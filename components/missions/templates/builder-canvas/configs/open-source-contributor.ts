@@ -84,11 +84,11 @@ export const openSourceContributorConfig: BuilderCanvasConfig = {
     ],
     maxScore: 100,
     badges: [
-        { minScore: 90, emoji: '🏆', title: 'Open Source Hero', color: '#F59E0B' },
-        { minScore: 70, emoji: '🐙', title: 'Contributor', color: '#10B981' },
-        { minScore: 50, emoji: '🔀', title: 'Pull Request Beginner', color: '#D97757' },
-        { minScore: 25, emoji: '💡', title: 'Beginnende Contributor', color: '#8B5CF6' },
-        { minScore: 0, emoji: '🌱', title: 'Op weg', color: '#6B6B66' },
+        { minScore: 90, emoji: '🏆', title: 'Open Source Hero', color: '#D7C95F' },
+        { minScore: 70, emoji: '🐙', title: 'Contributor', color: '#5F947D' },
+        { minScore: 50, emoji: '🔀', title: 'Pull Request Beginner', color: '#D97848' },
+        { minScore: 25, emoji: '💡', title: 'Beginnende Contributor', color: '#0B453F' },
+        { minScore: 0, emoji: '🌱', title: 'Op weg', color: '#445865' },
     ],
     takeaways: [
         'Je begrijpt de complete open source workflow van fork tot pull request',

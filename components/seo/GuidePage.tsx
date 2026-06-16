@@ -50,13 +50,13 @@ export const GuidePage: React.FC<{ guideId: string }> = ({ guideId }) => {
 
     return (
         <div className="min-h-screen bg-white">
-            <nav className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-100">
+            <nav className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-md border-b border-lab-muted">
                 <div className="max-w-4xl mx-auto px-6 h-16 flex items-center justify-between">
                     <a href="/" className="flex items-center gap-2.5">
                         <img src="/mascot/pip-logo.webp" alt="DGSkills logo" className="w-8 h-8 object-contain" />
-                        <span className="font-bold text-slate-900">DGSkills</span>
+                        <span className="font-bold text-lab-muted">DGSkills</span>
                     </a>
-                    <a href="/" className="flex items-center gap-1 text-sm font-medium text-slate-500 hover:text-slate-900 transition-colors">
+                    <a href="/" className="flex items-center gap-1 text-sm font-medium text-lab-muted hover:text-lab-muted transition-colors">
                         <IconChevronLeft />
                         Terug
                     </a>
@@ -67,13 +67,13 @@ export const GuidePage: React.FC<{ guideId: string }> = ({ guideId }) => {
                 <article className="max-w-3xl mx-auto prose prose-slate prose-indigo">
                     <ReactMarkdown>{content}</ReactMarkdown>
                     
-                    <div className="mt-16 pt-8 border-t border-slate-100">
-                        <h4 className="font-bold text-slate-900 mb-4">Wil je meer weten over DGSkills?</h4>
+                    <div className="mt-16 pt-8 border-t border-lab-muted">
+                        <h4 className="font-bold text-lab-muted mb-4">Wil je meer weten over DGSkills?</h4>
                         <div className="flex flex-col sm:flex-row gap-4">
                             <a href="/digitale-geletterdheid-vo" className="inline-flex items-center justify-center px-6 py-3 bg-indigo-600 text-white font-bold rounded-xl hover:bg-indigo-700 transition-colors">
                                 Ontdek de Lesmethode
                             </a>
-                            <a href="/scholen" className="inline-flex items-center justify-center px-6 py-3 bg-white border border-slate-200 text-slate-600 font-bold rounded-xl hover:bg-slate-50 transition-colors">
+                            <a href="/scholen" className="inline-flex items-center justify-center px-6 py-3 bg-white border border-lab-muted text-lab-muted font-bold rounded-xl hover:bg-lab-muted transition-colors">
                                 Bekijk Features
                             </a>
                         </div>
@@ -81,7 +81,7 @@ export const GuidePage: React.FC<{ guideId: string }> = ({ guideId }) => {
                 </article>
             </main>
 
-            <footer className="py-12 bg-slate-50 border-t border-slate-100 text-slate-400 text-center text-xs">
+            <footer className="py-12 bg-lab-muted border-t border-lab-muted text-lab-muted text-center text-xs">
                 <p>© {new Date().getFullYear()} DGSkills — Digitale Geletterdheid Gidsen</p>
             </footer>
         </div>

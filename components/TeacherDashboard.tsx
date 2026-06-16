@@ -465,14 +465,14 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ user, onUpda
             }}
         >
             <TutorialSpotlight />
-            <div className="min-h-screen bg-slate-50 p-4 md:p-8">
+            <div className="min-h-screen bg-lab-muted p-4 md:p-8">
                 {/* Toasts */}
                 <div className="fixed top-4 right-4 z-[200] flex flex-col gap-2 pointer-events-none">
                     <AnimatePresence>
                         {toasts.map(t => (
-                            <motion.div key={t.id} initial={{ opacity: 0, x: 50 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 20 }} className="pointer-events-auto min-w-[300px] p-4 rounded-xl shadow-xl bg-white border border-slate-100 flex items-start gap-3">
+                            <motion.div key={t.id} initial={{ opacity: 0, x: 50 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 20 }} className="pointer-events-auto min-w-[300px] p-4 rounded-xl shadow-xl bg-white border border-lab-muted flex items-start gap-3">
                                 <div className={`p-2 rounded-lg ${t.type === 'error' ? 'bg-red-50 text-red-500' : 'bg-indigo-50 text-indigo-500'}`}><Stars size={20} /></div>
-                                <div><h4 className="font-bold text-slate-900 text-sm">{t.title}</h4><p className="text-slate-500 text-xs mt-0.5">{t.message}</p></div>
+                                <div><h4 className="font-bold text-lab-muted text-sm">{t.title}</h4><p className="text-lab-muted text-xs mt-0.5">{t.message}</p></div>
                             </motion.div>
                         ))}
                     </AnimatePresence>
@@ -493,8 +493,8 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ user, onUpda
                     <TeacherNavigation activeTab={activeTab} setActiveTab={setActiveTab} />
 
                     {/* Year Group Selector */}
-                    <div className="flex items-center gap-3 bg-white rounded-xl border border-slate-200 shadow-sm p-2">
-                        <span className="text-xs font-bold text-slate-400 uppercase tracking-wider pl-2">Leerjaar</span>
+                    <div className="flex items-center gap-3 bg-white rounded-xl border border-lab-muted shadow-sm p-2">
+                        <span className="text-xs font-bold text-lab-muted uppercase tracking-wider pl-2">Leerjaar</span>
                         <div className="flex gap-1">
                             {Object.entries(CURRICULUM.yearGroups).map(([year, config]) => (
                                 <button
@@ -503,7 +503,7 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ user, onUpda
                                     className={`px-4 py-2 rounded-lg text-sm font-bold transition-all ${
                                         yearGroupFilter === Number(year)
                                             ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-200'
-                                            : 'text-slate-500 hover:text-slate-700 hover:bg-slate-50'
+                                            : 'text-lab-muted hover:text-lab-muted hover:bg-lab-muted'
                                     }`}
                                 >
                                     {year} — {config.title}
@@ -549,10 +549,10 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ user, onUpda
 
                         {activeTab === 'students' && (
                             <PageTransition key="students" className="space-y-4">
-                                <div className="bg-white rounded-xl border border-slate-200 p-3 flex items-center justify-between gap-3">
+                                <div className="bg-white rounded-xl border border-lab-muted p-3 flex items-center justify-between gap-3">
                                     <div className="flex items-center gap-2">
-                                        <button onClick={() => setRetryCount(prev => prev + 1)} className="p-2 text-slate-400 hover:bg-slate-50 rounded-lg"><RotateCcw size={16} /></button>
-                                        <button onClick={exportCSV} className="p-2 text-slate-400 hover:bg-slate-50 rounded-lg"><Download size={16} /></button>
+                                        <button onClick={() => setRetryCount(prev => prev + 1)} className="p-2 text-lab-muted hover:bg-lab-muted rounded-lg"><RotateCcw size={16} /></button>
+                                        <button onClick={exportCSV} className="p-2 text-lab-muted hover:bg-lab-muted rounded-lg"><Download size={16} /></button>
                                     </div>
                                     <button data-tutorial="students-message-btn" onClick={() => setShowMessageModal(true)} className="px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-bold flex items-center gap-2"><Send size={14} /> Bericht</button>
                                 </div>
@@ -578,26 +578,26 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ user, onUpda
                         {activeTab === 'gamification' && (
                             <PageTransition key="gamification" className="space-y-6">
                                 <div className="flex items-center justify-between">
-                                    <div className="flex bg-slate-100 p-1 rounded-lg">
+                                    <div className="flex bg-lab-muted p-1 rounded-lg">
                                         {[
                                             { id: 'leaderboard', label: 'Ranglijst', icon: Award },
                                             { id: 'gallery', label: 'Gallery', icon: Stars },
                                             { id: 'events', label: 'Events', icon: Sparkles },
                                         ].map(sub => (
-                                            <button key={sub.id} onClick={() => setGamificationSubTab(sub.id as any)} className={`flex items-center gap-2 px-3 py-1.5 rounded-md text-xs font-bold transition-all ${gamificationSubTab === sub.id ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}><sub.icon size={14} /> {sub.label}</button>
+                                            <button key={sub.id} onClick={() => setGamificationSubTab(sub.id as any)} className={`flex items-center gap-2 px-3 py-1.5 rounded-md text-xs font-bold transition-all ${gamificationSubTab === sub.id ? 'bg-white text-lab-muted shadow-sm' : 'text-lab-muted hover:text-lab-muted'}`}><sub.icon size={14} /> {sub.label}</button>
                                         ))}
                                     </div>
-                                    <button data-tutorial="xp-boost-btn" onClick={() => setShowEventModal(true)} className="px-4 py-2 bg-slate-900 text-white rounded-xl text-xs font-bold flex items-center gap-2"><Zap size={14} /> XP Boost</button>
+                                    <button data-tutorial="xp-boost-btn" onClick={() => setShowEventModal(true)} className="px-4 py-2 bg-lab-muted text-white rounded-xl text-xs font-bold flex items-center gap-2"><Zap size={14} /> XP Boost</button>
                                 </div>
                                 {gamificationSubTab === 'leaderboard' && <Leaderboard students={students} />}
                                 {gamificationSubTab === 'gallery' && <GoudenPromptGallery schoolId={user?.schoolId} />}
-                                {gamificationSubTab === 'events' && <div className="bg-white rounded-[2rem] border border-slate-100 overflow-hidden"><EventsPanel activeEvents={activeEvents} onShowModal={() => setShowEventModal(true)} onEndEvent={async id => { await endEvent(id); getActiveEvents(user?.schoolId).then(setActiveEvents); }} /></div>}
+                                {gamificationSubTab === 'events' && <div className="bg-white rounded-[2rem] border border-lab-muted overflow-hidden"><EventsPanel activeEvents={activeEvents} onShowModal={() => setShowEventModal(true)} onEndEvent={async id => { await endEvent(id); getActiveEvents(user?.schoolId).then(setActiveEvents); }} /></div>}
                             </PageTransition>
                         )}
 
                         {activeTab === 'settings' && <PageTransition key="settings" className="space-y-6"><SettingsPanel classFilter={classFilter} onClassFilterChange={setClassFilter} availableClasses={classGroups} enabledMissions={enabledMissions} onToggleMission={handleToggleMission} onTestGame={onOpenGames} yearGroup={yearGroupFilter} classroomConfig={classRoomConfig} onUpdateConfig={async u => { await updateClassroomConfig(selectedClassId, { ...u, schoolId: user?.schoolId }); setClassRoomConfig(p => p ? { ...p, ...u } : null); }} onOpenSchedulingConfig={(user?.role === 'admin' || user?.role === 'developer') ? () => setShowSchedulingConfig(true) : undefined} />{onLogout && <button onClick={onLogout} className="w-full py-4 border-2 border-red-100 text-red-600 rounded-2xl font-bold flex items-center justify-center gap-2 hover:bg-red-50"><RotateCcw size={18} /> Uitloggen</button>}</PageTransition>}
                         {activeTab === 'games' && <PageTransition key="games"><GamesPanel onOpenGame={onOpenGames || (() => { })} /></PageTransition>}
-                        {activeTab === 'ai-beleid' && <PageTransition key="ai-beleid"><div className="bg-white rounded-[2rem] border border-slate-100 p-6"><AiBeleidFeedbackPanel classFilter={classFilter !== 'all' ? classFilter : undefined} schoolId={user?.schoolId} /></div></PageTransition>}
+                        {activeTab === 'ai-beleid' && <PageTransition key="ai-beleid"><div className="bg-white rounded-[2rem] border border-lab-muted p-6"><AiBeleidFeedbackPanel classFilter={classFilter !== 'all' ? classFilter : undefined} schoolId={user?.schoolId} /></div></PageTransition>}
                         {activeTab === 'feedback' && <PageTransition key="feedback"><FeedbackPanel schoolId={user?.schoolId} /></PageTransition>}
                         {activeTab === 'progress' && <PageTransition key="progress" className="space-y-6"><MissionProgressPanel students={students} classFilter={classFilter} availableClasses={classGroups} onClassFilterChange={setClassFilter} onSelectStudent={setSelectedStudent} yearGroup={yearGroupFilter} /><HybridAssessmentPanel records={hybridAssessments} classFilter={classFilter} /><GrowthOverviewPanel studentIds={students.filter(s => classFilter === 'all' || s.studentClass === classFilter).map(s => s.uid)} /></PageTransition>}
                         {activeTab === 'slo' && <PageTransition key="slo"><SLOClassOverview students={students} schoolId={user?.schoolId} selectedYear={yearGroupFilter} /></PageTransition>}
@@ -667,7 +667,7 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ user, onUpda
 
                 {showSchedulingConfig && user?.schoolId && (
                     <div className="fixed inset-0 z-50 bg-black/40 flex items-start justify-center overflow-y-auto p-4 pt-12">
-                        <div className="bg-[#FAF9F0] rounded-[2rem] shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto">
+                        <div className="bg-[#FCF6EA] rounded-[2rem] shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto">
                             <SchedulingConfigurator
                                 schoolId={user.schoolId}
                                 yearGroup={yearGroupFilter}

@@ -165,7 +165,7 @@ export const AssessmentEngine: React.FC<Props> = ({ tasks, config, onComplete, o
         return (
             <div className="w-full h-full bg-lab-bg overflow-y-auto text-lab-dark text-center">
             <div className="min-h-full flex items-center justify-center p-6">
-                <div className="max-w-md w-full bg-white rounded-3xl p-8 shadow-xl border border-slate-200 animate-in zoom-in-95">
+                <div className="max-w-md w-full bg-white rounded-3xl p-8 shadow-xl border border-lab-muted animate-in zoom-in-95">
                     <div className={`w-20 h-20 rounded-2xl mx-auto mb-6 flex items-center justify-center text-4xl shadow-lg transform rotate-3 ${config?.themeColor ? `bg-${config.themeColor}-500 text-white` : 'bg-lab-primary text-white'}`}>
                         {config?.introIcon || '🛠️'}
                     </div>
@@ -233,13 +233,13 @@ export const AssessmentEngine: React.FC<Props> = ({ tasks, config, onComplete, o
         return (
             <div className="w-full h-full bg-lab-bg overflow-y-auto text-lab-dark text-center">
             <div className="min-h-full flex items-center justify-center p-6">
-                <div className="max-w-md w-full bg-white rounded-3xl p-8 shadow-xl border border-slate-200 animate-in zoom-in-95">
-                    <div className={`w-24 h-24 rounded-full mx-auto mb-6 flex items-center justify-center border-4 ${passed ? 'bg-emerald-50 border-emerald-500 text-emerald-600' : 'bg-red-50 border-red-400 text-red-500'}`}>
+                <div className="max-w-md w-full bg-white rounded-3xl p-8 shadow-xl border border-lab-muted animate-in zoom-in-95">
+                    <div className={`w-24 h-24 rounded-full mx-auto mb-6 flex items-center justify-center border-4 ${passed ? 'bg-lab-sage border-lab-sage text-lab-sage' : 'bg-red-50 border-red-400 text-red-500'}`}>
                         {passed ? <Trophy size={48} /> : <XCircle size={48} />}
                     </div>
 
                     <h1 className="text-3xl font-black mb-2 text-lab-dark">{passed ? 'Missie Voltooid!' : 'Helaas...'}</h1>
-                    <p className={`text-xl font-bold mb-8 ${passed ? 'text-emerald-600' : 'text-red-500'}`}>
+                    <p className={`text-xl font-bold mb-8 ${passed ? 'text-lab-sage' : 'text-red-500'}`}>
                         Score: {finalPercentage}%
                     </p>
 
@@ -268,7 +268,7 @@ export const AssessmentEngine: React.FC<Props> = ({ tasks, config, onComplete, o
                         <div className="space-y-2 mb-6 text-left">
                             <p className="text-[10px] font-black uppercase tracking-widest text-lab-textLight">Docent validatie</p>
                             {checklist.map((item) => (
-                                <label key={item.id} className="flex items-start gap-3 p-3 bg-lab-bg rounded-xl border border-slate-200 cursor-pointer hover:border-lab-primary/40 transition-colors">
+                                <label key={item.id} className="flex items-start gap-3 p-3 bg-lab-bg rounded-xl border border-lab-muted cursor-pointer hover:border-lab-primary/40 transition-colors">
                                     <input
                                         type="checkbox"
                                         checked={!!teacherChecks[item.id]}
@@ -287,10 +287,10 @@ export const AssessmentEngine: React.FC<Props> = ({ tasks, config, onComplete, o
                         {tasks.map((task) => {
                             const result = taskResults.find(r => r.id === task.id);
                             return (
-                                <div key={task.id} className="flex items-center justify-between p-3 bg-lab-bg rounded-xl border border-slate-200">
+                                <div key={task.id} className="flex items-center justify-between p-3 bg-lab-bg rounded-xl border border-lab-muted">
                                     <span className="text-sm font-bold text-lab-text">{task.title}</span>
                                     {result?.success
-                                        ? <CheckCircle size={16} className="text-emerald-500" />
+                                        ? <CheckCircle size={16} className="text-lab-sage" />
                                         : <XCircle size={16} className="text-red-400" />
                                     }
                                 </div>
@@ -303,7 +303,7 @@ export const AssessmentEngine: React.FC<Props> = ({ tasks, config, onComplete, o
                             <button
                                 onClick={handleFinish}
                                 disabled={hasMissingRequired}
-                                className="flex-1 py-4 bg-lab-primary hover:bg-lab-primaryDark disabled:bg-slate-200 disabled:text-slate-400 disabled:cursor-not-allowed text-white rounded-xl font-black text-lg shadow-lg transition-all active:scale-95"
+                                className="flex-1 py-4 bg-lab-primary hover:bg-lab-primaryDark disabled:bg-lab-muted disabled:text-lab-muted disabled:cursor-not-allowed text-white rounded-xl font-black text-lg shadow-lg transition-all active:scale-95"
                             >
                                 {hasMissingRequired ? 'Wacht op docentcheck' : 'Definitief beoordelen'}
                             </button>
@@ -318,7 +318,7 @@ export const AssessmentEngine: React.FC<Props> = ({ tasks, config, onComplete, o
                             <>
                                 <button
                                     onClick={onExit}
-                                    className="flex-1 py-4 bg-slate-100 hover:bg-slate-200 text-lab-text rounded-xl font-bold shadow-lg transition-all"
+                                    className="flex-1 py-4 bg-lab-muted hover:bg-lab-muted text-lab-text rounded-xl font-bold shadow-lg transition-all"
                                 >
                                     Stoppen
                                 </button>
@@ -340,7 +340,7 @@ export const AssessmentEngine: React.FC<Props> = ({ tasks, config, onComplete, o
     return (
         <div className="w-full h-full relative overflow-hidden">
             {/* Progress Bar */}
-            <div className="absolute top-0 left-0 right-0 h-2 bg-slate-200 z-50">
+            <div className="absolute top-0 left-0 right-0 h-2 bg-lab-muted z-50">
                 <div
                     className="h-full bg-lab-primary transition-all duration-500"
                     style={{ width: `${((currentTaskIndex) / tasks.length) * 100}%` }}
@@ -353,7 +353,7 @@ export const AssessmentEngine: React.FC<Props> = ({ tasks, config, onComplete, o
             </div>
 
             {/* Exit Button */}
-            <button onClick={onExit} className="absolute top-4 right-4 p-2 bg-white/80 text-lab-textLight rounded-lg hover:bg-white hover:text-lab-dark transition-colors z-50 min-h-[44px] min-w-[44px] flex items-center justify-center shadow-sm border border-slate-200" aria-label="Missie verlaten">
+            <button onClick={onExit} className="absolute top-4 right-4 p-2 bg-white/80 text-lab-textLight rounded-lg hover:bg-white hover:text-lab-dark transition-colors z-50 min-h-[44px] min-w-[44px] flex items-center justify-center shadow-sm border border-lab-muted" aria-label="Missie verlaten">
                 <XCircle size={20} />
             </button>
         </div>

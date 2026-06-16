@@ -100,26 +100,26 @@ export const DuelWaitingRoom: React.FC<DuelWaitingRoomProps> = ({
 
     if (!session) {
         return (
-            <div className="w-full h-full flex items-center justify-center" style={{ backgroundColor: '#FAF9F0' }}>
-                <Loader2 size={48} className="animate-spin" style={{ color: '#D97757' }} />
+            <div className="w-full h-full flex items-center justify-center" style={{ backgroundColor: '#FCF6EA' }}>
+                <Loader2 size={48} className="animate-spin" style={{ color: '#D97848' }} />
             </div>
         );
     }
 
     return (
-        <div className="w-full h-full flex flex-col" style={{ backgroundColor: '#FAF9F0', color: '#1A1A19' }}>
+        <div className="w-full h-full flex flex-col" style={{ backgroundColor: '#FCF6EA', color: '#08283B' }}>
             {/* Header */}
-            <header className="px-6 py-4 flex items-center justify-between" style={{ backgroundColor: '#FFFFFF', borderBottom: '1px solid #E8E6DF' }}>
+            <header className="px-6 py-4 flex items-center justify-between" style={{ backgroundColor: '#FFFFFF', borderBottom: '1px solid #E7D8BD' }}>
                 <button
                     onClick={handleLeave}
-                    className="flex items-center gap-2 transition-all duration-300 focus-visible:ring-2 focus-visible:ring-[#D97757]"
-                    style={{ color: '#6B6B66' }}
+                    className="flex items-center gap-2 transition-all duration-300 focus-visible:ring-2 focus-visible:ring-[#D97848]"
+                    style={{ color: '#445865' }}
                 >
                     <ArrowLeft size={20} />
                     <span className="font-bold text-sm" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>Verlaten</span>
                 </button>
                 <div className="flex items-center gap-2">
-                    <Swords size={20} style={{ color: '#D97757' }} />
+                    <Swords size={20} style={{ color: '#D97848' }} />
                     <span className="text-lg uppercase tracking-wider" style={{ fontFamily: "'Newsreader', Georgia, serif", fontWeight: 700 }}>Duel Lobby</span>
                 </div>
                 <div className="w-24" /> {/* Spacer for centering */}
@@ -131,7 +131,7 @@ export const DuelWaitingRoom: React.FC<DuelWaitingRoomProps> = ({
                 {countdown !== null && (
                     <div className="absolute inset-0 flex items-center justify-center z-50" style={{ backgroundColor: 'rgba(26,26,25,0.85)' }}>
                         <div className="text-center">
-                            <div className="text-9xl font-black animate-pulse" style={{ color: '#D97757' }}>
+                            <div className="text-9xl font-black animate-pulse" style={{ color: '#D97848' }}>
                                 {countdown === 0 ? 'GO!' : countdown}
                             </div>
                             <p className="text-2xl font-bold mt-4" style={{ fontFamily: "'Newsreader', Georgia, serif", color: '#FFFFFF' }}>
@@ -143,8 +143,8 @@ export const DuelWaitingRoom: React.FC<DuelWaitingRoomProps> = ({
 
                 {/* Title */}
                 <div className="text-center mb-4">
-                    <h2 className="text-3xl mb-2" style={{ fontFamily: "'Newsreader', Georgia, serif", fontWeight: 700, color: '#1A1A19' }}>Tekenduel</h2>
-                    <p style={{ fontFamily: "'Outfit', system-ui, sans-serif", color: '#6B6B66' }}>Beide spelers moeten READY zijn om te beginnen!</p>
+                    <h2 className="text-3xl mb-2" style={{ fontFamily: "'Newsreader', Georgia, serif", fontWeight: 700, color: '#08283B' }}>Tekenduel</h2>
+                    <p style={{ fontFamily: "'Outfit', system-ui, sans-serif", color: '#445865' }}>Beide spelers moeten READY zijn om te beginnen!</p>
                 </div>
 
                 {/* Players */}
@@ -153,53 +153,53 @@ export const DuelWaitingRoom: React.FC<DuelWaitingRoomProps> = ({
                     <div
                         className="relative p-6 rounded-2xl border-4 transition-all duration-300"
                         style={myReady
-                            ? { borderColor: '#10B981', backgroundColor: 'rgba(16,185,129,0.08)', boxShadow: '0 8px 24px rgba(16,185,129,0.15)' }
-                            : { borderColor: '#E8E6DF', backgroundColor: '#FFFFFF' }
+                            ? { borderColor: '#5F947D', backgroundColor: 'rgba(16,185,129,0.08)', boxShadow: '0 8px 24px rgba(16,185,129,0.15)' }
+                            : { borderColor: '#E7D8BD', backgroundColor: '#FFFFFF' }
                         }
                     >
-                        <div className="w-24 h-24 rounded-full flex items-center justify-center text-4xl font-black text-white mb-4" style={{ background: 'linear-gradient(135deg, #D97757, #C46849)' }}>
+                        <div className="w-24 h-24 rounded-full flex items-center justify-center text-4xl font-black text-white mb-4" style={{ background: 'linear-gradient(135deg, #D97848, #D97848)' }}>
                             {myName?.charAt(0).toUpperCase() || '?'}
                         </div>
                         <div className="flex items-center justify-center gap-2">
-                            <div className={`w-3 h-3 rounded-full ${!myReady ? 'animate-pulse' : ''}`} style={{ backgroundColor: myReady ? '#10B981' : '#ef4444' }} />
-                            <p className="font-bold text-lg" style={{ fontFamily: "'Outfit', system-ui, sans-serif", color: '#1A1A19' }}>{myName}</p>
+                            <div className={`w-3 h-3 rounded-full ${!myReady ? 'animate-pulse' : ''}`} style={{ backgroundColor: myReady ? '#5F947D' : '#D97848' }} />
+                            <p className="font-bold text-lg" style={{ fontFamily: "'Outfit', system-ui, sans-serif", color: '#08283B' }}>{myName}</p>
                         </div>
-                        <p className="text-center text-xs font-bold uppercase tracking-wider" style={{ fontFamily: "'Outfit', system-ui, sans-serif", color: '#D97757' }}>(Jij)</p>
+                        <p className="text-center text-xs font-bold uppercase tracking-wider" style={{ fontFamily: "'Outfit', system-ui, sans-serif", color: '#D97848' }}>(Jij)</p>
 
                         {myReady && (
-                            <div className="absolute -top-2 -right-2 w-10 h-10 rounded-full flex items-center justify-center shadow-lg" style={{ backgroundColor: '#10B981' }}>
+                            <div className="absolute -top-2 -right-2 w-10 h-10 rounded-full flex items-center justify-center shadow-lg" style={{ backgroundColor: '#5F947D' }}>
                                 <Check size={24} className="text-white" />
                             </div>
                         )}
                     </div>
 
                     {/* VS */}
-                    <div className="text-4xl font-black" style={{ color: '#E8E6DF' }}>VS</div>
+                    <div className="text-4xl font-black" style={{ color: '#E7D8BD' }}>VS</div>
 
                     {/* Player 2 (Opponent) */}
                     <div
                         className="relative p-6 rounded-2xl border-4 transition-all duration-300"
                         style={opponentReady
-                            ? { borderColor: '#10B981', backgroundColor: 'rgba(16,185,129,0.08)', boxShadow: '0 8px 24px rgba(16,185,129,0.15)' }
-                            : { borderColor: '#E8E6DF', backgroundColor: '#FFFFFF' }
+                            ? { borderColor: '#5F947D', backgroundColor: 'rgba(16,185,129,0.08)', boxShadow: '0 8px 24px rgba(16,185,129,0.15)' }
+                            : { borderColor: '#E7D8BD', backgroundColor: '#FFFFFF' }
                         }
                     >
-                        <div className="w-24 h-24 rounded-full flex items-center justify-center text-4xl font-black text-white mb-4" style={{ background: 'linear-gradient(135deg, #8B6F9E, #7A5F8E)' }}>
+                        <div className="w-24 h-24 rounded-full flex items-center justify-center text-4xl font-black text-white mb-4" style={{ background: 'linear-gradient(135deg, #0B453F, #7A5F8E)' }}>
                             {opponentName?.charAt(0).toUpperCase() || '?'}
                         </div>
                         <div className="flex items-center justify-center gap-2">
-                            <div className={`w-3 h-3 rounded-full ${!opponentReady ? 'animate-pulse' : ''}`} style={{ backgroundColor: opponentReady ? '#10B981' : '#ef4444' }} />
-                            <p className="font-bold text-lg" style={{ fontFamily: "'Outfit', system-ui, sans-serif", color: '#1A1A19' }}>{opponentName}</p>
+                            <div className={`w-3 h-3 rounded-full ${!opponentReady ? 'animate-pulse' : ''}`} style={{ backgroundColor: opponentReady ? '#5F947D' : '#D97848' }} />
+                            <p className="font-bold text-lg" style={{ fontFamily: "'Outfit', system-ui, sans-serif", color: '#08283B' }}>{opponentName}</p>
                         </div>
-                        <p className="text-center text-xs font-bold uppercase tracking-wider" style={{ fontFamily: "'Outfit', system-ui, sans-serif", color: '#6B6B66' }}>Tegenstander</p>
+                        <p className="text-center text-xs font-bold uppercase tracking-wider" style={{ fontFamily: "'Outfit', system-ui, sans-serif", color: '#445865' }}>Tegenstander</p>
 
                         {opponentReady ? (
-                            <div className="absolute -top-2 -right-2 w-10 h-10 rounded-full flex items-center justify-center shadow-lg" style={{ backgroundColor: '#10B981' }}>
+                            <div className="absolute -top-2 -right-2 w-10 h-10 rounded-full flex items-center justify-center shadow-lg" style={{ backgroundColor: '#5F947D' }}>
                                 <Check size={24} className="text-white" />
                             </div>
                         ) : (
-                            <div className="absolute -top-2 -right-2 w-10 h-10 rounded-full flex items-center justify-center shadow-lg" style={{ backgroundColor: '#F0EEE8' }}>
-                                <Clock size={20} className="animate-pulse" style={{ color: '#6B6B66' }} />
+                            <div className="absolute -top-2 -right-2 w-10 h-10 rounded-full flex items-center justify-center shadow-lg" style={{ backgroundColor: '#FCF6EA' }}>
+                                <Clock size={20} className="animate-pulse" style={{ color: '#445865' }} />
                             </div>
                         )}
                     </div>
@@ -207,24 +207,24 @@ export const DuelWaitingRoom: React.FC<DuelWaitingRoomProps> = ({
 
                 {/* Ready Button */}
                 {readCountdown > 0 && !myReady ? (
-                    <div className="mt-8 px-12 py-5 rounded-2xl font-bold text-lg flex items-center justify-center gap-3" style={{ backgroundColor: '#F0EEE8', color: '#6B6B66', border: '1px solid #E8E6DF', fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                    <div className="mt-8 px-12 py-5 rounded-2xl font-bold text-lg flex items-center justify-center gap-3" style={{ backgroundColor: '#FCF6EA', color: '#445865', border: '1px solid #E7D8BD', fontFamily: "'Outfit', system-ui, sans-serif" }}>
                         <div className="relative w-8 h-8">
                             <svg className="w-8 h-8 -rotate-90" viewBox="0 0 36 36">
                                 <path
                                     d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
                                     fill="none"
-                                    stroke="#E8E6DF"
+                                    stroke="#E7D8BD"
                                     strokeWidth="3"
                                 />
                                 <path
                                     d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
                                     fill="none"
-                                    stroke="#10B981"
+                                    stroke="#5F947D"
                                     strokeWidth="3"
                                     strokeDasharray={`${((5 - readCountdown) / 5) * 100}, 100`}
                                 />
                             </svg>
-                            <span className="absolute inset-0 flex items-center justify-center text-sm font-black" style={{ color: '#1A1A19' }}>
+                            <span className="absolute inset-0 flex items-center justify-center text-sm font-black" style={{ color: '#08283B' }}>
                                 {readCountdown}
                             </span>
                         </div>
@@ -234,10 +234,10 @@ export const DuelWaitingRoom: React.FC<DuelWaitingRoomProps> = ({
                     <button
                         onClick={handleToggleReady}
                         disabled={isSettingReady || countdown !== null}
-                        className={`mt-8 px-12 py-5 rounded-full font-black text-xl uppercase tracking-wider transition-all duration-300 flex items-center gap-3 focus-visible:ring-2 focus-visible:ring-[#D97757] ${!myReady ? 'hover:scale-105 active:scale-95' : ''}`}
+                        className={`mt-8 px-12 py-5 rounded-full font-black text-xl uppercase tracking-wider transition-all duration-300 flex items-center gap-3 focus-visible:ring-2 focus-visible:ring-[#D97848] ${!myReady ? 'hover:scale-105 active:scale-95' : ''}`}
                         style={myReady
-                            ? { backgroundColor: '#F0EEE8', color: '#6B6B66', fontFamily: "'Outfit', system-ui, sans-serif" }
-                            : { background: 'linear-gradient(135deg, #10B981, #059669)', color: '#FFFFFF', boxShadow: '0 8px 24px rgba(16,185,129,0.3)', fontFamily: "'Outfit', system-ui, sans-serif" }
+                            ? { backgroundColor: '#FCF6EA', color: '#445865', fontFamily: "'Outfit', system-ui, sans-serif" }
+                            : { background: 'linear-gradient(135deg, #5F947D, #5F947D)', color: '#FFFFFF', boxShadow: '0 8px 24px rgba(16,185,129,0.3)', fontFamily: "'Outfit', system-ui, sans-serif" }
                         }
                     >
                         {isSettingReady ? (
@@ -258,7 +258,7 @@ export const DuelWaitingRoom: React.FC<DuelWaitingRoomProps> = ({
 
                 {/* Waiting message */}
                 {myReady && !opponentReady && (
-                    <p className="flex items-center gap-2 animate-pulse" style={{ fontFamily: "'Outfit', system-ui, sans-serif", color: '#6B6B66' }}>
+                    <p className="flex items-center gap-2 animate-pulse" style={{ fontFamily: "'Outfit', system-ui, sans-serif", color: '#445865' }}>
                         <Clock size={16} />
                         Wachten op tegenstander...
                     </p>
@@ -266,7 +266,7 @@ export const DuelWaitingRoom: React.FC<DuelWaitingRoomProps> = ({
 
                 {/* Both ready message */}
                 {myReady && opponentReady && countdown === null && (
-                    <p className="flex items-center gap-2 font-bold" style={{ fontFamily: "'Outfit', system-ui, sans-serif", color: '#10B981' }}>
+                    <p className="flex items-center gap-2 font-bold" style={{ fontFamily: "'Outfit', system-ui, sans-serif", color: '#5F947D' }}>
                         <Check size={16} />
                         Beide klaar! Start over een moment...
                     </p>
@@ -274,8 +274,8 @@ export const DuelWaitingRoom: React.FC<DuelWaitingRoomProps> = ({
             </div>
 
             {/* Footer */}
-            <footer className="px-6 py-3 text-center" style={{ backgroundColor: '#FFFFFF', borderTop: '1px solid #E8E6DF' }}>
-                <p className="text-xs" style={{ fontFamily: "'Outfit', system-ui, sans-serif", color: '#6B6B66' }}>
+            <footer className="px-6 py-3 text-center" style={{ backgroundColor: '#FFFFFF', borderTop: '1px solid #E7D8BD' }}>
+                <p className="text-xs" style={{ fontFamily: "'Outfit', system-ui, sans-serif", color: '#445865' }}>
                     Tip: Wie in 1 minuut de meeste tekeningen door de AI goedgekeurd krijgt, wint!
                 </p>
             </footer>

@@ -6,11 +6,11 @@ import React from 'react';
 
 const SERIF = "'Newsreader', Georgia, serif";
 const C = {
-    text: '#1A1A19',
-    textMuted: '#6B6B66',
-    textLight: '#9C9C95',
-    accent: '#D97757',
-    border: '#E8E6DF',
+    text: '#08283B',
+    textMuted: '#445865',
+    textLight: '#445865',
+    accent: '#D97848',
+    border: '#E7D8BD',
 };
 
 // Warm background colors for illustration containers

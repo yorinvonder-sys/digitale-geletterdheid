@@ -88,14 +88,14 @@ export const EindmetingReleaseButton: React.FC<EindmetingReleaseButtonProps> = (
 
   return (
     <>
-      <div className="bg-white rounded-2xl border border-slate-100 p-6">
+      <div className="bg-white rounded-2xl border border-lab-muted p-6">
         <div className="flex items-start gap-3 mb-4">
           <div className="p-2 bg-indigo-50 rounded-xl">
             <ClipboardCheck size={18} className="text-indigo-600" />
           </div>
           <div>
-            <h3 className="text-sm font-black text-slate-900">Eindmeting vrijgeven</h3>
-            <p className="text-xs text-slate-400 mt-0.5">
+            <h3 className="text-sm font-black text-lab-muted">Eindmeting vrijgeven</h3>
+            <p className="text-xs text-lab-muted mt-0.5">
               Geef de eindmeting vrij voor een klas. Leerlingen zien de eindmeting bij hun volgende
               login.
             </p>
@@ -107,7 +107,7 @@ export const EindmetingReleaseButton: React.FC<EindmetingReleaseButtonProps> = (
             <select
               value={selectedClass}
               onChange={(e) => setSelectedClass(e.target.value)}
-              className="w-full p-3 border border-slate-200 rounded-xl text-sm font-bold bg-white hover:border-indigo-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 outline-none transition-all cursor-pointer"
+              className="w-full p-3 border border-lab-muted rounded-xl text-sm font-bold bg-white hover:border-indigo-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 outline-none transition-all cursor-pointer"
             >
               <option value="">-- Selecteer een klas --</option>
               {availableClasses.map((cls) => (
@@ -121,11 +121,11 @@ export const EindmetingReleaseButton: React.FC<EindmetingReleaseButtonProps> = (
         )}
 
         {targetClass && alreadyReleased && (
-          <div className="flex items-center gap-2 px-4 py-3 bg-emerald-50 border border-emerald-100 rounded-xl">
-            <Check size={16} className="text-emerald-600 flex-shrink-0" />
+          <div className="flex items-center gap-2 px-4 py-3 bg-lab-sage border border-lab-sage rounded-xl">
+            <Check size={16} className="text-lab-sage flex-shrink-0" />
             <div>
-              <span className="text-sm font-bold text-emerald-700">Vrijgegeven</span>
-              <span className="text-xs text-emerald-600 flex items-center gap-1 mt-0.5">
+              <span className="text-sm font-bold text-lab-sage">Vrijgegeven</span>
+              <span className="text-xs text-lab-sage flex items-center gap-1 mt-0.5">
                 <Calendar size={11} />
                 {formatDate(releaseRecord!.released_at)}
               </span>
@@ -146,7 +146,7 @@ export const EindmetingReleaseButton: React.FC<EindmetingReleaseButtonProps> = (
         )}
 
         {!targetClass && classFilter === 'all' && (
-          <div className="px-4 py-3 bg-slate-50 text-slate-400 text-sm rounded-xl text-center">
+          <div className="px-4 py-3 bg-lab-muted text-lab-muted text-sm rounded-xl text-center">
             Selecteer eerst een klas.
           </div>
         )}

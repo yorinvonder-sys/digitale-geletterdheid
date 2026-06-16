@@ -55,7 +55,7 @@ function PlatformerIllustration({ state }: { state: GameVisualState }) {
         <svg viewBox="0 0 480 320" className="w-full h-full" aria-hidden="true">
             <defs>
                 <linearGradient id="gd-plat" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stopColor="#64b5f6" />
+                    <stop offset="0%" stopColor="#0B453F" />
                     <stop offset="100%" stopColor="#e1f5fe" />
                 </linearGradient>
             </defs>
@@ -84,7 +84,7 @@ function PlatformerIllustration({ state }: { state: GameVisualState }) {
             <text x="415" y="39" textAnchor="middle" fontSize="13" fontWeight="bold" fill="white" fontFamily="monospace">SCORE: 120</text>
 
             {/* Ground */}
-            <rect x="0" y="260" width="480" height="20" fill="#66bb6a" />
+            <rect x="0" y="260" width="480" height="20" fill="#5F947D" />
             <rect x="0" y="272" width="480" height="48" fill="#8d6e63" />
             {[20, 55, 95, 130, 180, 220, 270, 310, 360, 400, 440].map(x => (
                 <line key={x} x1={x} y1="260" x2={x - 3} y2="252" stroke="#4caf50" strokeWidth="2" strokeLinecap="round" />
@@ -94,12 +94,12 @@ function PlatformerIllustration({ state }: { state: GameVisualState }) {
             <g>
                 <rect x="330" y="190" width="36" height="70" rx="3" fill="#43a047" />
                 <rect x="326" y="186" width="44" height="14" rx="4" fill="#388e3c" />
-                <rect x="336" y="198" width="6" height="58" fill="#66bb6a" opacity="0.4" />
+                <rect x="336" y="198" width="6" height="58" fill="#5F947D" opacity="0.4" />
             </g>
             <g>
                 <rect x="210" y="220" width="30" height="40" rx="3" fill="#43a047" />
                 <rect x="206" y="216" width="38" height="12" rx="4" fill="#388e3c" />
-                <rect x="216" y="228" width="5" height="28" fill="#66bb6a" opacity="0.4" />
+                <rect x="216" y="228" width="5" height="28" fill="#5F947D" opacity="0.4" />
             </g>
 
             {/* Player */}
@@ -109,24 +109,24 @@ function PlatformerIllustration({ state }: { state: GameVisualState }) {
             }}>
                 <rect x="90" y="216" width="32" height="40" rx="6" style={{ fill: state.primary, transition: 'fill 0.8s ease' }} />
                 <rect x="94" y="196" width="24" height="24" rx="12" style={{ fill: state.primary, transition: 'fill 0.8s ease' }} />
-                <rect x="88" y="192" width="30" height="8" rx="3" fill="#1A1A19" />
-                <rect x="96" y="185" width="16" height="10" rx="3" fill="#1A1A19" />
+                <rect x="88" y="192" width="30" height="8" rx="3" fill="#08283B" />
+                <rect x="96" y="185" width="16" height="10" rx="3" fill="#08283B" />
                 <circle cx="103" cy="206" r="2.5" fill="white" />
                 <circle cx="112" cy="206" r="2.5" fill="white" />
-                <circle cx="104" cy="206" r="1.2" fill="#1A1A19" />
-                <circle cx="113" cy="206" r="1.2" fill="#1A1A19" />
+                <circle cx="104" cy="206" r="1.2" fill="#08283B" />
+                <circle cx="113" cy="206" r="1.2" fill="#08283B" />
 
                 {state.effect2 && (
                     <g>
-                        <line x1="85" y1="228" x2="55" y2="228" stroke="#f59e0b" strokeWidth="2.5" strokeLinecap="round" opacity="0.8">
+                        <line x1="85" y1="228" x2="55" y2="228" stroke="#D7C95F" strokeWidth="2.5" strokeLinecap="round" opacity="0.8">
                             <animate attributeName="x2" values="55;35;55" dur="0.6s" repeatCount="indefinite" />
                             <animate attributeName="opacity" values="0.8;0.3;0.8" dur="0.6s" repeatCount="indefinite" />
                         </line>
-                        <line x1="85" y1="236" x2="45" y2="236" stroke="#f59e0b" strokeWidth="2" strokeLinecap="round" opacity="0.6">
+                        <line x1="85" y1="236" x2="45" y2="236" stroke="#D7C95F" strokeWidth="2" strokeLinecap="round" opacity="0.6">
                             <animate attributeName="x2" values="45;25;45" dur="0.7s" repeatCount="indefinite" />
                             <animate attributeName="opacity" values="0.6;0.2;0.6" dur="0.7s" repeatCount="indefinite" />
                         </line>
-                        <line x1="85" y1="244" x2="60" y2="244" stroke="#f59e0b" strokeWidth="1.5" strokeLinecap="round" opacity="0.5">
+                        <line x1="85" y1="244" x2="60" y2="244" stroke="#D7C95F" strokeWidth="1.5" strokeLinecap="round" opacity="0.5">
                             <animate attributeName="x2" values="60;40;60" dur="0.5s" repeatCount="indefinite" />
                             <animate attributeName="opacity" values="0.5;0.15;0.5" dur="0.5s" repeatCount="indefinite" />
                         </line>
@@ -142,8 +142,8 @@ function SpaceIllustration({ state }: { state: GameVisualState }) {
         <svg viewBox="0 0 480 320" className="w-full h-full" aria-hidden="true">
             <defs>
                 <linearGradient id="gd-space" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stopColor="#1A1A19" />
-                    <stop offset="100%" stopColor="#2A2A25" />
+                    <stop offset="0%" stopColor="#08283B" />
+                    <stop offset="100%" stopColor="#08283B" />
                 </linearGradient>
             </defs>
             <rect width="480" height="320" fill="url(#gd-space)" />
@@ -160,39 +160,39 @@ function SpaceIllustration({ state }: { state: GameVisualState }) {
             ))}
 
             {/* Nebula */}
-            <ellipse cx="380" cy="80" rx="80" ry="50" fill="#D97757" opacity="0.06" />
-            <ellipse cx="100" cy="250" rx="60" ry="40" fill="#E8956F" opacity="0.05" />
+            <ellipse cx="380" cy="80" rx="80" ry="50" fill="#D97848" opacity="0.06" />
+            <ellipse cx="100" cy="250" rx="60" ry="40" fill="#D97848" opacity="0.05" />
 
             {/* HUD */}
             <rect x="370" y="16" width="96" height="28" rx="6" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.15)" strokeWidth="1" />
-            <text x="418" y="35" textAnchor="middle" fontSize="12" fontWeight="bold" fill="#9C9C95" fontFamily="monospace">WAVE: 03</text>
+            <text x="418" y="35" textAnchor="middle" fontSize="12" fontWeight="bold" fill="#445865" fontFamily="monospace">WAVE: 03</text>
 
             <rect x="14" y="16" width="80" height="8" rx="4" fill="rgba(255,255,255,0.08)" />
             <rect x="14" y="16" width="56" height="8" rx="4" fill="#22d3ee" opacity="0.6" />
-            <text x="14" y="38" fontSize="9" fill="#9C9C95" fontFamily="monospace">SHIELD</text>
+            <text x="14" y="38" fontSize="9" fill="#445865" fontFamily="monospace">SHIELD</text>
 
             {/* Asteroids */}
             <g>
-                <ellipse cx="340" cy="100" rx="22" ry="18" fill="#6B6B66" stroke="#3D3D38" strokeWidth="1.5" />
-                <ellipse cx="334" cy="94" rx="5" ry="4" fill="#3D3D38" />
-                <ellipse cx="348" cy="104" rx="3" ry="3" fill="#3D3D38" />
+                <ellipse cx="340" cy="100" rx="22" ry="18" fill="#445865" stroke="#445865" strokeWidth="1.5" />
+                <ellipse cx="334" cy="94" rx="5" ry="4" fill="#445865" />
+                <ellipse cx="348" cy="104" rx="3" ry="3" fill="#445865" />
             </g>
             <g>
-                <ellipse cx="400" cy="200" rx="16" ry="14" fill="#6B6B66" stroke="#3D3D38" strokeWidth="1.5" />
-                <ellipse cx="394" cy="196" rx="4" ry="3" fill="#3D3D38" />
+                <ellipse cx="400" cy="200" rx="16" ry="14" fill="#445865" stroke="#445865" strokeWidth="1.5" />
+                <ellipse cx="394" cy="196" rx="4" ry="3" fill="#445865" />
             </g>
-            <ellipse cx="300" cy="250" rx="10" ry="8" fill="#6B6B66" stroke="#3D3D38" strokeWidth="1" />
+            <ellipse cx="300" cy="250" rx="10" ry="8" fill="#445865" stroke="#445865" strokeWidth="1" />
 
             {/* Enemy ships */}
             <g>
                 <g>
-                    <polygon points="380,140 395,148 380,156 384,148" style={{ fill: state.effect2 ? '#ef4444' : '#f87171', transition: 'fill 0.8s ease' }} />
-                    <rect x="376" y="145" width="4" height="6" rx="1" fill="#dc2626" />
+                    <polygon points="380,140 395,148 380,156 384,148" style={{ fill: state.effect2 ? '#D97848' : '#D97848', transition: 'fill 0.8s ease' }} />
+                    <rect x="376" y="145" width="4" height="6" rx="1" fill="#D97848" />
                     <animateTransform attributeName="transform" type="translate" values={state.effect2 ? '0,0;-30,-8;0,0' : '0,0;-10,-3;0,0'} dur={state.effect2 ? '2s' : '4s'} repeatCount="indefinite" />
                 </g>
                 <g>
-                    <polygon points="420,220 435,228 420,236 424,228" style={{ fill: state.effect2 ? '#ef4444' : '#f87171', transition: 'fill 0.8s ease' }} />
-                    <rect x="416" y="225" width="4" height="6" rx="1" fill="#dc2626" />
+                    <polygon points="420,220 435,228 420,236 424,228" style={{ fill: state.effect2 ? '#D97848' : '#D97848', transition: 'fill 0.8s ease' }} />
+                    <rect x="416" y="225" width="4" height="6" rx="1" fill="#D97848" />
                     <animateTransform attributeName="transform" type="translate" values={state.effect2 ? '0,0;-25,10;0,0' : '0,0;-8,3;0,0'} dur={state.effect2 ? '2.5s' : '5s'} repeatCount="indefinite" />
                 </g>
             </g>
@@ -200,7 +200,7 @@ function SpaceIllustration({ state }: { state: GameVisualState }) {
             {/* Spaceship */}
             <g>
                 {/* Engine glow */}
-                <ellipse cx="80" cy="165" rx="8" ry="4" fill="#f59e0b" opacity="0.5">
+                <ellipse cx="80" cy="165" rx="8" ry="4" fill="#D7C95F" opacity="0.5">
                     <animate attributeName="rx" values="6;10;6" dur="0.5s" repeatCount="indefinite" />
                     <animate attributeName="opacity" values="0.3;0.7;0.3" dur="0.5s" repeatCount="indefinite" />
                 </ellipse>
@@ -208,7 +208,7 @@ function SpaceIllustration({ state }: { state: GameVisualState }) {
                 {/* Ship body */}
                 <polygon points="130,165 85,148 85,182" style={{ fill: state.primary, transition: 'fill 0.8s ease' }} />
                 <polygon points="120,165 92,155 92,175" fill="white" opacity="0.15" />
-                <ellipse cx="118" cy="165" rx="6" ry="4" fill="#38bdf8" opacity="0.7" />
+                <ellipse cx="118" cy="165" rx="6" ry="4" fill="#0B453F" opacity="0.7" />
                 {/* Wings */}
                 <polygon points="95,148 88,135 100,148" style={{ fill: state.primary, transition: 'fill 0.8s ease', opacity: 0.8 }} />
                 <polygon points="95,182 88,195 100,182" style={{ fill: state.primary, transition: 'fill 0.8s ease', opacity: 0.8 }} />
@@ -252,8 +252,8 @@ function RacingIllustration({ state }: { state: GameVisualState }) {
         <svg viewBox="0 0 480 320" className="w-full h-full" aria-hidden="true">
             <defs>
                 <linearGradient id="gd-grass-r" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stopColor="#22c55e" />
-                    <stop offset="100%" stopColor="#16a34a" />
+                    <stop offset="0%" stopColor="#5F947D" />
+                    <stop offset="100%" stopColor="#5F947D" />
                 </linearGradient>
             </defs>
 
@@ -264,18 +264,18 @@ function RacingIllustration({ state }: { state: GameVisualState }) {
             {[30, 80, 140, 380, 430, 460].map((x, i) => (
                 <g key={`tree-${i}`} opacity="0.5">
                     <circle cx={x} cy={50 + (i * 47) % 260} r={8 + (i % 3) * 3} fill="#15803d" />
-                    <circle cx={x + 5} cy={45 + (i * 47) % 260} r={6 + (i % 2) * 2} fill="#166534" />
+                    <circle cx={x + 5} cy={45 + (i * 47) % 260} r={6 + (i % 2) * 2} fill="#5F947D" />
                 </g>
             ))}
 
             {/* Road */}
-            <rect x="120" y="0" width="240" height="320" fill="#3D3D38" />
+            <rect x="120" y="0" width="240" height="320" fill="#445865" />
 
             {/* Kerbs */}
             {[0, 40, 80, 120, 160, 200, 240, 280].map((y, i) => (
                 <React.Fragment key={`kerb-${i}`}>
-                    <rect x="120" y={y} width="10" height="20" fill={i % 2 === 0 ? '#ef4444' : 'white'} />
-                    <rect x="350" y={y} width="10" height="20" fill={i % 2 === 0 ? '#ef4444' : 'white'} />
+                    <rect x="120" y={y} width="10" height="20" fill={i % 2 === 0 ? '#D97848' : 'white'} />
+                    <rect x="350" y={y} width="10" height="20" fill={i % 2 === 0 ? '#D97848' : 'white'} />
                 </React.Fragment>
             ))}
 
@@ -289,8 +289,8 @@ function RacingIllustration({ state }: { state: GameVisualState }) {
             {/* Finish line */}
             {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map(i => (
                 <React.Fragment key={`fin-${i}`}>
-                    <rect x={130 + i * 18} y={280} width="9" height="8" fill={(i) % 2 === 0 ? 'white' : '#2A2A25'} />
-                    <rect x={130 + i * 18} y={288} width="9" height="8" fill={(i + 1) % 2 === 0 ? 'white' : '#2A2A25'} />
+                    <rect x={130 + i * 18} y={280} width="9" height="8" fill={(i) % 2 === 0 ? 'white' : '#08283B'} />
+                    <rect x={130 + i * 18} y={288} width="9" height="8" fill={(i + 1) % 2 === 0 ? 'white' : '#08283B'} />
                 </React.Fragment>
             ))}
 
@@ -299,7 +299,7 @@ function RacingIllustration({ state }: { state: GameVisualState }) {
             <text x="418" y="35" textAnchor="middle" fontSize="12" fontWeight="bold" fill="white" fontFamily="monospace">LAP: 3/5</text>
 
             <rect x="14" y="16" width="80" height="28" rx="6" fill="rgba(0,0,0,0.5)" />
-            <text x="54" y="35" textAnchor="middle" fontSize="12" fontWeight="bold" fontFamily="monospace" style={{ fill: state.effect1 ? '#fbbf24' : '#9C9C95', transition: 'fill 0.8s ease' }}>
+            <text x="54" y="35" textAnchor="middle" fontSize="12" fontWeight="bold" fontFamily="monospace" style={{ fill: state.effect1 ? '#D7C95F' : '#445865', transition: 'fill 0.8s ease' }}>
                 {state.effect1 ? '280' : '180'} km/h
             </text>
 
@@ -307,13 +307,13 @@ function RacingIllustration({ state }: { state: GameVisualState }) {
             {state.effect2 && (
                 <g>
                     {/* Dark overcast sky */}
-                    <rect width="480" height="320" fill="#2A2A25" opacity="0.45" />
+                    <rect width="480" height="320" fill="#08283B" opacity="0.45" />
 
                     {/* Storm clouds */}
-                    <ellipse cx="100" cy="30" rx="80" ry="28" fill="#3D3D38" opacity="0.9" />
-                    <ellipse cx="150" cy="20" rx="60" ry="22" fill="#6B6B66" opacity="0.8" />
-                    <ellipse cx="300" cy="35" rx="90" ry="30" fill="#3D3D38" opacity="0.9" />
-                    <ellipse cx="360" cy="22" rx="70" ry="24" fill="#6B6B66" opacity="0.8" />
+                    <ellipse cx="100" cy="30" rx="80" ry="28" fill="#445865" opacity="0.9" />
+                    <ellipse cx="150" cy="20" rx="60" ry="22" fill="#445865" opacity="0.8" />
+                    <ellipse cx="300" cy="35" rx="90" ry="30" fill="#445865" opacity="0.9" />
+                    <ellipse cx="360" cy="22" rx="70" ry="24" fill="#445865" opacity="0.8" />
                     <ellipse cx="220" cy="28" rx="50" ry="18" fill="#4A4A44" opacity="0.7" />
 
                     {/* Rain drops — heavy, angled */}
@@ -367,11 +367,11 @@ function RacingIllustration({ state }: { state: GameVisualState }) {
                 {/* Turbo */}
                 {state.effect1 && (
                     <g>
-                        <ellipse cx="232" cy="188" rx="4" ry="10" fill="#f59e0b" opacity="0.7">
+                        <ellipse cx="232" cy="188" rx="4" ry="10" fill="#D7C95F" opacity="0.7">
                             <animate attributeName="ry" values="8;14;8" dur="0.3s" repeatCount="indefinite" />
                             <animate attributeName="opacity" values="0.5;0.9;0.5" dur="0.3s" repeatCount="indefinite" />
                         </ellipse>
-                        <ellipse cx="248" cy="188" rx="4" ry="10" fill="#f59e0b" opacity="0.7">
+                        <ellipse cx="248" cy="188" rx="4" ry="10" fill="#D7C95F" opacity="0.7">
                             <animate attributeName="ry" values="8;14;8" dur="0.3s" begin="0.1s" repeatCount="indefinite" />
                             <animate attributeName="opacity" values="0.5;0.9;0.5" dur="0.3s" begin="0.1s" repeatCount="indefinite" />
                         </ellipse>
@@ -386,13 +386,13 @@ function RacingIllustration({ state }: { state: GameVisualState }) {
 
                 {/* Car body */}
                 <rect x="224" y="140" width="32" height="50" rx="8" style={{ fill: state.primary, transition: 'fill 0.8s ease' }} />
-                <rect x="228" y="144" width="24" height="12" rx="4" fill="#2A2A25" opacity="0.6" />
-                <rect x="230" y="172" width="20" height="8" rx="3" fill="#2A2A25" opacity="0.4" />
+                <rect x="228" y="144" width="24" height="12" rx="4" fill="#08283B" opacity="0.6" />
+                <rect x="230" y="172" width="20" height="8" rx="3" fill="#08283B" opacity="0.4" />
                 {/* Wheels */}
-                <rect x="220" y="148" width="6" height="14" rx="2" fill="#2A2A25" />
-                <rect x="254" y="148" width="6" height="14" rx="2" fill="#2A2A25" />
-                <rect x="220" y="168" width="6" height="14" rx="2" fill="#2A2A25" />
-                <rect x="254" y="168" width="6" height="14" rx="2" fill="#2A2A25" />
+                <rect x="220" y="148" width="6" height="14" rx="2" fill="#08283B" />
+                <rect x="254" y="148" width="6" height="14" rx="2" fill="#08283B" />
+                <rect x="220" y="168" width="6" height="14" rx="2" fill="#08283B" />
+                <rect x="254" y="168" width="6" height="14" rx="2" fill="#08283B" />
                 <text x="240" y="162" textAnchor="middle" fontSize="10" fontWeight="bold" fill="white" fontFamily="monospace">7</text>
 
                 <animateTransform attributeName="transform" type="translate" values="0,0;-2,-2;0,0;2,-1;0,0" dur="2s" repeatCount="indefinite" />
@@ -400,12 +400,12 @@ function RacingIllustration({ state }: { state: GameVisualState }) {
 
             {/* Opponent */}
             <g opacity="0.7">
-                <rect x="290" y="60" width="28" height="44" rx="7" fill="#9C9C95" />
-                <rect x="293" y="63" width="22" height="10" rx="3" fill="#2A2A25" opacity="0.5" />
-                <rect x="286" y="68" width="5" height="12" rx="2" fill="#6B6B66" />
-                <rect x="318" y="68" width="5" height="12" rx="2" fill="#6B6B66" />
-                <rect x="286" y="84" width="5" height="12" rx="2" fill="#6B6B66" />
-                <rect x="318" y="84" width="5" height="12" rx="2" fill="#6B6B66" />
+                <rect x="290" y="60" width="28" height="44" rx="7" fill="#445865" />
+                <rect x="293" y="63" width="22" height="10" rx="3" fill="#08283B" opacity="0.5" />
+                <rect x="286" y="68" width="5" height="12" rx="2" fill="#445865" />
+                <rect x="318" y="68" width="5" height="12" rx="2" fill="#445865" />
+                <rect x="286" y="84" width="5" height="12" rx="2" fill="#445865" />
+                <rect x="318" y="84" width="5" height="12" rx="2" fill="#445865" />
             </g>
         </svg>
     );
@@ -430,32 +430,32 @@ const GAMES: GameDemo[] = [
             </svg>
         ),
         tabLabel: 'Platformer',
-        activeTabClass: 'border-emerald-400 bg-emerald-50 text-emerald-700',
+        activeTabClass: 'border-lab-sage bg-lab-sage text-lab-sage',
         educationalNote: 'Variabelen, functies en oorzaak-gevolg',
         sloTag: 'CT — Computational Thinking',
-        baseState: { primary: '#e53935', secondary: '#64b5f6', effect1: false, effect2: false },
+        baseState: { primary: '#D97848', secondary: '#0B453F', effect1: false, effect2: false },
         Illustration: PlatformerIllustration,
         steps: [
             {
                 studentMessage: 'Maak de speler groen',
                 aiResponse: 'De speler is nu groen! Probeer ook eens de achtergrond aan te passen.',
-                gameState: { primary: '#10B981', secondary: '#64b5f6', effect1: false, effect2: false },
+                gameState: { primary: '#5F947D', secondary: '#0B453F', effect1: false, effect2: false },
                 label: 'Kleur',
-                accentClass: 'border-emerald-400 bg-emerald-50 text-emerald-700',
+                accentClass: 'border-lab-sage bg-lab-sage text-lab-sage',
             },
             {
                 studentMessage: 'Maak het springen hoger',
                 aiResponse: 'De jumpForce is verhoogd! Je speler springt nu veel hoger.',
-                gameState: { primary: '#10B981', secondary: '#64b5f6', effect1: true, effect2: false },
+                gameState: { primary: '#5F947D', secondary: '#0B453F', effect1: true, effect2: false },
                 label: 'Fysica',
                 accentClass: 'border-blue-400 bg-blue-50 text-blue-700',
             },
             {
                 studentMessage: 'Geef de speler een speed boost',
                 aiResponse: 'Speed boost toegevoegd! Je speler laat nu een snelheidsspoor achter.',
-                gameState: { primary: '#10B981', secondary: '#64b5f6', effect1: true, effect2: true },
+                gameState: { primary: '#5F947D', secondary: '#0B453F', effect1: true, effect2: true },
                 label: 'Snelheid',
-                accentClass: 'border-amber-400 bg-amber-50 text-amber-700',
+                accentClass: 'border-lab-gold bg-lab-gold text-lab-gold',
             },
         ],
         stepIcons: [
@@ -481,27 +481,27 @@ const GAMES: GameDemo[] = [
         activeTabClass: 'border-cyan-400 bg-cyan-50 text-cyan-700',
         educationalNote: 'Coördinaten, loops en logica',
         sloTag: 'CT — Algoritmen & patronen',
-        baseState: { primary: '#9C9C95', secondary: '#1A1A19', effect1: false, effect2: false },
+        baseState: { primary: '#445865', secondary: '#08283B', effect1: false, effect2: false },
         Illustration: SpaceIllustration,
         steps: [
             {
                 studentMessage: 'Maak mijn schip blauw',
                 aiResponse: 'Je ruimteschip is nu blauw! De shipColor variabele is aangepast.',
-                gameState: { primary: '#3b82f6', secondary: '#1A1A19', effect1: false, effect2: false },
+                gameState: { primary: '#0B453F', secondary: '#08283B', effect1: false, effect2: false },
                 label: 'Kleur',
                 accentClass: 'border-blue-400 bg-blue-50 text-blue-700',
             },
             {
                 studentMessage: 'Voeg een laser toe',
                 aiResponse: 'Laser geactiveerd! Bij elke klik vuurt je schip nu een laserstraal af.',
-                gameState: { primary: '#3b82f6', secondary: '#1A1A19', effect1: true, effect2: false },
+                gameState: { primary: '#0B453F', secondary: '#08283B', effect1: true, effect2: false },
                 label: 'Wapen',
                 accentClass: 'border-cyan-400 bg-cyan-50 text-cyan-700',
             },
             {
                 studentMessage: 'Maak de vijanden sneller',
                 aiResponse: 'De enemySpeed is verdubbeld! Let op, ze zijn nu veel moeilijker te ontwijken.',
-                gameState: { primary: '#3b82f6', secondary: '#1A1A19', effect1: true, effect2: true },
+                gameState: { primary: '#0B453F', secondary: '#08283B', effect1: true, effect2: true },
                 label: 'Snelheid',
                 accentClass: 'border-red-400 bg-red-50 text-red-700',
             },
@@ -526,30 +526,30 @@ const GAMES: GameDemo[] = [
             </svg>
         ),
         tabLabel: 'Race Game',
-        activeTabClass: 'border-amber-400 bg-amber-50 text-amber-700',
+        activeTabClass: 'border-lab-gold bg-lab-gold text-lab-gold',
         educationalNote: 'Condities, variabelen en simulatie',
         sloTag: 'CT — Modelleren & simuleren',
-        baseState: { primary: '#e53935', secondary: '#3D3D38', effect1: false, effect2: false },
+        baseState: { primary: '#D97848', secondary: '#445865', effect1: false, effect2: false },
         Illustration: RacingIllustration,
         steps: [
             {
                 studentMessage: 'Maak mijn auto oranje',
                 aiResponse: 'Je raceauto is nu oranje! De carColor variabele is geüpdatet.',
-                gameState: { primary: '#f97316', secondary: '#3D3D38', effect1: false, effect2: false },
+                gameState: { primary: '#D97848', secondary: '#445865', effect1: false, effect2: false },
                 label: 'Kleur',
                 accentClass: 'border-orange-400 bg-orange-50 text-orange-700',
             },
             {
                 studentMessage: 'Voeg turbo boost toe',
                 aiResponse: 'Turbo geactiveerd! Druk op spatie voor een snelheidsboost met vlammen.',
-                gameState: { primary: '#f97316', secondary: '#3D3D38', effect1: true, effect2: false },
+                gameState: { primary: '#D97848', secondary: '#445865', effect1: true, effect2: false },
                 label: 'Turbo',
-                accentClass: 'border-amber-400 bg-amber-50 text-amber-700',
+                accentClass: 'border-lab-gold bg-lab-gold text-lab-gold',
             },
             {
                 studentMessage: 'Voeg regen toe aan het circuit',
                 aiResponse: 'Het regent nu! De grip is lager — je auto glijdt meer in de bochten.',
-                gameState: { primary: '#f97316', secondary: '#3D3D38', effect1: true, effect2: true },
+                gameState: { primary: '#D97848', secondary: '#445865', effect1: true, effect2: true },
                 label: 'Weer',
                 accentClass: 'border-blue-400 bg-blue-50 text-blue-700',
             },
@@ -569,9 +569,9 @@ const GAMES: GameDemo[] = [
 function TypingDots() {
     return (
         <span className="inline-flex gap-1 items-center px-3 py-1.5">
-            <span className="w-1.5 h-1.5 rounded-full bg-slate-400 animate-typing-bounce" />
-            <span className="w-1.5 h-1.5 rounded-full bg-slate-400 animate-typing-bounce [animation-delay:0.2s]" />
-            <span className="w-1.5 h-1.5 rounded-full bg-slate-400 animate-typing-bounce [animation-delay:0.4s]" />
+            <span className="w-1.5 h-1.5 rounded-full bg-lab-muted animate-typing-bounce" />
+            <span className="w-1.5 h-1.5 rounded-full bg-lab-muted animate-typing-bounce [animation-delay:0.2s]" />
+            <span className="w-1.5 h-1.5 rounded-full bg-lab-muted animate-typing-bounce [animation-delay:0.4s]" />
         </span>
     );
 }
@@ -580,7 +580,7 @@ function ChatBubble({ text, isStudent, visible }: { text: string; isStudent: boo
     return (
         <div className={`flex ${isStudent ? 'justify-end' : 'justify-start'} transition-all duration-500 ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-3'}`}>
             {!isStudent && (
-                <div className="w-7 h-7 rounded-full bg-emerald-600 flex items-center justify-center mr-2 mt-1 shrink-0">
+                <div className="w-7 h-7 rounded-full bg-lab-sage flex items-center justify-center mr-2 mt-1 shrink-0">
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                         <path d="M12 8V4H8" /><rect x="2" y="2" width="20" height="20" rx="5" /><path d="M7 15h0M17 15h0" />
                     </svg>
@@ -589,9 +589,9 @@ function ChatBubble({ text, isStudent, visible }: { text: string; isStudent: boo
             <div className={`max-w-[80%] px-3.5 py-2 text-sm leading-relaxed ${
                 isStudent
                     ? 'text-white rounded-2xl rounded-br-sm'
-                    : 'bg-slate-800 text-slate-200 rounded-2xl rounded-bl-sm'
+                    : 'bg-lab-muted text-lab-muted rounded-2xl rounded-bl-sm'
             }`}
-                style={isStudent ? { backgroundColor: '#D97757' } : undefined}
+                style={isStudent ? { backgroundColor: '#D97848' } : undefined}
             >
                 {text}
             </div>
@@ -682,11 +682,11 @@ export function ScholenLandingGameDemo() {
         <div className="max-w-6xl mx-auto">
             {/* Header */}
             <div className="text-center mb-10">
-                <p className="font-semibold text-sm mb-3 tracking-wide" style={{ color: '#D97757' }}>Bekijk het in actie</p>
-                <h2 className="text-2xl md:text-3xl font-medium tracking-tight mb-4" style={{ fontFamily: "'Newsreader', Georgia, serif", color: '#1A1A19' }}>
+                <p className="font-semibold text-sm mb-3 tracking-wide" style={{ color: '#D97848' }}>Bekijk het in actie</p>
+                <h2 className="text-2xl md:text-3xl font-medium tracking-tight mb-4" style={{ fontFamily: "'Newsreader', Georgia, serif", color: '#08283B' }}>
                     Leerlingen bouwen hun eigen game
                 </h2>
-                <p className="text-base leading-relaxed max-w-xl mx-auto" style={{ color: '#6B6B66' }}>
+                <p className="text-base leading-relaxed max-w-xl mx-auto" style={{ color: '#445865' }}>
                     Met de AI-mentor passen leerlingen stap voor stap een echte game aan.
                     Elke chat-opdracht verandert direct het resultaat.
                 </p>
@@ -705,7 +705,7 @@ export function ScholenLandingGameDemo() {
                                 ? g.activeTabClass + ' shadow-md'
                                 : 'bg-white hover:shadow-sm'
                         }`}
-                        style={i !== activeGameIdx ? { borderColor: '#E8E6DF', color: '#6B6B66' } : undefined}
+                        style={i !== activeGameIdx ? { borderColor: '#E7D8BD', color: '#445865' } : undefined}
                     >
                         <span className={`transition-transform group-hover:scale-110 ${i === activeGameIdx ? '' : 'opacity-60'}`}>
                             {g.tabIcon}
@@ -716,14 +716,14 @@ export function ScholenLandingGameDemo() {
             </div>
 
             {/* Educational context */}
-            <div className="flex flex-wrap items-center justify-center gap-4 mb-6 text-xs" style={{ color: '#6B6B66' }}>
+            <div className="flex flex-wrap items-center justify-center gap-4 mb-6 text-xs" style={{ color: '#445865' }}>
                 <span className="flex items-center gap-1.5">
                     <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                         <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" /><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
                     </svg>
                     {game.educationalNote}
                 </span>
-                <span className="w-px h-3" style={{ backgroundColor: '#E8E6DF' }} aria-hidden="true" />
+                <span className="w-px h-3" style={{ backgroundColor: '#E7D8BD' }} aria-hidden="true" />
                 <span className="flex items-center gap-1.5">
                     <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                         <circle cx="12" cy="12" r="10" /><path d="m9 12 2 2 4-4" />
@@ -735,19 +735,19 @@ export function ScholenLandingGameDemo() {
             {/* Demo area */}
             <div
                 className="grid grid-cols-1 lg:grid-cols-5 gap-0 rounded-3xl overflow-hidden shadow-xl bg-white"
-                style={{ borderWidth: '1px', borderStyle: 'solid', borderColor: '#E8E6DF' }}
+                style={{ borderWidth: '1px', borderStyle: 'solid', borderColor: '#E7D8BD' }}
                 onMouseEnter={() => { if (!manualRef.current) setIsPaused(true); }}
                 onMouseLeave={() => { if (!manualRef.current) setIsPaused(false); }}
             >
                 {/* Chat panel */}
-                <div className="lg:col-span-2 bg-slate-900 flex flex-col min-h-[360px] lg:min-h-[420px] order-2 lg:order-1">
-                    <div className="flex items-center gap-3 px-4 py-3 border-b border-slate-800">
-                        <div className="w-8 h-8 rounded-lg bg-emerald-600 flex items-center justify-center">
+                <div className="lg:col-span-2 bg-lab-muted flex flex-col min-h-[360px] lg:min-h-[420px] order-2 lg:order-1">
+                    <div className="flex items-center gap-3 px-4 py-3 border-b border-lab-muted">
+                        <div className="w-8 h-8 rounded-lg bg-lab-sage flex items-center justify-center">
                             {game.mentorIcon}
                         </div>
                         <div>
                             <p className="text-white text-sm font-semibold">{game.mentorName}</p>
-                            <p className="text-slate-500 text-xs">AI-mentor</p>
+                            <p className="text-lab-muted text-xs">AI-mentor</p>
                         </div>
                     </div>
 
@@ -774,12 +774,12 @@ export function ScholenLandingGameDemo() {
 
                         {currentPhaseIdx === phaseIndex('ai-typing') && (
                             <div className="flex justify-start" role="listitem">
-                                <div className="w-7 h-7 rounded-full bg-emerald-600 flex items-center justify-center mr-2 mt-1 shrink-0">
+                                <div className="w-7 h-7 rounded-full bg-lab-sage flex items-center justify-center mr-2 mt-1 shrink-0">
                                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                                         <path d="M12 8V4H8" /><rect x="2" y="2" width="20" height="20" rx="5" /><path d="M7 15h0M17 15h0" />
                                     </svg>
                                 </div>
-                                <div className="bg-slate-800/60 rounded-2xl rounded-bl-sm">
+                                <div className="bg-lab-muted/60 rounded-2xl rounded-bl-sm">
                                     <TypingDots />
                                 </div>
                             </div>
@@ -793,9 +793,9 @@ export function ScholenLandingGameDemo() {
                     </div>
 
                     <div className="px-4 pb-4">
-                        <div className="flex items-center gap-2 bg-slate-800 rounded-xl px-3 py-2.5">
-                            <span className="text-slate-500 text-sm flex-1 truncate">Typ een bericht...</span>
-                            <div className="w-7 h-7 rounded-lg flex items-center justify-center opacity-50" style={{ backgroundColor: '#D97757' }}>
+                        <div className="flex items-center gap-2 bg-lab-muted rounded-xl px-3 py-2.5">
+                            <span className="text-lab-muted text-sm flex-1 truncate">Typ een bericht...</span>
+                            <div className="w-7 h-7 rounded-lg flex items-center justify-center opacity-50" style={{ backgroundColor: '#D97848' }}>
                                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                                     <path d="m5 12 7-7 7 7" /><path d="M12 19V5" />
                                 </svg>
@@ -805,7 +805,7 @@ export function ScholenLandingGameDemo() {
                 </div>
 
                 {/* Game illustration */}
-                <div className="lg:col-span-3 relative order-1 lg:order-2 bg-slate-100">
+                <div className="lg:col-span-3 relative order-1 lg:order-2 bg-lab-muted">
                     <GameIll state={gameState} />
 
                     {isPaused && (
@@ -836,7 +836,7 @@ export function ScholenLandingGameDemo() {
                                 ? s.accentClass
                                 : 'bg-white'
                         }`}
-                        style={i !== activeStep ? { borderColor: '#E8E6DF', color: '#6B6B66' } : undefined}
+                        style={i !== activeStep ? { borderColor: '#E7D8BD', color: '#445865' } : undefined}
                     >
                         {game.stepIcons[i]}
                         {s.label}

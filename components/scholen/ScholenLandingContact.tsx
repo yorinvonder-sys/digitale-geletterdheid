@@ -88,7 +88,7 @@ export const ScholenLandingContact: React.FC = () => {
                     <h2 className="text-2xl md:text-3xl font-medium tracking-tight mb-3" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>
                         Start met een gratis pilot
                     </h2>
-                    <p className="text-base max-w-2xl mx-auto" style={{ color: '#9C9C95' }}>
+                    <p className="text-base max-w-2xl mx-auto" style={{ color: '#445865' }}>
                         Transparante prijzen. Start met een gratis pilot — geen verplichtingen.
                         Snel live (binnen 10 werkdagen); privacy AVG-compliant.
                     </p>
@@ -96,15 +96,15 @@ export const ScholenLandingContact: React.FC = () => {
 
                 <div className="lg:flex lg:items-stretch lg:gap-6">
                     {/* Pilot card */}
-                    <div className="bg-white/5 border border-white/10 rounded-2xl p-6 lg:p-7 flex-1 mb-4 lg:mb-0 ring-2 ring-[#D97757]/30 relative overflow-hidden">
-                        <div className="text-white text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full absolute top-3 right-3" style={{ backgroundColor: '#D97757' }}>Aanbevolen</div>
-                        <p className="text-xs font-semibold uppercase tracking-wider mb-1" style={{ color: '#D97757' }}>Pilot</p>
+                    <div className="bg-white/5 border border-white/10 rounded-2xl p-6 lg:p-7 flex-1 mb-4 lg:mb-0 ring-2 ring-[#D97848]/30 relative overflow-hidden">
+                        <div className="text-white text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full absolute top-3 right-3" style={{ backgroundColor: '#D97848' }}>Aanbevolen</div>
+                        <p className="text-xs font-semibold uppercase tracking-wider mb-1" style={{ color: '#D97848' }}>Pilot</p>
                         <p className="text-3xl font-bold text-white mb-1">Gratis</p>
-                        <p className="text-sm mb-5" style={{ color: '#9C9C95' }}>3 maanden / max. 250 leerlingen</p>
+                        <p className="text-sm mb-5" style={{ color: '#445865' }}>3 maanden / max. 250 leerlingen</p>
                         <ul className="space-y-2.5 mb-6">
                             {['20+ AI-missies', 'Docenten-dashboard', 'Onboarding 30 min', 'AVG-compliant', 'Live binnen 10 werkdagen'].map((item, i) => (
-                                <li key={i} className="flex items-center gap-2 text-sm text-slate-300">
-                                    <IconCheckCircle className="flex-shrink-0" style={{ color: '#D97757' }} />
+                                <li key={i} className="flex items-center gap-2 text-sm text-lab-muted">
+                                    <IconCheckCircle className="flex-shrink-0" style={{ color: '#D97848' }} />
                                     {item}
                                 </li>
                             ))}
@@ -112,13 +112,13 @@ export const ScholenLandingContact: React.FC = () => {
                         <button
                             onClick={() => document.getElementById('pilot-form')?.scrollIntoView({ behavior: 'smooth' })}
                             className="w-full text-white font-semibold min-h-[44px] rounded-full text-sm transition-colors"
-                            style={{ backgroundColor: '#D97757' }}
-                            onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#C46849')}
-                            onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = '#D97757')}
+                            style={{ backgroundColor: '#D97848' }}
+                            onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#D97848')}
+                            onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = '#D97848')}
                         >
                             Pilot aanvragen
                         </button>
-                        <div className="flex items-center justify-center gap-1.5 mt-3 text-[11px]" style={{ color: '#9C9C95' }}>
+                        <div className="flex items-center justify-center gap-1.5 mt-3 text-[11px]" style={{ color: '#445865' }}>
                             <IconShield />
                             Geen creditcard nodig
                         </div>
@@ -126,14 +126,14 @@ export const ScholenLandingContact: React.FC = () => {
 
                     {/* Post-pilot card */}
                     <div className="bg-white/5 border border-white/10 rounded-2xl p-6 lg:p-7 flex-1 mb-4 lg:mb-0">
-                        <p className="text-xs font-semibold uppercase tracking-wider mb-1" style={{ color: '#9C9C95' }}>Na de pilot</p>
+                        <p className="text-xs font-semibold uppercase tracking-wider mb-1" style={{ color: '#445865' }}>Na de pilot</p>
                         <p className="text-3xl font-bold text-white mb-1">Vanaf €2.000</p>
-                        <p className="text-sm mb-1" style={{ color: '#9C9C95' }}>per schoollocatie / jaar</p>
-                        <p className="text-xs mt-1 mb-5" style={{ color: '#9C9C95' }}>Minder dan €7 per leerling per jaar</p>
+                        <p className="text-sm mb-1" style={{ color: '#445865' }}>per schoollocatie / jaar</p>
+                        <p className="text-xs mt-1 mb-5" style={{ color: '#445865' }}>Minder dan €7 per leerling per jaar</p>
                         <ul className="space-y-2.5 mb-6">
                             {['Onbeperkt leerlingen', 'Volledige SLO-koppeling', 'Support-SLA (ma-vr)', 'Geen verborgen kosten'].map((item, i) => (
-                                <li key={i} className="flex items-center gap-2 text-sm text-slate-300">
-                                    <IconCheckCircle className="flex-shrink-0" style={{ color: '#9C9C95' }} />
+                                <li key={i} className="flex items-center gap-2 text-sm text-lab-muted">
+                                    <IconCheckCircle className="flex-shrink-0" style={{ color: '#445865' }} />
                                     {item}
                                 </li>
                             ))}
@@ -148,20 +148,20 @@ export const ScholenLandingContact: React.FC = () => {
 
                     {/* Form */}
                     <div id="pilot-form" className="flex-[1.3] max-w-lg scroll-mt-24 w-full lg:min-w-[340px]">
-                        <p className="text-sm font-medium mb-6" style={{ color: '#D97757' }}>Schooljaar 2025-2026 is het laatste volledige pilotjaar vóór de verwachte verplichting in 2027.</p>
+                        <p className="text-sm font-medium mb-6" style={{ color: '#D97848' }}>Schooljaar 2025-2026 is het laatste volledige pilotjaar vóór de verwachte verplichting in 2027.</p>
                         <div className="bg-white rounded-2xl p-7 shadow-2xl shadow-black/10">
                             {isSubmitted ? (
                                 <div className="text-center py-8">
-                                    <div className="w-14 h-14 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                                        <IconCheckCircle className="text-emerald-600 w-7 h-7" />
+                                    <div className="w-14 h-14 bg-lab-sage rounded-full flex items-center justify-center mx-auto mb-4">
+                                        <IconCheckCircle className="text-lab-sage w-7 h-7" />
                                     </div>
-                                    <h3 className="text-lg font-medium mb-2" style={{ fontFamily: "'Newsreader', Georgia, serif", color: '#1A1A19' }}>Aanvraag ontvangen!</h3>
-                                    <p className="text-sm mb-4" style={{ color: '#6B6B66' }}>
+                                    <h3 className="text-lg font-medium mb-2" style={{ fontFamily: "'Newsreader', Georgia, serif", color: '#08283B' }}>Aanvraag ontvangen!</h3>
+                                    <p className="text-sm mb-4" style={{ color: '#445865' }}>
                                         We nemen binnen 2 werkdagen contact met je op om de pilot in te plannen.
                                     </p>
-                                    <div className="rounded-xl p-4 text-left" style={{ backgroundColor: '#F5F3EC' }}>
-                                        <p className="text-xs font-bold mb-1" style={{ color: '#1A1A19' }}>Wat kun je verwachten?</p>
-                                        <ul className="space-y-1 text-xs" style={{ color: '#6B6B66' }}>
+                                    <div className="rounded-xl p-4 text-left" style={{ backgroundColor: '#FCF6EA' }}>
+                                        <p className="text-xs font-bold mb-1" style={{ color: '#08283B' }}>Wat kun je verwachten?</p>
+                                        <ul className="space-y-1 text-xs" style={{ color: '#445865' }}>
                                             <li>1. Kennismakingsgesprek (15 min)</li>
                                             <li>2. Onboarding voor docenten (30 min)</li>
                                             <li>3. Leerlingen starten binnen 10 werkdagen</li>
@@ -181,12 +181,12 @@ export const ScholenLandingContact: React.FC = () => {
                                         aria-hidden="true"
                                     />
                                     <div className="text-center mb-2">
-                                        <p className="text-sm font-bold" style={{ color: '#1A1A19' }}>Direct aanvragen</p>
-                                        <p className="text-xs" style={{ color: '#9C9C95' }}>Reactie binnen 2 werkdagen</p>
+                                        <p className="text-sm font-bold" style={{ color: '#08283B' }}>Direct aanvragen</p>
+                                        <p className="text-xs" style={{ color: '#445865' }}>Reactie binnen 2 werkdagen</p>
                                     </div>
 
                                     <div>
-                                        <label htmlFor="schoolNaam" className="block text-xs font-medium mb-1.5" style={{ color: '#6B6B66' }}>Schoolnaam</label>
+                                        <label htmlFor="schoolNaam" className="block text-xs font-medium mb-1.5" style={{ color: '#445865' }}>Schoolnaam</label>
                                         <input
                                             id="schoolNaam"
                                             type="text"
@@ -195,12 +195,12 @@ export const ScholenLandingContact: React.FC = () => {
                                             onChange={(e) => setFormData({ ...formData, schoolNaam: e.target.value })}
                                             placeholder="Naam van je school…"
                                             autoComplete="organization"
-                                            className="w-full px-3.5 min-h-[44px] bg-[#F5F3EC] border border-[#E8E6DF] rounded-lg outline-none focus:ring-2 focus:ring-[#D97757]/20 focus:border-[#D97757] transition-all text-sm text-[#1A1A19] placeholder:text-[#9C9C95]"
+                                            className="w-full px-3.5 min-h-[44px] bg-[#FCF6EA] border border-[#E7D8BD] rounded-lg outline-none focus:ring-2 focus:ring-[#D97848]/20 focus:border-[#D97848] transition-all text-sm text-[#08283B] placeholder:text-[#445865]"
                                         />
                                     </div>
 
                                     <div>
-                                        <label htmlFor="contactPersoon" className="block text-xs font-medium mb-1.5" style={{ color: '#6B6B66' }}>Naam</label>
+                                        <label htmlFor="contactPersoon" className="block text-xs font-medium mb-1.5" style={{ color: '#445865' }}>Naam</label>
                                         <input
                                             id="contactPersoon"
                                             type="text"
@@ -209,12 +209,12 @@ export const ScholenLandingContact: React.FC = () => {
                                             onChange={(e) => setFormData({ ...formData, contactPersoon: e.target.value })}
                                             placeholder="Je volledige naam…"
                                             autoComplete="name"
-                                            className="w-full px-3.5 min-h-[44px] bg-[#F5F3EC] border border-[#E8E6DF] rounded-lg outline-none focus:ring-2 focus:ring-[#D97757]/20 focus:border-[#D97757] transition-all text-sm text-[#1A1A19] placeholder:text-[#9C9C95]"
+                                            className="w-full px-3.5 min-h-[44px] bg-[#FCF6EA] border border-[#E7D8BD] rounded-lg outline-none focus:ring-2 focus:ring-[#D97848]/20 focus:border-[#D97848] transition-all text-sm text-[#08283B] placeholder:text-[#445865]"
                                         />
                                     </div>
 
                                     <div>
-                                        <label htmlFor="email" className="block text-xs font-medium mb-1.5" style={{ color: '#6B6B66' }}>E-mail</label>
+                                        <label htmlFor="email" className="block text-xs font-medium mb-1.5" style={{ color: '#445865' }}>E-mail</label>
                                         <input
                                             id="email"
                                             type="email"
@@ -224,18 +224,18 @@ export const ScholenLandingContact: React.FC = () => {
                                             placeholder="naam@school.nl"
                                             autoComplete="email"
                                             spellCheck={false}
-                                            className="w-full px-3.5 min-h-[44px] bg-[#F5F3EC] border border-[#E8E6DF] rounded-lg outline-none focus:ring-2 focus:ring-[#D97757]/20 focus:border-[#D97757] transition-all text-sm text-[#1A1A19] placeholder:text-[#9C9C95]"
+                                            className="w-full px-3.5 min-h-[44px] bg-[#FCF6EA] border border-[#E7D8BD] rounded-lg outline-none focus:ring-2 focus:ring-[#D97848]/20 focus:border-[#D97848] transition-all text-sm text-[#08283B] placeholder:text-[#445865]"
                                         />
                                     </div>
 
                                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                                         <div>
-                                            <label htmlFor="rol" className="block text-xs font-medium mb-1.5" style={{ color: '#6B6B66' }}>Rol</label>
+                                            <label htmlFor="rol" className="block text-xs font-medium mb-1.5" style={{ color: '#445865' }}>Rol</label>
                                             <select
                                                 id="rol"
                                                 value={formData.rol}
                                                 onChange={(e) => setFormData({ ...formData, rol: e.target.value })}
-                                                className="w-full px-3.5 min-h-[44px] bg-[#F5F3EC] border border-[#E8E6DF] rounded-lg outline-none focus:ring-2 focus:ring-[#D97757]/20 focus:border-[#D97757] transition-all text-sm text-[#1A1A19] appearance-none"
+                                                className="w-full px-3.5 min-h-[44px] bg-[#FCF6EA] border border-[#E7D8BD] rounded-lg outline-none focus:ring-2 focus:ring-[#D97848]/20 focus:border-[#D97848] transition-all text-sm text-[#08283B] appearance-none"
                                             >
                                                 <option value="">Selecteer</option>
                                                 <option value="docent">Docent</option>
@@ -246,12 +246,12 @@ export const ScholenLandingContact: React.FC = () => {
                                             </select>
                                         </div>
                                         <div>
-                                            <label htmlFor="aantalLeerlingen" className="block text-xs font-medium mb-1.5" style={{ color: '#6B6B66' }}>Leerlingen</label>
+                                            <label htmlFor="aantalLeerlingen" className="block text-xs font-medium mb-1.5" style={{ color: '#445865' }}>Leerlingen</label>
                                             <select
                                                 id="aantalLeerlingen"
                                                 value={formData.aantalLeerlingen}
                                                 onChange={(e) => setFormData({ ...formData, aantalLeerlingen: e.target.value })}
-                                                className="w-full px-3.5 min-h-[44px] bg-[#F5F3EC] border border-[#E8E6DF] rounded-lg outline-none focus:ring-2 focus:ring-[#D97757]/20 focus:border-[#D97757] transition-all text-sm text-[#1A1A19] appearance-none"
+                                                className="w-full px-3.5 min-h-[44px] bg-[#FCF6EA] border border-[#E7D8BD] rounded-lg outline-none focus:ring-2 focus:ring-[#D97848]/20 focus:border-[#D97848] transition-all text-sm text-[#08283B] appearance-none"
                                             >
                                                 <option value="">Aantal</option>
                                                 <option value="1-50">1 – 50</option>
@@ -263,8 +263,8 @@ export const ScholenLandingContact: React.FC = () => {
                                     </div>
 
                                     <div>
-                                        <label htmlFor="bericht" className="block text-xs font-medium mb-1.5" style={{ color: '#6B6B66' }}>
-                                            Bericht <span style={{ color: '#9C9C95' }}>(optioneel)</span>
+                                        <label htmlFor="bericht" className="block text-xs font-medium mb-1.5" style={{ color: '#445865' }}>
+                                            Bericht <span style={{ color: '#445865' }}>(optioneel)</span>
                                         </label>
                                         <textarea
                                             id="bericht"
@@ -272,7 +272,7 @@ export const ScholenLandingContact: React.FC = () => {
                                             onChange={(e) => setFormData({ ...formData, bericht: e.target.value })}
                                             placeholder="Specifieke wensen of vragen…"
                                             rows={2}
-                                            className="w-full px-3.5 py-3 bg-[#F5F3EC] border border-[#E8E6DF] rounded-lg outline-none focus:ring-2 focus:ring-[#D97757]/20 focus:border-[#D97757] transition-all text-sm text-[#1A1A19] placeholder:text-[#9C9C95] resize-none min-h-[80px]"
+                                            className="w-full px-3.5 py-3 bg-[#FCF6EA] border border-[#E7D8BD] rounded-lg outline-none focus:ring-2 focus:ring-[#D97848]/20 focus:border-[#D97848] transition-all text-sm text-[#08283B] placeholder:text-[#445865] resize-none min-h-[80px]"
                                         />
                                     </div>
 
@@ -284,10 +284,10 @@ export const ScholenLandingContact: React.FC = () => {
                                         type="submit"
                                         disabled={isSubmitting}
                                         aria-busy={isSubmitting}
-                                        className="w-full text-white font-semibold min-h-[48px] rounded-full flex items-center justify-center gap-2 transition-colors text-sm disabled:opacity-60 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#D97757]"
-                                        style={{ backgroundColor: '#D97757' }}
-                                        onMouseEnter={(e) => { if (!isSubmitting) e.currentTarget.style.backgroundColor = '#C46849'; }}
-                                        onMouseLeave={(e) => { if (!isSubmitting) e.currentTarget.style.backgroundColor = '#D97757'; }}
+                                        className="w-full text-white font-semibold min-h-[48px] rounded-full flex items-center justify-center gap-2 transition-colors text-sm disabled:opacity-60 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#D97848]"
+                                        style={{ backgroundColor: '#D97848' }}
+                                        onMouseEnter={(e) => { if (!isSubmitting) e.currentTarget.style.backgroundColor = '#D97848'; }}
+                                        onMouseLeave={(e) => { if (!isSubmitting) e.currentTarget.style.backgroundColor = '#D97848'; }}
                                     >
                                         {isSubmitting ? (
                                             <>
@@ -299,11 +299,11 @@ export const ScholenLandingContact: React.FC = () => {
                                         )}
                                     </button>
 
-                                    <p className="text-[11px] text-center leading-relaxed" style={{ color: '#9C9C95' }}>
+                                    <p className="text-[11px] text-center leading-relaxed" style={{ color: '#445865' }}>
                                         Reactie binnen 2 werkdagen. Livegang binnen 10 werkdagen na akkoord.
                                     </p>
-                                    <p className="text-[11px] leading-relaxed" style={{ color: '#6B6B66' }}>
-                                        Je gegevens worden verwerkt op grond van precontractueel contact (aanvraag). Verwerking vindt plaats via subverwerkers (o.a. hosting) met passende AVG-overeenkomsten. Zie onze <a href="/ict/privacy/policy" className="underline transition-colors" style={{ color: '#D97757' }} onMouseEnter={(e) => (e.currentTarget.style.color = '#C46849')} onMouseLeave={(e) => (e.currentTarget.style.color = '#D97757')}>privacyverklaring</a>.
+                                    <p className="text-[11px] leading-relaxed" style={{ color: '#445865' }}>
+                                        Je gegevens worden verwerkt op grond van precontractueel contact (aanvraag). Verwerking vindt plaats via subverwerkers (o.a. hosting) met passende AVG-overeenkomsten. Zie onze <a href="/ict/privacy/policy" className="underline transition-colors" style={{ color: '#D97848' }} onMouseEnter={(e) => (e.currentTarget.style.color = '#D97848')} onMouseLeave={(e) => (e.currentTarget.style.color = '#D97848')}>privacyverklaring</a>.
                                     </p>
                                 </form>
                             )}

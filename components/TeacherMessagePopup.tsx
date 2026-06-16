@@ -73,10 +73,10 @@ export const TeacherMessagePopup: React.FC<TeacherMessagePopupProps> = ({
                                         <MessageSquare className="w-5 h-5 text-indigo-600" />
                                     </div>
                                     <div className="flex-1">
-                                        <p className="text-slate-700 text-base leading-relaxed whitespace-pre-wrap">
+                                        <p className="text-lab-muted text-base leading-relaxed whitespace-pre-wrap">
                                             {message.text}
                                         </p>
-                                        <p className="text-slate-400 text-xs mt-3">
+                                        <p className="text-lab-muted text-xs mt-3">
                                             {message.created_at ? new Date(message.created_at).toLocaleString('nl-NL', {
                                                 day: 'numeric',
                                                 month: 'short',
@@ -92,7 +92,7 @@ export const TeacherMessagePopup: React.FC<TeacherMessagePopupProps> = ({
                             <div className="px-6 pb-6 flex gap-3">
                                 <button
                                     onClick={onDismiss}
-                                    className="flex-1 py-3 bg-slate-100 text-slate-600 rounded-xl font-bold text-sm hover:bg-slate-200 transition-colors"
+                                    className="flex-1 py-3 bg-lab-muted text-lab-muted rounded-xl font-bold text-sm hover:bg-lab-muted transition-colors"
                                 >
                                     Later lezen
                                 </button>

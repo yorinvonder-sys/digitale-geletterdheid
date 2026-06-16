@@ -23,18 +23,18 @@ const KAMER_STIJLEN: Record<string, { dot: string; dotActive: string; shadow: st
     shadow: 'shadow-indigo-200',
   },
   kamer2: {
-    dot: 'bg-emerald-500',
-    dotActive: 'bg-emerald-500 ring-4 ring-emerald-200 shadow-lg shadow-emerald-200',
+    dot: 'bg-lab-sage',
+    dotActive: 'bg-lab-sage ring-4 ring-emerald-200 shadow-lg shadow-emerald-200',
     shadow: 'shadow-emerald-200',
   },
   kamer3: {
-    dot: 'bg-violet-500',
-    dotActive: 'bg-violet-500 ring-4 ring-violet-200 shadow-lg shadow-violet-200',
+    dot: 'bg-lab-teal',
+    dotActive: 'bg-lab-teal ring-4 ring-violet-200 shadow-lg shadow-violet-200',
     shadow: 'shadow-violet-200',
   },
   kamer4: {
-    dot: 'bg-rose-500',
-    dotActive: 'bg-rose-500 ring-4 ring-rose-200 shadow-lg shadow-rose-200',
+    dot: 'bg-lab-coral',
+    dotActive: 'bg-lab-coral ring-4 ring-rose-200 shadow-lg shadow-rose-200',
     shadow: 'shadow-rose-200',
   },
   kamer5: {
@@ -169,13 +169,13 @@ export const EscaperoomNulmeting: React.FC<Props> = ({ variant = 'nulmeting', on
             <div key={i} className="flex items-center gap-3">
               <div className={`w-3 h-3 rounded-full transition-all ${
                 isActief
-                  ? stijl?.dotActive || 'bg-slate-400'
+                  ? stijl?.dotActive || 'bg-lab-muted'
                   : isKlaar
-                    ? 'bg-emerald-500'
-                    : 'bg-slate-300'
+                    ? 'bg-lab-sage'
+                    : 'bg-lab-muted'
               }`} />
               {i < aantalKamers - 1 && (
-                <div className={`w-6 h-0.5 ${isKlaar ? 'bg-emerald-400' : 'bg-slate-200'}`} />
+                <div className={`w-6 h-0.5 ${isKlaar ? 'bg-lab-sage' : 'bg-lab-muted'}`} />
               )}
             </div>
           );
@@ -187,7 +187,7 @@ export const EscaperoomNulmeting: React.FC<Props> = ({ variant = 'nulmeting', on
   // === INTRO ===
   if (stap === 'intro') {
     return (
-      <div className="w-full h-full bg-slate-50 text-slate-900 overflow-y-auto">
+      <div className="w-full h-full bg-lab-muted text-lab-muted overflow-y-auto">
         <div className="min-h-full flex items-center justify-center p-6">
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
@@ -197,31 +197,31 @@ export const EscaperoomNulmeting: React.FC<Props> = ({ variant = 'nulmeting', on
             {/* Terug knop */}
             <button
               onClick={onBack}
-              className="flex items-center gap-2 text-slate-400 hover:text-slate-600 transition-colors mb-6 text-sm"
+              className="flex items-center gap-2 text-lab-muted hover:text-lab-muted transition-colors mb-6 text-sm"
             >
               <ArrowLeft size={16} /> Terug
             </button>
 
-            <div className="bg-white rounded-2xl p-6 md:p-8 border border-slate-200 shadow-sm">
+            <div className="bg-white rounded-2xl p-6 md:p-8 border border-lab-muted shadow-sm">
               {/* Icon */}
               <div className="w-20 h-20 rounded-2xl mx-auto mb-6 flex items-center justify-center bg-gradient-to-br from-indigo-500 to-indigo-600 shadow-lg shadow-indigo-200 transform rotate-3">
                 <Lock size={40} className="text-white" />
               </div>
 
-              <h1 className="text-2xl md:text-3xl font-black text-center mb-2 text-slate-900">
+              <h1 className="text-2xl md:text-3xl font-black text-center mb-2 text-lab-muted">
                 Digitale Escaperoom
               </h1>
-              <p className="text-slate-400 text-center text-sm mb-6">
+              <p className="text-lab-muted text-center text-sm mb-6">
                 {variant === 'eindmeting' ? 'Eindmeting Digitale Geletterdheid' : 'Nulmeting Digitale Geletterdheid'}
               </p>
 
-              <div className="bg-slate-50 rounded-xl p-4 mb-6 space-y-3">
-                <p className="text-slate-600 text-sm leading-relaxed">
+              <div className="bg-lab-muted rounded-xl p-4 mb-6 space-y-3">
+                <p className="text-lab-muted text-sm leading-relaxed">
                   {variant === 'eindmeting'
                     ? 'Welkom terug! Laten we zien hoeveel je hebt geleerd dit jaar. Dezelfde kamers, maar nu weet je veel meer.'
                     : 'Welkom, agent! Je staat voor een reeks digitale kamers. In elke kamer los je een puzzel op. Zo ontdekken we wat je al weet over de digitale wereld.'}
                 </p>
-                <p className="text-slate-400 text-xs">
+                <p className="text-lab-muted text-xs">
                   {variant === 'eindmeting'
                     ? 'Je resultaten worden vergeleken met je nulmeting, zodat je je groei kunt zien.'
                     : 'Dit is geen toets — er zijn geen foute antwoorden. We willen alleen weten waar je staat, zodat we je het beste kunnen helpen.'}
@@ -232,21 +232,21 @@ export const EscaperoomNulmeting: React.FC<Props> = ({ variant = 'nulmeting', on
               <div className="space-y-2 mb-6">
                 {[
                   { naam: 'Vergrendelde Laptop', bg: 'bg-indigo-50', tekst: 'text-indigo-600', icon: <Monitor size={14} /> },
-                  { naam: 'Nepnieuwsfabriek', bg: 'bg-emerald-50', tekst: 'text-emerald-600', icon: <Newspaper size={14} /> },
-                  { naam: 'Codekluis', bg: 'bg-violet-50', tekst: 'text-violet-600', icon: <Code size={14} /> },
-                  { naam: 'Datalek', bg: 'bg-rose-50', tekst: 'text-rose-600', icon: <Shield size={14} /> },
+                  { naam: 'Nepnieuwsfabriek', bg: 'bg-lab-sage', tekst: 'text-lab-sage', icon: <Newspaper size={14} /> },
+                  { naam: 'Codekluis', bg: 'bg-lab-teal', tekst: 'text-lab-teal', icon: <Code size={14} /> },
+                  { naam: 'Datalek', bg: 'bg-lab-coral', tekst: 'text-lab-coral', icon: <Shield size={14} /> },
                   { naam: 'Het Dilemma', bg: 'bg-sky-50', tekst: 'text-sky-600', icon: <Heart size={14} /> },
                 ].map((kamer, i) => (
                   <div key={i} className="flex items-center gap-3 text-sm">
                     <span className={`w-7 h-7 rounded-lg ${kamer.bg} ${kamer.tekst} flex items-center justify-center`}>
                       {kamer.icon}
                     </span>
-                    <span className="text-slate-500 font-medium">{kamer.naam}</span>
+                    <span className="text-lab-muted font-medium">{kamer.naam}</span>
                   </div>
                 ))}
               </div>
 
-              <div className="flex items-center justify-center gap-4 text-xs text-slate-400 mb-6">
+              <div className="flex items-center justify-center gap-4 text-xs text-lab-muted mb-6">
                 <span className="flex items-center gap-1"><Clock size={12} /> ~15 minuten</span>
                 <span>5 kamers</span>
               </div>
@@ -270,9 +270,9 @@ export const EscaperoomNulmeting: React.FC<Props> = ({ variant = 'nulmeting', on
     if (!resultaat) return null;
 
     const niveauStijl = resultaat.niveau === 'gevorderd'
-      ? { border: 'border-emerald-500', bg: 'bg-emerald-50', tekst: 'text-emerald-600', icon: 'text-emerald-500' }
+      ? { border: 'border-lab-sage', bg: 'bg-lab-sage', tekst: 'text-lab-sage', icon: 'text-lab-sage' }
       : resultaat.niveau === 'basis'
-        ? { border: 'border-amber-500', bg: 'bg-amber-50', tekst: 'text-amber-600', icon: 'text-amber-500' }
+        ? { border: 'border-lab-gold', bg: 'bg-lab-gold', tekst: 'text-lab-gold', icon: 'text-lab-gold' }
         : { border: 'border-indigo-500', bg: 'bg-indigo-50', tekst: 'text-indigo-600', icon: 'text-indigo-500' };
     const niveauLabel = resultaat.niveau === 'gevorderd' ? 'Gevorderd' : resultaat.niveau === 'basis' ? 'Basis' : 'Starter';
 
@@ -285,24 +285,24 @@ export const EscaperoomNulmeting: React.FC<Props> = ({ variant = 'nulmeting', on
     ];
 
     return (
-      <div className="w-full h-full bg-slate-50 text-slate-900 overflow-y-auto">
+      <div className="w-full h-full bg-lab-muted text-lab-muted overflow-y-auto">
         <div className="min-h-full flex items-center justify-center p-6">
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="max-w-md w-full bg-white rounded-2xl p-6 md:p-8 border border-slate-200 shadow-sm"
+            className="max-w-md w-full bg-white rounded-2xl p-6 md:p-8 border border-lab-muted shadow-sm"
           >
             {/* Badge */}
             <div className={`w-24 h-24 rounded-full mx-auto mb-6 flex items-center justify-center border-4 ${niveauStijl.border} ${niveauStijl.bg}`}>
               <Trophy size={48} className={niveauStijl.icon} />
             </div>
 
-            <h1 className="text-2xl font-black text-center mb-1 text-slate-900">Escaperoom Voltooid!</h1>
+            <h1 className="text-2xl font-black text-center mb-1 text-lab-muted">Escaperoom Voltooid!</h1>
             <p className={`text-center font-bold ${niveauStijl.tekst} mb-6`}>
               Niveau: {niveauLabel} — Score: {resultaat.overallScore}%
             </p>
 
-            <div className="flex items-center justify-center gap-4 text-xs text-slate-400 mb-6">
+            <div className="flex items-center justify-center gap-4 text-xs text-lab-muted mb-6">
               <span className="flex items-center gap-1"><Clock size={12} /> {formateerTijd(resultaat.totalTimeSeconds)}</span>
               <span className="flex items-center gap-1"><Star size={12} /> 5/5 kamers</span>
             </div>
@@ -310,26 +310,26 @@ export const EscaperoomNulmeting: React.FC<Props> = ({ variant = 'nulmeting', on
             {/* Scores per kamer */}
             <div className="space-y-3 mb-6">
               {kamerResultaten.map((kamer, i) => (
-                <div key={i} className="bg-slate-50 rounded-xl p-3">
+                <div key={i} className="bg-lab-muted rounded-xl p-3">
                   <div className="flex items-center justify-between mb-2">
-                    <span className="text-sm font-medium text-slate-600">{kamer.naam}</span>
+                    <span className="text-sm font-medium text-lab-muted">{kamer.naam}</span>
                     <span className={`text-sm font-bold ${
-                      kamer.score >= 75 ? 'text-emerald-600' : kamer.score >= 40 ? 'text-amber-600' : 'text-rose-600'
+                      kamer.score >= 75 ? 'text-lab-sage' : kamer.score >= 40 ? 'text-lab-gold' : 'text-lab-coral'
                     }`}>
                       {kamer.score}%
                     </span>
                   </div>
-                  <div className="h-2 bg-slate-200 rounded-full overflow-hidden">
+                  <div className="h-2 bg-lab-muted rounded-full overflow-hidden">
                     <motion.div
                       initial={{ width: 0 }}
                       animate={{ width: `${kamer.score}%` }}
                       transition={{ duration: 0.8, delay: i * 0.15 }}
                       className={`h-full rounded-full ${
                         kamer.score >= 75
-                          ? 'bg-emerald-500'
+                          ? 'bg-lab-sage'
                           : kamer.score >= 40
-                            ? 'bg-amber-500'
-                            : 'bg-rose-500'
+                            ? 'bg-lab-gold'
+                            : 'bg-lab-coral'
                       }`}
                     />
                   </div>
@@ -338,7 +338,7 @@ export const EscaperoomNulmeting: React.FC<Props> = ({ variant = 'nulmeting', on
             </div>
 
             {/* Uitleg */}
-            <div className="bg-slate-50 rounded-xl p-4 mb-6 text-sm text-slate-500 leading-relaxed">
+            <div className="bg-lab-muted rounded-xl p-4 mb-6 text-sm text-lab-muted leading-relaxed">
               {resultaat.niveau === 'gevorderd' && (
                 <p>Je hebt al een sterke basis in digitale geletterdheid. De missies zullen je helpen om nog verder te groeien!</p>
               )}
@@ -381,25 +381,25 @@ export const EscaperoomNulmeting: React.FC<Props> = ({ variant = 'nulmeting', on
   };
 
   return (
-    <div className="w-full h-full bg-slate-50 text-slate-900 flex flex-col overflow-hidden">
+    <div className="w-full h-full bg-lab-muted text-lab-muted flex flex-col overflow-hidden">
       {/* Top bar */}
-      <div className="shrink-0 bg-white/80 backdrop-blur border-b border-slate-200 px-4 py-2">
+      <div className="shrink-0 bg-white/80 backdrop-blur border-b border-lab-muted px-4 py-2">
         <div className="flex items-center justify-between max-w-3xl mx-auto">
           <button
             onClick={onBack}
-            className="flex items-center gap-1 text-slate-400 hover:text-slate-600 transition-colors text-sm p-2 -ml-2"
+            className="flex items-center gap-1 text-lab-muted hover:text-lab-muted transition-colors text-sm p-2 -ml-2"
           >
             <ArrowLeft size={16} />
           </button>
 
           {/* Kamer naam */}
           <div className="text-center">
-            <span className="text-xs text-slate-400">Kamer {huidigeKamerIndex}/{aantalKamers}</span>
-            <h3 className="text-sm font-bold text-slate-700">{KAMER_NAMEN[stap] || ''}</h3>
+            <span className="text-xs text-lab-muted">Kamer {huidigeKamerIndex}/{aantalKamers}</span>
+            <h3 className="text-sm font-bold text-lab-muted">{KAMER_NAMEN[stap] || ''}</h3>
           </div>
 
           {/* Timer */}
-          <div className="flex items-center gap-1 text-slate-400 text-sm">
+          <div className="flex items-center gap-1 text-lab-muted text-sm">
             <Clock size={14} />
             <span className="font-mono">{formateerTijd(verstrekenTijd)}</span>
           </div>

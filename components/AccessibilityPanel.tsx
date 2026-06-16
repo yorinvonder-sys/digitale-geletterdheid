@@ -37,8 +37,8 @@ function Toggle({
                 onClick={onToggle}
                 className="relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full transition-colors duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
                 style={{
-                    backgroundColor: checked ? '#D97757' : '#D5D3CC',
-                    outlineColor: '#D97757',
+                    backgroundColor: checked ? '#D97848' : '#E7D8BD',
+                    outlineColor: '#D97848',
                 }}
             >
                 <span className="sr-only">{label}</span>
@@ -101,8 +101,8 @@ export function AccessibilityPanel() {
                 className="relative flex items-center justify-center w-9 h-9 rounded-full transition-colors duration-150 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
                 style={{
                     backgroundColor: open ? '#F0EDE0' : 'transparent',
-                    outlineColor: '#D97757',
-                    color: '#6B6B66',
+                    outlineColor: '#D97848',
+                    color: '#445865',
                 }}
                 title="Toegankelijkheid"
             >
@@ -129,7 +129,7 @@ export function AccessibilityPanel() {
                     <span
                         aria-hidden="true"
                         className="absolute top-1 right-1 w-2 h-2 rounded-full"
-                        style={{ backgroundColor: '#D97757' }}
+                        style={{ backgroundColor: '#D97848' }}
                     />
                 )}
             </button>
@@ -142,7 +142,7 @@ export function AccessibilityPanel() {
                     aria-modal="false"
                     className="absolute right-0 mt-2 w-64 rounded-xl shadow-lg border z-50 p-4"
                     style={{
-                        backgroundColor: '#FAF9F0',
+                        backgroundColor: '#FCF6EA',
                         borderColor: '#E8E5D8',
                         color: '#23231F',
                         top: '100%',
@@ -150,7 +150,7 @@ export function AccessibilityPanel() {
                 >
                     <p
                         className="text-xs font-semibold uppercase tracking-wide mb-3"
-                        style={{ color: '#6B6B66' }}
+                        style={{ color: '#445865' }}
                     >
                         Toegankelijkheid
                     </p>
@@ -176,7 +176,7 @@ export function AccessibilityPanel() {
 
                     {/* Font size */}
                     <div className="mt-3 pt-3" style={{ borderTop: '1px solid #E8E5D8' }}>
-                        <p className="text-xs font-medium mb-2" style={{ color: '#6B6B66' }}>
+                        <p className="text-xs font-medium mb-2" style={{ color: '#445865' }}>
                             Tekstgrootte
                         </p>
                         <div className="flex gap-2">
@@ -187,10 +187,10 @@ export function AccessibilityPanel() {
                                     aria-pressed={settings.fontSize === size}
                                     className="flex-1 py-1.5 text-xs rounded-lg border transition-colors duration-150 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-1"
                                     style={{
-                                        backgroundColor: settings.fontSize === size ? '#D97757' : 'transparent',
-                                        borderColor: settings.fontSize === size ? '#D97757' : '#D5D3CC',
+                                        backgroundColor: settings.fontSize === size ? '#D97848' : 'transparent',
+                                        borderColor: settings.fontSize === size ? '#D97848' : '#E7D8BD',
                                         color: settings.fontSize === size ? '#fff' : '#23231F',
-                                        outlineColor: '#D97757',
+                                        outlineColor: '#D97848',
                                     }}
                                 >
                                     {FONT_SIZE_LABELS[size]}

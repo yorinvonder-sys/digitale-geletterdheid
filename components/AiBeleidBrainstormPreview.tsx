@@ -88,8 +88,8 @@ const CATEGORIES = [
         label: 'Mogelijkheden',
         description: 'Hoe kan AI helpen?',
         color: 'from-emerald-500 to-emerald-600',
-        bgColor: 'bg-emerald-50',
-        borderColor: 'border-emerald-200',
+        bgColor: 'bg-lab-sage',
+        borderColor: 'border-lab-sage',
         icon: Lightbulb,
         prompt: 'Hoe zou AI kunnen helpen bij leren?'
     },
@@ -98,8 +98,8 @@ const CATEGORIES = [
         label: 'Zorgen',
         description: 'Waar maak je je zorgen over?',
         color: 'from-amber-500 to-amber-600',
-        bgColor: 'bg-amber-50',
-        borderColor: 'border-amber-200',
+        bgColor: 'bg-lab-gold',
+        borderColor: 'border-lab-gold',
         icon: AlertTriangle,
         prompt: 'Welke risicos zie je bij AI gebruik?'
     },
@@ -108,8 +108,8 @@ const CATEGORIES = [
         label: 'Suggesties',
         description: 'Ideeën voor de school',
         color: 'from-violet-500 to-violet-600',
-        bgColor: 'bg-violet-50',
-        borderColor: 'border-violet-200',
+        bgColor: 'bg-lab-teal',
+        borderColor: 'border-lab-teal',
         icon: Sparkles,
         prompt: 'Welke concrete suggesties heb je?'
     }
@@ -253,14 +253,14 @@ export const AiBeleidBrainstormPreview: React.FC<AiBeleidBrainstormPreviewProps>
                         <div className="w-16 h-16 bg-indigo-100 rounded-2xl flex items-center justify-center mx-auto mb-4 text-indigo-600">
                             <Users size={32} />
                         </div>
-                        <h1 className="text-2xl font-black text-slate-900 mb-2">Eerst even dit...</h1>
-                        <p className="text-slate-500">We zijn benieuwd hoe jij AI gebruikt! Deze gegevens worden <span className="font-bold text-indigo-600">anoniem</span> verwerkt.</p>
+                        <h1 className="text-2xl font-black text-lab-muted mb-2">Eerst even dit...</h1>
+                        <p className="text-lab-muted">We zijn benieuwd hoe jij AI gebruikt! Deze gegevens worden <span className="font-bold text-indigo-600">anoniem</span> verwerkt.</p>
                     </div>
 
                     <div className="space-y-6">
                         {/* Question 1 */}
                         <div>
-                            <label className="block text-sm font-bold text-slate-700 mb-3">
+                            <label className="block text-sm font-bold text-lab-muted mb-3">
                                 1. Hoe vaak gebruik jij AI voor school?
                             </label>
                             <div className="grid grid-cols-2 gap-3">
@@ -270,7 +270,7 @@ export const AiBeleidBrainstormPreview: React.FC<AiBeleidBrainstormPreviewProps>
                                         onClick={() => setSurveyData(prev => ({ ...prev, freqUse: option }))}
                                         className={`p-3 rounded-xl border-2 text-sm font-medium transition-all ${surveyData.freqUse === option
                                             ? 'border-indigo-500 bg-indigo-50 text-indigo-700'
-                                            : 'border-slate-200 hover:border-indigo-300 hover:bg-slate-50 text-slate-600'
+                                            : 'border-lab-muted hover:border-indigo-300 hover:bg-lab-muted text-lab-muted'
                                             }`}
                                     >
                                         {option}
@@ -281,7 +281,7 @@ export const AiBeleidBrainstormPreview: React.FC<AiBeleidBrainstormPreviewProps>
 
                         {/* Question 2 */}
                         <div>
-                            <label className="block text-sm font-bold text-slate-700 mb-2">
+                            <label className="block text-sm font-bold text-lab-muted mb-2">
                                 2. Waar gebruik je dit voor?
                             </label>
                             <input
@@ -289,13 +289,13 @@ export const AiBeleidBrainstormPreview: React.FC<AiBeleidBrainstormPreviewProps>
                                 placeholder="Bijv. tekst samenvatten, ideeën bedenken..."
                                 value={surveyData.purpose}
                                 onChange={e => setSurveyData(prev => ({ ...prev, purpose: e.target.value }))}
-                                className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all"
+                                className="w-full p-3 bg-lab-muted border border-lab-muted rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all"
                             />
                         </div>
 
                         {/* Question 3 */}
                         <div>
-                            <label className="block text-sm font-bold text-slate-700 mb-2">
+                            <label className="block text-sm font-bold text-lab-muted mb-2">
                                 3. Wat vind je er handig aan?
                             </label>
                             <input
@@ -303,13 +303,13 @@ export const AiBeleidBrainstormPreview: React.FC<AiBeleidBrainstormPreviewProps>
                                 placeholder="Bijv. het gaat sneller, het helpt bij..."
                                 value={surveyData.useful}
                                 onChange={e => setSurveyData(prev => ({ ...prev, useful: e.target.value }))}
-                                className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all"
+                                className="w-full p-3 bg-lab-muted border border-lab-muted rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all"
                             />
                         </div>
 
                         {/* Question 4 */}
                         <div>
-                            <label className="block text-sm font-bold text-slate-700 mb-2">
+                            <label className="block text-sm font-bold text-lab-muted mb-2">
                                 4. Wat vind jij dat er nog ontbreekt op school wat betreft AI?
                             </label>
                             <textarea
@@ -317,12 +317,12 @@ export const AiBeleidBrainstormPreview: React.FC<AiBeleidBrainstormPreviewProps>
                                 placeholder="Bijv. meer uitleg, betere tools..."
                                 value={surveyData.missing}
                                 onChange={e => setSurveyData(prev => ({ ...prev, missing: e.target.value }))}
-                                className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all resize-none"
+                                className="w-full p-3 bg-lab-muted border border-lab-muted rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all resize-none"
                             />
                         </div>
                     </div>
 
-                    <div className="mt-8 pt-6 border-t border-slate-100 flex justify-end">
+                    <div className="mt-8 pt-6 border-t border-lab-muted flex justify-end">
                         <button
                             onClick={handleSurveySubmit}
                             disabled={!surveyData.freqUse || !surveyData.purpose || surveySubmitting}
@@ -355,8 +355,8 @@ export const AiBeleidBrainstormPreview: React.FC<AiBeleidBrainstormPreviewProps>
                     <div className="w-24 h-24 bg-gradient-to-br from-indigo-500 to-violet-600 rounded-3xl flex items-center justify-center shadow-2xl shadow-indigo-500/30 mb-6 mx-auto">
                         <Scale className="w-12 h-12 text-white" />
                     </div>
-                    <h1 className="text-3xl font-black text-slate-900 mb-3">AI Beleid Brainstorm</h1>
-                    <p className="text-slate-600 max-w-md mx-auto text-lg">
+                    <h1 className="text-3xl font-black text-lab-muted mb-3">AI Beleid Brainstorm</h1>
+                    <p className="text-lab-muted max-w-md mx-auto text-lg">
                         Jouw mening telt! Help mee met het vormgeven van de AI-regels op school.
                     </p>
                 </motion.div>
@@ -365,13 +365,13 @@ export const AiBeleidBrainstormPreview: React.FC<AiBeleidBrainstormPreviewProps>
                     initial={{ y: 20, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
                     transition={{ delay: 0.2 }}
-                    className="bg-white rounded-3xl p-8 shadow-xl border border-slate-100 max-w-lg w-full mb-8"
+                    className="bg-white rounded-3xl p-8 shadow-xl border border-lab-muted max-w-lg w-full mb-8"
                 >
-                    <h3 className="font-bold text-slate-900 mb-4 flex items-center gap-2">
+                    <h3 className="font-bold text-lab-muted mb-4 flex items-center gap-2">
                         <Users size={20} className="text-indigo-500" />
                         Hoe werkt het?
                     </h3>
-                    <ul className="text-left space-y-3 text-slate-600">
+                    <ul className="text-left space-y-3 text-lab-muted">
                         <li className="flex items-start gap-3">
                             <span className="w-6 h-6 bg-indigo-100 text-indigo-600 rounded-full flex items-center justify-center font-bold text-sm shrink-0">1</span>
                             <span>Eerst vullen we een korte enquête in over jouw AI-gebruik</span>
@@ -406,8 +406,8 @@ export const AiBeleidBrainstormPreview: React.FC<AiBeleidBrainstormPreviewProps>
         return (
             <div className="min-h-full bg-gradient-to-br from-indigo-50 via-white to-violet-50 p-6">
                 <div className="max-w-2xl mx-auto">
-                    <h2 className="text-2xl font-black text-slate-900 mb-2 text-center">Kies een Categorie</h2>
-                    <p className="text-slate-500 text-center mb-8">Waar wil je over nadenken?</p>
+                    <h2 className="text-2xl font-black text-lab-muted mb-2 text-center">Kies een Categorie</h2>
+                    <p className="text-lab-muted text-center mb-8">Waar wil je over nadenken?</p>
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
                         {CATEGORIES.map((cat, idx) => (
@@ -425,8 +425,8 @@ export const AiBeleidBrainstormPreview: React.FC<AiBeleidBrainstormPreviewProps>
                                 <div className={`w-12 h-12 bg-gradient-to-br ${cat.color} rounded-xl flex items-center justify-center mb-4 text-white shadow-lg group-hover:scale-110 transition-transform`}>
                                     <cat.icon size={24} />
                                 </div>
-                                <h3 className="font-bold text-slate-900 text-lg mb-1">{cat.label}</h3>
-                                <p className="text-slate-600 text-sm">{cat.description}</p>
+                                <h3 className="font-bold text-lab-muted text-lg mb-1">{cat.label}</h3>
+                                <p className="text-lab-muted text-sm">{cat.description}</p>
                             </motion.button>
                         ))}
                     </div>
@@ -454,7 +454,7 @@ export const AiBeleidBrainstormPreview: React.FC<AiBeleidBrainstormPreviewProps>
                 <div className="max-w-lg mx-auto">
                     <button
                         onClick={() => setPhase('categories')}
-                        className="flex items-center gap-2 text-slate-500 hover:text-slate-700 mb-6 font-medium"
+                        className="flex items-center gap-2 text-lab-muted hover:text-lab-muted mb-6 font-medium"
                     >
                         <ArrowLeft size={18} />
                         Terug naar categorieën
@@ -466,8 +466,8 @@ export const AiBeleidBrainstormPreview: React.FC<AiBeleidBrainstormPreviewProps>
                                 <selectedCategory.icon size={28} />
                             </div>
                             <div>
-                                <h3 className="font-bold text-slate-900 text-xl">{selectedCategory.label}</h3>
-                                <p className="text-slate-600">{selectedCategory.prompt}</p>
+                                <h3 className="font-bold text-lab-muted text-xl">{selectedCategory.label}</h3>
+                                <p className="text-lab-muted">{selectedCategory.prompt}</p>
                             </div>
                         </div>
                     </div>
@@ -478,20 +478,20 @@ export const AiBeleidBrainstormPreview: React.FC<AiBeleidBrainstormPreviewProps>
                                 initial={{ scale: 0.8, opacity: 0 }}
                                 animate={{ scale: 1, opacity: 1 }}
                                 exit={{ scale: 0.8, opacity: 0 }}
-                                className="bg-emerald-50 border-2 border-emerald-200 rounded-2xl p-8 text-center"
+                                className="bg-lab-sage border-2 border-lab-sage rounded-2xl p-8 text-center"
                             >
-                                <CheckCircle2 className="w-16 h-16 text-emerald-500 mx-auto mb-4" />
-                                <h3 className="text-xl font-bold text-emerald-700">Idee Ingediend!</h3>
-                                <p className="text-emerald-600">Bedankt voor je bijdrage 🎉</p>
+                                <CheckCircle2 className="w-16 h-16 text-lab-sage mx-auto mb-4" />
+                                <h3 className="text-xl font-bold text-lab-sage">Idee Ingediend!</h3>
+                                <p className="text-lab-sage">Bedankt voor je bijdrage 🎉</p>
                             </motion.div>
                         ) : (
                             <motion.div
                                 initial={{ opacity: 0 }}
                                 animate={{ opacity: 1 }}
                                 exit={{ opacity: 0 }}
-                                className="bg-white rounded-2xl p-6 shadow-xl border border-slate-100"
+                                className="bg-white rounded-2xl p-6 shadow-xl border border-lab-muted"
                             >
-                                <label className="block text-sm font-bold text-slate-700 mb-2">
+                                <label className="block text-sm font-bold text-lab-muted mb-2">
                                     Jouw idee
                                 </label>
                                 <textarea
@@ -501,9 +501,9 @@ export const AiBeleidBrainstormPreview: React.FC<AiBeleidBrainstormPreviewProps>
                                         if (contentError) setContentError(null); // Clear error on typing
                                     }}
                                     placeholder="Schrijf hier je gedachte, regel of suggestie..."
-                                    className={`w-full h-32 p-4 border-2 rounded-xl focus:ring-2 outline-none resize-none text-slate-700 transition-colors ${contentError
+                                    className={`w-full h-32 p-4 border-2 rounded-xl focus:ring-2 outline-none resize-none text-lab-muted transition-colors ${contentError
                                         ? 'border-red-300 focus:border-red-500 focus:ring-red-500/20'
-                                        : 'border-slate-200 focus:border-indigo-500 focus:ring-indigo-500/20'
+                                        : 'border-lab-muted focus:border-indigo-500 focus:ring-indigo-500/20'
                                         }`}
                                 />
 
@@ -520,7 +520,7 @@ export const AiBeleidBrainstormPreview: React.FC<AiBeleidBrainstormPreviewProps>
                                 )}
 
                                 <div className="flex items-center justify-between mt-3">
-                                    <span className={`text-sm font-medium ${ideeText.length >= 250 ? 'text-amber-500' : 'text-slate-400'}`}>
+                                    <span className={`text-sm font-medium ${ideeText.length >= 250 ? 'text-lab-gold' : 'text-lab-muted'}`}>
                                         {ideeText.length}/280
                                     </span>
                                     <button
@@ -560,14 +560,14 @@ export const AiBeleidBrainstormPreview: React.FC<AiBeleidBrainstormPreviewProps>
                     <div className="flex items-center justify-between mb-6">
                         <button
                             onClick={() => setPhase('categories')}
-                            className="flex items-center gap-2 text-slate-500 hover:text-slate-700 font-medium"
+                            className="flex items-center gap-2 text-lab-muted hover:text-lab-muted font-medium"
                         >
                             <ArrowLeft size={18} />
                             Nieuw idee
                         </button>
                         <button
                             onClick={() => setPhase('complete')}
-                            className="px-4 py-2 bg-emerald-500 text-white font-bold rounded-xl hover:bg-emerald-600 transition-colors"
+                            className="px-4 py-2 bg-lab-sage text-white font-bold rounded-xl hover:bg-lab-sage transition-colors"
                         >
                             Afronden ✓
                         </button>
@@ -575,9 +575,9 @@ export const AiBeleidBrainstormPreview: React.FC<AiBeleidBrainstormPreviewProps>
 
                     {/* Top 3 Leaderboard */}
                     {topThree.length > 0 && (
-                        <div className="bg-gradient-to-br from-amber-50 to-orange-50 rounded-2xl p-6 mb-6 border-2 border-amber-200">
-                            <h3 className="font-bold text-amber-800 flex items-center gap-2 mb-4">
-                                <Trophy className="text-amber-500" size={20} />
+                        <div className="bg-gradient-to-br from-amber-50 to-orange-50 rounded-2xl p-6 mb-6 border-2 border-lab-gold">
+                            <h3 className="font-bold text-lab-gold flex items-center gap-2 mb-4">
+                                <Trophy className="text-lab-gold" size={20} />
                                 Top Ideeën
                             </h3>
                             <div className="space-y-3">
@@ -585,15 +585,15 @@ export const AiBeleidBrainstormPreview: React.FC<AiBeleidBrainstormPreviewProps>
                                     const cat = getCategoryById(idee.categorie);
                                     return (
                                         <div key={idee.id} className="flex items-center gap-3 bg-white/80 rounded-xl p-3">
-                                            <span className={`w-8 h-8 flex items-center justify-center font-black text-lg ${idx === 0 ? 'text-amber-500' : idx === 1 ? 'text-slate-400' : 'text-amber-700'
+                                            <span className={`w-8 h-8 flex items-center justify-center font-black text-lg ${idx === 0 ? 'text-lab-gold' : idx === 1 ? 'text-lab-muted' : 'text-lab-gold'
                                                 }`}>
                                                 {idx === 0 ? '🥇' : idx === 1 ? '🥈' : '🥉'}
                                             </span>
                                             <div className="flex-1 min-w-0">
-                                                <p className="text-slate-700 font-medium truncate">{idee.idee}</p>
-                                                <span className="text-xs text-slate-400">{cat?.label}</span>
+                                                <p className="text-lab-muted font-medium truncate">{idee.idee}</p>
+                                                <span className="text-xs text-lab-muted">{cat?.label}</span>
                                             </div>
-                                            <span className="text-amber-600 font-bold flex items-center gap-1">
+                                            <span className="text-lab-gold font-bold flex items-center gap-1">
                                                 <ThumbsUp size={14} /> {idee.stemmen || 0}
                                             </span>
                                         </div>
@@ -604,12 +604,12 @@ export const AiBeleidBrainstormPreview: React.FC<AiBeleidBrainstormPreviewProps>
                     )}
 
                     {/* All Ideas */}
-                    <h3 className="font-bold text-slate-900 mb-4">Alle Ideeën ({ideeen.length})</h3>
+                    <h3 className="font-bold text-lab-muted mb-4">Alle Ideeën ({ideeen.length})</h3>
 
                     {loading ? (
-                        <div className="text-center py-12 text-slate-400">Laden...</div>
+                        <div className="text-center py-12 text-lab-muted">Laden...</div>
                     ) : ideeen.length === 0 ? (
-                        <div className="text-center py-12 text-slate-400 bg-white rounded-2xl border-2 border-dashed border-slate-200">
+                        <div className="text-center py-12 text-lab-muted bg-white rounded-2xl border-2 border-dashed border-lab-muted">
                             Nog geen ideeën. Wees de eerste!
                         </div>
                     ) : (
@@ -623,15 +623,15 @@ export const AiBeleidBrainstormPreview: React.FC<AiBeleidBrainstormPreviewProps>
                                         key={idee.id}
                                         initial={{ opacity: 0, y: 10 }}
                                         animate={{ opacity: 1, y: 0 }}
-                                        className={`bg-white rounded-xl p-4 border-2 ${cat?.borderColor || 'border-slate-200'}`}
+                                        className={`bg-white rounded-xl p-4 border-2 ${cat?.borderColor || 'border-lab-muted'}`}
                                     >
                                         <div className="flex items-start gap-3">
                                             <div className={`w-10 h-10 bg-gradient-to-br ${cat?.color || 'from-slate-400 to-slate-500'} rounded-lg flex items-center justify-center text-white shrink-0`}>
                                                 {cat && <cat.icon size={18} />}
                                             </div>
                                             <div className="flex-1 min-w-0">
-                                                <p className="text-slate-700 mb-2">{idee.idee}</p>
-                                                <div className="flex items-center gap-2 text-xs text-slate-400">
+                                                <p className="text-lab-muted mb-2">{idee.idee}</p>
+                                                <div className="flex items-center gap-2 text-xs text-lab-muted">
                                                     <span>{cat?.label}</span>
                                                 </div>
                                             </div>
@@ -640,7 +640,7 @@ export const AiBeleidBrainstormPreview: React.FC<AiBeleidBrainstormPreviewProps>
                                                 disabled={hasVoted}
                                                 className={`flex items-center gap-1 px-3 py-2 rounded-lg font-bold transition-all ${hasVoted
                                                     ? 'bg-indigo-100 text-indigo-500'
-                                                    : 'bg-slate-100 text-slate-500 hover:bg-indigo-100 hover:text-indigo-600'
+                                                    : 'bg-lab-muted text-lab-muted hover:bg-indigo-100 hover:text-indigo-600'
                                                     }`}
                                             >
                                                 <ThumbsUp size={16} />

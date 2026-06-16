@@ -74,7 +74,7 @@ export function PipGuide({ pose, tooltip, side, topOffset = '8.5rem', xOffset, c
         left: '50%',
         transform: 'translateX(-50%)',
         border: '5px solid transparent',
-        borderTopColor: '#E8E6DF',
+        borderTopColor: '#E7D8BD',
     };
 
     const anchorStyle: React.CSSProperties = side === 'left'
@@ -110,9 +110,9 @@ export function PipGuide({ pose, tooltip, side, topOffset = '8.5rem', xOffset, c
                             fontSize: 13,
                             lineHeight: 1.4,
                             fontFamily: "'Outfit', system-ui, sans-serif",
-                            color: '#1A1A19',
-                            background: '#FAF9F0',
-                            border: '1px solid #E8E6DF',
+                            color: '#08283B',
+                            background: '#FCF6EA',
+                            border: '1px solid #E7D8BD',
                             boxShadow: '0 4px 12px rgba(0,0,0,0.08)',
                             maxWidth: 148,
                             textAlign: 'center' as const,

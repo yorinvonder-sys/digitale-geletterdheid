@@ -96,20 +96,20 @@ export const MissionProgressPanel: React.FC<MissionProgressPanelProps> = ({
     }, [filteredStudents, yearMissions]);
 
     const getProgressColor = (percentage: number) => {
-        if (percentage >= 70) return 'bg-emerald-500';
-        if (percentage >= 30) return 'bg-amber-500';
+        if (percentage >= 70) return 'bg-lab-sage';
+        if (percentage >= 30) return 'bg-lab-gold';
         return 'bg-red-500';
     };
 
     const getProgressBgColor = (percentage: number) => {
-        if (percentage >= 70) return 'bg-emerald-50';
-        if (percentage >= 30) return 'bg-amber-50';
+        if (percentage >= 70) return 'bg-lab-sage';
+        if (percentage >= 30) return 'bg-lab-gold';
         return 'bg-red-50';
     };
 
     const getProgressTextColor = (percentage: number) => {
-        if (percentage >= 70) return 'text-emerald-600';
-        if (percentage >= 30) return 'text-amber-600';
+        if (percentage >= 70) return 'text-lab-sage';
+        if (percentage >= 30) return 'text-lab-gold';
         return 'text-red-600';
     };
 
@@ -142,9 +142,9 @@ export const MissionProgressPanel: React.FC<MissionProgressPanelProps> = ({
                             onChange={(e) => onClassFilterChange(e.target.value)}
                             className="bg-white/20 backdrop-blur-sm border border-white/30 text-white rounded-xl px-4 py-2 font-bold text-sm focus:outline-none focus:ring-2 focus:ring-white/50 cursor-pointer"
                         >
-                            <option value="all" className="text-slate-900">Alle klassen</option>
+                            <option value="all" className="text-lab-muted">Alle klassen</option>
                             {availableClasses.map(cls => (
-                                <option key={cls} value={cls} className="text-slate-900">{cls}</option>
+                                <option key={cls} value={cls} className="text-lab-muted">{cls}</option>
                             ))}
                         </select>
                     </div>
@@ -193,7 +193,7 @@ export const MissionProgressPanel: React.FC<MissionProgressPanelProps> = ({
                     <motion.div
                         key={mission.missionId}
                         layout
-                        className={`bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden transition-shadow hover:shadow-md ${getProgressBgColor(mission.percentage)}`}
+                        className={`bg-white rounded-2xl border border-lab-muted shadow-sm overflow-hidden transition-shadow hover:shadow-md ${getProgressBgColor(mission.percentage)}`}
                     >
                         {/* Main Row */}
                         <div
@@ -211,14 +211,14 @@ export const MissionProgressPanel: React.FC<MissionProgressPanelProps> = ({
                                 {/* Mission Info */}
                                 <div className="flex-1 min-w-0">
                                     <div className="flex items-center justify-between mb-2">
-                                        <h3 className="font-bold text-slate-900 truncate">{mission.missionName}</h3>
+                                        <h3 className="font-bold text-lab-muted truncate">{mission.missionName}</h3>
                                         <span className={`text-2xl font-black ${getProgressTextColor(mission.percentage)}`}>
                                             {mission.percentage}%
                                         </span>
                                     </div>
 
                                     {/* Progress Bar */}
-                                    <div className="h-3 bg-slate-100 rounded-full overflow-hidden">
+                                    <div className="h-3 bg-lab-muted rounded-full overflow-hidden">
                                         <motion.div
                                             initial={{ width: 0 }}
                                             animate={{ width: `${mission.percentage}%` }}
@@ -229,15 +229,15 @@ export const MissionProgressPanel: React.FC<MissionProgressPanelProps> = ({
 
                                     {/* Quick Stats */}
                                     <div className="flex items-center gap-4 mt-2 text-xs font-medium">
-                                        <span className="flex items-center gap-1 text-emerald-600">
+                                        <span className="flex items-center gap-1 text-lab-sage">
                                             <CheckCircle2 size={12} />
                                             {mission.completed} voltooid
                                         </span>
-                                        <span className="flex items-center gap-1 text-amber-600">
+                                        <span className="flex items-center gap-1 text-lab-gold">
                                             <Clock size={12} />
                                             {mission.inProgress} bezig
                                         </span>
-                                        <span className="flex items-center gap-1 text-slate-400">
+                                        <span className="flex items-center gap-1 text-lab-muted">
                                             <AlertTriangle size={12} />
                                             {mission.notStarted} niet gestart
                                         </span>
@@ -247,7 +247,7 @@ export const MissionProgressPanel: React.FC<MissionProgressPanelProps> = ({
                                 {/* Expand Arrow */}
                                 <motion.div
                                     animate={{ rotate: expandedMission === mission.missionId ? 90 : 0 }}
-                                    className="text-slate-400"
+                                    className="text-lab-muted"
                                 >
                                     <ChevronRight size={20} />
                                 </motion.div>
@@ -262,22 +262,22 @@ export const MissionProgressPanel: React.FC<MissionProgressPanelProps> = ({
                                     animate={{ height: 'auto', opacity: 1 }}
                                     exit={{ height: 0, opacity: 0 }}
                                     transition={{ duration: 0.2 }}
-                                    className="border-t border-slate-100"
+                                    className="border-t border-lab-muted"
                                 >
                                     <div className="p-4 grid grid-cols-3 gap-3">
                                         <button
                                             onClick={() => setShowStudentList({ mission: mission.missionId, type: 'completed' })}
-                                            className="p-4 bg-emerald-50 hover:bg-emerald-100 rounded-xl text-center transition-colors"
+                                            className="p-4 bg-lab-sage hover:bg-lab-sage rounded-xl text-center transition-colors"
                                         >
-                                            <div className="text-2xl font-black text-emerald-600">{mission.completed}</div>
-                                            <div className="text-xs font-bold text-emerald-500 uppercase">Voltooid</div>
+                                            <div className="text-2xl font-black text-lab-sage">{mission.completed}</div>
+                                            <div className="text-xs font-bold text-lab-sage uppercase">Voltooid</div>
                                         </button>
                                         <button
                                             onClick={() => setShowStudentList({ mission: mission.missionId, type: 'inProgress' })}
-                                            className="p-4 bg-amber-50 hover:bg-amber-100 rounded-xl text-center transition-colors"
+                                            className="p-4 bg-lab-gold hover:bg-lab-gold rounded-xl text-center transition-colors"
                                         >
-                                            <div className="text-2xl font-black text-amber-600">{mission.inProgress}</div>
-                                            <div className="text-xs font-bold text-amber-500 uppercase">Bezig</div>
+                                            <div className="text-2xl font-black text-lab-gold">{mission.inProgress}</div>
+                                            <div className="text-xs font-bold text-lab-gold uppercase">Bezig</div>
                                         </button>
                                         <button
                                             onClick={() => setShowStudentList({ mission: mission.missionId, type: 'notStarted' })}
@@ -311,12 +311,12 @@ export const MissionProgressPanel: React.FC<MissionProgressPanelProps> = ({
                             className="bg-white rounded-2xl shadow-2xl max-w-md w-full max-h-[70vh] overflow-hidden"
                             onClick={e => e.stopPropagation()}
                         >
-                            <div className="p-4 border-b border-slate-100 flex items-center justify-between">
+                            <div className="p-4 border-b border-lab-muted flex items-center justify-between">
                                 <div>
-                                    <h3 className="font-bold text-slate-900">
+                                    <h3 className="font-bold text-lab-muted">
                                         {missionStats.find(m => m.missionId === showStudentList.mission)?.missionName}
                                     </h3>
-                                    <p className="text-xs text-slate-500">
+                                    <p className="text-xs text-lab-muted">
                                         {showStudentList.type === 'completed' && 'Leerlingen die deze missie hebben voltooid'}
                                         {showStudentList.type === 'inProgress' && 'Leerlingen die bezig zijn met deze missie'}
                                         {showStudentList.type === 'notStarted' && 'Leerlingen die deze missie nog moeten starten'}
@@ -324,14 +324,14 @@ export const MissionProgressPanel: React.FC<MissionProgressPanelProps> = ({
                                 </div>
                                 <button
                                     onClick={() => setShowStudentList(null)}
-                                    className="p-2 hover:bg-slate-100 rounded-lg"
+                                    className="p-2 hover:bg-lab-muted rounded-lg"
                                 >
-                                    <X size={18} className="text-slate-400" />
+                                    <X size={18} className="text-lab-muted" />
                                 </button>
                             </div>
                             <div className="p-4 overflow-y-auto max-h-[50vh]">
                                 {currentList.length === 0 ? (
-                                    <div className="text-center py-8 text-slate-400">
+                                    <div className="text-center py-8 text-lab-muted">
                                         Geen leerlingen in deze categorie
                                     </div>
                                 ) : (
@@ -343,17 +343,17 @@ export const MissionProgressPanel: React.FC<MissionProgressPanelProps> = ({
                                                     onSelectStudent?.(student);
                                                     setShowStudentList(null);
                                                 }}
-                                                className="w-full flex items-center justify-between p-3 bg-slate-50 hover:bg-slate-100 rounded-xl transition-colors text-left"
+                                                className="w-full flex items-center justify-between p-3 bg-lab-muted hover:bg-lab-muted rounded-xl transition-colors text-left"
                                             >
                                                 <div>
-                                                    <div className="font-bold text-slate-900">{student.displayName}</div>
-                                                    <div className="text-xs text-slate-400">{student.identifier}</div>
+                                                    <div className="font-bold text-lab-muted">{student.displayName}</div>
+                                                    <div className="text-xs text-lab-muted">{student.identifier}</div>
                                                 </div>
                                                 <div className="flex items-center gap-2">
                                                     <span className="text-xs font-bold text-indigo-600 bg-indigo-50 px-2 py-1 rounded-lg">
                                                         {student.stats?.xp || 0} XP
                                                     </span>
-                                                    <ChevronRight size={16} className="text-slate-300" />
+                                                    <ChevronRight size={16} className="text-lab-muted" />
                                                 </div>
                                             </button>
                                         ))}

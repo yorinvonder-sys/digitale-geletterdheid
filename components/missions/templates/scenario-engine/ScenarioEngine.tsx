@@ -34,14 +34,14 @@ function adjustedScoreRound(round: ScenarioRound, rs: RoundState): number {
 // ── Loading / error screens ───────────────────────────────────────────────────
 
 const LoadingScreen: React.FC = () => (
-    <div className="min-h-screen bg-[#FAF9F0] flex items-center justify-center p-4">
+    <div className="min-h-screen bg-[#FCF6EA] flex items-center justify-center p-4">
         <div className="text-center">
             <div
-                className="w-8 h-8 border-2 border-[#D97757] border-t-transparent rounded-full animate-spin mx-auto mb-3"
+                className="w-8 h-8 border-2 border-[#D97848] border-t-transparent rounded-full animate-spin mx-auto mb-3"
                 aria-label="Laden..."
             />
             <p
-                className="text-sm text-[#6B6B66]"
+                className="text-sm text-[#445865]"
                 style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
             >
                 Missie laden…
@@ -51,24 +51,24 @@ const LoadingScreen: React.FC = () => (
 );
 
 const ErrorScreen: React.FC<{ missionId: string; onBack: () => void }> = ({ missionId, onBack }) => (
-    <div className="min-h-screen bg-[#FAF9F0] flex items-center justify-center p-4">
+    <div className="min-h-screen bg-[#FCF6EA] flex items-center justify-center p-4">
         <div className="text-center max-w-sm">
             <div className="text-4xl mb-4">⚠️</div>
             <h2
-                className="text-lg font-black text-[#1A1A19] mb-2"
+                className="text-lg font-black text-[#08283B] mb-2"
                 style={{ fontFamily: "'Newsreader', Georgia, serif" }}
             >
                 Missie niet gevonden
             </h2>
             <p
-                className="text-sm text-[#6B6B66] mb-4"
+                className="text-sm text-[#445865] mb-4"
                 style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
             >
                 De configuratie voor <code>{missionId}</code> kon niet worden geladen.
             </p>
             <button
                 onClick={onBack}
-                className="px-5 py-2.5 bg-[#D97757] text-white rounded-xl text-sm font-bold"
+                className="px-5 py-2.5 bg-[#D97848] text-white rounded-xl text-sm font-bold"
                 style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
             >
                 Terug
@@ -220,7 +220,7 @@ const ScenarioEngineInner: React.FC<{
     const followUpPending = roundIsCorrect && hasFollowUp && !roundState.followUpAnswered;
 
     return (
-        <div className="min-h-screen bg-[#FAF9F0] p-4">
+        <div className="min-h-screen bg-[#FCF6EA] p-4">
             <div className="max-w-md mx-auto">
                 <PhaseHeader
                     currentPhase={state.currentRound}

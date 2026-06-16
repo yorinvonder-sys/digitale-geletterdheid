@@ -189,7 +189,7 @@ const DebateArenaInner: React.FC<DebateArenaProps> = ({ config, onBack, onComple
         ];
 
         return (
-            <div className="min-h-screen bg-[#FAF9F0] p-4">
+            <div className="min-h-screen bg-[#FCF6EA] p-4">
                 <div className="max-w-md mx-auto">
                     <PhaseHeader
                         currentPhase={6}
@@ -199,36 +199,36 @@ const DebateArenaInner: React.FC<DebateArenaProps> = ({ config, onBack, onComple
                     />
 
                     {/* Journey summary */}
-                    <div className="bg-white rounded-2xl border border-[#E8E6DF] p-4 mb-4">
+                    <div className="bg-white rounded-2xl border border-[#E7D8BD] p-4 mb-4">
                         <div className="flex items-center gap-2 mb-3">
-                            <MessageSquare size={16} className="text-[#8B6F9E]" />
-                            <span className="text-xs font-black text-[#8B6F9E] uppercase tracking-widest" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                            <MessageSquare size={16} className="text-[#0B453F]" />
+                            <span className="text-xs font-black text-[#0B453F] uppercase tracking-widest" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                                 Jouw debattraject
                             </span>
                         </div>
 
                         <div className="flex items-center gap-3 mb-3">
-                            <div className="flex-1 bg-[#F5F4EE] rounded-xl p-3 text-center">
-                                <div className="text-xs text-[#6B6B66] mb-1" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>Begin</div>
-                                <div className="text-sm font-bold text-[#1A1A19]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                            <div className="flex-1 bg-[#FCF6EA] rounded-xl p-3 text-center">
+                                <div className="text-xs text-[#445865] mb-1" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>Begin</div>
+                                <div className="text-sm font-bold text-[#08283B]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                                     {initialPos?.label ?? '—'}
                                 </div>
                             </div>
-                            <ArrowRight size={16} className="text-[#6B6B66] shrink-0" />
-                            <div className="flex-1 bg-[#8B6F9E]/10 rounded-xl p-3 text-center border border-[#8B6F9E]/20">
-                                <div className="text-xs text-[#8B6F9E] mb-1" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>Einde</div>
-                                <div className="text-sm font-bold text-[#8B6F9E]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                            <ArrowRight size={16} className="text-[#445865] shrink-0" />
+                            <div className="flex-1 bg-[#0B453F]/10 rounded-xl p-3 text-center border border-[#0B453F]/20">
+                                <div className="text-xs text-[#0B453F] mb-1" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>Einde</div>
+                                <div className="text-sm font-bold text-[#0B453F]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                                     {finalPos?.label ?? initialPos?.label ?? '—'}
                                 </div>
                             </div>
                         </div>
 
                         {state.arguments.filter(a => a.claim.trim().length > 0).map((arg, i) => (
-                            <div key={i} className={`py-2.5 ${i < 2 ? 'border-b border-[#E8E6DF]' : ''}`}>
-                                <div className="text-xs text-[#6B6B66] mb-0.5" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                            <div key={i} className={`py-2.5 ${i < 2 ? 'border-b border-[#E7D8BD]' : ''}`}>
+                                <div className="text-xs text-[#445865] mb-0.5" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                                     Argument {i + 1}
                                 </div>
-                                <div className="text-sm text-[#3D3D38]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                                <div className="text-sm text-[#445865]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                                     {arg.claim.trim()}
                                 </div>
                             </div>
@@ -254,7 +254,7 @@ const DebateArenaInner: React.FC<DebateArenaProps> = ({ config, onBack, onComple
     const currentPhaseIndex = phaseIndex[state.phase];
 
     return (
-        <div className="min-h-screen bg-[#FAF9F0] p-4">
+        <div className="min-h-screen bg-[#FCF6EA] p-4">
             <div className="max-w-md mx-auto">
                 <PhaseHeader
                     currentPhase={currentPhaseIndex}
@@ -264,11 +264,11 @@ const DebateArenaInner: React.FC<DebateArenaProps> = ({ config, onBack, onComple
                 />
 
                 {/* Dilemma banner */}
-                <div className="bg-[#8B6F9E]/8 border border-[#8B6F9E]/20 rounded-2xl p-3 mb-5">
-                    <div className="text-xs font-black text-[#8B6F9E] uppercase tracking-widest mb-1" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                <div className="bg-[#0B453F]/8 border border-[#0B453F]/20 rounded-2xl p-3 mb-5">
+                    <div className="text-xs font-black text-[#0B453F] uppercase tracking-widest mb-1" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                         Stelling
                     </div>
-                    <p className="text-sm text-[#3D3D38] leading-relaxed italic" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>
+                    <p className="text-sm text-[#445865] leading-relaxed italic" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>
                         "{config.dilemma}"
                     </p>
                 </div>
@@ -344,8 +344,8 @@ const DebateArenaInner: React.FC<DebateArenaProps> = ({ config, onBack, onComple
 // ── Public entry point — loads config dynamically ────────────────────────────
 
 const LoadingScreen = () => (
-    <div className="min-h-screen bg-[#FAF9F0] flex items-center justify-center">
-        <div className="animate-spin rounded-full h-8 w-8 border-2 border-[#D97757] border-t-transparent" />
+    <div className="min-h-screen bg-[#FCF6EA] flex items-center justify-center">
+        <div className="animate-spin rounded-full h-8 w-8 border-2 border-[#D97848] border-t-transparent" />
     </div>
 );
 
@@ -364,12 +364,12 @@ export const DebateArena: React.FC<TemplateMissionProps> = ({ missionId, onBack,
     }, [missionId]);
 
     if (loadError) return (
-        <div className="min-h-screen bg-[#FAF9F0] flex items-center justify-center p-4">
+        <div className="min-h-screen bg-[#FCF6EA] flex items-center justify-center p-4">
             <div className="text-center">
-                <p className="text-[#6B6B66] mb-4" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                <p className="text-[#445865] mb-4" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                     Config niet gevonden: {missionId}
                 </p>
-                <button onClick={onBack} className="px-4 py-2 bg-[#D97757] text-white rounded-xl text-sm font-bold">Terug</button>
+                <button onClick={onBack} className="px-4 py-2 bg-[#D97848] text-white rounded-xl text-sm font-bold">Terug</button>
             </div>
         </div>
     );

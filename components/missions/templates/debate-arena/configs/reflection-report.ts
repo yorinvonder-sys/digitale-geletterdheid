@@ -98,7 +98,7 @@ const config: DebateArenaConfig = {
             minScore: 80,
             emoji: '🏆',
             title: 'Debatmeester',
-            color: '#F59E0B',
+            color: '#D7C95F',
         },
         {
             minScore: 60,
@@ -110,13 +110,13 @@ const config: DebateArenaConfig = {
             minScore: 40,
             emoji: '💬',
             title: 'Goed Bezig',
-            color: '#10B981',
+            color: '#5F947D',
         },
         {
             minScore: 0,
             emoji: '🌱',
             title: 'Aan de Start',
-            color: '#6B6B66',
+            color: '#445865',
         },
     ],
     takeaways: [

@@ -14,18 +14,18 @@ import type { jsPDF } from 'jspdf';
 // ============================================================================
 
 export const BRAND = {
-    primary:      [217, 119, 87]  as [number, number, number],  // #D97757
-    primaryDark:  [196, 104, 73]  as [number, number, number],  // #C46849
-    accent:       [42, 157, 143]  as [number, number, number],  // #2A9D8F
-    secondary:    [139, 111, 158] as [number, number, number],  // #8B6F9E
-    dark:         [26, 26, 25]    as [number, number, number],  // #1A1A19
-    text:         [61, 61, 56]    as [number, number, number],  // #3D3D38
-    textLight:    [107, 107, 102] as [number, number, number],  // #6B6B66
-    muted:        [156, 156, 149] as [number, number, number],  // #9C9C95
-    bg:           [250, 249, 240] as [number, number, number],  // #FAF9F0
+    primary:      [217, 119, 87]  as [number, number, number],  // #D97848
+    primaryDark:  [196, 104, 73]  as [number, number, number],  // #D97848
+    accent:       [42, 157, 143]  as [number, number, number],  // #5F947D
+    secondary:    [139, 111, 158] as [number, number, number],  // #0B453F
+    dark:         [26, 26, 25]    as [number, number, number],  // #08283B
+    text:         [61, 61, 56]    as [number, number, number],  // #445865
+    textLight:    [107, 107, 102] as [number, number, number],  // #445865
+    muted:        [156, 156, 149] as [number, number, number],  // #445865
+    bg:           [250, 249, 240] as [number, number, number],  // #FCF6EA
     surface:      [255, 255, 255] as [number, number, number],  // #FFFFFF
-    border:       [232, 230, 223] as [number, number, number],  // #E8E6DF
-    primaryLight: [217, 119, 87, 0.08] as [number, number, number, number], // #D97757 12%
+    border:       [232, 230, 223] as [number, number, number],  // #E7D8BD
+    primaryLight: [217, 119, 87, 0.08] as [number, number, number, number], // #D97848 12%
 } as const;
 
 // ============================================================================

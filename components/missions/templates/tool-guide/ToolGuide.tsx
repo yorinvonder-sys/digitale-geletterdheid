@@ -86,7 +86,7 @@ function RichText({ text, className }: { text: string; className?: string }) {
             {parts.map((part, i) => {
                 if (part.startsWith('**') && part.endsWith('**')) {
                     return (
-                        <strong key={i} className="font-bold text-[#1A1A19]">
+                        <strong key={i} className="font-bold text-[#08283B]">
                             {part.slice(2, -2)}
                         </strong>
                     );
@@ -144,7 +144,7 @@ const StepCard: React.FC<StepCardProps> = ({
         <div className="w-full max-w-md">
             {/* Step counter */}
             <div className="flex items-center gap-2 mb-4">
-                <div className="w-7 h-7 rounded-full bg-[#D97757] flex items-center justify-center">
+                <div className="w-7 h-7 rounded-full bg-[#D97848] flex items-center justify-center">
                     <span
                         className="text-xs font-black text-white"
                         style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
@@ -153,7 +153,7 @@ const StepCard: React.FC<StepCardProps> = ({
                     </span>
                 </div>
                 <span
-                    className="text-xs text-[#6B6B66]"
+                    className="text-xs text-[#445865]"
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                 >
                     Stap {stepIndex + 1} van {totalSteps}
@@ -163,16 +163,16 @@ const StepCard: React.FC<StepCardProps> = ({
 
             {/* Title */}
             <h2
-                className="text-xl font-black text-[#1A1A19] mb-3"
+                className="text-xl font-black text-[#08283B] mb-3"
                 style={{ fontFamily: "'Newsreader', Georgia, serif" }}
             >
                 {step.title}
             </h2>
 
             {/* Instruction */}
-            <div className="bg-white rounded-2xl border border-[#E8E6DF] p-4 mb-3">
+            <div className="bg-white rounded-2xl border border-[#E7D8BD] p-4 mb-3">
                 <p
-                    className="text-sm text-[#3D3D38] leading-relaxed"
+                    className="text-sm text-[#445865] leading-relaxed"
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                 >
                     <RichText text={step.instruction} />
@@ -181,10 +181,10 @@ const StepCard: React.FC<StepCardProps> = ({
 
             {/* Tip */}
             {step.tip && (
-                <div className="flex gap-2 bg-[#D97757]/8 border border-[#D97757]/20 rounded-xl p-3 mb-3">
-                    <Lightbulb size={15} className="text-[#D97757] shrink-0 mt-0.5" />
+                <div className="flex gap-2 bg-[#D97848]/8 border border-[#D97848]/20 rounded-xl p-3 mb-3">
+                    <Lightbulb size={15} className="text-[#D97848] shrink-0 mt-0.5" />
                     <p
-                        className="text-xs text-[#6B6B66] leading-relaxed"
+                        className="text-xs text-[#445865] leading-relaxed"
                         style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                     >
                         {step.tip}
@@ -193,9 +193,9 @@ const StepCard: React.FC<StepCardProps> = ({
             )}
 
             {/* Checklist */}
-            <div className="bg-white rounded-2xl border border-[#E8E6DF] p-4 mb-3">
+            <div className="bg-white rounded-2xl border border-[#E7D8BD] p-4 mb-3">
                 <p
-                    className="text-xs font-black text-[#D97757] uppercase tracking-widest mb-3"
+                    className="text-xs font-black text-[#D97848] uppercase tracking-widest mb-3"
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                 >
                     Vink af zodra je het hebt gedaan
@@ -210,22 +210,22 @@ const StepCard: React.FC<StepCardProps> = ({
                                 onClick={() => onCheckItem(step.id, item.id)}
                                 className={`w-full flex items-center gap-3 p-2.5 rounded-xl border transition-all duration-200 text-left ${
                                     checked
-                                        ? 'bg-[#10B981]/8 border-[#10B981]/30'
-                                        : 'bg-[#FAF9F0] border-[#E8E6DF] hover:border-[#D97757]/40'
+                                        ? 'bg-[#5F947D]/8 border-[#5F947D]/30'
+                                        : 'bg-[#FCF6EA] border-[#E7D8BD] hover:border-[#D97848]/40'
                                 }`}
                             >
                                 <div
                                     className={`w-5 h-5 rounded-md border-2 flex items-center justify-center shrink-0 transition-all duration-200 ${
                                         checked
-                                            ? 'bg-[#10B981] border-[#10B981]'
-                                            : 'border-[#E8E6DF]'
+                                            ? 'bg-[#5F947D] border-[#5F947D]'
+                                            : 'border-[#E7D8BD]'
                                     }`}
                                 >
                                     {checked && <Check size={11} className="text-white" strokeWidth={3} />}
                                 </div>
                                 <span
                                     className={`text-sm transition-all duration-200 ${
-                                        checked ? 'text-[#10B981] line-through' : 'text-[#3D3D38]'
+                                        checked ? 'text-[#5F947D] line-through' : 'text-[#445865]'
                                     }`}
                                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                                 >
@@ -239,15 +239,15 @@ const StepCard: React.FC<StepCardProps> = ({
 
             {/* Verification question */}
             {step.verificationQuestion && allChecked && (
-                <div className="bg-white rounded-2xl border border-[#E8E6DF] p-4 mb-3">
+                <div className="bg-white rounded-2xl border border-[#E7D8BD] p-4 mb-3">
                     <p
-                        className="text-xs font-black text-[#D97757] uppercase tracking-widest mb-2"
+                        className="text-xs font-black text-[#D97848] uppercase tracking-widest mb-2"
                         style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                     >
                         Checkpunt
                     </p>
                     <p
-                        className="text-sm font-bold text-[#1A1A19] mb-3"
+                        className="text-sm font-bold text-[#08283B] mb-3"
                         style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                     >
                         {step.verificationQuestion.question}
@@ -255,15 +255,15 @@ const StepCard: React.FC<StepCardProps> = ({
                     <div className="space-y-2 mb-3">
                         {step.verificationQuestion.options.map((option, i) => {
                             const selected = verificationAnswer === i;
-                            let style = 'bg-[#FAF9F0] border-[#E8E6DF] hover:border-[#D97757]/40';
+                            let style = 'bg-[#FCF6EA] border-[#E7D8BD] hover:border-[#D97848]/40';
                             if (verificationSubmitted) {
                                 if (i === step.verificationQuestion!.correctIndex) {
-                                    style = 'bg-[#10B981]/8 border-[#10B981]/40';
+                                    style = 'bg-[#5F947D]/8 border-[#5F947D]/40';
                                 } else if (selected) {
                                     style = 'bg-red-50 border-red-200';
                                 }
                             } else if (selected) {
-                                style = 'bg-[#D97757]/8 border-[#D97757]/40';
+                                style = 'bg-[#D97848]/8 border-[#D97848]/40';
                             }
 
                             return (
@@ -279,10 +279,10 @@ const StepCard: React.FC<StepCardProps> = ({
                                         className={`w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0 transition-all duration-200 ${
                                             verificationSubmitted &&
                                             i === step.verificationQuestion!.correctIndex
-                                                ? 'bg-[#10B981] border-[#10B981]'
+                                                ? 'bg-[#5F947D] border-[#5F947D]'
                                                 : selected && !verificationSubmitted
-                                                  ? 'border-[#D97757] bg-[#D97757]'
-                                                  : 'border-[#E8E6DF]'
+                                                  ? 'border-[#D97848] bg-[#D97848]'
+                                                  : 'border-[#E7D8BD]'
                                         }`}
                                     >
                                         {((verificationSubmitted &&
@@ -292,7 +292,7 @@ const StepCard: React.FC<StepCardProps> = ({
                                         )}
                                     </div>
                                     <span
-                                        className="text-sm text-[#3D3D38]"
+                                        className="text-sm text-[#445865]"
                                         style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                                     >
                                         {option}
@@ -305,7 +305,7 @@ const StepCard: React.FC<StepCardProps> = ({
                     {!verificationSubmitted && verificationAnswer !== undefined && (
                         <button
                             onClick={() => onSubmitAnswer(step.id)}
-                            className="w-full py-2.5 bg-[#D97757]/10 hover:bg-[#D97757]/20 text-[#D97757] rounded-xl text-sm font-bold transition-all duration-200 border border-[#D97757]/20"
+                            className="w-full py-2.5 bg-[#D97848]/10 hover:bg-[#D97848]/20 text-[#D97848] rounded-xl text-sm font-bold transition-all duration-200 border border-[#D97848]/20"
                             style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                         >
                             Controleer antwoord
@@ -316,14 +316,14 @@ const StepCard: React.FC<StepCardProps> = ({
                         <div
                             className={`flex gap-2 rounded-xl p-3 ${
                                 isCorrect
-                                    ? 'bg-[#10B981]/8 border border-[#10B981]/20'
-                                    : 'bg-amber-50 border border-amber-200'
+                                    ? 'bg-[#5F947D]/8 border border-[#5F947D]/20'
+                                    : 'bg-lab-gold border border-lab-gold'
                             }`}
                         >
                             <span>{isCorrect ? '✓' : '!'}</span>
                             <p
                                 className={`text-xs leading-relaxed ${
-                                    isCorrect ? 'text-[#10B981]' : 'text-amber-700'
+                                    isCorrect ? 'text-[#5F947D]' : 'text-lab-gold'
                                 }`}
                                 style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                             >
@@ -338,7 +338,7 @@ const StepCard: React.FC<StepCardProps> = ({
             {canProceed && (
                 <button
                     onClick={onNext}
-                    className="w-full py-3.5 bg-gradient-to-r from-[#D97757] to-[#C46849] hover:from-[#C46849] hover:to-[#B05A3C] text-white rounded-xl font-bold text-sm transition-all duration-200 active:scale-[0.98] flex items-center justify-center gap-2"
+                    className="w-full py-3.5 bg-gradient-to-r from-[#D97848] to-[#D97848] hover:from-[#D97848] hover:to-[#D97848] text-white rounded-xl font-bold text-sm transition-all duration-200 active:scale-[0.98] flex items-center justify-center gap-2"
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                 >
                     {isLastStep ? 'Bekijk resultaten' : 'Volgende stap'}
@@ -465,7 +465,7 @@ const ToolGuideInner: React.FC<ToolGuideProps> = ({
 
     // steps phase
     return (
-        <div className="min-h-screen bg-[#FAF9F0] p-4">
+        <div className="min-h-screen bg-[#FCF6EA] p-4">
             <div className="max-w-md mx-auto">
                 <PhaseHeader
                     currentPhase={state.currentStep}
@@ -495,8 +495,8 @@ const ToolGuideInner: React.FC<ToolGuideProps> = ({
 // ── Public entry point — loads config dynamically ────────────────────────────
 
 const LoadingScreen = () => (
-    <div className="min-h-screen bg-[#FAF9F0] flex items-center justify-center">
-        <div className="animate-spin rounded-full h-8 w-8 border-2 border-[#D97757] border-t-transparent" />
+    <div className="min-h-screen bg-[#FCF6EA] flex items-center justify-center">
+        <div className="animate-spin rounded-full h-8 w-8 border-2 border-[#D97848] border-t-transparent" />
     </div>
 );
 
@@ -515,12 +515,12 @@ export const ToolGuide: React.FC<TemplateMissionProps> = ({ missionId, onBack, o
     }, [missionId]);
 
     if (loadError) return (
-        <div className="min-h-screen bg-[#FAF9F0] flex items-center justify-center p-4">
+        <div className="min-h-screen bg-[#FCF6EA] flex items-center justify-center p-4">
             <div className="text-center">
-                <p className="text-[#6B6B66] mb-4" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                <p className="text-[#445865] mb-4" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                     Config niet gevonden: {missionId}
                 </p>
-                <button onClick={onBack} className="px-4 py-2 bg-[#D97757] text-white rounded-xl text-sm font-bold">Terug</button>
+                <button onClick={onBack} className="px-4 py-2 bg-[#D97848] text-white rounded-xl text-sm font-bold">Terug</button>
             </div>
         </div>
     );

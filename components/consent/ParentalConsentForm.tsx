@@ -92,13 +92,13 @@ export const ParentalConsentForm: React.FC<ParentalConsentFormProps> = ({
         <button
           type="button"
           onClick={onCancel}
-          className="w-8 h-8 rounded-lg bg-slate-100 flex items-center justify-center hover:bg-slate-200 transition-colors"
+          className="w-8 h-8 rounded-lg bg-lab-muted flex items-center justify-center hover:bg-lab-muted transition-colors"
         >
-          <ArrowLeft size={16} className="text-slate-600" />
+          <ArrowLeft size={16} className="text-lab-muted" />
         </button>
         <div>
-          <h3 className="text-base font-bold text-slate-800">Toestemming ouder/voogd</h3>
-          <p className="text-xs text-slate-500">
+          <h3 className="text-base font-bold text-lab-muted">Toestemming ouder/voogd</h3>
+          <p className="text-xs text-lab-muted">
             Omdat je jonger bent dan 16, vragen we je ouder of voogd om toestemming.
           </p>
         </div>
@@ -120,8 +120,8 @@ export const ParentalConsentForm: React.FC<ParentalConsentFormProps> = ({
 
       {/* Naam ouder/voogd */}
       <div>
-        <label className="block text-sm font-semibold text-slate-700 mb-1.5">
-          <User size={14} className="inline mr-1.5 text-slate-400" />
+        <label className="block text-sm font-semibold text-lab-muted mb-1.5">
+          <User size={14} className="inline mr-1.5 text-lab-muted" />
           Naam ouder/voogd
         </label>
         <input
@@ -130,7 +130,7 @@ export const ParentalConsentForm: React.FC<ParentalConsentFormProps> = ({
           onChange={(e) => setParentName(e.target.value)}
           placeholder="Bijv. Jan de Vries"
           className={`w-full px-3 py-2 border rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 ${
-            errors.parentName ? 'border-red-300 bg-red-50' : 'border-slate-200'
+            errors.parentName ? 'border-red-300 bg-red-50' : 'border-lab-muted'
           }`}
         />
         {errors.parentName && <p className="text-xs text-red-500 mt-1">{errors.parentName}</p>}
@@ -138,8 +138,8 @@ export const ParentalConsentForm: React.FC<ParentalConsentFormProps> = ({
 
       {/* E-mailadres */}
       <div>
-        <label className="block text-sm font-semibold text-slate-700 mb-1.5">
-          <Mail size={14} className="inline mr-1.5 text-slate-400" />
+        <label className="block text-sm font-semibold text-lab-muted mb-1.5">
+          <Mail size={14} className="inline mr-1.5 text-lab-muted" />
           E-mailadres ouder/voogd
         </label>
         <input
@@ -148,7 +148,7 @@ export const ParentalConsentForm: React.FC<ParentalConsentFormProps> = ({
           onChange={(e) => setParentEmail(e.target.value)}
           placeholder="ouder@voorbeeld.nl"
           className={`w-full px-3 py-2 border rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 ${
-            errors.parentEmail ? 'border-red-300 bg-red-50' : 'border-slate-200'
+            errors.parentEmail ? 'border-red-300 bg-red-50' : 'border-lab-muted'
           }`}
         />
         {errors.parentEmail && <p className="text-xs text-red-500 mt-1">{errors.parentEmail}</p>}
@@ -156,7 +156,7 @@ export const ParentalConsentForm: React.FC<ParentalConsentFormProps> = ({
 
       {/* Relatie */}
       <div>
-        <label className="block text-sm font-semibold text-slate-700 mb-1.5">Relatie tot leerling</label>
+        <label className="block text-sm font-semibold text-lab-muted mb-1.5">Relatie tot leerling</label>
         <div className="flex gap-2">
           {['Ouder', 'Voogd', 'Verzorger'].map((opt) => (
             <button
@@ -166,7 +166,7 @@ export const ParentalConsentForm: React.FC<ParentalConsentFormProps> = ({
               className={`px-4 py-2 rounded-xl text-sm font-medium border transition-colors ${
                 relation === opt
                   ? 'bg-indigo-100 border-indigo-300 text-indigo-700'
-                  : 'bg-white border-slate-200 text-slate-600 hover:bg-slate-50'
+                  : 'bg-white border-lab-muted text-lab-muted hover:bg-lab-muted'
               }`}
             >
               {opt}
@@ -178,7 +178,7 @@ export const ParentalConsentForm: React.FC<ParentalConsentFormProps> = ({
 
       {/* Consent checkboxes */}
       <div>
-        <label className="block text-sm font-semibold text-slate-700 mb-2">
+        <label className="block text-sm font-semibold text-lab-muted mb-2">
           Waarvoor geeft u toestemming?
         </label>
         {errors.types && <p className="text-xs text-red-500 mb-2">{errors.types}</p>}
@@ -191,31 +191,31 @@ export const ParentalConsentForm: React.FC<ParentalConsentFormProps> = ({
               className={`w-full text-left p-3 rounded-xl border transition-colors ${
                 selectedTypes.has(status.consentType)
                   ? 'bg-indigo-50 border-indigo-300'
-                  : 'bg-white border-slate-200 hover:bg-slate-50'
+                  : 'bg-white border-lab-muted hover:bg-lab-muted'
               }`}
             >
               <div className="flex items-start gap-2.5">
                 {selectedTypes.has(status.consentType) ? (
                   <CheckSquare size={18} className="text-indigo-600 mt-0.5 shrink-0" />
                 ) : (
-                  <Square size={18} className="text-slate-300 mt-0.5 shrink-0" />
+                  <Square size={18} className="text-lab-muted mt-0.5 shrink-0" />
                 )}
                 <div>
                   <div className="flex items-center gap-2">
-                    <span className="text-sm font-semibold text-slate-800">{status.label}</span>
+                    <span className="text-sm font-semibold text-lab-muted">{status.label}</span>
                     {status.required && (
                       <span className="text-[9px] font-bold uppercase tracking-wider text-red-500 bg-red-50 px-1.5 py-0.5 rounded">
                         verplicht
                       </span>
                     )}
                   </div>
-                  <p className="text-xs text-slate-500 mt-0.5">{status.description}</p>
+                  <p className="text-xs text-lab-muted mt-0.5">{status.description}</p>
                 </div>
               </div>
             </button>
           ))}
           {availableStatuses.length === 0 && (
-            <p className="text-sm text-slate-500 text-center py-4">
+            <p className="text-sm text-lab-muted text-center py-4">
               Alle toestemmingen zijn al gegeven.
             </p>
           )}
@@ -227,7 +227,7 @@ export const ParentalConsentForm: React.FC<ParentalConsentFormProps> = ({
         <button
           type="button"
           onClick={onCancel}
-          className="flex-1 px-4 py-2.5 border border-slate-200 text-slate-600 rounded-xl text-sm font-semibold hover:bg-slate-50 transition-colors"
+          className="flex-1 px-4 py-2.5 border border-lab-muted text-lab-muted rounded-xl text-sm font-semibold hover:bg-lab-muted transition-colors"
         >
           Annuleren
         </button>
@@ -241,7 +241,7 @@ export const ParentalConsentForm: React.FC<ParentalConsentFormProps> = ({
         </button>
       </div>
 
-      <p className="text-[10px] text-slate-400 text-center leading-relaxed">
+      <p className="text-[10px] text-lab-muted text-center leading-relaxed">
         Deze aanvraag verleent nog geen toestemming. Alleen de bevestiging via de e-mail activeert
         de geselecteerde verwerkingen.
       </p>

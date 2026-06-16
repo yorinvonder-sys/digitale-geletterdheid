@@ -108,10 +108,10 @@ export const KamerDatalek: React.FC<Props> = ({ onComplete, variant }) => {
       {/* Header */}
       <div className="text-center mb-4 md:mb-6">
         <div className="flex items-center justify-center gap-2 mb-2">
-          <ShieldAlert className="text-rose-600" size={24} />
-          <h2 className="text-xl md:text-2xl font-black text-rose-600">Datalek!</h2>
+          <ShieldAlert className="text-lab-coral" size={24} />
+          <h2 className="text-xl md:text-2xl font-black text-lab-coral">Datalek!</h2>
         </div>
-        <p className="text-slate-500 text-sm md:text-base max-w-lg mx-auto">
+        <p className="text-lab-muted text-sm md:text-base max-w-lg mx-auto">
           {fase === 'selectie'
             ? 'Er is een datalek ontdekt! Welke gegevens zijn gevoelig en moeten als eerste beveiligd worden?'
             : fase === 'actie'
@@ -125,8 +125,8 @@ export const KamerDatalek: React.FC<Props> = ({ onComplete, variant }) => {
           {/* Fase 1: Gegevens selecteren */}
           {fase === 'selectie' && (
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-              <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-4 mb-4">
-                <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-3">
+              <div className="bg-white rounded-xl border border-lab-muted shadow-sm p-4 mb-4">
+                <h3 className="text-xs font-bold uppercase tracking-wider text-lab-muted mb-3">
                   Selecteer de gevoelige gegevens
                 </h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
@@ -136,13 +136,13 @@ export const KamerDatalek: React.FC<Props> = ({ onComplete, variant }) => {
                       onClick={() => toggleSelectie(item.id)}
                       className={`px-4 py-3 rounded-lg text-sm font-medium text-left transition-all border ${
                         geselecteerd.has(item.id)
-                          ? 'bg-rose-50 border-rose-300 text-rose-700'
-                          : 'bg-slate-50 border-slate-200 text-slate-500 hover:border-slate-300'
+                          ? 'bg-lab-coral border-lab-coral text-lab-coral'
+                          : 'bg-lab-muted border-lab-muted text-lab-muted hover:border-lab-muted'
                       }`}
                     >
                       <span className="flex items-center gap-2">
                         <span className={`w-4 h-4 rounded border-2 flex items-center justify-center shrink-0 ${
-                          geselecteerd.has(item.id) ? 'border-rose-500 bg-rose-500' : 'border-slate-300'
+                          geselecteerd.has(item.id) ? 'border-lab-coral bg-lab-coral' : 'border-lab-muted'
                         }`}>
                           {geselecteerd.has(item.id) && <CheckCircle size={10} className="text-white" />}
                         </span>
@@ -156,7 +156,7 @@ export const KamerDatalek: React.FC<Props> = ({ onComplete, variant }) => {
               <button
                 onClick={gaVerder}
                 disabled={geselecteerd.size === 0}
-                className="w-full py-3 rounded-xl font-bold text-sm bg-rose-600 hover:bg-rose-700 text-white disabled:opacity-40 disabled:cursor-not-allowed transition-all active:scale-[0.98] flex items-center justify-center gap-2 shadow-lg shadow-rose-200"
+                className="w-full py-3 rounded-xl font-bold text-sm bg-lab-coral hover:bg-lab-coral text-white disabled:opacity-40 disabled:cursor-not-allowed transition-all active:scale-[0.98] flex items-center justify-center gap-2 shadow-lg shadow-rose-200"
               >
                 Bevestig selectie <ChevronRight size={18} />
               </button>
@@ -166,8 +166,8 @@ export const KamerDatalek: React.FC<Props> = ({ onComplete, variant }) => {
           {/* Fase 2: Actie kiezen */}
           {fase === 'actie' && (
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
-              <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-4 mb-4">
-                <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-3">
+              <div className="bg-white rounded-xl border border-lab-muted shadow-sm p-4 mb-4">
+                <h3 className="text-xs font-bold uppercase tracking-wider text-lab-muted mb-3">
                   Wat is je eerste actie?
                 </h3>
                 <div className="space-y-2">
@@ -175,7 +175,7 @@ export const KamerDatalek: React.FC<Props> = ({ onComplete, variant }) => {
                     <button
                       key={optie.id}
                       onClick={() => kiesActie(optie.id)}
-                      className="w-full text-left px-4 py-3 bg-slate-50 border border-slate-200 rounded-lg text-sm text-slate-600 hover:border-rose-300 hover:bg-rose-50 transition-colors active:scale-[0.98]"
+                      className="w-full text-left px-4 py-3 bg-lab-muted border border-lab-muted rounded-lg text-sm text-lab-muted hover:border-lab-coral hover:bg-lab-coral transition-colors active:scale-[0.98]"
                     >
                       {optie.tekst}
                     </button>
@@ -193,20 +193,20 @@ export const KamerDatalek: React.FC<Props> = ({ onComplete, variant }) => {
                 return (
                   <div className={`p-5 rounded-xl border ${
                     (actie?.score ?? 0) >= 75
-                      ? 'bg-emerald-50 border-emerald-200'
-                      : 'bg-amber-50 border-amber-200'
+                      ? 'bg-lab-sage border-lab-sage'
+                      : 'bg-lab-gold border-lab-gold'
                   }`}>
                     <div className="flex items-start gap-3">
                       <CheckCircle size={20} className={`mt-0.5 shrink-0 ${
-                        (actie?.score ?? 0) >= 75 ? 'text-emerald-600' : 'text-amber-600'
+                        (actie?.score ?? 0) >= 75 ? 'text-lab-sage' : 'text-lab-gold'
                       }`} />
                       <div>
                         <p className={`font-bold text-sm ${
-                          (actie?.score ?? 0) >= 75 ? 'text-emerald-700' : 'text-amber-700'
+                          (actie?.score ?? 0) >= 75 ? 'text-lab-sage' : 'text-lab-gold'
                         }`}>
                           {actie?.tekst}
                         </p>
-                        <p className="text-slate-500 text-sm mt-2">{actie?.feedback}</p>
+                        <p className="text-lab-muted text-sm mt-2">{actie?.feedback}</p>
                       </div>
                     </div>
                   </div>

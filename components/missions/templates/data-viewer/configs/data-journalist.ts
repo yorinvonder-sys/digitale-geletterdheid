@@ -93,12 +93,12 @@ export const dataJournalistConfig: DataViewerConfig = {
                 'Onderzoekers van de Universiteit van Utrecht (2024) vergeleken de gemiddelde dagelijkse schermtijd van 13-15 jarigen in zes landen. Bekijk de grafiek en beantwoord de vragen.',
             type: 'bar-chart',
             chartData: [
-                { label: 'VS', value: 7.7, color: '#D97757' },
-                { label: 'Brazilië', value: 6.4, color: '#F59E0B' },
-                { label: 'Nederland', value: 4.2, color: '#3B82F6' },
-                { label: 'Duitsland', value: 3.8, color: '#8B5CF6' },
-                { label: 'Japan', value: 2.9, color: '#10B981' },
-                { label: 'Finland', value: 3.1, color: '#06B6D4' },
+                { label: 'VS', value: 7.7, color: '#D97848' },
+                { label: 'Brazilië', value: 6.4, color: '#D7C95F' },
+                { label: 'Nederland', value: 4.2, color: '#0B453F' },
+                { label: 'Duitsland', value: 3.8, color: '#0B453F' },
+                { label: 'Japan', value: 2.9, color: '#5F947D' },
+                { label: 'Finland', value: 3.1, color: '#0B453F' },
             ],
             questions: [
                 {
@@ -208,25 +208,25 @@ export const dataJournalistConfig: DataViewerConfig = {
             minScore: 85,
             emoji: '🏆',
             title: 'Datajournalist in spe!',
-            color: '#F59E0B',
+            color: '#D7C95F',
         },
         {
             minScore: 65,
             emoji: '📊',
             title: 'Scherpe analist',
-            color: '#10B981',
+            color: '#5F947D',
         },
         {
             minScore: 40,
             emoji: '🔍',
             title: 'Op onderzoek uit',
-            color: '#3B82F6',
+            color: '#0B453F',
         },
         {
             minScore: 0,
             emoji: '📚',
             title: 'Aan de slag!',
-            color: '#6B6B66',
+            color: '#445865',
         },
     ],
 

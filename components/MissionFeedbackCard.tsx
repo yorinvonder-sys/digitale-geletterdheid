@@ -17,7 +17,7 @@ export function MissionFeedbackCard({ score, config, whatWentWell, improvementPo
   const percentage = Math.round((score / maxScore) * 100);
 
   return (
-    <div className="bg-white rounded-2xl shadow-lg border border-slate-200 overflow-hidden">
+    <div className="bg-white rounded-2xl shadow-lg border border-lab-muted overflow-hidden">
       {/* Badge header */}
       <div className={`bg-gradient-to-r ${getBadgeGradient(badge.tier)} p-6 text-center text-white`}>
         <div className="text-5xl mb-2">{badge.emoji}</div>
@@ -33,7 +33,7 @@ export function MissionFeedbackCard({ score, config, whatWentWell, improvementPo
         </div>
 
         {/* Progress bar */}
-        <div className="w-full bg-slate-100 rounded-full h-3">
+        <div className="w-full bg-lab-muted rounded-full h-3">
           <div
             className="bg-gradient-to-r from-lab-primary to-lab-primaryDark h-3 rounded-full transition-all duration-500"
             style={{ width: `${percentage}%` }}

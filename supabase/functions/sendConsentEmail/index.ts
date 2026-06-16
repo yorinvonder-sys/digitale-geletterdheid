@@ -288,38 +288,38 @@ serve(async (req: Request) => {
 
     const htmlBody = `
       <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; max-width: 600px;">
-        <div style="background: linear-gradient(135deg, #D97757, #C46849); padding: 24px 32px; border-radius: 12px 12px 0 0;">
+        <div style="background: linear-gradient(135deg, #D97848, #D97848); padding: 24px 32px; border-radius: 12px 12px 0 0;">
           <h1 style="color: white; margin: 0; font-size: 20px;">Beveiligde toestemmingsaanvraag voor DGSkills</h1>
           <p style="color: rgba(255,255,255,0.8); margin: 4px 0 0; font-size: 14px;">${escaped.schoolName}</p>
         </div>
-        <div style="background: white; padding: 24px 32px; border: 1px solid #E8E6DF; border-top: none; border-radius: 0 0 12px 12px;">
-          <p style="font-size: 15px; color: #3D3D38; line-height: 1.6;">
+        <div style="background: white; padding: 24px 32px; border: 1px solid #E7D8BD; border-top: none; border-radius: 0 0 12px 12px;">
+          <p style="font-size: 15px; color: #445865; line-height: 1.6;">
             Beste ${escaped.parentName},
           </p>
-          <p style="font-size: 15px; color: #3D3D38; line-height: 1.6;">
+          <p style="font-size: 15px; color: #445865; line-height: 1.6;">
             Uw kind <strong>${escaped.studentName}</strong> gebruikt het DGSkills platform op
             <strong>${escaped.schoolName}</strong> voor digitale geletterdheid.
           </p>
-          <p style="font-size: 15px; color: #3D3D38; line-height: 1.6;">
+          <p style="font-size: 15px; color: #445865; line-height: 1.6;">
             Volgens de AVG vragen wij uw toestemming voor de volgende onderdelen:
           </p>
-          <ul style="font-size: 14px; color: #52524D; line-height: 1.8; padding-left: 20px;">
+          <ul style="font-size: 14px; color: #445865; line-height: 1.8; padding-left: 20px;">
             ${consentListHtml}
           </ul>
           <div style="margin: 24px 0; text-align: center;">
-            <a href="${escaped.approvalUrl}" style="display: inline-block; background: #D97757; color: white; padding: 12px 32px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 15px;">
+            <a href="${escaped.approvalUrl}" style="display: inline-block; background: #D97848; color: white; padding: 12px 32px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 15px;">
               Bevestig toestemming veilig
             </a>
           </div>
-          <p style="font-size: 13px; color: #6B6B66; line-height: 1.6;">
+          <p style="font-size: 13px; color: #445865; line-height: 1.6;">
             Deze link is persoonlijk, eenmalig en zeven dagen geldig. Zonder bevestiging via deze link
             wordt geen toestemming geactiveerd.
           </p>
-          <hr style="border: none; border-top: 1px solid #E8E6DF; margin: 20px 0;" />
-          <p style="font-size: 12px; color: #9C9C95;">
+          <hr style="border: none; border-top: 1px solid #E7D8BD; margin: 20px 0;" />
+          <p style="font-size: 12px; color: #445865;">
             DGSkills — Digitale Geletterdheid voor het Voortgezet Onderwijs<br />
-            <a href="https://dgskills.app" style="color: #D97757;">dgskills.app</a> |
-            <a href="mailto:privacy@dgskills.app" style="color: #D97757;">privacy@dgskills.app</a>
+            <a href="https://dgskills.app" style="color: #D97848;">dgskills.app</a> |
+            <a href="mailto:privacy@dgskills.app" style="color: #D97848;">privacy@dgskills.app</a>
           </p>
         </div>
       </div>

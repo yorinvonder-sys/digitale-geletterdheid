@@ -14,7 +14,7 @@ interface MarkdownRendererProps {
 }
 
 const Fallback = () => (
-  <span className="inline-block w-4 h-4 rounded bg-slate-200 animate-pulse" aria-hidden />
+  <span className="inline-block w-4 h-4 rounded bg-lab-muted animate-pulse" aria-hidden />
 );
 
 export const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({

@@ -47,27 +47,27 @@ function computeVisuals(
             {
                 label: 'Camera',
                 value: camera ? 4 : 0,
-                color: camera ? '#D97757' : '#E8E6DF',
+                color: camera ? '#D97848' : '#E7D8BD',
             },
             {
                 label: 'Microfoon',
                 value: microfoon ? 5 : 0,
-                color: microfoon ? '#C46849' : '#E8E6DF',
+                color: microfoon ? '#D97848' : '#E7D8BD',
             },
             {
                 label: 'Locatie',
                 value: locatie ? 5 : 0,
-                color: locatie ? '#B05A3C' : '#E8E6DF',
+                color: locatie ? '#D97848' : '#E7D8BD',
             },
             {
                 label: 'Contacten',
                 value: contacten ? 3 : 0,
-                color: contacten ? '#D97757' : '#E8E6DF',
+                color: contacten ? '#D97848' : '#E7D8BD',
             },
             {
                 label: 'Opslag',
                 value: opslag ? 2 : 0,
-                color: opslag ? '#E8956A' : '#E8E6DF',
+                color: opslag ? '#E8956A' : '#E7D8BD',
             },
         ];
 
@@ -382,31 +382,31 @@ export const privacyByDesignConfig: SimulationLabConfig = {
             minScore: 90,
             emoji: '🏆',
             title: 'Privacy Expert',
-            color: '#10B981',
+            color: '#5F947D',
         },
         {
             minScore: 70,
             emoji: '🔐',
             title: 'Privacy Pro',
-            color: '#D97757',
+            color: '#D97848',
         },
         {
             minScore: 50,
             emoji: '🛡️',
             title: 'Privacy Beginner',
-            color: '#6B6B66',
+            color: '#445865',
         },
         {
             minScore: 25,
             emoji: '💡',
             title: 'Startende Privacy Ontwerper',
-            color: '#8B5CF6',
+            color: '#0B453F',
         },
         {
             minScore: 0,
             emoji: '📖',
             title: 'Aan het leren',
-            color: '#6B6B66',
+            color: '#445865',
         },
     ],
     takeaways: [

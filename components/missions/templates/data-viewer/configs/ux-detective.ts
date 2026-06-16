@@ -88,11 +88,11 @@ export const uxDetectiveConfig: DataViewerConfig = {
                 'De SUS (System Usability Scale) is een standaard maatstaf voor gebruiksvriendelijkheid op een schaal van 0-100. Boven 68 = goed. Bekijk de scores van vijf apps.',
             type: 'bar-chart',
             chartData: [
-                { label: 'Magister', value: 61, color: '#F59E0B' },
-                { label: 'Google Classroom', value: 78, color: '#3B82F6' },
-                { label: 'Itslearning', value: 55, color: '#EF4444' },
-                { label: 'Microsoft Teams', value: 72, color: '#8B5CF6' },
-                { label: 'Zermelo', value: 69, color: '#10B981' },
+                { label: 'Magister', value: 61, color: '#D7C95F' },
+                { label: 'Google Classroom', value: 78, color: '#0B453F' },
+                { label: 'Itslearning', value: 55, color: '#D97848' },
+                { label: 'Microsoft Teams', value: 72, color: '#0B453F' },
+                { label: 'Zermelo', value: 69, color: '#5F947D' },
             ],
             questions: [
                 {
@@ -199,25 +199,25 @@ export const uxDetectiveConfig: DataViewerConfig = {
             minScore: 85,
             emoji: '🕵️',
             title: 'UX Expert!',
-            color: '#E8956F',
+            color: '#D97848',
         },
         {
             minScore: 65,
             emoji: '🔍',
             title: 'Usability Detective',
-            color: '#8B5CF6',
+            color: '#0B453F',
         },
         {
             minScore: 40,
             emoji: '👆',
             title: 'UX Verkenner',
-            color: '#3B82F6',
+            color: '#0B453F',
         },
         {
             minScore: 0,
             emoji: '📚',
             title: 'Aan de slag!',
-            color: '#6B6B66',
+            color: '#445865',
         },
     ],
 

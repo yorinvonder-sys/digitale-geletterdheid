@@ -50,7 +50,7 @@ function computeCoverage(containers: ContainerConfig[], yearGroup: number): Cove
 const DOMAIN_COLORS: Record<string, { bg: string; text: string; border: string }> = {
     blue:   { bg: 'bg-blue-50',   text: 'text-blue-700',   border: 'border-blue-200' },
     purple: { bg: 'bg-purple-50', text: 'text-purple-700', border: 'border-purple-200' },
-    amber:  { bg: 'bg-amber-50',  text: 'text-amber-700',  border: 'border-amber-200' },
+    amber:  { bg: 'bg-lab-gold',  text: 'text-lab-gold',  border: 'border-lab-gold' },
 };
 
 export const SLOCoverageIndicator: React.FC<SLOCoverageIndicatorProps> = ({
@@ -65,7 +65,7 @@ export const SLOCoverageIndicator: React.FC<SLOCoverageIndicatorProps> = ({
     );
 
     const isComplete = percentage === 100;
-    const barColor = isComplete ? 'bg-emerald-500' : percentage >= 75 ? 'bg-amber-400' : 'bg-red-400';
+    const barColor = isComplete ? 'bg-lab-sage' : percentage >= 75 ? 'bg-lab-gold' : 'bg-red-400';
 
     if (compact) {
         return (
@@ -76,7 +76,7 @@ export const SLOCoverageIndicator: React.FC<SLOCoverageIndicatorProps> = ({
                 <span className="font-medium text-gray-700 tabular-nums">{percentage}%</span>
                 <span className="text-gray-400 text-xs">kerndoelen</span>
                 {!isComplete && (
-                    <AlertTriangle size={14} className="text-amber-500 shrink-0" aria-label={`${missing.length} kerndoel(en) niet gedekt`} />
+                    <AlertTriangle size={14} className="text-lab-gold shrink-0" aria-label={`${missing.length} kerndoel(en) niet gedekt`} />
                 )}
             </div>
         );
@@ -101,7 +101,7 @@ export const SLOCoverageIndicator: React.FC<SLOCoverageIndicatorProps> = ({
                     <span className="text-gray-500 text-sm truncate">
                         kerndoelen gedekt
                         {!isComplete && (
-                            <span className="ml-1 text-amber-600">
+                            <span className="ml-1 text-lab-gold">
                                 ({missing.length} ontbrekend)
                             </span>
                         )}
@@ -127,7 +127,7 @@ export const SLOCoverageIndicator: React.FC<SLOCoverageIndicatorProps> = ({
                                     const colors = DOMAIN_COLORS[kd.kleur];
                                     return (
                                         <li key={code} className="flex items-start gap-2">
-                                            <CheckCircle size={15} className="text-emerald-500 shrink-0 mt-0.5" />
+                                            <CheckCircle size={15} className="text-lab-sage shrink-0 mt-0.5" />
                                             <span className={`inline-flex items-center gap-1.5 text-sm leading-snug`}>
                                                 <span className={`text-xs font-mono px-1.5 py-0.5 rounded border ${colors.bg} ${colors.text} ${colors.border}`}>
                                                     {code}
@@ -170,7 +170,7 @@ export const SLOCoverageIndicator: React.FC<SLOCoverageIndicatorProps> = ({
                     )}
 
                     {isComplete && (
-                        <p className="flex items-center gap-2 text-sm text-emerald-600 font-medium">
+                        <p className="flex items-center gap-2 text-sm text-lab-sage font-medium">
                             <CheckCircle size={15} />
                             Alle kerndoelen zijn gedekt voor leerjaar {yearGroup}.
                         </p>

@@ -108,19 +108,19 @@ const config: ToolGuideConfig = {
             minScore: 55,
             emoji: '🏆',
             title: 'Marketing Expert',
-            color: '#16A34A',
+            color: '#5F947D',
         },
         {
             minScore: 40,
             emoji: '🚀',
             title: 'Launcher',
-            color: '#22C55E',
+            color: '#5F947D',
         },
         {
             minScore: 0,
             emoji: '🌱',
             title: 'Aan de slag',
-            color: '#10B981',
+            color: '#5F947D',
         },
     ],
     takeaways: [

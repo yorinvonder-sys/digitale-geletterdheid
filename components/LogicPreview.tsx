@@ -122,81 +122,81 @@ export const LogicPreview: React.FC<LogicPreviewProps> = ({ code, onStart, onLev
     // INTRO SCREEN
     if (!code && !hasStarted) {
         return (
-            <div className="w-full h-full flex flex-col relative overflow-hidden" style={{ backgroundColor: '#FAF9F0' }}>
+            <div className="w-full h-full flex flex-col relative overflow-hidden" style={{ backgroundColor: '#FCF6EA' }}>
                 <div className="flex-1 flex flex-col items-center justify-start p-6 relative z-10 overflow-y-auto">
                     {/* Header met Pip */}
                     <div className="relative mb-4">
                         <img src="/mascot/pip-excited.webp" alt="Pip" className="w-20 h-20 object-contain" loading="lazy" />
                     </div>
 
-                    <h2 className="text-xl font-black mb-1 tracking-tight text-center" style={{ fontFamily: "'Newsreader', Georgia, serif", color: '#1A1A19' }}>
+                    <h2 className="text-xl font-black mb-1 tracking-tight text-center" style={{ fontFamily: "'Newsreader', Georgia, serif", color: '#08283B' }}>
                         Robbie de Speurhond
                     </h2>
-                    <p className="text-sm font-bold mb-4" style={{ color: '#D97757' }}>Leer programmeren door Robbie te besturen!</p>
+                    <p className="text-sm font-bold mb-4" style={{ color: '#D97848' }}>Leer programmeren door Robbie te besturen!</p>
 
                     {/* WAT GA JE DOEN */}
-                    <div className="rounded-2xl p-4 max-w-md w-full mb-4" style={{ backgroundColor: '#FFFFFF', border: '1px solid #E8E6DF' }}>
-                        <h3 className="text-sm font-black uppercase tracking-widest mb-3 flex items-center gap-2" style={{ color: '#D97757' }}>
+                    <div className="rounded-2xl p-4 max-w-md w-full mb-4" style={{ backgroundColor: '#FFFFFF', border: '1px solid #E7D8BD' }}>
+                        <h3 className="text-sm font-black uppercase tracking-widest mb-3 flex items-center gap-2" style={{ color: '#D97848' }}>
                             Wat Ga Je Doen?
                         </h3>
                         <div className="space-y-2 text-sm">
-                            <div className="flex items-start gap-3 rounded-xl p-3" style={{ backgroundColor: '#FAF9F0', border: '1px solid #F0EEE8' }}>
-                                <span className="w-6 h-6 rounded-full flex items-center justify-center font-black text-xs shrink-0 text-white" style={{ backgroundColor: '#D97757' }}>1</span>
+                            <div className="flex items-start gap-3 rounded-xl p-3" style={{ backgroundColor: '#FCF6EA', border: '1px solid #FCF6EA' }}>
+                                <span className="w-6 h-6 rounded-full flex items-center justify-center font-black text-xs shrink-0 text-white" style={{ backgroundColor: '#D97848' }}>1</span>
                                 <div>
-                                    <p className="font-bold" style={{ color: '#1A1A19' }}>Chat met Pip in de chatbalk links</p>
-                                    <p className="text-xs" style={{ color: '#6B6B66' }}>Typ commando's zoals "stap" of "draai rechts"</p>
+                                    <p className="font-bold" style={{ color: '#08283B' }}>Chat met Pip in de chatbalk links</p>
+                                    <p className="text-xs" style={{ color: '#445865' }}>Typ commando's zoals "stap" of "draai rechts"</p>
                                 </div>
                             </div>
-                            <div className="flex items-start gap-3 rounded-xl p-3" style={{ backgroundColor: '#FAF9F0', border: '1px solid #F0EEE8' }}>
-                                <span className="w-6 h-6 rounded-full flex items-center justify-center font-black text-xs shrink-0 text-white" style={{ backgroundColor: '#2A9D8F' }}>2</span>
+                            <div className="flex items-start gap-3 rounded-xl p-3" style={{ backgroundColor: '#FCF6EA', border: '1px solid #FCF6EA' }}>
+                                <span className="w-6 h-6 rounded-full flex items-center justify-center font-black text-xs shrink-0 text-white" style={{ backgroundColor: '#5F947D' }}>2</span>
                                 <div>
-                                    <p className="font-bold" style={{ color: '#1A1A19' }}>Pip stuurt je code terug</p>
-                                    <p className="text-xs" style={{ color: '#6B6B66' }}>De code verschijnt dan hier in dit venster</p>
+                                    <p className="font-bold" style={{ color: '#08283B' }}>Pip stuurt je code terug</p>
+                                    <p className="text-xs" style={{ color: '#445865' }}>De code verschijnt dan hier in dit venster</p>
                                 </div>
                             </div>
-                            <div className="flex items-start gap-3 rounded-xl p-3" style={{ backgroundColor: '#FAF9F0', border: '1px solid #F0EEE8' }}>
-                                <span className="w-6 h-6 rounded-full flex items-center justify-center font-black text-xs shrink-0 text-white" style={{ backgroundColor: '#10B981' }}>3</span>
+                            <div className="flex items-start gap-3 rounded-xl p-3" style={{ backgroundColor: '#FCF6EA', border: '1px solid #FCF6EA' }}>
+                                <span className="w-6 h-6 rounded-full flex items-center justify-center font-black text-xs shrink-0 text-white" style={{ backgroundColor: '#5F947D' }}>3</span>
                                 <div>
-                                    <p className="font-bold" style={{ color: '#1A1A19' }}>Klik op RUN om de code uit te voeren</p>
-                                    <p className="text-xs" style={{ color: '#6B6B66' }}>Kijk of Robbie alle botjes vindt!</p>
+                                    <p className="font-bold" style={{ color: '#08283B' }}>Klik op RUN om de code uit te voeren</p>
+                                    <p className="text-xs" style={{ color: '#445865' }}>Kijk of Robbie alle botjes vindt!</p>
                                 </div>
                             </div>
                         </div>
                     </div>
 
                     {/* DE 3 COMMANDO'S */}
-                    <div className="rounded-2xl p-4 max-w-md w-full mb-4" style={{ backgroundColor: '#FFFFFF', border: '1px solid #E8E6DF' }}>
-                        <h3 className="text-xs font-bold uppercase tracking-widest mb-2 flex items-center gap-2" style={{ color: '#8B6F9E' }}>
+                    <div className="rounded-2xl p-4 max-w-md w-full mb-4" style={{ backgroundColor: '#FFFFFF', border: '1px solid #E7D8BD' }}>
+                        <h3 className="text-xs font-bold uppercase tracking-widest mb-2 flex items-center gap-2" style={{ color: '#0B453F' }}>
                             De 3 Commando's Die Robbie Begrijpt
                         </h3>
                         <div className="grid grid-cols-3 gap-2">
-                            <div className="rounded-xl p-2 text-center" style={{ backgroundColor: '#FAF9F0', border: '1px solid #F0EEE8' }}>
-                                <code className="font-bold text-xs" style={{ color: '#D97757' }}>stap</code>
-                                <p className="text-[9px] mt-1" style={{ color: '#6B6B66' }}>1 hokje vooruit</p>
+                            <div className="rounded-xl p-2 text-center" style={{ backgroundColor: '#FCF6EA', border: '1px solid #FCF6EA' }}>
+                                <code className="font-bold text-xs" style={{ color: '#D97848' }}>stap</code>
+                                <p className="text-[9px] mt-1" style={{ color: '#445865' }}>1 hokje vooruit</p>
                             </div>
-                            <div className="rounded-xl p-2 text-center" style={{ backgroundColor: '#FAF9F0', border: '1px solid #F0EEE8' }}>
-                                <code className="font-bold text-xs" style={{ color: '#D97757' }}>draai links</code>
-                                <p className="text-[9px] mt-1" style={{ color: '#6B6B66' }}>90° draaien</p>
+                            <div className="rounded-xl p-2 text-center" style={{ backgroundColor: '#FCF6EA', border: '1px solid #FCF6EA' }}>
+                                <code className="font-bold text-xs" style={{ color: '#D97848' }}>draai links</code>
+                                <p className="text-[9px] mt-1" style={{ color: '#445865' }}>90° draaien</p>
                             </div>
-                            <div className="rounded-xl p-2 text-center" style={{ backgroundColor: '#FAF9F0', border: '1px solid #F0EEE8' }}>
-                                <code className="font-bold text-xs" style={{ color: '#D97757' }}>draai rechts</code>
-                                <p className="text-[9px] mt-1" style={{ color: '#6B6B66' }}>90° draaien</p>
+                            <div className="rounded-xl p-2 text-center" style={{ backgroundColor: '#FCF6EA', border: '1px solid #FCF6EA' }}>
+                                <code className="font-bold text-xs" style={{ color: '#D97848' }}>draai rechts</code>
+                                <p className="text-[9px] mt-1" style={{ color: '#445865' }}>90° draaien</p>
                             </div>
                         </div>
                     </div>
 
                     {/* HET DOEL */}
                     <div className="rounded-xl p-3 max-w-md w-full mb-4" style={{ backgroundColor: 'rgba(16, 185, 129, 0.06)', border: '1px solid rgba(16, 185, 129, 0.2)' }}>
-                        <h3 className="text-xs font-bold uppercase tracking-widest mb-2" style={{ color: '#10B981' }}>Het Doel</h3>
-                        <div className="flex items-center justify-center gap-4 text-sm" style={{ color: '#3D3D38' }}>
+                        <h3 className="text-xs font-bold uppercase tracking-widest mb-2" style={{ color: '#5F947D' }}>Het Doel</h3>
+                        <div className="flex items-center justify-center gap-4 text-sm" style={{ color: '#445865' }}>
                             <div className="flex flex-col items-center">
                                 <span className="text-2xl">🦴</span>
-                                <span className="text-[10px]" style={{ color: '#10B981' }}>Pak alle botjes</span>
+                                <span className="text-[10px]" style={{ color: '#5F947D' }}>Pak alle botjes</span>
                             </div>
-                            <span className="font-bold" style={{ color: '#10B981' }}>→</span>
+                            <span className="font-bold" style={{ color: '#5F947D' }}>→</span>
                             <div className="flex flex-col items-center">
                                 <span className="text-2xl">🏠</span>
-                                <span className="text-[10px]" style={{ color: '#10B981' }}>Ga naar het hok</span>
+                                <span className="text-[10px]" style={{ color: '#5F947D' }}>Ga naar het hok</span>
                             </div>
                         </div>
                     </div>
@@ -208,9 +208,9 @@ export const LogicPreview: React.FC<LogicPreviewProps> = ({ code, onStart, onLev
                                 onStart?.();
                             }}
                             className="w-full max-w-md text-white font-bold text-lg py-4 px-8 rounded-full shadow-xl active:scale-95 transition-all flex items-center justify-center gap-3"
-                            style={{ backgroundColor: '#D97757' }}
-                            onMouseEnter={e => (e.currentTarget.style.backgroundColor = '#C46849')}
-                            onMouseLeave={e => (e.currentTarget.style.backgroundColor = '#D97757')}
+                            style={{ backgroundColor: '#D97848' }}
+                            onMouseEnter={e => (e.currentTarget.style.backgroundColor = '#D97848')}
+                            onMouseLeave={e => (e.currentTarget.style.backgroundColor = '#D97848')}
                         >
                             Ik Snap Het - Start!
                         </button>
@@ -361,7 +361,7 @@ export const LogicPreview: React.FC<LogicPreviewProps> = ({ code, onStart, onLev
                                     className="absolute transition-all duration-300 z-10"
                                     style={{ transform: `rotate(${robotPos.dir * 90}deg)` }}
                                 >
-                                    <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full shadow-lg flex items-center justify-center text-xl border-2" style={{ backgroundColor: '#D97757', borderColor: '#C46849' }}>
+                                    <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full shadow-lg flex items-center justify-center text-xl border-2" style={{ backgroundColor: '#D97848', borderColor: '#D97848' }}>
                                         🐕
                                     </div>
                                 </div>
@@ -374,20 +374,20 @@ export const LogicPreview: React.FC<LogicPreviewProps> = ({ code, onStart, onLev
     };
 
     return (
-        <div className="w-full h-full flex flex-col" style={{ backgroundColor: '#FAF9F0' }}>
+        <div className="w-full h-full flex flex-col" style={{ backgroundColor: '#FCF6EA' }}>
             {/* Header Bar */}
-            <div className="px-3 py-2 flex justify-between items-center shrink-0" style={{ backgroundColor: '#FFFFFF', borderBottom: '1px solid #E8E6DF' }}>
+            <div className="px-3 py-2 flex justify-between items-center shrink-0" style={{ backgroundColor: '#FFFFFF', borderBottom: '1px solid #E7D8BD' }}>
                 <div className="flex items-center gap-2">
                     <span className="flex items-center gap-1.5 px-2 py-1 rounded-lg" style={{ backgroundColor: 'rgba(217, 119, 87, 0.08)', border: '1px solid rgba(217, 119, 87, 0.2)' }}>
                         <span className="text-lg">🦴</span>
-                        <span className="font-black text-xs" style={{ color: '#D97757' }}>{collectedBones.size}/{totalBones}</span>
+                        <span className="font-black text-xs" style={{ color: '#D97848' }}>{collectedBones.size}/{totalBones}</span>
                     </span>
-                    <span className="flex items-center gap-0.5 px-2 py-1 rounded-lg" style={{ backgroundColor: '#FAF9F0', border: '1px solid #F0EEE8' }}>
+                    <span className="flex items-center gap-0.5 px-2 py-1 rounded-lg" style={{ backgroundColor: '#FCF6EA', border: '1px solid #FCF6EA' }}>
                         {[...Array(3)].map((_, i) => (
                             <span key={i} className={`text-sm ${i < lives ? '' : 'opacity-30'}`}>❤️</span>
                         ))}
                     </span>
-                    <span className="px-2 py-1 rounded-lg font-black text-xs hidden sm:block" style={{ backgroundColor: '#FAF9F0', color: '#3D3D38', border: '1px solid #F0EEE8' }}>
+                    <span className="px-2 py-1 rounded-lg font-black text-xs hidden sm:block" style={{ backgroundColor: '#FCF6EA', color: '#445865', border: '1px solid #FCF6EA' }}>
                         Lvl {currentLevel + 1}: {level.name}
                     </span>
                 </div>
@@ -395,19 +395,19 @@ export const LogicPreview: React.FC<LogicPreviewProps> = ({ code, onStart, onLev
                     <button
                         onClick={() => setHasStarted(false)}
                         className="p-1.5 rounded-lg transition-colors"
-                        style={{ color: '#6B6B66' }}
+                        style={{ color: '#445865' }}
                         title="Bekijk uitleg"
                     >
                         <HelpCircle size={16} />
                     </button>
-                    <button onClick={resetLevel} disabled={isRunning} className="p-1.5 rounded-lg transition-colors" style={{ color: '#6B6B66' }}>
+                    <button onClick={resetLevel} disabled={isRunning} className="p-1.5 rounded-lg transition-colors" style={{ color: '#445865' }}>
                         <RotateCcw size={16} />
                     </button>
                     <button
                         onClick={runCode}
                         disabled={isRunning || !code}
                         className="flex items-center gap-1.5 px-3 py-1.5 text-white font-black text-xs rounded-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-md"
-                        style={{ backgroundColor: '#D97757' }}
+                        style={{ backgroundColor: '#D97848' }}
                     >
                         <Play size={14} fill="currentColor" /> RUN
                     </button>
@@ -424,8 +424,8 @@ export const LogicPreview: React.FC<LogicPreviewProps> = ({ code, onStart, onLev
                     {status !== 'idle' && status !== 'running' && (
                         <div className="px-4 py-2 rounded-xl font-black text-xs uppercase tracking-widest animate-in zoom-in text-white"
                             style={{
-                                backgroundColor: status === 'success' ? '#10B981' :
-                                    status === 'crashed' ? '#EF4444' : '#D97757'
+                                backgroundColor: status === 'success' ? '#5F947D' :
+                                    status === 'crashed' ? '#D97848' : '#D97848'
                             }}
                         >
                             {status === 'success' && 'Level Gehaald!'}
@@ -440,7 +440,7 @@ export const LogicPreview: React.FC<LogicPreviewProps> = ({ code, onStart, onLev
                     </div>
 
                     {/* Legend */}
-                    <div className="flex gap-3 text-[10px] font-bold" style={{ color: '#6B6B66' }}>
+                    <div className="flex gap-3 text-[10px] font-bold" style={{ color: '#445865' }}>
                         <span>🐕 Robbie</span>
                         <span>🦴 Botje</span>
                         <span>🏠 Hok</span>
@@ -450,7 +450,7 @@ export const LogicPreview: React.FC<LogicPreviewProps> = ({ code, onStart, onLev
                     {/* Logs */}
                     <div className="w-full max-w-md max-h-16 overflow-y-auto custom-scrollbar">
                         {logs.slice(-5).map((log, i) => (
-                            <div key={i} className="text-[10px] font-mono pl-2 mb-0.5" style={{ color: '#6B6B66', borderLeft: '2px solid #D97757' }}>
+                            <div key={i} className="text-[10px] font-mono pl-2 mb-0.5" style={{ color: '#445865', borderLeft: '2px solid #D97848' }}>
                                 {log}
                             </div>
                         ))}
@@ -458,39 +458,39 @@ export const LogicPreview: React.FC<LogicPreviewProps> = ({ code, onStart, onLev
                 </div>
 
                 {/* PERMANENT INSTRUCTIONS PANEL */}
-                <div className="w-full md:w-56 p-3 shrink-0 overflow-y-auto" style={{ backgroundColor: '#FFFFFF', borderTop: '1px solid #E8E6DF', borderLeft: '1px solid #E8E6DF' }}>
+                <div className="w-full md:w-56 p-3 shrink-0 overflow-y-auto" style={{ backgroundColor: '#FFFFFF', borderTop: '1px solid #E7D8BD', borderLeft: '1px solid #E7D8BD' }}>
                     <div className="flex items-center gap-2 mb-3">
-                        <HelpCircle size={14} style={{ color: '#D97757' }} />
-                        <span className="text-[10px] font-black uppercase tracking-widest" style={{ color: '#D97757' }}>Commando's</span>
+                        <HelpCircle size={14} style={{ color: '#D97848' }} />
+                        <span className="text-[10px] font-black uppercase tracking-widest" style={{ color: '#D97848' }}>Commando's</span>
                     </div>
 
                     <div className="space-y-2">
-                        <div className="rounded-lg p-2" style={{ backgroundColor: '#FAF9F0', border: '1px solid #F0EEE8' }}>
-                            <code className="font-bold text-xs" style={{ color: '#D97757' }}>stap</code>
-                            <p className="text-[10px] mt-0.5" style={{ color: '#6B6B66' }}>1 hokje vooruit</p>
+                        <div className="rounded-lg p-2" style={{ backgroundColor: '#FCF6EA', border: '1px solid #FCF6EA' }}>
+                            <code className="font-bold text-xs" style={{ color: '#D97848' }}>stap</code>
+                            <p className="text-[10px] mt-0.5" style={{ color: '#445865' }}>1 hokje vooruit</p>
                         </div>
-                        <div className="rounded-lg p-2" style={{ backgroundColor: '#FAF9F0', border: '1px solid #F0EEE8' }}>
-                            <code className="font-bold text-xs" style={{ color: '#D97757' }}>draai links</code>
-                            <p className="text-[10px] mt-0.5" style={{ color: '#6B6B66' }}>90° naar links draaien</p>
+                        <div className="rounded-lg p-2" style={{ backgroundColor: '#FCF6EA', border: '1px solid #FCF6EA' }}>
+                            <code className="font-bold text-xs" style={{ color: '#D97848' }}>draai links</code>
+                            <p className="text-[10px] mt-0.5" style={{ color: '#445865' }}>90° naar links draaien</p>
                         </div>
-                        <div className="rounded-lg p-2" style={{ backgroundColor: '#FAF9F0', border: '1px solid #F0EEE8' }}>
-                            <code className="font-bold text-xs" style={{ color: '#D97757' }}>draai rechts</code>
-                            <p className="text-[10px] mt-0.5" style={{ color: '#6B6B66' }}>90° naar rechts draaien</p>
+                        <div className="rounded-lg p-2" style={{ backgroundColor: '#FCF6EA', border: '1px solid #FCF6EA' }}>
+                            <code className="font-bold text-xs" style={{ color: '#D97848' }}>draai rechts</code>
+                            <p className="text-[10px] mt-0.5" style={{ color: '#445865' }}>90° naar rechts draaien</p>
                         </div>
                     </div>
 
-                    <div className="mt-4 pt-3" style={{ borderTop: '1px solid #F0EEE8' }}>
-                        <div className="text-[10px] font-black uppercase tracking-widest mb-2" style={{ color: '#6B6B66' }}>Doel</div>
-                        <div className="text-xs leading-relaxed" style={{ color: '#3D3D38' }}>
-                            <span style={{ color: '#D97757' }}>1.</span> Pak alle 🦴<br />
-                            <span style={{ color: '#D97757' }}>2.</span> Ga naar 🏠
+                    <div className="mt-4 pt-3" style={{ borderTop: '1px solid #FCF6EA' }}>
+                        <div className="text-[10px] font-black uppercase tracking-widest mb-2" style={{ color: '#445865' }}>Doel</div>
+                        <div className="text-xs leading-relaxed" style={{ color: '#445865' }}>
+                            <span style={{ color: '#D97848' }}>1.</span> Pak alle 🦴<br />
+                            <span style={{ color: '#D97848' }}>2.</span> Ga naar 🏠
                         </div>
                     </div>
 
                     {/* Code Preview */}
-                    <div className="mt-4 pt-3" style={{ borderTop: '1px solid #F0EEE8' }}>
-                        <div className="text-[10px] font-black uppercase tracking-widest mb-2" style={{ color: '#6B6B66' }}>Jouw Code</div>
-                        <div className="rounded-lg p-2 font-mono text-[10px] max-h-24 overflow-y-auto whitespace-pre-wrap" style={{ backgroundColor: '#FAF9F0', color: '#D97757', border: '1px solid #F0EEE8' }}>
+                    <div className="mt-4 pt-3" style={{ borderTop: '1px solid #FCF6EA' }}>
+                        <div className="text-[10px] font-black uppercase tracking-widest mb-2" style={{ color: '#445865' }}>Jouw Code</div>
+                        <div className="rounded-lg p-2 font-mono text-[10px] max-h-24 overflow-y-auto whitespace-pre-wrap" style={{ backgroundColor: '#FCF6EA', color: '#D97848', border: '1px solid #FCF6EA' }}>
                             {code || "// Wachten..."}
                         </div>
                     </div>
@@ -500,11 +500,11 @@ export const LogicPreview: React.FC<LogicPreviewProps> = ({ code, onStart, onLev
             {/* Game Over Overlay */}
             {lives <= 0 && (
                 <div className="absolute inset-0 bg-black/60 flex items-center justify-center z-50">
-                    <div className="rounded-2xl p-6 text-center max-w-xs" style={{ backgroundColor: '#FFFFFF', border: '1px solid #E8E6DF' }}>
+                    <div className="rounded-2xl p-6 text-center max-w-xs" style={{ backgroundColor: '#FFFFFF', border: '1px solid #E7D8BD' }}>
                         <div className="text-4xl mb-3">😢</div>
-                        <h3 className="text-xl font-black mb-2" style={{ color: '#1A1A19' }}>Game Over!</h3>
-                        <p className="text-sm mb-4" style={{ color: '#6B6B66' }}>Je hebt geen levens meer.</p>
-                        <button onClick={fullReset} className="w-full py-2.5 text-white font-bold rounded-xl transition-all text-sm" style={{ backgroundColor: '#D97757' }}>
+                        <h3 className="text-xl font-black mb-2" style={{ color: '#08283B' }}>Game Over!</h3>
+                        <p className="text-sm mb-4" style={{ color: '#445865' }}>Je hebt geen levens meer.</p>
+                        <button onClick={fullReset} className="w-full py-2.5 text-white font-bold rounded-xl transition-all text-sm" style={{ backgroundColor: '#D97848' }}>
                             Opnieuw Proberen
                         </button>
                     </div>

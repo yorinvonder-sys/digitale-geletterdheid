@@ -94,7 +94,7 @@ export function MfaGate({ onVerified }: MfaGateProps) {
 
     if (step === 'loading') {
         return (
-            <div className="fixed inset-0 bg-slate-50 flex items-center justify-center">
+            <div className="fixed inset-0 bg-lab-muted flex items-center justify-center">
                 <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-indigo-50 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl opacity-50 pointer-events-none" />
                 <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-indigo-50 rounded-full translate-y-1/2 -translate-x-1/2 blur-3xl opacity-50 pointer-events-none" />
                 <div className="flex flex-col items-center gap-4 relative z-10">
@@ -102,35 +102,35 @@ export function MfaGate({ onVerified }: MfaGateProps) {
                         <img src="/mascot/pip-logo.webp" alt="DGSkills" className="w-full h-full object-contain" width={64} height={64} decoding="async" />
                     </div>
                     <div className="w-6 h-6 border-2 border-indigo-200 border-t-indigo-500 rounded-full animate-spin" />
-                    <p className="text-slate-400 text-sm font-medium">MFA-status controleren...</p>
+                    <p className="text-lab-muted text-sm font-medium">MFA-status controleren...</p>
                 </div>
             </div>
         );
     }
 
     return (
-        <div className="fixed inset-0 bg-slate-50 font-sans overflow-hidden">
+        <div className="fixed inset-0 bg-lab-muted font-sans overflow-hidden">
             <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-indigo-50 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl opacity-50 pointer-events-none" />
             <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-indigo-50 rounded-full translate-y-1/2 -translate-x-1/2 blur-3xl opacity-50 pointer-events-none" />
 
             <div className="absolute inset-0 overflow-y-auto flex items-center justify-center p-6">
                 <div className="max-w-md w-full relative z-10 my-auto">
-                    <div className="bg-white rounded-[2rem] shadow-2xl shadow-indigo-100 p-8 md:p-10 border border-slate-100">
+                    <div className="bg-white rounded-[2rem] shadow-2xl shadow-indigo-100 p-8 md:p-10 border border-lab-muted">
 
                         {/* Header met logo */}
                         <div className="text-center mb-8">
                             <div className="w-24 h-24 mx-auto mb-4">
                                 <img src="/mascot/pip-2fa.png" alt="Pip met telefoon" className="w-full h-full object-contain" width={96} height={96} decoding="async" />
                             </div>
-                            <h1 className="text-2xl font-black text-slate-900 mb-1 tracking-tight">
+                            <h1 className="text-2xl font-black text-lab-muted mb-1 tracking-tight">
                                 Verificatie <span className="text-lab-primary">vereist</span>
                             </h1>
-                            <p className="text-slate-400 font-bold text-[10px] uppercase tracking-widest">
+                            <p className="text-lab-muted font-bold text-[10px] uppercase tracking-widest">
                                 Tweefactorauthenticatie • Cbw/NIS2
                             </p>
                         </div>
 
-                        <p className="text-slate-500 text-sm text-center mb-6 leading-relaxed">
+                        <p className="text-lab-muted text-sm text-center mb-6 leading-relaxed">
                             Als docent of beheerder is tweefactorauthenticatie (MFA) verplicht
                             om de gegevens van leerlingen te beschermen.
                         </p>
@@ -144,16 +144,16 @@ export function MfaGate({ onVerified }: MfaGateProps) {
 
                         {step === 'enroll' && (
                             <div className="space-y-5">
-                                <div className="bg-slate-50 rounded-2xl p-5">
-                                    <p className="text-sm font-bold text-slate-700 mb-1">
+                                <div className="bg-lab-muted rounded-2xl p-5">
+                                    <p className="text-sm font-bold text-lab-muted mb-1">
                                         1. Scan de QR-code
                                     </p>
-                                    <p className="text-xs text-slate-400 mb-4">
+                                    <p className="text-xs text-lab-muted mb-4">
                                         Gebruik Google Authenticator, Microsoft Authenticator of een andere TOTP-app.
                                     </p>
                                     {qrCode && (
                                         <div className="flex justify-center mb-4">
-                                            <div className="bg-white p-3 rounded-2xl shadow-sm border border-slate-100">
+                                            <div className="bg-white p-3 rounded-2xl shadow-sm border border-lab-muted">
                                                 <img
                                                     src={qrCode}
                                                     alt="MFA QR Code"
@@ -163,7 +163,7 @@ export function MfaGate({ onVerified }: MfaGateProps) {
                                         </div>
                                     )}
                                     <div className="flex items-center gap-2">
-                                        <code className="flex-1 text-xs bg-white border border-slate-200 rounded-lg px-3 py-2 font-mono text-slate-500 truncate">
+                                        <code className="flex-1 text-xs bg-white border border-lab-muted rounded-lg px-3 py-2 font-mono text-lab-muted truncate">
                                             {secret}
                                         </code>
                                         <button
@@ -178,11 +178,11 @@ export function MfaGate({ onVerified }: MfaGateProps) {
                                 </div>
 
                                 <div>
-                                    <p className="text-sm font-bold text-slate-700 mb-3">
+                                    <p className="text-sm font-bold text-lab-muted mb-3">
                                         2. Voer de 6-cijferige code in
                                     </p>
                                     <div className="relative mb-3">
-                                        <KeyRound size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
+                                        <KeyRound size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-lab-muted" />
                                         <input
                                             type="text"
                                             inputMode="numeric"
@@ -195,7 +195,7 @@ export function MfaGate({ onVerified }: MfaGateProps) {
                                                 setError(null);
                                             }}
                                             onKeyDown={(e) => e.key === 'Enter' && code.length === 6 && handleVerify()}
-                                            className="w-full pl-12 pr-4 py-3.5 bg-slate-50 border border-slate-200 rounded-xl text-center text-lg font-mono tracking-widest focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition-all"
+                                            className="w-full pl-12 pr-4 py-3.5 bg-lab-muted border border-lab-muted rounded-xl text-center text-lg font-mono tracking-widest focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition-all"
                                             autoFocus
                                         />
                                     </div>
@@ -227,7 +227,7 @@ export function MfaGate({ onVerified }: MfaGateProps) {
                                 </div>
 
                                 <div className="relative">
-                                    <KeyRound size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
+                                    <KeyRound size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-lab-muted" />
                                     <input
                                         type="text"
                                         inputMode="numeric"
@@ -240,7 +240,7 @@ export function MfaGate({ onVerified }: MfaGateProps) {
                                             setError(null);
                                         }}
                                         onKeyDown={(e) => e.key === 'Enter' && code.length === 6 && handleVerify()}
-                                        className="w-full pl-12 pr-4 py-3.5 bg-slate-50 border border-slate-200 rounded-xl text-center text-lg font-mono tracking-widest focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition-all"
+                                        className="w-full pl-12 pr-4 py-3.5 bg-lab-muted border border-lab-muted rounded-xl text-center text-lg font-mono tracking-widest focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition-all"
                                         autoFocus
                                     />
                                 </div>
@@ -260,10 +260,10 @@ export function MfaGate({ onVerified }: MfaGateProps) {
                             </div>
                         )}
 
-                        <div className="mt-8 pt-5 border-t border-slate-100 text-center">
+                        <div className="mt-8 pt-5 border-t border-lab-muted text-center">
                             <button
                                 onClick={() => logout()}
-                                className="text-xs font-bold text-slate-400 hover:text-indigo-600 transition-colors"
+                                className="text-xs font-bold text-lab-muted hover:text-indigo-600 transition-colors"
                             >
                                 Uitloggen en later terugkomen
                             </button>

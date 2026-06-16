@@ -73,10 +73,10 @@ const SloCoverageBar: React.FC<SloCoverageBarProps> = ({ codes }) => {
     return (
         <div className="space-y-2">
             <div className="flex items-center justify-between">
-                <span className="text-xs font-bold text-slate-500 uppercase tracking-widest">SLO Kerndoel Dekking</span>
-                <span className="text-xs font-black text-slate-700">{pct}%</span>
+                <span className="text-xs font-bold text-lab-muted uppercase tracking-widest">SLO Kerndoel Dekking</span>
+                <span className="text-xs font-black text-lab-muted">{pct}%</span>
             </div>
-            <div className="h-2 bg-slate-100 rounded-full overflow-hidden">
+            <div className="h-2 bg-lab-muted rounded-full overflow-hidden">
                 <div
                     className="h-full bg-indigo-500 rounded-full transition-all duration-500"
                     style={{ width: `${pct}%` }}
@@ -89,7 +89,7 @@ const SloCoverageBar: React.FC<SloCoverageBarProps> = ({ codes }) => {
                         className={`text-[10px] font-bold px-1.5 py-0.5 rounded-md ${
                             covered.includes(code)
                                 ? 'bg-indigo-100 text-indigo-700'
-                                : 'bg-slate-100 text-slate-400'
+                                : 'bg-lab-muted text-lab-muted'
                         }`}
                     >
                         {code}
@@ -134,7 +134,7 @@ const TemplateSelector: React.FC<TemplateSelectorProps> = ({
 
     return (
         <div className="space-y-4">
-            <p className="text-sm text-slate-500">
+            <p className="text-sm text-lab-muted">
                 Kies een startstructuur voor leerjaar {yearGroup}. Je kunt daarna alles aanpassen.
             </p>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -146,7 +146,7 @@ const TemplateSelector: React.FC<TemplateSelectorProps> = ({
                         className={`text-left p-4 border rounded-2xl transition-all ${
                             seeding === template.id
                                 ? 'border-indigo-300 bg-indigo-50 opacity-70 cursor-wait'
-                                : 'border-slate-200 bg-white hover:border-indigo-300 hover:shadow-md hover:shadow-indigo-100/50'
+                                : 'border-lab-muted bg-white hover:border-indigo-300 hover:shadow-md hover:shadow-indigo-100/50'
                         }`}
                     >
                         <div className="flex items-start justify-between gap-2">
@@ -158,9 +158,9 @@ const TemplateSelector: React.FC<TemplateSelectorProps> = ({
                             )}
                         </div>
                         <div className="mt-3">
-                            <div className="font-black text-slate-900 text-sm">{template.name}</div>
-                            <div className="text-xs text-slate-500 mt-1">{template.description}</div>
-                            <div className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-2">
+                            <div className="font-black text-lab-muted text-sm">{template.name}</div>
+                            <div className="text-xs text-lab-muted mt-1">{template.description}</div>
+                            <div className="text-[10px] font-bold text-lab-muted uppercase tracking-widest mt-2">
                                 {template.defaultContainerCount} containers · {template.labelPattern}
                             </div>
                         </div>
@@ -174,7 +174,7 @@ const TemplateSelector: React.FC<TemplateSelectorProps> = ({
             )}
             <button
                 onClick={onKeepDefault}
-                className="w-full p-3 border border-slate-200 text-slate-500 text-sm font-bold rounded-xl hover:bg-slate-50 transition-all"
+                className="w-full p-3 border border-lab-muted text-lab-muted text-sm font-bold rounded-xl hover:bg-lab-muted transition-all"
             >
                 Behoud huidige indeling (standaard curriculum)
             </button>
@@ -227,10 +227,10 @@ const ContainerCard: React.FC<ContainerCardProps> = ({
 
     return (
         <div className={`flex items-center gap-3 p-4 border rounded-2xl bg-white transition-all ${
-            isDeleting ? 'opacity-50 pointer-events-none' : 'border-slate-100 hover:border-slate-200 hover:shadow-sm'
+            isDeleting ? 'opacity-50 pointer-events-none' : 'border-lab-muted hover:border-lab-muted hover:shadow-sm'
         }`}>
             {/* Drag handle (visual only) */}
-            <div className="text-slate-300 cursor-grab flex-shrink-0">
+            <div className="text-lab-muted cursor-grab flex-shrink-0">
                 <GripVertical size={16} />
             </div>
 
@@ -239,12 +239,12 @@ const ContainerCard: React.FC<ContainerCardProps> = ({
 
             {/* Label + subtitle */}
             <div className="flex-1 min-w-0">
-                <div className="font-black text-slate-900 text-sm truncate">{container.label}</div>
+                <div className="font-black text-lab-muted text-sm truncate">{container.label}</div>
                 {container.subtitle && (
-                    <div className="text-xs text-slate-400 truncate">{container.subtitle}</div>
+                    <div className="text-xs text-lab-muted truncate">{container.subtitle}</div>
                 )}
                 <div className="flex flex-wrap gap-1 mt-1.5">
-                    <span className="text-[10px] font-bold text-slate-500 bg-slate-50 px-2 py-0.5 rounded-lg border border-slate-100">
+                    <span className="text-[10px] font-bold text-lab-muted bg-lab-muted px-2 py-0.5 rounded-lg border border-lab-muted">
                         {container.missions.length} missie{container.missions.length !== 1 ? 's' : ''}
                     </span>
                     {container.sloFocus.slice(0, 3).map(code => (
@@ -253,7 +253,7 @@ const ContainerCard: React.FC<ContainerCardProps> = ({
                         </span>
                     ))}
                     {container.sloFocus.length > 3 && (
-                        <span className="text-[10px] font-bold text-slate-400 bg-slate-50 px-2 py-0.5 rounded-lg border border-slate-100">
+                        <span className="text-[10px] font-bold text-lab-muted bg-lab-muted px-2 py-0.5 rounded-lg border border-lab-muted">
                             +{container.sloFocus.length - 3}
                         </span>
                     )}
@@ -265,7 +265,7 @@ const ContainerCard: React.FC<ContainerCardProps> = ({
                 <button
                     onClick={onMoveUp}
                     disabled={index === 0}
-                    className="w-6 h-6 flex items-center justify-center text-slate-400 hover:text-slate-700 disabled:opacity-25 transition-colors"
+                    className="w-6 h-6 flex items-center justify-center text-lab-muted hover:text-lab-muted disabled:opacity-25 transition-colors"
                     title="Omhoog"
                 >
                     <ArrowUp size={12} />
@@ -273,7 +273,7 @@ const ContainerCard: React.FC<ContainerCardProps> = ({
                 <button
                     onClick={onMoveDown}
                     disabled={index === total - 1}
-                    className="w-6 h-6 flex items-center justify-center text-slate-400 hover:text-slate-700 disabled:opacity-25 transition-colors"
+                    className="w-6 h-6 flex items-center justify-center text-lab-muted hover:text-lab-muted disabled:opacity-25 transition-colors"
                     title="Omlaag"
                 >
                     <ArrowDown size={12} />
@@ -299,7 +299,7 @@ const ContainerCard: React.FC<ContainerCardProps> = ({
                 ) : (
                     <button
                         onClick={handleDeleteClick}
-                        className="w-8 h-8 flex items-center justify-center text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-xl transition-colors"
+                        className="w-8 h-8 flex items-center justify-center text-lab-muted hover:text-red-500 hover:bg-red-50 rounded-xl transition-colors"
                         title="Verwijderen"
                         onBlur={() => setConfirmDelete(false)}
                     >
@@ -412,21 +412,21 @@ export const SchedulingConfigurator: React.FC<SchedulingConfiguratorProps> = ({
     // ---------------------------------------------------------------------------
 
     return (
-        <div className="bg-white rounded-[2rem] shadow-xl shadow-slate-200/50 border border-slate-100 overflow-hidden">
+        <div className="bg-white rounded-[2rem] shadow-xl shadow-slate-200/50 border border-lab-muted overflow-hidden">
             {/* Header */}
-            <div className="flex items-center justify-between p-6 border-b border-slate-100">
+            <div className="flex items-center justify-between p-6 border-b border-lab-muted">
                 <div>
-                    <h2 className="text-lg font-black text-slate-900 flex items-center gap-2">
+                    <h2 className="text-lg font-black text-lab-muted flex items-center gap-2">
                         <Settings size={20} className="text-indigo-500" />
                         Leerlijn Inrichten
                     </h2>
-                    <p className="text-sm text-slate-400 mt-0.5">
+                    <p className="text-sm text-lab-muted mt-0.5">
                         Leerjaar {yearGroup} — {model === 'custom' ? 'Aangepaste indeling' : 'Standaard curriculum'}
                     </p>
                 </div>
                 <button
                     onClick={onClose}
-                    className="w-9 h-9 flex items-center justify-center text-slate-400 hover:text-slate-700 hover:bg-slate-100 rounded-xl transition-colors"
+                    className="w-9 h-9 flex items-center justify-center text-lab-muted hover:text-lab-muted hover:bg-lab-muted rounded-xl transition-colors"
                     title="Sluiten"
                 >
                     <X size={18} />
@@ -445,7 +445,7 @@ export const SchedulingConfigurator: React.FC<SchedulingConfiguratorProps> = ({
                 {/* Template selector — only when model is 'default' */}
                 {!isLoading && model === 'default' && (
                     <div className="space-y-4">
-                        <h3 className="text-xs font-black text-slate-500 uppercase tracking-widest flex items-center gap-2">
+                        <h3 className="text-xs font-black text-lab-muted uppercase tracking-widest flex items-center gap-2">
                             <Layout size={14} />
                             Kies een structuur
                         </h3>
@@ -466,13 +466,13 @@ export const SchedulingConfigurator: React.FC<SchedulingConfiguratorProps> = ({
                     <>
                         {/* Container list */}
                         <div className="space-y-3">
-                            <h3 className="text-xs font-black text-slate-500 uppercase tracking-widest flex items-center gap-2">
+                            <h3 className="text-xs font-black text-lab-muted uppercase tracking-widest flex items-center gap-2">
                                 <Layout size={14} />
                                 Containers ({containers.length})
                             </h3>
 
                             {containers.length === 0 && (
-                                <div className="p-6 bg-slate-50 rounded-2xl text-center text-sm text-slate-400 border border-slate-100">
+                                <div className="p-6 bg-lab-muted rounded-2xl text-center text-sm text-lab-muted border border-lab-muted">
                                     Nog geen containers. Voeg er hieronder een toe.
                                 </div>
                             )}
@@ -510,7 +510,7 @@ export const SchedulingConfigurator: React.FC<SchedulingConfiguratorProps> = ({
                             <button
                                 onClick={handleAddContainer}
                                 disabled={adding}
-                                className="w-full p-3 border-2 border-dashed border-slate-200 text-slate-500 text-sm font-bold rounded-2xl hover:border-indigo-300 hover:text-indigo-600 hover:bg-indigo-50 transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-wait"
+                                className="w-full p-3 border-2 border-dashed border-lab-muted text-lab-muted text-sm font-bold rounded-2xl hover:border-indigo-300 hover:text-indigo-600 hover:bg-indigo-50 transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-wait"
                             >
                                 {adding ? (
                                     <div className="w-4 h-4 border-2 border-indigo-400 border-t-transparent rounded-full animate-spin" />
@@ -522,7 +522,7 @@ export const SchedulingConfigurator: React.FC<SchedulingConfiguratorProps> = ({
                         </div>
 
                         {/* SLO coverage summary */}
-                        <div className="p-4 bg-slate-50 rounded-2xl border border-slate-100">
+                        <div className="p-4 bg-lab-muted rounded-2xl border border-lab-muted">
                             <SloCoverageBar codes={allSloCodes} />
                         </div>
 
@@ -534,14 +534,14 @@ export const SchedulingConfigurator: React.FC<SchedulingConfiguratorProps> = ({
                         )}
 
                         {/* Action buttons */}
-                        <div className="flex items-center justify-between gap-3 pt-2 border-t border-slate-100">
+                        <div className="flex items-center justify-between gap-3 pt-2 border-t border-lab-muted">
                             <button
                                 onClick={handleReset}
                                 disabled={resetting}
-                                className="flex items-center gap-2 px-4 py-2.5 text-sm font-bold text-slate-500 border border-slate-200 rounded-xl hover:bg-slate-50 hover:text-slate-700 transition-all disabled:opacity-50 disabled:cursor-wait"
+                                className="flex items-center gap-2 px-4 py-2.5 text-sm font-bold text-lab-muted border border-lab-muted rounded-xl hover:bg-lab-muted hover:text-lab-muted transition-all disabled:opacity-50 disabled:cursor-wait"
                             >
                                 {resetting ? (
-                                    <div className="w-4 h-4 border-2 border-slate-400 border-t-transparent rounded-full animate-spin" />
+                                    <div className="w-4 h-4 border-2 border-lab-muted border-t-transparent rounded-full animate-spin" />
                                 ) : (
                                     <RotateCcw size={14} />
                                 )}
@@ -551,7 +551,7 @@ export const SchedulingConfigurator: React.FC<SchedulingConfiguratorProps> = ({
                                 onClick={handleSave}
                                 className={`flex items-center gap-2 px-5 py-2.5 text-sm font-black text-white rounded-xl transition-all ${
                                     savedFeedback
-                                        ? 'bg-emerald-500 hover:bg-emerald-600'
+                                        ? 'bg-lab-sage hover:bg-lab-sage'
                                         : 'bg-indigo-600 hover:bg-indigo-700'
                                 }`}
                             >

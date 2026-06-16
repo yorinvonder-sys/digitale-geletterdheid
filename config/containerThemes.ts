@@ -8,23 +8,23 @@ export const CONTAINER_THEME_MAP: Record<string, ContainerTheme> = {
     'indigo':   { border: 'border-indigo-100',   bg: 'bg-indigo-50',   text: 'text-indigo-600',   iconKey: 'monitor', label: 'Digitale Basis' },
     'pink':     { border: 'border-pink-100',     bg: 'bg-pink-50',     text: 'text-pink-600',     iconKey: 'brain',   label: 'AI & Creatie' },
     'cyan':     { border: 'border-cyan-100',     bg: 'bg-cyan-50',     text: 'text-cyan-600',     iconKey: 'shield',  label: 'Data & Veiligheid' },
-    'violet':   { border: 'border-violet-100',   bg: 'bg-violet-50',   text: 'text-violet-600',   iconKey: 'rocket',  label: 'Eindproject' },
+    'violet':   { border: 'border-lab-teal',   bg: 'bg-lab-teal',   text: 'text-lab-teal',   iconKey: 'rocket',  label: 'Eindproject' },
     // Extra thema's voor scholen met meer containers
-    'emerald':  { border: 'border-emerald-100',  bg: 'bg-emerald-50',  text: 'text-emerald-600',  iconKey: 'leaf',    label: '' },
-    'amber':    { border: 'border-amber-100',    bg: 'bg-amber-50',    text: 'text-amber-600',    iconKey: 'star',    label: '' },
-    'rose':     { border: 'border-rose-100',     bg: 'bg-rose-50',     text: 'text-rose-600',     iconKey: 'heart',   label: '' },
-    'slate':    { border: 'border-slate-100',    bg: 'bg-slate-50',    text: 'text-slate-600',    iconKey: 'puzzle',  label: '' },
+    'emerald':  { border: 'border-lab-sage',  bg: 'bg-lab-sage',  text: 'text-lab-sage',  iconKey: 'leaf',    label: '' },
+    'amber':    { border: 'border-lab-gold',    bg: 'bg-lab-gold',    text: 'text-lab-gold',    iconKey: 'star',    label: '' },
+    'rose':     { border: 'border-lab-coral',     bg: 'bg-lab-coral',     text: 'text-lab-coral',     iconKey: 'heart',   label: '' },
+    'slate':    { border: 'border-lab-muted',    bg: 'bg-lab-muted',    text: 'text-lab-muted',    iconKey: 'puzzle',  label: '' },
     'orange':   { border: 'border-orange-100',   bg: 'bg-orange-50',   text: 'text-orange-600',   iconKey: 'flame',   label: '' },
-    'teal':     { border: 'border-teal-100',     bg: 'bg-teal-50',     text: 'text-teal-600',     iconKey: 'compass', label: '' },
+    'teal':     { border: 'border-lab-teal',     bg: 'bg-lab-teal',     text: 'text-lab-teal',     iconKey: 'compass', label: '' },
     'fuchsia':  { border: 'border-fuchsia-100',  bg: 'bg-fuchsia-50',  text: 'text-fuchsia-600',  iconKey: 'sparkle', label: '' },
     'lime':     { border: 'border-lime-100',     bg: 'bg-lime-50',     text: 'text-lime-600',     iconKey: 'bolt',    label: '' },
 };
 
 // Matcht DEFAULT_PERIOD_THEME in ProjectZeroDashboard.tsx (slate + puzzle)
 export const DEFAULT_CONTAINER_THEME: ContainerTheme = {
-    border: 'border-slate-100',
-    bg: 'bg-slate-50',
-    text: 'text-slate-600',
+    border: 'border-lab-muted',
+    bg: 'bg-lab-muted',
+    text: 'text-lab-muted',
     iconKey: 'puzzle',
     label: '',
 };

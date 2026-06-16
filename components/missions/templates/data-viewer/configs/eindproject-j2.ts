@@ -96,11 +96,11 @@ export const eindprojectJ2Config: DataViewerConfig = {
                 'Bekijk de gemiddelde eindcijfers per projecttype om te helpen bij jouw keuze.',
             type: 'bar-chart',
             chartData: [
-                { label: 'App-ontwerp', value: 7.9, color: '#3B82F6' },
-                { label: 'Video/animatie', value: 7.8, color: '#8B5CF6' },
-                { label: 'Spel (Scratch)', value: 7.7, color: '#F59E0B' },
-                { label: 'Website', value: 6.9, color: '#10B981' },
-                { label: 'Onderzoek', value: 6.8, color: '#D97757' },
+                { label: 'App-ontwerp', value: 7.9, color: '#0B453F' },
+                { label: 'Video/animatie', value: 7.8, color: '#0B453F' },
+                { label: 'Spel (Scratch)', value: 7.7, color: '#D7C95F' },
+                { label: 'Website', value: 6.9, color: '#5F947D' },
+                { label: 'Onderzoek', value: 6.8, color: '#D97848' },
             ],
             questions: [
                 {
@@ -213,25 +213,25 @@ export const eindprojectJ2Config: DataViewerConfig = {
             minScore: 85,
             emoji: '🏆',
             title: 'Klaar voor het eindproject!',
-            color: '#F59E0B',
+            color: '#D7C95F',
         },
         {
             minScore: 65,
             emoji: '⭐',
             title: 'Goed voorbereid',
-            color: '#3B82F6',
+            color: '#0B453F',
         },
         {
             minScore: 40,
             emoji: '🎯',
             title: 'Op de goede weg',
-            color: '#10B981',
+            color: '#5F947D',
         },
         {
             minScore: 0,
             emoji: '📚',
             title: 'Aan de slag!',
-            color: '#6B6B66',
+            color: '#445865',
         },
     ],
 

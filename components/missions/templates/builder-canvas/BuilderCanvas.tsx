@@ -216,7 +216,7 @@ const BuilderCanvasInner: React.FC<BuilderCanvasProps> = ({
     const totalSteps = config.steps.length;
 
     return (
-        <div className="min-h-screen bg-[#FAF9F0] flex flex-col">
+        <div className="min-h-screen bg-[#FCF6EA] flex flex-col">
             <MilestoneToast
                 show={state.showMilestone}
                 completedCount={completedStepIndex}
@@ -239,7 +239,7 @@ const BuilderCanvasInner: React.FC<BuilderCanvasProps> = ({
             <div className="flex-1 flex flex-col md:flex-row overflow-hidden">
                 {/* Left panel — instructions */}
                 <div
-                    className={`md:w-[45%] border-r border-[#E8E6DF] overflow-y-auto flex flex-col ${
+                    className={`md:w-[45%] border-r border-[#E7D8BD] overflow-y-auto flex flex-col ${
                         mobileTab !== 'instructies' ? 'hidden md:flex' : 'flex'
                     }`}
                 >
@@ -295,7 +295,7 @@ const BuilderCanvasInner: React.FC<BuilderCanvasProps> = ({
                     {!isChatOpen && (
                         <button
                             onClick={() => setIsChatOpen(true)}
-                            className="fixed bottom-6 right-6 z-40 w-13 h-13 bg-gradient-to-br from-[#D97757] to-[#C46849] hover:from-[#C46849] hover:to-[#B05A3C] text-white rounded-full shadow-lg flex items-center justify-center transition-all duration-200 active:scale-95"
+                            className="fixed bottom-6 right-6 z-40 w-13 h-13 bg-gradient-to-br from-[#D97848] to-[#D97848] hover:from-[#D97848] hover:to-[#D97848] text-white rounded-full shadow-lg flex items-center justify-center transition-all duration-200 active:scale-95"
                             aria-label="Open AI-assistent"
                         >
                             <MessageCircle size={22} />
@@ -309,7 +309,7 @@ const BuilderCanvasInner: React.FC<BuilderCanvasProps> = ({
                 <div className="md:hidden fixed bottom-20 left-4 z-30">
                     <button
                         onClick={() => setMobileTab('instructies')}
-                        className="flex items-center gap-2 bg-white border border-[#E8E6DF] rounded-full px-4 py-2 shadow-sm text-sm font-bold text-[#3D3D38]"
+                        className="flex items-center gap-2 bg-white border border-[#E7D8BD] rounded-full px-4 py-2 shadow-sm text-sm font-bold text-[#445865]"
                         style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                     >
                         <ArrowLeft size={14} />
@@ -324,8 +324,8 @@ const BuilderCanvasInner: React.FC<BuilderCanvasProps> = ({
 // ── Public entry point — loads config dynamically ────────────────────────────
 
 const LoadingScreen = () => (
-    <div className="min-h-screen bg-[#FAF9F0] flex items-center justify-center">
-        <div className="animate-spin rounded-full h-8 w-8 border-2 border-[#D97757] border-t-transparent" />
+    <div className="min-h-screen bg-[#FCF6EA] flex items-center justify-center">
+        <div className="animate-spin rounded-full h-8 w-8 border-2 border-[#D97848] border-t-transparent" />
     </div>
 );
 
@@ -344,12 +344,12 @@ export const BuilderCanvas: React.FC<TemplateMissionProps> = ({ missionId, onBac
     }, [missionId]);
 
     if (loadError) return (
-        <div className="min-h-screen bg-[#FAF9F0] flex items-center justify-center p-4">
+        <div className="min-h-screen bg-[#FCF6EA] flex items-center justify-center p-4">
             <div className="text-center">
-                <p className="text-[#6B6B66] mb-4" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                <p className="text-[#445865] mb-4" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                     Config niet gevonden: {missionId}
                 </p>
-                <button onClick={onBack} className="px-4 py-2 bg-[#D97757] text-white rounded-xl text-sm font-bold">Terug</button>
+                <button onClick={onBack} className="px-4 py-2 bg-[#D97848] text-white rounded-xl text-sm font-bold">Terug</button>
             </div>
         </div>
     );

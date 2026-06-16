@@ -32,25 +32,25 @@ const LoadingStateWithTimeout: React.FC = () => {
   }, []);
 
   return (
-    <div className="flex flex-col items-center justify-center h-full gap-4 p-6" style={{ color: '#6B6B66' }} role="status" aria-live="polite">
+    <div className="flex flex-col items-center justify-center h-full gap-4 p-6" style={{ color: '#445865' }} role="status" aria-live="polite">
       {!showRetry ? (
         <>
-          <Loader2 className="animate-spin" size={32} style={{ color: '#D97757' }} aria-hidden="true" />
+          <Loader2 className="animate-spin" size={32} style={{ color: '#D97848' }} aria-hidden="true" />
           <span className="font-mono text-sm">Game laden...</span>
         </>
       ) : (
         <div className="text-center max-w-xs">
           <div className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4" style={{ backgroundColor: 'rgba(217, 119, 87, 0.1)' }}>
-            <RefreshCw size={28} style={{ color: '#D97757' }} />
+            <RefreshCw size={28} style={{ color: '#D97848' }} />
           </div>
-          <h3 className="text-lg font-bold mb-2" style={{ color: '#1A1A19' }}>Laden duurt lang...</h3>
-          <p className="text-sm mb-4" style={{ color: '#6B6B66' }}>
+          <h3 className="text-lg font-bold mb-2" style={{ color: '#08283B' }}>Laden duurt lang...</h3>
+          <p className="text-sm mb-4" style={{ color: '#445865' }}>
             Er is mogelijk een probleem met je opgeslagen game. Ververs de pagina of reset je voortgang.
           </p>
           <button
             onClick={() => window.location.reload()}
             className="w-full py-3 text-white rounded-xl font-bold transition-all active:scale-95 flex items-center justify-center gap-2"
-            style={{ backgroundColor: '#D97757' }}
+            style={{ backgroundColor: '#D97848' }}
           >
             <RefreshCw size={18} />
             Pagina Verversen
@@ -336,14 +336,14 @@ export const GamePreview: React.FC<GamePreviewProps> = ({ code, autoStart = fals
   const showIntroOverlay = !gameStarted;
 
   return (
-    <div className="w-full h-full flex flex-col relative" style={{ backgroundColor: '#FAF9F0', borderLeft: '1px solid #E8E6DF' }}>
+    <div className="w-full h-full flex flex-col relative" style={{ backgroundColor: '#FCF6EA', borderLeft: '1px solid #E7D8BD' }}>
       {/* Header */}
-      <div className="px-3 md:px-4 py-2 md:py-3 flex justify-between items-center shrink-0 shadow-sm z-10" style={{ backgroundColor: '#FFFFFF', borderBottom: '1px solid #E8E6DF' }}>
+      <div className="px-3 md:px-4 py-2 md:py-3 flex justify-between items-center shrink-0 shadow-sm z-10" style={{ backgroundColor: '#FFFFFF', borderBottom: '1px solid #E7D8BD' }}>
         <div className="flex items-center gap-2">
-          <div className="p-1 md:p-1.5 rounded-lg text-white" style={{ backgroundColor: '#10B981' }}>
+          <div className="p-1 md:p-1.5 rounded-lg text-white" style={{ backgroundColor: '#5F947D' }}>
             <Monitor size={14} strokeWidth={3} />
           </div>
-          <span className="font-bold tracking-wide text-xs md:text-sm" style={{ color: '#1A1A19' }}>Live Game Preview</span>
+          <span className="font-bold tracking-wide text-xs md:text-sm" style={{ color: '#08283B' }}>Live Game Preview</span>
         </div>
         <div className="flex gap-1 md:gap-2">
           {/* Gallery Button */}
@@ -352,7 +352,7 @@ export const GamePreview: React.FC<GamePreviewProps> = ({ code, autoStart = fals
               onClick={() => setShowGallery(true)}
               aria-label="Bekijk games van klasgenoten"
               className="transition-all p-1.5 rounded-lg active:scale-95 flex items-center gap-1.5"
-              style={{ color: '#2A9D8F' }}
+              style={{ color: '#5F947D' }}
             >
               <Users size={16} aria-hidden="true" />
               <span className="text-xs font-bold hidden md:inline">Galerij</span>
@@ -365,7 +365,7 @@ export const GamePreview: React.FC<GamePreviewProps> = ({ code, autoStart = fals
               onClick={() => setShowPublishModal(true)}
               aria-label="Zet in Galerij"
               className="transition-all p-1.5 rounded-lg active:scale-95 flex items-center gap-1.5"
-              style={{ color: '#10B981' }}
+              style={{ color: '#5F947D' }}
             >
               <Share2 size={16} aria-hidden="true" />
               <span className="text-xs font-bold hidden md:inline">Publiceren</span>
@@ -379,7 +379,7 @@ export const GamePreview: React.FC<GamePreviewProps> = ({ code, autoStart = fals
               disabled={isSavingToLibrary}
               className="transition-all p-1.5 rounded-lg active:scale-95 flex items-center gap-1.5"
               style={{
-                color: librarySaveSuccess ? '#10B981' : '#4F46E5',
+                color: librarySaveSuccess ? '#5F947D' : '#0B453F',
                 backgroundColor: librarySaveSuccess ? 'rgba(16, 185, 129, 0.1)' : undefined,
               }}
               title="Opslaan in Bibliotheek"
@@ -402,7 +402,7 @@ export const GamePreview: React.FC<GamePreviewProps> = ({ code, autoStart = fals
             <button
               onClick={onUndo}
               className="transition-all p-1.5 rounded-lg active:scale-95 flex items-center gap-1.5 animate-in fade-in slide-in-from-right-2"
-              style={{ color: '#D97757' }}
+              style={{ color: '#D97848' }}
               title="Vorige versie herstellen"
             >
               <Undo2 size={16} />
@@ -413,7 +413,7 @@ export const GamePreview: React.FC<GamePreviewProps> = ({ code, autoStart = fals
           <button
             onClick={handleReload}
             className="transition-all p-1.5 rounded-lg active:scale-95"
-            style={{ color: '#6B6B66' }}
+            style={{ color: '#445865' }}
             title="Herstart"
           >
             <RefreshCw size={16} />
@@ -437,7 +437,7 @@ export const GamePreview: React.FC<GamePreviewProps> = ({ code, autoStart = fals
       <div
         className="flex-1 relative overflow-hidden select-none"
         style={{
-          backgroundColor: '#1A1A19',
+          backgroundColor: '#08283B',
           WebkitUserSelect: 'none',
           userSelect: 'none',
           WebkitTouchCallout: 'none',
@@ -467,10 +467,10 @@ export const GamePreview: React.FC<GamePreviewProps> = ({ code, autoStart = fals
             {!iframeLoaded && !isGenerating && (
               <div className="absolute inset-0 z-25 flex flex-col items-center justify-center p-6 animate-in fade-in duration-300 pointer-events-auto" style={{ backgroundColor: 'rgba(250, 249, 240, 0.9)' }}>
                 <div className="flex flex-col items-center gap-4">
-                  <Loader2 className="animate-spin" size={48} style={{ color: '#D97757' }} />
+                  <Loader2 className="animate-spin" size={48} style={{ color: '#D97848' }} />
                   <div className="text-center">
-                    <h3 className="text-lg font-black mb-1 tracking-tight" style={{ color: '#1A1A19' }}>Game Laden...</h3>
-                    <p className="text-xs font-medium" style={{ color: '#6B6B66' }}>Even geduld</p>
+                    <h3 className="text-lg font-black mb-1 tracking-tight" style={{ color: '#08283B' }}>Game Laden...</h3>
+                    <p className="text-xs font-medium" style={{ color: '#445865' }}>Even geduld</p>
                   </div>
                 </div>
               </div>
@@ -480,12 +480,12 @@ export const GamePreview: React.FC<GamePreviewProps> = ({ code, autoStart = fals
             {(isGenerating || (!iframeLoaded && updateCount > 0)) && (
               <div className="absolute inset-x-0 top-0 z-30 flex justify-center p-4 pointer-events-none">
                 <div className="text-white pl-4 pr-6 py-3 rounded-full shadow-2xl flex items-center gap-4 animate-in slide-in-from-top-4 backdrop-blur-md" style={{ backgroundColor: 'rgba(26, 26, 25, 0.9)', border: '1px solid rgba(217, 119, 87, 0.3)' }}>
-                  <Loader2 className="animate-spin" size={20} style={{ color: '#D97757' }} />
+                  <Loader2 className="animate-spin" size={20} style={{ color: '#D97848' }} />
                   <div className="flex flex-col">
                     <span className="font-bold text-sm tracking-wide">
                       {isGenerating ? "Pip is bezig..." : "Game verversen..."}
                     </span>
-                    <span className="text-[10px] font-mono uppercase tracking-widest" style={{ color: '#D97757' }}>
+                    <span className="text-[10px] font-mono uppercase tracking-widest" style={{ color: '#D97848' }}>
                       {isGenerating ? "Code schrijven" : "Update toepassen"}
                     </span>
                   </div>
@@ -501,7 +501,7 @@ export const GamePreview: React.FC<GamePreviewProps> = ({ code, autoStart = fals
             {/* Update notification banner */}
             {showUpdateBanner && !showIntroOverlay && !isGenerating && (
               <div className="absolute top-2 left-1/2 -translate-x-1/2 z-30 animate-in fade-in slide-in-from-top-2">
-                <div className="text-white px-4 py-2 rounded-full text-sm font-bold shadow-lg flex items-center gap-2" style={{ backgroundColor: '#10B981' }}>
+                <div className="text-white px-4 py-2 rounded-full text-sm font-bold shadow-lg flex items-center gap-2" style={{ backgroundColor: '#5F947D' }}>
                   Game Bijgewerkt!
                 </div>
               </div>
@@ -518,22 +518,22 @@ export const GamePreview: React.FC<GamePreviewProps> = ({ code, autoStart = fals
                   </div>
 
                   {/* Title */}
-                  <h2 className="text-xl md:text-2xl font-black mb-2 tracking-tight" style={{ fontFamily: "'Newsreader', Georgia, serif", color: '#1A1A19' }}>
+                  <h2 className="text-xl md:text-2xl font-black mb-2 tracking-tight" style={{ fontFamily: "'Newsreader', Georgia, serif", color: '#08283B' }}>
                     Super Code Jumper
                   </h2>
-                  <p className="text-sm md:text-base mb-4 md:mb-6 leading-relaxed px-4" style={{ color: '#3D3D38' }}>
+                  <p className="text-sm md:text-base mb-4 md:mb-6 leading-relaxed px-4" style={{ color: '#445865' }}>
                     Dit is jouw eigen game! Spring over obstakels en verzamel punten.
                   </p>
 
                   {/* Instructions Card */}
-                  <div className="rounded-xl md:rounded-2xl p-4 md:p-5 mb-4 md:mb-6 text-left mx-auto" style={{ backgroundColor: '#FFFFFF', border: '1px solid #E8E6DF' }}>
-                    <h3 className="text-xs md:text-sm font-bold uppercase tracking-widest mb-3 flex items-center gap-2" style={{ color: '#D97757' }}>
+                  <div className="rounded-xl md:rounded-2xl p-4 md:p-5 mb-4 md:mb-6 text-left mx-auto" style={{ backgroundColor: '#FFFFFF', border: '1px solid #E7D8BD' }}>
+                    <h3 className="text-xs md:text-sm font-bold uppercase tracking-widest mb-3 flex items-center gap-2" style={{ color: '#D97848' }}>
                       <Code size={14} /> Hoe werkt het?
                     </h3>
-                    <ul className="space-y-2 md:space-y-3 text-sm md:text-base" style={{ color: '#3D3D38' }}>
+                    <ul className="space-y-2 md:space-y-3 text-sm md:text-base" style={{ color: '#445865' }}>
                       <li className="flex items-start gap-3">
                         <span className="text-xl">🎮</span>
-                        <span><strong style={{ color: '#D97757' }}>TAP</strong> op het scherm of druk <strong style={{ color: '#D97757' }}>SPATIE</strong> om te springen</span>
+                        <span><strong style={{ color: '#D97848' }}>TAP</strong> op het scherm of druk <strong style={{ color: '#D97848' }}>SPATIE</strong> om te springen</span>
                       </li>
                       <li className="flex items-start gap-3">
                         <span className="text-xl">💬</span>
@@ -541,31 +541,31 @@ export const GamePreview: React.FC<GamePreviewProps> = ({ code, autoStart = fals
                       </li>
                       <li className="flex items-start gap-3">
                         <span className="text-xl">✨</span>
-                        <span>Probeer: <em style={{ color: '#2A9D8F' }}>"Maak de speler blauw"</em> of <em style={{ color: '#2A9D8F' }}>"Spring hoger"</em></span>
+                        <span>Probeer: <em style={{ color: '#5F947D' }}>"Maak de speler blauw"</em> of <em style={{ color: '#5F947D' }}>"Spring hoger"</em></span>
                       </li>
                     </ul>
                   </div>
 
                   {/* Numbered Intro Steps */}
-                  <div className="rounded-xl md:rounded-2xl p-4 md:p-5 mb-4 md:mb-6 text-left mx-auto" style={{ backgroundColor: '#FFFFFF', border: '1px solid #E8E6DF' }}>
-                    <h3 className="text-xs md:text-sm font-bold uppercase tracking-widest mb-3 flex items-center gap-2" style={{ color: '#4F46E5' }}>
+                  <div className="rounded-xl md:rounded-2xl p-4 md:p-5 mb-4 md:mb-6 text-left mx-auto" style={{ backgroundColor: '#FFFFFF', border: '1px solid #E7D8BD' }}>
+                    <h3 className="text-xs md:text-sm font-bold uppercase tracking-widest mb-3 flex items-center gap-2" style={{ color: '#0B453F' }}>
                       <Sparkles size={14} /> Zo werkt het
                     </h3>
-                    <ol className="space-y-2 md:space-y-3 text-sm md:text-base" style={{ color: '#3D3D38' }}>
+                    <ol className="space-y-2 md:space-y-3 text-sm md:text-base" style={{ color: '#445865' }}>
                       <li className="flex items-start gap-3">
-                        <span className="flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold text-white" style={{ backgroundColor: '#4F46E5' }}>1</span>
+                        <span className="flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold text-white" style={{ backgroundColor: '#0B453F' }}>1</span>
                         <span>Beschrijf in de chat welk spel je wilt maken</span>
                       </li>
                       <li className="flex items-start gap-3">
-                        <span className="flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold text-white" style={{ backgroundColor: '#4F46E5' }}>2</span>
+                        <span className="flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold text-white" style={{ backgroundColor: '#0B453F' }}>2</span>
                         <span>De AI schrijft de code voor je</span>
                       </li>
                       <li className="flex items-start gap-3">
-                        <span className="flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold text-white" style={{ backgroundColor: '#4F46E5' }}>3</span>
+                        <span className="flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold text-white" style={{ backgroundColor: '#0B453F' }}>3</span>
                         <span>Je ziet het resultaat live in het speelveld rechts</span>
                       </li>
                       <li className="flex items-start gap-3">
-                        <span className="flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold text-white" style={{ backgroundColor: '#4F46E5' }}>4</span>
+                        <span className="flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold text-white" style={{ backgroundColor: '#0B453F' }}>4</span>
                         <span>Vraag de AI om aanpassingen totdat je tevreden bent!</span>
                       </li>
                     </ol>
@@ -575,14 +575,14 @@ export const GamePreview: React.FC<GamePreviewProps> = ({ code, autoStart = fals
                   <button
                     onClick={handleStartGame}
                     className="w-full py-4 md:py-5 text-white rounded-xl md:rounded-full font-black text-lg md:text-xl transition-all flex items-center justify-center gap-3 shadow-xl active:scale-95"
-                    style={{ backgroundColor: '#D97757' }}
-                    onMouseEnter={e => (e.currentTarget.style.backgroundColor = '#C46849')}
-                    onMouseLeave={e => (e.currentTarget.style.backgroundColor = '#D97757')}
+                    style={{ backgroundColor: '#D97848' }}
+                    onMouseEnter={e => (e.currentTarget.style.backgroundColor = '#D97848')}
+                    onMouseLeave={e => (e.currentTarget.style.backgroundColor = '#D97848')}
                   >
                     <Play size={24} fill="white" className="md:w-8 md:h-8" /> START DE GAME!
                   </button>
 
-                  <p className="text-xs md:text-sm mt-3 flex items-center justify-center gap-2" style={{ color: '#6B6B66' }}>
+                  <p className="text-xs md:text-sm mt-3 flex items-center justify-center gap-2" style={{ color: '#445865' }}>
                     <MousePointer size={14} /> Tik om te beginnen
                   </p>
                 </div>
@@ -597,32 +597,32 @@ export const GamePreview: React.FC<GamePreviewProps> = ({ code, autoStart = fals
       {/* Publish Modal */}
       {showPublishModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in">
-          <div className="rounded-2xl p-6 w-full max-w-md shadow-2xl animate-in zoom-in-95" style={{ backgroundColor: '#FFFFFF', border: '1px solid #E8E6DF' }}>
+          <div className="rounded-2xl p-6 w-full max-w-md shadow-2xl animate-in zoom-in-95" style={{ backgroundColor: '#FFFFFF', border: '1px solid #E7D8BD' }}>
             {publishSuccess ? (
               <div className="text-center py-8">
                 <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4" style={{ backgroundColor: 'rgba(16, 185, 129, 0.1)' }}>
-                  <Check size={32} style={{ color: '#10B981' }} />
+                  <Check size={32} style={{ color: '#5F947D' }} />
                 </div>
-                <h3 className="text-xl font-black mb-2" style={{ color: '#1A1A19' }}>Gepubliceerd!</h3>
-                <p className="text-sm" style={{ color: '#6B6B66' }}>Je game staat nu in de galerij!</p>
+                <h3 className="text-xl font-black mb-2" style={{ color: '#08283B' }}>Gepubliceerd!</h3>
+                <p className="text-sm" style={{ color: '#445865' }}>Je game staat nu in de galerij!</p>
               </div>
             ) : (
               <>
                 <div className="flex items-center justify-between mb-6">
                   <div className="flex items-center gap-3">
                     <div className="p-2 rounded-lg" style={{ backgroundColor: 'rgba(16, 185, 129, 0.1)' }}>
-                      <Share2 size={20} style={{ color: '#10B981' }} />
+                      <Share2 size={20} style={{ color: '#5F947D' }} />
                     </div>
                     <div>
-                      <h3 className="text-lg font-black" style={{ color: '#1A1A19' }}>Deel je Game</h3>
-                      <p className="text-xs" style={{ color: '#6B6B66' }}>Anderen kunnen je game spelen!</p>
+                      <h3 className="text-lg font-black" style={{ color: '#08283B' }}>Deel je Game</h3>
+                      <p className="text-xs" style={{ color: '#445865' }}>Anderen kunnen je game spelen!</p>
                     </div>
                   </div>
                   <button
                     onClick={() => setShowPublishModal(false)}
                     aria-label="Sluit dialoog"
                     className="p-2 rounded-lg transition-colors"
-                    style={{ color: '#6B6B66' }}
+                    style={{ color: '#445865' }}
                   >
                     <X size={20} />
                   </button>
@@ -630,7 +630,7 @@ export const GamePreview: React.FC<GamePreviewProps> = ({ code, autoStart = fals
 
                 <div className="space-y-4">
                   <div>
-                    <label className="block text-xs font-bold uppercase tracking-wider mb-2" style={{ color: '#6B6B66' }}>
+                    <label className="block text-xs font-bold uppercase tracking-wider mb-2" style={{ color: '#445865' }}>
                       Geef je game een naam
                     </label>
                     <input
@@ -639,23 +639,23 @@ export const GamePreview: React.FC<GamePreviewProps> = ({ code, autoStart = fals
                       onChange={(e) => setPublishTitle(e.target.value)}
                       placeholder="Bijv. Super Spring Avontuur"
                       className="w-full px-4 py-3 rounded-xl outline-none transition-all"
-                      style={{ backgroundColor: '#FAF9F0', border: '1px solid #E8E6DF', color: '#1A1A19' }}
+                      style={{ backgroundColor: '#FCF6EA', border: '1px solid #E7D8BD', color: '#08283B' }}
                       maxLength={50}
                     />
                   </div>
 
-                  <div className="rounded-xl p-4" style={{ backgroundColor: '#FAF9F0', border: '1px solid #F0EEE8' }}>
-                    <div className="flex items-center gap-2 text-xs font-bold mb-2" style={{ color: '#D97757' }}>
+                  <div className="rounded-xl p-4" style={{ backgroundColor: '#FCF6EA', border: '1px solid #FCF6EA' }}>
+                    <div className="flex items-center gap-2 text-xs font-bold mb-2" style={{ color: '#D97848' }}>
                       <Sparkles size={14} />
                       Tip
                     </div>
-                    <p className="text-sm" style={{ color: '#3D3D38' }}>
+                    <p className="text-sm" style={{ color: '#445865' }}>
                       Kies een creatieve naam zodat anderen je game willen proberen!
                     </p>
                   </div>
 
                   {publishError && (
-                    <div className="rounded-xl p-4 text-sm" style={{ backgroundColor: 'rgba(239, 68, 68, 0.06)', border: '1px solid rgba(239, 68, 68, 0.2)', color: '#EF4444' }}>
+                    <div className="rounded-xl p-4 text-sm" style={{ backgroundColor: 'rgba(239, 68, 68, 0.06)', border: '1px solid rgba(239, 68, 68, 0.2)', color: '#D97848' }}>
                       {publishError}
                     </div>
                   )}
@@ -664,7 +664,7 @@ export const GamePreview: React.FC<GamePreviewProps> = ({ code, autoStart = fals
                     onClick={handlePublish}
                     disabled={!publishTitle.trim() || isPublishing}
                     className="w-full py-4 text-white rounded-full font-black text-lg transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg active:scale-95"
-                    style={{ backgroundColor: '#10B981' }}
+                    style={{ backgroundColor: '#5F947D' }}
                   >
                     {isPublishing ? (
                       <>
@@ -688,15 +688,15 @@ export const GamePreview: React.FC<GamePreviewProps> = ({ code, autoStart = fals
       {/* Save Name Modal */}
       {showSaveNameModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in">
-          <div className="rounded-2xl p-6 w-full max-w-md shadow-2xl animate-in zoom-in-95" style={{ backgroundColor: '#FFFFFF', border: '1px solid #E8E6DF' }}>
+          <div className="rounded-2xl p-6 w-full max-w-md shadow-2xl animate-in zoom-in-95" style={{ backgroundColor: '#FFFFFF', border: '1px solid #E7D8BD' }}>
             <div className="flex items-center justify-between mb-6">
               <div className="flex items-center gap-3">
                 <div className="p-2 rounded-lg" style={{ backgroundColor: 'rgba(79, 70, 229, 0.1)' }}>
-                  <BookOpen size={20} style={{ color: '#4F46E5' }} />
+                  <BookOpen size={20} style={{ color: '#0B453F' }} />
                 </div>
                 <div>
-                  <h3 className="text-lg font-black" style={{ color: '#1A1A19' }}>Opslaan in Bibliotheek</h3>
-                  <p className="text-xs" style={{ color: '#6B6B66' }}>Geef je project een naam</p>
+                  <h3 className="text-lg font-black" style={{ color: '#08283B' }}>Opslaan in Bibliotheek</h3>
+                  <p className="text-xs" style={{ color: '#445865' }}>Geef je project een naam</p>
                 </div>
               </div>
               <button
@@ -705,7 +705,7 @@ export const GamePreview: React.FC<GamePreviewProps> = ({ code, autoStart = fals
                   setProjectName('');
                 }}
                 className="p-2 rounded-lg transition-colors"
-                style={{ color: '#6B6B66' }}
+                style={{ color: '#445865' }}
               >
                 <X size={20} />
               </button>
@@ -713,7 +713,7 @@ export const GamePreview: React.FC<GamePreviewProps> = ({ code, autoStart = fals
 
             <div className="space-y-4">
               <div>
-                <label className="block text-xs font-bold uppercase tracking-wider mb-2" style={{ color: '#6B6B66' }}>
+                <label className="block text-xs font-bold uppercase tracking-wider mb-2" style={{ color: '#445865' }}>
                   Naam van je project
                 </label>
                 <input
@@ -722,24 +722,24 @@ export const GamePreview: React.FC<GamePreviewProps> = ({ code, autoStart = fals
                   onChange={(e) => setProjectName(e.target.value)}
                   placeholder="Bijv. Mijn Super Game"
                   className="w-full px-4 py-3 rounded-xl outline-none transition-all"
-                  style={{ backgroundColor: '#FAF9F0', border: '1px solid #E8E6DF', color: '#1A1A19' }}
+                  style={{ backgroundColor: '#FCF6EA', border: '1px solid #E7D8BD', color: '#08283B' }}
                   maxLength={50}
                   autoFocus
                 />
               </div>
 
-              <div className="rounded-xl p-4" style={{ backgroundColor: '#FAF9F0', border: '1px solid #F0EEE8' }}>
-                <div className="flex items-center gap-2 text-xs font-bold mb-2" style={{ color: '#D97757' }}>
+              <div className="rounded-xl p-4" style={{ backgroundColor: '#FCF6EA', border: '1px solid #FCF6EA' }}>
+                <div className="flex items-center gap-2 text-xs font-bold mb-2" style={{ color: '#D97848' }}>
                   <Sparkles size={14} />
                   Tip
                 </div>
-                <p className="text-sm" style={{ color: '#3D3D38' }}>
+                <p className="text-sm" style={{ color: '#445865' }}>
                   Kies een herkenbare naam zodat je deze later snel terugvindt in je bibliotheek!
                 </p>
               </div>
 
               {librarySaveError && (
-                <div className="rounded-xl p-4 text-sm flex items-center gap-2" style={{ backgroundColor: 'rgba(239, 68, 68, 0.06)', border: '1px solid rgba(239, 68, 68, 0.2)', color: '#EF4444' }}>
+                <div className="rounded-xl p-4 text-sm flex items-center gap-2" style={{ backgroundColor: 'rgba(239, 68, 68, 0.06)', border: '1px solid rgba(239, 68, 68, 0.2)', color: '#D97848' }}>
                   {librarySaveError}
                 </div>
               )}
@@ -748,7 +748,7 @@ export const GamePreview: React.FC<GamePreviewProps> = ({ code, autoStart = fals
                 onClick={handleConfirmSave}
                 disabled={!projectName.trim() || isSavingToLibrary || isCheckingLimit}
                 className="w-full py-4 text-white rounded-full font-black text-lg transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg active:scale-95"
-                style={{ backgroundColor: '#4F46E5' }}
+                style={{ backgroundColor: '#0B453F' }}
               >
                 {(isSavingToLibrary || isCheckingLimit) ? (
                   <>
@@ -769,7 +769,7 @@ export const GamePreview: React.FC<GamePreviewProps> = ({ code, autoStart = fals
 
       {/* Gallery Modal */}
       {showGallery && user && (
-        <div className="fixed inset-0 z-50" style={{ backgroundColor: '#FAF9F0' }}>
+        <div className="fixed inset-0 z-50" style={{ backgroundColor: '#FCF6EA' }}>
           <GameGallery
             userId={user.uid}
             schoolId={user.schoolId}
@@ -781,23 +781,23 @@ export const GamePreview: React.FC<GamePreviewProps> = ({ code, autoStart = fals
       {/* Library Limit / Replace Game Modal */}
       {showReplaceModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in">
-          <div className="rounded-2xl p-6 w-full max-w-md shadow-2xl animate-in zoom-in-95" style={{ backgroundColor: '#FFFFFF', border: '1px solid #E8E6DF' }}>
+          <div className="rounded-2xl p-6 w-full max-w-md shadow-2xl animate-in zoom-in-95" style={{ backgroundColor: '#FFFFFF', border: '1px solid #E7D8BD' }}>
             <div className="flex items-center gap-3 mb-6">
-              <div className="w-12 h-12 rounded-xl flex items-center justify-center" style={{ backgroundColor: 'rgba(217, 119, 87, 0.1)', color: '#D97757' }}>
+              <div className="w-12 h-12 rounded-xl flex items-center justify-center" style={{ backgroundColor: 'rgba(217, 119, 87, 0.1)', color: '#D97848' }}>
                 <Database size={24} />
               </div>
               <div>
-                <h3 className="text-lg font-black" style={{ color: '#1A1A19' }}>Opslag Vol (5/5)</h3>
-                <p className="text-xs" style={{ color: '#6B6B66' }}>Je kunt maximaal 5 games bewaren.</p>
+                <h3 className="text-lg font-black" style={{ color: '#08283B' }}>Opslag Vol (5/5)</h3>
+                <p className="text-xs" style={{ color: '#445865' }}>Je kunt maximaal 5 games bewaren.</p>
               </div>
             </div>
 
-            <p className="text-sm mb-4" style={{ color: '#3D3D38' }}>
+            <p className="text-sm mb-4" style={{ color: '#445865' }}>
               Kies een oude game om te vervangen door deze nieuwe versie:
             </p>
 
             {librarySaveError && (
-              <div className="mb-4 rounded-xl p-4 text-sm flex items-center gap-2" style={{ backgroundColor: 'rgba(239, 68, 68, 0.06)', border: '1px solid rgba(239, 68, 68, 0.2)', color: '#EF4444' }}>
+              <div className="mb-4 rounded-xl p-4 text-sm flex items-center gap-2" style={{ backgroundColor: 'rgba(239, 68, 68, 0.06)', border: '1px solid rgba(239, 68, 68, 0.2)', color: '#D97848' }}>
                 {librarySaveError}
               </div>
             )}
@@ -809,20 +809,20 @@ export const GamePreview: React.FC<GamePreviewProps> = ({ code, autoStart = fals
                   onClick={() => game.id && handleReplaceGame(game.id)}
                   disabled={isSavingToLibrary}
                   className="flex items-center justify-between p-3 rounded-xl transition-all group text-left"
-                  style={{ backgroundColor: '#FAF9F0', border: '1px solid #E8E6DF' }}
+                  style={{ backgroundColor: '#FCF6EA', border: '1px solid #E7D8BD' }}
                 >
                   <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 rounded-lg flex items-center justify-center transition-colors" style={{ backgroundColor: '#FFFFFF', border: '1px solid #E8E6DF', color: '#6B6B66' }}>
+                    <div className="w-8 h-8 rounded-lg flex items-center justify-center transition-colors" style={{ backgroundColor: '#FFFFFF', border: '1px solid #E7D8BD', color: '#445865' }}>
                       <Gamepad2 size={16} />
                     </div>
                     <div>
-                      <div className="font-bold text-sm" style={{ color: '#1A1A19' }}>{game.name}</div>
-                      <div className="text-[10px]" style={{ color: '#9C9C95' }}>
+                      <div className="font-bold text-sm" style={{ color: '#08283B' }}>{game.name}</div>
+                      <div className="text-[10px]" style={{ color: '#445865' }}>
                         {game.created_at ? new Date(game.created_at).toLocaleDateString() : 'Onbekende datum'}
                       </div>
                     </div>
                   </div>
-                  <div className="opacity-0 group-hover:opacity-100 transition-opacity text-xs font-bold uppercase tracking-wider" style={{ color: '#D97757' }}>
+                  <div className="opacity-0 group-hover:opacity-100 transition-opacity text-xs font-bold uppercase tracking-wider" style={{ color: '#D97848' }}>
                     Vervang
                   </div>
                 </button>
@@ -837,7 +837,7 @@ export const GamePreview: React.FC<GamePreviewProps> = ({ code, autoStart = fals
               }}
               disabled={isSavingToLibrary}
               className="w-full py-3 rounded-xl font-bold transition-colors"
-              style={{ backgroundColor: '#FAF9F0', color: '#3D3D38', border: '1px solid #E8E6DF' }}
+              style={{ backgroundColor: '#FCF6EA', color: '#445865', border: '1px solid #E7D8BD' }}
             >
               Annuleren
             </button>

@@ -9,7 +9,7 @@ Een gestileerd Europees roodborstje (Erithacus rubecula) als doorlopend verhaalp
 
 | Eigenschap | Betekenis voor DGSkills |
 |---|---|
-| Terracotta borst | Matcht exact met merkkkleur #D97757 |
+| Terracotta borst | Matcht exact met merkkkleur #D97848 |
 | Nieuwsgierig & onbevreesd | Leerlingen die digitale uitdagingen aangaan |
 | Klein maar moedig | Je hoeft geen expert te zijn om te beginnen |
 | Europees & herkenbaar | Nederlandse leerlingen kennen het roodborstje |
@@ -18,9 +18,9 @@ Een gestileerd Europees roodborstje (Erithacus rubecula) als doorlopend verhaalp
 ## Visueel ontwerp
 
 ### Kleuren
-- **Lichaam/contouren:** Charcoal (#1A1A19) — inkt-achtige lijnen
-- **Borst:** Terracotta (#D97757) — warm, uitnodigend
-- **Pixel-staart:** Mix van #D97757 en #1A1A19 blokjes
+- **Lichaam/contouren:** Charcoal (#08283B) — inkt-achtige lijnen
+- **Borst:** Terracotta (#D97848) — warm, uitnodigend
+- **Pixel-staart:** Mix van #D97848 en #08283B blokjes
 - **Oog:** Groot, rond, expressief — de sleutel tot emotie
 - **Achtergrond:** Altijd transparant
 

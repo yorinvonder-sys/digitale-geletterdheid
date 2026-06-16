@@ -130,26 +130,26 @@ export const GamesPanel: React.FC<GamesPanelProps> = ({ onOpenGame }) => {
 
             {/* Active Lobbies Section - Only show if there are active lobbies */}
             {activeLobbies.length > 0 && (
-                <div className="bg-gradient-to-br from-amber-50 to-orange-50 rounded-2xl border-2 border-amber-200 p-6 shadow-lg">
+                <div className="bg-gradient-to-br from-amber-50 to-orange-50 rounded-2xl border-2 border-lab-gold p-6 shadow-lg">
                     <div className="flex items-center justify-between mb-4">
                         <div className="flex items-center gap-3">
-                            <div className="w-10 h-10 bg-amber-500 rounded-xl flex items-center justify-center text-white">
+                            <div className="w-10 h-10 bg-lab-gold rounded-xl flex items-center justify-center text-white">
                                 <Users size={20} />
                             </div>
                             <div>
-                                <h3 className="font-black text-slate-900">Actieve Bomberman Lobbies</h3>
-                                <p className="text-sm text-slate-500">{activeLobbies.length} lobby(s) • {totalPlayersInLobbies} spelers wachten</p>
+                                <h3 className="font-black text-lab-muted">Actieve Bomberman Lobbies</h3>
+                                <p className="text-sm text-lab-muted">{activeLobbies.length} lobby(s) • {totalPlayersInLobbies} spelers wachten</p>
                             </div>
                         </div>
                         <div className="flex items-center gap-2">
-                            <div className="w-3 h-3 bg-emerald-500 rounded-full animate-pulse" />
-                            <span className="text-xs font-bold text-emerald-600 uppercase tracking-widest">Live</span>
+                            <div className="w-3 h-3 bg-lab-sage rounded-full animate-pulse" />
+                            <span className="text-xs font-bold text-lab-sage uppercase tracking-widest">Live</span>
                         </div>
                     </div>
 
                     {/* Force Start Controls - FIRST/PROMINENT */}
-                    <div className="bg-white/70 rounded-xl p-4 border border-amber-200 mb-4">
-                        <h4 className="text-xs font-bold text-amber-700 uppercase tracking-widest mb-3 flex items-center gap-2">
+                    <div className="bg-white/70 rounded-xl p-4 border border-lab-gold mb-4">
+                        <h4 className="text-xs font-bold text-lab-gold uppercase tracking-widest mb-3 flex items-center gap-2">
                             <Zap size={14} />
                             Docent Controls
                         </h4>
@@ -158,7 +158,7 @@ export const GamesPanel: React.FC<GamesPanelProps> = ({ onOpenGame }) => {
                             <button
                                 onClick={handleForceStartAll}
                                 disabled={forceStarting || activeLobbies.length === 0}
-                                className="flex items-center gap-2 px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl shadow-lg shadow-emerald-200 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                                className="flex items-center gap-2 px-4 py-2.5 bg-lab-sage hover:bg-lab-sage text-white font-bold rounded-xl shadow-lg shadow-emerald-200 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                             >
                                 {forceStarting ? (
                                     <Loader2 size={16} className="animate-spin" />
@@ -173,7 +173,7 @@ export const GamesPanel: React.FC<GamesPanelProps> = ({ onOpenGame }) => {
                                 <select
                                     value={selectedClass}
                                     onChange={(e) => setSelectedClass(e.target.value)}
-                                    className="px-3 py-2 bg-white border border-slate-200 rounded-xl text-sm font-medium text-slate-700 focus:ring-2 focus:ring-amber-500 focus:border-amber-500"
+                                    className="px-3 py-2 bg-white border border-lab-muted rounded-xl text-sm font-medium text-lab-muted focus:ring-2 focus:ring-amber-500 focus:border-lab-gold"
                                 >
                                     <option value="">Kies klas...</option>
                                     {CLASSES.map(c => (
@@ -183,7 +183,7 @@ export const GamesPanel: React.FC<GamesPanelProps> = ({ onOpenGame }) => {
                                 <button
                                     onClick={handleForceStartByClass}
                                     disabled={forceStarting || !selectedClass}
-                                    className="flex items-center gap-2 px-4 py-2.5 bg-amber-500 hover:bg-amber-600 text-white font-bold rounded-xl shadow-lg shadow-amber-200 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                                    className="flex items-center gap-2 px-4 py-2.5 bg-lab-gold hover:bg-lab-gold text-white font-bold rounded-xl shadow-lg shadow-amber-200 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                                 >
                                     <Play size={16} fill="currentColor" />
                                     Start {selectedClass || 'Klas'}
@@ -194,23 +194,23 @@ export const GamesPanel: React.FC<GamesPanelProps> = ({ onOpenGame }) => {
 
                     {/* Collapsible Lobby List - Hidden by default */}
                     <details className="group">
-                        <summary className="cursor-pointer flex items-center gap-2 text-sm font-bold text-slate-600 hover:text-slate-900 transition-colors py-2">
+                        <summary className="cursor-pointer flex items-center gap-2 text-sm font-bold text-lab-muted hover:text-lab-muted transition-colors py-2">
                             <span className="group-open:rotate-90 transition-transform">▶</span>
                             Bekijk {activeLobbies.length} wachtende lobby(s)
                         </summary>
                         <div className="space-y-2 mt-3 animate-in slide-in-from-top-2 duration-200">
                             {activeLobbies.map((lobby) => (
-                                <div key={lobby.id} className="bg-white rounded-xl p-3 border border-amber-200 flex items-center justify-between">
+                                <div key={lobby.id} className="bg-white rounded-xl p-3 border border-lab-gold flex items-center justify-between">
                                     <div className="flex items-center gap-3">
                                         <span className="text-2xl">💣</span>
                                         <div>
-                                            <div className="font-bold text-slate-900 text-sm">{lobby.playerCount} speler{lobby.playerCount !== 1 ? 's' : ''}</div>
-                                            <div className="text-xs text-slate-500 truncate max-w-[200px]">{lobby.playerNames.join(', ')}</div>
+                                            <div className="font-bold text-lab-muted text-sm">{lobby.playerCount} speler{lobby.playerCount !== 1 ? 's' : ''}</div>
+                                            <div className="text-xs text-lab-muted truncate max-w-[200px]">{lobby.playerNames.join(', ')}</div>
                                         </div>
                                     </div>
                                     <div className="flex items-center gap-2">
                                         {lobby.lobbyStartTime && (
-                                            <span className="text-[10px] bg-emerald-100 text-emerald-600 px-2 py-1 rounded-full font-bold">
+                                            <span className="text-[10px] bg-lab-sage text-lab-sage px-2 py-1 rounded-full font-bold">
                                                 Auto-start actief
                                             </span>
                                         )}
@@ -235,7 +235,7 @@ export const GamesPanel: React.FC<GamesPanelProps> = ({ onOpenGame }) => {
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: index * 0.1 }}
-                            className={`bg-white rounded-2xl border-2 shadow-lg p-6 hover:shadow-xl transition-all group ${enabled ? 'border-emerald-300 bg-emerald-50/30' : 'border-slate-100'
+                            className={`bg-white rounded-2xl border-2 shadow-lg p-6 hover:shadow-xl transition-all group ${enabled ? 'border-lab-sage bg-lab-sage/30' : 'border-lab-muted'
                                 }`}
                         >
                             <div className="flex items-start justify-between mb-4">
@@ -246,18 +246,18 @@ export const GamesPanel: React.FC<GamesPanelProps> = ({ onOpenGame }) => {
                                             ⚡ Altijd Actief
                                         </span>
                                     ) : enabled && (
-                                        <span className="text-[10px] font-bold uppercase tracking-widest text-emerald-600 bg-emerald-100 px-2 py-1 rounded-full flex items-center gap-1">
+                                        <span className="text-[10px] font-bold uppercase tracking-widest text-lab-sage bg-lab-sage px-2 py-1 rounded-full flex items-center gap-1">
                                             <Check size={10} /> Actief
                                         </span>
                                     )}
-                                    <span className="text-[10px] font-bold uppercase tracking-widest text-slate-400 bg-slate-100 px-2 py-1 rounded-full">
+                                    <span className="text-[10px] font-bold uppercase tracking-widest text-lab-muted bg-lab-muted px-2 py-1 rounded-full">
                                         {game.category}
                                     </span>
                                 </div>
                             </div>
 
-                            <h3 className="text-lg font-black text-slate-900 mb-2">{game.name}</h3>
-                            <p className="text-sm text-slate-500 mb-4 line-clamp-2">{game.description}</p>
+                            <h3 className="text-lg font-black text-lab-muted mb-2">{game.name}</h3>
+                            <p className="text-sm text-lab-muted mb-4 line-clamp-2">{game.description}</p>
 
                             <div className="flex gap-2">
                                 {isAlwaysEnabled ? (
@@ -271,7 +271,7 @@ export const GamesPanel: React.FC<GamesPanelProps> = ({ onOpenGame }) => {
                                         disabled={isLoading}
                                         className={`flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold transition-all ${enabled
                                             ? 'bg-red-100 text-red-600 hover:bg-red-200'
-                                            : 'bg-emerald-600 text-white hover:bg-emerald-700 shadow-lg shadow-emerald-200'
+                                            : 'bg-lab-sage text-white hover:bg-lab-sage shadow-lg shadow-emerald-200'
                                             } ${isLoading ? 'opacity-50 cursor-wait' : ''}`}
                                     >
                                         {isLoading ? (
@@ -296,34 +296,34 @@ export const GamesPanel: React.FC<GamesPanelProps> = ({ onOpenGame }) => {
             </div>
 
             {/* Quick Actions */}
-            <div className="bg-slate-50 rounded-2xl border border-slate-100 p-6">
-                <h3 className="text-sm font-black text-slate-900 uppercase tracking-widest mb-4 flex items-center gap-2">
-                    <Settings size={16} className="text-slate-400" />
+            <div className="bg-lab-muted rounded-2xl border border-lab-muted p-6">
+                <h3 className="text-sm font-black text-lab-muted uppercase tracking-widest mb-4 flex items-center gap-2">
+                    <Settings size={16} className="text-lab-muted" />
                     Snelle Acties
                 </h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                     <button
                         onClick={() => onOpenGame()}
-                        className="flex items-center gap-3 px-4 py-3 bg-white rounded-xl border border-slate-200 hover:border-indigo-300 hover:bg-indigo-50 transition-all text-left group"
+                        className="flex items-center gap-3 px-4 py-3 bg-white rounded-xl border border-lab-muted hover:border-indigo-300 hover:bg-indigo-50 transition-all text-left group"
                     >
                         <div className="w-10 h-10 bg-indigo-100 rounded-xl flex items-center justify-center text-indigo-600 group-hover:bg-indigo-200 transition-colors">
                             <Gamepad2 size={20} />
                         </div>
                         <div>
-                            <div className="font-bold text-slate-900 text-sm">Open Games Menu</div>
-                            <div className="text-xs text-slate-500">Bekijk alle beschikbare games</div>
+                            <div className="font-bold text-lab-muted text-sm">Open Games Menu</div>
+                            <div className="text-xs text-lab-muted">Bekijk alle beschikbare games</div>
                         </div>
                     </button>
                     <button
                         onClick={() => onOpenGame()}
-                        className="flex items-center gap-3 px-4 py-3 bg-white rounded-xl border border-slate-200 hover:border-emerald-300 hover:bg-emerald-50 transition-all text-left group"
+                        className="flex items-center gap-3 px-4 py-3 bg-white rounded-xl border border-lab-muted hover:border-lab-sage hover:bg-lab-sage transition-all text-left group"
                     >
-                        <div className="w-10 h-10 bg-emerald-100 rounded-xl flex items-center justify-center text-emerald-600 group-hover:bg-emerald-200 transition-colors">
+                        <div className="w-10 h-10 bg-lab-sage rounded-xl flex items-center justify-center text-lab-sage group-hover:bg-lab-sage transition-colors">
                             <Users size={20} />
                         </div>
                         <div>
-                            <div className="font-bold text-slate-900 text-sm">Speel met Klas</div>
-                            <div className="text-xs text-slate-500">Start een klassikale game-sessie</div>
+                            <div className="font-bold text-lab-muted text-sm">Speel met Klas</div>
+                            <div className="text-xs text-lab-muted">Start een klassikale game-sessie</div>
                         </div>
                     </button>
                 </div>

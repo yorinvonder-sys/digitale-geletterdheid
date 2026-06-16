@@ -56,16 +56,16 @@ export class SecureErrorBoundary extends Component<Props, State> {
 
             return (
                 <div className="flex flex-col items-center justify-center min-h-[300px] p-8 text-center">
-                    <div className="w-16 h-16 bg-amber-100 rounded-2xl flex items-center justify-center mb-4">
-                        <AlertTriangle className="text-amber-500" size={32} />
+                    <div className="w-16 h-16 bg-lab-gold rounded-2xl flex items-center justify-center mb-4">
+                        <AlertTriangle className="text-lab-gold" size={32} />
                     </div>
-                    <h2 className="text-xl font-bold text-slate-800 mb-2">
+                    <h2 className="text-xl font-bold text-lab-muted mb-2">
                         Oeps, er ging iets mis
                     </h2>
-                    <p className="text-slate-500 mb-1 max-w-md">
+                    <p className="text-lab-muted mb-1 max-w-md">
                         Dit onderdeel werkt even niet. Probeer het opnieuw of ververs de pagina.
                     </p>
-                    <p className="text-xs text-slate-400 mb-6 font-mono">
+                    <p className="text-xs text-lab-muted mb-6 font-mono">
                         Referentie: {this.state.errorId}
                     </p>
                     <div className="flex gap-3">
@@ -80,8 +80,8 @@ export class SecureErrorBoundary extends Component<Props, State> {
                         </button>
                         <button
                             onClick={() => window.location.reload()}
-                            className="px-5 py-2.5 bg-slate-100 text-slate-700 rounded-xl font-bold text-sm
-                                       hover:bg-slate-200 transition-colors active:scale-95 transition-transform"
+                            className="px-5 py-2.5 bg-lab-muted text-lab-muted rounded-xl font-bold text-sm
+                                       hover:bg-lab-muted transition-colors active:scale-95 transition-transform"
                         >
                             Pagina verversen
                         </button>

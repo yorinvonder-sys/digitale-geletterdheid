@@ -33,7 +33,7 @@ export const CompletionScreen: React.FC<CompletionScreenProps> = ({
     const percentage = Math.round((score / maxScore) * 100);
 
     return (
-        <div className="min-h-screen bg-[#FAF9F0] flex items-center justify-center p-4">
+        <div className="min-h-screen bg-[#FCF6EA] flex items-center justify-center p-4">
             <div className="w-full max-w-md">
                 {/* Badge */}
                 <div
@@ -42,14 +42,14 @@ export const CompletionScreen: React.FC<CompletionScreenProps> = ({
                 >
                     <div className="text-5xl mb-3">{badge.emoji}</div>
                     <h2
-                        className="text-2xl font-black text-[#1A1A19] mb-1"
+                        className="text-2xl font-black text-[#08283B] mb-1"
                         style={{ fontFamily: "'Newsreader', Georgia, serif" }}
                     >
                         {badge.title}
                     </h2>
                     <div className="flex items-center justify-center gap-2 mt-3">
-                        <Trophy size={16} className="text-[#D97757]" />
-                        <span className="text-lg font-black text-[#D97757]">
+                        <Trophy size={16} className="text-[#D97848]" />
+                        <span className="text-lg font-black text-[#D97848]">
                             {score}/{maxScore} punten ({percentage}%)
                         </span>
                     </div>
@@ -57,24 +57,24 @@ export const CompletionScreen: React.FC<CompletionScreenProps> = ({
 
                 {/* Phase breakdown */}
                 {phases && phases.length > 0 && (
-                    <div className="bg-white rounded-2xl border border-[#E8E6DF] p-4 mb-4">
+                    <div className="bg-white rounded-2xl border border-[#E7D8BD] p-4 mb-4">
                         {phases.map((phase, i) => (
                             <div
                                 key={i}
                                 className={`flex items-center justify-between py-2 ${
-                                    i < phases.length - 1 ? 'border-b border-[#E8E6DF]' : ''
+                                    i < phases.length - 1 ? 'border-b border-[#E7D8BD]' : ''
                                 }`}
                             >
                                 <div className="flex items-center gap-2">
                                     <span>{phase.icon}</span>
                                     <span
-                                        className="text-sm text-[#3D3D38]"
+                                        className="text-sm text-[#445865]"
                                         style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                                     >
                                         {phase.title}
                                     </span>
                                 </div>
-                                <span className="text-sm font-bold text-[#D97757]">
+                                <span className="text-sm font-bold text-[#D97848]">
                                     {phase.score}/{phase.max}
                                 </span>
                             </div>
@@ -83,11 +83,11 @@ export const CompletionScreen: React.FC<CompletionScreenProps> = ({
                 )}
 
                 {/* Takeaways */}
-                <div className="bg-white rounded-2xl border border-[#E8E6DF] p-4 mb-6">
+                <div className="bg-white rounded-2xl border border-[#E7D8BD] p-4 mb-6">
                     <div className="flex items-center gap-2 mb-3">
-                        <Sparkles size={16} className="text-[#D97757]" />
+                        <Sparkles size={16} className="text-[#D97848]" />
                         <span
-                            className="text-xs font-black text-[#D97757] uppercase tracking-widest"
+                            className="text-xs font-black text-[#D97848] uppercase tracking-widest"
                             style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                         >
                             Wat je hebt geleerd
@@ -97,10 +97,10 @@ export const CompletionScreen: React.FC<CompletionScreenProps> = ({
                         {takeaways.map((t, i) => (
                             <li
                                 key={i}
-                                className="text-sm text-[#3D3D38] flex items-start gap-2"
+                                className="text-sm text-[#445865] flex items-start gap-2"
                                 style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                             >
-                                <span className="text-[#10B981] mt-0.5">✓</span>
+                                <span className="text-[#5F947D] mt-0.5">✓</span>
                                 {t}
                             </li>
                         ))}
@@ -110,7 +110,7 @@ export const CompletionScreen: React.FC<CompletionScreenProps> = ({
                 {/* Complete button */}
                 <button
                     onClick={onComplete}
-                    className="w-full py-3.5 bg-gradient-to-r from-[#D97757] to-[#C46849] hover:from-[#C46849] hover:to-[#B05A3C] text-white rounded-xl font-bold text-sm transition-all duration-200 active:scale-[0.98]"
+                    className="w-full py-3.5 bg-gradient-to-r from-[#D97848] to-[#D97848] hover:from-[#D97848] hover:to-[#D97848] text-white rounded-xl font-bold text-sm transition-all duration-200 active:scale-[0.98]"
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                 >
                     Missie voltooid! 🎉

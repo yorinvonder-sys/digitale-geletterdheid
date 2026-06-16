@@ -20,7 +20,7 @@ const SubTabBar: React.FC<{
         initial={{ opacity: 0, height: 0 }}
         animate={{ opacity: 1, height: 'auto' }}
         exit={{ opacity: 0, height: 0 }}
-        className="flex justify-center gap-1 pt-3 mt-2 border-t border-slate-100 overflow-x-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
+        className="flex justify-center gap-1 pt-3 mt-2 border-t border-lab-muted overflow-x-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
     >
         {tabs.map(sub => (
             <button
@@ -30,7 +30,7 @@ const SubTabBar: React.FC<{
                 title={sub.tooltip}
                 className={`px-3 py-2 min-h-[36px] rounded-lg text-xs font-bold transition-all flex-shrink-0 ${activeTab === sub.id
                     ? 'bg-indigo-100 text-indigo-700'
-                    : 'text-slate-400 hover:text-slate-600 hover:bg-slate-50'
+                    : 'text-lab-muted hover:text-lab-muted hover:bg-lab-muted'
                     }`}
             >
                 {sub.label}
@@ -76,7 +76,7 @@ export const TeacherNavigation: React.FC<TeacherNavigationProps> = ({ activeTab,
     const activeSection = MAIN_TABS.find(t => t.subTabIds.includes(activeTab))?.id || 'overview';
 
     return (
-        <div data-tutorial="main-tabs" className="bg-white rounded-2xl border border-slate-200 shadow-sm p-2">
+        <div data-tutorial="main-tabs" className="bg-white rounded-2xl border border-lab-muted shadow-sm p-2">
             <div className="flex items-center justify-center gap-1 md:gap-2 overflow-x-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
                 {MAIN_TABS.map(tab => {
                     const isActive = tab.subTabIds.includes(activeTab);
@@ -89,7 +89,7 @@ export const TeacherNavigation: React.FC<TeacherNavigationProps> = ({ activeTab,
                             title={tab.tooltip}
                             className={`relative flex items-center gap-2 px-2 sm:px-3 md:px-6 py-3 min-h-[44px] rounded-xl text-sm font-bold transition-all flex-shrink-0 ${isActive
                                 ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-200'
-                                : 'text-slate-500 hover:text-slate-700 hover:bg-slate-50'
+                                : 'text-lab-muted hover:text-lab-muted hover:bg-lab-muted'
                                 }`}
                         >
                             <Icon size={18} />

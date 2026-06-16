@@ -28,7 +28,7 @@ const VIDEO_PROMPT = `A small European robin bird (Pip) flying against a SOLID B
 
 CHARACTER — Pip:
 - European robin (Erithacus rubecula)
-- Matte terracotta-orange breast (#D97757), white belly, charcoal-gray wings and back
+- Matte terracotta-orange breast (#D97848), white belly, charcoal-gray wings and back
 - Large round expressive black eyes, small orange beak
 - Tail feathers dissolve into tiny square digital pixels (terracotta + charcoal)
 - Clean black outlines, 2D cartoon style similar to Studio Ghibli companion characters

@@ -59,22 +59,22 @@ function computeVisuals(
             {
                 label: 'Bubble Sort',
                 value: bubbleSort ? 5 : 0,
-                color: bubbleSort ? '#B05A3C' : '#E8E6DF',
+                color: bubbleSort ? '#D97848' : '#E7D8BD',
             },
             {
                 label: 'Selection Sort',
                 value: selectionSort ? 4 : 0,
-                color: selectionSort ? '#C46849' : '#E8E6DF',
+                color: selectionSort ? '#D97848' : '#E7D8BD',
             },
             {
                 label: 'Insertion Sort',
                 value: insertionSort ? 3 : 0,
-                color: insertionSort ? '#D97757' : '#E8E6DF',
+                color: insertionSort ? '#D97848' : '#E7D8BD',
             },
             {
                 label: 'Snel Sorteren',
                 value: snelSorteren ? 2 : 0,
-                color: snelSorteren ? '#10B981' : '#E8E6DF',
+                color: snelSorteren ? '#5F947D' : '#E7D8BD',
             },
         ];
 
@@ -396,31 +396,31 @@ export const algorithmArchitectConfig: SimulationLabConfig = {
             minScore: 90,
             emoji: '🏆',
             title: 'Master Architect',
-            color: '#10B981',
+            color: '#5F947D',
         },
         {
             minScore: 70,
             emoji: '⚙️',
             title: 'Algorithm Pro',
-            color: '#7C3AED',
+            color: '#0B453F',
         },
         {
             minScore: 50,
             emoji: '🔧',
             title: 'Codebouwer',
-            color: '#6B6B66',
+            color: '#445865',
         },
         {
             minScore: 25,
             emoji: '💡',
             title: 'Startende Algoritme Ontwerper',
-            color: '#8B5CF6',
+            color: '#0B453F',
         },
         {
             minScore: 0,
             emoji: '📖',
             title: 'Aan het leren',
-            color: '#6B6B66',
+            color: '#445865',
         },
     ],
     takeaways: [

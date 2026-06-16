@@ -91,23 +91,23 @@ export const MetricsOverview: React.FC<MetricsOverviewProps> = ({ students, acti
         }
         : curriculumSignal.tone === 'success'
         ? {
-            panel: 'border-emerald-200 bg-emerald-50/80 hover:border-emerald-300',
-            icon: 'bg-emerald-100 text-emerald-700',
-            label: 'text-emerald-700',
-            badge: 'bg-white text-emerald-700 border-emerald-200',
+            panel: 'border-lab-sage bg-lab-sage/80 hover:border-lab-sage',
+            icon: 'bg-lab-sage text-lab-sage',
+            label: 'text-lab-sage',
+            badge: 'bg-white text-lab-sage border-lab-sage',
         }
         : curriculumSignal.tone === 'attention'
             ? {
-                panel: 'border-amber-200 bg-amber-50/80 hover:border-amber-300',
-                icon: 'bg-amber-100 text-amber-700',
-                label: 'text-amber-700',
-                badge: 'bg-white text-amber-700 border-amber-200',
+                panel: 'border-lab-gold bg-lab-gold/80 hover:border-lab-gold',
+                icon: 'bg-lab-gold text-lab-gold',
+                label: 'text-lab-gold',
+                badge: 'bg-white text-lab-gold border-lab-gold',
             }
             : {
-                panel: 'border-rose-200 bg-rose-50/80 hover:border-rose-300',
-                icon: 'bg-rose-100 text-rose-700',
-                label: 'text-rose-700',
-                badge: 'bg-white text-rose-700 border-rose-200',
+                panel: 'border-lab-coral bg-lab-coral/80 hover:border-lab-coral',
+                icon: 'bg-lab-coral text-lab-coral',
+                label: 'text-lab-coral',
+                badge: 'bg-white text-lab-coral border-lab-coral',
             };
 
     // Class stats for comparison (only show when not filtering individual student)
@@ -259,7 +259,7 @@ export const MetricsOverview: React.FC<MetricsOverviewProps> = ({ students, acti
                         onClick={() => setShowStudentDropdown(!showStudentDropdown)}
                         className={`flex items-center gap-2 px-4 py-2.5 rounded-xl border transition-all ${selectedStudentId
                             ? 'bg-indigo-50 border-indigo-300 text-indigo-700'
-                            : 'bg-white border-slate-200 text-slate-600 hover:border-indigo-300'
+                            : 'bg-white border-lab-muted text-lab-muted hover:border-indigo-300'
                             }`}
                     >
                         <Filter size={16} />
@@ -271,17 +271,17 @@ export const MetricsOverview: React.FC<MetricsOverviewProps> = ({ students, acti
 
                     {/* Dropdown */}
                     {showStudentDropdown && (
-                        <div className="absolute top-full left-0 mt-2 w-72 bg-white rounded-xl shadow-xl border border-slate-200 z-50 overflow-hidden">
+                        <div className="absolute top-full left-0 mt-2 w-72 bg-white rounded-xl shadow-xl border border-lab-muted z-50 overflow-hidden">
                             {/* Search */}
-                            <div className="p-2 border-b border-slate-100">
+                            <div className="p-2 border-b border-lab-muted">
                                 <div className="relative">
-                                    <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+                                    <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-lab-muted" />
                                     <input
                                         type="text"
                                         placeholder="Zoek leerling..."
                                         value={studentSearch}
                                         onChange={(e) => setStudentSearch(e.target.value)}
-                                        className="w-full pl-9 pr-3 py-2 text-sm border border-slate-200 rounded-lg focus:outline-none focus:border-indigo-400"
+                                        className="w-full pl-9 pr-3 py-2 text-sm border border-lab-muted rounded-lg focus:outline-none focus:border-indigo-400"
                                         autoFocus
                                     />
                                 </div>
@@ -296,16 +296,16 @@ export const MetricsOverview: React.FC<MetricsOverviewProps> = ({ students, acti
                                         setShowStudentDropdown(false);
                                         setStudentSearch('');
                                     }}
-                                    className={`w-full px-3 py-2 text-left hover:bg-slate-50 transition-colors flex items-center gap-2 ${!selectedStudentId ? 'bg-indigo-50 text-indigo-700' : 'text-slate-600'
+                                    className={`w-full px-3 py-2 text-left hover:bg-lab-muted transition-colors flex items-center gap-2 ${!selectedStudentId ? 'bg-indigo-50 text-indigo-700' : 'text-lab-muted'
                                         }`}
                                 >
                                     <Users size={14} />
                                     <span className="font-bold text-sm">Alle Leerlingen</span>
-                                    <span className="ml-auto text-xs text-slate-400">{students.length}</span>
+                                    <span className="ml-auto text-xs text-lab-muted">{students.length}</span>
                                 </button>
 
                                 {/* Divider */}
-                                <div className="border-t border-slate-100 my-1" />
+                                <div className="border-t border-lab-muted my-1" />
 
                                 {/* Student List */}
                                 {filteredStudentOptions.map(student => (
@@ -316,7 +316,7 @@ export const MetricsOverview: React.FC<MetricsOverviewProps> = ({ students, acti
                                             setShowStudentDropdown(false);
                                             setStudentSearch('');
                                         }}
-                                        className={`w-full px-3 py-2 text-left hover:bg-slate-50 transition-colors flex items-center gap-2 ${selectedStudentId === student.uid ? 'bg-indigo-50 text-indigo-700' : 'text-slate-600'
+                                        className={`w-full px-3 py-2 text-left hover:bg-lab-muted transition-colors flex items-center gap-2 ${selectedStudentId === student.uid ? 'bg-indigo-50 text-indigo-700' : 'text-lab-muted'
                                             }`}
                                     >
                                         <div className="w-6 h-6 rounded-full bg-gradient-to-br from-indigo-400 to-purple-500 flex items-center justify-center text-white text-[10px] font-bold">
@@ -324,14 +324,14 @@ export const MetricsOverview: React.FC<MetricsOverviewProps> = ({ students, acti
                                         </div>
                                         <div className="flex-1 min-w-0">
                                             <div className="font-bold text-sm truncate">{student.displayName}</div>
-                                            <div className="text-[10px] text-slate-400">{student.identifier}</div>
+                                            <div className="text-[10px] text-lab-muted">{student.identifier}</div>
                                         </div>
-                                        <span className="text-xs text-amber-600 font-bold">{student.stats?.xp || 0} XP</span>
+                                        <span className="text-xs text-lab-gold font-bold">{student.stats?.xp || 0} XP</span>
                                     </button>
                                 ))}
 
                                 {filteredStudentOptions.length === 0 && (
-                                    <div className="px-3 py-4 text-center text-slate-400 text-sm">Geen leerlingen gevonden</div>
+                                    <div className="px-3 py-4 text-center text-lab-muted text-sm">Geen leerlingen gevonden</div>
                                 )}
                             </div>
                         </div>
@@ -371,79 +371,79 @@ export const MetricsOverview: React.FC<MetricsOverviewProps> = ({ students, acti
                     <>
                         <div
                             onClick={() => onNavigate?.('overview')}
-                            className="bg-white rounded-2xl p-4 shadow-sm border border-slate-100 cursor-pointer hover:border-indigo-300 hover:shadow-md transition-all active:scale-95"
+                            className="bg-white rounded-2xl p-4 shadow-sm border border-lab-muted cursor-pointer hover:border-indigo-300 hover:shadow-md transition-all active:scale-95"
                         >
                             <div className="flex items-center gap-2 mb-2">
                                 <div className="w-8 h-8 bg-indigo-100 text-indigo-600 rounded-lg flex items-center justify-center">
                                     <Users size={16} />
                                 </div>
-                                <div className="text-[9px] font-bold text-slate-400 uppercase">Leerlingen</div>
+                                <div className="text-[9px] font-bold text-lab-muted uppercase">Leerlingen</div>
                             </div>
-                            <div className="text-2xl font-black text-slate-900">{students.length}</div>
-                            <div className="text-[10px] text-emerald-600 font-bold flex items-center gap-1">
-                                <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse"></span>
+                            <div className="text-2xl font-black text-lab-muted">{students.length}</div>
+                            <div className="text-[10px] text-lab-sage font-bold flex items-center gap-1">
+                                <span className="w-1.5 h-1.5 bg-lab-sage rounded-full animate-pulse"></span>
                                 {activeNow} online
                             </div>
                         </div>
 
                         <div
                             onClick={() => onNavigate?.('leaderboard')}
-                            className="bg-white rounded-2xl p-4 shadow-sm border border-slate-100 cursor-pointer hover:border-amber-300 hover:shadow-md transition-all active:scale-95"
+                            className="bg-white rounded-2xl p-4 shadow-sm border border-lab-muted cursor-pointer hover:border-lab-gold hover:shadow-md transition-all active:scale-95"
                         >
                             <div className="flex items-center gap-2 mb-2">
-                                <div className="w-8 h-8 bg-amber-100 text-amber-600 rounded-lg flex items-center justify-center">
+                                <div className="w-8 h-8 bg-lab-gold text-lab-gold rounded-lg flex items-center justify-center">
                                     <Zap size={16} />
                                 </div>
-                                <div className="text-[9px] font-bold text-slate-400 uppercase">Totaal XP</div>
+                                <div className="text-[9px] font-bold text-lab-muted uppercase">Totaal XP</div>
                             </div>
-                            <div className="text-2xl font-black text-slate-900">{totalXP.toLocaleString()}</div>
-                            <div className="text-[10px] text-slate-400 font-medium">Ø {avgXP} per leerling</div>
+                            <div className="text-2xl font-black text-lab-muted">{totalXP.toLocaleString()}</div>
+                            <div className="text-[10px] text-lab-muted font-medium">Ø {avgXP} per leerling</div>
                         </div>
 
                         <div
                             onClick={() => onNavigate?.('overview')}
-                            className="bg-white rounded-2xl p-4 shadow-sm border border-slate-100 cursor-pointer hover:border-pink-300 hover:shadow-md transition-all active:scale-95"
+                            className="bg-white rounded-2xl p-4 shadow-sm border border-lab-muted cursor-pointer hover:border-pink-300 hover:shadow-md transition-all active:scale-95"
                         >
                             <div className="flex items-center gap-2 mb-2">
                                 <div className="w-8 h-8 bg-pink-100 text-pink-600 rounded-lg flex items-center justify-center">
                                     <Target size={16} />
                                 </div>
-                                <div className="text-[9px] font-bold text-slate-400 uppercase">Populair</div>
+                                <div className="text-[9px] font-bold text-lab-muted uppercase">Populair</div>
                             </div>
-                            <div className="text-lg font-black text-slate-900 truncate">
+                            <div className="text-lg font-black text-lab-muted truncate">
                                 {popularMission ? yearMissions.find(m => m.id === popularMission[0])?.short || '?' : '-'}
                             </div>
-                            <div className="text-[10px] text-slate-400 font-medium truncate">
+                            <div className="text-[10px] text-lab-muted font-medium truncate">
                                 {popularMission ? `${popularMission[1]}x voltooid` : 'Geen data'}
                             </div>
                         </div>
 
                         <div
                             onClick={() => onNavigate?.('overview')}
-                            className="bg-white rounded-2xl p-4 shadow-sm border border-slate-100 cursor-pointer hover:border-emerald-300 hover:shadow-md transition-all active:scale-95"
+                            className="bg-white rounded-2xl p-4 shadow-sm border border-lab-muted cursor-pointer hover:border-lab-sage hover:shadow-md transition-all active:scale-95"
                         >
                             <div className="flex items-center gap-2 mb-2">
-                                <div className="w-8 h-8 bg-emerald-100 text-emerald-600 rounded-lg flex items-center justify-center">
+                                <div className="w-8 h-8 bg-lab-sage text-lab-sage rounded-lg flex items-center justify-center">
                                     <Activity size={16} />
                                 </div>
-                                <div className="text-[9px] font-bold text-slate-400 uppercase">Vandaag</div>
+                                <div className="text-[9px] font-bold text-lab-muted uppercase">Vandaag</div>
                             </div>
-                            <div className="text-2xl font-black text-slate-900">{activeToday}</div>
-                            <div className="text-[10px] text-slate-400 font-medium">actief vandaag</div>
+                            <div className="text-2xl font-black text-lab-muted">{activeToday}</div>
+                            <div className="text-[10px] text-lab-muted font-medium">actief vandaag</div>
                         </div>
 
                         <div
                             onClick={() => onNavigate?.('alerts')}
-                            className="bg-white rounded-2xl p-4 shadow-sm border border-slate-100 cursor-pointer hover:border-red-300 hover:shadow-md transition-all active:scale-95"
+                            className="bg-white rounded-2xl p-4 shadow-sm border border-lab-muted cursor-pointer hover:border-red-300 hover:shadow-md transition-all active:scale-95"
                             title="Leerlingen die al even niet actief zijn of weinig voortgang boeken."
                         >
                             <div className="flex items-center gap-2 mb-2">
                                 <div className="w-8 h-8 bg-red-100 text-red-600 rounded-lg flex items-center justify-center">
                                     <AlertTriangle size={16} />
                                 </div>
-                                <div className="text-[9px] font-bold text-slate-400 uppercase">Aandacht</div>
+                                <div className="text-[9px] font-bold text-lab-muted uppercase">Aandacht</div>
                             </div>
-                            <div className="text-2xl font-black text-slate-900">{inactiveStudents.length + lowXPStudents.length}</div>
+                            <div className="text-2xl font-black text-lab-muted">{inactiveStudents.length + lowXPStudents.length}</div>
                             <div className="text-[10px] text-red-500 font-bold uppercase tracking-tight">Hulp nodig</div>
                         </div>
                     </>
@@ -469,15 +469,15 @@ export const MetricsOverview: React.FC<MetricsOverviewProps> = ({ students, acti
                                             J{curriculumFocus.spotlight.yearGroup} • {curriculumFocus.spotlight.periodLabel}
                                         </span>
                                         {selectedStudentId && (
-                                            <span className="inline-flex items-center rounded-full border border-slate-200 bg-white px-2 py-1 text-[10px] font-bold uppercase tracking-wider text-slate-500">
+                                            <span className="inline-flex items-center rounded-full border border-lab-muted bg-white px-2 py-1 text-[10px] font-bold uppercase tracking-wider text-lab-muted">
                                                 Schoolbreed
                                             </span>
                                         )}
                                     </div>
-                                    <h3 className="text-lg font-black text-slate-900 mt-1">
+                                    <h3 className="text-lg font-black text-lab-muted mt-1">
                                         {curriculumSignal?.title || curriculumFocus.spotlight.title}
                                     </h3>
-                                    <p className="text-sm text-slate-600 mt-1 max-w-3xl">
+                                    <p className="text-sm text-lab-muted mt-1 max-w-3xl">
                                         {curriculumSignal?.summary || `${curriculumFocus.spotlight.title}: ${curriculumFocus.startedPercentage}% gestart en ${curriculumFocus.completedPercentage}% afgerond in deze jaarlaag.`}
                                     </p>
                                 </div>
@@ -485,11 +485,11 @@ export const MetricsOverview: React.FC<MetricsOverviewProps> = ({ students, acti
 
                             <div className="mt-4 flex flex-wrap gap-2">
                                 {curriculumFocus.spotlight.kerndoelen.map(code => (
-                                    <span key={code} className="inline-flex rounded-full bg-white/90 px-2.5 py-1 text-[11px] font-black text-slate-700 border border-white">
+                                    <span key={code} className="inline-flex rounded-full bg-white/90 px-2.5 py-1 text-[11px] font-black text-lab-muted border border-white">
                                         {code}
                                     </span>
                                 ))}
-                                <span className="inline-flex items-center gap-1 rounded-full bg-slate-900 px-3 py-1 text-[11px] font-black text-white">
+                                <span className="inline-flex items-center gap-1 rounded-full bg-lab-muted px-3 py-1 text-[11px] font-black text-white">
                                     Open SLO-rapportage <ArrowRight size={12} />
                                 </span>
                             </div>
@@ -497,26 +497,26 @@ export const MetricsOverview: React.FC<MetricsOverviewProps> = ({ students, acti
 
                         <div className="grid grid-cols-3 gap-3 xl:min-w-[340px]">
                             <div className="rounded-2xl border border-white bg-white/90 px-3 py-3">
-                                <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Gestart</p>
+                                <p className="text-[10px] font-bold uppercase tracking-wider text-lab-muted">Gestart</p>
                                 <p className="text-2xl font-black text-indigo-700 mt-1">{curriculumFocus.startedStudents}</p>
-                                <p className="text-[10px] text-slate-500 mt-1">{curriculumFocus.startedPercentage}% van leerlingen</p>
+                                <p className="text-[10px] text-lab-muted mt-1">{curriculumFocus.startedPercentage}% van leerlingen</p>
                             </div>
                             <div className="rounded-2xl border border-white bg-white/90 px-3 py-3">
-                                <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Nog Bezig</p>
-                                <p className="text-2xl font-black text-amber-700 mt-1">{curriculumFocus.inProgressStudents}</p>
-                                <p className="text-[10px] text-slate-500 mt-1">Wel gestart, nog niet af</p>
+                                <p className="text-[10px] font-bold uppercase tracking-wider text-lab-muted">Nog Bezig</p>
+                                <p className="text-2xl font-black text-lab-gold mt-1">{curriculumFocus.inProgressStudents}</p>
+                                <p className="text-[10px] text-lab-muted mt-1">Wel gestart, nog niet af</p>
                             </div>
                             <div className="rounded-2xl border border-white bg-white/90 px-3 py-3">
-                                <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Afgerond</p>
-                                <p className="text-2xl font-black text-emerald-700 mt-1">{curriculumFocus.completedStudents}</p>
-                                <p className="text-[10px] text-slate-500 mt-1">{curriculumFocus.completedPercentage}% van leerlingen</p>
+                                <p className="text-[10px] font-bold uppercase tracking-wider text-lab-muted">Afgerond</p>
+                                <p className="text-2xl font-black text-lab-sage mt-1">{curriculumFocus.completedStudents}</p>
+                                <p className="text-[10px] text-lab-muted mt-1">{curriculumFocus.completedPercentage}% van leerlingen</p>
                             </div>
                         </div>
                     </div>
 
                     <div className="mt-4 rounded-2xl border border-white bg-white/85 px-4 py-3">
-                        <p className="text-[10px] font-black uppercase tracking-wider text-slate-400">Docentnudge</p>
-                        <p className="text-sm text-slate-700 mt-1">
+                        <p className="text-[10px] font-black uppercase tracking-wider text-lab-muted">Docentnudge</p>
+                        <p className="text-sm text-lab-muted mt-1">
                             {curriculumSignal?.nudge || 'Open de SLO-rapportage om per klas te zien waar leerlingen starten, blijven hangen of juist al sterk afronden.'}
                         </p>
                     </div>
@@ -525,12 +525,12 @@ export const MetricsOverview: React.FC<MetricsOverviewProps> = ({ students, acti
 
             {/* ACTION QUEUE — Wat moet je nu doen? */}
             {!loading && actionQueue.length > 0 && (
-                <div className="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
-                    <div className="px-5 py-4 border-b border-slate-100 flex items-center justify-between">
-                        <h3 className="text-sm font-black text-slate-900 flex items-center gap-2">
+                <div className="bg-white rounded-2xl shadow-sm border border-lab-muted overflow-hidden">
+                    <div className="px-5 py-4 border-b border-lab-muted flex items-center justify-between">
+                        <h3 className="text-sm font-black text-lab-muted flex items-center gap-2">
                             <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse" />
                             Acties voor jou
-                            <span className="text-[10px] font-bold text-slate-400 bg-slate-100 px-2 py-0.5 rounded-full">{actionQueue.length}</span>
+                            <span className="text-[10px] font-bold text-lab-muted bg-lab-muted px-2 py-0.5 rounded-full">{actionQueue.length}</span>
                         </h3>
                         <div className="flex items-center gap-2">
                             <button
@@ -548,24 +548,24 @@ export const MetricsOverview: React.FC<MetricsOverviewProps> = ({ students, acti
                                 <button
                                     key={item.student.uid}
                                     onClick={() => onSelectStudent?.(item.student)}
-                                    className="w-full px-5 py-3 flex items-center gap-4 hover:bg-slate-50 transition-colors text-left group"
+                                    className="w-full px-5 py-3 flex items-center gap-4 hover:bg-lab-muted transition-colors text-left group"
                                 >
-                                    <div className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 ${item.priority === 'high' ? 'bg-red-100 text-red-600' : 'bg-amber-100 text-amber-600'}`}>
+                                    <div className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 ${item.priority === 'high' ? 'bg-red-100 text-red-600' : 'bg-lab-gold text-lab-gold'}`}>
                                         <Icon size={16} />
                                     </div>
                                     <div className="flex-1 min-w-0">
                                         <div className="flex items-center gap-2">
-                                            <span className="font-bold text-sm text-slate-900 truncate">{item.student.displayName}</span>
-                                            <span className="text-[9px] text-slate-400">{item.student.identifier}</span>
+                                            <span className="font-bold text-sm text-lab-muted truncate">{item.student.displayName}</span>
+                                            <span className="text-[9px] text-lab-muted">{item.student.identifier}</span>
                                         </div>
-                                        <div className="text-[10px] text-slate-500">{item.reason}</div>
+                                        <div className="text-[10px] text-lab-muted">{item.reason}</div>
                                     </div>
                                     <div className="flex items-center gap-2 flex-shrink-0">
-                                        <span className="text-[10px] font-bold text-slate-400">{item.student.stats?.xp || 0} XP</span>
-                                        <span className={`text-[9px] font-black uppercase tracking-wider px-2 py-1 rounded-lg ${item.priority === 'high' ? 'text-red-600 bg-red-50 border border-red-200' : 'text-amber-600 bg-amber-50 border border-amber-200'}`}>
+                                        <span className="text-[10px] font-bold text-lab-muted">{item.student.stats?.xp || 0} XP</span>
+                                        <span className={`text-[9px] font-black uppercase tracking-wider px-2 py-1 rounded-lg ${item.priority === 'high' ? 'text-red-600 bg-red-50 border border-red-200' : 'text-lab-gold bg-lab-gold border border-lab-gold'}`}>
                                             {item.action}
                                         </span>
-                                        <ChevronRight size={14} className="text-slate-300 group-hover:translate-x-1 transition-transform" />
+                                        <ChevronRight size={14} className="text-lab-muted group-hover:translate-x-1 transition-transform" />
                                     </div>
                                 </button>
                             );
@@ -579,13 +579,13 @@ export const MetricsOverview: React.FC<MetricsOverviewProps> = ({ students, acti
                 <div className="flex items-center gap-3 flex-wrap">
                     <button
                         onClick={() => onNavigate?.('progress')}
-                        className="flex items-center gap-2 px-4 py-2.5 bg-white border border-slate-200 rounded-xl text-sm font-bold text-slate-700 hover:border-indigo-300 hover:text-indigo-700 transition-all"
+                        className="flex items-center gap-2 px-4 py-2.5 bg-white border border-lab-muted rounded-xl text-sm font-bold text-lab-muted hover:border-indigo-300 hover:text-indigo-700 transition-all"
                     >
                         <BarChart3 size={14} /> Missie-voortgang
                     </button>
                     <button
                         onClick={() => onNavigate?.('slo')}
-                        className="flex items-center gap-2 px-4 py-2.5 bg-white border border-slate-200 rounded-xl text-sm font-bold text-slate-700 hover:border-indigo-300 hover:text-indigo-700 transition-all"
+                        className="flex items-center gap-2 px-4 py-2.5 bg-white border border-lab-muted rounded-xl text-sm font-bold text-lab-muted hover:border-indigo-300 hover:text-indigo-700 transition-all"
                     >
                         <Target size={14} /> SLO Rapportage
                     </button>
@@ -598,9 +598,9 @@ export const MetricsOverview: React.FC<MetricsOverviewProps> = ({ students, acti
                         </button>
                     )}
                     {activeEvents.length > 0 && (
-                        <div className="flex items-center gap-2 px-3 py-2 bg-amber-50 border border-amber-200 rounded-xl">
-                            <Flame size={14} className="text-amber-600" />
-                            <span className="text-[10px] font-bold text-amber-700">{activeEvents.length} actief event</span>
+                        <div className="flex items-center gap-2 px-3 py-2 bg-lab-gold border border-lab-gold rounded-xl">
+                            <Flame size={14} className="text-lab-gold" />
+                            <span className="text-[10px] font-bold text-lab-gold">{activeEvents.length} actief event</span>
                         </div>
                     )}
                 </div>
@@ -630,24 +630,24 @@ export const MetricsOverview: React.FC<MetricsOverviewProps> = ({ students, acti
                 const hasSignals = signalStudents.length > 0;
 
                 return (
-                    <div className="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
+                    <div className="bg-white rounded-2xl shadow-sm border border-lab-muted overflow-hidden">
                         <button
                             onClick={() => setExpandedSignaling(!expandedSignaling)}
                             className="w-full px-5 py-4 text-left flex items-center justify-between"
                         >
                             <div className="flex items-center gap-3">
-                                <div className={`size-8 rounded-lg flex items-center justify-center ${hasSignals ? 'bg-amber-100' : 'bg-emerald-100'}`}>
+                                <div className={`size-8 rounded-lg flex items-center justify-center ${hasSignals ? 'bg-lab-gold' : 'bg-lab-sage'}`}>
                                     {hasSignals
-                                        ? <AlertTriangle size={16} className="text-amber-600" />
-                                        : <CheckCircle2 size={16} className="text-emerald-600" />
+                                        ? <AlertTriangle size={16} className="text-lab-gold" />
+                                        : <CheckCircle2 size={16} className="text-lab-sage" />
                                     }
                                 </div>
                                 <div>
-                                    <h3 className="text-xs font-black text-slate-900 uppercase tracking-widest text-balance">
+                                    <h3 className="text-xs font-black text-lab-muted uppercase tracking-widest text-balance">
                                         Vroege Signalering
                                     </h3>
                                     {!expandedSignaling && (
-                                        <p className="text-[10px] text-slate-500 mt-0.5">
+                                        <p className="text-[10px] text-lab-muted mt-0.5">
                                             {hasSignals ? `${signalStudents.length} leerling${signalStudents.length !== 1 ? 'en' : ''} verdien${signalStudents.length !== 1 ? 'en' : 't'} aandacht` : 'Iedereen ligt op koers'}
                                         </p>
                                     )}
@@ -655,11 +655,11 @@ export const MetricsOverview: React.FC<MetricsOverviewProps> = ({ students, acti
                             </div>
                             <div className="flex items-center gap-2">
                                 {hasSignals && (
-                                    <span className="inline-flex items-center justify-center size-5 rounded-full bg-amber-500 text-[10px] font-black text-white tabular-nums">
+                                    <span className="inline-flex items-center justify-center size-5 rounded-full bg-lab-gold text-[10px] font-black text-white tabular-nums">
                                         {signalStudents.length}
                                     </span>
                                 )}
-                                <ChevronDown size={18} className={`text-slate-400 transition-transform ${expandedSignaling ? 'rotate-180' : ''}`} />
+                                <ChevronDown size={18} className={`text-lab-muted transition-transform ${expandedSignaling ? 'rotate-180' : ''}`} />
                             </div>
                         </button>
 
@@ -677,41 +677,41 @@ export const MetricsOverview: React.FC<MetricsOverviewProps> = ({ students, acti
                                             type="button"
                                             className={`w-full p-3 rounded-xl flex items-center justify-between group transition-colors text-left ${
                                                 tone === 'warning'
-                                                    ? 'bg-amber-50 border border-amber-100 hover:bg-amber-100'
-                                                    : 'bg-slate-50 border border-slate-100 hover:bg-slate-100'
+                                                    ? 'bg-lab-gold border border-lab-gold hover:bg-lab-gold'
+                                                    : 'bg-lab-muted border border-lab-muted hover:bg-lab-muted'
                                             }`}
                                             onClick={() => onSelectStudent?.(student)}
                                         >
                                             <div className="flex items-center gap-3 min-w-0">
                                                 <div className={`size-9 rounded-lg flex items-center justify-center flex-shrink-0 ${
-                                                    tone === 'warning' ? 'bg-amber-100 text-amber-600' : 'bg-slate-200 text-slate-500'
+                                                    tone === 'warning' ? 'bg-lab-gold text-lab-gold' : 'bg-lab-muted text-lab-muted'
                                                 }`}>
                                                     <GraduationCap size={18} />
                                                 </div>
                                                 <div className="min-w-0">
-                                                    <div className="text-xs font-bold text-slate-900 truncate">{student.displayName}</div>
-                                                    <div className={`text-[10px] mt-0.5 ${tone === 'warning' ? 'text-amber-600' : 'text-slate-500'}`}>{reason}</div>
+                                                    <div className="text-xs font-bold text-lab-muted truncate">{student.displayName}</div>
+                                                    <div className={`text-[10px] mt-0.5 ${tone === 'warning' ? 'text-lab-gold' : 'text-lab-muted'}`}>{reason}</div>
                                                 </div>
                                             </div>
                                             <div className="flex items-center gap-2 flex-shrink-0 ml-2">
                                                 <span className={`text-[10px] font-bold uppercase tracking-wider px-2 py-1 rounded-lg border ${
                                                     tone === 'warning'
-                                                        ? 'text-amber-700 bg-white border-amber-200'
-                                                        : 'text-slate-600 bg-white border-slate-200'
+                                                        ? 'text-lab-gold bg-white border-lab-gold'
+                                                        : 'text-lab-muted bg-white border-lab-muted'
                                                 }`}>
                                                     Begeleid
                                                 </span>
-                                                <ChevronRight size={14} className="text-slate-300 group-hover:translate-x-0.5 transition-transform" />
+                                                <ChevronRight size={14} className="text-lab-muted group-hover:translate-x-0.5 transition-transform" />
                                             </div>
                                         </button>
                                     ))}
                                     {!hasSignals && (
                                         <div className="flex flex-col items-center py-6 gap-2">
-                                            <div className="size-10 rounded-full bg-emerald-100 flex items-center justify-center">
-                                                <CheckCircle2 size={20} className="text-emerald-600" />
+                                            <div className="size-10 rounded-full bg-lab-sage flex items-center justify-center">
+                                                <CheckCircle2 size={20} className="text-lab-sage" />
                                             </div>
-                                            <p className="text-sm font-bold text-slate-700 text-balance text-center">Iedereen ligt op koers</p>
-                                            <p className="text-[11px] text-slate-500 text-center text-pretty max-w-xs">Geen leerlingen die extra aandacht nodig hebben op dit moment.</p>
+                                            <p className="text-sm font-bold text-lab-muted text-balance text-center">Iedereen ligt op koers</p>
+                                            <p className="text-[11px] text-lab-muted text-center text-pretty max-w-xs">Geen leerlingen die extra aandacht nodig hebben op dit moment.</p>
                                         </div>
                                     )}
                                 </motion.div>
@@ -722,12 +722,12 @@ export const MetricsOverview: React.FC<MetricsOverviewProps> = ({ students, acti
             })()}
 
             {/* SLO KERNDOELEN DIGITALE GELETTERDHEID - Collapsible */}
-            <div className="bg-white rounded-[2rem] shadow-xl shadow-slate-200/50 border border-slate-100 overflow-hidden">
+            <div className="bg-white rounded-[2rem] shadow-xl shadow-slate-200/50 border border-lab-muted overflow-hidden">
                 <button
                     onClick={() => setExpandedSlo(!expandedSlo)}
                     className="w-full p-6 text-left flex items-center justify-between"
                 >
-                    <h3 className="text-sm font-black text-slate-900 uppercase tracking-widest flex items-center gap-2">
+                    <h3 className="text-sm font-black text-lab-muted uppercase tracking-widest flex items-center gap-2">
                         <div className="w-2 h-2 bg-indigo-500 rounded-full"></div>
                         SLO Kerndoelen Digitale Geletterdheid
                     </h3>
@@ -735,12 +735,12 @@ export const MetricsOverview: React.FC<MetricsOverviewProps> = ({ students, acti
                         {!expandedSlo && (
                             <div className="hidden md:flex items-center gap-2">
                                 <div className="w-3 h-3 bg-red-100 border border-red-200 rounded"></div>
-                                <span className="text-[9px] font-bold text-slate-400 uppercase">Moeite</span>
-                                <div className="w-3 h-3 bg-emerald-100 border border-emerald-200 rounded ml-2"></div>
-                                <span className="text-[9px] font-bold text-slate-400 uppercase">Beheerst</span>
+                                <span className="text-[9px] font-bold text-lab-muted uppercase">Moeite</span>
+                                <div className="w-3 h-3 bg-lab-sage border border-lab-sage rounded ml-2"></div>
+                                <span className="text-[9px] font-bold text-lab-muted uppercase">Beheerst</span>
                             </div>
                         )}
-                        <ChevronDown size={20} className={`text-slate-400 transition-transform ${expandedSlo ? 'rotate-180' : ''}`} />
+                        <ChevronDown size={20} className={`text-lab-muted transition-transform ${expandedSlo ? 'rotate-180' : ''}`} />
                     </div>
                 </button>
 
@@ -781,8 +781,8 @@ export const MetricsOverview: React.FC<MetricsOverviewProps> = ({ students, acti
 
                                     const colorClasses: Record<string, { bg: string; border: string; text: string; light: string }> = {
                                         'indigo': { bg: 'bg-indigo-500', border: 'border-indigo-200', text: 'text-indigo-700', light: 'bg-indigo-50' },
-                                        'emerald': { bg: 'bg-emerald-500', border: 'border-emerald-200', text: 'text-emerald-700', light: 'bg-emerald-50' },
-                                        'amber': { bg: 'bg-amber-500', border: 'border-amber-200', text: 'text-amber-700', light: 'bg-amber-50' }
+                                        'emerald': { bg: 'bg-lab-sage', border: 'border-lab-sage', text: 'text-lab-sage', light: 'bg-lab-sage' },
+                                        'amber': { bg: 'bg-lab-gold', border: 'border-lab-gold', text: 'text-lab-gold', light: 'bg-lab-gold' }
                                     };
                                     const colors = colorClasses[domain.color] || colorClasses['indigo'];
 
@@ -794,14 +794,14 @@ export const MetricsOverview: React.FC<MetricsOverviewProps> = ({ students, acti
                                                     <div className={`w-3 h-3 ${colors.bg} rounded-full`}></div>
                                                     <div>
                                                         <h4 className={`text-xs font-black uppercase tracking-wider ${colors.text}`}>{domain.title}</h4>
-                                                        <p className="text-[10px] text-slate-500">{domain.description}</p>
+                                                        <p className="text-[10px] text-lab-muted">{domain.description}</p>
                                                     </div>
                                                 </div>
                                                 <div className="flex items-center gap-2">
-                                                    <span className={`text-lg font-black ${avgDomainScore < 50 ? 'text-red-600' : avgDomainScore >= 75 ? 'text-emerald-600' : 'text-amber-600'}`}>
+                                                    <span className={`text-lg font-black ${avgDomainScore < 50 ? 'text-red-600' : avgDomainScore >= 75 ? 'text-lab-sage' : 'text-lab-gold'}`}>
                                                         {avgDomainScore}%
                                                     </span>
-                                                    <span className="text-[9px] font-bold text-slate-400 uppercase">gemiddeld</span>
+                                                    <span className="text-[9px] font-bold text-lab-muted uppercase">gemiddeld</span>
                                                 </div>
                                             </div>
 
@@ -814,18 +814,18 @@ export const MetricsOverview: React.FC<MetricsOverviewProps> = ({ students, acti
                                                             <div
                                                                 key={item.id}
                                                                 onClick={() => onFilterConcept?.(item.title)}
-                                                                className={`p-3 rounded-xl bg-slate-50 border transition-all cursor-pointer active:scale-95 ${conceptFilter === item.title ? 'border-indigo-500 ring-2 ring-indigo-500/20' : 'border-slate-100 hover:border-slate-200'}`}
+                                                                className={`p-3 rounded-xl bg-lab-muted border transition-all cursor-pointer active:scale-95 ${conceptFilter === item.title ? 'border-indigo-500 ring-2 ring-indigo-500/20' : 'border-lab-muted hover:border-lab-muted'}`}
                                                             >
                                                                 <div className="flex items-center gap-2 mb-2">
-                                                                    <div className={`w-7 h-7 rounded-lg flex items-center justify-center ${item.score < 50 ? 'bg-red-100 text-red-600' : item.score >= 75 ? 'bg-emerald-100 text-emerald-600' : 'bg-amber-100 text-amber-600'}`}>
+                                                                    <div className={`w-7 h-7 rounded-lg flex items-center justify-center ${item.score < 50 ? 'bg-red-100 text-red-600' : item.score >= 75 ? 'bg-lab-sage text-lab-sage' : 'bg-lab-gold text-lab-gold'}`}>
                                                                         <Icon size={14} />
                                                                     </div>
-                                                                    <span className={`text-lg font-black ${item.score < 50 ? 'text-red-600' : item.score >= 75 ? 'text-emerald-600' : 'text-amber-600'}`}>
+                                                                    <span className={`text-lg font-black ${item.score < 50 ? 'text-red-600' : item.score >= 75 ? 'text-lab-sage' : 'text-lab-gold'}`}>
                                                                         {item.score}%
                                                                     </span>
                                                                 </div>
-                                                                <div className="text-[10px] font-bold text-slate-700 mb-0.5 line-clamp-1">{item.title}</div>
-                                                                <div className="text-[9px] text-slate-400 line-clamp-1">{item.description}</div>
+                                                                <div className="text-[10px] font-bold text-lab-muted mb-0.5 line-clamp-1">{item.title}</div>
+                                                                <div className="text-[9px] text-lab-muted line-clamp-1">{item.description}</div>
                                                                 {item.score < 50 && (
                                                                     <div className="mt-2 text-[8px] font-bold text-red-600 flex items-center gap-1">
                                                                         <AlertTriangle size={8} />
@@ -848,13 +848,13 @@ export const MetricsOverview: React.FC<MetricsOverviewProps> = ({ students, acti
 
             {/* CLASS COMPARISON CHART - Collapsible */}
             {classStats.length > 1 && (
-                <div className="bg-white rounded-[2rem] shadow-xl shadow-slate-200/50 border border-slate-100 overflow-hidden">
+                <div className="bg-white rounded-[2rem] shadow-xl shadow-slate-200/50 border border-lab-muted overflow-hidden">
                     <button
                         onClick={() => setExpandedComparison(!expandedComparison)}
                         className="w-full p-6 text-left flex items-center justify-between"
                     >
-                        <h3 className="text-sm font-black text-slate-500 uppercase tracking-widest">Klas Vergelijking (Gem. XP)</h3>
-                        <ChevronDown size={20} className={`text-slate-400 transition-transform ${expandedComparison ? 'rotate-180' : ''}`} />
+                        <h3 className="text-sm font-black text-lab-muted uppercase tracking-widest">Klas Vergelijking (Gem. XP)</h3>
+                        <ChevronDown size={20} className={`text-lab-muted transition-transform ${expandedComparison ? 'rotate-180' : ''}`} />
                     </button>
 
                     <AnimatePresence>
@@ -871,13 +871,13 @@ export const MetricsOverview: React.FC<MetricsOverviewProps> = ({ students, acti
                                         const height = maxXP > 0 ? (cls.avgXP / maxXP) * 100 : 0;
                                         return (
                                             <div key={cls.name} className="flex-1 flex flex-col items-center gap-2 group">
-                                                <div className="opacity-0 group-hover:opacity-100 transition-opacity bg-slate-900 text-white text-[10px] font-bold px-2 py-1 rounded mb-1">{cls.avgXP} XP</div>
+                                                <div className="opacity-0 group-hover:opacity-100 transition-opacity bg-lab-muted text-white text-[10px] font-bold px-2 py-1 rounded mb-1">{cls.avgXP} XP</div>
                                                 <div
-                                                    className={`w-full rounded-t-xl transition-all ${i % 3 === 0 ? 'bg-indigo-500' : i % 3 === 1 ? 'bg-emerald-500' : 'bg-amber-500'
+                                                    className={`w-full rounded-t-xl transition-all ${i % 3 === 0 ? 'bg-indigo-500' : i % 3 === 1 ? 'bg-lab-sage' : 'bg-lab-gold'
                                                         } hover:brightness-110 shadow-sm`}
                                                     style={{ height: `${height}%`, minHeight: '8px' }}
                                                 ></div>
-                                                <div className="text-[10px] font-black text-slate-400 uppercase">{cls.name}</div>
+                                                <div className="text-[10px] font-black text-lab-muted uppercase">{cls.name}</div>
                                             </div>
                                         );
                                     })}

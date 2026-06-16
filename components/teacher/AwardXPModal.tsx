@@ -112,15 +112,15 @@ export const AwardXPModal: React.FC<AwardXPModalProps> = ({ student, onClose, on
                         {!success ? (
                             <>
                                 {/* Current XP Display */}
-                                <div className="bg-slate-50 rounded-xl p-4 flex items-center justify-between">
+                                <div className="bg-lab-muted rounded-xl p-4 flex items-center justify-between">
                                     <div>
-                                        <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Huidige XP</p>
-                                        <p className="text-2xl font-black text-slate-900">{currentXP.toLocaleString()}</p>
+                                        <p className="text-[10px] font-bold text-lab-muted uppercase tracking-wider">Huidige XP</p>
+                                        <p className="text-2xl font-black text-lab-muted">{currentXP.toLocaleString()}</p>
                                     </div>
-                                    <div className="flex items-center gap-2 text-emerald-600">
+                                    <div className="flex items-center gap-2 text-lab-sage">
                                         <TrendingUp size={20} />
                                         <div className="text-right">
-                                            <p className="text-[10px] font-bold text-emerald-500 uppercase tracking-wider">Na toekenning</p>
+                                            <p className="text-[10px] font-bold text-lab-sage uppercase tracking-wider">Na toekenning</p>
                                             <p className="text-xl font-black">{newXP.toLocaleString()}</p>
                                         </div>
                                     </div>
@@ -128,7 +128,7 @@ export const AwardXPModal: React.FC<AwardXPModalProps> = ({ student, onClose, on
 
                                 {/* Amount Input */}
                                 <div className="space-y-3">
-                                    <label className="text-xs font-bold text-slate-500 uppercase tracking-wider block">
+                                    <label className="text-xs font-bold text-lab-muted uppercase tracking-wider block">
                                         Aantal XP
                                     </label>
                                     <div className="relative">
@@ -138,10 +138,10 @@ export const AwardXPModal: React.FC<AwardXPModalProps> = ({ student, onClose, on
                                             value={amount}
                                             onChange={(e) => setAmount(Math.max(0, parseInt(e.target.value) || 0))}
                                             min="1"
-                                            className="w-full px-4 py-4 bg-slate-50 border-2 border-slate-200 rounded-xl text-2xl font-black text-center
-                                                     focus:ring-4 focus:ring-amber-500/20 focus:border-amber-500 outline-none transition-all"
+                                            className="w-full px-4 py-4 bg-lab-muted border-2 border-lab-muted rounded-xl text-2xl font-black text-center
+                                                     focus:ring-4 focus:ring-amber-500/20 focus:border-lab-gold outline-none transition-all"
                                         />
-                                        <div className="absolute right-4 top-1/2 -translate-y-1/2 text-amber-500">
+                                        <div className="absolute right-4 top-1/2 -translate-y-1/2 text-lab-gold">
                                             <Sparkles size={24} />
                                         </div>
                                     </div>
@@ -154,8 +154,8 @@ export const AwardXPModal: React.FC<AwardXPModalProps> = ({ student, onClose, on
                                             key={quickAmount}
                                             onClick={() => setAmount(quickAmount)}
                                             className={`flex-1 min-w-[60px] py-2.5 rounded-xl font-bold text-sm transition-all ${amount === quickAmount
-                                                    ? 'bg-amber-500 text-white shadow-lg shadow-amber-200'
-                                                    : 'bg-slate-100 text-slate-600 hover:bg-amber-100 hover:text-amber-700'
+                                                    ? 'bg-lab-gold text-white shadow-lg shadow-amber-200'
+                                                    : 'bg-lab-muted text-lab-muted hover:bg-lab-gold hover:text-lab-gold'
                                                 }`}
                                         >
                                             +{quickAmount}
@@ -169,12 +169,12 @@ export const AwardXPModal: React.FC<AwardXPModalProps> = ({ student, onClose, on
                                 animate={{ scale: 1, opacity: 1 }}
                                 className="py-8 text-center"
                             >
-                                <div className="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                                    <Check size={32} className="text-emerald-600" />
+                                <div className="w-16 h-16 bg-lab-sage rounded-full flex items-center justify-center mx-auto mb-4">
+                                    <Check size={32} className="text-lab-sage" />
                                 </div>
-                                <h3 className="text-xl font-black text-slate-900 mb-2">XP Toegekend!</h3>
-                                <p className="text-slate-500">
-                                    <span className="font-bold text-amber-600">+{amount} XP</span> voor {student.displayName}
+                                <h3 className="text-xl font-black text-lab-muted mb-2">XP Toegekend!</h3>
+                                <p className="text-lab-muted">
+                                    <span className="font-bold text-lab-gold">+{amount} XP</span> voor {student.displayName}
                                 </p>
                             </motion.div>
                         )}
@@ -182,10 +182,10 @@ export const AwardXPModal: React.FC<AwardXPModalProps> = ({ student, onClose, on
 
                     {/* Footer */}
                     {!success && (
-                        <div className="px-6 py-4 bg-slate-50 border-t border-slate-100 flex justify-end gap-3">
+                        <div className="px-6 py-4 bg-lab-muted border-t border-lab-muted flex justify-end gap-3">
                             <button
                                 onClick={onClose}
-                                className="px-4 py-2.5 text-slate-600 font-bold text-sm rounded-xl hover:bg-slate-100 transition-colors"
+                                className="px-4 py-2.5 text-lab-muted font-bold text-sm rounded-xl hover:bg-lab-muted transition-colors"
                             >
                                 Annuleren
                             </button>

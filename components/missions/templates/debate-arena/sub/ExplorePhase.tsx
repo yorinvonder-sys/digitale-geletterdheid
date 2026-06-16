@@ -3,7 +3,7 @@ import { ChevronRight } from 'lucide-react';
 import { FollowUpCard } from '../../shared/FollowUpCard';
 import type { DebateArenaConfig, DebateArenaState } from '../DebateArena';
 
-const STAKEHOLDER_COLORS = ['#D97757', '#8B6F9E', '#10B981', '#3B82F6', '#F59E0B', '#EF4444'];
+const STAKEHOLDER_COLORS = ['#D97848', '#0B453F', '#5F947D', '#0B453F', '#D7C95F', '#D97848'];
 
 export interface ExplorePhaseProps {
     config: DebateArenaConfig;
@@ -23,10 +23,10 @@ export const ExplorePhase: React.FC<ExplorePhaseProps> = ({ config, state, onMar
     return (
         <div>
             <div className="mb-4">
-                <h2 className="text-lg font-black text-[#1A1A19] mb-1" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>
+                <h2 className="text-lg font-black text-[#08283B] mb-1" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>
                     Leer de betrokkenen kennen
                 </h2>
-                <p className="text-xs text-[#6B6B66]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                <p className="text-xs text-[#445865]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                     Lees alle {config.stakeholders.length} perspectieven voordat je positie kiest.
                 </p>
             </div>
@@ -42,15 +42,15 @@ export const ExplorePhase: React.FC<ExplorePhaseProps> = ({ config, state, onMar
                             onClick={() => onSetActiveIndex(i)}
                             className={`shrink-0 flex flex-col items-center gap-1 px-3 py-2 rounded-xl border transition-all duration-200 ${
                                 isActive
-                                    ? 'border-[#8B6F9E] bg-[#8B6F9E]/10'
-                                    : 'border-[#E8E6DF] bg-white hover:border-[#8B6F9E]/40'
+                                    ? 'border-[#0B453F] bg-[#0B453F]/10'
+                                    : 'border-[#E7D8BD] bg-white hover:border-[#0B453F]/40'
                             }`}
                         >
                             <span className="text-lg leading-none">{sh.emoji}</span>
-                            <span className="text-[10px] font-bold text-[#3D3D38]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                            <span className="text-[10px] font-bold text-[#445865]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                                 {sh.name}
                             </span>
-                            {read && <span className="text-[9px] text-[#10B981] font-bold">✓ gelezen</span>}
+                            {read && <span className="text-[9px] text-[#5F947D] font-bold">✓ gelezen</span>}
                         </button>
                     );
                 })}
@@ -69,16 +69,16 @@ export const ExplorePhase: React.FC<ExplorePhaseProps> = ({ config, state, onMar
                         {active.emoji}
                     </div>
                     <div>
-                        <div className="font-black text-[#1A1A19] text-base" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>
+                        <div className="font-black text-[#08283B] text-base" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>
                             {active.name}
                         </div>
-                        <div className="text-xs text-[#6B6B66]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                        <div className="text-xs text-[#445865]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                             {active.role}
                         </div>
                     </div>
                 </div>
 
-                <p className="text-sm text-[#3D3D38] leading-relaxed mb-4" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                <p className="text-sm text-[#445865] leading-relaxed mb-4" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                     "{active.perspective}"
                 </p>
 
@@ -86,7 +86,7 @@ export const ExplorePhase: React.FC<ExplorePhaseProps> = ({ config, state, onMar
                     <div className="text-[10px] font-black uppercase tracking-widest mb-1" style={{ color, fontFamily: "'Outfit', system-ui, sans-serif" }}>
                         Kernargument
                     </div>
-                    <p className="text-sm text-[#3D3D38]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                    <p className="text-sm text-[#445865]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                         {active.keyArgument}
                     </p>
                 </div>
@@ -97,7 +97,7 @@ export const ExplorePhase: React.FC<ExplorePhaseProps> = ({ config, state, onMar
                 <button
                     onClick={() => onSetActiveIndex(Math.max(0, state.activeStakeholderIndex - 1))}
                     disabled={state.activeStakeholderIndex === 0}
-                    className="flex-1 py-2.5 border border-[#E8E6DF] rounded-xl text-sm font-bold text-[#6B6B66] disabled:opacity-30 transition-all"
+                    className="flex-1 py-2.5 border border-[#E7D8BD] rounded-xl text-sm font-bold text-[#445865] disabled:opacity-30 transition-all"
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                 >
                     ← Vorige
@@ -131,7 +131,7 @@ export const ExplorePhase: React.FC<ExplorePhaseProps> = ({ config, state, onMar
             {allRead && (!config.explorationQuiz || state.explorationQuizAnswered) && (
                 <button
                     onClick={onNext}
-                    className="w-full py-3.5 bg-gradient-to-r from-[#D97757] to-[#C46849] hover:from-[#C46849] hover:to-[#B05A3C] text-white rounded-xl font-bold text-sm transition-all duration-200 active:scale-[0.98] flex items-center justify-center gap-2"
+                    className="w-full py-3.5 bg-gradient-to-r from-[#D97848] to-[#D97848] hover:from-[#D97848] hover:to-[#D97848] text-white rounded-xl font-bold text-sm transition-all duration-200 active:scale-[0.98] flex items-center justify-center gap-2"
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                 >
                     Kies jouw positie
@@ -140,7 +140,7 @@ export const ExplorePhase: React.FC<ExplorePhaseProps> = ({ config, state, onMar
             )}
 
             {!allRead && (
-                <p className="text-center text-xs text-[#6B6B66] mt-2" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                <p className="text-center text-xs text-[#445865] mt-2" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                     Lees alle perspectieven om door te gaan ({state.stakeholdersRead.length}/{config.stakeholders.length} gelezen)
                 </p>
             )}

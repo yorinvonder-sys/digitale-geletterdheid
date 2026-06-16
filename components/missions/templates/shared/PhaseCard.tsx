@@ -17,20 +17,20 @@ export const PhaseCard: React.FC<PhaseCardProps> = ({
     description,
     children,
 }) => (
-    <div className="bg-white rounded-2xl border border-[#E8E6DF] p-5 mb-6">
+    <div className="bg-white rounded-2xl border border-[#E7D8BD] p-5 mb-6">
         <div className="flex items-center gap-3 mb-4">
-            <div className="w-10 h-10 bg-[#D97757]/10 rounded-xl flex items-center justify-center text-[#D97757]">
+            <div className="w-10 h-10 bg-[#D97848]/10 rounded-xl flex items-center justify-center text-[#D97848]">
                 {icon}
             </div>
             <div>
                 <span
-                    className="text-[10px] font-black text-[#D97757] uppercase tracking-widest"
+                    className="text-[10px] font-black text-[#D97848] uppercase tracking-widest"
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                 >
                     Fase {phaseNumber}/{totalPhases}
                 </span>
                 <h3
-                    className="text-lg font-black text-[#1A1A19]"
+                    className="text-lg font-black text-[#08283B]"
                     style={{ fontFamily: "'Newsreader', Georgia, serif" }}
                 >
                     {title}
@@ -38,7 +38,7 @@ export const PhaseCard: React.FC<PhaseCardProps> = ({
             </div>
         </div>
         <p
-            className="text-sm text-[#3D3D38] leading-relaxed mb-4"
+            className="text-sm text-[#445865] leading-relaxed mb-4"
             style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
         >
             {description}

@@ -176,8 +176,8 @@ export const StudentModal: React.FC<StudentModalProps> = ({ student, onClose, on
     const getPriorityColor = (priority: 'low' | 'medium' | 'high') => {
         switch (priority) {
             case 'high': return 'bg-red-100 text-red-600 border-red-200';
-            case 'medium': return 'bg-amber-100 text-amber-600 border-amber-200';
-            case 'low': return 'bg-emerald-100 text-emerald-600 border-emerald-200';
+            case 'medium': return 'bg-lab-gold text-lab-gold border-lab-gold';
+            case 'low': return 'bg-lab-sage text-lab-sage border-lab-sage';
         }
     };
 
@@ -194,44 +194,44 @@ export const StudentModal: React.FC<StudentModalProps> = ({ student, onClose, on
     return (
         <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-end md:items-center md:justify-center md:p-4" onClick={onClose}>
             <div ref={modalRef} role="dialog" aria-modal="true" aria-labelledby="student-modal-title" className="bg-white rounded-t-2xl md:rounded-2xl shadow-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto flex flex-col" onClick={e => e.stopPropagation()}>
-                <div className="p-4 border-b border-slate-100 flex items-center justify-between shrink-0">
+                <div className="p-4 border-b border-lab-muted flex items-center justify-between shrink-0">
                     <div className="flex items-center gap-3">
                         <div className="w-12 h-12 bg-indigo-100 rounded-xl flex items-center justify-center text-indigo-600">
                             <GraduationCap size={24} />
                         </div>
                         <div>
-                            <h2 className="text-lg font-black text-slate-900">{student.displayName}</h2>
-                            <p className="text-xs text-slate-400">{student.identifier}</p>
+                            <h2 className="text-lg font-black text-lab-muted">{student.displayName}</h2>
+                            <p className="text-xs text-lab-muted">{student.identifier}</p>
                         </div>
                     </div>
-                    <button onClick={onClose} className="p-2 hover:bg-slate-100 rounded-xl">
-                        <X size={18} className="text-slate-400" />
+                    <button onClick={onClose} className="p-2 hover:bg-lab-muted rounded-xl">
+                        <X size={18} className="text-lab-muted" />
                     </button>
                 </div>
 
                 {/* Tabs */}
-                <div className="px-4 border-b border-slate-100 flex gap-4 shrink-0">
+                <div className="px-4 border-b border-lab-muted flex gap-4 shrink-0">
                     <button
                         onClick={() => setActiveTab('overview')}
-                        className={`py-3 text-xs font-bold uppercase tracking-wider border-b-2 transition-colors ${activeTab === 'overview' ? 'border-indigo-600 text-indigo-600' : 'border-transparent text-slate-400 hover:text-slate-600'}`}
+                        className={`py-3 text-xs font-bold uppercase tracking-wider border-b-2 transition-colors ${activeTab === 'overview' ? 'border-indigo-600 text-indigo-600' : 'border-transparent text-lab-muted hover:text-lab-muted'}`}
                     >
                         Overzicht
                     </button>
                     <button
                         onClick={() => setActiveTab('missions')}
-                        className={`py-3 text-xs font-bold uppercase tracking-wider border-b-2 transition-colors ${activeTab === 'missions' ? 'border-indigo-600 text-indigo-600' : 'border-transparent text-slate-400 hover:text-slate-600'}`}
+                        className={`py-3 text-xs font-bold uppercase tracking-wider border-b-2 transition-colors ${activeTab === 'missions' ? 'border-indigo-600 text-indigo-600' : 'border-transparent text-lab-muted hover:text-lab-muted'}`}
                     >
                         Missies
                     </button>
                     <button
                         onClick={() => setActiveTab('slo')}
-                        className={`py-3 text-xs font-bold uppercase tracking-wider border-b-2 transition-colors ${activeTab === 'slo' ? 'border-indigo-600 text-indigo-600' : 'border-transparent text-slate-400 hover:text-slate-600'}`}
+                        className={`py-3 text-xs font-bold uppercase tracking-wider border-b-2 transition-colors ${activeTab === 'slo' ? 'border-indigo-600 text-indigo-600' : 'border-transparent text-lab-muted hover:text-lab-muted'}`}
                     >
                         SLO Doelen
                     </button>
                     <button
                         onClick={() => setActiveTab('overrides')}
-                        className={`py-3 text-xs font-bold uppercase tracking-wider border-b-2 transition-colors flex items-center gap-1.5 ${activeTab === 'overrides' ? 'border-indigo-600 text-indigo-600' : 'border-transparent text-slate-400 hover:text-slate-600'}`}
+                        className={`py-3 text-xs font-bold uppercase tracking-wider border-b-2 transition-colors flex items-center gap-1.5 ${activeTab === 'overrides' ? 'border-indigo-600 text-indigo-600' : 'border-transparent text-lab-muted hover:text-lab-muted'}`}
                     >
                         <Shield size={11} />
                         Overrides
@@ -241,14 +241,14 @@ export const StudentModal: React.FC<StudentModalProps> = ({ student, onClose, on
                     </button>
                     <button
                         onClick={() => setActiveTab('groei')}
-                        className={`py-3 text-xs font-bold uppercase tracking-wider border-b-2 transition-colors ${activeTab === 'groei' ? 'border-emerald-600 text-emerald-600' : 'border-transparent text-slate-400 hover:text-slate-600'}`}
+                        className={`py-3 text-xs font-bold uppercase tracking-wider border-b-2 transition-colors ${activeTab === 'groei' ? 'border-lab-sage text-lab-sage' : 'border-transparent text-lab-muted hover:text-lab-muted'}`}
                     >
                         Groei
                     </button>
                     {student.stats?.nulmetingResult && (
                         <button
                             onClick={() => setActiveTab('paspoort')}
-                            className={`py-3 text-xs font-bold uppercase tracking-wider border-b-2 transition-colors ${activeTab === 'paspoort' ? 'border-indigo-600 text-indigo-600' : 'border-transparent text-slate-400 hover:text-slate-600'}`}
+                            className={`py-3 text-xs font-bold uppercase tracking-wider border-b-2 transition-colors ${activeTab === 'paspoort' ? 'border-indigo-600 text-indigo-600' : 'border-transparent text-lab-muted hover:text-lab-muted'}`}
                         >
                             Paspoort
                         </button>
@@ -283,23 +283,23 @@ export const StudentModal: React.FC<StudentModalProps> = ({ student, onClose, on
                         <>
                             {/* Quick Stats */}
                             <div className="grid grid-cols-3 gap-2">
-                                <div className="bg-slate-50 rounded-xl p-3 text-center">
-                                    <div className="text-xl font-black text-slate-900">{student.stats?.xp || 0}</div>
-                                    <div className="text-[9px] text-slate-400 font-bold uppercase">XP</div>
+                                <div className="bg-lab-muted rounded-xl p-3 text-center">
+                                    <div className="text-xl font-black text-lab-muted">{student.stats?.xp || 0}</div>
+                                    <div className="text-[9px] text-lab-muted font-bold uppercase">XP</div>
                                 </div>
                                 <div className="bg-indigo-50 rounded-xl p-3 text-center">
                                     <div className="text-xl font-black text-indigo-600">{student.stats?.level || 1}</div>
                                     <div className="text-[9px] text-indigo-400 font-bold uppercase">Level</div>
                                 </div>
-                                <div className="bg-emerald-50 rounded-xl p-3 text-center">
-                                    <div className="text-xl font-black text-emerald-600">{student.stats?.missionsCompleted?.length || 0}</div>
-                                    <div className="text-[9px] text-emerald-400 font-bold uppercase">Missies</div>
+                                <div className="bg-lab-sage rounded-xl p-3 text-center">
+                                    <div className="text-xl font-black text-lab-sage">{student.stats?.missionsCompleted?.length || 0}</div>
+                                    <div className="text-[9px] text-lab-sage font-bold uppercase">Missies</div>
                                 </div>
                             </div>
 
                             {/* Badges */}
                             <div>
-                                <h3 className="text-[10px] font-black text-slate-500 uppercase mb-2">Badges</h3>
+                                <h3 className="text-[10px] font-black text-lab-muted uppercase mb-2">Badges</h3>
                                 <div className="flex flex-wrap gap-1">
                                     {(student.stats?.badges || []).length > 0 ? (
                                         (student.stats?.badges || []).map(b => {
@@ -309,15 +309,15 @@ export const StudentModal: React.FC<StudentModalProps> = ({ student, onClose, on
                                             ) : null;
                                         })
                                     ) : (
-                                        <span className="text-slate-400 text-xs">Nog geen badges</span>
+                                        <span className="text-lab-muted text-xs">Nog geen badges</span>
                                     )}
                                 </div>
                             </div>
 
                             {/* Teacher Notes Section */}
-                            <div className="border-t border-slate-100 pt-4">
+                            <div className="border-t border-lab-muted pt-4">
                                 <div className="flex items-center justify-between mb-3">
-                                    <h3 className="text-[10px] font-black text-slate-500 uppercase flex items-center gap-2">
+                                    <h3 className="text-[10px] font-black text-lab-muted uppercase flex items-center gap-2">
                                         <StickyNote size={12} />
                                         Docentnotities ({notes.length})
                                     </h3>
@@ -344,23 +344,23 @@ export const StudentModal: React.FC<StudentModalProps> = ({ student, onClose, on
                                             exit={{ height: 0, opacity: 0 }}
                                             className="mb-3 overflow-hidden"
                                         >
-                                            <div className="bg-slate-50 rounded-xl p-3 space-y-3">
+                                            <div className="bg-lab-muted rounded-xl p-3 space-y-3">
                                                 <textarea
                                                     value={noteText}
                                                     onChange={(e) => setNoteText(e.target.value)}
                                                     placeholder="Schrijf een notitie..."
-                                                    className="w-full p-3 border border-slate-200 rounded-lg text-sm resize-none focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500"
+                                                    className="w-full p-3 border border-lab-muted rounded-lg text-sm resize-none focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500"
                                                     rows={3}
                                                 />
                                                 <div className="flex items-center gap-2">
-                                                    <span className="text-xs font-bold text-slate-500">Prioriteit:</span>
+                                                    <span className="text-xs font-bold text-lab-muted">Prioriteit:</span>
                                                     {(['low', 'medium', 'high'] as const).map(p => (
                                                         <button
                                                             key={p}
                                                             onClick={() => setNotePriority(p)}
                                                             className={`px-2 py-1 rounded-lg text-xs font-bold transition-all ${notePriority === p
                                                                 ? getPriorityColor(p) + ' ring-2 ring-offset-1'
-                                                                : 'bg-slate-100 text-slate-400 hover:bg-slate-200'
+                                                                : 'bg-lab-muted text-lab-muted hover:bg-lab-muted'
                                                                 }`}
                                                         >
                                                             {getPriorityEmoji(p)} {p === 'high' ? 'Hoog' : p === 'medium' ? 'Medium' : 'Laag'}
@@ -382,7 +382,7 @@ export const StudentModal: React.FC<StudentModalProps> = ({ student, onClose, on
                                                             setEditingNote(null);
                                                             setNoteText('');
                                                         }}
-                                                        className="px-3 py-2 bg-slate-200 text-slate-600 rounded-lg text-xs font-bold hover:bg-slate-300 transition-colors"
+                                                        className="px-3 py-2 bg-lab-muted text-lab-muted rounded-lg text-xs font-bold hover:bg-lab-muted transition-colors"
                                                     >
                                                         Annuleren
                                                     </button>
@@ -395,10 +395,10 @@ export const StudentModal: React.FC<StudentModalProps> = ({ student, onClose, on
                                 {/* Notes List */}
                                 {loadingNotes ? (
                                     <div className="flex items-center justify-center py-4">
-                                        <Loader2 size={20} className="animate-spin text-slate-400" />
+                                        <Loader2 size={20} className="animate-spin text-lab-muted" />
                                     </div>
                                 ) : notes.length === 0 ? (
-                                    <div className="text-center py-4 text-slate-400 text-xs">
+                                    <div className="text-center py-4 text-lab-muted text-xs">
                                         Nog geen notities voor deze leerling
                                     </div>
                                 ) : (
@@ -410,8 +410,8 @@ export const StudentModal: React.FC<StudentModalProps> = ({ student, onClose, on
                                             >
                                                 <div className="flex items-start justify-between gap-2">
                                                     <div className="flex-1">
-                                                        <p className="text-sm text-slate-700">{note.text}</p>
-                                                        <p className="text-[10px] text-slate-400 mt-1">
+                                                        <p className="text-sm text-lab-muted">{note.text}</p>
+                                                        <p className="text-[10px] text-lab-muted mt-1">
                                                             {note.created_at ? new Date(note.created_at).toLocaleDateString('nl-NL') : 'Recent'}
                                                         </p>
                                                     </div>
@@ -444,10 +444,10 @@ export const StudentModal: React.FC<StudentModalProps> = ({ student, onClose, on
                             </div>
 
                             {/* Actions Hierarchy */}
-                            <div className="border-t border-slate-100 pt-4 space-y-4">
+                            <div className="border-t border-lab-muted pt-4 space-y-4">
                                 {/* Interaction Actions */}
                                 <div>
-                                    <h3 className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-3">Directe Interactie</h3>
+                                    <h3 className="text-[10px] font-black text-lab-muted uppercase tracking-widest mb-3">Directe Interactie</h3>
                                     <div className="grid grid-cols-2 gap-2">
                                         <button
                                             onClick={onMessage}
@@ -457,13 +457,13 @@ export const StudentModal: React.FC<StudentModalProps> = ({ student, onClose, on
                                         </button>
                                         <button
                                             onClick={() => setShowXPModal(true)}
-                                            className="flex items-center justify-center gap-2 p-3 bg-emerald-50 text-emerald-600 rounded-xl font-bold text-xs hover:bg-emerald-100 transition-colors"
+                                            className="flex items-center justify-center gap-2 p-3 bg-lab-sage text-lab-sage rounded-xl font-bold text-xs hover:bg-lab-sage transition-colors"
                                         >
                                             <Zap size={14} /> + XP
                                         </button>
                                         <button
                                             onClick={onBadge}
-                                            className="flex items-center justify-center gap-2 p-3 bg-amber-50 text-amber-600 rounded-xl font-bold text-xs hover:bg-amber-100 transition-colors"
+                                            className="flex items-center justify-center gap-2 p-3 bg-lab-gold text-lab-gold rounded-xl font-bold text-xs hover:bg-lab-gold transition-colors"
                                         >
                                             <Award size={14} /> Badge
                                         </button>
@@ -478,7 +478,7 @@ export const StudentModal: React.FC<StudentModalProps> = ({ student, onClose, on
 
                                 {/* Monitoring Actions */}
                                 <div>
-                                    <h3 className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-3">Monitoring & Hulp</h3>
+                                    <h3 className="text-[10px] font-black text-lab-muted uppercase tracking-widest mb-3">Monitoring & Hulp</h3>
                                     <button
                                         onClick={onLiveView}
                                         className="w-full flex items-center justify-center gap-2 p-3 bg-sky-50 text-sky-600 rounded-xl font-bold text-xs hover:bg-sky-100 transition-colors"
@@ -589,16 +589,16 @@ const MissionScoresView: React.FC<{
 
     const statusColor = (s: 'completed' | 'in_progress' | 'not_started') => {
         switch (s) {
-            case 'completed': return 'bg-emerald-100 text-emerald-700';
-            case 'in_progress': return 'bg-amber-100 text-amber-700';
-            case 'not_started': return 'bg-slate-100 text-slate-400';
+            case 'completed': return 'bg-lab-sage text-lab-sage';
+            case 'in_progress': return 'bg-lab-gold text-lab-gold';
+            case 'not_started': return 'bg-lab-muted text-lab-muted';
         }
     };
 
     if (loading) {
         return (
             <div className="flex items-center justify-center py-8">
-                <Loader2 size={20} className="animate-spin text-slate-400" />
+                <Loader2 size={20} className="animate-spin text-lab-muted" />
             </div>
         );
     }
@@ -606,15 +606,15 @@ const MissionScoresView: React.FC<{
     return (
         <div className="space-y-3">
             <div className="flex items-center justify-between">
-                <h3 className="text-[10px] font-black text-slate-500 uppercase flex items-center gap-2">
+                <h3 className="text-[10px] font-black text-lab-muted uppercase flex items-center gap-2">
                     <Target size={12} /> Missie Voortgang ({completedIds.length}/{allMissions.length})
                 </h3>
             </div>
 
             {/* Progress bar */}
-            <div className="w-full bg-slate-100 rounded-full h-2">
+            <div className="w-full bg-lab-muted rounded-full h-2">
                 <div
-                    className="bg-emerald-500 h-2 rounded-full transition-all"
+                    className="bg-lab-sage h-2 rounded-full transition-all"
                     style={{ width: `${allMissions.length > 0 ? (completedIds.length / allMissions.length) * 100 : 0}%` }}
                 />
             </div>
@@ -632,13 +632,13 @@ const MissionScoresView: React.FC<{
                     const hasSteps = agent?.steps && agent.steps.length > 0;
 
                     return (
-                        <div key={mission.id} className="flex items-center gap-3 p-3 bg-slate-50 rounded-xl">
+                        <div key={mission.id} className="flex items-center gap-3 p-3 bg-lab-muted rounded-xl">
                             <div className={`w-8 h-8 rounded-lg flex items-center justify-center text-xs font-black ${statusColor(status)}`}>
                                 {status === 'completed' ? '✓' : mission.short[0]}
                             </div>
                             <div className="flex-1 min-w-0">
                                 <div className="flex items-center gap-2">
-                                    <span className="font-bold text-sm text-slate-900 truncate">{mission.name}</span>
+                                    <span className="font-bold text-sm text-lab-muted truncate">{mission.name}</span>
                                     {overrideCount > 0 && (
                                         <span className={`inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded text-[9px] font-bold ${
                                             rejected ? 'bg-red-100 text-red-600' : 'bg-indigo-100 text-indigo-600'
@@ -653,7 +653,7 @@ const MissionScoresView: React.FC<{
                                         {statusLabel(status)}
                                     </span>
                                     {lastActive && (
-                                        <span className="flex items-center gap-1 text-[9px] text-slate-400">
+                                        <span className="flex items-center gap-1 text-[9px] text-lab-muted">
                                             <Clock size={8} />
                                             {new Date(lastActive).toLocaleDateString('nl-NL', { day: 'numeric', month: 'short' })}
                                         </span>
@@ -662,10 +662,10 @@ const MissionScoresView: React.FC<{
                             </div>
                             {score !== null && score !== undefined && (
                                 <div className="text-right mr-1">
-                                    <div className={`text-lg font-black ${score >= 70 ? 'text-emerald-600' : score >= 50 ? 'text-amber-600' : 'text-red-500'}`}>
+                                    <div className={`text-lg font-black ${score >= 70 ? 'text-lab-sage' : score >= 50 ? 'text-lab-gold' : 'text-red-500'}`}>
                                         {score}%
                                     </div>
-                                    <div className="text-[8px] font-bold text-slate-400 uppercase">Score</div>
+                                    <div className="text-[8px] font-bold text-lab-muted uppercase">Score</div>
                                 </div>
                             )}
                             {hasSteps && (
@@ -684,7 +684,7 @@ const MissionScoresView: React.FC<{
             </div>
 
             {allMissions.length === 0 && (
-                <div className="text-center py-4 text-slate-400 text-xs">
+                <div className="text-center py-4 text-lab-muted text-xs">
                     Geen missies gevonden voor leerjaar {yearGroup}
                 </div>
             )}
@@ -700,7 +700,7 @@ const OverrideHistoryView: React.FC<{
     if (loading) {
         return (
             <div className="flex items-center justify-center py-8">
-                <Loader2 size={20} className="animate-spin motion-reduce:animate-none text-slate-400" />
+                <Loader2 size={20} className="animate-spin motion-reduce:animate-none text-lab-muted" />
             </div>
         );
     }
@@ -708,11 +708,11 @@ const OverrideHistoryView: React.FC<{
     if (overrides.length === 0) {
         return (
             <div className="text-center py-8">
-                <div className="w-12 h-12 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                    <Shield size={20} className="text-slate-400" />
+                <div className="w-12 h-12 bg-lab-muted rounded-full flex items-center justify-center mx-auto mb-3">
+                    <Shield size={20} className="text-lab-muted" />
                 </div>
-                <p className="text-sm font-bold text-slate-500">Geen overrides</p>
-                <p className="text-xs text-slate-400 mt-1">
+                <p className="text-sm font-bold text-lab-muted">Geen overrides</p>
+                <p className="text-xs text-lab-muted mt-1">
                     Ga naar de tab &quot;Missies&quot; om AI-beoordelingen te overrulen.
                 </p>
             </div>
@@ -730,7 +730,7 @@ const OverrideHistoryView: React.FC<{
     return (
         <div className="space-y-4">
             <div className="flex items-center justify-between">
-                <h3 className="text-[10px] font-black text-slate-500 uppercase flex items-center gap-2">
+                <h3 className="text-[10px] font-black text-lab-muted uppercase flex items-center gap-2">
                     <Shield size={12} /> Override Geschiedenis ({overrides.length})
                 </h3>
             </div>
@@ -748,37 +748,37 @@ const OverrideHistoryView: React.FC<{
 
                 return (
                     <div key={missionId} className="space-y-2">
-                        <h4 className="text-xs font-black text-slate-700">{missionTitle}</h4>
+                        <h4 className="text-xs font-black text-lab-muted">{missionTitle}</h4>
                         {missionOverrides.map(o => {
                             const stepTitle = agent?.steps?.[o.step_number]?.title || `Stap ${o.step_number + 1}`;
 
                             return (
                                 <div key={o.id} className={`p-3 rounded-xl border ${
                                     o.override_type === 'approve'
-                                        ? 'bg-emerald-50 border-emerald-100'
+                                        ? 'bg-lab-sage border-lab-sage'
                                         : 'bg-red-50 border-red-100'
                                 }`}>
                                     <div className="flex items-center gap-2 mb-1">
                                         {o.override_type === 'approve' ? (
-                                            <CheckCircle2 size={14} className="text-emerald-600" />
+                                            <CheckCircle2 size={14} className="text-lab-sage" />
                                         ) : (
                                             <XCircle size={14} className="text-red-600" />
                                         )}
-                                        <span className="font-bold text-sm text-slate-900">
+                                        <span className="font-bold text-sm text-lab-muted">
                                             Stap {o.step_number + 1}: {stepTitle}
                                         </span>
                                         <span className={`ml-auto text-[9px] font-bold px-1.5 py-0.5 rounded ${
                                             o.override_type === 'approve'
-                                                ? 'bg-emerald-100 text-emerald-700'
+                                                ? 'bg-lab-sage text-lab-sage'
                                                 : 'bg-red-100 text-red-700'
                                         }`}>
                                             {o.override_type === 'approve' ? 'Goedgekeurd' : 'Afgewezen'}
                                         </span>
                                     </div>
                                     {o.reason && (
-                                        <p className="text-xs text-slate-600 italic mt-1">&ldquo;{o.reason}&rdquo;</p>
+                                        <p className="text-xs text-lab-muted italic mt-1">&ldquo;{o.reason}&rdquo;</p>
                                     )}
-                                    <p className="text-[9px] text-slate-400 mt-1 flex items-center gap-1">
+                                    <p className="text-[9px] text-lab-muted mt-1 flex items-center gap-1">
                                         <Clock size={8} />
                                         {new Date(o.created_at).toLocaleDateString('nl-NL', {
                                             day: 'numeric', month: 'short', year: 'numeric',

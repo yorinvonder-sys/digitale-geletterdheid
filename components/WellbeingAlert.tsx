@@ -19,7 +19,7 @@ export const WellbeingAlert: React.FC<Props> = ({ match, onDismiss }) => {
 
   return (
     <div
-      className="fixed inset-0 z-[9999] bg-slate-900/80 backdrop-blur-sm flex items-center justify-center p-4"
+      className="fixed inset-0 z-[9999] bg-lab-muted/80 backdrop-blur-sm flex items-center justify-center p-4"
       role="alertdialog"
       aria-modal="true"
       aria-labelledby="wellbeing-title"
@@ -45,7 +45,7 @@ export const WellbeingAlert: React.FC<Props> = ({ match, onDismiss }) => {
 
         {/* Body */}
         <div className="p-6">
-          <p id="wellbeing-desc" className="text-slate-600 text-sm leading-relaxed mb-5">
+          <p id="wellbeing-desc" className="text-lab-muted text-sm leading-relaxed mb-5">
             We merkten dat je iets schreef waarover we ons een beetje zorgen maken.
             Dat kan helemaal niets zijn, maar als je ergens mee zit, zijn er mensen
             die je kunnen helpen. Je bent niet alleen.
@@ -59,7 +59,7 @@ export const WellbeingAlert: React.FC<Props> = ({ match, onDismiss }) => {
                 href={hulplijn.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-start gap-3 p-3 rounded-xl border border-slate-200 hover:border-sky-300 hover:bg-sky-50 transition-colors group"
+                className="flex items-start gap-3 p-3 rounded-xl border border-lab-muted hover:border-sky-300 hover:bg-sky-50 transition-colors group"
               >
                 <div className="w-10 h-10 rounded-lg bg-sky-50 group-hover:bg-sky-100 flex items-center justify-center shrink-0">
                   {hulplijn.naam.includes('113') ? (
@@ -70,24 +70,24 @@ export const WellbeingAlert: React.FC<Props> = ({ match, onDismiss }) => {
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2">
-                    <span className="font-bold text-sm text-slate-800">{hulplijn.naam}</span>
-                    <ExternalLink size={12} className="text-slate-400" />
+                    <span className="font-bold text-sm text-lab-muted">{hulplijn.naam}</span>
+                    <ExternalLink size={12} className="text-lab-muted" />
                   </div>
                   <p className="text-xs text-sky-600 font-medium">{hulplijn.nummer}</p>
-                  <p className="text-xs text-slate-500">{hulplijn.beschrijving}</p>
+                  <p className="text-xs text-lab-muted">{hulplijn.beschrijving}</p>
                 </div>
               </a>
             ))}
           </div>
 
-          <p className="text-xs text-slate-400 text-center leading-relaxed mb-4">
+          <p className="text-xs text-lab-muted text-center leading-relaxed mb-4">
             Je docent krijgt een melding dat je misschien hulp kunt gebruiken.
             Ze zullen discreet even bij je checken.
           </p>
 
           <button
             onClick={onDismiss}
-            className="w-full py-3 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl font-bold text-sm transition-colors"
+            className="w-full py-3 bg-lab-muted hover:bg-lab-muted text-lab-muted rounded-xl font-bold text-sm transition-colors"
           >
             Ik begrijp het, terug naar de missie
           </button>

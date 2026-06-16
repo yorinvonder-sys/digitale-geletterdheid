@@ -363,14 +363,14 @@ const ResultVisual: React.FC<{
 }> = ({ type, content, isIdeal, isSuccess, exampleImage, generatedImage }) => {
     // Icons & Colors based on type
     const getBgColor = () => {
-        if (isIdeal) return 'bg-[#10B981]/10 border-[#10B981]/30';
-        if (isSuccess) return 'bg-[#10B981]/10 border-[#10B981]/30';
-        return 'bg-[#D97757]/10 border-[#D97757]/30';
+        if (isIdeal) return 'bg-[#5F947D]/10 border-[#5F947D]/30';
+        if (isSuccess) return 'bg-[#5F947D]/10 border-[#5F947D]/30';
+        return 'bg-[#D97848]/10 border-[#D97848]/30';
     };
 
     const getHeader = () => {
-        if (isIdeal) return <div className="flex items-center gap-2 text-[#10B981] mb-2" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}><Target size={16} /> <span className="font-bold">Ideaal Resultaat</span></div>;
-        return <div className="flex items-center gap-2 text-[#3D3D38] mb-2" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}><Bot size={16} /> <span className="font-bold">Jouw Resultaat</span></div>;
+        if (isIdeal) return <div className="flex items-center gap-2 text-[#5F947D] mb-2" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}><Target size={16} /> <span className="font-bold">Ideaal Resultaat</span></div>;
+        return <div className="flex items-center gap-2 text-[#445865] mb-2" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}><Bot size={16} /> <span className="font-bold">Jouw Resultaat</span></div>;
     };
 
     // IMAGE CHALLENGE VISUALIZATION
@@ -381,7 +381,7 @@ const ResultVisual: React.FC<{
         return (
             <div className={`p-4 rounded-2xl border ${getBgColor()} h-full flex flex-col`}>
                 {getHeader()}
-                <div className="flex-1 min-h-[200px] bg-[#F0EEE8] rounded-xl flex flex-col items-center justify-center p-4 text-center relative overflow-hidden group">
+                <div className="flex-1 min-h-[200px] bg-[#FCF6EA] rounded-xl flex flex-col items-center justify-center p-4 text-center relative overflow-hidden group">
                     {/* Show actual image if available */}
                     {imageToShow ? (
                         <>
@@ -390,37 +390,37 @@ const ResultVisual: React.FC<{
                                 alt={isIdeal ? "Voorbeeld resultaat" : "Jouw gegenereerde afbeelding"}
                                 className="absolute inset-0 w-full h-full object-cover rounded-xl opacity-90"
                             />
-                            <div className="absolute inset-0 bg-gradient-to-t from-[#1A1A19]/70 via-transparent to-transparent" />
+                            <div className="absolute inset-0 bg-gradient-to-t from-[#08283B]/70 via-transparent to-transparent" />
                             <div className="absolute bottom-4 left-4 right-4 text-left z-10">
                                 <p className="text-white text-sm font-medium drop-shadow-lg" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                                     {content.replace(/^De AI.*?:\s*/i, '')}
                                 </p>
                             </div>
-                            <div className={`absolute top-2 right-2 text-white text-[10px] uppercase font-bold px-2 py-0.5 rounded-full z-10`} style={{ backgroundColor: isIdeal || isSuccess ? '#10B981' : '#D97757' }}>
+                            <div className={`absolute top-2 right-2 text-white text-[10px] uppercase font-bold px-2 py-0.5 rounded-full z-10`} style={{ backgroundColor: isIdeal || isSuccess ? '#5F947D' : '#D97848' }}>
                                 {isIdeal ? 'Perfect' : isSuccess ? 'Goed gedaan!' : 'Jouw resultaat'}
                             </div>
                         </>
                     ) : (
                         <>
                             {/* Simulated AI canvas - shows what the AI would produce */}
-                            <div className="absolute inset-0 bg-gradient-to-br from-[#F5F3EE] to-[#E8E6DF]" />
+                            <div className="absolute inset-0 bg-gradient-to-br from-[#F5F3EE] to-[#E7D8BD]" />
                             {/* Abstract shapes to simulate a vague/incomplete image */}
-                            <div className="absolute top-1/4 left-1/4 w-20 h-20 bg-[#D97757]/8 rounded-full blur-2xl" />
-                            <div className="absolute bottom-1/4 right-1/4 w-28 h-28 bg-[#8B6F9E]/8 rounded-full blur-3xl" />
-                            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-14 h-14 bg-[#D97757]/5 rounded-xl blur-lg" />
+                            <div className="absolute top-1/4 left-1/4 w-20 h-20 bg-[#D97848]/8 rounded-full blur-2xl" />
+                            <div className="absolute bottom-1/4 right-1/4 w-28 h-28 bg-[#0B453F]/8 rounded-full blur-3xl" />
+                            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-14 h-14 bg-[#D97848]/5 rounded-xl blur-lg" />
 
                             <div className="relative z-10 flex flex-col items-center gap-3 px-4">
                                 <div className="p-3 rounded-2xl" style={{ backgroundColor: 'rgba(217,119,87,0.1)' }}>
-                                    <Image size={28} className="text-[#D97757]" />
+                                    <Image size={28} className="text-[#D97848]" />
                                 </div>
-                                <div className="bg-white/80 backdrop-blur-sm rounded-xl px-4 py-3 border border-[#E8E6DF] max-w-[90%]">
-                                    <p className="text-[13px] text-[#3D3D38] font-medium text-center leading-relaxed" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                                <div className="bg-white/80 backdrop-blur-sm rounded-xl px-4 py-3 border border-[#E7D8BD] max-w-[90%]">
+                                    <p className="text-[13px] text-[#445865] font-medium text-center leading-relaxed" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                                         {content.replace(/^De AI.*?:\s*/i, '')}
                                     </p>
                                 </div>
-                                <p className="text-[10px] text-[#6B6B66] italic">Simulatie — zo zou de AI je prompt interpreteren</p>
+                                <p className="text-[10px] text-[#445865] italic">Simulatie — zo zou de AI je prompt interpreteren</p>
                             </div>
-                            {isSuccess && <div className="absolute top-2 right-2 text-white text-[10px] uppercase font-bold px-2 py-0.5 rounded-full" style={{ backgroundColor: '#10B981' }}>Goed gedaan!</div>}
+                            {isSuccess && <div className="absolute top-2 right-2 text-white text-[10px] uppercase font-bold px-2 py-0.5 rounded-full" style={{ backgroundColor: '#5F947D' }}>Goed gedaan!</div>}
                         </>
                     )}
                 </div>
@@ -433,18 +433,18 @@ const ResultVisual: React.FC<{
         return (
             <div className={`p-4 rounded-2xl border ${getBgColor()} h-full flex flex-col font-mono text-sm`}>
                 {getHeader()}
-                <div className="flex-1 bg-[#1A1A19] rounded-xl p-4 overflow-x-auto relative">
+                <div className="flex-1 bg-[#08283B] rounded-xl p-4 overflow-x-auto relative">
                     <div className="flex gap-1.5 mb-3 opacity-50">
                         <div className="w-2.5 h-2.5 rounded-full bg-red-500" />
-                        <div className="w-2.5 h-2.5 rounded-full bg-yellow-500" />
+                        <div className="w-2.5 h-2.5 rounded-full bg-lab-gold" />
                         <div className="w-2.5 h-2.5 rounded-full bg-green-500" />
                     </div>
-                    <code className="text-[#E8E6DF] block leading-relaxed">
-                        <span className="text-[#8B6F9E]">def</span> <span className="text-[#D97757]">calculator</span>():<br />
-                        &nbsp;&nbsp;<span className="text-[#6B6B66]"># {content.substring(0, 50)}...</span><br />
-                        &nbsp;&nbsp;<span className="text-[#8B6F9E]">return</span> result
+                    <code className="text-[#E7D8BD] block leading-relaxed">
+                        <span className="text-[#0B453F]">def</span> <span className="text-[#D97848]">calculator</span>():<br />
+                        &nbsp;&nbsp;<span className="text-[#445865]"># {content.substring(0, 50)}...</span><br />
+                        &nbsp;&nbsp;<span className="text-[#0B453F]">return</span> result
                     </code>
-                    <div className="mt-4 pt-4 border-t border-[#3D3D38] text-xs text-[#6B6B66]">
+                    <div className="mt-4 pt-4 border-t border-[#445865] text-xs text-[#445865]">
                         // Output: {content}
                     </div>
                 </div>
@@ -456,16 +456,16 @@ const ResultVisual: React.FC<{
     return (
         <div className={`p-4 rounded-2xl border ${getBgColor()} h-full flex flex-col`}>
             {getHeader()}
-            <div className="flex-1 bg-white rounded-xl p-4 text-[#3D3D38] shadow-sm relative overflow-y-auto max-h-[300px]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
-                <div className="absolute top-0 left-0 w-full h-1 bg-[#E8E6DF]" />
+            <div className="flex-1 bg-white rounded-xl p-4 text-[#445865] shadow-sm relative overflow-y-auto max-h-[300px]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                <div className="absolute top-0 left-0 w-full h-1 bg-[#E7D8BD]" />
                 {/* Simulate paper lines */}
                 <div className="space-y-3">
-                    <div className="h-4 bg-[#F0EEE8] rounded w-3/4" />
-                    <div className="h-4 bg-[#F0EEE8] rounded w-full" />
-                    <div className="h-4 bg-[#F0EEE8] rounded w-5/6" />
+                    <div className="h-4 bg-[#FCF6EA] rounded w-3/4" />
+                    <div className="h-4 bg-[#FCF6EA] rounded w-full" />
+                    <div className="h-4 bg-[#FCF6EA] rounded w-5/6" />
                 </div>
 
-                <div className="mt-4 p-3 bg-[#FAF9F0] rounded-lg text-sm font-medium border-l-4 border-[#D97757]">
+                <div className="mt-4 p-3 bg-[#FCF6EA] rounded-lg text-sm font-medium border-l-4 border-[#D97848]">
                     "{content}"
                 </div>
             </div>
@@ -581,34 +581,34 @@ export const PromptMasterMission: React.FC<Props> = ({ onBack, onComplete, vsoPr
 
     const getLevelColor = (level: string) => {
         switch (level) {
-            case 'beginner': return 'from-[#2A9D8F] to-[#10B981]';
-            case 'gevorderd': return 'from-[#D97757] to-[#C46849]';
-            case 'expert': return 'from-[#8B6F9E] to-[#D97757]';
-            default: return 'from-[#2A9D8F] to-[#D97757]';
+            case 'beginner': return 'from-[#5F947D] to-[#5F947D]';
+            case 'gevorderd': return 'from-[#D97848] to-[#D97848]';
+            case 'expert': return 'from-[#0B453F] to-[#D97848]';
+            default: return 'from-[#5F947D] to-[#D97848]';
         }
     };
 
     // INTRO SCREEN
     if (phase === 'intro') {
         return (
-            <div className="min-h-screen overflow-y-auto bg-[#FAF9F0] text-[#1A1A19] flex flex-col" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+            <div className="min-h-screen overflow-y-auto bg-[#FCF6EA] text-[#08283B] flex flex-col" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                 {/* Header */}
-                <header className="bg-white border-b border-[#E8E6DF] px-6 py-4 flex items-center justify-between">
+                <header className="bg-white border-b border-[#E7D8BD] px-6 py-4 flex items-center justify-between">
                     <button
                         onClick={onBack}
-                        className="flex items-center gap-2 text-[#6B6B66] hover:text-[#1A1A19] transition-all duration-300 font-bold text-sm uppercase tracking-widest"
+                        className="flex items-center gap-2 text-[#445865] hover:text-[#08283B] transition-all duration-300 font-bold text-sm uppercase tracking-widest"
                     >
                         <ArrowLeft size={16} /> Terug
                     </button>
                     <div className="flex items-center gap-3">
-                        <div className="p-2 bg-[#D97757]/10 text-[#D97757] rounded-xl">
+                        <div className="p-2 bg-[#D97848]/10 text-[#D97848] rounded-xl">
                             <Sparkles size={24} />
                         </div>
                         <div>
                             <h1 className="text-lg font-black uppercase tracking-tight flex items-center gap-2" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>
-                                Prompt Lab <Zap size={16} className="text-[#D97757]" />
+                                Prompt Lab <Zap size={16} className="text-[#D97848]" />
                             </h1>
-                            <p className="text-[10px] text-[#6B6B66] uppercase tracking-widest font-bold">
+                            <p className="text-[10px] text-[#445865] uppercase tracking-widest font-bold">
                                 Prompt Engineering
                             </p>
                         </div>
@@ -619,43 +619,43 @@ export const PromptMasterMission: React.FC<Props> = ({ onBack, onComplete, vsoPr
                 {/* Content */}
                 <div className="flex-1 flex items-center justify-center p-6 md:p-12">
                     <div className="max-w-2xl mx-auto text-center">
-                        <div className="w-24 h-24 rounded-[2rem] flex items-center justify-center mx-auto mb-8 shadow-2xl text-white" style={{ background: 'linear-gradient(135deg, #D97757, #C46849)', boxShadow: '0 25px 50px -12px rgba(217,119,87,0.3)' }}>
+                        <div className="w-24 h-24 rounded-[2rem] flex items-center justify-center mx-auto mb-8 shadow-2xl text-white" style={{ background: 'linear-gradient(135deg, #D97848, #D97848)', boxShadow: '0 25px 50px -12px rgba(217,119,87,0.3)' }}>
                             <Sparkles size={48} />
                         </div>
 
-                        <h2 className="text-3xl md:text-4xl font-black mb-6 text-[#1A1A19]" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>
-                            Leer Prompt Engineering door te <span className="text-[#D97757]">DOEN</span>
+                        <h2 className="text-3xl md:text-4xl font-black mb-6 text-[#08283B]" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>
+                            Leer Prompt Engineering door te <span className="text-[#D97848]">DOEN</span>
                         </h2>
 
-                        <p className="text-lg text-[#6B6B66] mb-10 leading-relaxed">
+                        <p className="text-lg text-[#445865] mb-10 leading-relaxed">
                             Typ je eigen prompts, zie wat de AI maakt, en ontdek wat er beter kan!
                         </p>
 
                         {/* Levels Preview */}
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-10">
-                            <div className="bg-white rounded-2xl p-5 border border-[#E8E6DF]">
+                            <div className="bg-white rounded-2xl p-5 border border-[#E7D8BD]">
                                 <div className="text-3xl mb-2">🌱</div>
-                                <h3 className="font-bold mb-1 text-[#2A9D8F]">Beginner</h3>
-                                <p className="text-xs text-[#6B6B66]">Specifiek zijn, context geven</p>
+                                <h3 className="font-bold mb-1 text-[#5F947D]">Beginner</h3>
+                                <p className="text-xs text-[#445865]">Specifiek zijn, context geven</p>
                             </div>
-                            <div className="bg-white rounded-2xl p-5 border border-[#E8E6DF]">
+                            <div className="bg-white rounded-2xl p-5 border border-[#E7D8BD]">
                                 <div className="text-3xl mb-2">⚡</div>
-                                <h3 className="font-bold mb-1 text-[#D97757]">Gevorderd</h3>
-                                <p className="text-xs text-[#6B6B66]">Structuur, format, toon</p>
+                                <h3 className="font-bold mb-1 text-[#D97848]">Gevorderd</h3>
+                                <p className="text-xs text-[#445865]">Structuur, format, toon</p>
                             </div>
-                            <div className="bg-white rounded-2xl p-5 border border-[#E8E6DF]">
+                            <div className="bg-white rounded-2xl p-5 border border-[#E7D8BD]">
                                 <div className="text-3xl mb-2">🎯</div>
-                                <h3 className="font-bold mb-1 text-[#8B6F9E]">Expert</h3>
-                                <p className="text-xs text-[#6B6B66]">Persona's, beperkingen</p>
+                                <h3 className="font-bold mb-1 text-[#0B453F]">Expert</h3>
+                                <p className="text-xs text-[#445865]">Persona's, beperkingen</p>
                             </div>
                         </div>
 
                         <button
                             onClick={() => setPhase('challenge')}
                             className="text-white px-12 py-4 rounded-full font-bold text-lg transition-all duration-300 shadow-lg hover:shadow-xl"
-                            style={{ backgroundColor: '#D97757' }}
-                            onMouseEnter={e => (e.currentTarget.style.backgroundColor = '#C46849')}
-                            onMouseLeave={e => (e.currentTarget.style.backgroundColor = '#D97757')}
+                            style={{ backgroundColor: '#D97848' }}
+                            onMouseEnter={e => (e.currentTarget.style.backgroundColor = '#D97848')}
+                            onMouseLeave={e => (e.currentTarget.style.backgroundColor = '#D97848')}
                         >
                             Start het Lab! 🧪
                         </button>
@@ -670,11 +670,11 @@ export const PromptMasterMission: React.FC<Props> = ({ onBack, onComplete, vsoPr
         const passed = aiResponse && aiResponse.score >= effectiveMinScore;
 
         return (
-            <div className="min-h-screen overflow-y-auto bg-[#FAF9F0] text-[#1A1A19] flex flex-col" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+            <div className="min-h-screen overflow-y-auto bg-[#FCF6EA] text-[#08283B] flex flex-col" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                 {/* Header */}
-                <header className="bg-white border-b border-[#E8E6DF] px-6 py-4 sticky top-0 z-10">
+                <header className="bg-white border-b border-[#E7D8BD] px-6 py-4 sticky top-0 z-10">
                     <div className="max-w-4xl mx-auto flex items-center justify-between">
-                        <button onClick={onBack} className="flex items-center gap-2 text-[#6B6B66] hover:text-[#1A1A19] text-sm font-bold uppercase tracking-widest transition-all duration-300">
+                        <button onClick={onBack} className="flex items-center gap-2 text-[#445865] hover:text-[#08283B] text-sm font-bold uppercase tracking-widest transition-all duration-300">
                             <ArrowLeft size={16} /> Stoppen
                         </button>
                         <div className="flex items-center gap-3">
@@ -683,22 +683,22 @@ export const PromptMasterMission: React.FC<Props> = ({ onBack, onComplete, vsoPr
                                 <span className={`text-xs font-bold px-3 py-1.5 rounded-full border inline-flex items-center`}
                                     style={{
                                         backgroundColor: progress.currentLevel === 'beginner' ? 'rgba(42,157,143,0.1)' : progress.currentLevel === 'gevorderd' ? 'rgba(217,119,87,0.1)' : 'rgba(139,111,158,0.1)',
-                                        color: progress.currentLevel === 'beginner' ? '#2A9D8F' : progress.currentLevel === 'gevorderd' ? '#D97757' : '#8B6F9E',
+                                        color: progress.currentLevel === 'beginner' ? '#5F947D' : progress.currentLevel === 'gevorderd' ? '#D97848' : '#0B453F',
                                         borderColor: progress.currentLevel === 'beginner' ? 'rgba(42,157,143,0.3)' : progress.currentLevel === 'gevorderd' ? 'rgba(217,119,87,0.3)' : 'rgba(139,111,158,0.3)'
                                     }}>
                                     {progress.currentLevel === 'beginner' ? '🌱 Beginner' :
                                         progress.currentLevel === 'gevorderd' ? '⚡ Gevorderd' : '🎯 Expert'}
                                 </span>
-                                <span className="text-[10px] text-[#6B6B66] font-bold uppercase">
+                                <span className="text-[10px] text-[#445865] font-bold uppercase">
                                     Niveau {progress.currentLevel === 'beginner' ? 1 : progress.currentLevel === 'gevorderd' ? 2 : 3}/3
                                 </span>
                                 {vsoProfile && (
-                                    <span className="text-[10px] px-2 py-1 rounded-full border font-bold uppercase tracking-tight" style={{ backgroundColor: 'rgba(139,111,158,0.1)', color: '#8B6F9E', borderColor: 'rgba(139,111,158,0.3)' }}>
+                                    <span className="text-[10px] px-2 py-1 rounded-full border font-bold uppercase tracking-tight" style={{ backgroundColor: 'rgba(139,111,158,0.1)', color: '#0B453F', borderColor: 'rgba(139,111,158,0.3)' }}>
                                         {vsoProfile === 'dagbesteding' ? 'Focus: Ervaren' : 'Focus: Beheersen'}
                                     </span>
                                 )}
                             </div>
-                            <div className="h-4 w-px bg-[#E8E6DF]" />
+                            <div className="h-4 w-px bg-[#E7D8BD]" />
                             <div className="flex items-center gap-2">
                                 <div className="flex gap-0.5">
                                     {CHALLENGES.map((_, i) => (
@@ -707,20 +707,20 @@ export const PromptMasterMission: React.FC<Props> = ({ onBack, onComplete, vsoPr
                                             className="w-2 h-2 rounded-full transition-all duration-300"
                                             style={{
                                                 backgroundColor: progress.completedChallenges.includes(CHALLENGES[i].id)
-                                                    ? '#10B981'
+                                                    ? '#5F947D'
                                                     : i === globalIndex
-                                                        ? '#D97757'
-                                                        : '#E8E6DF'
+                                                        ? '#D97848'
+                                                        : '#E7D8BD'
                                             }}
                                         />
                                     ))}
                                 </div>
-                                <span className="text-xs text-[#6B6B66] font-bold">
+                                <span className="text-xs text-[#445865] font-bold">
                                     {globalIndex + 1}/{totalChallenges}
                                 </span>
                             </div>
                         </div>
-                        <div className="flex items-center gap-2 text-[#D97757]">
+                        <div className="flex items-center gap-2 text-[#D97848]">
                             <Star size={16} fill="currentColor" />
                             <span className="font-bold">{progress.totalScore}</span>
                         </div>
@@ -729,7 +729,7 @@ export const PromptMasterMission: React.FC<Props> = ({ onBack, onComplete, vsoPr
 
                 <div className="max-w-4xl mx-auto p-4 md:p-8">
                     {/* Goal Card */}
-                    <div className="bg-white rounded-2xl p-6 border border-[#E8E6DF] mb-6">
+                    <div className="bg-white rounded-2xl p-6 border border-[#E7D8BD] mb-6">
                         {/* Level Progress Bar */}
                         <div className="flex items-center gap-2 mb-4">
                             <div className="flex-1 flex items-center gap-1">
@@ -738,16 +738,16 @@ export const PromptMasterMission: React.FC<Props> = ({ onBack, onComplete, vsoPr
                                         <div className={`h-1.5 flex-1 rounded-full transition-all`}
                                             style={{
                                                 background: level === progress.currentLevel
-                                                    ? 'linear-gradient(to right, #D97757, #C46849)'
+                                                    ? 'linear-gradient(to right, #D97848, #D97848)'
                                                     : (level === 'beginner' || (level === 'gevorderd' && progress.currentLevel === 'expert'))
-                                                        ? '#10B981'
-                                                        : '#E8E6DF'
+                                                        ? '#5F947D'
+                                                        : '#E7D8BD'
                                             }} />
-                                        {i < 2 && <div className="w-2 h-2 rounded-full mx-1 bg-[#E8E6DF]" />}
+                                        {i < 2 && <div className="w-2 h-2 rounded-full mx-1 bg-[#E7D8BD]" />}
                                     </div>
                                 ))}
                             </div>
-                            <span className="text-[10px] text-[#6B6B66] font-bold">
+                            <span className="text-[10px] text-[#445865] font-bold">
                                 {progress.currentLevel === 'beginner' ? '2 niveaus te gaan' :
                                     progress.currentLevel === 'gevorderd' ? '1 niveau te gaan' : 'Laatste niveau!'}
                             </span>
@@ -757,13 +757,13 @@ export const PromptMasterMission: React.FC<Props> = ({ onBack, onComplete, vsoPr
                             <div className="p-2 rounded-xl"
                                 style={{
                                     backgroundColor: progress.currentLevel === 'beginner' ? 'rgba(42,157,143,0.1)' : progress.currentLevel === 'gevorderd' ? 'rgba(217,119,87,0.1)' : 'rgba(139,111,158,0.1)',
-                                    color: progress.currentLevel === 'beginner' ? '#2A9D8F' : progress.currentLevel === 'gevorderd' ? '#D97757' : '#8B6F9E'
+                                    color: progress.currentLevel === 'beginner' ? '#5F947D' : progress.currentLevel === 'gevorderd' ? '#D97848' : '#0B453F'
                                 }}>
                                 {getTypeIcon(currentChallenge.type)}
                             </div>
-                            <span className="font-bold text-lg text-[#1A1A19]" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>{currentChallenge.goal}</span>
+                            <span className="font-bold text-lg text-[#08283B]" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>{currentChallenge.goal}</span>
                         </div>
-                        <p className="text-[#6B6B66]">{currentChallenge.scenario}</p>
+                        <p className="text-[#445865]">{currentChallenge.scenario}</p>
                     </div>
 
                     {/* Input Area */}
@@ -773,40 +773,40 @@ export const PromptMasterMission: React.FC<Props> = ({ onBack, onComplete, vsoPr
                             {isAnalyzing && (
                                 <div className="absolute inset-0 z-20 bg-white/90 backdrop-blur-sm rounded-2xl flex flex-col items-center justify-center gap-4 animate-in fade-in">
                                     <div className="relative">
-                                        <div className="absolute inset-0 bg-[#D97757]/20 blur-xl rounded-full animate-pulse"></div>
-                                        <div className="relative z-10 p-4 bg-white rounded-full border-2 border-[#D97757]/50 shadow-lg">
-                                            <Brain size={32} className="text-[#D97757] animate-pulse" />
+                                        <div className="absolute inset-0 bg-[#D97848]/20 blur-xl rounded-full animate-pulse"></div>
+                                        <div className="relative z-10 p-4 bg-white rounded-full border-2 border-[#D97848]/50 shadow-lg">
+                                            <Brain size={32} className="text-[#D97848] animate-pulse" />
                                         </div>
                                     </div>
                                     <div className="text-center">
-                                        <p className="text-lg font-bold text-[#1A1A19] animate-pulse">{thinkingStep}</p>
-                                        <p className="text-sm text-[#6B6B66] mt-1">De AI denkt na over je prompt...</p>
+                                        <p className="text-lg font-bold text-[#08283B] animate-pulse">{thinkingStep}</p>
+                                        <p className="text-sm text-[#445865] mt-1">De AI denkt na over je prompt...</p>
                                     </div>
                                     <div className="flex gap-1.5">
-                                        <div className="w-2 h-2 bg-[#D97757] rounded-full animate-bounce [animation-delay:0ms]"></div>
-                                        <div className="w-2 h-2 bg-[#D97757] rounded-full animate-bounce [animation-delay:150ms]"></div>
-                                        <div className="w-2 h-2 bg-[#D97757] rounded-full animate-bounce [animation-delay:300ms]"></div>
+                                        <div className="w-2 h-2 bg-[#D97848] rounded-full animate-bounce [animation-delay:0ms]"></div>
+                                        <div className="w-2 h-2 bg-[#D97848] rounded-full animate-bounce [animation-delay:150ms]"></div>
+                                        <div className="w-2 h-2 bg-[#D97848] rounded-full animate-bounce [animation-delay:300ms]"></div>
                                     </div>
                                 </div>
                             )}
 
-                            <label className="block text-sm font-bold text-[#3D3D38] mb-3">
+                            <label className="block text-sm font-bold text-[#445865] mb-3">
                                 {attempts > 0 ? 'Verbeter je prompt:' : 'Typ je prompt aan de AI:'}
                             </label>
                             <textarea
                                 value={userPrompt}
                                 onChange={e => setUserPrompt(e.target.value)}
                                 placeholder="Typ hier je opdracht voor de AI..."
-                                className="w-full bg-white border-2 border-[#E8E6DF] rounded-2xl p-4 text-[#1A1A19] placeholder-[#6B6B66] min-h-[120px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#D97757] transition-all duration-300 resize-none"
+                                className="w-full bg-white border-2 border-[#E7D8BD] rounded-2xl p-4 text-[#08283B] placeholder-[#445865] min-h-[120px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#D97848] transition-all duration-300 resize-none"
                                 disabled={isAnalyzing}
                             />
                             <button
                                 onClick={handleSubmitPrompt}
                                 disabled={userPrompt.trim().length < 5 || isAnalyzing}
                                 className="mt-4 w-full py-4 rounded-full font-bold flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 shadow-lg text-white"
-                                style={{ backgroundColor: '#D97757' }}
-                                onMouseEnter={e => { if (!e.currentTarget.disabled) e.currentTarget.style.backgroundColor = '#C46849'; }}
-                                onMouseLeave={e => { if (!e.currentTarget.disabled) e.currentTarget.style.backgroundColor = '#D97757'; }}
+                                style={{ backgroundColor: '#D97848' }}
+                                onMouseEnter={e => { if (!e.currentTarget.disabled) e.currentTarget.style.backgroundColor = '#D97848'; }}
+                                onMouseLeave={e => { if (!e.currentTarget.disabled) e.currentTarget.style.backgroundColor = '#D97848'; }}
                             >
                                 {isAnalyzing ? (
                                     <>
@@ -822,8 +822,8 @@ export const PromptMasterMission: React.FC<Props> = ({ onBack, onComplete, vsoPr
                             {/* Show what's missing while editing after first attempt */}
                             {attempts > 0 && aiResponse && (
                                 <div className="mt-8 space-y-4 animate-in fade-in slide-in-from-top-4">
-                                    <h4 className="font-bold flex items-center gap-2 text-[#3D3D38]">
-                                        <Target size={18} className="text-[#D97757]" />
+                                    <h4 className="font-bold flex items-center gap-2 text-[#445865]">
+                                        <Target size={18} className="text-[#D97848]" />
                                         Wat moet je nog toevoegen?
                                     </h4>
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
@@ -838,34 +838,34 @@ export const PromptMasterMission: React.FC<Props> = ({ onBack, onComplete, vsoPr
                                                 }}
                                             >
                                                 {item.found ? (
-                                                    <div className="w-6 h-6 rounded-full flex items-center justify-center text-white" style={{ backgroundColor: '#10B981' }}>
+                                                    <div className="w-6 h-6 rounded-full flex items-center justify-center text-white" style={{ backgroundColor: '#5F947D' }}>
                                                         ✓
                                                     </div>
                                                 ) : (
-                                                    <div className="w-6 h-6 rounded-full flex items-center justify-center text-white text-[10px] font-bold" style={{ backgroundColor: '#D97757' }}>
+                                                    <div className="w-6 h-6 rounded-full flex items-center justify-center text-white text-[10px] font-bold" style={{ backgroundColor: '#D97848' }}>
                                                         !
                                                     </div>
                                                 )}
                                                 <div>
-                                                    <span className="font-bold text-sm" style={{ color: item.found ? '#10B981' : '#1A1A19' }}>
+                                                    <span className="font-bold text-sm" style={{ color: item.found ? '#5F947D' : '#08283B' }}>
                                                         {item.label}
                                                     </span>
                                                     {!item.found && (
-                                                        <p className="text-xs text-[#6B6B66]">{item.hint}</p>
+                                                        <p className="text-xs text-[#445865]">{item.hint}</p>
                                                     )}
                                                 </div>
                                             </div>
                                         ))}
                                     </div>
 
-                                    <div className="mt-6 bg-[#D97757]/5 rounded-2xl p-5 border border-[#D97757]/20">
-                                        <h4 className="font-bold mb-3 flex items-center gap-2 text-[#D97757] text-sm">
+                                    <div className="mt-6 bg-[#D97848]/5 rounded-2xl p-5 border border-[#D97848]/20">
+                                        <h4 className="font-bold mb-3 flex items-center gap-2 text-[#D97848] text-sm">
                                             <Lightbulb size={16} /> Tips voor dit niveau:
                                         </h4>
                                         <ul className="space-y-2">
                                             {currentChallenge.tips.map((tip, i) => (
-                                                <li key={i} className="flex items-start gap-2 text-[13px] text-[#6B6B66]">
-                                                    <div className="w-1 h-1 rounded-full bg-[#D97757] mt-1.5 flex-shrink-0" />
+                                                <li key={i} className="flex items-start gap-2 text-[13px] text-[#445865]">
+                                                    <div className="w-1 h-1 rounded-full bg-[#D97848] mt-1.5 flex-shrink-0" />
                                                     {tip}
                                                 </li>
                                             ))}
@@ -911,14 +911,14 @@ export const PromptMasterMission: React.FC<Props> = ({ onBack, onComplete, vsoPr
                                     borderColor: passed ? 'rgba(16,185,129,0.2)' : 'rgba(217,119,87,0.2)'
                                 }}>
                                 <div className="flex items-center gap-3">
-                                    <div className="w-10 h-10 rounded-full flex items-center justify-center text-white" style={{ backgroundColor: passed ? '#10B981' : '#D97757' }}>
+                                    <div className="w-10 h-10 rounded-full flex items-center justify-center text-white" style={{ backgroundColor: passed ? '#5F947D' : '#D97848' }}>
                                         {passed ? <ThumbsUp size={20} /> : <ThumbsDown size={20} />}
                                     </div>
                                     <div>
-                                        <h4 className="font-bold" style={{ color: passed ? '#10B981' : '#D97757' }}>
+                                        <h4 className="font-bold" style={{ color: passed ? '#5F947D' : '#D97848' }}>
                                             {passed ? 'Missie Geslaagd!' : 'Nog niet helemaal...'}
                                         </h4>
-                                        <p className="text-sm text-[#6B6B66]">
+                                        <p className="text-sm text-[#445865]">
                                             {passed ? 'Je prompt gaf een geweldig resultaat.' : 'Kijk naar het verschil tussen jouw resultaat en het doel.'}
                                         </p>
                                     </div>
@@ -926,9 +926,9 @@ export const PromptMasterMission: React.FC<Props> = ({ onBack, onComplete, vsoPr
                             </div>
 
                             {/* Feedback Checklist */}
-                            <div className="bg-white rounded-2xl p-6 border border-[#E8E6DF]">
-                                <h4 className="font-bold mb-4 flex items-center gap-2 text-[#1A1A19]">
-                                    <Target size={18} className="text-[#D97757]" />
+                            <div className="bg-white rounded-2xl p-6 border border-[#E7D8BD]">
+                                <h4 className="font-bold mb-4 flex items-center gap-2 text-[#08283B]">
+                                    <Target size={18} className="text-[#D97848]" />
                                     Wat zat er in je prompt?
                                 </h4>
                                 <div className="grid grid-cols-2 gap-3">
@@ -942,7 +942,7 @@ export const PromptMasterMission: React.FC<Props> = ({ onBack, onComplete, vsoPr
                                             }}
                                         >
                                             {item.found ? (
-                                                <div className="w-6 h-6 rounded-full flex items-center justify-center text-white" style={{ backgroundColor: '#10B981' }}>
+                                                <div className="w-6 h-6 rounded-full flex items-center justify-center text-white" style={{ backgroundColor: '#5F947D' }}>
                                                     <Sparkles size={12} />
                                                 </div>
                                             ) : (
@@ -951,11 +951,11 @@ export const PromptMasterMission: React.FC<Props> = ({ onBack, onComplete, vsoPr
                                                 </div>
                                             )}
                                             <div>
-                                                <span className="font-bold text-sm" style={{ color: item.found ? '#10B981' : '#D97757' }}>
+                                                <span className="font-bold text-sm" style={{ color: item.found ? '#5F947D' : '#D97848' }}>
                                                     {item.label}
                                                 </span>
                                                 {!item.found && (
-                                                    <p className="text-xs text-[#6B6B66]">{item.hint}</p>
+                                                    <p className="text-xs text-[#445865]">{item.hint}</p>
                                                 )}
                                             </div>
                                         </div>
@@ -965,14 +965,14 @@ export const PromptMasterMission: React.FC<Props> = ({ onBack, onComplete, vsoPr
 
                             {/* Tips (if not passed) */}
                             {!passed && (
-                                <div className="bg-[#D97757]/5 rounded-2xl p-6 border border-[#D97757]/20">
-                                    <h4 className="font-bold mb-3 flex items-center gap-2 text-[#D97757]">
+                                <div className="bg-[#D97848]/5 rounded-2xl p-6 border border-[#D97848]/20">
+                                    <h4 className="font-bold mb-3 flex items-center gap-2 text-[#D97848]">
                                         <Lightbulb size={18} /> Tips om te verbeteren:
                                     </h4>
                                     <ul className="space-y-2">
                                         {currentChallenge.tips.map((tip, i) => (
-                                            <li key={i} className="flex items-start gap-2 text-sm text-[#3D3D38]">
-                                                <ChevronRight size={14} className="mt-1 text-[#D97757] flex-shrink-0" />
+                                            <li key={i} className="flex items-start gap-2 text-sm text-[#445865]">
+                                                <ChevronRight size={14} className="mt-1 text-[#D97848] flex-shrink-0" />
                                                 {tip}
                                             </li>
                                         ))}
@@ -985,7 +985,7 @@ export const PromptMasterMission: React.FC<Props> = ({ onBack, onComplete, vsoPr
                                 {!passed && (
                                     <button
                                         onClick={handleTryAgain}
-                                        className="flex-1 bg-white border border-[#E8E6DF] text-[#3D3D38] py-4 rounded-full font-bold hover:bg-[#F0EEE8] transition-all duration-300 flex items-center justify-center gap-2 active:scale-95 shadow-sm"
+                                        className="flex-1 bg-white border border-[#E7D8BD] text-[#445865] py-4 rounded-full font-bold hover:bg-[#FCF6EA] transition-all duration-300 flex items-center justify-center gap-2 active:scale-95 shadow-sm"
                                     >
                                         <RotateCcw size={18} /> Verbeteren
                                     </button>
@@ -994,7 +994,7 @@ export const PromptMasterMission: React.FC<Props> = ({ onBack, onComplete, vsoPr
                                     onClick={handleNext}
                                     disabled={aiResponse.score < 2}
                                     className="flex-1 py-4 rounded-full font-bold flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed text-white transition-all duration-300 shadow-lg"
-                                    style={{ background: passed ? 'linear-gradient(to right, #10B981, #2A9D8F)' : 'linear-gradient(to right, #D97757, #C46849)' }}
+                                    style={{ background: passed ? 'linear-gradient(to right, #5F947D, #5F947D)' : 'linear-gradient(to right, #D97848, #D97848)' }}
                                 >
                                     {allLevelsDone ? 'Bekijk resultaat' : 'Volgende uitdaging'} <ArrowRight size={18} />
                                 </button>
@@ -1013,10 +1013,10 @@ export const PromptMasterMission: React.FC<Props> = ({ onBack, onComplete, vsoPr
         const passed = percentage >= 60;
 
         return (
-            <div className="min-h-screen overflow-y-auto bg-[#FAF9F0] text-[#1A1A19] p-4 md:p-8 flex items-center justify-center" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+            <div className="min-h-screen overflow-y-auto bg-[#FCF6EA] text-[#08283B] p-4 md:p-8 flex items-center justify-center" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                 <div className="max-w-lg w-full text-center">
                     <div className="w-28 h-28 rounded-full flex items-center justify-center mx-auto mb-8 text-white"
-                        style={{ backgroundColor: passed ? '#10B981' : '#D97757', boxShadow: passed ? '0 25px 50px -12px rgba(16,185,129,0.3)' : '0 25px 50px -12px rgba(217,119,87,0.3)' }}>
+                        style={{ backgroundColor: passed ? '#5F947D' : '#D97848', boxShadow: passed ? '0 25px 50px -12px rgba(16,185,129,0.3)' : '0 25px 50px -12px rgba(217,119,87,0.3)' }}>
                         <Trophy size={56} />
                     </div>
 
@@ -1024,52 +1024,52 @@ export const PromptMasterMission: React.FC<Props> = ({ onBack, onComplete, vsoPr
                         {passed ? 'Prompt Master!' : 'Goed bezig!'}
                     </h1>
 
-                    <p className="text-xl text-[#6B6B66] mb-8">
+                    <p className="text-xl text-[#445865] mb-8">
                         {passed
                             ? 'Je beheerst nu de kunst van prompt engineering!'
                             : 'Je hebt veel geleerd over hoe je effectieve prompts schrijft.'
                         }
                     </p>
 
-                    <div className="bg-white rounded-2xl p-8 mb-8 border border-[#E8E6DF]">
-                        <div className="text-6xl font-black mb-2 text-[#D97757]">
+                    <div className="bg-white rounded-2xl p-8 mb-8 border border-[#E7D8BD]">
+                        <div className="text-6xl font-black mb-2 text-[#D97848]">
                             {progress.totalScore} pts
                         </div>
-                        <p className="text-[#6B6B66] font-bold mb-4">{progress.completedChallenges.length}/{CHALLENGES.length} uitdagingen voltooid</p>
+                        <p className="text-[#445865] font-bold mb-4">{progress.completedChallenges.length}/{CHALLENGES.length} uitdagingen voltooid</p>
 
                         <div className="mt-6 grid grid-cols-3 gap-3 text-sm">
                             <div className="rounded-xl p-3 border" style={{ backgroundColor: 'rgba(42,157,143,0.05)', borderColor: 'rgba(42,157,143,0.2)' }}>
-                                <div className="font-bold text-[#2A9D8F]">Beginner</div>
-                                <div className="text-[#1A1A19]">{progress.completedChallenges.filter(id => CHALLENGES.find(c => c.id === id)?.level === 'beginner').length}/2</div>
+                                <div className="font-bold text-[#5F947D]">Beginner</div>
+                                <div className="text-[#08283B]">{progress.completedChallenges.filter(id => CHALLENGES.find(c => c.id === id)?.level === 'beginner').length}/2</div>
                             </div>
                             <div className="rounded-xl p-3 border" style={{ backgroundColor: 'rgba(217,119,87,0.05)', borderColor: 'rgba(217,119,87,0.2)' }}>
-                                <div className="font-bold text-[#D97757]">Gevorderd</div>
-                                <div className="text-[#1A1A19]">{progress.completedChallenges.filter(id => CHALLENGES.find(c => c.id === id)?.level === 'gevorderd').length}/2</div>
+                                <div className="font-bold text-[#D97848]">Gevorderd</div>
+                                <div className="text-[#08283B]">{progress.completedChallenges.filter(id => CHALLENGES.find(c => c.id === id)?.level === 'gevorderd').length}/2</div>
                             </div>
                             <div className="rounded-xl p-3 border" style={{ backgroundColor: 'rgba(139,111,158,0.05)', borderColor: 'rgba(139,111,158,0.2)' }}>
-                                <div className="font-bold text-[#8B6F9E]">Expert</div>
-                                <div className="text-[#1A1A19]">{progress.completedChallenges.filter(id => CHALLENGES.find(c => c.id === id)?.level === 'expert').length}/2</div>
+                                <div className="font-bold text-[#0B453F]">Expert</div>
+                                <div className="text-[#08283B]">{progress.completedChallenges.filter(id => CHALLENGES.find(c => c.id === id)?.level === 'expert').length}/2</div>
                             </div>
                         </div>
                     </div>
 
                     {/* Key Learnings */}
-                    <div className="bg-white rounded-2xl p-6 mb-8 text-left border border-[#E8E6DF]">
-                        <h4 className="font-bold mb-3 flex items-center gap-2 text-[#1A1A19]">
-                            <Lightbulb size={18} className="text-[#D97757]" /> Wat je geleerd hebt:
+                    <div className="bg-white rounded-2xl p-6 mb-8 text-left border border-[#E7D8BD]">
+                        <h4 className="font-bold mb-3 flex items-center gap-2 text-[#08283B]">
+                            <Lightbulb size={18} className="text-[#D97848]" /> Wat je geleerd hebt:
                         </h4>
-                        <ul className="space-y-2 text-sm text-[#3D3D38]">
+                        <ul className="space-y-2 text-sm text-[#445865]">
                             <li className="flex items-start gap-2">
-                                <span className="text-[#10B981]">✓</span> Specifieke details geven betere resultaten
+                                <span className="text-[#5F947D]">✓</span> Specifieke details geven betere resultaten
                             </li>
                             <li className="flex items-start gap-2">
-                                <span className="text-[#10B981]">✓</span> Context en doel helpen de AI begrijpen
+                                <span className="text-[#5F947D]">✓</span> Context en doel helpen de AI begrijpen
                             </li>
                             <li className="flex items-start gap-2">
-                                <span className="text-[#10B981]">✓</span> Format en structuur vragen geeft overzicht
+                                <span className="text-[#5F947D]">✓</span> Format en structuur vragen geeft overzicht
                             </li>
                             <li className="flex items-start gap-2">
-                                <span className="text-[#10B981]">✓</span> Persona's en beperkingen geven controle
+                                <span className="text-[#5F947D]">✓</span> Persona's en beperkingen geven controle
                             </li>
                         </ul>
                     </div>
@@ -1077,9 +1077,9 @@ export const PromptMasterMission: React.FC<Props> = ({ onBack, onComplete, vsoPr
                     <button
                         onClick={() => { clearSave(); onComplete(passed); }}
                         className="w-full py-5 rounded-full font-bold transition-all duration-300 text-white shadow-lg hover:shadow-xl"
-                        style={{ backgroundColor: '#D97757' }}
-                        onMouseEnter={e => (e.currentTarget.style.backgroundColor = '#C46849')}
-                        onMouseLeave={e => (e.currentTarget.style.backgroundColor = '#D97757')}
+                        style={{ backgroundColor: '#D97848' }}
+                        onMouseEnter={e => (e.currentTarget.style.backgroundColor = '#D97848')}
+                        onMouseLeave={e => (e.currentTarget.style.backgroundColor = '#D97848')}
                     >
                         Terug naar Dashboard
                     </button>

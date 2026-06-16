@@ -90,8 +90,8 @@ export const spreadsheetSpecialistConfig: DataViewerConfig = {
                 'Een staafdiagram is ideaal om categorieën te vergelijken. Bekijk de totale uitgaven per categorie en beantwoord de vragen.',
             type: 'bar-chart',
             chartData: [
-                { label: 'Evenement', value: 460, color: '#0891B2' },
-                { label: 'Materiaal', value: 53, color: '#F59E0B' },
+                { label: 'Evenement', value: 460, color: '#0B453F' },
+                { label: 'Materiaal', value: 53, color: '#D7C95F' },
             ],
             questions: [
                 {
@@ -196,25 +196,25 @@ export const spreadsheetSpecialistConfig: DataViewerConfig = {
             minScore: 85,
             emoji: '🏆',
             title: 'Formule-expert!',
-            color: '#F59E0B',
+            color: '#D7C95F',
         },
         {
             minScore: 65,
             emoji: '📊',
             title: 'Data-analist in opleiding',
-            color: '#0891B2',
+            color: '#0B453F',
         },
         {
             minScore: 40,
             emoji: '🔢',
             title: 'Spreadsheet-starter',
-            color: '#10B981',
+            color: '#5F947D',
         },
         {
             minScore: 0,
             emoji: '📚',
             title: 'Aan de slag!',
-            color: '#6B6B66',
+            color: '#445865',
         },
     ],
 

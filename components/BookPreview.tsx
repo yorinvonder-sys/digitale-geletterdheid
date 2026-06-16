@@ -34,8 +34,8 @@ const StorySetupForm = ({ onCancel, onSubmit }: { onCancel: () => void, onSubmit
     };
 
     return (
-        <div className="w-full max-w-md bg-white rounded-2xl shadow-2xl overflow-hidden animate-in zoom-in-95 duration-300 max-h-[85vh] flex flex-col" style={{ borderColor: '#E8E6DF', borderWidth: 1 }}>
-            <div className="p-6 text-white text-center shrink-0" style={{ backgroundColor: '#D97757' }}>
+        <div className="w-full max-w-md bg-white rounded-2xl shadow-2xl overflow-hidden animate-in zoom-in-95 duration-300 max-h-[85vh] flex flex-col" style={{ borderColor: '#E7D8BD', borderWidth: 1 }}>
+            <div className="p-6 text-white text-center shrink-0" style={{ backgroundColor: '#D97848' }}>
                 <Sparkles size={32} className="mx-auto mb-2 text-white/80" />
                 <h3 className="text-xl font-black uppercase tracking-tight">Verhaal Setup</h3>
                 <p className="text-white/80 text-sm font-medium">Vertel ons kort over je idee!</p>
@@ -44,51 +44,51 @@ const StorySetupForm = ({ onCancel, onSubmit }: { onCancel: () => void, onSubmit
             <div className="overflow-y-auto custom-scrollbar">
                 <form onSubmit={handleSubmit} className="p-6 space-y-4">
                     <div>
-                        <label className="block text-xs font-bold text-slate-500 uppercase mb-1">Naam van de Held</label>
+                        <label className="block text-xs font-bold text-lab-muted uppercase mb-1">Naam van de Held</label>
                         <input
                             type="text"
                             required
                             value={heroName}
                             onChange={e => setHeroName(e.target.value)}
                             placeholder="Bijv. Tim, Bello, Robo..."
-                            className="w-full p-3 border rounded-xl outline-none font-bold" style={{ backgroundColor: '#FAF9F0', borderColor: '#E8E6DF', color: '#3D3D38' }}
+                            className="w-full p-3 border rounded-xl outline-none font-bold" style={{ backgroundColor: '#FCF6EA', borderColor: '#E7D8BD', color: '#445865' }}
                         />
                     </div>
 
                     <div className="grid grid-cols-2 gap-4">
                         <div>
-                            <label className="block text-xs font-bold text-slate-500 uppercase mb-1">Wat is het?</label>
+                            <label className="block text-xs font-bold text-lab-muted uppercase mb-1">Wat is het?</label>
                             <input
                                 type="text"
                                 required
                                 value={heroType}
                                 onChange={e => setHeroType(e.target.value)}
                                 placeholder="Bijv. Een robot..."
-                                className="w-full p-3 border rounded-xl outline-none font-bold" style={{ backgroundColor: '#FAF9F0', borderColor: '#E8E6DF', color: '#3D3D38' }}
+                                className="w-full p-3 border rounded-xl outline-none font-bold" style={{ backgroundColor: '#FCF6EA', borderColor: '#E7D8BD', color: '#445865' }}
                             />
                         </div>
                         <div>
-                            <label className="block text-xs font-bold text-slate-500 uppercase mb-1">Waar?</label>
+                            <label className="block text-xs font-bold text-lab-muted uppercase mb-1">Waar?</label>
                             <input
                                 type="text"
                                 required
                                 value={setting}
                                 onChange={e => setSetting(e.target.value)}
                                 placeholder="Bijv. Op Mars..."
-                                className="w-full p-3 border rounded-xl outline-none font-bold" style={{ backgroundColor: '#FAF9F0', borderColor: '#E8E6DF', color: '#3D3D38' }}
+                                className="w-full p-3 border rounded-xl outline-none font-bold" style={{ backgroundColor: '#FCF6EA', borderColor: '#E7D8BD', color: '#445865' }}
                             />
                         </div>
                     </div>
 
                     <div>
-                        <label className="block text-xs font-bold text-slate-500 uppercase mb-1">Waar gaat het over?</label>
+                        <label className="block text-xs font-bold text-lab-muted uppercase mb-1">Waar gaat het over?</label>
                         <textarea
                             required
                             value={theme}
                             onChange={e => setTheme(e.target.value)}
                             placeholder="Bijv. Hij zoekt zijn verloren vlieger..."
                             rows={3}
-                            className="w-full p-3 border rounded-xl outline-none font-bold resize-none" style={{ backgroundColor: '#FAF9F0', borderColor: '#E8E6DF', color: '#3D3D38' }}
+                            className="w-full p-3 border rounded-xl outline-none font-bold resize-none" style={{ backgroundColor: '#FCF6EA', borderColor: '#E7D8BD', color: '#445865' }}
                         />
                     </div>
 
@@ -96,13 +96,13 @@ const StorySetupForm = ({ onCancel, onSubmit }: { onCancel: () => void, onSubmit
                         <button
                             type="button"
                             onClick={onCancel}
-                            className="flex-1 py-3 text-slate-400 font-bold hover:bg-slate-50 rounded-xl transition-colors"
+                            className="flex-1 py-3 text-lab-muted font-bold hover:bg-lab-muted rounded-xl transition-colors"
                         >
                             Terug
                         </button>
                         <button
                             type="submit"
-                            className="flex-[2] py-3 text-white font-bold rounded-xl shadow-lg hover:shadow-xl hover:scale-[1.02] active:scale-95 transition-all" style={{ backgroundColor: '#D97757' }}
+                            className="flex-[2] py-3 text-white font-bold rounded-xl shadow-lg hover:shadow-xl hover:scale-[1.02] active:scale-95 transition-all" style={{ backgroundColor: '#D97848' }}
                         >
                             Start Verhaal! 🚀
                         </button>
@@ -159,10 +159,10 @@ const PromptPopup: React.FC<PromptPopupProps> = ({
     if (!isOpen) return null;
 
     const typeConfig = {
-        text: { icon: <Edit3 size={16} />, color: 'from-[#2A9D8F] to-[#238B7F]' },
-        image: { icon: <ImageIcon size={16} />, color: 'from-[#8B6F9E] to-[#7A5F8D]' },
-        title: { icon: <Wand2 size={16} />, color: 'from-[#D97757] to-[#C46849]' },
-        'new-page': { icon: <Sparkles size={16} />, color: 'from-[#10B981] to-[#059669]' }
+        text: { icon: <Edit3 size={16} />, color: 'from-[#5F947D] to-[#238B7F]' },
+        image: { icon: <ImageIcon size={16} />, color: 'from-[#0B453F] to-[#7A5F8D]' },
+        title: { icon: <Wand2 size={16} />, color: 'from-[#D97848] to-[#D97848]' },
+        'new-page': { icon: <Sparkles size={16} />, color: 'from-[#5F947D] to-[#5F947D]' }
     };
 
     const config = typeConfig[type];
@@ -193,8 +193,8 @@ const PromptPopup: React.FC<PromptPopupProps> = ({
                 {/* Content */}
                 <form onSubmit={handleSubmit} className="p-4 space-y-3">
                     {context && (
-                        <div className="bg-slate-50 rounded-xl p-3 text-sm text-slate-600 border border-slate-200">
-                            <span className="text-xs font-bold text-slate-400 uppercase block mb-1">Huidige inhoud:</span>
+                        <div className="bg-lab-muted rounded-xl p-3 text-sm text-lab-muted border border-lab-muted">
+                            <span className="text-xs font-bold text-lab-muted uppercase block mb-1">Huidige inhoud:</span>
                             <span className="line-clamp-2">{context}</span>
                         </div>
                     )}
@@ -205,14 +205,14 @@ const PromptPopup: React.FC<PromptPopupProps> = ({
                         onChange={e => setPrompt(e.target.value)}
                         placeholder={placeholder}
                         rows={3}
-                        className="w-full p-3 border rounded-xl focus:ring-2 outline-none font-medium resize-none" style={{ backgroundColor: '#FAF9F0', borderColor: '#E8E6DF', color: '#3D3D38' }}
+                        className="w-full p-3 border rounded-xl focus:ring-2 outline-none font-medium resize-none" style={{ backgroundColor: '#FCF6EA', borderColor: '#E7D8BD', color: '#445865' }}
                     />
 
                     <div className="flex gap-2">
                         <button
                             type="button"
                             onClick={onClose}
-                            className="flex-1 py-2.5 text-slate-500 font-bold rounded-xl hover:bg-slate-100 transition-colors text-sm"
+                            className="flex-1 py-2.5 text-lab-muted font-bold rounded-xl hover:bg-lab-muted transition-colors text-sm"
                         >
                             Annuleren
                         </button>
@@ -258,11 +258,11 @@ const PageContent = ({
 
     // Shared interactive styles
     const interactiveWrapperClass = isInteractive
-        ? "cursor-pointer transition-all duration-200 hover:border-dashed hover:border-2 hover:border-[#2A9D8F] hover:bg-[#2A9D8F]/10 group/edit"
+        ? "cursor-pointer transition-all duration-200 hover:border-dashed hover:border-2 hover:border-[#5F947D] hover:bg-[#5F947D]/10 group/edit"
         : "";
     // Only show edit hint tooltips if interactive
     const editHintClass = isInteractive
-        ? "absolute -top-2 -right-2 w-6 h-6 bg-[#D97757] rounded-full flex items-center justify-center text-white opacity-0 group-hover/edit:opacity-100 transition-opacity shadow-lg"
+        ? "absolute -top-2 -right-2 w-6 h-6 bg-[#D97848] rounded-full flex items-center justify-center text-white opacity-0 group-hover/edit:opacity-100 transition-opacity shadow-lg"
         : "hidden";
 
     // --- RENDER COVER (FRONT ONLY) ---
@@ -271,7 +271,7 @@ const PageContent = ({
     if (isCover && !isBack) {
         // FRONT COVER
         return (
-            <div className="w-full h-full bg-[#EAB308] flex flex-col items-center relative overflow-hidden shadow-inner select-none rounded-r-md border-r-4 border-[#854D0E] border-b-4">
+            <div className="w-full h-full bg-[#D7C95F] flex flex-col items-center relative overflow-hidden shadow-inner select-none rounded-r-md border-r-4 border-[#854D0E] border-b-4">
                 {/* Texture Overlay */}
                 <div className="absolute inset-0 bg-white/10 opacity-50 mix-blend-overlay pointer-events-none"></div>
 
@@ -279,25 +279,25 @@ const PageContent = ({
                 <div
                     className={`absolute inset-0 z-0 m-4 rounded overflow-hidden shadow-inner border-[6px] transition-all group/edit 
                     ${isInteractive
-                            ? 'border-amber-400/50 cursor-pointer hover:border-[#D97757] hover:shadow-[0_0_20px_rgba(217,119,87,0.3)]'
+                            ? 'border-lab-gold/50 cursor-pointer hover:border-[#D97848] hover:shadow-[0_0_20px_rgba(217,119,87,0.3)]'
                             : 'border-white/20'}`}
                     onClick={() => isInteractive && onImageClick?.(0)}
                 >
                     {data.coverImage === 'loading' ? (
-                        <div className="w-full h-full bg-amber-200/50 flex items-center justify-center">
+                        <div className="w-full h-full bg-lab-gold/50 flex items-center justify-center">
                             <div className="flex flex-col items-center gap-2">
-                                <Loader2 className="w-12 h-12 text-amber-600 animate-spin" />
-                                <span className="text-amber-800 font-bold text-xs uppercase tracking-widest">Kaft ontwerpen...</span>
+                                <Loader2 className="w-12 h-12 text-lab-gold animate-spin" />
+                                <span className="text-lab-gold font-bold text-xs uppercase tracking-widest">Kaft ontwerpen...</span>
                             </div>
                         </div>
                     ) : data.coverImage?.startsWith('error:') ? (
-                        <div className="w-full h-full bg-amber-50 flex flex-col items-center justify-center text-amber-600 border-2 border-dashed border-amber-200 gap-2 p-4 text-center">
-                            <AlertCircle size={36} className="text-amber-500" />
+                        <div className="w-full h-full bg-lab-gold flex flex-col items-center justify-center text-lab-gold border-2 border-dashed border-lab-gold gap-2 p-4 text-center">
+                            <AlertCircle size={36} className="text-lab-gold" />
                             <span className="font-bold text-sm">Oeps! De AI kon dit niet tekenen 🎨</span>
-                            <span className="text-xs text-amber-600 max-w-[85%] leading-relaxed">
+                            <span className="text-xs text-lab-gold max-w-[85%] leading-relaxed">
                                 De AI heeft regels over wat getekend mag worden. Probeer het opnieuw met andere woorden!
                             </span>
-                            <div className="bg-white/80 rounded-lg p-2 mt-1 text-[10px] text-amber-700 max-w-[90%]">
+                            <div className="bg-white/80 rounded-lg p-2 mt-1 text-[10px] text-lab-gold max-w-[90%]">
                                 💡 <strong>Tip:</strong> Vermijd enge, gewelddadige of ongepaste beschrijvingen. Denk aan een vriendelijk kinderboek!
                             </div>
                         </div>
@@ -310,17 +310,17 @@ const PageContent = ({
                             />
                             {isInteractive && (
                                 <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/60 to-transparent p-4 flex justify-center opacity-0 group-hover/edit:opacity-100 transition-opacity">
-                                    <div className="text-white px-3 py-1.5 rounded-full text-xs font-bold shadow-lg flex items-center gap-2" style={{ backgroundColor: '#D97757' }}>
+                                    <div className="text-white px-3 py-1.5 rounded-full text-xs font-bold shadow-lg flex items-center gap-2" style={{ backgroundColor: '#D97848' }}>
                                         <Edit3 size={12} /> Kaft Afbeelding Wijzigen
                                     </div>
                                 </div>
                             )}
                         </>
                     ) : (
-                        <div className={`w-full h-full flex items-center justify-center text-yellow-900/10 ${isInteractive ? 'hover:bg-[#D97757]/10' : ''}`}>
+                        <div className={`w-full h-full flex items-center justify-center text-lab-gold/10 ${isInteractive ? 'hover:bg-[#D97848]/10' : ''}`}>
                             <div className="flex flex-col items-center gap-2">
-                                <BookOpen size={60} className={isInteractive ? 'text-[#D97757]' : ''} />
-                                <span className="text-amber-900/40 text-xs font-bold uppercase tracking-widest">Kaft Illustratie</span>
+                                <BookOpen size={60} className={isInteractive ? 'text-[#D97848]' : ''} />
+                                <span className="text-lab-gold/40 text-xs font-bold uppercase tracking-widest">Kaft Illustratie</span>
                                 {isInteractive && (
                                     <span className="text-xs font-bold bg-white/80 px-3 py-1 rounded-full shadow-sm text-stone-400">
                                         📝 Illustraties binnenkort beschikbaar
@@ -335,7 +335,7 @@ const PageContent = ({
                 <div className="relative z-20 w-full flex-1 flex flex-col items-center justify-between py-4 px-4 pointer-events-none">
                     {/* Title Area - Clickable - Now at top with less padding */}
                     <div
-                        className={`w-full text-center relative p-2 rounded-lg bg-white/90 shadow-lg border-2 border-white backdrop-blur-sm transform -rotate-1 transition-all duration-300 pointer-events-auto ${isInteractive ? 'cursor-pointer hover:border-[#D97757] hover:scale-[1.02] group/edit' : ''}`}
+                        className={`w-full text-center relative p-2 rounded-lg bg-white/90 shadow-lg border-2 border-white backdrop-blur-sm transform -rotate-1 transition-all duration-300 pointer-events-auto ${isInteractive ? 'cursor-pointer hover:border-[#D97848] hover:scale-[1.02] group/edit' : ''}`}
                         onClick={(e) => {
                             if (isInteractive) {
                                 e.stopPropagation();
@@ -343,7 +343,7 @@ const PageContent = ({
                             }
                         }}
                     >
-                        <h1 className="text-lg md:text-xl font-black text-slate-900 font-sans leading-tight tracking-tight break-words line-clamp-2">
+                        <h1 className="text-lg md:text-xl font-black text-lab-muted font-sans leading-tight tracking-tight break-words line-clamp-2">
                             {data.title || "Mijn Verhaal"}
                         </h1>
                         {isInteractive && (
@@ -354,9 +354,9 @@ const PageContent = ({
                     </div>
 
                     {/* Author Label */}
-                    <div className="mb-4 px-3 py-1.5 bg-yellow-900/20 rounded-full border border-yellow-900/10 backdrop-blur-md">
-                        <span className="font-bold text-[9px] text-yellow-900 uppercase tracking-widest flex items-center gap-1">
-                            <Sparkles size={10} className="text-yellow-600" />
+                    <div className="mb-4 px-3 py-1.5 bg-lab-gold/20 rounded-full border border-lab-gold/10 backdrop-blur-md">
+                        <span className="font-bold text-[9px] text-lab-gold uppercase tracking-widest flex items-center gap-1">
+                            <Sparkles size={10} className="text-lab-gold" />
                             Geschreven door Jou
                         </span>
                     </div>
@@ -395,7 +395,7 @@ const PageContent = ({
                 {/* REMOVED: bg-stone-50 and p-1.5 to remove the gray box/frame effect */}
                 <div
                     className={`w-full max-h-[40%] shadow-sm rounded border transition-all duration-300 shrink-0 ${isInteractive
-                        ? 'cursor-pointer border-dashed border-2 border-stone-300 hover:border-[#8B6F9E] hover:bg-[#8B6F9E]/10 group/edit'
+                        ? 'cursor-pointer border-dashed border-2 border-stone-300 hover:border-[#0B453F] hover:bg-[#0B453F]/10 group/edit'
                         : 'border-stone-100 transform rotate-[0.5deg] hover:rotate-0'
                         }`}
                     onClick={() => isInteractive && onImageClick?.(pageIndex + 1)}
@@ -408,19 +408,19 @@ const PageContent = ({
                                 <span className="text-indigo-300 font-bold text-[10px] uppercase tracking-widest">Illustreren...</span>
                             </div>
                         ) : page?.image?.startsWith('error:') ? (
-                            <div className="w-full h-full bg-amber-50 flex flex-col items-center justify-center text-amber-600 gap-2 p-4 text-center">
-                                <AlertCircle size={28} className="text-amber-500" />
+                            <div className="w-full h-full bg-lab-gold flex flex-col items-center justify-center text-lab-gold gap-2 p-4 text-center">
+                                <AlertCircle size={28} className="text-lab-gold" />
                                 <span className="text-xs font-bold">
                                     Oeps! De AI kon dit niet tekenen 🎨
                                 </span>
-                                <span className="text-[10px] text-amber-600 max-w-[90%] leading-relaxed">
+                                <span className="text-[10px] text-lab-gold max-w-[90%] leading-relaxed">
                                     De AI heeft regels over wat getekend mag worden. Probeer vriendelijke woorden!
                                 </span>
-                                <div className="bg-white/80 rounded-lg p-2 text-[9px] text-amber-700 max-w-[95%]">
+                                <div className="bg-white/80 rounded-lg p-2 text-[9px] text-lab-gold max-w-[95%]">
                                     💡 <strong>Tip:</strong> Vermijd enge, gewelddadige of ongepaste beschrijvingen.
                                 </div>
                                 {isInteractive && (
-                                    <button className="text-[10px] text-white px-3 py-1.5 rounded-full shadow-sm transition-colors mt-1 font-bold" style={{ backgroundColor: '#D97757' }}>
+                                    <button className="text-[10px] text-white px-3 py-1.5 rounded-full shadow-sm transition-colors mt-1 font-bold" style={{ backgroundColor: '#D97848' }}>
                                         ✏️ Opnieuw proberen
                                     </button>
                                 )}
@@ -429,8 +429,8 @@ const PageContent = ({
                             <>
                                 <img src={page.image} className="w-full h-full object-cover" alt={`Pagina ${pageIndex + 1}`} loading="lazy" />
                                 {isInteractive && (
-                                    <div className="absolute inset-0 bg-[#8B6F9E]/0 hover:bg-[#8B6F9E]/10 transition-colors flex items-center justify-center">
-                                        <div className="opacity-0 group-hover/edit:opacity-100 bg-white/90 px-3 py-1.5 rounded-full text-xs font-bold shadow-lg transition-opacity" style={{ color: '#8B6F9E' }}>
+                                    <div className="absolute inset-0 bg-[#0B453F]/0 hover:bg-[#0B453F]/10 transition-colors flex items-center justify-center">
+                                        <div className="opacity-0 group-hover/edit:opacity-100 bg-white/90 px-3 py-1.5 rounded-full text-xs font-bold shadow-lg transition-opacity" style={{ color: '#0B453F' }}>
                                             ✏️ Afbeelding wijzigen
                                         </div>
                                     </div>
@@ -438,8 +438,8 @@ const PageContent = ({
                             </>
                         ) : (
                             <div className="w-full h-full flex flex-col items-center justify-center text-stone-300 gap-1 bg-stone-50/50">
-                                <ImageIcon size={20} className={isInteractive ? 'text-[#8B6F9E]' : 'opacity-50'} />
-                                <span className={`text-[9px] font-medium ${isInteractive ? 'text-[#8B6F9E]' : ''}`}>
+                                <ImageIcon size={20} className={isInteractive ? 'text-[#0B453F]' : 'opacity-50'} />
+                                <span className={`text-[9px] font-medium ${isInteractive ? 'text-[#0B453F]' : ''}`}>
                                     {isInteractive ? 'Klik om illustratie toe te voegen' : 'Wacht op illustratie...'}
                                 </span>
                             </div>
@@ -455,7 +455,7 @@ const PageContent = ({
                 {/* Text Area - Clickable */}
                 <div
                     className={`flex-1 relative overflow-y-auto custom-scrollbar rounded-lg p-2 ${isInteractive
-                        ? 'cursor-pointer border-2 border-dashed border-stone-300 hover:border-[#2A9D8F] hover:bg-[#2A9D8F]/10 transition-all group/edit'
+                        ? 'cursor-pointer border-2 border-dashed border-stone-300 hover:border-[#5F947D] hover:bg-[#5F947D]/10 transition-all group/edit'
                         : ''
                         }`}
                     onClick={(e) => {
@@ -469,7 +469,7 @@ const PageContent = ({
                     <div className="absolute inset-0 flex flex-col justify-start pt-1 pointer-events-none opacity-15">
                         {[...Array(12)].map((_, i) => <div key={i} className="w-full h-5 border-b border-stone-300"></div>)}
                     </div>
-                    <p className="font-serif text-stone-700 text-base md:text-lg leading-relaxed relative z-10 first-letter:text-2xl first-letter:font-black first-letter:text-[#D97757] first-letter:mr-0.5 first-letter:float-left">
+                    <p className="font-serif text-stone-700 text-base md:text-lg leading-relaxed relative z-10 first-letter:text-2xl first-letter:font-black first-letter:text-[#D97848] first-letter:mr-0.5 first-letter:float-left">
                         {page?.text || "Het verhaal gaat hier verder..."}
                     </p>
                     {isInteractive && (
@@ -857,8 +857,8 @@ Maak nu de titel met [TITLE] tags en de tekst van de eerste pagina met [PAGE] ta
 
     if (isEmptyBook && !hasStarted) {
         return (
-            <div className="w-full h-full flex items-center justify-center p-4 relative overflow-hidden" style={{ backgroundColor: '#FAF9F0' }}>
-                <div className="absolute inset-0 bg-[radial-gradient(#D9775720_1px,transparent_1px)] [background-size:20px_20px] opacity-50"></div>
+            <div className="w-full h-full flex items-center justify-center p-4 relative overflow-hidden" style={{ backgroundColor: '#FCF6EA' }}>
+                <div className="absolute inset-0 bg-[radial-gradient(#D9784820_1px,transparent_1px)] [background-size:20px_20px] opacity-50"></div>
                 <div className="z-10 w-full max-w-md">
                     {showForm ? (
                         <StorySetupForm
@@ -866,16 +866,16 @@ Maak nu de titel met [TITLE] tags en de tekst van de eerste pagina met [PAGE] ta
                             onSubmit={handleFormSubmit}
                         />
                     ) : (
-                        <div className="bg-white rounded-3xl shadow-xl overflow-hidden text-center p-8 animate-in zoom-in-95 duration-500" style={{ borderColor: '#E8E6DF', borderWidth: 1 }}>
+                        <div className="bg-white rounded-3xl shadow-xl overflow-hidden text-center p-8 animate-in zoom-in-95 duration-500" style={{ borderColor: '#E7D8BD', borderWidth: 1 }}>
                             <img src="/mascot/pip-reading.webp" alt="Pip" className="w-24 h-24 object-contain mx-auto mb-4" />
-                            <h1 className="text-3xl font-black mb-2" style={{ color: '#1A1A19' }}>Verhalen Ontwerper</h1>
-                            <p className="font-medium mb-8" style={{ color: '#6B6B66' }}>
+                            <h1 className="text-3xl font-black mb-2" style={{ color: '#08283B' }}>Verhalen Ontwerper</h1>
+                            <p className="font-medium mb-8" style={{ color: '#445865' }}>
                                 Word een echte auteur! Samen met AI ga je je eigen prentenboek schrijven en illustreren.
                             </p>
                             <button
                                 onClick={() => setShowForm(true)}
                                 className="w-full py-4 text-white font-bold rounded-2xl shadow-lg hover:opacity-90 transition-all flex items-center justify-center gap-2 active:scale-95 group"
-                                style={{ backgroundColor: '#D97757' }}
+                                style={{ backgroundColor: '#D97848' }}
                             >
                                 <Sparkles size={18} className="text-white/80 group-hover:animate-spin" />
                                 Start Mijn Boek
@@ -957,7 +957,7 @@ Maak nu de titel met [TITLE] tags en de tekst van de eerste pagina met [PAGE] ta
                         }
                          /* Cover specific styling */
                         .cover-page {
-                            background-color: #FAF9F0; /* Brand cream */
+                            background-color: #FCF6EA; /* Brand cream */
                         }
                     }
                 `}</style>
@@ -965,19 +965,19 @@ Maak nu de titel met [TITLE] tags en de tekst van de eerste pagina met [PAGE] ta
                 {/* --- 1. FRONT COVER (Standalone Page) --- */}
                 <div className="print-page cover-page flex flex-col items-center justify-center text-center relative overflow-hidden">
                     {/* Decorative border */}
-                    <div className="absolute inset-4 border-4 border-[#D97757]/20 rounded-3xl"></div>
+                    <div className="absolute inset-4 border-4 border-[#D97848]/20 rounded-3xl"></div>
 
                     <div className="z-10 max-w-4xl w-full flex flex-col items-center gap-8">
                         <div className="flex flex-col gap-2">
-                            <div className="flex items-center justify-center gap-2 font-bold uppercase tracking-[0.2em] text-sm mb-2" style={{ color: '#D97757' }}>
+                            <div className="flex items-center justify-center gap-2 font-bold uppercase tracking-[0.2em] text-sm mb-2" style={{ color: '#D97848' }}>
                                 <Sparkles size={16} />
                                 <span>Een verhaal van de Toekomst</span>
                                 <Sparkles size={16} />
                             </div>
-                            <h1 className="text-6xl font-black text-slate-900 leading-tight mb-2">
+                            <h1 className="text-6xl font-black text-lab-muted leading-tight mb-2">
                                 {data.title || "Mijn Verhaal"}
                             </h1>
-                            <div className="w-32 h-1 mx-auto rounded-full" style={{ backgroundColor: '#D97757' }}></div>
+                            <div className="w-32 h-1 mx-auto rounded-full" style={{ backgroundColor: '#D97848' }}></div>
                         </div>
 
                         {data.coverImage && data.coverImage !== 'loading' && !data.coverImage.startsWith('error') ? (
@@ -985,14 +985,14 @@ Maak nu de titel met [TITLE] tags en de tekst van de eerste pagina met [PAGE] ta
                                 <img src={data.coverImage} className="w-full h-full object-cover" alt="Kaft" loading="lazy" />
                             </div>
                         ) : (
-                            <div className="w-[60%] aspect-[4/3] rounded-2xl border-4 border-dashed bg-white/50 flex items-center justify-center" style={{ borderColor: '#D9775740' }}>
-                                <BookOpen size={64} style={{ color: '#D9775740' }} />
+                            <div className="w-[60%] aspect-[4/3] rounded-2xl border-4 border-dashed bg-white/50 flex items-center justify-center" style={{ borderColor: '#D9784840' }}>
+                                <BookOpen size={64} style={{ color: '#D9784840' }} />
                             </div>
                         )}
 
                         <div className="mt-4">
-                            <p className="text-2xl font-serif italic" style={{ color: '#6B6B66' }}>Geschreven &amp; Geïllustreerd door</p>
-                            <p className="text-3xl font-black mt-2 uppercase tracking-wide" style={{ color: '#3D3D38' }}>
+                            <p className="text-2xl font-serif italic" style={{ color: '#445865' }}>Geschreven &amp; Geïllustreerd door</p>
+                            <p className="text-3xl font-black mt-2 uppercase tracking-wide" style={{ color: '#445865' }}>
                                 {user?.displayName || "Een Jonge Schrijver"}
                             </p>
                         </div>
@@ -1003,9 +1003,9 @@ Maak nu de titel met [TITLE] tags en de tekst van de eerste pagina met [PAGE] ta
                 {spreads.map((spread, index) => (
                     <div key={index} className="print-page bg-white flex flex-row gap-0 items-stretch p-0 overflow-hidden">
                         {/* LEFT PAGE */}
-                        <div className="flex-1 h-full border-r border-slate-200 p-12 flex flex-col relative">
+                        <div className="flex-1 h-full border-r border-lab-muted p-12 flex flex-col relative">
                             {/* Page Number */}
-                            <div className="absolute top-8 left-8 text-slate-300 font-mono text-xs">
+                            <div className="absolute top-8 left-8 text-lab-muted font-mono text-xs">
                                 PAGINA {spread.leftIndex + 1}
                             </div>
 
@@ -1014,17 +1014,17 @@ Maak nu de titel met [TITLE] tags en de tekst van de eerste pagina met [PAGE] ta
 
                             <div className="flex-1 flex flex-col gap-8 items-center justify-center">
                                 {spread.left.image && spread.left.image !== 'loading' && !spread.left.image.startsWith('error') ? (
-                                    <div className="w-full aspect-video rounded-xl overflow-hidden border-4 border-slate-100 shadow-sm bg-slate-50">
+                                    <div className="w-full aspect-video rounded-xl overflow-hidden border-4 border-lab-muted shadow-sm bg-lab-muted">
                                         <img src={spread.left.image} className="w-full h-full object-cover" alt={`Pagina ${spread.leftIndex + 1}`} loading="lazy" />
                                     </div>
                                 ) : (
-                                    <div className="w-full aspect-video rounded-xl border-2 border-dashed border-slate-200 flex items-center justify-center text-slate-300 bg-slate-50/50">
+                                    <div className="w-full aspect-video rounded-xl border-2 border-dashed border-lab-muted flex items-center justify-center text-lab-muted bg-lab-muted/50">
                                         <ImageIcon size={48} />
                                     </div>
                                 )}
                                 <div className="w-full">
-                                    <div className="w-full h-px bg-slate-100 mb-6"></div>
-                                    <p className="font-serif text-xl leading-loose text-slate-800 text-justify">
+                                    <div className="w-full h-px bg-lab-muted mb-6"></div>
+                                    <p className="font-serif text-xl leading-loose text-lab-muted text-justify">
                                         {spread.left.text}
                                     </p>
                                 </div>
@@ -1034,7 +1034,7 @@ Maak nu de titel met [TITLE] tags en de tekst van de eerste pagina met [PAGE] ta
                         {/* RIGHT PAGE */}
                         <div className="flex-1 h-full p-12 flex flex-col relative">
                             {/* Page Number */}
-                            <div className="absolute top-8 right-8 text-slate-300 font-mono text-xs">
+                            <div className="absolute top-8 right-8 text-lab-muted font-mono text-xs">
                                 PAGINA {spread.leftIndex + 2}
                             </div>
 
@@ -1044,24 +1044,24 @@ Maak nu de titel met [TITLE] tags en de tekst van de eerste pagina met [PAGE] ta
                             {spread.right ? (
                                 <div className="flex-1 flex flex-col gap-8 items-center justify-center">
                                     {spread.right.image && spread.right.image !== 'loading' && !spread.right.image.startsWith('error') ? (
-                                        <div className="w-full aspect-video rounded-xl overflow-hidden border-4 border-slate-100 shadow-sm bg-slate-50">
+                                        <div className="w-full aspect-video rounded-xl overflow-hidden border-4 border-lab-muted shadow-sm bg-lab-muted">
                                             <img src={spread.right.image} className="w-full h-full object-cover" alt={`Pagina ${spread.rightIndex + 1}`} loading="lazy" />
                                         </div>
                                     ) : (
-                                        <div className="w-full aspect-video rounded-xl border-2 border-dashed border-slate-200 flex items-center justify-center text-slate-300 bg-slate-50/50">
+                                        <div className="w-full aspect-video rounded-xl border-2 border-dashed border-lab-muted flex items-center justify-center text-lab-muted bg-lab-muted/50">
                                             <ImageIcon size={48} />
                                         </div>
                                     )}
                                     <div className="w-full">
-                                        <div className="w-full h-px bg-slate-100 mb-6"></div>
-                                        <p className="font-serif text-xl leading-loose text-slate-800 text-justify">
+                                        <div className="w-full h-px bg-lab-muted mb-6"></div>
+                                        <p className="font-serif text-xl leading-loose text-lab-muted text-justify">
                                             {spread.right.text}
                                         </p>
                                     </div>
                                 </div>
                             ) : (
                                 /* Empty page if odd count */
-                                <div className="flex-1 flex flex-col items-center justify-center text-slate-300 opacity-30">
+                                <div className="flex-1 flex flex-col items-center justify-center text-lab-muted opacity-30">
                                     <Sparkles size={48} className="mb-4" />
                                     <span className="font-bold uppercase tracking-widest text-sm">Einde van het verhaal</span>
                                 </div>
@@ -1151,11 +1151,11 @@ Maak nu de titel met [TITLE] tags en de tekst van de eerste pagina met [PAGE] ta
                                         {/* Placeholder Image Area - Matching left page styling */}
                                         <div
                                             onClick={handlePlaceholderClick}
-                                            className="w-full max-h-[40%] shadow-sm rounded border transition-all duration-300 shrink-0 cursor-pointer border-dashed border-2 border-stone-300 hover:border-[#8B6F9E] hover:bg-[#8B6F9E]/10 group/edit"
+                                            className="w-full max-h-[40%] shadow-sm rounded border transition-all duration-300 shrink-0 cursor-pointer border-dashed border-2 border-stone-300 hover:border-[#0B453F] hover:bg-[#0B453F]/10 group/edit"
                                         >
                                             <div className="w-full h-full aspect-[4/3] overflow-hidden relative rounded flex items-center justify-center bg-stone-50/50">
-                                                <ImageIcon size={20} className="text-[#8B6F9E]" />
-                                                <span className="text-[9px] font-medium text-[#8B6F9E] ml-1">
+                                                <ImageIcon size={20} className="text-[#0B453F]" />
+                                                <span className="text-[9px] font-medium text-[#0B453F] ml-1">
                                                     Klik om illustratie toe te voegen
                                                 </span>
                                             </div>
@@ -1164,7 +1164,7 @@ Maak nu de titel met [TITLE] tags en de tekst van de eerste pagina met [PAGE] ta
                                         {/* Placeholder Text Area - Matching left page styling */}
                                         <div
                                             onClick={handlePlaceholderClick}
-                                            className="flex-1 relative overflow-y-auto custom-scrollbar rounded-lg p-2 cursor-pointer border-2 border-dashed border-stone-300 hover:border-[#2A9D8F] hover:bg-[#2A9D8F]/10 transition-all group/edit"
+                                            className="flex-1 relative overflow-y-auto custom-scrollbar rounded-lg p-2 cursor-pointer border-2 border-dashed border-stone-300 hover:border-[#5F947D] hover:bg-[#5F947D]/10 transition-all group/edit"
                                         >
                                             {/* Lined paper effect */}
                                             <div className="absolute inset-0 flex flex-col justify-start pt-1 pointer-events-none opacity-15">
@@ -1181,7 +1181,7 @@ Maak nu de titel met [TITLE] tags en de tekst van de eerste pagina met [PAGE] ta
                             ) : (
                                 <div className="w-full h-full flex flex-col items-center justify-center text-stone-400 gap-4 bg-stone-50 p-6">
                                     {/* Empty book state - show loading or hint */}
-                                    <Loader2 size={32} className="animate-spin text-[#D97757]" />
+                                    <Loader2 size={32} className="animate-spin text-[#D97848]" />
                                     <span className="text-sm font-bold uppercase tracking-widest text-center">Verhaal aan het opbouwen...</span>
                                     <span className="text-xs text-stone-400 text-center max-w-[200px]">Je boekje verschijnt hier zodra de AI je eerste pagina schrijft</span>
                                 </div>
@@ -1202,22 +1202,22 @@ Maak nu de titel met [TITLE] tags en de tekst van de eerste pagina met [PAGE] ta
                                         // Next: Showing OLD Right Page
                                         (prevPageRef.current === 0) ? (
                                             // Handle Cover specifically
-                                            <div className="w-full h-full bg-[#EAB308] flex flex-col items-center relative overflow-hidden shadow-inner select-none rounded-r-md border-r-4 border-[#854D0E] border-b-4">
+                                            <div className="w-full h-full bg-[#D7C95F] flex flex-col items-center relative overflow-hidden shadow-inner select-none rounded-r-md border-r-4 border-[#854D0E] border-b-4">
                                                 <div className="absolute inset-0 bg-gradient-to-l from-black/20 to-transparent pointer-events-none" />
-                                                <div className="mt-8 md:mt-12 w-3/4 aspect-[3/4] bg-amber-100 shadow-lg rotate-1 transform transition-transform hover:rotate-0 duration-500 flex items-center justify-center overflow-hidden border-4 border-white relative">
+                                                <div className="mt-8 md:mt-12 w-3/4 aspect-[3/4] bg-lab-gold shadow-lg rotate-1 transform transition-transform hover:rotate-0 duration-500 flex items-center justify-center overflow-hidden border-4 border-white relative">
                                                     {data.coverImage === 'loading' ? (
-                                                        <Loader2 className="animate-spin text-amber-600" />
+                                                        <Loader2 className="animate-spin text-lab-gold" />
                                                     ) : data.coverImage ? (
                                                         <img src={data.coverImage} alt="Cover" className="w-full h-full object-cover" loading="lazy" />
                                                     ) : (
-                                                        <div className="flex flex-col items-center text-amber-800/30">
+                                                        <div className="flex flex-col items-center text-lab-gold/30">
                                                             <BookOpen size={48} className="mb-2" />
                                                             <span className="font-black text-xs uppercase tracking-widest">Kaft Illustratie</span>
                                                         </div>
                                                     )}
                                                 </div>
                                                 <div className={`w-full text-center relative p-2 rounded-xl bg-white/90 shadow-xl border-4 border-white backdrop-blur-sm transform -rotate-1 mt-4 max-w-[90%]`}>
-                                                    <h1 className="text-lg md:text-xl font-black text-slate-900 font-sans leading-tight tracking-tight break-words line-clamp-2">
+                                                    <h1 className="text-lg md:text-xl font-black text-lab-muted font-sans leading-tight tracking-tight break-words line-clamp-2">
                                                         {data.title || "Mijn Verhaal"}
                                                     </h1>
                                                 </div>
@@ -1260,27 +1260,27 @@ Maak nu de titel met [TITLE] tags en de tekst van de eerste pagina met [PAGE] ta
                 </div>
 
                 {/* Controls - Compact & Less Intrusive */}
-                <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-3 z-50 bg-white/95 backdrop-blur-md px-4 py-2 rounded-full shadow-lg border border-slate-200/50 scale-90 origin-bottom hover:scale-100 transition-transform duration-300">
+                <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-3 z-50 bg-white/95 backdrop-blur-md px-4 py-2 rounded-full shadow-lg border border-lab-muted/50 scale-90 origin-bottom hover:scale-100 transition-transform duration-300">
                     <button
                         onClick={() => handlePageTurn('prev')}
                         disabled={currentPage === 0 || isFlipping}
                         className={`p-2 rounded-full transition-all ${currentPage === 0
-                            ? 'text-slate-300 cursor-not-allowed'
-                            : 'bg-slate-50 text-slate-600 hover:bg-[#D97757]/10 hover:text-[#D97757] hover:scale-110 active:scale-95'
+                            ? 'text-lab-muted cursor-not-allowed'
+                            : 'bg-lab-muted text-lab-muted hover:bg-[#D97848]/10 hover:text-[#D97848] hover:scale-110 active:scale-95'
                             }`}
                     >
                         <ChevronLeft size={18} />
                     </button>
 
                     <div className="flex flex-col items-center min-w-[80px]">
-                        <span className="font-bold text-slate-600 font-mono text-[10px] tracking-wide">
+                        <span className="font-bold text-lab-muted font-mono text-[10px] tracking-wide">
                             {currentPage === 0 ? 'KAFT' : `PAG ${currentPage} / ${totalPages}`}
                         </span>
                         <div className="flex gap-1 mt-0.5">
                             {[...Array(totalPages + 1)].map((_, i) => (
                                 <div
                                     key={i}
-                                    className={`w-1 h-1 rounded-full transition-all ${i === currentPage ? 'bg-[#D97757] scale-125' : 'bg-slate-300'}`}
+                                    className={`w-1 h-1 rounded-full transition-all ${i === currentPage ? 'bg-[#D97848] scale-125' : 'bg-lab-muted'}`}
                                 />
                             ))}
                         </div>
@@ -1290,18 +1290,18 @@ Maak nu de titel met [TITLE] tags en de tekst van de eerste pagina met [PAGE] ta
                         onClick={() => handlePageTurn('next')}
                         disabled={currentPage >= totalPages || isFlipping}
                         className={`p-2 rounded-full transition-all ${currentPage >= totalPages
-                            ? 'text-slate-300 cursor-not-allowed'
-                            : 'bg-slate-50 text-slate-600 hover:bg-[#D97757]/10 hover:text-[#D97757] hover:scale-110 active:scale-95'
+                            ? 'text-lab-muted cursor-not-allowed'
+                            : 'bg-lab-muted text-lab-muted hover:bg-[#D97848]/10 hover:text-[#D97848] hover:scale-110 active:scale-95'
                             }`}
                     >
                         <ChevronRight size={18} />
                     </button>
 
-                    <div className="w-[1px] h-4 bg-slate-200 mx-1"></div>
+                    <div className="w-[1px] h-4 bg-lab-muted mx-1"></div>
 
                     <button
                         onClick={() => window.print()}
-                        className="p-2 rounded-full text-slate-400 hover:bg-blue-50 hover:text-blue-500 transition-all hover:scale-105 active:scale-95"
+                        className="p-2 rounded-full text-lab-muted hover:bg-blue-50 hover:text-blue-500 transition-all hover:scale-105 active:scale-95"
                         title="Print Boekje"
                     >
                         <Printer size={16} />
@@ -1309,7 +1309,7 @@ Maak nu de titel met [TITLE] tags en de tekst van de eerste pagina met [PAGE] ta
 
                     <button
                         onClick={handleDownloadBooklet}
-                        className="p-2 rounded-full text-slate-400 hover:bg-green-50 hover:text-green-500 transition-all hover:scale-105 active:scale-95"
+                        className="p-2 rounded-full text-lab-muted hover:bg-green-50 hover:text-green-500 transition-all hover:scale-105 active:scale-95"
                         title="Download PDF"
                     >
                         <Download size={16} />
@@ -1322,7 +1322,7 @@ Maak nu de titel met [TITLE] tags en de tekst van de eerste pagina met [PAGE] ta
                             disabled={isSavingToLibrary}
                             className={`p-2 rounded-full transition-all hover:scale-105 active:scale-95 ${librarySaveSuccess
                                 ? 'text-green-500 bg-green-50'
-                                : 'text-slate-400 hover:bg-purple-50 hover:text-purple-500'
+                                : 'text-lab-muted hover:bg-purple-50 hover:text-purple-500'
                                 }`}
                             title={librarySaveSuccess ? 'Opgeslagen!' : 'Opslaan in Bibliotheek'}
                         >
@@ -1343,40 +1343,40 @@ Maak nu de titel met [TITLE] tags en de tekst van de eerste pagina met [PAGE] ta
             {/* Publish Modal */}
             {showPublishModal && (
                 <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm animate-in fade-in">
-                    <div className="bg-white rounded-2xl p-6 w-full max-w-md shadow-2xl animate-in zoom-in-95" style={{ borderColor: '#E8E6DF', borderWidth: 1 }} onClick={e => e.stopPropagation()}>
+                    <div className="bg-white rounded-2xl p-6 w-full max-w-md shadow-2xl animate-in zoom-in-95" style={{ borderColor: '#E7D8BD', borderWidth: 1 }} onClick={e => e.stopPropagation()}>
                         {publishSuccess ? (
                             <div className="text-center py-8">
-                                <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4" style={{ backgroundColor: '#10B98120' }}>
-                                    <Check size={32} style={{ color: '#10B981' }} />
+                                <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4" style={{ backgroundColor: '#5F947D20' }}>
+                                    <Check size={32} style={{ color: '#5F947D' }} />
                                 </div>
-                                <h3 className="text-xl font-black text-slate-800 mb-2">Gepubliceerd! 🎉</h3>
-                                <p className="text-slate-500 text-sm">Je boek staat nu in de galerij!</p>
+                                <h3 className="text-xl font-black text-lab-muted mb-2">Gepubliceerd! 🎉</h3>
+                                <p className="text-lab-muted text-sm">Je boek staat nu in de galerij!</p>
                             </div>
                         ) : (
                             <>
                                 <div className="flex items-center justify-between mb-6">
-                                    <h3 className="text-lg font-black text-slate-800 flex items-center gap-2">
-                                        <Share2 style={{ color: '#10B981' }} size={20} />
+                                    <h3 className="text-lg font-black text-lab-muted flex items-center gap-2">
+                                        <Share2 style={{ color: '#5F947D' }} size={20} />
                                         Deel je Boek
                                     </h3>
                                     <button
                                         onClick={() => setShowPublishModal(false)}
-                                        className="p-2 hover:bg-slate-100 rounded-lg transition-colors"
+                                        className="p-2 hover:bg-lab-muted rounded-lg transition-colors"
                                     >
-                                        <X size={20} className="text-slate-400" />
+                                        <X size={20} className="text-lab-muted" />
                                     </button>
                                 </div>
 
                                 <div className="space-y-4">
                                     <div>
-                                        <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">
+                                        <label className="block text-xs font-bold text-lab-muted uppercase tracking-wider mb-2">
                                             Titel van je boek
                                         </label>
                                         <input
                                             type="text"
                                             value={publishTitle}
                                             onChange={(e) => setPublishTitle(e.target.value)}
-                                            className="w-full px-4 py-3 border rounded-xl font-bold focus:ring-2 outline-none transition-all" style={{ backgroundColor: '#FAF9F0', borderColor: '#E8E6DF', color: '#1A1A19' }}
+                                            className="w-full px-4 py-3 border rounded-xl font-bold focus:ring-2 outline-none transition-all" style={{ backgroundColor: '#FCF6EA', borderColor: '#E7D8BD', color: '#08283B' }}
                                             maxLength={50}
                                         />
                                     </div>
@@ -1391,7 +1391,7 @@ Maak nu de titel met [TITLE] tags en de tekst van de eerste pagina met [PAGE] ta
                                     <button
                                         onClick={handlePublish}
                                         disabled={!publishTitle.trim() || isPublishing}
-                                        className="w-full py-4 text-white rounded-xl font-black text-lg hover:shadow-lg hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed" style={{ backgroundColor: '#10B981' }}
+                                        className="w-full py-4 text-white rounded-xl font-black text-lg hover:shadow-lg hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed" style={{ backgroundColor: '#5F947D' }}
                                     >
                                         {isPublishing ? (
                                             <>
@@ -1414,7 +1414,7 @@ Maak nu de titel met [TITLE] tags en de tekst van de eerste pagina met [PAGE] ta
 
             {/* Feedback Toast */}
             {showToast && (
-                <div className="absolute top-4 left-1/2 -translate-x-1/2 text-white px-4 py-2 rounded-full shadow-xl flex items-center gap-2 z-[100] animate-in slide-in-from-top-4 fade-in duration-300" style={{ backgroundColor: '#2A9D8F' }}>
+                <div className="absolute top-4 left-1/2 -translate-x-1/2 text-white px-4 py-2 rounded-full shadow-xl flex items-center gap-2 z-[100] animate-in slide-in-from-top-4 fade-in duration-300" style={{ backgroundColor: '#5F947D' }}>
                     <Sparkles size={16} className="text-white/80" />
                     <span className="font-bold text-sm">{toastMessage || 'Opdracht verstuurd aan AI!'}</span>
                 </div>

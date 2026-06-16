@@ -86,10 +86,10 @@ export const dataPipelineConfig: DataViewerConfig = {
                 'Na het ETL-proces is de dataset opgeschoond. Bekijk het verschil in gemiddelde temperatuur per lokaal voor en na de opschoning.',
             type: 'bar-chart',
             chartData: [
-                { label: 'Lokaal 3A (ruw)', value: 47.8, color: '#EF4444' },
-                { label: 'Lokaal 3A (schoon)', value: 21.6, color: '#3B82F6' },
-                { label: 'Lokaal 3B (ruw)', value: 20.8, color: '#F97316' },
-                { label: 'Lokaal 3B (schoon)', value: 21.0, color: '#10B981' },
+                { label: 'Lokaal 3A (ruw)', value: 47.8, color: '#D97848' },
+                { label: 'Lokaal 3A (schoon)', value: 21.6, color: '#0B453F' },
+                { label: 'Lokaal 3B (ruw)', value: 20.8, color: '#D97848' },
+                { label: 'Lokaal 3B (schoon)', value: 21.0, color: '#5F947D' },
             ],
             questions: [
                 {
@@ -202,25 +202,25 @@ export const dataPipelineConfig: DataViewerConfig = {
             minScore: 85,
             emoji: '🏆',
             title: 'Data Engineer Pro!',
-            color: '#059669',
+            color: '#5F947D',
         },
         {
             minScore: 65,
             emoji: '🔧',
             title: 'Pipeline Bouwer',
-            color: '#3B82F6',
+            color: '#0B453F',
         },
         {
             minScore: 40,
             emoji: '📊',
             title: 'ETL Beginner',
-            color: '#F59E0B',
+            color: '#D7C95F',
         },
         {
             minScore: 0,
             emoji: '📚',
             title: 'Aan de slag!',
-            color: '#6B6B66',
+            color: '#445865',
         },
     ],
 

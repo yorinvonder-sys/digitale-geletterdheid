@@ -60,8 +60,8 @@ export const ChangePassword: React.FC<ChangePasswordProps> = ({ onComplete }) =>
     };
 
     return (
-        <div className="min-h-screen bg-slate-50 flex items-center justify-center p-4">
-            <div className="bg-white max-w-md w-full rounded-2xl shadow-xl overflow-hidden border border-slate-100">
+        <div className="min-h-screen bg-lab-muted flex items-center justify-center p-4">
+            <div className="bg-white max-w-md w-full rounded-2xl shadow-xl overflow-hidden border border-lab-muted">
                 <div className="p-8">
                     <div className="flex justify-center mb-6">
                         <div className="w-16 h-16 bg-indigo-100 rounded-2xl flex items-center justify-center text-indigo-600">
@@ -69,21 +69,21 @@ export const ChangePassword: React.FC<ChangePasswordProps> = ({ onComplete }) =>
                         </div>
                     </div>
 
-                    <h2 className="text-2xl font-bold text-center text-slate-900 mb-2">Nieuw Wachtwoord Nodig</h2>
-                    <p className="text-center text-slate-500 mb-8 text-sm">
+                    <h2 className="text-2xl font-bold text-center text-lab-muted mb-2">Nieuw Wachtwoord Nodig</h2>
+                    <p className="text-center text-lab-muted mb-8 text-sm">
                         Je logt in met een tijdelijk wachtwoord. Stel nu een eigen, veilig wachtwoord in om verder te gaan.
                     </p>
 
                     <form onSubmit={handleSubmit} className="space-y-4">
                         <div className="space-y-4">
                             <div className="relative">
-                                <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
+                                <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-lab-muted" size={18} />
                                 <input
                                     type={showPassword ? "text" : "password"}
                                     placeholder="Nieuw wachtwoord"
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
-                                    className="w-full pl-12 pr-12 py-3.5 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all font-medium text-sm text-slate-700"
+                                    className="w-full pl-12 pr-12 py-3.5 bg-lab-muted border border-lab-muted rounded-xl outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all font-medium text-sm text-lab-muted"
                                     required
                                     minLength={12}
                                 />
@@ -91,20 +91,20 @@ export const ChangePassword: React.FC<ChangePasswordProps> = ({ onComplete }) =>
                                     type="button"
                                     onClick={() => setShowPassword(!showPassword)}
                                     aria-label={showPassword ? 'Verberg wachtwoord' : 'Toon wachtwoord'}
-                                    className="absolute right-2 top-1/2 -translate-y-1/2 p-2.5 min-w-[44px] min-h-[44px] flex items-center justify-center text-slate-500 hover:text-slate-700 hover:bg-slate-100 rounded-lg transition-colors"
+                                    className="absolute right-2 top-1/2 -translate-y-1/2 p-2.5 min-w-[44px] min-h-[44px] flex items-center justify-center text-lab-muted hover:text-lab-muted hover:bg-lab-muted rounded-lg transition-colors"
                                 >
                                     {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                                 </button>
                             </div>
 
                             <div className="relative">
-                                <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
+                                <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-lab-muted" size={18} />
                                 <input
                                     type={showPassword ? "text" : "password"}
                                     placeholder="Bevestig wachtwoord"
                                     value={confirmPassword}
                                     onChange={(e) => setConfirmPassword(e.target.value)}
-                                    className="w-full pl-12 pr-4 py-3.5 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all font-medium text-sm text-slate-700"
+                                    className="w-full pl-12 pr-4 py-3.5 bg-lab-muted border border-lab-muted rounded-xl outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all font-medium text-sm text-lab-muted"
                                     required
                                     minLength={12}
                                 />

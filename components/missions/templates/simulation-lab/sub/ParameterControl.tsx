@@ -12,13 +12,13 @@ export const ParameterControl: React.FC<{
             <div className="space-y-1">
                 <div className="flex justify-between items-center">
                     <label
-                        className="text-xs font-bold text-[#3D3D38]"
+                        className="text-xs font-bold text-[#445865]"
                         style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                     >
                         {param.label}
                     </label>
                     <span
-                        className="text-xs font-black text-[#D97757] bg-[#D97757]/10 px-2 py-0.5 rounded-full"
+                        className="text-xs font-black text-[#D97848] bg-[#D97848]/10 px-2 py-0.5 rounded-full"
                         style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                     >
                         {v}
@@ -31,9 +31,9 @@ export const ParameterControl: React.FC<{
                     step={param.step ?? 1}
                     value={v}
                     onChange={(e) => onChange(Number(e.target.value))}
-                    className="w-full accent-[#D97757]"
+                    className="w-full accent-[#D97848]"
                 />
-                <div className="flex justify-between text-[10px] text-[#6B6B66]">
+                <div className="flex justify-between text-[10px] text-[#445865]">
                     <span>{param.min ?? 0}</span>
                     <span>{param.max ?? 100}</span>
                 </div>
@@ -46,7 +46,7 @@ export const ParameterControl: React.FC<{
         return (
             <div className="flex items-center justify-between">
                 <label
-                    className="text-xs font-bold text-[#3D3D38]"
+                    className="text-xs font-bold text-[#445865]"
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                 >
                     {param.label}
@@ -54,7 +54,7 @@ export const ParameterControl: React.FC<{
                 <button
                     onClick={() => onChange(!v)}
                     className={`relative w-11 h-6 rounded-full transition-colors duration-300 ${
-                        v ? 'bg-[#D97757]' : 'bg-[#E8E6DF]'
+                        v ? 'bg-[#D97848]' : 'bg-[#E7D8BD]'
                     }`}
                 >
                     <div
@@ -72,7 +72,7 @@ export const ParameterControl: React.FC<{
         return (
             <div className="space-y-1">
                 <label
-                    className="text-xs font-bold text-[#3D3D38] block"
+                    className="text-xs font-bold text-[#445865] block"
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                 >
                     {param.label}
@@ -84,8 +84,8 @@ export const ParameterControl: React.FC<{
                             onClick={() => onChange(opt)}
                             className={`text-left px-3 py-2 rounded-lg text-xs font-medium transition-all duration-200 border ${
                                 v === opt
-                                    ? 'bg-[#D97757]/10 border-[#D97757] text-[#D97757] font-bold'
-                                    : 'bg-white border-[#E8E6DF] text-[#3D3D38] hover:border-[#D97757]/50'
+                                    ? 'bg-[#D97848]/10 border-[#D97848] text-[#D97848] font-bold'
+                                    : 'bg-white border-[#E7D8BD] text-[#445865] hover:border-[#D97848]/50'
                             }`}
                             style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                         >

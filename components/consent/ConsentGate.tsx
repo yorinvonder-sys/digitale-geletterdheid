@@ -50,13 +50,13 @@ export const ConsentGate: React.FC<ConsentGateProps> = ({
 
   return (
     <div className="flex flex-col items-center justify-center p-8 text-center max-w-md mx-auto">
-      <div className="w-16 h-16 rounded-2xl bg-amber-100 flex items-center justify-center mb-4">
-        <AlertTriangle size={32} className="text-amber-600" />
+      <div className="w-16 h-16 rounded-2xl bg-lab-gold flex items-center justify-center mb-4">
+        <AlertTriangle size={32} className="text-lab-gold" />
       </div>
-      <h3 className="text-lg font-bold text-slate-800 mb-2">Toestemming nodig</h3>
-      <p className="text-sm text-slate-600 mb-1 font-medium">{meta.label}</p>
-      <p className="text-sm text-slate-500 mb-6">{meta.description}</p>
-      <p className="text-xs text-slate-400 mb-4">
+      <h3 className="text-lg font-bold text-lab-muted mb-2">Toestemming nodig</h3>
+      <p className="text-sm text-lab-muted mb-1 font-medium">{meta.label}</p>
+      <p className="text-sm text-lab-muted mb-6">{meta.description}</p>
+      <p className="text-xs text-lab-muted mb-4">
         Om deze functie te gebruiken heb je toestemming nodig.
         {meta.required ? ' Dit is verplicht om deze functie te gebruiken.' : ''}
       </p>

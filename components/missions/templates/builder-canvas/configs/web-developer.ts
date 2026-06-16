@@ -81,11 +81,11 @@ export const webDeveloperConfig: BuilderCanvasConfig = {
     ],
     maxScore: 100,
     badges: [
-        { minScore: 90, emoji: '🏆', title: 'Full Stack Hero', color: '#F59E0B' },
-        { minScore: 70, emoji: '🖥️', title: 'Web Developer', color: '#10B981' },
-        { minScore: 50, emoji: '🔧', title: 'Code Knutselaar', color: '#D97757' },
-        { minScore: 25, emoji: '💡', title: 'Beginnende Webdeveloper', color: '#8B5CF6' },
-        { minScore: 0, emoji: '🌱', title: 'Op weg', color: '#6B6B66' },
+        { minScore: 90, emoji: '🏆', title: 'Full Stack Hero', color: '#D7C95F' },
+        { minScore: 70, emoji: '🖥️', title: 'Web Developer', color: '#5F947D' },
+        { minScore: 50, emoji: '🔧', title: 'Code Knutselaar', color: '#D97848' },
+        { minScore: 25, emoji: '💡', title: 'Beginnende Webdeveloper', color: '#0B453F' },
+        { minScore: 0, emoji: '🌱', title: 'Op weg', color: '#445865' },
     ],
     takeaways: [
         'Je weet hoe je semantische HTML gebruikt voor een overzichtelijke paginastructuur',

@@ -35,9 +35,9 @@ const BESTANDEN: BestandItem[] = [
 
 const MAPPEN: MapTarget[] = [
   { id: 'm1', naam: 'Documenten', accepteert: ['document'], icon: <FolderOpen size={20} />, kleurBorder: 'border-indigo-400', kleurBg: 'bg-indigo-50', kleurTekst: 'text-indigo-600' },
-  { id: 'm2', naam: 'Afbeeldingen', accepteert: ['afbeelding'], icon: <FolderOpen size={20} />, kleurBorder: 'border-emerald-400', kleurBg: 'bg-emerald-50', kleurTekst: 'text-emerald-600' },
-  { id: 'm3', naam: 'Spreadsheets', accepteert: ['spreadsheet'], icon: <FolderOpen size={20} />, kleurBorder: 'border-amber-400', kleurBg: 'bg-amber-50', kleurTekst: 'text-amber-600' },
-  { id: 'm4', naam: 'Presentaties', accepteert: ['presentatie'], icon: <FolderOpen size={20} />, kleurBorder: 'border-violet-400', kleurBg: 'bg-violet-50', kleurTekst: 'text-violet-600' },
+  { id: 'm2', naam: 'Afbeeldingen', accepteert: ['afbeelding'], icon: <FolderOpen size={20} />, kleurBorder: 'border-lab-sage', kleurBg: 'bg-lab-sage', kleurTekst: 'text-lab-sage' },
+  { id: 'm3', naam: 'Spreadsheets', accepteert: ['spreadsheet'], icon: <FolderOpen size={20} />, kleurBorder: 'border-lab-gold', kleurBg: 'bg-lab-gold', kleurTekst: 'text-lab-gold' },
+  { id: 'm4', naam: 'Presentaties', accepteert: ['presentatie'], icon: <FolderOpen size={20} />, kleurBorder: 'border-lab-teal', kleurBg: 'bg-lab-teal', kleurTekst: 'text-lab-teal' },
 ];
 
 interface Props {
@@ -143,7 +143,7 @@ export const KamerVergrendeldeLaptop: React.FC<Props> = ({ onComplete, variant }
           <Monitor className="text-indigo-600" size={24} />
           <h2 className="text-xl md:text-2xl font-black text-indigo-600">Vergrendelde Laptop</h2>
         </div>
-        <p className="text-slate-500 text-sm md:text-base max-w-lg mx-auto">
+        <p className="text-lab-muted text-sm md:text-base max-w-lg mx-auto">
           Je vindt een oude laptop op school. De bestanden staan door elkaar.
           Sleep ze naar de juiste map om het wachtwoord te vinden!
         </p>
@@ -151,11 +151,11 @@ export const KamerVergrendeldeLaptop: React.FC<Props> = ({ onComplete, variant }
 
       <div className="flex-1 flex flex-col md:flex-row gap-4 min-h-0">
         {/* Bestanden */}
-        <div className="md:w-1/2 bg-white rounded-xl border border-slate-200 shadow-sm p-4">
-          <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-3">Bestanden op bureaublad</h3>
+        <div className="md:w-1/2 bg-white rounded-xl border border-lab-muted shadow-sm p-4">
+          <h3 className="text-xs font-bold uppercase tracking-wider text-lab-muted mb-3">Bestanden op bureaublad</h3>
           <div className="space-y-2">
             {ongeplaatstebestanden.length === 0 && !ingediend && (
-              <p className="text-slate-400 text-sm italic text-center py-4">Alle bestanden zijn geplaatst!</p>
+              <p className="text-lab-muted text-sm italic text-center py-4">Alle bestanden zijn geplaatst!</p>
             )}
             {ongeplaatstebestanden.map(bestand => (
               <div
@@ -163,10 +163,10 @@ export const KamerVergrendeldeLaptop: React.FC<Props> = ({ onComplete, variant }
                 draggable
                 onDragStart={e => handleDragStart(e, bestand.id)}
                 onClick={() => handleBestandKlik(bestand.id)}
-                className="flex items-center gap-3 px-4 py-3 bg-slate-50 rounded-lg border border-slate-200 cursor-grab active:cursor-grabbing hover:border-indigo-300 transition-colors select-none"
+                className="flex items-center gap-3 px-4 py-3 bg-lab-muted rounded-lg border border-lab-muted cursor-grab active:cursor-grabbing hover:border-indigo-300 transition-colors select-none"
               >
                 <span className="text-indigo-500">{bestand.icon}</span>
-                <span className="text-sm font-medium text-slate-700">{bestand.naam}</span>
+                <span className="text-sm font-medium text-lab-muted">{bestand.naam}</span>
               </div>
             ))}
           </div>
@@ -187,7 +187,7 @@ export const KamerVergrendeldeLaptop: React.FC<Props> = ({ onComplete, variant }
                 className={`rounded-xl border-2 border-dashed p-4 transition-all min-h-[70px] ${
                   isOver
                     ? `${map.kleurBorder} ${map.kleurBg}`
-                    : 'border-slate-200 bg-white hover:border-slate-300'
+                    : 'border-lab-muted bg-white hover:border-lab-muted'
                 }`}
               >
                 <div className="flex items-center gap-2 mb-2">
@@ -198,16 +198,16 @@ export const KamerVergrendeldeLaptop: React.FC<Props> = ({ onComplete, variant }
                   {bestandenInMap.map(b => (
                     <div
                       key={b.id}
-                      className="flex items-center justify-between px-3 py-2 bg-slate-50 rounded-lg text-sm"
+                      className="flex items-center justify-between px-3 py-2 bg-lab-muted rounded-lg text-sm"
                     >
-                      <span className="text-slate-600 flex items-center gap-2">
+                      <span className="text-lab-muted flex items-center gap-2">
                         <span className="text-indigo-500">{b.icon}</span>
                         {b.naam}
                       </span>
                       {!ingediend && (
                         <button
                           onClick={() => verwijderPlaatsing(b.id)}
-                          className="text-slate-400 hover:text-rose-500 transition-colors p-1"
+                          className="text-lab-muted hover:text-lab-coral transition-colors p-1"
                           aria-label={`${b.naam} verwijderen`}
                         >
                           <XCircle size={16} />
@@ -229,8 +229,8 @@ export const KamerVergrendeldeLaptop: React.FC<Props> = ({ onComplete, variant }
           animate={{ opacity: 1, y: 0 }}
           className={`mt-4 p-4 rounded-xl border text-center font-bold ${
             feedback.correct
-              ? 'bg-emerald-50 border-emerald-200 text-emerald-700'
-              : 'bg-amber-50 border-amber-200 text-amber-700'
+              ? 'bg-lab-sage border-lab-sage text-lab-sage'
+              : 'bg-lab-gold border-lab-gold text-lab-gold'
           }`}
         >
           <div className="flex items-center justify-center gap-2">

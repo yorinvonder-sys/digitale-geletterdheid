@@ -45,27 +45,27 @@ function computeVisuals(
             {
                 label: 'Herhaalde functies',
                 value: herhaaldeFuncties ? 4 : 0,
-                color: herhaaldeFuncties ? '#D97757' : '#E8E6DF',
+                color: herhaaldeFuncties ? '#D97848' : '#E7D8BD',
             },
             {
                 label: 'Gekopieerde blokken',
                 value: gekopieerdeBlokken ? 5 : 0,
-                color: gekopieerdeBlokken ? '#B05A3C' : '#E8E6DF',
+                color: gekopieerdeBlokken ? '#D97848' : '#E7D8BD',
             },
             {
                 label: 'Magische getallen',
                 value: magigeGetallen ? 3 : 0,
-                color: magigeGetallen ? '#C46849' : '#E8E6DF',
+                color: magigeGetallen ? '#D97848' : '#E7D8BD',
             },
             {
                 label: 'Duplicate logica',
                 value: duplicateLogica ? 5 : 0,
-                color: duplicateLogica ? '#B05A3C' : '#E8E6DF',
+                color: duplicateLogica ? '#D97848' : '#E7D8BD',
             },
             {
                 label: 'Functies gebruikt',
                 value: functiesGebruikt ? 1 : 0,
-                color: functiesGebruikt ? '#10B981' : '#E8E6DF',
+                color: functiesGebruikt ? '#5F947D' : '#E7D8BD',
             },
         ];
 
@@ -377,31 +377,31 @@ export const codeReviewerConfig: SimulationLabConfig = {
             minScore: 90,
             emoji: '🏆',
             title: 'Senior Reviewer',
-            color: '#10B981',
+            color: '#5F947D',
         },
         {
             minScore: 70,
             emoji: '👀',
             title: 'Code Reviewer Pro',
-            color: '#059669',
+            color: '#5F947D',
         },
         {
             minScore: 50,
             emoji: '🔧',
             title: 'Code Kijker',
-            color: '#6B6B66',
+            color: '#445865',
         },
         {
             minScore: 25,
             emoji: '💡',
             title: 'Startende Code Reviewer',
-            color: '#8B5CF6',
+            color: '#0B453F',
         },
         {
             minScore: 0,
             emoji: '📖',
             title: 'Aan het leren',
-            color: '#6B6B66',
+            color: '#445865',
         },
     ],
     takeaways: [

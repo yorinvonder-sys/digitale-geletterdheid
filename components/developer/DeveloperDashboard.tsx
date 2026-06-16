@@ -104,57 +104,57 @@ export function DeveloperDashboard({ user, onLogout, onSwitchView }: DeveloperDa
                     <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
                         {/* Weekly Scorecard */}
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                            <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm">
-                                <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Voortgang</p>
+                            <div className="bg-white p-6 rounded-3xl border border-lab-muted shadow-sm">
+                                <p className="text-[10px] font-black text-lab-muted uppercase tracking-widest mb-1">Voortgang</p>
                                 <div className="flex items-baseline gap-2">
-                                    <h3 className="text-3xl font-black text-slate-900">{completionRate}%</h3>
+                                    <h3 className="text-3xl font-black text-lab-muted">{completionRate}%</h3>
                                     {tasksCompletedThisWeek > 0 && (
-                                        <span className="text-xs font-bold text-emerald-500 flex items-center gap-0.5">
+                                        <span className="text-xs font-bold text-lab-sage flex items-center gap-0.5">
                                             <TrendingUp size={12} />
                                             +{tasksCompletedThisWeek} deze week
                                         </span>
                                     )}
                                 </div>
-                                <div className="mt-4 h-1.5 bg-slate-100 rounded-full overflow-hidden">
+                                <div className="mt-4 h-1.5 bg-lab-muted rounded-full overflow-hidden">
                                     <div className="h-full bg-indigo-600 transition-all duration-1000" style={{ width: `${completionRate}%` }}></div>
                                 </div>
                             </div>
 
-                            <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm">
-                                <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Taken Gereed</p>
+                            <div className="bg-white p-6 rounded-3xl border border-lab-muted shadow-sm">
+                                <p className="text-[10px] font-black text-lab-muted uppercase tracking-widest mb-1">Taken Gereed</p>
                                 <div className="flex items-baseline gap-2">
-                                    <h3 className="text-3xl font-black text-slate-900">{completedTasks.length}</h3>
-                                    <span className="text-xs font-bold text-slate-400 uppercase tracking-widest">/ {tasks.length}</span>
+                                    <h3 className="text-3xl font-black text-lab-muted">{completedTasks.length}</h3>
+                                    <span className="text-xs font-bold text-lab-muted uppercase tracking-widest">/ {tasks.length}</span>
                                 </div>
-                                <p className="text-[10px] text-slate-500 mt-2 font-medium">Deze week</p>
+                                <p className="text-[10px] text-lab-muted mt-2 font-medium">Deze week</p>
                             </div>
 
-                            <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm">
-                                <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">AI Checks</p>
+                            <div className="bg-white p-6 rounded-3xl border border-lab-muted shadow-sm">
+                                <p className="text-[10px] font-black text-lab-muted uppercase tracking-widest mb-1">AI Checks</p>
                                 <div className="flex items-baseline gap-2">
-                                    <h3 className="text-3xl font-black text-slate-900">
+                                    <h3 className="text-3xl font-black text-lab-muted">
                                         {validatedTasks.length}
                                     </h3>
                                     <Shield size={16} className="text-indigo-500" />
                                 </div>
-                                <p className="text-[10px] text-slate-500 mt-2 font-medium">Goedgekeurd door Coach</p>
+                                <p className="text-[10px] text-lab-muted mt-2 font-medium">Goedgekeurd door Coach</p>
                             </div>
 
-                            <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm">
-                                <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Blokkades</p>
+                            <div className="bg-white p-6 rounded-3xl border border-lab-muted shadow-sm">
+                                <p className="text-[10px] font-black text-lab-muted uppercase tracking-widest mb-1">Blokkades</p>
                                 <div className="flex items-baseline gap-2">
                                     <h3 className="text-3xl font-black text-red-600">
                                         {blockedTasks.length}
                                     </h3>
                                     <AlertCircle size={16} className="text-red-500" />
                                 </div>
-                                <p className="text-[10px] text-slate-500 mt-2 font-medium">Aandacht nodig</p>
+                                <p className="text-[10px] text-lab-muted mt-2 font-medium">Aandacht nodig</p>
                             </div>
                         </div>
 
                         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                             {/* AI Reflection Coach */}
-                            <div className="lg:col-span-2 bg-slate-900 rounded-[2rem] p-8 text-white relative overflow-hidden">
+                            <div className="lg:col-span-2 bg-lab-muted rounded-[2rem] p-8 text-white relative overflow-hidden">
                                 <div className="relative z-10">
                                     <div className="flex items-center gap-3 mb-6">
                                         <div className="w-10 h-10 bg-indigo-500 rounded-xl flex items-center justify-center">
@@ -168,10 +168,10 @@ export function DeveloperDashboard({ user, onLogout, onSwitchView }: DeveloperDa
 
                                     {recentReflection ? (
                                         <div className="space-y-6">
-                                            <div className="p-6 bg-white/5 rounded-2xl border border-white/10 italic text-slate-300 text-sm leading-relaxed">
+                                            <div className="p-6 bg-white/5 rounded-2xl border border-white/10 italic text-lab-muted text-sm leading-relaxed">
                                                 "{recentReflection.evidence?.reflection}"
                                                 <div className="mt-4 flex items-center gap-2 not-italic">
-                                                    <span className="text-[10px] font-black text-slate-500 uppercase">Bron:</span>
+                                                    <span className="text-[10px] font-black text-lab-muted uppercase">Bron:</span>
                                                     <span className="text-[10px] font-bold text-indigo-400 uppercase">{recentReflection.title}</span>
                                                 </div>
                                             </div>
@@ -179,7 +179,7 @@ export function DeveloperDashboard({ user, onLogout, onSwitchView }: DeveloperDa
                                                 <div className="w-1 h-auto bg-indigo-500 rounded-full" />
                                                 <div className="space-y-2">
                                                     <p className="text-xs font-bold text-indigo-400 uppercase tracking-widest">Tip van de Coach</p>
-                                                    <p className="text-sm text-slate-300 leading-relaxed">
+                                                    <p className="text-sm text-lab-muted leading-relaxed">
                                                         Je focus op {recentReflection.learningNote || 'validatie'} werpt zijn vruchten af.
                                                         Zorg dat je deze week de documentatie volledig afrondt voordat je de sales week ingaat.
                                                         De AI-check laat zien dat je bewijsvoering steeds concreter wordt.
@@ -189,7 +189,7 @@ export function DeveloperDashboard({ user, onLogout, onSwitchView }: DeveloperDa
                                         </div>
                                     ) : (
                                         <div className="py-10 text-center">
-                                            <p className="text-slate-400 italic text-sm">Nog geen reflecties beschikbaar. Voeg bewijs toe aan voltooide taken om coach-inzichten te ontvangen.</p>
+                                            <p className="text-lab-muted italic text-sm">Nog geen reflecties beschikbaar. Voeg bewijs toe aan voltooide taken om coach-inzichten te ontvangen.</p>
                                         </div>
                                     )}
                                 </div>
@@ -202,7 +202,7 @@ export function DeveloperDashboard({ user, onLogout, onSwitchView }: DeveloperDa
                                     <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center text-indigo-600 shadow-sm">
                                         <BookOpen size={24} />
                                     </div>
-                                    <h3 className="text-lg font-black text-slate-900 uppercase tracking-tight">Weekdoel</h3>
+                                    <h3 className="text-lg font-black text-lab-muted uppercase tracking-tight">Weekdoel</h3>
                                 </div>
                                 <p className="text-indigo-900 font-bold text-xl leading-tight mb-4">
                                     {tasks.length > 0
@@ -231,65 +231,65 @@ export function DeveloperDashboard({ user, onLogout, onSwitchView }: DeveloperDa
                         {/* Additional Insights / History */}
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                             {/* Plan History */}
-                            <div className="bg-white p-8 rounded-[2rem] border border-slate-200 shadow-sm">
+                            <div className="bg-white p-8 rounded-[2rem] border border-lab-muted shadow-sm">
                                 <div className="flex items-center justify-between mb-6">
                                     <div className="flex items-center gap-3">
-                                        <div className="w-10 h-10 bg-slate-100 rounded-xl flex items-center justify-center text-slate-600">
+                                        <div className="w-10 h-10 bg-lab-muted rounded-xl flex items-center justify-center text-lab-muted">
                                             <History size={20} />
                                         </div>
-                                        <h3 className="text-lg font-black text-slate-900 uppercase tracking-tight">Plan Historie</h3>
+                                        <h3 className="text-lg font-black text-lab-muted uppercase tracking-tight">Plan Historie</h3>
                                     </div>
                                 </div>
 
                                 <div className="space-y-4">
                                     {planHistory.slice(0, 3).map((item, i) => (
-                                        <div key={i} className="flex items-center gap-4 p-4 hover:bg-slate-50 rounded-2xl transition-colors group">
-                                            <div className={`w-2 h-2 rounded-full ${item.status === 'approved' ? 'bg-emerald-500' : 'bg-amber-500'}`} />
+                                        <div key={i} className="flex items-center gap-4 p-4 hover:bg-lab-muted rounded-2xl transition-colors group">
+                                            <div className={`w-2 h-2 rounded-full ${item.status === 'approved' ? 'bg-lab-sage' : 'bg-lab-gold'}`} />
                                             <div className="flex-1 min-w-0">
-                                                <p className="text-sm font-bold text-slate-900 truncate">AI Plan v{planHistory.length - i}</p>
-                                                <p className="text-[10px] text-slate-400 font-medium uppercase tracking-widest">
+                                                <p className="text-sm font-bold text-lab-muted truncate">AI Plan v{planHistory.length - i}</p>
+                                                <p className="text-[10px] text-lab-muted font-medium uppercase tracking-widest">
                                                     {item.created_at ? new Date(item.created_at).toLocaleDateString('nl-NL') : ''} • {item.status || 'draft'}
                                                 </p>
                                             </div>
-                                            <ChevronRight size={16} className="text-slate-300 group-hover:text-indigo-500 transition-colors" />
+                                            <ChevronRight size={16} className="text-lab-muted group-hover:text-indigo-500 transition-colors" />
                                         </div>
                                     ))}
                                     {planHistory.length === 0 && (
-                                        <p className="text-sm text-slate-400 italic text-center py-4">Nog geen plannen gegenereerd.</p>
+                                        <p className="text-sm text-lab-muted italic text-center py-4">Nog geen plannen gegenereerd.</p>
                                     )}
                                 </div>
                             </div>
 
                             {/* Performance KPI's */}
-                            <div className="bg-white p-8 rounded-[2rem] border border-slate-200 shadow-sm">
+                            <div className="bg-white p-8 rounded-[2rem] border border-lab-muted shadow-sm">
                                 <div className="flex items-center justify-between mb-6">
                                     <div className="flex items-center gap-3">
                                         <div className="w-10 h-10 bg-indigo-50 rounded-xl flex items-center justify-center text-indigo-600">
                                             <Zap size={20} />
                                         </div>
-                                        <h3 className="text-lg font-black text-slate-900 uppercase tracking-tight">Snelheid & Focus</h3>
+                                        <h3 className="text-lg font-black text-lab-muted uppercase tracking-tight">Snelheid & Focus</h3>
                                     </div>
                                 </div>
 
                                 <div className="space-y-6">
                                     <div className="flex justify-between items-center">
                                         <div>
-                                            <p className="text-sm font-bold text-slate-900">Taken per week</p>
-                                            <p className="text-[10px] text-slate-400 uppercase font-black">Gemiddelde snelheid</p>
+                                            <p className="text-sm font-bold text-lab-muted">Taken per week</p>
+                                            <p className="text-[10px] text-lab-muted uppercase font-black">Gemiddelde snelheid</p>
                                         </div>
                                         <span className="text-xl font-black text-indigo-600">{avgTasksPerWeek}</span>
                                     </div>
                                     <div className="flex justify-between items-center">
                                         <div>
-                                            <p className="text-sm font-bold text-slate-900">Leerdoelen ingevuld</p>
-                                            <p className="text-[10px] text-slate-400 uppercase font-black">Taken met leerdoel</p>
+                                            <p className="text-sm font-bold text-lab-muted">Leerdoelen ingevuld</p>
+                                            <p className="text-[10px] text-lab-muted uppercase font-black">Taken met leerdoel</p>
                                         </div>
-                                        <span className="text-xl font-black text-emerald-600">{learningGoalRate}%</span>
+                                        <span className="text-xl font-black text-lab-sage">{learningGoalRate}%</span>
                                     </div>
                                     <div className="flex justify-between items-center">
                                         <div>
-                                            <p className="text-sm font-bold text-slate-900">AI Validaties</p>
-                                            <p className="text-[10px] text-slate-400 uppercase font-black">Goedgekeurd door Coach</p>
+                                            <p className="text-sm font-bold text-lab-muted">AI Validaties</p>
+                                            <p className="text-[10px] text-lab-muted uppercase font-black">Goedgekeurd door Coach</p>
                                         </div>
                                         <span className="text-xl font-black text-indigo-600">{validatedTasks.length}</span>
                                     </div>
@@ -314,16 +314,16 @@ export function DeveloperDashboard({ user, onLogout, onSwitchView }: DeveloperDa
     };
 
     return (
-        <div className="min-h-screen bg-slate-50 flex flex-col md:flex-row">
+        <div className="min-h-screen bg-lab-muted flex flex-col md:flex-row">
             {/* Sidebar */}
-            <aside className="w-full md:w-72 bg-white border-r border-slate-200 flex flex-col z-20">
-                <div className="p-6 border-b border-slate-100">
+            <aside className="w-full md:w-72 bg-white border-r border-lab-muted flex flex-col z-20">
+                <div className="p-6 border-b border-lab-muted">
                     <div className="flex items-center gap-3">
                         <div className="w-10 h-10 bg-indigo-600 rounded-xl flex items-center justify-center shadow-lg shadow-indigo-200">
                             <LayoutDashboard size={20} className="text-white" />
                         </div>
                         <div>
-                            <h1 className="font-black text-slate-900 uppercase tracking-tight leading-none">Developer</h1>
+                            <h1 className="font-black text-lab-muted uppercase tracking-tight leading-none">Developer</h1>
                             <span className="text-[10px] font-black text-indigo-600 uppercase tracking-widest">Portal</span>
                         </div>
                     </div>
@@ -339,7 +339,7 @@ export function DeveloperDashboard({ user, onLogout, onSwitchView }: DeveloperDa
                                 onClick={() => setActiveTab(tab.id as TabId)}
                                 className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 ${isActive
                                     ? 'bg-indigo-50 text-indigo-600 shadow-sm'
-                                    : 'text-slate-500 hover:bg-slate-50 hover:text-slate-900'
+                                    : 'text-lab-muted hover:bg-lab-muted hover:text-lab-muted'
                                     }`}
                             >
                                 <Icon size={20} />
@@ -352,10 +352,10 @@ export function DeveloperDashboard({ user, onLogout, onSwitchView }: DeveloperDa
 
                 {onSwitchView && (
                     <div className="px-4 pb-2 space-y-2">
-                        <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-4 mb-1">Bekijk als</p>
+                        <p className="text-[10px] font-black text-lab-muted uppercase tracking-widest px-4 mb-1">Bekijk als</p>
                         <button
                             onClick={() => onSwitchView('student')}
-                            className="w-full flex items-center gap-3 px-4 py-3 text-emerald-600 bg-emerald-50 hover:bg-emerald-100 rounded-xl font-bold text-sm transition-colors"
+                            className="w-full flex items-center gap-3 px-4 py-3 text-lab-sage bg-lab-sage hover:bg-lab-sage rounded-xl font-bold text-sm transition-colors"
                         >
                             <GraduationCap size={20} />
                             Leerling Dashboard
@@ -370,14 +370,14 @@ export function DeveloperDashboard({ user, onLogout, onSwitchView }: DeveloperDa
                     </div>
                 )}
 
-                <div className="p-4 mt-auto border-t border-slate-100">
-                    <div className="flex items-center gap-3 p-3 bg-slate-50 rounded-xl mb-4">
-                        <div className="w-8 h-8 bg-slate-200 rounded-full flex items-center justify-center text-slate-600 font-bold text-xs uppercase">
+                <div className="p-4 mt-auto border-t border-lab-muted">
+                    <div className="flex items-center gap-3 p-3 bg-lab-muted rounded-xl mb-4">
+                        <div className="w-8 h-8 bg-lab-muted rounded-full flex items-center justify-center text-lab-muted font-bold text-xs uppercase">
                             {user.displayName?.charAt(0) || user.role.charAt(0)}
                         </div>
                         <div className="flex-1 min-w-0">
-                            <p className="text-xs font-bold text-slate-900 truncate">{user.displayName}</p>
-                            <p className="text-[10px] text-slate-500 truncate">{user.email}</p>
+                            <p className="text-xs font-bold text-lab-muted truncate">{user.displayName}</p>
+                            <p className="text-[10px] text-lab-muted truncate">{user.email}</p>
                         </div>
                     </div>
                     <button
@@ -392,8 +392,8 @@ export function DeveloperDashboard({ user, onLogout, onSwitchView }: DeveloperDa
 
             {/* Main Content */}
             <main className="flex-1 overflow-y-auto max-h-screen">
-                <header className="sticky top-0 bg-slate-50 backdrop-blur-md z-30 px-6 md:px-10 py-6 border-b border-slate-100">
-                    <h2 className="text-2xl font-black text-slate-900 tracking-tight m-0 border-none p-0 flex items-center gap-3">
+                <header className="sticky top-0 bg-lab-muted backdrop-blur-md z-30 px-6 md:px-10 py-6 border-b border-lab-muted">
+                    <h2 className="text-2xl font-black text-lab-muted tracking-tight m-0 border-none p-0 flex items-center gap-3">
                         {tabs.find(t => t.id === activeTab)?.label}
                     </h2>
                 </header>

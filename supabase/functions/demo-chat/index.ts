@@ -64,9 +64,9 @@ NA ELK ANTWOORD voeg je een JSON-blok toe met de huidige game-staat. Dit blok wo
 
 <GAME_STATE>
 {
-  "sky": "#1a1a2e",
-  "ground": "#16a34a",
-  "character": "#f59e0b",
+  "sky": "#08283B",
+  "ground": "#5F947D",
+  "character": "#D7C95F",
   "characterType": "robot",
   "obstacles": 2,
   "clouds": true,

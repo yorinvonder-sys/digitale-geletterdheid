@@ -107,19 +107,19 @@ const config: ToolGuideConfig = {
             minScore: 55,
             emoji: '🏆',
             title: 'Print Expert',
-            color: '#6B6B66',
+            color: '#445865',
         },
         {
             minScore: 40,
             emoji: '🖨️',
             title: 'Print Pro',
-            color: '#64748B',
+            color: '#445865',
         },
         {
             minScore: 0,
             emoji: '🌱',
             title: 'Aan de slag',
-            color: '#10B981',
+            color: '#5F947D',
         },
     ],
     takeaways: [

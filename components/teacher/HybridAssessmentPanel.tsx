@@ -16,21 +16,21 @@ export const HybridAssessmentPanel: React.FC<HybridAssessmentPanelProps> = ({ re
     const recent = filtered.slice(0, 20);
 
     return (
-        <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
-            <div className="p-4 border-b border-slate-100 flex items-center justify-between">
-                <h3 className="text-sm font-black text-slate-900 uppercase tracking-widest flex items-center gap-2">
+        <div className="bg-white rounded-2xl border border-lab-muted shadow-sm overflow-hidden">
+            <div className="p-4 border-b border-lab-muted flex items-center justify-between">
+                <h3 className="text-sm font-black text-lab-muted uppercase tracking-widest flex items-center gap-2">
                     <ClipboardCheck size={16} className="text-indigo-600" />
                     Hybride Beoordelingen
                 </h3>
-                <span className="text-xs font-bold text-slate-400">{filtered.length} records</span>
+                <span className="text-xs font-bold text-lab-muted">{filtered.length} records</span>
             </div>
 
             {recent.length === 0 ? (
-                <div className="p-8 text-center text-slate-400 text-sm">Nog geen hybride beoordelingen gevonden.</div>
+                <div className="p-8 text-center text-lab-muted text-sm">Nog geen hybride beoordelingen gevonden.</div>
             ) : (
                 <div className="overflow-x-auto">
                     <table className="w-full text-sm">
-                        <thead className="bg-slate-50 text-slate-500">
+                        <thead className="bg-lab-muted text-lab-muted">
                             <tr>
                                 <th className="text-left px-4 py-3 font-bold">Leerling</th>
                                 <th className="text-left px-4 py-3 font-bold">Missie</th>
@@ -43,18 +43,18 @@ export const HybridAssessmentPanel: React.FC<HybridAssessmentPanelProps> = ({ re
                         </thead>
                         <tbody>
                             {recent.map((r) => (
-                                <tr key={r.id} className="border-t border-slate-100">
+                                <tr key={r.id} className="border-t border-lab-muted">
                                     <td className="px-4 py-3">
-                                        <div className="font-bold text-slate-900">{r.studentName}</div>
-                                        <div className="text-xs text-slate-400">{r.studentClass || 'Onbekende klas'}</div>
+                                        <div className="font-bold text-lab-muted">{r.studentName}</div>
+                                        <div className="text-xs text-lab-muted">{r.studentClass || 'Onbekende klas'}</div>
                                     </td>
-                                    <td className="px-4 py-3 font-medium text-slate-600">{r.missionId}</td>
-                                    <td className="px-4 py-3 text-slate-600">{r.autoScore}%</td>
-                                    <td className="px-4 py-3 text-slate-600">{r.teacherScore}%</td>
+                                    <td className="px-4 py-3 font-medium text-lab-muted">{r.missionId}</td>
+                                    <td className="px-4 py-3 text-lab-muted">{r.autoScore}%</td>
+                                    <td className="px-4 py-3 text-lab-muted">{r.teacherScore}%</td>
                                     <td className="px-4 py-3 font-black text-indigo-600">{r.finalScore}%</td>
                                     <td className="px-4 py-3">
                                         {r.passed ? (
-                                            <span className="inline-flex items-center gap-1 text-emerald-600 font-bold">
+                                            <span className="inline-flex items-center gap-1 text-lab-sage font-bold">
                                                 <CheckCircle2 size={14} /> Geslaagd
                                             </span>
                                         ) : (
@@ -63,7 +63,7 @@ export const HybridAssessmentPanel: React.FC<HybridAssessmentPanelProps> = ({ re
                                             </span>
                                         )}
                                     </td>
-                                    <td className="px-4 py-3 text-xs text-slate-500">
+                                    <td className="px-4 py-3 text-xs text-lab-muted">
                                         {r.timestamp?.toDate
                                             ? r.timestamp.toDate().toLocaleString('nl-NL')
                                             : '-'}

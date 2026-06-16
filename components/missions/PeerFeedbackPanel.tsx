@@ -130,7 +130,7 @@ export const PeerFeedbackPanel: React.FC<Props> = ({ missionId, studentId, schoo
   const renderStarInput = (key: keyof PeerFeedbackCriteria, label: string, description: string) => (
     <div className="space-y-1">
       <div className="flex items-center justify-between">
-        <span className="text-sm font-bold text-[#3D3D38]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+        <span className="text-sm font-bold text-[#445865]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
           {label}
         </span>
         <div className="flex gap-1">
@@ -144,8 +144,8 @@ export const PeerFeedbackPanel: React.FC<Props> = ({ missionId, studentId, schoo
                 size={20}
                 className={`transition-colors ${
                   i <= criteria[key]
-                    ? 'text-yellow-400 fill-yellow-400'
-                    : 'text-[#D1CFC7] hover:text-yellow-300'
+                    ? 'text-lab-gold fill-lab-gold'
+                    : 'text-[#D1CFC7] hover:text-lab-gold'
                 }`}
               />
             </button>
@@ -163,28 +163,28 @@ export const PeerFeedbackPanel: React.FC<Props> = ({ missionId, studentId, schoo
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.3 }}
-        className="bg-gradient-to-br from-[#FAFAF8] to-[#F0EFEA] rounded-2xl border border-[#E8E6DF] p-5 space-y-4"
+        className="bg-gradient-to-br from-[#FAFAF8] to-[#F0EFEA] rounded-2xl border border-[#E7D8BD] p-5 space-y-4"
       >
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-xl bg-[#F0FAF8] flex items-center justify-center">
-            <Users size={20} className="text-[#2A9D8F]" />
+            <Users size={20} className="text-[#5F947D]" />
           </div>
           <div>
-            <h3 className="text-base font-black text-[#3D3D38]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+            <h3 className="text-base font-black text-[#445865]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
               Peer Feedback
             </h3>
-            <p className="text-xs text-[#6B6B66]">Beoordeel het werk van een klasgenoot</p>
+            <p className="text-xs text-[#445865]">Beoordeel het werk van een klasgenoot</p>
           </div>
         </div>
 
-        <p className="text-sm text-[#3D3D38]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
-          Wil je het werk van een klasgenoot beoordelen? Je helpt hen verbeteren en verdient <span className="font-bold text-[#2A9D8F]">+25 XP</span>!
+        <p className="text-sm text-[#445865]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+          Wil je het werk van een klasgenoot beoordelen? Je helpt hen verbeteren en verdient <span className="font-bold text-[#5F947D]">+25 XP</span>!
         </p>
 
         <button
           onClick={handleStartReview}
           disabled={loading}
-          className="w-full py-3 bg-[#2A9D8F] hover:bg-[#238B80] text-white rounded-xl font-bold text-sm transition-all duration-200 active:scale-[0.98] flex items-center justify-center gap-2 disabled:opacity-50"
+          className="w-full py-3 bg-[#5F947D] hover:bg-[#238B80] text-white rounded-xl font-bold text-sm transition-all duration-200 active:scale-[0.98] flex items-center justify-center gap-2 disabled:opacity-50"
         >
           {loading ? (
             <Loader2 size={16} className="animate-spin" />
@@ -199,7 +199,7 @@ export const PeerFeedbackPanel: React.FC<Props> = ({ missionId, studentId, schoo
           <div>
             <button
               onClick={() => setShowReceived(!showReceived)}
-              className="flex items-center gap-1.5 text-xs font-bold text-[#6B6B66] hover:text-[#3D3D38] transition-colors"
+              className="flex items-center gap-1.5 text-xs font-bold text-[#445865] hover:text-[#445865] transition-colors"
             >
               {showReceived ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
               {receivedFeedback.length} feedback ontvangen
@@ -230,10 +230,10 @@ export const PeerFeedbackPanel: React.FC<Props> = ({ missionId, studentId, schoo
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        className="bg-[#FAFAF8] rounded-2xl border border-[#E8E6DF] p-5 text-center space-y-2"
+        className="bg-[#FAFAF8] rounded-2xl border border-[#E7D8BD] p-5 text-center space-y-2"
       >
         <Users size={24} className="text-[#A3A196] mx-auto" />
-        <p className="text-sm text-[#6B6B66]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+        <p className="text-sm text-[#445865]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
           Er zijn nog geen klasgenoten die deze missie hebben afgerond, of je hebt iedereen al beoordeeld.
         </p>
       </motion.div>
@@ -248,17 +248,17 @@ export const PeerFeedbackPanel: React.FC<Props> = ({ missionId, studentId, schoo
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="bg-white rounded-2xl border border-[#E8E6DF] p-5 space-y-4"
+        className="bg-white rounded-2xl border border-[#E7D8BD] p-5 space-y-4"
       >
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-xl bg-[#F0FAF8] flex items-center justify-center">
-            <MessageSquare size={20} className="text-[#2A9D8F]" />
+            <MessageSquare size={20} className="text-[#5F947D]" />
           </div>
           <div>
-            <h3 className="text-base font-black text-[#3D3D38]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+            <h3 className="text-base font-black text-[#445865]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
               Beoordeel {peer?.displayName}
             </h3>
-            <p className="text-xs text-[#6B6B66]">Geef eerlijke en constructieve feedback</p>
+            <p className="text-xs text-[#445865]">Geef eerlijke en constructieve feedback</p>
           </div>
         </div>
 
@@ -269,7 +269,7 @@ export const PeerFeedbackPanel: React.FC<Props> = ({ missionId, studentId, schoo
 
         {/* Feedback text */}
         <div>
-          <label className="text-sm font-bold text-[#3D3D38] block mb-1.5" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+          <label className="text-sm font-bold text-[#445865] block mb-1.5" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
             Geschreven feedback
           </label>
           <textarea
@@ -279,7 +279,7 @@ export const PeerFeedbackPanel: React.FC<Props> = ({ missionId, studentId, schoo
             maxLength={1000}
             rows={3}
             disabled={isSubmitting}
-            className="w-full px-4 py-3 rounded-xl border border-[#E8E6DF] bg-[#FAFAF8] text-sm text-[#3D3D38] placeholder-[#A3A196] resize-none focus:outline-none focus:ring-2 focus:ring-[#2A9D8F]/30 focus:border-transparent disabled:opacity-50"
+            className="w-full px-4 py-3 rounded-xl border border-[#E7D8BD] bg-[#FAFAF8] text-sm text-[#445865] placeholder-[#A3A196] resize-none focus:outline-none focus:ring-2 focus:ring-[#5F947D]/30 focus:border-transparent disabled:opacity-50"
             style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
           />
           <p className="text-xs text-[#A3A196] mt-1 text-right">
@@ -294,7 +294,7 @@ export const PeerFeedbackPanel: React.FC<Props> = ({ missionId, studentId, schoo
         <button
           onClick={handleSubmit}
           disabled={isSubmitting}
-          className="w-full py-3 bg-[#2A9D8F] hover:bg-[#238B80] text-white rounded-xl font-bold text-sm transition-all duration-200 active:scale-[0.98] flex items-center justify-center gap-2 disabled:opacity-50"
+          className="w-full py-3 bg-[#5F947D] hover:bg-[#238B80] text-white rounded-xl font-bold text-sm transition-all duration-200 active:scale-[0.98] flex items-center justify-center gap-2 disabled:opacity-50"
         >
           {isSubmitting ? (
             <Loader2 size={16} className="animate-spin" />
@@ -322,9 +322,9 @@ export const PeerFeedbackPanel: React.FC<Props> = ({ missionId, studentId, schoo
             transition={{ type: 'spring', delay: 0.2 }}
             className="w-14 h-14 rounded-2xl bg-[#D1F0EC] flex items-center justify-center mx-auto"
           >
-            <Award size={28} className="text-[#2A9D8F]" />
+            <Award size={28} className="text-[#5F947D]" />
           </motion.div>
-          <h3 className="text-lg font-black text-[#3D3D38]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+          <h3 className="text-lg font-black text-[#445865]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
             Feedback verstuurd!
           </h3>
           {xpAwarded && (
@@ -332,7 +332,7 @@ export const PeerFeedbackPanel: React.FC<Props> = ({ missionId, studentId, schoo
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4 }}
-              className="text-sm font-bold text-[#2A9D8F]"
+              className="text-sm font-bold text-[#5F947D]"
             >
               +25 XP verdiend!
             </motion.p>
@@ -342,10 +342,10 @@ export const PeerFeedbackPanel: React.FC<Props> = ({ missionId, studentId, schoo
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.6 }}
-              className="inline-flex items-center gap-1.5 bg-yellow-50 border border-yellow-200 px-3 py-1.5 rounded-full"
+              className="inline-flex items-center gap-1.5 bg-lab-gold border border-lab-gold px-3 py-1.5 rounded-full"
             >
-              <Award size={14} className="text-yellow-500" />
-              <span className="text-xs font-bold text-yellow-700">Badge: Peer Reviewer</span>
+              <Award size={14} className="text-lab-gold" />
+              <span className="text-xs font-bold text-lab-gold">Badge: Peer Reviewer</span>
             </motion.div>
           )}
         </div>
@@ -353,7 +353,7 @@ export const PeerFeedbackPanel: React.FC<Props> = ({ missionId, studentId, schoo
         {/* Show received feedback */}
         {receivedFeedback.length > 0 && (
           <div className="space-y-2">
-            <p className="text-sm font-bold text-[#3D3D38]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+            <p className="text-sm font-bold text-[#445865]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
               Feedback die jij hebt ontvangen:
             </p>
             {receivedFeedback.map(fb => (

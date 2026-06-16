@@ -12,16 +12,16 @@ function trackLandingEvent(event: LandingAnalyticsEvent, data?: Record<string, u
 
 // Warm earth-tone palette (Anthropic-inspired)
 const C = {
-    bg: '#FAF9F0',
-    bgAlt: '#F5F3EC',
-    text: '#1A1A19',
-    textMuted: '#6B6B66',
-    textLight: '#9C9C95',
-    accent: '#D97757',
-    accentHover: '#C46849',
-    border: '#E8E6DF',
-    borderLight: '#F0EEE8',
-    dark: '#1A1A19',
+    bg: '#FCF6EA',
+    bgAlt: '#FCF6EA',
+    text: '#08283B',
+    textMuted: '#445865',
+    textLight: '#445865',
+    accent: '#D97848',
+    accentHover: '#D97848',
+    border: '#E7D8BD',
+    borderLight: '#FCF6EA',
+    dark: '#08283B',
     darkDeep: '#141413',
 } as const;
 

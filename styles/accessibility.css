@@ -48,17 +48,17 @@
 }
 
 .high-contrast body,
-.high-contrast [class*="bg-[#FAF9F0]"],
+.high-contrast [class*="bg-[#FCF6EA]"],
 .high-contrast [class*="bg-[#F5F3E8]"] {
     background-color: var(--hc-bg) !important;
 }
 
 .high-contrast [class*="text-[#23231F]"],
-.high-contrast [class*="text-[#6B6B66]"] {
+.high-contrast [class*="text-[#445865]"] {
     color: var(--hc-text) !important;
 }
 
-.high-contrast [class*="text-[#D97757]"] {
+.high-contrast [class*="text-[#D97848]"] {
     color: var(--hc-accent) !important;
 }
 

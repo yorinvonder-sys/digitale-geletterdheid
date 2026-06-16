@@ -29,7 +29,7 @@ const ONBOARDING_STEPS = [
             { icon: '🎨', text: 'Creaties maken' },
         ],
         animation: 'pulse',
-        color: 'from-emerald-500 to-teal-500',
+        color: 'from-emerald-500 to-lab-teal',
     },
     {
         id: 'how',
@@ -102,7 +102,7 @@ export const StudentOnboarding: React.FC<StudentOnboardingProps> = ({ onComplete
     const isFirstStep = currentStep === 0;
 
     return (
-        <div className="fixed inset-0 z-[200] bg-slate-900 overflow-hidden">
+        <div className="fixed inset-0 z-[200] bg-lab-muted overflow-hidden">
             {/* Animated Background */}
             <div className="absolute inset-0">
                 {/* Gradient orbs */}
@@ -155,7 +155,7 @@ export const StudentOnboarding: React.FC<StudentOnboardingProps> = ({ onComplete
                         <h1 className="text-2xl md:text-4xl font-black text-white mb-2 md:mb-4 tracking-tight">
                             {step.title}
                         </h1>
-                        <p className="text-base md:text-lg text-slate-400 leading-relaxed max-w-md mx-auto">
+                        <p className="text-base md:text-lg text-lab-muted leading-relaxed max-w-md mx-auto">
                             {step.description}
                         </p>
                     </div>
@@ -201,7 +201,7 @@ export const StudentOnboarding: React.FC<StudentOnboardingProps> = ({ onComplete
                                     style={{ animationDelay: `${i * 200}ms` }}
                                 >
                                     <div className="text-3xl font-black text-white mb-1">{stat.value}</div>
-                                    <div className="text-xs text-slate-400 font-medium">{stat.label}</div>
+                                    <div className="text-xs text-lab-muted font-medium">{stat.label}</div>
                                 </div>
                             ))}
                         </div>
@@ -216,7 +216,7 @@ export const StudentOnboarding: React.FC<StudentOnboardingProps> = ({ onComplete
                                     style={{ animationDelay: `${i * 100}ms` }}
                                 >
                                     <span className="text-white font-medium">{ex.action}</span>
-                                    <span className="text-emerald-400 font-bold text-sm bg-emerald-400/10 px-2 py-1 rounded">{ex.xp}</span>
+                                    <span className="text-lab-sage font-bold text-sm bg-lab-sage/10 px-2 py-1 rounded">{ex.xp}</span>
                                 </div>
                             ))}
                         </div>
@@ -254,7 +254,7 @@ export const StudentOnboarding: React.FC<StudentOnboardingProps> = ({ onComplete
                     </div>
 
                     {/* Step counter */}
-                    <p className="text-center text-slate-500 text-sm mt-2 font-medium pb-4 md:pb-0">
+                    <p className="text-center text-lab-muted text-sm mt-2 font-medium pb-4 md:pb-0">
                         Stap {currentStep + 1} van {ONBOARDING_STEPS.length}
                     </p>
                 </div>

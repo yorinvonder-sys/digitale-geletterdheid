@@ -35,7 +35,7 @@ const WEEKS_DATA: WeekConfig[] = [
     {
         id: 'week-1',
         title: 'Week 1: Digital Master',
-        theme: '#3B82F6', // Blue
+        theme: '#0B453F', // Blue
         description: 'De basis voor je digitale leven.',
         slides: [
             {
@@ -140,8 +140,8 @@ const WEEKS_DATA: WeekConfig[] = [
                 subtitle: 'Sommige functies zijn nog in ontwikkeling',
                 content: (
                     <div className="max-w-4xl mx-auto space-y-8">
-                        <div className="bg-amber-500/20 border-2 border-amber-400/50 rounded-3xl p-8 backdrop-blur-sm">
-                            <p className="text-2xl text-amber-50 font-bold leading-relaxed mb-6">
+                        <div className="bg-lab-gold/20 border-2 border-lab-gold/50 rounded-3xl p-8 backdrop-blur-sm">
+                            <p className="text-2xl text-lab-gold font-bold leading-relaxed mb-6">
                                 Dit platform is nieuw. Werkt iets nog niet perfect? 
                                 Geen probleem — dat hoort bij het leren!
                             </p>
@@ -193,7 +193,7 @@ const WEEKS_DATA: WeekConfig[] = [
     {
         id: 'week-2',
         title: 'Week 2: Creative AI',
-        theme: '#EC4899', // Pink
+        theme: '#D97848', // Pink
         description: 'Bouw, Design & Codeer met AI.',
         slides: [
             {
@@ -269,7 +269,7 @@ const WEEKS_DATA: WeekConfig[] = [
                                 key={i}
                                 className="flex items-start gap-4"
                             >
-                                <Sparkles className="min-w-8 text-yellow-400 mt-1" />
+                                <Sparkles className="min-w-8 text-lab-gold mt-1" />
                                 <span className="text-white/90">{goal}</span>
                             </motion.li>
                         ))}
@@ -294,7 +294,7 @@ const WEEKS_DATA: WeekConfig[] = [
                             {
                                 title: 'Game Programmeur',
                                 icon: <Gamepad2 size={32} />,
-                                color: 'from-emerald-500 to-teal-600',
+                                color: 'from-emerald-500 to-lab-teal',
                                 desc: 'Bouw Super Jump - een platformer die jij ontwerpt',
                                 image: 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=400&q=80'
                             },
@@ -336,8 +336,8 @@ const WEEKS_DATA: WeekConfig[] = [
                 subtitle: 'Sommige functies zijn nog in ontwikkeling',
                 content: (
                     <div className="max-w-4xl mx-auto space-y-8">
-                        <div className="bg-amber-500/20 border-2 border-amber-400/50 rounded-3xl p-8 backdrop-blur-sm">
-                            <p className="text-2xl text-amber-50 font-bold leading-relaxed mb-6">
+                        <div className="bg-lab-gold/20 border-2 border-lab-gold/50 rounded-3xl p-8 backdrop-blur-sm">
+                            <p className="text-2xl text-lab-gold font-bold leading-relaxed mb-6">
                                 Dit platform is nieuw. Werkt iets nog niet perfect? 
                                 Geen probleem — dat hoort bij het leren!
                             </p>
@@ -388,7 +388,7 @@ const WEEKS_DATA: WeekConfig[] = [
     {
         id: 'week-3',
         title: 'Week 3: Social & Safety',
-        theme: '#8B5CF6', // Violet
+        theme: '#0B453F', // Violet
         description: 'Mediawijsheid en online veiligheid.',
         slides: [
             {
@@ -402,7 +402,7 @@ const WEEKS_DATA: WeekConfig[] = [
                 title: 'Ben jij het product?',
                 subtitle: 'Als het gratis is, betaal je met je data.',
                 content: (
-                    <div className="space-y-6 text-xl text-violet-50 max-w-4xl mx-auto leading-relaxed">
+                    <div className="space-y-6 text-xl text-lab-teal max-w-4xl mx-auto leading-relaxed">
                         <p>
                             We scrollen, liken en delen elke dag. Maar wie kijkt er mee?
                             Bedrijven bouwen profielen van jou. En screenshots van 'privé' grappen zijn zo gemaakt.
@@ -473,8 +473,8 @@ const WEEKS_DATA: WeekConfig[] = [
                 subtitle: 'Sommige functies zijn nog in ontwikkeling',
                 content: (
                     <div className="max-w-4xl mx-auto space-y-8">
-                        <div className="bg-amber-500/20 border-2 border-amber-400/50 rounded-3xl p-8 backdrop-blur-sm">
-                            <p className="text-2xl text-amber-50 font-bold leading-relaxed mb-6">
+                        <div className="bg-lab-gold/20 border-2 border-lab-gold/50 rounded-3xl p-8 backdrop-blur-sm">
+                            <p className="text-2xl text-lab-gold font-bold leading-relaxed mb-6">
                                 Dit platform is nieuw. Werkt iets nog niet perfect? 
                                 Geen probleem — dat hoort bij het leren!
                             </p>
@@ -508,7 +508,7 @@ const WEEKS_DATA: WeekConfig[] = [
     {
         id: 'week-4',
         title: 'Week 4: The Project',
-        theme: '#16A34A', // Green
+        theme: '#5F947D', // Green
         description: 'Je meesterwerk.',
         slides: [
             {
@@ -551,9 +551,9 @@ const WEEKS_DATA: WeekConfig[] = [
                 content: (
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-6xl mx-auto">
                         {[
-                            { title: 'De Blauwdruk', icon: <Map />, color: 'bg-slate-700', desc: 'Projectplan' },
-                            { title: 'De Visie', icon: <Lightbulb />, color: 'bg-amber-500', desc: 'Moodboard & Pitch' },
-                            { title: 'De Ethische Raad', icon: <Scale />, color: 'bg-violet-500', desc: 'Slimme Keuzes' },
+                            { title: 'De Blauwdruk', icon: <Map />, color: 'bg-lab-muted', desc: 'Projectplan' },
+                            { title: 'De Visie', icon: <Lightbulb />, color: 'bg-lab-gold', desc: 'Moodboard & Pitch' },
+                            { title: 'De Ethische Raad', icon: <Scale />, color: 'bg-lab-teal', desc: 'Slimme Keuzes' },
                             { title: 'De Lancering', icon: <Rocket />, color: 'bg-green-600', desc: 'Nu live!' },
                         ].map((m, i) => (
                             <motion.div
@@ -578,8 +578,8 @@ const WEEKS_DATA: WeekConfig[] = [
                 subtitle: 'Sommige functies zijn nog in ontwikkeling',
                 content: (
                     <div className="max-w-4xl mx-auto space-y-8">
-                        <div className="bg-amber-500/20 border-2 border-amber-400/50 rounded-3xl p-8 backdrop-blur-sm">
-                            <p className="text-2xl text-amber-50 font-bold leading-relaxed mb-6">
+                        <div className="bg-lab-gold/20 border-2 border-lab-gold/50 rounded-3xl p-8 backdrop-blur-sm">
+                            <p className="text-2xl text-lab-gold font-bold leading-relaxed mb-6">
                                 Dit platform is nieuw. Werkt iets nog niet perfect? 
                                 Geen probleem — dat hoort bij het leren!
                             </p>
@@ -826,8 +826,8 @@ export const TeacherPresentation = ({ activeWeekId, onClose }: { activeWeekId: s
                                 <span className="inline-block px-4 py-1.5 bg-blue-100 text-blue-600 rounded-full font-black text-xs uppercase tracking-widest mb-4">
                                     Directe Toegang
                                 </span>
-                                <h2 className="text-slate-900 text-4xl font-black mb-1 tracking-tight">Klaar om te beginnen?</h2>
-                                <p className="text-slate-500 font-bold text-lg">Ga naar <span className="text-blue-600">www.dgskills.app</span></p>
+                                <h2 className="text-lab-muted text-4xl font-black mb-1 tracking-tight">Klaar om te beginnen?</h2>
+                                <p className="text-lab-muted font-bold text-lg">Ga naar <span className="text-blue-600">www.dgskills.app</span></p>
                             </div>
 
                             <div className="relative group">
@@ -844,12 +844,12 @@ export const TeacherPresentation = ({ activeWeekId, onClose }: { activeWeekId: s
                             <div className="flex flex-col items-center gap-4 w-full">
                                 <button
                                     onClick={() => setShowLargeQR(false)}
-                                    className="w-full py-4 bg-slate-900 text-white rounded-2xl font-black text-lg hover:bg-slate-800 transition-all hover:scale-[1.02] active:scale-[0.98] shadow-xl group flex items-center justify-center gap-3"
+                                    className="w-full py-4 bg-lab-muted text-white rounded-2xl font-black text-lg hover:bg-lab-muted transition-all hover:scale-[1.02] active:scale-[0.98] shadow-xl group flex items-center justify-center gap-3"
                                 >
                                     <span>Begrepen</span>
-                                    <Sparkles className="text-yellow-400 group-hover:rotate-12 transition-transform" />
+                                    <Sparkles className="text-lab-gold group-hover:rotate-12 transition-transform" />
                                 </button>
-                                <p className="text-slate-400 font-medium text-sm">Klik buiten het venster of op de knop om te sluiten</p>
+                                <p className="text-lab-muted font-medium text-sm">Klik buiten het venster of op de knop om te sluiten</p>
                             </div>
                         </motion.div>
                     </motion.div>

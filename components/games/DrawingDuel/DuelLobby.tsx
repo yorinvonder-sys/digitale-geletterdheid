@@ -109,22 +109,22 @@ export const DuelLobby: React.FC<DuelLobbyProps> = ({
     }, [currentUser.uid, onChallengeAccepted]);
 
     return (
-        <div className="w-full h-full flex flex-col" style={{ backgroundColor: '#FAF9F0' }}>
+        <div className="w-full h-full flex flex-col" style={{ backgroundColor: '#FCF6EA' }}>
             {/* Header */}
-            <div className="p-4 flex items-center gap-4" style={{ borderBottom: '1px solid #E8E6DF' }}>
+            <div className="p-4 flex items-center gap-4" style={{ borderBottom: '1px solid #E7D8BD' }}>
                 <button
                     onClick={onBack}
-                    className="w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 focus-visible:ring-2 focus-visible:ring-[#D97757]"
-                    style={{ backgroundColor: '#F0EEE8', color: '#3D3D38' }}
+                    className="w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 focus-visible:ring-2 focus-visible:ring-[#D97848]"
+                    style={{ backgroundColor: '#FCF6EA', color: '#445865' }}
                 >
                     <ArrowLeft size={20} />
                 </button>
                 <div>
-                    <h1 className="text-xl flex items-center gap-2" style={{ fontFamily: "'Newsreader', Georgia, serif", fontWeight: 700, color: '#1A1A19' }}>
-                        <Swords style={{ color: '#D97757' }} size={24} />
+                    <h1 className="text-xl flex items-center gap-2" style={{ fontFamily: "'Newsreader', Georgia, serif", fontWeight: 700, color: '#08283B' }}>
+                        <Swords style={{ color: '#D97848' }} size={24} />
                         Tekenduel Lobby
                     </h1>
-                    <p className="text-sm" style={{ fontFamily: "'Outfit', system-ui, sans-serif", color: '#6B6B66' }}>
+                    <p className="text-sm" style={{ fontFamily: "'Outfit', system-ui, sans-serif", color: '#445865' }}>
                         Daag een klasgenoot uit voor een 1-minuut tekenstrijd!
                     </p>
                 </div>
@@ -133,36 +133,36 @@ export const DuelLobby: React.FC<DuelLobbyProps> = ({
             {/* Content */}
             <div className="flex-1 p-4 overflow-auto">
                 {isLoading ? (
-                    <div className="flex flex-col items-center justify-center h-full" style={{ color: '#6B6B66' }}>
-                        <Loader2 size={32} className="animate-spin mb-4" style={{ color: '#D97757' }} />
+                    <div className="flex flex-col items-center justify-center h-full" style={{ color: '#445865' }}>
+                        <Loader2 size={32} className="animate-spin mb-4" style={{ color: '#D97848' }} />
                         <p style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>Zoeken naar klasgenoten...</p>
                     </div>
                 ) : !currentUser.studentClass ? (
                     <div className="flex flex-col items-center justify-center h-full text-center p-6">
-                        <WifiOff size={48} className="mb-4" style={{ color: '#E8E6DF' }} />
-                        <p className="text-lg mb-2" style={{ fontFamily: "'Newsreader', Georgia, serif", fontWeight: 700, color: '#1A1A19' }}>Geen klas gevonden</p>
-                        <p className="text-sm" style={{ fontFamily: "'Outfit', system-ui, sans-serif", color: '#6B6B66' }}>Je moet aan een klas toegewezen zijn om klasgenoten te kunnen uitdagen.</p>
+                        <WifiOff size={48} className="mb-4" style={{ color: '#E7D8BD' }} />
+                        <p className="text-lg mb-2" style={{ fontFamily: "'Newsreader', Georgia, serif", fontWeight: 700, color: '#08283B' }}>Geen klas gevonden</p>
+                        <p className="text-sm" style={{ fontFamily: "'Outfit', system-ui, sans-serif", color: '#445865' }}>Je moet aan een klas toegewezen zijn om klasgenoten te kunnen uitdagen.</p>
                     </div>
                 ) : classmates.length === 0 ? (
                     <div className="flex flex-col items-center justify-center h-full text-center p-6">
-                        <div className="w-24 h-24 rounded-full flex items-center justify-center mb-6" style={{ backgroundColor: '#F0EEE8' }}>
-                            <Users size={40} style={{ color: '#6B6B66' }} />
+                        <div className="w-24 h-24 rounded-full flex items-center justify-center mb-6" style={{ backgroundColor: '#FCF6EA' }}>
+                            <Users size={40} style={{ color: '#445865' }} />
                         </div>
-                        <p className="text-lg mb-2" style={{ fontFamily: "'Newsreader', Georgia, serif", fontWeight: 700, color: '#1A1A19' }}>
+                        <p className="text-lg mb-2" style={{ fontFamily: "'Newsreader', Georgia, serif", fontWeight: 700, color: '#08283B' }}>
                             Nog geen klasgenoten online
                         </p>
-                        <p className="text-sm max-w-xs" style={{ fontFamily: "'Outfit', system-ui, sans-serif", color: '#6B6B66' }}>
+                        <p className="text-sm max-w-xs" style={{ fontFamily: "'Outfit', system-ui, sans-serif", color: '#445865' }}>
                             Wacht tot een klasgenoot uit {currentUser.studentClass} ook de duel lobby opent, of speel eerst solo!
                         </p>
-                        <div className="mt-6 flex items-center gap-2 animate-pulse" style={{ color: '#10B981' }}>
+                        <div className="mt-6 flex items-center gap-2 animate-pulse" style={{ color: '#5F947D' }}>
                             <Wifi size={16} />
                             <span className="text-sm font-bold" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>Jij bent online in {currentUser.studentClass}</span>
                         </div>
                     </div>
                 ) : (
                     <div className="space-y-3">
-                        <div className="flex items-center gap-2 mb-4" style={{ color: '#10B981' }}>
-                            <div className="w-2 h-2 rounded-full animate-pulse" style={{ backgroundColor: '#10B981' }} />
+                        <div className="flex items-center gap-2 mb-4" style={{ color: '#5F947D' }}>
+                            <div className="w-2 h-2 rounded-full animate-pulse" style={{ backgroundColor: '#5F947D' }} />
                             <span className="text-sm font-bold" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>{classmates.length} klasgenoot{classmates.length !== 1 ? 'en' : ''} online</span>
                         </div>
 
@@ -170,20 +170,20 @@ export const DuelLobby: React.FC<DuelLobbyProps> = ({
                             <div
                                 key={classmate.uid}
                                 className="rounded-2xl p-4 flex items-center gap-4 transition-all duration-300"
-                                style={{ backgroundColor: '#FFFFFF', border: '1px solid #E8E6DF' }}
-                                onMouseEnter={e => (e.currentTarget.style.borderColor = '#D97757')}
-                                onMouseLeave={e => (e.currentTarget.style.borderColor = '#E8E6DF')}
+                                style={{ backgroundColor: '#FFFFFF', border: '1px solid #E7D8BD' }}
+                                onMouseEnter={e => (e.currentTarget.style.borderColor = '#D97848')}
+                                onMouseLeave={e => (e.currentTarget.style.borderColor = '#E7D8BD')}
                             >
                                 {/* Avatar */}
-                                <div className="w-12 h-12 rounded-full flex items-center justify-center text-white font-bold text-lg" style={{ background: 'linear-gradient(135deg, #D97757, #C46849)' }}>
+                                <div className="w-12 h-12 rounded-full flex items-center justify-center text-white font-bold text-lg" style={{ background: 'linear-gradient(135deg, #D97848, #D97848)' }}>
                                     {classmate.name.charAt(0).toUpperCase()}
                                 </div>
 
                                 {/* Info */}
                                 <div className="flex-1">
-                                    <p className="font-bold" style={{ fontFamily: "'Outfit', system-ui, sans-serif", color: '#1A1A19' }}>{classmate.name}</p>
-                                    <p className="text-sm flex items-center gap-1" style={{ fontFamily: "'Outfit', system-ui, sans-serif", color: '#6B6B66' }}>
-                                        <span className="w-2 h-2 rounded-full" style={{ backgroundColor: '#10B981' }} />
+                                    <p className="font-bold" style={{ fontFamily: "'Outfit', system-ui, sans-serif", color: '#08283B' }}>{classmate.name}</p>
+                                    <p className="text-sm flex items-center gap-1" style={{ fontFamily: "'Outfit', system-ui, sans-serif", color: '#445865' }}>
+                                        <span className="w-2 h-2 rounded-full" style={{ backgroundColor: '#5F947D' }} />
                                         Online
                                     </p>
                                 </div>
@@ -192,13 +192,13 @@ export const DuelLobby: React.FC<DuelLobbyProps> = ({
                                 <button
                                     onClick={() => handleChallenge(classmate)}
                                     disabled={pendingChallenge !== null}
-                                    className="px-5 py-3 rounded-full font-bold flex items-center gap-2 transition-all duration-300 focus-visible:ring-2 focus-visible:ring-[#D97757]"
+                                    className="px-5 py-3 rounded-full font-bold flex items-center gap-2 transition-all duration-300 focus-visible:ring-2 focus-visible:ring-[#D97848]"
                                     style={
                                         pendingChallenge === classmate.uid
-                                            ? { backgroundColor: 'rgba(217,119,87,0.15)', color: '#D97757', cursor: 'wait' }
+                                            ? { backgroundColor: 'rgba(217,119,87,0.15)', color: '#D97848', cursor: 'wait' }
                                             : pendingChallenge
-                                                ? { backgroundColor: '#F0EEE8', color: '#6B6B66', cursor: 'not-allowed' }
-                                                : { background: 'linear-gradient(135deg, #D97757, #C46849)', color: '#FFFFFF' }
+                                                ? { backgroundColor: '#FCF6EA', color: '#445865', cursor: 'not-allowed' }
+                                                : { background: 'linear-gradient(135deg, #D97848, #D97848)', color: '#FFFFFF' }
                                     }
                                 >
                                     {pendingChallenge === classmate.uid ? (
@@ -220,8 +220,8 @@ export const DuelLobby: React.FC<DuelLobbyProps> = ({
             </div>
 
             {/* Footer */}
-            <div className="p-4 space-y-3" style={{ borderTop: '1px solid #E8E6DF', backgroundColor: '#FFFFFF' }}>
-                <p className="text-xs text-center" style={{ fontFamily: "'Outfit', system-ui, sans-serif", color: '#6B6B66' }}>
+            <div className="p-4 space-y-3" style={{ borderTop: '1px solid #E7D8BD', backgroundColor: '#FFFFFF' }}>
+                <p className="text-xs text-center" style={{ fontFamily: "'Outfit', system-ui, sans-serif", color: '#445865' }}>
                     Tip: Wie in 1 minuut de meeste tekeningen door de AI goedgekeurd krijgt, wint!
                 </p>
 
@@ -229,8 +229,8 @@ export const DuelLobby: React.FC<DuelLobbyProps> = ({
                 {onStartSolo && (
                     <button
                         onClick={onStartSolo}
-                        className="w-full py-3 rounded-full font-bold flex items-center justify-center gap-2 transition-all duration-300 active:scale-95 focus-visible:ring-2 focus-visible:ring-[#2A9D8F]"
-                        style={{ backgroundColor: '#2A9D8F', color: '#FFFFFF' }}
+                        className="w-full py-3 rounded-full font-bold flex items-center justify-center gap-2 transition-all duration-300 active:scale-95 focus-visible:ring-2 focus-visible:ring-[#5F947D]"
+                        style={{ backgroundColor: '#5F947D', color: '#FFFFFF' }}
                     >
                         <Pencil size={18} />
                         Speel Solo (Tegen AI)

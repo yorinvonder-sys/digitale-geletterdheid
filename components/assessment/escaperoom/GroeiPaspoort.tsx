@@ -26,9 +26,9 @@ const DOMEINEN: DomeinKey[] = [
 
 function getNiveauKleur(niveau: 'starter' | 'basis' | 'gevorderd'): string {
   switch (niveau) {
-    case 'gevorderd': return 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40';
+    case 'gevorderd': return 'bg-lab-sage/20 text-lab-sage border-lab-sage/40';
     case 'basis':     return 'bg-blue-500/20 text-blue-300 border-blue-500/40';
-    case 'starter':   return 'bg-amber-500/20 text-amber-300 border-amber-500/40';
+    case 'starter':   return 'bg-lab-gold/20 text-lab-gold border-lab-gold/40';
   }
 }
 
@@ -45,9 +45,9 @@ function getDomeinBarKleur(key: DomeinKey): { bar: string; text: string; badge: 
   const kleur = getDomeinKleur(key);
   const map: Record<string, { bar: string; text: string; badge: string }> = {
     indigo:  { bar: 'bg-indigo-500',  text: 'text-indigo-300',  badge: 'bg-indigo-500/20 text-indigo-300' },
-    emerald: { bar: 'bg-emerald-500', text: 'text-emerald-300', badge: 'bg-emerald-500/20 text-emerald-300' },
-    violet:  { bar: 'bg-violet-500',  text: 'text-violet-300',  badge: 'bg-violet-500/20 text-violet-300' },
-    rose:    { bar: 'bg-rose-500',    text: 'text-rose-300',    badge: 'bg-rose-500/20 text-rose-300' },
+    emerald: { bar: 'bg-lab-sage', text: 'text-lab-sage', badge: 'bg-lab-sage/20 text-lab-sage' },
+    violet:  { bar: 'bg-lab-teal',  text: 'text-lab-teal',  badge: 'bg-lab-teal/20 text-lab-teal' },
+    rose:    { bar: 'bg-lab-coral',    text: 'text-lab-coral',    badge: 'bg-lab-coral/20 text-lab-coral' },
     sky:     { bar: 'bg-sky-500',     text: 'text-sky-300',     badge: 'bg-sky-500/20 text-sky-300' },
   };
   return map[kleur] ?? { bar: 'bg-gray-500', text: 'text-gray-300', badge: 'bg-gray-500/20 text-gray-300' };
@@ -90,10 +90,10 @@ export const GroeiPaspoort: React.FC<GroeiPaspoortProps> = ({
           <div
             className={`inline-flex items-center gap-2 px-4 py-2 rounded-full font-bold text-sm ${
               groeiPositief
-                ? 'bg-emerald-500/15 text-emerald-300'
+                ? 'bg-lab-sage/15 text-lab-sage'
                 : groeiNeutraal
                 ? 'bg-gray-700/60 text-gray-400'
-                : 'bg-rose-500/15 text-rose-300'
+                : 'bg-lab-coral/15 text-lab-coral'
             }`}
           >
             {groeiPositief ? (
@@ -158,10 +158,10 @@ export const GroeiPaspoort: React.FC<GroeiPaspoortProps> = ({
                   <span
                     className={`text-xs font-bold px-2 py-0.5 rounded-full ${
                       groeiPositiefDomein
-                        ? 'bg-emerald-500/15 text-emerald-400'
+                        ? 'bg-lab-sage/15 text-lab-sage'
                         : groeiNeutraalDomein
                         ? 'bg-gray-700 text-gray-400'
-                        : 'bg-rose-500/15 text-rose-400'
+                        : 'bg-lab-coral/15 text-lab-coral'
                     }`}
                   >
                     {groeiPositiefDomein ? `+${groei}` : groei}
@@ -197,28 +197,28 @@ export const GroeiPaspoort: React.FC<GroeiPaspoortProps> = ({
 
         {/* 4. Highlights */}
         <motion.div variants={itemVariants} className="grid grid-cols-2 gap-3">
-          <div className="bg-gray-800/50 border border-emerald-500/30 rounded-2xl p-4 space-y-2">
-            <div className="flex items-center gap-2 text-emerald-400">
+          <div className="bg-gray-800/50 border border-lab-sage/30 rounded-2xl p-4 space-y-2">
+            <div className="flex items-center gap-2 text-lab-sage">
               <Trophy size={16} />
               <span className="text-xs font-bold uppercase tracking-wide">Meest gegroeid</span>
             </div>
             <p className="text-sm font-bold text-white leading-tight">
               {getDomeinLabel(analyse.sterksteDomein)}
             </p>
-            <p className="text-xs text-emerald-400 font-bold">
+            <p className="text-xs text-lab-sage font-bold">
               +{Math.round(analyse.perDomein[analyse.sterksteDomein].groei)} punten
             </p>
           </div>
 
-          <div className="bg-gray-800/50 border border-amber-500/30 rounded-2xl p-4 space-y-2">
-            <div className="flex items-center gap-2 text-amber-400">
+          <div className="bg-gray-800/50 border border-lab-gold/30 rounded-2xl p-4 space-y-2">
+            <div className="flex items-center gap-2 text-lab-gold">
               <Target size={16} />
               <span className="text-xs font-bold uppercase tracking-wide">Focuspunt</span>
             </div>
             <p className="text-sm font-bold text-white leading-tight">
               {getDomeinLabel(analyse.focusDomein)}
             </p>
-            <p className="text-xs text-amber-400 font-bold">
+            <p className="text-xs text-lab-gold font-bold">
               {Math.round(analyse.perDomein[analyse.focusDomein].eindmeting)}/100
             </p>
           </div>

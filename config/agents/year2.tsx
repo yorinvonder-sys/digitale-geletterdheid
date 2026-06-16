@@ -10,7 +10,7 @@ export const YEAR2_ROLES: AgentRole[] = [
         educationLevels: ['mavo', 'havo', 'vwo'] as EducationLevel[],
         title: 'Data Journalist',
         icon: <BarChart2 size={28} />,
-        color: '#059669',
+        color: '#5F947D',
         description: 'Vertel verhalen die verborgen zitten in data.',
         problemScenario: 'Een lokale krant heeft een enorme dataset gekregen over het energieverbruik van scholen in Nederland, maar niemand begrijpt de cijfers. Jij wordt ingehuurd als data-journalist om de belangrijkste patronen te ontdekken en er een heldere infographic van te maken.',
         missionObjective: 'Analyseer een dataset, vind patronen en ontwerp een overtuigende infographic.',
@@ -94,7 +94,7 @@ Je eerste opdracht: open de dataset en vertel me — wat valt je als eerste op?"
         educationLevels: ['mavo', 'havo', 'vwo'] as EducationLevel[],
         title: 'Spreadsheet Specialist',
         icon: <Table2 size={28} />,
-        color: '#0891B2',
+        color: '#0B453F',
         description: 'Maak van chaos in cellen een georganiseerd meesterwerk.',
         problemScenario: 'De penningmeester van de leerlingenraad is ziek en het kasboek is een puinhoop. Overal staan bedragen zonder formules, totalen kloppen niet en er is geen grafiek te bekennen. Jij springt in als spreadsheet-specialist om orde te scheppen.',
         missionObjective: 'Gebruik formules, maak een grafiek en vat data samen in een spreadsheet.',
@@ -262,7 +262,7 @@ Jouw missie: achterhalen of het klopt. Begin bij het begin — wat is de eerste 
         educationLevels: ['mavo', 'havo', 'vwo'] as EducationLevel[],
         title: 'API Verkenner',
         icon: <Globe size={28} />,
-        color: '#7C3AED',
+        color: '#0B453F',
         description: 'Haal live data op van het internet als een digitale ontdekkingsreiziger.',
         problemScenario: 'Je school wil een informatiescherm in de hal met actueel weer, nieuws en een fun fact van de dag. Maar hoe krijg je die data automatisch binnen? Via API\'s natuurlijk! Jij gaat ontdekken hoe apps en websites met elkaar "praten" via data.',
         missionObjective: 'Begrijp hoe API\'s werken, haal data op en interpreteer de resultaten.',
@@ -347,7 +347,7 @@ Laten we het uitzoeken: kun jij me vertellen wat jij al weet over hoe apps met e
         educationLevels: ['mavo', 'havo', 'vwo'] as EducationLevel[],
         title: 'Dashboard Designer',
         icon: <LayoutDashboard size={28} />,
-        color: '#2563EB',
+        color: '#0B453F',
         description: 'Bouw een dashboard dat data laat spreken.',
         problemScenario: 'De schooldirecteur wil in één oogopslag zien hoe het gaat met de leerlingen: cijfers, aanwezigheid, tevredenheid. Maar al die data staat verspreid in losse bestanden. Jij ontwerpt een overzichtelijk dashboard dat alles samenbrengt op één scherm.',
         missionObjective: 'Ontwerp een data-dashboard met de juiste visualisaties voor verschillende soorten data.',
@@ -432,7 +432,7 @@ Jij ontwerpt hun dashboard. Vertel me eerst: voor wie is dit dashboard en wat mo
         educationLevels: ['mavo', 'havo', 'vwo'] as EducationLevel[],
         title: 'AI Bias Detective',
         icon: <Search size={28} />,
-        color: '#DC2626',
+        color: '#D97848',
         description: 'Ontdek verborgen vooroordelen in kunstmatige intelligentie.',
         problemScenario: 'Een AI-systeem op school stelt automatisch boeken voor aan leerlingen, maar meisjes krijgen alleen romantische boeken en jongens alleen actie. Dat klopt toch niet? Jij onderzoekt als AI Bias Detective waar het misgaat en hoe het eerlijker kan.',
         missionObjective: 'Analyseer AI-output, identificeer bias en stel verbeteringen voor.',
@@ -517,7 +517,7 @@ Jij gaat vandaag als bias-detective aan de slag. Laten we beginnen: welk AI-syst
         educationLevels: ['mavo', 'havo', 'vwo'] as EducationLevel[],
         title: 'Data Review',
         icon: <RotateCcw size={28} />,
-        color: '#6B6B66',
+        color: '#445865',
         description: 'Test je kennis van alle dataconcepten uit deze periode.',
         problemScenario: 'Het is tijd om te laten zien wat je hebt geleerd over data en informatie. Van datasets en spreadsheets tot factchecking en AI-bias — bewijs dat jij een echte data-expert bent geworden door alle concepten te herhalen en toe te passen.',
         missionObjective: 'Herhaal en test je kennis van alle dataconcepten uit periode 1.',
@@ -605,7 +605,7 @@ Laten we kijken wat er al stevig zit. Vertel me: welk onderwerp van deze periode
         educationLevels: ['mavo', 'havo', 'vwo'] as EducationLevel[],
         title: 'Algorithm Architect',
         icon: <Code2 size={28} />,
-        color: '#7C3AED',
+        color: '#0B453F',
         description: 'Ontwerp slimme algoritmes die problemen razendsnel oplossen.',
         problemScenario: 'Een bibliotheek heeft duizenden boeken, maar niemand vindt iets terug. Het zoeksysteem is kapot en alles staat door elkaar. Jij moet een slim algoritme ontwerpen dat de juiste boeken razendsnel vindt.',
         missionObjective: 'Ontwerp een zoek- of sorteeralgoritme dat het probleem efficiënt oplost.',
@@ -687,7 +687,7 @@ We beginnen met een klassiek probleem. Vertel me: hoe zou jij een stapel kaarten
         educationLevels: ['mavo', 'havo', 'vwo'] as EducationLevel[],
         title: 'Web Developer',
         icon: <Globe size={28} />,
-        color: '#2563EB',
+        color: '#0B453F',
         description: 'Bouw je eigen interactieve webpagina van scratch.',
         problemScenario: 'Een lokale dierenasiel heeft geen website en loopt daardoor adoptieaanvragen mis. Ze hebben dringend een interactieve pagina nodig waar bezoekers dieren kunnen bekijken. Jij bent de webdeveloper die dit gaat bouwen!',
         missionObjective: 'Bouw een werkende interactieve webpagina met HTML, CSS en JavaScript.',
@@ -769,7 +769,7 @@ We beginnen met de basis. Type dit in je editor en vertel me wat je ziet:
         educationLevels: ['mavo', 'havo', 'vwo'] as EducationLevel[],
         title: 'App Prototyper',
         icon: <Smartphone size={28} />,
-        color: '#EC4899',
+        color: '#D97848',
         description: 'Ontwerp en bouw een app die een echt probleem oplost.',
         problemScenario: 'Leerlingen op jouw school klagen dat ze nooit weten wanneer de kantine druk is. Er is een app nodig die dit probleem oplost. Jij gaat een prototype ontwerpen dat de school kan testen!',
         missionObjective: 'Ontwerp een compleet app-prototype met schermen, navigatie en gebruikersflow.',
@@ -851,7 +851,7 @@ Vertel me: welk probleem wil jij oplossen met jouw app? Voor wie is het bedoeld?
         educationLevels: ['mavo', 'havo', 'vwo'] as EducationLevel[],
         title: 'Bug Hunter',
         icon: <Bug size={28} />,
-        color: '#DC2626',
+        color: '#D97848',
         description: 'Spoor bugs op in code en los ze op als een pro.',
         problemScenario: 'De schoolwebsite crasht elke keer als iemand op de roosterknop klikt. De code zit vol met fouten en niemand weet waar het probleem zit. Jij bent de Bug Hunter die systematisch de bugs opspoort en fixt!',
         missionObjective: 'Vind en repareer alle bugs in de code door systematisch te debuggen.',
@@ -935,7 +935,7 @@ Hier is de buggy code. Wat is het eerste wat jij doet als je een onbekende bug z
         educationLevels: ['mavo', 'havo', 'vwo'] as EducationLevel[],
         title: 'Automation Engineer',
         icon: <Zap size={28} />,
-        color: '#F59E0B',
+        color: '#D7C95F',
         description: 'Automatiseer saaie taken en bespaar uren werk.',
         problemScenario: 'De conciërge van school moet elke week handmatig 200 mails sturen naar ouders met roosterwijzigingen. Dat kost uren! Jij gaat een script schrijven dat dit automatisch doet, zodat de conciërge tijd overhoudt voor belangrijkere dingen.',
         missionObjective: 'Schrijf een script dat een repetitieve taak volledig automatiseert.',
@@ -1018,7 +1018,7 @@ Vertel me: welke taak vind jij ontzettend saai om steeds opnieuw te doen? Dat wo
         educationLevels: ['mavo', 'havo', 'vwo'] as EducationLevel[],
         title: 'Code Reviewer',
         icon: <FileCode size={28} />,
-        color: '#059669',
+        color: '#5F947D',
         description: 'Leer code van anderen lezen, beoordelen en verbeteren.',
         problemScenario: 'Een medeleerling heeft een website gebouwd, maar de code is een chaos: geen commentaar, variabelen heten "x" en "abc", en sommige functies doen helemaal niets. Jij moet de code reviewen en concrete verbeteringen voorstellen.',
         missionObjective: 'Review de code kritisch en implementeer minstens 3 verbeteringen.',
@@ -1101,7 +1101,7 @@ Hier is een stukje code dat werkt, maar niet optimaal is. Lees het rustig door e
         educationLevels: ['mavo', 'havo', 'vwo'] as EducationLevel[],
         title: 'Network Navigator',
         icon: <Network size={28} />,
-        color: '#0891B2',
+        color: '#0B453F',
         description: 'Volg het pad van een bericht door het internet en ontdek hoe netwerken werken.',
         problemScenario: 'Je stuurt een bericht op Instagram naar je vriend, maar het komt niet aan. Iedereen klaagt dat berichten verdwijnen of heel laat aankomen. Als Network Navigator moet jij uitzoeken hoe een bericht eigenlijk door het internet reist — en waar het misging.',
         missionObjective: 'Beschrijf stap voor stap hoe een bericht van jouw telefoon naar de server van Instagram reist, en vind het probleem.',
@@ -1210,7 +1210,7 @@ REGELS:
         educationLevels: ['mavo', 'havo', 'vwo'] as EducationLevel[],
         title: 'Privacy by Design',
         icon: <ShieldCheck size={28} />,
-        color: '#7C3AED',
+        color: '#0B453F',
         description: 'Beoordeel een app op privacyrisico\'s en maak het ontwerp AVG-proof.',
         problemScenario: 'Een startup heeft een nieuwe social media app gebouwd voor tieners: "BuddyLoop". De app verzamelt locatie, contacten, chatberichten en foto\'s. Voordat de app gelanceerd mag worden, moet een Privacy Officer controleren of alles voldoet aan de AVG. Jij bent die Privacy Officer!',
         missionObjective: 'Identificeer minstens 3 privacyrisico\'s in de app, schrijf een privacyverklaring en herontwerp de app met privacy-by-design principes.',
@@ -1340,7 +1340,7 @@ REGELS:
         educationLevels: ['mavo', 'havo', 'vwo'] as EducationLevel[],
         title: 'Code Terugblik',
         icon: <RotateCcw size={28} />,
-        color: '#6B6B66',
+        color: '#445865',
         description: 'Test je kennis van programmeren en computational thinking.',
         problemScenario: 'Het is tijd om alles wat je hebt geleerd over programmeren en computational thinking te testen. Van algoritmes tot debugging, van webdevelopment tot automatisering. Bewijs dat je de concepten beheerst!',
         missionObjective: 'Doorloop alle programmeerconcepten en bewijs dat je ze beheerst.',
@@ -1446,7 +1446,7 @@ Laten we het samenvatten. Welk onderdeel van deze periode was voor jou het meest
         educationLevels: ['mavo', 'havo', 'vwo'] as EducationLevel[],
         title: 'UX Detective',
         icon: <Eye size={28} />,
-        color: '#E8956F',
+        color: '#D97848',
         description: 'Ontdek waarom sommige apps lekker werken en andere niet.',
         problemScenario: 'Een populaire app krijgt slechte reviews: gebruikers raken verdwaald in de menu\'s en geven op. Het bedrijf huurt jou in als UX-detective om te achterhalen wat er misgaat en hoe het beter kan.',
         missionObjective: 'Analyseer de gebruikservaring van een app en ontwerp verbeteringen.',
@@ -1458,7 +1458,7 @@ Laten we het samenvatten. Welk onderdeel van deze periode was voor jou het meest
                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_40%,rgba(255,255,255,0.1),transparent)]"></div>
                 <div className="relative z-10 w-36 bg-white/10 backdrop-blur-md rounded-2xl border border-white/20 p-3 space-y-2">
                     <div className="flex items-center gap-2">
-                        <div className="w-6 h-6 rounded-full bg-violet-300/50"></div>
+                        <div className="w-6 h-6 rounded-full bg-lab-teal/50"></div>
                         <div className="flex-1 h-2 bg-white/20 rounded-full"></div>
                     </div>
                     <div className="w-full h-16 bg-white/10 rounded-lg border border-dashed border-white/30 flex items-center justify-center">
@@ -1536,7 +1536,7 @@ Kies een app die je dagelijks gebruikt (TikTok, Instagram, je schoolapp — wat 
         educationLevels: ['mavo', 'havo', 'vwo'] as EducationLevel[],
         title: 'Podcast Producer',
         icon: <Mic size={28} />,
-        color: '#059669',
+        color: '#5F947D',
         description: 'Schrijf een podcastconcept en script over een tech-onderwerp dat jou boeit.',
         problemScenario: 'Een online mediaplatform zoekt frisse stemmen voor hun nieuwe podcastkanaal gericht op tieners. Ze willen korte, pakkende afleveringen over technologie. Jij mag een pilot-aflevering produceren!',
         missionObjective: 'Kies een tech-onderwerp, schrijf een professioneel podcastscript met intro, interview en outro, en leer hoe je een boeiend audioverhaal opbouwt.',
@@ -1629,7 +1629,7 @@ Jij gaat vandaag jouw eigen aflevering plannen. Vertel me: over welk onderwerp b
         educationLevels: ['mavo', 'havo', 'vwo'] as EducationLevel[],
         title: 'Meme Machine',
         icon: <ImageIcon size={28} />,
-        color: '#F97316',
+        color: '#D97848',
         description: 'Ontdek waarom memes viral gaan en maak er zelf een.',
         problemScenario: 'Een marketingbureau snapt niet waarom hun campagnes floppen terwijl memes miljoenen views scoren. Ze vragen jou als meme-expert om uit te leggen hoe viraliteit werkt en een virale post te ontwerpen.',
         missionObjective: 'Analyseer virale memes en ontwerp je eigen content die potentie heeft om viral te gaan.',
@@ -1644,13 +1644,13 @@ Jij gaat vandaag jouw eigen aflevering plannen. Vertel me: over welk onderwerp b
                         <ImageIcon size={24} className="text-orange-400" />
                     </div>
                     <div className="p-2 space-y-1">
-                        <div className="w-full h-2 bg-slate-800 rounded-sm"></div>
-                        <div className="w-2/3 h-2 bg-slate-800 rounded-sm"></div>
+                        <div className="w-full h-2 bg-lab-muted rounded-sm"></div>
+                        <div className="w-2/3 h-2 bg-lab-muted rounded-sm"></div>
                     </div>
                     <div className="px-2 pb-2 flex gap-1">
                         <div className="w-4 h-4 bg-red-400 rounded-full"></div>
                         <div className="w-4 h-4 bg-blue-400 rounded-full"></div>
-                        <div className="flex-1 h-4 bg-slate-100 rounded-full"></div>
+                        <div className="flex-1 h-4 bg-lab-muted rounded-full"></div>
                     </div>
                 </div>
             </div>
@@ -1720,7 +1720,7 @@ Jij gaat die formule ontdekken. Begin met dit: noem 3 memes of stukjes content d
         educationLevels: ['mavo', 'havo', 'vwo'] as EducationLevel[],
         title: 'Digital Storyteller',
         icon: <BookOpen size={28} />,
-        color: '#2563EB',
+        color: '#0B453F',
         description: 'Schrijf een interactief verhaal waar de lezer zelf keuzes maakt.',
         problemScenario: 'Een game-studio wil een interactief verhaal maken voor hun nieuwe app, maar ze weten niet hoe je een verhaal schrijft met vertakkingen. Jij wordt ingehuurd om het eerste prototype te ontwerpen.',
         missionObjective: 'Ontwerp een interactief digitaal verhaal met minstens twee keuzemomenten.',
@@ -1811,7 +1811,7 @@ We starten met het fundament: wie is je hoofdpersonage en welke moeilijke keuze 
         educationLevels: ['mavo', 'havo', 'vwo'] as EducationLevel[],
         title: 'Brand Builder',
         icon: <Palette size={28} />,
-        color: '#EC4899',
+        color: '#D97848',
         description: 'Ontwerp een complete visuele identiteit voor een merk.',
         problemScenario: 'Een startup heeft een geweldig product maar ziet er online uit alsof het in 2005 is gemaakt. Ze hebben dringend een nieuwe visuele identiteit nodig: logo, kleuren, lettertype en uitstraling. Jij bent de designer die het merk tot leven brengt.',
         missionObjective: 'Ontwerp een volledige merkidentiteit inclusief logo-idee, kleurenpalet en huisstijl.',
@@ -1826,7 +1826,7 @@ We starten met het fundament: wie is je hoofdpersonage en welke moeilijke keuze 
                         <Palette size={32} className="text-white" />
                     </div>
                     <div className="flex gap-2">
-                        {['#EC4899', '#E8956F', '#3B82F6', '#10B981'].map((c, i) => (
+                        {['#D97848', '#D97848', '#0B453F', '#5F947D'].map((c, i) => (
                             <div key={i} className="w-6 h-6 rounded-full border-2 border-white/30" style={{ backgroundColor: c }}></div>
                         ))}
                     </div>
@@ -1899,7 +1899,7 @@ Jij bouwt vandaag een merkidentiteit. Vertel me: wat voor bedrijf of product wil
         educationLevels: ['mavo', 'havo', 'vwo'] as EducationLevel[],
         title: 'Video Editor',
         icon: <Video size={28} />,
-        color: '#DC2626',
+        color: '#D97848',
         description: 'Ontwerp een storyboard en montageplan voor een korte video die een verhaal vertelt.',
         problemScenario: 'Je school wil een promotievideo van 60 seconden voor de open dag, maar niemand weet hoe je beelden selecteert, knipt en monteert tot een strak geheel. Jij neemt de regisseursstoel en maakt er iets van!',
         missionObjective: 'Ontwerp een storyboard, schrijf een shotlist en maak een montageplan voor een korte video die een verhaal vertelt.',
@@ -1994,7 +1994,7 @@ Eerste vraag van de regisseur: wat is de kernboodschap van jouw video? Wat moet 
         educationLevels: ['mavo', 'havo', 'vwo'] as EducationLevel[],
         title: 'De Media Mixer',
         icon: <RotateCcw size={28} />,
-        color: '#6B6B66',
+        color: '#445865',
         description: 'Test je kennis van digitale media en creatie uit deze periode!',
         problemScenario: 'Alle mediaconcepten uit deze periode zitten door elkaar in de studio. UX, podcasts, memes, storytelling, branding en video — alles is door de war. Jij moet orde scheppen en bewijzen dat je alles beheerst.',
         missionObjective: 'Doorloop een review van alle mediaconcepten uit Periode 3 en bewijs je kennis.',
@@ -2114,7 +2114,7 @@ Elke challenge test een ander mediadomein. Klaar? Zeg 'ACTIE' om te starten!"
         educationLevels: ['mavo', 'havo', 'vwo'] as EducationLevel[],
         title: 'AI Ethicus',
         icon: <Scale size={28} />,
-        color: '#7C3AED',
+        color: '#0B453F',
         description: 'Ontmasker vooroordelen die verstopt zitten in AI-systemen.',
         problemScenario: 'Een AI-systeem op een school wijst automatisch leerlingen toe aan niveaus, maar sommige groepen worden vaker lager ingedeeld. Is dat eerlijk? Jij onderzoekt hoe bias in algoritmes sluipt en wat je eraan kunt doen.',
         missionObjective: 'Analyseer een AI-systeem op bias en stel een ethisch advies op.',
@@ -2189,7 +2189,7 @@ Jouw missie: een AI-systeem doorlichten. Welk systeem wil jij onderzoeken? (bijv
         educationLevels: ['mavo', 'havo', 'vwo'] as EducationLevel[],
         title: 'Digital Rights Defender',
         icon: <Shield size={28} />,
-        color: '#059669',
+        color: '#5F947D',
         description: 'Bescherm jouw digitale rechten en schrijf het privacybeleid van de toekomst.',
         problemScenario: 'Je school verzamelt gegevens via apps, camera\'s en leerlingvolgsystemen. Maar welke rechten heb jij eigenlijk? Als Digital Rights Defender schrijf jij een manifest dat de privacy van alle leerlingen beschermt.',
         missionObjective: 'Schrijf een privacy-manifest voor jouw school met concrete afspraken.',
@@ -2265,7 +2265,7 @@ Begin hier: welke apps of platforms verzamelen volgens jou de meeste data over j
         educationLevels: ['mavo', 'havo', 'vwo'] as EducationLevel[],
         title: 'Tech Court',
         icon: <Hammer size={28} />,
-        color: '#DC2626',
+        color: '#D97848',
         description: 'Sta voor de rechter in een tech-rechtszaak en verdedig jouw standpunt.',
         problemScenario: 'Een groot techbedrijf wordt aangeklaagd omdat hun AI-systeem discrimineert bij sollicitaties. Jij speelt een rol in deze rechtszaak: als aanklager, verdediger of rechter. Wie heeft gelijk?',
         missionObjective: 'Voer een overtuigend debat over een actueel tech-dilemma.',
@@ -2348,7 +2348,7 @@ Laat me de zaak presenteren. Bereid je voor — want de jury luistert mee."
         educationLevels: ['mavo', 'havo', 'vwo'] as EducationLevel[],
         title: 'Future Forecaster',
         icon: <Telescope size={28} />,
-        color: '#2563EB',
+        color: '#0B453F',
         description: 'Voorspel hoe technologie de wereld van 2040 vormgeeft.',
         problemScenario: 'Het is 2040. Hoe ziet jouw wereld eruit? Zijn er nog scholen? Rijden auto\'s zelf? Jij bent futuroloog en schrijft een toekomstvisie op basis van echte trends van nu.',
         missionObjective: 'Schrijf een onderbouwde toekomstvisie op technologie in 2040.',
@@ -2424,7 +2424,7 @@ We beginnen met trends: noem 3 technologieën of ontwikkelingen die je de afgelo
         educationLevels: ['mavo', 'havo', 'vwo'] as EducationLevel[],
         title: 'Sustainability Scanner',
         icon: <Leaf size={28} />,
-        color: '#16A34A',
+        color: '#5F947D',
         description: 'Bereken de verborgen milieu-impact van jouw favoriete technologie.',
         problemScenario: 'Elke keer dat je een video streamt, een zoekopdracht doet of een bericht stuurt, kost dat energie. Datacenters draaien 24/7 en verbruiken evenveel stroom als kleine landen. Hoe groot is jouw digitale voetafdruk?',
         missionObjective: 'Analyseer de milieu-impact van een technologie en stel duurzame alternatieven voor.',
@@ -2434,7 +2434,7 @@ We beginnen met trends: noem 3 technologieën of ontwikkelingen die je de afgelo
         visualPreview: (
             <div className="w-full h-full bg-gradient-to-br from-green-500 to-emerald-800 flex items-center justify-center relative overflow-hidden">
                 <div className="absolute bottom-0 left-0 right-0 h-1/3 bg-green-900/30"></div>
-                <div className="absolute top-6 right-6 w-8 h-8 bg-yellow-400/30 rounded-full blur-sm"></div>
+                <div className="absolute top-6 right-6 w-8 h-8 bg-lab-gold/30 rounded-full blur-sm"></div>
                 <Leaf size={64} className="text-white/80 drop-shadow-lg" />
             </div>
         ),
@@ -2497,7 +2497,7 @@ Jij gaat vandaag de digitale voetafdruk meten. Kies een apparaat of dienst die j
         educationLevels: ['mavo', 'havo', 'vwo'] as EducationLevel[],
         title: 'Eindproject Jaar 2',
         icon: <Trophy size={28} />,
-        color: '#F59E0B',
+        color: '#D7C95F',
         description: 'Laat alles zien wat je hebt geleerd in een eigen eindproject.',
         problemScenario: 'Je hebt dit jaar ontzettend veel geleerd over digitale technologie: van programmeren tot ethiek, van data tot design. Nu is het tijd om te laten zien wat jij kunt. Kies een onderwerp, maak een plan en bouw iets waar je trots op bent.',
         missionObjective: 'Ontwerp, bouw en presenteer een eigen digitaal eindproject.',
@@ -2578,7 +2578,7 @@ Laten we beginnen met het leukste deel: het idee. Wat wil jij maken?"
         educationLevels: ['mavo', 'havo', 'vwo'] as EducationLevel[],
         title: 'Wachtwoord Warrior',
         icon: <Shield size={28} />,
-        color: '#EF4444',
+        color: '#D97848',
         description: 'Leer hoe hackers wachtwoorden kraken, waarom jouw wachtwoord misschien niet veilig is, en schrijf een wachtwoordbeleid voor je school.',
         problemScenario: 'In 2024 zijn meer dan 10 miljard wachtwoorden gelekt. De meestgebruikte wachtwoorden ter wereld — "123456", "password", "qwerty" — worden in minder dan 1 seconde gekraakt. Zelfs wachtwoorden met hoofdletters en speciale tekens zijn vaak zwakker dan je denkt. Hoe bescherm je jezelf echt?',
         missionObjective: 'Analyseer waarom populaire wachtwoorden zwak zijn, begrijp hoe aanvalstechnieken werken, en schrijf een wachtwoordbeleid voor je school met concrete regels en uitleg.',
@@ -2596,7 +2596,7 @@ Laten we beginnen met het leukste deel: het idee. Wat wil jij maken?"
                         <div className="flex gap-1 items-center mb-2">
                             <div className="w-2 h-2 rounded-full bg-red-400"></div>
                             <div className="w-2 h-2 rounded-full bg-red-400"></div>
-                            <div className="w-2 h-2 rounded-full bg-yellow-400"></div>
+                            <div className="w-2 h-2 rounded-full bg-lab-gold"></div>
                             <div className="w-2 h-2 rounded-full bg-green-400"></div>
                             <div className="w-2 h-2 rounded-full bg-green-400"></div>
                         </div>
@@ -2712,7 +2712,7 @@ REGELS:
         educationLevels: ['mavo', 'havo', 'vwo'] as EducationLevel[],
         title: 'Access Control Engineer',
         icon: <Shield size={28} />,
-        color: '#4F46E5',
+        color: '#0B453F',
         description: 'Repareer de onveilige login- en toegangsregels van een schoolsysteem.',
         problemScenario: 'Het inlogportaal van Het Rijnlands Lyceum zit vol beveiligingsfouten: gasten kunnen zonder wachtwoord inloggen, leerlingen zien cijfers van anderen, en roosters zijn door iedereen aanpasbaar. De directie heeft jou als Access Control Engineer ingehuurd om het systeem te repareren voordat er een datalek ontstaat.',
         missionObjective: 'Analyseer de toegangsregels, stel de juiste rechten in per rol, en test of je configuratie klopt met realistische scenario\'s.',

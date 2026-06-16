@@ -223,7 +223,7 @@ export const GameGallery: React.FC<GameGalleryProps> = ({ userId, schoolId, user
     };
 
     return (
-        <div className="flex-1 overflow-y-auto bg-slate-900 p-4 md:p-6">
+        <div className="flex-1 overflow-y-auto bg-lab-muted p-4 md:p-6">
             {/* Header */}
             <div className="max-w-6xl mx-auto mb-6">
                 <div className="flex items-center justify-between mb-4">
@@ -232,17 +232,17 @@ export const GameGallery: React.FC<GameGalleryProps> = ({ userId, schoolId, user
                             <button
                                 onClick={onBack}
                                 aria-label="Terug"
-                                className="p-2 hover:bg-slate-800 rounded-xl transition-colors"
+                                className="p-2 hover:bg-lab-muted rounded-xl transition-colors"
                             >
-                                <ArrowLeft size={24} className="text-slate-400" />
+                                <ArrowLeft size={24} className="text-lab-muted" />
                             </button>
                         )}
                         <div>
                             <h1 className="text-2xl md:text-3xl font-black text-white flex items-center gap-3">
-                                <Gamepad2 className="text-emerald-400" />
+                                <Gamepad2 className="text-lab-sage" />
                                 Game Galerij
                             </h1>
-                            <p className="text-slate-300 text-sm mt-1">
+                            <p className="text-lab-muted text-sm mt-1">
                                 Speel games gemaakt door je klasgenoten!
                             </p>
                         </div>
@@ -251,9 +251,9 @@ export const GameGallery: React.FC<GameGalleryProps> = ({ userId, schoolId, user
                         onClick={loadGames}
                         aria-label="Vernieuwen"
                         disabled={isLoading || isOffline}
-                        className="p-2 hover:bg-slate-800 rounded-xl transition-colors disabled:opacity-70"
+                        className="p-2 hover:bg-lab-muted rounded-xl transition-colors disabled:opacity-70"
                     >
-                        <RefreshCw size={20} className={`text-slate-400 ${isLoading ? 'animate-spin' : ''}`} aria-hidden="true" />
+                        <RefreshCw size={20} className={`text-lab-muted ${isLoading ? 'animate-spin' : ''}`} aria-hidden="true" />
                         {isLoading && <span className="sr-only">Games laden...</span>}
                     </button>
                 </div>
@@ -263,8 +263,8 @@ export const GameGallery: React.FC<GameGalleryProps> = ({ userId, schoolId, user
                     <button
                         onClick={() => setFilterMission(undefined)}
                         className={`px-4 py-2 rounded-xl text-sm font-bold transition-all ${!filterMission
-                            ? 'bg-emerald-500 text-white'
-                            : 'bg-slate-800 text-slate-400 hover:bg-slate-700'
+                            ? 'bg-lab-sage text-white'
+                            : 'bg-lab-muted text-lab-muted hover:bg-lab-muted'
                             }`}
                     >
                         📁 Alle Missies
@@ -272,8 +272,8 @@ export const GameGallery: React.FC<GameGalleryProps> = ({ userId, schoolId, user
                     <button
                         onClick={() => setFilterMission('game-programmeur')}
                         className={`px-4 py-2 rounded-xl text-sm font-bold transition-all ${filterMission === 'game-programmeur'
-                            ? 'bg-emerald-500 text-white'
-                            : 'bg-slate-800 text-slate-400 hover:bg-slate-700'
+                            ? 'bg-lab-sage text-white'
+                            : 'bg-lab-muted text-lab-muted hover:bg-lab-muted'
                             }`}
                     >
                         🎮 Game Programmeur
@@ -281,8 +281,8 @@ export const GameGallery: React.FC<GameGalleryProps> = ({ userId, schoolId, user
                     <button
                         onClick={() => setFilterMission('verhalen-ontwerper')}
                         className={`px-4 py-2 rounded-xl text-sm font-bold transition-all ${filterMission === 'verhalen-ontwerper'
-                            ? 'bg-amber-500 text-white'
-                            : 'bg-slate-800 text-slate-400 hover:bg-slate-700'
+                            ? 'bg-lab-gold text-white'
+                            : 'bg-lab-muted text-lab-muted hover:bg-lab-muted'
                             }`}
                     >
                         📖 Verhalen Ontwerper
@@ -291,7 +291,7 @@ export const GameGallery: React.FC<GameGalleryProps> = ({ userId, schoolId, user
                         onClick={() => setFilterMission('chatbot-trainer')}
                         className={`px-4 py-2 rounded-xl text-sm font-bold transition-all ${filterMission === 'chatbot-trainer'
                             ? 'bg-indigo-500 text-white'
-                            : 'bg-slate-800 text-slate-400 hover:bg-slate-700'
+                            : 'bg-lab-muted text-lab-muted hover:bg-lab-muted'
                             }`}
                     >
                         🤖 Chatbot Trainer
@@ -304,12 +304,12 @@ export const GameGallery: React.FC<GameGalleryProps> = ({ userId, schoolId, user
                         <div className="px-4 py-2 bg-cyan-500/20 border border-cyan-500/30 rounded-xl text-sm font-bold text-cyan-300">
                             👥 Klas: {userClass}
                         </div>
-                        <span className="text-xs text-slate-500">
+                        <span className="text-xs text-lab-muted">
                             Je ziet alleen games van je klasgenoten
                         </span>
                     </div>
                 ) : (
-                    <div className="text-xs text-slate-500">
+                    <div className="text-xs text-lab-muted">
                         (Geen klas ingesteld - alle games worden getoond)
                     </div>
                 )}
@@ -318,22 +318,22 @@ export const GameGallery: React.FC<GameGalleryProps> = ({ userId, schoolId, user
             {/* Games Grid */}
             <div className="max-w-6xl mx-auto">
                 {isOffline && (
-                    <div className="mb-4 p-3 rounded-xl border border-amber-500/30 bg-amber-500/10 text-amber-200 text-sm">
+                    <div className="mb-4 p-3 rounded-xl border border-lab-gold/30 bg-lab-gold/10 text-lab-gold text-sm">
                         Offline modus: je ziet alleen eerder geladen galerijgames op dit apparaat.
                     </div>
                 )}
                 {isLoading ? (
                     <div className="flex flex-col items-center justify-center py-20" role="status" aria-live="polite">
-                        <Loader2 size={48} className="animate-spin text-emerald-500 mb-4" aria-hidden="true" />
-                        <p className="text-slate-300 font-medium">Games laden...</p>
+                        <Loader2 size={48} className="animate-spin text-lab-sage mb-4" aria-hidden="true" />
+                        <p className="text-lab-muted font-medium">Games laden...</p>
                     </div>
                 ) : games.length === 0 ? (
                     <div className="text-center py-20">
-                        <Gamepad2 size={64} className="text-slate-700 mx-auto mb-4" />
-                        <h3 className="text-xl font-bold text-slate-300 mb-2">
+                        <Gamepad2 size={64} className="text-lab-muted mx-auto mb-4" />
+                        <h3 className="text-xl font-bold text-lab-muted mb-2">
                             Nog geen games gepubliceerd
                         </h3>
-                        <p className="text-slate-500">
+                        <p className="text-lab-muted">
                             Wees de eerste die een game deelt!
                         </p>
                     </div>
@@ -352,7 +352,7 @@ export const GameGallery: React.FC<GameGalleryProps> = ({ userId, schoolId, user
                                 role="button"
                                 tabIndex={0}
                                 aria-label={`${game.title} door ${game.creator_name} openen`}
-                                className="bg-slate-800 rounded-2xl overflow-hidden border border-slate-700 hover:border-emerald-500/50 transition-all cursor-pointer group hover:shadow-xl hover:shadow-emerald-500/10 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 focus:ring-offset-slate-900"
+                                className="bg-lab-muted rounded-2xl overflow-hidden border border-lab-muted hover:border-lab-sage/50 transition-all cursor-pointer group hover:shadow-xl hover:shadow-emerald-500/10 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 focus:ring-offset-lab-ink"
                             >
                                 {/* Game Preview */}
                                 <div className="aspect-video bg-gradient-to-br from-slate-700 to-slate-800 relative overflow-hidden">
@@ -367,15 +367,15 @@ export const GameGallery: React.FC<GameGalleryProps> = ({ userId, schoolId, user
                                     ) : (
                                         <div className="absolute inset-0 flex items-center justify-center">
                                             {game.mission_id === 'verhalen-ontwerper' ? (
-                                                <BookOpen size={48} className="text-amber-500/50" />
+                                                <BookOpen size={48} className="text-lab-gold/50" />
                                             ) : (
-                                                <Gamepad2 size={48} className="text-slate-600" />
+                                                <Gamepad2 size={48} className="text-lab-muted" />
                                             )}
                                         </div>
                                     )}
 
                                     {/* Play overlay on hover */}
-                                    <div className={`absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity ${game.mission_id === 'verhalen-ontwerper' ? 'bg-amber-500/90' : 'bg-emerald-500/90'
+                                    <div className={`absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity ${game.mission_id === 'verhalen-ontwerper' ? 'bg-lab-gold/90' : 'bg-lab-sage/90'
                                         }`}>
                                         <div className="text-center">
                                             {game.mission_id === 'verhalen-ontwerper' ? (
@@ -398,17 +398,17 @@ export const GameGallery: React.FC<GameGalleryProps> = ({ userId, schoolId, user
                                     <h3 className="font-black text-white text-lg mb-1 truncate">
                                         {game.title}
                                     </h3>
-                                    <p className="text-slate-300 text-sm mb-3">
+                                    <p className="text-lab-muted text-sm mb-3">
                                         door {game.creator_name}
                                         {game.student_class && (
-                                            <span className="text-slate-500"> • {game.student_class}</span>
+                                            <span className="text-lab-muted"> • {game.student_class}</span>
                                         )}
                                     </p>
 
                                     {/* Stats */}
                                     <div className="flex items-center justify-between">
                                         <div className="flex items-center gap-4 text-sm">
-                                            <span className="flex items-center gap-1 text-slate-300">
+                                            <span className="flex items-center gap-1 text-lab-muted">
                                                 {game.mission_id === 'verhalen-ontwerper' ? <BookOpen size={14} /> : <Play size={14} />}
                                                 {game.play_count}
                                             </span>
@@ -418,7 +418,7 @@ export const GameGallery: React.FC<GameGalleryProps> = ({ userId, schoolId, user
                                                 aria-pressed={game.likes?.includes(userId) || false}
                                                 className={`flex items-center gap-1 transition-colors ${game.likes?.includes(userId)
                                                     ? 'text-red-400'
-                                                    : 'text-slate-400 hover:text-red-400'
+                                                    : 'text-lab-muted hover:text-red-400'
                                                     }`}
                                             >
                                                 <Heart
@@ -428,7 +428,7 @@ export const GameGallery: React.FC<GameGalleryProps> = ({ userId, schoolId, user
                                                 {game.likes?.length || 0}
                                             </button>
                                         </div>
-                                        <span className="text-xs text-slate-500">
+                                        <span className="text-xs text-lab-muted">
                                             {formatDate(game.created_at)}
                                         </span>
                                     </div>
@@ -443,17 +443,17 @@ export const GameGallery: React.FC<GameGalleryProps> = ({ userId, schoolId, user
             {selectedGame && blobUrl && (
                 <div className="fixed inset-0 z-50 bg-black flex flex-col">
                     {/* Header */}
-                    <div className="bg-slate-900 px-4 py-3 flex items-center justify-between border-b border-slate-800">
+                    <div className="bg-lab-muted px-4 py-3 flex items-center justify-between border-b border-lab-muted">
                         <div>
                             <h2 className="font-black text-white">{selectedGame.title}</h2>
-                            <p className="text-xs text-slate-400">door {selectedGame.creator_name}</p>
+                            <p className="text-xs text-lab-muted">door {selectedGame.creator_name}</p>
                         </div>
                         <button
                             onClick={handleCloseGame}
                             aria-label="Sluit game"
-                            className="p-2 hover:bg-slate-800 rounded-xl transition-colors"
+                            className="p-2 hover:bg-lab-muted rounded-xl transition-colors"
                         >
-                            <X size={24} className="text-slate-400" />
+                            <X size={24} className="text-lab-muted" />
                         </button>
                     </div>
 
@@ -476,17 +476,17 @@ export const GameGallery: React.FC<GameGalleryProps> = ({ userId, schoolId, user
             {selectedGame && selectedGame.mission_id === 'verhalen-ontwerper' && selectedGame.book_data && (
                 <div className="fixed inset-0 z-50 bg-black flex flex-col">
                     {/* Header */}
-                    <div className="bg-slate-900 px-4 py-3 flex items-center justify-between border-b border-slate-800 z-50">
+                    <div className="bg-lab-muted px-4 py-3 flex items-center justify-between border-b border-lab-muted z-50">
                         <div>
                             <h2 className="font-black text-white">{selectedGame.title}</h2>
-                            <p className="text-xs text-slate-400">door {selectedGame.creator_name}</p>
+                            <p className="text-xs text-lab-muted">door {selectedGame.creator_name}</p>
                         </div>
                         <button
                             onClick={handleCloseGame}
                             aria-label="Sluit boek"
-                            className="p-2 hover:bg-slate-800 rounded-xl transition-colors"
+                            className="p-2 hover:bg-lab-muted rounded-xl transition-colors"
                         >
-                            <X size={24} className="text-slate-400" />
+                            <X size={24} className="text-lab-muted" />
                         </button>
                     </div>
 

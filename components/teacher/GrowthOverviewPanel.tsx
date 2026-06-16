@@ -121,7 +121,7 @@ export const GrowthOverviewPanel: React.FC<GrowthOverviewPanelProps> = ({
             </div>
             {hasData && !kAnonymityWarning && (
               <div>
-                <div className={`text-2xl font-black flex items-center gap-1 ${avgOverallGroei >= 0 ? 'text-emerald-400' : 'text-rose-400'}`}>
+                <div className={`text-2xl font-black flex items-center gap-1 ${avgOverallGroei >= 0 ? 'text-lab-sage' : 'text-lab-coral'}`}>
                   {avgOverallGroei >= 0
                     ? <TrendingUp size={20} />
                     : <TrendingDown size={20} />}
@@ -134,7 +134,7 @@ export const GrowthOverviewPanel: React.FC<GrowthOverviewPanelProps> = ({
 
           {/* k-anonymity warning */}
           {kAnonymityWarning && (
-            <div className="mx-5 mt-4 flex items-start gap-3 bg-amber-500/10 border border-amber-500/30 rounded-xl px-4 py-3 text-sm text-amber-300">
+            <div className="mx-5 mt-4 flex items-start gap-3 bg-lab-gold/10 border border-lab-gold/30 rounded-xl px-4 py-3 text-sm text-lab-gold">
               <AlertTriangle size={16} className="shrink-0 mt-0.5" />
               <span>Onvoldoende data voor betrouwbare gemiddelden (minder dan 5 leerlingen met nulmeting én eindmeting).</span>
             </div>
@@ -167,7 +167,7 @@ export const GrowthOverviewPanel: React.FC<GrowthOverviewPanelProps> = ({
                       <td className="py-3 text-right text-gray-300 tabular-nums">
                         {row.avgEindmeting.toFixed(1)}
                       </td>
-                      <td className={`py-3 text-right font-bold tabular-nums ${row.avgGroei >= 0 ? 'text-emerald-400' : 'text-rose-400'}`}>
+                      <td className={`py-3 text-right font-bold tabular-nums ${row.avgGroei >= 0 ? 'text-lab-sage' : 'text-lab-coral'}`}>
                         {row.avgGroei >= 0 ? '+' : ''}{row.avgGroei.toFixed(1)}
                       </td>
                     </tr>

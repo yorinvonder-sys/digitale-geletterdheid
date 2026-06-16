@@ -90,10 +90,10 @@ export const mlTrainerConfig: DataViewerConfig = {
                 'Vier versies van een spamfilter zijn getraind met verschillende features. Bekijk de accuracy op de testset.',
             type: 'bar-chart',
             chartData: [
-                { label: 'Alleen afzender', value: 68, color: '#F59E0B' },
-                { label: 'Afzender + link', value: 75, color: '#3B82F6' },
-                { label: 'Alle 3 features', value: 88, color: '#10B981' },
-                { label: 'Alle features + datum', value: 89, color: '#8B5CF6' },
+                { label: 'Alleen afzender', value: 68, color: '#D7C95F' },
+                { label: 'Afzender + link', value: 75, color: '#0B453F' },
+                { label: 'Alle 3 features', value: 88, color: '#5F947D' },
+                { label: 'Alle features + datum', value: 89, color: '#0B453F' },
             ],
             questions: [
                 {
@@ -205,25 +205,25 @@ export const mlTrainerConfig: DataViewerConfig = {
             minScore: 85,
             emoji: '🧠',
             title: 'ML Expert!',
-            color: '#7C3AED',
+            color: '#0B453F',
         },
         {
             minScore: 65,
             emoji: '🤖',
             title: 'Model Trainer',
-            color: '#3B82F6',
+            color: '#0B453F',
         },
         {
             minScore: 40,
             emoji: '📊',
             title: 'Data Scientist in opleiding',
-            color: '#10B981',
+            color: '#5F947D',
         },
         {
             minScore: 0,
             emoji: '📚',
             title: 'Aan de slag!',
-            color: '#6B6B66',
+            color: '#445865',
         },
     ],
 

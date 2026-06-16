@@ -99,7 +99,7 @@ export const PrivacyModal: React.FC<PrivacyModalProps> = ({ isOpen, onClose, onA
     return (
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
             {/* Backdrop */}
-            <div className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm" onClick={onClose} />
+            <div className="absolute inset-0 bg-lab-muted/60 backdrop-blur-sm" onClick={onClose} />
 
             {/* Modal */}
             <div
@@ -110,15 +110,15 @@ export const PrivacyModal: React.FC<PrivacyModalProps> = ({ isOpen, onClose, onA
                 className="relative bg-white rounded-3xl shadow-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto animate-in zoom-in-95 fade-in duration-300 motion-reduce:animate-none"
             >
                 {/* Header */}
-                <div className="sticky top-0 bg-white border-b border-slate-100 px-6 py-4 flex items-center justify-between rounded-t-3xl">
+                <div className="sticky top-0 bg-white border-b border-lab-muted px-6 py-4 flex items-center justify-between rounded-t-3xl">
                     <div className="flex items-center gap-3">
                         <div className="w-10 h-10 bg-indigo-100 rounded-xl flex items-center justify-center">
                             <Shield className="text-indigo-600" size={20} />
                         </div>
-                        <h2 id="privacy-modal-title" className="text-xl font-black text-slate-900">Privacy & Gegevens</h2>
+                        <h2 id="privacy-modal-title" className="text-xl font-black text-lab-muted">Privacy & Gegevens</h2>
                     </div>
-                    <button onClick={onClose} className="p-2 hover:bg-slate-100 rounded-xl transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center" aria-label="Sluiten">
-                        <X size={20} className="text-slate-400" />
+                    <button onClick={onClose} className="p-2 hover:bg-lab-muted rounded-xl transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center" aria-label="Sluiten">
+                        <X size={20} className="text-lab-muted" />
                     </button>
                 </div>
 
@@ -126,8 +126,8 @@ export const PrivacyModal: React.FC<PrivacyModalProps> = ({ isOpen, onClose, onA
                 <div className="p-6 space-y-6">
                     {/* Privacy Info */}
                     <section>
-                        <h3 className="text-sm font-bold text-slate-800 uppercase tracking-wider mb-3">Welke gegevens bewaren wij?</h3>
-                        <div className="bg-slate-50 rounded-2xl p-4 space-y-2 text-sm text-slate-600">
+                        <h3 className="text-sm font-bold text-lab-muted uppercase tracking-wider mb-3">Welke gegevens bewaren wij?</h3>
+                        <div className="bg-lab-muted rounded-2xl p-4 space-y-2 text-sm text-lab-muted">
                             <p>• <strong>E-mailadres</strong> – Voor inloggen en accountherstel</p>
                             <p>• <strong>Weergavenaam</strong> – Om je in de app te begroeten</p>
                             <p>• <strong>Voortgang</strong> – XP, level en voltooide missies</p>
@@ -136,8 +136,8 @@ export const PrivacyModal: React.FC<PrivacyModalProps> = ({ isOpen, onClose, onA
                     </section>
 
                     <section>
-                        <h3 className="text-sm font-bold text-slate-800 uppercase tracking-wider mb-3">Hoe gebruiken wij je gegevens?</h3>
-                        <div className="bg-slate-50 rounded-2xl p-4 text-sm text-slate-600 space-y-2">
+                        <h3 className="text-sm font-bold text-lab-muted uppercase tracking-wider mb-3">Hoe gebruiken wij je gegevens?</h3>
+                        <div className="bg-lab-muted rounded-2xl p-4 text-sm text-lab-muted space-y-2">
                             <p>Je gegevens worden <strong>alleen</strong> gebruikt om:</p>
                             <p>• Je voortgang op te slaan zodat je verder kunt waar je was</p>
                             <p>• Docenten inzicht te geven in de voortgang van hun klas</p>
@@ -146,8 +146,8 @@ export const PrivacyModal: React.FC<PrivacyModalProps> = ({ isOpen, onClose, onA
                     </section>
 
                     <section>
-                        <h3 className="text-sm font-bold text-slate-800 uppercase tracking-wider mb-3">AI & Chat</h3>
-                        <div className="bg-amber-50 border border-amber-100 rounded-2xl p-4 text-sm text-amber-800">
+                        <h3 className="text-sm font-bold text-lab-muted uppercase tracking-wider mb-3">AI & Chat</h3>
+                        <div className="bg-lab-gold border border-lab-gold rounded-2xl p-4 text-sm text-lab-gold">
                             <p className="mb-3">De AI-onderwijsassistent wordt aangedreven door <strong>Google Gemini</strong>.</p>
                             <ul className="list-disc pl-4 space-y-1 text-sm">
                                 <li><strong>Geen Training:</strong> Jouw invoer wordt <u>niet</u> gebruikt om de AI-modellen te trainen.</li>
@@ -155,13 +155,13 @@ export const PrivacyModal: React.FC<PrivacyModalProps> = ({ isOpen, onClose, onA
                                 <li><strong>Datalocatie:</strong> Verwerking vindt plaats in de EU (regio: België).</li>
                                 <li><strong>Retentie:</strong> Google bewaart API-inputs maximaal 30 dagen voor misbruikdetectie, daarna wordt het gewist.</li>
                             </ul>
-                            <p className="mt-3 text-xs text-amber-600 italic">De AI Mentor is er om je te helpen, maar kan soms fouten maken. Controleer antwoorden altijd zelf.</p>
+                            <p className="mt-3 text-xs text-lab-gold italic">De AI Mentor is er om je te helpen, maar kan soms fouten maken. Controleer antwoorden altijd zelf.</p>
                         </div>
                     </section>
 
                     {/* Actions */}
-                    <section className="pt-4 border-t border-slate-100">
-                        <h3 className="text-sm font-bold text-slate-800 uppercase tracking-wider mb-3">Jouw Rechten (AVG)</h3>
+                    <section className="pt-4 border-t border-lab-muted">
+                        <h3 className="text-sm font-bold text-lab-muted uppercase tracking-wider mb-3">Jouw Rechten (AVG)</h3>
 
                         {error && (
                             <div className="mb-4 p-3 bg-red-50 border border-red-100 text-red-600 text-sm rounded-xl flex items-center gap-2">
@@ -171,7 +171,7 @@ export const PrivacyModal: React.FC<PrivacyModalProps> = ({ isOpen, onClose, onA
                         )}
 
                         {success && (
-                            <div className="mb-4 p-3 bg-emerald-50 border border-emerald-100 text-emerald-600 text-sm rounded-xl flex items-center gap-2">
+                            <div className="mb-4 p-3 bg-lab-sage border border-lab-sage text-lab-sage text-sm rounded-xl flex items-center gap-2">
                                 <CheckCircle size={16} />
                                 {success}
                             </div>
@@ -182,16 +182,16 @@ export const PrivacyModal: React.FC<PrivacyModalProps> = ({ isOpen, onClose, onA
                             <button
                                 onClick={handleExportData}
                                 disabled={isExporting}
-                                className="w-full flex items-center justify-between p-4 bg-slate-100 hover:bg-slate-200 rounded-2xl transition-colors disabled:opacity-50"
+                                className="w-full flex items-center justify-between p-4 bg-lab-muted hover:bg-lab-muted rounded-2xl transition-colors disabled:opacity-50"
                             >
                                 <div className="flex items-center gap-3">
-                                    <Download size={20} className="text-slate-600" />
+                                    <Download size={20} className="text-lab-muted" />
                                     <div className="text-left">
-                                        <p className="font-bold text-slate-800">Download Mijn Gegevens</p>
-                                        <p className="text-xs text-slate-500">Ontvang een kopie van al je data (JSON)</p>
+                                        <p className="font-bold text-lab-muted">Download Mijn Gegevens</p>
+                                        <p className="text-xs text-lab-muted">Ontvang een kopie van al je data (JSON)</p>
                                     </div>
                                 </div>
-                                {isExporting && <Loader2 size={20} className="animate-spin motion-reduce:animate-none text-slate-400" />}
+                                {isExporting && <Loader2 size={20} className="animate-spin motion-reduce:animate-none text-lab-muted" />}
                             </button>
 
                             {/* Delete Account */}
@@ -220,7 +220,7 @@ export const PrivacyModal: React.FC<PrivacyModalProps> = ({ isOpen, onClose, onA
                                     <div className="flex gap-2">
                                         <button
                                             onClick={() => setShowDeleteConfirm(false)}
-                                            className="flex-1 py-2 bg-white text-slate-600 font-bold rounded-xl hover:bg-slate-50 transition-colors"
+                                            className="flex-1 py-2 bg-white text-lab-muted font-bold rounded-xl hover:bg-lab-muted transition-colors"
                                         >
                                             Annuleren
                                         </button>
@@ -257,12 +257,12 @@ export const PrivacyModal: React.FC<PrivacyModalProps> = ({ isOpen, onClose, onA
                     </section>
 
                     {/* Data Retention Info */}
-                    <section className="pt-4 border-t border-slate-100">
-                        <h3 className="text-sm font-bold text-slate-800 uppercase tracking-wider mb-3 flex items-center gap-2">
+                    <section className="pt-4 border-t border-lab-muted">
+                        <h3 className="text-sm font-bold text-lab-muted uppercase tracking-wider mb-3 flex items-center gap-2">
                             <Clock size={14} />
                             Bewaartermijnen
                         </h3>
-                        <div className="bg-slate-50 rounded-2xl p-4 text-sm text-slate-600 space-y-1">
+                        <div className="bg-lab-muted rounded-2xl p-4 text-sm text-lab-muted space-y-1">
                             <p>• <strong>Activiteitslogs:</strong> 90 dagen</p>
                             <p>• <strong>Accountgegevens:</strong> Zolang je account actief is</p>
                             <p>• <strong>Chatgesprekken:</strong> Alleen tijdens sessie (niet opgeslagen)</p>
@@ -270,7 +270,7 @@ export const PrivacyModal: React.FC<PrivacyModalProps> = ({ isOpen, onClose, onA
                     </section>
 
                     {/* Formal Privacy Policy Link */}
-                    <section className="pt-4 border-t border-slate-100">
+                    <section className="pt-4 border-t border-lab-muted">
                         <a
                             href="/ict/privacy/policy"
                             className="flex items-center justify-between p-4 bg-indigo-50 hover:bg-indigo-100 rounded-2xl transition-colors border border-indigo-100 group"
@@ -287,8 +287,8 @@ export const PrivacyModal: React.FC<PrivacyModalProps> = ({ isOpen, onClose, onA
                     </section>
 
                     {/* Contact */}
-                    <section className="pt-4 border-t border-slate-100">
-                        <p className="text-xs text-slate-400 text-center">
+                    <section className="pt-4 border-t border-lab-muted">
+                        <p className="text-xs text-lab-muted text-center">
                             Vragen over je privacy? Neem contact op met je docent of de Functionaris Gegevensbescherming (FG) van de school.
                         </p>
                     </section>

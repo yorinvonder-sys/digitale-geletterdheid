@@ -55,31 +55,31 @@ const JsonViewer: React.FC<{ data: object; depth?: number }> = ({ data, depth = 
 
     return (
         <div style={{ paddingLeft: indent }}>
-            <span className="text-slate-400">{'{'}</span>
+            <span className="text-lab-muted">{'{'}</span>
             {entries.map(([key, value], i) => (
                 <div key={key} style={{ paddingLeft: 16 }} className="leading-relaxed">
-                    <span className="text-violet-400">"{key}"</span>
-                    <span className="text-slate-400">: </span>
+                    <span className="text-lab-teal">"{key}"</span>
+                    <span className="text-lab-muted">: </span>
                     {Array.isArray(value) ? (
                         <span>
-                            <span className="text-slate-400">[</span>
+                            <span className="text-lab-muted">[</span>
                             {value.map((item, j) => (
                                 <span key={j}>
-                                    <span className="text-emerald-400">"{item}"</span>
-                                    {j < value.length - 1 && <span className="text-slate-400">, </span>}
+                                    <span className="text-lab-sage">"{item}"</span>
+                                    {j < value.length - 1 && <span className="text-lab-muted">, </span>}
                                 </span>
                             ))}
-                            <span className="text-slate-400">]</span>
+                            <span className="text-lab-muted">]</span>
                         </span>
                     ) : typeof value === 'number' ? (
-                        <span className="text-amber-400">{value}</span>
+                        <span className="text-lab-gold">{value}</span>
                     ) : (
-                        <span className="text-emerald-400">"{String(value)}"</span>
+                        <span className="text-lab-sage">"{String(value)}"</span>
                     )}
-                    {i < entries.length - 1 && <span className="text-slate-400">,</span>}
+                    {i < entries.length - 1 && <span className="text-lab-muted">,</span>}
                 </div>
             ))}
-            <span className="text-slate-400">{'}'}</span>
+            <span className="text-lab-muted">{'}'}</span>
         </div>
     );
 };
@@ -104,7 +104,7 @@ const ApiVerkennerPreview: React.FC = () => {
         <div className="w-full h-full bg-gradient-to-br from-violet-50 to-white flex flex-col overflow-hidden">
             {/* Header */}
             <div className="shrink-0 bg-gradient-to-r from-violet-600 to-violet-700 px-4 py-3 flex items-center gap-2">
-                <Globe size={18} className="text-violet-200" />
+                <Globe size={18} className="text-lab-teal" />
                 <span className="text-white font-bold text-sm">API Verkenner</span>
             </div>
 
@@ -115,7 +115,7 @@ const ApiVerkennerPreview: React.FC = () => {
                         <button
                             key={i}
                             onClick={() => { setSelectedApi(i); setShowResponse(false); }}
-                            className={`flex-1 px-3 py-2 rounded-xl text-xs font-bold transition-all ${selectedApi === i ? 'bg-violet-100 text-violet-700 ring-2 ring-violet-300 shadow-sm' : 'bg-white text-slate-600 border border-slate-200 hover:bg-violet-50'}`}
+                            className={`flex-1 px-3 py-2 rounded-xl text-xs font-bold transition-all ${selectedApi === i ? 'bg-lab-teal text-lab-teal ring-2 ring-violet-300 shadow-sm' : 'bg-white text-lab-muted border border-lab-muted hover:bg-lab-teal'}`}
                         >
                             <span className="block text-base mb-0.5">{api.emoji}</span>
                             {api.name}
@@ -124,32 +124,32 @@ const ApiVerkennerPreview: React.FC = () => {
                 </div>
 
                 {/* Explanation box */}
-                <div className="bg-violet-50 border border-violet-200 rounded-xl p-3">
+                <div className="bg-lab-teal border border-lab-teal rounded-xl p-3">
                     <div className="flex items-center gap-1.5 mb-1">
-                        <Zap size={12} className="text-violet-600" />
-                        <span className="text-[10px] font-bold text-violet-700 uppercase">Hoe werkt het?</span>
+                        <Zap size={12} className="text-lab-teal" />
+                        <span className="text-[10px] font-bold text-lab-teal uppercase">Hoe werkt het?</span>
                     </div>
-                    <p className="text-[11px] text-violet-600 leading-relaxed">
+                    <p className="text-[11px] text-lab-teal leading-relaxed">
                         Een API is als een <strong>ober in een restaurant</strong>: jij (de app) stuurt een bestelling, de ober (API) brengt het naar de keuken (server) en komt terug met je data.
                     </p>
                 </div>
 
                 {/* Request */}
-                <div className="bg-slate-900 rounded-xl overflow-hidden shadow-lg">
-                    <div className="px-3 py-2 bg-slate-800 flex items-center justify-between">
+                <div className="bg-lab-muted rounded-xl overflow-hidden shadow-lg">
+                    <div className="px-3 py-2 bg-lab-muted flex items-center justify-between">
                         <div className="flex items-center gap-2">
-                            <span className="bg-emerald-500 text-white text-[9px] font-black px-2 py-0.5 rounded">GET</span>
-                            <span className="text-[10px] text-slate-400 font-medium">Request</span>
+                            <span className="bg-lab-sage text-white text-[9px] font-black px-2 py-0.5 rounded">GET</span>
+                            <span className="text-[10px] text-lab-muted font-medium">Request</span>
                         </div>
-                        <Cloud size={12} className="text-slate-500" />
+                        <Cloud size={12} className="text-lab-muted" />
                     </div>
                     <div className="px-3 py-2 flex items-center gap-2">
-                        <span className="text-violet-300 text-xs font-mono flex-1 break-all">
+                        <span className="text-lab-teal text-xs font-mono flex-1 break-all">
                             https://{current.url}
                         </span>
                         <button
                             onClick={handleSend}
-                            className="shrink-0 bg-violet-600 hover:bg-violet-500 text-white p-2 rounded-lg transition-colors"
+                            className="shrink-0 bg-lab-teal hover:bg-lab-teal text-white p-2 rounded-lg transition-colors"
                         >
                             {isLoading ? <RefreshCw size={14} className="animate-spin" /> : <Send size={14} />}
                         </button>
@@ -157,21 +157,21 @@ const ApiVerkennerPreview: React.FC = () => {
                 </div>
 
                 {/* Response */}
-                <div className="bg-slate-900 rounded-xl overflow-hidden shadow-lg">
-                    <div className="px-3 py-2 bg-slate-800 flex items-center justify-between">
+                <div className="bg-lab-muted rounded-xl overflow-hidden shadow-lg">
+                    <div className="px-3 py-2 bg-lab-muted flex items-center justify-between">
                         <div className="flex items-center gap-2">
                             {showResponse ? (
-                                <span className="bg-emerald-500 text-white text-[9px] font-black px-2 py-0.5 rounded">200 OK</span>
+                                <span className="bg-lab-sage text-white text-[9px] font-black px-2 py-0.5 rounded">200 OK</span>
                             ) : (
-                                <span className="bg-slate-600 text-slate-300 text-[9px] font-black px-2 py-0.5 rounded">---</span>
+                                <span className="bg-lab-muted text-lab-muted text-[9px] font-black px-2 py-0.5 rounded">---</span>
                             )}
-                            <span className="text-[10px] text-slate-400 font-medium">Response (JSON)</span>
+                            <span className="text-[10px] text-lab-muted font-medium">Response (JSON)</span>
                         </div>
-                        <ChevronRight size={12} className="text-slate-500" />
+                        <ChevronRight size={12} className="text-lab-muted" />
                     </div>
                     <div className="px-3 py-2 font-mono text-[11px] leading-relaxed min-h-[80px]">
                         {isLoading && (
-                            <div className="flex items-center gap-2 text-slate-500 py-4 justify-center">
+                            <div className="flex items-center gap-2 text-lab-muted py-4 justify-center">
                                 <RefreshCw size={14} className="animate-spin" />
                                 <span>Data ophalen...</span>
                             </div>
@@ -180,16 +180,16 @@ const ApiVerkennerPreview: React.FC = () => {
                             <JsonViewer data={current.response} />
                         )}
                         {!showResponse && !isLoading && (
-                            <div className="text-slate-600 py-4 text-center text-xs">
-                                Klik op <Send size={10} className="inline text-violet-400" /> om de API aan te roepen
+                            <div className="text-lab-muted py-4 text-center text-xs">
+                                Klik op <Send size={10} className="inline text-lab-teal" /> om de API aan te roepen
                             </div>
                         )}
                     </div>
                 </div>
 
                 {/* Task hint */}
-                <div className="bg-violet-50 border-2 border-violet-200 rounded-xl p-3">
-                    <p className="text-xs text-violet-700">
+                <div className="bg-lab-teal border-2 border-lab-teal rounded-xl p-3">
+                    <p className="text-xs text-lab-teal">
                         Bekijk de response en bespreek in de chat: welke <strong>keys</strong> zie je? Welke <strong>waarde</strong> hoort bij welk label?
                     </p>
                 </div>

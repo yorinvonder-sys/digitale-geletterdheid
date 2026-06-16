@@ -25,19 +25,19 @@ const config: ScenarioEngineConfig = {
             minScore: 60,
             emoji: '🔍',
             title: 'Kritische Lezer',
-            color: '#10B981',
+            color: '#5F947D',
         },
         {
             minScore: 40,
             emoji: '📚',
             title: 'Goed Begonnen',
-            color: '#6B6B66',
+            color: '#445865',
         },
         {
             minScore: 0,
             emoji: '🌱',
             title: 'Blijf Oefenen',
-            color: '#6B6B66',
+            color: '#445865',
         },
     ],
     takeaways: [

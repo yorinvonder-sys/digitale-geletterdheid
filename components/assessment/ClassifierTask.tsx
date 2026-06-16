@@ -75,7 +75,7 @@ export const ClassifierTask: React.FC<Props> = ({ task, onComplete }) => {
             <div className="flex-1 flex gap-4 min-h-0 overflow-hidden">
                 {/* Left: Chat / Scenario */}
                 <div className="w-1/3 flex flex-col gap-4">
-                    <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex-1">
+                    <div className="bg-white p-4 rounded-xl border border-lab-muted shadow-sm flex-1">
                         <div className="flex items-center gap-3 mb-4">
                             <div className="w-12 h-12 bg-lab-secondary rounded-full flex items-center justify-center font-bold text-xl text-white">
                                 {task.npcName.charAt(0)}
@@ -85,14 +85,14 @@ export const ClassifierTask: React.FC<Props> = ({ task, onComplete }) => {
                                 <span className="text-xs text-lab-textLight">Klasgenoot</span>
                             </div>
                         </div>
-                        <div className="bg-lab-bg p-4 rounded-xl rounded-tl-none relative border border-slate-200">
-                            <MessageSquare className="absolute -top-3 -left-2 text-slate-300 fill-current" size={24} transform="scale(-1, 1)" />
+                        <div className="bg-lab-bg p-4 rounded-xl rounded-tl-none relative border border-lab-muted">
+                            <MessageSquare className="absolute -top-3 -left-2 text-lab-muted fill-current" size={24} transform="scale(-1, 1)" />
                             <p className="text-lab-text leading-relaxed italic">"{task.scenario}"</p>
                         </div>
 
                         {/* Score indicator when all done */}
                         {allDone && (
-                            <div className="mt-4 p-3 rounded-xl bg-lab-bg border border-slate-200 text-center">
+                            <div className="mt-4 p-3 rounded-xl bg-lab-bg border border-lab-muted text-center">
                                 <p className="text-sm font-bold text-lab-text">
                                     {getCorrectCount()} van {task.options.length} goed
                                 </p>
@@ -117,9 +117,9 @@ export const ClassifierTask: React.FC<Props> = ({ task, onComplete }) => {
                                 className={`bg-white rounded-xl border shadow-sm transition-all ${
                                     state.revealed
                                         ? correct
-                                            ? 'border-emerald-300 bg-emerald-50/50'
+                                            ? 'border-lab-sage bg-lab-sage/50'
                                             : 'border-red-300 bg-red-50/50'
-                                        : 'border-slate-200'
+                                        : 'border-lab-muted'
                                 }`}
                             >
                                 {/* Statement */}
@@ -134,7 +134,7 @@ export const ClassifierTask: React.FC<Props> = ({ task, onComplete }) => {
                                     <div className="flex gap-2 px-4 pb-4">
                                         <button
                                             onClick={() => handleJudge(option.id, 'good')}
-                                            className="flex-1 flex items-center justify-center gap-2 py-2.5 rounded-lg border border-emerald-200 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 font-bold text-sm transition-colors active:scale-95"
+                                            className="flex-1 flex items-center justify-center gap-2 py-2.5 rounded-lg border border-lab-sage bg-lab-sage hover:bg-lab-sage text-lab-sage font-bold text-sm transition-colors active:scale-95"
                                         >
                                             <ThumbsUp size={16} /> {goodLabel}
                                         </button>
@@ -149,7 +149,7 @@ export const ClassifierTask: React.FC<Props> = ({ task, onComplete }) => {
                                     <div className="px-4 pb-4">
                                         <div className={`flex items-start gap-2 p-3 rounded-lg text-sm leading-relaxed ${
                                             correct
-                                                ? 'bg-emerald-100/80 text-emerald-800'
+                                                ? 'bg-lab-sage/80 text-lab-sage'
                                                 : 'bg-red-100/80 text-red-800'
                                         }`}>
                                             {correct

@@ -120,10 +120,10 @@ export const KamerNepnieuwsfabriek: React.FC<Props> = ({ onComplete, variant }) 
       {/* Header */}
       <div className="text-center mb-4 md:mb-6">
         <div className="flex items-center justify-center gap-2 mb-2">
-          <Newspaper className="text-emerald-600" size={24} />
-          <h2 className="text-xl md:text-2xl font-black text-emerald-600">Nepnieuwsfabriek</h2>
+          <Newspaper className="text-lab-sage" size={24} />
+          <h2 className="text-xl md:text-2xl font-black text-lab-sage">Nepnieuwsfabriek</h2>
         </div>
-        <p className="text-slate-500 text-sm md:text-base max-w-lg mx-auto">
+        <p className="text-lab-muted text-sm md:text-base max-w-lg mx-auto">
           Je onderschept 5 nieuwsberichten. Welke zijn echt en welke zijn nep?
         </p>
         <div className="flex items-center justify-center gap-1 mt-2">
@@ -131,7 +131,7 @@ export const KamerNepnieuwsfabriek: React.FC<Props> = ({ onComplete, variant }) 
             <div
               key={i}
               className={`w-2 h-2 rounded-full transition-colors ${
-                i < huidigIndex ? 'bg-emerald-500' : i === huidigIndex ? 'bg-emerald-500 ring-2 ring-emerald-200' : 'bg-slate-300'
+                i < huidigIndex ? 'bg-lab-sage' : i === huidigIndex ? 'bg-lab-sage ring-2 ring-emerald-200' : 'bg-lab-muted'
               }`}
             />
           ))}
@@ -148,24 +148,24 @@ export const KamerNepnieuwsfabriek: React.FC<Props> = ({ onComplete, variant }) 
             exit={{ opacity: 0, y: -20 }}
             className="w-full max-w-lg"
           >
-            <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+            <div className="bg-white rounded-xl border border-lab-muted shadow-sm overflow-hidden">
               {/* Bron */}
-              <div className="px-4 py-2 bg-slate-50 border-b border-slate-200 flex items-center justify-between">
-                <span className="text-xs font-mono text-slate-400">{huidigBericht.bron}</span>
-                <span className="text-xs text-slate-400">Bericht {huidigIndex + 1}/{berichten.length}</span>
+              <div className="px-4 py-2 bg-lab-muted border-b border-lab-muted flex items-center justify-between">
+                <span className="text-xs font-mono text-lab-muted">{huidigBericht.bron}</span>
+                <span className="text-xs text-lab-muted">Bericht {huidigIndex + 1}/{berichten.length}</span>
               </div>
 
               {/* Content */}
               <div className="p-5">
-                <h3 className="text-lg font-bold text-slate-900 mb-3">{huidigBericht.titel}</h3>
-                <p className="text-slate-600 text-sm leading-relaxed">{huidigBericht.tekst}</p>
+                <h3 className="text-lg font-bold text-lab-muted mb-3">{huidigBericht.titel}</h3>
+                <p className="text-lab-muted text-sm leading-relaxed">{huidigBericht.tekst}</p>
               </div>
 
               {/* Hints */}
               <div className="px-5 pb-4">
                 <div className="flex flex-wrap gap-2">
                   {huidigBericht.hints.map((hint, i) => (
-                    <span key={i} className="text-xs px-2 py-1 rounded-full bg-slate-100 text-slate-500">
+                    <span key={i} className="text-xs px-2 py-1 rounded-full bg-lab-muted text-lab-muted">
                       {hint}
                     </span>
                   ))}
@@ -180,8 +180,8 @@ export const KamerNepnieuwsfabriek: React.FC<Props> = ({ onComplete, variant }) 
                 animate={{ opacity: 1, y: 0 }}
                 className={`mt-3 p-4 rounded-xl border ${
                   isCorrect
-                    ? 'bg-emerald-50 border-emerald-200 text-emerald-700'
-                    : 'bg-rose-50 border-rose-200 text-rose-700'
+                    ? 'bg-lab-sage border-lab-sage text-lab-sage'
+                    : 'bg-lab-coral border-lab-coral text-lab-coral'
                 }`}
               >
                 <div className="flex items-start gap-2">
@@ -200,13 +200,13 @@ export const KamerNepnieuwsfabriek: React.FC<Props> = ({ onComplete, variant }) 
                 <>
                   <button
                     onClick={() => geefAntwoord(false)}
-                    className="flex-1 py-3 rounded-xl font-bold text-sm bg-emerald-50 border border-emerald-200 text-emerald-700 hover:bg-emerald-100 transition-colors active:scale-[0.98]"
+                    className="flex-1 py-3 rounded-xl font-bold text-sm bg-lab-sage border border-lab-sage text-lab-sage hover:bg-lab-sage transition-colors active:scale-[0.98]"
                   >
                     Echt
                   </button>
                   <button
                     onClick={() => geefAntwoord(true)}
-                    className="flex-1 py-3 rounded-xl font-bold text-sm bg-rose-50 border border-rose-200 text-rose-700 hover:bg-rose-100 transition-colors active:scale-[0.98]"
+                    className="flex-1 py-3 rounded-xl font-bold text-sm bg-lab-coral border border-lab-coral text-lab-coral hover:bg-lab-coral transition-colors active:scale-[0.98]"
                   >
                     Nep
                   </button>
@@ -214,7 +214,7 @@ export const KamerNepnieuwsfabriek: React.FC<Props> = ({ onComplete, variant }) 
               ) : (
                 <button
                   onClick={volgendBericht}
-                  className="flex-1 py-3 rounded-xl font-bold text-sm bg-emerald-600 hover:bg-emerald-700 text-white transition-all active:scale-[0.98] flex items-center justify-center gap-2 shadow-lg shadow-emerald-200"
+                  className="flex-1 py-3 rounded-xl font-bold text-sm bg-lab-sage hover:bg-lab-sage text-white transition-all active:scale-[0.98] flex items-center justify-center gap-2 shadow-lg shadow-emerald-200"
                 >
                   {isLaatste ? 'Afronden' : 'Volgend bericht'}
                   <ChevronRight size={18} />

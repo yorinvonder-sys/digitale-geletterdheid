@@ -8,7 +8,7 @@ interface MissionWelcomeCardProps {
 
 const difficultyLabel: Record<string, { text: string; bg: string }> = {
     Easy: { text: 'Makkelijk', bg: 'bg-green-100 text-green-700' },
-    Medium: { text: 'Gemiddeld', bg: 'bg-amber-100 text-amber-700' },
+    Medium: { text: 'Gemiddeld', bg: 'bg-lab-gold text-lab-gold' },
     Hard: { text: 'Uitdagend', bg: 'bg-red-100 text-red-700' },
 };
 
@@ -18,7 +18,7 @@ const MissionWelcomeCard: React.FC<MissionWelcomeCardProps> = ({ role }) => {
 
     return (
         <div className="max-w-[92%] md:max-w-[80%] w-full animate-fade-in-up">
-            <div className="rounded-2xl overflow-hidden shadow-lg border border-slate-100 bg-white">
+            <div className="rounded-2xl overflow-hidden shadow-lg border border-lab-muted bg-white">
                 {/* ── Gradient Header ── */}
                 <div
                     className="px-5 py-4 flex items-center gap-3"
@@ -60,7 +60,7 @@ const MissionWelcomeCard: React.FC<MissionWelcomeCardProps> = ({ role }) => {
                     </div>
 
                     {/* ── Objective ── */}
-                    <div className="flex items-start gap-2.5 rounded-xl bg-slate-50 px-3.5 py-3 border border-slate-100">
+                    <div className="flex items-start gap-2.5 rounded-xl bg-lab-muted px-3.5 py-3 border border-lab-muted">
                         <Target size={16} className="text-lab-primary mt-0.5 shrink-0" />
                         <p className="text-sm font-semibold text-lab-dark leading-snug">
                             {role.missionObjective}
@@ -69,7 +69,7 @@ const MissionWelcomeCard: React.FC<MissionWelcomeCardProps> = ({ role }) => {
 
                     {/* ── First Step ── */}
                     {firstStep && (
-                        <div className="rounded-xl border-2 border-slate-100 p-3.5">
+                        <div className="rounded-xl border-2 border-lab-muted p-3.5">
                             <p className="text-[10px] font-bold uppercase tracking-wider text-lab-textLight mb-1">
                                 Stap 1: {firstStep.title}
                             </p>

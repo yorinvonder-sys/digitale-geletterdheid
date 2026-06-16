@@ -25,7 +25,7 @@ export interface BadgeConfig {
     minScore: number;
     emoji: string;
     title: string;
-    color: string; // tailwind-compatible color like '#10B981'
+    color: string; // tailwind-compatible color like '#5F947D'
 }
 
 // === Template type discriminator ===

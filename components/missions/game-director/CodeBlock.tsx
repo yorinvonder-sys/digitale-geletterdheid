@@ -52,7 +52,7 @@ export const CodeBlock: React.FC<CodeBlockProps> = ({
                             disabled={isInPalette}
                         >
                             {inputDef.options?.map(opt => (
-                                <option key={opt.value} value={opt.value} className="text-slate-900">
+                                <option key={opt.value} value={opt.value} className="text-lab-muted">
                                     {opt.label}
                                 </option>
                             ))}
@@ -137,7 +137,7 @@ export const CodeBlock: React.FC<CodeBlockProps> = ({
 
                     {/* Children container */}
                     <div
-                        className="pl-4 py-2 min-h-[40px] border-2 border-dashed border-[#E8E6DF] rounded-2xl bg-[#FAF9F0]/50"
+                        className="pl-4 py-2 min-h-[40px] border-2 border-dashed border-[#E7D8BD] rounded-2xl bg-[#FCF6EA]/50"
                         onDragOver={(e) => {
                             e.preventDefault();
                             e.stopPropagation();
@@ -149,7 +149,7 @@ export const CodeBlock: React.FC<CodeBlockProps> = ({
                         }}
                     >
                         {children || (
-                            <div className="text-xs text-[#6B6B66] italic text-center py-2">
+                            <div className="text-xs text-[#445865] italic text-center py-2">
                                 Sleep blokken hierheen
                             </div>
                         )}

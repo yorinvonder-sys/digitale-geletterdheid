@@ -63,7 +63,7 @@ const FaceLayer = memo<{
     eyeGroupRef: React.RefObject<THREE.Group>;
 }>(({ config, skinColor, eyeGroupRef }) => {
     const expression = config.expression ?? 'happy';
-    const eyeColor = config.eyeColor ?? '#111111';
+    const eyeColor = config.eyeColor ?? '#08283B';
     const fz = 0.425; // front face z position (outside head cube, enough gap to prevent z-fighting)
 
     return (
@@ -103,11 +103,11 @@ const FaceLayer = memo<{
                     <group>
                         <mesh position={[-0.15, 0.13, fz + 0.01]}>
                             <boxGeometry args={[0.14, 0.02, 0.01]} />
-                            <meshStandardMaterial color="#1a1a1a" roughness={0.9} />
+                            <meshStandardMaterial color="#08283B" roughness={0.9} />
                         </mesh>
                         <mesh position={[0.15, 0.13, fz + 0.01]}>
                             <boxGeometry args={[0.14, 0.02, 0.01]} />
-                            <meshStandardMaterial color="#1a1a1a" roughness={0.9} />
+                            <meshStandardMaterial color="#08283B" roughness={0.9} />
                         </mesh>
                     </group>
                 )}
@@ -123,7 +123,7 @@ const FaceLayer = memo<{
             {expression === 'cool' && config.accessory !== 'sunglasses' && config.accessory !== 'glasses' && (
                 <mesh position={[0, 0.06, fz + 0.02]}>
                     <boxGeometry args={[0.38, 0.1, 0.03]} />
-                    <meshStandardMaterial color="#111111" roughness={0.1} metalness={0.8} />
+                    <meshStandardMaterial color="#08283B" roughness={0.1} metalness={0.8} />
                 </mesh>
             )}
 
@@ -132,28 +132,28 @@ const FaceLayer = memo<{
                 <group position={[0, -0.16, fz]}>
                     <mesh position={[-0.08, 0.02, 0]}>
                         <boxGeometry args={[0.04, 0.02, 0.01]} />
-                        {mcMat('#7c3b2a')}
+                        {mcMat('#D97848')}
                     </mesh>
                     <mesh position={[0, 0, 0]}>
                         <boxGeometry args={[0.12, 0.04, 0.01]} />
-                        {mcMat('#7c3b2a')}
+                        {mcMat('#D97848')}
                     </mesh>
                     <mesh position={[0.08, 0.02, 0]}>
                         <boxGeometry args={[0.04, 0.02, 0.01]} />
-                        {mcMat('#7c3b2a')}
+                        {mcMat('#D97848')}
                     </mesh>
                 </group>
             )}
             {expression === 'surprised' && (
                 <mesh position={[0, -0.16, fz]}>
                     <boxGeometry args={[0.08, 0.1, 0.01]} />
-                    {mcMat('#7c3b2a')}
+                    {mcMat('#D97848')}
                 </mesh>
             )}
             {expression === 'neutral' && (
                 <mesh position={[0, -0.15, fz]}>
                     <boxGeometry args={[0.14, 0.03, 0.01]} />
-                    {mcMat('#7c3b2a')}
+                    {mcMat('#D97848')}
                 </mesh>
             )}
 
@@ -976,7 +976,7 @@ const AccessoryLayer = memo<{
     const matMet = <meshStandardMaterial color={color} roughness={0.15} metalness={0.8} />;
     const matGold = <meshStandardMaterial color="#ffd700" roughness={0.1} metalness={0.9} />;
     const matGlow = <meshStandardMaterial color={color} emissive={color} emissiveIntensity={0.8} />;
-    const matBlk = <meshStandardMaterial color="#111111" roughness={0.8} />;
+    const matBlk = <meshStandardMaterial color="#08283B" roughness={0.8} />;
     const matWht = <meshStandardMaterial color="#eeeeee" roughness={0.6} />;
     const matGlass = <meshStandardMaterial color="#ffffff" roughness={0.1} transparent opacity={0.3} />;
     const matGlassDk = <meshStandardMaterial color="#222222" roughness={0.1} transparent opacity={0.65} />;
@@ -1699,10 +1699,10 @@ const AvatarModel = memo<{
     );
 
     const skinColor = dims.isRobot ? '#C0C0C0' : config.skinColor;
-    const hairColor = config.hairColor ?? '#5D4037';
-    const shirtColor = config.shirtColor ?? '#D97757';
-    const pantsColor = config.pantsColor ?? '#1e293b';
-    const shoeColor = config.shoeColor ?? '#1a1a1a';
+    const hairColor = config.hairColor ?? '#08283B';
+    const shirtColor = config.shirtColor ?? '#D97848';
+    const pantsColor = config.pantsColor ?? '#08283B';
+    const shoeColor = config.shoeColor ?? '#08283B';
 
     const headRef = useRef<THREE.Group>(null);
     const torsoRef = useRef<THREE.Group>(null);
@@ -1802,7 +1802,7 @@ const AvatarModel = memo<{
         if (interactive) { setHoveredPart(null); document.body.style.cursor = 'default'; }
     }, [interactive]);
 
-    const emissive = (part: string) => hoveredPart === part && interactive ? '#D97757' : '#000000';
+    const emissive = (part: string) => hoveredPart === part && interactive ? '#D97848' : '#000000';
     const emissiveInt = (part: string) => hoveredPart === part && interactive ? 0.12 : 0;
 
     const skinMatProps = {
@@ -2016,7 +2016,7 @@ const AvatarModel = memo<{
 
 const SceneSurface = memo<{ variant: 'full' | 'head' }>(({ variant }) => {
     const { gl, scene } = useThree();
-    const bgColor = useMemo(() => new THREE.Color('#FAF9F0'), []);
+    const bgColor = useMemo(() => new THREE.Color('#FCF6EA'), []);
 
     useEffect(() => {
         if (variant === 'head') {
@@ -2042,10 +2042,10 @@ export const AvatarViewer: React.FC<AvatarViewerProps> = ({
     );
 
     return (
-        <div className={`w-full h-full relative ${variant === 'head' ? '' : 'min-h-[300px]'}`} style={{ backgroundColor: variant === 'full' ? '#FAF9F0' : 'transparent' }}>
+        <div className={`w-full h-full relative ${variant === 'head' ? '' : 'min-h-[300px]'}`} style={{ backgroundColor: variant === 'full' ? '#FCF6EA' : 'transparent' }}>
             <Canvas
-                style={{ background: variant === 'full' ? '#FAF9F0' : 'transparent' }}
-                className={variant === 'full' ? 'bg-[#FAF9F0]' : 'bg-transparent'}
+                style={{ background: variant === 'full' ? '#FCF6EA' : 'transparent' }}
+                className={variant === 'full' ? 'bg-[#FCF6EA]' : 'bg-transparent'}
                 shadows={{ type: THREE.PCFSoftShadowMap }}
                 gl={{
                     alpha: true,
@@ -2057,7 +2057,7 @@ export const AvatarViewer: React.FC<AvatarViewerProps> = ({
                 }}
                 onCreated={({ gl, scene }) => {
                     if (variant === 'full') {
-                        const bg = new THREE.Color('#FAF9F0');
+                        const bg = new THREE.Color('#FCF6EA');
                         gl.setClearColor(bg, 1);
                         scene.background = bg;
                     } else {
@@ -2086,7 +2086,7 @@ export const AvatarViewer: React.FC<AvatarViewerProps> = ({
                     shadow-camera-bottom={-2}
                     shadow-bias={-0.0005}
                 />
-                <directionalLight position={[-3, 2, -4]} intensity={0.3} color="#D97757" />
+                <directionalLight position={[-3, 2, -4]} intensity={0.3} color="#D97848" />
                 <pointLight position={[0, -1, 2]} intensity={0.15} color="#fff0e0" />
 
                 <ThreeErrorBoundary>
@@ -2105,7 +2105,7 @@ export const AvatarViewer: React.FC<AvatarViewerProps> = ({
                 {variant === 'full' && (
                     <mesh position={[0, -0.15, 0]} rotation={[-Math.PI / 2, 0, 0]}>
                         <boxGeometry args={[2.4, 2.4, 0.06]} />
-                        <meshStandardMaterial color="#E8E6DF" roughness={0.9} metalness={0} polygonOffset polygonOffsetFactor={4} polygonOffsetUnits={4} />
+                        <meshStandardMaterial color="#E7D8BD" roughness={0.9} metalness={0} polygonOffset polygonOffsetFactor={4} polygonOffsetUnits={4} />
                     </mesh>
                 )}
 
@@ -2126,7 +2126,7 @@ export const AvatarViewer: React.FC<AvatarViewerProps> = ({
                         size={2}
                         speed={0.3}
                         opacity={0.3}
-                        color="#D97757"
+                        color="#D97848"
                     />
                 )}
 

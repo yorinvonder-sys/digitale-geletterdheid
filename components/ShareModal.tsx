@@ -54,7 +54,7 @@ export const ShareModal: React.FC<ShareModalProps> = ({
             <div ref={modalRef} role="dialog" aria-modal="true" aria-labelledby="share-modal-title" className="bg-white rounded-2xl p-6 max-w-sm w-full shadow-2xl relative animate-in zoom-in-95 motion-reduce:animate-none">
                 <button
                     onClick={onClose}
-                    className="absolute top-4 right-4 text-slate-400 hover:text-slate-600 transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center"
+                    className="absolute top-4 right-4 text-lab-muted hover:text-lab-muted transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center"
                     aria-label="Sluiten"
                 >
                     <X size={20} />
@@ -64,14 +64,14 @@ export const ShareModal: React.FC<ShareModalProps> = ({
                     <div className="w-16 h-16 bg-indigo-100 rounded-full flex items-center justify-center mx-auto mb-4 text-indigo-600">
                         <Share size={32} />
                     </div>
-                    <h3 id="share-modal-title" className="text-xl font-black text-slate-900 mb-1">{title}</h3>
-                    <p className="text-slate-500 text-sm">{description}</p>
+                    <h3 id="share-modal-title" className="text-xl font-black text-lab-muted mb-1">{title}</h3>
+                    <p className="text-lab-muted text-sm">{description}</p>
                 </div>
 
                 {isSharing ? (
                     <div className="flex flex-col items-center justify-center py-8">
                         <Loader2 size={32} className="animate-spin motion-reduce:animate-none text-indigo-500 mb-2" />
-                        <span className="text-slate-400 text-sm">Link genereren...</span>
+                        <span className="text-lab-muted text-sm">Link genereren...</span>
                     </div>
                 ) : (
                     <div className="space-y-4">
@@ -80,18 +80,18 @@ export const ShareModal: React.FC<ShareModalProps> = ({
                                 type="text"
                                 readOnly
                                 value={shareUrl}
-                                className="w-full bg-slate-50 border border-slate-200 rounded-xl py-3 pl-4 pr-12 text-sm text-slate-600 font-mono focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition-all"
+                                className="w-full bg-lab-muted border border-lab-muted rounded-xl py-3 pl-4 pr-12 text-sm text-lab-muted font-mono focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition-all"
                             />
                             <button
                                 onClick={copyToClipboard}
-                                className="absolute right-2 top-2 p-1.5 text-slate-400 hover:text-indigo-600 transition-colors bg-white rounded-lg border border-slate-200 shadow-sm hover:shadow min-h-[44px] min-w-[44px] flex items-center justify-center"
+                                className="absolute right-2 top-2 p-1.5 text-lab-muted hover:text-indigo-600 transition-colors bg-white rounded-lg border border-lab-muted shadow-sm hover:shadow min-h-[44px] min-w-[44px] flex items-center justify-center"
                                 aria-label="Kopieer link"
                             >
-                                {copied ? <Check size={18} className="text-emerald-500" /> : <Copy size={18} />}
+                                {copied ? <Check size={18} className="text-lab-sage" /> : <Copy size={18} />}
                             </button>
                         </div>
 
-                        <div className="text-center text-xs text-slate-400">
+                        <div className="text-center text-xs text-lab-muted">
                             {copied ? '✓ Gekopieerd!' : 'Kopieer de link om te delen'}
                         </div>
                     </div>

@@ -23,9 +23,9 @@ interface ChatMessage {
 }
 
 const DEFAULT_GAME_STATE: GameState = {
-    sky: '#1a1a2e',
-    ground: '#16a34a',
-    character: '#f59e0b',
+    sky: '#08283B',
+    ground: '#5F947D',
+    character: '#D7C95F',
     characterType: 'robot',
     obstacles: 2,
     clouds: true,
@@ -39,13 +39,13 @@ const MAX_MESSAGES = 5;
 const SERIF = "'Newsreader', Georgia, serif";
 
 const C = {
-    accent: '#D97757',
-    accentHover: '#C46849',
-    text: '#1A1A19',
-    textMuted: '#6B6B66',
-    textLight: '#9C9C95',
-    border: '#E8E6DF',
-    bg: '#FAF9F0',
+    accent: '#D97848',
+    accentHover: '#D97848',
+    text: '#08283B',
+    textMuted: '#445865',
+    textLight: '#445865',
+    border: '#E7D8BD',
+    bg: '#FCF6EA',
 } as const;
 
 /* ═══════════════════════════════════════════════════════════
@@ -94,8 +94,8 @@ function GameIllustration({ state }: { state: GameState }) {
                 <rect x="70" y="210" width="28" height="32" rx="4" fill={state.character} />
                 <rect x="74" y="216" width="8" height="6" rx="2" fill="#fff" opacity="0.9" />
                 <rect x="86" y="216" width="8" height="6" rx="2" fill="#fff" opacity="0.9" />
-                <circle cx="78" cy="219" r="2" fill="#1a1a2e" />
-                <circle cx="90" cy="219" r="2" fill="#1a1a2e" />
+                <circle cx="78" cy="219" r="2" fill="#08283B" />
+                <circle cx="90" cy="219" r="2" fill="#08283B" />
                 <rect x="78" y="228" width="12" height="3" rx="1" fill="#fff" opacity="0.5" />
                 <rect x="73" y="206" width="22" height="6" rx="3" fill={state.character} opacity="0.7" />
                 <line x1="84" y1="203" x2="84" y2="196" stroke={state.character} strokeWidth="2" />
@@ -119,8 +119,8 @@ function GameIllustration({ state }: { state: GameState }) {
                 <polygon points="94,208 96,194 88,206" fill={state.character} />
                 <circle cx="79" cy="214" r="3" fill="white" />
                 <circle cx="89" cy="214" r="3" fill="white" />
-                <circle cx="79" cy="215" r="1.5" fill="#1a1a2e" />
-                <circle cx="89" cy="215" r="1.5" fill="#1a1a2e" />
+                <circle cx="79" cy="215" r="1.5" fill="#08283B" />
+                <circle cx="89" cy="215" r="1.5" fill="#08283B" />
                 <ellipse cx="84" cy="220" rx="2" ry="1.5" fill="#f472b6" />
                 <line x1="68" y1="218" x2="76" y2="216" stroke={state.character} strokeWidth="1" opacity="0.5" />
                 <line x1="68" y1="222" x2="76" y2="220" stroke={state.character} strokeWidth="1" opacity="0.5" />
@@ -137,22 +137,22 @@ function GameIllustration({ state }: { state: GameState }) {
                 <polygon points="96,206 100,190 90,204" fill={state.character} />
                 <circle cx="78" cy="212" r="4" fill="white" />
                 <circle cx="90" cy="212" r="4" fill="white" />
-                <circle cx="79" cy="213" r="2" fill="#dc2626" />
-                <circle cx="91" cy="213" r="2" fill="#dc2626" />
-                <path d="M78,222 Q84,228 90,222" fill="none" stroke="#dc2626" strokeWidth="2" />
+                <circle cx="79" cy="213" r="2" fill="#D97848" />
+                <circle cx="91" cy="213" r="2" fill="#D97848" />
+                <path d="M78,222 Q84,228 90,222" fill="none" stroke="#D97848" strokeWidth="2" />
                 <ellipse cx="64" cy="226" rx="8" ry="5" fill={state.character} opacity="0.7" />
                 <ellipse cx="104" cy="226" rx="8" ry="5" fill={state.character} opacity="0.7" />
             </g>
         ),
         ninja: (
             <g>
-                <rect x="72" y="212" width="24" height="30" rx="4" fill="#1a1a2e" />
-                <circle cx="84" cy="210" r="12" fill="#1a1a2e" />
+                <rect x="72" y="212" width="24" height="30" rx="4" fill="#08283B" />
+                <circle cx="84" cy="210" r="12" fill="#08283B" />
                 <rect x="70" y="206" width="28" height="10" rx="2" fill={state.character} />
                 <circle cx="79" cy="211" r="2.5" fill="white" />
                 <circle cx="89" cy="211" r="2.5" fill="white" />
-                <circle cx="79" cy="211" r="1.5" fill="#1a1a2e" />
-                <circle cx="89" cy="211" r="1.5" fill="#1a1a2e" />
+                <circle cx="79" cy="211" r="1.5" fill="#08283B" />
+                <circle cx="89" cy="211" r="1.5" fill="#08283B" />
                 <line x1="98" y1="210" x2="110" y2="206" stroke={state.character} strokeWidth="2" />
                 <line x1="110" y1="206" x2="114" y2="210" stroke={state.character} strokeWidth="2" />
             </g>
@@ -164,11 +164,11 @@ function GameIllustration({ state }: { state: GameState }) {
                 <polygon points="84,196 80,208 88,208" fill={state.character} />
                 <circle cx="78" cy="214" r="3" fill="#f0abfc" />
                 <circle cx="90" cy="214" r="3" fill="#f0abfc" />
-                <circle cx="78" cy="215" r="1.5" fill="#1a1a2e" />
-                <circle cx="90" cy="215" r="1.5" fill="#1a1a2e" />
+                <circle cx="78" cy="215" r="1.5" fill="#08283B" />
+                <circle cx="90" cy="215" r="1.5" fill="#08283B" />
                 <path d="M76,222 Q84,226 92,222" fill="none" stroke="#f472b6" strokeWidth="1.5" />
                 <path d="M68,220 Q60,216 56,224 Q62,222 68,226" fill={state.character} opacity="0.6" />
-                <path d="M100,220 Q108,216 112,224 Q106,222 100,226" fill="#c084fc" opacity="0.6" />
+                <path d="M100,220 Q108,216 112,224 Q106,222 100,226" fill="#0B453F" opacity="0.6" />
             </g>
         ),
     };
@@ -242,10 +242,10 @@ function GameIllustration({ state }: { state: GameState }) {
             {/* Coins/collectibles */}
             {[{ x: 170, y: 188 }, { x: 300, y: 168 }, { x: 400, y: 198 }].map((pos, i) => (
                 <g key={`coin-${i}`}>
-                    <circle cx={pos.x} cy={pos.y} r="6" fill="#fbbf24" />
+                    <circle cx={pos.x} cy={pos.y} r="6" fill="#D7C95F" />
                     <circle cx={pos.x} cy={pos.y} r="4" fill="#fcd34d" />
                     <text x={pos.x} y={pos.y + 3} textAnchor="middle" fontSize="7" fontWeight="bold" fill="#92400e">$</text>
-                    <circle cx={pos.x} cy={pos.y} r="7" fill="none" stroke="#fbbf24" strokeWidth="1" opacity="0.4">
+                    <circle cx={pos.x} cy={pos.y} r="7" fill="none" stroke="#D7C95F" strokeWidth="1" opacity="0.4">
                         <animate attributeName="r" values="7;11;7" dur="2s" repeatCount="indefinite" />
                         <animate attributeName="opacity" values="0.4;0;0.4" dur="2s" repeatCount="indefinite" />
                     </circle>
@@ -285,7 +285,7 @@ function TypingDots() {
             {[0, 0.2, 0.4].map((delay, i) => (
                 <span
                     key={i}
-                    className="w-1.5 h-1.5 rounded-full bg-slate-400"
+                    className="w-1.5 h-1.5 rounded-full bg-lab-muted"
                     style={{ animation: `typing-bounce 1.2s ease-in-out ${delay}s infinite` }}
                 />
             ))}
@@ -407,7 +407,7 @@ export const ScholenLandingLiveDemo: React.FC = () => {
                     className="flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium"
                     style={{
                         backgroundColor: isLocked ? '#fef2f2' : `${C.accent}10`,
-                        color: isLocked ? '#dc2626' : C.accent,
+                        color: isLocked ? '#D97848' : C.accent,
                         border: `1px solid ${isLocked ? '#fecaca' : `${C.accent}30`}`,
                     }}
                 >
@@ -435,9 +435,9 @@ export const ScholenLandingLiveDemo: React.FC = () => {
                 style={{ border: `1px solid ${C.border}` }}
             >
                 {/* Chat panel */}
-                <div className="lg:col-span-2 bg-slate-900 flex flex-col min-h-[400px] lg:min-h-[460px] order-2 lg:order-1">
+                <div className="lg:col-span-2 bg-lab-muted flex flex-col min-h-[400px] lg:min-h-[460px] order-2 lg:order-1">
                     {/* Chat header */}
-                    <div className="flex items-center gap-3 px-4 py-3 border-b border-slate-800">
+                    <div className="flex items-center gap-3 px-4 py-3 border-b border-lab-muted">
                         <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ backgroundColor: C.accent }}>
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                                 <path d="M12 8V4H8" /><rect width="16" height="12" x="4" y="8" rx="2" /><path d="m2 14 6-6 6 6" />
@@ -445,11 +445,11 @@ export const ScholenLandingLiveDemo: React.FC = () => {
                         </div>
                         <div>
                             <p className="text-white text-sm font-semibold">Pip — Game Builder</p>
-                            <p className="text-slate-500 text-xs">AI-mentor</p>
+                            <p className="text-lab-muted text-xs">AI-mentor</p>
                         </div>
                         <div className="ml-auto flex items-center gap-1.5">
-                            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-                            <span className="text-emerald-400 text-xs">Online</span>
+                            <span className="w-2 h-2 rounded-full bg-lab-sage animate-pulse" />
+                            <span className="text-lab-sage text-xs">Online</span>
                         </div>
                     </div>
 
@@ -466,7 +466,7 @@ export const ScholenLandingLiveDemo: React.FC = () => {
                                     className={`max-w-[85%] px-3.5 py-2.5 text-sm leading-relaxed ${
                                         msg.role === 'user'
                                             ? 'text-white rounded-2xl rounded-br-sm'
-                                            : 'bg-slate-800 text-slate-200 rounded-2xl rounded-bl-sm'
+                                            : 'bg-lab-muted text-lab-muted rounded-2xl rounded-bl-sm'
                                     }`}
                                     style={msg.role === 'user' ? { backgroundColor: C.accent } : undefined}
                                 >
@@ -480,7 +480,7 @@ export const ScholenLandingLiveDemo: React.FC = () => {
                                 <div className="w-7 h-7 rounded-full flex items-center justify-center mr-2 mt-1 shrink-0" style={{ backgroundColor: C.accent }}>
                                     <img src="/mascot/pip-logo.webp" alt="" className="w-5 h-5 object-contain" width={20} height={20} loading="lazy" decoding="async" />
                                 </div>
-                                <div className="bg-slate-800/60 rounded-2xl rounded-bl-sm">
+                                <div className="bg-lab-muted/60 rounded-2xl rounded-bl-sm">
                                     <TypingDots />
                                 </div>
                             </div>
@@ -498,7 +498,7 @@ export const ScholenLandingLiveDemo: React.FC = () => {
                     <div className="px-4 pb-4">
                         {isLocked ? (
                             <div className="text-center space-y-3 py-2">
-                                <p className="text-slate-400 text-sm">
+                                <p className="text-lab-muted text-sm">
                                     Demo afgelopen! Maak een gratis account om verder te bouwen.
                                 </p>
                                 <a
@@ -515,7 +515,7 @@ export const ScholenLandingLiveDemo: React.FC = () => {
                                 </a>
                             </div>
                         ) : (
-                            <div className="flex items-center gap-2 bg-slate-800 rounded-xl px-3 py-2">
+                            <div className="flex items-center gap-2 bg-lab-muted rounded-xl px-3 py-2">
                                 <input
                                     ref={inputRef}
                                     type="text"
@@ -545,7 +545,7 @@ export const ScholenLandingLiveDemo: React.FC = () => {
                 </div>
 
                 {/* Game preview */}
-                <div className="lg:col-span-3 relative order-1 lg:order-2 bg-slate-100">
+                <div className="lg:col-span-3 relative order-1 lg:order-2 bg-lab-muted">
                     <GameIllustration state={gameState} />
 
                     {/* Locked overlay */}

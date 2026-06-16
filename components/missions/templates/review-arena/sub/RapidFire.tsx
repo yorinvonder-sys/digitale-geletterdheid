@@ -101,7 +101,7 @@ export const RapidFire: React.FC<RapidFireProps> = ({
             <div className="space-y-4">
                 <div>
                     <h3
-                        className="text-lg font-black text-[#1A1A19] mb-1"
+                        className="text-lg font-black text-[#08283B] mb-1"
                         style={{ fontFamily: "'Newsreader', Georgia, serif" }}
                     >
                         {title} — Resultaat
@@ -113,14 +113,14 @@ export const RapidFire: React.FC<RapidFireProps> = ({
                         <div
                             key={i}
                             className={`h-8 rounded-lg flex items-center justify-center text-sm
-                                ${r.correct ? 'bg-[#10B981]/15 text-[#10B981]' : 'bg-[#EF4444]/15 text-[#EF4444]'}`}
+                                ${r.correct ? 'bg-[#5F947D]/15 text-[#5F947D]' : 'bg-[#D97848]/15 text-[#D97848]'}`}
                         >
                             {r.correct ? '✓' : '✗'}
                         </div>
                     ))}
                 </div>
 
-                <div className="bg-white border border-[#E8E6DF] rounded-2xl p-4 space-y-2">
+                <div className="bg-white border border-[#E7D8BD] rounded-2xl p-4 space-y-2">
                     {questions.map((q, i) => {
                         const result = results[i];
                         if (!result) return null;
@@ -129,17 +129,17 @@ export const RapidFire: React.FC<RapidFireProps> = ({
                                 key={i}
                                 className={`text-xs p-2 rounded-lg ${
                                     result.correct
-                                        ? 'bg-[#10B981]/10 text-[#3D3D38]'
-                                        : 'bg-[#EF4444]/10 text-[#3D3D38]'
+                                        ? 'bg-[#5F947D]/10 text-[#445865]'
+                                        : 'bg-[#D97848]/10 text-[#445865]'
                                 }`}
                                 style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                             >
-                                <span className={`font-bold ${result.correct ? 'text-[#10B981]' : 'text-[#EF4444]'}`}>
+                                <span className={`font-bold ${result.correct ? 'text-[#5F947D]' : 'text-[#D97848]'}`}>
                                     {result.correct ? '✓' : '✗'}
                                 </span>{' '}
                                 <span className="font-medium">{q.question}</span>
                                 {!result.correct && (
-                                    <div className="mt-1 text-[#6B6B66]">{q.explanation}</div>
+                                    <div className="mt-1 text-[#445865]">{q.explanation}</div>
                                 )}
                             </div>
                         );
@@ -149,19 +149,19 @@ export const RapidFire: React.FC<RapidFireProps> = ({
                 <div
                     className={`p-3 rounded-xl text-sm font-medium ${
                         correctCount === questions.length
-                            ? 'bg-[#10B981]/10 text-[#10B981]'
-                            : 'bg-[#D97757]/10 text-[#D97757]'
+                            ? 'bg-[#5F947D]/10 text-[#5F947D]'
+                            : 'bg-[#D97848]/10 text-[#D97848]'
                     }`}
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                 >
                     {correctCount}/{questions.length} goed
-                    {streak >= 3 && <span className="ml-2 text-[#F59E0B]">🔥 Streak bonus!</span>}
+                    {streak >= 3 && <span className="ml-2 text-[#D7C95F]">🔥 Streak bonus!</span>}
                     <span className="font-black ml-2">{finalScore}/{maxScore} punten</span>
                 </div>
 
                 <button
                     onClick={handleContinue}
-                    className="w-full py-3 bg-gradient-to-r from-[#10B981] to-[#059669] hover:from-[#059669] hover:to-[#047857] text-white rounded-xl font-bold text-sm transition-all duration-200 active:scale-[0.98] flex items-center justify-center gap-2"
+                    className="w-full py-3 bg-gradient-to-r from-[#5F947D] to-[#5F947D] hover:from-[#5F947D] hover:to-[#047857] text-white rounded-xl font-bold text-sm transition-all duration-200 active:scale-[0.98] flex items-center justify-center gap-2"
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                 >
                     Afronden
@@ -176,22 +176,22 @@ export const RapidFire: React.FC<RapidFireProps> = ({
             <div className="flex items-start justify-between">
                 <div>
                     <h3
-                        className="text-lg font-black text-[#1A1A19] mb-1"
+                        className="text-lg font-black text-[#08283B] mb-1"
                         style={{ fontFamily: "'Newsreader', Georgia, serif" }}
                     >
                         {title}
                     </h3>
                     <p
-                        className="text-sm text-[#6B6B66]"
+                        className="text-sm text-[#445865]"
                         style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                     >
                         {description}
                     </p>
                 </div>
                 {streak >= 2 && (
-                    <div className="flex items-center gap-1 bg-[#F59E0B]/15 px-2 py-1 rounded-full">
-                        <Zap size={12} className="text-[#F59E0B]" />
-                        <span className="text-xs font-black text-[#F59E0B]">{streak}x</span>
+                    <div className="flex items-center gap-1 bg-[#D7C95F]/15 px-2 py-1 rounded-full">
+                        <Zap size={12} className="text-[#D7C95F]" />
+                        <span className="text-xs font-black text-[#D7C95F]">{streak}x</span>
                     </div>
                 )}
             </div>
@@ -204,11 +204,11 @@ export const RapidFire: React.FC<RapidFireProps> = ({
                         className={`flex-1 h-1.5 rounded-full transition-all duration-300 ${
                             i < currentIndex
                                 ? results[i]?.correct
-                                    ? 'bg-[#10B981]'
-                                    : 'bg-[#EF4444]'
+                                    ? 'bg-[#5F947D]'
+                                    : 'bg-[#D97848]'
                                 : i === currentIndex
-                                    ? 'bg-[#D97757]'
-                                    : 'bg-[#E8E6DF]'
+                                    ? 'bg-[#D97848]'
+                                    : 'bg-[#E7D8BD]'
                         }`}
                     />
                 ))}
@@ -217,21 +217,21 @@ export const RapidFire: React.FC<RapidFireProps> = ({
             {/* Timer */}
             {hasTimer && timeLeft !== null && answered === null && (
                 <div className="flex items-center gap-2">
-                    <div className="flex-1 h-2 bg-[#E8E6DF] rounded-full overflow-hidden">
+                    <div className="flex-1 h-2 bg-[#E7D8BD] rounded-full overflow-hidden">
                         <motion.div
                             className="h-full rounded-full"
                             style={{
                                 background: timeLeft > timePerQuestion! * 0.5
-                                    ? '#10B981'
+                                    ? '#5F947D'
                                     : timeLeft > timePerQuestion! * 0.25
-                                        ? '#F59E0B'
-                                        : '#EF4444',
+                                        ? '#D7C95F'
+                                        : '#D97848',
                             }}
                             animate={{ width: `${(timeLeft / timePerQuestion!) * 100}%` }}
                             transition={{ duration: 0.5 }}
                         />
                     </div>
-                    <span className="text-xs font-black text-[#6B6B66] w-6 text-right"
+                    <span className="text-xs font-black text-[#445865] w-6 text-right"
                         style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                         {timeLeft}s
                     </span>
@@ -248,16 +248,16 @@ export const RapidFire: React.FC<RapidFireProps> = ({
                     transition={{ duration: 0.2 }}
                     className={`p-5 rounded-2xl border-2 min-h-[100px] flex items-center justify-center transition-colors duration-300 ${
                         answered === null
-                            ? 'bg-white border-[#E8E6DF]'
+                            ? 'bg-white border-[#E7D8BD]'
                             : answered === currentQuestion.answer
-                                ? 'bg-[#10B981]/10 border-[#10B981]'
+                                ? 'bg-[#5F947D]/10 border-[#5F947D]'
                                 : answered === null
-                                    ? 'bg-[#F59E0B]/10 border-[#F59E0B]'
-                                    : 'bg-[#EF4444]/10 border-[#EF4444]/60'
+                                    ? 'bg-[#D7C95F]/10 border-[#D7C95F]'
+                                    : 'bg-[#D97848]/10 border-[#D97848]/60'
                     }`}
                 >
                     <p
-                        className="text-base font-bold text-[#1A1A19] text-center leading-snug"
+                        className="text-base font-bold text-[#08283B] text-center leading-snug"
                         style={{ fontFamily: "'Newsreader', Georgia, serif" }}
                     >
                         {currentQuestion.question}
@@ -273,8 +273,8 @@ export const RapidFire: React.FC<RapidFireProps> = ({
                         animate={{ opacity: 1, y: 0 }}
                         className={`text-xs px-3 py-2 rounded-xl ${
                             answered === currentQuestion.answer
-                                ? 'bg-[#10B981]/10 text-[#10B981]'
-                                : 'bg-[#EF4444]/10 text-[#EF4444]'
+                                ? 'bg-[#5F947D]/10 text-[#5F947D]'
+                                : 'bg-[#D97848]/10 text-[#D97848]'
                         }`}
                         style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                     >
@@ -293,12 +293,12 @@ export const RapidFire: React.FC<RapidFireProps> = ({
                     disabled={answered !== null}
                     className={`py-4 rounded-xl font-black text-sm transition-all duration-200 active:scale-[0.97]
                         ${answered === null
-                            ? 'bg-[#10B981] hover:bg-[#059669] text-white'
+                            ? 'bg-[#5F947D] hover:bg-[#5F947D] text-white'
                             : answered === true
                                 ? currentQuestion.answer === true
-                                    ? 'bg-[#10B981] text-white'
-                                    : 'bg-[#EF4444] text-white'
-                                : 'bg-[#E8E6DF] text-[#6B6B66] cursor-not-allowed'
+                                    ? 'bg-[#5F947D] text-white'
+                                    : 'bg-[#D97848] text-white'
+                                : 'bg-[#E7D8BD] text-[#445865] cursor-not-allowed'
                         }`}
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                 >
@@ -309,12 +309,12 @@ export const RapidFire: React.FC<RapidFireProps> = ({
                     disabled={answered !== null}
                     className={`py-4 rounded-xl font-black text-sm transition-all duration-200 active:scale-[0.97]
                         ${answered === null
-                            ? 'bg-[#EF4444] hover:bg-[#DC2626] text-white'
+                            ? 'bg-[#D97848] hover:bg-[#D97848] text-white'
                             : answered === false
                                 ? currentQuestion.answer === false
-                                    ? 'bg-[#10B981] text-white'
-                                    : 'bg-[#EF4444] text-white'
-                                : 'bg-[#E8E6DF] text-[#6B6B66] cursor-not-allowed'
+                                    ? 'bg-[#5F947D] text-white'
+                                    : 'bg-[#D97848] text-white'
+                                : 'bg-[#E7D8BD] text-[#445865] cursor-not-allowed'
                         }`}
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                 >
@@ -323,7 +323,7 @@ export const RapidFire: React.FC<RapidFireProps> = ({
             </div>
 
             <div
-                className="text-center text-xs text-[#6B6B66]"
+                className="text-center text-xs text-[#445865]"
                 style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
             >
                 Vraag {currentIndex + 1} van {questions.length}

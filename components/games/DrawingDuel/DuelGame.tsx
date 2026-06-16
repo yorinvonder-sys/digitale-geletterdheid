@@ -123,7 +123,7 @@ export const DuelGame: React.FC<DuelGameProps> = ({
             if (ctx) {
                 ctx.fillStyle = 'white';
                 ctx.fillRect(0, 0, canvasRef.current.width, canvasRef.current.height);
-                ctx.strokeStyle = '#3D3D38';
+                ctx.strokeStyle = '#445865';
                 ctx.lineWidth = 4;
                 ctx.lineCap = 'round';
                 ctx.lineJoin = 'round';
@@ -248,14 +248,14 @@ export const DuelGame: React.FC<DuelGameProps> = ({
     // COUNTDOWN SCREEN
     if (session?.status === 'drawing' && countdown > 0) {
         return (
-            <div className="w-full h-full flex items-center justify-center" style={{ backgroundColor: '#FAF9F0' }}>
+            <div className="w-full h-full flex items-center justify-center" style={{ backgroundColor: '#FCF6EA' }}>
                 <div className="text-center">
-                    <Swords size={64} className="mx-auto mb-6" style={{ color: '#D97757' }} />
-                    <h2 className="text-2xl mb-2" style={{ fontFamily: "'Newsreader', Georgia, serif", fontWeight: 700, color: '#1A1A19' }}>Duel Start in...</h2>
-                    <div className="text-8xl font-black animate-pulse" style={{ color: '#D97757' }}>
+                    <Swords size={64} className="mx-auto mb-6" style={{ color: '#D97848' }} />
+                    <h2 className="text-2xl mb-2" style={{ fontFamily: "'Newsreader', Georgia, serif", fontWeight: 700, color: '#08283B' }}>Duel Start in...</h2>
+                    <div className="text-8xl font-black animate-pulse" style={{ color: '#D97848' }}>
                         {countdown}
                     </div>
-                    <p className="mt-4" style={{ fontFamily: "'Outfit', system-ui, sans-serif", color: '#6B6B66' }}>vs {opponentName}</p>
+                    <p className="mt-4" style={{ fontFamily: "'Outfit', system-ui, sans-serif", color: '#445865' }}>vs {opponentName}</p>
                 </div>
             </div>
         );
@@ -269,54 +269,54 @@ export const DuelGame: React.FC<DuelGameProps> = ({
         const isTie = p1Score === p2Score;
 
         return (
-            <div className="w-full h-full flex items-center justify-center p-6" style={{ backgroundColor: '#FAF9F0' }}>
+            <div className="w-full h-full flex items-center justify-center p-6" style={{ backgroundColor: '#FCF6EA' }}>
                 <div className="text-center max-w-md">
                     {isWinner ? (
                         <>
                             <div className="w-24 h-24 mx-auto mb-6 rounded-full flex items-center justify-center" style={{ backgroundColor: 'rgba(217,119,87,0.12)' }}>
-                                <Crown size={48} style={{ color: '#D97757' }} />
+                                <Crown size={48} style={{ color: '#D97848' }} />
                             </div>
-                            <h2 className="text-3xl mb-2" style={{ fontFamily: "'Newsreader', Georgia, serif", fontWeight: 700, color: '#D97757' }}>JIJ WINT!</h2>
+                            <h2 className="text-3xl mb-2" style={{ fontFamily: "'Newsreader', Georgia, serif", fontWeight: 700, color: '#D97848' }}>JIJ WINT!</h2>
                         </>
                     ) : isTie ? (
                         <>
-                            <div className="w-24 h-24 mx-auto mb-6 rounded-full flex items-center justify-center" style={{ backgroundColor: '#F0EEE8' }}>
-                                <Swords size={48} style={{ color: '#6B6B66' }} />
+                            <div className="w-24 h-24 mx-auto mb-6 rounded-full flex items-center justify-center" style={{ backgroundColor: '#FCF6EA' }}>
+                                <Swords size={48} style={{ color: '#445865' }} />
                             </div>
-                            <h2 className="text-3xl mb-2" style={{ fontFamily: "'Newsreader', Georgia, serif", fontWeight: 700, color: '#1A1A19' }}>GELIJKSPEL!</h2>
+                            <h2 className="text-3xl mb-2" style={{ fontFamily: "'Newsreader', Georgia, serif", fontWeight: 700, color: '#08283B' }}>GELIJKSPEL!</h2>
                         </>
                     ) : (
                         <>
-                            <div className="w-24 h-24 mx-auto mb-6 rounded-full flex items-center justify-center" style={{ backgroundColor: '#F0EEE8' }}>
-                                <Trophy size={48} style={{ color: '#6B6B66' }} />
+                            <div className="w-24 h-24 mx-auto mb-6 rounded-full flex items-center justify-center" style={{ backgroundColor: '#FCF6EA' }}>
+                                <Trophy size={48} style={{ color: '#445865' }} />
                             </div>
-                            <h2 className="text-3xl mb-2" style={{ fontFamily: "'Newsreader', Georgia, serif", fontWeight: 700, color: '#1A1A19' }}>{opponentName} Wint</h2>
+                            <h2 className="text-3xl mb-2" style={{ fontFamily: "'Newsreader', Georgia, serif", fontWeight: 700, color: '#08283B' }}>{opponentName} Wint</h2>
                         </>
                     )}
 
-                    <div className="rounded-2xl p-6 mb-6" style={{ backgroundColor: '#FFFFFF', border: '1px solid #E8E6DF' }}>
+                    <div className="rounded-2xl p-6 mb-6" style={{ backgroundColor: '#FFFFFF', border: '1px solid #E7D8BD' }}>
                         <div className="flex justify-around">
                             <div className="text-center">
-                                <p className="text-sm" style={{ fontFamily: "'Outfit', system-ui, sans-serif", color: '#6B6B66' }}>Jij</p>
-                                <p className="text-3xl font-black" style={{ color: '#1A1A19' }}>{myScore || 0}</p>
+                                <p className="text-sm" style={{ fontFamily: "'Outfit', system-ui, sans-serif", color: '#445865' }}>Jij</p>
+                                <p className="text-3xl font-black" style={{ color: '#08283B' }}>{myScore || 0}</p>
                             </div>
-                            <div className="text-2xl font-bold" style={{ color: '#E8E6DF' }}>vs</div>
+                            <div className="text-2xl font-bold" style={{ color: '#E7D8BD' }}>vs</div>
                             <div className="text-center">
-                                <p className="text-sm" style={{ fontFamily: "'Outfit', system-ui, sans-serif", color: '#6B6B66' }}>{opponentName}</p>
-                                <p className="text-3xl font-black" style={{ color: '#1A1A19' }}>{opponentScore || 0}</p>
+                                <p className="text-sm" style={{ fontFamily: "'Outfit', system-ui, sans-serif", color: '#445865' }}>{opponentName}</p>
+                                <p className="text-3xl font-black" style={{ color: '#08283B' }}>{opponentScore || 0}</p>
                             </div>
                         </div>
                     </div>
 
-                    <p className="mb-6" style={{ fontFamily: "'Outfit', system-ui, sans-serif", color: '#6B6B66' }}>
+                    <p className="mb-6" style={{ fontFamily: "'Outfit', system-ui, sans-serif", color: '#445865' }}>
                         {isWinner ? "+50 XP" : isTie ? "+25 XP" : "+15 XP"}
                         {(myScore || 0) >= 5 && " +10 XP bonus!"}
                     </p>
 
                     <button
                         onClick={handleExit}
-                        className="px-8 py-4 rounded-full font-bold shadow-lg transition-all duration-300 focus-visible:ring-2 focus-visible:ring-[#D97757]"
-                        style={{ background: 'linear-gradient(135deg, #D97757, #C46849)', color: '#FFFFFF' }}
+                        className="px-8 py-4 rounded-full font-bold shadow-lg transition-all duration-300 focus-visible:ring-2 focus-visible:ring-[#D97848]"
+                        style={{ background: 'linear-gradient(135deg, #D97848, #D97848)', color: '#FFFFFF' }}
                     >
                         Afsluiten
                     </button>
@@ -327,9 +327,9 @@ export const DuelGame: React.FC<DuelGameProps> = ({
 
     // PLAYING SCREEN
     return (
-        <div className="w-full h-full flex flex-col" style={{ backgroundColor: '#FAF9F0' }}>
+        <div className="w-full h-full flex flex-col" style={{ backgroundColor: '#FCF6EA' }}>
             {/* Header */}
-            <div className="p-3 flex items-center justify-between" style={{ background: 'linear-gradient(135deg, #D97757, #C46849)' }}>
+            <div className="p-3 flex items-center justify-between" style={{ background: 'linear-gradient(135deg, #D97848, #D97848)' }}>
                 <div className="flex items-center gap-4">
                     {/* Current Prompt */}
                     <div className="rounded-full px-4 py-2" style={{ backgroundColor: 'rgba(255,255,255,0.2)' }}>
@@ -344,7 +344,7 @@ export const DuelGame: React.FC<DuelGameProps> = ({
                 <div
                     className="px-4 py-2 rounded-full font-mono font-black text-xl flex items-center gap-2"
                     style={timeLeft <= 10
-                        ? { backgroundColor: '#ef4444', color: '#FFFFFF' }
+                        ? { backgroundColor: '#D97848', color: '#FFFFFF' }
                         : { backgroundColor: 'rgba(255,255,255,0.2)', color: '#FFFFFF' }
                     }
                 >
@@ -380,7 +380,7 @@ export const DuelGame: React.FC<DuelGameProps> = ({
                     onTouchMove={draw}
                     onTouchEnd={stopDrawing}
                     className="bg-white rounded-2xl shadow-2xl touch-none cursor-crosshair"
-                    style={{ touchAction: 'none', border: '1px solid #E8E6DF' }}
+                    style={{ touchAction: 'none', border: '1px solid #E7D8BD' }}
                 />
 
                 {/* Result overlay */}
@@ -398,18 +398,18 @@ export const DuelGame: React.FC<DuelGameProps> = ({
                 {/* Analyzing overlay */}
                 {isAnalyzing && (
                     <div className="absolute inset-0 flex items-center justify-center" style={{ backgroundColor: 'rgba(250,249,240,0.7)' }}>
-                        <Loader2 size={48} className="animate-spin" style={{ color: '#D97757' }} />
+                        <Loader2 size={48} className="animate-spin" style={{ color: '#D97848' }} />
                     </div>
                 )}
             </div>
 
             {/* Controls */}
-            <div className="p-4 flex justify-center gap-4" style={{ backgroundColor: '#FFFFFF', borderTop: '1px solid #E8E6DF' }}>
+            <div className="p-4 flex justify-center gap-4" style={{ backgroundColor: '#FFFFFF', borderTop: '1px solid #E7D8BD' }}>
                 <button
                     onClick={clearCanvas}
                     disabled={isAnalyzing}
-                    className="px-6 py-3 disabled:opacity-50 rounded-full font-bold flex items-center gap-2 transition-all duration-300 focus-visible:ring-2 focus-visible:ring-[#D97757]"
-                    style={{ backgroundColor: '#F0EEE8', color: '#3D3D38' }}
+                    className="px-6 py-3 disabled:opacity-50 rounded-full font-bold flex items-center gap-2 transition-all duration-300 focus-visible:ring-2 focus-visible:ring-[#D97848]"
+                    style={{ backgroundColor: '#FCF6EA', color: '#445865' }}
                 >
                     <RotateCcw size={18} />
                     Wissen
@@ -417,11 +417,11 @@ export const DuelGame: React.FC<DuelGameProps> = ({
                 <button
                     onClick={submitDrawing}
                     disabled={!isDrawing || isAnalyzing}
-                    className="px-10 py-3 disabled:opacity-50 rounded-full font-bold flex items-center gap-2 shadow-lg transition-all duration-300 focus-visible:ring-2 focus-visible:ring-[#D97757]"
+                    className="px-10 py-3 disabled:opacity-50 rounded-full font-bold flex items-center gap-2 shadow-lg transition-all duration-300 focus-visible:ring-2 focus-visible:ring-[#D97848]"
                     style={
                         !isDrawing || isAnalyzing
-                            ? { backgroundColor: '#E8E6DF', color: '#6B6B66' }
-                            : { background: 'linear-gradient(135deg, #D97757, #C46849)', color: '#FFFFFF', boxShadow: '0 4px 14px rgba(217,119,87,0.3)' }
+                            ? { backgroundColor: '#E7D8BD', color: '#445865' }
+                            : { background: 'linear-gradient(135deg, #D97848, #D97848)', color: '#FFFFFF', boxShadow: '0 4px 14px rgba(217,119,87,0.3)' }
                     }
                 >
                     <Check size={18} />

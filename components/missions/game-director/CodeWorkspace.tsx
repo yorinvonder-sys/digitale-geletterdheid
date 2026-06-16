@@ -226,8 +226,8 @@ export const CodeWorkspace: React.FC<CodeWorkspaceProps> = ({
                             {parentId === null && (
                                 <div
                                     className={`h-3 rounded-full mb-1 transition-all duration-300 ${dragOverIndex === index
-                                        ? 'bg-[#D97757] h-4'
-                                        : reorderingBlockId ? 'bg-[#F0EEE8] hover:bg-white' : 'bg-transparent'
+                                        ? 'bg-[#D97848] h-4'
+                                        : reorderingBlockId ? 'bg-[#FCF6EA] hover:bg-white' : 'bg-transparent'
                                         }`}
                                     onDragOver={(e) => {
                                         e.preventDefault();
@@ -258,7 +258,7 @@ export const CodeWorkspace: React.FC<CodeWorkspaceProps> = ({
 
                 {parentId === null && (
                     <div
-                        className={`h-12 rounded-2xl border-2 border-dashed mt-2 transition-all duration-300 flex items-center justify-center ${dragOverIndex === currentBlocks.length ? 'border-[#D97757] bg-[#D97757]/10' : 'border-transparent'
+                        className={`h-12 rounded-2xl border-2 border-dashed mt-2 transition-all duration-300 flex items-center justify-center ${dragOverIndex === currentBlocks.length ? 'border-[#D97848] bg-[#D97848]/10' : 'border-transparent'
                             }`}
                         onDragOver={(e) => {
                             e.preventDefault();
@@ -266,7 +266,7 @@ export const CodeWorkspace: React.FC<CodeWorkspaceProps> = ({
                         }}
                         onDrop={(e) => handleDrop(e, null, currentBlocks.length)}
                     >
-                        {dragOverIndex === currentBlocks.length && <span className="text-[#D97757] font-bold text-xs">Drop hier</span>}
+                        {dragOverIndex === currentBlocks.length && <span className="text-[#D97848] font-bold text-xs">Drop hier</span>}
                     </div>
                 )}
             </div>
@@ -274,18 +274,18 @@ export const CodeWorkspace: React.FC<CodeWorkspaceProps> = ({
     };
 
     return (
-        <div className="h-full flex flex-col bg-white rounded-2xl overflow-hidden border border-[#E8E6DF] shadow-lg">
+        <div className="h-full flex flex-col bg-white rounded-2xl overflow-hidden border border-[#E7D8BD] shadow-lg">
             {/* Header with controls */}
-            <div className="px-4 py-3 bg-white border-b border-[#E8E6DF] flex items-center justify-between">
+            <div className="px-4 py-3 bg-white border-b border-[#E7D8BD] flex items-center justify-between">
                 <div>
-                    <h3 className="font-black text-sm uppercase tracking-widest text-[#1A1A19] font-['Newsreader',Georgia,serif]">📝 Jouw Code</h3>
-                    <p className="text-[10px] text-[#6B6B66] mt-0.5">{blocks.length} stack{blocks.length !== 1 ? 's' : ''}</p>
+                    <h3 className="font-black text-sm uppercase tracking-widest text-[#08283B] font-['Newsreader',Georgia,serif]">📝 Jouw Code</h3>
+                    <p className="text-[10px] text-[#445865] mt-0.5">{blocks.length} stack{blocks.length !== 1 ? 's' : ''}</p>
                 </div>
                 <div className="flex items-center gap-2">
                     <button
                         onClick={handleUndo}
                         disabled={undoStack.length === 0}
-                        className="p-2 rounded-full text-[#6B6B66] hover:bg-[#FAF9F0] hover:text-[#8B6F9E] transition-all duration-300 disabled:opacity-30 disabled:cursor-not-allowed"
+                        className="p-2 rounded-full text-[#445865] hover:bg-[#FCF6EA] hover:text-[#0B453F] transition-all duration-300 disabled:opacity-30 disabled:cursor-not-allowed"
                         title="Ongedaan maken"
                         aria-label="Ongedaan maken"
                     >
@@ -294,14 +294,14 @@ export const CodeWorkspace: React.FC<CodeWorkspaceProps> = ({
                     <button
                         onClick={handleClearAll}
                         disabled={blocks.length === 0}
-                        className="p-2 rounded-full text-[#6B6B66] hover:bg-[#FAF9F0] hover:text-[#D97757] transition-all duration-300 disabled:opacity-30 disabled:cursor-not-allowed"
+                        className="p-2 rounded-full text-[#445865] hover:bg-[#FCF6EA] hover:text-[#D97848] transition-all duration-300 disabled:opacity-30 disabled:cursor-not-allowed"
                         title="Verwijder alles"
                     >
                         <Trash2 size={16} />
                     </button>
                     <button
                         onClick={onReset}
-                        className="p-2 rounded-full text-[#6B6B66] hover:bg-[#FAF9F0] hover:text-[#D97757] transition-all duration-300"
+                        className="p-2 rounded-full text-[#445865] hover:bg-[#FCF6EA] hover:text-[#D97848] transition-all duration-300"
                         title="Reset game"
                     >
                         <RotateCcw size={16} />
@@ -309,9 +309,9 @@ export const CodeWorkspace: React.FC<CodeWorkspaceProps> = ({
                     <button
                         onClick={onRun}
                         disabled={blocks.length === 0}
-                        className={`px-4 py-2 rounded-full font-bold text-sm text-white flex items-center gap-2 transition-all duration-300 focus-visible:ring-2 focus-visible:ring-[#D97757] ${isRunning
+                        className={`px-4 py-2 rounded-full font-bold text-sm text-white flex items-center gap-2 transition-all duration-300 focus-visible:ring-2 focus-visible:ring-[#D97848] ${isRunning
                             ? 'bg-red-500 hover:bg-red-600'
-                            : 'bg-[#D97757] hover:bg-[#C46849] disabled:bg-[#E8E6DF] disabled:text-[#6B6B66] disabled:cursor-not-allowed'
+                            : 'bg-[#D97848] hover:bg-[#D97848] disabled:bg-[#E7D8BD] disabled:text-[#445865] disabled:cursor-not-allowed'
                             }`}
                     >
                         <Play size={14} fill="currentColor" />
@@ -324,26 +324,26 @@ export const CodeWorkspace: React.FC<CodeWorkspaceProps> = ({
             <div
                 ref={dropZoneRef}
                 data-drop-zone="main"
-                className={`flex-1 p-4 overflow-y-auto transition-all duration-300 ${isDraggingOver ? 'bg-[#D97757]/5' : 'bg-[#FAF9F0]'
+                className={`flex-1 p-4 overflow-y-auto transition-all duration-300 ${isDraggingOver ? 'bg-[#D97848]/5' : 'bg-[#FCF6EA]'
                     }`}
                 onDrop={(e) => handleDrop(e)}
                 onDragOver={handleDragOver}
                 onDragLeave={handleDragLeave}
             >
                 {blocks.length === 0 ? (
-                    <div className={`h-full flex flex-col items-center justify-center text-center p-8 border-2 border-dashed rounded-2xl transition-all duration-300 ${isDraggingOver ? 'border-[#D97757] bg-[#D97757]/5 scale-[1.02]' : 'border-[#E8E6DF]'
+                    <div className={`h-full flex flex-col items-center justify-center text-center p-8 border-2 border-dashed rounded-2xl transition-all duration-300 ${isDraggingOver ? 'border-[#D97848] bg-[#D97848]/5 scale-[1.02]' : 'border-[#E7D8BD]'
                         }`}>
                         {/* Placeholder box for visual guidance */}
-                        <div className={`w-48 h-16 mb-4 border-2 border-dashed rounded-2xl flex items-center justify-center transition-all duration-300 ${isDraggingOver ? 'border-[#D97757] bg-[#D97757]/10' : 'border-[#E8E6DF] bg-white'}`}>
-                            <Plus size={24} className={`${isDraggingOver ? 'text-[#D97757]' : 'text-[#6B6B66]'}`} />
+                        <div className={`w-48 h-16 mb-4 border-2 border-dashed rounded-2xl flex items-center justify-center transition-all duration-300 ${isDraggingOver ? 'border-[#D97848] bg-[#D97848]/10' : 'border-[#E7D8BD] bg-white'}`}>
+                            <Plus size={24} className={`${isDraggingOver ? 'text-[#D97848]' : 'text-[#445865]'}`} />
                         </div>
                         <div className="text-5xl mb-4">🧩</div>
-                        <h4 className="font-bold text-[#1A1A19] mb-2">Sleep blokken hierheen</h4>
-                        <p className="text-sm text-[#6B6B66] max-w-xs">
-                            Begin met een <span className="text-[#D97757] font-bold">gele gebeurtenis</span> blok en voeg daarna andere blokken toe.
+                        <h4 className="font-bold text-[#08283B] mb-2">Sleep blokken hierheen</h4>
+                        <p className="text-sm text-[#445865] max-w-xs">
+                            Begin met een <span className="text-[#D97848] font-bold">gele gebeurtenis</span> blok en voeg daarna andere blokken toe.
                         </p>
                         {/* iPad hint */}
-                        <p className="text-xs text-[#6B6B66] mt-4 bg-white px-3 py-1.5 rounded-full border border-[#F0EEE8]">
+                        <p className="text-xs text-[#445865] mt-4 bg-white px-3 py-1.5 rounded-full border border-[#FCF6EA]">
                             📱 Op iPad: Houd een blok ingedrukt en sleep naar hier
                         </p>
                     </div>
@@ -355,26 +355,26 @@ export const CodeWorkspace: React.FC<CodeWorkspaceProps> = ({
             {/* Clear All Confirmation Dialog */}
             {showClearConfirm && (
                 <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/30 backdrop-blur-sm rounded-2xl">
-                    <div className="bg-white rounded-2xl shadow-2xl border border-[#E8E6DF] p-6 mx-4 max-w-sm w-full">
+                    <div className="bg-white rounded-2xl shadow-2xl border border-[#E7D8BD] p-6 mx-4 max-w-sm w-full">
                         <div className="flex items-center gap-3 mb-3">
-                            <div className="p-2 bg-[#D97757]/10 rounded-xl">
-                                <AlertTriangle size={20} className="text-[#D97757]" />
+                            <div className="p-2 bg-[#D97848]/10 rounded-xl">
+                                <AlertTriangle size={20} className="text-[#D97848]" />
                             </div>
-                            <h4 className="font-bold text-[#1A1A19] text-sm font-['Newsreader',Georgia,serif]">Alles verwijderen?</h4>
+                            <h4 className="font-bold text-[#08283B] text-sm font-['Newsreader',Georgia,serif]">Alles verwijderen?</h4>
                         </div>
-                        <p className="text-xs text-[#6B6B66] mb-4">
+                        <p className="text-xs text-[#445865] mb-4">
                             Weet je zeker dat je alle {blocks.length} blok{blocks.length !== 1 ? 'ken' : ''} wilt verwijderen? Je kunt dit ongedaan maken met de undo-knop.
                         </p>
                         <div className="flex items-center gap-2 justify-end">
                             <button
                                 onClick={() => setShowClearConfirm(false)}
-                                className="px-4 py-2 rounded-full text-xs font-bold text-[#6B6B66] hover:bg-[#FAF9F0] transition-all duration-300 border border-[#E8E6DF]"
+                                className="px-4 py-2 rounded-full text-xs font-bold text-[#445865] hover:bg-[#FCF6EA] transition-all duration-300 border border-[#E7D8BD]"
                             >
                                 Annuleren
                             </button>
                             <button
                                 onClick={confirmClearAll}
-                                className="px-4 py-2 rounded-full text-xs font-bold text-white bg-[#D97757] hover:bg-[#C46849] transition-all duration-300 shadow-lg shadow-[#D97757]/20"
+                                className="px-4 py-2 rounded-full text-xs font-bold text-white bg-[#D97848] hover:bg-[#D97848] transition-all duration-300 shadow-lg shadow-[#D97848]/20"
                             >
                                 Verwijder alles
                             </button>

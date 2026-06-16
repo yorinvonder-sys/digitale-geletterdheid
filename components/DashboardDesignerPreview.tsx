@@ -40,7 +40,7 @@ const DRAG_WIDGET_MIME = 'application/x-dashboard-widget';
 const MiniBarChart: React.FC = () => (
     <svg viewBox="0 0 80 40" className="w-full h-full">
         {[28, 35, 22, 30, 38, 25].map((h, i) => (
-            <rect key={i} x={i * 13 + 2} y={40 - h} width={10} height={h} rx={2} className="fill-emerald-400/80" />
+            <rect key={i} x={i * 13 + 2} y={40 - h} width={10} height={h} rx={2} className="fill-lab-sage/80" />
         ))}
     </svg>
 );
@@ -49,7 +49,7 @@ const MiniLineChart: React.FC = () => (
     <svg viewBox="0 0 80 40" className="w-full h-full">
         <polyline
             fill="none"
-            stroke="#8B5CF6"
+            stroke="#0B453F"
             strokeWidth="2.5"
             strokeLinecap="round"
             strokeLinejoin="round"
@@ -57,20 +57,20 @@ const MiniLineChart: React.FC = () => (
         />
         <polyline
             fill="none"
-            stroke="#8B5CF6"
+            stroke="#0B453F"
             strokeWidth="0"
             points="4,32 16,28 28,20 40,22 52,14 64,10 76,8 76,40 4,40"
-            className="fill-violet-200/40"
+            className="fill-lab-teal/40"
         />
     </svg>
 );
 
 const MiniPieChart: React.FC = () => (
     <svg viewBox="0 0 40 40" className="w-full h-full">
-        <circle cx="20" cy="20" r="16" className="fill-amber-100" />
-        <path d="M20,20 L20,4 A16,16 0 0,1 36,20 Z" className="fill-amber-400" />
-        <path d="M20,20 L36,20 A16,16 0 0,1 20,36 Z" className="fill-amber-300" />
-        <path d="M20,20 L20,36 A16,16 0 0,1 4,20 Z" className="fill-amber-200" />
+        <circle cx="20" cy="20" r="16" className="fill-lab-gold" />
+        <path d="M20,20 L20,4 A16,16 0 0,1 36,20 Z" className="fill-lab-gold" />
+        <path d="M20,20 L36,20 A16,16 0 0,1 20,36 Z" className="fill-lab-gold" />
+        <path d="M20,20 L20,36 A16,16 0 0,1 4,20 Z" className="fill-lab-gold" />
     </svg>
 );
 
@@ -183,8 +183,8 @@ const DashboardDesignerPreview: React.FC = () => {
         if (widget.type === 'kpi') {
             return (
                 <div className="text-center">
-                    <div className={`${small ? 'text-lg' : 'text-2xl'} font-black text-slate-800`}>{widget.value}</div>
-                    <div className="text-[9px] text-slate-500 font-medium mt-0.5">{widget.label}</div>
+                    <div className={`${small ? 'text-lg' : 'text-2xl'} font-black text-lab-muted`}>{widget.value}</div>
+                    <div className="text-[9px] text-lab-muted font-medium mt-0.5">{widget.label}</div>
                 </div>
             );
         }
@@ -238,7 +238,7 @@ const DashboardDesignerPreview: React.FC = () => {
                                         <div className="w-full h-full flex flex-col items-center justify-center">
                                             {renderWidget(widget, true)}
                                             {widget.type !== 'kpi' && (
-                                                <div className="text-[8px] text-slate-500 font-medium mt-1">{widget.label}</div>
+                                                <div className="text-[8px] text-lab-muted font-medium mt-1">{widget.label}</div>
                                             )}
                                         </div>
                                     ) : (
@@ -260,7 +260,7 @@ const DashboardDesignerPreview: React.FC = () => {
                         : 'border-blue-100'
                     }`}
                 >
-                    <div className="text-[10px] font-bold text-slate-700 uppercase mb-2">Beschikbare widgets — sleep of klik om te plaatsen</div>
+                    <div className="text-[10px] font-bold text-lab-muted uppercase mb-2">Beschikbare widgets — sleep of klik om te plaatsen</div>
                     <div className="grid grid-cols-2 gap-2">
                         {availableWidgets.map((widget) => (
                             <button
@@ -277,15 +277,15 @@ const DashboardDesignerPreview: React.FC = () => {
                                     {WIDGET_ICONS[widget.type]}
                                 </div>
                                 <div>
-                                    <div className="text-[11px] font-bold text-slate-700">{widget.label}</div>
-                                    <div className="text-[9px] text-slate-400 capitalize">{widget.type === 'kpi' ? 'Getal-kaart' : widget.type === 'bar' ? 'Staafdiagram' : widget.type === 'line' ? 'Lijndiagram' : 'Cirkeldiagram'}</div>
+                                    <div className="text-[11px] font-bold text-lab-muted">{widget.label}</div>
+                                    <div className="text-[9px] text-lab-muted capitalize">{widget.type === 'kpi' ? 'Getal-kaart' : widget.type === 'bar' ? 'Staafdiagram' : widget.type === 'line' ? 'Lijndiagram' : 'Cirkeldiagram'}</div>
                                 </div>
-                                <GripVertical size={12} className={`text-slate-300 ml-auto transition-opacity ${draggedWidgetId === widget.id ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`} />
+                                <GripVertical size={12} className={`text-lab-muted ml-auto transition-opacity ${draggedWidgetId === widget.id ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`} />
                             </button>
                         ))}
                     </div>
                     {availableWidgets.length > 0 && (
-                        <p className="mt-2 text-[10px] text-slate-400">
+                        <p className="mt-2 text-[10px] text-lab-muted">
                             Sleep naar een vak. Sleep een geplaatste widget terug hierheen om hem weg te halen.
                         </p>
                     )}

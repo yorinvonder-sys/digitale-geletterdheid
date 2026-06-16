@@ -23,10 +23,10 @@ $FFMPEG -y \
   -loop 1 -t 2 -i "$SCREENSHOTS/student-dashboard.png" \
   -i "$VIDEOS/pip-greenscreen.mp4" \
   -filter_complex "
-    [0:v]scale=1280:720:force_original_aspect_ratio=decrease,pad=1280:720:(ow-iw)/2:(oh-ih)/2:color=#FAF9F0,setsar=1[s0];
-    [1:v]scale=1280:720:force_original_aspect_ratio=decrease,pad=1280:720:(ow-iw)/2:(oh-ih)/2:color=#FAF9F0,setsar=1[s1];
-    [2:v]scale=1280:720:force_original_aspect_ratio=decrease,pad=1280:720:(ow-iw)/2:(oh-ih)/2:color=#FAF9F0,setsar=1[s2];
-    [3:v]scale=1280:720:force_original_aspect_ratio=decrease,pad=1280:720:(ow-iw)/2:(oh-ih)/2:color=#FAF9F0,setsar=1[s3];
+    [0:v]scale=1280:720:force_original_aspect_ratio=decrease,pad=1280:720:(ow-iw)/2:(oh-ih)/2:color=#FCF6EA,setsar=1[s0];
+    [1:v]scale=1280:720:force_original_aspect_ratio=decrease,pad=1280:720:(ow-iw)/2:(oh-ih)/2:color=#FCF6EA,setsar=1[s1];
+    [2:v]scale=1280:720:force_original_aspect_ratio=decrease,pad=1280:720:(ow-iw)/2:(oh-ih)/2:color=#FCF6EA,setsar=1[s2];
+    [3:v]scale=1280:720:force_original_aspect_ratio=decrease,pad=1280:720:(ow-iw)/2:(oh-ih)/2:color=#FCF6EA,setsar=1[s3];
     [s0][s1]xfade=transition=fade:duration=0.3:offset=1.7[t01];
     [t01][s2]xfade=transition=fade:duration=0.3:offset=3.4[t02];
     [t02][s3]xfade=transition=fade:duration=0.3:offset=5.1[slideshow];

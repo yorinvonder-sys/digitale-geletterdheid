@@ -64,7 +64,7 @@ export const SimulatorTask: React.FC<Props> = ({ task, onComplete }) => {
         switch (iconName) {
             case 'FileText': return <FileText size={32} className="text-blue-500" />;
             case 'Image': return <Image size={32} className="text-purple-500" />;
-            default: return <FileText size={32} className="text-slate-500" />;
+            default: return <FileText size={32} className="text-lab-muted" />;
         }
     };
 
@@ -81,7 +81,7 @@ export const SimulatorTask: React.FC<Props> = ({ task, onComplete }) => {
             <div className="flex-1 bg-white rounded-2xl border-2 border-neutral-200 shadow-md relative overflow-hidden flex">
 
                 {/* Wallpaper */}
-                <div className="absolute inset-0 opacity-5 bg-[radial-gradient(#D97757_1px,transparent_1px)] [background-size:20px_20px]"></div>
+                <div className="absolute inset-0 opacity-5 bg-[radial-gradient(#D97848_1px,transparent_1px)] [background-size:20px_20px]"></div>
 
                 {/* Left: Desktop Icons (Source) */}
                 <div className="flex-1 p-3 sm:p-6 grid grid-cols-2 sm:grid-cols-3 gap-2 sm:gap-4 content-start">

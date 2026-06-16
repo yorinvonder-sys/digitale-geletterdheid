@@ -76,11 +76,11 @@ export const dashboardDesignerConfig: DataViewerConfig = {
                 'Een cirkeldiagram laat zien hoe een geheel verdeeld is over delen. Bekijk de verdeling van onvoldoendes over vakken en beantwoord de vragen.',
             type: 'pie-chart',
             chartData: [
-                { label: 'Wiskunde', value: 28, color: '#D97757' },
-                { label: 'Engels', value: 18, color: '#3B82F6' },
-                { label: 'Nederlands', value: 14, color: '#10B981' },
-                { label: 'Aardrijkskunde', value: 22, color: '#F59E0B' },
-                { label: 'Overige vakken', value: 18, color: '#8B5CF6' },
+                { label: 'Wiskunde', value: 28, color: '#D97848' },
+                { label: 'Engels', value: 18, color: '#0B453F' },
+                { label: 'Nederlands', value: 14, color: '#5F947D' },
+                { label: 'Aardrijkskunde', value: 22, color: '#D7C95F' },
+                { label: 'Overige vakken', value: 18, color: '#0B453F' },
             ],
             questions: [
                 {
@@ -188,25 +188,25 @@ export const dashboardDesignerConfig: DataViewerConfig = {
             minScore: 85,
             emoji: '🏆',
             title: 'Dashboard Designer Pro!',
-            color: '#2563EB',
+            color: '#0B453F',
         },
         {
             minScore: 65,
             emoji: '📈',
             title: 'Data Visualist',
-            color: '#10B981',
+            color: '#5F947D',
         },
         {
             minScore: 40,
             emoji: '📊',
             title: 'Dashboard Starter',
-            color: '#F59E0B',
+            color: '#D7C95F',
         },
         {
             minScore: 0,
             emoji: '📚',
             title: 'Aan de slag!',
-            color: '#6B6B66',
+            color: '#445865',
         },
     ],
 

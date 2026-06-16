@@ -83,12 +83,12 @@ export const researchProjectConfig: DataViewerConfig = {
                 'Niet elke onderzoeksmethode is even betrouwbaar. Wetenschappers beoordelen methoden op basis van "levels of evidence". Hogere score = sterker bewijs.',
             type: 'bar-chart',
             chartData: [
-                { label: 'Expertmening', value: 15, color: '#6B7280' },
-                { label: 'Casestudy (1 persoon)', value: 25, color: '#F59E0B' },
-                { label: 'Enquête (zelfrapportage)', value: 45, color: '#3B82F6' },
-                { label: 'Cohort-onderzoek', value: 65, color: '#8B5CF6' },
-                { label: 'Gecontroleerd experiment', value: 80, color: '#10B981' },
-                { label: 'Meta-analyse', value: 95, color: '#059669' },
+                { label: 'Expertmening', value: 15, color: '#445865' },
+                { label: 'Casestudy (1 persoon)', value: 25, color: '#D7C95F' },
+                { label: 'Enquête (zelfrapportage)', value: 45, color: '#0B453F' },
+                { label: 'Cohort-onderzoek', value: 65, color: '#0B453F' },
+                { label: 'Gecontroleerd experiment', value: 80, color: '#5F947D' },
+                { label: 'Meta-analyse', value: 95, color: '#5F947D' },
             ],
             questions: [
                 {
@@ -195,25 +195,25 @@ export const researchProjectConfig: DataViewerConfig = {
             minScore: 85,
             emoji: '🔬',
             title: 'Wetenschapper in spe!',
-            color: '#2563EB',
+            color: '#0B453F',
         },
         {
             minScore: 65,
             emoji: '📊',
             title: 'Data Onderzoeker',
-            color: '#8B5CF6',
+            color: '#0B453F',
         },
         {
             minScore: 40,
             emoji: '🔍',
             title: 'Kritisch Denker',
-            color: '#10B981',
+            color: '#5F947D',
         },
         {
             minScore: 0,
             emoji: '📚',
             title: 'Aan de slag!',
-            color: '#6B6B66',
+            color: '#445865',
         },
     ],
 

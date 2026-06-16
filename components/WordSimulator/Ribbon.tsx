@@ -27,7 +27,7 @@ interface RibbonProps {
 
 // Reusable group separator
 const GroupSeparator = () => (
-    <div className="w-px bg-[#d1d1d1] mx-1 self-stretch my-1" />
+    <div className="w-px bg-[#E7D8BD] mx-1 self-stretch my-1" />
 );
 
 // Group label at the bottom
@@ -51,12 +51,12 @@ const RibbonButtonLarge = ({
         className={`
             flex flex-col items-center justify-center px-2 py-1 rounded-sm min-w-[52px]
             transition-colors select-none
-            ${active ? 'bg-[#c8e0f9] border border-[#98c6f7]' : 'hover:bg-[#e5f0fb] border border-transparent hover:border-[#c8ddf2]'}
+            ${active ? 'bg-[#c8e0f9] border border-[#98c6f7]' : 'hover:bg-[#FCF6EA] border border-transparent hover:border-[#E7D8BD]'}
             ${disabled ? 'opacity-40 cursor-not-allowed' : 'cursor-default'}
         `}
     >
-        <Icon size={22} className="mb-0.5 text-[#404040]" strokeWidth={1.5} />
-        <span className="text-[10px] text-center leading-tight text-[#404040] whitespace-nowrap">{label}</span>
+        <Icon size={22} className="mb-0.5 text-[#445865]" strokeWidth={1.5} />
+        <span className="text-[10px] text-center leading-tight text-[#445865] whitespace-nowrap">{label}</span>
     </button>
 );
 
@@ -74,11 +74,11 @@ const RibbonButtonSmall = ({
         title={title || label}
         className={`
             flex items-center justify-center p-1 rounded-sm transition-colors select-none
-            ${active ? 'bg-[#c8e0f9] border border-[#98c6f7]' : 'hover:bg-[#e5f0fb] border border-transparent hover:border-[#c8ddf2]'}
+            ${active ? 'bg-[#c8e0f9] border border-[#98c6f7]' : 'hover:bg-[#FCF6EA] border border-transparent hover:border-[#E7D8BD]'}
             ${disabled ? 'opacity-40 cursor-not-allowed' : 'cursor-default'}
         `}
     >
-        <Icon size={size} className="text-[#404040]" strokeWidth={1.5} />
+        <Icon size={size} className="text-[#445865]" strokeWidth={1.5} />
     </button>
 );
 
@@ -93,17 +93,17 @@ const SplitButton = ({
             onMouseDown={(e) => e.preventDefault()}
             onClick={onClick}
             disabled={disabled}
-            className="flex flex-col items-center px-3 py-1 rounded-t-sm hover:bg-[#e5f0fb] border border-transparent hover:border-[#c8ddf2] cursor-default transition-colors"
+            className="flex flex-col items-center px-3 py-1 rounded-t-sm hover:bg-[#FCF6EA] border border-transparent hover:border-[#E7D8BD] cursor-default transition-colors"
         >
-            <Icon size={28} className="text-[#404040]" strokeWidth={1.5} />
+            <Icon size={28} className="text-[#445865]" strokeWidth={1.5} />
         </button>
         <button
             onMouseDown={(e) => e.preventDefault()}
             disabled={disabled}
-            className="flex items-center gap-0.5 px-2 py-0.5 rounded-b-sm hover:bg-[#e5f0fb] border border-transparent hover:border-[#c8ddf2] cursor-default transition-colors"
+            className="flex items-center gap-0.5 px-2 py-0.5 rounded-b-sm hover:bg-[#FCF6EA] border border-transparent hover:border-[#E7D8BD] cursor-default transition-colors"
         >
-            <span className="text-[10px] text-[#404040]">{label}</span>
-            <ChevronDown size={8} className="text-[#404040]" />
+            <span className="text-[10px] text-[#445865]">{label}</span>
+            <ChevronDown size={8} className="text-[#445865]" />
         </button>
     </div>
 );
@@ -111,16 +111,16 @@ const SplitButton = ({
 // Font dropdown (decorative)
 const FontDropdown = ({ value }: { value: string }) => (
     <div className="flex items-center bg-white border border-[#c0c0c0] rounded-sm h-[22px] px-2 min-w-[130px] cursor-default hover:border-[#3c7fb1]">
-        <span className="text-[12px] text-[#404040] flex-1 truncate" style={{ fontFamily: value }}>{value}</span>
-        <ChevronDown size={10} className="text-[#808080] ml-1 shrink-0" />
+        <span className="text-[12px] text-[#445865] flex-1 truncate" style={{ fontFamily: value }}>{value}</span>
+        <ChevronDown size={10} className="text-[#445865] ml-1 shrink-0" />
     </div>
 );
 
 // Font size dropdown (decorative)
 const FontSizeDropdown = ({ value }: { value: number }) => (
     <div className="flex items-center bg-white border border-[#c0c0c0] rounded-sm h-[22px] px-2 w-[42px] cursor-default hover:border-[#3c7fb1]">
-        <span className="text-[12px] text-[#404040] flex-1 text-center">{value}</span>
-        <ChevronDown size={10} className="text-[#808080] ml-0.5 shrink-0" />
+        <span className="text-[12px] text-[#445865] flex-1 text-center">{value}</span>
+        <ChevronDown size={10} className="text-[#445865] ml-0.5 shrink-0" />
     </div>
 );
 
@@ -137,8 +137,8 @@ const StyleCard = ({
         className={`
             flex items-end px-2 py-1 border rounded-sm min-w-[60px] h-[56px] cursor-default transition-colors
             ${active
-                ? 'border-[#4e9bd5] bg-[#e5f0fb] shadow-sm'
-                : 'border-[#d5d5d5] bg-white hover:border-[#91c4e9] hover:bg-[#f5f9fc]'
+                ? 'border-[#4e9bd5] bg-[#FCF6EA] shadow-sm'
+                : 'border-[#E7D8BD] bg-white hover:border-[#91c4e9] hover:bg-[#f5f9fc]'
             }
         `}
     >
@@ -166,7 +166,7 @@ export const Ribbon: React.FC<RibbonProps> = ({ state, onAction, onTabChange, ha
     ];
 
     return (
-        <div className="bg-[#f3f3f3] border-b border-[#d1d1d1] shrink-0 z-30 relative select-none">
+        <div className="bg-[#f3f3f3] border-b border-[#E7D8BD] shrink-0 z-30 relative select-none">
             {/* TABS ROW */}
             <div className="flex items-end px-1 bg-[#f3f3f3]">
                 {tabs.map(tab => {
@@ -179,7 +179,7 @@ export const Ribbon: React.FC<RibbonProps> = ({ state, onAction, onTabChange, ha
                             className={`
                                 px-3 py-[5px] text-[12px] transition-colors relative cursor-default
                                 ${isActive
-                                    ? 'bg-[#fdfdfd] text-[#1a1a1a] border-t border-l border-r border-[#d1d1d1] border-b-0 -mb-px z-10 rounded-t-[3px] font-medium'
+                                    ? 'bg-[#fdfdfd] text-[#08283B] border-t border-l border-r border-[#E7D8BD] border-b-0 -mb-px z-10 rounded-t-[3px] font-medium'
                                     : 'text-[#444] hover:bg-[#e8e8e8] border border-transparent'
                                 }
                                 ${tab.id === 'bestand' ? 'bg-[#185abd] text-white hover:bg-[#1a4fa0] rounded-[3px] font-medium mr-1 border-none' : ''}
@@ -192,7 +192,7 @@ export const Ribbon: React.FC<RibbonProps> = ({ state, onAction, onTabChange, ha
             </div>
 
             {/* RIBBON CONTENT */}
-            <div className="bg-[#fdfdfd] border-t border-[#d1d1d1] min-h-[90px] px-2 py-1 flex items-stretch gap-0 overflow-x-auto">
+            <div className="bg-[#fdfdfd] border-t border-[#E7D8BD] min-h-[90px] px-2 py-1 flex items-stretch gap-0 overflow-x-auto">
 
                 {/* ===== START TAB ===== */}
                 {state.activeTab === 'start' && (
@@ -230,26 +230,26 @@ export const Ribbon: React.FC<RibbonProps> = ({ state, onAction, onTabChange, ha
                                     <RibbonButtonSmall icon={Strikethrough} title="Doorhalen" />
                                     <RibbonButtonSmall icon={Subscript} title="Subscript" />
                                     <RibbonButtonSmall icon={Superscript} title="Superscript" />
-                                    <div className="w-px h-4 bg-[#d1d1d1] mx-0.5" />
+                                    <div className="w-px h-4 bg-[#E7D8BD] mx-0.5" />
                                     {/* Text highlight color */}
                                     <div className="flex items-center">
                                         <button
                                             onMouseDown={(e) => e.preventDefault()}
-                                            className="flex items-center p-1 rounded-sm hover:bg-[#e5f0fb] border border-transparent hover:border-[#c8ddf2] cursor-default"
+                                            className="flex items-center p-1 rounded-sm hover:bg-[#FCF6EA] border border-transparent hover:border-[#E7D8BD] cursor-default"
                                             title="Markeerstiftkleur"
                                         >
-                                            <Highlighter size={14} className="text-[#404040]" strokeWidth={1.5} />
-                                            <div className="w-3.5 h-1 bg-yellow-300 mt-0.5 -ml-0.5" />
+                                            <Highlighter size={14} className="text-[#445865]" strokeWidth={1.5} />
+                                            <div className="w-3.5 h-1 bg-lab-gold mt-0.5 -ml-0.5" />
                                         </button>
                                     </div>
                                     {/* Font color */}
                                     <div className="flex items-center">
                                         <button
                                             onMouseDown={(e) => e.preventDefault()}
-                                            className="flex items-center p-1 rounded-sm hover:bg-[#e5f0fb] border border-transparent hover:border-[#c8ddf2] cursor-default"
+                                            className="flex items-center p-1 rounded-sm hover:bg-[#FCF6EA] border border-transparent hover:border-[#E7D8BD] cursor-default"
                                             title="Tekenkleur"
                                         >
-                                            <Type size={14} className="text-[#404040]" strokeWidth={1.5} />
+                                            <Type size={14} className="text-[#445865]" strokeWidth={1.5} />
                                             <div className="w-3.5 h-1 bg-red-500 mt-0.5 -ml-0.5" />
                                         </button>
                                     </div>
@@ -266,10 +266,10 @@ export const Ribbon: React.FC<RibbonProps> = ({ state, onAction, onTabChange, ha
                                 <div className="flex items-center gap-0">
                                     <RibbonButtonSmall icon={List} title="Opsommingstekens" onClick={() => onAction('bulletList')} />
                                     <RibbonButtonSmall icon={ListOrdered} title="Nummering" />
-                                    <div className="w-px h-4 bg-[#d1d1d1] mx-0.5" />
+                                    <div className="w-px h-4 bg-[#E7D8BD] mx-0.5" />
                                     <RibbonButtonSmall icon={IndentDecrease} title="Inspringing verkleinen" />
                                     <RibbonButtonSmall icon={IndentIncrease} title="Inspringing vergroten" />
-                                    <div className="w-px h-4 bg-[#d1d1d1] mx-0.5" />
+                                    <div className="w-px h-4 bg-[#E7D8BD] mx-0.5" />
                                     <RibbonButtonSmall icon={ArrowUpDown} title="Sorteren" />
                                     <RibbonButtonSmall icon={Pilcrow} title="Alles weergeven" />
                                 </div>
@@ -279,24 +279,24 @@ export const Ribbon: React.FC<RibbonProps> = ({ state, onAction, onTabChange, ha
                                     <RibbonButtonSmall icon={AlignCenter} title="Centreren" onClick={() => onAction('alignCenter')} />
                                     <RibbonButtonSmall icon={AlignRight} title="Rechts uitlijnen" onClick={() => onAction('alignRight')} />
                                     <RibbonButtonSmall icon={AlignJustify} title="Uitvullen" />
-                                    <div className="w-px h-4 bg-[#d1d1d1] mx-0.5" />
+                                    <div className="w-px h-4 bg-[#E7D8BD] mx-0.5" />
                                     <RibbonButtonSmall icon={SeparatorHorizontal} title="Regelafstand" />
                                     {/* Shading */}
                                     <button
                                         onMouseDown={(e) => e.preventDefault()}
-                                        className="flex items-center p-1 rounded-sm hover:bg-[#e5f0fb] border border-transparent hover:border-[#c8ddf2] cursor-default"
+                                        className="flex items-center p-1 rounded-sm hover:bg-[#FCF6EA] border border-transparent hover:border-[#E7D8BD] cursor-default"
                                         title="Arcering"
                                     >
-                                        <div className="w-3.5 h-3.5 border border-[#808080] bg-white" />
+                                        <div className="w-3.5 h-3.5 border border-[#445865] bg-white" />
                                     </button>
                                     {/* Border */}
                                     <button
                                         onMouseDown={(e) => e.preventDefault()}
-                                        className="flex items-center gap-0.5 p-1 rounded-sm hover:bg-[#e5f0fb] border border-transparent hover:border-[#c8ddf2] cursor-default"
+                                        className="flex items-center gap-0.5 p-1 rounded-sm hover:bg-[#FCF6EA] border border-transparent hover:border-[#E7D8BD] cursor-default"
                                         title="Randen"
                                     >
-                                        <Grid3X3 size={14} className="text-[#404040]" strokeWidth={1.5} />
-                                        <ChevronDown size={8} className="text-[#808080]" />
+                                        <Grid3X3 size={14} className="text-[#445865]" strokeWidth={1.5} />
+                                        <ChevronDown size={8} className="text-[#445865]" />
                                     </button>
                                 </div>
                             </div>
@@ -311,14 +311,14 @@ export const Ribbon: React.FC<RibbonProps> = ({ state, onAction, onTabChange, ha
                                     label="Normaal"
                                     fontSize="11px"
                                     fontWeight="normal"
-                                    color="#404040"
+                                    color="#445865"
                                     onClick={() => onAction('normal')}
                                 />
                                 <StyleCard
                                     label="Geen af..."
                                     fontSize="11px"
                                     fontWeight="normal"
-                                    color="#404040"
+                                    color="#445865"
                                 />
                                 <StyleCard
                                     label="Kop 1"
@@ -337,22 +337,22 @@ export const Ribbon: React.FC<RibbonProps> = ({ state, onAction, onTabChange, ha
                                     label="Titel"
                                     fontSize="18px"
                                     fontWeight="300"
-                                    color="#404040"
+                                    color="#445865"
                                     onClick={() => onAction('title')}
                                 />
                                 <StyleCard
                                     label="Ondertitel"
                                     fontSize="12px"
                                     fontWeight="normal"
-                                    color="#808080"
+                                    color="#445865"
                                 />
                                 {/* Scroll arrow */}
                                 <div className="flex flex-col gap-0 ml-0.5">
-                                    <button className="p-0.5 hover:bg-[#e5f0fb] border border-[#d5d5d5] rounded-t-sm cursor-default">
-                                        <ChevronDown size={10} className="text-[#808080] rotate-180" />
+                                    <button className="p-0.5 hover:bg-[#FCF6EA] border border-[#E7D8BD] rounded-t-sm cursor-default">
+                                        <ChevronDown size={10} className="text-[#445865] rotate-180" />
                                     </button>
-                                    <button className="p-0.5 hover:bg-[#e5f0fb] border border-[#d5d5d5] border-t-0 rounded-b-sm cursor-default">
-                                        <ChevronDown size={10} className="text-[#808080]" />
+                                    <button className="p-0.5 hover:bg-[#FCF6EA] border border-[#E7D8BD] border-t-0 rounded-b-sm cursor-default">
+                                        <ChevronDown size={10} className="text-[#445865]" />
                                     </button>
                                 </div>
                             </div>
@@ -363,18 +363,18 @@ export const Ribbon: React.FC<RibbonProps> = ({ state, onAction, onTabChange, ha
                         {/* --- Bewerken Group --- */}
                         <div className="flex flex-col items-center px-1">
                             <div className="flex flex-col gap-0.5 flex-1 py-0.5">
-                                <div className="flex items-center gap-1 px-1 py-0.5 rounded-sm hover:bg-[#e5f0fb] cursor-default">
-                                    <Search size={14} className="text-[#404040]" strokeWidth={1.5} />
-                                    <span className="text-[11px] text-[#404040]">Zoeken</span>
+                                <div className="flex items-center gap-1 px-1 py-0.5 rounded-sm hover:bg-[#FCF6EA] cursor-default">
+                                    <Search size={14} className="text-[#445865]" strokeWidth={1.5} />
+                                    <span className="text-[11px] text-[#445865]">Zoeken</span>
                                 </div>
-                                <div className="flex items-center gap-1 px-1 py-0.5 rounded-sm hover:bg-[#e5f0fb] cursor-default">
-                                    <GitCompare size={14} className="text-[#404040]" strokeWidth={1.5} />
-                                    <span className="text-[11px] text-[#404040]">Vervangen</span>
+                                <div className="flex items-center gap-1 px-1 py-0.5 rounded-sm hover:bg-[#FCF6EA] cursor-default">
+                                    <GitCompare size={14} className="text-[#445865]" strokeWidth={1.5} />
+                                    <span className="text-[11px] text-[#445865]">Vervangen</span>
                                 </div>
-                                <div className="flex items-center gap-1 px-1 py-0.5 rounded-sm hover:bg-[#e5f0fb] cursor-default">
-                                    <LayoutGrid size={14} className="text-[#404040]" strokeWidth={1.5} />
-                                    <span className="text-[11px] text-[#404040]">Selecteren</span>
-                                    <ChevronDown size={8} className="text-[#808080]" />
+                                <div className="flex items-center gap-1 px-1 py-0.5 rounded-sm hover:bg-[#FCF6EA] cursor-default">
+                                    <LayoutGrid size={14} className="text-[#445865]" strokeWidth={1.5} />
+                                    <span className="text-[11px] text-[#445865]">Selecteren</span>
+                                    <ChevronDown size={8} className="text-[#445865]" />
                                 </div>
                             </div>
                             <GroupLabel label="Bewerken" />
@@ -448,7 +448,7 @@ export const Ribbon: React.FC<RibbonProps> = ({ state, onAction, onTabChange, ha
                                         onMouseDown={(e) => e.preventDefault()}
                                         className={`
                                             w-[62px] h-[56px] rounded border text-[10px] flex flex-col items-center justify-end pb-1 cursor-default transition-colors
-                                            ${i === 0 ? 'border-[#4e9bd5] bg-[#e5f0fb]' : 'border-[#d5d5d5] bg-white hover:border-[#91c4e9]'}
+                                            ${i === 0 ? 'border-[#4e9bd5] bg-[#FCF6EA]' : 'border-[#E7D8BD] bg-white hover:border-[#91c4e9]'}
                                         `}
                                     >
                                         {/* Mini document preview */}
@@ -471,7 +471,7 @@ export const Ribbon: React.FC<RibbonProps> = ({ state, onAction, onTabChange, ha
                                     <button
                                         key={color}
                                         onMouseDown={(e) => e.preventDefault()}
-                                        className="w-7 h-7 rounded border border-[#d5d5d5] hover:border-[#91c4e9] cursor-default"
+                                        className="w-7 h-7 rounded border border-[#E7D8BD] hover:border-[#91c4e9] cursor-default"
                                         style={{ backgroundColor: color }}
                                     />
                                 ))}
@@ -499,7 +499,7 @@ export const Ribbon: React.FC<RibbonProps> = ({ state, onAction, onTabChange, ha
                                             onClick={() => onAction('margins', 'normal')}
                                             className={`text-[9px] px-1.5 py-0.5 rounded-sm border cursor-default transition-colors ${state.margins === 'normal'
                                                 ? 'bg-[#c8e0f9] border-[#98c6f7] text-[#1a4fa0]'
-                                                : 'bg-white border-[#d1d1d1] hover:bg-[#e5f0fb] text-[#404040]'
+                                                : 'bg-white border-[#E7D8BD] hover:bg-[#FCF6EA] text-[#445865]'
                                                 }`}
                                         >
                                             Normaal
@@ -509,7 +509,7 @@ export const Ribbon: React.FC<RibbonProps> = ({ state, onAction, onTabChange, ha
                                             onClick={() => onAction('margins', 'narrow')}
                                             className={`text-[9px] px-1.5 py-0.5 rounded-sm border cursor-default transition-colors ${state.margins === 'narrow'
                                                 ? 'bg-[#c8e0f9] border-[#98c6f7] text-[#1a4fa0]'
-                                                : 'bg-white border-[#d1d1d1] hover:bg-[#e5f0fb] text-[#404040]'
+                                                : 'bg-white border-[#E7D8BD] hover:bg-[#FCF6EA] text-[#445865]'
                                                 }`}
                                         >
                                             Smal
@@ -537,12 +537,12 @@ export const Ribbon: React.FC<RibbonProps> = ({ state, onAction, onTabChange, ha
                                             className={`flex flex-col items-center justify-center w-14 h-14 rounded-sm border cursor-default transition-colors
                                                 ${selectedImageWrapMode === 'square'
                                                     ? 'bg-[#c8e0f9] border-[#98c6f7]'
-                                                    : 'bg-white border-[#d5d5d5] hover:bg-[#e5f0fb] hover:border-[#91c4e9]'
+                                                    : 'bg-white border-[#E7D8BD] hover:bg-[#FCF6EA] hover:border-[#91c4e9]'
                                                 }`}
                                             title="Vierkant"
                                         >
-                                            <Square size={18} className="mb-0.5 text-[#404040]" strokeWidth={1.5} />
-                                            <span className="text-[9px] text-[#404040]">Vierkant</span>
+                                            <Square size={18} className="mb-0.5 text-[#445865]" strokeWidth={1.5} />
+                                            <span className="text-[9px] text-[#445865]">Vierkant</span>
                                         </button>
                                         <button
                                             onMouseDown={(e) => e.preventDefault()}
@@ -551,12 +551,12 @@ export const Ribbon: React.FC<RibbonProps> = ({ state, onAction, onTabChange, ha
                                             className={`flex flex-col items-center justify-center w-14 h-14 rounded-sm border cursor-default transition-colors
                                                 ${selectedImageWrapMode === 'front'
                                                     ? 'bg-[#c8e0f9] border-[#98c6f7]'
-                                                    : 'bg-white border-[#d5d5d5] hover:bg-[#e5f0fb] hover:border-[#91c4e9]'
+                                                    : 'bg-white border-[#E7D8BD] hover:bg-[#FCF6EA] hover:border-[#91c4e9]'
                                                 }`}
                                             title="Voor tekst"
                                         >
-                                            <BringToFront size={18} className="mb-0.5 text-[#404040]" strokeWidth={1.5} />
-                                            <span className="text-[9px] text-[#404040]">Voor</span>
+                                            <BringToFront size={18} className="mb-0.5 text-[#445865]" strokeWidth={1.5} />
+                                            <span className="text-[9px] text-[#445865]">Voor</span>
                                         </button>
                                         <button
                                             onMouseDown={(e) => e.preventDefault()}
@@ -565,12 +565,12 @@ export const Ribbon: React.FC<RibbonProps> = ({ state, onAction, onTabChange, ha
                                             className={`flex flex-col items-center justify-center w-14 h-14 rounded-sm border cursor-default transition-colors
                                                 ${selectedImageWrapMode === 'behind'
                                                     ? 'bg-[#c8e0f9] border-[#98c6f7]'
-                                                    : 'bg-white border-[#d5d5d5] hover:bg-[#e5f0fb] hover:border-[#91c4e9]'
+                                                    : 'bg-white border-[#E7D8BD] hover:bg-[#FCF6EA] hover:border-[#91c4e9]'
                                                 }`}
                                             title="Achter tekst"
                                         >
-                                            <SendToBack size={18} className="mb-0.5 text-[#404040]" strokeWidth={1.5} />
-                                            <span className="text-[9px] text-[#404040]">Achter</span>
+                                            <SendToBack size={18} className="mb-0.5 text-[#445865]" strokeWidth={1.5} />
+                                            <span className="text-[9px] text-[#445865]">Achter</span>
                                         </button>
                                     </div>
                                 </div>
@@ -589,8 +589,8 @@ export const Ribbon: React.FC<RibbonProps> = ({ state, onAction, onTabChange, ha
                                     className="flex flex-col items-center justify-center px-3 py-1 rounded-sm min-w-[52px] hover:bg-red-50 border border-transparent hover:border-red-200 cursor-default transition-colors"
                                     title="Verwijder afbeelding"
                                 >
-                                    <Trash2 size={22} className="mb-0.5 text-[#404040]" strokeWidth={1.5} />
-                                    <span className="text-[10px] text-[#404040]">Verwijder</span>
+                                    <Trash2 size={22} className="mb-0.5 text-[#445865]" strokeWidth={1.5} />
+                                    <span className="text-[10px] text-[#445865]">Verwijder</span>
                                 </button>
                             </div>
                             <GroupLabel label="Acties" />
@@ -693,19 +693,19 @@ export const Ribbon: React.FC<RibbonProps> = ({ state, onAction, onTabChange, ha
                 {/* ===== BESTAND TAB (backstage placeholder) ===== */}
                 {state.activeTab === 'bestand' && (
                     <div className="flex items-center justify-center flex-1 py-4">
-                        <div className="text-[#808080] text-sm">
+                        <div className="text-[#445865] text-sm">
                             <div className="flex flex-col gap-3 pl-4">
-                                <div className="flex items-center gap-3 px-3 py-2 rounded hover:bg-[#e5f0fb] cursor-default">
-                                    <FileText size={18} className="text-[#404040]" />
-                                    <span className="text-[#404040]">Nieuw</span>
+                                <div className="flex items-center gap-3 px-3 py-2 rounded hover:bg-[#FCF6EA] cursor-default">
+                                    <FileText size={18} className="text-[#445865]" />
+                                    <span className="text-[#445865]">Nieuw</span>
                                 </div>
-                                <div className="flex items-center gap-3 px-3 py-2 rounded hover:bg-[#e5f0fb] cursor-default">
-                                    <FileText size={18} className="text-[#404040]" />
-                                    <span className="text-[#404040]">Openen</span>
+                                <div className="flex items-center gap-3 px-3 py-2 rounded hover:bg-[#FCF6EA] cursor-default">
+                                    <FileText size={18} className="text-[#445865]" />
+                                    <span className="text-[#445865]">Openen</span>
                                 </div>
-                                <div className="flex items-center gap-3 px-3 py-2 rounded hover:bg-[#e5f0fb] cursor-default">
-                                    <FileText size={18} className="text-[#404040]" />
-                                    <span className="text-[#404040]">Opslaan</span>
+                                <div className="flex items-center gap-3 px-3 py-2 rounded hover:bg-[#FCF6EA] cursor-default">
+                                    <FileText size={18} className="text-[#445865]" />
+                                    <span className="text-[#445865]">Opslaan</span>
                                 </div>
                             </div>
                         </div>

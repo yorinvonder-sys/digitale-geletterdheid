@@ -132,17 +132,17 @@ export const ConsentManager: React.FC<ConsentManagerProps> = ({
           <ShieldCheck size={20} className="text-indigo-600" />
         </div>
         <div>
-          <h3 className="text-base font-bold text-slate-800">Privacy & Toestemming</h3>
-          <p className="text-xs text-slate-500">
+          <h3 className="text-base font-bold text-lab-muted">Privacy & Toestemming</h3>
+          <p className="text-xs text-lab-muted">
             Beheer hier welke gegevens het platform mag gebruiken.
           </p>
         </div>
       </div>
 
       {requiresParent && (
-        <div className="flex items-start gap-2 p-3 bg-amber-50 border border-amber-200 rounded-xl">
-          <AlertTriangle size={16} className="text-amber-600 mt-0.5 shrink-0" />
-          <p className="text-xs text-amber-800">
+        <div className="flex items-start gap-2 p-3 bg-lab-gold border border-lab-gold rounded-xl">
+          <AlertTriangle size={16} className="text-lab-gold mt-0.5 shrink-0" />
+          <p className="text-xs text-lab-gold">
             Omdat je jonger bent dan 16, moet een ouder of voogd toestemming geven.
             Klik op een schakelaar om het formulier te openen.
           </p>
@@ -167,7 +167,7 @@ export const ConsentManager: React.FC<ConsentManagerProps> = ({
         ))}
       </div>
 
-      <p className="text-[10px] text-slate-400 mt-4 leading-relaxed">
+      <p className="text-[10px] text-lab-muted mt-4 leading-relaxed">
         Je kunt je toestemming altijd intrekken. Verplichte toestemmingen zijn nodig om het platform te
         kunnen gebruiken. Meer informatie vind je in ons{' '}
         <a href="/privacy" className="underline hover:text-indigo-500">privacybeleid</a>.
@@ -189,27 +189,27 @@ const ConsentToggleRow: React.FC<ConsentToggleRowProps> = ({ status, toggling, o
     <div className={`p-3 rounded-xl border transition-colors ${
       status.granted
         ? 'bg-green-50 border-green-200'
-        : 'bg-slate-50 border-slate-200'
+        : 'bg-lab-muted border-lab-muted'
     }`}>
       <div className="flex items-start justify-between gap-3">
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 mb-0.5">
-            <span className="text-sm font-semibold text-slate-800">{status.label}</span>
+            <span className="text-sm font-semibold text-lab-muted">{status.label}</span>
             {status.required && (
               <span className="text-[9px] font-bold uppercase tracking-wider text-red-500 bg-red-50 px-1.5 py-0.5 rounded">
                 verplicht
               </span>
             )}
             {status.needsRenewal && (
-              <span className="text-[9px] font-bold uppercase tracking-wider text-amber-600 bg-amber-50 px-1.5 py-0.5 rounded flex items-center gap-0.5">
+              <span className="text-[9px] font-bold uppercase tracking-wider text-lab-gold bg-lab-gold px-1.5 py-0.5 rounded flex items-center gap-0.5">
                 <RefreshCw size={8} />
                 vernieuwen
               </span>
             )}
           </div>
-          <p className="text-xs text-slate-500 leading-relaxed">{status.description}</p>
+          <p className="text-xs text-lab-muted leading-relaxed">{status.description}</p>
           {status.granted && status.grantedAt && (
-            <p className="text-[10px] text-slate-400 mt-1">
+            <p className="text-[10px] text-lab-muted mt-1">
               Gegeven door {status.grantedBy === 'parent' ? 'ouder/voogd' : status.grantedBy === 'school' ? 'school' : 'jijzelf'} op{' '}
               {new Date(status.grantedAt).toLocaleDateString('nl-NL', { day: 'numeric', month: 'long', year: 'numeric' })}
             </p>
@@ -220,18 +220,18 @@ const ConsentToggleRow: React.FC<ConsentToggleRowProps> = ({ status, toggling, o
           disabled={toggling}
           className={`relative w-12 h-7 rounded-full transition-colors shrink-0 mt-0.5 ${
             toggling ? 'opacity-50 cursor-wait' : 'cursor-pointer'
-          } ${status.granted ? 'bg-green-500' : 'bg-slate-300'}`}
+          } ${status.granted ? 'bg-green-500' : 'bg-lab-muted'}`}
           aria-label={`${status.label} ${status.granted ? 'uitzetten' : 'aanzetten'}`}
         >
           <div className={`absolute top-0.5 w-6 h-6 rounded-full bg-white shadow-sm transition-transform flex items-center justify-center ${
             status.granted ? 'translate-x-5.5 left-auto right-0.5' : 'left-0.5'
           }`}>
             {toggling ? (
-              <div className="w-3 h-3 border border-slate-300 border-t-slate-500 rounded-full animate-spin" />
+              <div className="w-3 h-3 border border-lab-muted border-t-slate-500 rounded-full animate-spin" />
             ) : status.granted ? (
               <Check size={12} className="text-green-600" />
             ) : (
-              <ShieldOff size={10} className="text-slate-400" />
+              <ShieldOff size={10} className="text-lab-muted" />
             )}
           </div>
         </button>

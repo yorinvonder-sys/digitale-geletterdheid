@@ -50,34 +50,34 @@ export const GoudenPromptGallery: React.FC<GoudenPromptGalleryProps> = ({ school
         };
     }, [schoolId]);
 
-    if (loading) return <div className="p-12 text-center animate-pulse text-slate-400 font-black uppercase tracking-widest text-xs">Gallerij laden...</div>;
+    if (loading) return <div className="p-12 text-center animate-pulse text-lab-muted font-black uppercase tracking-widest text-xs">Gallerij laden...</div>;
 
     return (
         <div className="space-y-6">
             <div className="flex items-center justify-between">
                 <div>
-                    <h2 className="text-2xl font-black text-slate-900 flex items-center gap-3">
-                        <div className="w-10 h-10 bg-amber-100 text-amber-600 rounded-xl flex items-center justify-center">
+                    <h2 className="text-2xl font-black text-lab-muted flex items-center gap-3">
+                        <div className="w-10 h-10 bg-lab-gold text-lab-gold rounded-xl flex items-center justify-center">
                             <Trophy size={20} />
                         </div>
                         De Gouden Prompt Gallerij
                     </h2>
-                    <p className="text-slate-500 font-medium">De meest creatieve, slimme en originele bijdragen van vandaag.</p>
+                    <p className="text-lab-muted font-medium">De meest creatieve, slimme en originele bijdragen van vandaag.</p>
                 </div>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {highlights.length === 0 ? (
-                    <div className="col-span-full py-20 text-center bg-slate-50 rounded-[2rem] border-2 border-dashed border-slate-200">
-                        <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center mx-auto mb-4 text-slate-300">
+                    <div className="col-span-full py-20 text-center bg-lab-muted rounded-[2rem] border-2 border-dashed border-lab-muted">
+                        <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center mx-auto mb-4 text-lab-muted">
                             <Star size={32} />
                         </div>
-                        <p className="text-slate-400 font-bold uppercase tracking-widest text-xs">Nog geen werk gehighlight</p>
+                        <p className="text-lab-muted font-bold uppercase tracking-widest text-xs">Nog geen werk gehighlight</p>
                     </div>
                 ) : highlights.map((work) => (
-                    <div key={work.id} className="bg-white rounded-[2rem] p-8 shadow-xl shadow-slate-200/50 border border-slate-100 relative group overflow-hidden transition-all hover:shadow-2xl">
+                    <div key={work.id} className="bg-white rounded-[2rem] p-8 shadow-xl shadow-slate-200/50 border border-lab-muted relative group overflow-hidden transition-all hover:shadow-2xl">
                         <div className="absolute top-0 right-0 p-4">
-                            <div className="w-10 h-10 bg-amber-50 text-amber-500 rounded-full flex items-center justify-center animate-pulse">
+                            <div className="w-10 h-10 bg-lab-gold text-lab-gold rounded-full flex items-center justify-center animate-pulse">
                                 <Sparkles size={18} />
                             </div>
                         </div>
@@ -87,21 +87,21 @@ export const GoudenPromptGallery: React.FC<GoudenPromptGalleryProps> = ({ school
                                 {work.studentName[0]}
                             </div>
                             <div>
-                                <div className="text-lg font-black text-slate-900">{work.studentName}</div>
+                                <div className="text-lg font-black text-lab-muted">{work.studentName}</div>
                                 <div className="text-[10px] font-black text-indigo-500 uppercase tracking-widest">{work.missionId}</div>
                             </div>
                         </div>
 
-                        <div className="bg-slate-50 rounded-2xl p-6 relative mb-6">
+                        <div className="bg-lab-muted rounded-2xl p-6 relative mb-6">
                             <Quote className="absolute -top-3 -left-2 text-indigo-200" size={32} />
-                            <h4 className="font-black text-slate-900 mb-2 truncate">{work.title}</h4>
-                            <p className="text-sm font-medium text-slate-600 line-clamp-3 italic">
+                            <h4 className="font-black text-lab-muted mb-2 truncate">{work.title}</h4>
+                            <p className="text-sm font-medium text-lab-muted line-clamp-3 italic">
                                 {work.content}
                             </p>
                         </div>
 
                         {work.teacherNote && (
-                            <div className="flex items-start gap-2 text-[11px] font-bold text-slate-500 bg-slate-50/50 p-3 rounded-xl border border-dashed border-slate-200">
+                            <div className="flex items-start gap-2 text-[11px] font-bold text-lab-muted bg-lab-muted/50 p-3 rounded-xl border border-dashed border-lab-muted">
                                 <Code size={14} className="mt-0.5 text-indigo-400" />
                                 <span>Note van Docent: {work.teacherNote}</span>
                             </div>

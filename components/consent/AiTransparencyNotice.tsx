@@ -54,11 +54,11 @@ export const AiTransparencyNotice: React.FC<AiTransparencyNoticeProps> = ({
       <div className="w-16 h-16 rounded-2xl bg-indigo-100 flex items-center justify-center mb-4">
         <Bot size={32} className="text-indigo-600" />
       </div>
-      <h3 className="text-lg font-bold text-slate-800 mb-2">AI-mentor</h3>
-      <p className="text-sm text-slate-600 mb-4">
+      <h3 className="text-lg font-bold text-lab-muted mb-2">AI-mentor</h3>
+      <p className="text-sm text-lab-muted mb-4">
         Je gaat chatten met een AI-mentor die je helpt bij opdrachten.
       </p>
-      <ul className="text-left text-sm text-slate-500 space-y-2 mb-6">
+      <ul className="text-left text-sm text-lab-muted space-y-2 mb-6">
         <li className="flex items-start gap-2">
           <ShieldCheck size={16} className="text-green-500 mt-0.5 shrink-0" />
           <span>Alleen de tekst van je bericht wordt naar de AI gestuurd — geen persoonsgegevens.</span>

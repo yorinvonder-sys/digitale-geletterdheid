@@ -57,7 +57,7 @@ const ROUNDS: AuctionRound[] = [
     }
 ];
 
-const RISK_COLORS = { low: 'bg-[#10B981]', medium: 'bg-[#D97757]', high: 'bg-red-500', extreme: 'bg-red-700' };
+const RISK_COLORS = { low: 'bg-[#5F947D]', medium: 'bg-[#D97848]', high: 'bg-red-500', extreme: 'bg-red-700' };
 const RISK_LABELS = { low: 'Laag risico', medium: 'Gemiddeld risico', high: 'Hoog risico', extreme: 'Extreem risico' };
 const SCOPE_LABELS = { class: 'jouw klas', school: 'jouw school' } as const;
 
@@ -117,7 +117,7 @@ export const DataVoorDataMission: React.FC<Props> = ({ onBack, onComplete }) => 
         <div className={containerClassName}>
             <button
                 onClick={onBack}
-                className="flex items-center gap-2 text-[#6B6B66] hover:text-[#1A1A19] transition-all duration-300"
+                className="flex items-center gap-2 text-[#445865] hover:text-[#08283B] transition-all duration-300"
                 aria-label="Terug naar dashboard"
             >
                 <ArrowLeft size={18} />
@@ -163,9 +163,9 @@ export const DataVoorDataMission: React.FC<Props> = ({ onBack, onComplete }) => 
 
     const getBadge = () => {
         const s = getScore();
-        if (s >= 80) return { emoji: '🛡️', title: 'Privacy Kampioen', color: 'from-[#10B981] to-[#2A9D8F]' };
-        if (s >= 50) return { emoji: '⚖️', title: 'Data Diplomaat', color: 'from-[#2A9D8F] to-[#8B6F9E]' };
-        return { emoji: '💸', title: 'Data Verkoper', color: 'from-[#D97757] to-[#C46849]' };
+        if (s >= 80) return { emoji: '🛡️', title: 'Privacy Kampioen', color: 'from-[#5F947D] to-[#5F947D]' };
+        if (s >= 50) return { emoji: '⚖️', title: 'Data Diplomaat', color: 'from-[#5F947D] to-[#0B453F]' };
+        return { emoji: '💸', title: 'Data Verkoper', color: 'from-[#D97848] to-[#D97848]' };
     };
 
     const getRoundStatText = (roundIndex: number) => {
@@ -177,35 +177,35 @@ export const DataVoorDataMission: React.FC<Props> = ({ onBack, onComplete }) => 
 
     if (phase === 'intro') {
         return (
-            <div className="min-h-screen bg-[#FAF9F0] text-[#1A1A19] overflow-y-auto p-4 pb-safe">
+            <div className="min-h-screen bg-[#FCF6EA] text-[#08283B] overflow-y-auto p-4 pb-safe">
                 {renderBackButton()}
                 <div className="max-w-lg mx-auto text-center space-y-6">
-                    <div className="w-20 h-20 bg-[#D97757]/10 rounded-3xl flex items-center justify-center mx-auto border border-[#D97757]/20 animate-bounce"><span className="text-4xl">💰</span></div>
+                    <div className="w-20 h-20 bg-[#D97848]/10 rounded-3xl flex items-center justify-center mx-auto border border-[#D97848]/20 animate-bounce"><span className="text-4xl">💰</span></div>
                     <h1 className="text-3xl font-black" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>Data voor Data</h1>
-                    <p className="text-[#3D3D38] text-sm leading-relaxed max-w-sm mx-auto" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
-                        Hoeveel van je persoonlijke data zou jij inruilen voor gratis diensten? In deze veiling bepaal jij je prijs — maar elke <span className="text-[#D97757] font-bold">deal heeft een keerzijde</span>.
+                    <p className="text-[#445865] text-sm leading-relaxed max-w-sm mx-auto" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                        Hoeveel van je persoonlijke data zou jij inruilen voor gratis diensten? In deze veiling bepaal jij je prijs — maar elke <span className="text-[#D97848] font-bold">deal heeft een keerzijde</span>.
                     </p>
-                    <div className="bg-white border border-[#E8E6DF] rounded-2xl p-4 max-w-sm mx-auto">
-                        <p className="text-xs text-[#3D3D38]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
-                            Je vergelijkt je keuzes met <span className="font-bold text-[#1A1A19]">echte, anonieme leerlingantwoorden</span>.
+                    <div className="bg-white border border-[#E7D8BD] rounded-2xl p-4 max-w-sm mx-auto">
+                        <p className="text-xs text-[#445865]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                            Je vergelijkt je keuzes met <span className="font-bold text-[#08283B]">echte, anonieme leerlingantwoorden</span>.
                             We tonen alleen percentages als er genoeg antwoorden zijn om iedereen anoniem te houden.
                         </p>
                     </div>
-                    <div className="bg-white border border-[#E8E6DF] rounded-2xl p-4 max-w-xs mx-auto">
+                    <div className="bg-white border border-[#E7D8BD] rounded-2xl p-4 max-w-xs mx-auto">
                         <div className="flex items-center justify-around">
                             <div className="text-center">
-                                <ThumbsUp size={24} className="text-[#10B981] mx-auto" />
-                                <p className="text-[10px] text-[#6B6B66] mt-1" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>DEAL!</p>
+                                <ThumbsUp size={24} className="text-[#5F947D] mx-auto" />
+                                <p className="text-[10px] text-[#445865] mt-1" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>DEAL!</p>
                             </div>
-                            <div className="text-2xl text-[#E8E6DF]">of</div>
+                            <div className="text-2xl text-[#E7D8BD]">of</div>
                             <div className="text-center">
-                                <ThumbsDown size={24} className="text-[#D97757] mx-auto" />
-                                <p className="text-[10px] text-[#6B6B66] mt-1" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>NO DEAL!</p>
+                                <ThumbsDown size={24} className="text-[#D97848] mx-auto" />
+                                <p className="text-[10px] text-[#445865] mt-1" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>NO DEAL!</p>
                             </div>
                         </div>
                     </div>
-                    <p className="text-[#6B6B66] text-xs" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>5 rondes -- vergelijk je keuzes met anonieme leerlingdata</p>
-                    <button onClick={() => setPhase('auction')} className="px-8 py-4 bg-[#D97757] hover:bg-[#C46849] text-white rounded-full font-black text-lg transition-all duration-300 active:scale-95 shadow-xl shadow-[#D97757]/30 focus-visible:ring-2 focus-visible:ring-[#D97757]">Start de veiling →</button>
+                    <p className="text-[#445865] text-xs" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>5 rondes -- vergelijk je keuzes met anonieme leerlingdata</p>
+                    <button onClick={() => setPhase('auction')} className="px-8 py-4 bg-[#D97848] hover:bg-[#D97848] text-white rounded-full font-black text-lg transition-all duration-300 active:scale-95 shadow-xl shadow-[#D97848]/30 focus-visible:ring-2 focus-visible:ring-[#D97848]">Start de veiling →</button>
                 </div>
             </div>
         );
@@ -214,47 +214,47 @@ export const DataVoorDataMission: React.FC<Props> = ({ onBack, onComplete }) => 
     if (phase === 'reflection') {
         const dealCount = choices.filter(c => c === 'deal').length;
         return (
-            <div className="min-h-screen bg-[#FAF9F0] text-[#1A1A19] overflow-y-auto p-4 pb-safe">
+            <div className="min-h-screen bg-[#FCF6EA] text-[#08283B] overflow-y-auto p-4 pb-safe">
                 {renderBackButton()}
                 <div className="max-w-lg mx-auto space-y-6">
                     <div className="text-center space-y-4">
-                        <div className="w-16 h-16 bg-[#8B6F9E]/10 rounded-2xl flex items-center justify-center mx-auto border border-[#8B6F9E]/20">
-                            <Pause size={32} className="text-[#8B6F9E]" />
+                        <div className="w-16 h-16 bg-[#0B453F]/10 rounded-2xl flex items-center justify-center mx-auto border border-[#0B453F]/20">
+                            <Pause size={32} className="text-[#0B453F]" />
                         </div>
                         <h2 className="text-2xl font-black" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>Even pauzeren...</h2>
-                        <p className="text-sm text-[#3D3D38]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
-                            Je hebt tot nu toe <span className="font-black text-[#D97757]">{dealCount}x</span> je data gedeeld.
+                        <p className="text-sm text-[#445865]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                            Je hebt tot nu toe <span className="font-black text-[#D97848]">{dealCount}x</span> je data gedeeld.
                             Kijk terug: zou je een eerdere ronde nu anders beantwoorden?
                         </p>
                     </div>
 
                     <div className="space-y-3">
                         {ROUNDS.slice(0, 3).map((round, i) => (
-                            <div key={i} className="bg-white rounded-2xl border border-[#E8E6DF] p-4">
+                            <div key={i} className="bg-white rounded-2xl border border-[#E7D8BD] p-4">
                                 <div className="flex items-center justify-between mb-2">
                                     <div className="flex items-center gap-2">
                                         <span className="text-xl">{round.emoji}</span>
-                                        <span className="text-sm font-black text-[#1A1A19]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>{round.service}</span>
+                                        <span className="text-sm font-black text-[#08283B]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>{round.service}</span>
                                     </div>
-                                    <span className={`text-[10px] font-black px-2 py-0.5 rounded-full inline-flex border ${choices[i] === 'deal' ? 'bg-[#10B981]/10 text-[#10B981] border-[#10B981]/20' : 'bg-[#D97757]/10 text-[#D97757] border-[#D97757]/20'}`}>
+                                    <span className={`text-[10px] font-black px-2 py-0.5 rounded-full inline-flex border ${choices[i] === 'deal' ? 'bg-[#5F947D]/10 text-[#5F947D] border-[#5F947D]/20' : 'bg-[#D97848]/10 text-[#D97848] border-[#D97848]/20'}`}>
                                         {choices[i] === 'deal' ? 'DEAL' : 'NO DEAL'}
                                     </span>
                                 </div>
                                 <div className="flex flex-wrap gap-1.5">
                                     {round.dataAsked.map((d, j) => (
-                                        <span key={j} className="text-[10px] bg-[#FAF9F0] border border-[#E8E6DF] px-2 py-0.5 rounded-full text-[#6B6B66]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>{d}</span>
+                                        <span key={j} className="text-[10px] bg-[#FCF6EA] border border-[#E7D8BD] px-2 py-0.5 rounded-full text-[#445865]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>{d}</span>
                                     ))}
                                 </div>
                                 <div className="mt-2 flex items-center gap-2">
                                     <div className={`w-2 h-2 rounded-full ${RISK_COLORS[round.privacyRisk]}`} />
-                                    <span className="text-[10px] text-[#6B6B66]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>{RISK_LABELS[round.privacyRisk]}</span>
+                                    <span className="text-[10px] text-[#445865]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>{RISK_LABELS[round.privacyRisk]}</span>
                                 </div>
                             </div>
                         ))}
                     </div>
 
-                    <div className="bg-[#8B6F9E]/5 border border-[#8B6F9E]/20 rounded-2xl p-4">
-                        <p className="text-xs text-[#3D3D38] text-center" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                    <div className="bg-[#0B453F]/5 border border-[#0B453F]/20 rounded-2xl p-4">
+                        <p className="text-xs text-[#445865] text-center" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                             De volgende 2 rondes worden zwaarder. Denk goed na over wat je data waard is!
                         </p>
                     </div>
@@ -264,7 +264,7 @@ export const DataVoorDataMission: React.FC<Props> = ({ onBack, onComplete }) => 
                             setCurrentRound(c => c + 1);
                             setPhase('auction');
                         }}
-                        className="w-full py-4 bg-[#D97757] hover:bg-[#C46849] text-white rounded-full font-black text-lg transition-all duration-300 active:scale-95 shadow-xl shadow-[#D97757]/30 flex items-center justify-center gap-2 focus-visible:ring-2 focus-visible:ring-[#D97757]"
+                        className="w-full py-4 bg-[#D97848] hover:bg-[#D97848] text-white rounded-full font-black text-lg transition-all duration-300 active:scale-95 shadow-xl shadow-[#D97848]/30 flex items-center justify-center gap-2 focus-visible:ring-2 focus-visible:ring-[#D97848]"
                     >
                         Verder met de veiling <ChevronRight size={20} />
                     </button>
@@ -277,72 +277,72 @@ export const DataVoorDataMission: React.FC<Props> = ({ onBack, onComplete }) => 
         const round = ROUNDS[currentRound];
         const currentStat = roundStats[currentRound];
         return (
-            <div className="min-h-screen bg-[#FAF9F0] text-[#1A1A19] overflow-y-auto p-4 pb-safe">
+            <div className="min-h-screen bg-[#FCF6EA] text-[#08283B] overflow-y-auto p-4 pb-safe">
                 <div className="max-w-lg mx-auto">
                     {renderBackButton('mb-4')}
                     <div className="flex items-center justify-between mb-6">
-                        <span className="text-[10px] font-black text-[#6B6B66] uppercase tracking-widest" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>Ronde {currentRound + 1}/{ROUNDS.length}</span>
-                        <div className="flex gap-1.5">{ROUNDS.map((_, i) => (<div key={i} className={`w-8 h-1.5 rounded-full transition-all duration-300 ${i < currentRound ? (choices[i] === 'deal' ? 'bg-[#10B981]' : 'bg-[#D97757]') : i === currentRound ? 'bg-gradient-to-r from-[#D97757] to-[#C46849]' : 'bg-[#E8E6DF]'}`} />))}</div>
+                        <span className="text-[10px] font-black text-[#445865] uppercase tracking-widest" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>Ronde {currentRound + 1}/{ROUNDS.length}</span>
+                        <div className="flex gap-1.5">{ROUNDS.map((_, i) => (<div key={i} className={`w-8 h-1.5 rounded-full transition-all duration-300 ${i < currentRound ? (choices[i] === 'deal' ? 'bg-[#5F947D]' : 'bg-[#D97848]') : i === currentRound ? 'bg-gradient-to-r from-[#D97848] to-[#D97848]' : 'bg-[#E7D8BD]'}`} />))}</div>
                     </div>
 
-                    <div className="bg-white rounded-2xl border border-[#E8E6DF] p-6 mb-6 text-center">
+                    <div className="bg-white rounded-2xl border border-[#E7D8BD] p-6 mb-6 text-center">
                         <span className="text-5xl mb-3 block">{round.emoji}</span>
-                        <h3 className="text-xl font-black mb-1 text-[#1A1A19]" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>{round.service}</h3>
-                        <p className="text-sm text-[#6B6B66]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>{round.benefit}</p>
+                        <h3 className="text-xl font-black mb-1 text-[#08283B]" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>{round.service}</h3>
+                        <p className="text-sm text-[#445865]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>{round.benefit}</p>
                     </div>
 
-                    <div className="bg-white rounded-2xl border border-[#E8E6DF] p-4 mb-6">
-                        <p className="text-[10px] font-black text-[#6B6B66] uppercase tracking-widest mb-3" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>In ruil voor:</p>
+                    <div className="bg-white rounded-2xl border border-[#E7D8BD] p-4 mb-6">
+                        <p className="text-[10px] font-black text-[#445865] uppercase tracking-widest mb-3" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>In ruil voor:</p>
                         <div className="flex flex-wrap gap-2">
                             {round.dataAsked.map((d, i) => (
-                                <span key={i} className="inline-flex bg-[#FAF9F0] border border-[#E8E6DF] px-3 py-1.5 rounded-full text-xs font-bold text-[#3D3D38]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>{d}</span>
+                                <span key={i} className="inline-flex bg-[#FCF6EA] border border-[#E7D8BD] px-3 py-1.5 rounded-full text-xs font-bold text-[#445865]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>{d}</span>
                             ))}
                         </div>
                         <div className="mt-3 flex items-center gap-2">
                             <div className={`w-2.5 h-2.5 rounded-full ${RISK_COLORS[round.privacyRisk]}`} />
-                            <span className="text-xs text-[#6B6B66]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>{RISK_LABELS[round.privacyRisk]}</span>
+                            <span className="text-xs text-[#445865]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>{RISK_LABELS[round.privacyRisk]}</span>
                         </div>
                     </div>
 
                     {!hasChosen && (
                         <div className="grid grid-cols-2 gap-4">
-                            <button onClick={() => handleChoice('deal')} className="py-5 bg-[#10B981]/10 hover:bg-[#10B981]/20 border-2 border-[#10B981]/30 rounded-2xl font-black text-lg transition-all duration-300 active:scale-95 flex flex-col items-center gap-1 focus-visible:ring-2 focus-visible:ring-[#10B981]">
-                                <ThumbsUp size={28} className="text-[#10B981]" />
-                                <span className="text-[#10B981]">DEAL!</span>
+                            <button onClick={() => handleChoice('deal')} className="py-5 bg-[#5F947D]/10 hover:bg-[#5F947D]/20 border-2 border-[#5F947D]/30 rounded-2xl font-black text-lg transition-all duration-300 active:scale-95 flex flex-col items-center gap-1 focus-visible:ring-2 focus-visible:ring-[#5F947D]">
+                                <ThumbsUp size={28} className="text-[#5F947D]" />
+                                <span className="text-[#5F947D]">DEAL!</span>
                             </button>
-                            <button onClick={() => handleChoice('no-deal')} className="py-5 bg-[#D97757]/10 hover:bg-[#D97757]/20 border-2 border-[#D97757]/30 rounded-2xl font-black text-lg transition-all duration-300 active:scale-95 flex flex-col items-center gap-1 focus-visible:ring-2 focus-visible:ring-[#D97757]">
-                                <ThumbsDown size={28} className="text-[#D97757]" />
-                                <span className="text-[#D97757]">NO DEAL!</span>
+                            <button onClick={() => handleChoice('no-deal')} className="py-5 bg-[#D97848]/10 hover:bg-[#D97848]/20 border-2 border-[#D97848]/30 rounded-2xl font-black text-lg transition-all duration-300 active:scale-95 flex flex-col items-center gap-1 focus-visible:ring-2 focus-visible:ring-[#D97848]">
+                                <ThumbsDown size={28} className="text-[#D97848]" />
+                                <span className="text-[#D97848]">NO DEAL!</span>
                             </button>
                         </div>
                     )}
 
                     {showExplanation && (
                         <div className="mt-6 space-y-4">
-                            <div className="bg-[#D97757]/5 border border-[#D97757]/20 rounded-2xl p-4">
-                                <div className="flex items-start gap-2"><Sparkles size={16} className="text-[#D97757] mt-0.5 flex-shrink-0" /><p className="text-sm text-[#3D3D38]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>{round.explanation}</p></div>
+                            <div className="bg-[#D97848]/5 border border-[#D97848]/20 rounded-2xl p-4">
+                                <div className="flex items-start gap-2"><Sparkles size={16} className="text-[#D97848] mt-0.5 flex-shrink-0" /><p className="text-sm text-[#445865]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>{round.explanation}</p></div>
                             </div>
                             {currentStat ? (
-                                <div className="bg-white rounded-2xl border border-[#E8E6DF] p-3 flex items-center justify-between gap-3">
+                                <div className="bg-white rounded-2xl border border-[#E7D8BD] p-3 flex items-center justify-between gap-3">
                                     <div>
-                                        <span className="text-xs text-[#6B6B66]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>Anonieme antwoorden uit {SCOPE_LABELS[currentStat.scope]}:</span>
-                                        <p className="text-[10px] text-[#6B6B66] mt-1" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>Gebaseerd op echte leerlingkeuzes</p>
+                                        <span className="text-xs text-[#445865]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>Anonieme antwoorden uit {SCOPE_LABELS[currentStat.scope]}:</span>
+                                        <p className="text-[10px] text-[#445865] mt-1" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>Gebaseerd op echte leerlingkeuzes</p>
                                     </div>
                                     <div className="flex items-center gap-2">
-                                        <div className="w-24 h-2 bg-[#F0EEE8] rounded-full overflow-hidden"><div className="h-full bg-gradient-to-r from-[#D97757] to-[#C46849] rounded-full" style={{ width: `${currentStat.dealPercentage}%` }} /></div>
-                                        <span className="text-xs font-black text-[#D97757]">{currentStat.dealPercentage}%</span>
+                                        <div className="w-24 h-2 bg-[#FCF6EA] rounded-full overflow-hidden"><div className="h-full bg-gradient-to-r from-[#D97848] to-[#D97848] rounded-full" style={{ width: `${currentStat.dealPercentage}%` }} /></div>
+                                        <span className="text-xs font-black text-[#D97848]">{currentStat.dealPercentage}%</span>
                                     </div>
                                 </div>
                             ) : (
-                                <div className="bg-white rounded-2xl border border-[#E8E6DF] p-4">
-                                    <p className="text-xs text-[#6B6B66]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                                <div className="bg-white rounded-2xl border border-[#E7D8BD] p-4">
+                                    <p className="text-xs text-[#445865]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                                         {hasLoadedStats
                                             ? 'Nog te weinig anonieme antwoorden van leerlingen om dit percentage veilig te tonen.'
                                             : 'Anonieme leerlingstatistieken worden geladen...'}
                                     </p>
                                 </div>
                             )}
-                            <button onClick={nextRound} className="w-full py-3 bg-[#D97757] hover:bg-[#C46849] text-white rounded-full font-black text-sm flex items-center justify-center gap-2 transition-all duration-300 focus-visible:ring-2 focus-visible:ring-[#D97757]">
+                            <button onClick={nextRound} className="w-full py-3 bg-[#D97848] hover:bg-[#D97848] text-white rounded-full font-black text-sm flex items-center justify-center gap-2 transition-all duration-300 focus-visible:ring-2 focus-visible:ring-[#D97848]">
                                 {currentRound < ROUNDS.length - 1 ? <>Volgende ronde <ChevronRight size={16} /></> : <>Bekijk resultaat <Trophy size={16} /></>}
                             </button>
                         </div>
@@ -355,34 +355,34 @@ export const DataVoorDataMission: React.FC<Props> = ({ onBack, onComplete }) => 
     const badge = getBadge();
     const dealCount = choices.filter(c => c === 'deal').length;
     return (
-        <div className="min-h-screen bg-[#FAF9F0] text-[#1A1A19] overflow-y-auto">
+        <div className="min-h-screen bg-[#FCF6EA] text-[#08283B] overflow-y-auto">
             <div className="min-h-full flex items-center justify-center p-4 pb-safe">
             <div className="max-w-sm w-full text-center space-y-6">
                 {renderBackButton('max-w-sm w-full mb-0')}
                 <div className={`w-24 h-24 mx-auto bg-gradient-to-br ${badge.color} rounded-3xl flex items-center justify-center shadow-2xl`}><span className="text-5xl">{badge.emoji}</span></div>
                 <h1 className="text-2xl font-black" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>{badge.title}</h1>
-                <p className="text-[#6B6B66] text-sm" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>{dealCount}x DEAL — {ROUNDS.length - dealCount}x NO DEAL</p>
-                <div className="bg-white rounded-2xl p-4 border border-[#E8E6DF]">
-                    <div className="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-[#D97757] to-[#C46849]">{getScore()}/100</div>
-                    <p className="text-[#6B6B66] text-xs mt-1" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>Privacy Score</p>
+                <p className="text-[#445865] text-sm" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>{dealCount}x DEAL — {ROUNDS.length - dealCount}x NO DEAL</p>
+                <div className="bg-white rounded-2xl p-4 border border-[#E7D8BD]">
+                    <div className="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-[#D97848] to-[#D97848]">{getScore()}/100</div>
+                    <p className="text-[#445865] text-xs mt-1" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>Privacy Score</p>
                 </div>
-                <div className="bg-white rounded-2xl p-4 text-left space-y-3 border border-[#E8E6DF]">
-                    <p className="text-xs font-bold text-[#3D3D38]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>Jouw keuzes vs. anonieme leerlingantwoorden:</p>
+                <div className="bg-white rounded-2xl p-4 text-left space-y-3 border border-[#E7D8BD]">
+                    <p className="text-xs font-bold text-[#445865]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>Jouw keuzes vs. anonieme leerlingantwoorden:</p>
                     {ROUNDS.map((r, i) => (
                         <div key={i} className="flex items-center justify-between">
-                            <span className="text-xs text-[#6B6B66]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>{r.emoji} {r.service.split(' ').slice(0, 2).join(' ')}</span>
+                            <span className="text-xs text-[#445865]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>{r.emoji} {r.service.split(' ').slice(0, 2).join(' ')}</span>
                             <div className="flex items-center gap-2">
-                                <span className={`text-[10px] font-black px-2 py-0.5 rounded-full inline-flex border ${choices[i] === 'deal' ? 'bg-[#10B981]/10 text-[#10B981] border-[#10B981]/20' : 'bg-[#D97757]/10 text-[#D97757] border-[#D97757]/20'}`}>{choices[i] === 'deal' ? 'DEAL' : 'NO DEAL'}</span>
-                                <span className="text-[10px] text-[#6B6B66]">{getRoundStatText(i)}</span>
+                                <span className={`text-[10px] font-black px-2 py-0.5 rounded-full inline-flex border ${choices[i] === 'deal' ? 'bg-[#5F947D]/10 text-[#5F947D] border-[#5F947D]/20' : 'bg-[#D97848]/10 text-[#D97848] border-[#D97848]/20'}`}>{choices[i] === 'deal' ? 'DEAL' : 'NO DEAL'}</span>
+                                <span className="text-[10px] text-[#445865]">{getRoundStatText(i)}</span>
                             </div>
                         </div>
                     ))}
                 </div>
-                <div className="bg-white rounded-2xl p-4 text-left border border-[#E8E6DF]">
-                    <p className="text-xs font-bold text-[#3D3D38] mb-2" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>De les:</p>
-                    <p className="text-xs text-[#6B6B66]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>"Gratis" bestaat niet op internet. Je betaalt altijd met je data. Hoe meer je deelt, hoe meer macht je weggeeft. Kies bewust!</p>
+                <div className="bg-white rounded-2xl p-4 text-left border border-[#E7D8BD]">
+                    <p className="text-xs font-bold text-[#445865] mb-2" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>De les:</p>
+                    <p className="text-xs text-[#445865]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>"Gratis" bestaat niet op internet. Je betaalt altijd met je data. Hoe meer je deelt, hoe meer macht je weggeeft. Kies bewust!</p>
                 </div>
-                <button onClick={() => { clearSave(); onComplete(true); }} className="w-full py-4 bg-[#10B981] hover:bg-[#059669] text-white rounded-full font-black text-lg transition-all duration-300 active:scale-95 shadow-xl flex items-center justify-center gap-2 focus-visible:ring-2 focus-visible:ring-[#10B981]"><Trophy size={20} /> Missie Voltooid!</button>
+                <button onClick={() => { clearSave(); onComplete(true); }} className="w-full py-4 bg-[#5F947D] hover:bg-[#5F947D] text-white rounded-full font-black text-lg transition-all duration-300 active:scale-95 shadow-xl flex items-center justify-center gap-2 focus-visible:ring-2 focus-visible:ring-[#5F947D]"><Trophy size={20} /> Missie Voltooid!</button>
             </div>
             </div>
         </div>

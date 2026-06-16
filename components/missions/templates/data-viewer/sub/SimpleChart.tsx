@@ -12,8 +12,8 @@ interface SimpleChartProps {
 }
 
 const DEFAULT_COLORS = [
-    '#D97757', '#10B981', '#3B82F6', '#F59E0B', '#8B5CF6', '#EC4899',
-    '#06B6D4', '#84CC16', '#F97316', '#6366F1',
+    '#D97848', '#5F947D', '#0B453F', '#D7C95F', '#0B453F', '#D97848',
+    '#0B453F', '#99984D', '#D97848', '#0B453F',
 ];
 
 // ── Bar chart ────────────────────────────────────────────────────────────────
@@ -71,7 +71,7 @@ const BarChart: React.FC<{ data: ChartDataPoint[] }> = ({ data }) => {
                 {data.map((d, i) => (
                     <div
                         key={i}
-                        className="flex-1 text-center text-[10px] text-[#6B6B66] leading-tight truncate"
+                        className="flex-1 text-center text-[10px] text-[#445865] leading-tight truncate"
                         style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                         title={d.label}
                     >
@@ -83,7 +83,7 @@ const BarChart: React.FC<{ data: ChartDataPoint[] }> = ({ data }) => {
             {/* Tooltip */}
             {tooltip !== null && (
                 <div
-                    className="absolute pointer-events-none z-10 bg-[#1A1A19] text-white text-xs px-2.5 py-1.5 rounded-lg shadow-lg whitespace-nowrap"
+                    className="absolute pointer-events-none z-10 bg-[#08283B] text-white text-xs px-2.5 py-1.5 rounded-lg shadow-lg whitespace-nowrap"
                     style={{
                         fontFamily: "'Outfit', system-ui, sans-serif",
                         left: tooltip.x,
@@ -204,16 +204,16 @@ const PieChart: React.FC<{ data: ChartDataPoint[] }> = ({ data }) => {
                         >
                             <div className="w-3 h-3 rounded-sm flex-shrink-0" style={{ backgroundColor: color }} />
                             <span
-                                className="text-xs text-[#3D3D38] flex-1"
+                                className="text-xs text-[#445865] flex-1"
                                 style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                             >
                                 {d.label}
                             </span>
                             <span
-                                className="text-xs font-bold text-[#1A1A19]"
+                                className="text-xs font-bold text-[#08283B]"
                                 style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                             >
-                                {d.value} <span className="font-normal text-[#6B6B66]">({pct}%)</span>
+                                {d.value} <span className="font-normal text-[#445865]">({pct}%)</span>
                             </span>
                         </div>
                     );

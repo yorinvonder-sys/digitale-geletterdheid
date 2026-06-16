@@ -29,22 +29,22 @@ export const BinaryChoiceRound: React.FC<{
                             className={`rounded-2xl border-2 p-4 transition-all duration-200 ${
                                 submitted && isAnswered
                                     ? isCorrectAnswer
-                                        ? 'border-[#10B981] bg-[#10B981]/5'
+                                        ? 'border-[#5F947D] bg-[#5F947D]/5'
                                         : 'border-red-400 bg-red-50'
-                                    : 'border-[#E8E6DF] bg-white'
+                                    : 'border-[#E7D8BD] bg-white'
                             }`}
                         >
                             <div className="flex items-start gap-3 mb-3">
                                 <span className="text-xl mt-0.5">{item.icon}</span>
                                 <div className="flex-1">
                                     <p
-                                        className="text-sm font-bold text-[#1A1A19] mb-1"
+                                        className="text-sm font-bold text-[#08283B] mb-1"
                                         style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                                     >
                                         {item.title}
                                     </p>
                                     <p
-                                        className="text-xs text-[#6B6B66] leading-relaxed"
+                                        className="text-xs text-[#445865] leading-relaxed"
                                         style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                                     >
                                         {item.description}
@@ -58,8 +58,8 @@ export const BinaryChoiceRound: React.FC<{
                                         onClick={() => onChoice(item.id, true)}
                                         className={`flex-1 py-2 rounded-lg text-xs font-bold transition-all duration-200 ${
                                             isAccepted
-                                                ? 'bg-[#D97757] text-white'
-                                                : 'bg-[#FAF9F0] text-[#6B6B66] hover:bg-[#D97757]/10 hover:text-[#D97757] border border-[#E8E6DF]'
+                                                ? 'bg-[#D97848] text-white'
+                                                : 'bg-[#FCF6EA] text-[#445865] hover:bg-[#D97848]/10 hover:text-[#D97848] border border-[#E7D8BD]'
                                         }`}
                                         style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                                     >
@@ -69,8 +69,8 @@ export const BinaryChoiceRound: React.FC<{
                                         onClick={() => onChoice(item.id, false)}
                                         className={`flex-1 py-2 rounded-lg text-xs font-bold transition-all duration-200 ${
                                             isRejected
-                                                ? 'bg-[#1A1A19] text-white'
-                                                : 'bg-[#FAF9F0] text-[#6B6B66] hover:bg-[#1A1A19]/10 hover:text-[#1A1A19] border border-[#E8E6DF]'
+                                                ? 'bg-[#08283B] text-white'
+                                                : 'bg-[#FCF6EA] text-[#445865] hover:bg-[#08283B]/10 hover:text-[#08283B] border border-[#E7D8BD]'
                                         }`}
                                         style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                                     >
@@ -82,7 +82,7 @@ export const BinaryChoiceRound: React.FC<{
                             {submitted && isAnswered && (
                                 <div
                                     className={`mt-2 text-[11px] italic leading-relaxed ${
-                                        isCorrectAnswer ? 'text-[#10B981]' : 'text-red-600'
+                                        isCorrectAnswer ? 'text-[#5F947D]' : 'text-red-600'
                                     }`}
                                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                                 >
@@ -98,7 +98,7 @@ export const BinaryChoiceRound: React.FC<{
             {!submitted && allAnswered && (
                 <button
                     onClick={onSubmit}
-                    className="w-full py-3 rounded-full font-black text-sm bg-[#D97757] hover:bg-[#C46849] text-white transition-all duration-300"
+                    className="w-full py-3 rounded-full font-black text-sm bg-[#D97848] hover:bg-[#D97848] text-white transition-all duration-300"
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                 >
                     Controleer keuzes
@@ -106,7 +106,7 @@ export const BinaryChoiceRound: React.FC<{
             )}
             {!submitted && !allAnswered && (
                 <p
-                    className="text-center text-xs text-[#6B6B66] mt-2"
+                    className="text-center text-xs text-[#445865] mt-2"
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                 >
                     Beantwoord alle scenario's om door te gaan

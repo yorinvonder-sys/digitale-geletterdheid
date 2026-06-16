@@ -85,11 +85,11 @@ export const networkNavigatorConfig: DataViewerConfig = {
             type: 'bar-chart',
             chartData: [
                 { label: 'Google.nl', value: 8, color: '#4285F4' },
-                { label: 'Wikipedia', value: 15, color: '#8B5CF6' },
+                { label: 'Wikipedia', value: 15, color: '#0B453F' },
                 { label: 'Instagram', value: 34, color: '#E91E63' },
                 { label: 'YouTube', value: 12, color: '#FF0000' },
                 { label: 'TikTok', value: 45, color: '#010101' },
-                { label: 'Amazon.com', value: 72, color: '#F59E0B' },
+                { label: 'Amazon.com', value: 72, color: '#D7C95F' },
             ],
             questions: [
                 {
@@ -191,25 +191,25 @@ export const networkNavigatorConfig: DataViewerConfig = {
             minScore: 85,
             emoji: '🌐',
             title: 'Netwerk Engineer!',
-            color: '#0891B2',
+            color: '#0B453F',
         },
         {
             minScore: 65,
             emoji: '📡',
             title: 'Internetdetective',
-            color: '#3B82F6',
+            color: '#0B453F',
         },
         {
             minScore: 40,
             emoji: '🔌',
             title: 'Netwerk Verkenner',
-            color: '#10B981',
+            color: '#5F947D',
         },
         {
             minScore: 0,
             emoji: '📚',
             title: 'Aan de slag!',
-            color: '#6B6B66',
+            color: '#445865',
         },
     ],
 

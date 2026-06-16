@@ -38,18 +38,18 @@ export const StepInstructionPanel: React.FC<StepInstructionPanelProps> = ({
         <div className="p-5 flex-1 flex flex-col">
             {/* Step indicator */}
             <div className="flex items-center gap-2 mb-4">
-                <div className="w-7 h-7 rounded-xl bg-gradient-to-br from-[#D97757] to-[#C46849] flex items-center justify-center">
+                <div className="w-7 h-7 rounded-xl bg-gradient-to-br from-[#D97848] to-[#D97848] flex items-center justify-center">
                     <span className="text-xs font-black text-white">{stepIndex + 1}</span>
                 </div>
                 <div>
                     <span
-                        className="text-[10px] font-black text-[#D97757] uppercase tracking-widest block"
+                        className="text-[10px] font-black text-[#D97848] uppercase tracking-widest block"
                         style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                     >
                         Stap {stepIndex + 1} van {totalSteps}
                     </span>
                     <h2
-                        className="text-lg font-black text-[#1A1A19] leading-tight"
+                        className="text-lg font-black text-[#08283B] leading-tight"
                         style={{ fontFamily: "'Newsreader', Georgia, serif" }}
                     >
                         {stepData.title}
@@ -59,16 +59,16 @@ export const StepInstructionPanel: React.FC<StepInstructionPanelProps> = ({
 
             {/* Description */}
             <p
-                className="text-sm text-[#6B6B66] leading-relaxed mb-4"
+                className="text-sm text-[#445865] leading-relaxed mb-4"
                 style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
             >
                 {stepData.description}
             </p>
 
             {/* Instruction card */}
-            <div className="bg-white rounded-2xl border border-[#E8E6DF] p-4 mb-4">
+            <div className="bg-white rounded-2xl border border-[#E7D8BD] p-4 mb-4">
                 <p
-                    className="text-sm text-[#3D3D38] leading-relaxed"
+                    className="text-sm text-[#445865] leading-relaxed"
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                 >
                     {stepData.instruction}
@@ -77,10 +77,10 @@ export const StepInstructionPanel: React.FC<StepInstructionPanelProps> = ({
 
             {/* Optional tip */}
             {stepData.tip && (
-                <div className="flex items-start gap-2 bg-[#D97757]/8 border border-[#D97757]/20 rounded-xl p-3 mb-4">
-                    <Lightbulb size={14} className="text-[#D97757] mt-0.5 shrink-0" />
+                <div className="flex items-start gap-2 bg-[#D97848]/8 border border-[#D97848]/20 rounded-xl p-3 mb-4">
+                    <Lightbulb size={14} className="text-[#D97848] mt-0.5 shrink-0" />
                     <p
-                        className="text-xs text-[#D97757] leading-relaxed"
+                        className="text-xs text-[#D97848] leading-relaxed"
                         style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                     >
                         {stepData.tip}
@@ -91,7 +91,7 @@ export const StepInstructionPanel: React.FC<StepInstructionPanelProps> = ({
             {/* Checklist */}
             <div className="mb-4">
                 <span
-                    className="text-[10px] font-black text-[#6B6B66] uppercase tracking-widest mb-2 block"
+                    className="text-[10px] font-black text-[#445865] uppercase tracking-widest mb-2 block"
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                 >
                     Checklist
@@ -113,7 +113,7 @@ export const StepInstructionPanel: React.FC<StepInstructionPanelProps> = ({
             {stepData.textPrompt && (
                 <div className="mb-4 flex-1 flex flex-col">
                     <label
-                        className="text-[10px] font-black text-[#6B6B66] uppercase tracking-widest mb-2 block"
+                        className="text-[10px] font-black text-[#445865] uppercase tracking-widest mb-2 block"
                         style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                         htmlFor={`text-${stepData.id}`}
                     >
@@ -125,7 +125,7 @@ export const StepInstructionPanel: React.FC<StepInstructionPanelProps> = ({
                         onChange={(e) => onTextChange(stepData.id, e.target.value)}
                         placeholder="Schrijf hier jouw antwoord…"
                         rows={5}
-                        className="w-full flex-1 resize-none rounded-xl border border-[#E8E6DF] bg-white px-4 py-3 text-sm text-[#3D3D38] placeholder:text-[#6B6B66] focus:outline-none focus:ring-2 focus:ring-[#D97757]/30 focus:border-[#D97757]/50 transition-all duration-200 leading-relaxed"
+                        className="w-full flex-1 resize-none rounded-xl border border-[#E7D8BD] bg-white px-4 py-3 text-sm text-[#445865] placeholder:text-[#445865] focus:outline-none focus:ring-2 focus:ring-[#D97848]/30 focus:border-[#D97848]/50 transition-all duration-200 leading-relaxed"
                         style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                     />
                 </div>
@@ -146,8 +146,8 @@ export const StepInstructionPanel: React.FC<StepInstructionPanelProps> = ({
                 disabled={!canProceed}
                 className={`w-full py-3.5 rounded-xl font-bold text-sm transition-all duration-200 flex items-center justify-center gap-2 mt-auto ${
                     canProceed
-                        ? 'bg-gradient-to-r from-[#D97757] to-[#C46849] hover:from-[#C46849] hover:to-[#B05A3C] text-white active:scale-[0.98]'
-                        : 'bg-[#E8E6DF] text-[#6B6B66] cursor-not-allowed'
+                        ? 'bg-gradient-to-r from-[#D97848] to-[#D97848] hover:from-[#D97848] hover:to-[#D97848] text-white active:scale-[0.98]'
+                        : 'bg-[#E7D8BD] text-[#445865] cursor-not-allowed'
                 }`}
                 style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
             >
@@ -163,7 +163,7 @@ export const StepInstructionPanel: React.FC<StepInstructionPanelProps> = ({
 
             {!isStepComplete && (
                 <p
-                    className="text-center text-xs text-[#6B6B66] mt-2"
+                    className="text-center text-xs text-[#445865] mt-2"
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                 >
                     Vink alle items af om door te gaan

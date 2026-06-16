@@ -64,15 +64,15 @@ export function PWAInstallPrompt() {
 
     return (
         <div className="fixed bottom-4 left-4 right-4 z-50 animate-in slide-in-from-bottom-4 fade-in duration-500 sm:left-auto sm:right-4 sm:max-w-sm">
-            <div className="bg-white rounded-2xl shadow-2xl border border-slate-200 p-5 flex items-start gap-4">
+            <div className="bg-white rounded-2xl shadow-2xl border border-lab-muted p-5 flex items-start gap-4">
                 <div className="w-12 h-12 bg-indigo-100 rounded-xl flex items-center justify-center shrink-0">
                     <Smartphone size={24} className="text-indigo-600" />
                 </div>
                 <div className="flex-1 min-w-0">
-                    <p className="font-black text-slate-900 text-sm">
+                    <p className="font-black text-lab-muted text-sm">
                         DGSkills installeren
                     </p>
-                    <p className="text-xs text-slate-500 mt-0.5">
+                    <p className="text-xs text-lab-muted mt-0.5">
                         Installeer als app voor snelle toegang tot je boekhouding en bonnetje-scanner.
                     </p>
                     <div className="flex gap-2 mt-3">
@@ -86,7 +86,7 @@ export function PWAInstallPrompt() {
                         </button>
                         <button
                             onClick={handleDismiss}
-                            className="px-3 py-2 text-xs font-bold text-slate-400 hover:text-slate-600 hover:bg-slate-50 rounded-xl transition-colors"
+                            className="px-3 py-2 text-xs font-bold text-lab-muted hover:text-lab-muted hover:bg-lab-muted rounded-xl transition-colors"
                         >
                             Later
                         </button>
@@ -94,7 +94,7 @@ export function PWAInstallPrompt() {
                 </div>
                 <button
                     onClick={handleDismiss}
-                    className="p-1 text-slate-300 hover:text-slate-500 transition-colors shrink-0"
+                    className="p-1 text-lab-muted hover:text-lab-muted transition-colors shrink-0"
                 >
                     <X size={16} />
                 </button>

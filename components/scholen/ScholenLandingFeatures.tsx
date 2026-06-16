@@ -7,10 +7,10 @@ import React from 'react';
 
 const SERIF = "'Newsreader', Georgia, serif";
 const C = {
-    text: '#1A1A19',
-    textMuted: '#6B6B66',
-    accent: '#D97757',
-    border: '#E8E6DF',
+    text: '#08283B',
+    textMuted: '#445865',
+    accent: '#D97848',
+    border: '#E7D8BD',
 };
 
 // Illustration container background colors — DGSkills eigen palet

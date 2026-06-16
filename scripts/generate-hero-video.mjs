@@ -32,7 +32,7 @@ function loadImage(relativePath) {
 }
 
 // ─── The prompt ───────────────────────────────────────────────────────
-const VIDEO_PROMPT = `Create a cinematic 8-second teaser animation. The star is Pip — a small European robin bird (Erithacus rubecula) with a matte terracotta-orange breast (#D97757), white belly, charcoal-gray wings and back, large round expressive black eyes, and a small orange beak. Pip's tail feathers subtly dissolve into tiny square digital pixels in terracotta and charcoal. Clean black outlines, friendly but NOT babyish — think Ghibli companion character, confident and curious.
+const VIDEO_PROMPT = `Create a cinematic 8-second teaser animation. The star is Pip — a small European robin bird (Erithacus rubecula) with a matte terracotta-orange breast (#D97848), white belly, charcoal-gray wings and back, large round expressive black eyes, and a small orange beak. Pip's tail feathers subtly dissolve into tiny square digital pixels in terracotta and charcoal. Clean black outlines, friendly but NOT babyish — think Ghibli companion character, confident and curious.
 
 THE CONCEPT — "Platform Teaser":
 Pip flies through real-looking UI screens of a modern edtech platform, giving the viewer a rapid, exciting preview of what's inside. The screens look like actual web app interfaces (clean, modern, rounded cards with shadows) floating in a warm, softly lit 3D space with depth-of-field blur.
@@ -48,7 +48,7 @@ BEAT 3 (4-6s): Pip spirals upward past a screen showing a PROGRESS DASHBOARD wit
 BEAT 4 (6-8s): Pip slows down, turns to face the camera, and gives a confident, knowing look — one eyebrow raised, slight head tilt — as if saying "Want to see more?" The background screens blur into warm bokeh. Pip hovers in center frame for a beat, then darts off-screen downward (toward the rest of the page), leaving a trail of terracotta pixel-particles that linger and fade.
 
 STYLE REQUIREMENTS:
-- Color palette: warm cream backgrounds (#FAF9F0), terracotta orange (#D97757) accents, soft charcoal, touches of muted purple for UI elements. NEVER dark/black backgrounds.
+- Color palette: warm cream backgrounds (#FCF6EA), terracotta orange (#D97848) accents, soft charcoal, touches of muted purple for UI elements. NEVER dark/black backgrounds.
 - UI screens: realistic modern web design — white cards, subtle shadows, rounded corners, clean typography placeholders. They should look like actual app screenshots rendered in 3D space.
 - Lighting: warm diffused light from above-right, soft volumetric glow behind screens, gentle lens flare.
 - Camera: dynamic and cinematic — tracking shots, smooth whip-pans between beats, shallow depth of field.

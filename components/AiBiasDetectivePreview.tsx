@@ -44,7 +44,7 @@ const AiBiasDetectivePreview: React.FC = () => {
                         <span className="text-xs font-bold text-red-800">ZAAK: Boeken-AI op school</span>
                     </div>
                     <div className="p-3">
-                        <p className="text-xs text-slate-600 leading-relaxed">
+                        <p className="text-xs text-lab-muted leading-relaxed">
                             De school gebruikt een AI die automatisch boeken aanbeveelt. Maar leerlingen klagen: de aanbevelingen lijken niet eerlijk verdeeld. Onderzoek de output!
                         </p>
                     </div>
@@ -53,7 +53,7 @@ const AiBiasDetectivePreview: React.FC = () => {
                 {/* Side-by-side recommendations */}
                 <div className="grid grid-cols-2 gap-2">
                     {/* Boys */}
-                    <div className="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm">
+                    <div className="bg-white rounded-xl border border-lab-muted overflow-hidden shadow-sm">
                         <div className="bg-blue-50 px-3 py-2 border-b border-blue-100">
                             <div className="flex items-center gap-1.5">
                                 <Users size={12} className="text-blue-600" />
@@ -65,8 +65,8 @@ const AiBiasDetectivePreview: React.FC = () => {
                                 <div key={i} className="flex items-center gap-2 bg-blue-50/50 rounded-lg px-2 py-1.5">
                                     <span className="text-sm">{rec.emoji}</span>
                                     <div>
-                                        <div className="text-[10px] font-bold text-slate-700 leading-tight">{rec.title}</div>
-                                        <div className="text-[9px] text-slate-400">{rec.genre}</div>
+                                        <div className="text-[10px] font-bold text-lab-muted leading-tight">{rec.title}</div>
+                                        <div className="text-[9px] text-lab-muted">{rec.genre}</div>
                                     </div>
                                 </div>
                             ))}
@@ -74,7 +74,7 @@ const AiBiasDetectivePreview: React.FC = () => {
                     </div>
 
                     {/* Girls */}
-                    <div className="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm">
+                    <div className="bg-white rounded-xl border border-lab-muted overflow-hidden shadow-sm">
                         <div className="bg-pink-50 px-3 py-2 border-b border-pink-100">
                             <div className="flex items-center gap-1.5">
                                 <Users size={12} className="text-pink-600" />
@@ -86,8 +86,8 @@ const AiBiasDetectivePreview: React.FC = () => {
                                 <div key={i} className="flex items-center gap-2 bg-pink-50/50 rounded-lg px-2 py-1.5">
                                     <span className="text-sm">{rec.emoji}</span>
                                     <div>
-                                        <div className="text-[10px] font-bold text-slate-700 leading-tight">{rec.title}</div>
-                                        <div className="text-[9px] text-slate-400">{rec.genre}</div>
+                                        <div className="text-[10px] font-bold text-lab-muted leading-tight">{rec.title}</div>
+                                        <div className="text-[9px] text-lab-muted">{rec.genre}</div>
                                     </div>
                                 </div>
                             ))}
@@ -97,7 +97,7 @@ const AiBiasDetectivePreview: React.FC = () => {
 
                 {/* Analysis: Bias type selection */}
                 <div className="bg-white rounded-xl border border-red-100 p-3 shadow-sm">
-                    <div className="text-[10px] font-bold text-slate-700 uppercase mb-2">Welk type bias zie je hier?</div>
+                    <div className="text-[10px] font-bold text-lab-muted uppercase mb-2">Welk type bias zie je hier?</div>
                     <div className="space-y-1.5">
                         {([
                             { type: 'gender' as BiasType, label: 'Genderbias', desc: 'Verschil in behandeling op basis van geslacht' },
@@ -107,14 +107,14 @@ const AiBiasDetectivePreview: React.FC = () => {
                             <button
                                 key={type}
                                 onClick={() => setSelectedBias(selectedBias === type ? null : type)}
-                                className={`w-full text-left px-3 py-2 rounded-lg text-xs transition-all flex items-center gap-2 ${selectedBias === type ? 'bg-red-100 text-red-700 ring-2 ring-red-300' : 'bg-slate-50 text-slate-600 hover:bg-red-50'}`}
+                                className={`w-full text-left px-3 py-2 rounded-lg text-xs transition-all flex items-center gap-2 ${selectedBias === type ? 'bg-red-100 text-red-700 ring-2 ring-red-300' : 'bg-lab-muted text-lab-muted hover:bg-red-50'}`}
                             >
-                                <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center shrink-0 ${selectedBias === type ? 'border-red-500 bg-red-500' : 'border-slate-300'}`}>
+                                <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center shrink-0 ${selectedBias === type ? 'border-red-500 bg-red-500' : 'border-lab-muted'}`}>
                                     {selectedBias === type && <CheckCircle2 size={10} className="text-white" />}
                                 </div>
                                 <div>
                                     <span className="font-bold">{label}</span>
-                                    <span className="text-slate-400 ml-1">— {desc}</span>
+                                    <span className="text-lab-muted ml-1">— {desc}</span>
                                 </div>
                             </button>
                         ))}
@@ -123,17 +123,17 @@ const AiBiasDetectivePreview: React.FC = () => {
 
                 {/* Verdict */}
                 <div className="bg-white rounded-xl border border-red-100 p-3 shadow-sm">
-                    <div className="text-[10px] font-bold text-slate-700 uppercase mb-2">Jouw oordeel</div>
+                    <div className="text-[10px] font-bold text-lab-muted uppercase mb-2">Jouw oordeel</div>
                     <div className="flex gap-2">
                         <button
                             onClick={() => setVerdict(verdict === 'eerlijk' ? null : 'eerlijk')}
-                            className={`flex-1 flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-xl text-xs font-bold transition-all ${verdict === 'eerlijk' ? 'bg-emerald-100 text-emerald-700 ring-2 ring-emerald-300' : 'bg-slate-50 text-slate-500 hover:bg-emerald-50'}`}
+                            className={`flex-1 flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-xl text-xs font-bold transition-all ${verdict === 'eerlijk' ? 'bg-lab-sage text-lab-sage ring-2 ring-emerald-300' : 'bg-lab-muted text-lab-muted hover:bg-lab-sage'}`}
                         >
                             <CheckCircle2 size={14} /> Eerlijk
                         </button>
                         <button
                             onClick={() => setVerdict(verdict === 'oneerlijk' ? null : 'oneerlijk')}
-                            className={`flex-1 flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-xl text-xs font-bold transition-all ${verdict === 'oneerlijk' ? 'bg-red-100 text-red-700 ring-2 ring-red-300' : 'bg-slate-50 text-slate-500 hover:bg-red-50'}`}
+                            className={`flex-1 flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-xl text-xs font-bold transition-all ${verdict === 'oneerlijk' ? 'bg-red-100 text-red-700 ring-2 ring-red-300' : 'bg-lab-muted text-lab-muted hover:bg-red-50'}`}
                         >
                             <XCircle size={14} /> Oneerlijk
                         </button>

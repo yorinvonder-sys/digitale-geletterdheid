@@ -44,17 +44,17 @@ export const SLOProgressPanel: React.FC<SLOProgressPanelProps> = ({ student }) =
                     if (!stat || stat.total === 0) return null;
 
                     return (
-                        <div key={code} className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden hover:shadow-md transition-shadow">
+                        <div key={code} className="bg-white rounded-xl border border-lab-muted shadow-sm overflow-hidden hover:shadow-md transition-shadow">
                             <div className="p-4">
                                 <div className="flex items-start justify-between mb-3 gap-3">
                                     <div className="min-w-0">
-                                        <h4 className="font-bold text-slate-800 truncate">
-                                            {code} <span className="text-slate-500 font-medium">({kerndoel.label})</span>
+                                        <h4 className="font-bold text-lab-muted truncate">
+                                            {code} <span className="text-lab-muted font-medium">({kerndoel.label})</span>
                                         </h4>
-                                        <p className="text-xs text-slate-500 line-clamp-2">{kerndoel.omschrijving}</p>
+                                        <p className="text-xs text-lab-muted line-clamp-2">{kerndoel.omschrijving}</p>
                                     </div>
                                     <div className="text-right shrink-0">
-                                        <span className={`text-2xl font-black ${stat.percentage >= 100 ? 'text-emerald-500' : 'text-slate-700'}`}>
+                                        <span className={`text-2xl font-black ${stat.percentage >= 100 ? 'text-lab-sage' : 'text-lab-muted'}`}>
                                             {stat.percentage}%
                                         </span>
                                     </div>
@@ -62,15 +62,15 @@ export const SLOProgressPanel: React.FC<SLOProgressPanelProps> = ({ student }) =
 
                                 <div className="space-y-3">
                                     {/* Progress Bar */}
-                                    <div className="h-2 w-full bg-slate-100 rounded-full overflow-hidden">
+                                    <div className="h-2 w-full bg-lab-muted rounded-full overflow-hidden">
                                         <div
-                                            className={`h-full transition-all duration-500 ease-out ${stat.percentage >= 100 ? 'bg-emerald-500' : 'bg-indigo-500'}`}
+                                            className={`h-full transition-all duration-500 ease-out ${stat.percentage >= 100 ? 'bg-lab-sage' : 'bg-indigo-500'}`}
                                             style={{ width: `${Math.min(100, stat.percentage)}%` }}
                                         />
                                     </div>
 
                                     {/* Stats Detail */}
-                                    <div className="flex justify-between items-center text-xs text-slate-500">
+                                    <div className="flex justify-between items-center text-xs text-lab-muted">
                                         <span>
                                             Behaald: <span className="font-bold">{stat.completed}</span> van <span className="font-bold">{stat.total}</span> missies
                                         </span>
@@ -79,8 +79,8 @@ export const SLOProgressPanel: React.FC<SLOProgressPanelProps> = ({ student }) =
                             </div>
 
                             {stat.completedMissions.length > 0 && (
-                                <div className="bg-slate-50 px-4 py-3 border-t border-slate-100">
-                                    <p className="text-[10px] uppercase font-bold text-slate-400 mb-2">Bijdragende missies:</p>
+                                <div className="bg-lab-muted px-4 py-3 border-t border-lab-muted">
+                                    <p className="text-[10px] uppercase font-bold text-lab-muted mb-2">Bijdragende missies:</p>
                                     <div className="flex flex-wrap gap-2">
                                         {stat.completedMissions.map(mId => {
                                             const meta = getMissionMeta(mId);
@@ -88,10 +88,10 @@ export const SLOProgressPanel: React.FC<SLOProgressPanelProps> = ({ student }) =
                                             return (
                                                 <span
                                                     key={mId}
-                                                    className="inline-flex items-center gap-1 px-2 py-1 bg-white border border-slate-200 rounded text-xs text-slate-600"
+                                                    className="inline-flex items-center gap-1 px-2 py-1 bg-white border border-lab-muted rounded text-xs text-lab-muted"
                                                     title={mId}
                                                 >
-                                                    <Check size={10} className="text-emerald-500" />
+                                                    <Check size={10} className="text-lab-sage" />
                                                     {label}
                                                 </span>
                                             );
@@ -104,7 +104,7 @@ export const SLOProgressPanel: React.FC<SLOProgressPanelProps> = ({ student }) =
                 })}
 
                 {Object.values(kerndoelStats).every(s => s.total === 0) && (
-                    <div className="text-center py-8 text-slate-400 italic">
+                    <div className="text-center py-8 text-lab-muted italic">
                         Geen kerndoelen gevonden voor deze leerling.
                     </div>
                 )}

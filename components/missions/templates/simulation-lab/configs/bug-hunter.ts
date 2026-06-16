@@ -46,27 +46,27 @@ function computeVisuals(
             {
                 label: 'Syntax',
                 value: syntaxFout ? 3 : 0,
-                color: syntaxFout ? '#D97757' : '#E8E6DF',
+                color: syntaxFout ? '#D97848' : '#E7D8BD',
             },
             {
                 label: 'Naamgeving',
                 value: naamFout ? 2 : 0,
-                color: naamFout ? '#C46849' : '#E8E6DF',
+                color: naamFout ? '#D97848' : '#E7D8BD',
             },
             {
                 label: 'Logica',
                 value: logicaFout ? 5 : 0,
-                color: logicaFout ? '#B05A3C' : '#E8E6DF',
+                color: logicaFout ? '#D97848' : '#E7D8BD',
             },
             {
                 label: 'Off-by-one',
                 value: offByOne ? 4 : 0,
-                color: offByOne ? '#D97757' : '#E8E6DF',
+                color: offByOne ? '#D97848' : '#E7D8BD',
             },
             {
                 label: 'Types',
                 value: typesFout ? 4 : 0,
-                color: typesFout ? '#C46849' : '#E8E6DF',
+                color: typesFout ? '#D97848' : '#E7D8BD',
             },
         ];
 
@@ -383,31 +383,31 @@ export const bugHunterConfig: SimulationLabConfig = {
             minScore: 90,
             emoji: '🏆',
             title: 'Master Debugger',
-            color: '#10B981',
+            color: '#5F947D',
         },
         {
             minScore: 70,
             emoji: '🐛',
             title: 'Bug Hunter Pro',
-            color: '#D97757',
+            color: '#D97848',
         },
         {
             minScore: 50,
             emoji: '🔍',
             title: 'Foutspeurder',
-            color: '#6B6B66',
+            color: '#445865',
         },
         {
             minScore: 25,
             emoji: '💡',
             title: 'Startende Bug Hunter',
-            color: '#8B5CF6',
+            color: '#0B453F',
         },
         {
             minScore: 0,
             emoji: '📖',
             title: 'Aan het leren',
-            color: '#6B6B66',
+            color: '#445865',
         },
     ],
     takeaways: [

@@ -19,7 +19,7 @@ export const PhaseHeader: React.FC<PhaseHeaderProps> = ({
     <div className="flex items-center justify-between mb-6">
         <button
             onClick={onBack}
-            className="text-[#6B6B66] hover:text-[#1A1A19] transition-all duration-300"
+            className="text-[#445865] hover:text-[#08283B] transition-all duration-300"
             aria-label="Terug"
         >
             <ArrowLeft size={18} />
@@ -30,16 +30,16 @@ export const PhaseHeader: React.FC<PhaseHeaderProps> = ({
                     key={i}
                     className={`w-8 h-1.5 rounded-full transition-all duration-300 ${
                         i < currentPhase
-                            ? 'bg-[#10B981]'
+                            ? 'bg-[#5F947D]'
                             : i === currentPhase
-                              ? 'bg-gradient-to-r from-[#D97757] to-[#C46849]'
-                              : 'bg-[#E8E6DF]'
+                              ? 'bg-gradient-to-r from-[#D97848] to-[#D97848]'
+                              : 'bg-[#E7D8BD]'
                     }`}
                 />
             ))}
         </div>
-        <div className="bg-[#D97757]/10 px-3 py-1 rounded-full border border-[#D97757]/20">
-            <span className="text-xs font-black text-[#D97757]">
+        <div className="bg-[#D97848]/10 px-3 py-1 rounded-full border border-[#D97848]/20">
+            <span className="text-xs font-black text-[#D97848]">
                 {totalScore} {scoreLabel}
             </span>
         </div>

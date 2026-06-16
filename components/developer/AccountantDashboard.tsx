@@ -115,7 +115,7 @@ export function AccountantDashboard({ userId }: AccountantDashboardProps) {
             <div className="flex items-center justify-center py-24">
                 <div className="space-y-4 text-center">
                     <div className="w-12 h-12 border-4 border-indigo-600 border-t-transparent rounded-full animate-spin mx-auto" />
-                    <p className="text-slate-500 text-sm font-medium">Boekhouddata laden...</p>
+                    <p className="text-lab-muted text-sm font-medium">Boekhouddata laden...</p>
                 </div>
             </div>
         );
@@ -142,14 +142,14 @@ export function AccountantDashboard({ userId }: AccountantDashboardProps) {
             {/* Header met jaar-selector en sub-tabs */}
             <div className="flex flex-col sm:flex-row sm:items-center gap-4">
                 {/* Sub-tabs */}
-                <div className="flex bg-white border border-slate-200 rounded-2xl p-1 gap-1 overflow-x-auto">
+                <div className="flex bg-white border border-lab-muted rounded-2xl p-1 gap-1 overflow-x-auto">
                     {SUB_TABS.map(tab => (
                         <button
                             key={tab.id}
                             onClick={() => setActiveTab(tab.id)}
                             className={`flex items-center gap-2 px-2.5 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-bold whitespace-nowrap transition-all ${activeTab === tab.id
                                 ? 'bg-indigo-600 text-white shadow-sm'
-                                : 'text-slate-500 hover:text-slate-900 hover:bg-slate-50'
+                                : 'text-lab-muted hover:text-lab-muted hover:bg-lab-muted'
                                 }`}
                         >
                             {tab.icon}
@@ -163,33 +163,33 @@ export function AccountantDashboard({ userId }: AccountantDashboardProps) {
                     <select
                         value={year}
                         onChange={e => setYear(Number(e.target.value))}
-                        className="appearance-none pl-4 pr-8 py-2 bg-white border border-slate-200 rounded-xl text-sm font-bold text-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-300 cursor-pointer"
+                        className="appearance-none pl-4 pr-8 py-2 bg-white border border-lab-muted rounded-xl text-sm font-bold text-lab-muted focus:outline-none focus:ring-2 focus:ring-indigo-300 cursor-pointer"
                     >
                         {YEAR_OPTIONS.map(y => (
                             <option key={y} value={y}>{y}</option>
                         ))}
                     </select>
-                    <ChevronDown size={14} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
+                    <ChevronDown size={14} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-lab-muted pointer-events-none" />
                 </div>
             </div>
 
             {/* Snelle statistieken */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
-                <div className="bg-white rounded-2xl border border-slate-200 px-4 py-3 text-center">
-                    <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Transacties</p>
-                    <p className="text-xl font-black text-slate-900 mt-0.5">{transactions.length}</p>
+                <div className="bg-white rounded-2xl border border-lab-muted px-4 py-3 text-center">
+                    <p className="text-[9px] font-black text-lab-muted uppercase tracking-widest">Transacties</p>
+                    <p className="text-xl font-black text-lab-muted mt-0.5">{transactions.length}</p>
                 </div>
-                <div className="bg-white rounded-2xl border border-slate-200 px-4 py-3 text-center">
-                    <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Bonnetjes</p>
-                    <p className="text-xl font-black text-slate-900 mt-0.5">{receipts.length}</p>
+                <div className="bg-white rounded-2xl border border-lab-muted px-4 py-3 text-center">
+                    <p className="text-[9px] font-black text-lab-muted uppercase tracking-widest">Bonnetjes</p>
+                    <p className="text-xl font-black text-lab-muted mt-0.5">{receipts.length}</p>
                 </div>
-                <div className="bg-white rounded-2xl border border-slate-200 px-4 py-3 text-center">
-                    <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Facturen</p>
-                    <p className="text-xl font-black text-slate-900 mt-0.5">{invoices.length}</p>
+                <div className="bg-white rounded-2xl border border-lab-muted px-4 py-3 text-center">
+                    <p className="text-[9px] font-black text-lab-muted uppercase tracking-widest">Facturen</p>
+                    <p className="text-xl font-black text-lab-muted mt-0.5">{invoices.length}</p>
                 </div>
-                <div className={`rounded-2xl border px-4 py-3 text-center ${summary.profit >= 0 ? 'bg-emerald-50 border-emerald-100' : 'bg-red-50 border-red-100'}`}>
-                    <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Winst {year}</p>
-                    <p className={`text-xl font-black mt-0.5 ${summary.profit >= 0 ? 'text-emerald-700' : 'text-red-600'}`}>
+                <div className={`rounded-2xl border px-4 py-3 text-center ${summary.profit >= 0 ? 'bg-lab-sage border-lab-sage' : 'bg-red-50 border-red-100'}`}>
+                    <p className="text-[9px] font-black text-lab-muted uppercase tracking-widest">Winst {year}</p>
+                    <p className={`text-xl font-black mt-0.5 ${summary.profit >= 0 ? 'text-lab-sage' : 'text-red-600'}`}>
                         {new Intl.NumberFormat('nl-NL', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(summary.profit)}
                     </p>
                 </div>

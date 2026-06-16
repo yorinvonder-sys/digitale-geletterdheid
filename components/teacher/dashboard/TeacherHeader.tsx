@@ -21,25 +21,25 @@ export const TeacherHeader: React.FC<TeacherHeaderProps> = ({
 }) => {
     return (
         <header className="max-w-7xl mx-auto mb-6">
-            <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-4 md:p-6">
+            <div className="bg-white rounded-2xl border border-lab-muted shadow-sm p-4 md:p-6">
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                     {/* Left: Title */}
                     <div>
-                        <h1 className="text-2xl font-black text-slate-900 tracking-tight">
+                        <h1 className="text-2xl font-black text-lab-muted tracking-tight">
                             Docenten Dashboard
                         </h1>
-                        <p className="text-slate-500 font-medium text-sm">Beheer je klassen, volg voortgang en stuur je lessen.</p>
+                        <p className="text-lab-muted font-medium text-sm">Beheer je klassen, volg voortgang en stuur je lessen.</p>
                     </div>
 
                     {/* Right: Action Buttons - Grouped */}
                     <div className="flex items-center gap-2 flex-wrap">
                         {/* Focus Mode Toggle - Compact */}
-                        <div data-tutorial="focus-toggle" className="flex items-center gap-2 bg-slate-50 px-3 py-2 rounded-xl border border-slate-100 group relative">
-                            <span className="text-xs font-bold text-slate-500">Focus</span>
+                        <div data-tutorial="focus-toggle" className="flex items-center gap-2 bg-lab-muted px-3 py-2 rounded-xl border border-lab-muted group relative">
+                            <span className="text-xs font-bold text-lab-muted">Focus</span>
                             <button
                                 onClick={handleToggleFocusMode}
                                 aria-label={focusMode ? 'Focus modus uitschakelen' : 'Focus modus inschakelen'}
-                                className={`transition-all duration-300 ${focusMode ? 'text-indigo-600' : 'text-slate-300'}`}
+                                className={`transition-all duration-300 ${focusMode ? 'text-indigo-600' : 'text-lab-muted'}`}
                             >
                                 {focusMode ? <ToggleRight size={24} /> : <ToggleLeft size={24} />}
                             </button>
@@ -49,7 +49,7 @@ export const TeacherHeader: React.FC<TeacherHeaderProps> = ({
                                 </span>
                             )}
                             {/* Tooltip */}
-                            <div className="absolute top-full right-0 mt-2 w-48 bg-slate-800 text-white text-[10px] p-2 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50 shadow-xl">
+                            <div className="absolute top-full right-0 mt-2 w-48 bg-lab-muted text-white text-[10px] p-2 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50 shadow-xl">
                                 <p className="font-bold mb-1">🎯 Focus Modus</p>
                                 Dwing alle leerlingen naar één specifieke opdracht om de les te sturen.
                             </div>
@@ -65,7 +65,7 @@ export const TeacherHeader: React.FC<TeacherHeaderProps> = ({
                                 <MonitorPlay size={16} />
                                 <span className="hidden sm:inline">Presentatie</span>
                             </button>
-                            <div className="absolute top-full right-0 mt-2 w-48 bg-slate-800 text-white text-[10px] p-2 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50 shadow-xl">
+                            <div className="absolute top-full right-0 mt-2 w-48 bg-lab-muted text-white text-[10px] p-2 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50 shadow-xl">
                                 <p className="font-bold mb-1">🖥️ Presentatie Scherm</p>
                                 Open de QR-code en instructies voor op het digibord.
                             </div>
@@ -82,7 +82,7 @@ export const TeacherHeader: React.FC<TeacherHeaderProps> = ({
                                     <Eye size={16} />
                                     <span className="hidden sm:inline">Leerling View</span>
                                 </button>
-                                <div className="absolute top-full right-0 mt-2 w-48 bg-slate-800 text-white text-[10px] p-2 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50 shadow-xl">
+                                <div className="absolute top-full right-0 mt-2 w-48 bg-lab-muted text-white text-[10px] p-2 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50 shadow-xl">
                                     <p className="font-bold mb-1">👁️ Bekijk als Leerling</p>
                                     Zie precies wat jouw leerlingen zien in hun dashboard.
                                 </div>
@@ -94,7 +94,7 @@ export const TeacherHeader: React.FC<TeacherHeaderProps> = ({
                             <button
                                 onClick={onLogout}
                                 aria-label="Uitloggen"
-                                className="flex items-center gap-2 px-3 py-2 bg-slate-100 text-slate-600 rounded-xl text-sm font-bold hover:bg-red-50 hover:text-red-600 transition-colors"
+                                className="flex items-center gap-2 px-3 py-2 bg-lab-muted text-lab-muted rounded-xl text-sm font-bold hover:bg-red-50 hover:text-red-600 transition-colors"
                             >
                                 <LogOut size={16} />
                             </button>

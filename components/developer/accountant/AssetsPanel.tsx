@@ -200,13 +200,13 @@ export function AssetsPanel({ userId, year, onRefresh }: AssetsPanelProps) {
 
             {/* KIA melding */}
             {kiaData && kiaData.kiaAmount > 0 && (
-                <div className="flex items-start gap-3 bg-emerald-50 border border-emerald-100 rounded-xl px-4 py-3 text-sm">
-                    <div className="w-8 h-8 bg-emerald-100 rounded-lg flex items-center justify-center shrink-0 mt-0.5">
-                        <span className="text-emerald-700 font-black text-xs">KIA</span>
+                <div className="flex items-start gap-3 bg-lab-sage border border-lab-sage rounded-xl px-4 py-3 text-sm">
+                    <div className="w-8 h-8 bg-lab-sage rounded-lg flex items-center justify-center shrink-0 mt-0.5">
+                        <span className="text-lab-sage font-black text-xs">KIA</span>
                     </div>
                     <div>
-                        <p className="font-bold text-emerald-800">Kleinschaligheidsinvesteringsaftrek {year}</p>
-                        <p className="text-emerald-700 text-xs mt-0.5">
+                        <p className="font-bold text-lab-sage">Kleinschaligheidsinvesteringsaftrek {year}</p>
+                        <p className="text-lab-sage text-xs mt-0.5">
                             Totale investering: {formatEuro(kiaData.totalInvestment)} — KIA-aftrek: <strong>{formatEuro(kiaData.kiaAmount)}</strong>
                         </p>
                     </div>
@@ -226,11 +226,11 @@ export function AssetsPanel({ userId, year, onRefresh }: AssetsPanelProps) {
                 {/* Totalen */}
                 {activeAssets.length > 0 && (
                     <div className="ml-auto flex gap-4 text-sm">
-                        <span className="text-slate-400">
-                            Boekwaarde: <span className="font-bold text-slate-600">{formatEuro(totalBookValue)}</span>
+                        <span className="text-lab-muted">
+                            Boekwaarde: <span className="font-bold text-lab-muted">{formatEuro(totalBookValue)}</span>
                         </span>
-                        <span className="text-slate-400">
-                            Afschrijving {year}: <span className="font-bold text-slate-600">{formatEuro(totalDepreciation)}</span>
+                        <span className="text-lab-muted">
+                            Afschrijving {year}: <span className="font-bold text-lab-muted">{formatEuro(totalDepreciation)}</span>
                         </span>
                     </div>
                 )}
@@ -238,10 +238,10 @@ export function AssetsPanel({ userId, year, onRefresh }: AssetsPanelProps) {
 
             {/* Lijst */}
             {assets.length === 0 ? (
-                <div className="bg-white rounded-[2rem] border border-slate-200 py-16 text-center">
-                    <Package size={32} className="mx-auto text-slate-300 mb-3" />
-                    <p className="text-slate-400 text-sm italic">Nog geen bedrijfsmiddelen toegevoegd.</p>
-                    <p className="text-slate-400 text-xs mt-1">
+                <div className="bg-white rounded-[2rem] border border-lab-muted py-16 text-center">
+                    <Package size={32} className="mx-auto text-lab-muted mb-3" />
+                    <p className="text-lab-muted text-sm italic">Nog geen bedrijfsmiddelen toegevoegd.</p>
+                    <p className="text-lab-muted text-xs mt-1">
                         Voeg bedrijfsmiddelen toe zoals laptop, bureau, software licenties, etc.
                     </p>
                 </div>
@@ -260,7 +260,7 @@ export function AssetsPanel({ userId, year, onRefresh }: AssetsPanelProps) {
                     ))}
                     {disposedAssets.length > 0 && (
                         <>
-                            <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mt-6">
+                            <p className="text-[10px] font-black text-lab-muted uppercase tracking-widest mt-6">
                                 Afgestoten ({disposedAssets.length})
                             </p>
                             {disposedAssets.map(asset => (
@@ -283,24 +283,24 @@ export function AssetsPanel({ userId, year, onRefresh }: AssetsPanelProps) {
                 <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
                     <div className="bg-white rounded-3xl shadow-2xl w-full max-w-sm p-8">
                         <div className="flex items-center justify-between mb-6">
-                            <h3 className="text-lg font-black text-slate-900 uppercase tracking-tight">Afstoten / Verkopen</h3>
-                            <button onClick={() => setShowDispose(null)} className="p-2 hover:bg-slate-100 rounded-xl">
-                                <X size={20} className="text-slate-500" />
+                            <h3 className="text-lg font-black text-lab-muted uppercase tracking-tight">Afstoten / Verkopen</h3>
+                            <button onClick={() => setShowDispose(null)} className="p-2 hover:bg-lab-muted rounded-xl">
+                                <X size={20} className="text-lab-muted" />
                             </button>
                         </div>
 
                         <div className="space-y-4">
                             <div>
-                                <label className="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-1">Datum afstoting *</label>
+                                <label className="block text-xs font-bold text-lab-muted uppercase tracking-widest mb-1">Datum afstoting *</label>
                                 <input
                                     type="date"
                                     value={disposeForm.date}
                                     onChange={e => setDisposeForm(f => ({ ...f, date: e.target.value }))}
-                                    className="w-full px-4 py-2.5 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-300"
+                                    className="w-full px-4 py-2.5 border border-lab-muted rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-300"
                                 />
                             </div>
                             <div>
-                                <label className="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-1">Verkoopprijs</label>
+                                <label className="block text-xs font-bold text-lab-muted uppercase tracking-widest mb-1">Verkoopprijs</label>
                                 <input
                                     type="number"
                                     step="0.01"
@@ -308,7 +308,7 @@ export function AssetsPanel({ userId, year, onRefresh }: AssetsPanelProps) {
                                     value={disposeForm.amount}
                                     onChange={e => setDisposeForm(f => ({ ...f, amount: e.target.value }))}
                                     placeholder="0.00 (bij weggooien)"
-                                    className="w-full px-4 py-2.5 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-300"
+                                    className="w-full px-4 py-2.5 border border-lab-muted rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-300"
                                 />
                             </div>
                         </div>
@@ -316,7 +316,7 @@ export function AssetsPanel({ userId, year, onRefresh }: AssetsPanelProps) {
                         <div className="flex gap-3 mt-6">
                             <button
                                 onClick={() => setShowDispose(null)}
-                                className="flex-1 py-3 border border-slate-200 rounded-xl text-sm font-bold text-slate-600 hover:bg-slate-50 transition-colors"
+                                className="flex-1 py-3 border border-lab-muted rounded-xl text-sm font-bold text-lab-muted hover:bg-lab-muted transition-colors"
                             >
                                 Annuleren
                             </button>
@@ -336,9 +336,9 @@ export function AssetsPanel({ userId, year, onRefresh }: AssetsPanelProps) {
                 <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
                     <div className="bg-white rounded-3xl shadow-2xl w-full max-w-md p-5 sm:p-8 max-h-[90vh] overflow-y-auto">
                         <div className="flex items-center justify-between mb-6">
-                            <h3 className="text-lg font-black text-slate-900 uppercase tracking-tight">Bedrijfsmiddel Toevoegen</h3>
-                            <button onClick={() => { setShowForm(false); setError(''); }} className="p-2 hover:bg-slate-100 rounded-xl">
-                                <X size={20} className="text-slate-500" />
+                            <h3 className="text-lg font-black text-lab-muted uppercase tracking-tight">Bedrijfsmiddel Toevoegen</h3>
+                            <button onClick={() => { setShowForm(false); setError(''); }} className="p-2 hover:bg-lab-muted rounded-xl">
+                                <X size={20} className="text-lab-muted" />
                             </button>
                         </div>
 
@@ -352,19 +352,19 @@ export function AssetsPanel({ userId, year, onRefresh }: AssetsPanelProps) {
                         <div className="space-y-4">
                             {/* Naam */}
                             <div>
-                                <label className="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-1">Naam *</label>
+                                <label className="block text-xs font-bold text-lab-muted uppercase tracking-widest mb-1">Naam *</label>
                                 <input
                                     type="text"
                                     value={form.name}
                                     onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
                                     placeholder="MacBook Pro, Bureau, Adobe licentie..."
-                                    className="w-full px-4 py-2.5 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-300"
+                                    className="w-full px-4 py-2.5 border border-lab-muted rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-300"
                                 />
                             </div>
 
                             {/* Categorie */}
                             <div>
-                                <label className="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-1">Categorie</label>
+                                <label className="block text-xs font-bold text-lab-muted uppercase tracking-widest mb-1">Categorie</label>
                                 <div className="grid grid-cols-3 sm:grid-cols-5 gap-2">
                                     {(Object.keys(ASSET_CATEGORY_LABELS) as AssetCategory[]).map(cat => (
                                         <button
@@ -376,7 +376,7 @@ export function AssetsPanel({ userId, year, onRefresh }: AssetsPanelProps) {
                                             }))}
                                             className={`flex flex-col items-center gap-1 py-2.5 px-1 text-[10px] font-bold rounded-xl transition-colors ${form.category === cat
                                                 ? 'bg-indigo-600 text-white'
-                                                : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                                                : 'bg-lab-muted text-lab-muted hover:bg-lab-muted'
                                             }`}
                                         >
                                             {CATEGORY_ICONS[cat]}
@@ -388,19 +388,19 @@ export function AssetsPanel({ userId, year, onRefresh }: AssetsPanelProps) {
 
                             {/* Aanschafdatum */}
                             <div>
-                                <label className="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-1">Aanschafdatum *</label>
+                                <label className="block text-xs font-bold text-lab-muted uppercase tracking-widest mb-1">Aanschafdatum *</label>
                                 <input
                                     type="date"
                                     value={form.purchaseDate}
                                     onChange={e => setForm(f => ({ ...f, purchaseDate: e.target.value }))}
-                                    className="w-full px-4 py-2.5 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-300"
+                                    className="w-full px-4 py-2.5 border border-lab-muted rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-300"
                                 />
                             </div>
 
                             {/* Aanschafprijs + Restwaarde */}
                             <div className="grid grid-cols-2 gap-3">
                                 <div>
-                                    <label className="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-1">Aanschafprijs *</label>
+                                    <label className="block text-xs font-bold text-lab-muted uppercase tracking-widest mb-1">Aanschafprijs *</label>
                                     <input
                                         type="number"
                                         step="0.01"
@@ -408,11 +408,11 @@ export function AssetsPanel({ userId, year, onRefresh }: AssetsPanelProps) {
                                         value={form.purchasePrice}
                                         onChange={e => setForm(f => ({ ...f, purchasePrice: e.target.value }))}
                                         placeholder="0.00"
-                                        className="w-full px-4 py-2.5 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-300"
+                                        className="w-full px-4 py-2.5 border border-lab-muted rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-300"
                                     />
                                 </div>
                                 <div>
-                                    <label className="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-1">Restwaarde</label>
+                                    <label className="block text-xs font-bold text-lab-muted uppercase tracking-widest mb-1">Restwaarde</label>
                                     <input
                                         type="number"
                                         step="0.01"
@@ -420,7 +420,7 @@ export function AssetsPanel({ userId, year, onRefresh }: AssetsPanelProps) {
                                         value={form.residualValue}
                                         onChange={e => setForm(f => ({ ...f, residualValue: e.target.value }))}
                                         placeholder="0.00"
-                                        className="w-full px-4 py-2.5 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-300"
+                                        className="w-full px-4 py-2.5 border border-lab-muted rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-300"
                                     />
                                 </div>
                             </div>
@@ -428,18 +428,18 @@ export function AssetsPanel({ userId, year, onRefresh }: AssetsPanelProps) {
                             {/* Levensduur + Methode */}
                             <div className="grid grid-cols-2 gap-3">
                                 <div>
-                                    <label className="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-1">Levensduur (jaren)</label>
+                                    <label className="block text-xs font-bold text-lab-muted uppercase tracking-widest mb-1">Levensduur (jaren)</label>
                                     <input
                                         type="number"
                                         min="1"
                                         max="50"
                                         value={form.usefulLifeYears}
                                         onChange={e => setForm(f => ({ ...f, usefulLifeYears: e.target.value }))}
-                                        className="w-full px-4 py-2.5 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-300"
+                                        className="w-full px-4 py-2.5 border border-lab-muted rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-300"
                                     />
                                 </div>
                                 <div>
-                                    <label className="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-1">Methode</label>
+                                    <label className="block text-xs font-bold text-lab-muted uppercase tracking-widest mb-1">Methode</label>
                                     <div className="flex gap-2">
                                         {(['linear', 'declining'] as const).map(method => (
                                             <button
@@ -447,7 +447,7 @@ export function AssetsPanel({ userId, year, onRefresh }: AssetsPanelProps) {
                                                 onClick={() => setForm(f => ({ ...f, depreciationMethod: method }))}
                                                 className={`flex-1 py-2.5 text-xs font-bold rounded-xl transition-colors ${form.depreciationMethod === method
                                                     ? 'bg-indigo-600 text-white'
-                                                    : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                                                    : 'bg-lab-muted text-lab-muted hover:bg-lab-muted'
                                                 }`}
                                             >
                                                 {method === 'linear' ? 'Lineair' : 'Degressief'}
@@ -459,13 +459,13 @@ export function AssetsPanel({ userId, year, onRefresh }: AssetsPanelProps) {
 
                             {/* Notities */}
                             <div>
-                                <label className="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-1">Notities</label>
+                                <label className="block text-xs font-bold text-lab-muted uppercase tracking-widest mb-1">Notities</label>
                                 <input
                                     type="text"
                                     value={form.notes}
                                     onChange={e => setForm(f => ({ ...f, notes: e.target.value }))}
                                     placeholder="Serienummer, factuurverwijzing..."
-                                    className="w-full px-4 py-2.5 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-300"
+                                    className="w-full px-4 py-2.5 border border-lab-muted rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-300"
                                 />
                             </div>
                         </div>
@@ -473,7 +473,7 @@ export function AssetsPanel({ userId, year, onRefresh }: AssetsPanelProps) {
                         <div className="flex gap-3 mt-6">
                             <button
                                 onClick={() => { setShowForm(false); setError(''); }}
-                                className="flex-1 py-3 border border-slate-200 rounded-xl text-sm font-bold text-slate-600 hover:bg-slate-50 transition-colors"
+                                className="flex-1 py-3 border border-lab-muted rounded-xl text-sm font-bold text-lab-muted hover:bg-lab-muted transition-colors"
                             >
                                 Annuleren
                             </button>
@@ -516,11 +516,11 @@ function AssetCard({
     const schedule = expanded ? getDepreciationSchedule(asset) : [];
 
     return (
-        <div className={`bg-white rounded-2xl border border-slate-200 shadow-sm group transition-opacity ${asset.is_disposed ? 'opacity-50' : ''}`}>
+        <div className={`bg-white rounded-2xl border border-lab-muted shadow-sm group transition-opacity ${asset.is_disposed ? 'opacity-50' : ''}`}>
             <div className="p-5 flex items-center gap-4">
                 {/* Icoon */}
-                <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 ${asset.is_disposed ? 'bg-slate-100' : 'bg-indigo-100'}`}>
-                    <span className={asset.is_disposed ? 'text-slate-400' : 'text-indigo-600'}>
+                <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 ${asset.is_disposed ? 'bg-lab-muted' : 'bg-indigo-100'}`}>
+                    <span className={asset.is_disposed ? 'text-lab-muted' : 'text-indigo-600'}>
                         {CATEGORY_ICONS[asset.category]}
                     </span>
                 </div>
@@ -528,7 +528,7 @@ function AssetCard({
                 {/* Info */}
                 <div className="min-w-0 flex-1">
                     <div className="flex items-center gap-2">
-                        <p className="font-bold text-slate-800 text-sm truncate">{asset.name}</p>
+                        <p className="font-bold text-lab-muted text-sm truncate">{asset.name}</p>
                         {asset.is_disposed && (
                             <span className="text-[10px] bg-red-50 text-red-600 px-2 py-0.5 rounded-lg font-bold">Afgestoten</span>
                         )}
@@ -537,10 +537,10 @@ function AssetCard({
                         <span className="text-[10px] bg-indigo-50 text-indigo-600 px-2 py-0.5 rounded-lg font-bold">
                             {ASSET_CATEGORY_LABELS[asset.category]}
                         </span>
-                        <span className="text-[10px] text-slate-400">
+                        <span className="text-[10px] text-lab-muted">
                             {formatDate(asset.purchase_date)}
                         </span>
-                        <span className="text-[10px] text-slate-400">
+                        <span className="text-[10px] text-lab-muted">
                             {asset.useful_life_years} jaar {asset.depreciation_method === 'linear' ? 'lineair' : 'degressief'}
                         </span>
                     </div>
@@ -548,8 +548,8 @@ function AssetCard({
 
                 {/* Waarden */}
                 <div className="text-right shrink-0">
-                    <p className="font-black text-slate-900 text-sm">{formatEuro(bookValue)}</p>
-                    <p className="text-[10px] text-slate-400">
+                    <p className="font-black text-lab-muted text-sm">{formatEuro(bookValue)}</p>
+                    <p className="text-[10px] text-lab-muted">
                         {depreciation.depreciationAmount > 0
                             ? `${formatEuro(depreciation.depreciationAmount)} afschr. ${year}`
                             : 'volledig afgeschreven'
@@ -562,7 +562,7 @@ function AssetCard({
                     <button
                         onClick={onToggleExpand}
                         title="Afschrijvingsschema"
-                        className="p-2 text-slate-300 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-all"
+                        className="p-2 text-lab-muted hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-all"
                     >
                         {expanded ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
                     </button>
@@ -570,14 +570,14 @@ function AssetCard({
                         <button
                             onClick={onDispose}
                             title="Afstoten"
-                            className="p-2 text-slate-300 hover:text-amber-600 hover:bg-amber-50 rounded-lg transition-all"
+                            className="p-2 text-lab-muted hover:text-lab-gold hover:bg-lab-gold rounded-lg transition-all"
                         >
                             <Ban size={14} />
                         </button>
                     )}
                     <button
                         onClick={onDelete}
-                        className="opacity-0 group-hover:opacity-100 p-2 text-slate-300 hover:text-red-500 hover:bg-red-50 rounded-lg transition-all"
+                        className="opacity-0 group-hover:opacity-100 p-2 text-lab-muted hover:text-red-500 hover:bg-red-50 rounded-lg transition-all"
                     >
                         <Trash2 size={14} />
                     </button>
@@ -586,12 +586,12 @@ function AssetCard({
 
             {/* Uitklapbaar afschrijvingsschema */}
             {expanded && schedule.length > 0 && (
-                <div className="border-t border-slate-100 px-5 py-4">
-                    <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-3">Afschrijvingsschema</p>
+                <div className="border-t border-lab-muted px-5 py-4">
+                    <p className="text-[10px] font-black text-lab-muted uppercase tracking-widest mb-3">Afschrijvingsschema</p>
                     <div className="overflow-x-auto">
                         <table className="w-full text-xs">
                             <thead>
-                                <tr className="text-slate-400 text-left">
+                                <tr className="text-lab-muted text-left">
                                     <th className="pb-2 font-bold">Jaar</th>
                                     <th className="pb-2 font-bold text-right">Boekwaarde begin</th>
                                     <th className="pb-2 font-bold text-right">Afschrijving</th>
@@ -602,28 +602,28 @@ function AssetCard({
                                 {schedule.map(row => (
                                     <tr
                                         key={row.year}
-                                        className={`border-t border-slate-50 ${row.year === year ? 'bg-indigo-50/50 font-bold' : ''}`}
+                                        className={`border-t border-lab-muted ${row.year === year ? 'bg-indigo-50/50 font-bold' : ''}`}
                                     >
-                                        <td className="py-1.5 text-slate-700">{row.year}</td>
-                                        <td className="py-1.5 text-right text-slate-600">{formatEuro(row.bookValueStart)}</td>
-                                        <td className="py-1.5 text-right text-slate-600">{formatEuro(row.depreciationAmount)}</td>
-                                        <td className="py-1.5 text-right text-slate-600">{formatEuro(row.bookValueEnd)}</td>
+                                        <td className="py-1.5 text-lab-muted">{row.year}</td>
+                                        <td className="py-1.5 text-right text-lab-muted">{formatEuro(row.bookValueStart)}</td>
+                                        <td className="py-1.5 text-right text-lab-muted">{formatEuro(row.depreciationAmount)}</td>
+                                        <td className="py-1.5 text-right text-lab-muted">{formatEuro(row.bookValueEnd)}</td>
                                     </tr>
                                 ))}
                             </tbody>
                             <tfoot>
-                                <tr className="border-t border-slate-200 font-bold">
-                                    <td className="py-2 text-slate-700">Totaal</td>
-                                    <td className="py-2 text-right text-slate-600">{formatEuro(asset.purchase_price)}</td>
-                                    <td className="py-2 text-right text-slate-600">
+                                <tr className="border-t border-lab-muted font-bold">
+                                    <td className="py-2 text-lab-muted">Totaal</td>
+                                    <td className="py-2 text-right text-lab-muted">{formatEuro(asset.purchase_price)}</td>
+                                    <td className="py-2 text-right text-lab-muted">
                                         {formatEuro(schedule.reduce((s, r) => s + r.depreciationAmount, 0))}
                                     </td>
-                                    <td className="py-2 text-right text-slate-600">{formatEuro(asset.residual_value)}</td>
+                                    <td className="py-2 text-right text-lab-muted">{formatEuro(asset.residual_value)}</td>
                                 </tr>
                             </tfoot>
                         </table>
                     </div>
-                    <div className="flex gap-4 mt-3 text-[10px] text-slate-400">
+                    <div className="flex gap-4 mt-3 text-[10px] text-lab-muted">
                         <span>Aanschafwaarde: {formatEuro(asset.purchase_price)}</span>
                         <span>Restwaarde: {formatEuro(asset.residual_value)}</span>
                         <span>Afschrijfbaar: {formatEuro(asset.purchase_price - asset.residual_value)}</span>

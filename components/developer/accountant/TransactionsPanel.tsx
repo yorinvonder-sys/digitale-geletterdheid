@@ -208,7 +208,7 @@ export function TransactionsPanel({ transactions, userId, year, onRefresh }: Tra
                 </button>
                 <button
                     onClick={() => setShowImport(!showImport)}
-                    className="flex items-center gap-2 px-4 py-2.5 bg-white border border-slate-200 text-slate-700 rounded-xl font-bold text-sm hover:bg-slate-50 transition-colors"
+                    className="flex items-center gap-2 px-4 py-2.5 bg-white border border-lab-muted text-lab-muted rounded-xl font-bold text-sm hover:bg-lab-muted transition-colors"
                 >
                     <Upload size={16} />
                     CSV Importeren
@@ -218,7 +218,7 @@ export function TransactionsPanel({ transactions, userId, year, onRefresh }: Tra
                 <select
                     value={filterType}
                     onChange={e => setFilterType(e.target.value as 'alle' | 'inkomst' | 'uitgave')}
-                    className="ml-auto px-3 py-2 bg-white border border-slate-200 rounded-xl text-sm font-medium text-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-300"
+                    className="ml-auto px-3 py-2 bg-white border border-lab-muted rounded-xl text-sm font-medium text-lab-muted focus:outline-none focus:ring-2 focus:ring-indigo-300"
                 >
                     <option value="alle">Alle types</option>
                     <option value="inkomst">Inkomsten</option>
@@ -228,7 +228,7 @@ export function TransactionsPanel({ transactions, userId, year, onRefresh }: Tra
                 <select
                     value={filterCat}
                     onChange={e => setFilterCat(e.target.value)}
-                    className="px-3 py-2 bg-white border border-slate-200 rounded-xl text-sm font-medium text-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-300"
+                    className="px-3 py-2 bg-white border border-lab-muted rounded-xl text-sm font-medium text-lab-muted focus:outline-none focus:ring-2 focus:ring-indigo-300"
                 >
                     {categories.map(c => (
                         <option key={c} value={c}>
@@ -240,7 +240,7 @@ export function TransactionsPanel({ transactions, userId, year, onRefresh }: Tra
                 <select
                     value={filterPrivacy}
                     onChange={e => setFilterPrivacy(e.target.value as FilterPrivacy)}
-                    className="px-3 py-2 bg-white border border-slate-200 rounded-xl text-sm font-medium text-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-300"
+                    className="px-3 py-2 bg-white border border-lab-muted rounded-xl text-sm font-medium text-lab-muted focus:outline-none focus:ring-2 focus:ring-indigo-300"
                 >
                     <option value="alle">Zakelijk & Privé</option>
                     <option value="zakelijk">Alleen Zakelijk</option>
@@ -250,8 +250,8 @@ export function TransactionsPanel({ transactions, userId, year, onRefresh }: Tra
 
             {/* CSV Import panel */}
             {showImport && (
-                <div className="bg-slate-50 border border-slate-200 rounded-2xl p-6 space-y-4">
-                    <h4 className="font-bold text-slate-800">Bankafschrift importeren</h4>
+                <div className="bg-lab-muted border border-lab-muted rounded-2xl p-6 space-y-4">
+                    <h4 className="font-bold text-lab-muted">Bankafschrift importeren</h4>
                     <div className="flex flex-wrap gap-2">
                         {BANK_OPTIONS.map(b => (
                             <button
@@ -259,7 +259,7 @@ export function TransactionsPanel({ transactions, userId, year, onRefresh }: Tra
                                 onClick={() => setImportBank(b.id)}
                                 className={`px-4 py-2 rounded-xl text-sm font-bold transition-colors ${importBank === b.id
                                     ? 'bg-indigo-600 text-white'
-                                    : 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-100'
+                                    : 'bg-white border border-lab-muted text-lab-muted hover:bg-lab-muted'
                                     }`}
                             >
                                 {b.label}
@@ -267,7 +267,7 @@ export function TransactionsPanel({ transactions, userId, year, onRefresh }: Tra
                         ))}
                     </div>
                     <div
-                        className="border-2 border-dashed border-slate-300 rounded-xl p-4 sm:p-8 text-center cursor-pointer hover:border-indigo-400 hover:bg-indigo-50 transition-colors"
+                        className="border-2 border-dashed border-lab-muted rounded-xl p-4 sm:p-8 text-center cursor-pointer hover:border-indigo-400 hover:bg-indigo-50 transition-colors"
                         onClick={() => fileRef.current?.click()}
                         onDragOver={e => e.preventDefault()}
                         onDrop={e => {
@@ -287,18 +287,18 @@ export function TransactionsPanel({ transactions, userId, year, onRefresh }: Tra
                             <p className="text-indigo-600 font-bold animate-pulse">Importeren...</p>
                         ) : (
                             <>
-                                <Upload size={24} className="mx-auto text-slate-400 mb-2" />
-                                <p className="text-sm text-slate-600 font-medium">
+                                <Upload size={24} className="mx-auto text-lab-muted mb-2" />
+                                <p className="text-sm text-lab-muted font-medium">
                                     Sleep je CSV-bestand hierheen of klik om te selecteren
                                 </p>
-                                <p className="text-xs text-slate-400 mt-1">
+                                <p className="text-xs text-lab-muted mt-1">
                                     Download het bestand via Mijn {BANK_OPTIONS.find(b => b.id === importBank)?.label} → Transacties exporteren
                                 </p>
                             </>
                         )}
                     </div>
                     {importResult && (
-                        <div className="flex items-center gap-2 text-emerald-700 bg-emerald-50 rounded-xl px-4 py-3">
+                        <div className="flex items-center gap-2 text-lab-sage bg-lab-sage rounded-xl px-4 py-3">
                             <Check size={16} />
                             <span className="text-sm font-bold">
                                 {importResult.imported} transacties geïmporteerd
@@ -316,41 +316,41 @@ export function TransactionsPanel({ transactions, userId, year, onRefresh }: Tra
             )}
 
             {/* Tabel */}
-            <div className="bg-white rounded-[2rem] border border-slate-200 shadow-sm overflow-hidden">
+            <div className="bg-white rounded-[2rem] border border-lab-muted shadow-sm overflow-hidden">
                 {filtered.length === 0 ? (
                     <div className="py-16 text-center">
-                        <p className="text-slate-400 text-sm italic">Geen transacties gevonden voor {year}.</p>
-                        <p className="text-slate-400 text-xs mt-1">Voeg een transactie toe of importeer een bankafschrift.</p>
+                        <p className="text-lab-muted text-sm italic">Geen transacties gevonden voor {year}.</p>
+                        <p className="text-lab-muted text-xs mt-1">Voeg een transactie toe of importeer een bankafschrift.</p>
                     </div>
                 ) : (
                     <div className="overflow-x-auto">
                         <table className="w-full text-sm">
                             <thead>
-                                <tr className="border-b border-slate-100">
+                                <tr className="border-b border-lab-muted">
                                     <th
-                                        className="text-left px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest cursor-pointer hover:text-slate-700"
+                                        className="text-left px-6 py-4 text-[10px] font-black text-lab-muted uppercase tracking-widest cursor-pointer hover:text-lab-muted"
                                         onClick={() => toggleSort('date')}
                                     >
                                         <span className="flex items-center gap-1">
                                             Datum {sortKey === 'date' && (sortAsc ? <ChevronUp size={12} /> : <ChevronDown size={12} />)}
                                         </span>
                                     </th>
-                                    <th className="text-left px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest">
+                                    <th className="text-left px-6 py-4 text-[10px] font-black text-lab-muted uppercase tracking-widest">
                                         Omschrijving
                                     </th>
                                     <th
-                                        className="text-left px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest cursor-pointer hover:text-slate-700"
+                                        className="text-left px-6 py-4 text-[10px] font-black text-lab-muted uppercase tracking-widest cursor-pointer hover:text-lab-muted"
                                         onClick={() => toggleSort('category')}
                                     >
                                         <span className="flex items-center gap-1">
                                             Categorie {sortKey === 'category' && (sortAsc ? <ChevronUp size={12} /> : <ChevronDown size={12} />)}
                                         </span>
                                     </th>
-                                    <th className="text-left px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest">
+                                    <th className="text-left px-6 py-4 text-[10px] font-black text-lab-muted uppercase tracking-widest">
                                         Type
                                     </th>
                                     <th
-                                        className="text-right px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest cursor-pointer hover:text-slate-700"
+                                        className="text-right px-6 py-4 text-[10px] font-black text-lab-muted uppercase tracking-widest cursor-pointer hover:text-lab-muted"
                                         onClick={() => toggleSort('amount')}
                                     >
                                         <span className="flex items-center justify-end gap-1">
@@ -366,20 +366,20 @@ export function TransactionsPanel({ transactions, userId, year, onRefresh }: Tra
                                     return (
                                         <tr
                                             key={tx.id}
-                                            className={`hover:bg-slate-50 transition-colors group ${isPrivate ? 'opacity-60' : ''}`}
+                                            className={`hover:bg-lab-muted transition-colors group ${isPrivate ? 'opacity-60' : ''}`}
                                         >
-                                            <td className="px-6 py-4 text-slate-500 text-xs whitespace-nowrap">
+                                            <td className="px-6 py-4 text-lab-muted text-xs whitespace-nowrap">
                                                 {formatDate(tx.date)}
                                             </td>
                                             <td className="px-6 py-4">
-                                                <span className="font-medium text-slate-800 text-xs">{tx.description}</span>
+                                                <span className="font-medium text-lab-muted text-xs">{tx.description}</span>
                                                 {tx.imported_from && tx.imported_from !== 'manual' && (
-                                                    <span className="ml-2 text-[9px] bg-slate-100 text-slate-400 px-1.5 py-0.5 rounded-full uppercase font-bold">
+                                                    <span className="ml-2 text-[9px] bg-lab-muted text-lab-muted px-1.5 py-0.5 rounded-full uppercase font-bold">
                                                         {tx.imported_from}
                                                     </span>
                                                 )}
                                                 {tx.km_distance !== undefined && tx.km_distance !== null && (
-                                                    <span className="ml-2 text-[9px] bg-amber-50 text-amber-600 px-1.5 py-0.5 rounded-full font-bold">
+                                                    <span className="ml-2 text-[9px] bg-lab-gold text-lab-gold px-1.5 py-0.5 rounded-full font-bold">
                                                         {tx.km_distance} km
                                                     </span>
                                                 )}
@@ -396,7 +396,7 @@ export function TransactionsPanel({ transactions, userId, year, onRefresh }: Tra
                                                     className="focus:outline-none"
                                                 >
                                                     {isPrivate ? (
-                                                        <span className="inline-flex items-center gap-1 text-[10px] bg-slate-100 text-slate-400 px-2 py-1 rounded-lg font-bold hover:bg-slate-200 transition-colors cursor-pointer">
+                                                        <span className="inline-flex items-center gap-1 text-[10px] bg-lab-muted text-lab-muted px-2 py-1 rounded-lg font-bold hover:bg-lab-muted transition-colors cursor-pointer">
                                                             privé
                                                         </span>
                                                     ) : (
@@ -407,13 +407,13 @@ export function TransactionsPanel({ transactions, userId, year, onRefresh }: Tra
                                                     )}
                                                 </button>
                                             </td>
-                                            <td className={`px-6 py-4 text-right font-black text-sm whitespace-nowrap ${tx.amount >= 0 ? 'text-emerald-600' : 'text-red-500'}`}>
+                                            <td className={`px-6 py-4 text-right font-black text-sm whitespace-nowrap ${tx.amount >= 0 ? 'text-lab-sage' : 'text-red-500'}`}>
                                                 {tx.amount >= 0 ? '+' : ''}{formatEuro(tx.amount)}
                                             </td>
                                             <td className="px-4 py-4">
                                                 <button
                                                     onClick={() => tx.id && handleDelete(tx.id)}
-                                                    className="opacity-0 group-hover:opacity-100 p-2.5 text-slate-300 hover:text-red-500 hover:bg-red-50 rounded-lg transition-all"
+                                                    className="opacity-0 group-hover:opacity-100 p-2.5 text-lab-muted hover:text-red-500 hover:bg-red-50 rounded-lg transition-all"
                                                 >
                                                     <Trash2 size={16} />
                                                 </button>
@@ -430,8 +430,8 @@ export function TransactionsPanel({ transactions, userId, year, onRefresh }: Tra
             {/* Totaalregel */}
             {filtered.length > 0 && (
                 <div className="flex justify-end gap-6 px-2 text-sm font-bold">
-                    <span className="text-slate-400">{filtered.length} transacties</span>
-                    <span className={filtered.reduce((s, t) => s + t.amount, 0) >= 0 ? 'text-emerald-600' : 'text-red-500'}>
+                    <span className="text-lab-muted">{filtered.length} transacties</span>
+                    <span className={filtered.reduce((s, t) => s + t.amount, 0) >= 0 ? 'text-lab-sage' : 'text-red-500'}>
                         Saldo: {formatEuro(filtered.reduce((s, t) => s + t.amount, 0))}
                     </span>
                 </div>
@@ -442,9 +442,9 @@ export function TransactionsPanel({ transactions, userId, year, onRefresh }: Tra
                 <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
                     <div className="bg-white rounded-3xl shadow-2xl w-full max-w-md p-8 max-h-[90vh] overflow-y-auto">
                         <div className="flex items-center justify-between mb-6">
-                            <h3 className="text-lg font-black text-slate-900 uppercase tracking-tight">Transactie Toevoegen</h3>
-                            <button onClick={() => { setShowAddModal(false); setError(''); }} className="p-2 hover:bg-slate-100 rounded-xl">
-                                <X size={20} className="text-slate-500" />
+                            <h3 className="text-lg font-black text-lab-muted uppercase tracking-tight">Transactie Toevoegen</h3>
+                            <button onClick={() => { setShowAddModal(false); setError(''); }} className="p-2 hover:bg-lab-muted rounded-xl">
+                                <X size={20} className="text-lab-muted" />
                             </button>
                         </div>
 
@@ -457,7 +457,7 @@ export function TransactionsPanel({ transactions, userId, year, onRefresh }: Tra
 
                         <div className="space-y-4">
                             {/* Type */}
-                            <div className="flex rounded-xl overflow-hidden border border-slate-200">
+                            <div className="flex rounded-xl overflow-hidden border border-lab-muted">
                                 {(['inkomst', 'uitgave'] as const).map(type => (
                                     <button
                                         key={type}
@@ -469,8 +469,8 @@ export function TransactionsPanel({ transactions, userId, year, onRefresh }: Tra
                                             }));
                                         }}
                                         className={`flex-1 py-2.5 text-sm font-bold capitalize transition-colors ${form.type === type
-                                            ? type === 'inkomst' ? 'bg-emerald-500 text-white' : 'bg-red-500 text-white'
-                                            : 'bg-white text-slate-500 hover:bg-slate-50'
+                                            ? type === 'inkomst' ? 'bg-lab-sage text-white' : 'bg-red-500 text-white'
+                                            : 'bg-white text-lab-muted hover:bg-lab-muted'
                                             }`}
                                     >
                                         {type}
@@ -480,18 +480,18 @@ export function TransactionsPanel({ transactions, userId, year, onRefresh }: Tra
 
                             {/* Datum */}
                             <div>
-                                <label className="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-1">Datum</label>
+                                <label className="block text-xs font-bold text-lab-muted uppercase tracking-widest mb-1">Datum</label>
                                 <input
                                     type="date"
                                     value={form.date}
                                     onChange={e => setForm(f => ({ ...f, date: e.target.value }))}
-                                    className="w-full px-4 py-2.5 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-300"
+                                    className="w-full px-4 py-2.5 border border-lab-muted rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-300"
                                 />
                             </div>
 
                             {/* Bedrag */}
                             <div>
-                                <label className="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-1">Bedrag (€)</label>
+                                <label className="block text-xs font-bold text-lab-muted uppercase tracking-widest mb-1">Bedrag (€)</label>
                                 <input
                                     type="number"
                                     step="0.01"
@@ -499,29 +499,29 @@ export function TransactionsPanel({ transactions, userId, year, onRefresh }: Tra
                                     placeholder="0,00"
                                     value={form.amount}
                                     onChange={e => setForm(f => ({ ...f, amount: e.target.value }))}
-                                    className="w-full px-4 py-2.5 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-300"
+                                    className="w-full px-4 py-2.5 border border-lab-muted rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-300"
                                 />
                             </div>
 
                             {/* Omschrijving */}
                             <div>
-                                <label className="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-1">Omschrijving</label>
+                                <label className="block text-xs font-bold text-lab-muted uppercase tracking-widest mb-1">Omschrijving</label>
                                 <input
                                     type="text"
                                     placeholder="Bijv. Factuur #001, Kantoorbenodigdheden..."
                                     value={form.description}
                                     onChange={e => setForm(f => ({ ...f, description: e.target.value }))}
-                                    className="w-full px-4 py-2.5 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-300"
+                                    className="w-full px-4 py-2.5 border border-lab-muted rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-300"
                                 />
                             </div>
 
                             {/* Categorie */}
                             <div>
-                                <label className="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-1">Categorie</label>
+                                <label className="block text-xs font-bold text-lab-muted uppercase tracking-widest mb-1">Categorie</label>
                                 <select
                                     value={form.category}
                                     onChange={e => setForm(f => ({ ...f, category: e.target.value as TransactionCategory }))}
-                                    className="w-full px-4 py-2.5 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-300"
+                                    className="w-full px-4 py-2.5 border border-lab-muted rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-300"
                                 >
                                     {(form.type === 'inkomst' ? INCOME_CATEGORIES : EXPENSE_CATEGORIES).map(cat => (
                                         <option key={cat} value={cat}>{CATEGORY_LABELS[cat]}</option>
@@ -532,7 +532,7 @@ export function TransactionsPanel({ transactions, userId, year, onRefresh }: Tra
                             {/* Kilometerveld (alleen bij reiskosten) */}
                             {form.category === 'reiskosten' && (
                                 <div>
-                                    <label className="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-1">
+                                    <label className="block text-xs font-bold text-lab-muted uppercase tracking-widest mb-1">
                                         Kilometers (km)
                                     </label>
                                     <input
@@ -542,9 +542,9 @@ export function TransactionsPanel({ transactions, userId, year, onRefresh }: Tra
                                         placeholder="Bijv. 42"
                                         value={form.km_distance}
                                         onChange={e => setForm(f => ({ ...f, km_distance: e.target.value }))}
-                                        className="w-full px-4 py-2.5 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-300"
+                                        className="w-full px-4 py-2.5 border border-lab-muted rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-300"
                                     />
-                                    <p className="text-[10px] text-slate-400 mt-1 font-medium">
+                                    <p className="text-[10px] text-lab-muted mt-1 font-medium">
                                         €0,23/km aftrekbaar. Vul in voor administratie.
                                     </p>
                                 </div>
@@ -552,14 +552,14 @@ export function TransactionsPanel({ transactions, userId, year, onRefresh }: Tra
 
                             {/* Privé toggle */}
                             <div className={`flex items-center justify-between p-4 rounded-xl border transition-colors ${form.is_private
-                                ? 'bg-slate-50 border-slate-200 border-dashed'
+                                ? 'bg-lab-muted border-lab-muted border-dashed'
                                 : 'bg-blue-50 border-blue-100'
                                 }`}>
                                 <div>
-                                    <p className={`text-sm font-bold ${form.is_private ? 'text-slate-400 line-through decoration-dotted' : 'text-blue-700'}`}>
+                                    <p className={`text-sm font-bold ${form.is_private ? 'text-lab-muted line-through decoration-dotted' : 'text-blue-700'}`}>
                                         {form.is_private ? 'Privé transactie' : 'Zakelijke transactie'}
                                     </p>
-                                    <p className="text-[10px] text-slate-400 mt-0.5">
+                                    <p className="text-[10px] text-lab-muted mt-0.5">
                                         {form.is_private
                                             ? 'Niet aftrekbaar voor de belasting'
                                             : 'Telt mee als zakelijke kosten of omzet'}
@@ -572,7 +572,7 @@ export function TransactionsPanel({ transactions, userId, year, onRefresh }: Tra
                                         checked={form.is_private}
                                         onChange={e => setForm(f => ({ ...f, is_private: e.target.checked }))}
                                     />
-                                    <div className="w-10 h-6 bg-blue-500 peer-checked:bg-slate-300 rounded-full peer peer-focus:ring-2 peer-focus:ring-indigo-300 transition-colors after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:after:translate-x-4" />
+                                    <div className="w-10 h-6 bg-blue-500 peer-checked:bg-lab-muted rounded-full peer peer-focus:ring-2 peer-focus:ring-indigo-300 transition-colors after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:after:translate-x-4" />
                                 </label>
                             </div>
                         </div>
@@ -580,7 +580,7 @@ export function TransactionsPanel({ transactions, userId, year, onRefresh }: Tra
                         <div className="flex gap-3 mt-6">
                             <button
                                 onClick={() => { setShowAddModal(false); setError(''); }}
-                                className="flex-1 py-3 border border-slate-200 rounded-xl text-sm font-bold text-slate-600 hover:bg-slate-50 transition-colors"
+                                className="flex-1 py-3 border border-lab-muted rounded-xl text-sm font-bold text-lab-muted hover:bg-lab-muted transition-colors"
                             >
                                 Annuleren
                             </button>

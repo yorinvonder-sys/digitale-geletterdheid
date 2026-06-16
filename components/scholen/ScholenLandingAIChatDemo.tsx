@@ -48,7 +48,7 @@ const STEPS: DemoStep[] = [
             confetti: false,
         },
         label: 'Apps',
-        accentClass: 'border-teal-400 bg-teal-50 text-teal-700',
+        accentClass: 'border-lab-teal bg-lab-teal text-lab-teal',
     },
     {
         studentMessage: 'Ehm... mijn foto\'s en berichten?',
@@ -61,7 +61,7 @@ const STEPS: DemoStep[] = [
             confetti: false,
         },
         label: 'Data',
-        accentClass: 'border-amber-400 bg-amber-50 text-amber-700',
+        accentClass: 'border-lab-gold bg-lab-gold text-lab-gold',
     },
     {
         studentMessage: 'Ik wil mijn locatie uitzetten en privé-account instellen',
@@ -74,7 +74,7 @@ const STEPS: DemoStep[] = [
             confetti: true,
         },
         label: 'Regels',
-        accentClass: 'border-emerald-400 bg-emerald-50 text-emerald-700',
+        accentClass: 'border-lab-sage bg-lab-sage text-lab-sage',
     },
 ];
 
@@ -100,10 +100,10 @@ function PrivacyIllustration({ state }: { state: PrivacyVisualState }) {
 
     // Color interpolation based on meter percentage
     const getMeterColor = (pct: number) => {
-        if (pct <= 0) return '#6B6B66';
-        if (pct <= 40) return '#f59e0b';
-        if (pct <= 70) return '#14b8a6';
-        return '#10b981';
+        if (pct <= 0) return '#445865';
+        if (pct <= 40) return '#D7C95F';
+        if (pct <= 70) return '#0B453F';
+        return '#5F947D';
     };
 
     const getMeterGlowColor = (pct: number) => {
@@ -117,17 +117,17 @@ function PrivacyIllustration({ state }: { state: PrivacyVisualState }) {
         <svg viewBox="0 0 480 320" className="w-full h-full" aria-hidden="true">
             <defs>
                 <linearGradient id="gd-privacy-bg" x1="0" y1="0" x2="1" y2="1">
-                    <stop offset="0%" stopColor="#1A1A19" />
+                    <stop offset="0%" stopColor="#08283B" />
                     <stop offset="50%" stopColor="#134e4a" />
-                    <stop offset="100%" stopColor="#1A1A19" />
+                    <stop offset="100%" stopColor="#08283B" />
                 </linearGradient>
                 <linearGradient id="gd-meter-fill" x1="0" y1="1" x2="0" y2="0">
                     <stop offset="0%" stopColor="#0d9488" />
-                    <stop offset="100%" stopColor="#10b981" />
+                    <stop offset="100%" stopColor="#5F947D" />
                 </linearGradient>
                 <linearGradient id="gd-meter-track" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stopColor="#2A2A25" />
-                    <stop offset="100%" stopColor="#1A1A19" />
+                    <stop offset="0%" stopColor="#08283B" />
+                    <stop offset="100%" stopColor="#08283B" />
                 </linearGradient>
             </defs>
 
@@ -136,10 +136,10 @@ function PrivacyIllustration({ state }: { state: PrivacyVisualState }) {
 
             {/* Subtle grid pattern */}
             {Array.from({ length: 12 }, (_, i) => (
-                <line key={`gh-${i}`} x1="0" y1={i * 30} x2="480" y2={i * 30} stroke="#2A2A25" strokeWidth="0.5" opacity="0.5" />
+                <line key={`gh-${i}`} x1="0" y1={i * 30} x2="480" y2={i * 30} stroke="#08283B" strokeWidth="0.5" opacity="0.5" />
             ))}
             {Array.from({ length: 16 }, (_, i) => (
-                <line key={`gv-${i}`} x1={i * 32} y1="0" x2={i * 32} y2="320" stroke="#2A2A25" strokeWidth="0.5" opacity="0.5" />
+                <line key={`gv-${i}`} x1={i * 32} y1="0" x2={i * 32} y2="320" stroke="#08283B" strokeWidth="0.5" opacity="0.5" />
             ))}
 
             {/* Floating particles */}
@@ -147,7 +147,7 @@ function PrivacyIllustration({ state }: { state: PrivacyVisualState }) {
                 [40, 50], [120, 90], [380, 60], [430, 140], [60, 260], [200, 280],
                 [350, 250], [450, 40], [280, 30], [160, 200],
             ].map(([x, y], i) => (
-                <circle key={`particle-${i}`} cx={x} cy={y} r={1 + (i % 3) * 0.5} fill="#14b8a6" opacity={0.15 + (i % 4) * 0.05}>
+                <circle key={`particle-${i}`} cx={x} cy={y} r={1 + (i % 3) * 0.5} fill="#0B453F" opacity={0.15 + (i % 4) * 0.05}>
                     <animate attributeName="opacity" values={`${0.1 + (i % 3) * 0.05};${0.25 + (i % 2) * 0.1};${0.1 + (i % 3) * 0.05}`} dur={`${3 + (i % 3)}s`} repeatCount="indefinite" />
                     <animateTransform attributeName="transform" type="translate" values={`0,0;0,${-4 + (i % 2) * 8};0,0`} dur={`${4 + i % 3}s`} repeatCount="indefinite" />
                 </circle>
@@ -156,10 +156,10 @@ function PrivacyIllustration({ state }: { state: PrivacyVisualState }) {
             {/* ═══ PRIVACY METER ═══ */}
             <g>
                 {/* Label */}
-                <text x="100" y="30" textAnchor="middle" fontSize="11" fontWeight="bold" fill="#9C9C95" fontFamily="monospace" letterSpacing="1.5">PRIVACY SCORE</text>
+                <text x="100" y="30" textAnchor="middle" fontSize="11" fontWeight="bold" fill="#445865" fontFamily="monospace" letterSpacing="1.5">PRIVACY SCORE</text>
 
                 {/* Meter track */}
-                <rect x="80" y="45" width="40" height={meterHeight} rx="8" fill="url(#gd-meter-track)" stroke="#3D3D38" strokeWidth="1" />
+                <rect x="80" y="45" width="40" height={meterHeight} rx="8" fill="url(#gd-meter-track)" stroke="#445865" strokeWidth="1" />
 
                 {/* Meter fill */}
                 <rect
@@ -208,7 +208,7 @@ function PrivacyIllustration({ state }: { state: PrivacyVisualState }) {
                 >
                     {state.meterPercent}%
                 </text>
-                <text x="100" y="248" textAnchor="middle" fontSize="9" fill="#9C9C95" fontFamily="monospace">BESCHERMD</text>
+                <text x="100" y="248" textAnchor="middle" fontSize="9" fill="#445865" fontFamily="monospace">BESCHERMD</text>
             </g>
 
             {/* ═══ APP ICONS ═══ */}
@@ -223,7 +223,7 @@ function PrivacyIllustration({ state }: { state: PrivacyVisualState }) {
                         <rect x="192" y="62" width="20" height="20" rx="5" fill="none" stroke="white" strokeWidth="2" />
                         <circle cx="202" cy="72" r="5" fill="none" stroke="white" strokeWidth="2" />
                         <circle cx="210" cy="64" r="2" fill="white" />
-                        <text x="202" y="110" textAnchor="middle" fontSize="9" fill="#9C9C95">Instagram</text>
+                        <text x="202" y="110" textAnchor="middle" fontSize="9" fill="#445865">Instagram</text>
                     </g>
 
                     {/* TikTok */}
@@ -236,7 +236,7 @@ function PrivacyIllustration({ state }: { state: PrivacyVisualState }) {
                         <path d="M272 62 v16 a7 7 0 0 1 -14 0 v0" fill="none" stroke="#FE2C55" strokeWidth="2.5" strokeLinecap="round" />
                         <path d="M273 63 v16 a7 7 0 0 1 -14 0 v0" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" />
                         <path d="M273 68 c4 0 6-2 7-5" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" />
-                        <text x="266" y="110" textAnchor="middle" fontSize="9" fill="#9C9C95">TikTok</text>
+                        <text x="266" y="110" textAnchor="middle" fontSize="9" fill="#445865">TikTok</text>
                     </g>
 
                     {/* Snapchat */}
@@ -246,7 +246,7 @@ function PrivacyIllustration({ state }: { state: PrivacyVisualState }) {
                     }}>
                         <rect x="308" y="50" width="44" height="44" rx="10" fill="#FFFC00" />
                         <path d="M330 68 c0-6 -5-8 -5-8 s-5 2 -5 8 c-4 0 -6-2 -6-2 s0 4 6 5 c-1 3 -5 4 -5 4 s5 2 11 0 s-1-1 -1-4 c6-1 6-5 6-5 s-2 2 -6 2z" fill="white" />
-                        <text x="330" y="110" textAnchor="middle" fontSize="9" fill="#9C9C95">Snapchat</text>
+                        <text x="330" y="110" textAnchor="middle" fontSize="9" fill="#445865">Snapchat</text>
                     </g>
                 </g>
             )}
@@ -257,7 +257,7 @@ function PrivacyIllustration({ state }: { state: PrivacyVisualState }) {
                     {state.dataTags.map((tag, i) => {
                         const tagX = 190 + i * 90;
                         const tagY = 145;
-                        const tagColors = ['#f59e0b', '#ef4444', '#E8956F'];
+                        const tagColors = ['#D7C95F', '#D97848', '#D97848'];
                         const tagBgs = ['rgba(245,158,11,0.15)', 'rgba(239,68,68,0.15)', 'rgba(139,92,246,0.15)'];
                         const tagIcons = [
                             // Location pin
@@ -314,12 +314,12 @@ function PrivacyIllustration({ state }: { state: PrivacyVisualState }) {
                                 transition: `opacity 0.6s ease ${0.3 + i * 0.2}s`,
                             }}>
                                 {/* Checkmark circle */}
-                                <circle cx="200" cy={ruleY + 2} r="11" fill="#10b981" opacity="0.15" />
-                                <circle cx="200" cy={ruleY + 2} r="11" fill="none" stroke="#10b981" strokeWidth="1.5" />
+                                <circle cx="200" cy={ruleY + 2} r="11" fill="#5F947D" opacity="0.15" />
+                                <circle cx="200" cy={ruleY + 2} r="11" fill="none" stroke="#5F947D" strokeWidth="1.5" />
                                 <path
                                     d={`M195,${ruleY + 2} l3,4 l7,-7`}
                                     fill="none"
-                                    stroke="#10b981"
+                                    stroke="#5F947D"
                                     strokeWidth="2"
                                     strokeLinecap="round"
                                     strokeLinejoin="round"
@@ -337,7 +337,7 @@ function PrivacyIllustration({ state }: { state: PrivacyVisualState }) {
                                 </text>
 
                                 {/* Animated shield pulse */}
-                                <circle cx="200" cy={ruleY + 2} r="11" fill="none" stroke="#10b981" strokeWidth="1" opacity="0.3">
+                                <circle cx="200" cy={ruleY + 2} r="11" fill="none" stroke="#5F947D" strokeWidth="1" opacity="0.3">
                                     <animate attributeName="r" values="11;18;11" dur="2s" repeatCount="indefinite" />
                                     <animate attributeName="opacity" values="0.3;0;0.3" dur="2s" repeatCount="indefinite" />
                                 </circle>
@@ -351,18 +351,18 @@ function PrivacyIllustration({ state }: { state: PrivacyVisualState }) {
             {state.confetti && (
                 <g>
                     {[
-                        { x: 160, y: 180, color: '#10b981', size: 4, dur: '2.5s', delay: '0s' },
-                        { x: 220, y: 190, color: '#14b8a6', size: 3, dur: '3s', delay: '0.3s' },
-                        { x: 280, y: 175, color: '#f59e0b', size: 5, dur: '2.8s', delay: '0.1s' },
-                        { x: 340, y: 195, color: '#E8956F', size: 3, dur: '3.2s', delay: '0.5s' },
-                        { x: 190, y: 200, color: '#ec4899', size: 4, dur: '2.6s', delay: '0.2s' },
-                        { x: 310, y: 185, color: '#3b82f6', size: 3, dur: '2.9s', delay: '0.4s' },
-                        { x: 250, y: 170, color: '#10b981', size: 5, dur: '2.4s', delay: '0.15s' },
-                        { x: 370, y: 190, color: '#f59e0b', size: 4, dur: '3.1s', delay: '0.35s' },
-                        { x: 150, y: 210, color: '#14b8a6', size: 3, dur: '2.7s', delay: '0.6s' },
-                        { x: 400, y: 175, color: '#ec4899', size: 4, dur: '2.3s', delay: '0.25s' },
-                        { x: 230, y: 160, color: '#3b82f6', size: 3, dur: '3.3s', delay: '0.45s' },
-                        { x: 300, y: 200, color: '#E8956F', size: 5, dur: '2.5s', delay: '0.55s' },
+                        { x: 160, y: 180, color: '#5F947D', size: 4, dur: '2.5s', delay: '0s' },
+                        { x: 220, y: 190, color: '#0B453F', size: 3, dur: '3s', delay: '0.3s' },
+                        { x: 280, y: 175, color: '#D7C95F', size: 5, dur: '2.8s', delay: '0.1s' },
+                        { x: 340, y: 195, color: '#D97848', size: 3, dur: '3.2s', delay: '0.5s' },
+                        { x: 190, y: 200, color: '#D97848', size: 4, dur: '2.6s', delay: '0.2s' },
+                        { x: 310, y: 185, color: '#0B453F', size: 3, dur: '2.9s', delay: '0.4s' },
+                        { x: 250, y: 170, color: '#5F947D', size: 5, dur: '2.4s', delay: '0.15s' },
+                        { x: 370, y: 190, color: '#D7C95F', size: 4, dur: '3.1s', delay: '0.35s' },
+                        { x: 150, y: 210, color: '#0B453F', size: 3, dur: '2.7s', delay: '0.6s' },
+                        { x: 400, y: 175, color: '#D97848', size: 4, dur: '2.3s', delay: '0.25s' },
+                        { x: 230, y: 160, color: '#0B453F', size: 3, dur: '3.3s', delay: '0.45s' },
+                        { x: 300, y: 200, color: '#D97848', size: 5, dur: '2.5s', delay: '0.55s' },
                     ].map((p, i) => (
                         <g key={`confetti-${i}`}>
                             {i % 3 === 0 ? (
@@ -388,10 +388,10 @@ function PrivacyIllustration({ state }: { state: PrivacyVisualState }) {
 
                     {/* Central shield celebration */}
                     <g>
-                        <path d="M290,270 l0,-20 a22,22 0 0,1 44,0 l0,20 c0,12 -22,20 -22,20 s-22,-8 -22,-20z" fill="none" stroke="#10b981" strokeWidth="2" opacity="0.6">
+                        <path d="M290,270 l0,-20 a22,22 0 0,1 44,0 l0,20 c0,12 -22,20 -22,20 s-22,-8 -22,-20z" fill="none" stroke="#5F947D" strokeWidth="2" opacity="0.6">
                             <animate attributeName="opacity" values="0.6;0.2;0.6" dur="2s" repeatCount="indefinite" />
                         </path>
-                        <path d="M306,268 l5,5 l10,-10" fill="none" stroke="#10b981" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" opacity="0.8">
+                        <path d="M306,268 l5,5 l10,-10" fill="none" stroke="#5F947D" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" opacity="0.8">
                             <animate attributeName="opacity" values="0.8;0.4;0.8" dur="2s" repeatCount="indefinite" />
                         </path>
                     </g>
@@ -413,9 +413,9 @@ function PrivacyIllustration({ state }: { state: PrivacyVisualState }) {
 function TypingDots() {
     return (
         <span className="inline-flex gap-1 items-center px-3 py-1.5">
-            <span className="w-1.5 h-1.5 rounded-full bg-slate-400 animate-typing-bounce" />
-            <span className="w-1.5 h-1.5 rounded-full bg-slate-400 animate-typing-bounce [animation-delay:0.2s]" />
-            <span className="w-1.5 h-1.5 rounded-full bg-slate-400 animate-typing-bounce [animation-delay:0.4s]" />
+            <span className="w-1.5 h-1.5 rounded-full bg-lab-muted animate-typing-bounce" />
+            <span className="w-1.5 h-1.5 rounded-full bg-lab-muted animate-typing-bounce [animation-delay:0.2s]" />
+            <span className="w-1.5 h-1.5 rounded-full bg-lab-muted animate-typing-bounce [animation-delay:0.4s]" />
         </span>
     );
 }
@@ -424,7 +424,7 @@ function ChatBubble({ text, isStudent, visible }: { text: string; isStudent: boo
     return (
         <div className={`flex ${isStudent ? 'justify-end' : 'justify-start'} transition-all duration-500 ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-3'}`}>
             {!isStudent && (
-                <div className="w-7 h-7 rounded-full bg-teal-600 flex items-center justify-center mr-2 mt-1 shrink-0">
+                <div className="w-7 h-7 rounded-full bg-lab-teal flex items-center justify-center mr-2 mt-1 shrink-0">
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                         <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
                     </svg>
@@ -433,9 +433,9 @@ function ChatBubble({ text, isStudent, visible }: { text: string; isStudent: boo
             <div className={`max-w-[80%] px-3.5 py-2 text-sm leading-relaxed ${
                 isStudent
                     ? 'text-white rounded-2xl rounded-br-sm'
-                    : 'bg-slate-800 text-slate-200 rounded-2xl rounded-bl-sm'
+                    : 'bg-lab-muted text-lab-muted rounded-2xl rounded-bl-sm'
             }`}
-                style={isStudent ? { backgroundColor: '#D97757' } : undefined}
+                style={isStudent ? { backgroundColor: '#D97848' } : undefined}
             >
                 {text}
             </div>
@@ -510,25 +510,25 @@ export const ScholenLandingAIChatDemo: React.FC = () => {
         <div className="max-w-6xl mx-auto">
             {/* Header */}
             <div className="text-center mb-10">
-                <p className="font-semibold text-sm mb-3 tracking-wide" style={{ color: '#D97757' }}>Bekijk het in actie</p>
-                <h2 className="text-2xl md:text-3xl font-medium tracking-tight mb-4" style={{ fontFamily: "'Newsreader', Georgia, serif", color: '#1A1A19' }}>
+                <p className="font-semibold text-sm mb-3 tracking-wide" style={{ color: '#D97848' }}>Bekijk het in actie</p>
+                <h2 className="text-2xl md:text-3xl font-medium tracking-tight mb-4" style={{ fontFamily: "'Newsreader', Georgia, serif", color: '#08283B' }}>
                     Leerlingen ontdekken hun digitale voetafdruk
                 </h2>
-                <p className="text-base leading-relaxed max-w-xl mx-auto" style={{ color: '#6B6B66' }}>
+                <p className="text-base leading-relaxed max-w-xl mx-auto" style={{ color: '#445865' }}>
                     De AI Spiegel coach helpt leerlingen stap voor stap bewust worden van
                     hun online privacy. Elke keuze bouwt aan een sterker digitaal profiel.
                 </p>
             </div>
 
             {/* Educational context */}
-            <div className="flex flex-wrap items-center justify-center gap-4 mb-6 text-xs" style={{ color: '#6B6B66' }}>
+            <div className="flex flex-wrap items-center justify-center gap-4 mb-6 text-xs" style={{ color: '#445865' }}>
                 <span className="flex items-center gap-1.5">
                     <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                         <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
                     </svg>
                     Online privacy, datageletterdheid en digitaal burgerschap
                 </span>
-                <span className="w-px h-3" style={{ backgroundColor: '#E8E6DF' }} aria-hidden="true" />
+                <span className="w-px h-3" style={{ backgroundColor: '#E7D8BD' }} aria-hidden="true" />
                 <span className="flex items-center gap-1.5">
                     <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                         <circle cx="12" cy="12" r="10" /><path d="m9 12 2 2 4-4" />
@@ -540,21 +540,21 @@ export const ScholenLandingAIChatDemo: React.FC = () => {
             {/* Demo area */}
             <div
                 className="grid grid-cols-1 lg:grid-cols-5 gap-0 rounded-3xl overflow-hidden shadow-xl bg-white"
-                style={{ borderWidth: '1px', borderStyle: 'solid', borderColor: '#E8E6DF' }}
+                style={{ borderWidth: '1px', borderStyle: 'solid', borderColor: '#E7D8BD' }}
                 onMouseEnter={() => setIsPaused(true)}
                 onMouseLeave={() => setIsPaused(false)}
             >
                 {/* Chat panel */}
-                <div className="lg:col-span-2 bg-slate-900 flex flex-col min-h-[360px] lg:min-h-[420px] order-2 lg:order-1">
-                    <div className="flex items-center gap-3 px-4 py-3 border-b border-slate-800">
-                        <div className="w-8 h-8 rounded-lg bg-teal-600 flex items-center justify-center">
+                <div className="lg:col-span-2 bg-lab-muted flex flex-col min-h-[360px] lg:min-h-[420px] order-2 lg:order-1">
+                    <div className="flex items-center gap-3 px-4 py-3 border-b border-lab-muted">
+                        <div className="w-8 h-8 rounded-lg bg-lab-teal flex items-center justify-center">
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                                 <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
                             </svg>
                         </div>
                         <div>
                             <p className="text-white text-sm font-semibold">AI Spiegel</p>
-                            <p className="text-slate-500 text-xs">Privacy coach</p>
+                            <p className="text-lab-muted text-xs">Privacy coach</p>
                         </div>
                     </div>
 
@@ -588,12 +588,12 @@ export const ScholenLandingAIChatDemo: React.FC = () => {
 
                         {currentPhaseIdx === phaseIndex('ai-typing') && (
                             <div className="flex justify-start" role="listitem">
-                                <div className="w-7 h-7 rounded-full bg-teal-600 flex items-center justify-center mr-2 mt-1 shrink-0">
+                                <div className="w-7 h-7 rounded-full bg-lab-teal flex items-center justify-center mr-2 mt-1 shrink-0">
                                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                                         <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
                                     </svg>
                                 </div>
-                                <div className="bg-slate-800/60 rounded-2xl rounded-bl-sm">
+                                <div className="bg-lab-muted/60 rounded-2xl rounded-bl-sm">
                                     <TypingDots />
                                 </div>
                             </div>
@@ -607,9 +607,9 @@ export const ScholenLandingAIChatDemo: React.FC = () => {
                     </div>
 
                     <div className="px-4 pb-4">
-                        <div className="flex items-center gap-2 bg-slate-800 rounded-xl px-3 py-2.5">
-                            <span className="text-slate-500 text-sm flex-1 truncate">Typ een bericht...</span>
-                            <div className="w-7 h-7 rounded-lg flex items-center justify-center opacity-50" style={{ backgroundColor: '#D97757' }}>
+                        <div className="flex items-center gap-2 bg-lab-muted rounded-xl px-3 py-2.5">
+                            <span className="text-lab-muted text-sm flex-1 truncate">Typ een bericht...</span>
+                            <div className="w-7 h-7 rounded-lg flex items-center justify-center opacity-50" style={{ backgroundColor: '#D97848' }}>
                                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                                     <path d="m5 12 7-7 7 7" /><path d="M12 19V5" />
                                 </svg>
@@ -619,7 +619,7 @@ export const ScholenLandingAIChatDemo: React.FC = () => {
                 </div>
 
                 {/* Privacy illustration */}
-                <div className="lg:col-span-3 relative order-1 lg:order-2 bg-slate-100">
+                <div className="lg:col-span-3 relative order-1 lg:order-2 bg-lab-muted">
                     <PrivacyIllustration state={visualState} />
 
                     {isPaused && (
@@ -650,7 +650,7 @@ export const ScholenLandingAIChatDemo: React.FC = () => {
                                 ? s.accentClass
                                 : 'bg-white'
                         }`}
-                        style={i !== activeStep ? { borderColor: '#E8E6DF', color: '#6B6B66' } : undefined}
+                        style={i !== activeStep ? { borderColor: '#E7D8BD', color: '#445865' } : undefined}
                     >
                         {STEP_ICONS[i]}
                         {s.label}

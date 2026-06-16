@@ -74,12 +74,12 @@ const AGENT_ENHANCEMENT_TEMPLATES: Record<string, {
             'hoger': 'verhoog de springkracht (jumpForce variabele)',
             'groter': 'vergroot de afmetingen (width/height properties)',
             'kleiner': 'verklein de afmetingen (width/height properties)',
-            'rood': 'kleurcode #ef4444 (rood)',
-            'groen': 'kleurcode #22c55e (groen)',
-            'blauw': 'kleurcode #3b82f6 (blauw)',
-            'geel': 'kleurcode #eab308 (geel)',
-            'paars': 'kleurcode #a855f7 (paars)',
-            'oranje': 'kleurcode #f97316 (oranje)',
+            'rood': 'kleurcode #D97848 (rood)',
+            'groen': 'kleurcode #5F947D (groen)',
+            'blauw': 'kleurcode #0B453F (blauw)',
+            'geel': 'kleurcode #D7C95F (geel)',
+            'paars': 'kleurcode #0B453F (paars)',
+            'oranje': 'kleurcode #D97848 (oranje)',
         }
     },
     'ai-trainer': {

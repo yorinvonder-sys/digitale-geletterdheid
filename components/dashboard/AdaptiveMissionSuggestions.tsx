@@ -15,9 +15,9 @@ interface AdaptiveMissionSuggestionsProps {
 
 const DOMAIN_COLORS: Record<string, { badge: string; dot: string }> = {
   indigo:  { badge: 'bg-indigo-500/20 text-indigo-300',  dot: 'bg-indigo-400' },
-  emerald: { badge: 'bg-emerald-500/20 text-emerald-300', dot: 'bg-emerald-400' },
-  violet:  { badge: 'bg-violet-500/20 text-violet-300',  dot: 'bg-violet-400' },
-  rose:    { badge: 'bg-rose-500/20 text-rose-300',      dot: 'bg-rose-400' },
+  emerald: { badge: 'bg-lab-sage/20 text-lab-sage', dot: 'bg-lab-sage' },
+  violet:  { badge: 'bg-lab-teal/20 text-lab-teal',  dot: 'bg-lab-teal' },
+  rose:    { badge: 'bg-lab-coral/20 text-lab-coral',      dot: 'bg-lab-coral' },
   sky:     { badge: 'bg-sky-500/20 text-sky-300',        dot: 'bg-sky-400' },
 };
 
@@ -27,8 +27,8 @@ function domainBadgeClass(key: DomeinKey): string {
 }
 
 function relevanceIndicator(score: number): { label: string; className: string } {
-  if (score > 0.6) return { label: 'Hoog',   className: 'bg-emerald-400' };
-  if (score >= 0.3) return { label: 'Middel', className: 'bg-amber-400' };
+  if (score > 0.6) return { label: 'Hoog',   className: 'bg-lab-sage' };
+  if (score >= 0.3) return { label: 'Middel', className: 'bg-lab-gold' };
   return               { label: 'Laag',   className: 'bg-gray-500' };
 }
 

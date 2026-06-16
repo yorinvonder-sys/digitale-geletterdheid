@@ -51,7 +51,7 @@ const SLIDES: SlideData[] = [
             </ul>
         ),
         bg: "bg-white",
-        textColor: "text-[#1A1A19]",
+        textColor: "text-[#08283B]",
         issue: "text-overload",
         feedback: "Veel te veel tekst! Mensen gaan dit lezen in plaats van naar jou luisteren.",
         options: [
@@ -64,7 +64,7 @@ const SLIDES: SlideData[] = [
         id: 2,
         title: "Mijn Vakantie",
         content: "In de zomer ging ik naar Spanje",
-        bg: "bg-yellow-300",
+        bg: "bg-lab-gold",
         textColor: "text-white",
         issue: "contrast",
         feedback: "Au! Witte tekst op een gele achtergrond is onleesbaar.",
@@ -84,16 +84,16 @@ const SLIDES: SlideData[] = [
         issue: "chaos",
         feedback: "Wow, rustig aan! Te veel verschillende kleuren en lettertypes maken het onrustig.",
         customRender: (fixed) => (
-            <div className={`p-8 h-full flex flex-col items-center justify-center transition-all duration-500 ${fixed ? 'bg-[#FAF9F0]' : 'bg-gradient-to-r from-purple-500 via-pink-500 to-red-500'}`}>
-                <h1 className={`text-5xl mb-8 transition-all duration-500 ${fixed ? 'font-bold text-[#1A1A19]' : 'font-[Comic_Sans_MS] text-yellow-300 drop-shadow-lg'}`} style={fixed ? { fontFamily: "'Newsreader', Georgia, serif" } : undefined}>
+            <div className={`p-8 h-full flex flex-col items-center justify-center transition-all duration-500 ${fixed ? 'bg-[#FCF6EA]' : 'bg-gradient-to-r from-purple-500 via-pink-500 to-red-500'}`}>
+                <h1 className={`text-5xl mb-8 transition-all duration-500 ${fixed ? 'font-bold text-[#08283B]' : 'font-[Comic_Sans_MS] text-lab-gold drop-shadow-lg'}`} style={fixed ? { fontFamily: "'Newsreader', Georgia, serif" } : undefined}>
                     {fixed ? "Thema: De Kermis" : "~~~ WELKOM OP DE KERMIS!!! ~~~"}
                 </h1>
                 <div className="grid grid-cols-2 gap-8 w-full max-w-2xl">
-                    <div className={`p-6 rounded-2xl transition-all duration-500 ${fixed ? 'bg-white shadow-md text-[#3D3D38] border border-[#E8E6DF]' : 'bg-lime-400 text-red-600 font-mono rotate-3 border-4 border-blue-500'}`}>
+                    <div className={`p-6 rounded-2xl transition-all duration-500 ${fixed ? 'bg-white shadow-md text-[#445865] border border-[#E7D8BD]' : 'bg-lime-400 text-red-600 font-mono rotate-3 border-4 border-blue-500'}`}>
                         <h3 className="text-xl font-bold mb-2">Attracties</h3>
                         <p>Botsauto's & Reuzenrad</p>
                     </div>
-                    <div className={`p-6 rounded-2xl transition-all duration-500 ${fixed ? 'bg-white shadow-md text-[#3D3D38] border border-[#E8E6DF]' : 'bg-orange-500 text-blue-800 font-serif -rotate-2 border-dashed border-4 border-white'}`}>
+                    <div className={`p-6 rounded-2xl transition-all duration-500 ${fixed ? 'bg-white shadow-md text-[#445865] border border-[#E7D8BD]' : 'bg-orange-500 text-blue-800 font-serif -rotate-2 border-dashed border-4 border-white'}`}>
                         <h3 className="text-xl font-bold mb-2">Eten</h3>
                         <p>Suikerspin & Popcorn</p>
                     </div>
@@ -111,7 +111,7 @@ const SLIDES: SlideData[] = [
         title: "Klimaatverandering",
         content: "Het klimaat verandert. De aarde warmt op.",
         bg: "bg-white",
-        textColor: "text-[#1A1A19]",
+        textColor: "text-[#08283B]",
         issue: "distraction",
         feedback: "Is dit een presentatie of een meme-pagina? De GIFs leiden af van je serieuze boodschap.",
         customRender: (fixed) => (
@@ -153,12 +153,12 @@ const SLIDES: SlideData[] = [
         id: 5,
         title: "Samenvatting",
         content: "Bedankt voor het luisteren. Zijn er nog vragen? Je kunt me mailen op naam@school.nl voor meer info.",
-        bg: "bg-[#1A1A19]",
-        textColor: "text-[#6B6B66]", // Low contrast intentionally for initial state
+        bg: "bg-[#08283B]",
+        textColor: "text-[#445865]", // Low contrast intentionally for initial state
         issue: "size",
         feedback: "Kan iemand dit lezen? De tekst is veel te klein en valt weg!",
         customRender: (fixed) => (
-            <div className={`h-full flex flex-col items-center justify-center p-8 transition-all duration-500 ${fixed ? 'bg-[#1A1A19] text-white' : 'bg-[#1A1A19] text-[#6B6B66]'}`}>
+            <div className={`h-full flex flex-col items-center justify-center p-8 transition-all duration-500 ${fixed ? 'bg-[#08283B] text-white' : 'bg-[#08283B] text-[#445865]'}`}>
                 <h1 className={`font-bold transition-all duration-500 ${fixed ? 'text-6xl mb-8' : 'text-xs mb-2'}`} style={{ fontFamily: "'Newsreader', Georgia, serif" }}>
                     BEDANKT!
                 </h1>
@@ -178,7 +178,7 @@ const SLIDES: SlideData[] = [
         title: "Droomauto",
         content: "Dit is de auto die ik later wil kopen.",
         bg: "bg-white",
-        textColor: "text-[#1A1A19]",
+        textColor: "text-[#08283B]",
         issue: "image-stretch",
         feedback: "Die auto is helemaal platgedrukt! Dat ziet er gek uit.",
         customRender: (fixed) => (
@@ -201,8 +201,8 @@ const SLIDES: SlideData[] = [
         id: 7,
         title: "Waarom ik fan ben",
         content: "Ik vint het egt heel leuk omdat hun goeie musiek maken en ik luister er elken dag naar.",
-        bg: "bg-[#FAF9F0]",
-        textColor: "text-[#1A1A19]",
+        bg: "bg-[#FCF6EA]",
+        textColor: "text-[#08283B]",
         issue: "spelling",
         feedback: "Ai... Zoveel taalfouten leiden af van je verhaal. Het staat ook een beetje slordig.",
         fixedContent: "Ik vind het echt heel leuk, omdat ze goede muziek maken. Ik luister er elke dag naar.",
@@ -217,24 +217,24 @@ const SLIDES: SlideData[] = [
         title: "Mijn Cijfers",
         content: "Hier zie je een overzicht van mijn schoolcijfers.",
         bg: "bg-white",
-        textColor: "text-[#1A1A19]",
+        textColor: "text-[#08283B]",
         issue: "chart-chaos",
         feedback: "Help! Deze grafiek is veel te ingewikkeld en onduidelijk. Niemand snapt dit in 3 seconden.",
         customRender: (fixed) => (
             <div className="h-full flex flex-col items-center justify-center">
                 <h1 className="text-4xl font-bold mb-8" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>Schoolcijfers</h1>
                 {fixed ? (
-                    <div className="flex items-end gap-6 h-64 w-96 border-b-4 border-[#1A1A19] p-4">
-                        <div className="flex-1 bg-[#2A9D8F] rounded-t-lg h-[80%] relative group shadow-lg"><span className="absolute -top-8 left-1/2 -translate-x-1/2 font-bold text-xl">8.0</span></div>
-                        <div className="flex-1 bg-[#D97757] rounded-t-lg h-[70%] relative group shadow-lg"><span className="absolute -top-8 left-1/2 -translate-x-1/2 font-bold text-xl">7.0</span></div>
-                        <div className="flex-1 bg-[#8B6F9E] rounded-t-lg h-[75%] relative group shadow-lg"><span className="absolute -top-8 left-1/2 -translate-x-1/2 font-bold text-xl">7.5</span></div>
+                    <div className="flex items-end gap-6 h-64 w-96 border-b-4 border-[#08283B] p-4">
+                        <div className="flex-1 bg-[#5F947D] rounded-t-lg h-[80%] relative group shadow-lg"><span className="absolute -top-8 left-1/2 -translate-x-1/2 font-bold text-xl">8.0</span></div>
+                        <div className="flex-1 bg-[#D97848] rounded-t-lg h-[70%] relative group shadow-lg"><span className="absolute -top-8 left-1/2 -translate-x-1/2 font-bold text-xl">7.0</span></div>
+                        <div className="flex-1 bg-[#0B453F] rounded-t-lg h-[75%] relative group shadow-lg"><span className="absolute -top-8 left-1/2 -translate-x-1/2 font-bold text-xl">7.5</span></div>
                     </div>
                 ) : (
                     <div className="relative w-72 h-72 flex items-center justify-center">
-                        <div className="absolute inset-0 rounded-full border-[40px] border-[#E8E6DF] animate-spin-slow"></div>
-                        <div className="absolute inset-0 rounded-full border-[40px] border-t-red-500 border-r-[#2A9D8F] border-b-[#10B981] border-l-[#D97757] opacity-80"></div>
-                        <div className="absolute inset-8 rounded-full border-[20px] border-[#8B6F9E] border-dashed animate-pulse"></div>
-                        <span className="font-bold text-6xl rotate-45 text-[#E8E6DF]">?</span>
+                        <div className="absolute inset-0 rounded-full border-[40px] border-[#E7D8BD] animate-spin-slow"></div>
+                        <div className="absolute inset-0 rounded-full border-[40px] border-t-red-500 border-r-[#5F947D] border-b-[#5F947D] border-l-[#D97848] opacity-80"></div>
+                        <div className="absolute inset-8 rounded-full border-[20px] border-[#0B453F] border-dashed animate-pulse"></div>
+                        <span className="font-bold text-6xl rotate-45 text-[#E7D8BD]">?</span>
                     </div>
                 )}
             </div>
@@ -311,78 +311,78 @@ export const PitchPoliceMission: React.FC<PitchPoliceProps> = ({ onComplete, onB
     // INTRO SCREEN
     if (showIntro) {
         return (
-            <div className="h-screen bg-[#FAF9F0] flex flex-col items-center justify-center p-4 text-[#1A1A19] relative overflow-hidden" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+            <div className="h-screen bg-[#FCF6EA] flex flex-col items-center justify-center p-4 text-[#08283B] relative overflow-hidden" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                 {/* Background decorations */}
                 <div className="absolute inset-0 opacity-10 pointer-events-none">
-                    <div className="absolute top-10 left-10 w-32 h-32 bg-[#D97757] rounded-full blur-3xl animate-pulse" />
-                    <div className="absolute bottom-20 right-20 w-40 h-40 bg-[#C46849] rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }} />
+                    <div className="absolute top-10 left-10 w-32 h-32 bg-[#D97848] rounded-full blur-3xl animate-pulse" />
+                    <div className="absolute bottom-20 right-20 w-40 h-40 bg-[#D97848] rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }} />
                 </div>
 
                 <div className="max-w-xl w-full text-center relative z-10">
                     {/* Icon + Title row */}
                     <div className="flex items-center justify-center gap-4 mb-3">
                         <div className="relative shrink-0">
-                            <div className="w-16 h-16 bg-gradient-to-br from-[#D97757] to-[#C46849] rounded-2xl flex items-center justify-center shadow-xl shadow-[#D97757]/30 rotate-3">
+                            <div className="w-16 h-16 bg-gradient-to-br from-[#D97848] to-[#D97848] rounded-2xl flex items-center justify-center shadow-xl shadow-[#D97848]/30 rotate-3">
                                 <Monitor size={32} className="text-white" />
                             </div>
-                            <div className="absolute -bottom-1 -right-1 w-7 h-7 bg-[#2A9D8F] rounded-lg flex items-center justify-center text-sm shadow-lg -rotate-6 text-white font-bold">
+                            <div className="absolute -bottom-1 -right-1 w-7 h-7 bg-[#5F947D] rounded-lg flex items-center justify-center text-sm shadow-lg -rotate-6 text-white font-bold">
                                 !
                             </div>
                         </div>
                         <h1 className="text-3xl md:text-4xl font-black tracking-tight text-left" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>
-                            <span className="text-[#D97757]">Pitch Politie</span>
+                            <span className="text-[#D97848]">Pitch Politie</span>
                         </h1>
                     </div>
 
-                    <p className="text-base text-[#3D3D38] mb-5 max-w-md mx-auto">
+                    <p className="text-base text-[#445865] mb-5 max-w-md mx-auto">
                         Jij bent de presentatie-expert. Help medeleerlingen hun rommelige slides te verbeteren!
                     </p>
 
                     {/* Instructions Card — compact */}
-                    <div className="bg-white border border-[#E8E6DF] rounded-xl p-5 mb-5 text-left shadow-sm">
-                        <h3 className="text-xs font-black text-[#D97757] uppercase tracking-widest mb-3 flex items-center gap-2">
+                    <div className="bg-white border border-[#E7D8BD] rounded-xl p-5 mb-5 text-left shadow-sm">
+                        <h3 className="text-xs font-black text-[#D97848] uppercase tracking-widest mb-3 flex items-center gap-2">
                             <Zap size={14} /> Hoe werkt het?
                         </h3>
                         <div className="grid grid-cols-2 gap-x-6 gap-y-2 text-sm">
                             <div className="flex items-start gap-2">
-                                <span className="bg-[#D97757]/10 text-[#D97757] rounded-full w-6 h-6 flex items-center justify-center shrink-0 font-bold text-xs">1</span>
-                                <span className="text-[#3D3D38]">Bekijk slides <strong className="text-[#1A1A19]">met fouten</strong></span>
+                                <span className="bg-[#D97848]/10 text-[#D97848] rounded-full w-6 h-6 flex items-center justify-center shrink-0 font-bold text-xs">1</span>
+                                <span className="text-[#445865]">Bekijk slides <strong className="text-[#08283B]">met fouten</strong></span>
                             </div>
                             <div className="flex items-start gap-2">
-                                <span className="bg-[#D97757]/10 text-[#D97757] rounded-full w-6 h-6 flex items-center justify-center shrink-0 font-bold text-xs">2</span>
-                                <span className="text-[#3D3D38]">Lees het <strong className="text-[#1A1A19]">Politie Rapport</strong></span>
+                                <span className="bg-[#D97848]/10 text-[#D97848] rounded-full w-6 h-6 flex items-center justify-center shrink-0 font-bold text-xs">2</span>
+                                <span className="text-[#445865]">Lees het <strong className="text-[#08283B]">Politie Rapport</strong></span>
                             </div>
                             <div className="flex items-start gap-2">
-                                <span className="bg-[#D97757]/10 text-[#D97757] rounded-full w-6 h-6 flex items-center justify-center shrink-0 font-bold text-xs">3</span>
-                                <span className="text-[#3D3D38]">Kies de <strong className="text-[#1A1A19]">beste oplossing</strong></span>
+                                <span className="bg-[#D97848]/10 text-[#D97848] rounded-full w-6 h-6 flex items-center justify-center shrink-0 font-bold text-xs">3</span>
+                                <span className="text-[#445865]">Kies de <strong className="text-[#08283B]">beste oplossing</strong></span>
                             </div>
                             <div className="flex items-start gap-2">
-                                <span className="bg-[#10B981]/10 text-[#10B981] rounded-full w-6 h-6 flex items-center justify-center shrink-0 font-bold text-xs">✓</span>
-                                <span className="text-[#3D3D38]">Zie de slide <strong className="text-[#1A1A19]">live verbeteren</strong></span>
+                                <span className="bg-[#5F947D]/10 text-[#5F947D] rounded-full w-6 h-6 flex items-center justify-center shrink-0 font-bold text-xs">✓</span>
+                                <span className="text-[#445865]">Zie de slide <strong className="text-[#08283B]">live verbeteren</strong></span>
                             </div>
                         </div>
                     </div>
 
                     {/* Tips */}
                     <div className="flex flex-wrap justify-center gap-2 mb-6">
-                        <div className="bg-white border border-[#E8E6DF] rounded-full px-3 py-1.5 flex items-center gap-1.5 text-xs">
-                            <Type size={14} className="text-[#2A9D8F]" />
-                            <span className="text-[#3D3D38]">Minder tekst = Beter</span>
+                        <div className="bg-white border border-[#E7D8BD] rounded-full px-3 py-1.5 flex items-center gap-1.5 text-xs">
+                            <Type size={14} className="text-[#5F947D]" />
+                            <span className="text-[#445865]">Minder tekst = Beter</span>
                         </div>
-                        <div className="bg-white border border-[#E8E6DF] rounded-full px-3 py-1.5 flex items-center gap-1.5 text-xs">
-                            <Palette size={14} className="text-[#8B6F9E]" />
-                            <span className="text-[#3D3D38]">Goed contrast is key</span>
+                        <div className="bg-white border border-[#E7D8BD] rounded-full px-3 py-1.5 flex items-center gap-1.5 text-xs">
+                            <Palette size={14} className="text-[#0B453F]" />
+                            <span className="text-[#445865]">Goed contrast is key</span>
                         </div>
-                        <div className="bg-white border border-[#E8E6DF] rounded-full px-3 py-1.5 flex items-center gap-1.5 text-xs">
-                            <Layout size={14} className="text-[#10B981]" />
-                            <span className="text-[#3D3D38]">Keep it simple</span>
+                        <div className="bg-white border border-[#E7D8BD] rounded-full px-3 py-1.5 flex items-center gap-1.5 text-xs">
+                            <Layout size={14} className="text-[#5F947D]" />
+                            <span className="text-[#445865]">Keep it simple</span>
                         </div>
                     </div>
 
                     {/* Start Button */}
                     <button
                         onClick={() => setState(prev => ({ ...prev, showIntro: false }))}
-                        className="px-10 py-4 bg-[#D97757] hover:bg-[#C46849] text-white rounded-full font-black text-lg shadow-2xl shadow-[#D97757]/30 hover:scale-105 transition-all duration-300 flex items-center gap-3 mx-auto group focus-visible:ring-2 focus-visible:ring-[#D97757]"
+                        className="px-10 py-4 bg-[#D97848] hover:bg-[#D97848] text-white rounded-full font-black text-lg shadow-2xl shadow-[#D97848]/30 hover:scale-105 transition-all duration-300 flex items-center gap-3 mx-auto group focus-visible:ring-2 focus-visible:ring-[#D97848]"
                     >
                         <Play size={20} fill="currentColor" />
                         Start de Inspectie
@@ -392,7 +392,7 @@ export const PitchPoliceMission: React.FC<PitchPoliceProps> = ({ onComplete, onB
                     {/* Back button */}
                     <button
                         onClick={onBack}
-                        className="mt-4 text-[#6B6B66] hover:text-[#1A1A19] text-sm font-medium flex items-center gap-2 mx-auto transition-all duration-300 focus-visible:ring-2 focus-visible:ring-[#D97757] rounded-full px-3 py-1"
+                        className="mt-4 text-[#445865] hover:text-[#08283B] text-sm font-medium flex items-center gap-2 mx-auto transition-all duration-300 focus-visible:ring-2 focus-visible:ring-[#D97848] rounded-full px-3 py-1"
                     >
                         <ArrowLeft size={16} />
                         Terug naar missies
@@ -403,9 +403,9 @@ export const PitchPoliceMission: React.FC<PitchPoliceProps> = ({ onComplete, onB
     }
 
     return (
-        <div className="min-h-screen bg-[#1A1A19] flex flex-col text-white" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+        <div className="min-h-screen bg-[#08283B] flex flex-col text-white" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
             {/* PowerPoint-like Header */}
-            <header className="bg-[#D97757] px-4 py-2 flex items-center justify-between shadow-md">
+            <header className="bg-[#D97848] px-4 py-2 flex items-center justify-between shadow-md">
                 <div className="flex items-center gap-4">
                     <button onClick={onBack} className="p-1.5 hover:bg-white/10 rounded-lg transition-all duration-300 focus-visible:ring-2 focus-visible:ring-white">
                         <ArrowLeft size={20} />
@@ -427,27 +427,27 @@ export const PitchPoliceMission: React.FC<PitchPoliceProps> = ({ onComplete, onB
             </header>
 
             {/* Progress Bar */}
-            <div className="w-full bg-[#1A1A19] h-1">
+            <div className="w-full bg-[#08283B] h-1">
                 <div
-                    className="h-full bg-gradient-to-r from-[#D97757] to-[#C46849] transition-all duration-500 ease-out"
+                    className="h-full bg-gradient-to-r from-[#D97848] to-[#D97848] transition-all duration-500 ease-out"
                     style={{ width: `${((currentSlideIndex + (isFixed ? 1 : 0)) / SLIDES.length) * 100}%` }}
                 />
             </div>
 
             <div className="flex-1 flex flex-col lg:flex-row overflow-hidden">
                 {/* Thumbnails Sidebar - hidden on mobile */}
-                <aside className="w-48 bg-[#2d2d2a] border-r border-[#3D3D38] p-4 flex-col gap-4 overflow-y-auto hidden lg:flex">
+                <aside className="w-48 bg-[#2d2d2a] border-r border-[#445865] p-4 flex-col gap-4 overflow-y-auto hidden lg:flex">
                     {SLIDES.map((slide, idx) => (
                         <div
                             key={slide.id}
                             className={`
-                                aspect-video bg-white rounded-lg flex items-center justify-center text-[#1A1A19] text-[10px] p-2 relative transition-all duration-300
-                                ${idx === currentSlideIndex ? 'ring-2 ring-[#D97757] scale-105 opacity-100' : 'opacity-40 hover:opacity-100'}
+                                aspect-video bg-white rounded-lg flex items-center justify-center text-[#08283B] text-[10px] p-2 relative transition-all duration-300
+                                ${idx === currentSlideIndex ? 'ring-2 ring-[#D97848] scale-105 opacity-100' : 'opacity-40 hover:opacity-100'}
                             `}
                         >
-                            <span className="font-bold text-[#6B6B66]">Dia {idx + 1}</span>
+                            <span className="font-bold text-[#445865]">Dia {idx + 1}</span>
                             {slideStates[idx] === 'fixed' && (
-                                <div className="absolute top-1 right-1 bg-[#10B981] rounded-full p-0.5">
+                                <div className="absolute top-1 right-1 bg-[#5F947D] rounded-full p-0.5">
                                     <CheckCircle size={10} className="text-white" />
                                 </div>
                             )}
@@ -456,14 +456,14 @@ export const PitchPoliceMission: React.FC<PitchPoliceProps> = ({ onComplete, onB
                 </aside>
 
                 {/* Main Slide Editor */}
-                <main className="flex-1 bg-[#1A1A19] p-4 lg:p-8 flex items-center justify-center relative flex-col gap-4 lg:gap-6">
+                <main className="flex-1 bg-[#08283B] p-4 lg:p-8 flex items-center justify-center relative flex-col gap-4 lg:gap-6">
                     {/* The Slide Container */}
                     <div className="relative w-full max-w-4xl aspect-video group">
                         <div className={`
                             w-full h-full bg-white shadow-2xl relative overflow-hidden transition-all duration-700
                             ${!isFixed && currentSlide.issue === 'chaos' ? 'animate-pulse' : ''}
                             ${currentSlide.bg}
-                            ${isFixed && currentSlide.id === 2 ? 'text-[#1A1A19]' : currentSlide.textColor}
+                            ${isFixed && currentSlide.id === 2 ? 'text-[#08283B]' : currentSlide.textColor}
                         `}>
                             {/* Render Custom or Default Content */}
                             {currentSlide.customRender ? (
@@ -495,14 +495,14 @@ export const PitchPoliceMission: React.FC<PitchPoliceProps> = ({ onComplete, onB
                             {currentSlideIndex > 0 && (
                                 <button
                                     onClick={handlePrevSlide}
-                                    className="bg-[#3D3D38] text-white px-4 py-3 rounded-full font-bold text-sm lg:text-lg shadow-lg hover:bg-[#4a4a44] hover:scale-105 transition-all duration-300 flex items-center gap-2 focus-visible:ring-2 focus-visible:ring-[#6B6B66]"
+                                    className="bg-[#445865] text-white px-4 py-3 rounded-full font-bold text-sm lg:text-lg shadow-lg hover:bg-[#4a4a44] hover:scale-105 transition-all duration-300 flex items-center gap-2 focus-visible:ring-2 focus-visible:ring-[#445865]"
                                 >
                                     <ChevronLeft size={20} /> <span className="hidden sm:inline">Vorige</span>
                                 </button>
                             )}
                             <button
                                 onClick={handleNextSlide}
-                                className="bg-[#10B981] text-white px-6 lg:px-8 py-3 rounded-full font-bold text-sm lg:text-lg shadow-lg hover:bg-emerald-600 hover:scale-105 transition-all duration-300 flex items-center gap-2 focus-visible:ring-2 focus-visible:ring-[#10B981]"
+                                className="bg-[#5F947D] text-white px-6 lg:px-8 py-3 rounded-full font-bold text-sm lg:text-lg shadow-lg hover:bg-lab-sage hover:scale-105 transition-all duration-300 flex items-center gap-2 focus-visible:ring-2 focus-visible:ring-[#5F947D]"
                             >
                                 {currentSlideIndex < SLIDES.length - 1 ? 'Volgende Dia' : 'Afronden'} <ArrowRight size={20} />
                             </button>
@@ -516,10 +516,10 @@ export const PitchPoliceMission: React.FC<PitchPoliceProps> = ({ onComplete, onB
                                 key={idx}
                                 className={`w-2 h-2 rounded-full transition-all duration-300 ${
                                     idx === currentSlideIndex
-                                        ? 'bg-[#D97757] w-6'
+                                        ? 'bg-[#D97848] w-6'
                                         : slideStates[idx] === 'fixed'
-                                            ? 'bg-[#10B981]'
-                                            : 'bg-[#3D3D38]'
+                                            ? 'bg-[#5F947D]'
+                                            : 'bg-[#445865]'
                                 }`}
                             />
                         ))}
@@ -529,7 +529,7 @@ export const PitchPoliceMission: React.FC<PitchPoliceProps> = ({ onComplete, onB
                     {!isFixed && (
                         <button
                             onClick={() => setShowMobileInspector(!showMobileInspector)}
-                            className="lg:hidden bg-[#D97757] text-white px-6 py-3 rounded-full font-bold text-sm shadow-lg hover:bg-[#C46849] transition-all duration-300 flex items-center gap-2 focus-visible:ring-2 focus-visible:ring-[#D97757]"
+                            className="lg:hidden bg-[#D97848] text-white px-6 py-3 rounded-full font-bold text-sm shadow-lg hover:bg-[#D97848] transition-all duration-300 flex items-center gap-2 focus-visible:ring-2 focus-visible:ring-[#D97848]"
                         >
                             <AlertTriangle size={16} /> Bekijk Rapport & Opties
                         </button>
@@ -538,20 +538,20 @@ export const PitchPoliceMission: React.FC<PitchPoliceProps> = ({ onComplete, onB
                     {/* Feedback Overlay */}
                     {showFeedback === true && (
                         <div className="absolute inset-0 flex items-center justify-center bg-transparent z-50 pointer-events-none">
-                            <div className="bg-[#10B981] text-white px-6 py-4 rounded-full shadow-2xl flex items-center gap-3 animate-in zoom-in slide-in-from-bottom-10 fade-in duration-300">
+                            <div className="bg-[#5F947D] text-white px-6 py-4 rounded-full shadow-2xl flex items-center gap-3 animate-in zoom-in slide-in-from-bottom-10 fade-in duration-300">
                                 <CheckCircle size={24} />
                                 <span className="font-bold text-lg">Goed Gekozen!</span>
                             </div>
                         </div>
                     )}
                     {showFeedback === false && (
-                        <div className="absolute inset-0 flex items-center justify-center bg-[#1A1A19]/40 z-50 backdrop-blur-[1px] animate-in fade-in cursor-not-allowed">
-                            <div className="bg-white text-[#1A1A19] px-8 py-8 rounded-2xl shadow-2xl flex flex-col items-center animate-in shake">
+                        <div className="absolute inset-0 flex items-center justify-center bg-[#08283B]/40 z-50 backdrop-blur-[1px] animate-in fade-in cursor-not-allowed">
+                            <div className="bg-white text-[#08283B] px-8 py-8 rounded-2xl shadow-2xl flex flex-col items-center animate-in shake">
                                 <div className="bg-red-100 p-3 rounded-full mb-4">
                                     <X size={32} className="text-red-500" />
                                 </div>
                                 <h3 className="text-xl font-black mb-2" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>Dat is niet de beste optie</h3>
-                                <p className="text-[#6B6B66] text-center">Probeer het nog eens!</p>
+                                <p className="text-[#445865] text-center">Probeer het nog eens!</p>
                             </div>
                         </div>
                     )}
@@ -559,7 +559,7 @@ export const PitchPoliceMission: React.FC<PitchPoliceProps> = ({ onComplete, onB
 
                 {/* Inspector Panel - Desktop: sidebar, Mobile: bottom sheet */}
                 <aside className={`
-                    hidden lg:flex w-80 bg-[#2d2d2a] border-l border-[#3D3D38] flex-col transition-all duration-500
+                    hidden lg:flex w-80 bg-[#2d2d2a] border-l border-[#445865] flex-col transition-all duration-500
                     ${isFixed ? 'opacity-30 pointer-events-none grayscale' : 'opacity-100'}
                 `}>
                     <div className="p-6">
@@ -567,29 +567,29 @@ export const PitchPoliceMission: React.FC<PitchPoliceProps> = ({ onComplete, onB
                             <h3 className="text-lg font-black text-white mb-2 flex items-center gap-2" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>
                                 Politie Rapport
                             </h3>
-                            <div className="bg-[#1A1A19] p-4 rounded-2xl border border-[#3D3D38]">
+                            <div className="bg-[#08283B] p-4 rounded-2xl border border-[#445865]">
                                 <p className="text-red-400 font-bold text-xs uppercase mb-1 flex items-center gap-1">
                                     <AlertTriangle size={12} /> Overtreding:
                                 </p>
-                                <p className="text-slate-300 text-sm leading-relaxed">
+                                <p className="text-lab-muted text-sm leading-relaxed">
                                     {currentSlide.feedback}
                                 </p>
                             </div>
                         </div>
 
                         <div className="space-y-3">
-                            <h4 className="text-xs font-bold text-[#6B6B66] uppercase tracking-widest pl-1">Jouw Oplossing:</h4>
+                            <h4 className="text-xs font-bold text-[#445865] uppercase tracking-widest pl-1">Jouw Oplossing:</h4>
                             {currentSlide.options.map((opt) => (
                                 <button
                                     key={opt.id}
                                     onClick={() => handleOptionSelect(opt.correct)}
-                                    className="w-full text-left p-4 rounded-2xl bg-[#3D3D38] hover:bg-[#4a4a44] border border-transparent hover:border-[#D97757] transition-all duration-300 group relative overflow-hidden focus-visible:ring-2 focus-visible:ring-[#D97757]"
+                                    className="w-full text-left p-4 rounded-2xl bg-[#445865] hover:bg-[#4a4a44] border border-transparent hover:border-[#D97848] transition-all duration-300 group relative overflow-hidden focus-visible:ring-2 focus-visible:ring-[#D97848]"
                                 >
                                     <div className="flex items-start gap-3 relative z-10">
-                                        <div className="w-6 h-6 rounded-full bg-[#1A1A19] flex items-center justify-center text-xs font-bold group-hover:bg-[#D97757] transition-all duration-300 shrink-0">
+                                        <div className="w-6 h-6 rounded-full bg-[#08283B] flex items-center justify-center text-xs font-bold group-hover:bg-[#D97848] transition-all duration-300 shrink-0">
                                             {opt.id.toUpperCase()}
                                         </div>
-                                        <span className="text-sm font-medium text-slate-200 group-hover:text-white">
+                                        <span className="text-sm font-medium text-lab-muted group-hover:text-white">
                                             {opt.text}
                                         </span>
                                     </div>
@@ -604,34 +604,34 @@ export const PitchPoliceMission: React.FC<PitchPoliceProps> = ({ onComplete, onB
                     <div className="lg:hidden fixed inset-0 z-50 flex flex-col justify-end">
                         <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={() => setShowMobileInspector(false)} />
                         <div className="relative bg-[#2d2d2a] rounded-t-3xl p-6 max-h-[80vh] overflow-y-auto animate-in slide-in-from-bottom fade-in duration-300">
-                            <div className="w-10 h-1 bg-[#6B6B66] rounded-full mx-auto mb-4" />
+                            <div className="w-10 h-1 bg-[#445865] rounded-full mx-auto mb-4" />
                             <div className="mb-4">
                                 <h3 className="text-lg font-black text-white mb-2 flex items-center gap-2" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>
                                     Politie Rapport
                                 </h3>
-                                <div className="bg-[#1A1A19] p-4 rounded-2xl border border-[#3D3D38]">
+                                <div className="bg-[#08283B] p-4 rounded-2xl border border-[#445865]">
                                     <p className="text-red-400 font-bold text-xs uppercase mb-1 flex items-center gap-1">
                                         <AlertTriangle size={12} /> Overtreding:
                                     </p>
-                                    <p className="text-slate-300 text-sm leading-relaxed">
+                                    <p className="text-lab-muted text-sm leading-relaxed">
                                         {currentSlide.feedback}
                                     </p>
                                 </div>
                             </div>
 
                             <div className="space-y-3">
-                                <h4 className="text-xs font-bold text-[#6B6B66] uppercase tracking-widest pl-1">Jouw Oplossing:</h4>
+                                <h4 className="text-xs font-bold text-[#445865] uppercase tracking-widest pl-1">Jouw Oplossing:</h4>
                                 {currentSlide.options.map((opt) => (
                                     <button
                                         key={opt.id}
                                         onClick={() => handleOptionSelect(opt.correct)}
-                                        className="w-full text-left p-4 rounded-2xl bg-[#3D3D38] hover:bg-[#4a4a44] border border-transparent hover:border-[#D97757] transition-all duration-300 group relative overflow-hidden focus-visible:ring-2 focus-visible:ring-[#D97757]"
+                                        className="w-full text-left p-4 rounded-2xl bg-[#445865] hover:bg-[#4a4a44] border border-transparent hover:border-[#D97848] transition-all duration-300 group relative overflow-hidden focus-visible:ring-2 focus-visible:ring-[#D97848]"
                                     >
                                         <div className="flex items-start gap-3 relative z-10">
-                                            <div className="w-6 h-6 rounded-full bg-[#1A1A19] flex items-center justify-center text-xs font-bold group-hover:bg-[#D97757] transition-all duration-300 shrink-0 text-white">
+                                            <div className="w-6 h-6 rounded-full bg-[#08283B] flex items-center justify-center text-xs font-bold group-hover:bg-[#D97848] transition-all duration-300 shrink-0 text-white">
                                                 {opt.id.toUpperCase()}
                                             </div>
-                                            <span className="text-sm font-medium text-slate-200 group-hover:text-white">
+                                            <span className="text-sm font-medium text-lab-muted group-hover:text-white">
                                                 {opt.text}
                                             </span>
                                         </div>

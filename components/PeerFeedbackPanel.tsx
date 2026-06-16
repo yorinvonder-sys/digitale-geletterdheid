@@ -49,8 +49,8 @@ const FEEDBACK_TYPES = [
     emoji: '\uD83D\uDC4D',
     description: 'Wat ging er goed?',
     color: 'emerald',
-    bgSelected: 'bg-emerald-100 border-emerald-400 text-emerald-800',
-    bgDefault: 'bg-white border-slate-200 text-slate-600 hover:border-emerald-300 hover:bg-emerald-50',
+    bgSelected: 'bg-lab-sage border-lab-sage text-lab-sage',
+    bgDefault: 'bg-white border-lab-muted text-lab-muted hover:border-lab-sage hover:bg-lab-sage',
   },
   {
     type: 'suggestion' as const,
@@ -59,8 +59,8 @@ const FEEDBACK_TYPES = [
     emoji: '\uD83D\uDCA1',
     description: 'Hoe kan het beter?',
     color: 'amber',
-    bgSelected: 'bg-amber-100 border-amber-400 text-amber-800',
-    bgDefault: 'bg-white border-slate-200 text-slate-600 hover:border-amber-300 hover:bg-amber-50',
+    bgSelected: 'bg-lab-gold border-lab-gold text-lab-gold',
+    bgDefault: 'bg-white border-lab-muted text-lab-muted hover:border-lab-gold hover:bg-lab-gold',
   },
   {
     type: 'question' as const,
@@ -70,7 +70,7 @@ const FEEDBACK_TYPES = [
     description: 'Iets onduidelijk?',
     color: 'blue',
     bgSelected: 'bg-blue-100 border-blue-400 text-blue-800',
-    bgDefault: 'bg-white border-slate-200 text-slate-600 hover:border-blue-300 hover:bg-blue-50',
+    bgDefault: 'bg-white border-lab-muted text-lab-muted hover:border-blue-300 hover:bg-blue-50',
   },
 ];
 
@@ -175,14 +175,14 @@ export const PeerFeedbackPanel: React.FC<PeerFeedbackPanelProps> = ({
   }
 
   return (
-    <div className="mt-8 border-t border-slate-200 pt-8">
+    <div className="mt-8 border-t border-lab-muted pt-8">
       <div className="flex items-center gap-3 mb-6">
         <div className="w-10 h-10 bg-indigo-100 rounded-xl flex items-center justify-center text-indigo-600">
           <MessageSquare size={20} />
         </div>
         <div>
-          <h3 className="text-lg font-black text-slate-900 tracking-tight">Geef Feedback</h3>
-          <p className="text-sm text-slate-500 font-medium">Wat vind je van het werk van je klasgenoot?</p>
+          <h3 className="text-lg font-black text-lab-muted tracking-tight">Geef Feedback</h3>
+          <p className="text-sm text-lab-muted font-medium">Wat vind je van het werk van je klasgenoot?</p>
         </div>
       </div>
 
@@ -226,10 +226,10 @@ export const PeerFeedbackPanel: React.FC<PeerFeedbackPanelProps> = ({
           }
           disabled={!selectedType || isSubmitting}
           rows={3}
-          className="w-full p-4 border border-slate-200 rounded-xl text-sm text-slate-800 placeholder:text-slate-400 focus:ring-4 focus:ring-indigo-100 focus:border-indigo-300 transition-all outline-none resize-none disabled:opacity-50 disabled:bg-slate-50"
+          className="w-full p-4 border border-lab-muted rounded-xl text-sm text-lab-muted placeholder:text-lab-muted focus:ring-4 focus:ring-indigo-100 focus:border-indigo-300 transition-all outline-none resize-none disabled:opacity-50 disabled:bg-lab-muted"
         />
         <span className={`absolute bottom-2 right-3 text-[10px] font-bold ${
-          message.length > MAX_CHARS - 20 ? 'text-red-500' : 'text-slate-400'
+          message.length > MAX_CHARS - 20 ? 'text-red-500' : 'text-lab-muted'
         }`}>
           {message.length}/{MAX_CHARS}
         </span>
@@ -253,7 +253,7 @@ export const PeerFeedbackPanel: React.FC<PeerFeedbackPanelProps> = ({
 
       {/* Success Message */}
       {submitSuccess && (
-        <div className="mb-3 px-4 py-2 bg-emerald-50 border border-emerald-200 text-emerald-700 rounded-xl text-sm font-bold animate-in fade-in">
+        <div className="mb-3 px-4 py-2 bg-lab-sage border border-lab-sage text-lab-sage rounded-xl text-sm font-bold animate-in fade-in">
           Feedback verstuurd! Bedankt voor je bijdrage.
         </div>
       )}
@@ -262,7 +262,7 @@ export const PeerFeedbackPanel: React.FC<PeerFeedbackPanelProps> = ({
       <button
         onClick={handleSubmit}
         disabled={!selectedType || !message.trim() || isSubmitting}
-        className="w-full py-3 bg-slate-900 text-white rounded-xl font-bold uppercase tracking-widest hover:bg-indigo-600 transition-all flex items-center justify-center gap-2 disabled:opacity-30 disabled:cursor-not-allowed active:scale-95 shadow-lg"
+        className="w-full py-3 bg-lab-muted text-white rounded-xl font-bold uppercase tracking-widest hover:bg-indigo-600 transition-all flex items-center justify-center gap-2 disabled:opacity-30 disabled:cursor-not-allowed active:scale-95 shadow-lg"
       >
         {isSubmitting ? (
           <>
@@ -277,13 +277,13 @@ export const PeerFeedbackPanel: React.FC<PeerFeedbackPanelProps> = ({
 
       {/* Received Feedback Section */}
       {isLoadingFeedback ? (
-        <div className="mt-6 flex items-center justify-center py-4 text-slate-400">
+        <div className="mt-6 flex items-center justify-center py-4 text-lab-muted">
           <Loader2 size={18} className="animate-spin mr-2" />
           <span className="text-sm font-medium">Feedback laden...</span>
         </div>
       ) : receivedFeedback.length > 0 ? (
         <div className="mt-8">
-          <h4 className="text-sm font-black text-slate-700 uppercase tracking-wider mb-3">
+          <h4 className="text-sm font-black text-lab-muted uppercase tracking-wider mb-3">
             Ontvangen Feedback ({receivedFeedback.length})
           </h4>
           <div className="space-y-3">
@@ -292,14 +292,14 @@ export const PeerFeedbackPanel: React.FC<PeerFeedbackPanelProps> = ({
               return (
                 <div
                   key={fb.id}
-                  className="p-4 bg-slate-50 border border-slate-100 rounded-xl"
+                  className="p-4 bg-lab-muted border border-lab-muted rounded-xl"
                 >
                   <div className="flex items-center gap-2 mb-2">
                     <span className="text-base">{typeConfig?.emoji}</span>
-                    <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">
+                    <span className="text-xs font-bold text-lab-muted uppercase tracking-wider">
                       {typeConfig?.label}
                     </span>
-                    <span className="text-[10px] text-slate-400 ml-auto">
+                    <span className="text-[10px] text-lab-muted ml-auto">
                       {fb.fromName}
                       {fb.createdAt && (
                         <> &middot; {new Date(fb.createdAt).toLocaleDateString('nl-NL', {
@@ -309,7 +309,7 @@ export const PeerFeedbackPanel: React.FC<PeerFeedbackPanelProps> = ({
                       )}
                     </span>
                   </div>
-                  <p className="text-sm text-slate-700 leading-relaxed">{fb.message}</p>
+                  <p className="text-sm text-lab-muted leading-relaxed">{fb.message}</p>
                 </div>
               );
             })}

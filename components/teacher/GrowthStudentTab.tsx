@@ -21,9 +21,9 @@ const NIVEAU_LABEL: Record<'starter' | 'basis' | 'gevorderd', string> = {
 };
 
 const NIVEAU_KLEUR: Record<'starter' | 'basis' | 'gevorderd', string> = {
-  starter: 'text-rose-400 bg-rose-500/10 border-rose-500/30',
-  basis: 'text-amber-400 bg-amber-500/10 border-amber-500/30',
-  gevorderd: 'text-emerald-400 bg-emerald-500/10 border-emerald-500/30',
+  starter: 'text-lab-coral bg-lab-coral/10 border-lab-coral/30',
+  basis: 'text-lab-gold bg-lab-gold/10 border-lab-gold/30',
+  gevorderd: 'text-lab-sage bg-lab-sage/10 border-lab-sage/30',
 };
 
 interface GrowthRecommendation {
@@ -188,7 +188,7 @@ export const GrowthStudentTab: React.FC<GrowthStudentTabProps> = ({
 
               <div className="flex items-center justify-between mt-2 text-xs text-gray-500">
                 <span>Nulmeting: <span className="text-gray-300 font-medium">{data.nulmeting.toFixed(0)}</span></span>
-                <span className={`font-bold flex items-center gap-1 ${data.groei >= 0 ? 'text-emerald-400' : 'text-rose-400'}`}>
+                <span className={`font-bold flex items-center gap-1 ${data.groei >= 0 ? 'text-lab-sage' : 'text-lab-coral'}`}>
                   {data.groei >= 0 ? <TrendingUp size={12} /> : <TrendingDown size={12} />}
                   {data.groei >= 0 ? '+' : ''}{data.groei.toFixed(0)}
                 </span>
@@ -220,7 +220,7 @@ export const GrowthStudentTab: React.FC<GrowthStudentTabProps> = ({
                 <button
                   onClick={() => handleApprove(true)}
                   disabled={approvingId === recommendation.id}
-                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 hover:bg-emerald-500/30 transition-colors disabled:opacity-50"
+                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-lab-sage/20 text-lab-sage border border-lab-sage/30 hover:bg-lab-sage/30 transition-colors disabled:opacity-50"
                 >
                   <Check size={12} />
                   Goedkeuren
@@ -228,7 +228,7 @@ export const GrowthStudentTab: React.FC<GrowthStudentTabProps> = ({
                 <button
                   onClick={() => handleApprove(false)}
                   disabled={approvingId === recommendation.id}
-                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-rose-500/20 text-rose-400 border border-rose-500/30 hover:bg-rose-500/30 transition-colors disabled:opacity-50"
+                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-lab-coral/20 text-lab-coral border border-lab-coral/30 hover:bg-lab-coral/30 transition-colors disabled:opacity-50"
                 >
                   <X size={12} />
                   Afwijzen
@@ -240,7 +240,7 @@ export const GrowthStudentTab: React.FC<GrowthStudentTabProps> = ({
           {recommendation.teacher_approved === true && (
             <>
               <div className="flex items-center gap-2 mb-2">
-                <span className="inline-flex items-center gap-1 text-xs text-emerald-400 bg-emerald-500/10 border border-emerald-500/30 px-2 py-0.5 rounded-full font-medium">
+                <span className="inline-flex items-center gap-1 text-xs text-lab-sage bg-lab-sage/10 border border-lab-sage/30 px-2 py-0.5 rounded-full font-medium">
                   <Check size={11} />
                   Goedgekeurd
                 </span>

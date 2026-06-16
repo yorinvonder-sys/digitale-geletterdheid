@@ -349,11 +349,11 @@ export const SLOClassOverview: React.FC<SLOClassOverviewProps> = ({ students, sc
         <div className="space-y-6">
             <div className="flex items-center justify-between gap-4">
                 <div className="min-w-0">
-                    <h2 className="text-xl font-black text-slate-900 flex items-center gap-2">
+                    <h2 className="text-xl font-black text-lab-muted flex items-center gap-2">
                         <School size={24} className="text-indigo-600" />
                         SLO Kerndoelen per Klas
                     </h2>
-                    <p className="text-sm text-slate-500 mt-1">
+                    <p className="text-sm text-lab-muted mt-1">
                         Inclusief export voor data-analyse (activiteiten: laatste 90 dagen).
                     </p>
                     {exportError && (
@@ -363,23 +363,23 @@ export const SLOClassOverview: React.FC<SLOClassOverviewProps> = ({ students, sc
                 <button
                     onClick={exportToExcel}
                     disabled={exporting}
-                    className={`flex items-center gap-2 px-4 py-2 rounded-xl font-bold text-sm transition-colors shadow-lg ${exporting ? 'bg-emerald-400 text-white cursor-not-allowed' : 'bg-emerald-600 text-white hover:bg-emerald-700 shadow-emerald-500/20'}`}
+                    className={`flex items-center gap-2 px-4 py-2 rounded-xl font-bold text-sm transition-colors shadow-lg ${exporting ? 'bg-lab-sage text-white cursor-not-allowed' : 'bg-lab-sage text-white hover:bg-lab-sage shadow-emerald-500/20'}`}
                 >
                     {exporting ? <Loader2 size={16} className="animate-spin" /> : <Download size={16} />}
                     {exporting ? 'Exporteren...' : 'Exporteer naar Excel'}
                 </button>
             </div>
 
-            <div className="bg-slate-50 rounded-xl p-4 border border-slate-100">
-                <p className="text-xs font-bold text-slate-500 uppercase mb-2">Legenda</p>
+            <div className="bg-lab-muted rounded-xl p-4 border border-lab-muted">
+                <p className="text-xs font-bold text-lab-muted uppercase mb-2">Legenda</p>
                 <div className="space-y-4">
                     <div>
-                        <p className="text-[10px] font-black text-slate-400 uppercase tracking-wider mb-1">Regulier (PO/VO)</p>
+                        <p className="text-[10px] font-black text-lab-muted uppercase tracking-wider mb-1">Regulier (PO/VO)</p>
                         <div className="flex flex-wrap gap-4">
                             {KERNDOEL_CODES.filter(code => !SLO_KERNDOELEN[code].isVso).map(code => (
                                 <div key={code} className="flex items-center gap-2">
                                     <div className="w-2 h-2 rounded-full bg-indigo-500"></div>
-                                    <span className="text-[11px] text-slate-600">
+                                    <span className="text-[11px] text-lab-muted">
                                         <span className="font-bold">{code}</span> {SLO_KERNDOELEN[code].label}
                                     </span>
                                 </div>
@@ -387,12 +387,12 @@ export const SLOClassOverview: React.FC<SLOClassOverviewProps> = ({ students, sc
                         </div>
                     </div>
                     <div>
-                        <p className="text-[10px] font-black text-emerald-500 uppercase tracking-wider mb-1">VSO (Functioneel)</p>
+                        <p className="text-[10px] font-black text-lab-sage uppercase tracking-wider mb-1">VSO (Functioneel)</p>
                         <div className="flex flex-wrap gap-4">
                             {KERNDOEL_CODES.filter(code => SLO_KERNDOELEN[code].isVso).map(code => (
                                 <div key={code} className="flex items-center gap-2">
-                                    <div className="w-2 h-2 rounded-full bg-emerald-500"></div>
-                                    <span className="text-[11px] text-slate-600">
+                                    <div className="w-2 h-2 rounded-full bg-lab-sage"></div>
+                                    <span className="text-[11px] text-lab-muted">
                                         <span className="font-bold">{code}</span> {SLO_KERNDOELEN[code].label}
                                     </span>
                                 </div>
@@ -406,19 +406,19 @@ export const SLOClassOverview: React.FC<SLOClassOverviewProps> = ({ students, sc
                 <div className="bg-white rounded-xl border border-indigo-100 shadow-sm overflow-hidden">
                     <div className="px-4 py-3 border-b border-indigo-100 bg-indigo-50/70">
                         <p className="text-[10px] font-black text-indigo-600 uppercase tracking-widest">Curriculum Spotlight</p>
-                        <h3 className="text-sm font-bold text-slate-900 mt-1">
+                        <h3 className="text-sm font-bold text-lab-muted mt-1">
                             Missie die extra sterk bewijs geeft in het SLO-verhaal
                         </h3>
                     </div>
                     <div className="p-4 space-y-3">
                         {spotlightProgress.map(({ spotlight, totalStudents, startedStudents, completedStudents, inProgressStudents, startedPercentage, completedPercentage, classBreakdown, signals }) => (
-                            <div key={spotlight.missionId} className="rounded-xl border border-slate-200 bg-slate-50 p-4">
+                            <div key={spotlight.missionId} className="rounded-xl border border-lab-muted bg-lab-muted p-4">
                                 <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
                                     <div className="min-w-0">
-                                        <p className="text-xs font-bold text-slate-400 uppercase tracking-wider">
+                                        <p className="text-xs font-bold text-lab-muted uppercase tracking-wider">
                                             J{spotlight.yearGroup} • {spotlight.periodLabel}
                                         </p>
-                                        <h4 className="text-base font-bold text-slate-900 mt-1">{spotlight.title}</h4>
+                                        <h4 className="text-base font-bold text-lab-muted mt-1">{spotlight.title}</h4>
                                     </div>
                                     <div className="flex flex-wrap gap-2">
                                         {spotlight.kerndoelen.map(code => (
@@ -428,75 +428,75 @@ export const SLOClassOverview: React.FC<SLOClassOverviewProps> = ({ students, sc
                                         ))}
                                     </div>
                                 </div>
-                                <p className="text-sm text-slate-600 mt-3">{spotlight.summary}</p>
+                                <p className="text-sm text-lab-muted mt-3">{spotlight.summary}</p>
                                 <div className="mt-3 grid gap-3 md:grid-cols-4">
-                                    <div className="rounded-lg bg-white border border-slate-200 px-3 py-2">
-                                        <p className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Leerlingen</p>
-                                        <p className="text-xl font-black text-slate-900 mt-1">{totalStudents}</p>
+                                    <div className="rounded-lg bg-white border border-lab-muted px-3 py-2">
+                                        <p className="text-[11px] font-bold text-lab-muted uppercase tracking-wider">Leerlingen</p>
+                                        <p className="text-xl font-black text-lab-muted mt-1">{totalStudents}</p>
                                     </div>
                                     <div className="rounded-lg bg-white border border-indigo-200 px-3 py-2">
                                         <p className="text-[11px] font-bold text-indigo-600 uppercase tracking-wider">Gestart</p>
                                         <p className="text-xl font-black text-indigo-700 mt-1">{startedStudents}</p>
-                                        <p className="text-xs text-slate-500 mt-1">{startedPercentage}% van leerjaarfilter</p>
+                                        <p className="text-xs text-lab-muted mt-1">{startedPercentage}% van leerjaarfilter</p>
                                     </div>
-                                    <div className="rounded-lg bg-white border border-amber-200 px-3 py-2">
-                                        <p className="text-[11px] font-bold text-amber-600 uppercase tracking-wider">Nog Bezig</p>
-                                        <p className="text-xl font-black text-amber-700 mt-1">{inProgressStudents}</p>
-                                        <p className="text-xs text-slate-500 mt-1">Wel gestart, nog niet afgerond</p>
+                                    <div className="rounded-lg bg-white border border-lab-gold px-3 py-2">
+                                        <p className="text-[11px] font-bold text-lab-gold uppercase tracking-wider">Nog Bezig</p>
+                                        <p className="text-xl font-black text-lab-gold mt-1">{inProgressStudents}</p>
+                                        <p className="text-xs text-lab-muted mt-1">Wel gestart, nog niet afgerond</p>
                                     </div>
-                                    <div className="rounded-lg bg-white border border-emerald-200 px-3 py-2">
-                                        <p className="text-[11px] font-bold text-emerald-600 uppercase tracking-wider">Afgerond</p>
-                                        <p className="text-xl font-black text-emerald-700 mt-1">{completedStudents}</p>
-                                        <p className="text-xs text-slate-500 mt-1">{completedPercentage}% van leerjaarfilter</p>
+                                    <div className="rounded-lg bg-white border border-lab-sage px-3 py-2">
+                                        <p className="text-[11px] font-bold text-lab-sage uppercase tracking-wider">Afgerond</p>
+                                        <p className="text-xl font-black text-lab-sage mt-1">{completedStudents}</p>
+                                        <p className="text-xs text-lab-muted mt-1">{completedPercentage}% van leerjaarfilter</p>
                                     </div>
                                 </div>
                                 <div className="mt-3 grid gap-2">
                                     <div>
-                                        <div className="flex items-center justify-between text-[11px] font-bold text-slate-500 uppercase tracking-wider">
+                                        <div className="flex items-center justify-between text-[11px] font-bold text-lab-muted uppercase tracking-wider">
                                             <span>Gestart</span>
                                             <span>{startedPercentage}%</span>
                                         </div>
-                                        <div className="mt-1 h-2 rounded-full bg-slate-200 overflow-hidden">
+                                        <div className="mt-1 h-2 rounded-full bg-lab-muted overflow-hidden">
                                             <div className="h-full rounded-full bg-indigo-500 transition-all" style={{ width: `${startedPercentage}%` }} />
                                         </div>
                                     </div>
                                     <div>
-                                        <div className="flex items-center justify-between text-[11px] font-bold text-slate-500 uppercase tracking-wider">
+                                        <div className="flex items-center justify-between text-[11px] font-bold text-lab-muted uppercase tracking-wider">
                                             <span>Afgerond</span>
                                             <span>{completedPercentage}%</span>
                                         </div>
-                                        <div className="mt-1 h-2 rounded-full bg-slate-200 overflow-hidden">
-                                            <div className="h-full rounded-full bg-emerald-500 transition-all" style={{ width: `${completedPercentage}%` }} />
+                                        <div className="mt-1 h-2 rounded-full bg-lab-muted overflow-hidden">
+                                            <div className="h-full rounded-full bg-lab-sage transition-all" style={{ width: `${completedPercentage}%` }} />
                                         </div>
                                     </div>
                                 </div>
                                 {signals.length > 0 && (
-                                    <div className="mt-3 rounded-lg bg-white border border-slate-200 px-3 py-3">
+                                    <div className="mt-3 rounded-lg bg-white border border-lab-muted px-3 py-3">
                                         <div className="flex items-center justify-between gap-3">
-                                            <p className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Docentsignalen</p>
-                                            <p className="text-[11px] text-slate-400">Automatische nudges op basis van start- en afronddata</p>
+                                            <p className="text-[11px] font-bold text-lab-muted uppercase tracking-wider">Docentsignalen</p>
+                                            <p className="text-[11px] text-lab-muted">Automatische nudges op basis van start- en afronddata</p>
                                         </div>
                                         <div className="mt-3 grid gap-3 xl:grid-cols-3">
                                             {signals.map(signal => {
                                                 const toneStyles = signal.tone === 'success'
                                                     ? {
-                                                        wrapper: 'border-emerald-200 bg-emerald-50',
-                                                        icon: 'bg-emerald-100 text-emerald-700',
-                                                        title: 'text-emerald-800',
-                                                        nudge: 'bg-white/80 border-emerald-200 text-emerald-900',
+                                                        wrapper: 'border-lab-sage bg-lab-sage',
+                                                        icon: 'bg-lab-sage text-lab-sage',
+                                                        title: 'text-lab-sage',
+                                                        nudge: 'bg-white/80 border-lab-sage text-lab-sage',
                                                     }
                                                     : signal.tone === 'attention'
                                                         ? {
-                                                            wrapper: 'border-amber-200 bg-amber-50',
-                                                            icon: 'bg-amber-100 text-amber-700',
-                                                            title: 'text-amber-800',
-                                                            nudge: 'bg-white/80 border-amber-200 text-amber-900',
+                                                            wrapper: 'border-lab-gold bg-lab-gold',
+                                                            icon: 'bg-lab-gold text-lab-gold',
+                                                            title: 'text-lab-gold',
+                                                            nudge: 'bg-white/80 border-lab-gold text-lab-gold',
                                                         }
                                                         : {
-                                                            wrapper: 'border-rose-200 bg-rose-50',
-                                                            icon: 'bg-rose-100 text-rose-700',
-                                                            title: 'text-rose-800',
-                                                            nudge: 'bg-white/80 border-rose-200 text-rose-900',
+                                                            wrapper: 'border-lab-coral bg-lab-coral',
+                                                            icon: 'bg-lab-coral text-lab-coral',
+                                                            title: 'text-lab-coral',
+                                                            nudge: 'bg-white/80 border-lab-coral text-lab-coral',
                                                         };
                                                 const Icon = signal.tone === 'success'
                                                     ? TrendingUp
@@ -512,7 +512,7 @@ export const SLOClassOverview: React.FC<SLOClassOverviewProps> = ({ students, sc
                                                             </div>
                                                             <div className="min-w-0">
                                                                 <p className={`text-sm font-bold ${toneStyles.title}`}>{signal.title}</p>
-                                                                <p className="text-sm text-slate-700 mt-1">{signal.summary}</p>
+                                                                <p className="text-sm text-lab-muted mt-1">{signal.summary}</p>
                                                             </div>
                                                         </div>
                                                         <div className={`mt-3 rounded-lg border px-3 py-2 ${toneStyles.nudge}`}>
@@ -525,41 +525,41 @@ export const SLOClassOverview: React.FC<SLOClassOverviewProps> = ({ students, sc
                                         </div>
                                     </div>
                                 )}
-                                <div className="mt-3 rounded-lg bg-white border border-slate-200 px-3 py-2">
-                                    <p className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Docent kan observeren</p>
-                                    <p className="text-sm text-slate-700 mt-1">{spotlight.teacherSignal}</p>
+                                <div className="mt-3 rounded-lg bg-white border border-lab-muted px-3 py-2">
+                                    <p className="text-[11px] font-bold text-lab-muted uppercase tracking-wider">Docent kan observeren</p>
+                                    <p className="text-sm text-lab-muted mt-1">{spotlight.teacherSignal}</p>
                                 </div>
-                                <div className="mt-3 rounded-lg bg-white border border-slate-200 px-3 py-3">
+                                <div className="mt-3 rounded-lg bg-white border border-lab-muted px-3 py-3">
                                     <div className="flex items-center justify-between gap-3">
-                                        <p className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Per klas</p>
-                                        <p className="text-[11px] text-slate-400">Gestart telt ook afgeronde leerlingen mee</p>
+                                        <p className="text-[11px] font-bold text-lab-muted uppercase tracking-wider">Per klas</p>
+                                        <p className="text-[11px] text-lab-muted">Gestart telt ook afgeronde leerlingen mee</p>
                                     </div>
                                     <div className="mt-3 grid gap-3 lg:grid-cols-2">
                                         {classBreakdown.map(classProgress => (
-                                            <div key={`${spotlight.missionId}-${classProgress.className}`} className="rounded-lg border border-slate-200 bg-slate-50 px-3 py-3">
+                                            <div key={`${spotlight.missionId}-${classProgress.className}`} className="rounded-lg border border-lab-muted bg-lab-muted px-3 py-3">
                                                 <div className="flex items-start justify-between gap-3">
                                                     <div className="min-w-0">
-                                                        <p className="text-sm font-bold text-slate-900">{classProgress.className}</p>
-                                                        <p className="text-xs text-slate-500 mt-1">
+                                                        <p className="text-sm font-bold text-lab-muted">{classProgress.className}</p>
+                                                        <p className="text-xs text-lab-muted mt-1">
                                                             {classProgress.completedStudents} van {classProgress.totalStudents} leerlingen afgerond
                                                         </p>
                                                     </div>
-                                                    <span className="inline-flex px-2 py-1 rounded-full bg-emerald-100 text-emerald-700 text-[11px] font-bold">
+                                                    <span className="inline-flex px-2 py-1 rounded-full bg-lab-sage text-lab-sage text-[11px] font-bold">
                                                         {classProgress.completedPercentage}%
                                                     </span>
                                                 </div>
                                                 <div className="mt-3 grid grid-cols-3 gap-2">
-                                                    <div className="rounded-lg bg-white border border-slate-200 px-2 py-2 text-center">
-                                                        <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Gestart</p>
+                                                    <div className="rounded-lg bg-white border border-lab-muted px-2 py-2 text-center">
+                                                        <p className="text-[10px] font-bold text-lab-muted uppercase tracking-wider">Gestart</p>
                                                         <p className="text-lg font-black text-indigo-700 mt-1">{classProgress.startedStudents}</p>
                                                     </div>
-                                                    <div className="rounded-lg bg-white border border-slate-200 px-2 py-2 text-center">
-                                                        <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Bezig</p>
-                                                        <p className="text-lg font-black text-amber-700 mt-1">{classProgress.inProgressStudents}</p>
+                                                    <div className="rounded-lg bg-white border border-lab-muted px-2 py-2 text-center">
+                                                        <p className="text-[10px] font-bold text-lab-muted uppercase tracking-wider">Bezig</p>
+                                                        <p className="text-lg font-black text-lab-gold mt-1">{classProgress.inProgressStudents}</p>
                                                     </div>
-                                                    <div className="rounded-lg bg-white border border-slate-200 px-2 py-2 text-center">
-                                                        <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Afgerond</p>
-                                                        <p className="text-lg font-black text-emerald-700 mt-1">{classProgress.completedStudents}</p>
+                                                    <div className="rounded-lg bg-white border border-lab-muted px-2 py-2 text-center">
+                                                        <p className="text-[10px] font-bold text-lab-muted uppercase tracking-wider">Afgerond</p>
+                                                        <p className="text-lg font-black text-lab-sage mt-1">{classProgress.completedStudents}</p>
                                                     </div>
                                                 </div>
                                             </div>
@@ -578,18 +578,18 @@ export const SLOClassOverview: React.FC<SLOClassOverviewProps> = ({ students, sc
                     const isExpanded = expandedClasses.has(className);
 
                     return (
-                        <div key={className} className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+                        <div key={className} className="bg-white rounded-xl border border-lab-muted shadow-sm overflow-hidden">
                             <button
                                 onClick={() => toggleClass(className)}
-                                className="w-full p-4 flex items-center justify-between hover:bg-slate-50 transition-colors"
+                                className="w-full p-4 flex items-center justify-between hover:bg-lab-muted transition-colors"
                             >
                                 <div className="flex items-center gap-3">
                                     <div className="w-10 h-10 bg-indigo-100 rounded-lg flex items-center justify-center">
                                         <Users size={20} className="text-indigo-600" />
                                     </div>
                                     <div className="text-left">
-                                        <h3 className="font-bold text-slate-900">{className}</h3>
-                                        <p className="text-xs text-slate-500">{classStudents.length} leerlingen</p>
+                                        <h3 className="font-bold text-lab-muted">{className}</h3>
+                                        <p className="text-xs text-lab-muted">{classStudents.length} leerlingen</p>
                                     </div>
                                 </div>
 
@@ -597,13 +597,13 @@ export const SLOClassOverview: React.FC<SLOClassOverviewProps> = ({ students, sc
                                     <div className="hidden md:flex gap-2">
                                         {KERNDOEL_CODES.filter(code => classStats[code].hasData).map(code => (
                                             <div key={code} className="w-16" title={`${code} ${SLO_KERNDOELEN[code].label}`}>
-                                                <div className="h-2 bg-slate-100 rounded-full overflow-hidden">
+                                                <div className="h-2 bg-lab-muted rounded-full overflow-hidden">
                                                     <div
-                                                        className={`h-full transition-all ${SLO_KERNDOELEN[code].isVso ? 'bg-emerald-500' : 'bg-indigo-500'}`}
+                                                        className={`h-full transition-all ${SLO_KERNDOELEN[code].isVso ? 'bg-lab-sage' : 'bg-indigo-500'}`}
                                                         style={{ width: `${classStats[code].avgPercentage}%` }}
                                                     />
                                                 </div>
-                                                <p className="text-[9px] text-slate-400 text-center mt-0.5">
+                                                <p className="text-[9px] text-lab-muted text-center mt-0.5">
                                                     {classStats[code].avgPercentage}%
                                                 </p>
                                             </div>
@@ -611,20 +611,20 @@ export const SLOClassOverview: React.FC<SLOClassOverviewProps> = ({ students, sc
                                     </div>
 
                                     {isExpanded
-                                        ? <ChevronUp size={18} className="text-slate-400" />
-                                        : <ChevronDown size={18} className="text-slate-400" />
+                                        ? <ChevronUp size={18} className="text-lab-muted" />
+                                        : <ChevronDown size={18} className="text-lab-muted" />
                                     }
                                 </div>
                             </button>
 
                             {isExpanded && (
-                                <div className="border-t border-slate-100">
+                                <div className="border-t border-lab-muted">
                                     <table className="w-full text-sm">
-                                        <thead className="bg-slate-50">
+                                        <thead className="bg-lab-muted">
                                             <tr>
-                                                <th className="text-left px-4 py-2 text-xs font-bold text-slate-500 uppercase">Leerling</th>
+                                                <th className="text-left px-4 py-2 text-xs font-bold text-lab-muted uppercase">Leerling</th>
                                                 {KERNDOEL_CODES.filter(code => classStats[code].hasData).map(code => (
-                                                    <th key={code} className={`text-center px-2 py-2 text-xs font-bold uppercase whitespace-nowrap ${SLO_KERNDOELEN[code].isVso ? 'text-emerald-600' : 'text-slate-500'}`}>
+                                                    <th key={code} className={`text-center px-2 py-2 text-xs font-bold uppercase whitespace-nowrap ${SLO_KERNDOELEN[code].isVso ? 'text-lab-sage' : 'text-lab-muted'}`}>
                                                         {code}
                                                     </th>
                                                 ))}
@@ -634,17 +634,17 @@ export const SLOClassOverview: React.FC<SLOClassOverviewProps> = ({ students, sc
                                             {classStudents.map(student => {
                                                 const st = calculateStudentKerndoelStats(student);
                                                 return (
-                                                    <tr key={student.uid} className="hover:bg-slate-50">
+                                                    <tr key={student.uid} className="hover:bg-lab-muted">
                                                         <td className="px-4 py-3">
                                                             <div className="flex items-center gap-2">
-                                                                <p className="font-medium text-slate-900">{student.displayName}</p>
+                                                                <p className="font-medium text-lab-muted">{student.displayName}</p>
                                                                 {student.stats?.vsoProfile && (
-                                                                    <span className="text-[8px] bg-emerald-50 text-emerald-600 px-1 rounded border border-emerald-100 font-bold uppercase">
+                                                                    <span className="text-[8px] bg-lab-sage text-lab-sage px-1 rounded border border-lab-sage font-bold uppercase">
                                                                         VSO
                                                                     </span>
                                                                 )}
                                                             </div>
-                                                            <p className="text-xs text-slate-400">{student.identifier}</p>
+                                                            <p className="text-xs text-lab-muted">{student.identifier}</p>
                                                         </td>
                                                         {KERNDOEL_CODES.filter(code => classStats[code].hasData).map(code => {
                                                             const stat = st[code];
@@ -652,10 +652,10 @@ export const SLOClassOverview: React.FC<SLOClassOverviewProps> = ({ students, sc
                                                             const isVso = SLO_KERNDOELEN[code].isVso;
                                                             return (
                                                                 <td key={code} className="text-center px-2 py-3">
-                                                                    <span className={`inline-block px-2 py-1 rounded text-xs font-bold ${percentage >= 75 ? (isVso ? 'bg-emerald-100 text-emerald-700' : 'bg-indigo-100 text-indigo-700') :
-                                                                        percentage >= 50 ? 'bg-amber-100 text-amber-700' :
+                                                                    <span className={`inline-block px-2 py-1 rounded text-xs font-bold ${percentage >= 75 ? (isVso ? 'bg-lab-sage text-lab-sage' : 'bg-indigo-100 text-indigo-700') :
+                                                                        percentage >= 50 ? 'bg-lab-gold text-lab-gold' :
                                                                             percentage >= 25 ? 'bg-orange-100 text-orange-700' :
-                                                                                'bg-slate-100 text-slate-500'
+                                                                                'bg-lab-muted text-lab-muted'
                                                                         }`}>
                                                                         {percentage}%
                                                                     </span>
@@ -675,7 +675,7 @@ export const SLOClassOverview: React.FC<SLOClassOverviewProps> = ({ students, sc
             </div>
 
             {Object.keys(studentsByClass).length === 0 && (
-                <div className="text-center py-12 text-slate-400">
+                <div className="text-center py-12 text-lab-muted">
                     <Users size={48} className="mx-auto mb-4 opacity-50" />
                     <p>Geen leerlingen gevonden</p>
                 </div>

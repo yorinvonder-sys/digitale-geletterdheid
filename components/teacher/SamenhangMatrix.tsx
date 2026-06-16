@@ -44,7 +44,7 @@ interface CellData {
 }
 
 function getIntensityClass(count: number): string {
-    if (count === 0) return 'bg-gray-100 text-slate-400';
+    if (count === 0) return 'bg-gray-100 text-lab-muted';
     if (count <= 2) return 'bg-blue-100 text-blue-700';
     if (count <= 4) return 'bg-blue-300 text-blue-900';
     return 'bg-blue-500 text-white';
@@ -218,24 +218,24 @@ export const SamenhangMatrix: React.FC<SamenhangMatrixProps> = ({ selectedYear, 
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4 }}
-            className="bg-white rounded-[2rem] shadow-xl shadow-slate-200/50 border border-slate-100 overflow-hidden"
+            className="bg-white rounded-[2rem] shadow-xl shadow-slate-200/50 border border-lab-muted overflow-hidden"
         >
             {/* Header */}
             <div className="p-6 pb-4">
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                     <div>
-                        <h3 className="text-sm font-black text-slate-900 uppercase tracking-widest flex items-center gap-2">
+                        <h3 className="text-sm font-black text-lab-muted uppercase tracking-widest flex items-center gap-2">
                             <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
                             Samenhang Basisvaardigheden
                         </h3>
-                        <p className="text-xs text-slate-500 mt-1">
+                        <p className="text-xs text-lab-muted mt-1">
                             Hoe digitale geletterdheid samenhangt met taal, rekenen en burgerschap
                         </p>
                     </div>
 
                     {/* Filter */}
                     <div className="flex items-center gap-2">
-                        <Filter size={14} className="text-slate-400" />
+                        <Filter size={14} className="text-lab-muted" />
                         <select
                             value={yearFilter}
                             onChange={(e) => {
@@ -243,7 +243,7 @@ export const SamenhangMatrix: React.FC<SamenhangMatrixProps> = ({ selectedYear, 
                                 setYearFilter(val === 'all' ? 'all' : Number(val));
                                 setExpandedCell(null);
                             }}
-                            className="px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs font-bold text-slate-700 outline-none hover:bg-slate-50 transition-colors"
+                            className="px-3 py-2 bg-white border border-lab-muted rounded-xl text-xs font-bold text-lab-muted outline-none hover:bg-lab-muted transition-colors"
                         >
                             <option value="all">Alle leerjaren</option>
                             <option value={1}>Leerjaar 1</option>
@@ -259,11 +259,11 @@ export const SamenhangMatrix: React.FC<SamenhangMatrixProps> = ({ selectedYear, 
                 <table className="w-full border-collapse">
                     <thead>
                         <tr>
-                            <th className="text-left text-[9px] font-black text-slate-400 uppercase tracking-widest py-2 pr-3 w-40">
+                            <th className="text-left text-[9px] font-black text-lab-muted uppercase tracking-widest py-2 pr-3 w-40">
                                 Periode
                             </th>
                             {CATEGORIEEN.map(cat => (
-                                <th key={cat} className="text-center text-[9px] font-black text-slate-400 uppercase tracking-widest py-2 px-2">
+                                <th key={cat} className="text-center text-[9px] font-black text-lab-muted uppercase tracking-widest py-2 px-2">
                                     <span className="mr-1">{CATEGORIE_CONFIG[cat].icon}</span>
                                     {CATEGORIE_CONFIG[cat].label}
                                 </th>
@@ -275,8 +275,8 @@ export const SamenhangMatrix: React.FC<SamenhangMatrixProps> = ({ selectedYear, 
                             <React.Fragment key={row.key}>
                                 <tr>
                                     <td className="py-1.5 pr-3">
-                                        <div className="text-xs font-bold text-slate-700">{row.label}</div>
-                                        <div className="text-[10px] text-slate-400 truncate max-w-[160px]">{row.sublabel}</div>
+                                        <div className="text-xs font-bold text-lab-muted">{row.label}</div>
+                                        <div className="text-[10px] text-lab-muted truncate max-w-[160px]">{row.sublabel}</div>
                                     </td>
                                     {CATEGORIEEN.map(cat => {
                                         const cellKey = `${row.key}-${cat}`;
@@ -315,15 +315,15 @@ export const SamenhangMatrix: React.FC<SamenhangMatrixProps> = ({ selectedYear, 
                                                         transition={{ duration: 0.25 }}
                                                         className="overflow-hidden"
                                                     >
-                                                        <div className="bg-slate-50 rounded-xl border border-slate-200 p-4 mt-1">
+                                                        <div className="bg-lab-muted rounded-xl border border-lab-muted p-4 mt-1">
                                                             <div className="flex items-center gap-2 mb-3">
                                                                 <span className="text-sm">{CATEGORIE_CONFIG[cat].icon}</span>
-                                                                <h4 className="text-xs font-black text-slate-700 uppercase tracking-wider">
+                                                                <h4 className="text-xs font-black text-lab-muted uppercase tracking-wider">
                                                                     {row.sublabel} — {CATEGORIE_CONFIG[cat].label}
                                                                 </h4>
                                                                 <button
                                                                     onClick={() => setExpandedCell(null)}
-                                                                    className="ml-auto text-[10px] font-bold text-slate-400 hover:text-slate-600 transition-colors"
+                                                                    className="ml-auto text-[10px] font-bold text-lab-muted hover:text-lab-muted transition-colors"
                                                                 >
                                                                     Sluiten
                                                                 </button>
@@ -332,9 +332,9 @@ export const SamenhangMatrix: React.FC<SamenhangMatrixProps> = ({ selectedYear, 
                                                                 {cell.details.map(detail => (
                                                                     <div
                                                                         key={detail.missionId}
-                                                                        className="bg-white rounded-lg border border-slate-100 p-3"
+                                                                        className="bg-white rounded-lg border border-lab-muted p-3"
                                                                     >
-                                                                        <div className="text-xs font-bold text-slate-800">
+                                                                        <div className="text-xs font-bold text-lab-muted">
                                                                             {detail.missionTitle}
                                                                         </div>
                                                                         <div className="mt-1.5 space-y-1">
@@ -342,8 +342,8 @@ export const SamenhangMatrix: React.FC<SamenhangMatrixProps> = ({ selectedYear, 
                                                                                 <div key={i} className="flex items-start gap-2 text-[11px]">
                                                                                     <span className="inline-block mt-0.5 w-1.5 h-1.5 rounded-full bg-blue-400 shrink-0"></span>
                                                                                     <span>
-                                                                                        <span className="font-bold text-slate-600">{tag.subcategorie}:</span>{' '}
-                                                                                        <span className="text-slate-500">{tag.toelichting}</span>
+                                                                                        <span className="font-bold text-lab-muted">{tag.subcategorie}:</span>{' '}
+                                                                                        <span className="text-lab-muted">{tag.toelichting}</span>
                                                                                     </span>
                                                                                 </div>
                                                                             ))}
@@ -366,10 +366,10 @@ export const SamenhangMatrix: React.FC<SamenhangMatrixProps> = ({ selectedYear, 
 
             {/* Legenda */}
             <div className="px-6 pb-4">
-                <div className="flex items-center gap-3 text-[9px] font-bold text-slate-400 uppercase tracking-wider">
+                <div className="flex items-center gap-3 text-[9px] font-bold text-lab-muted uppercase tracking-wider">
                     <span>Intensiteit:</span>
                     <div className="flex items-center gap-1.5">
-                        <div className="w-4 h-4 rounded bg-gray-100 border border-slate-200"></div>
+                        <div className="w-4 h-4 rounded bg-gray-100 border border-lab-muted"></div>
                         <span>0</span>
                     </div>
                     <div className="flex items-center gap-1.5">
@@ -396,8 +396,8 @@ export const SamenhangMatrix: React.FC<SamenhangMatrixProps> = ({ selectedYear, 
                         const topSub = getTopSubcategorie(cat);
                         const colorMap: Record<Categorie, { bg: string; border: string; iconBg: string; text: string }> = {
                             taal: { bg: 'bg-indigo-50', border: 'border-indigo-200', iconBg: 'bg-indigo-100', text: 'text-indigo-700' },
-                            rekenen: { bg: 'bg-amber-50', border: 'border-amber-200', iconBg: 'bg-amber-100', text: 'text-amber-700' },
-                            burgerschap: { bg: 'bg-emerald-50', border: 'border-emerald-200', iconBg: 'bg-emerald-100', text: 'text-emerald-700' },
+                            rekenen: { bg: 'bg-lab-gold', border: 'border-lab-gold', iconBg: 'bg-lab-gold', text: 'text-lab-gold' },
+                            burgerschap: { bg: 'bg-lab-sage', border: 'border-lab-sage', iconBg: 'bg-lab-sage', text: 'text-lab-sage' },
                         };
                         const colors = colorMap[cat];
 
@@ -416,10 +416,10 @@ export const SamenhangMatrix: React.FC<SamenhangMatrixProps> = ({ selectedYear, 
                                         </div>
                                     </div>
                                 </div>
-                                <div className="text-2xl font-black text-slate-900">{data.total}</div>
-                                <div className="text-[10px] text-slate-500 font-medium">raakvlakken totaal</div>
+                                <div className="text-2xl font-black text-lab-muted">{data.total}</div>
+                                <div className="text-[10px] text-lab-muted font-medium">raakvlakken totaal</div>
                                 {topSub !== '-' && (
-                                    <div className="mt-2 text-[10px] font-bold text-slate-600 flex items-center gap-1">
+                                    <div className="mt-2 text-[10px] font-bold text-lab-muted flex items-center gap-1">
                                         <ChevronDown size={10} className="rotate-[-90deg]" />
                                         Meest: {topSub}
                                     </div>

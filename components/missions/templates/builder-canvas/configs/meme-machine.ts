@@ -82,11 +82,11 @@ export const memeMachineConfig: BuilderCanvasConfig = {
     ],
     maxScore: 100,
     badges: [
-        { minScore: 90, emoji: '🏆', title: 'Viral Mastermind', color: '#F59E0B' },
-        { minScore: 70, emoji: '😂', title: 'Meme Maker', color: '#10B981' },
-        { minScore: 50, emoji: '👍', title: 'Content Creator', color: '#D97757' },
-        { minScore: 25, emoji: '💡', title: 'Beginnende Content Maker', color: '#8B5CF6' },
-        { minScore: 0, emoji: '🌱', title: 'Op weg', color: '#6B6B66' },
+        { minScore: 90, emoji: '🏆', title: 'Viral Mastermind', color: '#D7C95F' },
+        { minScore: 70, emoji: '😂', title: 'Meme Maker', color: '#5F947D' },
+        { minScore: 50, emoji: '👍', title: 'Content Creator', color: '#D97848' },
+        { minScore: 25, emoji: '💡', title: 'Beginnende Content Maker', color: '#0B453F' },
+        { minScore: 0, emoji: '🌱', title: 'Op weg', color: '#445865' },
     ],
     takeaways: [
         'Je weet hoe meme-formats werken en waarom ze zo herkenbaar zijn',

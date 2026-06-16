@@ -28,13 +28,13 @@ const COLOR_SWATCH_BG: Record<string, string> = {
     indigo: 'bg-indigo-500',
     pink: 'bg-pink-500',
     cyan: 'bg-cyan-500',
-    violet: 'bg-violet-500',
-    emerald: 'bg-emerald-500',
-    amber: 'bg-amber-500',
-    rose: 'bg-rose-500',
-    slate: 'bg-slate-500',
+    violet: 'bg-lab-teal',
+    emerald: 'bg-lab-sage',
+    amber: 'bg-lab-gold',
+    rose: 'bg-lab-coral',
+    slate: 'bg-lab-muted',
     orange: 'bg-orange-500',
-    teal: 'bg-teal-500',
+    teal: 'bg-lab-teal',
     fuchsia: 'bg-fuchsia-500',
     lime: 'bg-lime-500',
 };
@@ -120,7 +120,7 @@ export const ContainerEditor: React.FC<ContainerEditorProps> = ({
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
-                    className="absolute inset-0 bg-slate-900/50 backdrop-blur-sm"
+                    className="absolute inset-0 bg-lab-muted/50 backdrop-blur-sm"
                     onClick={onClose}
                 />
 
@@ -133,14 +133,14 @@ export const ContainerEditor: React.FC<ContainerEditorProps> = ({
                     className="absolute right-0 top-0 h-full w-full max-w-2xl bg-white shadow-2xl flex flex-col overflow-hidden"
                 >
                     {/* Header */}
-                    <div className="flex items-center justify-between px-6 py-5 border-b border-slate-100 bg-slate-50 flex-shrink-0">
+                    <div className="flex items-center justify-between px-6 py-5 border-b border-lab-muted bg-lab-muted flex-shrink-0">
                         <div>
-                            <h2 className="text-lg font-black text-slate-900">Container bewerken</h2>
-                            <p className="text-sm text-slate-500 font-medium mt-0.5">{container.label}</p>
+                            <h2 className="text-lg font-black text-lab-muted">Container bewerken</h2>
+                            <p className="text-sm text-lab-muted font-medium mt-0.5">{container.label}</p>
                         </div>
                         <button
                             onClick={onClose}
-                            className="p-2 text-slate-400 hover:text-slate-700 hover:bg-slate-100 rounded-xl transition-colors"
+                            className="p-2 text-lab-muted hover:text-lab-muted hover:bg-lab-muted rounded-xl transition-colors"
                         >
                             <X size={20} />
                         </button>
@@ -151,11 +151,11 @@ export const ContainerEditor: React.FC<ContainerEditorProps> = ({
 
                         {/* Section: Details */}
                         <section>
-                            <h3 className="text-sm font-bold text-slate-500 uppercase tracking-wider mb-4">Details</h3>
+                            <h3 className="text-sm font-bold text-lab-muted uppercase tracking-wider mb-4">Details</h3>
                             <div className="space-y-4">
                                 {/* Label */}
                                 <div>
-                                    <label className="block text-sm font-bold text-slate-700 mb-1.5">
+                                    <label className="block text-sm font-bold text-lab-muted mb-1.5">
                                         Naam <span className="text-red-400">*</span>
                                     </label>
                                     <input
@@ -163,27 +163,27 @@ export const ContainerEditor: React.FC<ContainerEditorProps> = ({
                                         value={label}
                                         onChange={e => setLabel(e.target.value)}
                                         placeholder="Bijv. Periode 1"
-                                        className="w-full px-4 py-2.5 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                                        className="w-full px-4 py-2.5 border border-lab-muted rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
                                     />
                                 </div>
 
                                 {/* Subtitle */}
                                 <div>
-                                    <label className="block text-sm font-bold text-slate-700 mb-1.5">
-                                        Ondertitel <span className="text-slate-400 font-normal">(optioneel)</span>
+                                    <label className="block text-sm font-bold text-lab-muted mb-1.5">
+                                        Ondertitel <span className="text-lab-muted font-normal">(optioneel)</span>
                                     </label>
                                     <input
                                         type="text"
                                         value={subtitle}
                                         onChange={e => setSubtitle(e.target.value)}
                                         placeholder="Bijv. Digitale Basis"
-                                        className="w-full px-4 py-2.5 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                                        className="w-full px-4 py-2.5 border border-lab-muted rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
                                     />
                                 </div>
 
                                 {/* Container type */}
                                 <div>
-                                    <label className="block text-sm font-bold text-slate-700 mb-1.5">Type</label>
+                                    <label className="block text-sm font-bold text-lab-muted mb-1.5">Type</label>
                                     <div className="flex flex-wrap gap-2">
                                         {(Object.keys(CONTAINER_TYPE_LABELS) as ContainerType[]).map(type => (
                                             <button
@@ -192,7 +192,7 @@ export const ContainerEditor: React.FC<ContainerEditorProps> = ({
                                                 className={`px-4 py-2 rounded-xl text-sm font-bold border transition-all ${
                                                     containerType === type
                                                         ? 'bg-indigo-600 text-white border-indigo-600 shadow-sm'
-                                                        : 'bg-white text-slate-600 border-slate-200 hover:border-indigo-300 hover:text-indigo-600'
+                                                        : 'bg-white text-lab-muted border-lab-muted hover:border-indigo-300 hover:text-indigo-600'
                                                 }`}
                                             >
                                                 {CONTAINER_TYPE_LABELS[type]}
@@ -203,14 +203,14 @@ export const ContainerEditor: React.FC<ContainerEditorProps> = ({
 
                                 {/* Color picker */}
                                 <div>
-                                    <label className="block text-sm font-bold text-slate-700 mb-2">Kleur</label>
+                                    <label className="block text-sm font-bold text-lab-muted mb-2">Kleur</label>
                                     <div className="flex flex-wrap gap-2">
                                         {Object.keys(CONTAINER_THEME_MAP).map(key => (
                                             <button
                                                 key={key}
                                                 title={key}
                                                 onClick={() => setColorKey(key)}
-                                                className={`w-8 h-8 rounded-full transition-all ${COLOR_SWATCH_BG[key] ?? 'bg-slate-400'} ${
+                                                className={`w-8 h-8 rounded-full transition-all ${COLOR_SWATCH_BG[key] ?? 'bg-lab-muted'} ${
                                                     colorKey === key
                                                         ? 'ring-2 ring-offset-2 ring-slate-700 scale-110'
                                                         : 'hover:scale-105 opacity-80 hover:opacity-100'
@@ -223,25 +223,25 @@ export const ContainerEditor: React.FC<ContainerEditorProps> = ({
                                 {/* Date range */}
                                 <div className="grid grid-cols-2 gap-4">
                                     <div>
-                                        <label className="block text-sm font-bold text-slate-700 mb-1.5">
-                                            Startdatum <span className="text-slate-400 font-normal">(optioneel)</span>
+                                        <label className="block text-sm font-bold text-lab-muted mb-1.5">
+                                            Startdatum <span className="text-lab-muted font-normal">(optioneel)</span>
                                         </label>
                                         <input
                                             type="date"
                                             value={startDate}
                                             onChange={e => setStartDate(e.target.value)}
-                                            className="w-full px-4 py-2.5 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                                            className="w-full px-4 py-2.5 border border-lab-muted rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
                                         />
                                     </div>
                                     <div>
-                                        <label className="block text-sm font-bold text-slate-700 mb-1.5">
-                                            Einddatum <span className="text-slate-400 font-normal">(optioneel)</span>
+                                        <label className="block text-sm font-bold text-lab-muted mb-1.5">
+                                            Einddatum <span className="text-lab-muted font-normal">(optioneel)</span>
                                         </label>
                                         <input
                                             type="date"
                                             value={endDate}
                                             onChange={e => setEndDate(e.target.value)}
-                                            className="w-full px-4 py-2.5 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                                            className="w-full px-4 py-2.5 border border-lab-muted rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
                                         />
                                     </div>
                                 </div>
@@ -250,15 +250,15 @@ export const ContainerEditor: React.FC<ContainerEditorProps> = ({
 
                         {/* Section: Mission assignment */}
                         <section>
-                            <h3 className="text-sm font-bold text-slate-500 uppercase tracking-wider mb-4">Opdrachten</h3>
+                            <h3 className="text-sm font-bold text-lab-muted uppercase tracking-wider mb-4">Opdrachten</h3>
                             <div className="grid grid-cols-2 gap-4">
 
                                 {/* Left: Available missions */}
                                 <div>
-                                    <p className="text-xs font-bold text-slate-500 mb-2 uppercase tracking-wide">Beschikbaar</p>
-                                    <div className="border border-slate-100 rounded-2xl overflow-hidden">
+                                    <p className="text-xs font-bold text-lab-muted mb-2 uppercase tracking-wide">Beschikbaar</p>
+                                    <div className="border border-lab-muted rounded-2xl overflow-hidden">
                                         {availableMissions.length === 0 ? (
-                                            <div className="py-8 text-center text-slate-400 text-sm">
+                                            <div className="py-8 text-center text-lab-muted text-sm">
                                                 Alle opdrachten zijn toegewezen
                                             </div>
                                         ) : (
@@ -277,15 +277,15 @@ export const ContainerEditor: React.FC<ContainerEditorProps> = ({
                                                                         : 'hover:bg-indigo-50 bg-white cursor-pointer'
                                                                 }`}
                                                             >
-                                                                <span className="w-7 h-7 flex-shrink-0 bg-slate-100 rounded-lg flex items-center justify-center text-[10px] font-black text-slate-500">
+                                                                <span className="w-7 h-7 flex-shrink-0 bg-lab-muted rounded-lg flex items-center justify-center text-[10px] font-black text-lab-muted">
                                                                     {mission.short}
                                                                 </span>
                                                                 <div className="flex-1 min-w-0">
-                                                                    <span className={`text-sm font-semibold block truncate ${isElsewhere ? 'text-slate-400' : 'text-slate-800'}`}>
+                                                                    <span className={`text-sm font-semibold block truncate ${isElsewhere ? 'text-lab-muted' : 'text-lab-muted'}`}>
                                                                         {mission.name}
                                                                     </span>
                                                                     {isElsewhere && (
-                                                                        <span className="text-[10px] text-slate-400">Al in andere container</span>
+                                                                        <span className="text-[10px] text-lab-muted">Al in andere container</span>
                                                                     )}
                                                                 </div>
                                                                 {!isElsewhere && (
@@ -302,13 +302,13 @@ export const ContainerEditor: React.FC<ContainerEditorProps> = ({
 
                                 {/* Right: Assigned missions */}
                                 <div>
-                                    <p className="text-xs font-bold text-slate-500 mb-2 uppercase tracking-wide">
+                                    <p className="text-xs font-bold text-lab-muted mb-2 uppercase tracking-wide">
                                         In deze container
                                         <span className="ml-1.5 text-indigo-500">{sortedAssigned.length}</span>
                                     </p>
-                                    <div className="border border-slate-100 rounded-2xl overflow-hidden">
+                                    <div className="border border-lab-muted rounded-2xl overflow-hidden">
                                         {sortedAssigned.length === 0 ? (
-                                            <div className="py-8 text-center text-slate-400 text-sm">
+                                            <div className="py-8 text-center text-lab-muted text-sm">
                                                 Nog geen opdrachten
                                             </div>
                                         ) : (
@@ -323,14 +323,14 @@ export const ContainerEditor: React.FC<ContainerEditorProps> = ({
                                                                 <button
                                                                     onClick={() => handleMoveUp(index)}
                                                                     disabled={index === 0}
-                                                                    className="p-0.5 text-slate-300 hover:text-slate-600 disabled:opacity-20 disabled:cursor-not-allowed transition-colors"
+                                                                    className="p-0.5 text-lab-muted hover:text-lab-muted disabled:opacity-20 disabled:cursor-not-allowed transition-colors"
                                                                 >
                                                                     <ChevronUp size={13} />
                                                                 </button>
                                                                 <button
                                                                     onClick={() => handleMoveDown(index)}
                                                                     disabled={index === sortedAssigned.length - 1}
-                                                                    className="p-0.5 text-slate-300 hover:text-slate-600 disabled:opacity-20 disabled:cursor-not-allowed transition-colors"
+                                                                    className="p-0.5 text-lab-muted hover:text-lab-muted disabled:opacity-20 disabled:cursor-not-allowed transition-colors"
                                                                 >
                                                                     <ChevronDown size={13} />
                                                                 </button>
@@ -342,7 +342,7 @@ export const ContainerEditor: React.FC<ContainerEditorProps> = ({
                                                             </span>
 
                                                             {/* Name */}
-                                                            <span className="flex-1 text-xs font-semibold text-slate-800 truncate min-w-0">
+                                                            <span className="flex-1 text-xs font-semibold text-lab-muted truncate min-w-0">
                                                                 {info?.name ?? mc.missionId}
                                                             </span>
 
@@ -352,8 +352,8 @@ export const ContainerEditor: React.FC<ContainerEditorProps> = ({
                                                                 title={isRev ? 'Reviewopdracht — klik om te wijzigen' : 'Normale opdracht — klik om review te maken'}
                                                                 className={`flex-shrink-0 p-1 rounded-lg transition-colors ${
                                                                     isRev
-                                                                        ? 'bg-amber-100 text-amber-600'
-                                                                        : 'text-slate-300 hover:text-amber-500 hover:bg-amber-50'
+                                                                        ? 'bg-lab-gold text-lab-gold'
+                                                                        : 'text-lab-muted hover:text-lab-gold hover:bg-lab-gold'
                                                                 }`}
                                                             >
                                                                 <BookOpen size={13} />
@@ -362,7 +362,7 @@ export const ContainerEditor: React.FC<ContainerEditorProps> = ({
                                                             {/* Remove */}
                                                             <button
                                                                 onClick={() => onRemoveMission(mc.missionId)}
-                                                                className="flex-shrink-0 p-1 text-slate-300 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors"
+                                                                className="flex-shrink-0 p-1 text-lab-muted hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors"
                                                             >
                                                                 <X size={13} />
                                                             </button>
@@ -379,16 +379,16 @@ export const ContainerEditor: React.FC<ContainerEditorProps> = ({
                         {/* Section: SLO summary */}
                         {assignedMissionNames.length > 0 && (
                             <section>
-                                <h3 className="text-sm font-bold text-slate-500 uppercase tracking-wider mb-3">Gedekte opdrachten</h3>
-                                <div className="bg-slate-50 rounded-2xl p-4 border border-slate-100">
-                                    <p className="text-xs text-slate-500 mb-2">
+                                <h3 className="text-sm font-bold text-lab-muted uppercase tracking-wider mb-3">Gedekte opdrachten</h3>
+                                <div className="bg-lab-muted rounded-2xl p-4 border border-lab-muted">
+                                    <p className="text-xs text-lab-muted mb-2">
                                         Deze container bevat {assignedMissionNames.length} opdracht{assignedMissionNames.length !== 1 ? 'en' : ''}:
                                     </p>
                                     <div className="flex flex-wrap gap-1.5">
                                         {assignedMissionNames.map(name => (
                                             <span
                                                 key={name}
-                                                className="inline-flex items-center px-2.5 py-1 bg-white border border-slate-200 rounded-lg text-xs font-semibold text-slate-700"
+                                                className="inline-flex items-center px-2.5 py-1 bg-white border border-lab-muted rounded-lg text-xs font-semibold text-lab-muted"
                                             >
                                                 {name}
                                             </span>
@@ -400,10 +400,10 @@ export const ContainerEditor: React.FC<ContainerEditorProps> = ({
                     </div>
 
                     {/* Footer */}
-                    <div className="flex-shrink-0 flex items-center justify-end gap-3 px-6 py-4 border-t border-slate-100 bg-slate-50">
+                    <div className="flex-shrink-0 flex items-center justify-end gap-3 px-6 py-4 border-t border-lab-muted bg-lab-muted">
                         <button
                             onClick={onClose}
-                            className="px-5 py-2.5 text-sm font-bold text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-xl transition-colors"
+                            className="px-5 py-2.5 text-sm font-bold text-lab-muted hover:text-lab-muted hover:bg-lab-muted rounded-xl transition-colors"
                         >
                             Annuleren
                         </button>

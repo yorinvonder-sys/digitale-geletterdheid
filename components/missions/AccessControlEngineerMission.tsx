@@ -348,19 +348,19 @@ export const AccessControlEngineerMission: React.FC<Props> = ({
     // ---------------------------------------------------------------------------
 
     return (
-        <div className="min-h-screen bg-slate-50 flex flex-col">
+        <div className="min-h-screen bg-lab-muted flex flex-col">
             {/* Header */}
-            <div className="bg-white border-b border-slate-200 px-4 py-3 flex items-center gap-3 sticky top-0 z-20">
-                <button onClick={onBack} className="p-2 hover:bg-slate-100 rounded-lg transition-colors" aria-label="Terug">
-                    <ArrowLeft size={20} className="text-slate-600" />
+            <div className="bg-white border-b border-lab-muted px-4 py-3 flex items-center gap-3 sticky top-0 z-20">
+                <button onClick={onBack} className="p-2 hover:bg-lab-muted rounded-lg transition-colors" aria-label="Terug">
+                    <ArrowLeft size={20} className="text-lab-muted" />
                 </button>
                 <div className="flex items-center gap-2 flex-1">
                     <div className="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center">
                         <Shield size={18} className="text-white" />
                     </div>
                     <div>
-                        <h1 className="font-bold text-slate-800 text-sm leading-tight">Access Control Engineer</h1>
-                        <p className="text-xs text-slate-500">Beveilig het schoolsysteem</p>
+                        <h1 className="font-bold text-lab-muted text-sm leading-tight">Access Control Engineer</h1>
+                        <p className="text-xs text-lab-muted">Beveilig het schoolsysteem</p>
                     </div>
                 </div>
                 {/* Stap-indicator */}
@@ -374,7 +374,7 @@ export const AccessControlEngineerMission: React.FC<Props> = ({
                                     ? 'bg-indigo-600 text-white'
                                     : (s === 0 && stap1Klaar) || (s === 1 && stap2Klaar) || (s === 2 && stap3Klaar)
                                     ? 'bg-green-100 text-green-700'
-                                    : 'bg-slate-100 text-slate-500'
+                                    : 'bg-lab-muted text-lab-muted'
                             }`}
                             aria-label={`Stap ${s + 1}`}
                         >
@@ -391,12 +391,12 @@ export const AccessControlEngineerMission: React.FC<Props> = ({
                 {/* Introductie */}
                 {state.currentStep === 0 && (
                     <div className="space-y-4">
-                        <div className="bg-amber-50 border border-amber-200 rounded-xl p-4">
+                        <div className="bg-lab-gold border border-lab-gold rounded-xl p-4">
                             <div className="flex items-start gap-3">
-                                <AlertTriangle size={20} className="text-amber-600 shrink-0 mt-0.5" />
+                                <AlertTriangle size={20} className="text-lab-gold shrink-0 mt-0.5" />
                                 <div>
-                                    <h2 className="font-bold text-amber-800 text-sm">Melding van {SCHOOL_NAAM}</h2>
-                                    <p className="text-amber-700 text-sm mt-1">
+                                    <h2 className="font-bold text-lab-gold text-sm">Melding van {SCHOOL_NAAM}</h2>
+                                    <p className="text-lab-gold text-sm mt-1">
                                         {isVso
                                             ? `Het schoolsysteem heeft problemen. Niet iedereen mag alles zien, maar de regels kloppen niet. Kijk welke regels onveilig zijn.`
                                             : `Het inlogportaal van de school is onveilig: leerlingen kunnen bij cijfers van anderen, gasten loggen zonder wachtwoord in, en roosters zijn aanpasbaar door de verkeerde mensen. Analyseer de beveiligingsregels en vind de problemen.`
@@ -406,8 +406,8 @@ export const AccessControlEngineerMission: React.FC<Props> = ({
                             </div>
                         </div>
 
-                        <h3 className="font-bold text-slate-800">Stap 1: Vind de problemen</h3>
-                        <p className="text-sm text-slate-600">
+                        <h3 className="font-bold text-lab-muted">Stap 1: Vind de problemen</h3>
+                        <p className="text-sm text-lab-muted">
                             Hieronder staan de huidige beveiligingsregels van het schoolsysteem.
                             Tik op de regels die <strong>onveilig</strong> zijn.
                             {isVso && ' Tip: kijk welke regels iedereen overal bij laten.'}
@@ -418,7 +418,7 @@ export const AccessControlEngineerMission: React.FC<Props> = ({
                                 const geselecteerd = state.gevondenProblemen.includes(regel.id);
                                 const toonUitleg = showUitleg === regel.id;
                                 return (
-                                    <div key={regel.id} className="bg-white rounded-xl border border-slate-200 overflow-hidden">
+                                    <div key={regel.id} className="bg-white rounded-xl border border-lab-muted overflow-hidden">
                                         <button
                                             onClick={() => toggleProbleem(regel.id)}
                                             className={`w-full text-left p-3 flex items-center gap-3 transition-colors ${
@@ -426,22 +426,22 @@ export const AccessControlEngineerMission: React.FC<Props> = ({
                                                     ? regel.isVeilig
                                                         ? 'bg-red-50 border-l-4 border-red-400'
                                                         : 'bg-green-50 border-l-4 border-green-400'
-                                                    : 'hover:bg-slate-50'
+                                                    : 'hover:bg-lab-muted'
                                             }`}
                                         >
                                             <div className={`w-6 h-6 rounded-full flex items-center justify-center shrink-0 ${
-                                                geselecteerd ? (regel.isVeilig ? 'bg-red-100' : 'bg-green-100') : 'bg-slate-100'
+                                                geselecteerd ? (regel.isVeilig ? 'bg-red-100' : 'bg-green-100') : 'bg-lab-muted'
                                             }`}>
                                                 {geselecteerd ? (
                                                     regel.isVeilig
                                                         ? <XCircle size={14} className="text-red-500" />
                                                         : <CheckCircle2 size={14} className="text-green-500" />
                                                 ) : (
-                                                    <Eye size={14} className="text-slate-400" />
+                                                    <Eye size={14} className="text-lab-muted" />
                                                 )}
                                             </div>
                                             <div className="flex-1 min-w-0">
-                                                <p className="text-sm text-slate-800">{regel.beschrijving}</p>
+                                                <p className="text-sm text-lab-muted">{regel.beschrijving}</p>
                                                 <span className={`inline-block mt-1 text-xs px-2 py-0.5 rounded-full ${
                                                     regel.risicoType === 'privacy' ? 'bg-purple-100 text-purple-700' :
                                                     regel.risicoType === 'authenticatie' ? 'bg-orange-100 text-orange-700' :
@@ -460,7 +460,7 @@ export const AccessControlEngineerMission: React.FC<Props> = ({
                                                     {toonUitleg ? 'Verberg uitleg' : 'Bekijk uitleg'}
                                                 </button>
                                                 {toonUitleg && (
-                                                    <p className="text-xs text-slate-600 mt-1 bg-slate-50 rounded-lg p-2">
+                                                    <p className="text-xs text-lab-muted mt-1 bg-lab-muted rounded-lg p-2">
                                                         {geselecteerd && regel.isVeilig
                                                             ? `Oeps! Deze regel is eigenlijk veilig. ${regel.uitleg}`
                                                             : regel.uitleg
@@ -474,8 +474,8 @@ export const AccessControlEngineerMission: React.FC<Props> = ({
                             })}
                         </div>
 
-                        <div className="bg-slate-100 rounded-xl p-3 flex items-center justify-between">
-                            <p className="text-sm text-slate-600">
+                        <div className="bg-lab-muted rounded-xl p-3 flex items-center justify-between">
+                            <p className="text-sm text-lab-muted">
                                 Gevonden: <strong>{aantalProblemen}</strong> / minstens 3 problemen
                             </p>
                             {stap1Klaar && (
@@ -493,8 +493,8 @@ export const AccessControlEngineerMission: React.FC<Props> = ({
                 {/* Stap 2: Regels aanpassen */}
                 {state.currentStep === 1 && (
                     <div className="space-y-4">
-                        <h3 className="font-bold text-slate-800">Stap 2: Stel de juiste rechten in</h3>
-                        <p className="text-sm text-slate-600">
+                        <h3 className="font-bold text-lab-muted">Stap 2: Stel de juiste rechten in</h3>
+                        <p className="text-sm text-lab-muted">
                             {isVso
                                 ? 'Kies voor elke actie wie dat mag doen. Vink de juiste rollen aan.'
                                 : 'Nu je de problemen kent, ga je de toegangsrechten correct instellen. Bepaal per resource welke rollen er toegang toe moeten hebben.'
@@ -505,12 +505,12 @@ export const AccessControlEngineerMission: React.FC<Props> = ({
                             {RESOURCES.map(resource => {
                                 const huidigeRollen = state.aangepasteRegels[resource.id] ?? [];
                                 return (
-                                    <div key={resource.id} className="bg-white rounded-xl border border-slate-200 p-4">
+                                    <div key={resource.id} className="bg-white rounded-xl border border-lab-muted p-4">
                                         <div className="flex items-start gap-2 mb-2">
-                                            <Lock size={16} className="text-slate-400 shrink-0 mt-0.5" />
+                                            <Lock size={16} className="text-lab-muted shrink-0 mt-0.5" />
                                             <div>
-                                                <p className="text-sm font-semibold text-slate-800">{resource.resource}</p>
-                                                <p className="text-xs text-slate-500">{resource.beschrijving}</p>
+                                                <p className="text-sm font-semibold text-lab-muted">{resource.resource}</p>
+                                                <p className="text-xs text-lab-muted">{resource.beschrijving}</p>
                                             </div>
                                         </div>
                                         <div className="flex flex-wrap gap-2 mt-2">
@@ -528,7 +528,7 @@ export const AccessControlEngineerMission: React.FC<Props> = ({
                                                         className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
                                                             actief
                                                                 ? ROLLEN_KLEUREN[rol] + ' ring-2 ring-offset-1 ring-indigo-300'
-                                                                : 'bg-slate-100 text-slate-500 hover:bg-slate-200'
+                                                                : 'bg-lab-muted text-lab-muted hover:bg-lab-muted'
                                                         }`}
                                                     >
                                                         {actief ? <Unlock size={12} className="inline mr-1" /> : <Lock size={12} className="inline mr-1" />}
@@ -542,14 +542,14 @@ export const AccessControlEngineerMission: React.FC<Props> = ({
                             })}
                         </div>
 
-                        <div className="bg-slate-100 rounded-xl p-3 flex items-center justify-between">
-                            <p className="text-sm text-slate-600">
+                        <div className="bg-lab-muted rounded-xl p-3 flex items-center justify-between">
+                            <p className="text-sm text-lab-muted">
                                 Ingesteld: <strong>{aantalRegelsIngesteld}</strong> / {RESOURCES.length} resources
                             </p>
                             <div className="flex gap-2">
                                 <button
                                     onClick={() => naarStap(0)}
-                                    className="flex items-center gap-1 text-slate-600 px-3 py-2 rounded-lg text-sm hover:bg-slate-200 transition-colors"
+                                    className="flex items-center gap-1 text-lab-muted px-3 py-2 rounded-lg text-sm hover:bg-lab-muted transition-colors"
                                 >
                                     <ArrowLeft size={16} /> Terug
                                 </button>
@@ -569,8 +569,8 @@ export const AccessControlEngineerMission: React.FC<Props> = ({
                 {/* Stap 3: Testen */}
                 {state.currentStep === 2 && (
                     <div className="space-y-4">
-                        <h3 className="font-bold text-slate-800">Stap 3: Test je configuratie</h3>
-                        <p className="text-sm text-slate-600">
+                        <h3 className="font-bold text-lab-muted">Stap 3: Test je configuratie</h3>
+                        <p className="text-sm text-lab-muted">
                             {isVso
                                 ? 'Controleer of jouw regels goed werken. Druk op "Test" en kijk of de juiste mensen de juiste toegang krijgen.'
                                 : 'Voer de testscenario\'s uit om te controleren of jouw toegangsregels correct werken. Elke test simuleert een echte gebruiker die iets probeert te doen.'
@@ -585,16 +585,16 @@ export const AccessControlEngineerMission: React.FC<Props> = ({
                                     <div key={scenario.id} className={`bg-white rounded-xl border overflow-hidden transition-colors ${
                                         resultaat === 'correct' ? 'border-green-300' :
                                         resultaat === 'fout' ? 'border-red-300' :
-                                        'border-slate-200'
+                                        'border-lab-muted'
                                     }`}>
                                         <div className="p-4">
                                             <div className="flex items-center gap-2 mb-2">
                                                 <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${ROLLEN_KLEUREN[scenario.gebruiker.rol]}`}>
                                                     {scenario.gebruiker.rol}
                                                 </span>
-                                                <span className="text-sm font-medium text-slate-700">{scenario.gebruiker.naam}</span>
+                                                <span className="text-sm font-medium text-lab-muted">{scenario.gebruiker.naam}</span>
                                             </div>
-                                            <p className="text-sm text-slate-600 mb-3">
+                                            <p className="text-sm text-lab-muted mb-3">
                                                 Wil: <strong>{scenario.resource}</strong>
                                             </p>
                                             <div className="flex items-center gap-2">
@@ -622,7 +622,7 @@ export const AccessControlEngineerMission: React.FC<Props> = ({
                                                                     testResultaten: { ...state.testResultaten, [scenario.id]: null },
                                                                 });
                                                             }}
-                                                            className="text-xs text-slate-500 hover:text-slate-700 flex items-center gap-1"
+                                                            className="text-xs text-lab-muted hover:text-lab-muted flex items-center gap-1"
                                                         >
                                                             <RotateCcw size={12} /> Opnieuw
                                                         </button>
@@ -637,11 +637,11 @@ export const AccessControlEngineerMission: React.FC<Props> = ({
                                             </div>
                                         </div>
                                         {toonDetail && (
-                                            <div className="bg-slate-50 px-4 py-3 border-t border-slate-100">
-                                                <p className="text-xs text-slate-600">
+                                            <div className="bg-lab-muted px-4 py-3 border-t border-lab-muted">
+                                                <p className="text-xs text-lab-muted">
                                                     <strong>Verwacht:</strong> {scenario.verwachtResultaat === 'toegang' ? 'Toegang verlenen' : 'Geblokkeerd'}
                                                 </p>
-                                                <p className="text-xs text-slate-500 mt-1">{scenario.uitleg}</p>
+                                                <p className="text-xs text-lab-muted mt-1">{scenario.uitleg}</p>
                                             </div>
                                         )}
                                     </div>
@@ -649,14 +649,14 @@ export const AccessControlEngineerMission: React.FC<Props> = ({
                             })}
                         </div>
 
-                        <div className="bg-slate-100 rounded-xl p-3">
+                        <div className="bg-lab-muted rounded-xl p-3">
                             <div className="flex items-center justify-between mb-2">
-                                <p className="text-sm text-slate-600">
+                                <p className="text-sm text-lab-muted">
                                     Tests: <strong>{aantalTestsCorrect}</strong> correct / {aantalTestsGedaan} uitgevoerd
                                 </p>
                                 <button
                                     onClick={() => naarStap(1)}
-                                    className="flex items-center gap-1 text-slate-600 px-3 py-2 rounded-lg text-sm hover:bg-slate-200 transition-colors"
+                                    className="flex items-center gap-1 text-lab-muted px-3 py-2 rounded-lg text-sm hover:bg-lab-muted transition-colors"
                                 >
                                     <ArrowLeft size={16} /> Terug
                                 </button>
@@ -671,7 +671,7 @@ export const AccessControlEngineerMission: React.FC<Props> = ({
                                 </button>
                             )}
                             {!stap3Klaar && aantalTestsGedaan > 0 && (
-                                <p className="text-xs text-amber-600 mt-1">
+                                <p className="text-xs text-lab-gold mt-1">
                                     {aantalTestsCorrect < 4
                                         ? 'Sommige tests mislukken. Ga terug naar Stap 2 en pas de rechten aan.'
                                         : `Voer minstens 5 tests uit (nu: ${aantalTestsGedaan}).`

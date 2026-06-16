@@ -89,16 +89,16 @@ export const InspectorTask: React.FC<Props> = ({ task, onComplete }) => {
                         </button>
                     </div>
                     <div className="flex flex-col items-start">
-                        <div className="bg-lab-bg border border-slate-200 px-3 py-2 rounded-2xl rounded-tl-sm max-w-[55%] shadow-sm">
+                        <div className="bg-lab-bg border border-lab-muted px-3 py-2 rounded-2xl rounded-tl-sm max-w-[55%] shadow-sm">
                             <p className="text-[11px] text-lab-textLight italic">Eh... oké. Hier is iets: &quot;Er was eens iemand die iets deed.&quot; Ik weet niet precies wat je wilt...</p>
                         </div>
                     </div>
 
                     {/* Divider */}
                     <div className="flex items-center gap-2 my-0.5">
-                        <div className="flex-1 border-t border-slate-200"></div>
+                        <div className="flex-1 border-t border-lab-muted"></div>
                         <span className="text-[10px] text-lab-textLight font-medium">vs</span>
-                        <div className="flex-1 border-t border-slate-200"></div>
+                        <div className="flex-1 border-t border-lab-muted"></div>
                     </div>
 
                     {/* Leerling 2 — goede prompt (klikbaar) */}
@@ -112,7 +112,7 @@ export const InspectorTask: React.FC<Props> = ({ task, onComplete }) => {
                         </button>
                     </div>
                     <div className="flex flex-col items-start">
-                        <div className="bg-lab-bg border border-slate-200 px-3 py-2 rounded-2xl rounded-tl-sm max-w-[55%] shadow-sm">
+                        <div className="bg-lab-bg border border-lab-muted px-3 py-2 rounded-2xl rounded-tl-sm max-w-[55%] shadow-sm">
                             <p className="text-[11px] text-lab-textLight italic">ROBO-7 knipperde met zijn blauwe ogen. De hoge gebouwen leken op reusachtige vingers die naar de hemel wezen. &quot;Waar ben ik?&quot; piepte hij...</p>
                         </div>
                     </div>
@@ -147,7 +147,7 @@ export const InspectorTask: React.FC<Props> = ({ task, onComplete }) => {
                         <span className="text-[10px] text-lab-textLight mb-1">SlimmeBot — Antwoord 1</span>
                         <button
                             onClick={() => wrongAnswer && handleHotspotClick(wrongAnswer)}
-                            className="bg-lab-bg border border-slate-200 px-4 py-2.5 rounded-2xl rounded-tl-sm max-w-[55%] shadow-sm text-left hover:ring-2 hover:ring-lab-primary/50 hover:ring-offset-2 transition-all cursor-pointer active:scale-95"
+                            className="bg-lab-bg border border-lab-muted px-4 py-2.5 rounded-2xl rounded-tl-sm max-w-[55%] shadow-sm text-left hover:ring-2 hover:ring-lab-primary/50 hover:ring-offset-2 transition-all cursor-pointer active:scale-95"
                         >
                             <p className="text-sm text-lab-dark">Ons zonnestelsel heeft <strong>9 planeten</strong>! De negen planeten zijn: Mercurius, Venus, Aarde, Mars, Jupiter, Saturnus, Uranus, Neptunus en Pluto. 🪐</p>
                         </button>
@@ -155,9 +155,9 @@ export const InspectorTask: React.FC<Props> = ({ task, onComplete }) => {
 
                     {/* Divider */}
                     <div className="flex items-center gap-2 my-0.5">
-                        <div className="flex-1 border-t border-slate-200"></div>
+                        <div className="flex-1 border-t border-lab-muted"></div>
                         <span className="text-[10px] text-lab-textLight font-medium">twee antwoorden</span>
-                        <div className="flex-1 border-t border-slate-200"></div>
+                        <div className="flex-1 border-t border-lab-muted"></div>
                     </div>
 
                     {/* Antwoord 2 — GOED (klikbaar) */}
@@ -165,7 +165,7 @@ export const InspectorTask: React.FC<Props> = ({ task, onComplete }) => {
                         <span className="text-[10px] text-lab-textLight mb-1">SlimmeBot — Antwoord 2</span>
                         <button
                             onClick={() => correctAnswer && handleHotspotClick(correctAnswer)}
-                            className="bg-lab-bg border border-slate-200 px-4 py-2.5 rounded-2xl rounded-tl-sm max-w-[55%] shadow-sm text-left hover:ring-2 hover:ring-lab-primary/50 hover:ring-offset-2 transition-all cursor-pointer active:scale-95"
+                            className="bg-lab-bg border border-lab-muted px-4 py-2.5 rounded-2xl rounded-tl-sm max-w-[55%] shadow-sm text-left hover:ring-2 hover:ring-lab-primary/50 hover:ring-offset-2 transition-all cursor-pointer active:scale-95"
                         >
                             <p className="text-sm text-lab-dark">Ons zonnestelsel heeft <strong>8 planeten</strong>: Mercurius, Venus, Aarde, Mars, Jupiter, Saturnus, Uranus en Neptunus. Pluto werd in 2006 herclassificeerd als dwergplaneet. 🌍</p>
                         </button>
@@ -198,38 +198,38 @@ export const InspectorTask: React.FC<Props> = ({ task, onComplete }) => {
                 {/* Title area — hotspot */}
                 <button
                     onClick={(e) => { e.stopPropagation(); titleHotspot && handleHotspotClick(titleHotspot); }}
-                    className="pt-5 pb-2 px-6 text-center hover:bg-slate-50 transition-colors"
+                    className="pt-5 pb-2 px-6 text-center hover:bg-lab-muted transition-colors"
                 >
-                    <h3 className="text-base font-bold text-slate-800">Smartphonegebruik onder jongeren (%)</h3>
-                    <p className="text-[11px] text-slate-400 mt-0.5">Bron: Schoolkrant De Digitale Pen, 2026</p>
+                    <h3 className="text-base font-bold text-lab-muted">Smartphonegebruik onder jongeren (%)</h3>
+                    <p className="text-[11px] text-lab-muted mt-0.5">Bron: Schoolkrant De Digitale Pen, 2026</p>
                 </button>
 
                 <div className="flex-1 flex px-4 pb-4 min-h-0">
                     {/* Y-axis area — hotspot (correct answer) */}
                     <button
                         onClick={(e) => { e.stopPropagation(); yAxisHotspot && handleHotspotClick(yAxisHotspot); }}
-                        className="w-14 flex flex-col justify-between items-end pr-2 py-2 hover:bg-amber-50 rounded-l-lg transition-colors border border-transparent hover:border-amber-200"
+                        className="w-14 flex flex-col justify-between items-end pr-2 py-2 hover:bg-lab-gold rounded-l-lg transition-colors border border-transparent hover:border-lab-gold"
                     >
                         {[100, 90, 80, 70, 60].map(v => (
-                            <span key={v} className="text-[11px] font-mono text-slate-500 leading-none">{v}%</span>
+                            <span key={v} className="text-[11px] font-mono text-lab-muted leading-none">{v}%</span>
                         ))}
                     </button>
 
                     {/* Chart bars area — hotspot */}
                     <button
                         onClick={(e) => { e.stopPropagation(); barsHotspot && handleHotspotClick(barsHotspot); }}
-                        className="flex-1 flex items-end justify-around gap-3 px-4 py-2 border-l-2 border-b-2 border-slate-300 hover:bg-blue-50/30 rounded-r-lg transition-colors"
+                        className="flex-1 flex items-end justify-around gap-3 px-4 py-2 border-l-2 border-b-2 border-lab-muted hover:bg-blue-50/30 rounded-r-lg transition-colors"
                     >
                         {data.map(d => {
                             const heightPct = ((d.value - yMin) / (yMax - yMin)) * 100;
                             return (
                                 <div key={d.label} className="flex flex-col items-center flex-1 h-full justify-end">
-                                    <span className="text-[11px] font-bold text-slate-600 mb-1">{d.value}%</span>
+                                    <span className="text-[11px] font-bold text-lab-muted mb-1">{d.value}%</span>
                                     <div
                                         className="w-full rounded-t-md bg-gradient-to-t from-lab-primary to-lab-primary/70 transition-all min-h-[8px]"
                                         style={{ height: `${heightPct}%` }}
                                     />
-                                    <span className="text-[11px] text-slate-500 mt-2 font-medium">{d.label}</span>
+                                    <span className="text-[11px] text-lab-muted mt-2 font-medium">{d.label}</span>
                                 </div>
                             );
                         })}
@@ -257,7 +257,7 @@ export const InspectorTask: React.FC<Props> = ({ task, onComplete }) => {
                 <p className="text-lab-textLight">{task.description}</p>
             </div>
 
-            <div className="flex-1 relative flex items-center justify-center bg-white rounded-2xl overflow-hidden border border-slate-200 shadow-sm">
+            <div className="flex-1 relative flex items-center justify-center bg-white rounded-2xl overflow-hidden border border-lab-muted shadow-sm">
                 {/* Simulated Slide/Image Area */}
                 {isSpecialType ? (
                     <div className="relative w-full max-w-2xl aspect-[4/3]">
@@ -323,7 +323,7 @@ export const InspectorTask: React.FC<Props> = ({ task, onComplete }) => {
                     <div className="absolute inset-0 flex items-center justify-center bg-black/40 backdrop-blur-sm animate-in fade-in duration-200 z-10">
                         <div className={`
                             p-6 rounded-2xl max-w-sm text-center shadow-2xl transform scale-100 animate-in zoom-in-95
-                            ${showFeedback.correct ? 'bg-emerald-500 text-white' : 'bg-red-500 text-white'}
+                            ${showFeedback.correct ? 'bg-lab-sage text-white' : 'bg-red-500 text-white'}
                         `}>
                             {showFeedback.correct ? <CheckCircle size={48} className="mx-auto mb-2" /> : <AlertCircle size={48} className="mx-auto mb-2" />}
                             <h3 className="text-xl font-bold mb-1">{showFeedback.correct ? 'Goed gezien!' : 'Niet helemaal...'}</h3>
@@ -340,7 +340,7 @@ export const InspectorTask: React.FC<Props> = ({ task, onComplete }) => {
                 </div>
             )}
 
-            <div className="mt-3 bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+            <div className="mt-3 bg-white p-4 rounded-xl border border-lab-muted shadow-sm">
                 <p className="font-bold text-center text-lg text-lab-dark">{task.question}</p>
             </div>
         </div>

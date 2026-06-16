@@ -107,19 +107,19 @@ const config: ToolGuideConfig = {
             minScore: 55,
             emoji: '🏆',
             title: 'Document Expert',
-            color: '#2563EB',
+            color: '#0B453F',
         },
         {
             minScore: 40,
             emoji: '✍️',
             title: 'Word Wizard',
-            color: '#3B82F6',
+            color: '#0B453F',
         },
         {
             minScore: 0,
             emoji: '🌱',
             title: 'Aan de slag',
-            color: '#10B981',
+            color: '#5F947D',
         },
     ],
     takeaways: [

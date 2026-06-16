@@ -237,7 +237,7 @@ const TutorialSpotlight: React.FC = () => {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -8 }}
                     transition={{ duration: 0.25 }}
-                    style={{ ...getTooltipStyle(), pointerEvents: 'auto', backgroundColor: '#FFFFFF', borderWidth: 1, borderColor: '#E8E6DF' }}
+                    style={{ ...getTooltipStyle(), pointerEvents: 'auto', backgroundColor: '#FFFFFF', borderWidth: 1, borderColor: '#E7D8BD' }}
                     className="rounded-2xl shadow-2xl overflow-hidden"
                 >
                     {/* Step counter bar */}
@@ -246,7 +246,7 @@ const TutorialSpotlight: React.FC = () => {
                             <div
                                 key={i}
                                 className="flex-1 transition-colors duration-300"
-                                style={{ backgroundColor: i <= currentStepIndex ? '#D97757' : '#F0EEE8' }}
+                                style={{ backgroundColor: i <= currentStepIndex ? '#D97848' : '#FCF6EA' }}
                             />
                         ))}
                     </div>
@@ -254,7 +254,7 @@ const TutorialSpotlight: React.FC = () => {
                     {/* Fullscreen intro: Pip centered above content */}
                     {isFullscreen && (
                         <div className="flex justify-center pt-4 pb-1">
-                            <div className="w-16 h-16 rounded-full flex items-center justify-center" style={{ backgroundColor: '#FAF9F0' }}>
+                            <div className="w-16 h-16 rounded-full flex items-center justify-center" style={{ backgroundColor: '#FCF6EA' }}>
                                     <motion.img
                                         src="/mascot/pip-excited.webp"
                                     alt=""
@@ -271,7 +271,7 @@ const TutorialSpotlight: React.FC = () => {
                         {/* Pip mascot — inline guide for targeted steps */}
                         {!isFullscreen && (
                             <div className="shrink-0 mt-0.5">
-                                <div className="w-10 h-10 rounded-full flex items-center justify-center" style={{ backgroundColor: '#FAF9F0' }}>
+                                <div className="w-10 h-10 rounded-full flex items-center justify-center" style={{ backgroundColor: '#FCF6EA' }}>
                                     <motion.img
                                         src="/mascot/pip-waving.webp"
                                         alt=""
@@ -287,11 +287,11 @@ const TutorialSpotlight: React.FC = () => {
                         <div className={`flex-1 min-w-0 ${isFullscreen ? 'text-center' : ''}`}>
                             {/* Title + skip */}
                             <div className="flex items-center justify-between gap-2 mb-1">
-                                <h3 className="text-sm font-bold leading-tight" style={{ color: '#1A1A19', fontFamily: "'Newsreader', Georgia, serif" }}>{currentStep.title}</h3>
+                                <h3 className="text-sm font-bold leading-tight" style={{ color: '#08283B', fontFamily: "'Newsreader', Georgia, serif" }}>{currentStep.title}</h3>
                                 <button
                                     onClick={skipTutorial}
                                     className="shrink-0 p-1 rounded transition-colors"
-                                    style={{ color: '#6B6B66' }}
+                                    style={{ color: '#445865' }}
                                     title="Tutorial overslaan"
                                 >
                                     <X size={14} />
@@ -299,19 +299,19 @@ const TutorialSpotlight: React.FC = () => {
                             </div>
 
                             {/* Description */}
-                            <p className="text-xs leading-relaxed mb-3" style={{ color: '#3D3D38' }}>{currentStep.content}</p>
+                            <p className="text-xs leading-relaxed mb-3" style={{ color: '#445865' }}>{currentStep.content}</p>
 
                             {/* Required click hint */}
                             {currentStep.requireClick && rect && !targetNotFound && (
-                                <p className="text-[11px] font-semibold mb-3 flex items-center gap-1.5" style={{ color: '#D97757' }}>
-                                    <span className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ backgroundColor: '#D97757' }} />
+                                <p className="text-[11px] font-semibold mb-3 flex items-center gap-1.5" style={{ color: '#D97848' }}>
+                                    <span className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ backgroundColor: '#D97848' }} />
                                     Klik op het uitgelichte element
                                 </p>
                             )}
 
                             {/* Navigation */}
                             <div className={`flex items-center ${isFullscreen ? 'justify-center gap-3' : 'justify-between'}`}>
-                                <span className="text-[10px] font-medium" style={{ color: '#6B6B66' }}>
+                                <span className="text-[10px] font-medium" style={{ color: '#445865' }}>
                                     {currentStepIndex + 1}/{steps.length}
                                 </span>
                                 <div className="flex items-center gap-1">
@@ -319,7 +319,7 @@ const TutorialSpotlight: React.FC = () => {
                                         <button
                                             onClick={prevStep}
                                             className="p-1.5 rounded-lg transition-colors"
-                                            style={{ color: '#6B6B66' }}
+                                            style={{ color: '#445865' }}
                                         >
                                             <ChevronLeft size={16} />
                                         </button>
@@ -328,9 +328,9 @@ const TutorialSpotlight: React.FC = () => {
                                         <button
                                             onClick={isLastStep ? skipTutorial : nextStep}
                                             className="flex items-center gap-1 px-3 py-1.5 text-white text-xs font-semibold rounded-full transition-all duration-300"
-                                            style={{ backgroundColor: '#D97757' }}
-                                            onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#C46849'}
-                                            onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#D97757'}
+                                            style={{ backgroundColor: '#D97848' }}
+                                            onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#D97848'}
+                                            onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#D97848'}
                                         >
                                             {isLastStep ? 'Klaar' : 'Volgende'}
                                             <ChevronRight size={14} />
@@ -355,7 +355,7 @@ export const TutorialRestartButton: React.FC = () => {
         <button
             onClick={startTutorial}
             className="fixed bottom-6 right-6 w-10 h-10 rounded-full flex items-center justify-center shadow-md transition-all hover:scale-110 z-40"
-            style={{ backgroundColor: '#FFFFFF', borderWidth: 1, borderColor: '#E8E6DF', color: '#6B6B66' }}
+            style={{ backgroundColor: '#FFFFFF', borderWidth: 1, borderColor: '#E7D8BD', color: '#445865' }}
             title="Tutorial Herhalen"
         >
             <span className="text-sm">?</span>

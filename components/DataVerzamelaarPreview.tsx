@@ -6,8 +6,8 @@ interface DataVerzamelaarPreviewProps {
 }
 
 const DATASET = [
-  { label: 'Fiets', aantal: 56, percentage: 47, color: '#6366F1', emoji: '🚲' },
-  { label: 'Bus/tram', aantal: 22, percentage: 18, color: '#8B5CF6', emoji: '🚌' },
+  { label: 'Fiets', aantal: 56, percentage: 47, color: '#0B453F', emoji: '🚲' },
+  { label: 'Bus/tram', aantal: 22, percentage: 18, color: '#0B453F', emoji: '🚌' },
   { label: 'Lopend', aantal: 18, percentage: 15, color: '#A78BFA', emoji: '🚶' },
   { label: 'Auto', aantal: 16, percentage: 13, color: '#C4B5FD', emoji: '🚗' },
   { label: 'Scooter', aantal: 5, percentage: 4, color: '#DDD6FE', emoji: '🛵' },
@@ -53,8 +53,8 @@ const DataVerzamelaarPreview: React.FC<DataVerzamelaarPreviewProps> = ({ current
               >
                 <div className="flex items-center gap-2">
                   <span className="text-sm w-5 shrink-0">{item.emoji}</span>
-                  <span className="text-xs font-medium text-slate-700 w-14 shrink-0 truncate">{item.label}</span>
-                  <div className="flex-1 h-6 bg-slate-100 rounded-full overflow-hidden relative">
+                  <span className="text-xs font-medium text-lab-muted w-14 shrink-0 truncate">{item.label}</span>
+                  <div className="flex-1 h-6 bg-lab-muted rounded-full overflow-hidden relative">
                     <div
                       className="h-full rounded-full transition-all duration-500 ease-out flex items-center justify-end pr-2"
                       style={{
@@ -68,10 +68,10 @@ const DataVerzamelaarPreview: React.FC<DataVerzamelaarPreviewProps> = ({ current
                       )}
                     </div>
                     {item.percentage < 10 && (
-                      <span className="absolute right-2 top-1/2 -translate-y-1/2 text-slate-500 text-[10px] font-medium">{item.percentage}%</span>
+                      <span className="absolute right-2 top-1/2 -translate-y-1/2 text-lab-muted text-[10px] font-medium">{item.percentage}%</span>
                     )}
                   </div>
-                  <span className={`text-[10px] text-slate-400 w-6 text-right transition-opacity ${hoveredBar === i ? 'opacity-100' : 'opacity-0'}`}>
+                  <span className={`text-[10px] text-lab-muted w-6 text-right transition-opacity ${hoveredBar === i ? 'opacity-100' : 'opacity-0'}`}>
                     {item.aantal}
                   </span>
                 </div>
@@ -85,8 +85,8 @@ const DataVerzamelaarPreview: React.FC<DataVerzamelaarPreviewProps> = ({ current
           {CONTEXT_ITEMS.map((item) => (
             <div key={item.label} className="bg-white rounded-lg p-2 shadow-sm border border-indigo-100 text-center">
               <item.icon size={14} className="text-indigo-500 mx-auto mb-1" />
-              <div className="text-[10px] font-bold text-slate-800 leading-tight">{item.label}</div>
-              <div className="text-[9px] text-slate-400">{item.detail}</div>
+              <div className="text-[10px] font-bold text-lab-muted leading-tight">{item.label}</div>
+              <div className="text-[9px] text-lab-muted">{item.detail}</div>
             </div>
           ))}
         </div>
@@ -107,33 +107,33 @@ const DataVerzamelaarPreview: React.FC<DataVerzamelaarPreviewProps> = ({ current
         {/* Denkvragen toggle */}
         <button
           onClick={() => setShowLimitations(!showLimitations)}
-          className="w-full bg-white border border-amber-200 rounded-xl p-2.5 flex items-center gap-2 text-left hover:bg-amber-50 transition-colors shadow-sm"
+          className="w-full bg-white border border-lab-gold rounded-xl p-2.5 flex items-center gap-2 text-left hover:bg-lab-gold transition-colors shadow-sm"
         >
           <span className="text-sm">🤔</span>
-          <span className="text-xs font-medium text-amber-800 flex-1">Denk na: is deze data betrouwbaar?</span>
-          <ChevronRight size={14} className={`text-amber-400 transition-transform ${showLimitations ? 'rotate-90' : ''}`} />
+          <span className="text-xs font-medium text-lab-gold flex-1">Denk na: is deze data betrouwbaar?</span>
+          <ChevronRight size={14} className={`text-lab-gold transition-transform ${showLimitations ? 'rotate-90' : ''}`} />
         </button>
 
         {showLimitations && (
-          <div className="bg-amber-50 border border-amber-200 rounded-xl p-3 space-y-2 animate-in slide-in-from-top-2 duration-200">
+          <div className="bg-lab-gold border border-lab-gold rounded-xl p-3 space-y-2 animate-in slide-in-from-top-2 duration-200">
             <div className="flex items-center gap-1.5">
               <span className="text-[10px]">📍</span>
-              <span className="text-[11px] text-amber-900">Maar 1 school — geldt dit voor heel Nederland?</span>
+              <span className="text-[11px] text-lab-gold">Maar 1 school — geldt dit voor heel Nederland?</span>
             </div>
             <div className="flex items-center gap-1.5">
               <span className="text-[10px]">🌧️</span>
-              <span className="text-[11px] text-amber-900">November = koud weer — in juni fietsen er misschien meer</span>
+              <span className="text-[11px] text-lab-gold">November = koud weer — in juni fietsen er misschien meer</span>
             </div>
             <div className="flex items-center gap-1.5">
               <span className="text-[10px]">👻</span>
-              <span className="text-[11px] text-amber-900">Wie ontbreken? Zieke leerlingen, thuiswerkers...</span>
+              <span className="text-[11px] text-lab-gold">Wie ontbreken? Zieke leerlingen, thuiswerkers...</span>
             </div>
           </div>
         )}
 
         {/* Stappen indicator */}
-        <div className="bg-white rounded-xl p-3 shadow-sm border border-slate-200">
-          <div className="text-[10px] font-bold text-slate-500 uppercase tracking-wide mb-2">Jouw onderzoek</div>
+        <div className="bg-white rounded-xl p-3 shadow-sm border border-lab-muted">
+          <div className="text-[10px] font-bold text-lab-muted uppercase tracking-wide mb-2">Jouw onderzoek</div>
           <div className="space-y-1.5">
             {['Dataset verkennen', 'Beperkingen ontdekken', 'Advies geven'].map((step, i) => (
               <div key={step} className="flex items-center gap-2">
@@ -142,12 +142,12 @@ const DataVerzamelaarPreview: React.FC<DataVerzamelaarPreviewProps> = ({ current
                     ? 'bg-green-500 text-white'
                     : currentStep === i + 1
                     ? 'bg-indigo-500 text-white ring-2 ring-indigo-200'
-                    : 'bg-slate-100 text-slate-400'
+                    : 'bg-lab-muted text-lab-muted'
                 }`}>
                   {currentStep > i + 1 ? '✓' : i + 1}
                 </div>
                 <span className={`text-xs ${
-                  currentStep === i + 1 ? 'text-indigo-700 font-medium' : 'text-slate-500'
+                  currentStep === i + 1 ? 'text-indigo-700 font-medium' : 'text-lab-muted'
                 }`}>{step}</span>
               </div>
             ))}

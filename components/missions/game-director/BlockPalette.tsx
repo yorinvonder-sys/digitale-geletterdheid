@@ -26,11 +26,11 @@ export const BlockPalette: React.FC<BlockPaletteProps> = ({ onDragStart, onAddBl
     const categories: BlockCategory[] = ['event', 'motion', 'control', 'variable'];
 
     return (
-        <div className="h-full flex flex-col bg-[#FAF9F0] rounded-2xl overflow-hidden border border-[#E8E6DF]">
+        <div className="h-full flex flex-col bg-[#FCF6EA] rounded-2xl overflow-hidden border border-[#E7D8BD]">
             {/* Header */}
-            <div className="px-4 py-3 bg-white border-b border-[#E8E6DF]">
-                <h3 className="font-black text-sm uppercase tracking-widest text-[#1A1A19] font-['Newsreader',Georgia,serif]">🧩 Blokken</h3>
-                <p className="text-[10px] text-[#6B6B66] mt-0.5">Sleep blokken naar rechts</p>
+            <div className="px-4 py-3 bg-white border-b border-[#E7D8BD]">
+                <h3 className="font-black text-sm uppercase tracking-widest text-[#08283B] font-['Newsreader',Georgia,serif]">🧩 Blokken</h3>
+                <p className="text-[10px] text-[#445865] mt-0.5">Sleep blokken naar rechts</p>
             </div>
 
             {/* Categories */}
@@ -41,28 +41,28 @@ export const BlockPalette: React.FC<BlockPaletteProps> = ({ onDragStart, onAddBl
                     const isExpanded = expandedCategories[category];
 
                     return (
-                        <div key={category} className="rounded-2xl overflow-hidden bg-white shadow-sm border border-[#F0EEE8]">
+                        <div key={category} className="rounded-2xl overflow-hidden bg-white shadow-sm border border-[#FCF6EA]">
                             {/* Category header */}
                             <button
                                 onClick={() => toggleCategory(category)}
-                                className="w-full flex items-center gap-2 px-3 py-2 hover:bg-[#FAF9F0] transition-all duration-300"
+                                className="w-full flex items-center gap-2 px-3 py-2 hover:bg-[#FCF6EA] transition-all duration-300"
                                 style={{ borderLeft: `4px solid ${info.color}` }}
                             >
                                 <span className="text-lg">{info.icon}</span>
-                                <span className="font-bold text-[#1A1A19] text-sm flex-1 text-left">
+                                <span className="font-bold text-[#08283B] text-sm flex-1 text-left">
                                     {info.label}
                                 </span>
-                                <span className="text-xs text-[#6B6B66] mr-1">{blocks.length}</span>
+                                <span className="text-xs text-[#445865] mr-1">{blocks.length}</span>
                                 {isExpanded ? (
-                                    <ChevronDown size={16} className="text-[#6B6B66]" />
+                                    <ChevronDown size={16} className="text-[#445865]" />
                                 ) : (
-                                    <ChevronRight size={16} className="text-[#6B6B66]" />
+                                    <ChevronRight size={16} className="text-[#445865]" />
                                 )}
                             </button>
 
                             {/* Blocks */}
                             {isExpanded && (
-                                <div className="p-2 space-y-2 bg-[#FAF9F0]/50">
+                                <div className="p-2 space-y-2 bg-[#FCF6EA]/50">
                                     {blocks.map(block => (
                                         <div key={block.id} className="flex items-center gap-1">
                                             <div
@@ -78,7 +78,7 @@ export const BlockPalette: React.FC<BlockPaletteProps> = ({ onDragStart, onAddBl
                                             {onAddBlock && (
                                                 <button
                                                     onClick={() => onAddBlock(block)}
-                                                    className="p-1.5 rounded-lg bg-white border border-[#E8E6DF] text-[#6B6B66] hover:text-[#D97757] hover:border-[#D97757]/30 hover:bg-[#D97757]/5 transition-all duration-300 shrink-0"
+                                                    className="p-1.5 rounded-lg bg-white border border-[#E7D8BD] text-[#445865] hover:text-[#D97848] hover:border-[#D97848]/30 hover:bg-[#D97848]/5 transition-all duration-300 shrink-0"
                                                     aria-label={`Voeg ${block.label.replace(/[{}]/g, '')} toe aan werkgebied`}
                                                     title="Toevoegen"
                                                 >
@@ -95,8 +95,8 @@ export const BlockPalette: React.FC<BlockPaletteProps> = ({ onDragStart, onAddBl
             </div>
 
             {/* Help footer */}
-            <div className="p-3 bg-[#D97757]/5 border-t border-[#D97757]/10">
-                <p className="text-[10px] text-[#D97757] font-medium text-center">
+            <div className="p-3 bg-[#D97848]/5 border-t border-[#D97848]/10">
+                <p className="text-[10px] text-[#D97848] font-medium text-center">
                     💡 Tip: Begin met een gele <strong>gebeurtenis</strong> blok!
                 </p>
             </div>

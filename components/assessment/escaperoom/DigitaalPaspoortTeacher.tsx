@@ -86,7 +86,7 @@ const RadarChartLight: React.FC<{ scores: number[]; labels: string[] }> = ({ sco
         animate={{ points: dataPolygonPoints(angles, scores) }}
         transition={{ duration: 1, ease: 'easeOut', delay: 0.2 }}
         fill="rgba(99,102,241,0.15)"
-        stroke="#6366f1"
+        stroke="#0B453F"
         strokeWidth={2}
       />
 
@@ -100,8 +100,8 @@ const RadarChartLight: React.FC<{ scores: number[]; labels: string[] }> = ({ sco
             initial={{ cx: CENTER, cy: CENTER, r: 0 }}
             animate={{ cx: x, cy: y, r: 4 }}
             transition={{ duration: 1, ease: 'easeOut', delay: 0.2 }}
-            fill="#6366f1"
-            stroke="#4f46e5"
+            fill="#0B453F"
+            stroke="#0B453F"
             strokeWidth={1.5}
           />
         );
@@ -117,7 +117,7 @@ const RadarChartLight: React.FC<{ scores: number[]; labels: string[] }> = ({ sco
             y={y}
             textAnchor="middle"
             dominantBaseline="central"
-            className="fill-slate-500 text-[9px] font-bold"
+            className="fill-lab-muted text-[9px] font-bold"
           >
             {labels[i]}
           </text>
@@ -128,15 +128,15 @@ const RadarChartLight: React.FC<{ scores: number[]; labels: string[] }> = ({ sco
 };
 
 function scoreBarColor(score: number): string {
-  if (score >= 80) return 'bg-emerald-500';
-  if (score >= 50) return 'bg-amber-500';
+  if (score >= 80) return 'bg-lab-sage';
+  if (score >= 50) return 'bg-lab-gold';
   return 'bg-red-500';
 }
 
 function niveauBadge(niveau: NulmetingResult['niveau']): { label: string; className: string } {
   switch (niveau) {
     case 'gevorderd':
-      return { label: 'Gevorderd', className: 'bg-emerald-100 text-emerald-700 border-emerald-200' };
+      return { label: 'Gevorderd', className: 'bg-lab-sage text-lab-sage border-lab-sage' };
     case 'basis':
       return { label: 'Basis', className: 'bg-blue-100 text-blue-700 border-blue-200' };
     case 'starter':
@@ -200,8 +200,8 @@ export const DigitaalPaspoortTeacher: React.FC<DigitaalPaspoortTeacherProps> = (
 
   if (klasResults.length === 0) {
     return (
-      <div className="bg-white rounded-2xl border border-slate-100 p-8 text-center">
-        <p className="text-slate-400 text-sm">Nog geen nulmetingsresultaten beschikbaar.</p>
+      <div className="bg-white rounded-2xl border border-lab-muted p-8 text-center">
+        <p className="text-lab-muted text-sm">Nog geen nulmetingsresultaten beschikbaar.</p>
       </div>
     );
   }
@@ -209,8 +209,8 @@ export const DigitaalPaspoortTeacher: React.FC<DigitaalPaspoortTeacherProps> = (
   return (
     <div className="space-y-6">
       {/* Gemiddeld radardiagram */}
-      <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-6">
-        <h3 className="text-sm font-black text-slate-900 uppercase tracking-widest mb-4 flex items-center gap-2">
+      <div className="bg-white rounded-2xl border border-lab-muted shadow-sm p-6">
+        <h3 className="text-sm font-black text-lab-muted uppercase tracking-widest mb-4 flex items-center gap-2">
           <div className="w-2 h-2 bg-indigo-500 rounded-full" />
           Klasgemiddelde Nulmeting
         </h3>
@@ -218,22 +218,22 @@ export const DigitaalPaspoortTeacher: React.FC<DigitaalPaspoortTeacherProps> = (
         <div className="flex justify-center gap-4 mt-4">
           {DOMEINEN.map((d, i) => (
             <div key={d.key} className="text-center">
-              <div className={`text-sm font-black ${gemiddeldeScores[i] >= 80 ? 'text-emerald-600' : gemiddeldeScores[i] >= 50 ? 'text-amber-600' : 'text-red-600'}`}>
+              <div className={`text-sm font-black ${gemiddeldeScores[i] >= 80 ? 'text-lab-sage' : gemiddeldeScores[i] >= 50 ? 'text-lab-gold' : 'text-red-600'}`}>
                 {gemiddeldeScores[i]}
               </div>
-              <div className="text-[8px] font-bold text-slate-400 uppercase">{d.short}</div>
+              <div className="text-[8px] font-bold text-lab-muted uppercase">{d.short}</div>
             </div>
           ))}
         </div>
       </div>
 
       {/* Leerlingen tabel */}
-      <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
-        <div className="p-4 border-b border-slate-100">
-          <h3 className="text-sm font-black text-slate-900 uppercase tracking-widest flex items-center gap-2">
+      <div className="bg-white rounded-2xl border border-lab-muted shadow-sm overflow-hidden">
+        <div className="p-4 border-b border-lab-muted">
+          <h3 className="text-sm font-black text-lab-muted uppercase tracking-widest flex items-center gap-2">
             <div className="w-2 h-2 bg-indigo-500 rounded-full" />
             Resultaten per leerling
-            <span className="text-xs font-bold text-slate-400 normal-case tracking-normal ml-2">
+            <span className="text-xs font-bold text-lab-muted normal-case tracking-normal ml-2">
               ({klasResults.length} leerlingen)
             </span>
           </h3>
@@ -242,11 +242,11 @@ export const DigitaalPaspoortTeacher: React.FC<DigitaalPaspoortTeacherProps> = (
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-slate-100">
+              <tr className="border-b border-lab-muted">
                 <th className="text-left px-4 py-3">
                   <button
                     onClick={() => toggleSort('name')}
-                    className="flex items-center gap-1 text-[10px] font-black text-slate-400 uppercase tracking-widest hover:text-slate-600 transition-colors"
+                    className="flex items-center gap-1 text-[10px] font-black text-lab-muted uppercase tracking-widest hover:text-lab-muted transition-colors"
                   >
                     Naam
                     <ArrowUpDown size={10} className={sortField === 'name' ? 'text-indigo-500' : ''} />
@@ -255,7 +255,7 @@ export const DigitaalPaspoortTeacher: React.FC<DigitaalPaspoortTeacherProps> = (
                 <th className="text-center px-2 py-3">
                   <button
                     onClick={() => toggleSort('score')}
-                    className="flex items-center gap-1 mx-auto text-[10px] font-black text-slate-400 uppercase tracking-widest hover:text-slate-600 transition-colors"
+                    className="flex items-center gap-1 mx-auto text-[10px] font-black text-lab-muted uppercase tracking-widest hover:text-lab-muted transition-colors"
                   >
                     Niveau
                     <ArrowUpDown size={10} className={sortField === 'score' ? 'text-indigo-500' : ''} />
@@ -263,7 +263,7 @@ export const DigitaalPaspoortTeacher: React.FC<DigitaalPaspoortTeacherProps> = (
                 </th>
                 {DOMEINEN.map(d => (
                   <th key={d.key} className="text-center px-2 py-3">
-                    <span className="text-[9px] font-bold text-slate-400 uppercase">{d.short}</span>
+                    <span className="text-[9px] font-bold text-lab-muted uppercase">{d.short}</span>
                   </th>
                 ))}
               </tr>
@@ -272,9 +272,9 @@ export const DigitaalPaspoortTeacher: React.FC<DigitaalPaspoortTeacherProps> = (
               {sortedResults.map(({ studentName, studentId, result }) => {
                 const badge = niveauBadge(result.niveau);
                 return (
-                  <tr key={studentId} className="border-b border-slate-50 hover:bg-slate-50 transition-colors">
+                  <tr key={studentId} className="border-b border-lab-muted hover:bg-lab-muted transition-colors">
                     <td className="px-4 py-3">
-                      <span className="font-bold text-slate-900">{studentName}</span>
+                      <span className="font-bold text-lab-muted">{studentName}</span>
                     </td>
                     <td className="px-2 py-3 text-center">
                       <span className={`inline-block px-2 py-0.5 rounded-full text-[10px] font-black border ${badge.className}`}>
@@ -286,13 +286,13 @@ export const DigitaalPaspoortTeacher: React.FC<DigitaalPaspoortTeacherProps> = (
                       return (
                         <td key={d.key} className="px-2 py-3">
                           <div className="flex items-center gap-2">
-                            <div className="flex-1 h-2 bg-slate-100 rounded-full overflow-hidden min-w-[40px]">
+                            <div className="flex-1 h-2 bg-lab-muted rounded-full overflow-hidden min-w-[40px]">
                               <div
                                 className={`h-full rounded-full ${scoreBarColor(score)}`}
                                 style={{ width: `${score}%` }}
                               />
                             </div>
-                            <span className="text-[10px] font-bold text-slate-500 w-6 text-right">{score}</span>
+                            <span className="text-[10px] font-bold text-lab-muted w-6 text-right">{score}</span>
                           </div>
                         </td>
                       );

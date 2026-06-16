@@ -21,16 +21,16 @@ export const QuestionCard: React.FC<{
         <div
             className={`rounded-2xl border p-4 transition-all duration-300 ${
                 isCorrect
-                    ? 'border-[#10B981] bg-[#10B981]/5'
+                    ? 'border-[#5F947D] bg-[#5F947D]/5'
                     : isWrong
-                    ? 'border-[#D97757] bg-[#D97757]/5'
-                    : 'border-[#E8E6DF] bg-white'
+                    ? 'border-[#D97848] bg-[#D97848]/5'
+                    : 'border-[#E7D8BD] bg-white'
             }`}
         >
             <div className="flex items-start gap-2 mb-3">
-                <Lightbulb size={14} className="text-[#D97757] mt-0.5 flex-shrink-0" />
+                <Lightbulb size={14} className="text-[#D97848] mt-0.5 flex-shrink-0" />
                 <p
-                    className="text-sm font-bold text-[#1A1A19]"
+                    className="text-sm font-bold text-[#08283B]"
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                 >
                     {question.question}
@@ -51,12 +51,12 @@ export const QuestionCard: React.FC<{
                                 onClick={() => onAnswer(opt)}
                                 className={`w-full text-left px-3 py-2 rounded-lg text-xs transition-all duration-200 border flex items-center gap-2 ${
                                     isThisCorrect
-                                        ? 'bg-[#10B981]/10 border-[#10B981] text-[#10B981] font-bold'
+                                        ? 'bg-[#5F947D]/10 border-[#5F947D] text-[#5F947D] font-bold'
                                         : isThisWrong
-                                        ? 'bg-[#D97757]/10 border-[#D97757] text-[#D97757] font-bold'
+                                        ? 'bg-[#D97848]/10 border-[#D97848] text-[#D97848] font-bold'
                                         : isSelected
-                                        ? 'bg-[#D97757]/10 border-[#D97757] text-[#D97757] font-bold'
-                                        : 'bg-white border-[#E8E6DF] text-[#3D3D38] hover:border-[#D97757]/40 disabled:opacity-70'
+                                        ? 'bg-[#D97848]/10 border-[#D97848] text-[#D97848] font-bold'
+                                        : 'bg-white border-[#E7D8BD] text-[#445865] hover:border-[#D97848]/40 disabled:opacity-70'
                                 }`}
                                 style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                             >
@@ -83,8 +83,8 @@ export const QuestionCard: React.FC<{
                     disabled={submitDisabled}
                     className={`w-full py-2 rounded-lg text-xs font-bold transition-all duration-200 active:scale-[0.98] ${
                         submitDisabled
-                            ? 'bg-[#E8E6DF] text-[#6B6B66] cursor-not-allowed'
-                            : 'bg-gradient-to-r from-[#D97757] to-[#C46849] text-white'
+                            ? 'bg-[#E7D8BD] text-[#445865] cursor-not-allowed'
+                            : 'bg-gradient-to-r from-[#D97848] to-[#D97848] text-white'
                     }`}
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                 >
@@ -96,7 +96,7 @@ export const QuestionCard: React.FC<{
             {submitted && (
                 <div
                     className={`flex items-start gap-2 mt-2 p-2 rounded-lg text-xs ${
-                        isCorrect ? 'bg-[#10B981]/10 text-[#10B981]' : 'bg-[#D97757]/10 text-[#D97757]'
+                        isCorrect ? 'bg-[#5F947D]/10 text-[#5F947D]' : 'bg-[#D97848]/10 text-[#D97848]'
                     }`}
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                 >

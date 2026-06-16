@@ -170,20 +170,20 @@ const PhaseHeader: React.FC<{
     onBack: () => void;
 }> = ({ currentPhase, totalPhases, totalScore, onBack }) => (
     <div className="flex items-center justify-between mb-6">
-        <button onClick={onBack} className="text-[#6B6B66] hover:text-[#1A1A19] transition-all duration-300">
+        <button onClick={onBack} className="text-[#445865] hover:text-[#08283B] transition-all duration-300">
             <ArrowLeft size={18} />
         </button>
         <div className="flex gap-1.5">
             {Array.from({ length: totalPhases }).map((_, i) => (
                 <div key={i} className={`w-8 h-1.5 rounded-full transition-all duration-300 ${
-                    i < currentPhase ? 'bg-[#10B981]'
-                    : i === currentPhase ? 'bg-gradient-to-r from-[#D97757] to-[#C46849]'
-                    : 'bg-[#E8E6DF]'
+                    i < currentPhase ? 'bg-[#5F947D]'
+                    : i === currentPhase ? 'bg-gradient-to-r from-[#D97848] to-[#D97848]'
+                    : 'bg-[#E7D8BD]'
                 }`} />
             ))}
         </div>
-        <div className="bg-[#D97757]/10 px-3 py-1 rounded-full border border-[#D97757]/20">
-            <span className="text-xs font-black text-[#D97757]">{totalScore} pts</span>
+        <div className="bg-[#D97848]/10 px-3 py-1 rounded-full border border-[#D97848]/20">
+            <span className="text-xs font-black text-[#D97848]">{totalScore} pts</span>
         </div>
     </div>
 );
@@ -196,21 +196,21 @@ const PhaseCard: React.FC<{
     description: string;
     children: React.ReactNode;
 }> = ({ icon, phaseNumber, totalPhases, title, description, children }) => (
-    <div className="bg-white rounded-2xl border border-[#E8E6DF] p-5 mb-6">
+    <div className="bg-white rounded-2xl border border-[#E7D8BD] p-5 mb-6">
         <div className="flex items-center gap-3 mb-4">
-            <div className="w-10 h-10 bg-[#D97757]/10 rounded-xl flex items-center justify-center text-[#D97757]">
+            <div className="w-10 h-10 bg-[#D97848]/10 rounded-xl flex items-center justify-center text-[#D97848]">
                 {icon}
             </div>
             <div>
-                <span className="text-[10px] font-black text-[#D97757] uppercase tracking-widest" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                <span className="text-[10px] font-black text-[#D97848] uppercase tracking-widest" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                     Fase {phaseNumber}/{totalPhases}
                 </span>
-                <h3 className="text-lg font-black text-[#1A1A19]" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>
+                <h3 className="text-lg font-black text-[#08283B]" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>
                     {title}
                 </h3>
             </div>
         </div>
-        <p className="text-sm text-[#3D3D38] leading-relaxed" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+        <p className="text-sm text-[#445865] leading-relaxed" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
             {description}
         </p>
         {children}
@@ -229,23 +229,23 @@ const EvidencePhase: React.FC<{
             {EVIDENCE_ITEMS.map((item) => {
                 const isSelected = selected.includes(item.id);
                 const showResult = submitted;
-                let borderClass = 'border-[#E8E6DF]';
+                let borderClass = 'border-[#E7D8BD]';
                 let bgClass = 'bg-white';
 
                 if (isSelected && !showResult) {
-                    borderClass = 'border-[#D97757] ring-1 ring-[#D97757]/20';
-                    bgClass = 'bg-[#D97757]/5';
+                    borderClass = 'border-[#D97848] ring-1 ring-[#D97848]/20';
+                    bgClass = 'bg-[#D97848]/5';
                 }
                 if (showResult && isSelected) {
-                    borderClass = item.relevant ? 'border-[#10B981]' : 'border-red-400';
-                    bgClass = item.relevant ? 'bg-[#10B981]/5' : 'bg-red-50';
+                    borderClass = item.relevant ? 'border-[#5F947D]' : 'border-red-400';
+                    bgClass = item.relevant ? 'bg-[#5F947D]/5' : 'bg-red-50';
                 }
                 if (showResult && !isSelected && item.relevant) {
-                    borderClass = 'border-[#10B981]/40';
-                    bgClass = 'bg-[#10B981]/5';
+                    borderClass = 'border-[#5F947D]/40';
+                    bgClass = 'bg-[#5F947D]/5';
                 }
                 if (showResult && !isSelected && !item.relevant) {
-                    bgClass = 'bg-[#F0EEE8]';
+                    bgClass = 'bg-[#FCF6EA]';
                 }
 
                 return (
@@ -259,26 +259,26 @@ const EvidencePhase: React.FC<{
                             <span className="text-xl mt-0.5">{item.icon}</span>
                             <div className="flex-1 min-w-0">
                                 <div className="flex items-center gap-2 mb-1">
-                                    <span className="text-sm font-bold text-[#1A1A19]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                                    <span className="text-sm font-bold text-[#08283B]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                                         {item.title}
                                     </span>
                                     {isSelected && !showResult && (
-                                        <span className="text-[10px] bg-[#D97757]/10 text-[#D97757] px-2 py-0.5 rounded-full font-bold">geselecteerd</span>
+                                        <span className="text-[10px] bg-[#D97848]/10 text-[#D97848] px-2 py-0.5 rounded-full font-bold">geselecteerd</span>
                                     )}
                                     {showResult && isSelected && (
                                         item.relevant
-                                            ? <Check size={14} className="text-[#10B981]" />
+                                            ? <Check size={14} className="text-[#5F947D]" />
                                             : <X size={14} className="text-red-500" />
                                     )}
                                     {showResult && !isSelected && item.relevant && (
-                                        <span className="text-[10px] text-[#10B981] font-bold">gemist!</span>
+                                        <span className="text-[10px] text-[#5F947D] font-bold">gemist!</span>
                                     )}
                                 </div>
-                                <p className="text-xs text-[#6B6B66] leading-relaxed" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                                <p className="text-xs text-[#445865] leading-relaxed" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                                     {item.description}
                                 </p>
                                 {showResult && (isSelected || item.relevant) && (
-                                    <p className="text-[11px] text-[#3D3D38] mt-2 italic" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                                    <p className="text-[11px] text-[#445865] mt-2 italic" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                                         {item.explanation}
                                     </p>
                                 )}
@@ -289,7 +289,7 @@ const EvidencePhase: React.FC<{
             })}
         </div>
         {!submitted && selected.length > 0 && (
-            <p className="text-center text-xs text-[#6B6B66] mb-3" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+            <p className="text-center text-xs text-[#445865] mb-3" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                 {selected.length} bewijsstuk{selected.length !== 1 ? 'ken' : ''} geselecteerd
             </p>
         )}
@@ -299,8 +299,8 @@ const EvidencePhase: React.FC<{
                 disabled={selected.length === 0}
                 className={`w-full py-3 rounded-full font-black text-sm transition-all duration-300 ${
                     selected.length > 0
-                        ? 'bg-[#D97757] hover:bg-[#C46849] text-white'
-                        : 'bg-[#E8E6DF] text-[#6B6B66] cursor-not-allowed'
+                        ? 'bg-[#D97848] hover:bg-[#D97848] text-white'
+                        : 'bg-[#E7D8BD] text-[#445865] cursor-not-allowed'
                 }`}
             >
                 Dien analyse in
@@ -323,13 +323,13 @@ const PrioritiesPhase: React.FC<{
         <>
             {/* Selected order */}
             {order.length > 0 && (
-                <div className="bg-[#FAF9F0] rounded-xl p-3 mb-4 border border-[#E8E6DF]">
+                <div className="bg-[#FCF6EA] rounded-xl p-3 mb-4 border border-[#E7D8BD]">
                     <div className="flex items-center justify-between mb-2">
-                        <span className="text-[10px] font-black text-[#6B6B66] uppercase tracking-widest" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                        <span className="text-[10px] font-black text-[#445865] uppercase tracking-widest" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                             Jouw volgorde
                         </span>
                         {!submitted && (
-                            <button onClick={onReset} className="text-[#6B6B66] hover:text-[#D97757] transition-colors">
+                            <button onClick={onReset} className="text-[#445865] hover:text-[#D97848] transition-colors">
                                 <RotateCcw size={14} />
                             </button>
                         )}
@@ -342,12 +342,12 @@ const PrioritiesPhase: React.FC<{
                             return (
                                 <div key={id} className={`flex items-center gap-2 p-2 rounded-lg text-xs transition-all ${
                                     submitted
-                                        ? isCorrectPos ? 'bg-[#10B981]/10 text-[#10B981]'
-                                        : isClosePos ? 'bg-amber-50 text-amber-600'
+                                        ? isCorrectPos ? 'bg-[#5F947D]/10 text-[#5F947D]'
+                                        : isClosePos ? 'bg-lab-gold text-lab-gold'
                                         : 'bg-red-50 text-red-500'
-                                        : 'bg-white text-[#3D3D38]'
+                                        : 'bg-white text-[#445865]'
                                 }`} style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
-                                    <span className="w-5 h-5 rounded-full bg-[#D97757]/10 text-[#D97757] flex items-center justify-center text-[10px] font-black shrink-0">
+                                    <span className="w-5 h-5 rounded-full bg-[#D97848]/10 text-[#D97848] flex items-center justify-center text-[10px] font-black shrink-0">
                                         {i + 1}
                                     </span>
                                     <span>{action.icon} {action.text}</span>
@@ -365,16 +365,16 @@ const PrioritiesPhase: React.FC<{
             {/* Remaining actions */}
             {!submitted && remaining.length > 0 && (
                 <div className="grid gap-2 mb-4">
-                    <span className="text-[10px] font-black text-[#6B6B66] uppercase tracking-widest" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                    <span className="text-[10px] font-black text-[#445865] uppercase tracking-widest" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                         Klik in volgorde van prioriteit
                     </span>
                     {remaining.map((action) => (
                         <button
                             key={action.id}
                             onClick={() => onAdd(action.id)}
-                            className="w-full p-3 rounded-xl border-2 border-[#E8E6DF] bg-white text-left hover:border-[#D97757]/40 transition-all duration-200"
+                            className="w-full p-3 rounded-xl border-2 border-[#E7D8BD] bg-white text-left hover:border-[#D97848]/40 transition-all duration-200"
                         >
-                            <span className="text-sm text-[#3D3D38]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                            <span className="text-sm text-[#445865]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                                 {action.icon} {action.text}
                             </span>
                         </button>
@@ -383,8 +383,8 @@ const PrioritiesPhase: React.FC<{
             )}
 
             {submitted && (
-                <div className="bg-[#FAF9F0] rounded-xl p-3 mb-4 border border-[#E8E6DF]">
-                    <p className="text-xs text-[#3D3D38] leading-relaxed" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                <div className="bg-[#FCF6EA] rounded-xl p-3 mb-4 border border-[#E7D8BD]">
+                    <p className="text-xs text-[#445865] leading-relaxed" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                         <strong>De juiste volgorde:</strong> Eerst het crisisteam bijeen, dan het lek dichten, omvang bepalen, AP melden, ouders informeren, en als laatste de pers.
                         In de praktijk lopen sommige stappen parallel, maar deze volgorde voorkomt dat je informatie deelt voordat je weet wat er precies aan de hand is.
                     </p>
@@ -394,7 +394,7 @@ const PrioritiesPhase: React.FC<{
             {!submitted && order.length === PRIORITY_ACTIONS.length && (
                 <button
                     onClick={onSubmit}
-                    className="w-full py-3 rounded-full font-black text-sm bg-[#D97757] hover:bg-[#C46849] text-white transition-all duration-300"
+                    className="w-full py-3 rounded-full font-black text-sm bg-[#D97848] hover:bg-[#D97848] text-white transition-all duration-300"
                 >
                     Bevestig volgorde
                 </button>
@@ -416,49 +416,49 @@ const LetterPhase: React.FC<{
         <>
             {/* Letter preview */}
             {selectedBlocks.length > 0 && (
-                <div className="bg-white rounded-xl p-4 mb-4 border-2 border-dashed border-[#E8E6DF]">
+                <div className="bg-white rounded-xl p-4 mb-4 border-2 border-dashed border-[#E7D8BD]">
                     <div className="flex items-center gap-2 mb-3">
-                        <Mail size={14} className="text-[#D97757]" />
-                        <span className="text-[10px] font-black text-[#6B6B66] uppercase tracking-widest" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                        <Mail size={14} className="text-[#D97848]" />
+                        <span className="text-[10px] font-black text-[#445865] uppercase tracking-widest" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                             Jouw brief aan ouders
                         </span>
                     </div>
-                    <div className="text-xs text-[#3D3D38] space-y-2 leading-relaxed italic" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
-                        <p className="text-[#6B6B66]">Geachte ouders/verzorgers,</p>
+                    <div className="text-xs text-[#445865] space-y-2 leading-relaxed italic" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                        <p className="text-[#445865]">Geachte ouders/verzorgers,</p>
                         {selectedBlocks.map((block) => (
-                            <p key={block.id} className={submitted ? (block.belongsInLetter ? 'text-[#10B981]' : 'text-red-500 line-through') : ''}>
+                            <p key={block.id} className={submitted ? (block.belongsInLetter ? 'text-[#5F947D]' : 'text-red-500 line-through') : ''}>
                                 {block.content}
                             </p>
                         ))}
-                        <p className="text-[#6B6B66]">Met vriendelijke groet,<br />Het crisisteam</p>
+                        <p className="text-[#445865]">Met vriendelijke groet,<br />Het crisisteam</p>
                     </div>
                 </div>
             )}
 
             {/* Block options */}
             <div className="grid gap-2 mb-4">
-                <span className="text-[10px] font-black text-[#6B6B66] uppercase tracking-widest" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                <span className="text-[10px] font-black text-[#445865] uppercase tracking-widest" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                     {submitted ? 'Beoordeling' : 'Selecteer wat er in de brief moet'}
                 </span>
                 {LETTER_BLOCKS.map((block) => {
                     const isSelected = selected.includes(block.id);
-                    let borderClass = 'border-[#E8E6DF]';
+                    let borderClass = 'border-[#E7D8BD]';
                     let bgClass = 'bg-white';
 
                     if (isSelected && !submitted) {
-                        borderClass = 'border-[#D97757] ring-1 ring-[#D97757]/20';
-                        bgClass = 'bg-[#D97757]/5';
+                        borderClass = 'border-[#D97848] ring-1 ring-[#D97848]/20';
+                        bgClass = 'bg-[#D97848]/5';
                     }
                     if (submitted && isSelected) {
-                        borderClass = block.belongsInLetter ? 'border-[#10B981]' : 'border-red-400';
-                        bgClass = block.belongsInLetter ? 'bg-[#10B981]/5' : 'bg-red-50';
+                        borderClass = block.belongsInLetter ? 'border-[#5F947D]' : 'border-red-400';
+                        bgClass = block.belongsInLetter ? 'bg-[#5F947D]/5' : 'bg-red-50';
                     }
                     if (submitted && !isSelected && block.belongsInLetter) {
-                        borderClass = 'border-[#10B981]/40';
-                        bgClass = 'bg-[#10B981]/5';
+                        borderClass = 'border-[#5F947D]/40';
+                        bgClass = 'bg-[#5F947D]/5';
                     }
                     if (submitted && !isSelected && !block.belongsInLetter) {
-                        bgClass = 'bg-[#F0EEE8]';
+                        bgClass = 'bg-[#FCF6EA]';
                     }
 
                     return (
@@ -472,20 +472,20 @@ const LetterPhase: React.FC<{
                                 <span className="text-base mt-0.5">{block.icon}</span>
                                 <div className="flex-1">
                                     <div className="flex items-center gap-2">
-                                        <span className="text-sm font-bold text-[#1A1A19]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                                        <span className="text-sm font-bold text-[#08283B]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                                             {block.title}
                                         </span>
                                         {submitted && isSelected && (
                                             block.belongsInLetter
-                                                ? <Check size={12} className="text-[#10B981]" />
+                                                ? <Check size={12} className="text-[#5F947D]" />
                                                 : <X size={12} className="text-red-500" />
                                         )}
                                         {submitted && !isSelected && block.belongsInLetter && (
-                                            <span className="text-[10px] text-[#10B981] font-bold">gemist!</span>
+                                            <span className="text-[10px] text-[#5F947D] font-bold">gemist!</span>
                                         )}
                                     </div>
                                     {submitted && (isSelected || block.belongsInLetter) && (
-                                        <p className="text-[11px] text-[#6B6B66] mt-1" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                                        <p className="text-[11px] text-[#445865] mt-1" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                                             {block.explanation}
                                         </p>
                                     )}
@@ -502,8 +502,8 @@ const LetterPhase: React.FC<{
                     disabled={selected.length === 0}
                     className={`w-full py-3 rounded-full font-black text-sm transition-all duration-300 ${
                         selected.length > 0
-                            ? 'bg-[#D97757] hover:bg-[#C46849] text-white'
-                            : 'bg-[#E8E6DF] text-[#6B6B66] cursor-not-allowed'
+                            ? 'bg-[#D97848] hover:bg-[#D97848] text-white'
+                            : 'bg-[#E7D8BD] text-[#445865] cursor-not-allowed'
                     }`}
                 >
                     Verstuur brief
@@ -526,18 +526,18 @@ const BudgetPhase: React.FC<{
     return (
         <>
             {/* Budget bar */}
-            <div className="bg-[#FAF9F0] rounded-xl p-3 mb-4 border border-[#E8E6DF]">
+            <div className="bg-[#FCF6EA] rounded-xl p-3 mb-4 border border-[#E7D8BD]">
                 <div className="flex items-center justify-between mb-2">
-                    <span className="text-[10px] font-black text-[#6B6B66] uppercase tracking-widest" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                    <span className="text-[10px] font-black text-[#445865] uppercase tracking-widest" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                         Beschikbaar budget
                     </span>
-                    <span className={`text-sm font-black ${remaining < 0 ? 'text-red-500' : remaining === 0 ? 'text-[#10B981]' : 'text-[#D97757]'}`} style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                    <span className={`text-sm font-black ${remaining < 0 ? 'text-red-500' : remaining === 0 ? 'text-[#5F947D]' : 'text-[#D97848]'}`} style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                         €{remaining.toLocaleString('nl-NL')} van €{TOTAL_BUDGET.toLocaleString('nl-NL')}
                     </span>
                 </div>
-                <div className="h-2 bg-[#E8E6DF] rounded-full overflow-hidden">
+                <div className="h-2 bg-[#E7D8BD] rounded-full overflow-hidden">
                     <div
-                        className={`h-full rounded-full transition-all duration-500 ${remaining < 0 ? 'bg-red-500' : 'bg-gradient-to-r from-[#D97757] to-[#C46849]'}`}
+                        className={`h-full rounded-full transition-all duration-500 ${remaining < 0 ? 'bg-red-500' : 'bg-gradient-to-r from-[#D97848] to-[#D97848]'}`}
                         style={{ width: `${Math.min(100, (totalSpent / TOTAL_BUDGET) * 100)}%` }}
                     />
                 </div>
@@ -557,42 +557,42 @@ const BudgetPhase: React.FC<{
                             className={`w-full p-4 rounded-2xl border-2 text-left transition-all duration-200 ${
                                 isAllocated
                                     ? submitted
-                                        ? 'border-[#10B981] bg-[#10B981]/5'
-                                        : 'border-[#D97757] bg-[#D97757]/5'
+                                        ? 'border-[#5F947D] bg-[#5F947D]/5'
+                                        : 'border-[#D97848] bg-[#D97848]/5'
                                     : !canAfford && !submitted
-                                        ? 'border-[#E8E6DF] bg-[#F0EEE8] opacity-50'
-                                        : 'border-[#E8E6DF] bg-white hover:border-[#D97757]/40'
+                                        ? 'border-[#E7D8BD] bg-[#FCF6EA] opacity-50'
+                                        : 'border-[#E7D8BD] bg-white hover:border-[#D97848]/40'
                             }`}
                         >
                             <div className="flex items-start gap-3">
                                 <span className="text-xl mt-0.5">{item.icon}</span>
                                 <div className="flex-1">
                                     <div className="flex items-center justify-between mb-1">
-                                        <span className="text-sm font-bold text-[#1A1A19]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                                        <span className="text-sm font-bold text-[#08283B]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                                             {item.title}
                                         </span>
-                                        <span className={`text-xs font-bold ${isAllocated ? 'text-[#D97757]' : 'text-[#6B6B66]'}`} style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                                        <span className={`text-xs font-bold ${isAllocated ? 'text-[#D97848]' : 'text-[#445865]'}`} style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                                             €{item.cost.toLocaleString('nl-NL')}
                                         </span>
                                     </div>
-                                    <p className="text-xs text-[#6B6B66] leading-relaxed mb-2" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                                    <p className="text-xs text-[#445865] leading-relaxed mb-2" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                                         {item.description}
                                     </p>
                                     <div className="flex items-center gap-1">
-                                        <span className="text-[10px] text-[#6B6B66] mr-1" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>Impact:</span>
+                                        <span className="text-[10px] text-[#445865] mr-1" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>Impact:</span>
                                         {Array.from({ length: 5 }).map((_, i) => (
-                                            <div key={i} className={`w-2 h-2 rounded-full ${i < item.effectiveness ? 'bg-[#D97757]' : 'bg-[#E8E6DF]'}`} />
+                                            <div key={i} className={`w-2 h-2 rounded-full ${i < item.effectiveness ? 'bg-[#D97848]' : 'bg-[#E7D8BD]'}`} />
                                         ))}
                                     </div>
                                     {submitted && (
-                                        <p className="text-[11px] text-[#3D3D38] mt-2 italic" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                                        <p className="text-[11px] text-[#445865] mt-2 italic" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                                             {item.explanation}
                                         </p>
                                     )}
                                 </div>
                                 {isAllocated && (
                                     <div className="shrink-0">
-                                        <Check size={16} className={submitted ? 'text-[#10B981]' : 'text-[#D97757]'} />
+                                        <Check size={16} className={submitted ? 'text-[#5F947D]' : 'text-[#D97848]'} />
                                     </div>
                                 )}
                             </div>
@@ -613,8 +613,8 @@ const BudgetPhase: React.FC<{
                     disabled={totalSpent === 0 || remaining < 0}
                     className={`w-full py-3 rounded-full font-black text-sm transition-all duration-300 ${
                         totalSpent > 0 && remaining >= 0
-                            ? 'bg-[#D97757] hover:bg-[#C46849] text-white'
-                            : 'bg-[#E8E6DF] text-[#6B6B66] cursor-not-allowed'
+                            ? 'bg-[#D97848] hover:bg-[#D97848] text-white'
+                            : 'bg-[#E7D8BD] text-[#445865] cursor-not-allowed'
                     }`}
                 >
                     Beveiligingsplan indienen
@@ -681,20 +681,20 @@ export const DatalekkenRampenplanMission: React.FC<Props> = ({ onBack, onComplet
     // === INTRO ===
     if (phase === 'intro') {
         return (
-            <div className="min-h-screen bg-[#FAF9F0] text-[#1A1A19] overflow-y-auto p-4 pb-safe">
-                <button onClick={onBack} className="flex items-center gap-2 text-[#6B6B66] hover:text-[#1A1A19] transition-all duration-300 mb-6">
+            <div className="min-h-screen bg-[#FCF6EA] text-[#08283B] overflow-y-auto p-4 pb-safe">
+                <button onClick={onBack} className="flex items-center gap-2 text-[#445865] hover:text-[#08283B] transition-all duration-300 mb-6">
                     <ArrowLeft size={18} />
                     <span className="text-sm font-bold" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>Terug</span>
                 </button>
                 <div className="max-w-lg mx-auto text-center space-y-6">
-                    <div className="w-20 h-20 bg-[#D97757]/10 rounded-3xl flex items-center justify-center mx-auto border border-[#D97757]/20 animate-pulse">
+                    <div className="w-20 h-20 bg-[#D97848]/10 rounded-3xl flex items-center justify-center mx-auto border border-[#D97848]/20 animate-pulse">
                         <span className="text-4xl">🚨</span>
                     </div>
                     <h1 className="text-3xl font-black" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>
                         Datalekken Rampenplan
                     </h1>
-                    <p className="text-[#3D3D38] text-sm leading-relaxed max-w-sm mx-auto" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
-                        <span className="text-[#D97757] font-bold">BREAKING:</span> De school is gehackt! 800 leerlinggegevens liggen op straat.
+                    <p className="text-[#445865] text-sm leading-relaxed max-w-sm mx-auto" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                        <span className="text-[#D97848] font-bold">BREAKING:</span> De school is gehackt! 800 leerlinggegevens liggen op straat.
                         Analyseer bewijs, stel prioriteiten, schrijf de crisiscommunicatie en verdeel het beveiligingsbudget.
                     </p>
                     <div className="grid grid-cols-2 gap-3 max-w-xs mx-auto">
@@ -704,9 +704,9 @@ export const DatalekkenRampenplanMission: React.FC<Props> = ({ onBack, onComplet
                             { icon: <Mail size={16} />, label: 'Brief schrijven' },
                             { icon: <PiggyBank size={16} />, label: 'Budget verdelen' },
                         ].map((item, i) => (
-                            <div key={i} className="bg-white border border-[#E8E6DF] rounded-2xl p-3 flex items-center gap-2">
-                                <div className="text-[#D97757]">{item.icon}</div>
-                                <span className="text-xs font-bold text-[#3D3D38]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                            <div key={i} className="bg-white border border-[#E7D8BD] rounded-2xl p-3 flex items-center gap-2">
+                                <div className="text-[#D97848]">{item.icon}</div>
+                                <span className="text-xs font-bold text-[#445865]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                                     {item.label}
                                 </span>
                             </div>
@@ -714,7 +714,7 @@ export const DatalekkenRampenplanMission: React.FC<Props> = ({ onBack, onComplet
                     </div>
                     <button
                         onClick={() => setPhase('evidence')}
-                        className="px-8 py-4 bg-[#D97757] hover:bg-[#C46849] text-white rounded-full font-black text-lg transition-all duration-300 active:scale-95 shadow-xl shadow-[#D97757]/30 focus-visible:ring-2 focus-visible:ring-[#D97757]"
+                        className="px-8 py-4 bg-[#D97848] hover:bg-[#D97848] text-white rounded-full font-black text-lg transition-all duration-300 active:scale-95 shadow-xl shadow-[#D97848]/30 focus-visible:ring-2 focus-visible:ring-[#D97848]"
                     >
                         Start de crisis →
                     </button>
@@ -726,9 +726,9 @@ export const DatalekkenRampenplanMission: React.FC<Props> = ({ onBack, onComplet
     // === RESULTS ===
     if (phase === 'results') {
         const getBadge = () => {
-            if (totalScore >= 80) return { emoji: '🛡️', title: 'Crisis Commander', color: 'from-[#10B981] to-[#2A9D8F]' };
-            if (totalScore >= 55) return { emoji: '📋', title: 'Noodplan Specialist', color: 'from-[#2A9D8F] to-[#D97757]' };
-            return { emoji: '🔰', title: 'Crisis Trainee', color: 'from-[#D97757] to-[#C46849]' };
+            if (totalScore >= 80) return { emoji: '🛡️', title: 'Crisis Commander', color: 'from-[#5F947D] to-[#5F947D]' };
+            if (totalScore >= 55) return { emoji: '📋', title: 'Noodplan Specialist', color: 'from-[#5F947D] to-[#D97848]' };
+            return { emoji: '🔰', title: 'Crisis Trainee', color: 'from-[#D97848] to-[#D97848]' };
         };
         const badge = getBadge();
 
@@ -740,7 +740,7 @@ export const DatalekkenRampenplanMission: React.FC<Props> = ({ onBack, onComplet
         ];
 
         return (
-            <div className="min-h-screen bg-[#FAF9F0] text-[#1A1A19] overflow-y-auto">
+            <div className="min-h-screen bg-[#FCF6EA] text-[#08283B] overflow-y-auto">
                 <div className="min-h-full flex items-center justify-center p-4 pb-safe">
                     <div className="max-w-sm w-full text-center space-y-6">
                         <div className={`w-24 h-24 mx-auto bg-gradient-to-br ${badge.color} rounded-3xl flex items-center justify-center shadow-2xl`}>
@@ -750,18 +750,18 @@ export const DatalekkenRampenplanMission: React.FC<Props> = ({ onBack, onComplet
                             {badge.title}
                         </h1>
 
-                        <div className="bg-white rounded-2xl p-4 border border-[#E8E6DF]">
-                            <div className="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-[#D97757] to-[#C46849]">
+                        <div className="bg-white rounded-2xl p-4 border border-[#E7D8BD]">
+                            <div className="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-[#D97848] to-[#D97848]">
                                 {totalScore}/100
                             </div>
-                            <p className="text-[#6B6B66] text-xs mt-1" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                            <p className="text-[#445865] text-xs mt-1" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                                 Crisis Score
                             </p>
                         </div>
 
                         {/* Phase breakdown */}
-                        <div className="bg-white rounded-2xl p-4 text-left space-y-3 border border-[#E8E6DF]">
-                            <p className="text-xs font-bold text-[#3D3D38]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                        <div className="bg-white rounded-2xl p-4 text-left space-y-3 border border-[#E7D8BD]">
+                            <p className="text-xs font-bold text-[#445865]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                                 Score per fase
                             </p>
                             {phases.map((p, i) => (
@@ -769,14 +769,14 @@ export const DatalekkenRampenplanMission: React.FC<Props> = ({ onBack, onComplet
                                     <span className="text-base">{p.icon}</span>
                                     <div className="flex-1">
                                         <div className="flex items-center justify-between mb-1">
-                                            <span className="text-xs text-[#3D3D38]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                                            <span className="text-xs text-[#445865]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                                                 {p.title}
                                             </span>
-                                            <span className="text-xs font-bold text-[#D97757]">{p.score}/{p.max}</span>
+                                            <span className="text-xs font-bold text-[#D97848]">{p.score}/{p.max}</span>
                                         </div>
-                                        <div className="h-1.5 bg-[#E8E6DF] rounded-full overflow-hidden">
+                                        <div className="h-1.5 bg-[#E7D8BD] rounded-full overflow-hidden">
                                             <div
-                                                className="h-full rounded-full bg-gradient-to-r from-[#D97757] to-[#C46849] transition-all duration-700"
+                                                className="h-full rounded-full bg-gradient-to-r from-[#D97848] to-[#D97848] transition-all duration-700"
                                                 style={{ width: `${(p.score / p.max) * 100}%` }}
                                             />
                                         </div>
@@ -786,27 +786,27 @@ export const DatalekkenRampenplanMission: React.FC<Props> = ({ onBack, onComplet
                         </div>
 
                         {/* Key takeaways */}
-                        <div className="bg-white rounded-2xl p-4 text-left space-y-2 border border-[#E8E6DF]">
-                            <p className="text-xs font-bold text-[#3D3D38] mb-2" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                        <div className="bg-white rounded-2xl p-4 text-left space-y-2 border border-[#E7D8BD]">
+                            <p className="text-xs font-bold text-[#445865] mb-2" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                                 Wat je moet onthouden
                             </p>
-                            <p className="text-xs text-[#6B6B66]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                            <p className="text-xs text-[#445865]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                                 🔍 Niet elk signaal is een hack — analyseer bewijs kritisch
                             </p>
-                            <p className="text-xs text-[#6B6B66]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                            <p className="text-xs text-[#445865]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                                 📋 Volgorde doet ertoe: eerst team, dan techniek, dan communicatie
                             </p>
-                            <p className="text-xs text-[#6B6B66]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                            <p className="text-xs text-[#445865]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                                 ✉️ Eerlijk, concreet, en actiegerichte communicatie wint vertrouwen
                             </p>
-                            <p className="text-xs text-[#6B6B66]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                            <p className="text-xs text-[#445865]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                                 💰 Budget is beperkt — kies impact boven compleetheid
                             </p>
                         </div>
 
                         <button
                             onClick={() => { clearSave(); onComplete(true); }}
-                            className="w-full py-4 bg-[#10B981] hover:bg-[#059669] text-white rounded-full font-black text-lg transition-all duration-300 active:scale-95 shadow-xl flex items-center justify-center gap-2 focus-visible:ring-2 focus-visible:ring-[#10B981]"
+                            className="w-full py-4 bg-[#5F947D] hover:bg-[#5F947D] text-white rounded-full font-black text-lg transition-all duration-300 active:scale-95 shadow-xl flex items-center justify-center gap-2 focus-visible:ring-2 focus-visible:ring-[#5F947D]"
                         >
                             <Trophy size={20} /> Missie Voltooid!
                         </button>
@@ -844,7 +844,7 @@ export const DatalekkenRampenplanMission: React.FC<Props> = ({ onBack, onComplet
     if (!config) return null;
 
     return (
-        <div className="min-h-screen bg-[#FAF9F0] text-[#1A1A19] overflow-y-auto p-4 pb-safe">
+        <div className="min-h-screen bg-[#FCF6EA] text-[#08283B] overflow-y-auto p-4 pb-safe">
             <div className="max-w-lg mx-auto">
                 <PhaseHeader
                     currentPhase={currentPhaseIndex}
@@ -926,7 +926,7 @@ export const DatalekkenRampenplanMission: React.FC<Props> = ({ onBack, onComplet
                 {isCurrentPhaseSubmitted() && (
                     <button
                         onClick={goNext}
-                        className="w-full mt-4 py-3 bg-[#D97757] hover:bg-[#C46849] text-white rounded-full font-black text-sm flex items-center justify-center gap-2 transition-all duration-300 focus-visible:ring-2 focus-visible:ring-[#D97757]"
+                        className="w-full mt-4 py-3 bg-[#D97848] hover:bg-[#D97848] text-white rounded-full font-black text-sm flex items-center justify-center gap-2 transition-all duration-300 focus-visible:ring-2 focus-visible:ring-[#D97848]"
                     >
                         {currentPhaseIndex < PHASE_SEQUENCE.length - 1
                             ? <>Volgende fase <ChevronRight size={16} /></>

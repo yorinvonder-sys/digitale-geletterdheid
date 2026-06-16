@@ -82,12 +82,12 @@ export const apiVerkennerConfig: DataViewerConfig = {
                 'Onderzoekers van de TU Delft (2024) analyseerden hoeveel API-verzoeken populaire apps sturen tijdens een sessie van 5 minuten. Elke bar toont het gemiddeld aantal verzoeken.',
             type: 'bar-chart',
             chartData: [
-                { label: 'Google Maps', value: 47, color: '#D97757' },
+                { label: 'Google Maps', value: 47, color: '#D97848' },
                 { label: 'Instagram', value: 38, color: '#E91E63' },
-                { label: 'Buienradar', value: 12, color: '#3B82F6' },
+                { label: 'Buienradar', value: 12, color: '#0B453F' },
                 { label: 'WhatsApp', value: 8, color: '#25D366' },
                 { label: 'Spotify', value: 22, color: '#1DB954' },
-                { label: 'Wikipedia', value: 3, color: '#8B5CF6' },
+                { label: 'Wikipedia', value: 3, color: '#0B453F' },
             ],
             questions: [
                 {
@@ -194,25 +194,25 @@ export const apiVerkennerConfig: DataViewerConfig = {
             minScore: 85,
             emoji: '🌐',
             title: 'API-expert!',
-            color: '#7C3AED',
+            color: '#0B453F',
         },
         {
             minScore: 65,
             emoji: '📡',
             title: 'Digitale ontdekkingsreiziger',
-            color: '#3B82F6',
+            color: '#0B453F',
         },
         {
             minScore: 40,
             emoji: '🔌',
             title: 'Aan de slag met APIs',
-            color: '#10B981',
+            color: '#5F947D',
         },
         {
             minScore: 0,
             emoji: '📚',
             title: 'Aan de slag!',
-            color: '#6B6B66',
+            color: '#445865',
         },
     ],
 

@@ -592,35 +592,35 @@ export const ChatbotTrainerPreview: React.FC<ChatbotTrainerPreviewProps> = ({ on
     // 1. INTRO
     if (mode === 'intro') {
         return (
-            <div className="w-full h-full flex flex-col relative overflow-hidden" style={{ backgroundColor: '#FAF9F0', color: '#1A1A19' }}>
+            <div className="w-full h-full flex flex-col relative overflow-hidden" style={{ backgroundColor: '#FCF6EA', color: '#08283B' }}>
                 <div className="flex-1 flex flex-col items-center justify-center p-6 relative z-10">
                     <img src="/mascot/pip-excited.webp" alt="Pip" className="w-20 h-20 object-contain mb-6" loading="lazy" />
 
-                    <h2 className="text-3xl font-black mb-2 text-center" style={{ fontFamily: "'Newsreader', Georgia, serif", color: '#1A1A19' }}>AI Chatbot Trainer</h2>
-                    <p className="text-center max-w-md mb-4 text-lg font-medium" style={{ color: '#6B6B66' }}>
+                    <h2 className="text-3xl font-black mb-2 text-center" style={{ fontFamily: "'Newsreader', Georgia, serif", color: '#08283B' }}>AI Chatbot Trainer</h2>
+                    <p className="text-center max-w-md mb-4 text-lg font-medium" style={{ color: '#445865' }}>
                         Bouw je eigen chatbot en leer hoe Pip gesprekken voert!
                     </p>
 
                     {/* Explanation Box */}
-                    <div className="rounded-2xl p-5 max-w-md mb-6" style={{ backgroundColor: '#FFFFFF', border: '1px solid #E8E6DF' }}>
-                        <h3 className="text-sm font-bold uppercase mb-3 flex items-center gap-2" style={{ color: '#D97757' }}>
+                    <div className="rounded-2xl p-5 max-w-md mb-6" style={{ backgroundColor: '#FFFFFF', border: '1px solid #E7D8BD' }}>
+                        <h3 className="text-sm font-bold uppercase mb-3 flex items-center gap-2" style={{ color: '#D97848' }}>
                             <HelpCircle size={16} /> Zo werkt het:
                         </h3>
-                        <ul className="space-y-2 text-sm" style={{ color: '#3D3D38' }}>
+                        <ul className="space-y-2 text-sm" style={{ color: '#445865' }}>
                             <li className="flex items-start gap-2">
-                                <span className="rounded-full w-5 h-5 flex items-center justify-center text-[10px] font-bold shrink-0 mt-0.5 text-white" style={{ backgroundColor: '#D97757' }}>1</span>
+                                <span className="rounded-full w-5 h-5 flex items-center justify-center text-[10px] font-bold shrink-0 mt-0.5 text-white" style={{ backgroundColor: '#D97848' }}>1</span>
                                 <span><strong>Kies een scenario</strong> — bijvoorbeeld een pizzeria of klantenservice</span>
                             </li>
                             <li className="flex items-start gap-2">
-                                <span className="rounded-full w-5 h-5 flex items-center justify-center text-[10px] font-bold shrink-0 mt-0.5 text-white" style={{ backgroundColor: '#D97757' }}>2</span>
+                                <span className="rounded-full w-5 h-5 flex items-center justify-center text-[10px] font-bold shrink-0 mt-0.5 text-white" style={{ backgroundColor: '#D97848' }}>2</span>
                                 <span><strong>Train de chatbot</strong> door voorbeeldzinnen toe te voegen</span>
                             </li>
                             <li className="flex items-start gap-2">
-                                <span className="rounded-full w-5 h-5 flex items-center justify-center text-[10px] font-bold shrink-0 mt-0.5 text-white" style={{ backgroundColor: '#D97757' }}>3</span>
+                                <span className="rounded-full w-5 h-5 flex items-center justify-center text-[10px] font-bold shrink-0 mt-0.5 text-white" style={{ backgroundColor: '#D97848' }}>3</span>
                                 <span><strong>Test je chatbot</strong> door vragen te stellen</span>
                             </li>
                             <li className="flex items-start gap-2">
-                                <span className="rounded-full w-5 h-5 flex items-center justify-center text-[10px] font-bold shrink-0 mt-0.5 text-white" style={{ backgroundColor: '#10B981' }}>4</span>
+                                <span className="rounded-full w-5 h-5 flex items-center justify-center text-[10px] font-bold shrink-0 mt-0.5 text-white" style={{ backgroundColor: '#5F947D' }}>4</span>
                                 <span><strong>Hoe meer voorbeelden, hoe slimmer je chatbot wordt!</strong></span>
                             </li>
                         </ul>
@@ -630,7 +630,7 @@ export const ChatbotTrainerPreview: React.FC<ChatbotTrainerPreviewProps> = ({ on
                         <button
                             onClick={() => setMode('setup')}
                             className="w-full p-4 rounded-xl font-bold text-lg shadow-xl hover:scale-105 transition-transform flex items-center justify-between group"
-                            style={{ backgroundColor: '#D97757', color: '#FFFFFF' }}
+                            style={{ backgroundColor: '#D97848', color: '#FFFFFF' }}
                         >
                             <span className="flex items-center gap-3">
                                 <Sparkles /> Start Nieuw Project
@@ -646,25 +646,25 @@ export const ChatbotTrainerPreview: React.FC<ChatbotTrainerPreviewProps> = ({ on
     // 2. SETUP (Scenario Selection)
     if (mode === 'setup') {
         return (
-            <div className="w-full h-full flex flex-col overflow-hidden" style={{ backgroundColor: '#FAF9F0', color: '#1A1A19' }}>
+            <div className="w-full h-full flex flex-col overflow-hidden" style={{ backgroundColor: '#FCF6EA', color: '#08283B' }}>
                 <div className="p-6">
-                    <button onClick={() => setMode('intro')} className="mb-4 flex items-center gap-2 text-sm font-bold" style={{ color: '#6B6B66' }}>
+                    <button onClick={() => setMode('intro')} className="mb-4 flex items-center gap-2 text-sm font-bold" style={{ color: '#445865' }}>
                         <ArrowLeft size={16} /> Terug
                     </button>
-                    <h2 className="text-2xl font-black mb-2" style={{ fontFamily: "'Newsreader', Georgia, serif", color: '#1A1A19' }}>Wat wil je maken?</h2>
-                    <p className="mb-6" style={{ color: '#6B6B66' }}>Kies een voorbeeldproject of verzin je eigen chatbot.</p>
+                    <h2 className="text-2xl font-black mb-2" style={{ fontFamily: "'Newsreader', Georgia, serif", color: '#08283B' }}>Wat wil je maken?</h2>
+                    <p className="mb-6" style={{ color: '#445865' }}>Kies een voorbeeldproject of verzin je eigen chatbot.</p>
                 </div>
 
                 <div className="flex-1 overflow-y-auto px-6 pb-6">
                     <div className="grid md:grid-cols-2 gap-4 max-w-4xl mx-auto">
                         {/* Custom Option - Highlighted */}
-                        <div className="md:col-span-2 rounded-2xl p-6 shadow-xl relative overflow-hidden group" style={{ backgroundColor: '#D97757', color: '#FFFFFF', border: '2px solid #C46849' }}>
+                        <div className="md:col-span-2 rounded-2xl p-6 shadow-xl relative overflow-hidden group" style={{ backgroundColor: '#D97848', color: '#FFFFFF', border: '2px solid #D97848' }}>
                             <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
                                 <Sparkles size={120} />
                             </div>
 
                             <div className="relative z-10">
-                                <span className="text-xs font-bold px-2 py-1 rounded mb-3 inline-block" style={{ backgroundColor: '#2A9D8F', color: '#FFFFFF' }}>VRIJE KEUZE</span>
+                                <span className="text-xs font-bold px-2 py-1 rounded mb-3 inline-block" style={{ backgroundColor: '#5F947D', color: '#FFFFFF' }}>VRIJE KEUZE</span>
                                 <h3 className="text-2xl font-black mb-2 flex items-center gap-2" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>
                                     <Pencil size={24} /> Ontwerp je eigen Bot
                                 </h3>
@@ -722,7 +722,7 @@ export const ChatbotTrainerPreview: React.FC<ChatbotTrainerPreviewProps> = ({ on
                                         onClick={startCustomScenario}
                                         disabled={!customName || !customContext || customTestQuestions.filter(q => q.trim()).length < 2}
                                         className="w-full py-3 font-bold rounded-xl shadow-lg disabled:opacity-50 disabled:cursor-not-allowed transition-all mt-4 flex items-center justify-center gap-2"
-                                        style={{ backgroundColor: '#FFFFFF', color: '#D97757' }}
+                                        style={{ backgroundColor: '#FFFFFF', color: '#D97848' }}
                                     >
                                         Start Maken <ArrowRight size={16} />
                                     </button>
@@ -740,15 +740,15 @@ export const ChatbotTrainerPreview: React.FC<ChatbotTrainerPreviewProps> = ({ on
                                     setMode('training');
                                 }}
                                 className="p-5 rounded-2xl text-left transition-all flex items-start gap-4 group hover:shadow-md"
-                                style={{ backgroundColor: '#FFFFFF', border: '1px solid #E8E6DF' }}
+                                style={{ backgroundColor: '#FFFFFF', border: '1px solid #E7D8BD' }}
                             >
-                                <div className="text-4xl w-16 h-16 flex items-center justify-center rounded-xl shadow-inner group-hover:scale-110 transition-transform" style={{ backgroundColor: '#F0EEE8' }}>
+                                <div className="text-4xl w-16 h-16 flex items-center justify-center rounded-xl shadow-inner group-hover:scale-110 transition-transform" style={{ backgroundColor: '#FCF6EA' }}>
                                     {s.icon}
                                 </div>
                                 <div>
-                                    <h4 className="font-bold text-lg mb-1 transition-colors" style={{ color: '#1A1A19' }}>{s.name}</h4>
-                                    <p className="text-sm mb-2" style={{ color: '#6B6B66' }}>{s.description}</p>
-                                    <span className="text-xs font-bold px-2 py-1 rounded" style={{ backgroundColor: '#F0EEE8', color: '#6B6B66' }}>Voorbeeld</span>
+                                    <h4 className="font-bold text-lg mb-1 transition-colors" style={{ color: '#08283B' }}>{s.name}</h4>
+                                    <p className="text-sm mb-2" style={{ color: '#445865' }}>{s.description}</p>
+                                    <span className="text-xs font-bold px-2 py-1 rounded" style={{ backgroundColor: '#FCF6EA', color: '#445865' }}>Voorbeeld</span>
                                 </div>
                             </button>
                         ))}
@@ -763,19 +763,19 @@ export const ChatbotTrainerPreview: React.FC<ChatbotTrainerPreviewProps> = ({ on
     const scorePercentage = Math.round((testScore / maxScore) * 100);
 
     return (
-        <div className="w-full h-full flex flex-col relative overflow-hidden" style={{ backgroundColor: '#FAF9F0', color: '#1A1A19' }}>
+        <div className="w-full h-full flex flex-col relative overflow-hidden" style={{ backgroundColor: '#FCF6EA', color: '#08283B' }}>
             {/* Header */}
-            <div className="px-4 py-3 flex items-center justify-between shrink-0" style={{ backgroundColor: '#FFFFFF', borderBottom: '1px solid #E8E6DF' }}>
+            <div className="px-4 py-3 flex items-center justify-between shrink-0" style={{ backgroundColor: '#FFFFFF', borderBottom: '1px solid #E7D8BD' }}>
                 <div className="flex items-center gap-3">
                     {!isSharedView && (
-                        <button onClick={() => setMode('setup')} className="p-2 rounded-lg transition-colors" style={{ color: '#6B6B66' }}>
+                        <button onClick={() => setMode('setup')} className="p-2 rounded-lg transition-colors" style={{ color: '#445865' }}>
                             <ArrowLeft size={18} />
                         </button>
                     )}
                     <span className="text-2xl">{activeScenario.icon}</span>
                     <div>
-                        <h3 className="font-bold text-sm" style={{ color: '#1A1A19' }}>{activeScenario.name}</h3>
-                        <p className="text-xs" style={{ color: '#6B6B66' }}>{activeScenario.context}</p>
+                        <h3 className="font-bold text-sm" style={{ color: '#08283B' }}>{activeScenario.name}</h3>
+                        <p className="text-xs" style={{ color: '#445865' }}>{activeScenario.context}</p>
                     </div>
                 </div>
                 <div className="flex items-center gap-2">
@@ -783,13 +783,13 @@ export const ChatbotTrainerPreview: React.FC<ChatbotTrainerPreviewProps> = ({ on
                         <button
                             onClick={handleShare}
                             className="text-white text-xs px-3 py-1.5 rounded-lg font-bold flex items-center gap-2 transition-colors shadow-lg"
-                            style={{ backgroundColor: '#D97757' }}
+                            style={{ backgroundColor: '#D97848' }}
                         >
                             <Share size={14} /> Delen
                         </button>
                     )}
                     {activeScenario.isCustom && (
-                        <span className="text-xs px-2 py-1 rounded font-bold" style={{ backgroundColor: 'rgba(79,70,229,0.1)', color: '#4F46E5', border: '1px solid rgba(79,70,229,0.3)' }}>
+                        <span className="text-xs px-2 py-1 rounded font-bold" style={{ backgroundColor: 'rgba(79,70,229,0.1)', color: '#0B453F', border: '1px solid rgba(79,70,229,0.3)' }}>
                             {isSharedView ? 'Gedeeld Project' : 'Jouw Project'}
                         </span>
                     )}
@@ -820,16 +820,16 @@ export const ChatbotTrainerPreview: React.FC<ChatbotTrainerPreviewProps> = ({ on
 
             <div className="flex-1 flex overflow-hidden">
                 {/* Left: Intent List */}
-                <div className="w-64 p-3 flex flex-col shrink-0" style={{ backgroundColor: '#FFFFFF', borderRight: '1px solid #E8E6DF' }}>
+                <div className="w-64 p-3 flex flex-col shrink-0" style={{ backgroundColor: '#FFFFFF', borderRight: '1px solid #E7D8BD' }}>
                     <div className="flex items-center justify-between mb-3">
-                        <h4 className="text-[10px] font-bold uppercase tracking-widest flex items-center gap-2" style={{ color: '#6B6B66' }}>
+                        <h4 className="text-[10px] font-bold uppercase tracking-widest flex items-center gap-2" style={{ color: '#445865' }}>
                             <Target size={12} /> Intents (Onderwerpen)
                         </h4>
                         {activeScenario.isCustom && (
                             <button
                                 onClick={() => setIsAddingIntent(true)}
                                 className="text-xs text-white px-2 py-1 rounded flex items-center gap-1 transition-colors"
-                                style={{ backgroundColor: '#D97757' }}
+                                style={{ backgroundColor: '#D97848' }}
                             >
                                 <Plus size={12} /> Nieuw
                             </button>
@@ -847,15 +847,15 @@ export const ChatbotTrainerPreview: React.FC<ChatbotTrainerPreviewProps> = ({ on
                                     onClick={() => setSelectedIntent(intent.id)}
                                     className="w-full p-2.5 rounded-lg text-left transition-all text-sm group relative"
                                     style={isSelected
-                                        ? { backgroundColor: '#D97757', color: '#FFFFFF', boxShadow: '0 4px 6px -1px rgba(217,119,87,0.2)' }
-                                        : { backgroundColor: '#F0EEE8', color: '#3D3D38' }
+                                        ? { backgroundColor: '#D97848', color: '#FFFFFF', boxShadow: '0 4px 6px -1px rgba(217,119,87,0.2)' }
+                                        : { backgroundColor: '#FCF6EA', color: '#445865' }
                                     }
                                 >
                                     <div className="flex items-center gap-2.5">
                                         <span className="text-base">{intent.icon}</span>
                                         <span className="font-medium truncate flex-1">{intent.name}</span>
-                                        {status === 'ready' && <CheckCircle2 size={14} className="text-emerald-400 shrink-0" />}
-                                        {status === 'partial' && <AlertCircle size={14} className="text-amber-400 shrink-0" />}
+                                        {status === 'ready' && <CheckCircle2 size={14} className="text-lab-sage shrink-0" />}
+                                        {status === 'partial' && <AlertCircle size={14} className="text-lab-gold shrink-0" />}
                                         {status === 'empty' && intent.required && (
                                             <div className="bg-red-500/20 rounded-full p-1 animate-pulse">
                                                 <AlertCircle size={14} className="text-red-400 shrink-0" />
@@ -878,7 +878,7 @@ export const ChatbotTrainerPreview: React.FC<ChatbotTrainerPreviewProps> = ({ on
                         })}
 
                         {isAddingIntent && (
-                            <div className="p-2 rounded-lg animate-in fade-in slide-in-from-top-2" style={{ backgroundColor: '#F0EEE8' }}>
+                            <div className="p-2 rounded-lg animate-in fade-in slide-in-from-top-2" style={{ backgroundColor: '#FCF6EA' }}>
                                 <input
                                     autoFocus
                                     type="text"
@@ -887,21 +887,21 @@ export const ChatbotTrainerPreview: React.FC<ChatbotTrainerPreviewProps> = ({ on
                                     onChange={(e) => setNewIntentName(e.target.value)}
                                     onKeyDown={(e) => e.key === 'Enter' && addNewIntent()}
                                     className="w-full rounded px-2 py-1 text-sm outline-none mb-2"
-                                    style={{ backgroundColor: '#FAF9F0', border: '1px solid #E8E6DF', color: '#1A1A19' }}
+                                    style={{ backgroundColor: '#FCF6EA', border: '1px solid #E7D8BD', color: '#08283B' }}
                                 />
                                 <div className="flex gap-2">
                                     <button
                                         onClick={addNewIntent}
                                         disabled={!newIntentName.trim()}
                                         className="flex-1 text-white text-xs py-1 rounded"
-                                        style={{ backgroundColor: '#10B981' }}
+                                        style={{ backgroundColor: '#5F947D' }}
                                     >
                                         Toevoegen
                                     </button>
                                     <button
                                         onClick={() => setIsAddingIntent(false)}
                                         className="px-2 text-xs py-1 rounded"
-                                        style={{ backgroundColor: '#E8E6DF', color: '#3D3D38' }}
+                                        style={{ backgroundColor: '#E7D8BD', color: '#445865' }}
                                     >
                                         Annuleer
                                     </button>
@@ -922,8 +922,8 @@ export const ChatbotTrainerPreview: React.FC<ChatbotTrainerPreviewProps> = ({ on
                             }}
                             className="mt-3 py-3 rounded-xl font-bold text-sm flex items-center justify-center gap-2 transition-all cursor-pointer"
                             style={canStartTest()
-                                ? { backgroundColor: '#2A9D8F', color: '#FFFFFF', boxShadow: '0 4px 6px -1px rgba(42,157,143,0.3)' }
-                                : { backgroundColor: '#E8E6DF', color: '#6B6B66', opacity: 0.7 }
+                                ? { backgroundColor: '#5F947D', color: '#FFFFFF', boxShadow: '0 4px 6px -1px rgba(42,157,143,0.3)' }
+                                : { backgroundColor: '#E7D8BD', color: '#445865', opacity: 0.7 }
                             }
                         >
                             <Play size={16} fill="currentColor" />
@@ -933,28 +933,28 @@ export const ChatbotTrainerPreview: React.FC<ChatbotTrainerPreviewProps> = ({ on
 
                     {isTesting && !showResults && (
                         <div className="mt-3 py-3 rounded-xl text-center" style={{ backgroundColor: 'rgba(42,157,143,0.1)' }}>
-                            <Loader2 size={20} className="animate-spin mx-auto" style={{ color: '#2A9D8F' }} />
-                            <p className="text-xs mt-1" style={{ color: '#2A9D8F' }}>Pip is aan het testen...</p>
+                            <Loader2 size={20} className="animate-spin mx-auto" style={{ color: '#5F947D' }} />
+                            <p className="text-xs mt-1" style={{ color: '#5F947D' }}>Pip is aan het testen...</p>
                         </div>
                     )}
                 </div>
 
                 {/* Middle: Training Panel */}
-                <div className="flex-1 p-6 flex flex-col min-w-0" style={{ backgroundColor: '#FAF9F0' }}>
+                <div className="flex-1 p-6 flex flex-col min-w-0" style={{ backgroundColor: '#FCF6EA' }}>
                     {selectedIntentData ? (
                         <div className="h-full flex flex-col max-w-2xl mx-auto w-full">
                             <div className="mb-6 flex items-start justify-between">
                                 <div className="flex items-center gap-4">
-                                    <div className="w-12 h-12 rounded-2xl flex items-center justify-center text-2xl shadow-inner" style={{ backgroundColor: 'rgba(217,119,87,0.1)', color: '#D97757', border: '1px solid rgba(217,119,87,0.2)' }}>
+                                    <div className="w-12 h-12 rounded-2xl flex items-center justify-center text-2xl shadow-inner" style={{ backgroundColor: 'rgba(217,119,87,0.1)', color: '#D97848', border: '1px solid rgba(217,119,87,0.2)' }}>
                                         {selectedIntentData.icon}
                                     </div>
                                     <div>
-                                        <h3 className="font-black text-2xl tracking-tight" style={{ fontFamily: "'Newsreader', Georgia, serif", color: '#1A1A19' }}>{selectedIntentData.name}</h3>
-                                        <p className="text-sm" style={{ color: '#6B6B66' }}>{selectedIntentData.description}</p>
+                                        <h3 className="font-black text-2xl tracking-tight" style={{ fontFamily: "'Newsreader', Georgia, serif", color: '#08283B' }}>{selectedIntentData.name}</h3>
+                                        <p className="text-sm" style={{ color: '#445865' }}>{selectedIntentData.description}</p>
                                     </div>
                                 </div>
                                 {selectedIntentData.required && (
-                                    <span className="text-[10px] px-3 py-1 rounded-full font-bold uppercase tracking-wide" style={{ backgroundColor: 'rgba(217,119,87,0.1)', color: '#D97757', border: '1px solid rgba(217,119,87,0.2)' }}>
+                                    <span className="text-[10px] px-3 py-1 rounded-full font-bold uppercase tracking-wide" style={{ backgroundColor: 'rgba(217,119,87,0.1)', color: '#D97848', border: '1px solid rgba(217,119,87,0.2)' }}>
                                         Verplicht
                                     </span>
                                 )}
@@ -962,29 +962,29 @@ export const ChatbotTrainerPreview: React.FC<ChatbotTrainerPreviewProps> = ({ on
 
                             <div className="flex-1 flex flex-col gap-6 overflow-y-auto pr-2">
                                 {/* STEP 1: TRAINING EXAMPLES */}
-                                <div className="rounded-2xl p-5 shadow-lg group transition-all" style={{ backgroundColor: '#FFFFFF', border: '1px solid #E8E6DF' }}>
-                                    <h4 className="flex items-center gap-2 text-xs font-black uppercase tracking-widest mb-2" style={{ color: '#D97757' }}>
-                                        <span className="w-5 h-5 rounded flex items-center justify-center text-white text-[10px]" style={{ backgroundColor: '#D97757' }}>1</span>
+                                <div className="rounded-2xl p-5 shadow-lg group transition-all" style={{ backgroundColor: '#FFFFFF', border: '1px solid #E7D8BD' }}>
+                                    <h4 className="flex items-center gap-2 text-xs font-black uppercase tracking-widest mb-2" style={{ color: '#D97848' }}>
+                                        <span className="w-5 h-5 rounded flex items-center justify-center text-white text-[10px]" style={{ backgroundColor: '#D97848' }}>1</span>
                                         Trainingsdata (Wat zegt de gebruiker?)
                                     </h4>
-                                    <p className="text-xs mb-4" style={{ color: '#6B6B66' }}>
+                                    <p className="text-xs mb-4" style={{ color: '#445865' }}>
                                         Voeg minimaal 2-3 voorbeeldzinnen toe die mensen zouden kunnen typen over dit onderwerp.
                                     </p>
 
                                     <div className="space-y-2 mb-4">
                                         {selectedIntentData.trainingExamples.length === 0 ? (
-                                            <div className="text-sm py-3 px-4 rounded-lg" style={{ color: '#6B6B66', backgroundColor: 'rgba(217,119,87,0.05)', border: '1px dashed rgba(217,119,87,0.3)' }}>
+                                            <div className="text-sm py-3 px-4 rounded-lg" style={{ color: '#445865', backgroundColor: 'rgba(217,119,87,0.05)', border: '1px dashed rgba(217,119,87,0.3)' }}>
                                                 Nog geen voorbeelden. Typ een zin in het tekstveld hieronder en klik op <strong>+</strong> om toe te voegen.
                                             </div>
                                         ) : (
                                             selectedIntentData.trainingExamples.slice().reverse().map((example) => (
                                                 <div key={example.id} className="flex items-center gap-3 px-3 py-2 rounded-lg group/item" style={{ backgroundColor: 'rgba(217,119,87,0.05)', border: '1px solid rgba(217,119,87,0.15)' }}>
-                                                    <MessageSquare size={14} className="shrink-0" style={{ color: '#D97757' }} />
-                                                    <span className="text-sm flex-1" style={{ color: '#3D3D38' }}>"{example.text}"</span>
+                                                    <MessageSquare size={14} className="shrink-0" style={{ color: '#D97848' }} />
+                                                    <span className="text-sm flex-1" style={{ color: '#445865' }}>"{example.text}"</span>
                                                     <button
                                                         onClick={() => removeExample(example.id)}
                                                         className="hover:text-red-400 opacity-0 group-hover/item:opacity-100 transition-all p-1"
-                                                        style={{ color: '#6B6B66' }}
+                                                        style={{ color: '#445865' }}
                                                     >
                                                         <Trash2 size={14} />
                                                     </button>
@@ -994,7 +994,7 @@ export const ChatbotTrainerPreview: React.FC<ChatbotTrainerPreviewProps> = ({ on
                                     </div>
 
                                     <div className="flex flex-col gap-1">
-                                        <label className="text-xs font-bold" style={{ color: '#6B6B66' }}>Voorbeeldzin toevoegen</label>
+                                        <label className="text-xs font-bold" style={{ color: '#445865' }}>Voorbeeldzin toevoegen</label>
                                         <div className="flex gap-2">
                                         <input
                                             type="text"
@@ -1003,13 +1003,13 @@ export const ChatbotTrainerPreview: React.FC<ChatbotTrainerPreviewProps> = ({ on
                                             onKeyDown={(e) => e.key === 'Enter' && addExample()}
                                             placeholder="Bijv. 'Wat kost een pizza margherita?'"
                                             className="flex-1 rounded-xl px-4 py-3 text-sm focus:outline-none transition-colors"
-                                            style={{ backgroundColor: '#FAF9F0', border: '1px solid #E8E6DF', color: '#1A1A19' }}
+                                            style={{ backgroundColor: '#FCF6EA', border: '1px solid #E7D8BD', color: '#08283B' }}
                                         />
                                         <button
                                             onClick={addExample}
                                             disabled={!newExample.trim()}
                                             className="px-4 rounded-xl transition-colors shadow-lg disabled:opacity-50 text-white"
-                                            style={{ backgroundColor: '#D97757' }}
+                                            style={{ backgroundColor: '#D97848' }}
                                         >
                                             <Plus size={20} />
                                         </button>
@@ -1018,12 +1018,12 @@ export const ChatbotTrainerPreview: React.FC<ChatbotTrainerPreviewProps> = ({ on
                                 </div>
 
                                 {/* STEP 2: RESPONSE */}
-                                <div className="rounded-2xl p-5 shadow-lg transition-all" style={{ backgroundColor: '#FFFFFF', border: '1px solid #E8E6DF' }}>
-                                    <h4 className="flex items-center gap-2 text-xs font-black uppercase tracking-widest mb-2" style={{ color: '#2A9D8F' }}>
-                                        <span className="w-5 h-5 rounded flex items-center justify-center text-white text-[10px]" style={{ backgroundColor: '#2A9D8F' }}>2</span>
+                                <div className="rounded-2xl p-5 shadow-lg transition-all" style={{ backgroundColor: '#FFFFFF', border: '1px solid #E7D8BD' }}>
+                                    <h4 className="flex items-center gap-2 text-xs font-black uppercase tracking-widest mb-2" style={{ color: '#5F947D' }}>
+                                        <span className="w-5 h-5 rounded flex items-center justify-center text-white text-[10px]" style={{ backgroundColor: '#5F947D' }}>2</span>
                                         Pip's Antwoord (Output)
                                     </h4>
-                                    <p className="text-xs mb-4" style={{ color: '#6B6B66' }}>
+                                    <p className="text-xs mb-4" style={{ color: '#445865' }}>
                                         Schrijf hier het antwoord dat Pip moet geven als iemand over dit onderwerp praat.
                                     </p>
 
@@ -1035,15 +1035,15 @@ export const ChatbotTrainerPreview: React.FC<ChatbotTrainerPreviewProps> = ({ on
                                             placeholder={`Wat moet Pip antwoorden als iemand over '${selectedIntentData.name}' begint?`}
                                             rows={3}
                                             className="w-full rounded-xl pl-10 pr-4 py-3 text-sm focus:outline-none transition-all resize-none"
-                                            style={{ backgroundColor: '#FAF9F0', border: '1px solid #E8E6DF', color: '#1A1A19' }}
+                                            style={{ backgroundColor: '#FCF6EA', border: '1px solid #E7D8BD', color: '#08283B' }}
                                         />
                                     </div>
                                 </div>
                             </div>
                         </div>
                     ) : (
-                        <div className="flex-1 flex flex-col items-center justify-center" style={{ color: '#6B6B66' }}>
-                            <div className="w-20 h-20 rounded-3xl flex items-center justify-center mb-4 opacity-50" style={{ backgroundColor: '#F0EEE8' }}>
+                        <div className="flex-1 flex flex-col items-center justify-center" style={{ color: '#445865' }}>
+                            <div className="w-20 h-20 rounded-3xl flex items-center justify-center mb-4 opacity-50" style={{ backgroundColor: '#FCF6EA' }}>
                                 <Target size={40} />
                             </div>
                             <p className="font-bold">Selecteer een Intent</p>
@@ -1053,9 +1053,9 @@ export const ChatbotTrainerPreview: React.FC<ChatbotTrainerPreviewProps> = ({ on
                 </div>
 
                 {/* Right: Test Chat */}
-                <div className="w-80 flex flex-col shrink-0" style={{ backgroundColor: '#FFFFFF', borderLeft: '1px solid #E8E6DF' }}>
-                    <div className="p-4" style={{ borderBottom: '1px solid #E8E6DF' }}>
-                        <h4 className="text-xs font-bold uppercase tracking-widest flex items-center gap-2" style={{ color: '#6B6B66' }}>
+                <div className="w-80 flex flex-col shrink-0" style={{ backgroundColor: '#FFFFFF', borderLeft: '1px solid #E7D8BD' }}>
+                    <div className="p-4" style={{ borderBottom: '1px solid #E7D8BD' }}>
+                        <h4 className="text-xs font-bold uppercase tracking-widest flex items-center gap-2" style={{ color: '#445865' }}>
                             <MessageCircle size={12} /> Test Omgeving
                         </h4>
                     </div>
@@ -1063,10 +1063,10 @@ export const ChatbotTrainerPreview: React.FC<ChatbotTrainerPreviewProps> = ({ on
                     <div
                         ref={chatRef}
                         className="flex-1 p-4 overflow-y-auto space-y-4"
-                        style={{ backgroundImage: 'radial-gradient(circle at center, #E8E6DF 1px, transparent 1px)', backgroundSize: '20px 20px' }}
+                        style={{ backgroundImage: 'radial-gradient(circle at center, #E7D8BD 1px, transparent 1px)', backgroundSize: '20px 20px' }}
                     >
                         {!isTesting && testMessages.length === 0 && (
-                            <div className="text-center mt-10" style={{ color: '#6B6B66' }}>
+                            <div className="text-center mt-10" style={{ color: '#445865' }}>
                                 <p className="text-sm">Zodra je start met testen,</p>
                                 <p className="text-xs">simuleert Pip een gesprek.</p>
                             </div>
@@ -1077,19 +1077,19 @@ export const ChatbotTrainerPreview: React.FC<ChatbotTrainerPreviewProps> = ({ on
                                 <div
                                     className="max-w-[85%] px-4 py-2.5 rounded-2xl text-sm shadow-sm"
                                     style={msg.sender === 'customer'
-                                        ? { backgroundColor: '#D97757', color: '#FFFFFF', borderBottomRightRadius: 0 }
+                                        ? { backgroundColor: '#D97848', color: '#FFFFFF', borderBottomRightRadius: 0 }
                                         : msg.status === 'confident'
-                                            ? { backgroundColor: '#F0EEE8', color: '#3D3D38', border: '1px solid rgba(16,185,129,0.3)', borderBottomLeftRadius: 0 }
+                                            ? { backgroundColor: '#FCF6EA', color: '#445865', border: '1px solid rgba(16,185,129,0.3)', borderBottomLeftRadius: 0 }
                                             : msg.status === 'unsure'
-                                                ? { backgroundColor: '#F0EEE8', color: '#3D3D38', border: '1px solid rgba(245,158,11,0.3)', borderBottomLeftRadius: 0 }
-                                                : { backgroundColor: '#F0EEE8', color: '#3D3D38', border: '1px solid rgba(239,68,68,0.3)', borderBottomLeftRadius: 0 }
+                                                ? { backgroundColor: '#FCF6EA', color: '#445865', border: '1px solid rgba(245,158,11,0.3)', borderBottomLeftRadius: 0 }
+                                                : { backgroundColor: '#FCF6EA', color: '#445865', border: '1px solid rgba(239,68,68,0.3)', borderBottomLeftRadius: 0 }
                                     }
                                 >
                                     <p>{msg.text}</p>
                                     {msg.sender === 'bot' && msg.confidence !== undefined && (
-                                        <div className="flex items-center gap-2 mt-1.5 pt-1.5" style={{ borderTop: '1px solid #E8E6DF' }}>
-                                            {msg.status === 'confident' && <span className="w-2 h-2 rounded-full bg-emerald-400" />}
-                                            {msg.status === 'unsure' && <span className="w-2 h-2 rounded-full bg-amber-400" />}
+                                        <div className="flex items-center gap-2 mt-1.5 pt-1.5" style={{ borderTop: '1px solid #E7D8BD' }}>
+                                            {msg.status === 'confident' && <span className="w-2 h-2 rounded-full bg-lab-sage" />}
+                                            {msg.status === 'unsure' && <span className="w-2 h-2 rounded-full bg-lab-gold" />}
                                             {msg.status === 'no_match' && <span className="w-2 h-2 rounded-full bg-red-400" />}
                                             <span className="text-[10px] opacity-70 font-mono">
                                                 {(msg.confidence * 100).toFixed(0)}% • {msg.matchedIntent || 'Geen match'}
@@ -1103,14 +1103,14 @@ export const ChatbotTrainerPreview: React.FC<ChatbotTrainerPreviewProps> = ({ on
 
                     {/* Results Overlay */}
                     {showResults && (
-                        <div className="p-4 animate-in slide-in-from-bottom-10" style={{ backgroundColor: '#FFFFFF', borderTop: '1px solid #E8E6DF' }}>
+                        <div className="p-4 animate-in slide-in-from-bottom-10" style={{ backgroundColor: '#FFFFFF', borderTop: '1px solid #E7D8BD' }}>
                             <div className="flex items-center justify-between mb-4">
-                                <span className="text-sm font-bold" style={{ color: '#3D3D38' }}>Test Score</span>
+                                <span className="text-sm font-bold" style={{ color: '#445865' }}>Test Score</span>
                                 <div
                                     className="px-3 py-1 rounded-full font-black text-sm"
                                     style={scorePercentage >= activeScenario.minScore
-                                        ? { backgroundColor: 'rgba(16,185,129,0.1)', color: '#10B981' }
-                                        : { backgroundColor: 'rgba(245,158,11,0.1)', color: '#F59E0B' }
+                                        ? { backgroundColor: 'rgba(16,185,129,0.1)', color: '#5F947D' }
+                                        : { backgroundColor: 'rgba(245,158,11,0.1)', color: '#D7C95F' }
                                     }
                                 >
                                     {scorePercentage}%
@@ -1121,17 +1121,17 @@ export const ChatbotTrainerPreview: React.FC<ChatbotTrainerPreviewProps> = ({ on
                                 <button
                                     onClick={() => setShowConclusion(true)}
                                     className="w-full py-3 text-white rounded-xl font-bold shadow-lg transition-all flex items-center justify-center gap-2"
-                                    style={{ backgroundColor: '#10B981' }}
+                                    style={{ backgroundColor: '#5F947D' }}
                                 >
                                     <Trophy size={18} /> Afronden
                                 </button>
                             ) : (
                                 <div className="space-y-2">
-                                    <p className="text-xs text-center mb-2" style={{ color: '#6B6B66' }}>Je hebt minimaal {activeScenario.minScore}% nodig.</p>
+                                    <p className="text-xs text-center mb-2" style={{ color: '#445865' }}>Je hebt minimaal {activeScenario.minScore}% nodig.</p>
                                     <button
                                         onClick={() => setShowResults(false)}
                                         className="w-full py-3 rounded-xl font-bold transition-all"
-                                        style={{ backgroundColor: '#F0EEE8', color: '#3D3D38' }}
+                                        style={{ backgroundColor: '#FCF6EA', color: '#445865' }}
                                     >
                                         Verder Trainen
                                     </button>

@@ -99,17 +99,17 @@ export const KamerDilemma: React.FC<Props> = ({ onComplete, variant }) => {
       <div className="flex-1 flex items-center justify-center">
         <div className="w-full max-w-lg">
           {/* Scenario */}
-          <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-5 mb-4">
+          <div className="bg-white rounded-xl border border-lab-muted shadow-sm p-5 mb-4">
             <div className="flex items-start gap-3 mb-4">
               <div className="w-10 h-10 rounded-full bg-sky-50 flex items-center justify-center shrink-0">
                 <MessageCircle size={18} className="text-sky-600" />
               </div>
               <div>
                 <p className="text-sm font-bold text-sky-600 mb-1">Situatie</p>
-                <p className="text-slate-600 text-sm leading-relaxed">
+                <p className="text-lab-muted text-sm leading-relaxed">
                   {scenarioTekst}
                 </p>
-                <p className="text-slate-400 text-sm mt-2 italic">
+                <p className="text-lab-muted text-sm mt-2 italic">
                   Wat doe je?
                 </p>
               </div>
@@ -123,7 +123,7 @@ export const KamerDilemma: React.FC<Props> = ({ onComplete, variant }) => {
                 <button
                   key={optie.id}
                   onClick={() => kiesOptie(optie.id)}
-                  className="w-full text-left px-4 py-3 bg-slate-50 border border-slate-200 rounded-lg text-sm text-slate-600 hover:border-sky-300 hover:bg-sky-50 transition-colors active:scale-[0.98]"
+                  className="w-full text-left px-4 py-3 bg-lab-muted border border-lab-muted rounded-lg text-sm text-lab-muted hover:border-sky-300 hover:bg-sky-50 transition-colors active:scale-[0.98]"
                 >
                   {optie.tekst}
                 </button>
@@ -136,17 +136,17 @@ export const KamerDilemma: React.FC<Props> = ({ onComplete, variant }) => {
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
               <div className={`p-4 rounded-xl border mb-4 ${
                 optie.score >= 75
-                  ? 'bg-emerald-50 border-emerald-200 text-emerald-700'
+                  ? 'bg-lab-sage border-lab-sage text-lab-sage'
                   : optie.score >= 25
-                    ? 'bg-amber-50 border-amber-200 text-amber-700'
-                    : 'bg-rose-50 border-rose-200 text-rose-700'
+                    ? 'bg-lab-gold border-lab-gold text-lab-gold'
+                    : 'bg-lab-coral border-lab-coral text-lab-coral'
               }`}>
                 <p className="text-sm font-bold mb-1">Jouw keuze: {optie.tekst}</p>
                 <p className="text-sm opacity-80">{optie.feedback}</p>
               </div>
 
-              <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-4">
-                <label className="text-xs font-bold uppercase tracking-wider text-slate-400 block mb-2">
+              <div className="bg-white rounded-xl border border-lab-muted shadow-sm p-4">
+                <label className="text-xs font-bold uppercase tracking-wider text-lab-muted block mb-2">
                   Leg kort uit waarom je deze keuze maakte (2-3 zinnen)
                 </label>
                 <textarea
@@ -154,7 +154,7 @@ export const KamerDilemma: React.FC<Props> = ({ onComplete, variant }) => {
                   onChange={e => setReflectie(e.target.value)}
                   placeholder="Ik koos dit omdat..."
                   rows={3}
-                  className="w-full bg-slate-50 border border-slate-200 rounded-lg px-4 py-3 text-sm text-slate-700 placeholder-slate-400 resize-none focus:outline-none focus:border-sky-400 focus:ring-1 focus:ring-sky-200"
+                  className="w-full bg-lab-muted border border-lab-muted rounded-lg px-4 py-3 text-sm text-lab-muted placeholder-slate-400 resize-none focus:outline-none focus:border-sky-400 focus:ring-1 focus:ring-sky-200"
                 />
               </div>
 
@@ -164,7 +164,7 @@ export const KamerDilemma: React.FC<Props> = ({ onComplete, variant }) => {
               >
                 <Send size={18} /> Verzend antwoord
               </button>
-              <p className="text-center text-slate-400 text-xs mt-2">
+              <p className="text-center text-lab-muted text-xs mt-2">
                 Je reflectie wordt bewaard zodat je docent het kan lezen.
               </p>
             </motion.div>
@@ -181,7 +181,7 @@ export const KamerDilemma: React.FC<Props> = ({ onComplete, variant }) => {
                 <Heart size={32} className="text-sky-600" />
               </div>
               <p className="text-sky-600 font-bold text-lg mb-2">Antwoord opgeslagen!</p>
-              <p className="text-slate-400 text-sm">Je gaat door naar de resultaten...</p>
+              <p className="text-lab-muted text-sm">Je gaat door naar de resultaten...</p>
             </motion.div>
           )}
         </div>

@@ -49,9 +49,9 @@ const STATUS_LABELS: Record<Invoice['status'], string> = {
 };
 
 const STATUS_COLORS: Record<Invoice['status'], string> = {
-    concept: 'bg-slate-100 text-slate-600',
+    concept: 'bg-lab-muted text-lab-muted',
     verzonden: 'bg-blue-100 text-blue-700',
-    betaald: 'bg-emerald-100 text-emerald-700',
+    betaald: 'bg-lab-sage text-lab-sage',
     vervallen: 'bg-red-100 text-red-700',
 };
 
@@ -123,12 +123,12 @@ function InvoiceDetailModal({
     return (
         <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
             <div className="bg-white rounded-3xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
-                <div className="sticky top-0 bg-white rounded-t-3xl border-b border-slate-100 px-8 py-5 flex items-center justify-between">
+                <div className="sticky top-0 bg-white rounded-t-3xl border-b border-lab-muted px-8 py-5 flex items-center justify-between">
                     <div>
-                        <h3 className="text-lg font-black text-slate-900 uppercase tracking-tight">
+                        <h3 className="text-lg font-black text-lab-muted uppercase tracking-tight">
                             Factuur {invoice.invoice_number}
                         </h3>
-                        <p className="text-xs text-slate-500 mt-0.5">{invoice.client_name}</p>
+                        <p className="text-xs text-lab-muted mt-0.5">{invoice.client_name}</p>
                     </div>
                     <div className="flex items-center gap-2">
                         <button
@@ -140,7 +140,7 @@ function InvoiceDetailModal({
                         </button>
                         <button
                             onClick={onClose}
-                            className="px-4 py-2 border border-slate-200 rounded-xl text-xs font-bold text-slate-600 hover:bg-slate-50 transition-colors"
+                            className="px-4 py-2 border border-lab-muted rounded-xl text-xs font-bold text-lab-muted hover:bg-lab-muted transition-colors"
                         >
                             Sluiten
                         </button>
@@ -151,19 +151,19 @@ function InvoiceDetailModal({
                     {/* Meta gegevens */}
                     <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
                         <div>
-                            <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Status</p>
+                            <p className="text-[10px] font-black text-lab-muted uppercase tracking-widest mb-1">Status</p>
                             <span className={`inline-block text-xs font-bold px-2.5 py-1 rounded-lg ${STATUS_COLORS[invoice.status]}`}>
                                 {STATUS_LABELS[invoice.status]}
                             </span>
                         </div>
                         <div>
-                            <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Factuurdatum</p>
-                            <p className="font-bold text-slate-800 text-sm">{formatDateShort(invoice.issue_date)}</p>
+                            <p className="text-[10px] font-black text-lab-muted uppercase tracking-widest mb-1">Factuurdatum</p>
+                            <p className="font-bold text-lab-muted text-sm">{formatDateShort(invoice.issue_date)}</p>
                         </div>
                         {invoice.due_date && (
                             <div>
-                                <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Vervaldatum</p>
-                                <p className={`font-bold text-sm ${isOverdue(invoice) ? 'text-red-600' : 'text-slate-800'}`}>
+                                <p className="text-[10px] font-black text-lab-muted uppercase tracking-widest mb-1">Vervaldatum</p>
+                                <p className={`font-bold text-sm ${isOverdue(invoice) ? 'text-red-600' : 'text-lab-muted'}`}>
                                     {formatDateShort(invoice.due_date)}
                                 </p>
                             </div>
@@ -171,17 +171,17 @@ function InvoiceDetailModal({
                     </div>
 
                     {/* Klantgegevens */}
-                    <div className="bg-slate-50 rounded-2xl p-4">
-                        <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Klant</p>
-                        <p className="font-bold text-slate-800">{invoice.client_name}</p>
+                    <div className="bg-lab-muted rounded-2xl p-4">
+                        <p className="text-[10px] font-black text-lab-muted uppercase tracking-widest mb-2">Klant</p>
+                        <p className="font-bold text-lab-muted">{invoice.client_name}</p>
                         {invoice.client_address && (
-                            <p className="text-sm text-slate-600 mt-1 whitespace-pre-wrap">{invoice.client_address}</p>
+                            <p className="text-sm text-lab-muted mt-1 whitespace-pre-wrap">{invoice.client_address}</p>
                         )}
                         {invoice.client_vat_number && (
-                            <p className="text-xs text-slate-500 mt-1">BTW: {invoice.client_vat_number}</p>
+                            <p className="text-xs text-lab-muted mt-1">BTW: {invoice.client_vat_number}</p>
                         )}
                         {invoice.client_email && (
-                            <p className="text-xs text-slate-500 mt-1">{invoice.client_email}</p>
+                            <p className="text-xs text-lab-muted mt-1">{invoice.client_email}</p>
                         )}
                     </div>
 
@@ -190,22 +190,22 @@ function InvoiceDetailModal({
                         <div className="overflow-x-auto">
                             <table className="w-full text-sm">
                                 <thead>
-                                    <tr className="border-b border-slate-200">
-                                        <th className="text-left py-2 text-[10px] font-black text-slate-400 uppercase tracking-widest">Omschrijving</th>
-                                        <th className="text-right py-2 text-[10px] font-black text-slate-400 uppercase tracking-widest">Aantal</th>
-                                        <th className="text-right py-2 text-[10px] font-black text-slate-400 uppercase tracking-widest">Tarief</th>
-                                        <th className="text-right py-2 text-[10px] font-black text-slate-400 uppercase tracking-widest">BTW%</th>
-                                        <th className="text-right py-2 text-[10px] font-black text-slate-400 uppercase tracking-widest">Totaal</th>
+                                    <tr className="border-b border-lab-muted">
+                                        <th className="text-left py-2 text-[10px] font-black text-lab-muted uppercase tracking-widest">Omschrijving</th>
+                                        <th className="text-right py-2 text-[10px] font-black text-lab-muted uppercase tracking-widest">Aantal</th>
+                                        <th className="text-right py-2 text-[10px] font-black text-lab-muted uppercase tracking-widest">Tarief</th>
+                                        <th className="text-right py-2 text-[10px] font-black text-lab-muted uppercase tracking-widest">BTW%</th>
+                                        <th className="text-right py-2 text-[10px] font-black text-lab-muted uppercase tracking-widest">Totaal</th>
                                     </tr>
                                 </thead>
                                 <tbody className="divide-y divide-slate-50">
                                     {lines.map((line, idx) => (
                                         <tr key={line.id || idx}>
-                                            <td className="py-2.5 text-slate-800 font-medium">{line.description}</td>
-                                            <td className="py-2.5 text-right text-slate-600">{line.quantity}</td>
-                                            <td className="py-2.5 text-right text-slate-600">{formatEuro(line.unit_price)}</td>
-                                            <td className="py-2.5 text-right text-slate-600">{line.vat_rate}%</td>
-                                            <td className="py-2.5 text-right font-bold text-slate-800">{formatEuro(line.line_total)}</td>
+                                            <td className="py-2.5 text-lab-muted font-medium">{line.description}</td>
+                                            <td className="py-2.5 text-right text-lab-muted">{line.quantity}</td>
+                                            <td className="py-2.5 text-right text-lab-muted">{formatEuro(line.unit_price)}</td>
+                                            <td className="py-2.5 text-right text-lab-muted">{line.vat_rate}%</td>
+                                            <td className="py-2.5 text-right font-bold text-lab-muted">{formatEuro(line.line_total)}</td>
                                         </tr>
                                     ))}
                                 </tbody>
@@ -214,26 +214,26 @@ function InvoiceDetailModal({
                     )}
 
                     {/* Totaalblok */}
-                    <div className="border-t border-slate-200 pt-4 space-y-1">
+                    <div className="border-t border-lab-muted pt-4 space-y-1">
                         <div className="flex justify-between text-sm">
-                            <span className="text-slate-500">Subtotaal (excl. BTW)</span>
-                            <span className="font-medium text-slate-800">{formatEuro(invoice.subtotal)}</span>
+                            <span className="text-lab-muted">Subtotaal (excl. BTW)</span>
+                            <span className="font-medium text-lab-muted">{formatEuro(invoice.subtotal)}</span>
                         </div>
                         <div className="flex justify-between text-sm">
-                            <span className="text-slate-500">BTW</span>
-                            <span className="font-medium text-slate-800">{formatEuro(invoice.vat_amount)}</span>
+                            <span className="text-lab-muted">BTW</span>
+                            <span className="font-medium text-lab-muted">{formatEuro(invoice.vat_amount)}</span>
                         </div>
-                        <div className="flex justify-between text-base font-black pt-2 border-t border-slate-200">
-                            <span className="text-slate-900">Totaal incl. BTW</span>
-                            <span className="text-slate-900">{formatEuro(invoice.total)}</span>
+                        <div className="flex justify-between text-base font-black pt-2 border-t border-lab-muted">
+                            <span className="text-lab-muted">Totaal incl. BTW</span>
+                            <span className="text-lab-muted">{formatEuro(invoice.total)}</span>
                         </div>
                     </div>
 
                     {/* Notities */}
                     {invoice.notes && (
-                        <div className="bg-amber-50 border border-amber-100 rounded-xl px-4 py-3">
-                            <p className="text-[10px] font-black text-amber-600 uppercase tracking-widest mb-1">Notities</p>
-                            <p className="text-sm text-amber-800 whitespace-pre-wrap">{invoice.notes}</p>
+                        <div className="bg-lab-gold border border-lab-gold rounded-xl px-4 py-3">
+                            <p className="text-[10px] font-black text-lab-gold uppercase tracking-widest mb-1">Notities</p>
+                            <p className="text-sm text-lab-gold whitespace-pre-wrap">{invoice.notes}</p>
                         </div>
                     )}
                 </div>
@@ -380,30 +380,30 @@ function NewInvoiceModal({
         <div className="fixed inset-0 bg-black/50 z-50 flex items-start justify-center p-4 overflow-y-auto">
             <div className="bg-white rounded-3xl shadow-2xl w-full max-w-2xl my-8">
                 {/* Header */}
-                <div className="border-b border-slate-100 px-8 py-5 flex items-center justify-between">
+                <div className="border-b border-lab-muted px-8 py-5 flex items-center justify-between">
                     <div>
-                        <h3 className="text-lg font-black text-slate-900 uppercase tracking-tight">Nieuwe Factuur</h3>
-                        <p className="text-xs text-slate-400 mt-0.5">
+                        <h3 className="text-lg font-black text-lab-muted uppercase tracking-tight">Nieuwe Factuur</h3>
+                        <p className="text-xs text-lab-muted mt-0.5">
                             Factuurnummer: <span className="font-bold text-indigo-600">{nextInvoiceNumber}</span>
                         </p>
                     </div>
                     <button
                         onClick={onClose}
-                        className="p-2 hover:bg-slate-100 rounded-xl transition-colors"
+                        className="p-2 hover:bg-lab-muted rounded-xl transition-colors"
                         aria-label="Sluiten"
                     >
-                        <ChevronDown size={20} className="text-slate-500 rotate-180" />
+                        <ChevronDown size={20} className="text-lab-muted rotate-180" />
                     </button>
                 </div>
 
                 {/* Stap indicator */}
-                <div className="flex border-b border-slate-100">
+                <div className="flex border-b border-lab-muted">
                     <button
                         onClick={() => setStep(1)}
                         className={`flex-1 py-3 text-xs font-black uppercase tracking-widest transition-colors ${
                             step === 1
                                 ? 'text-indigo-600 border-b-2 border-indigo-600'
-                                : 'text-slate-400 hover:text-slate-600'
+                                : 'text-lab-muted hover:text-lab-muted'
                         }`}
                     >
                         1. Klantgegevens
@@ -415,7 +415,7 @@ function NewInvoiceModal({
                         className={`flex-1 py-3 text-xs font-black uppercase tracking-widest transition-colors ${
                             step === 2
                                 ? 'text-indigo-600 border-b-2 border-indigo-600'
-                                : 'text-slate-400 hover:text-slate-600'
+                                : 'text-lab-muted hover:text-lab-muted'
                         }`}
                     >
                         2. Factuurregels
@@ -435,31 +435,31 @@ function NewInvoiceModal({
                         <div className="space-y-4">
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                 <div>
-                                    <label className="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">
+                                    <label className="block text-[10px] font-black text-lab-muted uppercase tracking-widest mb-1">
                                         Factuurdatum
                                     </label>
                                     <input
                                         type="date"
                                         value={issueDate}
                                         onChange={e => setIssueDate(e.target.value)}
-                                        className="w-full px-4 py-2.5 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-300"
+                                        className="w-full px-4 py-2.5 border border-lab-muted rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-300"
                                     />
                                 </div>
                                 <div>
-                                    <label className="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">
+                                    <label className="block text-[10px] font-black text-lab-muted uppercase tracking-widest mb-1">
                                         Vervaldatum
                                     </label>
                                     <input
                                         type="date"
                                         value={dueDate}
                                         onChange={e => setDueDate(e.target.value)}
-                                        className="w-full px-4 py-2.5 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-300"
+                                        className="w-full px-4 py-2.5 border border-lab-muted rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-300"
                                     />
                                 </div>
                             </div>
 
                             <div>
-                                <label className="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">
+                                <label className="block text-[10px] font-black text-lab-muted uppercase tracking-widest mb-1">
                                     Klantnaam <span className="text-red-400">*</span>
                                 </label>
                                 <input
@@ -467,12 +467,12 @@ function NewInvoiceModal({
                                     value={form.client_name}
                                     onChange={e => setForm(f => ({ ...f, client_name: e.target.value }))}
                                     placeholder="Naam van de klant of het bedrijf"
-                                    className="w-full px-4 py-2.5 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-300"
+                                    className="w-full px-4 py-2.5 border border-lab-muted rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-300"
                                 />
                             </div>
 
                             <div>
-                                <label className="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">
+                                <label className="block text-[10px] font-black text-lab-muted uppercase tracking-widest mb-1">
                                     Adres
                                 </label>
                                 <textarea
@@ -480,13 +480,13 @@ function NewInvoiceModal({
                                     onChange={e => setForm(f => ({ ...f, client_address: e.target.value }))}
                                     placeholder="Straat en huisnummer&#10;Postcode en stad"
                                     rows={3}
-                                    className="w-full px-4 py-2.5 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-300 resize-none"
+                                    className="w-full px-4 py-2.5 border border-lab-muted rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-300 resize-none"
                                 />
                             </div>
 
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                 <div>
-                                    <label className="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">
+                                    <label className="block text-[10px] font-black text-lab-muted uppercase tracking-widest mb-1">
                                         BTW-nummer klant
                                     </label>
                                     <input
@@ -494,11 +494,11 @@ function NewInvoiceModal({
                                         value={form.client_vat_number}
                                         onChange={e => setForm(f => ({ ...f, client_vat_number: e.target.value }))}
                                         placeholder="NL000000000B01"
-                                        className="w-full px-4 py-2.5 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-300"
+                                        className="w-full px-4 py-2.5 border border-lab-muted rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-300"
                                     />
                                 </div>
                                 <div>
-                                    <label className="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">
+                                    <label className="block text-[10px] font-black text-lab-muted uppercase tracking-widest mb-1">
                                         E-mailadres klant
                                     </label>
                                     <input
@@ -506,13 +506,13 @@ function NewInvoiceModal({
                                         value={form.client_email}
                                         onChange={e => setForm(f => ({ ...f, client_email: e.target.value }))}
                                         placeholder="klant@bedrijf.nl"
-                                        className="w-full px-4 py-2.5 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-300"
+                                        className="w-full px-4 py-2.5 border border-lab-muted rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-300"
                                     />
                                 </div>
                             </div>
 
                             <div>
-                                <label className="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">
+                                <label className="block text-[10px] font-black text-lab-muted uppercase tracking-widest mb-1">
                                     Notities (optioneel)
                                 </label>
                                 <textarea
@@ -520,7 +520,7 @@ function NewInvoiceModal({
                                     onChange={e => setForm(f => ({ ...f, notes: e.target.value }))}
                                     placeholder="Extra informatie op de factuur..."
                                     rows={3}
-                                    className="w-full px-4 py-2.5 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-300 resize-none"
+                                    className="w-full px-4 py-2.5 border border-lab-muted rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-300 resize-none"
                                 />
                             </div>
 
@@ -540,13 +540,13 @@ function NewInvoiceModal({
                             <div className="overflow-x-auto">
                                 <table className="w-full text-sm">
                                     <thead>
-                                        <tr className="border-b border-slate-200">
-                                            <th className="text-left pb-2 text-[10px] font-black text-slate-400 uppercase tracking-widest">Omschrijving</th>
-                                            <th className="text-right pb-2 text-[10px] font-black text-slate-400 uppercase tracking-widest w-16">Aantal</th>
-                                            <th className="text-right pb-2 text-[10px] font-black text-slate-400 uppercase tracking-widest w-24">Tarief (€)</th>
-                                            <th className="text-right pb-2 text-[10px] font-black text-slate-400 uppercase tracking-widest w-16">BTW%</th>
-                                            <th className="text-right pb-2 text-[10px] font-black text-slate-400 uppercase tracking-widest w-24">BTW</th>
-                                            <th className="text-right pb-2 text-[10px] font-black text-slate-400 uppercase tracking-widest w-24">Totaal</th>
+                                        <tr className="border-b border-lab-muted">
+                                            <th className="text-left pb-2 text-[10px] font-black text-lab-muted uppercase tracking-widest">Omschrijving</th>
+                                            <th className="text-right pb-2 text-[10px] font-black text-lab-muted uppercase tracking-widest w-16">Aantal</th>
+                                            <th className="text-right pb-2 text-[10px] font-black text-lab-muted uppercase tracking-widest w-24">Tarief (€)</th>
+                                            <th className="text-right pb-2 text-[10px] font-black text-lab-muted uppercase tracking-widest w-16">BTW%</th>
+                                            <th className="text-right pb-2 text-[10px] font-black text-lab-muted uppercase tracking-widest w-24">BTW</th>
+                                            <th className="text-right pb-2 text-[10px] font-black text-lab-muted uppercase tracking-widest w-24">Totaal</th>
                                             <th className="w-8" />
                                         </tr>
                                     </thead>
@@ -563,7 +563,7 @@ function NewInvoiceModal({
                                                             value={line.description}
                                                             onChange={e => updateLine(idx, 'description', e.target.value)}
                                                             placeholder="Omschrijving werkzaamheden"
-                                                            className="w-full px-3 py-2 border border-slate-200 rounded-lg text-xs focus:outline-none focus:ring-2 focus:ring-indigo-300"
+                                                            className="w-full px-3 py-2 border border-lab-muted rounded-lg text-xs focus:outline-none focus:ring-2 focus:ring-indigo-300"
                                                         />
                                                     </td>
                                                     <td className="py-2 pr-2">
@@ -573,7 +573,7 @@ function NewInvoiceModal({
                                                             step="0.5"
                                                             value={line.quantity}
                                                             onChange={e => updateLine(idx, 'quantity', parseFloat(e.target.value) || 0)}
-                                                            className="w-full px-2 py-2 border border-slate-200 rounded-lg text-xs text-right focus:outline-none focus:ring-2 focus:ring-indigo-300"
+                                                            className="w-full px-2 py-2 border border-lab-muted rounded-lg text-xs text-right focus:outline-none focus:ring-2 focus:ring-indigo-300"
                                                         />
                                                     </td>
                                                     <td className="py-2 pr-2">
@@ -583,31 +583,31 @@ function NewInvoiceModal({
                                                             step="0.01"
                                                             value={line.unit_price}
                                                             onChange={e => updateLine(idx, 'unit_price', parseFloat(e.target.value) || 0)}
-                                                            className="w-full px-2 py-2 border border-slate-200 rounded-lg text-xs text-right focus:outline-none focus:ring-2 focus:ring-indigo-300"
+                                                            className="w-full px-2 py-2 border border-lab-muted rounded-lg text-xs text-right focus:outline-none focus:ring-2 focus:ring-indigo-300"
                                                         />
                                                     </td>
                                                     <td className="py-2 pr-2">
                                                         <select
                                                             value={line.vat_rate}
                                                             onChange={e => updateLine(idx, 'vat_rate', parseInt(e.target.value) as 0 | 9 | 21)}
-                                                            className="w-full px-2 py-2 border border-slate-200 rounded-lg text-xs focus:outline-none focus:ring-2 focus:ring-indigo-300"
+                                                            className="w-full px-2 py-2 border border-lab-muted rounded-lg text-xs focus:outline-none focus:ring-2 focus:ring-indigo-300"
                                                         >
                                                             <option value={0}>0%</option>
                                                             <option value={9}>9%</option>
                                                             <option value={21}>21%</option>
                                                         </select>
                                                     </td>
-                                                    <td className="py-2 pr-2 text-right text-xs text-slate-500 tabular-nums whitespace-nowrap">
+                                                    <td className="py-2 pr-2 text-right text-xs text-lab-muted tabular-nums whitespace-nowrap">
                                                         {formatEuro(Math.round(lineVat * 100) / 100)}
                                                     </td>
-                                                    <td className="py-2 pr-2 text-right text-xs font-bold text-slate-800 tabular-nums whitespace-nowrap">
+                                                    <td className="py-2 pr-2 text-right text-xs font-bold text-lab-muted tabular-nums whitespace-nowrap">
                                                         {formatEuro(Math.round(lineTotal * 100) / 100)}
                                                     </td>
                                                     <td className="py-2">
                                                         <button
                                                             onClick={() => removeLine(idx)}
                                                             disabled={lines.length === 1}
-                                                            className="p-1.5 text-slate-300 hover:text-red-500 hover:bg-red-50 rounded-lg transition-all disabled:opacity-30 disabled:cursor-not-allowed"
+                                                            className="p-1.5 text-lab-muted hover:text-red-500 hover:bg-red-50 rounded-lg transition-all disabled:opacity-30 disabled:cursor-not-allowed"
                                                         >
                                                             <Trash2 size={13} />
                                                         </button>
@@ -628,17 +628,17 @@ function NewInvoiceModal({
                             </button>
 
                             {/* Totaalblok */}
-                            <div className="border-t border-slate-200 pt-4 space-y-1.5">
+                            <div className="border-t border-lab-muted pt-4 space-y-1.5">
                                 <div className="flex justify-between text-sm">
-                                    <span className="text-slate-500">Subtotaal (excl. BTW)</span>
-                                    <span className="font-medium text-slate-800 tabular-nums">{formatEuro(totals.subtotal)}</span>
+                                    <span className="text-lab-muted">Subtotaal (excl. BTW)</span>
+                                    <span className="font-medium text-lab-muted tabular-nums">{formatEuro(totals.subtotal)}</span>
                                 </div>
                                 <div className="flex justify-between text-sm">
-                                    <span className="text-slate-500">BTW</span>
-                                    <span className="font-medium text-slate-800 tabular-nums">{formatEuro(totals.vat_amount)}</span>
+                                    <span className="text-lab-muted">BTW</span>
+                                    <span className="font-medium text-lab-muted tabular-nums">{formatEuro(totals.vat_amount)}</span>
                                 </div>
-                                <div className="flex justify-between text-base font-black pt-2 border-t border-slate-200">
-                                    <span className="text-slate-900">Totaal incl. BTW</span>
+                                <div className="flex justify-between text-base font-black pt-2 border-t border-lab-muted">
+                                    <span className="text-lab-muted">Totaal incl. BTW</span>
                                     <span className="text-indigo-700 tabular-nums">{formatEuro(totals.total)}</span>
                                 </div>
                             </div>
@@ -647,14 +647,14 @@ function NewInvoiceModal({
                             <div className="flex gap-3 pt-2">
                                 <button
                                     onClick={() => setStep(1)}
-                                    className="px-5 py-3 border border-slate-200 rounded-xl text-sm font-bold text-slate-600 hover:bg-slate-50 transition-colors"
+                                    className="px-5 py-3 border border-lab-muted rounded-xl text-sm font-bold text-lab-muted hover:bg-lab-muted transition-colors"
                                 >
                                     Terug
                                 </button>
                                 <button
                                     onClick={() => handleSave('concept')}
                                     disabled={saving}
-                                    className="flex-1 flex items-center justify-center gap-2 py-3 border border-slate-300 text-slate-700 rounded-xl text-sm font-bold hover:bg-slate-50 disabled:opacity-50 transition-colors"
+                                    className="flex-1 flex items-center justify-center gap-2 py-3 border border-lab-muted text-lab-muted rounded-xl text-sm font-bold hover:bg-lab-muted disabled:opacity-50 transition-colors"
                                 >
                                     <FileText size={15} />
                                     {saving ? 'Opslaan...' : 'Opslaan als concept'}
@@ -816,7 +816,7 @@ export function InvoicesPanel({ userId, year, onRefresh }: InvoicesPanelProps) {
     if (loading) {
         return (
             <div className="py-20 text-center">
-                <p className="text-slate-400 text-sm animate-pulse">Facturen laden...</p>
+                <p className="text-lab-muted text-sm animate-pulse">Facturen laden...</p>
             </div>
         );
     }
@@ -842,14 +842,14 @@ export function InvoicesPanel({ userId, year, onRefresh }: InvoicesPanelProps) {
                 <StatCard
                     label="Openstaand"
                     value={formatEuro(summary.unpaid - summary.overdue)}
-                    color="bg-amber-50 border-amber-100 text-amber-800"
-                    icon={<Clock size={16} className="text-amber-500" />}
+                    color="bg-lab-gold border-lab-gold text-lab-gold"
+                    icon={<Clock size={16} className="text-lab-gold" />}
                 />
                 <StatCard
                     label="Betaald dit jaar"
                     value={formatEuro(summary.paid)}
-                    color="bg-emerald-50 border-emerald-100 text-emerald-800"
-                    icon={<Check size={16} className="text-emerald-500" />}
+                    color="bg-lab-sage border-lab-sage text-lab-sage"
+                    icon={<Check size={16} className="text-lab-sage" />}
                 />
                 <StatCard
                     label="Vervallen"
@@ -876,7 +876,7 @@ export function InvoicesPanel({ userId, year, onRefresh }: InvoicesPanelProps) {
                 </button>
 
                 {/* Status filter */}
-                <div className="flex items-center gap-1 bg-slate-100 rounded-xl p-1">
+                <div className="flex items-center gap-1 bg-lab-muted rounded-xl p-1">
                     {STATUS_FILTER_OPTIONS.map(opt => (
                         <button
                             key={opt.key}
@@ -884,7 +884,7 @@ export function InvoicesPanel({ userId, year, onRefresh }: InvoicesPanelProps) {
                             className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-colors ${
                                 statusFilter === opt.key
                                     ? 'bg-white text-indigo-700 shadow-sm'
-                                    : 'text-slate-500 hover:text-slate-700'
+                                    : 'text-lab-muted hover:text-lab-muted'
                             }`}
                         >
                             {opt.label}
@@ -892,23 +892,23 @@ export function InvoicesPanel({ userId, year, onRefresh }: InvoicesPanelProps) {
                     ))}
                 </div>
 
-                <span className="ml-auto text-xs text-slate-400 font-medium">
+                <span className="ml-auto text-xs text-lab-muted font-medium">
                     {filtered.length} factuur{filtered.length !== 1 ? 'en' : ''}
                 </span>
             </div>
 
             {/* Tabel */}
-            <div className="bg-white rounded-[2rem] border border-slate-200 shadow-sm overflow-hidden">
+            <div className="bg-white rounded-[2rem] border border-lab-muted shadow-sm overflow-hidden">
                 {filtered.length === 0 ? (
                     <div className="py-16 text-center">
-                        <FileText size={32} className="mx-auto text-slate-200 mb-3" />
-                        <p className="text-slate-400 text-sm italic">
+                        <FileText size={32} className="mx-auto text-lab-muted mb-3" />
+                        <p className="text-lab-muted text-sm italic">
                             {invoices.length === 0
                                 ? `Geen facturen gevonden voor ${year}.`
                                 : 'Geen facturen voor dit filter.'}
                         </p>
                         {invoices.length === 0 && (
-                            <p className="text-slate-400 text-xs mt-1">
+                            <p className="text-lab-muted text-xs mt-1">
                                 Maak je eerste factuur aan via de knop hierboven.
                             </p>
                         )}
@@ -917,14 +917,14 @@ export function InvoicesPanel({ userId, year, onRefresh }: InvoicesPanelProps) {
                     <div className="overflow-x-auto">
                         <table className="w-full text-sm">
                             <thead>
-                                <tr className="border-b border-slate-100">
-                                    <th className="text-left px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest">Nr</th>
-                                    <th className="text-left px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest">Klant</th>
-                                    <th className="text-left px-4 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest">Datum</th>
-                                    <th className="text-left px-4 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest">Verval</th>
-                                    <th className="text-right px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest">Bedrag</th>
-                                    <th className="text-left px-4 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest">Status</th>
-                                    <th className="px-4 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest text-right">Acties</th>
+                                <tr className="border-b border-lab-muted">
+                                    <th className="text-left px-6 py-4 text-[10px] font-black text-lab-muted uppercase tracking-widest">Nr</th>
+                                    <th className="text-left px-6 py-4 text-[10px] font-black text-lab-muted uppercase tracking-widest">Klant</th>
+                                    <th className="text-left px-4 py-4 text-[10px] font-black text-lab-muted uppercase tracking-widest">Datum</th>
+                                    <th className="text-left px-4 py-4 text-[10px] font-black text-lab-muted uppercase tracking-widest">Verval</th>
+                                    <th className="text-right px-6 py-4 text-[10px] font-black text-lab-muted uppercase tracking-widest">Bedrag</th>
+                                    <th className="text-left px-4 py-4 text-[10px] font-black text-lab-muted uppercase tracking-widest">Status</th>
+                                    <th className="px-4 py-4 text-[10px] font-black text-lab-muted uppercase tracking-widest text-right">Acties</th>
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-slate-50">
@@ -935,7 +935,7 @@ export function InvoicesPanel({ userId, year, onRefresh }: InvoicesPanelProps) {
                                     return (
                                         <tr
                                             key={invoice.id}
-                                            className="hover:bg-slate-50 transition-colors group cursor-pointer"
+                                            className="hover:bg-lab-muted transition-colors group cursor-pointer"
                                             onClick={() => setSelectedInvoice(invoice)}
                                         >
                                             {/* Factuurnummer */}
@@ -947,31 +947,31 @@ export function InvoicesPanel({ userId, year, onRefresh }: InvoicesPanelProps) {
 
                                             {/* Klant */}
                                             <td className="px-6 py-4">
-                                                <p className="font-medium text-slate-800 text-sm">{invoice.client_name}</p>
+                                                <p className="font-medium text-lab-muted text-sm">{invoice.client_name}</p>
                                                 {invoice.client_email && (
-                                                    <p className="text-[10px] text-slate-400">{invoice.client_email}</p>
+                                                    <p className="text-[10px] text-lab-muted">{invoice.client_email}</p>
                                                 )}
                                             </td>
 
                                             {/* Datum */}
-                                            <td className="px-4 py-4 text-xs text-slate-500 whitespace-nowrap">
+                                            <td className="px-4 py-4 text-xs text-lab-muted whitespace-nowrap">
                                                 {formatDateShort(invoice.issue_date)}
                                             </td>
 
                                             {/* Verval */}
                                             <td className="px-4 py-4 whitespace-nowrap">
                                                 {invoice.due_date ? (
-                                                    <span className={`text-xs ${overdue ? 'text-red-600 font-bold' : 'text-slate-500'}`}>
+                                                    <span className={`text-xs ${overdue ? 'text-red-600 font-bold' : 'text-lab-muted'}`}>
                                                         {formatDateShort(invoice.due_date)}
                                                         {overdue && <span className="ml-1">(!)</span>}
                                                     </span>
                                                 ) : (
-                                                    <span className="text-xs text-slate-300">—</span>
+                                                    <span className="text-xs text-lab-muted">—</span>
                                                 )}
                                             </td>
 
                                             {/* Bedrag */}
-                                            <td className="px-6 py-4 text-right font-black text-sm whitespace-nowrap text-slate-800">
+                                            <td className="px-6 py-4 text-right font-black text-sm whitespace-nowrap text-lab-muted">
                                                 {formatEuro(invoice.total)}
                                             </td>
 
@@ -992,7 +992,7 @@ export function InvoicesPanel({ userId, year, onRefresh }: InvoicesPanelProps) {
                                                     <button
                                                         onClick={() => setSelectedInvoice(invoice)}
                                                         title="Bekijk factuur"
-                                                        className="p-1.5 text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-all"
+                                                        className="p-1.5 text-lab-muted hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-all"
                                                     >
                                                         <Eye size={14} />
                                                     </button>
@@ -1001,7 +1001,7 @@ export function InvoicesPanel({ userId, year, onRefresh }: InvoicesPanelProps) {
                                                     <button
                                                         onClick={() => handleDownloadPDF(invoice)}
                                                         title="Download PDF"
-                                                        className="p-1.5 text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-all"
+                                                        className="p-1.5 text-lab-muted hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-all"
                                                     >
                                                         <Download size={14} />
                                                     </button>
@@ -1012,7 +1012,7 @@ export function InvoicesPanel({ userId, year, onRefresh }: InvoicesPanelProps) {
                                                             onClick={() => handleMarkVerzonden(invoice)}
                                                             disabled={isLoadingThis}
                                                             title="Markeer als verzonden"
-                                                            className="p-1.5 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all disabled:opacity-50"
+                                                            className="p-1.5 text-lab-muted hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all disabled:opacity-50"
                                                         >
                                                             <Send size={14} />
                                                         </button>
@@ -1024,7 +1024,7 @@ export function InvoicesPanel({ userId, year, onRefresh }: InvoicesPanelProps) {
                                                             onClick={() => handleMarkBetaald(invoice)}
                                                             disabled={isLoadingThis}
                                                             title="Markeer als betaald"
-                                                            className="p-1.5 text-slate-400 hover:text-emerald-600 hover:bg-emerald-50 rounded-lg transition-all disabled:opacity-50"
+                                                            className="p-1.5 text-lab-muted hover:text-lab-sage hover:bg-lab-sage rounded-lg transition-all disabled:opacity-50"
                                                         >
                                                             <Check size={14} />
                                                         </button>
@@ -1036,7 +1036,7 @@ export function InvoicesPanel({ userId, year, onRefresh }: InvoicesPanelProps) {
                                                             onClick={() => handleDelete(invoice)}
                                                             disabled={isLoadingThis}
                                                             title="Verwijder factuur"
-                                                            className="p-1.5 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-all disabled:opacity-50"
+                                                            className="p-1.5 text-lab-muted hover:text-red-500 hover:bg-red-50 rounded-lg transition-all disabled:opacity-50"
                                                         >
                                                             <Trash2 size={14} />
                                                         </button>
@@ -1055,8 +1055,8 @@ export function InvoicesPanel({ userId, year, onRefresh }: InvoicesPanelProps) {
             {/* Totaalregel */}
             {filtered.length > 0 && (
                 <div className="flex justify-end gap-6 px-2 text-sm font-bold">
-                    <span className="text-slate-400">{filtered.length} facturen</span>
-                    <span className="text-slate-700">
+                    <span className="text-lab-muted">{filtered.length} facturen</span>
+                    <span className="text-lab-muted">
                         Totaal: {formatEuro(filtered.reduce((s, inv) => s + inv.total, 0))}
                     </span>
                 </div>

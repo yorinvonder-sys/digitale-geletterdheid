@@ -113,13 +113,13 @@ const config: ToolGuideConfig = {
             minScore: 40,
             emoji: '🎨',
             title: 'Slide Specialist',
-            color: '#F97316',
+            color: '#D97848',
         },
         {
             minScore: 0,
             emoji: '🌱',
             title: 'Aan de slag',
-            color: '#10B981',
+            color: '#5F947D',
         },
     ],
     takeaways: [

@@ -62,26 +62,26 @@ export function ParentConsentApproval() {
   const isApproved = preview?.status === 'approved';
 
   return (
-    <div className="min-h-screen bg-[radial-gradient(circle_at_top,_rgba(217,119,87,0.12),_transparent_45%),linear-gradient(180deg,#FAF9F0_0%,#FFFFFF_100%)] px-4 py-10">
+    <div className="min-h-screen bg-[radial-gradient(circle_at_top,_rgba(217,119,87,0.12),_transparent_45%),linear-gradient(180deg,#FCF6EA_0%,#FFFFFF_100%)] px-4 py-10">
       <div className="max-w-2xl mx-auto">
-        <div className="bg-white rounded-[2rem] border border-slate-200 shadow-xl shadow-slate-200/40 p-8 md:p-10">
+        <div className="bg-white rounded-[2rem] border border-lab-muted shadow-xl shadow-slate-200/40 p-8 md:p-10">
           <div className={`w-16 h-16 rounded-2xl flex items-center justify-center mb-6 ${
-            isApproved ? 'bg-emerald-100 text-emerald-700' : 'bg-indigo-100 text-indigo-700'
+            isApproved ? 'bg-lab-sage text-lab-sage' : 'bg-indigo-100 text-indigo-700'
           }`}>
             {loading ? <Loader2 className="animate-spin" size={30} /> : isApproved ? <CheckCircle2 size={30} /> : <ShieldCheck size={30} />}
           </div>
 
-          <h1 className="text-3xl font-black text-slate-900 mb-3">
+          <h1 className="text-3xl font-black text-lab-muted mb-3">
             {isApproved ? 'Toestemming bevestigd' : 'Ouderlijke toestemming DGSkills'}
           </h1>
-          <p className="text-sm text-slate-600 leading-relaxed mb-8">
+          <p className="text-sm text-lab-muted leading-relaxed mb-8">
             {isApproved
               ? 'De geselecteerde toestemmingen zijn veilig vastgelegd. De leerling kan deze onderdelen nu gebruiken binnen DGSkills.'
               : 'Controleer hieronder de aanvraag en bevestig alleen als u ouder, voogd of verzorger van de leerling bent.'}
           </p>
 
           {loading && (
-            <div className="flex items-center gap-3 text-sm text-slate-500">
+            <div className="flex items-center gap-3 text-sm text-lab-muted">
               <Loader2 className="animate-spin" size={18} />
               Aanvraag laden...
             </div>
@@ -112,13 +112,13 @@ export function ParentConsentApproval() {
                 />
               </div>
 
-              <div className="rounded-2xl border border-slate-200 bg-slate-50 p-5">
-                <p className="text-xs font-bold uppercase tracking-[0.24em] text-slate-500 mb-3">Toestemmingen</p>
+              <div className="rounded-2xl border border-lab-muted bg-lab-muted p-5">
+                <p className="text-xs font-bold uppercase tracking-[0.24em] text-lab-muted mb-3">Toestemmingen</p>
                 <div className="space-y-3">
                   {preview.consentTypes.map((consentType) => (
-                    <div key={consentType} className="rounded-xl bg-white border border-slate-200 px-4 py-3">
-                      <p className="text-sm font-semibold text-slate-900">{formatConsentLabel(consentType)}</p>
-                      <p className="text-xs text-slate-500 mt-1">{CONSENT_META[consentType].description}</p>
+                    <div key={consentType} className="rounded-xl bg-white border border-lab-muted px-4 py-3">
+                      <p className="text-sm font-semibold text-lab-muted">{formatConsentLabel(consentType)}</p>
+                      <p className="text-xs text-lab-muted mt-1">{CONSENT_META[consentType].description}</p>
                     </div>
                   ))}
                 </div>
@@ -150,9 +150,9 @@ export function ParentConsentApproval() {
 
 function InfoCard({ label, value }: { label: string; value: string }) {
   return (
-    <div className="rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3">
-      <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-slate-500 mb-1">{label}</p>
-      <p className="text-sm font-semibold text-slate-900">{value}</p>
+    <div className="rounded-2xl border border-lab-muted bg-lab-muted px-4 py-3">
+      <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-lab-muted mb-1">{label}</p>
+      <p className="text-sm font-semibold text-lab-muted">{value}</p>
     </div>
   );
 }

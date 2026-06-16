@@ -2,13 +2,13 @@ import React, { useEffect } from 'react';
 import { trackEvent } from '../../services/analyticsService';
 
 const FeatureRow = ({ feature, dgskills, other }: { feature: string; dgskills: boolean; other: boolean }) => (
-    <tr className="border-b border-slate-100">
-        <td className="py-4 text-sm font-medium text-slate-700">{feature}</td>
+    <tr className="border-b border-lab-muted">
+        <td className="py-4 text-sm font-medium text-lab-muted">{feature}</td>
         <td className="py-4 text-center">
-            {dgskills ? <span className="text-emerald-500 font-bold">✓</span> : <span className="text-slate-300">—</span>}
+            {dgskills ? <span className="text-lab-sage font-bold">✓</span> : <span className="text-lab-muted">—</span>}
         </td>
         <td className="py-4 text-center">
-            {other ? <span className="text-emerald-500 font-bold">✓</span> : <span className="text-slate-300">—</span>}
+            {other ? <span className="text-lab-sage font-bold">✓</span> : <span className="text-lab-muted">—</span>}
         </td>
     </tr>
 );
@@ -25,17 +25,17 @@ export const ComparisonPage: React.FC<{ competitor: 'digit-vo' | 'basicly' }> = 
         <div className="min-h-screen bg-white pt-32 pb-24 px-6">
             <div className="max-w-4xl mx-auto">
                 <div className="text-center mb-16">
-                    <h1 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">DGSkills vs {competitorName}</h1>
-                    <p className="text-slate-600 max-w-2xl mx-auto">
+                    <h1 className="text-3xl md:text-4xl font-bold text-lab-muted mb-4">DGSkills vs {competitorName}</h1>
+                    <p className="text-lab-muted max-w-2xl mx-auto">
                         Een vergelijking tussen twee methodes voor digitale geletterdheid in het voortgezet onderwijs.
                     </p>
                 </div>
 
-                <div className="bg-white rounded-3xl border border-slate-100 shadow-sm overflow-hidden mb-16">
-                    <p className="text-xs text-slate-400 mb-4 px-6 pt-4">Vergelijking op basis van publiek beschikbare informatie per februari 2026. Kenmerken van andere platforms kunnen gewijzigd zijn.</p>
+                <div className="bg-white rounded-3xl border border-lab-muted shadow-sm overflow-hidden mb-16">
+                    <p className="text-xs text-lab-muted mb-4 px-6 pt-4">Vergelijking op basis van publiek beschikbare informatie per februari 2026. Kenmerken van andere platforms kunnen gewijzigd zijn.</p>
                     <table className="w-full">
-                        <thead className="bg-slate-50">
-                            <tr className="text-left text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+                        <thead className="bg-lab-muted">
+                            <tr className="text-left text-[10px] font-bold text-lab-muted uppercase tracking-widest">
                                 <th className="p-6">Feature</th>
                                 <th className="p-6 text-center text-indigo-600">DGSkills</th>
                                 <th className="p-6 text-center">{competitorName}</th>
@@ -61,9 +61,9 @@ export const ComparisonPage: React.FC<{ competitor: 'digit-vo' | 'basicly' }> = 
                             DGSkills is een sterke keuze als je een methode zoekt die leerlingen écht boeit door gamification en AI. Het is specifiek ontworpen om de werkdruk van docenten te verlagen door automatisering.
                         </p>
                     </div>
-                    <div className="p-8 rounded-2xl bg-slate-50 border border-slate-100">
-                        <h3 className="font-bold text-slate-900 mb-4">Wanneer kiezen voor {competitorName}?</h3>
-                        <p className="text-slate-600 text-sm leading-relaxed">
+                    <div className="p-8 rounded-2xl bg-lab-muted border border-lab-muted">
+                        <h3 className="font-bold text-lab-muted mb-4">Wanneer kiezen voor {competitorName}?</h3>
+                        <p className="text-lab-muted text-sm leading-relaxed">
                             {competitorName} is een gevestigde naam met een brede basis. Als je school al jarenlang gebruikmaakt van hun ecosysteem en geen behoefte heeft aan nieuwe AI-gedreven didactiek, kan het een geschikte keuze zijn.
                         </p>
                     </div>

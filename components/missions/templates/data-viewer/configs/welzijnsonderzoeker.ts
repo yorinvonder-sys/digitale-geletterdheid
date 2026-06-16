@@ -118,12 +118,12 @@ export const welzijnsonderzoekerConfig: DataViewerConfig = {
                 'Gebaseerd op CBS-data en Trimbos-onderzoek (2025): gemiddeld aantal uren per dag dat Nederlandse jongeren van 12–18 jaar besteden aan verschillende schermactiviteiten. Let goed op de categorieën.',
             type: 'bar-chart',
             chartData: [
-                { label: 'Social media',         value: 2.8, color: '#D97757' },
-                { label: 'Gaming',               value: 1.9, color: '#8B5CF6' },
-                { label: 'Streaming (video)',     value: 1.6, color: '#3B82F6' },
-                { label: 'School/huiswerk',       value: 1.2, color: '#10B981' },
-                { label: 'Communicatie (app)',    value: 0.9, color: '#F59E0B' },
-                { label: 'Creatief (muziek/video)', value: 0.4, color: '#06B6D4' },
+                { label: 'Social media',         value: 2.8, color: '#D97848' },
+                { label: 'Gaming',               value: 1.9, color: '#0B453F' },
+                { label: 'Streaming (video)',     value: 1.6, color: '#0B453F' },
+                { label: 'School/huiswerk',       value: 1.2, color: '#5F947D' },
+                { label: 'Communicatie (app)',    value: 0.9, color: '#D7C95F' },
+                { label: 'Creatief (muziek/video)', value: 0.4, color: '#0B453F' },
             ],
             questions: [
                 {
@@ -214,25 +214,25 @@ export const welzijnsonderzoekerConfig: DataViewerConfig = {
             minScore: 85,
             emoji: '🔬',
             title: 'Welzijnsexpert!',
-            color: '#10B981',
+            color: '#5F947D',
         },
         {
             minScore: 65,
             emoji: '📊',
             title: 'Data-detective',
-            color: '#3B82F6',
+            color: '#0B453F',
         },
         {
             minScore: 40,
             emoji: '🔍',
             title: 'Op onderzoek uit',
-            color: '#F59E0B',
+            color: '#D7C95F',
         },
         {
             minScore: 0,
             emoji: '📋',
             title: 'Onderzoeker in opleiding',
-            color: '#6B6B66',
+            color: '#445865',
         },
     ],
 

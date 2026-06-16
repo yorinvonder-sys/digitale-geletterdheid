@@ -174,17 +174,17 @@ export function BackupSection({ userId, year }: BackupSectionProps) {
     return (
         <div className="space-y-5">
             {/* Handmatige backup card */}
-            <div className="bg-white rounded-[2rem] border border-slate-200 shadow-sm p-5 sm:p-8">
+            <div className="bg-white rounded-[2rem] border border-lab-muted shadow-sm p-5 sm:p-8">
                 {/* Header */}
                 <div className="flex items-center gap-3 mb-6">
                     <div className="w-10 h-10 bg-indigo-100 rounded-xl flex items-center justify-center">
                         <Archive size={20} className="text-indigo-600" />
                     </div>
                     <div>
-                        <h3 className="text-lg font-black text-slate-900 uppercase tracking-tight">
+                        <h3 className="text-lg font-black text-lab-muted uppercase tracking-tight">
                             Backup & Bewaarplicht
                         </h3>
-                        <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">
+                        <p className="text-[10px] text-lab-muted font-bold uppercase tracking-widest">
                             Belastingdienst: administratie 7 jaar bewaren
                         </p>
                     </div>
@@ -192,15 +192,15 @@ export function BackupSection({ userId, year }: BackupSectionProps) {
 
                 {/* Waarschuwing als backup oud is */}
                 {!loading && stale && (
-                    <div className="flex items-start gap-3 bg-amber-50 border border-amber-100 rounded-2xl px-5 py-4 mb-5">
-                        <AlertTriangle size={18} className="text-amber-500 shrink-0 mt-0.5" />
+                    <div className="flex items-start gap-3 bg-lab-gold border border-lab-gold rounded-2xl px-5 py-4 mb-5">
+                        <AlertTriangle size={18} className="text-lab-gold shrink-0 mt-0.5" />
                         <div>
-                            <p className="text-sm font-black text-amber-800">
+                            <p className="text-sm font-black text-lab-gold">
                                 {lastBackup
                                     ? `Laatste backup is ${daysSinceBackup(lastBackup)} dagen geleden`
                                     : 'Nog geen backup gemaakt'}
                             </p>
-                            <p className="text-xs text-amber-700 mt-0.5">
+                            <p className="text-xs text-lab-gold mt-0.5">
                                 Maak regelmatig een backup van je volledige administratie.
                                 Bewaar backups minimaal 7 jaar conform de fiscale bewaarplicht.
                             </p>
@@ -210,11 +210,11 @@ export function BackupSection({ userId, year }: BackupSectionProps) {
 
                 {/* Succes melding */}
                 {done && (
-                    <div className="flex items-center gap-3 bg-emerald-50 border border-emerald-100 rounded-2xl px-5 py-4 mb-5">
-                        <CheckCircle size={18} className="text-emerald-500 shrink-0" />
+                    <div className="flex items-center gap-3 bg-lab-sage border border-lab-sage rounded-2xl px-5 py-4 mb-5">
+                        <CheckCircle size={18} className="text-lab-sage shrink-0" />
                         <div>
-                            <p className="text-sm font-black text-emerald-800">Backup succesvol gedownload</p>
-                            <p className="text-xs text-emerald-700 mt-0.5">
+                            <p className="text-sm font-black text-lab-sage">Backup succesvol gedownload</p>
+                            <p className="text-xs text-lab-sage mt-0.5">
                                 Sla het ZIP-bestand op een veilige plek op (bijv. externe schijf of cloud).
                             </p>
                         </div>
@@ -233,10 +233,10 @@ export function BackupSection({ userId, year }: BackupSectionProps) {
                 {downloading && progress && (
                     <div className="mb-5">
                         <div className="flex justify-between mb-1.5">
-                            <span className="text-xs font-bold text-slate-600">{progress.phase}</span>
+                            <span className="text-xs font-bold text-lab-muted">{progress.phase}</span>
                             <span className="text-xs font-black text-indigo-600 tabular-nums">{progressPct}%</span>
                         </div>
-                        <div className="h-2.5 bg-slate-100 rounded-full overflow-hidden">
+                        <div className="h-2.5 bg-lab-muted rounded-full overflow-hidden">
                             <div
                                 className="h-full bg-indigo-500 rounded-full transition-all duration-300"
                                 style={{ width: `${progressPct}%` }}
@@ -263,7 +263,7 @@ export function BackupSection({ userId, year }: BackupSectionProps) {
                     <button
                         onClick={() => handleDownload()}
                         disabled={downloading}
-                        className="w-full sm:w-auto flex items-center gap-2 px-5 py-3 bg-white border border-slate-200 text-slate-700 rounded-xl font-bold text-sm hover:bg-slate-50 disabled:opacity-50 transition-colors"
+                        className="w-full sm:w-auto flex items-center gap-2 px-5 py-3 bg-white border border-lab-muted text-lab-muted rounded-xl font-bold text-sm hover:bg-lab-muted disabled:opacity-50 transition-colors"
                     >
                         <Shield size={16} />
                         Volledige backup (alle jaren)
@@ -271,20 +271,20 @@ export function BackupSection({ userId, year }: BackupSectionProps) {
                 </div>
 
                 {/* Laatste backup info */}
-                <div className="mt-5 pt-5 border-t border-slate-100">
+                <div className="mt-5 pt-5 border-t border-lab-muted">
                     <div className="flex items-center gap-2">
-                        <Clock size={14} className="text-slate-400" />
+                        <Clock size={14} className="text-lab-muted" />
                         {loading ? (
-                            <span className="text-xs text-slate-400">Laden...</span>
+                            <span className="text-xs text-lab-muted">Laden...</span>
                         ) : lastBackup ? (
-                            <span className={`text-xs font-bold ${stale ? 'text-amber-600' : 'text-slate-500'}`}>
+                            <span className={`text-xs font-bold ${stale ? 'text-lab-gold' : 'text-lab-muted'}`}>
                                 Laatste backup: {formatBackupDate(lastBackup)}
                             </span>
                         ) : (
-                            <span className="text-xs text-slate-400 italic">Nog geen backup gemaakt</span>
+                            <span className="text-xs text-lab-muted italic">Nog geen backup gemaakt</span>
                         )}
                     </div>
-                    <p className="text-[10px] text-slate-400 mt-2 leading-relaxed">
+                    <p className="text-[10px] text-lab-muted mt-2 leading-relaxed">
                         De backup bevat alle transacties, bonnetjes (incl. afbeeldingen), abonnementen,
                         uren, facturen en instellingen als ZIP-bestand. Inclusief CSV-export van transacties
                         voor gebruik in Excel of andere software.
@@ -293,16 +293,16 @@ export function BackupSection({ userId, year }: BackupSectionProps) {
             </div>
 
             {/* Google Drive Auto-Backup card */}
-            <div className="bg-white rounded-[2rem] border border-slate-200 shadow-sm p-5 sm:p-8">
+            <div className="bg-white rounded-[2rem] border border-lab-muted shadow-sm p-5 sm:p-8">
                 <div className="flex items-center gap-3 mb-6">
                     <div className="w-10 h-10 bg-blue-100 rounded-xl flex items-center justify-center">
                         <Cloud size={20} className="text-blue-600" />
                     </div>
                     <div>
-                        <h3 className="text-lg font-black text-slate-900 uppercase tracking-tight">
+                        <h3 className="text-lg font-black text-lab-muted uppercase tracking-tight">
                             Google Drive Auto-Backup
                         </h3>
-                        <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">
+                        <p className="text-[10px] text-lab-muted font-bold uppercase tracking-widest">
                             Automatisch elke zondag om 03:00
                         </p>
                     </div>
@@ -318,9 +318,9 @@ export function BackupSection({ userId, year }: BackupSectionProps) {
 
                 {/* Drive success */}
                 {driveDone && (
-                    <div className="flex items-center gap-3 bg-emerald-50 border border-emerald-100 rounded-2xl px-5 py-4 mb-5">
-                        <CheckCircle size={18} className="text-emerald-500 shrink-0" />
-                        <p className="text-sm font-black text-emerald-800">
+                    <div className="flex items-center gap-3 bg-lab-sage border border-lab-sage rounded-2xl px-5 py-4 mb-5">
+                        <CheckCircle size={18} className="text-lab-sage shrink-0" />
+                        <p className="text-sm font-black text-lab-sage">
                             {driveStatus?.connected && !driveStatus.lastBackupAt
                                 ? 'Google Drive succesvol gekoppeld!'
                                 : 'Backup succesvol naar Google Drive geüpload!'}
@@ -329,8 +329,8 @@ export function BackupSection({ userId, year }: BackupSectionProps) {
                 )}
 
                 {driveLoading ? (
-                    <div className="flex items-center gap-2 text-slate-400 text-sm">
-                        <div className="w-4 h-4 border-2 border-slate-300 border-t-transparent rounded-full animate-spin" />
+                    <div className="flex items-center gap-2 text-lab-muted text-sm">
+                        <div className="w-4 h-4 border-2 border-lab-muted border-t-transparent rounded-full animate-spin" />
                         Laden...
                     </div>
                 ) : driveStatus?.connected ? (
@@ -380,10 +380,10 @@ export function BackupSection({ userId, year }: BackupSectionProps) {
                             <button
                                 onClick={handleDriveDisconnect}
                                 disabled={driveAction !== null}
-                                className="w-full sm:w-auto flex items-center gap-2 px-5 py-3 bg-white border border-slate-200 text-slate-500 rounded-xl font-bold text-sm hover:bg-red-50 hover:text-red-600 hover:border-red-200 disabled:opacity-50 transition-colors"
+                                className="w-full sm:w-auto flex items-center gap-2 px-5 py-3 bg-white border border-lab-muted text-lab-muted rounded-xl font-bold text-sm hover:bg-red-50 hover:text-red-600 hover:border-red-200 disabled:opacity-50 transition-colors"
                             >
                                 {driveAction === 'disconnecting' ? (
-                                    <div className="w-4 h-4 border-2 border-slate-400 border-t-transparent rounded-full animate-spin" />
+                                    <div className="w-4 h-4 border-2 border-lab-muted border-t-transparent rounded-full animate-spin" />
                                 ) : (
                                     <Unlink size={16} />
                                 )}
@@ -394,13 +394,13 @@ export function BackupSection({ userId, year }: BackupSectionProps) {
                 ) : (
                     /* Not connected state */
                     <div className="space-y-4">
-                        <div className="flex items-start gap-3 bg-slate-50 border border-slate-100 rounded-2xl px-5 py-4">
-                            <CloudOff size={18} className="text-slate-400 shrink-0 mt-0.5" />
+                        <div className="flex items-start gap-3 bg-lab-muted border border-lab-muted rounded-2xl px-5 py-4">
+                            <CloudOff size={18} className="text-lab-muted shrink-0 mt-0.5" />
                             <div>
-                                <p className="text-sm font-bold text-slate-700">
+                                <p className="text-sm font-bold text-lab-muted">
                                     Nog niet verbonden
                                 </p>
-                                <p className="text-xs text-slate-500 mt-0.5">
+                                <p className="text-xs text-lab-muted mt-0.5">
                                     Koppel je Google Drive om automatisch wekelijkse backups te ontvangen.
                                     De backups worden opgeslagen in een map "DGSkills Backups" op je Drive.
                                 </p>

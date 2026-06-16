@@ -180,22 +180,22 @@ export function MobileReceiptPage({ userId, onNavigateHome }: MobileReceiptPageP
 
     if (screen === 'success') {
         return (
-            <div className="min-h-screen bg-emerald-50 flex flex-col items-center justify-center p-6 text-center">
-                <div className="w-20 h-20 bg-emerald-100 rounded-full flex items-center justify-center mb-6">
-                    <Check size={40} className="text-emerald-600" />
+            <div className="min-h-screen bg-lab-sage flex flex-col items-center justify-center p-6 text-center">
+                <div className="w-20 h-20 bg-lab-sage rounded-full flex items-center justify-center mb-6">
+                    <Check size={40} className="text-lab-sage" />
                 </div>
-                <h1 className="text-2xl font-black text-emerald-900 mb-2">Bonnetje opgeslagen!</h1>
-                <p className="text-emerald-700 mb-8">Je bonnetje is succesvol gescand en opgeslagen in je boekhouding.</p>
+                <h1 className="text-2xl font-black text-lab-sage mb-2">Bonnetje opgeslagen!</h1>
+                <p className="text-lab-sage mb-8">Je bonnetje is succesvol gescand en opgeslagen in je boekhouding.</p>
                 <button
                     onClick={handleReset}
-                    className="w-full max-w-xs py-4 bg-emerald-600 text-white rounded-2xl font-black text-lg shadow-lg active:scale-95 transition-transform"
+                    className="w-full max-w-xs py-4 bg-lab-sage text-white rounded-2xl font-black text-lg shadow-lg active:scale-95 transition-transform"
                 >
                     Nog een bonnetje
                 </button>
                 {onNavigateHome && (
                     <button
                         onClick={onNavigateHome}
-                        className="mt-4 text-sm text-emerald-600 font-bold"
+                        className="mt-4 text-sm text-lab-sage font-bold"
                     >
                         Naar dashboard
                     </button>
@@ -206,7 +206,7 @@ export function MobileReceiptPage({ userId, onNavigateHome }: MobileReceiptPageP
 
     if (screen === 'scan') {
         return (
-            <div className="min-h-screen bg-slate-900 flex flex-col items-center justify-center p-6 text-center">
+            <div className="min-h-screen bg-lab-muted flex flex-col items-center justify-center p-6 text-center">
                 {previewUrl && (
                     <div className="w-full max-w-sm mb-6 rounded-2xl overflow-hidden border-4 border-indigo-500 shadow-2xl">
                         <img src={previewUrl} alt="Bonnetje preview" className="w-full object-contain max-h-64" />
@@ -216,7 +216,7 @@ export function MobileReceiptPage({ userId, onNavigateHome }: MobileReceiptPageP
                     <div className="w-16 h-16 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin" />
                     <div>
                         <p className="text-white font-black text-xl">AI scant bonnetje...</p>
-                        <p className="text-slate-400 text-sm mt-1">AI analyseert je bonnetje</p>
+                        <p className="text-lab-muted text-sm mt-1">AI analyseert je bonnetje</p>
                     </div>
                 </div>
             </div>
@@ -225,25 +225,25 @@ export function MobileReceiptPage({ userId, onNavigateHome }: MobileReceiptPageP
 
     if (screen === 'form' && form) {
         return (
-            <div className="min-h-screen bg-slate-50 flex flex-col">
+            <div className="min-h-screen bg-lab-muted flex flex-col">
                 {/* Header */}
-                <div className="sticky top-0 bg-white border-b border-slate-200 px-4 py-3 flex items-center gap-3 z-10">
-                    <button onClick={handleReset} className="p-2 rounded-xl hover:bg-slate-100">
-                        <ChevronLeft size={20} className="text-slate-600" />
+                <div className="sticky top-0 bg-white border-b border-lab-muted px-4 py-3 flex items-center gap-3 z-10">
+                    <button onClick={handleReset} className="p-2 rounded-xl hover:bg-lab-muted">
+                        <ChevronLeft size={20} className="text-lab-muted" />
                     </button>
                     <div className="flex-1">
-                        <h1 className="font-black text-slate-900">Bonnetje controleren</h1>
+                        <h1 className="font-black text-lab-muted">Bonnetje controleren</h1>
                         {!scanning && !error && (
-                            <p className="text-[10px] text-emerald-600 font-bold uppercase tracking-widest flex items-center gap-1">
+                            <p className="text-[10px] text-lab-sage font-bold uppercase tracking-widest flex items-center gap-1">
                                 <Sparkles size={10} /> AI gescand — controleer de gegevens
                             </p>
                         )}
                         {error && (
-                            <p className="text-[10px] text-amber-600 font-bold uppercase tracking-widest">{error}</p>
+                            <p className="text-[10px] text-lab-gold font-bold uppercase tracking-widest">{error}</p>
                         )}
                     </div>
                     {previewUrl && (
-                        <div className="w-10 h-10 rounded-lg overflow-hidden border border-slate-200 shrink-0">
+                        <div className="w-10 h-10 rounded-lg overflow-hidden border border-lab-muted shrink-0">
                             <img src={previewUrl} alt="preview" className="w-full h-full object-cover" />
                         </div>
                     )}
@@ -258,7 +258,7 @@ export function MobileReceiptPage({ userId, onNavigateHome }: MobileReceiptPageP
                             value={form.supplier}
                             onChange={e => setForm(f => f ? { ...f, supplier: e.target.value } : f)}
                             placeholder="Naam winkel / bedrijf"
-                            className="w-full px-4 py-3.5 border border-slate-200 rounded-xl text-base focus:outline-none focus:ring-2 focus:ring-indigo-300 bg-white"
+                            className="w-full px-4 py-3.5 border border-lab-muted rounded-xl text-base focus:outline-none focus:ring-2 focus:ring-indigo-300 bg-white"
                         />
                     </FieldGroup>
 
@@ -268,7 +268,7 @@ export function MobileReceiptPage({ userId, onNavigateHome }: MobileReceiptPageP
                             type="date"
                             value={form.date}
                             onChange={e => setForm(f => f ? { ...f, date: e.target.value } : f)}
-                            className="w-full px-4 py-3.5 border border-slate-200 rounded-xl text-base focus:outline-none focus:ring-2 focus:ring-indigo-300 bg-white"
+                            className="w-full px-4 py-3.5 border border-lab-muted rounded-xl text-base focus:outline-none focus:ring-2 focus:ring-indigo-300 bg-white"
                         />
                     </FieldGroup>
 
@@ -282,14 +282,14 @@ export function MobileReceiptPage({ userId, onNavigateHome }: MobileReceiptPageP
                                 value={form.amount}
                                 onChange={e => setForm(f => f ? { ...f, amount: e.target.value } : f)}
                                 placeholder="0.00"
-                                className="w-full px-4 py-3.5 border border-slate-200 rounded-xl text-base focus:outline-none focus:ring-2 focus:ring-indigo-300 bg-white"
+                                className="w-full px-4 py-3.5 border border-lab-muted rounded-xl text-base focus:outline-none focus:ring-2 focus:ring-indigo-300 bg-white"
                             />
                         </FieldGroup>
                         <FieldGroup label="BTW-tarief">
                             <select
                                 value={form.vatRate}
                                 onChange={e => setForm(f => f ? { ...f, vatRate: Number(e.target.value) as 0 | 9 | 21 } : f)}
-                                className="w-full px-4 py-3.5 border border-slate-200 rounded-xl text-base focus:outline-none focus:ring-2 focus:ring-indigo-300 bg-white appearance-none"
+                                className="w-full px-4 py-3.5 border border-lab-muted rounded-xl text-base focus:outline-none focus:ring-2 focus:ring-indigo-300 bg-white appearance-none"
                             >
                                 <option value={21}>21%</option>
                                 <option value={9}>9%</option>
@@ -307,7 +307,7 @@ export function MobileReceiptPage({ userId, onNavigateHome }: MobileReceiptPageP
                             value={form.vatAmount}
                             onChange={e => setForm(f => f ? { ...f, vatAmount: e.target.value } : f)}
                             placeholder="0.00"
-                            className="w-full px-4 py-3.5 border border-slate-200 rounded-xl text-base focus:outline-none focus:ring-2 focus:ring-indigo-300 bg-white"
+                            className="w-full px-4 py-3.5 border border-lab-muted rounded-xl text-base focus:outline-none focus:ring-2 focus:ring-indigo-300 bg-white"
                         />
                     </FieldGroup>
 
@@ -316,7 +316,7 @@ export function MobileReceiptPage({ userId, onNavigateHome }: MobileReceiptPageP
                         <select
                             value={form.category}
                             onChange={e => setForm(f => f ? { ...f, category: e.target.value as TransactionCategory } : f)}
-                            className="w-full px-4 py-3.5 border border-slate-200 rounded-xl text-base focus:outline-none focus:ring-2 focus:ring-indigo-300 bg-white appearance-none"
+                            className="w-full px-4 py-3.5 border border-lab-muted rounded-xl text-base focus:outline-none focus:ring-2 focus:ring-indigo-300 bg-white appearance-none"
                         >
                             {EXPENSE_CATEGORIES.map(cat => (
                                 <option key={cat} value={cat}>{CATEGORY_LABELS[cat]}</option>
@@ -331,13 +331,13 @@ export function MobileReceiptPage({ userId, onNavigateHome }: MobileReceiptPageP
                             value={form.description}
                             onChange={e => setForm(f => f ? { ...f, description: e.target.value } : f)}
                             placeholder="Korte omschrijving"
-                            className="w-full px-4 py-3.5 border border-slate-200 rounded-xl text-base focus:outline-none focus:ring-2 focus:ring-indigo-300 bg-white"
+                            className="w-full px-4 py-3.5 border border-lab-muted rounded-xl text-base focus:outline-none focus:ring-2 focus:ring-indigo-300 bg-white"
                         />
                     </FieldGroup>
                 </div>
 
                 {/* Sticky Save Button */}
-                <div className="fixed bottom-0 left-0 right-0 p-4 bg-white border-t border-slate-200 safe-area-inset-bottom">
+                <div className="fixed bottom-0 left-0 right-0 p-4 bg-white border-t border-lab-muted safe-area-inset-bottom">
                     {error && !scanning && (
                         <p className="text-xs text-red-600 text-center mb-2 font-medium">{error}</p>
                     )}
@@ -359,7 +359,7 @@ export function MobileReceiptPage({ userId, onNavigateHome }: MobileReceiptPageP
 
     // HOME SCREEN
     return (
-        <div className="min-h-screen bg-slate-50 flex flex-col">
+        <div className="min-h-screen bg-lab-muted flex flex-col">
             {/* Header */}
             <div className="bg-indigo-600 text-white px-5 pt-12 pb-8 safe-area-inset-top">
                 <div className="flex items-center justify-between mb-2">
@@ -413,21 +413,21 @@ export function MobileReceiptPage({ userId, onNavigateHome }: MobileReceiptPageP
                 {/* Gallerij / upload */}
                 <button
                     onClick={() => galleryRef.current?.click()}
-                    className="w-full bg-white border-2 border-dashed border-slate-300 text-slate-600 rounded-[2rem] p-6 flex flex-col items-center gap-3 active:scale-95 transition-transform active:bg-slate-50"
+                    className="w-full bg-white border-2 border-dashed border-lab-muted text-lab-muted rounded-[2rem] p-6 flex flex-col items-center gap-3 active:scale-95 transition-transform active:bg-lab-muted"
                 >
-                    <div className="w-12 h-12 bg-slate-100 rounded-full flex items-center justify-center">
-                        <Upload size={24} className="text-slate-400" />
+                    <div className="w-12 h-12 bg-lab-muted rounded-full flex items-center justify-center">
+                        <Upload size={24} className="text-lab-muted" />
                     </div>
                     <div className="text-center">
-                        <p className="font-black text-slate-800">Uit gallerij / bestanden</p>
-                        <p className="text-slate-400 text-sm mt-0.5">Afbeelding of PDF uploaden</p>
+                        <p className="font-black text-lab-muted">Uit gallerij / bestanden</p>
+                        <p className="text-lab-muted text-sm mt-0.5">Afbeelding of PDF uploaden</p>
                     </div>
                 </button>
 
                 {/* AI badge */}
-                <div className="bg-amber-50 border border-amber-100 rounded-2xl px-4 py-3 flex items-start gap-3">
-                    <Sparkles size={18} className="text-amber-500 shrink-0 mt-0.5" />
-                    <p className="text-xs text-amber-800 leading-relaxed">
+                <div className="bg-lab-gold border border-lab-gold rounded-2xl px-4 py-3 flex items-start gap-3">
+                    <Sparkles size={18} className="text-lab-gold shrink-0 mt-0.5" />
+                    <p className="text-xs text-lab-gold leading-relaxed">
                         <strong>AI</strong> leest automatisch de leverancier, datum, bedrag en BTW van je bonnetje. Je kunt daarna alles controleren en aanpassen.
                     </p>
                 </div>
@@ -435,35 +435,35 @@ export function MobileReceiptPage({ userId, onNavigateHome }: MobileReceiptPageP
                 {/* Recente bonnetjes */}
                 <div>
                     <div className="flex items-center justify-between mb-3">
-                        <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Recent ({CURRENT_YEAR})</p>
-                        <span className="text-[10px] text-slate-400 font-bold">{recentList.length} bonnetjes</span>
+                        <p className="text-[10px] font-black text-lab-muted uppercase tracking-widest">Recent ({CURRENT_YEAR})</p>
+                        <span className="text-[10px] text-lab-muted font-bold">{recentList.length} bonnetjes</span>
                     </div>
 
                     {loadingList ? (
                         <div className="flex justify-center py-8">
-                            <Loader size={24} className="animate-spin text-slate-300" />
+                            <Loader size={24} className="animate-spin text-lab-muted" />
                         </div>
                     ) : recentList.length === 0 ? (
-                        <div className="bg-white rounded-2xl border border-slate-200 p-6 text-center">
-                            <p className="text-slate-400 text-sm">Nog geen bonnetjes dit jaar</p>
+                        <div className="bg-white rounded-2xl border border-lab-muted p-6 text-center">
+                            <p className="text-lab-muted text-sm">Nog geen bonnetjes dit jaar</p>
                         </div>
                     ) : (
                         <div className="space-y-2">
                             {recentList.map(receipt => (
                                 <div
                                     key={receipt.id}
-                                    className="bg-white rounded-2xl border border-slate-200 px-4 py-3 flex items-center gap-3"
+                                    className="bg-white rounded-2xl border border-lab-muted px-4 py-3 flex items-center gap-3"
                                 >
-                                    <div className="w-9 h-9 bg-slate-100 rounded-xl flex items-center justify-center shrink-0">
-                                        <Receipt size={16} className="text-slate-400" />
+                                    <div className="w-9 h-9 bg-lab-muted rounded-xl flex items-center justify-center shrink-0">
+                                        <Receipt size={16} className="text-lab-muted" />
                                     </div>
                                     <div className="flex-1 min-w-0">
-                                        <p className="font-bold text-slate-800 text-sm truncate">
+                                        <p className="font-bold text-lab-muted text-sm truncate">
                                             {receipt.supplier || receipt.description || 'Onbekend'}
                                         </p>
-                                        <p className="text-xs text-slate-400">{formatDate(receipt.date)}</p>
+                                        <p className="text-xs text-lab-muted">{formatDate(receipt.date)}</p>
                                     </div>
-                                    <p className="font-black text-slate-900 text-sm shrink-0">
+                                    <p className="font-black text-lab-muted text-sm shrink-0">
                                         {formatEuro(receipt.amount)}
                                     </p>
                                 </div>
@@ -473,7 +473,7 @@ export function MobileReceiptPage({ userId, onNavigateHome }: MobileReceiptPageP
                 </div>
 
                 {/* Tip */}
-                <p className="text-center text-xs text-slate-400 pb-6">
+                <p className="text-center text-xs text-lab-muted pb-6">
                     Voeg deze pagina toe aan je startscherm voor snelle toegang
                 </p>
             </div>
@@ -485,7 +485,7 @@ export function MobileReceiptPage({ userId, onNavigateHome }: MobileReceiptPageP
 function FieldGroup({ label, children }: { label: string; children: React.ReactNode }) {
     return (
         <div>
-            <label className="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1.5">
+            <label className="block text-[10px] font-black text-lab-muted uppercase tracking-widest mb-1.5">
                 {label}
             </label>
             {children}
