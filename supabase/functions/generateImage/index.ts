@@ -20,6 +20,7 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 import { buildCorsHeaders, rejectDisallowedBrowserRequest } from "../_shared/cors.ts";
 import { checkDurableRateLimit, rateLimitResponse, rateLimitHeaders, type RateLimitResult } from "../_shared/rateLimiter.ts";
 import { sanitizePrompt } from "../_shared/promptSanitizer.ts";
+import { redactPii } from "../_shared/piiRedactor.ts";
 import { ensureAiInteractionConsent } from "../_shared/consent.ts";
 import { getUserSchoolId, logAiUsageEvent, resolveAiRequestId } from "../_shared/aiUsageLogger.ts";
 import { generateFluxImage, getBflImageModel } from "../_shared/bflImageClient.ts";
@@ -209,9 +210,11 @@ Deno.serve(async (req: Request) => {
         );
     }
 
-    // 7. Build safe prompt with child-safety prefix and style prefix
+    // 7. Build safe prompt with child-safety prefix and style prefix.
+    // Data minimisation: mask high-confidence PII before it reaches the provider.
+    const redactedPrompt = redactPii(sanitizeResult.sanitized).redacted;
     const safePrompt =
-        `${SAFETY_PREFIX}${STYLE_PREFIXES[style]}${sanitizeResult.sanitized} ${ASPECT_RATIO_LABELS[aspectRatio]} Geen tekst of watermerk in de afbeelding.`;
+        `${SAFETY_PREFIX}${STYLE_PREFIXES[style]}${redactedPrompt} ${ASPECT_RATIO_LABELS[aspectRatio]} Geen tekst of watermerk in de afbeelding.`;
 
     // Forward to BFL. Provider delivery URLs are downloaded by the server.
     try {
