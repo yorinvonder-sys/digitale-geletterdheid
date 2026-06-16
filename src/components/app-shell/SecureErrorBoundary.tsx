@@ -15,7 +15,7 @@ interface State {
 /**
  * SecureErrorBoundary - Catches React component crashes without leaking
  * sensitive information (stack traces, file paths, internal state) to users.
- * 
+ *
  * Security considerations for vibe-coded apps:
  * - Stack traces can reveal file structure, API endpoints, and service names
  * - Error messages may contain user data, tokens, or internal state
@@ -56,23 +56,23 @@ export class SecureErrorBoundary extends Component<Props, State> {
 
             return (
                 <div className="flex flex-col items-center justify-center min-h-[300px] p-8 text-center">
-                    <div className="w-16 h-16 bg-lab-gold rounded-2xl flex items-center justify-center mb-4">
-                        <AlertTriangle className="text-lab-muted" size={32} />
+                    <div className="w-16 h-16 bg-duck-acid/20 rounded-2xl flex items-center justify-center mb-4">
+                        <AlertTriangle className="text-duck-ink/65" size={32} />
                     </div>
-                    <h2 className="text-xl font-bold text-lab-ink mb-2">
+                    <h2 className="text-xl font-bold text-duck-ink mb-2">
                         Oeps, er ging iets mis
                     </h2>
-                    <p className="text-lab-muted mb-1 max-w-md">
+                    <p className="text-duck-ink/65 mb-1 max-w-md">
                         Dit onderdeel werkt even niet. Probeer het opnieuw of ververs de pagina.
                     </p>
-                    <p className="text-xs text-lab-muted mb-6 font-mono">
+                    <p className="text-xs text-duck-ink/65 mb-6 font-mono">
                         Referentie: {this.state.errorId}
                     </p>
                     <div className="flex gap-3">
                         <button
                             onClick={this.handleRetry}
-                            className="px-5 py-2.5 bg-lab-coral text-white rounded-xl font-bold text-sm
-                                       hover:bg-lab-coral hover:text-white transition-colors flex items-center gap-2
+                            className="px-5 py-2.5 bg-duck-ink text-white rounded-xl font-bold text-sm
+                                       hover:bg-duck-ink/80 transition-colors flex items-center gap-2
                                        active:scale-95 transition-transform"
                         >
                             <RefreshCw size={16} />
@@ -80,8 +80,8 @@ export class SecureErrorBoundary extends Component<Props, State> {
                         </button>
                         <button
                             onClick={() => window.location.reload()}
-                            className="px-5 py-2.5 bg-lab-cream text-lab-muted rounded-xl font-bold text-sm
-                                       hover:bg-lab-creamDeep transition-colors active:scale-95 transition-transform"
+                            className="px-5 py-2.5 bg-duck-bg text-duck-ink/65 rounded-xl font-bold text-sm
+                                       hover:bg-duck-bgLight transition-colors active:scale-95 transition-transform"
                         >
                             Pagina verversen
                         </button>
