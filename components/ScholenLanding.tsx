@@ -186,6 +186,9 @@ const PipGuide: React.FC<{ pose: string; tooltip: string; side: string; children
     </Suspense>
 );
 
+// Gamified scroll progress
+import { ScrollQuestBar } from './scholen/ScrollQuestBar';
+
 // JSON-LD structured data for Google rich results
 const structuredData = {
     "@context": "https://schema.org",
@@ -278,6 +281,7 @@ const SECTION_IDS = {
     customization: 'op-maat',
     howItWorks: 'hoe-het-werkt',
     platform: 'platform-preview',
+    sneak: 'probeer-het-zelf',
     slo: 'slo-kerndoelen',
     ict: 'voor-ict',
     faq: 'veelgestelde-vragen',
@@ -390,6 +394,9 @@ export const ScholenLanding: React.FC = () => {
         <div className="min-h-screen antialiased" style={{ backgroundColor: C.bg, fontFamily: SANS, color: C.text }}>
             <a href="#main-content" className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:text-white focus:rounded-lg focus:font-semibold text-sm" style={{ backgroundColor: C.accent }}>Skip naar inhoud</a>
 
+            {/* Gamified scroll progress bar */}
+            <ScrollQuestBar />
+
             {/* Nav */}
             <nav aria-label="Hoofdnavigatie" className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled
                 ? 'backdrop-blur-md shadow-[0_1px_0_0_rgba(0,0,0,0.04)]'
@@ -405,8 +412,8 @@ export const ScholenLanding: React.FC = () => {
                         {[
                             { label: 'Waarom DGSkills', section: SECTION_IDS.features },
                             { label: 'Op maat', section: SECTION_IDS.customization },
+                            { label: 'Probeer het', section: SECTION_IDS.sneak },
                             { label: 'Kerndoelen', section: SECTION_IDS.slo },
-                            { label: 'Veelgestelde vragen', section: SECTION_IDS.faq },
                             { label: 'Gratis pilot', section: SECTION_IDS.contact },
                         ].map(item => (
                             <button key={item.label} onClick={() => scrollTo(item.section)} className="text-[13px] font-medium transition-colors focus-visible:ring-2 focus-visible:rounded-md" style={{ color: C.textMuted }} onMouseEnter={e => (e.currentTarget.style.color = C.text)} onMouseLeave={e => (e.currentTarget.style.color = C.textMuted)}>{item.label}</button>
@@ -436,6 +443,7 @@ export const ScholenLanding: React.FC = () => {
                             {[
                                 { label: 'Waarom DGSkills', section: SECTION_IDS.features },
                                 { label: 'Op maat', section: SECTION_IDS.customization },
+                                { label: 'Probeer het zelf', section: SECTION_IDS.sneak },
                                 { label: 'Kerndoelen', section: SECTION_IDS.slo },
                                 { label: 'Veelgestelde vragen', section: SECTION_IDS.faq },
                                 { label: 'Gratis pilot', section: SECTION_IDS.contact },
