@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { DuckMark } from '@/components/brand/DuckMark';
-import { DuckMascot } from '@/components/brand/DuckMascot';
 import { HeroEyes } from '@/components/brand/HeroEyes';
 import { AnimatedCounter } from '@/components/brand/AnimatedCounter';
 import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion';
@@ -1026,8 +1025,21 @@ function SkillsSection({ scrollTo }: { scrollTo: (target: string) => void }) {
                         {skills.map((skill) => (
                             <article
                                 key={skill.title}
-                                className={`relative flex h-[500px] w-[80vw] max-w-[400px] shrink-0 snap-center flex-col overflow-hidden rounded-[1.6rem] p-7 shadow-[2px_4px_24px_rgba(199,197,188,0.30)] sm:h-[540px] lg:h-[400px] lg:p-5 ${skill.tone === 'acid' ? 'bg-duck-acid' : 'bg-white'}`}
-                                aria-label={`${skill.title}. ${skill.coachTip}`}
+                                onClick={() => {
+                                    window.history.pushState({}, '', `/speeltuin?categorie=${skill.art}`);
+                                    window.dispatchEvent(new Event('pathchange'));
+                                }}
+                                onKeyDown={(e) => {
+                                    if (e.key === 'Enter' || e.key === ' ') {
+                                        e.preventDefault();
+                                        window.history.pushState({}, '', `/speeltuin?categorie=${skill.art}`);
+                                        window.dispatchEvent(new Event('pathchange'));
+                                    }
+                                }}
+                                tabIndex={0}
+                                role="link"
+                                className={`relative flex h-[500px] w-[80vw] max-w-[400px] shrink-0 snap-center flex-col overflow-hidden rounded-[1.6rem] p-7 shadow-[2px_4px_24px_rgba(199,197,188,0.30)] cursor-pointer transition-transform duration-300 hover:-translate-y-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-ink sm:h-[540px] lg:h-[400px] lg:p-5 ${skill.tone === 'acid' ? 'bg-duck-acid' : 'bg-white'}`}
+                                aria-label={`${skill.title} — bekijk voorbeeldopdrachten`}
                             >
                                 <span className="pointer-events-none absolute -right-2 -top-8 select-none font-display text-[11rem] leading-none text-duck-ink/10" aria-hidden="true">
                                     {skill.letter}
@@ -1048,9 +1060,12 @@ function SkillsSection({ scrollTo }: { scrollTo: (target: string) => void }) {
                                         </li>
                                     ))}
                                 </ul>
-                                <p className={`mt-auto rounded-[1rem] px-4 py-3 text-xs font-extrabold leading-5 ${skill.tone === 'acid' ? 'bg-white/60' : 'bg-duck-bg'}`}>
-                                    Past goed bij: {skill.bestFor}.
-                                </p>
+                                <div className={`mt-auto flex items-center justify-between gap-2 rounded-[1rem] px-4 py-3 ${skill.tone === 'acid' ? 'bg-white/60' : 'bg-duck-bg'}`}>
+                                    <p className="text-xs font-extrabold leading-5">
+                                        Past goed bij: {skill.bestFor}.
+                                    </p>
+                                    <span className="shrink-0 text-xs font-extrabold text-duck-ink/50">Bekijk →</span>
+                                </div>
                             </article>
                         ))}
 
@@ -2430,9 +2445,9 @@ function PageLoader({ onDone }: { onDone: () => void }) {
     return (
         <div
             aria-hidden="true"
-            className={`fixed inset-0 z-[100] flex flex-col items-center justify-center gap-7 bg-duck-acid transition-[transform,border-radius] duration-700 ease-[cubic-bezier(0.65,0,0.35,1)] ${leaving ? '-translate-y-full rounded-b-[44%]' : ''}`}
+            className={`fixed inset-0 z-[100] flex flex-col items-center justify-center gap-7 bg-duck-acid transition-[transform,border-radius] duration-700 ease-[cubic-bezier(0.65,0,0.35,1)] motion-reduce:transition-none ${leaving ? '-translate-y-full rounded-b-[44%]' : ''}`}
         >
-            <DuckMascot className="size-20 md:size-24" />
+            <DuckMark className="size-20 md:size-24 animate-spin motion-reduce:animate-none" />
             <p className="font-display text-7xl tabular-nums text-duck-ink md:text-8xl">{pct}%</p>
         </div>
     );
