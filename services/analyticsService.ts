@@ -16,7 +16,8 @@ export type AnalyticsEvent =
     | 'offline_detected'
     | 'web_vital'
     | 'mission_start'
-    | 'mission_complete';
+    | 'mission_complete'
+    | 'persona_switch';
 
 interface AnalyticsPayload extends Record<string, unknown> {
     route?: string;

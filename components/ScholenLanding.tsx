@@ -1,6 +1,8 @@
 import React, { useState, useEffect, Suspense, useRef, useCallback, Component } from 'react';
+import { PersonaProvider, usePersona } from './scholen/PersonaContext';
+import { PersonaSwitcher } from './scholen/PersonaSwitcher';
 
-type LandingAnalyticsEvent = 'dual_cta_click' | 'contact_click';
+type LandingAnalyticsEvent = 'dual_cta_click' | 'contact_click' | 'persona_switch';
 
 function trackLandingEvent(event: LandingAnalyticsEvent, data?: Record<string, unknown>) {
     void import('../services/analyticsService')
@@ -161,6 +163,11 @@ const IconChevronDown = () => {
     );
 };
 
+// Persona bewijs-blokken — direct imported (lichtgewicht ~180 regels, geen lazy nodig)
+import { DocentenBewijs } from './scholen/DocentenBewijs';
+import { IctBewijs } from './scholen/IctBewijs';
+import { DirecteurBewijs } from './scholen/DirecteurBewijs';
+
 // Lazy load below-the-fold sections
 const ScholenLandingPainPoints = React.lazy(() => import('./scholen/ScholenLandingPainPoints').then(m => ({ default: m.ScholenLandingPainPoints })));
 const ScholenLandingFeatures = React.lazy(() => import('./scholen/ScholenLandingFeatures').then(m => ({ default: m.ScholenLandingFeatures })));
@@ -284,6 +291,260 @@ const SECTION_IDS = {
     contact: 'gratis-pilot'
 } as const;
 
+/** Per-persona hero copy */
+const HERO_COPY = {
+    teacher: {
+        h1Before: 'Digitale geletterdheid waar leerlingen ',
+        h1Accent: 'wél',
+        h1After: ' enthousiast van worden',
+        sub: 'Klassikale AI-missies die je in 45 minuten draait. Voorbereiding gedaan, leerlingen aan de slag.',
+        primaryLabel: 'Speel een demo-missie →',
+        secondaryLabel: 'Plan een 15-min teacher-call',
+    },
+    ict: {
+        h1Before: 'EU-data, AI Act-roadmap, audit-trail — ',
+        h1Accent: 'klaar voor inspectie',
+        h1After: '',
+        sub: 'Volledige compliance-stack: DPIA, DPA Model 4.0, RLS, MFA AAL2, EU-data in europe-west4. Hoog-risico AI conform Annex III 3(b).',
+        primaryLabel: 'Bekijk security & architectuur →',
+        secondaryLabel: 'Download compliance-pack',
+    },
+    director: {
+        h1Before: '100% SLO-dekking. ',
+        h1Accent: 'Gratis pilot.',
+        h1After: ' Geen verbintenis.',
+        sub: 'Alle 9 kerndoelen 21A–23C (regulier) + 18A–20B (VSO). Inspectie-proof rapportage per klas. Pilot in 10 werkdagen live.',
+        primaryLabel: 'Vraag gratis pilot aan →',
+        secondaryLabel: 'Bekijk SLO-dekking',
+    },
+} as const;
+
+interface PersonaHeroContentProps {
+    scrollTo: (id: string) => void;
+    trackLandingEvent: (event: LandingAnalyticsEvent, data?: Record<string, unknown>) => void;
+    isDesktopHero: boolean;
+}
+
+const PersonaHeroContent: React.FC<PersonaHeroContentProps> = ({ scrollTo, trackLandingEvent, isDesktopHero }) => {
+    const { persona } = usePersona();
+    const copy = HERO_COPY[persona];
+
+    const handlePrimaryClick = () => {
+        trackLandingEvent('dual_cta_click', { type: 'primary', persona });
+        if (persona === 'teacher') {
+            // Scroll to game demo section — features is the closest reachable section
+            document.getElementById(SECTION_IDS.features)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        } else if (persona === 'ict') {
+            // Navigate to /ict page
+            window.location.href = '/ict';
+        } else {
+            scrollTo(SECTION_IDS.contact);
+        }
+    };
+
+    const handleSecondaryClick = () => {
+        trackLandingEvent('dual_cta_click', { type: 'secondary', persona });
+        if (persona === 'teacher') {
+            scrollTo(SECTION_IDS.contact);
+        } else if (persona === 'ict') {
+            window.location.href = '/ict#compliance';
+        } else {
+            scrollTo(SECTION_IDS.slo);
+        }
+    };
+
+    return (
+        <>
+            <h1 id="hero-heading" className="text-2xl sm:text-3xl md:text-4xl leading-snug font-medium tracking-tight mb-8" style={{ fontFamily: SERIF }}>
+                {copy.h1Before}<em className="not-italic" style={{ color: C.accent }}>{copy.h1Accent}</em>{copy.h1After}
+            </h1>
+
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+                {/* Left: text */}
+                <div className="relative">
+                    {/* Decorative compass rose — subtle background element */}
+                    <svg className="absolute -top-8 -left-10 w-[320px] h-[320px] opacity-[0.06] pointer-events-none select-none hidden md:block" viewBox="0 0 300 300" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                        <circle cx="150" cy="150" r="120" stroke={C.text} strokeWidth="1.5"/>
+                        <circle cx="150" cy="150" r="105" stroke={C.text} strokeWidth="0.8"/>
+                        <polygon points="150,35 145,150 150,160 155,150" fill={C.text}/>
+                        <polygon points="150,265 145,150 150,140 155,150" fill={C.text} opacity="0.3"/>
+                        <polygon points="35,150 150,145 160,150 150,155" fill={C.text} opacity="0.3"/>
+                        <polygon points="265,150 150,145 140,150 150,155" fill={C.text} opacity="0.3"/>
+                        {[0, 30, 60, 90, 120, 150, 180, 210, 240, 270, 300, 330].map(deg => (
+                            <line key={deg} x1="150" y1="32" x2="150" y2="40" stroke={C.text} strokeWidth="1" transform={`rotate(${deg} 150 150)`}/>
+                        ))}
+                        <circle cx="150" cy="150" r="6" fill={C.text}/>
+                    </svg>
+
+                    <p className="text-base leading-relaxed max-w-xl mb-4" style={{ color: C.textMuted }}>
+                        {copy.sub}
+                    </p>
+                    <p className="text-sm font-medium mb-8 px-3 py-1.5 rounded-full inline-flex items-center gap-2" style={{ backgroundColor: `${C.accent}10`, color: C.accent, border: `1px solid ${C.accent}25` }}>
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                        Kerndoelen verplicht per 2027 — start nu met de gratis pilot
+                    </p>
+
+                    <div className="flex flex-col sm:flex-row sm:items-center gap-4">
+                        <button
+                            onClick={handlePrimaryClick}
+                            className="group text-white px-4 py-2 rounded-full text-xs font-medium transition-all flex items-center justify-center gap-2 hover:-translate-y-0.5"
+                            style={{ backgroundColor: C.accent, boxShadow: `0 8px 24px ${C.accent}33` }}
+                            onMouseEnter={e => (e.currentTarget.style.backgroundColor = C.accentHover)}
+                            onMouseLeave={e => (e.currentTarget.style.backgroundColor = C.accent)}
+                        >
+                            {copy.primaryLabel}
+                            <span className="group-hover:translate-x-0.5 transition-transform inline-block"><IconArrowRight /></span>
+                        </button>
+                        <button
+                            onClick={handleSecondaryClick}
+                            className="group px-4 py-2 rounded-full text-xs font-medium transition-all flex items-center justify-center gap-2 hover:-translate-y-0.5"
+                            style={{ border: `1.5px solid ${C.border}`, color: C.text }}
+                        >
+                            {copy.secondaryLabel}
+                            <span style={{ color: C.textLight }}><IconArrowRight /></span>
+                        </button>
+                    </div>
+
+                    {/* Trust badges */}
+                    <div className="flex flex-wrap items-center gap-x-3 gap-y-2 sm:gap-4 mt-8 text-xs font-medium" style={{ color: C.textMuted }}>
+                        <span className="flex items-center gap-1.5">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                            AVG-compliant
+                        </span>
+                        <span className="flex items-center gap-1.5">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+                            SLO Kerndoelen 2025
+                        </span>
+                        <span className="flex items-center gap-1.5">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                            Geen installatie
+                        </span>
+                        <span className="flex items-center gap-1.5">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+                            EU AI Act ready
+                        </span>
+                    </div>
+                </div>
+
+                {/* Right: hero video */}
+                {isDesktopHero && (
+                    <div className="relative hidden md:block" aria-hidden="true">
+                        <div
+                            className="absolute -inset-4 rounded-[2.5rem] opacity-80"
+                            style={{ background: `radial-gradient(circle at 30% 30%, ${C.accent}18, transparent 58%), linear-gradient(135deg, ${C.bgAlt}85, transparent)` }}
+                        />
+                        <div className="relative">
+                            <div className="rounded-2xl overflow-hidden" style={{ boxShadow: `0 18px 34px ${C.text}12`, border: `1px solid ${C.border}` }}>
+                                <video autoPlay loop muted playsInline preload="metadata" className="w-full rounded-2xl" src="/videos/hero-hybrid.mp4" />
+                            </div>
+                        </div>
+                        <div className="absolute -top-7 left-16 z-20">
+                            <img src="/mascot/pip-headset.webp" alt="Pip — DGSkills mascotte" className="w-10 h-10 object-contain" width={40} height={40} loading="lazy" fetchPriority="low" decoding="async" />
+                        </div>
+                    </div>
+                )}
+            </div>
+
+            {/* Scroll indicator with Pip */}
+            <div className="flex items-center justify-center gap-2 mt-12 md:mt-16">
+                <img src="/mascot/pip-excited.webp" alt="" className="w-7 h-7 object-contain opacity-50 hidden sm:block" width={28} height={28} loading="lazy" aria-hidden="true" />
+                <button
+                    onClick={() => scrollTo(SECTION_IDS.painPoints)}
+                    className="transition-colors p-2"
+                    style={{ color: C.textLight }}
+                    aria-label="Scroll naar beneden"
+                >
+                    <IconChevronDown />
+                </button>
+            </div>
+        </>
+    );
+};
+
+/**
+ * Renders the three demo sections (Game / Live / Dashboard) in a flex column
+ * so CSS order can re-sequence them per persona without DOM re-mount.
+ * Director persona: Dashboard first, Live second, Game third.
+ * Teacher + ICT: Game first (default DOM order).
+ * Must be inside <PersonaProvider>.
+ */
+const DemoSectionsPersona: React.FC = () => {
+    const { persona } = usePersona();
+
+    const gameOrder = persona === 'director' ? 3 : 1;
+    const liveOrder = persona === 'director' ? 2 : 2;
+    const dashboardOrder = persona === 'director' ? 1 : 3;
+
+    return (
+        <div style={{ display: 'flex', flexDirection: 'column' }}>
+            {/* Game Demo — order via wrapper div zodat PipGuide's Suspense niet de flex-child breekt */}
+            <div style={{ order: gameOrder }}>
+                <PipGuide pose="excited" tooltip="Dit vinden leerlingen het leukst!" side="left">
+                <section className="py-14 md:py-20 lg:py-24 px-6 scroll-mt-16 [content-visibility:auto] [contain-intrinsic-size:auto_500px]" style={{ backgroundColor: C.bgAlt, borderTop: `1px solid ${C.border}`, borderBottom: `1px solid ${C.border}` }} aria-label="Game Programmeur demo">
+                    <DeferredSection minHeight="min-h-[400px]">
+                        <Suspense fallback={<div className="min-h-[400px]" aria-hidden="true" />}>
+                            <AnimateOnScroll>
+                                <ScholenLandingGameDemo />
+                            </AnimateOnScroll>
+                        </Suspense>
+                    </DeferredSection>
+                </section>
+                </PipGuide>
+            </div>
+
+            {/* Live Interactive Demo — real AI chat + game builder */}
+            <div style={{ order: liveOrder }}>
+                <PipGuide pose="excited" tooltip="Probeer het zelf!" side="right">
+                <section id="probeer-het" className="py-14 md:py-20 lg:py-24 px-6 scroll-mt-16 [content-visibility:auto] [contain-intrinsic-size:auto_600px]" aria-label="Interactieve AI demo">
+                    <SectionErrorBoundary>
+                        <DeferredSection minHeight="min-h-[400px]">
+                            <Suspense fallback={<div className="min-h-[400px]" aria-hidden="true" />}>
+                                <AnimateOnScroll>
+                                    <ScholenLandingLiveDemo />
+                                </AnimateOnScroll>
+                            </Suspense>
+                        </DeferredSection>
+                    </SectionErrorBoundary>
+                </section>
+                </PipGuide>
+            </div>
+
+            {/* Dashboard Demo */}
+            <div style={{ order: dashboardOrder }}>
+                <PipGuide pose="waving" tooltip="Altijd weten waar je leerlingen staan" side="left">
+                <section className="py-14 md:py-20 lg:py-24 px-6 scroll-mt-16 [content-visibility:auto] [contain-intrinsic-size:auto_500px]" style={{ backgroundColor: C.bgAlt, borderTop: `1px solid ${C.border}`, borderBottom: `1px solid ${C.border}` }} aria-label="Docenten dashboard demo">
+                    <DeferredSection minHeight="min-h-[400px]">
+                        <Suspense fallback={<div className="min-h-[400px]" aria-hidden="true" />}>
+                            <AnimateOnScroll>
+                                <ScholenLandingDashboardDemo />
+                            </AnimateOnScroll>
+                        </Suspense>
+                    </DeferredSection>
+                </section>
+                </PipGuide>
+            </div>
+        </div>
+    );
+};
+
+/** Passes current persona to ScholenLandingFaq for category filtering — must be inside <PersonaProvider> */
+const ScholenLandingFaqWithPersona: React.FC<{ scrollToContact: () => void }> = ({ scrollToContact }) => {
+    const { persona } = usePersona();
+    return <ScholenLandingFaq scrollToContact={scrollToContact} persona={persona} />;
+};
+
+/** Renders the correct bewijs-blok based on current persona — must be inside <PersonaProvider> */
+const PersonaBewijsSwitch: React.FC = () => {
+    const { persona } = usePersona();
+    return (
+        <SectionErrorBoundary>
+            {persona === 'teacher' && <DocentenBewijs />}
+            {persona === 'ict' && <IctBewijs />}
+            {persona === 'director' && <DirecteurBewijs />}
+        </SectionErrorBoundary>
+    );
+};
+
 export const ScholenLanding: React.FC = () => {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const [scrolled, setScrolled] = useState(false);
@@ -387,6 +648,7 @@ export const ScholenLanding: React.FC = () => {
     };
 
     return (
+        <PersonaProvider>
         <div className="min-h-screen antialiased" style={{ backgroundColor: C.bg, fontFamily: SANS, color: C.text }}>
             <a href="#main-content" className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:text-white focus:rounded-lg focus:font-semibold text-sm" style={{ backgroundColor: C.accent }}>Skip naar inhoud</a>
 
@@ -451,153 +713,15 @@ export const ScholenLanding: React.FC = () => {
                 {/* Hero */}
                 <section className="pt-32 pb-12 md:pt-40 md:pb-20 px-6 overflow-hidden" aria-labelledby="hero-heading">
                     <div className="max-w-5xl mx-auto">
+                        {/* Persona switcher — above pre-headline */}
+                        <PersonaSwitcher />
+
                         {/* Heading — full width above grid so it never wraps */}
                         <p className="text-sm font-medium mb-4 tracking-wide" style={{ color: C.accent }}>
                             Voor het voortgezet onderwijs
                         </p>
 
-                        <h1 id="hero-heading" className="text-2xl sm:text-3xl md:text-4xl leading-snug font-medium tracking-tight mb-8" style={{ fontFamily: SERIF }}>
-                            Digitale geletterdheid waar leerlingen <em className="not-italic" style={{ color: C.accent }}>wel</em> enthousiast van worden
-                        </h1>
-
-                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-                            {/* Left: text */}
-                            <div className="relative">
-                                {/* Decorative pencil sketch — subtle background element */}
-                                <svg className="absolute -top-8 -left-10 w-[320px] h-[320px] opacity-[0.06] pointer-events-none select-none hidden md:block" viewBox="0 0 300 300" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                                    {/* Compass rose */}
-                                    <circle cx="150" cy="150" r="120" stroke={C.text} strokeWidth="1.5"/>
-                                    <circle cx="150" cy="150" r="105" stroke={C.text} strokeWidth="0.8"/>
-                                    <polygon points="150,35 145,150 150,160 155,150" fill={C.text}/>
-                                    <polygon points="150,265 145,150 150,140 155,150" fill={C.text} opacity="0.3"/>
-                                    <polygon points="35,150 150,145 160,150 150,155" fill={C.text} opacity="0.3"/>
-                                    <polygon points="265,150 150,145 140,150 150,155" fill={C.text} opacity="0.3"/>
-                                    {/* Degree marks */}
-                                    {[0, 30, 60, 90, 120, 150, 180, 210, 240, 270, 300, 330].map(deg => (
-                                        <line key={deg} x1="150" y1="32" x2="150" y2="40" stroke={C.text} strokeWidth="1" transform={`rotate(${deg} 150 150)`}/>
-                                    ))}
-                                    <circle cx="150" cy="150" r="6" fill={C.text}/>
-                                </svg>
-
-                                <p className="text-base leading-relaxed max-w-xl mb-4" style={{ color: C.textMuted }}>
-                                    DGSkills combineert AI-missies, gamification en de
-                                    SLO Kerndoelen 2025 tot een complete lesmethode voor digitale geletterdheid.
-                                    Gebouwd door een docent, voor docenten.
-                                </p>
-                                <p className="text-sm font-medium mb-8 px-3 py-1.5 rounded-full inline-flex items-center gap-2" style={{ backgroundColor: `${C.accent}10`, color: C.accent, border: `1px solid ${C.accent}25` }}>
-                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-                                    Kerndoelen verplicht per 2027 — start nu met de gratis pilot
-                                </p>
-
-                                <div className="flex flex-col sm:flex-row sm:items-center gap-4">
-                                    <button
-                                        onClick={() => {
-                                            scrollTo(SECTION_IDS.contact);
-                                            trackLandingEvent('dual_cta_click', { type: 'pilot' });
-                                        }}
-                                        className="group text-white px-4 py-2 rounded-full text-xs font-medium transition-all flex items-center justify-center gap-2 hover:-translate-y-0.5"
-                                        style={{ backgroundColor: C.accent, boxShadow: `0 8px 24px ${C.accent}33` }}
-                                        onMouseEnter={e => (e.currentTarget.style.backgroundColor = C.accentHover)}
-                                        onMouseLeave={e => (e.currentTarget.style.backgroundColor = C.accent)}
-                                    >
-                                        Gratis pilot aanvragen
-                                        <span className="group-hover:translate-x-0.5 transition-transform inline-block"><IconArrowRight /></span>
-                                    </button>
-                                    <button
-                                        onClick={() => {
-                                            scrollTo(SECTION_IDS.features);
-                                            trackLandingEvent('dual_cta_click', { type: 'demo' });
-                                        }}
-                                        className="group px-4 py-2 rounded-full text-xs font-medium transition-all flex items-center justify-center gap-2 hover:-translate-y-0.5"
-                                        style={{ border: `1.5px solid ${C.border}`, color: C.text }}
-                                    >
-                                        Bekijk de demo
-                                        <span style={{ color: C.textLight }}><IconArrowRight /></span>
-                                    </button>
-                                </div>
-
-                                {/* Trust badges */}
-                                <div className="flex flex-wrap items-center gap-x-3 gap-y-2 sm:gap-4 mt-8 text-xs font-medium" style={{ color: C.textMuted }}>
-                                    <span className="flex items-center gap-1.5">
-                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-                                        AVG-compliant
-                                    </span>
-                                    <span className="flex items-center gap-1.5">
-                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
-                                        SLO Kerndoelen 2025
-                                    </span>
-                                    <span className="flex items-center gap-1.5">
-                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
-                                        Geen installatie
-                                    </span>
-                                    <span className="flex items-center gap-1.5">
-                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
-                                        EU AI Act ready
-                                    </span>
-                                </div>
-                            </div>
-
-                            {/* Right: hero video */}
-                            {isDesktopHero && (
-                                <div className="relative hidden md:block" aria-hidden="true">
-                                {/* Background glow — warm */}
-                                <div
-                                    className="absolute -inset-4 rounded-[2.5rem] opacity-80"
-                                    style={{ background: `radial-gradient(circle at 30% 30%, ${C.accent}18, transparent 58%), linear-gradient(135deg, ${C.bgAlt}85, transparent)` }}
-                                />
-
-                                {/* Video container */}
-                                <div className="relative">
-                                    <div className="rounded-2xl overflow-hidden" style={{ boxShadow: `0 18px 34px ${C.text}12`, border: `1px solid ${C.border}` }}>
-                                        <video
-                                            autoPlay
-                                            loop
-                                            muted
-                                            playsInline
-                                            preload="metadata"
-                                            className="w-full rounded-2xl"
-                                            src="/videos/hero-hybrid.mp4"
-                                        />
-                                    </div>
-                                </div>
-
-                                {/* Pip — floating near the video */}
-                                <div className="absolute -top-7 left-16 z-20">
-                                    <img
-                                        src="/mascot/pip-headset.webp"
-                                        alt="Pip — DGSkills mascotte"
-                                        className="w-10 h-10 object-contain"
-                                        width={40}
-                                        height={40}
-                                        loading="lazy"
-                                        fetchPriority="low"
-                                        decoding="async"
-                                    />
-                                </div>
-                                </div>
-                            )}
-                        </div>
-
-                        {/* Scroll indicator with Pip */}
-                        <div className="flex items-center justify-center gap-2 mt-12 md:mt-16">
-                            <img
-                                src="/mascot/pip-excited.webp"
-                                alt=""
-                                className="w-7 h-7 object-contain opacity-50 hidden sm:block"
-                                width={28}
-                                height={28}
-                                loading="lazy"
-                                aria-hidden="true"
-                            />
-                            <button
-                                onClick={() => scrollTo(SECTION_IDS.painPoints)}
-                                className="transition-colors p-2"
-                                style={{ color: C.textLight }}
-                                aria-label="Scroll naar beneden"
-                            >
-                                <IconChevronDown />
-                            </button>
-                        </div>
+                        <PersonaHeroContent scrollTo={scrollTo} trackLandingEvent={trackLandingEvent} isDesktopHero={isDesktopHero} />
                     </div>
                 </section>
 
@@ -633,6 +757,11 @@ export const ScholenLanding: React.FC = () => {
                         </div>
                     </div>
                 </section>
+
+                {/* Persona bewijs-blok — scroll-target van PersonaSwitcher */}
+                <div id="persona-bewijs" role="tabpanel" aria-live="polite">
+                    <PersonaBewijsSwitch />
+                </div>
 
                 {/* Pain Points */}
                 <PipGuide pose="concerned" tooltip="Leerlingen scoren een 4,7 voor digitale geletterdheid..." side="left">
@@ -770,47 +899,8 @@ export const ScholenLanding: React.FC = () => {
                 </section>
                 </PipGuide>
 
-                {/* Game Demo */}
-                <PipGuide pose="excited" tooltip="Dit vinden leerlingen het leukst!" side="left">
-                <section className="py-14 md:py-20 lg:py-24 px-6 scroll-mt-16 [content-visibility:auto] [contain-intrinsic-size:auto_500px]" style={{ backgroundColor: C.bgAlt, borderTop: `1px solid ${C.border}`, borderBottom: `1px solid ${C.border}` }} aria-label="Game Programmeur demo">
-                    <DeferredSection minHeight="min-h-[400px]">
-                        <Suspense fallback={<div className="min-h-[400px]" aria-hidden="true" />}>
-                            <AnimateOnScroll>
-                                <ScholenLandingGameDemo />
-                            </AnimateOnScroll>
-                        </Suspense>
-                    </DeferredSection>
-                </section>
-                </PipGuide>
-
-
-                {/* Live Interactive Demo — real AI chat + game builder */}
-                <PipGuide pose="excited" tooltip="Probeer het zelf!" side="right">
-                <section id="probeer-het" className="py-14 md:py-20 lg:py-24 px-6 scroll-mt-16 [content-visibility:auto] [contain-intrinsic-size:auto_600px]" aria-label="Interactieve AI demo">
-                    <SectionErrorBoundary>
-                        <DeferredSection minHeight="min-h-[400px]">
-                            <Suspense fallback={<div className="min-h-[400px]" aria-hidden="true" />}>
-                                <AnimateOnScroll>
-                                    <ScholenLandingLiveDemo />
-                                </AnimateOnScroll>
-                            </Suspense>
-                        </DeferredSection>
-                    </SectionErrorBoundary>
-                </section>
-                </PipGuide>
-
-                {/* Dashboard Demo */}
-                <PipGuide pose="waving" tooltip="Altijd weten waar je leerlingen staan" side="left">
-                <section className="py-14 md:py-20 lg:py-24 px-6 scroll-mt-16 [content-visibility:auto] [contain-intrinsic-size:auto_500px]" style={{ backgroundColor: C.bgAlt, borderTop: `1px solid ${C.border}`, borderBottom: `1px solid ${C.border}` }} aria-label="Docenten dashboard demo">
-                    <DeferredSection minHeight="min-h-[400px]">
-                        <Suspense fallback={<div className="min-h-[400px]" aria-hidden="true" />}>
-                            <AnimateOnScroll>
-                                <ScholenLandingDashboardDemo />
-                            </AnimateOnScroll>
-                        </Suspense>
-                    </DeferredSection>
-                </section>
-                </PipGuide>
+                {/* Demo sectie-trio — volgorde wisselt per persona via flex order */}
+                <DemoSectionsPersona />
 
                 {/* Platform preview */}
                 <section id={SECTION_IDS.platform} className="py-14 md:py-20 lg:py-24 px-6 scroll-mt-16 [content-visibility:auto] [contain-intrinsic-size:auto_500px]" style={{ borderBottom: `1px solid ${C.border}` }} aria-label="Platform preview">
@@ -870,7 +960,7 @@ export const ScholenLanding: React.FC = () => {
                         <DeferredSection minHeight="min-h-[300px]">
                             <Suspense fallback={<div className="min-h-[300px]" aria-hidden="true" />}>
                                 <AnimateOnScroll>
-                                    <ScholenLandingFaq scrollToContact={() => scrollTo(SECTION_IDS.contact)} />
+                                    <ScholenLandingFaqWithPersona scrollToContact={() => scrollTo(SECTION_IDS.contact)} />
                                 </AnimateOnScroll>
                             </Suspense>
                         </DeferredSection>
@@ -990,5 +1080,6 @@ export const ScholenLanding: React.FC = () => {
                 </div>
             </footer>
         </div>
+        </PersonaProvider>
     );
 };
