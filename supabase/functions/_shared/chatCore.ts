@@ -9,6 +9,7 @@
  */
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 import { sanitizePrompt } from "./promptSanitizer.ts";
+import { redactPii } from "./piiRedactor.ts";
 import { getSystemInstruction, isValidRoleId } from "./systemInstructions.ts";
 import { buildSafeHistory } from "./chatHistory.ts";
 import { checkDurableRateLimit, rateLimitHeaders, RateLimitConfig, RateLimitResult } from "./rateLimiter.ts";
@@ -287,6 +288,14 @@ export async function validateAndParseRequest(
         );
     }
 
+    // Data minimisation: mask high-confidence PII (e-mail/phone/BSN/postcode)
+    // in both the message and history before it reaches the AI provider.
+    const redactedSanitized = redactPii(validation.sanitized).redacted;
+    const redactedHistory: AiChatContent[] = (safeHistory.history as AiChatContent[]).map((turn) => ({
+        role: turn.role,
+        parts: turn.parts.map((p) => ({ text: redactPii(p.text).redacted })),
+    }));
+
     return {
         body: rawBody as ChatRequestBody,
         userId: user.id,
@@ -294,8 +303,8 @@ export async function validateAndParseRequest(
         requestId,
         systemInstruction,
         rateCheck,
-        sanitized: validation.sanitized,
-        safeHistory: safeHistory as { history: AiChatContent[]; blocked: boolean; detectionLabel?: string },
+        sanitized: redactedSanitized,
+        safeHistory: { history: redactedHistory, blocked: safeHistory.blocked, detectionLabel: safeHistory.detectionLabel },
     };
 }
 
