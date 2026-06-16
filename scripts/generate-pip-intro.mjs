@@ -38,16 +38,16 @@ const ai = new GoogleGenAI({ apiKey: API_KEY });
 // ─── Karakter-definitie (herbruikbaar in elke prompt) ──────────────────────
 //
 // Pip = Europees roodborstje met:
-// - Terracotta-oranje borst (#D97757), NOOIT goud/geel
+// - Terracotta-oranje borst (#D97848), NOOIT goud/geel
 // - Witte buik
-// - Donkergrijze/charcoal vleugels en rug (#1A1A19)
+// - Donkergrijze/charcoal vleugels en rug (#08283B)
 // - Staartveren die uiteen vallen in kleine vierkante pixels
 // - Grote ronde zwarte ogen, vrolijke uitdrukking
 // - Schone zwarte contouren, cartoon-stijl
 
-const PIP_DESC = `a small cute European robin bird (Erithacus rubecula) with a matte terracotta-orange breast (NOT gold, NOT yellow, NOT shiny — strictly matte warm orange-brown like the color #D97757), a clean white belly, dark charcoal-gray wings and back, small thin black legs, large round expressive black eyes, a small orange beak, and tail feathers that dissolve into small square digital pixels in terracotta and charcoal colors. The bird has clean black outlines in a friendly 2D cartoon illustration style.`;
+const PIP_DESC = `a small cute European robin bird (Erithacus rubecula) with a matte terracotta-orange breast (NOT gold, NOT yellow, NOT shiny — strictly matte warm orange-brown like the color #D97848), a clean white belly, dark charcoal-gray wings and back, small thin black legs, large round expressive black eyes, a small orange beak, and tail feathers that dissolve into small square digital pixels in terracotta and charcoal colors. The bird has clean black outlines in a friendly 2D cartoon illustration style.`;
 
-const BG_RULE = `The background must NEVER be black or dark. Use warm, bright, inviting colors: cream (#FAF9F0), soft sky blue, warm sunlit tones.`;
+const BG_RULE = `The background must NEVER be black or dark. Use warm, bright, inviting colors: cream (#FCF6EA), soft sky blue, warm sunlit tones.`;
 
 const AUDIO_RULE = `This video MUST have synchronized audio. Include a warm, friendly, young male Dutch narrator voice speaking clearly and enthusiastically.`;
 

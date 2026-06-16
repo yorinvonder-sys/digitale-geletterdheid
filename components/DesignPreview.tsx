@@ -8,15 +8,15 @@ import React, { useEffect } from 'react';
 
 // Warm earth-tone palette (Anthropic-inspired)
 const palette = {
-  bg: '#FAF9F0',        // warm cream
+  bg: '#FCF6EA',        // warm cream
   surface: '#FFFFFF',
-  text: '#1A1A19',       // warm near-black
-  textMuted: '#6B6B66',  // warm grey
-  textLight: '#9C9C95',
-  accent: '#D97757',     // terracotta (Anthropic signature)
-  accentHover: '#C46849',
-  border: '#E8E6DF',
-  borderLight: '#F0EEE8',
+  text: '#08283B',       // warm near-black
+  textMuted: '#445865',  // warm grey
+  textLight: '#445865',
+  accent: '#D97848',     // terracotta (Anthropic signature)
+  accentHover: '#D97848',
+  border: '#E7D8BD',
+  borderLight: '#FCF6EA',
   // Illustration container colors
   sky: '#D4E4ED',
   cactus: '#C5D9C0',

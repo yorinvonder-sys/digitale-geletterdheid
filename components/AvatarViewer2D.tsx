@@ -36,11 +36,11 @@ export const AvatarViewer2D: React.FC<AvatarViewer2DProps> = ({
     onPartClick,
     variant = 'full'
 }) => {
-    const hairColor = config.hairColor || '#5D4037';
+    const hairColor = config.hairColor || '#08283B';
     const skinColor = config.baseModel === 'robot' ? '#C0C0C0' : (config.skinColor || '#ffe0bd');
-    const shirtColor = config.shirtColor || '#D97757';
+    const shirtColor = config.shirtColor || '#D97848';
     const pantsColor = config.pantsColor || '#1F2937';
-    const shoeColor = config.shoeColor || '#1a1a1a';
+    const shoeColor = config.shoeColor || '#08283B';
     const eyeColor = config.eyeColor || '#4a3728';
     const expression = config.expression || 'happy';
     const isFemale = config.gender === 'female';
@@ -68,7 +68,7 @@ export const AvatarViewer2D: React.FC<AvatarViewer2DProps> = ({
     const viewBox = variant === 'head' ? '30 10 140 140' : '10 -5 180 270';
 
     return (
-        <div className="w-full h-full flex items-center justify-center bg-gradient-to-b from-[#FAF9F0] to-[#E8E6DF] rounded-2xl overflow-hidden">
+        <div className="w-full h-full flex items-center justify-center bg-gradient-to-b from-[#FCF6EA] to-[#E7D8BD] rounded-2xl overflow-hidden">
             <svg
                 viewBox={viewBox}
                 preserveAspectRatio="xMidYMid meet"
@@ -78,12 +78,12 @@ export const AvatarViewer2D: React.FC<AvatarViewer2DProps> = ({
                 <defs>
                     {/* Cheek blush gradient */}
                     <radialGradient id="blush-l">
-                        <stop offset="0%" stopColor="#ff9999" stopOpacity="0.45" />
-                        <stop offset="100%" stopColor="#ff9999" stopOpacity="0" />
+                        <stop offset="0%" stopColor="#D97848" stopOpacity="0.45" />
+                        <stop offset="100%" stopColor="#D97848" stopOpacity="0" />
                     </radialGradient>
                     <radialGradient id="blush-r">
-                        <stop offset="0%" stopColor="#ff9999" stopOpacity="0.45" />
-                        <stop offset="100%" stopColor="#ff9999" stopOpacity="0" />
+                        <stop offset="0%" stopColor="#D97848" stopOpacity="0.45" />
+                        <stop offset="100%" stopColor="#D97848" stopOpacity="0" />
                     </radialGradient>
                     {/* Eye shine */}
                     <radialGradient id="eye-shine" cx="35%" cy="30%">
@@ -239,7 +239,7 @@ export const AvatarViewer2D: React.FC<AvatarViewer2DProps> = ({
                                     {/* Iris */}
                                     <circle cx={headCx - 15} cy={headCy - 2} r={7.5} fill={eyeColor} />
                                     {/* Pupil */}
-                                    <circle cx={headCx - 15} cy={headCy - 1} r={4} fill="#111111" />
+                                    <circle cx={headCx - 15} cy={headCy - 1} r={4} fill="#08283B" />
                                     {/* Shine - big */}
                                     <circle cx={headCx - 18} cy={headCy - 7} r={3} fill="white" opacity={0.9} />
                                     {/* Shine - small */}
@@ -261,7 +261,7 @@ export const AvatarViewer2D: React.FC<AvatarViewer2DProps> = ({
                                 <g>
                                     <ellipse cx={headCx + 15} cy={headCy - 4} rx={11} ry={12} fill="white" />
                                     <circle cx={headCx + 15} cy={headCy - 2} r={7.5} fill={eyeColor} />
-                                    <circle cx={headCx + 15} cy={headCy - 1} r={4} fill="#111111" />
+                                    <circle cx={headCx + 15} cy={headCy - 1} r={4} fill="#08283B" />
                                     <circle cx={headCx + 12} cy={headCy - 7} r={3} fill="white" opacity={0.9} />
                                     <circle cx={headCx + 18} cy={headCy - 3} r={1.5} fill="white" opacity={0.7} />
                                     <path
@@ -321,31 +321,31 @@ function renderMouth(expression: string, cx: number, cy: number): React.ReactNod
                 <g>
                     <path
                         d={`M ${cx - 10} ${my} Q ${cx} ${my + 10} ${cx + 10} ${my}`}
-                        fill="none" stroke="#6b3a2a" strokeWidth={2.2} strokeLinecap="round"
+                        fill="none" stroke="#D97848" strokeWidth={2.2} strokeLinecap="round"
                     />
                 </g>
             );
         case 'surprised':
             return (
-                <ellipse cx={cx} cy={my + 3} rx={6} ry={8} fill="#6b3a2a" />
+                <ellipse cx={cx} cy={my + 3} rx={6} ry={8} fill="#D97848" />
             );
         case 'neutral':
             return (
                 <line x1={cx - 8} y1={my + 2} x2={cx + 8} y2={my + 2}
-                    stroke="#6b3a2a" strokeWidth={2} strokeLinecap="round" />
+                    stroke="#D97848" strokeWidth={2} strokeLinecap="round" />
             );
         case 'cool':
             return (
                 <path
                     d={`M ${cx - 8} ${my} Q ${cx} ${my + 6} ${cx + 8} ${my}`}
-                    fill="none" stroke="#6b3a2a" strokeWidth={2} strokeLinecap="round"
+                    fill="none" stroke="#D97848" strokeWidth={2} strokeLinecap="round"
                 />
             );
         default:
             return (
                 <path
                     d={`M ${cx - 10} ${my} Q ${cx} ${my + 10} ${cx + 10} ${my}`}
-                    fill="none" stroke="#6b3a2a" strokeWidth={2.2} strokeLinecap="round"
+                    fill="none" stroke="#D97848" strokeWidth={2.2} strokeLinecap="round"
                 />
             );
     }
@@ -382,10 +382,10 @@ function renderSunglasses(cx: number, cy: number): React.ReactNode {
             <path d={`M ${cx - 6} ${glassY} Q ${cx} ${glassY - 3} ${cx + 6} ${glassY}`}
                 fill="none" stroke="#222" strokeWidth={2.5} strokeLinecap="round" />
             {/* Left lens */}
-            <rect x={cx - 28} y={glassY - 10} width={22} height={16} rx={5} fill="#1a1a1a" />
+            <rect x={cx - 28} y={glassY - 10} width={22} height={16} rx={5} fill="#08283B" />
             <rect x={cx - 27} y={glassY - 9} width={12} height={6} rx={2} fill="#333" opacity={0.4} />
             {/* Right lens */}
-            <rect x={cx + 6} y={glassY - 10} width={22} height={16} rx={5} fill="#1a1a1a" />
+            <rect x={cx + 6} y={glassY - 10} width={22} height={16} rx={5} fill="#08283B" />
             <rect x={cx + 7} y={glassY - 9} width={12} height={6} rx={2} fill="#333" opacity={0.4} />
             {/* Temple arms */}
             <line x1={cx - 28} y1={glassY - 3} x2={cx - 40} y2={glassY} stroke="#222" strokeWidth={2} />

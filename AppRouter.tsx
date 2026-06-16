@@ -34,9 +34,9 @@ const DesignPreview = React.lazy(() => import('./components/DesignPreview'));
 
 /** Minimal spinner — no lucide to avoid blocking LCP */
 const LoadingFallback = () => (
-    <div className="min-h-screen bg-slate-50 flex flex-col items-center justify-center gap-4">
+    <div className="min-h-screen bg-lab-muted flex flex-col items-center justify-center gap-4">
         <div className="w-12 h-12 border-2 border-indigo-200 border-t-indigo-600 rounded-full animate-spin" aria-hidden="true" />
-        <p className="text-slate-500 font-medium">Laden...</p>
+        <p className="text-lab-muted font-medium">Laden...</p>
     </div>
 );
 

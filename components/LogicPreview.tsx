@@ -122,7 +122,7 @@ export const LogicPreview: React.FC<LogicPreviewProps> = ({ code, onStart, onLev
     // INTRO SCREEN
     if (!code && !hasStarted) {
         return (
-            <div className="w-full h-full flex flex-col bg-gradient-to-br from-amber-900 to-orange-950 text-slate-200 relative overflow-hidden">
+            <div className="w-full h-full flex flex-col bg-gradient-to-br from-amber-900 to-orange-950 text-lab-muted relative overflow-hidden">
                 <div className="absolute inset-0 opacity-10">
                     {[...Array(20)].map((_, i) => (
                         <div key={i} className="absolute text-2xl" style={{
@@ -140,7 +140,7 @@ export const LogicPreview: React.FC<LogicPreviewProps> = ({ code, onStart, onLev
                         <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center shadow-2xl shadow-amber-500/30 text-4xl">
                             🐕
                         </div>
-                        <div className="absolute -bottom-1 -right-1 w-7 h-7 bg-amber-300 rounded-full flex items-center justify-center text-sm shadow-lg">
+                        <div className="absolute -bottom-1 -right-1 w-7 h-7 bg-lab-gold rounded-full flex items-center justify-center text-sm shadow-lg">
                             🦴
                         </div>
                     </div>
@@ -148,71 +148,71 @@ export const LogicPreview: React.FC<LogicPreviewProps> = ({ code, onStart, onLev
                     <h2 className="text-xl font-black text-white mb-1 tracking-tight text-center">
                         🎮 Robbie de Speurhond
                     </h2>
-                    <p className="text-amber-300 text-sm font-bold mb-4">Leer programmeren door Robbie te besturen!</p>
+                    <p className="text-lab-gold text-sm font-bold mb-4">Leer programmeren door Robbie te besturen!</p>
 
                     {/* WAT GA JE DOEN - Duidelijke uitleg */}
-                    <div className="bg-amber-950/60 backdrop-blur border-2 border-amber-500/50 rounded-2xl p-4 max-w-md w-full mb-4">
-                        <h3 className="text-sm font-black text-amber-300 uppercase tracking-widest mb-3 flex items-center gap-2">
+                    <div className="bg-lab-gold/60 backdrop-blur border-2 border-lab-gold/50 rounded-2xl p-4 max-w-md w-full mb-4">
+                        <h3 className="text-sm font-black text-lab-gold uppercase tracking-widest mb-3 flex items-center gap-2">
                             📋 Wat Ga Je Doen?
                         </h3>
                         <div className="space-y-2 text-sm">
-                            <div className="flex items-start gap-3 bg-amber-900/40 rounded-xl p-3">
-                                <span className="bg-amber-500 text-white w-6 h-6 rounded-full flex items-center justify-center font-black text-xs shrink-0">1</span>
+                            <div className="flex items-start gap-3 bg-lab-gold/40 rounded-xl p-3">
+                                <span className="bg-lab-gold text-white w-6 h-6 rounded-full flex items-center justify-center font-black text-xs shrink-0">1</span>
                                 <div>
                                     <p className="text-white font-bold">Chat met Robbie in de chatbalk links</p>
-                                    <p className="text-amber-400 text-xs">Typ commando's zoals "stap" of "draai rechts"</p>
+                                    <p className="text-lab-gold text-xs">Typ commando's zoals "stap" of "draai rechts"</p>
                                 </div>
                             </div>
-                            <div className="flex items-start gap-3 bg-amber-900/40 rounded-xl p-3">
-                                <span className="bg-amber-500 text-white w-6 h-6 rounded-full flex items-center justify-center font-black text-xs shrink-0">2</span>
+                            <div className="flex items-start gap-3 bg-lab-gold/40 rounded-xl p-3">
+                                <span className="bg-lab-gold text-white w-6 h-6 rounded-full flex items-center justify-center font-black text-xs shrink-0">2</span>
                                 <div>
                                     <p className="text-white font-bold">Robbie stuurt je code terug</p>
-                                    <p className="text-amber-400 text-xs">De code verschijnt dan hier in dit venster</p>
+                                    <p className="text-lab-gold text-xs">De code verschijnt dan hier in dit venster</p>
                                 </div>
                             </div>
-                            <div className="flex items-start gap-3 bg-amber-900/40 rounded-xl p-3">
-                                <span className="bg-amber-500 text-white w-6 h-6 rounded-full flex items-center justify-center font-black text-xs shrink-0">3</span>
+                            <div className="flex items-start gap-3 bg-lab-gold/40 rounded-xl p-3">
+                                <span className="bg-lab-gold text-white w-6 h-6 rounded-full flex items-center justify-center font-black text-xs shrink-0">3</span>
                                 <div>
                                     <p className="text-white font-bold">Klik op RUN om de code uit te voeren</p>
-                                    <p className="text-amber-400 text-xs">Kijk of Robbie alle botjes 🦴 vindt!</p>
+                                    <p className="text-lab-gold text-xs">Kijk of Robbie alle botjes 🦴 vindt!</p>
                                 </div>
                             </div>
                         </div>
                     </div>
 
                     {/* DE 3 COMMANDO'S */}
-                    <div className="bg-amber-950/50 backdrop-blur border border-amber-700/50 rounded-2xl p-4 max-w-md w-full mb-4">
-                        <h3 className="text-xs font-bold text-amber-400 uppercase tracking-widest mb-2 flex items-center gap-2">
+                    <div className="bg-lab-gold/50 backdrop-blur border border-lab-gold/50 rounded-2xl p-4 max-w-md w-full mb-4">
+                        <h3 className="text-xs font-bold text-lab-gold uppercase tracking-widest mb-2 flex items-center gap-2">
                             🐾 De 3 Commando's Die Robbie Begrijpt
                         </h3>
                         <div className="grid grid-cols-3 gap-2">
-                            <div className="bg-amber-900/50 rounded-xl p-2 text-center border border-amber-700/50">
-                                <code className="text-amber-200 font-bold text-xs">stap</code>
-                                <p className="text-amber-500 text-[9px] mt-1">1 hokje vooruit</p>
+                            <div className="bg-lab-gold/50 rounded-xl p-2 text-center border border-lab-gold/50">
+                                <code className="text-lab-gold font-bold text-xs">stap</code>
+                                <p className="text-lab-gold text-[9px] mt-1">1 hokje vooruit</p>
                             </div>
-                            <div className="bg-amber-900/50 rounded-xl p-2 text-center border border-amber-700/50">
-                                <code className="text-amber-200 font-bold text-xs">draai links</code>
-                                <p className="text-amber-500 text-[9px] mt-1">90° draaien</p>
+                            <div className="bg-lab-gold/50 rounded-xl p-2 text-center border border-lab-gold/50">
+                                <code className="text-lab-gold font-bold text-xs">draai links</code>
+                                <p className="text-lab-gold text-[9px] mt-1">90° draaien</p>
                             </div>
-                            <div className="bg-amber-900/50 rounded-xl p-2 text-center border border-amber-700/50">
-                                <code className="text-amber-200 font-bold text-xs">draai rechts</code>
-                                <p className="text-amber-500 text-[9px] mt-1">90° draaien</p>
+                            <div className="bg-lab-gold/50 rounded-xl p-2 text-center border border-lab-gold/50">
+                                <code className="text-lab-gold font-bold text-xs">draai rechts</code>
+                                <p className="text-lab-gold text-[9px] mt-1">90° draaien</p>
                             </div>
                         </div>
                     </div>
 
                     {/* HET DOEL */}
-                    <div className="bg-emerald-900/40 border border-emerald-500/50 rounded-xl p-3 max-w-md w-full mb-4">
-                        <h3 className="text-xs font-bold text-emerald-400 uppercase tracking-widest mb-2">🎯 Het Doel</h3>
+                    <div className="bg-lab-sage/40 border border-lab-sage/50 rounded-xl p-3 max-w-md w-full mb-4">
+                        <h3 className="text-xs font-bold text-lab-sage uppercase tracking-widest mb-2">🎯 Het Doel</h3>
                         <div className="flex items-center justify-center gap-4 text-white text-sm">
                             <div className="flex flex-col items-center">
                                 <span className="text-2xl">🦴</span>
-                                <span className="text-[10px] text-emerald-300">Pak alle botjes</span>
+                                <span className="text-[10px] text-lab-sage">Pak alle botjes</span>
                             </div>
-                            <span className="text-emerald-400 font-bold">→</span>
+                            <span className="text-lab-sage font-bold">→</span>
                             <div className="flex flex-col items-center">
                                 <span className="text-2xl">🏠</span>
-                                <span className="text-[10px] text-emerald-300">Ga naar het hok</span>
+                                <span className="text-[10px] text-lab-sage">Ga naar het hok</span>
                             </div>
                         </div>
                     </div>
@@ -346,12 +346,12 @@ export const LogicPreview: React.FC<LogicPreviewProps> = ({ code, onStart, onLev
                     const boneKey = `${x},${y}`;
                     const boneCollected = collectedBones.has(boneKey);
 
-                    let bgClass = 'bg-emerald-200 border-emerald-300';
+                    let bgClass = 'bg-lab-sage border-lab-sage';
                     let content = null;
 
                     if (cell === '#') {
-                        bgClass = 'bg-amber-700 border-amber-800';
-                        content = <span className="text-amber-900 text-lg">🌲</span>;
+                        bgClass = 'bg-lab-gold border-lab-gold';
+                        content = <span className="text-lab-gold text-lg">🌲</span>;
                     } else if (cell === '~') {
                         bgClass = 'bg-blue-400 border-blue-500';
                         content = <span className="text-blue-600 text-xs">💧</span>;
@@ -370,7 +370,7 @@ export const LogicPreview: React.FC<LogicPreviewProps> = ({ code, onStart, onLev
                                     className="absolute transition-all duration-300 z-10"
                                     style={{ transform: `rotate(${robotPos.dir * 90}deg)` }}
                                 >
-                                    <div className="w-8 h-8 sm:w-9 sm:h-9 bg-amber-500 rounded-full shadow-lg flex items-center justify-center text-xl border-2 border-amber-600">
+                                    <div className="w-8 h-8 sm:w-9 sm:h-9 bg-lab-gold rounded-full shadow-lg flex items-center justify-center text-xl border-2 border-lab-gold">
                                         🐕
                                     </div>
                                 </div>
@@ -383,7 +383,7 @@ export const LogicPreview: React.FC<LogicPreviewProps> = ({ code, onStart, onLev
     };
 
     return (
-        <div className="w-full h-full flex flex-col bg-slate-900">
+        <div className="w-full h-full flex flex-col bg-lab-muted">
             {/* Orange Header Bar */}
             <div className="bg-orange-500 px-3 py-2 flex justify-between items-center shrink-0 shadow-lg">
                 <div className="flex items-center gap-2">
@@ -430,9 +430,9 @@ export const LogicPreview: React.FC<LogicPreviewProps> = ({ code, onStart, onLev
 
                     {/* Status Banner */}
                     {status !== 'idle' && status !== 'running' && (
-                        <div className={`px-4 py-2 rounded-xl font-black text-xs uppercase tracking-widest animate-in zoom-in ${status === 'success' ? 'bg-emerald-500 text-white' :
+                        <div className={`px-4 py-2 rounded-xl font-black text-xs uppercase tracking-widest animate-in zoom-in ${status === 'success' ? 'bg-lab-sage text-white' :
                             status === 'crashed' ? 'bg-red-500 text-white' :
-                                'bg-amber-500 text-white'
+                                'bg-lab-gold text-white'
                             }`}>
                             {status === 'success' && '🎉 Level Gehaald!'}
                             {status === 'crashed' && '💥 Gecrasht!'}
@@ -441,12 +441,12 @@ export const LogicPreview: React.FC<LogicPreviewProps> = ({ code, onStart, onLev
                     )}
 
                     {/* Grid */}
-                    <div className="border-4 border-amber-800 rounded-xl overflow-hidden shadow-2xl bg-emerald-300">
+                    <div className="border-4 border-lab-gold rounded-xl overflow-hidden shadow-2xl bg-lab-sage">
                         {renderGrid()}
                     </div>
 
                     {/* Legend */}
-                    <div className="flex gap-3 text-[10px] text-emerald-200 font-bold">
+                    <div className="flex gap-3 text-[10px] text-lab-sage font-bold">
                         <span>🐕 Robbie</span>
                         <span>🦴 Botje</span>
                         <span>🏠 Hok</span>
@@ -456,7 +456,7 @@ export const LogicPreview: React.FC<LogicPreviewProps> = ({ code, onStart, onLev
                     {/* Logs */}
                     <div className="w-full max-w-md max-h-16 overflow-y-auto custom-scrollbar">
                         {logs.slice(-5).map((log, i) => (
-                            <div key={i} className="text-[10px] font-mono text-emerald-300/70 pl-2 border-l-2 border-emerald-600 mb-0.5">
+                            <div key={i} className="text-[10px] font-mono text-lab-sage/70 pl-2 border-l-2 border-lab-sage mb-0.5">
                                 {log}
                             </div>
                         ))}
@@ -464,39 +464,39 @@ export const LogicPreview: React.FC<LogicPreviewProps> = ({ code, onStart, onLev
                 </div>
 
                 {/* PERMANENT INSTRUCTIONS PANEL */}
-                <div className="w-full md:w-56 bg-slate-800 border-t md:border-t-0 md:border-l border-slate-700 p-3 shrink-0 overflow-y-auto">
+                <div className="w-full md:w-56 bg-lab-muted border-t md:border-t-0 md:border-l border-lab-muted p-3 shrink-0 overflow-y-auto">
                     <div className="flex items-center gap-2 mb-3">
-                        <HelpCircle size={14} className="text-amber-400" />
-                        <span className="text-[10px] font-black text-amber-400 uppercase tracking-widest">Commando's</span>
+                        <HelpCircle size={14} className="text-lab-gold" />
+                        <span className="text-[10px] font-black text-lab-gold uppercase tracking-widest">Commando's</span>
                     </div>
 
                     <div className="space-y-2">
-                        <div className="bg-slate-700/50 rounded-lg p-2 border border-slate-600">
-                            <code className="text-amber-300 font-bold text-xs">stap</code>
-                            <p className="text-slate-400 text-[10px] mt-0.5">1 hokje vooruit</p>
+                        <div className="bg-lab-muted/50 rounded-lg p-2 border border-lab-muted">
+                            <code className="text-lab-gold font-bold text-xs">stap</code>
+                            <p className="text-lab-muted text-[10px] mt-0.5">1 hokje vooruit</p>
                         </div>
-                        <div className="bg-slate-700/50 rounded-lg p-2 border border-slate-600">
-                            <code className="text-amber-300 font-bold text-xs">draai links</code>
-                            <p className="text-slate-400 text-[10px] mt-0.5">90° naar links draaien</p>
+                        <div className="bg-lab-muted/50 rounded-lg p-2 border border-lab-muted">
+                            <code className="text-lab-gold font-bold text-xs">draai links</code>
+                            <p className="text-lab-muted text-[10px] mt-0.5">90° naar links draaien</p>
                         </div>
-                        <div className="bg-slate-700/50 rounded-lg p-2 border border-slate-600">
-                            <code className="text-amber-300 font-bold text-xs">draai rechts</code>
-                            <p className="text-slate-400 text-[10px] mt-0.5">90° naar rechts draaien</p>
+                        <div className="bg-lab-muted/50 rounded-lg p-2 border border-lab-muted">
+                            <code className="text-lab-gold font-bold text-xs">draai rechts</code>
+                            <p className="text-lab-muted text-[10px] mt-0.5">90° naar rechts draaien</p>
                         </div>
                     </div>
 
-                    <div className="mt-4 pt-3 border-t border-slate-700">
-                        <div className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-2">Doel</div>
-                        <div className="text-slate-300 text-xs leading-relaxed">
-                            <span className="text-amber-300">1.</span> Pak alle 🦴<br />
-                            <span className="text-amber-300">2.</span> Ga naar 🏠
+                    <div className="mt-4 pt-3 border-t border-lab-muted">
+                        <div className="text-[10px] font-black text-lab-muted uppercase tracking-widest mb-2">Doel</div>
+                        <div className="text-lab-muted text-xs leading-relaxed">
+                            <span className="text-lab-gold">1.</span> Pak alle 🦴<br />
+                            <span className="text-lab-gold">2.</span> Ga naar 🏠
                         </div>
                     </div>
 
                     {/* Code Preview */}
-                    <div className="mt-4 pt-3 border-t border-slate-700">
-                        <div className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-2">Jouw Code</div>
-                        <div className="bg-slate-900 rounded-lg p-2 font-mono text-[10px] text-amber-300 max-h-24 overflow-y-auto whitespace-pre-wrap">
+                    <div className="mt-4 pt-3 border-t border-lab-muted">
+                        <div className="text-[10px] font-black text-lab-muted uppercase tracking-widest mb-2">Jouw Code</div>
+                        <div className="bg-lab-muted rounded-lg p-2 font-mono text-[10px] text-lab-gold max-h-24 overflow-y-auto whitespace-pre-wrap">
                             {code || "// Wachten..."}
                         </div>
                     </div>
@@ -506,10 +506,10 @@ export const LogicPreview: React.FC<LogicPreviewProps> = ({ code, onStart, onLev
             {/* Game Over Overlay */}
             {lives <= 0 && (
                 <div className="absolute inset-0 bg-black/80 flex items-center justify-center z-50">
-                    <div className="bg-slate-800 rounded-2xl p-6 text-center max-w-xs">
+                    <div className="bg-lab-muted rounded-2xl p-6 text-center max-w-xs">
                         <div className="text-4xl mb-3">😢</div>
                         <h3 className="text-xl font-black text-white mb-2">Game Over!</h3>
-                        <p className="text-slate-400 text-sm mb-4">Je hebt geen levens meer.</p>
+                        <p className="text-lab-muted text-sm mb-4">Je hebt geen levens meer.</p>
                         <button onClick={fullReset} className="w-full py-2.5 bg-orange-500 text-white font-bold rounded-xl hover:bg-orange-600 transition-all text-sm">
                             Opnieuw Proberen
                         </button>

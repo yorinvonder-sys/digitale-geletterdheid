@@ -161,10 +161,10 @@ export class ErrorBoundary extends Component<Props, State> {
             // Show a friendly loading state while auto-reloading
             if (isReloading) {
                 return (
-                    <div className="min-h-screen flex items-center justify-center bg-slate-50 p-8 font-sans">
+                    <div className="min-h-screen flex items-center justify-center bg-lab-muted p-8 font-sans">
                         <div className="flex flex-col items-center gap-4">
                             <IconLoader2 size={48} className="animate-spin text-indigo-600" />
-                            <p className="text-slate-600 font-medium">Nieuwe versie laden...</p>
+                            <p className="text-lab-muted font-medium">Nieuwe versie laden...</p>
                         </div>
                     </div>
                 );
@@ -181,11 +181,11 @@ export class ErrorBoundary extends Component<Props, State> {
                                 <IconRefreshCw size={32} className="text-indigo-600" />
                             </div>
 
-                            <h1 className="text-2xl font-black text-slate-800 mb-3">
+                            <h1 className="text-2xl font-black text-lab-muted mb-3">
                                 Update Beschikbaar! 🚀
                             </h1>
 
-                            <p className="text-slate-600 mb-8 leading-relaxed">
+                            <p className="text-lab-muted mb-8 leading-relaxed">
                                 Er is een nieuwe versie van de app uitgebracht.
                                 Klik op de knop hieronder om de nieuwste versie te laden.
                             </p>
@@ -198,7 +198,7 @@ export class ErrorBoundary extends Component<Props, State> {
                                 Pagina Verversen
                             </button>
 
-                            <p className="text-[11px] text-slate-400 mt-4">
+                            <p className="text-[11px] text-lab-muted mt-4">
                                 Dit gebeurt wanneer er een update is uitgebracht terwijl je de app gebruikte.
                             </p>
                         </div>
@@ -217,15 +217,15 @@ export class ErrorBoundary extends Component<Props, State> {
                             <h1 className="text-2xl font-black text-red-600">Er is iets misgegaan 😔</h1>
                         </div>
 
-                        <p className="text-slate-600 mb-6">
+                        <p className="text-lab-muted mb-6">
                             De applicatie is vastgelopen. Maak een screenshot van dit bericht en stuur het naar de ontwikkelaar.
                         </p>
 
-                        <div className="bg-slate-900 rounded-xl p-4 overflow-auto max-h-96 text-left">
+                        <div className="bg-lab-muted rounded-xl p-4 overflow-auto max-h-96 text-left">
                             <p className="text-red-400 font-mono text-sm font-bold mb-2">
                                 {error && error.toString()}
                             </p>
-                            <pre className="text-slate-500 font-mono text-xs whitespace-pre-wrap">
+                            <pre className="text-lab-muted font-mono text-xs whitespace-pre-wrap">
                                 {errorInfo && errorInfo.componentStack}
                             </pre>
                         </div>

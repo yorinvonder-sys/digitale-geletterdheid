@@ -26,7 +26,7 @@ const StartButton: React.FC<{ onStart: () => void; countdown: number }> = ({ onS
                 flex items-center justify-center gap-3 relative overflow-hidden
                 ${isReady
                     ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-2xl shadow-purple-500/40 hover:scale-105 cursor-pointer active:scale-95'
-                    : 'bg-slate-800 text-slate-500 cursor-not-allowed border border-slate-700'
+                    : 'bg-lab-muted text-lab-muted cursor-not-allowed border border-lab-muted'
                 }
             `}
         >
@@ -35,7 +35,7 @@ const StartButton: React.FC<{ onStart: () => void; countdown: number }> = ({ onS
                     <div className="relative w-7 h-7">
                         <svg className="w-7 h-7 -rotate-90" viewBox="0 0 36 36">
                             <path
-                                className="text-slate-700"
+                                className="text-lab-muted"
                                 d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
                                 fill="none"
                                 stroke="currentColor"
@@ -93,7 +93,7 @@ export const TrainerPreview: React.FC<TrainerPreviewProps> = ({ data }) => {
 
     if (showIntro) {
         return (
-            <div className="w-full h-full flex flex-col bg-slate-900 text-slate-200 relative overflow-hidden">
+            <div className="w-full h-full flex flex-col bg-lab-muted text-lab-muted relative overflow-hidden">
                 {/* Neural Network Background Pattern */}
                 <div className="absolute inset-0 opacity-10">
                     <div className="absolute top-10 left-10 w-3 h-3 bg-purple-500 rounded-full animate-ping"></div>
@@ -119,16 +119,16 @@ export const TrainerPreview: React.FC<TrainerPreviewProps> = ({ data }) => {
                     <h2 className="text-2xl font-black text-white mb-2 tracking-tight text-center">
                         Welkom, AI Trainer!
                     </h2>
-                    <p className="text-slate-400 text-center max-w-sm mb-8 leading-relaxed">
+                    <p className="text-lab-muted text-center max-w-sm mb-8 leading-relaxed">
                         Leer een AI model hoe het afval moet sorteren door <strong className="text-blue-400">voorbeelden</strong> te geven.
                     </p>
 
                     {/* Instructions */}
-                    <div className="bg-slate-800/50 backdrop-blur border border-slate-700 rounded-2xl p-5 max-w-sm w-full mb-6">
+                    <div className="bg-lab-muted/50 backdrop-blur border border-lab-muted rounded-2xl p-5 max-w-sm w-full mb-6">
                         <h3 className="text-xs font-bold text-purple-400 uppercase tracking-widest mb-3 flex items-center gap-2">
                             <Sparkles size={14} /> Hoe werkt het?
                         </h3>
-                        <ul className="space-y-3 text-sm text-slate-300">
+                        <ul className="space-y-3 text-sm text-lab-muted">
                             <li className="flex items-start gap-3">
                                 <span className="bg-blue-500/20 text-blue-400 rounded-full w-6 h-6 flex items-center justify-center shrink-0 font-bold text-xs">1</span>
                                 <span>Geef trainingsdata: "Een bananenschil hoort bij GFT"</span>
@@ -159,10 +159,10 @@ export const TrainerPreview: React.FC<TrainerPreviewProps> = ({ data }) => {
     const showInstructionBanner = data.classAItems.length === 0 && data.classBItems.length === 0;
 
     return (
-        <div className="w-full h-full flex flex-col bg-slate-900 border-l border-slate-800 relative overflow-hidden font-sans">
+        <div className="w-full h-full flex flex-col bg-lab-muted border-l border-lab-muted relative overflow-hidden font-sans">
 
             {/* Header */}
-            <div className="bg-slate-950 px-4 py-3 flex justify-between items-center border-b border-slate-800 shrink-0 z-20">
+            <div className="bg-lab-muted px-4 py-3 flex justify-between items-center border-b border-lab-muted shrink-0 z-20">
                 <div className="flex items-center gap-3">
                     <div className="p-1.5 bg-purple-500 rounded text-white shadow-lg shadow-purple-500/20">
                         <BrainCircuit size={18} />
@@ -173,7 +173,7 @@ export const TrainerPreview: React.FC<TrainerPreviewProps> = ({ data }) => {
                     </div>
                 </div>
                 <div className="flex gap-2">
-                    <div className="text-[10px] bg-slate-800 text-slate-400 px-2 py-1 rounded border border-slate-700 flex items-center">
+                    <div className="text-[10px] bg-lab-muted text-lab-muted px-2 py-1 rounded border border-lab-muted flex items-center">
                         <span>DATASET: {data.classAItems.length + data.classBItems.length}</span>
                     </div>
                     {/* Completion Button */}
@@ -224,7 +224,7 @@ export const TrainerPreview: React.FC<TrainerPreviewProps> = ({ data }) => {
                 {/* Visualisation of the Brain/Model */}
                 <div className="flex justify-center py-2">
                     <div className="relative">
-                        <div className="w-24 h-24 bg-slate-800 rounded-full border-4 border-purple-500/30 flex items-center justify-center animate-pulse-soft">
+                        <div className="w-24 h-24 bg-lab-muted rounded-full border-4 border-purple-500/30 flex items-center justify-center animate-pulse-soft">
                             <Database size={40} className="text-purple-400" />
                         </div>
                         {/* Connections */}
@@ -244,13 +244,13 @@ export const TrainerPreview: React.FC<TrainerPreviewProps> = ({ data }) => {
 
                         <div className="mt-4 flex-1 space-y-2 overflow-y-auto custom-scrollbar pr-1">
                             {data.classAItems.length === 0 && (
-                                <div className="text-center text-slate-400 text-xs mt-6 space-y-3">
+                                <div className="text-center text-lab-muted text-xs mt-6 space-y-3">
                                     <div className="text-2xl">🥤</div>
                                     <p className="font-medium">Nog geen plastic voorbeelden</p>
-                                    <div className="bg-slate-800/50 rounded-lg p-3 text-left">
+                                    <div className="bg-lab-muted/50 rounded-lg p-3 text-left">
                                         <p className="text-[10px] text-blue-400 font-bold uppercase tracking-wide mb-2">💡 Probeer dit:</p>
-                                        <p className="text-slate-300 text-xs italic">"Een plastic flesje is plastic"</p>
-                                        <p className="text-slate-300 text-xs italic">"Een lege chipszak is plastic"</p>
+                                        <p className="text-lab-muted text-xs italic">"Een plastic flesje is plastic"</p>
+                                        <p className="text-lab-muted text-xs italic">"Een lege chipszak is plastic"</p>
                                     </div>
                                 </div>
                             )}
@@ -275,13 +275,13 @@ export const TrainerPreview: React.FC<TrainerPreviewProps> = ({ data }) => {
 
                         <div className="mt-4 flex-1 space-y-2 overflow-y-auto custom-scrollbar pr-1">
                             {data.classBItems.length === 0 && (
-                                <div className="text-center text-slate-400 text-xs mt-6 space-y-3">
+                                <div className="text-center text-lab-muted text-xs mt-6 space-y-3">
                                     <div className="text-2xl">📰</div>
                                     <p className="font-medium">Nog geen papier voorbeelden</p>
-                                    <div className="bg-slate-800/50 rounded-lg p-3 text-left">
+                                    <div className="bg-lab-muted/50 rounded-lg p-3 text-left">
                                         <p className="text-[10px] text-green-400 font-bold uppercase tracking-wide mb-2">💡 Probeer dit:</p>
-                                        <p className="text-slate-300 text-xs italic">"Een oude krant is papier"</p>
-                                        <p className="text-slate-300 text-xs italic">"Een kartonnen doos is papier"</p>
+                                        <p className="text-lab-muted text-xs italic">"Een oude krant is papier"</p>
+                                        <p className="text-lab-muted text-xs italic">"Een kartonnen doos is papier"</p>
                                     </div>
                                 </div>
                             )}
@@ -300,21 +300,21 @@ export const TrainerPreview: React.FC<TrainerPreviewProps> = ({ data }) => {
                 </div>
 
                 {/* Testing Zone */}
-                <div className="bg-slate-800 rounded-xl p-4 border border-slate-700 relative min-h-[100px] flex items-center justify-between gap-4 shrink-0 z-10">
-                    <div className="absolute -top-3 left-4 bg-slate-700 text-slate-300 text-[10px] font-bold px-2 py-0.5 rounded border border-slate-600">
+                <div className="bg-lab-muted rounded-xl p-4 border border-lab-muted relative min-h-[100px] flex items-center justify-between gap-4 shrink-0 z-10">
+                    <div className="absolute -top-3 left-4 bg-lab-muted text-lab-muted text-[10px] font-bold px-2 py-0.5 rounded border border-lab-muted">
                         TEST ZONE
                     </div>
 
                     {data.testItem ? (
                         <>
-                            <div className="bg-white text-slate-900 font-bold px-4 py-3 rounded-lg shadow-lg text-lg animate-in slide-in-from-left">
+                            <div className="bg-white text-lab-muted font-bold px-4 py-3 rounded-lg shadow-lg text-lg animate-in slide-in-from-left">
                                 "{data.testItem.name}"
                             </div>
 
-                            <ArrowRight className="text-slate-500" />
+                            <ArrowRight className="text-lab-muted" />
 
                             <div className={`flex items-center gap-2 px-4 py-3 rounded-lg font-bold text-white shadow-lg animate-in zoom-in duration-500 ${data.testItem.predictedClass === 'A' ? 'bg-blue-600' :
-                                data.testItem.predictedClass === 'B' ? 'bg-green-600' : 'bg-slate-600'
+                                data.testItem.predictedClass === 'B' ? 'bg-green-600' : 'bg-lab-muted'
                                 }`}>
                                 {data.testItem.predictedClass === 'A' && <Trash2 size={20} />}
                                 {data.testItem.predictedClass === 'B' && <FileText size={20} />}
@@ -331,14 +331,14 @@ export const TrainerPreview: React.FC<TrainerPreviewProps> = ({ data }) => {
                             </div>
                         </>
                     ) : (
-                        <div className="w-full text-center text-slate-400 text-sm flex flex-col items-center gap-2">
-                            <div className="bg-slate-700/50 rounded-full p-3">
-                                <HelpCircle className="text-yellow-400" size={28} />
+                        <div className="w-full text-center text-lab-muted text-sm flex flex-col items-center gap-2">
+                            <div className="bg-lab-muted/50 rounded-full p-3">
+                                <HelpCircle className="text-lab-gold" size={28} />
                             </div>
                             <span className="font-medium">Test de AI!</span>
-                            <div className="bg-slate-700/50 rounded-lg px-3 py-2 text-xs">
-                                <p className="text-slate-300">Als je genoeg voorbeelden hebt gegeven, vraag dan:</p>
-                                <p className="text-yellow-400 font-medium mt-1">"Waar hoort een cola flesje bij?"</p>
+                            <div className="bg-lab-muted/50 rounded-lg px-3 py-2 text-xs">
+                                <p className="text-lab-muted">Als je genoeg voorbeelden hebt gegeven, vraag dan:</p>
+                                <p className="text-lab-gold font-medium mt-1">"Waar hoort een cola flesje bij?"</p>
                             </div>
                         </div>
                     )}

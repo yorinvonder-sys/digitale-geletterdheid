@@ -101,14 +101,14 @@ export const ScholenLandingCustomization: React.FC = () => {
         <div className="max-w-5xl mx-auto">
             {/* Header */}
             <div className="text-center mb-16">
-                <div className="inline-flex items-center gap-2 text-sm font-medium tracking-wide px-4 py-2 rounded-full mb-5 border" style={{ color: '#D97757', backgroundColor: '#FAF9F0', borderColor: '#E8E6DF' }}>
-                    <div className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ backgroundColor: '#D97757' }} />
+                <div className="inline-flex items-center gap-2 text-sm font-medium tracking-wide px-4 py-2 rounded-full mb-5 border" style={{ color: '#D97848', backgroundColor: '#FCF6EA', borderColor: '#E7D8BD' }}>
+                    <div className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ backgroundColor: '#D97848' }} />
                     Ons verschil
                 </div>
-                <h2 className="text-2xl md:text-3xl font-medium tracking-tight mb-4" style={{ fontFamily: "'Newsreader', Georgia, serif", color: '#1A1A19' }}>
-                    Volledig afgestemd op <span style={{ color: '#D97757' }}>jouw school</span>
+                <h2 className="text-2xl md:text-3xl font-medium tracking-tight mb-4" style={{ fontFamily: "'Newsreader', Georgia, serif", color: '#08283B' }}>
+                    Volledig afgestemd op <span style={{ color: '#D97848' }}>jouw school</span>
                 </h2>
-                <p className="text-base leading-relaxed max-w-2xl mx-auto" style={{ color: '#6B6B66' }}>
+                <p className="text-base leading-relaxed max-w-2xl mx-auto" style={{ color: '#445865' }}>
                     Geen twee scholen zijn hetzelfde. Daarom past DGSkills zich aan op jullie visie,
                     planning en curriculum — niet andersom. Jullie bepalen hoe het platform werkt.
                 </p>
@@ -128,16 +128,16 @@ export const ScholenLandingCustomization: React.FC = () => {
                                     : 'hover:shadow-md'
                             }`}
                             style={{
-                                backgroundColor: activeIndex === i ? '#FAF9F0' : '#FFFFFF',
-                                borderColor: activeIndex === i ? '#E8E6DF' : '#F0EEE8',
+                                backgroundColor: activeIndex === i ? '#FCF6EA' : '#FFFFFF',
+                                borderColor: activeIndex === i ? '#E7D8BD' : '#FCF6EA',
                             }}
                         >
                             <div className="flex items-center gap-3.5">
                                 <div
                                     className="w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0 transition-transform group-hover:scale-110"
                                     style={{
-                                        backgroundColor: activeIndex === i ? '#F5F3EC' : '#F5F3EC',
-                                        color: activeIndex === i ? '#D97757' : '#9C9C95',
+                                        backgroundColor: activeIndex === i ? '#FCF6EA' : '#FCF6EA',
+                                        color: activeIndex === i ? '#D97848' : '#445865',
                                     }}
                                 >
                                     {pillar.icon}
@@ -145,17 +145,17 @@ export const ScholenLandingCustomization: React.FC = () => {
                                 <div className="flex-1 min-w-0">
                                     <h3
                                         className="text-[15px] font-medium transition-colors"
-                                        style={{ color: activeIndex === i ? '#1A1A19' : '#6B6B66' }}
+                                        style={{ color: activeIndex === i ? '#08283B' : '#445865' }}
                                     >
                                         {pillar.title}
                                     </h3>
                                     {activeIndex !== i && (
-                                        <p className="text-xs mt-0.5 truncate" style={{ color: '#9C9C95' }}>{pillar.description}</p>
+                                        <p className="text-xs mt-0.5 truncate" style={{ color: '#445865' }}>{pillar.description}</p>
                                     )}
                                 </div>
                                 <div
                                     className="w-2 h-2 rounded-full transition-all flex-shrink-0"
-                                    style={{ backgroundColor: activeIndex === i ? '#D97757' : '#E8E6DF' }}
+                                    style={{ backgroundColor: activeIndex === i ? '#D97848' : '#E7D8BD' }}
                                 />
                             </div>
                         </button>
@@ -164,7 +164,7 @@ export const ScholenLandingCustomization: React.FC = () => {
 
                 {/* Right: detail panel */}
                 <div className="md:col-span-2 lg:col-span-3">
-                    <div className="rounded-3xl border overflow-hidden h-full flex flex-col justify-center p-8 md:p-10 transition-all duration-300" style={{ backgroundColor: 'transparent', borderColor: '#E8E6DF' }}>
+                    <div className="rounded-3xl border overflow-hidden h-full flex flex-col justify-center p-8 md:p-10 transition-all duration-300" style={{ backgroundColor: 'transparent', borderColor: '#E7D8BD' }}>
                         {/* Title row with illustration */}
                         <div className="flex items-center gap-4 mb-4">
                             <div className="w-16 h-16 rounded-xl flex-shrink-0 flex items-center justify-center" style={{ backgroundColor: 'transparent' }}>
@@ -175,12 +175,12 @@ export const ScholenLandingCustomization: React.FC = () => {
                                     loading="lazy"
                                 />
                             </div>
-                            <h3 className="text-2xl font-medium" style={{ fontFamily: "'Newsreader', Georgia, serif", color: '#1A1A19' }}>
+                            <h3 className="text-2xl font-medium" style={{ fontFamily: "'Newsreader', Georgia, serif", color: '#08283B' }}>
                                 {active.title}
                             </h3>
                         </div>
 
-                        <p className="text-base leading-relaxed mb-6" style={{ color: '#6B6B66' }}>
+                        <p className="text-base leading-relaxed mb-6" style={{ color: '#445865' }}>
                             {active.description}
                         </p>
 
@@ -189,11 +189,11 @@ export const ScholenLandingCustomization: React.FC = () => {
                                 <div key={h} className="flex items-center gap-3">
                                     <div
                                         className="w-6 h-6 rounded-lg flex items-center justify-center flex-shrink-0"
-                                        style={{ backgroundColor: '#F0EEE8', color: '#D97757' }}
+                                        style={{ backgroundColor: '#FCF6EA', color: '#D97848' }}
                                     >
                                         <IconCheck />
                                     </div>
-                                    <span className="text-sm font-medium" style={{ color: '#1A1A19' }}>{h}</span>
+                                    <span className="text-sm font-medium" style={{ color: '#08283B' }}>{h}</span>
                                 </div>
                             ))}
                         </div>
@@ -203,8 +203,8 @@ export const ScholenLandingCustomization: React.FC = () => {
 
             {/* Bottom CTA strip */}
             <div className="mt-14 text-center">
-                <div className="inline-flex flex-col sm:flex-row items-center gap-4 rounded-2xl px-8 py-6 border" style={{ backgroundColor: '#FAF9F0', borderColor: '#E8E6DF' }}>
-                    <p className="text-sm font-medium" style={{ color: '#1A1A19' }}>
+                <div className="inline-flex flex-col sm:flex-row items-center gap-4 rounded-2xl px-8 py-6 border" style={{ backgroundColor: '#FCF6EA', borderColor: '#E7D8BD' }}>
+                    <p className="text-sm font-medium" style={{ color: '#08283B' }}>
                         Benieuwd hoe DGSkills past bij jullie school?
                     </p>
                     <a
@@ -214,9 +214,9 @@ export const ScholenLandingCustomization: React.FC = () => {
                             document.getElementById('gratis-pilot')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
                         }}
                         className="text-white px-6 py-2.5 rounded-full text-sm font-medium transition-all hover:-translate-y-0.5 flex items-center gap-2"
-                        style={{ backgroundColor: '#D97757' }}
-                        onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#C46849')}
-                        onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = '#D97757')}
+                        style={{ backgroundColor: '#D97848' }}
+                        onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#D97848')}
+                        onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = '#D97848')}
                     >
                         Plan een gesprek
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7" /></svg>

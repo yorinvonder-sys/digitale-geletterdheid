@@ -38,11 +38,11 @@ const FILES: FileItem[] = [
 
 // Pre-defined folders (original OneDrive style)
 const FOLDERS: FolderItem[] = [
-    { id: 'nederlands', name: 'Nederlands', icon: <Folder className="text-[#2A9D8F]" fill="currentColor" fillOpacity={0.2} /> },
-    { id: 'wiskunde', name: 'Wiskunde', icon: <Folder className="text-[#2A9D8F]" fill="currentColor" fillOpacity={0.2} /> },
-    { id: 'aardrijkskunde', name: 'Aardrijkskunde', icon: <Folder className="text-[#2A9D8F]" fill="currentColor" fillOpacity={0.2} /> },
-    { id: 'school_algemeen', name: 'School Algemeen', icon: <Folder className="text-[#8B6F9E]" fill="currentColor" fillOpacity={0.2} /> },
-    { id: 'prive', name: "Privé & Foto's", icon: <Folder className="text-[#D97757]" fill="currentColor" fillOpacity={0.2} /> },
+    { id: 'nederlands', name: 'Nederlands', icon: <Folder className="text-[#5F947D]" fill="currentColor" fillOpacity={0.2} /> },
+    { id: 'wiskunde', name: 'Wiskunde', icon: <Folder className="text-[#5F947D]" fill="currentColor" fillOpacity={0.2} /> },
+    { id: 'aardrijkskunde', name: 'Aardrijkskunde', icon: <Folder className="text-[#5F947D]" fill="currentColor" fillOpacity={0.2} /> },
+    { id: 'school_algemeen', name: 'School Algemeen', icon: <Folder className="text-[#0B453F]" fill="currentColor" fillOpacity={0.2} /> },
+    { id: 'prive', name: "Privé & Foto's", icon: <Folder className="text-[#D97848]" fill="currentColor" fillOpacity={0.2} /> },
 ];
 
 export const CloudCleanerMission: React.FC<CloudCleanerProps> = ({ onComplete, onBack }) => {
@@ -243,7 +243,7 @@ export const CloudCleanerMission: React.FC<CloudCleanerProps> = ({ onComplete, o
     };
 
     return (
-        <div className="min-h-screen bg-[#FAF9F0] flex flex-col text-[#1A1A19]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+        <div className="min-h-screen bg-[#FCF6EA] flex flex-col text-[#08283B]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
             {/* Touch drag ghost */}
             {touchDragFile && touchPosition && (
                 <div
@@ -253,8 +253,8 @@ export const CloudCleanerMission: React.FC<CloudCleanerProps> = ({ onComplete, o
                         top: touchPosition.y - 40,
                     }}
                 >
-                    <div className="w-20 h-20 bg-[#D97757]/20 backdrop-blur-sm rounded-2xl border-2 border-[#D97757] flex items-center justify-center shadow-xl">
-                        <FileText size={32} className="text-[#D97757]" />
+                    <div className="w-20 h-20 bg-[#D97848]/20 backdrop-blur-sm rounded-2xl border-2 border-[#D97848] flex items-center justify-center shadow-xl">
+                        <FileText size={32} className="text-[#D97848]" />
                     </div>
                 </div>
             )}
@@ -266,7 +266,7 @@ export const CloudCleanerMission: React.FC<CloudCleanerProps> = ({ onComplete, o
                         initial={{ opacity: 0, y: -50, scale: 0.8 }}
                         animate={{ opacity: 1, y: 0, scale: 1 }}
                         exit={{ opacity: 0, y: -20, scale: 0.8 }}
-                        className="fixed top-20 left-1/2 -translate-x-1/2 z-50 bg-[#10B981] text-white px-6 py-3 rounded-full shadow-2xl flex items-center gap-3 font-bold"
+                        className="fixed top-20 left-1/2 -translate-x-1/2 z-50 bg-[#5F947D] text-white px-6 py-3 rounded-full shadow-2xl flex items-center gap-3 font-bold"
                     >
                         <Sparkles size={20} />
                         <span>{successMessage}</span>
@@ -290,7 +290,7 @@ export const CloudCleanerMission: React.FC<CloudCleanerProps> = ({ onComplete, o
             </AnimatePresence>
 
             {/* OneDrive Header */}
-            <header className="bg-[#D97757] text-white flex items-center justify-between px-4 py-3 shadow-md">
+            <header className="bg-[#D97848] text-white flex items-center justify-between px-4 py-3 shadow-md">
                 <div className="flex items-center gap-4">
                     <button onClick={onBack} className="p-2 hover:bg-white/10 rounded-full transition-all duration-300 focus-visible:ring-2 focus-visible:ring-white" title="Terug naar opdrachten">
                         <ArrowLeft size={20} />
@@ -314,8 +314,8 @@ export const CloudCleanerMission: React.FC<CloudCleanerProps> = ({ onComplete, o
             {/* Main Interface */}
             <div className="flex-1 flex overflow-hidden">
                 {/* Sidebar (Folders) */}
-                <aside className="w-64 bg-[#FAF9F0] border-r border-[#E8E6DF] p-4 flex flex-col overflow-y-auto">
-                    <h3 className="text-xs font-bold text-[#6B6B66] uppercase tracking-widest mb-4 px-2">Mijn Mappen</h3>
+                <aside className="w-64 bg-[#FCF6EA] border-r border-[#E7D8BD] p-4 flex flex-col overflow-y-auto">
+                    <h3 className="text-xs font-bold text-[#445865] uppercase tracking-widest mb-4 px-2">Mijn Mappen</h3>
 
                     {/* Instruction hint when dragging */}
                     <AnimatePresence>
@@ -324,9 +324,9 @@ export const CloudCleanerMission: React.FC<CloudCleanerProps> = ({ onComplete, o
                                 initial={{ opacity: 0, height: 0 }}
                                 animate={{ opacity: 1, height: 'auto' }}
                                 exit={{ opacity: 0, height: 0 }}
-                                className="mb-4 p-3 bg-[#D97757]/10 border border-[#D97757]/20 rounded-2xl"
+                                className="mb-4 p-3 bg-[#D97848]/10 border border-[#D97848]/20 rounded-2xl"
                             >
-                                <p className="text-xs text-[#D97757] font-bold text-center">
+                                <p className="text-xs text-[#D97848] font-bold text-center">
                                     Sleep naar de juiste map!
                                 </p>
                             </motion.div>
@@ -355,13 +355,13 @@ export const CloudCleanerMission: React.FC<CloudCleanerProps> = ({ onComplete, o
                                 className={`
                                     flex items-center gap-3 px-3 py-3 rounded-2xl transition-all duration-300 cursor-pointer border-2
                                     ${selectedFolder === folder.id
-                                        ? 'border-[#D97757] bg-[#D97757]/10 shadow-md ring-2 ring-[#D97757]/20'
+                                        ? 'border-[#D97848] bg-[#D97848]/10 shadow-md ring-2 ring-[#D97848]/20'
                                         : dragOverFolderId === folder.id
-                                            ? 'border-[#10B981] bg-[#10B981]/10 shadow-lg ring-2 ring-[#10B981]/30'
+                                            ? 'border-[#5F947D] bg-[#5F947D]/10 shadow-lg ring-2 ring-[#5F947D]/30'
                                             : lastSuccessFolder === folder.id
-                                                ? 'border-[#10B981] bg-[#10B981]/10 shadow-lg'
+                                                ? 'border-[#5F947D] bg-[#5F947D]/10 shadow-lg'
                                                 : 'border-transparent hover:bg-white hover:shadow-sm'}
-                                    ${selectedFile ? 'hover:border-[#10B981] hover:bg-[#10B981]/5' : ''}
+                                    ${selectedFile ? 'hover:border-[#5F947D] hover:bg-[#5F947D]/5' : ''}
                                 `}
                             >
                                 <motion.div
@@ -372,12 +372,12 @@ export const CloudCleanerMission: React.FC<CloudCleanerProps> = ({ onComplete, o
                                 >
                                     {folder.icon}
                                 </motion.div>
-                                <span className="font-medium text-sm text-[#3D3D38]">{folder.name}</span>
+                                <span className="font-medium text-sm text-[#445865]">{folder.name}</span>
                                 {dragOverFolderId === folder.id && (
                                     <motion.span
                                         initial={{ opacity: 0, scale: 0 }}
                                         animate={{ opacity: 1, scale: 1 }}
-                                        className="ml-auto text-[#10B981]"
+                                        className="ml-auto text-[#5F947D]"
                                     >
                                         <CheckCircle size={18} />
                                     </motion.span>
@@ -408,8 +408,8 @@ export const CloudCleanerMission: React.FC<CloudCleanerProps> = ({ onComplete, o
                                     : dragOverFolderId === 'trash'
                                         ? 'border-red-500 bg-red-100 shadow-lg ring-2 ring-red-300'
                                         : lastSuccessFolder === 'trash'
-                                            ? 'border-[#10B981] bg-[#10B981]/10 shadow-lg'
-                                            : 'border-transparent text-[#6B6B66] hover:bg-red-50 hover:shadow-sm'}
+                                            ? 'border-[#5F947D] bg-[#5F947D]/10 shadow-lg'
+                                            : 'border-transparent text-[#445865] hover:bg-red-50 hover:shadow-sm'}
                                 ${selectedFile ? 'hover:border-red-400' : ''}
                             `}
                         >
@@ -419,9 +419,9 @@ export const CloudCleanerMission: React.FC<CloudCleanerProps> = ({ onComplete, o
                                 }}
                                 transition={{ duration: 0.5 }}
                             >
-                                <Trash2 size={20} className={dragOverFolderId === 'trash' || selectedFolder === 'trash' ? 'text-red-500' : 'text-[#6B6B66]'} />
+                                <Trash2 size={20} className={dragOverFolderId === 'trash' || selectedFolder === 'trash' ? 'text-red-500' : 'text-[#445865]'} />
                             </motion.div>
-                            <span className={`font-medium text-sm ${selectedFolder === 'trash' || dragOverFolderId === 'trash' ? 'text-red-700' : 'text-[#3D3D38]'}`}>
+                            <span className={`font-medium text-sm ${selectedFolder === 'trash' || dragOverFolderId === 'trash' ? 'text-red-700' : 'text-[#445865]'}`}>
                                 Prullenbak
                             </span>
                             {dragOverFolderId === 'trash' && (
@@ -437,7 +437,7 @@ export const CloudCleanerMission: React.FC<CloudCleanerProps> = ({ onComplete, o
                     </div>
 
                     {/* Score Panel */}
-                    <div className="mt-auto bg-gradient-to-br from-[#D97757] to-[#C46849] p-4 rounded-2xl text-white shadow-lg">
+                    <div className="mt-auto bg-gradient-to-br from-[#D97848] to-[#D97848] p-4 rounded-2xl text-white shadow-lg">
                         <h4 className="font-bold text-sm mb-2 flex items-center gap-2">
                             <Sparkles size={16} />
                             Score: {score} XP
@@ -468,26 +468,26 @@ export const CloudCleanerMission: React.FC<CloudCleanerProps> = ({ onComplete, o
                     onTouchEnd={handleTouchEnd}
                 >
                     <div className="mb-6 flex items-center justify-between flex-wrap gap-2">
-                        <h2 className="text-xl font-bold text-[#1A1A19]" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>Recente Bestanden</h2>
+                        <h2 className="text-xl font-bold text-[#08283B]" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>Recente Bestanden</h2>
                         {selectedFile && (
                             <motion.div
                                 initial={{ opacity: 0, x: 20 }}
                                 animate={{ opacity: 1, x: 0 }}
-                                className="text-sm text-[#D97757] bg-[#D97757]/10 px-4 py-2 rounded-full font-bold shadow-sm border border-[#D97757]/20 flex items-center gap-2"
+                                className="text-sm text-[#D97848] bg-[#D97848]/10 px-4 py-2 rounded-full font-bold shadow-sm border border-[#D97848]/20 flex items-center gap-2"
                             >
                                 <span>👈</span>
                                 Tik nu op een map om te plaatsen
                             </motion.div>
                         )}
                         {!selectedFile && files.length > 0 && !dragActive && (
-                            <div className="text-xs text-[#6B6B66] bg-[#FAF9F0] px-3 py-1 rounded-full hidden sm:block border border-[#E8E6DF]">
+                            <div className="text-xs text-[#445865] bg-[#FCF6EA] px-3 py-1 rounded-full hidden sm:block border border-[#E7D8BD]">
                                 Sleep bestanden naar de juiste map
                             </div>
                         )}
                     </div>
 
                     {files.length === 0 && !showSuccess && (
-                        <div className="flex flex-col items-center justify-center h-64 text-[#6B6B66]">
+                        <div className="flex flex-col items-center justify-center h-64 text-[#445865]">
                             <Cloud size={64} className="mb-4 opacity-20" />
                             <p>Alles opgeruimd! Goed gedaan.</p>
                         </div>
@@ -524,34 +524,34 @@ export const CloudCleanerMission: React.FC<CloudCleanerProps> = ({ onComplete, o
                                     style={{ touchAction: 'none' }}
                                     className={`
                                         bg-white rounded-2xl border-2 shadow-sm p-4 flex flex-col items-center gap-3 cursor-grab active:cursor-grabbing transition-all duration-300 group select-none
-                                        ${dragActive === file.id ? 'opacity-50 ring-2 ring-[#D97757] shadow-xl border-[#D97757]' : ''}
+                                        ${dragActive === file.id ? 'opacity-50 ring-2 ring-[#D97848] shadow-xl border-[#D97848]' : ''}
                                         ${selectedFile === file.id
-                                            ? 'border-[#D97757] bg-[#D97757]/5 ring-2 ring-[#D97757]/20 shadow-lg'
-                                            : file.type === 'junk' ? 'border-red-200 bg-red-50/30 hover:border-red-300' : 'border-[#E8E6DF] hover:border-[#D97757]/50'}
-                                        ${selectedFolder ? 'hover:border-[#10B981] hover:bg-[#10B981]/5' : ''}
+                                            ? 'border-[#D97848] bg-[#D97848]/5 ring-2 ring-[#D97848]/20 shadow-lg'
+                                            : file.type === 'junk' ? 'border-red-200 bg-red-50/30 hover:border-red-300' : 'border-[#E7D8BD] hover:border-[#D97848]/50'}
+                                        ${selectedFolder ? 'hover:border-[#5F947D] hover:bg-[#5F947D]/5' : ''}
                                     `}
                                 >
                                     <motion.div
                                         className={`w-16 h-16 rounded-2xl flex items-center justify-center transition-all duration-300
-                                            ${file.type === 'junk' ? 'bg-red-100 group-hover:bg-red-200' : 'bg-[#FAF9F0] group-hover:bg-[#D97757]/10'}
+                                            ${file.type === 'junk' ? 'bg-red-100 group-hover:bg-red-200' : 'bg-[#FCF6EA] group-hover:bg-[#D97848]/10'}
                                         `}
                                         animate={{
                                             rotate: dragActive === file.id ? [0, -5, 5, -5, 5, 0] : 0,
                                         }}
                                         transition={{ duration: 0.5, repeat: dragActive === file.id ? Infinity : 0 }}
                                     >
-                                        {file.type === 'doc' && <FileText size={32} className="text-[#2A9D8F]" />}
-                                        {file.type === 'image' && <ImageIcon size={32} className="text-[#8B6F9E]" />}
+                                        {file.type === 'doc' && <FileText size={32} className="text-[#5F947D]" />}
+                                        {file.type === 'image' && <ImageIcon size={32} className="text-[#0B453F]" />}
                                         {file.type === 'junk' && <FileWarning size={32} className="text-red-500" />}
                                     </motion.div>
-                                    <span className="text-sm font-medium text-[#3D3D38] text-center break-all line-clamp-2">
+                                    <span className="text-sm font-medium text-[#445865] text-center break-all line-clamp-2">
                                         {file.name}
                                     </span>
                                     {selectedFile === file.id && (
                                         <motion.span
                                             initial={{ opacity: 0, scale: 0 }}
                                             animate={{ opacity: 1, scale: 1 }}
-                                            className="text-xs text-[#D97757] font-bold"
+                                            className="text-xs text-[#D97848] font-bold"
                                         >
                                             Geselecteerd ✓
                                         </motion.span>
@@ -570,7 +570,7 @@ export const CloudCleanerMission: React.FC<CloudCleanerProps> = ({ onComplete, o
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
-                        className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#1A1A19]/50 backdrop-blur-sm"
+                        className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#08283B]/50 backdrop-blur-sm"
                     >
                         <motion.div
                             initial={{ scale: 0.8, y: 50 }}
@@ -583,23 +583,23 @@ export const CloudCleanerMission: React.FC<CloudCleanerProps> = ({ onComplete, o
                                     initial={{ scale: 0 }}
                                     animate={{ scale: 1, rotate: [0, -10, 10, -5, 5, 0] }}
                                     transition={{ delay: 0.2, type: 'spring' }}
-                                    className="w-24 h-24 bg-gradient-to-br from-[#10B981] to-emerald-600 text-white rounded-full flex items-center justify-center mx-auto mb-6 shadow-xl shadow-[#10B981]/20"
+                                    className="w-24 h-24 bg-gradient-to-br from-[#5F947D] to-emerald-600 text-white rounded-full flex items-center justify-center mx-auto mb-6 shadow-xl shadow-[#5F947D]/20"
                                 >
                                     <CheckCircle size={48} />
                                 </motion.div>
-                                <h3 className="text-2xl font-black text-[#1A1A19] mb-2" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>Opgeruimd Staat Netjes!</h3>
-                                <p className="text-[#6B6B66] mb-2">
+                                <h3 className="text-2xl font-black text-[#08283B] mb-2" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>Opgeruimd Staat Netjes!</h3>
+                                <p className="text-[#445865] mb-2">
                                     Je OneDrive is weer helemaal georganiseerd. Goed gedaan!
                                 </p>
-                                <div className="bg-[#10B981]/10 rounded-2xl p-3 mb-6">
-                                    <p className="text-[#10B981] font-bold text-lg">+{score} XP verdiend!</p>
+                                <div className="bg-[#5F947D]/10 rounded-2xl p-3 mb-6">
+                                    <p className="text-[#5F947D] font-bold text-lg">+{score} XP verdiend!</p>
                                     {mistakes > 0 && (
-                                        <p className="text-sm text-[#6B6B66]">{mistakes} foutjes gemaakt, maar dat geeft niet!</p>
+                                        <p className="text-sm text-[#445865]">{mistakes} foutjes gemaakt, maar dat geeft niet!</p>
                                     )}
                                 </div>
                                 <button
                                     onClick={() => onComplete(true)}
-                                    className="w-full py-4 bg-[#D97757] hover:bg-[#C46849] text-white rounded-full font-bold transition-all duration-300 shadow-lg hover:shadow-[#D97757]/30 focus-visible:ring-2 focus-visible:ring-[#D97757]"
+                                    className="w-full py-4 bg-[#D97848] hover:bg-[#D97848] text-white rounded-full font-bold transition-all duration-300 shadow-lg hover:shadow-[#D97848]/30 focus-visible:ring-2 focus-visible:ring-[#D97848]"
                                 >
                                     Voltooien
                                 </button>

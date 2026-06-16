@@ -12,22 +12,22 @@ const IconFileText = () => (
 );
 
 const ResourceItem = ({ title, description, link, badge }: { title: string; description: string; link: string; badge: string }) => (
-    <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 p-6 rounded-2xl border border-slate-100 hover:border-indigo-200 transition-colors bg-white">
+    <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 p-6 rounded-2xl border border-lab-muted hover:border-indigo-200 transition-colors bg-white">
         <div className="flex gap-5 items-start">
             <div className="mt-1 p-3 bg-indigo-50 rounded-xl">
                 <IconFileText />
             </div>
             <div>
                 <div className="flex items-center gap-3 mb-1">
-                    <h3 className="font-bold text-slate-900">{title}</h3>
-                    <span className="px-2 py-0.5 bg-slate-100 text-slate-500 text-[10px] font-bold rounded uppercase">{badge}</span>
+                    <h3 className="font-bold text-lab-muted">{title}</h3>
+                    <span className="px-2 py-0.5 bg-lab-muted text-lab-muted text-[10px] font-bold rounded uppercase">{badge}</span>
                 </div>
-                <p className="text-sm text-slate-500 max-w-md">{description}</p>
+                <p className="text-sm text-lab-muted max-w-md">{description}</p>
             </div>
         </div>
         <a 
             href={link}
-            className="inline-flex items-center justify-center px-5 py-2.5 bg-white border border-slate-200 text-slate-600 font-semibold text-sm rounded-lg hover:bg-slate-50 transition-colors"
+            className="inline-flex items-center justify-center px-5 py-2.5 bg-white border border-lab-muted text-lab-muted font-semibold text-sm rounded-lg hover:bg-lab-muted transition-colors"
         >
             Bekijk Document
         </a>
@@ -59,22 +59,22 @@ export const ComplianceHub: React.FC = () => {
     }, []);
 
     return (
-        <div className="min-h-screen bg-slate-50">
-            <nav className="fixed top-0 left-0 right-0 z-50 bg-white border-b border-slate-100">
+        <div className="min-h-screen bg-lab-muted">
+            <nav className="fixed top-0 left-0 right-0 z-50 bg-white border-b border-lab-muted">
                 <div className="max-w-5xl mx-auto px-6 h-16 flex items-center justify-between">
                     <a href="/" className="flex items-center gap-2.5">
                         <img src="/mascot/pip-logo.webp" alt="DGSkills logo" className="w-8 h-8 object-contain" />
-                        <span className="font-bold text-slate-900">DGSkills</span>
+                        <span className="font-bold text-lab-muted">DGSkills</span>
                     </a>
-                    <a href="/ict" className="text-sm font-medium text-slate-500 hover:text-indigo-600 transition-colors">ICT Dashboard</a>
+                    <a href="/ict" className="text-sm font-medium text-lab-muted hover:text-indigo-600 transition-colors">ICT Dashboard</a>
                 </div>
             </nav>
 
             <main className="pt-32 pb-24 px-6">
                 <div className="max-w-4xl mx-auto">
                     <div className="mb-12">
-                        <h1 className="text-3xl font-bold text-slate-900 mb-4">Compliance Hub</h1>
-                        <p className="text-slate-600">Alle juridische en technische documentatie voor schoolbesturen, FG's en ICT-managers op één plek.</p>
+                        <h1 className="text-3xl font-bold text-lab-muted mb-4">Compliance Hub</h1>
+                        <p className="text-lab-muted">Alle juridische en technische documentatie voor schoolbesturen, FG's en ICT-managers op één plek.</p>
                     </div>
 
                     <div className="grid gap-4 mb-16">
@@ -122,15 +122,15 @@ export const ComplianceHub: React.FC = () => {
                         />
                     </div>
 
-                    <div className="bg-white p-8 rounded-2xl border border-slate-100 text-center">
+                    <div className="bg-white p-8 rounded-2xl border border-lab-muted text-center">
                         <h2 className="text-xl font-bold mb-4">Vragen voor onze Privacy Officer?</h2>
-                        <p className="text-slate-500 text-sm mb-6">Heb je specifieke vragen over de AVG, AI Act of integratie met jouw school-LVS? Ons team staat klaar om te helpen.</p>
+                        <p className="text-lab-muted text-sm mb-6">Heb je specifieke vragen over de AVG, AI Act of integratie met jouw school-LVS? Ons team staat klaar om te helpen.</p>
                         <a href="mailto:privacy@dgskills.app" className="text-indigo-600 font-bold hover:underline">privacy@dgskills.app</a>
                     </div>
                 </div>
             </main>
 
-            <footer className="py-12 text-slate-400 text-center text-xs">
+            <footer className="py-12 text-lab-muted text-center text-xs">
                 <p>© {new Date().getFullYear()} DGSkills — Privacy & Compliance</p>
             </footer>
         </div>

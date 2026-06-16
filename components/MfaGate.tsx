@@ -109,33 +109,33 @@ export function MfaGate({ onVerified }: MfaGateProps) {
 
     if (step === 'loading') {
         return (
-            <div className="min-h-screen bg-slate-50 flex items-center justify-center">
+            <div className="min-h-screen bg-lab-muted flex items-center justify-center">
                 <div className="flex flex-col items-center gap-4">
                     <Loader2 size={48} className="animate-spin text-indigo-600" />
-                    <p className="text-slate-500 font-medium">MFA-status controleren...</p>
+                    <p className="text-lab-muted font-medium">MFA-status controleren...</p>
                 </div>
             </div>
         );
     }
 
     return (
-        <div className="min-h-screen bg-slate-50 flex items-center justify-center p-4">
-            <div className="bg-white rounded-2xl shadow-lg border border-slate-200 max-w-md w-full p-8">
+        <div className="min-h-screen bg-lab-muted flex items-center justify-center p-4">
+            <div className="bg-white rounded-2xl shadow-lg border border-lab-muted max-w-md w-full p-8">
                 <div className="flex items-center gap-3 mb-6">
                     <div className="w-12 h-12 rounded-xl bg-indigo-100 flex items-center justify-center">
                         <ShieldCheck size={24} className="text-indigo-600" />
                     </div>
                     <div>
-                        <h1 className="text-xl font-bold text-slate-900">
+                        <h1 className="text-xl font-bold text-lab-muted">
                             Tweefactorauthenticatie vereist
                         </h1>
-                        <p className="text-sm text-slate-500">
+                        <p className="text-sm text-lab-muted">
                             Cbw/NIS2 beveiligingsvereiste
                         </p>
                     </div>
                 </div>
 
-                <p className="text-slate-600 text-sm mb-6">
+                <p className="text-lab-muted text-sm mb-6">
                     Als docent of beheerder is tweefactorauthenticatie (MFA) verplicht
                     om de gegevens van leerlingen te beschermen.
                 </p>
@@ -149,11 +149,11 @@ export function MfaGate({ onVerified }: MfaGateProps) {
 
                 {step === 'enroll' && (
                     <div className="space-y-4">
-                        <div className="bg-slate-50 rounded-lg p-4">
-                            <p className="text-sm font-medium text-slate-700 mb-3">
+                        <div className="bg-lab-muted rounded-lg p-4">
+                            <p className="text-sm font-medium text-lab-muted mb-3">
                                 1. Scan de QR-code met een authenticator-app
                             </p>
-                            <p className="text-xs text-slate-500 mb-3">
+                            <p className="text-xs text-lab-muted mb-3">
                                 Gebruik Google Authenticator, Microsoft Authenticator of een andere TOTP-app.
                             </p>
                             {qrCode && (
@@ -161,12 +161,12 @@ export function MfaGate({ onVerified }: MfaGateProps) {
                                     <img
                                         src={qrCode}
                                         alt="MFA QR Code"
-                                        className="w-48 h-48 rounded-lg border border-slate-200"
+                                        className="w-48 h-48 rounded-lg border border-lab-muted"
                                     />
                                 </div>
                             )}
                             <div className="flex items-center gap-2">
-                                <code className="flex-1 text-xs bg-white border border-slate-200 rounded px-2 py-1.5 font-mono text-slate-600 truncate">
+                                <code className="flex-1 text-xs bg-white border border-lab-muted rounded px-2 py-1.5 font-mono text-lab-muted truncate">
                                     {secret}
                                 </code>
                                 <button
@@ -181,12 +181,12 @@ export function MfaGate({ onVerified }: MfaGateProps) {
                         </div>
 
                         <div>
-                            <p className="text-sm font-medium text-slate-700 mb-2">
+                            <p className="text-sm font-medium text-lab-muted mb-2">
                                 2. Voer de 6-cijferige code in
                             </p>
                             <div className="flex gap-2">
                                 <div className="relative flex-1">
-                                    <KeyRound size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+                                    <KeyRound size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-lab-muted" />
                                     <input
                                         type="text"
                                         inputMode="numeric"
@@ -199,7 +199,7 @@ export function MfaGate({ onVerified }: MfaGateProps) {
                                             setError(null);
                                         }}
                                         onKeyDown={(e) => e.key === 'Enter' && code.length === 6 && handleVerify()}
-                                        className="w-full pl-10 pr-4 py-3 border border-slate-300 rounded-lg text-center text-lg font-mono tracking-widest focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none"
+                                        className="w-full pl-10 pr-4 py-3 border border-lab-muted rounded-lg text-center text-lg font-mono tracking-widest focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none"
                                         autoFocus
                                     />
                                 </div>
@@ -230,7 +230,7 @@ export function MfaGate({ onVerified }: MfaGateProps) {
 
                         <div className="flex gap-2">
                             <div className="relative flex-1">
-                                <KeyRound size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+                                <KeyRound size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-lab-muted" />
                                 <input
                                     type="text"
                                     inputMode="numeric"
@@ -243,7 +243,7 @@ export function MfaGate({ onVerified }: MfaGateProps) {
                                         setError(null);
                                     }}
                                     onKeyDown={(e) => e.key === 'Enter' && code.length === 6 && handleVerify()}
-                                    className="w-full pl-10 pr-4 py-3 border border-slate-300 rounded-lg text-center text-lg font-mono tracking-widest focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none"
+                                    className="w-full pl-10 pr-4 py-3 border border-lab-muted rounded-lg text-center text-lg font-mono tracking-widest focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none"
                                     autoFocus
                                 />
                             </div>
@@ -263,10 +263,10 @@ export function MfaGate({ onVerified }: MfaGateProps) {
                     </div>
                 )}
 
-                <div className="mt-6 pt-4 border-t border-slate-200">
+                <div className="mt-6 pt-4 border-t border-lab-muted">
                     <button
                         onClick={() => logout()}
-                        className="text-sm text-slate-500 hover:text-slate-700 transition-colors"
+                        className="text-sm text-lab-muted hover:text-lab-muted transition-colors"
                     >
                         Uitloggen en later terugkomen
                     </button>

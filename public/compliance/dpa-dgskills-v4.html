@@ -6,39 +6,39 @@
     <title>Model Verwerkersovereenkomst V4.0 - DGSkills</title>
     <style>
         * { box-sizing: border-box; }
-        body { margin: 0; padding: 0; background: #f8fafc; color: #0f172a; font-family: system-ui, -apple-system, sans-serif; line-height: 1.6; }
-        .container { max-width: 56rem; margin: 3rem auto; padding: 3rem; background: #fff; box-shadow: 0 25px 50px -12px rgba(0,0,0,.25); border-radius: 0.5rem; border: 1px solid #e2e8f0; }
+        body { margin: 0; padding: 0; background: #FCF6EA; color: #08283B; font-family: system-ui, -apple-system, sans-serif; line-height: 1.6; }
+        .container { max-width: 56rem; margin: 3rem auto; padding: 3rem; background: #fff; box-shadow: 0 25px 50px -12px rgba(0,0,0,.25); border-radius: 0.5rem; border: 1px solid #E7D8BD; }
         .flex-between { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 3rem; }
-        h1 { font-size: 1.875rem; font-weight: 900; color: #312e81; margin: 0 0 0.5rem 0; }
-        .subtitle { color: #64748b; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; font-size: 0.75rem; }
+        h1 { font-size: 1.875rem; font-weight: 900; color: #0B453F; margin: 0 0 0.5rem 0; }
+        .subtitle { color: #445865; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; font-size: 0.75rem; }
         .text-right { text-align: right; }
-        .badge { background: #4f46e5; color: #fff; padding: 0.5rem 1rem; border-radius: 0.5rem; font-weight: 700; font-size: 0.875rem; display: inline-block; margin-bottom: 1rem; }
-        .version { font-size: 0.75rem; color: #94a3b8; }
+        .badge { background: #0B453F; color: #fff; padding: 0.5rem 1rem; border-radius: 0.5rem; font-weight: 700; font-size: 0.875rem; display: inline-block; margin-bottom: 1rem; }
+        .version { font-size: 0.75rem; color: #E7D8BD; }
         .section { margin-bottom: 2rem; }
-        h2 { font-size: 1.25rem; font-weight: 700; border-bottom: 2px solid #f1f5f9; padding-bottom: 0.5rem; margin-bottom: 1rem; }
+        h2 { font-size: 1.25rem; font-weight: 700; border-bottom: 2px solid #F3E4CB; padding-bottom: 0.5rem; margin-bottom: 1rem; }
         ol { margin: 0 0 0 1.5rem; padding: 0; }
         ol li { margin-bottom: 1rem; }
-        .italic-sm { margin-top: 1rem; font-style: italic; font-size: 0.875rem; color: #475569; }
+        .italic-sm { margin-top: 1rem; font-style: italic; font-size: 0.875rem; color: #445865; }
         .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1rem 0; }
         @media (max-width: 768px) { .grid-2 { grid-template-columns: 1fr; } }
-        .card { padding: 1rem; background: #f8fafc; border-radius: 0.25rem; border: 1px solid #e2e8f0; }
-        .card h4 { font-weight: 700; font-size: 0.875rem; margin-bottom: 0.5rem; color: #3730a3; }
+        .card { padding: 1rem; background: #FCF6EA; border-radius: 0.25rem; border: 1px solid #E7D8BD; }
+        .card h4 { font-weight: 700; font-size: 0.875rem; margin-bottom: 0.5rem; color: #0B453F; }
         .card ul { margin: 0; padding-left: 1rem; font-size: 0.75rem; list-style: disc; }
         .card li { margin-bottom: 0.25rem; }
-        table { width: 100%; font-size: 0.875rem; border-collapse: collapse; border: 1px solid #e2e8f0; margin-top: 1rem; }
-        th, td { border: 1px solid #e2e8f0; padding: 0.5rem; text-align: left; }
-        thead { background: #f8fafc; }
-        .signatures { margin-top: 4rem; padding-top: 3rem; border-top: 1px solid #e2e8f0; display: flex; justify-content: space-between; gap: 2rem; flex-wrap: wrap; }
+        table { width: 100%; font-size: 0.875rem; border-collapse: collapse; border: 1px solid #E7D8BD; margin-top: 1rem; }
+        th, td { border: 1px solid #E7D8BD; padding: 0.5rem; text-align: left; }
+        thead { background: #FCF6EA; }
+        .signatures { margin-top: 4rem; padding-top: 3rem; border-top: 1px solid #E7D8BD; display: flex; justify-content: space-between; gap: 2rem; flex-wrap: wrap; }
         .sign-block { flex: 1; min-width: 200px; }
-        .sign-label { font-size: 0.75rem; text-transform: uppercase; font-weight: 700; color: #94a3b8; margin-bottom: 2rem; }
-        .sign-line { height: 4rem; border-bottom: 1px solid #cbd5e1; margin-bottom: 0.5rem; font-style: italic; color: #cbd5e1; display: flex; align-items: flex-end; }
+        .sign-label { font-size: 0.75rem; text-transform: uppercase; font-weight: 700; color: #E7D8BD; margin-bottom: 2rem; }
+        .sign-line { height: 4rem; border-bottom: 1px solid #E7D8BD; margin-bottom: 0.5rem; font-style: italic; color: #E7D8BD; display: flex; align-items: flex-end; }
         .sign-name { font-size: 0.875rem; font-weight: 700; }
-        .sign-date { font-size: 0.75rem; color: #64748b; }
-        .instruction { margin-top: 3rem; background: #eef2ff; padding: 1.5rem; border-radius: 0.75rem; border: 1px solid #c7d2fe; }
-        .instruction h4 { font-weight: 700; color: #312e81; margin-bottom: 0.5rem; }
-        .instruction p { font-size: 0.875rem; color: #3730a3; }
+        .sign-date { font-size: 0.75rem; color: #445865; }
+        .instruction { margin-top: 3rem; background: #FCF6EA; padding: 1.5rem; border-radius: 0.75rem; border: 1px solid #c7d2fe; }
+        .instruction h4 { font-weight: 700; color: #0B453F; margin-bottom: 0.5rem; }
+        .instruction p { font-size: 0.875rem; color: #0B453F; }
         .print-btn-wrap { max-width: 56rem; margin: 0 auto 3rem; display: flex; justify-content: center; }
-        .print-btn { background: #4f46e5; color: #fff; padding: 0.75rem 2rem; border-radius: 9999px; font-weight: 900; border: none; cursor: pointer; display: inline-flex; align-items: center; gap: 0.5rem; box-shadow: 0 10px 15px -3px rgba(0,0,0,.1); }
+        .print-btn { background: #0B453F; color: #fff; padding: 0.75rem 2rem; border-radius: 9999px; font-weight: 900; border: none; cursor: pointer; display: inline-flex; align-items: center; gap: 0.5rem; box-shadow: 0 10px 15px -3px rgba(0,0,0,.1); }
         .print-btn:hover { background: #4338ca; }
         @media print {
             .no-print { display: none !important; }

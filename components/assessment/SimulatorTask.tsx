@@ -63,21 +63,21 @@ export const SimulatorTask: React.FC<Props> = ({ task, onComplete }) => {
         switch (iconName) {
             case 'FileText': return <FileText size={32} className="text-blue-500" />;
             case 'Image': return <Image size={32} className="text-purple-500" />;
-            default: return <FileText size={32} className="text-slate-500" />;
+            default: return <FileText size={32} className="text-lab-muted" />;
         }
     };
 
     return (
-        <div className="flex flex-col h-full bg-slate-900 text-white p-4">
+        <div className="flex flex-col h-full bg-lab-muted text-white p-4">
             <div className="mb-4 text-center">
-                <h2 className="text-2xl font-black text-amber-400 flex items-center justify-center gap-2">
+                <h2 className="text-2xl font-black text-lab-gold flex items-center justify-center gap-2">
                     <Monitor /> {task.title}
                 </h2>
-                <p className="text-slate-300">{task.description}</p>
+                <p className="text-lab-muted">{task.description}</p>
             </div>
 
             {/* Desktop Area */}
-            <div className="flex-1 bg-slate-800 rounded-2xl border-4 border-slate-700 relative overflow-hidden flex">
+            <div className="flex-1 bg-lab-muted rounded-2xl border-4 border-lab-muted relative overflow-hidden flex">
 
                 {/* Wallpaper */}
                 <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#ffffff_1px,transparent_1px)] [background-size:20px_20px]"></div>
@@ -94,7 +94,7 @@ export const SimulatorTask: React.FC<Props> = ({ task, onComplete }) => {
                             <div className="group-hover:scale-110 transition-transform">
                                 {getIcon(item.icon)}
                             </div>
-                            <span className="text-xs font-bold text-center bg-slate-900/50 px-2 py-1 rounded truncate w-full max-w-[80px]">
+                            <span className="text-xs font-bold text-center bg-lab-muted/50 px-2 py-1 rounded truncate w-full max-w-[80px]">
                                 {item.name}
                             </span>
                         </div>
@@ -102,7 +102,7 @@ export const SimulatorTask: React.FC<Props> = ({ task, onComplete }) => {
                 </div>
 
                 {/* Right: Targets (Destination) */}
-                <div className="w-1/3 bg-slate-900/50 border-l border-slate-700 p-4 flex flex-col gap-4 justify-center">
+                <div className="w-1/3 bg-lab-muted/50 border-l border-lab-muted p-4 flex flex-col gap-4 justify-center">
                     {task.targets.map(target => (
                         <div
                             key={target.id}
@@ -114,20 +114,20 @@ export const SimulatorTask: React.FC<Props> = ({ task, onComplete }) => {
                             `}
                         >
                             {target.type === 'trash' ? <Trash2 size={32} className="text-red-400" /> : <UploadCloud size={32} className="text-blue-400" />}
-                            <span className="font-bold text-sm text-slate-400">{target.name}</span>
+                            <span className="font-bold text-sm text-lab-muted">{target.name}</span>
                         </div>
                     ))}
                 </div>
 
                 {feedback && (
-                    <div className="absolute bottom-6 left-1/2 -translate-x-1/2 bg-slate-800 border border-slate-600 px-6 py-3 rounded-xl shadow-xl font-bold animate-in slide-in-from-bottom-4">
+                    <div className="absolute bottom-6 left-1/2 -translate-x-1/2 bg-lab-muted border border-lab-muted px-6 py-3 rounded-xl shadow-xl font-bold animate-in slide-in-from-bottom-4">
                         {feedback}
                     </div>
                 )}
             </div>
 
-            <div className="mt-4 bg-slate-800 p-4 rounded-xl border border-slate-700 text-center">
-                <p className="font-bold text-lg text-emerald-400">Doel: {task.goal}</p>
+            <div className="mt-4 bg-lab-muted p-4 rounded-xl border border-lab-muted text-center">
+                <p className="font-bold text-lg text-lab-sage">Doel: {task.goal}</p>
             </div>
         </div>
     );

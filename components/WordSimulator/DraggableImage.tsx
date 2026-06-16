@@ -72,7 +72,7 @@ export const DraggableImage: React.FC<DraggableImageProps> = ({ item, isSelected
             width: item.width,
             height: item.height,
             cursor: isDraggingState ? 'grabbing' : 'grab',
-            border: isSelected ? '2px solid #C46849' : '1px solid transparent',
+            border: isSelected ? '2px solid #D97848' : '1px solid transparent',
             userSelect: 'none',
             touchAction: 'none',
             position: 'absolute',
@@ -111,7 +111,7 @@ export const DraggableImage: React.FC<DraggableImageProps> = ({ item, isSelected
                 }}
             />
             {isSelected && (
-                <div className="absolute -top-8 left-0 bg-slate-800 text-white text-xs px-2 py-1 rounded whitespace-nowrap z-50 pointer-events-none">
+                <div className="absolute -top-8 left-0 bg-lab-muted text-white text-xs px-2 py-1 rounded whitespace-nowrap z-50 pointer-events-none">
                     Tekstomloop: {item.wrapMode === 'square' ? 'vierkant' : item.wrapMode === 'front' ? 'voor' : item.wrapMode === 'behind' ? 'achter' : item.wrapMode === 'tight' ? 'strak' : 'geen'}
                 </div>
             )}

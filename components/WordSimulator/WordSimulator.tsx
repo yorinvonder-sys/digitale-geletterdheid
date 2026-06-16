@@ -143,7 +143,7 @@ export const WordSimulator: React.FC<WordSimulatorProps> = ({
                                 if (['p', 'div', 'h2', 'h3'].includes(tagName)) {
                                     const h1 = document.createElement('h1');
                                     h1.innerHTML = DOMPurify.sanitize(block.innerHTML);
-                                    h1.style.cssText = 'color: #C46849; font-size: 24px; font-weight: bold; margin-bottom: 0.5em;';
+                                    h1.style.cssText = 'color: #D97848; font-size: 24px; font-weight: bold; margin-bottom: 0.5em;';
                                     editor.replaceChild(h1, block);
                                     modified = true;
                                 }
@@ -178,7 +178,7 @@ export const WordSimulator: React.FC<WordSimulatorProps> = ({
                                 // Replace this element with an H1
                                 const h1 = document.createElement('h1');
                                 h1.innerHTML = DOMPurify.sanitize(el.innerHTML);
-                                h1.style.cssText = 'color: #C46849; font-size: 24px; font-weight: bold; margin-bottom: 0.5em;';
+                                h1.style.cssText = 'color: #D97848; font-size: 24px; font-weight: bold; margin-bottom: 0.5em;';
                                 el.parentNode?.replaceChild(h1, el);
 
                                 // Restore selection inside the new H1
@@ -243,7 +243,7 @@ export const WordSimulator: React.FC<WordSimulatorProps> = ({
                                 const p = document.createElement('p');
                                 p.innerHTML = DOMPurify.sanitize(block.innerHTML);
                                 // Title style: Bigger, centered (optional but common for titles), distinctive color
-                                p.style.cssText = 'font-size: 36px; font-weight: bold; color: #3D3D38; margin-bottom: 0.5em; line-height: 1.2;';
+                                p.style.cssText = 'font-size: 36px; font-weight: bold; color: #445865; margin-bottom: 0.5em; line-height: 1.2;';
                                 // Since we can't easily make a custom tag, we use P with styles, or H1 with distinct styles. 
                                 // But heading1 uses H1. Let's use P with massive styling to differentiate from "Kop 1" (H1) as requested.
                                 // Or use DIV. P is safer for text.
@@ -266,7 +266,7 @@ export const WordSimulator: React.FC<WordSimulatorProps> = ({
                             // Convert anything to Title
                             const p = document.createElement('p');
                             p.innerHTML = DOMPurify.sanitize(el.innerHTML);
-                            p.style.cssText = 'font-size: 36px; font-weight: bold; color: #3D3D38; margin-bottom: 0.5em; line-height: 1.2;';
+                            p.style.cssText = 'font-size: 36px; font-weight: bold; color: #445865; margin-bottom: 0.5em; line-height: 1.2;';
                             el.parentNode?.replaceChild(p, el);
 
                             const newRange = document.createRange();
@@ -403,16 +403,16 @@ export const WordSimulator: React.FC<WordSimulatorProps> = ({
 
             let tocHtml = `
                 <div style="margin: 0 0 30px 0; padding: 0; font-family: 'Calibri', sans-serif;">
-                    <p style="color: #C46849; font-size: 24px; font-weight: bold; margin-bottom: 16px; border-bottom: 2px solid #C46849; padding-bottom: 8px;">Inhoudsopgave</p>
+                    <p style="color: #D97848; font-size: 24px; font-weight: bold; margin-bottom: 16px; border-bottom: 2px solid #D97848; padding-bottom: 8px;">Inhoudsopgave</p>
             `;
 
             h1s.forEach((h1, index) => {
                 const pageNum = index + 1;
                 tocHtml += `
                     <div style="display: flex; align-items: baseline; margin: 8px 0; font-size: 14px;">
-                        <span style="color: #C46849; font-weight: 500;">${h1.innerText}</span>
-                        <span style="flex: 1; border-bottom: 1px dotted #6B6B66; margin: 0 8px; min-width: 20px;"></span>
-                        <span style="color: #3D3D38; font-weight: 500;">${pageNum}</span>
+                        <span style="color: #D97848; font-weight: 500;">${h1.innerText}</span>
+                        <span style="flex: 1; border-bottom: 1px dotted #445865; margin: 0 8px; min-width: 20px;"></span>
+                        <span style="color: #445865; font-weight: 500;">${pageNum}</span>
                     </div>
                 `;
             });
@@ -550,9 +550,9 @@ export const WordSimulator: React.FC<WordSimulatorProps> = ({
     }
 
     return (
-        <div className="fixed inset-0 z-[100] bg-slate-100 flex flex-col font-sans text-slate-900 overflow-hidden">
+        <div className="fixed inset-0 z-[100] bg-lab-muted flex flex-col font-sans text-lab-muted overflow-hidden">
             {/* APP HEADER */}
-            <div className="bg-[#C46849] text-white px-4 py-2 flex items-center justify-between shadow-sm shrink-0">
+            <div className="bg-[#D97848] text-white px-4 py-2 flex items-center justify-between shadow-sm shrink-0">
                 <div className="flex items-center gap-4">
                     {onExit && (
                         <button
@@ -591,25 +591,25 @@ export const WordSimulator: React.FC<WordSimulatorProps> = ({
             <div className="flex-1 flex overflow-hidden">
 
                 {/* LEFT SIDEBAR - Patient Info & Context */}
-                <div className="w-[300px] bg-white border-r border-slate-200 flex flex-col shrink-0 overflow-y-auto">
+                <div className="w-[300px] bg-white border-r border-lab-muted flex flex-col shrink-0 overflow-y-auto">
                     {/* Patient Profile */}
-                    <div className="p-6 border-b border-slate-100">
+                    <div className="p-6 border-b border-lab-muted">
                         <div className="flex items-center gap-4 mb-4">
                             <div className="w-16 h-16 bg-indigo-100 rounded-full flex items-center justify-center text-3xl shadow-inner border border-indigo-200 shrink-0">
                                 {currentLevel.avatar}
                             </div>
                             <div>
-                                <div className="text-xs text-slate-500 uppercase font-bold tracking-wider mb-0.5">Patiënt</div>
+                                <div className="text-xs text-lab-muted uppercase font-bold tracking-wider mb-0.5">Patiënt</div>
                                 <div className="font-bold text-indigo-900 text-lg leading-tight">{currentLevel.sender}</div>
                             </div>
                         </div>
 
                         {/* Complaint */}
-                        <div className="bg-amber-50 border border-amber-100 p-4 rounded-xl mb-4">
-                            <h4 className="font-bold text-amber-800 text-xs mb-2 flex items-center gap-2">
+                        <div className="bg-lab-gold border border-lab-gold p-4 rounded-xl mb-4">
+                            <h4 className="font-bold text-lab-gold text-xs mb-2 flex items-center gap-2">
                                 <Eye size={14} /> Klacht:
                             </h4>
-                            <p className="text-sm text-slate-700 leading-relaxed italic">
+                            <p className="text-sm text-lab-muted leading-relaxed italic">
                                 "{currentLevel.complaint}"
                             </p>
                         </div>
@@ -627,12 +627,12 @@ export const WordSimulator: React.FC<WordSimulatorProps> = ({
 
                             {/* Extra warning for headings level */}
                             {currentLevel.id === 'level-2-headings' && (
-                                <div className="bg-amber-100 border-2 border-amber-400 rounded-lg p-3 mb-3">
-                                    <p className="text-sm text-amber-900 font-bold flex items-start gap-2">
+                                <div className="bg-lab-gold border-2 border-lab-gold rounded-lg p-3 mb-3">
+                                    <p className="text-sm text-lab-gold font-bold flex items-start gap-2">
                                         <span className="text-lg">✋</span>
                                         <span>
                                             <strong>Zo doe je het:</strong><br />
-                                            <span className="font-normal text-amber-800">
+                                            <span className="font-normal text-lab-gold">
                                                 1. Klik ergens IN het woord 'Inleiding'<br />
                                                 2. Klik op de knop <strong>'Kop 1'</strong> bovenin<br />
                                                 3. Herhaal voor de andere 2 titels
@@ -642,7 +642,7 @@ export const WordSimulator: React.FC<WordSimulatorProps> = ({
                                 </div>
                             )}
 
-                            <div className="text-xs text-slate-500 bg-white/50 p-2 rounded-lg border border-blue-100/50">
+                            <div className="text-xs text-lab-muted bg-white/50 p-2 rounded-lg border border-blue-100/50">
                                 <span className="font-bold text-indigo-600">💡 Tip:</span> {currentLevel.hint}
                             </div>
                         </div>
@@ -650,14 +650,14 @@ export const WordSimulator: React.FC<WordSimulatorProps> = ({
 
                     {/* Success Feedback (Replaces sidebar content when successful) */}
                     {showSuccessFeedback && (
-                        <div className="p-6 bg-emerald-50 border-t border-emerald-100 animate-in slide-in-from-left duration-500">
+                        <div className="p-6 bg-lab-sage border-t border-lab-sage animate-in slide-in-from-left duration-500">
                             <div className="flex items-center gap-3 mb-4">
-                                <div className="w-10 h-10 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center shrink-0 shadow-sm border border-emerald-200">
+                                <div className="w-10 h-10 bg-lab-sage text-lab-sage rounded-full flex items-center justify-center shrink-0 shadow-sm border border-lab-sage">
                                     <Check size={20} />
                                 </div>
-                                <h3 className="font-black text-emerald-800 text-lg">Genezen!</h3>
+                                <h3 className="font-black text-lab-sage text-lg">Genezen!</h3>
                             </div>
-                            <p className="text-sm text-emerald-700 mb-6 leading-relaxed">
+                            <p className="text-sm text-lab-sage mb-6 leading-relaxed">
                                 De patiënt is tevreden met het resultaat.
                             </p>
                             <button
@@ -671,7 +671,7 @@ export const WordSimulator: React.FC<WordSimulatorProps> = ({
                 </div>
 
                 {/* DOCUMENT CANVAS CONTAINER WITH FOOTER */}
-                <div className="flex-1 bg-slate-200 overflow-auto p-8 relative flex justify-center shadow-inner">
+                <div className="flex-1 bg-lab-muted overflow-auto p-8 relative flex justify-center shadow-inner">
                     <div className="relative">
                         <DocumentCanvas
                             state={simState}
@@ -687,7 +687,7 @@ export const WordSimulator: React.FC<WordSimulatorProps> = ({
                             <>
                                 {/* Page 1 */}
                                 <div
-                                    className={`absolute w-[794px] text-slate-400 text-xs pointer-events-none px-16 ${pageNumberPosition.horizontal === 'left' ? 'text-left' :
+                                    className={`absolute w-[794px] text-lab-muted text-xs pointer-events-none px-16 ${pageNumberPosition.horizontal === 'left' ? 'text-left' :
                                         pageNumberPosition.horizontal === 'right' ? 'text-right' : 'text-center'
                                         }`}
                                     style={{
@@ -703,7 +703,7 @@ export const WordSimulator: React.FC<WordSimulatorProps> = ({
                                 {(editorContent.includes('id="page-2"') || editorContent.length > 5000) && (
                                     <>
                                         <div
-                                            className={`absolute w-[794px] text-slate-400 text-xs pointer-events-none px-16 ${pageNumberPosition.horizontal === 'left' ? 'text-left' :
+                                            className={`absolute w-[794px] text-lab-muted text-xs pointer-events-none px-16 ${pageNumberPosition.horizontal === 'left' ? 'text-left' :
                                                 pageNumberPosition.horizontal === 'right' ? 'text-right' : 'text-center'
                                                 }`}
                                             style={{
@@ -715,7 +715,7 @@ export const WordSimulator: React.FC<WordSimulatorProps> = ({
                                             - 2 -
                                         </div>
                                         <div
-                                            className={`absolute w-[794px] text-slate-400 text-xs pointer-events-none px-16 ${pageNumberPosition.horizontal === 'left' ? 'text-left' :
+                                            className={`absolute w-[794px] text-lab-muted text-xs pointer-events-none px-16 ${pageNumberPosition.horizontal === 'left' ? 'text-left' :
                                                 pageNumberPosition.horizontal === 'right' ? 'text-right' : 'text-center'
                                                 }`}
                                             style={{
@@ -736,18 +736,18 @@ export const WordSimulator: React.FC<WordSimulatorProps> = ({
                     {showPageNumberDialog && (
                         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
                             <div className="bg-white rounded-2xl p-6 max-w-md w-full mx-4 shadow-2xl">
-                                <h3 className="text-xl font-bold text-slate-800 mb-4">Paginanummer Positie</h3>
-                                <p className="text-sm text-slate-600 mb-6">Waar wil je het paginanummer plaatsen?</p>
+                                <h3 className="text-xl font-bold text-lab-muted mb-4">Paginanummer Positie</h3>
+                                <p className="text-sm text-lab-muted mb-6">Waar wil je het paginanummer plaatsen?</p>
 
                                 <div className="space-y-4">
                                     <div>
-                                        <label className="text-xs font-bold text-slate-500 uppercase mb-2 block">Verticaal</label>
+                                        <label className="text-xs font-bold text-lab-muted uppercase mb-2 block">Verticaal</label>
                                         <div className="grid grid-cols-2 gap-2">
                                             <button
                                                 onClick={() => setPageNumberPosition(p => ({ ...p!, vertical: 'top', horizontal: p?.horizontal || 'center' }))}
                                                 className={`p-3 rounded-lg border-2 font-medium transition-all ${pageNumberPosition?.vertical === 'top'
                                                     ? 'border-indigo-500 bg-indigo-50 text-indigo-700'
-                                                    : 'border-slate-200 hover:border-slate-300'
+                                                    : 'border-lab-muted hover:border-lab-muted'
                                                     }`}
                                             >
                                                 ⬆️ Bovenaan
@@ -756,7 +756,7 @@ export const WordSimulator: React.FC<WordSimulatorProps> = ({
                                                 onClick={() => setPageNumberPosition(p => ({ ...p!, vertical: 'bottom', horizontal: p?.horizontal || 'center' }))}
                                                 className={`p-3 rounded-lg border-2 font-medium transition-all ${pageNumberPosition?.vertical === 'bottom'
                                                     ? 'border-indigo-500 bg-indigo-50 text-indigo-700'
-                                                    : 'border-slate-200 hover:border-slate-300'
+                                                    : 'border-lab-muted hover:border-lab-muted'
                                                     }`}
                                             >
                                                 ⬇️ Onderaan
@@ -765,13 +765,13 @@ export const WordSimulator: React.FC<WordSimulatorProps> = ({
                                     </div>
 
                                     <div>
-                                        <label className="text-xs font-bold text-slate-500 uppercase mb-2 block">Horizontaal</label>
+                                        <label className="text-xs font-bold text-lab-muted uppercase mb-2 block">Horizontaal</label>
                                         <div className="grid grid-cols-3 gap-2">
                                             <button
                                                 onClick={() => setPageNumberPosition(p => ({ vertical: p?.vertical || 'bottom', horizontal: 'left' }))}
                                                 className={`p-3 rounded-lg border-2 font-medium transition-all ${pageNumberPosition?.horizontal === 'left'
                                                     ? 'border-indigo-500 bg-indigo-50 text-indigo-700'
-                                                    : 'border-slate-200 hover:border-slate-300'
+                                                    : 'border-lab-muted hover:border-lab-muted'
                                                     }`}
                                             >
                                                 ◀️ Links
@@ -780,7 +780,7 @@ export const WordSimulator: React.FC<WordSimulatorProps> = ({
                                                 onClick={() => setPageNumberPosition(p => ({ vertical: p?.vertical || 'bottom', horizontal: 'center' }))}
                                                 className={`p-3 rounded-lg border-2 font-medium transition-all ${pageNumberPosition?.horizontal === 'center'
                                                     ? 'border-indigo-500 bg-indigo-50 text-indigo-700'
-                                                    : 'border-slate-200 hover:border-slate-300'
+                                                    : 'border-lab-muted hover:border-lab-muted'
                                                     }`}
                                             >
                                                 ⏺️ Midden
@@ -789,7 +789,7 @@ export const WordSimulator: React.FC<WordSimulatorProps> = ({
                                                 onClick={() => setPageNumberPosition(p => ({ vertical: p?.vertical || 'bottom', horizontal: 'right' }))}
                                                 className={`p-3 rounded-lg border-2 font-medium transition-all ${pageNumberPosition?.horizontal === 'right'
                                                     ? 'border-indigo-500 bg-indigo-50 text-indigo-700'
-                                                    : 'border-slate-200 hover:border-slate-300'
+                                                    : 'border-lab-muted hover:border-lab-muted'
                                                     }`}
                                             >
                                                 ▶️ Rechts
@@ -801,7 +801,7 @@ export const WordSimulator: React.FC<WordSimulatorProps> = ({
                                 <div className="flex gap-3 mt-6">
                                     <button
                                         onClick={() => setShowPageNumberDialog(false)}
-                                        className="flex-1 px-4 py-3 bg-slate-100 text-slate-700 rounded-xl font-medium hover:bg-slate-200 transition-colors"
+                                        className="flex-1 px-4 py-3 bg-lab-muted text-lab-muted rounded-xl font-medium hover:bg-lab-muted transition-colors"
                                     >
                                         Annuleren
                                     </button>
@@ -827,7 +827,7 @@ export const WordSimulator: React.FC<WordSimulatorProps> = ({
             </div>
 
             {/* STATUS BAR */}
-            <div className="bg-[#C46849] text-white/80 text-[10px] px-2 py-0.5 flex justify-between shrink-0">
+            <div className="bg-[#D97848] text-white/80 text-[10px] px-2 py-0.5 flex justify-between shrink-0">
                 <div className="flex gap-4">
                     <span>Pagina 1 van 1</span>
                     <span>{editorContent.split(' ').length} woorden</span>
@@ -839,17 +839,17 @@ export const WordSimulator: React.FC<WordSimulatorProps> = ({
             {showSuccessFeedback && (
                 <div className="fixed inset-0 z-[200] bg-black/60 flex items-center justify-center animate-in fade-in duration-300">
                     <div className="bg-white rounded-3xl p-8 max-w-md w-full mx-4 shadow-2xl text-center animate-in zoom-in-95 duration-500">
-                        <div className="w-20 h-20 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg">
+                        <div className="w-20 h-20 bg-lab-sage text-lab-sage rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg">
                             <Check size={40} />
                         </div>
-                        <h2 className="text-3xl font-black text-emerald-600 mb-2">Goed gedaan! 🎉</h2>
-                        <p className="text-lg text-slate-600 mb-6">
+                        <h2 className="text-3xl font-black text-lab-sage mb-2">Goed gedaan! 🎉</h2>
+                        <p className="text-lg text-lab-muted mb-6">
                             Je hebt de opdracht succesvol afgerond!
                         </p>
-                        <div className="bg-slate-100 rounded-xl p-4 mb-6">
-                            <p className="text-sm text-slate-500 mb-2">Volgende casus start over</p>
+                        <div className="bg-lab-muted rounded-xl p-4 mb-6">
+                            <p className="text-sm text-lab-muted mb-2">Volgende casus start over</p>
                             <div className="text-4xl font-black text-indigo-600">{autoRedirectCountdown}</div>
-                            <p className="text-xs text-slate-400">seconden</p>
+                            <p className="text-xs text-lab-muted">seconden</p>
                         </div>
                         <button
                             onClick={handleNextLevel}
@@ -875,7 +875,7 @@ const levels: LevelConfig[] = [
         hint: "Selecteer het plaatje en kijk bij 'Indeling' naar 'Tekstomloop'.",
         instruction: "Zet de tekstomloop op 'Vierkant' en sleep het plaatje naar rechts.",
         initialContent: `
-                <h1 style="color: #C46849; font-size: 24px; font-weight: bold; margin-bottom: 1em;">De Romeinse Tijd</h1>
+                <h1 style="color: #D97848; font-size: 24px; font-weight: bold; margin-bottom: 1em;">De Romeinse Tijd</h1>
                 <p>De Romeinen waren een volk dat oorspronkelijk in de stad Rome leefde. Ze veroverden een enorm rijk dat zich uitstrekte van Engeland tot Egypte.</p>
                 <p>Hun leger was super goed georganiseerd en ze bouwden overal wegen.</p>
                 <p>In Nederland kwamen de Romeinen tot aan de Rijn. Ze bouwden forten, badhuizen en tempels.</p>

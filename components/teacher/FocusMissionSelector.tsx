@@ -121,7 +121,7 @@ export const FocusMissionSelector: React.FC<FocusMissionSelectorProps> = ({
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
-                    className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm"
+                    className="absolute inset-0 bg-lab-muted/60 backdrop-blur-sm"
                     onClick={handleClose}
                 />
 
@@ -130,18 +130,18 @@ export const FocusMissionSelector: React.FC<FocusMissionSelectorProps> = ({
                     initial={{ opacity: 0, scale: 0.95, y: 20 }}
                     animate={{ opacity: 1, scale: 1, y: 0 }}
                     exit={{ opacity: 0, scale: 0.95, y: 20 }}
-                    className="bg-white rounded-[2rem] shadow-2xl border border-slate-100 w-full max-w-2xl max-h-[80vh] overflow-hidden relative z-10 flex flex-col"
+                    className="bg-white rounded-[2rem] shadow-2xl border border-lab-muted w-full max-w-2xl max-h-[80vh] overflow-hidden relative z-10 flex flex-col"
                 >
                     {/* Header */}
-                    <div className="p-6 border-b border-slate-100 bg-gradient-to-r from-indigo-50 to-purple-50">
+                    <div className="p-6 border-b border-lab-muted bg-gradient-to-r from-indigo-50 to-purple-50">
                         <div className="flex items-start justify-between">
                             <div className="flex items-center gap-4">
                                 <div className="w-14 h-14 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl flex items-center justify-center text-white shadow-lg shadow-indigo-200">
                                     <Target size={28} />
                                 </div>
                                 <div>
-                                    <h2 className="text-xl font-black text-slate-900">Focus Modus Activeren</h2>
-                                    <p className="text-slate-500 text-sm font-medium">
+                                    <h2 className="text-xl font-black text-lab-muted">Focus Modus Activeren</h2>
+                                    <p className="text-lab-muted text-sm font-medium">
                                         {showClassSelector
                                             ? 'Kies eerst een klas om te focussen'
                                             : `Selecteer welke opdracht ${selectedClass || 'leerlingen'} moeten maken`
@@ -151,7 +151,7 @@ export const FocusMissionSelector: React.FC<FocusMissionSelectorProps> = ({
                             </div>
                             <button
                                 onClick={handleClose}
-                                className="p-2 text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-xl transition-colors"
+                                className="p-2 text-lab-muted hover:text-lab-muted hover:bg-lab-muted rounded-xl transition-colors"
                             >
                                 <X size={20} />
                             </button>
@@ -173,19 +173,19 @@ export const FocusMissionSelector: React.FC<FocusMissionSelectorProps> = ({
                                 )}
 
                                 <div className="flex-1 relative">
-                                    <Search size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
+                                    <Search size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-lab-muted" />
                                     <input
                                         type="text"
                                         value={searchTerm}
                                         onChange={(e) => setSearchTerm(e.target.value)}
                                         placeholder="Zoek opdracht..."
-                                        className="w-full pl-11 pr-4 py-2.5 bg-white border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                                        className="w-full pl-11 pr-4 py-2.5 bg-white border border-lab-muted rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
                                     />
                                 </div>
-                                <div className="flex bg-slate-100 p-1 rounded-xl">
+                                <div className="flex bg-lab-muted p-1 rounded-xl">
                                     <button
                                         onClick={() => setSelectedWeek(null)}
-                                        className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${selectedWeek === null ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-500'}`}
+                                        className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${selectedWeek === null ? 'bg-white text-lab-muted shadow-sm' : 'text-lab-muted'}`}
                                     >
                                         Alle
                                     </button>
@@ -193,7 +193,7 @@ export const FocusMissionSelector: React.FC<FocusMissionSelectorProps> = ({
                                         <button
                                             key={week}
                                             onClick={() => setSelectedWeek(week)}
-                                            className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${selectedWeek === week ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-500'}`}
+                                            className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${selectedWeek === week ? 'bg-white text-lab-muted shadow-sm' : 'text-lab-muted'}`}
                                         >
                                             W{week}
                                         </button>
@@ -223,28 +223,28 @@ export const FocusMissionSelector: React.FC<FocusMissionSelectorProps> = ({
                                             <button
                                                 key={className}
                                                 onClick={() => setSelectedClass(className)}
-                                                className="group p-5 bg-slate-50 hover:bg-indigo-50 border border-slate-100 hover:border-indigo-200 rounded-xl text-left transition-all hover:shadow-md"
+                                                className="group p-5 bg-lab-muted hover:bg-indigo-50 border border-lab-muted hover:border-indigo-200 rounded-xl text-left transition-all hover:shadow-md"
                                             >
                                                 <div className="flex items-center justify-between">
                                                     <div className="flex items-center gap-3">
-                                                        <div className="w-12 h-12 bg-white group-hover:bg-indigo-100 rounded-xl flex items-center justify-center text-slate-500 group-hover:text-indigo-600 transition-colors border border-slate-100 font-black text-lg">
+                                                        <div className="w-12 h-12 bg-white group-hover:bg-indigo-100 rounded-xl flex items-center justify-center text-lab-muted group-hover:text-indigo-600 transition-colors border border-lab-muted font-black text-lg">
                                                             {className}
                                                         </div>
                                                         <div>
-                                                            <h3 className="font-bold text-slate-900 text-base">Klas {className}</h3>
+                                                            <h3 className="font-bold text-lab-muted text-base">Klas {className}</h3>
                                                             <div className="flex items-center gap-2 mt-1">
                                                                 <div className="flex items-center gap-1">
-                                                                    <div className={`w-2 h-2 rounded-full ${activeCount > 0 ? 'bg-emerald-500 animate-pulse' : 'bg-slate-300'}`} />
-                                                                    <span className={`text-xs font-bold ${activeCount > 0 ? 'text-emerald-600' : 'text-slate-400'}`}>
+                                                                    <div className={`w-2 h-2 rounded-full ${activeCount > 0 ? 'bg-lab-sage animate-pulse' : 'bg-lab-muted'}`} />
+                                                                    <span className={`text-xs font-bold ${activeCount > 0 ? 'text-lab-sage' : 'text-lab-muted'}`}>
                                                                         {activeCount} online
                                                                     </span>
                                                                 </div>
-                                                                <span className="text-slate-300">•</span>
-                                                                <span className="text-xs text-slate-400">{totalCount} totaal</span>
+                                                                <span className="text-lab-muted">•</span>
+                                                                <span className="text-xs text-lab-muted">{totalCount} totaal</span>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <ChevronRight size={20} className="text-slate-300 group-hover:text-indigo-500 transition-colors" />
+                                                    <ChevronRight size={20} className="text-lab-muted group-hover:text-indigo-500 transition-colors" />
                                                 </div>
                                             </button>
                                         );
@@ -263,18 +263,18 @@ export const FocusMissionSelector: React.FC<FocusMissionSelectorProps> = ({
                                         <button
                                             key={mission.id}
                                             onClick={() => handleSelect(mission)}
-                                            className="group p-4 bg-slate-50 hover:bg-indigo-50 border border-slate-100 hover:border-indigo-200 rounded-xl text-left transition-all hover:shadow-md"
+                                            className="group p-4 bg-lab-muted hover:bg-indigo-50 border border-lab-muted hover:border-indigo-200 rounded-xl text-left transition-all hover:shadow-md"
                                         >
                                             <div className="flex items-start gap-3">
-                                                <div className="w-10 h-10 bg-white group-hover:bg-indigo-100 rounded-xl flex items-center justify-center text-slate-400 group-hover:text-indigo-600 transition-colors border border-slate-100">
+                                                <div className="w-10 h-10 bg-white group-hover:bg-indigo-100 rounded-xl flex items-center justify-center text-lab-muted group-hover:text-indigo-600 transition-colors border border-lab-muted">
                                                     <Target size={20} />
                                                 </div>
                                                 <div className="flex-1 min-w-0">
                                                     <div className="flex items-center gap-2">
-                                                        <h3 className="font-bold text-slate-900 text-sm truncate">{mission.title}</h3>
-                                                        <span className="text-[10px] font-bold text-slate-400 bg-slate-100 px-1.5 py-0.5 rounded uppercase">W{mission.week}</span>
+                                                        <h3 className="font-bold text-lab-muted text-sm truncate">{mission.title}</h3>
+                                                        <span className="text-[10px] font-bold text-lab-muted bg-lab-muted px-1.5 py-0.5 rounded uppercase">W{mission.week}</span>
                                                     </div>
-                                                    <p className="text-xs text-slate-500 mt-0.5 line-clamp-2">{mission.description}</p>
+                                                    <p className="text-xs text-lab-muted mt-0.5 line-clamp-2">{mission.description}</p>
                                                 </div>
                                             </div>
                                         </button>
@@ -285,15 +285,15 @@ export const FocusMissionSelector: React.FC<FocusMissionSelectorProps> = ({
 
                         {!showClassSelector && filteredMissions.length === 0 && (
                             <div className="text-center py-12">
-                                <Search size={40} className="text-slate-200 mx-auto mb-3" />
-                                <p className="text-slate-400 font-medium">Geen opdrachten gevonden</p>
+                                <Search size={40} className="text-lab-muted mx-auto mb-3" />
+                                <p className="text-lab-muted font-medium">Geen opdrachten gevonden</p>
                             </div>
                         )}
                     </div>
 
                     {/* Footer */}
-                    <div className="p-4 border-t border-slate-100 bg-slate-50">
-                        <p className="text-xs text-slate-400 text-center">
+                    <div className="p-4 border-t border-lab-muted bg-lab-muted">
+                        <p className="text-xs text-lab-muted text-center">
                             <Lock size={12} className="inline mr-1" />
                             {showClassSelector
                                 ? 'Selecteer een klas om de focus modus te activeren'

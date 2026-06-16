@@ -12,16 +12,16 @@ function trackLandingEvent(event: LandingAnalyticsEvent, data?: Record<string, u
 
 // Warm earth-tone palette (Anthropic-inspired)
 const C = {
-    bg: '#FAF9F0',
-    bgAlt: '#F5F3EC',
-    text: '#1A1A19',
-    textMuted: '#6B6B66',
-    textLight: '#9C9C95',
-    accent: '#D97757',
-    accentHover: '#C46849',
-    border: '#E8E6DF',
-    borderLight: '#F0EEE8',
-    dark: '#1A1A19',
+    bg: '#FCF6EA',
+    bgAlt: '#FCF6EA',
+    text: '#08283B',
+    textMuted: '#445865',
+    textLight: '#445865',
+    accent: '#D97848',
+    accentHover: '#D97848',
+    border: '#E7D8BD',
+    borderLight: '#FCF6EA',
+    dark: '#08283B',
     darkDeep: '#141413',
 } as const;
 
@@ -176,6 +176,13 @@ const ScholenLandingDashboardDemo = React.lazy(() => import('./scholen/ScholenLa
 
 // Pip the Robin — static guide in section margins
 import { PipGuide } from './scholen/FlyingPip';
+
+// 3D & Gamification components (lazy loaded)
+const Hero3DScene = React.lazy(() => import('./scholen/Hero3DScene').then(m => ({ default: m.Hero3DScene })));
+const ScrollXPBar = React.lazy(() => import('./scholen/ScrollXPBar').then(m => ({ default: m.ScrollXPBar })));
+const XPParticles = React.lazy(() => import('./scholen/XPParticles').then(m => ({ default: m.XPParticles })));
+const LandingAvatarPreview = React.lazy(() => import('./scholen/LandingAvatarPreview').then(m => ({ default: m.LandingAvatarPreview })));
+import { TiltCard } from './scholen/TiltCard';
 
 // JSON-LD structured data for Google rich results
 const structuredData = {
@@ -446,8 +453,12 @@ export const ScholenLanding: React.FC = () => {
 
             <main id="main-content">
                 {/* Hero */}
-                <section className="pt-32 pb-12 md:pt-40 md:pb-20 px-6 overflow-hidden" aria-labelledby="hero-heading">
-                    <div className="max-w-5xl mx-auto">
+                <section className="pt-32 pb-12 md:pt-40 md:pb-20 px-6 overflow-hidden relative" aria-labelledby="hero-heading">
+                    {/* 3D Background Scene */}
+                    <Suspense fallback={null}>
+                        <Hero3DScene />
+                    </Suspense>
+                    <div className="max-w-5xl mx-auto relative" style={{ zIndex: 2 }}>
                         {/* Heading — full width above grid so it never wraps */}
                         <p className="text-sm font-medium mb-4 tracking-wide" style={{ color: C.accent }}>
                             Voor het voortgezet onderwijs
@@ -539,8 +550,8 @@ export const ScholenLanding: React.FC = () => {
                                     <div className="rounded-2xl overflow-hidden bg-white" style={{ boxShadow: `0 18px 34px ${C.text}10`, border: `1px solid ${C.border}` }}>
                                         <div className="flex items-center gap-1.5 px-4 py-2.5" style={{ backgroundColor: C.bgAlt, borderBottom: `1px solid ${C.borderLight}` }}>
                                             <div className="w-2.5 h-2.5 rounded-full bg-red-400" />
-                                            <div className="w-2.5 h-2.5 rounded-full bg-amber-400" />
-                                            <div className="w-2.5 h-2.5 rounded-full bg-emerald-400" />
+                                            <div className="w-2.5 h-2.5 rounded-full bg-lab-gold" />
+                                            <div className="w-2.5 h-2.5 rounded-full bg-lab-sage" />
                                             <span className="ml-3 text-[10px] font-medium" style={{ color: C.textLight }}>dgskills.app</span>
                                         </div>
                                         <img
@@ -572,29 +583,33 @@ export const ScholenLanding: React.FC = () => {
                                 {/* Floating card: SLO check */}
                                 <div className="absolute -right-4 top-20 z-10">
                                     <div className="bg-white rounded-2xl p-4 flex items-center gap-3" style={{ boxShadow: `0 8px 18px ${C.text}08`, border: `1px solid ${C.border}` }}>
-                                        <div className="w-10 h-10 bg-emerald-500 rounded-xl flex items-center justify-center text-white">
+                                        <div className="w-10 h-10 bg-lab-sage rounded-xl flex items-center justify-center text-white">
                                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
                                         </div>
                                         <div>
                                             <p className="text-xs font-bold" style={{ color: C.text }}>Kerndoel behaald</p>
-                                            <p className="text-[10px] font-medium text-emerald-600">DV-2: Cloud beheer</p>
+                                            <p className="text-[10px] font-medium text-lab-sage">DV-2: Cloud beheer</p>
                                         </div>
                                     </div>
                                 </div>
 
-                                {/* Small avatar preview */}
+                                {/* 3D Avatar Preview — compact thumbnail, top-left */}
                                 <div className="absolute -left-2 top-8 z-10">
-                                    <div className="bg-white rounded-xl p-2.5" style={{ boxShadow: `0 4px 12px ${C.text}08`, border: `1px solid ${C.border}` }}>
-                                        <img
-                                            src="/screenshots/avatar-customization-192.webp"
-                                            alt=""
-                                            className="w-16 h-16 rounded-lg object-cover"
-                                            width={192}
-                                            height={120}
-                                            loading="lazy"
-                                            decoding="async"
-                                        />
-                                    </div>
+                                    <Suspense fallback={
+                                        <div className="bg-white rounded-xl p-2.5" style={{ boxShadow: `0 4px 12px ${C.text}08`, border: `1px solid ${C.border}` }}>
+                                            <img
+                                                src="/screenshots/avatar-customization-192.webp"
+                                                alt=""
+                                                className="w-16 h-16 rounded-lg object-cover"
+                                                width={192}
+                                                height={120}
+                                                loading="lazy"
+                                                decoding="async"
+                                            />
+                                        </div>
+                                    }>
+                                        <LandingAvatarPreview />
+                                    </Suspense>
                                 </div>
 
                                 {/* Pip — sitting on the browser bar */}
@@ -896,6 +911,14 @@ export const ScholenLanding: React.FC = () => {
                     </SectionErrorBoundary>
                 </section>
             </main>
+
+            {/* Gamification overlays */}
+            <Suspense fallback={null}>
+                <ScrollXPBar />
+            </Suspense>
+            <Suspense fallback={null}>
+                <XPParticles count={12} />
+            </Suspense>
 
             {/* Floating CTA — Mobile */}
             <div

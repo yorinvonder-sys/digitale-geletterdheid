@@ -41,7 +41,7 @@ const clickTutorialTarget = (selector: string, delayMs = 0) => {
 /** Close any open modals/overlays by clicking their backdrop or close button */
 const dismissOpenOverlays = () => {
     // Close feedback modal backdrop (z-[100] overlay)
-    const feedbackBackdrop = document.querySelector('.fixed.inset-0.z-\\[100\\] .bg-slate-900\\/60') as HTMLElement | null;
+    const feedbackBackdrop = document.querySelector('.fixed.inset-0.z-\\[100\\] .bg-lab-muted\\/60') as HTMLElement | null;
     feedbackBackdrop?.click();
     // Close profile dropdown by clicking outside
     const profileMenu = document.querySelector('[aria-haspopup="true"][aria-expanded="true"]') as HTMLElement | null;

@@ -106,11 +106,11 @@ export const ScholenLandingPlatformPreview: React.FC = () => {
         <div className="max-w-6xl mx-auto">
             {/* Header */}
             <div className="text-center max-w-2xl mx-auto mb-12 md:mb-16">
-                <p className="text-sm font-medium tracking-wide mb-3" style={{ color: '#D97757' }}>Bekijk het platform</p>
-                <h2 className="text-2xl md:text-3xl lg:text-4xl font-medium tracking-tight mb-4" style={{ fontFamily: "'Newsreader', Georgia, serif", color: '#1A1A19' }}>
+                <p className="text-sm font-medium tracking-wide mb-3" style={{ color: '#D97848' }}>Bekijk het platform</p>
+                <h2 className="text-2xl md:text-3xl lg:text-4xl font-medium tracking-tight mb-4" style={{ fontFamily: "'Newsreader', Georgia, serif", color: '#08283B' }}>
                     De leerlingreis in 4 stappen
                 </h2>
-                <p className="text-base md:text-lg leading-relaxed" style={{ color: '#6B6B66' }}>
+                <p className="text-base md:text-lg leading-relaxed" style={{ color: '#445865' }}>
                     Van eerste missie tot certificaat — zo ervaren leerlingen DGSkills.
                 </p>
             </div>
@@ -121,31 +121,31 @@ export const ScholenLandingPlatformPreview: React.FC = () => {
                 onMouseLeave={() => setIsPaused(false)}
             >
                 {/* Showcase card */}
-                <div className="rounded-3xl border p-6 md:p-10 lg:p-12" style={{ borderColor: '#E8E6DF', backgroundColor: '#FAF9F0' }}>
+                <div className="rounded-3xl border p-6 md:p-10 lg:p-12" style={{ borderColor: '#E7D8BD', backgroundColor: '#FCF6EA' }}>
                     <div className="grid md:grid-cols-5 gap-6 md:gap-10 items-center md:min-h-[400px]">
                         {/* Content — left */}
                         <div className="md:col-span-2 order-2 md:order-1 flex flex-col">
                             {/* Step badge */}
                             <span
                                 className="inline-flex items-center gap-2 self-start px-3 py-1.5 rounded-full text-xs font-medium mb-6"
-                                style={{ backgroundColor: '#F5F3EC', color: '#D97757' }}
+                                style={{ backgroundColor: '#FCF6EA', color: '#D97848' }}
                             >
                                 {active.icon}
                                 {active.stepLabel}
                             </span>
 
                             {/* Subtitle */}
-                            <p className="text-[11px] font-medium tracking-[0.15em] mb-2 opacity-60" style={{ color: '#D97757' }}>
+                            <p className="text-[11px] font-medium tracking-[0.15em] mb-2 opacity-60" style={{ color: '#D97848' }}>
                                 {active.subtitle}
                             </p>
 
                             {/* Title */}
-                            <h3 className="text-2xl md:text-3xl font-medium mb-3 tracking-tight" style={{ fontFamily: "'Newsreader', Georgia, serif", color: '#1A1A19' }}>
+                            <h3 className="text-2xl md:text-3xl font-medium mb-3 tracking-tight" style={{ fontFamily: "'Newsreader', Georgia, serif", color: '#08283B' }}>
                                 {active.title}
                             </h3>
 
                             {/* Description */}
-                            <p className="text-sm md:text-base leading-relaxed mb-8" style={{ color: '#6B6B66' }}>
+                            <p className="text-sm md:text-base leading-relaxed mb-8" style={{ color: '#445865' }}>
                                 {active.description}
                             </p>
 
@@ -157,7 +157,7 @@ export const ScholenLandingPlatformPreview: React.FC = () => {
                                         onClick={() => goTo(i)}
                                         className="w-11 h-11 min-w-[44px] min-h-[44px] rounded-full flex items-center justify-center transition-colors"
                                         style={{ backgroundColor: 'transparent' }}
-                                        onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#F5F3EC')}
+                                        onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#FCF6EA')}
                                         onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = 'transparent')}
                                         aria-label={`Ga naar stap ${i + 1}`}
                                         aria-current={i === activeIndex ? 'true' : undefined}
@@ -166,7 +166,7 @@ export const ScholenLandingPlatformPreview: React.FC = () => {
                                             className="h-2 rounded-full transition-all duration-300"
                                             style={{
                                                 width: i === activeIndex ? '2rem' : '0.5rem',
-                                                backgroundColor: i === activeIndex ? '#D97757' : '#9C9C95',
+                                                backgroundColor: i === activeIndex ? '#D97848' : '#445865',
                                             }}
                                             aria-hidden="true"
                                         />
@@ -175,9 +175,9 @@ export const ScholenLandingPlatformPreview: React.FC = () => {
                                 <button
                                     onClick={() => setIsPaused(p => !p)}
                                     className="ml-1 w-11 h-11 min-w-[44px] min-h-[44px] rounded-full flex items-center justify-center transition-colors"
-                                    style={{ color: '#6B6B66' }}
-                                    onMouseEnter={(e) => { e.currentTarget.style.color = '#1A1A19'; e.currentTarget.style.backgroundColor = '#F5F3EC'; }}
-                                    onMouseLeave={(e) => { e.currentTarget.style.color = '#6B6B66'; e.currentTarget.style.backgroundColor = 'transparent'; }}
+                                    style={{ color: '#445865' }}
+                                    onMouseEnter={(e) => { e.currentTarget.style.color = '#08283B'; e.currentTarget.style.backgroundColor = '#FCF6EA'; }}
+                                    onMouseLeave={(e) => { e.currentTarget.style.color = '#445865'; e.currentTarget.style.backgroundColor = 'transparent'; }}
                                     aria-label={isPaused ? 'Afspelen' : 'Pauzeren'}
                                 >
                                     {isPaused ? (
@@ -195,9 +195,9 @@ export const ScholenLandingPlatformPreview: React.FC = () => {
                             <div className="absolute -inset-4 rounded-3xl blur-2xl pointer-events-none" style={{ backgroundColor: 'rgba(232, 230, 223, 0.4)' }} />
 
                             {/* Image frame */}
-                            <div className="relative rounded-2xl overflow-hidden shadow-2xl shadow-slate-900/10 ring-1 ring-slate-900/5 bg-slate-900">
+                            <div className="relative rounded-2xl overflow-hidden shadow-2xl shadow-slate-900/10 ring-1 ring-slate-900/5 bg-lab-muted">
                                 {/* Browser chrome */}
-                                <div className="flex items-center gap-1.5 px-4 py-2.5 bg-slate-800/80 border-b border-white/5">
+                                <div className="flex items-center gap-1.5 px-4 py-2.5 bg-lab-muted/80 border-b border-white/5">
                                     <div className="w-2 h-2 rounded-full bg-white/15" />
                                     <div className="w-2 h-2 rounded-full bg-white/15" />
                                     <div className="w-2 h-2 rounded-full bg-white/15" />
@@ -241,8 +241,8 @@ export const ScholenLandingPlatformPreview: React.FC = () => {
                                 onClick={() => goTo(i)}
                                 className="group relative text-left p-4 rounded-xl border-2 transition-all duration-300 overflow-hidden"
                                 style={{
-                                    borderColor: isActive ? '#D97757' : '#E8E6DF',
-                                    backgroundColor: isActive ? '#FAF9F0' : '#FFFFFF',
+                                    borderColor: isActive ? '#D97848' : '#E7D8BD',
+                                    backgroundColor: isActive ? '#FCF6EA' : '#FFFFFF',
                                     boxShadow: isActive ? '0 10px 15px -3px rgba(217, 119, 87, 0.1)' : undefined,
                                 }}
                                 aria-current={isActive ? 'step' : undefined}
@@ -251,8 +251,8 @@ export const ScholenLandingPlatformPreview: React.FC = () => {
                                     <div
                                         className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 transition-colors duration-300"
                                         style={{
-                                            backgroundColor: isActive ? '#F5F3EC' : '#F5F3EC',
-                                            color: isActive ? '#D97757' : '#9C9C95',
+                                            backgroundColor: isActive ? '#FCF6EA' : '#FCF6EA',
+                                            color: isActive ? '#D97848' : '#445865',
                                         }}
                                     >
                                         {step.icon}
@@ -260,13 +260,13 @@ export const ScholenLandingPlatformPreview: React.FC = () => {
                                     <div className="min-w-0">
                                         <span
                                             className="text-[10px] font-medium uppercase tracking-wider block"
-                                            style={{ color: isActive ? '#D97757' : '#6B6B66' }}
+                                            style={{ color: isActive ? '#D97848' : '#445865' }}
                                         >
                                             {step.stepLabel}
                                         </span>
                                         <span
                                             className="font-medium text-sm block truncate"
-                                            style={{ color: isActive ? '#1A1A19' : '#6B6B66' }}
+                                            style={{ color: isActive ? '#08283B' : '#445865' }}
                                         >
                                             {step.title}
                                         </span>
@@ -275,11 +275,11 @@ export const ScholenLandingPlatformPreview: React.FC = () => {
 
                                 {/* Progress bar */}
                                 {isActive && !isPaused && (
-                                    <div className="absolute bottom-0 left-0 right-0 h-0.5" style={{ backgroundColor: '#F0EEE8' }}>
+                                    <div className="absolute bottom-0 left-0 right-0 h-0.5" style={{ backgroundColor: '#FCF6EA' }}>
                                         <div
                                             key={progressKey}
                                             className="h-full animate-carousel-progress"
-                                            style={{ backgroundColor: '#D97757' }}
+                                            style={{ backgroundColor: '#D97848' }}
                                         />
                                     </div>
                                 )}

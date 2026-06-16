@@ -14,9 +14,9 @@ interface UserProfileProps {
 }
 
 const PALETTE_COLORS = [
-    '#ef4444', '#f97316', '#f59e0b', '#eab308', '#84cc16', '#22c55e', '#10b981', '#14b8a6',
-    '#06b6d4', '#0ea5e9', '#3b82f6', '#D97757', '#E8956F', '#a855f7', '#d946ef', '#ec4899',
-    '#f43f5e', '#1e293b', '#64748b', '#94a3b8', '#ffffff'
+    '#D97848', '#D97848', '#D7C95F', '#D7C95F', '#99984D', '#5F947D', '#5F947D', '#0B453F',
+    '#0B453F', '#0B453F', '#0B453F', '#D97848', '#D97848', '#0B453F', '#D97848', '#D97848',
+    '#D97848', '#08283B', '#445865', '#E7D8BD', '#ffffff'
 ];
 
 const CircularColorPicker = ({ selectedColor, onSelect, label, size = 'md' }: { selectedColor: string, onSelect: (color: string) => void, label?: string, size?: 'sm' | 'md' }) => {
@@ -34,7 +34,7 @@ const CircularColorPicker = ({ selectedColor, onSelect, label, size = 'md' }: { 
 
     return (
         <div className="flex flex-col items-center gap-2 py-2">
-            {label && <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">{label}</span>}
+            {label && <span className="text-[10px] font-black text-lab-muted uppercase tracking-widest">{label}</span>}
             <div
                 className={`relative ${sizeClasses} rounded-full cursor-crosshair shadow-xl border-2 border-white overflow-hidden group transition-transform active:scale-95`}
                 style={{ background: 'conic-gradient(from 180deg, #ff0000, #ffff00, #00ff00, #00ffff, #0000ff, #ff00ff, #ff0000)' }}
@@ -47,8 +47,8 @@ const CircularColorPicker = ({ selectedColor, onSelect, label, size = 'md' }: { 
             </div>
 
             <div className="flex items-center gap-1.5 mt-1">
-                <div className="w-4 h-4 rounded shadow-sm border border-slate-200" style={{ backgroundColor: selectedColor }} />
-                <span className="text-[9px] font-mono font-bold text-slate-500 uppercase">{selectedColor}</span>
+                <div className="w-4 h-4 rounded shadow-sm border border-lab-muted" style={{ backgroundColor: selectedColor }} />
+                <span className="text-[9px] font-mono font-bold text-lab-muted uppercase">{selectedColor}</span>
             </div>
         </div>
     );
@@ -210,20 +210,20 @@ const SHOP_ITEMS = [
 // BADGES & TROPHIES
 // ═══════════════════════════════════════════════════════════════════════════════
 const BADGES = [
-    { id: 'game-programmeur', title: 'Code Krijger', icon: <Gamepad2 size={24} />, description: 'Je hebt de game code gehackt!', color: 'bg-emerald-500' },
+    { id: 'game-programmeur', title: 'Code Krijger', icon: <Gamepad2 size={24} />, description: 'Je hebt de game code gehackt!', color: 'bg-lab-sage' },
     { id: 'verhalen-ontwerper', title: 'Meester Verteller', icon: <BookOpen size={24} />, description: 'Een prachtig verhaal gecreëerd.', color: 'bg-pink-500' },
     { id: 'ai-trainer', title: 'Data Trainer', icon: <BrainCircuit size={24} />, description: 'De AI slim getraind.', color: 'bg-indigo-500' },
     { id: 'nepnieuws-speurder', title: 'Waarheidszoeker', icon: <Search size={24} />, description: 'Fake news ontmaskerd.', color: 'bg-red-500' },
-    { id: 'review-week-1', title: 'Tijdreiziger', icon: <RotateCcw size={24} />, description: 'De tijdlijn hersteld.', color: 'bg-amber-500' },
+    { id: 'review-week-1', title: 'Tijdreiziger', icon: <RotateCcw size={24} />, description: 'De tijdlijn hersteld.', color: 'bg-lab-gold' },
     { id: 'magister-master', title: 'Planner Pro', icon: <Calendar size={24} />, description: 'De school app getemd.', color: 'bg-blue-500' },
-    { id: 'print-pro', title: 'Print Meester', icon: <Printer size={24} />, description: 'De printer verslagen.', color: 'bg-slate-500' },
+    { id: 'print-pro', title: 'Print Meester', icon: <Printer size={24} />, description: 'De printer verslagen.', color: 'bg-lab-muted' },
     { id: 'slide-specialist', title: 'Slide Ster', icon: <Projector size={24} />, description: 'Een top presentatie gemaakt.', color: 'bg-orange-500' },
     { id: 'word-wizard', title: 'Woord Tovenaar', icon: <FileText size={24} />, description: 'Een magisch document gemaakt.', color: 'bg-cyan-500' },
     { id: 'cloud-commander', title: 'Cloud Kapitein', icon: <Cloud size={24} />, description: 'De cloud beheerst.', color: 'bg-sky-500' },
-    { id: 'social-media-psychologist', title: 'Filter Breker', icon: <Share2 size={24} />, description: 'De bubbel doorgeprikt.', color: 'bg-violet-500' },
+    { id: 'social-media-psychologist', title: 'Filter Breker', icon: <Share2 size={24} />, description: 'De bubbel doorgeprikt.', color: 'bg-lab-teal' },
     { id: 'ai-tekengame', title: 'Kunstenaar', icon: <Palette size={24} />, description: 'AI kunst gemaakt.', color: 'bg-purple-500' },
     { id: 'chatbot-trainer', title: 'Chatbot Expert', icon: <MessageSquare size={24} />, description: 'Een chatbot gebouwd.', color: 'bg-green-500' },
-    { id: 'ai-beleid-brainstorm', title: 'Beleidsmaker', icon: <Scale size={24} />, description: 'Nieuwe regels bedacht.', color: 'bg-teal-500' },
+    { id: 'ai-beleid-brainstorm', title: 'Beleidsmaker', icon: <Scale size={24} />, description: 'Nieuwe regels bedacht.', color: 'bg-lab-teal' },
 ];
 
 const TrophyRoom = ({ completedMissions }: { completedMissions: string[] }) => {
@@ -232,21 +232,21 @@ const TrophyRoom = ({ completedMissions }: { completedMissions: string[] }) => {
 
     return (
         <div className="flex-1 overflow-y-auto custom-scrollbar p-6">
-            <div className="mb-8 bg-gradient-to-r from-amber-100 to-yellow-50 p-6 rounded-3xl border border-amber-200">
+            <div className="mb-8 bg-gradient-to-r from-amber-100 to-yellow-50 p-6 rounded-3xl border border-lab-gold">
                 <div className="flex items-center justify-between mb-4">
                     <div>
-                        <h3 className="text-xl font-black text-amber-800 uppercase tracking-tight flex items-center gap-2">
-                            <Trophy className="text-amber-600" /> Jouw Trofeeënhal
+                        <h3 className="text-xl font-black text-lab-gold uppercase tracking-tight flex items-center gap-2">
+                            <Trophy className="text-lab-gold" /> Jouw Trofeeënhal
                         </h3>
-                        <p className="text-amber-700/80 font-medium text-sm">Verzamel badges door missies te voltooien!</p>
+                        <p className="text-lab-gold/80 font-medium text-sm">Verzamel badges door missies te voltooien!</p>
                     </div>
                     <div className="text-right">
-                        <div className="text-3xl font-black text-amber-600">{earnedCount}/{BADGES.length}</div>
-                        <div className="text-[10px] font-bold text-amber-400 uppercase tracking-widest">Verzameld</div>
+                        <div className="text-3xl font-black text-lab-gold">{earnedCount}/{BADGES.length}</div>
+                        <div className="text-[10px] font-bold text-lab-gold uppercase tracking-widest">Verzameld</div>
                     </div>
                 </div>
-                <div className="w-full h-3 bg-white rounded-full overflow-hidden border border-amber-100">
-                    <div className="h-full bg-amber-500 transition-all duration-1000" style={{ width: `${progress}%` }} />
+                <div className="w-full h-3 bg-white rounded-full overflow-hidden border border-lab-gold">
+                    <div className="h-full bg-lab-gold transition-all duration-1000" style={{ width: `${progress}%` }} />
                 </div>
             </div>
 
@@ -254,22 +254,22 @@ const TrophyRoom = ({ completedMissions }: { completedMissions: string[] }) => {
                 {BADGES.map(badge => {
                     const isUnlocked = completedMissions.includes(badge.id);
                     return (
-                        <div key={badge.id} className={`relative group p-4 rounded-2xl border-2 transition-all duration-300 ${isUnlocked ? 'bg-white border-slate-100 shadow-lg hover:scale-105 hover:shadow-xl hover:border-indigo-100' : 'bg-slate-50 border-slate-100 opacity-60 grayscale'}`}>
-                            <div className={`w-16 h-16 mx-auto mb-3 rounded-full flex items-center justify-center text-white shadow-md ${isUnlocked ? badge.color : 'bg-slate-300'}`}>
+                        <div key={badge.id} className={`relative group p-4 rounded-2xl border-2 transition-all duration-300 ${isUnlocked ? 'bg-white border-lab-muted shadow-lg hover:scale-105 hover:shadow-xl hover:border-indigo-100' : 'bg-lab-muted border-lab-muted opacity-60 grayscale'}`}>
+                            <div className={`w-16 h-16 mx-auto mb-3 rounded-full flex items-center justify-center text-white shadow-md ${isUnlocked ? badge.color : 'bg-lab-muted'}`}>
                                 {badge.icon}
                             </div>
                             <div className="text-center">
-                                <h4 className={`font-black text-sm mb-1 ${isUnlocked ? 'text-slate-800' : 'text-slate-400'}`}>{badge.title}</h4>
-                                <p className="text-[10px] font-medium text-slate-500 leading-tight">{badge.description}</p>
+                                <h4 className={`font-black text-sm mb-1 ${isUnlocked ? 'text-lab-muted' : 'text-lab-muted'}`}>{badge.title}</h4>
+                                <p className="text-[10px] font-medium text-lab-muted leading-tight">{badge.description}</p>
                             </div>
                             {isUnlocked && (
-                                <div className="absolute top-2 right-2 text-emerald-500 animate-in zoom-in spin-in-90 duration-500">
+                                <div className="absolute top-2 right-2 text-lab-sage animate-in zoom-in spin-in-90 duration-500">
                                     <Award size={16} />
                                 </div>
                             )}
                             {!isUnlocked && (
-                                <div className="absolute inset-0 bg-slate-100/50 backdrop-blur-[1px] rounded-2xl flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                                    <span className="bg-slate-900 text-white text-[10px] font-bold px-2 py-1 rounded">Nog niet behaald</span>
+                                <div className="absolute inset-0 bg-lab-muted/50 backdrop-blur-[1px] rounded-2xl flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                                    <span className="bg-lab-muted text-white text-[10px] font-bold px-2 py-1 rounded">Nog niet behaald</span>
                                 </div>
                             )}
                         </div>
@@ -385,7 +385,7 @@ export const UserProfile: React.FC<UserProfileProps> = ({ user, onBack, onUpdate
         if (item.type === 'pose') newConfig.pose = item.value as any;
         if (item.type === 'accessory') {
             newConfig.accessory = item.value as any;
-            if (!newConfig.accessoryColor) newConfig.accessoryColor = '#D97757';
+            if (!newConfig.accessoryColor) newConfig.accessoryColor = '#D97848';
         }
         if (item.type === 'gender') {
             newConfig.gender = item.value as any;
@@ -436,7 +436,7 @@ export const UserProfile: React.FC<UserProfileProps> = ({ user, onBack, onUpdate
     };
 
     return (
-        <div className="min-h-screen bg-[#FAF9F0] font-sans overflow-y-auto pt-safe pl-safe pr-safe pb-20">
+        <div className="min-h-screen bg-[#FCF6EA] font-sans overflow-y-auto pt-safe pl-safe pr-safe pb-20">
 
             <div className="w-full max-w-[95%] lg:max-w-[1920px] mx-auto p-4 lg:p-8">
 
@@ -445,35 +445,35 @@ export const UserProfile: React.FC<UserProfileProps> = ({ user, onBack, onUpdate
                     <div className="flex flex-col sm:flex-row items-center justify-between mb-8 gap-4">
                         <button
                             onClick={onBack}
-                            className="flex items-center gap-2 text-slate-400 hover:text-indigo-600 font-bold uppercase tracking-widest text-xs transition-colors self-start sm:self-auto"
+                            className="flex items-center gap-2 text-lab-muted hover:text-indigo-600 font-bold uppercase tracking-widest text-xs transition-colors self-start sm:self-auto"
                         >
                             <ChevronLeft size={16} /> Terug naar Dashboard
                         </button>
 
-                        <div className="flex items-center gap-3 bg-white pl-2 pr-6 py-2 rounded-full shadow-lg border border-slate-100">
+                        <div className="flex items-center gap-3 bg-white pl-2 pr-6 py-2 rounded-full shadow-lg border border-lab-muted">
                             <div className="bg-gradient-to-br from-amber-400 to-orange-500 w-10 h-10 rounded-full flex items-center justify-center text-white shadow-md">
                                 <Trophy size={20} fill="currentColor" />
                             </div>
                             <div className="flex flex-col">
-                                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Jouw Saldo</span>
-                                <span className="font-black text-slate-900 leading-none">{stats.xp} XP</span>
+                                <span className="text-[10px] font-bold text-lab-muted uppercase tracking-wider">Jouw Saldo</span>
+                                <span className="font-black text-lab-muted leading-none">{stats.xp} XP</span>
                             </div>
                         </div>
                     </div>
                 )}
 
                 {onboardingStep !== null ? (
-                    <div className="flex-1 bg-white rounded-[3rem] shadow-2xl border border-slate-100 overflow-hidden flex flex-col md:flex-row h-[85dvh] min-h-[600px] animate-in zoom-in duration-500 relative">
+                    <div className="flex-1 bg-white rounded-[3rem] shadow-2xl border border-lab-muted overflow-hidden flex flex-col md:flex-row h-[85dvh] min-h-[600px] animate-in zoom-in duration-500 relative">
                         {/* Close Button */}
                         <button
                             onClick={onBack}
-                            className="absolute top-6 right-6 z-50 w-10 h-10 bg-white/80 backdrop-blur border border-slate-200 rounded-full flex items-center justify-center text-slate-400 hover:text-slate-800 hover:bg-white transition-all shadow-lg"
+                            className="absolute top-6 right-6 z-50 w-10 h-10 bg-white/80 backdrop-blur border border-lab-muted rounded-full flex items-center justify-center text-lab-muted hover:text-lab-muted hover:bg-white transition-all shadow-lg"
                             title="Sluiten"
                         >
                             <X size={20} />
                         </button>
 
-                        <div className="md:w-1/2 relative border-r border-slate-100" style={{ backgroundColor: '#FAF9F0' }}>
+                        <div className="md:w-1/2 relative border-r border-lab-muted" style={{ backgroundColor: '#FCF6EA' }}>
                             <LazyAvatarViewer
                                 config={previewConfig}
                                 onPartClick={handlePartClick}
@@ -486,54 +486,54 @@ export const UserProfile: React.FC<UserProfileProps> = ({ user, onBack, onUpdate
                         <div className="flex-1 p-8 md:p-12 flex flex-col justify-center overflow-y-auto custom-scrollbar bg-white">
                             {onboardingStep === 0 && (
                                 <div className="space-y-6 animate-in slide-in-from-right-4">
-                                    <h2 className="text-4xl font-black text-slate-900 leading-tight">Hoi {user.displayName}! 👋<br /><span className="text-indigo-600">Klaar voor de start?</span></h2>
-                                    <p className="text-slate-500 font-medium text-lg">Laten we samen jouw avatar maken. Dit is hoe jij eruit ziet in het digitale lab.</p>
-                                    <button onClick={() => setOnboardingStep(1)} className="w-full py-5 bg-slate-900 text-white rounded-2xl font-bold text-lg shadow-xl active:scale-95 transition-all">Laten we beginnen!</button>
+                                    <h2 className="text-4xl font-black text-lab-muted leading-tight">Hoi {user.displayName}! 👋<br /><span className="text-indigo-600">Klaar voor de start?</span></h2>
+                                    <p className="text-lab-muted font-medium text-lg">Laten we samen jouw avatar maken. Dit is hoe jij eruit ziet in het digitale lab.</p>
+                                    <button onClick={() => setOnboardingStep(1)} className="w-full py-5 bg-lab-muted text-white rounded-2xl font-bold text-lg shadow-xl active:scale-95 transition-all">Laten we beginnen!</button>
                                 </div>
                             )}
 
                             {onboardingStep === 1 && (
                                 <div className="space-y-6 animate-in slide-in-from-right-4">
-                                    <h3 className="text-2xl font-black text-slate-900">Wie ben jij?</h3>
+                                    <h3 className="text-2xl font-black text-lab-muted">Wie ben jij?</h3>
                                     <div className="grid grid-cols-2 gap-4">
-                                        <button onClick={() => setPreviewConfig({ ...previewConfig, gender: 'male', hairStyle: 'short', baseModel: 'standard' })} className={`p-6 rounded-2xl border-4 transition-all ${previewConfig.gender === 'male' ? 'border-indigo-600 bg-indigo-50 ring-4 ring-indigo-50' : 'border-slate-100'}`}>
+                                        <button onClick={() => setPreviewConfig({ ...previewConfig, gender: 'male', hairStyle: 'short', baseModel: 'standard' })} className={`p-6 rounded-2xl border-4 transition-all ${previewConfig.gender === 'male' ? 'border-indigo-600 bg-indigo-50 ring-4 ring-indigo-50' : 'border-lab-muted'}`}>
                                             <div className="text-4xl mb-2">👦</div>
-                                            <div className="font-bold text-slate-800">Jongen</div>
+                                            <div className="font-bold text-lab-muted">Jongen</div>
                                         </button>
-                                        <button onClick={() => setPreviewConfig({ ...previewConfig, gender: 'female', hairStyle: 'pigtails', baseModel: 'slim' })} className={`p-6 rounded-2xl border-4 transition-all ${previewConfig.gender === 'female' ? 'border-indigo-600 bg-indigo-50 ring-4 ring-indigo-50' : 'border-slate-100'}`}>
+                                        <button onClick={() => setPreviewConfig({ ...previewConfig, gender: 'female', hairStyle: 'pigtails', baseModel: 'slim' })} className={`p-6 rounded-2xl border-4 transition-all ${previewConfig.gender === 'female' ? 'border-indigo-600 bg-indigo-50 ring-4 ring-indigo-50' : 'border-lab-muted'}`}>
                                             <div className="text-4xl mb-2">👧</div>
-                                            <div className="font-bold text-slate-800">Meisje</div>
+                                            <div className="font-bold text-lab-muted">Meisje</div>
                                         </button>
                                     </div>
-                                    <button onClick={() => setOnboardingStep(2)} className="w-full py-4 bg-slate-900 text-white rounded-xl font-bold hover:bg-slate-800 transition-all active:scale-95 shadow-lg mt-4">Volgende stap</button>
+                                    <button onClick={() => setOnboardingStep(2)} className="w-full py-4 bg-lab-muted text-white rounded-xl font-bold hover:bg-lab-muted transition-all active:scale-95 shadow-lg mt-4">Volgende stap</button>
                                 </div>
                             )}
 
                             {onboardingStep === 2 && (
                                 <div className="space-y-6 animate-in slide-in-from-right-4">
-                                    <h3 className="text-2xl font-black text-slate-900">Kies je kapsel</h3>
+                                    <h3 className="text-2xl font-black text-lab-muted">Kies je kapsel</h3>
                                     <div className="grid grid-cols-3 gap-3">
                                         {SHOP_ITEMS.filter(i => i.type === 'hairStyle' && (!i.gender || i.gender === previewConfig.gender)).map(item => (
                                             <button
                                                 key={item.id}
                                                 onClick={() => setPreviewConfig({ ...previewConfig, hairStyle: item.value as any })}
-                                                className={`p-3 rounded-xl border-2 transition-all ${previewConfig.hairStyle === item.value ? 'border-indigo-600 bg-indigo-50 ring-2 ring-indigo-100' : 'border-slate-100 hover:border-slate-200'}`}
+                                                className={`p-3 rounded-xl border-2 transition-all ${previewConfig.hairStyle === item.value ? 'border-indigo-600 bg-indigo-50 ring-2 ring-indigo-100' : 'border-lab-muted hover:border-lab-muted'}`}
                                             >
-                                                <div className="text-xs font-bold truncate text-slate-700">{item.label}</div>
+                                                <div className="text-xs font-bold truncate text-lab-muted">{item.label}</div>
                                             </button>
                                         ))}
                                     </div>
                                     <div className="flex gap-3 mt-4">
-                                        <button onClick={() => setOnboardingStep(1)} className="flex-1 py-4 bg-slate-100 text-slate-500 rounded-xl font-bold">Terug</button>
-                                        <button onClick={() => setOnboardingStep(3)} className="flex-2 py-4 bg-slate-900 text-white rounded-xl font-bold px-8 shadow-lg">Kleur kiezen</button>
+                                        <button onClick={() => setOnboardingStep(1)} className="flex-1 py-4 bg-lab-muted text-lab-muted rounded-xl font-bold">Terug</button>
+                                        <button onClick={() => setOnboardingStep(3)} className="flex-2 py-4 bg-lab-muted text-white rounded-xl font-bold px-8 shadow-lg">Kleur kiezen</button>
                                     </div>
                                 </div>
                             )}
 
                             {onboardingStep === 3 && (
                                 <div className="space-y-4 animate-in slide-in-from-right-4 text-center">
-                                    <h3 className="text-2xl font-black text-slate-900">Kies je kleuren!</h3>
-                                    <p className="text-slate-500 font-medium text-sm">Klik op je avatar om een onderdeel te kiezen.</p>
+                                    <h3 className="text-2xl font-black text-lab-muted">Kies je kleuren!</h3>
+                                    <p className="text-lab-muted font-medium text-sm">Klik op je avatar om een onderdeel te kiezen.</p>
 
                                     {/* Active Part Indicator */}
                                     <div className="flex justify-center gap-2 mb-2 flex-wrap">
@@ -548,7 +548,7 @@ export const UserProfile: React.FC<UserProfileProps> = ({ user, onBack, onUpdate
                                                 onClick={() => setActivePart(part.id as any)}
                                                 className={`px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition-all border-2 ${activePart === part.id
                                                     ? 'bg-indigo-600 text-white border-indigo-600 shadow-lg'
-                                                    : 'bg-white text-slate-400 border-slate-200 hover:border-slate-300'
+                                                    : 'bg-white text-lab-muted border-lab-muted hover:border-lab-muted'
                                                     }`}
                                             >
                                                 <span className="mr-2">{part.icon}</span> {part.label}
@@ -556,17 +556,17 @@ export const UserProfile: React.FC<UserProfileProps> = ({ user, onBack, onUpdate
                                         ))}
                                     </div>
 
-                                    <div className="bg-slate-50 rounded-[2rem] p-4 border border-slate-100 shadow-inner min-h-[200px] flex flex-col justify-center">
+                                    <div className="bg-lab-muted rounded-[2rem] p-4 border border-lab-muted shadow-inner min-h-[200px] flex flex-col justify-center">
                                         {activePart === 'hair' && (
                                             <CircularColorPicker
-                                                selectedColor={previewConfig.hairColor || '#5D4037'}
+                                                selectedColor={previewConfig.hairColor || '#08283B'}
                                                 onSelect={(c) => setPreviewConfig({ ...previewConfig, hairColor: c })}
                                                 label="Kleur van je Haar"
                                             />
                                         )}
                                         {activePart === 'eyes' && (
                                             <CircularColorPicker
-                                                selectedColor={previewConfig.eyeColor || '#111111'}
+                                                selectedColor={previewConfig.eyeColor || '#08283B'}
                                                 onSelect={(c) => setPreviewConfig({ ...previewConfig, eyeColor: c })}
                                                 label="Kleur van je Ogen"
                                             />
@@ -586,12 +586,12 @@ export const UserProfile: React.FC<UserProfileProps> = ({ user, onBack, onUpdate
                                             />
                                         )}
                                         {activePart === 'accessory' && (
-                                            <div className="text-center py-4 text-slate-400 font-medium">
+                                            <div className="text-center py-4 text-lab-muted font-medium">
                                                 Selecteer een ander onderdeel om te kleuren.
                                             </div>
                                         )}
                                         {activePart === 'skin' && (
-                                            <div className="text-center py-4 text-slate-400 font-medium">
+                                            <div className="text-center py-4 text-lab-muted font-medium">
                                                 Huidskleur kun je bij stap 2 kiezen!
                                                 <button
                                                     onClick={() => setOnboardingStep(1)}
@@ -603,22 +603,22 @@ export const UserProfile: React.FC<UserProfileProps> = ({ user, onBack, onUpdate
                                         )}
                                     </div>
                                     <div className="flex gap-3 mt-4">
-                                        <button onClick={() => setOnboardingStep(2)} className="flex-1 py-4 bg-slate-100 text-slate-500 rounded-xl font-bold">Terug</button>
-                                        <button onClick={() => setOnboardingStep(4)} className="flex-2 py-4 bg-slate-900 text-white rounded-xl font-bold px-8 shadow-lg">Laatste stap</button>
+                                        <button onClick={() => setOnboardingStep(2)} className="flex-1 py-4 bg-lab-muted text-lab-muted rounded-xl font-bold">Terug</button>
+                                        <button onClick={() => setOnboardingStep(4)} className="flex-2 py-4 bg-lab-muted text-white rounded-xl font-bold px-8 shadow-lg">Laatste stap</button>
                                     </div>
                                 </div>
                             )}
 
                             {onboardingStep === 4 && (
                                 <div className="space-y-6 animate-in slide-in-from-right-4 text-center">
-                                    <div className="w-20 h-20 bg-emerald-100 rounded-full flex items-center justify-center text-emerald-600 mx-auto shadow-xl border-4 border-white mb-4">
+                                    <div className="w-20 h-20 bg-lab-sage rounded-full flex items-center justify-center text-lab-sage mx-auto shadow-xl border-4 border-white mb-4">
                                         <Crown size={40} fill="currentColor" />
                                     </div>
-                                    <h3 className="text-3xl font-black text-slate-900">Helemaal klaar! 🚀</h3>
-                                    <p className="text-slate-500 font-medium text-lg max-w-sm mx-auto">Je avatar ziet er geweldig uit. Je bent nu een echte Future Architect.</p>
+                                    <h3 className="text-3xl font-black text-lab-muted">Helemaal klaar! 🚀</h3>
+                                    <p className="text-lab-muted font-medium text-lg max-w-sm mx-auto">Je avatar ziet er geweldig uit. Je bent nu een echte Future Architect.</p>
                                     <div className="flex flex-col gap-3 mt-8">
                                         <button onClick={completeOnboarding} className="w-full py-5 bg-indigo-600 text-white rounded-2xl font-black text-xl shadow-xl shadow-indigo-100 transition-all active:scale-95 ring-4 ring-indigo-50">Start je Avontuur!</button>
-                                        <button onClick={() => setOnboardingStep(3)} className="w-full py-3 text-slate-400 font-bold hover:text-slate-600 transition-colors">Kleur aanpassen</button>
+                                        <button onClick={() => setOnboardingStep(3)} className="w-full py-3 text-lab-muted font-bold hover:text-lab-muted transition-colors">Kleur aanpassen</button>
                                     </div>
                                 </div>
                             )}
@@ -628,28 +628,28 @@ export const UserProfile: React.FC<UserProfileProps> = ({ user, onBack, onUpdate
                     <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 h-[calc(100dvh-180px)] min-h-[600px]">
                         <div className="lg:col-span-5 flex flex-col gap-6 h-full">
                             <div className="flex-1 bg-gradient-to-b from-slate-200 to-white rounded-[2.5rem] p-1 shadow-xl relative overflow-hidden border border-white">
-                                <div className="w-full h-full relative rounded-[2.3rem] overflow-hidden" style={{ backgroundColor: '#FAF9F0' }}>
+                                <div className="w-full h-full relative rounded-[2.3rem] overflow-hidden" style={{ backgroundColor: '#FCF6EA' }}>
                                     <div className="absolute top-0 w-full p-6 z-10 flex justify-between items-start">
                                         <div>
-                                            <h2 className="text-slate-900 font-black text-3xl">{user.displayName}</h2>
-                                            <p className="text-slate-500 font-bold text-xs uppercase tracking-widest mt-1">Level {stats.level} Architect</p>
+                                            <h2 className="text-lab-muted font-black text-3xl">{user.displayName}</h2>
+                                            <p className="text-lab-muted font-bold text-xs uppercase tracking-widest mt-1">Level {stats.level} Architect</p>
                                         </div>
                                         <div className="flex flex-col gap-2 items-end">
                                             <div className="bg-indigo-600 text-white px-3 py-1 rounded-full text-xs font-bold shadow-lg shadow-indigo-200">3D</div>
                                             <button
                                                 onClick={() => setShowResetConfirm(true)}
-                                                className="bg-white/50 backdrop-blur text-slate-500 p-2 rounded-full hover:bg-white hover:text-red-500 transition-colors shadow-sm"
+                                                className="bg-white/50 backdrop-blur text-lab-muted p-2 rounded-full hover:bg-white hover:text-red-500 transition-colors shadow-sm"
                                                 title="Reset Avatar"
                                             >
                                                 <RotateCcw size={14} />
                                             </button>
                                             {showResetConfirm && (
-                                                <div className="absolute top-16 right-4 z-20 bg-white rounded-2xl shadow-2xl border border-slate-200 p-4 w-56 animate-in zoom-in-95 duration-200">
-                                                    <p className="text-xs font-bold text-slate-700 mb-3">Avatar resetten naar standaard?</p>
+                                                <div className="absolute top-16 right-4 z-20 bg-white rounded-2xl shadow-2xl border border-lab-muted p-4 w-56 animate-in zoom-in-95 duration-200">
+                                                    <p className="text-xs font-bold text-lab-muted mb-3">Avatar resetten naar standaard?</p>
                                                     <div className="flex gap-2">
                                                         <button
                                                             onClick={() => setShowResetConfirm(false)}
-                                                            className="flex-1 py-2 bg-slate-100 text-slate-500 rounded-lg text-xs font-bold hover:bg-slate-200 transition-colors"
+                                                            className="flex-1 py-2 bg-lab-muted text-lab-muted rounded-lg text-xs font-bold hover:bg-lab-muted transition-colors"
                                                         >Nee</button>
                                                         <button
                                                             onClick={() => {
@@ -671,12 +671,12 @@ export const UserProfile: React.FC<UserProfileProps> = ({ user, onBack, onUpdate
                         </div>
 
                         <div className="lg:col-span-7 flex flex-col gap-4 h-full">
-                            <div className="bg-white p-2 rounded-2xl shadow-sm border border-slate-100 flex gap-2 shrink-0">
-                                <button onClick={() => setActiveTab('profile')} className={`flex-1 py-3 rounded-xl text-xs font-black uppercase tracking-widest transition-all flex items-center justify-center gap-2 ${activeTab === 'profile' ? 'bg-[#D97757] text-white shadow-lg' : 'text-slate-400 hover:bg-slate-50'}`}><User size={16} /> Stats</button>
-                                <button onClick={() => setActiveTab('shop')} className={`flex-1 py-3 rounded-xl text-xs font-black uppercase tracking-widest transition-all flex items-center justify-center gap-2 ${activeTab === 'shop' ? 'bg-[#D97757] text-white shadow-lg' : 'text-slate-400 hover:bg-slate-50'}`}><ShoppingBag size={16} /> Winkel</button>
-                                <button onClick={() => setActiveTab('trophies')} className={`flex-1 py-3 rounded-xl text-xs font-black uppercase tracking-widest transition-all flex items-center justify-center gap-2 ${activeTab === 'trophies' ? 'bg-[#D97757] text-white shadow-lg' : 'text-slate-400 hover:bg-slate-50'}`}><Trophy size={16} /> Trofeeën</button>
+                            <div className="bg-white p-2 rounded-2xl shadow-sm border border-lab-muted flex gap-2 shrink-0">
+                                <button onClick={() => setActiveTab('profile')} className={`flex-1 py-3 rounded-xl text-xs font-black uppercase tracking-widest transition-all flex items-center justify-center gap-2 ${activeTab === 'profile' ? 'bg-[#D97848] text-white shadow-lg' : 'text-lab-muted hover:bg-lab-muted'}`}><User size={16} /> Stats</button>
+                                <button onClick={() => setActiveTab('shop')} className={`flex-1 py-3 rounded-xl text-xs font-black uppercase tracking-widest transition-all flex items-center justify-center gap-2 ${activeTab === 'shop' ? 'bg-[#D97848] text-white shadow-lg' : 'text-lab-muted hover:bg-lab-muted'}`}><ShoppingBag size={16} /> Winkel</button>
+                                <button onClick={() => setActiveTab('trophies')} className={`flex-1 py-3 rounded-xl text-xs font-black uppercase tracking-widest transition-all flex items-center justify-center gap-2 ${activeTab === 'trophies' ? 'bg-[#D97848] text-white shadow-lg' : 'text-lab-muted hover:bg-lab-muted'}`}><Trophy size={16} /> Trofeeën</button>
                             </div>
-                            <div className="bg-white rounded-[2.5rem] p-8 shadow-sm border border-slate-100 overflow-y-auto custom-scrollbar flex-1">
+                            <div className="bg-white rounded-[2.5rem] p-8 shadow-sm border border-lab-muted overflow-y-auto custom-scrollbar flex-1">
                             {activeTab === 'trophies' ? (
                                 <TrophyRoom completedMissions={stats.missionsCompleted || []} />
                             ) : activeTab === 'profile' ? (
@@ -684,8 +684,8 @@ export const UserProfile: React.FC<UserProfileProps> = ({ user, onBack, onUpdate
                                     <div className="flex items-center gap-3 mb-6">
                                         <div className="p-3 bg-indigo-50 text-indigo-600 rounded-xl"><Award size={24} /></div>
                                         <div>
-                                            <h3 className="text-xl font-black text-slate-900">Jouw Prestaties</h3>
-                                            <p className="text-sm text-slate-500 font-medium">Badges verdiend in het lab.</p>
+                                            <h3 className="text-xl font-black text-lab-muted">Jouw Prestaties</h3>
+                                            <p className="text-sm text-lab-muted font-medium">Badges verdiend in het lab.</p>
                                         </div>
                                     </div>
                                     <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
@@ -694,15 +694,15 @@ export const UserProfile: React.FC<UserProfileProps> = ({ user, onBack, onUpdate
                                         <BadgeDisplay icon="🛡️" label="Verdediger" unlocked={stats.missionsCompleted?.includes('digitale-wereld')} color="bg-blue-50 text-blue-500" />
                                         <BadgeDisplay icon="💎" label="Verzamelaar" unlocked={stats.xp > 500} color="bg-purple-50 text-purple-500" />
                                     </div>
-                                    <div className="h-px bg-slate-100 my-8"></div>
+                                    <div className="h-px bg-lab-muted my-8"></div>
                                     <div className="grid grid-cols-2 gap-4">
-                                        <div className="bg-slate-50 rounded-3xl p-6">
-                                            <div className="text-slate-400 font-bold text-[10px] uppercase tracking-widest mb-2">Missies</div>
-                                            <div className="text-4xl font-black text-slate-900">{stats.missionsCompleted?.length || 0}</div>
+                                        <div className="bg-lab-muted rounded-3xl p-6">
+                                            <div className="text-lab-muted font-bold text-[10px] uppercase tracking-widest mb-2">Missies</div>
+                                            <div className="text-4xl font-black text-lab-muted">{stats.missionsCompleted?.length || 0}</div>
                                         </div>
-                                        <div className="bg-slate-50 rounded-3xl p-6">
-                                            <div className="text-slate-400 font-bold text-[10px] uppercase tracking-widest mb-2">XP Totaal</div>
-                                            <div className="text-4xl font-black text-slate-900">{stats.xp}</div>
+                                        <div className="bg-lab-muted rounded-3xl p-6">
+                                            <div className="text-lab-muted font-bold text-[10px] uppercase tracking-widest mb-2">XP Totaal</div>
+                                            <div className="text-4xl font-black text-lab-muted">{stats.xp}</div>
                                         </div>
                                     </div>
 
@@ -711,39 +711,39 @@ export const UserProfile: React.FC<UserProfileProps> = ({ user, onBack, onUpdate
                                         <div className="flex items-center gap-3 mb-6">
                                             <div className="p-2 bg-white rounded-lg text-indigo-600 shadow-sm"><Scale size={20} /></div>
                                             <div>
-                                                <h4 className="font-black text-slate-900 uppercase tracking-tight">Mijn Leerprofiel</h4>
-                                                <p className="text-xs text-slate-500">Kies je uitstroomprofiel voor aangepaste leerdoelen.</p>
+                                                <h4 className="font-black text-lab-muted uppercase tracking-tight">Mijn Leerprofiel</h4>
+                                                <p className="text-xs text-lab-muted">Kies je uitstroomprofiel voor aangepaste leerdoelen.</p>
                                             </div>
                                         </div>
                                         
                                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                             <button 
                                                 onClick={() => onUpdateProfile({ stats: { ...stats, vsoProfile: 'dagbesteding' } })}
-                                                className={`p-5 rounded-2xl border-2 transition-all text-left ${stats.vsoProfile === 'dagbesteding' ? 'bg-white border-indigo-600 shadow-md ring-4 ring-indigo-50' : 'bg-white/50 border-slate-100 hover:border-indigo-200'}`}
+                                                className={`p-5 rounded-2xl border-2 transition-all text-left ${stats.vsoProfile === 'dagbesteding' ? 'bg-white border-indigo-600 shadow-md ring-4 ring-indigo-50' : 'bg-white/50 border-lab-muted hover:border-indigo-200'}`}
                                             >
                                                 <div className="flex items-center justify-between mb-2">
                                                     <span className="text-2xl">🌱</span>
                                                     {stats.vsoProfile === 'dagbesteding' && <CheckCircle2 size={16} className="text-indigo-600" />}
                                                 </div>
-                                                <div className="font-black text-slate-900 text-sm">Dagbesteding</div>
-                                                <p className="text-[10px] text-slate-500 mt-1 leading-tight">Focus op verkennen en samendoen.</p>
+                                                <div className="font-black text-lab-muted text-sm">Dagbesteding</div>
+                                                <p className="text-[10px] text-lab-muted mt-1 leading-tight">Focus op verkennen en samendoen.</p>
                                             </button>
 
                                             <button 
                                                 onClick={() => onUpdateProfile({ stats: { ...stats, vsoProfile: 'arbeidsmarkt' } })}
-                                                className={`p-5 rounded-2xl border-2 transition-all text-left ${stats.vsoProfile === 'arbeidsmarkt' ? 'bg-white border-indigo-600 shadow-md ring-4 ring-indigo-50' : 'bg-white/50 border-slate-100 hover:border-indigo-200'}`}
+                                                className={`p-5 rounded-2xl border-2 transition-all text-left ${stats.vsoProfile === 'arbeidsmarkt' ? 'bg-white border-indigo-600 shadow-md ring-4 ring-indigo-50' : 'bg-white/50 border-lab-muted hover:border-indigo-200'}`}
                                             >
                                                 <div className="flex items-center justify-between mb-2">
                                                     <span className="text-2xl">💼</span>
                                                     {stats.vsoProfile === 'arbeidsmarkt' && <CheckCircle2 size={16} className="text-indigo-600" />}
                                                 </div>
-                                                <div className="font-black text-slate-900 text-sm">Arbeidsmarkt</div>
-                                                <p className="text-[10px] text-slate-500 mt-1 leading-tight">Focus op zelfstandigheid en beheersing.</p>
+                                                <div className="font-black text-lab-muted text-sm">Arbeidsmarkt</div>
+                                                <p className="text-[10px] text-lab-muted mt-1 leading-tight">Focus op zelfstandigheid en beheersing.</p>
                                             </button>
                                         </div>
                                         
                                         {!stats.vsoProfile && (
-                                            <div className="mt-4 flex items-center gap-2 text-amber-600 bg-amber-50 p-3 rounded-xl border border-amber-100">
+                                            <div className="mt-4 flex items-center gap-2 text-lab-gold bg-lab-gold p-3 rounded-xl border border-lab-gold">
                                                 <AlertTriangle size={14} />
                                                 <span className="text-[10px] font-bold">Kies een profiel om je voortgang beter te volgen!</span>
                                             </div>
@@ -770,7 +770,7 @@ export const UserProfile: React.FC<UserProfileProps> = ({ user, onBack, onUpdate
                                                 onClick={() => setShopCategory(cat.id as any)}
                                                 className={`
                                                         flex flex-1 md:flex-none items-center gap-3 px-4 py-3 rounded-2xl font-black text-xs uppercase tracking-widest transition-all
-                                                        ${shopCategory === cat.id ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-100' : 'text-slate-400 hover:bg-slate-50'}
+                                                        ${shopCategory === cat.id ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-100' : 'text-lab-muted hover:bg-lab-muted'}
                                                     `}
                                             >
                                                 <span className="shrink-0">{cat.icon}</span>
@@ -801,13 +801,13 @@ export const UserProfile: React.FC<UserProfileProps> = ({ user, onBack, onUpdate
                                             <div className="space-y-6 animate-in fade-in duration-500">
                                                 <div className="flex items-center gap-3 mb-2">
                                                     <div className="p-2 bg-indigo-50 text-indigo-600 rounded-lg"><Palette size={20} /></div>
-                                                    <h4 className="font-black text-slate-900 uppercase tracking-widest text-sm">Kleuren & Stijl</h4>
+                                                    <h4 className="font-black text-lab-muted uppercase tracking-widest text-sm">Kleuren & Stijl</h4>
                                                 </div>
 
-                                                <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8 bg-slate-50/50 p-6 rounded-[2.5rem] border border-slate-100">
+                                                <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8 bg-lab-muted/50 p-6 rounded-[2.5rem] border border-lab-muted">
                                                     <CircularColorPicker
                                                         size="sm"
-                                                        selectedColor={activeTab === 'shop' ? previewConfig.shirtColor : (stats.avatarConfig?.shirtColor || '#3b82f6')}
+                                                        selectedColor={activeTab === 'shop' ? previewConfig.shirtColor : (stats.avatarConfig?.shirtColor || '#0B453F')}
                                                         onSelect={(c) => {
                                                             const newConfig = { ...(stats.avatarConfig || DEFAULT_AVATAR_CONFIG), shirtColor: c };
                                                             onUpdateProfile({ stats: { ...stats, avatarConfig: newConfig } });
@@ -817,7 +817,7 @@ export const UserProfile: React.FC<UserProfileProps> = ({ user, onBack, onUpdate
                                                     />
                                                     <CircularColorPicker
                                                         size="sm"
-                                                        selectedColor={activeTab === 'shop' ? previewConfig.pantsColor : (stats.avatarConfig?.pantsColor || '#1e293b')}
+                                                        selectedColor={activeTab === 'shop' ? previewConfig.pantsColor : (stats.avatarConfig?.pantsColor || '#08283B')}
                                                         onSelect={(c) => {
                                                             const newConfig = { ...(stats.avatarConfig || DEFAULT_AVATAR_CONFIG), pantsColor: c };
                                                             onUpdateProfile({ stats: { ...stats, avatarConfig: newConfig } });
@@ -827,7 +827,7 @@ export const UserProfile: React.FC<UserProfileProps> = ({ user, onBack, onUpdate
                                                     />
                                                     <CircularColorPicker
                                                         size="sm"
-                                                        selectedColor={activeTab === 'shop' ? (previewConfig.hairColor || '#5D4037') : (stats.avatarConfig?.hairColor || '#5D4037')}
+                                                        selectedColor={activeTab === 'shop' ? (previewConfig.hairColor || '#08283B') : (stats.avatarConfig?.hairColor || '#08283B')}
                                                         onSelect={(c) => {
                                                             const newConfig = { ...(stats.avatarConfig || DEFAULT_AVATAR_CONFIG), hairColor: c };
                                                             onUpdateProfile({ stats: { ...stats, avatarConfig: newConfig } });
@@ -837,7 +837,7 @@ export const UserProfile: React.FC<UserProfileProps> = ({ user, onBack, onUpdate
                                                     />
                                                     <CircularColorPicker
                                                         size="sm"
-                                                        selectedColor={activeTab === 'shop' ? (previewConfig.shoeColor || '#1e293b') : (stats.avatarConfig?.shoeColor || '#1e293b')}
+                                                        selectedColor={activeTab === 'shop' ? (previewConfig.shoeColor || '#08283B') : (stats.avatarConfig?.shoeColor || '#08283B')}
                                                         onSelect={(c) => {
                                                             const newConfig = { ...(stats.avatarConfig || DEFAULT_AVATAR_CONFIG), shoeColor: c };
                                                             onUpdateProfile({ stats: { ...stats, avatarConfig: newConfig } });
@@ -848,7 +848,7 @@ export const UserProfile: React.FC<UserProfileProps> = ({ user, onBack, onUpdate
                                                     {previewConfig.accessory !== 'none' && (
                                                         <CircularColorPicker
                                                             size="sm"
-                                                            selectedColor={activeTab === 'shop' ? (previewConfig.accessoryColor || '#D97757') : (stats.avatarConfig?.accessoryColor || '#D97757')}
+                                                            selectedColor={activeTab === 'shop' ? (previewConfig.accessoryColor || '#D97848') : (stats.avatarConfig?.accessoryColor || '#D97848')}
                                                             onSelect={(c) => {
                                                                 const newConfig = { ...(stats.avatarConfig || DEFAULT_AVATAR_CONFIG), accessoryColor: c };
                                                                 onUpdateProfile({ stats: { ...stats, avatarConfig: newConfig } });
@@ -859,7 +859,7 @@ export const UserProfile: React.FC<UserProfileProps> = ({ user, onBack, onUpdate
                                                     )}
                                                     <CircularColorPicker
                                                         size="sm"
-                                                        selectedColor={activeTab === 'shop' ? (previewConfig.eyeColor || '#111111') : (stats.avatarConfig?.eyeColor || '#111111')}
+                                                        selectedColor={activeTab === 'shop' ? (previewConfig.eyeColor || '#08283B') : (stats.avatarConfig?.eyeColor || '#08283B')}
                                                         onSelect={(c) => {
                                                             const newConfig = { ...(stats.avatarConfig || DEFAULT_AVATAR_CONFIG), eyeColor: c };
                                                             onUpdateProfile({ stats: { ...stats, avatarConfig: newConfig } });
@@ -911,16 +911,16 @@ export const UserProfile: React.FC<UserProfileProps> = ({ user, onBack, onUpdate
                 <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/50 backdrop-blur-sm p-4 animate-in fade-in duration-200">
                     <div className="bg-white rounded-[2rem] shadow-2xl w-full max-w-sm overflow-hidden animate-in zoom-in-95 duration-200">
                         <div className="p-8 text-center">
-                            <div className="w-16 h-16 bg-amber-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                                <Trophy size={28} className="text-amber-600" />
+                            <div className="w-16 h-16 bg-lab-gold rounded-full flex items-center justify-center mx-auto mb-4">
+                                <Trophy size={28} className="text-lab-gold" />
                             </div>
-                            <h3 className="text-xl font-black text-slate-900 mb-2">
+                            <h3 className="text-xl font-black text-lab-muted mb-2">
                                 Nog {xpLockInfo.needed} XP nodig
                             </h3>
-                            <p className="text-slate-500 text-sm mb-4">
-                                <span className="font-bold text-amber-600">{xpLockInfo.item.label}</span> kost {xpLockInfo.item.price} XP. Je hebt nu {stats.xp} XP.
+                            <p className="text-lab-muted text-sm mb-4">
+                                <span className="font-bold text-lab-gold">{xpLockInfo.item.label}</span> kost {xpLockInfo.item.price} XP. Je hebt nu {stats.xp} XP.
                             </p>
-                            <p className="text-slate-400 text-xs mb-6">
+                            <p className="text-lab-muted text-xs mb-6">
                                 Voltooi missies en verdien XP om dit item te ontgrendelen.
                             </p>
                             <button
@@ -938,26 +938,26 @@ export const UserProfile: React.FC<UserProfileProps> = ({ user, onBack, onUpdate
             {itemToPurchase && (
                 <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/50 backdrop-blur-sm p-4 animate-in fade-in duration-200">
                     <div className="bg-white rounded-[2rem] shadow-2xl w-full max-w-md overflow-hidden animate-in zoom-in-95 duration-200">
-                        <div className="relative h-64 border-b border-slate-100" style={{ backgroundColor: '#FAF9F0' }}>
+                        <div className="relative h-64 border-b border-lab-muted" style={{ backgroundColor: '#FCF6EA' }}>
                             <LazyAvatarViewer config={getPurchasePreviewConfig()} />
                             <div className="absolute top-4 right-4">
-                                <span className="bg-amber-100 text-amber-600 px-3 py-1 rounded-full text-xs font-bold border border-amber-200">
+                                <span className="bg-lab-gold text-lab-gold px-3 py-1 rounded-full text-xs font-bold border border-lab-gold">
                                     Preview
                                 </span>
                             </div>
                         </div>
                         <div className="p-8 text-center">
-                            <h3 className="text-2xl font-black text-slate-900 mb-2">
+                            <h3 className="text-2xl font-black text-lab-muted mb-2">
                                 {itemToPurchase.label} kopen?
                             </h3>
-                            <p className="text-slate-500 mb-8">
-                                Weet je zeker dat je dit item wilt kopen voor <span className="font-bold text-amber-500">{itemToPurchase.price} XP</span>?
+                            <p className="text-lab-muted mb-8">
+                                Weet je zeker dat je dit item wilt kopen voor <span className="font-bold text-lab-gold">{itemToPurchase.price} XP</span>?
                             </p>
 
                             <div className="flex gap-4">
                                 <button
                                     onClick={() => setItemToPurchase(null)}
-                                    className="flex-1 py-4 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-xl font-bold transition-colors"
+                                    className="flex-1 py-4 bg-lab-muted hover:bg-lab-muted text-lab-muted rounded-xl font-bold transition-colors"
                                 >
                                     Nee, laat maar
                                 </button>
@@ -978,11 +978,11 @@ export const UserProfile: React.FC<UserProfileProps> = ({ user, onBack, onUpdate
 };
 
 const BadgeDisplay = ({ icon, label, unlocked, color }: { icon: string, label: string, unlocked: boolean, color: string }) => (
-    <div className={`flex flex-col items-center justify-center p-4 rounded-2xl border-2 transition-all ${unlocked ? 'border-slate-100 bg-white hover:border-indigo-100 hover:shadow-lg' : 'border-dashed border-slate-200 bg-slate-50 opacity-50'}`}>
+    <div className={`flex flex-col items-center justify-center p-4 rounded-2xl border-2 transition-all ${unlocked ? 'border-lab-muted bg-white hover:border-indigo-100 hover:shadow-lg' : 'border-dashed border-lab-muted bg-lab-muted opacity-50'}`}>
         <div className={`w-12 h-12 rounded-full flex items-center justify-center text-2xl mb-3 ${color} shadow-sm`}>
             {icon}
         </div>
-        <div className="text-[10px] font-black text-slate-900 uppercase tracking-widest text-center leading-tight">{label}</div>
+        <div className="text-[10px] font-black text-lab-muted uppercase tracking-widest text-center leading-tight">{label}</div>
     </div>
 );
 
@@ -1009,7 +1009,7 @@ const CategorySection = ({ title, items, stats, handlePurchase, handleEquip, pre
 
     return (
     <div>
-        <h4 className="font-bold text-slate-900 mb-4 px-1">{title}</h4>
+        <h4 className="font-bold text-lab-muted mb-4 px-1">{title}</h4>
         <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
             {items.map((item: any) => {
                 const isOwned = item.price === 0 || stats.inventory.includes(item.id);
@@ -1049,7 +1049,7 @@ const CategorySection = ({ title, items, stats, handlePurchase, handleEquip, pre
                         disabled={notEnoughMoney}
                         className={`
                             relative text-left p-3 rounded-3xl border-2 transition-all flex flex-col items-center text-center gap-2 group
-                            ${isEquipped ? 'border-indigo-600 bg-indigo-50/30' : 'border-slate-100 bg-white hover:border-indigo-200 hover:shadow-xl hover:-translate-y-1'}
+                            ${isEquipped ? 'border-indigo-600 bg-indigo-50/30' : 'border-lab-muted bg-white hover:border-indigo-200 hover:shadow-xl hover:-translate-y-1'}
                             ${!isEquipped && isOwned ? '' : ''}
                             ${!isOwned && !notEnoughMoney ? 'border-indigo-50 bg-indigo-50/20' : ''}
                             ${notEnoughMoney ? 'opacity-40 grayscale cursor-not-allowed' : ''}
@@ -1064,13 +1064,13 @@ const CategorySection = ({ title, items, stats, handlePurchase, handleEquip, pre
                         </div>
 
                         <div className="w-full">
-                            <div className="font-black text-slate-900 text-xs uppercase tracking-widest truncate leading-tight mb-2">{item.label}</div>
+                            <div className="font-black text-lab-muted text-xs uppercase tracking-widest truncate leading-tight mb-2">{item.label}</div>
                             {isOwned ? (
-                                <div className={`py-1.5 px-3 rounded-full text-[9px] font-black uppercase tracking-widest mx-auto inline-block ${isEquipped ? 'bg-indigo-600 text-white' : 'bg-slate-100 text-slate-400'}`}>
+                                <div className={`py-1.5 px-3 rounded-full text-[9px] font-black uppercase tracking-widest mx-auto inline-block ${isEquipped ? 'bg-indigo-600 text-white' : 'bg-lab-muted text-lab-muted'}`}>
                                     {isEquipped ? 'In gebruik' : 'Draag'}
                                 </div>
                             ) : (
-                                <div className="flex items-center justify-center gap-1 bg-amber-100 text-amber-700 py-1.5 px-3 rounded-full text-[10px] font-black">
+                                <div className="flex items-center justify-center gap-1 bg-lab-gold text-lab-gold py-1.5 px-3 rounded-full text-[10px] font-black">
                                     <Trophy size={10} fill="currentColor" /> {item.price} XP
                                 </div>
                             )}
@@ -1093,13 +1093,13 @@ const CategorySection = ({ title, items, stats, handlePurchase, handleEquip, pre
                                         (props as any).onEditColor(partMap[item.type]);
                                     }
                                 }}
-                                className="absolute top-2 right-2 w-6 h-6 rounded-full bg-white border border-slate-200 shadow-sm flex items-center justify-center text-slate-400 hover:text-indigo-600 hover:border-indigo-200 cursor-pointer z-10"
+                                className="absolute top-2 right-2 w-6 h-6 rounded-full bg-white border border-lab-muted shadow-sm flex items-center justify-center text-lab-muted hover:text-indigo-600 hover:border-indigo-200 cursor-pointer z-10"
                                 title="Pas kleur aan"
                             >
                                 <Palette size={12} />
                             </div>
                         ) : (isOwned && !isEquipped && (
-                            <div className="absolute top-2 right-2 w-2 h-2 rounded-full bg-emerald-500" />
+                            <div className="absolute top-2 right-2 w-2 h-2 rounded-full bg-lab-sage" />
                         ))}
                     </button>
                 );

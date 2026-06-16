@@ -44,7 +44,7 @@ const StudentsAnimation = () => (
 const GamificationAnimation = () => (
     <div className="w-full h-full flex items-center justify-center relative">
         <div className="absolute inset-0 flex items-center justify-center">
-            <div className="w-24 h-24 bg-amber-400/20 rounded-full animate-ping" />
+            <div className="w-24 h-24 bg-lab-gold/20 rounded-full animate-ping" />
         </div>
         <div className="relative z-10 transform hover:scale-110 transition-transform duration-300">
             <Trophy size={48} className="text-white drop-shadow-lg" />
@@ -54,7 +54,7 @@ const GamificationAnimation = () => (
         </div>
         <div className="absolute bottom-4 flex gap-1">
             {[1, 2, 3].map((i) => (
-                <Stars key={i} size={12} className="text-yellow-200 animate-spin" style={{ animationDuration: `${i + 2}s` }} />
+                <Stars key={i} size={12} className="text-lab-gold animate-spin" style={{ animationDuration: `${i + 2}s` }} />
             ))}
         </div>
     </div>
@@ -67,14 +67,14 @@ const HeatmapAnimation = () => (
                 <div
                     key={i}
                     className={`aspect-square rounded-md transition-all duration-700 ${[0, 4, 8].includes(i) ? 'bg-red-400 animate-pulse' :
-                        [2, 6].includes(i) ? 'bg-emerald-400' :
-                            'bg-emerald-200'
+                        [2, 6].includes(i) ? 'bg-lab-sage' :
+                            'bg-lab-sage'
                         }`}
                     style={{ animationDelay: `${i * 100}ms` }}
                 />
             ))}
         </div>
-        <div className="absolute bottom-4 right-8 bg-white text-emerald-600 p-1.5 rounded-lg shadow-lg">
+        <div className="absolute bottom-4 right-8 bg-white text-lab-sage p-1.5 rounded-lg shadow-lg">
             <BarChart3 size={16} />
         </div>
     </div>
@@ -104,13 +104,13 @@ const SLIDES: Slide[] = [
         title: "Gamificatie Centraal",
         description: "Leaderboards, XP Boost events en de Gouden Prompt Gallery staan nu samen onder 'Gamificatie. Alles om de klas te motiveren!",
         component: <GamificationAnimation />,
-        color: "bg-amber-500"
+        color: "bg-lab-gold"
     },
     {
         title: "Direct Inzicht",
         description: "Op het 'Overzicht' zie je direct hoe de klas er voor staat met de Begrip Heatmap en belangrijke meldingen. Focus Modus blijft altijd bovenin beschikbaar.",
         component: <HeatmapAnimation />,
-        color: "bg-emerald-500"
+        color: "bg-lab-sage"
     }
 ];
 
@@ -138,10 +138,10 @@ export const TeacherOnboarding: React.FC<OnboardingProps> = ({ onClose }) => {
     const slide = SLIDES[currentSlide];
 
     return (
-        <div className="fixed inset-0 z-[100] bg-slate-900/60 backdrop-blur-md flex items-center justify-center p-4 animate-in fade-in duration-300">
+        <div className="fixed inset-0 z-[100] bg-lab-muted/60 backdrop-blur-md flex items-center justify-center p-4 animate-in fade-in duration-300">
             <div className="bg-white rounded-[2.5rem] shadow-2xl w-full max-w-lg overflow-hidden relative animate-in zoom-in duration-300">
                 {/* Progress bar */}
-                <div className="absolute top-0 left-0 w-full h-1.5 bg-slate-100 flex">
+                <div className="absolute top-0 left-0 w-full h-1.5 bg-lab-muted flex">
                     {SLIDES.map((_, i) => (
                         <div
                             key={i}
@@ -156,8 +156,8 @@ export const TeacherOnboarding: React.FC<OnboardingProps> = ({ onClose }) => {
                         {slide.component}
                     </div>
 
-                    <h3 className="text-2xl font-black text-slate-900 mb-4 tracking-tight">{slide.title}</h3>
-                    <p className="text-slate-500 font-medium leading-relaxed mb-10 min-h-[5rem]">
+                    <h3 className="text-2xl font-black text-lab-muted mb-4 tracking-tight">{slide.title}</h3>
+                    <p className="text-lab-muted font-medium leading-relaxed mb-10 min-h-[5rem]">
                         {slide.description}
                     </p>
 
@@ -165,7 +165,7 @@ export const TeacherOnboarding: React.FC<OnboardingProps> = ({ onClose }) => {
                         <button
                             onClick={prev}
                             disabled={currentSlide === 0}
-                            className={`p-4 rounded-2xl text-slate-400 hover:bg-slate-50 transition-all ${currentSlide === 0 ? 'opacity-0' : 'opacity-100'}`}
+                            className={`p-4 rounded-2xl text-lab-muted hover:bg-lab-muted transition-all ${currentSlide === 0 ? 'opacity-0' : 'opacity-100'}`}
                         >
                             <ChevronLeft size={24} />
                         </button>
@@ -182,7 +182,7 @@ export const TeacherOnboarding: React.FC<OnboardingProps> = ({ onClose }) => {
                 {/* Close button top right */}
                 <button
                     onClick={onClose}
-                    className="absolute top-4 right-4 p-2 text-slate-300 hover:text-slate-500 transition-colors"
+                    className="absolute top-4 right-4 p-2 text-lab-muted hover:text-lab-muted transition-colors"
                 >
                     <X size={20} />
                 </button>
@@ -194,11 +194,11 @@ export const TeacherOnboarding: React.FC<OnboardingProps> = ({ onClose }) => {
 export const TeacherInfoButton: React.FC<{ onClick: () => void }> = ({ onClick }) => (
     <button
         onClick={onClick}
-        className="fixed bottom-6 right-6 w-10 h-10 bg-white border border-slate-200 text-slate-400 hover:text-indigo-600 hover:border-indigo-200 rounded-full flex items-center justify-center shadow-lg transition-all hover:scale-110 z-40 group"
+        className="fixed bottom-6 right-6 w-10 h-10 bg-white border border-lab-muted text-lab-muted hover:text-indigo-600 hover:border-indigo-200 rounded-full flex items-center justify-center shadow-lg transition-all hover:scale-110 z-40 group"
         title="Info & Uitleg"
     >
         <Info size={18} />
-        <span className="absolute right-full mr-3 bg-slate-800 text-white text-xs font-bold px-2 py-1 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
+        <span className="absolute right-full mr-3 bg-lab-muted text-white text-xs font-bold px-2 py-1 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
             Uitleg
         </span>
     </button>

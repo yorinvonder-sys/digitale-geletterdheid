@@ -3,41 +3,41 @@ import { ArrowLeft, Shield, Mail, Lock, Database, UserCheck } from 'lucide-react
 
 export const PrivacyPolicy: React.FC = () => {
     return (
-        <div className="min-h-screen bg-slate-50 py-12 px-6">
+        <div className="min-h-screen bg-lab-muted py-12 px-6">
             <div className="max-w-4xl mx-auto">
-                <a href="/ict/privacy" className="inline-flex items-center gap-2 text-slate-500 hover:text-indigo-600 font-medium mb-8 transition-colors">
+                <a href="/ict/privacy" className="inline-flex items-center gap-2 text-lab-muted hover:text-indigo-600 font-medium mb-8 transition-colors">
                     <ArrowLeft size={20} />
                     Terug naar Security & Privacy
                 </a>
 
-                <div className="bg-white rounded-3xl shadow-sm border border-slate-200 p-8 md:p-12">
+                <div className="bg-white rounded-3xl shadow-sm border border-lab-muted p-8 md:p-12">
                     <div className="flex items-center gap-4 mb-8">
                         <div className="w-12 h-12 bg-indigo-100 rounded-2xl flex items-center justify-center">
                             <Shield className="text-indigo-600" size={28} />
                         </div>
                         <div>
-                            <h1 className="text-3xl font-black text-slate-900">Privacyverklaring</h1>
-                            <p className="text-slate-500">Laatst bijgewerkt: 14 februari 2026</p>
+                            <h1 className="text-3xl font-black text-lab-muted">Privacyverklaring</h1>
+                            <p className="text-lab-muted">Laatst bijgewerkt: 14 februari 2026</p>
                         </div>
                     </div>
 
                     <div className="prose prose-slate max-w-none">
-                        <p className="text-lg leading-relaxed text-slate-600">
+                        <p className="text-lg leading-relaxed text-lab-muted">
                             DGSkills (een product van <strong>Future Architect</strong>) hecht grote waarde aan de bescherming van persoonsgegevens, 
                             zeker in een onderwijsomgeving. In deze verklaring leggen we uit hoe we omgaan met gegevens van leerlingen en docenten.
                         </p>
 
-                        <div className="my-8 p-6 bg-slate-100 rounded-2xl border border-slate-200">
-                            <h3 className="text-sm font-bold uppercase tracking-wider text-slate-500 mb-4">Identiteit van de Verwerker</h3>
+                        <div className="my-8 p-6 bg-lab-muted rounded-2xl border border-lab-muted">
+                            <h3 className="text-sm font-bold uppercase tracking-wider text-lab-muted mb-4">Identiteit van de Verwerker</h3>
                             <div className="grid sm:grid-cols-2 gap-4 text-sm">
                                 <div>
-                                    <p className="font-bold text-slate-900">Future Architect</p>
-                                    <p className="text-slate-600">De exacte KvK-nummer, adres en vestigingsgegevens staan vermeld in de ondertekende verwerkersovereenkomst (DPA) en/of het contract met uw school. Indien deze niet openbaar beschikbaar zijn, vindt u ze in die documenten.</p>
+                                    <p className="font-bold text-lab-muted">Future Architect</p>
+                                    <p className="text-lab-muted">De exacte KvK-nummer, adres en vestigingsgegevens staan vermeld in de ondertekende verwerkersovereenkomst (DPA) en/of het contract met uw school. Indien deze niet openbaar beschikbaar zijn, vindt u ze in die documenten.</p>
                                 </div>
                                 <div>
-                                    <p className="font-bold text-slate-900">Functionaris Gegevensbescherming (FG)</p>
-                                    <p className="text-slate-600">Bereikbaar via: privacy@dgskills.app</p>
-                                    <p className="text-slate-600">T.a.v. Privacy Officer</p>
+                                    <p className="font-bold text-lab-muted">Functionaris Gegevensbescherming (FG)</p>
+                                    <p className="text-lab-muted">Bereikbaar via: privacy@dgskills.app</p>
+                                    <p className="text-lab-muted">T.a.v. Privacy Officer</p>
                                 </div>
                             </div>
                         </div>
@@ -52,17 +52,17 @@ export const PrivacyPolicy: React.FC = () => {
 
                         <h2 className="text-xl font-bold mt-8 mb-4">2. Welke gegevens verwerken wij?</h2>
                         <div className="grid md:grid-cols-2 gap-4 my-6">
-                            <div className="p-4 bg-slate-50 rounded-xl border border-slate-100">
+                            <div className="p-4 bg-lab-muted rounded-xl border border-lab-muted">
                                 <h3 className="font-bold text-sm mb-2 flex items-center gap-2">
                                     <UserCheck size={16} className="text-indigo-500" /> Accountgegevens
                                 </h3>
-                                <p className="text-xs text-slate-600">E-mailadres (inlog), weergavenaam, rol (leerling/docent) en klas-ID.</p>
+                                <p className="text-xs text-lab-muted">E-mailadres (inlog), weergavenaam, rol (leerling/docent) en klas-ID.</p>
                             </div>
-                            <div className="p-4 bg-slate-50 rounded-xl border border-slate-100">
+                            <div className="p-4 bg-lab-muted rounded-xl border border-lab-muted">
                                 <h3 className="font-bold text-sm mb-2 flex items-center gap-2">
                                     <Database size={16} className="text-indigo-500" /> Leerlingvoortgang
                                 </h3>
-                                <p className="text-xs text-slate-600">XP, levels, voltooide missies, badges en antwoorden op opdrachten.</p>
+                                <p className="text-xs text-lab-muted">XP, levels, voltooide missies, badges en antwoorden op opdrachten.</p>
                             </div>
                         </div>
 
@@ -85,7 +85,7 @@ export const PrivacyPolicy: React.FC = () => {
                         </p>
                         <div className="overflow-x-auto my-4">
                             <table className="min-w-full text-sm text-left">
-                                <thead className="bg-slate-50">
+                                <thead className="bg-lab-muted">
                                     <tr>
                                         <th className="px-4 py-2 font-bold">Partij</th>
                                         <th className="px-4 py-2 font-bold">Functie</th>
@@ -94,12 +94,12 @@ export const PrivacyPolicy: React.FC = () => {
                                 </thead>
                                 <tbody>
                                     <tr className="border-t">
-                                        <td className="px-4 py-2 italic text-slate-800 font-medium">Supabase (AWS)</td>
+                                        <td className="px-4 py-2 italic text-lab-muted font-medium">Supabase (AWS)</td>
                                         <td className="px-4 py-2">Database, Authenticatie, Storage</td>
                                         <td className="px-4 py-2 font-medium">EER (Ierland)</td>
                                     </tr>
                                     <tr className="border-t">
-                                        <td className="px-4 py-2 italic text-slate-800 font-medium">Google Vertex AI (Gemini)</td>
+                                        <td className="px-4 py-2 italic text-lab-muted font-medium">Google Vertex AI (Gemini)</td>
                                         <td className="px-4 py-2">AI-ondersteuning (Vertex AI, geen training)</td>
                                         <td className="px-4 py-2 font-medium">EER (Nederland, europe-west4)</td>
                                     </tr>

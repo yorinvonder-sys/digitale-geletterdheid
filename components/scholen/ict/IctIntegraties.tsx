@@ -18,48 +18,48 @@ export const IctIntegraties: React.FC = () => {
     ];
 
     return (
-        <div className="min-h-screen bg-slate-50 py-12 px-6">
+        <div className="min-h-screen bg-lab-muted py-12 px-6">
             <div className="max-w-4xl mx-auto">
-                <a href="/ict" className="inline-flex items-center gap-2 text-slate-500 hover:text-indigo-600 font-medium mb-12 transition-colors min-h-[44px] py-2">
+                <a href="/ict" className="inline-flex items-center gap-2 text-lab-muted hover:text-indigo-600 font-medium mb-12 transition-colors min-h-[44px] py-2">
                     <IconArrowLeft />
                     Terug naar overzicht
                 </a>
 
-                <h1 className="text-4xl font-bold text-slate-900 mb-6">Integratie & Compatibiliteit</h1>
-                <p className="text-lg text-slate-600 mb-12">
+                <h1 className="text-4xl font-bold text-lab-muted mb-6">Integratie & Compatibiliteit</h1>
+                <p className="text-lg text-lab-muted mb-12">
                     DGSkills is ontworpen om naadloos samen te werken met de bestaande ICT-infrastructuur van VO-scholen. 
                     Wij geloven in open standaarden en platform-onafhankelijkheid.
                 </p>
 
-                <section className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden mb-12">
-                    <div className="p-6 border-b border-slate-100 bg-slate-50/50">
-                        <h2 className="font-bold text-slate-900">Integratiematrix</h2>
+                <section className="bg-white rounded-2xl shadow-sm border border-lab-muted overflow-hidden mb-12">
+                    <div className="p-6 border-b border-lab-muted bg-lab-muted/50">
+                        <h2 className="font-bold text-lab-muted">Integratiematrix</h2>
                     </div>
                     <div className="overflow-x-auto">
                         <table className="w-full text-left border-collapse">
                             <thead>
-                                <tr className="text-xs font-bold text-slate-400 uppercase tracking-wider">
-                                    <th className="px-6 py-4 border-b border-slate-100">Categorie</th>
-                                    <th className="px-6 py-4 border-b border-slate-100">Platform</th>
-                                    <th className="px-6 py-4 border-b border-slate-100">Status</th>
-                                    <th className="px-6 py-4 border-b border-slate-100">Methode</th>
+                                <tr className="text-xs font-bold text-lab-muted uppercase tracking-wider">
+                                    <th className="px-6 py-4 border-b border-lab-muted">Categorie</th>
+                                    <th className="px-6 py-4 border-b border-lab-muted">Platform</th>
+                                    <th className="px-6 py-4 border-b border-lab-muted">Status</th>
+                                    <th className="px-6 py-4 border-b border-lab-muted">Methode</th>
                                 </tr>
                             </thead>
                             <tbody className="text-sm">
                                 {integrations.map((item, i) => (
-                                    <tr key={i} className="hover:bg-slate-50 transition-colors">
-                                        <td className="px-6 py-4 border-b border-slate-100 text-slate-500">{item.category}</td>
-                                        <td className="px-6 py-4 border-b border-slate-100 font-medium text-slate-900">{item.platform}</td>
-                                        <td className="px-6 py-4 border-b border-slate-100">
+                                    <tr key={i} className="hover:bg-lab-muted transition-colors">
+                                        <td className="px-6 py-4 border-b border-lab-muted text-lab-muted">{item.category}</td>
+                                        <td className="px-6 py-4 border-b border-lab-muted font-medium text-lab-muted">{item.platform}</td>
+                                        <td className="px-6 py-4 border-b border-lab-muted">
                                             <span className={`px-2 py-1 rounded-full text-[10px] font-bold uppercase ${
-                                                item.status === 'Ondersteund' ? 'bg-emerald-100 text-emerald-700' :
+                                                item.status === 'Ondersteund' ? 'bg-lab-sage text-lab-sage' :
                                                 item.status === 'Export/Import' ? 'bg-blue-100 text-blue-700' :
-                                                'bg-amber-100 text-amber-700'
+                                                'bg-lab-gold text-lab-gold'
                                             }`}>
                                                 {item.status}
                                             </span>
                                         </td>
-                                        <td className="px-6 py-4 border-b border-slate-100 text-slate-500">{item.method}</td>
+                                        <td className="px-6 py-4 border-b border-lab-muted text-lab-muted">{item.method}</td>
                                     </tr>
                                 ))}
                             </tbody>
@@ -68,17 +68,17 @@ export const IctIntegraties: React.FC = () => {
                 </section>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    <div className="bg-white p-8 rounded-2xl shadow-sm border border-slate-200">
-                        <h3 className="text-lg font-bold text-slate-900 mb-4">Single Sign-On (SSO)</h3>
-                        <p className="text-slate-600 text-sm leading-relaxed">
+                    <div className="bg-white p-8 rounded-2xl shadow-sm border border-lab-muted">
+                        <h3 className="text-lg font-bold text-lab-muted mb-4">Single Sign-On (SSO)</h3>
+                        <p className="text-lab-muted text-sm leading-relaxed">
                             Wij maken gebruik van federatieve login via Microsoft 365 of Google Workspace. 
                             Dit betekent dat leerlingen en docenten geen nieuwe wachtwoorden hoeven te onthouden 
                             en dat accounts automatisch worden beheerd via jullie centrale directory.
                         </p>
                     </div>
-                    <div className="bg-white p-8 rounded-2xl shadow-sm border border-slate-200">
-                        <h3 className="text-lg font-bold text-slate-900 mb-4">LVS Koppelingen</h3>
-                        <p className="text-slate-600 text-sm leading-relaxed">
+                    <div className="bg-white p-8 rounded-2xl shadow-sm border border-lab-muted">
+                        <h3 className="text-lg font-bold text-lab-muted mb-4">LVS Koppelingen</h3>
+                        <p className="text-lab-muted text-sm leading-relaxed">
                             Voortgangsdata kan eenvoudig worden geëxporteerd naar Magister en SOMtoday. 
                             Hiermee borgen we dat resultaten op de juiste plek in de schooladministratie terechtkomen 
                             zonder handmatig overtypwerk voor docenten.

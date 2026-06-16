@@ -30,7 +30,7 @@ export const AiDisclosureBadge: React.FC<AiDisclosureBadgeProps> = ({
     if (compact) {
         return (
             <span
-                className={`inline-flex items-center gap-1 text-[11px] text-slate-400 font-medium ${className}`}
+                className={`inline-flex items-center gap-1 text-[11px] text-lab-muted font-medium ${className}`}
                 title="Dit antwoord is gegenereerd door kunstmatige intelligentie en kan fouten bevatten."
                 role="note"
                 aria-label="AI-gegenereerde inhoud"

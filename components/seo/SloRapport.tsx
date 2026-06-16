@@ -2,12 +2,12 @@ import React, { useEffect } from 'react';
 import { trackEvent } from '../../services/analyticsService';
 
 const SloRow = ({ goal, domein, status }: { goal: string; domein: string; status: string }) => (
-    <tr className="border-b border-slate-50 text-sm">
-        <td className="py-4 font-medium text-slate-900">{goal}</td>
-        <td className="py-4 text-slate-500">{domein}</td>
+    <tr className="border-b border-lab-muted text-sm">
+        <td className="py-4 font-medium text-lab-muted">{goal}</td>
+        <td className="py-4 text-lab-muted">{domein}</td>
         <td className="py-4">
             <span className={`px-2 py-1 rounded-full text-[10px] font-bold uppercase ${
-                status === 'Gedekt' ? 'bg-emerald-50 text-emerald-600' : 'bg-amber-50 text-amber-600'
+                status === 'Gedekt' ? 'bg-lab-sage text-lab-sage' : 'bg-lab-gold text-lab-gold'
             }`}>
                 {status}
             </span>
@@ -22,38 +22,38 @@ export const SloRapport: React.FC = () => {
     }, []);
 
     return (
-        <div className="min-h-screen bg-slate-50 py-20 px-6">
-            <div className="max-w-4xl mx-auto bg-white p-10 rounded-3xl shadow-sm border border-slate-100">
+        <div className="min-h-screen bg-lab-muted py-20 px-6">
+            <div className="max-w-4xl mx-auto bg-white p-10 rounded-3xl shadow-sm border border-lab-muted">
                 <div className="flex justify-between items-start mb-12">
                     <div>
-                        <h1 className="text-2xl font-bold text-slate-900 mb-2">SLO-Dekkingsrapport (Voorbeeld)</h1>
-                        <p className="text-slate-500 text-sm">Gegenereerd voor: Voorbeeldschool VO — Datum: 14 feb 2026</p>
+                        <h1 className="text-2xl font-bold text-lab-muted mb-2">SLO-Dekkingsrapport (Voorbeeld)</h1>
+                        <p className="text-lab-muted text-sm">Gegenereerd voor: Voorbeeldschool VO — Datum: 14 feb 2026</p>
                     </div>
                     <img src="/mascot/pip-logo.webp" alt="DGSkills" className="w-10 h-10 object-contain opacity-20" />
                 </div>
 
                 <div className="grid md:grid-cols-4 gap-4 mb-12">
-                    <div className="bg-slate-50 p-4 rounded-2xl">
-                        <div className="text-xs text-slate-400 uppercase font-bold mb-1">Missies Voltooid</div>
-                        <div className="text-xl font-bold text-slate-900">1.240</div>
+                    <div className="bg-lab-muted p-4 rounded-2xl">
+                        <div className="text-xs text-lab-muted uppercase font-bold mb-1">Missies Voltooid</div>
+                        <div className="text-xl font-bold text-lab-muted">1.240</div>
                     </div>
-                    <div className="bg-slate-50 p-4 rounded-2xl">
-                        <div className="text-xs text-slate-400 uppercase font-bold mb-1">Kerndoelen</div>
-                        <div className="text-xl font-bold text-slate-900">14 / 14</div>
+                    <div className="bg-lab-muted p-4 rounded-2xl">
+                        <div className="text-xs text-lab-muted uppercase font-bold mb-1">Kerndoelen</div>
+                        <div className="text-xl font-bold text-lab-muted">14 / 14</div>
                     </div>
-                    <div className="bg-slate-50 p-4 rounded-2xl">
-                        <div className="text-xs text-slate-400 uppercase font-bold mb-1">Gem. Score</div>
-                        <div className="text-xl font-bold text-slate-900">84%</div>
+                    <div className="bg-lab-muted p-4 rounded-2xl">
+                        <div className="text-xs text-lab-muted uppercase font-bold mb-1">Gem. Score</div>
+                        <div className="text-xl font-bold text-lab-muted">84%</div>
                     </div>
-                    <div className="bg-slate-50 p-4 rounded-2xl">
-                        <div className="text-xs text-slate-400 uppercase font-bold mb-1">Status</div>
-                        <div className="text-xl font-bold text-emerald-600">Inspectie-proof</div>
+                    <div className="bg-lab-muted p-4 rounded-2xl">
+                        <div className="text-xs text-lab-muted uppercase font-bold mb-1">Status</div>
+                        <div className="text-xl font-bold text-lab-sage">Inspectie-proof</div>
                     </div>
                 </div>
 
                 <table className="w-full text-left">
                     <thead>
-                        <tr className="text-[10px] font-bold text-slate-400 uppercase tracking-widest border-b border-slate-100">
+                        <tr className="text-[10px] font-bold text-lab-muted uppercase tracking-widest border-b border-lab-muted">
                             <th className="pb-4">SLO Kerndoel 2025</th>
                             <th className="pb-4">Domein</th>
                             <th className="pb-4">Status</th>

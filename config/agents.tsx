@@ -140,7 +140,7 @@ export const ROLES: AgentRole[] = [
         educationLevels: ['mavo', 'havo', 'vwo'] as EducationLevel[],
         title: 'Prompt Perfectionist',
         icon: <Sparkles size={28} />,
-        color: '#E8956F',
+        color: '#D97848',
         description: 'Leer hoe je AI precies laat doen wat jij wilt door betere prompts te schrijven.',
         problemScenario: 'AI kan van alles — verhalen schrijven, uitleggen, bedenken. Maar alleen als jij de juiste opdracht geeft. Een vage vraag geeft een vaag antwoord. Jij leert hoe je AI als een pro aanstuurt.',
         missionObjective: 'Schrijf 3 steeds betere prompts en scoor op alle criteria een groene vink.',
@@ -150,7 +150,7 @@ export const ROLES: AgentRole[] = [
         primaryGoal: '🎯 Schrijf 3 prompts die steeds beter worden',
         goalCriteria: { type: 'steps-complete', min: 3 },
         visualPreview: (
-            <div className="w-full h-full bg-violet-600 flex flex-col items-center justify-center p-4 relative overflow-hidden">
+            <div className="w-full h-full bg-lab-teal flex flex-col items-center justify-center p-4 relative overflow-hidden">
                 <div className="absolute inset-0 bg-gradient-to-br from-violet-500 to-purple-700"></div>
                 <div className="relative z-10 flex flex-col items-center gap-3">
                     <div className="w-40 bg-white/10 backdrop-blur rounded-xl p-3 border border-white/20">
@@ -160,7 +160,7 @@ export const ROLES: AgentRole[] = [
                         <div className="flex gap-1 items-center">
                             <div className="text-[7px] text-white/50">Score:</div>
                             <div className="w-3 h-3 rounded-sm bg-red-400/70"></div>
-                            <div className="w-3 h-3 rounded-sm bg-yellow-400/70"></div>
+                            <div className="w-3 h-3 rounded-sm bg-lab-gold/70"></div>
                             <div className="w-3 h-3 rounded-sm bg-green-400/70"></div>
                         </div>
                     </div>
@@ -170,8 +170,8 @@ export const ROLES: AgentRole[] = [
                         <div className="w-2 h-2 rounded-full bg-white/80"></div>
                     </div>
                 </div>
-                <Sparkles size={20} className="text-yellow-300 absolute top-3 right-3 animate-pulse" />
-                <Sparkles size={14} className="text-yellow-300/50 absolute bottom-4 left-4" />
+                <Sparkles size={20} className="text-lab-gold absolute top-3 right-3 animate-pulse" />
+                <Sparkles size={14} className="text-lab-gold/50 absolute bottom-4 left-4" />
             </div>
         ),
         systemInstruction: `Je bent een Prompt Coach die leerlingen (12-15 jaar) leert hoe ze betere prompts schrijven voor AI.
@@ -268,7 +268,7 @@ REGELS:
         educationLevels: ['mavo', 'havo', 'vwo'] as EducationLevel[],
         title: 'Game Director',
         icon: <Gamepad2 size={28} />,
-        color: '#F59E0B',
+        color: '#D7C95F',
         description: 'Ontwerp je eigen game met visuele codeblokken.',
         problemScenario: 'Programmeurs schrijven niet altijd tekst-code. Met blokken kun je ook een game besturen — net als Scratch!',
         missionObjective: 'Bouw een werkende game-besturing met codeblokken en laat je karakter de finish bereiken.',
@@ -277,10 +277,10 @@ REGELS:
         examplePrompt: 'Hoe laat ik mijn karakter bewegen?',
         primaryGoal: '🎯 Bouw een besturing en bereik de finish',
         visualPreview: (
-            <div className="w-full h-full bg-amber-500 flex flex-col items-center justify-center p-4 relative overflow-hidden">
+            <div className="w-full h-full bg-lab-gold flex flex-col items-center justify-center p-4 relative overflow-hidden">
                 <div className="absolute inset-0 bg-gradient-to-br from-amber-400 to-orange-600"></div>
                 <div className="relative z-10 flex flex-col gap-2">
-                    <div className="w-32 h-8 bg-yellow-300 rounded-lg border-2 border-yellow-500 flex items-center px-2 text-[9px] font-bold text-yellow-800">🚀 wanneer start</div>
+                    <div className="w-32 h-8 bg-lab-gold rounded-lg border-2 border-lab-gold flex items-center px-2 text-[9px] font-bold text-lab-gold">🚀 wanneer start</div>
                     <div className="w-32 h-8 bg-blue-400 rounded-lg border-2 border-blue-500 flex items-center px-2 text-[9px] font-bold text-white ml-4">➡️ ga 5 rechts</div>
                     <div className="w-32 h-8 bg-blue-400 rounded-lg border-2 border-blue-500 flex items-center px-2 text-[9px] font-bold text-white ml-4">🦘 spring!</div>
                 </div>
@@ -349,7 +349,7 @@ REGELS:
         educationLevels: ['mavo', 'havo', 'vwo'] as EducationLevel[],
         title: 'Magister Meester',
         icon: <ShieldAlert size={28} />,
-        color: '#3B82F6',
+        color: '#0B453F',
         description: 'Word de baas over je eigen rooster en cijfers.',
         problemScenario: 'Zonder Magister ben je nergens. Waar moet je zijn? Welk lokaal? Heb je huiswerk? Jij moet dit sneller weten dan wie dan ook.',
         missionObjective: 'Vind je rooster, check je huiswerk en ontdek je laatste cijfer.',
@@ -409,7 +409,7 @@ Zeg dus NOOIT 'Zeg KLAAR'. Vraag altijd om inhoudelijk bewijs.` + SYSTEM_INSTRUC
         educationLevels: ['mavo', 'havo', 'vwo'] as EducationLevel[],
         title: 'Cloud Commander',
         icon: <Database size={28} />,
-        color: '#0EA5E9',
+        color: '#0B453F',
         description: 'Raak nooit meer een bestand kwijt met OneDrive.',
         problemScenario: 'Je hebt een supergoed verslag gemaakt, maar je computer gaat kapot. Wat nu? Als Cloud Commander sla jij alles veilig op in de wolken.',
         missionObjective: 'Sla je bestanden op in OneDrive en leer ze delen.',
@@ -423,9 +423,9 @@ Zeg dus NOOIT 'Zeg KLAAR'. Vraag altijd om inhoudelijk bewijs.` + SYSTEM_INSTRUC
                     <div className="w-10 h-10 bg-sky-500 rounded-xl flex items-center justify-center text-white mb-3">
                         <Rocket size={20} />
                     </div>
-                    <div className="w-full h-2 bg-slate-100 rounded-full mb-2"></div>
-                    <div className="w-2/3 h-2 bg-slate-100 rounded-full"></div>
-                    <div className="absolute -bottom-2 -right-2 w-12 h-12 bg-emerald-500 rounded-full border-4 border-white flex items-center justify-center text-white scale-75">
+                    <div className="w-full h-2 bg-lab-muted rounded-full mb-2"></div>
+                    <div className="w-2/3 h-2 bg-lab-muted rounded-full"></div>
+                    <div className="absolute -bottom-2 -right-2 w-12 h-12 bg-lab-sage rounded-full border-4 border-white flex items-center justify-center text-white scale-75">
                         <ShieldAlert size={20} />
                     </div>
                 </div>
@@ -465,7 +465,7 @@ Zeg dus NOOIT 'Zeg KLAAR'. Vraag altijd om inhoudelijk bewijs.` + SYSTEM_INSTRUC
         educationLevels: ['mavo', 'havo', 'vwo'] as EducationLevel[],
         title: 'Word Wizard',
         icon: <Pencil size={28} />,
-        color: '#2563EB',
+        color: '#0B453F',
         description: 'Schrijf verslagen die eruit zien als boeken.',
         problemScenario: 'Een verslag in alleen één lettertype is saai. Als Word Wizard ken jij de geheimen van koppen, titels en afbeeldingen.',
         missionObjective: 'Maak een professioneel verslag met koppen en een inhoudsopgave.',
@@ -473,15 +473,15 @@ Zeg dus NOOIT 'Zeg KLAAR'. Vraag altijd om inhoudelijk bewijs.` + SYSTEM_INSTRUC
         difficulty: 'Medium',
         examplePrompt: 'Hoe maak ik een automatische inhoudsopgave?',
         visualPreview: (
-            <div className="w-full h-full bg-slate-100 flex items-center justify-center p-4">
+            <div className="w-full h-full bg-lab-muted flex items-center justify-center p-4">
                 <div className="w-40 h-52 bg-white shadow-2xl rounded-sm p-4 flex flex-col gap-3 relative overflow-hidden">
                     <div className="w-full h-4 bg-blue-600 rounded-sm"></div>
-                    <div className="w-2/3 h-3 bg-slate-200 rounded-full"></div>
-                    <div className="w-full h-2 bg-slate-100 rounded-full"></div>
-                    <div className="w-full h-2 bg-slate-100 rounded-full"></div>
-                    <div className="w-1/2 h-2 bg-slate-100 rounded-full"></div>
-                    <div className="w-full h-16 bg-slate-50 rounded-lg border border-dashed border-slate-200 flex items-center justify-center">
-                        <ImageIcon size={20} className="text-slate-300" />
+                    <div className="w-2/3 h-3 bg-lab-muted rounded-full"></div>
+                    <div className="w-full h-2 bg-lab-muted rounded-full"></div>
+                    <div className="w-full h-2 bg-lab-muted rounded-full"></div>
+                    <div className="w-1/2 h-2 bg-lab-muted rounded-full"></div>
+                    <div className="w-full h-16 bg-lab-muted rounded-lg border border-dashed border-lab-muted flex items-center justify-center">
+                        <ImageIcon size={20} className="text-lab-muted" />
                     </div>
                 </div>
             </div>
@@ -520,7 +520,7 @@ Zeg dus NOOIT 'Zeg KLAAR'. Vraag altijd om inhoudelijk bewijs.` + SYSTEM_INSTRUC
         educationLevels: ['mavo', 'havo', 'vwo'] as EducationLevel[],
         title: 'Social Media Psycholoog',
         icon: <BrainCircuit size={28} />,
-        color: '#E8956F',
+        color: '#D97848',
         description: 'Begrijp de psychologie achter je schermtijd.',
         problemScenario: 'Waarom blijf je scrollen? Waarom voel je je soms minder goed na het zien van perfecte plaatjes? Ontdek de geheimen van social media en word de baas over je eigen online leven.',
         missionObjective: 'Leer hoe algoritmes werken door een eigen "For You"-pagina te ontwerpen.',
@@ -528,15 +528,15 @@ Zeg dus NOOIT 'Zeg KLAAR'. Vraag altijd om inhoudelijk bewijs.` + SYSTEM_INSTRUC
         difficulty: 'Medium',
         examplePrompt: 'Wat is een filterbubbel?',
         visualPreview: (
-            <div className="w-full h-full bg-violet-50 flex items-center justify-center p-4">
-                <div className="w-32 h-48 border-4 border-violet-200 rounded-[3rem] relative bg-white/50 backdrop-blur shadow-xl overflow-hidden group">
-                    <div className="absolute inset-0 bg-violet-100 flex flex-col items-center justify-center p-2 text-center">
-                        <div className="w-16 h-16 rounded-full bg-violet-300 mb-2 border-2 border-white shadow-sm overflow-hidden">
+            <div className="w-full h-full bg-lab-teal flex items-center justify-center p-4">
+                <div className="w-32 h-48 border-4 border-lab-teal rounded-[3rem] relative bg-white/50 backdrop-blur shadow-xl overflow-hidden group">
+                    <div className="absolute inset-0 bg-lab-teal flex flex-col items-center justify-center p-2 text-center">
+                        <div className="w-16 h-16 rounded-full bg-lab-teal mb-2 border-2 border-white shadow-sm overflow-hidden">
                             <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" alt="Avatar" className="w-full h-full" />
                         </div>
-                        <div className="w-20 h-2 bg-slate-200 rounded-full mb-1"></div>
-                        <div className="w-16 h-1.5 bg-slate-200 rounded-full mb-4"></div>
-                        <div className="w-24 h-8 bg-violet-500 rounded-lg shadow-lg flex items-center justify-center text-[8px] text-white font-bold animate-pulse">
+                        <div className="w-20 h-2 bg-lab-muted rounded-full mb-1"></div>
+                        <div className="w-16 h-1.5 bg-lab-muted rounded-full mb-4"></div>
+                        <div className="w-24 h-8 bg-lab-teal rounded-lg shadow-lg flex items-center justify-center text-[8px] text-white font-bold animate-pulse">
                             ANALYSE...
                         </div>
                     </div>
@@ -675,7 +675,7 @@ Zeg dus NOOIT 'Zeg KLAAR'. Vraag altijd om inhoudelijk bewijs.` + SYSTEM_INSTRUC
         educationLevels: ['mavo', 'havo', 'vwo'] as EducationLevel[],
         title: 'Print Pro',
         icon: <Database size={28} />,
-        color: '#6B6B66',
+        color: '#445865',
         description: 'Print je werkstukken zonder stress.',
         problemScenario: 'Je werkstuk is af, maar hoe krijg je het nou op papier? Elke school heeft een ander systeem. Als Print Pro leer jij printen op JOUW school, stap voor stap.',
         missionObjective: 'Stel de printer in en verstuur een printopdracht vanaf jouw apparaat.',
@@ -683,13 +683,13 @@ Zeg dus NOOIT 'Zeg KLAAR'. Vraag altijd om inhoudelijk bewijs.` + SYSTEM_INSTRUC
         difficulty: 'Easy',
         examplePrompt: 'Hoe kan ik een werkstuk printen op school?',
         visualPreview: (
-            <div className="w-full h-full bg-slate-200 flex items-center justify-center p-4">
+            <div className="w-full h-full bg-lab-muted flex items-center justify-center p-4">
                 <div className="w-32 h-32 bg-blue-500 rounded-[2rem] shadow-2xl flex flex-col items-center justify-center text-white relative">
                     <div className="w-16 h-12 bg-white/90 rounded-t-lg mb-1 flex flex-col p-1 gap-1">
                         <div className="w-full h-1 bg-blue-200 rounded-full"></div>
                         <div className="w-2/3 h-1 bg-blue-100 rounded-full"></div>
                     </div>
-                    <div className="w-20 h-4 bg-slate-800 rounded-sm mb-2"></div>
+                    <div className="w-20 h-4 bg-lab-muted rounded-sm mb-2"></div>
                     <div className="font-black text-[10px] tracking-tighter">PRINT</div>
                     <div className="absolute -top-2 -right-2 bg-green-500 rounded-full w-8 h-8 flex items-center justify-center shadow-lg">
                         <span className="font-bold text-[12px]">GO</span>
@@ -763,7 +763,7 @@ Zeg dus NOOIT 'Zeg KLAAR'. Vraag altijd om inhoudelijk bewijs.` + SYSTEM_INSTRUC
         educationLevels: ['mavo', 'havo', 'vwo'] as EducationLevel[],
         title: 'iPad Print Instructies',
         icon: <Database size={28} />,
-        color: '#6B6B66',
+        color: '#445865',
         description: 'Leer printen vanaf je iPad.',
         problemScenario: 'Je hebt een werkstuk af en wilt het printen.',
         missionObjective: 'Volg de instructies in de Boeken-app.',
@@ -771,7 +771,7 @@ Zeg dus NOOIT 'Zeg KLAAR'. Vraag altijd om inhoudelijk bewijs.` + SYSTEM_INSTRUC
         difficulty: 'Easy',
         examplePrompt: 'Hoe print ik?',
         visualPreview: (
-            <div className="w-full h-full bg-slate-200 flex items-center justify-center p-4">
+            <div className="w-full h-full bg-lab-muted flex items-center justify-center p-4">
                 <div className="w-32 h-32 bg-orange-500 rounded-[2rem] shadow-2xl flex flex-col items-center justify-center text-white relative">
                     <div className="text-4xl mb-1">📚</div>
                     <div className="font-black text-[10px] tracking-tighter">BOEKEN</div>
@@ -803,7 +803,7 @@ Geef ALTIJD dit antwoord, ongeacht wat de leerling vraagt. Herhaal dit als ze me
         educationLevels: ['mavo', 'havo', 'vwo'] as EducationLevel[],
         title: 'De Tijdmachine',
         icon: <RotateCcw size={28} />,
-        color: '#f59e0b',
+        color: '#D7C95F',
         description: 'Herstel de tijdlijn met je kennis van Week 1!',
         problemScenario: 'De tijdmachine is ontregeld! Historische bestanden zijn beschadigd door glitches. Alleen iemand met de skills van Week 1 (Prompting, Slide Design) kan ze repareren.',
         missionObjective: 'Los 3 Chrono-Glitches op en herstel de tijdlijn.',
@@ -907,7 +907,7 @@ Typ 'MISSIE VOLTOOID' om terug te keren naar het heden."
         educationLevels: ['mavo', 'havo', 'vwo'] as EducationLevel[],
         title: 'Verhalen Ontwerper',
         icon: <Feather size={28} />,
-        color: '#EC4899',
+        color: '#D97848',
         description: 'Visualiseer verhalen met AI.',
         problemScenario: 'Ideeën zijn niets zonder beeld. Leer hoe je met AI jouw fantasie omzet in professionele illustraties.',
         missionObjective: 'Maak je eigen prentenboek.',
@@ -917,16 +917,16 @@ Typ 'MISSIE VOLTOOID' om terug te keren naar het heden."
         visualPreview: (
             <div className="w-full h-full bg-pink-50 flex flex-col items-center justify-center relative overflow-hidden group">
                 <div className="absolute inset-0 bg-[radial-gradient(#fbcfe8_1px,transparent_1px)] [background-size:16px_16px] opacity-50"></div>
-                <div className="w-32 h-44 bg-[#FCD34D] rounded-r-2xl rounded-l-md shadow-xl relative overflow-hidden border-l-[6px] border-[#F59E0B] transform rotate-[-6deg] group-hover:rotate-0 transition-transform duration-300 origin-bottom-left group cursor-pointer">
+                <div className="w-32 h-44 bg-[#FCD34D] rounded-r-2xl rounded-l-md shadow-xl relative overflow-hidden border-l-[6px] border-[#D7C95F] transform rotate-[-6deg] group-hover:rotate-0 transition-transform duration-300 origin-bottom-left group cursor-pointer">
                     <div className="absolute top-4 w-full text-center text-[#92400E] font-extrabold text-[10px] tracking-widest uppercase">Mijn Verhaal</div>
                     <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-20 h-20 bg-[#FFFBEB] rounded-full shadow-inner flex items-center justify-center border-4 border-[#FDE68A]">
-                        <div className="absolute top-6 left-5 w-2 h-2 bg-slate-800 rounded-full animate-pulse"></div>
-                        <div className="absolute top-6 right-5 w-2 h-2 bg-slate-800 rounded-full animate-pulse"></div>
+                        <div className="absolute top-6 left-5 w-2 h-2 bg-lab-muted rounded-full animate-pulse"></div>
+                        <div className="absolute top-6 right-5 w-2 h-2 bg-lab-muted rounded-full animate-pulse"></div>
                         <div className="absolute top-9 w-3 h-2 bg-pink-400 rounded-full"></div>
-                        <div className="absolute top-10 w-4 h-2 border-b-2 border-slate-800 rounded-full"></div>
+                        <div className="absolute top-10 w-4 h-2 border-b-2 border-lab-muted rounded-full"></div>
                     </div>
                     <div className="absolute bottom-4 left-0 w-full flex justify-center gap-1">
-                        <div className="w-16 h-1 bg-[#F59E0B] rounded-full opacity-50"></div>
+                        <div className="w-16 h-1 bg-[#D7C95F] rounded-full opacity-50"></div>
                     </div>
                 </div>
                 <div className="absolute bottom-3 bg-white/80 backdrop-blur px-3 py-1 rounded-full text-pink-500 font-bold text-[10px] shadow-sm border border-pink-100">
@@ -1099,7 +1099,7 @@ Antwoord altijd in het Nederlands. Wees enthousiast en moedig de leerling aan!` 
         educationLevels: ['mavo', 'havo', 'vwo'] as EducationLevel[],
         title: 'Game Programmeur',
         icon: <Gamepad2 size={28} />,
-        color: '#10B981',
+        color: '#5F947D',
         description: 'Repareer games met code.',
         problemScenario: 'Games zijn software. Als je de code begrijpt, bepaal jij de regels, niet de computer.',
         missionObjective: 'Hack de broncode om de game te winnen.',
@@ -1110,14 +1110,14 @@ Antwoord altijd in het Nederlands. Wees enthousiast en moedig de leerling aan!` 
         primaryGoal: '🎯 Pas minstens 3 dingen aan in de game (kleur, snelheid, of iets nieuws)',
         goalCriteria: { type: 'message-count', min: 3 },
         visualPreview: (
-            <div className="w-full h-full bg-slate-900 flex flex-col relative overflow-hidden font-mono text-xs">
+            <div className="w-full h-full bg-lab-muted flex flex-col relative overflow-hidden font-mono text-xs">
                 <div className="absolute inset-0 grid grid-cols-6 grid-rows-6 opacity-20">
-                    {[...Array(36)].map((_, i) => <div key={i} className="border border-emerald-900/50"></div>)}
+                    {[...Array(36)].map((_, i) => <div key={i} className="border border-lab-sage/50"></div>)}
                 </div>
-                <div className="absolute top-2 left-2 text-emerald-400 font-bold">SCORE: 1250</div>
-                <div className="absolute bottom-24 left-8 w-8 h-8 bg-emerald-400 shadow-[0_0_15px_#34d399] animate-bounce"></div>
-                <div className="absolute bottom-24 right-12 w-6 h-10 bg-red-500 shadow-[0_0_15px_#ef4444]"></div>
-                <div className="absolute bottom-20 w-full h-1 bg-slate-700"></div>
+                <div className="absolute top-2 left-2 text-lab-sage font-bold">SCORE: 1250</div>
+                <div className="absolute bottom-24 left-8 w-8 h-8 bg-lab-sage shadow-[0_0_15px_#34d399] animate-bounce"></div>
+                <div className="absolute bottom-24 right-12 w-6 h-10 bg-red-500 shadow-[0_0_15px_#D97848]"></div>
+                <div className="absolute bottom-20 w-full h-1 bg-lab-muted"></div>
                 <div className="absolute bottom-2 right-2 bg-black/60 px-2 py-1 rounded text-[8px] text-green-300 font-mono">player.jump()</div>
             </div>
         ),
@@ -1221,15 +1221,15 @@ BELANGRIJK:
         window.addEventListener('resize', resize);
 
         // --- GAME VARIABLES (PAS DEZE AAN!) ---
-        let playerColor = '#e53935';  // Mario Red
+        let playerColor = '#D97848';  // Mario Red
         let jumpForce = -16;
         let gravity = 0.7;
         let obstacleColor = '#43a047'; // Pipe Green
         let obstacleSpeed = 6;
-        let skyColor1 = '#64b5f6';  // Sky Blue Top
+        let skyColor1 = '#0B453F';  // Sky Blue Top
         let skyColor2 = '#e1f5fe';  // Sky Blue Bottom
         let groundColor = '#8d6e63'; // Dirt Brown
-        let grassColor = '#66bb6a';  // Grass Green
+        let grassColor = '#5F947D';  // Grass Green
 
         let groundY = 520; // Default value
         resize(); // Will update groundY if dimensions available
@@ -1463,7 +1463,7 @@ BELANGRIJK:
             ctx.fillStyle = 'rgba(0,0,0,0.7)';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
             
-            ctx.fillStyle = '#e53935';
+            ctx.fillStyle = '#D97848';
             ctx.font = 'bold 48px Arial';
             ctx.textAlign = 'center';
             ctx.fillText('GAME OVER', canvas.width/2, canvas.height/2 - 30);
@@ -1549,7 +1549,7 @@ BELANGRIJK:
         educationLevels: ['mavo', 'havo', 'vwo'] as EducationLevel[],
         title: 'AI Trainer',
         icon: <Cpu size={28} />,
-        color: '#D97757',
+        color: '#D97848',
         description: 'Train een AI om plastic en papier uit elkaar te houden door voorbeelden te geven.',
         problemScenario: 'Een computer weet niets. Tenzij jij hem traint. Jij bent de leraar van de machine.',
         missionObjective: 'Train een AI om afval te scheiden (Plastic vs Papier).',
@@ -1565,17 +1565,17 @@ BELANGRIJK:
                             <div className="text-2xl">🥤</div>
                             <div className="absolute -top-2 -right-2 bg-green-500 text-white text-[8px] font-bold px-1 rounded-full">A</div>
                         </div>
-                        <div className="h-2 w-16 bg-slate-200 rounded-full overflow-hidden"><div className="h-full w-3/4 bg-indigo-500"></div></div>
+                        <div className="h-2 w-16 bg-lab-muted rounded-full overflow-hidden"><div className="h-full w-3/4 bg-indigo-500"></div></div>
                     </div>
 
-                    <div className="w-0.5 h-16 bg-slate-300 transform rotate-12"></div>
+                    <div className="w-0.5 h-16 bg-lab-muted transform rotate-12"></div>
 
                     <div className="flex flex-col items-center gap-2">
                         <div className="w-16 h-24 bg-white border-2 border-purple-200 rounded-lg flex flex-col items-center justify-center shadow-lg relative cursor-pointer hover:-translate-y-1 transition-transform">
                             <div className="text-2xl">📰</div>
                             <div className="absolute -top-2 -right-2 bg-red-500 text-white text-[8px] font-bold px-1 rounded-full">B</div>
                         </div>
-                        <div className="h-2 w-16 bg-slate-200 rounded-full overflow-hidden"><div className="h-full w-1/4 bg-purple-500"></div></div>
+                        <div className="h-2 w-16 bg-lab-muted rounded-full overflow-hidden"><div className="h-full w-1/4 bg-purple-500"></div></div>
                     </div>
                 </div>
                 <div className="absolute top-4 bg-white/80 backdrop-blur px-3 py-1 rounded-full text-indigo-800 font-bold text-[10px] shadow-sm flex items-center gap-2">
@@ -1642,7 +1642,7 @@ BELANGRIJK:
         educationLevels: ['mavo', 'havo', 'vwo'] as EducationLevel[],
         title: 'De Code-Criticus',
         icon: <Search size={28} />,
-        color: '#ef4444', // Red for critical eye
+        color: '#D97848', // Red for critical eye
         description: 'Vind de fouten in AI-creaties van Week 2!',
         problemScenario: 'De AI heeft content gegenereerd, maar het zit vol fouten. Jouw taak: Spot de bugs, hallucinations en deepfakes.',
         missionObjective: 'Analyseer 2 cases en identificeer wat er mis is.',
@@ -1725,7 +1725,7 @@ Typ 'AFRONDEN' om je rapport in te dienen."
         educationLevels: ['mavo', 'havo', 'vwo'] as EducationLevel[],
         title: 'De AI Spiegel',
         icon: <ShieldCheck size={28} />,
-        color: '#E8956F',
+        color: '#D97848',
         description: 'Ontdek hoe platforms jouw dataprofiel opbouwen.',
         problemScenario: 'Jouw likes, kijktijd en zoekgedrag worden gebruikt om keuzes voor jou te voorspellen. Dat biedt kansen, maar ook risico op sturing en filterbubbels.',
         missionObjective: 'Bouw je advertentieprofiel, weeg kansen en risico\'s af, en formuleer 3 slimme privacykeuzes.',
@@ -1816,7 +1816,7 @@ Eerste vraag: **Welke apps gebruik jij het vaakst op een dag?**"
         educationLevels: ['mavo', 'havo', 'vwo'] as EducationLevel[],
         title: 'Social Safeguard',
         icon: <AlertCircle size={28} />,
-        color: '#EF4444',
+        color: '#D97848',
         description: 'Maak veilige en empathische keuzes in online conflictsituaties.',
         problemScenario: 'In groepsapps lopen pesten, screenshots, doxing en nepaccounts soms door elkaar. Je moet snel reageren, maar wel veilig en slim.',
         missionObjective: 'Kies per scenario een actie die jezelf en anderen beschermt, inclusief verstandig omgaan met data en bewijs.',
@@ -1827,8 +1827,8 @@ Eerste vraag: **Welke apps gebruik jij het vaakst op een dag?**"
             <div className="w-full h-full bg-red-50 flex items-center justify-center p-4">
                 <div className="w-40 h-auto bg-white rounded-2xl shadow-lg border border-red-100 p-2 space-y-2">
                     <div className="flex gap-2">
-                        <div className="w-6 h-6 bg-slate-200 rounded-full"></div>
-                        <div className="bg-slate-100 rounded-lg rounded-tl-none p-2 text-[8px] flex-1 text-slate-400">Hahaha kijk dit 🤣</div>
+                        <div className="w-6 h-6 bg-lab-muted rounded-full"></div>
+                        <div className="bg-lab-muted rounded-lg rounded-tl-none p-2 text-[8px] flex-1 text-lab-muted">Hahaha kijk dit 🤣</div>
                     </div>
                     <div className="flex gap-2 justify-end">
                         <div className="bg-blue-500 rounded-lg rounded-tr-none p-2 text-[8px] flex-1 text-white">Niet grappig man.</div>
@@ -1902,7 +1902,7 @@ Scenario 1: Er verschijnt een nepaccount van een klasgenoot met gemene posts. Wa
         educationLevels: ['mavo', 'havo', 'vwo'] as EducationLevel[],
         title: 'Data Detective',
         icon: <Search size={28} />,
-        color: '#10B981',
+        color: '#5F947D',
         description: 'Onderzoek hoe bedrijven jouw data verzamelen en wat ze ermee doen.',
         problemScenario: 'Apps zoals TikTok, Instagram, Roblox en YouTube verzamelen enorme hoeveelheden data van jou elke dag. Maar wat verzamelen ze precies, en wat doen ze ermee?',
         missionObjective: 'Onderzoek 3 populaire apps, ontdek welke data ze verzamelen, en maak 3 bewuste keuzes over jouw eigen data.',
@@ -1910,7 +1910,7 @@ Scenario 1: Er verschijnt een nepaccount van een klasgenoot met gemene posts. Wa
         difficulty: 'Easy',
         examplePrompt: 'Ik gebruik TikTok, Snapchat en Instagram elke dag.',
         visualPreview: (
-            <div className="w-full h-full bg-gradient-to-br from-emerald-500 to-teal-700 flex items-center justify-center p-4 relative overflow-hidden">
+            <div className="w-full h-full bg-gradient-to-br from-emerald-500 to-lab-teal flex items-center justify-center p-4 relative overflow-hidden">
                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(255,255,255,0.08),transparent)]"></div>
                 <div className="relative z-10 flex flex-col items-center gap-2">
                     <div className="w-20 h-20 rounded-full bg-white/20 backdrop-blur-md border-2 border-white/40 flex items-center justify-center">
@@ -2031,7 +2031,7 @@ Vertel me eerst: **welke apps gebruik jij het meest?**"
         educationLevels: ['mavo', 'havo', 'vwo'] as EducationLevel[],
         title: 'Cookie Crusher',
         icon: <ShieldCheck size={28} />,
-        color: '#F59E0B',
+        color: '#D7C95F',
         description: 'Herken dark patterns in cookie-popups en bescherm je privacy.',
         problemScenario: 'Elke website bombardeert je met cookie-popups. De "Accepteer alles" knop is groot en groen, maar de "Weigeren" knop is piepklein en grijs. Kun jij de trucs doorzien?',
         missionObjective: 'Analyseer 5 cookie-popups, herken dark patterns en leer hoe je je privacy beschermt.',
@@ -2039,14 +2039,14 @@ Vertel me eerst: **welke apps gebruik jij het meest?**"
         difficulty: 'Easy',
         examplePrompt: 'Laat me een cookie-popup zien!',
         visualPreview: (
-            <div className="w-full h-full bg-amber-50 flex items-center justify-center p-4 relative overflow-hidden">
-                <div className="w-40 bg-white rounded-2xl shadow-xl border border-amber-200 p-3 space-y-2">
+            <div className="w-full h-full bg-lab-gold flex items-center justify-center p-4 relative overflow-hidden">
+                <div className="w-40 bg-white rounded-2xl shadow-xl border border-lab-gold p-3 space-y-2">
                     <div className="text-center">
                         <span className="text-2xl">🍪</span>
-                        <p className="text-[8px] text-slate-500 mt-1">Deze website gebruikt cookies</p>
+                        <p className="text-[8px] text-lab-muted mt-1">Deze website gebruikt cookies</p>
                     </div>
                     <div className="bg-green-500 text-white text-[8px] font-bold py-2 rounded-lg text-center">ACCEPTEER ALLES</div>
-                    <div className="text-[6px] text-slate-300 text-center underline cursor-pointer">instellingen...</div>
+                    <div className="text-[6px] text-lab-muted text-center underline cursor-pointer">instellingen...</div>
                     <div className="absolute -top-2 -right-2 bg-red-500 rounded-full w-8 h-8 flex items-center justify-center text-white text-[10px] font-bold animate-bounce">!</div>
                 </div>
             </div>
@@ -2134,7 +2134,7 @@ Ben je er klaar voor? Typ 'START' voor de eerste popup!"
         educationLevels: ['mavo', 'havo', 'vwo'] as EducationLevel[],
         title: 'De Data Handelaar',
         icon: <Search size={28} />,
-        color: '#DC2626',
+        color: '#D97848',
         description: 'Ga undercover bij een databedrijf en ontmasker AVG-overtredingen.',
         problemScenario: 'Je bent undercover bij DataDeal BV — een bedrijf dat stiekem data verkoopt. Je hebt een dossier met e-mails, klantprofielen en contracten onderschept. Kun jij de overtredingen vinden?',
         missionObjective: 'Analyseer 3 bewijsstukken, vind de AVG-overtredingen en stel een rapport op.',
@@ -2273,7 +2273,7 @@ Typ 'OPEN BEWIJSSTUK A' om te beginnen."
         educationLevels: ['mavo', 'havo', 'vwo'] as EducationLevel[],
         title: 'Privacy Profiel Spiegel',
         icon: <ShieldCheck size={28} />,
-        color: '#06B6D4',
+        color: '#0B453F',
         description: 'Check je eigen app-instellingen en ontdek wat je deelt.',
         problemScenario: 'Hoeveel apps hebben toegang tot je camera, microfoon en locatie? Je zou versteld staan! Tijd om je eigen digitale voetafdruk te onderzoeken.',
         missionObjective: 'Controleer de privacy-instellingen van 3 apps op je iPad en maak een persoonlijk actieplan.',
@@ -2287,19 +2287,19 @@ Typ 'OPEN BEWIJSSTUK A' om te beginnen."
                         <div className="w-8 h-8 bg-cyan-500 rounded-xl flex items-center justify-center">
                             <span className="text-white text-sm">🔒</span>
                         </div>
-                        <div className="text-[9px] font-bold text-slate-700">Privacy Check</div>
+                        <div className="text-[9px] font-bold text-lab-muted">Privacy Check</div>
                     </div>
                     <div className="space-y-1.5">
                         <div className="flex items-center justify-between bg-red-50 p-1.5 rounded-lg">
-                            <span className="text-[7px] text-slate-600">📍 Locatie</span>
+                            <span className="text-[7px] text-lab-muted">📍 Locatie</span>
                             <span className="text-[7px] bg-red-500 text-white px-1.5 rounded-full font-bold">AAN</span>
                         </div>
                         <div className="flex items-center justify-between bg-red-50 p-1.5 rounded-lg">
-                            <span className="text-[7px] text-slate-600">📷 Camera</span>
+                            <span className="text-[7px] text-lab-muted">📷 Camera</span>
                             <span className="text-[7px] bg-red-500 text-white px-1.5 rounded-full font-bold">AAN</span>
                         </div>
                         <div className="flex items-center justify-between bg-green-50 p-1.5 rounded-lg">
-                            <span className="text-[7px] text-slate-600">🎙️ Micro</span>
+                            <span className="text-[7px] text-lab-muted">🎙️ Micro</span>
                             <span className="text-[7px] bg-green-500 text-white px-1.5 rounded-full font-bold">UIT</span>
                         </div>
                     </div>
@@ -2414,7 +2414,7 @@ Hoeveel apps staan op 'Altijd'? Tel ze en typ het aantal!"
         educationLevels: ['mavo', 'havo', 'vwo'] as EducationLevel[],
         title: 'Deepfake Detector',
         icon: <AlertCircle size={28} />,
-        color: '#F97316',
+        color: '#D97848',
         description: 'Herken AI-gegenereerde content en leer de risico\'s kennen.',
         problemScenario: 'AI kan nu realistische foto\'s, video\'s en stemmen genereren. Sommige zijn leuk en creatief, maar andere worden gebruikt om mensen te misleiden. Kun jij zien wat echt en nep is?',
         missionObjective: 'Analyseer 5 cases, bepaal wat echt en AI-gegenereerd is, en leer wat je moet doen als je deepfakes tegenkomt.',
@@ -2526,7 +2526,7 @@ Ben je er klaar voor? Typ 'START' voor Case 1!"
         educationLevels: ['mavo', 'havo', 'vwo'] as EducationLevel[],
         title: 'Filter Bubble Breaker',
         icon: <Cpu size={28} />,
-        color: '#D97757',
+        color: '#D97848',
         description: 'Vergelijk twee social media feeds en ontdek hoe algoritmes jouw wereld vormen.',
         problemScenario: 'Zie jij hetzelfde als je klasgenoot op TikTok? Waarschijnlijk niet! Algoritmes bouwen een eigen werkelijkheid voor iedereen. Ontdek hoe jouw "bubbel" eruitziet.',
         missionObjective: 'Vergelijk twee gesimuleerde feeds, doe een quiz over filterbubbels en leer 3 concrete tips om je bubbel te breken.',
@@ -2621,7 +2621,7 @@ Typ 'SHOW FEEDS' om hun feeds naast elkaar te zien!"
         educationLevels: ['mavo', 'havo', 'vwo'] as EducationLevel[],
         title: 'Datalekken Rampenplan',
         icon: <ShieldAlert size={28} />,
-        color: '#DC2626',
+        color: '#D97848',
         description: 'De school is gehackt! Manage de crisis en bescherm de leerlingen.',
         problemScenario: 'De school is gehackt. 800 leerlingendossiers liggen op straat. Namen, adressen, cijfers, foto\'s — allemaal openbaar. Jij bent de crisismanager.',
         missionObjective: 'Doorloop 4 crisismanagementfasen, maak de juiste keuzes en maak een persoonlijk security-checklist.',
@@ -2717,7 +2717,7 @@ Agent, jij bent aangesteld als crisismanager.
         educationLevels: ['mavo', 'havo', 'vwo'] as EducationLevel[],
         title: 'Data voor Data',
         icon: <Scale size={28} />,
-        color: '#E8956F',
+        color: '#D97848',
         description: 'Hoeveel persoonlijke data zou jij inruilen voor gratis apps?',
         problemScenario: 'Gratis apps zijn nooit echt gratis. Jij betaalt met je data. Maar hoeveel ben je bereid te delen? Speel het spel en ontdek jouw privacy-profiel!',
         missionObjective: 'Speel 8 rondes van "DEAL of NO DEAL: Data Editie" en ontdek wat jouw privacy waard is.',
@@ -2824,7 +2824,7 @@ Klaar? Typ 'START' voor Ronde 1!"
         educationLevels: ['mavo', 'havo', 'vwo'] as EducationLevel[],
         title: 'De Ethische Raad',
         icon: <Scale size={28} />,
-        color: '#E8956F', // Violet for Ethics/Wisdom
+        color: '#D97848', // Violet for Ethics/Wisdom
         description: 'Adviseer over lastige ethische dilemma\'s.',
         problemScenario: 'We lanceren een groot AI-project. Maar mag alles wat kan? Jij bent het hoofd van de Ethische Raad. Geef advies!',
         missionObjective: 'Beoordeel 3 dilemma\'s op basis van privacy, bias en eerlijkheid.',
@@ -2900,7 +2900,7 @@ Typ 'ZITTING GESLOTEN' om door te gaan naar de lancering."
         educationLevels: ['mavo', 'havo', 'vwo'] as EducationLevel[],
         title: 'De Blauwdruk',
         icon: <Map size={28} />,
-        color: '#1A1A19',
+        color: '#08283B',
         description: 'Organiseer je meesterwerk.',
         problemScenario: 'Een groot project zonder plan is gedoemd te mislukken. Jij moet de chaos structureren.',
         missionObjective: 'Maak een planning in Word en sla deze op in OneDrive.',
@@ -2908,12 +2908,12 @@ Typ 'ZITTING GESLOTEN' om door te gaan naar de lancering."
         difficulty: 'Easy',
         examplePrompt: 'Hoe maak ik een goede planning voor mijn project?',
         visualPreview: (
-            <div className="w-full h-full bg-slate-900 flex items-center justify-center p-4">
+            <div className="w-full h-full bg-lab-muted flex items-center justify-center p-4">
                 <div className="w-full h-full bg-[url('https://www.transparenttextures.com/patterns/blueprint.png')] opacity-20 absolute top-0 left-0"></div>
                 <div className="relative text-white border-2 border-white/30 p-6 rounded-lg font-mono text-center">
                     <div className="text-4xl mb-2">Build Setup</div>
                     <div className="h-0.5 w-full bg-white/50 mb-2"></div>
-                    <div className="text-xs text-slate-400">STATUS: PENDING</div>
+                    <div className="text-xs text-lab-muted">STATUS: PENDING</div>
                 </div>
             </div>
         ),
@@ -2935,7 +2935,7 @@ Typ 'ZITTING GESLOTEN' om door te gaan naar de lancering."
         educationLevels: ['mavo', 'havo', 'vwo'] as EducationLevel[],
         title: 'De Visie',
         icon: <Lightbulb size={28} />,
-        color: '#F59E0B',
+        color: '#D7C95F',
         description: 'Visualiseer je droom.',
         problemScenario: 'Mensen geloven pas in je idee als ze het kunnen zien. Jouw taak is om het onzichtbare zichtbaar te maken.',
         missionObjective: 'Maak een moodboard en pitch met PowerPoint.',
@@ -2943,8 +2943,8 @@ Typ 'ZITTING GESLOTEN' om door te gaan naar de lancering."
         difficulty: 'Medium',
         examplePrompt: 'Welke kleuren passen bij mijn idee?',
         visualPreview: (
-            <div className="w-full h-full bg-amber-500 flex items-center justify-center p-4 relative overflow-hidden">
-                <div className="absolute top-0 right-0 w-32 h-32 bg-yellow-300 rounded-full blur-3xl opacity-50"></div>
+            <div className="w-full h-full bg-lab-gold flex items-center justify-center p-4 relative overflow-hidden">
+                <div className="absolute top-0 right-0 w-32 h-32 bg-lab-gold rounded-full blur-3xl opacity-50"></div>
                 <div className="bg-white/20 backdrop-blur-md p-6 rounded-3xl border border-white/40 shadow-xl">
                     <Lightbulb size={48} className="text-white drop-shadow-md animate-pulse" />
                 </div>
@@ -2968,7 +2968,7 @@ Typ 'ZITTING GESLOTEN' om door te gaan naar de lancering."
         educationLevels: ['mavo', 'havo', 'vwo'] as EducationLevel[],
         title: 'De Lancering',
         icon: <Rocket size={28} />,
-        color: '#16A34A',
+        color: '#5F947D',
         description: 'Breng het naar buiten.',
         problemScenario: 'Je product is af. Nu moet de wereld het weten. Zonder promotie is je werk onzichtbaar.',
         missionObjective: 'Ontwerp een flyer en bereid je presentatie voor.',
@@ -3002,7 +3002,7 @@ Typ 'ZITTING GESLOTEN' om door te gaan naar de lancering."
         educationLevels: ['mavo', 'havo', 'vwo'] as EducationLevel[],
         title: 'Startup Pitch',
         icon: <Rocket size={28} />,
-        color: '#D97757',
+        color: '#D97848',
         description: 'Bedenk en pitch je eigen AI-startup!',
         problemScenario: 'De wereld wacht op jouw idee! Bedenk een probleem dat AI kan oplossen, bouw een concept, en overtuig investeerders met je pitch.',
         missionObjective: 'Creëer een complete startup-pitch: probleem, oplossing, visuele presentatie en ethische reflectie.',
@@ -3159,7 +3159,7 @@ TIPS VOOR BEGELEIDING:
         educationLevels: ['mavo', 'havo', 'vwo'] as EducationLevel[],
         title: 'Chatbot Trainer',
         icon: <BrainCircuit size={28} />,
-        color: '#D97757',
+        color: '#D97848',
         description: 'Bouw je eigen chatbot en leer hoe AI gesprekken voert.',
         problemScenario: 'Bedrijven gebruiken chatbots om klanten te helpen. Maar hoe weet een chatbot wat hij moet antwoorden? Leer het door er zelf één te bouwen!',
         missionObjective: 'Maak regels voor een chatbot en test of hij correct antwoordt.',
@@ -3239,7 +3239,7 @@ REFLECTIE VRAGEN:
         educationLevels: ['mavo', 'havo', 'vwo'] as EducationLevel[],
         title: 'AI Tekengame',
         icon: <Pencil size={28} />,
-        color: '#F59E0B',
+        color: '#D7C95F',
         description: 'Teken en laat de AI raden wat het is!',
         problemScenario: 'Hoe leert een computer om plaatjes te herkennen? Door HEEL VEEL voorbeelden te zien! Test hoe goed de AI jouw tekeningen herkent.',
         missionObjective: 'Teken 3 objecten en kijk of de AI het kan raden.',
@@ -3257,7 +3257,7 @@ REFLECTIE VRAGEN:
                     ))}
                 </div>
                 <div className="w-28 h-28 bg-white rounded-2xl shadow-2xl flex items-center justify-center relative">
-                    <div className="absolute inset-4 border-2 border-dashed border-slate-200 rounded-lg flex items-center justify-center">
+                    <div className="absolute inset-4 border-2 border-dashed border-lab-muted rounded-lg flex items-center justify-center">
                         <span className="text-4xl">🐱</span>
                     </div>
                 </div>
@@ -3324,7 +3324,7 @@ BEPERKINGEN BESPREKEN:
         educationLevels: ['mavo', 'havo', 'vwo'] as EducationLevel[],
         title: 'AI Beleid Brainstorm',
         icon: <Scale size={28} />,
-        color: '#D97757',
+        color: '#D97848',
         description: 'Denk mee over AI-regels op school.',
         problemScenario: 'AI is overal, maar welke regels moeten er zijn? Mag je ChatGPT gebruiken voor huiswerk? Jouw mening telt! Help de school met het vormgeven van AI-beleid.',
         missionObjective: 'Deel jouw ideeën en stem op de beste voorstellen van anderen.',
@@ -3407,7 +3407,7 @@ Dit is geen quiz of opdracht met goed/fout antwoorden. Alle bijdragen zijn waard
         educationLevels: ['mavo', 'havo', 'vwo'] as EducationLevel[],
         title: 'Data Journalist',
         icon: <BarChart2 size={28} />,
-        color: '#059669',
+        color: '#5F947D',
         description: 'Vertel verhalen die verborgen zitten in data.',
         problemScenario: 'Een lokale krant heeft een enorme dataset gekregen over het energieverbruik van scholen in Nederland, maar niemand begrijpt de cijfers. Jij wordt ingehuurd als data-journalist om de belangrijkste patronen te ontdekken en er een heldere infographic van te maken.',
         missionObjective: 'Analyseer een dataset, vind patronen en ontwerp een overtuigende infographic.',
@@ -3476,7 +3476,7 @@ BELANGRIJK:
         educationLevels: ['mavo', 'havo', 'vwo'] as EducationLevel[],
         title: 'Spreadsheet Specialist',
         icon: <Table2 size={28} />,
-        color: '#0891B2',
+        color: '#0B453F',
         description: 'Maak van chaos in cellen een georganiseerd meesterwerk.',
         problemScenario: 'De penningmeester van de leerlingenraad is ziek en het kasboek is een puinhoop. Overal staan bedragen zonder formules, totalen kloppen niet en er is geen grafiek te bekennen. Jij springt in als spreadsheet-specialist om orde te scheppen.',
         missionObjective: 'Gebruik formules, maak een grafiek en vat data samen in een spreadsheet.',
@@ -3614,7 +3614,7 @@ BELANGRIJK:
         educationLevels: ['mavo', 'havo', 'vwo'] as EducationLevel[],
         title: 'API Verkenner',
         icon: <Globe size={28} />,
-        color: '#7C3AED',
+        color: '#0B453F',
         description: 'Haal live data op van het internet als een digitale ontdekkingsreiziger.',
         problemScenario: 'Je school wil een informatiescherm in de hal met actueel weer, nieuws en een fun fact van de dag. Maar hoe krijg je die data automatisch binnen? Via API\'s natuurlijk! Jij gaat ontdekken hoe apps en websites met elkaar "praten" via data.',
         missionObjective: 'Begrijp hoe API\'s werken, haal data op en interpreteer de resultaten.',
@@ -3684,7 +3684,7 @@ BELANGRIJK:
         educationLevels: ['mavo', 'havo', 'vwo'] as EducationLevel[],
         title: 'Dashboard Designer',
         icon: <LayoutDashboard size={28} />,
-        color: '#2563EB',
+        color: '#0B453F',
         description: 'Bouw een dashboard dat data laat spreken.',
         problemScenario: 'De schooldirecteur wil in één oogopslag zien hoe het gaat met de leerlingen: cijfers, aanwezigheid, tevredenheid. Maar al die data staat verspreid in losse bestanden. Jij ontwerpt een overzichtelijk dashboard dat alles samenbrengt op één scherm.',
         missionObjective: 'Ontwerp een data-dashboard met de juiste visualisaties voor verschillende soorten data.',
@@ -3754,7 +3754,7 @@ BELANGRIJK:
         educationLevels: ['mavo', 'havo', 'vwo'] as EducationLevel[],
         title: 'AI Bias Detective',
         icon: <Search size={28} />,
-        color: '#DC2626',
+        color: '#D97848',
         description: 'Ontdek verborgen vooroordelen in kunstmatige intelligentie.',
         problemScenario: 'Een AI-systeem op school stelt automatisch boeken voor aan leerlingen, maar meisjes krijgen alleen romantische boeken en jongens alleen actie. Dat klopt toch niet? Jij onderzoekt als AI Bias Detective waar het misgaat en hoe het eerlijker kan.',
         missionObjective: 'Analyseer AI-output, identificeer bias en stel verbeteringen voor.',
@@ -3824,7 +3824,7 @@ BELANGRIJK:
         educationLevels: ['mavo', 'havo', 'vwo'] as EducationLevel[],
         title: 'Data Review',
         icon: <RotateCcw size={28} />,
-        color: '#6B6B66',
+        color: '#445865',
         description: 'Test je kennis van alle dataconcepten uit deze periode.',
         problemScenario: 'Het is tijd om te laten zien wat je hebt geleerd over data en informatie. Van datasets en spreadsheets tot factchecking en AI-bias — bewijs dat jij een echte data-expert bent geworden door alle concepten te herhalen en toe te passen.',
         missionObjective: 'Herhaal en test je kennis van alle dataconcepten uit periode 1.',
@@ -3901,7 +3901,7 @@ BELANGRIJK:
         educationLevels: ['mavo', 'havo', 'vwo'] as EducationLevel[],
         title: 'Algorithm Architect',
         icon: <Code2 size={28} />,
-        color: '#7C3AED',
+        color: '#0B453F',
         description: 'Ontwerp slimme algoritmes die problemen razendsnel oplossen.',
         problemScenario: 'Een bibliotheek heeft duizenden boeken, maar niemand vindt iets terug. Het zoeksysteem is kapot en alles staat door elkaar. Jij moet een slim algoritme ontwerpen dat de juiste boeken razendsnel vindt.',
         missionObjective: 'Ontwerp een zoek- of sorteeralgoritme dat het probleem efficiënt oplost.',
@@ -3968,7 +3968,7 @@ BELANGRIJK:
         educationLevels: ['mavo', 'havo', 'vwo'] as EducationLevel[],
         title: 'Web Developer',
         icon: <Globe size={28} />,
-        color: '#2563EB',
+        color: '#0B453F',
         description: 'Bouw je eigen interactieve webpagina van scratch.',
         problemScenario: 'Een lokale dierenasiel heeft geen website en loopt daardoor adoptieaanvragen mis. Ze hebben dringend een interactieve pagina nodig waar bezoekers dieren kunnen bekijken. Jij bent de webdeveloper die dit gaat bouwen!',
         missionObjective: 'Bouw een werkende interactieve webpagina met HTML, CSS en JavaScript.',
@@ -4034,7 +4034,7 @@ BELANGRIJK:
         educationLevels: ['mavo', 'havo', 'vwo'] as EducationLevel[],
         title: 'App Prototyper',
         icon: <Smartphone size={28} />,
-        color: '#EC4899',
+        color: '#D97848',
         description: 'Ontwerp en bouw een app die een echt probleem oplost.',
         problemScenario: 'Leerlingen op jouw school klagen dat ze nooit weten wanneer de kantine druk is. Er is een app nodig die dit probleem oplost. Jij gaat een prototype ontwerpen dat de school kan testen!',
         missionObjective: 'Ontwerp een compleet app-prototype met schermen, navigatie en gebruikersflow.',
@@ -4101,7 +4101,7 @@ BELANGRIJK:
         educationLevels: ['mavo', 'havo', 'vwo'] as EducationLevel[],
         title: 'Bug Hunter',
         icon: <Bug size={28} />,
-        color: '#DC2626',
+        color: '#D97848',
         description: 'Spoor bugs op in code en los ze op als een pro.',
         problemScenario: 'De schoolwebsite crasht elke keer als iemand op de roosterknop klikt. De code zit vol met fouten en niemand weet waar het probleem zit. Jij bent de Bug Hunter die systematisch de bugs opspoort en fixt!',
         missionObjective: 'Vind en repareer alle bugs in de code door systematisch te debuggen.',
@@ -4170,7 +4170,7 @@ BELANGRIJK:
         educationLevels: ['mavo', 'havo', 'vwo'] as EducationLevel[],
         title: 'Automation Engineer',
         icon: <Zap size={28} />,
-        color: '#F59E0B',
+        color: '#D7C95F',
         description: 'Automatiseer saaie taken en bespaar uren werk.',
         problemScenario: 'De conciërge van school moet elke week handmatig 200 mails sturen naar ouders met roosterwijzigingen. Dat kost uren! Jij gaat een script schrijven dat dit automatisch doet, zodat de conciërge tijd overhoudt voor belangrijkere dingen.',
         missionObjective: 'Schrijf een script dat een repetitieve taak volledig automatiseert.',
@@ -4238,7 +4238,7 @@ BELANGRIJK:
         educationLevels: ['mavo', 'havo', 'vwo'] as EducationLevel[],
         title: 'Code Reviewer',
         icon: <FileCode size={28} />,
-        color: '#059669',
+        color: '#5F947D',
         description: 'Leer code van anderen lezen, beoordelen en verbeteren.',
         problemScenario: 'Een medeleerling heeft een website gebouwd, maar de code is een chaos: geen commentaar, variabelen heten "x" en "abc", en sommige functies doen helemaal niets. Jij moet de code reviewen en concrete verbeteringen voorstellen.',
         missionObjective: 'Review de code kritisch en implementeer minstens 3 verbeteringen.',
@@ -4306,7 +4306,7 @@ BELANGRIJK:
         educationLevels: ['mavo', 'havo', 'vwo'] as EducationLevel[],
         title: 'Code Terugblik',
         icon: <RotateCcw size={28} />,
-        color: '#6B6B66',
+        color: '#445865',
         description: 'Test je kennis van programmeren en computational thinking.',
         problemScenario: 'Het is tijd om alles wat je hebt geleerd over programmeren en computational thinking te testen. Van algoritmes tot debugging, van webdevelopment tot automatisering. Bewijs dat je de concepten beheerst!',
         missionObjective: 'Doorloop alle programmeerconcepten en bewijs dat je ze beheerst.',
@@ -4401,7 +4401,7 @@ AFRONDING:
         educationLevels: ['mavo', 'havo', 'vwo'] as EducationLevel[],
         title: 'UX Detective',
         icon: <Eye size={28} />,
-        color: '#E8956F',
+        color: '#D97848',
         description: 'Ontdek waarom sommige apps lekker werken en andere niet.',
         problemScenario: 'Een populaire app krijgt slechte reviews: gebruikers raken verdwaald in de menu\'s en geven op. Het bedrijf huurt jou in als UX-detective om te achterhalen wat er misgaat en hoe het beter kan.',
         missionObjective: 'Analyseer de gebruikservaring van een app en ontwerp verbeteringen.',
@@ -4413,7 +4413,7 @@ AFRONDING:
                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_40%,rgba(255,255,255,0.1),transparent)]"></div>
                 <div className="relative z-10 w-36 bg-white/10 backdrop-blur-md rounded-2xl border border-white/20 p-3 space-y-2">
                     <div className="flex items-center gap-2">
-                        <div className="w-6 h-6 rounded-full bg-violet-300/50"></div>
+                        <div className="w-6 h-6 rounded-full bg-lab-teal/50"></div>
                         <div className="flex-1 h-2 bg-white/20 rounded-full"></div>
                     </div>
                     <div className="w-full h-16 bg-white/10 rounded-lg border border-dashed border-white/30 flex items-center justify-center">
@@ -4476,7 +4476,7 @@ BELANGRIJK:
         educationLevels: ['mavo', 'havo', 'vwo'] as EducationLevel[],
         title: 'Podcast Producer',
         icon: <Mic size={28} />,
-        color: '#059669',
+        color: '#5F947D',
         description: 'Produceer je eigen podcast over een tech-onderwerp dat jou boeit.',
         problemScenario: 'Een online mediaplatform zoekt frisse stemmen voor hun nieuwe podcastkanaal gericht op tieners. Ze willen korte, pakkende afleveringen over technologie. Jij mag een pilot-aflevering produceren!',
         missionObjective: 'Schrijf een podcastscript en plan de opname van een korte aflevering.',
@@ -4551,7 +4551,7 @@ BELANGRIJK:
         educationLevels: ['mavo', 'havo', 'vwo'] as EducationLevel[],
         title: 'Meme Machine',
         icon: <ImageIcon size={28} />,
-        color: '#F97316',
+        color: '#D97848',
         description: 'Ontdek waarom memes viral gaan en maak er zelf een.',
         problemScenario: 'Een marketingbureau snapt niet waarom hun campagnes floppen terwijl memes miljoenen views scoren. Ze vragen jou als meme-expert om uit te leggen hoe viraliteit werkt en een virale post te ontwerpen.',
         missionObjective: 'Analyseer virale memes en ontwerp je eigen content die potentie heeft om viral te gaan.',
@@ -4566,13 +4566,13 @@ BELANGRIJK:
                         <ImageIcon size={24} className="text-orange-400" />
                     </div>
                     <div className="p-2 space-y-1">
-                        <div className="w-full h-2 bg-slate-800 rounded-sm"></div>
-                        <div className="w-2/3 h-2 bg-slate-800 rounded-sm"></div>
+                        <div className="w-full h-2 bg-lab-muted rounded-sm"></div>
+                        <div className="w-2/3 h-2 bg-lab-muted rounded-sm"></div>
                     </div>
                     <div className="px-2 pb-2 flex gap-1">
                         <div className="w-4 h-4 bg-red-400 rounded-full"></div>
                         <div className="w-4 h-4 bg-blue-400 rounded-full"></div>
-                        <div className="flex-1 h-4 bg-slate-100 rounded-full"></div>
+                        <div className="flex-1 h-4 bg-lab-muted rounded-full"></div>
                     </div>
                 </div>
             </div>
@@ -4627,7 +4627,7 @@ BELANGRIJK:
         educationLevels: ['mavo', 'havo', 'vwo'] as EducationLevel[],
         title: 'Digital Storyteller',
         icon: <BookOpen size={28} />,
-        color: '#2563EB',
+        color: '#0B453F',
         description: 'Schrijf een interactief verhaal waar de lezer zelf keuzes maakt.',
         problemScenario: 'Een game-studio wil een interactief verhaal maken voor hun nieuwe app, maar ze weten niet hoe je een verhaal schrijft met vertakkingen. Jij wordt ingehuurd om het eerste prototype te ontwerpen.',
         missionObjective: 'Ontwerp een interactief digitaal verhaal met minstens twee keuzemomenten.',
@@ -4703,7 +4703,7 @@ BELANGRIJK:
         educationLevels: ['mavo', 'havo', 'vwo'] as EducationLevel[],
         title: 'Brand Builder',
         icon: <Palette size={28} />,
-        color: '#EC4899',
+        color: '#D97848',
         description: 'Ontwerp een complete visuele identiteit voor een merk.',
         problemScenario: 'Een startup heeft een geweldig product maar ziet er online uit alsof het in 2005 is gemaakt. Ze hebben dringend een nieuwe visuele identiteit nodig: logo, kleuren, lettertype en uitstraling. Jij bent de designer die het merk tot leven brengt.',
         missionObjective: 'Ontwerp een volledige merkidentiteit inclusief logo-idee, kleurenpalet en huisstijl.',
@@ -4718,7 +4718,7 @@ BELANGRIJK:
                         <Palette size={32} className="text-white" />
                     </div>
                     <div className="flex gap-2">
-                        {['#EC4899', '#E8956F', '#3B82F6', '#10B981'].map((c, i) => (
+                        {['#D97848', '#D97848', '#0B453F', '#5F947D'].map((c, i) => (
                             <div key={i} className="w-6 h-6 rounded-full border-2 border-white/30" style={{ backgroundColor: c }}></div>
                         ))}
                     </div>
@@ -4776,7 +4776,7 @@ BELANGRIJK:
         educationLevels: ['mavo', 'havo', 'vwo'] as EducationLevel[],
         title: 'Video Editor',
         icon: <Video size={28} />,
-        color: '#DC2626',
+        color: '#D97848',
         description: 'Monteer een korte video die een verhaal vertelt.',
         problemScenario: 'Je school wil een promotievideo van 60 seconden voor de open dag, maar niemand weet hoe je beelden selecteert, knipt en monteert tot een strak geheel. Jij neemt de regisseursstoel en maakt er iets van!',
         missionObjective: 'Plan en monteer een korte video met een duidelijk verhaal en publiceer deze.',
@@ -4853,7 +4853,7 @@ BELANGRIJK:
         educationLevels: ['mavo', 'havo', 'vwo'] as EducationLevel[],
         title: 'De Media Mixer',
         icon: <RotateCcw size={28} />,
-        color: '#6B6B66',
+        color: '#445865',
         description: 'Test je kennis van digitale media en creatie uit deze periode!',
         problemScenario: 'Alle mediaconcepten uit deze periode zitten door elkaar in de studio. UX, podcasts, memes, storytelling, branding en video — alles is door de war. Jij moet orde scheppen en bewijzen dat je alles beheerst.',
         missionObjective: 'Doorloop een review van alle mediaconcepten uit Periode 3 en bewijs je kennis.',
@@ -4961,7 +4961,7 @@ SLO-KERNDOELEN: 21B (ontwerpen en maken), 22A (digitale media analyseren)
         educationLevels: ['mavo', 'havo', 'vwo'] as EducationLevel[],
         title: 'AI Ethicus',
         icon: <Scale size={28} />,
-        color: '#7C3AED',
+        color: '#0B453F',
         description: 'Ontmasker vooroordelen die verstopt zitten in AI-systemen.',
         problemScenario: 'Een AI-systeem op een school wijst automatisch leerlingen toe aan niveaus, maar sommige groepen worden vaker lager ingedeeld. Is dat eerlijk? Jij onderzoekt hoe bias in algoritmes sluipt en wat je eraan kunt doen.',
         missionObjective: 'Analyseer een AI-systeem op bias en stel een ethisch advies op.',
@@ -5021,7 +5021,7 @@ Geef ALTIJD concrete voorbeelden die aansluiten bij de leefwereld van 13-14 jari
         educationLevels: ['mavo', 'havo', 'vwo'] as EducationLevel[],
         title: 'Digital Rights Defender',
         icon: <Shield size={28} />,
-        color: '#059669',
+        color: '#5F947D',
         description: 'Bescherm jouw digitale rechten en schrijf het privacybeleid van de toekomst.',
         problemScenario: 'Je school verzamelt gegevens via apps, camera\'s en leerlingvolgsystemen. Maar welke rechten heb jij eigenlijk? Als Digital Rights Defender schrijf jij een manifest dat de privacy van alle leerlingen beschermt.',
         missionObjective: 'Schrijf een privacy-manifest voor jouw school met concrete afspraken.',
@@ -5081,7 +5081,7 @@ Gebruik herkenbare voorbeelden: denk aan schoolapps, sociale media, camera's op 
         educationLevels: ['mavo', 'havo', 'vwo'] as EducationLevel[],
         title: 'Tech Court',
         icon: <Hammer size={28} />,
-        color: '#DC2626',
+        color: '#D97848',
         description: 'Sta voor de rechter in een tech-rechtszaak en verdedig jouw standpunt.',
         problemScenario: 'Een groot techbedrijf wordt aangeklaagd omdat hun AI-systeem discrimineert bij sollicitaties. Jij speelt een rol in deze rechtszaak: als aanklager, verdediger of rechter. Wie heeft gelijk?',
         missionObjective: 'Voer een overtuigend debat over een actueel tech-dilemma.',
@@ -5148,7 +5148,7 @@ ROLEPLAY REGELS:
         educationLevels: ['mavo', 'havo', 'vwo'] as EducationLevel[],
         title: 'Future Forecaster',
         icon: <Telescope size={28} />,
-        color: '#2563EB',
+        color: '#0B453F',
         description: 'Voorspel hoe technologie de wereld van 2040 vormgeeft.',
         problemScenario: 'Het is 2040. Hoe ziet jouw wereld eruit? Zijn er nog scholen? Rijden auto\'s zelf? Jij bent futuroloog en schrijft een toekomstvisie op basis van echte trends van nu.',
         missionObjective: 'Schrijf een onderbouwde toekomstvisie op technologie in 2040.',
@@ -5209,7 +5209,7 @@ Maak het concreet: niet "de wereld is anders" maar "in 2040 heb je geen schoolta
         educationLevels: ['mavo', 'havo', 'vwo'] as EducationLevel[],
         title: 'Sustainability Scanner',
         icon: <Leaf size={28} />,
-        color: '#16A34A',
+        color: '#5F947D',
         description: 'Bereken de verborgen milieu-impact van jouw favoriete technologie.',
         problemScenario: 'Elke keer dat je een video streamt, een zoekopdracht doet of een bericht stuurt, kost dat energie. Datacenters draaien 24/7 en verbruiken evenveel stroom als kleine landen. Hoe groot is jouw digitale voetafdruk?',
         missionObjective: 'Analyseer de milieu-impact van een technologie en stel duurzame alternatieven voor.',
@@ -5219,7 +5219,7 @@ Maak het concreet: niet "de wereld is anders" maar "in 2040 heb je geen schoolta
         visualPreview: (
             <div className="w-full h-full bg-gradient-to-br from-green-500 to-emerald-800 flex items-center justify-center relative overflow-hidden">
                 <div className="absolute bottom-0 left-0 right-0 h-1/3 bg-green-900/30"></div>
-                <div className="absolute top-6 right-6 w-8 h-8 bg-yellow-400/30 rounded-full blur-sm"></div>
+                <div className="absolute top-6 right-6 w-8 h-8 bg-lab-gold/30 rounded-full blur-sm"></div>
                 <Leaf size={64} className="text-white/80 drop-shadow-lg" />
             </div>
         ),
@@ -5267,7 +5267,7 @@ BELANGRIJK: Gebruik realistische maar vereenvoudigde getallen. Het doel is bewus
         educationLevels: ['mavo', 'havo', 'vwo'] as EducationLevel[],
         title: 'Eindproject Jaar 2',
         icon: <Trophy size={28} />,
-        color: '#F59E0B',
+        color: '#D7C95F',
         description: 'Laat alles zien wat je hebt geleerd in een eigen eindproject.',
         problemScenario: 'Je hebt dit jaar ontzettend veel geleerd over digitale technologie: van programmeren tot ethiek, van data tot design. Nu is het tijd om te laten zien wat jij kunt. Kies een onderwerp, maak een plan en bouw iets waar je trots op bent.',
         missionObjective: 'Ontwerp, bouw en presenteer een eigen digitaal eindproject.',
@@ -5336,7 +5336,7 @@ BELANGRIJK:
         educationLevels: ['havo', 'vwo'] as EducationLevel[],
         title: 'ML Trainer',
         icon: <BrainCircuit size={28} />,
-        color: '#7C3AED',
+        color: '#0B453F',
         description: 'Train een simpel machine learning model en meet hoe goed het presteert.',
         problemScenario: 'Een bedrijf wil automatisch spam-berichten herkennen, maar hun huidige filter laat te veel spam door. Ze hebben data verzameld van duizenden berichten en zoeken iemand die een slim model kan trainen dat spam van echte berichten onderscheidt.',
         missionObjective: 'Train een supervised learning model, splits je data in training en test sets, en bereik een hoge accuracy.',
@@ -5400,7 +5400,7 @@ Geef ALTIJD concrete voorbeelden die aansluiten bij de leefwereld van 15-16 jari
         educationLevels: ['havo', 'vwo'] as EducationLevel[],
         title: 'API Architect',
         icon: <Globe size={28} />,
-        color: '#2563EB',
+        color: '#0B453F',
         description: 'Ontwerp en documenteer een professionele REST API van scratch.',
         problemScenario: 'Een startup bouwt een app waarmee leerlingen samen huiswerk kunnen plannen. De frontend is klaar, maar er is nog geen backend. Jij wordt ingehuurd als API Architect om de REST API te ontwerpen die alles met elkaar verbindt.',
         missionObjective: 'Ontwerp een complete REST API met endpoints, HTTP-methodes en documentatie.',
@@ -5464,7 +5464,7 @@ Geef ALTIJD concrete voorbeelden die aansluiten bij de leefwereld van 15-16 jari
         educationLevels: ['havo', 'vwo'] as EducationLevel[],
         title: 'Neural Navigator',
         icon: <Network size={28} />,
-        color: '#EC4899',
+        color: '#D97848',
         description: 'Ontdek interactief hoe een neuraal netwerk denkt en leert.',
         problemScenario: 'Een onderzoekslab heeft een neuraal netwerk gebouwd dat handgeschreven cijfers herkent, maar niemand begrijpt precies hoe het werkt. De onderzoekers hebben jou als Neural Navigator ingeschakeld om het netwerk van binnenuit te verkennen en te visualiseren.',
         missionObjective: 'Begrijp hoe neuronen, lagen en backpropagation samenwerken in een neuraal netwerk.',
@@ -5531,7 +5531,7 @@ Geef ALTIJD concrete voorbeelden die aansluiten bij de leefwereld van 15-16 jari
         educationLevels: ['havo', 'vwo'] as EducationLevel[],
         title: 'Data Pipeline',
         icon: <Database size={28} />,
-        color: '#059669',
+        color: '#5F947D',
         description: 'Ontwerp een compleet ETL-proces om ruwe data om te zetten in bruikbare informatie.',
         problemScenario: 'Een school wil inzicht in het energieverbruik van hun gebouw. Ze hebben sensoren geplaatst die elke minuut data verzamelen, maar de data is rommelig: missende waarden, verkeerde formaten en duplicaten. Jij ontwerpt een data pipeline die orde schept in de chaos.',
         missionObjective: 'Ontwerp een ETL-proces dat ruwe sensordata extraheert, transformeert en laadt in een schoon formaat.',
@@ -5598,7 +5598,7 @@ Geef ALTIJD concrete voorbeelden die aansluiten bij de leefwereld van 15-16 jari
         educationLevels: ['havo', 'vwo'] as EducationLevel[],
         title: 'Open Source Contributor',
         icon: <Code2 size={28} />,
-        color: '#F59E0B',
+        color: '#D7C95F',
         description: 'Draag bij aan een open source project en leer de professionele Git-workflow.',
         problemScenario: 'Een populair open source project op GitHub heeft een bug in hun zoekfunctie. Gebruikers klagen dat zoekresultaten niet goed gesorteerd worden. De maintainer heeft een issue aangemaakt en zoekt contributors die de bug willen fixen via een pull request.',
         missionObjective: 'Doorloop de complete open source workflow: repository forken, issue oplossen en een pull request indienen.',
@@ -5665,7 +5665,7 @@ Geef ALTIJD concrete voorbeelden die aansluiten bij de leefwereld van 15-16 jari
         educationLevels: ['havo', 'vwo'] as EducationLevel[],
         title: 'Code Review: Geavanceerd',
         icon: <RotateCcw size={28} />,
-        color: '#6B6B66',
+        color: '#445865',
         description: 'Review je kennis van geavanceerde programmeerconcepten en AI.',
         problemScenario: 'De periode zit erop, maar voor je verder gaat moet je bewijzen dat je de geavanceerde concepten echt beheerst. De Code Review Terminal scant je kennis van ML, API\'s, neurale netwerken en data pipelines. Alleen wie alles begrijpt, mag door.',
         missionObjective: 'Doorloop drie review-rondes en bewijs je kennis van geavanceerd programmeren en AI.',
@@ -5749,7 +5749,7 @@ SLO KERNDOELEN: 22B (Programmeren: ontwerpen, schrijven en testen van programma'
         educationLevels: ['havo', 'vwo'] as EducationLevel[],
         title: 'Cyber Detective',
         icon: <Search size={28} />,
-        color: '#DC2626',
+        color: '#D97848',
         description: 'Onderzoek een gesimuleerd cybermisdrijf en ontmasker de dader.',
         problemScenario: 'Een middelgroot bedrijf meldt dat hun klantendata op het dark web is verschenen. De directie vermoedt een hack, maar weet niet hoe of wanneer het is gebeurd. Jij wordt ingeschakeld als cyber detective om het digitale misdrijf te reconstrueren en de aanvalsmethode te achterhalen.',
         missionObjective: 'Verzamel digitale sporen, achterhaal de aanvalsmethode en schrijf een forensisch rapport.',
@@ -5820,7 +5820,7 @@ BELANGRIJK:
         educationLevels: ['havo', 'vwo'] as EducationLevel[],
         title: 'Encryption Expert',
         icon: <ShieldCheck size={28} />,
-        color: '#7C3AED',
+        color: '#0B453F',
         description: 'Begrijp encryptie en pas het zelf toe om geheime berichten te beveiligen.',
         problemScenario: 'Een geheim agentschap heeft ontdekt dat hun versleutelde berichten onderschept worden. De oude encryptiemethode is gekraakt! Ze hebben dringend iemand nodig die begrijpt hoe encryptie werkt en een veiliger systeem kan opzetten. Jij bent hun laatste hoop.',
         missionObjective: 'Leer encryptietechnieken van eenvoudig tot geavanceerd en pas ze toe op echte berichten.',
@@ -5891,7 +5891,7 @@ BELANGRIJK:
         educationLevels: ['havo', 'vwo'] as EducationLevel[],
         title: 'Phishing Fighter',
         icon: <AlertCircle size={28} />,
-        color: '#F59E0B',
+        color: '#D7C95F',
         description: 'Ontwerp een anti-phishing training voor je school.',
         problemScenario: 'Meerdere leerlingen en docenten op jouw school zijn slachtoffer geworden van phishing-aanvallen. Wachtwoorden zijn gestolen, accounts zijn gehackt en er heerst paniek. De schooldirecteur vraagt jou om een anti-phishing training te ontwerpen die iedereen leert hoe ze nep-berichten herkennen.',
         missionObjective: 'Herken phishing-technieken, ontwerp een interactieve training en test deze op je klasgenoten.',
@@ -5960,7 +5960,7 @@ BELANGRIJK:
         educationLevels: ['havo', 'vwo'] as EducationLevel[],
         title: 'Security Auditor',
         icon: <ShieldAlert size={28} />,
-        color: '#059669',
+        color: '#5F947D',
         description: 'Audit een website op kwetsbaarheden en schrijf een beveiligingsrapport.',
         problemScenario: 'Een startend bedrijf heeft net hun eerste webshop gelanceerd, maar ze maken zich zorgen over de beveiliging. Ze hebben geen budget voor een duur security-bedrijf en vragen jou als junior security auditor om hun website te controleren. Kun jij de zwakke plekken vinden voordat een hacker dat doet?',
         missionObjective: 'Analyseer een website op veelvoorkomende kwetsbaarheden en schrijf een professioneel beveiligingsrapport.',
@@ -6034,7 +6034,7 @@ BELANGRIJK:
         educationLevels: ['havo', 'vwo'] as EducationLevel[],
         title: 'Digital Forensics',
         icon: <FileSearch size={28} />,
-        color: '#2563EB',
+        color: '#0B453F',
         description: 'Analyseer digitale sporen en reconstrueer wat er is gebeurd.',
         problemScenario: 'Op het netwerk van een ziekenhuis zijn vreemde activiteiten gedetecteerd. Patiëntgegevens zijn mogelijk ingezien door een onbevoegde persoon. De politie schakelt jou in als digitaal forensisch analist om de logbestanden te onderzoeken, een tijdlijn te maken en te achterhalen wat er precies is gebeurd.',
         missionObjective: 'Lees logbestanden, reconstrueer een tijdlijn van gebeurtenissen en trek een onderbouwde conclusie.',
@@ -6107,7 +6107,7 @@ BELANGRIJK:
         educationLevels: ['havo', 'vwo'] as EducationLevel[],
         title: 'Security Review',
         icon: <RotateCcw size={28} />,
-        color: '#6B6B66',
+        color: '#445865',
         // isReview: true
         description: 'Test je kennis van cybersecurity-concepten en bevestig wat je hebt geleerd.',
         problemScenario: 'Het is tijd voor een security review. De afgelopen weken heb je gewerkt als cyber detective, encryptie-expert, phishing fighter, security auditor en forensisch analist. Nu moet je bewijzen dat je de kernconcepten echt begrijpt door scenario\'s te analyseren en begrippen helder uit te leggen.',
@@ -6188,7 +6188,7 @@ BELANGRIJK:
     educationLevels: ['havo', 'vwo'] as EducationLevel[],
     title: 'Startup Simulator',
     icon: <Rocket size={28} />,
-    color: '#EC4899',
+    color: '#D97848',
     description: 'Ontwikkel een tech-startup idee dat een echt probleem oplost.',
     problemScenario: 'Een investeerder geeft jou 3 minuten om je startup-idee te pitchen. Je hebt een briljant technologie-concept, maar zonder een strak businessmodel en een overtuigend verhaal krijg je geen cent. De klok tikt — bouw je startup van nul tot pitch-ready.',
     missionObjective: 'Bedenk een tech-startup, ontwerp het businessmodel en bereid een overtuigende pitch voor.',
@@ -6256,7 +6256,7 @@ BELANGRIJK:
     educationLevels: ['havo', 'vwo'] as EducationLevel[],
     title: 'Policy Maker',
     icon: <Scale size={28} />,
-    color: '#7C3AED',
+    color: '#0B453F',
     description: 'Schrijf tech-beleid dat eerlijk en effectief is voor iedereen.',
     problemScenario: 'De gemeenteraad wil gezichtsherkenning invoeren op het schoolplein om pesten te bestrijden. De helft van de ouders is enthousiast, de andere helft maakt zich zorgen over privacy. Jij wordt aangesteld als beleidsadviseur om een eerlijk en werkbaar beleid te schrijven.',
     missionObjective: 'Analyseer een technologisch dilemma, schrijf een beleidsvoorstel en beoordeel de impact.',
@@ -6325,7 +6325,7 @@ BELANGRIJK:
     educationLevels: ['havo', 'vwo'] as EducationLevel[],
     title: 'Innovation Lab',
     icon: <Lightbulb size={28} />,
-    color: '#F59E0B',
+    color: '#D7C95F',
     description: 'Bedenk een technologische oplossing voor een maatschappelijk probleem.',
     problemScenario: 'De VN heeft een oproep gedaan: ze zoeken jongeren met frisse ideeën om de Sustainable Development Goals (SDGs) te versnellen met technologie. Jij bent geselecteerd voor het Innovation Lab en moet binnen één sessie een werkbaar prototype-concept presenteren.',
     missionObjective: 'Onderzoek een maatschappelijk probleem, ontwerp een tech-oplossing en presenteer je prototype-concept.',
@@ -6394,7 +6394,7 @@ BELANGRIJK:
     educationLevels: ['havo', 'vwo'] as EducationLevel[],
     title: 'Digital Divide Researcher',
     icon: <Globe size={28} />,
-    color: '#2563EB',
+    color: '#0B453F',
     description: 'Onderzoek digitale ongelijkheid en kom met aanbevelingen.',
     problemScenario: 'Een mensenrechtenorganisatie heeft jou ingehuurd als onderzoeker. Uit eerste cijfers blijkt dat miljoenen mensen in Nederland geen gelijke toegang hebben tot digitale middelen. Sommige wijken hebben nauwelijks internet, ouderen kunnen niet internetbankieren, en kinderen uit arme gezinnen missen laptops voor school. Jij moet uitzoeken hoe groot het probleem is.',
     missionObjective: 'Verzamel data over digitale ongelijkheid, analyseer de oorzaken en doe concrete aanbevelingen.',
@@ -6463,7 +6463,7 @@ BELANGRIJK:
     educationLevels: ['havo', 'vwo'] as EducationLevel[],
     title: 'Tech Impact Analyst',
     icon: <Search size={28} />,
-    color: '#059669',
+    color: '#5F947D',
     description: 'Maak een grondige impact-analyse van een specifieke technologie.',
     problemScenario: 'Een grote techgigant wil een nieuw AI-systeem lanceren in Nederland. De Tweede Kamer wil eerst een onafhankelijke impact-analyse voordat ze toestemming geven. Jij bent de analist die moet uitzoeken wat de effecten zijn op de samenleving — positief én negatief.',
     missionObjective: 'Kies een technologie, analyseer de maatschappelijke impact en schrijf een helder rapport.',
@@ -6532,7 +6532,7 @@ BELANGRIJK:
     educationLevels: ['havo', 'vwo'] as EducationLevel[],
     title: 'Impact Review',
     icon: <RotateCcw size={28} />,
-    color: '#6B6B66',
+    color: '#445865',
     description: 'Herhaal en verdiep je kennis over maatschappelijke impact van technologie.',
     problemScenario: 'Het is bijna examentijd en het Impact Archief is gehackt! Alle samenvattingen over maatschappelijke impact van technologie zijn door elkaar gehusseld. Alleen iemand die de stof écht begrijpt kan de concepten herstellen en de cases opnieuw analyseren.',
     missionObjective: 'Bewijs je kennis door kernbegrippen te herhalen, cases te analyseren en alles samen te vatten.',
@@ -6632,7 +6632,7 @@ BELANGRIJK:
     educationLevels: ['havo', 'vwo'] as EducationLevel[],
     title: 'Portfolio Builder',
     icon: <Sparkles size={28} />,
-    color: '#7C3AED',
+    color: '#0B453F',
     description: 'Bouw een digitaal portfolio dat laat zien wie jij bent en wat je kunt.',
     problemScenario: 'Je hebt drie jaar lang projecten gemaakt, vaardigheden ontwikkeld en lessen geleerd. Maar als iemand je vraagt: "Wat kun jij eigenlijk?" heb je geen plek om het te laten zien. Een digitaal portfolio brengt al jouw beste werk samen op één plek — klaar om te delen met docenten, vervolgopleidingen of zelfs werkgevers.',
     missionObjective: 'Stel een professioneel digitaal portfolio samen dat jouw beste werk uit drie jaar informatica bundelt. Selecteer je sterkste projecten, geef ze context en ontwerp een presentatie die indruk maakt.',
@@ -6698,7 +6698,7 @@ Verifieer elke stap door de leerling te vragen wat ze hebben gedaan en bewijs te
     educationLevels: ['havo', 'vwo'] as EducationLevel[],
     title: 'Research Project',
     icon: <Search size={28} />,
-    color: '#2563EB',
+    color: '#0B453F',
     description: 'Voer een klein wetenschappelijk onderzoek uit over een digitaal onderwerp.',
     problemScenario: 'Er wordt van alles beweerd over technologie: "AI neemt onze banen over", "Social media maakt je depressief", "Hackers kunnen alles kraken". Maar klopt dat eigenlijk? Alleen met echt onderzoek kom je achter de waarheid. Jij gaat als onderzoeker een prangende digitale vraag beantwoorden met feiten.',
     missionObjective: 'Formuleer een onderzoeksvraag over een digitaal thema, verzamel data via betrouwbare bronnen en trek een onderbouwde conclusie.',
@@ -6765,7 +6765,7 @@ Verifieer elke stap door de leerling te vragen hun werk te delen (onderzoeksvraa
     educationLevels: ['havo', 'vwo'] as EducationLevel[],
     title: 'Prototype Developer',
     icon: <Code2 size={28} />,
-    color: '#059669',
+    color: '#5F947D',
     description: 'Bouw een werkend prototype van een digitaal product.',
     problemScenario: 'Je hebt een briljant idee voor een app, website of tool. Maar een idee alleen is niet genoeg — je moet het bouwen, testen en verbeteren. In de echte tech-wereld draait alles om prototypes: snelle versies die je kunt testen en verbeteren. Kun jij van idee naar werkend product gaan?',
     missionObjective: 'Ontwerp en bouw een werkend prototype van een digitaal product. Test het met echte gebruikers en verbeter het op basis van hun feedback.',
@@ -6774,20 +6774,20 @@ Verifieer elke stap door de leerling te vragen hun werk te delen (onderzoeksvraa
     examplePrompt: 'Ik wil een app maken die leerlingen helpt met huiswerk plannen. Waar begin ik met het prototype?',
     visualPreview: (
         <div className="w-full h-full bg-gradient-to-br from-emerald-600 to-green-900 flex flex-col items-center justify-center relative overflow-hidden p-4">
-            <div className="absolute top-4 left-4 w-16 h-16 bg-emerald-400/20 rounded-full blur-xl"></div>
+            <div className="absolute top-4 left-4 w-16 h-16 bg-lab-sage/20 rounded-full blur-xl"></div>
             <div className="bg-white/10 backdrop-blur-md rounded-2xl p-5 border border-white/20 w-full max-w-[180px]">
                 <Code2 size={32} className="text-white mb-3" />
                 <div className="space-y-2 mb-3">
                     <div className="flex gap-1">
                         <div className="w-3 h-3 rounded-full bg-red-400/60"></div>
-                        <div className="w-3 h-3 rounded-full bg-yellow-400/60"></div>
+                        <div className="w-3 h-3 rounded-full bg-lab-gold/60"></div>
                         <div className="w-3 h-3 rounded-full bg-green-400/60"></div>
                     </div>
                     <div className="h-2 bg-white/20 rounded-full w-full"></div>
                     <div className="h-2 bg-white/15 rounded-full w-4/5"></div>
                     <div className="h-2 bg-white/20 rounded-full w-3/5"></div>
                 </div>
-                <div className="h-8 bg-emerald-400/30 rounded-lg border border-emerald-400/40"></div>
+                <div className="h-8 bg-lab-sage/30 rounded-lg border border-lab-sage/40"></div>
             </div>
         </div>
     ),
@@ -6836,7 +6836,7 @@ Verifieer elke stap door de leerling te vragen hun werk te laten zien (ontwerp, 
     educationLevels: ['havo', 'vwo'] as EducationLevel[],
     title: 'Pitch Perfect',
     icon: <Rocket size={28} />,
-    color: '#EC4899',
+    color: '#D97848',
     description: 'Pitch je project overtuigend aan een jury.',
     problemScenario: 'Je hebt wekenlang gewerkt aan je meesterproef. Het resultaat is geweldig. Maar nu moet je het verkopen. Een jury van docenten wacht op je presentatie — en je hebt maar 5 minuten. Kun jij ze overtuigen dat jouw project ertoe doet? In de echte wereld draait succes niet alleen om wat je maakt, maar om hoe je het presenteert.',
     missionObjective: 'Bereid een overtuigende pitch van maximaal 5 minuten voor waarin je je meesterproef-project presenteert. Oefen, presenteer en verwerk feedback.',
@@ -6904,7 +6904,7 @@ Verifieer elke stap door de leerling te vragen hun werk te delen (pitch-structuu
     educationLevels: ['havo', 'vwo'] as EducationLevel[],
     title: 'Reflection Report',
     icon: <BookOpen size={28} />,
-    color: '#F59E0B',
+    color: '#D7C95F',
     description: 'Schrijf een reflectieverslag over je leerproces van drie jaar informatica.',
     problemScenario: 'Drie jaar informatica zitten erop. Je hebt geprogrammeerd, ontworpen, onderzocht en gepresenteerd. Maar wat heb je eigenlijk geleerd? En hoe ga je deze kennis gebruiken in de toekomst? Een goed reflectieverslag dwingt je om stil te staan bij je groei — en dat is precies wat vervolgopleidingen en werkgevers willen zien.',
     missionObjective: 'Schrijf een reflectieverslag waarin je je leerproces beschrijft, je sterke en zwakke punten analyseert en vooruitkijkt naar de toekomst.',
@@ -6913,7 +6913,7 @@ Verifieer elke stap door de leerling te vragen hun werk te delen (pitch-structuu
     examplePrompt: 'Ik vind het lastig om over mezelf te schrijven. Hoe begin ik met mijn reflectieverslag?',
     visualPreview: (
         <div className="w-full h-full bg-gradient-to-br from-amber-500 to-orange-700 flex flex-col items-center justify-center relative overflow-hidden p-4">
-            <div className="absolute bottom-6 right-6 w-24 h-24 bg-amber-300/20 rounded-full blur-2xl"></div>
+            <div className="absolute bottom-6 right-6 w-24 h-24 bg-lab-gold/20 rounded-full blur-2xl"></div>
             <div className="bg-white/10 backdrop-blur-md rounded-2xl p-5 border border-white/20 w-full max-w-[180px]">
                 <BookOpen size={32} className="text-white mb-3" />
                 <div className="space-y-2">
@@ -6971,7 +6971,7 @@ Verifieer elke stap door de leerling te vragen hun tekst te delen. Geef specifie
     educationLevels: ['havo', 'vwo'] as EducationLevel[],
     title: 'De Meesterproef',
     icon: <Trophy size={28} />,
-    color: '#DC2626',
+    color: '#D97848',
     description: 'De grote meesterproef: een geïntegreerd eindproject dat alles samenbrengt wat je in drie jaar hebt geleerd.',
     problemScenario: 'Dit is het moment. Drie jaar informatica komen samen in één groot eindproject: de Meesterproef. Je moet alles laten zien wat je kunt — onderzoeken, ontwerpen, bouwen, presenteren en reflecteren. Dit is geen gewone opdracht. Dit is jouw bewijs dat je klaar bent voor de volgende stap. Kun jij een project neerzetten waar je trots op bent?',
     missionObjective: 'Schrijf een projectvoorstel, voer je meesterproef-project uit en verdedig het voor een jury. Dit is je eindproject: laat zien wat je in huis hebt.',
@@ -6980,9 +6980,9 @@ Verifieer elke stap door de leerling te vragen hun tekst te delen. Geef specifie
     examplePrompt: 'Ik wil mijn meesterproef doen over het bouwen van een app die voedselverspilling tegengaat. Hoe schrijf ik een goed projectvoorstel?',
     visualPreview: (
         <div className="w-full h-full bg-gradient-to-br from-red-600 to-red-900 flex flex-col items-center justify-center relative overflow-hidden p-4">
-            <div className="absolute top-4 left-1/2 -translate-x-1/2 w-32 h-32 bg-yellow-400/10 rounded-full blur-3xl"></div>
+            <div className="absolute top-4 left-1/2 -translate-x-1/2 w-32 h-32 bg-lab-gold/10 rounded-full blur-3xl"></div>
             <div className="bg-white/10 backdrop-blur-md rounded-2xl p-5 border border-white/20 w-full max-w-[180px] relative">
-                <div className="absolute -top-3 -right-3 w-8 h-8 bg-yellow-400 rounded-full flex items-center justify-center">
+                <div className="absolute -top-3 -right-3 w-8 h-8 bg-lab-gold rounded-full flex items-center justify-center">
                     <Trophy size={16} className="text-red-900" />
                 </div>
                 <Trophy size={32} className="text-white mb-3" />

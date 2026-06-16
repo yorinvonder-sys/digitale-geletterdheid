@@ -14,46 +14,46 @@ const IconCheck = () => (
 
 export const IctTechnisch: React.FC = () => {
     return (
-        <div className="min-h-screen bg-slate-50 py-12 px-6">
+        <div className="min-h-screen bg-lab-muted py-12 px-6">
             <div className="max-w-4xl mx-auto">
-                <a href="/ict" className="inline-flex items-center gap-2 text-slate-500 hover:text-indigo-600 font-medium mb-12 transition-colors min-h-[44px] py-2">
+                <a href="/ict" className="inline-flex items-center gap-2 text-lab-muted hover:text-indigo-600 font-medium mb-12 transition-colors min-h-[44px] py-2">
                     <IconArrowLeft />
                     Terug naar overzicht
                 </a>
 
-                <h1 className="text-4xl font-bold text-slate-900 mb-6">Technische Vereisten & Implementatie</h1>
-                <p className="text-lg text-slate-600 mb-12 max-w-2xl">
+                <h1 className="text-4xl font-bold text-lab-muted mb-6">Technische Vereisten & Implementatie</h1>
+                <p className="text-lg text-lab-muted mb-12 max-w-2xl">
                     DGSkills is een web-based platform. Dit betekent: geen installatie, 
                     geen plugins en minimale configuratie voor de ICT-afdeling.
                 </p>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-12 mb-16">
                     <div>
-                        <h2 className="text-xl font-bold text-slate-900 mb-6 flex items-center gap-2">
+                        <h2 className="text-xl font-bold text-lab-muted mb-6 flex items-center gap-2">
                             <span className="w-8 h-8 rounded-lg bg-indigo-600 text-white flex items-center justify-center text-sm">1</span>
                             Systeemvereisten
                         </h2>
-                        <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm">
+                        <div className="bg-white rounded-2xl p-6 border border-lab-muted shadow-sm">
                             <ul className="space-y-4">
                                 <li className="flex items-start gap-3">
-                                    <div className="mt-1 text-emerald-500"><IconCheck /></div>
+                                    <div className="mt-1 text-lab-sage"><IconCheck /></div>
                                     <div>
-                                        <p className="font-bold text-slate-900 text-sm">Ondersteunde Browsers</p>
-                                        <p className="text-slate-500 text-xs">Recentste 2 versies van Chrome, Edge, Safari en Firefox.</p>
+                                        <p className="font-bold text-lab-muted text-sm">Ondersteunde Browsers</p>
+                                        <p className="text-lab-muted text-xs">Recentste 2 versies van Chrome, Edge, Safari en Firefox.</p>
                                     </div>
                                 </li>
                                 <li className="flex items-start gap-3">
-                                    <div className="mt-1 text-emerald-500"><IconCheck /></div>
+                                    <div className="mt-1 text-lab-sage"><IconCheck /></div>
                                     <div>
-                                        <p className="font-bold text-slate-900 text-sm">Devices</p>
-                                        <p className="text-slate-500 text-xs">Chromebooks, iPads (iPadOS 15+), Windows 10/11 en macOS.</p>
+                                        <p className="font-bold text-lab-muted text-sm">Devices</p>
+                                        <p className="text-lab-muted text-xs">Chromebooks, iPads (iPadOS 15+), Windows 10/11 en macOS.</p>
                                     </div>
                                 </li>
                                 <li className="flex items-start gap-3">
-                                    <div className="mt-1 text-emerald-500"><IconCheck /></div>
+                                    <div className="mt-1 text-lab-sage"><IconCheck /></div>
                                     <div>
-                                        <p className="font-bold text-slate-900 text-sm">Geen installatie</p>
-                                        <p className="text-slate-500 text-xs">Werkt volledig in de browser. Geen MSI-pakketten of App Store downloads nodig.</p>
+                                        <p className="font-bold text-lab-muted text-sm">Geen installatie</p>
+                                        <p className="text-lab-muted text-xs">Werkt volledig in de browser. Geen MSI-pakketten of App Store downloads nodig.</p>
                                     </div>
                                 </li>
                             </ul>
@@ -61,31 +61,31 @@ export const IctTechnisch: React.FC = () => {
                     </div>
 
                     <div>
-                        <h2 className="text-xl font-bold text-slate-900 mb-6 flex items-center gap-2">
+                        <h2 className="text-xl font-bold text-lab-muted mb-6 flex items-center gap-2">
                             <span className="w-8 h-8 rounded-lg bg-indigo-600 text-white flex items-center justify-center text-sm">2</span>
                             Netwerk & Firewall
                         </h2>
-                        <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm">
+                        <div className="bg-white rounded-2xl p-6 border border-lab-muted shadow-sm">
                             <ul className="space-y-4">
                                 <li className="flex items-start gap-3">
-                                    <div className="mt-1 text-emerald-500"><IconCheck /></div>
+                                    <div className="mt-1 text-lab-sage"><IconCheck /></div>
                                     <div>
-                                        <p className="font-bold text-slate-900 text-sm">Protocol</p>
-                                        <p className="text-slate-500 text-xs">HTTPS over poort 443. Al het verkeer is versleuteld via TLS 1.3.</p>
+                                        <p className="font-bold text-lab-muted text-sm">Protocol</p>
+                                        <p className="text-lab-muted text-xs">HTTPS over poort 443. Al het verkeer is versleuteld via TLS 1.3.</p>
                                     </div>
                                 </li>
                                 <li className="flex items-start gap-3">
-                                    <div className="mt-1 text-emerald-500"><IconCheck /></div>
+                                    <div className="mt-1 text-lab-sage"><IconCheck /></div>
                                     <div>
-                                        <p className="font-bold text-slate-900 text-sm">Domeinen op de allowlist</p>
-                                        <p className="text-slate-500 text-xs">*.dgskills.app, *.supabase.co, *.googleapis.com.</p>
+                                        <p className="font-bold text-lab-muted text-sm">Domeinen op de allowlist</p>
+                                        <p className="text-lab-muted text-xs">*.dgskills.app, *.supabase.co, *.googleapis.com.</p>
                                     </div>
                                 </li>
                                 <li className="flex items-start gap-3">
-                                    <div className="mt-1 text-emerald-500"><IconCheck /></div>
+                                    <div className="mt-1 text-lab-sage"><IconCheck /></div>
                                     <div>
-                                        <p className="font-bold text-slate-900 text-sm">Bandbreedte</p>
-                                        <p className="text-slate-500 text-xs">Geoptimaliseerd voor gemiddelde schoolverbindingen. Laag verbruik per leerling.</p>
+                                        <p className="font-bold text-lab-muted text-sm">Bandbreedte</p>
+                                        <p className="text-lab-muted text-xs">Geoptimaliseerd voor gemiddelde schoolverbindingen. Laag verbruik per leerling.</p>
                                     </div>
                                 </li>
                             </ul>

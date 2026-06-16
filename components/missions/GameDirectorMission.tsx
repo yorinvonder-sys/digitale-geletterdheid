@@ -279,11 +279,11 @@ export const GameDirectorMission: React.FC<GameDirectorProps> = ({ onComplete, o
         const height = canvasRef.current.height;
 
         // Clear
-        ctx.fillStyle = '#1A1A19'; // Dark warm background
+        ctx.fillStyle = '#08283B'; // Dark warm background
         ctx.fillRect(0, 0, width, height);
 
         // Grid pattern
-        ctx.strokeStyle = '#3D3D38';
+        ctx.strokeStyle = '#445865';
         ctx.lineWidth = 1;
         for (let x = 0; x < width; x += 40) {
             ctx.beginPath();
@@ -299,9 +299,9 @@ export const GameDirectorMission: React.FC<GameDirectorProps> = ({ onComplete, o
         }
 
         // Ground
-        ctx.fillStyle = '#22c55e';
+        ctx.fillStyle = '#5F947D';
         ctx.fillRect(0, height - 40, width, 40);
-        ctx.fillStyle = '#16a34a';
+        ctx.fillStyle = '#5F947D';
         ctx.fillRect(0, height - 40, width, 4);
 
         // Draw maze walls
@@ -310,10 +310,10 @@ export const GameDirectorMission: React.FC<GameDirectorProps> = ({ onComplete, o
             ctx.fillStyle = 'rgba(0,0,0,0.3)';
             ctx.fillRect(wall.x + 4, wall.y + 4, wall.w, wall.h);
             // Wall body
-            ctx.fillStyle = '#dc2626';
+            ctx.fillStyle = '#D97848';
             ctx.fillRect(wall.x, wall.y, wall.w, wall.h);
             // Wall highlight
-            ctx.fillStyle = '#ef4444';
+            ctx.fillStyle = '#D97848';
             ctx.fillRect(wall.x, wall.y, wall.w, 4);
             // Wall stripe pattern
             ctx.fillStyle = '#b91c1c';
@@ -330,13 +330,13 @@ export const GameDirectorMission: React.FC<GameDirectorProps> = ({ onComplete, o
         ctx.arc(goal.x + goal.w / 2, goal.y + goal.h / 2, 40, 0, Math.PI * 2);
         ctx.fill();
         // Goal base
-        ctx.fillStyle = '#22c55e';
+        ctx.fillStyle = '#5F947D';
         ctx.fillRect(goal.x, goal.y, goal.w, goal.h);
         // Goal flag pole
-        ctx.fillStyle = '#166534';
+        ctx.fillStyle = '#5F947D';
         ctx.fillRect(goal.x + 5, goal.y - 60, 6, 60);
         // Goal flag
-        ctx.fillStyle = '#fbbf24';
+        ctx.fillStyle = '#D7C95F';
         ctx.beginPath();
         ctx.moveTo(goal.x + 11, goal.y - 60);
         ctx.lineTo(goal.x + 45, goal.y - 45);
@@ -458,7 +458,7 @@ export const GameDirectorMission: React.FC<GameDirectorProps> = ({ onComplete, o
         ctx.fillRect(px + 4, height - 38, 24, 6);
 
         // Body
-        ctx.fillStyle = '#D97757';
+        ctx.fillStyle = '#D97848';
         ctx.fillRect(px + 4, py + 16, 24, 24);
 
         // Head
@@ -466,7 +466,7 @@ export const GameDirectorMission: React.FC<GameDirectorProps> = ({ onComplete, o
         ctx.fillRect(px + 6, py, 20, 20);
 
         // Eyes
-        ctx.fillStyle = '#3D3D38';
+        ctx.fillStyle = '#445865';
         if (p.facingRight) {
             ctx.fillRect(px + 18, py + 6, 4, 4);
             ctx.fillRect(px + 24, py + 6, 4, 4);
@@ -476,7 +476,7 @@ export const GameDirectorMission: React.FC<GameDirectorProps> = ({ onComplete, o
         }
 
         // Legs
-        ctx.fillStyle = '#3D3D38';
+        ctx.fillStyle = '#445865';
         ctx.fillRect(px + 6, py + 40, 8, 8);
         ctx.fillRect(px + 18, py + 40, 8, 8);
 
@@ -487,14 +487,14 @@ export const GameDirectorMission: React.FC<GameDirectorProps> = ({ onComplete, o
 
         // Goal indicator arrow when not visible
         if (goal.x > width - 100) {
-            ctx.fillStyle = '#22c55e';
+            ctx.fillStyle = '#5F947D';
             ctx.font = 'bold 14px Inter, sans-serif';
             ctx.fillText('🏁 →', width - 60, 28);
         }
 
         // Challenge indicator
         if (currentChallenge) {
-            ctx.fillStyle = '#fbbf24';
+            ctx.fillStyle = '#D7C95F';
             ctx.font = 'bold 12px Inter, sans-serif';
             ctx.fillText(`🎯 ${currentChallenge.title}`, 16, height - 52);
         }
@@ -627,7 +627,7 @@ export const GameDirectorMission: React.FC<GameDirectorProps> = ({ onComplete, o
 
 
     return (
-        <div className="bg-[#FAF9F0] h-dvh flex flex-col text-[#1A1A19] font-['Outfit',system-ui,sans-serif] relative overflow-y-auto">
+        <div className="bg-[#FCF6EA] h-dvh flex flex-col text-[#08283B] font-['Outfit',system-ui,sans-serif] relative overflow-y-auto">
 
             {showConclusion && (
                 <MissionConclusion
@@ -646,24 +646,24 @@ export const GameDirectorMission: React.FC<GameDirectorProps> = ({ onComplete, o
             )}
 
             {/* Header */}
-            <header className="bg-white border-b border-[#E8E6DF] px-6 py-2 flex items-center justify-between shrink-0 min-h-[4rem]">
+            <header className="bg-white border-b border-[#E7D8BD] px-6 py-2 flex items-center justify-between shrink-0 min-h-[4rem]">
                 <div className="flex items-center gap-6">
                     <button
                         onClick={onBack}
-                        className="flex items-center gap-2 text-[#6B6B66] hover:text-[#D97757] transition-all duration-300 font-bold text-xs uppercase tracking-widest"
+                        className="flex items-center gap-2 text-[#445865] hover:text-[#D97848] transition-all duration-300 font-bold text-xs uppercase tracking-widest"
                     >
                         <ArrowLeft size={16} /> Terug
                     </button>
-                    <div className="h-8 w-px bg-[#E8E6DF]"></div>
+                    <div className="h-8 w-px bg-[#E7D8BD]"></div>
                     <div className="flex items-center gap-3">
-                        <div className="p-2 bg-[#D97757]/10 text-[#D97757] rounded-xl">
+                        <div className="p-2 bg-[#D97848]/10 text-[#D97848] rounded-xl">
                             <Settings2 size={20} />
                         </div>
                         <div>
-                            <h1 className="text-sm font-black uppercase tracking-tight flex items-center gap-2 font-['Newsreader',Georgia,serif] text-[#1A1A19]">
-                                Game Director <Sparkles size={14} className="text-[#D97757]" />
+                            <h1 className="text-sm font-black uppercase tracking-tight flex items-center gap-2 font-['Newsreader',Georgia,serif] text-[#08283B]">
+                                Game Director <Sparkles size={14} className="text-[#D97848]" />
                             </h1>
-                            <p className="text-[10px] text-[#6B6B66] uppercase tracking-widest font-bold">
+                            <p className="text-[10px] text-[#445865] uppercase tracking-widest font-bold">
                                 Visueel Programmeren
                             </p>
                         </div>
@@ -673,17 +673,17 @@ export const GameDirectorMission: React.FC<GameDirectorProps> = ({ onComplete, o
                 {/* Challenge Banner - Integrated in Header */}
                 {currentChallenge && (
                     <div className={`flex-1 mx-8 px-4 py-2 rounded-2xl flex items-center justify-between transition-all duration-500 ${challengeComplete
-                        ? (successPulse ? 'bg-[#10B981] scale-105 shadow-[0_0_30px_rgba(16,185,129,0.4)]' : 'bg-[#10B981]/10 border border-[#10B981]/30')
-                        : 'bg-[#FAF9F0] border border-[#E8E6DF]'
+                        ? (successPulse ? 'bg-[#5F947D] scale-105 shadow-[0_0_30px_rgba(16,185,129,0.4)]' : 'bg-[#5F947D]/10 border border-[#5F947D]/30')
+                        : 'bg-[#FCF6EA] border border-[#E7D8BD]'
                         }`}>
                         <div className="flex items-center gap-4">
                             <div className="flex items-center gap-2 shrink-0">
                                 {challengeComplete ? (
-                                    <Trophy size={18} className="text-[#10B981]" />
+                                    <Trophy size={18} className="text-[#5F947D]" />
                                 ) : (
                                     <span className="text-lg">🎯</span>
                                 )}
-                                <span className="font-bold text-xs text-[#6B6B66] uppercase tracking-widest">
+                                <span className="font-bold text-xs text-[#445865] uppercase tracking-widest">
                                     Puzzel {progress.currentChallengeIndex + 1}/{CHALLENGES.length}
                                 </span>
                                 <div className="flex items-center gap-1 ml-1">
@@ -692,20 +692,20 @@ export const GameDirectorMission: React.FC<GameDirectorProps> = ({ onComplete, o
                                             key={i}
                                             className={`w-2 h-2 rounded-full transition-all duration-300 ${
                                                 i < progress.currentChallengeIndex
-                                                    ? 'bg-[#10B981]'
+                                                    ? 'bg-[#5F947D]'
                                                     : i === progress.currentChallengeIndex
-                                                        ? (challengeComplete ? 'bg-[#10B981] scale-125' : 'bg-[#D97757] scale-125')
-                                                        : 'bg-[#E8E6DF]'
+                                                        ? (challengeComplete ? 'bg-[#5F947D] scale-125' : 'bg-[#D97848] scale-125')
+                                                        : 'bg-[#E7D8BD]'
                                             }`}
                                         />
                                     ))}
                                 </div>
                             </div>
-                            <h3 className="font-bold text-sm text-[#1A1A19] shrink-0 font-['Newsreader',Georgia,serif]">
+                            <h3 className="font-bold text-sm text-[#08283B] shrink-0 font-['Newsreader',Georgia,serif]">
                                 {currentChallenge.title}
                             </h3>
                             <span
-                                className="hidden xl:inline text-xs text-[#6B6B66] border-l border-[#E8E6DF] pl-4 whitespace-normal leading-tight max-w-2xl"
+                                className="hidden xl:inline text-xs text-[#445865] border-l border-[#E7D8BD] pl-4 whitespace-normal leading-tight max-w-2xl"
                                 title={currentChallenge.description}
                             >
                                 {currentChallenge.description}
@@ -716,14 +716,14 @@ export const GameDirectorMission: React.FC<GameDirectorProps> = ({ onComplete, o
                             {challengeComplete ? (
                                 <button
                                     onClick={handleNextChallenge}
-                                    className="px-3 py-1.5 bg-[#10B981] hover:bg-[#059669] text-white rounded-full font-bold text-xs transition-all duration-300 flex items-center gap-1 shadow-lg shadow-[#10B981]/20"
+                                    className="px-3 py-1.5 bg-[#5F947D] hover:bg-[#5F947D] text-white rounded-full font-bold text-xs transition-all duration-300 flex items-center gap-1 shadow-lg shadow-[#5F947D]/20"
                                 >
                                     Volgende <ArrowLeft size={12} className="rotate-180" />
                                 </button>
                             ) : (
                                 <button
                                     onClick={() => setShowHint(!showHint)}
-                                    className="flex items-center gap-1 text-[10px] text-[#D97757] hover:text-[#C46849] font-bold px-2 py-1.5 bg-white hover:bg-[#FAF9F0] rounded-full transition-all duration-300 border border-[#D97757]/20"
+                                    className="flex items-center gap-1 text-[10px] text-[#D97848] hover:text-[#D97848] font-bold px-2 py-1.5 bg-white hover:bg-[#FCF6EA] rounded-full transition-all duration-300 border border-[#D97848]/20"
                                 >
                                     <HelpCircle size={12} /> {showHint ? 'Verberg Hint' : 'Hint'}
                                 </button>
@@ -732,7 +732,7 @@ export const GameDirectorMission: React.FC<GameDirectorProps> = ({ onComplete, o
                             {/* 'I am stuck' button - Always visible/accessible helper */}
                             <button
                                 onClick={() => setIsChatOpen(true)}
-                                className="flex items-center gap-1 text-[10px] text-white font-bold px-3 py-1.5 bg-[#D97757] hover:bg-[#C46849] rounded-full transition-all duration-300 shadow-lg shadow-[#D97757]/20 focus-visible:ring-2 focus-visible:ring-[#D97757]"
+                                className="flex items-center gap-1 text-[10px] text-white font-bold px-3 py-1.5 bg-[#D97848] hover:bg-[#D97848] rounded-full transition-all duration-300 shadow-lg shadow-[#D97848]/20 focus-visible:ring-2 focus-visible:ring-[#D97848]"
                             >
                                 <Sparkles size={12} /> Hulp nodig?
                             </button>
@@ -759,7 +759,7 @@ export const GameDirectorMission: React.FC<GameDirectorProps> = ({ onComplete, o
             />
 
             {showHint && !challengeComplete && currentChallenge && (
-                <div className="bg-[#D97757]/10 border-b border-[#D97757]/20 px-6 py-2 text-center text-xs font-medium text-[#D97757] animate-in slide-in-from-top-2">
+                <div className="bg-[#D97848]/10 border-b border-[#D97848]/20 px-6 py-2 text-center text-xs font-medium text-[#D97848] animate-in slide-in-from-top-2">
                     💡 <span className="font-bold">HINT:</span> {currentChallenge.hint}
                 </div>
             )}
@@ -768,13 +768,13 @@ export const GameDirectorMission: React.FC<GameDirectorProps> = ({ onComplete, o
             <div className="flex-1 flex overflow-hidden">
 
                 {/* Left Panel: Block Palette */}
-                <div className="w-64 bg-[#FAF9F0] border-r border-[#E8E6DF] flex flex-col shrink-0 z-10 p-2">
+                <div className="w-64 bg-[#FCF6EA] border-r border-[#E7D8BD] flex flex-col shrink-0 z-10 p-2">
                     <BlockPalette onDragStart={setDraggingBlock} />
                 </div>
 
                 {/* Middle Panel: Workspace */}
-                <div className="flex-1 bg-[#FAF9F0] relative flex flex-col min-w-[300px] p-2">
-                    <div className="absolute inset-0 bg-[linear-gradient(#E8E6DF_1px,transparent_1px),linear-gradient(90deg,#E8E6DF_1px,transparent_1px)] bg-[size:20px_20px] opacity-40 pointer-events-none"></div>
+                <div className="flex-1 bg-[#FCF6EA] relative flex flex-col min-w-[300px] p-2">
+                    <div className="absolute inset-0 bg-[linear-gradient(#E7D8BD_1px,transparent_1px),linear-gradient(90deg,#E7D8BD_1px,transparent_1px)] bg-[size:20px_20px] opacity-40 pointer-events-none"></div>
                     <CodeWorkspace
                         blocks={blocks}
                         onBlocksChange={setBlocks}
@@ -785,22 +785,22 @@ export const GameDirectorMission: React.FC<GameDirectorProps> = ({ onComplete, o
                 </div>
 
                 {/* Right Panel: Game Preview (Larger!) */}
-                <div className="w-[40%] min-w-[500px] max-w-[800px] bg-white border-l border-[#E8E6DF] flex flex-col shadow-2xl z-20">
-                    <div className="p-4 bg-[#FAF9F0] border-b border-[#E8E6DF] flex justify-between items-center">
+                <div className="w-[40%] min-w-[500px] max-w-[800px] bg-white border-l border-[#E7D8BD] flex flex-col shadow-2xl z-20">
+                    <div className="p-4 bg-[#FCF6EA] border-b border-[#E7D8BD] flex justify-between items-center">
                         <div className="flex items-center gap-2">
-                            <div className="w-2 h-2 rounded-full bg-[#10B981] animate-pulse"></div>
-                            <span className="text-xs font-bold text-[#3D3D38] uppercase tracking-wider">Game Preview</span>
+                            <div className="w-2 h-2 rounded-full bg-[#5F947D] animate-pulse"></div>
+                            <span className="text-xs font-bold text-[#445865] uppercase tracking-wider">Game Preview</span>
                         </div>
-                        <div className="text-xs font-mono text-[#6B6B66]">
+                        <div className="text-xs font-mono text-[#445865]">
                             {canvasRef.current ? `${canvasRef.current.width}x${canvasRef.current.height}` : '800x600'}
                         </div>
                     </div>
 
-                    <div className="flex-1 p-6 flex flex-col gap-4 overflow-y-auto bg-[#FAF9F0] relative">
+                    <div className="flex-1 p-6 flex flex-col gap-4 overflow-y-auto bg-[#FCF6EA] relative">
                         {/* Game Screen Container - Maintains Aspect Ratio but fills space */}
-                        <div className="flex-1 relative bg-[#1A1A19] rounded-2xl overflow-hidden shadow-2xl border-4 border-[#E8E6DF] ring-1 ring-black/5 group">
+                        <div className="flex-1 relative bg-[#08283B] rounded-2xl overflow-hidden shadow-2xl border-4 border-[#E7D8BD] ring-1 ring-black/5 group">
                             {/* Canvas needs to respond to size */}
-                            <div className="absolute inset-0 flex items-center justify-center bg-[radial-gradient(circle_at_center,#3D3D38_0%,#1A1A19_100%)]">
+                            <div className="absolute inset-0 flex items-center justify-center bg-[radial-gradient(circle_at_center,#445865_0%,#08283B_100%)]">
                                 <canvas
                                     ref={canvasRef}
                                     width={800}
@@ -811,12 +811,12 @@ export const GameDirectorMission: React.FC<GameDirectorProps> = ({ onComplete, o
                             </div>
 
                             {/* Overlay Controls (Play/Stop) on top of Game */}
-                            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 bg-white/90 backdrop-blur-sm p-1.5 rounded-full border border-[#E8E6DF] shadow-xl opacity-0 group-hover:opacity-100 transition-all duration-300">
+                            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 bg-white/90 backdrop-blur-sm p-1.5 rounded-full border border-[#E7D8BD] shadow-xl opacity-0 group-hover:opacity-100 transition-all duration-300">
                                 <button
                                     onClick={handleTogglePlay}
                                     className={`p-3 rounded-full transition-all duration-300 active:scale-95 ${isPlaying
                                         ? 'bg-red-500/20 text-red-500 hover:bg-red-500 hover:text-white'
-                                        : 'bg-[#D97757]/20 text-[#D97757] hover:bg-[#D97757] hover:text-white'}`}
+                                        : 'bg-[#D97848]/20 text-[#D97848] hover:bg-[#D97848] hover:text-white'}`}
                                 >
                                     {isPlaying ? <RotateCcw size={20} /> : <Play size={20} fill="currentColor" />}
                                 </button>
@@ -824,18 +824,18 @@ export const GameDirectorMission: React.FC<GameDirectorProps> = ({ onComplete, o
                         </div>
 
                         {/* Console / Logs */}
-                        <div className="h-32 bg-white rounded-2xl border border-[#E8E6DF] flex flex-col shrink-0 overflow-hidden">
-                            <div className="px-3 py-2 bg-[#FAF9F0] border-b border-[#E8E6DF] flex justify-between items-center">
-                                <span className="text-[10px] font-bold text-[#6B6B66] uppercase tracking-widest">Systeem Console</span>
-                                <button onClick={() => setLogs([])} className="text-[10px] text-[#6B6B66] hover:text-[#D97757] transition-all duration-300">Wis</button>
+                        <div className="h-32 bg-white rounded-2xl border border-[#E7D8BD] flex flex-col shrink-0 overflow-hidden">
+                            <div className="px-3 py-2 bg-[#FCF6EA] border-b border-[#E7D8BD] flex justify-between items-center">
+                                <span className="text-[10px] font-bold text-[#445865] uppercase tracking-widest">Systeem Console</span>
+                                <button onClick={() => setLogs([])} className="text-[10px] text-[#445865] hover:text-[#D97848] transition-all duration-300">Wis</button>
                             </div>
                             <div className="flex-1 p-2 overflow-y-auto font-mono text-xs space-y-1 custom-scrollbar">
                                 {logs.length === 0 ? (
-                                    <div className="text-[#6B6B66] italic px-2">Wachten op input...</div>
+                                    <div className="text-[#445865] italic px-2">Wachten op input...</div>
                                 ) : (
                                     logs.map((l, i) => (
-                                        <div key={i} className="flex gap-2 text-[#2A9D8F] hover:bg-[#FAF9F0] rounded px-2 py-0.5">
-                                            <span className="text-[#6B6B66] select-none">&gt;</span>
+                                        <div key={i} className="flex gap-2 text-[#5F947D] hover:bg-[#FCF6EA] rounded px-2 py-0.5">
+                                            <span className="text-[#445865] select-none">&gt;</span>
                                             <span>{l}</span>
                                         </div>
                                     ))

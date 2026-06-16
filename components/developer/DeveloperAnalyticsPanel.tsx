@@ -42,7 +42,7 @@ export function DeveloperAnalyticsPanel() {
 
     if (loading) {
         return (
-            <div className="flex flex-col items-center justify-center py-20 text-slate-400">
+            <div className="flex flex-col items-center justify-center py-20 text-lab-muted">
                 <Loader2 className="animate-spin mb-4" size={32} />
                 <p className="font-medium">Analytics ophalen...</p>
             </div>
@@ -102,11 +102,11 @@ export function DeveloperAnalyticsPanel() {
             {/* Header / Filter */}
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div>
-                    <h3 className="text-xl font-black text-slate-900 uppercase tracking-tight">Klik Analyse</h3>
-                    <p className="text-xs text-slate-500 font-medium uppercase tracking-widest">Inzichten uit anonieme gebruikersinteracties</p>
+                    <h3 className="text-xl font-black text-lab-muted uppercase tracking-tight">Klik Analyse</h3>
+                    <p className="text-xs text-lab-muted font-medium uppercase tracking-widest">Inzichten uit anonieme gebruikersinteracties</p>
                 </div>
                 
-                <div className="flex items-center gap-2 bg-white p-1 rounded-xl border border-slate-200 shadow-sm">
+                <div className="flex items-center gap-2 bg-white p-1 rounded-xl border border-lab-muted shadow-sm">
                     {[7, 14, 30, 60, 90].map(d => (
                         <button
                             key={d}
@@ -114,7 +114,7 @@ export function DeveloperAnalyticsPanel() {
                             className={`px-4 py-1.5 rounded-lg text-xs font-bold transition-all ${
                                 days === d 
                                     ? 'bg-indigo-600 text-white shadow-md' 
-                                    : 'text-slate-500 hover:bg-slate-50'
+                                    : 'text-lab-muted hover:bg-lab-muted'
                             }`}
                         >
                             {d} Dagen
@@ -125,38 +125,38 @@ export function DeveloperAnalyticsPanel() {
 
             {/* Top Stats */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm">
+                <div className="bg-white p-6 rounded-3xl border border-lab-muted shadow-sm">
                     <div className="flex items-center gap-3 mb-4">
                         <div className="w-8 h-8 bg-indigo-50 rounded-lg flex items-center justify-center text-indigo-600">
                             <MousePointer2 size={16} />
                         </div>
-                        <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Totaal Interacties</p>
+                        <p className="text-[10px] font-black text-lab-muted uppercase tracking-widest">Totaal Interacties</p>
                     </div>
-                    <h3 className="text-3xl font-black text-slate-900">
+                    <h3 className="text-3xl font-black text-lab-muted">
                         {Object.values(totalsByEvent).reduce((a, b) => a + b, 0)}
                     </h3>
                 </div>
 
-                <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm">
+                <div className="bg-white p-6 rounded-3xl border border-lab-muted shadow-sm">
                     <div className="flex items-center gap-3 mb-4">
-                        <div className="w-8 h-8 bg-emerald-50 rounded-lg flex items-center justify-center text-emerald-600">
+                        <div className="w-8 h-8 bg-lab-sage rounded-lg flex items-center justify-center text-lab-sage">
                             <Users size={16} />
                         </div>
-                        <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Actieve Rollen</p>
+                        <p className="text-[10px] font-black text-lab-muted uppercase tracking-widest">Actieve Rollen</p>
                     </div>
-                    <h3 className="text-3xl font-black text-slate-900">
+                    <h3 className="text-3xl font-black text-lab-muted">
                         {Object.keys(totalsByRole).length}
                     </h3>
                 </div>
 
-                <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm">
+                <div className="bg-white p-6 rounded-3xl border border-lab-muted shadow-sm">
                     <div className="flex items-center gap-3 mb-4">
-                        <div className="w-8 h-8 bg-amber-50 rounded-lg flex items-center justify-center text-amber-600">
+                        <div className="w-8 h-8 bg-lab-gold rounded-lg flex items-center justify-center text-lab-gold">
                             <Layout size={16} />
                         </div>
-                        <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Meest Bezocht</p>
+                        <p className="text-[10px] font-black text-lab-muted uppercase tracking-widest">Meest Bezocht</p>
                     </div>
-                    <h3 className="text-lg font-black text-slate-900 truncate">
+                    <h3 className="text-lg font-black text-lab-muted truncate">
                         {topPages[0]?.[0] || 'Geen data'}
                     </h3>
                 </div>
@@ -164,20 +164,20 @@ export function DeveloperAnalyticsPanel() {
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                 {/* Popular Events Bar Chart */}
-                <div className="bg-white p-8 rounded-[2rem] border border-slate-200 shadow-sm">
+                <div className="bg-white p-8 rounded-[2rem] border border-lab-muted shadow-sm">
                     <div className="flex items-center gap-3 mb-8">
                         <BarChart3 className="text-indigo-600" size={20} />
-                        <h4 className="font-black text-slate-900 uppercase tracking-tight text-sm">Populaire Acties</h4>
+                        <h4 className="font-black text-lab-muted uppercase tracking-tight text-sm">Populaire Acties</h4>
                     </div>
 
                     <div className="space-y-6">
                         {topEvents.map(([event, count]) => (
                             <div key={event} className="space-y-2">
                                 <div className="flex justify-between text-xs font-bold uppercase tracking-widest">
-                                    <span className="text-slate-600">{event.replace(/_/g, ' ')}</span>
+                                    <span className="text-lab-muted">{event.replace(/_/g, ' ')}</span>
                                     <span className="text-indigo-600 font-black">{count}</span>
                                 </div>
-                                <div className="h-2.5 bg-slate-100 rounded-full overflow-hidden">
+                                <div className="h-2.5 bg-lab-muted rounded-full overflow-hidden">
                                     <div 
                                         className="h-full bg-indigo-500 rounded-full transition-all duration-1000"
                                         style={{ width: `${(count / maxEventCount) * 100}%` }}
@@ -186,40 +186,40 @@ export function DeveloperAnalyticsPanel() {
                             </div>
                         ))}
                         {topEvents.length === 0 && (
-                            <p className="text-sm text-slate-400 italic text-center py-10">Nog geen data beschikbaar voor deze periode.</p>
+                            <p className="text-sm text-lab-muted italic text-center py-10">Nog geen data beschikbaar voor deze periode.</p>
                         )}
                     </div>
                 </div>
 
                 {/* Top Pages List */}
-                <div className="bg-white p-8 rounded-[2rem] border border-slate-200 shadow-sm">
+                <div className="bg-white p-8 rounded-[2rem] border border-lab-muted shadow-sm">
                     <div className="flex items-center gap-3 mb-8">
                         <Layout className="text-indigo-600" size={20} />
-                        <h4 className="font-black text-slate-900 uppercase tracking-tight text-sm">Top Pagina's</h4>
+                        <h4 className="font-black text-lab-muted uppercase tracking-tight text-sm">Top Pagina's</h4>
                     </div>
 
                     <div className="space-y-2">
                         {topPages.map(([page, count], i) => (
-                            <div key={page} className="flex items-center gap-4 p-4 hover:bg-slate-50 rounded-2xl transition-colors group">
-                                <div className="w-8 h-8 rounded-lg bg-slate-100 flex items-center justify-center text-[10px] font-black text-slate-400">
+                            <div key={page} className="flex items-center gap-4 p-4 hover:bg-lab-muted rounded-2xl transition-colors group">
+                                <div className="w-8 h-8 rounded-lg bg-lab-muted flex items-center justify-center text-[10px] font-black text-lab-muted">
                                     0{i+1}
                                 </div>
                                 <div className="flex-1 min-w-0">
-                                    <p className="text-sm font-bold text-slate-900 truncate">{page}</p>
-                                    <p className="text-[10px] text-slate-400 font-medium uppercase tracking-widest">{count} kliks</p>
+                                    <p className="text-sm font-bold text-lab-muted truncate">{page}</p>
+                                    <p className="text-[10px] text-lab-muted font-medium uppercase tracking-widest">{count} kliks</p>
                                 </div>
-                                <ArrowRight size={14} className="text-slate-200 group-hover:text-indigo-500 transition-colors" />
+                                <ArrowRight size={14} className="text-lab-muted group-hover:text-indigo-500 transition-colors" />
                             </div>
                         ))}
                         {topPages.length === 0 && (
-                            <p className="text-sm text-slate-400 italic text-center py-10">Nog geen data beschikbaar.</p>
+                            <p className="text-sm text-lab-muted italic text-center py-10">Nog geen data beschikbaar.</p>
                         )}
                     </div>
                 </div>
             </div>
 
             {/* Role Breakdown */}
-            <div className="bg-slate-900 rounded-[2rem] p-8 text-white">
+            <div className="bg-lab-muted rounded-[2rem] p-8 text-white">
                 <div className="flex items-center gap-3 mb-8">
                     <Users className="text-indigo-400" size={20} />
                     <h4 className="font-black uppercase tracking-tight text-sm">Interactie per Rol</h4>
@@ -233,7 +233,7 @@ export function DeveloperAnalyticsPanel() {
                         </div>
                     ))}
                     {Object.keys(totalsByRole).length === 0 && (
-                        <p className="text-sm text-slate-400 italic">Geen roldata beschikbaar.</p>
+                        <p className="text-sm text-lab-muted italic">Geen roldata beschikbaar.</p>
                     )}
                 </div>
             </div>

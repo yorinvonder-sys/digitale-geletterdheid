@@ -28,19 +28,19 @@ const STUDENTS: Student[] = [
         timeSpent: '4u 12m', streak: 5,
     },
     {
-        id: 2, name: 'Lisa M.', initials: 'LM', avatarColor: 'bg-emerald-500',
+        id: 2, name: 'Lisa M.', initials: 'LM', avatarColor: 'bg-lab-sage',
         xp: 1200, maxXp: 1200, level: 12, missionsCompleted: 9, totalMissions: 9,
         currentMission: 'Alle missies afgerond!', sloKerndoelen: ['Digitale geletterdheid', 'Computational Thinking', 'Creatief ontwerpen'],
         timeSpent: '6u 45m', streak: 12,
     },
     {
-        id: 3, name: 'Jayden R.', initials: 'JR', avatarColor: 'bg-amber-500',
+        id: 3, name: 'Jayden R.', initials: 'JR', avatarColor: 'bg-lab-gold',
         xp: 340, maxXp: 500, level: 4, missionsCompleted: 3, totalMissions: 9,
         currentMission: 'Game Programmeur bezig...', sloKerndoelen: ['Computational Thinking', 'Algoritmen & patronen'],
         timeSpent: '2u 08m', streak: 2,
     },
     {
-        id: 4, name: 'Fatima B.', initials: 'FB', avatarColor: 'bg-rose-500',
+        id: 4, name: 'Fatima B.', initials: 'FB', avatarColor: 'bg-lab-coral',
         xp: 680, maxXp: 800, level: 7, missionsCompleted: 5, totalMissions: 9,
         currentMission: 'Deepfake Detector bezig...', sloKerndoelen: ['Digitale geletterdheid', 'Mediawijsheid', 'Ethiek & AI'],
         timeSpent: '3u 34m', streak: 4,
@@ -72,7 +72,7 @@ interface DemoStep {
 const DEMO_STEPS: DemoStep[] = [
     { label: 'Leerling bekijken', accentClass: 'border-blue-400 bg-blue-50 text-blue-700' },
     { label: 'Focus Mode', accentClass: 'border-orange-400 bg-orange-50 text-orange-700' },
-    { label: 'Klasoverzicht', accentClass: 'border-emerald-400 bg-emerald-50 text-emerald-700' },
+    { label: 'Klasoverzicht', accentClass: 'border-lab-sage bg-lab-sage text-lab-sage' },
 ];
 
 /* ═══════════════════════════════════════════════════════════
@@ -82,10 +82,10 @@ const DEMO_STEPS: DemoStep[] = [
 function AnimatedXpBar({ value, max, animate }: { value: number; max: number; animate: boolean }) {
     const pct = Math.round((value / max) * 100);
     return (
-        <div className="w-full h-2 rounded-full bg-slate-100 overflow-hidden">
+        <div className="w-full h-2 rounded-full bg-lab-muted overflow-hidden">
             <div
                 className="h-full rounded-full transition-all duration-1000 ease-out"
-                style={{ background: 'linear-gradient(to right, #D97757, #C46849)', width: animate ? `${pct}%` : '0%' }}
+                style={{ background: 'linear-gradient(to right, #D97848, #D97848)', width: animate ? `${pct}%` : '0%' }}
             />
         </div>
     );
@@ -95,7 +95,7 @@ function MissionDots({ completed, total }: { completed: number; total: number })
     return (
         <div className="flex gap-1">
             {Array.from({ length: total }, (_, i) => (
-                <div key={i} className="w-2 h-2 rounded-full transition-colors duration-300" style={{ backgroundColor: i < completed ? '#D97757' : '#E8E6DF' }} />
+                <div key={i} className="w-2 h-2 rounded-full transition-colors duration-300" style={{ backgroundColor: i < completed ? '#D97848' : '#E7D8BD' }} />
             ))}
         </div>
     );
@@ -119,7 +119,7 @@ function StudentCard({
                 isSelected ? 'shadow-md scale-[1.02]' : 'bg-white'
             } ${isFocusMode ? 'ring-2 ring-orange-300 ring-offset-1' : ''}`}
             style={{
-                borderColor: isHighlighted ? '#3b82f6' : isSelected ? '#D97757' : '#E8E6DF',
+                borderColor: isHighlighted ? '#0B453F' : isSelected ? '#D97848' : '#E7D8BD',
                 backgroundColor: isSelected ? 'rgba(217,119,87,0.06)' : undefined,
                 boxShadow: isHighlighted ? '0 0 0 3px rgba(59, 130, 246, 0.3), 0 0 16px rgba(59, 130, 246, 0.15)' : undefined,
             }}
@@ -129,12 +129,12 @@ function StudentCard({
                     {student.initials}
                 </div>
                 <div className="min-w-0 flex-1">
-                    <p className="text-sm font-semibold text-slate-800 truncate">{student.name}</p>
-                    <p className="text-xs text-slate-400">Level {student.level}</p>
+                    <p className="text-sm font-semibold text-lab-muted truncate">{student.name}</p>
+                    <p className="text-xs text-lab-muted">Level {student.level}</p>
                 </div>
                 {isComplete && (
-                    <span className="shrink-0 w-5 h-5 rounded-full bg-emerald-100 flex items-center justify-center">
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#10b981" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                    <span className="shrink-0 w-5 h-5 rounded-full bg-lab-sage flex items-center justify-center">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#5F947D" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                             <path d="m9 12 2 2 4-4" />
                         </svg>
                     </span>
@@ -142,7 +142,7 @@ function StudentCard({
             </div>
 
             <div className="mb-1.5">
-                <div className="flex justify-between text-[10px] text-slate-400 mb-0.5">
+                <div className="flex justify-between text-[10px] text-lab-muted mb-0.5">
                     <span>{student.xp} XP</span>
                     <span>{student.maxXp} XP</span>
                 </div>
@@ -151,7 +151,7 @@ function StudentCard({
 
             <div className="flex items-center justify-between">
                 <MissionDots completed={student.missionsCompleted} total={student.totalMissions} />
-                <span className="text-[10px] text-slate-400">{student.missionsCompleted}/{student.totalMissions}</span>
+                <span className="text-[10px] text-lab-muted">{student.missionsCompleted}/{student.totalMissions}</span>
             </div>
 
             {isFocusMode && (
@@ -166,7 +166,7 @@ function StudentCard({
 function DetailPanel({ student, visible }: { student: Student | null; visible: boolean }) {
     if (!student) {
         return (
-            <div className="flex items-center justify-center h-full text-slate-400 text-sm px-4 text-center">
+            <div className="flex items-center justify-center h-full text-lab-muted text-sm px-4 text-center">
                 Klik op een leerling om details te zien
             </div>
         );
@@ -179,29 +179,29 @@ function DetailPanel({ student, visible }: { student: Student | null; visible: b
                     {student.initials}
                 </div>
                 <div>
-                    <p className="text-base font-bold text-slate-800">{student.name}</p>
-                    <p className="text-xs text-slate-400">Level {student.level} &middot; {student.xp} XP</p>
+                    <p className="text-base font-bold text-lab-muted">{student.name}</p>
+                    <p className="text-xs text-lab-muted">Level {student.level} &middot; {student.xp} XP</p>
                 </div>
             </div>
 
             <div className="p-3 rounded-lg" style={{ backgroundColor: 'rgba(217,119,87,0.06)', border: '1px solid rgba(217,119,87,0.15)' }}>
-                <p className="text-[10px] uppercase tracking-wider font-semibold mb-1" style={{ color: '#D97757' }}>Huidige missie</p>
-                <p className="text-sm font-medium" style={{ color: '#1A1A19' }}>{student.currentMission}</p>
+                <p className="text-[10px] uppercase tracking-wider font-semibold mb-1" style={{ color: '#D97848' }}>Huidige missie</p>
+                <p className="text-sm font-medium" style={{ color: '#08283B' }}>{student.currentMission}</p>
             </div>
 
             <div>
-                <p className="text-[10px] uppercase tracking-wider text-slate-400 font-semibold mb-2">Missie-voortgang</p>
-                <div className="w-full h-3 rounded-full bg-slate-100 overflow-hidden">
+                <p className="text-[10px] uppercase tracking-wider text-lab-muted font-semibold mb-2">Missie-voortgang</p>
+                <div className="w-full h-3 rounded-full bg-lab-muted overflow-hidden">
                     <div
                         className="h-full rounded-full transition-all duration-700"
-                        style={{ width: `${Math.round((student.missionsCompleted / student.totalMissions) * 100)}%`, background: 'linear-gradient(to right, #D97757, #C46849)' }}
+                        style={{ width: `${Math.round((student.missionsCompleted / student.totalMissions) * 100)}%`, background: 'linear-gradient(to right, #D97848, #D97848)' }}
                     />
                 </div>
-                <p className="text-xs text-slate-500 mt-1">{student.missionsCompleted} van {student.totalMissions} missies voltooid</p>
+                <p className="text-xs text-lab-muted mt-1">{student.missionsCompleted} van {student.totalMissions} missies voltooid</p>
             </div>
 
             <div>
-                <p className="text-[10px] uppercase tracking-wider text-slate-400 font-semibold mb-2">SLO-kerndoelen</p>
+                <p className="text-[10px] uppercase tracking-wider text-lab-muted font-semibold mb-2">SLO-kerndoelen</p>
                 <div className="flex flex-wrap gap-1.5">
                     {student.sloKerndoelen.map((kd) => (
                         <span key={kd} className="px-2 py-0.5 rounded-full bg-purple-50 border border-purple-100 text-[10px] text-purple-600 font-medium">
@@ -212,13 +212,13 @@ function DetailPanel({ student, visible }: { student: Student | null; visible: b
             </div>
 
             <div className="grid grid-cols-2 gap-2">
-                <div className="p-2 rounded-lg bg-slate-50 border border-slate-100 text-center">
-                    <p className="text-lg font-bold text-slate-800">{student.timeSpent}</p>
-                    <p className="text-[10px] text-slate-400">Tijdbesteding</p>
+                <div className="p-2 rounded-lg bg-lab-muted border border-lab-muted text-center">
+                    <p className="text-lg font-bold text-lab-muted">{student.timeSpent}</p>
+                    <p className="text-[10px] text-lab-muted">Tijdbesteding</p>
                 </div>
-                <div className="p-2 rounded-lg bg-slate-50 border border-slate-100 text-center">
-                    <p className="text-lg font-bold text-slate-800">{student.streak} dagen</p>
-                    <p className="text-[10px] text-slate-400">Streak</p>
+                <div className="p-2 rounded-lg bg-lab-muted border border-lab-muted text-center">
+                    <p className="text-lg font-bold text-lab-muted">{student.streak} dagen</p>
+                    <p className="text-[10px] text-lab-muted">Streak</p>
                 </div>
             </div>
         </div>
@@ -253,7 +253,7 @@ function AnimatedStat({ value, label, color, borderColor, animate, delay }: {
             }}
         >
             <p className="text-xl font-bold" style={{ color }}>{value}</p>
-            <p className="text-[10px] font-medium" style={{ color: '#6B6B66' }}>{label}</p>
+            <p className="text-[10px] font-medium" style={{ color: '#445865' }}>{label}</p>
         </div>
     );
 }
@@ -352,11 +352,11 @@ export const ScholenLandingDashboardDemo: React.FC = () => {
         <div ref={containerRef} className="max-w-6xl mx-auto">
             {/* Header */}
             <div className="text-center mb-10">
-                <p className="font-semibold text-sm mb-3 tracking-wide" style={{ color: '#D97757' }}>Volledige controle</p>
-                <h2 className="text-2xl md:text-3xl font-medium tracking-tight mb-4" style={{ fontFamily: "'Newsreader', Georgia, serif", color: '#1A1A19' }}>
+                <p className="font-semibold text-sm mb-3 tracking-wide" style={{ color: '#D97848' }}>Volledige controle</p>
+                <h2 className="text-2xl md:text-3xl font-medium tracking-tight mb-4" style={{ fontFamily: "'Newsreader', Georgia, serif", color: '#08283B' }}>
                     Docenten Dashboard
                 </h2>
-                <p className="text-base leading-relaxed max-w-xl mx-auto" style={{ color: '#6B6B66' }}>
+                <p className="text-base leading-relaxed max-w-xl mx-auto" style={{ color: '#445865' }}>
                     Volg de voortgang van elke leerling in real-time.
                     Stuur de klas aan met Focus Mode.
                 </p>
@@ -365,23 +365,23 @@ export const ScholenLandingDashboardDemo: React.FC = () => {
             {/* Dashboard container */}
             <div
                 className="rounded-3xl overflow-hidden shadow-xl bg-white"
-                style={{ borderWidth: '1px', borderStyle: 'solid', borderColor: '#E8E6DF' }}
+                style={{ borderWidth: '1px', borderStyle: 'solid', borderColor: '#E7D8BD' }}
                 onMouseEnter={() => { if (!manualRef.current) setIsPaused(true); }}
                 onMouseLeave={() => { if (!manualRef.current) setIsPaused(false); }}
             >
                 {/* Top bar */}
-                <div className="flex items-center justify-between px-4 sm:px-6 py-3 border-b border-slate-100 bg-slate-50/50">
+                <div className="flex items-center justify-between px-4 sm:px-6 py-3 border-b border-lab-muted bg-lab-muted/50">
                     <div className="flex items-center gap-3">
                         <div className="flex items-center gap-2">
                             <div className="w-3 h-3 rounded-full bg-red-400" />
-                            <div className="w-3 h-3 rounded-full bg-amber-400" />
-                            <div className="w-3 h-3 rounded-full bg-emerald-400" />
+                            <div className="w-3 h-3 rounded-full bg-lab-gold" />
+                            <div className="w-3 h-3 rounded-full bg-lab-sage" />
                         </div>
-                        <span className="text-sm font-semibold text-slate-700 hidden sm:inline">Docenten Dashboard</span>
+                        <span className="text-sm font-semibold text-lab-muted hidden sm:inline">Docenten Dashboard</span>
                     </div>
                     <div className="flex items-center gap-3">
-                        <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-[11px] font-semibold text-emerald-600">
-                            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                        <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-lab-sage border border-lab-sage text-[11px] font-semibold text-lab-sage">
+                            <span className="w-1.5 h-1.5 rounded-full bg-lab-sage animate-pulse" />
                             Live Demo
                         </span>
 
@@ -390,7 +390,7 @@ export const ScholenLandingDashboardDemo: React.FC = () => {
                             className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all duration-500 ${
                                 focusMode
                                     ? 'bg-orange-500 text-white shadow-md shadow-orange-200'
-                                    : 'bg-slate-100 text-slate-500'
+                                    : 'bg-lab-muted text-lab-muted'
                             }`}
                             style={{
                                 boxShadow: highlightFocusBtn ? '0 0 0 3px rgba(249, 115, 22, 0.4), 0 0 16px rgba(249, 115, 22, 0.2)' : undefined,
@@ -421,8 +421,8 @@ export const ScholenLandingDashboardDemo: React.FC = () => {
                     {/* Student grid */}
                     <div className="lg:col-span-2 p-4 sm:p-6">
                         <div className="flex items-center justify-between mb-4">
-                            <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Leerlingen (5)</p>
-                            <p className="text-xs text-slate-400">Klik voor details</p>
+                            <p className="text-xs font-semibold text-lab-muted uppercase tracking-wider">Leerlingen (5)</p>
+                            <p className="text-xs text-lab-muted">Klik voor details</p>
                         </div>
                         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
                             {STUDENTS.map((student) => (
@@ -440,17 +440,17 @@ export const ScholenLandingDashboardDemo: React.FC = () => {
 
                         {/* Class stats */}
                         <div className="mt-6 grid grid-cols-2 sm:grid-cols-4 gap-3">
-                            <AnimatedStat value="3.590" label="Totaal XP klas" color="#D97757" borderColor="rgba(217,119,87,0.15)" animate={highlightStats} delay={0} />
-                            <AnimatedStat value="62%" label="Gem. voortgang" color="#7c3aed" borderColor="rgba(124,58,237,0.15)" animate={highlightStats} delay={200} />
-                            <AnimatedStat value="28" label="Missies voltooid" color="#059669" borderColor="rgba(5,150,105,0.15)" animate={highlightStats} delay={400} />
+                            <AnimatedStat value="3.590" label="Totaal XP klas" color="#D97848" borderColor="rgba(217,119,87,0.15)" animate={highlightStats} delay={0} />
+                            <AnimatedStat value="62%" label="Gem. voortgang" color="#0B453F" borderColor="rgba(124,58,237,0.15)" animate={highlightStats} delay={200} />
+                            <AnimatedStat value="28" label="Missies voltooid" color="#5F947D" borderColor="rgba(5,150,105,0.15)" animate={highlightStats} delay={400} />
                             <AnimatedStat value="5.2" label="Gem. streak" color="#d97706" borderColor="rgba(217,119,6,0.15)" animate={highlightStats} delay={600} />
                         </div>
                     </div>
 
                     {/* Detail panel */}
-                    <div className="border-t lg:border-t-0 lg:border-l border-slate-100 bg-slate-50/30 min-h-[300px]">
-                        <div className="px-4 py-3 border-b border-slate-100">
-                            <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Leerling details</p>
+                    <div className="border-t lg:border-t-0 lg:border-l border-lab-muted bg-lab-muted/30 min-h-[300px]">
+                        <div className="px-4 py-3 border-b border-lab-muted">
+                            <p className="text-xs font-semibold text-lab-muted uppercase tracking-wider">Leerling details</p>
                         </div>
                         <DetailPanel student={selectedStudent} visible={detailVisible} />
                     </div>
@@ -469,7 +469,7 @@ export const ScholenLandingDashboardDemo: React.FC = () => {
                         className={`relative flex items-center gap-2 px-4 py-2 rounded-full text-xs font-semibold border-2 transition-all focus-visible:ring-2 focus-visible:ring-offset-2 ${
                             i === activeStep ? s.accentClass + ' shadow-sm' : 'bg-white'
                         }`}
-                        style={i !== activeStep ? { borderColor: '#E8E6DF', color: '#6B6B66' } : undefined}
+                        style={i !== activeStep ? { borderColor: '#E7D8BD', color: '#445865' } : undefined}
                     >
                         {i === 0 && (
                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">

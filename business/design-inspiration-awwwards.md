@@ -25,7 +25,7 @@
 - **Data-gedreven narratief** — Concrete cijfers en bronnen bouwen geloofwaardigheid
 - **Performance** — Lazy loading, deferred components, goede LCP
 - **Trust signals** — AVG, SLO 2025, EU AI Act, Almere College pilot
-- **Kleurconsistentie** — Indigo primair (#6366F1), duidelijke kleurcodering per domein
+- **Kleurconsistentie** — Indigo primair (#0B453F), duidelijke kleurcodering per domein
 
 ### Wat beter kan
 - **Te veel informatie tegelijk** — 8+ secties op de landingspagina; geen "ademruimte"

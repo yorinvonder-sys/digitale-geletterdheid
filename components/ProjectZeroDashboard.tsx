@@ -57,9 +57,9 @@ const PERIOD_THEME: Record<number, { border: string; bg: string; text: string; i
     1: { border: 'border-indigo-100', bg: 'bg-indigo-50', text: 'text-indigo-600', icon: <Monitor size={14} />, label: 'Digitale Basis' },
     2: { border: 'border-pink-100', bg: 'bg-pink-50', text: 'text-pink-600', icon: <BrainCircuit size={14} />, label: 'AI & Creatie' },
     3: { border: 'border-cyan-100', bg: 'bg-cyan-50', text: 'text-cyan-600', icon: <ShieldCheck size={14} />, label: 'Data & Veiligheid' },
-    4: { border: 'border-violet-100', bg: 'bg-violet-50', text: 'text-violet-600', icon: <Rocket size={14} />, label: 'Eindproject' },
+    4: { border: 'border-lab-teal', bg: 'bg-lab-teal', text: 'text-lab-teal', icon: <Rocket size={14} />, label: 'Eindproject' },
 };
-const DEFAULT_PERIOD_THEME = { border: 'border-slate-100', bg: 'bg-slate-50', text: 'text-slate-600', icon: <Puzzle size={14} />, label: '' };
+const DEFAULT_PERIOD_THEME = { border: 'border-lab-muted', bg: 'bg-lab-muted', text: 'text-lab-muted', icon: <Puzzle size={14} />, label: '' };
 
 interface YearGroupTheme {
     label: string;
@@ -103,11 +103,11 @@ const getYearGroupTheme = (year: number): YearGroupTheme => {
             return {
                 label: 'Digitale Meesterschap',
                 Icon: Rocket,
-                badgeBg: 'bg-violet-100',
-                badgeText: 'text-violet-700',
-                accentDot: 'bg-violet-500',
-                activeBorder: 'border-violet-200',
-                activeText: 'text-violet-700',
+                badgeBg: 'bg-lab-teal',
+                badgeText: 'text-lab-teal',
+                accentDot: 'bg-lab-teal',
+                activeBorder: 'border-lab-teal',
+                activeText: 'text-lab-teal',
                 focusRing: 'ring-violet-100',
                 gradient: 'from-violet-500 to-indigo-500',
             };
@@ -115,11 +115,11 @@ const getYearGroupTheme = (year: number): YearGroupTheme => {
             return {
                 label: 'Digitale Leerlijn',
                 Icon: MonitorSmartphone,
-                badgeBg: 'bg-slate-100',
-                badgeText: 'text-slate-700',
-                accentDot: 'bg-slate-500',
-                activeBorder: 'border-slate-200',
-                activeText: 'text-slate-700',
+                badgeBg: 'bg-lab-muted',
+                badgeText: 'text-lab-muted',
+                accentDot: 'bg-lab-muted',
+                activeBorder: 'border-lab-muted',
+                activeText: 'text-lab-muted',
                 focusRing: 'ring-slate-100',
                 gradient: 'from-slate-500 to-slate-600',
             };
@@ -646,7 +646,7 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
     };
 
     return (
-        <div className="flex-1 w-full flex flex-col font-sans text-slate-900 pb-safe relative">
+        <div className="flex-1 w-full flex flex-col font-sans text-lab-muted pb-safe relative">
                 {/* Student AI Chat - Floating Button */}
                 {userUid && <StudentAIChat userIdentifier={userUid} context={{ week: activeWeek }} />}
 
@@ -671,13 +671,13 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
 
                 {/* FOCUS MODE OVERLAY */}
                 {focusMode && (
-                    <div className="fixed inset-0 z-[200] bg-slate-900/95 backdrop-blur-md flex items-center justify-center p-6 text-center animate-in fade-in duration-500">
+                    <div className="fixed inset-0 z-[200] bg-lab-muted/95 backdrop-blur-md flex items-center justify-center p-6 text-center animate-in fade-in duration-500">
                         <div className="max-w-md">
                             <div className="w-24 h-24 bg-indigo-500 rounded-[2rem] flex items-center justify-center text-white mx-auto mb-8 shadow-2xl shadow-indigo-500/50">
                                 <Lock size={48} />
                             </div>
                             <h2 className="text-3xl font-black text-white mb-4 uppercase tracking-tight">Focus Modus Actief</h2>
-                            <p className="text-slate-400 font-medium text-lg leading-relaxed">
+                            <p className="text-lab-muted font-medium text-lg leading-relaxed">
                                 De docent vraagt nu je aandacht. <br />
                                 Kijk naar het bord en luister naar de instructies.
                             </p>
@@ -694,32 +694,32 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
                 {showXPPopup && (
                     <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
                         <div
-                            className="absolute inset-0 bg-slate-900/40 backdrop-blur-sm transition-opacity"
+                            className="absolute inset-0 bg-lab-muted/40 backdrop-blur-sm transition-opacity"
                             onClick={() => setShowXPPopup(false)}
                         />
-                        <div className="bg-white rounded-[2.5rem] p-8 shadow-2xl border border-slate-100 w-full max-w-sm relative z-10 animate-in zoom-in duration-300">
+                        <div className="bg-white rounded-[2.5rem] p-8 shadow-2xl border border-lab-muted w-full max-w-sm relative z-10 animate-in zoom-in duration-300">
                             <div className="flex flex-col items-center text-center">
                                 <div className="bg-gradient-to-br from-indigo-500 to-purple-600 w-20 h-20 rounded-3xl flex items-center justify-center text-white shadow-xl mb-6 transform rotate-3">
                                     <Trophy size={40} />
                                 </div>
-                                <h3 className="text-2xl font-black text-slate-900 mb-1 uppercase tracking-tight">Level {level}</h3>
-                                <p className="text-slate-500 font-bold uppercase tracking-widest text-[10px] mb-6">Jouw Voortgang</p>
+                                <h3 className="text-2xl font-black text-lab-muted mb-1 uppercase tracking-tight">Level {level}</h3>
+                                <p className="text-lab-muted font-bold uppercase tracking-widest text-[10px] mb-6">Jouw Voortgang</p>
 
-                                <div className="w-full bg-slate-100 h-4 rounded-full overflow-hidden mb-4 p-1 border border-slate-200">
+                                <div className="w-full bg-lab-muted h-4 rounded-full overflow-hidden mb-4 p-1 border border-lab-muted">
                                     <div
                                         className="h-full bg-indigo-600 rounded-full transition-all duration-1000 shadow-[0_0_15px_rgba(79,70,229,0.4)]"
                                         style={{ width: `${progressPercentage}%` }}
                                     />
                                 </div>
 
-                                <div className="flex justify-between w-full text-sm font-black text-slate-800 mb-8 lowercase">
+                                <div className="flex justify-between w-full text-sm font-black text-lab-muted mb-8 lowercase">
                                     <span>{xp} xp</span>
-                                    <span className="text-slate-400">nog {xpToNext} xp voor lvl {level + 1}</span>
+                                    <span className="text-lab-muted">nog {xpToNext} xp voor lvl {level + 1}</span>
                                 </div>
 
                                 <button
                                     onClick={() => setShowXPPopup(false)}
-                                    className="w-full py-4 bg-slate-900 text-white rounded-2xl font-bold uppercase tracking-widest hover:bg-slate-800 transition-all active:scale-95 shadow-lg"
+                                    className="w-full py-4 bg-lab-muted text-white rounded-2xl font-bold uppercase tracking-widest hover:bg-lab-muted transition-all active:scale-95 shadow-lg"
                                 >
                                     Begrepen!
                                 </button>
@@ -735,16 +735,16 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
                             className="absolute inset-0 bg-black/40 backdrop-blur-sm transition-opacity"
                             onClick={() => setShowGameNotification(false)}
                         />
-                        <div className="rounded-2xl p-8 shadow-2xl w-full max-w-sm relative z-10 animate-in zoom-in duration-300" style={{ backgroundColor: '#FAF9F0', border: '1px solid #E8E6DF' }}>
+                        <div className="rounded-2xl p-8 shadow-2xl w-full max-w-sm relative z-10 animate-in zoom-in duration-300" style={{ backgroundColor: '#FCF6EA', border: '1px solid #E7D8BD' }}>
                             <div className="flex flex-col items-center text-center">
-                                <div className="w-20 h-20 rounded-2xl flex items-center justify-center text-white shadow-lg mb-5" style={{ backgroundColor: '#D97757' }}>
+                                <div className="w-20 h-20 rounded-2xl flex items-center justify-center text-white shadow-lg mb-5" style={{ backgroundColor: '#D97848' }}>
                                     <Gamepad2 size={40} />
                                 </div>
-                                <h3 className="text-xl font-bold mb-2" style={{ fontFamily: "'Newsreader', Georgia, serif", color: '#1A1A19' }}>Game geactiveerd!</h3>
-                                <p className="text-sm font-medium mb-1" style={{ color: '#6B6B66' }}>
+                                <h3 className="text-xl font-bold mb-2" style={{ fontFamily: "'Newsreader', Georgia, serif", color: '#08283B' }}>Game geactiveerd!</h3>
+                                <p className="text-sm font-medium mb-1" style={{ color: '#445865' }}>
                                     De docent heeft {activatedGameName || 'een game'} geactiveerd!
                                 </p>
-                                <p className="text-xs mb-6" style={{ color: '#9C9C95' }}>
+                                <p className="text-xs mb-6" style={{ color: '#445865' }}>
                                     Je kunt nu meedoen aan de game-sessie met je klasgenoten.
                                 </p>
 
@@ -755,7 +755,7 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
                                             if (onOpenGames) onOpenGames();
                                         }}
                                         className="w-full py-3.5 text-white rounded-full font-semibold text-sm hover:shadow-lg hover:scale-[1.02] transition-all active:scale-95 flex items-center justify-center gap-2"
-                                        style={{ backgroundColor: '#D97757' }}
+                                        style={{ backgroundColor: '#D97848' }}
                                     >
                                         <Play size={16} fill="currentColor" />
                                         Naar Games
@@ -763,7 +763,7 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
                                     <button
                                         onClick={() => setShowGameNotification(false)}
                                         className="w-full py-2.5 font-medium text-sm transition-colors"
-                                        style={{ color: '#9C9C95' }}
+                                        style={{ color: '#445865' }}
                                     >
                                         Later, ik ben nog bezig
                                     </button>
@@ -777,23 +777,23 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
                 {showFeedbackModal && (
                     <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
                         <div
-                            className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm transition-opacity"
+                            className="absolute inset-0 bg-lab-muted/60 backdrop-blur-sm transition-opacity"
                             onClick={() => { if (!feedbackSubmitting && !feedbackSuccess) { setShowFeedbackModal(false); setFeedbackError(null); } }}
                         />
-                        <div className="bg-white rounded-[2rem] p-8 shadow-2xl border border-amber-200 w-full max-w-md relative z-10 animate-in zoom-in duration-300">
+                        <div className="bg-white rounded-[2rem] p-8 shadow-2xl border border-lab-gold w-full max-w-md relative z-10 animate-in zoom-in duration-300">
                             {feedbackSuccess ? (
                                 <div className="flex flex-col items-center text-center py-8">
-                                    <div className="w-24 h-24 bg-emerald-100 rounded-full flex items-center justify-center mb-6 animate-in zoom-in duration-500">
+                                    <div className="w-24 h-24 bg-lab-sage rounded-full flex items-center justify-center mb-6 animate-in zoom-in duration-500">
                                         <span className="text-5xl">✅</span>
                                     </div>
-                                    <h3 className="text-2xl font-black text-slate-900 mb-3">Bedankt!</h3>
-                                    <p className="text-slate-500 text-sm mb-6">Je feedback is succesvol verzonden naar de ontwikkelaar.</p>
+                                    <h3 className="text-2xl font-black text-lab-muted mb-3">Bedankt!</h3>
+                                    <p className="text-lab-muted text-sm mb-6">Je feedback is succesvol verzonden naar de ontwikkelaar.</p>
                                     <button
                                         onClick={() => {
                                             setShowFeedbackModal(false);
                                             setFeedbackSuccess(false);
                                         }}
-                                        className="px-8 py-3 bg-emerald-500 hover:bg-emerald-600 text-white rounded-xl font-bold text-sm transition-colors"
+                                        className="px-8 py-3 bg-lab-sage hover:bg-lab-sage text-white rounded-xl font-bold text-sm transition-colors"
                                     >
                                         Sluiten
                                     </button>
@@ -801,12 +801,12 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
                             ) : (
                                 <>
                                     <div className="flex items-center gap-3 mb-6">
-                                        <div className="w-12 h-12 bg-amber-100 rounded-xl flex items-center justify-center">
-                                            <MessageSquare size={24} className="text-amber-600" />
+                                        <div className="w-12 h-12 bg-lab-gold rounded-xl flex items-center justify-center">
+                                            <MessageSquare size={24} className="text-lab-gold" />
                                         </div>
                                         <div>
-                                            <h3 className="text-lg font-black text-slate-900">Feedback Geven</h3>
-                                            <p className="text-xs text-slate-400">Wat kan er beter aan de website?</p>
+                                            <h3 className="text-lg font-black text-lab-muted">Feedback Geven</h3>
+                                            <p className="text-xs text-lab-muted">Wat kan er beter aan de website?</p>
                                         </div>
                                     </div>
 
@@ -817,12 +817,12 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
                                             if (feedbackError) setFeedbackError(null);
                                         }}
                                         placeholder="Beschrijf hier wat je graag verbeterd zou zien, of deel een bug die je hebt gevonden..."
-                                        className="w-full h-32 p-4 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-700 resize-none focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-amber-500"
+                                        className="w-full h-32 p-4 bg-lab-muted border border-lab-muted rounded-xl text-sm text-lab-muted resize-none focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-lab-gold"
                                         maxLength={500}
                                         disabled={feedbackSubmitting}
                                     />
                                     <div className="flex justify-between items-center mt-2 mb-4">
-                                        <span className="text-[10px] text-slate-400">{feedbackText.length}/500 tekens</span>
+                                        <span className="text-[10px] text-lab-muted">{feedbackText.length}/500 tekens</span>
                                     </div>
 
                                     {feedbackError && (
@@ -836,14 +836,14 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
                                         <button
                                             onClick={() => setShowFeedbackModal(false)}
                                             disabled={feedbackSubmitting}
-                                            className="flex-1 py-3 text-slate-500 font-bold text-sm hover:bg-slate-100 rounded-xl transition-colors disabled:opacity-50"
+                                            className="flex-1 py-3 text-lab-muted font-bold text-sm hover:bg-lab-muted rounded-xl transition-colors disabled:opacity-50"
                                         >
                                             Annuleren
                                         </button>
                                         <button
                                             onClick={handleSubmitFeedback}
                                             disabled={!feedbackText.trim() || feedbackSubmitting}
-                                            className="flex-1 py-3 bg-amber-500 hover:bg-amber-600 text-white rounded-xl font-bold text-sm flex items-center justify-center gap-2 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                                            className="flex-1 py-3 bg-lab-gold hover:bg-lab-gold text-white rounded-xl font-bold text-sm flex items-center justify-center gap-2 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                                         >
                                             {feedbackSubmitting ? (
                                                 <Loader2 size={16} className="animate-spin" />
@@ -861,20 +861,20 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
                     </div>
                 )}
                 {/* HEADER */}
-                <header className="bg-white/80 backdrop-blur-md border-b border-slate-200 px-4 py-3 sm:px-8 sm:py-6 flex justify-between items-center sticky top-0 z-50">
+                <header className="bg-white/80 backdrop-blur-md border-b border-lab-muted px-4 py-3 sm:px-8 sm:py-6 flex justify-between items-center sticky top-0 z-50">
                     <button
                         onClick={onGoHome}
                         aria-label="Ga naar de startpagina"
                         className="flex items-center gap-3 hover:opacity-80 transition-opacity text-left bg-transparent border-none p-0 cursor-pointer focus:outline-none"
                     >
                         <img src="/mascot/pip-logo.webp" alt="DGSkills" className="w-9 h-9 object-contain" width={36} height={36} decoding="async" />
-                        <span className="text-[15px] font-semibold tracking-tight text-slate-900">DGSkills</span>
+                        <span className="text-[15px] font-semibold tracking-tight text-lab-muted">DGSkills</span>
                     </button>
 
                     {/* FEEDBACK BUTTON */}
                     <button
                         onClick={() => setShowFeedbackModal(true)}
-                        className="hidden sm:flex items-center gap-2 px-3 py-2 bg-amber-50 hover:bg-amber-100 text-amber-600 rounded-xl border border-amber-200 transition-all hover:scale-105 active:scale-95"
+                        className="hidden sm:flex items-center gap-2 px-3 py-2 bg-lab-gold hover:bg-lab-gold text-lab-gold rounded-xl border border-lab-gold transition-all hover:scale-105 active:scale-95"
                         aria-label="Geef feedback aan de ontwikkelaar"
                         data-tutorial="student-feedback-btn"
                     >
@@ -888,7 +888,7 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
                             <div className={`flex items-center gap-1 px-3 py-1 rounded-full text-sm font-bold
                                 ${dailyStreak >= 7 ? 'bg-orange-500 text-white animate-pulse shadow-lg shadow-orange-500/30' :
                                   dailyStreak >= 3 ? 'bg-orange-100 text-orange-600' :
-                                  'bg-slate-100 text-slate-500'}`}>
+                                  'bg-lab-muted text-lab-muted'}`}>
                                 <span role="img" aria-label="streak">&#x1F525;</span> {dailyStreak} {dailyStreak === 1 ? 'dag' : 'dagen'}
                             </div>
                         )}
@@ -898,11 +898,11 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
                             <button
                                 onClick={() => setShowXPPopup(true)}
                                 aria-label={`Level ${level}, ${xp} XP - Klik voor details`}
-                                className="flex flex-col items-end gap-1.5 hover:opacity-80 transition-opacity p-2 rounded-2xl hover:bg-slate-50 border border-transparent hover:border-slate-100 group"
+                                className="flex flex-col items-end gap-1.5 hover:opacity-80 transition-opacity p-2 rounded-2xl hover:bg-lab-muted border border-transparent hover:border-lab-muted group"
                             >
                                 <div className="flex items-center gap-3">
-                                    <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest group-hover:text-indigo-600 transition-colors">Lvl {level}</span>
-                                    <div className="w-32 h-2.5 bg-slate-100 rounded-full overflow-hidden border border-slate-200 p-[1px]">
+                                    <span className="text-[10px] font-bold text-lab-muted uppercase tracking-widest group-hover:text-indigo-600 transition-colors">Lvl {level}</span>
+                                    <div className="w-32 h-2.5 bg-lab-muted rounded-full overflow-hidden border border-lab-muted p-[1px]">
                                         <div
                                             className="h-full bg-indigo-600 rounded-full transition-all duration-700 shadow-[0_0_8px_rgba(79,70,229,0.3)]"
                                             style={{ width: `${progressPercentage}%` }}
@@ -914,8 +914,8 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
 
                         <div className="flex items-center gap-4 relative">
                             <div className="text-right hidden sm:block">
-                                <div className="text-[9px] text-slate-400 font-bold uppercase tracking-tighter leading-none text-indigo-500">Mijn Profiel</div>
-                                <div className="font-black text-slate-800 text-sm tracking-tight">{userDisplayName || 'Gast'}</div>
+                                <div className="text-[9px] text-lab-muted font-bold uppercase tracking-tighter leading-none text-indigo-500">Mijn Profiel</div>
+                                <div className="font-black text-lab-muted text-sm tracking-tight">{userDisplayName || 'Gast'}</div>
                             </div>
                             <button
                                 onClick={() => setShowProfileMenu(!showProfileMenu)}
@@ -942,10 +942,10 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
                                         className="fixed inset-0 z-40"
                                         onClick={() => setShowProfileMenu(false)}
                                     />
-                                    <div className="absolute right-0 sm:right-0 top-14 z-50 bg-white rounded-2xl shadow-2xl border border-slate-100 overflow-hidden min-w-[200px] max-w-[calc(100vw-2rem)] animate-in fade-in slide-in-from-top-2 duration-200">
-                                        <div className="p-3 border-b border-slate-100 bg-slate-50">
-                                            <div className="font-bold text-slate-900 text-sm">{userDisplayName || 'Gast'}</div>
-                                            <div className="text-[10px] text-slate-400 font-medium">Leerling Account</div>
+                                    <div className="absolute right-0 sm:right-0 top-14 z-50 bg-white rounded-2xl shadow-2xl border border-lab-muted overflow-hidden min-w-[200px] max-w-[calc(100vw-2rem)] animate-in fade-in slide-in-from-top-2 duration-200">
+                                        <div className="p-3 border-b border-lab-muted bg-lab-muted">
+                                            <div className="font-bold text-lab-muted text-sm">{userDisplayName || 'Gast'}</div>
+                                            <div className="text-[10px] text-lab-muted font-medium">Leerling Account</div>
                                         </div>
                                         <div className="p-2">
                                             <button
@@ -957,7 +957,7 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
                                                 data-tutorial="student-avatar-btn"
                                             >
                                                 <User size={18} className="text-indigo-500" />
-                                                <span className="font-bold text-slate-700 text-sm group-hover:text-indigo-600">Avatar Aanpassen</span>
+                                                <span className="font-bold text-lab-muted text-sm group-hover:text-indigo-600">Avatar Aanpassen</span>
                                             </button>
                                             {/* Trofeeënhal Button */}
                                             <button
@@ -965,10 +965,10 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
                                                     setShowProfileMenu(false);
                                                     onOpenProfile('trophies');
                                                 }}
-                                                className="w-full flex items-center gap-3 px-4 py-3 min-h-[48px] rounded-xl text-left hover:bg-amber-50 transition-colors group"
+                                                className="w-full flex items-center gap-3 px-4 py-3 min-h-[48px] rounded-xl text-left hover:bg-lab-gold transition-colors group"
                                             >
-                                                <Trophy size={18} className="text-amber-500" />
-                                                <span className="font-bold text-slate-700 text-sm group-hover:text-amber-600">Trofeeënhal</span>
+                                                <Trophy size={18} className="text-lab-gold" />
+                                                <span className="font-bold text-lab-muted text-sm group-hover:text-lab-gold">Trofeeënhal</span>
                                             </button>
                                             {/* Bibliotheek Button */}
                                             <button
@@ -979,7 +979,7 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
                                                 className="w-full flex items-center gap-3 px-4 py-3 min-h-[48px] rounded-xl text-left hover:bg-purple-50 transition-colors group"
                                             >
                                                 <BookOpen size={18} className="text-purple-500" />
-                                                <span className="font-bold text-slate-700 text-sm group-hover:text-purple-600">Bibliotheek</span>
+                                                <span className="font-bold text-lab-muted text-sm group-hover:text-purple-600">Bibliotheek</span>
                                             </button>
                                             {/* Games Button in Profile Menu */}
                                             <button
@@ -991,15 +991,15 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
                                                 }}
                                                 disabled={!gamesEnabled}
                                                 className={`w-full flex items-center gap-3 px-4 py-3 min-h-[48px] rounded-xl text-left transition-colors group ${gamesEnabled
-                                                    ? 'hover:bg-emerald-50 cursor-pointer'
+                                                    ? 'hover:bg-lab-sage cursor-pointer'
                                                     : 'opacity-50 cursor-not-allowed'
                                                     }`}
                                             >
-                                                <Gamepad2 size={18} className={gamesEnabled ? 'text-emerald-500' : 'text-slate-400'} />
+                                                <Gamepad2 size={18} className={gamesEnabled ? 'text-lab-sage' : 'text-lab-muted'} />
                                                 <div className="flex flex-col">
-                                                    <span className={`font-bold text-sm ${gamesEnabled ? 'text-slate-700 group-hover:text-emerald-600' : 'text-slate-400'}`}>Games</span>
+                                                    <span className={`font-bold text-sm ${gamesEnabled ? 'text-lab-muted group-hover:text-lab-sage' : 'text-lab-muted'}`}>Games</span>
                                                     {!gamesEnabled && (
-                                                        <span className="text-[9px] text-slate-400">Wacht op activatie van de docent</span>
+                                                        <span className="text-[9px] text-lab-muted">Wacht op activatie van de docent</span>
                                                     )}
                                                 </div>
                                             </button>
@@ -1013,7 +1013,7 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
                                                     className="w-full flex items-center gap-3 px-4 py-3 min-h-[48px] rounded-xl text-left hover:bg-red-50 transition-colors group"
                                                 >
                                                     <LogOut size={18} className="text-red-500" />
-                                                    <span className="font-bold text-slate-700 text-sm group-hover:text-red-600">Uitloggen</span>
+                                                    <span className="font-bold text-lab-muted text-sm group-hover:text-red-600">Uitloggen</span>
                                                 </button>
                                             )}
                                         </div>
@@ -1033,28 +1033,28 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
                 >
                     <div className="flex items-center justify-between gap-4 mb-4">
                         <div className="min-w-0">
-                            <h2 className="text-xl md:text-2xl font-black text-slate-900 tracking-tight truncate">
+                            <h2 className="text-xl md:text-2xl font-black text-lab-muted tracking-tight truncate">
                                 {currentPeriodConfig?.title || `${periodNaming} ${activeWeek}`}
                             </h2>
                             {currentPeriodConfig?.subtitle && (
-                                <p className="text-xs text-slate-400 font-medium truncate mt-0.5">{currentPeriodConfig.subtitle}</p>
+                                <p className="text-xs text-lab-muted font-medium truncate mt-0.5">{currentPeriodConfig.subtitle}</p>
                             )}
                         </div>
                         {totalMissions > 0 && (
-                            <div className="flex items-center gap-2.5 flex-shrink-0 px-3 py-2 bg-white rounded-xl border border-slate-100 shadow-sm">
+                            <div className="flex items-center gap-2.5 flex-shrink-0 px-3 py-2 bg-white rounded-xl border border-lab-muted shadow-sm">
                                 <div className="relative w-9 h-9">
                                     <svg className="w-9 h-9 -rotate-90" viewBox="0 0 36 36">
-                                        <path className="text-slate-100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" strokeWidth="3.5" />
+                                        <path className="text-lab-muted" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" strokeWidth="3.5" />
                                         <path className="text-indigo-600" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" strokeWidth="3.5"
                                             strokeDasharray={`${(completedCount / totalMissions) * 100}, 100`} strokeLinecap="round" />
                                     </svg>
-                                    <span className="absolute inset-0 flex items-center justify-center text-[9px] font-extrabold text-slate-700">
+                                    <span className="absolute inset-0 flex items-center justify-center text-[9px] font-extrabold text-lab-muted">
                                         {completedCount}/{totalMissions}
                                     </span>
                                 </div>
                                 <div className="hidden sm:block">
-                                    <p className="text-xs font-bold text-slate-700 leading-tight">{completedCount}/{totalMissions}</p>
-                                    <p className="text-[9px] text-slate-400 font-medium">voltooid</p>
+                                    <p className="text-xs font-bold text-lab-muted leading-tight">{completedCount}/{totalMissions}</p>
+                                    <p className="text-[9px] text-lab-muted font-medium">voltooid</p>
                                 </div>
                             </div>
                         )}
@@ -1070,23 +1070,23 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
                                     aria-expanded={showYearGroupMenu}
                                     aria-label="Kies digitale leerlijn"
                                     onClick={() => setShowYearGroupMenu(prev => !prev)}
-                                    className={`min-h-[44px] rounded-2xl border border-slate-200 bg-slate-100 p-1.5 shadow-inner transition-all duration-200 ${showYearGroupMenu
+                                    className={`min-h-[44px] rounded-2xl border border-lab-muted bg-lab-muted p-1.5 shadow-inner transition-all duration-200 ${showYearGroupMenu
                                         ? `ring-2 ${activeYearTheme.focusRing}`
-                                        : 'hover:border-slate-300 hover:-translate-y-[1px]'
+                                        : 'hover:border-lab-muted hover:-translate-y-[1px]'
                                         }`}
                                 >
-                                    <span className={`min-w-[210px] max-w-[72vw] flex items-center gap-2.5 rounded-xl border bg-white px-3 py-2 transition-all ${showYearGroupMenu ? `${activeYearTheme.activeBorder} shadow-sm` : 'border-slate-200'}`}>
+                                    <span className={`min-w-[210px] max-w-[72vw] flex items-center gap-2.5 rounded-xl border bg-white px-3 py-2 transition-all ${showYearGroupMenu ? `${activeYearTheme.activeBorder} shadow-sm` : 'border-lab-muted'}`}>
                                         <span className={`w-7 h-7 rounded-lg ${activeYearTheme.badgeBg} ${activeYearTheme.badgeText} flex items-center justify-center shrink-0`}>
                                             <activeYearTheme.Icon size={13} />
                                         </span>
                                         <span className="flex flex-col items-start leading-tight min-w-0 flex-1">
-                                            <span className="text-[9px] font-black uppercase tracking-[0.18em] text-slate-400">Leerlijn</span>
-                                            <span className="text-xs font-black uppercase tracking-widest text-slate-800 truncate">{selectedYearGroupTitle}</span>
+                                            <span className="text-[9px] font-black uppercase tracking-[0.18em] text-lab-muted">Leerlijn</span>
+                                            <span className="text-xs font-black uppercase tracking-widest text-lab-muted truncate">{selectedYearGroupTitle}</span>
                                         </span>
                                         <span className={`w-2 h-2 rounded-full ${activeYearTheme.accentDot} shrink-0`} />
                                         <ChevronRight
                                             size={14}
-                                            className={`text-slate-400 shrink-0 transition-transform duration-200 ${showYearGroupMenu ? '-rotate-90' : 'rotate-90'}`}
+                                            className={`text-lab-muted shrink-0 transition-transform duration-200 ${showYearGroupMenu ? '-rotate-90' : 'rotate-90'}`}
                                         />
                                     </span>
                                 </button>
@@ -1095,10 +1095,10 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
                                     <div
                                         role="listbox"
                                         aria-label="Digitale leerlijnen"
-                                        className="absolute left-0 top-[calc(100%+0.5rem)] z-40 w-[min(92vw,320px)] rounded-2xl border border-slate-200 bg-slate-100 p-1.5 shadow-[0_20px_40px_-24px_rgba(15,23,42,0.65)] animate-in fade-in-0 zoom-in-95 duration-150"
+                                        className="absolute left-0 top-[calc(100%+0.5rem)] z-40 w-[min(92vw,320px)] rounded-2xl border border-lab-muted bg-lab-muted p-1.5 shadow-[0_20px_40px_-24px_rgba(15,23,42,0.65)] animate-in fade-in-0 zoom-in-95 duration-150"
                                     >
                                         <div className={`h-1 rounded-full mb-2 bg-gradient-to-r ${activeYearTheme.gradient}`} />
-                                        <p className="px-2.5 pt-1 pb-1.5 text-[9px] font-black uppercase tracking-[0.18em] text-slate-400">
+                                        <p className="px-2.5 pt-1 pb-1.5 text-[9px] font-black uppercase tracking-[0.18em] text-lab-muted">
                                             Kies je route
                                         </p>
                                         <div className="space-y-1">
@@ -1118,18 +1118,18 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
                                                         }}
                                                         className={`w-full min-h-[44px] rounded-xl border px-2.5 py-2 text-left transition-all duration-150 flex items-center gap-2.5 ${isActive
                                                             ? `bg-white ${optionTheme.activeBorder} ${optionTheme.activeText} shadow-sm -translate-y-[1px]`
-                                                            : 'bg-white/80 border-transparent text-slate-600 hover:bg-white hover:border-slate-200 hover:-translate-y-[1px]'
+                                                            : 'bg-white/80 border-transparent text-lab-muted hover:bg-white hover:border-lab-muted hover:-translate-y-[1px]'
                                                             }`}
                                                     >
                                                         <span className={`w-1.5 h-8 rounded-full shrink-0 ${optionTheme.accentDot}`} />
-                                                        <span className={`w-7 h-7 rounded-lg flex items-center justify-center shrink-0 ${isActive ? `${optionTheme.badgeBg} ${optionTheme.badgeText}` : 'bg-slate-100 text-slate-500'}`}>
+                                                        <span className={`w-7 h-7 rounded-lg flex items-center justify-center shrink-0 ${isActive ? `${optionTheme.badgeBg} ${optionTheme.badgeText}` : 'bg-lab-muted text-lab-muted'}`}>
                                                             <optionTheme.Icon size={12} />
                                                         </span>
                                                         <span className="flex-1 min-w-0">
                                                             <span className="block text-xs font-black uppercase tracking-widest truncate">{config.title}</span>
-                                                            <span className="block text-[9px] font-bold tracking-wide text-slate-400 mt-0.5">Leerjaar {year} · {optionTheme.label}</span>
+                                                            <span className="block text-[9px] font-bold tracking-wide text-lab-muted mt-0.5">Leerjaar {year} · {optionTheme.label}</span>
                                                         </span>
-                                                        {isActive && <CheckCircle2 size={14} className="text-emerald-500 shrink-0" />}
+                                                        {isActive && <CheckCircle2 size={14} className="text-lab-sage shrink-0" />}
                                                     </button>
                                                 );
                                             })}
@@ -1138,7 +1138,7 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
                                 )}
                             </div>
                         )}
-                        <div className="flex items-center gap-2 bg-slate-100 p-1.5 rounded-2xl flex-1 md:flex-initial border border-slate-200 shadow-inner overflow-x-auto no-scrollbar">
+                        <div className="flex items-center gap-2 bg-lab-muted p-1.5 rounded-2xl flex-1 md:flex-initial border border-lab-muted shadow-inner overflow-x-auto no-scrollbar">
                         {Object.keys(yearConfig?.periods || {}).map(Number).sort((a, b) => a - b).map((period) => {
                             const pConf = yearConfig?.periods[period];
                             const isLocked = !isTeacher && !permissions?.enabled_games?.includes(`week-${period}`);
@@ -1151,10 +1151,10 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
                                     title={isLocked ? `${periodNaming} ${period} wordt later vrijgegeven` : pConf?.title}
                                     className={`flex-shrink-0 px-4 md:px-6 py-4 min-h-[44px] rounded-xl text-xs font-black uppercase tracking-widest transition-all flex items-center gap-1.5
                                 ${activeWeek === period
-                                            ? 'bg-white text-indigo-600 shadow-md border border-slate-100 translate-y-[-1px]'
+                                            ? 'bg-white text-indigo-600 shadow-md border border-lab-muted translate-y-[-1px]'
                                             : isLocked
-                                                ? 'bg-transparent text-slate-300 cursor-not-allowed'
-                                                : 'text-slate-400 hover:text-slate-600'
+                                                ? 'bg-transparent text-lab-muted cursor-not-allowed'
+                                                : 'text-lab-muted hover:text-lab-muted'
                                         }`}
                                 >
                                     {isLocked ? <Lock size={12} /> : (PERIOD_THEME[period]?.icon || null)}
@@ -1172,7 +1172,7 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
                             {/* Collapsed header — altijd zichtbaar */}
                             <button
                                 onClick={() => setLeerdoelenOpen(!leerdoelenOpen)}
-                                className="w-full flex items-center justify-between gap-3 px-4 py-3 hover:bg-slate-50/50 transition-colors min-h-[44px]"
+                                className="w-full flex items-center justify-between gap-3 px-4 py-3 hover:bg-lab-muted/50 transition-colors min-h-[44px]"
                             >
                                 <div className="flex items-center gap-2 min-w-0">
                                     <CheckCircle2 size={14} className={periodTheme.text} />
@@ -1190,19 +1190,19 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
                                                 </span>
                                             ))}
                                             {currentPeriodConfig.sloFocus.length > 3 && (
-                                                <span className="text-[8px] text-slate-400 font-bold">+{currentPeriodConfig.sloFocus.length - 3}</span>
+                                                <span className="text-[8px] text-lab-muted font-bold">+{currentPeriodConfig.sloFocus.length - 3}</span>
                                             )}
                                         </div>
                                     )}
                                 </div>
-                                <ChevronRight size={16} className={`text-slate-300 transition-transform duration-200 shrink-0 ${leerdoelenOpen ? 'rotate-90' : ''}`} />
+                                <ChevronRight size={16} className={`text-lab-muted transition-transform duration-200 shrink-0 ${leerdoelenOpen ? 'rotate-90' : ''}`} />
                             </button>
 
                             {/* Success criteria preview — altijd zichtbaar als accordion dicht is */}
                             {!leerdoelenOpen && periodLeerdoel?.succescriterium && (
                                 <div className="px-4 pb-3 flex items-start gap-2 -mt-1">
-                                    <CheckCircle2 size={12} className="text-emerald-500 shrink-0 mt-0.5" />
-                                    <p className="text-emerald-700 text-[11px] font-medium leading-snug">
+                                    <CheckCircle2 size={12} className="text-lab-sage shrink-0 mt-0.5" />
+                                    <p className="text-lab-sage text-[11px] font-medium leading-snug">
                                         <span className="font-bold">Klaar als: </span>
                                         {(stats?.vsoProfile === 'dagbesteding' && periodLeerdoel.succescriDagbesteding)
                                             ? periodLeerdoel.succescriDagbesteding
@@ -1213,8 +1213,8 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
 
                             {/* Expandable content */}
                             {leerdoelenOpen && (
-                                <div className="px-4 pb-4 pt-0 border-t border-slate-50 space-y-3">
-                                    <p className="text-slate-500 text-xs leading-snug line-clamp-2 pt-3">
+                                <div className="px-4 pb-4 pt-0 border-t border-lab-muted space-y-3">
+                                    <p className="text-lab-muted text-xs leading-snug line-clamp-2 pt-3">
                                         {periodLeerdoel
                                             ? (stats?.vsoProfile && periodLeerdoel.descriptionVso
                                                 ? periodLeerdoel.descriptionVso
@@ -1230,9 +1230,9 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
                                         const flowPart = raw.replace(/^[^.]+\.\s*/, '').replace(/^[^:]+:\s*/, '');
                                         const steps = flowPart.split('→').map(s => s.trim()).filter(Boolean);
                                         return (
-                                            <div className="rounded-2xl bg-slate-50 border border-slate-100 p-3">
+                                            <div className="rounded-2xl bg-lab-muted border border-lab-muted p-3">
                                                 {duur && (
-                                                    <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2">
+                                                    <p className="text-[10px] font-bold text-lab-muted uppercase tracking-wider mb-2">
                                                         {duur}
                                                     </p>
                                                 )}
@@ -1246,7 +1246,7 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
                                                                 {step}
                                                             </span>
                                                             {i < steps.length - 1 && (
-                                                                <span className="text-slate-300 text-xs">→</span>
+                                                                <span className="text-lab-muted text-xs">→</span>
                                                             )}
                                                         </div>
                                                     ))}
@@ -1276,8 +1276,8 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
                                         </div>
                                         {periodLeerdoel?.succescriterium && (
                                             <div className="flex items-start gap-1.5 min-w-0">
-                                                <CheckCircle2 size={11} className="text-emerald-500 shrink-0 mt-0.5" />
-                                                <p className="text-emerald-700 text-[10px] font-semibold leading-snug line-clamp-2">
+                                                <CheckCircle2 size={11} className="text-lab-sage shrink-0 mt-0.5" />
+                                                <p className="text-lab-sage text-[10px] font-semibold leading-snug line-clamp-2">
                                                     {(stats?.vsoProfile === 'dagbesteding' && periodLeerdoel.succescriDagbesteding)
                                                         ? periodLeerdoel.succescriDagbesteding
                                                         : periodLeerdoel.succescriterium}
@@ -1295,20 +1295,20 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
                                 <div className="flex flex-col gap-8">
                                     {/* REVIEW GATE BANNER — shown when period has review missions that aren't all done */}
                                     {reviewMissions.length > 0 && !allReviewsDone && !isTeacher && (
-                                        <div className="flex items-center gap-3 px-5 py-4 bg-amber-50 border border-amber-200 rounded-2xl">
-                                            <div className="w-8 h-8 bg-amber-100 rounded-xl flex items-center justify-center flex-shrink-0">
-                                                <AlertTriangle size={16} className="text-amber-600" />
+                                        <div className="flex items-center gap-3 px-5 py-4 bg-lab-gold border border-lab-gold rounded-2xl">
+                                            <div className="w-8 h-8 bg-lab-gold rounded-xl flex items-center justify-center flex-shrink-0">
+                                                <AlertTriangle size={16} className="text-lab-gold" />
                                             </div>
                                             <div className="flex-1">
-                                                <p className="text-sm font-bold text-amber-800">Eerst de herhalingsopdrachten</p>
-                                                <p className="text-xs text-amber-600 font-medium">
+                                                <p className="text-sm font-bold text-lab-gold">Eerst de herhalingsopdrachten</p>
+                                                <p className="text-xs text-lab-gold font-medium">
                                                     Voltooi {completedReviewCount}/{reviewMissions.length} herhalingen om de nieuwe missies vrij te spelen.
                                                 </p>
                                             </div>
                                             <div className="flex gap-1">
                                                 {reviewMissions.map(m => {
                                                     const done = stats?.missionsCompleted?.includes(m.id) || (m.id === 'ipad-print-instructies' && stats?.studentClass !== 'MH1A');
-                                                    return <div key={m.id} className={`w-2.5 h-2.5 rounded-full ${done ? 'bg-emerald-500' : 'bg-amber-300'}`} />;
+                                                    return <div key={m.id} className={`w-2.5 h-2.5 rounded-full ${done ? 'bg-lab-sage' : 'bg-lab-gold'}`} />;
                                                 })}
                                             </div>
                                         </div>
@@ -1317,7 +1317,7 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
                                     {/* OPTIONAL: Review Missions Row (if any) */}
                                     {currentMissions.some(m => m.isReview) && (
                                         <div className="w-full" data-tutorial="student-review-missions">
-                                            <h3 className="text-sm font-bold text-slate-400 uppercase tracking-widest mb-4 flex items-center gap-2">
+                                            <h3 className="text-sm font-bold text-lab-muted uppercase tracking-widest mb-4 flex items-center gap-2">
                                                 <RotateCcw size={16} /> Herhaling &amp; Basics
                                             </h3>
                                             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -1379,9 +1379,9 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
                                         ) : (
                                             currentMissions.every(m => m.isReview) && (
                                                 /* Only show placeholder if NO standard missions exist (and we're not just showing reviews) */
-                                                <div className="col-span-full flex flex-col items-center justify-center w-full py-20 bg-white rounded-[2.5rem] border border-dashed border-slate-200">
-                                                    <Calendar className="text-slate-200 mb-4" size={48} />
-                                                    <p className="text-slate-400 font-bold uppercase tracking-widest text-xs">Nieuwe missies worden voorbereid...</p>
+                                                <div className="col-span-full flex flex-col items-center justify-center w-full py-20 bg-white rounded-[2.5rem] border border-dashed border-lab-muted">
+                                                    <Calendar className="text-lab-muted mb-4" size={48} />
+                                                    <p className="text-lab-muted font-bold uppercase tracking-widest text-xs">Nieuwe missies worden voorbereid...</p>
                                                 </div>
                                             )
                                         )}
@@ -1393,7 +1393,7 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
                     {selectedMissionInfo && (
                         <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
                             <div
-                                className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm transition-opacity"
+                                className="absolute inset-0 bg-lab-muted/60 backdrop-blur-sm transition-opacity"
                                 onClick={() => setSelectedMissionInfo(null)}
                             />
                             <div className="bg-white rounded-[2rem] p-8 max-w-lg w-full relative z-10 shadow-2xl animate-in zoom-in duration-200">
@@ -1402,16 +1402,16 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
                                         <Info size={24} />
                                     </div>
                                     <div>
-                                        <h3 className="text-xl font-black text-slate-900 mb-2">Over deze Missie</h3>
-                                        <p className="text-slate-600 leading-relaxed">
+                                        <h3 className="text-xl font-black text-lab-muted mb-2">Over deze Missie</h3>
+                                        <p className="text-lab-muted leading-relaxed">
                                             {typeof selectedMissionInfo === 'string' ? selectedMissionInfo : (selectedMissionInfo as any)?.info}
                                         </p>
                                     </div>
                                 </div>
                                 {/* SLO Kerndoelen in info modal */}
                                 {typeof selectedMissionInfo === 'object' && (selectedMissionInfo as any)?.kerndoelen?.length > 0 && (
-                                    <div className="mt-4 pt-4 border-t border-slate-100">
-                                        <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">SLO Kerndoelen</p>
+                                    <div className="mt-4 pt-4 border-t border-lab-muted">
+                                        <p className="text-[10px] font-bold text-lab-muted uppercase tracking-widest mb-2">SLO Kerndoelen</p>
                                         <div className="space-y-1.5">
                                             {(selectedMissionInfo as any).kerndoelen.map((code: SloKerndoelCode) => {
                                                 const kd = SLO_KERNDOELEN[code];
@@ -1523,7 +1523,7 @@ const MissionCard = React.memo(({ mission, onSelectModule, onInfoClick, isComple
 
             {/* Custom Header Tag (e.g. Herhaling Periode 1) */}
             {customHeader && (
-                <div className={`absolute top-0 left-0 right-0 py-1 text-center rounded-t-lg ${headerColor === 'green' ? 'bg-amber-700/90' : 'bg-orange-500/90'}`}>
+                <div className={`absolute top-0 left-0 right-0 py-1 text-center rounded-t-lg ${headerColor === 'green' ? 'bg-lab-gold/90' : 'bg-orange-500/90'}`}>
                     <span className="text-[9px] font-extrabold text-white uppercase tracking-widest leading-none block">
                         {customHeader}
                     </span>
@@ -1560,7 +1560,7 @@ const MissionCard = React.memo(({ mission, onSelectModule, onInfoClick, isComple
 
             {/* Completed Checkmark */}
             {isCompleted && (
-                <div className={`absolute ${isCompact ? 'top-8 right-4' : 'top-6 right-6'} bg-emerald-600 text-white rounded-full p-1 shadow-lg z-20`}>
+                <div className={`absolute ${isCompact ? 'top-8 right-4' : 'top-6 right-6'} bg-lab-sage text-white rounded-full p-1 shadow-lg z-20`}>
                     <ShieldCheck size={isCompact ? 14 : 16} />
                 </div>
             )}
@@ -1578,7 +1578,7 @@ const MissionCard = React.memo(({ mission, onSelectModule, onInfoClick, isComple
                     ${isCompact ? 'w-10 h-10' : 'w-11 h-11 mb-4'}
                     ${mission.status === 'locked'
                             ? 'bg-stone-200/60 text-stone-400'
-                            : 'bg-amber-800/10 text-amber-800 group-hover:bg-amber-800 group-hover:text-white'}
+                            : 'bg-lab-gold/10 text-lab-gold group-hover:bg-lab-gold group-hover:text-white'}
                 `}>
                         {mission.status === 'locked' ? (
                             <Lock size={isCompact ? 16 : 28} />
@@ -1594,7 +1594,7 @@ const MissionCard = React.memo(({ mission, onSelectModule, onInfoClick, isComple
                                 e.stopPropagation();
                                 onInfoClick(mission.info!, displayKerndoelen);
                             }}
-                            className="p-3 min-w-[44px] min-h-[44px] text-stone-400 hover:text-amber-700 hover:bg-amber-800/10 rounded-lg transition-colors flex items-center justify-center"
+                            className="p-3 min-w-[44px] min-h-[44px] text-stone-400 hover:text-lab-gold hover:bg-lab-gold/10 rounded-lg transition-colors flex items-center justify-center"
                             title="Meer informatie"
                         >
                             <Info size={18} />
@@ -1614,11 +1614,11 @@ const MissionCard = React.memo(({ mission, onSelectModule, onInfoClick, isComple
                                 <Lock size={8} /> Vergrendeld
                             </span>
                         ) : mission.status === 'available' ? (
-                            <span className="px-2 py-0.5 bg-emerald-50 text-emerald-700 text-[9px] font-bold rounded uppercase tracking-widest border border-emerald-200/60 flex items-center gap-1">
-                                <span className="w-1 h-1 bg-emerald-500 rounded-full"></span> Beschikbaar
+                            <span className="px-2 py-0.5 bg-lab-sage text-lab-sage text-[9px] font-bold rounded uppercase tracking-widest border border-lab-sage/60 flex items-center gap-1">
+                                <span className="w-1 h-1 bg-lab-sage rounded-full"></span> Beschikbaar
                             </span>
                         ) : (
-                            <span className="px-2 py-0.5 bg-amber-50 text-amber-700 text-[9px] font-bold rounded uppercase tracking-widest border border-amber-200/60">
+                            <span className="px-2 py-0.5 bg-lab-gold text-lab-gold text-[9px] font-bold rounded uppercase tracking-widest border border-lab-gold/60">
                                 Wordt verwacht
                             </span>
                         )}
@@ -1628,7 +1628,7 @@ const MissionCard = React.memo(({ mission, onSelectModule, onInfoClick, isComple
                 <h3 className={`
                 font-semibold mb-2 transition-colors leading-snug line-clamp-2 break-words
                 ${isCompact ? 'text-base' : 'text-lg mb-2'}
-                ${mission.status === 'locked' ? 'text-stone-400' : 'text-stone-800 group-hover:text-amber-800'}
+                ${mission.status === 'locked' ? 'text-stone-400' : 'text-stone-800 group-hover:text-lab-gold'}
             `} style={{ fontFamily: SERIF_FONT }}>
                     {mission.title}
                 </h3>
@@ -1664,7 +1664,7 @@ const MissionCard = React.memo(({ mission, onSelectModule, onInfoClick, isComple
 
                 {/* Locked Reason */}
                 {mission.status === 'locked' ? (
-                    <div className={`mt-auto flex items-center gap-2 font-bold text-amber-700 bg-amber-50/80 rounded-lg border border-amber-200/50 ${isCompact ? 'text-[10px] p-2' : 'text-xs p-3'}`}>
+                    <div className={`mt-auto flex items-center gap-2 font-bold text-lab-gold bg-lab-gold/80 rounded-lg border border-lab-gold/50 ${isCompact ? 'text-[10px] p-2' : 'text-xs p-3'}`}>
                         <AlertTriangle size={isCompact ? 12 : 14} />
                         <span className={isCompact ? 'text-[9px]' : ''}>Voltooi eerst de review missies</span>
                     </div>
@@ -1673,11 +1673,11 @@ const MissionCard = React.memo(({ mission, onSelectModule, onInfoClick, isComple
                         {!isCompact && (
                             <div className="flex gap-1 opacity-20">
                                 {[...Array(3)].map((_, i) => (
-                                    <div key={i} className="w-1.5 h-1.5 bg-amber-800 rounded-full"></div>
+                                    <div key={i} className="w-1.5 h-1.5 bg-lab-gold rounded-full"></div>
                                 ))}
                             </div>
                         )}
-                        <div className={`text-amber-800 font-extrabold uppercase tracking-widest flex items-center gap-2 group-hover:translate-x-1 transition-transform ${isCompact ? 'text-[10px]' : 'text-xs'}`}>
+                        <div className={`text-lab-gold font-extrabold uppercase tracking-widest flex items-center gap-2 group-hover:translate-x-1 transition-transform ${isCompact ? 'text-[10px]' : 'text-xs'}`}>
                             Start <Play size={isCompact ? 10 : 12} fill="currentColor" />
                         </div>
                     </div>

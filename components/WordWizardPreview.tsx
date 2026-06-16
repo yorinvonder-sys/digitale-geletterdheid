@@ -95,9 +95,9 @@ export const WordWizardPreview: React.FC<WordWizardPreviewProps> = ({ onTaskComp
     };
 
     return (
-        <div className="w-full h-full flex flex-col bg-slate-100 font-sans">
+        <div className="w-full h-full flex flex-col bg-lab-muted font-sans">
             {/* WORD UI HEADER */}
-            <div className="bg-[#2b579a] text-white shrink-0">
+            <div className="bg-[#0B453F] text-white shrink-0">
                 {/* Top Bar */}
                 <div className="flex items-center justify-between px-4 py-2 border-b border-blue-400/30">
                     <div className="flex items-center gap-4">
@@ -111,7 +111,7 @@ export const WordWizardPreview: React.FC<WordWizardPreviewProps> = ({ onTaskComp
                     </div>
                     <div className="flex gap-2">
                         <button className="p-2 hover:bg-white/10 rounded-full transition-colors">
-                            <div className="w-6 h-6 rounded-full bg-yellow-400 text-[#2b579a] font-bold flex items-center justify-center text-xs">JS</div>
+                            <div className="w-6 h-6 rounded-full bg-lab-gold text-[#0B453F] font-bold flex items-center justify-center text-xs">JS</div>
                         </button>
                     </div>
                 </div>
@@ -120,39 +120,39 @@ export const WordWizardPreview: React.FC<WordWizardPreviewProps> = ({ onTaskComp
                 <div className="flex px-2 pt-2 gap-1">
                     <button
                         onClick={() => setActiveTab('start')}
-                        className={`px-6 py-2 rounded-t-lg text-sm font-bold transition-colors ${activeTab === 'start' ? 'bg-[#f3f4f6] text-[#2b579a]' : 'text-white/70 hover:bg-white/10'}`}
+                        className={`px-6 py-2 rounded-t-lg text-sm font-bold transition-colors ${activeTab === 'start' ? 'bg-[#f3f4f6] text-[#0B453F]' : 'text-white/70 hover:bg-white/10'}`}
                     >
                         Start
                     </button>
                     <button
                         onClick={() => setActiveTab('invoegen')}
-                        className={`px-6 py-2 rounded-t-lg text-sm font-bold transition-colors ${activeTab === 'invoegen' ? 'bg-[#f3f4f6] text-[#2b579a]' : 'text-white/70 hover:bg-white/10'}`}
+                        className={`px-6 py-2 rounded-t-lg text-sm font-bold transition-colors ${activeTab === 'invoegen' ? 'bg-[#f3f4f6] text-[#0B453F]' : 'text-white/70 hover:bg-white/10'}`}
                     >
                         Invoegen
                     </button>
                 </div>
 
                 {/* Ribbon / Toolbar */}
-                <div className="bg-[#f3f4f6] text-slate-700 px-4 py-3 h-24 flex gap-4 shadow-sm border-b border-slate-300 overflow-x-auto">
+                <div className="bg-[#f3f4f6] text-lab-muted px-4 py-3 h-24 flex gap-4 shadow-sm border-b border-lab-muted overflow-x-auto">
 
                     {activeTab === 'start' && (
                         <>
                             {/* STYLES SECTION */}
-                            <div className="flex flex-col justify-between gap-1 pr-4 border-r border-slate-300 min-w-[200px]">
-                                <span className="text-[10px] text-slate-400 font-bold uppercase text-center w-full">Stijlen</span>
+                            <div className="flex flex-col justify-between gap-1 pr-4 border-r border-lab-muted min-w-[200px]">
+                                <span className="text-[10px] text-lab-muted font-bold uppercase text-center w-full">Stijlen</span>
                                 <div className="flex gap-2 h-full items-center">
                                     <button
                                         onClick={() => handleStyleChange('p')}
-                                        className={`flex flex-col items-center justify-center h-16 w-20 bg-white border rounded hover:bg-blue-50 transition-all ${selectedBlockId && blocks.find(b => b.id === selectedBlockId)?.type === 'p' ? 'ring-2 ring-blue-500 bg-blue-50' : 'border-slate-200'}`}
+                                        className={`flex flex-col items-center justify-center h-16 w-20 bg-white border rounded hover:bg-blue-50 transition-all ${selectedBlockId && blocks.find(b => b.id === selectedBlockId)?.type === 'p' ? 'ring-2 ring-blue-500 bg-blue-50' : 'border-lab-muted'}`}
                                     >
                                         <span className="text-xs">AaBbCc</span>
                                         <span className="text-[10px] font-medium mt-1">Normaal</span>
                                     </button>
                                     <button
                                         onClick={() => handleStyleChange('h1')}
-                                        className={`flex flex-col items-center justify-center h-16 w-20 bg-white border rounded hover:bg-blue-50 transition-all ${selectedBlockId && blocks.find(b => b.id === selectedBlockId)?.type === 'h1' ? 'ring-2 ring-blue-500 bg-blue-50' : 'border-slate-200'}`}
+                                        className={`flex flex-col items-center justify-center h-16 w-20 bg-white border rounded hover:bg-blue-50 transition-all ${selectedBlockId && blocks.find(b => b.id === selectedBlockId)?.type === 'h1' ? 'ring-2 ring-blue-500 bg-blue-50' : 'border-lab-muted'}`}
                                     >
-                                        <span className="text-base font-bold text-[#2b579a]">AaBbCc</span>
+                                        <span className="text-base font-bold text-[#0B453F]">AaBbCc</span>
                                         <span className="text-[10px] font-medium mt-1">Kop 1</span>
                                     </button>
                                 </div>
@@ -163,25 +163,25 @@ export const WordWizardPreview: React.FC<WordWizardPreviewProps> = ({ onTaskComp
                     {activeTab === 'invoegen' && (
                         <>
                             {/* INSERT IMAGE */}
-                            <div className="flex flex-col justify-between gap-1 pr-4 border-r border-slate-300">
-                                <span className="text-[10px] text-slate-400 font-bold uppercase text-center w-full">Media</span>
+                            <div className="flex flex-col justify-between gap-1 pr-4 border-r border-lab-muted">
+                                <span className="text-[10px] text-lab-muted font-bold uppercase text-center w-full">Media</span>
                                 <button
                                     onClick={handleInsertImage}
-                                    className="flex flex-col items-center justify-center h-full px-4 hover:bg-slate-200 rounded transition-colors gap-1"
+                                    className="flex flex-col items-center justify-center h-full px-4 hover:bg-lab-muted rounded transition-colors gap-1"
                                 >
-                                    <ImageIcon size={24} className="text-slate-600" />
+                                    <ImageIcon size={24} className="text-lab-muted" />
                                     <span className="text-xs font-medium">Afbeelding</span>
                                 </button>
                             </div>
 
                             {/* INSERT TOC */}
-                            <div className="flex flex-col justify-between gap-1 pr-4 border-r border-slate-300">
-                                <span className="text-[10px] text-slate-400 font-bold uppercase text-center w-full">Referenties</span>
+                            <div className="flex flex-col justify-between gap-1 pr-4 border-r border-lab-muted">
+                                <span className="text-[10px] text-lab-muted font-bold uppercase text-center w-full">Referenties</span>
                                 <button
                                     onClick={generateToC}
-                                    className="flex flex-col items-center justify-center h-full px-4 hover:bg-slate-200 rounded transition-colors gap-1"
+                                    className="flex flex-col items-center justify-center h-full px-4 hover:bg-lab-muted rounded transition-colors gap-1"
                                 >
-                                    <LayoutList size={24} className="text-slate-600" />
+                                    <LayoutList size={24} className="text-lab-muted" />
                                     <span className="text-xs font-medium">Inhoudsopgave</span>
                                 </button>
                             </div>
@@ -192,21 +192,21 @@ export const WordWizardPreview: React.FC<WordWizardPreviewProps> = ({ onTaskComp
             </div>
 
             {/* DOCUMENT CANVAS */}
-            <div className="flex-1 overflow-y-auto bg-slate-200 p-4 md:p-8 flex justify-center">
+            <div className="flex-1 overflow-y-auto bg-lab-muted p-4 md:p-8 flex justify-center">
                 <div className="bg-white w-full max-w-[21cm] min-h-[29.7cm] shadow-xl p-8 md:p-16 flex flex-col gap-4 relative animate-in zoom-in-95 duration-300">
 
                     {/* GENERATED TABLE OF CONTENTS */}
                     {showToC && (
-                        <div className="mb-8 p-6 bg-slate-50 border border-slate-200 rounded-lg animate-in slide-in-from-top-4">
-                            <h2 className="text-lg font-bold text-[#2b579a] mb-4 uppercase tracking-wider border-b-2 border-[#2b579a] pb-2">Inhoudsopgave</h2>
+                        <div className="mb-8 p-6 bg-lab-muted border border-lab-muted rounded-lg animate-in slide-in-from-top-4">
+                            <h2 className="text-lg font-bold text-[#0B453F] mb-4 uppercase tracking-wider border-b-2 border-[#0B453F] pb-2">Inhoudsopgave</h2>
                             {tocItems.length === 0 ? (
-                                <p className="text-slate-400 italic text-sm">Geen koppen gevonden. Gebruik 'Kop 1' om hoofdstukken te maken!</p>
+                                <p className="text-lab-muted italic text-sm">Geen koppen gevonden. Gebruik 'Kop 1' om hoofdstukken te maken!</p>
                             ) : (
                                 <div className="space-y-2">
                                     {tocItems.map((item, i) => (
-                                        <div key={i} className="flex justify-between items-end border-b border-dotted border-slate-300 pb-1">
-                                            <span className="font-medium text-slate-700">{item.text}</span>
-                                            <span className="text-slate-500 text-sm font-mono">{item.page}</span>
+                                        <div key={i} className="flex justify-between items-end border-b border-dotted border-lab-muted pb-1">
+                                            <span className="font-medium text-lab-muted">{item.text}</span>
+                                            <span className="text-lab-muted text-sm font-mono">{item.page}</span>
                                         </div>
                                     ))}
                                 </div>
@@ -223,7 +223,7 @@ export const WordWizardPreview: React.FC<WordWizardPreviewProps> = ({ onTaskComp
                         >
                             {/* Hover Controls (Delete) */}
                             <div className="absolute -left-10 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col gap-1">
-                                <button onClick={() => deleteBlock(block.id)} className="p-1.5 text-slate-400 hover:text-red-500 bg-white shadow-sm border rounded-md">
+                                <button onClick={() => deleteBlock(block.id)} className="p-1.5 text-lab-muted hover:text-red-500 bg-white shadow-sm border rounded-md">
                                     <Trash2 size={14} />
                                 </button>
                             </div>
@@ -234,13 +234,13 @@ export const WordWizardPreview: React.FC<WordWizardPreviewProps> = ({ onTaskComp
                     `}>
                                 {block.image && (
                                     <div className={`relative group/img ${block.textWrap ? 'w-1/3 float-right ml-4 mb-2' : 'w-full mb-4'}`}>
-                                        <img src={block.image} alt="Inserted" className="w-full rounded shadow-sm border border-slate-200" loading="lazy" />
+                                        <img src={block.image} alt="Inserted" className="w-full rounded shadow-sm border border-lab-muted" loading="lazy" />
                                         <button
                                             onClick={(e) => {
                                                 e.stopPropagation();
                                                 updateBlock(block.id, { textWrap: !block.textWrap });
                                             }}
-                                            className="absolute top-2 right-2 bg-white/90 p-1 rounded shadow text-xs font-bold text-slate-600 opacity-0 group-hover/img:opacity-100 transition-opacity"
+                                            className="absolute top-2 right-2 bg-white/90 p-1 rounded shadow text-xs font-bold text-lab-muted opacity-0 group-hover/img:opacity-100 transition-opacity"
                                         >
                                             {block.textWrap ? 'Regel: In Tekst' : 'Regel: Omloop'}
                                         </button>
@@ -255,7 +255,7 @@ export const WordWizardPreview: React.FC<WordWizardPreviewProps> = ({ onTaskComp
                                     placeholder={block.type === 'h1' ? "Hoofdstuk Titel..." : "Typ hier je tekst..."}
                                     className={`
                                 w-full bg-transparent resize-none outline-none overflow-hidden
-                                ${block.type === 'h1' ? 'text-3xl font-bold text-[#2b579a] mb-4' : 'text-base leading-relaxed text-slate-800'}
+                                ${block.type === 'h1' ? 'text-3xl font-bold text-[#0B453F] mb-4' : 'text-base leading-relaxed text-lab-muted'}
                             `}
                                     rows={1}
                                     style={{ minHeight: '1.5em', height: 'auto' }}
@@ -270,7 +270,7 @@ export const WordWizardPreview: React.FC<WordWizardPreviewProps> = ({ onTaskComp
 
                     {/* Empty State / Add Button at bottom */}
                     <div
-                        className="h-32 border-2 border-dashed border-slate-200 rounded-lg flex items-center justify-center text-slate-400 hover:border-blue-300 hover:text-blue-400 cursor-pointer transition-colors mt-4"
+                        className="h-32 border-2 border-dashed border-lab-muted rounded-lg flex items-center justify-center text-lab-muted hover:border-blue-300 hover:text-blue-400 cursor-pointer transition-colors mt-4"
                         onClick={() => addBlock('p')}
                     >
                         <div className="flex flex-col items-center gap-2">

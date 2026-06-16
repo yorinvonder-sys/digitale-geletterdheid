@@ -5,11 +5,11 @@ interface SkeletonProps {
 }
 
 export const Skeleton: React.FC<SkeletonProps> = ({ className }) => (
-    <div className={`animate-pulse bg-slate-200 rounded-xl ${className}`} />
+    <div className={`animate-pulse bg-lab-muted rounded-xl ${className}`} />
 );
 
 export const StudentCardSkeleton = () => (
-    <div className="bg-white p-4 rounded-xl border border-slate-100 flex items-center justify-between">
+    <div className="bg-white p-4 rounded-xl border border-lab-muted flex items-center justify-between">
         <div className="flex items-center gap-3">
             <Skeleton className="w-10 h-10 rounded-lg" />
             <div className="space-y-2">
@@ -25,7 +25,7 @@ export const StudentCardSkeleton = () => (
 );
 
 export const StatCardSkeleton = () => (
-    <div className="bg-white rounded-2xl p-4 shadow-sm border border-slate-100">
+    <div className="bg-white rounded-2xl p-4 shadow-sm border border-lab-muted">
         <div className="flex items-center gap-2 mb-2">
             <Skeleton className="w-8 h-8 rounded-lg" />
             <Skeleton className="w-12 h-3" />
@@ -36,7 +36,7 @@ export const StatCardSkeleton = () => (
 );
 
 export const TableRowSkeleton = () => (
-    <tr className="border-b border-slate-50">
+    <tr className="border-b border-lab-muted">
         <td className="px-4 py-3">
             <div className="flex items-center gap-3">
                 <Skeleton className="w-8 h-8 rounded-lg" />

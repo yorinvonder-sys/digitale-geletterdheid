@@ -72,7 +72,7 @@ export const TeacherGameToggle: React.FC<TeacherGameToggleProps> = ({ onTestGame
     };
 
     return (
-        <div className="bg-white rounded-2xl shadow-lg border border-slate-200 overflow-hidden">
+        <div className="bg-white rounded-2xl shadow-lg border border-lab-muted overflow-hidden">
             {/* Header */}
             <div className="bg-gradient-to-r from-indigo-500 to-purple-500 px-6 py-4">
                 <div className="flex items-center gap-3">
@@ -95,20 +95,20 @@ export const TeacherGameToggle: React.FC<TeacherGameToggleProps> = ({ onTestGame
                         <div
                             key={game.id}
                             className={`flex items-center justify-between p-4 rounded-xl border transition-all ${isEnabled
-                                ? 'bg-emerald-50 border-emerald-200'
-                                : 'bg-slate-50 border-slate-200'
+                                ? 'bg-lab-sage border-lab-sage'
+                                : 'bg-lab-muted border-lab-muted'
                                 }`}
                         >
                             <div className="flex items-center gap-3">
                                 <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${isEnabled
-                                    ? 'bg-emerald-100 text-emerald-600'
-                                    : 'bg-slate-200 text-slate-500'
+                                    ? 'bg-lab-sage text-lab-sage'
+                                    : 'bg-lab-muted text-lab-muted'
                                     }`}>
                                     {game.icon}
                                 </div>
                                 <div>
-                                    <h3 className="font-bold text-slate-800">{game.name}</h3>
-                                    <p className="text-xs text-slate-500">{game.description}</p>
+                                    <h3 className="font-bold text-lab-muted">{game.name}</h3>
+                                    <p className="text-xs text-lab-muted">{game.description}</p>
                                 </div>
                             </div>
 
@@ -127,8 +127,8 @@ export const TeacherGameToggle: React.FC<TeacherGameToggleProps> = ({ onTestGame
                                     onClick={() => handleToggle(game.id, !isEnabled)}
                                     disabled={saving === game.id}
                                     className={`flex items-center gap-2 px-4 py-2 rounded-lg font-bold text-sm transition-all ${isEnabled
-                                        ? 'bg-emerald-500 text-white hover:bg-emerald-600'
-                                        : 'bg-slate-200 text-slate-600 hover:bg-slate-300'
+                                        ? 'bg-lab-sage text-white hover:bg-lab-sage'
+                                        : 'bg-lab-muted text-lab-muted hover:bg-lab-muted'
                                         } ${saving === game.id ? 'opacity-50' : ''}`}
                                 >
                                     {isEnabled ? (
@@ -150,8 +150,8 @@ export const TeacherGameToggle: React.FC<TeacherGameToggleProps> = ({ onTestGame
             </div>
 
             {/* Footer info */}
-            <div className="px-6 py-3 bg-slate-50 border-t border-slate-200">
-                <div className="flex items-center gap-2 text-xs text-slate-500">
+            <div className="px-6 py-3 bg-lab-muted border-t border-lab-muted">
+                <div className="flex items-center gap-2 text-xs text-lab-muted">
                     <Users size={14} />
                     <span>Wijzigingen worden direct toegepast voor alle leerlingen</span>
                 </div>
