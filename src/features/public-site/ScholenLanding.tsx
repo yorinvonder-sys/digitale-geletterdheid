@@ -4,7 +4,7 @@ import { DuckMascot } from '@/components/brand/DuckMascot';
 import { HeroEyes } from '@/components/brand/HeroEyes';
 import { AnimatedCounter } from '@/components/brand/AnimatedCounter';
 import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion';
-import { DuckWalker } from '@/components/brand/ScrollDuckWalker';
+import { useHomepageAnalytics } from '@/hooks/useHomepageAnalytics';
 
 type NavItem = { label: string; target: string };
 type SkillTone = 'paper' | 'acid';
@@ -295,6 +295,7 @@ export const ScholenLanding: React.FC = () => {
     const { hidden: headerHidden, scrolled: headerScrolled } = useHeaderChrome(mobileMenuOpen);
 
     useHomepageGsapEffects(reduceMotion);
+    useHomepageAnalytics();
 
     useEffect(() => {
         let seen = true;
@@ -463,7 +464,7 @@ export const ScholenLanding: React.FC = () => {
             )}
 
             <main className="relative">
-                <section data-home-hero className="relative overflow-hidden px-5 pb-16 pt-32 md:px-10 md:pt-40">
+                <section data-home-hero data-section="hero" className="relative overflow-hidden px-5 pb-16 pt-32 md:px-10 md:pt-40">
                     <div className="relative z-10 mx-auto max-w-5xl text-center">
                         <p data-duck-anchor="hero-badge" className={`inline-flex items-center gap-2 rounded-full border border-duck-ink bg-duck-acid px-4 py-2 text-xs font-extrabold uppercase tracking-[0.16em] opacity-0 motion-reduce:animate-none motion-reduce:opacity-100 mt-6 md:mt-8 ${introReady ? 'animate-fade-in-up' : ''}`}>
                             Digitale geletterdheid voor VO &amp; VSO
@@ -552,7 +553,7 @@ export const ScholenLanding: React.FC = () => {
 
                 <PortfolioStorySection startPilot={startPilot} />
 
-                <section id="docent-les" className="relative scroll-mt-24 bg-duck-bgLight px-5 py-20 md:px-10 md:py-28">
+                <section id="docent-les" data-section="docent-les" className="relative scroll-mt-24 bg-duck-bgLight px-5 py-20 md:px-10 md:py-28">
                     <div className="relative z-10 mx-auto max-w-6xl">
                         <Reveal className="grid gap-12 lg:grid-cols-[0.95fr_1.05fr] lg:items-center">
                             <div>
@@ -583,7 +584,7 @@ export const ScholenLanding: React.FC = () => {
                     </div>
                 </section>
 
-                <section id="voor-schoolleiding" className="relative scroll-mt-24 bg-duck-bg px-5 py-20 md:px-10 md:py-28">
+                <section id="voor-schoolleiding" data-section="schoolleiding" className="relative scroll-mt-24 bg-duck-bg px-5 py-20 md:px-10 md:py-28">
                     <div className="relative z-10 mx-auto max-w-6xl space-y-16">
                         <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
                             <Reveal y={30}>
@@ -647,7 +648,7 @@ export const ScholenLanding: React.FC = () => {
                     </div>
                 </section>
 
-                <section id="productbewijs" className="scroll-mt-24 bg-duck-bgLight px-5 py-20 md:px-10 md:py-28">
+                <section id="productbewijs" data-section="productbewijs" className="scroll-mt-24 bg-duck-bgLight px-5 py-20 md:px-10 md:py-28">
                     <Reveal y={24} className="mx-auto max-w-6xl">
                         <p className="mb-10 text-center text-[11px] font-extrabold uppercase tracking-[0.14em] text-duck-ink/35">Voor de hele school</p>
                         <div className="grid gap-5 lg:grid-cols-3">
@@ -746,7 +747,7 @@ export const ScholenLanding: React.FC = () => {
                     </Reveal>
                 </section>
 
-                <section id="schoolpilot" className="relative scroll-mt-24 bg-duck-bg px-5 py-20 md:px-10 md:py-28">
+                <section id="schoolpilot" data-section="schoolpilot" className="relative scroll-mt-24 bg-duck-bg px-5 py-20 md:px-10 md:py-28">
                     <div className="relative z-10 mx-auto max-w-6xl">
                         <Reveal y={30} className="grid gap-10 rounded-[2rem] bg-duck-acid px-6 py-10 md:px-10 md:py-14 lg:grid-cols-[0.85fr_1.15fr] lg:items-center">
                             <div>
@@ -782,7 +783,6 @@ export const ScholenLanding: React.FC = () => {
                 <FaqSection />
 
                 <FooterCta startPilot={startPilot} scrollTo={scrollTo} />
-                <DuckWalker />
             </main>
         </div>
     );
@@ -968,7 +968,7 @@ function JourneySection() {
     }, []);
 
     return (
-        <section id="journey" className="relative scroll-mt-24 overflow-x-clip bg-duck-bgLight px-5 py-20 md:px-10 md:py-28">
+        <section id="journey" data-section="journey" className="relative scroll-mt-24 overflow-x-clip bg-duck-bgLight px-5 py-20 md:px-10 md:py-28">
             <div className="relative z-10 mx-auto grid max-w-6xl gap-12 lg:grid-cols-[0.85fr_1.15fr]">
                 <div className="min-w-0 lg:sticky lg:top-32 lg:self-start">
                     <Reveal>
@@ -1051,7 +1051,7 @@ function JourneySection() {
 
 function SkillsSection({ scrollTo }: { scrollTo: (target: string) => void }) {
     return (
-        <section id="skills" className="relative scroll-mt-24 overflow-x-clip bg-duck-bg">
+        <section id="skills" data-section="skills" className="relative scroll-mt-24 overflow-x-clip bg-duck-bg">
             <div data-skills-stage className="py-16 md:py-24 lg:flex lg:flex-col lg:justify-center lg:py-6 lg:min-h-[100svh]">
                 <div className="mx-auto w-full max-w-6xl px-5 md:px-10">
                     <Reveal className="flex flex-col justify-between gap-5 lg:flex-row lg:items-end">
@@ -1503,6 +1503,7 @@ function PortfolioStorySection({ startPilot }: { startPilot: () => void }) {
     return (
         <section
             id="portfolio"
+            data-section="portfolio"
             ref={sectionRef}
             className={`relative scroll-mt-24 overflow-x-clip bg-duck-bgLight px-5 py-20 md:px-10 ${reduceMotion ? '' : 'lg:min-h-[420svh] lg:py-0'}`}
         >
@@ -1594,7 +1595,7 @@ function FaqSection() {
     const [openIndex, setOpenIndex] = useState<number>(0);
 
     return (
-        <section id="faq" className="relative scroll-mt-24 bg-duck-bg px-5 py-20 md:px-10 md:py-28">
+        <section id="faq" data-section="faq" className="relative scroll-mt-24 bg-duck-bg px-5 py-20 md:px-10 md:py-28">
             <div className="relative z-10 mx-auto grid max-w-6xl gap-12 lg:grid-cols-[0.8fr_1.2fr]">
                 <Reveal y={30} className="lg:sticky lg:top-32 lg:self-start">
                     <SectionLabel>FAQ per rol</SectionLabel>
