@@ -170,11 +170,43 @@ const leaderReasons = [
 ] as const;
 
 const sloRows = [
-    { domain: 'Digitale vaardigheden', missions: 'Prompt Perfectionist, Website Bouwer', proof: 'Toolgebruik, workflow en uitleg bij keuzes' },
-    { domain: 'Informatievaardigheden', missions: 'Data Journalist, Factchecker', proof: 'Bronnen beoordelen, data lezen en conclusies trekken' },
-    { domain: 'Mediawijsheid', missions: 'Deepfake Detector, Scroll Stopper', proof: 'Kritisch kijken naar media, identiteit en online gedrag' },
-    { domain: 'Computational thinking', missions: 'Game Programmeur, Robot Bestuurder', proof: 'Logica, testen, debuggen en iteratief verbeteren' },
-] as const;
+    {
+        domain: 'Digitale vaardigheden',
+        icon: <MonitorIcon />,
+        proof: 'Toolgebruik, workflow en uitleg bij keuzes',
+        missions: [
+            { name: 'Prompt Perfectionist', description: 'Leer hoe je AI precies laat doen wat jij wilt door de kunst van het prompting.', image: '/assets/agents/prompt_master.webp' },
+            { name: 'Website Bouwer', description: 'Typ je eerste HTML-code en bouw een persoonlijke webpagina.', image: '/assets/agents/prompt_master.webp' },
+        ],
+    },
+    {
+        domain: 'Informatievaardigheden',
+        icon: <SearchIcon />,
+        proof: 'Bronnen beoordelen, data lezen en conclusies trekken',
+        missions: [
+            { name: 'Data Journalist', description: 'Vertel verhalen die verborgen zitten in data en maak een infographic.', image: '/assets/agents/nepnieuws_speurder_new.webp' },
+            { name: 'Factchecker', description: 'Ontmasker nepnieuws en word een digitale waarheidsvinder.', image: '/assets/agents/nepnieuws_speurder.webp' },
+        ],
+    },
+    {
+        domain: 'Mediawijsheid',
+        icon: <EyeIcon />,
+        proof: 'Kritisch kijken naar media, identiteit en online gedrag',
+        missions: [
+            { name: 'Deepfake Detector', description: 'Leer echte en nep-afbeeldingen van elkaar te onderscheiden.', image: '/assets/agents/social_safeguard.webp' },
+            { name: 'Scroll Stopper', description: 'Begrijp hoe social media-algoritmen je gedrag beïnvloeden.', image: '/assets/agents/social_media_psychologist.webp' },
+        ],
+    },
+    {
+        domain: 'Computational thinking',
+        icon: <CodeIcon />,
+        proof: 'Logica, testen, debuggen en iteratief verbeteren',
+        missions: [
+            { name: 'Game Programmeur', description: 'Ontwerp en programmeer je eigen spelwereld met echte code.', image: '/assets/agents/game_programmeur_new.webp' },
+            { name: 'Robot Bestuurder', description: 'Geef een robot stap-voor-stap instructies om een doolhof op te lossen.', image: '/assets/agents/robot_bestuurder.webp' },
+        ],
+    },
+];
 
 const ictTrustItems = [
     { title: 'Microsoft 365', copy: 'Inloggen en klasbeheer worden besproken vanuit de bestaande schoolomgeving.' },
@@ -304,6 +336,7 @@ export const ScholenLanding: React.FC = () => {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const [showLoader, setShowLoader] = useState(false);
     const [introReady, setIntroReady] = useState(false);
+    const [activeSlo, setActiveSlo] = useState<string | null>(null);
     const reduceMotion = usePrefersReducedMotion();
     const { hidden: headerHidden, scrolled: headerScrolled } = useHeaderChrome(mobileMenuOpen);
 
@@ -633,15 +666,52 @@ export const ScholenLanding: React.FC = () => {
                             <div className="rounded-[1.5rem] bg-white p-6 shadow-[2px_4px_24px_rgba(199,197,188,0.30)] md:p-8">
                                 <SectionLabel>SLO &amp; curriculum proof</SectionLabel>
                                 <h2 className="mt-4 text-balance font-display text-3xl leading-[1.08] md:text-4xl">Van losse activiteit naar aantoonbare leerlijn</h2>
-                                <div className="mt-7">
-                                    {sloRows.map((row) => (
-                                        <div key={row.domain} className="grid gap-2 border-t border-duck-ink/10 py-4 last:border-b md:grid-cols-[0.8fr_1fr_1fr] md:items-center md:gap-4">
-                                            <p className="text-sm font-extrabold">{row.domain}</p>
-                                            <p className="text-sm font-semibold leading-6 text-duck-ink/65">{row.missions}</p>
-                                            <p className="text-xs font-bold leading-5 text-duck-ink/80">{row.proof}</p>
-                                        </div>
-                                    ))}
-                                </div>
+                                <ul className="mt-7">
+                                    {sloRows.map((row) => {
+                                        const isActive = activeSlo === row.domain;
+                                        return (
+                                            <li key={row.domain} className="border-t border-duck-ink/10 last:border-b">
+                                                <button
+                                                    type="button"
+                                                    aria-expanded={isActive}
+                                                    onClick={() => setActiveSlo(isActive ? null : row.domain)}
+                                                    className="flex w-full items-center gap-3 py-4 text-left transition-colors duration-200 hover:opacity-80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-ink focus-visible:ring-offset-2"
+                                                >
+                                                    <span className="grid size-10 shrink-0 place-items-center rounded-[0.75rem] bg-duck-ink text-duck-acid" aria-hidden="true">
+                                                        {row.icon}
+                                                    </span>
+                                                    <span className="flex-1 min-w-0">
+                                                        <span className="block text-sm font-extrabold">{row.domain}</span>
+                                                        <span className="block text-xs font-semibold text-duck-ink/55">{row.missions.map((m) => m.name).join(', ')}</span>
+                                                    </span>
+                                                    <span className={`grid size-7 shrink-0 place-items-center rounded-full border transition-all duration-300 ${isActive ? 'rotate-45 border-duck-ink bg-duck-ink text-duck-acid' : 'border-duck-ink/20 text-duck-ink'}`} aria-hidden="true">
+                                                        <PlusIcon />
+                                                    </span>
+                                                </button>
+                                                <div className={`grid transition-[grid-template-rows,opacity] duration-500 ease-out ${isActive ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'}`}>
+                                                    <div className="overflow-hidden">
+                                                        <div className="grid gap-3 pb-4 pt-1 sm:grid-cols-2">
+                                                            {row.missions.map((mission) => (
+                                                                <div key={mission.name} className="overflow-hidden rounded-[1rem] bg-duck-bg">
+                                                                    <img
+                                                                        src={mission.image}
+                                                                        alt={mission.name}
+                                                                        className="h-28 w-full object-cover"
+                                                                        loading="lazy"
+                                                                    />
+                                                                    <div className="px-3.5 pb-3.5 pt-3">
+                                                                        <p className="text-sm font-extrabold">{mission.name}</p>
+                                                                        <p className="mt-1 text-xs font-semibold leading-5 text-duck-ink/60">{mission.description}</p>
+                                                                    </div>
+                                                                </div>
+                                                            ))}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        );
+                                    })}
+                                </ul>
                             </div>
                             <div className="rounded-[1.5rem] bg-duck-ink p-6 text-white md:p-8">
                                 <p className="text-xs font-extrabold uppercase tracking-[0.16em] text-duck-acid">Voor ICT en privacy</p>
@@ -2385,6 +2455,8 @@ function IconBase({ children }: { children: React.ReactNode }) {
     return <svg className="size-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">{children}</svg>;
 }
 
+function MonitorIcon() { return <IconBase><rect x="2" y="3" width="20" height="14" rx="2" /><path d="M8 21h8M12 17v4" /></IconBase>; }
+function EyeIcon() { return <IconBase><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z" /><circle cx="12" cy="12" r="3" /></IconBase>; }
 function ArrowRightIcon() { return <IconBase><path d="M5 12h14M13 5l7 7-7 7" /></IconBase>; }
 function ArrowDownIcon() { return <IconBase><path d="M12 5v14M5 13l7 7 7-7" /></IconBase>; }
 function MenuIcon() { return <IconBase><path d="M4 7h16M4 12h16M4 17h16" /></IconBase>; }
