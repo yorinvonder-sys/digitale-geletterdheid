@@ -1925,10 +1925,11 @@ function BrowserFrame({ url, children }: { url: string; children: React.ReactNod
 /* ---- Mock-productschermen in DUCK-stijl (productimpressies, geen screenshots) ---- */
 
 function ScreenMissies() {
+    const [activeTooltip, setActiveTooltip] = useState<string | null>(null);
     const missions = [
-        { title: 'Prompt Perfectionist', domain: 'Digitale vaardigheden', pct: 72, tone: 'acid' },
-        { title: 'Deepfake Detector', domain: 'Mediawijsheid', pct: 38, tone: 'paper' },
-        { title: 'Game Programmeur', domain: 'Computational thinking', pct: 12, tone: 'ink' },
+        { title: 'Prompt Perfectionist', domain: 'Digitale vaardigheden', pct: 72, tone: 'acid', keesTooltip: 'start klein. Eén goede prompt is al werk genoeg.' },
+        { title: 'Deepfake Detector', domain: 'Mediawijsheid', pct: 38, tone: 'paper', keesTooltip: 'eerst kijken, dan geloven. Scheelt gedoe.' },
+        { title: 'Game Programmeur', domain: 'Computational thinking', pct: 12, tone: 'ink', keesTooltip: 'test vroeg. Bugs wachten niet beleefd.' },
     ] as const;
 
     return (
@@ -1951,17 +1952,46 @@ function ScreenMissies() {
                     <span className="rounded-full bg-duck-ink px-2.5 py-1 text-[9px] font-extrabold text-duck-acid">1.840 XP</span>
                 </div>
                 <div className="mt-[4%] grid gap-[3%]">
-                    {missions.map((mission) => (
-                        <div key={mission.title} className={`rounded-xl p-2.5 ${mission.tone === 'acid' ? 'bg-duck-acid' : mission.tone === 'ink' ? 'bg-duck-ink text-white' : 'bg-white'}`}>
-                            <div className="flex items-center justify-between gap-2">
-                                <p className="truncate text-[10px] font-extrabold">{mission.title}</p>
-                                <span className={`hidden whitespace-nowrap rounded-full px-2 py-0.5 text-[8px] font-extrabold sm:inline ${mission.tone === 'ink' ? 'bg-white/10 text-duck-acid' : 'bg-duck-ink text-duck-acid'}`}>{mission.domain}</span>
+                    {missions.map((mission) => {
+                        const tooltipId = `kees-${mission.title.replace(/\s+/g, '-').toLowerCase()}`;
+                        const isActive = activeTooltip === mission.title;
+                        return (
+                            <div
+                                key={mission.title}
+                                className={`relative rounded-xl p-2.5 ${mission.tone === 'acid' ? 'bg-duck-acid' : mission.tone === 'ink' ? 'bg-duck-ink text-white' : 'bg-white'}`}
+                                onMouseLeave={() => setActiveTooltip(null)}
+                            >
+                                <div className="flex items-center gap-1">
+                                    <p className="min-w-0 flex-1 truncate text-[10px] font-extrabold">{mission.title}</p>
+                                    <span className={`hidden whitespace-nowrap rounded-full px-2 py-0.5 text-[8px] font-extrabold sm:inline ${mission.tone === 'ink' ? 'bg-white/10 text-duck-acid' : 'bg-duck-ink text-duck-acid'}`}>{mission.domain}</span>
+                                    <button
+                                        type="button"
+                                        aria-label={`Kees-tip voor ${mission.title}`}
+                                        aria-describedby={tooltipId}
+                                        onMouseEnter={() => setActiveTooltip(mission.title)}
+                                        onFocus={() => setActiveTooltip(mission.title)}
+                                        onBlur={() => setActiveTooltip(null)}
+                                        className={`grid size-[13px] shrink-0 place-items-center rounded-full border text-[7px] font-extrabold leading-none focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-current ${mission.tone === 'ink' ? 'border-white/30 text-duck-acid' : 'border-duck-ink/30 text-duck-ink/50'}`}
+                                    >
+                                        i
+                                    </button>
+                                </div>
+                                <div className={`mt-2 h-1.5 overflow-hidden rounded-full ${mission.tone === 'ink' ? 'bg-white/15' : 'bg-duck-ink/10'}`}>
+                                    <div className={`h-full rounded-full ${mission.tone === 'acid' ? 'bg-duck-ink' : 'bg-duck-acid'}`} style={{ width: `${mission.pct}%` }} />
+                                </div>
+                                <div
+                                    id={tooltipId}
+                                    role="tooltip"
+                                    className={`pointer-events-none absolute inset-0 flex items-center rounded-xl px-3 text-[8px] font-semibold leading-snug transition-opacity duration-150 ${isActive ? 'opacity-100' : 'opacity-0'} ${mission.tone === 'ink' ? 'bg-duck-acid text-duck-ink' : 'bg-duck-ink/92 text-white'}`}
+                                >
+                                    <p>
+                                        <span className={`font-extrabold ${mission.tone === 'ink' ? 'text-duck-ink' : 'text-duck-acid'}`}>Kees:</span>{' '}
+                                        {mission.keesTooltip}
+                                    </p>
+                                </div>
                             </div>
-                            <div className={`mt-2 h-1.5 overflow-hidden rounded-full ${mission.tone === 'ink' ? 'bg-white/15' : 'bg-duck-ink/10'}`}>
-                                <div className={`h-full rounded-full ${mission.tone === 'acid' ? 'bg-duck-ink' : 'bg-duck-acid'}`} style={{ width: `${mission.pct}%` }} />
-                            </div>
-                        </div>
-                    ))}
+                        );
+                    })}
                 </div>
             </div>
         </div>
