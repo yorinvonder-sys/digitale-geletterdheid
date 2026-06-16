@@ -31,6 +31,19 @@ export const missionVisionConfig: BuilderCanvasConfig = {
                 { id: 'drie-waarden', label: 'Drie kernwaarden zijn geformuleerd' },
             ],
             textPrompt: 'Schrijf je visie en kernwaarden',
+            reflectionQuestion: {
+                question: 'Wat hebben een visiestelling en een goede AI-prompt gemeen?',
+                options: [
+                    'Niets — het een gaat over mensen, het ander over AI',
+                    'Allebei: hoe duidelijker en specifieker, hoe beter de ander je begrijpt',
+                    'Een visie moet altijd langer zijn dan een prompt',
+                    'Alleen prompts moeten kort zijn',
+                ],
+                correctIndex: 1,
+                bonusPoints: 5,
+                explanation:
+                    'Of je nu een AI aanstuurt of een publiek inspireert: duidelijkheid en specificiteit bepalen of je boodschap overkomt.',
+            },
         },
         {
             id: 'moodboard',
@@ -38,15 +51,29 @@ export const missionVisionConfig: BuilderCanvasConfig = {
             description:
                 'Een moodboard is een visuele verzameling van beelden, kleuren en stijlen die de sfeer van je idee weergeven. Designers gebruiken moodboards om anderen te laten voelen wat ze zelf zien.',
             instruction:
-                'Beschrijf je moodboard in woorden (je hoeft niets te tekenen). Beschrijf: 1) 3 tot 5 soorten beelden die je zou opnemen en waarom (bijv. "foto van jongeren die samenwerken — laat de sfeer van samenwerking zien"), 2) Het kleurenpalet: welke kleuren passen bij de sfeer van jouw idee?, 3) Het gevoel dat je wilt overbrengen met het moodboard (in 2 woorden), 4) Welk platform je gebruikt om het moodboard te maken (Canva, Pinterest, PowerPoint, Google Slides).',
+                'Maak nu écht een moodboard — niet alleen beschrijven. 1) Kies je platform: Canva, Pinterest of PowerPoint. 2) Voeg minimaal 5 beelden toe die de sfeer van jouw project uitstralen. 3) Kies een kleurenpalet van 3 kleuren en schrijf er één zin bij waarom deze kleuren passen. 4) Benoem het gevoel van je moodboard in precies 2 woorden. 5) Sla je moodboard op in de map "P4-Eindproject" in OneDrive en maak een deellink. Plak die link hieronder.',
             tip: 'Een goed moodboard vertelt hetzelfde verhaal als je visie — maar dan zonder woorden. Als iemand je moodboard ziet zonder uitleg, moet hij de juiste sfeer voelen.',
             checklistItems: [
-                { id: 'beelden', label: 'Ik heb 3-5 soorten beelden beschreven met motivatie' },
-                { id: 'kleuren', label: 'Het kleurenpalet is beschreven' },
-                { id: 'gevoel', label: 'Het gevoel van het moodboard is in 2 woorden beschreven' },
-                { id: 'platform', label: 'Ik heb een platform gekozen voor het moodboard' },
+                { id: 'beelden', label: 'Mijn moodboard heeft minimaal 5 beelden' },
+                { id: 'kleuren', label: 'Ik heb een kleurenpalet van 3 kleuren gekozen met motivatie' },
+                { id: 'gevoel', label: 'Het gevoel van mijn moodboard is in 2 woorden benoemd' },
+                { id: 'link-geplakt', label: 'Ik heb het moodboard opgeslagen in OneDrive en de link geplakt' },
             ],
-            textPrompt: 'Beschrijf je moodboard',
+            textPrompt: 'Plak hier de link naar je moodboard',
+            minTextLength: 30,
+            reflectionQuestion: {
+                question: 'Hoe gebruik je AI het beste om beelden voor je moodboard te vinden?',
+                options: [
+                    '"Geef me afbeeldingen" — kort en simpel',
+                    '"Zoek foto\'s" — minder woorden werkt sneller',
+                    '"Geef me 5 foto\'s van [onderwerp] met een [sfeer]-gevoel voor een moodboard over [mijn project]" — met context en specificiteit',
+                    'AI kan geen beelden zoeken, dus prompten helpt niet',
+                ],
+                correctIndex: 2,
+                bonusPoints: 5,
+                explanation:
+                    'Duidelijkheid + specificiteit + context = betere prompt. Dat leerde je in Prompt Perfectionist.',
+            },
         },
         {
             id: 'slides-ontwerpen',
@@ -63,6 +90,19 @@ export const missionVisionConfig: BuilderCanvasConfig = {
                 { id: 'design', label: 'Een design-principe is benoemd' },
             ],
             textPrompt: 'Beschrijf je presentatie-slides',
+            reflectionQuestion: {
+                question: 'Slide Specialist-regel: hoeveel bullets per slide is ideaal?',
+                options: [
+                    '1 bullet',
+                    '3 tot 5 korte punten',
+                    '8 punten zodat alles erop staat',
+                    'Geen bullets, alleen beeld',
+                ],
+                correctIndex: 1,
+                bonusPoints: 5,
+                explanation:
+                    'Maximaal 3 tot 5 korte punten — de slide ondersteunt jouw verhaal, het publiek luistert naar jou.',
+            },
         },
         {
             id: 'pitchen',
@@ -70,13 +110,14 @@ export const missionVisionConfig: BuilderCanvasConfig = {
             description:
                 'Je visie pitchen is anders dan je plan uitleggen. Een pitch is een verhaal dat mensen enthousiast maakt. Het gaat niet om feiten — het gaat om gevoel, richting en geloof.',
             instruction:
-                'Schrijf een 2-minuten pitch voor jouw visie. Gebruik deze structuur: 1) Open met een vraag of beeld dat het probleem voelbaar maakt (30 sec), 2) Beschrijf jouw droom-oplossing en wat die verandert (45 sec), 3) Vertel één concreet voorbeeld of verhaal dat jouw visie laat leven (30 sec), 4) Sluit af met een uitnodiging: wat wil je van je publiek? (15 sec). Schrijf de tekst als gesproken woord — kort en krachtig.',
+                'Schrijf een 2-minuten pitch voor jouw visie. Gebruik deze structuur: 1) Open met een vraag of beeld dat het probleem voelbaar maakt (30 sec), 2) Beschrijf jouw droom-oplossing en wat die verandert (45 sec), 3) Vertel één concreet voorbeeld of verhaal dat jouw visie laat leven (30 sec), 4) Sluit af met een uitnodiging: wat wil je van je publiek? (15 sec). Schrijf de tekst als gesproken woord — kort en krachtig. Bouw je 5 slides ook écht in PowerPoint: kies een thema via het tabblad Ontwerp en zorg dat elke slide maximaal 5 bullets heeft. Sla het bestand op in de map "P4-Eindproject" in OneDrive.',
             tip: 'Een visie-pitch eindigt niet met "zijn er nog vragen?" maar met een uitnodiging: "Ik zoek mensen die dit mee willen bouwen" of "Ik wil weten: welk deel spreekt jou het meest aan?"',
             checklistItems: [
                 { id: 'vier-onderdelen', label: 'De pitch heeft 4 onderdelen in de juiste volgorde' },
                 { id: 'gesproken-taal', label: 'De tekst is gesproken taal, niet schrijftaal' },
                 { id: 'uitnodiging', label: 'De pitch eindigt met een uitnodiging, niet een vraag' },
                 { id: 'twee-minuten', label: 'De pitch past in 2 minuten (ca. 250-300 woorden)' },
+                { id: 'slides-opgeslagen', label: 'Mijn 5 PowerPoint-slides zijn opgeslagen in de map "P4-Eindproject" in OneDrive' },
             ],
             textPrompt: 'Schrijf je 2-minuten visie-pitch',
         },
@@ -94,7 +135,7 @@ export const missionVisionConfig: BuilderCanvasConfig = {
         'Je kunt een moodboard beschrijven dat de sfeer en stijl van een idee visualiseert',
         'Je hebt presentatieslides ontworpen die jouw boodschap versterken zonder het podium te stelen',
         'Je hebt een 2-minuten pitch geschreven die gevoel en richting overbrengt',
-        'Je begrijpt dat visie presenteren een vaardigheid is die los staat van het idee zelf — en net zo belangrijk',
+        'Je hebt bewezen dat je de Slide Specialist-regels kunt toepassen: max 5 bullets per slide, een Ontwerp-thema kiezen en slides opslaan in de cloud — vaardigheden uit Periode 1.',
     ],
 };
 

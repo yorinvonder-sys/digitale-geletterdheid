@@ -6,92 +6,105 @@ const config: DebateArenaConfig = {
     introEmoji: '⚖️',
     introTitle: 'De Ethische Raad',
     introDescription:
-        'We lanceren een groot AI-project — maar mag alles wat kan? Jij bent lid van de Ethische Raad. Drie dossiers liggen op tafel: over privacy, bias en eerlijkheid. Debatteer mee over de grenzen van technologie.',
+        'Je hebt je project gemaakt en gelanceerd. Nu stelt de Ethische Raad de vraag die er écht toe doet: mag jouw project bestaan zoals het nu is? Je past drie ethische toetsen toe op je eigen werk — is het legaal, eerlijk en transparant? — en laat zien dat je een bewuste digitale burger bent, óók als maker.',
     introFeatures: [
-        'Lees de standpunten van 4 betrokkenen',
-        'Kies jouw positie in het debat',
-        'Bouw 2-3 sterke argumenten op',
-        'Reageer op een tegenargument',
-        'Reflecteer: is je mening veranderd?',
+        'Lees de drie ethische toetsen en wie ze bewaakt',
+        'Geef je eerlijke oordeel over je eigen project',
+        'Onderbouw waarom het legaal, eerlijk en transparant is',
+        'Reageer op een stevig tegenargument',
+        'Reflecteer: wat zou je nog aanpassen?',
     ],
-    topic: 'Ethiek van AI-projecten op school',
+    topic: 'De drie ethische toetsen op je eigen eindproject',
     dilemma:
-        'Een schoolteam wil een AI-systeem lanceren dat leerlingfoto\'s verzamelt, niveaus voorspelt en eindverslagen beoordeelt. Technisch is het mogelijk. Maar is het ook ethisch verantwoord?',
+        'Jouw P4-project staat klaar om gelanceerd te worden. Drie dossiers liggen op tafel — over jóuw project: Is het LEGAAL? Is het EERLIJK? Is het TRANSPARANT? De Ethische Raad wil jouw eigen onderbouwing horen.',
     stakeholders: [
         {
-            id: 'yara',
-            name: 'Yara',
-            emoji: '👧',
-            role: 'Leerling en privacy-bewuste gebruiker',
-            perspective:
-                'Ik gebruik social media en ik weet dat mijn foto\'s openbaar zijn. Maar "openbaar" betekent niet dat iedereen ze mag gebruiken voor wat ze willen. Als iemand mijn foto gebruikt om een AI te trainen zonder mijn toestemming, is dat een schending van mijn recht op mijn eigen afbeelding.',
-            keyArgument:
-                'Openbaar betekent niet vrij beschikbaar voor elk doel. Toestemming is een grondrecht, ook bij openbare informatie.',
-        },
-        {
-            id: 'bouwer',
-            name: 'Sander',
-            emoji: '💻',
-            role: 'Leerling-projectleider',
-            perspective:
-                'We hebben een maand gewerkt aan ons AI-systeem. We scrapen alleen openbare profielen, het niveau-model is gebaseerd op bestaande data en ChatGPT helpt ons bij het nakijken. Alles is technisch mogelijk. Ik snap het probleem niet — niemand wordt er slechter van.',
-            keyArgument:
-                'Als we elk mogelijk bezwaar moeten wegnemen voordat we iets bouwen, bouwen we nooit iets. Innovatie vereist enig risico.',
-        },
-        {
-            id: 'raadslid',
-            name: 'Dr. Okonkwo',
+            id: 'avg-advocaat',
+            name: 'AVG-advocaat',
             emoji: '⚖️',
-            role: 'Voorzitter Ethische Raad',
+            role: 'Privacy- en wetgevingsspecialist',
             perspective:
-                'Drie toetsen: Is het legaal? Is het eerlijk? Is het transparant? Bij het scrapen van foto\'s: nee, niet zonder toestemming. Bij het niveau-model: als de trainingsdata historische ongelijkheid bevat, reproduceert het systeem die ongelijkheid. Bij AI-beoordeling: wie is er aansprakelijk als een AI een leerling onterecht afwijst?',
+                'Ik bekijk jouw project door de bril van de wet. Verwerk jij persoonsgegevens — namen, foto\'s, e-mailadressen? Dan moet je kunnen aantonen dat je toestemming hebt én dat duidelijk is wie verantwoordelijk is voor die gegevens. "Ik dacht dat het mocht" is geen juridisch verweer.',
             keyArgument:
-                'Technologie die legale, ethische en transparantie-toetsen niet doorstaat, mag niet worden ingezet — ook niet als het technisch kan.',
+                'Legaal betekent: ook als een rechter ernaar kijkt, klopt het — niet "waarschijnlijk mag het".',
         },
         {
-            id: 'docent',
-            name: 'Mevrouw Groot',
-            emoji: '👩‍🏫',
-            role: 'Begeleidend docent',
+            id: 'eerlijkheidsrechter',
+            name: 'Eerlijkheidsrechter',
+            emoji: '🔍',
+            role: 'Ethicus voor eerlijkheid en bias',
             perspective:
-                'Ik ben trots op wat dit team heeft gebouwd. Maar mijn taak is ook om te leren dat technologie verantwoord worden ingezet. ChatGPT gebruiken als copiloot bij het schrijven: prima. ChatGPT een verslag laten schrijven en dat als eigen werk inleveren: dat is plagiaat, en het ondermijnt wat leren betekent.',
+                'Mijn vraag aan jou: werkt jouw project voor iedereen even goed? Sluit het bepaalde leerlingen buiten — misschien per ongeluk, omdat je dataset niet representatief was? En als je iemand met een beperking jouw project zou laten gebruiken, zou het dan ook voor hem of haar werken?',
             keyArgument:
-                'AI als tool is krachtig. AI als vervanger voor jouw eigen denken is een gemiste leerkans — en oneerlijk tegenover je klasgenoten.',
+                'Eerlijk betekent: niemand wordt systematisch benadeeld door jouw project — ook niet per ongeluk.',
+        },
+        {
+            id: 'transparantie-officier',
+            name: 'Transparantie-officier',
+            emoji: '🪟',
+            role: 'Expert in openheid en verantwoording',
+            perspective:
+                'Ik wil weten of een gewone gebruiker begrijpt wat jouw project doet. Weet diegene of er AI in zit? Weet diegene wat er met eventuele gegevens gebeurt? Als je dat alleen kunt uitleggen door je code te laten lezen, is jouw project niet transparant genoeg.',
+            keyArgument:
+                'Transparant betekent: een gebruiker begrijpt hoe jouw project werkt zonder de broncode te lezen.',
+        },
+        {
+            id: 'ai-copiloot-bewaker',
+            name: 'AI-Copiloot Bewaker',
+            emoji: '🤖',
+            role: 'Bewaker van eerlijk AI-gebruik',
+            perspective:
+                'Heb jij AI ingezet bij het maken van dit project? Dan wil ik weten: heb je AI-tekst als eigen werk ingeleverd, of heb je het bewerkt en aangevuld met jouw eigen denken? En als je AI-gegenereerde afbeeldingen hebt gebruikt — staat er bij de bron dat AI die heeft gemaakt?',
+            keyArgument:
+                'AI als copiloot is krachtig. AI als vervanger van je eigen denken ondermijnt waarom je het maakt.',
         },
     ],
     positions: [
         {
-            id: 'stoppen',
-            label: 'Project stopzetten',
-            description: 'Het project voldoet niet aan privacy-, ethische en eerlijkheidseisen. Stoppen en opnieuw beginnen met een ethisch verantwoord ontwerp.',
+            id: 'voldoet',
+            label: 'Mijn project voldoet aan alle drie de toetsen',
+            description: 'Legaal, eerlijk én transparant — en ik kan dat onderbouwen.',
         },
         {
             id: 'aanpassen',
-            label: 'Aanpassen met voorwaarden',
-            description: 'Het project mag doorgaan als foto\'s worden verwijderd, het niveau-model wordt geaudit op bias en AI-beoordeling menselijk wordt gecontroleerd.',
+            label: 'Mijn project heeft aanpassingen nodig',
+            description: 'Op één of meer toetsen scoort het nog niet goed genoeg. Ik benoem wat ik aanpas.',
         },
         {
-            id: 'doorgaan',
-            label: 'Doorgaan — voordelen wegen zwaarder',
-            description: 'De voordelen van het systeem wegen op tegen de risico\'s. Met kleine aanpassingen is het project verantwoord.',
+            id: 'grijszone',
+            label: 'Mijn project zit in een grijszone',
+            description: 'Er zijn botsende belangen. Ik leg uit waarom het niet zwart-wit is.',
         },
         {
-            id: 'apart-beoordelen',
-            label: 'Elk dossier apart beoordelen',
-            description: 'De drie ethische kwesties — foto\'s scrapen, niveau-model, AI-beoordeling — zijn los van elkaar te beoordelen en vereisen elk een eigen beslissing.',
+            id: 'opnieuw',
+            label: 'Mijn project moet opnieuw ontworpen worden',
+            description: 'De toetsen onthullen een fundamenteel probleem. Ik schets een beter ontwerp.',
         },
     ],
     argumentPrompts: [
-        'Mijn advies aan de Ethische Raad is...',
-        'De reden daarvoor is...',
-        'De waarde die ik het zwaarst laat wegen is...',
+        'Mijn project is LEGAAL omdat...',
+        'Mijn project is EERLIJK omdat...',
+        'Mijn project is TRANSPARANT omdat...',
     ],
     reflectionQuestions: [
-        'Welke van de drie dossiers vind jij het ernstigst? Waarom?',
-        'Is er een situatie waarbij je het project wel volledig zou goedkeuren? Onder welke voorwaarden?',
+        'Welke van de drie toetsen was het lastigst toe te passen op jóuw project, en waarom?',
+        'Stel je voor dat een klasgenoot jouw project beoordeelt: welk ethisch punt zou hij of zij als grootste zorg aanwijzen?',
     ],
     counterArgument:
-        '"Als we dit project afkeuren, sturen we de boodschap dat technologie niet mag worden uitgeprobeerd. Dat maakt leerlingen bang om te experimenteren. Fouten maken is onderdeel van leren — ook ethische fouten. Beter nu leren van een fout in een veilige schoolomgeving dan later in de echte wereld."',
+        '"Jij bent een scholier, geen bedrijf. Ethische toetsen zijn voor echte developers, niet voor schoolprojecten. Niemand wordt vervolgd voor een schoolopdracht — dus waarom al die moeite?"',
+    explorationQuiz: {
+        question: 'In welke volgorde pas je de drie ethische toetsen het slimst toe?',
+        options: [
+            'Transparant → Eerlijk → Legaal',
+            'Legaal → Eerlijk → Transparant',
+            'Eerlijk → Transparant → Legaal',
+            'De volgorde maakt niet uit',
+        ],
+        correctIndex: 1,
+        bonusPoints: 10,
+        explanation:
+            'Eerst legaal: is iets illegaal, dan is de discussie voorbij. Dan eerlijk: benadeelt het niemand? Dan transparant: snappen gebruikers wat het doet? Deze volgorde leerde je in Periode 3.',
+    },
     maxScore: 100,
     badges: [
         {
@@ -120,10 +133,11 @@ const config: DebateArenaConfig = {
         },
     ],
     takeaways: [
-        'Openbaar betekent niet automatisch vrij te gebruiken — toestemming is een apart vereiste.',
-        'Drie ethische toetsen: Is het legaal? Is het eerlijk? Is het transparant?',
-        'AI als copiloot is een krachtig hulpmiddel; AI als vervanger van je eigen denken is plagiaat.',
-        'Bias in trainingsdata reproduceert ongelijkheid — ook als het niet de bedoeling was.',
+        'Je hebt de drie ethische toetsen (legaal, eerlijk, transparant) toegepast op je eigen project.',
+        'Je kunt uitleggen waarom "openbaar" niet hetzelfde is als "vrij te gebruiken".',
+        'Je begrijpt het verschil tussen AI als copiloot en AI als vervanger van je eigen denken.',
+        'Je kunt een ethisch oordeel onderbouwen met een claim én een reden.',
+        'Je laat zien dat je een bewuste digitale burger bent — óók als maker, niet alleen als gebruiker.',
     ],
 };
 
