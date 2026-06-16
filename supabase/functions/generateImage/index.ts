@@ -23,7 +23,7 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 import { buildCorsHeaders, rejectDisallowedBrowserRequest } from "../_shared/cors.ts";
 import { checkDurableRateLimit, rateLimitResponse, rateLimitHeaders, type RateLimitResult } from "../_shared/rateLimiter.ts";
-import { sanitizePrompt } from "../_shared/promptSanitizer.ts";
+import { sanitizePrompt, redactPii } from "../_shared/promptSanitizer.ts";
 import { ensureAiInteractionConsent } from "../_shared/consent.ts";
 import { getUserSchoolId, logAiUsageEvent, resolveAiRequestId } from "../_shared/aiUsageLogger.ts";
 import { generateBflImage, BFL_MODEL } from "../_shared/bflClient.ts";
@@ -204,8 +204,10 @@ Deno.serve(async (req: Request) => {
 
     // 7. Build safe prompt with child-safety prefix and style prefix.
     // Aspect ratio is enforced via FLUX width/height, not via prompt text.
+    // Data minimisation: mask high-confidence PII before it reaches the provider.
+    const redactedPrompt = redactPii(sanitizeResult.sanitized).redacted;
     const safePrompt =
-        `${SAFETY_PREFIX}${STYLE_PREFIXES[style]}${sanitizeResult.sanitized} Geen tekst of watermerk in de afbeelding.`;
+        `${SAFETY_PREFIX}${STYLE_PREFIXES[style]}${redactedPrompt} Geen tekst of watermerk in de afbeelding.`;
 
     // 8. Generate via Black Forest Labs (EU endpoint, async submit → poll → download)
     try {

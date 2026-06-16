@@ -12,10 +12,13 @@ gebruiken.
 
 ## Privacy-grens
 
-Er gaat alleen een **geschoonde, kindveilige tekst-prompt** naar BFL — geen
-leerling-PII. De bestaande lagen blijven actief: JWT-auth, ouderlijke
-toestemming, rate limiting (5/min), prompt-injectiefilter, kindveilige
-prefix, en audit-logging in `ai_usage_events` (`provider = "blackforestlabs"`).
+Er gaat alleen een **geschoonde, kindveilige tekst-prompt** naar BFL. Account-PII
+wordt nooit toegevoegd, en high-confidence PII-patronen in de prompt
+(e-mail, telefoon-/BSN-achtige nummers, postcode) worden server-side gemaskeerd
+via `redactPii` vóór verzending (namen worden bewust niet geredigeerd). De
+bestaande lagen blijven actief: JWT-auth, ouderlijke toestemming, rate limiting
+(5/min), prompt-injectiefilter, kindveilige prefix, en audit-logging in
+`ai_usage_events` (`provider = "blackforestlabs"`).
 
 De gegenereerde afbeelding wordt **server-side gedownload** en als base64
 teruggegeven; de kortlevende signed URL van BFL lekt nooit naar de client.

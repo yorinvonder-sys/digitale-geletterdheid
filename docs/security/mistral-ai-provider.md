@@ -18,8 +18,16 @@ Er gaat **geen leerling-PII** naar Mistral. Het verzoek bevat uitsluitend:
 - de geschoonde gespreksgeschiedenis (`buildSafeHistory`);
 - een server-side rol-instructie (`getSystemInstruction`).
 
-Naam, e-mail, school, voortgang of profieldata bereiken de provider nooit. De
-bestaande lagen blijven volledig actief en zijn provider-onafhankelijk:
+**Account-PII** (naam, e-mail, school, voortgang, profieldata) wordt nooit aan
+de prompt toegevoegd. Daarnaast worden **high-confidence PII-patronen in de
+vrije tekst** van de leerling server-side gemaskeerd vóór verzending
+(`redactPii`): e-mailadressen, telefoon-/BSN-achtige nummers en postcodes.
+Let op: **namen worden bewust níet geredigeerd** (betrouwbare naamdetectie is
+niet haalbaar zonder het tutoren te schaden), dus een leerling die zelf zijn
+naam inttypt kan die nog meesturen — leerlingen wordt gevraagd geen
+persoonsgegevens te delen.
+
+De bestaande lagen blijven volledig actief en zijn provider-onafhankelijk:
 prompt-injectiefilter, rate limiting (15/min), ouderlijke toestemming,
 output-filter voor minderjarigen, en audit-logging in `ai_usage_events`
 (`provider = "mistral"`).
