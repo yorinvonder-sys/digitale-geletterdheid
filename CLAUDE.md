@@ -65,6 +65,8 @@ Use `design-and-refactor` as the orchestrating skill that sequences these gates 
 
 ## Reference Pointers
 
+- **Docs overview**: `docs/README.md` — centrale navigatie-index voor alle documentatie
+- **Pedagogisch fundament**: `docs/pedagogy/README.md` — frameworks, rubric en missie-audit
 - AI context strategy: `docs/architecture/agent-context-strategy.md`
 - Feature-domain rules: `src/features/AGENTS.md` and local
   `src/features/<domain>/AGENTS.md`
