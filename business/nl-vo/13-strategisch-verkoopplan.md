@@ -1,7 +1,7 @@
 # 13 — Strategisch Verkoop- en Marketingplan DGSkills
 
 > **Versie:** 1.0 | **Datum:** 17 juni 2026 | **Status:** Strategisch voorstel — ter bespreking en validatie
-> **Auteur:** DGSkills / Yorin von der — t.b.v. strategische onderbouwing commerciële aanpak
+> **Auteur:** DGSkills (Yorin) — t.b.v. strategische onderbouwing commerciële aanpak
 
 ---
 
@@ -105,7 +105,7 @@ De SLO heeft definitieve conceptkerndoelen digitale geletterdheid gepubliceerd (
 **2. AI Act: hoog-risico classificatie**
 AI-systemen ingezet in het onderwijs vallen onder Annex III, punt 3(b) van de EU AI Act en zijn geclassificeerd als **hoog-risico**. Voor DGSkills betekent dit: de DPIA, het risicoregister en AI-transparantie (Art. 50) zijn gedocumenteerd en geïmplementeerd. De resterende hoog-risico-verplichtingen (Art. 9 risicomanagementsysteem, Art. 11 technische documentatie, Art. 14 menselijk toezicht — docent kan STEP_COMPLETE nog niet overrulen, Art. 16-17 QMS, Art. 47-49 conformiteitsverklaring) zijn nog niet afgerond. De oorspronkelijke deadline van 2 augustus 2026 voor hoog-risico-systemen wordt via de **Digital Omnibus** (voorlopig EU-akkoord, nog niet formeel gepubliceerd) naar verwachting verschoven richting **2 december 2027**.
 
-> **Belangrijk voor communicatie:** DGSkills claimit *niet* volledig AI Act-compliant te zijn. De eerlijke positionering is: "hoog-risico AI-systeem, in actieve compliance-voorbereiding; DPIA, risicoregister en AI-transparantie zijn gedocumenteerd en geïmplementeerd; de resterende hoog-risico-verplichtingen worden voor de wettelijke deadline afgerond." Deze transparantie is zelf een onderscheidend kenmerk ten opzichte van concurrenten die de classificatie überhaupt niet hebben gemaakt.
+> **Belangrijk voor communicatie:** DGSkills claimt *niet* volledig AI Act-compliant te zijn. De eerlijke positionering is: "hoog-risico AI-systeem, in actieve compliance-voorbereiding; DPIA, risicoregister en AI-transparantie zijn gedocumenteerd en geïmplementeerd; de resterende hoog-risico-verplichtingen worden voor de wettelijke deadline afgerond." Deze transparantie is zelf een onderscheidend kenmerk ten opzichte van concurrenten die de classificatie überhaupt niet hebben gemaakt.
 
 **3. Lerarentekort en werkdruk**
 Het lerarentekort in het VO bedroeg in schooljaar 2024/2025 circa **2.200 FTE** (Voion, 2025). Werkdruk is een structureel knelpunt. Elke tool die docenten ontlast in plaats van belast, heeft een intrinsiek voordeel bij de beslisser.
@@ -128,7 +128,7 @@ Het lerarentekort in het VO bedroeg in schooljaar 2024/2025 circa **2.200 FTE** 
 
 ### 4.1 Segmentatie
 
-Het Nederlands voortgezet onderwijs kent circa 650 scholen met in totaal ~900.000 leerlingen. Relevante segmentatievariabelen voor DGSkills:
+Het Nederlands voortgezet onderwijs kent circa 650 scholen met in totaal bijna 1 miljoen leerlingen. Relevante segmentatievariabelen voor DGSkills:
 
 | Dimensie | Segment | Prioriteit |
 |---|---|---|
@@ -311,7 +311,7 @@ Dixon & Adamson (2011) bevestigen dit via de Challenger-aanpak: de beste verkope
 
 **Waarom:** LinkedIn heeft 5,7 miljoen Nederlandse gebruikers, waarvan 56% hoogopgeleid (Fingerspitz, 2024). Dit is precies het kanaal waar ICT-coördinatoren, teamleiders en directeuren actief zijn. Scholen kopen niet via Instagram — maar beslissers in het onderwijs zijn op LinkedIn aanwezig.
 
-**Aanpak (founder-led):** Yorin van der post als praktiserend docent over DG in de klas, SLO-puzzels, AI Act in het onderwijs, en concrete leerling-ervaringen. Geen advertentietaal — collegiale reflectie die Initiators en Influencers bereikt. Doel: een volgend docentennetwerk dat zich omzet in inbound demo-aanvragen.
+**Aanpak (founder-led):** Yorin post als praktiserend docent over DG in de klas, SLO-puzzels, AI Act in het onderwijs, en concrete leerling-ervaringen. Geen advertentietaal — collegiale reflectie die Initiators en Influencers bereikt. Doel: een volgend docentennetwerk dat zich omzet in inbound demo-aanvragen.
 
 **Frequentie:** 2-3 posts per week; prioriteit op contenttypes die goed performen in het onderwijs-segment: praktijkobservaties, SLO-analyse, bezwaar-debunking.
 
@@ -411,9 +411,9 @@ De meest voorkomende bezwaren en de theoretisch onderbouwde respons:
 | Bezwaar | Type bezwaar | Respons-aanpak |
 |---|---|---|
 | "We hebben al een methode" | Compatibiliteitsbezwaar (Rogers) | Stel de Situatie/Probleem-vragen: Welke methode? Hoe toont die SLO-kerndoeldekking aan? Dekt die AI-geletterdheid (kerndoel 21D)? |
-| "We hebben geen budget" | Kopersmacht-bezwaar (Porter) | Herankering: een jaarlicentie School-S is ~€17,80/leerling — minder dan een lesboek. Pilot is €1.500 en 100% verrekenbaar. |
+| "We hebben geen budget" | Kopersmacht-bezwaar (Porter) | Herankering: een jaarlicentie School-S is ~€17,80–35,50/leerling — in de orde van een lesboek, maar met dashboard, updates en support. Pilot is €1.500 en 100% verrekenbaar. |
 | "We zijn niet zo ver met DG" | Adoptie-bezwaar (Rogers: complexiteit) | Compatibiliteitsargument: het platform past in elke les, ook als DG nu minimaal is. Dat is juist waarom scholen beginnen. |
-| "Is dit AVG-proof?" | Gatekeeper-bezwaar (Webster & Wind) | Compliance-pack: DPIA, verwerkersovereenkomst, data in NL, DSGVO-certificering beschikbaar. Direct versturen. |
+| "Is dit AVG-proof?" | Gatekeeper-bezwaar (Webster & Wind) | Compliance-pack: DPIA, verwerkersovereenkomst, AVG-documentatie, data in NL. Direct versturen. |
 | "Wat doen andere scholen ermee?" | Observability-bezwaar (Rogers) | Casestudy / referentie versturen. Als die nog niet beschikbaar is: pilot aanbieden als de referentie. |
 
 Zie `sales-assets/07-bezwarenkaart-dgskills.md` en `sales-assets/02-demo-script-vo.md` voor de uitgewerkte scripts.
@@ -438,7 +438,7 @@ DGSkills gebruikt een gecombineerde funnel die AIDA (Strong, 1925; ontwerp ~1898
 
 | Fase | Definitie | Criteria om door te stromen | Actie |
 |---|---|---|---|
-| **Lead** | Eerste contact of inbound interesse | Schooeltype klopt (VO); heeft een DG-context (uur/vak) | Toevoegen aan CRM; warme follow-up binnen 48 uur |
+| **Lead** | Eerste contact of inbound interesse | Schooltype klopt (VO); heeft een DG-context (uur/vak) | Toevoegen aan CRM; warme follow-up binnen 48 uur |
 | **MQL** (Marketing Qualified Lead) | Lead die actief interesse toont | Heeft webinar bijgewoond, demo aangevraagd, of reageerde op content | Demo inplannen |
 | **SQL** (Sales Qualified Lead) | Gekwalificeerd voor verkoop | Heeft ≥1 eigenaar/trekker; heeft ≥2 docenten; directie is bereid doel vooraf goed te keuren; school is in onderbouw VO lj1-2 | SPIN-discovery doen; pilotvoorstel sturen |
 | **Demo** | Demo gegeven | Demo-feedback positief; SLO-mapping gedeeld; compliance-pack verstuurd | Pilotcontract opstellen |
