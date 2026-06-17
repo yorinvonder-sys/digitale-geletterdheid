@@ -108,7 +108,7 @@ export const FollowUpCard: React.FC<FollowUpCardProps> = ({ followUp, onComplete
                         onClick={() => onComplete(correct)}
                         className={`w-full py-2.5 rounded-full font-black text-sm transition-all duration-200 ${
                             isLight
-                                ? 'bg-gradient-to-r from-duck-acid to-duck-acid hover:from-duck-acid hover:to-duck-acid text-white'
+                                ? 'bg-gradient-to-r from-duck-acid to-duck-acid hover:from-duck-acid hover:to-duck-acid text-duck-ink'
                                 : 'bg-duck-ink hover:bg-duck-ink hover:text-duck-acid text-duck-acid font-mono'
                         }`}
                         style={fontBody}

@@ -417,7 +417,7 @@ const SimulationLabInner: React.FC<SimulationLabProps> = ({ onBack, onComplete, 
                         onClick={handleNextSim}
                         className={`flex items-center gap-1.5 px-5 py-2.5 rounded-xl text-sm font-bold transition-all duration-200 active:scale-[0.98] ${
                             canAdvance
-                                ? 'bg-gradient-to-r from-duck-acid to-duck-acid text-white hover:from-duck-acid hover:to-duck-acid'
+                                ? 'bg-gradient-to-r from-duck-acid to-duck-acid text-duck-ink hover:from-duck-acid hover:to-duck-acid'
                                 : 'bg-duck-gray text-duck-ink/60 cursor-not-allowed'
                         }`}
                         style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}

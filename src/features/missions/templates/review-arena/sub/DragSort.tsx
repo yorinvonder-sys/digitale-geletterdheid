@@ -200,7 +200,7 @@ export const DragSort: React.FC<DragSortProps> = ({
             {!submitted ? (
                 <button
                     onClick={handleSubmit}
-                    className="w-full py-3 bg-gradient-to-r from-duck-acid to-duck-acid hover:from-duck-acid hover:to-duck-acid text-white rounded-xl font-bold text-sm transition-all duration-200 active:scale-[0.98]"
+                    className="w-full py-3 bg-gradient-to-r from-duck-acid to-duck-acid hover:from-duck-acid hover:to-duck-acid text-duck-ink rounded-xl font-bold text-sm transition-all duration-200 active:scale-[0.98]"
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                 >
                     Volgorde bevestigen

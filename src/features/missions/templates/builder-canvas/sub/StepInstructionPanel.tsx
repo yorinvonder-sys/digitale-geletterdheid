@@ -149,7 +149,7 @@ export const StepInstructionPanel: React.FC<StepInstructionPanelProps> = ({
                 disabled={!canProceed}
                 className={`mt-auto flex min-h-[44px] w-full items-center justify-center gap-2 rounded-xl text-sm font-bold transition-all duration-200 ${
                     canProceed
-                        ? 'bg-gradient-to-r from-duck-acid to-duck-acid hover:from-duck-acid hover:to-duck-acid text-white active:scale-[0.98]'
+                        ? 'bg-gradient-to-r from-duck-acid to-duck-acid hover:from-duck-acid hover:to-duck-acid text-duck-ink active:scale-[0.98]'
                         : 'bg-duck-gray text-duck-ink/60 cursor-not-allowed'
                 }`}
                 style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
