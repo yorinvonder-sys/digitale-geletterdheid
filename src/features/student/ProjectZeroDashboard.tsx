@@ -23,6 +23,7 @@ import { MissionPreviewVisual } from '@/features/dashboard/MissionPreviewVisual'
 import { STUDENT_DASHBOARD_COLORS, PERIOD_THEME, DEFAULT_PERIOD_THEME, getYearGroupTheme, PERIOD_LEERDOELEN, type YearGroupTheme, type PeriodLeerdoel } from '@/config/dashboardThemes';
 import { MISSION_SCREENSHOTS, MISSION_PREVIEW_OVERRIDES, inferMissionPreviewConfig, missionTagFor, type MissionPreviewKind, type MissionPreviewConfig } from '@/config/missionPreviewConfig';
 import { Mission, MISSION_OVERRIDES, CURRICULUM_MISSION_IDS, getMissionOverride, getMissionTooltipInfo, buildMissionsForPeriod } from '@/utils/missionBuilder';
+import { PLAYABLE_MISSION_IDS } from '@/features/public-site/demo/demoGalleryConfig';
 
 interface DashboardProps {
     onSelectModule: (moduleId: string, libraryItemData?: any) => void;
@@ -265,7 +266,7 @@ const StudentProjectCard: React.FC<StudentProjectCardProps> = ({ mission, isComp
                         </span>
                     ) : isLocked ? (
                         <span className="inline-flex min-h-[44px] items-center gap-2 rounded-full border border-duck-ink/10 bg-duck-bgLight px-4 text-sm font-bold text-duck-ink/65">
-                            <Lock size={14} /> Voltooi eerst de herhalingen
+                            <Lock size={14} /> {mission.lockLabel ?? 'Voltooi eerst de herhalingen'}
                         </span>
                     ) : (
                         <button
@@ -466,6 +467,21 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
             }));
         }
 
+        // Public demo (/leerlingdemo): allowlist only. Solely the curated,
+        // security-vetted demo missions are openable; everything else stays
+        // visibly locked. Playable missions are sorted first so they surface in
+        // the dashboard's default 3-card preview. Shares PLAYABLE_MISSION_IDS
+        // with DemoMissionHost (single source of truth).
+        if (userUid === 'capture-student') {
+            return missions
+                .map(mission =>
+                    PLAYABLE_MISSION_IDS.has(mission.id)
+                        ? { ...mission, status: 'available' as const }
+                        : { ...mission, status: 'locked' as const, lockLabel: 'Beschikbaar na aanmelding' }
+                )
+                .sort((a, b) => Number(PLAYABLE_MISSION_IDS.has(b.id)) - Number(PLAYABLE_MISSION_IDS.has(a.id)));
+        }
+
         // 0. Filter out class-restricted missions if user's class doesn't match
         const userClass = stats?.studentClass;
         missions = missions.filter(mission => {
@@ -511,7 +527,7 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
         }
 
         return missions;
-    }, [currentYearGroup, activeWeek, stats, permissions, canBypassMissionLocks, periodNaming]);
+    }, [currentYearGroup, activeWeek, stats, permissions, canBypassMissionLocks, periodNaming, userUid]);
 
     // Stable callbacks for MissionCard memoization (reduces re-renders of mission grid)
     const handleInfoClick = useCallback((info: string, kerndoelen?: SloKerndoelCode[]) => {
@@ -785,7 +801,7 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
                 </section>
             )}
 
-            {reviewMissions.length > 0 && !allReviewsDone && !canBypassMissionLocks && (
+            {reviewMissions.length > 0 && !allReviewsDone && !canBypassMissionLocks && userUid !== 'capture-student' && (
                 <section className="mb-6 flex items-center gap-3 rounded-[1.5rem] bg-duck-ink px-5 py-4 shadow-duck-soft">
                     <div className="flex size-10 shrink-0 items-center justify-center rounded-2xl bg-duck-acid text-duck-ink">
                         <AlertTriangle size={18} />

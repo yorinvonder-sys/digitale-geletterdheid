@@ -32,8 +32,8 @@ type SandboxView = 'student' | 'teacher';
 export const LeerlingDemoSandbox: React.FC = () => {
     const [sandboxView, setSandboxView] = useState<SandboxView>('student');
     const [activeDemoMission, setActiveDemoMission] = useState<string | null>(null);
-    const [activeWeek, setActiveWeek] = useState(2);
-    const [activeYearGroup, setActiveYearGroup] = useState(2);
+    const [activeWeek, setActiveWeek] = useState(3);
+    const [activeYearGroup, setActiveYearGroup] = useState(1);
 
     if (activeDemoMission) {
         return (

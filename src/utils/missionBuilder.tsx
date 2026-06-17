@@ -13,6 +13,7 @@ export interface Mission {
     number: string;
     status: 'available' | 'coming-soon' | 'locked';
     info?: string;
+    lockLabel?: string;
     isReview?: boolean;
     classRestriction?: string;
     isHighlighted?: boolean;
