@@ -226,7 +226,7 @@ In deze Algemene Voorwaarden worden de volgende begrippen met een hoofdletter ge
 
 ### 11.5 Conformiteit
 
-1. DGSkills zal vóór **2 augustus 2026** voldoen aan de hoog-risico verplichtingen van de EU AI Act, waaronder:
+1. DGSkills zal vóór de geldende wettelijke deadline voor hoog-risico-verplichtingen onder de EU AI Act voldoen aan die verplichtingen (oorspronkelijk 2 augustus 2026; via de Digital Omnibus — voorlopig EU-akkoord, nog niet formeel gepubliceerd — naar verwachting verschoven richting **2 december 2027**), waaronder:
    - risicobeheersysteem (Art. 9);
    - technische documentatie conform Annex IV (Art. 11);
    - conformiteitsbeoordeling (Art. 43);
@@ -393,7 +393,7 @@ In deze Algemene Voorwaarden worden de volgende begrippen met een hoofdletter ge
 1. **Docent-override functie** — Art. 14 EU AI Act vereist dat docenten AI-voortgang kunnen overriden. Dit is benoemd in Art. 11.3 maar technisch nog niet volledig geïmplementeerd (TODO in product).
 2. **SIVON Model VWO 5.0** — In ontwikkeling (feb 2026), zal AI Act-bepalingen bevatten. Monitor en update AV/DPA wanneer 5.0 beschikbaar is.
 3. **NLdigital lidmaatschap** — Overweeg als aanvulling (EUR 400-600/jaar) voor modelvoorwaarden die door juristen worden onderhouden inclusief AI Act, NIS2, Data Act updates.
-4. **Conformiteitsbeoordeling** — Art. 43 EU AI Act vereist conformiteitsbeoordeling voor 2 aug 2026. Voor Annex III AI-systemen: self-assessment op basis van Annex VI voldoet (geen notified body nodig).
+4. **Conformiteitsbeoordeling** — Art. 43 EU AI Act vereist een conformiteitsbeoordeling vóór de geldende wettelijke deadline (oorspronkelijk 2 aug 2026; via de Digital Omnibus naar verwachting verschoven richting 2 dec 2027). Voor Annex III AI-systemen: self-assessment op basis van Annex VI voldoet (geen notified body nodig).
 5. **Verzekering** — AV noemen geen specifieke verzekeringsverplichting. Overweeg BAV + cyberverzekering (EUR 400-1.200/jaar) en opname in de AV als vertrouwenssignaal naar scholen.
 6. **KvK-deponering** — Art. 2 lid 5 verwijst naar deponering bij KvK. Dit moet daadwerkelijk worden uitgevoerd.
 7. **Beroep bij AI-beoordeling** — Art. 22 AVG (geautomatiseerde besluitvorming) en Art. 14 EU AI Act suggereren een beroepsmogelijkheid. Overweeg expliciete beroepsprocedure (leerling → docent → school) op te nemen.
