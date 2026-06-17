@@ -1,6 +1,6 @@
 # Toetsmatrix AVG & AI Act Compliance - DGSkills.app
 
-> **Correctie 15-03-2026:** Classificatie gewijzigd van 'beperkt risico' naar **hoog risico** conform EU AI Act Annex III punt 3(b) — AI-systemen bedoeld voor gebruik bij het beoordelen van leerresultaten in het onderwijs. Deadline hoog-risico verplichtingen: **2 augustus 2026**.
+> **Correctie 15-03-2026:** Classificatie gewijzigd van 'beperkt risico' naar **hoog risico** conform EU AI Act Annex III punt 3(b) — AI-systemen bedoeld voor gebruik bij het beoordelen van leerresultaten in het onderwijs. Deadline hoog-risico verplichtingen: oorspronkelijk **2 augustus 2026**, maar via de Digital Omnibus (voorlopig EU-akkoord, nog niet formeel gepubliceerd) verschuift deze naar verwachting richting **2 december 2027** (urgentie blijft op de wettelijke SLO-kerndoelen, 1 augustus 2027).
 
 Dit document dient als intern referentiekader voor de compliance-audit van DGSkills.app (Februari 2026).
 

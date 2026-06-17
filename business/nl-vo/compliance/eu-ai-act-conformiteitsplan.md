@@ -5,6 +5,8 @@
 **Deadline hoog-risico verplichtingen:** 2 augustus 2026 (159 dagen)
 **Opgesteld op basis van:** Verordening (EU) 2024/1689 (EU AI Act)
 
+> **Deadline-update (17 juni 2026):** De in dit document genoemde AI Act-deadline van **2 augustus 2026** voor hoog-risico-verplichtingen is niet definitief. Via de **Digital Omnibus** (voorlopig EU-akkoord, nog niet formeel gepubliceerd) verschuift deze naar verwachting richting **2 december 2027**. De hoog-risico-classificatie (Annex III, punt 3b) en de wettelijke SLO-kerndoelen (verplicht vanaf 1 augustus 2027) blijven ongewijzigd. De deadline-datums in de beoordeling hieronder weerspiegelen de oorspronkelijke datum op moment van schrijven.
+
 ---
 
 ## A. CLASSIFICATIE-ANALYSE
