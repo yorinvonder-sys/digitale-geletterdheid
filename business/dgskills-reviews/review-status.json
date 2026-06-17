@@ -1,0 +1,1900 @@
+[
+  {
+    "missionId": "access-control-engineer",
+    "templateType": "dedicated",
+    "priorityBand": "high",
+    "triageScores": {
+      "uiux": 1,
+      "slo": 0,
+      "functions": 2,
+      "interactivity": 0,
+      "total": 6
+    },
+    "lastReviewed": null,
+    "reviewStatus": "pending",
+    "reportPath": null,
+    "autoFixesApplied": 0,
+    "openEscalations": [],
+    "codexVerdict": null
+  },
+  {
+    "missionId": "advanced-code-review",
+    "templateType": "review-arena",
+    "priorityBand": "low",
+    "triageScores": {
+      "uiux": 1,
+      "slo": 0,
+      "functions": 0,
+      "interactivity": 0,
+      "total": 2
+    },
+    "lastReviewed": null,
+    "reviewStatus": "pending",
+    "reportPath": null,
+    "autoFixesApplied": 0,
+    "openEscalations": [],
+    "codexVerdict": null
+  },
+  {
+    "missionId": "ai-beleid-brainstorm",
+    "templateType": "agent-role",
+    "priorityBand": "high",
+    "triageScores": {
+      "uiux": 0,
+      "slo": 0,
+      "functions": 2,
+      "interactivity": 0,
+      "total": 6
+    },
+    "lastReviewed": null,
+    "reviewStatus": "pending",
+    "reportPath": null,
+    "autoFixesApplied": 0,
+    "openEscalations": [],
+    "codexVerdict": null
+  },
+  {
+    "missionId": "ai-bias-detective",
+    "templateType": "scenario-engine",
+    "priorityBand": "medium",
+    "triageScores": {
+      "uiux": 2,
+      "slo": 1,
+      "functions": 1,
+      "interactivity": 0,
+      "total": 5
+    },
+    "lastReviewed": null,
+    "reviewStatus": "pending",
+    "reportPath": null,
+    "autoFixesApplied": 0,
+    "openEscalations": [],
+    "codexVerdict": null
+  },
+  {
+    "missionId": "ai-ethicus",
+    "templateType": "debate-arena",
+    "priorityBand": "high",
+    "triageScores": {
+      "uiux": 1,
+      "slo": 0,
+      "functions": 2,
+      "interactivity": 0,
+      "total": 7
+    },
+    "lastReviewed": null,
+    "reviewStatus": "pending",
+    "reportPath": null,
+    "autoFixesApplied": 0,
+    "openEscalations": [],
+    "codexVerdict": null
+  },
+  {
+    "missionId": "ai-spiegel",
+    "templateType": "simulation-lab",
+    "priorityBand": "low",
+    "triageScores": {
+      "uiux": 1,
+      "slo": 0,
+      "functions": 1,
+      "interactivity": 0,
+      "total": 2
+    },
+    "lastReviewed": null,
+    "reviewStatus": "pending",
+    "reportPath": null,
+    "autoFixesApplied": 0,
+    "openEscalations": [],
+    "codexVerdict": null
+  },
+  {
+    "missionId": "ai-tekengame",
+    "templateType": "agent-role",
+    "priorityBand": "high",
+    "triageScores": {
+      "uiux": 1,
+      "slo": 0,
+      "functions": 2,
+      "interactivity": 0,
+      "total": 7
+    },
+    "lastReviewed": null,
+    "reviewStatus": "pending",
+    "reportPath": null,
+    "autoFixesApplied": 0,
+    "openEscalations": [],
+    "codexVerdict": null
+  },
+  {
+    "missionId": "ai-trainer",
+    "templateType": "agent-role",
+    "priorityBand": "medium",
+    "triageScores": {
+      "uiux": 0,
+      "slo": 0,
+      "functions": 2,
+      "interactivity": 0,
+      "total": 5
+    },
+    "lastReviewed": null,
+    "reviewStatus": "pending",
+    "reportPath": null,
+    "autoFixesApplied": 0,
+    "openEscalations": [],
+    "codexVerdict": null
+  },
+  {
+    "missionId": "algorithm-architect",
+    "templateType": "simulation-lab",
+    "priorityBand": "medium",
+    "triageScores": {
+      "uiux": 1,
+      "slo": 1,
+      "functions": 1,
+      "interactivity": 0,
+      "total": 4
+    },
+    "lastReviewed": null,
+    "reviewStatus": "pending",
+    "reportPath": null,
+    "autoFixesApplied": 0,
+    "openEscalations": [],
+    "codexVerdict": null
+  },
+  {
+    "missionId": "api-architect",
+    "templateType": "builder-canvas",
+    "priorityBand": "medium",
+    "triageScores": {
+      "uiux": 0,
+      "slo": 1,
+      "functions": 1,
+      "interactivity": 0,
+      "total": 3
+    },
+    "lastReviewed": null,
+    "reviewStatus": "pending",
+    "reportPath": null,
+    "autoFixesApplied": 0,
+    "openEscalations": [],
+    "codexVerdict": null
+  },
+  {
+    "missionId": "api-verkenner",
+    "templateType": "data-viewer",
+    "priorityBand": "medium",
+    "triageScores": {
+      "uiux": 2,
+      "slo": 1,
+      "functions": 1,
+      "interactivity": 0,
+      "total": 4
+    },
+    "lastReviewed": null,
+    "reviewStatus": "pending",
+    "reportPath": null,
+    "autoFixesApplied": 0,
+    "openEscalations": [],
+    "codexVerdict": null
+  },
+  {
+    "missionId": "app-prototyper",
+    "templateType": "builder-canvas",
+    "priorityBand": "low",
+    "triageScores": {
+      "uiux": 0,
+      "slo": 1,
+      "functions": 1,
+      "interactivity": 0,
+      "total": 2
+    },
+    "lastReviewed": null,
+    "reviewStatus": "pending",
+    "reportPath": null,
+    "autoFixesApplied": 0,
+    "openEscalations": [],
+    "codexVerdict": null
+  },
+  {
+    "missionId": "automation-engineer",
+    "templateType": "builder-canvas",
+    "priorityBand": "low",
+    "triageScores": {
+      "uiux": 0,
+      "slo": 1,
+      "functions": 1,
+      "interactivity": 0,
+      "total": 2
+    },
+    "lastReviewed": null,
+    "reviewStatus": "pending",
+    "reportPath": null,
+    "autoFixesApplied": 0,
+    "openEscalations": [],
+    "codexVerdict": null
+  },
+  {
+    "missionId": "brand-builder",
+    "templateType": "builder-canvas",
+    "priorityBand": "high",
+    "triageScores": {
+      "uiux": 0,
+      "slo": 2,
+      "functions": 1,
+      "interactivity": 0,
+      "total": 7
+    },
+    "lastReviewed": null,
+    "reviewStatus": "pending",
+    "reportPath": null,
+    "autoFixesApplied": 0,
+    "openEscalations": [],
+    "codexVerdict": null
+  },
+  {
+    "missionId": "bug-hunter",
+    "templateType": "simulation-lab",
+    "priorityBand": "medium",
+    "triageScores": {
+      "uiux": 1,
+      "slo": 1,
+      "functions": 1,
+      "interactivity": 0,
+      "total": 4
+    },
+    "lastReviewed": null,
+    "reviewStatus": "pending",
+    "reportPath": null,
+    "autoFixesApplied": 0,
+    "openEscalations": [],
+    "codexVerdict": null
+  },
+  {
+    "missionId": "chatbot-trainer",
+    "templateType": "agent-role",
+    "priorityBand": "medium",
+    "triageScores": {
+      "uiux": 1,
+      "slo": 0,
+      "functions": 1,
+      "interactivity": 0,
+      "total": 4
+    },
+    "lastReviewed": null,
+    "reviewStatus": "pending",
+    "reportPath": null,
+    "autoFixesApplied": 0,
+    "openEscalations": [],
+    "codexVerdict": null
+  },
+  {
+    "missionId": "cloud-cleaner",
+    "templateType": "dedicated",
+    "priorityBand": "medium",
+    "triageScores": {
+      "uiux": 0,
+      "slo": 2,
+      "functions": 0,
+      "interactivity": 0,
+      "total": 4
+    },
+    "lastReviewed": null,
+    "reviewStatus": "pending",
+    "reportPath": null,
+    "autoFixesApplied": 0,
+    "openEscalations": [],
+    "codexVerdict": null
+  },
+  {
+    "missionId": "cloud-commander",
+    "templateType": "tool-guide",
+    "priorityBand": "high",
+    "triageScores": {
+      "uiux": 2,
+      "slo": 1,
+      "functions": 2,
+      "interactivity": 1,
+      "total": 6
+    },
+    "lastReviewed": "2026-06-17",
+    "reviewStatus": "reviewed",
+    "reportPath": "business/dgskills-reviews/cloud-commander-2026-06-17.md",
+    "autoFixesApplied": 0,
+    "openEscalations": [],
+    "codexVerdict": null,
+    "reviewScores": {
+      "uiux": 2,
+      "didactiek": 2,
+      "tech": 2
+    },
+    "goalClear": false,
+    "goalAchieved": true,
+    "proposedFixes": 4,
+    "escalationCount": 2,
+    "topIssues": [
+      "maxScore:60 maar engine-max 50 → gouden badge onbereikbaar",
+      "duck-namespace tokens ontbreken (engine-breed) [ESCALATIE]",
+      "stap-3 foto-instructie AVG-risico: portretten 12-jarigen [ESCALATIE]"
+    ]
+  },
+  {
+    "missionId": "code-denker",
+    "templateType": "scenario-engine",
+    "priorityBand": "high",
+    "triageScores": {
+      "uiux": 2,
+      "slo": 0,
+      "functions": 1,
+      "interactivity": 0,
+      "total": 6
+    },
+    "lastReviewed": null,
+    "reviewStatus": "pending",
+    "reportPath": null,
+    "autoFixesApplied": 0,
+    "openEscalations": [],
+    "codexVerdict": null
+  },
+  {
+    "missionId": "code-review-2",
+    "templateType": "review-arena",
+    "priorityBand": "medium",
+    "triageScores": {
+      "uiux": 2,
+      "slo": 1,
+      "functions": 1,
+      "interactivity": 0,
+      "total": 5
+    },
+    "lastReviewed": null,
+    "reviewStatus": "pending",
+    "reportPath": null,
+    "autoFixesApplied": 0,
+    "openEscalations": [],
+    "codexVerdict": null
+  },
+  {
+    "missionId": "code-reviewer",
+    "templateType": "simulation-lab",
+    "priorityBand": "medium",
+    "triageScores": {
+      "uiux": 1,
+      "slo": 1,
+      "functions": 1,
+      "interactivity": 0,
+      "total": 4
+    },
+    "lastReviewed": null,
+    "reviewStatus": "pending",
+    "reportPath": null,
+    "autoFixesApplied": 0,
+    "openEscalations": [],
+    "codexVerdict": null
+  },
+  {
+    "missionId": "cookie-crusher",
+    "templateType": "scenario-engine",
+    "priorityBand": "low",
+    "triageScores": {
+      "uiux": 1,
+      "slo": 0,
+      "functions": 1,
+      "interactivity": 0,
+      "total": 2
+    },
+    "lastReviewed": null,
+    "reviewStatus": "pending",
+    "reportPath": null,
+    "autoFixesApplied": 0,
+    "openEscalations": [],
+    "codexVerdict": null
+  },
+  {
+    "missionId": "cyber-detective",
+    "templateType": "puzzle-lab",
+    "priorityBand": "medium",
+    "triageScores": {
+      "uiux": 1,
+      "slo": 1,
+      "functions": 2,
+      "interactivity": 0,
+      "total": 5
+    },
+    "lastReviewed": null,
+    "reviewStatus": "pending",
+    "reportPath": null,
+    "autoFixesApplied": 0,
+    "openEscalations": [],
+    "codexVerdict": null
+  },
+  {
+    "missionId": "dashboard-designer",
+    "templateType": "data-viewer",
+    "priorityBand": "medium",
+    "triageScores": {
+      "uiux": 2,
+      "slo": 1,
+      "functions": 1,
+      "interactivity": 0,
+      "total": 4
+    },
+    "lastReviewed": null,
+    "reviewStatus": "pending",
+    "reportPath": null,
+    "autoFixesApplied": 0,
+    "openEscalations": [],
+    "codexVerdict": null
+  },
+  {
+    "missionId": "data-detective",
+    "templateType": "dedicated",
+    "priorityBand": "medium",
+    "triageScores": {
+      "uiux": 1,
+      "slo": 0,
+      "functions": 2,
+      "interactivity": 0,
+      "total": 5
+    },
+    "lastReviewed": null,
+    "reviewStatus": "pending",
+    "reportPath": null,
+    "autoFixesApplied": 0,
+    "openEscalations": [],
+    "codexVerdict": null
+  },
+  {
+    "missionId": "data-handelaar",
+    "templateType": "puzzle-lab",
+    "priorityBand": "medium",
+    "triageScores": {
+      "uiux": 1,
+      "slo": 0,
+      "functions": 2,
+      "interactivity": 0,
+      "total": 3
+    },
+    "lastReviewed": null,
+    "reviewStatus": "pending",
+    "reportPath": null,
+    "autoFixesApplied": 0,
+    "openEscalations": [],
+    "codexVerdict": null
+  },
+  {
+    "missionId": "data-journalist",
+    "templateType": "data-viewer",
+    "priorityBand": "medium",
+    "triageScores": {
+      "uiux": 2,
+      "slo": 1,
+      "functions": 1,
+      "interactivity": 1,
+      "total": 5
+    },
+    "lastReviewed": null,
+    "reviewStatus": "pending",
+    "reportPath": null,
+    "autoFixesApplied": 0,
+    "openEscalations": [],
+    "codexVerdict": null
+  },
+  {
+    "missionId": "data-pipeline",
+    "templateType": "data-viewer",
+    "priorityBand": "medium",
+    "triageScores": {
+      "uiux": 1,
+      "slo": 0,
+      "functions": 1,
+      "interactivity": 1,
+      "total": 4
+    },
+    "lastReviewed": null,
+    "reviewStatus": "pending",
+    "reportPath": null,
+    "autoFixesApplied": 0,
+    "openEscalations": [],
+    "codexVerdict": null
+  },
+  {
+    "missionId": "data-review",
+    "templateType": "review-arena",
+    "priorityBand": "medium",
+    "triageScores": {
+      "uiux": 2,
+      "slo": 0,
+      "functions": 1,
+      "interactivity": 0,
+      "total": 3
+    },
+    "lastReviewed": null,
+    "reviewStatus": "pending",
+    "reportPath": null,
+    "autoFixesApplied": 0,
+    "openEscalations": [],
+    "codexVerdict": null
+  },
+  {
+    "missionId": "data-speurder",
+    "templateType": "scenario-engine",
+    "priorityBand": "high",
+    "triageScores": {
+      "uiux": 2,
+      "slo": 0,
+      "functions": 2,
+      "interactivity": 0,
+      "total": 6
+    },
+    "lastReviewed": null,
+    "reviewStatus": "pending",
+    "reportPath": null,
+    "autoFixesApplied": 0,
+    "openEscalations": [],
+    "codexVerdict": null
+  },
+  {
+    "missionId": "data-verzamelaar",
+    "templateType": "agent-role",
+    "priorityBand": "low",
+    "triageScores": {
+      "uiux": 0,
+      "slo": 0,
+      "functions": 0,
+      "interactivity": 0,
+      "total": 1
+    },
+    "lastReviewed": null,
+    "reviewStatus": "pending",
+    "reportPath": null,
+    "autoFixesApplied": 0,
+    "openEscalations": [],
+    "codexVerdict": null
+  },
+  {
+    "missionId": "data-voor-data",
+    "templateType": "dedicated",
+    "priorityBand": "low",
+    "triageScores": {
+      "uiux": 0,
+      "slo": 0,
+      "functions": 1,
+      "interactivity": 0,
+      "total": 1
+    },
+    "lastReviewed": null,
+    "reviewStatus": "pending",
+    "reportPath": null,
+    "autoFixesApplied": 0,
+    "openEscalations": [],
+    "codexVerdict": null
+  },
+  {
+    "missionId": "datalekken-rampenplan",
+    "templateType": "dedicated",
+    "priorityBand": "low",
+    "triageScores": {
+      "uiux": 0,
+      "slo": 1,
+      "functions": 1,
+      "interactivity": 0,
+      "total": 2
+    },
+    "lastReviewed": null,
+    "reviewStatus": "pending",
+    "reportPath": null,
+    "autoFixesApplied": 0,
+    "openEscalations": [],
+    "codexVerdict": null
+  },
+  {
+    "missionId": "deepfake-detector",
+    "templateType": "dedicated",
+    "priorityBand": "medium",
+    "triageScores": {
+      "uiux": 1,
+      "slo": 0,
+      "functions": 2,
+      "interactivity": 0,
+      "total": 5
+    },
+    "lastReviewed": null,
+    "reviewStatus": "pending",
+    "reportPath": null,
+    "autoFixesApplied": 0,
+    "openEscalations": [],
+    "codexVerdict": null
+  },
+  {
+    "missionId": "digital-divide-researcher",
+    "templateType": "data-viewer",
+    "priorityBand": "medium",
+    "triageScores": {
+      "uiux": 2,
+      "slo": 1,
+      "functions": 1,
+      "interactivity": 0,
+      "total": 3
+    },
+    "lastReviewed": null,
+    "reviewStatus": "pending",
+    "reportPath": null,
+    "autoFixesApplied": 0,
+    "openEscalations": [],
+    "codexVerdict": null
+  },
+  {
+    "missionId": "digital-forensics",
+    "templateType": "scenario-engine",
+    "priorityBand": "high",
+    "triageScores": {
+      "uiux": 2,
+      "slo": 1,
+      "functions": 2,
+      "interactivity": 0,
+      "total": 8
+    },
+    "lastReviewed": "2026-06-17",
+    "reviewStatus": "reviewed",
+    "reportPath": "business/dgskills-reviews/digital-forensics-2026-06-17.md",
+    "autoFixesApplied": 0,
+    "openEscalations": [],
+    "codexVerdict": null,
+    "reviewScores": {
+      "uiux": 2,
+      "didactiek": 2,
+      "tech": 3
+    },
+    "goalClear": true,
+    "goalAchieved": true,
+    "proposedFixes": 3,
+    "escalationCount": 3,
+    "topIssues": [
+      "SLO 21C valt buiten J3-P2 sloFocus → mismatch",
+      "Badge color '#202023' hardcoded hex",
+      "missionGoal ontbreekt in missionGoals.ts"
+    ]
+  },
+  {
+    "missionId": "digital-rights-defender",
+    "templateType": "debate-arena",
+    "priorityBand": "high",
+    "triageScores": {
+      "uiux": 1,
+      "slo": 0,
+      "functions": 2,
+      "interactivity": 0,
+      "total": 7
+    },
+    "lastReviewed": null,
+    "reviewStatus": "pending",
+    "reportPath": null,
+    "autoFixesApplied": 0,
+    "openEscalations": [],
+    "codexVerdict": null
+  },
+  {
+    "missionId": "digital-storyteller",
+    "templateType": "builder-canvas",
+    "priorityBand": "high",
+    "triageScores": {
+      "uiux": 0,
+      "slo": 1,
+      "functions": 1,
+      "interactivity": 1,
+      "total": 6
+    },
+    "lastReviewed": null,
+    "reviewStatus": "pending",
+    "reportPath": null,
+    "autoFixesApplied": 0,
+    "openEscalations": [],
+    "codexVerdict": null
+  },
+  {
+    "missionId": "digitale-balans-coach",
+    "templateType": "debate-arena",
+    "priorityBand": "medium",
+    "triageScores": {
+      "uiux": 2,
+      "slo": 0,
+      "functions": 2,
+      "interactivity": 0,
+      "total": 4
+    },
+    "lastReviewed": null,
+    "reviewStatus": "pending",
+    "reportPath": null,
+    "autoFixesApplied": 0,
+    "openEscalations": [],
+    "codexVerdict": null
+  },
+  {
+    "missionId": "eindproject-j2",
+    "templateType": "data-viewer",
+    "priorityBand": "medium",
+    "triageScores": {
+      "uiux": 1,
+      "slo": 0,
+      "functions": 1,
+      "interactivity": 0,
+      "total": 3
+    },
+    "lastReviewed": null,
+    "reviewStatus": "pending",
+    "reportPath": null,
+    "autoFixesApplied": 0,
+    "openEscalations": [],
+    "codexVerdict": null
+  },
+  {
+    "missionId": "encryption-expert",
+    "templateType": "puzzle-lab",
+    "priorityBand": "medium",
+    "triageScores": {
+      "uiux": 1,
+      "slo": 1,
+      "functions": 2,
+      "interactivity": 0,
+      "total": 5
+    },
+    "lastReviewed": null,
+    "reviewStatus": "pending",
+    "reportPath": null,
+    "autoFixesApplied": 0,
+    "openEscalations": [],
+    "codexVerdict": null
+  },
+  {
+    "missionId": "factchecker",
+    "templateType": "scenario-engine",
+    "priorityBand": "medium",
+    "triageScores": {
+      "uiux": 2,
+      "slo": 1,
+      "functions": 1,
+      "interactivity": 0,
+      "total": 5
+    },
+    "lastReviewed": null,
+    "reviewStatus": "pending",
+    "reportPath": null,
+    "autoFixesApplied": 0,
+    "openEscalations": [],
+    "codexVerdict": null
+  },
+  {
+    "missionId": "filter-bubble-breaker",
+    "templateType": "dedicated",
+    "priorityBand": "low",
+    "triageScores": {
+      "uiux": 0,
+      "slo": 0,
+      "functions": 1,
+      "interactivity": 0,
+      "total": 1
+    },
+    "lastReviewed": null,
+    "reviewStatus": "pending",
+    "reportPath": null,
+    "autoFixesApplied": 0,
+    "openEscalations": [],
+    "codexVerdict": null
+  },
+  {
+    "missionId": "future-forecaster",
+    "templateType": "debate-arena",
+    "priorityBand": "high",
+    "triageScores": {
+      "uiux": 1,
+      "slo": 0,
+      "functions": 2,
+      "interactivity": 0,
+      "total": 7
+    },
+    "lastReviewed": null,
+    "reviewStatus": "pending",
+    "reportPath": null,
+    "autoFixesApplied": 0,
+    "openEscalations": [],
+    "codexVerdict": null
+  },
+  {
+    "missionId": "game-director",
+    "templateType": "dedicated",
+    "priorityBand": "high",
+    "triageScores": {
+      "uiux": 2,
+      "slo": 1,
+      "functions": 2,
+      "interactivity": 0,
+      "total": 13
+    },
+    "lastReviewed": "2026-06-17",
+    "reviewStatus": "reviewed",
+    "reportPath": "business/dgskills-reviews/game-director-2026-06-17.md",
+    "autoFixesApplied": 0,
+    "openEscalations": [],
+    "codexVerdict": null,
+    "reviewScores": {
+      "uiux": 2,
+      "didactiek": 2,
+      "tech": 2
+    },
+    "goalClear": true,
+    "goalAchieved": true,
+    "proposedFixes": 6,
+    "escalationCount": 0,
+    "topIssues": [
+      "roleId='game-director' ontbreekt bij StudentAIChat → generieke fallback",
+      "SLO-dashboard claimt ['22A','22B'] maar mapping heeft alleen ['22B']",
+      "Mobiel canvas 0x0-bug uit mei-review nog onopgelost"
+    ]
+  },
+  {
+    "missionId": "game-programmeur",
+    "templateType": "agent-role",
+    "priorityBand": "high",
+    "triageScores": {
+      "uiux": 1,
+      "slo": 1,
+      "functions": 2,
+      "interactivity": 0,
+      "total": 9
+    },
+    "lastReviewed": null,
+    "reviewStatus": "pending",
+    "reportPath": null,
+    "autoFixesApplied": 0,
+    "openEscalations": [],
+    "codexVerdict": null
+  },
+  {
+    "missionId": "impact-review",
+    "templateType": "review-arena",
+    "priorityBand": "medium",
+    "triageScores": {
+      "uiux": 2,
+      "slo": 1,
+      "functions": 1,
+      "interactivity": 0,
+      "total": 4
+    },
+    "lastReviewed": null,
+    "reviewStatus": "pending",
+    "reportPath": null,
+    "autoFixesApplied": 0,
+    "openEscalations": [],
+    "codexVerdict": null
+  },
+  {
+    "missionId": "innovation-lab",
+    "templateType": "builder-canvas",
+    "priorityBand": "low",
+    "triageScores": {
+      "uiux": 0,
+      "slo": 1,
+      "functions": 1,
+      "interactivity": 0,
+      "total": 2
+    },
+    "lastReviewed": null,
+    "reviewStatus": "pending",
+    "reportPath": null,
+    "autoFixesApplied": 0,
+    "openEscalations": [],
+    "codexVerdict": null
+  },
+  {
+    "missionId": "ipad-print-instructies",
+    "templateType": "dedicated",
+    "priorityBand": "unknown",
+    "triageScores": null,
+    "lastReviewed": null,
+    "reviewStatus": "pending",
+    "reportPath": null,
+    "autoFixesApplied": 0,
+    "openEscalations": [],
+    "codexVerdict": null
+  },
+  {
+    "missionId": "layout-doctor",
+    "templateType": "dedicated",
+    "priorityBand": "low",
+    "triageScores": {
+      "uiux": 1,
+      "slo": 1,
+      "functions": 0,
+      "interactivity": 0,
+      "total": 2
+    },
+    "lastReviewed": null,
+    "reviewStatus": "pending",
+    "reportPath": null,
+    "autoFixesApplied": 0,
+    "openEscalations": [],
+    "codexVerdict": null
+  },
+  {
+    "missionId": "magister-master",
+    "templateType": "tool-guide",
+    "priorityBand": "medium",
+    "triageScores": {
+      "uiux": 2,
+      "slo": 1,
+      "functions": 1,
+      "interactivity": 1,
+      "total": 5
+    },
+    "lastReviewed": null,
+    "reviewStatus": "pending",
+    "reportPath": null,
+    "autoFixesApplied": 0,
+    "openEscalations": [],
+    "codexVerdict": null
+  },
+  {
+    "missionId": "mail-detective",
+    "templateType": "scenario-engine",
+    "priorityBand": "medium",
+    "triageScores": {
+      "uiux": 1,
+      "slo": 1,
+      "functions": 1,
+      "interactivity": 0,
+      "total": 3
+    },
+    "lastReviewed": null,
+    "reviewStatus": "pending",
+    "reportPath": null,
+    "autoFixesApplied": 0,
+    "openEscalations": [],
+    "codexVerdict": null
+  },
+  {
+    "missionId": "media-review",
+    "templateType": "review-arena",
+    "priorityBand": "high",
+    "triageScores": {
+      "uiux": 2,
+      "slo": 0,
+      "functions": 1,
+      "interactivity": 0,
+      "total": 7
+    },
+    "lastReviewed": null,
+    "reviewStatus": "pending",
+    "reportPath": null,
+    "autoFixesApplied": 0,
+    "openEscalations": [],
+    "codexVerdict": null
+  },
+  {
+    "missionId": "meesterproef",
+    "templateType": "builder-canvas",
+    "priorityBand": "medium",
+    "triageScores": {
+      "uiux": 0,
+      "slo": 0,
+      "functions": 2,
+      "interactivity": 1,
+      "total": 5
+    },
+    "lastReviewed": null,
+    "reviewStatus": "pending",
+    "reportPath": null,
+    "autoFixesApplied": 0,
+    "openEscalations": [],
+    "codexVerdict": null
+  },
+  {
+    "missionId": "meme-machine",
+    "templateType": "builder-canvas",
+    "priorityBand": "medium",
+    "triageScores": {
+      "uiux": 0,
+      "slo": 0,
+      "functions": 1,
+      "interactivity": 1,
+      "total": 4
+    },
+    "lastReviewed": null,
+    "reviewStatus": "pending",
+    "reportPath": null,
+    "autoFixesApplied": 0,
+    "openEscalations": [],
+    "codexVerdict": null
+  },
+  {
+    "missionId": "mission-blueprint",
+    "templateType": "builder-canvas",
+    "priorityBand": "medium",
+    "triageScores": {
+      "uiux": 1,
+      "slo": 0,
+      "functions": 1,
+      "interactivity": 0,
+      "total": 3
+    },
+    "lastReviewed": null,
+    "reviewStatus": "pending",
+    "reportPath": null,
+    "autoFixesApplied": 0,
+    "openEscalations": [],
+    "codexVerdict": null
+  },
+  {
+    "missionId": "mission-launch",
+    "templateType": "tool-guide",
+    "priorityBand": "medium",
+    "triageScores": {
+      "uiux": 2,
+      "slo": 0,
+      "functions": 1,
+      "interactivity": 1,
+      "total": 4
+    },
+    "lastReviewed": null,
+    "reviewStatus": "pending",
+    "reportPath": null,
+    "autoFixesApplied": 0,
+    "openEscalations": [],
+    "codexVerdict": null
+  },
+  {
+    "missionId": "mission-vision",
+    "templateType": "builder-canvas",
+    "priorityBand": "medium",
+    "triageScores": {
+      "uiux": 1,
+      "slo": 0,
+      "functions": 1,
+      "interactivity": 0,
+      "total": 3
+    },
+    "lastReviewed": null,
+    "reviewStatus": "pending",
+    "reportPath": null,
+    "autoFixesApplied": 0,
+    "openEscalations": [],
+    "codexVerdict": null
+  },
+  {
+    "missionId": "ml-trainer",
+    "templateType": "data-viewer",
+    "priorityBand": "medium",
+    "triageScores": {
+      "uiux": 1,
+      "slo": 0,
+      "functions": 1,
+      "interactivity": 1,
+      "total": 5
+    },
+    "lastReviewed": null,
+    "reviewStatus": "pending",
+    "reportPath": null,
+    "autoFixesApplied": 0,
+    "openEscalations": [],
+    "codexVerdict": null
+  },
+  {
+    "missionId": "network-navigator",
+    "templateType": "data-viewer",
+    "priorityBand": "high",
+    "triageScores": {
+      "uiux": 2,
+      "slo": 1,
+      "functions": 2,
+      "interactivity": 0,
+      "total": 7
+    },
+    "lastReviewed": "2026-06-17",
+    "reviewStatus": "reviewed",
+    "reportPath": "business/dgskills-reviews/network-navigator-2026-06-17.md",
+    "autoFixesApplied": 0,
+    "openEscalations": [],
+    "codexVerdict": null,
+    "reviewScores": {
+      "uiux": 2,
+      "didactiek": 3,
+      "tech": 2
+    },
+    "goalClear": true,
+    "goalAchieved": true,
+    "proposedFixes": 6,
+    "escalationCount": 1,
+    "topIssues": [
+      "goalCriteria type-mismatch: config='rounds-complete' vs agent='steps-complete'",
+      "Hardcoded hex in badges/chartData",
+      "A11y: aria-sort + aria-label ontbreken"
+    ]
+  },
+  {
+    "missionId": "neural-navigator",
+    "templateType": "data-viewer",
+    "priorityBand": "medium",
+    "triageScores": {
+      "uiux": 1,
+      "slo": 0,
+      "functions": 1,
+      "interactivity": 0,
+      "total": 4
+    },
+    "lastReviewed": null,
+    "reviewStatus": "pending",
+    "reportPath": null,
+    "autoFixesApplied": 0,
+    "openEscalations": [],
+    "codexVerdict": null
+  },
+  {
+    "missionId": "notificatie-ninja",
+    "templateType": "scenario-engine",
+    "priorityBand": "high",
+    "triageScores": {
+      "uiux": 2,
+      "slo": 0,
+      "functions": 1,
+      "interactivity": 0,
+      "total": 6
+    },
+    "lastReviewed": null,
+    "reviewStatus": "pending",
+    "reportPath": null,
+    "autoFixesApplied": 0,
+    "openEscalations": [],
+    "codexVerdict": null
+  },
+  {
+    "missionId": "online-helden",
+    "templateType": "scenario-engine",
+    "priorityBand": "high",
+    "triageScores": {
+      "uiux": 2,
+      "slo": 1,
+      "functions": 1,
+      "interactivity": 0,
+      "total": 9
+    },
+    "lastReviewed": null,
+    "reviewStatus": "pending",
+    "reportPath": null,
+    "autoFixesApplied": 0,
+    "openEscalations": [],
+    "codexVerdict": null
+  },
+  {
+    "missionId": "open-source-contributor",
+    "templateType": "builder-canvas",
+    "priorityBand": "medium",
+    "triageScores": {
+      "uiux": 0,
+      "slo": 1,
+      "functions": 1,
+      "interactivity": 0,
+      "total": 3
+    },
+    "lastReviewed": null,
+    "reviewStatus": "pending",
+    "reportPath": null,
+    "autoFixesApplied": 0,
+    "openEscalations": [],
+    "codexVerdict": null
+  },
+  {
+    "missionId": "phishing-fighter",
+    "templateType": "scenario-engine",
+    "priorityBand": "high",
+    "triageScores": {
+      "uiux": 2,
+      "slo": 1,
+      "functions": 2,
+      "interactivity": 0,
+      "total": 8
+    },
+    "lastReviewed": "2026-06-17",
+    "reviewStatus": "reviewed",
+    "reportPath": "business/dgskills-reviews/phishing-fighter-2026-06-17.md",
+    "autoFixesApplied": 0,
+    "openEscalations": [],
+    "codexVerdict": null,
+    "reviewScores": {
+      "uiux": 2,
+      "didactiek": 2,
+      "tech": 3
+    },
+    "goalClear": false,
+    "goalAchieved": false,
+    "proposedFixes": 3,
+    "escalationCount": 2,
+    "topIssues": [
+      "missionGoal ontbreekt → IntroScreen toont geen doel",
+      "22A alleen via agent-chat, niet engine-rondes [ESCALATIE]",
+      "Badge-kleuren hardcoded hex"
+    ]
+  },
+  {
+    "missionId": "pitch-perfect",
+    "templateType": "builder-canvas",
+    "priorityBand": "medium",
+    "triageScores": {
+      "uiux": 0,
+      "slo": 0,
+      "functions": 2,
+      "interactivity": 1,
+      "total": 5
+    },
+    "lastReviewed": null,
+    "reviewStatus": "pending",
+    "reportPath": null,
+    "autoFixesApplied": 0,
+    "openEscalations": [],
+    "codexVerdict": null
+  },
+  {
+    "missionId": "pitch-police",
+    "templateType": "dedicated",
+    "priorityBand": "medium",
+    "triageScores": {
+      "uiux": 2,
+      "slo": 1,
+      "functions": 1,
+      "interactivity": 0,
+      "total": 5
+    },
+    "lastReviewed": null,
+    "reviewStatus": "pending",
+    "reportPath": null,
+    "autoFixesApplied": 0,
+    "openEscalations": [],
+    "codexVerdict": null
+  },
+  {
+    "missionId": "podcast-producer",
+    "templateType": "builder-canvas",
+    "priorityBand": "medium",
+    "triageScores": {
+      "uiux": 0,
+      "slo": 1,
+      "functions": 1,
+      "interactivity": 0,
+      "total": 5
+    },
+    "lastReviewed": null,
+    "reviewStatus": "pending",
+    "reportPath": null,
+    "autoFixesApplied": 0,
+    "openEscalations": [],
+    "codexVerdict": null
+  },
+  {
+    "missionId": "policy-maker",
+    "templateType": "debate-arena",
+    "priorityBand": "high",
+    "triageScores": {
+      "uiux": 2,
+      "slo": 1,
+      "functions": 2,
+      "interactivity": 0,
+      "total": 7
+    },
+    "lastReviewed": "2026-06-17",
+    "reviewStatus": "reviewed",
+    "reportPath": "business/dgskills-reviews/policy-maker-2026-06-17.md",
+    "autoFixesApplied": 0,
+    "openEscalations": [],
+    "codexVerdict": null,
+    "reviewScores": {
+      "uiux": 2,
+      "didactiek": 2,
+      "tech": 2
+    },
+    "goalClear": true,
+    "goalAchieved": false,
+    "proposedFixes": 5,
+    "escalationCount": 3,
+    "topIssues": [
+      "missionGoal ontbreekt → IntroScreen goal-blok leeg",
+      "missionObjective 'schrijf beleidsvoorstel' maar template heeft geen schrijfstap [ESCALATIE]",
+      "systemInstruction client-side in year3.tsx [ESCALATIE]"
+    ]
+  },
+  {
+    "missionId": "portfolio-builder",
+    "templateType": "builder-canvas",
+    "priorityBand": "medium",
+    "triageScores": {
+      "uiux": 0,
+      "slo": 0,
+      "functions": 2,
+      "interactivity": 1,
+      "total": 5
+    },
+    "lastReviewed": null,
+    "reviewStatus": "pending",
+    "reportPath": null,
+    "autoFixesApplied": 0,
+    "openEscalations": [],
+    "codexVerdict": null
+  },
+  {
+    "missionId": "print-pro",
+    "templateType": "tool-guide",
+    "priorityBand": "high",
+    "triageScores": {
+      "uiux": 2,
+      "slo": 2,
+      "functions": 1,
+      "interactivity": 2,
+      "total": 8
+    },
+    "lastReviewed": "2026-06-17",
+    "reviewStatus": "reviewed",
+    "reportPath": "business/dgskills-reviews/print-pro-2026-06-17.md",
+    "autoFixesApplied": 0,
+    "openEscalations": [],
+    "codexVerdict": null,
+    "reviewScores": {
+      "uiux": 2,
+      "didactiek": 2,
+      "tech": 2
+    },
+    "goalClear": true,
+    "goalAchieved": false,
+    "proposedFixes": 4,
+    "escalationCount": 1,
+    "topIssues": [
+      "takeaways missen Bloom-actiewerkwoorden",
+      "stap 2 instructie >60w + geen verificationQuestion",
+      "SLO-claim dekt inhoud niet (stap 4 = 23A, claim alleen 21A)"
+    ]
+  },
+  {
+    "missionId": "privacy-by-design",
+    "templateType": "simulation-lab",
+    "priorityBand": "high",
+    "triageScores": {
+      "uiux": 1,
+      "slo": 1,
+      "functions": 2,
+      "interactivity": 0,
+      "total": 6
+    },
+    "lastReviewed": null,
+    "reviewStatus": "pending",
+    "reportPath": null,
+    "autoFixesApplied": 0,
+    "openEscalations": [],
+    "codexVerdict": null
+  },
+  {
+    "missionId": "prompt-master",
+    "templateType": "dedicated",
+    "priorityBand": "high",
+    "triageScores": {
+      "uiux": 1,
+      "slo": 0,
+      "functions": 2,
+      "interactivity": 0,
+      "total": 14
+    },
+    "lastReviewed": null,
+    "reviewStatus": "pending",
+    "reportPath": null,
+    "autoFixesApplied": 0,
+    "openEscalations": [],
+    "codexVerdict": null
+  },
+  {
+    "missionId": "prototype-developer",
+    "templateType": "builder-canvas",
+    "priorityBand": "medium",
+    "triageScores": {
+      "uiux": 0,
+      "slo": 0,
+      "functions": 2,
+      "interactivity": 1,
+      "total": 5
+    },
+    "lastReviewed": null,
+    "reviewStatus": "pending",
+    "reportPath": null,
+    "autoFixesApplied": 0,
+    "openEscalations": [],
+    "codexVerdict": null
+  },
+  {
+    "missionId": "reflection-report",
+    "templateType": "debate-arena",
+    "priorityBand": "high",
+    "triageScores": {
+      "uiux": 2,
+      "slo": 0,
+      "functions": 2,
+      "interactivity": 2,
+      "total": 10
+    },
+    "lastReviewed": "2026-06-17",
+    "reviewStatus": "reviewed",
+    "reportPath": "business/dgskills-reviews/reflection-report-2026-06-17.md",
+    "autoFixesApplied": 0,
+    "openEscalations": [],
+    "codexVerdict": null,
+    "reviewScores": {
+      "uiux": 2,
+      "didactiek": 1,
+      "tech": 2
+    },
+    "goalClear": false,
+    "goalAchieved": false,
+    "proposedFixes": 5,
+    "escalationCount": 2,
+    "topIssues": [
+      "Template/doel-mismatch: agent beschrijft essay, template implementeert debat [ESCALATIE]",
+      "Ontbrekende missionGoal → IntroScreen krijgt undefined goal",
+      "systemInstruction client-side inline in year3.tsx [ESCALATIE]"
+    ]
+  },
+  {
+    "missionId": "research-project",
+    "templateType": "data-viewer",
+    "priorityBand": "high",
+    "triageScores": {
+      "uiux": 2,
+      "slo": 0,
+      "functions": 2,
+      "interactivity": 1,
+      "total": 7
+    },
+    "lastReviewed": "2026-06-17",
+    "reviewStatus": "reviewed",
+    "reportPath": "business/dgskills-reviews/research-project-2026-06-17.md",
+    "autoFixesApplied": 0,
+    "openEscalations": [],
+    "codexVerdict": null,
+    "reviewScores": {
+      "uiux": 2,
+      "didactiek": 2,
+      "tech": 2
+    },
+    "goalClear": true,
+    "goalAchieved": true,
+    "proposedFixes": 7,
+    "escalationCount": 3,
+    "topIssues": [
+      "missionGoal ontbreekt in config en missionGoals.ts",
+      "Hardcoded hex + accent buiten token-systeem",
+      "q8 (zwaarste open vraag) heeft points:0 — inconsistent"
+    ]
+  },
+  {
+    "missionId": "review-week-2",
+    "templateType": "review-arena",
+    "priorityBand": "medium",
+    "triageScores": {
+      "uiux": 2,
+      "slo": 0,
+      "functions": 1,
+      "interactivity": 0,
+      "total": 5
+    },
+    "lastReviewed": null,
+    "reviewStatus": "pending",
+    "reportPath": null,
+    "autoFixesApplied": 0,
+    "openEscalations": [],
+    "codexVerdict": null
+  },
+  {
+    "missionId": "review-week-3",
+    "templateType": "debate-arena",
+    "priorityBand": "medium",
+    "triageScores": {
+      "uiux": 2,
+      "slo": 0,
+      "functions": 2,
+      "interactivity": 1,
+      "total": 5
+    },
+    "lastReviewed": null,
+    "reviewStatus": "pending",
+    "reportPath": null,
+    "autoFixesApplied": 0,
+    "openEscalations": [],
+    "codexVerdict": null
+  },
+  {
+    "missionId": "schermtijd-coach",
+    "templateType": "debate-arena",
+    "priorityBand": "high",
+    "triageScores": {
+      "uiux": 2,
+      "slo": 0,
+      "functions": 2,
+      "interactivity": 0,
+      "total": 9
+    },
+    "lastReviewed": null,
+    "reviewStatus": "pending",
+    "reportPath": null,
+    "autoFixesApplied": 0,
+    "openEscalations": [],
+    "codexVerdict": null
+  },
+  {
+    "missionId": "scroll-stopper",
+    "templateType": "debate-arena",
+    "priorityBand": "medium",
+    "triageScores": {
+      "uiux": 2,
+      "slo": 0,
+      "functions": 2,
+      "interactivity": 0,
+      "total": 4
+    },
+    "lastReviewed": null,
+    "reviewStatus": "pending",
+    "reportPath": null,
+    "autoFixesApplied": 0,
+    "openEscalations": [],
+    "codexVerdict": null
+  },
+  {
+    "missionId": "security-auditor",
+    "templateType": "puzzle-lab",
+    "priorityBand": "medium",
+    "triageScores": {
+      "uiux": 1,
+      "slo": 0,
+      "functions": 2,
+      "interactivity": 0,
+      "total": 4
+    },
+    "lastReviewed": null,
+    "reviewStatus": "pending",
+    "reportPath": null,
+    "autoFixesApplied": 0,
+    "openEscalations": [],
+    "codexVerdict": null
+  },
+  {
+    "missionId": "security-review",
+    "templateType": "review-arena",
+    "priorityBand": "medium",
+    "triageScores": {
+      "uiux": 2,
+      "slo": 1,
+      "functions": 1,
+      "interactivity": 0,
+      "total": 5
+    },
+    "lastReviewed": null,
+    "reviewStatus": "pending",
+    "reportPath": null,
+    "autoFixesApplied": 0,
+    "openEscalations": [],
+    "codexVerdict": null
+  },
+  {
+    "missionId": "slide-specialist",
+    "templateType": "tool-guide",
+    "priorityBand": "high",
+    "triageScores": {
+      "uiux": 2,
+      "slo": 1,
+      "functions": 2,
+      "interactivity": 1,
+      "total": 6
+    },
+    "lastReviewed": "2026-06-17",
+    "reviewStatus": "reviewed",
+    "reportPath": "business/dgskills-reviews/slide-specialist-2026-06-17.md",
+    "autoFixesApplied": 0,
+    "openEscalations": [],
+    "codexVerdict": null,
+    "reviewScores": {
+      "uiux": 1,
+      "didactiek": 1,
+      "tech": 2
+    },
+    "goalClear": true,
+    "goalAchieved": false,
+    "proposedFixes": 5,
+    "escalationCount": 2,
+    "topIssues": [
+      "'Zetelen' bestaat niet als PowerPoint-overgang (stap 4 onuitvoerbaar)",
+      "'Animatievenster' bestaat niet in iOS PowerPoint (stap 3 onuitvoerbaar)",
+      "learningObjectives-array ontbreekt"
+    ]
+  },
+  {
+    "missionId": "social-safeguard",
+    "templateType": "scenario-engine",
+    "priorityBand": "medium",
+    "triageScores": {
+      "uiux": 2,
+      "slo": 0,
+      "functions": 1,
+      "interactivity": 0,
+      "total": 3
+    },
+    "lastReviewed": null,
+    "reviewStatus": "pending",
+    "reportPath": null,
+    "autoFixesApplied": 0,
+    "openEscalations": [],
+    "codexVerdict": null
+  },
+  {
+    "missionId": "spreadsheet-specialist",
+    "templateType": "data-viewer",
+    "priorityBand": "medium",
+    "triageScores": {
+      "uiux": 2,
+      "slo": 1,
+      "functions": 1,
+      "interactivity": 0,
+      "total": 4
+    },
+    "lastReviewed": null,
+    "reviewStatus": "pending",
+    "reportPath": null,
+    "autoFixesApplied": 0,
+    "openEscalations": [],
+    "codexVerdict": null
+  },
+  {
+    "missionId": "startup-pitch",
+    "templateType": "tool-guide",
+    "priorityBand": "medium",
+    "triageScores": {
+      "uiux": 2,
+      "slo": 0,
+      "functions": 1,
+      "interactivity": 1,
+      "total": 4
+    },
+    "lastReviewed": null,
+    "reviewStatus": "pending",
+    "reportPath": null,
+    "autoFixesApplied": 0,
+    "openEscalations": [],
+    "codexVerdict": null
+  },
+  {
+    "missionId": "startup-simulator",
+    "templateType": "builder-canvas",
+    "priorityBand": "low",
+    "triageScores": {
+      "uiux": 0,
+      "slo": 1,
+      "functions": 1,
+      "interactivity": 0,
+      "total": 2
+    },
+    "lastReviewed": null,
+    "reviewStatus": "pending",
+    "reportPath": null,
+    "autoFixesApplied": 0,
+    "openEscalations": [],
+    "codexVerdict": null
+  },
+  {
+    "missionId": "sustainability-scanner",
+    "templateType": "data-viewer",
+    "priorityBand": "medium",
+    "triageScores": {
+      "uiux": 1,
+      "slo": 0,
+      "functions": 1,
+      "interactivity": 0,
+      "total": 3
+    },
+    "lastReviewed": null,
+    "reviewStatus": "pending",
+    "reportPath": null,
+    "autoFixesApplied": 0,
+    "openEscalations": [],
+    "codexVerdict": null
+  },
+  {
+    "missionId": "tech-court",
+    "templateType": "debate-arena",
+    "priorityBand": "high",
+    "triageScores": {
+      "uiux": 1,
+      "slo": 1,
+      "functions": 2,
+      "interactivity": 0,
+      "total": 8
+    },
+    "lastReviewed": null,
+    "reviewStatus": "pending",
+    "reportPath": null,
+    "autoFixesApplied": 0,
+    "openEscalations": [],
+    "codexVerdict": null
+  },
+  {
+    "missionId": "tech-impact-analyst",
+    "templateType": "data-viewer",
+    "priorityBand": "medium",
+    "triageScores": {
+      "uiux": 2,
+      "slo": 0,
+      "functions": 1,
+      "interactivity": 0,
+      "total": 3
+    },
+    "lastReviewed": null,
+    "reviewStatus": "pending",
+    "reportPath": null,
+    "autoFixesApplied": 0,
+    "openEscalations": [],
+    "codexVerdict": null
+  },
+  {
+    "missionId": "ux-detective",
+    "templateType": "data-viewer",
+    "priorityBand": "high",
+    "triageScores": {
+      "uiux": 2,
+      "slo": 1,
+      "functions": 1,
+      "interactivity": 0,
+      "total": 9
+    },
+    "lastReviewed": null,
+    "reviewStatus": "pending",
+    "reportPath": null,
+    "autoFixesApplied": 0,
+    "openEscalations": [],
+    "codexVerdict": null
+  },
+  {
+    "missionId": "verhalen-ontwerper",
+    "templateType": "agent-role",
+    "priorityBand": "medium",
+    "triageScores": {
+      "uiux": 0,
+      "slo": 0,
+      "functions": 2,
+      "interactivity": 0,
+      "total": 5
+    },
+    "lastReviewed": null,
+    "reviewStatus": "pending",
+    "reportPath": null,
+    "autoFixesApplied": 0,
+    "openEscalations": [],
+    "codexVerdict": null
+  },
+  {
+    "missionId": "video-editor",
+    "templateType": "builder-canvas",
+    "priorityBand": "high",
+    "triageScores": {
+      "uiux": 0,
+      "slo": 1,
+      "functions": 1,
+      "interactivity": 1,
+      "total": 6
+    },
+    "lastReviewed": null,
+    "reviewStatus": "pending",
+    "reportPath": null,
+    "autoFixesApplied": 0,
+    "openEscalations": [],
+    "codexVerdict": null
+  },
+  {
+    "missionId": "wachtwoord-warrior",
+    "templateType": "puzzle-lab",
+    "priorityBand": "high",
+    "triageScores": {
+      "uiux": 1,
+      "slo": 1,
+      "functions": 2,
+      "interactivity": 0,
+      "total": 6
+    },
+    "lastReviewed": null,
+    "reviewStatus": "pending",
+    "reportPath": null,
+    "autoFixesApplied": 0,
+    "openEscalations": [],
+    "codexVerdict": null
+  },
+  {
+    "missionId": "web-developer",
+    "templateType": "builder-canvas",
+    "priorityBand": "low",
+    "triageScores": {
+      "uiux": 0,
+      "slo": 1,
+      "functions": 1,
+      "interactivity": 0,
+      "total": 2
+    },
+    "lastReviewed": null,
+    "reviewStatus": "pending",
+    "reportPath": null,
+    "autoFixesApplied": 0,
+    "openEscalations": [],
+    "codexVerdict": null
+  },
+  {
+    "missionId": "website-bouwer",
+    "templateType": "builder-canvas",
+    "priorityBand": "medium",
+    "triageScores": {
+      "uiux": 0,
+      "slo": 0,
+      "functions": 1,
+      "interactivity": 0,
+      "total": 4
+    },
+    "lastReviewed": null,
+    "reviewStatus": "pending",
+    "reportPath": null,
+    "autoFixesApplied": 0,
+    "openEscalations": [],
+    "codexVerdict": null
+  },
+  {
+    "missionId": "welzijnsonderzoeker",
+    "templateType": "data-viewer",
+    "priorityBand": "medium",
+    "triageScores": {
+      "uiux": 2,
+      "slo": 0,
+      "functions": 1,
+      "interactivity": 0,
+      "total": 3
+    },
+    "lastReviewed": null,
+    "reviewStatus": "pending",
+    "reportPath": null,
+    "autoFixesApplied": 0,
+    "openEscalations": [],
+    "codexVerdict": null
+  },
+  {
+    "missionId": "word-wizard",
+    "templateType": "tool-guide",
+    "priorityBand": "medium",
+    "triageScores": {
+      "uiux": 2,
+      "slo": 1,
+      "functions": 1,
+      "interactivity": 1,
+      "total": 5
+    },
+    "lastReviewed": null,
+    "reviewStatus": "pending",
+    "reportPath": null,
+    "autoFixesApplied": 0,
+    "openEscalations": [],
+    "codexVerdict": null
+  }
+]
