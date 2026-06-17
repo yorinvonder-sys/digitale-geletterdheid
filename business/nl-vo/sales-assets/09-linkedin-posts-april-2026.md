@@ -37,22 +37,18 @@ Dat is waar digitale geletterdheid over zou moeten gaan.
 
 ---
 
-Over 4 maanden wordt de EU AI Act afdwingbaar voor hoog-risico AI-systemen.
+Gebruikt jouw school een AI-tool die leerresultaten beoordeelt?
 
-Wat veel scholen niet weten: als je een AI-tool gebruikt die leerresultaten beoordeelt, val je als school ook onder deze wet. Niet alleen de aanbieder — ook jij als gebruiker.
+Dan val je onder de EU AI Act — als gebruiker, niet alleen de aanbieder. Want zulke onderwijs-AI is geclassificeerd als hoog-risico (Annex III, punt 3b). Dat weten de meeste scholen niet.
 
-Wat betekent dat concreet?
-
-Na 2 augustus 2026 moet je als school kunnen aantonen dat:
-- De AI-tool die je gebruikt compliant is
+Wat betekent dat concreet? Je moet als school kunnen aantonen dat:
+- De AI-tool de juiste risicoclassificatie heeft, transparant gedocumenteerd
 - Er menselijk toezicht is op de AI-beslissingen
-- De risico's zijn beoordeeld
+- De risico's zijn beoordeeld (DPIA, risicoregister)
 
-Vraag het eens aan je huidige EdTech-leveranciers: "Is jullie tool compliant met de EU AI Act?"
+De exacte deadline voor hoog-risico-verplichtingen schuift — via de Digital Omnibus (voorlopig) richting eind 2027 — maar de classificatie en de wettelijke SLO-kerndoelen (verplicht vanaf 1 augustus 2027) staan vast. Wachten op de datum is geen plan.
 
-De meeste weten niet eens dat ze eronder vallen.
-
-Dit is geen ver-van-mijn-bed-show. Dit is wet- en regelgeving die over 4 maanden ingaat. En het raakt elke school die AI inzet.
+Vraag je huidige EdTech-leveranciers eens: "Onder welke risicoklasse valt jullie tool, en is dat gedocumenteerd?"
 
 Hoe is jouw school hierop voorbereid?
 
@@ -94,29 +90,29 @@ Het resultaat: dgskills.app. Een missiegedreven platform waar leerlingen wil met
 
 ---
 
-## Bonus Post: AI Act Countdown (optioneel, voor week 2)
+## Bonus Post: AI Act-checklist (optioneel, voor week 2)
 
-**Onderwerp:** Countdown naar de AI Act deadline
+**Onderwerp:** AI Act-checklist voor scholen
 
 ---
 
-122 dagen.
+"De AI Act? Dat is toch pas in 2027?"
 
-Zoveel dagen heeft jouw school nog om te zorgen dat AI-tools die leerresultaten beoordelen voldoen aan de EU AI Act.
+Klopt — de exacte deadline voor hoog-risico-systemen schuift via de Digital Omnibus (voorlopig) richting eind 2027. Maar de classificatie verandert niet, en de wettelijke SLO-kerndoelen gelden al vanaf 1 augustus 2027.
 
-Wat moet er geregeld zijn voor 2 augustus 2026?
+Drie dingen die je nu al regelt voor elke AI-tool die leerresultaten beoordeelt:
 
 1. Een overzicht van welke AI-tools je school gebruikt
 2. Per tool: is het hoog-risico? (Hint: als het leerresultaten beoordeelt, dan ja)
-3. Per hoog-risico tool: is er een DPIA? Risicobeoordeling? Menselijk toezicht?
+3. Per hoog-risico tool: is er een DPIA? Risicoregister? Menselijk toezicht?
 
-Begin vandaag. Niet omdat het leuk is, maar omdat het moet.
+Niet omdat de datum dringt, maar omdat dit straks gewoon op orde moet zijn — en je het niet in één week regelt.
 
-En als je een tool zoekt die dit al op orde heeft: DM me.
+En als je een tool zoekt die de classificatie al transparant heeft gedocumenteerd: DM me.
 
 ---
 
-**Hashtags:** #AIAct #onderwijs #deadline #compliance #hoogrisico
+**Hashtags:** #AIAct #onderwijs #compliance #hoogrisico #SLO
 
 ---
 
@@ -125,7 +121,7 @@ En als je een tool zoekt die dit al op orde heeft: DM me.
 | Week | Maandag | Woensdag | Vrijdag |
 |------|---------|----------|---------|
 | **Wk 1 (7 apr)** | Post 1: Uit de klas | Post 2: AI Act uitleg | Post 3: Waarom ik bouw |
-| **Wk 2 (14 apr)** | Nieuw "uit de klas" moment | Bonus: AI Act countdown | Nieuw "behind the build" |
+| **Wk 2 (14 apr)** | Nieuw "uit de klas" moment | Bonus: AI Act-checklist | Nieuw "behind the build" |
 | **Wk 3 (21 apr)** | Leerlingreactie delen | SLO-kerndoelen uitleg | Pilot-resultaat delen |
 | **Wk 4 (28 apr)** | Dashboard-screenshot | AI Act + scholen tips | Roadmap/visie post |
 
