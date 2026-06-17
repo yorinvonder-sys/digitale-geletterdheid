@@ -1,6 +1,7 @@
 import React from 'react';
 import { Trophy, Sparkles } from 'lucide-react';
-import { DuckMark } from '@/components/brand/DuckMark';
+import { KeesMessage } from '@/components/brand/KeesMessage';
+import { getKeesCompletionLine } from '@/config/keesVoice';
 import type { BadgeConfig } from './types';
 
 interface PhaseScore {
@@ -41,7 +42,13 @@ export const CompletionScreen: React.FC<CompletionScreenProps> = ({
                     className="text-center mb-6 p-6 rounded-3xl"
                     style={{ background: `linear-gradient(135deg, ${badge.color}15, ${badge.color}08)` }}
                 >
-                    <DuckMark className="mx-auto mb-3 size-16" />
+                    <KeesMessage
+                        message={getKeesCompletionLine(percentage)}
+                        mood="cheer"
+                        layout="stacked"
+                        duckClassName="h-12 w-12"
+                        className="mx-auto mb-3 max-w-xs"
+                    />
                     <h2
                         className="text-2xl font-black text-duck-ink mb-1"
                         style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}

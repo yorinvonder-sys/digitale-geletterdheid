@@ -1,7 +1,8 @@
 import React from 'react';
 import { ChevronRight } from 'lucide-react';
-import { DuckMark } from '@/components/brand/DuckMark';
+import { KeesMessage } from '@/components/brand/KeesMessage';
 import { MissionGoalBanner } from './MissionGoalBanner';
+import { getKeesMissionIntro } from '@/config/keesVoice';
 import type { MissionGoal } from './types';
 
 interface IntroScreenProps {
@@ -11,6 +12,7 @@ interface IntroScreenProps {
     onStart: () => void;
     features?: string[];
     goal?: MissionGoal | string;
+    coachMessage?: string;
 }
 
 export const IntroScreen: React.FC<IntroScreenProps> = ({
@@ -20,10 +22,17 @@ export const IntroScreen: React.FC<IntroScreenProps> = ({
     onStart,
     features,
     goal,
+    coachMessage,
 }) => (
     <div className="min-h-screen overflow-y-auto bg-duck-bg flex items-start justify-center px-4 py-6 sm:py-8" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
         <div className="w-full max-w-lg text-center">
-            <DuckMark className="mx-auto mb-4 size-16" />
+            <KeesMessage
+                message={coachMessage ?? getKeesMissionIntro(title)}
+                mood="wave"
+                layout="stacked"
+                duckClassName="h-12 w-12"
+                className="mx-auto mb-4 max-w-xs"
+            />
             <h1
                 className="text-2xl font-black text-duck-ink mb-3"
                 style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}

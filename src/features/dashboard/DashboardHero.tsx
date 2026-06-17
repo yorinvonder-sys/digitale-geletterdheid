@@ -3,6 +3,8 @@ import { motion } from 'framer-motion';
 import { ChevronRight, Flame } from 'lucide-react';
 import type { Mission } from '@/utils/missionBuilder';
 import { DuckMascot } from '@/components/brand/DuckMascot';
+import { KeesMessage } from '@/components/brand/KeesMessage';
+import { getKeesDashboardGreeting, KEES_ALL_DONE } from '@/config/keesVoice';
 
 interface DashboardHeroProps {
     userDisplayName: string;
@@ -75,7 +77,15 @@ export const DashboardHero: React.FC<DashboardHeroProps> = ({
                     </div>
                 </div>
 
-                <DuckMascot className="hidden h-14 w-14 shrink-0 sm:block" />
+                <KeesMessage
+                    message={getKeesDashboardGreeting({ name, dailyStreak })}
+                    mood="idle"
+                    layout="row"
+                    align="end"
+                    duckClassName="h-10 w-10"
+                    className="hidden sm:flex max-w-[16rem] shrink-0"
+                    showName={false}
+                />
             </div>
 
             {!allMissionsDone && featuredMission ? (
@@ -107,16 +117,23 @@ export const DashboardHero: React.FC<DashboardHeroProps> = ({
                 </motion.div>
             ) : allMissionsDone ? (
                 <motion.div
-                    className="mt-4 flex items-center gap-4 rounded-[1.5rem] border border-duck-ink/10 bg-white p-5"
+                    className="mt-4 rounded-[1.5rem] border border-duck-ink/10 bg-white p-5"
                     initial={{ opacity: 0, scale: 0.95 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ duration: 0.3 }}
                 >
-                    <DuckMascot className="h-16 w-16 shrink-0" />
-                    <div>
-                        <p className="font-black text-duck-ink">Alle missies gedaan — lekker bezig!</p>
-                        <p className="text-sm text-duck-ink/65">Je docent opent binnenkort nieuwe missies.</p>
-                    </div>
+                    <KeesMessage
+                        message={
+                            <>
+                                <span className="font-black text-duck-ink block">{KEES_ALL_DONE.title}</span>
+                                <span className="text-sm text-duck-ink/65 block mt-0.5">{KEES_ALL_DONE.sub}</span>
+                            </>
+                        }
+                        mood="cheer"
+                        layout="row"
+                        duckClassName="h-12 w-12"
+                        showName={true}
+                    />
                 </motion.div>
             ) : null}
         </section>
