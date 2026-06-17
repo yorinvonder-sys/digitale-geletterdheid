@@ -10,11 +10,11 @@
 ### A. SLO-kerndoelen urgentie
 Scholen moeten digitale geletterdheid aantoonbaar maken. De meeste hebben geen methode, geen bewijs, geen plan. DGSkills biedt dat bewijs kant-en-klaar.
 
-### B. EU AI Act druk (deadline 2 augustus 2026)
-Scholen die AI-tools gebruiken worden na die datum ook zelf aansprakelijk. Ze moeten kunnen aantonen dat hun AI-tools compliant zijn. DGSkills is het enige platform voor digitale geletterdheid dat dit al gedocumenteerd heeft (DPIA, risicobeoordeling, menselijk toezicht). Dit is een deuropener bij bestuurders.
+### B. EU AI Act druk (hoog-risico; deadline verschuift richting 2 dec 2027)
+Onderwijs-AI is onder de EU AI Act geclassificeerd als hoog-risico (Annex III, punt 3b). De oorspronkelijke deadline van 2 augustus 2026 verschuift via de Digital Omnibus (voorlopig EU-akkoord, nog niet formeel gepubliceerd) naar verwachting richting 2 december 2027. Scholen moeten kunnen aantonen dat hun AI-tools de juiste classificatie en waarborgen hebben. DGSkills heeft dit transparant gedocumenteerd (DPIA, risicoregister, AI-transparantie) en is in actieve compliance-voorbereiding — een deuropener bij bestuurders.
 
 ### C. Docenttekort + werkdruk
-3.800 FTE tekort. Docenten hebben geen tijd om zelf digitale geletterdheid te ontwikkelen. DGSkills neemt dat over: AI geeft feedback, dashboard volgt voortgang, docent coacht.
+~2.200 FTE lerarentekort in het VO (schooljaar 2024/25, Voion 2025). Docenten hebben geen tijd om zelf digitale geletterdheid te ontwikkelen. DGSkills neemt dat over: AI geeft feedback, dashboard volgt voortgang, docent coacht.
 
 ---
 
@@ -32,7 +32,7 @@ Het grootste concurrentievoordeel is niet de technologie — het is de oprichter
 | **Docent** | "Missies die leerlingen wel willen doen" | Herkenning |
 | **ICT-coordinator** | "SLO-bewijs in een klik, klaar voor de inspectie" | Ontzorging |
 | **Teamleider/directeur** | "Aantoonbare digitale geletterdheid zonder extra werkdruk" | Risicoreductie |
-| **Bestuurder** | "AVG-proof, AI Act-compliant, governance dashboard" | Compliance-zekerheid |
+| **Bestuurder** | "AVG-proof, AI Act hoog-risico transparant gedocumenteerd, governance dashboard" | Compliance-zekerheid |
 
 ---
 
@@ -87,7 +87,7 @@ Verbeterpunten: social proof toevoegen, CTA verscherpen ("Plan een demo"), compl
 | Factor | DGSkills | Markt |
 |--------|----------|-------|
 | SLO-kerndoel bewijs | Automatisch, exporteerbaar | Handmatig, onvolledig |
-| AI Act compliance | Gedocumenteerd, transparant | Onbekend |
+| AI Act-classificatie | Hoog-risico, transparant gedocumenteerd | Onbekend |
 | Implementatiesnelheid | 30 dagen | 3-12 maanden |
 | Leerlingmotivatie | Missies, XP, badges, avatars | Tekst, werkbladen |
 | Geloofwaardigheid | Gebouwd door docent | Corporate |

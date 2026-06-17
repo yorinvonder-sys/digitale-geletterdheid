@@ -224,7 +224,7 @@ DGSkills is ontworpen met privacy-by-design:
 - **DPIA**: Een volledige Data Protection Impact Assessment is uitgevoerd, gezien de verwerking van persoonsgegevens van minderjarigen.
 - **Data residency**: Alle data wordt verwerkt en opgeslagen binnen de EU (europe-west4, Nederland) via Google Cloud/Vertex AI en Supabase.
 - **Verwerkingsregister**: Een volledig verwerkingsregister conform AVG artikel 30 is opgesteld.
-- **AI Act**: DGSkills is geclassificeerd als hoog-risico AI-systeem onder de EU AI Act (Annex III, punt 3b — AI voor beoordeling van leerresultaten). De bijbehorende verplichtingen worden vóór de deadline van 2 augustus 2026 geïmplementeerd.
+- **AI Act**: DGSkills is geclassificeerd als hoog-risico AI-systeem onder de EU AI Act (Annex III, punt 3b — AI voor beoordeling van leerresultaten). De oorspronkelijke deadline van 2 augustus 2026 verschuift via de Digital Omnibus (voorlopig EU-akkoord, nog niet formeel gepubliceerd) naar verwachting richting 2 december 2027; de bijbehorende verplichtingen worden in actieve compliance-voorbereiding geïmplementeerd.
 
 ---
 
@@ -270,8 +270,8 @@ DGSkills biedt een didactisch onderbouwd, driejarig curriculum voor digitale gel
 - **AI als copiloot** inzet die coacht en uitdaagt, maar nooit het antwoord geeft
 - **Gamification** gebruikt om motivatie te stimuleren, met ingebouwde bescherming tegen XP-farming
 - **Veiligheid en welzijn** borgt via welzijnsprotocol, content safety en gevoeligheidsinstructies
-- **93 missies** biedt, verdeeld over 3 leerjaren en 12 periodes
+- **97 missies** biedt, verdeeld over 3 leerjaren en 12 periodes
 - De **docent centraal** houdt als eindverantwoordelijke, ondersteund door een dashboard voor monitoring en beheer
-- Voldoet aan **AVG, DPIA en EU AI Act** vereisten voor gebruik in het onderwijs
+- Voldoet aan **AVG en DPIA**; voor de **EU AI Act** geclassificeerd als hoog-risico (Annex III, 3b) en in actieve compliance-voorbereiding (DPIA, risicoregister, AI-transparantie gedocumenteerd)
 
 Voor vragen of een demo: neem contact op via [info@dgskills.app](mailto:info@dgskills.app).

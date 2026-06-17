@@ -7,7 +7,7 @@
 
 ## Waarom dit document?
 
-Als scholen vragen "waarom werkt dit?", moet het antwoord meer zijn dan "we hebben 94 missies". Dit document legt uit welk leermodel erachter zit, waarom AI-begeleiding werkt voor deze doelgroep, en hoe elke missie aansluit bij de SLO-kerndoelen Digitale Geletterdheid.
+Als scholen vragen "waarom werkt dit?", moet het antwoord meer zijn dan "we hebben 97 missies". Dit document legt uit welk leermodel erachter zit, waarom AI-begeleiding werkt voor deze doelgroep, en hoe elke missie aansluit bij de SLO-kerndoelen Digitale Geletterdheid.
 
 Dit is het document dat je meestuurt naar je ICT-coördinator, je sectie-overleg, of je schoolleiding.
 

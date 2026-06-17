@@ -196,7 +196,7 @@ DGSkills positioneert zich als het **missiegedreven alternatief** voor tradition
 
 ### Do's
 
-- **Wees concreet.** Noem aantallen (140+ missies, 30 dagen live), geen vage beloften.
+- **Wees concreet.** Noem aantallen (97 missies, 30 dagen live), geen vage beloften.
 - **Wees enthousiast maar onderbouwd.** Energie in de communicatie, feiten als fundament.
 - **Spreek de taal van je publiek.** Gaming-taal voor leerlingen, kerndoelen voor docenten, compliance voor bestuurders.
 - **Laat het platform spreken.** Screenshots, demo's en concrete voorbeelden overtuigen meer dan tekst.

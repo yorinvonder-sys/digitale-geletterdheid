@@ -25,7 +25,7 @@
 ### Marktcontext
 - Nederlandse EdTech markt: ~€475M (2023), 15%+ groei per jaar
 - **Timing:** Scholen beslissen februari-mei over tools voor schooljaar 2026-2027
-- **Regelgeving:** EU AI Act hoog-risico deadline 2 augustus 2026 — DGSkills is compliant, concurrenten vaak niet
+- **Regelgeving:** EU AI Act classificeert onderwijs-AI als hoog-risico (Annex III, 3b); de deadline verschuift via de Digital Omnibus (voorlopig) richting 2 dec 2027. DGSkills heeft de classificatie transparant gedocumenteerd (DPIA, risicoregister, AI-transparantie) — veel concurrenten niet
 - **Kans:** NOLAI ontving €63M voor AI-onderwijs in NL — digitale geletterdheid staat hoog op de agenda
 
 ### Positionering
@@ -52,7 +52,7 @@ Kernboodschap:
 - **Pijn:** Moet kerndoelen implementeren maar heeft geen lesmethode, alles zelf uitvinden
 - **Trigger:** SLO-kerndoelen update, inspectiebezoek, directie vraagt "hoe staan we ervoor?"
 - **Kanalen:** LinkedIn, Kennisnet, vakgroep-overleggen, IPON
-- **Boodschap:** "94 missies, direct gekoppeld aan SLO-kerndoelen. Inspectieproof in 30 dagen."
+- **Boodschap:** "97 missies, direct gekoppeld aan SLO-kerndoelen. Inspectieproof in 30 dagen."
 - **CTA:** Gratis demo + SLO-mapping PDF downloaden
 
 ### Persona 2: De Schoolleider ("Annemarie")
@@ -157,7 +157,7 @@ Pilot → Resultaten → Jaarcontract
 #### 3.6 Webinars
 **Format:** 30 min, gratis, maandelijks
 - "SLO-kerndoelen digitale geletterdheid: van beleid naar praktijk"
-- "AI Act voor scholen: wat moet je weten vóór augustus 2026?"
+- "AI Act voor scholen: wat moet je weten?"
 - "Demo: Hoe 1 docent digitale geletterdheid inricht voor heel jaar 1"
 
 ### Tier 3: Schaalbare Kanalen (Langere termijn)
@@ -396,7 +396,7 @@ Bewustwording          →  Interesse           →  Pilot              →  Con
 | Bezwaar | Response |
 |---------|----------|
 | "Te duur" | €19/leerling/jaar = 1 lesboek. Maar dan met dashboard, updates, en support. |
-| "Privacy/AVG?" | Volledig DPIA, DPA Model 4.0, data in NL, AI Act compliant. Hier is ons compliance-pack. |
+| "Privacy/AVG?" | Volledig DPIA, DPA Model 4.0, data in NL. AI Act: hoog-risico-classificatie transparant gedocumenteerd (DPIA, risicoregister, AI-transparantie), in actieve compliance-voorbereiding. Hier is ons compliance-pack. |
 | "Geen tijd voor implementatie" | 30 dagen live. Wij doen de setup. Docenthandleiding voor het eerste lesuur bijgesloten. |
 | "We doen het zelf al" | Mooi! Hoe meten jullie of leerlingen de kerndoelen halen? Wij maken dat aantoonbaar. |
 | "Moet langs directie/bestuur" | Begrijpelijk. Hier is een one-pager + ROI-sheet specifiek voor directie. |
