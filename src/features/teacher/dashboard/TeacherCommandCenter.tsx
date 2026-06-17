@@ -80,7 +80,7 @@ const MissionThumbnail: React.FC<{ image: string | null; name: string }> = ({ im
 
     if (showFallback) {
         return (
-            <div className="flex h-full w-full items-center justify-center text-lab-coral" aria-label={`${name} thumbnail niet beschikbaar`}>
+            <div className="flex h-full w-full items-center justify-center text-duck-error" aria-label={`${name} thumbnail niet beschikbaar`}>
                 <Map size={28} />
             </div>
         );
@@ -144,16 +144,16 @@ function buildSloStats(students: StudentData[], missions: MissionInfo[]) {
 }
 
 const colorMap: Record<string, { icon: string; bar: string; label: string }> = {
-    sage: { icon: 'bg-lab-sage/15 text-lab-tealDark', bar: 'bg-lab-sage', label: 'text-lab-tealDark' },
-    terracotta: { icon: 'bg-lab-creamDeep text-lab-coral', bar: 'bg-lab-coral', label: 'text-lab-coral' },
-    amber: { icon: 'bg-lab-gold/25 text-lab-olive', bar: 'bg-lab-gold', label: 'text-lab-olive' },
-    sky: { icon: 'bg-lab-tealDark/10 text-lab-tealDark', bar: 'bg-lab-tealDark', label: 'text-lab-tealDark' },
+    sage: { icon: 'bg-duck-gray/15 text-duck-ink', bar: 'bg-duck-gray', label: 'text-duck-ink' },
+    terracotta: { icon: 'bg-duck-bgDeep text-duck-error', bar: 'bg-duck-error', label: 'text-duck-error' },
+    amber: { icon: 'bg-duck-acid/20 text-duck-ink', bar: 'bg-duck-acid', label: 'text-duck-ink' },
+    sky: { icon: 'bg-duck-ink/10 text-duck-ink', bar: 'bg-duck-ink', label: 'text-duck-ink' },
 };
 
 const columnStyles = [
-    'bg-lab-creamDeep text-lab-tealDark',
-    'bg-lab-tealDark text-white',
-    'bg-lab-gold text-lab-ink',
+    'bg-duck-bgDeep text-duck-ink',
+    'bg-duck-ink text-white',
+    'bg-duck-acid text-duck-ink',
 ];
 
 function toChartPoints(values: number[], width = 320, height = 116, padding = 18) {
@@ -237,7 +237,7 @@ export const TeacherCommandCenter: React.FC<TeacherCommandCenterProps> = ({
 
     if (loading) {
         return (
-            <div className="rounded-2xl border border-lab-line bg-lab-paper/80 p-8 text-center text-sm font-bold text-lab-muted">
+            <div className="rounded-2xl border border-duck-ink/15 bg-duck-bgLight p-8 text-center text-sm font-bold text-duck-ink/60">
                 Docentendashboard laden...
             </div>
         );
@@ -247,36 +247,36 @@ export const TeacherCommandCenter: React.FC<TeacherCommandCenterProps> = ({
         <div className="space-y-4">
             <div className="flex flex-col gap-4 xl:flex-row xl:items-start xl:justify-between">
                 <div>
-                    <h1 className="text-4xl font-black tracking-tight text-lab-ink">Docentendashboard</h1>
-                    <div className="mt-3 flex flex-wrap items-center gap-4 text-sm font-bold text-lab-ink">
+                    <h1 className="text-4xl font-black tracking-tight text-duck-ink">Docentendashboard</h1>
+                    <div className="mt-3 flex flex-wrap items-center gap-4 text-sm font-bold text-duck-ink">
                         <span className="text-xl font-black">{selectedClassLabel}</span>
-                        <span className="inline-flex items-center gap-2 text-lab-muted"><Users size={17} /> {filteredStudents.length} leerlingen</span>
-                        <span className="inline-flex items-center gap-2 text-lab-muted"><span className="h-2 w-2 rounded-full bg-lab-sage" /> Les actief</span>
+                        <span className="inline-flex items-center gap-2 text-duck-ink/60"><Users size={17} /> {filteredStudents.length} leerlingen</span>
+                        <span className="inline-flex items-center gap-2 text-duck-ink/60"><span className="h-2 w-2 rounded-full bg-duck-gray" /> Les actief</span>
                         {activeEvents.length > 0 && (
-                            <span className="rounded-full bg-lab-gold/20 px-2.5 py-1 text-xs font-black text-lab-olive">{activeEvents.length} actief event</span>
+                            <span className="rounded-full bg-duck-acid/20 px-2.5 py-1 text-xs font-black text-duck-ink">{activeEvents.length} actief event</span>
                         )}
                     </div>
                 </div>
                 <button
                     onClick={onToggleFocusMode}
-                    className="inline-flex h-11 items-center justify-center gap-2 rounded-xl border border-lab-coral bg-white px-7 text-sm font-black text-lab-ink transition hover:bg-lab-creamDeep"
+                    className="inline-flex h-11 items-center justify-center gap-2 rounded-xl border border-duck-error bg-white px-7 text-sm font-black text-duck-ink transition hover:bg-duck-bgDeep"
                 >
-                    <Zap size={17} className={focusMode ? 'text-lab-sage' : 'text-lab-tealDark'} />
+                    <Zap size={17} className={focusMode ? 'text-duck-gray' : 'text-duck-ink'} />
                     {focusMode && focusModeRemaining > 0 ? `${Math.floor(focusModeRemaining / 60)} min focus` : 'Focusmodus'}
                 </button>
             </div>
 
             <section className="space-y-4">
-                <div className="relative overflow-hidden rounded-2xl border border-lab-line bg-lab-paper p-5 shadow-sm lg:p-6">
+                <div className="relative overflow-hidden rounded-2xl border border-duck-ink/15 bg-duck-bgLight p-5 shadow-sm lg:p-6">
                     <div className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
                         <div>
-                            <h2 className="text-2xl font-black text-lab-ink">Missiekaart</h2>
-                            <p className="mt-1 text-sm font-medium text-lab-muted">Overzicht van de leerreis van je klas</p>
+                            <h2 className="text-2xl font-black text-duck-ink">Missiekaart</h2>
+                            <p className="mt-1 text-sm font-medium text-duck-ink/60">Overzicht van de leerreis van je klas</p>
                         </div>
-                        <button onClick={() => onNavigate('slo')} className="flex items-center gap-3 rounded-xl border border-lab-line bg-white/80 px-4 py-3 text-left">
-                            <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-lab-tealDark text-sm font-black text-white">SLO</span>
-                            <span className="text-sm font-black text-lab-ink">6 doelen actief<br /><span className="font-bold text-lab-tealDark">Bekijk SLO-overzicht</span></span>
-                            <ArrowRight size={16} className="text-lab-tealDark" />
+                        <button onClick={() => onNavigate('slo')} className="flex items-center gap-3 rounded-xl border border-duck-ink/15 bg-white/80 px-4 py-3 text-left">
+                            <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-duck-ink text-sm font-black text-white">SLO</span>
+                            <span className="text-sm font-black text-duck-ink">6 doelen actief<br /><span className="font-bold text-duck-ink">Bekijk SLO-overzicht</span></span>
+                            <ArrowRight size={16} className="text-duck-ink" />
                         </button>
                     </div>
 
@@ -286,51 +286,51 @@ export const TeacherCommandCenter: React.FC<TeacherCommandCenterProps> = ({
 
                     <div className="grid gap-4 xl:grid-cols-3">
                         {missionColumns.map((column, columnIndex) => (
-                            <div key={column.label} className="rounded-2xl border border-lab-line bg-lab-paper p-3">
+                            <div key={column.label} className="rounded-2xl border border-duck-ink/15 bg-duck-bgLight p-3">
                                 <div className={`mb-4 flex items-center justify-between gap-2 rounded-xl px-5 py-2 text-base font-black shadow-sm ${columnStyles[columnIndex]}`}>
                                     {column.label}
-                                    <span className="flex h-6 min-w-6 items-center justify-center rounded-full bg-white/90 px-2 text-xs text-lab-ink">{column.items.length}</span>
+                                    <span className="flex h-6 min-w-6 items-center justify-center rounded-full bg-white/90 px-2 text-xs text-duck-ink">{column.items.length}</span>
                                 </div>
                                 <div className="space-y-3">
                                     {column.items.map((item) => (
                                         <button
                                             key={item.mission.id}
                                             onClick={() => onNavigate('progress')}
-                                            className="w-full overflow-hidden rounded-xl border border-lab-line bg-white text-left transition hover:-translate-y-0.5 hover:border-lab-coral hover:shadow-md"
+                                            className="w-full overflow-hidden rounded-xl border border-duck-ink/15 bg-white text-left transition hover:-translate-y-0.5 hover:border-duck-error hover:shadow-md"
                                         >
                                             <div className="grid grid-cols-[96px_minmax(0,1fr)] gap-4 p-4">
-                                                <div className="h-24 w-24 overflow-hidden rounded-xl bg-lab-cream">
+                                                <div className="h-24 w-24 overflow-hidden rounded-xl bg-duck-bg">
                                                     <MissionThumbnail image={item.image} name={item.mission.name} />
                                                 </div>
                                                 <div className="min-w-0">
                                                     <div className="flex min-w-0 items-start justify-between gap-3">
-                                                        <p className="line-clamp-2 min-w-0 text-base font-black leading-tight text-lab-ink">{item.mission.name}</p>
-                                                        <span className="shrink-0 rounded-full border border-lab-line bg-lab-paper px-2.5 py-1 text-xs font-black leading-none text-lab-ink">
+                                                        <p className="line-clamp-2 min-w-0 text-base font-black leading-tight text-duck-ink">{item.mission.name}</p>
+                                                        <span className="shrink-0 rounded-full border border-duck-ink/15 bg-duck-bgLight px-2.5 py-1 text-xs font-black leading-none text-duck-ink">
                                                             {item.progress.percentage}%
                                                         </span>
                                                     </div>
-                                                    <p className="mt-2 text-sm font-medium leading-tight text-lab-muted">{item.progress.started} gestart · {item.progress.completed} klaar</p>
+                                                    <p className="mt-2 text-sm font-medium leading-tight text-duck-ink/60">{item.progress.started} gestart · {item.progress.completed} klaar</p>
                                                     <div className="mt-3 flex min-w-0 flex-wrap gap-1.5">
                                                         {item.kerndoelen.map(code => (
-                                                            <span key={code} className="rounded-md bg-lab-sage/15 px-2 py-1 text-[10px] font-black text-lab-tealDark">SLO {code}</span>
+                                                            <span key={code} className="rounded-md bg-duck-gray/15 px-2 py-1 text-[10px] font-black text-duck-ink">SLO {code}</span>
                                                         ))}
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div className="flex items-center gap-1 border-t border-lab-line px-4 py-2">
+                                            <div className="flex items-center gap-1 border-t border-duck-ink/15 px-4 py-2">
                                                 <div className="flex -space-x-2">
                                                     {item.progress.activeStudents.slice(0, 5).map(student => (
-                                                        <span key={student.uid} className="flex h-6 w-6 items-center justify-center rounded-full border-2 border-white bg-lab-creamDeep text-[9px] font-black text-lab-ink">
+                                                        <span key={student.uid} className="flex h-6 w-6 items-center justify-center rounded-full border-2 border-white bg-duck-bgDeep text-[9px] font-black text-duck-ink">
                                                             {initials(student.displayName)}
                                                         </span>
                                                     ))}
                                                 </div>
-                                                {item.progress.activeStudents.length > 5 && <span className="ml-1 text-xs font-black text-lab-muted">+{item.progress.activeStudents.length - 5}</span>}
+                                                {item.progress.activeStudents.length > 5 && <span className="ml-1 text-xs font-black text-duck-ink/60">+{item.progress.activeStudents.length - 5}</span>}
                                             </div>
                                         </button>
                                     ))}
                                     {columnIndex === 1 && (
-                                        <button onClick={() => onNavigate('settings')} className="flex min-h-[96px] w-full items-center justify-center gap-2 rounded-xl border border-dashed border-lab-line px-4 text-sm font-bold text-lab-tealDark">
+                                        <button onClick={() => onNavigate('settings')} className="flex min-h-[96px] w-full items-center justify-center gap-2 rounded-xl border border-dashed border-duck-ink/15 px-4 text-sm font-bold text-duck-ink">
                                             <Plus size={18} />
                                             Missie toevoegen
                                         </button>
@@ -340,11 +340,11 @@ export const TeacherCommandCenter: React.FC<TeacherCommandCenterProps> = ({
                         ))}
                     </div>
 
-                    <div className="mt-4 flex flex-wrap gap-5 rounded-xl border border-lab-line bg-white/70 px-4 py-3 text-xs font-bold text-lab-muted">
-                        <span className="inline-flex items-center gap-2"><span className="h-2 w-2 rounded-full bg-lab-sage" /> Op schema</span>
-                        <span className="inline-flex items-center gap-2"><span className="h-2 w-2 rounded-full bg-lab-gold" /> Bezig</span>
-                        <span className="inline-flex items-center gap-2"><span className="h-2 w-2 rounded-full bg-lab-coral" /> Achter</span>
-                        <span className="inline-flex items-center gap-2"><span className="h-2 w-2 rounded-full bg-lab-muted" /> Niet gestart</span>
+                    <div className="mt-4 flex flex-wrap gap-5 rounded-xl border border-duck-ink/15 bg-white/70 px-4 py-3 text-xs font-bold text-duck-ink/60">
+                        <span className="inline-flex items-center gap-2"><span className="h-2 w-2 rounded-full bg-duck-gray" /> Op schema</span>
+                        <span className="inline-flex items-center gap-2"><span className="h-2 w-2 rounded-full bg-duck-acid" /> Bezig</span>
+                        <span className="inline-flex items-center gap-2"><span className="h-2 w-2 rounded-full bg-duck-error" /> Achter</span>
+                        <span className="inline-flex items-center gap-2"><span className="h-2 w-2 rounded-full bg-duck-ink/60" /> Niet gestart</span>
                     </div>
                 </div>
 
@@ -352,15 +352,15 @@ export const TeacherCommandCenter: React.FC<TeacherCommandCenterProps> = ({
                     <Panel title="Aandacht" action={`${attentionStudents.length || 0}`}>
                         <div className="space-y-1">
                             {attentionStudents.length > 0 ? attentionStudents.map(item => (
-                                <button key={item.student.uid} onClick={() => onSelectStudent(item.student)} className="flex w-full items-center gap-3 border-b border-lab-line py-2 text-left last:border-0">
-                                    <span className="flex h-10 w-10 items-center justify-center rounded-full bg-lab-creamDeep text-xs font-black text-lab-ink">{initials(item.student.displayName)}</span>
+                                <button key={item.student.uid} onClick={() => onSelectStudent(item.student)} className="flex w-full items-center gap-3 border-b border-duck-ink/15 py-2 text-left last:border-0">
+                                    <span className="flex h-10 w-10 items-center justify-center rounded-full bg-duck-bgDeep text-xs font-black text-duck-ink">{initials(item.student.displayName)}</span>
                                     <span className="min-w-0 flex-1">
                                         <span className="block truncate text-sm font-black">{item.student.displayName || 'Naamloos'}</span>
-                                        <span className="block text-xs font-medium text-lab-coral">{item.reason}</span>
+                                        <span className="block text-xs font-medium text-duck-error">{item.reason}</span>
                                     </span>
                                     <ChevronRight size={16} />
                                 </button>
-                            )) : <p className="text-sm font-bold text-lab-tealDark">Geen aandachtspunten.</p>}
+                            )) : <p className="text-sm font-bold text-duck-ink">Geen aandachtspunten.</p>}
                         </div>
                     </Panel>
 
@@ -377,7 +377,7 @@ export const TeacherCommandCenter: React.FC<TeacherCommandCenterProps> = ({
                                                 <p className="truncate text-xs font-bold">{stat.label}</p>
                                                 <p className="text-sm font-black">{stat.percentage}%</p>
                                             </div>
-                                            <div className="mt-1 h-1.5 overflow-hidden rounded-full bg-lab-line/50">
+                                            <div className="mt-1 h-1.5 overflow-hidden rounded-full bg-duck-ink/10">
                                                 <div className={`h-full rounded-full ${colors.bar}`} style={{ width: `${stat.percentage}%` }} />
                                             </div>
                                         </div>
@@ -394,29 +394,29 @@ export const TeacherCommandCenter: React.FC<TeacherCommandCenterProps> = ({
             </section>
 
             <section className="grid gap-4 xl:grid-cols-[minmax(0,1fr)_330px_300px]">
-                <div className="rounded-2xl border border-lab-line bg-lab-paper p-4 shadow-sm">
+                <div className="rounded-2xl border border-duck-ink/15 bg-duck-bgLight p-4 shadow-sm">
                     <div className="grid gap-4 md:grid-cols-[160px_1fr_1fr_1fr_160px] md:items-center">
                         <div className="flex items-center gap-3">
-                            <Flag className="text-lab-coral" size={28} />
+                            <Flag className="text-duck-error" size={28} />
                             <div><p className="text-sm font-black">Klasprogressie</p></div>
                         </div>
                         <div className="flex items-center gap-3">
-                            <div className="flex h-14 w-14 items-center justify-center rounded-full border-[6px] border-lab-sage text-lg font-black">{missionProgressAverage}%</div>
-                            <p className="text-xs font-bold text-lab-muted">Gemiddelde missievoortgang</p>
+                            <div className="flex h-14 w-14 items-center justify-center rounded-full border-[6px] border-duck-gray text-lg font-black">{missionProgressAverage}%</div>
+                            <p className="text-xs font-bold text-duck-ink/60">Gemiddelde missievoortgang</p>
                         </div>
                         <MiniAvatarGroup label="Meest voortgang" students={studentGroups.leaders} />
                         <MiniAvatarGroup label="Hulp nodig" students={studentGroups.help} />
-                        <div className="text-sm font-bold">Volgende mijlpaal<br /><span className="text-xs text-lab-muted">6 van 10 missies gemiddeld</span></div>
+                        <div className="text-sm font-bold">Volgende mijlpaal<br /><span className="text-xs text-duck-ink/60">6 van 10 missies gemiddeld</span></div>
                     </div>
                 </div>
 
-                <div className="rounded-2xl border border-lab-line bg-lab-tealDark/5 p-4 shadow-sm">
-                    <p className="text-xs font-black uppercase text-lab-muted">Volgende les</p>
+                <div className="rounded-2xl border border-duck-ink/15 bg-duck-ink/5 p-4 shadow-sm">
+                    <p className="text-xs font-black uppercase text-duck-ink/60">Volgende les</p>
                     <h3 className="mt-1 text-lg font-black">3. Verhalenmakers</h3>
-                    <p className="mt-1 text-xs font-bold text-lab-muted">Les 2: Structuur & Perspectief</p>
+                    <p className="mt-1 text-xs font-bold text-duck-ink/60">Les 2: Structuur & Perspectief</p>
                     <div className="mt-4 flex gap-2">
-                        <button onClick={() => onNavigate('games')} className="rounded-lg bg-lab-tealDark px-4 py-2 text-sm font-black text-white">Les openen</button>
-                        <button onClick={() => onNavigate('documenten')} className="rounded-lg border border-lab-line bg-white px-3 py-2 text-sm font-black">Voorbereiding</button>
+                        <button onClick={() => onNavigate('games')} className="rounded-lg bg-duck-ink px-4 py-2 text-sm font-black text-white">Les openen</button>
+                        <button onClick={() => onNavigate('documenten')} className="rounded-lg border border-duck-ink/15 bg-white px-3 py-2 text-sm font-black">Voorbereiding</button>
                     </div>
                 </div>
 
@@ -425,7 +425,7 @@ export const TeacherCommandCenter: React.FC<TeacherCommandCenterProps> = ({
                         <ActionRow label="Versterk digitale veiligheid" onClick={() => onNavigate('slo')} />
                         <ActionRow label="Samenwerken stimuleren" onClick={() => onNavigate('students')} />
                         <ActionRow label="Laat creativiteit zien" onClick={onSendMessage} />
-                        <button onClick={() => onNavigate('progress')} className="mt-2 text-sm font-black text-lab-coral">Bekijk rapport</button>
+                        <button onClick={() => onNavigate('progress')} className="mt-2 text-sm font-black text-duck-error">Bekijk rapport</button>
                     </div>
                 </Panel>
             </section>
@@ -443,18 +443,18 @@ function GrowthWeekChart({ values, currentValue }: { values: number[]; currentVa
     const weeklyDelta = Math.max(0, currentValue - values[0]);
 
     return (
-        <div className="overflow-hidden rounded-xl border border-lab-line bg-white">
+        <div className="overflow-hidden rounded-xl border border-duck-ink/15 bg-white">
             <div className="flex items-start justify-between gap-3 px-4 pt-4">
                 <div>
-                    <p className="text-[10px] font-black uppercase tracking-widest text-lab-muted">Klasgemiddelde</p>
+                    <p className="text-[10px] font-black uppercase tracking-widest text-duck-ink/60">Klasgemiddelde</p>
                     <div className="mt-1 flex items-baseline gap-2">
-                        <span className="text-4xl font-black leading-none text-lab-tealDark">{currentValue}</span>
-                        <span className="text-xs font-black text-lab-tealDark">DG</span>
+                        <span className="text-4xl font-black leading-none text-duck-ink">{currentValue}</span>
+                        <span className="text-xs font-black text-duck-ink">DG</span>
                     </div>
                 </div>
-                <div className="rounded-lg bg-lab-sage/15 px-3 py-2 text-right">
-                    <p className="text-sm font-black leading-none text-lab-tealDark">+{weeklyDelta}</p>
-                    <p className="mt-1 text-[10px] font-bold text-lab-tealDark">deze week</p>
+                <div className="rounded-lg bg-duck-gray/15 px-3 py-2 text-right">
+                    <p className="text-sm font-black leading-none text-duck-ink">+{weeklyDelta}</p>
+                    <p className="mt-1 text-[10px] font-bold text-duck-ink">deze week</p>
                 </div>
             </div>
 
@@ -488,7 +488,7 @@ function GrowthWeekChart({ values, currentValue }: { values: number[]; currentVa
                 </svg>
             </div>
 
-            <div className="flex flex-wrap items-center gap-x-4 gap-y-2 border-t border-lab-line px-4 py-3 text-[11px] font-bold text-lab-muted">
+            <div className="flex flex-wrap items-center gap-x-4 gap-y-2 border-t border-duck-ink/15 px-4 py-3 text-[11px] font-bold text-duck-ink/60">
                 <span className="inline-flex items-center gap-2"><span aria-hidden="true" style={{ display: 'block', width: 20, height: 8, borderRadius: 999, background: '#5F947D' }} /> Klas</span>
                 <span className="inline-flex items-center gap-2"><span aria-hidden="true" style={{ display: 'block', width: 20, borderTop: '2px dashed #445865' }} /> Vorige week</span>
             </div>
@@ -510,11 +510,11 @@ function Panel({
     onButtonClick?: () => void;
 }) {
     return (
-        <div className="rounded-2xl border border-lab-line bg-lab-paper p-4 shadow-sm">
+        <div className="rounded-2xl border border-duck-ink/15 bg-duck-bgLight p-4 shadow-sm">
             <div className="mb-3 flex items-center justify-between gap-3">
-                <h3 className="text-xl font-black text-lab-ink">{title}</h3>
-                {action && <span className="rounded-full bg-lab-creamDeep px-2.5 py-1 text-xs font-black text-lab-coral">{action}</span>}
-                {buttonLabel && <button onClick={onButtonClick} className="rounded-lg border border-lab-line bg-white px-3 py-2 text-xs font-bold">{buttonLabel}</button>}
+                <h3 className="text-xl font-black text-duck-ink">{title}</h3>
+                {action && <span className="rounded-full bg-duck-bgDeep px-2.5 py-1 text-xs font-black text-duck-error">{action}</span>}
+                {buttonLabel && <button onClick={onButtonClick} className="rounded-lg border border-duck-ink/15 bg-white px-3 py-2 text-xs font-bold">{buttonLabel}</button>}
             </div>
             {children}
         </div>
@@ -527,10 +527,10 @@ function MiniAvatarGroup({ label, students }: { label: string; students: Student
             <p className="mb-2 text-xs font-black">{label}</p>
             <div className="flex -space-x-2">
                 {students.length > 0 ? students.map(student => (
-                    <span key={student.uid} className="flex h-8 w-8 items-center justify-center rounded-full border-2 border-white bg-lab-gold/20 text-[10px] font-black text-lab-olive">
+                    <span key={student.uid} className="flex h-8 w-8 items-center justify-center rounded-full border-2 border-white bg-duck-acid/20 text-[10px] font-black text-duck-ink">
                         {initials(student.displayName)}
                     </span>
-                )) : <span className="text-xs font-bold text-lab-muted">Geen data</span>}
+                )) : <span className="text-xs font-bold text-duck-ink/60">Geen data</span>}
             </div>
         </div>
     );
@@ -538,7 +538,7 @@ function MiniAvatarGroup({ label, students }: { label: string; students: Student
 
 function ActionRow({ label, onClick }: { label: string; onClick: () => void }) {
     return (
-        <button onClick={onClick} className="flex w-full items-center justify-between rounded-lg border-b border-lab-line py-2 text-left text-sm font-bold last:border-0">
+        <button onClick={onClick} className="flex w-full items-center justify-between rounded-lg border-b border-duck-ink/15 py-2 text-left text-sm font-bold last:border-0">
             {label}
             <ChevronRight size={15} />
         </button>

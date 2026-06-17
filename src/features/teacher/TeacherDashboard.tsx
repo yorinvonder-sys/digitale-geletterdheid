@@ -524,24 +524,24 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ user, onUpda
             }}
         >
             <TutorialSpotlight />
-            <div className="min-h-screen overflow-x-hidden bg-lab-cream text-lab-ink">
+            <div className="min-h-screen overflow-x-hidden bg-duck-bg text-duck-ink">
                 {/* Toasts */}
                 <div className="fixed top-4 right-4 z-[200] flex flex-col gap-2 pointer-events-none">
                     <AnimatePresence>
                         {toasts.map(t => (
-                            <motion.div key={t.id} initial={{ opacity: 0, x: 50 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 20 }} className="pointer-events-auto min-w-[300px] p-4 rounded-xl shadow-xl bg-white border border-lab-line flex items-start gap-3">
-                                <div className={`p-2 rounded-lg ${t.type === 'error' ? 'bg-lab-coral/10 text-lab-coral' : 'bg-lab-cream text-lab-coral'}`}><Stars size={20} /></div>
-                                <div><h4 className="font-bold text-lab-ink text-sm">{t.title}</h4><p className="text-lab-muted text-xs mt-0.5">{t.message}</p></div>
+                            <motion.div key={t.id} initial={{ opacity: 0, x: 50 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 20 }} className="pointer-events-auto min-w-[300px] p-4 rounded-xl shadow-xl bg-white border border-duck-ink/15 flex items-start gap-3">
+                                <div className={`p-2 rounded-lg ${t.type === 'error' ? 'bg-duck-error/10 text-duck-error' : 'bg-duck-bg text-duck-error'}`}><Stars size={20} /></div>
+                                <div><h4 className="font-bold text-duck-ink text-sm">{t.title}</h4><p className="text-duck-ink/60 text-xs mt-0.5">{t.message}</p></div>
                             </motion.div>
                         ))}
                     </AnimatePresence>
                 </div>
 
                 <div className="min-h-screen lg:grid lg:grid-cols-[216px_minmax(0,1fr)]">
-                    <aside className="hidden border-r border-lab-line bg-lab-paper lg:flex lg:flex-col">
-                        <div className="flex h-[76px] items-center gap-3 border-b border-lab-line px-5">
+                    <aside className="hidden border-r border-duck-ink/15 bg-duck-bgLight lg:flex lg:flex-col">
+                        <div className="flex h-[76px] items-center gap-3 border-b border-duck-ink/15 px-5">
                             <DuckMark className="size-11 shrink-0" />
-                            <span className="text-2xl font-black text-lab-ink">DGSkills</span>
+                            <span className="text-2xl font-black text-duck-ink">DGSkills</span>
                         </div>
                         <nav className="flex-1 space-y-2 px-4 py-5">
                             {sideNavItems.map((item, index) => {
@@ -553,14 +553,14 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ user, onUpda
                                         onClick={() => navigateTo(item.id)}
                                         className={`flex w-full items-center gap-3 rounded-xl px-3 py-3 text-left text-sm font-bold transition ${
                                             isActive
-                                                ? 'bg-lab-primary/15 text-lab-primary'
-                                                : 'text-lab-muted hover:bg-lab-cream'
+                                                ? 'bg-duck-acid/20 text-duck-ink'
+                                                : 'text-duck-ink/60 hover:bg-duck-bg'
                                         }`}
                                     >
                                         <Icon size={19} />
                                         <span className="flex-1">{item.label}</span>
                                         {item.badge ? (
-                                            <span className="rounded-full bg-lab-primary px-2 py-0.5 text-[10px] font-black text-white">{item.badge}</span>
+                                            <span className="rounded-full bg-duck-acid px-2 py-0.5 text-[10px] font-black text-duck-ink">{item.badge}</span>
                                         ) : null}
                                     </button>
                                 );
@@ -569,7 +569,7 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ user, onUpda
                         <div className="px-4 pb-5">
                             <button
                                 onClick={() => navigateTo('documenten')}
-                                className="flex w-full items-center gap-3 rounded-xl border border-lab-line bg-lab-cream/60 px-3 py-3 text-left text-xs font-bold text-lab-muted transition hover:bg-lab-cream"
+                                className="flex w-full items-center gap-3 rounded-xl border border-duck-ink/15 bg-duck-bg/60 px-3 py-3 text-left text-xs font-bold text-duck-ink/60 transition hover:bg-duck-bg"
                             >
                                 <BookOpen size={20} />
                                 <span className="flex-1">DGSkills<br />Kennisbank</span>
@@ -579,11 +579,11 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ user, onUpda
                     </aside>
 
                     <div className="min-w-0">
-                        <header className="sticky top-0 z-40 border-b border-lab-line bg-lab-paper/95 backdrop-blur">
+                        <header className="sticky top-0 z-40 border-b border-duck-ink/15 bg-duck-bgLight/95 backdrop-blur">
                             <div className="flex min-h-[76px] min-w-0 flex-wrap items-center gap-2 px-4 py-3 sm:flex-nowrap lg:px-7 lg:py-0">
                                 <div className="flex min-w-0 flex-1 items-center gap-3 lg:hidden">
                                     <DuckMark className="size-10 shrink-0" />
-                                    <span className="truncate text-xl font-black text-lab-ink">DGSkills</span>
+                                    <span className="truncate text-xl font-black text-duck-ink">DGSkills</span>
                                 </div>
 
                                 <div className="ml-auto flex min-w-0 shrink-0 items-center gap-2 sm:gap-3">
@@ -591,13 +591,13 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ user, onUpda
                                         <button
                                             type="button"
                                             onClick={() => setClassDropdownOpen((open) => !open)}
-                                            className="flex h-11 min-w-[142px] max-w-[172px] items-center justify-between gap-2 rounded-xl border border-lab-line bg-lab-cream px-3 text-left text-sm font-black text-lab-ink outline-none transition hover:border-lab-sage sm:h-12 sm:min-w-[172px] sm:px-4"
+                                            className="flex h-11 min-w-[142px] max-w-[172px] items-center justify-between gap-2 rounded-xl border border-duck-ink/15 bg-duck-bg px-3 text-left text-sm font-black text-duck-ink outline-none transition hover:border-duck-gray sm:h-12 sm:min-w-[172px] sm:px-4"
                                             aria-haspopup="listbox"
                                             aria-expanded={classDropdownOpen}
                                             aria-label="Selecteer klas"
                                         >
                                             <span className="truncate">{selectedClassLabel}</span>
-                                            <ChevronDown size={17} className={`shrink-0 text-lab-muted transition-transform ${classDropdownOpen ? 'rotate-180' : ''}`} />
+                                            <ChevronDown size={17} className={`shrink-0 text-duck-ink/60 transition-transform ${classDropdownOpen ? 'rotate-180' : ''}`} />
                                         </button>
                                         <AnimatePresence>
                                             {classDropdownOpen && (
@@ -606,7 +606,7 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ user, onUpda
                                                     animate={{ opacity: 1, y: 0 }}
                                                     exit={{ opacity: 0, y: -4 }}
                                                     transition={{ duration: 0.12 }}
-                                                    className="absolute right-0 top-full z-50 mt-2 w-56 overflow-hidden rounded-xl border border-lab-line bg-lab-paper p-1 shadow-lg"
+                                                    className="absolute right-0 top-full z-50 mt-2 w-56 overflow-hidden rounded-xl border border-duck-ink/15 bg-duck-bgLight p-1 shadow-lg"
                                                     role="listbox"
                                                 >
                                                     {classOptions.map(option => {
@@ -622,8 +622,8 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ user, onUpda
                                                                 }}
                                                                 className={`flex min-h-11 w-full items-center gap-2 rounded-lg px-3 text-left text-sm font-bold transition ${
                                                                     isSelected
-                                                                        ? 'bg-lab-primary/15 text-lab-primary'
-                                                                        : 'text-lab-muted hover:bg-lab-cream hover:text-lab-ink'
+                                                                        ? 'bg-duck-acid/20 text-duck-ink'
+                                                                        : 'text-duck-ink/60 hover:bg-duck-bg hover:text-duck-ink'
                                                                 }`}
                                                                 role="option"
                                                                 aria-selected={isSelected}
@@ -637,34 +637,34 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ user, onUpda
                                             )}
                                         </AnimatePresence>
                                     </div>
-                                    <button className="relative hidden h-11 w-11 items-center justify-center rounded-full text-lab-ink hover:bg-lab-cream sm:flex" aria-label="Meldingen">
+                                    <button className="relative hidden h-11 w-11 items-center justify-center rounded-full text-duck-ink hover:bg-duck-bg sm:flex" aria-label="Meldingen">
                                         <Bell size={22} />
                                         {attentionCount > 0 && (
-                                            <span className="absolute right-1 top-1 flex h-5 min-w-5 items-center justify-center rounded-full bg-lab-primary px-1 text-[10px] font-black text-white">
+                                            <span className="absolute right-1 top-1 flex h-5 min-w-5 items-center justify-center rounded-full bg-duck-acid px-1 text-[10px] font-black text-duck-ink">
                                                 {attentionCount}
                                             </span>
                                         )}
                                     </button>
                                     <button
                                         onClick={() => setShowPresentation(true)}
-                                        className="hidden h-11 items-center gap-2 rounded-xl bg-lab-primary px-4 text-sm font-black text-white transition hover:bg-lab-primaryDark md:flex"
+                                        className="hidden h-11 items-center gap-2 rounded-full bg-duck-acid px-4 text-sm font-black text-duck-ink transition hover:bg-duck-ink hover:text-duck-acid md:flex"
                                     >
                                         <Presentation size={17} />
                                         Presentatie
                                     </button>
                                     {onLogout && (
-                                        <button onClick={onLogout} className="flex h-11 w-11 items-center justify-center rounded-full bg-lab-cream text-lab-muted hover:text-lab-coral" aria-label="Uitloggen">
+                                        <button onClick={onLogout} className="flex h-11 w-11 items-center justify-center rounded-full bg-duck-bg text-duck-ink/60 hover:text-duck-error" aria-label="Uitloggen">
                                             <LogOut size={18} />
                                         </button>
                                     )}
-                                    <div className="hidden h-11 w-11 shrink-0 items-center justify-center rounded-full bg-lab-gold/35 text-sm font-black text-lab-ink min-[430px]:flex">
+                                    <div className="hidden h-11 w-11 shrink-0 items-center justify-center rounded-full bg-duck-acid/35 text-sm font-black text-duck-ink min-[430px]:flex">
                                         {user?.displayName?.charAt(0)?.toUpperCase() || 'D'}
                                     </div>
                                 </div>
                             </div>
                         </header>
 
-                        {error && <div className="m-4 rounded-xl border border-lab-coral bg-lab-coral p-4 text-sm text-lab-coral">{error}</div>}
+                        {error && <div className="m-4 rounded-xl border border-duck-error bg-duck-error p-4 text-sm text-duck-error">{error}</div>}
 
                         <main className="min-w-0 p-4 lg:p-6">
                             <AnimatePresence mode="wait">
@@ -697,12 +697,12 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ user, onUpda
 
                         {activeTab === 'students' && (
                             <PageTransition key="students" className="space-y-4">
-                                <div className="bg-lab-paper rounded-xl border border-lab-line p-3 flex items-center justify-between gap-3">
+                                <div className="bg-duck-bgLight rounded-xl border border-duck-ink/15 p-3 flex items-center justify-between gap-3">
                                     <div className="flex items-center gap-2">
-                                        <button onClick={() => setRetryCount(prev => prev + 1)} className="p-2 text-lab-muted hover:bg-lab-cream rounded-lg"><RotateCcw size={16} /></button>
-                                        <button onClick={exportCSV} className="p-2 text-lab-muted hover:bg-lab-cream rounded-lg"><Download size={16} /></button>
+                                        <button onClick={() => setRetryCount(prev => prev + 1)} className="p-2 text-duck-ink/60 hover:bg-duck-bg rounded-lg"><RotateCcw size={16} /></button>
+                                        <button onClick={exportCSV} className="p-2 text-duck-ink/60 hover:bg-duck-bg rounded-lg"><Download size={16} /></button>
                                     </div>
-                                    <button data-tutorial="students-message-btn" onClick={() => setShowMessageModal(true)} className="px-4 py-2 bg-lab-tealDark text-white rounded-lg text-sm font-bold flex items-center gap-2 hover:bg-lab-ink"><Send size={14} /> Bericht</button>
+                                    <button data-tutorial="students-message-btn" onClick={() => setShowMessageModal(true)} className="px-4 py-2 bg-duck-ink text-white rounded-lg text-sm font-bold flex items-center gap-2 hover:bg-duck-ink"><Send size={14} /> Bericht</button>
                                 </div>
                                 <StudentList
                                     students={students.filter(s => {
@@ -726,20 +726,20 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ user, onUpda
                         {activeTab === 'gamification' && (
                             <PageTransition key="gamification" className="space-y-6">
                                 <div className="flex items-center justify-between">
-                                    <div className="flex bg-lab-cream p-1 rounded-lg">
+                                    <div className="flex bg-duck-bg p-1 rounded-lg">
                                         {[
                                             { id: 'leaderboard', label: 'Ranglijst', icon: Award },
                                             { id: 'gallery', label: 'Gallery', icon: Stars },
                                             { id: 'events', label: 'Events', icon: Sparkles },
                                         ].map(sub => (
-                                            <button key={sub.id} onClick={() => setGamificationSubTab(sub.id as any)} className={`flex items-center gap-2 px-3 py-1.5 rounded-md text-xs font-bold transition-all ${gamificationSubTab === sub.id ? 'bg-white text-lab-ink shadow-sm' : 'text-lab-muted hover:text-lab-muted'}`}><sub.icon size={14} /> {sub.label}</button>
+                                            <button key={sub.id} onClick={() => setGamificationSubTab(sub.id as any)} className={`flex items-center gap-2 px-3 py-1.5 rounded-md text-xs font-bold transition-all ${gamificationSubTab === sub.id ? 'bg-white text-duck-ink shadow-sm' : 'text-duck-ink/60 hover:text-duck-ink/60'}`}><sub.icon size={14} /> {sub.label}</button>
                                         ))}
                                     </div>
-                                    <button data-tutorial="xp-boost-btn" onClick={() => setShowEventModal(true)} className="px-4 py-2 bg-lab-ink text-white rounded-xl text-xs font-bold flex items-center gap-2"><Zap size={14} /> XP Boost</button>
+                                    <button data-tutorial="xp-boost-btn" onClick={() => setShowEventModal(true)} className="px-4 py-2 bg-duck-acid text-duck-ink rounded-full text-xs font-bold flex items-center gap-2"><Zap size={14} /> XP Boost</button>
                                 </div>
                                 {gamificationSubTab === 'leaderboard' && <Leaderboard students={students} />}
                                 {gamificationSubTab === 'gallery' && <GoudenPromptGallery schoolId={user?.schoolId} />}
-                                {gamificationSubTab === 'events' && <div className="bg-white rounded-[2rem] border border-lab-line overflow-hidden"><EventsPanel activeEvents={activeEvents} onShowModal={() => setShowEventModal(true)} onEndEvent={async id => { await endEvent(id); getActiveEvents(user?.schoolId).then(setActiveEvents); }} /></div>}
+                                {gamificationSubTab === 'events' && <div className="bg-white rounded-[2rem] border border-duck-ink/15 overflow-hidden"><EventsPanel activeEvents={activeEvents} onShowModal={() => setShowEventModal(true)} onEndEvent={async id => { await endEvent(id); getActiveEvents(user?.schoolId).then(setActiveEvents); }} /></div>}
                             </PageTransition>
                         )}
 
@@ -750,16 +750,16 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ user, onUpda
                             }
                             await updateClassroomConfig(user.schoolId, selectedClassId, u);
                             setClassRoomConfig(p => p ? { ...p, ...u } : null);
-                        }} onOpenSchedulingConfig={(user?.role === 'teacher' || user?.role === 'admin' || user?.role === 'developer') ? () => setShowSchedulingConfig(true) : undefined} />{onLogout && <button onClick={onLogout} className="w-full py-4 border-2 border-lab-coral text-lab-coral rounded-2xl font-bold flex items-center justify-center gap-2 hover:bg-lab-coral hover:text-white"><RotateCcw size={18} /> Uitloggen</button>}</PageTransition>}
+                        }} onOpenSchedulingConfig={(user?.role === 'teacher' || user?.role === 'admin' || user?.role === 'developer') ? () => setShowSchedulingConfig(true) : undefined} />{onLogout && <button onClick={onLogout} className="w-full py-4 border-2 border-duck-error text-duck-error rounded-2xl font-bold flex items-center justify-center gap-2 hover:bg-duck-error hover:text-white"><RotateCcw size={18} /> Uitloggen</button>}</PageTransition>}
                         {activeTab === 'games' && <PageTransition key="games"><GamesPanel onOpenGame={onOpenGames || (() => { })} /></PageTransition>}
-                        {activeTab === 'ai-beleid' && <PageTransition key="ai-beleid"><div className="bg-white rounded-[2rem] border border-lab-line p-6"><AiBeleidFeedbackPanel classFilter={classFilter !== 'all' ? classFilter : undefined} schoolId={user?.schoolId} /></div></PageTransition>}
+                        {activeTab === 'ai-beleid' && <PageTransition key="ai-beleid"><div className="bg-white rounded-[2rem] border border-duck-ink/15 p-6"><AiBeleidFeedbackPanel classFilter={classFilter !== 'all' ? classFilter : undefined} schoolId={user?.schoolId} /></div></PageTransition>}
                         {activeTab === 'feedback' && <PageTransition key="feedback"><FeedbackPanel schoolId={user?.schoolId} /></PageTransition>}
                         {activeTab === 'progress' && <PageTransition key="progress" className="space-y-6"><MissionProgressPanel students={students} classFilter={classFilter} availableClasses={classGroups} onClassFilterChange={setClassFilter} onSelectStudent={setSelectedStudent} yearGroup={yearGroupFilter} /><HybridAssessmentPanel records={hybridAssessments} classFilter={classFilter} /><GrowthOverviewPanel studentIds={students.filter(s => classFilter === 'all' || s.studentClass === classFilter).map(s => s.uid)} /></PageTransition>}
                         {activeTab === 'slo' && <PageTransition key="slo"><SLOClassOverview students={students} schoolId={user?.schoolId} selectedYear={yearGroupFilter} /></PageTransition>}
                         {activeTab === 'nulmeting' && (
                             <PageTransition key="nulmeting" className="space-y-6">
                                 <EindmetingReleaseButton classFilter={classFilter} schoolId={user?.schoolId} availableClasses={classGroups} />
-                                <Suspense fallback={<div className="flex items-center justify-center py-12"><div className="h-8 w-8 animate-spin rounded-full border-b-2 border-lab-tealDark" /></div>}>
+                                <Suspense fallback={<div className="flex items-center justify-center py-12"><div className="h-8 w-8 animate-spin rounded-full border-b-2 border-duck-ink" /></div>}>
                                     <LazyDigitaalPaspoortTeacher
                                         klasResults={students
                                             .filter(s => {
@@ -777,7 +777,7 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ user, onUpda
                         )}
                         {activeTab === 'samenhang' && (
                             <PageTransition key="samenhang">
-                                <Suspense fallback={<div className="flex items-center justify-center py-12"><div className="h-8 w-8 animate-spin rounded-full border-b-2 border-lab-tealDark" /></div>}>
+                                <Suspense fallback={<div className="flex items-center justify-center py-12"><div className="h-8 w-8 animate-spin rounded-full border-b-2 border-duck-ink" /></div>}>
                                     <LazySamenhangMatrix selectedYear={yearGroupFilter} schoolId={user?.schoolId} />
                                 </Suspense>
                             </PageTransition>
@@ -825,7 +825,7 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ user, onUpda
 
                 {showSchedulingConfig && user?.schoolId && (
                     <div className="fixed inset-0 z-50 bg-black/40 flex items-start justify-center overflow-y-auto p-4 pt-12">
-                        <div className="bg-lab-cream rounded-[2rem] shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto">
+                        <div className="bg-duck-bg rounded-[2rem] shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto">
                             <SchedulingConfigurator
                                 schoolId={user.schoolId}
                                 yearGroup={yearGroupFilter}

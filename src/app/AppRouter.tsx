@@ -470,6 +470,14 @@ export function AppRouter() {
         );
     }
 
+    if (normalizedPath === '/docentdemo') {
+        return (
+            <React.Suspense fallback={<LoadingFallback />}>
+                <LeerlingDemoSandbox initialView="teacher" />
+            </React.Suspense>
+        );
+    }
+
     if (normalizedPath === '/speeltuin') {
         return (
             <React.Suspense fallback={<LoadingFallback />}>

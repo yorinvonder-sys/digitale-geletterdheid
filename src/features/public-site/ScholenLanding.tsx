@@ -526,7 +526,14 @@ export const ScholenLanding: React.FC = () => {
                                 onClick={() => { window.history.pushState({}, '', '/leerlingdemo'); window.dispatchEvent(new Event('pathchange')); }}
                                 className="group inline-flex min-h-[54px] w-full items-center justify-center gap-3 rounded-full border border-duck-ink/20 bg-duck-bgLight px-8 py-3.5 text-base font-extrabold text-duck-ink transition-all duration-300 hover:-translate-y-0.5 hover:border-duck-ink sm:w-auto focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-ink focus-visible:ring-offset-2"
                             >
-                                Bekijk de leerlingdemo
+                                Leerlingdemo
+                                <ArrowRightIcon />
+                            </button>
+                            <button
+                                onClick={() => { window.history.pushState({}, '', '/docentdemo'); window.dispatchEvent(new Event('pathchange')); }}
+                                className="group inline-flex min-h-[54px] w-full items-center justify-center gap-3 rounded-full border border-duck-ink/20 bg-duck-bgLight px-8 py-3.5 text-base font-extrabold text-duck-ink transition-all duration-300 hover:-translate-y-0.5 hover:border-duck-ink sm:w-auto focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-ink focus-visible:ring-offset-2"
+                            >
+                                Docentdemo
                                 <ArrowRightIcon />
                             </button>
                         </div>

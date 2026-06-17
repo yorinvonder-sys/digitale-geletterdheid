@@ -29,8 +29,12 @@ function navigateTo(path: string) {
 
 type SandboxView = 'student' | 'teacher';
 
-export const LeerlingDemoSandbox: React.FC = () => {
-    const [sandboxView, setSandboxView] = useState<SandboxView>('student');
+interface LeerlingDemoSandboxProps {
+    initialView?: SandboxView;
+}
+
+export const LeerlingDemoSandbox: React.FC<LeerlingDemoSandboxProps> = ({ initialView = 'student' }) => {
+    const [sandboxView, setSandboxView] = useState<SandboxView>(initialView);
     const [activeDemoMission, setActiveDemoMission] = useState<string | null>(null);
     const [activeWeek, setActiveWeek] = useState(2);
     const [activeYearGroup, setActiveYearGroup] = useState(2);
@@ -112,6 +116,7 @@ export const LeerlingDemoSandbox: React.FC = () => {
                         userRole="student"
                         containers={[]}
                         onGoHome={() => navigateTo('/')}
+                        demoLocked={true}
                     />
                 )}
                 {sandboxView === 'teacher' && (
