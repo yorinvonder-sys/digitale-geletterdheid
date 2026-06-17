@@ -50,7 +50,7 @@
 
 #### Over de EU AI Act
 
-> **CORRECTIE (23 feb 2026):** De onderstaande oorspronkelijke classificatie als "beperkt risico" is **onjuist**. DGSkills is geclassificeerd als **HIGH RISK -- Annex III punt 3(b)** van de EU AI Act, omdat de AI STEP_COMPLETE markers genereert die leerresultaten evalueren en het leerproces sturen. Zie het conformiteitsbeoordelingsplan en het juridisch rapport (09-juridisch-rapport-compleet.md) voor de volledige analyse. De deadline voor hoog-risico verplichtingen is **2 augustus 2026**.
+> **CORRECTIE (23 feb 2026):** De onderstaande oorspronkelijke classificatie als "beperkt risico" is **onjuist**. DGSkills is geclassificeerd als **HIGH RISK -- Annex III punt 3(b)** van de EU AI Act, omdat de AI STEP_COMPLETE markers genereert die leerresultaten evalueren en het leerproces sturen. Zie het conformiteitsbeoordelingsplan en het juridisch rapport (09-juridisch-rapport-compleet.md) voor de volledige analyse. De oorspronkelijke deadline voor hoog-risico-verplichtingen (2 augustus 2026) verschuift via de Digital Omnibus (voorlopig EU-akkoord, nog niet formeel gepubliceerd) naar verwachting richting **2 december 2027**; urgentie blijft gebaseerd op de wettelijke SLO-kerndoelen (1 augustus 2027).
 
 ~~Jullie vallen onder "beperkt risico" (Art. 50). Dit betekent transparantieplicht: gebruikers moeten weten dat ze met AI praten. Dit is al geregeld in het product. Je bent NIET high-risk zolang de AI geen beslissingen neemt over leerlingen (beoordeling/selectie).~~ De docent blijft eindverantwoordelijk - dat is goed.
 

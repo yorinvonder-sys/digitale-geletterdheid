@@ -1,6 +1,6 @@
 # dgskills.app — Digitale Geletterdheid die Werkt
 
-**AVG-proof | AI Act-ready | DPIA beschikbaar | SLO-kerndoelen 2025**
+**AVG-proof | AI Act: hoog-risico, actieve compliance | DPIA beschikbaar | SLO-kerndoelen 2025**
 
 ---
 
@@ -9,9 +9,9 @@
 | Feit | Bron |
 |------|------|
 | Gemiddeld digitaal niveau leerlingen: **4,7 / 10** | Monitor Digitale Geletterdheid 2023 |
-| Docenttekort ICT/digitale vaardigheden: **3.800 FTE** | OCW Arbeidsmarkt Leraren 2024 |
+| Lerarentekort VO: **~2.200 FTE** (schooljaar 2024/25) | Voion Trendrapportage arbeidsmarkt leraren 2025 |
 | SLO-kerndoelen digitale geletterdheid worden **verplicht** | SLO Conceptkerndoelen 2025 |
-| EU AI Act hoog-risico deadline: **2 augustus 2026** | EU Verordening 2024/1689 |
+| EU AI Act: onderwijs-AI = hoog-risico (Annex III, 3b); deadline verschuift richting 2 dec 2027 (Digital Omnibus, voorlopig) | EU Verordening 2024/1689 |
 
 De meeste scholen hebben geen methode, geen bewijs en geen plan voor digitale geletterdheid.
 
@@ -36,9 +36,9 @@ De meeste scholen hebben geen methode, geen bewijs en geen plan voor digitale ge
 ## Bewijs
 
 - Elke missie is getest met echte leerlingen in een echte klas
-- 60+ missies verdeeld over 3 leerjaren, gekoppeld aan alle SLO-domeinen
+- 97 missies verdeeld over 3 leerjaren, gekoppeld aan alle SLO-domeinen
 - Platform draait op EU-datacenters (Nederland), volledig AVG-compliant
-- Enige platform met gedocumenteerde EU AI Act-compliance (DPIA, risicobeoordeling, menselijk toezicht)
+- Enige platform met transparant gedocumenteerde EU AI Act-classificatie: hoog-risico (Annex III, 3b), in actieve compliance-voorbereiding (DPIA, risicoregister, AI-transparantie)
 
 ---
 

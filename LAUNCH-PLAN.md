@@ -47,7 +47,7 @@ Drie modellen, elk voor een ander type taak. Gebruik de router hieronder als geh
 - [x] Privacyverklaring opgesteld
 - [x] AI-transparantieverklaring op website (hoog-risico classificatie)
 - [x] FG/DPO adviesrapport
-- [x] 94 missies ontwikkeld met SLO Kerndoelen mapping
+- [x] 97 missies ontwikkeld met SLO Kerndoelen mapping
 - [x] Docentendashboard met 11 tabs (monitoring, gamificatie, SLO, etc.)
 - [x] Homepage met lazy-loaded secties, SEO, JSON-LD
 - [x] Avatar-systeem, XP/leveling, badges
@@ -164,16 +164,18 @@ Drie modellen, elk voor een ander type taak. Gebruik de router hieronder als geh
 
 | # | Taak | Deadline | Prioriteit |
 |---|------|----------|------------|
-| B.1 | AI Act: Risicobeheersysteem documenteren (Art. 9) | 2 aug 2026 | Hoog |
-| B.2 | AI Act: Technische documentatie Annex IV (Art. 11) | 2 aug 2026 | Hoog |
-| B.3 | AI Act: Registratie EU AI-database (Art. 49) | 2 aug 2026 | Hoog |
-| B.4 | AI Act: Docent override voor STEP_COMPLETE (Art. 14) | 2 aug 2026 | Hoog |
+| B.1 | AI Act: Risicobeheersysteem documenteren (Art. 9) | 2 dec 2027* | Hoog |
+| B.2 | AI Act: Technische documentatie Annex IV (Art. 11) | 2 dec 2027* | Hoog |
+| B.3 | AI Act: Registratie EU AI-database (Art. 49) | 2 dec 2027* | Hoog |
+| B.4 | AI Act: Docent override voor STEP_COMPLETE (Art. 14) | 2 dec 2027* | Hoog |
 | B.5 | Merknaam "DGSkills" registreren bij BOIP (€271) | Q3 2026 | Midden |
 | B.6 | Cyberverzekering afsluiten | Q3 2026 | Midden |
 | B.7 | Privacyconvenant Onderwijs aansluiting | Q3 2026 | Midden |
 | B.8 | THIRD_PARTY_LICENSES.txt genereren | Q3 2026 | Laag |
 | B.9 | Defensieve domeinnamen (dgskills.nl) | Q4 2026 | Laag |
 | B.10 | BTW vooroverleg Belastingdienst (21% vs 9%) | Q2 2026 | Midden |
+
+> *AI Act hoog-risico-deadline: oorspronkelijk 2 aug 2026 — verschuift via de Digital Omnibus (voorlopig EU-akkoord, nog niet formeel gepubliceerd) richting ~2 dec 2027. Urgentie blijft gebaseerd op de wettelijke SLO-kerndoelen (1 aug 2027) en werkdruk.
 
 ---
 
@@ -190,8 +192,8 @@ Mrt 29 ──── Apr 11    Apr 12 ──── Apr 25    Apr 26 ──── 
  UI/UX + Bugs           Homepage + Dashboard  Go-to-Market
  KvK/bank tussendoor    Etalage, docent-UX    Pitch, eerste klant
 
-Mei ──── Juni                              Aug 2 ────
- SPRINT 6                                  AI ACT DEADLINE
+Mei ──── Juni                              Q4 2027 ──
+ SPRINT 6                                  AI ACT (voorlopig)
  Pilot Draaien
 ```
 
