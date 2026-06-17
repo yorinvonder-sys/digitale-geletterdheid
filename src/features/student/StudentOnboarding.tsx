@@ -155,7 +155,6 @@ export const StudentOnboarding: React.FC<StudentOnboardingProps> = ({ onComplete
                                 mood="wave"
                                 layout="stacked"
                                 duckClassName="w-16 h-16 md:w-20 md:h-20"
-                                className="[&_.animate-duck-rise]:text-white"
                             />
                         </div>
                     ) : (
