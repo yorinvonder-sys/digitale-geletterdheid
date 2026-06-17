@@ -1,7 +1,9 @@
 # Go-to-Market Strategie — DGSkills.app
 
-> **Versie:** 1.0 | **Datum:** 2 april 2026 | **Status:** Goedgekeurd
+> **Versie:** 1.1 | **Datum:** 2 april 2026 (feitelijke correcties 17 juni 2026) | **Status:** Goedgekeurd
 > **Doel:** Helder, herhaalbaar playbook om DGSkills strategisch in de markt te brengen bij VO-scholen.
+
+> **Strategische context:** Dit document is de **GTM-fasering / tactische laag**. Het overkoepelende strategische kader (STP, JTBD, Crossing the Chasm, Porter) staat in [`13-strategisch-verkoopplan.md`](13-strategisch-verkoopplan.md). Bij tegenstrijdigheid is doc 13 leidend.
 
 ---
 
@@ -10,11 +12,11 @@
 ### A. SLO-kerndoelen urgentie
 Scholen moeten digitale geletterdheid aantoonbaar maken. De meeste hebben geen methode, geen bewijs, geen plan. DGSkills biedt dat bewijs kant-en-klaar.
 
-### B. EU AI Act druk (deadline 2 augustus 2026)
-Scholen die AI-tools gebruiken worden na die datum ook zelf aansprakelijk. Ze moeten kunnen aantonen dat hun AI-tools compliant zijn. DGSkills is het enige platform voor digitale geletterdheid dat dit al gedocumenteerd heeft (DPIA, risicobeoordeling, menselijk toezicht). Dit is een deuropener bij bestuurders.
+### B. EU AI Act druk (hoog-risico; deadline naar verwachting ~2 december 2027)
+AI in het onderwijs valt onder Annex III, punt 3(b) van de EU AI Act en is **hoog-risico**. De oorspronkelijke hoog-risico-deadline van 2 augustus 2026 wordt via de **Digital Omnibus** (voorlopig EU-akkoord, nog niet formeel gepubliceerd) naar verwachting verschoven richting **~2 december 2027**. Scholen die AI-tools gebruiken moeten kunnen aantonen dat die zorgvuldig zijn ingericht. DGSkills positioneert zich transparant: hoog-risico classificatie bevestigd; DPIA, risicoregister en AI-transparantie (Art. 50) gedocumenteerd en geïmplementeerd; de resterende hoog-risico-verplichtingen worden vóór de wettelijke deadline afgerond. Die transparantie — bewust géén "AI Act compliant"-claim — is zelf een deuropener bij bestuurders. (Zie doc 13 §3 en §13.2.)
 
 ### C. Docenttekort + werkdruk
-3.800 FTE tekort. Docenten hebben geen tijd om zelf digitale geletterdheid te ontwikkelen. DGSkills neemt dat over: AI geeft feedback, dashboard volgt voortgang, docent coacht.
+Circa 2.200 FTE tekort in het VO (schooljaar 2024/2025, Voion 2025). Docenten hebben geen tijd om zelf digitale geletterdheid te ontwikkelen. DGSkills neemt dat over: AI geeft feedback, dashboard volgt voortgang, docent coacht.
 
 ---
 
@@ -32,7 +34,7 @@ Het grootste concurrentievoordeel is niet de technologie — het is de oprichter
 | **Docent** | "Missies die leerlingen wel willen doen" | Herkenning |
 | **ICT-coordinator** | "SLO-bewijs in een klik, klaar voor de inspectie" | Ontzorging |
 | **Teamleider/directeur** | "Aantoonbare digitale geletterdheid zonder extra werkdruk" | Risicoreductie |
-| **Bestuurder** | "AVG-proof, AI Act-compliant, governance dashboard" | Compliance-zekerheid |
+| **Bestuurder** | "AVG-proof, AI Act hoog-risico transparant gedocumenteerd, governance dashboard" | Compliance-transparantie |
 
 ---
 
@@ -51,7 +53,7 @@ Het grootste concurrentievoordeel is niet de technologie — het is de oprichter
 
 | Onderdeel | Details |
 |-----------|---------|
-| Platform-toegang | Alle missies + dashboard, 8-12 weken, max 60 leerlingen, 2 docenten |
+| Platform-toegang | Alle missies + dashboard, 8 weken, max 150 leerlingen, max 2 docenten (Pilot Start) |
 | Kickoff-sessie | 45 min online |
 | Docent-onboarding | 90 min training |
 | Starterset lessenplan | Kant-en-klaar voor eerste 4 weken |
@@ -63,6 +65,8 @@ Het grootste concurrentievoordeel is niet de technologie — het is de oprichter
 | E-mailsupport | Ma-vr 8:30-17:00 |
 
 **100% verrekend bij jaarcontract** (binnen 30 dagen na pilotafronding).
+
+> Dit is de **Pilot Start** (8 weken, ≤150 leerlingen). Grotere pilotvormen (Pilot Plus, Pilot School) staan in [`06-standard-paid-pilot-package.md`](06-standard-paid-pilot-package.md) en [`02-pricing-matrix.md`](02-pricing-matrix.md).
 
 ---
 
@@ -87,7 +91,7 @@ Verbeterpunten: social proof toevoegen, CTA verscherpen ("Plan een demo"), compl
 | Factor | DGSkills | Markt |
 |--------|----------|-------|
 | SLO-kerndoel bewijs | Automatisch, exporteerbaar | Handmatig, onvolledig |
-| AI Act compliance | Gedocumenteerd, transparant | Onbekend |
+| AI Act-transparantie | Hoog-risico, transparant gedocumenteerd | Onbekend/niet gemaakt |
 | Implementatiesnelheid | 30 dagen | 3-12 maanden |
 | Leerlingmotivatie | Missies, XP, badges, avatars | Tekst, werkbladen |
 | Geloofwaardigheid | Gebouwd door docent | Corporate |

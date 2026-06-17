@@ -4,6 +4,9 @@ Dit mapje bevat de direct inzetbare commerciële en operationele documenten voor
 
 ## Inhoud
 
+- `13-strategisch-verkoopplan.md`  
+  Overkoepelend strategisch verkoop- en marketingplan (literatuur-gefundeerd); kader boven de tactische documenten hieronder.
+
 - `00-niche-definition-first-3-pilots.md`  
   Exact nichesegment en profiel voor de eerste 3 pilots.
 
@@ -31,8 +34,14 @@ Dit mapje bevat de direct inzetbare commerciële en operationele documenten voor
 - `sales-assets/06-pilotresultaat-template.md`  
   Eindtemplate voor go/no-go en omzetting naar jaarcontract.
 
+- `sales-assets/07-bezwarenkaart-dgskills.md`  
+  Bezwaarbehandeling: veelgehoorde schoolbezwaren met onderbouwde antwoorden.
+
 - `sales-assets/08-inspectie-rapportformat-dgskills.md`  
   1-pagina format om DGSkills te koppelen aan kerndoelen, inspectiestandaarden en schoolbewijs.
+
+- `sales-assets/09-linkedin-posts-april-2026.md`  
+  Kant-en-klare LinkedIn-posts voor het founder-led contentkanaal.
 
 - `03-pilot-cohort-playbook.md`  
   Operationale aanpak voor cohort van 5-10 pilots.
