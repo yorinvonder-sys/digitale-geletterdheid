@@ -18,7 +18,7 @@
    "SLO 22B (Programmeren) mismatch — missie bevat geen programmeeractiviteit (curriculaire beslissing)",
    "cognitieve load stap 2: 24 toggle-buttons voor leerjaar 2 (structurele herontwerp)"
   ],
-  "codexVerdict": null,
+  "codexVerdict": "ALLOW",
   "escalationCount": 2,
   "reviewScores": {
    "uiux": 7,
