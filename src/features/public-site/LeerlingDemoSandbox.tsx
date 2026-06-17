@@ -116,7 +116,6 @@ export const LeerlingDemoSandbox: React.FC<LeerlingDemoSandboxProps> = ({ initia
                         userRole="student"
                         containers={[]}
                         onGoHome={() => navigateTo('/')}
-                        demoLocked={true}
                     />
                 )}
                 {sandboxView === 'teacher' && (

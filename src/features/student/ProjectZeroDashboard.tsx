@@ -42,7 +42,6 @@ interface DashboardProps {
     focusMode?: boolean;
     userRole?: 'student' | 'teacher' | 'admin' | 'developer'; // For teacher/developer bypass of restrictions
     containers?: ContainerConfig[];
-    demoLocked?: boolean;
 }
 
 const FORCE_UNLOCK_ALL_ASSIGNMENTS =
@@ -214,39 +213,12 @@ interface StudentProjectCardProps {
     onSelectModule: (id: string) => void;
     onInfoClick?: (info: string, kerndoelen?: SloKerndoelCode[]) => void;
     vsoProfile?: string;
-    demoLocked?: boolean;
 }
 
-const StudentProjectCard: React.FC<StudentProjectCardProps> = ({ mission, isCompleted, index, onSelectModule, onInfoClick, vsoProfile, demoLocked }) => {
+const StudentProjectCard: React.FC<StudentProjectCardProps> = ({ mission, isCompleted, index, onSelectModule, onInfoClick, vsoProfile }) => {
     const displayKerndoelen = vsoProfile && mission.sloVsoKerndoelen ? mission.sloVsoKerndoelen : mission.sloKerndoelen;
     const canOpen = mission.status === 'available';
     const isLocked = mission.status === 'locked';
-
-    if (demoLocked) {
-        return (
-            <article className="flex h-full flex-col overflow-hidden rounded-[1.5rem] border border-duck-ink/10 bg-white shadow-duck-soft">
-                <div className="flex h-[120px] items-center justify-center bg-duck-bgLight">
-                    <Lock size={28} className="text-duck-ink/20" />
-                </div>
-                <div className="flex flex-1 flex-col p-4">
-                    <div className="space-y-2">
-                        <div className="h-4 w-3/4 rounded-full bg-duck-ink/10" />
-                        <div className="h-3 w-full rounded-full bg-duck-ink/6" />
-                        <div className="h-3 w-2/3 rounded-full bg-duck-ink/6" />
-                    </div>
-                    <div className="mt-auto pt-4">
-                        <button
-                            type="button"
-                            onClick={() => onSelectModule('__account_cta__')}
-                            className="inline-flex min-h-[44px] items-center gap-2 rounded-full border border-duck-ink/20 bg-duck-bgLight px-5 text-sm font-extrabold text-duck-ink/60 transition-all duration-300 hover:-translate-y-0.5 hover:border-duck-ink hover:text-duck-ink motion-reduce:transition-none"
-                        >
-                            <Lock size={14} /> Beschikbaar na aanmelding
-                        </button>
-                    </div>
-                </div>
-            </article>
-        );
-    }
 
     return (
         <article
@@ -328,7 +300,6 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
     focusMode = false,
     userRole = 'student',
     containers,
-    demoLocked = false,
 }) => {
     // Curriculum-aware variabelen
     const currentYearGroup = activeYearGroup ?? 1;
@@ -1315,7 +1286,6 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
                                             onInfoClick={handleInfoClick}
                                             isCompleted={stats?.missionsCompleted?.includes(mission.id) || (mission.id === 'ipad-print-instructies' && stats?.studentClass !== 'MH1A')}
                                             vsoProfile={stats?.vsoProfile}
-                                            demoLocked={demoLocked}
                                         />
                                     </motion.div>
                                 ))}
@@ -1351,7 +1321,6 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
                                                 onInfoClick={handleInfoClick}
                                                 isCompleted={stats?.missionsCompleted?.includes(mission.id)}
                                                 vsoProfile={stats?.vsoProfile}
-                                                demoLocked={demoLocked}
                                             />
                                         </motion.div>
                                     ))}
