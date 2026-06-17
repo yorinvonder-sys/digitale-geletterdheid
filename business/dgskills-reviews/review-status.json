@@ -655,10 +655,12 @@
       "total": 8
     },
     "lastReviewed": "2026-06-17",
-    "reviewStatus": "reviewed",
+    "reviewStatus": "fixes-applied",
     "reportPath": "business/dgskills-reviews/digital-forensics-2026-06-17.md",
-    "autoFixesApplied": 0,
-    "openEscalations": [],
+    "autoFixesApplied": 1,
+    "openEscalations": [
+      "hardcoded hex -> duck-token swap vereist refactor van gedeelde CompletionScreen/SimpleChart (geescaleerd)"
+    ],
     "codexVerdict": null,
     "reviewScores": {
       "uiux": 2,
@@ -1213,10 +1215,12 @@
       "total": 8
     },
     "lastReviewed": "2026-06-17",
-    "reviewStatus": "reviewed",
+    "reviewStatus": "fixes-applied",
     "reportPath": "business/dgskills-reviews/phishing-fighter-2026-06-17.md",
-    "autoFixesApplied": 0,
-    "openEscalations": [],
+    "autoFixesApplied": 1,
+    "openEscalations": [
+      "hardcoded hex -> duck-token swap vereist refactor van gedeelde CompletionScreen/SimpleChart (geescaleerd)"
+    ],
     "codexVerdict": null,
     "reviewScores": {
       "uiux": 2,
@@ -1467,10 +1471,12 @@
       "total": 7
     },
     "lastReviewed": "2026-06-17",
-    "reviewStatus": "reviewed",
+    "reviewStatus": "fixes-applied",
     "reportPath": "business/dgskills-reviews/research-project-2026-06-17.md",
-    "autoFixesApplied": 0,
-    "openEscalations": [],
+    "autoFixesApplied": 1,
+    "openEscalations": [
+      "hardcoded hex -> duck-token swap vereist refactor van gedeelde CompletionScreen/SimpleChart (geescaleerd)"
+    ],
     "codexVerdict": null,
     "reviewScores": {
       "uiux": 2,
