@@ -1597,6 +1597,61 @@ const AccessoryLayer = memo<{
                     ))}
                 </group>
             );
+        case 'pet_duck':
+            return (
+                <group position={[0.50, 0.10, 0.30]}>
+                    {/* Lichaam — rond geel */}
+                    <mesh position={[0, 0.13, 0]}>
+                        <boxGeometry args={[0.20, 0.15, 0.18]} />
+                        <meshStandardMaterial color="#F5C842" roughness={0.82} />
+                    </mesh>
+                    {/* Lichte buik */}
+                    <mesh position={[0, 0.09, 0.10]}>
+                        <boxGeometry args={[0.15, 0.10, 0.05]} />
+                        <meshStandardMaterial color="#FFE08A" roughness={0.85} />
+                    </mesh>
+                    {/* Kop */}
+                    <mesh position={[0, 0.28, 0.05]}>
+                        <boxGeometry args={[0.13, 0.13, 0.13]} />
+                        <meshStandardMaterial color="#F5C842" roughness={0.82} />
+                    </mesh>
+                    {/* Snavel — oranje, naar voren */}
+                    <mesh position={[0, 0.26, 0.15]}>
+                        <boxGeometry args={[0.09, 0.04, 0.08]} />
+                        <meshStandardMaterial color="#E8871A" roughness={0.7} />
+                    </mesh>
+                    {/* Oogjes */}
+                    <mesh position={[-0.04, 0.31, 0.115]}>
+                        <boxGeometry args={[0.025, 0.025, 0.01]} />
+                        {matBlk}
+                    </mesh>
+                    <mesh position={[0.04, 0.31, 0.115]}>
+                        <boxGeometry args={[0.025, 0.025, 0.01]} />
+                        {matBlk}
+                    </mesh>
+                    {/* Vleugels */}
+                    <mesh position={[-0.11, 0.14, -0.01]} rotation={[0, 0, 0.12]}>
+                        <boxGeometry args={[0.03, 0.10, 0.12]} />
+                        <meshStandardMaterial color="#EAB72E" roughness={0.84} />
+                    </mesh>
+                    <mesh position={[0.11, 0.14, -0.01]} rotation={[0, 0, -0.12]}>
+                        <boxGeometry args={[0.03, 0.10, 0.12]} />
+                        <meshStandardMaterial color="#EAB72E" roughness={0.84} />
+                    </mesh>
+                    {/* Staartje — opstaand achter */}
+                    <mesh position={[0, 0.17, -0.11]} rotation={[0.6, 0, 0]}>
+                        <boxGeometry args={[0.08, 0.04, 0.06]} />
+                        <meshStandardMaterial color="#EAB72E" roughness={0.84} />
+                    </mesh>
+                    {/* Pootjes — oranje, plat (webbed) */}
+                    {[[-0.05, 0.035, 0.05], [0.05, 0.035, 0.05]].map((pos, i) => (
+                        <mesh key={`duck-foot-${i}`} position={pos as [number, number, number]}>
+                            <boxGeometry args={[0.06, 0.02, 0.08]} />
+                            <meshStandardMaterial color="#E8871A" roughness={0.8} />
+                        </mesh>
+                    ))}
+                </group>
+            );
         case 'robot_arm':
             return (
                 <group position={[gender === 'female' ? 0.38 : 0.44, 0.95, 0]}>

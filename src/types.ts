@@ -139,7 +139,7 @@ export interface AvatarConfig {
   shoeColor?: string; // New: Custom shoe color
   accessoryColor?: string;
   // Expanded accessory options
-  accessory: 'none' | 'cap' | 'glasses' | 'sunglasses' | 'headphones' | 'earbuds' | 'backpack' | 'satchel' | 'skateboard' | 'beanie' | 'bandana' | 'crown' | 'halo' | 'watch' | 'smartwatch' | 'necklace' | 'chain' | 'scarf' | 'bowtie' | 'tie' | 'guitar' | 'wings' | 'cape' | 'sword' | 'shield' | 'pet_cat' | 'pet_dog' | 'robot_arm' | 'crown_gold' | 'jetpack' | 'wings_cyber' | 'pet_robo';
+  accessory: 'none' | 'cap' | 'glasses' | 'sunglasses' | 'headphones' | 'earbuds' | 'backpack' | 'satchel' | 'skateboard' | 'beanie' | 'bandana' | 'crown' | 'halo' | 'watch' | 'smartwatch' | 'necklace' | 'chain' | 'scarf' | 'bowtie' | 'tie' | 'guitar' | 'wings' | 'cape' | 'sword' | 'shield' | 'pet_cat' | 'pet_dog' | 'robot_arm' | 'crown_gold' | 'jetpack' | 'wings_cyber' | 'pet_robo' | 'pet_duck';
   accessories?: string[]; // Allow array of accessories for backward compatibility
   hairStyle: 'short' | 'pigtails' | 'spiky' | 'messy' | 'long' | 'bob' | 'fade' | 'curls' | 'ponytail' | 'braids' | 'buzzcut' | 'mohawk' | 'afro' | 'bun' | 'sidepart';
   // Expanded shirt styles
@@ -151,14 +151,13 @@ export interface AvatarConfig {
   // Body pose
   pose?: 'idle' | 'wave' | 'dab' | 'peace';
   // Companion pet (separate from accessory)
-  pet?: 'none' | 'pet_dog' | 'pet_cat' | 'pet_robo';
+  pet?: 'none' | 'pet_dog' | 'pet_cat' | 'pet_robo' | 'pet_duck';
   gender: 'male' | 'female';
-  avatarKind?: 'human' | 'duck';
 }
 
 export const DEFAULT_AVATAR_CONFIG: AvatarConfig = {
   baseModel: 'standard',
-  skinColor: '#e1ff01',
+  skinColor: '#f5d0b0',
   shirtColor: '#D97848',
   pantsColor: '#08283B',
   accessory: 'none',
@@ -168,8 +167,7 @@ export const DEFAULT_AVATAR_CONFIG: AvatarConfig = {
   hairColor: '#08283B',
   eyeColor: '#08283B',
   shoeColor: '#08283B',
-  gender: 'male',
-  avatarKind: 'duck',
+  gender: 'male'
 };
 
 // Alias for game components
