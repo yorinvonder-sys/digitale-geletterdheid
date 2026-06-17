@@ -3,149 +3,537 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>DGSkills - Uitgebreid Uitvoeringsplan</title>
+  <title>DGSkills — 30-Dagen Actieplan</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,700;0,900;1,700&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
-    
-    :root {
-      --primary: #0B453F;
-      --slate-900: #08283B;
-      --slate-800: #08283B;
-      --slate-700: #08283B;
-      --slate-200: #E7D8BD;
-      --slate-100: #F3E4CB;
-      --slate-50: #FCF6EA;
-      --white: #ffffff;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
-    * { box-sizing: border-box; -webkit-print-color-adjust: exact; }
-    
     body {
-      font-family: 'Inter', -apple-system, system-ui, sans-serif;
-      line-height: 1.6;
-      color: var(--slate-700);
-      margin: 0;
-      background: var(--white);
-      font-size: 11pt;
+      font-family: 'Outfit', sans-serif;
+      background: #f2f1ec;
+      color: #202023;
+      -webkit-font-smoothing: antialiased;
     }
 
-    .page-break { page-break-after: always; }
+    @page { size: A4; margin: 0; }
+    @media print { body { background: #f2f1ec; } .page-break { page-break-after: always; } }
 
-    /* Cover Styling */
+    .page { width: 210mm; background: #f2f1ec; margin: 0 auto; }
+
+    /* COVER */
     .cover {
-      height: 100vh;
+      min-height: 297mm;
+      background: #202023;
       display: flex;
       flex-direction: column;
-      justify-content: center;
-      background: linear-gradient(135deg, var(--slate-900) 0%, var(--primary) 100%);
-      color: var(--white);
-      padding: 80px;
-      text-align: center;
+      padding: 52px 56px 48px;
+      position: relative;
+      overflow: hidden;
     }
 
-    .cover-logo { width: 140px; margin-bottom: 40px; filter: brightness(0) invert(1); }
-    .cover-title { font-size: 38pt; font-weight: 800; line-height: 1.1; margin: 0; letter-spacing: -0.02em; }
-    .cover-subtitle { font-size: 18pt; font-weight: 400; margin-top: 24px; opacity: 0.8; }
-
-    /* Content Styling */
-    .content-wrapper { max-width: 850px; margin: 0 auto; padding: 60px; }
-    
-    h2 { 
-      font-size: 20pt; 
-      font-weight: 800; 
-      color: var(--slate-900); 
-      margin-top: 50px; 
-      margin-bottom: 20px;
-      border-left: 6px solid var(--primary);
-      padding-left: 20px;
+    .cover-grid-bg {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(225,255,1,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(225,255,1,0.04) 1px, transparent 1px);
+      background-size: 40px 40px;
     }
-    
-    h3 { font-size: 15pt; font-weight: 700; color: var(--slate-800); margin-top: 35px; margin-bottom: 12px; }
 
-    .card {
-      background: var(--slate-50);
-      border: 1px solid var(--slate-200);
+    .cover-top {
+      display: flex; justify-content: space-between; align-items: center;
+      position: relative;
+    }
+
+    .logo-mark { display: flex; align-items: center; gap: 10px; }
+    .logo-duck {
+      width: 36px; height: 36px; background: #e1ff01; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center; font-size: 18px;
+    }
+    .logo-text { font-family: 'Fraunces', serif; font-size: 22px; font-weight: 900; color: #f2f1ec; }
+
+    .doc-tag { font-size: 11px; color: rgba(225,255,1,0.7); font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; }
+
+    .cover-body {
+      flex: 1; display: flex; flex-direction: column; justify-content: center;
+      position: relative; padding: 60px 0 40px;
+    }
+
+    .cover-number {
+      font-family: 'Fraunces', serif;
+      font-size: 120px;
+      font-weight: 900;
+      color: #e1ff01;
+      line-height: 1;
+      opacity: 0.15;
+      position: absolute;
+      right: -10px;
+      top: 20px;
+      letter-spacing: -6px;
+    }
+
+    .cover-eyebrow {
+      font-size: 11px; font-weight: 700; color: #e1ff01;
+      text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 18px;
+    }
+
+    .cover-title {
+      font-family: 'Fraunces', serif;
+      font-size: 54px; font-weight: 900; color: #f2f1ec;
+      line-height: 1.0; letter-spacing: -2px; margin-bottom: 20px;
+    }
+
+    .cover-title em { color: #e1ff01; font-style: normal; }
+
+    .cover-sub {
+      font-size: 14px; color: #c2c1bd; max-width: 400px;
+      line-height: 1.6; margin-bottom: 48px;
+    }
+
+    .cover-stats {
+      display: flex; gap: 32px; position: relative;
+      padding-top: 28px;
+      border-top: 1px solid rgba(242,241,236,0.12);
+    }
+
+    .stat-item {}
+    .stat-num {
+      font-family: 'Fraunces', serif;
+      font-size: 28px; font-weight: 900; color: #e1ff01; line-height: 1;
+    }
+    .stat-label {
+      font-size: 10px; color: rgba(194,193,189,0.7); margin-top: 4px;
+    }
+
+    /* Content pages */
+    .content-page {
+      min-height: 297mm;
+      padding: 44px 48px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .page-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 24px; padding-bottom: 14px;
+      border-bottom: 2px solid #202023;
+    }
+
+    .page-header-title {
+      font-family: 'Fraunces', serif;
+      font-size: 22px; font-weight: 900; color: #202023; letter-spacing: -0.5px;
+    }
+
+    .page-header-logo { font-size: 11px; font-weight: 700; color: #c2c1bd; }
+
+    .section { margin-bottom: 22px; }
+
+    .section-label {
+      font-size: 10px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.1em; color: #c2c1bd; margin-bottom: 12px;
+    }
+
+    /* Context box */
+    .context-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .ctx-card {
+      background: white;
       border-radius: 12px;
-      padding: 24px;
-      margin-bottom: 24px;
+      padding: 14px 16px;
+      border: 1px solid rgba(32,32,35,0.08);
     }
 
-    .kpi-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 20px; }
-    .kpi-box { background: var(--white); padding: 16px; border-radius: 8px; border: 1px solid var(--slate-200); }
-    .kpi-label { font-weight: 700; color: var(--primary); display: block; font-size: 10pt; }
-    .kpi-value { font-size: 14pt; font-weight: 800; color: var(--slate-900); }
+    .ctx-label {
+      font-size: 9px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.08em; color: #c2c1bd; margin-bottom: 6px;
+    }
 
-    ul { padding-left: 20px; }
-    li { margin-bottom: 10px; }
+    .ctx-val { font-size: 12px; color: #202023; line-height: 1.5; }
 
-    .footer {
-      margin-top: 80px;
-      padding-top: 24px;
-      border-top: 1px solid var(--slate-200);
+    /* Week cards */
+    .week-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .week-card {
+      background: white;
+      border-radius: 14px;
+      padding: 18px;
+      border: 1px solid rgba(32,32,35,0.08);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .week-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: #c2c1bd;
+    }
+
+    .week-card.w1::before { background: #e1ff01; }
+    .week-card.w2::before { background: #c2c1bd; }
+    .week-card.w3::before { background: #202023; }
+    .week-card.w4::before { background: #e1ff01; }
+
+    .week-num {
+      font-size: 9px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.1em; color: #c2c1bd; margin-bottom: 4px;
+    }
+
+    .week-goal {
+      font-size: 13px; font-weight: 700; color: #202023;
+      margin-bottom: 10px; line-height: 1.3;
+    }
+
+    .week-actions {
+      list-style: none;
+    }
+
+    .week-actions li {
+      font-size: 11px; color: #202023; padding: 4px 0;
+      padding-left: 14px; position: relative;
+      border-bottom: 1px solid #f2f1ec; line-height: 1.4;
+    }
+
+    .week-actions li:last-child { border-bottom: none; }
+    .week-actions li::before { content: '→'; position: absolute; left: 0; color: #c2c1bd; font-size: 9px; }
+
+    .week-result {
+      margin-top: 10px;
+      background: #f2f1ec;
+      border-radius: 8px;
+      padding: 7px 10px;
+      font-size: 10px;
+      color: #202023;
+      font-weight: 600;
+    }
+
+    /* KPI strip */
+    .kpi-strip {
+      background: #202023;
+      border-radius: 14px;
+      padding: 18px 22px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .kpi-item {
       text-align: center;
-      font-size: 9pt;
-      color: var(--slate-400);
+      padding: 0 12px;
+      border-right: 1px solid rgba(242,241,236,0.12);
     }
 
-    .references { margin-top: 60px; padding-top: 30px; border-top: 1px solid var(--slate-100); }
-    .ref-item { font-size: 9.5pt; color: var(--slate-600); margin-bottom: 10px; }
+    .kpi-item:last-child { border-right: none; }
+
+    .kpi-num {
+      font-family: 'Fraunces', serif;
+      font-size: 32px; font-weight: 900; color: #e1ff01; line-height: 1;
+    }
+
+    .kpi-label {
+      font-size: 10px; color: #c2c1bd; margin-top: 4px; line-height: 1.4;
+    }
+
+    /* Weekplanning routine */
+    .routine-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 8px;
+    }
+
+    .routine-card {
+      background: white;
+      border-radius: 12px;
+      padding: 12px 10px;
+      border: 1px solid rgba(32,32,35,0.08);
+      text-align: center;
+    }
+
+    .routine-day {
+      font-size: 9px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.06em; color: #c2c1bd; margin-bottom: 6px;
+    }
+
+    .routine-hours {
+      font-family: 'Fraunces', serif;
+      font-size: 20px; font-weight: 900; color: #202023; line-height: 1;
+      margin-bottom: 6px;
+    }
+
+    .routine-task {
+      font-size: 9.5px; color: #202023; line-height: 1.4;
+    }
+
+    /* Checklist */
+    .checklist {
+      background: white;
+      border-radius: 14px;
+      overflow: hidden;
+      border: 1px solid rgba(32,32,35,0.08);
+    }
+
+    .checklist-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 16px;
+      border-bottom: 1px solid #f2f1ec;
+      font-size: 12px;
+      color: #202023;
+    }
+
+    .checklist-item:last-child { border-bottom: none; }
+
+    .check-box {
+      width: 18px; height: 18px;
+      border: 2px solid rgba(32,32,35,0.2);
+      border-radius: 5px;
+      flex-shrink: 0;
+    }
+
+    /* Footer */
+    .footer {
+      background: #202023;
+      padding: 13px 48px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer a { color: #e1ff01; text-decoration: none; font-weight: 600; font-size: 11px; }
+    .footer-note { font-size: 10px; color: rgba(194,193,189,0.5); }
+
+    .page-break { page-break-after: always; }
   </style>
 </head>
 <body>
+<div class="page">
+
+  <!-- COVER -->
   <div class="cover">
-    <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgdmlld0JveD0iMCAwIDUxMiA1MTIiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPCEtLSBSb2NrZXQgQm9keSAtLT4KICA8cGF0aCBkPSJNMjU2IDUwQzIwMCA1MCAxNjAgMTUwIDE2MCAyODBDMTYwIDM1MCAxODAgNDAwIDI1NiA0MjBDMzMyIDQwMCAzNTIgMzUwIDM1MiAyODBDMzMyIDQwMCAzNTIgMzUwIDM1MiAyODBDMzUyIDE1MCAzMTIgNTAgMjU2IDUwWiIgc3Ryb2tlPSIjMEYxNzJBIiBzdHJva2Utd2lkdGg9IjIwIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+CiAgCiAgPCEtLSBDaXJjdWl0IEJyYWluIEljb24gLS0+CiAgPGNpcmNsZSBjeD0iMjU2IiBjeT0iMjIwIiByPSI3MCIgc3Ryb2tlPSIjMTBCOTgxIiBzdHJva2Utd2lkdGg9IjE1Ii8+CiAgPHBhdGggZD0iTTI1NiAxODBWMjYwTTIxNiAyMjBIMjk2IiBzdHJva2U9IiMxMEI5ODEiIHN0cm9rZS13aWR0aD0iOCIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+CiAgPGNpcmNsZSBjeD0iMjU2IiBjeT0iMTgwIiByPSI4IiBmaWxsPSIjMTBCOTgxIi8+CiAgPGNpcmNsZSBjeD0iMjU2IiBjeT0iMjYwIiByPSI4IiBmaWxsPSIjMTBCOTgxIi8+CiAgPGNpcmNsZSBjeD0iMjE2IiBjeT0iMjIwIiByPSI4IiBmaWxsPSIjMTBCOTgxIi8+CiAgPGNpcmNsZSBjeD0iMjk2IiBjeT0iMjIwIiByPSI4IiBmaWxsPSIjMTBCOTgxIi8+CiAgCiAgPCEtLSBGaW5zIC0tPgogIDxwYXRoIGQ9Ik0xNjAgMzIwQzEyMCAzMjAgMTAwIDM4MCAxMjAgNDUwQzE0MCA0MzAgMTYwIDQyMCAxNjAgNDIwIiBzdHJva2U9IiMwRjE3MkEiIHN0cm9rZS13aWR0aD0iMjAiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPgogIDxwYXRoIGQ9Ik0zNTIgMzIwQzM5MiAzMjAgNDEyIDM4MCAzOTIgNDUwQzM3MiA0MzAgMzUyIDQyMCAzNTIgNDIwIiBzdHJva2U9IiMwRjE3MkEiIHN0cm9rZS13aWR0aD0iMjAiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPgogIAogIDwhLS0gRmxhbWUvRW5naW5lIC0tPgogIDxwYXRoIGQ9Ik0yMzAgNDIwQzIzMCA0NjAgMjU2IDUwMCAyNTYgNTAwQzI1NiA1MDAgMjgyIDQ2MCAyODIgNDIwIiBzdHJva2U9IiMwRjE3MkEiIHN0cm9rZS13aWR0aD0iMTUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgo8L3N2Zz4K" class="cover-logo" alt="DGSkills Logo">
-    <h1 class="cover-title">Actieplan: DGSkills op de kaart zetten</h1>
-    <p class="cover-subtitle">Handleiding voor marktintroductie en schaalvergroting in het Nederlandse Onderwijs.</p>
-  </div>
-
-  <div class="page-break"></div>
-
-  <div class="content-wrapper">
-    <section>
-      <h2>1. Waar ga jij je op focussen?</h2>
-      <div class="card">
-        <p><strong>Jouw doel:</strong> Bewijzen dat scholen voor DGSkills willen betalen omdat het hen echt helpt. We richten ons specifiek op de onderbouw (klas 1 en 2) van vmbo-t en havo, volledig afgestemd op de <strong>Functionele kerndoelen digitale geletterdheid (SLO, 2025)</strong>.</p>
-        <p><strong>Jouw verhaal:</strong> "Ik help docenten tijd besparen. DGSkills dekt direct Kerndoel 18C (AI-verkenning) en 19A (Digitale creatie). Dit verlaagt de werkdruk bij docenten aantoonbaar (Wang et al., 2025)."</p>
+    <div class="cover-grid-bg"></div>
+    <div class="cover-top">
+      <div class="logo-mark">
+        <div class="logo-duck">🦆</div>
+        <span class="logo-text">DGSkills</span>
       </div>
-    </section>
-
-    <section>
-      <h2>2. Jouw 30-dagen roadmap</h2>
-      <div class="card">
-        <h3>Week 1 & 2: Pipeline & Validatie</h3>
-        <ul>
-          <li><strong>Voorbereiding:</strong> Brochure en demo optimaliseren voor schoolleiding.</li>
-          <li><strong>Sales:</strong> 3-5 gesprekken voeren en pilotvoorstellen sturen.</li>
-        </ul>
+      <span class="doc-tag">Actieplan</span>
+    </div>
+    <div class="cover-body">
+      <div class="cover-number">30</div>
+      <div class="cover-eyebrow">Lancering · Scholen · Nederland</div>
+      <div class="cover-title">30 dagen.<br/><em>Eerste</em><br/>school<br/>binnen.</div>
+      <div class="cover-sub">Een concreet weekplan om DGSkills van idee naar betalende pilot te brengen. Geen theorie, maar acties die werken.</div>
+      <div class="cover-stats">
+        <div class="stat-item">
+          <div class="stat-num">3–5</div>
+          <div class="stat-label">scholen benaderen</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num">€1.500</div>
+          <div class="stat-label">eerste pilotprijs</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num">10–20u</div>
+          <div class="stat-label">per week nodig</div>
+        </div>
       </div>
-      <div class="card">
-        <h3>Week 3 & 4: Start & Resultaat</h3>
-        <ul>
-          <li><strong>Implementatie:</strong> Kickoff en docent-onboarding (start binnen 60 min).</li>
-          <li><strong>Monitoring:</strong> Wekelijkse data-check en voorbereiding jaarcontract.</li>
-        </ul>
-      </div>
-    </section>
-
-    <section>
-      <h2>3. Hoe weet je of het goed gaat?</h2>
-      <div class="kpi-grid">
-        <div class="kpi-box"><span class="kpi-label">Docentactivatie</span><span class="kpi-value">> 70%</span></div>
-        <div class="kpi-box"><span class="kpi-label">Leerling WAU</span><span class="kpi-value">> 60%</span></div>
-        <div class="kpi-box"><span class="kpi-label">Opdrachtafmaak</span><span class="kpi-value">> 55%</span></div>
-        <div class="kpi-box"><span class="kpi-label">Tevredenheid</span><span class="kpi-value">> 7.5</span></div>
-      </div>
-    </section>
-
-    <section class="references">
-      <h3>Referenties</h3>
-      <p class="ref-item">SLO. (2025). <i>Functionele kerndoelen digitale geletterdheid</i>.</p>
-      <p class="ref-item">Wang et al. (2025). <i>Workload perception in AI-supported resource recommendation</i>.</p>
-    </section>
-
-    <div class="footer">
-      © 2026 DGSkills.app | Premium Strategiedocument
     </div>
   </div>
+  <div class="page-break"></div>
+
+  <!-- PAGE 2: Context + Weekplan -->
+  <div class="content-page">
+    <div class="page-header">
+      <div class="page-header-title">Focus &amp; Weekplanning</div>
+      <div class="page-header-logo">DGSkills · 30-Dagen Actieplan</div>
+    </div>
+
+    <div class="section">
+      <div class="section-label">Context</div>
+      <div class="context-grid">
+        <div class="ctx-card">
+          <div class="ctx-label">Doel dit plan</div>
+          <div class="ctx-val">Bewijzen dat docenten en leerlingen DGSkills echt willen gebruiken — en dat scholen bereid zijn ervoor te betalen.</div>
+        </div>
+        <div class="ctx-card">
+          <div class="ctx-label">Doelgroep</div>
+          <div class="ctx-val">Onderbouw VO (klas 1–2). Vakken: digitale geletterdheid, mentoruur. Focus: SLO-kerndoelen 2025.</div>
+        </div>
+        <div class="ctx-card">
+          <div class="ctx-label">Verkooppitch (simpel)</div>
+          <div class="ctx-val">"Ik help je docenten om AI en digitale vaardigheden makkelijk in de les te gebruiken — minder voorbereiding, meer bewijs."</div>
+        </div>
+        <div class="ctx-card">
+          <div class="ctx-label">Wat je verkoopt</div>
+          <div class="ctx-val">Betaalde pilot 8–12 weken · €1.500–€3.000 · 100% verrekend bij jaarcontract</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-label">De 4 weken</div>
+      <div class="week-grid">
+        <div class="week-card w1">
+          <div class="week-num">Week 1</div>
+          <div class="week-goal">Klaarmaken voor de start</div>
+          <ul class="week-actions">
+            <li>Kies welke klas je als eerste benadert</li>
+            <li>Brochure en demo afmaken</li>
+            <li>Prijzen definitief op papier</li>
+          </ul>
+          <div class="week-result">✓ Je bent klaar om je eerste school te bellen</div>
+        </div>
+        <div class="week-card w2">
+          <div class="week-num">Week 2</div>
+          <div class="week-goal">Praten met scholen</div>
+          <ul class="week-actions">
+            <li>Bel mensen die je al kent in onderwijs</li>
+            <li>Geef demo's en luister naar bezwaren</li>
+            <li>Stuur direct na gesprek het pilotvoorstel</li>
+          </ul>
+          <div class="week-result">✓ Eerste serieuze aanvragen binnen</div>
+        </div>
+        <div class="week-card w3">
+          <div class="week-num">Week 3</div>
+          <div class="week-goal">Eerste school start</div>
+          <ul class="week-actions">
+            <li>Kickoff-gesprek met contactpersoon</li>
+            <li>Docenten binnen 1 uur klaar voor les 1</li>
+            <li>Afspraken over meten van succes</li>
+          </ul>
+          <div class="week-result">✓ DGSkills wordt echt gebruikt in de klas</div>
+        </div>
+        <div class="week-card w4">
+          <div class="week-num">Week 4</div>
+          <div class="week-goal">Meten en bijsturen</div>
+          <ul class="week-actions">
+            <li>Wekelijks usage-dashboard bekijken</li>
+            <li>Gesprek met school: wat gaat goed?</li>
+            <li>Voorbereiden op jaarcontract-gesprek</li>
+          </ul>
+          <div class="week-result">✓ Je weet of de school klant wil blijven</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section" style="margin-bottom:0">
+      <div class="section-label">KPI-doelen voor succes</div>
+      <div class="kpi-strip">
+        <div class="kpi-item">
+          <div class="kpi-num">70%</div>
+          <div class="kpi-label">docenten gebruikt het platform wekelijks</div>
+        </div>
+        <div class="kpi-item">
+          <div class="kpi-num">60%</div>
+          <div class="kpi-label">leerlingen elke week actief</div>
+        </div>
+        <div class="kpi-item">
+          <div class="kpi-num">55%</div>
+          <div class="kpi-label">opdrachten daadwerkelijk afgemaakt</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <a href="https://dgskills.app">dgskills.app</a>
+      <span class="footer-note">Pagina 1 van 2</span>
+    </div>
+  </div>
+  <div class="page-break"></div>
+
+  <!-- PAGE 3: Routineplanning + Checklist + Signalen -->
+  <div class="content-page">
+    <div class="page-header">
+      <div class="page-header-title">Routine, Signalen &amp; Checklist</div>
+      <div class="page-header-logo">DGSkills · 30-Dagen Actieplan</div>
+    </div>
+
+    <div class="section">
+      <div class="section-label">Wekelijkse tijdsverdeling</div>
+      <div class="routine-grid">
+        <div class="routine-card">
+          <div class="routine-day">Maandag</div>
+          <div class="routine-hours">2u</div>
+          <div class="routine-task">Cijfers vorige week + focus bepalen</div>
+        </div>
+        <div class="routine-card">
+          <div class="routine-day">Dinsdag</div>
+          <div class="routine-hours">2–3u</div>
+          <div class="routine-task">Scholen bellen, demo's geven</div>
+        </div>
+        <div class="routine-card">
+          <div class="routine-day">Woensdag</div>
+          <div class="routine-hours">2–3u</div>
+          <div class="routine-task">Voorstellen sturen, opvolging</div>
+        </div>
+        <div class="routine-card">
+          <div class="routine-day">Donderdag</div>
+          <div class="routine-hours">3–5u</div>
+          <div class="routine-task">Support actieve scholen, coaching docenten</div>
+        </div>
+        <div class="routine-card">
+          <div class="routine-day">Vrijdag</div>
+          <div class="routine-hours">1–2u</div>
+          <div class="routine-task">Terugblik + plan volgende week</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-label">Wanneer moet je ingrijpen?</div>
+      <div style="background:white;border-radius:14px;overflow:hidden;border:1px solid rgba(32,32,35,0.08);">
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;background:#202023;padding:9px 14px;">
+          <div style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#c2c1bd">Signaal</div>
+          <div style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#c2c1bd">Drempel</div>
+          <div style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#c2c1bd">Actie</div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;padding:10px 14px;border-bottom:1px solid #f2f1ec;font-size:11.5px;align-items:center">
+          <div>Docent-activatie te laag</div>
+          <div style="color:#c2c1bd">&lt; 70% wekelijks</div>
+          <div>Direct bellen, volgende les samen voorbereiden</div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;padding:10px 14px;border-bottom:1px solid #f2f1ec;font-size:11.5px;align-items:center">
+          <div>School wil geen pilot na demo</div>
+          <div style="color:#c2c1bd">Na 2 gesprekken: no go</div>
+          <div>Pas verhaal aan. Vraag wat ze tegenhoudt.</div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;padding:10px 14px;font-size:11.5px;align-items:center">
+          <div>Technisch probleem</div>
+          <div style="color:#c2c1bd">Blokkade in klas</div>
+          <div>Los direct op. Zet verkoopgesprekken even op pauze.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section" style="margin-bottom:0">
+      <div class="section-label">Jouw checklist — klaar voor de start?</div>
+      <div class="checklist">
+        <div class="checklist-item"><div class="check-box"></div>Ik weet welke klas ik als eerste benader</div>
+        <div class="checklist-item"><div class="check-box"></div>Brochure (one-pager) en demo zijn klaar</div>
+        <div class="checklist-item"><div class="check-box"></div>Prijzen zijn definitief op papier gezet</div>
+        <div class="checklist-item"><div class="check-box"></div>Privacy-papieren (DPA, DPIA) liggen klaar voor de school</div>
+        <div class="checklist-item"><div class="check-box"></div>Ik heb met 3 scholen gesproken</div>
+        <div class="checklist-item"><div class="check-box"></div>Mijn eerste betaalde pilot is gestart</div>
+        <div class="checklist-item"><div class="check-box"></div>Ik vul elke week mijn KPI's in</div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <a href="mailto:info@dgskills.app">info@dgskills.app</a>
+      <span class="footer-note">KvK 81819889 · Pagina 2 van 2</span>
+    </div>
+  </div>
+
+</div>
 </body>
 </html>
