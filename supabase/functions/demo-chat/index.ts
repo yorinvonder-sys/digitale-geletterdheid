@@ -13,6 +13,7 @@
  * 6. No auth required — designed for anonymous demo use
  */
 import { sanitizePrompt } from "../_shared/promptSanitizer.ts";
+import { redactPii } from "../_shared/piiRedactor.ts";
 import { buildCorsHeaders, rejectDisallowedBrowserRequest } from "../_shared/cors.ts";
 import { buildSafeHistory } from "../_shared/chatHistory.ts";
 import { checkDurableRateLimit, rateLimitHeaders } from "../_shared/rateLimiter.ts";
@@ -217,9 +218,17 @@ Deno.serve(async (req: Request) => {
 
     // 4. Send to Mistral
     try {
+        // Data-minimalisatie: maskeer PII (e-mail, telefoon/BSN, postcode) vóór
+        // het bericht naar de externe AI-provider gaat. Alleen user-invoer; de
+        // eigen modeluitvoer in de history bevat geen leerling-PII.
+        const redactedHistory = safeHistory.history.map((msg) =>
+            msg.role === "user"
+                ? { ...msg, parts: msg.parts.map((part) => ({ ...part, text: redactPii(part.text).redacted })) }
+                : msg
+        );
         const contents = [
-            ...safeHistory.history,
-            { role: "user", parts: [{ text: validation.sanitized }] },
+            ...redactedHistory,
+            { role: "user", parts: [{ text: redactPii(validation.sanitized).redacted }] },
         ];
 
         const result = await completeMistralChat({
