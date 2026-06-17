@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ArrowLeft, ArrowRight, Shield, CheckCircle2, XCircle, Lock, Unlock, AlertTriangle, Eye, RotateCcw, Lightbulb, MessageCircle } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Shield, CheckCircle2, XCircle, Lock, Unlock, AlertTriangle, Eye, RotateCcw, MessageCircle } from 'lucide-react';
 import { useMissionAutoSave } from '@/hooks/useMissionAutoSave';
 import { MissionGoalBanner } from './templates/shared/MissionGoalBanner';
 import type { MissionGoal } from './templates/shared/types';
@@ -495,7 +495,7 @@ export const AccessControlEngineerMission: React.FC<Props> = ({
                             {stap1Klaar && (
                                 <button
                                     onClick={() => naarStap(1)}
-                                    className="flex min-h-[44px] items-center gap-1 rounded-full bg-duck-acid px-4 text-sm font-medium text-duck-ink transition-colors hover:bg-duck-ink hover:text-duck-ink"
+                                    className="flex min-h-[44px] items-center gap-1 rounded-full bg-duck-acid px-4 text-sm font-medium text-duck-ink transition-colors hover:bg-duck-ink hover:text-white"
                                 >
                                     Volgende <ArrowRight size={16} />
                                 </button>
@@ -570,7 +570,7 @@ export const AccessControlEngineerMission: React.FC<Props> = ({
                                 {stap2Klaar && (
                                     <button
                                         onClick={() => naarStap(2)}
-                                        className="flex min-h-[44px] items-center gap-1 rounded-full bg-duck-acid px-4 text-sm font-medium text-duck-ink transition-colors hover:bg-duck-ink hover:text-duck-ink"
+                                        className="flex min-h-[44px] items-center gap-1 rounded-full bg-duck-acid px-4 text-sm font-medium text-duck-ink transition-colors hover:bg-duck-ink hover:text-white"
                                     >
                                         Volgende <ArrowRight size={16} />
                                     </button>
@@ -615,7 +615,7 @@ export const AccessControlEngineerMission: React.FC<Props> = ({
                                                 {resultaat === null || resultaat === undefined ? (
                                                     <button
                                                         onClick={() => voerTestUit(scenario.id)}
-                                                        className="min-h-[44px] rounded-full bg-duck-acid px-3 text-xs font-medium text-duck-ink transition-colors hover:bg-duck-ink hover:text-duck-ink"
+                                                        className="min-h-[44px] rounded-full bg-duck-acid px-3 text-xs font-medium text-duck-ink transition-colors hover:bg-duck-ink hover:text-white"
                                                     >
                                                         Test uitvoeren
                                                     </button>
@@ -678,7 +678,7 @@ export const AccessControlEngineerMission: React.FC<Props> = ({
                             {stap3Klaar && (
                                 <button
                                     onClick={handleVoltooi}
-                                    className="flex min-h-[44px] w-full items-center justify-center gap-2 rounded-full bg-duck-acid px-4 text-sm font-bold text-duck-ink transition-colors hover:bg-duck-ink hover:text-duck-ink"
+                                    className="flex min-h-[44px] w-full items-center justify-center gap-2 rounded-full bg-duck-acid px-4 text-sm font-bold text-duck-ink transition-colors hover:bg-duck-ink hover:text-white"
                                 >
                                     <Shield size={18} />
                                     Missie afronden — systeem beveiligd!
@@ -702,7 +702,7 @@ export const AccessControlEngineerMission: React.FC<Props> = ({
                 <div className="fixed bottom-4 left-4 right-4 max-w-lg mx-auto z-30 animate-in slide-in-from-bottom-4">
                     <div className="bg-duck-acid border border-duck-acid rounded-xl p-3 shadow-duck-soft flex items-start gap-3">
                         <div className="w-8 h-8 bg-duck-ink rounded-full flex items-center justify-center shrink-0">
-                            <MessageCircle size={16} className="text-duck-ink" />
+                            <MessageCircle size={16} className="text-white" />
                         </div>
                         <div className="flex-1 min-w-0">
                             <p className="text-xs font-semibold text-duck-ink mb-0.5">Security Coach</p>
