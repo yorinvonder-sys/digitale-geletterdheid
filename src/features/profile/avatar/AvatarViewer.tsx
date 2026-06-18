@@ -860,11 +860,31 @@ export const LegsSection = memo<{
     onClickPants: (e: ThreeEvent<MouseEvent>) => void;
     onPointerEnterPants: (e: ThreeEvent<PointerEvent>) => void;
     onPointerLeave: (e: ThreeEvent<PointerEvent>) => void;
-}>(({ pantsStyle, pantsColor, shoeColor, skinColor, legWidth, legHeight, legSpacing, emissive: emissiveColor, emissiveInt: emissiveIntVal, onClickPants, onPointerEnterPants, onPointerLeave }) => {
+    footShape?: 'boot' | 'web';
+}>(({ pantsStyle, pantsColor, shoeColor, skinColor, legWidth, legHeight, legSpacing, emissive: emissiveColor, emissiveInt: emissiveIntVal, onClickPants, onPointerEnterPants, onPointerLeave, footShape = 'boot' }) => {
     const style = pantsStyle || 'standard';
     const darker = darkenColor(pantsColor, 0.8);
 
     const shoeMat = <meshStandardMaterial color={shoeColor} roughness={0.5} />;
+    const webFootDark = darkenColor(shoeColor, 0.82);
+
+    // Webbed duck foot: flat pad + 3 shallow toe ridges
+    const WebFoot = ({ posY, side }: { posY: number; side: 1 | -1 }) => (
+        <group position={[0, posY, 0.08]}>
+            {/* Main flat pad — wider and flatter than boot */}
+            <mesh>
+                <boxGeometry args={[0.30, 0.06, 0.42]} />
+                {shoeMat}
+            </mesh>
+            {/* Toe ridges */}
+            {[-0.08, 0, 0.08].map((rx, ri) => (
+                <mesh key={ri} position={[rx * side, 0.025, 0.10]}>
+                    <boxGeometry args={[0.05, 0.02, 0.12]} />
+                    <meshStandardMaterial color={webFootDark} roughness={0.6} />
+                </mesh>
+            ))}
+        </group>
+    );
 
     if (style === 'skirt' || style === 'pleated') {
         const skirtWidth = legSpacing * 2 + legWidth + 0.15;
@@ -895,10 +915,16 @@ export const LegsSection = memo<{
                             <boxGeometry args={[legWidth * 0.8, 0.15, legWidth * 0.8]} />
                             {mcMat(skinColor)}
                         </mesh>
-                        <mesh position={[x, -0.365, 0.02]}>
-                            <boxGeometry args={[legWidth + 0.04, 0.1, legWidth + 0.06]} />
-                            {shoeMat}
-                        </mesh>
+                        {footShape === 'web' ? (
+                            <group position={[x, 0, 0]}>
+                                <WebFoot posY={-0.365} side={i === 0 ? -1 : 1} />
+                            </group>
+                        ) : (
+                            <mesh position={[x, -0.365, 0.02]}>
+                                <boxGeometry args={[legWidth + 0.04, 0.1, legWidth + 0.06]} />
+                                {shoeMat}
+                            </mesh>
+                        )}
                     </group>
                 ))}
             </group>
@@ -924,10 +950,14 @@ export const LegsSection = memo<{
                             <boxGeometry args={[legWidth * 0.9, 0.28, legWidth * 0.9]} />
                             {mcMat(skinColor)}
                         </mesh>
-                        <mesh position={[0, -0.365, 0.02]}>
-                            <boxGeometry args={[legWidth + 0.04, 0.1, legWidth + 0.06]} />
-                            {shoeMat}
-                        </mesh>
+                        {footShape === 'web' ? (
+                            <WebFoot posY={-0.365} side={i === 0 ? -1 : 1} />
+                        ) : (
+                            <mesh position={[0, -0.365, 0.02]}>
+                                <boxGeometry args={[legWidth + 0.04, 0.1, legWidth + 0.06]} />
+                                {shoeMat}
+                            </mesh>
+                        )}
                     </group>
                 ))}
             </group>
@@ -989,11 +1019,15 @@ export const LegsSection = memo<{
                         </mesh>
                     )}
 
-                    {/* Shoe */}
-                    <mesh position={[0, -(legHeight / 2 + 0.04), 0.02]}>
-                        <boxGeometry args={[legWidth + 0.04, 0.1, legWidth + 0.06]} />
-                        {shoeMat}
-                    </mesh>
+                    {/* Shoe / webbed foot */}
+                    {footShape === 'web' ? (
+                        <WebFoot posY={-(legHeight / 2 + 0.04)} side={i === 0 ? -1 : 1} />
+                    ) : (
+                        <mesh position={[0, -(legHeight / 2 + 0.04), 0.02]}>
+                            <boxGeometry args={[legWidth + 0.04, 0.1, legWidth + 0.06]} />
+                            {shoeMat}
+                        </mesh>
+                    )}
                 </group>
             ))}
         </group>
