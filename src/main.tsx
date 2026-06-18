@@ -25,6 +25,9 @@ root.render(
     </ErrorBoundary>
   </React.StrictMode>
 );
+// Hide the skeleton #lcp-hero h1 (outside #root) as soon as React takes over.
+// The LCP candidate was already recorded by the browser before this module script ran.
+document.body.classList.add('lcp-hero-hidden');
 
 // Defer Web Vitals init to idle — reduces main-thread blocking during LCP/FCP
 const scheduleVitals = typeof requestIdleCallback !== 'undefined'

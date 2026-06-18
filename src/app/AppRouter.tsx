@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-const ScholenLanding = React.lazy(() => import('@/features/public-site/ScholenLanding').then(m => ({ default: m.ScholenLanding })));
+import { ScholenLanding } from '@/features/public-site/ScholenLanding';
 const IctLandingPage = React.lazy(() => import('@/features/public-site/IctLandingPage').then(m => ({ default: m.IctLandingPage })));
 const IctIntegraties = React.lazy(() => import('@/features/public-site/ict/IctIntegraties').then(m => ({ default: m.IctIntegraties })));
 const IctPrivacy = React.lazy(() => import('@/features/public-site/ict/IctPrivacy').then(m => ({ default: m.IctPrivacy })));
