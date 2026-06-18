@@ -198,7 +198,7 @@ De Article 29 Working Party (nu EDPB) heeft in richtlijn WP 248 rev.01 negen cri
 | # | WP29-criterium | Van toepassing? | Toelichting |
 |---|---|---|---|
 | 1 | **Evaluatie of scoring** (profilering, voorspellingen) | **JA** | Leervoortgang wordt geevalueerd; XP-scoring en level-progressie op basis van AI-interactie |
-| 2 | **Geautomatiseerde besluitvorming** met rechtsgevolg of vergelijkbaar effect | **GEDEELTELIJK** | AI genereert STEP_COMPLETE markers die voortgang registreren; docent blijft eindverantwoordelijk; geen beslissingen met formeel rechtsgevolg |
+| 2 | **Geautomatiseerde besluitvorming** met rechtsgevolg of vergelijkbaar effect | **GEDEELTELIJK** | AI genereert STEP_COMPLETE markers die voortgang registreren; docent blijft eindverantwoordelijk en kan elke markering corrigeren via de docent-override (geïmplementeerd 15 mrt 2026); geen beslissingen met formeel rechtsgevolg |
 | 3 | **Systematische monitoring** | **JA** | Leerlingactiviteit wordt systematisch bijgehouden: loginmomenten, voortgang, chatinteracties, XP-transacties |
 | 4 | **Gevoelige gegevens** of gegevens van zeer persoonlijke aard | **GEDEELTELIJK** | Geen bijzondere categorieen (Art. 9), maar chatinhoud kan incidenteel gevoelige informatie bevatten (persoonlijke omstandigheden, welzijn) |
 | 5 | **Grootschalige verwerking** | **JA** | Bij uitrol naar meerdere scholen betreft het duizenden leerlingen; per school tientallen tot honderden leerlingen |
@@ -528,7 +528,7 @@ Dit is van toepassing omdat:
 | Art. 11 | Technische documentatie (Annex IV) | **Nog niet voldaan** | 2 aug 2026 |
 | Art. 12 | Traceerbaarheid/logging | **Voldaan** | 2 aug 2026 |
 | Art. 13 | Transparantie | **Voldaan** | 2 aug 2026 |
-| Art. 14 | Menselijk toezicht | **Gedeeltelijk** (docent-override nodig) | 2 aug 2026 |
+| Art. 14 | Menselijk toezicht | **Voldaan** (docent-override STEP_COMPLETE geïmplementeerd 15 mrt 2026; docenttraining OM-09 nog open) | 2 aug 2026 |
 | Art. 15 | Nauwkeurigheid, robuustheid | **Gedeeltelijk** | 2 aug 2026 |
 | Art. 49 | Registratie EU AI-database | **Nog niet voldaan** | 2 aug 2026 |
 | Art. 50 | Transparantieplichten | **Voldaan** | 2 aug 2026 |
@@ -638,7 +638,7 @@ Na implementatie van de aanvullende maatregelen zijn de risico's voor de rechten
 | # | Actie | Verantwoordelijke | Deadline | Status |
 |---|---|---|---|---|
 | A05 | ~~Google Gemini EER-datalocatie bevestigen~~ Migratie naar Vertex AI (`europe-west4`) voltooid | Future Architect | ~~Binnen 4 weken~~ | **Afgerond** |
-| A06 | Docent-override voor STEP_COMPLETE | Future Architect (dev) | Binnen 4 weken | Open |
+| A06 | Docent-override voor STEP_COMPLETE | Future Architect (dev) | ~~Binnen 4 weken~~ | **Afgerond (15 mrt 2026)** |
 | A07 | Periodieke AI-outputvalidatie opzetten | Future Architect | Doorlopend | Open |
 | A08 | Privacy-informatie in leeftijdsgeschikte taal | Future Architect | Binnen 6 weken | Open |
 | A09 | Aansluiting Privacyconvenant Onderwijs | Future Architect | Binnen 10 weken | Open |
