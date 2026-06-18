@@ -1,6 +1,6 @@
 # dgskills.app — Digitale Geletterdheid die Werkt
 
-**AVG-proof | AI Act: hoog-risico, actieve compliance | DPIA beschikbaar | SLO-kerndoelen 2025**
+**Data in NL (EU) | AI Act: hoog-risico, actieve compliance | DPIA beschikbaar | SLO-kerndoelen 2025**
 
 ---
 
@@ -37,7 +37,7 @@ De meeste scholen hebben geen methode, geen bewijs en geen plan voor digitale ge
 
 - Elke missie is getest met echte leerlingen in een echte klas
 - 97 missies verdeeld over 3 leerjaren, gekoppeld aan alle SLO-domeinen
-- Platform draait op EU-datacenters (Nederland), volledig AVG-compliant
+- Platform draait op EU-datacenters (Nederland); DPIA uitgevoerd, DPA conform Model 4.0, geen commercieel datagebruik
 - Enige platform met transparant gedocumenteerde EU AI Act-classificatie: hoog-risico (Annex III, 3b), in actieve compliance-voorbereiding (DPIA, risicoregister, AI-transparantie)
 
 ---
