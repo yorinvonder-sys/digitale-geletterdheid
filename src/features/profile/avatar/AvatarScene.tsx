@@ -1,16 +1,8 @@
-import React, { Suspense, useEffect, useMemo, memo, useRef } from 'react';
+import React, { useEffect, useMemo, memo, useRef } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { useThree, useFrame, invalidate } from '@react-three/fiber';
 import { OrbitControls, ContactShadows, Sparkles } from '@react-three/drei';
 import * as THREE from 'three';
-
-// --- Error boundary (scene-only) ---
-
-class ThreeErrorBoundary extends React.Component<{ children: React.ReactNode }, { hasError: boolean }> {
-    state = { hasError: false };
-    static getDerivedStateFromError() { return { hasError: true }; }
-    render() { return this.state.hasError ? null : this.props.children; }
-}
 
 // --- Background sync ---
 

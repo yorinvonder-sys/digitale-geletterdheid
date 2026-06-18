@@ -12,7 +12,6 @@ import {
     getArmColor,
     getBodyDimensions,
     darkenColor,
-    mcMat,
 } from './AvatarViewer';
 
 // --- DuckModel: mirrors AvatarModel, swaps geometry for a voxel duck ---
