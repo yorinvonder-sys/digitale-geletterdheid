@@ -1,7 +1,7 @@
-import React, { Suspense, useEffect, useMemo, memo } from 'react';
+import React, { Suspense, useEffect, useMemo, memo, useRef } from 'react';
 import { Canvas } from '@react-three/fiber';
-import { useThree } from '@react-three/fiber';
-import { OrbitControls, ContactShadows, Environment, Sparkles } from '@react-three/drei';
+import { useThree, useFrame, invalidate } from '@react-three/fiber';
+import { OrbitControls, ContactShadows, Sparkles } from '@react-three/drei';
 import * as THREE from 'three';
 
 // --- Error boundary (scene-only) ---
@@ -31,6 +31,42 @@ const SceneSurface = memo<{ variant: 'full' | 'head' }>(({ variant }) => {
     return null;
 });
 
+// --- Demand-frameloop invalidation driver ---
+// Calls invalidate() each rAF while the canvas is visible (intersection) AND
+// the document tab is in the foreground. Costs 0 GPU when off-screen or tabbed away.
+
+const InvalidateWhileVisible: React.FC = () => {
+    const { gl } = useThree();
+    const rafRef = useRef<number | null>(null);
+    const visibleRef = useRef(true);
+
+    useEffect(() => {
+        const canvas = gl.domElement;
+
+        // Intersection observer: only drive rAF while canvas is in the viewport
+        const observer = new IntersectionObserver(
+            ([entry]) => { visibleRef.current = entry.isIntersecting; },
+            { threshold: 0.01 }
+        );
+        observer.observe(canvas);
+
+        const loop = () => {
+            if (visibleRef.current && document.visibilityState === 'visible') {
+                invalidate();
+            }
+            rafRef.current = requestAnimationFrame(loop);
+        };
+        rafRef.current = requestAnimationFrame(loop);
+
+        return () => {
+            observer.disconnect();
+            if (rafRef.current !== null) cancelAnimationFrame(rafRef.current);
+        };
+    }, [gl]);
+
+    return null;
+};
+
 // --- Reusable scene shell ---
 
 export const AvatarScene: React.FC<{ variant?: 'full' | 'head'; children: React.ReactNode }> = ({ variant = 'full', children }) => {
@@ -44,7 +80,8 @@ export const AvatarScene: React.FC<{ variant?: 'full' | 'head'; children: React.
             <Canvas
                 style={{ background: variant === 'full' ? '#FCF6EA' : 'transparent' }}
                 className={variant === 'full' ? 'bg-[#FCF6EA]' : 'bg-transparent'}
-                shadows={{ type: THREE.PCFSoftShadowMap }}
+                shadows={false}
+                frameloop="demand"
                 gl={{
                     alpha: true,
                     antialias: true,
@@ -66,32 +103,18 @@ export const AvatarScene: React.FC<{ variant?: 'full' | 'head'; children: React.
                 dpr={[1, 1.5]}
                 camera={{ position: cameraPos, fov: 45 }}
             >
+                <InvalidateWhileVisible />
                 <SceneSurface variant={variant} />
-                <ambientLight intensity={0.4} color="#fff8f0" />
-                <hemisphereLight color="#f5e6d0" groundColor="#f0ebe0" intensity={0.55} />
+
+                {/* 3 lights instead of 5: removed fill directionalLight (#D97848) and pointLight.
+                    Bumped ambient and hemisphere to compensate for lost Environment preset + fill. */}
+                <ambientLight intensity={0.6} color="#fff8f0" />
+                <hemisphereLight color="#f5e6d0" groundColor="#f0ebe0" intensity={0.75} />
                 <directionalLight
                     position={[4, 8, 4]}
                     intensity={1.5}
                     color="#fff5ee"
-                    castShadow
-                    shadow-mapSize-width={1024}
-                    shadow-mapSize-height={1024}
-                    shadow-camera-near={0.1}
-                    shadow-camera-far={20}
-                    shadow-camera-left={-4}
-                    shadow-camera-right={4}
-                    shadow-camera-top={6}
-                    shadow-camera-bottom={-2}
-                    shadow-bias={-0.0005}
                 />
-                <directionalLight position={[-3, 2, -4]} intensity={0.3} color="#D97848" />
-                <pointLight position={[0, -1, 2]} intensity={0.15} color="#fff0e0" />
-
-                <ThreeErrorBoundary>
-                    <Suspense fallback={null}>
-                        <Environment preset="sunset" />
-                    </Suspense>
-                </ThreeErrorBoundary>
 
                 {children}
 
