@@ -26,12 +26,12 @@ const DuckModel = memo<{
     // --- Dimensions: duck-specific overrides, preserve headSize=0.8 for HairLayer alignment ---
     const dims = useMemo(() => ({
         ...getBodyDimensions(config.baseModel, config.gender),
-        // Override with duck body proportions — plumper and wider
+        // Override with duck body proportions — short barrel body, big head dominates
         bodyWidth: 1.0,
-        bodyHeight: 0.80,
-        bodyDepth: 0.82,
+        bodyHeight: 0.64, // Short but connected — head still dominates due to big headSize=0.8
+        bodyDepth: 0.88,  // Deep barrel (front-to-back) for egg/barrel read
         legWidth: 0.24,
-        legHeight: 0.30,
+        legHeight: 0.28,
         legSpacing: 0.14,
         armWidth: 0.18,
         // headSize intentionally NOT overridden — stays 0.8 from getBodyDimensions
@@ -174,7 +174,11 @@ const DuckModel = memo<{
     const lowerBillOffsetY = expression === 'surprised' ? -0.22 : -0.13;
 
     return (
-        <group position={[0, variant === 'head' ? -1.5 : -0.22, 0]}>
+        // Root group rotated ~3/4 view so bill and duck silhouette read immediately
+        <group
+            position={[0, variant === 'head' ? -1.5 : -0.22, 0]}
+            rotation={[0, variant === 'head' ? 0.3 : 0.55, 0]}
+        >
 
             {/* Head – duck head cube with mouse-look */}
             <group ref={headRef} position={[0, 2.0, 0]}>
@@ -205,26 +209,30 @@ const DuckModel = memo<{
                         species="duck"
                     />
 
-                    {/* Bold duck bill — protrudes well forward; bill top at y≈+0.06 so eyes remain above */}
-                    {/* Upper bill */}
-                    <mesh position={[0, 0.00, 0.65]}>
-                        <boxGeometry args={[0.50, 0.12, 0.48]} />
-                        <meshStandardMaterial color={beakOrange} roughness={0.55} />
-                    </mesh>
-                    {/* Lower bill (drops more on 'surprised') */}
-                    <mesh position={[0, lowerBillOffsetY, 0.62]}>
-                        <boxGeometry args={[0.46, 0.08, 0.42]} />
-                        <meshStandardMaterial color={beakLower} roughness={0.60} />
-                    </mesh>
-                    {/* Nostrils — 2 tiny dark boxes on top of upper bill near base */}
-                    <mesh position={[-0.09, 0.07, 0.47]}>
-                        <boxGeometry args={[0.06, 0.03, 0.06]} />
-                        <meshStandardMaterial color={beakNostril} roughness={0.7} />
-                    </mesh>
-                    <mesh position={[0.09, 0.07, 0.47]}>
-                        <boxGeometry args={[0.06, 0.03, 0.06]} />
-                        <meshStandardMaterial color={beakNostril} roughness={0.7} />
-                    </mesh>
+                    {/* Bold duck bill — protrudes prominently forward, angled slightly down */}
+                    {/* Upper bill: pivot at head surface, tip angles ~0.12 rad downward */}
+                    <group position={[0, 0.02, 0.40]} rotation={[0.12, 0, 0]}>
+                        <mesh position={[0, 0, 0.28]}>
+                            <boxGeometry args={[0.52, 0.13, 0.58]} />
+                            <meshStandardMaterial color={beakOrange} roughness={0.5} />
+                        </mesh>
+                        {/* Nostrils — on top of upper bill */}
+                        <mesh position={[-0.10, 0.07, 0.12]}>
+                            <boxGeometry args={[0.07, 0.04, 0.07]} />
+                            <meshStandardMaterial color={beakNostril} roughness={0.7} />
+                        </mesh>
+                        <mesh position={[0.10, 0.07, 0.12]}>
+                            <boxGeometry args={[0.07, 0.04, 0.07]} />
+                            <meshStandardMaterial color={beakNostril} roughness={0.7} />
+                        </mesh>
+                    </group>
+                    {/* Lower bill: slightly more downward, small visible gap */}
+                    <group position={[0, lowerBillOffsetY - 0.05, 0.40]} rotation={[0.22, 0, 0]}>
+                        <mesh position={[0, 0, 0.26]}>
+                            <boxGeometry args={[0.48, 0.09, 0.52]} />
+                            <meshStandardMaterial color={beakLower} roughness={0.60} />
+                        </mesh>
+                    </group>
                 </group>
 
                 {/* Crest — HairLayer verbatim (maps to hairstyle wardrobe) */}
@@ -251,16 +259,19 @@ const DuckModel = memo<{
 
             {variant === 'full' && (
                 <group>
-                    {/* Short neck */}
-                    <mesh position={[0, 1.56, 0]}>
-                        <boxGeometry args={[0.26, 0.14, 0.30]} />
+                    {/* Neck — spans body top (1.42) to head bottom (1.62): center 1.52, height 0.26 (overlaps slightly) */}
+                    <mesh position={[0, 1.52, 0]}>
+                        <boxGeometry args={[0.30, 0.28, 0.34]} />
                         <meshStandardMaterial {...skinMatProps} />
                     </mesh>
 
-                    {/* Torso — duck body: wider, deeper, shorter than human */}
+                    {/* Torso — duck body: short barrel, bodyHeight=0.64, center at y=1.10 */}
+                    {/* body top = 1.10+0.32=1.42 → neck connects; bottom = 1.10-0.32=0.78 */}
+                    {/* Original legs at y=0.5 internal center → leg top = 0.5+0.14=0.64 */}
+                    {/* Gap body bottom→leg top: 0.78-0.64=0.14, filled by pants waistband */}
                     <group ref={torsoRef}>
                         <group
-                            position={[0, 1.1, 0]}
+                            position={[0, 1.10, 0]}
                             onClick={(e) => handleClick(e, 'shirt')}
                             onPointerEnter={(e) => handlePointerEnter(e, 'shirt')}
                             onPointerLeave={handlePointerLeave}
@@ -278,15 +289,24 @@ const DuckModel = memo<{
                                 />
                             </mesh>
 
-                            {/* Rounded belly — skinColor blob bulging at lower front for chubby duck look */}
-                            <mesh position={[0, -0.08, dims.bodyDepth / 2 + 0.02]}>
-                                <boxGeometry args={[dims.bodyWidth * 0.7, 0.42, 0.18]} />
+                            {/* Rounded belly chamfer — front-lower barrel bulge for chubby duck look */}
+                            <mesh position={[0, -0.06, dims.bodyDepth / 2 + 0.04]}>
+                                <boxGeometry args={[dims.bodyWidth * 0.74, 0.38, 0.22]} />
+                                <meshStandardMaterial {...skinMatProps} />
+                            </mesh>
+                            {/* Side chamfers — small corner rounding for barrel silhouette */}
+                            <mesh position={[dims.bodyWidth / 2 + 0.06, 0, 0]} rotation={[0, 0, 0]}>
+                                <boxGeometry args={[0.14, dims.bodyHeight * 0.78, dims.bodyDepth * 0.72]} />
+                                <meshStandardMaterial {...skinMatProps} />
+                            </mesh>
+                            <mesh position={[-(dims.bodyWidth / 2 + 0.06), 0, 0]}>
+                                <boxGeometry args={[0.14, dims.bodyHeight * 0.78, dims.bodyDepth * 0.72]} />
                                 <meshStandardMaterial {...skinMatProps} />
                             </mesh>
 
                             {/* Shirt front — wide enough to read as clothing, not a stark bib */}
                             <mesh position={[0, 0.04, dims.bodyDepth / 2 + 0.01]}>
-                                <boxGeometry args={[dims.bodyWidth * 0.82, dims.bodyHeight * 0.92, 0.04]} />
+                                <boxGeometry args={[dims.bodyWidth * 0.82, dims.bodyHeight * 0.90, 0.04]} />
                                 <meshStandardMaterial
                                     color={shirtColor}
                                     roughness={config.shirtStyle === 'leather' ? 0.3 : 0.85}
@@ -307,8 +327,8 @@ const DuckModel = memo<{
                     </group>
 
                     {/* Wings — longer, flatter paddles hugging body sides, swept slightly down/back */}
-                    {/* Left wing */}
-                    <group ref={leftArmRef} position={[-(dims.bodyWidth / 2 + dims.armWidth / 2 - 0.01), 1.35, 0]}>
+                    {/* Left wing — y aligned to body center (1.10) + slight up offset */}
+                    <group ref={leftArmRef} position={[-(dims.bodyWidth / 2 + dims.armWidth / 2 - 0.01), 1.18, 0]}>
                         {/* Slight outward base tilt so wing reads as a swept paddle, not an arm */}
                         <group rotation={[0, 0, 0.15]}>
                             <group
@@ -342,7 +362,7 @@ const DuckModel = memo<{
                     </group>
 
                     {/* Right wing */}
-                    <group ref={rightArmRef} position={[(dims.bodyWidth / 2 + dims.armWidth / 2 - 0.01), 1.35, 0]}>
+                    <group ref={rightArmRef} position={[(dims.bodyWidth / 2 + dims.armWidth / 2 - 0.01), 1.18, 0]}>
                         <group rotation={[0, 0, -0.15]}>
                             <group
                                 position={[0, -0.25, 0]}
@@ -371,38 +391,41 @@ const DuckModel = memo<{
                         </group>
                     </group>
 
-                    {/* Legs + webbed feet */}
-                    <LegsSection
-                        pantsStyle={config.pantsStyle ?? 'standard'}
-                        pantsColor={pantsColor}
-                        shoeColor={shoeColor}
-                        skinColor={skinColor}
-                        legWidth={dims.legWidth}
-                        legHeight={dims.legHeight}
-                        legSpacing={dims.legSpacing}
-                        emissive={emissive('pants')}
-                        emissiveInt={emissiveInt('pants')}
-                        onClickPants={(e) => handleClick(e, 'pants')}
-                        onPointerEnterPants={(e) => handlePointerEnter(e, 'pants')}
-                        onPointerLeave={handlePointerLeave}
-                        footShape="web"
-                    />
+                    {/* Legs + webbed feet — original ground position (no wrapper offset) */}
+                    <group position={[0, 0, 0]}>
+                        <LegsSection
+                            pantsStyle={config.pantsStyle ?? 'standard'}
+                            pantsColor={pantsColor}
+                            shoeColor={shoeColor}
+                            skinColor={skinColor}
+                            legWidth={dims.legWidth}
+                            legHeight={dims.legHeight}
+                            legSpacing={dims.legSpacing}
+                            emissive={emissive('pants')}
+                            emissiveInt={emissiveInt('pants')}
+                            onClickPants={(e) => handleClick(e, 'pants')}
+                            onPointerEnterPants={(e) => handlePointerEnter(e, 'pants')}
+                            onPointerLeave={handlePointerLeave}
+                            footShape="web"
+                        />
+                    </group>
 
-                    {/* Tail — stepped blocks behind the body, clearly angled upward */}
-                    <group position={[0, 1.0, -0.42]}>
+                    {/* Tail — stepped blocks behind the body, attached to body back center */}
+                    {/* Body back z = -(bodyDepth/2) = -0.44; body center y=1.10, lower back y≈0.90 */}
+                    <group position={[0, 0.92, -0.44]}>
                         {/* Base tail block — wide and low, attached to back */}
-                        <mesh position={[0, 0.06, -0.06]} rotation={[-0.42, 0, 0]}>
-                            <boxGeometry args={[0.38, 0.18, 0.28]} />
+                        <mesh position={[0, 0.08, -0.06]} rotation={[-0.42, 0, 0]}>
+                            <boxGeometry args={[0.40, 0.20, 0.30]} />
                             <meshStandardMaterial color={darkenColor(skinColor, 0.90)} roughness={0.88} />
                         </mesh>
                         {/* Mid tail block — narrower, more upward tilt */}
-                        <mesh position={[0, 0.22, -0.14]} rotation={[-0.70, 0, 0]}>
-                            <boxGeometry args={[0.26, 0.14, 0.22]} />
+                        <mesh position={[0, 0.28, -0.16]} rotation={[-0.70, 0, 0]}>
+                            <boxGeometry args={[0.28, 0.16, 0.24]} />
                             <meshStandardMaterial color={darkenColor(skinColor, 0.84)} roughness={0.88} />
                         </mesh>
                         {/* Tip tail block — small, most upward */}
-                        <mesh position={[0, 0.36, -0.20]} rotation={[-1.0, 0, 0]}>
-                            <boxGeometry args={[0.16, 0.10, 0.14]} />
+                        <mesh position={[0, 0.44, -0.22]} rotation={[-1.0, 0, 0]}>
+                            <boxGeometry args={[0.18, 0.12, 0.16]} />
                             <meshStandardMaterial color={darkenColor(skinColor, 0.78)} roughness={0.88} />
                         </mesh>
                     </group>
