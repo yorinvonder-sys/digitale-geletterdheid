@@ -97,8 +97,8 @@ const ACCESSORIES = [
 
 export const AvatarSetup: React.FC<AvatarSetupProps> = ({ onComplete, userName, initialConfig }) => {
     const [currentStep, setCurrentStep] = useState(0);
-    const [config, setConfig] = useState<AvatarConfig>(initialConfig || DEFAULT_AVATAR_CONFIG);
-    const isDuck = (config.avatarKind ?? 'duck') === 'duck';
+    const [config, setConfig] = useState<AvatarConfig>({ ...(initialConfig || DEFAULT_AVATAR_CONFIG), avatarKind: 'duck' });
+    const isDuck = true;
 
     const STEPS = [
         { id: 'welcome', title: 'Kies je karakter', subtitle: 'Welkom!' },
@@ -166,30 +166,6 @@ export const AvatarSetup: React.FC<AvatarSetupProps> = ({ onComplete, userName, 
                                     <p className="font-medium text-center text-sm text-duck-ink/65">
                                         Hoi{userName ? ` ${userName}` : ''}! Maak je eigen avatar en begin je avontuur.
                                     </p>
-
-                                    {/* Avatar Kind Selection */}
-                                    <div className="grid grid-cols-2 gap-4">
-                                        <button
-                                            onClick={() => setConfig({ ...config, avatarKind: 'human' })}
-                                            className={`p-5 rounded-2xl border-2 transition-all ${(config.avatarKind ?? 'duck') === 'human'
-                                                ? 'border-duck-ink bg-duck-acid'
-                                                : 'border-duck-ink/10 bg-white hover:border-duck-ink/40'
-                                                }`}
-                                        >
-                                            <div className="text-4xl mb-2">🧑</div>
-                                            <div className="font-bold text-duck-ink">Mens</div>
-                                        </button>
-                                        <button
-                                            onClick={() => setConfig({ ...config, avatarKind: 'duck' })}
-                                            className={`p-5 rounded-2xl border-2 transition-all ${(config.avatarKind ?? 'duck') === 'duck'
-                                                ? 'border-duck-ink bg-duck-acid'
-                                                : 'border-duck-ink/10 bg-white hover:border-duck-ink/40'
-                                                }`}
-                                        >
-                                            <div className="text-4xl mb-2">🦆</div>
-                                            <div className="font-bold text-duck-ink">Eend</div>
-                                        </button>
-                                    </div>
 
                                     {/* Gender Selection */}
                                     <div className="grid grid-cols-2 gap-4">
