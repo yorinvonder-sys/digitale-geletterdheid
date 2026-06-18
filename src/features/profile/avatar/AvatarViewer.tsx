@@ -55,14 +55,16 @@ export const FaceLayer = memo<{
     skinColor: string;
     isRobot: boolean;
     eyeGroupRef: React.RefObject<THREE.Group>;
-}>(({ config, skinColor, eyeGroupRef }) => {
+    species?: 'human' | 'duck';
+}>(({ config, skinColor, eyeGroupRef, species = 'human' }) => {
     const expression = config.expression ?? 'happy';
     const eyeColor = config.eyeColor ?? '#08283B';
     const fz = 0.425; // front face z position (outside head cube, enough gap to prevent z-fighting)
+    const isDuck = species === 'duck';
 
     return (
         <group>
-            {/* Eyes */}
+            {/* Eyes — kept for both human and duck */}
             <group ref={eyeGroupRef}>
                 {/* Left eye */}
                 <mesh position={[-0.15, 0.06, fz]}>
@@ -92,8 +94,8 @@ export const FaceLayer = memo<{
                     <meshStandardMaterial color="#ffffff" roughness={0.1} />
                 </mesh>
 
-                {/* Female eyelashes */}
-                {config.gender === 'female' && (
+                {/* Female eyelashes — human only */}
+                {!isDuck && config.gender === 'female' && (
                     <group>
                         <mesh position={[-0.15, 0.13, fz + 0.01]}>
                             <boxGeometry args={[0.14, 0.02, 0.01]} />
@@ -107,11 +109,13 @@ export const FaceLayer = memo<{
                 )}
             </group>
 
-            {/* Nose */}
-            <mesh position={[0, -0.04, fz]}>
-                <boxGeometry args={[0.06, 0.06, 0.04]} />
-                {mcMat(darkenColor(skinColor, 0.92))}
-            </mesh>
+            {/* Nose — human only (duck has a bill instead) */}
+            {!isDuck && (
+                <mesh position={[0, -0.04, fz]}>
+                    <boxGeometry args={[0.06, 0.06, 0.04]} />
+                    {mcMat(darkenColor(skinColor, 0.92))}
+                </mesh>
+            )}
 
             {/* Cool expression sunglasses (if no glasses/sunglasses accessory) */}
             {expression === 'cool' && config.accessory !== 'sunglasses' && config.accessory !== 'glasses' && (
@@ -121,8 +125,8 @@ export const FaceLayer = memo<{
                 </mesh>
             )}
 
-            {/* Mouths */}
-            {expression === 'happy' && (
+            {/* Mouths — human only (duck bill replaces mouth) */}
+            {!isDuck && expression === 'happy' && (
                 <group position={[0, -0.16, fz]}>
                     <mesh position={[-0.08, 0.02, 0]}>
                         <boxGeometry args={[0.04, 0.02, 0.01]} />
@@ -138,29 +142,29 @@ export const FaceLayer = memo<{
                     </mesh>
                 </group>
             )}
-            {expression === 'surprised' && (
+            {!isDuck && expression === 'surprised' && (
                 <mesh position={[0, -0.16, fz]}>
                     <boxGeometry args={[0.08, 0.1, 0.01]} />
                     {mcMat('#D97848')}
                 </mesh>
             )}
-            {expression === 'neutral' && (
+            {!isDuck && expression === 'neutral' && (
                 <mesh position={[0, -0.15, fz]}>
                     <boxGeometry args={[0.14, 0.03, 0.01]} />
                     {mcMat('#D97848')}
                 </mesh>
             )}
 
-            {/* Female lips */}
-            {config.gender === 'female' && expression !== 'cool' && (
+            {/* Female lips — human only */}
+            {!isDuck && config.gender === 'female' && expression !== 'cool' && (
                 <mesh position={[0, -0.18, fz + 0.005]}>
                     <boxGeometry args={[0.1, 0.03, 0.01]} />
                     {mcMat('#c9746e')}
                 </mesh>
             )}
 
-            {/* Female blush pixels */}
-            {config.gender === 'female' && (
+            {/* Female blush pixels — human only (these are the pink side blobs on the duck) */}
+            {!isDuck && config.gender === 'female' && (
                 <group>
                     <mesh position={[-0.25, -0.04, fz]}>
                         <boxGeometry args={[0.08, 0.04, 0.01]} />
