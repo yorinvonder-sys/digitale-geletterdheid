@@ -46,8 +46,8 @@ De meeste scholen hebben geen methode, geen bewijs en geen plan voor digitale ge
 
 | | |
 |---|---|
-| **Duur** | 8-12 weken |
-| **Omvang** | Max 60 leerlingen, 2 docenten |
+| **Duur** | 8 weken |
+| **Omvang** | Max 150 leerlingen, 2 docenten |
 | **Inclusief** | Kickoff, docententraining, lessenplan, wekelijkse rapportages, eindrapport |
 | **Prijs** | €1.500 excl. btw |
 | **Bij conversie** | 100% verrekend met jaarlicentie |

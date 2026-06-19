@@ -64,7 +64,7 @@
 
 > "Als dit interessant is, is de volgende stap een pilot. Die werkt zo:
 >
-> - 8 tot 12 weken, voor maximaal 60 leerlingen en 2 docenten
+> - 8 weken, voor maximaal 150 leerlingen en 2 docenten
 > - Wij regelen alles: setup, training, lessenplan, wekelijkse updates
 > - Na afloop krijgt u een eindrapport met harde cijfers
 > - De kosten zijn €1.500. En als u daarna doorgaat met een jaarlicentie, wordt dat bedrag volledig verrekend. U betaalt het dus eigenlijk alleen als u besluit te stoppen.

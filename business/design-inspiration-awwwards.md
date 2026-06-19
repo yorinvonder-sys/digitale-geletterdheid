@@ -291,7 +291,7 @@ De kernfilosofie: verander de landingspagina van een **informatiebrochure** naar
 **Huidige staat:** 4 probleem-cards naast elkaar
 **Nieuw concept:**
 - **Sticky sectie** — het scherm blijft vast terwijl je scrollt
-- **Animated counters** die optellen: 4.7 → rapportcijfer, 2027 → deadline, 3.800 → FTE
+- **Animated counters** die optellen: 4.7 → rapportcijfer, 2027 → deadline, 2.200 → FTE
 - **Eén nummer tegelijk** dat groot in beeld verschijnt en dan verkleint
 - **Minimale tekst** — alleen het getal en één zin
 - **Kleur-shift** — achtergrond verandert subtiel per probleem (warm → koud)
