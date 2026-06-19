@@ -72,8 +72,13 @@ export const AvatarViewer2D: React.FC<AvatarViewer2DProps> = ({
     // Show crest when not hidden under cap/beanie
     const hideHair = accessory === 'cap' || accessory === 'beanie';
 
-    // viewBox: head variant crops to head+bill area (must include bill tip at x≈182), full shows entire duck incl feet
-    const viewBox = variant === 'head' ? '30 10 160 120' : '15 8 175 205';
+    // viewBox: head variant crops to head+bill+chest area so silhouette reads as duck head-and-shoulders
+    // Full: entire duck incl feet
+    // Head: expanded downward to include top of body + wing hint (y goes to ~168 = BODY_CY+38)
+    //       and widened right to include enlarged bill tip (bx + 38*1.4 = 198 + stroke padding)
+    //       and widened left to include tail curl (x starts at 15)
+    // viewBox '15 6 195 162': x=15..210, y=6..168 — bill tip (x≈198) + stroke padding (6) = 204, fits at 210
+    const viewBox = variant === 'head' ? '15 6 195 162' : '15 8 175 205';
 
     return (
         <div className="w-full h-full flex items-center justify-center bg-[#f2f1ec] rounded-2xl overflow-hidden">
@@ -90,7 +95,7 @@ export const AvatarViewer2D: React.FC<AvatarViewer2DProps> = ({
                     </g>
                 )}
 
-                {/* Duck body — egg/oval */}
+                {/* Duck body — egg/oval (full always; head shows top portion as chest hint) */}
                 <g onClick={() => click('skin')} style={{ cursor }}>
                     <ellipse
                         cx={BODY_CX}
@@ -180,9 +185,9 @@ export const AvatarViewer2D: React.FC<AvatarViewer2DProps> = ({
                     {renderEyes(expression)}
                 </g>
 
-                {/* Bill — prominent orange duck bill projecting right */}
+                {/* Bill — prominent orange duck bill projecting right (larger in head mode) */}
                 <g onClick={() => click('mouth')} style={{ cursor }}>
-                    {renderBeak(expression)}
+                    {renderBeak(expression, variant)}
                 </g>
 
                 {/* Accessory */}
@@ -254,31 +259,38 @@ function renderEyes(expression: string): React.ReactNode {
 // Prominent flat duck bill projecting to the RIGHT of the head.
 // Single outlined wedge with a center divider — avoids the "chopstick" look
 // that separate stroked paths produce.
-function renderBeak(expression: string): React.ReactNode {
+// In head mode: bill is 40% wider and 30% taller for clear duck readability at 48-80px.
+function renderBeak(expression: string, variant: 'full' | 'head' = 'full'): React.ReactNode {
     // Bill base attaches at the right side of the head
     const bx = HEAD_CX + HEAD_R - 4; // x ≈ 145 — bill root
     const by = HEAD_CY + 6;          // y ≈ 72 — vertical center of bill
 
+    // Head mode: bigger bill so it reads clearly as a duck at 48-80px
+    const scale = variant === 'head' ? 1.4 : 1.0;
+    const vScale = variant === 'head' ? 1.3 : 1.0; // vertical scale (height of bill)
+
     // Closed bill: one trapezoidal wedge (upper=ORANGE, lower=DARK split by divider)
-    //   top-back (bx, by-12), tip-top (bx+38, by-4)
-    //   tip-bottom (bx+38, by+10), bottom-back (bx, by+14)
-    const tipX = bx + 38;
-    const topBack = `${bx},${by - 12}`;
-    const tipTop  = `${tipX},${by - 4}`;
-    const tipBot  = `${tipX},${by + 10}`;
-    const botBack = `${bx},${by + 14}`;
+    const tipX = bx + Math.round(38 * scale);
+    const topOffY = Math.round(12 * vScale);
+    const botOffY = Math.round(14 * vScale);
+    const tipTopY = Math.round(4 * vScale);
+    const tipBotY = Math.round(10 * vScale);
+    const topBack = `${bx},${by - topOffY}`;
+    const tipTop  = `${tipX},${by - tipTopY}`;
+    const tipBot  = `${tipX},${by + tipBotY}`;
+    const botBack = `${bx},${by + botOffY}`;
     // divider midpoints
-    const divBack = `${bx},${by + 1}`;
-    const divTip  = `${tipX},${by + 3}`;
+    const divBack = `${bx},${by + Math.round(1 * vScale)}`;
+    const divTip  = `${tipX},${by + Math.round(3 * vScale)}`;
 
     if (expression === 'surprised') {
-        // Open bill: gap of ~8px between upper and lower
-        const gapY = 8;
+        // Open bill: gap of ~8px between upper and lower (scaled)
+        const gapY = Math.round(8 * vScale);
         return (
             <g>
                 {/* Upper mandible */}
                 <path
-                    d={`M${bx},${by - 12} L${tipX},${by - 4} L${tipX},${by} L${bx},${by - 2} Z`}
+                    d={`M${bx},${by - topOffY} L${tipX},${by - tipTopY} L${tipX},${by} L${bx},${by - 2} Z`}
                     fill={BILL_ORANGE} stroke={INK} strokeWidth={6} strokeLinejoin="round"
                 />
                 {/* Mouth interior (tongue) */}
@@ -288,7 +300,7 @@ function renderBeak(expression: string): React.ReactNode {
                 />
                 {/* Lower mandible */}
                 <path
-                    d={`M${bx},${by + gapY} L${tipX},${by + gapY + 2} L${tipX},${by + gapY + 12} L${bx},${by + gapY + 14} Z`}
+                    d={`M${bx},${by + gapY} L${tipX},${by + gapY + 2} L${tipX},${by + gapY + tipBotY + 2} L${bx},${by + gapY + botOffY} Z`}
                     fill={BILL_DARK} stroke={INK} strokeWidth={6} strokeLinejoin="round"
                 />
             </g>
@@ -310,7 +322,7 @@ function renderBeak(expression: string): React.ReactNode {
             />
             {/* Divider line — center crease */}
             <line
-                x1={bx} y1={by + 1} x2={tipX} y2={by + 3}
+                x1={bx} y1={by + Math.round(1 * vScale)} x2={tipX} y2={by + Math.round(3 * vScale)}
                 stroke={INK} strokeWidth={3} strokeLinecap="round"
             />
         </g>
