@@ -20,7 +20,6 @@ import { checkDurableRateLimit, rateLimitHeaders } from "../_shared/rateLimiter.
 import { countTextChars, logAiUsageEvent, resolveAiRequestId } from "../_shared/aiUsageLogger.ts";
 import { buildMistralMessages, completeMistralChat, getMistralTextModel } from "../_shared/mistralClient.ts";
 import { filterAiOutput } from "../_shared/outputFilter.ts";
-import { ageGateEnforced } from "../_shared/consent.ts";
 
 const MAX_REQUEST_BYTES = 8_000;
 
@@ -109,26 +108,13 @@ Deno.serve(async (req: Request) => {
     }
 
     // 1. Parse request
-    let body: { message?: string; history?: Array<{ role: string; parts: Array<{ text: string }> }>; clientRequestId?: unknown; ageConfirmed?: unknown };
+    let body: { message?: string; history?: Array<{ role: string; parts: Array<{ text: string }> }>; clientRequestId?: unknown };
     try {
         body = await req.json();
     } catch {
         return new Response(
             JSON.stringify({ error: "Ongeldige JSON." }),
             { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-        );
-    }
-
-    // 13+ leeftijdspoort voor de publieke demo: anoniem, dus geen geboortedatum
-    // te verifiëren — vraag een expliciete 13+-zelfbevestiging. Alleen actief
-    // wanneer AI_AGE_GATE_ENFORCED=true (de landing-UI stuurt dan ageConfirmed).
-    if (ageGateEnforced() && body.ageConfirmed !== true) {
-        return new Response(
-            JSON.stringify({
-                error: "ai_age_restricted",
-                reason: "Bevestig dat je 13 jaar of ouder bent om de AI-demo te gebruiken.",
-            }),
-            { status: 403, headers: { ...corsHeaders, "Content-Type": "application/json" } }
         );
     }
 

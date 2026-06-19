@@ -13,7 +13,7 @@ type SupabaseLikeClient = {
 // (ToS §1.2) staan <13 niet toe — ouderlijke toestemming heft dit niet op.
 // Gefaseerde uitrol: alleen handhaven wanneer AI_AGE_GATE_ENFORCED=true (nadat
 // de school geboortedata heeft ingevuld). Default uit = ongewijzigd gedrag.
-export function ageGateEnforced(): boolean {
+function ageGateEnforced(): boolean {
   return (globalThis.Deno?.env.get("AI_AGE_GATE_ENFORCED") ?? "").toLowerCase() === "true";
 }
 
