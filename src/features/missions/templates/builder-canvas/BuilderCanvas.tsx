@@ -328,6 +328,29 @@ const BuilderCanvasInner: React.FC<BuilderCanvasProps> = ({
     );
 };
 
+// ── Allowlist ────────────────────────────────────────────────────────────────
+const VALID_BUILDER_CANVAS_IDS: ReadonlySet<string> = new Set([
+    'api-architect',
+    'app-prototyper',
+    'automation-engineer',
+    'brand-builder',
+    'digital-storyteller',
+    'innovation-lab',
+    'meesterproef',
+    'meme-machine',
+    'mission-blueprint',
+    'mission-vision',
+    'open-source-contributor',
+    'pitch-perfect',
+    'podcast-producer',
+    'portfolio-builder',
+    'prototype-developer',
+    'startup-simulator',
+    'video-editor',
+    'web-developer',
+    'website-bouwer',
+]);
+
 // ── Public entry point — loads config dynamically ────────────────────────────
 
 const LoadingScreen = () => (
@@ -341,6 +364,7 @@ export const BuilderCanvas: React.FC<TemplateMissionProps> = ({ missionId, onBac
     const [loadError, setLoadError] = useState(false);
 
     useEffect(() => {
+        if (!VALID_BUILDER_CANVAS_IDS.has(missionId)) { setLoadError(true); return; }
         import(`./configs/${missionId}.ts`)
             .then((mod) => {
                 const cfg = mod.default ?? Object.values(mod).find((v): v is BuilderCanvasConfig => v && typeof v === 'object' && 'missionId' in v);
