@@ -60,7 +60,7 @@ Schatting ~4-8 uur FG-tijd. Compleet AVG-dossier (DPIA, DPA-model, sub-verwerker
 Digitale geletterdheid zonder gestructureerd platform: docenten maken eigen materiaal, geen systematische voortgangsmeting, geen aantoonbare koppeling aan SLO-kerndoelen. Met de 2027-deadline voor het verplichte kerncurriculum is dit een risico.
 
 **"Is dit AI-proof qua regelgeving?"**
-Het platform valt onder de EU AI Act als hoog-risico systeem. Twee technische vereisten lopen nog tot augustus 2026. Tijdelijke oplossing is beschikbaar: AI gebruiken als hulpmiddel, docent neemt altijd de eindbeslissing. Volledige compliance is gepland vóór de harde EU-deadline.
+Het platform valt onder de EU AI Act als hoog-risico systeem. Twee technische vereisten zijn nog in voorbereiding. Tijdelijke oplossing is beschikbaar: AI gebruiken als hulpmiddel, docent neemt altijd de eindbeslissing. De oorspronkelijke EU-deadline (2 augustus 2026) schuift via de Digital Omnibus naar verwachting naar 2 december 2027; tot publicatie blijft 2 augustus 2026 formeel geldend. De resterende verplichtingen worden in die periode afgerond.
 
 ---
 
