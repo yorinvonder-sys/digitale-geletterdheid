@@ -29,7 +29,7 @@ export const IctPrivacy: React.FC = () => {
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
                     <div className="p-6 rounded-2xl bg-duck-acid border border-duck-acid">
                         <div className="text-duck-acid mb-4"><IconFileText /></div>
-                        <h3 className="font-bold text-duck-ink mb-2 text-sm">AVG-compliant</h3>
+                        <h3 className="font-bold text-duck-ink mb-2 text-sm">Privacy by design</h3>
                         <p className="text-duck-ink/60 text-xs leading-relaxed">
                             Onze verwerkingen zijn volledig in lijn met de Algemene Verordening Gegevensbescherming (AVG).
                         </p>

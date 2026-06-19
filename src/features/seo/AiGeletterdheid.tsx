@@ -32,7 +32,7 @@ export const AiGeletterdheid: React.FC = () => {
             el.setAttribute('content', content);
         };
 
-        setMeta('name', 'description', 'Sinds februari 2025 is AI-geletterdheid verplicht onder de EU AI Act. Ontdek hoe DGSkills jouw school helpt met veilige AI-missies en volledige AVG-compliance.');
+        setMeta('name', 'description', 'Sinds februari 2025 is AI-geletterdheid verplicht onder de EU AI Act. Ontdek hoe DGSkills jouw school helpt met veilige AI-missies en gedocumenteerde privacy-maatregelen (DPIA, EU-data).');
         
         trackEvent('seo_page_view', { cluster: 'compliance', page: 'ai-geletterdheid' });
 

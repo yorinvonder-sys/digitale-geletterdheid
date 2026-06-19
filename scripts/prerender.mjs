@@ -129,10 +129,10 @@ function prerenderRoutes() {
     },
     '/ict': {
       title: 'ICT & Informatiemanagers — Veiligheid, Privacy & Integratie | DGSkills',
-      description: 'Ontdek hoe DGSkills past in jouw schoolarchitectuur. Alles over SSO (Microsoft/Google/SURFconext), AVG-compliance, LVS-koppelingen en technische support.',
+      description: 'Ontdek hoe DGSkills past in jouw schoolarchitectuur. Alles over SSO (Microsoft/Google/SURFconext), privacy-maatregelen, LVS-koppelingen en technische support.',
       canonical: 'https://dgskills.app/ict',
       ogTitle: 'ICT & Informatiemanagers — Veiligheid, Privacy & Integratie | DGSkills',
-      ogDescription: 'Veilige en beheersbare digitale geletterdheid voor het VO. AVG-compliant en naadloze integratie.',
+      ogDescription: 'Veilige en beheersbare digitale geletterdheid voor het VO. Privacy by design en naadloze integratie.',
       ogUrl: 'https://dgskills.app/ict',
     },
     '/ict/integraties': {
@@ -145,7 +145,7 @@ function prerenderRoutes() {
     },
     '/ict/privacy': {
       title: 'Security & Privacy — DGSkills ICT',
-      description: 'AVG-compliant, data opslag in de EU en volledige transparantie over datastromen.',
+      description: 'Gedocumenteerde privacy-maatregelen (DPIA, EU-data), data opslag in de EU en transparantie over datastromen.',
       canonical: 'https://dgskills.app/ict/privacy',
       ogTitle: 'Security & Privacy — DGSkills ICT',
       ogDescription: 'Veilige digitale geletterdheid voor het voortgezet onderwijs.',
@@ -217,7 +217,7 @@ function prerenderRoutes() {
     },
     '/ai-geletterdheid-onderwijs-ai-act': {
       title: 'AI-geletterdheid in het Onderwijs & EU AI Act | DGSkills',
-      description: 'Sinds februari 2025 is AI-geletterdheid verplicht onder de EU AI Act. Ontdek hoe DGSkills jouw school helpt met veilige AI-missies en volledige AVG-compliance.',
+      description: 'Sinds februari 2025 is AI-geletterdheid verplicht onder de EU AI Act. Ontdek hoe DGSkills jouw school helpt met veilige AI-missies en gedocumenteerde privacy-maatregelen (DPIA, EU-data).',
       canonical: 'https://dgskills.app/ai-geletterdheid-onderwijs-ai-act',
       ogTitle: 'AI-geletterdheid in het Onderwijs & EU AI Act | DGSkills',
       ogDescription: 'Voldoe aan de EU AI Act verplichtingen voor AI-geletterdheid in het onderwijs.',

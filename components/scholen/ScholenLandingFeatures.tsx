@@ -267,7 +267,7 @@ const features = [
         illustration: <IllustrationPrivacy />,
         bgColor: BG.sky,
         label: 'Privacy',
-        title: 'AVG-compliant by design',
+        title: 'Privacy by design',
         description: 'Data in Europa, verwerkersovereenkomst en DPIA beschikbaar. Ontworpen voor de EU AI Act.',
     },
     {

@@ -248,10 +248,10 @@ const structuredData = {
                 },
                 {
                     "@type": "Question",
-                    "name": "Is DGSkills AVG-compliant en veilig?",
+                    "name": "Hoe regelt DGSkills privacy en veiligheid?",
                     "acceptedAnswer": {
                         "@type": "Answer",
-                        "text": "Ja. Data wordt opgeslagen in een beveiligde Europese database. Verwerkersovereenkomst en DPIA beschikbaar. Voldoet aan AVG en onderwijseisen."
+                        "text": "Data wordt opgeslagen in een beveiligde Europese database. Verwerkersovereenkomst en DPIA beschikbaar. Privacyverklaring gepubliceerd."
                     }
                 },
                 {
@@ -545,7 +545,7 @@ export const ScholenLanding: React.FC = () => {
                                 <div className="flex flex-wrap items-center gap-x-3 gap-y-2 sm:gap-4 mt-8 text-xs font-medium" style={{ color: C.textMuted }}>
                                     <span className="flex items-center gap-1.5">
                                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-                                        AVG-compliant
+                                        Privacy by design
                                     </span>
                                     <span className="flex items-center gap-1.5">
                                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
@@ -557,7 +557,7 @@ export const ScholenLanding: React.FC = () => {
                                     </span>
                                     <span className="flex items-center gap-1.5">
                                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
-                                        EU AI Act ready
+                                        EU AI Act-traject
                                     </span>
                                 </div>
                             </div>
@@ -910,7 +910,7 @@ export const ScholenLanding: React.FC = () => {
                             <h2 className="text-3xl font-medium mb-6" style={{ fontFamily: SERIF, color: C.text }}>Voor ICT & Informatiemanagers</h2>
                             <p className="text-lg max-w-2xl mx-auto mb-10 leading-relaxed" style={{ color: C.textMuted }}>
                                 DGSkills is ontworpen voor beheersbaarheid, veiligheid en snelle adoptie.
-                                Ontdek alles over onze SSO-integraties, AVG-compliance en technische architectuur.
+                                Ontdek alles over onze SSO-integraties, privacy-maatregelen en technische architectuur.
                             </p>
                             <a
                                 href="/ict"
