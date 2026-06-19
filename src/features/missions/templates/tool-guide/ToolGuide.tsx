@@ -49,6 +49,17 @@ export interface ToolGuideConfig {
     learningObjectives?: string[];
 }
 
+// ─── Allowlist ───────────────────────────────────────────────────────────────
+const VALID_TOOL_GUIDE_IDS: ReadonlySet<string> = new Set([
+    'cloud-commander',
+    'magister-master',
+    'mission-launch',
+    'print-pro',
+    'slide-specialist',
+    'startup-pitch',
+    'word-wizard',
+]);
+
 // ─── State ───────────────────────────────────────────────────────────────────
 
 interface ToolGuideState {
@@ -583,6 +594,7 @@ export const ToolGuide: React.FC<TemplateMissionProps> = ({ missionId, onBack, o
     const [loadError, setLoadError] = useState(false);
 
     useEffect(() => {
+        if (!VALID_TOOL_GUIDE_IDS.has(missionId)) { setLoadError(true); return; }
         import(`./configs/${missionId}.ts`)
             .then((mod) => {
                 const cfg = mod.default ?? Object.values(mod).find((v): v is ToolGuideConfig => v && typeof v === 'object' && 'missionId' in v);

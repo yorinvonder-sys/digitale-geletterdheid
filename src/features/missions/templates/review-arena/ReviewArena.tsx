@@ -387,6 +387,17 @@ const LoadingScreen = () => (
     </div>
 );
 
+// ── Allowlist ────────────────────────────────────────────────────────────────
+const VALID_REVIEW_ARENA_IDS: ReadonlySet<string> = new Set([
+    'advanced-code-review',
+    'code-review-2',
+    'data-review',
+    'impact-review',
+    'media-review',
+    'review-week-2',
+    'security-review',
+]);
+
 export const ReviewArena: React.FC<TemplateMissionProps> = (props) => {
     const { missionId, onBack } = props;
     const [config, setConfig] = useState<ReviewArenaConfig | null>(null);
@@ -396,6 +407,7 @@ export const ReviewArena: React.FC<TemplateMissionProps> = (props) => {
         setConfig(null);
         setLoadError(false);
 
+        if (!VALID_REVIEW_ARENA_IDS.has(missionId)) { setLoadError(true); return; }
         import(`./configs/${missionId}.ts`)
             .then((mod) => {
                 const cfg = mod.default ?? Object.values(mod).find(
