@@ -1323,7 +1323,7 @@ export const AiLab: React.FC<AiLabProps> = ({ user, onExit, saveProgress, initia
                         data={activeBookData}
                         user={user ? {
                           uid: user.uid,
-                          displayName: user.displayName,
+                          displayName: user.displayName ?? '',
                           studentClass: user.studentClass,
                           schoolId: user.schoolId
                         } : undefined}

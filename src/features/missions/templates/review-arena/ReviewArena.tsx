@@ -412,7 +412,7 @@ export const ReviewArena: React.FC<TemplateMissionProps> = (props) => {
             .then((mod) => {
                 const cfg = mod.default ?? Object.values(mod).find(
                     (value): value is ReviewArenaConfig =>
-                        Boolean(value) && typeof value === 'object' && 'missionId' in value
+                        value !== null && typeof value === 'object' && 'missionId' in value
                 );
 
                 if (cfg) setConfig(cfg);

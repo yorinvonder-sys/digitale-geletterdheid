@@ -438,8 +438,8 @@ export const UserProfile: React.FC<UserProfileProps> = ({ user, onBack, onUpdate
 
     // Outfit Save/Load
     const handleSaveOutfit = (slotIndex: number) => {
-        const currentOutfits = stats.savedOutfits ? [...stats.savedOutfits] : [undefined, undefined, undefined];
-        while (currentOutfits.length < 3) currentOutfits.push(undefined as any);
+        const currentOutfits: (AvatarConfig | undefined)[] = stats.savedOutfits ? [...stats.savedOutfits] : [undefined, undefined, undefined];
+        while (currentOutfits.length < 3) currentOutfits.push(undefined);
         currentOutfits[slotIndex] = { ...(stats.avatarConfig || DEFAULT_AVATAR_CONFIG) };
         onUpdateProfile({ stats: { ...stats, savedOutfits: currentOutfits as AvatarConfig[] } });
     };
