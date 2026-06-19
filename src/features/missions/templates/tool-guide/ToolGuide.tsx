@@ -597,7 +597,7 @@ export const ToolGuide: React.FC<TemplateMissionProps> = ({ missionId, onBack, o
         if (!VALID_TOOL_GUIDE_IDS.has(missionId)) { setLoadError(true); return; }
         import(`./configs/${missionId}.ts`)
             .then((mod) => {
-                const cfg = mod.default ?? Object.values(mod).find((v): v is ToolGuideConfig => v && typeof v === 'object' && 'missionId' in v);
+                const cfg = mod.default ?? Object.values(mod).find((v): v is ToolGuideConfig => !!v && typeof v === 'object' && 'missionId' in v);
                 if (cfg) setConfig(cfg);
                 else setLoadError(true);
             })

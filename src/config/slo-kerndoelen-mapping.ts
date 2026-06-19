@@ -244,7 +244,7 @@ export function calculateStudentKerndoelStats(student: StudentData, yearGroup?: 
 
   const out = Object.fromEntries(
     KERNDOEL_CODES.map((code) => [code, { completed: 0, total: 0, percentage: 0, completedMissions: [], totalMissions: [] }])
-  ) as Record<SloKerndoelCode, KerndoelProgress>;
+  ) as unknown as Record<SloKerndoelCode, KerndoelProgress>;
 
   for (const mission of missions) {
     if (!isMissionApplicableToStudent(mission, studentClass)) continue;

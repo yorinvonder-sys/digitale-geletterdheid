@@ -1395,7 +1395,7 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
                         )}
                     </section>
 
-                    {!isVisualCapture && (
+                    {!isVisualCapture && userUid && (
                         <AdaptiveMissionSuggestions
                             userId={userUid}
                             yearGroup={currentYearGroup}

@@ -111,7 +111,7 @@ export const GamesPanel: React.FC<GamesPanelProps> = ({ onOpenGame }) => {
         return permissions?.enabled_games?.includes(permissionId) ?? false;
     };
 
-    const totalPlayersInLobbies = activeLobbies.reduce((sum, l) => sum + l.playerCount, 0);
+    const totalPlayersInLobbies = activeLobbies.reduce((sum, l) => sum + (l.playerCount ?? 0), 0);
 
     return (
         <div className="space-y-6">
@@ -205,7 +205,7 @@ export const GamesPanel: React.FC<GamesPanelProps> = ({ onOpenGame }) => {
                                         <span className="text-2xl">💣</span>
                                         <div>
                                             <div className="font-bold text-duck-ink text-sm">{lobby.playerCount} speler{lobby.playerCount !== 1 ? 's' : ''}</div>
-                                            <div className="text-xs text-duck-ink/60 truncate max-w-[200px]">{lobby.playerNames.join(', ')}</div>
+                                            <div className="text-xs text-duck-ink/60 truncate max-w-[200px]">{(lobby.playerNames ?? []).join(', ')}</div>
                                         </div>
                                     </div>
                                     <div className="flex items-center gap-2">

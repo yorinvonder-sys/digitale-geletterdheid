@@ -81,7 +81,7 @@ export const Footer: React.FC<FooterProps> = ({ onAccountDeleted, schoolId }) =>
             <PrivacyModal
                 isOpen={isPrivacyOpen}
                 onClose={() => setIsPrivacyOpen(false)}
-                onAccountDeleted={onAccountDeleted}
+                onAccountDeleted={onAccountDeleted ?? (() => {})}
                 schoolId={schoolId}
             />
         </>

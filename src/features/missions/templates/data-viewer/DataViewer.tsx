@@ -751,7 +751,7 @@ export const DataViewer: React.FC<TemplateMissionProps> = ({ missionId, onBack, 
         if (!VALID_DATA_VIEWER_IDS.has(missionId)) { setLoadError(true); return; }
         import(`./configs/${missionId}.ts`)
             .then((mod) => {
-                const cfg = mod.default ?? Object.values(mod).find((v): v is DataViewerConfig => v && typeof v === 'object' && 'missionId' in v);
+                const cfg = mod.default ?? Object.values(mod).find((v): v is DataViewerConfig => !!v && typeof v === 'object' && 'missionId' in v);
                 if (cfg) setConfig(cfg);
                 else setLoadError(true);
             })

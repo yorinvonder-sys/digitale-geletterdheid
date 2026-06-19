@@ -59,7 +59,7 @@ export async function sha256Hex(input: string): Promise<string> {
 // Encryption (AES-256-GCM)
 // ---------------------------------------------------------------------------
 
-function getEncryptionKey(): Uint8Array {
+function getEncryptionKey(): Uint8Array<ArrayBuffer> {
     const hex = Deno.env.get("GDRIVE_TOKEN_ENCRYPTION_KEY");
     if (!hex || hex.length !== 64) {
         throw new Error("GDRIVE_TOKEN_ENCRYPTION_KEY must be a 64-character hex string (32 bytes)");

@@ -204,7 +204,8 @@ async function backupUserToDrive(
     const imageSlice = receiptsWithImages.slice(0, 20);
     for (const receipt of imageSlice) {
         try {
-            const storagePath = extractStoragePath(receipt.image_url);
+            // receipt.image_url is truthy here: the slice came from receiptsWithImages which filtered for r.image_url
+            const storagePath = extractStoragePath(receipt.image_url!);
             if (!storagePath) continue;
 
             const { data: fileData } = await supabase.storage

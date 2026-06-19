@@ -25,7 +25,7 @@ export const awardXP = async (
             p_user_id: userId,
             p_amount: amount,
             p_source: source,
-            p_mission_id: missionId || null,
+            p_mission_id: missionId ?? undefined,
         });
 
         if (error) {

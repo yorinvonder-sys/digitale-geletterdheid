@@ -74,6 +74,9 @@ const LoadingFallback = () => (
     </div>
 );
 
+/** Fallback base so spreading optional stats always yields a valid UserStats. */
+const DEFAULT_STATS: UserStats = { xp: 0, level: 1, missionsCompleted: [], inventory: [] };
+
 const DEDICATED_MISSIONS = new Set([
     'prompt-master',
     'game-director',
@@ -236,7 +239,7 @@ export function AuthenticatedApp() {
                     .select('id')
                     .eq('school_id', user.schoolId)
                     .eq('school_year', schoolYear)
-                    .eq('student_class', user.stats.studentClass)
+                    .eq('student_class', user.stats?.studentClass)
                     .maybeSingle();
                 if (error || cancelled) return; // Tabel bestaat nog niet of query faalde — stil falen
                 if (data) setShowEindmeting(true);
@@ -348,7 +351,8 @@ export function AuthenticatedApp() {
     if (showAvatarSetup && user.role === 'student') {
         const handleAvatarComplete = async (avatarConfig: AvatarConfig) => {
             if (user) {
-                const newStats = {
+                const newStats: UserStats = {
+                    ...DEFAULT_STATS,
                     ...user.stats,
                     avatarConfig: avatarConfig,
                     hasCompletedAvatarSetup: true,
@@ -376,7 +380,8 @@ export function AuthenticatedApp() {
     if (showNulmeting && user.role === 'student' && !hasCompletedNulmeting) {
         const handleNulmetingComplete = async (result: NulmetingResult) => {
             if (user) {
-                const newStats = {
+                const newStats: UserStats = {
+                    ...DEFAULT_STATS,
                     ...user.stats,
                     hasCompletedNulmeting: true,
                     nulmetingResult: result,
@@ -546,10 +551,11 @@ export function AuthenticatedApp() {
                 if (!currentCompleted.includes(missionId)) {
                     completingMissionRef.current.add(missionId);
                     try {
-                        const newStats = {
+                        const newStats: UserStats = {
+                            ...DEFAULT_STATS,
                             ...user.stats,
                             missionsCompleted: [...currentCompleted, missionId],
-	        }
+                        };
                         setUser({ ...user, stats: newStats });
                         await handleSaveProgress(newStats);
 
@@ -558,7 +564,7 @@ export function AuthenticatedApp() {
                         if (xpResult.awarded && xpResult.newXP !== undefined) {
                             setUser(prev => prev ? {
                                 ...prev,
-                                stats: { ...prev.stats, xp: xpResult.newXP!, level: xpResult.newLevel ?? prev.stats.level }
+                                stats: { ...DEFAULT_STATS, ...prev.stats, xp: xpResult.newXP!, level: xpResult.newLevel ?? prev.stats?.level ?? 1 }
                             } : prev);
                         }
 
@@ -1031,7 +1037,7 @@ export function AuthenticatedApp() {
             isCompleted={user?.stats?.hasCompletedStudentTutorial}
             onComplete={async () => {
                 if (user) {
-                    const newStats = { ...user.stats, hasCompletedStudentTutorial: true };
+                    const newStats: UserStats = { ...DEFAULT_STATS, ...user.stats, hasCompletedStudentTutorial: true };
                     setUser({ ...user, stats: newStats });
                     await handleSaveProgress(newStats);
                 }

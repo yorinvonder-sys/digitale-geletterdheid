@@ -483,6 +483,8 @@ export const SchedulingConfigurator: React.FC<SchedulingConfiguratorProps> = ({
                                     ? containers.find(c => c.id === editingContainerId)
                                     : undefined;
                                 if (!editing) return null;
+                                // editingContainerId is non-null here: editing is only found when editingContainerId is truthy (line above)
+                                const containerId = editingContainerId!;
                                 return (
                                     <ContainerEditor
                                         container={editing}
@@ -490,28 +492,28 @@ export const SchedulingConfigurator: React.FC<SchedulingConfiguratorProps> = ({
                                         allMissions={getMissionsForYear(yearGroup)}
                                         assignedMissionIds={new Set(
                                             containers
-                                                .filter(c => c.id !== editingContainerId)
+                                                .filter(c => c.id !== containerId)
                                                 .flatMap(c => c.missions.map(m => m.missionId))
                                         )}
                                         onAssignMission={async (missionId) => {
-                                            await assignMissionToContainer(editingContainerId, missionId, editing.missions.length);
+                                            await assignMissionToContainer(containerId, missionId, editing.missions.length);
                                             await refreshContainers();
                                         }}
                                         onRemoveMission={async (missionId) => {
-                                            await removeMissionFromContainer(editingContainerId, missionId);
+                                            await removeMissionFromContainer(containerId, missionId);
                                             await refreshContainers();
                                         }}
                                         onReorderMissions={async (ids) => {
-                                            await reorderContainerMissions(editingContainerId, ids);
+                                            await reorderContainerMissions(containerId, ids);
                                             await refreshContainers();
                                         }}
                                         onClose={() => setEditingContainerId(null)}
                                         onSave={async (updated) => {
-                                            await updateContainer(editingContainerId, updated);
+                                            await updateContainer(containerId, updated);
                                             if (updated.missions) {
                                                 for (const m of updated.missions) {
                                                     await assignMissionToContainer(
-                                                        editingContainerId,
+                                                        containerId,
                                                         m.missionId,
                                                         m.sortOrder,
                                                         m.isReview

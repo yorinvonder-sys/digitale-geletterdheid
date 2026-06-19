@@ -118,7 +118,8 @@ export function DeveloperTaskList({ user }: DeveloperTaskListProps) {
             
             console.log(`[DeveloperAI] Generating plan for user ${user.uid}`, { taskCount: tasks.length });
             const proposal = await generateDeveloperPlan(context);
-            
+            if (!proposal) return;
+
             await addDevPlanHistory(user.uid, {
                 proposal,
                 status: 'proposed'
@@ -245,8 +246,8 @@ export function DeveloperTaskList({ user }: DeveloperTaskListProps) {
             return true;
         })
         .filter(t => 
-            t.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
-            t.description.toLowerCase().includes(searchQuery.toLowerCase())
+            t.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            (t.description ?? '').toLowerCase().includes(searchQuery.toLowerCase())
         );
 
     const handleAIValidation = async () => {
@@ -691,7 +692,7 @@ export function DeveloperTaskList({ user }: DeveloperTaskListProps) {
                                                 />
                                                 <div className="flex items-center gap-3 mt-1">
                                                     <span className="text-[10px] font-black text-duck-coral uppercase tracking-widest">{ms.phase}</span>
-                                                    <span className="text-[10px] font-medium text-duck-muted italic">{new Date(ms.startDate).toLocaleDateString('nl-NL')} - {new Date(ms.endDate).toLocaleDateString('nl-NL')}</span>
+                                                    <span className="text-[10px] font-medium text-duck-muted italic">{ms.startDate ? new Date(ms.startDate).toLocaleDateString('nl-NL') : '?'} - {ms.endDate ? new Date(ms.endDate).toLocaleDateString('nl-NL') : '?'}</span>
                                                 </div>
                                             </div>
                                         </div>

@@ -79,7 +79,7 @@ export const getGamePermissions = async (schoolId?: string, yearGroup?: number):
             enabled_games: Array.isArray(d.enabled_games) ? d.enabled_games : [],
             blocked_games: Array.isArray(d.blocked_games) ? d.blocked_games : [],
             custom_settings: (d.custom_settings as Record<string, any>) || {},
-            updated_at: row.updated_at,
+            updated_at: row.updated_at ?? undefined,
         } : {
             enabled_games: [],
             blocked_games: [],
