@@ -344,7 +344,7 @@ Elke agent bevat detectielogica voor niet-serieuze berichten die bedoeld zijn om
 - Provenance metadata (JSON-LD) op alle AI-output
 
 **Ontbrekend (in ontwikkeling):**
-- [TODO] Docent-override voor STEP_COMPLETE-beoordelingen
+- [x] Docent-override voor STEP_COMPLETE-beoordelingen — **geïmplementeerd 15 mrt 2026** (`teacher_step_overrides` + RPC `override_student_step`, gelogd)
 - [TODO] Docentdashboard voor real-time monitoring van AI-interacties
 - [TODO] Noodstop-functionaliteit (docent kan AI per klas/leerling uitschakelen)
 
@@ -803,7 +803,7 @@ Onderstaande items moeten nog worden afgerond voor de conformiteitsbeoordeling:
 | 3 | Risicobeoordeling minderjarigen (Art. 9(9)) | 4.3 | KRITIEK | Maart 2026 |
 | 4 | Biasbeoordeling per agenttype | 6.2, 4.2 | HOOG | April 2026 |
 | 5 | Nauwkeurigheidsmetrieken definieren en meten | 6.1 | KRITIEK | April 2026 |
-| 6 | Docent-override STEP_COMPLETE | 3.7 | KRITIEK | April 2026 |
+| 6 | Docent-override STEP_COMPLETE | 3.7 | ~~KRITIEK~~ **Afgerond (15 mrt 2026)** | April 2026 |
 | 7 | Docentdashboard monitoring | 3.7 | HOOG | April 2026 |
 | 8 | Noodstop-functionaliteit | 3.7 | HOOG | April 2026 |
 | 9 | Graceful degradation bij Vertex AI-uitval | 4.2 | HOOG | Mei 2026 |
