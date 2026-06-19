@@ -750,7 +750,7 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ user, onUpda
                             }
                             await updateClassroomConfig(user.schoolId, selectedClassId, u);
                             setClassRoomConfig(p => p ? { ...p, ...u } : null);
-                        }} onOpenSchedulingConfig={(user?.role === 'teacher' || user?.role === 'admin' || user?.role === 'developer') ? () => setShowSchedulingConfig(true) : undefined} />{onLogout && <button onClick={onLogout} className="w-full py-4 border-2 border-lab-coral text-lab-coral rounded-2xl font-bold flex items-center justify-center gap-2 hover:bg-lab-coral hover:text-white"><RotateCcw size={18} /> Uitloggen</button>}</PageTransition>}
+                        }} onOpenSchedulingConfig={(user?.role === 'admin' || user?.role === 'developer') ? () => setShowSchedulingConfig(true) : undefined} />{onLogout && <button onClick={onLogout} className="w-full py-4 border-2 border-lab-coral text-lab-coral rounded-2xl font-bold flex items-center justify-center gap-2 hover:bg-lab-coral hover:text-white"><RotateCcw size={18} /> Uitloggen</button>}</PageTransition>}
                         {activeTab === 'games' && <PageTransition key="games"><GamesPanel onOpenGame={onOpenGames || (() => { })} /></PageTransition>}
                         {activeTab === 'ai-beleid' && <PageTransition key="ai-beleid"><div className="bg-white rounded-[2rem] border border-lab-line p-6"><AiBeleidFeedbackPanel classFilter={classFilter !== 'all' ? classFilter : undefined} schoolId={user?.schoolId} /></div></PageTransition>}
                         {activeTab === 'feedback' && <PageTransition key="feedback"><FeedbackPanel schoolId={user?.schoolId} /></PageTransition>}

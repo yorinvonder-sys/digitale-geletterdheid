@@ -1,15 +1,17 @@
 import { useState, useEffect, useCallback } from 'react';
-import { ContainerConfig } from '@/config/containerTypes';
+import { ContainerConfig, SchedulingModel } from '@/config/containerTypes';
 import { getContainersForSchool } from '@/services/containerService';
 
 export function useSchoolContainers(schoolId: string | undefined, yearGroup: number) {
     const [containers, setContainers] = useState<ContainerConfig[]>([]);
+    const [model, setModel] = useState<SchedulingModel>('default');
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
     const refresh = useCallback(async () => {
         if (!schoolId) {
             setContainers([]);
+            setModel('default');
             setLoading(false);
             return;
         }
@@ -19,7 +21,8 @@ export function useSchoolContainers(schoolId: string | undefined, yearGroup: num
 
         try {
             const result = await getContainersForSchool(schoolId, yearGroup);
-            setContainers(result);
+            setContainers(result.containers);
+            setModel(result.model);
         } catch (e) {
             setError(e instanceof Error ? e.message : 'Fout bij laden containers');
         } finally {
@@ -31,5 +34,5 @@ export function useSchoolContainers(schoolId: string | undefined, yearGroup: num
         refresh();
     }, [refresh]);
 
-    return { containers, loading, error, refresh };
+    return { containers, model, loading, error, refresh };
 }

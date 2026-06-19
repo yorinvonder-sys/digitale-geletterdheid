@@ -22,7 +22,8 @@ import { ProgressStrip } from '@/features/dashboard/ProgressStrip';
 import { MissionPreviewVisual } from '@/features/dashboard/MissionPreviewVisual';
 import { STUDENT_DASHBOARD_COLORS, PERIOD_THEME, DEFAULT_PERIOD_THEME, getYearGroupTheme, PERIOD_LEERDOELEN, type YearGroupTheme, type PeriodLeerdoel } from '@/config/dashboardThemes';
 import { MISSION_SCREENSHOTS, MISSION_PREVIEW_OVERRIDES, inferMissionPreviewConfig, missionTagFor, type MissionPreviewKind, type MissionPreviewConfig } from '@/config/missionPreviewConfig';
-import { Mission, MISSION_OVERRIDES, CURRICULUM_MISSION_IDS, getMissionOverride, getMissionTooltipInfo, buildMissionsForPeriod } from '@/utils/missionBuilder';
+import { Mission, MISSION_OVERRIDES, CURRICULUM_MISSION_IDS, getMissionOverride, getMissionTooltipInfo, buildMissionsForPeriod, buildMissionsFromContainer } from '@/utils/missionBuilder';
+import type { SchedulingModel } from '@/config/containerTypes';
 import { PLAYABLE_MISSION_IDS } from '@/features/public-site/demo/demoGalleryConfig';
 
 interface DashboardProps {
@@ -43,6 +44,7 @@ interface DashboardProps {
     focusMode?: boolean;
     userRole?: 'student' | 'teacher' | 'admin' | 'developer'; // For teacher/developer bypass of restrictions
     containers?: ContainerConfig[];
+    schedulingModel?: SchedulingModel;
 }
 
 const FORCE_UNLOCK_ALL_ASSIGNMENTS =
@@ -300,18 +302,20 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
     stats,
     focusMode = false,
     userRole = 'student',
-    containers
+    containers,
+    schedulingModel = 'default',
 }) => {
     // Curriculum-aware variabelen
     const currentYearGroup = activeYearGroup ?? 1;
     const isDeveloper = userRole === 'developer';
+    const isCustomSchedule = schedulingModel === 'custom' && (containers?.length ?? 0) > 0;
     const periodNaming = schoolConfig?.periodNaming || CURRICULUM.defaultPeriodNaming;
     const activeContainer = containers?.find(c => c.sortOrder === activeWeek);
     const containerLabel = activeContainer?.label || `${periodNaming} ${activeWeek}`;
     const yearConfig = getYearConfig(currentYearGroup);
     const currentPeriodConfig = getPeriodConfig(currentYearGroup, activeWeek);
-    const periodTheme = containers?.length
-        ? getContainerThemeDuck(containers.find(c => c.sortOrder === activeWeek)?.colorKey)
+    const periodTheme = isCustomSchedule
+        ? getContainerThemeDuck(activeContainer?.colorKey)
         : (PERIOD_THEME[activeWeek] || DEFAULT_PERIOD_THEME);
     const periodLeerdoel = PERIOD_LEERDOELEN[`${currentYearGroup}-${activeWeek}`];
     const [showXPPopup, setShowXPPopup] = useState(false);
@@ -457,7 +461,9 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
     const [leerdoelenOpen, setLeerdoelenOpen] = useState(isTeacher);
 
     const currentMissions = useMemo(() => {
-        let missions = buildMissionsForPeriod(currentYearGroup, activeWeek);
+        let missions = isCustomSchedule && activeContainer
+            ? buildMissionsFromContainer(activeContainer)
+            : buildMissionsForPeriod(currentYearGroup, activeWeek);
 
         // Teachers and temporary launch preview can see all missions without restrictions.
         if (canBypassMissionLocks) {
@@ -502,12 +508,16 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
             }));
         }
 
-        // 2. Generic review gate: if period has reviewMissions, require them first
-        const pConfig = getPeriodConfig(currentYearGroup, activeWeek);
-        const hasReviewGate = pConfig?.reviewMissions && pConfig.reviewMissions.length > 0;
+        // 2. Generic review gate: if period/container has review missions, require them first
+        const pConfig = isCustomSchedule ? null : getPeriodConfig(currentYearGroup, activeWeek);
+        const hasReviewGate = isCustomSchedule
+            ? (activeContainer?.isReviewGate ?? false) && missions.some(m => m.isReview)
+            : !!(pConfig?.reviewMissions && pConfig.reviewMissions.length > 0);
 
         if (hasReviewGate) {
-            const reviewIds = pConfig!.reviewMissions!;
+            const reviewIds = isCustomSchedule
+                ? missions.filter(m => m.isReview).map(m => m.id)
+                : pConfig!.reviewMissions!;
             const completedMissions = stats?.missionsCompleted || [];
             const allReviewsDone = reviewIds.every(id => {
                 if (id === 'ipad-print-instructies' && stats?.studentClass !== 'MH1A') return true;
@@ -527,7 +537,7 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
         }
 
         return missions;
-    }, [currentYearGroup, activeWeek, stats, permissions, canBypassMissionLocks, periodNaming, userUid]);
+    }, [currentYearGroup, activeWeek, stats, permissions, canBypassMissionLocks, periodNaming, userUid, isCustomSchedule, activeContainer]);
 
     // Stable callbacks for MissionCard memoization (reduces re-renders of mission grid)
     const handleInfoClick = useCallback((info: string, kerndoelen?: SloKerndoelCode[]) => {
@@ -750,24 +760,39 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
                         </div>
                     )}
 
-                    <div className="grid min-w-0 grid-cols-2 gap-2 rounded-full border border-duck-ink/10 bg-white p-1.5 shadow-duck-soft sm:flex-1 sm:grid-cols-4">
-                        {Object.keys(yearConfig?.periods || {}).map(Number).sort((a, b) => a - b).map((period) => {
-                            const pConf = yearConfig?.periods[period];
-                            return (
+                    {isCustomSchedule && containers ? (
+                        <div className="flex min-w-0 flex-wrap gap-2 overflow-x-auto rounded-full border border-duck-ink/10 bg-white p-1.5 shadow-duck-soft sm:flex-1">
+                            {[...containers].sort((a, b) => a.sortOrder - b.sortOrder).map((container) => (
                                 <button
-                                    key={period}
-                                    onClick={() => setActiveWeek(period)}
-                                    title={pConf?.title}
-                                    className={`min-h-[44px] min-w-0 rounded-full px-3 text-sm font-extrabold transition-colors ${activeWeek === period ? 'border border-duck-ink bg-duck-acid text-duck-ink' : 'text-duck-ink/65 hover:bg-duck-bgLight hover:text-duck-ink'}`}
+                                    key={container.id}
+                                    onClick={() => setActiveWeek(container.sortOrder)}
+                                    title={container.label}
+                                    className={`min-h-[44px] min-w-0 flex-shrink-0 rounded-full px-3 text-sm font-extrabold transition-colors ${activeWeek === container.sortOrder ? 'border border-duck-ink bg-duck-acid text-duck-ink' : 'text-duck-ink/65 hover:bg-duck-bgLight hover:text-duck-ink'}`}
                                 >
-                                    <span className="block truncate">{periodNaming} {period}</span>
+                                    <span className="block truncate">{container.label}</span>
                                 </button>
-                            );
-                        })}
-                    </div>
+                            ))}
+                        </div>
+                    ) : (
+                        <div className="grid min-w-0 grid-cols-2 gap-2 rounded-full border border-duck-ink/10 bg-white p-1.5 shadow-duck-soft sm:flex-1 sm:grid-cols-4">
+                            {Object.keys(yearConfig?.periods || {}).map(Number).sort((a, b) => a - b).map((period) => {
+                                const pConf = yearConfig?.periods[period];
+                                return (
+                                    <button
+                                        key={period}
+                                        onClick={() => setActiveWeek(period)}
+                                        title={pConf?.title}
+                                        className={`min-h-[44px] min-w-0 rounded-full px-3 text-sm font-extrabold transition-colors ${activeWeek === period ? 'border border-duck-ink bg-duck-acid text-duck-ink' : 'text-duck-ink/65 hover:bg-duck-bgLight hover:text-duck-ink'}`}
+                                    >
+                                        <span className="block truncate">{periodNaming} {period}</span>
+                                    </button>
+                                );
+                            })}
+                        </div>
+                    )}
                 </div>
 
-                {currentPeriodConfig && (
+                {(isCustomSchedule ? (activeContainer?.sloFocus?.length ?? 0) > 0 : !!currentPeriodConfig) && (
                     <button
                         type="button"
                         onClick={() => setLeerdoelenOpen(!leerdoelenOpen)}
@@ -779,19 +804,24 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
                 )}
             </section>
 
-            {leerdoelenOpen && currentPeriodConfig && (
+            {leerdoelenOpen && (isCustomSchedule ? (activeContainer?.sloFocus?.length ?? 0) > 0 : !!currentPeriodConfig) && (
                 <section className="mb-6 rounded-[1.5rem] border border-duck-ink/10 bg-white p-5 shadow-duck-soft">
                     <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
                         <div>
-                            <h2 className="font-display text-lg text-balance text-duck-ink">Leerdoelen {periodNaming} {activeWeek}</h2>
+                            <h2 className="font-display text-lg text-balance text-duck-ink">Leerdoelen {isCustomSchedule ? activeContainer?.label : `${periodNaming} ${activeWeek}`}</h2>
                             <p className="mt-2 max-w-3xl text-sm font-semibold leading-relaxed text-pretty text-duck-ink/65">
-                                {periodLeerdoel
-                                    ? (stats?.vsoProfile && periodLeerdoel.descriptionVso ? periodLeerdoel.descriptionVso : periodLeerdoel.description)
-                                    : currentPeriodConfig.subtitle}
+                                {isCustomSchedule
+                                    ? (activeContainer?.subtitle || '')
+                                    : (periodLeerdoel
+                                        ? (stats?.vsoProfile && periodLeerdoel.descriptionVso ? periodLeerdoel.descriptionVso : periodLeerdoel.description)
+                                        : currentPeriodConfig!.subtitle)}
                             </p>
                         </div>
                         <div className="flex flex-wrap gap-2">
-                            {(stats?.vsoProfile && currentPeriodConfig.sloFocusVso ? currentPeriodConfig.sloFocusVso : currentPeriodConfig.sloFocus).map(code => (
+                            {(isCustomSchedule
+                                ? (activeContainer?.sloFocus ?? [])
+                                : (stats?.vsoProfile && currentPeriodConfig!.sloFocusVso ? currentPeriodConfig!.sloFocusVso : currentPeriodConfig!.sloFocus)
+                            ).map(code => (
                                 <span key={code} className={`rounded-full border px-2.5 py-1 text-xs font-extrabold ${getKerndoelBadgeClasses(code)}`}>
                                     {code}
                                 </span>

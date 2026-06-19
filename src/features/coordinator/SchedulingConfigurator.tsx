@@ -27,7 +27,6 @@ import { ContainerEditor } from './ContainerEditor';
 import { getMissionsForYear } from '@/config/missions';
 import { SCHEDULING_TEMPLATES, SchedulingTemplate } from '@/config/containerTypes';
 import { getContainerTheme, getAutoTheme } from '@/config/containerThemes';
-import { supabase } from '@/services/supabase';
 
 // ---------------------------------------------------------------------------
 // Props
@@ -42,26 +41,6 @@ interface SchedulingConfiguratorProps {
 // ---------------------------------------------------------------------------
 // Helpers
 // ---------------------------------------------------------------------------
-
-function useSchedulingModel(schoolId: string) {
-    const [model, setModel] = useState<'default' | 'custom' | null>(null);
-    const [loading, setLoading] = useState(true);
-
-    const refresh = useCallback(async () => {
-        setLoading(true);
-        const { data } = await supabase
-            .from('school_configs')
-            .select('*')
-            .eq('school_id', schoolId)
-            .single();
-        setModel(((data as any)?.scheduling_model as 'default' | 'custom') ?? 'default');
-        setLoading(false);
-    }, [schoolId]);
-
-    React.useEffect(() => { refresh(); }, [refresh]);
-
-    return { model, loading, refresh };
-}
 
 // ---------------------------------------------------------------------------
 // SLO Coverage Bar
@@ -326,8 +305,9 @@ export const SchedulingConfigurator: React.FC<SchedulingConfiguratorProps> = ({
     yearGroup,
     onClose,
 }) => {
-    const { model, loading: modelLoading, refresh: refreshModel } = useSchedulingModel(schoolId);
-    const { containers, loading: containersLoading, refresh: refreshContainers } = useSchoolContainers(schoolId, yearGroup);
+    const { containers, model, loading: containersLoading, refresh: refreshContainers } = useSchoolContainers(schoolId, yearGroup);
+    const modelLoading = false; // model is now co-loaded with containers
+    const refreshModel = refreshContainers;
 
     const [deletingId, setDeletingId] = useState<string | null>(null);
     const [adding, setAdding] = useState(false);
