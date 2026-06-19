@@ -2,6 +2,7 @@ import React, { useMemo, useState } from 'react';
 import { LazyAvatarViewer } from '@/features/profile/avatar/LazyAvatarViewer';
 import { AvatarViewer } from '@/features/profile/avatar/AvatarViewer';
 import { AvatarViewer2D } from '@/features/profile/avatar/AvatarViewer2D';
+import { AvatarViewer3DDuck } from '@/features/profile/avatar/AvatarViewer3DDuck';
 import { AvatarConfig, DEFAULT_AVATAR_CONFIG } from '@/types';
 import { AVATAR_HAIR_CATALOG, AVATAR_PET_CATALOG } from '@/config/avatarCatalog';
 
@@ -290,7 +291,10 @@ const DevAvatarPreview: React.FC = () => {
                                         3D Renderer
                                     </div>
                                     <div className="h-[420px] rounded-[1.5rem] overflow-hidden" style={{ backgroundColor: '#f2f1ec', border: '1px solid #E7D8BD' }}>
-                                        <AvatarViewer config={selectedPreset.config} interactive={true} />
+                                        {avatarKind === 'duck'
+                                            ? <AvatarViewer3DDuck config={selectedPreset.config} interactive={true} />
+                                            : <AvatarViewer config={selectedPreset.config} interactive={true} />
+                                        }
                                     </div>
                                 </div>
 

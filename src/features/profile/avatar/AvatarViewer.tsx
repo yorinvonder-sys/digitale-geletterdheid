@@ -1,8 +1,8 @@
-import React, { Suspense, useEffect, useMemo, useRef, memo, useState, useCallback } from 'react';
-import { Canvas, ThreeEvent, useFrame, useThree } from '@react-three/fiber';
-import { OrbitControls, ContactShadows, Environment, Sparkles } from '@react-three/drei';
+import React, { useEffect, useMemo, useRef, memo, useState, useCallback } from 'react';
+import { ThreeEvent, useFrame, useThree } from '@react-three/fiber';
 import * as THREE from 'three';
 import { AvatarConfig } from '@/types';
+import { AvatarScene } from './AvatarScene';
 
 // --- Types ---
 
@@ -13,15 +13,9 @@ interface AvatarViewerProps {
     variant?: 'full' | 'head';
 }
 
-class ThreeErrorBoundary extends React.Component<{ children: React.ReactNode }, { hasError: boolean }> {
-    state = { hasError: false };
-    static getDerivedStateFromError() { return { hasError: true }; }
-    render() { return this.state.hasError ? null : this.props.children; }
-}
-
 // --- Minecraft body dimensions ---
 
-const getBodyDimensions = (baseModel: AvatarConfig['baseModel'], gender?: AvatarConfig['gender']) => {
+export const getBodyDimensions = (baseModel: AvatarConfig['baseModel'], gender?: AvatarConfig['gender']) => {
     const isRobot = baseModel === 'robot';
     const isSlim = baseModel === 'slim';
     const isFemale = gender === 'female';
@@ -43,32 +37,34 @@ const getBodyDimensions = (baseModel: AvatarConfig['baseModel'], gender?: Avatar
     };
 };
 
-const darkenColor = (hex: string, factor: number): string => {
+export const darkenColor = (hex: string, factor: number): string => {
     const c = new THREE.Color(hex);
     c.multiplyScalar(factor);
     return '#' + c.getHexString();
 };
 
 // Shared flat material for Minecraft look
-const mcMat = (color: string, emissive = '#000000', emissiveIntensity = 0) => (
+export const mcMat = (color: string, emissive = '#000000', emissiveIntensity = 0) => (
     <meshStandardMaterial color={color} roughness={0.85} metalness={0} emissive={emissive} emissiveIntensity={emissiveIntensity} />
 );
 
 // --- Face Layer (flat boxes on front of head cube) ---
 
-const FaceLayer = memo<{
+export const FaceLayer = memo<{
     config: AvatarConfig;
     skinColor: string;
     isRobot: boolean;
     eyeGroupRef: React.RefObject<THREE.Group>;
-}>(({ config, skinColor, eyeGroupRef }) => {
+    species?: 'human' | 'duck';
+}>(({ config, skinColor, eyeGroupRef, species = 'human' }) => {
     const expression = config.expression ?? 'happy';
     const eyeColor = config.eyeColor ?? '#08283B';
     const fz = 0.425; // front face z position (outside head cube, enough gap to prevent z-fighting)
+    const isDuck = species === 'duck';
 
     return (
         <group>
-            {/* Eyes */}
+            {/* Eyes — kept for both human and duck */}
             <group ref={eyeGroupRef}>
                 {/* Left eye */}
                 <mesh position={[-0.15, 0.06, fz]}>
@@ -98,8 +94,8 @@ const FaceLayer = memo<{
                     <meshStandardMaterial color="#ffffff" roughness={0.1} />
                 </mesh>
 
-                {/* Female eyelashes */}
-                {config.gender === 'female' && (
+                {/* Female eyelashes — human only */}
+                {!isDuck && config.gender === 'female' && (
                     <group>
                         <mesh position={[-0.15, 0.13, fz + 0.01]}>
                             <boxGeometry args={[0.14, 0.02, 0.01]} />
@@ -113,11 +109,13 @@ const FaceLayer = memo<{
                 )}
             </group>
 
-            {/* Nose */}
-            <mesh position={[0, -0.04, fz]}>
-                <boxGeometry args={[0.06, 0.06, 0.04]} />
-                {mcMat(darkenColor(skinColor, 0.92))}
-            </mesh>
+            {/* Nose — human only (duck has a bill instead) */}
+            {!isDuck && (
+                <mesh position={[0, -0.04, fz]}>
+                    <boxGeometry args={[0.06, 0.06, 0.04]} />
+                    {mcMat(darkenColor(skinColor, 0.92))}
+                </mesh>
+            )}
 
             {/* Cool expression sunglasses (if no glasses/sunglasses accessory) */}
             {expression === 'cool' && config.accessory !== 'sunglasses' && config.accessory !== 'glasses' && (
@@ -127,8 +125,8 @@ const FaceLayer = memo<{
                 </mesh>
             )}
 
-            {/* Mouths */}
-            {expression === 'happy' && (
+            {/* Mouths — human only (duck bill replaces mouth) */}
+            {!isDuck && expression === 'happy' && (
                 <group position={[0, -0.16, fz]}>
                     <mesh position={[-0.08, 0.02, 0]}>
                         <boxGeometry args={[0.04, 0.02, 0.01]} />
@@ -144,29 +142,29 @@ const FaceLayer = memo<{
                     </mesh>
                 </group>
             )}
-            {expression === 'surprised' && (
+            {!isDuck && expression === 'surprised' && (
                 <mesh position={[0, -0.16, fz]}>
                     <boxGeometry args={[0.08, 0.1, 0.01]} />
                     {mcMat('#D97848')}
                 </mesh>
             )}
-            {expression === 'neutral' && (
+            {!isDuck && expression === 'neutral' && (
                 <mesh position={[0, -0.15, fz]}>
                     <boxGeometry args={[0.14, 0.03, 0.01]} />
                     {mcMat('#D97848')}
                 </mesh>
             )}
 
-            {/* Female lips */}
-            {config.gender === 'female' && expression !== 'cool' && (
+            {/* Female lips — human only */}
+            {!isDuck && config.gender === 'female' && expression !== 'cool' && (
                 <mesh position={[0, -0.18, fz + 0.005]}>
                     <boxGeometry args={[0.1, 0.03, 0.01]} />
                     {mcMat('#c9746e')}
                 </mesh>
             )}
 
-            {/* Female blush pixels */}
-            {config.gender === 'female' && (
+            {/* Female blush pixels — human only (these are the pink side blobs on the duck) */}
+            {!isDuck && config.gender === 'female' && (
                 <group>
                     <mesh position={[-0.25, -0.04, fz]}>
                         <boxGeometry args={[0.08, 0.04, 0.01]} />
@@ -188,15 +186,15 @@ const FaceLayer = memo<{
 // Hair sits on/beyond head surface. Front face (z > 0.35) NEVER covered at face level.
 // Shading: top=light, sides/back=dark, crown=base. Consistent across all styles.
 
-type VoxelBlock = [
+export type VoxelBlock = [
     gx: number, gy: number, gz: number, // center position in grid units (×0.10)
     sx: number, sy: number, sz: number, // size in grid units (×0.10)
     shade: 'base' | 'dark' | 'light'
 ];
 
-const V = 0.10; // voxel unit in world coords
+export const V = 0.10; // voxel unit in world coords
 
-function renderVoxelBlocks(
+export function renderVoxelBlocks(
     blocks: VoxelBlock[],
     mat: React.ReactNode,
     matDark: React.ReactNode,
@@ -210,7 +208,7 @@ function renderVoxelBlocks(
     ));
 }
 
-const HairLayer = memo<{ style: string; color: string }>(({ style, color }) => {
+export const HairLayer = memo<{ style: string; color: string }>(({ style, color }) => {
     const mat = <meshStandardMaterial color={color} roughness={0.85} />;
     const matDark = <meshStandardMaterial color={darkenColor(color, 0.8)} roughness={0.85} />;
     const matLight = <meshStandardMaterial color={darkenColor(color, 1.12)} roughness={0.8} />;
@@ -591,7 +589,7 @@ const HairLayer = memo<{ style: string; color: string }>(({ style, color }) => {
 
 // --- Arm color helper ---
 
-const getArmColor = (
+export const getArmColor = (
     shirtStyle: string | undefined,
     shirtColor: string,
     skinColor: string,
@@ -603,7 +601,7 @@ const getArmColor = (
 
 // --- ShirtOverlay: box details on top of torso ---
 
-const ShirtOverlay = memo<{
+export const ShirtOverlay = memo<{
     style: string;
     color: string;
     bodyWidth: number;
@@ -853,7 +851,7 @@ const ShirtOverlay = memo<{
 
 // --- LegsSection: box-based legs ---
 
-const LegsSection = memo<{
+export const LegsSection = memo<{
     pantsStyle: string;
     pantsColor: string;
     shoeColor: string;
@@ -866,11 +864,31 @@ const LegsSection = memo<{
     onClickPants: (e: ThreeEvent<MouseEvent>) => void;
     onPointerEnterPants: (e: ThreeEvent<PointerEvent>) => void;
     onPointerLeave: (e: ThreeEvent<PointerEvent>) => void;
-}>(({ pantsStyle, pantsColor, shoeColor, skinColor, legWidth, legHeight, legSpacing, emissive: emissiveColor, emissiveInt: emissiveIntVal, onClickPants, onPointerEnterPants, onPointerLeave }) => {
+    footShape?: 'boot' | 'web';
+}>(({ pantsStyle, pantsColor, shoeColor, skinColor, legWidth, legHeight, legSpacing, emissive: emissiveColor, emissiveInt: emissiveIntVal, onClickPants, onPointerEnterPants, onPointerLeave, footShape = 'boot' }) => {
     const style = pantsStyle || 'standard';
     const darker = darkenColor(pantsColor, 0.8);
 
     const shoeMat = <meshStandardMaterial color={shoeColor} roughness={0.5} />;
+    const webFootDark = darkenColor(shoeColor, 0.82);
+
+    // Webbed duck foot: flat pad + 3 shallow toe ridges
+    const WebFoot = ({ posY, side }: { posY: number; side: 1 | -1 }) => (
+        <group position={[0, posY, 0.08]}>
+            {/* Main flat pad — wider and flatter than boot */}
+            <mesh>
+                <boxGeometry args={[0.30, 0.06, 0.42]} />
+                {shoeMat}
+            </mesh>
+            {/* Toe ridges */}
+            {[-0.08, 0, 0.08].map((rx, ri) => (
+                <mesh key={ri} position={[rx * side, 0.025, 0.10]}>
+                    <boxGeometry args={[0.05, 0.02, 0.12]} />
+                    <meshStandardMaterial color={webFootDark} roughness={0.6} />
+                </mesh>
+            ))}
+        </group>
+    );
 
     if (style === 'skirt' || style === 'pleated') {
         const skirtWidth = legSpacing * 2 + legWidth + 0.15;
@@ -901,10 +919,16 @@ const LegsSection = memo<{
                             <boxGeometry args={[legWidth * 0.8, 0.15, legWidth * 0.8]} />
                             {mcMat(skinColor)}
                         </mesh>
-                        <mesh position={[x, -0.365, 0.02]}>
-                            <boxGeometry args={[legWidth + 0.04, 0.1, legWidth + 0.06]} />
-                            {shoeMat}
-                        </mesh>
+                        {footShape === 'web' ? (
+                            <group position={[x, 0, 0]}>
+                                <WebFoot posY={-0.365} side={i === 0 ? -1 : 1} />
+                            </group>
+                        ) : (
+                            <mesh position={[x, -0.365, 0.02]}>
+                                <boxGeometry args={[legWidth + 0.04, 0.1, legWidth + 0.06]} />
+                                {shoeMat}
+                            </mesh>
+                        )}
                     </group>
                 ))}
             </group>
@@ -930,10 +954,14 @@ const LegsSection = memo<{
                             <boxGeometry args={[legWidth * 0.9, 0.28, legWidth * 0.9]} />
                             {mcMat(skinColor)}
                         </mesh>
-                        <mesh position={[0, -0.365, 0.02]}>
-                            <boxGeometry args={[legWidth + 0.04, 0.1, legWidth + 0.06]} />
-                            {shoeMat}
-                        </mesh>
+                        {footShape === 'web' ? (
+                            <WebFoot posY={-0.365} side={i === 0 ? -1 : 1} />
+                        ) : (
+                            <mesh position={[0, -0.365, 0.02]}>
+                                <boxGeometry args={[legWidth + 0.04, 0.1, legWidth + 0.06]} />
+                                {shoeMat}
+                            </mesh>
+                        )}
                     </group>
                 ))}
             </group>
@@ -995,11 +1023,15 @@ const LegsSection = memo<{
                         </mesh>
                     )}
 
-                    {/* Shoe */}
-                    <mesh position={[0, -(legHeight / 2 + 0.04), 0.02]}>
-                        <boxGeometry args={[legWidth + 0.04, 0.1, legWidth + 0.06]} />
-                        {shoeMat}
-                    </mesh>
+                    {/* Shoe / webbed foot */}
+                    {footShape === 'web' ? (
+                        <WebFoot posY={-(legHeight / 2 + 0.04)} side={i === 0 ? -1 : 1} />
+                    ) : (
+                        <mesh position={[0, -(legHeight / 2 + 0.04), 0.02]}>
+                            <boxGeometry args={[legWidth + 0.04, 0.1, legWidth + 0.06]} />
+                            {shoeMat}
+                        </mesh>
+                    )}
                 </group>
             ))}
         </group>
@@ -1008,12 +1040,12 @@ const LegsSection = memo<{
 
 // --- Accessory Layer (box-based) ---
 
-const HEAD_ACCESSORIES = new Set([
+export const HEAD_ACCESSORIES = new Set([
     'cap', 'beanie', 'bandana', 'glasses', 'sunglasses',
     'headphones', 'earbuds', 'crown', 'halo', 'crown_gold',
 ]);
 
-const AccessoryLayer = memo<{
+export const AccessoryLayer = memo<{
     accessory: AvatarConfig['accessory'];
     color: string;
     gender: AvatarConfig['gender'];
@@ -2066,133 +2098,20 @@ const AvatarModel = memo<{
     );
 });
 
-// --- Background ---
-
-const SceneSurface = memo<{ variant: 'full' | 'head' }>(({ variant }) => {
-    const { gl, scene } = useThree();
-    const bgColor = useMemo(() => new THREE.Color('#FCF6EA'), []);
-
-    useEffect(() => {
-        if (variant === 'head') {
-            gl.setClearColor('#000000', 0);
-            scene.background = null;
-        } else {
-            gl.setClearColor(bgColor, 1);
-            scene.background = bgColor;
-        }
-    }, [gl, scene, variant, bgColor]);
-
-    return null;
-});
-
 // --- Main Component ---
 
 export const AvatarViewer: React.FC<AvatarViewerProps> = ({
     config, interactive = true, onPartClick, variant = 'full',
 }) => {
-    const cameraPos = useMemo<[number, number, number]>(
-        () => (variant === 'head' ? [0, 0.5, 2.1] : [0, 0.85, 5.8]),
-        [variant]
-    );
-
     return (
-        <div className={`w-full h-full relative ${variant === 'head' ? '' : 'min-h-[300px]'}`} style={{ backgroundColor: variant === 'full' ? '#FCF6EA' : 'transparent' }}>
-            <Canvas
-                style={{ background: variant === 'full' ? '#FCF6EA' : 'transparent' }}
-                className={variant === 'full' ? 'bg-[#FCF6EA]' : 'bg-transparent'}
-                shadows={{ type: THREE.PCFSoftShadowMap }}
-                gl={{
-                    alpha: true,
-                    antialias: true,
-                    toneMapping: THREE.ACESFilmicToneMapping,
-                    toneMappingExposure: 1.15,
-                    outputColorSpace: THREE.SRGBColorSpace,
-                    powerPreference: 'high-performance',
-                }}
-                onCreated={({ gl, scene }) => {
-                    if (variant === 'full') {
-                        const bg = new THREE.Color('#FCF6EA');
-                        gl.setClearColor(bg, 1);
-                        scene.background = bg;
-                    } else {
-                        gl.setClearColor('#000000', 0);
-                        scene.background = null;
-                    }
-                }}
-                dpr={[1, 1.5]}
-                camera={{ position: cameraPos, fov: 45 }}
-            >
-                <SceneSurface variant={variant} />
-                <ambientLight intensity={0.4} color="#fff8f0" />
-                <hemisphereLight color="#f5e6d0" groundColor="#f0ebe0" intensity={0.55} />
-                <directionalLight
-                    position={[4, 8, 4]}
-                    intensity={1.5}
-                    color="#fff5ee"
-                    castShadow
-                    shadow-mapSize-width={1024}
-                    shadow-mapSize-height={1024}
-                    shadow-camera-near={0.1}
-                    shadow-camera-far={20}
-                    shadow-camera-left={-4}
-                    shadow-camera-right={4}
-                    shadow-camera-top={6}
-                    shadow-camera-bottom={-2}
-                    shadow-bias={-0.0005}
-                />
-                <directionalLight position={[-3, 2, -4]} intensity={0.3} color="#D97848" />
-                <pointLight position={[0, -1, 2]} intensity={0.15} color="#fff0e0" />
-
-                <ThreeErrorBoundary>
-                    <Suspense fallback={null}>
-                        <Environment preset="sunset" />
-                    </Suspense>
-                </ThreeErrorBoundary>
-
-                <AvatarModel
-                    config={config}
-                    variant={variant}
-                    onPartClick={onPartClick}
-                    interactive={interactive}
-                />
-
-                {variant === 'full' && (
-                    <mesh position={[0, -0.15, 0]} rotation={[-Math.PI / 2, 0, 0]}>
-                        <boxGeometry args={[2.4, 2.4, 0.06]} />
-                        <meshStandardMaterial color="#E7D8BD" roughness={0.9} metalness={0} polygonOffset polygonOffsetFactor={4} polygonOffsetUnits={4} />
-                    </mesh>
-                )}
-
-                <ContactShadows
-                    position={[0, -0.13, 0]}
-                    opacity={0.3}
-                    scale={2.2}
-                    blur={2.5}
-                    far={2}
-                    frames={1}
-                    color="#4A2518"
-                />
-
-                {variant === 'full' && (
-                    <Sparkles
-                        count={15}
-                        scale={[4, 5, 4]}
-                        size={2}
-                        speed={0.3}
-                        opacity={0.3}
-                        color="#D97848"
-                    />
-                )}
-
-                <OrbitControls
-                    enablePan={false}
-                    enableZoom={variant === 'full'}
-                    minPolarAngle={Math.PI / 3}
-                    maxPolarAngle={Math.PI / 1.5}
-                    target={variant === 'head' ? [0, 0.5, 0] : [0, 1.0, 0]}
-                />
-            </Canvas>
-        </div>
+        <AvatarScene variant={variant}>
+            <AvatarModel
+                config={config}
+                variant={variant}
+                onPartClick={onPartClick}
+                interactive={interactive}
+            />
+        </AvatarScene>
     );
 };
 
