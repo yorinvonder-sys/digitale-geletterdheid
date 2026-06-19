@@ -192,6 +192,7 @@ De AVG schrijft voor dat wij voor elke verwerking een wettelijke grondslag moete
 |---|---|---|
 | **Publieke taak** (Art. 6(1)(e) AVG) | Leerlinggegevens voor het leerproces | Scholen hebben een wettelijke taak om onderwijs te verzorgen. Het verwerken van leerlinggegevens is hiervoor noodzakelijk. |
 | **Gerechtvaardigd belang** (Art. 6(1)(f) AVG) | Beveiliging, misbruikpreventie | Het platform moet veilig zijn. Daarvoor zijn technische loggegevens nodig. |
+| **Vitaal belang** (Art. 9(2)(c) + 6(1)(d) AVG) | Crisissignalen in de chat (welzijnsprotocol) | Herkent de AI signalen van acute nood (bijv. suïcidaliteit, misbruik), dan verwijst hij direct door naar hulp om de leerling te beschermen. Deze signalen worden niet opgeslagen. |
 
 ### 7.2 Wanneer DGSkills verwerkingsverantwoordelijke is
 
@@ -201,6 +202,12 @@ De AVG schrijft voor dat wij voor elke verwerking een wettelijke grondslag moete
 | **Uitvoering overeenkomst** (Art. 6(1)(b) AVG) | Leveren van de dienst aan de school | Nodig om het contract met de school na te komen. |
 | **Gerechtvaardigd belang** (Art. 6(1)(f) AVG) | Websitebeveiliging, klantenservice | Noodzakelijk voor een veilige en betrouwbare dienstverlening. |
 | **Wettelijke verplichting** (Art. 6(1)(c) AVG) | Bewaren van audit-logboek, boekhouding | Wij zijn wettelijk verplicht bepaalde gegevens te bewaren. |
+
+### 7.3 Welzijnssignalen en de Meldcode
+
+Herkent de AI signalen van nood, dan toont DGSkills uitsluitend een directe doorverwijzing naar hulp (Kindertelefoon 0800-0432; 113 Zelfmoordpreventie). DGSkills slaat deze signalen **niet** op en gebruikt ze niet voor profilering. De wettelijke **Meldcode huiselijk geweld en kindermishandeling** ligt bij de school; DGSkills neemt die niet over. Bij (vermoedens van) mishandeling verloopt de melding via de school naar **Veilig Thuis (0800-2000)**.
+
+_Deze grondslag is een concept; een juridische toets wordt aanbevolen._
 
 ---
 

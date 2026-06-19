@@ -429,6 +429,16 @@ Na implementatie van alle maatregelen resteert een **midden restrisico** voor R0
 
 Alle overige risico's worden na maatregelen als **laag** beoordeeld.
 
+### Rechtsgrondslag welzijnsprotocol (crisissignalen)
+
+> Status: concept — juridische toets aanbevolen (`/dgskills-jurist-check`). Dit documenteert de grondslag van het bestaande, data-minimaliserende welzijnsprotocol; er is geen gedragswijziging in de applicatie.
+
+Het welzijnsprotocol laat de AI **transient** reageren op signalen van nood (suïcidaliteit, misbruik, ernstig pesten) met een directe doorverwijzing (Kindertelefoon 0800-0432; 113 Zelfmoordpreventie). Er worden **geen** crisissignalen opgeslagen, geprofileerd of als beslissing vastgelegd.
+
+- **EU AI Act (Art. 5(1)(f)):** Het verbod op emotieherkenning in het onderwijs betreft systemen die emoties afleiden **op basis van biometrische gegevens** (Art. 3(39)). Het welzijnsprotocol analyseert uitsluitend **tekst** en is daarmee geen emotieherkenningssysteem in de zin van de AI Act. Voor zover dit anders zou worden uitgelegd, geldt de uitdrukkelijke uitzondering voor **"safety reasons"** (uitsluitend bescherming van de leerling). → toegestaan.
+- **AVG-grondslag:** Crisissignalen kunnen bijzondere (gezondheids)gegevens raken (Art. 9). Bij acuut gevaar is de grondslag **vitaal belang** (Art. 9(2)(c) jo. Art. 6(1)(d) AVG) — van toepassing wanneer de betrokkene fysiek/mentaal niet in staat is toestemming te geven en er acuut gevaar dreigt (vgl. richtsnoer Autoriteit Persoonsgegevens). De bredere inzet valt onder de **publieke taak** van de school (Art. 6(1)(e)). De **transient** opzet (geen opslag/profilering) waarborgt data-minimalisatie (Art. 5(1)(c)).
+- **Verhouding tot de wettelijke Meldcode:** De Meldcode huiselijk geweld en kindermishandeling rust op de **school** (verwerkingsverantwoordelijke / onderwijsprofessional), níét op DGSkills (verwerker). DGSkills levert uitsluitend de directe doorverwijzing en neemt de Meldcode **niet over**; de school blijft verantwoordelijk voor het doorlopen van de Meldcode-stappen en een eventuele melding bij **Veilig Thuis (0800-2000)** bij (vermoedens van) mishandeling. Aanbevolen: leg in de verwerkersovereenkomst/onboarding vast hoe welzijnssignalen binnen de school-route worden opgepakt (sluit aan op restrisico **R05**, aanbeveling **A12** en punt 2 hierboven).
+
 ---
 
 ## 10. Rechten van betrokkenen
