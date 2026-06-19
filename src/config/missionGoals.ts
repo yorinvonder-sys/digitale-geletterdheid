@@ -239,6 +239,15 @@ export const MISSION_GOALS: Record<string, MissionGoal> = {
         },
         evidence: 'Je kunt minimaal drie phishing-signalen aanwijzen en een veilige vervolgstap kiezen.',
     },
+    'access-control-engineer': {
+        primaryGoal: 'Ik beveilig het schoolsysteem door onveilige toegangsregels te vinden, te verbeteren en te testen.',
+        criteria: {
+            type: 'steps-complete',
+            min: 3,
+            description: 'Problemen vinden, veilige regels bouwen en testscenario\'s doorstaan.',
+        },
+        evidence: 'Gevonden risico\'s, aangepaste regels en geslaagde toegangstesten.',
+    },
     'phishing-fighter': {
         primaryGoal: 'Ik herken phishing-aanvallen en adviseer anderen over de veiligste reactie.',
         criteria: {
