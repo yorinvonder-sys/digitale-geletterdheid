@@ -2,7 +2,9 @@
 import React, { useState } from 'react';
 import { Rocket, MessageSquare, Target, Trophy, ChevronRight, ChevronLeft, Brain, Sparkles, Zap, CheckCircle, Play } from 'lucide-react';
 import { DuckMascot } from '@/components/brand/DuckMascot';
+import { KeesMessage } from '@/components/brand/KeesMessage';
 import { duckUi } from '@/config/duckUi';
+import { KEES_INTRO } from '@/config/keesVoice';
 
 interface StudentOnboardingProps {
     onComplete: () => void;
@@ -145,10 +147,15 @@ export const StudentOnboarding: React.FC<StudentOnboardingProps> = ({ onComplete
             <div className="relative z-10 h-full flex flex-col items-center justify-center p-6 md:p-12 pt-20 md:pt-24 overflow-y-auto">
                 <div className="max-w-lg md:max-w-xl lg:max-w-2xl w-full flex flex-col items-center">
 
-                    {/* Mascot op welkomstscherm — acid vlak met DuckMascot */}
+                    {/* Mascot op welkomstscherm — Kees stelt zichzelf voor */}
                     {step.showMascot ? (
-                        <div className="mx-auto mb-6 w-24 h-24 md:w-28 md:h-28 bg-duck-acid rounded-[1.5rem] flex items-center justify-center shadow-duck-soft shrink-0">
-                            <DuckMascot className="w-16 h-16 md:w-20 md:h-20" />
+                        <div className="mb-6 w-full max-w-sm mx-auto shrink-0">
+                            <KeesMessage
+                                message={KEES_INTRO}
+                                mood="wave"
+                                layout="stacked"
+                                duckClassName="w-16 h-16 md:w-20 md:h-20"
+                            />
                         </div>
                     ) : (
                         <div className="mx-auto mb-6 w-20 h-20 md:w-24 md:h-24 bg-duck-acid rounded-3xl flex items-center justify-center text-duck-ink shadow-duck-soft shrink-0">
