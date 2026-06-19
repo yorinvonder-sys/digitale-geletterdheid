@@ -75,6 +75,18 @@ const config: ToolGuideConfig = {
                 { id: 'cta-concreet', label: 'Mijn CTA is concreet — de lezer weet precies wat te doen' },
                 { id: 'cta-positie', label: 'De CTA staat onderaan op de flyer als het meest opvallende element' },
             ],
+            verificationQuestion: {
+                question: 'Je wilt een foto van een klasgenoot op je flyer zetten. De foto staat al openbaar op Instagram. Wat moet je doen?',
+                options: [
+                    'Niets — de foto is al openbaar',
+                    'Eerst toestemming vragen aan de persoon op de foto',
+                    'De foto wazig maken zodat niemand het herkent',
+                    'De flyer alleen digitaal verspreiden, niet op papier',
+                ],
+                correctIndex: 1,
+                explanation:
+                    'Openbaar betekent niet vrij te gebruiken — dit leerde je in Periode 3. Vraag altijd toestemming voordat je iemands foto gebruikt.',
+            },
         },
         {
             id: 'stap-4-ontwerp',
@@ -88,6 +100,8 @@ const config: ToolGuideConfig = {
                 { id: 'twee-lettertypes', label: 'Ik gebruik maximaal 2 verschillende lettertypen' },
                 { id: 'cta-onderaan', label: 'De call to action staat onderaan en valt direct op' },
             ],
+            teacherCheck:
+                'Laat je echte flyer aan je docent zien. De docent controleert: de flyer is leesbaar, de kop is het grootst, de call to action valt op, en er staan geen foto\'s of namen van anderen op zonder toestemming.',
             verificationQuestion: {
                 question: 'Wat is de "gouden regel" van visuele hiërarchie op een flyer?',
                 options: [
@@ -129,6 +143,7 @@ const config: ToolGuideConfig = {
         'Je snapt wat een call to action is en hoe je mensen activeert',
         'Je kunt een flyer visueel indelen met de juiste hiërarchie',
         'Je begrijpt waarom minder tekst en witruimte een flyer sterker maakt',
+        'Je weet dat je toestemming nodig hebt voordat je iemands foto op een flyer gebruikt.',
     ],
 };
 
