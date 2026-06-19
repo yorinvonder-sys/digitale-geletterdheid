@@ -75,7 +75,7 @@ Dit rapport documenteert de audit van alle AI-integraties in de DGSkills edge fu
   - Data URL prefix wordt veilig gestript met MIME type extractie
   - possibleLabels: optioneel, max 20 items, max 50 tekens per label, HTML/template chars gestript
 - **Prompt injection preventie:** Client-verstuurd `prompt` veld wordt **volledig genegeerd**. Server-side prompt altijd bepalend.
-- **Safety settings:** `BLOCK_LOW_AND_ABOVE` voor alle 4 harm categorien
+- **AI-moderatie (provider):** Mistral `safe_prompt`-guardrail — instructie-gebaseerde veiligheids-systeemprompt (geen categorie-drempels)
 - **Content moderatie:** Server-side prompt instrueert model om "ONGEPAST" te retourneren bij ongepaste tekeningen
 - **Response validatie:** Strict schema check op guesses array en confidence scores
 
@@ -125,7 +125,7 @@ Alle drie volgen hetzelfde patroon:
 | EU AI Act Art. 12 (Logging) | DEELS | chat heeft logging; nieuwe functies nog niet |
 | EU AI Act Art. 14 (Human Oversight) | N/A | Nieuwe functies genereren geen beoordelingen van leerresultaten |
 | AVG Data Minimalisatie | CONFORM | Geen PII in prompts, server-side verwerking |
-| Kindveiligheid | CONFORM | Safety prefixes, BLOCK_LOW_AND_ABOVE, output filtering |
+| Kindveiligheid | CONFORM | Mistral `safe_prompt`-guardrail, server-side prompt-instructies, output-filtering |
 
 ---
 

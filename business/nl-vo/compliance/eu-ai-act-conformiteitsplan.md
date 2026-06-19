@@ -81,7 +81,7 @@ Een continu, iteratief risicobeheerssysteem dat gedurende de gehele levenscyclus
 
 **Huidige status: NIET VOLDAAN**
 
-DGSkills heeft individuele technische maatregelen (prompt injection bescherming, safety settings, welzijnsprotocol) maar geen formeel, gedocumenteerd risicobeheerssysteem.
+DGSkills heeft individuele technische maatregelen (prompt injection bescherming, Mistral `safe_prompt`-guardrail, output-filter voor minderjarigen, welzijnsprotocol) maar geen formeel, gedocumenteerd risicobeheerssysteem.
 
 **Concrete acties:**
 
@@ -89,7 +89,7 @@ DGSkills heeft individuele technische maatregelen (prompt injection bescherming,
 |---|-------|---------------|------------|
 | 9.1 | Opstellen risicoregister met alle geidentificeerde risico's per agent en functionaliteit | 2 weken | KRITIEK |
 | 9.2 | Risicobeoordeling voor misbruikscenario's (XP-farming, ongeschikte content, manipulatie, datalekkage) | 1 week | KRITIEK |
-| 9.3 | Documenteren bestaande maatregelen als risicobeperkend (prompt sanitizer, safety settings, welzijnsprotocol, rate limiting) | 1 week | KRITIEK |
+| 9.3 | Documenteren bestaande maatregelen als risicobeperkend (prompt sanitizer, Mistral `safe_prompt`-guardrail, output-filter, welzijnsprotocol, rate limiting) | 1 week | KRITIEK |
 | 9.4 | Specifieke risicobeoordeling voor minderjarigen (Art. 9(9)) | 1 week | KRITIEK |
 | 9.5 | Restrisico-analyse: welke risico's blijven bestaan na maatregelen? | 3 dagen | HOOG |
 | 9.6 | Procedure voor continue risico-evaluatie en bijwerking van het register | 2 dagen | HOOG |
@@ -269,7 +269,7 @@ Aandachtspunten:
 
 Sterk:
 - Defense-in-depth prompt injection bescherming (client + server, zie `promptSanitizer.ts`)
-- AI-provider veiligheidsinstellingen op maximaal restrictief niveau
+- Mistral `safe_prompt`-guardrail + server-side output-filter voor minderjarigen
 - XP-farming detectie in system instructions
 - CORS-beperking op edge functions
 - JWT authenticatie
@@ -509,7 +509,7 @@ De conformiteitsbeoordelingsprocedure op basis van interne controle omvat drie o
 **Quick wins in maart:**
 - Correctie classificatie in audit-report.md (1 uur)
 - Contactgegevens invullen in privacy-documenten (2 uur)
-- Documenteer bestaande maatregelen (promptSanitizer, safetySettings, welzijnsprotocol) als onderdeel van risicobeheersysteem
+- Documenteer bestaande maatregelen (promptSanitizer, Mistral `safe_prompt`, outputFilter, welzijnsprotocol) als onderdeel van risicobeheersysteem
 
 #### FASE 2: IMPLEMENTATIE (April 2026)
 
@@ -637,7 +637,7 @@ De conformiteitsbeoordelingsprocedure op basis van interne controle omvat drie o
 **Wat DGSkills moet doen:**
 - Documenteer de afhankelijkheid van Mistral AI en Black Forest Labs in de technische documentatie
 - Documenteer welke informatie de AI-provider verstrekt over het model (Art. 53 verplichtingen van de GPAI-aanbieder)
-- Implementeer eigen safeguards bovenop de AI-provider (reeds gedaan: safety settings, prompt sanitizer, welzijnsprotocol)
+- Implementeer eigen safeguards bovenop de AI-provider (reeds gedaan: server-side prompt-injectiefilter, output-filter voor minderjarigen, welzijnsprotocol; provider-side: Mistral `safe_prompt`-guardrail)
 - Monitor model-updates van de AI-provider en test de impact op DGSkills-functionaliteit
 - ~~Leg contractueel vast dat de AI-provider aan GPAI-verplichtingen voldoet~~ **TE VERIFIËREN:** Mistral AI DPA met EU SCC's (Besluit 2021/914); Black Forest Labs: ISO 27001 / SOC 2 Type II — ondertekende DPA's te verifiëren. Dataretentie en training-opt-out te verifiëren.
 

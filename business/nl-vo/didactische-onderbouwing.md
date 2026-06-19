@@ -214,7 +214,7 @@ Als een leerling aangeeft persoonlijke ervaring te hebben met het onderwerp, sto
 
 ### Content safety
 
-Het platform gebruikt Mistral AI (tekst, vision en OCR) en Black Forest Labs (beeldgeneratie) als AI-modellen, geconfigureerd met strikte veiligheidsinstellingen. Dit betekent dat zelfs milde ongewenste content — geweld, seksueel materiaal, haatspraak, gevaarlijke instructies — wordt geblokkeerd voordat het de leerling bereikt.
+Het platform gebruikt Mistral AI (tekst, vision en OCR) en Black Forest Labs (beeldgeneratie) als AI-modellen, met meerdere veiligheidslagen: een server-side prompt-injectiefilter, Mistral's `safe_prompt`-guardrail (die het model wegstuurt van schadelijke, onethische of ongepaste output) en een output-filter dat schadelijke inhoud — zoals zelfbeschadiging, grooming, wapens of drugs — blokkeert voordat het de leerling bereikt.
 
 ### Privacy en gegevensbescherming
 

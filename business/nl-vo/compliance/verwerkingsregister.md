@@ -73,11 +73,11 @@
 | | - Chatberichten (vrije tekst, ingevoerd door gebruiker) |
 | | - Conversatiegeschiedenis (history-array, tijdelijk in geheugen) |
 | | - Systeeminstructie (lescontext, geen persoonsgegevens) |
-| **Bijzondere categorie** | Niet van toepassing. Prompt-injectiefilter en safety-settings blokkeren sensitieve content actief (BLOCK_LOW_AND_ABOVE voor alle schadecategorieen) |
+| **Bijzondere categorie** | Niet van toepassing. Server-side prompt-injectiefilter, Mistral's `safe_prompt`-guardrail en een output-filter voor minderjarigen blokkeren sensitieve content actief |
 | **Ontvangers / subverwerkers** | Mistral AI (tekst, vision en OCR; `api.mistral.ai`) en Black Forest Labs (beeldgeneratie; `api.eu.bfl.ai`, EU-endpoint) |
 | **Doorgifte buiten EU/EER** | AI-promptverwerking vindt plaats in de EU (Mistral: Frankrijk; Black Forest Labs: EU-endpoint api.eu.bfl.ai). Mistral AI SAS is in Frankrijk gevestigd (EU-verwerking); Black Forest Labs, Inc. is een VS-onderneming die haar EU-endpoint gebruikt. Juridische grondslag: Mistral AI DPA met EU SCC's (Besluit 2021/914); Black Forest Labs: ISO 27001 / SOC 2 Type II -- ondertekende DPA's te verifiëren |
 | **Bewaartermijn** | Chatberichten worden NIET opgeslagen in de DGSkills-database. Data bestaat uitsluitend in het werkgeheugen van de edge function tijdens de request (verwerking duurt seconden). Dataretentie bij de AI-subverwerker te verifiëren (Mistral: standaard tot 30 dagen abuse-monitoring; Zero Data Retention optioneel, plan-afhankelijk). Geen training op leerlingdata (training-opt-out te verifiëren -- Mistral biedt opt-out; standaard opt-out op Scale-plan) |
-| **Technische maatregelen** | Server-side proxy (server-side API-key (Supabase secret), niet in client bundle); JWT-verificatie; server-side prompt-injectiefilter (sanitizePrompt); strikte safety settings voor minderjarigen; CORS-beperking tot dgskills.app; rate limiting (429); geen logging van chatinhoud |
+| **Technische maatregelen** | Server-side proxy (server-side API-key (Supabase secret), niet in client bundle); JWT-verificatie; server-side prompt-injectiefilter (sanitizePrompt); Mistral's `safe_prompt`-guardrail + output-filter voor minderjarigen; CORS-beperking tot dgskills.app; rate limiting (429); geen logging van chatinhoud |
 
 ---
 
@@ -388,7 +388,7 @@
 
 | Doorgifte | Subverwerker | Land | Grondslag | Aanvullende waarborgen |
 |:---|:---|:---|:---|:---|
-| AI-tekst/vision/OCR | Mistral AI SAS | Frankrijk (EU) | Mistral AI DPA + EU SCC's (Besluit 2021/914) | EU-verwerking (`api.mistral.ai`); dataretentie te verifiëren (Mistral: standaard tot 30 dagen abuse-monitoring; Zero Data Retention optioneel, plan-afhankelijk); geen training op leerlingdata (training-opt-out te verifiëren -- Mistral biedt opt-out; standaard opt-out op Scale-plan); server-side API-key; safety settings |
+| AI-tekst/vision/OCR | Mistral AI SAS | Frankrijk (EU) | Mistral AI DPA + EU SCC's (Besluit 2021/914) | EU-verwerking (`api.mistral.ai`); dataretentie te verifiëren (Mistral: standaard tot 30 dagen abuse-monitoring; Zero Data Retention optioneel, plan-afhankelijk); geen training op leerlingdata (training-opt-out te verifiëren -- Mistral biedt opt-out; standaard opt-out op Scale-plan); server-side API-key; `safe_prompt`-guardrail |
 | AI-beeldgeneratie | Black Forest Labs, Inc. | VS, via EU-endpoint `api.eu.bfl.ai` | ISO 27001 / SOC 2 Type II -- ondertekende DPA te verifiëren | Verwerking via EU-endpoint `api.eu.bfl.ai`; server-side API-key |
 | Webhosting | Vercel Inc. | VS / wereldwijd | SCC (EU Standard Contractual Clauses) | Vercel DPA; edge-routing kan EU-lokaal zijn |
 | Database & Auth | Supabase Inc. | VS (bedrijf) | SCC | Data opgeslagen in EU-regio (Frankfurt); Supabase DPA |
@@ -426,7 +426,7 @@
 | **Cascade-delete** | ON DELETE CASCADE op alle 28 foreign keys die verwijzen naar `public.users(id)` -- volledige gegevensverwijdering bij accountdeletie |
 | **API-beveiliging** | CORS-beperking tot dgskills.app; API-keys als server-side secrets (nooit in client bundle); service_role key alleen server-side |
 | **Input-sanitisatie** | Server-side prompt-injectiefilter (sanitizePrompt); inputvalidatie en -truncatie op alle formulieren; honeypot-velden tegen bots |
-| **AI-veiligheid** | Safety settings op BLOCK_LOW_AND_ABOVE voor alle schadecategorieen (minderjarigenbescherming); server-side proxy (server-side API-key (Supabase secret), credentials niet blootgesteld) |
+| **AI-veiligheid** | Mistral's `safe_prompt`-guardrail + server-side output-filter voor minderjarigen; server-side proxy (server-side API-key (Supabase secret), credentials niet blootgesteld) |
 | **Rate limiting** | IP-gebaseerde rate limiting op pilot-aanvragen (3/min); AI-provider rate limiting (429 propagatie) |
 | **Geautomatiseerde opschoning** | pg_cron jobs voor bewaartermijnen (zie sectie 5) |
 | **Verwerkingsbeperking** | `processing_restricted` vlag op gebruikersprofiel (Art. 18 AVG); index voor snelle filtering |
@@ -454,7 +454,7 @@
 | **Rechtsgrondslag** | Verwerking van leerlinggegevens op basis van publieke taak van de school (Art. 6(1)(e)), niet op basis van toestemming van de minderjarige zelf |
 | **Schoolverantwoordelijkheid** | De school is verwerkingsverantwoordelijke en beslist over inzet van DGSkills; ouderlijke betrokkenheid verloopt via de school |
 | **Dataminimalisatie** | Alleen strikt noodzakelijke gegevens voor het leerproces; geen BSN, adres, geboortedatum of andere niet-noodzakelijke gegevens |
-| **Inhoudsbescherming** | AI safety settings op maximaal beschermingsniveau (BLOCK_LOW_AND_ABOVE) voor alle schadecategorieen; server-side content filtering |
+| **Inhoudsbescherming** | Mistral's `safe_prompt`-guardrail (provider-side) + server-side output-filter voor minderjarigen; server-side input-/outputfiltering |
 | **Geen commercieel gebruik** | Geen advertenties, geen profilering, geen doorverkoop van leerlinggegevens |
 | **Self-service rechten** | Leerlingen kunnen zelf hun data exporteren en account verwijderen (met uitleg in begrijpelijke taal) |
 | **Beperkte bewaartermijnen** | Automatische opschoning van activiteitsdata na 1 jaar; efemere data na uren/dagen |

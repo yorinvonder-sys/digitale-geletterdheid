@@ -183,7 +183,7 @@ Moet bevatten:
 
 **Oorspronkelijke bevinding:** In `supabase/functions/chat/index.ts` werd de Gemini API aangeroepen ZONDER expliciete `safetySettings`.
 
-**Status:** Safety settings zijn geconfigureerd. De huidige AI-verwerkers zijn **Mistral AI (tekst, vision en OCR)** en **Black Forest Labs (beeldgeneratie)**; alle AI-calls lopen server-side via Supabase Edge Functions. Authenticatie verloopt via een server-side API-key (Supabase secret). LET OP: Mistral vereist minimaal 13 jaar en ouderlijke/voogd-toestemming voor minderjarigen — aandachtspunt voor 12-jarigen; te verifiëren met de schoolconsent-flow.
+**Status:** Opgelost. De huidige AI-verwerkers zijn **Mistral AI (tekst, vision en OCR)** en **Black Forest Labs (beeldgeneratie)**; alle AI-calls lopen server-side via Supabase Edge Functions. Content-moderatie verloopt via Mistral's `safe_prompt`-guardrail, een server-side prompt-injectiefilter en een output-filter voor minderjarigen (zelfbeschadiging, grooming, wapens, drugs → doorverwijzing Kindertelefoon). Authenticatie verloopt via een server-side API-key (Supabase secret). LET OP: Mistral vereist minimaal 13 jaar en ouderlijke/voogd-toestemming voor minderjarigen — aandachtspunt voor 12-jarigen; te verifiëren met de schoolconsent-flow.
 
 ### KRITIEKE BEVINDING: Geen welzijnsprotocol
 
@@ -236,7 +236,7 @@ Geef in dit geval GEEN reguliere missie-antwoorden. Stop de missie-interactie.
 Niet wettelijk verplicht in Nederland (wel in het VK), maar wordt steeds meer als norm gezien. Aandachtspunten:
 - Standaard hoge privacy-instellingen (is geregeld)
 - Geen manipulatief ontwerp (gamification is een grijs gebied)
-- Leeftijdsgeschikte content (moet technisch worden geborgd via safety settings)
+- Leeftijdsgeschikte content (technisch geborgd via Mistral's `safe_prompt`-guardrail en een output-filter voor minderjarigen)
 
 ---
 
@@ -252,7 +252,7 @@ Niet wettelijk verplicht in Nederland (wel in het VK), maar wordt steeds meer al
 | 4 | DPA finaliseren (Model 4.0) | AVG Art. 28 | EUR 500-1.000 | 1-2 weken |
 | 5 | DPIA uitvoeren | AVG Art. 35 | EUR 0-500 | 1 week |
 | 6 | Contactgegevens invullen in docs | AVG Art. 13 | EUR 0 | 2 uur |
-| 7 | ~~Gemini Safety Settings toevoegen~~ **AFGEROND** (safety settings geconfigureerd; huidige AI-verwerkers Mistral AI + Black Forest Labs) | Minderjarigenbescherming | EUR 0 | ~~2 uur~~ Afgerond |
+| 7 | ~~Gemini Safety Settings toevoegen~~ **AFGEROND** (vervangen door Mistral's `safe_prompt`-guardrail + output-filter voor minderjarigen; huidige AI-verwerkers Mistral AI + Black Forest Labs) | Minderjarigenbescherming | EUR 0 | ~~2 uur~~ Afgerond |
 | 8 | Welzijnsprotocol toevoegen | Minderjarigenbescherming | EUR 0 | 4 uur |
 | 9 | CORS beperken Edge Functions | Technische security | EUR 0 | 1 uur |
 | 10 | Beroepsaansprakelijkheidsverzekering | Aansprakelijkheid | EUR 300-800/jaar | 1 dag |

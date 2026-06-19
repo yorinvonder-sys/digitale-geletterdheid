@@ -55,7 +55,7 @@ De Verwerkingsverantwoordelijke (school) wordt ten minste 30 dagen vooraf geïnf
 - DGSkills stuurt uitsluitend de noodzakelijke context naar Mistral AI (opdrachttekst + leerlinginvoer).
 - Persoonsgegevens zoals naam en e-mailadres worden niet meegestuurd in API-aanroepen.
 - Dataretentie te verifiëren (Mistral: standaard tot 30 dagen abuse-monitoring; Zero Data Retention optioneel, plan-afhankelijk). Geen training op leerlingdata (training-opt-out te verifiëren — Mistral biedt opt-out; standaard opt-out op Scale-plan).
-- Server-side prompt-injectiefilter en safety settings zijn actief om ongepaste content te filteren.
+- Server-side prompt-injectiefilter, Mistral's `safe_prompt`-guardrail en een output-filter voor minderjarigen zijn actief om ongepaste content te filteren.
 - **LET OP:** Mistral vereist minimaal 13 jaar en ouderlijke/voogd-toestemming voor minderjarigen — aandachtspunt voor 12-jarigen; te verifiëren met de schoolconsent-flow.
 
 ---

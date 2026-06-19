@@ -176,7 +176,7 @@ De school is als verwerkingsverantwoordelijke primair verantwoordelijk voor het 
 4. Server-side: JWT-authenticatie wordt geverifieerd
 5. Server-side: Prompt sanitizer controleert nogmaals op injection (defense-in-depth)
 6. Gesanitiseerd bericht wordt met conversatiegeschiedenis naar Mistral AI (endpoint: `api.mistral.ai`) gestuurd
-7. Gemini Safety Settings filteren op: harassment, hate speech, sexually explicit, dangerous content (alle op `BLOCK_LOW_AND_ABOVE`)
+7. Mistral's `safe_prompt`-guardrail stuurt het model weg van schadelijke output; een server-side output-filter blokkeert resterende ongeschikte content (zelfbeschadiging, grooming, wapens, drugs) vóór weergave aan de leerling
 8. AI-response wordt teruggestuurd naar de leerling
 9. Conversatiegeschiedenis wordt client-side in het geheugen gehouden (sessiegebaseerd)
 
@@ -319,7 +319,7 @@ De betrokken leerlingen zijn 12 tot 18 jaar oud. Op grond van Overweging 38 en 7
 | Risico | Ernst | Toelichting |
 |---|---|---|
 | **Hallucinaties** | Hoog | LLM's genereren soms onjuiste informatie met grote stelligheid. Leerlingen kunnen dit voor waar aannemen, wat het leerproces schaadt. |
-| **Onvoorspelbare output** | Hoog | Ondanks safety settings kan een LLM onverwacht ongepaste content produceren. Bij minderjarigen is de impact hiervan groter. |
+| **Onvoorspelbare output** | Hoog | Ondanks de veiligheidsmaatregelen (Mistral `safe_prompt`-guardrail, output-filter) kan een LLM onverwacht ongepaste content produceren. Bij minderjarigen is de impact hiervan groter. |
 | **Parasociale relatie** | Midden | Leerlingen kunnen een emotionele band ontwikkelen met de AI-agent, wat kan leiden tot overmatig vertrouwen of emotionele afhankelijkheid. |
 | **Normalisatie van AI-interactie** | Midden | Dagelijks chatten met AI kan de grens vervagen tussen menselijke en kunstmatige interactie, wat de sociale ontwikkeling kan beinvloeden. |
 | **Privacy-uithollen** | Midden | De laagdrempelige chatinterface kan leerlingen verleiden om meer persoonlijke informatie te delen dan in een traditionele onderwijssetting. |
@@ -331,9 +331,9 @@ Op basis van analyse van de 30+ AI-agents in `config/agents.tsx`:
 
 | Agentcategorie | Voorbeeld | Specifiek risico | Maatregel |
 |---|---|---|---|
-| **Sociale media / psychologie** | Social Media Psycholoog | Bespreekt gevoelige onderwerpen (verslaving, dopamine). Leerling kan persoonlijke problemen delen. | Welzijnsprotocol in system instruction; safety settings op striktst niveau |
-| **Creatief schrijven** | Verhalen Ontwerper | Leerling kan gewelddadige of enge content willen genereren | Content-grenzen in system instruction; Gemini safety filters |
-| **Programmeren** | Game Programmeur, App Bouwer | Lager risico; code-gericht | Standaard safety settings |
+| **Sociale media / psychologie** | Social Media Psycholoog | Bespreekt gevoelige onderwerpen (verslaving, dopamine). Leerling kan persoonlijke problemen delen. | Welzijnsprotocol in system instruction; Mistral `safe_prompt`-guardrail + output-filter voor minderjarigen |
+| **Creatief schrijven** | Verhalen Ontwerper | Leerling kan gewelddadige of enge content willen genereren | Content-grenzen in system instruction; Mistral `safe_prompt`-guardrail + output-filter |
+| **Programmeren** | Game Programmeur, App Bouwer | Lager risico; code-gericht | Standaard Mistral `safe_prompt`-guardrail |
 | **Alle chat-agents** | Alle 30+ agents | Leerling kan in elke chat persoonlijke/gevoelige informatie delen | Welzijnsprotocol als universele suffix in alle system instructions |
 
 ---
@@ -349,7 +349,7 @@ Op basis van analyse van de 30+ AI-agents in `config/agents.tsx`:
 | **Row-Level Security (RLS)** | Database-beleid op rijniveau: leerlingen zien alleen eigen data; docenten alleen hun klas | R01, R08 |
 | **Server-side autorisatie** | `is_teacher()` helper function verifieert rol op database-niveau; RPC-functies voor gevoelige operaties | R08 |
 | **Prompt injection filtering (defense-in-depth)** | Zowel client-side als server-side sanitizer met 20+ detectiepatronen (NL + EN), URI-decodering, Unicode-normalisatie | R03 |
-| **Gemini Safety Settings** | Alle vier harm-categorieen op `BLOCK_LOW_AND_ABOVE` (striktst beschikbare niveau) | R04 |
+| **AI-moderatie (Mistral `safe_prompt` + output-filter)** | Provider-side veiligheids-systeemprompt die schadelijke output ontmoedigt + server-side output-filter voor minderjarigen (zelfbeschadiging, grooming, wapens, drugs) | R04 |
 | **Welzijnsprotocol** | System instruction bevat protocol voor detectie van suicidaliteit, misbruik, pesten met doorverwijzing naar Kindertelefoon/113 | R05 |
 | **XP farming detectie** | AI-agents herkennen en weigeren niet-serieuze berichten die bedoeld zijn om XP te "farmen" | R06, R13 |
 | **CORS-whitelist** | Alleen `dgskills.app` en lokale dev-URLs zijn toegestaan | R01 |
@@ -405,8 +405,8 @@ Na implementatie van alle bestaande en aanvullende maatregelen:
 |---|---|---|---|---|
 | R01 | Onbevoegde toegang | 6 (Midden) | **3 (Laag)** | Acceptabel - TLS, JWT, RLS, penetratietest |
 | R02 | Datalek subverwerker | 6 (Midden) | **4 (Laag)** | Acceptabel - DPA's, datalekprocedure, monitoring |
-| R03 | Prompt injection | 6 (Midden) | **3 (Laag)** | Acceptabel - Defense-in-depth sanitizer, safety settings |
-| R04 | Ongepaste AI-content | 8 (Midden) | **4 (Laag)** | Acceptabel - Safety settings BLOCK_LOW_AND_ABOVE, outputvalidatie |
+| R03 | Prompt injection | 6 (Midden) | **3 (Laag)** | Acceptabel - Defense-in-depth sanitizer, Mistral `safe_prompt`-guardrail |
+| R04 | Ongepaste AI-content | 8 (Midden) | **4 (Laag)** | Acceptabel - Mistral `safe_prompt`-guardrail + output-filter voor minderjarigen, outputvalidatie |
 | R05 | Gevoelige info in chat | 12 (Hoog) | **6 (Midden)** | **Nader te monitoren** - Welzijnsprotocol actief; chatdata is sessiegebaseerd; inherent risico bij AI-chatinteractie met minderjarigen |
 | R06 | Onjuiste AI-beoordeling | 6 (Midden) | **3 (Laag)** | Acceptabel - Docent-override, menselijk toezicht |
 | R07 | Beschikbaarheidsverlies | 4 (Laag) | **3 (Laag)** | Acceptabel - Multi-provider architectuur |
@@ -421,7 +421,7 @@ Na implementatie van alle bestaande en aanvullende maatregelen:
 
 ### Restrisico-oordeel
 
-Na implementatie van alle maatregelen resteert een **midden restrisico** voor R05 (gevoelige informatie in chat). Dit is een inherent risico van AI-chatinteractie met minderjarigen dat niet volledig kan worden gemitigeerd. De combinatie van welzijnsprotocol, sessiegebaseerde opslag (geen persistente chatdatabase) en Gemini safety settings reduceert dit risico tot een aanvaardbaar niveau, mits:
+Na implementatie van alle maatregelen resteert een **midden restrisico** voor R05 (gevoelige informatie in chat). Dit is een inherent risico van AI-chatinteractie met minderjarigen dat niet volledig kan worden gemitigeerd. De combinatie van welzijnsprotocol, sessiegebaseerde opslag (geen persistente chatdatabase) en de AI-moderatie (Mistral `safe_prompt`-guardrail + output-filter voor minderjarigen) reduceert dit risico tot een aanvaardbaar niveau, mits:
 
 1. Het welzijnsprotocol regelmatig wordt getest en bijgewerkt
 2. Er een escalatiepad is naar de school bij welzijnssignalen
@@ -627,7 +627,7 @@ Het restrisico van de groei-assessment verwerking wordt beoordeeld als **laag to
 
 ### 14.1 Algeheel oordeel
 
-DGSkills beschikt over een **bovengemiddeld** privacy- en securityprofiel voor een EdTech-startup. De technische implementatie van AVG-rechten (export, verwijdering, verwerkingsbeperking), de defense-in-depth benadering voor prompt injection, de gedifferentieerde bewaartermijnen en de Gemini safety settings zijn van hoog niveau.
+DGSkills beschikt over een **bovengemiddeld** privacy- en securityprofiel voor een EdTech-startup. De technische implementatie van AVG-rechten (export, verwijdering, verwerkingsbeperking), de defense-in-depth benadering voor prompt injection, de gedifferentieerde bewaartermijnen en de meerlaagse AI-moderatie (input-sanitizer, Mistral `safe_prompt`-guardrail, output-filter) zijn van hoog niveau.
 
 Na implementatie van de aanvullende maatregelen zijn de risico's voor de rechten en vrijheden van betrokkenen tot een **aanvaardbaar niveau** terug te brengen.
 

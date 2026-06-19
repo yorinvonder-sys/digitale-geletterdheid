@@ -38,7 +38,7 @@ Drie modellen, elk voor een ander type taak. Gebruik de router hieronder als geh
 ## STATUS: WAT IS AL GEDAAN
 
 - [x] CORS beperken op Edge Functions (whitelist dgskills.app)
-- [x] Gemini Safety Settings (BLOCK_LOW_AND_ABOVE op alle categorieën)
+- [x] AI-moderatie: Mistral `safe_prompt`-guardrail + server-side prompt-injectiefilter + output-filter voor minderjarigen
 - [x] Welzijnsprotocol in SYSTEM_INSTRUCTION_SUFFIX
 - [x] DPIA volledig uitgevoerd
 - [x] DPA Model 4.0 Privacyconvenant (A-E bijlagen compleet)

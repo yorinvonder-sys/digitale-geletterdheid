@@ -235,18 +235,17 @@ DGSkills gebruikt geen eigen getraind of finetuned model. In plaats daarvan word
 
 ## SECTIE 3: MONITORING, WERKING EN CONTROLE
 
-### 3.1 Safety settings
+### 3.1 AI-moderatie (provider-guardrail + output-filter)
 
-Alle AI-aanroepen gebruiken de maximaal restrictieve safety settings, geoptimaliseerd voor minderjarigen (12-18 jaar):
+Content-moderatie voor minderjarigen (12-18 jaar) wordt afgedwongen via een combinatie van een provider-side guardrail en een server-side output-filter — niet via categorie-drempels:
 
-| Categorie | Drempelwaarde | Toelichting |
-|-----------|--------------|-------------|
-| HARM_CATEGORY_HARASSMENT | BLOCK_LOW_AND_ABOVE | Blokkeert alle niveaus van intimidatie |
-| HARM_CATEGORY_HATE_SPEECH | BLOCK_LOW_AND_ABOVE | Blokkeert alle niveaus van haatdragend taalgebruik |
-| HARM_CATEGORY_SEXUALLY_EXPLICIT | BLOCK_LOW_AND_ABOVE | Blokkeert alle niveaus van seksueel expliciete content |
-| HARM_CATEGORY_DANGEROUS_CONTENT | BLOCK_LOW_AND_ABOVE | Blokkeert alle niveaus van gevaarlijke content |
+| Laag | Implementatie | Werking |
+|------|--------------|---------|
+| Provider-guardrail | Mistral `safe_prompt: true` (`supabase/functions/_shared/mistralClient.ts`) | Mistral plaatst vóór elk gesprek een veiligheids-systeemprompt die het model instrueert om schadelijke, onethische, bevooroordeelde of negatieve content te vermijden |
+| Output-filter | `supabase/functions/_shared/outputFilter.ts` | Server-side regex-vangnet dat AI-output blokkeert op zelfbeschadiging/suïcide, grooming, wapens/explosieven en drugs, en vervangt door een doorverwijzing (vertrouwenspersoon school / Kindertelefoon 0800-0432) |
+| Input-filter | `supabase/functions/_shared/promptSanitizer.ts` (zie 3.2) | Blokkeert prompt-injectie en manipulatiepogingen vóór ze het model bereiken |
 
-Dit is het strengste niveau dat de AI-provider ondersteunt. Elk niveau boven "negligible" wordt geblokkeerd.
+> **Let op:** De codebase bevat nog een ongebruikte `safetySettings`-array (categorieën `HARM_CATEGORY_*` op `BLOCK_LOW_AND_ABOVE`) uit de eerdere Google-AI-opzet vóór de migratie naar Mistral. Deze wordt **niet** naar Mistral verzonden en heeft geen functioneel effect.
 
 ### 3.2 Prompt sanitizer
 
@@ -386,7 +385,7 @@ Geimplementeerd in `services/auditService.ts`, conform AVG Art. 30 en EU AI Act 
 | # | Risico | Ernst | Waarschijnlijkheid | Maatregel | Restrisico |
 |---|--------|-------|--------------------|-----------|------------|
 | R1 | Prompt injection -- leerling manipuleert AI-gedrag | Hoog | Midden | Prompt sanitizer (28+ patronen, 6 talen), server-side validatie, system instruction niet door client aanpasbaar | Laag: novel/zero-day injection patronen |
-| R2 | Ongeschikte content voor minderjarigen | Hoog | Laag | Safety settings BLOCK_LOW_AND_ABOVE op alle 4 categorieen, welzijnsprotocol | Zeer laag: edge cases in het onderliggende model |
+| R2 | Ongeschikte content voor minderjarigen | Hoog | Laag | Mistral `safe_prompt`-guardrail + server-side output-filter voor minderjarigen, welzijnsprotocol | Zeer laag: edge cases in het onderliggende model |
 | R3 | Hallucinatie -- AI geeft feitelijk onjuiste informatie | Midden | Midden | Temperature 0.7, maxOutputTokens 1024, begrensde context | Midden: inherent aan LLM-technologie |
 | R4 | XP farming -- leerling verdient punten zonder te leren | Midden | Hoog | XP farming detectie in alle 93 agents, serieuze-input-eis | Laag-midden: creatieve workarounds |
 | R5 | Onjuiste STEP_COMPLETE-beoordeling | Midden | Midden | Agent-specifieke beoordelingscriteria, 3-stappen methode | Midden: LLM-beoordeling is niet perfect |
