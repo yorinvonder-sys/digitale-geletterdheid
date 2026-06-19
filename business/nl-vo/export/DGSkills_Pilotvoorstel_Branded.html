@@ -1,0 +1,670 @@
+<!doctype html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DGSkills — Pilotvoorstel</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,700;0,900;1,700&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Outfit', sans-serif;
+      background: #f2f1ec;
+      color: #202023;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    @page { size: A4; margin: 0; }
+    @media print { body { background: #f2f1ec; } .page-break { page-break-after: always; } }
+
+    .page {
+      width: 210mm;
+      background: #f2f1ec;
+      margin: 0 auto;
+    }
+
+    /* Cover page */
+    .cover {
+      min-height: 297mm;
+      background: #202023;
+      display: flex;
+      flex-direction: column;
+      padding: 56px 56px 48px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cover-pattern {
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(circle at 1px 1px, rgba(225,255,1,0.06) 1px, transparent 0);
+      background-size: 28px 28px;
+    }
+
+    .cover-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: relative;
+    }
+
+    .logo-mark {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo-duck {
+      width: 36px; height: 36px;
+      background: #e1ff01;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px;
+    }
+
+    .logo-text {
+      font-family: 'Fraunces', serif;
+      font-size: 22px;
+      font-weight: 900;
+      color: #f2f1ec;
+    }
+
+    .doc-type {
+      font-size: 11px;
+      color: rgba(225,255,1,0.7);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    .cover-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      position: relative;
+      padding: 60px 0;
+    }
+
+    .cover-eyebrow {
+      font-size: 11px;
+      font-weight: 600;
+      color: #e1ff01;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      margin-bottom: 20px;
+    }
+
+    .cover-title {
+      font-family: 'Fraunces', serif;
+      font-size: 52px;
+      font-weight: 900;
+      color: #f2f1ec;
+      line-height: 1.0;
+      letter-spacing: -2px;
+      margin-bottom: 20px;
+    }
+
+    .cover-title em {
+      color: #e1ff01;
+      font-style: normal;
+    }
+
+    .cover-sub {
+      font-size: 14px;
+      color: #c2c1bd;
+      max-width: 400px;
+      line-height: 1.6;
+    }
+
+    .cover-meta {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-top: 48px;
+      padding-top: 32px;
+      border-top: 1px solid rgba(242,241,236,0.12);
+      position: relative;
+    }
+
+    .meta-item label {
+      font-size: 9px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: rgba(194,193,189,0.6);
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .meta-item .meta-val {
+      font-size: 13px;
+      font-weight: 600;
+      color: #f2f1ec;
+    }
+
+    .meta-item .meta-val.placeholder {
+      color: rgba(194,193,189,0.5);
+      font-style: italic;
+      font-weight: 400;
+    }
+
+    /* Content pages */
+    .content-page {
+      min-height: 297mm;
+      padding: 44px 48px 44px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .page-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 32px;
+      padding-bottom: 16px;
+      border-bottom: 2px solid #202023;
+    }
+
+    .page-header-title {
+      font-family: 'Fraunces', serif;
+      font-size: 22px;
+      font-weight: 900;
+      color: #202023;
+      letter-spacing: -0.5px;
+    }
+
+    .page-header-logo {
+      font-size: 11px;
+      font-weight: 700;
+      color: #c2c1bd;
+    }
+
+    .section {
+      margin-bottom: 26px;
+    }
+
+    .section-title {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: #c2c1bd;
+      margin-bottom: 12px;
+    }
+
+    /* Form fields */
+    .fields-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .field {
+      background: white;
+      border-radius: 12px;
+      padding: 12px 14px;
+      border: 1px solid rgba(32,32,35,0.08);
+    }
+
+    .field label {
+      font-size: 9px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #c2c1bd;
+      display: block;
+      margin-bottom: 6px;
+    }
+
+    .field-val {
+      font-size: 13px;
+      font-weight: 500;
+      color: rgba(32,32,35,0.25);
+      font-style: italic;
+      border-bottom: 1.5px dashed rgba(32,32,35,0.15);
+      padding-bottom: 4px;
+      min-height: 24px;
+    }
+
+    /* Tables */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: white;
+      border-radius: 12px;
+      overflow: hidden;
+      font-size: 11.5px;
+    }
+
+    thead th {
+      background: #202023;
+      color: #f2f1ec;
+      font-size: 9px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 9px 12px;
+      text-align: left;
+    }
+
+    tbody tr { border-bottom: 1px solid #f2f1ec; }
+    tbody tr:last-child { border-bottom: none; }
+
+    tbody td {
+      padding: 9px 12px;
+      color: #202023;
+      vertical-align: top;
+    }
+
+    .cell-placeholder {
+      color: rgba(32,32,35,0.2);
+      font-style: italic;
+    }
+
+    /* Two col */
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+    /* Responsibility cards */
+    .resp-card {
+      background: white;
+      border-radius: 12px;
+      padding: 16px;
+      border: 1px solid rgba(32,32,35,0.08);
+    }
+
+    .resp-card-head {
+      font-size: 11px;
+      font-weight: 700;
+      color: #202023;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .resp-icon {
+      width: 24px; height: 24px;
+      background: #e1ff01;
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 12px;
+    }
+
+    .resp-list {
+      list-style: none;
+    }
+
+    .resp-list li {
+      font-size: 11px;
+      color: #202023;
+      padding: 5px 0;
+      padding-left: 14px;
+      position: relative;
+      border-bottom: 1px solid #f2f1ec;
+      line-height: 1.4;
+    }
+
+    .resp-list li:last-child { border-bottom: none; }
+
+    .resp-list li::before {
+      content: '→';
+      position: absolute;
+      left: 0;
+      color: #c2c1bd;
+      font-size: 9px;
+    }
+
+    /* Planning timeline */
+    .timeline {
+      background: white;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid rgba(32,32,35,0.08);
+    }
+
+    .timeline-row {
+      display: flex;
+      align-items: center;
+      padding: 10px 14px;
+      border-bottom: 1px solid #f2f1ec;
+    }
+
+    .timeline-row:last-child { border-bottom: none; }
+
+    .timeline-week {
+      width: 64px;
+      font-size: 10px;
+      font-weight: 700;
+      color: #c2c1bd;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      flex-shrink: 0;
+    }
+
+    .timeline-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: #c2c1bd;
+      margin-right: 12px;
+      flex-shrink: 0;
+    }
+
+    .timeline-row.milestone .timeline-dot { background: #e1ff01; }
+
+    .timeline-label {
+      font-size: 11.5px;
+      color: #202023;
+    }
+
+    /* Sign block */
+    .sign-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .sign-block {
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      border: 1px solid rgba(32,32,35,0.08);
+    }
+
+    .sign-label {
+      font-size: 9px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #c2c1bd;
+      margin-bottom: 40px;
+    }
+
+    .sign-line {
+      border-bottom: 1.5px solid #202023;
+      margin-bottom: 8px;
+    }
+
+    .sign-name {
+      font-size: 10px;
+      color: #c2c1bd;
+    }
+
+    /* Commercial summary */
+    .commercial-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+
+    .comm-card {
+      background: white;
+      border-radius: 12px;
+      padding: 14px 16px;
+      border: 1px solid rgba(32,32,35,0.08);
+    }
+
+    .comm-label {
+      font-size: 9px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #c2c1bd;
+      margin-bottom: 6px;
+    }
+
+    .comm-val {
+      font-size: 16px;
+      font-weight: 700;
+      color: rgba(32,32,35,0.2);
+      font-style: italic;
+    }
+
+    /* Footer */
+    .footer {
+      background: #202023;
+      padding: 13px 48px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer-contact {
+      font-size: 10.5px;
+      color: #c2c1bd;
+    }
+
+    .footer-contact a {
+      color: #e1ff01;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .footer-note {
+      font-size: 10px;
+      color: rgba(194,193,189,0.5);
+    }
+
+    .page-break { page-break-after: always; }
+
+    .accent-box {
+      background: #202023;
+      border-radius: 12px;
+      padding: 14px 16px;
+      font-size: 11.5px;
+      color: #c2c1bd;
+      line-height: 1.6;
+    }
+
+    .accent-box strong { color: #e1ff01; }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <!-- COVER -->
+  <div class="cover">
+    <div class="cover-pattern"></div>
+    <div class="cover-top">
+      <div class="logo-mark">
+        <div class="logo-duck">🦆</div>
+        <span class="logo-text">DGSkills</span>
+      </div>
+      <span class="doc-type">Pilotvoorstel</span>
+    </div>
+    <div class="cover-content">
+      <div class="cover-eyebrow">Digitale geletterdheid · VO</div>
+      <div class="cover-title">Samen<br/>werken<br/>aan <em>digitaal</em><br/>onderwijs</div>
+      <div class="cover-sub">Een concreet voorstel voor een bewezen pilot van 8–12 weken. Van missie naar meetbare impact.</div>
+      <div class="cover-meta">
+        <div class="meta-item">
+          <label>School</label>
+          <div class="meta-val placeholder">invullen</div>
+        </div>
+        <div class="meta-item">
+          <label>Contactpersoon</label>
+          <div class="meta-val placeholder">invullen</div>
+        </div>
+        <div class="meta-item">
+          <label>Datum voorstel</label>
+          <div class="meta-val placeholder">invullen</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="page-break"></div>
+
+  <!-- PAGE 2: Gegevens + Doel + Scope -->
+  <div class="content-page">
+    <div class="page-header">
+      <div class="page-header-title">Gegevens &amp; Pilotdoel</div>
+      <div class="page-header-logo">DGSkills · Pilotvoorstel</div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Contactgegevens school</div>
+      <div class="fields-grid">
+        <div class="field"><label>Schoolnaam</label><div class="field-val"></div></div>
+        <div class="field"><label>Contactpersoon</label><div class="field-val"></div></div>
+        <div class="field"><label>Functie</label><div class="field-val"></div></div>
+        <div class="field"><label>E-mail</label><div class="field-val"></div></div>
+        <div class="field"><label>Telefoon</label><div class="field-val"></div></div>
+        <div class="field"><label>Geldigheid voorstel</label><div class="field-val">30 dagen</div></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Pilotdoel</div>
+      <div style="background:white;border-radius:12px;padding:16px;border:1px solid rgba(32,32,35,0.08);min-height:80px;font-size:12px;color:rgba(32,32,35,0.2);font-style:italic;line-height:1.6">
+        Beschrijf hier in 2–3 zinnen wat de school met deze pilot wil bereiken...
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Scope</div>
+      <div class="two-col">
+        <div class="fields-grid" style="grid-template-columns:1fr">
+          <div class="field"><label>Duur</label><div class="field-val">8–12 weken</div></div>
+          <div class="field"><label>Betrokken teams / jaarlagen</label><div class="field-val"></div></div>
+          <div class="field"><label>Aantal docenten</label><div class="field-val"></div></div>
+          <div class="field"><label>Aantal leerlingen</label><div class="field-val"></div></div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div class="field" style="flex:1"><label>In scope</label><div class="field-val" style="min-height:60px"></div></div>
+          <div class="field" style="flex:1"><label>Buiten scope</label><div class="field-val" style="min-height:60px"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <div class="footer-contact"><a href="mailto:info@dgskills.app">info@dgskills.app</a> · <a href="https://dgskills.app">dgskills.app</a></div>
+      <div class="footer-note">Pagina 1 van 2</div>
+    </div>
+  </div>
+  <div class="page-break"></div>
+
+  <!-- PAGE 3: KPI's + Planning + Verantwoordelijkheden + Commercieel + Ondertekening -->
+  <div class="content-page">
+    <div class="page-header">
+      <div class="page-header-title">KPI's, Planning &amp; Commercieel</div>
+      <div class="page-header-logo">DGSkills · Pilotvoorstel</div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Succescriteria (KPI's)</div>
+      <table>
+        <thead>
+          <tr>
+            <th>KPI</th>
+            <th>Nulmeting</th>
+            <th>Doel</th>
+            <th>Meetmethode</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Docentactivatie (%)</td>
+            <td class="cell-placeholder">—</td>
+            <td class="cell-placeholder">—</td>
+            <td class="cell-placeholder">—</td>
+          </tr>
+          <tr>
+            <td>Wekelijks actieve leerlingen (%)</td>
+            <td class="cell-placeholder">—</td>
+            <td class="cell-placeholder">—</td>
+            <td class="cell-placeholder">—</td>
+          </tr>
+          <tr>
+            <td>Opdrachtafmaakratio (%)</td>
+            <td class="cell-placeholder">—</td>
+            <td class="cell-placeholder">—</td>
+            <td class="cell-placeholder">—</td>
+          </tr>
+          <tr>
+            <td>Tevredenheid docenten (1–10)</td>
+            <td class="cell-placeholder">—</td>
+            <td class="cell-placeholder">—</td>
+            <td class="cell-placeholder">—</td>
+          </tr>
+          <tr>
+            <td>Tevredenheid leerlingen (1–10)</td>
+            <td class="cell-placeholder">—</td>
+            <td class="cell-placeholder">—</td>
+            <td class="cell-placeholder">—</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="two-col">
+      <div class="section">
+        <div class="section-title">Planning</div>
+        <div class="timeline">
+          <div class="timeline-row milestone"><div class="timeline-week">Week 0</div><div class="timeline-dot"></div><div class="timeline-label">Kickoff + nulmeting</div></div>
+          <div class="timeline-row"><div class="timeline-week">Week 2</div><div class="timeline-dot"></div><div class="timeline-label">Evaluatie 1</div></div>
+          <div class="timeline-row"><div class="timeline-week">Week 4</div><div class="timeline-dot"></div><div class="timeline-label">Evaluatie 2</div></div>
+          <div class="timeline-row"><div class="timeline-week">Week 8</div><div class="timeline-dot"></div><div class="timeline-label">Evaluatie 3</div></div>
+          <div class="timeline-row milestone"><div class="timeline-week">Week 10–12</div><div class="timeline-dot"></div><div class="timeline-label">Eindrapport + besluit</div></div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title">Verantwoordelijkheden</div>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div class="resp-card">
+            <div class="resp-card-head"><div class="resp-icon">🏫</div> School</div>
+            <ul class="resp-list">
+              <li>Pilot owner aanwijzen</li>
+              <li>Docentdeelnemers bevestigen</li>
+              <li>Tijd inplannen voor evaluaties</li>
+            </ul>
+          </div>
+          <div class="resp-card">
+            <div class="resp-card-head"><div class="resp-icon">🦆</div> DGSkills</div>
+            <ul class="resp-list">
+              <li>Kickoff en onboarding</li>
+              <li>Training en support</li>
+              <li>KPI-monitoring en eindrapport</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Commercieel</div>
+      <div class="commercial-grid">
+        <div class="comm-card"><div class="comm-label">Pilotprijs</div><div class="comm-val">€ ____</div></div>
+        <div class="comm-card"><div class="comm-label">Verrekening bij jaarcontract</div><div class="comm-val">100%</div></div>
+        <div class="comm-card"><div class="comm-label">Voorgesteld vervolgcontract</div><div class="comm-val">invullen</div></div>
+        <div class="comm-card"><div class="comm-label">Contractduur</div><div class="comm-val">invullen</div></div>
+      </div>
+    </div>
+
+    <div class="section" style="margin-bottom:0">
+      <div class="section-title">Ondertekening</div>
+      <div class="sign-grid">
+        <div class="sign-block">
+          <div class="sign-label">Namens school</div>
+          <div class="sign-line"></div>
+          <div class="sign-name">Naam · Functie · Datum</div>
+        </div>
+        <div class="sign-block">
+          <div class="sign-label">Namens DGSkills</div>
+          <div class="sign-line"></div>
+          <div class="sign-name">Yorin Vonder · Oprichter · Datum</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <div class="footer-contact"><a href="mailto:info@dgskills.app">info@dgskills.app</a> · <a href="https://dgskills.app">dgskills.app</a></div>
+      <div class="footer-note">KvK 81819889 · Pagina 2 van 2</div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

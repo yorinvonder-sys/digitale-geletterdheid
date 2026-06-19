@@ -3,780 +3,593 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>DGSkills — Informatiepakket Digitale Geletterdheid</title>
+  <title>DGSkills — USP &amp; Positionering</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,700;0,900;1,700&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <style>
-    :root {
-      --primary: #0B453F;
-      --primary-dark: #0B453F;
-      --primary-light: #0B453F;
-      --primary-50: #FCF6EA;
-      --slate-900: #08283B;
-      --slate-800: #08283B;
-      --slate-700: #08283B;
-      --slate-600: #445865;
-      --slate-500: #445865;
-      --slate-200: #E7D8BD;
-      --slate-100: #F3E4CB;
-      --slate-50: #FCF6EA;
-      --emerald-600: #5F947D;
-      --emerald-50: #FCF6EA;
-      --amber-600: #d97706;
-      --amber-50: #fffbeb;
-      --rose-600: #e11d48;
-      --rose-50: #fff1f2;
-    }
-    
-    * { box-sizing: border-box; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      line-height: 1.7;
-      color: var(--slate-700);
-      margin: 0;
-      background: white;
+      font-family: 'Outfit', sans-serif;
+      background: #f2f1ec;
+      color: #202023;
       -webkit-font-smoothing: antialiased;
     }
-    
-    .page-break { page-break-after: always; }
-    
-    /* Cover Page */
+
+    @page { size: A4; margin: 0; }
+    @media print { body { background: #f2f1ec; } .page-break { page-break-after: always; } }
+
+    .page {
+      width: 210mm;
+      background: #f2f1ec;
+      margin: 0 auto;
+    }
+
+    /* COVER */
     .cover {
-      height: 100vh;
+      min-height: 297mm;
+      background: #202023;
       display: flex;
       flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      background: linear-gradient(135deg, var(--slate-900) 0%, var(--primary) 100%);
-      color: white;
-      padding: 40px;
+      padding: 52px 56px 48px;
       position: relative;
       overflow: hidden;
     }
-    .cover-bg-pattern {
+
+    .cover-bg {
       position: absolute;
       inset: 0;
-      opacity: 0.1;
-      background-image: radial-gradient(circle at 2px 2px, white 1px, transparent 0);
-      background-size: 40px 40px;
+      background: linear-gradient(135deg, #202023 0%, #2d2d32 100%);
     }
-    .logo { width: 120px; margin-bottom: 30px; position: relative; z-index: 1; }
-    .cover h1 { font-size: 38pt; margin: 0; line-height: 1.1; color: #ffffff; text-shadow: 0 4px 12px rgba(0,0,0,0.2); position: relative; z-index: 1; font-weight: 900; }
-    .cover h2 { font-size: 20pt; margin-top: 25px; font-weight: 400; color: #E7D8BD; position: relative; z-index: 1; max-width: 600px; }
-    .cover-info { margin-top: 60px; font-size: 13pt; color: #E7D8BD; font-weight: 500; position: relative; z-index: 1; }
 
-    /* Content Styling */
-    .content { max-width: 900px; margin: 0 auto; padding: 80px 60px; }
-    
-    h2 { 
-      color: var(--slate-900); 
-      border-left: 6px solid var(--primary); 
-      padding-left: 20px; 
-      margin-top: 80px; 
-      font-size: 24pt;
-      font-weight: 800;
-      letter-spacing: -0.02em;
-      scroll-margin-top: 60px;
+    .cover-accent {
+      position: absolute;
+      right: -80px;
+      top: -80px;
+      width: 400px;
+      height: 400px;
+      border-radius: 50%;
+      background: #e1ff01;
+      opacity: 0.06;
     }
-    h3 { color: var(--primary-dark); margin-top: 50px; font-size: 18pt; font-weight: 700; scroll-margin-top: 60px; }
-    h4 { color: var(--slate-900); margin-top: 30px; font-size: 14pt; font-weight: 700; }
-    
-    p { margin-bottom: 20px; }
-    ul, ol { margin-bottom: 20px; padding-left: 25px; }
-    li { margin-bottom: 10px; }
 
-    /* Inhoudsopgave */
-    .toc { 
-      background: var(--slate-50); 
-      padding: 50px; 
-      border-radius: 24px; 
-      margin-bottom: 80px; 
-      border: 1px solid var(--slate-200);
-      box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
+    .cover-accent-2 {
+      position: absolute;
+      left: -60px;
+      bottom: -60px;
+      width: 300px;
+      height: 300px;
+      border-radius: 50%;
+      background: #e1ff01;
+      opacity: 0.04;
     }
-    .toc h2 { border: none; padding: 0; margin-top: 0; font-size: 20pt; color: var(--slate-900); }
-    .toc ul { list-style: none; padding-left: 0; margin-top: 30px; }
-    .toc li { margin-bottom: 15px; }
-    .toc a { 
-      color: var(--primary); 
-      text-decoration: none; 
-      font-weight: 600; 
-      font-size: 13pt;
-      transition: all 0.2s;
-      display: inline-block;
-    }
-    .toc a:hover { color: var(--primary-dark); transform: translateX(5px); }
-    
-    .back-to-top {
-      display: inline-flex;
+
+    .cover-top {
+      display: flex;
+      justify-content: space-between;
       align-items: center;
-      gap: 8px;
-      margin-top: 30px;
-      font-size: 10pt;
-      color: var(--slate-500);
-      text-decoration: none;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-    }
-    .back-to-top:hover { color: var(--primary); }
-
-    .quote-box {
-      background: var(--primary-50);
-      border-radius: 24px;
-      padding: 40px;
-      margin: 50px 0;
-      font-style: italic;
-      font-size: 16pt;
-      color: var(--primary-dark);
-      text-align: center;
-      border: 1px solid var(--primary-light);
-      line-height: 1.6;
-      font-weight: 500;
-    }
-
-    /* Screenshots and Visuals */
-    .screenshot-container {
-      margin: 40px 0;
-      border-radius: 24px;
-      overflow: hidden;
-      border: 1px solid var(--slate-200);
-      box-shadow: 0 20px 50px rgba(0,0,0,0.12);
-      background: var(--slate-50);
       position: relative;
     }
-    .screenshot-container img {
-      width: 100%;
-      display: block;
-      height: auto;
+
+    .logo-mark {
+      display: flex; align-items: center; gap: 10px;
     }
-    .full-page-screenshot {
-      margin: 60px -60px;
-      border-radius: 0;
-      border-left: none;
-      border-right: none;
+
+    .logo-duck {
+      width: 36px; height: 36px;
+      background: #e1ff01;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px;
     }
-    .screenshot-caption {
-      padding: 20px 30px;
-      background: white;
-      border-top: 1px solid var(--slate-100);
-      font-size: 11pt;
-      color: var(--slate-600);
+
+    .logo-text {
+      font-family: 'Fraunces', serif;
+      font-size: 22px; font-weight: 900;
+      color: #f2f1ec;
+    }
+
+    .doc-tag {
+      font-size: 11px;
+      color: rgba(225,255,1,0.7);
       font-weight: 600;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-    .screenshot-caption::before {
-      content: "LIVE PRODUCT";
-      background: var(--primary-50);
-      color: var(--primary);
-      padding: 4px 10px;
-      border-radius: 6px;
-      font-size: 9pt;
-      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
     }
 
-    .visual-collage {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 25px;
-      margin: 50px 0;
-    }
-    .collage-item {
-      border-radius: 20px;
-      overflow: hidden;
-      border: 1px solid var(--slate-200);
-      box-shadow: 0 10px 25px rgba(0,0,0,0.08);
-      background: white;
-      transition: transform 0.3s ease;
-    }
-    .collage-item:hover { transform: scale(1.02); }
-    .collage-item img { width: 100%; height: auto; display: block; }
-
-    /* Step Flow */
-    .flow-container {
+    .cover-body {
+      flex: 1;
       display: flex;
       flex-direction: column;
-      gap: 40px;
-      margin: 60px 0;
+      justify-content: center;
       position: relative;
+      padding: 60px 0 40px;
     }
-    .flow-container::before {
-      content: "";
-      position: absolute;
-      left: 30px;
-      top: 0;
-      bottom: 0;
-      width: 4px;
-      background: var(--slate-100);
-      z-index: 0;
+
+    .cover-eyebrow {
+      font-size: 11px;
+      font-weight: 700;
+      color: rgba(225,255,1,0.8);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      margin-bottom: 18px;
     }
-    .flow-step {
+
+    .cover-headline {
+      font-family: 'Fraunces', serif;
+      font-size: 48px;
+      font-weight: 900;
+      color: #f2f1ec;
+      line-height: 1.0;
+      letter-spacing: -1.5px;
+      margin-bottom: 18px;
+    }
+
+    .cover-headline em { color: #e1ff01; font-style: normal; }
+
+    .cover-tagline {
+      font-size: 15px;
+      color: #c2c1bd;
+      max-width: 420px;
+      line-height: 1.6;
+      margin-bottom: 48px;
+    }
+
+    .hook-box {
+      background: rgba(225,255,1,0.08);
+      border: 1px solid rgba(225,255,1,0.2);
+      border-radius: 16px;
+      padding: 22px 24px;
+      max-width: 500px;
+    }
+
+    .hook-label {
+      font-size: 9px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: rgba(225,255,1,0.6);
+      margin-bottom: 10px;
+    }
+
+    .hook-text {
+      font-family: 'Fraunces', serif;
+      font-size: 17px;
+      font-weight: 700;
+      color: #f2f1ec;
+      line-height: 1.4;
+      font-style: italic;
+    }
+
+    /* Content pages */
+    .content-page {
+      min-height: 297mm;
+      padding: 44px 48px;
       display: flex;
-      gap: 30px;
-      position: relative;
-      z-index: 1;
+      flex-direction: column;
     }
-    .flow-badge {
-      width: 64px;
-      height: 64px;
-      background: white;
-      border: 4px solid var(--primary);
-      border-radius: 50%;
+
+    .page-header {
       display: flex;
       align-items: center;
-      justify-content: center;
+      justify-content: space-between;
+      margin-bottom: 28px;
+      padding-bottom: 14px;
+      border-bottom: 2px solid #202023;
+    }
+
+    .page-header-title {
+      font-family: 'Fraunces', serif;
+      font-size: 22px;
       font-weight: 900;
-      font-size: 18pt;
-      color: var(--primary);
-      flex-shrink: 0;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      color: #202023;
+      letter-spacing: -0.5px;
     }
-    .flow-content {
-      flex: 1;
-      background: var(--slate-50);
-      padding: 30px;
-      border-radius: 24px;
-      border: 1px solid var(--slate-200);
-    }
-    .flow-content h4 { margin-top: 0; margin-bottom: 10px; }
-    .flow-content p { margin-bottom: 20px; font-size: 11pt; }
-    .flow-image {
-      border-radius: 16px;
-      overflow: hidden;
-      border: 1px solid var(--slate-200);
-      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-    }
-    .flow-image img { width: 100%; display: block; }
 
-    .annotation {
-      position: absolute;
-      background: var(--primary);
-      color: white;
-      padding: 4px 12px;
-      border-radius: 20px;
-      font-size: 9pt;
+    .page-header-logo {
+      font-size: 11px;
       font-weight: 700;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-      z-index: 10;
+      color: #c2c1bd;
     }
 
-    .floating-agent {
-      width: 120px;
-      height: auto;
-      float: right;
-      margin: 0 0 20px 20px;
-      filter: drop-shadow(0 10px 15px rgba(0,0,0,0.1));
+    .section { margin-bottom: 24px; }
+
+    .section-label {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: #c2c1bd;
+      margin-bottom: 12px;
     }
 
+    /* USP cards */
+    .usp-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .usp-card {
+      background: white;
+      border-radius: 14px;
+      padding: 16px 18px;
+      border: 1px solid rgba(32,32,35,0.08);
+    }
+
+    .usp-card-head {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .usp-icon {
+      width: 28px; height: 28px;
+      background: #e1ff01;
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px;
+      flex-shrink: 0;
+    }
+
+    .usp-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: #202023;
+    }
+
+    .usp-desc {
+      font-size: 11px;
+      color: #202023;
+      line-height: 1.5;
+      margin-bottom: 8px;
+    }
+
+    .usp-value {
+      font-size: 10px;
+      font-weight: 600;
+      color: #c2c1bd;
+      background: #f2f1ec;
+      border-radius: 6px;
+      padding: 3px 8px;
+      display: inline-block;
+    }
+
+    /* Proof table */
     table {
       width: 100%;
       border-collapse: collapse;
-      margin: 40px 0;
-      font-size: 11pt;
       background: white;
-      border-radius: 16px;
+      border-radius: 14px;
       overflow: hidden;
-      border: 1px solid var(--slate-200);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+      font-size: 11.5px;
     }
-    th {
-      background: var(--slate-50);
-      color: var(--slate-900);
+
+    thead th {
+      background: #202023;
+      color: #f2f1ec;
+      font-size: 9px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 9px 14px;
       text-align: left;
-      padding: 18px 25px;
-      border-bottom: 2px solid var(--slate-200);
-      font-weight: 800;
-      text-transform: uppercase;
-      font-size: 9pt;
-      letter-spacing: 0.05em;
     }
-    td {
-      padding: 18px 25px;
-      border-bottom: 1px solid var(--slate-100);
-      vertical-align: top;
-    }
-    tr:last-child td { border-bottom: none; }
 
-    .badge {
-      display: inline-block;
-      padding: 6px 14px;
-      border-radius: 10px;
-      font-size: 9pt;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-    }
-    .badge-primary { background: var(--primary-50); color: var(--primary); }
-    .badge-emerald { background: var(--emerald-50); color: var(--emerald-600); }
-    .badge-amber { background: var(--amber-50); color: var(--amber-600); }
-    .badge-rose { background: var(--rose-50); color: var(--rose-600); }
+    tbody tr { border-bottom: 1px solid #f2f1ec; }
+    tbody tr:last-child { border-bottom: none; }
+    tbody td { padding: 9px 14px; color: #202023; line-height: 1.4; vertical-align: top; }
 
-    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin: 40px 0; }
-    .card {
+    tbody td:first-child { font-weight: 700; }
+
+    /* Packages */
+    .pkg-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+    }
+
+    .pkg-card {
       background: white;
-      border: 1px solid var(--slate-200);
-      border-radius: 24px;
-      padding: 35px;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.04);
-      transition: transform 0.2s;
+      border-radius: 14px;
+      padding: 16px 14px;
+      border: 1px solid rgba(32,32,35,0.08);
     }
-    .card:hover { transform: translateY(-5px); }
-    .card h4 { margin-top: 0; color: var(--slate-900); font-size: 15pt; margin-bottom: 15px; }
-    
-    .step-list { list-style: none; padding-left: 0; margin: 40px 0; }
-    .step-item { margin-bottom: 35px; display: flex; gap: 25px; }
-    .step-number { 
-      background: var(--primary); 
-      color: white; 
-      width: 40px; 
-      height: 40px; 
-      border-radius: 12px; 
-      display: flex; 
-      align-items: center; 
-      justify-content: center; 
-      font-weight: 900;
-      flex-shrink: 0;
-      font-size: 14pt;
-      box-shadow: 0 4px 10px rgba(79, 70, 229, 0.3);
+
+    .pkg-card.dark { background: #202023; }
+
+    .pkg-label {
+      font-size: 9px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #c2c1bd;
+      margin-bottom: 8px;
     }
-    .step-content h5 { margin: 0 0 8px 0; font-size: 13pt; color: var(--slate-900); font-weight: 700; }
-    .step-content p { margin: 0; font-size: 11pt; color: var(--slate-600); }
 
-    .faq-item { margin-bottom: 40px; padding-bottom: 30px; border-bottom: 1px solid var(--slate-100); }
-    .faq-item:last-child { border-bottom: none; }
-    .faq-question { font-weight: 800; color: var(--slate-900); font-size: 13pt; margin-bottom: 12px; }
-    .faq-answer { color: var(--slate-600); font-size: 11.5pt; }
+    .pkg-card.dark .pkg-label { color: rgba(225,255,1,0.6); }
 
-    .feature-tag {
-      font-size: 9pt;
-      font-weight: 800;
-      color: var(--primary);
+    .pkg-promise {
+      font-size: 11px;
+      color: #202023;
+      line-height: 1.5;
+    }
+
+    .pkg-card.dark .pkg-promise { color: #c2c1bd; }
+
+    .pkg-tag {
+      margin-top: 10px;
+      font-size: 10px;
+      font-weight: 600;
+      background: #e1ff01;
+      color: #202023;
+      border-radius: 6px;
+      padding: 2px 8px;
+      display: inline-block;
+    }
+
+    /* Messaging */
+    .msg-card {
+      background: white;
+      border-radius: 14px;
+      padding: 18px;
+      border: 1px solid rgba(32,32,35,0.08);
+      margin-bottom: 12px;
+    }
+
+    .msg-card-head {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .msg-section {
+      font-size: 9px;
+      font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.1em;
-      margin-bottom: 10px;
-      display: block;
+      color: #c2c1bd;
     }
 
-    .footer { 
-      margin-top: 120px; 
-      font-size: 10pt; 
-      color: var(--slate-500); 
-      border-top: 1px solid var(--slate-200); 
-      padding-top: 50px; 
-      text-align: center; 
+    .msg-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: #202023;
+      margin-bottom: 6px;
     }
-    
-    @media print {
-      body { background: white; }
-      .cover { height: 100vh; }
-      .content { max-width: 100%; padding: 0 40px; }
-      .card { box-shadow: none; border: 1px solid #ddd; break-inside: avoid; }
-      .back-to-top { display: none; }
-      .screenshot-container { break-inside: avoid; margin: 30px 0; }
-      .screenshot-container.full-page-screenshot { margin: 40px 0; border-radius: 12px; border: 1px solid #eee; }
-      .visual-collage { break-inside: avoid; }
-      .flow-step { break-inside: avoid; }
-      h2, h3 { break-after: avoid; color: var(--slate-900); }
-      .toc { break-inside: avoid; background: white; border: 1px solid #eee; }
-      .quote-box { break-inside: avoid; background: #f9fafb; }
-      a { color: var(--primary); text-decoration: none; }
-      .footer { border-top: 1px solid #eee; }
+
+    .msg-copy {
+      font-size: 11px;
+      color: #202023;
+      line-height: 1.6;
     }
+
+    .msg-ctas {
+      display: flex;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .cta-primary {
+      background: #202023;
+      color: #e1ff01;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 5px 12px;
+      border-radius: 8px;
+    }
+
+    .cta-secondary {
+      background: #f2f1ec;
+      color: #202023;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 5px 12px;
+      border-radius: 8px;
+      border: 1px solid rgba(32,32,35,0.15);
+    }
+
+    /* Footer */
+    .footer {
+      background: #202023;
+      padding: 13px 48px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer a { color: #e1ff01; text-decoration: none; font-weight: 600; font-size: 11px; }
+    .footer-note { font-size: 10px; color: rgba(194,193,189,0.5); }
+
+    .page-break { page-break-after: always; }
   </style>
 </head>
 <body>
-  <!-- Voorpagina -->
+<div class="page">
+
+  <!-- COVER -->
   <div class="cover">
-    <div class="cover-bg-pattern"></div>
-    <svg width="120" height="120" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg" class="logo">
-      <path d="M256 50C200 50 160 150 160 280C160 350 180 400 256 420C332 400 352 350 352 280C352 150 312 50 256 50Z" stroke="white" stroke-width="20" stroke-linejoin="round"/>
-      <circle cx="256" cy="220" r="70" stroke="#5F947D" stroke-width="15"/>
-      <path d="M256 180V260M216 220H296" stroke="#5F947D" stroke-width="8" stroke-linecap="round"/>
-      <circle cx="256" cy="180" r="8" fill="#5F947D"/>
-      <circle cx="256" cy="260" r="8" fill="#5F947D"/>
-      <circle cx="216" cy="220" r="8" fill="#5F947D"/>
-      <circle cx="296" cy="220" r="8" fill="#5F947D"/>
-      <path d="M160 320C120 320 100 380 120 450C140 430 160 420 160 420" stroke="white" stroke-width="20" stroke-linecap="round" stroke-linejoin="round"/>
-      <path d="M352 320C392 320 412 380 392 450C372 430 352 420 352 420" stroke="white" stroke-width="20" stroke-linecap="round" stroke-linejoin="round"/>
-    </svg>
-    <h1>Informatiepakket<br/>Digitale Geletterdheid</h1>
-    <h2>Maak van digitale geletterdheid een succeservaring voor elke leerling</h2>
-    <div class="cover-info">
-      Februari 2026 | Voor docenten, schoolleiders en ICT-coördinatoren
+    <div class="cover-bg"></div>
+    <div class="cover-accent"></div>
+    <div class="cover-accent-2"></div>
+    <div class="cover-top">
+      <div class="logo-mark">
+        <div class="logo-duck">🦆</div>
+        <span class="logo-text">DGSkills</span>
+      </div>
+      <span class="doc-tag">USP &amp; Positionering</span>
+    </div>
+    <div class="cover-body">
+      <div class="cover-eyebrow">Unique Selling Points · Messaging · Pakkettering</div>
+      <div class="cover-headline">Waarom<br/>scholen<br/>kiezen voor<br/><em>DGSkills</em></div>
+      <div class="cover-tagline">De commerciële positionering, USP-architectuur en website-messaging van dgskills.app — gebouwd op bewijs, niet op beloftes.</div>
+      <div class="hook-box">
+        <div class="hook-label">Kernboodschap</div>
+        <div class="hook-text">"Van missie naar meetbare digitale geletterdheid: dgskills.app maakt leren motiverend voor leerlingen en aantoonbaar voor scholen."</div>
+      </div>
     </div>
   </div>
-
   <div class="page-break"></div>
 
-  <div class="content">
-    <!-- Samenvatting -->
-    <section id="samenvatting">
-      <span class="feature-tag">Voor de directie</span>
-      <h2 style="margin-top: 0;">In het kort: Wat is DGSkills?</h2>
-      <p>DGSkills is een modern leerplatform dat digitale geletterdheid tastbaar en motiverend maakt. In plaats van uit boeken te leren, voltooien leerlingen <strong>AI-missies</strong> waarin ze direct feedback krijgen. Voor de school betekent dit minder werkdruk voor docenten en een waterdichte verantwoording voor de inspectie.</p>
-      
-      <div class="grid" style="margin-top: 30px;">
-        <div class="card">
-          <h4>Voor de leerling</h4>
-          <p>Leren door te doen met 'missies', XP en badges. Werkt op elk niveau, van VMBO tot VSO.</p>
-        </div>
-        <div class="card">
-          <h4>Voor de school</h4>
-          <p>Real-time inzicht in de voortgang op SLO-doelen. Direct inzetbaar zonder IT-gedoe.</p>
-        </div>
-      </div>
-    </section>
-
-    <!-- Inhoudsopgave -->
-    <div class="toc" id="inhoud">
-      <h2>Inhoudsopgave</h2>
-      <ul>
-        <li><a href="#waarom-nu">1. Waarom DGSkills? (De noodzaak)</a></li>
-        <li><a href="#ervaring-leerling">2. De leerling-ervaring: Motivatie door succes</a></li>
-        <li><a href="#ervaring-docent">3. De docent-ervaring: Grip zonder administratie</a></li>
-        <li><a href="#vso-differentiatie">4. Inclusief onderwijs: VSO en differentiatie</a></li>
-        <li><a href="#slo-doelen">5. Aansluiting op SLO Kerndoelen 2025</a></li>
-        <li><a href="#stappenplan">6. In 30 dagen live (Het stappenplan)</a></li>
-        <li><a href="#pakketten">7. Pilotaanbod en licenties</a></li>
-        <li><a href="#faq">8. Veelgestelde vragen (Privacy, Tijd, Techniek)</a></li>
-      </ul>
+  <!-- PAGE 2: USP's -->
+  <div class="content-page">
+    <div class="page-header">
+      <div class="page-header-title">USP-Architectuur</div>
+      <div class="page-header-logo">DGSkills · USP &amp; Positionering</div>
     </div>
 
-    <!-- Sectie 1 -->
-    <section id="waarom-nu">
-      <h2>1. Waarom DGSkills?</h2>
-      <p>Per 2027 wordt digitale geletterdheid een verplicht onderdeel van het curriculum. Veel scholen worstelen met de vraag: hoe bieden we dit kwalitatief aan zonder de werkdruk van docenten nog verder te verhogen?</p>
-      
-      <div class="quote-box">
-        "Het probleem is niet <strong>wat</strong> we moeten leren, maar <strong>hoe</strong> we leerlingen in beweging krijgen."
-      </div>
-
-      <div class="grid">
-        <div class="card">
-          <span class="feature-tag">Veiligheid</span>
-          <h4>Privacy-first</h4>
-          <p>Volledig AVG-proof. Geen leerlingdata wordt gebruikt voor het trainen van AI.</p>
+    <div class="section">
+      <div class="section-label">Voor leerlingen — "Leren door te doen"</div>
+      <div class="usp-grid">
+        <div class="usp-card">
+          <div class="usp-card-head"><div class="usp-icon">🗺️</div><div class="usp-title">Persoonlijke Leerroute</div></div>
+          <div class="usp-desc">Adaptieve opdrachten op basis van VSO-profiel (Dagbesteding of Arbeidsmarkt).</div>
+          <div class="usp-value">"Dit is op mijn niveau."</div>
         </div>
-        <div class="card">
-          <span class="feature-tag">Techniek</span>
-          <h4>Cloud-based</h4>
-          <p>Werkt op Chromebooks, iPads en Laptops. Geen installatie nodig.</p>
+        <div class="usp-card">
+          <div class="usp-card-head"><div class="usp-icon">🎯</div><div class="usp-title">Missiegedreven Content</div></div>
+          <div class="usp-desc">Korte, spannende challenges in plaats van droge theorie — AI, cybersecurity, digitale tools.</div>
+          <div class="usp-value">"Ik ben een missie aan het voltooien."</div>
         </div>
-      </div>
-
-      <div class="screenshot-container full-page-screenshot">
-        <img src="screenshots/scholen-landing-hero.png" alt="DGSkills Platform Hero" />
-        <div class="screenshot-caption">De eerste indruk voor docenten: een overzichtelijk, modern platform dat direct uitnodigt tot actie.</div>
-      </div>
-
-      <div class="screenshot-container">
-        <img src="screenshots/ict-privacy.png" alt="Privacy en Security" />
-        <div class="screenshot-caption">Wij nemen privacy serieus: een transparant dashboard voor ICT-coördinatoren.</div>
-      </div>
-
-      <p>DGSkills lost dit op door de nieuwste technologie (AI) in te zetten als coach. Leerlingen werken zelfstandig, terwijl de docent de rol van facilitator en coach aanneemt.</p>
-      
-      <div class="visual-collage">
-        <div class="collage-item">
-          <img src="screenshots/scholen-features.png" alt="Website Featuresoverzicht" />
-          <div style="padding: 15px; font-size: 9pt; font-weight: 700; color: var(--slate-600);">Krachtige Features</div>
+        <div class="usp-card">
+          <div class="usp-card-head"><div class="usp-icon">⚡</div><div class="usp-title">Directe Succeservaring</div></div>
+          <div class="usp-desc">Directe feedback, badges en zichtbare voortgang na elke taak.</div>
+          <div class="usp-value">"Ik kan dit!"</div>
         </div>
-        <div class="collage-item">
-          <img src="screenshots/scholen-faq.png" alt="Veelgestelde vragen op de website" />
-          <div style="padding: 15px; font-size: 9pt; font-weight: 700; color: var(--slate-600);">Heldere FAQ voor scholen</div>
+        <div class="usp-card">
+          <div class="usp-card-head"><div class="usp-icon">🔮</div><div class="usp-title">Toekomstbestendige Skills</div></div>
+          <div class="usp-desc">Focus op AI, veiligheid en praktische digitale handigheid voor de arbeidsmarkt.</div>
+          <div class="usp-value">"Dit heb ik later echt nodig."</div>
         </div>
       </div>
+    </div>
 
-      <div class="card" style="background: var(--emerald-50); border-color: var(--emerald-600);">
-        <h4 style="color: var(--emerald-600);">Commercieel onderscheidend</h4>
-        <p>In tegenstelling tot statische lesmethodes biedt DGSkills een <strong>alles-in-één ecosysteem</strong>. De koppeling tussen theorie, praktijk (missies) en verantwoording (SLO) is volledig geautomatiseerd. Dit bespaart een docent gemiddeld 4 uur per week aan nakijkwerk en administratie.</p>
-      </div>
-      <a href="#inhoud" class="back-to-top">↑ Terug naar de inhoud</a>
-    </section>
-
-    <div class="page-break"></div>
-
-    <!-- Sectie 2 -->
-    <section id="ervaring-leerling">
-      <h2>2. De leerling-ervaring: Motivatie door succes</h2>
-      <p>In DGSkills zijn leerlingen geen consumenten, maar actieve makers. Ze stappen in een wereld vol missies. Denk aan het ontmaskeren van deepfakes, het schrijven van krachtige prompts voor AI, of het bouwen van hun eigen games.</p>
-      
-      <div class="grid">
-        <div class="card">
-          <span class="badge badge-primary">Challenge</span>
-          <h4>Missiegedreven leren</h4>
-          <p>Korte, spannende uitdagingen met een duidelijk doel. Geen lange teksten, maar direct actie.</p>
+    <div class="section">
+      <div class="section-label">Voor school &amp; directie — "Grip en Ontzorging"</div>
+      <div class="usp-grid">
+        <div class="usp-card">
+          <div class="usp-card-head"><div class="usp-icon">📊</div><div class="usp-title">Aantoonbare Kerndoeldekking</div></div>
+          <div class="usp-desc">Directe koppeling van elke activiteit aan SLO-kerndoelen 21A–23C.</div>
+          <div class="usp-value">Inspectie-proof verantwoording</div>
         </div>
-        <div class="card">
-          <span class="badge badge-emerald">Beloning</span>
-          <h4>Gamification</h4>
-          <p>XP (ervaringspunten), levels en badges. Leerlingen zien hun voortgang en willen steeds een stapje verder.</p>
+        <div class="usp-card">
+          <div class="usp-card-head"><div class="usp-icon">🤝</div><div class="usp-title">Docent-Ontzorging</div></div>
+          <div class="usp-desc">Geautomatiseerde monitoring, AI-feedback en rapportage. Docent coacht.</div>
+          <div class="usp-value">Lagere werkdruk</div>
         </div>
-      </div>
-
-      <h3>Missies in actie: De 'Game Director' Flow</h3>
-      <p>Hoe ziet een missie eruit? We nemen de <strong>Game Programmeur</strong> missie als voorbeeld.</p>
-
-      <div class="flow-container">
-        <div class="flow-step">
-          <div class="flow-badge">1</div>
-          <div class="flow-content">
-            <h4>Start de missie</h4>
-            <p>De leerling kiest een missie uit het dashboard. Elk card toont direct wat er te leren valt.</p>
-            <div class="flow-image">
-              <img src="screenshots/student-dashboard.png" alt="Student Dashboard" />
-            </div>
-            <p style="margin-top: 20px; font-size: 10pt; color: var(--slate-500);">Het overzicht van alle beschikbare missies voor de leerling.</p>
-            <div class="flow-image">
-              <img src="screenshots/student-mission-overview.png" alt="Missie Overzicht" />
-            </div>
-          </div>
+        <div class="usp-card">
+          <div class="usp-card-head"><div class="usp-icon">🚀</div><div class="usp-title">Implementatiegarantie</div></div>
+          <div class="usp-desc">Binnen 30 dagen live met een vaste weekstructuur en onboardingflow.</div>
+          <div class="usp-value">Geen complexe IT-projecten</div>
         </div>
-
-        <div class="flow-step">
-          <div class="flow-badge">2</div>
-          <div class="flow-content">
-            <h4>Aan de slag in het Lab</h4>
-            <p>In de missie werkt de leerling met de AI-agent. In de Game Programmeur missie repareren ze live code van een game.</p>
-            <div class="flow-image">
-              <img src="screenshots/mission-game-programmeur.png" alt="Game Programmeur missie in actie" />
-            </div>
-            <div class="annotation" style="top: 20px; right: 20px;">AI-Coach Feedback</div>
-          </div>
+        <div class="usp-card">
+          <div class="usp-card-head"><div class="usp-icon">📈</div><div class="usp-title">Datagedreven Inzicht</div></div>
+          <div class="usp-desc">Heldere exports voor LVS en voortgangsbesprekingen. Beslissen op feiten.</div>
+          <div class="usp-value">Excel-export in één klik</div>
         </div>
       </div>
+    </div>
 
-      <h3>Gamification: Eigenaarschap & Expressie</h3>
-      <p>Elke leerling bouwt aan een eigen identiteit in het lab. Door missies te voltooien verdienen ze tokens. Deze kunnen ze uitgeven aan nieuwe kleding, kapsels en accessoires voor hun 3D avatar.</p>
-
-      <div class="visual-collage">
-        <div class="collage-item">
-          <img src="screenshots/avatar-customization.png" alt="Avatar Aanpassen" />
-          <div style="padding: 15px; font-size: 9pt; font-weight: 700; color: var(--slate-600);">3D Avatar Builder</div>
-        </div>
-        <div class="collage-item">
-          <img src="screenshots/item-shop.png" alt="Item Shop" />
-          <div style="padding: 15px; font-size: 9pt; font-weight: 700; color: var(--slate-600);">Shop & Beloningen</div>
-        </div>
-      </div>
-      
-      <div class="card" style="background: var(--amber-50); border-color: var(--amber-600);">
-        <h4 style="color: var(--amber-600);">Waarom dit werkt voor retentie</h4>
-        <p>Door leerlingen eigenaarschap te geven over hun digitale identiteit (avatar), stijgt de betrokkenheid met 40% ten opzichte van anonieme leeromgevingen. De <strong>Item Shop</strong> en <strong>Games Section</strong> dienen als krachtige motivatoren om ook de lastigere missies te voltooien.</p>
-      </div>
-      
-      <div class="screenshot-container">
-        <img src="screenshots/student-progress-xp.png" alt="Voortgang en XP" />
-        <div class="screenshot-caption">Real-time voortgang: leerlingen zien hun XP stijgen en badges verschijnen.</div>
-      </div>
-
-      <p>Dit zorgt voor eigenaarschap en een gevoel van progressie dat verder gaat dan alleen een cijfer.</p>
-
-      <div class="screenshot-container">
-        <img src="screenshots/games-section.png" alt="Ontspanningsgames" />
-        <div class="screenshot-caption">Na hard werken: educatieve ontspanningsgames zoals Arena Battle en Drawing Duel.</div>
-      </div>
-
-      <a href="#inhoud" class="back-to-top">↑ Terug naar de inhoud</a>
-    </section>
-
-    <div class="page-break"></div>
-
-    <!-- Sectie 3 -->
-    <section id="ervaring-docent">
-      <h2>3. De docent-ervaring: Grip zonder administratie</h2>
-      <p>De grootste frustratie bij digitale geletterdheid is vaak de administratie: wie heeft wat gedaan en welk doel is daarmee bereikt? DGSkills automatiseert dit volledig.</p>
-      
-      <div class="card" style="margin-bottom: 40px; border-left: 5px solid var(--emerald-600);">
-        <h4>Het Docent Dashboard</h4>
-        <ul>
-          <li><strong>Real-time monitoring:</strong> Zie wie er op dit moment aan het werk is.</li>
-          <li><strong>Automatische feedback:</strong> De AI kijkt het werk na, zodat u dat niet hoeft te doen.</li>
-          <li><strong>Focus Mode:</strong> Met één knop bepaalt u aan welke missie de hele klas werkt.</li>
-        </ul>
-      </div>
-
-      <a href="#inhoud" class="back-to-top">↑ Terug naar de inhoud</a>
-    </section>
-
-    <div class="page-break"></div>
-
-    <!-- Sectie 4 -->
-    <section id="vso-differentiatie">
-      <h2>4. Inclusief onderwijs: VSO en differentiatie</h2>
-      <p>Wij geloven dat digitale geletterdheid voor <em>iedereen</em> is. Daarom hebben we specifieke ondersteuning voor het VSO (Voortgezet Speciaal Onderwijs) ingebouwd.</p>
-      
+    <div class="section" style="margin-bottom:0">
+      <div class="section-label">USP-to-Proof matrix</div>
       <table>
         <thead>
-          <tr>
-            <th>Profiel</th>
-            <th>Focus</th>
-            <th>Ondersteuning</th>
-          </tr>
+          <tr><th>USP</th><th>Bewijsvoering in product</th></tr>
         </thead>
         <tbody>
-          <tr>
-            <td><span class="badge badge-amber">Dagbesteding</span></td>
-            <td>Verkennen en ervaren</td>
-            <td>Meer visuele hints, samendoen en verlaagde drempels voor succes.</td>
-          </tr>
-          <tr>
-            <td><span class="badge badge-primary">Arbeidsmarkt</span></td>
-            <td>Beheersen en zelfstandigheid</td>
-            <td>Focus op praktische vaardigheden voor werk en wonen.</td>
-          </tr>
+          <tr><td>Persoonlijke leerroute</td><td>Keuzemenu in UserProfile; conditionele hints/scores in missies</td></tr>
+          <tr><td>Meetbare kerndoeldekking</td><td><code>SLOClassOverview</code> dashboard + Excel-export per leerling</td></tr>
+          <tr><td>Werkdrukverlaging</td><td>Centraal dashboard 30+ leerlingen; automatische XP &amp; badge-toekenning</td></tr>
+          <tr><td>Leerlingmotivatie</td><td>Gamification engine: XP, Levels, Avatar-outfits, Badges</td></tr>
+          <tr><td>Snelle implementatie</td><td>Onboarding-flow + direct bruikbare dgskills-offline leskaarten</td></tr>
         </tbody>
       </table>
-      
-      <p>Leerlingen kunnen in hun eigen profiel instellen welk niveau ze volgen. De opdrachten passen zich hier direct op aan.</p>
-      <a href="#inhoud" class="back-to-top">↑ Terug naar de inhoud</a>
-    </section>
-
-    <div class="page-break"></div>
-
-    <!-- Sectie 5 -->
-    <section id="slo-doelen">
-      <h2>5. Aansluiting op SLO Kerndoelen 2025</h2>
-      <p>DGSkills is gebouwd rondom de nieuwste functionele kerndoelen van het SLO. U hoeft zelf de mapping niet meer te maken; dat hebben wij al gedaan.</p>
-      
-      <div class="screenshot-container">
-        <img src="screenshots/scholen-slo.png" alt="SLO Kerndoelen mapping" />
-        <div class="annotation" style="top: 10px; right: 10px;">100% Dekking</div>
-        <div class="screenshot-caption">Mapping van missies naar officiële kerndoelen (18A t/m 23C).</div>
-      </div>
-
-      <div class="card" style="margin-top: 40px;">
-        <h4>Aantoonbare verantwoording</h4>
-        <p>Aan het eind van een periode of schooljaar exporteert u met één klik een overzicht voor het LVS of de inspectie. Hierin staat exact welke leerling aan welke doelen heeft gewerkt en op welk niveau.</p>
-      </div>
-
-      <div class="card" style="background: var(--primary-50); border-color: var(--primary);">
-        <h4 style="color: var(--primary);">Impact op de schoolorganisatie</h4>
-        <p>De real-time SLO-mapping haalt de druk weg bij de directie en ICT-coördinator. U bent op elk moment klaar voor een inspectiebezoek, met data-onderbouwde bewijslast van de voortgang per leerling.</p>
-      </div>
-
-      <a href="#inhoud" class="back-to-top">↑ Terug naar de inhoud</a>
-    </section>
-
-    <!-- Sectie 6 -->
-    <section id="stappenplan">
-      <h2>6. In 30 dagen live (Het stappenplan)</h2>
-      <p>Geen complexe IT-projecten. Wij zorgen voor een vliegende start.</p>
-      
-      <div class="step-list">
-        <div class="step-item">
-          <div class="step-number">1</div>
-          <div class="step-content">
-            <h5>Week 1: Voorbereiding</h5>
-            <p>We richten de omgeving in voor uw school en klassen. U krijgt toegang tot het dashboard.</p>
-          </div>
-        </div>
-        <div class="step-item">
-          <div class="step-number">2</div>
-          <div class="step-content">
-            <h5>Week 2: Kick-off</h5>
-            <p>De leerlingen loggen voor het eerst in. In 15 minuten zijn ze op weg in hun eerste missie.</p>
-          </div>
-        </div>
-        <div class="step-item">
-          <div class="step-number">3</div>
-          <div class="step-content">
-            <h5>Week 3: Coaching</h5>
-            <p>Leerlingen werken zelfstandig. De docent monitort via het dashboard en coacht waar nodig.</p>
-          </div>
-        </div>
-        <div class="step-item">
-          <div class="step-number">4</div>
-          <div class="step-content">
-            <h5>Week 4: Impact</h5>
-            <p>We bekijken de eerste resultaten. Welke doelen zijn gehaald? Waar ligt de volgende uitdaging?</p>
-          </div>
-        </div>
-      </div>
-      <a href="#inhoud" class="back-to-top">↑ Terug naar de inhoud</a>
-    </section>
-
-    <div class="page-break"></div>
-
-    <!-- Sectie 7 -->
-    <section id="pakketten">
-      <h2>7. Pilotaanbod en licenties</h2>
-      <p>Start laagdrempelig met een pilot om de impact op uw eigen school te ervaren.</p>
-      
-      <div class="grid">
-        <div class="card" style="border-top: 8px solid var(--amber-600);">
-          <span class="badge badge-amber">Populairst</span>
-          <h4>Startversneller Pilot</h4>
-          <p><strong>Duur:</strong> 8 - 12 weken</p>
-          <p><strong>Inclusief:</strong> Onboarding, 2 klassen, nul- en eindmeting, volledige support.</p>
-          <p><em>Ideaal om bewijslast te verzamelen voor schoolbreed gebruik.</em></p>
-        </div>
-        <div class="card" style="border-top: 8px solid var(--primary);">
-          <span class="badge badge-primary">Structureel</span>
-          <h4>Jaarlicentie</h4>
-          <p><strong>Duur:</strong> 12 maanden</p>
-          <p><strong>Inclusief:</strong> Onbeperkt missies, alle updates, docenttraining en bestuursdashboard.</p>
-          <p><em>Borging van digitale geletterdheid in het hele curriculum.</em></p>
-        </div>
-      </div>
-      <a href="#inhoud" class="back-to-top">↑ Terug naar de inhoud</a>
-    </section>
-
-    <!-- Sectie 8 -->
-    <section id="faq">
-      <h2>8. Veelgestelde vragen</h2>
-      <div class="faq-item">
-        <div class="faq-question">Hoe zit het met de privacy (AVG)?</div>
-        <div class="faq-answer">Heel simpel: veilig. Data staat op EU-servers, we hebben een standaard VWO klaarliggen en we gebruiken enterprise AI-koppelingen die geen data gebruiken voor training.</div>
-      </div>
-      <div class="faq-item">
-        <div class="faq-question">Werkt dit op onze Chromebooks/iPads?</div>
-        <div class="faq-answer">Ja. DGSkills draait volledig in de browser. Geen installaties nodig, geen gedoe met de IT-afdeling.</div>
-      </div>
-      <div class="faq-item">
-        <div class="faq-question">Wat als onze docenten weinig ervaring hebben met AI?</div>
-        <div class="faq-answer">Dat is júist de kracht. De app is de expert. De docent hoeft alleen te faciliteren. Bovendien bieden we een korte training aan om iedereen comfortabel te maken.</div>
-      </div>
-      <a href="#inhoud" class="back-to-top">↑ Terug naar de inhoud</a>
-    </section>
-
-    <div class="page-break"></div>
-
-    <!-- Afsluiting -->
-    <section id="resultaat-in-beeld">
-      <h2>Resultaat in Beeld</h2>
-      <p>DGSkills koppelt motivatie, missiegedreven leren en inspectieklare verantwoording in een enkele leeromgeving. Een groeiend aanbod aan AI-agents staat klaar voor uw leerlingen.</p>
-
-      <div class="visual-collage">
-        <div class="collage-item">
-          <img src="screenshots/ai_spiegel.png" alt="AI Spiegel" />
-          <div style="padding: 15px; font-size: 9pt; font-weight: 700; color: var(--slate-600);">De AI Spiegel</div>
-        </div>
-        <div class="collage-item">
-          <img src="screenshots/chatbot_trainer.png" alt="Chatbot Trainer" />
-          <div style="padding: 15px; font-size: 9pt; font-weight: 700; color: var(--slate-600);">Chatbot Trainer</div>
-        </div>
-        <div class="collage-item">
-          <img src="screenshots/social_safeguard.png" alt="Social Safeguard" />
-          <div style="padding: 15px; font-size: 9pt; font-weight: 700; color: var(--slate-600);">Social Safeguard</div>
-        </div>
-        <div class="collage-item">
-          <img src="screenshots/verhalen_ontwerper.png" alt="Verhalen Ontwerper" />
-          <div style="padding: 15px; font-size: 9pt; font-weight: 700; color: var(--slate-600);">Verhalen Ontwerper</div>
-        </div>
-      </div>
-
-      <div class="quote-box">
-        Klaar om te starten? Neem contact op voor een demo op uw school.
-      </div>
-    </section>
+    </div>
 
     <div class="footer">
-      © 2026 DGSkills.app - Krachtig, Modern & Meetbaar.<br/>
-      <small>Dit is een vertrouwelijk document bedoeld voor interne besluitvorming op scholen.</small>
+      <a href="https://dgskills.app">dgskills.app</a>
+      <span class="footer-note">Pagina 1 van 2</span>
     </div>
   </div>
+  <div class="page-break"></div>
+
+  <!-- PAGE 3: Pakkettering + Messaging -->
+  <div class="content-page">
+    <div class="page-header">
+      <div class="page-header-title">Pakkettering &amp; Website Messaging</div>
+      <div class="page-header-logo">DGSkills · USP &amp; Positionering</div>
+    </div>
+
+    <div class="section">
+      <div class="section-label">Commerciële pakkettering</div>
+      <div class="pkg-row">
+        <div class="pkg-card">
+          <div class="pkg-label">Pakket 0 · Pilot</div>
+          <div class="pkg-promise">Binnen 30 dagen live, binnen 90 dagen aantoonbare impact op SLO-doelen.</div>
+          <div class="pkg-tag">€1.500</div>
+        </div>
+        <div class="pkg-card dark">
+          <div class="pkg-label">Pakket 1 · Start</div>
+          <div class="pkg-promise">Structurele borging van digitale geletterdheid in het curriculum.</div>
+          <div class="pkg-tag">€4.900/jr</div>
+        </div>
+        <div class="pkg-card">
+          <div class="pkg-label">Pakket 2 · Schoolbreed</div>
+          <div class="pkg-promise">Aantoonbare kerndoeldekking voor de gehele schoolpopulatie.</div>
+          <div class="pkg-tag">€8.900+</div>
+        </div>
+        <div class="pkg-card">
+          <div class="pkg-label">Pakket 3 · Bestuur</div>
+          <div class="pkg-promise">Centraal inzicht in de voortgang van alle scholen binnen het bestuur.</div>
+          <div class="pkg-tag">Op aanvraag</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-label">Website messaging — hero &amp; doelgroepblokken</div>
+
+      <div class="msg-card">
+        <div class="msg-card-head">
+          <span class="msg-section">Hero</span>
+        </div>
+        <div class="msg-title">Maak digitale geletterdheid tastbaar, motiverend en aantoonbaar.</div>
+        <div class="msg-copy">De missiegedreven leeromgeving voor VO en VSO die aansluit op de nieuwste SLO-kerndoelen. Van AI tot online veiligheid.</div>
+        <div class="msg-ctas">
+          <span class="cta-primary">Start een Pilot</span>
+          <span class="cta-secondary">Bekijk Demo</span>
+        </div>
+      </div>
+
+      <div class="msg-card">
+        <div class="msg-card-head">
+          <span class="msg-section">Leerling</span>
+        </div>
+        <div class="msg-title">Leer als een professional, voltooi missies als een pro.</div>
+        <div class="msg-copy">Geen saaie lessen uit een boek. In dgskills.app voltooi je challenges over AI, hacken, privacy en digitale tools. Verzamel badges, verhoog je level en zie hoe je groeit.</div>
+      </div>
+
+      <div class="msg-card" style="margin-bottom:0">
+        <div class="msg-card-head">
+          <span class="msg-section">School</span>
+        </div>
+        <div class="msg-title">Vink uw SLO-kerndoelen af met data, niet met administratie.</div>
+        <div class="msg-copy">Bespaar uren aan registratie. Ons dashboard koppelt elke leeractiviteit automatisch aan de functionele kerndoelen. Exporteer voortgangsrapportages voor de inspectie of het LVS met één klik.</div>
+        <div class="msg-ctas">
+          <span class="cta-primary">Download Voorbeeldrapportage</span>
+          <span class="cta-secondary">Vraag een demo aan</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <a href="https://dgskills.app">dgskills.app</a>
+      <span class="footer-note">KvK 81819889 · Pagina 2 van 2</span>
+    </div>
+  </div>
+
+</div>
 </body>
 </html>

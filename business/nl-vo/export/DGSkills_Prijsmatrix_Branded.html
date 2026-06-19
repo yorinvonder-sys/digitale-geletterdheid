@@ -1,0 +1,469 @@
+<!doctype html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DGSkills — Prijsmatrix &amp; Contractmodel</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,700;0,900;1,700&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Outfit', sans-serif;
+      background: #f2f1ec;
+      color: #202023;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    @page { size: A4; margin: 0; }
+    @media print { body { background: #f2f1ec; } }
+
+    .page {
+      width: 210mm;
+      min-height: 297mm;
+      background: #f2f1ec;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Header */
+    .header {
+      background: #202023;
+      padding: 36px 48px 32px;
+    }
+
+    .header-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+    }
+
+    .logo-mark {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo-duck {
+      width: 32px; height: 32px;
+      background: #e1ff01;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 16px;
+    }
+
+    .logo-text {
+      font-family: 'Fraunces', serif;
+      font-size: 20px;
+      font-weight: 900;
+      color: #f2f1ec;
+    }
+
+    .doc-tag {
+      background: rgba(225,255,1,0.15);
+      border: 1px solid rgba(225,255,1,0.3);
+      border-radius: 999px;
+      padding: 4px 12px;
+      font-size: 11px;
+      font-weight: 600;
+      color: #e1ff01;
+    }
+
+    .header-title {
+      font-family: 'Fraunces', serif;
+      font-size: 30px;
+      font-weight: 900;
+      color: #f2f1ec;
+      letter-spacing: -0.5px;
+      line-height: 1.1;
+    }
+
+    .header-sub {
+      font-size: 12px;
+      color: #c2c1bd;
+      margin-top: 6px;
+    }
+
+    /* Content */
+    .content {
+      flex: 1;
+      padding: 28px 48px 36px;
+    }
+
+    .section {
+      margin-bottom: 28px;
+    }
+
+    .section-head {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .section-num {
+      width: 26px; height: 26px;
+      background: #202023;
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 12px;
+      font-weight: 700;
+      color: #e1ff01;
+      flex-shrink: 0;
+    }
+
+    .section-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: #202023;
+      letter-spacing: -0.2px;
+    }
+
+    /* Tables */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: white;
+      border-radius: 14px;
+      overflow: hidden;
+      font-size: 12px;
+    }
+
+    thead th {
+      background: #202023;
+      color: #f2f1ec;
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 10px 14px;
+      text-align: left;
+    }
+
+    thead th:last-child { text-align: right; }
+
+    tbody tr {
+      border-bottom: 1px solid #f2f1ec;
+    }
+
+    tbody tr:last-child { border-bottom: none; }
+
+    tbody tr:hover { background: rgba(225,255,1,0.05); }
+
+    tbody td {
+      padding: 10px 14px;
+      color: #202023;
+      line-height: 1.4;
+    }
+
+    tbody td:last-child { text-align: right; font-weight: 600; }
+
+    .highlight-row td {
+      background: rgba(225,255,1,0.08) !important;
+    }
+
+    .highlight-row td:first-child {
+      border-left: 3px solid #e1ff01;
+    }
+
+    /* Highlight package card */
+    .packages-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+    }
+
+    .pkg-card {
+      background: white;
+      border-radius: 14px;
+      padding: 16px 14px;
+      border: 1px solid rgba(32,32,35,0.08);
+      position: relative;
+    }
+
+    .pkg-card.featured {
+      background: #202023;
+      border-color: #202023;
+    }
+
+    .pkg-name {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: #c2c1bd;
+      margin-bottom: 6px;
+    }
+
+    .pkg-card.featured .pkg-name { color: rgba(225,255,1,0.7); }
+
+    .pkg-price {
+      font-family: 'Fraunces', serif;
+      font-size: 22px;
+      font-weight: 900;
+      color: #202023;
+      line-height: 1;
+    }
+
+    .pkg-card.featured .pkg-price { color: #e1ff01; }
+
+    .pkg-unit {
+      font-size: 10px;
+      color: #c2c1bd;
+      font-weight: 500;
+    }
+
+    .pkg-scope {
+      font-size: 11px;
+      color: #202023;
+      margin-top: 8px;
+      line-height: 1.4;
+    }
+
+    .pkg-card.featured .pkg-scope { color: #c2c1bd; }
+
+    .best-label {
+      position: absolute;
+      top: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #e1ff01;
+      color: #202023;
+      font-size: 9px;
+      font-weight: 700;
+      padding: 2px 10px;
+      border-radius: 999px;
+      white-space: nowrap;
+    }
+
+    /* Two-col layout */
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    /* Info box */
+    .info-box {
+      background: #202023;
+      border-radius: 14px;
+      padding: 16px 18px;
+      font-size: 11.5px;
+      color: #c2c1bd;
+      line-height: 1.6;
+    }
+
+    .info-box strong { color: #e1ff01; }
+
+    /* Footer */
+    .footer {
+      background: #202023;
+      padding: 14px 48px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer-contact {
+      font-size: 11px;
+      color: #c2c1bd;
+    }
+
+    .footer-contact a {
+      color: #e1ff01;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .footer-note {
+      font-size: 10px;
+      color: rgba(194,193,189,0.5);
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <div class="header">
+    <div class="header-top">
+      <div class="logo-mark">
+        <div class="logo-duck">🦆</div>
+        <span class="logo-text">DGSkills</span>
+      </div>
+      <span class="doc-tag">Prijsmatrix 2025–2026</span>
+    </div>
+    <div class="header-title">Contractmodel &amp; Tarieven</div>
+    <div class="header-sub">Alle bedragen in EUR, exclusief btw &nbsp;·&nbsp; Betalingstermijn 30 dagen</div>
+  </div>
+
+  <div class="content">
+
+    <!-- Packages grid -->
+    <div class="section">
+      <div class="section-head">
+        <div class="section-num">1</div>
+        <div class="section-title">Jaarlicenties per school</div>
+      </div>
+      <div class="packages-grid">
+        <div class="pkg-card">
+          <div class="pkg-name">Start</div>
+          <div class="pkg-price">€4.900</div>
+          <div class="pkg-unit">/jaar</div>
+          <div class="pkg-scope">t/m 250 leerlingen<br/>max 8 docenten</div>
+        </div>
+        <div class="pkg-card">
+          <div class="pkg-name">School-S</div>
+          <div class="pkg-price">€8.900</div>
+          <div class="pkg-unit">/jaar</div>
+          <div class="pkg-scope">251–500 leerlingen</div>
+        </div>
+        <div class="pkg-card featured">
+          <div class="best-label">meest gekozen</div>
+          <div class="pkg-name">School-M</div>
+          <div class="pkg-price">€12.900</div>
+          <div class="pkg-unit" style="color:rgba(225,255,1,0.5)">/jaar</div>
+          <div class="pkg-scope">501–900 leerlingen</div>
+        </div>
+        <div class="pkg-card">
+          <div class="pkg-name">School-L</div>
+          <div class="pkg-price">€17.900</div>
+          <div class="pkg-unit">/jaar</div>
+          <div class="pkg-scope">901–1400 leerlingen</div>
+        </div>
+      </div>
+      <div style="margin-top:10px; background:white; border-radius:12px; padding:12px 16px; font-size:11.5px; border:1px solid rgba(32,32,35,0.08)">
+        <strong>Boven 1.400 leerlingen:</strong> School-L basisprijs + €6 per extra leerling/jaar &nbsp;·&nbsp;
+        <strong>Bestuur (3+ scholen):</strong> op aanvraag, richtprijs €11.500–€15.500 per school
+      </div>
+    </div>
+
+    <!-- Pilot + Contract -->
+    <div class="two-col">
+      <div class="section">
+        <div class="section-head">
+          <div class="section-num">2</div>
+          <div class="section-title">Pilotmodel (8–12 weken)</div>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>Pilotvorm</th>
+              <th>Omvang</th>
+              <th>Prijs</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="highlight-row">
+              <td><strong>Pilot Start</strong></td>
+              <td>1 team, max 150 lln</td>
+              <td>€1.500</td>
+            </tr>
+            <tr>
+              <td><strong>Pilot School</strong></td>
+              <td>2–3 teams, max 400 lln</td>
+              <td>€3.000</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="info-box" style="margin-top:10px;">
+          <strong>Verrekening:</strong> 100% van pilotprijs bij conversie naar jaarcontract (binnen 30 dagen na piloteinde).
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-head">
+          <div class="section-num">3</div>
+          <div class="section-title">Contractduur &amp; korting</div>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>Looptijd</th>
+              <th>Korting</th>
+              <th>Betaling</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>12 maanden</td>
+              <td style="text-align:right">0%</td>
+              <td>Jaarlijks vooruit</td>
+            </tr>
+            <tr>
+              <td>24 maanden</td>
+              <td style="text-align:right"><strong>8%</strong></td>
+              <td>Jaarlijks vooruit</td>
+            </tr>
+            <tr class="highlight-row">
+              <td>36 maanden</td>
+              <td style="text-align:right"><strong>15%</strong></td>
+              <td>Jaarlijks vooruit</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Add-ons -->
+    <div class="section">
+      <div class="section-head">
+        <div class="section-num">4</div>
+        <div class="section-title">Implementatie &amp; add-ons</div>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>Item</th>
+            <th style="text-align:right">Prijs</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Extra docenttraining (2 uur, online)</td>
+            <td>€650</td>
+          </tr>
+          <tr>
+            <td>On-site trainingsdag (max 20 deelnemers)</td>
+            <td>€1.950 + reiskosten</td>
+          </tr>
+          <tr>
+            <td>Fast-track onboarding (start binnen 5 werkdagen)</td>
+            <td>€1.200</td>
+          </tr>
+          <tr>
+            <td>Extra impactrapportage per semester</td>
+            <td>€900</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Voorwaarden -->
+    <div class="section" style="margin-bottom:0">
+      <div class="section-head">
+        <div class="section-num">5</div>
+        <div class="section-title">Commerciële voorwaarden</div>
+      </div>
+      <div class="info-box">
+        <strong>Indexatie</strong> — Jaarlijks CPI, max 5% voor contracten langer dan 12 maanden &nbsp;·&nbsp;
+        <strong>Opzegging</strong> — Stilzwijgend verlengd met 12 maanden, tenzij 3 maanden vooraf schriftelijk opgezegd &nbsp;·&nbsp;
+        <strong>Maximale korting</strong> — 15% zonder directiegoedkeuring &nbsp;·&nbsp;
+        <strong>Bestuursdeals</strong> — Raamovereenkomst + schoolspecifieke bijlagen
+      </div>
+    </div>
+
+  </div>
+
+  <div class="footer">
+    <div class="footer-contact">
+      Yorin Vonder &nbsp;·&nbsp; <a href="mailto:info@dgskills.app">info@dgskills.app</a> &nbsp;·&nbsp; <a href="https://dgskills.app">dgskills.app</a>
+    </div>
+    <div class="footer-note">KvK 81819889 &nbsp;·&nbsp; Alle prijzen excl. btw &nbsp;·&nbsp; Onder voorbehoud van wijzigingen</div>
+  </div>
+
+</div>
+</body>
+</html>
