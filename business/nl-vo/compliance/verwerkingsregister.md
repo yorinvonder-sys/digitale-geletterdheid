@@ -49,6 +49,7 @@
 | | - Rol (leerling / docent / admin / developer) |
 | | - School-ID, klas-ID |
 | | - Leerjaar (year_group), onderwijsniveau (education_level) |
+| | - Geboortedatum (uitsluitend voor de 13+ AI-leeftijdspoort; server-side bepaald via `student_ai_age_ok()`, niet met de AI gedeeld) |
 | | - Accountstatus (processing_restricted, restricted_at, restricted_reason) |
 | | - Aanmaak- en wijzigingstijdstempels |
 | **Ontvangers / subverwerkers** | Supabase Inc. (database, auth -- hosting EU: `eu-central-1` Frankfurt) |

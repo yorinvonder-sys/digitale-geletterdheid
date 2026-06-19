@@ -109,6 +109,7 @@ De school is als verwerkingsverantwoordelijke primair verantwoordelijk voor het 
 | Categorie | Specifieke gegevens | Bewaartermijn | Noodzaak |
 |---|---|---|---|
 | **Identificatiegegevens** | Naam, schoole-mailadres, account-ID (UUID), rol (leerling/docent/admin) | Duur contract + afgesproken na-termijn | Noodzakelijk voor authenticatie en autorisatie |
+| **Geboortedatum** | Geboortedatum van de leerling | Duur account | Uitsluitend voor de 13+ AI-leeftijdspoort (voorwaarden Mistral/BFL: geen <13). Server-side bepaald via `student_ai_age_ok()`; niet met de AI gedeeld. Data-minimalisatie: alleen gebruikt om leeftijd ≥13 vast te stellen |
 | **Authenticatiegegevens** | Gehashte wachtwoorden (bcrypt), JWT-tokens, sessiedata | Duur account; tokens: sessieduur | Noodzakelijk voor veilige toegang |
 | **Leervoortgang** | XP-punten, level, voltooide missies, stapvoltooiing per missie | Duur schooljaar + afgesproken termijn | Kernfunctionaliteit: leerproces monitoren |
 | **Chatgeschiedenis met AI** | Berichten van leerling aan AI-agent, AI-responses | Sessiegebaseerd (niet persistent opgeslagen in database) | Noodzakelijk voor contextbehoud in gesprek |
@@ -306,6 +307,7 @@ De betrokken leerlingen zijn 12 tot 18 jaar oud. Op grond van Overweging 38 en 7
 | Wetgeving | Relevante bepaling | Implicatie voor DGSkills |
 |---|---|---|
 | Art. 8 AVG / UAVG | Toestemming minderjarigen: in Nederland geldt de grens van 16 jaar voor informatiemaatschappijdiensten | DGSkills opereert onder de rechtsgrondslag "publieke taak" van de school, niet op basis van toestemming van de leerling. Dit is de juiste aanpak. |
+| AI-providers 13+ (Mistral/BFL) | Mistral (Commercial Terms §2.2(c)) en Black Forest Labs (ToS §1.2) staan kinderen <13 niet toe — ook niet met ouderlijke toestemming | Het platform bepaalt de leeftijd server-side uit de geboortedatum (`student_ai_age_ok()`) en blokkeert AI automatisch voor leerlingen <13 (fail-closed: ook bij onbekende geboortedatum). De geboortedatum wordt niet met de AI gedeeld. |
 | Overweging 38 AVG | Specifieke bescherming voor kinderen | Privacy-informatie moet in eenvoudige, begrijpelijke taal |
 | Art. 24 IVRK | Recht op onderwijs en ontwikkeling | Technologie moet de ontwikkeling van het kind ondersteunen, niet belemmeren |
 | Code voor Kinderrechten Online | Best practices (VK-oorsprong, groeiende NL-norm) | Standaard hoge privacy-instellingen, geen manipulatief ontwerp |
