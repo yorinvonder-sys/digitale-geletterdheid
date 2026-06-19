@@ -19,7 +19,7 @@ Het platform is al gebouwd en draait. De investering is niet "iets nieuws bouwen
 |---|---|---|
 | Zelfstandig werken op eigen tempo | Realtime voortgangsoverzicht per klas | Aantoonbaar werken aan SLO-kerndoelen |
 | Directe AI-feedback, geen wachttijd | Minder nakijkwerk | Klaar voor kerncurriculum 2027 |
-| Meetbare leeruitkomsten | Data voor rapportage | Data binnen EU, AVG-compliant |
+| Meetbare leeruitkomsten | Data voor rapportage | Data binnen EU, DPIA uitgevoerd |
 
 ---
 
