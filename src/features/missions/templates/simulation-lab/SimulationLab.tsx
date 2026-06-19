@@ -449,6 +449,15 @@ const SimulationLabInner: React.FC<SimulationLabProps> = ({ onBack, onComplete, 
     );
 };
 
+// ── Allowlist ────────────────────────────────────────────────────────────────
+const VALID_SIMULATION_LAB_IDS: ReadonlySet<string> = new Set([
+    'ai-spiegel',
+    'algorithm-architect',
+    'bug-hunter',
+    'code-reviewer',
+    'privacy-by-design',
+]);
+
 // ── Public entry point — loads config dynamically ────────────────────────────
 
 const LoadingScreen = () => (
@@ -462,6 +471,7 @@ export const SimulationLab: React.FC<TemplateMissionProps> = ({ missionId, onBac
     const [loadError, setLoadError] = useState(false);
 
     useEffect(() => {
+        if (!VALID_SIMULATION_LAB_IDS.has(missionId)) { setLoadError(true); return; }
         import(`./configs/${missionId}.ts`)
             .then((mod) => {
                 const cfg = mod.default ?? Object.values(mod).find((v): v is SimulationLabConfig => v && typeof v === 'object' && 'missionId' in v);

@@ -34,7 +34,7 @@ Het grootste concurrentievoordeel is niet de technologie — het is de oprichter
 | **Docent** | "Missies die leerlingen wel willen doen" | Herkenning |
 | **ICT-coordinator** | "SLO-bewijs in een klik, klaar voor de inspectie" | Ontzorging |
 | **Teamleider/directeur** | "Aantoonbare digitale geletterdheid zonder extra werkdruk" | Risicoreductie |
-| **Bestuurder** | "AVG-proof, AI Act hoog-risico transparant gedocumenteerd, governance dashboard" | Compliance-zekerheid |
+| **Bestuurder** | "AVG: DPIA uitgevoerd en data in NL, AI Act hoog-risico transparant gedocumenteerd, governance dashboard" | Compliance-zekerheid |
 
 ---
 

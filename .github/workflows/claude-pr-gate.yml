@@ -36,6 +36,11 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          # Full history so gitleaks-action can resolve the <sha>^..<sha>
+          # diff range; a shallow clone misses the parent commit and the
+          # action fails with "stderr is not empty".
+          fetch-depth: 0
 
       - name: Setup Node.js
         uses: actions/setup-node@v4

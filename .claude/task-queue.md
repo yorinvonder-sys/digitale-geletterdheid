@@ -10,7 +10,7 @@
 ### 1. Fase E — AI Act Compliance Code
 - **Werkstroom:** Compliance
 - **Sprint:** 6
-- **Beschrijving:** Art. 9 risk management in code (risicoregister koppelen aan live systeem), Art. 12 logging implementatie (audit-log voor elke AI-beoordeling en SLO-bepaling), Art. 14 human oversight dashboard (docent kan AI-gegenereerde beoordelingen corrigeren/overrulen met log), conformiteitsverklaring genereren (automatisch pdf op basis van Annex IV).
+- **Beschrijving:** Art. 9 risk management in code (risicoregister koppelen aan live systeem), Art. 12 logging implementatie (audit-log voor elke AI-beoordeling en SLO-bepaling), Art. 14 human oversight (docent kan AI-gegenereerde beoordelingen corrigeren/overrulen met log — **override-deel geïmplementeerd 15 mrt 2026 via `teacher_step_overrides`; monitoringdashboard resteert**), conformiteitsverklaring genereren (automatisch pdf op basis van Annex IV).
 - **Done wanneer:** Alle HIGH RISK verplichtingen zijn in code geïmplementeerd en een conformiteitsverklaring kan on-demand worden gegenereerd.
 
 ### 2. Fase F — Pilot Operatie

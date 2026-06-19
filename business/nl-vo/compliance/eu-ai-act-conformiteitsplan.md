@@ -241,7 +241,7 @@ Positief:
 - AI-output is visueel herkenbaar als AI-gegenereerd
 
 Aandachtspunten:
-- Docent kan STEP_COMPLETE momenteel NIET overriden
+- ~~Docent kan STEP_COMPLETE momenteel NIET overriden~~ → **opgelost: docent-override geïmplementeerd 15 mrt 2026** (`teacher_step_overrides` + RPC `override_student_step`, gelogd)
 - Geen docentdashboard voor real-time monitoring van AI-interacties
 - Geen "noodstop" functionaliteit voor docenten
 
@@ -249,7 +249,7 @@ Aandachtspunten:
 
 | # | Actie | Geschatte tijd | Prioriteit |
 |---|-------|---------------|------------|
-| 14.1 | **Implementeer docent-override voor STEP_COMPLETE** (docent kan stappen terugdraaien of handmatig goedkeuren) | 2 weken | KRITIEK |
+| 14.1 | ~~Implementeer docent-override voor STEP_COMPLETE~~ **✅ Geïmplementeerd (15 mrt 2026)** (docent kan stappen terugdraaien of handmatig goedkeuren) | — | Afgerond |
 | 14.2 | Bouw docentdashboard voor monitoring AI-interacties (aggregaat, niet PII) | 2 weken | HOOG |
 | 14.3 | Implementeer "noodstop": docent kan AI-functionaliteit per klas/leerling uitschakelen | 1 week | HOOG |
 | 14.4 | Voeg waarschuwing toe tegen "automation bias" in docenthandleiding | 2 dagen | MIDDEN |
@@ -765,7 +765,7 @@ Na de deadline stopt compliance niet. Doorlopende verplichtingen:
 ### Kritieke paden
 
 1. **Technische documentatie (Annex IV)** is het langste pad: ~12 weken doorlooptijd
-2. **Docent-override STEP_COMPLETE** is de belangrijkste technische implementatie
+2. **Docent-override STEP_COMPLETE** is de belangrijkste technische implementatie — **geïmplementeerd 15 mrt 2026**
 3. **EU-databank registratie** is afhankelijk van wanneer de databank operationeel wordt
 4. **Juridische review** is een bottleneck als de ICT-jurist niet tijdig beschikbaar is
 

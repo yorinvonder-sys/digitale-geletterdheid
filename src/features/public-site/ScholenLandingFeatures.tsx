@@ -74,10 +74,10 @@ const features = [
         description: 'Real-time inzicht per leerling en per klas. SLO-voortgang, activiteit, resultaten en wie extra aandacht nodig heeft.',
     },
     {
-        illustration: <FeatureImage src="/illustrations/feature-privacy.webp" alt="AVG-compliant privacy illustratie" />,
+        illustration: <FeatureImage src="/illustrations/feature-privacy.webp" alt="Privacy by design illustratie" />,
         bgColor: BG.sky,
         label: 'Privacy',
-        title: 'AVG-compliant by design',
+        title: 'Privacy by design',
         description: 'Data in Europa, verwerkersovereenkomst en DPIA beschikbaar. Ontworpen voor de EU AI Act.',
     },
     {

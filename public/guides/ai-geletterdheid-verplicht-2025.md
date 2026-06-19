@@ -12,6 +12,6 @@ Het gaat niet alleen om weten hoe je ChatGPT gebruikt. AI-geletterdheid omvat:
 In het voortgezet onderwijs moeten zowel docenten als leerlingen aantoonbaar bekwaam worden in het omgaan met AI. De Inspectie van het Onderwijs gaat hier in de toekomst op toetsen als onderdeel van de bredere digitale geletterdheid.
 
 ## Hoe DGSkills helpt
-DGSkills heeft specifieke [AI-missies](/ai-geletterdheid-onderwijs-ai-act) ontwikkeld die leerlingen stap voor stap meenemen in de wereld van AI, volledig AVG-proof.
+DGSkills heeft specifieke [AI-missies](/ai-geletterdheid-onderwijs-ai-act) ontwikkeld die leerlingen stap voor stap meenemen in de wereld van AI, met privacy by design en data in de EU.
 
 [Start een pilot](/digitale-geletterdheid-vo)

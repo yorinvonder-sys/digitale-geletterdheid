@@ -29,7 +29,7 @@ export const KERNDOEL_MISSIONS: KerndoelMissionMeta[] = [
   { id: 'cloud-commander', title: 'Cloud Commander', week: 1, yearGroup: 1, sloKerndoelen: ['21A', '23A'], sloVsoKerndoelen: ['18A', '20A'] },
   { id: 'word-wizard', title: 'Word Wizard', week: 1, yearGroup: 1, sloKerndoelen: ['21A', '22A'], sloVsoKerndoelen: ['18A', '19A'] },
   { id: 'slide-specialist', title: 'Slide Specialist', week: 1, yearGroup: 1, sloKerndoelen: ['21A', '22A'], sloVsoKerndoelen: ['18A', '19A'] },
-  { id: 'print-pro', title: 'Print Pro', week: 1, yearGroup: 1, sloKerndoelen: ['21A'], sloVsoKerndoelen: ['18A'] },
+  { id: 'print-pro', title: 'Print Pro', week: 1, yearGroup: 1, sloKerndoelen: ['21A', '23A'], sloVsoKerndoelen: ['18A', '20A'] },
 
   // Periode 1 review
   { id: 'ipad-print-instructies', title: 'iPad Print Instructies', week: 2, yearGroup: 1, sloKerndoelen: ['21A'], sloVsoKerndoelen: ['18A'], classRestriction: 'MH1A' },

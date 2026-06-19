@@ -86,7 +86,7 @@ DGSkills staat er voor een pre-revenue EdTech startup **opvallend goed** voor qu
 | Art. 11 | Technische documentatie (Annex IV) | NIET VOLDAAN | 2 aug 2026 |
 | Art. 12 | Traceerbaarheid/logging | VOLDAAN | 2 aug 2026 |
 | Art. 13 | Transparantie | VOLDAAN | 2 aug 2026 |
-| Art. 14 | Menselijk toezicht | GEDEELTELIJK | 2 aug 2026 |
+| Art. 14 | Menselijk toezicht | VOLDAAN (docent-override geïmplementeerd 15 mrt 2026; noodstop + docenttraining nog open) | 2 aug 2026 |
 | Art. 15 | Nauwkeurigheid, robuustheid | GEDEELTELIJK | 2 aug 2026 |
 | Art. 49 | Registratie EU AI-database | NIET VOLDAAN | 2 aug 2026 |
 | Art. 50 | Transparantieplichten | VOLDAAN | 2 aug 2026 |
@@ -97,7 +97,7 @@ Over ~5 maanden gaan de hoog-risico verplichtingen in werking. Voor die datum mo
 1. Risicobeheersysteem documenteren (Art. 9)
 2. Technische documentatie opstellen conform Annex IV (Art. 11)
 3. Registratie in EU AI-database (Art. 49)
-4. Docent moet AI-gegenereerde STEP_COMPLETE kunnen overriden (Art. 14)
+4. ~~Docent moet AI-gegenereerde STEP_COMPLETE kunnen overriden (Art. 14)~~ — **gedaan (15 mrt 2026): docent-override geïmplementeerd**
 
 ---
 
@@ -272,7 +272,7 @@ Niet wettelijk verplicht in Nederland (wel in het VK), maar wordt steeds meer al
 | 17 | System prompts server-side valideren | Security | EUR 0 |
 | 18 | Server-side rate limiting | Security | EUR 0 |
 | 19 | ~~Google Gemini EER-datalocatie bevestigen~~ **AFGEROND:** Vertex AI europe-west4 (NL), DPA+SCCs, zero retention | AVG Art. 44-49 | EUR 0 |
-| 20 | Docent override voor STEP_COMPLETE | AI Act Art. 14 | EUR 0 |
+| 20 | ~~Docent override voor STEP_COMPLETE~~ **AFGEROND (15 mrt 2026)** | AI Act Art. 14 | EUR 0 |
 
 ### Voor 2 augustus 2026 (AI Act deadline)
 

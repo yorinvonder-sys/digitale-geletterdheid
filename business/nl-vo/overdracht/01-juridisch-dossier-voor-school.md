@@ -104,7 +104,7 @@ Alle vier hebben actieve DPA's. Dataoverdrachten buiten de EU zijn beveiligd via
 | AVG/GDPR | ~70% compleet | DPA ondertekenen (school), DPIA endorsen (school-FG), register bijwerken |
 | EU AI Act | ~30% compleet | Art. 9 risicobeheer, Art. 10 data governance — **harde deadline 2 aug 2026** |
 | Onderwijsrecht | ~60% compleet | Privacyconvenant Onderwijs-lidmaatschap (aanbevolen, €3.000-8.000 eenmalig) |
-| Beveiliging | ~65% compleet | Rate limiting op 6 endpoints, docent-override AI-beslissingen |
+| Beveiliging | ~65% compleet | Rate limiting op 6 endpoints |
 
 ---
 

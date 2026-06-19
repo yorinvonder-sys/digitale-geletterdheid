@@ -88,6 +88,21 @@ function buildInitialState(config: ScenarioEngineConfig): ScenarioEngineState {
     return { phase: 'intro', currentRound: 0, roundStates };
 }
 
+// ── Allowlist ────────────────────────────────────────────────────────────────
+const VALID_SCENARIO_ENGINE_IDS: ReadonlySet<string> = new Set([
+    'ai-bias-detective',
+    'code-denker',
+    'cookie-crusher',
+    'data-speurder',
+    'digital-forensics',
+    'factchecker',
+    'mail-detective',
+    'notificatie-ninja',
+    'online-helden',
+    'phishing-fighter',
+    'social-safeguard',
+]);
+
 // ── Public entry point ────────────────────────────────────────────────────────
 
 export const ScenarioEngine: React.FC<TemplateMissionProps> = ({ missionId, onBack, onComplete }) => {
@@ -95,6 +110,7 @@ export const ScenarioEngine: React.FC<TemplateMissionProps> = ({ missionId, onBa
     const [loadError, setLoadError] = useState(false);
 
     useEffect(() => {
+        if (!VALID_SCENARIO_ENGINE_IDS.has(missionId)) { setLoadError(true); return; }
         import(`./configs/${missionId}.ts`)
             .then((mod) => setConfig(mod.default as ScenarioEngineConfig))
             .catch(() => setLoadError(true));
