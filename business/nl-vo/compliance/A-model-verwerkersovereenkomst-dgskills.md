@@ -99,7 +99,7 @@ In deze Verwerkersovereenkomst wordt verstaan onder:
    - b. het doen van ongevraagde aanbiedingen;
    - c. commerciële profilering van Betrokkenen;
    - d. het verkopen of anderszins ter beschikking stellen van Persoonsgegevens aan derden voor commerciële doeleinden.
-3. De Verwerker maakt geen gebruik van Persoonsgegevens voor het trainen van AI-modellen, tenzij uitdrukkelijk en schriftelijk overeengekomen met de Verwerkingsverantwoordelijke. De Verwerker bevestigt dat bij gebruik van Google Gemini via Vertex AI zero data retention geldt: invoer- en uitvoergegevens worden niet opgeslagen door Google en niet gebruikt voor modeltraining. Dit is contractueel vastgelegd in de Google Cloud Data Processing Addendum.
+3. De Verwerker maakt geen gebruik van Persoonsgegevens voor het trainen van AI-modellen, tenzij uitdrukkelijk en schriftelijk overeengekomen met de Verwerkingsverantwoordelijke. De Verwerker streeft ernaar dat bij gebruik van de AI-subverwerkers geen training op leerlingdata plaatsvindt (training-opt-out te verifiëren — Mistral biedt opt-out; standaard opt-out op Scale-plan) en dat dataretentie wordt beperkt (Mistral: standaard tot 30 dagen abuse-monitoring; Zero Data Retention optioneel, plan-afhankelijk — te verifiëren). Dit dient contractueel te worden vastgelegd in de Mistral AI DPA met EU SCC's (Besluit 2021/914); voor Black Forest Labs gelden ISO 27001 / SOC 2 Type II — ondertekende DPA's te verifiëren.
 
 ---
 
@@ -173,7 +173,8 @@ In deze Verwerkersovereenkomst wordt verstaan onder:
    | Sub-verwerker | Locatie primaire verwerking | Doorgifte buiten EER? | Waarborg |
    |---|---|---|---|
    | Supabase (database) | EU (AWS eu-central-1, Frankfurt) | Nee | — |
-   | Google Gemini via Vertex AI | EU (europe-west4, Nederland) | Nee | Google Cloud DPA + SCC's |
+   | Mistral AI (tekst, vision, OCR) | EU (Frankrijk, `api.mistral.ai`) | Nee | Mistral AI DPA + EU SCC's (Besluit 2021/914) — te verifiëren |
+   | Black Forest Labs (beeldgeneratie, FLUX) | EU-endpoint `api.eu.bfl.ai` | Via EU-endpoint (VS-onderneming) | ISO 27001 / SOC 2 Type II — ondertekende DPA te verifiëren |
    | Vercel (hosting) | EU-edge (ams1) | Mogelijk (VS) | EU-US Data Privacy Framework + SCC's |
    | Zoho (e-mail) | EU (eu.zoho.com) | Nee | EU-datacenter |
 
@@ -203,7 +204,7 @@ In deze Verwerkersovereenkomst wordt verstaan onder:
    |---|---|
    | Accountgegevens (naam, e-mail, rol) | Duur van de Onderliggende Overeenkomst + maximaal 3 maanden na beëindiging |
    | Gebruiksgegevens (voortgang, XP, activiteit) | Duur van de Onderliggende Overeenkomst + maximaal 3 maanden na beëindiging |
-   | AI-chatberichten (interacties met Gemini) | 90 dagen na aanmaak, daarna automatisch verwijderd |
+   | AI-chatberichten (interacties met Mistral AI) | 90 dagen na aanmaak, daarna automatisch verwijderd |
    | Logging en audittrail | 12 maanden, daarna automatisch verwijderd |
    | Back-ups | Maximaal 30 dagen na verwijdering uit productieomgeving |
 
@@ -271,7 +272,7 @@ In deze Verwerkersovereenkomst wordt verstaan onder:
 | Nr. | Artikel/Bepaling | Afwijking | Reden |
 |---|---|---|---|
 | 1 | Art. 4 — Privacyconvenant | DGSkills is (nog) geen formele deelnemer aan het Convenant, maar past het model als medestander integraal toe. | DGSkills is een jonge onderneming die werkt aan formele toetreding. De inhoudelijke naleving is gelijk. |
-| 2 | Art. 10 — Doorgifte | Beperkte doorgifte naar VS mogelijk via Vercel. Google Gemini wordt via Vertex AI uitsluitend in de EU (europe-west4) verwerkt. | Vercel: verwerking geschiedt onder het EU-US Data Privacy Framework en/of SCC's. Google Vertex AI: volledige EU-dataresidentie gegarandeerd, geen doorgifte naar VS. |
+| 2 | Art. 10 — Doorgifte | Beperkte doorgifte naar VS mogelijk via Vercel. Mistral AI verwerkt in de EU (Frankrijk); Black Forest Labs verwerkt via haar EU-endpoint `api.eu.bfl.ai`. | Vercel: verwerking geschiedt onder het EU-US Data Privacy Framework en/of SCC's. Mistral AI: EU-verwerking (Frankrijk), Mistral AI DPA met EU SCC's — te verifiëren. Black Forest Labs (VS-onderneming, EU-endpoint): ISO 27001 / SOC 2 Type II, ondertekende DPA en transfer-waarborgen te verifiëren. |
 | 3 | Art. 7.9 — Certificering | DGSkills beschikt nog niet over ISO 27001 of SOC 2-certificering. | Als jonge onderneming bouwt DGSkills toe naar certificering. Huidige maatregelen zijn beschreven in Bijlage 2 en worden periodiek geëvalueerd. |
 
 ---

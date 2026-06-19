@@ -93,7 +93,7 @@ const SECTIONS: ComplianceSection[] = [
             {
                 id: 'technische-whitepaper',
                 title: 'Technische Whitepaper',
-                description: 'Architectuur, SSO-integraties, data-opslag in europe-west4 en beveiligingsprotocollen.',
+                description: 'Architectuur, SSO-integraties, data-opslag binnen de EU (AWS Frankfurt) en beveiligingsprotocollen.',
                 badge: 'v1.0',
                 access: { type: 'link', href: '/ict/technisch' },
             },

@@ -204,7 +204,7 @@ export function ReceiptsPanel({ receipts, userId, onRefresh }: ReceiptsPanelProp
                         Sleep een foto van je bonnetje hierheen of klik om te selecteren
                     </p>
                     <p className="text-xs text-lab-muted mt-2">
-                        JPG, PNG, WEBP — max 10 MB — Gemini AI scant automatisch
+                        JPG, PNG, WEBP — max 10 MB — Mistral AI scant automatisch
                     </p>
                 </div>
             ) : (

@@ -167,7 +167,7 @@ Wij gebruiken je gegevens voor de volgende doelen:
 |---|---|
 | **Toegang tot het platform** | Aanmaken en beheren van je account, inloggen |
 | **Onderwijs en leerervaring** | Opdrachten aanbieden, voortgang bijhouden, feedback geven |
-| **AI-ondersteuning** | Het bieden van AI-chat en AI-feedback binnen lessen (via Google Gemini) |
+| **AI-ondersteuning** | Het bieden van AI-chat en AI-feedback binnen lessen (via Mistral AI; beeldgeneratie via Black Forest Labs) |
 | **Docentfunctionaliteiten** | Overzicht van leerlingvoortgang, berichten sturen, klassen beheren |
 | **Beveiliging** | Beschermen van het platform tegen misbruik, fraude en ongeoorloofd gebruik |
 | **Communicatie** | Beantwoorden van vragen, verwerken van pilot-aanvragen |
@@ -192,6 +192,7 @@ De AVG schrijft voor dat wij voor elke verwerking een wettelijke grondslag moete
 |---|---|---|
 | **Publieke taak** (Art. 6(1)(e) AVG) | Leerlinggegevens voor het leerproces | Scholen hebben een wettelijke taak om onderwijs te verzorgen. Het verwerken van leerlinggegevens is hiervoor noodzakelijk. |
 | **Gerechtvaardigd belang** (Art. 6(1)(f) AVG) | Beveiliging, misbruikpreventie | Het platform moet veilig zijn. Daarvoor zijn technische loggegevens nodig. |
+| **Vitaal belang** (Art. 9(2)(c) + 6(1)(d) AVG) | Crisissignalen in de chat (welzijnsprotocol) | Herkent de AI signalen van acute nood (bijv. suïcidaliteit, misbruik), dan verwijst hij direct door naar hulp om de leerling te beschermen. Deze signalen worden niet opgeslagen. |
 
 ### 7.2 Wanneer DGSkills verwerkingsverantwoordelijke is
 
@@ -201,6 +202,12 @@ De AVG schrijft voor dat wij voor elke verwerking een wettelijke grondslag moete
 | **Uitvoering overeenkomst** (Art. 6(1)(b) AVG) | Leveren van de dienst aan de school | Nodig om het contract met de school na te komen. |
 | **Gerechtvaardigd belang** (Art. 6(1)(f) AVG) | Websitebeveiliging, klantenservice | Noodzakelijk voor een veilige en betrouwbare dienstverlening. |
 | **Wettelijke verplichting** (Art. 6(1)(c) AVG) | Bewaren van audit-logboek, boekhouding | Wij zijn wettelijk verplicht bepaalde gegevens te bewaren. |
+
+### 7.3 Welzijnssignalen en de Meldcode
+
+Herkent de AI signalen van nood, dan toont DGSkills uitsluitend een directe doorverwijzing naar hulp (Kindertelefoon 0800-0432; 113 Zelfmoordpreventie; Veilig Thuis 0800-2000). DGSkills slaat deze signalen **niet** op en gebruikt ze niet voor profilering. De wettelijke **Meldcode huiselijk geweld en kindermishandeling** ligt bij de school; DGSkills neemt die niet over. Bij (vermoedens van) mishandeling verloopt de melding via de school naar **Veilig Thuis (0800-2000)**.
+
+_Deze grondslag is een concept; een juridische toets wordt aanbevolen._
 
 ---
 
@@ -213,7 +220,8 @@ Wij delen je gegevens alleen wanneer dat noodzakelijk is voor de werking van het
 | Subverwerker | Dienst | Welke gegevens | Locatie gegevens | Waarborg |
 |---|---|---|---|---|
 | **Supabase Inc.** (via AWS) | Database, authenticatie, edge functions | Alle accountgegevens en gebruiksgegevens | **EU (Frankfurt, Duitsland)** | Verwerkersovereenkomst (DPA); SOC2 Type II; data in EU-regio |
-| **Google LLC** (Vertex AI — Gemini 2.0 Flash) | AI-chatfunctionaliteit | Chatberichten die je typt (alleen de tekst van het gesprek) | **EU (europe-west4, Nederland)** | Google Cloud DPA met Standard Contractual Clauses (SCC); data at rest en ML-verwerking in EU-regio; zero data retention (geen opslag van prompts/responses); data wordt **niet** gebruikt voor AI-training; authenticatie via service account (geen API-key) |
+| **Mistral AI** (tekst, vision en OCR) | AI-chatfunctionaliteit | Chatberichten die je typt (alleen de tekst van het gesprek) | **EU (Mistral: Frankrijk)** | Mistral AI DPA met EU SCC's (Besluit 2021/914); verwerking in de EU; dataretentie te verifiëren (Mistral: standaard tot 30 dagen abuse-monitoring; Zero Data Retention optioneel, plan-afhankelijk); geen training op leerlingdata (training-opt-out te verifiëren — Mistral biedt opt-out; standaard opt-out op Scale-plan); authenticatie via server-side API-key (Supabase secret) |
+| **Black Forest Labs** (FLUX) | Beeldgeneratie | Opdrachttekst (prompt) voor het genereren van een afbeelding | **EU-endpoint (api.eu.bfl.ai)** | Black Forest Labs: ISO 27001 / SOC 2 Type II — ondertekende DPA te verifiëren; verwerking via EU-endpoint; authenticatie via server-side API-key (Supabase secret) |
 | **Vercel Inc.** | Hosting van de website (frontend) | IP-adres, sessiegegevens (geen opslag van persoonsgegevens in database) | VS en wereldwijd (CDN/edge) | DPA; EU Standard Contractual Clauses (SCC) |
 | **Zoho Corporation** | E-mailservice (SMTP) | E-mailadres en naam (alleen bij pilot-aanvragen en notificaties) | EU (smtp.zoho.eu, datacenter in EU) | Verwerkersovereenkomst (DPA); GDPR-compliant EU-datacenter |
 
@@ -232,17 +240,23 @@ Wij delen je gegevens niet met andere partijen dan hierboven genoemd.
 
 Wij streven ernaar al je gegevens binnen de Europese Unie (EU) of de Europese Economische Ruimte (EER) te bewaren. In sommige gevallen is doorgifte naar landen buiten de EU/EER echter noodzakelijk:
 
-### Google Vertex AI (Gemini 2.0 Flash)
+### Mistral AI (tekst, vision en OCR)
 
-Wanneer je de AI-chatfunctie gebruikt, wordt de tekst van je bericht verwerkt door **Google Gemini 2.0 Flash via Vertex AI**. DGSkills maakt gebruik van Vertex AI (het enterprise AI-platform van Google Cloud), en **niet** van de Gemini Developer API (generativelanguage.googleapis.com). Dit is een belangrijk onderscheid, omdat Vertex AI sterkere datalocatie- en privacygaranties biedt.
+Wanneer je de AI-chatfunctie gebruikt, wordt de tekst van je bericht verwerkt door **Mistral AI**. Mistral AI SAS is een Frans bedrijf (Parijs) en verwerkt de gegevens binnen de EU. Hiervoor gelden de volgende waarborgen:
 
-De AI-verwerking vindt plaats in de Google Cloud-regio **europe-west4 (Nederland)**. Hiervoor gelden de volgende waarborgen:
+- **Verwerking in de EU**: de verwerking vindt plaats binnen de EU (Mistral: Frankrijk). Er is op dit punt geen sprake van doorgifte naar een land buiten de EU/EER.
+- **Dataretentie**: dataretentie te verifiëren (Mistral: standaard tot 30 dagen abuse-monitoring; Zero Data Retention optioneel, plan-afhankelijk).
+- **Mistral AI DPA** met **EU SCC's (Besluit 2021/914)**: contractuele bescherming conform AVG-vereisten (ondertekende DPA te verifiëren).
+- **Server-side API-key**: de verbinding met Mistral AI verloopt via een server-side API-key (Supabase secret). Er wordt geen API-key gebruikt die kan uitlekken naar de client.
+- Je berichten worden **niet** gebruikt voor het trainen van AI-modellen op leerlingdata (training-opt-out te verifiëren — Mistral biedt opt-out; standaard opt-out op Scale-plan).
 
-- **Data blijft in de EU**: Google garandeert dat data at rest en ML-verwerking plaatsvinden binnen de EU-regio (europe-west4). Er vindt **geen doorgifte naar de VS** plaats.
-- **Zero data retention**: Google bewaart geen prompts, responses of andere invoergegevens. Er is geen tussentijdse opslag van chatberichten door Google.
-- **Google Cloud Data Processing Addendum (DPA)** met **Standard Contractual Clauses (SCC)**: contractuele bescherming conform AVG-vereisten.
-- **Service account-authenticatie**: de verbinding met Vertex AI verloopt via een service account met beperkte rechten. Er wordt geen API-key gebruikt die kan uitlekken naar de client.
-- Je berichten worden **niet** gebruikt voor het trainen van AI-modellen. Google's Vertex AI-voorwaarden verbieden het gebruik van klantgegevens voor modeltraining.
+### Black Forest Labs / FLUX (beeldgeneratie)
+
+Wanneer een afbeelding wordt gegenereerd, wordt de opdrachttekst (prompt) verwerkt door **Black Forest Labs (FLUX)** via het EU-endpoint `api.eu.bfl.ai`. Black Forest Labs Inc. is een Amerikaans bedrijf dat zijn EU-endpoint gebruikt voor deze verwerking. Hiervoor gelden de volgende waarborgen:
+
+- **EU-endpoint**: de verwerking verloopt via het EU-endpoint `api.eu.bfl.ai`.
+- **Certificeringen**: Black Forest Labs: ISO 27001 / SOC 2 Type II — ondertekende DPA met EU SCC's (Besluit 2021/914) te verifiëren.
+- **Server-side API-key**: de verbinding verloopt via een server-side API-key (Supabase secret).
 
 ### Vercel (hosting)
 
@@ -340,7 +354,7 @@ DGSkills maakt gebruik van AI om leerlingen te helpen met hun opdrachten. Het is
 ### Hoe werkt de AI op DGSkills?
 
 - Het platform bevat een **AI-chatfunctie** waarmee je vragen kunt stellen over opdrachten en lesmateriaal.
-- De AI wordt aangedreven door **Google Gemini 2.0 Flash** (een groot taalmodel).
+- De AI wordt aangedreven door **Mistral AI** (een groot taalmodel voor tekst, vision en OCR); beeldgeneratie verloopt via **Black Forest Labs (FLUX)**.
 - Wanneer je een bericht typt, wordt **alleen de tekst van je bericht** naar de AI gestuurd. Er worden geen andere persoonsgegevens meegestuurd.
 
 ### Belangrijke waarborgen
@@ -349,7 +363,7 @@ DGSkills maakt gebruik van AI om leerlingen te helpen met hun opdrachten. Het is
 |---|---|
 | **Je weet dat je met AI praat** | Het is altijd duidelijk aangegeven wanneer je met AI communiceert (EU AI Act Art. 50) |
 | **AI-antwoorden zijn herkenbaar** | Antwoorden van de AI zijn als zodanig gelabeld |
-| **Geen training met jouw gegevens** | De AI wordt niet getraind met jouw berichten of andere persoonsgegevens |
+| **Geen training met jouw gegevens** | Geen training op leerlingdata (training-opt-out te verifiëren — Mistral biedt opt-out; standaard opt-out op Scale-plan) |
 | **Extra veiligheidsfilters** | De AI blokkeert automatisch inhoud die niet geschikt is voor minderjarigen (intimidatie, haatspraak, seksueel of gevaarlijk materiaal) |
 | **Menselijk toezicht** | Een docent heeft altijd de eindbeslissing over beoordelingen; de AI neemt nooit beslissingen die directe gevolgen hebben voor je schoolresultaten |
 | **Beperkte context** | Alleen de tekst die je typt wordt verwerkt; de AI heeft geen toegang tot je complete profiel of schoolgegevens |
@@ -538,7 +552,8 @@ Onderstaand overzicht bevat de actuele lijst van subverwerkers. Deze lijst kan w
 | # | Subverwerker | Dienst | Gegevens | Locatie | Waarborgen |
 |---|---|---|---|---|---|
 | 1 | **Supabase Inc.** (AWS Frankfurt) | Database, authenticatie, serverless functions | Alle account- en gebruiksgegevens | EU (Frankfurt, DE) | DPA, SOC2 Type II, ISO 27001 |
-| 2 | **Google LLC** (Vertex AI — Gemini 2.0 Flash, europe-west4) | AI-chatverwerking | Chatberichttekst (geen profiel-/persoonsgegevens) | **EU (europe-west4, Nederland)** | Google Cloud DPA met SCC; zero data retention; data at rest en ML-verwerking in EU; ISO 27001, ISO 42001; service account-authenticatie |
+| 2 | **Mistral AI** (tekst, vision en OCR) | AI-chatverwerking | Chatberichttekst (geen profiel-/persoonsgegevens) | **EU (Mistral: Frankrijk)** | Mistral AI DPA met EU SCC's (Besluit 2021/914); dataretentie te verifiëren (Mistral: standaard tot 30 dagen abuse-monitoring; Zero Data Retention optioneel, plan-afhankelijk); geen training op leerlingdata (training-opt-out te verifiëren — Mistral biedt opt-out; standaard opt-out op Scale-plan); server-side API-key (Supabase secret) |
+| 2b | **Black Forest Labs** (FLUX) | Beeldgeneratie | Opdrachttekst (prompt), geen profiel-/persoonsgegevens | **EU-endpoint (api.eu.bfl.ai)** | Black Forest Labs: ISO 27001 / SOC 2 Type II — ondertekende DPA te verifiëren; server-side API-key (Supabase secret) |
 | 3 | **Vercel Inc.** | Website hosting (CDN/edge) | IP-adres, sessietokens (geen database-opslag) | VS / wereldwijd (CDN) | DPA, SCC |
 | 4 | **Zoho Corporation** (smtp.zoho.eu) | E-mailverzending | E-mailadres, naam (bij pilot/notificaties) | EU | DPA, GDPR-compliant EU-datacenter |
 

@@ -90,6 +90,12 @@ export const HULPLIJNEN = [
     url: 'https://www.113.nl',
   },
   {
+    naam: 'Veilig Thuis',
+    nummer: '0800-2000',
+    beschrijving: 'Bij huiselijk geweld of mishandeling (gratis)',
+    url: 'https://veiligthuis.nl',
+  },
+  {
     naam: 'Jellinek Advieslijn',
     nummer: '088 505 1220',
     beschrijving: 'Advies over alcohol, drugs, gokken en gamen',

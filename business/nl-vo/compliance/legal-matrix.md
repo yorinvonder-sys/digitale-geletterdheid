@@ -15,8 +15,8 @@ Dit document dient als intern referentiekader voor de compliance-audit van DGSki
 | AVG-05 | **Minimale Gegevens** | Art. 5(1)(c) | Alleen strikt noodzakelijke data voor leerproces (geen BSN, geen adres indien mogelijk). |
 | AVG-06 | **Bewaartermijnen** | Art. 5(1)(e) | Data niet langer bewaren dan nodig. Automatische opschoning inrichten. |
 | AVG-07 | **Beveiliging** | Art. 32 | Versleuteling (HTTPS/TLS), database-regels, toegangsbeheer (docent vs leerling). |
-| AVG-08 | **Datalocatie** | Art. 44 - 50 | Opslag binnen de EER (bijv. Google Cloud `europe-west4`). |
-| AVG-09 | **Subverwerkers** | Art. 28(2) | Lijst van subverwerkers (Supabase, Google AI) moet beschikbaar zijn. |
+| AVG-08 | **Datalocatie** | Art. 44 - 50 | Opslag binnen de EER: Supabase (AWS eu-central-1, Frankfurt, EU). AI-verwerking in de EU (Mistral: Frankrijk; Black Forest Labs: EU-endpoint api.eu.bfl.ai). |
+| AVG-09 | **Subverwerkers** | Art. 28(2) | Lijst van subverwerkers (Supabase, Mistral AI, Black Forest Labs) moet beschikbaar zijn. |
 | AVG-10 | **DPIA** | Art. 35 | DGSkills moet school ondersteunen bij het uitvoeren van een DPIA. |
 | AVG-11 | **Minderjarigen <16** | Art. 8 AVG / UAVG | Juridische basis en waarborgen voor minderjarigen expliciet vastgelegd in privacydocumentatie. |
 | AVG-12 | **Beperking verwerking** | Art. 18 AVG | Betrokkene moet verwerkingsbeperking kunnen aanvragen; workflow en logging vereist. |

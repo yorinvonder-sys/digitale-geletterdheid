@@ -102,7 +102,8 @@ Alle gegevens worden primair opgeslagen in de **Europese Unie**:
 | Dienst | Locatie |
 |---|---|
 | Database (Supabase) | Frankfurt, Duitsland |
-| AI-verwerking (Google Gemini via Vertex AI) | Nederland (europe-west4, Eemshaven) |
+| AI-verwerking (Mistral AI — tekst, vision en OCR) | EU (Mistral: Frankrijk) |
+| AI-beeldgeneratie (Black Forest Labs / FLUX) | EU-endpoint (api.eu.bfl.ai) |
 | Website-hosting (Vercel) | Amsterdam, Nederland |
 | E-mail (Zoho) | Nederland |
 
@@ -110,13 +111,14 @@ Alle gegevens worden primair opgeslagen in de **Europese Unie**:
 
 ## AI en privacy
 
-DGSkills maakt gebruik van een AI-assistent (Google Gemini via Vertex AI) waarmee leerlingen interactief opdrachten kunnen maken. Hierbij geldt:
+DGSkills maakt gebruik van een AI-assistent (Mistral AI voor tekst, vision en OCR; Black Forest Labs / FLUX voor beeldgeneratie) waarmee leerlingen interactief opdrachten kunnen maken. Hierbij geldt:
 
 - Leerlingen weten altijd dat ze met een AI praten (duidelijke melding op het scherm).
 - De AI geeft feedback op opdrachten, maar geeft **geen cijfers of beoordelingen** die zonder controle van een docent worden gebruikt.
-- De teksten die leerlingen aan de AI sturen, worden **niet** gebruikt om AI-modellen te trainen. Google hanteert zero data retention: invoer- en uitvoergegevens worden niet opgeslagen.
+- De teksten die leerlingen aan de AI sturen, worden **niet** gebruikt om AI-modellen te trainen op leerlingdata (training-opt-out te verifiëren — Mistral biedt opt-out; standaard opt-out op Scale-plan). Dataretentie te verifiëren (Mistral: standaard tot 30 dagen abuse-monitoring; Zero Data Retention optioneel, plan-afhankelijk).
 - DGSkills stuurt **geen namen of e-mailadressen** naar de AI; alleen de opdrachttekst en het antwoord van de leerling.
-- Alle AI-verwerking vindt plaats in **Nederland** (Google Cloud europe-west4, Eemshaven). Gegevens verlaten de EU niet.
+- AI-verwerking vindt plaats in de **EU** (Mistral: Frankrijk; Black Forest Labs: EU-endpoint api.eu.bfl.ai).
+- LET OP: Mistral vereist minimaal 13 jaar en ouderlijke/voogd-toestemming voor minderjarigen — aandachtspunt voor 12-jarigen; te verifiëren met de schoolconsent-flow.
 
 ---
 
@@ -164,7 +166,8 @@ DGSkills maakt gebruik van de volgende dienstverleners:
 | Dienstverlener | Waarvoor | Locatie data |
 |---|---|---|
 | Supabase | Database en accounts | EU (Frankfurt) |
-| Google (Gemini via Vertex AI) | AI-assistent | EU (Nederland) |
+| Mistral AI (tekst, vision en OCR) | AI-assistent | EU (Frankrijk) |
+| Black Forest Labs (FLUX) | AI-beeldgeneratie | EU-endpoint (api.eu.bfl.ai) |
 | Vercel | Websitehosting | EU (Amsterdam) |
 | Zoho | E-maildienst | EU (Nederland) |
 

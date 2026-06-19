@@ -79,7 +79,7 @@ const SECTIONS: ChecklistSection[] = [
                 label: 'Alle persoonsgegevens worden opgeslagen en verwerkt binnen de EER.',
                 responsibility: 'leverancier',
                 reference: 'AVG Art. 44-50',
-                note: 'DGSkills gebruikt Google Cloud europe-west4 (Nederland).',
+                note: 'Opslag bij Supabase (AWS Frankfurt, EU); AI-verwerking via Mistral AI en Black Forest Labs (EU), server-side.',
             },
             {
                 id: 'data-min',

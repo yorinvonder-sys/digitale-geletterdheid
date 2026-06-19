@@ -39,7 +39,7 @@ DGSkills staat er voor een pre-revenue EdTech startup **opvallend goed** voor qu
 | Art. 32 | Beveiliging | VOLDAAN | TLS, RLS, JWT, prompt sanitization |
 | Art. 33-34 | Datalekken | GEDEELTELIJK | Incidentproces beschreven, maar geen operationeel datalekregister |
 | Art. 35 | DPIA | NIET VOLDAAN | DPIA verplicht (minderjarigen + AI = nieuwe technologie), template bestaat maar niet uitgevoerd |
-| Art. 44-49 | Doorgifte buiten EER | ~~RISICO~~ **OPGELOST (23 feb 2026)** | ~~Google Gemini API data gaat naar Google servers; bevestig EER-locatie of SCC-basis~~ **Migratie naar Vertex AI europe-west4 (Nederland) afgerond.** Dataresidentie EU gegarandeerd (data at rest + ML-verwerking). Google Cloud DPA met SCCs van toepassing. Zero data retention. |
+| Art. 44-49 | Doorgifte buiten EER | ~~RISICO~~ **DEELS OPGELOST — aandachtspunt** | ~~De voormalige Google-AI verstuurde data naar Google-servers; bevestig EER-locatie of SCC-basis~~ **Huidige AI-verwerkers: Mistral AI (tekst, vision en OCR) en Black Forest Labs (beeldgeneratie).** AI-verwerking in de EU (Mistral: Frankrijk; Black Forest Labs: EU-endpoint api.eu.bfl.ai). Data-opslag bij Supabase (AWS eu-central-1, Frankfurt, EU). Mistral AI DPA met EU SCC's (Besluit 2021/914); Black Forest Labs: ISO 27001 / SOC 2 Type II — ondertekende DPA's te verifiëren. Dataretentie te verifiëren (Mistral: standaard tot 30 dagen abuse-monitoring; Zero Data Retention optioneel, plan-afhankelijk). |
 
 ### Blokkerende AVG-issues
 
@@ -51,7 +51,7 @@ DGSkills staat er voor een pre-revenue EdTech startup **opvallend goed** voor qu
 
 ### Risico-items (binnen 3 maanden)
 
-- ~~Google Gemini datalocatie bevestigen (EER of SCC)~~ **AFGEROND (23 feb 2026):** Vertex AI europe-west4 (Nederland), Google Cloud DPA met SCCs, zero data retention.
+- ~~Voormalige Google-AI datalocatie bevestigen (EER of SCC)~~ **Huidige AI-verwerkers: Mistral AI (tekst, vision en OCR) en Black Forest Labs (beeldgeneratie).** AI-verwerking in de EU (Mistral: Frankrijk; Black Forest Labs: EU-endpoint api.eu.bfl.ai). Mistral AI DPA met EU SCC's (Besluit 2021/914); Black Forest Labs: ISO 27001 / SOC 2 Type II — ondertekende DPA's te verifiëren. Dataretentie te verifiëren (Mistral: standaard tot 30 dagen abuse-monitoring; Zero Data Retention optioneel, plan-afhankelijk).
 - Bewaartermijnen technisch afdwingen via `pg_cron`
 - Data-retentiebeleid formaliseren per gegevenscategorie
 
@@ -183,7 +183,7 @@ Moet bevatten:
 
 **Oorspronkelijke bevinding:** In `supabase/functions/chat/index.ts` werd de Gemini API aangeroepen ZONDER expliciete `safetySettings`.
 
-**Status (23 feb 2026):** Dit is opgelost als onderdeel van de migratie naar **Vertex AI** (endpoint: europe-west4). Safety settings zijn nu geconfigureerd via de Vertex AI SDK met `BLOCK_LOW_AND_ABOVE` op alle categorieen. Authenticatie verloopt via service account (geen API key). Daarnaast is het ToS-probleem met minderjarigen opgelost: Vertex AI (Google Cloud) heeft geen minimumleeftijd-restrictie, in tegenstelling tot de Gemini Developer API die 18+ vereiste.
+**Status:** Opgelost. De huidige AI-verwerkers zijn **Mistral AI (tekst, vision en OCR)** en **Black Forest Labs (beeldgeneratie)**; alle AI-calls lopen server-side via Supabase Edge Functions. Content-moderatie verloopt via Mistral's `safe_prompt`-guardrail, een server-side prompt-injectiefilter en een output-filter voor minderjarigen (zelfbeschadiging, grooming, wapens, drugs → doorverwijzing Kindertelefoon). Authenticatie verloopt via een server-side API-key (Supabase secret). LET OP: Mistral vereist minimaal 13 jaar en ouderlijke/voogd-toestemming voor minderjarigen — aandachtspunt voor 12-jarigen; te verifiëren met de schoolconsent-flow.
 
 ### KRITIEKE BEVINDING: Geen welzijnsprotocol
 
@@ -236,7 +236,7 @@ Geef in dit geval GEEN reguliere missie-antwoorden. Stop de missie-interactie.
 Niet wettelijk verplicht in Nederland (wel in het VK), maar wordt steeds meer als norm gezien. Aandachtspunten:
 - Standaard hoge privacy-instellingen (is geregeld)
 - Geen manipulatief ontwerp (gamification is een grijs gebied)
-- Leeftijdsgeschikte content (moet technisch worden geborgd via safety settings)
+- Leeftijdsgeschikte content (technisch geborgd via Mistral's `safe_prompt`-guardrail en een output-filter voor minderjarigen)
 
 ---
 
@@ -252,7 +252,7 @@ Niet wettelijk verplicht in Nederland (wel in het VK), maar wordt steeds meer al
 | 4 | DPA finaliseren (Model 4.0) | AVG Art. 28 | EUR 500-1.000 | 1-2 weken |
 | 5 | DPIA uitvoeren | AVG Art. 35 | EUR 0-500 | 1 week |
 | 6 | Contactgegevens invullen in docs | AVG Art. 13 | EUR 0 | 2 uur |
-| 7 | ~~Gemini Safety Settings toevoegen~~ **AFGEROND** (migratie Vertex AI, 23 feb 2026) | Minderjarigenbescherming | EUR 0 | ~~2 uur~~ Afgerond |
+| 7 | ~~Gemini Safety Settings toevoegen~~ **AFGEROND** (vervangen door Mistral's `safe_prompt`-guardrail + output-filter voor minderjarigen; huidige AI-verwerkers Mistral AI + Black Forest Labs) | Minderjarigenbescherming | EUR 0 | ~~2 uur~~ Afgerond |
 | 8 | Welzijnsprotocol toevoegen | Minderjarigenbescherming | EUR 0 | 4 uur |
 | 9 | CORS beperken Edge Functions | Technische security | EUR 0 | 1 uur |
 | 10 | Beroepsaansprakelijkheidsverzekering | Aansprakelijkheid | EUR 300-800/jaar | 1 dag |
@@ -271,7 +271,7 @@ Niet wettelijk verplicht in Nederland (wel in het VK), maar wordt steeds meer al
 | 16 | SLA aanvullen (uptime, credits) | Contractenrecht | EUR 0-1.000 |
 | 17 | System prompts server-side valideren | Security | EUR 0 |
 | 18 | Server-side rate limiting | Security | EUR 0 |
-| 19 | ~~Google Gemini EER-datalocatie bevestigen~~ **AFGEROND:** Vertex AI europe-west4 (NL), DPA+SCCs, zero retention | AVG Art. 44-49 | EUR 0 |
+| 19 | ~~Voormalige Google-AI EER-datalocatie bevestigen~~ **Huidige AI-verwerkers: Mistral AI (EU, Frankrijk) + Black Forest Labs (EU-endpoint api.eu.bfl.ai); Mistral AI DPA met EU SCC's (Besluit 2021/914), Black Forest Labs ISO 27001 / SOC 2 Type II — ondertekende DPA's en dataretentie te verifiëren** | AVG Art. 44-49 | EUR 0 |
 | 20 | ~~Docent override voor STEP_COMPLETE~~ **AFGEROND (15 mrt 2026)** | AI Act Art. 14 | EUR 0 |
 
 ### Voor 2 augustus 2026 (AI Act deadline)

@@ -4,8 +4,9 @@ import path from 'node:path';
 const roots = [
   'CLAUDE.md',
   'README.md',
+  'business',
   'docs',
-  'public/compliance',
+  'public',
   'src',
   'supabase/functions',
   'scripts',
@@ -39,6 +40,8 @@ const blockedTerms = [
   ['Nano', 'Banana'].join(' '),
   ['VITE', 'GEMINI', 'API', 'KEY'].join('_'),
   ['generativelanguage', 'googleapis', 'com'].join('.'),
+  ['europe', 'west4'].join('-'),
+  'Eemshaven',
 ];
 
 const scannedExtensions = new Set([
@@ -49,6 +52,10 @@ const failures = [];
 
 function shouldScan(filePath) {
   if (filePath === 'scripts/check-ai-provider-docs.mjs') return false;
+  // Marketing-asset generators (favicon, hero-video, mascotte) mogen Google's
+  // beeld-/videomodellen gebruiken — dat is géén product- of compliance-claim
+  // over leerlingdata, dus buiten scope van deze check.
+  if (/^scripts\/generate-(favicon|hero|pip)[\w-]*\.mjs$/.test(filePath)) return false;
   const ext = path.extname(filePath);
   return scannedExtensions.has(ext) || path.basename(filePath) === 'CLAUDE.md' || path.basename(filePath) === 'README.md';
 }

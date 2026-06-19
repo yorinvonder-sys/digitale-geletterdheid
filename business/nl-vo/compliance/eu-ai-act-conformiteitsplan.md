@@ -49,7 +49,7 @@ DGSkills valt onder **Annex III, punt 3(b)** van de EU AI Act:
 | Art. 48 | CE-markering | Verplicht |
 | Art. 49 + Annex VIII | Registratie EU-databank | Verplicht |
 | Art. 50 | Transparantieverplichtingen | Van toepassing (ook los van hoog-risico) |
-| Art. 51-55 | GPAI-model verplichtingen | Google als GPAI-aanbieder; DGSkills indirect |
+| Art. 51-55 | GPAI-model verplichtingen | Mistral AI / Black Forest Labs als GPAI-aanbieder; DGSkills indirect |
 | Art. 72 | Post-market monitoring | Volledig van toepassing |
 
 ### A.3 Uitzonderingen -- Geldt Art. 6(3)?
@@ -81,7 +81,7 @@ Een continu, iteratief risicobeheerssysteem dat gedurende de gehele levenscyclus
 
 **Huidige status: NIET VOLDAAN**
 
-DGSkills heeft individuele technische maatregelen (prompt injection bescherming, safety settings, welzijnsprotocol) maar geen formeel, gedocumenteerd risicobeheerssysteem.
+DGSkills heeft individuele technische maatregelen (prompt injection bescherming, Mistral `safe_prompt`-guardrail, output-filter voor minderjarigen, welzijnsprotocol) maar geen formeel, gedocumenteerd risicobeheerssysteem.
 
 **Concrete acties:**
 
@@ -89,7 +89,7 @@ DGSkills heeft individuele technische maatregelen (prompt injection bescherming,
 |---|-------|---------------|------------|
 | 9.1 | Opstellen risicoregister met alle geidentificeerde risico's per agent en functionaliteit | 2 weken | KRITIEK |
 | 9.2 | Risicobeoordeling voor misbruikscenario's (XP-farming, ongeschikte content, manipulatie, datalekkage) | 1 week | KRITIEK |
-| 9.3 | Documenteren bestaande maatregelen als risicobeperkend (prompt sanitizer, safety settings, welzijnsprotocol, rate limiting) | 1 week | KRITIEK |
+| 9.3 | Documenteren bestaande maatregelen als risicobeperkend (prompt sanitizer, Mistral `safe_prompt`-guardrail, output-filter, welzijnsprotocol, rate limiting) | 1 week | KRITIEK |
 | 9.4 | Specifieke risicobeoordeling voor minderjarigen (Art. 9(9)) | 1 week | KRITIEK |
 | 9.5 | Restrisico-analyse: welke risico's blijven bestaan na maatregelen? | 3 dagen | HOOG |
 | 9.6 | Procedure voor continue risico-evaluatie en bijwerking van het register | 2 dagen | HOOG |
@@ -104,24 +104,25 @@ DGSkills heeft individuele technische maatregelen (prompt injection bescherming,
 
 **Huidige status: GEDEELTELIJK VOLDAAN**
 
-DGSkills gebruikt Google Gemini 2.0 Flash als foundation model via **Vertex AI** (Google Cloud) in regio **europe-west4 (Nederland)**. Migratie van de Gemini Developer API naar Vertex AI is **afgerond en getest in productie op 23 februari 2026**. DGSkills traint geen eigen model, maar:
+DGSkills gebruikt Mistral AI (tekst, vision en OCR) en Black Forest Labs (beeldgeneratie) als foundation models. Alle AI-calls lopen server-side via Supabase Edge Functions. DGSkills traint geen eigen model, maar:
 - De system instructions (agents.tsx) vormen de "configuratiedata" die het gedrag sturen
-- Leerlingdata wordt niet gebruikt voor modeltraining (Vertex AI: zero data retention, geen training op klantdata)
+- Geen training op leerlingdata (training-opt-out te verifiëren — Mistral biedt opt-out; standaard opt-out op Scale-plan)
 - Dataminimalisatie is geimplementeerd (geen BSN, geen adres)
 - Analytics zijn geaggregeerd en consent-gated
-- **Dataresidentie gegarandeerd in de EU:** data at rest en ML-verwerking in europe-west4 (Nederland)
-- **Google Cloud DPA met Standard Contractual Clauses (SCCs)** van toepassing
-- **Authenticatie via service account** (geen API key meer in omgeving)
+- **Dataresidentie in de EU:** AI-verwerking in de EU (Mistral: Frankrijk; Black Forest Labs: EU-endpoint api.eu.bfl.ai); opslag/database/auth via Supabase (AWS eu-central-1, Frankfurt, EU)
+- **Mistral AI DPA met EU SCC's (Besluit 2021/914); Black Forest Labs: ISO 27001 / SOC 2 Type II — ondertekende DPA's te verifiëren**
+- **Authenticatie via server-side API-key (Supabase secret)**
+- Dataretentie te verifiëren (Mistral: standaard tot 30 dagen abuse-monitoring; Zero Data Retention optioneel, plan-afhankelijk)
 
 **Concrete acties:**
 
 | # | Actie | Geschatte tijd | Prioriteit |
 |---|-------|---------------|------------|
 | 10.1 | Documenteer datagovernancebeleid: welke data wordt verwerkt, hoe, waarvoor, door wie | 1 week | HOOG |
-| 10.2 | Documenteer dat geen trainingsdata wordt gebruikt (API-only model) en verwijs naar Google's GPAI-documentatie | 3 dagen | HOOG |
+| 10.2 | Documenteer dat geen trainingsdata wordt gebruikt (API-only model) en verwijs naar de GPAI-documentatie van Mistral AI en Black Forest Labs | 3 dagen | HOOG |
 | 10.3 | Biasbeoordeling: controleer of agents consistent presteren voor verschillende leerlingtypen (taalvaardigheid, leeftijdsgroep) | 1 week | HOOG |
 | 10.4 | Documenteer de system instructions als "configuratiedata" en hun governance (versiebeheer, review, testing) | 3 dagen | MIDDEN |
-| 10.5 | ~~Bevestig en documenteer Google Gemini EER-datalocatie of SCC-basis~~ **AFGEROND (23 feb 2026):** Migratie naar Vertex AI europe-west4 (Nederland) voltooid. Dataresidentie EU gegarandeerd. Google Cloud DPA met SCCs van toepassing. Zero data retention. | ~~3 dagen~~ | ~~HOOG~~ AFGEROND |
+| 10.5 | ~~Bevestig en documenteer EER-datalocatie of SCC-basis~~ **HUIDIGE STATUS:** AI-verwerking in de EU (Mistral: Frankrijk; Black Forest Labs: EU-endpoint api.eu.bfl.ai); opslag via Supabase (AWS eu-central-1, Frankfurt, EU). Mistral AI DPA met EU SCC's (Besluit 2021/914); Black Forest Labs: ISO 27001 / SOC 2 Type II — ondertekende DPA's te verifiëren. Dataretentie te verifiëren (Mistral: standaard tot 30 dagen abuse-monitoring; Zero Data Retention optioneel, plan-afhankelijk). | ~~3 dagen~~ | HOOG (DPA's/retentie te verifiëren) |
 
 ### B.3 Artikel 11 + Annex IV -- Technische documentatie
 
@@ -153,7 +154,7 @@ Er is geen formeel technisch documentatiedossier. Wel zijn er bouwstenen aanwezi
 |---|-------|---------------|------------|
 | 11.1 | Opstellen "Technical Documentation Dossier" conform Annex IV template | 3-4 weken | KRITIEK |
 | 11.2 | Sectie 1: Systeembeschrijving (architectuur, dataflow, componenten, hardware/software) | 1 week | KRITIEK |
-| 11.3 | Sectie 2: Ontwikkelproces (design specs, keuze voor Gemini Flash, system instructions design) | 1 week | KRITIEK |
+| 11.3 | Sectie 2: Ontwikkelproces (design specs, keuze voor Mistral AI en Black Forest Labs, system instructions design) | 1 week | KRITIEK |
 | 11.4 | Sectie 3: Monitoring en controle (capabilities, limitations, accuracy, unintended outcomes) | 1 week | KRITIEK |
 | 11.5 | Sectie 4: Prestatiemetrieken (hoe meten we of agents correct evalueren?) | 1 week | HOOG |
 | 11.6 | Sectie 5: Risicobeheerssysteem (verwijzing naar Art. 9 documentatie) | 2 dagen | HOOG |
@@ -268,7 +269,7 @@ Aandachtspunten:
 
 Sterk:
 - Defense-in-depth prompt injection bescherming (client + server, zie `promptSanitizer.ts`)
-- Gemini Safety Settings op BLOCK_LOW_AND_ABOVE (maximaal restrictief)
+- Mistral `safe_prompt`-guardrail + server-side output-filter voor minderjarigen
 - XP-farming detectie in system instructions
 - CORS-beperking op edge functions
 - JWT authenticatie
@@ -277,7 +278,7 @@ Sterk:
 Te verbeteren:
 - Geen formele nauwkeurigheidsmetrieken
 - Geen systematisch adversarial testing programma
-- Geen technische redundantie bij Vertex AI-uitval
+- Geen technische redundantie bij uitval van de AI-provider
 
 **Concrete acties:**
 
@@ -285,10 +286,10 @@ Te verbeteren:
 |---|-------|---------------|------------|
 | 15.1 | Definieer en meet nauwkeurigheidsmetrieken: hoe correct evalueert de AI leerlingantwoorden? | 2 weken | KRITIEK |
 | 15.2 | Voer adversarial testing uit (red teaming) op alle 30+ agents | 2 weken | KRITIEK |
-| 15.3 | Implementeer fallback bij Vertex AI-uitval (graceful degradation) | 1 week | HOOG |
+| 15.3 | Implementeer fallback bij uitval van de AI-provider (graceful degradation) | 1 week | HOOG |
 | 15.4 | Documenteer cyberveiligheidsmaatregelen in technische documentatie | 3 dagen | HOOG |
 | 15.5 | Stel een penetratietest-schema op (minimaal jaarlijks) | 2 dagen | MIDDEN |
-| 15.6 | Monitor Gemini model-updates via Vertex AI (als Google het model wijzigt, kan de output veranderen) | Doorlopend | HOOG |
+| 15.6 | Monitor model-updates van de AI-provider (als Mistral AI of Black Forest Labs het model wijzigt, kan de output veranderen) | Doorlopend | HOOG |
 
 ### B.8 Artikelen 16-17 -- Verplichtingen aanbieders en kwaliteitsmanagementsysteem
 
@@ -384,7 +385,7 @@ DGSkills heeft uitstekende implementatie:
 // Uit /Users/yorinvonder/Downloads/ai-lab---future-architect/utils/aiContentMarker.ts:
 export interface AiProvenanceMetadata {
     generator: string;    // 'DGSkills/2.0'
-    model: string;        // 'gemini-2.0-flash' (via Vertex AI europe-west4)
+    model: string;        // bv. Mistral AI (tekst/vision/OCR) of Black Forest Labs / FLUX (beeld)
     timestamp: string;    // ISO 8601
     type: 'text' | 'image' | 'mixed';
     disclaimer: string;   // 'AI-gegenereerd — kan fouten bevatten'
@@ -501,14 +502,14 @@ De conformiteitsbeoordelingsprocedure op basis van interne controle omvat drie o
 | W2 (10-14 mrt) | Risicobeoordeling per agent (30+ agents) | Risicobeoordelingsrapport |
 | W2 | Start datagovernance documentatie (Art. 10) | Datagovernance beleidsdocument |
 | W3 (17-21 mrt) | Specifieke risicobeoordeling minderjarigen (Art. 9(9)) | Minderjarigen-risicoanalyse |
-| W3 | ~~Bevestig Google Gemini EER-datalocatie~~ **AFGEROND:** Vertex AI europe-west4 (Nederland) actief sinds 23 feb 2026 | ~~Bevestigingsdocument~~ Afgerond |
+| W3 | ~~Bevestig EER-datalocatie AI-provider~~ **HUIDIGE STATUS:** AI-verwerking in de EU (Mistral: Frankrijk; Black Forest Labs: EU-endpoint api.eu.bfl.ai); opslag via Supabase (AWS eu-central-1, Frankfurt, EU). Ondertekende DPA's te verifiëren | ~~Bevestigingsdocument~~ DPA's te verifiëren |
 | W4 (24-28 mrt) | Start technische documentatie Annex IV (sectie 1-2) | TD Hoofdstuk 1-2 (concept) |
 | W4 | Start QMS-document (Art. 17) | QMS-framework |
 
 **Quick wins in maart:**
 - Correctie classificatie in audit-report.md (1 uur)
 - Contactgegevens invullen in privacy-documenten (2 uur)
-- Documenteer bestaande maatregelen (promptSanitizer, safetySettings, welzijnsprotocol) als onderdeel van risicobeheersysteem
+- Documenteer bestaande maatregelen (promptSanitizer, Mistral `safe_prompt`, outputFilter, welzijnsprotocol) als onderdeel van risicobeheersysteem
 
 #### FASE 2: IMPLEMENTATIE (April 2026)
 
@@ -609,37 +610,38 @@ De conformiteitsbeoordelingsprocedure op basis van interne controle omvat drie o
 
 ## E. SPECIFIEKE AANDACHTSPUNTEN
 
-### E.1 Gebruik van foundation model (Google Gemini via Vertex AI) -- Verantwoordelijkheidsverdeling
+### E.1 Gebruik van foundation models (Mistral AI en Black Forest Labs) -- Verantwoordelijkheidsverdeling
 
-> **UPDATE 23 februari 2026:** De migratie van de Gemini Developer API (`generativelanguage.googleapis.com`) naar **Vertex AI** (`europe-west4-aiplatform.googleapis.com`) is **afgerond en getest in productie**. Dit lost de volgende eerdere risico's op:
-> - **Datalocatie:** Gegarandeerd EU (europe-west4, Nederland) voor data at rest en ML-verwerking
-> - **Contractueel kader:** Google Cloud DPA met SCCs (i.p.v. Gemini API Terms of Service)
-> - **Zero data retention:** Google bewaart geen klantdata en traint niet op klantdata
-> - **Authenticatie:** Service account (geen API key meer)
-> - **Minderjarigen ToS:** Vertex AI (Google Cloud) heeft geen minimumleeftijd-restrictie in de ToS, in tegenstelling tot de Gemini Developer API die 18+ vereiste
+> **HUIDIGE STATUS:** DGSkills gebruikt **Mistral AI** (tekst, vision en OCR, via `api.mistral.ai`) en **Black Forest Labs** (beeldgeneratie / FLUX, via het EU-endpoint `api.eu.bfl.ai`). Alle AI-calls lopen server-side via Supabase Edge Functions. Aandachtspunten:
+> - **Datalocatie:** AI-verwerking in de EU (Mistral: Frankrijk; Black Forest Labs: EU-endpoint api.eu.bfl.ai). Opslag/database/auth via Supabase (AWS eu-central-1, Frankfurt, EU)
+> - **Contractueel kader:** Mistral AI DPA met EU SCC's (Besluit 2021/914); Black Forest Labs: ISO 27001 / SOC 2 Type II — ondertekende DPA's te verifiëren
+> - **Dataretentie:** te verifiëren (Mistral: standaard tot 30 dagen abuse-monitoring; Zero Data Retention optioneel, plan-afhankelijk)
+> - **Training:** geen training op leerlingdata (training-opt-out te verifiëren — Mistral biedt opt-out; standaard opt-out op Scale-plan)
+> - **Authenticatie:** server-side API-key (Supabase secret)
+> - **Minderjarigen ToS:** LET OP: Mistral vereist minimaal 13 jaar en ouderlijke/voogd-toestemming voor minderjarigen — aandachtspunt voor 12-jarigen; te verifiëren met de schoolconsent-flow
 
 **De AI Act maakt een onderscheid tussen:**
 
-1. **GPAI-model aanbieder (Google):** Verantwoordelijk voor Art. 51-55 verplichtingen
+1. **GPAI-model aanbieder (Mistral AI / Black Forest Labs):** Verantwoordelijk voor Art. 51-55 verplichtingen
    - Technische documentatie van het model (Art. 53)
    - Informatie verstrekken aan downstream aanbieders (Art. 53)
    - Auteursrechtbeleid (Art. 53)
    - Als systemisch risico (>10^25 FLOPS): aanvullende verplichtingen (Art. 55)
-   - Google Gemini valt waarschijnlijk onder "systemic risk" vanwege de omvang
+   - De ingezette foundation models kunnen, afhankelijk van hun trainingsomvang, onder "systemic risk" vallen
 
 2. **Downstream aanbieder / integrator (DGSkills):** Verantwoordelijk voor Art. 9-17 als hoog-risico aanbieder
-   - DGSkills is verantwoordelijk voor het gehele AI-systeem, inclusief de integratie met Gemini via Vertex AI
-   - DGSkills kan zich NIET verschuilen achter Google: "wij gebruiken alleen de API" is geen verweer
-   - DGSkills moet de output van Gemini monitoren, filteren en beoordelen
+   - DGSkills is verantwoordelijk voor het gehele AI-systeem, inclusief de integratie met Mistral AI en Black Forest Labs
+   - DGSkills kan zich NIET verschuilen achter de AI-provider: "wij gebruiken alleen de API" is geen verweer
+   - DGSkills moet de output van de AI-provider monitoren, filteren en beoordelen
 
 **Wat DGSkills moet doen:**
-- Documenteer de afhankelijkheid van Google Gemini (via Vertex AI) in de technische documentatie
-- Documenteer welke informatie Google verstrekt over het model (Art. 53 verplichtingen van Google)
-- Implementeer eigen safeguards bovenop Gemini (reeds gedaan: safety settings, prompt sanitizer, welzijnsprotocol)
-- Monitor Gemini model-updates via Vertex AI en test de impact op DGSkills-functionaliteit
-- ~~Leg contractueel vast dat Google aan GPAI-verplichtingen voldoet~~ **AFGEROND:** Google Cloud DPA met SCCs is van toepassing via Vertex AI. Zero data retention gegarandeerd.
+- Documenteer de afhankelijkheid van Mistral AI en Black Forest Labs in de technische documentatie
+- Documenteer welke informatie de AI-provider verstrekt over het model (Art. 53 verplichtingen van de GPAI-aanbieder)
+- Implementeer eigen safeguards bovenop de AI-provider (reeds gedaan: server-side prompt-injectiefilter, output-filter voor minderjarigen, welzijnsprotocol; provider-side: Mistral `safe_prompt`-guardrail)
+- Monitor model-updates van de AI-provider en test de impact op DGSkills-functionaliteit
+- ~~Leg contractueel vast dat de AI-provider aan GPAI-verplichtingen voldoet~~ **TE VERIFIËREN:** Mistral AI DPA met EU SCC's (Besluit 2021/914); Black Forest Labs: ISO 27001 / SOC 2 Type II — ondertekende DPA's te verifiëren. Dataretentie en training-opt-out te verifiëren.
 
-**Risico:** Als Google het Gemini-model wijzigt (bijv. nieuwe versie, gewijzigd gedrag), verandert de output van DGSkills. Dit moet worden meegenomen in het risicobeheerssysteem en het post-market monitoring plan.
+**Risico:** Als de AI-provider (Mistral AI of Black Forest Labs) het model wijzigt (bijv. nieuwe versie, gewijzigd gedrag), verandert de output van DGSkills. Dit moet worden meegenomen in het risicobeheerssysteem en het post-market monitoring plan.
 
 ### E.2 Verhouding aanbieder (DGSkills) vs. deployer (scholen)
 
@@ -676,30 +678,30 @@ De conformiteitsbeoordelingsprocedure op basis van interne controle omvat drie o
 
 **Art. 51: Classificatie GPAI-modellen met systeemrisico**
 
-Google Gemini wordt waarschijnlijk geclassificeerd als GPAI met systeemrisico (Art. 51), vanwege:
+De ingezette foundation models (Mistral AI / Black Forest Labs) kunnen geclassificeerd worden als GPAI met systeemrisico (Art. 51), afhankelijk van:
 - Trainingscompute > 10^25 FLOPS (vermoedelijk)
 - Hoge impact capabilities
 - Breed beschikbaar voor miljoenen gebruikers
 
 **Implicaties voor DGSkills als downstream gebruiker:**
 
-DGSkills hoeft zelf NIET aan Art. 51-55 te voldoen (dat is Google's verantwoordelijkheid), maar moet wel:
+DGSkills hoeft zelf NIET aan Art. 51-55 te voldoen (dat is de verantwoordelijkheid van de AI-provider), maar moet wel:
 
-1. **Documenteer welke informatie Google verstrekt** (Art. 53(1)(b) verplicht Google om downstream providers relevante informatie te verstrekken)
+1. **Documenteer welke informatie de AI-provider verstrekt** (Art. 53(1)(b) verplicht de GPAI-aanbieder om downstream providers relevante informatie te verstrekken)
 2. **Gebruik deze informatie in je eigen technische documentatie** (hoe integreert het GPAI-model in je hoog-risico systeem?)
-3. **Monitor Google's compliance** (als Google niet voldoet, heeft dat impact op jouw systeem)
-4. **Contractuele afspraken** (Google's Terms of Service / API Terms moeten adequate garanties bieden)
+3. **Monitor de compliance van de AI-provider** (als de AI-provider niet voldoet, heeft dat impact op jouw systeem)
+4. **Contractuele afspraken** (de Terms of Service / API Terms van Mistral AI en Black Forest Labs moeten adequate garanties bieden)
 
-**Art. 53 vereist dat Google aan DGSkills levert:**
+**Art. 53 vereist dat de AI-provider aan DGSkills levert:**
 - Technische documentatie over het model
 - Informatie over training en evaluatie
 - Resultaten van adversarial testing
 - Bekende beperkingen
 - Informatie voor compliance met Art. 9-15 voor downstream hoog-risico systemen
 
-**Actie:** Controleer of Google's bestaande documentatie (Model Cards, Safety Reports, Vertex AI documentation) voldoende informatie biedt. Documenteer eventuele lacunes en neem dit op als risico in het risicoregister.
+**Actie:** Controleer of de bestaande documentatie van de AI-provider (Model Cards, Safety Reports, API-documentatie van Mistral AI en Black Forest Labs) voldoende informatie biedt. Documenteer eventuele lacunes en neem dit op als risico in het risicoregister.
 
-> **Status 23 feb 2026:** Met de migratie naar Vertex AI is het contractuele kader aanzienlijk verbeterd. De Google Cloud DPA met SCCs biedt een sterkere juridische basis dan de Gemini Developer API ToS. De zero data retention policy en EU-dataresidentie (europe-west4) adresseren de eerder geidentificeerde datalocatie-risico's.
+> **Status (huidig):** Het contractuele kader rust op de Mistral AI DPA met EU SCC's (Besluit 2021/914) en, voor Black Forest Labs, ISO 27001 / SOC 2 Type II — ondertekende DPA's zijn nog te verifiëren. EU-dataresidentie (Mistral: Frankrijk; Black Forest Labs: EU-endpoint api.eu.bfl.ai; opslag via Supabase, AWS eu-central-1, Frankfurt) adresseert de datalocatie-risico's. Dataretentie en training-opt-out zijn te verifiëren (Mistral: standaard tot 30 dagen abuse-monitoring; Zero Data Retention en opt-out plan-afhankelijk).
 
 ### E.4 Correctie op eerdere documenten
 

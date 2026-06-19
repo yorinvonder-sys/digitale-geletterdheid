@@ -20,7 +20,7 @@ In deze Algemene Voorwaarden worden de volgende begrippen met een hoofdletter ge
 | **Leerling** | Een minderjarige (12-18 jaar) die het Platform gebruikt in het kader van het onderwijs. |
 | **Docent** | Een medewerker van School met een docentrol op het Platform, inclusief toegang tot het docentendashboard. |
 | **Verwerkersovereenkomst** | De afzonderlijke verwerkersovereenkomst (DPA) op basis van het Model Verwerkersovereenkomst 4.0 (Privacyconvenant Onderwijs). |
-| **AI-componenten** | De onderdelen van het Platform die gebruikmaken van kunstmatige intelligentie (Google Vertex AI, Gemini) voor feedback, coaching en voortgangsbepaling. |
+| **AI-componenten** | De onderdelen van het Platform die gebruikmaken van kunstmatige intelligentie (Mistral AI voor tekst, vision en OCR; Black Forest Labs voor beeldgeneratie) voor feedback, coaching en voortgangsbepaling. |
 | **Missie** | Een digitale leeropdracht op het Platform, gekoppeld aan SLO-kerndoelen Digitale Geletterdheid. |
 | **Pilotovereenkomst** | Een tijdelijke overeenkomst voor een proefperiode van 8-12 weken. |
 
@@ -176,7 +176,7 @@ In deze Algemene Voorwaarden worden de volgende begrippen met een hoofdletter ge
 
 1. Alle intellectuele eigendomsrechten op het Platform, de software, de missies, de content, de algoritmen en de documentatie berusten bij DGSkills.
 2. Content die door AI-componenten wordt gegenereerd in reactie op leerlinginput is niet auteursrechtelijk beschermd. School en leerling mogen deze output vrij gebruiken voor onderwijsdoeleinden.
-3. DGSkills zal leerlingdata niet gebruiken voor het trainen van AI-modellen. Dit is contractueel vastgelegd met de AI-dienstverlener (Google Cloud, zero data retention).
+3. DGSkills zal leerlingdata niet gebruiken voor het trainen van eigen AI-modellen. Geen training op leerlingdata door de AI-dienstverleners (Mistral AI, Black Forest Labs): training-opt-out te verifiëren — Mistral biedt opt-out; standaard opt-out op Scale-plan. Dataretentie te verifiëren (Mistral: standaard tot 30 dagen abuse-monitoring; Zero Data Retention optioneel, plan-afhankelijk).
 
 ---
 
@@ -185,7 +185,7 @@ In deze Algemene Voorwaarden worden de volgende begrippen met een hoofdletter ge
 1. School is verwerkingsverantwoordelijke in de zin van de AVG. DGSkills is verwerker.
 2. De verwerking van persoonsgegevens is geregeld in de **Verwerkersovereenkomst**, die als afzonderlijk document onderdeel uitmaakt van de Overeenkomst. Bij strijdigheid prevaleert de Verwerkersovereenkomst.
 3. DGSkills verwerkt persoonsgegevens uitsluitend ten behoeve van de uitvoering van de Overeenkomst en conform de instructies van School.
-4. Alle gegevensverwerking vindt plaats binnen de **Europese Economische Ruimte** (EER). De primaire opslaglocatie is Supabase (AWS eu-central-1, Frankfurt, Duitsland). AI-verwerking vindt plaats via Google Vertex AI (europe-west4, Nederland).
+4. Alle gegevensverwerking vindt plaats binnen de **Europese Economische Ruimte** (EER). De primaire opslaglocatie is Supabase (AWS eu-central-1, Frankfurt, EU). AI-verwerking vindt plaats in de EU (Mistral: Frankrijk; Black Forest Labs: EU-endpoint api.eu.bfl.ai).
 5. DGSkills verkoopt geen persoonsgegevens aan derden en gebruikt leerlingdata niet voor commercieel profiling.
 6. De privacyverklaring van DGSkills is beschikbaar op https://dgskills.app/privacy.
 

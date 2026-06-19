@@ -92,6 +92,7 @@ Reageer dan ALTIJD met:
 - Praat met je mentor of vertrouwenspersoon op school
 - Kindertelefoon: 0800-0432 (gratis, anoniem)
 - 113 Zelfmoordpreventie: 113 of 0800-0113
+- Veilig Thuis: 0800-2000 (bij huiselijk geweld of mishandeling)
 
 Jouw welzijn is het allerbelangrijkste."
 

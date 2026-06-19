@@ -34,29 +34,46 @@ De Verwerkingsverantwoordelijke (school) wordt ten minste 30 dagen vooraf geïnf
 
 ---
 
-### 2.2 Google LLC (Gemini via Vertex AI)
+### 2.2 Mistral AI SAS (tekst, vision, OCR)
 
 | Veld | Details |
 |---|---|
-| **Naam** | Google LLC (Google Cloud — Vertex AI) |
-| **Vestigingsland** | Verenigde Staten (Mountain View, CA) |
-| **Type dienst** | AI-API: generatieve AI-model (Google Gemini via Vertex AI) voor interactieve leeropdrachten, feedback, en chatfunctionaliteit |
+| **Naam** | Mistral AI SAS |
+| **Vestigingsland** | Frankrijk (Parijs) |
+| **Type dienst** | AI-API: generatieve AI-model (Mistral AI) voor tekst, vision en OCR — interactieve leeropdrachten, feedback, en chatfunctionaliteit |
 | **Categorieën gegevens** | Invoergegevens van AI-interacties: opdrachttekst, leerlinginvoer (chatberichten), systeemprompts. Geen directe identificatiegegevens tenzij door leerling zelf ingevoerd. |
 | **Categorieën Betrokkenen** | Leerlingen (primair), docenten (bij gebruik van AI-functies) |
-| **Locatie verwerking** | **EU — Google Cloud europe-west4 (Eemshaven, Nederland)** als vaste verwerkingslocatie. Door het gebruik van Vertex AI met een regionaal endpoint is dataresidentie gegarandeerd: data-at-rest en ML-verwerking vinden uitsluitend plaats binnen de EU. Geen terugval naar VS-datacenters. |
-| **Doorgifte buiten EER** | Nee. Door de inzet van Vertex AI met het regionale endpoint europe-west4 blijven alle gegevens binnen de EU. |
-| **Waarborgen** | Google Cloud Data Processing Addendum (CDPA) met Standard Contractual Clauses (SCC's). ISO 27001, SOC 2 Type II, ISO 27017, ISO 27018 gecertificeerd. Zero data retention: Google bewaart geen invoer- of uitvoergegevens. Invoergegevens worden niet gebruikt voor modeltraining. |
-| **DPA-status** | Actief — Google Cloud CDPA geaccepteerd |
-| **Link naar DPA** | https://cloud.google.com/terms/data-processing-addendum |
+| **Locatie verwerking** | **EU — Mistral AI (Frankrijk)** als verwerkingslocatie (`api.mistral.ai`). Mistral AI SAS is in Frankrijk gevestigd; verwerking vindt plaats binnen de EU. |
+| **Doorgifte buiten EER** | Nee. Mistral AI SAS is in Frankrijk gevestigd; AI-promptverwerking vindt plaats binnen de EU. |
+| **Waarborgen** | Mistral AI DPA met EU SCC's (Besluit 2021/914) — ondertekende DPA te verifiëren. Dataretentie te verifiëren (Mistral: standaard tot 30 dagen abuse-monitoring; Zero Data Retention optioneel, plan-afhankelijk). Geen training op leerlingdata (training-opt-out te verifiëren — Mistral biedt opt-out; standaard opt-out op Scale-plan). |
+| **DPA-status** | Te verifiëren — ondertekende Mistral AI DPA |
+| **Link naar DPA** | https://mistral.ai/terms |
 
 **Aanvullende toelichting AI-verwerking:**
-- DGSkills maakt gebruik van Google Gemini via **Vertex AI** (enterprise-editie), niet via de Gemini Developer API.
-- Authenticatie verloopt via een **service account** (geen API-key), wat enterprise-grade beveiliging en auditbaarheid biedt.
-- DGSkills stuurt uitsluitend de noodzakelijke context naar Vertex AI (opdrachttekst + leerlinginvoer).
+- DGSkills maakt gebruik van Mistral AI voor tekst, vision en OCR.
+- Authenticatie verloopt via een **server-side API-key (Supabase secret)**, die nooit in de client bundle wordt blootgesteld.
+- DGSkills stuurt uitsluitend de noodzakelijke context naar Mistral AI (opdrachttekst + leerlinginvoer).
 - Persoonsgegevens zoals naam en e-mailadres worden niet meegestuurd in API-aanroepen.
-- Google hanteert **zero data retention** op Vertex AI: invoer- en uitvoergegevens worden niet opgeslagen en niet gebruikt voor modeltraining. Dit is contractueel vastgelegd in de Google Cloud DPA.
-- Safety-filters van Google Gemini zijn actief om ongepaste content te filteren.
-- Vertex AI kent geen Terms of Service-beperking voor gebruik door minderjarigen; de verantwoordelijkheid ligt bij de verwerkingsverantwoordelijke school.
+- Dataretentie te verifiëren (Mistral: standaard tot 30 dagen abuse-monitoring; Zero Data Retention optioneel, plan-afhankelijk). Geen training op leerlingdata (training-opt-out te verifiëren — Mistral biedt opt-out; standaard opt-out op Scale-plan).
+- Server-side prompt-injectiefilter, Mistral's `safe_prompt`-guardrail en een output-filter voor minderjarigen zijn actief om ongepaste content te filteren.
+- **LET OP:** Mistral vereist minimaal 13 jaar en ouderlijke/voogd-toestemming voor minderjarigen — aandachtspunt voor 12-jarigen; te verifiëren met de schoolconsent-flow.
+
+---
+
+### 2.2b Black Forest Labs, Inc. (beeldgeneratie)
+
+| Veld | Details |
+|---|---|
+| **Naam** | Black Forest Labs, Inc. |
+| **Vestigingsland** | Verenigde Staten (verwerking via EU-endpoint) |
+| **Type dienst** | AI-API: beeldgeneratie (FLUX) voor educatieve beeldopdrachten |
+| **Categorieën gegevens** | Invoergegevens van AI-beeldopdrachten: prompttekst. Geen directe identificatiegegevens tenzij door leerling zelf ingevoerd. |
+| **Categorieën Betrokkenen** | Leerlingen (primair), docenten (bij gebruik van AI-functies) |
+| **Locatie verwerking** | **EU-endpoint `api.eu.bfl.ai`.** Black Forest Labs, Inc. is een VS-onderneming die haar EU-endpoint gebruikt voor verwerking. |
+| **Doorgifte buiten EER** | Verwerking via EU-endpoint `api.eu.bfl.ai`; Black Forest Labs, Inc. is een VS-onderneming — ondertekende DPA en transfer-waarborgen te verifiëren. |
+| **Waarborgen** | ISO 27001 / SOC 2 Type II — ondertekende DPA te verifiëren. |
+| **DPA-status** | Te verifiëren — ondertekende DPA met Black Forest Labs |
+| **Link naar DPA** | https://blackforestlabs.ai |
 
 ---
 
@@ -99,7 +116,8 @@ De Verwerkingsverantwoordelijke (school) wordt ten minste 30 dagen vooraf geïnf
 | Sub-verwerker | Land | Dienst | EU-verwerking? | Doorgifte VS? | DPA actief? |
 |---|---|---|---|---|---|
 | Supabase Inc. | VS | Database, Auth, API | Ja (Frankfurt) | Nee* | Ja |
-| Google LLC | VS | AI (Gemini via Vertex AI) | Ja (Nederland) | Nee | Ja |
+| Mistral AI SAS | Frankrijk | AI (tekst, vision, OCR) | Ja (Frankrijk) | Nee | Te verifiëren |
+| Black Forest Labs, Inc. | VS (via EU-endpoint) | AI (beeldgeneratie, FLUX) | Ja (EU-endpoint `api.eu.bfl.ai`) | Via EU-endpoint | Te verifiëren |
 | Vercel Inc. | VS | Hosting, CDN | Ja (Amsterdam) | Mogelijk | Ja |
 | Zoho Corp. | India/NL | E-mail | Ja (Nederland) | Nee | Ja |
 
@@ -111,9 +129,9 @@ De Verwerkingsverantwoordelijke (school) wordt ten minste 30 dagen vooraf geïnf
 
 Voor Sub-verwerkers waarbij doorgifte naar de Verenigde Staten mogelijk is, gelden de volgende waarborgen:
 
-1. **EU-US Data Privacy Framework (DPF)**: Vercel is gecertificeerd onder het EU-US Data Privacy Framework, wat een adequaatheidsbesluit van de Europese Commissie betreft (Besluit C(2023) 4745 van 10 juli 2023). Google Cloud (Vertex AI) verwerkt alle gegevens uitsluitend binnen de EU (europe-west4); doorgifte naar de VS is niet van toepassing.
+1. **EU-US Data Privacy Framework (DPF)**: Vercel is gecertificeerd onder het EU-US Data Privacy Framework, wat een adequaatheidsbesluit van de Europese Commissie betreft (Besluit C(2023) 4745 van 10 juli 2023). Mistral AI SAS verwerkt gegevens binnen de EU (Frankrijk); Black Forest Labs, Inc. verwerkt via haar EU-endpoint `api.eu.bfl.ai` — transfer-waarborgen voor Black Forest Labs te verifiëren.
 
-2. **Standard Contractual Clauses (SCC's)**: Aanvullend op het DPF zijn met alle Sub-verwerkers de door de Europese Commissie goedgekeurde Standard Contractual Clauses (Uitvoeringsbesluit EU 2021/914) overeengekomen als terugvaloptie. De Google Cloud DPA bevat SCC's.
+2. **Standard Contractual Clauses (SCC's)**: Aanvullend zijn met alle Sub-verwerkers de door de Europese Commissie goedgekeurde Standard Contractual Clauses (Uitvoeringsbesluit EU 2021/914) overeengekomen als terugvaloptie. De Mistral AI DPA bevat EU SCC's (ondertekende DPA te verifiëren); voor Black Forest Labs zijn ISO 27001 / SOC 2 Type II van toepassing — ondertekende DPA te verifiëren.
 
 3. **Transfer Impact Assessments (TIA's)**: DGSkills heeft beoordeeld dat de combinatie van DPF-certificering, SCC's, en de technische maatregelen van de Sub-verwerkers (versleuteling, toegangsbeheersing) een passend beschermingsniveau biedt.
 

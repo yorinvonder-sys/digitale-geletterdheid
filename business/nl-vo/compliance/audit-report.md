@@ -14,8 +14,8 @@ Statusoverzicht van de compliance-audit op basis van de actuele implementatie.
 | AVG-04 | Rechten | **Voldaan** | Export, verwijdering en verzoek verwerkingsbeperking (Art. 18) technisch beschikbaar. |
 | AVG-05 | Dataminimalisatie | **Voldaan** | Geen BSN/adres; analytics geaggregeerd en consent-gated. |
 | AVG-06 | Bewaartermijnen | **Voldaan** | Cleanup actief voor auditlogs, studentactiviteiten en analytics-aggregaten. |
-| AVG-07 | Beveiliging | **Voldaan** | TLS, RBAC via Firestore rules, aanvullende endpoint-validatie en rate limiting. |
-| AVG-08 | Datalocatie | **Voldaan** | Opslag en primaire verwerking op `europe-west1` (EER). |
+| AVG-07 | Beveiliging | **Voldaan** | TLS, RLS op Supabase (Postgres), aanvullende endpoint-validatie en rate limiting. |
+| AVG-08 | Datalocatie | **Voldaan** | Opslag bij Supabase (AWS eu-central-1, Frankfurt, EER); AI-verwerking in de EU (Mistral AI, Black Forest Labs). |
 | AVG-09 | Subverwerkers | **Voldaan** | Overzicht subverwerkers in privacydocumentatie. |
 | AVG-10 | DPIA Support | **Voldaan** | DPIA-supportdocumenten beschikbaar voor scholen. |
 | AVG-11 | Minderjarigen (<16) | **Voldaan** | Juridische toelichting toegevoegd in privacy/cookie documentatie (AVG/UAVG context). |
@@ -41,12 +41,12 @@ Statusoverzicht van de compliance-audit op basis van de actuele implementatie.
 | AI-04 | Technische documentatie (Art. 11) | **Niet voldaan** | Geen formeel Annex IV technisch documentatiedossier. |
 | AI-05 | Logging (Art. 12) | **Voldaan** | Audit logging via `auditService.ts` met AI-interactie metadata (zonder PII). |
 | AI-06 | Menselijk toezicht (Art. 14) | **Voldaan** | Docent kan AI-beoordelingen (STEP_COMPLETE) overrulen via de docent-override (`teacher_step_overrides` + RPC `override_student_step`, geïmplementeerd 15 mrt 2026); docenttraining (OM-09) nog open. |
-| AI-07 | Nauwkeurigheid/Robuustheid (Art. 15) | **Gedeeltelijk** | Safety settings, prompt sanitizer en welzijnsprotocol aanwezig; geen formele nauwkeurigheidsmetrieken. |
+| AI-07 | Nauwkeurigheid/Robuustheid (Art. 15) | **Gedeeltelijk** | Mistral `safe_prompt`-guardrail, prompt sanitizer, output-filter en welzijnsprotocol aanwezig; geen formele nauwkeurigheidsmetrieken. |
 | AI-08 | QMS (Art. 17) | **Niet voldaan** | Geen formeel kwaliteitsmanagementsysteem. |
 | AI-09 | Conformiteitsverklaring (Art. 47) | **Niet voldaan** | Nog niet opgesteld. Deadline: 2 augustus 2026. |
 | AI-10 | CE-markering (Art. 48) | **Niet voldaan** | Nog niet aangebracht. |
 | AI-11 | EU-databank registratie (Art. 49) | **Niet voldaan** | EU-databank nog in ontwikkeling. |
-| AI-12 | Vertex AI migratie | **Voldaan** | Gemigreerd van Gemini Developer API (ToS verboden voor <18) naar Vertex AI (europe-west4, enterprise ToS). |
+| AI-12 | AI-provider datalocatie | **Voldaan** | AI-verwerking via Mistral AI (tekst, vision en OCR; `api.mistral.ai`, Frankrijk) en Black Forest Labs (beeldgeneratie; EU-endpoint `api.eu.bfl.ai`), server-side via Supabase Edge Functions. Verwerking in de EU (Mistral: Frankrijk; Black Forest Labs: EU-endpoint api.eu.bfl.ai). LET OP: Mistral vereist minimaal 13 jaar en ouderlijke/voogd-toestemming voor minderjarigen — aandachtspunt voor 12-jarigen; te verifiëren met de schoolconsent-flow. |
 
 ## 4. Security Hardening
 
@@ -59,4 +59,4 @@ Statusoverzicht van de compliance-audit op basis van de actuele implementatie.
 ---
 
 ## Eindoordeel
-DGSkills is geclassificeerd als **hoog-risico AI-systeem** onder de EU AI Act (Annex III punt 3(b)). Het AVG-compliance profiel is sterk (alle AVG-checks voldaan). De EU AI Act compliance vereist nog substantieel werk: 5 van 12 checks zijn niet voldaan, 2 gedeeltelijk. De kritieke Vertex AI-migratie is uitgevoerd. Zie `eu-ai-act-conformiteitsplan.md` voor het volledige actieplan richting de deadline van 2 augustus 2026.
+DGSkills is geclassificeerd als **hoog-risico AI-systeem** onder de EU AI Act (Annex III punt 3(b)). Het AVG-compliance profiel is sterk (alle AVG-checks voldaan). De EU AI Act compliance vereist nog substantieel werk: 5 van 12 checks zijn niet voldaan, 2 gedeeltelijk. AI-verwerking loopt via Mistral AI (tekst, vision en OCR) en Black Forest Labs (beeldgeneratie) in de EU. Zie `eu-ai-act-conformiteitsplan.md` voor het volledige actieplan richting de deadline van 2 augustus 2026.

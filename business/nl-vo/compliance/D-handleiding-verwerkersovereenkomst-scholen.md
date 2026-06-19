@@ -138,10 +138,10 @@ DGSkills biedt een **DPIA-support-template** aan en werkt mee aan het beantwoord
 A: DGSkills past het Model Verwerkersovereenkomst 4.0 uit het Privacyconvenant integraal toe als medestander. Formele toetreding als deelnemer aan het Convenant is in voorbereiding. De inhoudelijke privacywaarborgen zijn gelijk.
 
 **V: Waar worden de gegevens van onze leerlingen opgeslagen?**
-A: Alle persoonsgegevens worden primair opgeslagen in de Europese Unie (Frankfurt, Duitsland) bij Supabase. De AI-verwerking vindt plaats in Nederland (Google Cloud europe-west4, Eemshaven) via Vertex AI, met gegarandeerde EU-dataresidentie. Zie de Sub-verwerkerslijst voor het volledige overzicht.
+A: Alle persoonsgegevens worden primair opgeslagen in de Europese Unie bij Supabase (AWS eu-central-1, Frankfurt, EU). De AI-verwerking vindt plaats in de EU (Mistral: Frankrijk; Black Forest Labs: EU-endpoint api.eu.bfl.ai). Zie de Sub-verwerkerslijst voor het volledige overzicht.
 
 **V: Worden leerlinggegevens gebruikt om AI-modellen te trainen?**
-A: Nee. DGSkills maakt gebruik van Google Gemini via Vertex AI (enterprise). Google hanteert zero data retention: invoer- en uitvoergegevens worden niet opgeslagen en niet gebruikt voor modeltraining. Dit is contractueel vastgelegd in de Google Cloud DPA. DGSkills gebruikt leerlinggegevens evenmin voor eigen AI-training.
+A: DGSkills maakt gebruik van Mistral AI (tekst, vision en OCR) en Black Forest Labs (beeldgeneratie). Geen training op leerlingdata door de AI-dienstverleners: training-opt-out te verifiëren — Mistral biedt opt-out; standaard opt-out op Scale-plan. Dataretentie te verifiëren (Mistral: standaard tot 30 dagen abuse-monitoring; Zero Data Retention optioneel, plan-afhankelijk). Mistral AI DPA met EU SCC's (Besluit 2021/914); Black Forest Labs: ISO 27001 / SOC 2 Type II — ondertekende DPA's te verifiëren. DGSkills gebruikt leerlinggegevens evenmin voor eigen AI-training.
 
 **V: Welke gegevens verwerkt DGSkills precies?**
 A: DGSkills verwerkt: voornaam, achternaam, e-mailadres (schoolmail), schoolklas, voortgangsgegevens (afgeronde opdrachten, behaalde XP-punten), en chatberichten met de AI-assistent. DGSkills vraagt geen BSN, huisadres, of andere gevoelige persoonsgegevens.
