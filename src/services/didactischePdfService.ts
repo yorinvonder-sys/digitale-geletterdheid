@@ -194,7 +194,7 @@ export async function generateDidactischeOnderbouwingPDF(): Promise<void> {
     bulletPoint(ctx, 'Contentfiltering: Scheldwoorden, geweldstaal en ongepaste content worden geblokkeerd — zowel in AI-reacties als in peer feedback');
     bulletPoint(ctx, 'Data in Europa: Alle data wordt verwerkt in EU-datacenters (europe-west4, Nederland)');
     bulletPoint(ctx, 'Geen tracking buiten het platform: Geen third-party analytics, geen advertenties, geen doorverkoop van leerlingdata');
-    bulletPoint(ctx, 'AVG-compliant: DPIA uitgevoerd, verwerkingsovereenkomst beschikbaar, privacy by design');
+    bulletPoint(ctx, 'AVG-maatregelen: DPIA uitgevoerd, verwerkingsovereenkomst beschikbaar, privacy by design');
     spacer(ctx, 4);
 
     // ── Samenwerkend leren ────────────────────────────────────────────────────

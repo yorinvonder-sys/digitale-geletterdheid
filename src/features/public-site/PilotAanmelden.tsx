@@ -51,7 +51,7 @@ const HIGHLIGHTS: Array<{ title: string; description: string }> = [
             'De pilot dekt één schoollocatie tot 250 leerlingen. Groter? We bespreken dat in het kennismakingsgesprek.',
     },
     {
-        title: 'AVG-compliant',
+        title: 'Privacy by design',
         description:
             'Model 4.0 Verwerkersovereenkomst, DPIA-ondersteuning en dataopslag binnen de EER (Nederland).',
     },
@@ -161,7 +161,7 @@ export const PilotAanmelden: React.FC = () => {
         }
         descriptionEl.setAttribute(
             'content',
-            'Vraag een gratis pilot aan voor je school. 3 maanden volledige toegang tot DGSkills, AVG-compliant, live binnen 10 werkdagen. Reactie binnen 2 werkdagen.',
+            'Vraag een gratis pilot aan voor je school. 3 maanden volledige toegang tot DGSkills, privacy by design, live binnen 10 werkdagen. Reactie binnen 2 werkdagen.',
         );
 
         trackEvent('seo_page_view', { cluster: 'conversion', page: 'pilot-aanmelden' });
@@ -264,7 +264,7 @@ export const PilotAanmelden: React.FC = () => {
                                 </span>
                             </h1>
                             <p className="text-duck-ink/60 text-base md:text-lg leading-relaxed max-w-2xl mx-auto mb-8">
-                                Drie maanden volledige toegang, AVG-compliant, max. 250 leerlingen, live binnen tien
+                                Drie maanden volledige toegang, privacy by design, max. 250 leerlingen, live binnen tien
                                 werkdagen. Vul het formulier in en we nemen binnen twee werkdagen contact met je op.
                             </p>
                             <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
@@ -290,7 +290,7 @@ export const PilotAanmelden: React.FC = () => {
                         <div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-0 text-xs text-duck-ink/60 mb-14 flex-wrap">
                             {[
                                 { icon: <IconShield />, label: 'KvK 81819889' },
-                                { icon: <IconShield />, label: 'AVG-compliant' },
+                                { icon: <IconShield />, label: 'Privacy by design' },
                                 { icon: <IconShield />, label: 'EU AI Act conform' },
                                 { icon: <IconShield />, label: 'Data binnen EER' },
                             ].map((item, i) => (
