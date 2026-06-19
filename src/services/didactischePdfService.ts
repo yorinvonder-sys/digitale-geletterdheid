@@ -192,7 +192,7 @@ export async function generateDidactischeOnderbouwingPDF(): Promise<void> {
 
     bulletPoint(ctx, 'Welzijnsprotocol: Als een leerling signalen van nood uit (zelfbeschadiging, pesten, geweld), stopt de AI met de missie en verwijst naar de Kindertelefoon (0800-0432) en 113');
     bulletPoint(ctx, 'Contentfiltering: Scheldwoorden, geweldstaal en ongepaste content worden geblokkeerd — zowel in AI-reacties als in peer feedback');
-    bulletPoint(ctx, 'Data in Europa: Alle data wordt verwerkt in EU-datacenters (europe-west4, Nederland)');
+    bulletPoint(ctx, 'Data in Europa: Opslag binnen de EU (Supabase, AWS Frankfurt); AI-verwerking via Mistral AI en Black Forest Labs');
     bulletPoint(ctx, 'Geen tracking buiten het platform: Geen third-party analytics, geen advertenties, geen doorverkoop van leerlingdata');
     bulletPoint(ctx, 'AVG-maatregelen: DPIA uitgevoerd, verwerkingsovereenkomst beschikbaar, privacy by design');
     spacer(ctx, 4);

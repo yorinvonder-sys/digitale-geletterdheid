@@ -90,7 +90,7 @@ export const AiGeletterdheid: React.FC = () => {
                             <ComplianceCard 
                                 badge="Privacy"
                                 title="AVG & GDPR"
-                                description="Alle data-opslag vindt plaats binnen de EU (Eemshaven/België). Wij verwerken geen BSN of gevoelige leerlingdata — Privacy by Design."
+                                description="Alle data-opslag vindt plaats binnen de EU (Supabase, AWS Frankfurt). Wij verwerken geen BSN of gevoelige leerlingdata — Privacy by Design."
                             />
                             <ComplianceCard 
                                 badge="Veiligheid"

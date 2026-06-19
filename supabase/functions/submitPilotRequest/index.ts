@@ -359,7 +359,7 @@ serve(async (req: Request) => {
 
                 <p style="margin: 0 0 10px; font-size: 11px; color: #445865; text-transform: uppercase; letter-spacing: 0.08em; font-weight: bold;">Veelgestelde vragen</p>
                 <div style="font-size: 13px; color: #445865; line-height: 1.6;">
-                  <p style="margin: 0 0 10px;"><strong style="color: #445865;">Waar staat onze data?</strong><br />Binnen de Europese Economische Ruimte (europe-west4, Nederland). AI-verwerking via Mistral AI en Black Forest Labs server-side via Supabase Edge Functions. Geen data wordt gebruikt voor het trainen van AI-modellen.</p>
+                  <p style="margin: 0 0 10px;"><strong style="color: #445865;">Waar staat onze data?</strong><br />Binnen de Europese Economische Ruimte (Supabase, AWS Frankfurt). AI-verwerking via Mistral AI en Black Forest Labs server-side via Supabase Edge Functions. Geen data wordt gebruikt voor het trainen van AI-modellen.</p>
                   <p style="margin: 0 0 10px;"><strong style="color: #445865;">Wat gebeurt er na de pilot?</strong><br />Stoppen (alle data wordt binnen 30 dagen verwijderd), verlengen, of overstappen naar een licentie vanaf €2.000 per schoollocatie per jaar.</p>
                   <p style="margin: 0 0 10px;"><strong style="color: #445865;">Is DGSkills compliant met de EU AI Act?</strong><br />Ja. We zijn geclassificeerd als hoog-risico onder Annex III punt 3(b) en werken naar volledige conformiteit voor 2 augustus 2026. Het volledige conformiteitsbeoordelingsplan is opvraagbaar.</p>
                 </div>
@@ -392,7 +392,7 @@ serve(async (req: Request) => {
             + `Onze Compliance Hub bevat alle 21 juridische en technische documenten — DPA Model 4.0, DPIA, EU AI Act Annex IV, risicoregister en verwerkingsregister.\n`
             + `→ https://dgskills.app/compliance-hub\n\n`
             + `VEELGESTELDE VRAGEN\n`
-            + `• Waar staat onze data? Binnen de EER (europe-west4, Nederland). Geen training op jouw data.\n`
+            + `• Waar staat onze data? Binnen de EER (Supabase, AWS Frankfurt). Geen training op jouw data.\n`
             + `• Wat na de pilot? Stoppen (data verwijderd binnen 30 dagen), verlengen, of licentie vanaf €2.000 per locatie/jaar.\n`
             + `• EU AI Act? Ja — hoog-risico conform Annex III 3(b), conformiteit voor 2 augustus 2026.\n\n`
             + `Vragen? info@dgskills.app of privacy@dgskills.app\n\n`

@@ -240,7 +240,7 @@ const features = [
         bgColor: BG.coral,
         label: 'Leerervaring',
         title: 'AI-gestuurde missies',
-        description: 'Leerlingen lossen uitdagingen op met Google Gemini AI. Van deepfakes herkennen tot een AI-beleidsplan schrijven. Elke missie past zich aan het niveau aan.',
+        description: 'Leerlingen lossen uitdagingen op met Mistral AI. Van deepfakes herkennen tot een AI-beleidsplan schrijven. Elke missie past zich aan het niveau aan.',
     },
     {
         illustration: <IllustrationCurriculum />,
