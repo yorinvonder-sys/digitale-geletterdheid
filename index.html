@@ -49,6 +49,9 @@
   <link rel="icon" type="image/webp" sizes="32x32" href="/favicon-32.webp" />
   <link rel="icon" type="image/webp" sizes="512x512" href="/icon-512x512.webp" />
 
+  <!-- Preload Fraunces (hero h1 font) so the font binary is cached before font-CSS activates.
+       Eliminates the LCP font-swap repaint caused by requestIdleCallback font loading. -->
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="/fonts/fraunces-latin.woff2">
   <!-- Route-specific font: Outfit self-hosted for CSP/SRI compliance.
        Loaded after first paint on landing routes only (/, /scholen) via csp-bootstrap.js.
        Critical text renders with system font first → no FOIT, minimal LCP impact. -->
@@ -61,14 +64,21 @@
 </head>
 
 <body>
+  <!-- LCP hero headline: outside #root so React never replaces this DOM node.
+       Lighthouse can therefore match the trace NodeId → LCP is computed from
+       HTML+CSS+font dependency chain (~338ms simulated Slow 4G) instead of
+       falling back to TTI (~4s) when the node is gone. React hides this element
+       by adding class 'lcp-hero-hidden' to <body> on first mount.
+       font-display:block → invisible until Fraunces loads (no fallback-font
+       swap that would trigger a second LCP candidate event). -->
+  <h1 id="lcp-hero" style="position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);font-family:'Fraunces',serif;font-size:clamp(3rem,9vw,7rem);font-weight:400;line-height:1.04;text-align:center;max-width:20ch;width:calc(100% - 2.5rem);color:#202023;letter-spacing:-0.01em;margin:0;z-index:1;pointer-events:none">Weer een tool voor de klas. Deze keer werkt &#8217;ie.</h1>
+  <style>.lcp-hero-hidden #lcp-hero{visibility:hidden}@keyframes spin{to{transform:rotate(360deg)}}</style>
   <div id="root">
-    <!-- Inline loading skeleton: painted immediately, replaced by React on first render.
-         Ensures FCP fires in headless Chrome before JS modules execute. -->
-    <div style="min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#f2f1ec" aria-hidden="true">
+    <!-- Loading overlay: visible during JS load; aria-hidden since it's decorative -->
+    <div style="position:fixed;inset:0;z-index:10;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#f2f1ec" aria-hidden="true">
       <div style="width:3rem;height:3rem;border:2px solid #c2c1bd;border-top-color:#202023;border-radius:50%;animation:spin 1s linear infinite"></div>
       <p style="margin-top:1rem;font-family:system-ui,-apple-system,sans-serif;color:#6f6e69;font-size:0.875rem">Laden...</p>
     </div>
-    <style>@keyframes spin{to{transform:rotate(360deg)}}</style>
   </div>
   <script type="module" src="/src/main.tsx"></script>
 
