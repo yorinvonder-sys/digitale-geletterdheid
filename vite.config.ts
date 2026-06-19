@@ -63,6 +63,13 @@ export default defineConfig(({ mode }) => {
         '@react-three/fiber',
         '@react-three/drei',
       ],
+      include: [
+        // drei → tunnel-rat → zustand → use-sync-external-store/shim/with-selector.js
+        // is a CJS file with no ESM default export. Vite serves it raw via /@fs/ when
+        // its parent packages are excluded, which breaks the ES module import. Force
+        // pre-bundling the shim so Vite wraps it correctly.
+        'use-sync-external-store/shim/with-selector',
+      ],
     },
     // SECURITY: API keys removed from client bundle - all AI calls go through Supabase Edge Functions proxy
     resolve: {
