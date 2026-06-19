@@ -46,6 +46,7 @@ export interface ToolGuideConfig {
     maxScore: number;
     badges: BadgeConfig[];
     takeaways: string[];
+    learningObjectives?: string[];
 }
 
 // ─── State ───────────────────────────────────────────────────────────────────
