@@ -234,7 +234,7 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
                     <button
                         onClick={() => onSubmit(q.id)}
                         disabled={submitDisabled}
-                        className="w-full py-2 bg-gradient-to-r from-duck-acid to-duck-acid hover:from-duck-acid hover:to-duck-acid disabled:opacity-40 disabled:cursor-not-allowed text-white rounded-xl font-bold text-sm transition-all duration-200"
+                        className="w-full py-2 bg-gradient-to-r from-duck-acid to-duck-acid hover:from-duck-acid hover:to-duck-acid disabled:opacity-40 disabled:cursor-not-allowed text-duck-ink rounded-xl font-bold text-sm transition-all duration-200"
                         style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                     >
                         Bevestigen
@@ -445,7 +445,7 @@ const DatasetView: React.FC<DatasetViewProps> = ({
         {canGoNext && (
             <button
                 onClick={onNext}
-                className="w-full mt-4 py-3.5 bg-gradient-to-r from-duck-acid to-duck-acid hover:from-duck-acid hover:to-duck-acid text-white rounded-xl font-bold text-sm transition-all duration-200 active:scale-[0.98] flex items-center justify-center gap-2"
+                className="w-full mt-4 py-3.5 bg-gradient-to-r from-duck-acid to-duck-acid hover:from-duck-acid hover:to-duck-acid text-duck-ink rounded-xl font-bold text-sm transition-all duration-200 active:scale-[0.98] flex items-center justify-center gap-2"
                 style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
             >
                 {isLast ? 'Bekijk resultaten' : 'Volgende dataset'}
@@ -704,7 +704,7 @@ const DataViewerInner: React.FC<DataViewerProps> = ({
                     {!isChatOpen && (
                         <button
                             onClick={() => setIsChatOpen(true)}
-                            className="fixed bottom-6 right-6 z-40 flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-duck-acid to-duck-acid text-white shadow-lg transition-all duration-200 hover:brightness-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-ink focus-visible:ring-offset-2 active:scale-95"
+                            className="fixed bottom-6 right-6 z-40 flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-duck-acid to-duck-acid text-duck-ink shadow-lg transition-all duration-200 hover:brightness-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-ink focus-visible:ring-offset-2 active:scale-95"
                             aria-label="Open AI-assistent"
                         >
                             <MessageCircle size={22} />

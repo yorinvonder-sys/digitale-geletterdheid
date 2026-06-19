@@ -73,7 +73,7 @@ export const FeedbackBanner: React.FC<{
             {!hideButton && (
                 <button
                     onClick={onNext}
-                    className="w-full py-2.5 rounded-full font-black text-sm bg-gradient-to-r from-duck-acid to-duck-acid hover:from-duck-acid hover:to-duck-acid text-white transition-all duration-200"
+                    className="w-full py-2.5 rounded-full font-black text-sm bg-gradient-to-r from-duck-acid to-duck-acid hover:from-duck-acid hover:to-duck-acid text-duck-ink transition-all duration-200"
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                 >
                     {isLast ? 'Bekijk eindresultaat' : 'Volgende ronde →'}

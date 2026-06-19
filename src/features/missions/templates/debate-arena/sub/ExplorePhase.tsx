@@ -131,7 +131,7 @@ export const ExplorePhase: React.FC<ExplorePhaseProps> = ({ config, state, onMar
             {allRead && (!config.explorationQuiz || state.explorationQuizAnswered) && (
                 <button
                     onClick={onNext}
-                    className="w-full py-3.5 bg-gradient-to-r from-duck-acid to-duck-acid hover:from-duck-acid hover:to-duck-acid text-white rounded-xl font-bold text-sm transition-all duration-200 active:scale-[0.98] flex items-center justify-center gap-2"
+                    className="w-full py-3.5 bg-gradient-to-r from-duck-acid to-duck-acid hover:from-duck-acid hover:to-duck-acid text-duck-ink rounded-xl font-bold text-sm transition-all duration-200 active:scale-[0.98] flex items-center justify-center gap-2"
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                 >
                     Kies jouw positie

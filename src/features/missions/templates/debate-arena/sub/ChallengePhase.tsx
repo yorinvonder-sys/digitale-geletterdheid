@@ -69,7 +69,7 @@ export const ChallengePhase: React.FC<ChallengePhaseProps> = ({ config, state, o
                 <button
                     onClick={onNext}
                     disabled={!canContinue}
-                    className="flex-1 py-3 bg-gradient-to-r from-duck-acid to-duck-acid hover:from-duck-acid hover:to-duck-acid text-white rounded-xl font-bold text-sm transition-all duration-200 active:scale-[0.98] disabled:opacity-40 flex items-center justify-center gap-2"
+                    className="flex-1 py-3 bg-gradient-to-r from-duck-acid to-duck-acid hover:from-duck-acid hover:to-duck-acid text-duck-ink rounded-xl font-bold text-sm transition-all duration-200 active:scale-[0.98] disabled:opacity-40 flex items-center justify-center gap-2"
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                 >
                     Reflecteer

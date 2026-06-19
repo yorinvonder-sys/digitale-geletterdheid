@@ -84,7 +84,7 @@ export const QuestionCard: React.FC<{
                     className={`w-full py-2 rounded-lg text-xs font-bold transition-all duration-200 active:scale-[0.98] ${
                         submitDisabled
                             ? 'bg-duck-gray text-duck-ink/60 cursor-not-allowed'
-                            : 'bg-gradient-to-r from-duck-acid to-duck-acid text-white'
+                            : 'bg-gradient-to-r from-duck-acid to-duck-acid text-duck-ink'
                     }`}
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                 >

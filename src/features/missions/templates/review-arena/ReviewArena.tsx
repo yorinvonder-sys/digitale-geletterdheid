@@ -365,7 +365,7 @@ const ReviewArenaWithConfig: React.FC<ReviewArenaProps> = ({
                     {!isChatOpen && (
                         <button
                             onClick={() => setIsChatOpen(true)}
-                            className="fixed bottom-6 right-6 z-40 w-13 h-13 bg-gradient-to-br from-duck-acid to-duck-acid hover:from-duck-acid hover:to-duck-acid text-white rounded-full shadow-lg flex items-center justify-center transition-all duration-200 active:scale-95"
+                            className="fixed bottom-6 right-6 z-40 w-13 h-13 bg-gradient-to-br from-duck-acid to-duck-acid hover:from-duck-acid hover:to-duck-acid text-duck-ink rounded-full shadow-lg flex items-center justify-center transition-all duration-200 active:scale-95"
                             aria-label="Open AI-assistent"
                         >
                             <MessageCircle size={22} />
