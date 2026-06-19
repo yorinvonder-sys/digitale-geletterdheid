@@ -1,7 +1,9 @@
 # Go-to-Market Strategie — DGSkills.app
 
-> **Versie:** 1.0 | **Datum:** 2 april 2026 | **Status:** Goedgekeurd
+> **Versie:** 1.1 | **Datum:** 2 april 2026 (feitelijke correcties 19 juni 2026) | **Status:** Goedgekeurd
 > **Doel:** Helder, herhaalbaar playbook om DGSkills strategisch in de markt te brengen bij VO-scholen.
+>
+> **Strategische context:** Dit document is de **GTM-fasering / tactische laag**. Het overkoepelende strategische kader (STP, JTBD, Crossing the Chasm, Porter) staat in [`13-strategisch-verkoopplan.md`](13-strategisch-verkoopplan.md). Bij tegenstrijdigheid is doc 13 leidend.
 
 ---
 
@@ -11,7 +13,7 @@
 Scholen moeten digitale geletterdheid aantoonbaar maken. De meeste hebben geen methode, geen bewijs, geen plan. DGSkills biedt dat bewijs kant-en-klaar.
 
 ### B. EU AI Act druk (hoog-risico; deadline verschuift richting 2 dec 2027)
-Onderwijs-AI is onder de EU AI Act geclassificeerd als hoog-risico (Annex III, punt 3b). De oorspronkelijke deadline van 2 augustus 2026 verschuift via de Digital Omnibus (voorlopig EU-akkoord, nog niet formeel gepubliceerd) naar verwachting richting 2 december 2027. Scholen moeten kunnen aantonen dat hun AI-tools de juiste classificatie en waarborgen hebben. DGSkills heeft dit transparant gedocumenteerd (DPIA, risicoregister, AI-transparantie) en is in actieve compliance-voorbereiding — een deuropener bij bestuurders.
+Onderwijs-AI is onder de EU AI Act geclassificeerd als hoog-risico (Annex III, punt 3(b)). De oorspronkelijke deadline van 2 augustus 2026 verschuift via de Digital Omnibus (voorlopig politiek akkoord, 7 mei 2026; nog niet in het EU-Publicatieblad) naar verwachting naar 2 december 2027; tot die publicatie blijft 2 augustus 2026 formeel de geldende datum. Scholen moeten kunnen aantonen dat hun AI-tools de juiste classificatie en waarborgen hebben. DGSkills heeft dit transparant gedocumenteerd — DPIA en risicoregister opgesteld, AI-transparantie (Art. 50) in de app geïmplementeerd — en is in actieve compliance-voorbereiding (bewust géén "AI Act compliant"-claim). Dat is een deuropener bij bestuurders.
 
 ### C. Docenttekort + werkdruk
 ~2.200 FTE lerarentekort in het VO (schooljaar 2024/25, Voion 2025). Docenten hebben geen tijd om zelf digitale geletterdheid te ontwikkelen. DGSkills neemt dat over: AI geeft feedback, dashboard volgt voortgang, docent coacht.
@@ -51,7 +53,7 @@ Het grootste concurrentievoordeel is niet de technologie — het is de oprichter
 
 | Onderdeel | Details |
 |-----------|---------|
-| Platform-toegang | Alle missies + dashboard, 8-12 weken, max 60 leerlingen, 2 docenten |
+| Platform-toegang | Alle missies + dashboard, 8 weken, max 150 leerlingen, max 2 docenten (Pilot Start) |
 | Kickoff-sessie | 45 min online |
 | Docent-onboarding | 90 min training |
 | Starterset lessenplan | Kant-en-klaar voor eerste 4 weken |
@@ -63,6 +65,8 @@ Het grootste concurrentievoordeel is niet de technologie — het is de oprichter
 | E-mailsupport | Ma-vr 8:30-17:00 |
 
 **100% verrekend bij jaarcontract** (binnen 30 dagen na pilotafronding).
+
+> Dit is de **Pilot Start** (8 weken, ≤150 leerlingen). Grotere pilotvormen staan in [`06-standard-paid-pilot-package.md`](06-standard-paid-pilot-package.md) en [`02-pricing-matrix.md`](02-pricing-matrix.md).
 
 ---
 
