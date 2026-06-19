@@ -239,6 +239,14 @@ export const MISSION_GOALS: Record<string, MissionGoal> = {
         },
         evidence: 'Je kunt minimaal drie phishing-signalen aanwijzen en een veilige vervolgstap kiezen.',
     },
+    'phishing-fighter': {
+        primaryGoal: 'Ik herken phishing-aanvallen en adviseer anderen over de veiligste reactie.',
+        criteria: {
+            type: 'rounds-complete',
+            description: 'Je analyseert, rangschikt en beoordeelt phishing-scenario\'s en geeft advies.',
+        },
+        evidence: 'Je kunt minimaal vier rode vlaggen benoemen en een veilig advies geven bij een verdachte mail.',
+    },
     'data-handelaar': {
         primaryGoal: 'Ik beoordeel datasituaties op privacy, toestemming en eerlijk gebruik.',
         criteria: {
@@ -278,6 +286,22 @@ export const MISSION_GOALS: Record<string, MissionGoal> = {
             description: 'Je analyseert datasets en beantwoordt de vragen met onderbouwing.',
         },
         evidence: 'Je conclusie verwijst naar een getal, patroon of grafiek.',
+    },
+    'research-project': {
+        primaryGoal: 'Ik formuleer een onderzoeksvraag, analyseer data uit betrouwbare bronnen en trek een onderbouwde conclusie.',
+        criteria: {
+            type: 'rounds-complete',
+            description: 'Je analyseert datasets, evalueert onderzoeksmethoden en beantwoordt vragen met onderbouwing.',
+        },
+        evidence: 'Je conclusie verwijst naar een getal, patroon of bron die je keuze ondersteunt.',
+    },
+    'digital-forensics': {
+        primaryGoal: 'Ik analyseer logbestanden en trek een onderbouwde conclusie over wat er is gebeurd.',
+        criteria: {
+            type: 'rounds-complete',
+            description: 'Je herkent verdachte patronen, reconstrueert een tijdlijn en evalueert digitaal bewijs.',
+        },
+        evidence: 'Je kunt uitleggen welke logregels een aanval bewijzen en welke conclusie je daaruit trekt.',
     },
     'digitale-balans-coach': {
         primaryGoal: 'Ik maak een persoonlijk en haalbaar plan voor digitale balans en privacy.',
