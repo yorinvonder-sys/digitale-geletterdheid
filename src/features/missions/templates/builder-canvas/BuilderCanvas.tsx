@@ -367,7 +367,7 @@ export const BuilderCanvas: React.FC<TemplateMissionProps> = ({ missionId, onBac
         if (!VALID_BUILDER_CANVAS_IDS.has(missionId)) { setLoadError(true); return; }
         import(`./configs/${missionId}.ts`)
             .then((mod) => {
-                const cfg = mod.default ?? Object.values(mod).find((v): v is BuilderCanvasConfig => v && typeof v === 'object' && 'missionId' in v);
+                const cfg = mod.default ?? Object.values(mod).find((v): v is BuilderCanvasConfig => !!v && typeof v === 'object' && 'missionId' in v);
                 if (cfg) setConfig(cfg);
                 else setLoadError(true);
             })

@@ -369,7 +369,7 @@ async function fetchCustomContainers(
 
     if (containersError || !containers) return [];
 
-    const containerIds = containers.map(c => c.id);
+    const containerIds = containers.map((c: any) => c.id);
     if (containerIds.length === 0) return [];
 
     const { data: missionRows, error: missionsError } = await fromContainerMissions()
@@ -391,7 +391,7 @@ async function fetchCustomContainers(
         }
     }
 
-    return containers.map(row =>
+    return containers.map((row: any) =>
         mapContainerRow(row, missionsByContainer.get(row.id) ?? [])
     );
 }

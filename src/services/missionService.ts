@@ -167,8 +167,8 @@ export const getSharedProject = async (shareId: string): Promise<SharedProject |
             type: data.type,
             data: data.data,
             name: data.name,
-            createdBy: data.created_by,
-            createdAt: new Date(data.created_at),
+            createdBy: data.created_by ?? '',
+            createdAt: new Date(data.created_at ?? Date.now()),
         };
     } catch (error) {
         console.error('Error loading shared project:', error);

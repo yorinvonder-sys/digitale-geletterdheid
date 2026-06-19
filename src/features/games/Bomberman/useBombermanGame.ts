@@ -43,8 +43,9 @@ export const useBombermanGame = (avatarConfig: AvatarConfig, schoolId?: string, 
                 // Find a lobby with less than 4 players
                 if (lobbies) {
                     for (const lobby of lobbies) {
-                        const playerCount = Object.keys(lobby.players || {}).length;
-                        if (playerCount < 4 && !lobby.players?.[user.id]) {
+                        const players = (lobby.players || {}) as Record<string, unknown>;
+                        const playerCount = Object.keys(players).length;
+                        if (playerCount < 4 && !players[user.id]) {
                             roomId = lobby.id;
                             playerIndex = playerCount;
                             console.log('Bomberman Debug: Found existing lobby', roomId, 'with', playerCount, 'players');

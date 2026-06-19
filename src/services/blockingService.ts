@@ -106,9 +106,9 @@ export async function getBlockRecords(blockerId: string): Promise<Array<{
 
         return (data || []).map(row => ({
             blockedId: row.blocked_id,
-            blockedName: row.blocked_name,
-            reason: row.reason,
-            createdAt: row.created_at,
+            blockedName: row.blocked_name ?? '',
+            reason: row.reason ?? undefined,
+            createdAt: row.created_at ?? '',
         }));
     } catch (error) {
         console.error('[Blocking] Failed to get block records:', error);

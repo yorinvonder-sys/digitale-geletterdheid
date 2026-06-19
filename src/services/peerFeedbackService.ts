@@ -149,7 +149,7 @@ export async function getClassFeedbackStats(
   return {
     totalFeedback: data.length,
     avgRating: ratings.length > 0
-      ? Math.round((ratings.reduce((a, b) => a + b, 0) / ratings.length) * 10) / 10
+      ? Math.round((ratings.reduce((a: number, b: number) => a + b, 0) / ratings.length) * 10) / 10
       : 0,
     studentsWhoGave: uniqueGivers.size,
   };

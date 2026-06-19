@@ -279,7 +279,7 @@ export const WordSimulator: React.FC<WordSimulatorProps> = ({
                             setEditorContent(editor.innerHTML);
                             return;
 
-                            node = node.parentNode;
+                            node = node?.parentNode ?? null; // unreachable but TS needs the null guard
                         }
                     } else {
                         alert("Klik eerst ergens in de tekst die je een Titel wilt maken.");

@@ -511,7 +511,8 @@ export const useAgentLogic = ({ selectedRole, userIdentifier, schoolId, initialP
     useEffect(() => {
         if (!cloudSyncDisabled && ((selectedRole?.id as string) === 'prompt-trainer' || selectedRole?.id === 'ai-trainer') && activeTrainerData) {
             const timer = setTimeout(() => {
-                saveMissionProgress(userIdentifier, selectedRole.id, { trainerData: activeTrainerData, schoolId });
+                // selectedRole!: the if-condition uses selectedRole?.id, which is only truthy if selectedRole is non-null
+                saveMissionProgress(userIdentifier, selectedRole!.id, { trainerData: activeTrainerData, schoolId });
             }, 1000);
             return () => clearTimeout(timer);
         }

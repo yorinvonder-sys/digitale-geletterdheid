@@ -73,7 +73,7 @@ export const StudentList: React.FC<StudentListProps> = ({
         const completed = student.stats?.missionsCompleted || [];
         if (completed.includes(missionId)) return 'completed';
         const progress = student.stats?.missionProgress?.[missionId];
-        if (progress && (progress.completedSteps?.length > 0 || progress.chatHistory?.length > 0)) return 'in-progress';
+        if (progress && ((progress.completedSteps?.length ?? 0) > 0 || (progress.chatHistory?.length ?? 0) > 0)) return 'in-progress';
         if (student.stats?.activeMission === missionId) return 'in-progress';
         return 'not-started';
     };
