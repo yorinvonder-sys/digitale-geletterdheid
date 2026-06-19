@@ -505,7 +505,7 @@ export const ScholenLanding: React.FC = () => {
             <main className="relative">
                 <section data-home-hero data-section="hero" className="relative overflow-hidden px-5 pb-16 pt-32 md:px-10 md:pt-40">
                     <div className="relative z-10 mx-auto max-w-5xl text-center">
-                        <p data-duck-anchor="hero-badge" className={`inline-flex items-center gap-2 rounded-full border border-duck-ink bg-duck-acid px-4 py-2 text-xs font-extrabold uppercase tracking-[0.16em] opacity-0 motion-reduce:animate-none motion-reduce:opacity-100 mt-6 md:mt-8 ${introReady ? 'animate-fade-in-up' : ''}`}>
+                        <p data-duck-anchor="hero-badge" className={`inline-flex items-center gap-2 rounded-full border border-duck-ink bg-duck-acid px-3 py-2 text-[9px] sm:px-4 sm:text-xs font-extrabold uppercase tracking-[0.16em] opacity-0 motion-reduce:animate-none motion-reduce:opacity-100 mt-6 md:mt-8 ${introReady ? 'animate-fade-in-up' : ''}`}>
                             Digitale geletterdheid voor VO &amp; VSO
                         </p>
                         <HeroHeadline introReady={introReady} />
