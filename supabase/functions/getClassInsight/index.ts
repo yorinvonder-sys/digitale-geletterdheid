@@ -28,6 +28,12 @@ const PRIVILEGED_ROLES = new Set(["teacher", "admin", "developer"]);
 const STUCK_THRESHOLD_DAYS = 7;
 const STUCK_THRESHOLD_MS = STUCK_THRESHOLD_DAYS * 24 * 60 * 60 * 1000;
 
+// k-anonimiteit (AVG Overweging 26 / Art. 5(1)(c) dataminimalisatie):
+// stuur alleen geaggregeerde cijfers naar de AI als de groep groot genoeg is
+// dat een individuele leerling niet herleidbaar is (singling-out). Onder deze
+// drempel gaat er NIETS naar Mistral.
+const MIN_COHORT_SIZE = 5;
+
 const SYSTEM_INSTRUCTION = `Je bent een onderwijsassistent voor een Nederlandse middelbare school.
 Je krijgt ANONIEME statistieken over een klas: per missie hoeveel leerlingen gestart zijn, klaar zijn, of vastlopen.
 Je hebt GEEN namen of persoonsgegevens. Analyseer de patronen en geef maximaal 3 aandachtspunten.
@@ -264,12 +270,27 @@ Deno.serve(async (req: Request) => {
         }
     }
 
-    // Bouw anoniem statistieken-object voor Mistral (geen user-ids, geen namen)
-    const aggregatedStats = {
-        classSize,
-        classScope: studentClass ?? "hele school",
-        stuckThresholdDays: STUCK_THRESHOLD_DAYS,
-        missions: Array.from(missionMap.values()).map((s) => ({
+    // --- k-anonimiteit op klasniveau ---
+    // Te kleine groep → individuele leerling herleidbaar. Geen AI-call.
+    if (classSize < MIN_COHORT_SIZE) {
+        return new Response(
+            JSON.stringify({
+                points: [],
+                generatedAt: new Date().toISOString(),
+                classScope: studentClass ?? "hele school",
+                classSize,
+                note: `Te weinig leerlingen in deze selectie (minimaal ${MIN_COHORT_SIZE} nodig) voor een anonieme samenvatting. Kies een grotere groep.`,
+            }),
+            { headers: { ...corsHeaders, "Content-Type": "application/json", ...rateLimitHeaders(rateCheck) } },
+        );
+    }
+
+    // --- k-anonimiteit op missieniveau ---
+    // Alleen missies met een voldoende groot cohort tellen mee: één leerling op een
+    // missie zou anders herleidbaar zijn, óók binnen een grote klas.
+    const eligibleMissions = Array.from(missionMap.values())
+        .filter((s) => s.started >= MIN_COHORT_SIZE)
+        .map((s) => ({
             missionId: s.missionId,
             started: s.started,
             completed: s.completed,
@@ -280,7 +301,28 @@ Deno.serve(async (req: Request) => {
                 : 0,
             completionRate: s.started > 0 ? Math.round((s.completed / s.started) * 100) : 0,
             stuckRate: s.inProgress > 0 ? Math.round((s.stuck / s.inProgress) * 100) : 0,
-        })),
+        }));
+
+    if (eligibleMissions.length === 0) {
+        return new Response(
+            JSON.stringify({
+                points: [],
+                generatedAt: new Date().toISOString(),
+                classScope: studentClass ?? "hele school",
+                classSize,
+                note: `Nog te weinig leerlingen per missie (minimaal ${MIN_COHORT_SIZE}) voor een anonieme samenvatting.`,
+            }),
+            { headers: { ...corsHeaders, "Content-Type": "application/json", ...rateLimitHeaders(rateCheck) } },
+        );
+    }
+
+    // Bouw anoniem statistieken-object voor Mistral.
+    // GEEN user-ids, GEEN namen, GEEN echte klasnaam (die heeft de AI niet nodig).
+    const aggregatedStats = {
+        classSize,
+        stuckThresholdDays: STUCK_THRESHOLD_DAYS,
+        minCohortSize: MIN_COHORT_SIZE,
+        missions: eligibleMissions,
     };
 
     // --- Mistral AI call ---
