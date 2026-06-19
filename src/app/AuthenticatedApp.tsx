@@ -25,7 +25,7 @@ import { ExitConfirmDialog } from '@/components/app-shell/ExitConfirmDialog';
 import { Toast } from '@/components/app-shell/Toast';
 import { useSchoolContainers } from '@/hooks/useSchoolContainers';
 import { ContainerConfig } from '@/config/containerTypes';
-import { getProjectWeekForDate } from '@/utils/projectWeekSchedule';
+import { getActiveSortOrderForDate } from '@/utils/projectWeekSchedule';
 
 
 import '@/styles/app.css';
@@ -132,7 +132,7 @@ export function AuthenticatedApp() {
     const completingMissionRef = React.useRef<Set<string>>(new Set());
 
     // Flexible scheduling: load containers for the current school + year group
-    const { containers, loading: containersLoading } = useSchoolContainers(user?.schoolId, activeYearGroup);
+    const { containers, model: schedulingModel, loading: containersLoading } = useSchoolContainers(user?.schoolId, activeYearGroup);
     const initialProjectWeekSyncKeyRef = React.useRef<string | null>(null);
     const [showStudentOnboarding, setShowStudentOnboarding] = useState(false);
     const [showAvatarSetup, setShowAvatarSetup] = useState(false);
@@ -164,7 +164,7 @@ export function AuthenticatedApp() {
         initialProjectWeekSyncKeyRef.current = syncKey;
         if (hasActiveWeekBeenManuallySelected()) return;
 
-        setActiveWeekFromSystem(getProjectWeekForDate(new Date(), containers));
+        setActiveWeekFromSystem(getActiveSortOrderForDate(new Date(), containers, schedulingModel));
     }, [
         containers,
         containersLoading,
@@ -884,6 +884,7 @@ export function AuthenticatedApp() {
                             activeYearGroup={activeYearGroup}
                             setActiveYearGroup={setActiveYearGroup}
                             containers={containers}
+                            schedulingModel={schedulingModel}
                         />
                     </div>
                 );
@@ -918,6 +919,7 @@ export function AuthenticatedApp() {
                 activeYearGroup={activeYearGroup}
                 setActiveYearGroup={setActiveYearGroup}
                 containers={containers}
+                schedulingModel={schedulingModel}
             />
         );
     };

@@ -20,10 +20,15 @@ const fromContainerMissions = (): any => supabase.from('school_container_mission
 // Public API
 // ============================================================================
 
+export interface SchoolContainersResult {
+    model: 'default' | 'custom';
+    containers: ContainerConfig[];
+}
+
 export async function getContainersForSchool(
     schoolId: string,
     yearGroup: number
-): Promise<ContainerConfig[]> {
+): Promise<SchoolContainersResult> {
     const { data, error } = await supabase
         .from('school_configs')
         .select('*')
@@ -32,10 +37,10 @@ export async function getContainersForSchool(
 
     const model = (data as any)?.scheduling_model;
     if (error || !data || !model || model === 'default') {
-        return defaultCurriculumToContainers(schoolId, yearGroup);
+        return { model: 'default', containers: defaultCurriculumToContainers(schoolId, yearGroup) };
     }
 
-    return fetchCustomContainers(schoolId, yearGroup);
+    return { model: 'custom', containers: await fetchCustomContainers(schoolId, yearGroup) };
 }
 
 export async function createContainer(

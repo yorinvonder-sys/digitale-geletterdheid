@@ -1,4 +1,4 @@
-import type { ContainerConfig } from '@/config/containerTypes';
+import type { ContainerConfig, SchedulingModel } from '@/config/containerTypes';
 
 export type ProjectWeekNumber = 1 | 2 | 3 | 4;
 
@@ -74,4 +74,26 @@ export function getProjectWeekForDate(
     }
 
     return getFallbackProjectWeekForDate(date);
+}
+
+/**
+ * For custom scheduling models (>4 containers, arbitrary sortOrders):
+ * returns the sortOrder of the date-matching container, or falls back to
+ * the first container's sortOrder.
+ */
+export function getActiveSortOrderForDate(
+    date: Date = new Date(),
+    containers: Pick<ContainerConfig, 'sortOrder' | 'startDate' | 'endDate'>[],
+    schedulingModel: SchedulingModel
+): number {
+    if (schedulingModel !== 'custom' || containers.length === 0) {
+        return getProjectWeekForDate(date, containers);
+    }
+
+    const dateNumber = toLocalDateNumber(date);
+    const datedContainer = containers.find(c => isDateInsideContainer(dateNumber, c));
+    if (datedContainer) return datedContainer.sortOrder;
+
+    // Fall back to first container
+    return containers[0].sortOrder;
 }

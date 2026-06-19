@@ -4,6 +4,7 @@ import { getAllMissionIds, getPeriodConfig } from '@/config/curriculum';
 import { ROLES } from '@/config/agents';
 import { getMissionMeta } from '@/config/slo-kerndoelen-mapping';
 import type { SloKerndoelCode } from '@/config/sloKerndoelen';
+import type { ContainerConfig } from '@/config/containerTypes';
 
 export interface Mission {
     id: string;
@@ -207,5 +208,68 @@ export function buildMissionsForPeriod(yearGroup: number, period: number): Missi
         });
         missionNum++;
     }
+    return missions;
+}
+
+/**
+ * Builds a Mission list from a custom container's mission list.
+ * Used when schedulingModel === 'custom'.
+ */
+export function buildMissionsFromContainer(container: ContainerConfig): Mission[] {
+    const reviewMissionIds = container.missions
+        .filter(m => m.isReview)
+        .sort((a, b) => a.sortOrder - b.sortOrder)
+        .map(m => m.missionId);
+
+    const mainMissionIds = container.missions
+        .filter(m => !m.isReview)
+        .sort((a, b) => a.sortOrder - b.sortOrder)
+        .map(m => m.missionId);
+
+    const missions: Mission[] = [];
+
+    for (const missionId of reviewMissionIds) {
+        const role = ROLES.find(r => r.id === missionId);
+        const meta = getMissionMeta(missionId);
+        const overrides = getMissionOverride(missionId);
+        missions.push({
+            id: missionId,
+            title: role?.title || missionId,
+            description: role?.description || '',
+            icon: role?.icon ? React.cloneElement(role.icon as React.ReactElement<{ size?: number }>, { size: 40 }) : <RotateCcw size={40} />,
+            number: 'Review',
+            status: 'available',
+            info: getMissionTooltipInfo(missionId, role),
+            isReview: true,
+            classRestriction: overrides.classRestriction || meta?.classRestriction,
+            isHighlighted: overrides.isHighlighted,
+            sloKerndoelen: meta?.sloKerndoelen || container.sloFocus,
+            sloVsoKerndoelen: meta?.sloVsoKerndoelen,
+        });
+    }
+
+    let missionNum = 1;
+    for (const missionId of mainMissionIds) {
+        const role = ROLES.find(r => r.id === missionId);
+        const meta = getMissionMeta(missionId);
+        const overrides = getMissionOverride(missionId);
+        missions.push({
+            id: missionId,
+            title: role?.title || missionId,
+            description: role?.description || '',
+            icon: role?.icon ? React.cloneElement(role.icon as React.ReactElement<{ size?: number }>, { size: 40 }) : <Puzzle size={40} />,
+            number: overrides.number || String(missionNum).padStart(2, '0'),
+            status: 'available',
+            info: getMissionTooltipInfo(missionId, role),
+            isReview: false,
+            isExternal: overrides.isExternal,
+            isBonus: overrides.isBonus,
+            classRestriction: overrides.classRestriction || meta?.classRestriction,
+            sloKerndoelen: meta?.sloKerndoelen || container.sloFocus,
+            sloVsoKerndoelen: meta?.sloVsoKerndoelen,
+        });
+        missionNum++;
+    }
+
     return missions;
 }
