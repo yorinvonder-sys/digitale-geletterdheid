@@ -40,7 +40,7 @@ Statusoverzicht van de compliance-audit op basis van de actuele implementatie.
 | AI-03 | Risicobeheersysteem (Art. 9) | **Niet voldaan** | Individuele maatregelen aanwezig maar geen formeel, gedocumenteerd risicobeheersysteem. |
 | AI-04 | Technische documentatie (Art. 11) | **Niet voldaan** | Geen formeel Annex IV technisch documentatiedossier. |
 | AI-05 | Logging (Art. 12) | **Voldaan** | Audit logging via `auditService.ts` met AI-interactie metadata (zonder PII). |
-| AI-06 | Menselijk toezicht (Art. 14) | **Gedeeltelijk** | Docent is eindverantwoordelijk, maar STEP_COMPLETE kan nog niet door docent worden overruled. |
+| AI-06 | Menselijk toezicht (Art. 14) | **Voldaan** | Docent kan AI-beoordelingen (STEP_COMPLETE) overrulen via de docent-override (`teacher_step_overrides` + RPC `override_student_step`, geïmplementeerd 15 mrt 2026); docenttraining (OM-09) nog open. |
 | AI-07 | Nauwkeurigheid/Robuustheid (Art. 15) | **Gedeeltelijk** | Safety settings, prompt sanitizer en welzijnsprotocol aanwezig; geen formele nauwkeurigheidsmetrieken. |
 | AI-08 | QMS (Art. 17) | **Niet voldaan** | Geen formeel kwaliteitsmanagementsysteem. |
 | AI-09 | Conformiteitsverklaring (Art. 47) | **Niet voldaan** | Nog niet opgesteld. Deadline: 2 augustus 2026. |
