@@ -189,7 +189,7 @@ Deze jobs zijn niet afgeleid van wat klanten *zeggen* te willen (een digitaal le
 |---|---|
 | 97 missies dekken alle 9 SLO-kerndoelen aantoonbaar (incl. rapport voor inspectie) | Datagedreven dashboard voor docent: overzicht per leerling per kerndoel |
 | Implementatie in <2 weken, geen maatwerk nodig | Pilotgarantie: 100% verrekend bij jaarcontract |
-| DPIA, risicoregister, AVG-proof, data in NL (EU-dataresidentie) | Transparante AI-classificatie (hoog-risico, actieve compliance) = voorsprong op concurrenten |
+| DPIA, risicoregister, data in NL (EU-dataresidentie), DPA conform Model 4.0 | Transparante AI-classificatie (hoog-risico, actieve compliance) = voorsprong op concurrenten |
 | Missie-voor-missie leerroute houdt leerlingen op niveau | Founder is praktiserend docent: het platform klopt pedagogisch |
 
 De fit tussen Customer Profile en Value Map is sterk op de assen *compliance-ontzorging* en *werkdrukverlaging* — dat zijn de primaire pijnpunten die kopers bewegen.
@@ -232,7 +232,7 @@ Webster en Wind (1972) identificeerden vijf rollen in het organisatorische inkoo
 | Kenmerk | Wat het betekent | DGSkills-invulling |
 |---|---|---|
 | **Relatief voordeel** | Is het beter dan het alternatief? | SLO-kerndoeldekking aantoonbaar (vs. geen methode of lesboek zonder bewijs); werkdrukverlichting vs. zelf ontwikkelen |
-| **Compatibiliteit** | Past het in de bestaande situatie? | Werkt in bestaand lesrooster (DG-uur/mentoruur); past bij NL curriculumvereisten; AVG-proof met data in NL |
+| **Compatibiliteit** | Past het in de bestaande situatie? | Werkt in bestaand lesrooster (DG-uur/mentoruur); past bij NL curriculumvereisten; DPIA uitgevoerd, data in NL |
 | **Complexiteit** | Hoe moeilijk is het om te starten? | Live binnen 2 weken; geen maatwerk-integraties; docent hoeft alleen inloggegevens te verstrekken |
 | **Trialability** | Kan ik het eerst proberen? | **De €1.500-pilot (8 weken, ≤150 lln)** is het directe mechanisme; 100% verrekend bij jaarcontract |
 | **Observability** | Kan ik de resultaten zien (en laten zien)? | **Dashboard-export + SLO-rapport** maakt resultaten zichtbaar voor docent én directie; casestudies van andere scholen creëren observability voor volgende kopers |
@@ -287,7 +287,7 @@ De combinatie van deze vier elementen in één platform is de Blue Ocean-positie
 | DMU-rol | Kern van de boodschap | Toon |
 |---|---|---|
 | **Innovatieve docent (Initiator/User)** | "Jij hoeft dit niet zelf te bouwen — en het werkt echt in de klas, want ik gebruik het zelf." | Collegiaal, praktisch, enthousiast |
-| **ICT-coördinator (Influencer/Gatekeeper)** | "AVG-proof, data in NL, DPIA gedaan, AI Act hoog-risico transparant gedocumenteerd. Compliance-pack beschikbaar." | Zakelijk, technisch, feitelijk |
+| **ICT-coördinator (Influencer/Gatekeeper)** | "DPIA gedaan, data in NL, DPA conform Model 4.0, AI Act hoog-risico transparant gedocumenteerd. Compliance-pack beschikbaar." | Zakelijk, technisch, feitelijk |
 | **Teamleider (Influencer)** | "Jouw docenten zijn binnen twee weken live, en jij hebt direct inzicht in de voortgang van elke klas." | Managementgericht, resultaatgericht |
 | **Directeur (Decider)** | "Aantoonbare SLO-dekking voor de inspectie. Lage instap (pilot €1.500). Geen implementatierisico." | Strategisch, risicomijdend, bondig |
 
