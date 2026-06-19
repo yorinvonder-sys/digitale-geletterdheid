@@ -9,7 +9,7 @@
 
 ## Managementsamenvatting
 
-DGSkills heeft een **sterk technisch fundament** met defense-in-depth op authenticatie, RLS, CORS en prompt injection filtering. De architectuurkeuzes (app_metadata voor rollen, server-side systeeminstructies, SHA-256 token hashing, MFA op 3 lagen) zijn professioneel. Er zijn echter **7 KRITIEKE** en **18 HOGE/MEDIUM** bevindingen. De zwaarste gaps zitten in: (1) EU AI Act compliance — geen docent-override op AI-beoordelingen, geen risicoregister, geen Annex IV dossier; (2) ontbrekende rate limits op 6 Edge Function endpoints; (3) prompt sanitizer-bypasses via Unicode en meertalige aanvallen; (4) auto-merge CI/CD pipeline zonder security checks.
+DGSkills heeft een **sterk technisch fundament** met defense-in-depth op authenticatie, RLS, CORS en prompt injection filtering. De architectuurkeuzes (app_metadata voor rollen, server-side systeeminstructies, SHA-256 token hashing, MFA op 3 lagen) zijn professioneel. Er zijn echter **7 KRITIEKE** en **18 HOGE/MEDIUM** bevindingen. De zwaarste gaps zitten in: (1) EU AI Act compliance — geen docent-override op AI-beoordelingen (inmiddels geïmplementeerd 15 mrt 2026 — zie KRITIEK-sectie hieronder), geen risicoregister, geen Annex IV dossier; (2) ontbrekende rate limits op 6 Edge Function endpoints; (3) prompt sanitizer-bypasses via Unicode en meertalige aanvallen; (4) auto-merge CI/CD pipeline zonder security checks.
 
 ---
 
@@ -39,6 +39,7 @@ DGSkills heeft een **sterk technisch fundament** met defense-in-depth op authent
 - **Impact:** Directe schending van Art. 14 EU AI Act. Zonder menselijk toezicht is het systeem juridisch niet als hoog-risico AI op de markt te brengen. **Pre-launch blokker.**
 - **CVSS-schatting:** N/A (compliance)
 - **Fix:** Implementeer docent-override voor STEP_COMPLETE, bouw monitoring dashboard, implementeer per-klas/leerling noodstop.
+- **Status (update 15 mrt 2026):** ✅ Grotendeels opgelost — docent-override op `STEP_COMPLETE` geïmplementeerd (`teacher_step_overrides` + RPC `override_student_step` met `is_teacher()`-guard, school-scoped RLS, gelogd). Monitoring-dashboard en per-klas/leerling noodstop blijven open.
 
 ---
 
