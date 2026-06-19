@@ -101,7 +101,6 @@ export default defineConfig(({ mode }) => {
             if (pkg === 'react' || pkg === 'react-dom' || pkg.startsWith('react_')) return 'vendor-react';
             if (pkg === 'three') return 'vendor-three-core';
             if (pkg.startsWith('@react-three')) return 'vendor-react-three';
-            if (pkg === 'framer-motion') return 'vendor-framer';
             if (pkg === 'lucide-react') return 'vendor-lucide';
             if (pkg === 'exceljs') return 'vendor-exceljs';
             if (pkg === 'dompurify') return 'vendor-dompurify';
