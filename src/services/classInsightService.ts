@@ -32,8 +32,25 @@ export async function requestClassInsight(studentClass?: string): Promise<ClassI
 
     if (error) {
         logger.error('[classInsightService] requestClassInsight error:', error);
+        // supabase-js geeft bij non-2xx een generieke error; de echte NL-melding
+        // (incl. MFA-hint) staat in de response-body op error.context.
+        let serverMessage: string | undefined;
+        const ctx = (error as { context?: unknown }).context;
+        if (ctx instanceof Response) {
+            try {
+                const bodyJson = await ctx.clone().json();
+                const parts = [
+                    typeof bodyJson?.error === 'string' ? bodyJson.error : undefined,
+                    typeof bodyJson?.note === 'string' ? bodyJson.note : undefined,
+                ].filter(Boolean);
+                if (parts.length > 0) serverMessage = parts.join(' ');
+            } catch {
+                // body niet leesbaar; val terug op generieke melding
+            }
+        }
         throw new Error(
-            (error as { message?: string }).message
+            serverMessage
+                || (error as { message?: string }).message
                 || 'Kon geen klas-inzicht genereren. Probeer het later opnieuw.',
         );
     }
