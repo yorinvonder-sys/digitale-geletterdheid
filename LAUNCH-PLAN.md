@@ -167,7 +167,7 @@ Drie modellen, elk voor een ander type taak. Gebruik de router hieronder als geh
 | B.1 | AI Act: Risicobeheersysteem documenteren (Art. 9) | 2 dec 2027* | Hoog |
 | B.2 | AI Act: Technische documentatie Annex IV (Art. 11) | 2 dec 2027* | Hoog |
 | B.3 | AI Act: Registratie EU AI-database (Art. 49) | 2 dec 2027* | Hoog |
-| B.4 | AI Act: Docent override voor STEP_COMPLETE (Art. 14) | 2 dec 2027* | Hoog |
+| B.4 | ~~AI Act: Docent override voor STEP_COMPLETE (Art. 14)~~ — ✅ afgerond 15 mrt 2026 | n.v.t. | n.v.t. |
 | B.5 | Merknaam "DGSkills" registreren bij BOIP (€271) | Q3 2026 | Midden |
 | B.6 | Cyberverzekering afsluiten | Q3 2026 | Midden |
 | B.7 | Privacyconvenant Onderwijs aansluiting | Q3 2026 | Midden |
