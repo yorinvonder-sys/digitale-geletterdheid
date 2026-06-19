@@ -92,7 +92,7 @@
 |---------|-------------|
 | "Geen tijd" | "dgskills verlaagt werkdruk — AI geeft feedback, dashboard volgt alles automatisch" |
 | "Geen budget" | "Pilot is €1.500 — onder de inkoopdrempel, 100% verrekend bij jaarcontract" |
-| "Privacy/AI-zorgen" | "AVG-compliant, EU-datacenters, AI Act hoog-risico transparant gedocumenteerd (DPIA, risicoregister, AI-transparantie), DPIA beschikbaar" |
+| "Privacy/AI-zorgen" | "Data in NL (EU-datacenters), AI Act hoog-risico transparant gedocumenteerd (DPIA, risicoregister, AI-transparantie), DPIA beschikbaar" |
 | "Curriculum past niet" | "Inzetbaar bij mentoruur, informatica, projectweken — modulair, niet een vast vak" |
 | "Niveauverschillen" | "Adaptief per profiel. Laat me de profiel-switch tonen" |
 

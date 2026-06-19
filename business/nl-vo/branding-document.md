@@ -40,7 +40,7 @@ DGSkills biedt scholen een kant-en-klare, gamified leeromgeving voor digitale ge
 |:---|:---|
 | **Toegankelijk** | Geschikt voor alle niveaus (mavo, havo, vwo). B1-taalniveau in leerlingcommunicatie. Geen technische drempels voor docenten — binnen 5 minuten aan de slag. |
 | **Onderbouwd** | Elke missie is gekoppeld aan SLO-kerndoelen. Didactische keuzes zijn gebaseerd op de taxonomie van Bloom en constructive alignment. Geen losse activiteiten, maar een doordachte leerlijn. |
-| **Veilig** | Privacy-first: data in Nederland (EU), DPIA uitgevoerd, DPA conform Model 4.0, AVG-compliant. Welzijnsprotocol bij AI-interacties. Geen commercieel datagebruik. |
+| **Veilig** | Privacy-first: data in Nederland (EU), DPIA uitgevoerd, DPA conform Model 4.0. Welzijnsprotocol bij AI-interacties. Geen commercieel datagebruik. |
 | **Motiverend** | Gamification die werkt: missies, XP, levels, badges en avatars. Leerlingen ervaren vooruitgang en autonomie. Het platform voelt als een game, niet als huiswerk. |
 | **Gebouwd vanuit de praktijk** | Ontwikkeld door een docent die het platform dagelijks in de klas gebruikt. Elke feature is getoetst aan de realiteit van het klaslokaal: werkdruk, leerlingmotivatie en inspectie-eisen. |
 
@@ -75,7 +75,7 @@ DGSkills biedt scholen een kant-en-klare, gamified leeromgeving voor digitale ge
 
 **Voorbeeldzinnen:**
 - "DGSkills dekt alle 9 SLO-kerndoelen af met aantoonbare voortgangsdata per leerling."
-- "Volledig AVG-compliant: DPIA uitgevoerd, data in Nederland, DPA conform Model 4.0 Privacyconvenant Onderwijs."
+- "AVG-maatregelen getroffen: DPIA uitgevoerd, data in Nederland, DPA conform Model 4.0 Privacyconvenant Onderwijs."
 - "Binnen 30 dagen live, zonder belasting voor uw ICT-afdeling. Cloud-hosted, geen installatie nodig."
 
 ---
@@ -183,12 +183,12 @@ DGSkills positioneert zich als het **missiegedreven alternatief** voor tradition
 1. **Gebouwd door een docent, voor docenten.** Niet bedacht op een kantoor, maar ontstaan in het klaslokaal. Elke feature lost een echt probleem op.
 2. **SLO-kerndoelen als fundament.** Geen vage "21st century skills", maar directe koppeling aan de officiële kerndoelen digitale geletterdheid.
 3. **AI-gestuurd en toekomstbestendig.** Leerlingen leren niet alleen over AI — het platform gebruikt AI voor gepersonaliseerde feedback en adaptieve leerroutes.
-4. **Privacy-first, geen concessies.** Data in Nederland, DPIA uitgevoerd, geen commercieel datagebruik, volledig AVG-compliant. Hoog-risico AI Act classificatie proactief geadresseerd.
+4. **Privacy-first, geen concessies.** Data in Nederland, DPIA uitgevoerd, geen commercieel datagebruik. Hoog-risico AI Act classificatie proactief geadresseerd.
 5. **Motivatie ingebakken.** Gamification is geen laagje bovenop, maar de kern van de leerervaring: missies, XP, levels, badges, avatars.
 
 ### Elevator Pitch (30 seconden)
 
-> "DGSkills is een gamified leerplatform voor digitale geletterdheid in het voortgezet onderwijs. Leerlingen voltooien korte missies over AI, online veiligheid en programmeren — compleet met XP, badges en avatars. Docenten krijgen een dashboard dat automatisch bijhoudt welke SLO-kerndoelen zijn behaald. Het platform is AVG-compliant, draait op Nederlandse servers, en is binnen 30 dagen operationeel. Gebouwd door een docent die het dagelijks in de klas gebruikt."
+> "DGSkills is een gamified leerplatform voor digitale geletterdheid in het voortgezet onderwijs. Leerlingen voltooien korte missies over AI, online veiligheid en programmeren — compleet met XP, badges en avatars. Docenten krijgen een dashboard dat automatisch bijhoudt welke SLO-kerndoelen zijn behaald. Het platform draait op Nederlandse servers (DPIA uitgevoerd, verwerkersovereenkomst beschikbaar) en is binnen 30 dagen operationeel. Gebouwd door een docent die het dagelijks in de klas gebruikt."
 
 ---
 

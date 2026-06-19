@@ -145,7 +145,7 @@ AI in het onderwijs vraagt om verantwoordelijkheid. Dit is wat wij doen:
 - **Contentfiltering:** Scheldwoorden, geweldstaal en ongepaste content worden geblokkeerd — zowel in AI-reacties als in peer feedback
 - **Data in Europa:** Alle data wordt verwerkt in EU-datacenters (europe-west4, Nederland)
 - **Geen tracking buiten het platform:** Geen third-party analytics, geen advertenties, geen doorverkoop van leerlingdata
-- **AVG-compliant:** DPIA uitgevoerd, verwerkingsovereenkomst beschikbaar, privacy by design
+- **AVG-maatregelen:** DPIA uitgevoerd, verwerkingsovereenkomst beschikbaar, privacy by design
 
 ---
 
