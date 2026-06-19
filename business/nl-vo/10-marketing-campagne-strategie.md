@@ -109,7 +109,7 @@ Pilot → Resultaten → Jaarcontract
 
 **Content Pillars:**
 1. **"Vanuit de klas"** — Ervaringen als docent die zelf lesgeeft met DGSkills
-2. **"AI Act Countdown"** — Wekelijkse updates over wat scholen moeten weten
+2. **"AI in de klas"** — Wekelijkse updates over hoog-risico-AI en wat scholen moeten weten
 3. **"Leerling-inzichten"** — Geanonimiseerde data over hoe leerlingen leren
 4. **"Behind the build"** — Hoe een docent een EdTech-platform bouwt
 
@@ -356,7 +356,7 @@ Claude-gegenereerde content is altijd **draft** — nooit direct publiceren.
 | Maand | Focus | Claude-taak |
 |-------|-------|-------------|
 | Mei-Jun | Pilot onboarding, wekelijkse content, case study bouwen | Weekly reports, content, monitoring |
-| Jul-Aug | Zomerpauze content (AI Act deadline!), planning 2026-2027 | Voorbereidende content, analyses |
+| Jul-Aug | Zomerpauze content (AI in de klas: hoog-risico & SLO), planning 2026-2027 | Voorbereidende content, analyses |
 | Sep-Okt | Schooljaar start, conversie naar jaarcontracten, nieuwe pilots | Outreach naar grotere kring, content opschalen |
 
 ---
