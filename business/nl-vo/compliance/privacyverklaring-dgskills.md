@@ -205,7 +205,7 @@ De AVG schrijft voor dat wij voor elke verwerking een wettelijke grondslag moete
 
 ### 7.3 Welzijnssignalen en de Meldcode
 
-Herkent de AI signalen van nood, dan toont DGSkills uitsluitend een directe doorverwijzing naar hulp (Kindertelefoon 0800-0432; 113 Zelfmoordpreventie). DGSkills slaat deze signalen **niet** op en gebruikt ze niet voor profilering. De wettelijke **Meldcode huiselijk geweld en kindermishandeling** ligt bij de school; DGSkills neemt die niet over. Bij (vermoedens van) mishandeling verloopt de melding via de school naar **Veilig Thuis (0800-2000)**.
+Herkent de AI signalen van nood, dan toont DGSkills uitsluitend een directe doorverwijzing naar hulp (Kindertelefoon 0800-0432; 113 Zelfmoordpreventie; Veilig Thuis 0800-2000). DGSkills slaat deze signalen **niet** op en gebruikt ze niet voor profilering. De wettelijke **Meldcode huiselijk geweld en kindermishandeling** ligt bij de school; DGSkills neemt die niet over. Bij (vermoedens van) mishandeling verloopt de melding via de school naar **Veilig Thuis (0800-2000)**.
 
 _Deze grondslag is een concept; een juridische toets wordt aanbevolen._
 
