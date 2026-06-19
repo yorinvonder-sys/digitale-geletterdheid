@@ -1,7 +1,7 @@
 import { useCallback, useRef, useState } from 'react';
 import { ParentUser } from '@/types';
 import { logActivity } from '@/services/teacherService';
-import { getFallbackProjectWeekForDate, type ProjectWeekNumber } from '@/utils/projectWeekSchedule';
+import { getFallbackProjectWeekForDate } from '@/utils/projectWeekSchedule';
 
 interface UseNavigationParams {
     user: ParentUser | null;
@@ -13,7 +13,7 @@ export function useNavigation({ user }: UseNavigationParams) {
     const [isProfileOpen, setIsProfileOpen] = useState(false);
     const [initialProfileTab, setInitialProfileTab] = useState<'profile' | 'shop' | 'trophies' | 'privacy'>('profile');
     const [viewMode, setViewMode] = useState<'assignments' | 'monitoring'>('monitoring');
-    const [activeWeek, setActiveWeekState] = useState(() => getFallbackProjectWeekForDate());
+    const [activeWeek, setActiveWeekState] = useState<number>(() => getFallbackProjectWeekForDate());
     const hasManuallySelectedActiveWeekRef = useRef(false);
     const [showGames, setShowGames] = useState(false);
     const [initialGameId, setInitialGameId] = useState<string | null>(null);
@@ -25,12 +25,12 @@ export function useNavigation({ user }: UseNavigationParams) {
 
     const FOCUS_INTENT_KEY = 'dgskills_focus_intent';
 
-    const setActiveWeek = useCallback((week: ProjectWeekNumber) => {
+    const setActiveWeek = useCallback((week: number) => {
         hasManuallySelectedActiveWeekRef.current = true;
         setActiveWeekState(week);
     }, []);
 
-    const setActiveWeekFromSystem = useCallback((week: ProjectWeekNumber) => {
+    const setActiveWeekFromSystem = useCallback((week: number) => {
         setActiveWeekState(week);
     }, []);
 
