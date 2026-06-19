@@ -58,14 +58,14 @@
 
 ---
 
-#### Verwerking V-02: AI-chatfunctionaliteit (Vertex AI -- Gemini)
+#### Verwerking V-02: AI-chatfunctionaliteit (Mistral AI / Black Forest Labs)
 
 | Veld | Beschrijving |
 |:---|:---|
 | **Verwerkingsnaam** | AI-ondersteunde chatfunctie voor educatieve opdrachten |
 | **Verwerkingsverantwoordelijke** | School |
 | **Verwerker** | DGSkills B.V. (i.o.) |
-| **Subverwerker** | Google LLC (Gemini 2.0 Flash via Vertex AI, regio `europe-west4` Nederland) |
+| **Subverwerker** | Mistral AI (tekst, vision en OCR) en Black Forest Labs (beeldgeneratie) |
 | **Doel** | Educatieve AI-interactie: leerlingen stellen vragen over digitale geletterdheid, ontvangen AI-gegenereerde feedback en uitleg in het kader van het SLO-curriculum |
 | **Rechtsgrondslag** | Art. 6(1)(e) AVG -- Publieke taak (school); Art. 6(1)(b) AVG -- Uitvoering overeenkomst (DGSkills-school) |
 | **Categorieeen betrokkenen** | Leerlingen (12-18 jaar), docenten |
@@ -74,10 +74,10 @@
 | | - Conversatiegeschiedenis (history-array, tijdelijk in geheugen) |
 | | - Systeeminstructie (lescontext, geen persoonsgegevens) |
 | **Bijzondere categorie** | Niet van toepassing. Prompt-injectiefilter en safety-settings blokkeren sensitieve content actief (BLOCK_LOW_AND_ABOVE voor alle schadecategorieen) |
-| **Ontvangers / subverwerkers** | Google LLC -- Vertex AI (`europe-west4-aiplatform.googleapis.com`, regio Nederland) |
-| **Doorgifte buiten EU/EER** | Nee. Vertex AI verwerkt data in regio `europe-west4` (Eemshaven, Nederland). Google garandeert dat data at rest in de geselecteerde regio blijft en dat ML-verwerking in de regio plaatsvindt. Juridische grondslag: Google Cloud DPA met SCC (van toepassing op Google Cloud Platform-diensten) |
-| **Bewaartermijn** | Chatberichten worden NIET opgeslagen in de DGSkills-database. Data bestaat uitsluitend in het werkgeheugen van de edge function tijdens de request (verwerking duurt seconden). Google Vertex AI zero-data-retention: Google bewaart geen prompts of responses (geen logging, geen opslag, geen gebruik voor modeltraining). Conform Google Cloud Terms of Service en Data Processing Addendum |
-| **Technische maatregelen** | Server-side proxy (service account-authenticatie, geen API-key); JWT-verificatie; server-side prompt-injectiefilter (sanitizePrompt); strikte safety settings voor minderjarigen; CORS-beperking tot dgskills.app; rate limiting (429); geen logging van chatinhoud |
+| **Ontvangers / subverwerkers** | Mistral AI (tekst, vision en OCR; `api.mistral.ai`) en Black Forest Labs (beeldgeneratie; `api.eu.bfl.ai`, EU-endpoint) |
+| **Doorgifte buiten EU/EER** | AI-promptverwerking vindt plaats in de EU (Mistral: Frankrijk; Black Forest Labs: EU-endpoint api.eu.bfl.ai). Mistral AI SAS is in Frankrijk gevestigd (EU-verwerking); Black Forest Labs, Inc. is een VS-onderneming die haar EU-endpoint gebruikt. Juridische grondslag: Mistral AI DPA met EU SCC's (Besluit 2021/914); Black Forest Labs: ISO 27001 / SOC 2 Type II -- ondertekende DPA's te verifiëren |
+| **Bewaartermijn** | Chatberichten worden NIET opgeslagen in de DGSkills-database. Data bestaat uitsluitend in het werkgeheugen van de edge function tijdens de request (verwerking duurt seconden). Dataretentie bij de AI-subverwerker te verifiëren (Mistral: standaard tot 30 dagen abuse-monitoring; Zero Data Retention optioneel, plan-afhankelijk). Geen training op leerlingdata (training-opt-out te verifiëren -- Mistral biedt opt-out; standaard opt-out op Scale-plan) |
+| **Technische maatregelen** | Server-side proxy (server-side API-key (Supabase secret), niet in client bundle); JWT-verificatie; server-side prompt-injectiefilter (sanitizePrompt); strikte safety settings voor minderjarigen; CORS-beperking tot dgskills.app; rate limiting (429); geen logging van chatinhoud |
 
 ---
 
@@ -355,7 +355,7 @@
 | **Verwerkingsnaam** | Groei-assessment en gepersonaliseerde AI-aanbevelingen voor leerroute |
 | **Verwerkingsverantwoordelijke** | School |
 | **Verwerker** | DGSkills B.V. (i.o.) |
-| **Subverwerker** | Google LLC (Gemini 2.0 Flash via Vertex AI, regio `europe-west4` Nederland) |
+| **Subverwerker** | Mistral AI (tekst, vision en OCR) en Black Forest Labs (beeldgeneratie) |
 | **Doeleinde** | Meten van groei in digitale geletterdheid via nulmeting en eindmeting; genereren van gepersonaliseerde AI-aanbevelingen voor het volgende schooljaar |
 | **Rechtsgrondslag** | Art. 6(1)(e) AVG -- Publieke taak van de school (onderwijs en leerlingbegeleiding) |
 | **Categorieeen betrokkenen** | Leerlingen (12-18 jaar), docenten |
@@ -366,7 +366,7 @@
 | | - Docent-goedkeuring (teacher_approved: boolean) |
 | **Bijzondere categorie** | Niet van toepassing. Geen bijzondere persoonsgegevens. Domeinscores zijn leerresultaten, geen gezondheids- of andere gevoelige data. |
 | **Ontvangers** | Docent (eigen school via RLS); leerling (uitsluitend eigen data, en alleen aanbevelingen die door de docent zijn goedgekeurd) |
-| **Doorgifte buiten EU/EER** | Gedeeltelijk. AI-promptverwerking via Vertex AI (`europe-west4`, Nederland). Geen PII in AI-prompts -- alleen geaggregeerde scores en missie-IDs worden doorgegeven. Google Cloud DPA met SCCs, zero data retention. Geen export van persoonsgegevens buiten de EER. |
+| **Doorgifte buiten EU/EER** | Gedeeltelijk. AI-promptverwerking in de EU (Mistral: Frankrijk; Black Forest Labs: EU-endpoint api.eu.bfl.ai). Geen PII in AI-prompts -- alleen geaggregeerde scores en missie-IDs worden doorgegeven. Mistral AI DPA met EU SCC's (Besluit 2021/914); Black Forest Labs: ISO 27001 / SOC 2 Type II -- ondertekende DPA's te verifiëren. Geen export van persoonsgegevens buiten de EER. |
 | **Bewaartermijn** | Tot 30 juni van het betreffende schooljaar. Verlengd tot uitschrijving indien docent actief archiveert. ON DELETE CASCADE bij accountverwijdering. |
 | **Technische maatregelen** | RLS op database-niveau; school-scoping (leerling ziet alleen eigen school); ON DELETE CASCADE voor Art. 17; teacher_approved flow voor Art. 14 AI Act; AiDisclosureBadge op alle AI-output; input_context + model_version audit trail |
 
@@ -377,7 +377,8 @@
 | # | Subverwerker | Dienst | Vestigingsland | Datalocatie | Doorgifte-grondslag | Contactgegevens DPO/privacy |
 |:--|:---|:---|:---|:---|:---|:---|
 | 1 | **Supabase Inc.** | Database (PostgreSQL), authenticatie, edge functions, realtime | VS | EU (Frankfurt, `eu-central-1`) | SCC + Supabase DPA | privacy@supabase.io |
-| 2 | **Google LLC** | Vertex AI -- Gemini 2.0 Flash (generatieve AI) | VS | EU (Eemshaven, Nederland, `europe-west4`) | Google Cloud DPA + SCC | https://support.google.com/policies/contact/general_privacy_form |
+| 2 | **Mistral AI SAS** | AI-tekst/vision/OCR (`api.mistral.ai`) | Frankrijk | EU (Frankrijk) | Mistral AI DPA + EU SCC's (Besluit 2021/914) | https://mistral.ai/terms |
+| 2b | **Black Forest Labs, Inc.** | AI-beeldgeneratie (FLUX, via EU-endpoint `api.eu.bfl.ai`) | VS (via EU-endpoint) | EU-endpoint `api.eu.bfl.ai` | ISO 27001 / SOC 2 Type II -- ondertekende DPA te verifiëren | https://blackforestlabs.ai |
 | 3 | **Vercel Inc.** | Webhosting, CDN, deployment | VS | Wereldwijd (Edge Network) | SCC + Vercel DPA | privacy@vercel.com |
 | 4 | **Zoho Corporation** | SMTP e-mailrelay | India/VS | EU (Zoho EU Data Center) | SCC + Zoho DPA | privacy@zohocorp.com |
 
@@ -387,7 +388,8 @@
 
 | Doorgifte | Subverwerker | Land | Grondslag | Aanvullende waarborgen |
 |:---|:---|:---|:---|:---|
-| AI-chatverwerking | Google LLC | Nederland (EU) -- `europe-west4` | Google Cloud DPA + SCC | Vertex AI met regio-gebonden verwerking (Eemshaven, Nederland); data at rest blijft in `europe-west4`; zero data retention (geen opslag prompts/responses); service account-authenticatie; safety settings |
+| AI-tekst/vision/OCR | Mistral AI SAS | Frankrijk (EU) | Mistral AI DPA + EU SCC's (Besluit 2021/914) | EU-verwerking (`api.mistral.ai`); dataretentie te verifiëren (Mistral: standaard tot 30 dagen abuse-monitoring; Zero Data Retention optioneel, plan-afhankelijk); geen training op leerlingdata (training-opt-out te verifiëren -- Mistral biedt opt-out; standaard opt-out op Scale-plan); server-side API-key; safety settings |
+| AI-beeldgeneratie | Black Forest Labs, Inc. | VS, via EU-endpoint `api.eu.bfl.ai` | ISO 27001 / SOC 2 Type II -- ondertekende DPA te verifiëren | Verwerking via EU-endpoint `api.eu.bfl.ai`; server-side API-key |
 | Webhosting | Vercel Inc. | VS / wereldwijd | SCC (EU Standard Contractual Clauses) | Vercel DPA; edge-routing kan EU-lokaal zijn |
 | Database & Auth | Supabase Inc. | VS (bedrijf) | SCC | Data opgeslagen in EU-regio (Frankfurt); Supabase DPA |
 | E-mail SMTP | Zoho Corporation | India/VS (bedrijf) | SCC | SMTP-verkeer via smtp.zoho.eu (EU datacenter); Zoho DPA |
@@ -424,8 +426,8 @@
 | **Cascade-delete** | ON DELETE CASCADE op alle 28 foreign keys die verwijzen naar `public.users(id)` -- volledige gegevensverwijdering bij accountdeletie |
 | **API-beveiliging** | CORS-beperking tot dgskills.app; API-keys als server-side secrets (nooit in client bundle); service_role key alleen server-side |
 | **Input-sanitisatie** | Server-side prompt-injectiefilter (sanitizePrompt); inputvalidatie en -truncatie op alle formulieren; honeypot-velden tegen bots |
-| **AI-veiligheid** | Safety settings op BLOCK_LOW_AND_ABOVE voor alle schadecategorieen (minderjarigenbescherming); server-side proxy (service account-authenticatie, credentials niet blootgesteld) |
-| **Rate limiting** | IP-gebaseerde rate limiting op pilot-aanvragen (3/min); Vertex AI rate limiting (429 propagatie) |
+| **AI-veiligheid** | Safety settings op BLOCK_LOW_AND_ABOVE voor alle schadecategorieen (minderjarigenbescherming); server-side proxy (server-side API-key (Supabase secret), credentials niet blootgesteld) |
+| **Rate limiting** | IP-gebaseerde rate limiting op pilot-aanvragen (3/min); AI-provider rate limiting (429 propagatie) |
 | **Geautomatiseerde opschoning** | pg_cron jobs voor bewaartermijnen (zie sectie 5) |
 | **Verwerkingsbeperking** | `processing_restricted` vlag op gebruikersprofiel (Art. 18 AVG); index voor snelle filtering |
 | **Logging** | Auditlogboek voor privacy-gerelateerde acties; geen logging van chatinhoud of gevoelige data |
@@ -436,12 +438,12 @@
 |:---|:---|
 | **Privacy-by-design** | Dataminimalisatie als ontwerpprincipe; geen BSN, geen thuisadres, geen bijzondere persoonsgegevens |
 | **Privacy-by-default** | Standaard minimale gegevensverzameling; geen analytics-cookies zonder toestemming |
-| **Verwerkersovereenkomsten** | DPA's met alle subverwerkers (Supabase, Google, Vercel, Zoho) |
+| **Verwerkersovereenkomsten** | DPA's met alle subverwerkers (Supabase, Mistral AI, Black Forest Labs, Vercel, Zoho) -- ondertekende DPA's met Mistral AI en Black Forest Labs te verifiëren |
 | **Toegangsbeperking** | Need-to-know basis; school-scoped data-isolatie; admin-rechten beperkt |
 | **Incidentresponse** | Datalekprocedure: melding aan school < 48 uur; school meldt aan AP indien nodig (< 72 uur) |
 | **Documentatie** | Legal-matrix, DPIA-ondersteuningstemplate, privacyverklaring, schoolcompliance-gids |
 | **Geen commerciele profilering** | Geen advertenties; geen doorverkoop van gegevens; geen profilering voor commerciele doeleinden (conform Privacyconvenant Onderwijs) |
-| **Transparantie AI** | Duidelijke labeling dat gebruiker met AI communiceert; disclaimer over AI-beperkingen; expliciete mededeling dat input niet voor modeltraining wordt gebruikt |
+| **Transparantie AI** | Duidelijke labeling dat gebruiker met AI communiceert; disclaimer over AI-beperkingen; geen training op leerlingdata (training-opt-out te verifiëren -- Mistral biedt opt-out; standaard opt-out op Scale-plan) |
 
 ---
 
@@ -495,8 +497,9 @@
 | Datum | Versie | Wijziging | Door |
 |:---|:---|:---|:---|
 | 2026-02-23 | 1.0 | Initieele versie verwerkingsregister | DGSkills |
-| 2026-02-23 | 1.1 | Migratie van Gemini Developer API naar Vertex AI (regio `europe-west4`, Nederland): endpoint, authenticatie (service account), dataresidentie, zero data retention bijgewerkt in V-02, subverwerkeroverzicht en doorgifte-tabel | DGSkills |
+| 2026-02-23 | 1.1 | Migratie van de Google-AI Developer API naar het latere Google-AI-platform (Google-Cloud-regio): endpoint, authenticatie, dataresidentie en retentie bijgewerkt in V-02, subverwerkeroverzicht en doorgifte-tabel | DGSkills |
 | 2026-04-02 | 1.2 | Toevoeging V-16: Groei-assessment & AI-Aanbevelingen (nulmeting, eindmeting, gepersonaliseerde AI-aanbevelingen per schooljaar, teacher_approved flow) | DGSkills |
+| 2026-06-19 | 1.3 | Migratie van AI-subverwerker: de voormalige Google-AI vervangen door Mistral AI (tekst, vision, OCR; `api.mistral.ai`, Frankrijk/EU) en Black Forest Labs (beeldgeneratie; FLUX via EU-endpoint `api.eu.bfl.ai`). Endpoint, authenticatie (server-side API-key), subverwerkeroverzicht en doorgifte-tabel bijgewerkt in V-02, V-16, sectie 3 en sectie 4. Dataretentie, training-opt-out en ondertekende DPA's met de nieuwe subverwerkers te verifiëren | DGSkills |
 
 ---
 

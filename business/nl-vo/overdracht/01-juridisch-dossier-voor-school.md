@@ -45,13 +45,14 @@ De sub-verwerkerslijst hieronder komt uit het officiële compliance-document `C-
 | Verwerker | Dienst | Datalocatie | DPA-status |
 |---|---|---|---|
 | Supabase | Database, authenticatie, edge functions | AWS Frankfurt (EU, eu-central-1) | Actief (SCCs) |
-| Google LLC / Vertex AI | AI-feedback via Gemini — dataverwerking in EU | Google Cloud europe-west4 (Eemshaven, NL) | Actief (Google Cloud DPA, zero data retention) |
+| Mistral AI (tekst, vision en OCR) | AI-feedback op leerlingwerk, chat, vision en OCR — verwerking in de EU | EU (Mistral: Frankrijk; api.mistral.ai) | Mistral AI DPA met EU SCC's (Besluit 2021/914); ondertekende DPA en dataretentie te verifiëren (Mistral: standaard tot 30 dagen abuse-monitoring; Zero Data Retention optioneel, plan-afhankelijk) |
+| Black Forest Labs (FLUX) | Beeldgeneratie voor missies — EU-endpoint | EU (Black Forest Labs: EU-endpoint api.eu.bfl.ai) | ISO 27001 / SOC 2 Type II — ondertekende DPA te verifiëren |
 | Vercel | Hosting, CDN | Amsterdam edge | Actief (EU-US DPF + SCCs) |
 | Zoho Corporation | E-mail (wachtwoordherstel, notificaties) | Zoho EU-datacenter (Nederland) | Actief |
 
 Alle vier hebben actieve DPA's. Dataoverdrachten buiten de EU zijn beveiligd via Standard Contractual Clauses (SCCs) of het EU-US Data Privacy Framework.
 
-> **Let op voor de FG:** De code van het platform gebruikt mogelijk inmiddels Mistral AI (chat/feedback) en Black Forest Labs (beeldgeneratie) in plaats van of naast Google Vertex AI. De sub-verwerkerslijst (`C-sub-verwerkerslijst-dgskills.md`) is voor het laatste bijgewerkt op 23 februari 2026 en moet worden geactualiseerd vóór de FG-toets. Dit is een actiepunt voor Yorin/de nieuwe beheerder, niet voor de school.
+> **Let op voor de FG:** De huidige AI-verwerkers zijn Mistral AI (tekst, vision en OCR) en Black Forest Labs (beeldgeneratie); de voormalige Google-AI wordt niet meer gebruikt. Het officiële compliance-document `C-sub-verwerkerslijst-dgskills.md` is voor het laatste bijgewerkt op 23 februari 2026 (noemt nog de voormalige Google-AI) en moet worden geactualiseerd vóór de FG-toets, inclusief ondertekende DPA's en het te verifiëren dataretentiebeleid. Dit is een actiepunt voor Yorin/de nieuwe beheerder, niet voor de school.
 
 ---
 

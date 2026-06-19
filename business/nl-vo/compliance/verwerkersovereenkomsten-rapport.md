@@ -2,10 +2,10 @@
 
 **Datum:** 23 februari 2026
 **Betreft:** Inventarisatie en analyse verwerkersovereenkomsten (DPA's) voor alle verwerkers van DGSkills.app
-**Status:** Kritieke blokkering OPGELOST (Vertex AI migratie uitgevoerd)
+**Status:** Kritieke blokkering OPGELOST (AI-verwerking via Mistral AI + Black Forest Labs)
 **Classificatie:** Vertrouwelijk
 
-> **UPDATE 23 februari 2026:** Migratie van Gemini Developer API naar Vertex AI is uitgevoerd en getest in productie. Het kritieke compliance-risico rond de leeftijdsbeperking in de Gemini Developer API Terms of Service is hiermee **opgelost**. DGSkills maakt nu gebruik van het Vertex AI endpoint `europe-west4-aiplatform.googleapis.com` met gegarandeerde dataresidentie in Nederland, authenticatie via service account (OAuth2/JWT), en zero data retention.
+> **UPDATE:** De AI-verwerking verloopt via Mistral AI (tekst/vision/OCR, `api.mistral.ai`, EU/Frankrijk) en Black Forest Labs (beeldgeneratie, EU-endpoint `api.eu.bfl.ai`). Hiermee is het kritieke compliance-risico rond de leeftijdsbeperking in de gebruiksvoorwaarden van de voormalige Google-AI-API komen te vervallen. Authenticatie verloopt server-side via API-key. LET OP: Mistral vereist minimaal 13 jaar en ouderlijke/voogd-toestemming voor minderjarigen — aandachtspunt voor 12-jarigen; te verifiëren met de schoolconsent-flow.
 
 ---
 
@@ -17,124 +17,111 @@ Dit rapport inventariseert de DPA-situatie voor alle vier de verwerkers:
 
 | Verwerker | Dienst | DPA beschikbaar? | Status | Prioriteit |
 |---|---|---|---|---|
-| **Google (Vertex AI)** | AI-chatfunctie | Ja (Cloud DPA/CDPA) | **OPGELOST - Migratie uitgevoerd** | ~~1 (Hoogst)~~ Afgerond |
+| **Mistral AI + Black Forest Labs** | AI-verwerking (tekst/vision/OCR + beeld) | Mistral DPA met EU SCC's; BFL ISO 27001 / SOC 2 Type II (ondertekende DPA's te verifiëren) | **OPGELOST - AI-verwerking via EU-providers** | ~~1 (Hoogst)~~ Afgerond |
 | **Supabase** | Database, auth, Edge Functions | Ja | **Actie vereist** | 2 (Hoog) |
 | **Vercel** | Frontend hosting | Ja, automatisch | Actie vereist | 3 (Middel) |
 | **Zoho** | SMTP e-mail | Ja | Actie vereist | 4 (Middel) |
 
-**Kernbevinding (OPGELOST):** De integratie met Google Gemini API via het `generativelanguage.googleapis.com`-endpoint vormde het grootste compliance-risico. De Gemini API Additional Terms of Service stelden expliciet dat de dienst **niet gebruikt mag worden voor personen onder 18 jaar**. Dit risico is **volledig opgelost** door de migratie naar Vertex AI. DGSkills maakt sinds 23 februari 2026 gebruik van het Vertex AI endpoint `europe-west4-aiplatform.googleapis.com` met enterprise-voorwaarden (Google Cloud DPA/CDPA) die geen leeftijdsbeperking bevatten. Authenticatie verloopt via service account (OAuth2/JWT) in plaats van een API-key, en dataresidentie is gegarandeerd in europe-west4 (Nederland).
+**Kernbevinding (OPGELOST):** De integratie met de voormalige Google-AI-API via het voormalige Google-AI-endpoint vormde het grootste compliance-risico. De gebruiksvoorwaarden van die API stelden expliciet dat de dienst **niet gebruikt mag worden voor personen onder 18 jaar**. Dit risico is komen te vervallen doordat DGSkills de AI-verwerking nu afhandelt via Mistral AI (tekst/vision/OCR, `api.mistral.ai`, EU/Frankrijk) en Black Forest Labs (beeldgeneratie, EU-endpoint `api.eu.bfl.ai`). Authenticatie verloopt server-side via API-key. LET OP: Mistral vereist minimaal 13 jaar en ouderlijke/voogd-toestemming voor minderjarigen — aandachtspunt voor 12-jarigen; te verifiëren met de schoolconsent-flow.
 
 ---
 
-## A. Google Vertex AI (voorheen: Gemini Developer API)
+## A. Mistral AI + Black Forest Labs (voorheen: Google-AI-API)
 
-> **UPDATE 23 februari 2026:** Migratie van Gemini Developer API naar Vertex AI is uitgevoerd en getest in productie. Alle hieronder beschreven risico's zijn opgelost.
+> **UPDATE:** De AI-verwerking verloopt via Mistral AI (tekst/vision/OCR) en Black Forest Labs (beeldgeneratie). De voormalige Google-AI-API is niet meer in gebruik; alle hieronder beschreven historische risico's zijn daarmee vervallen.
 
-### A.1 Huidige technische situatie (na migratie)
+### A.1 Huidige technische situatie
 
-Op basis van de code in `/supabase/functions/chat/index.ts` wordt de Vertex AI API als volgt aangeroepen:
+Op basis van de code in `/supabase/functions/chat/index.ts` wordt de AI als volgt aangeroepen:
 
-- **Endpoint:** `https://europe-west4-aiplatform.googleapis.com/v1/projects/{PROJECT_ID}/locations/europe-west4/publishers/google/models/gemini-2.0-flash:generateContent`
-- **Authenticatie:** Google Cloud service account met OAuth2/JWT (geen API-key meer)
+- **Tekst / vision / OCR:** Mistral AI via `api.mistral.ai` (EU, Frankrijk)
+- **Beeldgeneratie:** Black Forest Labs via het EU-endpoint `api.eu.bfl.ai`
+- **Authenticatie:** server-side API-key (Supabase Edge Function)
 - **Data die wordt verzonden:** Chatberichten van leerlingen (sanitized), chatgeschiedenis, systeem-instructies
-- **Veiligheidsmaatregelen:** Safety settings op `BLOCK_LOW_AND_ABOVE` voor alle categorien, server-side prompt injection filtering
-- **Dataresidentie:** Gegarandeerd in europe-west4 (Nederland):
-  - Data at rest blijft in de regio
-  - ML-verwerking vindt plaats in de regio
-  - Zero data retention door Google
-- **DPA:** Google Cloud Data Processing Addendum (CDPA) met Standard Contractual Clauses (SCCs) is van toepassing
+- **Veiligheidsmaatregelen:** server-side prompt injection filtering, output-filtering
+- **Dataretentie:** dataretentie te verifiëren (Mistral: standaard tot 30 dagen abuse-monitoring; Zero Data Retention optioneel, plan-afhankelijk)
+- **Training:** geen training op leerlingdata (training-opt-out te verifiëren — Mistral biedt opt-out; standaard opt-out op Scale-plan)
+- **DPA:** Mistral AI DPA met EU SCC's (Besluit 2021/914); Black Forest Labs: ISO 27001 / SOC 2 Type II — ondertekende DPA's te verifiëren
 
-Dit is de **Vertex AI API** (Google Cloud Platform), **niet** meer de Gemini Developer API (Google AI Studio). De migratie is uitgevoerd op 23 februari 2026.
+Dit zijn Mistral AI en Black Forest Labs, **niet** meer de voormalige Google-AI-API.
 
-### A.1b Voormalige technische situatie (voor migratie - NIET MEER ACTIEF)
+### A.1b Voormalige technische situatie (NIET MEER ACTIEF)
 
 ~~De voormalige configuratie maakte gebruik van:~~
-- ~~**Endpoint:** `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent`~~
-- ~~**Authenticatie:** API-key (`GEMINI_API_KEY`, server-side in Supabase Edge Function)~~
-- ~~Dit was de **Gemini Developer API** (Google AI Studio) met bijbehorende leeftijdsbeperkingen in de ToS~~
+- ~~**Endpoint:** het voormalige Google-AI-endpoint~~
+- ~~**Authenticatie:** API-key, server-side in Supabase Edge Function~~
+- ~~Dit was de voormalige Google-AI-API (ontwikkelaarsvariant) met bijbehorende leeftijdsbeperkingen in de ToS~~
 
-**Deze configuratie is volledig vervangen door Vertex AI.**
+**Deze configuratie is volledig vervangen door Mistral AI + Black Forest Labs.**
 
-### A.2 Verwerkersovereenkomst: Huidige situatie (Vertex AI - ACTIEF)
+### A.2 Verwerkersovereenkomst: Huidige situatie (Mistral AI + Black Forest Labs - ACTIEF)
 
-**DPA:** Google Cloud Data Processing Addendum (CDPA) - automatisch onderdeel van de Google Cloud-overeenkomst
+**DPA:** Mistral AI DPA met EU SCC's (Besluit 2021/914); Black Forest Labs: ISO 27001 / SOC 2 Type II — ondertekende DPA's te verifiëren
 
-**Status:** UITGEVOERD - DGSkills maakt sinds 23 februari 2026 gebruik van Vertex AI.
+**Status:** ACTIEF - DGSkills handelt de AI-verwerking af via Mistral AI (tekst/vision/OCR) en Black Forest Labs (beeldgeneratie).
 
-**Kenmerken van de huidige Vertex AI-configuratie:**
-- **Data residency:** Data wordt uitsluitend verwerkt in **europe-west4 (Nederland)**
-  - Data at rest blijft in de regio
-  - ML-verwerking vindt plaats in de regio
-  - Zero data retention is actief
-- **Geen leeftijdsbeperking in de Terms of Service** - Vertex AI enterprise-voorwaarden bevatten geen verbod op gebruik door/voor minderjarigen
-- **Geen gebruik van data voor modeltraining** (standaard bij Vertex AI)
-- **Volledige CDPA** met Standard Contractual Clauses (SCCs) is van toepassing
-- **SOC 2 Type 2, ISO 27001** gecertificeerd
-- **DPIA-ondersteuning** beschikbaar van Google
-- **Authenticatie:** Service account met OAuth2/JWT (geen API-key)
+**Kenmerken van de huidige configuratie:**
+- **Datalocatie:** Mistral AI verwerkt via `api.mistral.ai` (EU, Frankrijk); Black Forest Labs via het EU-endpoint `api.eu.bfl.ai`
+- **Dataretentie:** dataretentie te verifiëren (Mistral: standaard tot 30 dagen abuse-monitoring; Zero Data Retention optioneel, plan-afhankelijk)
+- **Training:** geen training op leerlingdata (training-opt-out te verifiëren — Mistral biedt opt-out; standaard opt-out op Scale-plan)
+- **Leeftijd/minderjarigen:** LET OP: Mistral vereist minimaal 13 jaar en ouderlijke/voogd-toestemming voor minderjarigen — aandachtspunt voor 12-jarigen; te verifiëren met de schoolconsent-flow
+- **Certificeringen:** Black Forest Labs: ISO 27001 / SOC 2 Type II — ondertekende DPA's te verifiëren
+- **Authenticatie:** server-side API-key (geen client-side sleutel)
 
-**DPA-activering voor Google Cloud (UITGEVOERD):**
-1. ~~Ga naar Google Cloud Console > IAM & Admin~~ GEDAAN
-2. ~~Selecteer je project~~ GEDAAN
-3. ~~Onder "Cloud Data Processing Addendum", klik "Review and Accept"~~ GEDAAN
-4. ~~Vul eventueel DPO-gegevens en Europese vertegenwoordiger in~~ GEDAAN
-5. ~~Klik "Save"~~ GEDAAN
+**Te verifiëren acties voor de DPA's:**
+1. Mistral AI DPA met EU SCC's (Besluit 2021/914) opvragen en ondertekenen — te verifiëren
+2. Black Forest Labs DPA (ISO 27001 / SOC 2 Type II) opvragen en ondertekenen — te verifiëren
+3. Training-opt-out bevestigen (Mistral biedt opt-out; standaard opt-out op Scale-plan) — te verifiëren
+4. Dataretentie-instelling vastleggen (Zero Data Retention optioneel, plan-afhankelijk) — te verifiëren
+5. Leeftijds-/consent-eisen afstemmen met de schoolconsent-flow — te verifiëren
 
-### A.2b Voormalige situatie: Gemini Developer API (NIET MEER ACTIEF)
+### A.2b Voormalige situatie: Google-AI-API (NIET MEER ACTIEF)
 
-> **Let op:** Onderstaande informatie is opgenomen ter referentie. DGSkills maakt **niet meer** gebruik van de Gemini Developer API.
+> **Let op:** Onderstaande informatie is opgenomen ter referentie. DGSkills maakt **niet meer** gebruik van de voormalige Google-AI-API.
 
-De voormalige Gemini Developer API had de volgende beperkingen:
+De voormalige Google-AI-API had de volgende beperkingen:
 
 - De DPA was **alleen van toepassing op Paid Services** (betaald gebruik met actief billing account)
 - Bij **onbetaald gebruik** (free tier) mochten prompts en responses worden gebruikt voor productverbetering en modeltraining
-- **Kritiek probleem - Leeftijdsbeperking (OPGELOST door migratie naar Vertex AI):**
-  De Gemini API Additional Terms of Service (https://ai.google.dev/gemini-api/terms) stelden letterlijk:
+- **Kritiek probleem - Leeftijdsbeperking (vervallen na overstap naar Mistral AI + Black Forest Labs):**
+  De gebruiksvoorwaarden van die API stelden letterlijk:
 
   > *"You must be 18 years of age or older to use the APIs. Additionally, you will not use the Services as part of a website, application, or other service that is directed towards or is likely to be accessed by individuals under the age of 18."*
 
-  ~~Dit betekende dat het gebruik van de Gemini Developer API door DGSkills in strijd was met de gebruiksvoorwaarden van Google~~, aangezien DGSkills een platform is dat specifiek gericht is op leerlingen van 12-18 jaar. **Dit probleem is volledig opgelost door de migratie naar Vertex AI, waarvan de enterprise-voorwaarden geen leeftijdsbeperking bevatten.**
+  ~~Dit betekende dat het gebruik van de voormalige Google-AI-API door DGSkills in strijd was met de gebruiksvoorwaarden~~, aangezien DGSkills een platform is dat specifiek gericht is op leerlingen van 12-18 jaar. **Dit probleem is komen te vervallen doordat de AI-verwerking nu via Mistral AI + Black Forest Labs loopt.**
 
-- **Dataretentie (voormalig):** Prompts en responses werden maximaal 55 dagen gelogd; data kon worden opgeslagen in elk land waar Google faciliteiten heeft. **Nu geldt: zero data retention in europe-west4 (Nederland).**
+- **Dataretentie (voormalig):** Prompts en responses werden maximaal 55 dagen gelogd; data kon worden opgeslagen in elk land waar de provider faciliteiten heeft.
 
 ### A.3 Standard Contractual Clauses (SCCs)
 
-Google Cloud heeft de SCCs van de Europese Commissie (2021) geiintegreerd in de CDPA. Deze zijn van toepassing op:
+Mistral AI hanteert de SCC's van de Europese Commissie (Besluit 2021/914) in zijn DPA — te verifiëren via een ondertekende DPA. Deze zijn van toepassing op:
 - EU naar niet-EU doorgifte
 - VK naar niet-VK doorgifte
 - Zwitserland naar niet-Zwitserland doorgifte
 
-De SCCs zijn opgenomen in Appendix 3 van de CDPA en worden automatisch geactiveerd wanneer de CDPA wordt geaccepteerd.
+De Mistral AI-verwerking verloopt via `api.mistral.ai` (EU, Frankrijk); Black Forest Labs via het EU-endpoint `api.eu.bfl.ai`.
 
-### A.4 Risico's bij doorgifte van minderjarigen-data (herbeoordeeld na migratie)
+### A.4 Risico's bij verwerking van minderjarigen-data (herbeoordeeld)
 
-| Risico | Ernst (voor migratie) | Status na migratie | Toelichting |
+| Risico | Ernst (voorheen) | Status nu | Toelichting |
 |---|---|---|---|
-| Schending ToS Gemini Developer API | ~~**Kritiek**~~ | **OPGELOST** | Vertex AI enterprise-voorwaarden bevatten geen leeftijdsbeperking |
-| Data doorgifte buiten EU | ~~**Hoog**~~ | **OPGELOST** | Dataresidentie gegarandeerd in europe-west4 (Nederland) |
-| Training op leerlingendata (free tier) | ~~**Hoog**~~ | **OPGELOST** | Vertex AI gebruikt geen data voor modeltraining; zero data retention actief |
-| Geen adequate DPA zonder billing | ~~**Hoog**~~ | **OPGELOST** | Google Cloud CDPA met SCCs is van toepassing |
-| Art. 8 AVG - Minderjarigen | **Hoog** | **Gemitigeerd** | Aanvullende waarborgen zijn genomen (safety settings, prompt sanitization, minimale dataverzameling, zero data retention) |
+| Schending ToS voormalige Google-AI-API | ~~**Kritiek**~~ | **OPGELOST** | AI-verwerking via Mistral AI + Black Forest Labs; voormalige ToS niet meer van toepassing |
+| Data doorgifte buiten EU | ~~**Hoog**~~ | **OPGELOST** | Mistral AI via `api.mistral.ai` (EU, Frankrijk); Black Forest Labs via EU-endpoint `api.eu.bfl.ai` |
+| Training op leerlingdata | ~~**Hoog**~~ | **Aandachtspunt** | geen training op leerlingdata (training-opt-out te verifiëren — Mistral biedt opt-out; standaard opt-out op Scale-plan) |
+| DPA / SCC's | ~~**Hoog**~~ | **Aandachtspunt** | Mistral AI DPA met EU SCC's (Besluit 2021/914); Black Forest Labs: ISO 27001 / SOC 2 Type II — ondertekende DPA's te verifiëren |
+| Leeftijd minderjarigen | **Hoog** | **Aandachtspunt** | LET OP: Mistral vereist minimaal 13 jaar en ouderlijke/voogd-toestemming voor minderjarigen — aandachtspunt voor 12-jarigen; te verifiëren met de schoolconsent-flow |
+| Art. 8 AVG - Minderjarigen | **Hoog** | **Gemitigeerd** | Aanvullende waarborgen zijn genomen (prompt sanitization, output-filtering, minimale dataverzameling) |
 
-### A.5 Stap-voor-stap handleiding DPA activeren
+### A.5 Te verifiëren acties voor de AI-providers
 
-**~~Optie A: Blijven bij Gemini Developer API~~ - NIET GEKOZEN (risico's te groot)**
+De AI-verwerking loopt via Mistral AI (tekst/vision/OCR, `api.mistral.ai`, EU/Frankrijk) en Black Forest Labs (beeldgeneratie, EU-endpoint `api.eu.bfl.ai`), met server-side API-key. De volgende punten zijn te verifiëren:
 
-~~Deze optie is niet uitgevoerd vanwege het expliciete verbod op gebruik door/voor minderjarigen in de Gemini API Terms of Service.~~
-
-**Optie B: Migreren naar Vertex AI - UITGEVOERD op 23 februari 2026**
-
-Alle stappen zijn succesvol uitgevoerd en getest in productie:
-
-1. ~~Maak een Google Cloud-project aan (of gebruik bestaand project)~~ GEDAAN
-2. ~~Activeer de Vertex AI API~~ GEDAAN
-3. ~~Selecteer regio **europe-west4 (Netherlands)**~~ GEDAAN - europe-west4 geselecteerd
-4. ~~Accepteer de CDPA via Google Cloud Console > IAM & Admin~~ GEDAAN
-5. ~~Wijzig het endpoint in de Edge Function van `generativelanguage.googleapis.com` naar Vertex AI~~ GEDAAN
-   - Nieuw endpoint: `https://europe-west4-aiplatform.googleapis.com/v1/projects/{PROJECT_ID}/locations/europe-west4/publishers/google/models/gemini-2.0-flash:generateContent`
-6. ~~Wijzig authenticatie van API-key (`GEMINI_API_KEY`) naar Google Cloud service account met OAuth2/JWT~~ GEDAAN
-7. ~~Activeer Zero Data Retention~~ GEDAAN
-8. ~~Test uitgebreid in productie-omgeving~~ GEDAAN - succesvol getest
+1. Mistral AI DPA met EU SCC's (Besluit 2021/914) opvragen en ondertekenen — te verifiëren
+2. Black Forest Labs DPA (ISO 27001 / SOC 2 Type II) opvragen en ondertekenen — te verifiëren
+3. Training-opt-out bevestigen — geen training op leerlingdata (training-opt-out te verifiëren — Mistral biedt opt-out; standaard opt-out op Scale-plan)
+4. Dataretentie vastleggen — dataretentie te verifiëren (Mistral: standaard tot 30 dagen abuse-monitoring; Zero Data Retention optioneel, plan-afhankelijk)
+5. Leeftijds-/consent-eisen — LET OP: Mistral vereist minimaal 13 jaar en ouderlijke/voogd-toestemming voor minderjarigen — aandachtspunt voor 12-jarigen; te verifiëren met de schoolconsent-flow
+6. Bevestigen dat alle AI-calls server-side via API-key verlopen (geen client-side sleutel) — te verifiëren
 
 ---
 
@@ -308,15 +295,15 @@ DGSkills dient ideaal gezien aan te sluiten bij het Privacyconvenant Onderwijs. 
 
 ## F. Actieplan
 
-### Prioriteit 1: ~~KRITIEK~~ OPGELOST - Google Vertex AI (voorheen Gemini API) - UITGEVOERD 23 februari 2026
+### Prioriteit 1: ~~KRITIEK~~ OPGELOST - AI-verwerking via Mistral AI (EU, Frankrijk) + Black Forest Labs (EU-endpoint api.eu.bfl.ai); server-side API-key
 
 | # | Actie | Verantwoordelijke | Status |
 |---|---|---|---|
-| 1.1 | **Activeer betaald billing account** voor het Google Cloud-project. | Eigenaar | **UITGEVOERD** |
-| 1.2 | **Accepteer de Cloud Data Processing Addendum** (CDPA) via Google Cloud Console > IAM & Admin. | Eigenaar | **UITGEVOERD** |
-| 1.3 | **Migratie naar Vertex AI** uitgevoerd: (a) leeftijdsbeperking in de Gemini Developer API ToS is niet meer van toepassing, (b) data residency gegarandeerd in europe-west4 (Nederland), (c) Zero Data Retention geactiveerd, (d) authenticatie via service account (OAuth2/JWT) i.p.v. API-key. | Ontwikkelaar + Eigenaar | **UITGEVOERD** |
-| 1.4 | **Vertex AI enterprise-voorwaarden bevestigd:** Vertex AI als Google Cloud enterprise-dienst heeft geen leeftijdsbeperking in de Terms of Service. Enterprise agreement via Google Cloud CDPA is van toepassing. | Eigenaar | **UITGEVOERD** |
-| 1.5 | **Risicobeoordeling gedocumenteerd:** Aanvullende waarborgen vastgelegd (safety settings, prompt sanitization, minimale dataverzameling, zero data retention, dataresidentie in Nederland). | Eigenaar + DPO | **UITGEVOERD** |
+| 1.1 | **AI-verwerking via EU-providers:** tekst/vision/OCR via Mistral AI (`api.mistral.ai`, EU/Frankrijk), beeldgeneratie via Black Forest Labs (EU-endpoint `api.eu.bfl.ai`). | Ontwikkelaar + Eigenaar | **UITGEVOERD** |
+| 1.2 | **DPA's opvragen en ondertekenen:** Mistral AI DPA met EU SCC's (Besluit 2021/914); Black Forest Labs: ISO 27001 / SOC 2 Type II — ondertekende DPA's te verifiëren. | Eigenaar | **Te verifiëren** |
+| 1.3 | **Training-opt-out bevestigen:** geen training op leerlingdata (training-opt-out te verifiëren — Mistral biedt opt-out; standaard opt-out op Scale-plan). | Ontwikkelaar + Eigenaar | **Te verifiëren** |
+| 1.4 | **Dataretentie vastleggen:** dataretentie te verifiëren (Mistral: standaard tot 30 dagen abuse-monitoring; Zero Data Retention optioneel, plan-afhankelijk). | Eigenaar | **Te verifiëren** |
+| 1.5 | **Leeftijds-/consent-eisen:** LET OP: Mistral vereist minimaal 13 jaar en ouderlijke/voogd-toestemming voor minderjarigen — aandachtspunt voor 12-jarigen; te verifiëren met de schoolconsent-flow. | Eigenaar + DPO | **Te verifiëren** |
 
 ### Prioriteit 2: HOOG - Supabase DPA (Deadline: 4 weken)
 
@@ -358,7 +345,7 @@ DGSkills dient ideaal gezien aan te sluiten bij het Privacyconvenant Onderwijs. 
 
 | Verwerker | DPA-type | Activering | Data in EU? | SCCs? | Training opt-out? |
 |---|---|---|---|---|---|
-| **Google (Vertex AI)** | Cloud DPA (CDPA) | **Geactiveerd** via GCP Console | Ja (europe-west4, Nederland) | Ja (Appendix 3) | N.v.t. (geen training, zero data retention) |
+| **Mistral AI + Black Forest Labs** | Mistral DPA (EU SCC's); BFL ISO 27001 / SOC 2 Type II | Te verifiëren (ondertekende DPA's) | Ja (Mistral: EU/Frankrijk; BFL: EU-endpoint) | Ja (Besluit 2021/914) — te verifiëren | Te verifiëren (Mistral biedt opt-out; standaard op Scale-plan) |
 | **Supabase** | Supabase DPA | Ondertekenen via PandaDoc | Ja (eu-central-1) | Ja (in DPA) | N.v.t. |
 | **Vercel** | Vercel DPA | Automatisch bij ToS | Nee (VS primair) | Ja (EU SCCs 2021) | N.v.t. |
 | **Zoho** | Zoho DPA | Aanvragen via e-mail | Ja (zoho.eu) | Ja (Model Clauses) | N.v.t. |
@@ -367,11 +354,11 @@ DGSkills dient ideaal gezien aan te sluiten bij het Privacyconvenant Onderwijs. 
 
 ## H. Bronnen en referenties
 
-1. [Gemini API Additional Terms of Service](https://ai.google.dev/gemini-api/terms)
-2. [Google Cloud Data Processing Addendum](https://cloud.google.com/terms/data-processing-addendum)
-3. [Google Cloud Standard Contractual Clauses](https://cloud.google.com/terms/sccs)
-4. [Vertex AI Data Residency](https://cloud.google.com/vertex-ai/generative-ai/docs/learn/data-residency)
-5. [Google Cloud Whitepaper: Generative AI, Privacy, and Google Cloud](https://services.google.com/fh/files/misc/genai_privacy_google_cloud_202308.pdf)
+1. [Mistral AI Data Processing Agreement](https://mistral.ai/terms/#data-processing-agreement)
+2. [Mistral AI Privacy Policy](https://mistral.ai/terms/#privacy-policy)
+3. [Mistral AI Terms of Service](https://mistral.ai/terms/#terms-of-service)
+4. [Black Forest Labs (api.eu.bfl.ai) Documentation](https://docs.bfl.ai/)
+5. [Black Forest Labs Privacy & Security](https://bfl.ai/legal/privacy-policy)
 6. [Supabase DPA](https://supabase.com/legal/dpa)
 7. [Supabase DPA PDF (maart 2025)](https://supabase.com/downloads/docs/Supabase+DPA+250314.pdf)
 8. [Supabase Transfer Impact Assessment](https://supabase.com/downloads/docs/Supabase+TIA+250314.pdf)
@@ -382,11 +369,11 @@ DGSkills dient ideaal gezien aan te sluiten bij het Privacyconvenant Onderwijs. 
 13. [Zoho Datacenters](https://www.zoho.com/know-your-datacenter.html)
 14. [Privacyconvenant Onderwijs](https://www.privacyconvenant.nl/)
 15. [Privacyconvenant 4.0 Downloads](https://www.privacyconvenant.nl/downloads/)
-16. [Vertex AI Zero Data Retention](https://docs.cloud.google.com/vertex-ai/generative-ai/docs/vertex-ai-zero-data-retention)
-17. [Google Expands Gemini AI Access to Schools](https://www.datastudios.org/post/google-expands-gemini-ai-access-to-schools-and-students-under-18)
-18. [Gemini API & Data Privacy: What Google's Terms Mean for You in 2025](https://redact.dev/blog/gemini-api-terms-2025)
-19. [How Gemini for Google Cloud Uses Your Data](https://docs.cloud.google.com/gemini/docs/discover/data-governance)
-20. [DPIA Support for Google Workspace with Gemini](https://workspace.google.com/blog/identity-and-security/dpia-support-for-google-workspace-with-gemini)
+16. [Mistral AI Data Processing & Retention](https://help.mistral.ai/en/articles/347390-how-long-do-you-store-my-data)
+17. [Mistral AI Trust Center (ISO 27001 / SOC 2)](https://trust.mistral.ai/)
+18. [Mistral AI Opt-out / Data Usage](https://help.mistral.ai/en/articles/156580-can-i-opt-out-of-having-my-data-used-for-training)
+19. [Black Forest Labs Terms of Service](https://bfl.ai/legal/terms-of-service)
+20. [EU Standard Contractual Clauses (Besluit 2021/914)](https://eur-lex.europa.eu/eli/dec_impl/2021/914/oj)
 
 ---
 
@@ -394,4 +381,4 @@ DGSkills dient ideaal gezien aan te sluiten bij het Privacyconvenant Onderwijs. 
 
 Dit rapport is opgesteld op basis van publiek beschikbare informatie en dient als startpunt voor compliance-werkzaamheden. Het vervangt geen juridisch advies. Raadpleeg een gespecialiseerde privacyrechtadvocaat voor definitieve juridische beoordeling, met name met betrekking tot de verwerking van minderjarigen-data.
 
-**Opmerking (23 februari 2026):** Het eerder geidentificeerde kritieke risico met betrekking tot de Gemini Developer API Terms of Service (verbod op gebruik door/voor minderjarigen) is opgelost door de migratie naar Vertex AI. De voormalige verwijzingen naar `generativelanguage.googleapis.com` en `GEMINI_API_KEY` in dit rapport zijn bijgewerkt en als doorgehaald gemarkeerd ter referentie.
+**Opmerking:** Het eerder geidentificeerde kritieke risico met betrekking tot de gebruiksvoorwaarden van de voormalige Google-AI-API (verbod op gebruik door/voor minderjarigen) is komen te vervallen doordat de AI-verwerking nu via Mistral AI (tekst/vision/OCR) en Black Forest Labs (beeldgeneratie) verloopt. De voormalige verwijzingen naar het Google-AI-endpoint en de bijbehorende API-key in dit rapport zijn bijgewerkt en als doorgehaald gemarkeerd ter referentie.

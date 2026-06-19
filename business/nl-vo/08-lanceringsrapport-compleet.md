@@ -12,7 +12,7 @@
 
 #### Wat al goed is geregeld (GROEN)
 
-- ~~API key (Gemini) staat server-side in de Edge Function, niet in de frontend~~ **UPDATE (23 feb 2026):** Gemini API key is vervangen door Vertex AI service account authenticatie. Geen API key meer nodig. Endpoint: europe-west4 (Nederland).
+- ~~API key (Gemini) staat server-side in de Edge Function, niet in de frontend~~ **UPDATE:** AI-verwerking loopt via Mistral AI (tekst, vision en OCR) en Black Forest Labs (beeldgeneratie), met server-side API-key (Supabase secret). Endpoint tekst: api.mistral.ai; beeld: api.eu.bfl.ai (EU-endpoint).
 - JWT authenticatie op alle Edge Functions (chat, deleteMyAccount, exportMyData, restrictProcessing)
 - Prompt injection filtering (OWASP LLM01:2025) met defense-in-depth (client + server)
 - RLS policies op de `users` tabel met `is_teacher()` helper
@@ -167,7 +167,7 @@ Pricing is competitief en goed doordacht.
 
 - **Supabase**: Free tier of Pro ($25/maand)
 - **Vercel**: Free tier of Pro ($20/maand)
-- **Vertex AI (Gemini)**: Pay-per-use, gemini-2.0-flash via Vertex AI europe-west4 (~$0.075/1M input tokens). Migratie van Gemini Developer API naar Vertex AI afgerond op 23 feb 2026.
+- **Mistral AI (tekst, vision en OCR) en Black Forest Labs (beeldgeneratie)**: Pay-per-use. Mistral via api.mistral.ai; Black Forest Labs (FLUX) via api.eu.bfl.ai (EU-endpoint).
 - **Totaal bij 10 scholen**: ~$50-100/maand infra
 - **Totaal bij 100 scholen**: ~$200-500/maand infra
 - **Brutomarge**: 95%+ bij schaal

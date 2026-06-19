@@ -59,7 +59,7 @@ De keuze hangt samen met het eigenaarschapsbesluit in `00-eigenaarschaps-besluit
    | `BFL_API_KEY` | Black Forest Labs | Beeldgeneratie voor missies |
    | `SMTP_HOST` / `SMTP_USER` / `SMTP_PASS` | Zoho Mail (smtp.zoho.eu) | E-mail (toestemmingen, notificaties) |
 
-   > **Let op:** `C-sub-verwerkerslijst-dgskills.md` is voor het laatste bijgewerkt op 23 februari 2026 en noemt Google Vertex AI — dat is niet meer actief. De actieve AI-verwerkers zijn nu Mistral AI (EU) en Black Forest Labs (EU). `ANTHROPIC_API_KEY` is niet meer nodig (de Claude-scanner is uitgefaseerd). De nieuwe beheerder of Yorin moet `C-sub-verwerkerslijst-dgskills.md` actualiseren vóór de FG-toets.
+   > **Let op:** `C-sub-verwerkerslijst-dgskills.md` is voor het laatste bijgewerkt op 23 februari 2026 en noemt nog de oude Google-AI — dat is niet meer actief. De actieve AI-verwerkers zijn nu Mistral AI (EU) en Black Forest Labs (EU). `ANTHROPIC_API_KEY` is niet meer nodig (de Claude-scanner is uitgefaseerd). De nieuwe beheerder of Yorin moet `C-sub-verwerkerslijst-dgskills.md` actualiseren vóór de FG-toets.
 
    Stappen:
    - Maak nieuwe accounts aan voor Mistral, BFL en Zoho op het nieuwe beheerders-e-mailadres
