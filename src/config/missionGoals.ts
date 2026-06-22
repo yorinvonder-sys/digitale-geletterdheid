@@ -363,6 +363,500 @@ export const MISSION_GOALS: Record<string, MissionGoal> = {
         },
         evidence: 'Je kunt de printstappen zelfstandig voordoen of uitleggen.',
     },
+    'startup-pitch': {
+        primaryGoal: 'Ik bedenk een AI-startup, onderbouw het probleem en de oplossing, en reflecteer op privacy en eerlijkheid.',
+        criteria: {
+            type: 'steps-complete',
+            min: 4,
+            description: 'Je werkt probleemanalyse, AI-oplossing, branding en ethische reflectie uit.',
+        },
+        evidence: 'Je pitch beschrijft een concreet probleem, een AI-oplossing met naam, een logo-concept en een privacyreflectie.',
+    },
+
+    // === ScenarioEngine ===
+    'online-helden': {
+        primaryGoal: 'Ik herken cyberpesten en kies als bijstander de meest effectieve en veilige reactie.',
+        criteria: {
+            type: 'score-threshold',
+            threshold: 60,
+            description: 'Je beoordeelt bijstandersituaties en rangschikt de impact van online acties.',
+        },
+        evidence: 'Je kunt uitleggen wanneer iets cyberpesten is en welke bijstandersactie het meest helpt.',
+    },
+    'factchecker': {
+        primaryGoal: 'Ik beoordeel berichten en bronnen kritisch met de CRAAP-methode en besluit bewust of ik iets deel.',
+        criteria: {
+            type: 'score-threshold',
+            threshold: 60,
+            description: 'Je herkent rode vlaggen, rangschikt bronnen op betrouwbaarheid en kiest de juiste CRAAP-vragen.',
+        },
+        evidence: 'Je kunt minimaal drie rode vlaggen voor onbetrouwbare berichten noemen en uitleggen wanneer je niet deelt.',
+    },
+    'ai-bias-detective': {
+        primaryGoal: 'Ik herken AI-bias in systemen, schat het risico in en kies maatregelen die bijdragen aan eerlijkere AI.',
+        criteria: {
+            type: 'score-threshold',
+            threshold: 60,
+            description: 'Je identificeert bias-situaties, rangschikt risico\'s en beoordeelt oplossingen.',
+        },
+        evidence: 'Je kunt twee concrete voorbeelden van AI-bias noemen en een maatregel kiezen die écht helpt.',
+    },
+
+    // === PuzzleLab ===
+    'encryption-expert': {
+        primaryGoal: 'Ik los encryptie-puzzels op en leg uit hoe versleuteling gegevens beschermt van Caesar-cijfer tot moderne sleutels.',
+        criteria: {
+            type: 'score-threshold',
+            threshold: 70,
+            description: 'Je kraakt een Caesar-cijfer, decodeert Base64, begrijpt publieke sleutels en maakt een sterk wachtwoord.',
+        },
+        evidence: 'Je hebt een Caesar-code gekraakt, Base64 gedecodeerd en een wachtwoord gemaakt dat voldoet aan de veiligheidseisen.',
+    },
+    'cyber-detective': {
+        primaryGoal: 'Ik analyseer logbestanden, herken aanvalsmethoden en stel een forensische tijdlijn op als digitaal rechercheur.',
+        criteria: {
+            type: 'score-threshold',
+            threshold: 70,
+            description: 'Je identificeert aanvalsmethoden, kiest de juiste bewijsmethode en reconstrueert de aanvalsvolgorde.',
+        },
+        evidence: 'Je kunt een brute-force aanval herkennen in een logboek en de correcte volgorde van aanvalsgebeurtenissen noemen.',
+    },
+    'wachtwoord-warrior': {
+        primaryGoal: 'Ik los wachtwoordpuzzels op en formuleer regels voor een sterk en veilig wachtwoordbeleid.',
+        criteria: {
+            type: 'rounds-complete',
+            min: 3,
+            description: 'Je begrijpt wachtwoordaanvallen en maakt een wachtwoord dat voldoet aan de veiligheidscriteria.',
+        },
+        evidence: 'Je kunt uitleggen waarom veelgebruikte wachtwoorden zwak zijn en hebt een eigen sterk wachtwoord aangemaakt.',
+    },
+    'security-auditor': {
+        primaryGoal: 'Ik spoor kwetsbaarheden op in een webshop, classificeer ze op ernst en schrijf een concrete aanbeveling.',
+        criteria: {
+            type: 'score-threshold',
+            threshold: 70,
+            description: 'Je herkent SQL-injectie, rangschikt kwetsbaarheden op ernst en adviseert over een XSS-aanval.',
+        },
+        evidence: 'Je kunt een SQL-injectie herkennen en een technische aanbeveling formuleren met de term "prepared statements".',
+    },
+
+    // === SimulationLab ===
+    'privacy-by-design': {
+        primaryGoal: 'Ik pas privacy-instellingen aan op sociale media, apps en cookiebanners en zie hoe keuzes mijn datablootstelling beïnvloeden.',
+        criteria: {
+            type: 'rounds-complete',
+            min: 3,
+            description: 'Je doorloopt drie simulaties met profielinstellingen, app-rechten en cookiekeuzes.',
+        },
+        evidence: 'Je kunt per simulator uitleggen welke instelling meer of minder data deelt en waarom.',
+    },
+    'bug-hunter': {
+        primaryGoal: 'Ik lees foutmeldingen, herken bug-typen en kies de beste debugstrategie om een probleem systematisch op te lossen.',
+        criteria: {
+            type: 'rounds-complete',
+            min: 3,
+            description: 'Je doorloopt drie simulaties over foutlezen, bug-taxonomie en debugaanpak.',
+        },
+        evidence: 'Je kunt uitleggen wat een foutmelding betekent, welk bug-type het gevaarlijkst is en welke debugstrategie past.',
+    },
+    'code-reviewer': {
+        primaryGoal: 'Ik beoordeel code op leesbaarheid en het DRY-principe en geef constructieve feedback aan een mede-ontwikkelaar.',
+        criteria: {
+            type: 'rounds-complete',
+            min: 3,
+            description: 'Je doorloopt simulaties over leesbaarheid, herhaling in code en feedbackmethoden.',
+        },
+        evidence: 'Je kunt DRY-schendingen herkennen en het verschil uitleggen tussen destructieve en constructieve code-feedback.',
+    },
+    'algorithm-architect': {
+        primaryGoal: 'Ik vergelijk zoek- en sorteeralgoritmen op efficiëntie en leg uit waarom algoritme-keuze bij grote datasets uitmaakt.',
+        criteria: {
+            type: 'rounds-complete',
+            min: 3,
+            description: 'Je doorloopt simulaties over lineair vs. binair zoeken, sorteervergelijking en pseudocode als planningsinstrument.',
+        },
+        evidence: 'Je kunt uitleggen waarom binair zoeken sneller is dan lineair en welke sorteerkosten bij grote datasets toenemen.',
+    },
+
+    // === ReviewArena ===
+    'data-review': {
+        primaryGoal: 'Ik beoordeel databronnen op betrouwbaarheid, classificeer persoonsgegevens en beantwoord vragen over AVG-rechten.',
+        criteria: {
+            type: 'rounds-complete',
+            min: 4,
+            description: 'Je sorteert databronnen, koppelt beveiligingsmaatregelen, categoriseert persoonsgegevens en beantwoordt AVG-vragen.',
+        },
+        evidence: 'Je kunt het verschil uitleggen tussen gewone en bijzondere persoonsgegevens en weet welke AVG-rechten je hebt.',
+    },
+    'code-review-2': {
+        primaryGoal: 'Ik laat zien dat ik de programmeer- en webdev-concepten uit periode 2 beheers door ze te sorteren, te koppelen en toe te passen.',
+        criteria: {
+            type: 'rounds-complete',
+            min: 4,
+            description: 'Je sorteert weblagen, koppelt begrippen, categoriseert codefragmenten en beantwoordt programmeer-vragen.',
+        },
+        evidence: 'Je kunt weblagen van fundamenteel naar interactief ordenen en HTML, CSS en JavaScript van elkaar onderscheiden.',
+    },
+    'media-review': {
+        primaryGoal: 'Ik laat zien dat ik digitale media-concepten uit het blok beheers en bewuste mediakeuzes van onbewuste kan onderscheiden.',
+        criteria: {
+            type: 'rounds-complete',
+            min: 4,
+            description: 'Je sorteert videoproductie-stappen, koppelt mediabegrippen, categoriseert mediakeuzes en beantwoordt media-vragen.',
+        },
+        evidence: 'Je kunt uitleggen welke stap in videoproductie het concept vastlegt en wanneer een formatkeuze doelbewust is.',
+    },
+    'security-review': {
+        primaryGoal: 'Ik laat zien dat ik cybersecurity-concepten uit het blok beheers door wachtwoorden te beoordelen, aanvallen te koppelen en gedrag te classificeren.',
+        criteria: {
+            type: 'rounds-complete',
+            min: 4,
+            description: 'Je sorteert wachtwoorden op sterkte, koppelt aanvallen aan tegenmaatregelen, categoriseert gedrag en beantwoordt security-vragen.',
+        },
+        evidence: 'Je kunt uitleggen waarom een sterk wachtwoord alleen niet genoeg is en welke tegenmaatregel bij welke aanval hoort.',
+    },
+    'advanced-code-review': {
+        primaryGoal: 'Ik laat zien dat ik geavanceerde programmeer- en ML-concepten beheers door een ML-pipeline te ordenen, begrippen te koppelen en scenario\'s te classificeren.',
+        criteria: {
+            type: 'rounds-complete',
+            min: 4,
+            description: 'Je sorteert ML-stappen, koppelt geavanceerde begrippen, categoriseert leerstijlen en beantwoordt AI/ML-vragen.',
+        },
+        evidence: 'Je kunt de stappen van een ML-pipeline in de juiste volgorde zetten en overfitting van underfitting onderscheiden.',
+    },
+    'impact-review': {
+        primaryGoal: 'Ik beoordeel maatschappelijke effecten van technologie en onderscheid kansen van risico\'s vanuit ethisch en beleidsmatig perspectief.',
+        criteria: {
+            type: 'rounds-complete',
+            min: 4,
+            description: 'Je sorteert impact-analyse-stappen, koppelt technologieën aan effecten, categoriseert kansen/risico\'s en beantwoordt ethische vragen.',
+        },
+        evidence: 'Je kunt een maatschappelijke impact-analyse opzetten en uitleggen wanneer iets een kans of een risico is voor de samenleving.',
+    },
+
+    // === BuilderCanvas ===
+    'web-developer': {
+        primaryGoal: 'Ik bouw een interactieve website met HTML-structuur, CSS-layout en JavaScript-interactiviteit en test het resultaat.',
+        criteria: {
+            type: 'steps-complete',
+            min: 4,
+            description: 'Je werkt HTML-structuur, CSS-layout, JavaScript-interactiviteit en testen uit.',
+        },
+        evidence: 'Je website heeft een werkende structuur, nette opmaak, interactieve elementen met addEventListener en een testverslag.',
+    },
+    'podcast-producer': {
+        primaryGoal: 'Ik produceer een podcast van begin tot eind: onderwerp, structuur, pakkende intro en interviewvragen.',
+        criteria: {
+            type: 'steps-complete',
+            min: 4,
+            description: 'Je werkt onderwerp, structuur, intro en vijf interviewvragen met doorvragen uit.',
+        },
+        evidence: 'Je podcast heeft een duidelijk onderwerp, een hook-first intro en vijf interviewvragen met follow-ups.',
+    },
+    'brand-builder': {
+        primaryGoal: 'Ik ontwerp een merkidentiteit met brandpersoonlijkheid, kleurenpalet, logoconcept en een mini-stijlgids.',
+        criteria: {
+            type: 'steps-complete',
+            min: 4,
+            description: 'Je werkt merkanalyse, kleurenpalet, logoconcept en do/don\'t-regels uit.',
+        },
+        evidence: 'Je merkidentiteit heeft drie merkwoorden, een kleurenpalet met hexcodes en rollen, en een logobeschrijving.',
+    },
+    'video-editor': {
+        primaryGoal: 'Ik bereid een korte video voor van concept tot montageplan met storyboard, shotlist en overgangen.',
+        criteria: {
+            type: 'steps-complete',
+            min: 4,
+            description: 'Je werkt concept, storyboard, shotlist en montageplan uit.',
+        },
+        evidence: 'Je storyboard heeft minstens vijf scènes en je shotlist bevat minstens acht shots met type, locatie en back-up.',
+    },
+    'meme-machine': {
+        primaryGoal: 'Ik analyseer meme-formaten, ontwerp mijn eigen meme-concept en reflecteer op verantwoord content maken.',
+        criteria: {
+            type: 'steps-complete',
+            min: 4,
+            description: 'Je analyseert meme-formaten, onderzoekt viraliteit, ontwerpt een eigen meme en schrijft een persoonlijke richtlijn.',
+        },
+        evidence: 'Je meme-concept beschrijft doelgroep en format, en je richtlijn legt uit wanneer je iets wel of niet post.',
+    },
+    'digital-storyteller': {
+        primaryGoal: 'Ik ontwerp een vertakkend interactief verhaal met keuzemomenten, meerdere eindes en twee uitgeschreven scènes.',
+        criteria: {
+            type: 'steps-complete',
+            min: 4,
+            description: 'Je werkt verhalidee, stroomschema, twee scènes en een presentatieplan uit.',
+        },
+        evidence: 'Je verhaal heeft twee keuzemomenten, minstens drie eindes en een openingsscène van 80+ woorden in de tweede persoon.',
+    },
+    'app-prototyper': {
+        primaryGoal: 'Ik ontwerp een app die een schoolprobleem oplost met probleemanalyse, wireframes, gebruikersstromen en een testplan.',
+        criteria: {
+            type: 'steps-complete',
+            min: 4,
+            description: 'Je werkt probleemanalyse, drie wireframes, twee gebruikersstromen en een testplan met drie taken uit.',
+        },
+        evidence: 'Je app-ontwerp beschrijft het probleem in een value proposition-zin en bevat wireframes, fout-flow en testopzet.',
+    },
+    'automation-engineer': {
+        primaryGoal: 'Ik identificeer een herhalende taak, schrijf pseudocode met IF/THEN en loops, en ontwerp een veilig testplan met dry-run.',
+        criteria: {
+            type: 'steps-complete',
+            min: 4,
+            description: 'Je werkt taakanalyse, pseudocode, Python-scriptstructuur en testplan uit.',
+        },
+        evidence: 'Je pseudocode heeft minstens acht stappen met IF/THEN en een FOR-loop, en je testplan beschrijft drie testcases met dry-run.',
+    },
+    'api-architect': {
+        primaryGoal: 'Ik ontwerp een complete REST API met endpoints, authenticatie en professionele documentatie.',
+        criteria: {
+            type: 'steps-complete',
+            min: 4,
+            description: 'Je werkt REST-principes, minstens zes endpoints, JWT-authenticatie en API-documentatie voor twee endpoints uit.',
+        },
+        evidence: 'Je API-ontwerp beschrijft HTTP-methoden, statuscodes, request bodies en beveiligde vs. open endpoints.',
+    },
+    'open-source-contributor': {
+        primaryGoal: 'Ik doorloop de volledige open source workflow: fork, branch, bugfix en pull request op GitHub.',
+        criteria: {
+            type: 'steps-complete',
+            min: 4,
+            description: 'Je werkt de Git-workflow, bug-analyse, bugfix met testcase en een professionele pull request uit.',
+        },
+        evidence: 'Je pull request beschrijft het probleem, de oplossing, teststappen en sluit een issue met "Closes #42".',
+    },
+    'startup-simulator': {
+        primaryGoal: 'Ik ontwikkel een tech-startup van probleemdefinitie tot pitchstructuur als echte oprichter.',
+        criteria: {
+            type: 'steps-complete',
+            min: 4,
+            description: 'Je werkt probleem/oplossing, businessmodel, marktanalyse en zesdelige pitchstructuur uit.',
+        },
+        evidence: 'Je startup heeft een break-even-berekening, een USP ten opzichte van twee concurrenten en een 3-minuten pitch-outline.',
+    },
+    'innovation-lab': {
+        primaryGoal: 'Ik kies een SDG-probleem, ontwerp een technologische oplossing, maak een MVP-concept en presenteer de impact.',
+        criteria: {
+            type: 'steps-complete',
+            min: 4,
+            description: 'Je werkt SDG-probleemkeuze, oplossingsontwerp, MVP-concept en impactpresentatie uit.',
+        },
+        evidence: 'Je innovatie-ontwerp beschrijft wie de gebruikers zijn, hoe de kern-functie werkt en meetbare impact-indicatoren.',
+    },
+    'portfolio-builder': {
+        primaryGoal: 'Ik stel een professioneel digitaal portfolio samen van mijn beste projecten met reflecties en een persoonlijk profiel.',
+        criteria: {
+            type: 'steps-complete',
+            min: 4,
+            description: 'Je werkt projectselectie, WWW-reflecties, portfoliostructuur en een persoonlijk profiel van 80–120 woorden uit.',
+        },
+        evidence: 'Je portfolio heeft minstens drie projecten met motivatie, twee reflecties in WWW-structuur en een bio in de eerste persoon.',
+    },
+    'prototype-developer': {
+        primaryGoal: 'Ik bouw een digitaal prototype door de volledige cyclus te doorlopen: scopen, ontwerpen, bouwen en testen met echte gebruikers.',
+        criteria: {
+            type: 'steps-complete',
+            min: 4,
+            description: 'Je werkt probleemscope, prototypeontwerp, bouwlog en testresultaten met minstens twee testgebruikers uit.',
+        },
+        evidence: 'Je prototype-log beschrijft een opgeloste bug, de kernfunctie-status en een verbetering op basis van gebruikerstesten.',
+    },
+    'pitch-perfect': {
+        primaryGoal: 'Ik bereid een overtuigende 5-minuten pitch voor mijn meesterproef voor met structuur, volledige tekst en voorbereide juryvragen.',
+        criteria: {
+            type: 'steps-complete',
+            min: 4,
+            description: 'Je werkt zesdelige pitchstructuur, volledige pitchtekst, verwerkte feedback en vier juryvragen met antwoorden uit.',
+        },
+        evidence: 'Je pitch heeft een hook, probleemschets, oplossing, resultaat, reflectie en afsluiting met een kernzin per onderdeel.',
+    },
+    'meesterproef': {
+        primaryGoal: 'Ik plan, bouw, documenteer en verdedig mijn eindproject als afsluitende meesterproef van drie jaar informatica.',
+        criteria: {
+            type: 'steps-complete',
+            min: 4,
+            description: 'Je werkt projectvoorstel, ontwikkellog, eindproductbeschrijving en verdedigingsvoorbereiding uit.',
+        },
+        evidence: 'Je meesterproef-dossier bevat een SMART-doel, drie werklogboekentries, eerlijke zelfevaluatie en antwoorden op juryvragen.',
+    },
+
+    // === DataViewer ===
+    'data-journalist': {
+        primaryGoal: 'Ik analyseer social media- en schermtijddata als datajournalist en trek onderbouwde conclusies over betrouwbaarheid van nieuwsartikelen.',
+        criteria: {
+            type: 'score-threshold',
+            threshold: 65,
+            description: 'Je analyseert drie datasets over schermtijd en sociale media en beantwoordt vragen over bronkwaliteit.',
+        },
+        evidence: 'Je conclusie verwijst naar concrete getallen uit de data en je kunt uitleggen waarom een nieuwsartikel betrouwbaar of onbetrouwbaar is.',
+    },
+    'welzijnsonderzoeker': {
+        primaryGoal: 'Ik onderzoek de relatie tussen schermtijd en welzijn met enquêtedata en CBS-statistieken en onderscheid correlatie van oorzakelijkheid.',
+        criteria: {
+            type: 'score-threshold',
+            threshold: 65,
+            description: 'Je analyseert drie datasets over welzijn, schermgebruik en trends en beantwoordt vragen over verbanden en context.',
+        },
+        evidence: 'Je kunt uitleggen waarom correlatie geen oorzakelijkheid bewijst en hoe context (examen, vakantie) data beïnvloedt.',
+    },
+    'spreadsheet-specialist': {
+        primaryGoal: 'Ik gebruik spreadsheet-formules zoals SOM, GEMIDDELDE en MAX om vragen te beantwoorden en data te filteren en sorteren.',
+        criteria: {
+            type: 'score-threshold',
+            threshold: 65,
+            description: 'Je analyseert boekhouddata van de leerlingenraad en beantwoordt vragen met de juiste formules.',
+        },
+        evidence: 'Je kunt uitleggen welke formule een totaal, gemiddelde of maximum berekent en wanneer je filtert of sorteert.',
+    },
+    'api-verkenner': {
+        primaryGoal: 'Ik lees JSON-antwoorden van een API, begrijp hoe URL-parameters werken en weet waarvoor een API-sleutel dient.',
+        criteria: {
+            type: 'score-threshold',
+            threshold: 65,
+            description: 'Je analyseert JSON-data, API-aanvragen en voorbeeld-URLs van een weer-API.',
+        },
+        evidence: 'Je kunt een veld in een JSON-antwoord aanwijzen, uitleggen wat een URL-parameter doet en waarom een API-sleutel nodig is.',
+    },
+    'dashboard-designer': {
+        primaryGoal: 'Ik kies de juiste visualisatie voor een dataset en selecteer zinvolle KPI\'s voor een schooldashboard.',
+        criteria: {
+            type: 'score-threshold',
+            threshold: 65,
+            description: 'Je analyseert schoolprestatie-data en beantwoordt vragen over grafiektype, KPI-keuze en ontwerppricipes.',
+        },
+        evidence: 'Je kunt uitleggen wanneer je een taartdiagram of staafgrafiek kiest en welke KPI het meest informatief is.',
+    },
+    'network-navigator': {
+        primaryGoal: 'Ik volg de weg van een bericht door het netwerk en begrijp wat DNS, routers, latency en HTTP-statuscodes betekenen.',
+        criteria: {
+            type: 'rounds-complete',
+            min: 3,
+            description: 'Je analyseert drie datasets over netwerksappen, pingtijden en HTTP-codes.',
+        },
+        evidence: 'Je kunt de zeven stappen van een netwerkreis benoemen en uitleggen wat de HTTP-statuscodes 200, 403, 404 en 500 betekenen.',
+    },
+    'data-pipeline': {
+        primaryGoal: 'Ik identificeer datakwaliteitsproblemen in ruwe sensordata en kies de juiste transformatiestrategie voor een ETL-pipeline.',
+        criteria: {
+            type: 'score-threshold',
+            threshold: 65,
+            description: 'Je analyseert sensordata, vergelijkt ruwe en gecleande gemiddelden en kiest transformatiestrategieën.',
+        },
+        evidence: 'Je kunt vijf datakwaliteitsproblemen benoemen in de sensordata en uitleggen wat "garbage in, garbage out" betekent.',
+    },
+    'ml-trainer': {
+        primaryGoal: 'Ik begrijp hoe een supervised ML-model werkt met features, labels en trainings- en testsets, en herken overfitting.',
+        criteria: {
+            type: 'score-threshold',
+            threshold: 65,
+            description: 'Je analyseert een spamfilter-dataset, vergelijkt modelnauwkeurigheden en beantwoordt ML-conceptvragen.',
+        },
+        evidence: 'Je kunt het verschil uitleggen tussen trainings- en testset en aanwijzen welk model overfit in de accuraatheidsdata.',
+    },
+    'neural-navigator': {
+        primaryGoal: 'Ik bereken een forward pass door een neuraal netwerk en leg uit hoe lagen, gewichten en backpropagatie werken.',
+        criteria: {
+            type: 'score-threshold',
+            threshold: 65,
+            description: 'Je analyseert neuronen met gewichten en biassen, vergelijkt trainingsresultaten en beantwoordt vragen over netwerklagen.',
+        },
+        evidence: 'Je kunt de output van een neuron berekenen met invoer, gewichten en bias, en uitleggen wat backpropagatie doet.',
+    },
+    'ux-detective': {
+        primaryGoal: 'Ik analyseer gebruikersfeedback en SUS-scores om UX-problemen in schoolapps te identificeren en te prioriteren.',
+        criteria: {
+            type: 'score-threshold',
+            threshold: 65,
+            description: 'Je analyseert UX-klachten, vergelijkt SUS-scores van vijf apps en beantwoordt UX-principevragen.',
+        },
+        evidence: 'Je kunt de SUS-drempelwaarde voor "goed" noemen en uitleggen welk UX-probleem het hoogst geprioriteerd moet worden.',
+    },
+    'digital-divide-researcher': {
+        primaryGoal: 'Ik onderzoek de digitale kloof in Nederland en Europa en beoordeel beleidsmaatregelen op effectiviteit.',
+        criteria: {
+            type: 'score-threshold',
+            threshold: 65,
+            description: 'Je analyseert CBS-data naar demografische groep, Europese breedbandcijfers en beleidsdocumenten.',
+        },
+        evidence: 'Je kunt het procentuele verschil in digitale basisvaardigheden tussen 16–24-jarigen en 75-plussers noemen en een beleidsmaatregel beoordelen.',
+    },
+    'tech-impact-analyst': {
+        primaryGoal: 'Ik voer een maatschappelijke impact-analyse uit van gezichtsherkenning en vergelijk AI-reguleringsscores van landen en regio\'s.',
+        criteria: {
+            type: 'score-threshold',
+            threshold: 65,
+            description: 'Je analyseert een impactmatrix, vergelijkt reguleringsscores en beantwoordt vragen over de vier impact-analysestappen.',
+        },
+        evidence: 'Je kunt de vier stappen van een maatschappelijke impact-analyse benoemen en uitleggen waarom de EU anders reguleert dan de VS.',
+    },
+    'sustainability-scanner': {
+        primaryGoal: 'Ik bereken de CO2-voetafdruk van digitale activiteiten en kies strategieën om de milieubelasting van technologie te verminderen.',
+        criteria: {
+            type: 'score-threshold',
+            threshold: 65,
+            description: 'Je analyseert CO2-uitstoot per activiteit, de energiemix van datacenters en reductiemaatregelen.',
+        },
+        evidence: 'Je kunt het verschil in CO2-impact tussen een Bitcoin-transactie en een Google-zoekopdracht uitleggen en twee reductiemaatregelen noemen.',
+    },
+    'eindproject-j2': {
+        primaryGoal: 'Ik analyseer eindprojectresultaten uit jaar 2 en ontdek welke projecttypen en kwaliteiten tot de hoogste cijfers leiden.',
+        criteria: {
+            type: 'score-threshold',
+            threshold: 65,
+            description: 'Je analyseert projectscores van 16 leerlingen, vergelijkt gemiddelden per projecttype en leest tips van hoog-scorende leerlingen.',
+        },
+        evidence: 'Je kunt het best-scorende projecttype noemen en uitleggen welke component de sterkste voorspeller is van een hoog eindcijfer.',
+    },
+
+    // === DebateArena ===
+    'ai-ethicus': {
+        primaryGoal: 'Ik bouw een onderbouwd standpunt over het gebruik van AI bij schoolniveaukeuze en reageer op het tegenargument.',
+        criteria: {
+            type: 'rounds-complete',
+            description: 'Je leest vier perspectieven, kiest een positie, formuleert argumenten en reflecteert op de dilemma\'s.',
+        },
+        evidence: 'Je eindstandpunt bevat minimaal twee argumenten voor jouw positie en een reactie op het sterkste tegenargument.',
+    },
+    'digital-rights-defender': {
+        primaryGoal: 'Ik neem een onderbouwd standpunt in over dataverzameling door scholen via trackingapps en verdedig de digitale rechten van leerlingen.',
+        criteria: {
+            type: 'rounds-complete',
+            description: 'Je leest vier perspectieven, kiest een positie, formuleert argumenten en reflecteert op privacy en controle.',
+        },
+        evidence: 'Je standpunt beschrijft wanneer dataverzameling helpen wordt en wanneer controleren, met minimaal twee onderbouwde argumenten.',
+    },
+    'tech-court': {
+        primaryGoal: 'Ik beoordeel of een bedrijf schuldig is aan indirecte discriminatie door een CV-screening AI en onderbouw mijn juridische oordeel.',
+        criteria: {
+            type: 'rounds-complete',
+            description: 'Je leest vier standpunten uit de rechtszaal, kiest je oordeel, bouwt argumenten en reflecteert op systeemverantwoordelijkheid.',
+        },
+        evidence: 'Je oordeel noemt de betrokken partijen, de kern van het discriminatie-verwijt en wie volgens jou (mede-)verantwoordelijk is.',
+    },
+    'future-forecaster': {
+        primaryGoal: 'Ik formuleer een visie op de rol van menselijke leraren in 2040 als AI gepersonaliseerd onderwijs kan geven en onderbouw die met argumenten.',
+        criteria: {
+            type: 'rounds-complete',
+            description: 'Je leest vier toekomstperspectieven, kiest een model, bouwt argumenten en reflecteert op wat onderwijs uniek menselijk maakt.',
+        },
+        evidence: 'Je toekomstvisie kiest een van de vier modellen en onderbouwt waarom menselijk onderwijs wel of niet vervangbaar is.',
+    },
+    'policy-maker': {
+        primaryGoal: 'Ik adviseer als beleidsmaker over gezichtsherkenning op school en weeg veiligheid, privacy en alternatieven zorgvuldig af.',
+        criteria: {
+            type: 'rounds-complete',
+            description: 'Je leest vier stakeholderpersptieven, kiest een beleidsoptie, bouwt argumenten en reflecteert op de afweging veiligheid vs. privacy.',
+        },
+        evidence: 'Je beleidsadvies kiest een van de vier opties en onderbouwt de keuze met argumenten vanuit minimaal twee perspectieven.',
+    },
+    'reflection-report': {
+        primaryGoal: 'Ik formuleer een standpunt over de rol van reflectie en ethisch denken in het informatica-curriculum en onderbouw waarom dit wel of niet een kerndoel moet zijn.',
+        criteria: {
+            type: 'rounds-complete',
+            description: 'Je leest vier perspectieven op de eindreflectie, kiest een positie, bouwt argumenten en sluit je drie jaar informatica bewust af.',
+        },
+        evidence: 'Je eindstandpunt beschrijft welke plek reflectie in informatica verdient en bevat minimaal twee argumenten voor die keuze.',
+    },
 };
 
 export function getMissionGoal(missionId: string): MissionGoal | undefined {
