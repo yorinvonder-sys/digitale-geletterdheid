@@ -31,7 +31,7 @@ export const ParameterControl: React.FC<{
                     step={param.step ?? 1}
                     value={v}
                     onChange={(e) => onChange(Number(e.target.value))}
-                    className="min-h-[44px] w-full accent-[#D97848]"
+                    className="min-h-[44px] w-full accent-duck-error"
                 />
                 <div className="flex justify-between text-[10px] text-duck-ink/60">
                     <span>{param.min ?? 0}</span>

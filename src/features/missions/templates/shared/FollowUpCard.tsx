@@ -57,7 +57,7 @@ export const FollowUpCard: React.FC<FollowUpCardProps> = ({ followUp, onComplete
                 {followUp.options.map((opt, i) => {
                     let optStyle = isLight
                         ? 'bg-white border-duck-gray hover:border-duck-acid'
-                        : 'bg-duck-ink border-[#08283B] hover:border-duck-acid/40';
+                        : 'bg-duck-ink border-duck-ink hover:border-duck-acid/40';
 
                     if (answered && i === followUp.correctIndex) {
                         optStyle = isLight
@@ -70,7 +70,7 @@ export const FollowUpCard: React.FC<FollowUpCardProps> = ({ followUp, onComplete
                     } else if (answered) {
                         optStyle = isLight
                             ? 'bg-duck-gray border-duck-gray'
-                            : 'bg-duck-ink border-[#08283B]';
+                            : 'bg-duck-ink border-duck-ink';
                     }
 
                     return (

@@ -77,7 +77,7 @@ export const BinaryChoiceRound: React.FC<{
                                     </button>
                                     <button
                                         onClick={() => onChoice(item.id, false)}
-                                        className={`flex-1 min-h-[44px] py-2 rounded-lg text-xs font-bold transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#08283B]/30 ${
+                                        className={`flex-1 min-h-[44px] py-2 rounded-lg text-xs font-bold transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-ink/30 ${
                                             isRejected
                                                 ? 'bg-duck-ink text-white'
                                                 : 'bg-duck-bg text-duck-ink/60 hover:bg-duck-ink/10 hover:text-duck-ink border border-duck-gray'
