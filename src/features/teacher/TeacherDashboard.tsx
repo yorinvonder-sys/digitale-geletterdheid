@@ -8,7 +8,7 @@ import { ParentUser, UserStats, StudentData, GamificationEvent, ClassroomConfig,
 import {
     Award, BarChart3, Bell, BookOpen, Check, ChevronDown, ChevronRight,
     Download, Folder, LogOut, Presentation, RotateCcw, Send,
-    Settings, ShieldCheck, Sparkles, Stars, TrendingUp, Users, Zap
+    Settings, ShieldCheck, Sparkles, Stars, TrendingUp, Upload, Users, Zap
 } from 'lucide-react';
 import { GoudenPromptGallery } from '@/features/teacher/GoudenPromptGallery';
 import {
@@ -29,6 +29,7 @@ import { SLOClassOverview } from '@/features/teacher/SLOClassOverview';
 import { HybridAssessmentPanel } from '@/features/teacher/HybridAssessmentPanel';
 import { GrowthOverviewPanel } from '@/features/teacher/GrowthOverviewPanel';
 import { EindmetingReleaseButton } from '@/features/teacher/EindmetingReleaseButton';
+import { RosterImportModal } from '@/features/teacher/RosterImportModal';
 import { TutorialProvider } from '@/contexts/TutorialContext';
 import TutorialSpotlight, { TutorialRestartButton } from '@/features/teacher/TutorialSpotlight';
 
@@ -75,6 +76,7 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ user, onUpda
 
     // Modals
     const [showMessageModal, setShowMessageModal] = useState(false);
+    const [showRosterImport, setShowRosterImport] = useState(false);
     const [showBadgeModal, setShowBadgeModal] = useState(false);
     const [showEventModal, setShowEventModal] = useState(false);
     const [showResetConfirm, setShowResetConfirm] = useState(false);
@@ -702,7 +704,10 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ user, onUpda
                                         <button onClick={() => setRetryCount(prev => prev + 1)} className="p-2 text-lab-muted hover:bg-lab-cream rounded-lg"><RotateCcw size={16} /></button>
                                         <button onClick={exportCSV} className="p-2 text-lab-muted hover:bg-lab-cream rounded-lg"><Download size={16} /></button>
                                     </div>
-                                    <button data-tutorial="students-message-btn" onClick={() => setShowMessageModal(true)} className="px-4 py-2 bg-lab-tealDark text-white rounded-lg text-sm font-bold flex items-center gap-2 hover:bg-lab-ink"><Send size={14} /> Bericht</button>
+                                    <div className="flex items-center gap-2">
+                                        <button onClick={() => setShowRosterImport(true)} className="px-4 py-2 bg-lab-paper border border-lab-line text-lab-ink rounded-lg text-sm font-bold flex items-center gap-2 hover:bg-lab-cream"><Upload size={14} /> Importeren</button>
+                                        <button data-tutorial="students-message-btn" onClick={() => setShowMessageModal(true)} className="px-4 py-2 bg-lab-tealDark text-white rounded-lg text-sm font-bold flex items-center gap-2 hover:bg-lab-ink"><Send size={14} /> Bericht</button>
+                                    </div>
                                 </div>
                                 <StudentList
                                     students={students.filter(s => {
@@ -788,6 +793,7 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ user, onUpda
                     </div>
                 </div>
 
+                <RosterImportModal open={showRosterImport} onClose={() => setShowRosterImport(false)} />
                 <TeacherModals
                     showMessageModal={showMessageModal} setShowMessageModal={setShowMessageModal}
                     messageText={messageText} setMessageText={setMessageText}

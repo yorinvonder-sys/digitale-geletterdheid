@@ -56,6 +56,7 @@
 | **Doorgifte buiten EU/EER** | Supabase Inc. is gevestigd in de VS; dataopslag in EU-regio (`eu-central-1`). Doorgifte geregeld via EU Standard Contractual Clauses (SCC) en DPA van Supabase |
 | **Bewaartermijn** | Zolang het account actief is. Bij schoolbeeindiging: verwijdering binnen 30 dagen na einde verwerkersovereenkomst. Bij eigen verwijderingsverzoek: onmiddellijk (cascade-delete) |
 | **Technische maatregelen** | TLS 1.2+ (transport), bcrypt password hashing, JWT-authenticatie, Row Level Security (RLS), automatische cascade-delete bij accountverwijdering |
+| **Herkomst & provisioning** | Accounts kunnen automatisch worden aangemaakt/bijgewerkt via een beveiligde roster-import (`importRoster`): de school exporteert leerlinggegevens uit Magister (e-mailadres, naam, klas, leerjaar, niveau, **geboortedatum**) en uploadt die. Alleen docent/beheerder met MFA (aal2), strikt school-scoped, idempotent (geen duplicaten; e-mail van een andere school wordt geweigerd), met audit-logging. **Data-minimalisatie:** uitsluitend bovengenoemde velden; de geboortedatum dient enkel de 13+ AI-leeftijdspoort (server-side, niet met de AI gedeeld). De school blijft verwerkingsverantwoordelijke en bepaalt welke gegevens worden geëxporteerd. |
 
 ---
 
