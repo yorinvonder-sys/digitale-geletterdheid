@@ -81,7 +81,7 @@ const config: ReviewArenaConfig = {
                 },
                 {
                     left: 'Spelkarakter reageert niet op toetsenbord',
-                    right: 'Event listener toevoegen (onKeyDown)',
+                    right: 'Code toevoegen die reageert op een toetsaanslag (event listener)',
                 },
                 {
                     left: 'AI verzint een nepfeit (hallucinatie)',
@@ -97,7 +97,7 @@ const config: ReviewArenaConfig = {
             id: 'round-categorize',
             type: 'categorize',
             title: 'AI-fout of programmeer-bug?',
-            description: 'Bepaal of elk probleem een AI-fout (hallucinatie/stopsignaal) of een programmeer-bug is.',
+            description: 'Bepaal of elk probleem een AI-fout of een programmeer-bug is. Een hallucinatie = wanneer AI iets verzint dat overtuigend klinkt maar niet klopt. Een stopsignaal = wanneer AI halverwege stopt.',
             maxScore: 25,
             followUp: {
                 question: 'Je vraagt een AI-chatbot om uitleg over een wetenschappelijk onderzoek. De AI geeft een gedetailleerd antwoord met een overtuigende bronvermelding. Wat is de meest verstandige volgende stap?',
@@ -135,7 +135,7 @@ const config: ReviewArenaConfig = {
                     'De bewegingssnelheid verlagen zodat ze minder snel het scherm uit lopen',
                     'Randdetectie toevoegen die de vijand terugstuitert of verwijdert als hij de grens raakt',
                     'Het scherm breder maken zodat de vijanden er later uitlopen',
-                    'Een timer instellen die elke 5 seconden nieuwe vijanden spawnt',
+                    'Een timer instellen die elke 5 seconden nieuwe vijanden laat verschijnen (spawnen)',
                 ],
                 correctIndex: 1,
                 explanation: 'Randdetectie is de structurele oplossing: je code reageert op de positie van het object en handelt dat af. Snelheid verlagen of het scherm verbreden pakt de oorzaak niet aan — het probleem verschuift alleen. Een timer maakt nieuwe vijanden aan maar lost het verdwijnen niet op.',

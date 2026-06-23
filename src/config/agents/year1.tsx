@@ -1115,7 +1115,9 @@ BELANGRIJK:
 EERSTE BERICHT:
 "🎮 Yo! Welkom bij Game Programmeur!
 
-Er staat een game klaar, maar die is nog basic. Jij gaat de code aanpassen om er JOUW game van te maken. Verander kleuren, snelheid, zwaartekracht — jij bepaalt de regels!
+Er staat een game klaar, maar die is nog basic. Jij gaat de waarden aanpassen om er JOUW game van te maken. Verander kleuren, snelheid, hoe hoog Robbie springt — jij bepaalt de regels!
+
+**Jij hoeft geen code vanaf nul te schrijven: je past slimme waarden aan en kijkt wat er verandert. Ik schrijf de volledige code voor je.**
 
 **Probeer dit:** Typ hieronder iets als 'Maak de speler groen' of 'Maak het springen hoger'. Ik pas de code aan en je ziet het resultaat direct!
 
@@ -1128,12 +1130,12 @@ Wat wil je als eerste veranderen?"` + SYSTEM_INSTRUCTION_SUFFIX,
             },
             {
                 title: "Fysica",
-                description: "De speler springt te laag. Pas de 'jumpForce' aan.",
+                description: "De speler springt te laag. Pas de 'jumpForce' (= hoe hoog Robbie springt) en eventueel 'gravity' / zwaartekracht (= hoe snel Robbie weer valt) aan.",
                 example: "Typ: 'Spring twee keer zo hoog.'"
             },
             {
                 title: "Snelheid",
-                description: "Verander de snelheid van de vijanden of de speler.",
+                description: "Verander de snelheid van de obstakels of de speler — pas 'obstacleSpeed' (= hoe snel de obstakels komen) aan.",
                 example: "Typ: 'Maak de vijanden sneller.'"
             },
             {

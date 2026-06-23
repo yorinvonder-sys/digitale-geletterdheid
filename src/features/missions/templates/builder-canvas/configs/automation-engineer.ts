@@ -64,8 +64,8 @@ export const automationEngineerConfig: BuilderCanvasConfig = {
             description:
                 'Nu zet je de pseudocode om naar een echte script-structuur in Python. Je hoeft niet alles werkend te maken, maar je beschrijft welke functies je nodig hebt en hoe ze samenwerken.',
             instruction:
-                'Schrijf de Python-structuur van je script. Gebruik: 1) Commentaarregels (#) om elke sectie te beschrijven, 2) Minstens 2 functiedefinities met `def functienaam():`, 3) Een main-sectie die de functies aanroept, 4) Beschrijf in commentaar welke Python-modules je nodig hebt (bijv. `os` voor bestanden, `smtplib` voor e-mail). Je hoeft de functies niet volledig te implementeren.',
-            tip: 'Een Python-functie: `def hernoem_bestand(oud_naam, nieuw_naam):`. Elke taak in een eigen functie houdt code overzichtelijk.',
+                'Schrijf de Python-structuur van je script. Gebruik: 1) Commentaarregels (#) om elke sectie te beschrijven, 2) Minstens 2 functiedefinities met `def functienaam():`, 3) Een main-sectie die de functies aanroept, 4) Beschrijf in commentaar welke Python-modules (= een gereedschapsset die Python al klaar heeft staan, bijv. `os` voor bestanden) je nodig hebt. Je hoeft de functies niet volledig te implementeren.',
+            tip: 'Gebruik deze lege functie als startpunt en vul hem in:\n\ndef verstuur_herinnering(naam, datum):\n    # vul hier in wat de functie doet\n\nJe hoeft de functies niet volledig te bouwen — beschrijf in commentaar wat ze zouden doen. Elke taak in een eigen functie houdt code overzichtelijk.',
             checklistItems: [
                 { id: 'twee-functies', label: 'Er zijn minimaal 2 functiedefinities' },
                 { id: 'main', label: 'Er is een main-sectie die de functies aanroept' },
@@ -80,7 +80,7 @@ export const automationEngineerConfig: BuilderCanvasConfig = {
             description:
                 'Automatiseringsscripts moeten zorgvuldig getest worden. Een fout in een script dat 1000 bestanden hernoemt is catastrofaal — je kunt niet handmatig terugdraaien. Testen is geen optie, het is verplicht.',
             instruction:
-                'Schrijf een testplan voor je script. Beschrijf: 1) Hoe je het script test ZONDER echte data te beïnvloeden (bijv. een testmap met dummy-bestanden), 2) 3 testcases: één waarbij alles klopt, één waarbij een bestand al bestaat, één waarbij de invoer onverwacht is, 3) Hoe je een "dry run" modus inbouwt die beschrijft wat het script ZOU doen, maar het niet doet. Leg ook uit hoe je het script veilig voor anderen maakt.',
+                'Schrijf een testplan voor je script. Beschrijf: 1) Hoe je test zonder echte data te raken (bijv. dummy-bestanden in een testmap), 2) Drie testcases: één waarbij alles klopt, één met onverwachte invoer, één waarbij een bestand al bestaat, 3) Hoe een "dry run" werkt: het script beschrijft wat het zou doen, maar voert niets uit.',
             tip: 'Bouw altijd eerst een "dry run" in: het script print wat het zou doen, maar doet het nog niet echt. Zo zie je fouten voordat ze schade aanrichten.',
             checklistItems: [
                 { id: 'testomgeving', label: 'Ik heb beschreven hoe ik test zonder echte data' },

@@ -187,10 +187,10 @@ export const algorithmArchitectConfig: SimulationLabConfig = {
             visualType: 'meter',
             maxScore: 30,
             followUp: {
-                question: 'Waarom schaalt een O(n²) algoritme slecht bij grote datasets?',
-                options: ['Omdat het meer geheugen gebruikt', 'Omdat het aantal bewerkingen kwadratisch groeit met de invoergrootte', 'Omdat het alleen op snelle computers werkt', 'Omdat het niet parallel kan draaien'],
-                correctIndex: 1,
-                explanation: 'Bij O(n²) verdubbelt de invoer → verviervoudigt de rekentijd. Bij 1000 items: 1.000.000 bewerkingen. Bij 10.000 items: 100.000.000. Daarom zijn efficiëntere algoritmes cruciaal voor grote datasets.',
+                question: 'Wat zie je gebeuren met de zoektijd als je de lijst veel groter maakt?',
+                options: ['De zoektijd blijft altijd hetzelfde', 'De zoektijd wordt iets langer, nauwelijks merkbaar', 'Lineair zoeken heeft veel meer stappen nodig — de tijd groeit mee met de lijstgrootte', 'Binair zoeken wordt langzamer dan lineair zoeken'],
+                correctIndex: 2,
+                explanation: 'Bij lineair zoeken moet je bij een grotere lijst ook meer stappen zetten: 10 items → ~10 stappen, 1000 items → ~1000 stappen. Binair zoeken groeit veel minder snel: bij 1000 items nog maar ~10 stappen. Daarom is de keuze van algoritme belangrijk bij grote lijsten.',
                 bonusPoints: 5,
             },
             parameters: [
@@ -254,17 +254,17 @@ export const algorithmArchitectConfig: SimulationLabConfig = {
                 {
                     id: 'za1-q3',
                     question:
-                        'In een lijst van 1024 items: hoeveel stappen heeft binair zoeken maximaal nodig?',
+                        'Je hebt de simulatie gedraaid met binair zoeken op 1000 items. Hoeveel stappen zag je in de meter staan?',
                     type: 'multiple-choice',
                     options: [
-                        '1024 stappen — elk item één keer',
-                        '512 stappen — de helft van de lijst',
-                        '10 stappen — want log₂(1024) = 10',
+                        '1000 stappen — elk item één keer',
+                        '500 stappen — de helft van de lijst',
+                        '~10 stappen — binair zoeken halveert elke keer',
                         '1 stap — binair zoeken vindt altijd direct',
                     ],
-                    correctAnswer: '10 stappen — want log₂(1024) = 10',
+                    correctAnswer: '~10 stappen — binair zoeken halveert elke keer',
                     explanation:
-                        'log₂(1024) = 10 betekent dat je de lijst 10 keer kunt halveren voordat er nog maar één element over is. Dit is de kracht van binair zoeken: exponentieel sneller bij grote lijsten.',
+                        'Binair zoeken halveert elke stap het zoekgebied. Bij 1000 items zie je in de simulatie ~10 stappen. Vergeleken met de ~1000 stappen van lineair zoeken is dat een enorm verschil — en hoe groter de lijst, hoe groter dat voordeel.',
                     points: 10,
                 },
             ],
@@ -336,7 +336,7 @@ export const algorithmArchitectConfig: SimulationLabConfig = {
             id: 'pseudocode',
             title: 'Pseudocode als voorbereiding',
             description:
-                'Kies jouw aanpak voordat je code schrijft. Vergelijk het met direct beginnen.',
+                'Kies jouw aanpak voordat je code schrijft. Vergelijk het met direct beginnen. Computational thinking betekent: problemen slim opdelen en stap voor stap oplossen. Het heeft vier basisdelen.',
             visualType: 'comparison',
             maxScore: 30,
             parameters: [

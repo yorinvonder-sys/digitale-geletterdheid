@@ -6,7 +6,7 @@ const config: ScenarioEngineConfig = {
     introEmoji: '📊',
     introTitle: 'Data Speurder',
     introDescription:
-        'Data is overal — maar zonder de juiste vaardigheden is het gewoon ruis. Jij leert als Data Speurder hoe je data verzamelt, analyseert en presenteert zodat het een verhaal vertelt. Datageletterdheid is een van de meest gevraagde vaardigheden van de 21e eeuw.',
+        'Hoeveel stappen zette jij gisteren? Hoe warm was het precies? Getallen om je heen vertellen een verhaal — als je weet hoe je ze leest. Als Data Speurder leer je hoe je data verzamelt, analyseert en laat zien zodat jij zelf conclusies kunt trekken uit cijfers die je elke dag ziet.',
     missionGoal: {
         primaryGoal: 'Ik onderzoek data, kies passende visualisaties en trek een conclusie die ik met bewijs kan uitleggen.',
         criteria: {
@@ -51,9 +51,9 @@ const config: ScenarioEngineConfig = {
     ],
     takeaways: [
         'Data is een rauwe meting of observatie. Informatie is data met betekenis. Conclusies zijn interpretaties.',
-        'Correlatie betekent niet causaliteit: twee dingen die samen bewegen zijn niet per se oorzaak en gevolg.',
+        'Een verband (correlatie) betekent niet dat het één het ander veroorzaakt: twee dingen die samen bewegen zijn niet per se oorzaak en gevolg.',
         'Een grafiek kan eerlijk of misleidend zijn — kijk altijd naar de schaal van de y-as.',
-        'Gemiddeld, mediaan en modus kunnen heel verschillende dingen vertellen over dezelfde dataset.',
+        'Gemiddeld, mediaan (middelste waarde) en modus (meest voorkomende waarde) kunnen heel verschillende dingen vertellen over dezelfde dataset.',
         'Goede datavisualisatie maakt complexe informatie toegankelijk voor mensen die de ruwe data niet kunnen lezen.',
     ],
     rounds: [
@@ -162,7 +162,7 @@ const config: ScenarioEngineConfig = {
             emoji: '📈',
             title: 'Welke grafiek past het best?',
             description:
-                'Rangschik deze vijf datavragen naar welke grafiekvorm het BESTE past, van meest geschikt voor een staafdiagram (1e) naar minst geschikt (5e).',
+                'Rangschik deze vier datavragen naar welke grafiekvorm het BESTE past, van meest geschikt voor een staafdiagram (1e) naar minst geschikt (4e).',
             type: 'order-priority',
             orderInstruction: 'Klik van beste naar minst passende staafdiagram-keuze',
             maxScore: 25,
@@ -211,16 +211,6 @@ const config: ScenarioEngineConfig = {
                     explanation:
                         'Een cirkeldiagram (taartdiagram) is beter voor verhoudingen die optellen tot 100%. Een staafdiagram kan dit tonen, maar maakt het minder intuïtief duidelijk dat het om delen van een geheel gaat.',
                 },
-                {
-                    id: 5,
-                    icon: '🌱',
-                    title: 'Relatie tussen studie-uren en cijfer',
-                    description:
-                        'Voor elk van de 28 leerlingen: hoeveel uur ze hebben gestudeerd én hun cijfer voor de toets.',
-                    correctPosition: 4,
-                    explanation:
-                        'Een spreidingsdiagram (scatterplot) is het meest geschikt om verbanden tussen twee variabelen te tonen. Een staafdiagram past hier het slechtst.',
-                },
             ],
         },
 
@@ -251,12 +241,12 @@ const config: ScenarioEngineConfig = {
                 {
                     id: 2,
                     icon: '📊',
-                    title: 'Gemiddelde schermtijd met uitbijters vermeld',
+                    title: 'Gemiddelde schermtijd met uitschieters vermeld',
                     description:
-                        'Een rapport meldt: "De gemiddelde schermtijd is 4,2 uur per dag. Twee leerlingen (8 en 9 uur) trekken het gemiddelde omhoog. De mediaan is 3,5 uur."',
+                        'Een rapport meldt: "De gemiddelde schermtijd is 4,2 uur per dag. Twee leerlingen (8 en 9 uur) trekken het gemiddelde omhoog. De mediaan (middelste waarde) is 3,5 uur."',
                     correct: true,
                     explanation:
-                        'Eerlijk. Het rapport vermeldt niet alleen het gemiddelde, maar ook de mediaan en de uitbijters. Dit geeft een volledig beeld. Transparantie over uitbijters is goede datapresentatie.',
+                        'Eerlijk. Het rapport vermeldt niet alleen het gemiddelde, maar ook de mediaan (middelste waarde) en de uitschieters (extreme waarden). Dit geeft een volledig beeld. Transparantie daarover is goede datapresentatie.',
                 },
                 {
                     id: 3,
@@ -286,17 +276,17 @@ const config: ScenarioEngineConfig = {
                         'Een app-bedrijf claimt dat 90% tevreden is, gebaseerd op een enquête onder 10 vaste klanten.',
                     correct: false,
                     explanation:
-                        'Misleidend. Een steekproef van 10 mensen is te klein voor betrouwbare statistieken, en het zijn vaste klanten — een selecte, positief gestemde groep. Dit is geen representatieve steekproef.',
+                        'Misleidend. Een groep van 10 mensen is te klein voor betrouwbare uitspraken, en het zijn vaste klanten — een selecte, positief gestemde groep. Dit is geen betrouwbare steekproef (een groep die de rest echt weerspiegelt).',
                 },
                 {
                     id: 6,
                     icon: '📋',
                     title: 'Tabel met cijfers en de gebruikte rekenmethode uitgelegd',
                     description:
-                        'Een schoolrapport toont een tabel met cijfers per toets, het gewogen gemiddelde, en een voetnoot die uitlegt hoe het gewogen gemiddelde is berekend.',
+                        'Een schoolrapport toont een tabel met cijfers per toets, het gewogen gemiddelde (waarbij zwaardere toetsen meer meetellen), en een voetnoot die uitlegt hoe dat is berekend.',
                     correct: true,
                     explanation:
-                        'Eerlijk en transparant. Door de rekenmethode te vermelden kan iedereen het zelf controleren. Transparantie over methode is een kenmerk van goede datapresentatie.',
+                        'Eerlijk en transparant. Door de rekenmethode te vermelden kan iedereen het zelf controleren. Transparantie over de methode is een kenmerk van goede datapresentatie.',
                 },
             ],
         },
@@ -315,7 +305,7 @@ const config: ScenarioEngineConfig = {
             feedbackCorrect:
                 'Goed! Je weet het verschil tussen wat data bewijst en wat je er graag uit wilt lezen.',
             feedbackIncorrect:
-                'Pas op voor te sterke conclusies. Data bewijst correlaties, zelden oorzaken.',
+                'Pas op voor te sterke conclusies. Data bewijst verbanden, zelden oorzaken.',
             items: [
                 {
                     id: 1,
@@ -332,20 +322,20 @@ const config: ScenarioEngineConfig = {
                     icon: '📉',
                     title: '"Meer schermtijd veroorzaakt slechtere cijfers"',
                     description:
-                        'Op basis van de correlatie (hogere schermtijd → lagere cijfers gemiddeld 0,3 punt).',
+                        'Op basis van het verband (hogere schermtijd → lagere cijfers gemiddeld 0,3 punt).',
                     correct: false,
                     explanation:
-                        'Dit is te ver. Correlatie is geen causaliteit. Misschien hebben leerlingen die minder studeren zowel meer schermtijd als slechtere cijfers. Of misschien is er een derde factor. De data bewijst geen oorzaak-gevolg.',
+                        'Dit is te ver. Een verband (correlatie) is geen bewijs van oorzaak. Misschien hebben leerlingen die minder studeren zowel meer schermtijd als slechtere cijfers. Of misschien is er een derde factor. De data bewijst geen oorzaak-gevolg.',
                 },
                 {
                     id: 3,
                     icon: '🔗',
                     title: '"Er is een verband tussen hogere schermtijd en lagere cijfers in deze klas"',
                     description:
-                        'Op basis van de correlatie in de data van 28 leerlingen.',
+                        'Op basis van het verband in de data van 28 leerlingen.',
                     correct: true,
                     explanation:
-                        'Dit is een terechte conclusie. Je beschrijft een patroon in de data (correlatie) zonder een oorzaak te claimen. "Verband" is het juiste woord voor een correlatie.',
+                        'Dit is een terechte conclusie. Je beschrijft een patroon in de data zonder een oorzaak te claimen. "Verband" (ook wel correlatie) is het juiste woord hiervoor.',
                 },
                 {
                     id: 4,
@@ -355,7 +345,7 @@ const config: ScenarioEngineConfig = {
                         'Gegeneraliseerd vanuit jouw klassendata naar alle jongeren in Nederland.',
                     correct: false,
                     explanation:
-                        'Je kunt data van 28 leerlingen in één klas niet generaliseren naar alle jongeren in Nederland. Een representatieve steekproef voor Nederland vereist duizenden respondenten uit diverse regio\'s en achtergronden.',
+                        'Je kunt data van 28 leerlingen in één klas niet generaliseren naar alle jongeren in Nederland. Een betrouwbare steekproef (een groep die echt een afspiegeling is van de rest) vereist duizenden deelnemers uit diverse regio\'s en achtergronden.',
                 },
                 {
                     id: 5,
@@ -375,7 +365,7 @@ const config: ScenarioEngineConfig = {
                         'Een beleidsaanbeveling op basis van de gevonden correlatie.',
                     correct: false,
                     explanation:
-                        'Dit is een te sterke claim. De data toont een correlatie, maar niet dat verlagen van schermtijd de oorzaak van de lagere cijfers wegneemt. Er kunnen andere factoren spelen. Een aanbeveling voor beleid vereist meer onderzoek.',
+                        'Dit is een te sterke claim. De data toont een verband, maar niet dat verlagen van schermtijd de oorzaak van de lagere cijfers wegneemt. Er kunnen andere factoren spelen. Een aanbeveling voor beleid vereist meer onderzoek.',
                 },
                 {
                     id: 7,

@@ -6,7 +6,7 @@ export const websiteBouwerConfig: BuilderCanvasConfig = {
     introEmoji: '🌐',
     introTitle: 'Bouw je eerste website',
     introDescription:
-        'In deze missie leer je hoe echte websites worden gemaakt. Je typt je eerste HTML-code, voegt stijl toe met CSS en bouwt een persoonlijke "Over Mij"-pagina — geen drag-and-drop, maar echte code die je zelf schrijft.',
+        'In deze missie leer je hoe echte websites worden gemaakt. HTML is de taal waarmee je vertelt wát er op een pagina staat (een titel, tekst, een plaatje). Je typt je eerste HTML-code, voegt stijl toe met CSS en bouwt een persoonlijke "Over Mij"-pagina — geen drag-and-drop, maar echte code die je zelf schrijft.',
     missionGoal: {
         primaryGoal: 'Ik bouw een werkende Over Mij-webpagina met HTML, CSS en een korte uitleg van mijn keuzes.',
         criteria: {
@@ -30,7 +30,7 @@ export const websiteBouwerConfig: BuilderCanvasConfig = {
             id: 'html-basis',
             title: 'HTML-structuur opzetten',
             description:
-                'Elke website begint met een HTML-bestand. HTML vertelt de browser wat er op de pagina staat: een titel, tekst, een afbeelding. Zonder HTML bestaat er geen website.',
+                'Elke website begint met een HTML-bestand. HTML werkt met tags: een instructie tussen punthaken, zoals `<h1>...</h1>` — de eerste opent, de tweede (met /) sluit. Tags vertellen de browser wat er op de pagina staat: een titel, tekst, een afbeelding.',
             instruction:
                 'Schrijf de basisstructuur van een HTML-pagina. Je hebt nodig: `<!DOCTYPE html>`, `<html>`, `<head>` met een `<title>`, en `<body>`. Voeg in de body een `<h1>` toe met jouw naam als paginatitel en een `<p>` met een zin over jezelf. Schrijf de code uit alsof je hem echt in een bestand zou typen.',
             tip: 'Tags werken in paren: elke `<h1>` heeft een `</h1>`. Vergeet de sluit-tag niet, anders "lekt" je code.',

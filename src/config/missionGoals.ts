@@ -333,7 +333,7 @@ export const MISSION_GOALS: Record<string, MissionGoal> = {
         primaryGoal: 'Ik ontwikkel een duidelijke visie voor mijn eindproject met publiek, boodschap en sfeer.',
         criteria: {
             type: 'steps-complete',
-            min: 4,
+            min: 5,
             description: 'Je werkt doel, doelgroep, boodschap en visuele richting uit.',
         },
         evidence: 'Je kunt laten zien voor wie je project is en welke stijl of boodschap erbij hoort.',
