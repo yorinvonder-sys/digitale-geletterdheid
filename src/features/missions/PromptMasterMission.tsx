@@ -1256,15 +1256,15 @@ export const PromptMasterMission: React.FC<Props> = ({ onBack, onComplete, vsoPr
                     {/* AI Response & Feedback */}
                     {showFeedback && aiResponse && (
                         <div data-qa={passed ? 'prompt-master-success-feedback' : 'prompt-master-improve-feedback'} className="animate-in fade-in slide-in-from-bottom-4">
-                            <div className={`grid gap-4 lg:items-start ${passed ? 'lg:grid-cols-[minmax(0,1fr)_minmax(280px,0.65fr)]' : 'lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_minmax(300px,0.75fr)]'}`}>
+                            <div className={`grid gap-4 lg:items-start ${passed ? 'md:grid-cols-2 lg:grid-cols-[minmax(0,1fr)_minmax(280px,0.65fr)]' : 'md:grid-cols-2 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_minmax(300px,0.75fr)]'}`}>
                                 <ResultFeedbackRail
                                     passed={passed}
                                     feedback={aiResponse.feedback}
                                     tips={currentChallenge.tips}
-                                    className={passed ? 'order-1 lg:order-2' : 'order-1 lg:order-3'}
+                                    className={passed ? 'order-2 lg:order-2' : 'order-3 md:col-span-2 lg:col-span-1 lg:order-3'}
                                 />
 
-                                <div className="order-2 lg:order-1">
+                                <div className="order-1 lg:order-1">
                                     <ResultVisual
                                         type={currentChallenge.type}
                                         content={aiResponse.output}
@@ -1275,7 +1275,7 @@ export const PromptMasterMission: React.FC<Props> = ({ onBack, onComplete, vsoPr
                                 </div>
 
                                 {!passed && (
-                                    <div className="order-3 lg:order-2 animate-in fade-in slide-in-from-right-4 delay-150">
+                                    <div className="order-2 lg:order-2 animate-in fade-in slide-in-from-right-4 delay-150">
                                         <ResultVisual
                                             type={currentChallenge.type}
                                             content={currentChallenge.goodOutputExample}
