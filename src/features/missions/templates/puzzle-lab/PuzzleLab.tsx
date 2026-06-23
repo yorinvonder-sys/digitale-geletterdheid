@@ -101,7 +101,7 @@ export const PuzzleLab: React.FC<TemplateMissionProps> = ({
             <div className="min-h-screen bg-duck-ink flex items-center justify-center p-4">
                 <div className="font-mono text-xs text-duck-error text-center">
                     <div className="mb-2">ERROR: config not found for &quot;{missionId}&quot;</div>
-                    <button onClick={onBack} className="text-duck-gray hover:text-[#FCF6EA]">← back</button>
+                    <button onClick={onBack} className="text-duck-gray hover:text-duck-bg">← back</button>
                 </div>
             </div>
         );
@@ -303,7 +303,7 @@ export const PuzzleLab: React.FC<TemplateMissionProps> = ({
 
                         <button
                             onClick={onBack}
-                            className="w-full mt-3 py-2 font-mono text-xs text-duck-gray hover:text-[#FCF6EA] transition-colors flex items-center justify-center gap-1"
+                            className="w-full mt-3 py-2 font-mono text-xs text-duck-gray hover:text-duck-bg transition-colors flex items-center justify-center gap-1"
                         >
                             <ArrowLeft size={12} /> back
                         </button>
@@ -358,7 +358,7 @@ export const PuzzleLab: React.FC<TemplateMissionProps> = ({
                     </span>
                     <button
                         onClick={onBack}
-                        className="-mr-2 flex min-h-[44px] min-w-[44px] items-center justify-center rounded-full text-duck-gray transition-colors hover:bg-duck-gray/10 hover:text-[#FCF6EA] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#E7D8BD] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0B453F]"
+                        className="-mr-2 flex min-h-[44px] min-w-[44px] items-center justify-center rounded-full text-duck-gray transition-colors hover:bg-duck-gray/10 hover:text-duck-bg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-gray focus-visible:ring-offset-2 focus-visible:ring-offset-duck-ink"
                         aria-label="Terug"
                     >
                         <ArrowLeft size={14} />
@@ -515,7 +515,7 @@ export const PuzzleLab: React.FC<TemplateMissionProps> = ({
                                     {attempts >= 2 && (
                                         <button
                                             onClick={handleSkip}
-                                            className="font-mono text-[10px] text-duck-gray hover:text-[#FCF6EA] transition-colors"
+                                            className="font-mono text-[10px] text-duck-gray hover:text-duck-bg transition-colors"
                                         >
                                             overslaan →
                                         </button>

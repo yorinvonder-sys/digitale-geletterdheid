@@ -23,7 +23,7 @@ const buildSafeHtmlPreview = (html: string): string => {
   <meta charset="utf-8" />
   <meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src 'self'; style-src 'unsafe-inline';" />
   <style>
-    body { font-family: system-ui, sans-serif; margin: 16px; color: #08283B; background: #FFFDF7; }
+    body { font-family: system-ui, sans-serif; margin: 16px; color: #202023; background: #ffffff; }
     img { max-width: 100%; height: auto; border-radius: 8px; }
   </style>
 </head>

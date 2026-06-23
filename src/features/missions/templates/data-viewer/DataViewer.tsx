@@ -189,7 +189,7 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
                                         value={opt}
                                         checked={answer === opt}
                                         onChange={() => onAnswer(q.id, opt)}
-                                        className="accent-[#D97848]"
+                                        className="accent-duck-error"
                                     />
                                     <span
                                         className="text-sm text-duck-ink/60"
