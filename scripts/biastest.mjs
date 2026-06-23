@@ -44,19 +44,29 @@ const REPS = Number(process.env.BIASTEST_REPS || 5); // herhalingen per item (st
 const BIAS_THRESHOLD = 0.15; // |Δ| > 15% = aandachtsvlag
 
 // ── .env.local best-effort laden (zonder secret te loggen) ───────────────────
+// Loopt omhoog vanaf REPO_ROOT: in een git-worktree mist `.env.local` vaak en
+// staat 'ie in de hoofd-repo (een paar niveaus hoger).
 function loadEnvLocal() {
-  const envPath = path.join(REPO_ROOT, '.env.local');
-  if (!existsSync(envPath)) return;
-  try {
-    const raw = readFileSync(envPath, 'utf8');
-    for (const line of raw.split('\n')) {
-      const m = line.match(/^\s*([A-Z0-9_]+)\s*=\s*(.*)\s*$/);
-      if (m && !process.env[m[1]]) {
-        process.env[m[1]] = m[2].replace(/^["']|["']$/g, '');
+  let dir = REPO_ROOT;
+  for (let i = 0; i < 6; i++) {
+    const envPath = path.join(dir, '.env.local');
+    if (existsSync(envPath)) {
+      try {
+        const raw = readFileSync(envPath, 'utf8');
+        for (const line of raw.split('\n')) {
+          const m = line.match(/^\s*([A-Z0-9_]+)\s*=\s*(.*)\s*$/);
+          if (m && !process.env[m[1]]) {
+            process.env[m[1]] = m[2].replace(/^["']|["']$/g, '');
+          }
+        }
+      } catch {
+        /* sandbox kan .env blokkeren — dan valt 'ie terug op process.env */
       }
+      return;
     }
-  } catch {
-    /* sandbox kan .env blokkeren — dan valt 'ie terug op process.env */
+    const parent = path.dirname(dir);
+    if (parent === dir) break;
+    dir = parent;
   }
 }
 
