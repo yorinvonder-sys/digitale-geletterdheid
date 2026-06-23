@@ -17,7 +17,8 @@ import {
     selectModel,
 } from "../_shared/chatCore.ts";
 import { buildMistralMessages, completeMistralChat } from "../_shared/mistralClient.ts";
-import { filterAiOutput } from "../_shared/outputFilter.ts";
+import { filterAiOutput, SAFE_FALLBACK_MESSAGE } from "../_shared/outputFilter.ts";
+import { moderateText } from "../_shared/moderationClient.ts";
 import { detectAndLogStepComplete } from "../_shared/stepCompleteDetector.ts";
 import { countTextChars, logAiUsageEvent } from "../_shared/aiUsageLogger.ts";
 
@@ -40,6 +41,27 @@ Deno.serve(async (req: Request) => {
         const aiPayload = buildAiChatPayload(validated);
         const inputChars = countTextChars(aiPayload);
         const historyChars = countTextChars(validated.safeHistory.history);
+
+        // Input moderation (Mistral classifier) — additioneel op de sanitizer.
+        const inputModeration = await moderateText(validated.sanitized);
+        if (inputModeration.flagged) {
+            logAiUsageEvent({
+                requestId: validated.requestId,
+                endpoint: "chat",
+                provider: "mistral",
+                model: requestedModel,
+                status: "blocked",
+                userId: validated.userId,
+                schoolId: validated.schoolId,
+                inputChars,
+                historyChars,
+                metadata: { reason: "moderation_input", moderation_categories: inputModeration.categories.join(",") },
+            }).catch((err) => console.error("[chat] Usage log error:", err));
+
+            return new Response(JSON.stringify({ text: SAFE_FALLBACK_MESSAGE }), {
+                headers: { ...corsHeaders, "Content-Type": "application/json", "X-AI-Request-Id": validated.requestId, ...rateLimitHeaders(validated.rateCheck) },
+            });
+        }
 
         const result = await completeMistralChat({
             messages: buildMistralMessages(validated.systemInstruction, aiPayload.contents),
@@ -67,17 +89,28 @@ Deno.serve(async (req: Request) => {
 
         const rawText = result.text;
 
-        // Post-processing safety filter for minors
+        // Post-processing safety voor minderjarigen: goedkope regex-eerste-pass,
+        // daarna Mistral-moderatie als de regex niets ving.
         const filterResult = filterAiOutput(rawText);
-        const text = filterResult.safe ? rawText : (filterResult.filtered || "");
-        console.log("[chat] Step 5: Success, text length:", text.length, filterResult.safe ? "" : `(filtered: ${filterResult.category})`);
+        let text = filterResult.safe ? rawText : (filterResult.filtered || SAFE_FALLBACK_MESSAGE);
+        let outputBlockReason: string | null = filterResult.safe ? null : `regex:${filterResult.category}`;
+
+        if (filterResult.safe) {
+            const outputModeration = await moderateText(rawText);
+            if (outputModeration.flagged) {
+                text = SAFE_FALLBACK_MESSAGE;
+                outputBlockReason = `moderation:${outputModeration.categories.join("|")}`;
+            }
+        }
+        const outputSafe = outputBlockReason === null;
+        console.log("[chat] Step 5: Success, text length:", text.length, outputSafe ? "" : `(blocked: ${outputBlockReason})`);
 
         logAiUsageEvent({
             requestId: validated.requestId,
             endpoint: "chat",
             provider: "mistral",
             model: result.model,
-            status: filterResult.safe ? "ok" : "blocked",
+            status: outputSafe ? "ok" : "blocked",
             userId: validated.userId,
             schoolId: validated.schoolId,
             inputChars,
@@ -89,7 +122,7 @@ Deno.serve(async (req: Request) => {
                 role_id: validated.body.roleId,
                 mission_id: validated.body.missionId,
                 finish_reason: (result.usagePayload as any)?.choices?.[0]?.finish_reason,
-                output_filter: filterResult.safe ? "safe" : filterResult.category,
+                output_filter: outputBlockReason ?? "safe",
             },
         }).catch((err) => console.error("[chat] Usage log error:", err));
 
