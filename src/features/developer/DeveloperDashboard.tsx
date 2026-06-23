@@ -34,6 +34,7 @@ const DeveloperAnalyticsPanel = React.lazy(() => import('./DeveloperAnalyticsPan
 const AccountantDashboard = React.lazy(() => import('./AccountantDashboard').then(m => ({ default: m.AccountantDashboard })));
 const DeveloperNotesPanel = React.lazy(() => import('./DeveloperNotesPanel').then(m => ({ default: m.DeveloperNotesPanel })));
 const DeveloperReviewChecklist = React.lazy(() => import('./DeveloperReviewChecklist').then(m => ({ default: m.DeveloperReviewChecklist })));
+const DpaPdfGenerator = React.lazy(() => import('./DpaPdfGenerator').then(m => ({ default: m.DpaPdfGenerator })));
 import {
     subscribeToDeveloperTasks,
     DeveloperTask,
@@ -55,7 +56,7 @@ interface DeveloperDashboardProps {
     onSwitchView?: (view: 'developer' | 'student' | 'teacher') => void;
 }
 
-type TabId = 'overview' | 'tasks' | 'timeline' | 'docs' | 'analytics' | 'boekhouding' | 'sprintplan' | 'notities' | 'reviewChecklist';
+type TabId = 'overview' | 'tasks' | 'timeline' | 'docs' | 'analytics' | 'boekhouding' | 'sprintplan' | 'notities' | 'reviewChecklist' | 'dpaGenerator';
 
 export function DeveloperDashboard({ user, onLogout, onSwitchView }: DeveloperDashboardProps) {
     const [activeTab, setActiveTab] = useState<TabId>('sprintplan');
@@ -100,6 +101,7 @@ export function DeveloperDashboard({ user, onLogout, onSwitchView }: DeveloperDa
         { id: 'docs',         label: 'Documenten',    icon: FileText },
         { id: 'analytics',    label: 'Analytics',     icon: BarChart3 },
         { id: 'boekhouding',  label: 'Boekhouding',   icon: Calculator },
+        { id: 'dpaGenerator', label: 'DPA Generator',  icon: FileText },
     ];
 
     const renderTabContent = () => {
@@ -319,6 +321,8 @@ export function DeveloperDashboard({ user, onLogout, onSwitchView }: DeveloperDa
                 return <Suspense fallback={<TabLoader />}><DeveloperNotesPanel /></Suspense>;
             case 'reviewChecklist':
                 return <Suspense fallback={<TabLoader />}><DeveloperReviewChecklist user={user} /></Suspense>;
+            case 'dpaGenerator':
+                return <Suspense fallback={<TabLoader />}><DpaPdfGenerator /></Suspense>;
             default:
                 return null;
         }

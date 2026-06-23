@@ -4,7 +4,12 @@ dist-ssr
 .firebase
 lighthouse-reports
 lighthouse-report.json
-business
+business/*
+!business/nl-vo
+business/nl-vo/*
+!business/nl-vo/compliance
+business/nl-vo/compliance/*
+!business/nl-vo/compliance/A-model-verwerkersovereenkomst-dgskills.md
 .claude
 .agent/skills
 .playwright-mcp
