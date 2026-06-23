@@ -489,12 +489,42 @@ Het AI-systeem beoordeelt leerlingantwoorden op stap-niveau. Een stap wordt als 
 - Recall: percentage daadwerkelijk voltooide taken dat als STEP_COMPLETE wordt gemarkeerd
 - Inter-rater reliability: vergelijking AI-beoordeling vs. docent-beoordeling op steekproef
 
+### 6.1.1 Biastest-methodologie (Art. 10 — non-discriminatie)
+
+Om te toetsen of de beoordeling onafhankelijk is van taalregister, culturele context of gender
+(risico's R06/R07/R08 in het risicoregister), is een reproduceerbare biastest-harness opgezet:
+`scripts/biastest.mjs` (`npm run biastest`).
+
+**Opzet:**
+- **Inhouds-equivalente paren:** per testitem wordt dezelfde objectieve inhoud aangeboden in twee
+  varianten waarbij alléén het register/de context verschilt (vmbo-register vs. havo/vwo-register;
+  Suikerfeest vs. Kerst; gender-cue). Een onbevooroordeeld model hoort beide gelijk te scoren.
+- **Echte productie-instructies:** de harness laadt de instructies uit
+  `supabase/functions/_shared/systemInstructions.ts` (geen paraphrase) en gebruikt de
+  productie-parameters (`mistral-small-latest`, temperature 0.7, `safe_prompt: true`).
+- **Primaire agent `prompt-master`:** scoort de eerste prompt direct op 3 objectieve criteria
+  (duidelijkheid/specificiteit/context). Door de specificaties constant te houden en alleen het register
+  te variëren, is register zuiver te scheiden van echte kwaliteit.
+- **Metriek:** per agent×variant de STEP_COMPLETE-rate en het aantal vervulde criteria (✅), gemiddeld
+  over N=5 herhalingen. Bias-signaal = |Δ(vwo-register − vmbo-register)| > 15% (STEP) of > 0,5 (✅).
+
+**Geverifieerde context:** het onderwijsniveau van de leerling wordt niet aan de AI meegegeven (geen
+`educationLevel` in de chat-request); register-bias kan dus alleen uit het taalregister van het antwoord
+zelf ontstaan, niet uit een niveau-label.
+
+**Beperking:** synthetische antwoorden (geen leerlingdata); de test meet het relatieve verschil tussen
+varianten, niet de absolute beoordelingskwaliteit. Herhaling per kwartaal (zie evaluatiecyclus
+risicoregister §6.1).
+
+**Status:** harness + eval-set opgezet en runbaar; uitvoering door de aanbieder met `MISTRAL_API_KEY`.
+De resultaten worden hier opgenomen na de eerste run.
+
 ### 6.2 Bekende beperkingen
 
 | Beperking | Beschrijving | Impact | Mitigatie |
 |-----------|-------------|--------|-----------|
 | Hallucinatie | LLM kan feitelijk onjuiste informatie genereren | Leerling leert onjuiste feiten | AI-disclaimer, docent als toezichthouder |
-| Bias | Model kan inconsistent presteren voor verschillende taalvaardigheidsniveaus | Ongelijke beoordeling | [TODO: biasbeoordeling uitvoeren] |
+| Bias | Model kan inconsistent presteren voor verschillende taalregisters/contexten | Ongelijke beoordeling | Biastest-harness opgezet (`scripts/biastest.mjs`, R06/R07/R08; methodologie §6.1.1); uitvoering door aanbieder, resultaten te documenteren |
 | Context window | Max 12 berichten + 6000 chars history | AI "vergeet" eerder gesprek bij langere sessies | Duidelijke stap-structuur per missie |
 | Geen multimodaliteit in chat | Leerling kan alleen tekst invoeren in chat | Sommige taken moeilijk te beoordelen via tekst alleen | Aanvullende beoordelingsmechanismen (code preview, blok-editor) |
 | Taalgebondenheid | System instructions in het Nederlands | Beperkte ondersteuning voor niet-Nederlandstalige leerlingen | Doelgroep is Nederlands VO |
