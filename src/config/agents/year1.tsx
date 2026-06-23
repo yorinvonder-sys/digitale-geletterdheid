@@ -875,7 +875,7 @@ Typ 'MISSIE VOLTOOID' om terug te keren naar het heden."
         icon: <Feather size={28} />,
         color: '#ff3c21',
         description: 'Visualiseer verhalen met AI.',
-        problemScenario: 'Ideeën zijn niets zonder beeld. Leer hoe je met AI jouw fantasie omzet in professionele illustraties.',
+        problemScenario: 'Ideeën zijn niets zonder beeld. Leer hoe je met AI eigen plaatjes bij je verhaal maakt. Je beschrijft wat je wilt zien, en de AI maakt er een afbeelding van.',
         missionObjective: 'Maak je eigen prentenboek.',
         briefingImage: '/assets/agents/verhalen_ontwerper_new.webp',
         difficulty: 'Easy',
@@ -1115,7 +1115,9 @@ BELANGRIJK:
 EERSTE BERICHT:
 "🎮 Yo! Welkom bij Game Programmeur!
 
-Er staat een game klaar, maar die is nog basic. Jij gaat de code aanpassen om er JOUW game van te maken. Verander kleuren, snelheid, zwaartekracht — jij bepaalt de regels!
+Er staat een game klaar, maar die is nog basic. Jij gaat de waarden aanpassen om er JOUW game van te maken. Verander kleuren, snelheid, hoe hoog Robbie springt — jij bepaalt de regels!
+
+**Jij hoeft geen code vanaf nul te schrijven: je past slimme waarden aan en kijkt wat er verandert. Ik schrijf de volledige code voor je.**
 
 **Probeer dit:** Typ hieronder iets als 'Maak de speler groen' of 'Maak het springen hoger'. Ik pas de code aan en je ziet het resultaat direct!
 
@@ -1128,12 +1130,12 @@ Wat wil je als eerste veranderen?"` + SYSTEM_INSTRUCTION_SUFFIX,
             },
             {
                 title: "Fysica",
-                description: "De speler springt te laag. Pas de 'jumpForce' aan.",
+                description: "De speler springt te laag. Pas de 'jumpForce' (= hoe hoog Robbie springt) en eventueel 'gravity' / zwaartekracht (= hoe snel Robbie weer valt) aan.",
                 example: "Typ: 'Spring twee keer zo hoog.'"
             },
             {
                 title: "Snelheid",
-                description: "Verander de snelheid van de vijanden of de speler.",
+                description: "Verander de snelheid van de obstakels of de speler — pas 'obstacleSpeed' (= hoe snel de obstakels komen) aan.",
                 example: "Typ: 'Maak de vijanden sneller.'"
             },
             {
@@ -1608,7 +1610,7 @@ Wat wil je als eerste veranderen?"` + SYSTEM_INSTRUCTION_SUFFIX,
             },
             {
                 title: "Testen",
-                description: "Geef het model iets nieuws en kijk of hij het snapt. Verbeter daarna je dataset als de voorspelling nog zwak is.",
+                description: "Geef het model (het AI-programma dat leert) iets nieuws en kijk of hij het snapt. Verbeter daarna je dataset (de lijst voorbeelden die de AI leert) als de voorspelling nog zwak is.",
                 example: "Typ: 'Waar hoort een eierdoos bij?'"
             }
         ]
@@ -3708,7 +3710,7 @@ BEPERKINGEN BESPREKEN:
         icon: <Scale size={28} />,
         color: '#ff3c21',
         description: 'Denk mee over AI-regels op school.',
-        problemScenario: 'AI is overal, maar welke regels moeten er zijn? Mag je ChatGPT gebruiken voor huiswerk? Jouw mening telt! Help de school met het vormgeven van AI-beleid.',
+        problemScenario: 'AI is overal, maar welke regels moeten er zijn? Mag je ChatGPT gebruiken voor huiswerk? Jouw mening telt! Help de school meedenken over welke regels de school moet maken voor AI.',
         missionObjective: 'Deel jouw ideeën en stem op de beste voorstellen van anderen.',
         briefingImage: '/assets/agents/ai_beleid_brainstorm.webp',
         difficulty: 'Easy',

@@ -116,12 +116,12 @@ const config: ReviewArenaConfig = {
                     right: 'Automatisch uitvoeren van USB uitschakelen',
                 },
                 {
-                    left: 'Man-in-the-middle aanval op wifi',
+                    left: 'Man-in-the-middle aanval op wifi (een aanvaller luistert mee tussen jou en de server)',
                     right: 'HTTPS gebruiken en VPN inschakelen',
                 },
                 {
                     left: 'DDoS-aanval overbelast een server',
-                    right: 'Verkeer filteren via firewall en rate limiting',
+                    right: 'Verkeer filteren via firewall en rate limiting (het aantal pogingen beperken)',
                 },
             ],
         },
@@ -165,7 +165,7 @@ const config: ReviewArenaConfig = {
                 {
                     question: 'Symmetrische encryptie gebruikt één sleutel voor versleutelen én ontsleutelen.',
                     answer: true,
-                    explanation: 'Bij symmetrische encryptie (bijv. AES) heeft de ontvanger dezelfde sleutel als de verzender.',
+                    explanation: 'Bij symmetrische encryptie (bijv. AES — een veelgebruikte versleutelingsmethode) heeft de ontvanger dezelfde sleutel als de verzender.',
                 },
                 {
                     question: 'Een phishing-mail is altijd duidelijk te herkennen aan spelfouten.',

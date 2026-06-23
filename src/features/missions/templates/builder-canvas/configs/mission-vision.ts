@@ -23,7 +23,7 @@ export const missionVisionConfig: BuilderCanvasConfig = {
             description:
                 'Een visie is meer dan een plan. Het is een beeld van hoe jij wilt dat de wereld (of jouw project) eruitziet in de toekomst. Een sterke visie inspireert andere mensen om mee te doen.',
             instruction:
-                'Beschrijf de visie van je project of idee. Beantwoord: 1) Wat is jouw droom voor dit project? (beschrijf het alsof het al bestaat), 2) Welk probleem lost jouw idee op?, 3) Wie profiteert ervan en hoe verandert hun leven?, 4) Schrijf een "visiestelling" in één zin: "Wij geloven in een wereld waar [jouw droom] werkelijkheid is." Schrijf daarna 3 kernwaarden die jouw project uitstraalt (bijv. eerlijk, creatief, duurzaam).',
+                'Beschrijf de visie van je project of idee. Beantwoord: 1) Wat is jouw droom voor dit project? (beschrijf het alsof het al bestaat), 2) Welk probleem lost jouw idee op?, 3) Wie profiteert ervan en hoe verandert hun leven?, 4) Schrijf een visiestelling (= één zin die samenvat waar jij in gelooft) in de vorm: "Wij geloven in een wereld waar [jouw droom] werkelijkheid is." Schrijf daarna 3 kernwaarden (= woorden die uitstralen wat jouw project belangrijk vindt, bijv. eerlijk, creatief, duurzaam).',
             tip: 'De beste visies zijn concreet maar ambitieus. "Elke leerling heeft toegang tot kwalitatief onderwijs, waar ook ter wereld" is concreter dan "beter onderwijs". Maak het voelbaar.',
             checklistItems: [
                 { id: 'droom', label: 'De droom is beschreven in tegenwoordige tijd (alsof het al bestaat)' },
@@ -105,21 +105,32 @@ export const missionVisionConfig: BuilderCanvasConfig = {
             },
         },
         {
-            id: 'pitchen',
+            id: 'pitch-schrijven',
             title: 'Visie pitchen in 2 minuten',
             description:
-                'Je visie pitchen is anders dan je plan uitleggen. Een pitch is een verhaal dat mensen enthousiast maakt. Het gaat niet om feiten — het gaat om gevoel, richting en geloof.',
+                'Je visie pitchen (= een korte, overtuigende presentatie geven) is anders dan je plan uitleggen. Een pitch is een verhaal dat mensen enthousiast maakt. Het gaat niet om feiten — het gaat om gevoel, richting en geloof.',
             instruction:
-                'Schrijf een 2-minuten pitch voor jouw visie. Gebruik deze structuur: 1) Open met een vraag of beeld dat het probleem voelbaar maakt (30 sec), 2) Beschrijf jouw droom-oplossing en wat die verandert (45 sec), 3) Vertel één concreet voorbeeld of verhaal dat jouw visie laat leven (30 sec), 4) Sluit af met een uitnodiging: wat wil je van je publiek? (15 sec). Schrijf de tekst als gesproken woord — kort en krachtig. Bouw je 5 slides ook écht in PowerPoint: kies een thema via het tabblad Ontwerp en zorg dat elke slide maximaal 5 bullets heeft. Sla het bestand op in de map "P4-Eindproject" in OneDrive.',
+                'Schrijf een 2-minuten pitch voor jouw visie. Gebruik deze structuur: 1) Open met een vraag of beeld dat het probleem voelbaar maakt (30 sec), 2) Beschrijf jouw droom-oplossing (45 sec), 3) Vertel één concreet voorbeeld (30 sec), 4) Sluit af met een uitnodiging aan je publiek (15 sec). Schrijf als gesproken woord — kort en krachtig.',
             tip: 'Een visie-pitch eindigt niet met "zijn er nog vragen?" maar met een uitnodiging: "Ik zoek mensen die dit mee willen bouwen" of "Ik wil weten: welk deel spreekt jou het meest aan?"',
             checklistItems: [
                 { id: 'vier-onderdelen', label: 'De pitch heeft 4 onderdelen in de juiste volgorde' },
                 { id: 'gesproken-taal', label: 'De tekst is gesproken taal, niet schrijftaal' },
                 { id: 'uitnodiging', label: 'De pitch eindigt met een uitnodiging, niet een vraag' },
                 { id: 'twee-minuten', label: 'De pitch past in 2 minuten (ca. 250-300 woorden)' },
-                { id: 'slides-opgeslagen', label: 'Mijn 5 PowerPoint-slides zijn opgeslagen in de map "P4-Eindproject" in OneDrive' },
             ],
             textPrompt: 'Schrijf je 2-minuten visie-pitch',
+        },
+        {
+            id: 'slides-bouwen',
+            title: 'Presentatie bouwen in PowerPoint',
+            description:
+                'Nu je pitch klaar is, bouw je de bijbehorende slides écht in PowerPoint. Goede slides ondersteunen wat jij zegt — ze vervangen jou niet.',
+            instruction:
+                'Open PowerPoint en maak een presentatie van 5 slides. Kies een thema via het tabblad Ontwerp dat bij jouw visiestelling past. Zorg dat elke slide maximaal 5 bullets heeft. Sla het bestand op in de map "P4-Eindproject" in OneDrive en plak de bestandslink hieronder.',
+            checklistItems: [
+                { id: 'slides-opgeslagen', label: 'Mijn 5 PowerPoint-slides zijn opgeslagen in de map "P4-Eindproject" in OneDrive' },
+            ],
+            textPrompt: 'Plak hier de link naar je PowerPoint in OneDrive',
         },
     ],
     maxScore: 100,

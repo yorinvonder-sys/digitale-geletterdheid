@@ -44,7 +44,7 @@ const config: DebateArenaConfig = {
             emoji: '⚖️',
             role: 'Privacy-expert',
             perspective:
-                'De AVG schrijft voor dat scholen een wettelijke grondslag nodig hebben voor elke gegevensverzameling. Toestemming van minderjarigen is problematisch — ouders moeten toestemmen, maar ook die toestemming is niet altijd vrij als het gaat om toegang tot onderwijs. Scholen zijn verplicht een DPIA uit te voeren voor dit soort apps.',
+                'De AVG (= de Europese privacywet) schrijft voor dat scholen een goede, wettelijk toegestane reden nodig hebben voor elke gegevensverzameling. Toestemming van minderjarigen is problematisch — ouders moeten toestemmen, maar ook die toestemming is niet vrij als het om toegang tot onderwijs gaat. Scholen zijn verplicht een DPIA (= een verplichte privacy-check) uit te voeren voor dit soort apps.',
             keyArgument:
                 'Dataverzameling mag alleen als het noodzakelijk is, proportioneel is en de betrokkene het weet. Aan alle drie de eisen moet worden voldaan.',
         },
@@ -122,8 +122,8 @@ const config: DebateArenaConfig = {
     takeaways: [
         'De AVG geeft jou als leerling het recht op inzage, correctie en verwijdering van jouw data.',
         'Toestemming is niet vrij als afwijzing toegang tot onderwijs kost.',
-        'Dataminimalisatie is een wettelijk principe: verzamel alleen wat noodzakelijk is.',
-        'Scholen zijn verwerkers van persoonsgegevens en zijn wettelijk aansprakelijk voor hoe ze die bewaren.',
+        'Verzamel alleen wat noodzakelijk is — de wet (AVG) verplicht scholen daartoe.',
+        'Scholen zijn wettelijk verantwoordelijk voor hoe ze leerlinggegevens bewaren en gebruiken.',
     ],
 };
 

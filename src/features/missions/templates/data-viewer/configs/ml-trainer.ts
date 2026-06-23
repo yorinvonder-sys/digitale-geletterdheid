@@ -158,7 +158,7 @@ export const mlTrainerConfig: DataViewerConfig = {
                     title: 'Features en labels',
                     icon: '🏷️',
                     content:
-                        'Features zijn de kenmerken die het model als input krijgt: "heeft link", "onbekende afzender", "percentage hoofdletters". Labels zijn de uitkomsten die het model moet leren voorspellen: "spam" of "geen spam". Het kiezen van de juiste features is een van de moeilijkste en belangrijkste stappen in machine learning — ook wel "feature engineering" genoemd.',
+                        'Features zijn de kenmerken die het model als input krijgt: "heeft link", "onbekende afzender", "percentage hoofdletters". Labels zijn de uitkomsten die het model moet leren voorspellen: "spam" of "geen spam". Het kiezen van de juiste features is een van de moeilijkste en belangrijkste stappen in machine learning — ook wel feature engineering genoemd, wat betekent: zelf slimme kenmerken kiezen of maken waar het model van kan leren.',
                 },
                 {
                     title: 'Classificatie vs. regressie',

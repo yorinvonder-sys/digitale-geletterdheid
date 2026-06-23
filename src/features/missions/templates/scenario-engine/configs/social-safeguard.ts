@@ -6,7 +6,7 @@ const config: ScenarioEngineConfig = {
     introEmoji: '🛡️',
     introTitle: 'Social Safeguard',
     introDescription:
-        'Online conflicten kunnen snel escaleren: pesten, nepaccounts, doxing, schermafdrukken die worden doorgestuurd. Je wil helpen — maar hoe doe je dat zonder het erger te maken? Jij leert veilig en slim reageren in lastige online situaties.',
+        'Online conflicten kunnen snel escaleren: pesten, nepaccounts, doxing (= iemands privé-informatie online zetten als aanval), schermafdrukken die worden doorgestuurd. Je wil helpen — maar hoe doe je dat zonder het erger te maken? Jij leert veilig en slim reageren in lastige online situaties.',
     introFeatures: [
         'Herken wat er echt aan de hand is in online conflicten',
         'Kies de veiligste actie in lastige situaties',
@@ -326,7 +326,7 @@ const config: ScenarioEngineConfig = {
                         'Je verwijdert de naam van je school, je stad en je verjaardag uit je publieke profielbeschrijving.',
                     correct: true,
                     explanation:
-                        'Publieke bio-informatie is makkelijk te misbruiken voor doxing of social engineering. Hoe minder specifieke info, hoe moeilijker het is voor kwaadwillenden om een profiel van jou op te bouwen.',
+                        'Publieke bio-informatie is makkelijk te misbruiken voor doxing of social engineering (= mensen manipuleren door informatie over hen te gebruiken). Hoe minder specifieke info, hoe moeilijker het is voor kwaadwillenden om een profiel van jou op te bouwen.',
                 },
                 {
                     id: 3,
@@ -346,7 +346,7 @@ const config: ScenarioEngineConfig = {
                         'Je accepteert geen volgverzoeken van mensen die je niet persoonlijk kent.',
                     correct: true,
                     explanation:
-                        'Nep- of onbekende accounts kunnen informatie verzamelen voor social engineering, catfishing of phishing. Als je het profiel niet herkent: weigeren.',
+                        'Nep- of onbekende accounts kunnen informatie verzamelen voor social engineering of catfishing (= iemand doet zich voor als een ander om jou te misleiden). Als je het profiel niet herkent: weigeren.',
                 },
                 {
                     id: 5,

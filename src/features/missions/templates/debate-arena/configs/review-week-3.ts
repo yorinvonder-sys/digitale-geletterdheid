@@ -24,7 +24,7 @@ const config: DebateArenaConfig = {
             emoji: '⚖️',
             role: 'Privacy- en wetgevingsspecialist',
             perspective:
-                'Ik bekijk jouw project door de bril van de wet. Verwerk jij persoonsgegevens — namen, foto\'s, e-mailadressen? Dan moet je kunnen aantonen dat je toestemming hebt én dat duidelijk is wie verantwoordelijk is voor die gegevens. "Ik dacht dat het mocht" is geen juridisch verweer.',
+                'Ik bekijk jouw project door de bril van de wet (de AVG — de Europese privacywet). Verwerk jij persoonsgegevens — namen, foto\'s, e-mailadressen? Dan moet je kunnen aantonen dat je toestemming hebt én dat duidelijk is wie verantwoordelijk is voor die gegevens. "Ik dacht dat het mocht" is geen verdediging als de rechter ernaar kijkt.',
             keyArgument:
                 'Legaal betekent: ook als een rechter ernaar kijkt, klopt het — niet "waarschijnlijk mag het".',
         },
@@ -34,7 +34,7 @@ const config: DebateArenaConfig = {
             emoji: '🔍',
             role: 'Ethicus voor eerlijkheid en bias',
             perspective:
-                'Mijn vraag aan jou: werkt jouw project voor iedereen even goed? Sluit het bepaalde leerlingen buiten — misschien per ongeluk, omdat je dataset niet representatief was? En als je iemand met een beperking jouw project zou laten gebruiken, zou het dan ook voor hem of haar werken?',
+                'Mijn vraag aan jou: werkt jouw project voor iedereen even goed? Sluit het bepaalde leerlingen buiten — misschien per ongeluk? Werkt het bijvoorbeeld ook voor leerlingen met dyslexie? En als je iemand met een beperking jouw project zou laten gebruiken, zou het dan ook voor hem of haar werken?',
             keyArgument:
                 'Eerlijk betekent: niemand wordt systematisch benadeeld door jouw project — ook niet per ongeluk.',
         },

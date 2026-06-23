@@ -44,7 +44,7 @@ const config: ScenarioEngineConfig = {
         'Twijfelen is een superkracht — een sceptische lezer is moeilijker te misleiden dan een gelovige.',
         'Controleer altijd wie de auteur is en wat zijn belang kan zijn bij een bericht.',
         'Één bron is geen bewijs. Pas als meerdere onafhankelijke bronnen iets bevestigen, is het aannemelijk waar.',
-        'Een clickbait-kop ("Dit gelooft u nooit!") is zelden een teken van betrouwbare journalistiek.',
+        'Een clickbait-kop (= een kop die je nieuwsgierig maakt om te klikken, ook al klopt het niet, zoals "Dit gelooft u nooit!") is zelden een teken van betrouwbare journalistiek.',
         'Emotie in een bericht — woede, angst, verbazing — is een signaal om extra kritisch te zijn, niet om meteen te delen.',
     ],
     rounds: [
@@ -293,7 +293,7 @@ const config: ScenarioEngineConfig = {
             emoji: '🧪',
             title: 'De CRAAP-methode toepassen',
             description:
-                'De CRAAP-methode helpt je een bron te beoordelen: Currency (hoe oud?), Relevance (past het?), Authority (wie zegt het?), Accuracy (klopt het?), Purpose (waarom?). Welke vragen horen bij de CRAAP-methode? Selecteer ze.',
+                'De CRAAP-methode helpt je een bron te beoordelen: Currency (actualiteit — hoe oud?), Relevance (relevantie — past het?), Authority (wie het zegt — wie is de bron?), Accuracy (klopt het?), Purpose (waarom — wat is het doel?). Welke vragen horen bij de CRAAP-methode? Selecteer ze.',
             type: 'select-correct',
             maxScore: 25,
             feedbackCorrect:

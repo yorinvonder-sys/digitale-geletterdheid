@@ -6,7 +6,7 @@ export const dataReviewConfig: ReviewArenaConfig = {
     introEmoji: '🔐',
     introTitle: 'Wat weet jij over data en privacy?',
     introDescription:
-        'Test je kennis over databronnen, persoonsgegevens en de AVG via vier afwisselende ronden. Elk type opgave vraagt iets anders van je.',
+        'Test je kennis over databronnen, persoonsgegevens en de AVG (= de Europese privacywet) via vier afwisselende ronden. Elk type opgave vraagt iets anders van je.',
     maxScore: 100,
     badges: [
         {
@@ -105,11 +105,11 @@ export const dataReviewConfig: ReviewArenaConfig = {
             pairs: [
                 {
                     left: 'Wachtwoorden in een database',
-                    right: 'Hashing (bijv. bcrypt)',
+                    right: 'Je wachtwoord versleutelen (hashing)',
                 },
                 {
                     left: 'E-mails over het internet',
-                    right: 'Versleuteling (TLS/SSL)',
+                    right: 'Een beveiligde verbinding (https)',
                 },
                 {
                     left: 'Medisch dossier op een USB-stick',

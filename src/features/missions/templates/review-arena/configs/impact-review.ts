@@ -109,7 +109,7 @@ const config: ReviewArenaConfig = {
                     'Leraren kunnen zelf ook bijhouden wie er binnenkomt',
                 ],
                 correctIndex: 1,
-                explanation: 'Biometrische data van minderjarigen valt onder bijzondere persoonsgegevens die extra bescherming vereisen (AVG). Inzet zonder toestemming schendt fundamentele privacyrechten — ongeacht of het systeem effectief is. Kosten en effectiviteit zijn relevante factoren, maar privacyrechten zijn een harde juridische en ethische grens. Alternatieve methoden (optie 4) doen niet af aan de rechtsvraag.',
+                explanation: 'Biometrische data (= gegevens over je lichaam, zoals je gezicht) van minderjarigen valt onder bijzondere persoonsgegevens die extra bescherming vereisen volgens de AVG (= de Europese privacywet). Inzet zonder toestemming schendt fundamentele privacyrechten — ongeacht of het systeem effectief is. Kosten en effectiviteit zijn relevante factoren, maar privacyrechten zijn een harde juridische en ethische grens. Alternatieve methoden (optie 4) doen niet af aan de rechtsvraag.',
                 bonusPoints: 5,
             },
             categories: ['Kans', 'Risico'],
@@ -139,7 +139,7 @@ const config: ReviewArenaConfig = {
                     'Het systeem kost meer dan een HR-medewerker',
                 ],
                 correctIndex: 1,
-                explanation: 'Historische aanstellingsdata weerspiegelt vaak bestaande vooroordelen (bijv. minder vrouwen of mensen met een migratieachtergrond in bepaalde functies). Een model dat hierop traint leert die bias over — en versterkt deze op schaal. Dit is het kernprobleem van algoritmische discriminatie en een harde eis onder de EU AI Act voor hoog-risico systemen. Snelheid, vertrouwen en kosten zijn reële overwegingen, maar de bias-vraag is ethisch en juridisch het meest urgent.',
+                explanation: 'Historische aanstellingsdata weerspiegelt vaak bestaande vooroordelen (bijv. minder vrouwen of mensen met een migratieachtergrond in bepaalde functies). Een model dat hierop traint leert die bias over — en versterkt deze op schaal. Dit is het kernprobleem van algoritmische discriminatie en een harde eis onder de EU AI Act (= de Europese AI-wet) voor hoog-risico systemen. Snelheid, vertrouwen en kosten zijn reële overwegingen, maar de bias-vraag is ethisch en juridisch het meest urgent.',
                 bonusPoints: 5,
             },
             timePerQuestion: 12,
@@ -157,7 +157,7 @@ const config: ReviewArenaConfig = {
                 {
                     question: 'Een filterbubble zorgt ervoor dat je meer diverse meningen te zien krijgt.',
                     answer: false,
-                    explanation: 'Een filterbubble toont je juist meer van hetzelfde — content die aansluit bij je bestaande opvattingen.',
+                    explanation: 'Een filterbubble toont je juist meer van hetzelfde — content die aansluit bij je bestaande opvattingen. Dit kan leiden tot polarisatie (= groepen tegenover elkaar komen te staan) omdat je anders-denkenden steeds minder tegenkomt.',
                 },
                 {
                     question: 'Technologische innovatie lost altijd maatschappelijke problemen op.',

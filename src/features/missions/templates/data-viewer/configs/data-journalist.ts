@@ -82,7 +82,7 @@ export const dataJournalistConfig: DataViewerConfig = {
                 question: 'Welk aspect is het belangrijkst bij het beoordelen van de betrouwbaarheid van een dataset?',
                 options: ['De grootte van de dataset', 'De bron en methode van dataverzameling', 'Hoe recent de data is', 'Of de data je hypothese bevestigt'],
                 correctIndex: 1,
-                explanation: 'De bron en methode bepalen de validiteit. Grote of recente datasets kunnen alsnog onbetrouwbaar zijn als de verzamelmethode gebrekkig is.',
+                explanation: 'De bron en methode bepalen de betrouwbaarheid. Grote of recente datasets kunnen alsnog onbetrouwbaar zijn als de verzamelmethode gebrekkig is.',
                 bonusPoints: 0,
             },
         },
@@ -162,7 +162,7 @@ export const dataJournalistConfig: DataViewerConfig = {
                     title: 'Volkskrant-stijl voorbeeldbericht — 28 november 2024',
                     icon: '📰',
                     content:
-                        'Een meta-analyse van 47 internationale studies concludeert dat er een "matig negatief verband" bestaat tussen intensief social media gebruik (meer dan 3 uur per dag) en zelfgerapporteerd welzijn bij meisjes van 11-14 jaar. Bij jongens was het verband zwakker en minder consistent.',
+                        'Een meta-analyse (= een onderzoek dat veel andere studies samenvat) van 47 internationale studies concludeert dat er een "matig negatief verband" bestaat tussen intensief social media gebruik (meer dan 3 uur per dag) en zelfgerapporteerd welzijn bij meisjes van 11-14 jaar. Bij jongens was het verband zwakker en minder consistent.',
                 },
                 {
                     title: 'Schoolkrant 2B — 12 maart 2025',
@@ -196,7 +196,7 @@ export const dataJournalistConfig: DataViewerConfig = {
                     type: 'text-observation',
                     correctAnswer: '',
                     explanation:
-                        'Het kernprobleem heet "conflict of interest" of belangenverstrengeling: Instagram heeft er financieel belang bij dat hun product positief wordt beoordeeld. Onafhankelijk onderzoek (door RIVM, universiteiten) heeft dit belang niet. Goed kritisch denken houdt altijd rekening met wie onderzoek financiert of uitvoert.',
+                        'Het kernprobleem heet "conflict of interest" (= belangenverstrengeling: de onderzoeker heeft er zelf belang bij): Instagram heeft er financieel belang bij dat hun product positief wordt beoordeeld. Onafhankelijk onderzoek (door RIVM, universiteiten) heeft dit belang niet. Goed kritisch denken houdt altijd rekening met wie onderzoek financiert of uitvoert.',
                     points: 5,
                 },
             ],

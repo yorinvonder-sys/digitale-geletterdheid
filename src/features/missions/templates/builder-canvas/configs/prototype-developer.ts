@@ -71,7 +71,7 @@ export const prototypeDeveloperConfig: BuilderCanvasConfig = {
             description:
                 'Een prototype dat je niet hebt getest is niet klaar. Echte gebruikers doen onverwachte dingen. Ze drukken op plekken die je niet bedoeld had. Ze begrijpen instructies anders. Testen onthult wat je zelf niet kunt zien.',
             instruction:
-                'Beschrijf je testproces. Vul in: 1) Wie heeft je prototype getest? (minimaal 2 personen — klasgenoot, familielid), 2) Welke taak hebben ze uitgevoerd tijdens het testen?, 3) Welke 2 observaties of feedbackpunten heb je verzameld? (concreet: wat deden of zeiden ze?), 4) Welke 1 verbetering heb je doorgevoerd op basis van de feedback? Beschrijf ook: wat zou je doen als je meer tijd had om te verbeteren?',
+                'Beschrijf je testproces. Vul in: 1) Wie heeft je prototype getest? (minimaal 2 personen — klasgenoot, familielid), 2) Welke taak hebben ze uitgevoerd?, 3) Welke 2 observaties of feedbackpunten heb je verzameld? (concreet: wat deden of zeiden ze?), 4) Welke 1 verbetering heb je doorgevoerd — en wat zou je doen met meer tijd?',
             tip: 'Observeer, vraag niet tijdens het testen. Zeg niet "Nee, je moet hier klikken." Kijk gewoon. Waar iemand vastloopt, is een probleem in je design — niet bij de gebruiker.',
             checklistItems: [
                 { id: 'twee-testers', label: 'Minimaal 2 testpersonen zijn beschreven' },

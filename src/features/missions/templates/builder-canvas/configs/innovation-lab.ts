@@ -37,7 +37,7 @@ export const innovationLabConfig: BuilderCanvasConfig = {
             id: 'technologie-oplossing',
             title: 'Technologische oplossing ontwerpen',
             description:
-                'Nu komt het creatieve gedeelte: welke technologie gebruik je? Apps, AI, sensoren, satellieten, blockchain? De oplossing moet haalbaar zijn — niet science fiction — maar mag ambitieus zijn.',
+                'Nu komt het creatieve gedeelte: welke technologie gebruik je? Apps, AI, sensoren, satellieten, blockchain (= een gedeeld, niet-wijzigbaar digitaal logboek)? De oplossing moet haalbaar zijn — niet science fiction — maar mag ambitieus zijn.',
             instruction:
                 'Ontwerp je technologische oplossing. Beschrijf: 1) Wat is het product of systeem? (app, platform, sensor-netwerk, AI-tool), 2) Hoe werkt het? (beschrijf de technologie in begrijpelijke taal), 3) Wie zijn de gebruikers en hoe gebruiken ze het?, 4) Welke bestaande technologie gebruik je als basis? (je hoeft niet alles zelf uit te vinden), 5) Wat is het meest innovatieve element van jouw oplossing?',
             tip: 'De beste innovaties combineren bestaande technologie op een nieuwe manier. WhatsApp heruitvond SMS niet — het gebruikte het internet voor berichten. Welke bestaande technologie combineer jij?',
@@ -71,7 +71,7 @@ export const innovationLabConfig: BuilderCanvasConfig = {
             description:
                 'Innovatie is pas waardevol als het écht iets verandert. Hoe meet je de impact van jouw oplossing? En wat zijn de risico\'s of neveneffecten die je niet wilt? Een eerlijke innovator kijkt ook naar de nadelen.',
             instruction:
-                'Beschrijf de verwachte impact van jouw innovatie. Gebruik: 1) Kwantitatieve impact: hoeveel mensen help je, hoeveel tijd/geld/CO2 bespaar je? (maak een schatting met redenering), 2) Kwalitatieve impact: wat verandert er in het dagelijks leven van gebruikers?, 3) Risico\'s en bijeffecten: wat kan er misgaan of wie wordt er benadeeld?, 4) Duurzaamheid: hoe zorg je dat de innovatie blijft bestaan na het eerste jaar?',
+                'Beschrijf de verwachte impact van jouw innovatie. Gebruik: 1) Kwantitatieve impact (= in cijfers): hoeveel mensen help je, hoeveel tijd/geld/CO2 bespaar je? (maak een schatting met redenering), 2) Kwalitatieve impact (= in woorden): wat verandert er in het dagelijks leven van gebruikers?, 3) Risico\'s en bijeffecten: wat kan er misgaan of wie wordt er benadeeld?, 4) Duurzaamheid — hoe de innovatie blijft bestaan: hoe zorg je dat het na het eerste jaar verder gaat?',
             tip: 'Elke technologie heeft onbedoelde gevolgen. Sociale media verbindt mensen maar veroorzaakt ook polarisatie. Wees eerlijk over de risico\'s — dat maakt je innovatie geloofwaardiger.',
             checklistItems: [
                 { id: 'kwant-impact', label: 'Kwantitatieve impact is geschat met redenering' },

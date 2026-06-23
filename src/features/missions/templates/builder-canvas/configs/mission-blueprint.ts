@@ -23,13 +23,13 @@ export const missionBlueprintConfig: BuilderCanvasConfig = {
             description:
                 'Elk groot project begint met een helder beeld van wat je wilt bereiken. Zonder doel weet je niet wanneer je klaar bent. En zonder omschrijving weet je niet waar je begint.',
             instruction:
-                'Beschrijf je eindproject in 3 tot 5 zinnen. Beantwoord: 1) Wat ga je maken?, 2) Voor wie is het?, 3) Wat is het coolste of meest uitdagende eraan? Geef je project ook een naam. Schrijf daarna in één zin op wanneer je "klaar" bent — dat is je definitie van Done. Je kiest zelf het onderwerp, maar je project moet aansluiten bij een vaardigheid of concept dat je dit jaar leerde — uit Periode 1 (digitale tools, cloud), Periode 2 (AI & maken) of Periode 3 (digitaal burgerschap). Beschrijf welke vaardigheid je gaat gebruiken.',
+                'Beschrijf je eindproject in 3 tot 5 zinnen. Beantwoord: 1) Wat ga je maken?, 2) Voor wie is het?, 3) Wat is het coolste eraan? Geef je project een naam. Schrijf daarna in één zin je definitie van Done (= wanneer je iets als klaar mag beschouwen). Je kiest zelf het onderwerp. Gebruik de checklist hieronder voor de rest.',
             tip: 'Een project zonder duidelijk eindpunt is als een reis zonder bestemming. Schrijf je definitie van Done op en hang hem ergens waar je hem elke sessie ziet.',
             checklistItems: [
                 { id: 'beschrijving', label: 'Ik heb mijn project beschreven in 3-5 zinnen' },
                 { id: 'naam', label: 'Mijn project heeft een naam' },
                 { id: 'done', label: 'Ik heb in één zin beschreven wanneer ik "klaar" ben' },
-                { id: 'dg-link', label: 'Ik heb beschreven welke vaardigheid uit P1, P2 of P3 mijn project gebruikt' },
+                { id: 'dg-link', label: 'Mijn project sluit aan bij een vaardigheid uit P1 (digitale tools, cloud), P2 (AI & maken) of P3 (digitaal burgerschap) — ik heb beschreven welke' },
             ],
             textPrompt: 'Beschrijf je project en definitie van Done',
             reflectionQuestion: {

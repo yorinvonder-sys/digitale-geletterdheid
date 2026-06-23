@@ -20,7 +20,7 @@ export const cloudCommanderConfig: ToolGuideConfig = {
             id: 'stap-1-openen',
             title: 'OneDrive openen',
             instruction:
-                'Open de **OneDrive**-app op je iPad. Je vindt hem op het beginscherm of in de App Library. Log in met je **schoolaccount** (je e-mailadres dat op school @leerling.schoolnaam.nl eindigt). Als je dat nog niet weet, vraag dan je docent.',
+                'Open de **OneDrive**-app op je iPad. Je vindt hem op het beginscherm of in de **App Library** (de app-overzichtsmap op je iPad). Log in met je **schoolaccount** (je e-mailadres dat op school @leerling.schoolnaam.nl eindigt). Als je dat nog niet weet, vraag dan je docent.',
             tip: 'Gebruik altijd je schoolaccount — niet je persoonlijke Gmail of iCloud. Zo weet je zeker dat je bestanden veilig staan en de school toegang heeft als dat nodig is.',
             checklistItems: [
                 { id: 'app-gevonden', label: 'Ik heb de OneDrive-app gevonden op mijn iPad' },
@@ -65,8 +65,8 @@ export const cloudCommanderConfig: ToolGuideConfig = {
             id: 'stap-4-delen',
             title: 'Bestand delen',
             instruction:
-                'Open het bestand dat je net hebt geüpload. Tik op het **deelicoon** (een vierkantje met een pijltje omhoog) of hou je vinger op het bestand en kies **Delen**. Kies **Koppeling kopiëren** of **Persoon uitnodigen**. Als je een koppeling kopieert, stuur die dan via Teams of Magister naar een klasgenoot.',
-            tip: 'Een deellink is veiliger dan je bestand als bijlage sturen. De ontvanger kan het bestand altijd bekijken met de meest recente versie — en jij bepaalt wie toegang heeft.',
+                'Open het bestand dat je net hebt geüpload. Tik op het **deelicoon** (het deel-/verzend-icoontje: een vierkantje met een pijltje omhoog) of hou je vinger op het bestand en kies **Delen**. Kies **Koppeling kopiëren** (een link naar je bestand) of **Persoon uitnodigen**. Als je een koppeling kopieert, stuur die dan via Teams of Magister naar een klasgenoot.',
+            tip: 'Een deellink is veiliger dan je bestand als **bijlage** sturen (een bestand dat je meestuurt in een bericht). De ontvanger kan het bestand altijd bekijken met de meest recente versie — en jij bepaalt wie toegang heeft.',
             checklistItems: [
                 { id: 'deellink', label: 'Ik heb een deellink aangemaakt of iemand uitgenodigd' },
                 { id: 'link-verstuurd', label: 'Ik heb de link gedeeld met een klasgenoot' },

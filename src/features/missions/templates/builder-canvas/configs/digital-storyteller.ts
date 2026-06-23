@@ -55,12 +55,12 @@ export const digitalStorytellerConfig: BuilderCanvasConfig = {
             description:
                 'Nu ga je de tekst schrijven. Interactieve verhalen zijn anders dan boeken: je schrijft in de tweede persoon ("Jij loopt de kamer binnen") zodat de lezer zich de hoofdpersoon voelt. Kort, levendig en actiegericht.',
             instruction:
-                'Schrijf de beginscène en één keuze-scène van je verhaal. Gebruik de tweede persoon ("jij" of "je"). De beginscène: minimaal 80 woorden, eindigend met een eerste keuze voor de lezer. De keuze-scène: een van de twee opties uitgewerkt tot minstens 60 woorden. Voeg aan het einde van elke scène de keuze-opties toe als: [KIES: Optie A] of [KIES: Optie B].',
-            tip: 'Begin elke scène in medias res — midden in de actie. Niet: "Het was een rustige dag." Wel: "De deur vloog open en..."',
+                'Schrijf de beginscène en één keuze-scène van je verhaal. Gebruik de tweede persoon ("jij" of "je"). De beginscène: minimaal 80 woorden, eindigend met een eerste keuze voor de lezer. De keuze-scène: een van de twee opties uitgewerkt tot minstens 60 woorden.',
+            tip: 'Begin elke scène midden in de actie (in medias res). Niet: "Het was een rustige dag." Wel: "De deur vloog open en..." Zet de keuze-opties aan het einde van elke scène: [KIES: Optie A] of [KIES: Optie B].',
             checklistItems: [
                 { id: 'tweede-persoon', label: 'Het verhaal is geschreven in de tweede persoon (jij/je)' },
                 { id: 'beginscene-tekst', label: 'De beginscène is minimaal 80 woorden' },
-                { id: 'keuze-opties', label: 'De keuze-opties staan duidelijk aan het einde' },
+                { id: 'keuze-opties', label: 'De keuze-opties staan duidelijk aan het einde van elke scène' },
                 { id: 'tweede-scene', label: 'Een vervolgscène is uitgewerkt (minimaal 60 woorden)' },
             ],
             textPrompt: 'Schrijf je beginscène en één vervolgscène',

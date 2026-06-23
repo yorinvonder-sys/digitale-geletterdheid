@@ -45,7 +45,7 @@ export const webDeveloperConfig: BuilderCanvasConfig = {
             id: 'css-layout',
             title: 'Layout en stijl ontwerpen',
             description:
-                'Een mooie website trekt bezoekers. CSS Flexbox en Grid maken het mogelijk om content netjes te schikken — ook op smartphones. Een galerij met dierenfoto\'s vraagt om een grid-layout.',
+                'Een mooie website trekt bezoekers. CSS Flexbox en Grid (= manieren om content netjes te schikken) maken het mogelijk om elementen te rangschikken — ook op smartphones. Een galerij met dierenfoto\'s vraagt om een grid-layout.',
             instruction:
                 'Schrijf CSS voor: 1) een navigatiebalk die horizontaal uitlijnt met Flexbox, 2) een grid-galerij die 3 kolommen toont op desktop en 1 kolom op mobiel (gebruik media queries), 3) een kleurenschema dat past bij het thema "zorg voor dieren". Gebruik minimaal 3 verschillende CSS-eigenschappen.',
             tip: 'Voor een responsieve grid gebruik je: `display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));`. Dit werkt automatisch op alle schermbreedtes.',
@@ -63,11 +63,11 @@ export const webDeveloperConfig: BuilderCanvasConfig = {
             description:
                 'JavaScript maakt een website levend. Knoppen die reageren, filters die werken, tekst die verandert — dat alles doe je met JavaScript. Voor het asiel wil je dat bezoekers op een dier kunnen klikken om meer info te zien.',
             instruction:
-                'Schrijf een JavaScript-functie die werkt als een gebruiker op een dierkaart klikt. De functie moet: 1) een verborgen `<div>` zichtbaar maken (gebruik `display: block`), 2) de naam en beschrijving van het dier in die div zetten, 3) een sluitknop tonen. Gebruik `addEventListener` — geen inline `onclick`.',
+                'Beschrijf wat de JavaScript-functie moet doen en schrijf de structuur als een gebruiker op een dierkaart klikt. De functie moet: 1) een verborgen `<div>` zichtbaar maken in het DOM (= de structuur van je pagina) (gebruik `display: block`), 2) de naam en beschrijving van het dier in die div zetten, 3) een sluitknop tonen. Gebruik `addEventListener` — geen inline `onclick`.',
             tip: 'Vermijd onclick="..." in HTML. Gebruik altijd `element.addEventListener("click", functie)` in je JS-bestand. Dat is netter en makkelijker te onderhouden.',
             checklistItems: [
                 { id: 'event-listener', label: 'Ik gebruik addEventListener, geen inline onclick' },
-                { id: 'dom-manipulatie', label: 'De functie past het DOM aan (zichtbaarheid, inhoud)' },
+                { id: 'dom-manipulatie', label: 'De functie past het DOM aan (= de structuur van je pagina: zichtbaarheid, inhoud)' },
                 { id: 'sluitknop', label: 'Er is een sluitknop die de info weer verbergt' },
             ],
             textPrompt: 'Schrijf je JavaScript-functie hier',

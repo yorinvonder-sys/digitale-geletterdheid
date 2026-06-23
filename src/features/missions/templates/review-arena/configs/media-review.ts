@@ -101,7 +101,7 @@ const config: ReviewArenaConfig = {
                 'Bepaal bij elke mediakeuze of die bewust is gemaakt (strategisch) of het resultaat van toeval is.',
             maxScore: 25,
             followUp: {
-                question: 'Een sportmerk wil een nieuwe sneaker promoten bij jongeren van 13-17 jaar. Ze kiezen voor korte vertical video\'s met energieke muziek en geen gesproken tekst. Wat is de meest waarschijnlijke reden voor die keuze?',
+                question: 'Een sportmerk wil een nieuwe sneaker promoten bij jongeren van 13-17 jaar. Ze kiezen voor korte verticale video\'s (zoals op TikTok) met energieke muziek en geen gesproken tekst. Wat is de meest waarschijnlijke reden voor die keuze?',
                 options: [
                     'Gesproken tekst kost meer geld om te produceren',
                     'Het format past bij hoe de doelgroep op platforms zoals TikTok en Instagram Reels consumeert',
@@ -109,7 +109,7 @@ const config: ReviewArenaConfig = {
                     'Het algoritme blokkeert video\'s met geluid op sociale media',
                 ],
                 correctIndex: 1,
-                explanation: 'Dit is een bewuste mediakeuze gebaseerd op de doelgroep en het platform. Korte vertical video zonder voiceover sluit aan bij het scrollen-gedrag en de aandachtsspanne op short-form platforms. De andere opties zijn feitelijk onjuist — kosten zijn niet de reden, jongeren begrijpen tekst prima, en algoritmes blokkeren geluid niet.',
+                explanation: 'Dit is een bewuste mediakeuze gebaseerd op de doelgroep en het platform. Korte verticale video zonder gesproken tekst sluit aan bij het scrollen-gedrag en de aandachtsspanne op platforms voor korte video\'s (zoals TikTok en Reels). De andere opties zijn feitelijk onjuist — kosten zijn niet de reden, jongeren begrijpen tekst prima, en algoritmes blokkeren geluid niet.',
                 bonusPoints: 5,
             },
             categories: ['Bewuste mediakeuze', 'Geen mediakeuze'],

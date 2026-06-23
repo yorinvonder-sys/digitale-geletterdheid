@@ -38,7 +38,7 @@ export const videoEditorConfig: BuilderCanvasConfig = {
             description:
                 'Een storyboard is een reeks beschrijvingen (of schetsen) van de scènes in je video. Elke scène beschrijft wat je ziet, hoort en hoe lang die duurt. Film begint niet met de camera, maar op papier.',
             instruction:
-                'Schrijf een tekstueel storyboard voor je video met minimaal 5 scènes. Voor elke scène: 1) Wat zie je in beeld? (beschrijving van de shot), 2) Wat hoor je? (dialoog, voice-over of muziek), 3) Hoe lang duurt de scène? (in seconden), 4) Camerahoek (totaalshot, close-up, over-the-shoulder). Begin met een sterke openingsscène die meteen de aandacht trekt.',
+                'Schrijf een tekstueel storyboard voor je video met minimaal 5 scènes. Voor elke scène: 1) Wat zie je in beeld? (beschrijving van de shot), 2) Wat hoor je? (dialoog, voice-over (= ingesproken stem over de beelden) of muziek), 3) Hoe lang duurt de scène? (in seconden), 4) Camerahoek (totaalshot, close-up, over-the-shoulder (= over iemands schouder gefilmd)). Begin met een sterke openingsscène die meteen de aandacht trekt.',
             tip: 'De eerste 3 seconden bepalen of mensen blijven kijken. Begin dus niet met een logo of een "Hoi, welkom bij…". Begin direct met actie of een prikkelende vraag.',
             checklistItems: [
                 { id: 'vijf-scenes', label: 'Ik heb minimaal 5 scènes beschreven' },
@@ -70,8 +70,8 @@ export const videoEditorConfig: BuilderCanvasConfig = {
             description:
                 'Monteren is het selecteren en samenvoegen van shots tot een vloeiend geheel. Je kiest de volgorde, de overgangen en de muziek. Dit is waar de magie van film echt begint.',
             instruction:
-                'Schrijf een montageplan: 1) De definitieve volgorde van je shots (geef shottitels of nummers), 2) Welke overgangstypen je gebruikt (hard cut, dissolve, fade to black) en waarom, 3) Welk type muziek of geluid past bij elke sectie, 4) Waar de pacing versnelt en waar het rustiger wordt. Leg bij elk punt de motivatie uit.',
-            tip: 'Minder overgangen = professioneler. Gebruik "hard cuts" (direct knippen) als standaard en gebruik dissolves of fades alleen voor bewuste emotionele momenten.',
+                'Schrijf een montageplan: 1) De definitieve volgorde van je shots (geef shottitels of nummers), 2) Welke overgangstypen je gebruikt (hard cut, dissolve (= overvloeien), fade to black (= langzaam naar zwart)) en waarom, 3) Welk type muziek of geluid past bij elke sectie, 4) Waar de pacing (= het tempo van de video) versnelt en waar het rustiger wordt. Leg bij elk punt de motivatie uit.',
+            tip: 'Minder overgangen = professioneler. Gebruik "hard cuts" (direct knippen) als standaard en gebruik dissolves of fades alleen voor bewuste, emotionele momenten.',
             checklistItems: [
                 { id: 'volgorde', label: 'Ik heb de definitieve shotsvolgorde bepaald' },
                 { id: 'overgangen', label: 'Ik heb overgangstypen gekozen met motivatie' },

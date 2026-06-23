@@ -70,13 +70,15 @@ export const meesterproefConfig: BuilderCanvasConfig = {
             description:
                 'De jury-verdediging is het slotakkoord van drie jaar informatica. Je presenteert je project, beantwoordt vragen en laat zien dat je niet alleen iets kunt bouwen, maar ook kunt nadenken over wat je hebt gemaakt.',
             instruction:
-                'Bereid je voor op de jury-verdediging. Schrijf: 1) Een samenvatting van je project in 3 zinnen (voor als de jury vraagt: "Wat heb je gemaakt?"), 2) De 3 dingen die je het meest trots op bent in je project, 3) De 3 dingen die je zou verbeteren, 4) De antwoorden op deze jury-vragen: "Wat was de grootste uitdaging?", "Waarom heb je [technologie X] gekozen?", "Wat heb je geleerd over jezelf als maker?". Schrijf elk antwoord in max 3 zinnen.',
+                'Bereid je voor op de jury-verdediging. Schrijf: 1) Een samenvatting van je project in 3 zinnen, 2) De 3 dingen die je het meest trots op bent, 3) De 3 dingen die je zou verbeteren, 4) Antwoorden op de drie jury-vragen uit de checklist — max 3 zinnen per antwoord.',
             tip: 'De sterkste verdedigingen bevatten zowel trots als eerlijkheid. Een jury die ziet dat jij je eigen werk kritisch kunt beoordelen, vertrouwt jou meer dan iemand die alleen de successen noemt.',
             checklistItems: [
                 { id: 'drie-zinnen', label: 'Er is een samenvatting van het project in 3 zinnen' },
                 { id: 'trots', label: 'De 3 dingen die ik trots op ben zijn beschreven' },
                 { id: 'verbeter', label: 'De 3 verbeterpunten zijn beschreven' },
-                { id: 'jury-antwoorden', label: 'Alle 3 jury-vragen zijn beantwoord (max 3 zinnen per antwoord)' },
+                { id: 'jury-v1', label: 'Jury-vraag 1: "Wat was de grootste uitdaging?" — beantwoord in max 3 zinnen' },
+                { id: 'jury-v2', label: 'Jury-vraag 2: "Waarom heb je [technologie X] gekozen?" — beantwoord in max 3 zinnen' },
+                { id: 'jury-v3', label: 'Jury-vraag 3: "Wat heb je geleerd over jezelf als maker?" — beantwoord in max 3 zinnen' },
             ],
             textPrompt: 'Schrijf je voorbereiding op de verdediging',
         },

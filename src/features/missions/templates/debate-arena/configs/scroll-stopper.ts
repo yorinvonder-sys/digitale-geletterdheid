@@ -6,7 +6,7 @@ const config: DebateArenaConfig = {
     introEmoji: '📱',
     introTitle: 'Scroll Stopper',
     introDescription:
-        'Social media apps zijn bewust ontworpen om je zo lang mogelijk vast te houden. Infinite scroll, likes, notificaties — allemaal trucjes. Maar is dat erg? En wie mag daar iets van vinden?',
+        'Social media apps zijn bewust ontworpen om je zo lang mogelijk vast te houden. Infinite scroll (= eindeloos scrollen zonder stopknop), likes, notificaties — allemaal trucjes. Maar is dat erg? En wie mag daar iets van vinden?',
     introFeatures: [
         'Lees de standpunten van 4 betrokkenen',
         'Kies jouw positie in het debat',
@@ -34,7 +34,7 @@ const config: DebateArenaConfig = {
             emoji: '💼',
             role: 'App-ontwerper',
             perspective:
-                'Engagement is hoe wij geld verdienen. Zonder advertentie-inkomsten kunnen we onze app niet gratis aanbieden. We ontwerpen voor een prettige gebruikerservaring — als mensen lang blijven, vinden ze het blijkbaar leuk.',
+                'Engagement (= hoe lang je blijft kijken) is hoe wij geld verdienen. Zonder advertentie-inkomsten kunnen we onze app niet gratis aanbieden. We ontwerpen voor een prettige gebruikerservaring — als mensen lang blijven, vinden ze het blijkbaar leuk.',
             keyArgument:
                 'Niemand dwingt je de app te gebruiken. Wij maken hem aantrekkelijk; jij kiest zelf hoelang je blijft.',
         },
@@ -44,7 +44,7 @@ const config: DebateArenaConfig = {
             emoji: '🧠',
             role: 'Psycholoog',
             perspective:
-                'Onderzoek toont aan dat oneindige scroll en variabele beloningen (soms een like, soms niet) dezelfde hersengebieden activeren als gokken. Jongeren zijn extra kwetsbaar omdat hun prefrontale cortex — het deel dat impulsen remt — pas rond het 25e levensjaar volledig ontwikkeld is.',
+                'Onderzoek toont aan dat variabele beloningen (= je krijgt soms een like, soms niet) dezelfde reactie in je hersenen veroorzaken als gokken. Jongeren zijn extra kwetsbaar omdat het deel van je hersenen dat helpt om te stoppen pas rond je 25e klaar is.',
             keyArgument:
                 'Als een ontwerp gebruik maakt van psychologische kwetsbaarheden van tieners, is "eigen keuze" een misleidend argument.',
         },

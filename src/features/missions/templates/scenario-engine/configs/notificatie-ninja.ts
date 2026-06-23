@@ -86,7 +86,7 @@ const config: ScenarioEngineConfig = {
                         'Snapchat en Duolingo tonen hoeveel dagen op rij je de app hebt gebruikt. Je streak verdwijnt als je een dag mist.',
                     correct: true,
                     explanation:
-                        'Streaks koppelen app-gebruik aan verliesaversie: de angst iets te verliezen is sterker dan de wens iets te winnen. Je opent de app niet omdat je het leuk vindt, maar om je streak te beschermen.',
+                        'Streaks koppelen app-gebruik aan verliesaversie (= je wilt niet kwijtraken wat je hebt): de angst iets te verliezen is sterker dan de wens iets te winnen. Je opent de app niet omdat je het leuk vindt, maar om je streak te beschermen.',
                 },
                 {
                     id: 3,
@@ -146,7 +146,7 @@ const config: ScenarioEngineConfig = {
                         'Je krijgt een pushmelding elke keer als iemand je post liket, reageert of je bericht deelt.',
                     correct: true,
                     explanation:
-                        'Elke like is een kleine dopamine-piek. Apps sturen meldingen niet allemaal tegelijk, maar druppelsgewijs — om je zo vaak mogelijk terug te laten kijken. Dit heet variabele beloningsverdeling.',
+                        'Elke like is een kleine dopamine-piek (= dopamine is een stofje in je brein dat een fijn gevoel geeft). Apps sturen meldingen niet allemaal tegelijk, maar druppelsgewijs — om je zo vaak mogelijk terug te laten kijken. Dit heet variabele beloningsverdeling.',
                 },
             ],
         },
@@ -183,7 +183,7 @@ const config: ScenarioEngineConfig = {
                         'LinkedIn of een datingapp meldt: "Nieuwsgierig wie er op je profiel heeft gekeken? Open de app om te zien wie."',
                     correctPosition: 1,
                     explanation:
-                        'Zeer manipulatief. Speelt in op sociale nieuwsgierigheid en FOMO, maar houdt de namen verborgen achter een betaalmuur of login. Je wordt gelokt met onvolledige informatie.',
+                        'Zeer manipulatief. Speelt in op sociale nieuwsgierigheid en FOMO (= de angst om iets te missen), maar houdt de namen verborgen achter een betaalmuur of login. Je wordt gelokt met onvolledige informatie.',
                 },
                 {
                     id: 3,

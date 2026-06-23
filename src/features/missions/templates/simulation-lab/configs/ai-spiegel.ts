@@ -330,7 +330,7 @@ export const aiSpiegelConfig: SimulationLabConfig = {
             id: 'filterbubbel',
             title: 'De filterbubbel doorprikken',
             description:
-                'Kies hoe actief aanbevelingen zijn ingesteld. Vergelijk wat jij ziet met wat er buiten jouw bubbel bestaat.',
+                'Kies hoe actief aanbevelingen zijn ingesteld. Vergelijk wat jij ziet met wat er buiten jouw bubbel bestaat. Een filterbubbel (= je ziet online vooral wat bij je past) wordt gemaakt door een algoritme (= een set regels die de app gebruikt om te beslissen wat jij te zien krijgt).',
             visualType: 'comparison',
             maxScore: 30,
             parameters: [
@@ -361,10 +361,10 @@ export const aiSpiegelConfig: SimulationLabConfig = {
                 {
                     id: 'fb1-q2',
                     question:
-                        'Waarom is een filterbubbel ook een probleem voor de democratie?',
+                        'Wat kan er misgaan als je altijd alleen je eigen mening terugziet?',
                     type: 'multiple-choice',
                     options: [
-                        'Filterbubbels zijn alleen een persoonlijk probleem, niet maatschappelijk',
+                        'Niks — je eigen mening zien is juist fijn, dat maakt je blij',
                         'Als mensen steeds andere informatie zien, wordt het moeilijker om een gemeenschappelijke basis te vinden voor gesprekken en beslissingen',
                         'Filterbubbels maken internet duurder',
                         'Filterbubbels beschermen je juist tegen nepnieuws',

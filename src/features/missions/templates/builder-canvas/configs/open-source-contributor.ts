@@ -6,7 +6,7 @@ export const openSourceContributorConfig: BuilderCanvasConfig = {
     introEmoji: '🐙',
     introTitle: 'Draag bij aan een open source project',
     introDescription:
-        'In deze missie doorloop je de complete open source workflow: je analyseert een issue, forkt een repository, schrijft een bugfix en dient een pull request in — precies zoals echte developers dat doen op GitHub.',
+        'In deze missie doorloop je de complete open source workflow: je analyseert een issue, forkt een repository (= een opslagplek voor code), schrijft een bugfix en dient een pull request in (= een verzoek om jouw wijziging toe te voegen) — precies zoals echte developers dat doen op GitHub.',
     introFeatures: [
         'Begrijp hoe open source samenwerking werkt',
         'Analyseer een bug-rapport en reproduceert het probleem',
@@ -56,7 +56,7 @@ export const openSourceContributorConfig: BuilderCanvasConfig = {
                 'Een bugfix in open source moet meer zijn dan "het werkt nu". De code moet leesbaar zijn, consistent met de codestijl van het project, en voorzien van een duidelijk commentaar waarom je de wijziging hebt gemaakt.',
             instruction:
                 'Schrijf de bugfix voor het sorteerprobleem. De huidige sorteercode ziet er zo uit: `items.sort((a, b) => a.date - b.date)`. Wanneer twee items dezelfde datum hebben, is de volgorde ongedefinieerd. Schrijf een verbeterde versie die: 1) Op datum sorteert, 2) Bij gelijke datum op titel (alfabetisch) sorteert als tiebreaker, 3) Voorzien is van een commentaarregel die de keuze uitlegt. Schrijf ook een test-voorbeeld: geef 3 boeken op met datum en controleer de verwachte uitvoer.',
-            tip: 'Sorteerfuncties moeten deterministisch zijn: dezelfde invoer geeft altijd dezelfde uitvoer. Willekeurige volgorde bij gelijke waarden is altijd een bug.',
+            tip: 'Sorteerfuncties moeten deterministisch zijn (= altijd hetzelfde resultaat bij dezelfde invoer): dezelfde invoer geeft altijd dezelfde uitvoer. Willekeurige volgorde bij gelijke waarden is altijd een bug.',
             checklistItems: [
                 { id: 'verbeterde-sort', label: 'De sorteerfunctie is verbeterd' },
                 { id: 'tiebreaker', label: 'Er is een tiebreaker bij gelijke datum' },
@@ -69,7 +69,7 @@ export const openSourceContributorConfig: BuilderCanvasConfig = {
             id: 'pull-request',
             title: 'Pull Request indienen',
             description:
-                'Een pull request (PR) is een verzoek aan de maintainer om jouw wijzigingen in het project op te nemen. Een goede PR beschrijft wat je hebt gewijzigd, waarom en hoe je het hebt getest — zodat de reviewer snel kan beslissen.',
+                'Een pull request (PR) is een verzoek aan de maintainer (= de beheerder van het project) om jouw wijzigingen in het project op te nemen. Een goede PR beschrijft wat je hebt gewijzigd, waarom en hoe je het hebt getest — zodat de reviewer snel kan beslissen.',
             instruction:
                 'Schrijf de tekst voor een professioneel pull request. Gebruik dit formaat: 1) Titel (max 60 tekens, beschrijft wat je hebt opgelost), 2) Beschrijving: wat was het probleem?, 3) Wat heb je veranderd? (in bullet points), 4) Hoe kun je de fix testen? (stappen voor de reviewer), 5) Welk issue lost dit op? (schrijf: "Closes #42"), 6) Noteer ook: is er iets wat je nog niet zeker weet of wat de reviewer extra aandacht moet geven?',
             tip: 'Een goede PR-titel begint met een werkwoord: "Fix: sorteervolstabiliteit bij gelijke datum" of "Add: tiebreaker voor sortering". Duidelijk en concreet.',

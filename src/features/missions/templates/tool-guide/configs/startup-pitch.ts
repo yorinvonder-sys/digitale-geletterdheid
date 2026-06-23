@@ -68,12 +68,12 @@ const config: ToolGuideConfig = {
             id: 'stap-3-branding',
             title: 'Logo en slogan',
             instruction:
-                'Investeerders beoordelen ook hoe je startup eruitziet. Ontwerp je **visuele identiteit**:\n1. **Logo** — Beschrijf hoe het logo eruitziet. Welke kleuren? Welk symbool? Waarom past dat bij jouw startup?\n2. **Slogan** — Één zin die alles samenvat. Voorbeelden: "Just do it." (Nike), "Think different." (Apple). Jouw slogan: max. 6 woorden, actief, positief.\n3. **Kleurenpalet** — Kies 2 à 3 kleuren. Blauw = vertrouwen, groen = groei, oranje = energie.\n\nTeken of beschrijf je logo in je schrift of in een tekenapp.',
+                'Investeerders beoordelen ook je **branding** (= hoe je merk eruitziet en aanvoelt). Ontwerp je **visuele identiteit** (= het geheel van logo, kleuren en slogan):\n1. **Logo** — Beschrijf het symbool en de kleuren. Waarom passen ze bij jouw startup?\n2. **Slogan** — Één zin die alles samenvat: max. 6 woorden, actief en positief.\n\nTeken of beschrijf je logo in je schrift of in een tekenapp.',
             tip: 'Kleuren communiceren gevoel. Banken gebruiken blauw omdat dat vertrouwen uitstraalt. Energiedranken gebruiken rood en oranje voor actie. Kies kleuren die passen bij hoe je startup mensen wil laten voelen.',
             checklistItems: [
-                { id: 'logo-beschreven', label: 'Ik heb mijn logo beschreven of getekend met kleuren en symbool' },
+                { id: 'logo-beschreven', label: 'Ik heb mijn logo beschreven of getekend met symbool en kleuren' },
                 { id: 'slogan', label: 'Ik heb een slogan van maximaal 6 woorden bedacht' },
-                { id: 'kleurenpalet', label: 'Ik heb 2 à 3 kleuren gekozen en uitgelegd waarom ze passen' },
+                { id: 'kleurenpalet', label: 'Ik heb 2 à 3 kleuren gekozen (bijv. blauw = vertrouwen, groen = groei, oranje = energie) en uitgelegd waarom ze passen' },
             ],
         },
         {

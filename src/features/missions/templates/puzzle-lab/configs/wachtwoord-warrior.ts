@@ -29,7 +29,7 @@ const config: PuzzleLabConfig = {
             title: 'Hoe snel wordt dit gekraakt?',
             type: 'multiple-choice',
             description:
-                'Een hacker gebruikt een computer die 1 miljard wachtwoorden per seconde kan proberen. Hoe lang duurt het om het wachtwoord **"abc123"** te kraken?\n\nHet wachtwoord heeft 6 tekens. Er zijn 26 kleine letters + 10 cijfers = 36 mogelijke tekens. Totaal aantal combinaties van 6 tekens: 36⁶ = 2.176.782.336.',
+                'Een hacker gebruikt een computer die 1 miljard wachtwoorden per seconde kan proberen. Hoe lang duurt het om het wachtwoord **"abc123"** te kraken?\n\nHet wachtwoord heeft 6 tekens. Er zijn 26 kleine letters + 10 cijfers = 36 mogelijke tekens. Totaal aantal combinaties van 6 tekens: 36⁶ (36 keer 36, zes keer achter elkaar) = 2.176.782.336.',
             clues: [
                 'Bij 1 miljard pogingen per seconde: deel het totaal aantal combinaties door 1.000.000.000.',
                 '2.176.782.336 ÷ 1.000.000.000 = ongeveer 2 seconden.',

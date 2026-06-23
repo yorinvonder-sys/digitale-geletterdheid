@@ -6,7 +6,7 @@ const config: PuzzleLabConfig = {
     introEmoji: '🕵️',
     introTitle: 'De Data Handelaar',
     introDescription:
-        'Je bent undercover bij DataDeal BV — een bedrijf dat stiekem persoonsgegevens verkoopt. Je hebt interne documenten onderschept. Jouw missie: vind de AVG-overtredingen, begrijp de regels en rapporteer de feiten.',
+        'Je bent undercover bij DataDeal BV — een bedrijf dat stiekem persoonsgegevens verkoopt. Je hebt interne documenten onderschept. Jouw missie: vind de overtredingen van de AVG (de Europese privacywet die regelt wat bedrijven met jouw gegevens mogen doen), begrijp de regels en rapporteer de feiten.',
     introFeatures: [
         'Analyseer een onderschepte bedrijfse-mail op AVG-overtredingen',
         'Ontdek welke data extra beschermd is onder de wet',
@@ -20,7 +20,7 @@ const config: PuzzleLabConfig = {
             title: 'Bewijsstuk A — De interne e-mail',
             type: 'multiple-choice',
             description:
-                'Je onderschept een interne e-mail bij DataDeal BV:\n\n---\n**Van:** directeur@datadeal.nl\n**Aan:** verkoop@datadeal.nl\n\n*"Hi team, we hebben van FitTrack 50.000 gebruikersprofielen ontvangen — locatiedata, hartslag en slaappatronen. De gebruikers weten hier niks van maar dat hoeft ook niet — ze hebben de algemene voorwaarden geaccepteerd. Verkoop ze door aan verzekeraar HealthPlus."*\n\n---\n\nWelke AVG-overtreding is dit PRIMAIR?',
+                'Je onderschept een interne e-mail bij DataDeal BV:\n\n---\n**Van:** directeur@datadeal.nl\n**Aan:** verkoop@datadeal.nl\n\n*"Hi team, we hebben van FitTrack 50.000 gebruikersprofielen ontvangen — locatiedata, hartslag en slaappatronen. De gebruikers weten hier niks van maar dat hoeft ook niet — ze hebben de algemene voorwaarden geaccepteerd. Verkoop ze door aan verzekeraar HealthPlus."*\n\n---\n\nWelke overtreding van de AVG is dit PRIMAIR?',
             clues: [
                 'De AVG zegt: je mag data alleen verwerken voor het doel waarvoor het is verzameld.',
                 'FitTrack verzamelde de data voor de sportapp — niet om door te verkopen aan verzekeraars.',
@@ -28,7 +28,7 @@ const config: PuzzleLabConfig = {
             ],
             extraClues: [
                 'Gezondheidsdata (hartslag, slaap) zijn "bijzondere persoonsgegevens" — die zijn extra beschermd en mogen alleen met expliciete toestemming worden verwerkt.',
-                'Doelbinding = AVG-artikel 5: je mag data alleen gebruiken voor het doel waarvoor het is verzameld.',
+                'Doelbinding (ofwel: gegevens alleen gebruiken voor het doel waarvoor je ze kreeg) = een kernregel van de AVG: data mag niet zomaar voor iets anders worden gebruikt.',
             ],
             revealExtraAfterAttempts: 2,
             options: [
@@ -42,7 +42,7 @@ const config: PuzzleLabConfig = {
             maxAttempts: 3,
             points: 25,
             successMessage:
-                'Juist! Dit is schending van het doelbindingsbeginsel (AVG art. 5). Gebruikers gaven toestemming voor de sportapp — niet voor doorverkoop aan verzekeraars. Bovendien zijn hartslag en slaapdata "bijzondere persoonsgegevens" waarvoor expliciete toestemming vereist is.',
+                'Juist! Dit is schending van het doelbindingsbeginsel — de AVG-regel dat je gegevens alleen mag gebruiken voor het doel waarvoor je ze kreeg. Gebruikers gaven toestemming voor de sportapp, niet voor doorverkoop aan verzekeraars. Bovendien zijn hartslag en slaapdata "bijzondere persoonsgegevens" waarvoor expliciete toestemming vereist is.',
             hintCost: 4,
         },
         {
@@ -87,8 +87,8 @@ const config: PuzzleLabConfig = {
                 'Recht op verwijdering ("recht om vergeten te worden"): je mag vragen je data te wissen.',
             ],
             extraClues: [
-                'Andere AVG-rechten: recht op correctie, recht op beperking van verwerking, recht op dataportabiliteit.',
-                'Als een bedrijf niet meewerkt, kun je een klacht indienen bij de Autoriteit Persoonsgegevens (AP) — de Nederlandse privacywaakhond.',
+                'Andere AVG-rechten: recht op correctie, recht op beperking van verwerking, recht op dataportabiliteit (het recht om je gegevens mee te nemen naar een andere dienst).',
+                'Als een bedrijf niet meewerkt, kun je een klacht indienen bij de Autoriteit Persoonsgegevens (AP) — de Nederlandse privacy-waakhond die controleert of bedrijven de AVG naleven.',
             ],
             revealExtraAfterAttempts: 2,
             options: [
@@ -110,29 +110,29 @@ const config: PuzzleLabConfig = {
             title: 'Schrijf de conclusie van het rapport',
             type: 'text-input',
             description:
-                'Je onderzoek is klaar. Schrijf de conclusie van je rapport in één zin. De conclusie moet:\n\n• De naam van het bedrijf bevatten (DataDeal BV)\n• Ten minste één AVG-artikel of AVG-principe benoemen\n• Beschrijven welke groep het meest risico loopt\n\nVoorbeeldstructuur: "[Bedrijf] overtreedt [principe/artikel] doordat [handeling], wat [groep] benadeelt."',
+                'Je onderzoek is klaar. Schrijf in één zin de conclusie van je rapport:\n\n• Welk bedrijf maakte de fout?\n• Wat ging er mis?\n• Wie heeft er last van?\n\nVoorbeeldstructuur: "[Bedrijf] deed [fout], waardoor [groep] benadeeld wordt."',
             clues: [
-                'Noem het doelbindingsbeginsel of artikel 5 van de AVG.',
-                'De meest kwetsbare groep in dit onderzoek zijn de minderjarigen.',
-                'De kern van de overtreding: data wordt gebruikt voor een ander doel dan waarvoor het is verzameld.',
+                'Het bedrijf heet DataDeal BV.',
+                'De fout: ze verkochten privégegevens door zonder dat gebruikers dat wisten.',
+                'De groep die het meeste risico loopt: kinderen zoals Emma.',
             ],
             extraClues: [
-                'Voorbeeld: "DataDeal BV overtreedt het doelbindingsbeginsel (AVG art. 5) door gezondheidsdata door te verkopen zonder toestemming, waardoor minderjarigen zoals Emma bijzonder risico lopen."',
+                'Voorbeeld: "DataDeal BV verkocht privégegevens van gebruikers stiekem door, waardoor kinderen zoals Emma benadeeld worden."',
             ],
             revealExtraAfterAttempts: 3,
             answer: [],
             validator: (input: string) => {
                 const s = input.toLowerCase();
                 const hasCompany = s.includes('datadeal');
-                const hasAvg = s.includes('avg') || s.includes('doelbinding') || s.includes('privac') || s.includes('artikel 5') || s.includes('toestemming');
-                const hasGroup = s.includes('minderjarig') || s.includes('kind') || s.includes('gebruiker') || s.includes('emma') || s.includes('betrokkene');
-                return hasCompany && hasAvg && hasGroup && s.length >= 40;
+                const hasFout = s.includes('verkoch') || s.includes('doorverkoch') || s.includes('stiekem') || s.includes('mis') || s.includes('fout') || s.includes('zonder toestemming') || s.includes('privac');
+                const hasGroup = s.includes('minderjarig') || s.includes('kind') || s.includes('gebruiker') || s.includes('emma') || s.includes('betrokkene') || s.includes('leerling');
+                return hasCompany && hasFout && hasGroup && s.length >= 30;
             },
             caseSensitive: false,
             maxAttempts: 8,
             points: 25,
             successMessage:
-                'Goed rapport! Je hebt de kern van de zaak samengevat: het bedrijf, de overtreden regel en de benadeelde groep. Zo ziet een echte AVG-rapportage eruit. De Autoriteit Persoonsgegevens kan op basis van zo\'n rapport een onderzoek starten en boetes opleggen tot 20 miljoen euro.',
+                'Goed rapport! Je hebt de kern van de zaak samengevat: het bedrijf, wat er misging en wie er last van heeft. Zo ziet een echte privacy-rapportage eruit. De Autoriteit Persoonsgegevens — de Nederlandse privacy-waakhond — kan op basis van zo\'n rapport een onderzoek starten.',
             hintCost: 3,
         },
     ],

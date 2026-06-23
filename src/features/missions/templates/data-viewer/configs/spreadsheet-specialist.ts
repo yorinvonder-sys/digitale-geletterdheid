@@ -19,7 +19,7 @@ export const spreadsheetSpecialistConfig: DataViewerConfig = {
             id: 'kasboek-leerlingenraad',
             title: 'Kasboek Leerlingenraad — schooljaar 2024/2025',
             description:
-                'De penningmeester van de leerlingenraad heeft alle inkomsten en uitgaven bijgehouden. Bekijk de tabel en beantwoord de vragen over formules en totalen.',
+                'De penningmeester (= degene die de kas bijhoudt) van de leerlingenraad heeft alle inkomsten en uitgaven bijgehouden. Bekijk de tabel en beantwoord de vragen over formules en totalen.',
             type: 'table',
             columns: [
                 { key: 'maand', label: 'Maand', sortable: true },
@@ -147,7 +147,7 @@ export const spreadsheetSpecialistConfig: DataViewerConfig = {
                     title: '=GEMIDDELDE(bereik)',
                     icon: '📐',
                     content:
-                        'Berekent het gemiddelde van alle getallen in een bereik. Gebruik dit om een "typische" waarde te vinden. Voorbeeld: =GEMIDDELDE(C2:C12) geeft het gemiddeld cijfer van een klas. Let op: uitschieters (heel hoge of lage waarden) kunnen het gemiddelde sterk beïnvloeden.',
+                        'Berekent het gemiddelde van alle getallen in een bereik. Gebruik dit om een "typische" waarde te vinden. Voorbeeld: =GEMIDDELDE(C2:C12) geeft het gemiddeld cijfer van een klas. Let op: uitschieters (= waarden die er ver buiten vallen, heel hoog of laag) kunnen het gemiddelde sterk beïnvloeden.',
                 },
                 {
                     title: '=MAX(bereik) en =MIN(bereik)',

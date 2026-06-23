@@ -159,8 +159,8 @@ const CHALLENGES: DetectionChallenge[] = [
         content: '"De industriële revolutie was een periode van grote veranderingen. Het begon in Engeland rond 1760. Fabrieken ontstonden. Mensen verhuisden naar steden. De maatschappij veranderde fundamenteel. Nieuwe technologieën werden uitgevonden."',
         isAIGenerated: true,
         hints: ['Let op de zinsstructuur', 'Is er variatie in schrijfstijl?'],
-        explanation: 'Dit is AI-gegenereerd. Let op: elke zin is kort en feitelijk. Er is geen persoonlijke stijl, geen meningen, en geen verbindingswoorden tussen zinnen. Dit is typisch voor basis-AI tekst.',
-        telltaleSign: 'Monotone korte zinnen zonder persoonlijke stem',
+        explanation: 'Dit is AI-gegenereerd. Elke zin is kort en feitelijk, alsof iemand een lijst voorleest. Er staat geen eigen mening in, geen "ik vond het bijzonder dat..." en de zinnen hangen niet echt samen. Mensen schrijven gevarieerder.',
+        telltaleSign: 'Alle zinnen zijn even kort, droog en zonder persoonlijke stem',
         category: 'AI schrijfstijl',
         challengeQuestion: 'Hoe zou jij dit essay herschrijven om het menselijker te laten klinken? Wat zou je toevoegen?',
         challengeQuestionVso: 'Wat mist er in dit stuk om het "menselijk" te laten klinken?',
@@ -346,8 +346,7 @@ export const DeepfakeDetectorMission: React.FC<Props> = ({ onBack, onComplete, v
                     <div className="space-y-3 sm:space-y-4">
                         <h1 className="text-3xl font-black text-duck-ink sm:text-4xl" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>Deepfake Detector</h1>
                         <p className="text-duck-ink/60 text-base sm:text-lg">
-                            Kun jij AI-gegenereerde content herkennen? Leer de tekenen te spotten
-                            die verraden of iets door een mens of door AI is gemaakt!
+                            Kun jij AI-gegenereerde content herkennen (= iets dat niet door een mens maar door een computerprogramma is gemaakt)? Leer de tekenen te spotten die verraden of iets echt of AI is!
                         </p>
                     </div>
 

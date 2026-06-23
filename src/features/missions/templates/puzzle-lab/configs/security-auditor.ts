@@ -9,7 +9,7 @@ const config: PuzzleLabConfig = {
         'De webshop van FreshDrop gaat morgen live — maar de eigenaar maakt zich zorgen over de beveiliging. Jij bent ingeschakeld als junior security auditor. Vind de kwetsbaarheden voordat een hacker dat doet. Ethisch hacken: beschermen, niet breken.',
     introFeatures: [
         'Controleer een website op de meest voorkomende kwetsbaarheden',
-        'Leer de OWASP Top 10 kennen op een begrijpelijk niveau',
+        'Leer de OWASP Top 10 kennen — de lijst van meest voorkomende webkwetsbaarheden, samengesteld door een internationale beveiligingsorganisatie',
         'Classificeer kwetsbaarheden op ernst (laag tot kritiek)',
         'Schrijf een professioneel beveiligingsrapport met aanbevelingen',
     ],
@@ -24,7 +24,7 @@ const config: PuzzleLabConfig = {
             clues: [
                 'De website stuurt je invoer rechtstreeks naar de database zonder het te controleren.',
                 'De invoer breekt de database-query: \' sluit een tekstveld af, OR \'1\'=\'1 is altijd waar.',
-                'Dit staat op nummer 1 van de OWASP Top 10 — de lijst van meest kritieke webkwetsbaarheden.',
+                'Dit staat op nummer 1 van de OWASP Top 10 — een lijst bijgehouden door een internationale organisatie die de meest voorkomende webkwetsbaarheden bijhoudt.',
             ],
             extraClues: [
                 'SQL-injectie werkt doordat gebruikersinvoer wordt samengevoegd met een database-opdracht, in plaats van gescheiden te worden verwerkt.',
@@ -35,7 +35,7 @@ const config: PuzzleLabConfig = {
                 'Cross-Site Scripting (XSS) — een script wordt in de pagina geïnjecteerd',
                 'SQL-injectie — invoer wordt als database-opdracht uitgevoerd',
                 'Brute force — het wachtwoord wordt geraden',
-                'CSRF — een gebruiker wordt misleid een actie uit te voeren',
+                'CSRF (Cross-Site Request Forgery) — een gebruiker wordt misleid een actie uit te voeren',
             ],
             answer: 'SQL-injectie — invoer wordt als database-opdracht uitgevoerd',
             caseSensitive: false,
@@ -102,7 +102,7 @@ const config: PuzzleLabConfig = {
             maxAttempts: 3,
             points: 25,
             successMessage:
-                'Juist! Dit is Stored XSS — een aanval die elke bezoeker van de pagina treft. Met gestolen sessiecookies kan de aanvaller accounts overnemen zonder wachtwoord. Oplossing: sanitizeer alle gebruikersinvoer en gebruik een Content Security Policy (CSP) header.',
+                'Juist! Dit is Stored XSS — een aanval die elke bezoeker van de pagina treft. Met gestolen sessiecookies kan de aanvaller accounts overnemen zonder wachtwoord. Oplossing: sanitizeer alle gebruikersinvoer en gebruik een Content Security Policy (CSP — een browserregel die bepaalt welke scripts mogen draaien) header.',
             hintCost: 4,
         },
         {

@@ -6,7 +6,7 @@ const config: ReviewArenaConfig = {
     introEmoji: '🔄',
     introTitle: 'Bewijs dat je programmeren beheerst!',
     introDescription:
-        'Je hebt algoritmes, webdevelopment, debugging en automatisering geleerd. In vier ronden test je of je de kernconcepten echt begrijpt.',
+        'Je hebt algoritmes, webdevelopment, debugging en automatisering geleerd. In vier ronden test je of je de kernconcepten echt begrijpt. Je komt drie begrippen tegen die je moet kennen: API (een koppeling tussen systemen), UX (hoe prettig een app aanvoelt) en responsive design (een website die past op elk scherm).',
     missionGoal: {
         primaryGoal: 'Ik bewijs dat ik de programmeerconcepten uit periode 2 kan herkennen, koppelen en uitleggen.',
         criteria: {
@@ -116,7 +116,7 @@ const config: ReviewArenaConfig = {
                     'De API — de server geeft geen antwoord terug',
                 ],
                 correctIndex: 2,
-                explanation: 'Als een knop zichtbaar is (HTML aanwezig) en er goed uitziet (CSS correct), maar niet reageert, is de interactielogica het probleem. Dat zit in JavaScript: een onclick-handler of addEventListener ontbreekt. CSS kan in zeldzame gevallen klikken blokkeren (pointer-events: none), maar dat is hier niet de meest logische diagnose.',
+                explanation: 'Als een knop zichtbaar is (HTML aanwezig) en er goed uitziet (CSS correct), maar niet reageert, is de interactielogica het probleem. Dat zit in JavaScript: een onclick-opdracht in JavaScript ontbreekt die reageert op de klik. CSS kan in zeldzame gevallen klikken blokkeren (pointer-events: none), maar dat is hier niet de meest logische diagnose.',
                 bonusPoints: 5,
             },
             categories: ['HTML', 'CSS', 'JavaScript'],

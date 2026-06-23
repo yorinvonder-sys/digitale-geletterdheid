@@ -98,7 +98,7 @@ const CHALLENGES: Challenge[] = [
     {
         id: 'gravity_master',
         title: '🌙 Level 5: Maanmissie',
-        description: 'EINDBAAS! Robbie zoekt bewijs op de maan! Pas de zwaartekracht aan (tussen 0.1 en 0.3) zodat Robbie superhoog kan springen!',
+        description: 'EINDBAAS! Robbie zoekt bewijs op de maan! Pas de zwaartekracht aan (tussen 0.1 en 0.3) zodat Robbie superhoog kan springen! Hoe lager het getal, hoe minder zwaar Robbie is — zo springt hij hoger.',
         hint: 'Gebruik het "zet zwaartekracht op" blok en experimenteer met een waarde tussen 0.1 en 0.3. Te laag = zweeft weg, te hoog = springt niet hoog genoeg!',
         check: (ctx) => ctx.variables['gravity'] <= 0.3 && ctx.variables['gravity'] >= 0.1 && ctx.reachedGoal
     }
@@ -742,7 +742,7 @@ export const GameDirectorMission: React.FC<GameDirectorProps> = ({ onComplete, o
                     description="Super gedaan! Je hebt Robbie geprogrammeerd om alle bewijzen te vinden. Je bent nu een echte Game Director!"
                     aiConcept={{
                         title: "Wie is de baas?",
-                        text: "In deze missie was JIJ de baas over Robbie, net zoals programmeurs de baas zijn over AI. We moeten AI (zoals ChatGPT) duidelijke instructies geven, zodat het precies doet wat we willen en altijd veilig blijft. Dat noemen we 'AI Alignment'."
+                        text: "In deze missie was JIJ de baas over Robbie, net zoals programmeurs de baas zijn over AI. We moeten AI (zoals ChatGPT) duidelijke instructies geven, zodat het precies doet wat we willen en altijd veilig blijft. Dat noemen we 'AI Alignment' — dat de AI doet wat jij echt bedoelt."
                     }}
                     onExit={progress.reflectie.trim().length >= 10 ? () => {
                         clearSave();

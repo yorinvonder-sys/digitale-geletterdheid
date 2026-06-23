@@ -6,7 +6,7 @@ export const apiVerkennerConfig: DataViewerConfig = {
     introEmoji: '🌐',
     introTitle: 'Word een API Verkenner',
     introDescription:
-        'Elke app die je gebruikt — Instagram, Buienradar, Google Maps — haalt data op via API\'s. Jij gaat ontdekken hoe die onzichtbare datakoppelingen werken. Van JSON-responses tot URL-parameters: na deze missie begrijp je hoe apps met elkaar "praten".',
+        'Elke app die je gebruikt — Instagram, Buienradar, Google Maps — haalt data op via API\'s. JSON is gewoon een nette manier om data te verpakken die apps met elkaar delen. Jij gaat ontdekken hoe die onzichtbare datakoppelingen werken. Na deze missie begrijp je hoe apps met elkaar "praten".',
     introFeatures: [
         'Analyseer een echte JSON-response van een weer-API',
         'Vergelijk welke data populaire apps via API\'s ophalen',
@@ -19,7 +19,7 @@ export const apiVerkennerConfig: DataViewerConfig = {
             id: 'json-response-analyse',
             title: 'JSON-response van een weer-API: Amsterdam',
             description:
-                'Een app heeft de volgende JSON-response ontvangen van de OpenWeatherMap API voor Amsterdam. Bekijk de tabel (een vereenvoudigde weergave van de JSON) en beantwoord de vragen.',
+                'Een app heeft de volgende JSON-response ontvangen van de OpenWeatherMap API voor Amsterdam. Elke regel heeft een sleutel (de naam), een waarde, en een datatype (het soort waarde: tekst, getal of ja/nee). Bekijk de tabel en beantwoord de vragen.',
             type: 'table',
             columns: [
                 { key: 'key', label: 'JSON-sleutel (key)', sortable: true },
@@ -53,12 +53,12 @@ export const apiVerkennerConfig: DataViewerConfig = {
                 {
                     id: 'q2-datatype',
                     question:
-                        'Welk datatype heeft de waarde van "humidity" in deze JSON-response?',
+                        'Kijk in de kolom "Datatype": welk datatype heeft de waarde van "humidity"?',
                     type: 'multiple-choice',
                     options: ['string', 'boolean', 'number', 'array'],
                     correctAnswer: 'number',
                     explanation:
-                        '"humidity" heeft de waarde 78 — dat is een getal (number), geen tekst. Strings staan tussen aanhalingstekens ("Amsterdam"), numbers zijn kale getallen. Sorteer op "Datatype" om alle numbers te groeperen.',
+                        'In de kolom "Datatype" zie je bij "humidity" de waarde number staan. Dat klopt: 78 is een kaal getal, geen tekst. Strings staan tussen aanhalingstekens ("Amsterdam"), numbers zijn kale getallen.',
                     points: 10,
                 },
                 {
@@ -180,7 +180,7 @@ export const apiVerkennerConfig: DataViewerConfig = {
                     type: 'text-observation',
                     correctAnswer: '',
                     explanation:
-                        'Op basis van het patroon: https://pokeapi.co/api/v2/pokemon/charizard — je vervangt alleen "pikachu" door "charizard" in het pad. Dit is hoe REST API\'s werken: het "pad" bepaalt welke resource je opvraagt. Dit is een van de meest fundamentele concepten van het moderne web.',
+                        'Op basis van het patroon: https://pokeapi.co/api/v2/pokemon/charizard — je vervangt alleen "pikachu" door "charizard" in het pad. Dit is hoe dit soort API werkt: het "pad" bepaalt welke resource je opvraagt. Dit is een van de meest fundamentele concepten van het moderne web.',
                     points: 15,
                 },
             ],

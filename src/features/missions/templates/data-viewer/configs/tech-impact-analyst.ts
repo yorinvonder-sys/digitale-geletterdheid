@@ -50,7 +50,7 @@ export const techImpactAnalystConfig: DataViewerConfig = {
                 {
                     id: 'q2-bias-probleem',
                     question:
-                        'Gezichtsherkenning-algoritmes maken meer fouten bij donkere huidskleur. Wat is dit een voorbeeld van?',
+                        'Gezichtsherkenning-algoritmes maken meer fouten bij donkere huidskleur — dit kan komen doordat het model getraind is op data die niet alle groepen goed vertegenwoordigt. Wat is dit een voorbeeld van?',
                     type: 'multiple-choice',
                     options: [
                         'Een softwarebug die makkelijk te repareren is',
@@ -99,7 +99,7 @@ export const techImpactAnalystConfig: DataViewerConfig = {
                     options: ['VS', 'China', 'EU', 'Japan'],
                     correctAnswer: 'EU',
                     explanation:
-                        'De EU scoort het hoogst met 78 — dat klopt met de werkelijkheid: de EU AI Act (2024) is \'s werelds eerste uitgebreide AI-wetgeving. De VS heeft bewust minder strenge regels om innovatie te stimuleren. China heeft eigen strikte regels, maar die zijn meer gericht op inhoudelijke controle dan op mensenrechten.',
+                        'De EU scoort het hoogst met 78 — dat klopt met de werkelijkheid: de EU AI Act (2024, de Europese AI-wet) is \'s werelds eerste uitgebreide AI-wetgeving. De VS heeft bewust minder strenge regels om innovatie te stimuleren. China heeft eigen strikte regels, maar die zijn meer gericht op inhoudelijke controle dan op mensenrechten.',
                     points: 10,
                 },
                 {
@@ -130,7 +130,7 @@ export const techImpactAnalystConfig: DataViewerConfig = {
             id: 'impact-analyse-methode',
             title: 'Vier stappen van een professionele impact-analyse',
             description:
-                'Impact-analisten gebruiken een gestructureerde methode. Hier zijn de vier stappen die elke analyst doorloopt.',
+                'Impact-analisten (= onderzoekers die onderzoeken welke gevolgen iets heeft) gebruiken een gestructureerde methode. Hier zijn de vier stappen die elke analyst doorloopt.',
             type: 'document-cards',
             cards: [
                 {

@@ -92,7 +92,7 @@ const config: ToolGuideConfig = {
             id: 'stap-4-ontwerp',
             title: 'Flyer indelen',
             instruction:
-                'Maak de flyer in **Word, PowerPoint of Canva** (of op papier). Gebruik de visuele hiërarchie:\n1. **Groot = belangrijk** — de kop is het grootst, dan de CTA, dan de rest.\n2. **Witruimte is je vriend** — laat ruimte tussen elementen. Een volle flyer is onleesbaar.\n3. **Maximaal 2 lettertypen** — één voor koppen (dik, groot), één voor tekst (normaal).\n\nIndeling van boven naar beneden:\n- **Boven:** Pakkende kop\n- **Midden:** Korte tekst + eventueel een afbeelding\n- **Onder:** Call to action (groot, opvallende kleur)',
+                'Maak de flyer in **Word, PowerPoint of Canva** (of op papier). Gebruik visuele hiërarchie: groot = belangrijk. De kop staat bovenaan en is het grootst. Daarna korte tekst en een afbeelding. Onderaan de call to action in een opvallende kleur. Gebruik maximaal 2 lettertypen en laat genoeg witruimte. Vink de checklist af als je klaar bent.',
             tip: 'Test je flyer: dek de helft af met je hand. Mis je iets belangrijks? Als het antwoord nee is, dan kan die helft weg. Eenvoud wint altijd.',
             checklistItems: [
                 { id: 'hiearchie', label: 'Mijn kop staat bovenaan en is het grootst' },

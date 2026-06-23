@@ -6,7 +6,7 @@ const config: DebateArenaConfig = {
     introEmoji: '📱',
     introTitle: 'Schermtijd Coach',
     introDescription:
-        'Apps gebruiken ontwerpkeuzes zoals notificaties, autoplay en beloningen om aandacht vast te houden. Welke verantwoordelijkheid ligt bij jou, ouders, school, overheid of techbedrijven? Debatteer mee vanuit meerdere kanten.',
+        'Apps gebruiken ontwerpkeuzes zoals notificaties, autoplay (= video\'s starten vanzelf) en beloningen om aandacht vast te houden. Welke verantwoordelijkheid ligt bij jou, ouders, school, overheid of techbedrijven? Debatteer mee vanuit meerdere kanten.',
     missionGoal: {
         primaryGoal: 'Ik bouw een onderbouwd standpunt over wie verantwoordelijk is voor gezonde schermtijd.',
         criteria: {
@@ -33,7 +33,7 @@ const config: DebateArenaConfig = {
             emoji: '👧',
             role: 'Scholier, 13 jaar',
             perspective:
-                'Ik merk dat stoppen met scrollen soms lastig is. Een volgende video start automatisch, een streak-melding vraagt aandacht, en sommige apps laten zien hoeveel mensen online zijn. Daardoor blijf ik soms langer dan ik vooraf van plan was.',
+                'Ik merk dat stoppen met scrollen soms lastig is. Een volgende video start automatisch, een streak-melding (= dagelijks inloggen om een reeks niet te verbreken) vraagt aandacht, en sommige apps laten zien hoeveel mensen online zijn. Daardoor blijf ik soms langer dan ik vooraf van plan was.',
             keyArgument:
                 'Als ontwerpkeuzes het lastig maken om te stoppen, moeten app-bedrijven daar verantwoordelijkheid voor nemen.',
         },
@@ -53,7 +53,7 @@ const config: DebateArenaConfig = {
             emoji: '🧠',
             role: 'Gedragswetenschapper',
             perspective:
-                'Het tienerbrein is nog volop in ontwikkeling en kan gevoeliger zijn voor impulsief gedrag. Variabele beloningen — soms een like, soms niet — kunnen extra aantrekkelijk zijn. Kinderen en tieners zijn een bijzondere groep die extra bescherming verdient.',
+                'Het tienerbrein is nog volop in ontwikkeling en kan gevoeliger zijn voor impulsief gedrag. Variabele beloningen (= soms een like, soms niet — die onzekerheid houdt je bezig) kunnen extra aantrekkelijk zijn. Kinderen en tieners zijn een bijzondere groep die extra bescherming verdient.',
             keyArgument:
                 'Jongeren kunnen gevoeliger zijn voor prikkels. Daarom moeten ontwerpkeuzes voor minderjarigen extra zorgvuldig zijn.',
         },
@@ -63,7 +63,7 @@ const config: DebateArenaConfig = {
             emoji: '🏛️',
             role: 'Gemeenteraadslid',
             perspective:
-                'We kunnen niet elke app verbieden of volledig reguleren — dat schaadt innovatie. Maar voor minderjarigen moeten we nadenken over grenzen. De Digital Services Act van de EU verplicht platforms al tot meer transparantie. Toch blijft handhaving lastig als platforms vanuit Amerika opereren.',
+                'We kunnen niet elke app verbieden of volledig reguleren — dat schaadt innovatie. Maar voor minderjarigen moeten we nadenken over grenzen. De Digital Services Act (= een Europese wet voor online platforms) verplicht platforms al tot meer transparantie. Toch blijft handhaving lastig als platforms vanuit Amerika opereren.',
             keyArgument:
                 'Regelgeving is nodig, maar moet slim zijn: gericht op ontwerptrucs die specifiek op jongeren zijn gericht, niet op de hele app-sector.',
         },
@@ -72,7 +72,7 @@ const config: DebateArenaConfig = {
         {
             id: 'verbieden',
             label: 'Ontwerptrucs verbieden',
-            description: 'Autoplay, infinite scroll en aandachtstrekkende meldingen moeten wettelijk begrensd worden voor apps die door minderjarigen gebruikt worden.',
+            description: 'Autoplay, infinite scroll (= een eindeloze stroom content zonder stoppunt) en aandachtstrekkende meldingen moeten wettelijk begrensd worden voor apps die door minderjarigen gebruikt worden.',
         },
         {
             id: 'ouders',

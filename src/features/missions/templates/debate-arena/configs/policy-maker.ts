@@ -44,7 +44,7 @@ const config: DebateArenaConfig = {
             emoji: '🏛️',
             role: 'Wethouder Onderwijs',
             perspective:
-                'De EU AI Act verbiedt real-time biometrische identificatie in openbare ruimtes tenzij er een wettelijke uitzondering is. Schoolpleinen vallen waarschijnlijk onder die regel. We moeten dit eerst laten toetsen door juristen. Ik ben niet tégen de camera\'s, maar we moeten het wettelijk kunnen verantwoorden.',
+                'De EU AI Act verbiedt real-time biometrische identificatie (= herkennen via je lichaam, zoals je gezicht) in openbare ruimtes tenzij er een wettelijke uitzondering is. Schoolpleinen vallen waarschijnlijk onder die regel. We moeten dit eerst laten toetsen door juristen. Ik ben niet tégen de camera\'s, maar we moeten het wettelijk kunnen verantwoorden.',
             keyArgument:
                 'Goed beleid begint bij wettigheid. Als we een systeem invoeren dat later juridisch onhoudbaar blijkt, beschadigt dat het vertrouwen in de overheid.',
         },
@@ -91,7 +91,7 @@ const config: DebateArenaConfig = {
         'Is er een stakeholder waarvan jij het standpunt veranderd hebt na het debat?',
     ],
     counterArgument:
-        '"We accepteren al camera\'s in supermarkten, op straat en in het verkeer. Waarom is een schoolplein anders? Als ouders kiezen voor veiligheid van hun kind, is het paternalistisch om te zeggen dat hun kind geen bewaking mag hebben terwijl andere plekken in de samenleving al volledig gemonitord zijn."',
+        '"We accepteren al camera\'s in supermarkten, op straat en in het verkeer. Waarom is een schoolplein anders? Als ouders kiezen voor veiligheid van hun kind, is het paternalistisch (= beslissen vóór iemand anders, \'voor zijn eigen bestwil\') om te zeggen dat hun kind geen bewaking mag hebben terwijl andere plekken in de samenleving al volledig gemonitord zijn."',
     maxScore: 100,
     badges: [
         {
@@ -123,7 +123,7 @@ const config: DebateArenaConfig = {
         'De EU AI Act verbiedt real-time biometrische identificatie in openbare ruimtes, met strenge uitzonderingen.',
         'Goed beleid is effectief beleid: als een maatregel niet werkt, zijn de kosten niet te rechtvaardigen.',
         'Veiligheid en privacy zijn allebei grondrechten — de spanning daartussen vraagt om een zorgvuldige afweging.',
-        'Stakeholderanalyse is de eerste stap van elk goed beleidsvoorstel.',
+        'Stakeholderanalyse (= in kaart brengen wie er belang bij heeft) is de eerste stap van elk goed beleidsvoorstel.',
     ],
 };
 

@@ -155,7 +155,7 @@ export const privacyByDesignConfig: SimulationLabConfig = {
     introEmoji: '🔐',
     introTitle: 'Privacy by Design',
     introDescription:
-        'Ontdek hoe jouw digitale keuzes bepalen hoeveel anderen over jou weten. Speel met instellingen en zie direct wat er verandert.',
+        'Privacy by Design betekent: privacy vanaf het begin inbouwen in een app of systeem, niet achteraf. Ontdek hoe jouw digitale keuzes bepalen hoeveel anderen over jou weten. Speel met instellingen en zie direct wat er verandert.',
     missionGoal: {
         primaryGoal: 'Ik maak privacykeuzes die een app veiliger maken en leg uit welke data echt nodig is.',
         criteria: {
@@ -313,7 +313,7 @@ export const privacyByDesignConfig: SimulationLabConfig = {
                     ],
                     correctAnswer: 'Geef apps zo weinig permissies als mogelijk voor ze te laten werken',
                     explanation:
-                        'Data minimalisatie is een AVG-recht en een privacyprincipe: apps mogen alleen data verzamelen die strikt nodig is. Geef nooit meer toegang dan de app functioneel nodig heeft.',
+                        'Data minimalisatie is een AVG-recht (AVG = de Europese privacywet) en een privacyprincipe: apps mogen alleen data verzamelen die strikt nodig is. Geef nooit meer toegang dan de app functioneel nodig heeft.',
                     points: 15,
                 },
             ],

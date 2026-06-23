@@ -60,7 +60,7 @@ const config: ScenarioEngineConfig = {
             emoji: '🧱',
             title: 'Welke bouwsteen is dit?',
             description:
-                'Elk voorbeeld hieronder past bij één van de vier bouwstenen van computational thinking: decompositie, patroonherkenning, abstractie of algoritme. Welke voorbeelden zijn voorbeelden van DECOMPOSITIE? Selecteer ze.',
+                'Elk voorbeeld hieronder past bij één van de vier bouwstenen van computational thinking: decompositie (= een groot probleem in kleine stukjes hakken), patroonherkenning (= herhalingen herkennen), abstractie (= alleen de belangrijke details bewaren) of algoritme (= een stap-voor-stap recept). Welke voorbeelden zijn voorbeelden van DECOMPOSITIE? Selecteer ze.',
             type: 'select-correct',
             maxScore: 25,
             feedbackCorrect:
@@ -336,7 +336,7 @@ const config: ScenarioEngineConfig = {
                         'Een reeks getallen: 1, 1, 2, 3, 5, 8, 13. Wat is het volgende getal?',
                     correct: true,
                     explanation:
-                        'Dit is de Fibonacci-reeks: elk getal is de som van de twee vorige getallen. Het volgende getal is 21 (8+13). Dit patroon komt voor in de natuur: spiraalschelpen, bloemblaadjes, zonnebloemen.',
+                        'Dit is de Fibonacci-reeks (elk getal = de twee vorige bij elkaar opgeteld): elk getal is de som van de twee vorige getallen. Het volgende getal is 21 (8+13). Dit patroon komt voor in de natuur: spiraalschelpen, bloemblaadjes, zonnebloemen.',
                 },
                 {
                     id: 4,

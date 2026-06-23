@@ -39,7 +39,7 @@ export const startupSimulatorConfig: BuilderCanvasConfig = {
             description:
                 'Een geweldig idee zonder verdienmodel is een hobby, geen startup. Hoe verdient je bedrijf geld? Abonnementen, eenmalige aankoop, advertenties, commissie? Elk model heeft voor- en nadelen.',
             instruction:
-                'Ontwerp het businessmodel van je startup. Beschrijf: 1) Jouw verdienmodel: hoe verdien je geld? (kies één: abonnement, freemium, transactiekosten, advertenties, licenties), 2) Prijsstrategie: wat betaalt een klant per maand/jaar?, 3) Kosten: wat zijn de drie grootste kosten om te beginnen?, 4) Break-even punt: hoeveel betalende klanten heb je nodig om je kosten te dekken? Bereken dit globaal.',
+                'Ontwerp het businessmodel van je startup. Beschrijf: 1) Jouw verdienmodel: hoe verdien je geld? (kies één: abonnement, freemium, transactiekosten, advertenties, licenties), 2) Prijsstrategie: wat betaalt een klant per maand/jaar?, 3) Kosten: wat zijn de drie grootste kosten om te beginnen?, 4) Break-even punt (= het punt waarop inkomsten de kosten dekken): hoeveel betalende klanten heb je nodig? Bereken dit globaal.',
             tip: 'Freemium werkt zo: gratis basisversie + betaalde premium. Spotify, Dropbox, Duolingo gebruiken dit model. Het nadeel: minder dan 5% van gebruikers betaalt uiteindelijk.',
             checklistItems: [
                 { id: 'verdienmodel', label: 'Ik heb een verdienmodel gekozen en uitgelegd' },
@@ -71,13 +71,15 @@ export const startupSimulatorConfig: BuilderCanvasConfig = {
             description:
                 'Je hebt 3 minuten. De jury is druk. Hoe vertel je in drie minuten waarom jouw startup de moeite waard is? Een goede pitch volgt een bewezen structuur die investeerders meteen snappen.',
             instruction:
-                'Schrijf de structuur van je 3-minuten pitch in punten. Gebruik de volgende structuur: 1) Hook (30 sec): een prikkelende vraag of statistiek die het probleem invoelt, 2) Probleem (30 sec): maak het probleem voelbaar, 3) Oplossing (45 sec): laat zien hoe jouw product werkt, 4) Businessmodel (30 sec): hoe verdien je geld?, 5) Traction of plan (30 sec): wat heb je al bereikt of wat zijn de eerste stappen?, 6) Call to action (15 sec): wat vraag je van de jury? Schrijf bij elk onderdeel de kernzin die je zou zeggen.',
+                'Schrijf de structuur van je 3-minuten pitch. Gebruik de 6 onderdelen uit de checklist. Noteer bij elk onderdeel de kernzin die je zou zeggen. Denk ook aan traction (= bewijs dat mensen je product willen) en de financiële basis die je in stap 2 bepaalde, inclusief je break-even punt (= het punt waarop inkomsten de kosten dekken).',
             tip: 'Begin NOOIT met "Wij zijn [bedrijfsnaam] en wij..." Dat is saai. Begin met een statistiek of verhaal dat de jury raakt.',
             checklistItems: [
-                { id: 'hook', label: 'De hook is een prikkelende vraag of statistiek' },
-                { id: 'zes-onderdelen', label: 'Alle 6 pitch-onderdelen zijn uitgewerkt' },
-                { id: 'kernzinnen', label: 'Bij elk onderdeel staat een kernzin' },
-                { id: 'call-to-action', label: 'Er is een duidelijke call to action' },
+                { id: 'hook', label: '1) Hook (30 sec): een prikkelende vraag of statistiek die het probleem invoelt' },
+                { id: 'probleem', label: '2) Probleem (30 sec): maak het probleem voelbaar' },
+                { id: 'oplossing', label: '3) Oplossing (45 sec): laat zien hoe jouw product werkt' },
+                { id: 'businessmodel-pitch', label: '4) Businessmodel (30 sec): hoe verdien je geld?' },
+                { id: 'traction', label: '5) Traction of plan (30 sec): wat heb je al bereikt of wat zijn de eerste stappen?' },
+                { id: 'call-to-action', label: '6) Call to action (15 sec): wat vraag je van de jury?' },
             ],
             textPrompt: 'Schrijf je pitch-structuur',
         },
