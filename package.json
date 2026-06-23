@@ -29,6 +29,7 @@
     "check:ai-provider-docs": "node scripts/check-ai-provider-docs.mjs",
     "check:ai-usage": "node scripts/check-ai-usage-telemetry.mjs && node scripts/check-mistral-bfl-providers.mjs",
     "check:rls:functions": "node scripts/check-rls-functions.mjs",
+    "biastest": "node scripts/biastest.mjs",
     "edge:serve:function": "node scripts/serve-edge-function.mjs",
     "edge:serve:gdrive-backup": "node scripts/serve-edge-function.mjs gdrive-backup",
     "hooks:test": "node scripts/agent-hooks/test-agent-hooks.mjs && node scripts/agent-hooks/verify-agent-hooks.mjs",
