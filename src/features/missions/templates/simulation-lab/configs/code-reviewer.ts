@@ -276,7 +276,7 @@ export const codeReviewerConfig: SimulationLabConfig = {
                     ],
                     correctAnswer: 'Schrijf dezelfde logica maar één keer en hergebruik het via functies',
                     explanation:
-                        'DRY betekent: als je dezelfde code twee keer schrijft, maak er dan een functie van. Als je later iets wilt veranderen, doe je het op één plek — niet op tien plekken.',
+                        'DRY betekent: als je dezelfde code twee keer schrijft, maak er dan een functie van (= een herbruikbaar stukje code met een naam). Als je later iets wilt veranderen, doe je het op één plek — niet op tien plekken.',
                     points: 15,
                 },
                 {
@@ -417,7 +417,7 @@ export const codeReviewerConfig: SimulationLabConfig = {
         'Goede naamgeving, commentaar en inspringing maken code leesbaar — ook voor jezelf over 6 maanden.',
         'DRY: schrijf dezelfde logica maar één keer en gebruik functies voor herhaalbaarheid.',
         'Magische getallen zijn verborgen bugs — geef ze altijd een naam via een constante.',
-        'Constructieve feedback is concreet en actionable: noem wat beter kan én waarom.',
+        'Constructieve feedback is concreet uitvoerbaar: noem wat beter kan én waarom.',
         'Code review helpt zowel de schrijver als de reviewer — je leert van andermans code.',
     ],
 };

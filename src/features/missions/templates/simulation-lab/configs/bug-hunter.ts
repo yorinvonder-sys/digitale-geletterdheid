@@ -287,7 +287,7 @@ export const bugHunterConfig: SimulationLabConfig = {
                 {
                     id: 'sb1-q2',
                     question:
-                        'Je hebt de code: `for (let i = 0; i <= 5; i++)` maar je wil precies 5 elementen doorlopen (0 t/m 4). Welke bug bevat dit?',
+                        'Een lus die van 0 t/m 4 telt = 5 stappen. Je hebt de code: `for (let i = 0; i <= 5; i++)` maar je wil precies 5 elementen doorlopen (0 t/m 4). Welke bug bevat dit?',
                     type: 'multiple-choice',
                     options: [
                         'Syntax fout — de lus is verkeerd geschreven',

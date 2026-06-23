@@ -30,9 +30,9 @@ export const appPrototyperConfig: BuilderCanvasConfig = {
             id: 'probleemanalyse',
             title: 'Gebruikersprobleem analyseren',
             description:
-                'Goede apps lossen echte problemen op. Niet problemen die designers verzonnen hebben, maar problemen waar echte gebruikers dagelijks tegenaan lopen. Dit is wat designers "user research" noemen.',
+                'Goede apps lossen echte problemen op. Niet problemen die designers verzonnen hebben, maar problemen waar echte gebruikers dagelijks tegenaan lopen. Dit is wat designers "gebruikersonderzoek" noemen.',
             instruction:
-                'Beschrijf het probleem dat jouw app oplost. Gebruik de 5 W\'s: Wie heeft het probleem?, Wat is het probleem precies?, Wanneer doet het probleem zich voor?, Waar gebeurt het?, Waarom is het nu nog niet opgelost? Schrijf daarna in 1 zin de waardepropositie van je app: "Mijn app helpt [DOELGROEP] om [PROBLEEM] op te lossen door [OPLOSSING]."',
+                'Beschrijf het probleem dat jouw app oplost. Gebruik de 5 W\'s: Wie heeft het probleem?, Wat is het probleem precies?, Wanneer doet het probleem zich voor?, Waar gebeurt het?, Waarom is het nu nog niet opgelost? Schrijf daarna in 1 zin de waardepropositie (= wat jouw app uniek nuttig maakt) van je app: "Mijn app helpt [DOELGROEP] om [PROBLEEM] op te lossen door [OPLOSSING]."',
             tip: 'Hoe specifieker het probleem, hoe beter de app. "Leerlingen weten niet wanneer de kantine druk is" is specifieker en beter op te lossen dan "leerlingen willen alles weten over school".',
             checklistItems: [
                 { id: 'vijf-w', label: 'Alle 5 W\'s zijn ingevuld' },
@@ -70,7 +70,7 @@ export const appPrototyperConfig: BuilderCanvasConfig = {
                 'Een gebruikersflow beschrijft het pad dat een gebruiker door de app afloopt om een doel te bereiken. Bijv: "Open app → Tik op zoeken → Voer druktemeting in → Zie resultaat." Zonder een goede flow raken gebruikers verloren.',
             instruction:
                 'Schrijf twee gebruikersflows voor je app. Elke flow beschrijft stap voor stap wat de gebruiker doet om een specifiek doel te bereiken. Minimaal 4 stappen per flow. Geef ook aan wat er gebeurt als de gebruiker een fout maakt of op "terug" drukt — dat heet de "fout-flow". Kies duidelijke namen voor je flows (bijv. "Eerste keer opstarten" of "Druktemeting opzoeken").',
-            tip: 'Denk bij elke stap: "Wat kan er hier misgaan?" Goede UX-designers ontwerpen niet alleen voor dingen die lukken, maar ook voor dingen die mislukken.',
+            tip: 'Denk bij elke stap: "Wat kan er hier misgaan?" Goede app-ontwerpers (UX = gebruikerservaring) ontwerpen niet alleen voor dingen die lukken, maar ook voor dingen die mislukken.',
             checklistItems: [
                 { id: 'twee-flows', label: 'Ik heb 2 gebruikersflows beschreven' },
                 { id: 'vier-stappen', label: 'Elke flow heeft minimaal 4 stappen' },

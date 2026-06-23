@@ -6,7 +6,7 @@ const config: ScenarioEngineConfig = {
     introEmoji: '🔎',
     introTitle: 'AI Bias Detective',
     introDescription:
-        'AI-systemen leren van menselijke data — en die data is niet neutraal. Als de trainingsdata scheef is, worden de resultaten ook scheef. Jij leert als AI Bias Detective herkennen wanneer een AI oneerlijk uitpakt voor bepaalde groepen mensen.',
+        'AI-systemen leren van menselijke data — en die data is niet neutraal. Als de trainingsdata (= de voorbeelden waarvan een AI leert) scheef is, worden de resultaten ook scheef. Jij leert als AI Bias Detective herkennen wanneer een AI oneerlijk uitpakt voor bepaalde groepen mensen.',
     introFeatures: [
         'Herken vooroordelen in AI-systemen aan de hand van echte voorbeelden',
         'Rangschik AI-toepassingen van meest naar minst risicovol',
@@ -42,7 +42,7 @@ const config: ScenarioEngineConfig = {
     ],
     takeaways: [
         'AI is niet objectief — het leert van menselijke data en menselijke data bevat menselijke vooroordelen.',
-        'Bias in AI kan iedereen treffen, maar treft mensen die al gemarginaliseerd zijn onevenredig hard.',
+        'Bias in AI kan iedereen treffen, maar treft mensen die al in een nadelige positie zitten onevenredig hard.',
         'Diverse trainingsdata en diverse ontwikkelteams zijn de beste remedie tegen bias.',
         'Herkennen van bias is een vaardigheid die je kunt leren — je hoeft geen programmeur te zijn.',
         'Als AI wordt gebruikt voor beslissingen die mensen raken (aanname, leningen, straffen), moet er altijd mensenlijk toezicht zijn.',
@@ -120,7 +120,7 @@ const config: ScenarioEngineConfig = {
                         'Een ziekenhuisalgoritme dat prioriteert wie extra zorg nodig heeft, raadt zwarte patiënten minder behandelingen aan bij gelijke pijnklachten.',
                     correct: true,
                     explanation:
-                        'Dit is een gedocumenteerd geval uit de VS. Het algoritme gebruikte zorgkosten als proxy voor gezondheidsbehoeften — maar zwarte patiënten hadden historisch minder zorg ontvangen (door ongelijkheid), dus werden als "minder ziek" geclassificeerd.',
+                        'Dit is een gedocumenteerd geval uit de VS. Het algoritme gebruikte zorgkosten als vervangende maatstaf voor gezondheidsbehoeften — maar zwarte patiënten hadden historisch minder zorg ontvangen (door ongelijkheid), dus werden als "minder ziek" geclassificeerd.',
                 },
                 {
                     id: 7,
@@ -242,7 +242,7 @@ const config: ScenarioEngineConfig = {
                         'Een huizenzoeksite-algoritme toont automatisch minder dure huizen in witte wijken aan mensen met niet-westerse achternamen.',
                     correct: false,
                     explanation:
-                        'Dit is ernstige bias — en het is vergelijkbaar met redlining, een historische praktijk van woningdiscriminatie. Op basis van naam (een proxy voor etniciteit) worden mensen minder kansen getoond.',
+                        'Dit is ernstige bias — vergelijkbaar met een historische praktijk waarbij hele wijken systematisch werden uitgesloten van diensten zoals leningen of verzekeringen. Op basis van naam (een vervangende maatstaf voor etniciteit) worden mensen minder kansen getoond.',
                 },
                 {
                     id: 3,

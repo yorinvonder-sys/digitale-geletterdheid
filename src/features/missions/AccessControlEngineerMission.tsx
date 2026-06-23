@@ -92,7 +92,7 @@ const ONVEILIGE_REGELS: Regel[] = [
         id: 'r2',
         beschrijving: 'Gasten kunnen inloggen zonder wachtwoord',
         isVeilig: false,
-        uitleg: 'Zonder authenticatie kan iedereen zomaar het systeem in — dat is een groot beveiligingslek.',
+        uitleg: 'Zonder authenticatie (controleren wie je bent) kan iedereen zomaar het systeem in — dat is een groot beveiligingslek.',
         risicoType: 'authenticatie',
     },
     {
@@ -223,7 +223,7 @@ const COACH_HINTS: Record<string, string[]> = {
         'Tip van je Security Coach: soms is een regel gewoon correct. Dat herkennen is ook een skill!',
     ],
     stap2_start: [
-        'Denk aan het "principe van minimale rechten": geef alleen toegang die echt nodig is voor iemands taak.',
+        'Denk aan het principe van minimale rechten: geef alleen toegang die echt nodig is voor iemands taak.',
         'Stel jezelf de vraag: wat is de ROL van deze persoon, en wat MOET die persoon kunnen doen?',
     ],
     stap2_teveel_rechten: [
@@ -236,7 +236,7 @@ const COACH_HINTS: Record<string, string[]> = {
     ],
     stap3_goed: [
         'Correct! Jouw rechtenmodel beschermt de juiste gegevens.',
-        'Goed gedaan! Dit scenario klopt met het principle of least privilege.',
+        'Goed gedaan! Dit scenario klopt met het principe van minimale rechten.',
     ],
     voltooiing: [
         'Je hebt als Access Control Engineer het schoolsysteem beveiligd. Dit is precies wat echte beveiligingsexperts doen!',
@@ -511,7 +511,7 @@ export const AccessControlEngineerMission: React.FC<Props> = ({
                         <p className="text-sm text-duck-ink/60">
                             {isVso
                                 ? 'Kies voor elke actie wie dat mag doen. Vink de juiste rollen aan.'
-                                : 'Nu je de problemen kent, ga je de toegangsrechten correct instellen. Bepaal per resource welke rollen er toegang toe moeten hebben.'
+                                : 'Nu je de problemen kent, ga je de toegangsrechten correct instellen. Bepaal per onderdeel van het systeem (resource) welke rollen er toegang toe moeten hebben.'
                             }
                         </p>
 

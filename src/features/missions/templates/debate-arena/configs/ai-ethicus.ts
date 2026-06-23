@@ -44,7 +44,7 @@ const config: DebateArenaConfig = {
             emoji: '🔬',
             role: 'AI-onderzoeker',
             perspective:
-                'Er zijn drie soorten bias die hier spelen: historische bias in de trainingsdata, selectiebias bij welke leerlingen überhaupt in de data zitten, en bevestigingsbias doordat het systeem vroeger gedrag als norm ziet. Een systeem kan alleen eerlijk zijn als de data eerlijk is — en die is het nooit volledig.',
+                'Het systeem heeft een ingebouwde bias (= een voorkeur die oneerlijk uitpakt): het is getraind op historische data die al ongelijkheid bevat, en ziet dat als normaal. Een systeem kan alleen eerlijk zijn als de data eerlijk is — en die is het nooit volledig.',
             keyArgument:
                 'Technische nauwkeurigheid en ethische eerlijkheid zijn twee verschillende dingen. Een systeem kan statistisch kloppen en toch structureel oneerlijk zijn.',
         },
@@ -54,7 +54,7 @@ const config: DebateArenaConfig = {
             emoji: '🏛️',
             role: 'Gemeentelijk onderwijsambtenaar',
             perspective:
-                'De AVG en de EU AI Act stellen eisen aan AI-systemen die mensen beoordelen. Onderwijssystemen vallen onder de categorie "hoog-risico AI". Dat betekent verplichte transparantie, menselijk toezicht en de mogelijkheid tot bezwaar. De vraag is of scholen zich aan die regels houden.',
+                'De AVG (= de Europese privacywet) en de EU AI Act (= de Europese AI-wet) stellen eisen aan AI-systemen die mensen beoordelen. Onderwijssystemen vallen onder "hoog-risico AI": verplichte transparantie, menselijk toezicht en recht op bezwaar. De vraag is of scholen zich aan die regels houden.',
             keyArgument:
                 'Wetgeving dwingt scholen om verantwoording af te leggen. Maar regels werken alleen als ze gehandhaafd worden — en dat ontbreekt nu.',
         },
@@ -122,7 +122,7 @@ const config: DebateArenaConfig = {
     takeaways: [
         'AI leert van historische data — en die data bevat de ongelijkheid van het verleden.',
         'Statistisch nauwkeurig en ethisch eerlijk zijn niet hetzelfde.',
-        'De EU AI Act classificeert onderwijssystemen als hoog-risico AI met extra verplichtingen.',
+        'De EU AI Act (de Europese AI-wet) classificeert onderwijssystemen als hoog-risico AI met extra verplichtingen.',
         'Menselijk toezicht is geen formaliteit — het is de kern van verantwoord AI-gebruik.',
     ],
 };

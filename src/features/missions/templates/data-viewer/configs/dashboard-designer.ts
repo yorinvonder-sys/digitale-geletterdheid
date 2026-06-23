@@ -19,7 +19,7 @@ export const dashboardDesignerConfig: DataViewerConfig = {
             id: 'schooldata-klassen',
             title: 'Schooldata leerjaar 2 — periode 1 (2025)',
             description:
-                'De schooldirecteur wil een dashboard over de prestaties van de vier klassen in leerjaar 2. Bekijk de ruwe data en beantwoord de vragen.',
+                'De schooldirecteur wil een dashboard over de prestaties van de vier klassen in leerjaar 2. Een dashboard toont de belangrijkste KPI\'s (= Key Performance Indicators: je meest waardevolle meetwaarden in één oogopslag). Bekijk de ruwe data en beantwoord de vragen.',
             type: 'table',
             columns: [
                 { key: 'klas', label: 'Klas', sortable: true },
@@ -146,7 +146,7 @@ export const dashboardDesignerConfig: DataViewerConfig = {
                     title: 'Principe 3: Minder is meer',
                     icon: '✂️',
                     content:
-                        'Een dashboard vol grafieken is verwarrend. Beperk je tot 4-6 visualisaties per scherm. Gebruik witruimte om het overzichtelijk te houden. Verwijder alles wat de kijker afleidt van de kernboodschap. Edward Tufte, de grondlegger van datavisualisatie, noemde dit "data-ink ratio": elke pixel moet nuttige informatie bevatten.',
+                        'Een dashboard vol grafieken is verwarrend. Beperk je tot 4-6 visualisaties per scherm. Gebruik witruimte om het overzichtelijk te houden. Verwijder alles wat de kijker afleidt van de kernboodschap. Een goede vuistregel: alles wat je ziet op het scherm moet een reden hebben om er te staan — versier niet, informeer.',
                 },
                 {
                     title: 'Principe 4: Gebruik kleur bewust',

@@ -54,7 +54,7 @@ export const uxDetectiveConfig: DataViewerConfig = {
                     ],
                     correctAnswer: 'Huiswerk niet vinden in menu',
                     explanation:
-                        '"Huiswerk niet vinden in menu" wordt door 3 leerlingen (1, 4, 10) genoemd — het meest van alle problemen. Het heeft ook ernst 5 (maximaal). Sorteer op "Gevonden probleem" om duplicaten te groeperen. In UX noemen we dit een "high-priority issue": veel gebruikers, hoge ernst.',
+                        '"Huiswerk niet vinden in menu" wordt door 3 leerlingen (1, 4, 10) genoemd — het meest van alle problemen. Het heeft ook ernst 5 (maximaal). Sorteer op "Gevonden probleem" om duplicaten te groeperen. In UX noemen we dit een topprioriteit-probleem: veel gebruikers, hoge ernst.',
                     points: 15,
                 },
                 {
@@ -226,7 +226,7 @@ export const uxDetectiveConfig: DataViewerConfig = {
         'SUS-scores boven 68 gelden als "goed" — daaronder is er werk aan de winkel',
         'Feedback na een actie is cruciaal: laat altijd zien wat er is gebeurd',
         'Affordance betekent: maak zichtbaar wat klikbaar of aanraakbaar is',
-        'Consistentie verlaagt de cognitieve belasting voor gebruikers',
+        'Consistentie verlaagt de cognitieve belasting (hoeveel je brein tegelijk moet verwerken) voor gebruikers',
     ],
 };
 

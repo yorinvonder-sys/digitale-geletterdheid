@@ -38,7 +38,7 @@ export const brandBuilderConfig: BuilderCanvasConfig = {
             description:
                 'Kleuren roepen emoties op. Rood geeft energie en urgentie, blauw straalt vertrouwen uit, groen staat voor natuur en duurzaamheid. Merken kiezen kleuren met zorg — elke kleur communiceert iets aan de klant.',
             instruction:
-                'Kies een kleurenpalet van 3 tot 5 kleuren. Geef van elke kleur de hexadecimale kleurcode (bijv. #5F947D) en leg uit waarom je deze kleur hebt gekozen in relatie tot je merkwoorden. Verdeel de kleuren ook in rollen: primaire kleur (meest zichtbaar), secundaire kleur en accentkleur.',
+                'Kies een kleurenpalet van 3 tot 5 kleuren. Geef van elke kleur de kleurcode (bijv. #5F947D) en leg uit waarom je deze kleur hebt gekozen in relatie tot je merkwoorden. Verdeel de kleuren ook in rollen: primaire kleur (meest zichtbaar), secundaire kleur en accentkleur.',
             tip: 'Gratis tools als Coolors.co of Adobe Color helpen je bij het kiezen van kleuren die goed samenwerken. Het oog wil ook rust: gebruik niet te veel felle kleuren tegelijk.',
             checklistItems: [
                 { id: 'drie-kleuren', label: 'Ik heb minimaal 3 kleuren met hexcodes gekozen' },
@@ -50,7 +50,7 @@ export const brandBuilderConfig: BuilderCanvasConfig = {
                 question: 'Waarom is kleurcontrast belangrijk voor je merk?',
                 options: ['Het maakt je logo groter', 'Het verbetert leesbaarheid en toegankelijkheid', 'Het maakt de website sneller', 'Het is alleen belangrijk voor print'],
                 correctIndex: 1,
-                explanation: 'Goed kleurcontrast zorgt dat tekst leesbaar is voor iedereen, inclusief mensen met een visuele beperking. Dit is ook een wettelijke vereiste (WCAG).',
+                explanation: 'Goed kleurcontrast zorgt dat tekst leesbaar is voor iedereen, inclusief mensen met een visuele beperking. Dit is ook een wettelijke vereiste (een Europese toegankelijkheidsregel, WCAG).',
                 bonusPoints: 5,
             },
         },
@@ -60,7 +60,7 @@ export const brandBuilderConfig: BuilderCanvasConfig = {
             description:
                 'Een logo is het gezicht van een merk. Het staat op elk product, elke advertentie, elke verpakking. Een goed logo is simpel, herkenbaar en werkt in zwart-wit én in kleur.',
             instruction:
-                'Beschrijf je logo-concept in woorden (je hoeft niets te tekenen). Vertel: 1) Welk symbool of icoon gebruik je en waarom?, 2) Is het een woordmerk (alleen tekst), beeldmerk (alleen symbool) of combinatiemerk?, 3) Welk lettertype past bij je merkpersoonlijkheid (serieus/speels/modern)? Leg bij elk punt de keuze uit.',
+                'Beschrijf je logo-concept in woorden (je hoeft niets te tekenen). Vertel: 1) Welk symbool of icoon gebruik je en waarom?, 2) Is het een woordmerk (alleen tekst), een beeldmerk (alleen een symbool) of een combinatiemerk (tekst én symbool samen)?, 3) Welk lettertype past bij je merkpersoonlijkheid (serieus/speels/modern)? Leg bij elk punt de keuze uit.',
             tip: 'De beste logo\'s zijn eenvoudig. De Nike swoosh is één streep. De Apple is een gebeten appel. Simpel = memorabel.',
             checklistItems: [
                 { id: 'symbool', label: 'Ik heb een symbool of concept beschreven met motivatie' },
