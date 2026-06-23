@@ -19,7 +19,8 @@ import { buildSafeHistory } from "../_shared/chatHistory.ts";
 import { checkDurableRateLimit, rateLimitHeaders } from "../_shared/rateLimiter.ts";
 import { countTextChars, logAiUsageEvent, resolveAiRequestId } from "../_shared/aiUsageLogger.ts";
 import { buildMistralMessages, completeMistralChat, getMistralTextModel } from "../_shared/mistralClient.ts";
-import { filterAiOutput } from "../_shared/outputFilter.ts";
+import { filterAiOutput, SAFE_FALLBACK_MESSAGE } from "../_shared/outputFilter.ts";
+import { moderateText } from "../_shared/moderationClient.ts";
 
 const MAX_REQUEST_BYTES = 8_000;
 
@@ -216,6 +217,25 @@ Deno.serve(async (req: Request) => {
         );
     }
 
+    // Input moderation (Mistral classifier) — additioneel op de sanitizer.
+    const inputModeration = await moderateText(validation.sanitized);
+    if (inputModeration.flagged) {
+        logAiUsageEvent({
+            requestId,
+            endpoint: "demo-chat",
+            provider: "mistral",
+            model: getMistralTextModel(),
+            status: "blocked",
+            inputChars: validation.sanitized.length,
+            metadata: { reason: "moderation_input", moderation_categories: inputModeration.categories.join(",") },
+        }).catch((err) => console.error("[demo-chat] Usage log error:", err));
+
+        return new Response(
+            JSON.stringify({ text: SAFE_FALLBACK_MESSAGE, remaining: Math.max(rateCheck.remaining, 0) }),
+            { headers: { ...responseHeaders, ...rateLimitHeaders(rateCheck) } }
+        );
+    }
+
     // 4. Send to Mistral
     try {
         // Data-minimalisatie: maskeer PII (e-mail, telefoon/BSN, postcode) vóór
@@ -237,19 +257,29 @@ Deno.serve(async (req: Request) => {
         });
 
         const outputCheck = filterAiOutput(result.text);
-        const text = outputCheck.safe ? result.text : outputCheck.filtered!;
+        let text = outputCheck.safe ? result.text : (outputCheck.filtered || SAFE_FALLBACK_MESSAGE);
+        let outputBlockReason: string | null = outputCheck.safe ? null : `regex:${outputCheck.category}`;
+
+        if (outputCheck.safe) {
+            const outputModeration = await moderateText(result.text);
+            if (outputModeration.flagged) {
+                text = SAFE_FALLBACK_MESSAGE;
+                outputBlockReason = `moderation:${outputModeration.categories.join("|")}`;
+            }
+        }
+        const outputSafe = outputBlockReason === null;
 
         logAiUsageEvent({
             requestId,
             endpoint: "demo-chat",
             provider: "mistral",
             model: result.model,
-            status: "ok",
+            status: outputSafe ? "ok" : "blocked",
             inputChars: countTextChars(contents) + DEMO_SYSTEM_INSTRUCTION.length,
             historyChars: countTextChars(safeHistory.history),
             outputChars: text.length,
             usagePayload: result.usagePayload,
-            metadata: { remaining: Math.max(rateCheck.remaining, 0) },
+            metadata: { remaining: Math.max(rateCheck.remaining, 0), output_filter: outputBlockReason ?? "safe" },
         }).catch((err) => console.error("[demo-chat] Usage log error:", err));
 
         return new Response(

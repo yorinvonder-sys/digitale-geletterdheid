@@ -9,6 +9,14 @@
  * False positives zijn aanvaardbaar — beter safe dan sorry bij minderjarigen.
  */
 
+/**
+ * Kind-veilige fallback-boodschap, getoond wanneer output (of input) wordt
+ * geblokkeerd door het regex-filter óf de Mistral-moderatie. Eén gedeelde tekst
+ * zodat beide lagen dezelfde welzijnsgerichte verwijzing tonen.
+ */
+export const SAFE_FALLBACK_MESSAGE =
+    'Sorry, ik kan deze vraag niet beantwoorden. Als je ergens mee zit, praat dan met een vertrouwenspersoon op school of bel de Kindertelefoon (0800-0432).';
+
 const CONCERNING_PATTERNS: Array<{ pattern: RegExp; category: string }> = [
     // Zelfbeschadiging / suïcide instructies
     { pattern: /\b(snij|snijd)\s+(jezelf|je\s+polsen?|in\s+je)/i, category: 'zelfbeschadiging' },
@@ -48,7 +56,7 @@ export function filterAiOutput(text: string): OutputFilterResult {
             return {
                 safe: false,
                 category,
-                filtered: 'Sorry, ik kan deze vraag niet beantwoorden. Als je ergens mee zit, praat dan met een vertrouwenspersoon op school of bel de Kindertelefoon (0800-0432).',
+                filtered: SAFE_FALLBACK_MESSAGE,
             };
         }
     }

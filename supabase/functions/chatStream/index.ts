@@ -20,7 +20,8 @@ import {
     selectModel,
 } from "../_shared/chatCore.ts";
 import { buildMistralMessages, streamMistralChat } from "../_shared/mistralClient.ts";
-import { filterStreamChunk } from "../_shared/outputFilter.ts";
+import { filterStreamChunk, SAFE_FALLBACK_MESSAGE } from "../_shared/outputFilter.ts";
+import { moderateText } from "../_shared/moderationClient.ts";
 import { detectAndLogStepComplete } from "../_shared/stepCompleteDetector.ts";
 import { countTextChars, logAiUsageEvent } from "../_shared/aiUsageLogger.ts";
 
@@ -43,6 +44,35 @@ Deno.serve(async (req: Request) => {
     const aiPayload = buildAiChatPayload(validated);
     const inputChars = countTextChars(aiPayload);
     const historyChars = countTextChars(validated.safeHistory.history);
+
+    // Input moderation (Mistral classifier) — blokkeer vóór we streamen.
+    const inputModeration = await moderateText(validated.sanitized);
+    if (inputModeration.flagged) {
+        logAiUsageEvent({
+            requestId: validated.requestId,
+            endpoint: "chatStream",
+            provider: "mistral",
+            model,
+            status: "blocked",
+            userId: validated.userId,
+            schoolId: validated.schoolId,
+            inputChars,
+            historyChars,
+            metadata: { reason: "moderation_input", moderation_categories: inputModeration.categories.join(",") },
+        }).catch((err) => console.error("[chatStream] Usage log error:", err));
+
+        const blockedEncoder = new TextEncoder();
+        const blockedStream = new ReadableStream({
+            start(controller) {
+                controller.enqueue(blockedEncoder.encode(`data: ${JSON.stringify({ text: SAFE_FALLBACK_MESSAGE })}\n\n`));
+                controller.enqueue(blockedEncoder.encode("data: [DONE]\n\n"));
+                controller.close();
+            },
+        });
+        return new Response(blockedStream, {
+            headers: { ...corsHeaders, "Content-Type": "text/event-stream", "Cache-Control": "no-cache", "Connection": "keep-alive", "X-AI-Request-Id": validated.requestId, ...rateLimitHeaders(validated.rateCheck) },
+        });
+    }
 
     try {
         const result = await streamMistralChat({
@@ -206,12 +236,20 @@ Deno.serve(async (req: Request) => {
                         .catch((err) => console.error("[chatStream] STEP_COMPLETE log error:", err));
                 }
 
+                // Post-stream Mistral-moderatie: kan reeds-gestreamde tekst NIET
+                // terugtrekken — alleen detectie + logging (Art. 12 / monitoring).
+                let postStreamModeration = "";
+                if (!streamBlocked && accumulatedText) {
+                    const outputModeration = await moderateText(accumulatedText);
+                    if (outputModeration.flagged) postStreamModeration = outputModeration.categories.join("|");
+                }
+
                 logAiUsageEvent({
                     requestId: validated.requestId,
                     endpoint: "chatStream",
                     provider: "mistral",
                     model,
-                    status: streamBlocked ? "blocked" : "ok",
+                    status: (streamBlocked || postStreamModeration) ? "blocked" : "ok",
                     userId: validated.userId,
                     schoolId: validated.schoolId,
                     inputChars,
@@ -223,6 +261,7 @@ Deno.serve(async (req: Request) => {
                         role_id: validated.body.roleId,
                         mission_id: validated.body.missionId,
                         stream_blocked: streamBlocked,
+                        post_stream_moderation: postStreamModeration || "clean",
                     },
                 }).catch((err) => console.error("[chatStream] Usage log error:", err));
 
