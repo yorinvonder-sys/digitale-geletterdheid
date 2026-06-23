@@ -120,6 +120,7 @@ Wij verzamelen alleen gegevens die nodig zijn voor het functioneren van het plat
 | Rol (leerling/docent/beheerder) | Om je de juiste functies te tonen |
 | School / organisatie | Om je te koppelen aan de juiste schoolomgeving |
 | Account-ID (uniek nummer) | Technisch nodig voor het systeem |
+| Geboortedatum | Uitsluitend om te bepalen of een leerling 13 jaar of ouder is. AI-opdrachten zijn alleen voor 13+ (voorwaarden Mistral AI en Black Forest Labs). De geboortedatum wordt server-side gebruikt en **niet** met de AI gedeeld. |
 
 ### 5.2 Leer- en gebruiksgegevens
 
@@ -450,6 +451,7 @@ Op grond van artikel 8 van de AVG en artikel 5 van de Uitvoeringswet AVG (UAVG) 
 | **Gebruik via school** | Wanneer het platform via de school wordt ingezet, verloopt de grondslag via de publieke taak van de school. De school informeert ouders en regelt de benodigde toestemming indien nodig. |
 | **Leerlingen jonger dan 16 jaar** | De school draagt zorg voor het verkrijgen van ouderlijke toestemming conform het schoolbeleid en de UAVG. |
 | **Leerlingen van 16 jaar en ouder** | Leerlingen van 16 jaar en ouder kunnen zelfstandig toestemming geven. |
+| **AI-functies: 13 jaar en ouder** | AI-opdrachten zijn alleen beschikbaar voor leerlingen van **13 jaar en ouder** (voorwaarden Mistral AI en Black Forest Labs; ouderlijke toestemming heft dit niet op). De school geeft de geboortedatum door; het platform blokkeert AI-functies automatisch voor leerlingen jonger dan 13. |
 
 ### Extra beschermingsmaatregelen voor minderjarigen
 

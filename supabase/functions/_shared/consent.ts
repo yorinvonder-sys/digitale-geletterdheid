@@ -6,7 +6,16 @@ type SupabaseLikeClient = {
       eq: (column: string, value: string) => any;
     };
   };
+  rpc: (fn: string, params?: Record<string, unknown>) => any;
 };
+
+// 13+ leeftijdspoort: Mistral (Commercial Terms §2.2(c)) en Black Forest Labs
+// (ToS §1.2) staan <13 niet toe — ouderlijke toestemming heft dit niet op.
+// Gefaseerde uitrol: alleen handhaven wanneer AI_AGE_GATE_ENFORCED=true (nadat
+// de school geboortedata heeft ingevuld). Default uit = ongewijzigd gedrag.
+function ageGateEnforced(): boolean {
+  return (globalThis.Deno?.env.get("AI_AGE_GATE_ENFORCED") ?? "").toLowerCase() === "true";
+}
 
 type SupabaseUserLike = {
   id: string;
@@ -33,6 +42,25 @@ export async function ensureAiInteractionConsent(
 
   if (role === "teacher" || role === "admin" || role === "developer") {
     return null;
+  }
+
+  // 13+ leeftijdspoort (fail-closed): leerlingen <13 of zonder bekende
+  // geboortedatum krijgen geen AI-toegang. Alleen actief als de school de
+  // geboortedata heeft ingevuld en AI_AGE_GATE_ENFORCED=true is gezet.
+  if (ageGateEnforced()) {
+    const { data: ageOk, error: ageError } = await supabase.rpc("student_ai_age_ok");
+    if (ageError || ageOk !== true) {
+      return new Response(
+        JSON.stringify({
+          error: "ai_age_restricted",
+          reason: "AI-functies zijn alleen beschikbaar voor leerlingen van 13 jaar en ouder.",
+        }),
+        {
+          status: 403,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        },
+      );
+    }
   }
 
   const { data, error } = await supabase
