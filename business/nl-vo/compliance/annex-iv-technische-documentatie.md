@@ -9,7 +9,7 @@
 **E-mail:** info@dgskills.app
 **Classificatie:** Hoog-risico AI-systeem -- Annex III, punt 3(b)
 
-> **Deadline-update (17 juni 2026):** De in dit document genoemde AI Act-deadline van **2 augustus 2026** voor hoog-risico-verplichtingen is niet definitief. Via de **Digital Omnibus** (voorlopig EU-akkoord, nog niet formeel gepubliceerd) verschuift deze naar verwachting richting **2 december 2027**. De hoog-risico-classificatie (Annex III, punt 3b) en de wettelijke SLO-kerndoelen (verplicht vanaf 1 augustus 2027) blijven ongewijzigd. De deadline-datums in de beoordeling hieronder weerspiegelen de oorspronkelijke datum op moment van schrijven.
+> **Deadline-update (17 juni 2026):** De in dit document genoemde AI Act-deadline van **2 augustus 2026** voor hoog-risico-verplichtingen is niet definitief. Via de **Digital Omnibus** (door het Europees Parlement aangenomen op 11 juni 2026; formele bekrachtiging door de Raad en publicatie in het EU-Publicatieblad nog niet afgerond) verschuift deze naar verwachting richting **2 december 2027**. De hoog-risico-classificatie (Annex III, punt 3b) en de wettelijke SLO-kerndoelen (verplicht vanaf 1 augustus 2027) blijven ongewijzigd. De deadline-datums in de beoordeling hieronder weerspiegelen de oorspronkelijke datum op moment van schrijven.
 
 ---
 
@@ -378,7 +378,7 @@ Geimplementeerd in `services/auditService.ts`, conform AVG Art. 30 en EU AI Act 
 
 ### 4.1 Verwijzing naar risicoregister
 
-[TODO: Opstellen formeel risicoregister conform Art. 9 -- gepland voor maart 2026. Zie `eu-ai-act-conformiteitsplan.md` actie 9.1-9.7]
+Het risicoregister is uitgewerkt in `risicoregister-ai-act.md` (risico's per agent en functionaliteit gescoord, met maatregelen en restrisico). De formele vaststelling van het Art. 9-risicobeheersysteem is nog in afronding (status NIET VOLDAAN); zie acties 9.1-9.7 in `eu-ai-act-conformiteitsplan.md` en Appendix C.
 
 ### 4.2 Bekende risico's en maatregelen
 

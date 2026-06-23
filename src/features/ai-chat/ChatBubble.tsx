@@ -4,6 +4,7 @@ import { ChatMessage } from '@/types';
 import { MarkdownRenderer } from '@/components/ui/MarkdownRenderer';
 import { Sparkles, Download, CheckCircle2, Loader2, Info } from 'lucide-react';
 import { CodeChangeCard } from '@/features/ai-lab/CodeChangeCard';
+import { AiDisclosureBadge } from '@/features/ai-chat/AiDisclosureBadge';
 
 /**
  * Clean internal instruction text from messages before displaying to students.
@@ -151,6 +152,7 @@ export const ChatBubble: React.FC<ChatBubbleProps> = ({ message, onLinkClick, is
             >
               <Download size={16} className="text-lab-muted" />
             </a>
+            <AiDisclosureBadge compact text="Gegenereerd door AI" className="mt-2" />
           </div>
         )}
 
