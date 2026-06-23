@@ -25,6 +25,7 @@ import {
 } from './promptMasterLogic';
 import { MissionGoalBanner } from './templates/shared/MissionGoalBanner';
 import type { MissionGoal } from './templates/shared/types';
+import { AiDisclosureBadge } from '@/features/ai-chat/AiDisclosureBadge';
 
 interface PromptMasterProgress {
     currentLevel: 'beginner' | 'gevorderd' | 'expert';
@@ -472,6 +473,9 @@ const ResultVisual: React.FC<{
                             </div>
                             <div className={`absolute top-2 right-2 text-[#FFFDF7] text-[10px] uppercase font-bold px-2 py-0.5 rounded-full z-10`} style={{ backgroundColor: isIdeal || isSuccess ? '#202023' : '#ff3c21' }}>
                                 {isIdeal ? 'Perfect' : isSuccess ? 'Goed gedaan!' : 'Jouw resultaat'}
+                            </div>
+                            <div className="absolute top-2 left-2 z-10 bg-[#FFFDF7]/90 rounded-full px-2 py-0.5 shadow-sm">
+                                <AiDisclosureBadge compact text="AI-gegenereerd beeld" />
                             </div>
                         </>
                     ) : (
