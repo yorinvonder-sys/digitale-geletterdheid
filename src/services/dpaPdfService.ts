@@ -173,11 +173,11 @@ function renderMarkdownSection(ctx: any, md: string): void {
             continue;
         }
 
-        // Genummerde lijst (1. 2. enz.)
+        // Genummerde lijst (1. 2. enz.) — nummer BEHOUDEN: lid-nummering is
+        // juridisch betekenisvol (interne verwijzingen "zoals bedoeld in lid 1").
         if (/^\d+\. /.test(line.trim())) {
-            const text2 = line.trim().replace(/^\d+\.\s+/, '');
-            const clean = stripInlineMarkdown(text2);
-            bulletPoint(ctx, clean, { indent: 6 });
+            const clean = stripInlineMarkdown(line.trim());
+            paragraph(ctx, clean);
             i++;
             continue;
         }

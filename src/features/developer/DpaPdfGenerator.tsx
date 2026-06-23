@@ -128,7 +128,7 @@ export const DpaPdfGenerator: React.FC = () => {
         vertegenwoordigerEmail: '',
         ondertekeningPlaats: '',
         ondertekeningDatum: today,
-        verwerkerVertegenwoordiger: 'Yorin von der Osten',
+        verwerkerVertegenwoordiger: 'Yorin Vonder',
     });
 
     const [errors, setErrors] = useState<FormErrors>({});
@@ -274,7 +274,7 @@ export const DpaPdfGenerator: React.FC = () => {
                             value={form.verwerkerVertegenwoordiger}
                             onChange={set('verwerkerVertegenwoordiger')}
                             error={errors.verwerkerVertegenwoordiger}
-                            placeholder="bijv. Yorin von der Osten"
+                            placeholder="bijv. Yorin Vonder"
                         />
                         <p className="text-xs text-duck-ink/50">
                             Controleer de juridische naam vóór generatie.
