@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import {
     AlertTriangle,
     ArrowRight,
@@ -22,6 +22,7 @@ import { ROLES } from '@/config/agents';
 import { getKerndoelenForMission } from '@/config/slo-kerndoelen-mapping';
 import { SLO_KERNDOELEN } from '@/config/sloKerndoelen';
 import { MISSION_SCREENSHOTS } from '@/config/missionPreviewConfig';
+import { requestClassInsight, ClassInsight } from '../../../services/classInsightService';
 
 type MainTab = TeacherDashboardTab;
 
@@ -235,6 +236,25 @@ export const TeacherCommandCenter: React.FC<TeacherCommandCenterProps> = ({
     const currentDgIndex = Math.max(61, missionProgressAverage);
     const growthPoints = [34, 38, 43, 49, 46, 53, 56, 60, currentDgIndex];
 
+    const [insightLoading, setInsightLoading] = useState(false);
+    const [insightError, setInsightError] = useState<string | null>(null);
+    const [classInsight, setClassInsight] = useState<ClassInsight | null>(null);
+
+    async function handleGenerateInsight() {
+        setInsightLoading(true);
+        setInsightError(null);
+        try {
+            const scope = classFilter !== 'all' ? classFilter : undefined;
+            const result = await requestClassInsight(scope);
+            setClassInsight(result);
+        } catch (err: unknown) {
+            const message = err instanceof Error ? err.message : 'Kon geen klas-inzicht genereren.';
+            setInsightError(message);
+        } finally {
+            setInsightLoading(false);
+        }
+    }
+
     if (loading) {
         return (
             <div className="rounded-2xl border border-lab-line bg-lab-paper/80 p-8 text-center text-sm font-bold text-lab-muted">
@@ -427,6 +447,96 @@ export const TeacherCommandCenter: React.FC<TeacherCommandCenterProps> = ({
                         <ActionRow label="Laat creativiteit zien" onClick={onSendMessage} />
                         <button onClick={() => onNavigate('progress')} className="mt-2 text-sm font-black text-lab-coral">Bekijk rapport</button>
                     </div>
+                </Panel>
+            </section>
+
+            <section>
+                <Panel title="Klas-inzicht">
+                    {!classInsight && !insightLoading && !insightError && (
+                        <div className="space-y-3">
+                            <p className="text-xs font-bold text-lab-muted">
+                                Genereer een AI-samenvatting van waar{' '}
+                                {classFilter !== 'all' ? `klas ${classFilter}` : 'de klas'}{' '}
+                                vastloopt. Gebaseerd op anonieme voortgangsdata — geen namen zichtbaar voor de AI.
+                            </p>
+                            <button
+                                onClick={handleGenerateInsight}
+                                className="flex items-center gap-2 rounded-lg bg-lab-tealDark px-4 py-2 text-sm font-black text-white"
+                            >
+                                <Sparkles size={14} />
+                                Genereer samenvatting
+                            </button>
+                        </div>
+                    )}
+
+                    {insightLoading && (
+                        <div className="flex items-center gap-2 text-sm font-bold text-lab-muted">
+                            <Clock size={14} className="animate-spin" />
+                            Samenvatting wordt gegenereerd...
+                        </div>
+                    )}
+
+                    {insightError && (
+                        <div className="space-y-3">
+                            <p className="text-sm font-bold text-lab-coral">
+                                {insightError.toLowerCase().includes('mfa') || insightError.toLowerCase().includes('verificatie')
+                                    ? 'Zet MFA aan om klas-inzicht te zien. Ga naar je accountinstellingen.'
+                                    : insightError}
+                            </p>
+                            <button
+                                onClick={handleGenerateInsight}
+                                className="rounded-lg border border-lab-line bg-white px-3 py-2 text-xs font-bold"
+                            >
+                                Opnieuw proberen
+                            </button>
+                        </div>
+                    )}
+
+                    {classInsight && !insightLoading && (
+                        <div className="space-y-4">
+                            <div className="flex items-center justify-between gap-3">
+                                <p className="text-xs font-bold text-lab-muted">
+                                    {classInsight.classScope} &middot; {classInsight.classSize} leerling{classInsight.classSize !== 1 ? 'en' : ''}
+                                </p>
+                                <button
+                                    onClick={handleGenerateInsight}
+                                    className="text-xs font-bold text-lab-coral"
+                                >
+                                    Vernieuwen
+                                </button>
+                            </div>
+
+                            {classInsight.note && (
+                                <p className="text-xs font-bold text-lab-muted">{classInsight.note}</p>
+                            )}
+
+                            {classInsight.points.length > 0 && (
+                                <div className="space-y-3">
+                                    {classInsight.points.map((point, i) => (
+                                        <div
+                                            key={i}
+                                            className="rounded-xl border border-lab-line bg-white p-3"
+                                        >
+                                            <p className="text-sm font-black text-lab-ink">{point.title}</p>
+                                            <p className="mt-1 text-xs font-bold text-lab-muted">{point.observation}</p>
+                                            <p className="mt-1 text-xs font-bold text-lab-tealDark">{point.suggestion}</p>
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
+
+                            {classInsight.points.length === 0 && !classInsight.note && (
+                                <p className="text-xs font-bold text-lab-muted">Geen aandachtspunten gevonden.</p>
+                            )}
+
+                            <div className="flex items-center gap-1.5 rounded-lg border border-lab-gold/40 bg-lab-gold/10 px-3 py-2">
+                                <AlertTriangle size={12} className="shrink-0 text-lab-olive" />
+                                <p className="text-[11px] font-bold text-lab-olive">
+                                    AI-gegenereerd — controleer dit zelf
+                                </p>
+                            </div>
+                        </div>
+                    )}
                 </Panel>
             </section>
         </div>
