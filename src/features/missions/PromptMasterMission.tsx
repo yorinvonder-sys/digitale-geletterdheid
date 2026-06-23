@@ -172,7 +172,7 @@ const CHALLENGES: Challenge[] = [
         level: 'expert',
         type: 'text',
         goal: '🎭 Laat AI een persona aannemen',
-        scenario: 'Je wilt dat de AI als een middeleeuwse ridder praat voor je toneelstuk.',
+        scenario: 'Je wilt dat de AI (kunstmatige intelligentie) als een middeleeuwse ridder praat voor je toneelstuk. Dit heet een persona geven — je laat de AI een rol spelen.',
         badOutputExample: 'De AI praat gewoon modern: "Hey, wat kan ik voor je doen vandaag?"',
         goodOutputExample: 'De AI speelt de rol: "Gegroet, edele reiziger! Ik, Sir Galahad, sta tot uw dienst..."',
         feedbackCriteria: [
@@ -935,7 +935,7 @@ export const PromptMasterMission: React.FC<Props> = ({ onBack, onComplete, vsoPr
                         </h2>
 
                         <p className="text-base md:text-lg text-duck-ink/60 mb-5 md:mb-6 leading-relaxed max-w-2xl mx-auto">
-                            Je leert hoe je een AI duidelijke opdrachten geeft. In elke ronde schrijf je zelf een prompt, bekijk je het resultaat en verbeter je je prompt tot de AI begrijpt wat jij bedoelt.
+                            Je leert hoe je een AI (kunstmatige intelligentie) duidelijke opdrachten geeft. In elke ronde schrijf je zelf een prompt, bekijk je het resultaat en verbeter je je prompt tot de AI begrijpt wat jij bedoelt.
                         </p>
 
                         <div className="max-w-2xl mx-auto mb-5 md:mb-6">
@@ -949,7 +949,7 @@ export const PromptMasterMission: React.FC<Props> = ({ onBack, onComplete, vsoPr
                                     <h3 className="font-black text-duck-ink">Doel van de opdracht</h3>
                                 </div>
                                 <p className="text-sm leading-relaxed text-duck-ink/60">
-                                    Aan het einde kun je een prompt schrijven die specifiek genoeg is: met onderwerp, context, gewenste vorm en extra regels. Zo krijg je minder toeval en meer controle over AI-output.
+                                    Aan het einde kun je een prompt schrijven die specifiek genoeg is: met onderwerp (context), gewenste vorm (format) en extra regels. Zo krijg je minder toeval en meer controle over wat de AI teruggeeft (output).
                                 </p>
                             </div>
                             <div className="bg-white rounded-2xl p-4 md:p-5 border border-duck-gray">

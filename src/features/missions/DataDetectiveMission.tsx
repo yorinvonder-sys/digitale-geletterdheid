@@ -105,7 +105,7 @@ const CHALLENGES: DataChallenge[] = [
         },
         question: 'Welke combinatie van kans en risico past het beste bij deze trend?',
         options: [
-            { id: 'a', text: 'Kans: sneller relevante producten vinden. Risico: je ziet minder alternatieven.', isCorrect: true, explanation: 'Correct. Personalisatie verhoogt gemak, maar kan ook een filterbubbel in je keuzes veroorzaken.' },
+            { id: 'a', text: 'Kans: sneller relevante producten vinden. Risico: je ziet minder alternatieven.', isCorrect: true, explanation: 'Correct. Personalisatie verhoogt gemak, maar kan ook een filterbubbel veroorzaken (= je ziet online vooral wat bij je past).' },
             { id: 'b', text: 'Kans: volledige privacy. Risico: geen aanbiedingen.', isCorrect: false, explanation: 'Personalisatie betekent meestal juist dat er veel data wordt gebruikt, niet volledige privacy.' },
             { id: 'c', text: 'Kans: minder data-opslag. Risico: slechtere beveiliging.', isCorrect: false, explanation: 'Deze grafiek zegt niets over minder data-opslag of beveiliging.' },
             { id: 'd', text: 'Kans: geen advertenties meer. Risico: geen risico.', isCorrect: false, explanation: 'Personalisatie leidt vaak juist tot meer gerichte advertenties en heeft altijd afwegingen.' }
@@ -161,7 +161,7 @@ const CHALLENGES: DataChallenge[] = [
     {
         id: 'e1',
         level: 'expert',
-        title: '🧠 Correlatie of oorzakelijk?',
+        title: '🧠 Verband of oorzaak?',
         scenario: 'Een platform ziet: leerlingen die veel "study tips"-video\'s kijken, halen hogere cijfers. Het bedrijf zegt: "Onze app veroorzaakt betere cijfers."',
         dataType: 'table',
         data: {
@@ -176,11 +176,11 @@ const CHALLENGES: DataChallenge[] = [
         question: 'Wat is de beste kritische reactie?',
         options: [
             { id: 'a', text: 'De app is zeker de enige oorzaak van betere cijfers', isCorrect: false, explanation: 'Dat kun je niet zeker weten zonder extra onderzoek en controle van andere factoren.' },
-            { id: 'b', text: 'Correlatie is zichtbaar, maar motivatie, begeleiding of thuissituatie kunnen ook meespelen', isCorrect: true, explanation: 'Correct. Samenhang is niet hetzelfde als oorzaak; er kunnen meerdere verklaringen zijn.' },
+            { id: 'b', text: 'Er is een verband zichtbaar, maar motivatie, begeleiding of thuissituatie kunnen ook meespelen', isCorrect: true, explanation: 'Correct. Een verband (= twee dingen die samen veranderen) is niet hetzelfde als oorzaak; er kunnen meerdere verklaringen zijn.' },
             { id: 'c', text: 'Data mag nooit gebruikt worden voor onderwijsverbetering', isCorrect: false, explanation: 'Data kan juist kansen bieden in onderwijs, mits zorgvuldig en eerlijk ingezet.' },
             { id: 'd', text: 'Omdat de cijfers verschillen, is de data waardeloos', isCorrect: false, explanation: 'Verschillen zijn juist normaal in echte data en kunnen nuttige signalen geven.' }
         ],
-        insight: 'Goede data-geletterdheid betekent: kansen zien, maar claims van bedrijven altijd kritisch toetsen.'
+        insight: 'Goed met data omgaan betekent: kansen zien, maar claims van bedrijven altijd kritisch toetsen.'
     },
     {
         id: 'e2',
@@ -196,7 +196,7 @@ const CHALLENGES: DataChallenge[] = [
         question: 'Welke conclusie is het sterkst?',
         options: [
             { id: 'a', text: 'Gebruikers willen altijd vrijwillig volledige tracking', isCorrect: false, explanation: 'Niet per se. Ontwerpkeuzes kunnen gebruikers richting een snelle keuze duwen.' },
-            { id: 'b', text: 'Het ontwerp kan een dark pattern zijn: makkelijk accepteren, lastig weigeren', isCorrect: true, explanation: 'Correct. Dit is een bekend risico: de keuze lijkt vrij, maar de interface stuurt gedrag.' },
+            { id: 'b', text: 'Het ontwerp kan een dark pattern zijn (= een truc die je iets laat doen wat je niet wilt): makkelijk accepteren, lastig weigeren', isCorrect: true, explanation: 'Correct. Dit is een bekend risico: de keuze lijkt vrij, maar de interface stuurt gedrag.' },
             { id: 'c', text: 'Omdat 94% klikt, is er geen privacyprobleem', isCorrect: false, explanation: 'Een hoge acceptatie betekent niet automatisch dat toestemming bewust of eerlijk is gegeven.' },
             { id: 'd', text: 'Cookies zijn altijd illegaal', isCorrect: false, explanation: 'Cookies kunnen legaal zijn, maar transparantie en echte keuzevrijheid blijven cruciaal.' }
         ],

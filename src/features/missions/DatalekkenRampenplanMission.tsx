@@ -46,9 +46,9 @@ interface EvidenceItem {
 }
 
 const EVIDENCE_ITEMS: EvidenceItem[] = [
-    { id: 0, icon: '🖥️', title: 'Serverlog 03:14', description: 'Onbekend IP-adres heeft 47.000 queries uitgevoerd op de leerlingdatabase in 12 minuten.', relevant: true, explanation: 'Dit is een duidelijk teken van data-exfiltratie — veel te veel queries in korte tijd.' },
+    { id: 0, icon: '🖥️', title: 'Serverlog 03:14', description: 'Onbekend IP-adres heeft 47.000 queries uitgevoerd op de leerlingdatabase in 12 minuten.', relevant: true, explanation: 'Dit is een duidelijk teken van data-exfiltratie (= gegevens stiekem naar buiten kopiëren) — veel te veel queries in korte tijd.' },
     { id: 1, icon: '📧', title: 'E-mail van leverancier', description: 'De softwareleverancier meldt een geplande update voor volgende week.', relevant: false, explanation: 'Dit is een normale update-mail en heeft niks met het incident te maken.' },
-    { id: 2, icon: '🔑', title: 'Wachtwoordlog', description: 'Het admin-account "beheerder01" is 340 keer geprobeerd in te loggen vanaf verschillende locaties.', relevant: true, explanation: 'Brute-force aanval! Honderden inlogpogingen wijzen op een geautomatiseerde aanval op het admin-account.' },
+    { id: 2, icon: '🔑', title: 'Wachtwoordlog', description: 'Het admin-account "beheerder01" is 340 keer geprobeerd in te loggen vanaf verschillende locaties.', relevant: true, explanation: 'Brute-force aanval (= heel snel wachtwoorden raden)! Honderden inlogpogingen wijzen op een geautomatiseerde aanval op het admin-account.' },
     { id: 3, icon: '📱', title: 'Bericht op X (Twitter)', description: 'Een anoniem account claimt leerlinggegevens te hebben en plaatst een screenshot van namen en cijfers.', relevant: true, explanation: 'Bewijs dat de data daadwerkelijk gelekt is — het staat al online.' },
     { id: 4, icon: '🔧', title: 'Systeemmelding', description: 'De printer op de 2e verdieping heeft een papierstoring.', relevant: false, explanation: 'Een papierstoring is gewoon een papierstoring. Niet alles is een hack.' },
     { id: 5, icon: '📊', title: 'Exportlog database', description: 'Er is een CSV-export van 800 leerlingrecords gemaakt om 03:17, 3 minuten na de verdachte queries.', relevant: true, explanation: 'Direct na de verdachte queries is een volledige export gemaakt — dit bevestigt de datadiefstal.' },
@@ -110,11 +110,11 @@ interface BudgetItem {
 }
 
 const BUDGET_ITEMS: BudgetItem[] = [
-    { id: 0, icon: '🔐', title: 'Tweefactorauthenticatie (2FA)', description: 'Alle accounts krijgen verplichte 2FA via een authenticator-app.', cost: 1500, effectiveness: 5, explanation: '2FA blokkeert 99% van alle account-hackpogingen. Beste investering.' },
+    { id: 0, icon: '🔐', title: 'Tweefactorauthenticatie (2FA)', description: 'Alle accounts krijgen verplichte 2FA (= naast je wachtwoord een extra code) via een authenticator-app.', cost: 1500, effectiveness: 5, explanation: '2FA blokkeert 99% van alle account-hackpogingen. Beste investering.' },
     { id: 1, icon: '🎓', title: 'Security-training personeel', description: 'Elk kwartaal een interactieve cybersecurity workshop voor alle medewerkers.', cost: 3000, effectiveness: 4, explanation: 'Menselijke fouten zijn de #1 oorzaak van datalekken. Training is essentieel.' },
-    { id: 2, icon: '🔍', title: 'Penetratietest', description: 'Een extern bedrijf test alle systemen op kwetsbaarheden.', cost: 5000, effectiveness: 4, explanation: 'Vindt zwakke plekken voordat hackers dat doen. Belangrijk maar duur.' },
+    { id: 2, icon: '🔍', title: 'Penetratietest', description: 'Een extern bedrijf test alle systemen op kwetsbaarheden (= laten testen hoe inbreekbaar je systeem is).', cost: 5000, effectiveness: 4, explanation: 'Vindt zwakke plekken voordat hackers dat doen. Belangrijk maar duur.' },
     { id: 3, icon: '💾', title: 'Dagelijkse encrypted backups', description: 'Automatische versleutelde back-ups met off-site opslag.', cost: 2000, effectiveness: 3, explanation: 'Beschermt tegen ransomware en dataverlies. Goede basis-maatregel.' },
-    { id: 4, icon: '🧱', title: 'Enterprise firewall upgrade', description: 'Geavanceerde firewall met intrusion detection en DDoS-bescherming.', cost: 8000, effectiveness: 3, explanation: 'Goede verdediging maar duur. De huidige firewall is al redelijk, dus de meerwaarde is beperkt.' },
+    { id: 4, icon: '🧱', title: 'Enterprise firewall upgrade', description: 'Geavanceerde firewall met intrusion detection en DDoS-bescherming (= een site platleggen met heel veel verkeer).', cost: 8000, effectiveness: 3, explanation: 'Goede verdediging maar duur. De huidige firewall is al redelijk, dus de meerwaarde is beperkt.' },
 ];
 
 const TOTAL_BUDGET = 10000;

@@ -20,12 +20,13 @@ const config: ToolGuideConfig = {
             id: 'stap-1-systeem',
             title: 'Printsysteem herkennen',
             instruction:
-                'Elke school gebruikt een eigen printsysteem. Kijk eerst welk **apparaat** je gebruikt: iPad, Chromebook, Windows-laptop of Mac. Zoek daarna uit welk **printsysteem** jullie school heeft. Kijk in de App Library op je iPad naar apps als **RICOH myPrint**, **PaperCut**, of **FollowMe**. Op een laptop ga je naar Instellingen > Printers. Weet je het niet? Vraag je docent of de IT-helpdesk van school.',
+                'Elke school gebruikt een eigen printsysteem. Kijk eerst welk **apparaat** je gebruikt: iPad, Chromebook, Windows-laptop of Mac. Zoek daarna uit welk **printsysteem** jullie school heeft. Op een laptop ga je naar Instellingen > Printers. Weet je het niet? Vraag je docent of de IT-helpdesk van school.',
             tip: 'Je hoeft het printsysteem maar één keer in te stellen. Als je weet hoe het werkt op jouw school, kun je altijd en overal snel printen.',
             checklistItems: [
                 { id: 'apparaat-weet', label: 'Ik weet welk apparaat ik gebruik (iPad, Chromebook, laptop)' },
                 { id: 'systeem-weet', label: 'Ik weet welk printsysteem mijn school gebruikt, of ik heb het gevraagd' },
                 { id: 'app-gevonden', label: 'Ik heb de print-app gevonden op mijn apparaat (of de printfunctie in het OS)' },
+                { id: 'systeem-naam', label: 'Ik ken de naam van het systeem op mijn school (bijv. RICOH myPrint, PaperCut of FollowMe)' },
             ],
             verificationQuestion: {
                 question: 'Hoe kom je erachter welk printsysteem jouw school gebruikt?',
@@ -45,7 +46,7 @@ const config: ToolGuideConfig = {
             title: 'Printer instellen',
             instruction:
                 'Open de **print-app** van je school of de ingebouwde printfunctie. **iPad:** tik op Deel > Afdrukken en kies de schoolprinter. **Chromebook/Windows:** Ctrl+P in je document en kies de printer. Log in met je **schoolaccount** als dat gevraagd wordt.',
-            tip: 'Veel scholen gebruiken een "FollowMe"-systeem: je verstuurt de print naar de server en haalt hem op bij elke printer op school met je pas of pincode. Zo blijft je document privé.',
+            tip: 'Veel scholen gebruiken een **FollowMe**-systeem (een vrijgave-systeem: je print pas als je je bij de printer aanmeldt): je verstuurt de print naar de server en haalt hem op bij elke printer op school met je pas of pincode. Zo blijft je document privé.',
             checklistItems: [
                 { id: 'printer-gevonden', label: 'Ik heb de schoolprinter gevonden in de lijst' },
                 { id: 'ingelogd-printer', label: 'Ik ben ingelogd met mijn schoolaccount (als dat nodig was)' },
@@ -57,7 +58,7 @@ const config: ToolGuideConfig = {
             title: 'Printinstellingen kiezen',
             instruction:
                 'Voordat je print, controleer je de instellingen. Open het **printvenster** (Ctrl+P, Cmd+P of Deel > Afdrukken). Stel in: **Kleur of zwart-wit** (zwart-wit is goedkoper en spaart inkt), **Enkelzijdig of dubbelzijdig** (dubbelzijdig spaart papier — gebruik dit voor verslagen), en het **aantal kopieën** (normaal: 1). Kijk ook naar het **paginabereik** — wil je alle pagina\'s printen of alleen bepaalde?',
-            tip: 'Druk nooit zomaar op "Print" zonder de instellingen te checken. Een fout printopdracht kost papier en inkt — en soms ook geld van je printbudget op school.',
+            tip: 'Druk nooit zomaar op "Print" zonder de instellingen te checken. Een foute printopdracht kost papier en inkt — en soms ook tegoed van je **printbudget** (je tegoed om te printen) op school.',
             checklistItems: [
                 { id: 'kleur-zwart', label: 'Ik heb gekozen voor kleur of zwart-wit' },
                 { id: 'dubbelzijdig', label: 'Ik heb ingesteld of ik enkelzijdig of dubbelzijdig wil printen' },

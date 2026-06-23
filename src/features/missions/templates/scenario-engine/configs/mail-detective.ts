@@ -73,7 +73,7 @@ const config: ScenarioEngineConfig = {
                     icon: '📧',
                     title: 'Afzender: docent.smits@magister-berichten.com',
                     description:
-                        'De mail beweert van je docent te komen, maar het adres eindigt op "@magister-berichten.com" — niet op het domein van je school.',
+                        'De mail beweert van je docent te komen, maar het adres eindigt op "@magister-berichten.com" — niet op het domein (= het stuk na de @ of na www., bv. school.nl) van je school.',
                     correct: true,
                     explanation:
                         'Je docent heeft een schoolmailadres dat eindigt op het schooldomein (bijv. @onsschool.nl). Een adres als "@magister-berichten.com" is niet officieel. Aanvallers kiezen namen die vertrouwd klinken, maar het domein achter het @-teken verraadt hen.',
@@ -86,7 +86,7 @@ const config: ScenarioEngineConfig = {
                         'De mail heeft een bijlage die eruit ziet als een huiswerkopdracht, maar de bestandsnaam eindigt op ".exe".',
                     correct: true,
                     explanation:
-                        'Een .exe-bestand is een uitvoerbaar programma — geen document. Echte huiswerkopdrachten zijn altijd .pdf of .docx. Als je dit opent, kan er malware op je apparaat worden geïnstalleerd.',
+                        'Een .exe-bestand is een uitvoerbaar programma — geen document. Echte huiswerkopdrachten zijn altijd .pdf of .docx. Als je dit opent, kan er malware (= schadelijke software) op je apparaat worden geïnstalleerd.',
                 },
                 {
                     id: 3,
@@ -297,7 +297,7 @@ const config: ScenarioEngineConfig = {
                         'Je klikt niet op links in een mail als je de afzender niet kent of de mail verdacht vindt.',
                     correct: true,
                     explanation:
-                        'De simpelste verdediging. Phishing-aanvallen beginnen bijna altijd met een klik. Als je twijfelt: niet klikken, maar zelf het adres intypen in je browser.',
+                        'De simpelste verdediging. Phishing-aanvallen (= nepberichten om je gegevens te stelen) beginnen bijna altijd met een klik. Als je twijfelt: niet klikken, maar zelf het adres intypen in je browser.',
                 },
                 {
                     id: 2,

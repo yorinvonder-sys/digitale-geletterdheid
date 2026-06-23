@@ -25,7 +25,7 @@ interface LayoutDoctorState {
 const ASSIGNMENT_CRITERIA = [
     { id: 'title', label: 'Verander de titel naar stijl "Kop 1"', check: (s: LayoutDoctorState) => s.titleStyle === 'modern' },
     { id: 'font', label: 'Zet het lettertype op Arial', check: (s: LayoutDoctorState) => s.bodyFont === 'sans' },
-    { id: 'image', label: 'Stel tekstterugloop in voor de afbeelding', check: (s: LayoutDoctorState) => s.imageAlign === 'wrap' },
+    { id: 'image', label: 'Stel tekstterugloop in voor de afbeelding (= tekst loopt netjes om de afbeelding heen)', check: (s: LayoutDoctorState) => s.imageAlign === 'wrap' },
     { id: 'imagepos', label: 'Sleep de afbeelding naar rechts', check: (s: LayoutDoctorState) => s.isImageRight },
     { id: 'fontsize', label: 'Gebruik minimaal lettergrootte 12', check: (s: LayoutDoctorState) => s.fontSize >= 12 },
 ];
@@ -33,7 +33,7 @@ const ASSIGNMENT_CRITERIA = [
 // Uitleg per wijziging
 const CHANGE_EXPLANATIONS: Record<string, string> = {
     titleStyle: 'Kopstijlen zorgen voor een duidelijke structuur. Een lezer ziet direct wat de titel is en kan het document snel scannen.',
-    bodyFont: 'Sans-serif lettertypen zoals Arial zijn beter leesbaar op schermen. Comic Sans wordt als onprofessioneel gezien.',
+    bodyFont: 'Arial-achtige lettertypen (sans-serif = zonder schreefjes) zijn beter leesbaar op schermen. Comic Sans wordt als onprofessioneel gezien.',
     imageAlign: 'Tekstterugloop laat tekst om een afbeelding heen lopen. Dit maakt het document compacter en professioneler.',
     isImageRight: 'Afbeeldingen rechts plaatsen is een veelgebruikte conventie die de leesbaarheid verbetert.',
     fontSize: 'Lettergrootte 12 of hoger is de standaard voor goed leesbare documenten. Kleiner is vermoeiend voor de ogen.',

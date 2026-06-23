@@ -875,7 +875,7 @@ Typ 'MISSIE VOLTOOID' om terug te keren naar het heden."
         icon: <Feather size={28} />,
         color: '#ff3c21',
         description: 'Visualiseer verhalen met AI.',
-        problemScenario: 'Ideeën zijn niets zonder beeld. Leer hoe je met AI jouw fantasie omzet in professionele illustraties.',
+        problemScenario: 'Ideeën zijn niets zonder beeld. Leer hoe je met AI eigen plaatjes bij je verhaal maakt. Je beschrijft wat je wilt zien, en de AI maakt er een afbeelding van.',
         missionObjective: 'Maak je eigen prentenboek.',
         briefingImage: '/assets/agents/verhalen_ontwerper_new.webp',
         difficulty: 'Easy',
@@ -1610,7 +1610,7 @@ Wat wil je als eerste veranderen?"` + SYSTEM_INSTRUCTION_SUFFIX,
             },
             {
                 title: "Testen",
-                description: "Geef het model iets nieuws en kijk of hij het snapt. Verbeter daarna je dataset als de voorspelling nog zwak is.",
+                description: "Geef het model (het AI-programma dat leert) iets nieuws en kijk of hij het snapt. Verbeter daarna je dataset (de lijst voorbeelden die de AI leert) als de voorspelling nog zwak is.",
                 example: "Typ: 'Waar hoort een eierdoos bij?'"
             }
         ]
@@ -3710,7 +3710,7 @@ BEPERKINGEN BESPREKEN:
         icon: <Scale size={28} />,
         color: '#ff3c21',
         description: 'Denk mee over AI-regels op school.',
-        problemScenario: 'AI is overal, maar welke regels moeten er zijn? Mag je ChatGPT gebruiken voor huiswerk? Jouw mening telt! Help de school met het vormgeven van AI-beleid.',
+        problemScenario: 'AI is overal, maar welke regels moeten er zijn? Mag je ChatGPT gebruiken voor huiswerk? Jouw mening telt! Help de school meedenken over welke regels de school moet maken voor AI.',
         missionObjective: 'Deel jouw ideeën en stem op de beste voorstellen van anderen.',
         briefingImage: '/assets/agents/ai_beleid_brainstorm.webp',
         difficulty: 'Easy',

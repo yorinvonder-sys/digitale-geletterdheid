@@ -428,7 +428,8 @@ export const CloudCleanerMission: React.FC<CloudCleanerProps> = ({ onComplete, o
                     transition-transform duration-300 lg:transition-none
                     ${mobileSidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
                 `}>
-                    <h3 className="text-xs font-bold text-duck-ink/60 uppercase tracking-widest mb-4 px-2">Mijn Mappen</h3>
+                    <h3 className="text-xs font-bold text-duck-ink/60 uppercase tracking-widest mb-1 px-2">Mijn Mappen</h3>
+                    <p className="text-xs text-duck-ink/40 mb-4 px-2">OneDrive = online opslag van Microsoft waar je bestanden in mappen bewaart.</p>
 
                     {/* Instruction hint when dragging */}
                     <AnimatePresence>

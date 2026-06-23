@@ -20,12 +20,13 @@ const config: ToolGuideConfig = {
             id: 'stap-1-nieuw-document',
             title: 'Nieuw document aanmaken',
             instruction:
-                'Open de **Word**-app op je iPad. Je hebt een **Microsoft 365-licentie** via school nodig — vraag je docent als de app om betaling vraagt. Tik op **Nieuw** (of het +-icoon) en kies **Leeg document**. Typ de titel van je verslag bovenaan. Sla het document daarna direct op: tik op het **menu linksboven** (de drie streepjes of het Word-logo) en kies **Opslaan als**. Sla het op in OneDrive onder je schoolmap met een duidelijke naam, zoals `Naam_Verslag_Vak.docx`.',
+                'Open de **Word**-app op je iPad. Je hebt een **Microsoft 365-licentie** (je gratis Office-account via school) nodig — vraag je docent als de app om betaling vraagt. Tik op **Nieuw** (of het +-icoon) en kies **Leeg document**. Typ de titel van je verslag bovenaan. Sla het document daarna direct op: tik op het **menu linksboven** en kies **Opslaan als** in OneDrive onder je schoolmap.',
             tip: 'Sla je document altijd meteen op als je begint — niet pas als je klaar bent. Word slaat automatisch op in de cloud als je OneDrive gebruikt, maar alleen als je het bestand een naam hebt gegeven.',
             checklistItems: [
                 { id: 'app-open', label: 'Ik heb de Word-app geopend' },
                 { id: 'nieuw-document', label: 'Ik heb een nieuw leeg document aangemaakt' },
                 { id: 'opgeslagen', label: 'Ik heb het document opgeslagen met een duidelijke naam in OneDrive' },
+                { id: 'bestandsnaam', label: 'De bestandsnaam volgt het format Naam_Verslag_Vak.docx' },
             ],
             verificationQuestion: {
                 question: 'Waarom sla je een document meteen op als je begint, en niet pas aan het einde?',
@@ -68,7 +69,7 @@ const config: ToolGuideConfig = {
             id: 'stap-3-afbeelding',
             title: 'Afbeelding invoegen',
             instruction:
-                'Tik in je document op de plek waar je de afbeelding wilt. Tik op **Invoegen** (tabblad bovenaan) en kies **Online afbeelding** voor vrij beschikbare afbeeldingen, of **Foto\'s** voor een eigen schoolfoto — geen willekeurige Google-foto\'s (auteursrecht). Tik op de afbeelding nadat je hem hebt ingevoegd en zoek in het menu naar **Tekstomloop**. Kies **Strak** of **Vierkant** zodat de tekst netjes om de afbeelding heen loopt.',
+                'Tik in je document op de plek waar je de afbeelding wilt. Tik op **Invoegen** (tabblad bovenaan) en kies **Online afbeelding** voor vrij beschikbare afbeeldingen, of **Foto\'s** voor een eigen schoolfoto — geen willekeurige Google-foto\'s (**auteursrecht**: je mag niet zomaar andermans foto\'s gebruiken). Tik op de afbeelding nadat je hem hebt ingevoegd en zoek in het menu naar **Tekstomloop**. Kies **Strak** of **Vierkant** zodat de tekst netjes om de afbeelding heen loopt.',
             tip: 'Met de instelling "Strak" loopt tekst direct om de rand van de afbeelding. Met "Vierkant" loopt tekst om een denkbeeldig vierkant eromheen. Beide zien er professioneler uit dan de standaardinstelling "In lijn met tekst".',
             checklistItems: [
                 { id: 'afbeelding-ingevoegd', label: 'Ik heb een afbeelding in mijn document ingevoegd' },
