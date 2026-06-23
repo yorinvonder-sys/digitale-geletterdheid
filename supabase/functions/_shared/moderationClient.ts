@@ -56,12 +56,14 @@ function getModerationModel(): string {
 }
 
 /**
- * Moderatie staat standaard AAN. Expliciet uit te zetten met
- * `AI_MODERATION_ENABLED=false` (bv. als de Mistral-sleutel nog geen
- * moderation-toegang heeft, of bij latency/kosten-issues).
+ * Moderatie staat standaard UIT — expliciete opt-in. Aanzetten met
+ * `AI_MODERATION_ENABLED=true`, en pas NADAT geverifieerd is dat (a) de
+ * Mistral-sleutel moderation-toegang heeft, en (b) de extra moderation-call
+ * per beurt de chat-call niet rate-limit't (zie de demo-chat 502 van
+ * 2026-06-23). Tot die validatie blijft de laag dormant (fail-open no-op).
  */
 export function moderationEnabled(): boolean {
-  return (Deno.env.get("AI_MODERATION_ENABLED") ?? "true").trim().toLowerCase() !== "false";
+  return (Deno.env.get("AI_MODERATION_ENABLED") ?? "false").trim().toLowerCase() === "true";
 }
 
 /**
