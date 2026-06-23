@@ -498,7 +498,7 @@ De conformiteitsbeoordelingsprocedure op basis van interne controle omvat drie o
 | Week | Actie | Deliverable |
 |------|-------|-------------|
 | W1 (3-7 mrt) | Start risicoregister (Art. 9) | Eerste versie risicoregister |
-| W1 | Correctie audit-report.md: wijzig "Limited Risk" naar "High Risk" | Gecorrigeerd rapport |
+| W1 | ~~Correctie audit-report.md: wijzig "Limited Risk" naar "High Risk"~~ **Afgerond** — audit-report.md draagt nu de heading "HIGH RISK — Annex III punt 3(b)" | Gecorrigeerd rapport |
 | W2 (10-14 mrt) | Risicobeoordeling per agent (30+ agents) | Risicobeoordelingsrapport |
 | W2 | Start datagovernance documentatie (Art. 10) | Datagovernance beleidsdocument |
 | W3 (17-21 mrt) | Specifieke risicobeoordeling minderjarigen (Art. 9(9)) | Minderjarigen-risicoanalyse |
@@ -507,7 +507,7 @@ De conformiteitsbeoordelingsprocedure op basis van interne controle omvat drie o
 | W4 | Start QMS-document (Art. 17) | QMS-framework |
 
 **Quick wins in maart:**
-- Correctie classificatie in audit-report.md (1 uur)
+- ~~Correctie classificatie in audit-report.md (1 uur)~~ **Afgerond** (audit-report.md is HIGH RISK — Annex III 3(b))
 - Contactgegevens invullen in privacy-documenten (2 uur)
 - Documenteer bestaande maatregelen (promptSanitizer, Mistral `safe_prompt`, outputFilter, welzijnsprotocol) als onderdeel van risicobeheersysteem
 
@@ -601,7 +601,7 @@ De conformiteitsbeoordelingsprocedure op basis van interne controle omvat drie o
 
 | # | Actie | Tijd | Impact |
 |---|-------|------|--------|
-| 1 | Corrigeer audit-report.md: "Limited Risk" -> "High Risk" | 30 min | Hoog (correcte classificatie) |
+| 1 | ~~Corrigeer audit-report.md: "Limited Risk" -> "High Risk"~~ **Afgerond** | — | Voltooid (correcte classificatie) |
 | 2 | ~~Vul alle `[invullen]` placeholders in privacy-documenten in~~ **Afgerond** (28 mrt 2026) | — | Voltooid |
 | 3 | Documenteer bestaande maatregelen als eerste versie risicoregister | 4 uur | Hoog (basis Art. 9) |
 | 4 | Begin Annex VIII registratiedossier (verzamel basisgegevens) | 2 uur | Midden |
@@ -705,19 +705,13 @@ DGSkills hoeft zelf NIET aan Art. 51-55 te voldoen (dat is de verantwoordelijkhe
 
 ### E.4 Correctie op eerdere documenten
 
-Het audit-rapport (`/Users/yorinvonder/Downloads/ai-lab---future-architect/business/nl-vo/compliance/audit-report.md`) classificeert DGSkills nog als "Limited Risk - Art. 50":
+**Status: AFGEROND.** Het audit-rapport (`business/nl-vo/compliance/audit-report.md`) is gecorrigeerd en draagt nu de juiste classificatie in de sectiekop:
 
 ```
-## 3. EU AI Act Audit (Limited Risk - Art. 50)
+## 3. EU AI Act Audit (HIGH RISK — Annex III punt 3(b))
 ```
 
-Dit moet worden gecorrigeerd naar:
-
-```
-## 3. EU AI Act Audit (HIGH RISK - Annex III punt 3(b))
-```
-
-Het juridisch rapport (`09-juridisch-rapport-compleet.md`) classificeert correct als hoog-risico. Het audit-rapport moet worden bijgewerkt.
+Het juridisch rapport (`09-juridisch-rapport-compleet.md`) classificeerde al correct als hoog-risico. De eerdere onjuiste classificatie "Limited Risk - Art. 50" in het audit-rapport is hiermee gecorrigeerd; op dit punt is er geen openstaande actie meer.
 
 ### E.5 Post-2 augustus 2026: doorlopende verplichtingen
 
