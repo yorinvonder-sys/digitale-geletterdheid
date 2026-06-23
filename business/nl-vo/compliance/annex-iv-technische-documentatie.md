@@ -2,8 +2,8 @@
 ## DGSkills.app -- AI-Educatieplatform voor het Nederlands Voortgezet Onderwijs
 
 **Verordening (EU) 2024/1689 -- Artikel 11 + Bijlage IV**
-**Documentversie:** 1.0
-**Datum:** 15 maart 2026
+**Documentversie:** 1.1
+**Datum:** 15 maart 2026 (v1.0) · 23 juni 2026 (v1.1)
 **Aanbieder:** Yorin von der Osten (DGSkills) — KvK-nummer: [INVULLEN NA KVK-REGISTRATIE]
 **Contactadres:** [INVULLEN NA KVK-REGISTRATIE]
 **E-mail:** info@dgskills.app
@@ -74,10 +74,10 @@ Concrete functies:
 | Datum | Wijziging | Impact |
 |-------|-----------|--------|
 | 23-02-2026 | ~~Migratie van de Google-AI Developer API naar het latere Google-AI-platform~~ (historisch; Google wordt niet langer gebruikt) | — |
-| [TODO] | Overstap naar Mistral AI (tekst, vision en OCR) en Black Forest Labs (beeldgeneratie) | AI-verwerking in de EU; server-side API-key (Supabase secret) |
-| [TODO] | Initieel systeem in productie | [TODO: datum eerste productieversie] |
+| [aanbieder: datum] | Overstap naar Mistral AI (tekst, vision en OCR) en Black Forest Labs (beeldgeneratie); Google-AI volledig uitgefaseerd | AI-verwerking volledig in de EU; server-side API-key (Supabase secret) |
+| [aanbieder: datum] | Initieel systeem in productie | Eerste productieversie |
 
-[TODO: volledige versiegeschiedenis aanvullen]
+> De exacte migratie- en productiedatums worden door de aanbieder aangevuld (geen geverifieerde datum in de codebase). De huidige AI-provider staat vast: **Mistral AI + Black Forest Labs**; Google-AI wordt niet meer gebruikt.
 
 ---
 
@@ -136,7 +136,7 @@ Elke agent bevat de volgende verplichte secties in de system instruction:
 |-----------|-------------|---------|
 | Frontend | React 19, TypeScript, Vite | Vercel CDN (global, edge) |
 | Edge Functions | Deno runtime (Supabase Edge Functions) | Supabase infra |
-| Database | PostgreSQL (Supabase) | [TODO: exacte regio bevestigen] |
+| Database | PostgreSQL (Supabase) | EU — AWS `eu-central-1` (Frankfurt) volgens risicoregister TM-12; definitief te bevestigen via het Supabase-projectdashboard |
 | AI-model | Mistral AI (tekst, vision, OCR); Black Forest Labs / FLUX (beeld) | EU (Mistral: Frankrijk; Black Forest Labs: EU-endpoint api.eu.bfl.ai) |
 | Authenticatie | Supabase Auth (JWT) + server-side API-key (Supabase secret) | Supabase |
 
@@ -344,8 +344,8 @@ Elke agent bevat detectielogica voor niet-serieuze berichten die bedoeld zijn om
 
 **Ontbrekend (in ontwikkeling):**
 - [x] Docent-override voor STEP_COMPLETE-beoordelingen — **geïmplementeerd 15 mrt 2026** (`teacher_step_overrides` + RPC `override_student_step`, gelogd)
-- [TODO] Docentdashboard voor real-time monitoring van AI-interacties
-- [TODO] Noodstop-functionaliteit (docent kan AI per klas/leerling uitschakelen)
+- [TODO] Docentdashboard voor real-time monitoring van AI-interacties — docenttoezicht bestaat al via de docent-override en het klas-overzicht (`SLOClassOverview`), maar een dedicated real-time AI-interactiemonitor is nog niet gebouwd
+- [TODO] Noodstop-functionaliteit (docent kan AI per klas/leerling uitschakelen) — nog niet geïmplementeerd; zie risicoregister TM-14 (open restrisico; tijdelijke mitigatie: per-missie-inzet door docent + rate limiting)
 
 ### 3.8 Audit logging
 
@@ -378,7 +378,7 @@ Geimplementeerd in `services/auditService.ts`, conform AVG Art. 30 en EU AI Act 
 
 ### 4.1 Verwijzing naar risicoregister
 
-[TODO: Opstellen formeel risicoregister conform Art. 9 -- gepland voor maart 2026. Zie `eu-ai-act-conformiteitsplan.md` actie 9.1-9.7]
+Het formele risicoregister conform Art. 9 is opgesteld en vastgesteld: **`risicoregister-ai-act.md`** (v1.1, 23 juni 2026 — RMS formeel vastgesteld conform Art. 9(5)). Het bevat 20 risico's (R01–R20) met waarschijnlijkheid×impact-scores, een maatregelenregister (TM-01…TM-15, OM-01…OM-12), de Art. 9(9)-minderjarigensectie, een evaluatiecyclus en de gekwantificeerde restrisico-aanvaarding (§9.2). De onderstaande tabel (§4.2) is een beknopte samenvatting; het register is leidend.
 
 ### 4.2 Bekende risico's en maatregelen
 
@@ -389,15 +389,15 @@ Geimplementeerd in `services/auditService.ts`, conform AVG Art. 30 en EU AI Act 
 | R3 | Hallucinatie -- AI geeft feitelijk onjuiste informatie | Midden | Midden | Temperature 0.7, maxOutputTokens 1024, begrensde context | Midden: inherent aan LLM-technologie |
 | R4 | XP farming -- leerling verdient punten zonder te leren | Midden | Hoog | XP farming detectie in alle 93 agents, serieuze-input-eis | Laag-midden: creatieve workarounds |
 | R5 | Onjuiste STEP_COMPLETE-beoordeling | Midden | Midden | Agent-specifieke beoordelingscriteria, 3-stappen methode | Midden: LLM-beoordeling is niet perfect |
-| R6 | Bias -- inconsistente beoordeling op basis van taalvaardigheid | Midden | Midden | [TODO: biasbeoordeling uitvoeren] | [TODO: te bepalen na beoordeling] |
+| R6 | Bias -- inconsistente beoordeling op basis van taalregister | Midden | Midden | Biastest-harness opgezet (`scripts/biastest.mjs`; register/cultureel/gender — methodologie §6.1.1). Geverifieerd: het onderwijsniveau bereikt de AI niet (geen `educationLevel` in de chat-request) | Te herzien na uitvoering van de biastest (zie risicoregister R06–R08) |
 | R7 | Datalekkage -- persoonsgegevens in AI-responses | Midden | Laag | Dataretentie te verifiëren (Mistral: standaard tot 30 dagen abuse-monitoring; Zero Data Retention optioneel, plan-afhankelijk), geen opslag van chatinhoud, metadata-only logging | Laag |
 | R8 | Welzijnssignalen gemist door AI | Hoog | Laag | Welzijnsprotocol in alle 93 agents, verwijzing hulplijnen | Laag-midden: AI kan subtiele signalen missen |
 | R9 | Uitval van de AI-provider | Laag | Laag | [TODO: graceful degradation implementeren] | Midden: geen fallback-model |
-| R10 | Model-wijziging door Mistral AI of Black Forest Labs | Midden | Midden | [TODO: monitoring van model-updates van de AI-provider] | Midden: geen controle over upstream model |
+| R10 | Model-wijziging door Mistral AI of Black Forest Labs | Midden | Midden | Event-driven review (risicoregister §6.2): regressietest op alle agents binnen 1 week na een AI-provider-model-update | Midden: geen controle over upstream model; geen geautomatiseerde alerting |
 
 ### 4.3 Specifieke risicobeoordeling minderjarigen (Art. 9(9))
 
-[TODO: Uitgebreide risicobeoordeling specifiek voor minderjarigen opstellen. Aandachtspunten:]
+De uitgebreide risicobeoordeling specifiek voor minderjarigen (Art. 9(9)) is opgesteld in `risicoregister-ai-act.md` §7 (cognitieve ontwikkeling & AI-interactie, privacy/digitale autonomie, veiligheid/welzijn, + de specifieke acties 9.9-1…9.9-6). Kernpunten:
 
 - Cognitieve ontwikkeling: leerlingen (12-18) kunnen AI-output als autoriteit beschouwen (automation bias)
 - Emotionele impact: AI-feedback op schoolwerk kan demotiverend werken bij onjuiste beoordeling
@@ -410,7 +410,7 @@ De voornaamste restrisico's na implementatie van alle maatregelen:
 
 1. **Inherente LLM-beperkingen:** Hallucinatie en inconsistente beoordeling zijn onvermijdelijk bij huidige LLM-technologie. Mitigatie: docent als menselijk toezichthouder, AI-disclaimer.
 2. **Zero-day prompt injections:** Nieuwe aanvalstechnieken worden continu ontwikkeld. Mitigatie: regelmatige update van patronenbibliotheek, monitoring.
-3. **Upstream modelwijzigingen:** Mistral AI of Black Forest Labs kan het onderliggende model wijzigen zonder vooraankondiging. Mitigatie: [TODO: monitoring-protocol opstellen].
+3. **Upstream modelwijzigingen:** Mistral AI of Black Forest Labs kan het onderliggende model wijzigen zonder vooraankondiging (het tekstmodel is env-configureerbaar via `MISTRAL_TEXT_MODEL`, standaard `mistral-small-latest` — dat volgt automatisch de laatste minor-versie). Mitigatie: het risicoregister (§6.2 event-driven reviews) schrijft bij een AI-provider-model-update een regressietest op alle agents voor, binnen 1 week na de update.
 
 ---
 
@@ -423,7 +423,7 @@ DGSkills traint **geen eigen AI-model**. Het systeem gebruikt Mistral AI (tekst,
 - **Verantwoordelijkheid trainingsdata:** Mistral AI en Black Forest Labs als GPAI-model aanbieders (Art. 53)
 - **Eigen configuratiedata:** 93 system instructions (in totaal ~480KB aan prompt-tekst)
 - **Versiebeheer configuratiedata:** Git (GitHub repository)
-- [TODO: Documenteer verwijzing naar de GPAI-documentatie van Mistral AI en Black Forest Labs (model cards, training data practices)]
+- **GPAI-documentatie van de aanbieders (Art. 53):** [Mistral AI Privacy Policy](https://mistral.ai/terms/#privacy-policy), [Black Forest Labs Documentatie](https://docs.bfl.ai/) en [BFL Privacy & Security](https://bfl.ai/legal/privacy-policy). Mistral AI en Black Forest Labs zijn de GPAI-modelaanbieders; DGSkills is downstream-deployer (zie `eu-ai-act-conformiteitsplan.md` §Art. 51-55). Model cards en trainingsdata-praktijken berusten bij deze GPAI-aanbieders.
 
 ### 5.2 Inputdata
 
@@ -441,7 +441,7 @@ DGSkills traint **geen eigen AI-model**. Het systeem gebruikt Mistral AI (tekst,
 | AI-response (tekst) | Antwoord van het AI-model (Mistral AI) | **Niet opgeslagen** op server | Geen |
 | STEP_COMPLETE markers | Voltooiingsstatus per stap | Database (voortgangsregistratie) | Zolang account actief |
 | XP en levels | Puntentelling | Database | Zolang account actief |
-| Audit metadata | mission_id, response_length, model, fallback_used | Database (audit log) | [TODO: bewaartermijn vaststellen, min. 6 maanden] |
+| Audit metadata | mission_id, response_length, model, fallback_used | Database (audit log) | 3 jaar (AVG Art. 30 ROPA); geautomatiseerde `pg_cron`-cleanup, migratie `20260221_add_data_retention_policies.sql` |
 
 ### 5.4 Dataresidentie
 
@@ -602,7 +602,7 @@ Beschikbare documenten:
 | Aanbieder (Art. 3(3)) | Yorin von der Osten / DGSkills | Ontwikkeling, compliance, CE-markering |
 | GPAI-model aanbieder | Mistral AI SAS (Parijs, Frankrijk) en Black Forest Labs Inc. (VS) | Onderliggende modellen, Art. 51-55 verplichtingen |
 | Deployer (Art. 3(4)) | Individuele scholen | Gebruik conform instructions for use, menselijk toezicht |
-| FG/DPO | [TODO: benoemen of advisering inhuren] | Toezicht op gegevensbescherming |
+| FG/DPO | Advies opgesteld in `fg-dpo-adviesrapport.md` (extern FG-as-a-Service aanbevolen); feitelijke benoeming is een aanbieder-actie | Toezicht op gegevensbescherming |
 
 ### 8.2 Juridische entiteit
 
@@ -826,34 +826,34 @@ Conform Art. 47 en Annex V zal de verklaring bevatten:
 
 ## BIJLAGE C: OVERZICHT VAN [TODO]-ITEMS
 
-Onderstaande items moeten nog worden afgerond voor de conformiteitsbeoordeling:
+**Statusoverzicht (bijgewerkt 23 juni 2026).** *Afgerond* = technisch/verifieerbaar ingevuld in dit dossier. *Gedeeltelijk* = deels ingevuld, restant vereist een aanbieder-actie. *Openstaand (aanbieder)* = vereist een reële zakelijke/juridische handeling (KvK, CE, QMS, verzekering, conformiteitsverklaring) en kan niet documentair worden afgerond.
 
-| # | Item | Sectie | Prioriteit | Deadline |
-|---|------|--------|------------|----------|
-| 1 | KvK-inschrijving en juridische entiteit | 8.2 | KRITIEK | Zsm |
-| 2 | Formeel risicoregister (Art. 9) | 4.1 | KRITIEK | Maart 2026 |
-| 3 | Risicobeoordeling minderjarigen (Art. 9(9)) | 4.3 | KRITIEK | Maart 2026 |
-| 4 | Biasbeoordeling per agenttype | 6.2, 4.2 | HOOG | April 2026 |
-| 5 | Nauwkeurigheidsmetrieken definieren en meten | 6.1 | KRITIEK | April 2026 |
-| 6 | Docent-override STEP_COMPLETE | 3.7 | ~~KRITIEK~~ **Afgerond (15 mrt 2026)** | April 2026 |
-| 7 | Docentdashboard monitoring | 3.7 | HOOG | April 2026 |
-| 8 | Noodstop-functionaliteit | 3.7 | HOOG | April 2026 |
-| 9 | Graceful degradation bij uitval van de AI-provider | 4.2 | HOOG | Mei 2026 |
-| 10 | Monitoring model-updates van de AI-provider | 4.2 | HOOG | Doorlopend |
-| 11 | QMS-document (Art. 17) | 8.4 | KRITIEK | Mei 2026 |
-| 12 | Instructions for Use voor scholen | 7.3 | KRITIEK | Mei 2026 |
-| 13 | Post-market monitoring plan (Art. 72) | 8.5 | HOOG | Mei 2026 |
-| 14 | Supabase database regio bevestigen | 5.4 | MIDDEN | Zsm |
-| 15 | Bewaartermijn audit logs vaststellen | 5.3 | MIDDEN | April 2026 |
-| 16 | GPAI-documentatie verwijzing (Mistral AI en Black Forest Labs) | 5.1 | HOOG | April 2026 |
-| 17 | FG/DPO benoemen of advisering | 8.1 | HOOG | Mei 2026 |
-| 18 | Beroepsaansprakelijkheidsverzekering | 8.2 | HOOG | Zsm |
-| 19 | Versiegeschiedenis aanvullen | 1.5 | LAAG | Doorlopend |
-| 20 | Vestigingsadres en contactgegevens | Header | KRITIEK | Na KvK |
-| 21 | EU-conformiteitsverklaring (Art. 47) | 9 | KRITIEK | Juli 2026 |
-| 22 | CE-markering (Art. 48) | 9 | KRITIEK | Juli 2026 |
-| 23 | EU-databank registratie (Art. 49) | 9 | KRITIEK | Juli 2026 |
+| # | Item | Sectie | Prioriteit | Status |
+|---|------|--------|------------|--------|
+| 1 | KvK-inschrijving en juridische entiteit | 8.2 | KRITIEK | Openstaand (aanbieder) |
+| 2 | Formeel risicoregister (Art. 9) | 4.1 | ~~KRITIEK~~ | **Afgerond (23 jun 2026)** — `risicoregister-ai-act.md` v1.1, RMS vastgesteld |
+| 3 | Risicobeoordeling minderjarigen (Art. 9(9)) | 4.3 | ~~KRITIEK~~ | **Afgerond** — risicoregister §7 |
+| 4 | Biasbeoordeling per agenttype | 6.2, 4.2 | HOOG | **Gedeeltelijk** — harness opgezet (`scripts/biastest.mjs`); uitvoering openstaand (key) |
+| 5 | Nauwkeurigheidsmetrieken definieren en meten | 6.1 | KRITIEK | Openstaand (aanbieder) |
+| 6 | Docent-override STEP_COMPLETE | 3.7 | ~~KRITIEK~~ | **Afgerond (15 mrt 2026)** |
+| 7 | Docentdashboard monitoring | 3.7 | HOOG | Gedeeltelijk — toezicht via override + klas-overzicht; dedicated real-time monitor open |
+| 8 | Noodstop-functionaliteit | 3.7 | HOOG | Openstaand — zie risicoregister TM-14 |
+| 9 | Graceful degradation bij uitval van de AI-provider | 4.2 | HOOG | Openstaand (aanbieder) |
+| 10 | Monitoring model-updates van de AI-provider | 4.2 | ~~HOOG~~ | **Afgerond** — event-driven review risicoregister §6.2 |
+| 11 | QMS-document (Art. 17) | 8.4 | KRITIEK | Openstaand (aanbieder) |
+| 12 | Instructions for Use voor scholen | 7.3 | KRITIEK | Openstaand (aanbieder) |
+| 13 | Post-market monitoring plan (Art. 72) | 8.5 | HOOG | Openstaand (aanbieder) |
+| 14 | Supabase database regio bevestigen | 5.4 | MIDDEN | Gedeeltelijk — `eu-central-1` per TM-12; dashboard-bevestiging nodig |
+| 15 | Bewaartermijn audit logs vaststellen | 5.3 | ~~MIDDEN~~ | **Afgerond** — 3 jaar (AVG Art. 30), migratie aanwezig |
+| 16 | GPAI-documentatie verwijzing (Mistral AI en Black Forest Labs) | 5.1 | ~~HOOG~~ | **Afgerond** — referenties toegevoegd (§5.1) |
+| 17 | FG/DPO benoemen of advisering | 8.1 | HOOG | Gedeeltelijk — advies in `fg-dpo-adviesrapport.md`; benoeming = aanbieder |
+| 18 | Beroepsaansprakelijkheidsverzekering | 8.2 | HOOG | Openstaand (aanbieder) |
+| 19 | Versiegeschiedenis aanvullen | 1.5 | LAAG | Gedeeltelijk — provider bevestigd (Mistral/BFL); exacte datums door aanbieder |
+| 20 | Vestigingsadres en contactgegevens | Header | KRITIEK | Openstaand — na KvK |
+| 21 | EU-conformiteitsverklaring (Art. 47) | 9 | KRITIEK | Openstaand (aanbieder) |
+| 22 | CE-markering (Art. 48) | 9 | KRITIEK | Openstaand (aanbieder) |
+| 23 | EU-databank registratie (Art. 49) | 9 | KRITIEK | Openstaand (aanbieder) |
 
 ---
 
-*Dit document wordt bijgehouden als onderdeel van het technische documentatiedossier conform EU AI Act Art. 11 + Annex IV. Laatste update: 15 maart 2026.*
+*Dit document wordt bijgehouden als onderdeel van het technische documentatiedossier conform EU AI Act Art. 11 + Annex IV. Laatste update: 23 juni 2026 (v1.1 — technische TODO's ingevuld; resterende items vereisen aanbieder-/juridische acties, zie Bijlage C).*
