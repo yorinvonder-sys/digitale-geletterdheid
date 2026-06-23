@@ -6,7 +6,7 @@ export const neuralNavigatorConfig: DataViewerConfig = {
     introEmoji: '⚡',
     introTitle: 'Word een Neural Navigator',
     introDescription:
-        'Neurale netwerken zijn de motor achter gezichtsherkenning, stemassistenten en aanbevelingsalgoritmes. Ze zijn geïnspireerd op het menselijk brein. Jij gaat van binnenuit ontdekken hoe neuronen, lagen en backpropagation samenwerken.',
+        'Neurale netwerken zijn de motor achter gezichtsherkenning, stemassistenten en aanbevelingsalgoritmes. Ze zijn geïnspireerd op het menselijk brein. Jij gaat van binnenuit ontdekken hoe neuronen, lagen en backpropagation samenwerken — backpropagation is de manier waarop een netwerk leert door fouten terug te rekenen naar de gewichten.',
     introFeatures: [
         'Reken zelf een forward pass door een neuraal netwerk',
         'Vergelijk hoe de output verandert bij andere gewichten',
@@ -109,7 +109,7 @@ export const neuralNavigatorConfig: DataViewerConfig = {
                     ],
                     correctAnswer: 'De gewichten waren willekeurig — het netwerk had nog niets geleerd',
                     explanation:
-                        'Aan het begin zijn gewichten willekeurig (random initialization). Het netwerk maakt dan willekeurige voorspellingen. Na elke fout worden gewichten aangepast via backpropagation. Na genoeg trainingsrondes heeft het netwerk geleerd welke patronen bij "3" horen (open aan de bovenkant) en welke bij "8" (gesloten cirkel).',
+                        'Aan het begin zijn gewichten willekeurig — willekeurige beginwaarden. Het netwerk maakt dan willekeurige voorspellingen. Na elke fout worden gewichten aangepast via backpropagation. Na genoeg trainingsrondes heeft het netwerk geleerd welke patronen bij "3" horen (open aan de bovenkant) en welke bij "8" (gesloten cirkel).',
                     points: 10,
                 },
                 {

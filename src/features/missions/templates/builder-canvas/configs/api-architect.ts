@@ -24,7 +24,7 @@ export const apiArchitectConfig: BuilderCanvasConfig = {
                 'Een API (Application Programming Interface) is een afgesproken manier voor apps om met elkaar te praten. REST is de meest gebruikte stijl. Je communiceert via HTTP-verzoeken met specifieke methodes en ontvangt data terug in JSON-formaat.',
             instruction:
                 'Leg in eigen woorden uit: 1) Wat is een API en waarom is het nodig? (Gebruik het voorbeeld van een restaurant: jij bent de klant, de keuken is de database, de ober is de API), 2) Wat doen de 4 HTTP-methodes GET, POST, PUT en DELETE? Koppel elk aan een echt voorbeeld (bijv. GET = ophalen van huiswerktaken), 3) Wat is JSON en waarom gebruiken APIs het?',
-            tip: 'REST-APIs werken altijd stateless: elke aanvraag bevat alle informatie die nodig is. De server onthoudt niets tussen aanvragen.',
+            tip: 'REST-APIs werken altijd stateless (de server onthoudt niets tussen verzoeken): elke aanvraag bevat alle informatie die nodig is.',
             checklistItems: [
                 { id: 'api-uitleg', label: 'Ik heb uitgelegd wat een API is met een analogie' },
                 { id: 'http-methodes', label: 'GET, POST, PUT en DELETE zijn uitgelegd met voorbeelden' },
@@ -38,7 +38,7 @@ export const apiArchitectConfig: BuilderCanvasConfig = {
             description:
                 'Een endpoint is een URL waarop je een API-verzoek kunt sturen. Goede endpoint-namen zijn logisch, consistent en beschrijven altijd een resource (zelfstandig naamwoord), niet een actie. Zo is `/taken` goed, maar `/getTaak` is slecht REST-design.',
             instruction:
-                'Ontwerp de endpoints voor een huiswerk-planner API. Maak een tabel met: Endpoint-URL, HTTP-methode, Beschrijving, en Voorbeeld van request-body (indien POST of PUT). Ontwerp minimaal 6 endpoints, verdeeld over de resources: `taken` en `gebruikers`. Geef ook de HTTP-statuscodes aan die elk endpoint teruggeeft bij succes en bij een fout.',
+                'Ontwerp de endpoints voor een huiswerk-planner API. Maak een tabel met: Endpoint-URL, HTTP-methode, Beschrijving, en Voorbeeld van request-body (indien POST of PUT). Ontwerp minimaal 6 endpoints, verdeeld over de resources: `taken` en `gebruikers`. Geef ook de HTTP-statuscodes aan die elk endpoint teruggeeft bij succes en bij een fout — statuscodes zijn korte nummers die aangeven of een verzoek gelukt is, bijv. 200 = gelukt, 404 = niet gevonden, 401 = niet ingelogd.',
             tip: 'Gebruik altijd meervoud voor resource-namen: `/taken` niet `/taak`. En houd nesting beperkt: `/gebruikers/{id}/taken` is prima, maar `/school/{id}/klassen/{id}/leerlingen/{id}/taken` is te diep.',
             checklistItems: [
                 { id: 'zes-endpoints', label: 'Ik heb minimaal 6 endpoints ontworpen' },
@@ -71,7 +71,7 @@ export const apiArchitectConfig: BuilderCanvasConfig = {
                 'Een API zonder documentatie is waardeloos voor andere developers. Goede API-documentatie beschrijft elk endpoint zo duidelijk dat iemand die jou nooit heeft gesproken er direct mee aan de slag kan.',
             instruction:
                 'Schrijf de documentatie voor 2 endpoints uit je ontwerp. Gebruik dit formaat voor elk: Endpoint, Methode, Beschrijving, Request-body (met JSON-voorbeeld), Response bij succes (met JSON-voorbeeld en statuscode), Response bij fout (met foutmelding en statuscode). Schrijf de documentatie in het Engels — dat is de internationale standaard.',
-            tip: 'Tools als Swagger/OpenAPI genereren automatisch documentatie vanuit je code. Maar eerst moet je begrijpen hoe documentatie eruitziet — dan begrijp je ook de tools beter.',
+            tip: 'Tools als Swagger/OpenAPI — een standaard om API\'s te documenteren en te testen — genereren automatisch documentatie vanuit je code. Maar eerst moet je begrijpen hoe documentatie eruitziet — dan begrijp je ook de tools beter.',
             checklistItems: [
                 { id: 'twee-endpoints-gedoc', label: 'Twee endpoints zijn volledig gedocumenteerd' },
                 { id: 'json-voorbeelden', label: 'Request en response zijn als JSON-voorbeeld uitgeschreven' },

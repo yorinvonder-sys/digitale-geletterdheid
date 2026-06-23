@@ -19,7 +19,7 @@ export const researchProjectConfig: DataViewerConfig = {
             id: 'schermtijd-welzijn-onderzoek',
             title: 'Dataset: schermtijd en zelfgerapporteerd welzijn (havo/vwo, n=200)',
             description:
-                'Onderzoekers van de Universiteit Leiden maten schermtijd en welzijnsscores bij 200 havo/vwo-leerlingen (15-17 jaar). Welzijn werd gemeten op een schaal van 1-10.',
+                'Onderzoekers van de Universiteit Leiden maten schermtijd en welzijnsscores bij 200 havo/vwo-leerlingen (15-17 jaar). Welzijn werd gemeten op een schaal van 1-10. Let op twee sleutelbegrippen: correlatie (= twee dingen hangen samen) en causaliteit (= het ene veroorzaakt het andere) — die zijn niet hetzelfde.',
             type: 'table',
             columns: [
                 { key: 'groep', label: 'Groep (uren/dag)', sortable: true },
@@ -80,7 +80,7 @@ export const researchProjectConfig: DataViewerConfig = {
             id: 'onderzoeksmethoden-vergelijking',
             title: 'Betrouwbaarheid van onderzoeksmethoden',
             description:
-                'Niet elke onderzoeksmethode is even betrouwbaar. Wetenschappers beoordelen methoden op basis van "levels of evidence". Hogere score = sterker bewijs.',
+                'Niet elke onderzoeksmethode is even betrouwbaar. Wetenschappers beoordelen methoden op basis van "levels of evidence". Hogere score = sterker bewijs. Twee methoden in de grafiek die je misschien niet kent: cohort-onderzoek (= een groep mensen langere tijd volgen) en meta-analyse (meerdere studies samenvatten).',
             type: 'bar-chart',
             chartData: [
                 { label: 'Expertmening', value: 15, color: '#202023' },
@@ -142,7 +142,7 @@ export const researchProjectConfig: DataViewerConfig = {
                     title: 'Stap 2: Betrouwbare bronnen zoeken',
                     icon: '🔍',
                     content:
-                        'Niet alle bronnen zijn gelijkwaardig. Wetenschappelijke tijdschriften (peer-reviewed) zijn betrouwbaarder dan Wikipedia of nieuwsartikelen. Controleer altijd: Wie heeft het geschreven? Wanneer? Is het onafhankelijk onderzoek of gesponsord? Zijn de methoden beschreven? Google Scholar, CBS en RIVM zijn goede startpunten voor scholieren.',
+                        'Niet alle bronnen zijn gelijkwaardig. Wetenschappelijke tijdschriften zijn peer-reviewed (= gecontroleerd door andere wetenschappers) en daardoor betrouwbaarder dan Wikipedia of nieuwsartikelen. Controleer altijd: Wie heeft het geschreven? Wanneer? Is het onafhankelijk onderzoek of gesponsord? Zijn de methoden beschreven? Google Scholar, CBS en RIVM zijn goede startpunten voor scholieren.',
                 },
                 {
                     title: 'Stap 3: Data analyseren',

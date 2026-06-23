@@ -61,14 +61,14 @@ const config: ReviewArenaConfig = {
                 { id: 'features', label: 'Features selecteren en data splitsen (train/test)', correctPosition: 2 },
                 { id: 'trainen', label: 'Model trainen op trainingsdata', correctPosition: 3 },
                 { id: 'evalueren', label: 'Model evalueren op testdata', correctPosition: 4 },
-                { id: 'inzetten', label: 'Model inzetten (deployen) in een applicatie', correctPosition: 5 },
+                { id: 'inzetten', label: 'Model deployen in een applicatie (= live zetten voor echte gebruikers)', correctPosition: 5 },
             ],
         },
         {
             id: 'round-match-pairs',
             type: 'match-pairs',
             title: 'Geavanceerde begrippen koppelen',
-            description: 'Koppel elk geavanceerd programmeerbegrip aan de juiste omschrijving.',
+            description: 'Koppel elk geavanceerd programmeerbegrip aan de juiste omschrijving. Nieuw begrip: een epoch = één volledige ronde door alle trainingsdata.',
             maxScore: 25,
             pairs: [
                 {

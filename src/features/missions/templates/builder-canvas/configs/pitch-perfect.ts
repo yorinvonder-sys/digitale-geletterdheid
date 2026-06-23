@@ -23,13 +23,17 @@ export const pitchPerfectConfig: BuilderCanvasConfig = {
             description:
                 'Een overtuigende pitch vertelt een verhaal: er is een probleem, jij bent de held met een oplossing, en dit is waarom het lukt. Investeerders en jury\'s hebben duizenden pitches gehoord. Alleen een heldere structuur met een scherpe boodschap valt op.',
             instruction:
-                'Schrijf de structuur van je 5-minuten pitch in punt-form. Gebruik deze indeling: 1) Hook (30 sec) — prikkelende vraag, statistiek of scenario, 2) Probleem (45 sec) — maak het probleem voelbaar, 3) Jouw oplossing (90 sec) — wat heb je gebouwd en hoe werkt het?, 4) Resultaat en bewijs (60 sec) — wat heb je bereikt? Wat zijn de testresultaten?, 5) Reflectie (30 sec) — wat leerde je?, 6) Afsluiting (15 sec) — wat vraag je van de jury? Bij elk onderdeel: schrijf de kernzin die je gaat zeggen.',
+                'Schrijf de structuur van je 5-minuten pitch in punt-form. Gebruik de 6 onderdelen uit de checklist hieronder als leidraad. Bij elk onderdeel: schrijf de kernzin die je gaat zeggen.',
             tip: 'Een pitch is geen samenvatting van je verslag. Het is een verhaal. Begin niet met "Mijn project gaat over…" — begin met iets dat de jury doet nadenken of lachen.',
             checklistItems: [
-                { id: 'zes-onderdelen', label: 'Alle 6 onderdelen zijn ingevuld' },
+                { id: 'hook', label: '1) Hook (30 sec) — prikkelende vraag, statistiek of scenario' },
+                { id: 'probleem', label: '2) Probleem (45 sec) — maak het probleem voelbaar' },
+                { id: 'oplossing', label: '3) Jouw oplossing (90 sec) — wat heb je gebouwd en hoe werkt het?' },
+                { id: 'resultaat', label: '4) Resultaat en bewijs (60 sec) — wat heb je bereikt en wat zijn de testresultaten?' },
+                { id: 'reflectie', label: '5) Reflectie (30 sec) — wat leerde je?' },
+                { id: 'afsluiting', label: '6) Afsluiting (15 sec) — wat vraag je van de jury?' },
                 { id: 'kernzinnen', label: 'Bij elk onderdeel staat een kernzin' },
-                { id: 'hook-sterk', label: 'De hook is prikkelend en begint niet met "Mijn project..."' },
-                { id: 'tijdsverdeling', label: 'De tijdsverdeling klopt (samen 5 minuten)' },
+                { id: 'hook-sterk', label: 'De hook begint niet met "Mijn project..."' },
             ],
             textPrompt: 'Schrijf je pitch-structuur',
         },
