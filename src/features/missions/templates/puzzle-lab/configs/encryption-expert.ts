@@ -22,12 +22,12 @@ export const encryptionExpertConfig: PuzzleLabConfig = {
             description:
                 'Julius Caesar gebruikte een simpele code: elk letter in het bericht werd 3 posities naar rechts verschoven in het alfabet. A wordt D, B wordt E, Z wordt C. Jij hebt het gecodeerde bericht onderschept. Wat staat er echt?',
             clues: [
-                'Het gecodeerde bericht is: YHLJKWLJ',
+                'Het gecodeerde bericht is: YHLOLJ',
                 'De schuif is 3 — elk letter is 3 posities naar rechts verschoven.',
-                'V → S, H → E, L → I, J → G, K → H, W → T, L → I, J → G',
+                'Y → V, H → E, L → I, O → L, L → I, J → G',
             ],
             extraClues: [
-                'Verschuif elke letter 3 posities TERUG: V−3=S, H−3=E, I−3=F... Maar let op: I=9e letter, 9−3=6=F, niet E. Gebruik de volgorde A=1, B=2, C=3 ... Z=26.',
+                'Verschuif elke letter 3 posities TERUG in het alfabet (A=1, B=2, C=3 ... Z=26): Y=25, 25−3=22=V. H=8, 8−3=5=E. L=12, 12−3=9=I. O=15, 15−3=12=L.',
                 'Het antwoord is een Nederlands woord dat te maken heeft met bescherming.',
             ],
             revealExtraAfterAttempts: 3,
@@ -36,7 +36,7 @@ export const encryptionExpertConfig: PuzzleLabConfig = {
             maxAttempts: 6,
             points: 25,
             successMessage:
-                'Correct! YHLJKWLJ → VEILIG. Elke letter 3 posities terug: Y→V, H→E, L→I, J→G, K→H, W→T, L→I, J→G.',
+                'Correct! YHLOLJ → VEILIG. Elke letter 3 posities terug: Y→V, H→E, L→I, O→L, L→I, J→G.',
             hintCost: 3,
         },
         {
