@@ -378,7 +378,7 @@ Geimplementeerd in `services/auditService.ts`, conform AVG Art. 30 en EU AI Act 
 
 ### 4.1 Verwijzing naar risicoregister
 
-Het formele risicoregister conform Art. 9 is opgesteld (maart 2026): zie `risicoregister-ai-act.md` — risico's per agent en functionaliteit gescoord, inclusief maatregelen en restrisico. Bijbehorende acties 9.1-9.7 in `eu-ai-act-conformiteitsplan.md`.
+Het risicoregister is uitgewerkt in `risicoregister-ai-act.md` (risico's per agent en functionaliteit gescoord, met maatregelen en restrisico). De formele vaststelling van het Art. 9-risicobeheersysteem is nog in afronding (status NIET VOLDAAN); zie acties 9.1-9.7 in `eu-ai-act-conformiteitsplan.md` en Appendix C.
 
 ### 4.2 Bekende risico's en maatregelen
 
