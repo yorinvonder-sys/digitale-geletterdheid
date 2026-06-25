@@ -217,8 +217,22 @@ Deno.serve(async (req: Request) => {
         );
     }
 
+    // Data-minimalisatie: maskeer PII vóór externe moderatie en AI-provider.
+    const redactedHistory = safeHistory.history.map((msg) =>
+        msg.role === "user"
+            ? { ...msg, parts: msg.parts.map((part) => ({ ...part, text: redactPii(part.text).redacted })) }
+            : msg
+    );
+    const redactedMessage = redactPii(validation.sanitized).redacted;
+    let moderationErrorReason: string | null = null;
+
     // Input moderation (Mistral classifier) — additioneel op de sanitizer.
-    const inputModeration = await moderateText(validation.sanitized);
+    const inputModeration = await moderateText(redactedMessage);
+    if (inputModeration.errored) {
+        moderationErrorReason = `input:${inputModeration.errorReason ?? "unknown"}`;
+        console.error(`[demo-chat] Moderation unavailable; fail-open (${moderationErrorReason}).`);
+    }
+
     if (inputModeration.flagged) {
         logAiUsageEvent({
             requestId,
@@ -226,7 +240,7 @@ Deno.serve(async (req: Request) => {
             provider: "mistral",
             model: getMistralTextModel(),
             status: "blocked",
-            inputChars: validation.sanitized.length,
+            inputChars: redactedMessage.length,
             metadata: { reason: "moderation_input", moderation_categories: inputModeration.categories.join(",") },
         }).catch((err) => console.error("[demo-chat] Usage log error:", err));
 
@@ -238,17 +252,9 @@ Deno.serve(async (req: Request) => {
 
     // 4. Send to Mistral
     try {
-        // Data-minimalisatie: maskeer PII (e-mail, telefoon/BSN, postcode) vóór
-        // het bericht naar de externe AI-provider gaat. Alleen user-invoer; de
-        // eigen modeluitvoer in de history bevat geen leerling-PII.
-        const redactedHistory = safeHistory.history.map((msg) =>
-            msg.role === "user"
-                ? { ...msg, parts: msg.parts.map((part) => ({ ...part, text: redactPii(part.text).redacted })) }
-                : msg
-        );
         const contents = [
             ...redactedHistory,
-            { role: "user", parts: [{ text: redactPii(validation.sanitized).redacted }] },
+            { role: "user", parts: [{ text: redactedMessage }] },
         ];
 
         const result = await completeMistralChat({
@@ -262,7 +268,12 @@ Deno.serve(async (req: Request) => {
 
         if (outputCheck.safe) {
             const outputModeration = await moderateText(result.text);
-            if (outputModeration.flagged) {
+            if (outputModeration.errored) {
+                moderationErrorReason = moderationErrorReason
+                    ? `${moderationErrorReason},output:${outputModeration.errorReason ?? "unknown"}`
+                    : `output:${outputModeration.errorReason ?? "unknown"}`;
+                console.error(`[demo-chat] Output moderation unavailable; fail-open (${moderationErrorReason}).`);
+            } else if (outputModeration.flagged) {
                 text = SAFE_FALLBACK_MESSAGE;
                 outputBlockReason = `moderation:${outputModeration.categories.join("|")}`;
             }
@@ -279,7 +290,11 @@ Deno.serve(async (req: Request) => {
             historyChars: countTextChars(safeHistory.history),
             outputChars: text.length,
             usagePayload: result.usagePayload,
-            metadata: { remaining: Math.max(rateCheck.remaining, 0), output_filter: outputBlockReason ?? "safe" },
+            metadata: {
+                remaining: Math.max(rateCheck.remaining, 0),
+                output_filter: outputBlockReason ?? "safe",
+                ...(moderationErrorReason ? { moderation_error_reason: moderationErrorReason } : {}),
+            },
         }).catch((err) => console.error("[demo-chat] Usage log error:", err));
 
         return new Response(
