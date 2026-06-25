@@ -237,7 +237,7 @@ export const ScholenLandingAiMissionMoment: React.FC = () => {
                     {/* Live dot */}
                     <div className="ml-auto flex items-center gap-1.5 flex-shrink-0">
                         <span className="size-2 rounded-full bg-duck-acid" aria-hidden="true" />
-                        <span className="text-duck-acid text-[10px] font-extrabold tracking-wide">LIVE</span>
+                        <span className="text-duck-acid text-[10px] font-extrabold tracking-wide">DEMO</span>
                     </div>
                 </div>
 
