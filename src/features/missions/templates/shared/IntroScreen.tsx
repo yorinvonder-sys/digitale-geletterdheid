@@ -13,6 +13,13 @@ interface IntroScreenProps {
     features?: string[];
     goal?: MissionGoal | string;
     coachMessage?: string;
+    attribution?: {
+        source: string;
+        author?: string;
+        license?: string;
+        licenseUrl?: string;
+        sourceUrl?: string;
+    };
 }
 
 export const IntroScreen: React.FC<IntroScreenProps> = ({
@@ -23,6 +30,7 @@ export const IntroScreen: React.FC<IntroScreenProps> = ({
     features,
     goal,
     coachMessage,
+    attribution,
 }) => (
     <div className="min-h-screen overflow-y-auto bg-duck-bg flex items-start justify-center px-4 py-6 sm:py-8" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
         <div className="w-full max-w-lg text-center">
@@ -78,6 +86,42 @@ export const IntroScreen: React.FC<IntroScreenProps> = ({
                         </div>
                     ))}
                 </div>
+            )}
+
+            {attribution && (
+                <p className="mt-4 text-[11px] leading-relaxed text-duck-ink/45" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                    Eigen bewerking, gebaseerd op{' '}
+                    {attribution.sourceUrl ? (
+                        <a
+                            href={attribution.sourceUrl}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="underline decoration-duck-ink/25 underline-offset-2 hover:text-duck-ink/70"
+                        >
+                            de open les ‘{attribution.source}’
+                        </a>
+                    ) : (
+                        <span>de open les ‘{attribution.source}’</span>
+                    )}
+                    {attribution.author ? ` van ${attribution.author}` : ''}
+                    {attribution.license ? (
+                        <>
+                            {' · '}
+                            {attribution.licenseUrl ? (
+                                <a
+                                    href={attribution.licenseUrl}
+                                    target="_blank"
+                                    rel="noreferrer"
+                                    className="underline decoration-duck-ink/25 underline-offset-2 hover:text-duck-ink/70"
+                                >
+                                    {attribution.license}
+                                </a>
+                            ) : (
+                                attribution.license
+                            )}
+                        </>
+                    ) : ''}
+                </p>
             )}
         </div>
     </div>
