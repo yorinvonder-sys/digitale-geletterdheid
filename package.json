@@ -28,6 +28,7 @@
     "check:image-generation": "node scripts/check-image-generation.mjs",
     "check:ai-provider-docs": "node scripts/check-ai-provider-docs.mjs",
     "check:ai-usage": "node scripts/check-ai-usage-telemetry.mjs && node scripts/check-mistral-bfl-providers.mjs",
+    "check:mistral-moderation:live": "node scripts/check-mistral-moderation-live.mjs",
     "check:rls:functions": "node scripts/check-rls-functions.mjs",
     "biastest": "node scripts/biastest.mjs",
     "edge:serve:function": "node scripts/serve-edge-function.mjs",
