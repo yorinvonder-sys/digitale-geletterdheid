@@ -24,6 +24,9 @@ import { logAiUsageEvent, getUserSchoolId, resolveAiRequestId } from "../_shared
 
 const PRIVILEGED_ROLES = new Set(["teacher", "admin", "developer"]);
 
+type StudentRow = { id: string; student_class: string | null };
+type ProgressRow = { mission_id: string; status: string; updated_at: string; score: number | null };
+
 // Missie is "vastgelopen" als in_progress én langer dan 7 dagen niet bijgewerkt
 const STUCK_THRESHOLD_DAYS = 7;
 const STUCK_THRESHOLD_MS = STUCK_THRESHOLD_DAYS * 24 * 60 * 60 * 1000;
@@ -145,7 +148,8 @@ Deno.serve(async (req: Request) => {
         studentsQuery = studentsQuery.eq("student_class", studentClass);
     }
 
-    const { data: students, error: studentsError } = await studentsQuery;
+    const { data: studentRows, error: studentsError } = await studentsQuery;
+    const students = (studentRows ?? []) as unknown as StudentRow[];
 
     if (studentsError) {
         // RLS-fout kan betekenen dat de docent geen MFA heeft (AAL1 i.p.v. AAL2)
@@ -178,7 +182,7 @@ Deno.serve(async (req: Request) => {
         );
     }
 
-    const studentIds = (students ?? []).map((s: { id: string; student_class: string | null }) => s.id);
+    const studentIds = students.map((s) => s.id);
 
     // Missievoortgang ophalen
     const { data: progressRows, error: progressError } = await supabase
@@ -197,7 +201,7 @@ Deno.serve(async (req: Request) => {
         );
     }
 
-    const rows = progressRows ?? [];
+    const rows = (progressRows ?? []) as unknown as ProgressRow[];
 
     // Lege voortgangsdata → vroeg retourneren
     if (rows.length === 0) {
@@ -229,7 +233,7 @@ Deno.serve(async (req: Request) => {
 
     const missionMap = new Map<string, MissionStats>();
 
-    for (const row of rows as { mission_id: string; status: string; updated_at: string; score: number | null }[]) {
+    for (const row of rows) {
         const { mission_id, status, updated_at } = row;
 
         if (!missionMap.has(mission_id)) {
