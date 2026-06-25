@@ -8,6 +8,7 @@ import { DuckMascot } from '@/components/brand/DuckMascot';
 import { Target, Clock, FileText, Puzzle, PhoneCall, Map as MapIcon, Rocket, Users, CreditCard, CalendarClock, GraduationCap, Building2, ShieldCheck, FlaskConical } from 'lucide-react';
 import { ScholenLandingProductBento } from '@/features/public-site/ScholenLandingProductBento';
 import { AiDisclosureBadge } from '@/features/ai-chat/AiDisclosureBadge';
+import { ScholenLandingSloDomains } from '@/features/public-site/ScholenLandingSloDomains';
 
 type NavItem = { label: string; target: string };
 type SkillTone = 'paper' | 'acid';
@@ -682,6 +683,7 @@ export const ScholenLanding: React.FC = () => {
                                     </article>
                                 ))}
                             </div>
+                            <ScholenLandingSloDomains />
                             <div className="rounded-[1.5rem] bg-duck-ink p-6 md:p-8">
                                 <div className="mb-6 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
                                     <div>
