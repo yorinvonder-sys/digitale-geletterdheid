@@ -4,7 +4,6 @@ import { HeroEyes } from '@/components/brand/HeroEyes';
 import { AnimatedCounter } from '@/components/brand/AnimatedCounter';
 import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion';
 import { useHomepageAnalytics } from '@/hooks/useHomepageAnalytics';
-import { DuckMascot } from '@/components/brand/DuckMascot';
 import { Target, Clock, FileText, Puzzle, PhoneCall, Map as MapIcon, Rocket, Users, CreditCard, CalendarClock, GraduationCap, Building2, ShieldCheck, FlaskConical } from 'lucide-react';
 import { ScholenLandingProductBento } from '@/features/public-site/ScholenLandingProductBento';
 import { AiDisclosureBadge } from '@/features/ai-chat/AiDisclosureBadge';
@@ -722,8 +721,8 @@ export const ScholenLanding: React.FC = () => {
                                 <p className="mt-5 text-pretty text-base font-semibold leading-7 text-duck-ink/70">
                                     Gebouwd vanuit de VO/VSO-praktijk. Klein genoeg om dit semester te starten — concreet genoeg om een schoolbesluit op te baseren.
                                 </p>
-                                <div className="mt-8 hidden sm:grid size-32 place-items-center rounded-full bg-duck-ink" aria-hidden="true">
-                                    <DuckMascot mood="cheer" className="h-24 w-24" />
+                                <div className="mt-8 hidden sm:grid size-28 place-items-center rounded-full bg-white shadow-duck-soft" aria-hidden="true">
+                                    <DuckMark className="size-20 object-contain" />
                                 </div>
                             </div>
                             <div>
