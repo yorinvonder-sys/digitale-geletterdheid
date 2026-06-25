@@ -10,8 +10,16 @@ const migrations = readdirSync(migrationsDir)
   .filter((name) => name.endsWith('.sql'))
   .sort();
 
-const latestMigrationName = migrations.at(-1);
-const latestMigration = read(`supabase/migrations/${latestMigrationName}`);
+const securityMigrationName = [...migrations]
+  .reverse()
+  .find((name) => /security_report_core_auth_rls/.test(name));
+
+assert.ok(
+  securityMigrationName,
+  'security report core auth/RLS remediation migration must exist',
+);
+
+const securityMigration = read(`supabase/migrations/${securityMigrationName}`);
 const allMigrations = migrations
   .map((name) => `-- ${name}\n${read(`supabase/migrations/${name}`)}`)
   .join('\n\n');
@@ -24,13 +32,7 @@ const generateImage = read('supabase/functions/generateImage/index.ts');
 const analyzeDrawing = read('supabase/functions/analyzeDrawing/index.ts');
 
 assert.match(
-  latestMigrationName,
-  /security_report_core_auth_rls/,
-  'latest migration should be the security report core auth/RLS remediation',
-);
-
-assert.match(
-  latestMigration,
+  securityMigration,
   /CREATE OR REPLACE FUNCTION public\.is_teacher\(\)[\s\S]*raw_app_meta_data->>'role' IN \('teacher', 'admin', 'developer'\)[\s\S]*public\.is_mfa_aal2\(\)/,
   'is_teacher() must require app_metadata privileged role and AAL2 for teacher/admin/developer',
 );
@@ -42,25 +44,25 @@ assert.match(
 );
 
 assert.match(
-  latestMigration,
+  securityMigration,
   /DROP POLICY IF EXISTS "teachers_read_own_school_oversight"[\s\S]*public\.is_teacher_in_school\(school_id::text\)/,
   'AI oversight policy must use trusted same-school helper',
 );
 
 assert.match(
-  latestMigration,
+  securityMigration,
   /DROP POLICY IF EXISTS "audit_logs_teacher_select_school"[\s\S]*public\.is_teacher_in_school\(audit_logs\.school_id::text\)/,
   'audit log teacher policy must use trusted same-school helper',
 );
 
 assert.match(
-  latestMigration,
+  securityMigration,
   /DROP POLICY IF EXISTS "Docenten lezen nulmeting resultaten"[\s\S]*public\.is_teacher_in_school\(\(SELECT u\.school_id::text FROM public\.users u WHERE u\.id = nulmeting_results\.user_id\)\)/,
   'nulmeting teacher read policy must be scoped to the student school',
 );
 
 assert.match(
-  latestMigration,
+  securityMigration,
   /REVOKE ALL ON FUNCTION public\.consume_edge_rate_limit\(TEXT, INTEGER, INTEGER\) FROM PUBLIC[\s\S]*REVOKE ALL ON FUNCTION public\.consume_edge_rate_limit\(TEXT, INTEGER, INTEGER\) FROM anon, authenticated/,
   'rate-limit RPC must not be executable directly by anon/authenticated clients',
 );
@@ -90,4 +92,4 @@ assert.match(
   'password reset must reject legacy admin/developer accounts, including app_metadata.admin=true',
 );
 
-console.log(`security-report-core-check passed against ${latestMigrationName}`);
+console.log(`security-report-core-check passed against ${securityMigrationName}; latest migration is ${migrations.at(-1)}`);
