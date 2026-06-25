@@ -52,8 +52,8 @@ export const MISSION_SPOTLIGHTS: MissionSpotlight[] = [
         periodLabel: 'Periode 2',
         missionId: 'access-control-engineer',
         title: 'Access Control Engineer',
-        kerndoelen: ['21A', '23A', '22B'],
-        summary: 'Verbindt systeembegrip, privacy en programmeerlogica in een herkenbare schoolcasus rond rollen en rechten.',
+        kerndoelen: ['21A', '23A'],
+        summary: 'Verbindt systeembegrip en privacy in een herkenbare schoolcasus rond rollen en rechten.',
         teacherSignal: 'Sterk bewijs als leerlingen onveilige regels herkennen, rechten per rol toewijzen en testscenario’s inhoudelijk kunnen uitleggen.',
     },
 ];
