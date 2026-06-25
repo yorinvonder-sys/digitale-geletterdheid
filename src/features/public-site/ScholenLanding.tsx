@@ -4,9 +4,8 @@ import { HeroEyes } from '@/components/brand/HeroEyes';
 import { AnimatedCounter } from '@/components/brand/AnimatedCounter';
 import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion';
 import { useHomepageAnalytics } from '@/hooks/useHomepageAnalytics';
-import { Target, Clock, FileText, Puzzle, PhoneCall, Map as MapIcon, Rocket, Users, CreditCard, CalendarClock, GraduationCap, Building2, ShieldCheck, FlaskConical } from 'lucide-react';
+import { Target, Clock, FileText, Puzzle, PhoneCall, Map as MapIcon, Rocket, Users, CreditCard, CalendarClock, GraduationCap, Building2, ShieldCheck, FlaskConical, Pointer } from 'lucide-react';
 import { ScholenLandingProductBento } from '@/features/public-site/ScholenLandingProductBento';
-import { AiDisclosureBadge } from '@/features/ai-chat/AiDisclosureBadge';
 import { ScholenLandingSloDomains } from '@/features/public-site/ScholenLandingSloDomains';
 import { ScholenLandingAiMissionMoment } from '@/features/public-site/ScholenLandingAiMissionMoment';
 
@@ -1586,14 +1585,6 @@ function FaqSection() {
                 <Reveal y={30} className="lg:sticky lg:top-32 lg:self-start">
                     <SectionLabel>FAQ per rol</SectionLabel>
                     <h2 className="mt-4 text-balance font-display text-[clamp(2.1rem,4.5vw,4rem)] leading-[1.05]">De vragen die in elk schoolteam op tafel komen. En dan beantwoord.</h2>
-                    <div className="mt-8 hidden lg:block">
-                        <div className="overflow-hidden rounded-[1.5rem] bg-white shadow-duck-soft">
-                            <img src="/illustrations/pain-point-teacher-shortage.webp" alt="Illustratie: docent met meer tijd door DGSkills" className="aspect-[4/3] w-full object-cover" loading="lazy" decoding="async" />
-                        </div>
-                        <div className="mt-2 flex justify-end">
-                            <AiDisclosureBadge compact tone="duck" text="AI-gegenereerd beeld" />
-                        </div>
-                    </div>
                 </Reveal>
                 <Reveal y={30}>
                     <div role="list">
@@ -1688,7 +1679,7 @@ function FooterCta({ startPilot, scrollTo }: { startPilot: () => void; scrollTo:
                     </div>
                 </div>
                 <div className="mt-8 flex flex-col gap-2 border-t border-white/10 pt-6 text-xs text-white/50 md:flex-row md:items-center md:justify-between">
-                    <p>Eenmanszaak Yorin Vonder · KvK 81819889 · info@dgskills.app</p>
+                    <p>Yorin Vonder · KvK 81819889 · info@dgskills.app</p>
                     <p>Zin om samen te werken?</p>
                 </div>
             </footer>
@@ -2052,6 +2043,12 @@ function ProductbewijsCards() {
                         </p>
                     </div>
                     <div className="mt-auto pt-6">
+                        {submittedCount === 0 && (
+                            <div className="mb-2 flex items-center justify-center gap-1.5" aria-hidden="true">
+                                <Pointer className="size-4 text-duck-ink animate-bounce motion-reduce:animate-none" strokeWidth={2.5} />
+                                <span className="text-[10px] font-extrabold uppercase tracking-[0.14em] text-duck-ink/70">Probeer het zelf — typ een prompt</span>
+                            </div>
+                        )}
                         <div className="rounded-xl bg-duck-bgLight p-3">
                             <BrowserFrame url="dgskills.app">
                                 <ScreenMissieDetail
