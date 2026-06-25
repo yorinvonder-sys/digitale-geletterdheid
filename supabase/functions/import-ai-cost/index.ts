@@ -23,8 +23,10 @@
 import { serve } from 'https://deno.land/std@0.177.0/http/server.ts';
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 
+// Server-to-server endpoint (curl negeert CORS). Geen wildcard conform supabase/CLAUDE.md;
+// vaste productie-origin volstaat — beveiliging loopt via de X-Import-Secret header.
 const CORS_HEADERS = {
-    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Origin': 'https://dgskills.app',
     'Access-Control-Allow-Methods': 'POST, OPTIONS',
     'Access-Control-Allow-Headers': 'content-type, x-import-secret',
 };
