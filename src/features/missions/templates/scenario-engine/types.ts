@@ -55,6 +55,7 @@ export interface ScenarioEngineConfig {
         source: string;
         author?: string;
         license?: string;
+        licenseUrl?: string;
         sourceUrl?: string;
     };
     rounds: ScenarioRound[];

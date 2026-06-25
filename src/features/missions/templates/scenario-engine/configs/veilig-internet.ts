@@ -7,6 +7,14 @@ const config: ScenarioEngineConfig = {
     introTitle: 'Veilig Internet',
     introDescription:
         'Online zie je dagelijks berichten, links, inlogschermen en verzoeken om informatie. Sommige zijn echt, andere proberen je te misleiden. In deze missie oefen je met veilig gedrag: phishing herkennen, sterke wachtwoorden en 2FA kiezen, slim omgaan met persoonsgegevens en rustig reageren op social engineering.',
+    missionGoal: {
+        primaryGoal: 'Ik herken online gevaren en bescherm mezelf en mijn gegevens met veilige keuzes.',
+        criteria: {
+            type: 'rounds-complete',
+            description: 'Je beoordeelt nepberichten, wachtwoorden, persoonsgegevens en de juiste stappen bij twijfel.',
+        },
+        evidence: 'Je legt uit hoe je phishing herkent, sterke wachtwoorden en 2FA kiest, en wanneer je hulp vraagt.',
+    },
     introFeatures: [
         'Herken verdachte signalen in nepberichten',
         'Kies tussen sterke en zwakke wachtwoorden en 2FA',
@@ -23,6 +31,7 @@ const config: ScenarioEngineConfig = {
         source: 'Veilig internet',
         author: 'DigitaleVaardigheden Noorderpoort',
         license: 'CC BY 3.0 NL',
+        licenseUrl: 'https://creativecommons.org/licenses/by/3.0/nl/',
         sourceUrl: 'https://maken.wikiwijs.nl/105223/',
     },
     maxScore: 100,

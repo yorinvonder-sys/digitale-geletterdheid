@@ -22,6 +22,7 @@ interface CompletionScreenProps {
         source: string;
         author?: string;
         license?: string;
+        licenseUrl?: string;
         sourceUrl?: string;
     };
 }
@@ -133,7 +134,7 @@ export const CompletionScreen: React.FC<CompletionScreenProps> = ({
 
                 {attribution && (
                     <p className="mt-4 text-[11px] leading-relaxed text-duck-ink/45 text-center" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
-                        Gebaseerd op{' '}
+                        Eigen bewerking, gebaseerd op{' '}
                         {attribution.sourceUrl ? (
                             <a
                                 href={attribution.sourceUrl}
@@ -147,7 +148,23 @@ export const CompletionScreen: React.FC<CompletionScreenProps> = ({
                             <span>de open les ‘{attribution.source}’</span>
                         )}
                         {attribution.author ? ` van ${attribution.author}` : ''}
-                        {attribution.license ? ` · ${attribution.license}` : ''}
+                        {attribution.license ? (
+                            <>
+                                {' · '}
+                                {attribution.licenseUrl ? (
+                                    <a
+                                        href={attribution.licenseUrl}
+                                        target="_blank"
+                                        rel="noreferrer"
+                                        className="underline decoration-duck-ink/25 underline-offset-2 hover:text-duck-ink/70"
+                                    >
+                                        {attribution.license}
+                                    </a>
+                                ) : (
+                                    attribution.license
+                                )}
+                            </>
+                        ) : ''}
                     </p>
                 )}
             </div>
