@@ -718,7 +718,7 @@ export const ScholenLanding: React.FC = () => {
                                 <p className="mt-5 text-pretty text-base font-semibold leading-7 text-duck-ink/70">
                                     Gebouwd vanuit de VO/VSO-praktijk. Klein genoeg om dit semester te starten — concreet genoeg om een schoolbesluit op te baseren.
                                 </p>
-                                <div className="mt-8 hidden sm:block" aria-hidden="true">
+                                <div className="mt-8 hidden sm:grid size-32 place-items-center rounded-full bg-duck-ink" aria-hidden="true">
                                     <DuckMascot mood="cheer" className="h-24 w-24" />
                                 </div>
                             </div>
