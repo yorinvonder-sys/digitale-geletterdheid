@@ -13,7 +13,7 @@
 
 **Dan het probleem benoemen:**
 
-> "Scholen moeten digitale geletterdheid aantoonbaar maken — de SLO-kerndoelen worden wettelijk verplicht (1 augustus 2027). En AI-tools die leerresultaten beoordelen vallen onder de EU AI Act als hoog-risico. De meeste scholen hebben daar geen plan voor. Dat is wat dgskills oplost."
+> "Scholen moeten digitale geletterdheid aantoonbaar maken. De SLO-kerndoelen worden verplicht. En AI-tools die leerresultaten beoordelen vallen onder de EU AI Act als hoog-risico — Art. 50-transparantie geldt vanaf augustus 2026; de actuele Commissiepagina noemt 2 december 2027 voor high-risk onderwijsverplichtingen. De meeste scholen hebben daar geen plan voor. Dat is wat dgskills oplost."
 
 **Stel een vraag:**
 > "Hoe pakken jullie dat nu aan? Hebben jullie een methode, of doen docenten het individueel?"
@@ -92,7 +92,7 @@
 |---------|-------------|
 | "Geen tijd" | "dgskills verlaagt werkdruk — AI geeft feedback, dashboard volgt alles automatisch" |
 | "Geen budget" | "Pilot is €1.500 — onder de inkoopdrempel, 100% verrekend bij jaarcontract" |
-| "Privacy/AI-zorgen" | "Data in NL (EU-datacenters), AI Act hoog-risico transparant gedocumenteerd (DPIA, risicoregister, AI-transparantie), DPIA beschikbaar" |
+| "Privacy/AI-zorgen" | "privacy-by-design dossier, EER/EU-projectregio, EU AI Act high-risk positie transparant gedocumenteerd, DPIA-ondersteuning beschikbaar. Wij zijn duidelijk over wat al staat en wat nog in voorbereiding is" |
 | "Curriculum past niet" | "Inzetbaar bij mentoruur, informatica, projectweken — modulair, niet een vast vak" |
 | "Niveauverschillen" | "Adaptief per profiel. Laat me de profiel-switch tonen" |
 

@@ -25,7 +25,7 @@ const DGSKILLS_INFO = [
 ] as const;
 
 const SUBVERWERKERS_INFO = [
-    { naam: 'Supabase', dienst: 'Database / Auth / Hosting backend', locatie: 'AWS eu-central-1, Frankfurt (EU)' },
+    { naam: 'Supabase', dienst: 'Database / Auth / Hosting backend', locatie: 'EU-projectregio / EER, contractueel en projectmatig te verifieren' },
     { naam: 'Mistral AI', dienst: 'Tekst / Vision / OCR', locatie: 'api.mistral.ai (EU, Frankrijk)' },
     { naam: 'Black Forest Labs', dienst: 'Beeldgeneratie FLUX', locatie: 'api.eu.bfl.ai (EU-endpoint)' },
     { naam: 'Vercel', dienst: 'Frontend hosting / CDN', locatie: 'EU-edge ams1' },

@@ -32,8 +32,7 @@ export const AiTransparency: React.FC = () => {
                                 <Sparkles size={20} /> Onze AI-Belofte aan het Onderwijs
                             </h2>
                             <p className="text-duck-ink text-sm mb-0">
-                                Leerlingdata die wordt ingevoerd in onze AI-functies wordt <strong>nooit</strong> gebruikt om
-                                AI-modellen van derden te trainen. Alle dataverwerking vindt plaats binnen beveiligde API-omgevingen in de EU.
+                                Leerlinginput wordt server-side verwerkt en is ingericht om niet voor provider-modeltraining te worden gebruikt waar dit door de toepasselijke providerafspraken en instellingen wordt gedekt. Verwerking volgt de school-DPA en subverwerkersafspraken.
                             </p>
                         </div>
 
@@ -62,7 +61,7 @@ export const AiTransparency: React.FC = () => {
                         <ul>
                             <li><strong>Filtering:</strong> Wij maken gebruik van strikte enterprise safety-filters op input en output.</li>
                             <li><strong>Menselijk Toezicht:</strong> De AI geeft nooit formele cijfers. De docent heeft altijd het laatste woord en volledig inzicht in alle AI-interacties via het dashboard.</li>
-                            <li><strong>Kwaliteitsbewaking:</strong> Wij loggen AI-interacties voor kwaliteitscontrole, waarbij deze gegevens na 90 dagen worden verwijderd.</li>
+                            <li><strong>Kwaliteitsbewaking:</strong> Wij loggen relevante AI-interactiemetadata voor veiligheid, traceerbaarheid en kwaliteitscontrole volgens de gepubliceerde bewaartermijnen.</li>
                         </ul>
 
                         <h2 className="text-xl font-bold mt-8 mb-4">4. Privacy-by-Design en Gegevensretentie</h2>
@@ -70,7 +69,7 @@ export const AiTransparency: React.FC = () => {
                             Bij het aanroepen van AI-API's sturen wij <strong>geen</strong> direct herleidbare persoonsgegevens zoals namen of e-mailadressen mee.
                         </p>
                         <p>
-                            <strong>Belangrijk over retentie:</strong> AI-verzoeken lopen server-side via Supabase Edge Functions. Provider-keys, ruwe promptlogs en tijdelijke download-URL's worden niet naar de browser gestuurd. Leerlingdata wordt niet gebruikt voor training van modellen van derden; retentie volgt de verwerkersafspraken met Mistral AI, Black Forest Labs en DGSkills.
+                            <strong>Belangrijk over retentie:</strong> AI-verzoeken lopen server-side via Supabase Edge Functions. Provider-keys, ruwe promptlogs en tijdelijke download-URL's worden niet naar de browser gestuurd. Gebruik voor provider-modeltraining is uitgesloten waar dit door de toepasselijke providerafspraken en instellingen wordt gedekt; retentie volgt de verwerkersafspraken met Mistral AI, Black Forest Labs en DGSkills.
                         </p>
 
                         <h2 className="text-xl font-bold mt-8 mb-4">5. High-Risk Classificatie (AI Act Art. 6)</h2>
@@ -83,13 +82,13 @@ export const AiTransparency: React.FC = () => {
                                 wanneer zij invloed kunnen hebben op het leerproces of de beoordeling van leerlingen.
                             </p>
                             <p className="text-duck-ink text-sm mb-0">
-                                DGSkills erkent deze classificatie en voldoet aan de bijbehorende verplichtingen:
+                                DGSkills erkent deze classificatie en werkt met de volgende maatregelen toe naar aantoonbare naleving:
                             </p>
                             <ul className="text-duck-ink text-sm mt-2 space-y-1">
-                                <li>• <strong>Menselijk toezicht:</strong> De docent heeft altijd het laatste woord via het leerkrachtdashboard.</li>
+                                <li>• <strong>Menselijk toezicht:</strong> De docent blijft eindverantwoordelijk en krijgt functies om AI-output te controleren en bij te sturen.</li>
                                 <li>• <strong>Traceerbaarheid:</strong> Alle AI-interacties worden gelogd in een audit trail (Art. 12).</li>
                                 <li>• <strong>Risicobeheer:</strong> Content-filtering, safety-filters en output-validatie zijn actief.</li>
-                                <li>• <strong>Data governance:</strong> Geen training op leerlingdata, minimale dataverwerking.</li>
+                                <li>• <strong>Data governance:</strong> Minimale dataverwerking; providertraining uitgesloten waar dit door providerafspraken en instellingen wordt gedekt.</li>
                             </ul>
                         </div>
 
@@ -116,7 +115,7 @@ export const AiTransparency: React.FC = () => {
                             <Info size={20} className="text-duck-ink/60 shrink-0 mt-1" />
                             <p className="text-xs text-duck-ink/60 mb-0">
                                 Deze verklaring is opgesteld om te voldoen aan de transparantieverplichtingen voor AI-systemen in het onderwijs,
-                                zoals vastgelegd in de Europese AI Verordening (AI Act), inclusief de hoog-risico vereisten (Art. 6, Annex III)
+                                zoals vastgelegd in de Europese AI Verordening (AI Act), inclusief high-risk classificatie (Art. 6, Annex III)
                                 en transparantieverplichtingen (Art. 50). Laatste update: juni 2026.
                             </p>
                         </div>

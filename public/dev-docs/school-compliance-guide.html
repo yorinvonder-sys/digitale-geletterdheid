@@ -116,7 +116,7 @@
 
         <span class="badge">Privacy & Compliance Dossier v1.3</span>
         <h1>Digitale Geletterdheid & Wetgeving</h1>
-        <p><strong>Status:</strong> Ontworpen voor AVG & EU AI Act Compliance</p>
+        <p><strong>Status:</strong> Privacy-by-design dossier voor AVG, ePrivacy en EU AI Act-review door school/FG</p>
 
         <div class="info-box">
             <p>Dit dossier is opgesteld voor directies, Functionarissen Gegevensbescherming (FG) en ICT-managers in het onderwijs. Het biedt een gedetailleerd overzicht van de privacy-waarborgen binnen DGSkills en ondersteunt de school bij de verplichte documentatie (DPA/DPIA).</p>
@@ -131,34 +131,26 @@
         <h3>Belangrijkste Maatregelen:</h3>
         <ul class="checklist">
             <li><strong>Data-minimalisatie:</strong> Wij vragen geen BSN, woonadressen of medische gegevens. Alleen functionele accountdata en voortgangsresultaten.</li>
-            <li><strong>Datalocatie:</strong> Alle gegevens (database, authenticatie, AI-API) worden opgeslagen in de EU (Supabase/AWS regio <code>eu-west-1</code>, Ierland).</li>
+            <li><strong>Datalocatie:</strong> Opslag en verwerking worden ingericht binnen de EER/EU-projectregio waar contractueel en projectmatig vastgelegd. Exacte regio's worden per school-DPA en subverwerkerslijst bevestigd.</li>
             <li><strong>Beveiliging:</strong> Enterprise-grade encryptie (AES-256) en strikt gescheiden data-omgevingen per school/klas via Supabase Row Level Security (RLS).</li>
-            <li><strong>Audit Logs & Retentie:</strong> Beveiligingslogs worden 90 dagen bewaard. Accountdata wordt na beëindiging van de overeenkomst binnen 30 dagen definitief gewist.</li>
+            <li><strong>Audit Logs & Retentie:</strong> Bewaartermijnen verschillen per datacategorie: operationele activiteit maximaal 1 jaar, audit/compliance-logs maximaal 3 jaar, en verwijdering/back-ups volgens DPA-afspraken.</li>
             <li><strong>Minderjarigen:</strong> In privacydocumentatie is expliciet vastgelegd hoe de AVG/UAVG-context voor leerlingen onder 16 wordt toegepast binnen de schoolverantwoordelijkheid.</li>
             <li><strong>Rechten betrokkenen:</strong> In-app ondersteuning voor inzage/export, verwijdering en verwerkingsbeperking (AVG art. 18).</li>
         </ul>
 
-        <h2>2. EU AI Act: Hoog-risico classificatie</h2>
-        <p>DGSkills maakt gebruik van 'ondersteunende AI' (Large Language Models via Mistral AI). Onder de EU AI Act (Verordening (EU) 2024/1689) is DGSkills een <strong>hoog-risico AI-systeem</strong> conform <strong>Annex III, punt 3(b)</strong> (AI bestemd voor de evaluatie van leerresultaten, ook wanneer die het leerproces stuurt). Dit betekent dat — naast de transparantieverplichting (Art. 50) — de hoog-risico-eisen van toepassing zijn: risicobeheer (Art. 9), datagovernance (Art. 10), technische documentatie (Art. 11), logging (Art. 12), transparantie naar de school (Art. 13), menselijk toezicht (Art. 14), nauwkeurigheid en cyberveiligheid (Art. 15), aanbiedersverplichtingen (Art. 16-17), verplichtingen voor de school als gebruiksverantwoordelijke (Art. 26) en conformiteitsbeoordeling, CE-markering en EU-registratie (Art. 43-49). DGSkills erkent deze classificatie en bevindt zich in een actief compliancetraject. AI-transparantie naar leerling en docent (Art. 50) en menselijk toezicht via een gelogde docent-override (Art. 14) zijn geïmplementeerd. DGSkills claimt (nog) géén volledige conformiteit met de EU AI Act.</p>
+        <h2>2. EU AI Act: Veilig & Transparant</h2>
+        <p>DGSkills behandelt school-facing AI als <strong>hoog-risico onderwijs-AI</strong> waar AI-output leerresultaten evalueert of het leerproces stuurt (EU AI Act Annex III, punt 3(b)). Art. 50-transparantie geldt aanvullend.</p>
 
         <h3>Garanties conform de AI Act:</h3>
         <ul class="checklist">
-            <li><strong>Zero-Training Guarantee:</strong> Invoer van leerlingen wordt <u>niet</u> gebruikt om de modellen van derden (Mistral AI / Black Forest Labs) te trainen. De data blijft binnen de beveiligde API-context van DGSkills.</li>
-            <li><strong>Herkenbaarheid:</strong> Elke AI-interactie is duidelijk gemarkeerd met de "AI Mentor" badge.</li>
+            <li><strong>Modeltraining:</strong> Leerlinginput wordt server-side verwerkt en is ingericht om niet voor provider-modeltraining te worden gebruikt waar dit door de toepasselijke providerafspraken en instellingen wordt gedekt.</li>
+            <li><strong>Herkenbaarheid:</strong> Elke AI-interactie is duidelijk gemarkeerd met het "AI Coach" label.</li>
             <li><strong>Human-in-the-loop:</strong> De AI heeft een adviserende rol. De docent behoudt altijd de regie over de beoordeling en heeft volledig inzicht in de AI-leerling interacties.</li>
-            <li><strong>Safety Filtering:</strong> Actieve filtering op schadelijke content via Mistral's safe_prompt-guardrail en een server-side output-filter voor minderjarigen.</li>
+            <li><strong>Safety Filtering:</strong> Actieve filtering op schadelijke content via enterprise-grade safety settings.</li>
             <li><strong>Dataminimalisatie in AI-flow:</strong> Alleen noodzakelijke context wordt meegestuurd; geen marketingprofilering.</li>
         </ul>
 
-        <h2>3. ePrivacy & Security Hardening</h2>
-        <ul class="checklist">
-            <li><strong>Consent Enforcement:</strong> Niet-essentiële analytics wordt technisch pas uitgevoerd na expliciete toestemming.</li>
-            <li><strong>First-party analytics:</strong> Geen Google Analytics; alleen interne geaggregeerde klikstatistieken.</li>
-            <li><strong>CSP-hardening:</strong> Inline scripts verwijderd uit de hoofdpagina; `script-src` zonder `unsafe-inline`.</li>
-            <li><strong>Password reset hardening:</strong> API retourneert geen plaintext wachtwoorden meer.</li>
-        </ul>
-
-        <h2>4. Documentatie voor Inkoop & Toezicht</h2>
+        <h2>3. Documentatie voor Inkoop & Toezicht</h2>
         <table>
             <thead>
                 <tr>
@@ -180,23 +172,23 @@
                 </tr>
                 <tr>
                     <td>Subverwerker Overzicht</td>
-                    <td>Actueel (Supabase, Google AI)</td>
+                    <td>Actueel te verifiëren (Supabase, Mistral AI, Black Forest Labs, overige actieve subprocessors)</td>
                     <td>Zie Privacyverklaring</td>
                 </tr>
             </tbody>
         </table>
 
-        <h2>5. Stappenplan voor de School</h2>
+        <h2>4. Stappenplan voor de School</h2>
         <p>Om de implementatie juridisch correct af te ronden, adviseren wij de school de volgende stappen:</p>
         <ul class="checklist">
             <li><strong>FG Check:</strong> Leg dit dossier voor aan uw Functionaris Gegevensbescherming.</li>
             <li><strong>DPA Tekenen:</strong> Vul het Model Verwerkersovereenkomst aan met de gegevens van uw bestuur en stuur dit naar compliance@dgskills.app.</li>
             <li><strong>Register:</strong> Neem DGSkills op in het verwerkingsregister van de school.</li>
-            <li><strong>DPIA:</strong> Gebruik ons support-document om de interne DPIA ('light') in te vullen.</li>
+            <li><strong>DPIA:</strong> Gebruik ons support-document als input voor een volledige school-DPIA en FG/DPO-review.</li>
         </ul>
 
         <div class="info-box" style="border-left: 4px solid var(--secondary);">
-            <p><strong>Eindoordeel:</strong> DGSkills biedt aantoonbaar versterkte technische en organisatorische maatregelen voor AVG, ePrivacy en AI-transparantie in een onderwijssetting. Het implementatierisico voor de school is daardoor laag en goed beheersbaar.</p>
+            <p><strong>Eindoordeel:</strong> DGSkills biedt privacy-by-design en AI-transparantiemaatregelen die scholen ondersteunen bij AVG, ePrivacy en EU AI Act-verplichtingen. Definitieve inzet vereist DPA, school-DPIA, subprocessorcheck en FG/DPO-review.</p>
         </div>
 
         <footer>

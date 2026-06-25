@@ -1,9 +1,9 @@
 /**
  * restrictProcessing — AVG Art. 18 (Right to Restriction of Processing)
  *
- * Marks the user's account so that their data is retained but no longer
- * actively processed (e.g. excluded from analytics, AI training, exports
- * to third parties). Creates an audit trail entry and notifies the school.
+ * Registers a processing-restriction request and sets the user-level
+ * processing_restricted flag where available. Downstream services must enforce
+ * this flag before stronger public claims are made.
  *
  * Implementation:
  *  - Sets users.processing_restricted = true + restricted_at timestamp
@@ -68,8 +68,6 @@ serve(async (req: Request) => {
     const restrictedAt = new Date().toISOString();
 
     // Mark the account as restricted in the users table
-    // Note: if processing_restricted column doesn't exist yet, the update
-    // will silently succeed (Supabase ignores unknown columns in upsert).
     // Run migration 20260222_add_processing_restriction.sql to add the column.
     const { error: updateError } = await supabase
       .from('users')

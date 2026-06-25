@@ -240,7 +240,7 @@ export const SLOClassOverview: React.FC<SLOClassOverviewProps> = ({ students, sc
                 return totals;
             };
 
-            // Per-student cumulative counters (within the 90-day retention window).
+            // Per-student cumulative counters within the configured retention policy.
             const cumByUid = new Map<string, Record<string, number>>();
             const seenMissionsByUid = new Map<string, Set<string>>();
 

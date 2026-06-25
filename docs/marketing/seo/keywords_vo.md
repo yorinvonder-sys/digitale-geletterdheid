@@ -24,7 +24,7 @@
 
 16. ai geletterdheid school verplicht 2025
 17. eu ai act onderwijs compliance
-18. avg compliant ai tool onderwijs
+18. avg veilige ai tool onderwijs
 19. dpia digitale geletterdheid voortgezet onderwijs
 20. dpa model 4.0 onderwijs dgskills
 21. privacy digitale geletterdheid platform

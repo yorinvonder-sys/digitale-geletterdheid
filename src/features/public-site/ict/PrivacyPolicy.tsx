@@ -96,11 +96,11 @@ export const PrivacyPolicy: React.FC = () => {
                                     <tr className="border-t">
                                         <td className="px-4 py-2 italic text-duck-ink font-medium">Supabase (AWS)</td>
                                         <td className="px-4 py-2">Database, Authenticatie, Storage</td>
-                                        <td className="px-4 py-2 font-medium">EER (Ierland)</td>
+                                        <td className="px-4 py-2 font-medium">EER/EU-projectregio</td>
                                     </tr>
                                     <tr className="border-t">
                                         <td className="px-4 py-2 italic text-duck-ink font-medium">Mistral AI</td>
-                                        <td className="px-4 py-2">Tekst, vision en OCR via server-side Edge Functions, geen training op klantdata</td>
+                                        <td className="px-4 py-2">Tekst, vision en OCR via server-side Edge Functions; geen provider-modeltraining waar contractueel en technisch gedekt</td>
                                         <td className="px-4 py-2 font-medium">EER/EU API-verwerking</td>
                                     </tr>
                                     <tr className="border-t">
@@ -114,8 +114,7 @@ export const PrivacyPolicy: React.FC = () => {
 
                         <h2 className="text-xl font-bold mt-8 mb-4">5. Datalocatie en Beveiliging</h2>
                         <p>
-                            Al onze data wordt opgeslagen binnen de Europese Economische Ruimte (EER). Wij maken gebruik van 
-                            Supabase (AWS region: <code>eu-west-1</code>, Ierland). Onze beveiligingsmaatregelen omvatten:
+                            Dataopslag en verwerking worden ingericht binnen de Europese Economische Ruimte (EER) of een EU-projectregio zoals contractueel en projectmatig vastgelegd. Onze beveiligingsmaatregelen omvatten:
                         </p>
                         <ul>
                             <li>Encryptie van data in rust (AES-256) en in transport (TLS 1.2+).</li>
@@ -126,15 +125,16 @@ export const PrivacyPolicy: React.FC = () => {
                         <p>
                             Voor AI-ondersteuning gebruiken wij Mistral AI voor tekst, vision en OCR, en Black Forest Labs FLUX voor image generation.
                             Alle provider-aanroepen lopen server-side via Supabase Edge Functions. API keys, ruwe auditcontent en tijdelijke image delivery URL's
-                            worden niet naar de browser gestuurd. Wij gebruiken deze gegevens niet voor marketingprofilering of modeltraining.
+                            worden niet naar de browser gestuurd. Wij gebruiken deze gegevens niet voor marketingprofilering. Gebruik voor provider-modeltraining is uitgesloten waar dit door de toepasselijke providerafspraken en instellingen wordt gedekt.
                             Gegevensdeling en retentie volgen de verwerkersafspraken en de instructies van de school.
                         </p>
 
                         <h2 className="text-xl font-bold mt-8 mb-4">6. Bewaartermijnen</h2>
                         <ul>
                             <li><strong>Actieve accounts:</strong> Totdat de school de licentie beëindigt of het account verwijdert.</li>
-                            <li><strong>Activiteitslogs:</strong> Maximaal 90 dagen voor audit-doeleinden.</li>
-                            <li><strong>Verwijdering:</strong> Na opzegging door de school worden alle gegevens binnen 30 dagen definitief gewist uit back-ups.</li>
+                            <li><strong>Activiteitsdata:</strong> maximaal 1 jaar voor dashboard, ondersteuning en misbruikdetectie.</li>
+                            <li><strong>Audit/compliance-logs:</strong> maximaal 3 jaar voor beveiliging, verantwoording en wettelijke onderbouwing.</li>
+                            <li><strong>Verwijdering:</strong> Na opzegging door de school worden hoofdgegevens op verzoek binnen 30 dagen verwijderd; back-ups, audit/compliance-logs en wettelijke of contractuele bewaartermijnen volgen de DPA en schoolafspraken.</li>
                         </ul>
 
                         <h2 className="text-xl font-bold mt-8 mb-4">7. Jouw Rechten</h2>
@@ -143,7 +143,7 @@ export const PrivacyPolicy: React.FC = () => {
                         </p>
                         <ul>
                             <li><strong>Inzage & Dataportabiliteit:</strong> Direct mogelijk via profielinstellingen.</li>
-                            <li><strong>Verwijdering (Vergetelheid):</strong> Direct mogelijk via profielinstellingen.</li>
+                            <li><strong>Verwijdering:</strong> self-service voor de hoofdgegevens; back-ups en contractuele termijnen volgen de DPA en schoolafspraken.</li>
                             <li><strong>Rectificatie:</strong> De mogelijkheid om onjuiste gegevens te corrigeren.</li>
                             <li><strong>Beperking:</strong> Het recht om de verwerking tijdelijk te beperken (aan te vragen via privacy-instellingen).</li>
                             <li><strong>Bezwaar (Art. 21 AVG):</strong> Het recht om bezwaar te maken tegen verwerking op grond van gerechtvaardigd belang of voor directe marketing.</li>

@@ -1,5 +1,7 @@
 # DGSkills.app - Compleet Lanceringsrapport
 
+> **Historische status 25-06-2026:** Dit lanceringsrapport bevat oudere AI-provider- en deadlineclaims. Gebruik het niet als actuele school-facing complianceclaim; raadpleeg `docs/compliance/legal-claim-source-of-truth.md` en de actuele compliance-documenten.
+
 **Datum:** 23 februari 2026
 **Auteur:** Claude (AI-assistent) in opdracht van oprichter
 **Versie:** 1.0
@@ -12,7 +14,7 @@
 
 #### Wat al goed is geregeld (GROEN)
 
-- ~~API key (Gemini) staat server-side in de Edge Function, niet in de frontend~~ **UPDATE:** AI-verwerking loopt via Mistral AI (tekst, vision en OCR) en Black Forest Labs (beeldgeneratie), met server-side API-key (Supabase secret). Endpoint tekst: api.mistral.ai; beeld: api.eu.bfl.ai (EU-endpoint).
+- **Actuele providerstatus (25 jun 2026):** School-facing AI-paden gebruiken Mistral AI en Black Forest Labs via server-side Supabase Edge Functions. Eerdere Gemini/Vertex-claims zijn historisch.
 - JWT authenticatie op alle Edge Functions (chat, deleteMyAccount, exportMyData, restrictProcessing)
 - Prompt injection filtering (OWASP LLM01:2025) met defense-in-depth (client + server)
 - RLS policies op de `users` tabel met `is_teacher()` helper
@@ -50,9 +52,9 @@
 
 #### Over de EU AI Act
 
-> **CORRECTIE (23 feb 2026):** De onderstaande oorspronkelijke classificatie als "beperkt risico" is **onjuist**. DGSkills is geclassificeerd als **HIGH RISK -- Annex III punt 3(b)** van de EU AI Act, omdat de AI STEP_COMPLETE markers genereert die leerresultaten evalueren en het leerproces sturen. Zie het conformiteitsbeoordelingsplan en het juridisch rapport (09-juridisch-rapport-compleet.md) voor de volledige analyse. De oorspronkelijke deadline voor hoog-risico-verplichtingen (2 augustus 2026) verschuift via de Digital Omnibus (voorlopig EU-akkoord, nog niet formeel gepubliceerd) naar verwachting richting **2 december 2027**; urgentie blijft gebaseerd op de wettelijke SLO-kerndoelen (1 augustus 2027).
+> **CORRECTIE (25 jun 2026):** De onderstaande oorspronkelijke classificatie als beperkt risico was **onjuist**. DGSkills moet als **HIGH RISK -- Annex III punt 3(b)** worden behandeld waar AI STEP_COMPLETE markers of andere AI-output leerresultaten evalueren of het leerproces sturen. Volgens actuele Europese Commissie-informatie gelden de belangrijkste high-risk verplichtingen voor Annex III onderwijs-AI vanaf **2 december 2027**; Art. 4 AI-geletterdheid geldt sinds 2 februari 2025 en Art. 50 transparantie vanaf augustus 2026.
 
-~~Jullie vallen onder "beperkt risico" (Art. 50). Dit betekent transparantieplicht: gebruikers moeten weten dat ze met AI praten. Dit is al geregeld in het product. Je bent NIET high-risk zolang de AI geen beslissingen neemt over leerlingen (beoordeling/selectie).~~ De docent blijft eindverantwoordelijk - dat is goed.
+~~Oude tekst: beperkte-risico-classificatie.~~ Actuele lijn: behandel DGSkills als hoog-risico onderwijs-AI wanneer AI leerresultaten evalueert of het leerproces stuurt; de docent blijft eindverantwoordelijk.
 
 #### Over minderjarigen (<16 jaar)
 
@@ -167,7 +169,7 @@ Pricing is competitief en goed doordacht.
 
 - **Supabase**: Free tier of Pro ($25/maand)
 - **Vercel**: Free tier of Pro ($20/maand)
-- **Mistral AI (tekst, vision en OCR) en Black Forest Labs (beeldgeneratie)**: Pay-per-use. Mistral via api.mistral.ai; Black Forest Labs (FLUX) via api.eu.bfl.ai (EU-endpoint).
+- **AI-providers:** Mistral AI voor tekst/chat/feedback/vision/OCR en Black Forest Labs FLUX voor beeldgeneratie. Contracten, regio's, retentie en subprocessors per provider verifiëren.
 - **Totaal bij 10 scholen**: ~$50-100/maand infra
 - **Totaal bij 100 scholen**: ~$200-500/maand infra
 - **Brutomarge**: 95%+ bij schaal

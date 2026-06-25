@@ -161,9 +161,26 @@ CREATE TABLE IF NOT EXISTS public.xp_abuse_logs (
   created_at timestamptz NOT NULL DEFAULT now()
 );
 
+CREATE TABLE IF NOT EXISTS public.user_blocks (
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  blocker_id uuid NOT NULL REFERENCES public.users(id) ON DELETE CASCADE,
+  blocked_id uuid NOT NULL REFERENCES public.users(id) ON DELETE CASCADE,
+  blocked_name text,
+  reason text,
+  created_at timestamptz NOT NULL DEFAULT now(),
+  UNIQUE (blocker_id, blocked_id)
+);
+
 ALTER TABLE public.user_blocks
   ADD COLUMN IF NOT EXISTS blocked_name text,
   ADD COLUMN IF NOT EXISTS reason text;
+
+CREATE TABLE IF NOT EXISTS public.class_settings (
+  id text PRIMARY KEY,
+  school_id text,
+  data jsonb DEFAULT '{}'::jsonb,
+  updated_at timestamptz NOT NULL DEFAULT now()
+);
 
 ALTER TABLE public.class_settings
   ADD COLUMN IF NOT EXISTS class_id text,
@@ -174,6 +191,20 @@ ALTER TABLE public.class_settings
 CREATE UNIQUE INDEX IF NOT EXISTS class_settings_class_id_key
   ON public.class_settings(class_id)
   WHERE class_id IS NOT NULL;
+
+CREATE TABLE IF NOT EXISTS public.teacher_messages (
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  school_id text,
+  target_type text NOT NULL,
+  target_id text NOT NULL,
+  sender_id uuid REFERENCES public.users(id) ON DELETE SET NULL,
+  sender_name text,
+  content text,
+  text text,
+  read boolean NOT NULL DEFAULT false,
+  created_at timestamptz NOT NULL DEFAULT now(),
+  timestamp timestamptz NOT NULL DEFAULT now()
+);
 
 ALTER TABLE public.teacher_messages
   ADD COLUMN IF NOT EXISTS sender_name text,
@@ -213,6 +244,14 @@ WHERE read = true
   AND target_id ~* '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$'
 ON CONFLICT (message_id, user_id) DO NOTHING;
 
+CREATE TABLE IF NOT EXISTS public.gamification_events (
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  school_id text,
+  active boolean NOT NULL DEFAULT true,
+  data jsonb DEFAULT '{}'::jsonb,
+  created_at timestamptz NOT NULL DEFAULT now()
+);
+
 ALTER TABLE public.gamification_events
   ADD COLUMN IF NOT EXISTS type text,
   ADD COLUMN IF NOT EXISTS name text,
@@ -220,6 +259,13 @@ ALTER TABLE public.gamification_events
   ADD COLUMN IF NOT EXISTS target_class text,
   ADD COLUMN IF NOT EXISTS start_time timestamptz,
   ADD COLUMN IF NOT EXISTS end_time timestamptz;
+
+CREATE TABLE IF NOT EXISTS public.highlighted_work (
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  school_id text,
+  data jsonb DEFAULT '{}'::jsonb,
+  timestamp timestamptz NOT NULL DEFAULT now()
+);
 
 ALTER TABLE public.highlighted_work
   ADD COLUMN IF NOT EXISTS uid uuid REFERENCES public.users(id) ON DELETE CASCADE,
@@ -229,11 +275,26 @@ ALTER TABLE public.highlighted_work
   ADD COLUMN IF NOT EXISTS content text,
   ADD COLUMN IF NOT EXISTS teacher_note text;
 
+CREATE TABLE IF NOT EXISTS public.teacher_notes (
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  school_id text,
+  data jsonb DEFAULT '{}'::jsonb,
+  created_at timestamptz NOT NULL DEFAULT now(),
+  updated_at timestamptz NOT NULL DEFAULT now()
+);
+
 ALTER TABLE public.teacher_notes
   ADD COLUMN IF NOT EXISTS teacher_uid uuid REFERENCES public.users(id) ON DELETE CASCADE,
   ADD COLUMN IF NOT EXISTS student_uid uuid REFERENCES public.users(id) ON DELETE CASCADE,
   ADD COLUMN IF NOT EXISTS text text,
   ADD COLUMN IF NOT EXISTS category text;
+
+CREATE TABLE IF NOT EXISTS public.student_groups (
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  school_id text,
+  data jsonb DEFAULT '{}'::jsonb,
+  created_at timestamptz NOT NULL DEFAULT now()
+);
 
 ALTER TABLE public.student_groups
   ADD COLUMN IF NOT EXISTS name text,
