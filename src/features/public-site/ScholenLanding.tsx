@@ -6,6 +6,8 @@ import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion';
 import { useHomepageAnalytics } from '@/hooks/useHomepageAnalytics';
 import { DuckMascot } from '@/components/brand/DuckMascot';
 import { Target, Clock, FileText, Puzzle, PhoneCall, Map as MapIcon, Rocket, Users, CreditCard, CalendarClock, GraduationCap, Building2, ShieldCheck, FlaskConical } from 'lucide-react';
+import { ScholenLandingProductBento } from '@/features/public-site/ScholenLandingProductBento';
+import { AiDisclosureBadge } from '@/features/ai-chat/AiDisclosureBadge';
 
 type NavItem = { label: string; target: string };
 type SkillTone = 'paper' | 'acid';
@@ -584,6 +586,8 @@ export const ScholenLanding: React.FC = () => {
                         </div>
                     </Reveal>
                 </section>
+
+                <ScholenLandingProductBento />
 
                 <SkillMarquee reduceMotion={reduceMotion} />
 
@@ -1583,6 +1587,14 @@ function FaqSection() {
                 <Reveal y={30} className="lg:sticky lg:top-32 lg:self-start">
                     <SectionLabel>FAQ per rol</SectionLabel>
                     <h2 className="mt-4 text-balance font-display text-[clamp(2.1rem,4.5vw,4rem)] leading-[1.05]">De vragen die in elk schoolteam op tafel komen. En dan beantwoord.</h2>
+                    <div className="mt-8 hidden lg:block">
+                        <div className="overflow-hidden rounded-[1.5rem] bg-white shadow-duck-soft">
+                            <img src="/illustrations/pain-point-teacher-shortage.webp" alt="Illustratie: docent met meer tijd door DGSkills" className="aspect-[4/3] w-full object-cover" loading="lazy" decoding="async" />
+                        </div>
+                        <div className="mt-2 flex justify-end">
+                            <AiDisclosureBadge compact tone="duck" text="AI-gegenereerd beeld" />
+                        </div>
+                    </div>
                 </Reveal>
                 <Reveal y={30}>
                     <div role="list">
