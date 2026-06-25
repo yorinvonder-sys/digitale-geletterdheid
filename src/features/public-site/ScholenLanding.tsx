@@ -1,4 +1,5 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { HeroDashboardPreview } from '@/features/public-site/demo/HeroDashboardPreview';
 import { DuckMark } from '@/components/brand/DuckMark';
 import { HeroEyes } from '@/components/brand/HeroEyes';
 import { AnimatedCounter } from '@/components/brand/AnimatedCounter';
@@ -327,12 +328,39 @@ function trackLandingEvent(event: string, data?: Record<string, unknown>) {
 
 export const ScholenLanding: React.FC = () => {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+    const [showLoader, setShowLoader] = useState(false);
+    const [introReady, setIntroReady] = useState(false);
     const [activeSlo, setActiveSlo] = useState<string | null>(null);
     const reduceMotion = usePrefersReducedMotion();
     const { hidden: headerHidden, scrolled: headerScrolled } = useHeaderChrome(mobileMenuOpen);
 
     useHomepageGsapEffects(reduceMotion);
     useHomepageAnalytics();
+
+    useEffect(() => {
+        let seen = true;
+        try {
+            seen = sessionStorage.getItem('dg-intro-seen') === '1';
+        } catch {
+            seen = true;
+        }
+        const prefersReduce = typeof window.matchMedia === 'function' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (seen || prefersReduce) {
+            setIntroReady(true);
+            return;
+        }
+        try {
+            sessionStorage.setItem('dg-intro-seen', '1');
+        } catch {
+            // sessionStorage onbeschikbaar — intro toont dan vaker; acceptabel.
+        }
+        setShowLoader(true);
+    }, []);
+
+    const finishIntro = useCallback(() => {
+        setShowLoader(false);
+        setIntroReady(true);
+    }, []);
 
     useEffect(() => {
         const originalTitle = document.title;
@@ -401,6 +429,7 @@ export const ScholenLanding: React.FC = () => {
 
     return (
         <div className="min-h-screen overflow-x-clip bg-duck-bg font-sans text-duck-ink antialiased selection:bg-duck-acid selection:text-duck-ink">
+            {showLoader && <PageLoader onDone={finishIntro} />}
             <header
                 className={`fixed inset-x-0 top-0 z-50 transition-[transform,background-color,box-shadow] duration-500 ${headerHidden ? '-translate-y-full' : 'translate-y-0'} ${mobileMenuOpen ? 'bg-duck-acid' : headerScrolled ? 'bg-duck-bg/95 shadow-[0_1px_0_rgba(32,32,35,0.10)] backdrop-blur-md' : 'bg-transparent'}`}
             >
@@ -477,14 +506,14 @@ export const ScholenLanding: React.FC = () => {
             <main className="relative">
                 <section data-home-hero data-section="hero" className="relative overflow-hidden px-5 pb-16 pt-32 md:px-10 md:pt-40">
                     <div className="relative z-10 mx-auto max-w-5xl text-center">
-                        <p data-duck-anchor="hero-badge" className="inline-flex items-center gap-2 rounded-full border border-duck-ink bg-duck-acid px-3 py-2 text-[9px] sm:px-4 sm:text-xs font-extrabold uppercase tracking-[0.16em] opacity-0 motion-reduce:animate-none motion-reduce:opacity-100 mt-6 md:mt-8 animate-fade-in-up">
+                        <p data-duck-anchor="hero-badge" className={`inline-flex items-center gap-2 rounded-full border border-duck-ink bg-duck-acid px-4 py-2 text-xs font-extrabold uppercase tracking-[0.16em] opacity-0 motion-reduce:animate-none motion-reduce:opacity-100 mt-6 md:mt-8 ${introReady ? 'animate-fade-in-up' : ''}`}>
                             Digitale geletterdheid voor VO &amp; VSO
                         </p>
-                        <HeroHeadline />
-                        <p className="mx-auto mt-7 max-w-2xl text-pretty text-base font-semibold leading-7 text-duck-ink/70 sm:text-lg sm:leading-8 opacity-0 motion-reduce:animate-none motion-reduce:opacity-100 animate-fade-in-up-delay-2">
+                        <HeroHeadline introReady={introReady} />
+                        <p className={`mx-auto mt-7 max-w-2xl text-pretty text-base font-semibold leading-7 text-duck-ink/70 sm:text-lg sm:leading-8 opacity-0 motion-reduce:animate-none motion-reduce:opacity-100 ${introReady ? 'animate-fade-in-up-delay-2' : ''}`}>
                             Kant-en-klare AI-missies voor VO en VSO, gekoppeld aan de SLO-kerndoelen. Leerlingen werken zelfstandig, jij volgt de voortgang. De spreadsheet mag met pensioen.
                         </p>
-                        <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row opacity-0 motion-reduce:animate-none motion-reduce:opacity-100 animate-fade-in-up-delay-3">
+                        <div className={`mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row opacity-0 motion-reduce:animate-none motion-reduce:opacity-100 ${introReady ? 'animate-fade-in-up-delay-3' : ''}`}>
                             <a
                                 href="/pilot"
                                 onClick={startPilot}
@@ -497,11 +526,18 @@ export const ScholenLanding: React.FC = () => {
                                 onClick={() => { window.history.pushState({}, '', '/leerlingdemo'); window.dispatchEvent(new Event('pathchange')); }}
                                 className="group inline-flex min-h-[54px] w-full items-center justify-center gap-3 rounded-full border border-duck-ink/20 bg-duck-bgLight px-8 py-3.5 text-base font-extrabold text-duck-ink transition-all duration-300 hover:-translate-y-0.5 hover:border-duck-ink sm:w-auto focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-ink focus-visible:ring-offset-2"
                             >
-                                Bekijk de leerlingdemo
+                                Leerlingdemo
+                                <ArrowRightIcon />
+                            </button>
+                            <button
+                                onClick={() => { window.history.pushState({}, '', '/docentdemo'); window.dispatchEvent(new Event('pathchange')); }}
+                                className="group inline-flex min-h-[54px] w-full items-center justify-center gap-3 rounded-full border border-duck-ink/20 bg-duck-bgLight px-8 py-3.5 text-base font-extrabold text-duck-ink transition-all duration-300 hover:-translate-y-0.5 hover:border-duck-ink sm:w-auto focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-ink focus-visible:ring-offset-2"
+                            >
+                                Docentdemo
                                 <ArrowRightIcon />
                             </button>
                         </div>
-                        <p className="mx-auto mt-6 max-w-xl text-pretty text-sm font-bold leading-6 text-duck-ink/60 opacity-0 motion-reduce:animate-none motion-reduce:opacity-100 animate-fade-in-up-delay-3">
+                        <p className={`mx-auto mt-6 max-w-xl text-pretty text-sm font-bold leading-6 text-duck-ink/60 opacity-0 motion-reduce:animate-none motion-reduce:opacity-100 ${introReady ? 'animate-fade-in-up-delay-3' : ''}`}>
                             Voor VO en VSO: AI-missies, SLO-voortgang en portfolio-bewijs in een veilige leeromgeving.
                         </p>
 
@@ -510,7 +546,7 @@ export const ScholenLanding: React.FC = () => {
                         </div>
                     </div>
 
-                    <div className="relative z-10 mx-auto mt-14 max-w-[1120px] opacity-0 motion-reduce:animate-none motion-reduce:opacity-100 md:mt-16 animate-fade-in-up-delay-3">
+                    <div className={`relative z-10 mx-auto mt-14 max-w-[1120px] opacity-0 motion-reduce:animate-none motion-reduce:opacity-100 md:mt-16 ${introReady ? 'animate-fade-in-up-delay-3' : ''}`}>
                         <div data-hero-mockup id="game-demo" className="relative grid scroll-mt-24 gap-4 lg:grid-cols-2 lg:items-start">
                             {/* Leerling-kaart */}
                             <div className="flex flex-col gap-5 overflow-hidden rounded-[1.5rem] bg-duck-ink p-6 lg:-rotate-1">
@@ -520,7 +556,7 @@ export const ScholenLanding: React.FC = () => {
                                     <p className="mt-2 text-sm font-bold text-white/45">Bouwt. Prompts. Leert.</p>
                                 </div>
                                 <div className="overflow-hidden rounded-[1.1rem]">
-                                    <ScreenLeerling reduceMotion={reduceMotion} />
+                                    <HeroDashboardPreview which="student" />
                                 </div>
                             </div>
                             {/* Docent-kaart */}
@@ -530,11 +566,8 @@ export const ScholenLanding: React.FC = () => {
                                     <p className="mt-1 font-display text-5xl leading-none text-duck-ink">Docent</p>
                                     <p className="mt-2 text-sm font-bold text-duck-ink/45">Volgt. Ziet. Stuurt.</p>
                                 </div>
-                                <div className="relative overflow-hidden rounded-[1.1rem]">
-                                    <ScreenDocent />
-                                    <span className="absolute -right-2 -top-2 rounded-full bg-duck-ink px-3 py-1.5 text-[11px] font-extrabold text-duck-acid">
-                                        24/28 actief
-                                    </span>
+                                <div className="overflow-hidden rounded-[1.1rem]">
+                                    <HeroDashboardPreview which="teacher" />
                                 </div>
                             </div>
                         </div>
@@ -814,7 +847,7 @@ function useHomepageGsapEffects(reduceMotion: boolean) {
                     });
                 }, document.body);
 
-                window.addEventListener('scroll', () => ScrollTrigger.refresh(), { once: true, passive: true });
+                window.setTimeout(() => ScrollTrigger.refresh(), 200);
             })
             .catch(() => {
                 // Motion enhancement should never block the landing page.
@@ -2388,11 +2421,48 @@ function ProductProofFrame({
     );
 }
 
-function HeroHeadline() {
+function PageLoader({ onDone }: { onDone: () => void }) {
+    const [pct, setPct] = useState(0);
+    const [leaving, setLeaving] = useState(false);
+
+    useEffect(() => {
+        let raf = 0;
+        let exitTimer = 0;
+        const start = performance.now();
+        const DURATION = 1100;
+        const tick = (now: number) => {
+            const progress = Math.min(1, (now - start) / DURATION);
+            setPct(Math.round(progress * 100));
+            if (progress < 1) {
+                raf = requestAnimationFrame(tick);
+            } else {
+                setLeaving(true);
+                exitTimer = window.setTimeout(onDone, 700);
+            }
+        };
+        raf = requestAnimationFrame(tick);
+        return () => {
+            cancelAnimationFrame(raf);
+            window.clearTimeout(exitTimer);
+        };
+    }, [onDone]);
+
+    return (
+        <div
+            aria-hidden="true"
+            className={`fixed inset-0 z-[100] flex flex-col items-center justify-center gap-7 bg-duck-acid transition-[transform,border-radius] duration-700 ease-[cubic-bezier(0.65,0,0.35,1)] motion-reduce:transition-none ${leaving ? '-translate-y-full rounded-b-[44%]' : ''}`}
+        >
+            <DuckMark className="size-20 md:size-24 animate-spin motion-reduce:animate-none" />
+            <p className="font-display text-7xl tabular-nums text-duck-ink md:text-8xl">{pct}%</p>
+        </div>
+    );
+}
+
+function HeroHeadline({ introReady }: { introReady: boolean }) {
     const rise = (index: number, child: React.ReactNode) => (
         <span className="inline-block overflow-hidden pb-[0.14em] pr-[0.06em] align-bottom -mb-[0.14em] -mr-[0.06em]">
             <span
-                className="inline-block motion-reduce:translate-y-0 motion-reduce:animate-none animate-duck-rise"
+                className={`inline-block motion-reduce:translate-y-0 motion-reduce:animate-none ${introReady ? 'animate-duck-rise' : 'translate-y-[115%]'}`}
                 style={{ animationDelay: `${0.1 + index * 0.07}s` }}
             >
                 {child}

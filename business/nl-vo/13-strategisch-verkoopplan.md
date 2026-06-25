@@ -103,7 +103,7 @@ De marktomgeving voor DGSkills wordt gevormd door drie samenlopende krachten:
 De SLO heeft definitieve conceptkerndoelen digitale geletterdheid gepubliceerd (september 2025). Wettelijke invoering in het VO is vastgesteld op **1 augustus 2027**; handhaving door de inspectie start per **2031**. Dit geeft scholen een langere aanlooptijd dan aanvankelijk verwacht — maar de kerndoelen zijn géén vrijblijvend advies. Scholen die nu investeren in structurele implementatie, zijn in 2031 aantoonbaar voorbereid. Vier domeinen zijn leidend (Kennisnet): ICT-basisvaardigheden, informatievaardigheden, mediawijsheid en computational thinking.
 
 **2. AI Act: hoog-risico classificatie**
-AI-systemen ingezet in het onderwijs vallen onder Annex III, punt 3(b) van de EU AI Act en zijn geclassificeerd als **hoog-risico**. Voor DGSkills betekent dit: de DPIA, het risicoregister, AI-transparantie (Art. 50) en menselijk toezicht (Art. 14 — docenten kunnen een AI-beoordeling van een missiestap overrulen via een gelogde docent-override, geïmplementeerd 15 maart 2026) zijn gedocumenteerd en geïmplementeerd. De resterende hoog-risico-verplichtingen (Art. 9 volledig risicomanagementsysteem, Art. 11 technische documentatie, Art. 16-17 QMS, Art. 47-49 conformiteitsverklaring) zijn nog niet afgerond. De oorspronkelijke deadline van 2 augustus 2026 voor hoog-risico-systemen wordt via de **Digital Omnibus** (voorlopig EU-akkoord, nog niet formeel gepubliceerd) naar verwachting verschoven richting **2 december 2027**.
+AI-systemen ingezet in het onderwijs vallen onder Annex III, punt 3(b) van de EU AI Act en zijn geclassificeerd als **hoog-risico** wanneer zij leerresultaten evalueren of het leerproces sturen. Voor DGSkills betekent dit: de DPIA, het risicoregister, AI-transparantie (Art. 50) en menselijk toezicht (Art. 14 — docenten kunnen een AI-beoordeling van een missiestap overrulen via een gelogde docent-override, geïmplementeerd 15 maart 2026) zijn gedocumenteerd en geïmplementeerd. De resterende hoog-risico-verplichtingen (Art. 9 volledig risicomanagementsysteem, Art. 11 technische documentatie, Art. 16-17 QMS, Art. 47-49 conformiteitsverklaring) zijn nog niet afgerond. Hanteer voor communicatie de actuele Commissie-tijdlijn: AI-geletterdheid vanaf 2 februari 2025, transparantieverplichtingen vanaf augustus 2026 en hoog-risico-onderwijsregels volgens de actuele Commissiepagina vanaf 2 december 2027.
 
 > **Belangrijk voor communicatie:** DGSkills claimt *niet* volledig AI Act-compliant te zijn. De eerlijke positionering is: "hoog-risico AI-systeem, in actieve compliance-voorbereiding; DPIA, risicoregister, AI-transparantie en menselijk toezicht (Art. 14, docent-override) zijn gedocumenteerd en geïmplementeerd; de resterende hoog-risico-verplichtingen worden voor de wettelijke deadline afgerond." Deze transparantie is zelf een onderscheidend kenmerk ten opzichte van concurrenten die de classificatie überhaupt niet hebben gemaakt.
 
@@ -386,7 +386,7 @@ Beide methodieken zijn complementair: SPIN voor de discovery-fase, Challenger vo
 **Implication (wat zijn de consequenties als dit niet verandert?):**
 - "Als de SLO-kerndoelen in 2027 wettelijk worden en jullie nu geen structurele methode hebben, wat verwacht je dat de inspectie dan vraagt?"
 - "Als je docenten nog meer DG-voorbereiding krijgen bovenop de bestaande werkdruk, wat denk je dat er dan gebeurt?"
-- "Hoe denk je dat de school omgaat met aansprakelijkheid als een AI-tool voor leerlingen niet AVG-proof blijkt?"
+- "Hoe denk je dat de school omgaat met aansprakelijkheid als een AI-tool voor leerlingen geen aantoonbare AVG-bewijslaag, DPIA-ondersteuning en verwerkersafspraken heeft?"
 
 **Need-payoff (wat zou het waard zijn als het opgelost was?):**
 - "Als je morgen een exporteerbaar rapport had met SLO-kerndoeldekking per leerling, wat zou dat betekenen voor de volgende inspectie?"
@@ -413,7 +413,7 @@ De meest voorkomende bezwaren en de theoretisch onderbouwde respons:
 | "We hebben al een methode" | Compatibiliteitsbezwaar (Rogers) | Stel de Situatie/Probleem-vragen: Welke methode? Hoe toont die SLO-kerndoeldekking aan? Dekt die AI-geletterdheid (kerndoel 21D)? |
 | "We hebben geen budget" | Kopersmacht-bezwaar (Porter) | Herankering: een jaarlicentie School-S is ~€17,80–35,50/leerling — in de orde van een lesboek, maar met dashboard, updates en support. Pilot is €1.500 en 100% verrekenbaar. |
 | "We zijn niet zo ver met DG" | Adoptie-bezwaar (Rogers: complexiteit) | Compatibiliteitsargument: het platform past in elke les, ook als DG nu minimaal is. Dat is juist waarom scholen beginnen. |
-| "Is dit AVG-proof?" | Gatekeeper-bezwaar (Webster & Wind) | Compliance-pack: DPIA, verwerkersovereenkomst, AVG-documentatie, data in NL. Direct versturen. |
+| "Hoe is privacy geregeld?" | Gatekeeper-bezwaar (Webster & Wind) | Compliance-pack: DPIA-ondersteuning, verwerkersovereenkomst, AVG-bewijslaag en subverwerkerslijst. School-DPIA/FG-review blijft vereist; dataregio contractueel en projectmatig verifieren. |
 | "Wat doen andere scholen ermee?" | Observability-bezwaar (Rogers) | Casestudy / referentie versturen. Als die nog niet beschikbaar is: pilot aanbieden als de referentie. |
 
 Zie `sales-assets/07-bezwarenkaart-dgskills.md` en `sales-assets/02-demo-script-vo.md` voor de uitgewerkte scripts.

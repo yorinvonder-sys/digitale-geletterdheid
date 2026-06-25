@@ -1,6 +1,6 @@
 # dgskills.app — Digitale Geletterdheid die Werkt
 
-**Data in NL (EU) | AI Act: hoog-risico, actieve compliance | DPIA beschikbaar | SLO-kerndoelen 2025**
+**Privacy-by-design | EU AI Act: hoog-risico, transparant gedocumenteerd | DPIA-support beschikbaar | SLO-kerndoelen 2025**
 
 ---
 
@@ -9,9 +9,9 @@
 | Feit | Bron |
 |------|------|
 | Gemiddeld digitaal niveau leerlingen: **4,7 / 10** | Monitor Digitale Geletterdheid 2023 |
-| Lerarentekort VO: **~2.200 FTE** (schooljaar 2024/25) | Voion Trendrapportage arbeidsmarkt leraren 2025 |
+| Docenttekort ICT/digitale vaardigheden: **~2.200 FTE** | Voion Trendrapportage arbeidsmarkt leraren 2025 (schooljaar 2024/25) |
 | SLO-kerndoelen digitale geletterdheid worden **verplicht** | SLO Conceptkerndoelen 2025 |
-| EU AI Act: onderwijs-AI = hoog-risico (Annex III, 3b); deadline verschuift richting 2 dec 2027 (Digital Omnibus, voorlopig) | EU Verordening 2024/1689 |
+| EU AI Act high-risk onderwijs-AI (Annex III 3b); Art. 50-transparantie vanaf augustus 2026 en actuele Commissiepagina: high-risk onderwijsverplichtingen vanaf **2 december 2027** | EU Verordening 2024/1689 |
 
 De meeste scholen hebben geen methode, geen bewijs en geen plan voor digitale geletterdheid.
 
@@ -36,9 +36,9 @@ De meeste scholen hebben geen methode, geen bewijs en geen plan voor digitale ge
 ## Bewijs
 
 - Elke missie is getest met echte leerlingen in een echte klas
-- 97 missies verdeeld over 3 leerjaren, gekoppeld aan alle SLO-domeinen
-- Platform draait op EU-datacenters (Nederland); DPIA uitgevoerd, DPA conform Model 4.0, geen commercieel datagebruik
-- Enige platform met transparant gedocumenteerde EU AI Act-classificatie: hoog-risico (Annex III, 3b), in actieve compliance-voorbereiding (DPIA, risicoregister, AI-transparantie)
+- 60+ missies verdeeld over 3 leerjaren, gekoppeld aan alle SLO-domeinen
+- Privacy-by-design dossier, DPA-template en EER/EU-projectregio zoals contractueel vastgelegd
+- Enige platform dat zijn EU AI Act-positie transparant heeft gedocumenteerd (hoog-risico classificatie, DPIA, risicobeoordeling, menselijk toezicht in voorbereiding)
 
 ---
 

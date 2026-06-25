@@ -4,9 +4,13 @@ import path from 'node:path';
 const roots = [
   'CLAUDE.md',
   'README.md',
-  'business',
+  'index.html',
+  'business/nl-vo',
   'docs',
-  'public',
+  'public/compliance',
+  'public/dev-docs',
+  'public/guides',
+  'public/resources',
   'src',
   'supabase/functions',
   'scripts',
@@ -33,15 +37,79 @@ const allowedGoogleContexts = [
   /\.gemini\/antigravity/i,
 ];
 
-const blockedTerms = [
-  ['Google', 'Gemini'].join(' '),
-  ['Google', 'Vertex'].join(' '),
-  ['Vertex', 'AI'].join(' '),
-  ['Nano', 'Banana'].join(' '),
-  ['VITE', 'GEMINI', 'API', 'KEY'].join('_'),
-  ['generativelanguage', 'googleapis', 'com'].join('.'),
-  ['europe', 'west4'].join('-'),
-  'Eemshaven',
+const ignoredFiles = new Set([
+  'docs/compliance/legal-claim-source-of-truth.md',
+  'scripts/generate-hero-greenscreen.mjs',
+  'scripts/generate-hero-video.mjs',
+  'scripts/check-ai-provider-docs.mjs',
+  'scripts/check-gdpr-rights-coverage.mjs',
+  'scripts/check-legal-claims.mjs',
+  'scripts/check-legal-evidence.mjs',
+  'scripts/check-processing-restriction-enforcement.mjs',
+  'scripts/check-retention-policy.mjs',
+]);
+
+const historicalFilePatterns = [
+  /(^|\/)08-lanceringsrapport-compleet\.md$/,
+  /(^|\/)09-juridisch-rapport-compleet\.md$/,
+  /(^|\/)audit-report\.md$/,
+  /(^|\/)verwerkersovereenkomsten-rapport\.md$/,
+  /^docs\/audits\//,
+  /^docs\/compliance\/regulations\//,
+  /^docs\/security\//,
+];
+
+const allowedHistoricalLine = [
+  /historisch/i,
+  /oudere|eerdere|voormalige/i,
+  /niet meer als actuele/i,
+  /niet als actuele/i,
+  /was onjuist/i,
+  /Claim nooit/i,
+  /Do not claim|Do not use|Avoid blanket claims/i,
+];
+
+const blockedRules = [
+  {
+    label: 'stale school-facing Google/Gemini/Vertex provider claim',
+    pattern: /\b(Google\s+Gemini|Google\s+Vertex|Vertex\s+AI|Gemini Developer API|generativelanguage\.googleapis\.com|europe-west4-aiplatform\.googleapis\.com)\b/i,
+  },
+  {
+    label: 'unsafe AI Act limited-risk claim',
+    pattern: /\b(Limited Risk|limited risk|beperkt risico)\b/i,
+  },
+  {
+    label: 'blanket compliance overclaim',
+    pattern: /\b(AVG-compliant|AVG compliant|AVG-proof|AVG proof|volledige AVG-compliance|voldoet aan de AVG|voldoet aan (de )?AI Act|voldoe aan de EU AI Act|EU AI Act conform|volledig compliant|volledige naleving|volledige conformiteit|volledig in lijn met de AVG|strengste AVG-normen)\b/i,
+  },
+  {
+    label: 'unsafe high-risk deadline text',
+    pattern: /\b(2 augustus 2026|2 aug 2026)\b/i,
+  },
+  {
+    label: 'unqualified zero-retention/training claim',
+    pattern: /\b(zero-training|Zero-Training|zero data retention|Zero Data Retention|zero retention|geen training op leerlingdata|geen leerlingdata wordt gebruikt voor het trainen|geen data gebruiken voor training|data niet wordt gebruikt om het model te trainen)\b/i,
+  },
+  {
+    label: 'unverified hard data-location claim',
+    pattern: /\b(alle data in Nederland|data binnen EER|EU-servers|Eemshaven|Frankfurt|eu-west-1|eu-central-1|europe-west4|Alle persoonsgegevens worden opgeslagen en verwerkt binnen de (EU|EER))\b/i,
+  },
+  {
+    label: 'absolute all-data deletion claim',
+    pattern: /\b(alle data wordt (op verzoek )?(binnen \d+ dagen )?verwijderd|data verwijderd binnen \d+ dagen|alle gegevens binnen \d+ dagen definitief gewist|alle gegevens.*definitief gewist.*back-ups)\b/i,
+  },
+  {
+    label: 'unsafe anonymous analytics claim',
+    pattern: /\b(anonieme gebruiksstatistieken|anonieme analytics|anonymous analytics|purely anonymous)\b/i,
+  },
+  {
+    label: 'unqualified AI memory claim',
+    pattern: /\b(AI onthoudt geen|onthoudt geen persoonlijke gegevens|geen persoonlijke gegevens na de sessie)\b/i,
+  },
+  {
+    label: 'absolute subject-rights completeness claim',
+    pattern: /\b(all personal data|ALL associated data|alle persoonlijke gegevens|alle bijbehorende gegevens|alle 28 gekoppelde gegevenstabellen)\b/i,
+  },
 ];
 
 const scannedExtensions = new Set([
@@ -51,13 +119,18 @@ const scannedExtensions = new Set([
 const failures = [];
 
 function shouldScan(filePath) {
-  if (filePath === 'scripts/check-ai-provider-docs.mjs') return false;
-  // Marketing-asset generators (favicon, hero-video, mascotte) mogen Google's
-  // beeld-/videomodellen gebruiken — dat is géén product- of compliance-claim
-  // over leerlingdata, dus buiten scope van deze check.
-  if (/^scripts\/generate-(favicon|hero|pip)[\w-]*\.mjs$/.test(filePath)) return false;
+  if (ignoredFiles.has(filePath)) return false;
+  if (historicalFilePatterns.some((pattern) => pattern.test(filePath))) return false;
   const ext = path.extname(filePath);
   return scannedExtensions.has(ext) || path.basename(filePath) === 'CLAUDE.md' || path.basename(filePath) === 'README.md';
+}
+
+function isAllowedLine(line) {
+  return allowedHistoricalLine.some((pattern) => pattern.test(line));
+}
+
+function isPublicRetentionClaim(line) {
+  return /\b(90 dagen|90 days|90-day)\b/i.test(line) && /\b(chat|audit|log|activity|activiteit|bewaar|retention|gegevens|data|purge)\b/i.test(line);
 }
 
 function walk(entry) {
@@ -72,11 +145,15 @@ function walk(entry) {
   const source = readFileSync(entry, 'utf8');
   const lines = source.split(/\r?\n/);
   for (const [index, line] of lines.entries()) {
+    if (isAllowedLine(line)) continue;
     const isAllowedGoogleContext = allowedGoogleContexts.some((pattern) => pattern.test(line));
-    for (const term of blockedTerms) {
-      if (line.includes(term) && !isAllowedGoogleContext) {
-        failures.push(`${entry}:${index + 1}: stale AI provider claim contains "${term}"`);
+    for (const rule of blockedRules) {
+      if (rule.pattern.test(line) && !isAllowedGoogleContext) {
+        failures.push(`${entry}:${index + 1}: ${rule.label}`);
       }
+    }
+    if (isPublicRetentionClaim(line)) {
+      failures.push(`${entry}:${index + 1}: unsafe 90-day activity/audit/chat retention claim`);
     }
   }
 }

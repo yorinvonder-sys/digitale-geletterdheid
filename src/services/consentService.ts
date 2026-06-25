@@ -59,12 +59,12 @@ const CONSENT_META: Record<ConsentType, { label: string; description: string; re
   },
   ai_interaction: {
     label: 'Interactie met AI Mentor',
-    description: 'Je kunt chatten met een AI-mentor die je helpt bij opdrachten. De AI onthoudt geen persoonlijke gegevens na de sessie.',
+    description: 'Je kunt chatten met een AI-mentor die je helpt bij opdrachten. We sturen alleen noodzakelijke opdrachtcontext mee; retentie en providergebruik volgen de school- en providerafspraken.',
     required: true,
   },
   analytics: {
-    label: 'Anonieme gebruiksstatistieken',
-    description: 'We verzamelen anonieme gegevens over hoe het platform wordt gebruikt, om het beter te maken. Hier staat geen persoonlijke informatie in.',
+    label: 'Privacyvriendelijke gebruiksstatistieken',
+    description: 'We verzamelen na toestemming first-party gebruiksstatistieken om het platform te verbeteren, pseudoniem of geaggregeerd waar mogelijk.',
     required: false,
   },
   peer_feedback: {

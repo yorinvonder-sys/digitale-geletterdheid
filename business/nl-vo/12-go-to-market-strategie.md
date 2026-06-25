@@ -1,9 +1,7 @@
 # Go-to-Market Strategie — DGSkills.app
 
-> **Versie:** 1.1 | **Datum:** 2 april 2026 (feitelijke correcties 19 juni 2026) | **Status:** Goedgekeurd
+> **Versie:** 1.0 | **Datum:** 2 april 2026 | **Status:** Goedgekeurd
 > **Doel:** Helder, herhaalbaar playbook om DGSkills strategisch in de markt te brengen bij VO-scholen.
->
-> **Strategische context:** Dit document is de **GTM-fasering / tactische laag**. Het overkoepelende strategische kader (STP, JTBD, Crossing the Chasm, Porter) staat in [`13-strategisch-verkoopplan.md`](13-strategisch-verkoopplan.md). Bij tegenstrijdigheid is doc 13 leidend.
 
 ---
 
@@ -12,11 +10,11 @@
 ### A. SLO-kerndoelen urgentie
 Scholen moeten digitale geletterdheid aantoonbaar maken. De meeste hebben geen methode, geen bewijs, geen plan. DGSkills biedt dat bewijs kant-en-klaar.
 
-### B. EU AI Act druk (hoog-risico; deadline verschuift richting 2 dec 2027)
-Onderwijs-AI is onder de EU AI Act geclassificeerd als hoog-risico (Annex III, punt 3(b)). De oorspronkelijke deadline van 2 augustus 2026 verschuift via de Digital Omnibus (voorlopig politiek akkoord, 7 mei 2026; nog niet in het EU-Publicatieblad) naar verwachting naar 2 december 2027; tot die publicatie blijft 2 augustus 2026 formeel de geldende datum. Scholen moeten kunnen aantonen dat hun AI-tools de juiste classificatie en waarborgen hebben. DGSkills heeft dit transparant gedocumenteerd — DPIA en risicoregister opgesteld, AI-transparantie (Art. 50) in de app geïmplementeerd — en is in actieve compliance-voorbereiding (bewust géén "AI Act compliant"-claim). Dat is een deuropener bij bestuurders.
+### B. EU AI Act druk (hoog-risico, Annex III 3b)
+Scholen die AI-tools inzetten die leerresultaten beoordelen of het leerproces sturen, moeten hun eigen deployer-verplichtingen kunnen onderbouwen. Volgens de actuele Europese Commissie-informatie gaan de belangrijkste hoog-risico verplichtingen voor Annex III onderwijs-AI gelden op 2 december 2027; Art. 4 AI-geletterdheid geldt sinds 2 februari 2025 en Art. 50 transparantie vanaf augustus 2026. DGSkills kan zich onderscheiden door zijn hoog-risico positie, DPIA-support en risicodocumentatie transparant te tonen, zonder harde nalevingsclaim.
 
 ### C. Docenttekort + werkdruk
-~2.200 FTE lerarentekort in het VO (schooljaar 2024/25, Voion 2025). Docenten hebben geen tijd om zelf digitale geletterdheid te ontwikkelen. DGSkills neemt dat over: AI geeft feedback, dashboard volgt voortgang, docent coacht.
+~2.200 FTE tekort (Voion 2025, schooljaar 2024/25). Docenten hebben geen tijd om zelf digitale geletterdheid te ontwikkelen. DGSkills neemt dat over: AI geeft feedback, dashboard volgt voortgang, docent coacht.
 
 ---
 
@@ -34,7 +32,7 @@ Het grootste concurrentievoordeel is niet de technologie — het is de oprichter
 | **Docent** | "Missies die leerlingen wel willen doen" | Herkenning |
 | **ICT-coordinator** | "SLO-bewijs in een klik, klaar voor de inspectie" | Ontzorging |
 | **Teamleider/directeur** | "Aantoonbare digitale geletterdheid zonder extra werkdruk" | Risicoreductie |
-| **Bestuurder** | "AVG: DPIA uitgevoerd en data in NL, AI Act hoog-risico transparant gedocumenteerd, governance dashboard" | Compliance-zekerheid |
+| **Bestuurder** | "Privacy-by-design dossier, EU AI Act hoog-risico & transparant gedocumenteerd, governance dashboard" | Compliance-zekerheid |
 
 ---
 
@@ -53,7 +51,7 @@ Het grootste concurrentievoordeel is niet de technologie — het is de oprichter
 
 | Onderdeel | Details |
 |-----------|---------|
-| Platform-toegang | Alle missies + dashboard, 8 weken, max 150 leerlingen, max 2 docenten (Pilot Start) |
+| Platform-toegang | Alle missies + dashboard, 8 weken, max 150 leerlingen, 2 docenten |
 | Kickoff-sessie | 45 min online |
 | Docent-onboarding | 90 min training |
 | Starterset lessenplan | Kant-en-klaar voor eerste 4 weken |
@@ -65,8 +63,6 @@ Het grootste concurrentievoordeel is niet de technologie — het is de oprichter
 | E-mailsupport | Ma-vr 8:30-17:00 |
 
 **100% verrekend bij jaarcontract** (binnen 30 dagen na pilotafronding).
-
-> Dit is de **Pilot Start** (8 weken, ≤150 leerlingen). Grotere pilotvormen staan in [`06-standard-paid-pilot-package.md`](06-standard-paid-pilot-package.md) en [`02-pricing-matrix.md`](02-pricing-matrix.md).
 
 ---
 
@@ -91,7 +87,7 @@ Verbeterpunten: social proof toevoegen, CTA verscherpen ("Plan een demo"), compl
 | Factor | DGSkills | Markt |
 |--------|----------|-------|
 | SLO-kerndoel bewijs | Automatisch, exporteerbaar | Handmatig, onvolledig |
-| AI Act-classificatie | Hoog-risico, transparant gedocumenteerd | Onbekend |
+| AI Act-positie | Hoog-risico, transparant gedocumenteerd | Onbekend |
 | Implementatiesnelheid | 30 dagen | 3-12 maanden |
 | Leerlingmotivatie | Missies, XP, badges, avatars | Tekst, werkbladen |
 | Geloofwaardigheid | Gebouwd door docent | Corporate |

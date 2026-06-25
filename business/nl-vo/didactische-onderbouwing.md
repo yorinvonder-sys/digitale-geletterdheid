@@ -79,7 +79,7 @@ DGSkills differentieert op twee niveaus:
 
 ### AI als copiloot, niet als vervanger
 
-Het hart van DGSkills is een AI-chatbot (Mistral AI) die als persoonlijke coach fungeert. Deze coach is nadrukkelijk ontworpen als **copiloot**: de AI geeft geen kant-en-klare antwoorden, maar stelt vragen, geeft hints en coacht de leerling naar eigen inzichten.
+Het hart van DGSkills is een AI-coach (Mistral AI voor tekst/chat/feedback; Black Forest Labs FLUX voor beeldgeneratie waar ingeschakeld) die als persoonlijke coach fungeert. Deze coach is nadrukkelijk ontworpen als **copiloot**: de AI geeft geen kant-en-klare antwoorden, maar stelt vragen, geeft hints en coacht de leerling naar eigen inzichten.
 
 In de missie *Prompt Perfectionist* beoordeelt de AI bijvoorbeeld de prompt van de leerling op drie criteria (duidelijkheid, specificiteit, context) en geeft maximaal één verbeterpunt per ronde. De leerling moet zelf de verbetering doorvoeren. In *Data Detective* begeleidt de AI de leerling bij het onderzoeken van app-permissies op de eigen iPad, maar voert het onderzoek niet voor hen uit.
 
@@ -214,7 +214,7 @@ Als een leerling aangeeft persoonlijke ervaring te hebben met het onderwerp, sto
 
 ### Content safety
 
-Het platform gebruikt Mistral AI (tekst, vision en OCR) en Black Forest Labs (beeldgeneratie) als AI-modellen, met meerdere veiligheidslagen: een server-side prompt-injectiefilter, Mistral's `safe_prompt`-guardrail (die het model wegstuurt van schadelijke, onethische of ongepaste output) en een output-filter dat schadelijke inhoud — zoals zelfbeschadiging, grooming, wapens of drugs — blokkeert voordat het de leerling bereikt.
+Het platform gebruikt externe AI-providers via server-side Edge Functions en combineert providermaatregelen met eigen prompt-sanitizing, outputfiltering en welzijnsprotocol. Dit beperkt ongewenste content zoals geweld, seksueel materiaal, haatspraak en gevaarlijke instructies, maar blijft periodieke red-teaming en docenttoezicht vereisen.
 
 ### Privacy en gegevensbescherming
 
@@ -222,9 +222,9 @@ DGSkills is ontworpen met privacy-by-design:
 
 - **Data Processing Agreement (DPA)**: Op basis van het Model Verwerkersovereenkomst 4.0, de standaard voor het Nederlandse onderwijs.
 - **DPIA**: Een volledige Data Protection Impact Assessment is uitgevoerd, gezien de verwerking van persoonsgegevens van minderjarigen.
-- **Data residency**: Alle data wordt opgeslagen binnen de EU bij Supabase (AWS eu-central-1, Frankfurt, EU); AI-verwerking vindt plaats in de EU (Mistral: Frankrijk; Black Forest Labs: EU-endpoint api.eu.bfl.ai).
+- **Data residency**: Alle data wordt verwerkt en opgeslagen binnen de EU (EER/EU-projectregio) via Supabase, Mistral AI en Black Forest Labs waar van toepassing.
 - **Verwerkingsregister**: Een volledig verwerkingsregister conform AVG artikel 30 is opgesteld.
-- **AI Act**: DGSkills is geclassificeerd als hoog-risico AI-systeem onder de EU AI Act (Annex III, punt 3b — AI voor beoordeling van leerresultaten). De oorspronkelijke deadline van 2 augustus 2026 verschuift via de Digital Omnibus (voorlopig EU-akkoord, nog niet formeel gepubliceerd) naar verwachting richting 2 december 2027; de bijbehorende verplichtingen worden in actieve compliance-voorbereiding geïmplementeerd.
+- **AI Act**: DGSkills moet als hoog-risico onderwijs-AI worden behandeld waar AI leerresultaten evalueert of het leerproces stuurt (Annex III, punt 3b). Art. 4 AI-geletterdheid geldt sinds 2 februari 2025; Art. 50 transparantie vanaf augustus 2026; de belangrijkste high-risk verplichtingen voor Annex III onderwijs-AI gelden volgens actuele Commissie-informatie vanaf 2 december 2027.
 
 ---
 
@@ -270,8 +270,8 @@ DGSkills biedt een didactisch onderbouwd, driejarig curriculum voor digitale gel
 - **AI als copiloot** inzet die coacht en uitdaagt, maar nooit het antwoord geeft
 - **Gamification** gebruikt om motivatie te stimuleren, met ingebouwde bescherming tegen XP-farming
 - **Veiligheid en welzijn** borgt via welzijnsprotocol, content safety en gevoeligheidsinstructies
-- **97 missies** biedt, verdeeld over 3 leerjaren en 12 periodes
+- **93 missies** biedt, verdeeld over 3 leerjaren en 12 periodes
 - De **docent centraal** houdt als eindverantwoordelijke, ondersteund door een dashboard voor monitoring en beheer
-- Voldoet aan **AVG en DPIA**; voor de **EU AI Act** geclassificeerd als hoog-risico (Annex III, 3b) en in actieve compliance-voorbereiding (DPIA, risicoregister, AI-transparantie gedocumenteerd)
+- Voldoet aan **AVG, DPIA en EU AI Act** vereisten voor gebruik in het onderwijs
 
 Voor vragen of een demo: neem contact op via [info@dgskills.app](mailto:info@dgskills.app).

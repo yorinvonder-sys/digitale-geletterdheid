@@ -120,7 +120,6 @@ Wij verzamelen alleen gegevens die nodig zijn voor het functioneren van het plat
 | Rol (leerling/docent/beheerder) | Om je de juiste functies te tonen |
 | School / organisatie | Om je te koppelen aan de juiste schoolomgeving |
 | Account-ID (uniek nummer) | Technisch nodig voor het systeem |
-| Geboortedatum | Uitsluitend om te bepalen of een leerling 13 jaar of ouder is. AI-opdrachten zijn alleen voor 13+ (voorwaarden Mistral AI en Black Forest Labs). De geboortedatum wordt server-side gebruikt en **niet** met de AI gedeeld. |
 
 ### 5.2 Leer- en gebruiksgegevens
 
@@ -168,7 +167,7 @@ Wij gebruiken je gegevens voor de volgende doelen:
 |---|---|
 | **Toegang tot het platform** | Aanmaken en beheren van je account, inloggen |
 | **Onderwijs en leerervaring** | Opdrachten aanbieden, voortgang bijhouden, feedback geven |
-| **AI-ondersteuning** | Het bieden van AI-chat en AI-feedback binnen lessen (via Mistral AI; beeldgeneratie via Black Forest Labs) |
+| **AI-ondersteuning** | Het bieden van AI-chat, AI-feedback, vision/OCR en beeldgeneratie binnen lessen via server-side AI-providers (Mistral AI en Black Forest Labs waar ingeschakeld) |
 | **Docentfunctionaliteiten** | Overzicht van leerlingvoortgang, berichten sturen, klassen beheren |
 | **Beveiliging** | Beschermen van het platform tegen misbruik, fraude en ongeoorloofd gebruik |
 | **Communicatie** | Beantwoorden van vragen, verwerken van pilot-aanvragen |
@@ -193,7 +192,6 @@ De AVG schrijft voor dat wij voor elke verwerking een wettelijke grondslag moete
 |---|---|---|
 | **Publieke taak** (Art. 6(1)(e) AVG) | Leerlinggegevens voor het leerproces | Scholen hebben een wettelijke taak om onderwijs te verzorgen. Het verwerken van leerlinggegevens is hiervoor noodzakelijk. |
 | **Gerechtvaardigd belang** (Art. 6(1)(f) AVG) | Beveiliging, misbruikpreventie | Het platform moet veilig zijn. Daarvoor zijn technische loggegevens nodig. |
-| **Vitaal belang** (Art. 9(2)(c) + 6(1)(d) AVG) | Crisissignalen in de chat (welzijnsprotocol) | Herkent de AI signalen van acute nood (bijv. suïcidaliteit, misbruik), dan verwijst hij direct door naar hulp om de leerling te beschermen. Deze signalen worden niet opgeslagen. |
 
 ### 7.2 Wanneer DGSkills verwerkingsverantwoordelijke is
 
@@ -203,12 +201,6 @@ De AVG schrijft voor dat wij voor elke verwerking een wettelijke grondslag moete
 | **Uitvoering overeenkomst** (Art. 6(1)(b) AVG) | Leveren van de dienst aan de school | Nodig om het contract met de school na te komen. |
 | **Gerechtvaardigd belang** (Art. 6(1)(f) AVG) | Websitebeveiliging, klantenservice | Noodzakelijk voor een veilige en betrouwbare dienstverlening. |
 | **Wettelijke verplichting** (Art. 6(1)(c) AVG) | Bewaren van audit-logboek, boekhouding | Wij zijn wettelijk verplicht bepaalde gegevens te bewaren. |
-
-### 7.3 Welzijnssignalen en de Meldcode
-
-Herkent de AI signalen van nood, dan toont DGSkills uitsluitend een directe doorverwijzing naar hulp (Kindertelefoon 0800-0432; 113 Zelfmoordpreventie; Veilig Thuis 0800-2000). DGSkills slaat deze signalen **niet** op en gebruikt ze niet voor profilering. De wettelijke **Meldcode huiselijk geweld en kindermishandeling** ligt bij de school; DGSkills neemt die niet over. Bij (vermoedens van) mishandeling verloopt de melding via de school naar **Veilig Thuis (0800-2000)**.
-
-_Deze grondslag is een concept; een juridische toets wordt aanbevolen._
 
 ---
 
@@ -220,9 +212,9 @@ Wij delen je gegevens alleen wanneer dat noodzakelijk is voor de werking van het
 
 | Subverwerker | Dienst | Welke gegevens | Locatie gegevens | Waarborg |
 |---|---|---|---|---|
-| **Supabase Inc.** (via AWS) | Database, authenticatie, edge functions | Alle accountgegevens en gebruiksgegevens | **EU (Frankfurt, Duitsland)** | Verwerkersovereenkomst (DPA); SOC2 Type II; data in EU-regio |
-| **Mistral AI** (tekst, vision en OCR) | AI-chatfunctionaliteit | Chatberichten die je typt (alleen de tekst van het gesprek) | **EU (Mistral: Frankrijk)** | Mistral AI DPA met EU SCC's (Besluit 2021/914); verwerking in de EU; dataretentie te verifiëren (Mistral: standaard tot 30 dagen abuse-monitoring; Zero Data Retention optioneel, plan-afhankelijk); geen training op leerlingdata (training-opt-out te verifiëren — Mistral biedt opt-out; standaard opt-out op Scale-plan); authenticatie via server-side API-key (Supabase secret) |
-| **Black Forest Labs** (FLUX) | Beeldgeneratie | Opdrachttekst (prompt) voor het genereren van een afbeelding | **EU-endpoint (api.eu.bfl.ai)** | Black Forest Labs: ISO 27001 / SOC 2 Type II — ondertekende DPA te verifiëren; verwerking via EU-endpoint; authenticatie via server-side API-key (Supabase secret) |
+| **Supabase Inc.** (via AWS) | Database, authenticatie, edge functions | Alle accountgegevens en gebruiksgegevens | EU-projectregio / EER, exact te verifiëren | Verwerkersovereenkomst (DPA); SCC's waar nodig; projectregio vastleggen vóór schoolgebruik |
+| **Mistral AI** | AI-chat, feedback, vision en OCR | AI-invoer die nodig is voor de lesfunctie | Providerregio en subprocessors te verifiëren | Mistral DPA; SCC's/TIA waar nodig; gebruik voor provider-modeltraining uitgesloten waar providerafspraken en instellingen dit dekken |
+| **Black Forest Labs** | FLUX image generation | Beeldprompts en gegenereerde afbeeldingen | Providerregio en subprocessors te verifiëren | Provider-DPA/subprocessorbewijs vereist; server-side verwerking |
 | **Vercel Inc.** | Hosting van de website (frontend) | IP-adres, sessiegegevens (geen opslag van persoonsgegevens in database) | VS en wereldwijd (CDN/edge) | DPA; EU Standard Contractual Clauses (SCC) |
 | **Zoho Corporation** | E-mailservice (SMTP) | E-mailadres en naam (alleen bij pilot-aanvragen en notificaties) | EU (smtp.zoho.eu, datacenter in EU) | Verwerkersovereenkomst (DPA); GDPR-compliant EU-datacenter |
 
@@ -241,23 +233,17 @@ Wij delen je gegevens niet met andere partijen dan hierboven genoemd.
 
 Wij streven ernaar al je gegevens binnen de Europese Unie (EU) of de Europese Economische Ruimte (EER) te bewaren. In sommige gevallen is doorgifte naar landen buiten de EU/EER echter noodzakelijk:
 
-### Mistral AI (tekst, vision en OCR)
+### AI-verwerking via Mistral AI en Black Forest Labs
 
-Wanneer je de AI-chatfunctie gebruikt, wordt de tekst van je bericht verwerkt door **Mistral AI**. Mistral AI SAS is een Frans bedrijf (Parijs) en verwerkt de gegevens binnen de EU. Hiervoor gelden de volgende waarborgen:
+Wanneer je een AI-functie gebruikt, wordt de noodzakelijke invoer server-side verwerkt door de relevante AI-provider. Voor tekst/chat/feedback/vision/OCR is dat Mistral AI; voor beeldgeneratie is dat Black Forest Labs FLUX.
 
-- **Verwerking in de EU**: de verwerking vindt plaats binnen de EU (Mistral: Frankrijk). Er is op dit punt geen sprake van doorgifte naar een land buiten de EU/EER.
-- **Dataretentie**: dataretentie te verifiëren (Mistral: standaard tot 30 dagen abuse-monitoring; Zero Data Retention optioneel, plan-afhankelijk).
-- **Mistral AI DPA** met **EU SCC's (Besluit 2021/914)**: contractuele bescherming conform AVG-vereisten (ondertekende DPA te verifiëren).
-- **Server-side API-key**: de verbinding met Mistral AI verloopt via een server-side API-key (Supabase secret). Er wordt geen API-key gebruikt die kan uitlekken naar de client.
-- Je berichten worden **niet** gebruikt voor het trainen van AI-modellen op leerlingdata (training-opt-out te verifiëren — Mistral biedt opt-out; standaard opt-out op Scale-plan).
+Hiervoor gelden de volgende waarborgen en aandachtspunten:
 
-### Black Forest Labs / FLUX (beeldgeneratie)
-
-Wanneer een afbeelding wordt gegenereerd, wordt de opdrachttekst (prompt) verwerkt door **Black Forest Labs (FLUX)** via het EU-endpoint `api.eu.bfl.ai`. Black Forest Labs Inc. is een Amerikaans bedrijf dat zijn EU-endpoint gebruikt voor deze verwerking. Hiervoor gelden de volgende waarborgen:
-
-- **EU-endpoint**: de verwerking verloopt via het EU-endpoint `api.eu.bfl.ai`.
-- **Certificeringen**: Black Forest Labs: ISO 27001 / SOC 2 Type II — ondertekende DPA met EU SCC's (Besluit 2021/914) te verifiëren.
-- **Server-side API-key**: de verbinding verloopt via een server-side API-key (Supabase secret).
+- **Server-side verwerking**: providerkeys en tijdelijke provider-URL's worden niet naar de browser gestuurd.
+- **Dataminimalisatie**: DGSkills stuurt alleen de context die nodig is voor de lesfunctie; namen/e-mailadressen worden niet standaard meegestuurd.
+- **Providertraining**: gebruik voor provider-modeltraining wordt uitgesloten waar dit door providerafspraken en instellingen wordt gedekt.
+- **Regio en doorgifte**: exacte providerregio's, subprocessors en doorgifte buiten de EER moeten vóór schoolgebruik worden geverifieerd in DPA, instellingen en subprocessoroverzicht.
+- **Schoolcontrole**: scholen moeten deze informatie meenemen in hun DPIA/FG-review.
 
 ### Vercel (hosting)
 
@@ -267,7 +253,7 @@ De website wordt gehost via Vercel. Vercel maakt gebruik van een wereldwijd netw
 
 ### Supabase (database)
 
-Onze database is gehost bij AWS in de EU-regio (Frankfurt, Duitsland). Alle persoonsgegevens worden opgeslagen en verwerkt binnen de EU.
+Opslag en verwerking worden ingericht binnen de EER/EU-projectregio waar contractueel en projectmatig vastgelegd. Exacte regio, doorgifte-afspraken en subprocessorinstellingen worden per school-DPA, projectinstelling en subverwerkerslijst bevestigd.
 
 ### Zoho (e-mail)
 
@@ -311,7 +297,7 @@ Wij bewaren je gegevens niet langer dan nodig is voor het doel waarvoor ze zijn 
 
 ### 10.5 Bij het beeindigen van je account
 
-Als je je account verwijdert (zelf of via de school), worden **alle** gegevens die aan je account zijn gekoppeld **permanent en onomkeerbaar verwijderd**. Dit omvat alle 28 gekoppelde gegevenstabellen. Enige uitzondering is het audit-logboek, dat nog maximaal 3 jaar bewaard kan worden voor wettelijke verantwoording.
+Als je je account verwijdert (zelf of via de school), worden account-hoofdgegevens en technisch gekoppelde rijen verwijderd waar het verwijderbeleid dit dekt. Back-ups, auditlogs, gedeelde records en school/DPA-bewaartermijnen kunnen apart blijven gelden.
 
 ### 10.6 Bij einde schoolcontract
 
@@ -355,7 +341,7 @@ DGSkills maakt gebruik van AI om leerlingen te helpen met hun opdrachten. Het is
 ### Hoe werkt de AI op DGSkills?
 
 - Het platform bevat een **AI-chatfunctie** waarmee je vragen kunt stellen over opdrachten en lesmateriaal.
-- De AI wordt aangedreven door **Mistral AI** (een groot taalmodel voor tekst, vision en OCR); beeldgeneratie verloopt via **Black Forest Labs (FLUX)**.
+- De AI wordt aangedreven door externe AI-providers, waaronder Mistral AI en Black Forest Labs waar de betreffende functie is ingeschakeld.
 - Wanneer je een bericht typt, wordt **alleen de tekst van je bericht** naar de AI gestuurd. Er worden geen andere persoonsgegevens meegestuurd.
 
 ### Belangrijke waarborgen
@@ -364,7 +350,7 @@ DGSkills maakt gebruik van AI om leerlingen te helpen met hun opdrachten. Het is
 |---|---|
 | **Je weet dat je met AI praat** | Het is altijd duidelijk aangegeven wanneer je met AI communiceert (EU AI Act Art. 50) |
 | **AI-antwoorden zijn herkenbaar** | Antwoorden van de AI zijn als zodanig gelabeld |
-| **Geen training met jouw gegevens** | Geen training op leerlingdata (training-opt-out te verifiëren — Mistral biedt opt-out; standaard opt-out op Scale-plan) |
+| **Geen training met jouw gegevens** | De AI wordt niet getraind met jouw berichten of andere persoonsgegevens |
 | **Extra veiligheidsfilters** | De AI blokkeert automatisch inhoud die niet geschikt is voor minderjarigen (intimidatie, haatspraak, seksueel of gevaarlijk materiaal) |
 | **Menselijk toezicht** | Een docent heeft altijd de eindbeslissing over beoordelingen; de AI neemt nooit beslissingen die directe gevolgen hebben voor je schoolresultaten |
 | **Beperkte context** | Alleen de tekst die je typt wordt verwerkt; de AI heeft geen toegang tot je complete profiel of schoolgegevens |
@@ -404,7 +390,7 @@ Op grond van de AVG heb je verschillende rechten met betrekking tot je persoonsg
 ### 14.3 Recht op verwijdering / recht op vergetelheid (Art. 17 AVG)
 
 **Wat:** Je mag vragen om verwijdering van al je persoonsgegevens.
-**Hoe:** In het platform kun je zelf je account en alle bijbehorende gegevens permanent verwijderen via de accountinstellingen. Bij verwijdering worden **alle 28 gekoppelde gegevenstabellen** automatisch en onomkeerbaar gewist. Je kunt dit verzoek ook via je school indienen.
+**Hoe:** In het platform kun je zelf verwijdering van je account-hoofdgegevens aanvragen via de accountinstellingen. Technisch gekoppelde rijen worden verwijderd waar cascade- of verwijderbeleid dit dekt; back-ups, auditlogs, gedeelde records en school/DPA-bewaartermijnen kunnen apart blijven gelden. Je kunt dit verzoek ook via je school indienen.
 
 ### 14.4 Recht op beperking van de verwerking (Art. 18 AVG)
 
@@ -451,7 +437,6 @@ Op grond van artikel 8 van de AVG en artikel 5 van de Uitvoeringswet AVG (UAVG) 
 | **Gebruik via school** | Wanneer het platform via de school wordt ingezet, verloopt de grondslag via de publieke taak van de school. De school informeert ouders en regelt de benodigde toestemming indien nodig. |
 | **Leerlingen jonger dan 16 jaar** | De school draagt zorg voor het verkrijgen van ouderlijke toestemming conform het schoolbeleid en de UAVG. |
 | **Leerlingen van 16 jaar en ouder** | Leerlingen van 16 jaar en ouder kunnen zelfstandig toestemming geven. |
-| **AI-functies: 13 jaar en ouder** | AI-opdrachten zijn alleen beschikbaar voor leerlingen van **13 jaar en ouder** (voorwaarden Mistral AI en Black Forest Labs; ouderlijke toestemming heft dit niet op). De school geeft de geboortedatum door; het platform blokkeert AI-functies automatisch voor leerlingen jonger dan 13. |
 
 ### Extra beschermingsmaatregelen voor minderjarigen
 
@@ -493,7 +478,7 @@ DGSkills maakt uitsluitend gebruik van **strikt noodzakelijke (functionele) cook
 - **Geen analytics-cookies van derden**: wij gebruiken geen Google Analytics, Facebook Pixel of vergelijkbare diensten.
 - **Geen social media-cookies**: er zijn geen social media-knoppen die je gedrag volgen.
 
-Omdat wij uitsluitend strikt noodzakelijke cookies gebruiken, is hiervoor **geen voorafgaande toestemming** vereist (conform artikel 11.7a Telecommunicatiewet en de richtlijnen van de Autoriteit Persoonsgegevens).
+Voor strikt noodzakelijke opslag is geen voorafgaande toestemming vereist. Niet-essentiële analytics of vergelijkbare metingen mogen pas worden geplaatst of geactiveerd nadat daarvoor toestemming is gegeven.
 
 ---
 
@@ -553,11 +538,11 @@ Onderstaand overzicht bevat de actuele lijst van subverwerkers. Deze lijst kan w
 
 | # | Subverwerker | Dienst | Gegevens | Locatie | Waarborgen |
 |---|---|---|---|---|---|
-| 1 | **Supabase Inc.** (AWS Frankfurt) | Database, authenticatie, serverless functions | Alle account- en gebruiksgegevens | EU (Frankfurt, DE) | DPA, SOC2 Type II, ISO 27001 |
-| 2 | **Mistral AI** (tekst, vision en OCR) | AI-chatverwerking | Chatberichttekst (geen profiel-/persoonsgegevens) | **EU (Mistral: Frankrijk)** | Mistral AI DPA met EU SCC's (Besluit 2021/914); dataretentie te verifiëren (Mistral: standaard tot 30 dagen abuse-monitoring; Zero Data Retention optioneel, plan-afhankelijk); geen training op leerlingdata (training-opt-out te verifiëren — Mistral biedt opt-out; standaard opt-out op Scale-plan); server-side API-key (Supabase secret) |
-| 2b | **Black Forest Labs** (FLUX) | Beeldgeneratie | Opdrachttekst (prompt), geen profiel-/persoonsgegevens | **EU-endpoint (api.eu.bfl.ai)** | Black Forest Labs: ISO 27001 / SOC 2 Type II — ondertekende DPA te verifiëren; server-side API-key (Supabase secret) |
-| 3 | **Vercel Inc.** | Website hosting (CDN/edge) | IP-adres, sessietokens (geen database-opslag) | VS / wereldwijd (CDN) | DPA, SCC |
-| 4 | **Zoho Corporation** (smtp.zoho.eu) | E-mailverzending | E-mailadres, naam (bij pilot/notificaties) | EU | DPA, GDPR-compliant EU-datacenter |
+| 1 | **Supabase Inc.** | Database, authenticatie, serverless functions | Alle account- en gebruiksgegevens | EU-projectregio / EER, exact te verifiëren | DPA, SCC's waar nodig, SOC2/ISO waar van toepassing |
+| 2 | **Mistral AI** | AI-chat/feedback/vision/OCR | AI-invoer voor de lesfunctie | Providerregio te verifiëren | Mistral DPA; SCC's/TIA waar nodig; providertraining uitgesloten waar contract/settings dit dekken |
+| 3 | **Black Forest Labs** | AI-beeldgeneratie | Beeldprompts en gegenereerde afbeeldingen | Providerregio te verifiëren | Provider-DPA/subprocessorbewijs vereist; server-side verwerking |
+| 4 | **Vercel Inc.** | Website hosting (CDN/edge) | IP-adres, sessietokens (geen database-opslag) | VS / wereldwijd (CDN) | DPA, SCC, DPF waar van toepassing |
+| 5 | **Zoho Corporation** (smtp.zoho.eu) | E-mailverzending | E-mailadres, naam (bij pilot/notificaties) | EU-dienstverlening te verifiëren | DPA, SCC's waar nodig |
 
 ---
 

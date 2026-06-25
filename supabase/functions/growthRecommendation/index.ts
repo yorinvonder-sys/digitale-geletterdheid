@@ -13,6 +13,7 @@
  */
 import { createClient } from "jsr:@supabase/supabase-js@2";
 import { buildCorsHeaders, rejectDisallowedBrowserRequest } from "../_shared/cors.ts";
+import { ensureAiInteractionConsent } from "../_shared/consent.ts";
 import { completeMistralChat, getMistralTextModel } from "../_shared/mistralClient.ts";
 
 const MODEL = getMistralTextModel();
@@ -216,6 +217,9 @@ Deno.serve(async (req: Request) => {
             headers: { ...corsHeaders, "Content-Type": "application/json" },
         });
     }
+
+    const consentRejection = await ensureAiInteractionConsent(userClient, user, corsHeaders);
+    if (consentRejection) return consentRejection;
 
     const userId = user.id;
 

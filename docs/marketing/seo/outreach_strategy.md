@@ -21,7 +21,7 @@ Beste [Naam redacteur/contactpersoon],
 
 Ik volg [Naam Medium] al een tijdje met veel interesse, met name de recente artikelen over [relevant onderwerp].
 
-Sinds februari 2025 is de AI Act van kracht, wat nieuwe verplichtingen met zich meebrengt voor AI-geletterdheid in het onderwijs. Veel scholen worstelen momenteel met de vraag hoe ze hier praktisch én privacybewust invulling aan kunnen geven.
+Sinds februari 2025 is de AI Act van kracht, wat nieuwe verplichtingen met zich meebrengt voor AI-geletterdheid in het onderwijs. Veel scholen worstelen momenteel met de vraag hoe ze hier praktisch en AVG-bewust invulling aan kunnen geven.
 
 Vanuit DGSkills hebben we uitgebreid onderzoek gedaan naar de implementatie van deze richtlijnen in het VO. Ik zou graag een gastartikel (of expert-quote) aanleveren voor [Naam Medium] over:
 - De 3 belangrijkste AI Act verplichtingen voor schoolbesturen.

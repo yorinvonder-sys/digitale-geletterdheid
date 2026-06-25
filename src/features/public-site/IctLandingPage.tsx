@@ -31,9 +31,9 @@ export const IctLandingPage: React.FC = () => {
             el.setAttribute('content', content);
         };
 
-        setMeta('name', 'description', 'Ontdek hoe DGSkills past in jouw schoolarchitectuur. Alles over SSO (Microsoft/Google/SURFconext), privacy-maatregelen, LVS-koppelingen en technische support.');
+        setMeta('name', 'description', 'Ontdek hoe DGSkills past in jouw schoolarchitectuur. Alles over SSO (Microsoft/Google/SURFconext), AVG-bewuste inrichting, LVS-koppelingen en technische support.');
         setMeta('property', 'og:title', 'ICT & Informatiemanagers — Veiligheid, Privacy & Integratie | DGSkills');
-        setMeta('property', 'og:description', 'Veilige en beheersbare digitale geletterdheid voor het VO. Privacy by design en naadloze integratie.');
+        setMeta('property', 'og:description', 'Veilige en beheersbare digitale geletterdheid voor het VO. Privacy-by-design dossier en naadloze integratie.');
         
         const idleCb = () => {
             setMeta('property', 'og:url', 'https://dgskills.app/ict');

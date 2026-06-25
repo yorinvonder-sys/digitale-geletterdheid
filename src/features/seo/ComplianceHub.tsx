@@ -93,7 +93,7 @@ const SECTIONS: ComplianceSection[] = [
             {
                 id: 'technische-whitepaper',
                 title: 'Technische Whitepaper',
-                description: 'Architectuur, SSO-integraties, data-opslag binnen de EU (AWS Frankfurt) en beveiligingsprotocollen.',
+                description: 'Architectuur, SSO-integraties, EER/EU-projectregio en beveiligingsprotocollen.',
                 badge: 'v1.0',
                 access: { type: 'link', href: '/ict/technisch' },
             },
@@ -129,7 +129,7 @@ const SECTIONS: ComplianceSection[] = [
             {
                 id: 'checklist',
                 title: 'AI-Compliance Checklist',
-                description: 'Praktische checklist om te controleren of jouw school voldoet aan de AVG en EU AI Act bij gebruik van DGSkills.',
+                description: 'Praktische checklist voor AVG- en EU AI Act-aandachtspunten bij gebruik van DGSkills.',
                 badge: 'Handig',
                 access: { type: 'link', href: '/compliance/checklist' },
             },
@@ -158,7 +158,7 @@ const SECTIONS: ComplianceSection[] = [
             {
                 id: 'conformiteitsplan',
                 title: 'EU AI Act Conformiteitsplan',
-                description: 'Plan hoe DGSkills toewerkt naar volledige naleving van de hoog-risico verplichtingen per 2 augustus 2026.',
+                description: 'Plan hoe DGSkills toewerkt naar aantoonbare high-risk AI Act-documentatie, governance en transparantie.',
                 badge: 'AI Act',
                 access: { type: 'request', subject: 'Aanvraag: EU AI Act Conformiteitsplan' },
             },

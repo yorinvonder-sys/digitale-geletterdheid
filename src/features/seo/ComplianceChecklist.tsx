@@ -76,10 +76,10 @@ const SECTIONS: ChecklistSection[] = [
         items: [
             {
                 id: 'data-eea',
-                label: 'Alle persoonsgegevens worden opgeslagen en verwerkt binnen de EER.',
+                label: 'Opslag, verwerking en doorgifte zijn contractueel en projectmatig per provider en regio geverifieerd.',
                 responsibility: 'leverancier',
                 reference: 'AVG Art. 44-50',
-                note: 'Opslag bij Supabase (AWS Frankfurt, EU); AI-verwerking via Mistral AI en Black Forest Labs (EU), server-side.',
+                note: 'DGSkills verwerkt via een EER/EU-projectregio en actuele subverwerkersafspraken; exacte regio wordt per provider geverifieerd.',
             },
             {
                 id: 'data-min',
@@ -100,8 +100,8 @@ const SECTIONS: ChecklistSection[] = [
                 reference: 'AVG Art. 32',
             },
             {
-                id: 'zero-training',
-                label: 'Input van leerlingen en docenten wordt niet gebruikt voor het trainen van commerciële AI-modellen.',
+                id: 'provider-training-controls',
+                label: 'Input van leerlingen en docenten wordt niet voor provider-modeltraining gebruikt waar dit door providerafspraken en instellingen is gedekt.',
                 responsibility: 'leverancier',
                 reference: 'Privacy-by-design',
             },
@@ -147,7 +147,7 @@ const SECTIONS: ChecklistSection[] = [
     {
         id: 'ai-act',
         title: '4. AI Act — transparantie & menselijk toezicht',
-        intro: 'DGSkills valt onder hoog risico (EU AI Act Annex III, punt 3(b)). Deadline hoog-risico verplichtingen: 2 augustus 2026.',
+        intro: 'DGSkills behandelt school-facing AI als hoog risico (EU AI Act Annex III, punt 3(b)). Art. 50-transparantie geldt vanaf augustus 2026; de actuele Commissiepagina noemt 2 december 2027 voor high-risk onderwijsverplichtingen.',
         items: [
             {
                 id: 'ai-disclosure',
@@ -184,7 +184,7 @@ const SECTIONS: ChecklistSection[] = [
                 label: 'Er zijn maatregelen tegen automation bias (overmatig vertrouwen op AI bij beoordelingen).',
                 responsibility: 'samen',
                 reference: 'AI Act Art. 14(4)(b)',
-                note: 'Aandachtspunt voor augustus 2026: expliciet beleid per school.',
+                note: 'Aandachtspunt voor school-DPIA en AI-governance: expliciet beleid per school.',
             },
         ],
     },
@@ -228,7 +228,7 @@ const SECTIONS: ChecklistSection[] = [
                 label: 'Relevante gebeurtenissen worden automatisch gelogd en voor een passende periode bewaard.',
                 responsibility: 'leverancier',
                 reference: 'AI Act Art. 12',
-                note: 'Volledige Art. 12 logging wordt uitgebreid vóór 2 augustus 2026.',
+                note: 'Art. 12 logging wordt verder gedocumenteerd binnen het high-risk AI Act-dossier.',
             },
         ],
     },
@@ -375,7 +375,7 @@ export const ComplianceChecklist: React.FC = () => {
                                     Gebruik deze checklist bij inkoop, ingebruikname en de periodieke review van
                                     een AI-leermiddel in het voortgezet onderwijs. DGSkills valt onder{' '}
                                     <strong className="text-lab-ink">hoog risico</strong> volgens de EU AI Act (Annex III, punt 3(b)) —
-                                    deadline 2 augustus 2026.
+                                    actuele AI Act-roadmap.
                                 </p>
                                 <div className="flex flex-wrap gap-2 items-center text-xs">
                                     <span className="text-lab-mutedSoft">Verantwoordelijkheid:</span>

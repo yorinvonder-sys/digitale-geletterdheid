@@ -351,7 +351,7 @@ serve(async (req: Request) => {
 
                 <p style="margin: 0 0 10px; font-size: 11px; color: #445865; text-transform: uppercase; letter-spacing: 0.08em; font-weight: bold;">Voor je schoolbestuur en FG</p>
                 <p style="font-size: 14px; color: #445865; line-height: 1.6; margin: 0 0 14px;">
-                  Onze Compliance Hub bevat alle 21 juridische en technische documenten — DPA Model 4.0, DPIA, EU AI Act Annex IV, risicoregister en verwerkingsregister. Direct te bekijken of op aanvraag.
+                  Onze Compliance Hub bevat het schooldossier — DPA-template, DPIA-ondersteuning, EU AI Act-documentatie, risicoregister en verwerkingsregister. Direct te bekijken of op aanvraag.
                 </p>
                 <p style="margin: 0 0 24px;">
                   <a href="https://dgskills.app/compliance-hub" style="display: inline-block; padding: 10px 20px; background: #08283B; color: white; text-decoration: none; font-weight: 600; font-size: 13px; border-radius: 8px;">Naar Compliance Hub →</a>
@@ -359,9 +359,9 @@ serve(async (req: Request) => {
 
                 <p style="margin: 0 0 10px; font-size: 11px; color: #445865; text-transform: uppercase; letter-spacing: 0.08em; font-weight: bold;">Veelgestelde vragen</p>
                 <div style="font-size: 13px; color: #445865; line-height: 1.6;">
-                  <p style="margin: 0 0 10px;"><strong style="color: #445865;">Waar staat onze data?</strong><br />Binnen de Europese Economische Ruimte (Supabase, AWS Frankfurt). AI-verwerking via Mistral AI en Black Forest Labs server-side via Supabase Edge Functions. Geen data wordt gebruikt voor het trainen van AI-modellen.</p>
-                  <p style="margin: 0 0 10px;"><strong style="color: #445865;">Wat gebeurt er na de pilot?</strong><br />Stoppen (alle data wordt binnen 30 dagen verwijderd), verlengen, of overstappen naar een licentie vanaf €2.000 per schoollocatie per jaar.</p>
-                  <p style="margin: 0 0 10px;"><strong style="color: #445865;">Is DGSkills compliant met de EU AI Act?</strong><br />Ja. We zijn geclassificeerd als hoog-risico onder Annex III punt 3(b) en werken naar volledige conformiteit voor 2 augustus 2026. Het volledige conformiteitsbeoordelingsplan is opvraagbaar.</p>
+                  <p style="margin: 0 0 10px;"><strong style="color: #445865;">Waar staat onze data?</strong><br />Binnen de EER/EU-projectregio zoals contractueel en projectmatig vastgelegd. AI-verwerking loopt server-side via Mistral AI en Black Forest Labs; gebruik voor provider-modeltraining is uitgesloten waar dit door providerafspraken en instellingen is gedekt.</p>
+                  <p style="margin: 0 0 10px;"><strong style="color: #445865;">Wat gebeurt er na de pilot?</strong><br />Stoppen (hoofdgegevens worden op verzoek binnen 30 dagen verwijderd; back-ups, auditlogs en wettelijke/contractuele bewaartermijnen volgen de DPA), verlengen, of overstappen naar een licentie vanaf €2.000 per schoollocatie per jaar.</p>
+                  <p style="margin: 0 0 10px;"><strong style="color: #445865;">Is DGSkills compliant met de EU AI Act?</strong><br />We behandelen school-facing AI als high-risk onderwijs-AI onder Annex III punt 3(b) en werken aan aantoonbare documentatie, governance en transparantie. Het conformiteitsplan is opvraagbaar.</p>
                 </div>
 
                 <p style="font-size: 14px; color: #445865; margin: 24px 0 0;">
@@ -389,12 +389,12 @@ serve(async (req: Request) => {
             + `2. Onboarding voor docenten — 30 min, ingepland na akkoord\n`
             + `3. Leerlingen starten — binnen 10 werkdagen na akkoord\n\n`
             + `VOOR JE SCHOOLBESTUUR EN FG\n`
-            + `Onze Compliance Hub bevat alle 21 juridische en technische documenten — DPA Model 4.0, DPIA, EU AI Act Annex IV, risicoregister en verwerkingsregister.\n`
+            + `Onze Compliance Hub bevat het schooldossier — DPA-template, DPIA-ondersteuning, EU AI Act-documentatie, risicoregister en verwerkingsregister.\n`
             + `→ https://dgskills.app/compliance-hub\n\n`
             + `VEELGESTELDE VRAGEN\n`
-            + `• Waar staat onze data? Binnen de EER (Supabase, AWS Frankfurt). Geen training op jouw data.\n`
-            + `• Wat na de pilot? Stoppen (data verwijderd binnen 30 dagen), verlengen, of licentie vanaf €2.000 per locatie/jaar.\n`
-            + `• EU AI Act? Ja — hoog-risico conform Annex III 3(b), conformiteit voor 2 augustus 2026.\n\n`
+            + `• Waar staat onze data? Binnen de EER/EU-projectregio zoals contractueel vastgelegd; geen provider-modeltraining waar providerafspraken en instellingen dit dekken.\n`
+            + `• Wat na de pilot? Stoppen (hoofdgegevens op verzoek binnen 30 dagen verwijderd; back-ups, auditlogs en DPA-bewaartermijnen blijven leidend), verlengen, of licentie vanaf €2.000 per locatie/jaar.\n`
+            + `• EU AI Act? School-facing AI wordt behandeld als high-risk conform Annex III 3(b); transparantie en governance worden aantoonbaar gedocumenteerd.\n\n`
             + `Vragen? info@dgskills.app of privacy@dgskills.app\n\n`
             + `DGSkills — dgskills.app — KvK 81819889`,
         });

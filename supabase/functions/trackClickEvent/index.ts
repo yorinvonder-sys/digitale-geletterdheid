@@ -1,8 +1,9 @@
 /**
  * Edge Function: /trackClickEvent
  *
- * Stores lightweight analytics events and structured Web Vitals samples.
- * Uses service role writes so anonymous page loads can still be measured.
+ * Stores lightweight first-party analytics events and structured Web Vitals samples.
+ * The browser client gates calls on consent; this function stores pseudonymous
+ * rate-limit/quality metadata and never receives direct contact details.
  */
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 import {
@@ -73,6 +74,20 @@ interface AnalyticsRequest {
 interface AuthContext {
   userId: string | null;
   role: 'anonymous' | 'student' | 'teacher' | 'developer';
+}
+
+async function isProcessingRestricted(supabase: ReturnType<typeof createClient>, userId: string): Promise<boolean> {
+  const { data, error } = await supabase
+    .from('users')
+    .select('processing_restricted')
+    .eq('id', userId)
+    .maybeSingle();
+
+  if (error) {
+    throw new Error(`processing restriction lookup failed: ${error.message}`);
+  }
+
+  return data?.processing_restricted === true;
 }
 
 function sanitizeToken(value: unknown, maxLen: number): string {
@@ -193,6 +208,24 @@ Deno.serve(async (req: Request) => {
       });
     }
 
+    const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
+    if (authContext.userId) {
+      try {
+        if (await isProcessingRestricted(supabase, authContext.userId)) {
+          return new Response(JSON.stringify({ success: true, skipped: true, reason: 'processing_restricted' }), {
+            status: 200,
+            headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+          });
+        }
+      } catch (error) {
+        console.error('[trackClickEvent] processing restriction check failed:', error);
+        return new Response(JSON.stringify({ error: 'Verwerkingsstatus kon niet worden gecontroleerd.' }), {
+          status: 500,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        });
+      }
+    }
+
     const rateLimitKey = authContext.userId
       ? `analytics:user:${authContext.userId}`
       : `analytics:anon:${fingerprintHash}`;
@@ -226,7 +259,6 @@ Deno.serve(async (req: Request) => {
       }
     }
 
-    const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
     const eventData = {
       event_name: eventName,
       page_key: pageKey,
