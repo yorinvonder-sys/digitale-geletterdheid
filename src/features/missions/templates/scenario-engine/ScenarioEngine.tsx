@@ -101,6 +101,7 @@ const VALID_SCENARIO_ENGINE_IDS: ReadonlySet<string> = new Set([
     'online-helden',
     'phishing-fighter',
     'social-safeguard',
+    'veilig-internet',
 ]);
 
 // ── Public entry point ────────────────────────────────────────────────────────
@@ -207,6 +208,7 @@ const ScenarioEngineInner: React.FC<{
                 description={config.introDescription}
                 goal={config.missionGoal ?? getMissionGoal(config.missionId)}
                 features={config.introFeatures}
+                attribution={config.attribution}
                 onStart={() => setState((prev) => ({ ...prev, phase: 'active' }))}
             />
         );
@@ -226,6 +228,7 @@ const ScenarioEngineInner: React.FC<{
                     max: round.maxScore,
                 }))}
                 takeaways={config.takeaways}
+                attribution={config.attribution}
                 onComplete={handleComplete}
             />
         );

@@ -13,6 +13,7 @@ export const TEMPLATE_MISSIONS: Record<string, TemplateMissionEntry> = {
     'online-helden':        { missionId: 'online-helden',        templateType: 'scenario-engine' },
     'phishing-fighter':     { missionId: 'phishing-fighter',     templateType: 'scenario-engine' },
     'social-safeguard':     { missionId: 'social-safeguard',     templateType: 'scenario-engine' },
+    'veilig-internet':      { missionId: 'veilig-internet',      templateType: 'scenario-engine' },
     'factchecker':          { missionId: 'factchecker',          templateType: 'scenario-engine' },
     'ai-bias-detective':    { missionId: 'ai-bias-detective',    templateType: 'scenario-engine' },
     'digital-forensics':    { missionId: 'digital-forensics',    templateType: 'scenario-engine' },

@@ -1,6 +1,6 @@
 import React from 'react';
 import { AgentRole, EducationLevel } from '@/types';
-import { ShieldAlert, Database, Rocket, Pencil, Image as ImageIcon, Play, Sparkles, Feather, Gamepad2, BrainCircuit, Code2, Search, Cpu, ShieldCheck, AlertCircle, Map, Lightbulb, RotateCcw, Scale, BarChart2, Bug, Smartphone, Mic, Video, Shield } from 'lucide-react';
+import { ShieldAlert, Database, Rocket, Pencil, Image as ImageIcon, Play, Sparkles, Feather, Gamepad2, BrainCircuit, Code2, Search, Cpu, ShieldCheck, AlertCircle, Map, Lightbulb, RotateCcw, Scale, BarChart2, Bug, Smartphone, Mic, Video, Shield, Lock } from 'lucide-react';
 import { SYSTEM_INSTRUCTION_SUFFIX } from './shared';
 
 export const YEAR1_ROLES: AgentRole[] = [
@@ -4005,6 +4005,37 @@ REGELS:
                 example: "Maak een staafdiagram of tabel die je data visueel maakt."
             }
         ],
+    },
+    {
+        id: 'veilig-internet',
+        yearGroup: 1,
+        educationLevels: ['mavo', 'havo', 'vwo'] as EducationLevel[],
+        title: 'Veilig Internet',
+        icon: <Lock size={28} />,
+        color: '#202023',
+        description: 'Leer hoe je online risico’s herkent en je gegevens goed beschermt.',
+        problemScenario: 'Je krijgt berichten, links en inlogverzoeken die betrouwbaar lijken, maar niet altijd veilig zijn.',
+        missionObjective: 'Herken phishing, kies sterke wachtwoorden en 2FA, deel geen onnodige persoonsgegevens en reageer slim op social engineering.',
+        briefingImage: '/assets/agents/veilig-internet.svg',
+        difficulty: 'Easy',
+        examplePrompt: 'Welke signalen laten zien dat een bericht nep kan zijn?',
+        visualPreview: (
+            <div className="w-full h-full bg-lab-teal flex items-center justify-center p-4">
+                <div className="relative w-44 h-28 rounded-3xl bg-white shadow-lg border border-lab-teal/20 overflow-hidden">
+                    <div className="absolute inset-x-0 top-0 h-10 bg-lab-coral" />
+                    <div className="absolute left-6 top-7 w-16 h-16 rounded-full bg-lab-cream border-4 border-white flex items-center justify-center">
+                        <Lock size={22} className="text-lab-ink" />
+                    </div>
+                    <div className="absolute right-6 top-14 w-16">
+                        <div className="h-2 w-full rounded-full bg-lab-olive/30 mb-2" />
+                        <div className="h-2 w-4/5 rounded-full bg-lab-olive/20 mb-2" />
+                        <div className="h-2 w-2/3 rounded-full bg-lab-olive/20" />
+                    </div>
+                </div>
+            </div>
+        ),
+        systemInstruction: '',
+        steps: [],
     },
     {
         id: 'website-bouwer',

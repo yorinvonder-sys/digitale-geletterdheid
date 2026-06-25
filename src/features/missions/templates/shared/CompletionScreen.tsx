@@ -18,6 +18,12 @@ interface CompletionScreenProps {
     phases?: PhaseScore[];
     takeaways: string[];
     onComplete: () => void;
+    attribution?: {
+        source: string;
+        author?: string;
+        license?: string;
+        sourceUrl?: string;
+    };
 }
 
 export const CompletionScreen: React.FC<CompletionScreenProps> = ({
@@ -27,6 +33,7 @@ export const CompletionScreen: React.FC<CompletionScreenProps> = ({
     phases,
     takeaways,
     onComplete,
+    attribution,
 }) => {
     const badge = [...badges]
         .sort((a, b) => b.minScore - a.minScore)
@@ -123,6 +130,26 @@ export const CompletionScreen: React.FC<CompletionScreenProps> = ({
                         ))}
                     </ul>
                 </div>
+
+                {attribution && (
+                    <p className="mt-4 text-[11px] leading-relaxed text-duck-ink/45 text-center" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                        Gebaseerd op{' '}
+                        {attribution.sourceUrl ? (
+                            <a
+                                href={attribution.sourceUrl}
+                                target="_blank"
+                                rel="noreferrer"
+                                className="underline decoration-duck-ink/25 underline-offset-2 hover:text-duck-ink/70"
+                            >
+                                de open les ‘{attribution.source}’
+                            </a>
+                        ) : (
+                            <span>de open les ‘{attribution.source}’</span>
+                        )}
+                        {attribution.author ? ` van ${attribution.author}` : ''}
+                        {attribution.license ? ` · ${attribution.license}` : ''}
+                    </p>
+                )}
             </div>
         </div>
     );

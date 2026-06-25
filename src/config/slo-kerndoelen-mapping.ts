@@ -67,6 +67,7 @@ export const KERNDOEL_MISSIONS: KerndoelMissionMeta[] = [
   { id: 'deepfake-detector', title: 'Deepfake Detector', week: 3, yearGroup: 1, sloKerndoelen: ['21B', '21D', '23A', '23C'], sloVsoKerndoelen: ['18B', '18C', '20A'] }, // +23A: strafbaarheid + jezelf beschermen
   { id: 'ai-spiegel', title: 'De AI Spiegel', week: 3, yearGroup: 1, sloKerndoelen: ['23A', '23B', '21C'], sloVsoKerndoelen: ['20A', '20B'] },                // 23C→23A,21C: privacy-instellingen checken + data-bewustzijn
   { id: 'social-safeguard', title: 'Social Safeguard', week: 3, yearGroup: 1, sloKerndoelen: ['23B', '23A'], sloVsoKerndoelen: ['20A', '20B'] },
+  { id: 'veilig-internet', title: 'Veilig Internet', week: 3, yearGroup: 1, sloKerndoelen: ['23A', '21B'], sloVsoKerndoelen: ['20A', '18B'] },
   { id: 'scroll-stopper', title: 'De Scroll Stopper', week: 3, yearGroup: 1, sloKerndoelen: ['23B', '21B'], sloVsoKerndoelen: ['20A', '20B'] },                   // scrollgedrag + manipulatieve UX-design = welzijn + mediawijsheid
   { id: 'cookie-crusher', title: 'Cookie Crusher', week: 3, yearGroup: 1, sloKerndoelen: ['23A', '23C'], sloVsoKerndoelen: ['18B', '20A'] },                  // 21B→23A: dark patterns + AVG = privacy + regelgeving
   { id: 'mail-detective', title: 'Mail Detective', week: 3, yearGroup: 1, sloKerndoelen: ['23A'], sloVsoKerndoelen: ['18B', '20A'] },                         // herkennen van nep-mails = veiligheid & privacy; VSO: 18B mediawijsheid + 20A digitale veiligheid
