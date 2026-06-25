@@ -47,6 +47,7 @@
     "performance:ci": "npm run lighthouse:median && npm run perf:assert:network && npm run perf:bundle:check",
     "qa:journey:desktop": "node scripts/audit-journey-desktop.mjs",
     "audit:security": "npm audit --audit-level=moderate",
+    "security:check": "node scripts/security-report-core-check.mjs && node scripts/check-website-security-posture.mjs",
     "review:handoff": "node scripts/validate-claude-handoff.mjs"
   },
   "dependencies": {

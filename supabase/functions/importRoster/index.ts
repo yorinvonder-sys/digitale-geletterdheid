@@ -42,6 +42,15 @@ interface RosterRow {
 
 interface RowError { row: number; reason: string }
 interface NewCredential { email: string; tempPassword: string }
+interface CreatedAuthUser { id: string }
+interface AdminCreateUserApi {
+  createUser(attributes: {
+    email: string;
+    password: string;
+    email_confirm: boolean;
+    app_metadata: Record<string, unknown>;
+  }): Promise<{ data: { user: CreatedAuthUser | null }; error: { message?: string } | null }>;
+}
 
 function jsonResponse(body: unknown, status: number, corsHeaders: Record<string, string>, extra: Record<string, string> = {}): Response {
   return new Response(JSON.stringify(body), {
@@ -183,6 +192,7 @@ serve(async (req: Request) => {
     }
 
     const adminClient = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
+    const adminAuth = adminClient.auth.admin as typeof adminClient.auth.admin & AdminCreateUserApi;
     const now = new Date().toISOString();
 
     let created = 0;
@@ -262,7 +272,7 @@ serve(async (req: Request) => {
 
         // Nieuw account
         const tempPassword = strongTempPassword();
-        const { data: createdAuth, error: createErr } = await adminClient.auth.admin.createUser({
+        const { data: createdAuth, error: createErr } = await adminAuth.createUser({
           email,
           password: tempPassword,
           email_confirm: true,

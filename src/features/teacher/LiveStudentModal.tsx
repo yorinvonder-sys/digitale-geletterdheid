@@ -36,7 +36,7 @@ export const LiveStudentModal: React.FC<LiveStudentModalProps> = ({ student, onC
         const fetchActivities = async () => {
             const { data, error } = await supabase
                 .from('student_activities')
-                .select('*')
+                .select('id, uid, type, data, timestamp, mission_id')
                 .eq('uid', student.uid)
                 .order('timestamp', { ascending: false })
                 .limit(50);
