@@ -4,6 +4,8 @@ import { HeroEyes } from '@/components/brand/HeroEyes';
 import { AnimatedCounter } from '@/components/brand/AnimatedCounter';
 import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion';
 import { useHomepageAnalytics } from '@/hooks/useHomepageAnalytics';
+import { DuckMascot } from '@/components/brand/DuckMascot';
+import { Target, Clock, FileText, Puzzle, PhoneCall, Map as MapIcon, Rocket, Users, CreditCard, CalendarClock, GraduationCap, Building2, ShieldCheck, FlaskConical } from 'lucide-react';
 
 type NavItem = { label: string; target: string };
 type SkillTone = 'paper' | 'acid';
@@ -258,6 +260,28 @@ const roleFaqs = [
     { role: 'ICT & privacy', question: 'Kunnen we privacy en AI vooraf beoordelen?', answer: 'Ja — en dat is precies de bedoeling. Verwerkersafspraken, DPIA-ondersteuning en AI-transparantie zitten standaard in de pilot. Neem de tijd die je nodig hebt.' },
     { role: 'Pilot', question: 'Hoe snel kan een school starten?', answer: 'Binnen 10 werkdagen na de eerste afstemming. Geen projectplan van tien pagina\'s, geen maanden aanlooptijd.' },
 ] as const;
+
+const leaderReasonIcons = [
+    <Target className="h-5 w-5 text-duck-ink" strokeWidth={2} aria-hidden="true" />,
+    <Clock className="h-5 w-5 text-duck-ink" strokeWidth={2} aria-hidden="true" />,
+    <FileText className="h-5 w-5 text-duck-ink" strokeWidth={2} aria-hidden="true" />,
+    <Puzzle className="h-5 w-5 text-duck-ink" strokeWidth={2} aria-hidden="true" />,
+];
+const pilotItemIcons = [
+    <PhoneCall className="h-4 w-4 text-duck-ink" strokeWidth={2} aria-hidden="true" />,
+    <MapIcon className="h-4 w-4 text-duck-ink" strokeWidth={2} aria-hidden="true" />,
+    <Rocket className="h-4 w-4 text-duck-ink" strokeWidth={2} aria-hidden="true" />,
+    <Users className="h-4 w-4 text-duck-ink" strokeWidth={2} aria-hidden="true" />,
+    <FileText className="h-4 w-4 text-duck-ink" strokeWidth={2} aria-hidden="true" />,
+    <CreditCard className="h-4 w-4 text-duck-ink" strokeWidth={2} aria-hidden="true" />,
+    <CalendarClock className="h-4 w-4 text-duck-ink" strokeWidth={2} aria-hidden="true" />,
+];
+const roleFaqIcons = [
+    <GraduationCap className="h-4 w-4 text-duck-ink/60" strokeWidth={2} aria-hidden="true" />,
+    <Building2 className="h-4 w-4 text-duck-ink/60" strokeWidth={2} aria-hidden="true" />,
+    <ShieldCheck className="h-4 w-4 text-duck-ink/60" strokeWidth={2} aria-hidden="true" />,
+    <FlaskConical className="h-4 w-4 text-duck-ink/60" strokeWidth={2} aria-hidden="true" />,
+];
 
 const journeyChapters: JourneyChapter[] = [
     {
@@ -546,13 +570,19 @@ export const ScholenLanding: React.FC = () => {
                                 </div>
                             ))}
                         </dl>
-                        <div className="mx-auto mt-12 grid max-w-3xl grid-cols-2 gap-8 border-t border-duck-ink/10 pt-10 md:grid-cols-4">
+                    </div>
+                </section>
+
+                <section className="relative bg-duck-bgLight px-5 py-14 md:px-10 md:py-16">
+                    <Reveal className="mx-auto max-w-4xl">
+                        <p className="text-center text-[11px] font-extrabold uppercase tracking-[0.18em] text-duck-ink/45">DGSkills in cijfers</p>
+                        <div className="mt-8 grid grid-cols-2 gap-x-6 gap-y-10 md:grid-cols-4">
                             <AnimatedCounter value={95} suffix="+" label="AI-missies" />
                             <AnimatedCounter value={14} label="SLO-kerndoelen" />
                             <AnimatedCounter value={3} suffix=" jaar" label="Doorlopende leerlijn" />
                             <AnimatedCounter value={3} suffix=" mnd" label="Gratis pilot" />
                         </div>
-                    </div>
+                    </Reveal>
                 </section>
 
                 <SkillMarquee reduceMotion={reduceMotion} />
@@ -617,7 +647,12 @@ export const ScholenLanding: React.FC = () => {
                                 {leaderReasons.map((reason, index) => (
                                     <Reveal key={reason.title} delay={0.15 + index * 0.12} y={20} className="flex">
                                         <article className={`h-full rounded-[1.5rem] p-6 shadow-[2px_4px_24px_rgba(199,197,188,0.30)] ${index % 3 === 0 ? 'bg-duck-acid' : 'bg-white'}`}>
-                                            <p className="font-display text-3xl leading-none text-duck-ink/30" aria-hidden="true">{String(index + 1).padStart(2, '0')}</p>
+                                            <div className="flex items-center justify-between">
+                                                <span className={`grid size-11 place-items-center rounded-xl ${index % 3 === 0 ? 'bg-duck-ink/10' : 'bg-duck-ink/5'}`}>
+                                                    {leaderReasonIcons[index]}
+                                                </span>
+                                                <p className="font-display text-3xl leading-none text-duck-ink/25" aria-hidden="true">{String(index + 1).padStart(2, '0')}</p>
+                                            </div>
                                             <h3 className="mt-4 text-xl font-extrabold leading-tight">{reason.title}</h3>
                                             <p className="mt-2.5 text-sm font-semibold leading-6 text-duck-ink/65">{reason.copy}</p>
                                         </article>
@@ -683,12 +718,17 @@ export const ScholenLanding: React.FC = () => {
                                 <p className="mt-5 text-pretty text-base font-semibold leading-7 text-duck-ink/70">
                                     Gebouwd vanuit de VO/VSO-praktijk. Klein genoeg om dit semester te starten — concreet genoeg om een schoolbesluit op te baseren.
                                 </p>
+                                <div className="mt-8 hidden sm:block" aria-hidden="true">
+                                    <DuckMascot mood="cheer" className="h-24 w-24" />
+                                </div>
                             </div>
                             <div>
                                 <ul className="grid gap-x-6 sm:grid-cols-2">
-                                    {pilotItems.map((item) => (
-                                        <li key={item} className="flex gap-3 border-b border-duck-ink/10 py-3.5 text-sm font-extrabold leading-6">
-                                            <CheckIcon />
+                                    {pilotItems.map((item, index) => (
+                                        <li key={item} className="flex items-center gap-3 border-b border-duck-ink/10 py-3.5 text-sm font-extrabold leading-6">
+                                            <span className="grid size-8 flex-none place-items-center rounded-lg bg-duck-ink/10">
+                                                {pilotItemIcons[index]}
+                                            </span>
                                             <span>{item}</span>
                                         </li>
                                     ))}
@@ -1557,7 +1597,7 @@ function FaqSection() {
                                         className="flex w-full items-center justify-between gap-4 py-6 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-ink focus-visible:ring-offset-2"
                                     >
                                         <span>
-                                            <span className="text-xs font-extrabold uppercase tracking-[0.16em] text-duck-ink/45">{faq.role}</span>
+                                            <span className="inline-flex items-center gap-1.5 text-xs font-extrabold uppercase tracking-[0.16em] text-duck-ink/45">{roleFaqIcons[index]}{faq.role}</span>
                                             <span className="mt-1.5 block font-display text-xl leading-snug md:text-2xl">{faq.question}</span>
                                         </span>
                                         <span className={`grid size-10 flex-none place-items-center rounded-full border transition-all duration-300 ${isOpen ? 'rotate-45 border-duck-ink bg-duck-acid' : 'border-duck-ink/20'}`} aria-hidden="true">
