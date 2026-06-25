@@ -9,6 +9,7 @@ import { Target, Clock, FileText, Puzzle, PhoneCall, Map as MapIcon, Rocket, Use
 import { ScholenLandingProductBento } from '@/features/public-site/ScholenLandingProductBento';
 import { AiDisclosureBadge } from '@/features/ai-chat/AiDisclosureBadge';
 import { ScholenLandingSloDomains } from '@/features/public-site/ScholenLandingSloDomains';
+import { ScholenLandingAiMissionMoment } from '@/features/public-site/ScholenLandingAiMissionMoment';
 
 type NavItem = { label: string; target: string };
 type SkillTone = 'paper' | 'acid';
@@ -620,12 +621,9 @@ export const ScholenLanding: React.FC = () => {
                                     ))}
                                 </ol>
                             </div>
-                            <ProductProofFrame
-                                label="Leerlingmissie"
-                                title="Prompt Perfectionist"
-                                screen={<ScreenMissieDetail />}
-                                caption="Leerlingen maken, testen en leggen uit wat ze aanpassen."
-                            />
+                            <div>
+                                <ScholenLandingAiMissionMoment />
+                            </div>
                         </Reveal>
                     </div>
                 </section>
