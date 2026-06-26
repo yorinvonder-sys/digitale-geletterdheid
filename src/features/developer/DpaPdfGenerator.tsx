@@ -10,6 +10,7 @@
 
 import React, { useState } from 'react';
 import { generateDpaPdf, type DpaFormData } from '@/services/dpaPdfService';
+import { extractDpaSchoolData } from '@/services/dpaAiService';
 
 // ============================================================================
 // Statische DGSkills-info (spiegelt DGSKILLS_ENTITY in dpaPdfService)
@@ -135,6 +136,12 @@ export const DpaPdfGenerator: React.FC = () => {
     const [generating, setGenerating] = useState(false);
     const [success, setSuccess] = useState(false);
 
+    // Snel-invullen met Mistral
+    const [pasteText, setPasteText] = useState('');
+    const [aiLoading, setAiLoading] = useState(false);
+    const [aiError, setAiError] = useState('');
+    const [aiFilled, setAiFilled] = useState(false);
+
     function set(field: keyof DpaFormData) {
         return (value: string) => {
             setForm(prev => ({ ...prev, [field]: value }));
@@ -143,6 +150,33 @@ export const DpaPdfGenerator: React.FC = () => {
             }
             setSuccess(false);
         };
+    }
+
+    async function handleCreateWithMistral() {
+        if (!pasteText.trim() || aiLoading) return;
+        setAiLoading(true);
+        setAiError('');
+        setAiFilled(false);
+        try {
+            const data = await extractDpaSchoolData(pasteText);
+            // Merge alleen niet-lege velden; bestaande invoer niet wissen.
+            const filled = Object.fromEntries(
+                Object.entries(data).filter(([, v]) => typeof v === 'string' && v.trim() !== ''),
+            ) as Partial<DpaFormData>;
+            setForm(prev => ({ ...prev, ...filled }));
+            // Wis validatiefouten van de zojuist gevulde velden.
+            setErrors(prev => {
+                const next = { ...prev };
+                (Object.keys(filled) as (keyof FormErrors)[]).forEach(k => { delete next[k]; });
+                return next;
+            });
+            setSuccess(false);
+            setAiFilled(true);
+        } catch (err) {
+            setAiError(err instanceof Error ? err.message : 'Invullen mislukt. Probeer het opnieuw of vul handmatig in.');
+        } finally {
+            setAiLoading(false);
+        }
     }
 
     async function handleSubmit(e: React.FormEvent) {
@@ -184,6 +218,63 @@ export const DpaPdfGenerator: React.FC = () => {
 
                 {/* Formulier */}
                 <form onSubmit={handleSubmit} noValidate className="lg:col-span-2 space-y-6">
+
+                    {/* Snel invullen met Mistral (AI-extractie uit geplakte tekst) */}
+                    <section className="bg-white rounded-2xl border-2 border-duck-acid p-6 space-y-4">
+                        <div>
+                            <h3 className="text-sm font-black text-duck-ink uppercase tracking-widest">
+                                Snel invullen met Mistral
+                                <span className="ml-2 text-[10px] font-bold text-duck-ink/40 normal-case tracking-normal">optioneel</span>
+                            </h3>
+                            <p className="mt-1 text-xs text-duck-ink/60 leading-relaxed">
+                                Plak de schoolgegevens (uit een mail of van de schoolsite). De slimste Mistral-AI
+                                vult de velden hieronder in. De AI verzint niets — wat niet in je tekst staat, blijft leeg.
+                                Controleer daarna elk veld.
+                            </p>
+                        </div>
+
+                        <textarea
+                            value={pasteText}
+                            onChange={e => { setPasteText(e.target.value); setAiError(''); }}
+                            rows={5}
+                            placeholder="Plak hier de schoolgegevens, bijv. naam, bezoekadres, postcode en plaats, KvK-nummer, contactpersoon + functie + e-mail…"
+                            className="w-full rounded-xl border border-duck-ink/15 px-4 py-2.5 text-sm text-duck-ink bg-white focus:outline-none focus:ring-2 focus:ring-duck-acid focus:border-duck-acid transition-colors resize-y"
+                        />
+
+                        <div className="flex flex-wrap items-center gap-3">
+                            <button
+                                type="button"
+                                onClick={handleCreateWithMistral}
+                                disabled={aiLoading || !pasteText.trim()}
+                                className={[
+                                    'flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-sm',
+                                    'uppercase tracking-widest transition-all duration-200 border border-duck-ink',
+                                    aiLoading || !pasteText.trim()
+                                        ? 'bg-duck-acid/40 text-duck-ink/50 cursor-not-allowed'
+                                        : 'bg-duck-acid text-duck-ink hover:-translate-y-0.5 shadow-sm',
+                                ].join(' ')}
+                            >
+                                {aiLoading ? (
+                                    <>
+                                        <span className="w-4 h-4 border-2 border-duck-ink/30 border-t-duck-ink rounded-full animate-spin" />
+                                        Invullen…
+                                    </>
+                                ) : (
+                                    'Create with Mistral'
+                                )}
+                            </button>
+
+                            {aiFilled && !aiError && (
+                                <p className="text-xs font-medium text-duck-ink/70">
+                                    Velden ingevuld — controleer elk veld vóór je de PDF maakt.
+                                </p>
+                            )}
+                        </div>
+
+                        {aiError && (
+                            <p className="text-xs text-duck-error font-medium">{aiError}</p>
+                        )}
+                    </section>
 
                     {/* Schoolgegevens */}
                     <section className="bg-white rounded-2xl border border-duck-ink/15 p-6 space-y-4">
