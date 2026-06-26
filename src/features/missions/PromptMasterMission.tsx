@@ -207,13 +207,34 @@ const CHALLENGES: Challenge[] = [
 ];
 
 // Analyseer prompt met echte AI (Mistral)
+class TimeoutError extends Error {
+    constructor(message: string) {
+        super(message);
+        this.name = 'TimeoutError';
+    }
+}
+
 const withTimeout = <T,>(promise: Promise<T>, timeoutMs: number, errorMessage: string): Promise<T> =>
     Promise.race([
         promise,
         new Promise<T>((_, reject) => {
-            setTimeout(() => reject(new Error(errorMessage)), timeoutMs);
+            setTimeout(() => reject(new TimeoutError(errorMessage)), timeoutMs);
         })
     ]);
+
+// Vertaal een ruwe fout naar een korte, leerling-vriendelijke melding zonder service-details te lekken.
+const describeAiError = (error: unknown): string => {
+    if (error instanceof Error && error.name === 'TimeoutError') {
+        return 'Het duurde te lang om een antwoord van de AI te krijgen. Controleer je internet en probeer het opnieuw.';
+    }
+    const offline = typeof navigator !== 'undefined' && navigator.onLine === false;
+    const looksLikeNetworkError = error instanceof TypeError
+        || (error instanceof Error && /fetch|network|netwerk|connection|verbinding/i.test(error.message));
+    if (offline || looksLikeNetworkError) {
+        return 'Geen verbinding met de AI. Controleer je internetverbinding en probeer het opnieuw.';
+    }
+    return 'Er ging iets mis bij het analyseren. Probeer het opnieuw.';
+};
 
 const escapeRegex = (value: string): string => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 const formatLearnerImageError = () => 'De afbeelding kon nu niet worden gemaakt. Probeer het straks opnieuw.';
@@ -481,7 +502,12 @@ const ResultVisual: React.FC<{
                     ) : (
                         <>
                             <div className="absolute inset-0 bg-gradient-to-br from-duck-bg to-duck-gray" />
-                            <div className="relative z-10 flex flex-col items-center gap-3 px-4">
+                            <div
+                                className="relative z-10 flex flex-col items-center gap-3 px-4"
+                                role={isGeneratingImage ? 'status' : undefined}
+                                aria-live={isGeneratingImage ? 'polite' : undefined}
+                                aria-busy={isGeneratingImage || undefined}
+                            >
                                 {isGeneratingImage && (
                                     <div className="rounded-full bg-white/90 p-3 text-duck-ink shadow-sm">
                                         <Loader2 size={24} className="animate-spin" />
@@ -842,8 +868,8 @@ export const PromptMasterMission: React.FC<Props> = ({ onBack, onComplete, vsoPr
             }
         } catch (error) {
             console.error('AI analysis error:', error);
-            const message = error instanceof Error ? error.message : 'Er ging iets mis bij het analyseren. Probeer het opnieuw.';
-            // Show a simple error feedback
+            // Onderscheid timeout vs. netwerkfout en lek geen ruwe service-fout naar de leerling.
+            const message = describeAiError(error);
             setAiResponse({
                 output: message,
                 score: 0,
@@ -1119,8 +1145,13 @@ export const PromptMasterMission: React.FC<Props> = ({ onBack, onComplete, vsoPr
                         <div className="mb-6 relative">
                             {/* Thinking Overlay */}
                             {isAnalyzing && (
-                                <div className="absolute inset-0 z-20 bg-white/90 backdrop-blur-sm rounded-2xl flex flex-col items-center justify-center gap-4 animate-in fade-in">
-                                    <div className="relative">
+                                <div
+                                    role="status"
+                                    aria-live="polite"
+                                    aria-busy="true"
+                                    className="absolute inset-0 z-20 bg-white/90 backdrop-blur-sm rounded-2xl flex flex-col items-center justify-center gap-4 animate-in fade-in"
+                                >
+                                    <div className="relative" aria-hidden="true">
                                         <div className="absolute inset-0 bg-duck-acid/20 blur-xl rounded-full animate-pulse"></div>
                                         <div className="relative z-10 p-4 bg-white rounded-full border-2 border-duck-acid/50 shadow-lg">
                                             <Brain size={32} className="text-duck-ink animate-pulse" />
@@ -1130,7 +1161,7 @@ export const PromptMasterMission: React.FC<Props> = ({ onBack, onComplete, vsoPr
                                         <p className="text-lg font-bold text-duck-ink animate-pulse">{thinkingStep}</p>
                                         <p className="text-sm text-duck-ink/60 mt-1">De AI denkt na over je prompt...</p>
                                     </div>
-                                    <div className="flex gap-1.5">
+                                    <div className="flex gap-1.5" aria-hidden="true">
                                         <div className="w-2 h-2 bg-duck-acid rounded-full animate-bounce [animation-delay:0ms]"></div>
                                         <div className="w-2 h-2 bg-duck-acid rounded-full animate-bounce [animation-delay:150ms]"></div>
                                         <div className="w-2 h-2 bg-duck-acid rounded-full animate-bounce [animation-delay:300ms]"></div>
@@ -1229,15 +1260,15 @@ export const PromptMasterMission: React.FC<Props> = ({ onBack, onComplete, vsoPr
                     {/* AI Response & Feedback */}
                     {showFeedback && aiResponse && (
                         <div data-qa={passed ? 'prompt-master-success-feedback' : 'prompt-master-improve-feedback'} className="animate-in fade-in slide-in-from-bottom-4">
-                            <div className={`grid gap-4 lg:items-start ${passed ? 'lg:grid-cols-[minmax(0,1fr)_minmax(280px,0.65fr)]' : 'lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_minmax(300px,0.75fr)]'}`}>
+                            <div className={`grid gap-4 lg:items-start ${passed ? 'md:grid-cols-2 lg:grid-cols-[minmax(0,1fr)_minmax(280px,0.65fr)]' : 'md:grid-cols-2 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_minmax(300px,0.75fr)]'}`}>
                                 <ResultFeedbackRail
                                     passed={passed}
                                     feedback={aiResponse.feedback}
                                     tips={currentChallenge.tips}
-                                    className={passed ? 'order-1 lg:order-2' : 'order-1 lg:order-3'}
+                                    className={passed ? 'order-2 lg:order-2' : 'order-3 md:col-span-2 lg:col-span-1 lg:order-3'}
                                 />
 
-                                <div className="order-2 lg:order-1">
+                                <div className="order-1 lg:order-1">
                                     <ResultVisual
                                         type={currentChallenge.type}
                                         content={aiResponse.output}
@@ -1248,7 +1279,7 @@ export const PromptMasterMission: React.FC<Props> = ({ onBack, onComplete, vsoPr
                                 </div>
 
                                 {!passed && (
-                                    <div className="order-3 lg:order-2 animate-in fade-in slide-in-from-right-4 delay-150">
+                                    <div className="order-2 lg:order-2 animate-in fade-in slide-in-from-right-4 delay-150">
                                         <ResultVisual
                                             type={currentChallenge.type}
                                             content={currentChallenge.goodOutputExample}
@@ -1257,8 +1288,9 @@ export const PromptMasterMission: React.FC<Props> = ({ onBack, onComplete, vsoPr
                                             imageError={aiResponse.generatedIdealImageError}
                                             isGeneratingImage={
                                                 currentChallenge.type === 'image' &&
-                                                !aiResponse.generatedIdealImageUrl &&
-                                                !aiResponse.generatedIdealImageError
+                                                (aiResponse.isGeneratingIdealImage ??
+                                                    (!aiResponse.generatedIdealImageUrl &&
+                                                        !aiResponse.generatedIdealImageError))
                                             }
                                         />
                                     </div>
