@@ -31,6 +31,7 @@
     "check:postmarket": "node scripts/check-post-market-monitoring.mjs",
     "check:ai-provider-docs": "node scripts/check-ai-provider-docs.mjs",
     "check:ai-usage": "node scripts/check-ai-usage-telemetry.mjs && node scripts/check-mistral-bfl-providers.mjs",
+    "check:mistral-moderation:live": "node scripts/check-mistral-moderation-live.mjs",
     "check:rls:functions": "node scripts/check-rls-functions.mjs",
     "check:rls:throwaway": "node scripts/check-rls-throwaway.mjs",
     "check:supabase:remote-migrations": "node scripts/check-supabase-remote-migrations.mjs",

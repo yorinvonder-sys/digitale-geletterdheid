@@ -47,7 +47,8 @@ for (const [name, source] of [
 ]) {
   assert(source.includes('completeMistral'), `${name} must use the Mistral completion adapter.`);
 }
-assert(chatStream.includes('streamMistralChat'), 'chatStream must use the Mistral streaming adapter.');
+assert(chatStream.includes('completeMistralChat'), 'chatStream must collect Mistral output before moderated SSE delivery.');
+assert(chatStream.includes('delivery_mode: "moderated_full_sse"'), 'chatStream must mark moderated full SSE delivery in telemetry.');
 
 for (const [name, source] of [
   ['chat', chat],
