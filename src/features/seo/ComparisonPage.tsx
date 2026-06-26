@@ -46,7 +46,7 @@ export const ComparisonPage: React.FC<{ competitor: 'digit-vo' | 'basicly' }> = 
                             <FeatureRow feature="SLO Kerndoelen 2025 Dekking" dgskills={true} other={true} />
                             <FeatureRow feature="Gamification (XP, Badges, Avatars)" dgskills={true} other={competitor === 'basicly'} />
                             <FeatureRow feature="Real-time Docenten Dashboard" dgskills={true} other={true} />
-                            <FeatureRow feature="AVG-compliant & EU Data Opslag" dgskills={true} other={true} />
+                            <FeatureRow feature="Privacy-by-design & EU-verwerking" dgskills={true} other={true} />
                             <FeatureRow feature="Geen Installatie Nodig (Web-only)" dgskills={true} other={true} />
                             <FeatureRow feature="Focus op Praktijkonderwijs & VSO" dgskills={true} other={false} />
                             <FeatureRow feature="Geautomatiseerde Inspectie-Rapporten (in ontwikkeling)" dgskills={true} other={false} />

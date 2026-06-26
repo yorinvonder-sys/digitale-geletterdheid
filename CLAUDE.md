@@ -55,6 +55,11 @@ Use `design-and-refactor` as the orchestrating skill that sequences these gates 
 
 - Default language is Dutch unless code/docs context is English.
 - Keep visible status concise: one task at a time, clear proof, no giant lists.
+- Follow the `AGENTS.md` model-routing rule: Claude may plan/review, but should
+  prefer DeepSeek for bounded implementation when a safe DeepSeek bridge or
+  working `DEEPSEEK_API_KEY` is available. Choose `deepseek-v4-flash` for small
+  mechanical executor work and `deepseek-v4-pro` for larger bounded executor
+  work. Never expose or commit the key.
 - Use `.claude/adhd-format.md` only for Claude operator sessions or when the
   user explicitly asks for that workflow.
 - Use `.agents/skills/skales-agentic-fintech-engineering/SKILL.md` for Skales,

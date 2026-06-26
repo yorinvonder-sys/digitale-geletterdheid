@@ -23,22 +23,22 @@ export const IctPrivacy: React.FC = () => {
 
                 <h1 className="text-4xl font-bold text-duck-ink mb-6">Security & Privacy</h1>
                 <p className="text-lg text-duck-ink/60 mb-12 max-w-2xl">
-                    Veiligheid en privacy zijn de basis van DGSkills. Wij voldoen aan de strengste AVG-normen voor het onderwijs en bieden volledige transparantie over onze datastromen.
+                    Veiligheid en privacy zijn de basis van DGSkills. Wij werken privacy-by-design en ondersteunen scholen met een AVG-bewust dossier en transparantie over onze datastromen.
                 </p>
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
                     <div className="p-6 rounded-2xl bg-duck-acid border border-duck-acid">
                         <div className="text-duck-acid mb-4"><IconFileText /></div>
-                        <h3 className="font-bold text-duck-ink mb-2 text-sm">AVG-compliant</h3>
+                        <h3 className="font-bold text-duck-ink mb-2 text-sm">AVG-bewust ontworpen</h3>
                         <p className="text-duck-ink/60 text-xs leading-relaxed">
-                            Onze verwerkingen zijn volledig in lijn met de Algemene Verordening Gegevensbescherming (AVG).
+                            Onze verwerkingen zijn ingericht met AVG-principes zoals dataminimalisatie, doelbinding en documenteerbare schoolafspraken.
                         </p>
                     </div>
                     <div className="p-6 rounded-2xl bg-duck-ink/10 border border-duck-ink/20">
                         <div className="text-duck-ink/60 mb-4"><IconFileText /></div>
                         <h3 className="font-bold text-duck-ink mb-2 text-sm">EU Data Residency</h3>
                         <p className="text-duck-ink/60 text-xs leading-relaxed">
-                            Alle persoonlijke data van leerlingen en docenten wordt opgeslagen in de EER in een beveiligde Europese database (regio: Ierland).
+                            Persoonsgegevens worden verwerkt binnen de EER/EU-projectregio zoals contractueel en projectmatig vastgelegd.
                         </p>
                     </div>
                     <div className="p-6 rounded-2xl bg-duck-acid border border-duck-acid">
@@ -55,8 +55,8 @@ export const IctPrivacy: React.FC = () => {
                     <ul className="space-y-4 text-duck-ink/60">
                         <li><strong>Geen verkoop van data:</strong> Wij verkopen nooit leerling- of docentgegevens aan derden.</li>
                         <li><strong>Geen profilering:</strong> We gebruiken leerlingdata niet voor commerciële profilering of advertenties.</li>
-                        <li><strong>Minimale datacollectie:</strong> We vragen alleen de gegevens die strikt noodzakelijk zijn voor het leerproces.</li>
-                        <li><strong>Transparantie over AI:</strong> Onze AI-missies maken gebruik van API-modellen waarbij data niet wordt gebruikt om het model te trainen. <a href="/ict/privacy/ai" className="text-duck-acid underline">Lees onze AI-Transparantieverklaring</a>.</li>
+                        <li><strong>Minimale datacollectie:</strong> We beperken de gegevensvraag tot wat nodig is voor de afgesproken onderwijs- en beheerdoelen.</li>
+                        <li><strong>Transparantie over AI:</strong> Onze AI-missies gebruiken API-modellen met providertraining beperkt waar dit door providerafspraken en instellingen is gedekt. <a href="/ict/privacy/ai" className="text-duck-acid underline">Lees onze AI-Transparantieverklaring</a>.</li>
                     </ul>
                     <div className="mt-8 flex flex-wrap gap-4">
                         <a href="/ict/privacy/policy" className="text-sm font-bold text-duck-acid hover:text-duck-acid transition-colors">→ Volledige Privacyverklaring</a>

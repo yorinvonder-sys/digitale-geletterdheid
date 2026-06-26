@@ -26,41 +26,54 @@ De Verwerkingsverantwoordelijke (school) wordt ten minste 30 dagen vooraf geïnf
 | **Type dienst** | Backend-as-a-Service: PostgreSQL-database, authenticatie, autorisatie (Row Level Security), Edge Functions, opslag |
 | **Categorieën gegevens** | Alle Persoonsgegevens: accountgegevens (naam, e-mail, rol, school_id), gebruiksgegevens (voortgang, XP-punten, activiteit), AI-chatberichten, authenticatiegegevens |
 | **Categorieën Betrokkenen** | Leerlingen, docenten, schoolbeheerders |
-| **Locatie verwerking** | **EU — AWS eu-central-1 (Frankfurt, Duitsland)** |
-| **Doorgifte buiten EER** | Nee (EU-datacenter geselecteerd). Beperkte metadata kan via VS-gebaseerde infrastructuur lopen voor beheersdoeleinden. |
-| **Waarborgen** | Supabase Data Processing Agreement (DPA), gebaseerd op SCC's. AWS eu-central-1 is SOC 2 Type II en ISO 27001 gecertificeerd. |
+| **Locatie verwerking** | EU-projectregio / EER, exact te verifiëren in Supabase projectsettings en DPA |
+| **Doorgifte buiten EER** | Mogelijk voor beheer/toegang door VS-entiteit; beoordelen via DPA, SCC's en projectsettings. |
+| **Waarborgen** | Supabase Data Processing Agreement (DPA), gebaseerd op SCC's. Projectregio en onderliggende AWS-regio moeten vóór schoolgebruik worden vastgelegd. |
 | **DPA-status** | Actief — Supabase DPA ondertekend |
 | **Link naar DPA** | https://supabase.com/legal/dpa |
 
 ---
 
-### 2.2 Google LLC (Gemini via Vertex AI)
+### 2.2 Mistral AI
 
 | Veld | Details |
 |---|---|
-| **Naam** | Google LLC (Google Cloud — Vertex AI) |
-| **Vestigingsland** | Verenigde Staten (Mountain View, CA) |
-| **Type dienst** | AI-API: generatieve AI-model (Google Gemini via Vertex AI) voor interactieve leeropdrachten, feedback, en chatfunctionaliteit |
+| **Naam** | Mistral AI |
+| **Vestigingsland** | Frankrijk |
+| **Type dienst** | AI-API: tekst/chat/feedback, vision-analyse en OCR voor interactieve leeropdrachten |
 | **Categorieën gegevens** | Invoergegevens van AI-interacties: opdrachttekst, leerlinginvoer (chatberichten), systeemprompts. Geen directe identificatiegegevens tenzij door leerling zelf ingevoerd. |
 | **Categorieën Betrokkenen** | Leerlingen (primair), docenten (bij gebruik van AI-functies) |
-| **Locatie verwerking** | **EU — Google Cloud europe-west4 (Eemshaven, Nederland)** als vaste verwerkingslocatie. Door het gebruik van Vertex AI met een regionaal endpoint is dataresidentie gegarandeerd: data-at-rest en ML-verwerking vinden uitsluitend plaats binnen de EU. Geen terugval naar VS-datacenters. |
-| **Doorgifte buiten EER** | Nee. Door de inzet van Vertex AI met het regionale endpoint europe-west4 blijven alle gegevens binnen de EU. |
-| **Waarborgen** | Google Cloud Data Processing Addendum (CDPA) met Standard Contractual Clauses (SCC's). ISO 27001, SOC 2 Type II, ISO 27017, ISO 27018 gecertificeerd. Zero data retention: Google bewaart geen invoer- of uitvoergegevens. Invoergegevens worden niet gebruikt voor modeltraining. |
-| **DPA-status** | Actief — Google Cloud CDPA geaccepteerd |
-| **Link naar DPA** | https://cloud.google.com/terms/data-processing-addendum |
+| **Locatie verwerking** | Providerregio en subprocessorpad te verifiëren in Mistral DPA, console/configuratie en actuele providerdocumentatie |
+| **Doorgifte buiten EER** | Te verifiëren. Indien verwerking/toegang buiten de EER mogelijk is, zijn SCC's en een TIA nodig. |
+| **Waarborgen** | Mistral DPA en subprocessoroverzicht; technische maatregelen in DGSkills: server-side proxy, dataminimalisatie, geen providercredentials in browser, outputfiltering. Uitsluiting van provider-modeltraining geldt waar dit door providerafspraken en instellingen wordt gedekt. |
+| **DPA-status** | Te bevestigen vóór schoolgebruik / FG-toets |
+| **Link naar DPA** | https://mistral.ai/terms/#data-processing-agreement |
 
 **Aanvullende toelichting AI-verwerking:**
-- DGSkills maakt gebruik van Google Gemini via **Vertex AI** (enterprise-editie), niet via de Gemini Developer API.
-- Authenticatie verloopt via een **service account** (geen API-key), wat enterprise-grade beveiliging en auditbaarheid biedt.
-- DGSkills stuurt uitsluitend de noodzakelijke context naar Vertex AI (opdrachttekst + leerlinginvoer).
-- Persoonsgegevens zoals naam en e-mailadres worden niet meegestuurd in API-aanroepen.
-- Google hanteert **zero data retention** op Vertex AI: invoer- en uitvoergegevens worden niet opgeslagen en niet gebruikt voor modeltraining. Dit is contractueel vastgelegd in de Google Cloud DPA.
-- Safety-filters van Google Gemini zijn actief om ongepaste content te filteren.
-- Vertex AI kent geen Terms of Service-beperking voor gebruik door minderjarigen; de verantwoordelijkheid ligt bij de verwerkingsverantwoordelijke school.
+- DGSkills gebruikt Mistral AI server-side via Supabase Edge Functions voor tekst/chat/feedback, vision en OCR.
+- DGSkills stuurt uitsluitend noodzakelijke context (opdrachttekst + leerlinginvoer + relevante missiecontext).
+- Persoonsgegevens zoals naam en e-mailadres worden niet meegestuurd in reguliere AI-aanroepen tenzij een feature dit expliciet vereist en juridisch is beoordeeld.
+- Gebruik voor provider-modeltraining wordt uitgesloten waar dit door Mistral-afspraken en instellingen wordt gedekt; bewijs moet in het leveranciersdossier worden bewaard.
+- Outputfiltering, prompt-sanitizing en welzijnsprotocol blijven DGSkills-eigen waarborgen bovenop providermaatregelen.
+
+### 2.3 Black Forest Labs
+
+| Veld | Details |
+|---|---|
+| **Naam** | Black Forest Labs GmbH |
+| **Vestigingsland** | Duitsland |
+| **Type dienst** | FLUX image generation voor specifieke ontwerp- en promptmissies |
+| **Categorieën gegevens** | Beeldgeneratieprompts en gegenereerde afbeeldingen; geen directe identificatiegegevens tenzij door gebruiker zelf ingevoerd |
+| **Categorieën Betrokkenen** | Leerlingen en docenten bij gebruik van beeldgeneratiefuncties |
+| **Locatie verwerking** | Providerregio en subprocessorpad te verifiëren in contract/settings/providerdocumentatie |
+| **Doorgifte buiten EER** | Te verifiëren. Indien verwerking/toegang buiten de EER mogelijk is, zijn SCC's en een TIA nodig. |
+| **Waarborgen** | Server-side verwerking via Edge Functions; provider-URL's worden door de server opgehaald; DPA/subprocessorbewijs vereist vóór schoolgebruik |
+| **DPA-status** | Te bevestigen vóór schoolgebruik / FG-toets |
+| **Link naar DPA** | Providercontract of privacy/security-documentatie toevoegen aan leveranciersdossier |
 
 ---
 
-### 2.3 Vercel Inc.
+### 2.4 Vercel Inc.
 
 | Veld | Details |
 |---|---|
@@ -77,7 +90,7 @@ De Verwerkingsverantwoordelijke (school) wordt ten minste 30 dagen vooraf geïnf
 
 ---
 
-### 2.4 Zoho Corporation Pvt. Ltd.
+### 2.5 Zoho Corporation Pvt. Ltd.
 
 | Veld | Details |
 |---|---|
@@ -98,12 +111,13 @@ De Verwerkingsverantwoordelijke (school) wordt ten minste 30 dagen vooraf geïnf
 
 | Sub-verwerker | Land | Dienst | EU-verwerking? | Doorgifte VS? | DPA actief? |
 |---|---|---|---|---|---|
-| Supabase Inc. | VS | Database, Auth, API | Ja (Frankfurt) | Nee* | Ja |
-| Google LLC | VS | AI (Gemini via Vertex AI) | Ja (Nederland) | Nee | Ja |
+| Supabase Inc. | VS | Database, Auth, API | EU-projectregio te verifiëren | Mogelijk* | Ja / te bevestigen per project |
+| Mistral AI | Frankrijk | AI tekst/chat/vision/OCR | Te verifiëren | Te verifiëren | Te bevestigen |
+| Black Forest Labs | Duitsland | AI image generation | Te verifiëren | Te verifiëren | Te bevestigen |
 | Vercel Inc. | VS | Hosting, CDN | Ja (Amsterdam) | Mogelijk | Ja |
 | Zoho Corp. | India/NL | E-mail | Ja (Nederland) | Nee | Ja |
 
-*Beperkte metadata kan via VS-infrastructuur lopen voor beheersdoeleinden.
+*Beperkte metadata, beheerstoegang of supporttoegang kan buiten de EER plaatsvinden afhankelijk van providerafspraken.
 
 ---
 
@@ -111,9 +125,9 @@ De Verwerkingsverantwoordelijke (school) wordt ten minste 30 dagen vooraf geïnf
 
 Voor Sub-verwerkers waarbij doorgifte naar de Verenigde Staten mogelijk is, gelden de volgende waarborgen:
 
-1. **EU-US Data Privacy Framework (DPF)**: Vercel is gecertificeerd onder het EU-US Data Privacy Framework, wat een adequaatheidsbesluit van de Europese Commissie betreft (Besluit C(2023) 4745 van 10 juli 2023). Google Cloud (Vertex AI) verwerkt alle gegevens uitsluitend binnen de EU (europe-west4); doorgifte naar de VS is niet van toepassing.
+1. **EU-US Data Privacy Framework (DPF)**: Vercel is gecertificeerd onder het EU-US Data Privacy Framework, wat een adequaatheidsbesluit van de Europese Commissie betreft (Besluit C(2023) 4745 van 10 juli 2023). Voor AI-providers moet per provider worden vastgesteld of DPF, SCC's of andere waarborgen van toepassing zijn.
 
-2. **Standard Contractual Clauses (SCC's)**: Aanvullend op het DPF zijn met alle Sub-verwerkers de door de Europese Commissie goedgekeurde Standard Contractual Clauses (Uitvoeringsbesluit EU 2021/914) overeengekomen als terugvaloptie. De Google Cloud DPA bevat SCC's.
+2. **Standard Contractual Clauses (SCC's)**: Aanvullend op het DPF moeten met Sub-verwerkers de door de Europese Commissie goedgekeurde Standard Contractual Clauses (Uitvoeringsbesluit EU 2021/914) zijn overeengekomen waar doorgifte buiten de EER mogelijk is.
 
 3. **Transfer Impact Assessments (TIA's)**: DGSkills heeft beoordeeld dat de combinatie van DPF-certificering, SCC's, en de technische maatregelen van de Sub-verwerkers (versleuteling, toegangsbeheersing) een passend beschermingsniveau biedt.
 

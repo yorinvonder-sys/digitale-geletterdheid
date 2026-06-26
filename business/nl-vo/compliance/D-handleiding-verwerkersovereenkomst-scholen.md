@@ -115,7 +115,7 @@ Neem de volgende gegevens op in uw verwerkingsregister:
 | Rechtsgrondslag | [Publieke taak / Gerechtvaardigd belang / Toestemming] |
 | Categorieen betrokkenen | Leerlingen, docenten, schoolbeheerders |
 | Categorieen persoonsgegevens | Naam, e-mail, schoolklas, voortgang, chatberichten met AI, XP-punten |
-| Bewaartermijn | Duur licentie + 3 maanden; chatberichten 90 dagen |
+| Bewaartermijn | Duur licentie + 3 maanden waar passend; operationele activiteit/feedback/gedeeld werk tot 1 jaar; audit/compliance-logs tot 3 jaar; AI-chatinhoud niet persistent opgeslagen voor zover huidige implementatie laat zien |
 | Beveiligingsmaatregelen | Zie Beveiligingsbijlage (Bijlage 2) |
 | Verwerkersovereenkomst | Ja, ondertekend op [datum] |
 
@@ -138,10 +138,10 @@ DGSkills biedt een **DPIA-support-template** aan en werkt mee aan het beantwoord
 A: DGSkills past het Model Verwerkersovereenkomst 4.0 uit het Privacyconvenant integraal toe als medestander. Formele toetreding als deelnemer aan het Convenant is in voorbereiding. De inhoudelijke privacywaarborgen zijn gelijk.
 
 **V: Waar worden de gegevens van onze leerlingen opgeslagen?**
-A: Alle persoonsgegevens worden primair opgeslagen in de Europese Unie (Frankfurt, Duitsland) bij Supabase. De AI-verwerking vindt plaats in Nederland (Google Cloud europe-west4, Eemshaven) via Vertex AI, met gegarandeerde EU-dataresidentie. Zie de Sub-verwerkerslijst voor het volledige overzicht.
+A: Persoonsgegevens worden waar mogelijk via een EU-projectregio/EER verwerkt. De exacte Supabase-regio, AI-providerregio, subprocessors, retentie en doorgiftewaarborgen moeten vóór schoolgebruik worden gecontroleerd in projectsettings, DPA en subverwerkerslijst. Zie de actuele Sub-verwerkerslijst voor het volledige overzicht.
 
 **V: Worden leerlinggegevens gebruikt om AI-modellen te trainen?**
-A: Nee. DGSkills maakt gebruik van Google Gemini via Vertex AI (enterprise). Google hanteert zero data retention: invoer- en uitvoergegevens worden niet opgeslagen en niet gebruikt voor modeltraining. Dit is contractueel vastgelegd in de Google Cloud DPA. DGSkills gebruikt leerlinggegevens evenmin voor eigen AI-training.
+A: DGSkills gebruikt leerlinggegevens niet voor eigen AI-training. Voor externe AI-providers (Mistral AI en Black Forest Labs) wordt gebruik voor provider-modeltraining uitgesloten waar providerafspraken en instellingen dit dekken; bewijs hiervan moet per provider worden bewaard.
 
 **V: Welke gegevens verwerkt DGSkills precies?**
 A: DGSkills verwerkt: voornaam, achternaam, e-mailadres (schoolmail), schoolklas, voortgangsgegevens (afgeronde opdrachten, behaalde XP-punten), en chatberichten met de AI-assistent. DGSkills vraagt geen BSN, huisadres, of andere gevoelige persoonsgegevens.
@@ -155,7 +155,7 @@ A: Accounts worden aangemaakt door de schoolbeheerder via het docentendashboard,
 A: Ja. Via het docentendashboard kunnen voortgangsoverzichten per leerling en per klas worden geexporteerd.
 
 **V: Kan ik een leerling verwijderen?**
-A: Ja. De schoolbeheerder kan individuele leerlingaccounts en alle bijbehorende gegevens verwijderen via het dashboard. Deze verwijdering is definitief en onomkeerbaar.
+A: Ja. De schoolbeheerder kan verwijdering van individuele leerlingaccount-hoofdgegevens starten via het dashboard. Technisch gekoppelde rijen worden verwijderd waar het verwijderbeleid dit dekt; back-ups, auditlogs en school/DPA-bewaartermijnen blijven apart gelden.
 
 **V: Welke technische eisen stelt DGSkills?**
 A: DGSkills is een webapplicatie en vereist alleen een moderne webbrowser (Chrome, Edge, Firefox, Safari) en internettoegang. Er hoeft geen software geinstalleerd te worden.
@@ -189,7 +189,7 @@ A: DGSkills informeert uw school binnen 24 uur na ontdekking van een datalek. Om
 A: De school is het eerste aanspreekpunt voor inzageverzoeken. U kunt via het docentendashboard de gegevens van de betreffende leerling inzien en exporteren. DGSkills verleent desgevraagd bijstand.
 
 **V: Ondersteunt DGSkills het recht op vergetelheid?**
-A: Ja. Via het docentendashboard kan een schoolbeheerder een leerlingaccount en alle bijbehorende gegevens definitief verwijderen.
+A: Ja. Via het docentendashboard kan een schoolbeheerder verwijdering van een leerlingaccount starten. Technisch gekoppelde rijen worden verwijderd waar het beleid dit dekt; back-ups, auditlogs en school/DPA-bewaartermijnen blijven apart gelden.
 
 **V: Waar vind ik de meest actuele sub-verwerkerslijst?**
 A: De actuele sub-verwerkerslijst is beschikbaar als bijlage bij de verwerkersovereenkomst en kan worden opgevraagd via privacy@dgskills.app.

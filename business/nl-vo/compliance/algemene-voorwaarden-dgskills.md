@@ -20,7 +20,7 @@ In deze Algemene Voorwaarden worden de volgende begrippen met een hoofdletter ge
 | **Leerling** | Een minderjarige (12-18 jaar) die het Platform gebruikt in het kader van het onderwijs. |
 | **Docent** | Een medewerker van School met een docentrol op het Platform, inclusief toegang tot het docentendashboard. |
 | **Verwerkersovereenkomst** | De afzonderlijke verwerkersovereenkomst (DPA) op basis van het Model Verwerkersovereenkomst 4.0 (Privacyconvenant Onderwijs). |
-| **AI-componenten** | De onderdelen van het Platform die gebruikmaken van kunstmatige intelligentie (Google Vertex AI, Gemini) voor feedback, coaching en voortgangsbepaling. |
+| **AI-componenten** | De onderdelen van het Platform die gebruikmaken van kunstmatige intelligentie, waaronder Mistral AI voor tekst/chat/feedback/vision/OCR en Black Forest Labs FLUX voor beeldgeneratie, voor zover deze functies zijn ingeschakeld. |
 | **Missie** | Een digitale leeropdracht op het Platform, gekoppeld aan SLO-kerndoelen Digitale Geletterdheid. |
 | **Pilotovereenkomst** | Een tijdelijke overeenkomst voor een proefperiode van 8-12 weken. |
 
@@ -176,7 +176,7 @@ In deze Algemene Voorwaarden worden de volgende begrippen met een hoofdletter ge
 
 1. Alle intellectuele eigendomsrechten op het Platform, de software, de missies, de content, de algoritmen en de documentatie berusten bij DGSkills.
 2. Content die door AI-componenten wordt gegenereerd in reactie op leerlinginput is niet auteursrechtelijk beschermd. School en leerling mogen deze output vrij gebruiken voor onderwijsdoeleinden.
-3. DGSkills zal leerlingdata niet gebruiken voor het trainen van AI-modellen. Dit is contractueel vastgelegd met de AI-dienstverlener (Google Cloud, zero data retention).
+3. DGSkills gebruikt leerlingdata niet voor het trainen van eigen AI-modellen. Externe AI-providerverwerking wordt zo geconfigureerd en gecontracteerd dat gebruik voor provider-modeltraining wordt voorkomen waar dit door providerafspraken en instellingen wordt gedekt; bewijs daarvan moet per provider worden bewaard.
 
 ---
 
@@ -185,7 +185,7 @@ In deze Algemene Voorwaarden worden de volgende begrippen met een hoofdletter ge
 1. School is verwerkingsverantwoordelijke in de zin van de AVG. DGSkills is verwerker.
 2. De verwerking van persoonsgegevens is geregeld in de **Verwerkersovereenkomst**, die als afzonderlijk document onderdeel uitmaakt van de Overeenkomst. Bij strijdigheid prevaleert de Verwerkersovereenkomst.
 3. DGSkills verwerkt persoonsgegevens uitsluitend ten behoeve van de uitvoering van de Overeenkomst en conform de instructies van School.
-4. Alle gegevensverwerking vindt plaats binnen de **Europese Economische Ruimte** (EER). De primaire opslaglocatie is Supabase (AWS eu-central-1, Frankfurt, Duitsland). AI-verwerking vindt plaats via Google Vertex AI (europe-west4, Nederland).
+4. DGSkills streeft naar verwerking binnen de **Europese Economische Ruimte** (EER) of een EU-projectregio. Exacte opslag-, edge- en AI-providerregio's worden per provider contractueel en projectmatig geverifieerd en in de subverwerkerslijst vastgelegd.
 5. DGSkills verkoopt geen persoonsgegevens aan derden en gebruikt leerlingdata niet voor commercieel profiling.
 6. De privacyverklaring van DGSkills is beschikbaar op https://dgskills.app/privacy.
 
@@ -226,7 +226,7 @@ In deze Algemene Voorwaarden worden de volgende begrippen met een hoofdletter ge
 
 ### 11.5 Conformiteit
 
-1. DGSkills zal vóór **2 augustus 2026** voldoen aan de hoog-risico verplichtingen van de EU AI Act, waaronder:
+1. DGSkills werkt toe naar aantoonbare naleving van de hoog-risico verplichtingen van de EU AI Act. Volgens de actuele Europese Commissie-informatie gaan de belangrijkste hoog-risico verplichtingen voor Annex III onderwijs-AI gelden op **2 december 2027**. Art. 4 AI-geletterdheid geldt sinds 2 februari 2025 en Art. 50 transparantie vanaf augustus 2026. De resterende maatregelen omvatten:
    - risicobeheersysteem (Art. 9);
    - technische documentatie conform Annex IV (Art. 11);
    - conformiteitsbeoordeling (Art. 43);
@@ -393,7 +393,7 @@ In deze Algemene Voorwaarden worden de volgende begrippen met een hoofdletter ge
 1. **Docent-override functie** — Art. 14 EU AI Act vereist dat docenten AI-voortgang kunnen overriden. Dit is benoemd in Art. 11.3 maar technisch nog niet volledig geïmplementeerd (TODO in product).
 2. **SIVON Model VWO 5.0** — In ontwikkeling (feb 2026), zal AI Act-bepalingen bevatten. Monitor en update AV/DPA wanneer 5.0 beschikbaar is.
 3. **NLdigital lidmaatschap** — Overweeg als aanvulling (EUR 400-600/jaar) voor modelvoorwaarden die door juristen worden onderhouden inclusief AI Act, NIS2, Data Act updates.
-4. **Conformiteitsbeoordeling** — Art. 43 EU AI Act vereist conformiteitsbeoordeling voor 2 aug 2026. Voor Annex III AI-systemen: self-assessment op basis van Annex VI voldoet (geen notified body nodig).
+4. **Conformiteitsbeoordeling** — Art. 43 EU AI Act vereist conformiteitsbeoordeling voordat het hoog-risico systeem onder de toepasselijke high-risk verplichtingen in de handel/in gebruik wordt gebracht; huidige planning moet worden afgestemd op de actuele toepassingsdatum van 2 december 2027 voor Annex III onderwijs-AI en op juridisch advies.
 5. **Verzekering** — AV noemen geen specifieke verzekeringsverplichting. Overweeg BAV + cyberverzekering (EUR 400-1.200/jaar) en opname in de AV als vertrouwenssignaal naar scholen.
 6. **KvK-deponering** — Art. 2 lid 5 verwijst naar deponering bij KvK. Dit moet daadwerkelijk worden uitgevoerd.
 7. **Beroep bij AI-beoordeling** — Art. 22 AVG (geautomatiseerde besluitvorming) en Art. 14 EU AI Act suggereren een beroepsmogelijkheid. Overweeg expliciete beroepsprocedure (leerling → docent → school) op te nemen.

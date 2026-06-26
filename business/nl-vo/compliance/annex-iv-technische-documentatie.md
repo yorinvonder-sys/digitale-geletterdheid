@@ -59,11 +59,12 @@ Concrete functies:
 
 **Serverzijde:**
 - **Supabase:** PostgreSQL-database, authenticatie (JWT), Row Level Security, Edge Functions (Deno runtime)
-- **Google Cloud Vertex AI:** Gemini 2.0 Flash model, regio europe-west4 (Nederland)
+- **Mistral AI:** tekst/chat/feedback/vision/OCR via server-side Supabase Edge Functions
+- **Black Forest Labs FLUX:** image generation via server-side Supabase Edge Functions
 - **Vercel:** Hosting en CDN voor de React-frontend
 
 **Externe afhankelijkheden:**
-- Google Cloud Platform (Vertex AI, service account authenticatie)
+- Mistral AI en Black Forest Labs (server-side API-authenticatie; providerkeys niet in client)
 - Supabase (database, auth, serverless functions)
 - Vercel (frontend hosting)
 
@@ -71,7 +72,7 @@ Concrete functies:
 
 | Datum | Wijziging | Impact |
 |-------|-----------|--------|
-| 23-02-2026 | Migratie van Gemini Developer API naar Vertex AI (europe-west4) | Dataresidentie EU gegarandeerd, service account auth |
+| 25-06-2026 | Legal truth update: actuele school-facing AI-paden vastgesteld op Mistral AI en Black Forest Labs | Provider-DPA, regio, retentie en subprocessorbewijs per provider te verifiëren |
 | [TODO] | Initieel systeem in productie | [TODO: datum eerste productieversie] |
 
 [TODO: volledige versiegeschiedenis aanvullen]
@@ -82,14 +83,13 @@ Concrete functies:
 
 ### 2.1 Elementen en componenten
 
-#### 2.1.1 Foundation model
+#### 2.1.1 Externe AI-modellen
 
-- **Model:** Google Gemini 2.0 Flash
-- **Aanbieder:** Google (GPAI-model aanbieder conform Art. 51-55)
-- **Type:** Large Language Model (LLM), pre-trained, multimodaal
-- **Toegang:** Vertex AI API (europe-west4-aiplatform.googleapis.com)
-- **Training:** DGSkills traint het model NIET. Het model wordt gebruikt via API met prompt-gebaseerde instructie
-- **Data retention:** Zero data retention -- Google bewaart geen klantdata en traint niet op klantdata (Vertex AI enterprise ToS)
+- **Tekst/chat/feedback/vision/OCR:** Mistral AI via server-side Supabase Edge Functions
+- **Beeldgeneratie:** Black Forest Labs FLUX via server-side Supabase Edge Functions
+- **Type:** Externe GPAI-/generatieve modellen, aangeroepen via API
+- **Training:** DGSkills traint geen eigen model. Het systeem gebruikt prompt- en system-instructiongestuurde API-aanroepen
+- **Data retention/modeltraining:** Provider-retentie en uitsluiting van provider-modeltraining moeten per provider worden bewezen via DPA, instellingen en subprocessoroverzicht
 
 #### 2.1.2 AI-agents (93 stuks)
 
@@ -134,12 +134,13 @@ Elke agent bevat de volgende verplichte secties in de system instruction:
 | Frontend | React 19, TypeScript, Vite | Vercel CDN (global, edge) |
 | Edge Functions | Deno runtime (Supabase Edge Functions) | Supabase infra |
 | Database | PostgreSQL (Supabase) | [TODO: exacte regio bevestigen] |
-| AI-model | Vertex AI (Gemini 2.0 Flash) | europe-west4 (Nederland) |
-| Authenticatie | Supabase Auth (JWT) + Google service account | Supabase / Google Cloud |
+| AI-model tekst/chat/vision/OCR | Mistral AI | Providerregio en subprocessors te verifiëren |
+| AI-model beeldgeneratie | Black Forest Labs FLUX | Providerregio en subprocessors te verifiëren |
+| Authenticatie | Supabase Auth (JWT) + server-side AI-providerkeys | Supabase / provideromgeving |
 
 #### 2.2.2 Generatieconfiguratie
 
-De volgende parameters worden gebruikt bij elke Vertex AI-aanroep:
+De volgende parameters worden gebruikt bij tekst/chat-aanroepen waar van toepassing:
 
 ```
 maxOutputTokens: 1024
@@ -168,20 +169,19 @@ SUPABASE EDGE FUNCTION: /chat (Deno runtime)
     |-- (3e) Chat history sanitisatie (max 12 berichten, max 6000 chars totaal)
     |-- (3f) Request size beperking (max 20KB, max 4000 chars per bericht)
     |
-    | (4) Sanitized request naar Vertex AI
+    | (4) Sanitized request naar AI-provider
     v
-GOOGLE VERTEX AI (europe-west4, Nederland)
+AI-PROVIDER (Mistral AI / Black Forest Labs, providerregio te verifiëren)
     |
-    |-- Service account authenticatie (OAuth2 JWT, RSA-256)
-    |-- Safety settings: BLOCK_LOW_AND_ABOVE op alle 4 categorieen
-    |-- System instruction (server-side, niet door client aanpasbaar)
-    |-- Zero data retention
+    |-- Server-side API-authenticatie
+    |-- Provider safety/usage controls waar beschikbaar
+    |-- Retentie en modeltraining volgens providerafspraken/settings te verifiëren
     |
     | (5) AI-response
     v
 SUPABASE EDGE FUNCTION
     |
-    | (6) Extract tekst uit Vertex AI response
+    | (6) Extract tekst of gegenereerde asset uit AI-providerresponse
     v
 REACT FRONTEND
     |
@@ -202,32 +202,31 @@ Het systeem implementeert 6 beveiligingslagen, zoals gedocumenteerd in `supabase
 1. **JWT-authenticatie:** Supabase Auth verifieert de gebruikerssessie
 2. **Server-side prompt injection filtering:** Spiegelt client-side filtering (defense-in-depth)
 3. **Server-side rate limiting:** 15 requests per minuut per gebruiker, durable (Postgres-backed) met in-memory fallback
-4. **Vertex AI:** Enterprise ToS, geen leeftijdsrestrictie, zero data retention
-5. **Service account auth:** Geen API-key in URL, OAuth2 JWT-tokens
+4. **AI-provider via server-side proxy:** providerkeys blijven server-side en worden niet aan de browser blootgesteld
+5. **Providercontracten:** DPA, regio, retentie, subprocessorroute en minderjarigen/onderwijsgebruik worden per provider geverifieerd
 6. **Server-side system instruction lookup:** Client stuurt alleen een `roleId`, de system instruction wordt server-side opgezocht -- voorkomt prompt injection via systemInstruction-veld
 
 ### 2.4 Ontwerpkeuzes
 
-#### 2.4.1 Keuze voor Google Gemini via Vertex AI
+#### 2.4.1 Keuze voor Mistral AI en Black Forest Labs
 
-| Criterium | Gemini Developer API | Vertex AI (gekozen) |
-|-----------|---------------------|---------------------|
-| Minderjarigen ToS | 18+ vereist | Geen leeftijdsrestrictie |
-| Datalocatie | Niet gegarandeerd EU | europe-west4 (Nederland) |
-| Data retention | Onduidelijk | Zero data retention |
-| Contractueel kader | Gemini API ToS | Google Cloud DPA + SCCs |
-| Authenticatie | API key | Service account (OAuth2) |
+| Criterium | Mistral AI | Black Forest Labs FLUX |
+|-----------|------------|-------------------------|
+| Functie | Tekst/chat/feedback/vision/OCR | Beeldgeneratie |
+| Integratie | Server-side Edge Function, geen providerkey in client | Server-side Edge Function, tijdelijke provider-URL's server-side opgehaald |
+| Contractueel bewijs | DPA/subprocessor/regio/retentie te bewaren | DPA/subprocessor/regio/retentie te bewaren |
+| Modeltraining | Uitgesloten waar providerafspraken en instellingen dit dekken | Uitgesloten waar providerafspraken en instellingen dit dekken |
 
-De migratie naar Vertex AI is afgerond op 23 februari 2026.
+De eerdere Vertex/Gemini-documentatie is historisch en mag niet als actuele school-facing providerclaim worden gebruikt zonder nieuwe code- en contractverificatie.
 
 #### 2.4.2 Keuze voor prompt-gebaseerde sturing
 
 DGSkills gebruikt geen eigen getraind of finetuned model. In plaats daarvan wordt het gedrag gestuurd via uitgebreide system instructions per agent. Dit betekent:
 
-- **Geen eigen trainingsdata:** Risico's gerelateerd aan training data bias worden deels doorgeschoven naar Google als GPAI-aanbieder
+- **Geen eigen trainingsdata:** Risico's gerelateerd aan training data bias worden deels doorgeschoven naar de externe provider als GPAI-aanbieder
 - **Snelle iteratie:** Agents kunnen worden aangepast zonder hertraining
 - **Transparantie:** System instructions zijn volledig inspecteerbaar
-- **Beperking:** Gedrag is afhankelijk van het onderliggende model; wijzigingen door Google kunnen output beinvloeden
+- **Beperking:** Gedrag is afhankelijk van het onderliggende model; wijzigingen door providers kunnen output beinvloeden
 
 ---
 
@@ -235,7 +234,7 @@ DGSkills gebruikt geen eigen getraind of finetuned model. In plaats daarvan word
 
 ### 3.1 Safety settings
 
-Alle Vertex AI-aanroepen gebruiken de maximaal restrictieve safety settings, geoptimaliseerd voor minderjarigen (12-18 jaar):
+Alle AI-provider-aanroepen gebruiken de maximaal restrictieve safety settings, geoptimaliseerd voor minderjarigen (12-18 jaar):
 
 | Categorie | Drempelwaarde | Toelichting |
 |-----------|--------------|-------------|
@@ -244,7 +243,7 @@ Alle Vertex AI-aanroepen gebruiken de maximaal restrictieve safety settings, geo
 | HARM_CATEGORY_SEXUALLY_EXPLICIT | BLOCK_LOW_AND_ABOVE | Blokkeert alle niveaus van seksueel expliciete content |
 | HARM_CATEGORY_DANGEROUS_CONTENT | BLOCK_LOW_AND_ABOVE | Blokkeert alle niveaus van gevaarlijke content |
 
-Dit is het strengste niveau dat Vertex AI ondersteunt. Elk niveau boven "negligible" wordt geblokkeerd.
+Dit is het strengste niveau dat AI-provider ondersteunt. Elk niveau boven "negligible" wordt geblokkeerd.
 
 ### 3.2 Prompt sanitizer
 
@@ -368,7 +367,7 @@ Geimplementeerd in `services/auditService.ts`, conform AVG Art. 30 en EU AI Act 
 | Berichtlengte | Max 4.000 tekens per bericht |
 | RLS (Row Level Security) | Op alle databasetabellen |
 | JWT-authenticatie | Supabase Auth op elke edge function |
-| Service account auth | OAuth2 JWT met RSA-256 voor Vertex AI |
+| Service account auth | OAuth2 JWT met RSA-256 voor AI-provider |
 | Token caching | Access tokens gecached ~55 minuten, refresh 5 min voor expiry |
 
 ---
@@ -384,15 +383,15 @@ Geimplementeerd in `services/auditService.ts`, conform AVG Art. 30 en EU AI Act 
 | # | Risico | Ernst | Waarschijnlijkheid | Maatregel | Restrisico |
 |---|--------|-------|--------------------|-----------|------------|
 | R1 | Prompt injection -- leerling manipuleert AI-gedrag | Hoog | Midden | Prompt sanitizer (28+ patronen, 6 talen), server-side validatie, system instruction niet door client aanpasbaar | Laag: novel/zero-day injection patronen |
-| R2 | Ongeschikte content voor minderjarigen | Hoog | Laag | Safety settings BLOCK_LOW_AND_ABOVE op alle 4 categorieen, welzijnsprotocol | Zeer laag: edge cases in Gemini-model |
+| R2 | Ongeschikte content voor minderjarigen | Hoog | Laag | Safety settings BLOCK_LOW_AND_ABOVE op alle 4 categorieen, welzijnsprotocol | Zeer laag: edge cases in Mistral AI-model |
 | R3 | Hallucinatie -- AI geeft feitelijk onjuiste informatie | Midden | Midden | Temperature 0.7, maxOutputTokens 1024, begrensde context | Midden: inherent aan LLM-technologie |
 | R4 | XP farming -- leerling verdient punten zonder te leren | Midden | Hoog | XP farming detectie in alle 93 agents, serieuze-input-eis | Laag-midden: creatieve workarounds |
 | R5 | Onjuiste STEP_COMPLETE-beoordeling | Midden | Midden | Agent-specifieke beoordelingscriteria, 3-stappen methode | Midden: LLM-beoordeling is niet perfect |
 | R6 | Bias -- inconsistente beoordeling op basis van taalvaardigheid | Midden | Midden | [TODO: biasbeoordeling uitvoeren] | [TODO: te bepalen na beoordeling] |
-| R7 | Datalekkage -- persoonsgegevens in AI-responses | Midden | Laag | Zero data retention (Vertex AI), geen opslag van chatinhoud, metadata-only logging | Laag |
+| R7 | Datalekkage -- persoonsgegevens in AI-responses | Midden | Laag | retentie/modeltraining volgens providerafspraken (AI-provider), geen opslag van chatinhoud, metadata-only logging | Laag |
 | R8 | Welzijnssignalen gemist door AI | Hoog | Laag | Welzijnsprotocol in alle 93 agents, verwijzing hulplijnen | Laag-midden: AI kan subtiele signalen missen |
-| R9 | Vertex AI-uitval | Laag | Laag | [TODO: graceful degradation implementeren] | Midden: geen fallback-model |
-| R10 | Model-wijziging door Google | Midden | Midden | [TODO: monitoring van Gemini model-updates via Vertex AI] | Midden: geen controle over upstream model |
+| R9 | AI-provider-uitval | Laag | Laag | [TODO: graceful degradation implementeren] | Midden: geen fallback-model |
+| R10 | Model-wijziging door provider | Midden | Midden | [TODO: monitoring van Mistral AI model-updates via AI-provider] | Midden: geen controle over upstream model |
 
 ### 4.3 Specifieke risicobeoordeling minderjarigen (Art. 9(9))
 
@@ -409,7 +408,7 @@ De voornaamste restrisico's na implementatie van alle maatregelen:
 
 1. **Inherente LLM-beperkingen:** Hallucinatie en inconsistente beoordeling zijn onvermijdelijk bij huidige LLM-technologie. Mitigatie: docent als menselijk toezichthouder, AI-disclaimer.
 2. **Zero-day prompt injections:** Nieuwe aanvalstechnieken worden continu ontwikkeld. Mitigatie: regelmatige update van patronenbibliotheek, monitoring.
-3. **Upstream modelwijzigingen:** Google kan het Gemini-model wijzigen zonder vooraankondiging. Mitigatie: [TODO: monitoring-protocol opstellen].
+3. **Upstream modelwijzigingen:** provider kan het Mistral AI-model wijzigen zonder vooraankondiging. Mitigatie: [TODO: monitoring-protocol opstellen].
 
 ---
 
@@ -417,12 +416,12 @@ De voornaamste restrisico's na implementatie van alle maatregelen:
 
 ### 5.1 Trainingsdata
 
-DGSkills traint **geen eigen AI-model**. Het systeem gebruikt Google Gemini 2.0 Flash als pre-trained foundation model via de Vertex AI API.
+DGSkills traint **geen eigen AI-model**. Het systeem gebruikt Mistral AI 2.0 Flash als pre-trained foundation model via de AI-provider API.
 
-- **Verantwoordelijkheid trainingsdata:** Google als GPAI-model aanbieder (Art. 53)
+- **Verantwoordelijkheid trainingsdata:** provider als GPAI-model aanbieder (Art. 53)
 - **Eigen configuratiedata:** 93 system instructions (in totaal ~480KB aan prompt-tekst)
 - **Versiebeheer configuratiedata:** Git (GitHub repository)
-- [TODO: Documenteer verwijzing naar Google's GPAI-documentatie (model cards, training data practices)]
+- [TODO: Documenteer verwijzing naar provider's GPAI-documentatie (model cards, training data practices)]
 
 ### 5.2 Inputdata
 
@@ -437,7 +436,7 @@ DGSkills traint **geen eigen AI-model**. Het systeem gebruikt Google Gemini 2.0 
 
 | Datatype | Beschrijving | Opslag | Bewaartermijn |
 |----------|-------------|--------|---------------|
-| AI-response (tekst) | Antwoord van Gemini-model | **Niet opgeslagen** op server | Geen |
+| AI-response (tekst) | Antwoord van Mistral AI-model | **Niet opgeslagen** op server | Geen |
 | STEP_COMPLETE markers | Voltooiingsstatus per stap | Database (voortgangsregistratie) | Zolang account actief |
 | XP en levels | Puntentelling | Database | Zolang account actief |
 | Audit metadata | mission_id, response_length, model, fallback_used | Database (audit log) | [TODO: bewaartermijn vaststellen, min. 6 maanden] |
@@ -446,8 +445,8 @@ DGSkills traint **geen eigen AI-model**. Het systeem gebruikt Google Gemini 2.0 
 
 | Component | Locatie | Garantie |
 |-----------|---------|----------|
-| Vertex AI (ML-verwerking) | europe-west4 (Nederland) | Google Cloud DPA met SCCs |
-| Vertex AI (data at rest) | europe-west4 (Nederland) | Zero data retention |
+| AI-provider (ML-verwerking) | Providerregio te verifiëren | Provider-DPA met SCC's/TIA waar nodig |
+| AI-provider (data at rest / retentie) | Providerregio en retentie te verifiëren | Retentie/modeltraining volgens providerafspraken en instellingen |
 | Supabase database | [TODO: exacte regio bevestigen] | Supabase DPA |
 | Vercel (frontend) | Edge/global CDN | Alleen statische assets, geen PII |
 
@@ -464,7 +463,8 @@ DGSkills traint **geen eigen AI-model**. Het systeem gebruikt Google Gemini 2.0 
 Zie `business/nl-vo/compliance/C-sub-verwerkerslijst-dgskills.md` voor de volledige lijst.
 
 Primaire sub-verwerkers voor AI-functionaliteit:
-- **Google Cloud (Vertex AI):** ML-verwerking, europe-west4, Google Cloud DPA + SCCs
+- **Mistral AI:** Tekst/chat/feedback/vision/OCR, providerregio/DPA/SCC's te verifiëren
+- **Black Forest Labs:** Beeldgeneratie, providerregio/DPA/SCC's te verifiëren
 - **Supabase:** Database, authenticatie, edge functions
 - **Vercel:** Frontend hosting
 
@@ -514,10 +514,10 @@ Het AI-systeem beoordeelt leerlingantwoorden op stap-niveau. Een stap wordt als 
 ### 7.1 AI-transparantieverklaring
 
 DGSkills publiceert een AI-transparantieverklaring op de website die vermeldt:
-- Dat het systeem AI gebruikt (Google Gemini via Vertex AI)
+- Dat het systeem AI gebruikt (Mistral AI en Black Forest Labs)
 - Dat het een hoog-risico AI-systeem is conform EU AI Act Annex III punt 3(b)
 - Welke data wordt verwerkt en hoe
-- De dataresidentie (europe-west4, Nederland)
+- De providerregio's, retentie, subprocessors en doorgiftewaarborgen die per provider moeten worden geverifieerd
 
 ### 7.2 In-app disclosure
 
@@ -525,7 +525,7 @@ DGSkills publiceert een AI-transparantieverklaring op de website die vermeldt:
 - Alle AI-gegenereerde content wordt gemarkeerd met machine-readable provenance metadata (JSON-LD):
   ```
   generator: 'DGSkills/2.0'
-  model: 'gemini-2.0-flash' (via Vertex AI europe-west4)
+  model: 'mistral-*' of 'flux-*' (exact model/version per providerrequest loggen)
   timestamp: ISO 8601
   type: 'text' | 'image' | 'mixed'
   disclaimer: 'AI-gegenereerd -- kan fouten bevatten'
@@ -567,7 +567,7 @@ Beschikbare documenten:
 | Rol | Naam | Verantwoordelijkheid |
 |-----|------|---------------------|
 | Aanbieder (Art. 3(3)) | Yorin von der Osten / DGSkills | Ontwikkeling, compliance, CE-markering |
-| GPAI-model aanbieder | Google (Alphabet Inc.) | Gemini-model, Art. 51-55 verplichtingen |
+| GPAI-model aanbieder | provider (Alphabet Inc.) | Mistral AI-model, Art. 51-55 verplichtingen |
 | Deployer (Art. 3(4)) | Individuele scholen | Gebruik conform instructions for use, menselijk toezicht |
 | FG/DPO | [TODO: benoemen of advisering inhuren] | Toezicht op gegevensbescherming |
 
@@ -625,7 +625,7 @@ DGSkills valt onder Annex III punt 3(b), waardoor de conformiteitsbeoordeling op
 | 7 | Registratie EU-databank (Art. 49) | Juli 2026 | [TODO] |
 | 8 | Post-market monitoring activeren (Art. 72) | Augustus 2026 | [TODO] |
 
-**Deadline: 2 augustus 2026**
+**Toepassingsdatum high-risk verplichtingen volgens actuele Commissie-informatie: 2 december 2027**
 
 ---
 
@@ -784,7 +784,7 @@ Conform Art. 47 en Annex V zal de verklaring bevatten:
 | Prompt Sanitizer (broncode) | `supabase/functions/_shared/promptSanitizer.ts` | Actief |
 | Chat Edge Function (broncode) | `supabase/functions/chat/index.ts` | Actief |
 | System Instructions (broncode) | `supabase/functions/_shared/systemInstructions.ts` | Actief |
-| Vertex AI Auth (broncode) | `supabase/functions/_shared/vertexAuth.ts` | Actief |
+| AI-provider clients (broncode) | `supabase/functions/_shared/mistralClient.ts`, `supabase/functions/_shared/bflImageClient.ts` | Actief |
 | Rate Limiter (broncode) | `supabase/functions/_shared/rateLimiter.ts` | Actief |
 | Chat History Sanitizer (broncode) | `supabase/functions/_shared/chatHistory.ts` | Actief |
 
@@ -804,14 +804,14 @@ Onderstaande items moeten nog worden afgerond voor de conformiteitsbeoordeling:
 | 6 | Docent-override STEP_COMPLETE | 3.7 | KRITIEK | April 2026 |
 | 7 | Docentdashboard monitoring | 3.7 | HOOG | April 2026 |
 | 8 | Noodstop-functionaliteit | 3.7 | HOOG | April 2026 |
-| 9 | Graceful degradation bij Vertex AI-uitval | 4.2 | HOOG | Mei 2026 |
-| 10 | Monitoring Gemini model-updates | 4.2 | HOOG | Doorlopend |
+| 9 | Graceful degradation bij AI-provider-uitval | 4.2 | HOOG | Mei 2026 |
+| 10 | Monitoring Mistral AI en Black Forest Labs model-/policy-updates | 4.2 | HOOG | Doorlopend |
 | 11 | QMS-document (Art. 17) | 8.4 | KRITIEK | Mei 2026 |
 | 12 | Instructions for Use voor scholen | 7.3 | KRITIEK | Mei 2026 |
 | 13 | Post-market monitoring plan (Art. 72) | 8.5 | HOOG | Mei 2026 |
 | 14 | Supabase database regio bevestigen | 5.4 | MIDDEN | Zsm |
 | 15 | Bewaartermijn audit logs vaststellen | 5.3 | MIDDEN | April 2026 |
-| 16 | Google GPAI-documentatie verwijzing | 5.1 | HOOG | April 2026 |
+| 16 | provider GPAI-documentatie verwijzing | 5.1 | HOOG | April 2026 |
 | 17 | FG/DPO benoemen of advisering | 8.1 | HOOG | Mei 2026 |
 | 18 | Beroepsaansprakelijkheidsverzekering | 8.2 | HOOG | Zsm |
 | 19 | Versiegeschiedenis aanvullen | 1.5 | LAAG | Doorlopend |

@@ -42,7 +42,7 @@ export const ScholenLandingIct: React.FC = () => {
                     <FeatureMarker label="Security" colorClass="text-duck-ink/60" barClass="bg-duck-acid" />
                     <h3 className="text-xl font-bold text-duck-ink mb-2">Security & Privacy</h3>
                     <p className="text-duck-ink/60 text-[15px] leading-relaxed mb-4">
-                        Volledig AVG-compliant. Data-opslag in een beveiligde Europese database. 
+                        Privacy-by-design ingericht met DPA-template, DPIA-ondersteuning en beveiligde Europese verwerking.
                         Standaard verwerkersovereenkomst (DPA) en DPIA-support beschikbaar voor inkoop.
                     </p>
                     <div className="flex flex-wrap gap-2">
@@ -132,7 +132,7 @@ export const ScholenLandingIct: React.FC = () => {
                             className="group"
                         >
                             <p className="text-xs font-bold text-duck-acid uppercase tracking-widest mb-2 group-hover:text-duck-acid transition-colors">Privacy & Compliance</p>
-                            <p className="text-sm text-duck-ink/60">AVG compliant. Data opslag in EU.</p>
+                            <p className="text-sm text-duck-ink/60">Privacy-by-design. EER/EU-projectregio.</p>
                         </a>
                         <a 
                             href="/ict/support" 

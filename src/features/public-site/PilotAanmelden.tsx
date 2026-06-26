@@ -51,9 +51,9 @@ const HIGHLIGHTS: Array<{ title: string; description: string }> = [
             'De pilot dekt één schoollocatie tot 250 leerlingen. Groter? We bespreken dat in het kennismakingsgesprek.',
     },
     {
-        title: 'AVG-compliant',
+        title: 'AVG-ready dossier',
         description:
-            'Model 4.0 Verwerkersovereenkomst, DPIA-ondersteuning en dataopslag binnen de EER (Nederland).',
+            'Model 4.0 Verwerkersovereenkomst, DPIA-ondersteuning en privacy-by-design maatregelen voor school- en FG-review.',
     },
     {
         title: 'Live binnen 10 werkdagen',
@@ -89,12 +89,12 @@ const FAQ_ITEMS: Array<{ q: string; a: string }> = [
         a: 'Kennismakingsgesprek van 15 minuten, gevolgd door een onboarding van 30 minuten voor docenten. Daarna kunnen leerlingen direct starten. Totale tijdlijn: live binnen 10 werkdagen na akkoord.',
     },
     {
-        q: 'Voldoet DGSkills aan AVG en EU AI Act?',
-        a: 'Ja. We hebben een volledige DPIA, Verwerkersovereenkomst Model 4.0 voor funderend onderwijs, sub-verwerkerslijst en technische documentatie (Annex IV) conform EU AI Act Art. 11. DGSkills is geclassificeerd als hoog risico onder Annex III punt 3(b). Alle 21 compliance-documenten zijn opvraagbaar via de Compliance Hub.',
+        q: 'Hoe ondersteunt DGSkills AVG en EU AI Act?',
+        a: 'DGSkills biedt een schooldossier met DPA-template, DPIA-ondersteuning, subverwerkersinformatie en AI Act-documentatie. School-facing AI wordt behandeld als high-risk onderwijs-AI onder Annex III punt 3(b); definitieve inzet vereist school-DPIA, subprocessorcheck en FG/DPO-review.',
     },
     {
         q: 'Waar staat onze data?',
-        a: 'Alle data wordt opgeslagen binnen de Europese Economische Ruimte (europe-west4 — Nederland). AI-verwerking via Mistral AI en Black Forest Labs server-side via Supabase Edge Functions. Geen data wordt gebruikt voor het trainen van AI-modellen.',
+        a: 'Opslag en verwerking worden ingericht binnen de EER/EU-projectregio zoals contractueel en projectmatig vastgelegd. AI-verwerking loopt server-side via Mistral AI en Black Forest Labs. Gebruik voor provider-modeltraining is uitgesloten waar dit door providerafspraken en instellingen is gedekt.',
     },
     {
         q: 'Kunnen we onze klassen koppelen aan Magister / Cumlaude / Zermelo?',
@@ -102,7 +102,7 @@ const FAQ_ITEMS: Array<{ q: string; a: string }> = [
     },
     {
         q: 'Wat gebeurt er na de pilot?',
-        a: 'Na 3 maanden kan je kiezen: stoppen (alle data wordt op verzoek verwijderd binnen 30 dagen), verlengen, of overstappen naar een licentie vanaf €2.000 per schoollocatie per jaar (< €7 per leerling per jaar). Geen automatische verlenging.',
+        a: 'Na 3 maanden kan je kiezen: stoppen (hoofdgegevens worden op verzoek binnen 30 dagen verwijderd; back-ups, auditlogs en wettelijke/contractuele bewaartermijnen volgen de DPA), verlengen, of overstappen naar een licentie vanaf €2.000 per schoollocatie per jaar (< €7 per leerling per jaar). Geen automatische verlenging.',
     },
 ];
 
@@ -161,7 +161,7 @@ export const PilotAanmelden: React.FC = () => {
         }
         descriptionEl.setAttribute(
             'content',
-            'Vraag een gratis pilot aan voor je school. 3 maanden volledige toegang tot DGSkills, AVG-compliant, live binnen 10 werkdagen. Reactie binnen 2 werkdagen.',
+            'Vraag een gratis pilot aan voor je school. 3 maanden toegang tot DGSkills met AVG-ready schooldossier, live binnen 10 werkdagen. Reactie binnen 2 werkdagen.',
         );
 
         trackEvent('seo_page_view', { cluster: 'conversion', page: 'pilot-aanmelden' });
@@ -264,7 +264,7 @@ export const PilotAanmelden: React.FC = () => {
                                 </span>
                             </h1>
                             <p className="text-duck-ink/60 text-base md:text-lg leading-relaxed max-w-2xl mx-auto mb-8">
-                                Drie maanden volledige toegang, AVG-compliant, max. 250 leerlingen, live binnen tien
+                                Drie maanden toegang, AVG-ready dossier, max. 250 leerlingen, live binnen tien
                                 werkdagen. Vul het formulier in en we nemen binnen twee werkdagen contact met je op.
                             </p>
                             <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
@@ -290,9 +290,9 @@ export const PilotAanmelden: React.FC = () => {
                         <div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-0 text-xs text-duck-ink/60 mb-14 flex-wrap">
                             {[
                                 { icon: <IconShield />, label: 'KvK 81819889' },
-                                { icon: <IconShield />, label: 'AVG-compliant' },
-                                { icon: <IconShield />, label: 'EU AI Act conform' },
-                                { icon: <IconShield />, label: 'Data binnen EER' },
+                                { icon: <IconShield />, label: 'AVG-ready dossier' },
+                                { icon: <IconShield />, label: 'AI Act voorbereiding' },
+                                { icon: <IconShield />, label: 'EER-afspraken' },
                             ].map((item, i) => (
                                 <React.Fragment key={item.label}>
                                     {i > 0 && (

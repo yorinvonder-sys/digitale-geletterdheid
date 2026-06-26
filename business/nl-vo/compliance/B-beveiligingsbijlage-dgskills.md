@@ -18,9 +18,9 @@ DGSkills is een webgebaseerde SaaS-applicatie met de volgende architectuur:
 
 | Component | Technologie | Locatie |
 |---|---|---|
-| Frontend | React 19 + TypeScript (SPA) | Vercel Edge Network (EU-edge, ams1) |
-| Backend/API | Supabase (PostgreSQL + Auth + Edge Functions) | AWS eu-central-1 (Frankfurt, Duitsland) |
-| AI-verwerking | Google Gemini via Vertex AI | Google Cloud europe-west4 (Eemshaven, Nederland) |
+| Frontend | React 19 + TypeScript (SPA) | Vercel Edge Network; exacte edge-locatie afhankelijk van routing |
+| Backend/API | Supabase (PostgreSQL + Auth + Edge Functions) | EU-projectregio / EER, exact te verifiëren in projectsettings en DPA |
+| AI-verwerking | Mistral AI en Black Forest Labs FLUX via server-side Supabase Edge Functions | Providerregio's en DPA's contractueel/projectmatig te verifiëren |
 | E-maildienst | Zoho Mail | EU (eu.zoho.com) |
 | DNS/CDN | Vercel | EU-edge nodes |
 
@@ -34,7 +34,7 @@ DGSkills is een webgebaseerde SaaS-applicatie met de volgende architectuur:
 |---|---|
 | **Transport (data-in-transit)** | Alle verbindingen verlopen via HTTPS/TLS 1.2+ (minimaal). HSTS is ingeschakeld. Geen onversleuteld verkeer mogelijk. |
 | **Opslag (data-at-rest)** | PostgreSQL-database bij Supabase is versleuteld met AES-256. Back-ups zijn eveneens versleuteld opgeslagen. |
-| **API-communicatie** | Alle communicatie met Sub-verwerkers (Google Vertex AI, Zoho) verloopt via versleutelde API-verbindingen (TLS 1.2+). |
+| **API-communicatie** | Alle communicatie met Sub-verwerkers (Mistral AI, Black Forest Labs, Zoho en hostingproviders) verloopt via versleutelde API-verbindingen (TLS 1.2+). |
 | **Wachtwoorden** | Wachtwoorden worden gehasht opgeslagen met bcrypt (Supabase Auth). Plaintext-wachtwoorden worden niet opgeslagen. |
 
 ### 3.2 Toegangsbeheersing (Autorisatie en Authenticatie)
@@ -45,7 +45,7 @@ DGSkills is een webgebaseerde SaaS-applicatie met de volgende architectuur:
 | **Multi-factor authenticatie (MFA)** | Beschikbaar voor beheerders en docenten. |
 | **Rolgebaseerde toegang (RBAC)** | Vier rollen: `leerling`, `docent`, `schoolbeheerder`, `platform-admin`. Elke rol heeft uitsluitend toegang tot de gegevens die voor de functie noodzakelijk zijn. |
 | **Row Level Security (RLS)** | Supabase RLS-policies op database-niveau. Leerlingen zien uitsluitend hun eigen gegevens. Docenten zien uitsluitend gegevens van leerlingen in hun klassen. Schoolbeheerders zien gegevens van hun school. |
-| **API-sleutelbeheer** | Service account-credentials (Google Vertex AI) en API-keys (Supabase service role) worden uitsluitend server-side opgeslagen via omgevingsvariabelen. Authenticatie richting Google Vertex AI verloopt via een service account (geen API-key), wat enterprise-grade beveiliging en auditbaarheid biedt. Geen secrets in client-side code. |
+| **API-sleutelbeheer** | AI-providerkeys en API-keys (waaronder Supabase service role) worden uitsluitend server-side opgeslagen via omgevingsvariabelen. Geen secrets in client-side code of browserresponses. |
 | **Sessiebeheer** | JWT-tokens met beperkte geldigheid. Automatische sessie-time-out na inactiviteit. |
 
 ### 3.3 Scheiding van gegevens (Multi-tenancy)
@@ -80,10 +80,10 @@ DGSkills is een webgebaseerde SaaS-applicatie met de volgende architectuur:
 
 | Maatregel | Implementatie |
 |---|---|
-| **Data naar AI-endpoints** | Alleen de noodzakelijke context (opdrachttekst, leerling-invoer) wordt naar Google Gemini via Vertex AI gestuurd. Het regionale endpoint europe-west4 (Nederland) garandeert dat data-at-rest en ML-verwerking binnen de EU plaatsvinden. Geen volledige leerlingprofielen of identificeerbare gegevens indien niet strikt noodzakelijk. |
-| **Zero data retention** | Google hanteert zero data retention op Vertex AI: invoer- en uitvoergegevens worden niet opgeslagen door Google en niet gebruikt voor modeltraining. Dit is contractueel vastgelegd in de Google Cloud Data Processing Addendum met SCC's. |
-| **AI-output filtering** | Gegenereerde AI-content wordt gefilterd op ongepaste inhoud. Safety-instellingen van Google Gemini zijn actief. |
-| **Geen leeftijdsbeperking in ToS** | Vertex AI kent geen Terms of Service-beperking voor gebruik door minderjarigen, in tegenstelling tot de Gemini Developer API. De verantwoordelijkheid voor gepast gebruik ligt bij de verwerkingsverantwoordelijke school. |
+| **Data naar AI-endpoints** | Alleen de noodzakelijke context (opdrachttekst, leerling-invoer, relevante missiecontext) wordt server-side naar Mistral AI of Black Forest Labs gestuurd. Geen volledige leerlingprofielen of identificeerbare gegevens indien niet strikt noodzakelijk. |
+| **Providertraining en retentie** | Provider-calls worden geconfigureerd en gecontracteerd om gebruik voor modeltraining te voorkomen waar dit door providerafspraken en instellingen wordt gedekt. Retentie- en regio-bewijs moet per provider worden bewaard. |
+| **AI-output filtering** | Gegenereerde AI-content wordt gefilterd op ongepaste inhoud met server-side outputfilters en missiespecifieke instructies. |
+| **Gebruik met minderjarigen** | Voor schoolgebruik moet per AI-provider worden gecontroleerd dat de toepasselijke voorwaarden, DPA en instellingen inzet voor minderjarigen en onderwijsdata ondersteunen. |
 | **Transparantie** | Gebruikers worden geïnformeerd dat zij met een AI-systeem communiceren (conform EU AI Act artikel 50). |
 
 ### 3.7 Back-up en herstel
@@ -91,7 +91,7 @@ DGSkills is een webgebaseerde SaaS-applicatie met de volgende architectuur:
 | Maatregel | Implementatie |
 |---|---|
 | **Back-upfrequentie** | Dagelijkse automatische back-ups door Supabase (Point-in-Time Recovery). |
-| **Back-uplocatie** | EU (Frankfurt, AWS eu-central-1). |
+| **Back-uplocatie** | Gekoppelde Supabase projectregio / EER; exact te verifiëren in projectsettings en DPA. |
 | **Hersteltijd (RTO)** | Doelstelling: maximaal 4 uur. |
 | **Herstelpunt (RPO)** | Doelstelling: maximaal 1 uur (Point-in-Time Recovery). |
 | **Back-upversleuteling** | Back-ups zijn versleuteld opgeslagen (AES-256). |
@@ -171,9 +171,10 @@ DGSkills maakt als SaaS-platform gebruik van cloudinfrastructuur. De fysieke bev
 
 | Sub-verwerker | Datacenter | Certificeringen |
 |---|---|---|
-| Supabase / AWS | Frankfurt (eu-central-1) | ISO 27001, SOC 2 Type II, SOC 3 |
-| Google Cloud (Vertex AI) | Eemshaven, Nederland (europe-west4) | ISO 27001, SOC 2 Type II, ISO 27017, ISO 27018 |
-| Vercel / AWS | Amsterdam (ams1) | ISO 27001, SOC 2 Type II |
+| Supabase / AWS | EU-projectregio / EER, exact te verifiëren | ISO 27001, SOC 2 Type II, SOC 3 waar van toepassing |
+| Mistral AI | Providerregio en subprocessors te verifiëren | Providercertificeringen en DPA te verifiëren |
+| Black Forest Labs | Providerregio en subprocessors te verifiëren | Providercertificeringen en DPA te verifiëren |
+| Vercel / AWS | Edge-routing afhankelijk van netwerk en configuratie | ISO 27001, SOC 2 Type II waar van toepassing |
 
 ---
 

@@ -10,11 +10,11 @@
 ### A. SLO-kerndoelen urgentie
 Scholen moeten digitale geletterdheid aantoonbaar maken. De meeste hebben geen methode, geen bewijs, geen plan. DGSkills biedt dat bewijs kant-en-klaar.
 
-### B. EU AI Act druk (deadline 2 augustus 2026)
-Scholen die AI-tools gebruiken worden na die datum ook zelf aansprakelijk. Ze moeten kunnen aantonen dat hun AI-tools compliant zijn. DGSkills is het enige platform voor digitale geletterdheid dat dit al gedocumenteerd heeft (DPIA, risicobeoordeling, menselijk toezicht). Dit is een deuropener bij bestuurders.
+### B. EU AI Act druk (hoog-risico, Annex III 3b)
+Scholen die AI-tools inzetten die leerresultaten beoordelen of het leerproces sturen, moeten hun eigen deployer-verplichtingen kunnen onderbouwen. Volgens de actuele Europese Commissie-informatie gaan de belangrijkste hoog-risico verplichtingen voor Annex III onderwijs-AI gelden op 2 december 2027; Art. 4 AI-geletterdheid geldt sinds 2 februari 2025 en Art. 50 transparantie vanaf augustus 2026. DGSkills kan zich onderscheiden door zijn hoog-risico positie, DPIA-support en risicodocumentatie transparant te tonen, zonder harde nalevingsclaim.
 
 ### C. Docenttekort + werkdruk
-3.800 FTE tekort. Docenten hebben geen tijd om zelf digitale geletterdheid te ontwikkelen. DGSkills neemt dat over: AI geeft feedback, dashboard volgt voortgang, docent coacht.
+~2.200 FTE tekort (Voion 2025, schooljaar 2024/25). Docenten hebben geen tijd om zelf digitale geletterdheid te ontwikkelen. DGSkills neemt dat over: AI geeft feedback, dashboard volgt voortgang, docent coacht.
 
 ---
 
@@ -32,7 +32,7 @@ Het grootste concurrentievoordeel is niet de technologie — het is de oprichter
 | **Docent** | "Missies die leerlingen wel willen doen" | Herkenning |
 | **ICT-coordinator** | "SLO-bewijs in een klik, klaar voor de inspectie" | Ontzorging |
 | **Teamleider/directeur** | "Aantoonbare digitale geletterdheid zonder extra werkdruk" | Risicoreductie |
-| **Bestuurder** | "AVG-proof, AI Act-compliant, governance dashboard" | Compliance-zekerheid |
+| **Bestuurder** | "Privacy-by-design dossier, EU AI Act hoog-risico & transparant gedocumenteerd, governance dashboard" | Compliance-zekerheid |
 
 ---
 
@@ -51,7 +51,7 @@ Het grootste concurrentievoordeel is niet de technologie — het is de oprichter
 
 | Onderdeel | Details |
 |-----------|---------|
-| Platform-toegang | Alle missies + dashboard, 8-12 weken, max 60 leerlingen, 2 docenten |
+| Platform-toegang | Alle missies + dashboard, 8 weken, max 150 leerlingen, 2 docenten |
 | Kickoff-sessie | 45 min online |
 | Docent-onboarding | 90 min training |
 | Starterset lessenplan | Kant-en-klaar voor eerste 4 weken |
@@ -87,7 +87,7 @@ Verbeterpunten: social proof toevoegen, CTA verscherpen ("Plan een demo"), compl
 | Factor | DGSkills | Markt |
 |--------|----------|-------|
 | SLO-kerndoel bewijs | Automatisch, exporteerbaar | Handmatig, onvolledig |
-| AI Act compliance | Gedocumenteerd, transparant | Onbekend |
+| AI Act-positie | Hoog-risico, transparant gedocumenteerd | Onbekend |
 | Implementatiesnelheid | 30 dagen | 3-12 maanden |
 | Leerlingmotivatie | Missies, XP, badges, avatars | Tekst, werkbladen |
 | Geloofwaardigheid | Gebouwd door docent | Corporate |

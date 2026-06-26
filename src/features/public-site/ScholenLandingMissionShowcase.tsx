@@ -108,7 +108,7 @@ const YEARS: ShowcaseYear[] = [
                     { title: 'Automation Engineer', description: 'Automatiseer saaie taken', difficulty: 'Medium', color: '#e1ff01', iconLabel: '⚡' },
                     { title: 'Code Reviewer', description: 'Beoordeel code als een senior dev', difficulty: 'Hard', color: '#202023', iconLabel: '👨‍💻' },
                     { title: 'Network Navigator', description: 'Volg een bericht door het internet', difficulty: 'Medium', color: '#202023', iconLabel: '🌐' },
-                    { title: 'Privacy by Design', description: 'Maak een app AVG-proof', difficulty: 'Medium', color: '#202023', iconLabel: '🔒' },
+                    { title: 'Privacy by Design', description: 'Ontwerp AVG-bewuste appkeuzes', difficulty: 'Medium', color: '#202023', iconLabel: '🔒' },
                 ],
             },
             {

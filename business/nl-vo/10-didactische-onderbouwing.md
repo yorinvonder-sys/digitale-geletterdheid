@@ -160,9 +160,9 @@ AI in het onderwijs vraagt om verantwoordelijkheid. Dit is wat wij doen:
 
 - **Welzijnsprotocol:** Als een leerling signalen van nood uit (zelfbeschadiging, pesten, geweld), stopt de AI met de missie en verwijst naar de Kindertelefoon (0800-0432) en 113
 - **Contentfiltering:** Scheldwoorden, geweldstaal en ongepaste content worden geblokkeerd — zowel in AI-reacties als in peer feedback
-- **Data in Europa:** Alle data wordt verwerkt in EU-datacenters (europe-west4, Nederland)
+- **Data in Europa:** Alle data wordt verwerkt in EU-datacenters (EER/EU-projectregio)
 - **Geen tracking buiten het platform:** Geen third-party analytics, geen advertenties, geen doorverkoop van leerlingdata
-- **AVG-compliant:** DPIA uitgevoerd, verwerkingsovereenkomst beschikbaar, privacy by design
+- **AVG-ready:** DPIA uitgevoerd, verwerkingsovereenkomst beschikbaar, privacy by design
 
 ---
 

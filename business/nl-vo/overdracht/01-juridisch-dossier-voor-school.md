@@ -42,14 +42,15 @@ De sub-verwerkerslijst hieronder komt uit het officiële compliance-document `C-
 
 | Verwerker | Dienst | Datalocatie | DPA-status |
 |---|---|---|---|
-| Supabase | Database, authenticatie, edge functions | AWS Frankfurt (EU, eu-central-1) | Actief (SCCs) |
-| Google LLC / Vertex AI | AI-feedback via Gemini — dataverwerking in EU | Google Cloud europe-west4 (Eemshaven, NL) | Actief (Google Cloud DPA, zero data retention) |
+| Supabase | Database, authenticatie, edge functions | EU-projectregio / EER, exact te verifiëren | DPA/SCCs te bevestigen per project |
+| Mistral AI | AI-chat/feedback/vision/OCR | Providerregio en subprocessors te verifiëren | DPA/SCC/TIA en modeltraining-uitsluiting te bevestigen |
+| Black Forest Labs | AI-beeldgeneratie (FLUX) | Providerregio en subprocessors te verifiëren | DPA/SCC/TIA en retentie te bevestigen |
 | Vercel | Hosting, CDN | Amsterdam edge | Actief (EU-US DPF + SCCs) |
 | Zoho Corporation | E-mail (wachtwoordherstel, notificaties) | Zoho EU-datacenter (Nederland) | Actief |
 
 Alle vier hebben actieve DPA's. Dataoverdrachten buiten de EU zijn beveiligd via Standard Contractual Clauses (SCCs) of het EU-US Data Privacy Framework.
 
-> **Let op voor de FG:** De code van het platform gebruikt mogelijk inmiddels Mistral AI (chat/feedback) en Black Forest Labs (beeldgeneratie) in plaats van of naast Google Vertex AI. De sub-verwerkerslijst (`C-sub-verwerkerslijst-dgskills.md`) is voor het laatste bijgewerkt op 23 februari 2026 en moet worden geactualiseerd vóór de FG-toets. Dit is een actiepunt voor Yorin/de nieuwe beheerder, niet voor de school.
+> **Let op voor de FG:** De actuele code gebruikt Mistral AI (tekst/chat/feedback/vision/OCR) en Black Forest Labs (beeldgeneratie) als school-facing AI-paden. De subverwerkerslijst en providerbewijzen moeten vóór de FG-toets aantoonbaar worden geverifieerd.
 
 ---
 
@@ -86,11 +87,11 @@ Alle vier hebben actieve DPA's. Dataoverdrachten buiten de EU zijn beveiligd via
 - Actie: school stuurt toestemmingsformulieren naar ouders vóór leerlingactivatie
 - Tijdsduur: afhankelijk van schoolcommunicatieproces
 
-**Stap 6** — EU AI Act hoog-risico-beoordeling (deadline: 2 augustus 2026)
+**Stap 6** — EU AI Act hoog-risico-beoordeling (Art. 4 geldt sinds 2 februari 2025; Art. 50 vanaf augustus 2026; high-risk Annex III onderwijs-AI volgens Commissie-informatie vanaf 2 december 2027)
 - Document: `compliance/eu-ai-act-conformiteitsplan.md`
 - DGSkills is geclassificeerd als **hoog-risico AI-systeem** (Bijlage III, punt 3(b): minderjarigen + geautomatiseerde voortgangsbeoordelingen)
 - Twee open gaps: Art. 9 risicobeheer-systeem en Art. 10 data governance — nog niet technisch geïmplementeerd
-- Actie: school bespreekt met DGSkills of "niet-beoordelend inzetten" (AI alleen als hulpmiddel, docent neemt altijd eindbeslissing) een tijdelijke oplossing is voor augustus 2026
+- Actie: school bespreekt met DGSkills of "niet-beoordelend inzetten" (AI alleen als hulpmiddel, docent neemt altijd eindbeslissing) een tijdelijke oplossing is totdat de hoog-risico verplichtingen van kracht worden
 - Tijdsduur: bestuurlijk gesprek, daarna evt. technische aanpassingen
 
 ---
@@ -100,7 +101,7 @@ Alle vier hebben actieve DPA's. Dataoverdrachten buiten de EU zijn beveiligd via
 | Kader | Status | Wat nog moet |
 |---|---|---|
 | AVG/GDPR | ~70% compleet | DPA ondertekenen (school), DPIA endorsen (school-FG), register bijwerken |
-| EU AI Act | ~30% compleet | Art. 9 risicobeheer, Art. 10 data governance — **harde deadline 2 aug 2026** |
+| EU AI Act | ~30% compleet | Art. 9 risicobeheer, Art. 10 data governance en providerbewijs — **toepassingsdatum high-risk Annex III onderwijs-AI volgens Commissie-informatie: 2 dec 2027** |
 | Onderwijsrecht | ~60% compleet | Privacyconvenant Onderwijs-lidmaatschap (aanbevolen, €3.000-8.000 eenmalig) |
 | Beveiliging | ~65% compleet | Rate limiting op 6 endpoints, docent-override AI-beslissingen |
 
@@ -116,7 +117,7 @@ Alle vier hebben actieve DPA's. Dataoverdrachten buiten de EU zijn beveiligd via
 | `D-handleiding-verwerkersovereenkomst-scholen.md` | Stappenplan voor scholen bij DPA-implementatie |
 | `E-privacybijsluiter-dgskills.md` | Beknopte privacysamenvatting voor schoolleiding |
 | `dpia-dgskills-compleet.md` | Volledige DPIA (art. 35 AVG), ~55.000 tekens (~11.000 woorden) |
-| `eu-ai-act-conformiteitsplan.md` | EU AI Act compliance-roadmap t/m aug 2026 |
+| `eu-ai-act-conformiteitsplan.md` | EU AI Act-conformiteitsroadmap richting 2 dec 2027 |
 | `risicoregister-ai-act.md` | Art. 9 risicoregister (15 risico's, gedeeltelijk geïmplementeerd) |
 | `privacyverklaring-dgskills.md` | Gepubliceerde privacyverklaring (voor leerlingen/ouders) |
 | `verwerkingsregister.md` | Art. 30-register (DGSkills als verwerker) |

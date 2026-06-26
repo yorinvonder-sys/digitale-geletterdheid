@@ -1,5 +1,7 @@
 # Compliance Audit Rapport - DGSkills.app (Februari 2026)
 
+> **Historische status 25-06-2026:** Dit rapport bevat oudere auditbevindingen en mag niet als actuele school-facing complianceclaim worden gebruikt. Gebruik voor actuele claims `docs/compliance/legal-claim-source-of-truth.md`, `verwerkingsregister.md`, `C-sub-verwerkerslijst-dgskills.md`, `privacyverklaring-dgskills.md` en `eu-ai-act-conformiteitsplan.md`.
+
 Statusoverzicht van de compliance-audit op basis van de actuele implementatie.
 
 ## 1. AVG / GDPR Audit
@@ -41,10 +43,10 @@ Statusoverzicht van de compliance-audit op basis van de actuele implementatie.
 | AI-06 | Menselijk toezicht (Art. 14) | **Gedeeltelijk** | Docent is eindverantwoordelijk, maar STEP_COMPLETE kan nog niet door docent worden overruled. |
 | AI-07 | Nauwkeurigheid/Robuustheid (Art. 15) | **Gedeeltelijk** | Safety settings, prompt sanitizer en welzijnsprotocol aanwezig; geen formele nauwkeurigheidsmetrieken. |
 | AI-08 | QMS (Art. 17) | **Niet voldaan** | Geen formeel kwaliteitsmanagementsysteem. |
-| AI-09 | Conformiteitsverklaring (Art. 47) | **Niet voldaan** | Nog niet opgesteld. Deadline: 2 augustus 2026. |
+| AI-09 | Conformiteitsverklaring (Art. 47) | **Niet voldaan** | Nog niet opgesteld. Actuele toepassingsdatum high-risk Annex III onderwijs-AI volgens Commissie-informatie: 2 december 2027. |
 | AI-10 | CE-markering (Art. 48) | **Niet voldaan** | Nog niet aangebracht. |
 | AI-11 | EU-databank registratie (Art. 49) | **Niet voldaan** | EU-databank nog in ontwikkeling. |
-| AI-12 | Vertex AI migratie | **Voldaan** | Gemigreerd van Gemini Developer API (ToS verboden voor <18) naar Vertex AI (europe-west4, enterprise ToS). |
+| AI-12 | AI-providerverificatie | **Open** | Actuele school-facing providers zijn Mistral AI en Black Forest Labs; DPA, regio, retentie, subprocessors en modeltraining-uitsluiting moeten per provider worden vastgelegd. |
 
 ## 4. Security Hardening
 
@@ -57,4 +59,4 @@ Statusoverzicht van de compliance-audit op basis van de actuele implementatie.
 ---
 
 ## Eindoordeel
-DGSkills is geclassificeerd als **hoog-risico AI-systeem** onder de EU AI Act (Annex III punt 3(b)). Het AVG-compliance profiel is sterk (alle AVG-checks voldaan). De EU AI Act compliance vereist nog substantieel werk: 5 van 12 checks zijn niet voldaan, 2 gedeeltelijk. De kritieke Vertex AI-migratie is uitgevoerd. Zie `eu-ai-act-conformiteitsplan.md` voor het volledige actieplan richting de deadline van 2 augustus 2026.
+DGSkills is geclassificeerd als **hoog-risico AI-systeem** onder de EU AI Act (Annex III punt 3(b)). AVG-maatregelen zijn goed gevorderd, maar dit rapport mag niet als bewijs van volledige naleving worden gebruikt. De EU AI Act compliance vereist nog substantieel werk: 5 van 12 checks zijn niet voldaan, 2 gedeeltelijk. Zie `eu-ai-act-conformiteitsplan.md` en de canonical legal truth voor het actuele actieplan richting 2 december 2027.

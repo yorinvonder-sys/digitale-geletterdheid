@@ -37,22 +37,22 @@ Dat is waar digitale geletterdheid over zou moeten gaan.
 
 ---
 
-Over 4 maanden wordt de EU AI Act afdwingbaar voor hoog-risico AI-systemen.
+De EU AI Act stelt hoog-risico-eisen aan AI-systemen die leerresultaten beoordelen — Art. 50-transparantie geldt vanaf augustus 2026; de actuele Commissiepagina noemt 2 december 2027 voor high-risk onderwijsverplichtingen.
 
 Wat veel scholen niet weten: als je een AI-tool gebruikt die leerresultaten beoordeelt, val je als school ook onder deze wet. Niet alleen de aanbieder — ook jij als gebruiker.
 
 Wat betekent dat concreet?
 
-Na 2 augustus 2026 moet je als school kunnen aantonen dat:
-- De AI-tool die je gebruikt compliant is
+Zodra die hoog-risico verplichtingen van kracht zijn, moet je als school kunnen aantonen dat:
+- De AI-tool die je gebruikt aantoonbaar gedocumenteerd en juridisch beoordeeld is
 - Er menselijk toezicht is op de AI-beslissingen
 - De risico's zijn beoordeeld
 
-Vraag het eens aan je huidige EdTech-leveranciers: "Is jullie tool compliant met de EU AI Act?"
+Vraag het eens aan je huidige EdTech-leveranciers: "Kunnen jullie je EU AI Act-classificatie, roadmap en schooldocumentatie aantonen?"
 
 De meeste weten niet eens dat ze eronder vallen.
 
-Dit is geen ver-van-mijn-bed-show. Dit is wet- en regelgeving die over 4 maanden ingaat. En het raakt elke school die AI inzet.
+Dit is geen ver-van-mijn-bed-show. Dit is wet- en regelgeving die eraan komt. En het raakt elke school die AI inzet.
 
 Hoe is jouw school hierop voorbereid?
 
@@ -100,11 +100,11 @@ Het resultaat: dgskills.app. Een missiegedreven platform waar leerlingen wil met
 
 ---
 
-122 dagen.
+de AI Act-roadmap.
 
-Zoveel dagen heeft jouw school nog om te zorgen dat AI-tools die leerresultaten beoordelen voldoen aan de EU AI Act.
+Op die datum gaan de hoog-risico verplichtingen van de EU AI Act formeel in (via de Digital Omnibus naar verwachting verschoven naar 2 december 2027). Vanaf dan moet je kunnen aantonen dat AI-tools die leerresultaten beoordelen eraan voldoen.
 
-Wat moet er geregeld zijn voor 2 augustus 2026?
+Wat moet er dan geregeld zijn?
 
 1. Een overzicht van welke AI-tools je school gebruikt
 2. Per tool: is het hoog-risico? (Hint: als het leerresultaten beoordeelt, dan ja)

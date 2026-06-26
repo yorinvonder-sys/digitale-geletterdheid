@@ -99,7 +99,7 @@ In deze Verwerkersovereenkomst wordt verstaan onder:
    - b. het doen van ongevraagde aanbiedingen;
    - c. commerciële profilering van Betrokkenen;
    - d. het verkopen of anderszins ter beschikking stellen van Persoonsgegevens aan derden voor commerciële doeleinden.
-3. De Verwerker maakt geen gebruik van Persoonsgegevens voor het trainen van AI-modellen, tenzij uitdrukkelijk en schriftelijk overeengekomen met de Verwerkingsverantwoordelijke. De Verwerker bevestigt dat bij gebruik van Google Gemini via Vertex AI zero data retention geldt: invoer- en uitvoergegevens worden niet opgeslagen door Google en niet gebruikt voor modeltraining. Dit is contractueel vastgelegd in de Google Cloud Data Processing Addendum.
+3. De Verwerker maakt geen gebruik van Persoonsgegevens voor het trainen van eigen AI-modellen, tenzij uitdrukkelijk en schriftelijk overeengekomen met de Verwerkingsverantwoordelijke. Bij gebruik van externe AI-providers configureert en contracteert de Verwerker de verwerking zo dat gebruik voor provider-modeltraining wordt voorkomen waar dit door providerafspraken en instellingen wordt gedekt. Bewijs hiervan wordt per provider in het leveranciersdossier bewaard.
 
 ---
 
@@ -157,7 +157,7 @@ In deze Verwerkersovereenkomst wordt verstaan onder:
 3. DGSkills biedt de volgende in-app functionaliteiten ter ondersteuning van rechten van Betrokkenen:
    - Inzagefunctie: de school kan via het docentendashboard de gegevens van leerlingen inzien.
    - Exportfunctie: leerlinggegevens en voortgangsoverzichten kunnen worden geëxporteerd.
-   - Verwijderfunctie: individuele leerlingaccounts en alle bijbehorende gegevens kunnen door de schoolbeheerder worden verwijderd.
+   - Verwijderfunctie: schoolbeheerders kunnen verwijdering van leerlingaccount-hoofdgegevens starten; technisch gekoppelde rijen worden verwijderd waar het verwijderbeleid dit dekt, met caveats voor back-ups, auditlogs en wettelijke/contractuele bewaartermijnen.
 
 ---
 
@@ -172,10 +172,11 @@ In deze Verwerkersovereenkomst wordt verstaan onder:
 
    | Sub-verwerker | Locatie primaire verwerking | Doorgifte buiten EER? | Waarborg |
    |---|---|---|---|
-   | Supabase (database) | EU (AWS eu-central-1, Frankfurt) | Nee | — |
-   | Google Gemini via Vertex AI | EU (europe-west4, Nederland) | Nee | Google Cloud DPA + SCC's |
-   | Vercel (hosting) | EU-edge (ams1) | Mogelijk (VS) | EU-US Data Privacy Framework + SCC's |
-   | Zoho (e-mail) | EU (eu.zoho.com) | Nee | EU-datacenter |
+   | Supabase (database/auth/functions) | EU-projectregio / EER, exact te verifiëren | Mogelijk voor beheer/toegang door VS-entiteit | Supabase DPA + SCC's |
+   | Mistral AI | Providerregio en subprocessors te verifiëren | Te verifiëren | Mistral DPA + SCC's indien nodig |
+   | Black Forest Labs | Providerregio en subprocessors te verifiëren | Te verifiëren | Provider-DPA + SCC's indien nodig |
+   | Vercel (hosting) | Edge-routing afhankelijk van netwerk/configuratie | Mogelijk (VS) | EU-US Data Privacy Framework + SCC's |
+   | Zoho (e-mail) | EU-dienstverlening te verifiëren | Te verifiëren | Zoho DPA + SCC's indien nodig |
 
 4. Indien de verwerkingslocatie wijzigt of een nieuwe doorgifte buiten de EER plaatsvindt, informeert de Verwerker de Verwerkingsverantwoordelijke hierover ten minste 30 dagen vooraf.
 
@@ -203,8 +204,9 @@ In deze Verwerkersovereenkomst wordt verstaan onder:
    |---|---|
    | Accountgegevens (naam, e-mail, rol) | Duur van de Onderliggende Overeenkomst + maximaal 3 maanden na beëindiging |
    | Gebruiksgegevens (voortgang, XP, activiteit) | Duur van de Onderliggende Overeenkomst + maximaal 3 maanden na beëindiging |
-   | AI-chatberichten (interacties met Gemini) | 90 dagen na aanmaak, daarna automatisch verwijderd |
-   | Logging en audittrail | 12 maanden, daarna automatisch verwijderd |
+   | AI-chatinhoud | Niet persistent opgeslagen voor zover de huidige implementatie laat zien; providerretentie volgens providerafspraken/settings |
+   | Operationele activiteit, feedback en gedeeld werk | Maximaal 1 jaar, daarna automatische opschoning waar ingericht |
+   | Audit- en compliance-logging | Maximaal 3 jaar waar noodzakelijk voor compliance, incidentonderzoek en verantwoordingsplicht |
    | Back-ups | Maximaal 30 dagen na verwijdering uit productieomgeving |
 
 3. Bij beëindiging van de Onderliggende Overeenkomst:
@@ -271,7 +273,7 @@ In deze Verwerkersovereenkomst wordt verstaan onder:
 | Nr. | Artikel/Bepaling | Afwijking | Reden |
 |---|---|---|---|
 | 1 | Art. 4 — Privacyconvenant | DGSkills is (nog) geen formele deelnemer aan het Convenant, maar past het model als medestander integraal toe. | DGSkills is een jonge onderneming die werkt aan formele toetreding. De inhoudelijke naleving is gelijk. |
-| 2 | Art. 10 — Doorgifte | Beperkte doorgifte naar VS mogelijk via Vercel. Google Gemini wordt via Vertex AI uitsluitend in de EU (europe-west4) verwerkt. | Vercel: verwerking geschiedt onder het EU-US Data Privacy Framework en/of SCC's. Google Vertex AI: volledige EU-dataresidentie gegarandeerd, geen doorgifte naar VS. |
+| 2 | Art. 10 — Doorgifte | Doorgifte en providerregio's moeten per sub-verwerker worden geverifieerd. Beperkte doorgifte buiten de EER kan mogelijk zijn via hosting, support of AI-provider subprocessors. | Waar nodig gelden DPA, SCC's, DPF en/of Transfer Impact Assessment; geen harde regio-claim zonder project- en contractbewijs. |
 | 3 | Art. 7.9 — Certificering | DGSkills beschikt nog niet over ISO 27001 of SOC 2-certificering. | Als jonge onderneming bouwt DGSkills toe naar certificering. Huidige maatregelen zijn beschreven in Bijlage 2 en worden periodiek geëvalueerd. |
 
 ---

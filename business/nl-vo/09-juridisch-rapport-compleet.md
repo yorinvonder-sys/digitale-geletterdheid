@@ -1,5 +1,7 @@
 # DGSkills.app - Compleet Juridisch Rapport
 
+> **Historische status 25-06-2026:** Dit rapport bevat oudere Google Gemini/Vertex- en deadlineclaims. Gebruik het niet als actuele school-facing complianceclaim; raadpleeg `docs/compliance/legal-claim-source-of-truth.md` en de actuele compliance-documenten.
+
 **Datum:** 23 februari 2026
 **Versie:** 1.0
 **Bronnen:** 4 parallelle juridische analyses (AVG/GDPR, EU AI Act, Ondernemingsrecht, Onderwijsrecht & Minderjarigen)

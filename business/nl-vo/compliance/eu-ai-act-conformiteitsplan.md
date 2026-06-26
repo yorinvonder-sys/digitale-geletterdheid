@@ -2,7 +2,7 @@
 ## DGSkills.app -- AI-Educatieplatform voor het Nederlands Voortgezet Onderwijs
 
 **Datum:** 23 februari 2026
-**Deadline hoog-risico verplichtingen:** 2 augustus 2026 (159 dagen)
+**Toepassingsdata:** Art. 4 AI-geletterdheid sinds 2 februari 2025; Art. 50 transparantie vanaf augustus 2026; belangrijkste hoog-risico verplichtingen voor Annex III onderwijs-AI volgens actuele Europese Commissie-informatie vanaf 2 december 2027.
 **Opgesteld op basis van:** Verordening (EU) 2024/1689 (EU AI Act)
 
 ---
@@ -47,7 +47,7 @@ DGSkills valt onder **Annex III, punt 3(b)** van de EU AI Act:
 | Art. 48 | CE-markering | Verplicht |
 | Art. 49 + Annex VIII | Registratie EU-databank | Verplicht |
 | Art. 50 | Transparantieverplichtingen | Van toepassing (ook los van hoog-risico) |
-| Art. 51-55 | GPAI-model verplichtingen | Google als GPAI-aanbieder; DGSkills indirect |
+| Art. 51-55 | GPAI-model verplichtingen | Externe AI-providers als GPAI-aanbieders; DGSkills indirect |
 | Art. 72 | Post-market monitoring | Volledig van toepassing |
 
 ### A.3 Uitzonderingen -- Geldt Art. 6(3)?
@@ -102,24 +102,23 @@ DGSkills heeft individuele technische maatregelen (prompt injection bescherming,
 
 **Huidige status: GEDEELTELIJK VOLDAAN**
 
-DGSkills gebruikt Google Gemini 2.0 Flash als foundation model via **Vertex AI** (Google Cloud) in regio **europe-west4 (Nederland)**. Migratie van de Gemini Developer API naar Vertex AI is **afgerond en getest in productie op 23 februari 2026**. DGSkills traint geen eigen model, maar:
-- De system instructions (agents.tsx) vormen de "configuratiedata" die het gedrag sturen
-- Leerlingdata wordt niet gebruikt voor modeltraining (Vertex AI: zero data retention, geen training op klantdata)
+DGSkills gebruikt momenteel externe AI-providers via server-side Supabase Edge Functions: Mistral AI voor tekst/chat/feedback/vision/OCR en Black Forest Labs FLUX voor beeldgeneratie. DGSkills traint geen eigen model, maar:
+- De system instructions vormen de configuratiedata die het gedrag sturen
+- Leerlingdata wordt niet gebruikt voor eigen modeltraining
+- Provider-calls moeten zo zijn geconfigureerd en gecontracteerd dat gebruik voor provider-modeltraining wordt voorkomen waar providerafspraken en instellingen dit dekken
 - Dataminimalisatie is geimplementeerd (geen BSN, geen adres)
-- Analytics zijn geaggregeerd en consent-gated
-- **Dataresidentie gegarandeerd in de EU:** data at rest en ML-verwerking in europe-west4 (Nederland)
-- **Google Cloud DPA met Standard Contractual Clauses (SCCs)** van toepassing
-- **Authenticatie via service account** (geen API key meer in omgeving)
+- Analytics zijn first-party, consent-gated en waar mogelijk pseudoniem/geaggregeerd
+- Exacte providerregio's, subprocessors, retentie en doorgifte buiten de EER moeten per provider worden geverifieerd en vastgelegd
 
 **Concrete acties:**
 
 | # | Actie | Geschatte tijd | Prioriteit |
 |---|-------|---------------|------------|
 | 10.1 | Documenteer datagovernancebeleid: welke data wordt verwerkt, hoe, waarvoor, door wie | 1 week | HOOG |
-| 10.2 | Documenteer dat geen trainingsdata wordt gebruikt (API-only model) en verwijs naar Google's GPAI-documentatie | 3 dagen | HOOG |
+| 10.2 | Documenteer dat geen trainingsdata voor eigen modellen wordt gebruikt en bewaar providerbewijs voor modeltraining-uitsluiting | 3 dagen | HOOG |
 | 10.3 | Biasbeoordeling: controleer of agents consistent presteren voor verschillende leerlingtypen (taalvaardigheid, leeftijdsgroep) | 1 week | HOOG |
-| 10.4 | Documenteer de system instructions als "configuratiedata" en hun governance (versiebeheer, review, testing) | 3 dagen | MIDDEN |
-| 10.5 | ~~Bevestig en documenteer Google Gemini EER-datalocatie of SCC-basis~~ **AFGEROND (23 feb 2026):** Migratie naar Vertex AI europe-west4 (Nederland) voltooid. Dataresidentie EU gegarandeerd. Google Cloud DPA met SCCs van toepassing. Zero data retention. | ~~3 dagen~~ | ~~HOOG~~ AFGEROND |
+| 10.4 | Documenteer de system instructions als configuratiedata en hun governance (versiebeheer, review, testing) | 3 dagen | MIDDEN |
+| 10.5 | Bevestig en documenteer per AI-provider de DPA, subprocessorroute, regio-instellingen, retentie en SCC/TIA-grondslag waar nodig | 3 dagen | HOOG |
 
 ### B.3 Artikel 11 + Annex IV -- Technische documentatie
 
@@ -151,7 +150,7 @@ Er is geen formeel technisch documentatiedossier. Wel zijn er bouwstenen aanwezi
 |---|-------|---------------|------------|
 | 11.1 | Opstellen "Technical Documentation Dossier" conform Annex IV template | 3-4 weken | KRITIEK |
 | 11.2 | Sectie 1: Systeembeschrijving (architectuur, dataflow, componenten, hardware/software) | 1 week | KRITIEK |
-| 11.3 | Sectie 2: Ontwikkelproces (design specs, keuze voor Gemini Flash, system instructions design) | 1 week | KRITIEK |
+| 11.3 | Sectie 2: Ontwikkelproces (design specs, keuze voor Mistral AI Flash, system instructions design) | 1 week | KRITIEK |
 | 11.4 | Sectie 3: Monitoring en controle (capabilities, limitations, accuracy, unintended outcomes) | 1 week | KRITIEK |
 | 11.5 | Sectie 4: Prestatiemetrieken (hoe meten we of agents correct evalueren?) | 1 week | HOOG |
 | 11.6 | Sectie 5: Risicobeheerssysteem (verwijzing naar Art. 9 documentatie) | 2 dagen | HOOG |
@@ -266,7 +265,7 @@ Aandachtspunten:
 
 Sterk:
 - Defense-in-depth prompt injection bescherming (client + server, zie `promptSanitizer.ts`)
-- Gemini Safety Settings op BLOCK_LOW_AND_ABOVE (maximaal restrictief)
+- Mistral AI Safety Settings op BLOCK_LOW_AND_ABOVE (maximaal restrictief)
 - XP-farming detectie in system instructions
 - CORS-beperking op edge functions
 - JWT authenticatie
@@ -275,7 +274,7 @@ Sterk:
 Te verbeteren:
 - Geen formele nauwkeurigheidsmetrieken
 - Geen systematisch adversarial testing programma
-- Geen technische redundantie bij Vertex AI-uitval
+- Geen technische redundantie bij AI-provideruitval
 
 **Concrete acties:**
 
@@ -283,10 +282,10 @@ Te verbeteren:
 |---|-------|---------------|------------|
 | 15.1 | Definieer en meet nauwkeurigheidsmetrieken: hoe correct evalueert de AI leerlingantwoorden? | 2 weken | KRITIEK |
 | 15.2 | Voer adversarial testing uit (red teaming) op alle 30+ agents | 2 weken | KRITIEK |
-| 15.3 | Implementeer fallback bij Vertex AI-uitval (graceful degradation) | 1 week | HOOG |
+| 15.3 | Implementeer fallback bij AI-provideruitval (graceful degradation) | 1 week | HOOG |
 | 15.4 | Documenteer cyberveiligheidsmaatregelen in technische documentatie | 3 dagen | HOOG |
 | 15.5 | Stel een penetratietest-schema op (minimaal jaarlijks) | 2 dagen | MIDDEN |
-| 15.6 | Monitor Gemini model-updates via Vertex AI (als Google het model wijzigt, kan de output veranderen) | Doorlopend | HOOG |
+| 15.6 | Monitor Mistral AI en Black Forest Labs model-/policy-updates (als een provider het model wijzigt, kan de output veranderen) | Doorlopend | HOOG |
 
 ### B.8 Artikelen 16-17 -- Verplichtingen aanbieders en kwaliteitsmanagementsysteem
 
@@ -382,7 +381,7 @@ DGSkills heeft uitstekende implementatie:
 // Uit /Users/yorinvonder/Downloads/ai-lab---future-architect/utils/aiContentMarker.ts:
 export interface AiProvenanceMetadata {
     generator: string;    // 'DGSkills/2.0'
-    model: string;        // 'gemini-2.0-flash' (via Vertex AI europe-west4)
+    model: string;        // exact Mistral/FLUX model en versie per providerrequest
     timestamp: string;    // ISO 8601
     type: 'text' | 'image' | 'mixed';
     disclaimer: string;   // 'AI-gegenereerd — kan fouten bevatten'
@@ -422,7 +421,7 @@ De EU AI-databank is in ontwikkeling. DGSkills moet registreren zodra dit mogeli
 |---|-------|---------------|------------|
 | 49.1 | Monitor wanneer de EU AI-databank operationeel wordt | Doorlopend | KRITIEK |
 | 49.2 | Verzamel alle Annex VIII informatie in een registratiedossier | 1 week | HOOG |
-| 49.3 | Registreer in de EU-databank zodra operationeel (voor 2 aug 2026) | 1 dag | KRITIEK |
+| 49.3 | Registreer in de EU-databank zodra operationeel (voor 2 dec 2027) | 1 dag | KRITIEK |
 
 ---
 
@@ -495,11 +494,11 @@ De conformiteitsbeoordelingsprocedure op basis van interne controle omvat drie o
 | Week | Actie | Deliverable |
 |------|-------|-------------|
 | W1 (3-7 mrt) | Start risicoregister (Art. 9) | Eerste versie risicoregister |
-| W1 | Correctie audit-report.md: wijzig "Limited Risk" naar "High Risk" | Gecorrigeerd rapport |
+| W1 | Label oude limited-risk passages als historisch en gebruik high-risk als actuele lijn | Gecorrigeerde actuele documenten |
 | W2 (10-14 mrt) | Risicobeoordeling per agent (30+ agents) | Risicobeoordelingsrapport |
 | W2 | Start datagovernance documentatie (Art. 10) | Datagovernance beleidsdocument |
 | W3 (17-21 mrt) | Specifieke risicobeoordeling minderjarigen (Art. 9(9)) | Minderjarigen-risicoanalyse |
-| W3 | ~~Bevestig Google Gemini EER-datalocatie~~ **AFGEROND:** Vertex AI europe-west4 (Nederland) actief sinds 23 feb 2026 | ~~Bevestigingsdocument~~ Afgerond |
+| W3 | Bevestig Mistral AI en Black Forest Labs DPA, regio, retentie en subprocessorroute | Providerbewijs / leveranciersdossier |
 | W4 (24-28 mrt) | Start technische documentatie Annex IV (sectie 1-2) | TD Hoofdstuk 1-2 (concept) |
 | W4 | Start QMS-document (Art. 17) | QMS-framework |
 
@@ -568,7 +567,7 @@ De conformiteitsbeoordelingsprocedure op basis van interne controle omvat drie o
 | Datum | Actie |
 |-------|-------|
 | 1 aug 2026 | Laatste controle: alle documentatie actueel en toegankelijk |
-| **2 aug 2026** | **DEADLINE: Hoog-risico verplichtingen EU AI Act van kracht** |
+| **2 dec 2027** | **DEADLINE: Hoog-risico verplichtingen EU AI Act van kracht** |
 | 2-31 aug 2026 | Post-market monitoring plan activeren; eerste monitoring cyclus |
 
 ### D.2 Prioritering
@@ -598,7 +597,7 @@ De conformiteitsbeoordelingsprocedure op basis van interne controle omvat drie o
 
 | # | Actie | Tijd | Impact |
 |---|-------|------|--------|
-| 1 | Corrigeer audit-report.md: "Limited Risk" -> "High Risk" | 30 min | Hoog (correcte classificatie) |
+| 1 | Zorg dat actuele documenten high-risk als uitgangspunt nemen en oude limited-risk passages historisch labelen | 30 min | Hoog (correcte classificatie) |
 | 2 | ~~Vul alle `[invullen]` placeholders in privacy-documenten in~~ **Afgerond** (28 mrt 2026) | — | Voltooid |
 | 3 | Documenteer bestaande maatregelen als eerste versie risicoregister | 4 uur | Hoog (basis Art. 9) |
 | 4 | Begin Annex VIII registratiedossier (verzamel basisgegevens) | 2 uur | Midden |
@@ -607,37 +606,24 @@ De conformiteitsbeoordelingsprocedure op basis van interne controle omvat drie o
 
 ## E. SPECIFIEKE AANDACHTSPUNTEN
 
-### E.1 Gebruik van foundation model (Google Gemini via Vertex AI) -- Verantwoordelijkheidsverdeling
+### E.1 Gebruik van externe AI-providers -- Verantwoordelijkheidsverdeling
 
-> **UPDATE 23 februari 2026:** De migratie van de Gemini Developer API (`generativelanguage.googleapis.com`) naar **Vertex AI** (`europe-west4-aiplatform.googleapis.com`) is **afgerond en getest in productie**. Dit lost de volgende eerdere risico's op:
-> - **Datalocatie:** Gegarandeerd EU (europe-west4, Nederland) voor data at rest en ML-verwerking
-> - **Contractueel kader:** Google Cloud DPA met SCCs (i.p.v. Gemini API Terms of Service)
-> - **Zero data retention:** Google bewaart geen klantdata en traint niet op klantdata
-> - **Authenticatie:** Service account (geen API key meer)
-> - **Minderjarigen ToS:** Vertex AI (Google Cloud) heeft geen minimumleeftijd-restrictie in de ToS, in tegenstelling tot de Gemini Developer API die 18+ vereiste
+**Status 25 juni 2026:** De school-facing AI-paden in de code gebruiken Mistral AI voor tekst/chat/feedback/vision/OCR en Black Forest Labs FLUX voor image generation, server-side via Supabase Edge Functions. Eerdere teksten over Google Gemini/Vertex AI zijn historisch en mogen niet meer als actuele providerclaim worden gebruikt zonder nieuwe code- en contractverificatie. Anthropic wordt alleen genoemd voor interne developer/accounting-hulpmiddelen, niet als leerling- of school-AI-verwerker tenzij later bewezen wordt dat schooldata via Anthropic loopt.
 
 **De AI Act maakt een onderscheid tussen:**
 
-1. **GPAI-model aanbieder (Google):** Verantwoordelijk voor Art. 51-55 verplichtingen
-   - Technische documentatie van het model (Art. 53)
-   - Informatie verstrekken aan downstream aanbieders (Art. 53)
-   - Auteursrechtbeleid (Art. 53)
-   - Als systemisch risico (>10^25 FLOPS): aanvullende verplichtingen (Art. 55)
-   - Google Gemini valt waarschijnlijk onder "systemic risk" vanwege de omvang
+1. **GPAI-modelaanbieders (Mistral AI / Black Forest Labs):** verantwoordelijk voor hun eigen GPAI- en providerdocumentatie, inclusief informatie die downstream aanbieders nodig hebben.
 
-2. **Downstream aanbieder / integrator (DGSkills):** Verantwoordelijk voor Art. 9-17 als hoog-risico aanbieder
-   - DGSkills is verantwoordelijk voor het gehele AI-systeem, inclusief de integratie met Gemini via Vertex AI
-   - DGSkills kan zich NIET verschuilen achter Google: "wij gebruiken alleen de API" is geen verweer
-   - DGSkills moet de output van Gemini monitoren, filteren en beoordelen
+2. **Downstream aanbieder / integrator (DGSkills):** verantwoordelijk voor het gehele school-facing AI-systeem, inclusief Art. 9-17, Art. 26-support, Art. 43-49 en de integratie met externe AI-providers. DGSkills kan zich niet verschuilen achter de API-provider.
 
 **Wat DGSkills moet doen:**
-- Documenteer de afhankelijkheid van Google Gemini (via Vertex AI) in de technische documentatie
-- Documenteer welke informatie Google verstrekt over het model (Art. 53 verplichtingen van Google)
-- Implementeer eigen safeguards bovenop Gemini (reeds gedaan: safety settings, prompt sanitizer, welzijnsprotocol)
-- Monitor Gemini model-updates via Vertex AI en test de impact op DGSkills-functionaliteit
-- ~~Leg contractueel vast dat Google aan GPAI-verplichtingen voldoet~~ **AFGEROND:** Google Cloud DPA met SCCs is van toepassing via Vertex AI. Zero data retention gegarandeerd.
+- Documenteer de afhankelijkheid van Mistral AI en Black Forest Labs in de technische documentatie
+- Bewaar per provider DPA, subprocessoroverzicht, regio-/retentie-instellingen en bewijs voor uitsluiting van provider-modeltraining waar gedekt
+- Implementeer en test eigen safeguards bovenop providermaatregelen (prompt sanitizer, outputfilter, welzijnsprotocol, menselijke controle)
+- Monitor provider- en modelwijzigingen en test de impact op DGSkills-functionaliteit
+- Actualiseer de subverwerkerslijst vóór elke school-DPIA/FG-review
 
-**Risico:** Als Google het Gemini-model wijzigt (bijv. nieuwe versie, gewijzigd gedrag), verandert de output van DGSkills. Dit moet worden meegenomen in het risicobeheerssysteem en het post-market monitoring plan.
+**Risico:** Als een provider het model, beleid, retentie of subprocessorpad wijzigt, kan dit impact hebben op privacy, veiligheid en AI Act-conformiteit. Dit moet in het risicobeheersysteem en post-market monitoring plan worden meegenomen.
 
 ### E.2 Verhouding aanbieder (DGSkills) vs. deployer (scholen)
 
@@ -674,48 +660,33 @@ De conformiteitsbeoordelingsprocedure op basis van interne controle omvat drie o
 
 **Art. 51: Classificatie GPAI-modellen met systeemrisico**
 
-Google Gemini wordt waarschijnlijk geclassificeerd als GPAI met systeemrisico (Art. 51), vanwege:
-- Trainingscompute > 10^25 FLOPS (vermoedelijk)
-- Hoge impact capabilities
-- Breed beschikbaar voor miljoenen gebruikers
+De gebruikte externe modellen kunnen onder GPAI-verplichtingen vallen. Of sprake is van GPAI met systeemrisico moet per provider en model worden geverifieerd op basis van de actuele EU-lijsten, providerinformatie en technische documentatie.
 
 **Implicaties voor DGSkills als downstream gebruiker:**
 
-DGSkills hoeft zelf NIET aan Art. 51-55 te voldoen (dat is Google's verantwoordelijkheid), maar moet wel:
+DGSkills hoeft zelf NIET aan Art. 51-55 te voldoen (dat is de provider verantwoordelijkheid), maar moet wel:
 
-1. **Documenteer welke informatie Google verstrekt** (Art. 53(1)(b) verplicht Google om downstream providers relevante informatie te verstrekken)
+1. **Documenteer welke informatie de provider verstrekt** (Art. 53(1)(b) verplicht de provider om downstream providers relevante informatie te verstrekken)
 2. **Gebruik deze informatie in je eigen technische documentatie** (hoe integreert het GPAI-model in je hoog-risico systeem?)
-3. **Monitor Google's compliance** (als Google niet voldoet, heeft dat impact op jouw systeem)
-4. **Contractuele afspraken** (Google's Terms of Service / API Terms moeten adequate garanties bieden)
+3. **Monitor de provider compliance** (als de provider niet voldoet, heeft dat impact op jouw systeem)
+4. **Contractuele afspraken** (provider Terms of Service, DPA en API Terms moeten adequate garanties bieden)
 
-**Art. 53 vereist dat Google aan DGSkills levert:**
+**Art. 53 vereist dat de provider aan DGSkills levert:**
 - Technische documentatie over het model
 - Informatie over training en evaluatie
 - Resultaten van adversarial testing
 - Bekende beperkingen
 - Informatie voor compliance met Art. 9-15 voor downstream hoog-risico systemen
 
-**Actie:** Controleer of Google's bestaande documentatie (Model Cards, Safety Reports, Vertex AI documentation) voldoende informatie biedt. Documenteer eventuele lacunes en neem dit op als risico in het risicoregister.
+**Actie:** Controleer per provider of bestaande documentatie (model cards, safety reports, API/DPA/security-documentatie) voldoende informatie biedt. Documenteer lacunes in het risicoregister.
 
-> **Status 23 feb 2026:** Met de migratie naar Vertex AI is het contractuele kader aanzienlijk verbeterd. De Google Cloud DPA met SCCs biedt een sterkere juridische basis dan de Gemini Developer API ToS. De zero data retention policy en EU-dataresidentie (europe-west4) adresseren de eerder geidentificeerde datalocatie-risico's.
+> **Status 25 juni 2026:** Provider-DPA's, regio-/retentie-instellingen, subprocessorroute en bewijs voor modeltraining-uitsluiting moeten per Mistral AI en Black Forest Labs worden vastgelegd vóór school-DPIA/FG-review.
 
 ### E.4 Correctie op eerdere documenten
 
-Het audit-rapport (`/Users/yorinvonder/Downloads/ai-lab---future-architect/business/nl-vo/compliance/audit-report.md`) classificeert DGSkills nog als "Limited Risk - Art. 50":
+Oudere rapporten kunnen nog historische passages over een eerdere limited-risk of Google Vertex/Gemini-analyse bevatten. Die passages mogen niet als actuele school-facing claims worden gebruikt. Actuele documenten moeten DGSkills behandelen als hoog-risico onderwijs-AI wanneer AI leerresultaten evalueert of het leerproces stuurt.
 
-```
-## 3. EU AI Act Audit (Limited Risk - Art. 50)
-```
-
-Dit moet worden gecorrigeerd naar:
-
-```
-## 3. EU AI Act Audit (HIGH RISK - Annex III punt 3(b))
-```
-
-Het juridisch rapport (`09-juridisch-rapport-compleet.md`) classificeert correct als hoog-risico. Het audit-rapport moet worden bijgewerkt.
-
-### E.5 Post-2 augustus 2026: doorlopende verplichtingen
+### E.5 Na toepassingsdatum high-risk verplichtingen: doorlopende verplichtingen
 
 Na de deadline stopt compliance niet. Doorlopende verplichtingen:
 - **Post-market monitoring** (Art. 72): systematisch verzamelen en analyseren van data over prestaties
@@ -769,7 +740,7 @@ Na de deadline stopt compliance niet. Doorlopende verplichtingen:
 
 ### Einde
 
-Dit conformiteitsbeoordelingsplan biedt een volledig overzicht van alle verplichtingen, de huidige status, concrete acties en een tijdlijn om DGSkills.app compliant te maken voor de EU AI Act deadline van 2 augustus 2026. Het plan is gebaseerd op de daadwerkelijke codebase, bestaande documentatie en de wettekst van Verordening (EU) 2024/1689.
+Dit conformiteitsbeoordelingsplan biedt een volledig overzicht van alle verplichtingen, de huidige status, concrete acties en een tijdlijn om DGSkills.app compliant te maken voor de EU AI Act toepassingsdatum van 2 december 2027. Het plan is gebaseerd op de daadwerkelijke codebase, bestaande documentatie en de wettekst van Verordening (EU) 2024/1689.
 
 ---
 

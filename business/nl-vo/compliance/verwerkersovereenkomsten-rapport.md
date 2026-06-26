@@ -1,5 +1,7 @@
 # Rapport Verwerkersovereenkomsten DGSkills.app
 
+> **Historische status 25-06-2026:** Dit rapport beschrijft een oudere Google Gemini/Vertex-analyse en is niet langer de actuele school-facing subverwerkerwaarheid. Gebruik voor actuele verkoop-, school- en FG/DPO-vragen de bron van waarheid in `docs/compliance/legal-claim-source-of-truth.md`, `C-sub-verwerkerslijst-dgskills.md`, `verwerkingsregister.md` en `privacyverklaring-dgskills.md`. De actuele school-facing AI-paden zijn Mistral AI en Black Forest Labs, met DPA/regio/retentie/subprocessorbewijs per provider te verifiëren.
+
 **Datum:** 23 februari 2026
 **Betreft:** Inventarisatie en analyse verwerkersovereenkomsten (DPA's) voor alle verwerkers van DGSkills.app
 **Status:** Kritieke blokkering OPGELOST (Vertex AI migratie uitgevoerd)

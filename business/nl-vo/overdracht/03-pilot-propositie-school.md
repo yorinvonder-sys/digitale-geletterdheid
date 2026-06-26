@@ -19,7 +19,7 @@ Het platform is al gebouwd en draait. De investering is niet "iets nieuws bouwen
 |---|---|---|
 | Zelfstandig werken op eigen tempo | Realtime voortgangsoverzicht per klas | Aantoonbaar werken aan SLO-kerndoelen |
 | Directe AI-feedback, geen wachttijd | Minder nakijkwerk | Klaar voor kerncurriculum 2027 |
-| Meetbare leeruitkomsten | Data voor rapportage | Data binnen EU, AVG-compliant |
+| Meetbare leeruitkomsten | Data voor rapportage | Data binnen EU, AVG-ready |
 
 ---
 
@@ -60,7 +60,7 @@ Schatting ~4-8 uur FG-tijd. Compleet AVG-dossier (DPIA, DPA-model, sub-verwerker
 Digitale geletterdheid zonder gestructureerd platform: docenten maken eigen materiaal, geen systematische voortgangsmeting, geen aantoonbare koppeling aan SLO-kerndoelen. Met de 2027-deadline voor het verplichte kerncurriculum is dit een risico.
 
 **"Is dit AI-proof qua regelgeving?"**
-Het platform valt onder de EU AI Act als hoog-risico systeem. Twee technische vereisten lopen nog tot augustus 2026. Tijdelijke oplossing is beschikbaar: AI gebruiken als hulpmiddel, docent neemt altijd de eindbeslissing. Volledige compliance is gepland vóór de harde EU-deadline.
+Het platform moet als hoog-risico onderwijs-AI worden behandeld wanneer AI leerresultaten evalueert of het leerproces stuurt. Enkele technische en organisatorische vereisten zijn nog in voorbereiding. Tijdelijke werkwijze: AI gebruiken als hulpmiddel, docent houdt toezicht en neemt de eindbeslissing. Volgens de actuele Europese Commissie-informatie gelden de belangrijkste Annex III high-risk verplichtingen vanaf 2 december 2027; Art. 4 AI-geletterdheid geldt sinds 2 februari 2025 en Art. 50 transparantie vanaf augustus 2026.
 
 ---
 

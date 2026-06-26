@@ -87,7 +87,7 @@ export const ScholenLandingContact: React.FC = () => {
                     </h2>
                     <p className="text-base max-w-2xl mx-auto" style={{ color: '#202023' }}>
                         Transparante prijzen. Start met een gratis pilot — geen verplichtingen.
-                        Snel live (binnen 10 werkdagen); privacy AVG-compliant.
+                        Snel live (binnen 10 werkdagen); privacy-by-design dossier beschikbaar.
                     </p>
                 </div>
 
@@ -99,7 +99,7 @@ export const ScholenLandingContact: React.FC = () => {
                         <p className="text-3xl font-bold text-white mb-1">Gratis</p>
                         <p className="text-sm mb-5" style={{ color: '#202023' }}>3 maanden / max. 250 leerlingen</p>
                         <ul className="space-y-2.5 mb-6">
-                            {['20+ AI-missies', 'Docenten-dashboard', 'Onboarding 30 min', 'AVG-compliant', 'Live binnen 10 werkdagen'].map((item, i) => (
+                            {['20+ AI-missies', 'Docenten-dashboard', 'Onboarding 30 min', 'AVG-ready dossier', 'Live binnen 10 werkdagen'].map((item, i) => (
                                 <li key={i} className="flex items-center gap-2 text-sm text-duck-ink/60">
                                     <IconCheckCircle className="flex-shrink-0" style={{ color: '#ff3c21' }} />
                                     {item}

@@ -13,7 +13,7 @@
 
 **Dan het probleem benoemen:**
 
-> "Scholen moeten digitale geletterdheid aantoonbaar maken. De SLO-kerndoelen worden verplicht. En na 2 augustus 2026 moeten AI-tools die leerresultaten beoordelen voldoen aan de EU AI Act. De meeste scholen hebben daar geen plan voor. Dat is wat dgskills oplost."
+> "Scholen moeten digitale geletterdheid aantoonbaar maken. De SLO-kerndoelen worden verplicht. En AI-tools die leerresultaten beoordelen vallen onder de EU AI Act als hoog-risico — Art. 50-transparantie geldt vanaf augustus 2026; de actuele Commissiepagina noemt 2 december 2027 voor high-risk onderwijsverplichtingen. De meeste scholen hebben daar geen plan voor. Dat is wat dgskills oplost."
 
 **Stel een vraag:**
 > "Hoe pakken jullie dat nu aan? Hebben jullie een methode, of doen docenten het individueel?"
@@ -64,7 +64,7 @@
 
 > "Als dit interessant is, is de volgende stap een pilot. Die werkt zo:
 >
-> - 8 tot 12 weken, voor maximaal 60 leerlingen en 2 docenten
+> - 8 weken, voor maximaal 150 leerlingen en 2 docenten
 > - Wij regelen alles: setup, training, lessenplan, wekelijkse updates
 > - Na afloop krijgt u een eindrapport met harde cijfers
 > - De kosten zijn €1.500. En als u daarna doorgaat met een jaarlicentie, wordt dat bedrag volledig verrekend. U betaalt het dus eigenlijk alleen als u besluit te stoppen.
@@ -92,7 +92,7 @@
 |---------|-------------|
 | "Geen tijd" | "dgskills verlaagt werkdruk — AI geeft feedback, dashboard volgt alles automatisch" |
 | "Geen budget" | "Pilot is €1.500 — onder de inkoopdrempel, 100% verrekend bij jaarcontract" |
-| "Privacy/AI-zorgen" | "AVG-compliant, EU-datacenters, AI Act-ready, DPIA beschikbaar. Wij zijn strenger dan de wet vereist" |
+| "Privacy/AI-zorgen" | "privacy-by-design dossier, EER/EU-projectregio, EU AI Act high-risk positie transparant gedocumenteerd, DPIA-ondersteuning beschikbaar. Wij zijn duidelijk over wat al staat en wat nog in voorbereiding is" |
 | "Curriculum past niet" | "Inzetbaar bij mentoruur, informatica, projectweken — modulair, niet een vast vak" |
 | "Niveauverschillen" | "Adaptief per profiel. Laat me de profiel-switch tonen" |
 

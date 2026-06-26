@@ -61,7 +61,7 @@ De keuze hangt samen met het eigenaarschapsbesluit in `00-eigenaarschaps-besluit
    | `ANTHROPIC_API_KEY` | Anthropic | Abonnements-scanning (`scanSubscriptionClaude`) |
    | `SMTP_HOST` / `SMTP_USER` / `SMTP_PASS` | Zoho Mail (smtp.zoho.eu) | E-mail (toestemmingen, notificaties) |
 
-   > **Let op:** `C-sub-verwerkerslijst-dgskills.md` is voor het laatste bijgewerkt op 23 februari 2026 en noemt Google Vertex AI — dat is niet meer actief. Anthropic staat helemaal niet in de compliance-docs. De nieuwe beheerder of Yorin moet `C-sub-verwerkerslijst-dgskills.md` actualiseren vóór de FG-toets.
+   > **Let op:** De actuele school-facing AI-paden zijn Mistral AI en Black Forest Labs. Anthropic is alleen een intern/accountingpad zolang niet bewezen is dat schooldata via Anthropic loopt. De nieuwe beheerder of Yorin moet `C-sub-verwerkerslijst-dgskills.md` en providerbewijzen actualiseren vóór de FG-toets.
 
    Stappen:
    - Maak nieuwe accounts aan voor Mistral, BFL, Anthropic en Zoho op het nieuwe beheerders-e-mailadres

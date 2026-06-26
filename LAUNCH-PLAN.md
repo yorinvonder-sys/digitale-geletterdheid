@@ -164,16 +164,18 @@ Drie modellen, elk voor een ander type taak. Gebruik de router hieronder als geh
 
 | # | Taak | Deadline | Prioriteit |
 |---|------|----------|------------|
-| B.1 | AI Act: Risicobeheersysteem documenteren (Art. 9) | 2 aug 2026 | Hoog |
-| B.2 | AI Act: Technische documentatie Annex IV (Art. 11) | 2 aug 2026 | Hoog |
-| B.3 | AI Act: Registratie EU AI-database (Art. 49) | 2 aug 2026 | Hoog |
-| B.4 | AI Act: Docent override voor STEP_COMPLETE (Art. 14) | 2 aug 2026 | Hoog |
+| B.1 | AI Act: Risicobeheersysteem documenteren (Art. 9) | 2 aug 2026* | Hoog |
+| B.2 | AI Act: Technische documentatie Annex IV (Art. 11) | 2 aug 2026* | Hoog |
+| B.3 | AI Act: Registratie EU AI-database (Art. 49) | 2 aug 2026* | Hoog |
+| B.4 | AI Act: Docent override voor STEP_COMPLETE (Art. 14) | 2 aug 2026* | Hoog |
 | B.5 | Merknaam "DGSkills" registreren bij BOIP (€271) | Q3 2026 | Midden |
 | B.6 | Cyberverzekering afsluiten | Q3 2026 | Midden |
 | B.7 | Privacyconvenant Onderwijs aansluiting | Q3 2026 | Midden |
 | B.8 | THIRD_PARTY_LICENSES.txt genereren | Q3 2026 | Laag |
 | B.9 | Defensieve domeinnamen (dgskills.nl) | Q4 2026 | Laag |
 | B.10 | BTW vooroverleg Belastingdienst (21% vs 9%) | Q2 2026 | Midden |
+
+> *\* EU AI Act hoog-risico deadline: oorspronkelijk 2 augustus 2026. Via de Digital Omnibus (voorlopig politiek akkoord 7 mei 2026, nog niet gepubliceerd in het EU-Publicatieblad) naar verwachting verschoven naar 2 december 2027. Tot publicatie blijft 2 augustus 2026 formeel geldend.*
 
 ---
 

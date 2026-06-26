@@ -14,7 +14,7 @@ AI Lab helpt VO-scholen om digitale en AI-vaardigheden structureel in te zetten 
 **Resultaatbelofte:** Binnen 30 dagen live, binnen 90 dagen aantoonbare voortgang op prioritaire kerndoelen.
 
 ### Inbegrepen
-- Toegang voor 1 of 2 pilot-klassen (max 60 leerlingen).
+- Toegang voor 1 of 2 pilot-klassen (max 150 leerlingen).
 - Onboarding-call (45 min) voor deelnemende docenten.
 - Nulmeting (baseline) en Eindrapportage (impactanalyse).
 - Toegang tot alle missies en het docentendashboard.

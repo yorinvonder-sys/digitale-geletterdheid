@@ -79,7 +79,7 @@ DGSkills differentieert op twee niveaus:
 
 ### AI als copiloot, niet als vervanger
 
-Het hart van DGSkills is een AI-chatbot (Google Gemini) die als persoonlijke coach fungeert. Deze coach is nadrukkelijk ontworpen als **copiloot**: de AI geeft geen kant-en-klare antwoorden, maar stelt vragen, geeft hints en coacht de leerling naar eigen inzichten.
+Het hart van DGSkills is een AI-coach (Mistral AI voor tekst/chat/feedback; Black Forest Labs FLUX voor beeldgeneratie waar ingeschakeld) die als persoonlijke coach fungeert. Deze coach is nadrukkelijk ontworpen als **copiloot**: de AI geeft geen kant-en-klare antwoorden, maar stelt vragen, geeft hints en coacht de leerling naar eigen inzichten.
 
 In de missie *Prompt Perfectionist* beoordeelt de AI bijvoorbeeld de prompt van de leerling op drie criteria (duidelijkheid, specificiteit, context) en geeft maximaal één verbeterpunt per ronde. De leerling moet zelf de verbetering doorvoeren. In *Data Detective* begeleidt de AI de leerling bij het onderzoeken van app-permissies op de eigen iPad, maar voert het onderzoek niet voor hen uit.
 
@@ -214,7 +214,7 @@ Als een leerling aangeeft persoonlijke ervaring te hebben met het onderwerp, sto
 
 ### Content safety
 
-Het platform gebruikt Google Gemini als AI-model, geconfigureerd met de strictste veiligheidsinstellingen (BLOCK_LOW_AND_ABOVE op alle categorieën). Dit betekent dat zelfs milde ongewenste content — geweld, seksueel materiaal, haatspraak, gevaarlijke instructies — wordt geblokkeerd voordat het de leerling bereikt.
+Het platform gebruikt externe AI-providers via server-side Edge Functions en combineert providermaatregelen met eigen prompt-sanitizing, outputfiltering en welzijnsprotocol. Dit beperkt ongewenste content zoals geweld, seksueel materiaal, haatspraak en gevaarlijke instructies, maar blijft periodieke red-teaming en docenttoezicht vereisen.
 
 ### Privacy en gegevensbescherming
 
@@ -222,9 +222,9 @@ DGSkills is ontworpen met privacy-by-design:
 
 - **Data Processing Agreement (DPA)**: Op basis van het Model Verwerkersovereenkomst 4.0, de standaard voor het Nederlandse onderwijs.
 - **DPIA**: Een volledige Data Protection Impact Assessment is uitgevoerd, gezien de verwerking van persoonsgegevens van minderjarigen.
-- **Data residency**: Alle data wordt verwerkt en opgeslagen binnen de EU (europe-west4, Nederland) via Google Cloud/Vertex AI en Supabase.
+- **Data residency**: Alle data wordt verwerkt en opgeslagen binnen de EU (EER/EU-projectregio) via Supabase, Mistral AI en Black Forest Labs waar van toepassing.
 - **Verwerkingsregister**: Een volledig verwerkingsregister conform AVG artikel 30 is opgesteld.
-- **AI Act**: DGSkills is geclassificeerd als hoog-risico AI-systeem onder de EU AI Act (Annex III, punt 3b — AI voor beoordeling van leerresultaten). De bijbehorende verplichtingen worden vóór de deadline van 2 augustus 2026 geïmplementeerd.
+- **AI Act**: DGSkills moet als hoog-risico onderwijs-AI worden behandeld waar AI leerresultaten evalueert of het leerproces stuurt (Annex III, punt 3b). Art. 4 AI-geletterdheid geldt sinds 2 februari 2025; Art. 50 transparantie vanaf augustus 2026; de belangrijkste high-risk verplichtingen voor Annex III onderwijs-AI gelden volgens actuele Commissie-informatie vanaf 2 december 2027.
 
 ---
 

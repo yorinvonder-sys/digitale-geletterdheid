@@ -167,7 +167,7 @@ Wij gebruiken je gegevens voor de volgende doelen:
 |---|---|
 | **Toegang tot het platform** | Aanmaken en beheren van je account, inloggen |
 | **Onderwijs en leerervaring** | Opdrachten aanbieden, voortgang bijhouden, feedback geven |
-| **AI-ondersteuning** | Het bieden van AI-chat en AI-feedback binnen lessen (via Google Gemini) |
+| **AI-ondersteuning** | Het bieden van AI-chat, AI-feedback, vision/OCR en beeldgeneratie binnen lessen via server-side AI-providers (Mistral AI en Black Forest Labs waar ingeschakeld) |
 | **Docentfunctionaliteiten** | Overzicht van leerlingvoortgang, berichten sturen, klassen beheren |
 | **Beveiliging** | Beschermen van het platform tegen misbruik, fraude en ongeoorloofd gebruik |
 | **Communicatie** | Beantwoorden van vragen, verwerken van pilot-aanvragen |
@@ -212,8 +212,9 @@ Wij delen je gegevens alleen wanneer dat noodzakelijk is voor de werking van het
 
 | Subverwerker | Dienst | Welke gegevens | Locatie gegevens | Waarborg |
 |---|---|---|---|---|
-| **Supabase Inc.** (via AWS) | Database, authenticatie, edge functions | Alle accountgegevens en gebruiksgegevens | **EU (Frankfurt, Duitsland)** | Verwerkersovereenkomst (DPA); SOC2 Type II; data in EU-regio |
-| **Google LLC** (Vertex AI — Gemini 2.0 Flash) | AI-chatfunctionaliteit | Chatberichten die je typt (alleen de tekst van het gesprek) | **EU (europe-west4, Nederland)** | Google Cloud DPA met Standard Contractual Clauses (SCC); data at rest en ML-verwerking in EU-regio; zero data retention (geen opslag van prompts/responses); data wordt **niet** gebruikt voor AI-training; authenticatie via service account (geen API-key) |
+| **Supabase Inc.** (via AWS) | Database, authenticatie, edge functions | Alle accountgegevens en gebruiksgegevens | EU-projectregio / EER, exact te verifiëren | Verwerkersovereenkomst (DPA); SCC's waar nodig; projectregio vastleggen vóór schoolgebruik |
+| **Mistral AI** | AI-chat, feedback, vision en OCR | AI-invoer die nodig is voor de lesfunctie | Providerregio en subprocessors te verifiëren | Mistral DPA; SCC's/TIA waar nodig; gebruik voor provider-modeltraining uitgesloten waar providerafspraken en instellingen dit dekken |
+| **Black Forest Labs** | FLUX image generation | Beeldprompts en gegenereerde afbeeldingen | Providerregio en subprocessors te verifiëren | Provider-DPA/subprocessorbewijs vereist; server-side verwerking |
 | **Vercel Inc.** | Hosting van de website (frontend) | IP-adres, sessiegegevens (geen opslag van persoonsgegevens in database) | VS en wereldwijd (CDN/edge) | DPA; EU Standard Contractual Clauses (SCC) |
 | **Zoho Corporation** | E-mailservice (SMTP) | E-mailadres en naam (alleen bij pilot-aanvragen en notificaties) | EU (smtp.zoho.eu, datacenter in EU) | Verwerkersovereenkomst (DPA); GDPR-compliant EU-datacenter |
 
@@ -232,17 +233,17 @@ Wij delen je gegevens niet met andere partijen dan hierboven genoemd.
 
 Wij streven ernaar al je gegevens binnen de Europese Unie (EU) of de Europese Economische Ruimte (EER) te bewaren. In sommige gevallen is doorgifte naar landen buiten de EU/EER echter noodzakelijk:
 
-### Google Vertex AI (Gemini 2.0 Flash)
+### AI-verwerking via Mistral AI en Black Forest Labs
 
-Wanneer je de AI-chatfunctie gebruikt, wordt de tekst van je bericht verwerkt door **Google Gemini 2.0 Flash via Vertex AI**. DGSkills maakt gebruik van Vertex AI (het enterprise AI-platform van Google Cloud), en **niet** van de Gemini Developer API (generativelanguage.googleapis.com). Dit is een belangrijk onderscheid, omdat Vertex AI sterkere datalocatie- en privacygaranties biedt.
+Wanneer je een AI-functie gebruikt, wordt de noodzakelijke invoer server-side verwerkt door de relevante AI-provider. Voor tekst/chat/feedback/vision/OCR is dat Mistral AI; voor beeldgeneratie is dat Black Forest Labs FLUX.
 
-De AI-verwerking vindt plaats in de Google Cloud-regio **europe-west4 (Nederland)**. Hiervoor gelden de volgende waarborgen:
+Hiervoor gelden de volgende waarborgen en aandachtspunten:
 
-- **Data blijft in de EU**: Google garandeert dat data at rest en ML-verwerking plaatsvinden binnen de EU-regio (europe-west4). Er vindt **geen doorgifte naar de VS** plaats.
-- **Zero data retention**: Google bewaart geen prompts, responses of andere invoergegevens. Er is geen tussentijdse opslag van chatberichten door Google.
-- **Google Cloud Data Processing Addendum (DPA)** met **Standard Contractual Clauses (SCC)**: contractuele bescherming conform AVG-vereisten.
-- **Service account-authenticatie**: de verbinding met Vertex AI verloopt via een service account met beperkte rechten. Er wordt geen API-key gebruikt die kan uitlekken naar de client.
-- Je berichten worden **niet** gebruikt voor het trainen van AI-modellen. Google's Vertex AI-voorwaarden verbieden het gebruik van klantgegevens voor modeltraining.
+- **Server-side verwerking**: providerkeys en tijdelijke provider-URL's worden niet naar de browser gestuurd.
+- **Dataminimalisatie**: DGSkills stuurt alleen de context die nodig is voor de lesfunctie; namen/e-mailadressen worden niet standaard meegestuurd.
+- **Providertraining**: gebruik voor provider-modeltraining wordt uitgesloten waar dit door providerafspraken en instellingen wordt gedekt.
+- **Regio en doorgifte**: exacte providerregio's, subprocessors en doorgifte buiten de EER moeten vóór schoolgebruik worden geverifieerd in DPA, instellingen en subprocessoroverzicht.
+- **Schoolcontrole**: scholen moeten deze informatie meenemen in hun DPIA/FG-review.
 
 ### Vercel (hosting)
 
@@ -252,7 +253,7 @@ De website wordt gehost via Vercel. Vercel maakt gebruik van een wereldwijd netw
 
 ### Supabase (database)
 
-Onze database is gehost bij AWS in de EU-regio (Frankfurt, Duitsland). Alle persoonsgegevens worden opgeslagen en verwerkt binnen de EU.
+Opslag en verwerking worden ingericht binnen de EER/EU-projectregio waar contractueel en projectmatig vastgelegd. Exacte regio, doorgifte-afspraken en subprocessorinstellingen worden per school-DPA, projectinstelling en subverwerkerslijst bevestigd.
 
 ### Zoho (e-mail)
 
@@ -296,7 +297,7 @@ Wij bewaren je gegevens niet langer dan nodig is voor het doel waarvoor ze zijn 
 
 ### 10.5 Bij het beeindigen van je account
 
-Als je je account verwijdert (zelf of via de school), worden **alle** gegevens die aan je account zijn gekoppeld **permanent en onomkeerbaar verwijderd**. Dit omvat alle 28 gekoppelde gegevenstabellen. Enige uitzondering is het audit-logboek, dat nog maximaal 3 jaar bewaard kan worden voor wettelijke verantwoording.
+Als je je account verwijdert (zelf of via de school), worden account-hoofdgegevens en technisch gekoppelde rijen verwijderd waar het verwijderbeleid dit dekt. Back-ups, auditlogs, gedeelde records en school/DPA-bewaartermijnen kunnen apart blijven gelden.
 
 ### 10.6 Bij einde schoolcontract
 
@@ -340,7 +341,7 @@ DGSkills maakt gebruik van AI om leerlingen te helpen met hun opdrachten. Het is
 ### Hoe werkt de AI op DGSkills?
 
 - Het platform bevat een **AI-chatfunctie** waarmee je vragen kunt stellen over opdrachten en lesmateriaal.
-- De AI wordt aangedreven door **Google Gemini 2.0 Flash** (een groot taalmodel).
+- De AI wordt aangedreven door externe AI-providers, waaronder Mistral AI en Black Forest Labs waar de betreffende functie is ingeschakeld.
 - Wanneer je een bericht typt, wordt **alleen de tekst van je bericht** naar de AI gestuurd. Er worden geen andere persoonsgegevens meegestuurd.
 
 ### Belangrijke waarborgen
@@ -389,7 +390,7 @@ Op grond van de AVG heb je verschillende rechten met betrekking tot je persoonsg
 ### 14.3 Recht op verwijdering / recht op vergetelheid (Art. 17 AVG)
 
 **Wat:** Je mag vragen om verwijdering van al je persoonsgegevens.
-**Hoe:** In het platform kun je zelf je account en alle bijbehorende gegevens permanent verwijderen via de accountinstellingen. Bij verwijdering worden **alle 28 gekoppelde gegevenstabellen** automatisch en onomkeerbaar gewist. Je kunt dit verzoek ook via je school indienen.
+**Hoe:** In het platform kun je zelf verwijdering van je account-hoofdgegevens aanvragen via de accountinstellingen. Technisch gekoppelde rijen worden verwijderd waar cascade- of verwijderbeleid dit dekt; back-ups, auditlogs, gedeelde records en school/DPA-bewaartermijnen kunnen apart blijven gelden. Je kunt dit verzoek ook via je school indienen.
 
 ### 14.4 Recht op beperking van de verwerking (Art. 18 AVG)
 
@@ -477,7 +478,7 @@ DGSkills maakt uitsluitend gebruik van **strikt noodzakelijke (functionele) cook
 - **Geen analytics-cookies van derden**: wij gebruiken geen Google Analytics, Facebook Pixel of vergelijkbare diensten.
 - **Geen social media-cookies**: er zijn geen social media-knoppen die je gedrag volgen.
 
-Omdat wij uitsluitend strikt noodzakelijke cookies gebruiken, is hiervoor **geen voorafgaande toestemming** vereist (conform artikel 11.7a Telecommunicatiewet en de richtlijnen van de Autoriteit Persoonsgegevens).
+Voor strikt noodzakelijke opslag is geen voorafgaande toestemming vereist. Niet-essentiële analytics of vergelijkbare metingen mogen pas worden geplaatst of geactiveerd nadat daarvoor toestemming is gegeven.
 
 ---
 
@@ -537,10 +538,11 @@ Onderstaand overzicht bevat de actuele lijst van subverwerkers. Deze lijst kan w
 
 | # | Subverwerker | Dienst | Gegevens | Locatie | Waarborgen |
 |---|---|---|---|---|---|
-| 1 | **Supabase Inc.** (AWS Frankfurt) | Database, authenticatie, serverless functions | Alle account- en gebruiksgegevens | EU (Frankfurt, DE) | DPA, SOC2 Type II, ISO 27001 |
-| 2 | **Google LLC** (Vertex AI — Gemini 2.0 Flash, europe-west4) | AI-chatverwerking | Chatberichttekst (geen profiel-/persoonsgegevens) | **EU (europe-west4, Nederland)** | Google Cloud DPA met SCC; zero data retention; data at rest en ML-verwerking in EU; ISO 27001, ISO 42001; service account-authenticatie |
-| 3 | **Vercel Inc.** | Website hosting (CDN/edge) | IP-adres, sessietokens (geen database-opslag) | VS / wereldwijd (CDN) | DPA, SCC |
-| 4 | **Zoho Corporation** (smtp.zoho.eu) | E-mailverzending | E-mailadres, naam (bij pilot/notificaties) | EU | DPA, GDPR-compliant EU-datacenter |
+| 1 | **Supabase Inc.** | Database, authenticatie, serverless functions | Alle account- en gebruiksgegevens | EU-projectregio / EER, exact te verifiëren | DPA, SCC's waar nodig, SOC2/ISO waar van toepassing |
+| 2 | **Mistral AI** | AI-chat/feedback/vision/OCR | AI-invoer voor de lesfunctie | Providerregio te verifiëren | Mistral DPA; SCC's/TIA waar nodig; providertraining uitgesloten waar contract/settings dit dekken |
+| 3 | **Black Forest Labs** | AI-beeldgeneratie | Beeldprompts en gegenereerde afbeeldingen | Providerregio te verifiëren | Provider-DPA/subprocessorbewijs vereist; server-side verwerking |
+| 4 | **Vercel Inc.** | Website hosting (CDN/edge) | IP-adres, sessietokens (geen database-opslag) | VS / wereldwijd (CDN) | DPA, SCC, DPF waar van toepassing |
+| 5 | **Zoho Corporation** (smtp.zoho.eu) | E-mailverzending | E-mailadres, naam (bij pilot/notificaties) | EU-dienstverlening te verifiëren | DPA, SCC's waar nodig |
 
 ---
 

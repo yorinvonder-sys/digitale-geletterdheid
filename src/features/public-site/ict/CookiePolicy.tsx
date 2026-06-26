@@ -23,7 +23,7 @@ export const CookiePolicy: React.FC = () => {
 
                     <div className="prose prose-slate max-w-none">
                         <p className="text-lg leading-relaxed text-duck-ink/60">
-                            Wij gebruiken een minimale set aan cookies om het platform te laten werken en om het gebruik anoniem te analyseren. 
+                            Wij gebruiken een minimale set aan opslagtechnieken om het platform te laten werken en optionele first-party analytics na toestemming te meten.
                             Wij gebruiken <strong>geen</strong> tracking cookies voor advertenties of profilering.
                         </p>
 
@@ -53,7 +53,7 @@ export const CookiePolicy: React.FC = () => {
                                     </tr>
                                     <tr>
                                         <td className="border border-duck-ink/15 p-3">Interne klik-analyse</td>
-                                        <td className="border border-duck-ink/15 p-3">Anonieme gebruiksstatistieken voor productverbetering (first-party).</td>
+                                        <td className="border border-duck-ink/15 p-3">First-party gebruiksstatistieken voor productverbetering, pseudoniem en geaggregeerd waar mogelijk.</td>
                                         <td className="border border-duck-ink/15 p-3">Analytics</td>
                                         <td className="border border-duck-ink/15 p-3">Sessie / Geaggregeerd</td>
                                     </tr>
@@ -70,7 +70,7 @@ export const CookiePolicy: React.FC = () => {
                         <p>
                             Bij je eerste bezoek heb je een keuze gemaakt via de cookiebanner. Je kunt deze keuze op elk moment 
                             herzien of intrekken. Voor de volledigheid: wij slaan de status van uw toestemming op in uw browser (local storage) 
-                            en loggen de actie anoniem in ons audit-systeem om te kunnen voldoen aan de AVG-bewijsplicht.
+                            en loggen de keuze beperkt in ons audit-systeem om te kunnen voldoen aan de AVG-bewijsplicht.
                         </p>
                         <div className="flex items-center gap-4 p-6 bg-duck-bg rounded-2xl border border-duck-ink/15 my-6">
                             <ShieldAlert size={24} className="text-duck-ink/60" />
@@ -100,8 +100,8 @@ export const CookiePolicy: React.FC = () => {
                         </p>
                         <ul>
                             <li><strong>Geen datadelen:</strong> Jouw klikgedrag wordt nooit gedeeld met Google, Facebook of andere partijen.</li>
-                            <li><strong>Geen profilering:</strong> De data wordt uitsluitend op geaggregeerd niveau gebruikt om te zien welke functies veel gebruikt worden, niet om individuele leerlingen te volgen.</li>
-                            <li><strong>Gehost in de EU:</strong> Alle data blijft binnen onze beveiligde infrastructuur in Europa.</li>
+                            <li><strong>Geen advertentieprofilering:</strong> De data wordt gebruikt voor productverbetering en waar mogelijk geaggregeerd; niet voor advertenties of tracking over andere websites.</li>
+                            <li><strong>Hosting:</strong> Verwerking volgt de EER/EU-projectregio en subverwerkersafspraken.</li>
                         </ul>
                     </div>
                 </div>

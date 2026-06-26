@@ -25,7 +25,7 @@
 ### Marktcontext
 - Nederlandse EdTech markt: ~€475M (2023), 15%+ groei per jaar
 - **Timing:** Scholen beslissen februari-mei over tools voor schooljaar 2026-2027
-- **Regelgeving:** EU AI Act hoog-risico deadline 2 augustus 2026 — DGSkills is compliant, concurrenten vaak niet
+- **Regelgeving:** EU AI Act classificeert onderwijs-AI als hoog-risico; Art. 50-transparantie vanaf augustus 2026; actuele Commissiepagina: high-risk onderwijsverplichtingen vanaf 2 december 2027 — DGSkills is hoog-risico, transparant gedocumenteerd en in actieve voorbereiding; veel concurrenten niet
 - **Kans:** NOLAI ontving €63M voor AI-onderwijs in NL — digitale geletterdheid staat hoog op de agenda
 
 ### Positionering
@@ -157,7 +157,7 @@ Pilot → Resultaten → Jaarcontract
 #### 3.6 Webinars
 **Format:** 30 min, gratis, maandelijks
 - "SLO-kerndoelen digitale geletterdheid: van beleid naar praktijk"
-- "AI Act voor scholen: wat moet je weten vóór augustus 2026?"
+- "AI Act voor scholen: wat moet je weten?"
 - "Demo: Hoe 1 docent digitale geletterdheid inricht voor heel jaar 1"
 
 ### Tier 3: Schaalbare Kanalen (Langere termijn)
@@ -396,7 +396,7 @@ Bewustwording          →  Interesse           →  Pilot              →  Con
 | Bezwaar | Response |
 |---------|----------|
 | "Te duur" | €19/leerling/jaar = 1 lesboek. Maar dan met dashboard, updates, en support. |
-| "Privacy/AVG?" | Volledig DPIA, DPA Model 4.0, data in NL, AI Act compliant. Hier is ons compliance-pack. |
+| "Privacy/AVG?" | Volledig DPIA, DPA Model 4.0, data in NL, EU AI Act hoog-risico en transparant gedocumenteerd. Hier is ons compliance-pack. |
 | "Geen tijd voor implementatie" | 30 dagen live. Wij doen de setup. Docenthandleiding voor het eerste lesuur bijgesloten. |
 | "We doen het zelf al" | Mooi! Hoe meten jullie of leerlingen de kerndoelen halen? Wij maken dat aantoonbaar. |
 | "Moet langs directie/bestuur" | Begrijpelijk. Hier is een one-pager + ROI-sheet specifiek voor directie. |
