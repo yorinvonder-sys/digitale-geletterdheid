@@ -709,7 +709,6 @@ function ProductShowcaseBento() {
                         delay={0}
                         y={20}
                         className="rounded-[1.5rem] bg-duck-ink p-6 flex flex-col gap-4 md:col-span-2 md:row-span-2"
-                        aria-label="Docent-dashboard productimpressie"
                     >
                         <div aria-hidden="true" className="rounded-xl bg-duck-bgLight p-3">
                             <BrowserFrame url="dgskills.app/klas">
@@ -727,7 +726,6 @@ function ProductShowcaseBento() {
                         delay={0.07}
                         y={20}
                         className="rounded-[1.5rem] bg-white shadow-duck-soft p-6 flex flex-col gap-4 md:col-span-1"
-                        aria-label="Kant-en-klare AI-missies productimpressie"
                     >
                         <div aria-hidden="true" className="rounded-xl bg-duck-bgLight p-3">
                             <BrowserFrame url="dgskills.app/missies">
@@ -745,7 +743,6 @@ function ProductShowcaseBento() {
                         delay={0.14}
                         y={20}
                         className="rounded-[1.5rem] bg-duck-acid p-6 flex flex-col gap-4 md:col-span-1"
-                        aria-label="Avatar, XP en levels productimpressie"
                     >
                         <div aria-hidden="true" className="rounded-xl bg-duck-bgLight p-3">
                             <BrowserFrame url="dgskills.app/profiel">
