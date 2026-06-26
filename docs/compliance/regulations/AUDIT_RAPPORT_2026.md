@@ -47,6 +47,8 @@
 
 **Overtreden Wetgeving / Norm:** Cbw Zorgplicht (Implementatie NIS2 Art. 21); NCSC Richtlijn Authenticatie; OWASP Top 10 (A07:2021 – Identification and Authentication Failures)
 
+> **Correctie/aanvulling (26 juni 2026):** De Cyberbeveiligingswet (NL-implementatie NIS2) is nog niet in werking (beoogd ~15 augustus 2026, mogelijk later) en DGSkills valt naar verwachting niet binnen de NIS2-scope (onderwijs is geen NIS2-sector; vermoedelijk onder de omvangdrempel — te bevestigen). De MFA-verplichting wordt daarom primair gedragen door **AVG Art. 32** (passende beveiliging); de genoemde NIS2-boete (€10M) geldt voor in-scope entiteiten en is hier niet de directe grondslag — relevante boete-exposure is **AVG Art. 83**. NIS2 Art. 21 blijft richtinggevend best-practice.
+
 **Code Locatie & Het Fundamentele Probleem:**
 
 `services/authService.ts` — De gehele authenticatielogica biedt uitsluitend single-factor authenticatie: e-mail/wachtwoord (regel 154-178) en Microsoft SSO (regel 50-73). Er is **nergens** in de codebase een implementatie, configuratie of zelfs maar een referentie naar MFA, TOTP, 2FA of een authenticator-applicatie. Dit is bevestigd via een volledige codebase-brede grep op `mfa|two.factor|2fa|totp|authenticator` — nul resultaten.
@@ -816,6 +818,8 @@ Indien deze code in de exacte, huidige staat naar productie wordt gepusht en ope
 |--------|---------|---------------|-------------------|
 | Ontbreken MFA voor kritieke rollen | Art. 21 NIS2 | **€10.000.000** of 2% wereldwijde jaaromzet | €100.000 - €500.000 |
 | Onvoldoende wachtwoordbeleid (6 tekens minimum) | Art. 21 NIS2 | **€10.000.000** of 2% wereldwijde jaaromzet | €50.000 - €250.000 |
+
+> **Correctie/aanvulling (26 juni 2026):** De Cyberbeveiligingswet (NL-implementatie NIS2) is nog niet in werking (beoogd ~15 augustus 2026, mogelijk later) en DGSkills valt naar verwachting niet binnen de NIS2-scope (onderwijs is geen NIS2-sector; vermoedelijk onder de omvangdrempel — te bevestigen). De MFA-verplichting wordt daarom primair gedragen door **AVG Art. 32** (passende beveiliging); de genoemde NIS2-boete (€10M) geldt voor in-scope entiteiten en is hier niet de directe grondslag — relevante boete-exposure is **AVG Art. 83**. NIS2 Art. 21 blijft richtinggevend best-practice.
 
 ### Strafrechtelijke Aansprakelijkheid
 
