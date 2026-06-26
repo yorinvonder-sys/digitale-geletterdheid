@@ -150,10 +150,10 @@ export const PrivacyModal: React.FC<PrivacyModalProps> = ({ isOpen, onClose, onA
                         <div className="bg-lab-gold border border-lab-gold rounded-2xl p-4 text-sm text-lab-gold">
                             <p className="mb-3">De AI-onderwijsassistent wordt aangedreven door <strong>Mistral AI</strong>.</p>
                             <ul className="list-disc pl-4 space-y-1 text-sm">
-                                <li><strong>Geen Training:</strong> Jouw invoer wordt <u>niet</u> gebruikt om de AI-modellen te trainen.</li>
+                                <li><strong>Modeltraining:</strong> Jouw invoer is ingericht om niet voor provider-modeltraining te worden gebruikt waar dit contractueel en technisch is gedekt.</li>
                                 <li><strong>Dataminimalisatie:</strong> We sturen alleen de inhoud die nodig is voor de gevraagde AI-functie.</li>
-                                <li><strong>Datalocatie:</strong> Verwerking vindt plaats in de EU (regio: België).</li>
-                                <li><strong>Retentie:</strong> Google bewaart API-inputs maximaal 30 dagen voor misbruikdetectie, daarna wordt het gewist.</li>
+                                <li><strong>Datalocatie:</strong> Verwerking volgt de EER/EU-projectregio en subverwerkersafspraken van de school.</li>
+                                <li><strong>Retentie:</strong> Bewaartermijnen verschillen per datacategorie en staan in de privacyverklaring.</li>
                             </ul>
                             <p className="mt-3 text-xs text-duck-ink/65 italic">De AI Mentor is er om je te helpen, maar kan soms fouten maken. Controleer antwoorden altijd zelf.</p>
                         </div>
@@ -263,7 +263,8 @@ export const PrivacyModal: React.FC<PrivacyModalProps> = ({ isOpen, onClose, onA
                             Bewaartermijnen
                         </h3>
                         <div className="bg-duck-bg rounded-2xl p-4 text-sm text-duck-ink/65 space-y-1">
-                            <p>• <strong>Activiteitslogs:</strong> 90 dagen</p>
+                            <p>• <strong>Activiteitsdata:</strong> maximaal 1 jaar</p>
+                            <p>• <strong>Audit/compliance-logs:</strong> maximaal 3 jaar</p>
                             <p>• <strong>Accountgegevens:</strong> Zolang je account actief is</p>
                             <p>• <strong>Chatgesprekken:</strong> Alleen tijdens sessie (niet opgeslagen)</p>
                         </div>

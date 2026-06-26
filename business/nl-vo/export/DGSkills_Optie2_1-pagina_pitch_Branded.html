@@ -3,480 +3,145 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>DGSkills — One Pager Digitale Geletterdheid</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,700;0,900;1,700&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <title>DGSkills - Klaar voor de klas (Pitch)</title>
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
+
+    :root {
+      --primary: #0B453F;
+      --primary-gradient: linear-gradient(135deg, #08283B 0%, #0B453F 100%);
+      --slate-900: #08283B;
+      --slate-700: #08283B;
+      --slate-100: #F3E4CB;
+      --success: #5F947D;
+      --white: #ffffff;
+    }
 
     body {
-      font-family: 'Outfit', sans-serif;
-      background: #f2f1ec;
-      color: #202023;
-      -webkit-font-smoothing: antialiased;
+      font-family: 'Inter', sans-serif;
+      margin: 0;
+      padding: 0;
+      color: var(--slate-700);
+      background: #FCF6EA;
+      line-height: 1.4;
     }
 
-    @page { size: A4; margin: 0; }
-    @media print {
-      body { background: #f2f1ec; }
-      .page { box-shadow: none; }
-    }
-
-    .page {
-      width: 210mm;
-      min-height: 297mm;
-      background: #f2f1ec;
+    .one-pager {
+      max-width: 800px;
       margin: 0 auto;
-      position: relative;
-      overflow: hidden;
+      background: white;
+      min-height: 100vh;
       display: flex;
       flex-direction: column;
+      box-shadow: 0 0 40px rgba(0,0,0,0.05);
     }
 
-    /* Header */
     .header {
-      background: #202023;
-      color: #f2f1ec;
-      padding: 40px 48px 36px;
-      position: relative;
-    }
-
-    .header-top {
+      background: var(--primary-gradient);
+      color: white;
+      padding: 40px;
       display: flex;
       justify-content: space-between;
-      align-items: flex-start;
-      margin-bottom: 28px;
-    }
-
-    .logo-mark {
-      display: flex;
       align-items: center;
-      gap: 10px;
     }
 
-    .logo-duck {
-      width: 36px;
-      height: 36px;
-      background: #e1ff01;
-      border-radius: 50%;
+    .header-content { flex: 1; }
+    .header h1 { font-size: 26pt; font-weight: 800; margin: 0; line-height: 1.1; }
+    .header p { font-size: 13pt; opacity: 0.9; margin-top: 8px; font-weight: 400; }
+    .logo { width: 80px; filter: brightness(0) invert(1); }
+
+    .main-content { padding: 40px; flex: 1; }
+
+    h2 { font-size: 16pt; font-weight: 800; color: var(--slate-900); margin-top: 30px; margin-bottom: 16px; border-bottom: 2px solid var(--slate-100); padding-bottom: 8px; }
+
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 16px; }
+    .feature-card { background: var(--slate-100); padding: 20px; border-radius: 12px; border: 1px solid var(--slate-200); }
+    .feature-card h3 { margin-top: 0; font-size: 12pt; color: var(--primary); font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; }
+
+    .kpi-strip {
       display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 18px;
-      line-height: 1;
+      justify-content: space-around;
+      background: #FCF6EA;
+      padding: 20px;
+      border-radius: 16px;
+      margin-top: 24px;
+      border: 1px solid #e0e7ff;
     }
+    .kpi-box { text-align: center; }
+    .kpi-val { display: block; font-size: 20pt; font-weight: 800; color: var(--primary); }
+    .kpi-lab { font-size: 8.5pt; font-weight: 700; color: var(--slate-600); text-transform: uppercase; }
 
-    .logo-text {
-      font-family: 'Fraunces', serif;
-      font-size: 22px;
-      font-weight: 900;
-      letter-spacing: -0.5px;
-      color: #f2f1ec;
-    }
-
-    .badges {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      justify-content: flex-end;
-    }
-
-    .badge {
-      background: rgba(242,241,236,0.12);
-      border: 1px solid rgba(242,241,236,0.2);
-      border-radius: 999px;
-      padding: 3px 10px;
-      font-size: 10px;
-      font-weight: 500;
-      color: #c2c1bd;
-      letter-spacing: 0.02em;
-    }
-
-    .header-headline {
-      font-family: 'Fraunces', serif;
-      font-size: 36px;
-      font-weight: 900;
-      line-height: 1.1;
-      letter-spacing: -1px;
-      color: #f2f1ec;
-      max-width: 480px;
-    }
-
-    .header-headline em {
-      color: #e1ff01;
-      font-style: normal;
-    }
-
-    /* Main content */
-    .content {
-      flex: 1;
-      padding: 0 48px 40px;
-    }
-
-    /* Problem section */
-    .section {
+    .cta-section {
+      background: #f0fdf4;
+      border: 2px dashed var(--success);
+      padding: 24px;
+      border-radius: 16px;
+      text-align: center;
       margin-top: 32px;
     }
+    .cta-section p { font-size: 12pt; font-weight: 700; color: #5F947D; margin: 0; }
 
-    .section-label {
-      font-size: 10px;
-      font-weight: 700;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: #c2c1bd;
-      margin-bottom: 14px;
-    }
+    .footer { padding: 20px 40px; border-top: 1px solid var(--slate-100); text-align: center; font-size: 9pt; color: var(--slate-400); }
 
-    .problem-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-    }
+    ul { padding-left: 18px; margin: 8px 0 0 0; }
+    li { margin-bottom: 6px; font-size: 10.5pt; }
 
-    .problem-card {
-      background: white;
-      border-radius: 14px;
-      padding: 16px 18px;
-      border: 1px solid rgba(32,32,35,0.08);
-    }
-
-    .problem-stat {
-      font-family: 'Fraunces', serif;
-      font-size: 26px;
-      font-weight: 900;
-      color: #202023;
-      line-height: 1;
-      margin-bottom: 4px;
-    }
-
-    .problem-stat.accent { color: #e1ff01; -webkit-text-stroke: 1px #202023; }
-
-    .problem-label {
-      font-size: 11px;
-      color: #202023;
-      font-weight: 500;
-      line-height: 1.4;
-    }
-
-    .problem-source {
-      font-size: 9px;
-      color: #c2c1bd;
-      margin-top: 4px;
-    }
-
-    /* Two-column solution */
-    .solution-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 16px;
-    }
-
-    .solution-col {
-      background: white;
-      border-radius: 16px;
-      padding: 20px;
-      border: 1px solid rgba(32,32,35,0.08);
-    }
-
-    .solution-col-head {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 14px;
-    }
-
-    .icon-pill {
-      width: 32px;
-      height: 32px;
-      border-radius: 10px;
-      background: #e1ff01;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 16px;
-      flex-shrink: 0;
-    }
-
-    .solution-col-title {
-      font-size: 13px;
-      font-weight: 700;
-      color: #202023;
-    }
-
-    .feature-list {
-      list-style: none;
-    }
-
-    .feature-list li {
-      font-size: 11.5px;
-      color: #202023;
-      padding: 5px 0;
-      border-bottom: 1px solid #f2f1ec;
-      padding-left: 16px;
-      position: relative;
-      line-height: 1.45;
-    }
-
-    .feature-list li:last-child { border-bottom: none; }
-
-    .feature-list li::before {
-      content: '—';
-      position: absolute;
-      left: 0;
-      color: #c2c1bd;
-      font-size: 10px;
-    }
-
-    strong { font-weight: 700; }
-
-    /* Proof strip */
-    .proof-strip {
-      background: #202023;
-      border-radius: 16px;
-      padding: 18px 22px;
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 0;
-      margin-top: 16px;
-    }
-
-    .proof-item {
-      text-align: center;
-      padding: 0 8px;
-      border-right: 1px solid rgba(242,241,236,0.12);
-    }
-    .proof-item:last-child { border-right: none; }
-
-    .proof-num {
-      font-family: 'Fraunces', serif;
-      font-size: 24px;
-      font-weight: 900;
-      color: #e1ff01;
-      line-height: 1;
-    }
-
-    .proof-desc {
-      font-size: 10px;
-      color: #c2c1bd;
-      margin-top: 4px;
-      line-height: 1.4;
-    }
-
-    /* Pilot box */
-    .pilot-box {
-      background: white;
-      border-radius: 16px;
-      padding: 20px 22px;
-      border: 1px solid rgba(32,32,35,0.08);
-      display: flex;
-      gap: 24px;
-      align-items: flex-start;
-      margin-top: 16px;
-    }
-
-    .pilot-table {
-      flex: 1;
-      border-collapse: collapse;
-    }
-
-    .pilot-table tr td {
-      font-size: 11.5px;
-      padding: 5px 0;
-      border-bottom: 1px solid #f2f1ec;
-    }
-
-    .pilot-table tr:last-child td { border-bottom: none; }
-
-    .pilot-table td:first-child {
-      color: #c2c1bd;
-      font-size: 10px;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      width: 110px;
-      padding-right: 12px;
-    }
-
-    .pilot-cta {
-      background: #e1ff01;
-      border-radius: 14px;
-      padding: 20px;
-      width: 160px;
-      flex-shrink: 0;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-    }
-
-    .pilot-cta-title {
-      font-family: 'Fraunces', serif;
-      font-size: 16px;
-      font-weight: 900;
-      color: #202023;
-      line-height: 1.2;
-    }
-
-    .pilot-cta-action {
-      font-size: 11px;
-      font-weight: 700;
-      color: #202023;
-      margin-top: 16px;
-    }
-
-    /* Footer */
-    .footer {
-      background: #202023;
-      padding: 16px 48px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .footer-contact {
-      font-size: 11px;
-      color: #c2c1bd;
-    }
-
-    .footer-contact a {
-      color: #e1ff01;
-      text-decoration: none;
-      font-weight: 600;
-    }
-
-    .footer-tag {
-      font-size: 10px;
-      color: rgba(194,193,189,0.6);
+    @media print {
+      .one-pager { box-shadow: none; width: 100%; max-width: 100%; margin: 0; }
     }
   </style>
 </head>
 <body>
-<div class="page">
-
-  <div class="header">
-    <div class="header-top">
-      <div class="logo-mark">
-        <div class="logo-duck">🦆</div>
-        <span class="logo-text">DGSkills</span>
+  <div class="one-pager">
+    <div class="header">
+      <div class="header-content">
+        <h1>DGSkills: Klaar voor de klas</h1>
+        <p>Digitale geletterdheid & AI conform SLO 2025</p>
       </div>
-      <div class="badges">
-        <span class="badge">DPIA beschikbaar</span>
-        <span class="badge">EU AI Act-traject</span>
-        <span class="badge">DPIA beschikbaar</span>
-        <span class="badge">SLO 2025</span>
-      </div>
-    </div>
-    <div class="header-headline">
-      Van missie naar <em>meetbare</em> digitale geletterdheid
-    </div>
-  </div>
-
-  <div class="content">
-
-    <div class="section">
-      <div class="section-label">Het probleem</div>
-      <div class="problem-grid">
-        <div class="problem-card">
-          <div class="problem-stat">4,7<span style="font-size:18px">/10</span></div>
-          <div class="problem-label">Gemiddeld digitaal niveau leerlingen</div>
-          <div class="problem-source">Monitor Digitale Geletterdheid 2023</div>
-        </div>
-        <div class="problem-card">
-          <div class="problem-stat">3.800</div>
-          <div class="problem-label">FTE tekort ICT-docenten in NL</div>
-          <div class="problem-source">OCW Arbeidsmarkt Leraren 2024</div>
-        </div>
-        <div class="problem-card">
-          <div class="problem-stat" style="font-size:18px;margin-bottom:6px">Verplicht</div>
-          <div class="problem-label">SLO-kerndoelen digitale geletterdheid worden wettelijk verplicht</div>
-          <div class="problem-source">SLO Conceptkerndoelen 2025</div>
-        </div>
-        <div class="problem-card">
-          <div class="problem-stat" style="font-size:18px;margin-bottom:6px">2 aug 2026</div>
-          <div class="problem-label">EU AI Act hoog-risico deadline voor EdTech-aanbieders</div>
-          <div class="problem-source">EU Verordening 2024/1689</div>
-        </div>
-      </div>
+      <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgdmlld0JveD0iMCAwIDUxMiA1MTIiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPCEtLSBSb2NrZXQgQm9keSAtLT4KICA8cGF0aCBkPSJNMjU2IDUwQzIwMCA1MCAxNjAgMTUwIDE2MCAyODBDMTYwIDM1MCAxODAgNDAwIDI1NiA0MjBDMzMyIDQwMCAzNTIgMzUwIDM1MiAyODBDMzMyIDQwMCAzNTIgMzUwIDM1MiAyODBDMzUyIDE1MCAzMTIgNTAgMjU2IDUwWiIgc3Ryb2tlPSIjMEYxNzJBIiBzdHJva2Utd2lkdGg9IjIwIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+CiAgCiAgPCEtLSBDaXJjdWl0IEJyYWluIEljb24gLS0+CiAgPGNpcmNsZSBjeD0iMjU2IiBjeT0iMjIwIiByPSI3MCIgc3Ryb2tlPSIjMTBCOTgxIiBzdHJva2Utd2lkdGg9IjE1Ii8+CiAgPHBhdGggZD0iTTI1NiAxODBWMjYwTTIxNiAyMjBIMjk2IiBzdHJva2U9IiMxMEI5ODEiIHN0cm9rZS13aWR0aD0iOCIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+CiAgPGNpcmNsZSBjeD0iMjU2IiBjeT0iMTgwIiByPSI4IiBmaWxsPSIjMTBCOTgxIi8+CiAgPGNpcmNsZSBjeD0iMjU2IiBjeT0iMjYwIiByPSI4IiBmaWxsPSIjMTBCOTgxIi8+CiAgPGNpcmNsZSBjeD0iMjE2IiBjeT0iMjIwIiByPSI4IiBmaWxsPSIjMTBCOTgxIi8+CiAgPGNpcmNsZSBjeD0iMjk2IiBjeT0iMjIwIiByPSI4IiBmaWxsPSIjMTBCOTgxIi8+CiAgCiAgPCEtLSBGaW5zIC0tPgogIDxwYXRoIGQ9Ik0xNjAgMzIwQzEyMCAzMjAgMTAwIDM4MCAxMjAgNDUwQzE0MCA0MzAgMTYwIDQyMCAxNjAgNDIwIiBzdHJva2U9IiMwRjE3MkEiIHN0cm9rZS13aWR0aD0iMjAiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPgogIDxwYXRoIGQ9Ik0zNTIgMzIwQzM5MiAzMjAgNDEyIDM4MCAzOTIgNDUwQzM3MiA0MzAgMzUyIDQyMCAzNTIgNDIwIiBzdHJva2U9IiMwRjE3MkEiIHN0cm9rZS13aWR0aD0iMjAiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPgogIAogIDwhLS0gRmxhbWUvRW5naW5lIC0tPgogIDxwYXRoIGQ9Ik0yMzAgNDIwQzIzMCA0NjAgMjU2IDUwMCAyNTYgNTAwQzI1NiA1MDAgMjgyIDQ2MCAyODIgNDIwIiBzdHJva2U9IiMwRjE3MkEiIHN0cm9rZS13aWR0aD0iMTUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgo8L3N2Zz4K" class="logo">
     </div>
 
-    <div class="section">
-      <div class="section-label">De oplossing — dgskills.app</div>
-      <div class="solution-grid">
-        <div class="solution-col">
-          <div class="solution-col-head">
-            <div class="icon-pill">🎯</div>
-            <div class="solution-col-title">Voor leerlingen</div>
-          </div>
-          <ul class="feature-list">
-            <li><strong>Missies, geen werkbladen</strong> — challenges over AI, cybersecurity en digitale tools</li>
-            <li><strong>Directe AI-feedback</strong> — persoonlijke begeleiding, oneindige geduld</li>
-            <li><strong>Gamification</strong> — XP, badges, avatars en levels</li>
+    <div class="main-content">
+      <p>AI en digitale vaardigheden zijn essentieel. DGSkills biedt kant-en-klare missies voor leerlingen, zonder dat het de docent extra tijd kost.</p>
+
+      <h2>Waarom DGSkills?</h2>
+      <div class="grid">
+        <div class="feature-card">
+          <h3>Voor docenten</h3>
+          <ul>
+            <li>Volledige SLO Kerndoel-dekking.</li>
+            <li>Geen eigen lesvoorbereiding nodig.</li>
+            <li>Werkdrukverlaging (Wang et al., 2025).</li>
           </ul>
         </div>
-        <div class="solution-col">
-          <div class="solution-col-head">
-            <div class="icon-pill">📊</div>
-            <div class="solution-col-title">Voor school &amp; docenten</div>
-          </div>
-          <ul class="feature-list">
-            <li><strong>SLO-bewijs in één klik</strong> — dashboard koppelt elke activiteit aan kerndoelen 21A–23C</li>
-            <li><strong>Inspectie-klaar</strong> — exporteer voortgangsrapportages naar Excel</li>
-            <li><strong>Werkdruk omlaag</strong> — AI geeft feedback, docent coacht</li>
+        <div class="feature-card">
+          <h3>Voor de schoolleiding</h3>
+          <ul>
+            <li>Duidelijke pilot (8-12 weken).</li>
+            <li>DPA/DPIA-support voor inkoop en FG-review.</li>
+            <li>Meetbaar resultaat & impact.</li>
           </ul>
         </div>
       </div>
-    </div>
 
-    <div class="section">
-      <div class="section-label">Bewijs</div>
-      <div class="proof-strip">
-        <div class="proof-item">
-          <div class="proof-num">60+</div>
-          <div class="proof-desc">missies verdeeld over 3 leerjaren</div>
-        </div>
-        <div class="proof-item">
-          <div class="proof-num">EU</div>
-          <div class="proof-desc">datacenters, data in NL, DPIA uitgevoerd</div>
-        </div>
-        <div class="proof-item">
-          <div class="proof-num">DPIA</div>
-          <div class="proof-desc">risicobeoordeling &amp; menselijk toezicht</div>
-        </div>
-        <div class="proof-item">
-          <div class="proof-num">SLO</div>
-          <div class="proof-desc">alle domeinen 21A–23C gedekt</div>
-        </div>
+      <h2>Succes in Cijfers</h2>
+      <div class="kpi-strip">
+        <div class="kpi-box"><span class="kpi-val">> 70%</span><span class="kpi-lab">Docentactie</span></div>
+        <div class="kpi-box"><span class="kpi-val">> 60%</span><span class="kpi-lab">WAU Leerling</span></div>
+        <div class="kpi-box"><span class="kpi-val">> 55%</span><span class="kpi-lab">Opdrachten af</span></div>
+      </div>
+
+      <h2>De Pilot-route</h2>
+      <p style="font-size: 10pt; margin-top: 12px;"><strong>Kickoff</strong> (Week 0) → <strong>Onboarding</strong> (Week 1) → <strong>Check-ins</strong> (Week 4/8) → <strong>Impactrapport</strong> (Week 12).</p>
+
+      <div class="cta-section">
+        <p>Plan een demo van 45 minuten en ontvang direct een pilotvoorstel op maat.</p>
       </div>
     </div>
 
-    <div class="section">
-      <div class="section-label">Starten — Pilot in 30 dagen</div>
-      <div class="pilot-box">
-        <table class="pilot-table">
-          <tr><td>Duur</td><td>8–12 weken</td></tr>
-          <tr><td>Omvang</td><td>Max 60 leerlingen, 2 docenten</td></tr>
-          <tr><td>Inclusief</td><td>Kickoff, training, lessenplan, wekelijkse rapportages, eindrapport</td></tr>
-          <tr><td>Pilotprijs</td><td><strong>€ 1.500 excl. btw</strong></td></tr>
-          <tr><td>Verrekening</td><td>100% verrekend bij jaarlicentie</td></tr>
-          <tr><td>Nodig</td><td>Contactpersoon, 2 docenten, lesuren</td></tr>
-        </table>
-        <div class="pilot-cta">
-          <div class="pilot-cta-title">Plan een demo van 30 min</div>
-          <div class="pilot-cta-action">→ dgskills.app<br/>→ info@dgskills.app</div>
-        </div>
-      </div>
+    <div class="footer">
+      www.dgskills.app | De standaard voor digitale geletterdheid in het VO.
     </div>
-
   </div>
-
-  <div class="footer">
-    <div class="footer-contact">
-      <strong style="color:#f2f1ec">Yorin Vonder</strong> — Docent &amp; Oprichter &nbsp;|&nbsp;
-      <a href="mailto:info@dgskills.app">info@dgskills.app</a> &nbsp;|&nbsp;
-      <a href="https://dgskills.app">dgskills.app</a>
-    </div>
-    <div class="footer-tag">KvK 81819889 &nbsp;·&nbsp; DPIA beschikbaar &nbsp;·&nbsp; AI Act Annex III</div>
-  </div>
-
-</div>
 </body>
 </html>

@@ -1,4 +1,4 @@
-// Landing-page analytics — tracks conversions and engagement via Edge Function.
+// First-party, consent-gated analytics — tracks conversions and engagement via Edge Function.
 
 export type AnalyticsEvent =
     | 'pilot_request_start'

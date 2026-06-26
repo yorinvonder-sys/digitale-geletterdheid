@@ -1,8 +1,8 @@
 # Compliance Audit Rapport - DGSkills.app (Februari 2026)
 
-Statusoverzicht van de compliance-audit op basis van de actuele implementatie.
+> **Historische status 25-06-2026:** Dit rapport bevat oudere auditbevindingen en mag niet als actuele school-facing complianceclaim worden gebruikt. Gebruik voor actuele claims `docs/compliance/legal-claim-source-of-truth.md`, `verwerkingsregister.md`, `C-sub-verwerkerslijst-dgskills.md`, `privacyverklaring-dgskills.md` en `eu-ai-act-conformiteitsplan.md`.
 
-> **Deadline-update (17 juni 2026):** De in dit document genoemde AI Act-deadline van **2 augustus 2026** voor hoog-risico-verplichtingen is niet definitief. Via de **Digital Omnibus** (door het Europees Parlement aangenomen op 11 juni 2026; formele bekrachtiging door de Raad en publicatie in het EU-Publicatieblad nog niet afgerond) verschuift deze naar verwachting richting **2 december 2027**. De hoog-risico-classificatie (Annex III, punt 3b) en de wettelijke SLO-kerndoelen (verplicht vanaf 1 augustus 2027) blijven ongewijzigd. De deadline-datums in de beoordeling hieronder weerspiegelen de oorspronkelijke datum op moment van schrijven.
+Statusoverzicht van de compliance-audit op basis van de actuele implementatie.
 
 ## 1. AVG / GDPR Audit
 
@@ -14,8 +14,8 @@ Statusoverzicht van de compliance-audit op basis van de actuele implementatie.
 | AVG-04 | Rechten | **Voldaan** | Export, verwijdering en verzoek verwerkingsbeperking (Art. 18) technisch beschikbaar. |
 | AVG-05 | Dataminimalisatie | **Voldaan** | Geen BSN/adres; analytics geaggregeerd en consent-gated. |
 | AVG-06 | Bewaartermijnen | **Voldaan** | Cleanup actief voor auditlogs, studentactiviteiten en analytics-aggregaten. |
-| AVG-07 | Beveiliging | **Voldaan** | TLS, RLS op Supabase (Postgres), aanvullende endpoint-validatie en rate limiting. |
-| AVG-08 | Datalocatie | **Voldaan** | Opslag bij Supabase (AWS eu-central-1, Frankfurt, EER); AI-verwerking in de EU (Mistral AI, Black Forest Labs). |
+| AVG-07 | Beveiliging | **Voldaan** | TLS, RBAC via Firestore rules, aanvullende endpoint-validatie en rate limiting. |
+| AVG-08 | Datalocatie | **Voldaan** | Opslag en primaire verwerking op `europe-west1` (EER). |
 | AVG-09 | Subverwerkers | **Voldaan** | Overzicht subverwerkers in privacydocumentatie. |
 | AVG-10 | DPIA Support | **Voldaan** | DPIA-supportdocumenten beschikbaar voor scholen. |
 | AVG-11 | Minderjarigen (<16) | **Voldaan** | Juridische toelichting toegevoegd in privacy/cookie documentatie (AVG/UAVG context). |
@@ -40,13 +40,13 @@ Statusoverzicht van de compliance-audit op basis van de actuele implementatie.
 | AI-03 | Risicobeheersysteem (Art. 9) | **Niet voldaan** | Individuele maatregelen aanwezig maar geen formeel, gedocumenteerd risicobeheersysteem. |
 | AI-04 | Technische documentatie (Art. 11) | **Niet voldaan** | Geen formeel Annex IV technisch documentatiedossier. |
 | AI-05 | Logging (Art. 12) | **Voldaan** | Audit logging via `auditService.ts` met AI-interactie metadata (zonder PII). |
-| AI-06 | Menselijk toezicht (Art. 14) | **Voldaan** | Docent kan AI-beoordelingen (STEP_COMPLETE) overrulen via de docent-override (`teacher_step_overrides` + RPC `override_student_step`, geïmplementeerd 15 mrt 2026); docenttraining (OM-09) nog open. |
-| AI-07 | Nauwkeurigheid/Robuustheid (Art. 15) | **Gedeeltelijk** | Mistral `safe_prompt`-guardrail, prompt sanitizer, output-filter en welzijnsprotocol aanwezig; geen formele nauwkeurigheidsmetrieken. |
+| AI-06 | Menselijk toezicht (Art. 14) | **Gedeeltelijk** | Docent is eindverantwoordelijk, maar STEP_COMPLETE kan nog niet door docent worden overruled. |
+| AI-07 | Nauwkeurigheid/Robuustheid (Art. 15) | **Gedeeltelijk** | Safety settings, prompt sanitizer en welzijnsprotocol aanwezig; geen formele nauwkeurigheidsmetrieken. |
 | AI-08 | QMS (Art. 17) | **Niet voldaan** | Geen formeel kwaliteitsmanagementsysteem. |
-| AI-09 | Conformiteitsverklaring (Art. 47) | **Niet voldaan** | Nog niet opgesteld. Deadline: 2 augustus 2026. |
+| AI-09 | Conformiteitsverklaring (Art. 47) | **Niet voldaan** | Nog niet opgesteld. Actuele toepassingsdatum high-risk Annex III onderwijs-AI volgens Commissie-informatie: 2 december 2027. |
 | AI-10 | CE-markering (Art. 48) | **Niet voldaan** | Nog niet aangebracht. |
 | AI-11 | EU-databank registratie (Art. 49) | **Niet voldaan** | EU-databank nog in ontwikkeling. |
-| AI-12 | AI-provider datalocatie | **Voldaan** | AI-verwerking via Mistral AI (tekst, vision en OCR; `api.mistral.ai`, Frankrijk) en Black Forest Labs (beeldgeneratie; EU-endpoint `api.eu.bfl.ai`), server-side via Supabase Edge Functions. Verwerking in de EU (Mistral: Frankrijk; Black Forest Labs: EU-endpoint api.eu.bfl.ai). LET OP: Mistral vereist minimaal 13 jaar en ouderlijke/voogd-toestemming voor minderjarigen — aandachtspunt voor 12-jarigen; te verifiëren met de schoolconsent-flow. |
+| AI-12 | AI-providerverificatie | **Open** | Actuele school-facing providers zijn Mistral AI en Black Forest Labs; DPA, regio, retentie, subprocessors en modeltraining-uitsluiting moeten per provider worden vastgelegd. |
 
 ## 4. Security Hardening
 
@@ -59,4 +59,4 @@ Statusoverzicht van de compliance-audit op basis van de actuele implementatie.
 ---
 
 ## Eindoordeel
-DGSkills is geclassificeerd als **hoog-risico AI-systeem** onder de EU AI Act (Annex III punt 3(b)). Het AVG-compliance profiel is sterk (alle AVG-checks voldaan). De EU AI Act compliance vereist nog substantieel werk: 5 van 12 checks zijn niet voldaan, 2 gedeeltelijk. AI-verwerking loopt via Mistral AI (tekst, vision en OCR) en Black Forest Labs (beeldgeneratie) in de EU. Zie `eu-ai-act-conformiteitsplan.md` voor het volledige actieplan richting de deadline van 2 augustus 2026.
+DGSkills is geclassificeerd als **hoog-risico AI-systeem** onder de EU AI Act (Annex III punt 3(b)). AVG-maatregelen zijn goed gevorderd, maar dit rapport mag niet als bewijs van volledige naleving worden gebruikt. De EU AI Act compliance vereist nog substantieel werk: 5 van 12 checks zijn niet voldaan, 2 gedeeltelijk. Zie `eu-ai-act-conformiteitsplan.md` en de canonical legal truth voor het actuele actieplan richting 2 december 2027.

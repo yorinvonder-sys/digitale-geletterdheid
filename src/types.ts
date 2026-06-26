@@ -24,7 +24,7 @@ export type RoleId =
   // Leerjaar 1 - Periode 2
   'ipad-print-instructies' | 'review-week-1' | 'week1-review' | 'verhalen-ontwerper' | 'nepnieuws-speurder' | 'prompt-master' | 'game-programmeur' | 'game-director' | 'ai-trainer' | 'chatbot-trainer' | 'ai-tekengame' | 'website-bouwer' | 'schermtijd-coach' |
   // Leerjaar 1 - Periode 3
-  'review-week-2' | 'ai-spiegel' | 'social-safeguard' | 'scroll-stopper' | 'data-detective' | 'deepfake-detector' | 'cookie-crusher' | 'mail-detective' | 'data-handelaar' | 'privacy-profiel-spiegel' | 'filter-bubble-breaker' | 'datalekken-rampenplan' | 'data-voor-data' | 'data-speurder' | 'data-verzamelaar' |
+  'review-week-2' | 'ai-spiegel' | 'social-safeguard' | 'veilig-internet' | 'scroll-stopper' | 'data-detective' | 'deepfake-detector' | 'cookie-crusher' | 'mail-detective' | 'data-handelaar' | 'privacy-profiel-spiegel' | 'filter-bubble-breaker' | 'datalekken-rampenplan' | 'data-voor-data' | 'data-speurder' | 'data-verzamelaar' |
   // Leerjaar 1 - Periode 4
   'review-week-3' | 'mission-blueprint' | 'mission-vision' | 'mission-launch' | 'startup-pitch' |
   // Leerjaar 1 - Speciaal
@@ -139,7 +139,7 @@ export interface AvatarConfig {
   shoeColor?: string; // New: Custom shoe color
   accessoryColor?: string;
   // Expanded accessory options
-  accessory: 'none' | 'cap' | 'glasses' | 'sunglasses' | 'headphones' | 'earbuds' | 'backpack' | 'satchel' | 'skateboard' | 'beanie' | 'bandana' | 'crown' | 'halo' | 'watch' | 'smartwatch' | 'necklace' | 'chain' | 'scarf' | 'bowtie' | 'tie' | 'guitar' | 'wings' | 'cape' | 'sword' | 'shield' | 'pet_cat' | 'pet_dog' | 'robot_arm' | 'crown_gold' | 'jetpack' | 'wings_cyber' | 'pet_robo';
+  accessory: 'none' | 'cap' | 'glasses' | 'sunglasses' | 'headphones' | 'earbuds' | 'backpack' | 'satchel' | 'skateboard' | 'beanie' | 'bandana' | 'crown' | 'halo' | 'watch' | 'smartwatch' | 'necklace' | 'chain' | 'scarf' | 'bowtie' | 'tie' | 'guitar' | 'wings' | 'cape' | 'sword' | 'shield' | 'pet_cat' | 'pet_dog' | 'robot_arm' | 'crown_gold' | 'jetpack' | 'wings_cyber' | 'pet_robo' | 'pet_duck';
   accessories?: string[]; // Allow array of accessories for backward compatibility
   hairStyle: 'short' | 'pigtails' | 'spiky' | 'messy' | 'long' | 'bob' | 'fade' | 'curls' | 'ponytail' | 'braids' | 'buzzcut' | 'mohawk' | 'afro' | 'bun' | 'sidepart';
   // Expanded shirt styles
@@ -151,7 +151,7 @@ export interface AvatarConfig {
   // Body pose
   pose?: 'idle' | 'wave' | 'dab' | 'peace';
   // Companion pet (separate from accessory)
-  pet?: 'none' | 'pet_dog' | 'pet_cat' | 'pet_robo';
+  pet?: 'none' | 'pet_dog' | 'pet_cat' | 'pet_robo' | 'pet_duck';
   gender: 'male' | 'female';
   avatarKind?: 'human' | 'duck';
 }

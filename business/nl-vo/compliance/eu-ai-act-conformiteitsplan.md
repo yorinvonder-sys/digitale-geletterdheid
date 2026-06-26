@@ -2,10 +2,8 @@
 ## DGSkills.app -- AI-Educatieplatform voor het Nederlands Voortgezet Onderwijs
 
 **Datum:** 23 februari 2026
-**Deadline hoog-risico verplichtingen:** 2 augustus 2026 (159 dagen)
+**Toepassingsdata:** Art. 4 AI-geletterdheid sinds 2 februari 2025; Art. 50 transparantie vanaf augustus 2026; belangrijkste hoog-risico verplichtingen voor Annex III onderwijs-AI volgens actuele Europese Commissie-informatie vanaf 2 december 2027.
 **Opgesteld op basis van:** Verordening (EU) 2024/1689 (EU AI Act)
-
-> **Deadline-update (17 juni 2026):** De in dit document genoemde AI Act-deadline van **2 augustus 2026** voor hoog-risico-verplichtingen is niet definitief. Via de **Digital Omnibus** (door het Europees Parlement aangenomen op 11 juni 2026; formele bekrachtiging door de Raad en publicatie in het EU-Publicatieblad nog niet afgerond) verschuift deze naar verwachting richting **2 december 2027**. De hoog-risico-classificatie (Annex III, punt 3b) en de wettelijke SLO-kerndoelen (verplicht vanaf 1 augustus 2027) blijven ongewijzigd. De deadline-datums in de beoordeling hieronder weerspiegelen de oorspronkelijke datum op moment van schrijven.
 
 ---
 
@@ -49,7 +47,7 @@ DGSkills valt onder **Annex III, punt 3(b)** van de EU AI Act:
 | Art. 48 | CE-markering | Verplicht |
 | Art. 49 + Annex VIII | Registratie EU-databank | Verplicht |
 | Art. 50 | Transparantieverplichtingen | Van toepassing (ook los van hoog-risico) |
-| Art. 51-55 | GPAI-model verplichtingen | Mistral AI / Black Forest Labs als GPAI-aanbieder; DGSkills indirect |
+| Art. 51-55 | GPAI-model verplichtingen | Externe AI-providers als GPAI-aanbieders; DGSkills indirect |
 | Art. 72 | Post-market monitoring | Volledig van toepassing |
 
 ### A.3 Uitzonderingen -- Geldt Art. 6(3)?
@@ -81,7 +79,7 @@ Een continu, iteratief risicobeheerssysteem dat gedurende de gehele levenscyclus
 
 **Huidige status: NIET VOLDAAN**
 
-DGSkills heeft individuele technische maatregelen (prompt injection bescherming, Mistral `safe_prompt`-guardrail, output-filter voor minderjarigen, welzijnsprotocol) maar geen formeel, gedocumenteerd risicobeheerssysteem.
+DGSkills heeft individuele technische maatregelen (prompt injection bescherming, safety settings, welzijnsprotocol) maar geen formeel, gedocumenteerd risicobeheerssysteem.
 
 **Concrete acties:**
 
@@ -89,7 +87,7 @@ DGSkills heeft individuele technische maatregelen (prompt injection bescherming,
 |---|-------|---------------|------------|
 | 9.1 | Opstellen risicoregister met alle geidentificeerde risico's per agent en functionaliteit | 2 weken | KRITIEK |
 | 9.2 | Risicobeoordeling voor misbruikscenario's (XP-farming, ongeschikte content, manipulatie, datalekkage) | 1 week | KRITIEK |
-| 9.3 | Documenteren bestaande maatregelen als risicobeperkend (prompt sanitizer, Mistral `safe_prompt`-guardrail, output-filter, welzijnsprotocol, rate limiting) | 1 week | KRITIEK |
+| 9.3 | Documenteren bestaande maatregelen als risicobeperkend (prompt sanitizer, safety settings, welzijnsprotocol, rate limiting) | 1 week | KRITIEK |
 | 9.4 | Specifieke risicobeoordeling voor minderjarigen (Art. 9(9)) | 1 week | KRITIEK |
 | 9.5 | Restrisico-analyse: welke risico's blijven bestaan na maatregelen? | 3 dagen | HOOG |
 | 9.6 | Procedure voor continue risico-evaluatie en bijwerking van het register | 2 dagen | HOOG |
@@ -104,25 +102,23 @@ DGSkills heeft individuele technische maatregelen (prompt injection bescherming,
 
 **Huidige status: GEDEELTELIJK VOLDAAN**
 
-DGSkills gebruikt Mistral AI (tekst, vision en OCR) en Black Forest Labs (beeldgeneratie) als foundation models. Alle AI-calls lopen server-side via Supabase Edge Functions. DGSkills traint geen eigen model, maar:
-- De system instructions (agents.tsx) vormen de "configuratiedata" die het gedrag sturen
-- Geen training op leerlingdata (training-opt-out te verifiëren — Mistral biedt opt-out; standaard opt-out op Scale-plan)
+DGSkills gebruikt momenteel externe AI-providers via server-side Supabase Edge Functions: Mistral AI voor tekst/chat/feedback/vision/OCR en Black Forest Labs FLUX voor beeldgeneratie. DGSkills traint geen eigen model, maar:
+- De system instructions vormen de configuratiedata die het gedrag sturen
+- Leerlingdata wordt niet gebruikt voor eigen modeltraining
+- Provider-calls moeten zo zijn geconfigureerd en gecontracteerd dat gebruik voor provider-modeltraining wordt voorkomen waar providerafspraken en instellingen dit dekken
 - Dataminimalisatie is geimplementeerd (geen BSN, geen adres)
-- Analytics zijn geaggregeerd en consent-gated
-- **Dataresidentie in de EU:** AI-verwerking in de EU (Mistral: Frankrijk; Black Forest Labs: EU-endpoint api.eu.bfl.ai); opslag/database/auth via Supabase (AWS eu-central-1, Frankfurt, EU)
-- **Mistral AI DPA met EU SCC's (Besluit 2021/914); Black Forest Labs: ISO 27001 / SOC 2 Type II — ondertekende DPA's te verifiëren**
-- **Authenticatie via server-side API-key (Supabase secret)**
-- Dataretentie te verifiëren (Mistral: standaard tot 30 dagen abuse-monitoring; Zero Data Retention optioneel, plan-afhankelijk)
+- Analytics zijn first-party, consent-gated en waar mogelijk pseudoniem/geaggregeerd
+- Exacte providerregio's, subprocessors, retentie en doorgifte buiten de EER moeten per provider worden geverifieerd en vastgelegd
 
 **Concrete acties:**
 
 | # | Actie | Geschatte tijd | Prioriteit |
 |---|-------|---------------|------------|
 | 10.1 | Documenteer datagovernancebeleid: welke data wordt verwerkt, hoe, waarvoor, door wie | 1 week | HOOG |
-| 10.2 | Documenteer dat geen trainingsdata wordt gebruikt (API-only model) en verwijs naar de GPAI-documentatie van Mistral AI en Black Forest Labs | 3 dagen | HOOG |
+| 10.2 | Documenteer dat geen trainingsdata voor eigen modellen wordt gebruikt en bewaar providerbewijs voor modeltraining-uitsluiting | 3 dagen | HOOG |
 | 10.3 | Biasbeoordeling: controleer of agents consistent presteren voor verschillende leerlingtypen (taalvaardigheid, leeftijdsgroep) | 1 week | HOOG |
-| 10.4 | Documenteer de system instructions als "configuratiedata" en hun governance (versiebeheer, review, testing) | 3 dagen | MIDDEN |
-| 10.5 | ~~Bevestig en documenteer EER-datalocatie of SCC-basis~~ **HUIDIGE STATUS:** AI-verwerking in de EU (Mistral: Frankrijk; Black Forest Labs: EU-endpoint api.eu.bfl.ai); opslag via Supabase (AWS eu-central-1, Frankfurt, EU). Mistral AI DPA met EU SCC's (Besluit 2021/914); Black Forest Labs: ISO 27001 / SOC 2 Type II — ondertekende DPA's te verifiëren. Dataretentie te verifiëren (Mistral: standaard tot 30 dagen abuse-monitoring; Zero Data Retention optioneel, plan-afhankelijk). | ~~3 dagen~~ | HOOG (DPA's/retentie te verifiëren) |
+| 10.4 | Documenteer de system instructions als configuratiedata en hun governance (versiebeheer, review, testing) | 3 dagen | MIDDEN |
+| 10.5 | Bevestig en documenteer per AI-provider de DPA, subprocessorroute, regio-instellingen, retentie en SCC/TIA-grondslag waar nodig | 3 dagen | HOOG |
 
 ### B.3 Artikel 11 + Annex IV -- Technische documentatie
 
@@ -154,7 +150,7 @@ Er is geen formeel technisch documentatiedossier. Wel zijn er bouwstenen aanwezi
 |---|-------|---------------|------------|
 | 11.1 | Opstellen "Technical Documentation Dossier" conform Annex IV template | 3-4 weken | KRITIEK |
 | 11.2 | Sectie 1: Systeembeschrijving (architectuur, dataflow, componenten, hardware/software) | 1 week | KRITIEK |
-| 11.3 | Sectie 2: Ontwikkelproces (design specs, keuze voor Mistral AI en Black Forest Labs, system instructions design) | 1 week | KRITIEK |
+| 11.3 | Sectie 2: Ontwikkelproces (design specs, keuze voor Mistral AI Flash, system instructions design) | 1 week | KRITIEK |
 | 11.4 | Sectie 3: Monitoring en controle (capabilities, limitations, accuracy, unintended outcomes) | 1 week | KRITIEK |
 | 11.5 | Sectie 4: Prestatiemetrieken (hoe meten we of agents correct evalueren?) | 1 week | HOOG |
 | 11.6 | Sectie 5: Risicobeheerssysteem (verwijzing naar Art. 9 documentatie) | 2 dagen | HOOG |
@@ -242,7 +238,7 @@ Positief:
 - AI-output is visueel herkenbaar als AI-gegenereerd
 
 Aandachtspunten:
-- ~~Docent kan STEP_COMPLETE momenteel NIET overriden~~ → **opgelost: docent-override geïmplementeerd 15 mrt 2026** (`teacher_step_overrides` + RPC `override_student_step`, gelogd)
+- Docent kan STEP_COMPLETE momenteel NIET overriden
 - Geen docentdashboard voor real-time monitoring van AI-interacties
 - Geen "noodstop" functionaliteit voor docenten
 
@@ -250,7 +246,7 @@ Aandachtspunten:
 
 | # | Actie | Geschatte tijd | Prioriteit |
 |---|-------|---------------|------------|
-| 14.1 | ~~Implementeer docent-override voor STEP_COMPLETE~~ **✅ Geïmplementeerd (15 mrt 2026)** (docent kan stappen terugdraaien of handmatig goedkeuren) | — | Afgerond |
+| 14.1 | **Implementeer docent-override voor STEP_COMPLETE** (docent kan stappen terugdraaien of handmatig goedkeuren) | 2 weken | KRITIEK |
 | 14.2 | Bouw docentdashboard voor monitoring AI-interacties (aggregaat, niet PII) | 2 weken | HOOG |
 | 14.3 | Implementeer "noodstop": docent kan AI-functionaliteit per klas/leerling uitschakelen | 1 week | HOOG |
 | 14.4 | Voeg waarschuwing toe tegen "automation bias" in docenthandleiding | 2 dagen | MIDDEN |
@@ -269,7 +265,7 @@ Aandachtspunten:
 
 Sterk:
 - Defense-in-depth prompt injection bescherming (client + server, zie `promptSanitizer.ts`)
-- Mistral `safe_prompt`-guardrail + server-side output-filter voor minderjarigen
+- Mistral AI Safety Settings op BLOCK_LOW_AND_ABOVE (maximaal restrictief)
 - XP-farming detectie in system instructions
 - CORS-beperking op edge functions
 - JWT authenticatie
@@ -278,7 +274,7 @@ Sterk:
 Te verbeteren:
 - Geen formele nauwkeurigheidsmetrieken
 - Geen systematisch adversarial testing programma
-- Geen technische redundantie bij uitval van de AI-provider
+- Geen technische redundantie bij AI-provideruitval
 
 **Concrete acties:**
 
@@ -286,10 +282,10 @@ Te verbeteren:
 |---|-------|---------------|------------|
 | 15.1 | Definieer en meet nauwkeurigheidsmetrieken: hoe correct evalueert de AI leerlingantwoorden? | 2 weken | KRITIEK |
 | 15.2 | Voer adversarial testing uit (red teaming) op alle 30+ agents | 2 weken | KRITIEK |
-| 15.3 | Implementeer fallback bij uitval van de AI-provider (graceful degradation) | 1 week | HOOG |
+| 15.3 | Implementeer fallback bij AI-provideruitval (graceful degradation) | 1 week | HOOG |
 | 15.4 | Documenteer cyberveiligheidsmaatregelen in technische documentatie | 3 dagen | HOOG |
 | 15.5 | Stel een penetratietest-schema op (minimaal jaarlijks) | 2 dagen | MIDDEN |
-| 15.6 | Monitor model-updates van de AI-provider (als Mistral AI of Black Forest Labs het model wijzigt, kan de output veranderen) | Doorlopend | HOOG |
+| 15.6 | Monitor Mistral AI en Black Forest Labs model-/policy-updates (als een provider het model wijzigt, kan de output veranderen) | Doorlopend | HOOG |
 
 ### B.8 Artikelen 16-17 -- Verplichtingen aanbieders en kwaliteitsmanagementsysteem
 
@@ -385,7 +381,7 @@ DGSkills heeft uitstekende implementatie:
 // Uit /Users/yorinvonder/Downloads/ai-lab---future-architect/utils/aiContentMarker.ts:
 export interface AiProvenanceMetadata {
     generator: string;    // 'DGSkills/2.0'
-    model: string;        // bv. Mistral AI (tekst/vision/OCR) of Black Forest Labs / FLUX (beeld)
+    model: string;        // exact Mistral/FLUX model en versie per providerrequest
     timestamp: string;    // ISO 8601
     type: 'text' | 'image' | 'mixed';
     disclaimer: string;   // 'AI-gegenereerd — kan fouten bevatten'
@@ -425,7 +421,7 @@ De EU AI-databank is in ontwikkeling. DGSkills moet registreren zodra dit mogeli
 |---|-------|---------------|------------|
 | 49.1 | Monitor wanneer de EU AI-databank operationeel wordt | Doorlopend | KRITIEK |
 | 49.2 | Verzamel alle Annex VIII informatie in een registratiedossier | 1 week | HOOG |
-| 49.3 | Registreer in de EU-databank zodra operationeel (voor 2 aug 2026) | 1 dag | KRITIEK |
+| 49.3 | Registreer in de EU-databank zodra operationeel (voor 2 dec 2027) | 1 dag | KRITIEK |
 
 ---
 
@@ -498,18 +494,18 @@ De conformiteitsbeoordelingsprocedure op basis van interne controle omvat drie o
 | Week | Actie | Deliverable |
 |------|-------|-------------|
 | W1 (3-7 mrt) | Start risicoregister (Art. 9) | Eerste versie risicoregister |
-| W1 | ~~Correctie audit-report.md: wijzig "Limited Risk" naar "High Risk"~~ **Afgerond** — audit-report.md draagt nu de heading "HIGH RISK — Annex III punt 3(b)" | Gecorrigeerd rapport |
+| W1 | Label oude limited-risk passages als historisch en gebruik high-risk als actuele lijn | Gecorrigeerde actuele documenten |
 | W2 (10-14 mrt) | Risicobeoordeling per agent (30+ agents) | Risicobeoordelingsrapport |
 | W2 | Start datagovernance documentatie (Art. 10) | Datagovernance beleidsdocument |
 | W3 (17-21 mrt) | Specifieke risicobeoordeling minderjarigen (Art. 9(9)) | Minderjarigen-risicoanalyse |
-| W3 | ~~Bevestig EER-datalocatie AI-provider~~ **HUIDIGE STATUS:** AI-verwerking in de EU (Mistral: Frankrijk; Black Forest Labs: EU-endpoint api.eu.bfl.ai); opslag via Supabase (AWS eu-central-1, Frankfurt, EU). Ondertekende DPA's te verifiëren | ~~Bevestigingsdocument~~ DPA's te verifiëren |
+| W3 | Bevestig Mistral AI en Black Forest Labs DPA, regio, retentie en subprocessorroute | Providerbewijs / leveranciersdossier |
 | W4 (24-28 mrt) | Start technische documentatie Annex IV (sectie 1-2) | TD Hoofdstuk 1-2 (concept) |
 | W4 | Start QMS-document (Art. 17) | QMS-framework |
 
 **Quick wins in maart:**
-- ~~Correctie classificatie in audit-report.md (1 uur)~~ **Afgerond** (audit-report.md is HIGH RISK — Annex III 3(b))
+- Correctie classificatie in audit-report.md (1 uur)
 - Contactgegevens invullen in privacy-documenten (2 uur)
-- Documenteer bestaande maatregelen (promptSanitizer, Mistral `safe_prompt`, outputFilter, welzijnsprotocol) als onderdeel van risicobeheersysteem
+- Documenteer bestaande maatregelen (promptSanitizer, safetySettings, welzijnsprotocol) als onderdeel van risicobeheersysteem
 
 #### FASE 2: IMPLEMENTATIE (April 2026)
 
@@ -571,7 +567,7 @@ De conformiteitsbeoordelingsprocedure op basis van interne controle omvat drie o
 | Datum | Actie |
 |-------|-------|
 | 1 aug 2026 | Laatste controle: alle documentatie actueel en toegankelijk |
-| **2 aug 2026** | **DEADLINE: Hoog-risico verplichtingen EU AI Act van kracht** |
+| **2 dec 2027** | **DEADLINE: Hoog-risico verplichtingen EU AI Act van kracht** |
 | 2-31 aug 2026 | Post-market monitoring plan activeren; eerste monitoring cyclus |
 
 ### D.2 Prioritering
@@ -601,7 +597,7 @@ De conformiteitsbeoordelingsprocedure op basis van interne controle omvat drie o
 
 | # | Actie | Tijd | Impact |
 |---|-------|------|--------|
-| 1 | ~~Corrigeer audit-report.md: "Limited Risk" -> "High Risk"~~ **Afgerond** | — | Voltooid (correcte classificatie) |
+| 1 | Zorg dat actuele documenten high-risk als uitgangspunt nemen en oude limited-risk passages historisch labelen | 30 min | Hoog (correcte classificatie) |
 | 2 | ~~Vul alle `[invullen]` placeholders in privacy-documenten in~~ **Afgerond** (28 mrt 2026) | — | Voltooid |
 | 3 | Documenteer bestaande maatregelen als eerste versie risicoregister | 4 uur | Hoog (basis Art. 9) |
 | 4 | Begin Annex VIII registratiedossier (verzamel basisgegevens) | 2 uur | Midden |
@@ -610,38 +606,24 @@ De conformiteitsbeoordelingsprocedure op basis van interne controle omvat drie o
 
 ## E. SPECIFIEKE AANDACHTSPUNTEN
 
-### E.1 Gebruik van foundation models (Mistral AI en Black Forest Labs) -- Verantwoordelijkheidsverdeling
+### E.1 Gebruik van externe AI-providers -- Verantwoordelijkheidsverdeling
 
-> **HUIDIGE STATUS:** DGSkills gebruikt **Mistral AI** (tekst, vision en OCR, via `api.mistral.ai`) en **Black Forest Labs** (beeldgeneratie / FLUX, via het EU-endpoint `api.eu.bfl.ai`). Alle AI-calls lopen server-side via Supabase Edge Functions. Aandachtspunten:
-> - **Datalocatie:** AI-verwerking in de EU (Mistral: Frankrijk; Black Forest Labs: EU-endpoint api.eu.bfl.ai). Opslag/database/auth via Supabase (AWS eu-central-1, Frankfurt, EU)
-> - **Contractueel kader:** Mistral AI DPA met EU SCC's (Besluit 2021/914); Black Forest Labs: ISO 27001 / SOC 2 Type II — ondertekende DPA's te verifiëren
-> - **Dataretentie:** te verifiëren (Mistral: standaard tot 30 dagen abuse-monitoring; Zero Data Retention optioneel, plan-afhankelijk)
-> - **Training:** geen training op leerlingdata (training-opt-out te verifiëren — Mistral biedt opt-out; standaard opt-out op Scale-plan)
-> - **Authenticatie:** server-side API-key (Supabase secret)
-> - **Minderjarigen ToS:** LET OP: Mistral vereist minimaal 13 jaar en ouderlijke/voogd-toestemming voor minderjarigen — aandachtspunt voor 12-jarigen; te verifiëren met de schoolconsent-flow
+**Status 25 juni 2026:** De school-facing AI-paden in de code gebruiken Mistral AI voor tekst/chat/feedback/vision/OCR en Black Forest Labs FLUX voor image generation, server-side via Supabase Edge Functions. Eerdere teksten over Google Gemini/Vertex AI zijn historisch en mogen niet meer als actuele providerclaim worden gebruikt zonder nieuwe code- en contractverificatie. Anthropic wordt alleen genoemd voor interne developer/accounting-hulpmiddelen, niet als leerling- of school-AI-verwerker tenzij later bewezen wordt dat schooldata via Anthropic loopt.
 
 **De AI Act maakt een onderscheid tussen:**
 
-1. **GPAI-model aanbieder (Mistral AI / Black Forest Labs):** Verantwoordelijk voor Art. 51-55 verplichtingen
-   - Technische documentatie van het model (Art. 53)
-   - Informatie verstrekken aan downstream aanbieders (Art. 53)
-   - Auteursrechtbeleid (Art. 53)
-   - Als systemisch risico (>10^25 FLOPS): aanvullende verplichtingen (Art. 55)
-   - De ingezette foundation models kunnen, afhankelijk van hun trainingsomvang, onder "systemic risk" vallen
+1. **GPAI-modelaanbieders (Mistral AI / Black Forest Labs):** verantwoordelijk voor hun eigen GPAI- en providerdocumentatie, inclusief informatie die downstream aanbieders nodig hebben.
 
-2. **Downstream aanbieder / integrator (DGSkills):** Verantwoordelijk voor Art. 9-17 als hoog-risico aanbieder
-   - DGSkills is verantwoordelijk voor het gehele AI-systeem, inclusief de integratie met Mistral AI en Black Forest Labs
-   - DGSkills kan zich NIET verschuilen achter de AI-provider: "wij gebruiken alleen de API" is geen verweer
-   - DGSkills moet de output van de AI-provider monitoren, filteren en beoordelen
+2. **Downstream aanbieder / integrator (DGSkills):** verantwoordelijk voor het gehele school-facing AI-systeem, inclusief Art. 9-17, Art. 26-support, Art. 43-49 en de integratie met externe AI-providers. DGSkills kan zich niet verschuilen achter de API-provider.
 
 **Wat DGSkills moet doen:**
 - Documenteer de afhankelijkheid van Mistral AI en Black Forest Labs in de technische documentatie
-- Documenteer welke informatie de AI-provider verstrekt over het model (Art. 53 verplichtingen van de GPAI-aanbieder)
-- Implementeer eigen safeguards bovenop de AI-provider (reeds gedaan: server-side prompt-injectiefilter, output-filter voor minderjarigen, welzijnsprotocol; provider-side: Mistral `safe_prompt`-guardrail)
-- Monitor model-updates van de AI-provider en test de impact op DGSkills-functionaliteit
-- ~~Leg contractueel vast dat de AI-provider aan GPAI-verplichtingen voldoet~~ **TE VERIFIËREN:** Mistral AI DPA met EU SCC's (Besluit 2021/914); Black Forest Labs: ISO 27001 / SOC 2 Type II — ondertekende DPA's te verifiëren. Dataretentie en training-opt-out te verifiëren.
+- Bewaar per provider DPA, subprocessoroverzicht, regio-/retentie-instellingen en bewijs voor uitsluiting van provider-modeltraining waar gedekt
+- Implementeer en test eigen safeguards bovenop providermaatregelen (prompt sanitizer, outputfilter, welzijnsprotocol, menselijke controle)
+- Monitor provider- en modelwijzigingen en test de impact op DGSkills-functionaliteit
+- Actualiseer de subverwerkerslijst vóór elke school-DPIA/FG-review
 
-**Risico:** Als de AI-provider (Mistral AI of Black Forest Labs) het model wijzigt (bijv. nieuwe versie, gewijzigd gedrag), verandert de output van DGSkills. Dit moet worden meegenomen in het risicobeheerssysteem en het post-market monitoring plan.
+**Risico:** Als een provider het model, beleid, retentie of subprocessorpad wijzigt, kan dit impact hebben op privacy, veiligheid en AI Act-conformiteit. Dit moet in het risicobeheersysteem en post-market monitoring plan worden meegenomen.
 
 ### E.2 Verhouding aanbieder (DGSkills) vs. deployer (scholen)
 
@@ -678,42 +660,33 @@ De conformiteitsbeoordelingsprocedure op basis van interne controle omvat drie o
 
 **Art. 51: Classificatie GPAI-modellen met systeemrisico**
 
-De ingezette foundation models (Mistral AI / Black Forest Labs) kunnen geclassificeerd worden als GPAI met systeemrisico (Art. 51), afhankelijk van:
-- Trainingscompute > 10^25 FLOPS (vermoedelijk)
-- Hoge impact capabilities
-- Breed beschikbaar voor miljoenen gebruikers
+De gebruikte externe modellen kunnen onder GPAI-verplichtingen vallen. Of sprake is van GPAI met systeemrisico moet per provider en model worden geverifieerd op basis van de actuele EU-lijsten, providerinformatie en technische documentatie.
 
 **Implicaties voor DGSkills als downstream gebruiker:**
 
-DGSkills hoeft zelf NIET aan Art. 51-55 te voldoen (dat is de verantwoordelijkheid van de AI-provider), maar moet wel:
+DGSkills hoeft zelf NIET aan Art. 51-55 te voldoen (dat is de provider verantwoordelijkheid), maar moet wel:
 
-1. **Documenteer welke informatie de AI-provider verstrekt** (Art. 53(1)(b) verplicht de GPAI-aanbieder om downstream providers relevante informatie te verstrekken)
+1. **Documenteer welke informatie de provider verstrekt** (Art. 53(1)(b) verplicht de provider om downstream providers relevante informatie te verstrekken)
 2. **Gebruik deze informatie in je eigen technische documentatie** (hoe integreert het GPAI-model in je hoog-risico systeem?)
-3. **Monitor de compliance van de AI-provider** (als de AI-provider niet voldoet, heeft dat impact op jouw systeem)
-4. **Contractuele afspraken** (de Terms of Service / API Terms van Mistral AI en Black Forest Labs moeten adequate garanties bieden)
+3. **Monitor de provider compliance** (als de provider niet voldoet, heeft dat impact op jouw systeem)
+4. **Contractuele afspraken** (provider Terms of Service, DPA en API Terms moeten adequate garanties bieden)
 
-**Art. 53 vereist dat de AI-provider aan DGSkills levert:**
+**Art. 53 vereist dat de provider aan DGSkills levert:**
 - Technische documentatie over het model
 - Informatie over training en evaluatie
 - Resultaten van adversarial testing
 - Bekende beperkingen
 - Informatie voor compliance met Art. 9-15 voor downstream hoog-risico systemen
 
-**Actie:** Controleer of de bestaande documentatie van de AI-provider (Model Cards, Safety Reports, API-documentatie van Mistral AI en Black Forest Labs) voldoende informatie biedt. Documenteer eventuele lacunes en neem dit op als risico in het risicoregister.
+**Actie:** Controleer per provider of bestaande documentatie (model cards, safety reports, API/DPA/security-documentatie) voldoende informatie biedt. Documenteer lacunes in het risicoregister.
 
-> **Status (huidig):** Het contractuele kader rust op de Mistral AI DPA met EU SCC's (Besluit 2021/914) en, voor Black Forest Labs, ISO 27001 / SOC 2 Type II — ondertekende DPA's zijn nog te verifiëren. EU-dataresidentie (Mistral: Frankrijk; Black Forest Labs: EU-endpoint api.eu.bfl.ai; opslag via Supabase, AWS eu-central-1, Frankfurt) adresseert de datalocatie-risico's. Dataretentie en training-opt-out zijn te verifiëren (Mistral: standaard tot 30 dagen abuse-monitoring; Zero Data Retention en opt-out plan-afhankelijk).
+> **Status 25 juni 2026:** Provider-DPA's, regio-/retentie-instellingen, subprocessorroute en bewijs voor modeltraining-uitsluiting moeten per Mistral AI en Black Forest Labs worden vastgelegd vóór school-DPIA/FG-review.
 
 ### E.4 Correctie op eerdere documenten
 
-**Status: AFGEROND.** Het audit-rapport (`business/nl-vo/compliance/audit-report.md`) is gecorrigeerd en draagt nu de juiste classificatie in de sectiekop:
+Oudere rapporten kunnen nog historische passages over een eerdere limited-risk of Google Vertex/Gemini-analyse bevatten. Die passages mogen niet als actuele school-facing claims worden gebruikt. Actuele documenten moeten DGSkills behandelen als hoog-risico onderwijs-AI wanneer AI leerresultaten evalueert of het leerproces stuurt.
 
-```
-## 3. EU AI Act Audit (HIGH RISK — Annex III punt 3(b))
-```
-
-Het juridisch rapport (`09-juridisch-rapport-compleet.md`) classificeerde al correct als hoog-risico. De eerdere onjuiste classificatie "Limited Risk - Art. 50" in het audit-rapport is hiermee gecorrigeerd; op dit punt is er geen openstaande actie meer.
-
-### E.5 Post-2 augustus 2026: doorlopende verplichtingen
+### E.5 Na toepassingsdatum high-risk verplichtingen: doorlopende verplichtingen
 
 Na de deadline stopt compliance niet. Doorlopende verplichtingen:
 - **Post-market monitoring** (Art. 72): systematisch verzamelen en analyseren van data over prestaties
@@ -761,13 +734,13 @@ Na de deadline stopt compliance niet. Doorlopende verplichtingen:
 ### Kritieke paden
 
 1. **Technische documentatie (Annex IV)** is het langste pad: ~12 weken doorlooptijd
-2. **Docent-override STEP_COMPLETE** is de belangrijkste technische implementatie — **geïmplementeerd 15 mrt 2026**
+2. **Docent-override STEP_COMPLETE** is de belangrijkste technische implementatie
 3. **EU-databank registratie** is afhankelijk van wanneer de databank operationeel wordt
 4. **Juridische review** is een bottleneck als de ICT-jurist niet tijdig beschikbaar is
 
 ### Einde
 
-Dit conformiteitsbeoordelingsplan biedt een volledig overzicht van alle verplichtingen, de huidige status, concrete acties en een tijdlijn om DGSkills.app compliant te maken voor de EU AI Act deadline van 2 augustus 2026. Het plan is gebaseerd op de daadwerkelijke codebase, bestaande documentatie en de wettekst van Verordening (EU) 2024/1689.
+Dit conformiteitsbeoordelingsplan biedt een volledig overzicht van alle verplichtingen, de huidige status, concrete acties en een tijdlijn om DGSkills.app compliant te maken voor de EU AI Act toepassingsdatum van 2 december 2027. Het plan is gebaseerd op de daadwerkelijke codebase, bestaande documentatie en de wettekst van Verordening (EU) 2024/1689.
 
 ---
 

@@ -44,7 +44,7 @@ const SUBVERWERKERS = [
     {
         naam: 'Supabase',
         dienst: 'Database / Auth / Hosting backend',
-        locatie: 'AWS eu-central-1, Frankfurt',
+        locatie: 'EU-projectregio / EER, contractueel en projectmatig te verifieren',
         eerDoorgifte: 'Nee',
         regio: 'EU',
     },

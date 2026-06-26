@@ -32,7 +32,7 @@ export const AiGeletterdheid: React.FC = () => {
             el.setAttribute('content', content);
         };
 
-        setMeta('name', 'description', 'Sinds februari 2025 is AI-geletterdheid verplicht onder de EU AI Act. Ontdek hoe DGSkills jouw school helpt met veilige AI-missies en gedocumenteerde privacy-maatregelen (DPIA, EU-data).');
+        setMeta('name', 'description', 'Sinds februari 2025 geldt AI-geletterdheid onder de EU AI Act. Ontdek hoe DGSkills jouw school ondersteunt met veilige AI-missies, privacy-by-design en een AVG-bewust dossier.');
         
         trackEvent('seo_page_view', { cluster: 'compliance', page: 'ai-geletterdheid' });
 
@@ -56,7 +56,7 @@ export const AiGeletterdheid: React.FC = () => {
             <main className="pt-32">
                 <section className="px-6 mb-20">
                     <div className="max-w-3xl mx-auto">
-                        <p className="text-lab-coral font-bold text-sm mb-4 tracking-wide uppercase">AI Act Compliance</p>
+                        <p className="text-lab-coral font-bold text-sm mb-4 tracking-wide uppercase">AI Act voorbereiding</p>
                         <h1 className="text-4xl md:text-5xl font-extrabold text-lab-ink leading-tight mb-6">
                             AI-geletterdheid op school: verplicht én verantwoord
                         </h1>
@@ -78,24 +78,24 @@ export const AiGeletterdheid: React.FC = () => {
                 <section id="compliance" className="py-20 bg-lab-cream border-y border-lab-line px-6">
                     <div className="max-w-5xl mx-auto">
                         <div className="text-center mb-16">
-                            <h2 className="text-3xl font-bold mb-4">Voldoe aan de EU AI Act</h2>
-                            <p className="text-lab-muted">Wij ontzorgen de school op juridisch en technisch vlak.</p>
+                            <h2 className="text-3xl font-bold mb-4">Bereid je school voor op de EU AI Act</h2>
+                            <p className="text-lab-muted">Wij ondersteunen scholen met documentatie, governance en technische maatregelen; juridische toetsing blijft nodig.</p>
                         </div>
                         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                             <ComplianceCard 
                                 badge="Wetgeving"
                                 title="AI Act Artikel 50"
-                                description="DGSkills is geclassificeerd als hoog-risico AI-systeem (Annex III). Wij voldoen aan de transparantie- en logging-eisen (Art. 13, 50) en werken actief aan volledige EU AI Act conformiteit vóór de deadline van augustus 2026."
+                                description="DGSkills behandelt school-facing AI als hoog-risico onderwijs-AI (Annex III). We werken aan aantoonbare high-risk governance; Art. 50-transparantie geldt vanaf augustus 2026 en de actuele Commissiepagina noemt 2 december 2027 voor high-risk onderwijsverplichtingen."
                             />
                             <ComplianceCard 
                                 badge="Privacy"
                                 title="AVG & GDPR"
-                                description="Alle data-opslag vindt plaats binnen de EU (Supabase, AWS Frankfurt). Wij verwerken geen BSN of gevoelige leerlingdata — Privacy by Design."
+                                description="Opslag en verwerking worden ingericht binnen de EER/EU-projectregio zoals contractueel vastgelegd. Wij verwerken geen BSN en gebruiken privacy-by-design maatregelen."
                             />
                             <ComplianceCard 
                                 badge="Veiligheid"
-                                title="Zero-Training Guarantee"
-                                description="De invoer van leerlingen wordt NOOIT gebruikt om AI-modellen van derden te trainen. Jouw school-data blijft jouw data."
+                                title="Providertraining beperkt"
+                                description="Leerlinginput wordt niet voor provider-modeltraining gebruikt waar dit door providerafspraken en instellingen is gedekt. Schooldata blijft onder schoolafspraken."
                             />
                         </div>
                     </div>
@@ -123,7 +123,7 @@ export const AiGeletterdheid: React.FC = () => {
 
             <footer className="py-12 bg-lab-ink text-white/75 text-center text-xs">
                 <div className="max-w-5xl mx-auto px-6">
-                    <p>© {new Date().getFullYear()} DGSkills — AI-geletterdheid & Compliance</p>
+                    <p>© {new Date().getFullYear()} DGSkills — AI-geletterdheid & verantwoorde AI</p>
                 </div>
             </footer>
         </div>

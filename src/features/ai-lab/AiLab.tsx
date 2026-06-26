@@ -279,7 +279,7 @@ export const AiLab: React.FC<AiLabProps> = ({ user, onExit, saveProgress, initia
         missionsCompleted: [...new Set([...(prev.missionsCompleted || []), selectedRole.id])]
       }));
 
-      // Log activity for teacher analytics/export (90-day retention).
+      // Log activity for teacher analytics/export; retention follows the legal retention policy.
       // This complements the mission_complete logging in App.tsx for non-AiLab missions.
       if (user && user.role === 'student') {
         logActivity({
@@ -1323,7 +1323,7 @@ export const AiLab: React.FC<AiLabProps> = ({ user, onExit, saveProgress, initia
                         data={activeBookData}
                         user={user ? {
                           uid: user.uid,
-                          displayName: user.displayName ?? '',
+                          displayName: user.displayName,
                           studentClass: user.studentClass,
                           schoolId: user.schoolId
                         } : undefined}

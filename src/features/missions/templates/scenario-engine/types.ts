@@ -51,6 +51,13 @@ export interface ScenarioEngineConfig {
     introFeatures?: string[];
     /** Optional explicit, measurable learning objectives — preferred over implicit `introFeatures` for SLO-rapportage. Format: action verb + measurable outcome. */
     learningObjectives?: string[];
+    attribution?: {
+        source: string;
+        author?: string;
+        license?: string;
+        licenseUrl?: string;
+        sourceUrl?: string;
+    };
     rounds: ScenarioRound[];
     maxScore: number;
     badges: BadgeConfig[];

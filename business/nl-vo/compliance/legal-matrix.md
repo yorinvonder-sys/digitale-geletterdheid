@@ -1,6 +1,6 @@
 # Toetsmatrix AVG & AI Act Compliance - DGSkills.app
 
-> **Correctie 15-03-2026:** Classificatie gewijzigd van 'beperkt risico' naar **hoog risico** conform EU AI Act Annex III punt 3(b) — AI-systemen bedoeld voor gebruik bij het beoordelen van leerresultaten in het onderwijs. Deadline hoog-risico verplichtingen: oorspronkelijk **2 augustus 2026**, maar via de Digital Omnibus (voorlopig EU-akkoord, nog niet formeel gepubliceerd) verschuift deze naar verwachting richting **2 december 2027** (urgentie blijft op de wettelijke SLO-kerndoelen, 1 augustus 2027).
+> **Correctie 25-06-2026:** Classificatie blijft **hoog risico** conform EU AI Act Annex III punt 3(b) wanneer AI leerresultaten evalueert of het leerproces stuurt. Volgens de actuele Europese Commissie-informatie gaan de belangrijkste hoog-risico verplichtingen voor Annex III onderwijs-AI gelden op **2 december 2027**. Art. 4 AI-geletterdheid geldt sinds 2 februari 2025; Art. 50 transparantie geldt vanaf augustus 2026.
 
 Dit document dient als intern referentiekader voor de compliance-audit van DGSkills.app (Februari 2026).
 
@@ -15,8 +15,8 @@ Dit document dient als intern referentiekader voor de compliance-audit van DGSki
 | AVG-05 | **Minimale Gegevens** | Art. 5(1)(c) | Alleen strikt noodzakelijke data voor leerproces (geen BSN, geen adres indien mogelijk). |
 | AVG-06 | **Bewaartermijnen** | Art. 5(1)(e) | Data niet langer bewaren dan nodig. Automatische opschoning inrichten. |
 | AVG-07 | **Beveiliging** | Art. 32 | Versleuteling (HTTPS/TLS), database-regels, toegangsbeheer (docent vs leerling). |
-| AVG-08 | **Datalocatie** | Art. 44 - 50 | Opslag binnen de EER: Supabase (AWS eu-central-1, Frankfurt, EU). AI-verwerking in de EU (Mistral: Frankrijk; Black Forest Labs: EU-endpoint api.eu.bfl.ai). |
-| AVG-09 | **Subverwerkers** | Art. 28(2) | Lijst van subverwerkers (Supabase, Mistral AI, Black Forest Labs) moet beschikbaar zijn. |
+| AVG-08 | **Datalocatie** | Art. 44 - 50 | Opslag/verwerking via EER- of EU-projectregio waar contractueel/projectmatig geverifieerd; geen harde regio claim zonder bewijs. |
+| AVG-09 | **Subverwerkers** | Art. 28(2) | Lijst van subverwerkers (o.a. Supabase, Mistral AI, Black Forest Labs, Vercel, e-mailprovider) moet actueel beschikbaar zijn. |
 | AVG-10 | **DPIA** | Art. 35 | DGSkills moet school ondersteunen bij het uitvoeren van een DPIA. |
 | AVG-11 | **Minderjarigen <16** | Art. 8 AVG / UAVG | Juridische basis en waarborgen voor minderjarigen expliciet vastgelegd in privacydocumentatie. |
 | AVG-12 | **Beperking verwerking** | Art. 18 AVG | Betrokkene moet verwerkingsbeperking kunnen aanvragen; workflow en logging vereist. |
@@ -42,7 +42,7 @@ Dit document dient als intern referentiekader voor de compliance-audit van DGSki
 | AI-01 | **Transparantie** | Art. 50(1) | Gebruikers moeten weten dat ze met AI communiceren (Chat/Feedback). | VOLDAAN |
 | AI-02 | **Output Labeling** | Art. 50(2) | AI-gegenereerde content moet als zodanig herkenbaar zijn (disclaimer/watermerk). | VOLDAAN |
 | AI-03 | **AI-geletterdheid** | Art. 4 | Uitleg over de beperkingen (fouten/hallucinaties) en menselijke controle. Aanbieders en deployers moeten AI-geletterdheid waarborgen bij personeel en gebruikers. | VOLDAAN |
-| AI-04 | **Datagebruik AI** | Privacy-by-design | Expliciet vermelden dat input niet wordt gebruikt voor training (bij API-gebruik). | VOLDAAN |
+| AI-04 | **Datagebruik AI** | Privacy-by-design | Expliciet vermelden dat provider-calls zo zijn geconfigureerd en gecontracteerd dat input niet voor modeltraining wordt gebruikt waar providerafspraken/instellingen dit dekken; bewijs per provider bewaren. | GEDEELTELIJK |
 
 ### 3.2 Risicobeheersysteem (Art. 9)
 

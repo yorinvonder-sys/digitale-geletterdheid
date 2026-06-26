@@ -1,8 +1,9 @@
 /**
  * deleteMyAccount — AVG Art. 17 (Right to Erasure)
  *
- * Permanently deletes the authenticated user's account and ALL associated
- * data via the CASCADE constraints in 20260222_cascade_delete_policies.sql.
+ * Deletes the authenticated user's account hoofdgegevens and technically linked
+ * rows where covered by cascade/manual policies. Backups, audit logs and school
+ * controller records remain subject to DPA and retention procedures.
  *
  * Flow:
  *  1. Verify JWT
@@ -106,7 +107,7 @@ serve(async (req: Request) => {
 
     return new Response(JSON.stringify({
       success: true,
-      message: 'Je account en alle bijbehorende gegevens zijn permanent verwijderd.',
+      message: 'Je account-hoofdgegevens en technisch gekoppelde rijen zijn verwijderd. Back-ups, auditlogs en school/DPA-bewaartermijnen kunnen nog van toepassing zijn.',
     }), {
       status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });

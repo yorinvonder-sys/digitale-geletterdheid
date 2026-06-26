@@ -9,8 +9,6 @@
 **E-mail:** info@dgskills.app
 **Classificatie:** Hoog-risico AI-systeem -- Annex III, punt 3(b)
 
-> **Deadline-update (17 juni 2026):** De in dit document genoemde AI Act-deadline van **2 augustus 2026** voor hoog-risico-verplichtingen is niet definitief. Via de **Digital Omnibus** (door het Europees Parlement aangenomen op 11 juni 2026; formele bekrachtiging door de Raad en publicatie in het EU-Publicatieblad nog niet afgerond) verschuift deze naar verwachting richting **2 december 2027**. De hoog-risico-classificatie (Annex III, punt 3b) en de wettelijke SLO-kerndoelen (verplicht vanaf 1 augustus 2027) blijven ongewijzigd. De deadline-datums in de beoordeling hieronder weerspiegelen de oorspronkelijke datum op moment van schrijven.
-
 ---
 
 ## Versiebeheer
@@ -61,11 +59,12 @@ Concrete functies:
 
 **Serverzijde:**
 - **Supabase:** PostgreSQL-database, authenticatie (JWT), Row Level Security, Edge Functions (Deno runtime)
-- **Mistral AI (tekst, vision en OCR) en Black Forest Labs (beeldgeneratie):** tekst via api.mistral.ai (Mistral AI SAS, Parijs, EU-verwerking); beeldgeneratie (FLUX) via api.eu.bfl.ai (EU-endpoint)
+- **Mistral AI:** tekst/chat/feedback/vision/OCR via server-side Supabase Edge Functions
+- **Black Forest Labs FLUX:** image generation via server-side Supabase Edge Functions
 - **Vercel:** Hosting en CDN voor de React-frontend
 
 **Externe afhankelijkheden:**
-- Mistral AI (tekst, vision en OCR) en Black Forest Labs (beeldgeneratie), server-side API-key (Supabase secret)
+- Mistral AI en Black Forest Labs (server-side API-authenticatie; providerkeys niet in client)
 - Supabase (database, auth, serverless functions)
 - Vercel (frontend hosting)
 
@@ -73,8 +72,7 @@ Concrete functies:
 
 | Datum | Wijziging | Impact |
 |-------|-----------|--------|
-| 23-02-2026 | ~~Migratie van de Google-AI Developer API naar het latere Google-AI-platform~~ (historisch; Google wordt niet langer gebruikt) | — |
-| [TODO] | Overstap naar Mistral AI (tekst, vision en OCR) en Black Forest Labs (beeldgeneratie) | AI-verwerking in de EU; server-side API-key (Supabase secret) |
+| 25-06-2026 | Legal truth update: actuele school-facing AI-paden vastgesteld op Mistral AI en Black Forest Labs | Provider-DPA, regio, retentie en subprocessorbewijs per provider te verifiëren |
 | [TODO] | Initieel systeem in productie | [TODO: datum eerste productieversie] |
 
 [TODO: volledige versiegeschiedenis aanvullen]
@@ -85,14 +83,13 @@ Concrete functies:
 
 ### 2.1 Elementen en componenten
 
-#### 2.1.1 Foundation model
+#### 2.1.1 Externe AI-modellen
 
-- **Model:** Mistral AI (tekst, vision en OCR); Black Forest Labs / FLUX (beeldgeneratie)
-- **Aanbieder:** Mistral AI SAS (Parijs, Frankrijk) en Black Forest Labs Inc. (VS, met EU-endpoint api.eu.bfl.ai), GPAI-model aanbieders conform Art. 51-55
-- **Type:** Large Language Model (LLM), pre-trained, multimodaal
-- **Toegang:** tekst via api.mistral.ai; beeldgeneratie via api.eu.bfl.ai (EU-endpoint)
-- **Training:** DGSkills traint het model NIET. Het model wordt gebruikt via API met prompt-gebaseerde instructie
-- **Data retention:** dataretentie te verifiëren (Mistral: standaard tot 30 dagen abuse-monitoring; Zero Data Retention optioneel, plan-afhankelijk). Geen training op leerlingdata (training-opt-out te verifiëren — Mistral biedt opt-out; standaard opt-out op Scale-plan)
+- **Tekst/chat/feedback/vision/OCR:** Mistral AI via server-side Supabase Edge Functions
+- **Beeldgeneratie:** Black Forest Labs FLUX via server-side Supabase Edge Functions
+- **Type:** Externe GPAI-/generatieve modellen, aangeroepen via API
+- **Training:** DGSkills traint geen eigen model. Het systeem gebruikt prompt- en system-instructiongestuurde API-aanroepen
+- **Data retention/modeltraining:** Provider-retentie en uitsluiting van provider-modeltraining moeten per provider worden bewezen via DPA, instellingen en subprocessoroverzicht
 
 #### 2.1.2 AI-agents (93 stuks)
 
@@ -137,12 +134,13 @@ Elke agent bevat de volgende verplichte secties in de system instruction:
 | Frontend | React 19, TypeScript, Vite | Vercel CDN (global, edge) |
 | Edge Functions | Deno runtime (Supabase Edge Functions) | Supabase infra |
 | Database | PostgreSQL (Supabase) | [TODO: exacte regio bevestigen] |
-| AI-model | Mistral AI (tekst, vision, OCR); Black Forest Labs / FLUX (beeld) | EU (Mistral: Frankrijk; Black Forest Labs: EU-endpoint api.eu.bfl.ai) |
-| Authenticatie | Supabase Auth (JWT) + server-side API-key (Supabase secret) | Supabase |
+| AI-model tekst/chat/vision/OCR | Mistral AI | Providerregio en subprocessors te verifiëren |
+| AI-model beeldgeneratie | Black Forest Labs FLUX | Providerregio en subprocessors te verifiëren |
+| Authenticatie | Supabase Auth (JWT) + server-side AI-providerkeys | Supabase / provideromgeving |
 
 #### 2.2.2 Generatieconfiguratie
 
-De volgende parameters worden gebruikt bij elke AI-aanroep:
+De volgende parameters worden gebruikt bij tekst/chat-aanroepen waar van toepassing:
 
 ```
 maxOutputTokens: 1024
@@ -171,19 +169,19 @@ SUPABASE EDGE FUNCTION: /chat (Deno runtime)
     |-- (3e) Chat history sanitisatie (max 12 berichten, max 6000 chars totaal)
     |-- (3f) Request size beperking (max 20KB, max 4000 chars per bericht)
     |
-    | (4) Sanitized request naar de AI-provider
+    | (4) Sanitized request naar AI-provider
     v
-MISTRAL AI (tekst/vision/OCR, api.mistral.ai) / BLACK FOREST LABS (beeld, api.eu.bfl.ai)
+AI-PROVIDER (Mistral AI / Black Forest Labs, providerregio te verifiëren)
     |
-    |-- Server-side API-key authenticatie (Supabase secret)
-    |-- System instruction (server-side, niet door client aanpasbaar)
-    |-- Dataretentie te verifiëren (Mistral: standaard tot 30 dagen abuse-monitoring; Zero Data Retention optioneel, plan-afhankelijk)
+    |-- Server-side API-authenticatie
+    |-- Provider safety/usage controls waar beschikbaar
+    |-- Retentie en modeltraining volgens providerafspraken/settings te verifiëren
     |
     | (5) AI-response
     v
 SUPABASE EDGE FUNCTION
     |
-    | (6) Extract tekst uit AI-response
+    | (6) Extract tekst of gegenereerde asset uit AI-providerresponse
     v
 REACT FRONTEND
     |
@@ -204,48 +202,48 @@ Het systeem implementeert 6 beveiligingslagen, zoals gedocumenteerd in `supabase
 1. **JWT-authenticatie:** Supabase Auth verifieert de gebruikerssessie
 2. **Server-side prompt injection filtering:** Spiegelt client-side filtering (defense-in-depth)
 3. **Server-side rate limiting:** 15 requests per minuut per gebruiker, durable (Postgres-backed) met in-memory fallback
-4. **AI-provider (Mistral AI / Black Forest Labs):** dataretentie te verifiëren (Mistral: standaard tot 30 dagen abuse-monitoring; Zero Data Retention optioneel, plan-afhankelijk). LET OP: Mistral vereist minimaal 13 jaar en ouderlijke/voogd-toestemming voor minderjarigen — aandachtspunt voor 12-jarigen; te verifiëren met de schoolconsent-flow
-5. **Server-side API-key auth:** API-key (Supabase secret), niet in de URL, niet in de frontend
+4. **AI-provider via server-side proxy:** providerkeys blijven server-side en worden niet aan de browser blootgesteld
+5. **Providercontracten:** DPA, regio, retentie, subprocessorroute en minderjarigen/onderwijsgebruik worden per provider geverifieerd
 6. **Server-side system instruction lookup:** Client stuurt alleen een `roleId`, de system instruction wordt server-side opgezocht -- voorkomt prompt injection via systemInstruction-veld
 
 ### 2.4 Ontwerpkeuzes
 
-#### 2.4.1 Keuze voor Mistral AI (tekst, vision en OCR) en Black Forest Labs (beeldgeneratie)
+#### 2.4.1 Keuze voor Mistral AI en Black Forest Labs
 
-| Criterium | Mistral AI (tekst, vision, OCR) | Black Forest Labs / FLUX (beeld) |
-|-----------|---------------------------------|----------------------------------|
-| Minderjarigen ToS | LET OP: Mistral vereist minimaal 13 jaar en ouderlijke/voogd-toestemming voor minderjarigen — aandachtspunt voor 12-jarigen; te verifiëren met de schoolconsent-flow | Te verifiëren |
-| Datalocatie | EU (Mistral: Frankrijk) | EU-endpoint api.eu.bfl.ai (Black Forest Labs Inc. is een Amerikaans bedrijf) |
-| Data retention | Te verifiëren (Mistral: standaard tot 30 dagen abuse-monitoring; Zero Data Retention optioneel, plan-afhankelijk) | Te verifiëren |
-| Contractueel kader | Mistral AI DPA met EU SCC's (Besluit 2021/914) — ondertekende DPA te verifiëren | Black Forest Labs: ISO 27001 / SOC 2 Type II — ondertekende DPA te verifiëren |
-| Authenticatie | Server-side API-key (Supabase secret) | Server-side API-key (Supabase secret) |
+| Criterium | Mistral AI | Black Forest Labs FLUX |
+|-----------|------------|-------------------------|
+| Functie | Tekst/chat/feedback/vision/OCR | Beeldgeneratie |
+| Integratie | Server-side Edge Function, geen providerkey in client | Server-side Edge Function, tijdelijke provider-URL's server-side opgehaald |
+| Contractueel bewijs | DPA/subprocessor/regio/retentie te bewaren | DPA/subprocessor/regio/retentie te bewaren |
+| Modeltraining | Uitgesloten waar providerafspraken en instellingen dit dekken | Uitgesloten waar providerafspraken en instellingen dit dekken |
 
-Eerder (historisch) liep AI-verwerking via ~~een Google-AI-dienst~~; Google wordt niet langer gebruikt.
+De eerdere Vertex/Gemini-documentatie is historisch en mag niet als actuele school-facing providerclaim worden gebruikt zonder nieuwe code- en contractverificatie.
 
 #### 2.4.2 Keuze voor prompt-gebaseerde sturing
 
 DGSkills gebruikt geen eigen getraind of finetuned model. In plaats daarvan wordt het gedrag gestuurd via uitgebreide system instructions per agent. Dit betekent:
 
-- **Geen eigen trainingsdata:** Risico's gerelateerd aan training data bias worden deels doorgeschoven naar Mistral AI en Black Forest Labs als GPAI-aanbieders
+- **Geen eigen trainingsdata:** Risico's gerelateerd aan training data bias worden deels doorgeschoven naar de externe provider als GPAI-aanbieder
 - **Snelle iteratie:** Agents kunnen worden aangepast zonder hertraining
 - **Transparantie:** System instructions zijn volledig inspecteerbaar
-- **Beperking:** Gedrag is afhankelijk van het onderliggende model; wijzigingen door Mistral AI of Black Forest Labs kunnen output beinvloeden
+- **Beperking:** Gedrag is afhankelijk van het onderliggende model; wijzigingen door providers kunnen output beinvloeden
 
 ---
 
 ## SECTIE 3: MONITORING, WERKING EN CONTROLE
 
-### 3.1 AI-moderatie (provider-guardrail + output-filter)
+### 3.1 Safety settings
 
-Content-moderatie voor minderjarigen (12-18 jaar) wordt afgedwongen via een combinatie van een provider-side guardrail en een server-side output-filter — niet via categorie-drempels:
+Alle AI-provider-aanroepen gebruiken de maximaal restrictieve safety settings, geoptimaliseerd voor minderjarigen (12-18 jaar):
 
-| Laag | Implementatie | Werking |
-|------|--------------|---------|
-| Provider-guardrail | Mistral `safe_prompt: true` (`supabase/functions/_shared/mistralClient.ts`) | Mistral plaatst vóór elk gesprek een veiligheids-systeemprompt die het model instrueert om schadelijke, onethische, bevooroordeelde of negatieve content te vermijden |
-| Output-filter | `supabase/functions/_shared/outputFilter.ts` | Server-side regex-vangnet dat AI-output blokkeert op zelfbeschadiging/suïcide, grooming, wapens/explosieven en drugs, en vervangt door een doorverwijzing (vertrouwenspersoon school / Kindertelefoon 0800-0432) |
-| Input-filter | `supabase/functions/_shared/promptSanitizer.ts` (zie 3.2) | Blokkeert prompt-injectie en manipulatiepogingen vóór ze het model bereiken |
+| Categorie | Drempelwaarde | Toelichting |
+|-----------|--------------|-------------|
+| HARM_CATEGORY_HARASSMENT | BLOCK_LOW_AND_ABOVE | Blokkeert alle niveaus van intimidatie |
+| HARM_CATEGORY_HATE_SPEECH | BLOCK_LOW_AND_ABOVE | Blokkeert alle niveaus van haatdragend taalgebruik |
+| HARM_CATEGORY_SEXUALLY_EXPLICIT | BLOCK_LOW_AND_ABOVE | Blokkeert alle niveaus van seksueel expliciete content |
+| HARM_CATEGORY_DANGEROUS_CONTENT | BLOCK_LOW_AND_ABOVE | Blokkeert alle niveaus van gevaarlijke content |
 
-> **Let op:** De codebase bevat nog een ongebruikte `safetySettings`-array (categorieën `HARM_CATEGORY_*` op `BLOCK_LOW_AND_ABOVE`) uit de eerdere Google-AI-opzet vóór de migratie naar Mistral. Deze wordt **niet** naar Mistral verzonden en heeft geen functioneel effect.
+Dit is het strengste niveau dat AI-provider ondersteunt. Elk niveau boven "negligible" wordt geblokkeerd.
 
 ### 3.2 Prompt sanitizer
 
@@ -343,7 +341,7 @@ Elke agent bevat detectielogica voor niet-serieuze berichten die bedoeld zijn om
 - Provenance metadata (JSON-LD) op alle AI-output
 
 **Ontbrekend (in ontwikkeling):**
-- [x] Docent-override voor STEP_COMPLETE-beoordelingen — **geïmplementeerd 15 mrt 2026** (`teacher_step_overrides` + RPC `override_student_step`, gelogd)
+- [TODO] Docent-override voor STEP_COMPLETE-beoordelingen
 - [TODO] Docentdashboard voor real-time monitoring van AI-interacties
 - [TODO] Noodstop-functionaliteit (docent kan AI per klas/leerling uitschakelen)
 
@@ -369,7 +367,7 @@ Geimplementeerd in `services/auditService.ts`, conform AVG Art. 30 en EU AI Act 
 | Berichtlengte | Max 4.000 tekens per bericht |
 | RLS (Row Level Security) | Op alle databasetabellen |
 | JWT-authenticatie | Supabase Auth op elke edge function |
-| Server-side API-key auth | API-key (Supabase secret) voor Mistral AI en Black Forest Labs |
+| Service account auth | OAuth2 JWT met RSA-256 voor AI-provider |
 | Token caching | Access tokens gecached ~55 minuten, refresh 5 min voor expiry |
 
 ---
@@ -378,22 +376,22 @@ Geimplementeerd in `services/auditService.ts`, conform AVG Art. 30 en EU AI Act 
 
 ### 4.1 Verwijzing naar risicoregister
 
-Het risicoregister is uitgewerkt in `risicoregister-ai-act.md` (risico's per agent en functionaliteit gescoord, met maatregelen en restrisico). De formele vaststelling van het Art. 9-risicobeheersysteem is nog in afronding (status NIET VOLDAAN); zie acties 9.1-9.7 in `eu-ai-act-conformiteitsplan.md` en Appendix C.
+[TODO: Opstellen formeel risicoregister conform Art. 9 -- gepland voor maart 2026. Zie `eu-ai-act-conformiteitsplan.md` actie 9.1-9.7]
 
 ### 4.2 Bekende risico's en maatregelen
 
 | # | Risico | Ernst | Waarschijnlijkheid | Maatregel | Restrisico |
 |---|--------|-------|--------------------|-----------|------------|
 | R1 | Prompt injection -- leerling manipuleert AI-gedrag | Hoog | Midden | Prompt sanitizer (28+ patronen, 6 talen), server-side validatie, system instruction niet door client aanpasbaar | Laag: novel/zero-day injection patronen |
-| R2 | Ongeschikte content voor minderjarigen | Hoog | Laag | Mistral `safe_prompt`-guardrail + server-side output-filter voor minderjarigen, welzijnsprotocol | Zeer laag: edge cases in het onderliggende model |
+| R2 | Ongeschikte content voor minderjarigen | Hoog | Laag | Safety settings BLOCK_LOW_AND_ABOVE op alle 4 categorieen, welzijnsprotocol | Zeer laag: edge cases in Mistral AI-model |
 | R3 | Hallucinatie -- AI geeft feitelijk onjuiste informatie | Midden | Midden | Temperature 0.7, maxOutputTokens 1024, begrensde context | Midden: inherent aan LLM-technologie |
 | R4 | XP farming -- leerling verdient punten zonder te leren | Midden | Hoog | XP farming detectie in alle 93 agents, serieuze-input-eis | Laag-midden: creatieve workarounds |
 | R5 | Onjuiste STEP_COMPLETE-beoordeling | Midden | Midden | Agent-specifieke beoordelingscriteria, 3-stappen methode | Midden: LLM-beoordeling is niet perfect |
 | R6 | Bias -- inconsistente beoordeling op basis van taalvaardigheid | Midden | Midden | [TODO: biasbeoordeling uitvoeren] | [TODO: te bepalen na beoordeling] |
-| R7 | Datalekkage -- persoonsgegevens in AI-responses | Midden | Laag | Dataretentie te verifiëren (Mistral: standaard tot 30 dagen abuse-monitoring; Zero Data Retention optioneel, plan-afhankelijk), geen opslag van chatinhoud, metadata-only logging | Laag |
+| R7 | Datalekkage -- persoonsgegevens in AI-responses | Midden | Laag | retentie/modeltraining volgens providerafspraken (AI-provider), geen opslag van chatinhoud, metadata-only logging | Laag |
 | R8 | Welzijnssignalen gemist door AI | Hoog | Laag | Welzijnsprotocol in alle 93 agents, verwijzing hulplijnen | Laag-midden: AI kan subtiele signalen missen |
-| R9 | Uitval van de AI-provider | Laag | Laag | [TODO: graceful degradation implementeren] | Midden: geen fallback-model |
-| R10 | Model-wijziging door Mistral AI of Black Forest Labs | Midden | Midden | [TODO: monitoring van model-updates van de AI-provider] | Midden: geen controle over upstream model |
+| R9 | AI-provider-uitval | Laag | Laag | [TODO: graceful degradation implementeren] | Midden: geen fallback-model |
+| R10 | Model-wijziging door provider | Midden | Midden | [TODO: monitoring van Mistral AI model-updates via AI-provider] | Midden: geen controle over upstream model |
 
 ### 4.3 Specifieke risicobeoordeling minderjarigen (Art. 9(9))
 
@@ -410,7 +408,7 @@ De voornaamste restrisico's na implementatie van alle maatregelen:
 
 1. **Inherente LLM-beperkingen:** Hallucinatie en inconsistente beoordeling zijn onvermijdelijk bij huidige LLM-technologie. Mitigatie: docent als menselijk toezichthouder, AI-disclaimer.
 2. **Zero-day prompt injections:** Nieuwe aanvalstechnieken worden continu ontwikkeld. Mitigatie: regelmatige update van patronenbibliotheek, monitoring.
-3. **Upstream modelwijzigingen:** Mistral AI of Black Forest Labs kan het onderliggende model wijzigen zonder vooraankondiging. Mitigatie: [TODO: monitoring-protocol opstellen].
+3. **Upstream modelwijzigingen:** provider kan het Mistral AI-model wijzigen zonder vooraankondiging. Mitigatie: [TODO: monitoring-protocol opstellen].
 
 ---
 
@@ -418,12 +416,12 @@ De voornaamste restrisico's na implementatie van alle maatregelen:
 
 ### 5.1 Trainingsdata
 
-DGSkills traint **geen eigen AI-model**. Het systeem gebruikt Mistral AI (tekst, vision en OCR) en Black Forest Labs / FLUX (beeldgeneratie) als pre-trained foundation models via API (tekst: api.mistral.ai; beeld: api.eu.bfl.ai).
+DGSkills traint **geen eigen AI-model**. Het systeem gebruikt Mistral AI 2.0 Flash als pre-trained foundation model via de AI-provider API.
 
-- **Verantwoordelijkheid trainingsdata:** Mistral AI en Black Forest Labs als GPAI-model aanbieders (Art. 53)
+- **Verantwoordelijkheid trainingsdata:** provider als GPAI-model aanbieder (Art. 53)
 - **Eigen configuratiedata:** 93 system instructions (in totaal ~480KB aan prompt-tekst)
 - **Versiebeheer configuratiedata:** Git (GitHub repository)
-- [TODO: Documenteer verwijzing naar de GPAI-documentatie van Mistral AI en Black Forest Labs (model cards, training data practices)]
+- [TODO: Documenteer verwijzing naar provider's GPAI-documentatie (model cards, training data practices)]
 
 ### 5.2 Inputdata
 
@@ -438,7 +436,7 @@ DGSkills traint **geen eigen AI-model**. Het systeem gebruikt Mistral AI (tekst,
 
 | Datatype | Beschrijving | Opslag | Bewaartermijn |
 |----------|-------------|--------|---------------|
-| AI-response (tekst) | Antwoord van het AI-model (Mistral AI) | **Niet opgeslagen** op server | Geen |
+| AI-response (tekst) | Antwoord van Mistral AI-model | **Niet opgeslagen** op server | Geen |
 | STEP_COMPLETE markers | Voltooiingsstatus per stap | Database (voortgangsregistratie) | Zolang account actief |
 | XP en levels | Puntentelling | Database | Zolang account actief |
 | Audit metadata | mission_id, response_length, model, fallback_used | Database (audit log) | [TODO: bewaartermijn vaststellen, min. 6 maanden] |
@@ -447,10 +445,9 @@ DGSkills traint **geen eigen AI-model**. Het systeem gebruikt Mistral AI (tekst,
 
 | Component | Locatie | Garantie |
 |-----------|---------|----------|
-| Mistral AI (tekst/vision/OCR-verwerking) | EU (Frankrijk) | Mistral AI DPA met EU SCC's (Besluit 2021/914) — ondertekende DPA te verifiëren |
-| Black Forest Labs (beeldgeneratie) | EU-endpoint api.eu.bfl.ai | Black Forest Labs: ISO 27001 / SOC 2 Type II — ondertekende DPA te verifiëren |
-| AI-verwerking (dataretentie) | EU (Mistral: Frankrijk; Black Forest Labs: EU-endpoint api.eu.bfl.ai) | Dataretentie te verifiëren (Mistral: standaard tot 30 dagen abuse-monitoring; Zero Data Retention optioneel, plan-afhankelijk) |
-| Supabase database | Supabase (AWS eu-central-1, Frankfurt, EU) | Supabase DPA |
+| AI-provider (ML-verwerking) | Providerregio te verifiëren | Provider-DPA met SCC's/TIA waar nodig |
+| AI-provider (data at rest / retentie) | Providerregio en retentie te verifiëren | Retentie/modeltraining volgens providerafspraken en instellingen |
+| Supabase database | [TODO: exacte regio bevestigen] | Supabase DPA |
 | Vercel (frontend) | Edge/global CDN | Alleen statische assets, geen PII |
 
 ### 5.5 Dataminimalisatie
@@ -466,9 +463,9 @@ DGSkills traint **geen eigen AI-model**. Het systeem gebruikt Mistral AI (tekst,
 Zie `business/nl-vo/compliance/C-sub-verwerkerslijst-dgskills.md` voor de volledige lijst.
 
 Primaire sub-verwerkers voor AI-functionaliteit:
-- **Mistral AI (tekst, vision en OCR):** ML-verwerking, EU (Frankrijk), Mistral AI DPA met EU SCC's (Besluit 2021/914) — ondertekende DPA te verifiëren
-- **Black Forest Labs (beeldgeneratie / FLUX):** beeldgeneratie via EU-endpoint api.eu.bfl.ai; ISO 27001 / SOC 2 Type II — ondertekende DPA te verifiëren
-- **Supabase:** Database, authenticatie, edge functions (AWS eu-central-1, Frankfurt, EU)
+- **Mistral AI:** Tekst/chat/feedback/vision/OCR, providerregio/DPA/SCC's te verifiëren
+- **Black Forest Labs:** Beeldgeneratie, providerregio/DPA/SCC's te verifiëren
+- **Supabase:** Database, authenticatie, edge functions
 - **Vercel:** Frontend hosting
 
 ---
@@ -489,42 +486,12 @@ Het AI-systeem beoordeelt leerlingantwoorden op stap-niveau. Een stap wordt als 
 - Recall: percentage daadwerkelijk voltooide taken dat als STEP_COMPLETE wordt gemarkeerd
 - Inter-rater reliability: vergelijking AI-beoordeling vs. docent-beoordeling op steekproef
 
-### 6.1.1 Biastest-methodologie (Art. 10 — non-discriminatie)
-
-Om te toetsen of de beoordeling onafhankelijk is van taalregister, culturele context of gender
-(risico's R06/R07/R08 in het risicoregister), is een reproduceerbare biastest-harness opgezet:
-`scripts/biastest.mjs` (`npm run biastest`).
-
-**Opzet:**
-- **Inhouds-equivalente paren:** per testitem wordt dezelfde objectieve inhoud aangeboden in twee
-  varianten waarbij alléén het register/de context verschilt (vmbo-register vs. havo/vwo-register;
-  Suikerfeest vs. Kerst; gender-cue). Een onbevooroordeeld model hoort beide gelijk te scoren.
-- **Echte productie-instructies:** de harness laadt de instructies uit
-  `supabase/functions/_shared/systemInstructions.ts` (geen paraphrase) en gebruikt de
-  productie-parameters (`mistral-small-latest`, temperature 0.7, `safe_prompt: true`).
-- **Primaire agent `prompt-master`:** scoort de eerste prompt direct op 3 objectieve criteria
-  (duidelijkheid/specificiteit/context). Door de specificaties constant te houden en alleen het register
-  te variëren, is register zuiver te scheiden van echte kwaliteit.
-- **Metriek:** per agent×variant de STEP_COMPLETE-rate en het aantal vervulde criteria (✅), gemiddeld
-  over N=5 herhalingen. Bias-signaal = |Δ(vwo-register − vmbo-register)| > 15% (STEP) of > 0,5 (✅).
-
-**Geverifieerde context:** het onderwijsniveau van de leerling wordt niet aan de AI meegegeven (geen
-`educationLevel` in de chat-request); register-bias kan dus alleen uit het taalregister van het antwoord
-zelf ontstaan, niet uit een niveau-label.
-
-**Beperking:** synthetische antwoorden (geen leerlingdata); de test meet het relatieve verschil tussen
-varianten, niet de absolute beoordelingskwaliteit. Herhaling per kwartaal (zie evaluatiecyclus
-risicoregister §6.1).
-
-**Status:** harness + eval-set opgezet en runbaar; uitvoering door de aanbieder met `MISTRAL_API_KEY`.
-De resultaten worden hier opgenomen na de eerste run.
-
 ### 6.2 Bekende beperkingen
 
 | Beperking | Beschrijving | Impact | Mitigatie |
 |-----------|-------------|--------|-----------|
 | Hallucinatie | LLM kan feitelijk onjuiste informatie genereren | Leerling leert onjuiste feiten | AI-disclaimer, docent als toezichthouder |
-| Bias | Model kan inconsistent presteren voor verschillende taalregisters/contexten | Ongelijke beoordeling | Biastest-harness opgezet (`scripts/biastest.mjs`, R06/R07/R08; methodologie §6.1.1); uitvoering door aanbieder, resultaten te documenteren |
+| Bias | Model kan inconsistent presteren voor verschillende taalvaardigheidsniveaus | Ongelijke beoordeling | [TODO: biasbeoordeling uitvoeren] |
 | Context window | Max 12 berichten + 6000 chars history | AI "vergeet" eerder gesprek bij langere sessies | Duidelijke stap-structuur per missie |
 | Geen multimodaliteit in chat | Leerling kan alleen tekst invoeren in chat | Sommige taken moeilijk te beoordelen via tekst alleen | Aanvullende beoordelingsmechanismen (code preview, blok-editor) |
 | Taalgebondenheid | System instructions in het Nederlands | Beperkte ondersteuning voor niet-Nederlandstalige leerlingen | Doelgroep is Nederlands VO |
@@ -547,10 +514,10 @@ De resultaten worden hier opgenomen na de eerste run.
 ### 7.1 AI-transparantieverklaring
 
 DGSkills publiceert een AI-transparantieverklaring op de website die vermeldt:
-- Dat het systeem AI gebruikt (Mistral AI voor tekst, vision en OCR; Black Forest Labs voor beeldgeneratie)
+- Dat het systeem AI gebruikt (Mistral AI en Black Forest Labs)
 - Dat het een hoog-risico AI-systeem is conform EU AI Act Annex III punt 3(b)
 - Welke data wordt verwerkt en hoe
-- De dataresidentie: opslag in Supabase (AWS eu-central-1, Frankfurt, EU); AI-verwerking in de EU (Mistral: Frankrijk; Black Forest Labs: EU-endpoint api.eu.bfl.ai)
+- De providerregio's, retentie, subprocessors en doorgiftewaarborgen die per provider moeten worden geverifieerd
 
 ### 7.2 In-app disclosure
 
@@ -558,7 +525,7 @@ DGSkills publiceert een AI-transparantieverklaring op de website die vermeldt:
 - Alle AI-gegenereerde content wordt gemarkeerd met machine-readable provenance metadata (JSON-LD):
   ```
   generator: 'DGSkills/2.0'
-  model: Mistral AI (tekst/vision/OCR, api.mistral.ai); Black Forest Labs / FLUX (beeld, api.eu.bfl.ai)
+  model: 'mistral-*' of 'flux-*' (exact model/version per providerrequest loggen)
   timestamp: ISO 8601
   type: 'text' | 'image' | 'mixed'
   disclaimer: 'AI-gegenereerd -- kan fouten bevatten'
@@ -600,7 +567,7 @@ Beschikbare documenten:
 | Rol | Naam | Verantwoordelijkheid |
 |-----|------|---------------------|
 | Aanbieder (Art. 3(3)) | Yorin von der Osten / DGSkills | Ontwikkeling, compliance, CE-markering |
-| GPAI-model aanbieder | Mistral AI SAS (Parijs, Frankrijk) en Black Forest Labs Inc. (VS) | Onderliggende modellen, Art. 51-55 verplichtingen |
+| GPAI-model aanbieder | provider (Alphabet Inc.) | Mistral AI-model, Art. 51-55 verplichtingen |
 | Deployer (Art. 3(4)) | Individuele scholen | Gebruik conform instructions for use, menselijk toezicht |
 | FG/DPO | [TODO: benoemen of advisering inhuren] | Toezicht op gegevensbescherming |
 
@@ -658,7 +625,7 @@ DGSkills valt onder Annex III punt 3(b), waardoor de conformiteitsbeoordeling op
 | 7 | Registratie EU-databank (Art. 49) | Juli 2026 | [TODO] |
 | 8 | Post-market monitoring activeren (Art. 72) | Augustus 2026 | [TODO] |
 
-**Deadline: 2 augustus 2026**
+**Toepassingsdatum high-risk verplichtingen volgens actuele Commissie-informatie: 2 december 2027**
 
 ---
 
@@ -817,8 +784,7 @@ Conform Art. 47 en Annex V zal de verklaring bevatten:
 | Prompt Sanitizer (broncode) | `supabase/functions/_shared/promptSanitizer.ts` | Actief |
 | Chat Edge Function (broncode) | `supabase/functions/chat/index.ts` | Actief |
 | System Instructions (broncode) | `supabase/functions/_shared/systemInstructions.ts` | Actief |
-| Mistral AI client (broncode) | `supabase/functions/_shared/mistralClient.ts` | Actief |
-| Black Forest Labs / FLUX beeldclient (broncode) | `supabase/functions/_shared/bflImageClient.ts` | Actief |
+| AI-provider clients (broncode) | `supabase/functions/_shared/mistralClient.ts`, `supabase/functions/_shared/bflImageClient.ts` | Actief |
 | Rate Limiter (broncode) | `supabase/functions/_shared/rateLimiter.ts` | Actief |
 | Chat History Sanitizer (broncode) | `supabase/functions/_shared/chatHistory.ts` | Actief |
 
@@ -835,17 +801,17 @@ Onderstaande items moeten nog worden afgerond voor de conformiteitsbeoordeling:
 | 3 | Risicobeoordeling minderjarigen (Art. 9(9)) | 4.3 | KRITIEK | Maart 2026 |
 | 4 | Biasbeoordeling per agenttype | 6.2, 4.2 | HOOG | April 2026 |
 | 5 | Nauwkeurigheidsmetrieken definieren en meten | 6.1 | KRITIEK | April 2026 |
-| 6 | Docent-override STEP_COMPLETE | 3.7 | ~~KRITIEK~~ **Afgerond (15 mrt 2026)** | April 2026 |
+| 6 | Docent-override STEP_COMPLETE | 3.7 | KRITIEK | April 2026 |
 | 7 | Docentdashboard monitoring | 3.7 | HOOG | April 2026 |
 | 8 | Noodstop-functionaliteit | 3.7 | HOOG | April 2026 |
-| 9 | Graceful degradation bij uitval van de AI-provider | 4.2 | HOOG | Mei 2026 |
-| 10 | Monitoring model-updates van de AI-provider | 4.2 | HOOG | Doorlopend |
+| 9 | Graceful degradation bij AI-provider-uitval | 4.2 | HOOG | Mei 2026 |
+| 10 | Monitoring Mistral AI en Black Forest Labs model-/policy-updates | 4.2 | HOOG | Doorlopend |
 | 11 | QMS-document (Art. 17) | 8.4 | KRITIEK | Mei 2026 |
 | 12 | Instructions for Use voor scholen | 7.3 | KRITIEK | Mei 2026 |
 | 13 | Post-market monitoring plan (Art. 72) | 8.5 | HOOG | Mei 2026 |
 | 14 | Supabase database regio bevestigen | 5.4 | MIDDEN | Zsm |
 | 15 | Bewaartermijn audit logs vaststellen | 5.3 | MIDDEN | April 2026 |
-| 16 | GPAI-documentatie verwijzing (Mistral AI en Black Forest Labs) | 5.1 | HOOG | April 2026 |
+| 16 | provider GPAI-documentatie verwijzing | 5.1 | HOOG | April 2026 |
 | 17 | FG/DPO benoemen of advisering | 8.1 | HOOG | Mei 2026 |
 | 18 | Beroepsaansprakelijkheidsverzekering | 8.2 | HOOG | Zsm |
 | 19 | Versiegeschiedenis aanvullen | 1.5 | LAAG | Doorlopend |

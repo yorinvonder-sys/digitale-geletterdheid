@@ -23,6 +23,7 @@ export const AGENT_ROLE_IDS = [
   'review-week-2',
   'ai-spiegel',
   'social-safeguard',
+  'veilig-internet',
   'data-detective',
   'data-verzamelaar',
   'cookie-crusher',

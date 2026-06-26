@@ -19,11 +19,13 @@ assert(Boolean(migrationPath), 'Missing add_ai_usage_events migration.');
 const migration = migrationPath ? read(migrationPath) : '';
 const helperPath = 'supabase/functions/_shared/aiUsageLogger.ts';
 const helper = existsSync(helperPath) ? read(helperPath) : '';
+const consentHelper = read('supabase/functions/_shared/consent.ts');
 const chatCore = read('supabase/functions/_shared/chatCore.ts');
 const chat = read('supabase/functions/chat/index.ts');
 const chatStream = read('supabase/functions/chatStream/index.ts');
 const generateImage = read('supabase/functions/generateImage/index.ts');
 const analyzeDrawing = read('supabase/functions/analyzeDrawing/index.ts');
+const growthRecommendation = read('supabase/functions/growthRecommendation/index.ts');
 const demoChat = read('supabase/functions/demo-chat/index.ts');
 const client = read('src/services/aiProviderService.ts');
 const agentLogic = read('src/hooks/useAgentLogic.ts');
@@ -43,6 +45,8 @@ for (const field of ['promptTokenCount', 'candidatesTokenCount', 'totalTokenCoun
 }
 assert(helper.includes('SUPABASE_SERVICE_ROLE_KEY'), 'Helper must use service-role inserts server-side.');
 assert(!/\bprompt\b.*metadata|metadata.*\bprompt\b/i.test(helper), 'Helper metadata must not store prompt content.');
+assert(consentHelper.includes('processing_restricted'), 'AI consent helper must block processing-restricted users.');
+assert(consentHelper.includes('"processing_restricted"'), 'AI consent helper must emit processing_restricted error code.');
 
 assert(chatCore.includes('clientRequestId?: string'), 'Chat request type must accept optional clientRequestId.');
 assert(chatCore.includes('requestId:'), 'Validated chat request must expose a requestId.');
@@ -63,6 +67,8 @@ for (const [name, source] of [
   assert(source.includes('logAiUsageEvent'), `${name} must log AI usage events.`);
   assert(source.includes('X-AI-Request-Id'), `${name} must return X-AI-Request-Id.`);
 }
+
+assert(growthRecommendation.includes('ensureAiInteractionConsent'), 'growthRecommendation must enforce AI consent/restriction before provider calls.');
 
 assert(client.includes('createAiRequestId'), 'Client must generate stable AI request ids.');
 assert(client.includes('clientRequestId'), 'Client must send clientRequestId.');

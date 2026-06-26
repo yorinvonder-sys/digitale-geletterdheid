@@ -315,7 +315,7 @@ export default function DesignPreview() {
             illustration={<IllustrationShield />}
             bgColor={palette.cactus}
             title="Privacy-first"
-            description="AVG-compliant, DPIA uitgevoerd, data in Europa. Ontworpen voor de EU AI Act."
+            description="AVG-bewust, DPIA-support beschikbaar, providerregio's verifieerbaar. Ontworpen voor EU AI Act-transparantie."
           />
         </div>
       </section>
@@ -340,9 +340,9 @@ export default function DesignPreview() {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
           {[
             { value: '17', label: 'Compliance documenten' },
-            { value: '100%', label: 'Data in Europa' },
+            { value: 'DPA', label: 'Providerbewijs' },
             { value: 'SLO', label: 'Kerndoelen aligned' },
-            { value: 'AVG', label: 'Volledig compliant' },
+            { value: 'AVG', label: 'Privacy by design' },
           ].map(stat => (
             <div key={stat.label}>
               <div style={{ fontFamily: "'Newsreader', Georgia, serif", color: palette.accent }}

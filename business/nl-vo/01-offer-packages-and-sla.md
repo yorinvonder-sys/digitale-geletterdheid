@@ -9,8 +9,8 @@ AI Lab helpt VO-scholen om digitale en AI-vaardigheden structureel in te zetten 
 
 ## Pakket 0: Pilot (Startversneller)
 
-**Doelgroep:** Scholen die in 1 of 2 cohorten de impact van dgskills.app willen bewijzen.  
-**Duur:** 8 weken.  
+**Doelgroep:** Scholen die in 1 of 2 cohorten de impact van dgskills.app willen bewijzen.
+**Duur:** 8 tot 12 weken.
 **Resultaatbelofte:** Binnen 30 dagen live, binnen 90 dagen aantoonbare voortgang op prioritaire kerndoelen.
 
 ### Inbegrepen

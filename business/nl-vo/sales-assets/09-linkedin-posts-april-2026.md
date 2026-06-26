@@ -37,18 +37,22 @@ Dat is waar digitale geletterdheid over zou moeten gaan.
 
 ---
 
-Gebruikt jouw school een AI-tool die leerresultaten beoordeelt?
+De EU AI Act stelt hoog-risico-eisen aan AI-systemen die leerresultaten beoordelen — Art. 50-transparantie geldt vanaf augustus 2026; de actuele Commissiepagina noemt 2 december 2027 voor high-risk onderwijsverplichtingen.
 
-Dan val je onder de EU AI Act — als gebruiker, niet alleen de aanbieder. Want zulke onderwijs-AI is geclassificeerd als hoog-risico (Annex III, punt 3b). Dat weten de meeste scholen niet.
+Wat veel scholen niet weten: als je een AI-tool gebruikt die leerresultaten beoordeelt, val je als school ook onder deze wet. Niet alleen de aanbieder — ook jij als gebruiker.
 
-Wat betekent dat concreet? Je moet als school kunnen aantonen dat:
-- De AI-tool de juiste risicoclassificatie heeft, transparant gedocumenteerd
+Wat betekent dat concreet?
+
+Zodra die hoog-risico verplichtingen van kracht zijn, moet je als school kunnen aantonen dat:
+- De AI-tool die je gebruikt aantoonbaar gedocumenteerd en juridisch beoordeeld is
 - Er menselijk toezicht is op de AI-beslissingen
-- De risico's zijn beoordeeld (DPIA, risicoregister)
+- De risico's zijn beoordeeld
 
-De exacte deadline voor hoog-risico-verplichtingen schuift — via de Digital Omnibus (voorlopig) richting eind 2027 — maar de classificatie en de wettelijke SLO-kerndoelen (verplicht vanaf 1 augustus 2027) staan vast. Wachten op de datum is geen plan.
+Vraag het eens aan je huidige EdTech-leveranciers: "Kunnen jullie je EU AI Act-classificatie, roadmap en schooldocumentatie aantonen?"
 
-Vraag je huidige EdTech-leveranciers eens: "Onder welke risicoklasse valt jullie tool, en is dat gedocumenteerd?"
+De meeste weten niet eens dat ze eronder vallen.
+
+Dit is geen ver-van-mijn-bed-show. Dit is wet- en regelgeving die eraan komt. En het raakt elke school die AI inzet.
 
 Hoe is jouw school hierop voorbereid?
 
@@ -90,29 +94,29 @@ Het resultaat: dgskills.app. Een missiegedreven platform waar leerlingen wil met
 
 ---
 
-## Bonus Post: AI Act-checklist (optioneel, voor week 2)
+## Bonus Post: AI Act Countdown (optioneel, voor week 2)
 
-**Onderwerp:** AI Act-checklist voor scholen
+**Onderwerp:** Countdown naar de AI Act deadline
 
 ---
 
-"De AI Act? Dat is toch pas in 2027?"
+de AI Act-roadmap.
 
-Klopt — de exacte deadline voor hoog-risico-systemen schuift via de Digital Omnibus (voorlopig) richting eind 2027. Maar de classificatie verandert niet, en de wettelijke SLO-kerndoelen gelden al vanaf 1 augustus 2027.
+Op die datum gaan de hoog-risico verplichtingen van de EU AI Act formeel in (via de Digital Omnibus naar verwachting verschoven naar 2 december 2027). Vanaf dan moet je kunnen aantonen dat AI-tools die leerresultaten beoordelen eraan voldoen.
 
-Drie dingen die je nu al regelt voor elke AI-tool die leerresultaten beoordeelt:
+Wat moet er dan geregeld zijn?
 
 1. Een overzicht van welke AI-tools je school gebruikt
 2. Per tool: is het hoog-risico? (Hint: als het leerresultaten beoordeelt, dan ja)
-3. Per hoog-risico tool: is er een DPIA? Risicoregister? Menselijk toezicht?
+3. Per hoog-risico tool: is er een DPIA? Risicobeoordeling? Menselijk toezicht?
 
-Niet omdat de datum dringt, maar omdat dit straks gewoon op orde moet zijn — en je het niet in één week regelt.
+Begin vandaag. Niet omdat het leuk is, maar omdat het moet.
 
-En als je een tool zoekt die de classificatie al transparant heeft gedocumenteerd: DM me.
+En als je een tool zoekt die dit al op orde heeft: DM me.
 
 ---
 
-**Hashtags:** #AIAct #onderwijs #compliance #hoogrisico #SLO
+**Hashtags:** #AIAct #onderwijs #deadline #compliance #hoogrisico
 
 ---
 
@@ -121,7 +125,7 @@ En als je een tool zoekt die de classificatie al transparant heeft gedocumenteer
 | Week | Maandag | Woensdag | Vrijdag |
 |------|---------|----------|---------|
 | **Wk 1 (7 apr)** | Post 1: Uit de klas | Post 2: AI Act uitleg | Post 3: Waarom ik bouw |
-| **Wk 2 (14 apr)** | Nieuw "uit de klas" moment | Bonus: AI Act-checklist | Nieuw "behind the build" |
+| **Wk 2 (14 apr)** | Nieuw "uit de klas" moment | Bonus: AI Act countdown | Nieuw "behind the build" |
 | **Wk 3 (21 apr)** | Leerlingreactie delen | SLO-kerndoelen uitleg | Pilot-resultaat delen |
 | **Wk 4 (28 apr)** | Dashboard-screenshot | AI Act + scholen tips | Roadmap/visie post |
 

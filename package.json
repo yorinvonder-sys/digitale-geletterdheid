@@ -26,9 +26,13 @@
     "check:j2p2-workability": "node scripts/check-j2p2-workability-contract.mjs",
     "check:prompt-master:visual": "node scripts/chrome-prompt-master-qa.mjs",
     "check:image-generation": "node scripts/check-image-generation.mjs",
+    "check:legal": "node scripts/check-legal-claims.mjs",
+    "check:postmarket": "node scripts/check-post-market-monitoring.mjs",
     "check:ai-provider-docs": "node scripts/check-ai-provider-docs.mjs",
     "check:ai-usage": "node scripts/check-ai-usage-telemetry.mjs && node scripts/check-mistral-bfl-providers.mjs",
     "check:rls:functions": "node scripts/check-rls-functions.mjs",
+    "check:rls:throwaway": "node scripts/check-rls-throwaway.mjs",
+    "check:supabase:remote-migrations": "node scripts/check-supabase-remote-migrations.mjs",
     "biastest": "node scripts/biastest.mjs",
     "edge:serve:function": "node scripts/serve-edge-function.mjs",
     "edge:serve:gdrive-backup": "node scripts/serve-edge-function.mjs gdrive-backup",
@@ -48,6 +52,7 @@
     "qa:journey:desktop": "node scripts/audit-journey-desktop.mjs",
     "audit:security": "npm audit --audit-level=moderate",
     "security:check": "node scripts/security-report-core-check.mjs && node scripts/check-website-security-posture.mjs",
+    "postmarket:review": "node scripts/generate-post-market-review.mjs",
     "review:handoff": "node scripts/validate-claude-handoff.mjs"
   },
   "dependencies": {

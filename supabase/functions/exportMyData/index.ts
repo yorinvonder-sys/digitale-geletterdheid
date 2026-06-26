@@ -1,6 +1,8 @@
 /**
  * exportMyData — AVG Art. 20 (Right to Data Portability)
- * Exports all personal data for the authenticated user as structured JSON.
+ * Exports the main technically linked personal data for the authenticated user
+ * as structured JSON. Shared records, backups and controller procedures remain
+ * subject to DPA/school review.
  */
 import { serve } from 'https://deno.land/std@0.177.0/http/server.ts';
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
@@ -92,7 +94,7 @@ serve(async (req: Request) => {
         email: user.email,
         schema_version: '2.0',
         gdpr_basis: 'AVG Art. 20 — Recht op gegevensoverdraagbaarheid',
-        note: 'Dit bestand bevat alle persoonlijke gegevens die DGSkills over u heeft opgeslagen.',
+        note: 'Dit bestand bevat de belangrijkste technisch gekoppelde persoonsgegevens in DGSkills. Back-ups, auditlogs, gedeelde records en schoolprocedures kunnen onder aparte DPA- of bewaartermijnen vallen.',
       },
       profile: profileRes.data ?? null,
       mission_progress: missionRes.data ?? [],

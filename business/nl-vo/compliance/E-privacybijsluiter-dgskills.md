@@ -88,8 +88,9 @@ DGSkills (dgskills.app) is een online leerplatform voor digitale geletterdheid e
 | Gegevens | Bewaartermijn |
 |---|---|
 | Accountgegevens en voortgang | Zolang de school een licentie heeft + maximaal 3 maanden daarna |
-| Chatberichten met de AI | Maximaal 90 dagen, daarna automatisch verwijderd |
-| Logbestanden | Maximaal 12 maanden |
+| Chatinhoud met de AI | Niet persistent opgeslagen voor zover de huidige implementatie laat zien; providerretentie volgens providerafspraken/settings |
+| Operationele activiteit, feedback en gedeeld werk | Maximaal 1 jaar |
+| Audit- en compliance-logbestanden | Maximaal 3 jaar waar nodig voor verantwoordingsplicht en incidentonderzoek |
 
 Bij het einde van het contract kan de school alle gegevens exporteren. Daarna verwijderen wij alles.
 
@@ -97,28 +98,27 @@ Bij het einde van het contract kan de school alle gegevens exporteren. Daarna ve
 
 ## Waar worden gegevens opgeslagen?
 
-Alle gegevens worden primair opgeslagen in de **Europese Unie**:
+Gegevens worden waar mogelijk verwerkt binnen de **Europese Unie/EER**. Exacte regio's en subprocessors moeten vóór schoolgebruik worden gecontroleerd in projectsettings, DPA's en subverwerkerslijsten:
 
 | Dienst | Locatie |
 |---|---|
-| Database (Supabase) | Frankfurt, Duitsland |
-| AI-verwerking (Mistral AI — tekst, vision en OCR) | EU (Mistral: Frankrijk) |
-| AI-beeldgeneratie (Black Forest Labs / FLUX) | EU-endpoint (api.eu.bfl.ai) |
-| Website-hosting (Vercel) | Amsterdam, Nederland |
-| E-mail (Zoho) | Nederland |
+| Database (Supabase) | EU-projectregio / EER, exact te verifiëren |
+| AI-verwerking (Mistral AI) | Providerregio en subprocessors te verifiëren |
+| AI-beeldgeneratie (Black Forest Labs) | Providerregio en subprocessors te verifiëren |
+| Website-hosting (Vercel) | Edge-routing afhankelijk van netwerk/configuratie |
+| E-mail (Zoho) | EU-dienstverlening te verifiëren |
 
 ---
 
 ## AI en privacy
 
-DGSkills maakt gebruik van een AI-assistent (Mistral AI voor tekst, vision en OCR; Black Forest Labs / FLUX voor beeldgeneratie) waarmee leerlingen interactief opdrachten kunnen maken. Hierbij geldt:
+DGSkills maakt gebruik van AI-assistenten en AI-beeldgeneratie waarmee leerlingen interactief opdrachten kunnen maken. Tekst/chat/feedback/vision/OCR loopt via Mistral AI; beeldgeneratie via Black Forest Labs FLUX. Hierbij geldt:
 
 - Leerlingen weten altijd dat ze met een AI praten (duidelijke melding op het scherm).
 - De AI geeft feedback op opdrachten, maar geeft **geen cijfers of beoordelingen** die zonder controle van een docent worden gebruikt.
-- De teksten die leerlingen aan de AI sturen, worden **niet** gebruikt om AI-modellen te trainen op leerlingdata (training-opt-out te verifiëren — Mistral biedt opt-out; standaard opt-out op Scale-plan). Dataretentie te verifiëren (Mistral: standaard tot 30 dagen abuse-monitoring; Zero Data Retention optioneel, plan-afhankelijk).
+- DGSkills gebruikt leerlingdata niet voor het trainen van eigen AI-modellen. Gebruik voor provider-modeltraining wordt uitgesloten waar providerafspraken en instellingen dit dekken.
 - DGSkills stuurt **geen namen of e-mailadressen** naar de AI; alleen de opdrachttekst en het antwoord van de leerling.
-- AI-verwerking vindt plaats in de **EU** (Mistral: Frankrijk; Black Forest Labs: EU-endpoint api.eu.bfl.ai).
-- LET OP: Mistral vereist minimaal 13 jaar en ouderlijke/voogd-toestemming voor minderjarigen — aandachtspunt voor 12-jarigen; te verifiëren met de schoolconsent-flow.
+- Exacte AI-providerregio's, retentie en doorgifte buiten de EER moeten door DGSkills en school worden gecontroleerd in DPA, instellingen en subprocessoroverzicht.
 
 ---
 
@@ -165,14 +165,14 @@ DGSkills maakt gebruik van de volgende dienstverleners:
 
 | Dienstverlener | Waarvoor | Locatie data |
 |---|---|---|
-| Supabase | Database en accounts | EU (Frankfurt) |
-| Mistral AI (tekst, vision en OCR) | AI-assistent | EU (Frankrijk) |
-| Black Forest Labs (FLUX) | AI-beeldgeneratie | EU-endpoint (api.eu.bfl.ai) |
-| Vercel | Websitehosting | EU (Amsterdam) |
-| Zoho | E-maildienst | EU (Nederland) |
+| Supabase | Database en accounts | EU-projectregio / EER, exact te verifiëren |
+| Mistral AI | AI-chat, feedback, vision en OCR | Providerregio te verifiëren |
+| Black Forest Labs | AI-beeldgeneratie | Providerregio te verifiëren |
+| Vercel | Websitehosting | Wereldwijd edge-netwerk |
+| Zoho | E-maildienst | EU-dienstverlening te verifiëren |
 
-Met al deze partijen zijn verwerkersovereenkomsten afgesloten.
+Met deze partijen moeten verwerkersovereenkomsten of gelijkwaardige contractuele waarborgen aantoonbaar zijn vóór schoolgebruik.
 
 ---
 
-*Dit document is opgesteld door DGSkills en is bedoeld als begrijpelijke samenvatting. De volledige juridische afspraken staan in de Verwerkersovereenkomst en bijlagen. Laatste update: 23 februari 2026.*
+*Dit document is opgesteld door DGSkills en is bedoeld als begrijpelijke samenvatting. De volledige juridische afspraken staan in de Verwerkersovereenkomst en bijlagen. Laatste update: 25 juni 2026.*

@@ -40,7 +40,7 @@ const MAX_REQUEST_BYTES = 4_096;
 const CONSENT_LABELS: Record<ConsentType, string> = {
   data_processing: 'Opslag van leervoortgang en scores',
   ai_interaction: 'Interactie met de AI-mentor voor hulp bij opdrachten',
-  analytics: 'Anonieme gebruiksstatistieken om het platform te verbeteren',
+  analytics: 'Privacyvriendelijke gebruiksstatistieken om het platform te verbeteren',
   peer_feedback: 'Feedback geven en ontvangen van klasgenoten',
 };
 
