@@ -95,6 +95,7 @@ Gebruik **kebab-case**, Nederlands of Engels consistent met bestaande missies in
 ### Stap 4 — Verificatie
 
 Draai in gedachten (of echt) de volgende checks af:
+- Registratie compleet: `npm run check:mission-registration <missionId>` — controleert alle bronnen van waarheid (RoleId-union, AGENT_ROLE_IDS, templateRegistry, validIds-set, config-bestand, curriculum, SLO, missionGoals).
 - TypeScript compileert (`npm run build:prod` of `tsc --noEmit`)
 - Missie verschijnt in het dashboard voor de juiste leerjaar/periode
 - SLO-tags zijn zichtbaar en correct in de docent-view

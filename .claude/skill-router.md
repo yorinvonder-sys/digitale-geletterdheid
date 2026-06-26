@@ -53,6 +53,7 @@
 
 | Vraag | Bestanden |
 |-------|-----------|
+| RFC / ontwerp-voorstel | `rfc-forge` skill (pipeline); afgeronde RFC's in `docs/rfcs/` |
 | Compliance documenten | `business/nl-vo/compliance/` |
 | Security docs | `docs/security/` |
 | Privacy/DPIA | `business/nl-vo/compliance/dpia-dgskills-compleet.md` |
