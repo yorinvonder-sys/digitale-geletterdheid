@@ -4,11 +4,11 @@ export const innovationLabConfig: BuilderCanvasConfig = {
     missionId: 'innovation-lab',
     title: 'Innovation Lab',
     introEmoji: '🔬',
-    introTitle: 'Bedenk een technologische oplossing voor de wereld',
+    introTitle: 'Bedenk een technologische oplossing voor het dagelijks leven',
     introDescription:
-        'In deze missie word jij uitgenodigd voor het Innovation Lab van de VN. Je kiest een maatschappelijk probleem uit de Sustainable Development Goals (SDGs), ontwerpt een technologische oplossing en presenteert een werkbaar prototype-concept.',
+        'In deze missie bedenk jij een technologische oplossing voor een alledaags probleem — op school, in de sport, bij een hobby, thuis of in het dagelijks leven. Je werkt als innovator die met Design Thinking van probleem naar prototype gaat.',
     introFeatures: [
-        'Kies een SDG en analyseer het bijbehorende probleem',
+        'Kies een concreet alledaags probleem en analyseer het',
         'Ontwerp een technologische oplossing met concrete stappen',
         'Bouw een prototype-concept in woorden en schema',
         'Presenteer de impact van jouw innovatie',
@@ -18,26 +18,26 @@ export const innovationLabConfig: BuilderCanvasConfig = {
     previewType: 'text-preview',
     steps: [
         {
-            id: 'sdg-probleem',
-            title: 'SDG-probleem kiezen en analyseren',
+            id: 'probleem-kiezen',
+            title: 'Probleem kiezen en analyseren',
             description:
-                'De Sustainable Development Goals (SDGs) van de VN zijn 17 doelen voor een betere wereld in 2030. Van klimaatactie tot eerlijk onderwijs, van schoon water tot geen armoede. Elk doel verbergt duizenden concrete problemen die technologie kan helpen oplossen.',
+                'Technologie kan alledaagse problemen oplossen — op school, in de sport, bij een hobby of thuis. Goede innovatie begint bij een concreet probleem dat iemand écht ervaart.',
             instruction:
-                'Kies één SDG die jou aanspreekt (bijv. SDG 4: Kwaliteitsonderwijs, SDG 13: Klimaatactie, SDG 3: Gezondheid). Beschrijf: 1) Welke SDG je kiest en waarom, 2) Één concreet probleem binnen die SDG (bijv. niet "klimaatverandering" maar "kleinschalige boeren hebben geen toegang tot weersvoorspellingen"), 3) Wie er last van heeft en hoe erg (omvang), 4) Waarom technologie dit probleem zou kunnen helpen oplossen.',
-            tip: 'Hoe specifieker het probleem, hoe effectiever de oplossing. "Eenzaamheid" is te breed. "Ouderen in verzorgingshuizen die weinig menselijk contact hebben" is een probleem dat je kunt aanpakken.',
+                'Kies één alledaags probleem dat jou of mensen om je heen bezighoudt. Beschrijf: 1) Wat is het probleem precies? (bijv. niet "school is saai" maar "ik vergeet altijd welke spullen ik mee moet nemen"), 2) Wie heeft er last van en hoe erg is het?, 3) Waarom bestaat het probleem nu nog? (wat ontbreekt er?), 4) Waarom zou technologie dit probleem kunnen helpen oplossen?',
+            tip: 'Hoe specifieker het probleem, hoe effectiever de oplossing. "Vergeten" is te breed. "Sporters die na de training niet weten wat ze de volgende dag moeten eten om te herstellen" is een probleem dat je kunt aanpakken.',
             checklistItems: [
-                { id: 'sdg-gekozen', label: 'Ik heb een SDG gekozen met motivatie' },
-                { id: 'concreet-probleem', label: 'Het concrete probleem is specifiek beschreven' },
+                { id: 'probleem-gekozen', label: 'Ik heb een concreet alledaags probleem beschreven' },
+                { id: 'concreet-probleem', label: 'Het probleem is specifiek genoeg (niet te breed)' },
                 { id: 'omvang', label: 'Ik heb beschreven wie er last van heeft en hoe erg' },
                 { id: 'tech-kans', label: 'Ik heb uitgelegd waarom technologie kan helpen' },
             ],
-            textPrompt: 'Beschrijf het SDG-probleem dat jij wilt oplossen',
+            textPrompt: 'Beschrijf het alledaagse probleem dat jij wilt oplossen',
         },
         {
             id: 'technologie-oplossing',
             title: 'Technologische oplossing ontwerpen',
             description:
-                'Nu komt het creatieve gedeelte: welke technologie gebruik je? Apps, AI, sensoren, satellieten, blockchain (= een gedeeld, niet-wijzigbaar digitaal logboek)? De oplossing moet haalbaar zijn — niet science fiction — maar mag ambitieus zijn.',
+                'Nu komt het creatieve gedeelte: welke technologie gebruik je? Apps, AI, sensoren, slimme apparaten? De oplossing moet haalbaar zijn — niet science fiction — maar mag ambitieus zijn.',
             instruction:
                 'Ontwerp je technologische oplossing. Beschrijf: 1) Wat is het product of systeem? (app, platform, sensor-netwerk, AI-tool), 2) Hoe werkt het? (beschrijf de technologie in begrijpelijke taal), 3) Wie zijn de gebruikers en hoe gebruiken ze het?, 4) Welke bestaande technologie gebruik je als basis? (je hoeft niet alles zelf uit te vinden), 5) Wat is het meest innovatieve element van jouw oplossing?',
             tip: 'De beste innovaties combineren bestaande technologie op een nieuwe manier. WhatsApp heruitvond SMS niet — het gebruikte het internet voor berichten. Welke bestaande technologie combineer jij?',
@@ -71,7 +71,7 @@ export const innovationLabConfig: BuilderCanvasConfig = {
             description:
                 'Innovatie is pas waardevol als het écht iets verandert. Hoe meet je de impact van jouw oplossing? En wat zijn de risico\'s of neveneffecten die je niet wilt? Een eerlijke innovator kijkt ook naar de nadelen.',
             instruction:
-                'Beschrijf de verwachte impact van jouw innovatie. Gebruik: 1) Kwantitatieve impact (= in cijfers): hoeveel mensen help je, hoeveel tijd/geld/CO2 bespaar je? (maak een schatting met redenering), 2) Kwalitatieve impact (= in woorden): wat verandert er in het dagelijks leven van gebruikers?, 3) Risico\'s en bijeffecten: wat kan er misgaan of wie wordt er benadeeld?, 4) Duurzaamheid — hoe de innovatie blijft bestaan: hoe zorg je dat het na het eerste jaar verder gaat?',
+                'Beschrijf de verwachte impact van jouw innovatie. Gebruik: 1) Kwantitatieve impact (= in cijfers): hoeveel mensen help je, hoeveel tijd/geld bespaar je? (maak een schatting met redenering), 2) Kwalitatieve impact (= in woorden): wat verandert er in het dagelijks leven van gebruikers?, 3) Risico\'s en bijeffecten: wat kan er misgaan of wie wordt er benadeeld?, 4) Duurzaamheid — hoe de innovatie blijft bestaan: hoe zorg je dat het na het eerste jaar verder gaat?',
             tip: 'Elke technologie heeft onbedoelde gevolgen. Sociale media verbindt mensen maar veroorzaakt ook polarisatie. Wees eerlijk over de risico\'s — dat maakt je innovatie geloofwaardiger.',
             checklistItems: [
                 { id: 'kwant-impact', label: 'Kwantitatieve impact is geschat met redenering' },
@@ -84,14 +84,14 @@ export const innovationLabConfig: BuilderCanvasConfig = {
     ],
     maxScore: 100,
     badges: [
-        { minScore: 90, emoji: '🏆', title: 'VN Innovator', color: '#e1ff01' },
+        { minScore: 90, emoji: '🏆', title: 'Top Innovator', color: '#e1ff01' },
         { minScore: 70, emoji: '🔬', title: 'Innovation Lab', color: '#202023' },
         { minScore: 50, emoji: '💡', title: 'Probleemoplosser', color: '#ff3c21' },
         { minScore: 25, emoji: '🔬', title: 'Beginnende Innovator', color: '#202023' },
         { minScore: 0, emoji: '🌱', title: 'Op weg', color: '#202023' },
     ],
     takeaways: [
-        'Je weet wat de SDGs zijn en hoe je een concreet maatschappelijk probleem kunt identificeren',
+        'Je kunt een concreet alledaags probleem identificeren en beschrijven wie er last van heeft',
         'Je kunt een technologische oplossing ontwerpen en de werking uitleggen',
         'Je begrijpt wat een MVP is en waarom je klein begint bij innovatie',
         'Je kunt de impact van een innovatie kwantitatief en kwalitatief beschrijven',

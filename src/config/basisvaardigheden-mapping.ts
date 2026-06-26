@@ -532,8 +532,8 @@ export const MISSIE_BASISVAARDIGHEDEN: MissieBasisvaardigheden[] = [
   {
     missionId: 'sustainability-scanner',
     basisvaardigheden: [
-      STATISTIEK('Leerling analyseert data over de ecologische voetafdruk van technologie.'),
-      ETHIEK('Leerling weegt de milieukosten van digitale technologie tegen de voordelen.'),
+      STATISTIEK('Leerling analyseert trenddata over digitaal gebruik: gaming, streaming, sociale media en berichten.'),
+      ETHIEK('Leerling trekt observaties uit statistieken en beoordeelt de betrouwbaarheid van trenddata.'),
     ],
   },
   {
@@ -670,9 +670,9 @@ export const MISSIE_BASISVAARDIGHEDEN: MissieBasisvaardigheden[] = [
   {
     missionId: 'digital-divide-researcher',
     basisvaardigheden: [
-      STATISTIEK('Leerling analyseert data over de digitale kloof tussen bevolkingsgroepen.'),
-      GELIJKHEID('Leerling onderzoekt ongelijkheid in toegang tot digitale technologie.'),
-      SCHRIJFVAARDIGHEID('Leerling schrijft een onderzoeksrapport over de digitale kloof.'),
+      STATISTIEK('Leerling analyseert data over internetsnelheden en apparaatgebruik per land en leeftijdsgroep.'),
+      GELIJKHEID('Leerling onderzoekt verschillen in connectiviteit en apparaatbeschikbaarheid tussen landen en leeftijdsgroepen.'),
+      SCHRIJFVAARDIGHEID('Leerling schrijft een onderzoeksrapport over internetconnectiviteit en apparaatgebruik.'),
     ],
   },
   {

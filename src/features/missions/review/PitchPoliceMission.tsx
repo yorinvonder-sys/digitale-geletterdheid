@@ -110,19 +110,19 @@ const SLIDES: SlideData[] = [
     },
     {
         id: 4,
-        title: "Klimaatverandering",
-        content: "Het klimaat verandert. De aarde warmt op.",
+        title: "Eerste Hulp",
+        content: "Eerste hulp kan levens redden. Weet jij wat je moet doen?",
         bg: "bg-white",
         textColor: "text-duck-ink",
         issue: "distraction",
         feedback: "Is dit een presentatie of een meme-pagina? De GIFs leiden af van je serieuze boodschap.",
         customRender: (fixed) => (
             <div className="relative h-full w-full p-8 overflow-hidden">
-                <h1 className="text-4xl font-bold mb-6 relative z-10" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>Gevolgen van Opwarming</h1>
+                <h1 className="text-4xl font-bold mb-6 relative z-10" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>Stappen bij Eerste Hulp</h1>
                 <ul className="list-disc pl-6 space-y-4 text-xl relative z-10 bg-white/80 p-4 rounded-2xl max-w-xl" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
-                    <li>Stijgende zeespiegel</li>
-                    <li>Extreme weersomstandigheden</li>
-                    <li>Verlies van biodiversiteit</li>
+                    <li>Controleer de situatie op gevaar</li>
+                    <li>Bel 112 bij bewusteloosheid</li>
+                    <li>Begin met reanimatie indien nodig</li>
                 </ul>
 
                 {/* Distracting Elements - Only visible when NOT fixed */}
@@ -138,9 +138,9 @@ const SLIDES: SlideData[] = [
                 {/* Relevant Image - Only visible when FIXED */}
                 {fixed && (
                     <img
-                        src="https://images.unsplash.com/photo-1454496522488-7a8e488e8606?w=600&h=400&fit=crop"
+                        src="https://images.unsplash.com/photo-1532938911079-1b06ac7ceec7?w=600&h=400&fit=crop"
                         className="absolute top-20 right-20 w-64 h-48 rounded-2xl object-cover rotate-2 border-4 border-white shadow-xl animate-in fade-in zoom-in duration-700"
-                        alt="Mountains"
+                        alt="Eerste hulp kit"
                     />
                 )}
             </div>

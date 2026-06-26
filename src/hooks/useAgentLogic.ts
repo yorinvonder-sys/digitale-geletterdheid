@@ -268,11 +268,11 @@ const getStarterTips = (roleId: string, examplePrompt?: string): string[] => {
         'video-editor': ['Schrijf een verhaallijn van 60 seconden', 'Welke shots heb ik nodig?', 'Hoe maak ik een goede opening?'],
         'media-review': ['Test mijn mediakennis', 'Wat is UX design?', 'Hoe werkt een brand identity?'],
         // === J2P4: Ethiek & Maatschappij ===
-        'ai-ethicus': ['Is dit AI-systeem eerlijk?', 'Wie is verantwoordelijk als AI fouten maakt?', 'Welke regels zijn nodig?'],
+        'ai-ethicus': ['Mag AI essays nakijken?', 'Wat kan AI wel en niet beoordelen?', 'Wanneer is een beoordeling eerlijk?'],
         'digital-rights-defender': ['Welke rechten heb ik online?', 'Mag de school dit verzamelen?', 'Schrijf een privacycheck'],
         'tech-court': ['Bereid mijn zaak voor', 'Wat zijn de argumenten voor?', 'Wat zijn de argumenten tegen?'],
         'future-forecaster': ['Hoe ziet 2040 eruit?', 'Welke technologie verandert alles?', 'Wat zijn de risicos?'],
-        'sustainability-scanner': ['Hoeveel energie kost streamen?', 'Hoe verduurzaam ik mijn digitale gedrag?', 'Wat is de CO2-voetafdruk?'],
+        'sustainability-scanner': ['Welke activiteit kost de meeste tijd?', 'Reken een weektotaal uit', 'Wat valt je op in de trends?'],
         'eindproject-j2': ['Help me een onderwerp kiezen', 'Maak een projectplan', 'Welke vaardigheden gebruik ik?'],
         // === J3P1: Geavanceerd Programmeren & AI ===
         'ml-trainer': ['Hoe herken ik spam automatisch?', 'Wat is een trainingsset?', 'Hoe test ik mijn model?'],
@@ -291,8 +291,8 @@ const getStarterTips = (roleId: string, examplePrompt?: string): string[] => {
         // === J3P3: Maatschappelijke Impact ===
         'startup-simulator': ['Pitch mijn idee in 3 minuten', 'Wie is mijn klant?', 'Hoe verdien ik geld?'],
         'policy-maker': ['Analyseer het voorstel', 'Wie zijn de stakeholders?', 'Schrijf een beleidsadvies'],
-        'innovation-lab': ['Welk wereldprobleem pak ik aan?', 'Ontwerp een prototype', 'Hoe meet ik de impact?'],
-        'digital-divide-researcher': ['Verzamel data over digitale ongelijkheid', 'Welke groepen worden geraakt?', 'Stel oplossingen voor'],
+        'innovation-lab': ['Welk alledaags probleem pak ik aan?', 'Ontwerp een prototype', 'Hoe meet ik de impact?'],
+        'digital-divide-researcher': ['Welk land heeft het snelste internet?', 'Vergelijk gebruik per leeftijdsgroep', 'Hoe betrouwbaar is deze databron?'],
         'tech-impact-analyst': ['Kies een technologie om te analyseren', 'Voordelen en nadelen?', 'Schrijf een impactrapport'],
         'impact-review': ['Test mijn kennis over impact', 'Wat is de digitale kloof?', 'Hoe beïnvloedt AI de samenleving?'],
         // === J3P4: Meesterproef ===

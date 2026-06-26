@@ -2,72 +2,68 @@ import type { DataViewerConfig } from '../DataViewer';
 
 export const sustainabilityScannerConfig: DataViewerConfig = {
     missionId: 'sustainability-scanner',
-    title: 'Sustainability Scanner',
-    introEmoji: '🌱',
-    introTitle: 'Scan de digitale voetafdruk',
+    title: 'Trend Scanner',
+    introEmoji: '📊',
+    introTitle: 'Scan digitale gebruikstrends',
     introDescription:
-        'Elke zoekopdracht, gestreamde video en verstuurde app-notificatie kost energie. Datacenters verbruiken meer stroom dan heel Nederland. Jij gaat de verborgen milieu-impact van technologie uitrekenen en nadenken over duurzame alternatieven.',
+        'Hoe besteden jongeren hun online tijd? Van gaming en video-streaming tot muziek en berichten sturen — de cijfers vertellen een opvallend verhaal. Jij gaat trenddata lezen, berekeningen maken en jouw eigen observaties formuleren.',
     introFeatures: [
-        'Analyseer de CO2-uitstoot van verschillende digitale activiteiten',
-        'Vergelijk energieverbruik van datacenters in Europa',
-        'Beoordeel welke maatregelen de meeste impact hebben',
+        'Analyseer een tabel met gemiddeld dagelijks gebruik per activiteit',
+        'Bekijk het marktaandeel van apparaten voor mediaconsumptie',
+        'Lees informatiekaarten over streaming, leeftijdsclassificaties en schermtijd',
     ],
 
     datasets: [
         // ── Dataset 1: Tabel ──────────────────────────────────────────────────
         {
-            id: 'co2-digitale-activiteiten',
-            title: 'CO2-uitstoot per digitale activiteit (gram CO2 per gebruik)',
+            id: 'digitale-activiteiten-gebruik',
+            title: 'Gemiddeld dagelijks gebruik per online activiteit (wereldwijd, 2024)',
             description:
-                'Onderzoekers van het Shift Project (2024) berekenden de CO2-uitstoot van veelgebruikte digitale activiteiten. Bekijk de tabel en reken de impact van jouw gedrag uit.',
+                'Onderzoekers van DataReportal (2024) analyseerden hoeveel minuten jongeren van 13-24 jaar gemiddeld per dag besteden aan verschillende online activiteiten. Bekijk de tabel en reken de wekelijkse totalen uit.',
             type: 'table',
             columns: [
                 { key: 'activiteit', label: 'Activiteit', sortable: true },
-                { key: 'co2_gram', label: 'CO2 (gram)', sortable: true },
-                { key: 'vergelijking', label: 'Vergelijking', sortable: false },
+                { key: 'minuten_per_dag', label: 'Min. per dag', sortable: true },
+                { key: 'gebruikers_wereld_mln', label: 'Gebruikers wereldwijd (mln)', sortable: true },
                 { key: 'categorie', label: 'Categorie', sortable: true },
-                { key: 'frequentie_nl', label: 'Gem. frequentie NL/dag', sortable: true },
             ],
             rows: [
-                { activiteit: 'E-mail versturen (tekst)', co2_gram: 0.3, vergelijking: '= 1 minuut gloeilamp branden', categorie: 'Communicatie', frequentie_nl: 40 },
-                { activiteit: 'Google-zoekopdracht', co2_gram: 0.2, vergelijking: '= LED-lamp 3 seconden', categorie: 'Zoeken', frequentie_nl: 6 },
-                { activiteit: 'Video streamen (1 uur SD)', co2_gram: 36, vergelijking: '= 5 km autorijden', categorie: 'Streaming', frequentie_nl: 2.5 },
-                { activiteit: 'Video streamen (1 uur HD)', co2_gram: 97, vergelijking: '= 13 km autorijden', categorie: 'Streaming', frequentie_nl: 1.8 },
-                { activiteit: 'AI-chatgesprek (10 berichten)', co2_gram: 12, vergelijking: '= LED-lamp 3 uur', categorie: 'AI', frequentie_nl: 0.4 },
-                { activiteit: 'Cryptocurrency transactie (Bitcoin)', co2_gram: 700000, vergelijking: '= 700 km vliegen', categorie: 'Crypto', frequentie_nl: 0.01 },
-                { activiteit: 'Foto uploaden (Instagram)', co2_gram: 0.6, vergelijking: '= 2 minuten gloeilamp', categorie: 'Social media', frequentie_nl: 3 },
-                { activiteit: 'E-mail met bijlage (1 MB)', co2_gram: 19, vergelijking: '= LED-lamp 5 uur', categorie: 'Communicatie', frequentie_nl: 8 },
+                { activiteit: 'Online gamen', minuten_per_dag: 85, gebruikers_wereld_mln: 500, categorie: 'Gaming' },
+                { activiteit: 'Video streamen', minuten_per_dag: 95, gebruikers_wereld_mln: 900, categorie: 'Streaming' },
+                { activiteit: 'Muziek streamen', minuten_per_dag: 40, gebruikers_wereld_mln: 650, categorie: 'Streaming' },
+                { activiteit: 'Sociale media', minuten_per_dag: 75, gebruikers_wereld_mln: 1200, categorie: 'Social' },
+                { activiteit: 'Berichten sturen', minuten_per_dag: 55, gebruikers_wereld_mln: 2100, categorie: 'Communicatie' },
             ],
             questions: [
                 {
-                    id: 'q1-grootste-uitstoot',
+                    id: 'q1-meeste-gebruikers',
                     question:
-                        'Welke activiteit heeft veruit de hoogste CO2-uitstoot per gebruik?',
+                        'Welke activiteit heeft het grootste aantal gebruikers wereldwijd?',
                     type: 'multiple-choice',
-                    options: ['Video streamen HD', 'AI-chatgesprek', 'Cryptocurrency transactie', 'E-mail met bijlage'],
-                    correctAnswer: 'Cryptocurrency transactie',
+                    options: ['Online gamen', 'Video streamen', 'Sociale media', 'Berichten sturen'],
+                    correctAnswer: 'Berichten sturen',
                     explanation:
-                        'Een Bitcoin-transactie stoot 700.000 gram CO2 uit — dat is 700 kg! Dat is 7.000 keer meer dan een uur HD-streamen. Bitcoin gebruikt proof-of-work: miljarden berekeningen per seconde om één transactie te valideren. Sorteer op "CO2 (gram)" om het verschil te zien.',
+                        'Berichten sturen heeft 2.100 miljoen gebruikers wereldwijd — meer dan enige andere activiteit in de tabel. Dat zijn meer dan 2 miljard mensen. Apps zoals WhatsApp, iMessage en WeChat zijn daardoor de meest gebruikte digitale diensten ter wereld. Sorteer op "Gebruikers wereldwijd" om het overzicht te zien.',
                     points: 10,
                 },
                 {
-                    id: 'q2-dagelijkse-impact',
+                    id: 'q2-wekelijks-gamen',
                     question:
-                        'Als een gemiddelde Nederlander elke dag 1,8 uur HD-video streamt, hoeveel gram CO2 is dat per week?',
+                        'Als een gemiddelde gamer elke dag 85 minuten online gamet, hoeveel minuten is dat per week?',
                     type: 'number-input',
-                    correctAnswer: 1222.2,
+                    correctAnswer: 595,
                     explanation:
-                        '1 uur HD-streaming = 97 gram CO2. 1,8 uur = 1,8 × 97 = 174,6 gram per dag. Per week: 174,6 × 7 = 1.222,2 gram ≈ 1.222 gram (ook 1.223 is correct met afronding). Dat is ruim 1,2 kg CO2 per week alleen van streaming!',
+                        '85 minuten per dag × 7 dagen = 595 minuten per week. Dat is bijna 10 uur gamen per week. Ter vergelijking: een schoolweek heeft ongeveer 30 lesuren — gaming neemt dus al snel een flink deel van de vrije tijd in.',
                     points: 20,
                 },
                 {
                     id: 'q3-vergelijking-observatie',
                     question:
-                        'De data zegt dat één uur HD-streamen gelijkstaat aan 13 km autorijden. Wat zegt dit over hoe we gewoonlijk digitale technologie beoordelen op milieu-impact?',
+                        'Berichten sturen heeft 2.100 miljoen gebruikers wereldwijd, terwijl video streamen er 900 miljoen heeft — meer dan twee keer zoveel. Wat zegt dit verschil volgens jou over hoe mensen digitale technologie het meest gebruiken?',
                     type: 'text-observation',
                     correctAnswer: '',
                     explanation:
-                        'We zien digitale technologie als "schoon" — geen uitlaatgas, geen brandstof. Maar datacenters en netwerken gebruiken enorme hoeveelheden stroom, vaak nog deels opgewekt met fossiele brandstoffen. De impact is onzichtbaar, waardoor we die onderschatten. Dit heet het "dematerialisatieprobleem": digitale diensten lijken materiaalvrij maar zijn dat niet.',
+                        'Communicatie (berichten sturen) is de meest universele digitale activiteit — meer mensen sturen berichten dan dat ze video kijken of sociale media gebruiken. Dit laat zien dat de basis van digitale technologie voor veel mensen niet entertainment is, maar verbinding met anderen. Streamen en gaming zijn populair, maar directe communicatie is nog dominanter.',
                     points: 10,
                 },
             ],
@@ -75,49 +71,48 @@ export const sustainabilityScannerConfig: DataViewerConfig = {
 
         // ── Dataset 2: Cirkelgrafiek ─────────────────────────────────────────
         {
-            id: 'energiebronnen-datacenters',
-            title: 'Energiemix van datacenters in Europa (2024)',
+            id: 'apparaat-aandeel-media',
+            title: 'Apparaataandeel bij mediaconsumptie (2024)',
             description:
-                'Niet alle datacenters zijn even duurzaam. De energiemix bepaalt hoe "groen" jouw gebruik is. Bekijk de verdeling van energiebronnen.',
+                'Op welk apparaat kijken, luisteren en gamen mensen het meest? Onderzoeksbureau Statista bracht in 2024 het marktaandeel van verschillende apparaten in kaart voor mediaconsumptie (video, muziek, gaming, sociale media).',
             type: 'pie-chart',
             chartData: [
-                { label: 'Windenergie', value: 28, color: '#202023' },
-                { label: 'Zonne-energie', value: 18, color: '#e1ff01' },
-                { label: 'Waterkracht', value: 15, color: '#202023' },
-                { label: 'Aardgas', value: 22, color: '#202023' },
-                { label: 'Kolen/olie', value: 12, color: '#202023' },
-                { label: 'Kernenergie', value: 5, color: '#ff3c21' },
+                { label: 'Smartphone', value: 54, color: '#202023' },
+                { label: 'Laptop', value: 22, color: '#e1ff01' },
+                { label: 'Smart-tv', value: 13, color: '#202023' },
+                { label: 'Tablet', value: 7, color: '#202023' },
+                { label: 'Console', value: 4, color: '#ff3c21' },
             ],
             questions: [
                 {
-                    id: 'q4-hernieuwbaar-pct',
+                    id: 'q4-draagbaar-pct',
                     question:
-                        'Hoeveel procent van de energie van Europese datacenters komt uit hernieuwbare bronnen (wind + zon + waterkracht)?',
+                        'Hoeveel procent van de mediaconsumptie vindt plaats op draagbare apparaten (smartphone + laptop + tablet)?',
                     type: 'number-input',
-                    correctAnswer: 61,
+                    correctAnswer: 83,
                     explanation:
-                        'Wind: 28% + Zon: 18% + Water: 15% = 61% hernieuwbaar. Dit betekent dat 39% nog uit fossiele of nucleaire bronnen komt. Europa is op weg naar 100% hernieuwbaar, maar is er nog niet.',
+                        'Smartphone: 54% + Laptop: 22% + Tablet: 7% = 83% draagbaar. Dat betekent dat slechts 17% van de media op een vast apparaat (smart-tv of console) wordt geconsumeerd. Dit verklaart waarom streamingdiensten hun apps primair voor smartphones ontwerpen.',
                     points: 15,
                 },
                 {
-                    id: 'q5-fossiel-andeel',
+                    id: 'q5-grootste-niet-draagbaar',
                     question:
-                        'Welke energiebron heeft het grootste aandeel in de "niet-hernieuwbare" categorie (fossiel + kernenergie)?',
+                        'Welk vast apparaat (niet draagbaar) heeft het grootste aandeel in mediaconsumptie?',
                     type: 'multiple-choice',
-                    options: ['Kernenergie', 'Kolen/olie', 'Aardgas', 'Waterkracht'],
-                    correctAnswer: 'Aardgas',
+                    options: ['Console', 'Smart-tv', 'Laptop', 'Tablet'],
+                    correctAnswer: 'Smart-tv',
                     explanation:
-                        'Aardgas heeft 22% — het grootste aandeel van de niet-hernieuwbare bronnen. Kolen/olie heeft 12% en kernenergie 5%. Aardgas is "minder vervuilend" dan kolen maar stoot nog steeds CO2 uit. Veel datacenters gebruiken gas als back-up bij piekvraag.',
+                        'Smart-tv heeft 13% — het grootste aandeel van de vaste apparaten. Console volgt met 4%. Dit laat zien dat de televisie, nu als "slim" apparaat, nog steeds een belangrijke rol speelt bij het kijken naar series en films — ook al is de smartphone duidelijk de winnaar overall.',
                     points: 10,
                 },
                 {
-                    id: 'q6-locatie-datacenter',
+                    id: 'q6-smartphone-dominantie',
                     question:
-                        'Waarom zetten techbedrijven zoals Google en Microsoft hun datacenters in IJsland of Noorwegen? Koppel dit aan de energiemix-data.',
+                        'De smartphone heeft ruim de helft van het marktaandeel. Waarom denk jij dat de smartphone zo dominant is voor mediaconsumptie vergeleken met andere apparaten?',
                     type: 'text-observation',
                     correctAnswer: '',
                     explanation:
-                        'IJsland en Noorwegen hebben bijna 100% hernieuwbare energie (water- en geothermische energie) en het is er koud — minder koeling nodig, wat ook energie bespaart. Datacenters zijn enorme warmteproducenten en hebben continu koeling nodig. Door te kiezen voor koude klimaten met groene stroom verlagen techbedrijven hun energiekosten én CO2-uitstoot tegelijk.',
+                        'De smartphone is vrijwel altijd beschikbaar (mee onderweg, op bed, in de pauze), heeft een persoonlijk scherm, combineert alle functies in één apparaat en is eenvoudig te bedienen. Andere apparaten hebben één of meer van deze voordelen niet: een smart-tv staat vast, een laptop is groter en minder snel in de hand, een console is voor gaming-specifiek gebruik.',
                     points: 10,
                 },
             ],
@@ -125,62 +120,62 @@ export const sustainabilityScannerConfig: DataViewerConfig = {
 
         // ── Dataset 3: Document-cards ─────────────────────────────────────────
         {
-            id: 'duurzame-alternatieven',
-            title: 'Vier manieren om je digitale voetafdruk te verkleinen',
+            id: 'media-informatie-kaarten',
+            title: 'Vier dingen die handig zijn om te weten over digitale media',
             description:
-                'Je hoeft niet te stoppen met internet gebruiken — maar slimme keuzes kunnen de impact aanzienlijk verkleinen. Bekijk de opties.',
+                'Achter de apps en platforms die je dagelijks gebruikt, zit veel meer dan je misschien denkt. Bekijk deze informatiekaarten om meer te begrijpen van hoe digitale media werkt.',
             type: 'document-cards',
             cards: [
                 {
-                    title: 'Optie 1: Stream in lagere kwaliteit',
+                    title: 'Kaart 1: Hoe videokwaliteit de databehoefte beïnvloedt',
                     icon: '📺',
                     content:
-                        'HD-streaming gebruikt 97g CO2/uur, SD-streaming maar 36g — een besparing van 63%. De meeste content is prima zichtbaar op SD op een klein scherm (telefoon, laptop). Op een grote tv of voor gaming is HD relevanter. Eenvoudige instelling in Netflix, YouTube of Spotify. Besparing: tot 2/3 van je streaming-CO2.',
+                        'Een video in SD-kwaliteit (standaard) gebruikt ongeveer 700 MB data per uur. In HD (1080p) is dat al 3 GB per uur, en in 4K loopt dat op tot 15-20 GB per uur. Streamingdiensten zoals Netflix en YouTube laten je zelf de kwaliteit kiezen. Op een klein smartphonescherm is het verschil tussen SD en HD nauwelijks zichtbaar — op een grote smart-tv wel.',
                 },
                 {
-                    title: 'Optie 2: Gebruik minder e-mails met bijlagen',
-                    icon: '📧',
+                    title: 'Kaart 2: Hoe PEGI-leeftijdsclassificaties werken',
+                    icon: '🎮',
                     content:
-                        'Een e-mail met 1 MB bijlage stoot 19g CO2 uit — 63 keer meer dan een lege e-mail. Alternatief: gebruik een gedeelde link (Google Drive, WeTransfer) in plaats van een bijlage. De ontvanger downloadt het bestand alleen als ze het echt nodig hebben. Grote bedrijven besparen zo honderden kg CO2 per jaar.',
+                        'PEGI staat voor Pan European Game Information. Het systeem geeft games een aanbevolen minimumleeftijd: PEGI 3, 7, 12, 16 of 18. Naast de leeftijdsindicator zijn er ook inhoudslabels voor geweld, grof taalgebruik, angstaanjagend content en online-interactie. PEGI is een advies, geen wettelijk verbod in Nederland — maar detailhandelaren mogen games met PEGI 16 of 18 niet verkopen aan jongere kopers.',
                 },
                 {
-                    title: 'Optie 3: Kies een groene zoekmachine',
-                    icon: '🌱',
-                    content:
-                        'Ecosia is een zoekmachine die zijn serverenergie voor 200% compenseert met windenergie en de winst gebruikt om bomen te planten. Elke zoekopdracht plant gemiddeld een deel van een boom. Per zoekopdracht is het CO2-verschil klein (0.2g), maar Google verwerkt 8,5 miljard zoekopdrachten per dag wereldwijd — op die schaal maakt het uit.',
-                },
-                {
-                    title: 'Optie 4: Verleng de levensduur van je apparaat',
+                    title: 'Kaart 3: Hoe schermtijdtools werken',
                     icon: '📱',
                     content:
-                        'De productie van een nieuwe smartphone kost 70-80 kg CO2 — meer dan een jaar dagelijks gebruik. Door je telefoon 3 jaar te gebruiken in plaats van 2 jaar verlaag je de jaarlijkse productie-CO2 met 33%. Repareren in plaats van weggooien helpt ook. E-waste is een van de snelst groeiende milieuproblemen ter wereld.',
+                        'Zowel Android (Digitaal Welzijn) als iOS (Schermtijd) bieden ingebouwde overzichten van je appgebruik per dag en week. Je kunt limieten instellen per app-categorie of per specifieke app. Onderzoek laat zien dat mensen hun eigen schermtijd gemiddeld 20-40% onderschatten. Het bijhouden van je gebruik is een eerste stap om bewuster te kiezen wanneer je je telefoon pakt.',
+                },
+                {
+                    title: 'Kaart 4: Hoe aanbevelingsalgoritmen werken',
+                    icon: '🔁',
+                    content:
+                        'Platforms zoals YouTube, TikTok en Spotify gebruiken algoritmen om content aan te bevelen. Ze kijken naar wat je bekijkt, hoe lang je kijkt, wat je oversloeg en wat anderen met vergelijkbare interesses leuk vonden. Dit systeem heet collaborative filtering. Het doel is dat je langer op het platform blijft. Je kunt het beïnvloeden door actief aan te geven wat je niet meer wil zien of door je zoekgeschiedenis te wissen.',
                 },
             ],
             questions: [
                 {
-                    id: 'q7-meeste-impact',
+                    id: 'q7-databehoefte',
                     question:
-                        'Welke maatregel heeft waarschijnlijk de meeste CO2-besparing per jaar voor een gemiddeld persoon?',
+                        'Stel je streamt 2 uur video per dag in HD (3 GB/uur). Welke bewering klopt dan het best?',
                     type: 'multiple-choice',
                     options: [
-                        'Stream in lagere kwaliteit',
-                        'Gebruik minder e-mails met bijlagen',
-                        'Kies een groene zoekmachine',
-                        'Verleng de levensduur van je apparaat',
+                        'Je gebruikt 3 GB data per dag',
+                        'Je gebruikt 6 GB data per dag',
+                        'Je gebruikt 1,5 GB data per dag',
+                        'Je gebruikt 15 GB data per dag',
                     ],
-                    correctAnswer: 'Verleng de levensduur van je apparaat',
+                    correctAnswer: 'Je gebruikt 6 GB data per dag',
                     explanation:
-                        'Smartphone-productie kost 70-80 kg CO2 — dat is meer dan een heel jaar dagelijks streamen (365 × 1,8u × 0,097 kg ≈ 64 kg). Door één jaar langer een telefoon te gebruiken bespaar je meer dan alle andere opties bij elkaar. Dit heet "embodied carbon" — de verborgen CO2 in de productie van apparaten.',
+                        '2 uur × 3 GB/uur = 6 GB data per dag. In een maand (30 dagen) zou dat 180 GB zijn — een groot mobiel dataabonnement is in Nederland typisch 10-50 GB. Streamen in HD op een mobiel netwerk is dus snel duurder of trager dan verwacht.',
                     points: 15,
                 },
                 {
-                    id: 'q8-actieplan',
+                    id: 'q8-media-reflectie',
                     question:
-                        'Noem twee concrete aanpassingen die jij persoonlijk kunt doen om je digitale voetafdruk te verkleinen. Schat ook hoeveel gram CO2 je daarmee per week bespaart.',
+                        'Kies één van de vier informatiekaarten en leg uit wat jij er nieuw van leerde of wat jou het meest verraste. Geef ook een concreet voorbeeld uit je eigen mediagebruik.',
                     type: 'text-observation',
                     correctAnswer: '',
                     explanation:
-                        'Goede aanpassingen zijn: SD in plaats van HD (besparing: 60,4g CO2 per uur streaming). Bijlagen vervangen door links (besparing: 152g per 8 bijlagen per dag). Telefoon één jaar langer gebruiken (besparing: ≈25.000g CO2 gespreid over het extra jaar). De beste antwoorden koppelen een concrete gewoonte aan een berekening.',
+                        'Goede antwoorden benoemen een specifiek feit uit de kaart (bijv. het datagebruik bij 4K, de werking van PEGI-labels, de 20-40% onderschatting van schermtijd, of de rol van collaborative filtering) en koppelen dat aan een eigen ervaring. Het gaat om het verbinden van informatie aan de eigen leefwereld.',
                     points: 0,
                 },
             ],
@@ -192,20 +187,20 @@ export const sustainabilityScannerConfig: DataViewerConfig = {
     badges: [
         {
             minScore: 85,
-            emoji: '🌱',
-            title: 'Duurzaamheids Expert!',
+            emoji: '📊',
+            title: 'Trend Expert',
             color: '#202023',
         },
         {
             minScore: 65,
-            emoji: '♻️',
-            title: 'Eco-Analyst',
+            emoji: '🔍',
+            title: 'Data Analist',
             color: '#202023',
         },
         {
             minScore: 40,
-            emoji: '🔋',
-            title: 'Voetafdruk Scanner',
+            emoji: '📡',
+            title: 'Trend Scanner',
             color: '#202023',
         },
         {
@@ -217,11 +212,11 @@ export const sustainabilityScannerConfig: DataViewerConfig = {
     ],
 
     takeaways: [
-        'HD-streaming stoot per uur 97 gram CO2 uit — gelijk aan 13 km autorijden',
-        'Een Bitcoin-transactie stoot net zoveel CO2 uit als 700 km vliegen',
-        '61% van de Europese datacenter-energie komt al uit hernieuwbare bronnen',
-        'Smartphone-productie kost meer CO2 dan een jaar dagelijks gebruik — verleng de levensduur',
-        'Digitale technologie lijkt "schoon" maar datacenters verbruiken enorme hoeveelheden energie',
+        'Berichten sturen is de meest gebruikte digitale activiteit wereldwijd — meer dan video streamen of gamen',
+        '83% van mediaconsumptie vindt plaats op draagbare apparaten (smartphone, laptop, tablet)',
+        'HD-streaming gebruikt ruim 4× meer data dan SD — een groot verschil op mobiele data',
+        'Mensen onderschatten hun eigen schermtijd gemiddeld met 20-40%',
+        'Aanbevelingsalgoritmen leren van je gedrag en zijn te beïnvloeden door actief keuzes te maken',
     ],
 };
 

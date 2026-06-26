@@ -635,11 +635,11 @@ export const MISSION_GOALS: Record<string, MissionGoal> = {
         evidence: 'Je startup heeft een break-even-berekening, een USP ten opzichte van twee concurrenten en een 3-minuten pitch-outline.',
     },
     'innovation-lab': {
-        primaryGoal: 'Ik kies een SDG-probleem, ontwerp een technologische oplossing, maak een MVP-concept en presenteer de impact.',
+        primaryGoal: 'Ik kies een alledaags probleem (school, sport, hobby of thuis), ontwerp een technologische oplossing met Design Thinking, maak een MVP-concept en presenteer het.',
         criteria: {
             type: 'steps-complete',
             min: 4,
-            description: 'Je werkt SDG-probleemkeuze, oplossingsontwerp, MVP-concept en impactpresentatie uit.',
+            description: 'Je werkt probleemkeuze, oplossingsontwerp, MVP-concept en presentatie uit.',
         },
         evidence: 'Je innovatie-ontwerp beschrijft wie de gebruikers zijn, hoe de kern-functie werkt en meetbare impact-indicatoren.',
     },
@@ -772,31 +772,31 @@ export const MISSION_GOALS: Record<string, MissionGoal> = {
         evidence: 'Je kunt de SUS-drempelwaarde voor "goed" noemen en uitleggen welk UX-probleem het hoogst geprioriteerd moet worden.',
     },
     'digital-divide-researcher': {
-        primaryGoal: 'Ik onderzoek de digitale kloof in Nederland en Europa en beoordeel beleidsmaatregelen op effectiviteit.',
+        primaryGoal: 'Ik onderzoek internetsnelheden en apparaatgebruik per land en leeftijdsgroep en beoordeel de betrouwbaarheid van databronnen.',
         criteria: {
             type: 'score-threshold',
             threshold: 65,
-            description: 'Je analyseert CBS-data naar demografische groep, Europese breedbandcijfers en beleidsdocumenten.',
+            description: 'Je analyseert CBS-data naar leeftijdsgroep, Europese breedbandcijfers en internationale connectiviteitsrapporten.',
         },
-        evidence: 'Je kunt het procentuele verschil in digitale basisvaardigheden tussen 16–24-jarigen en 75-plussers noemen en een beleidsmaatregel beoordelen.',
+        evidence: 'Je kunt het procentuele verschil in internetsnelheid of apparaatbeschikbaarheid tussen leeftijdsgroepen of landen noemen en een databron beoordelen.',
     },
     'tech-impact-analyst': {
-        primaryGoal: 'Ik voer een maatschappelijke impact-analyse uit van gezichtsherkenning en vergelijk AI-reguleringsscores van landen en regio\'s.',
+        primaryGoal: 'Ik voer een maatschappelijke impact-analyse uit van bezorgdrones en weeg de voordelen en risico\'s af met de vier-stappenmethode.',
         criteria: {
             type: 'score-threshold',
             threshold: 65,
-            description: 'Je analyseert een impactmatrix, vergelijkt reguleringsscores en beantwoordt vragen over de vier impact-analysestappen.',
+            description: 'Je analyseert een impactmatrix, vergelijkt perspectieven van verschillende stakeholders en beantwoordt vragen over de vier impact-analysestappen.',
         },
-        evidence: 'Je kunt de vier stappen van een maatschappelijke impact-analyse benoemen en uitleggen waarom de EU anders reguleert dan de VS.',
+        evidence: 'Je kunt de vier stappen van een maatschappelijke impact-analyse benoemen en uitleggen hoe je voordelen en risico\'s van een technologie afweegt.',
     },
     'sustainability-scanner': {
-        primaryGoal: 'Ik bereken de CO2-voetafdruk van digitale activiteiten en kies strategieën om de milieubelasting van technologie te verminderen.',
+        primaryGoal: 'Ik analyseer trends in digitaal gebruik (gaming, video- en muziekstreaming, sociale media, berichten) en trek onderbouwde observaties uit trenddata.',
         criteria: {
             type: 'score-threshold',
             threshold: 65,
-            description: 'Je analyseert CO2-uitstoot per activiteit, de energiemix van datacenters en reductiemaatregelen.',
+            description: 'Je analyseert gebruiksstatistieken per categorie, vergelijkt trends over tijd en beantwoordt vragen over trenddata lezen en berekeningen maken.',
         },
-        evidence: 'Je kunt het verschil in CO2-impact tussen een Bitcoin-transactie en een Google-zoekopdracht uitleggen en twee reductiemaatregelen noemen.',
+        evidence: 'Je kunt het verschil in gebruikstrend tussen twee digitale categorieën uitleggen en twee observaties onderbouwen met concrete cijfers.',
     },
     'eindproject-j2': {
         primaryGoal: 'Ik analyseer eindprojectresultaten uit jaar 2 en ontdek welke projecttypen en kwaliteiten tot de hoogste cijfers leiden.',
@@ -810,7 +810,7 @@ export const MISSION_GOALS: Record<string, MissionGoal> = {
 
     // === DebateArena ===
     'ai-ethicus': {
-        primaryGoal: 'Ik bouw een onderbouwd standpunt over het gebruik van AI bij schoolniveaukeuze en reageer op het tegenargument.',
+        primaryGoal: 'Ik bouw een onderbouwd standpunt over de vraag of AI essays van leerlingen mag nakijken en reageer op het sterkste tegenargument.',
         criteria: {
             type: 'rounds-complete',
             description: 'Je leest vier perspectieven, kiest een positie, formuleert argumenten en reflecteert op de dilemma\'s.',
@@ -842,10 +842,10 @@ export const MISSION_GOALS: Record<string, MissionGoal> = {
         evidence: 'Je toekomstvisie kiest een van de vier modellen en onderbouwt waarom menselijk onderwijs wel of niet vervangbaar is.',
     },
     'policy-maker': {
-        primaryGoal: 'Ik adviseer als beleidsmaker over gezichtsherkenning op school en weeg veiligheid, privacy en alternatieven zorgvuldig af.',
+        primaryGoal: 'Ik adviseer als beleidsmaker over telefoonbeleid op school en weeg de belangen van leerlingen, docenten, ouders en directie zorgvuldig af.',
         criteria: {
             type: 'rounds-complete',
-            description: 'Je leest vier stakeholderpersptieven, kiest een beleidsoptie, bouwt argumenten en reflecteert op de afweging veiligheid vs. privacy.',
+            description: 'Je leest vier stakeholderperspectieven, kiest een beleidsoptie, bouwt argumenten en reflecteert op de afweging tussen de betrokken partijen.',
         },
         evidence: 'Je beleidsadvies kiest een van de vier opties en onderbouwt de keuze met argumenten vanuit minimaal twee perspectieven.',
     },

@@ -145,13 +145,13 @@ const config: ScenarioEngineConfig = {
                 },
                 {
                     id: 8,
-                    icon: '🌱',
-                    title: '"Klimaatverandering verloopt sneller dan verwacht"',
+                    icon: '🎮',
+                    title: '"Gamers worden agressiever van games"',
                     description:
-                        'Uitspraak van klimaatwetenschappers op basis van temperatuurmetingen.',
+                        'Uitspraak van onderzoekers op basis van speelgedrag-metingen.',
                     correct: false,
                     explanation:
-                        'Dit is een conclusie gebaseerd op data (temperatuurmetingen over decennia). De conclusie zelf is geen data. De meetwaarden (gemiddelde temperatuur per jaar) zijn de data.',
+                        'Dit is een conclusie gebaseerd op data (bijv. spelers speelden gemiddeld 2,3 uur per dag). De conclusie zelf is geen data. De meetwaarden (speeltijd, aantal incidenten) zijn de data.',
                 },
             ],
         },

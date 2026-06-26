@@ -6,7 +6,7 @@ const config: DebateArenaConfig = {
     introEmoji: '📋',
     introTitle: 'Policy Maker',
     introDescription:
-        'De gemeenteraad wil gezichtsherkenningscamera\'s plaatsen op het schoolplein om pesten te bestrijden. De helft van de ouders is enthousiast. De andere helft is bang voor een bewakingsstaat. Jij bent beleidsadviseur. Wat adviseer je?',
+        'De schoolleiding moet een beslissing nemen over het telefoonbeleid op school. Leerlingen, docenten, ouders en de directie hebben allemaal een mening. Jij bent beleidsadviseur. Wat adviseer je?',
     introFeatures: [
         'Lees de standpunten van 4 betrokkenen',
         'Kies jouw positie in het debat',
@@ -14,84 +14,84 @@ const config: DebateArenaConfig = {
         'Reageer op een tegenargument',
         'Reflecteer: is je mening veranderd?',
     ],
-    topic: 'Gezichtsherkenning op scholen',
+    topic: 'Telefoonbeleid op school',
     dilemma:
-        'De gemeente wil gezichtsherkenningscamera\'s inzetten op schoolpleinen om pestsituaties sneller te signaleren. Het systeem herkent emoties en alarmeert als er een dreigende situatie is. Is dat een goed idee?',
+        'De school overweegt haar telefoonbeleid aan te passen. Moet de smartphone volledig verboden worden tijdens schooltijd, alleen toegestaan in de pauze, of mogen leerlingen zelf bepalen wanneer ze hun telefoon gebruiken?',
     stakeholders: [
         {
-            id: 'ouder',
-            name: 'Mevrouw El Amrani',
-            emoji: '👩',
-            role: 'Ouder van gepest kind',
-            perspective:
-                'Mijn dochter is maanden lang gepest voordat iemand het in de gaten had. Als een systeem eerder had kunnen signaleren dat er iets fout zat, had ik liever dat gehad. Haar veiligheid weegt zwaarder dan mijn abstracte bezwaren over privacy.',
-            keyArgument:
-                'Veiligheid op school is een grondrecht. Als technologie kinderen beschermt die nu niet beschermd worden, dan is dat een afweging waard.',
-        },
-        {
             id: 'leerling',
-            name: 'Roos',
-            emoji: '👧',
-            role: 'Leerlingraadlid, 15 jaar',
+            name: 'Yasmine',
+            emoji: '🎒',
+            role: 'Leerlingraadlid, 16 jaar',
             perspective:
-                'Ik wil me op school vrij kunnen voelen — ook als ik een slechte dag heb, of ruzie met een vriendin. Als een camera mijn gezichtsuitdrukking monitort, pas ik me aan om niet als verdacht te worden gezien. Dat is precies het tegenovergestelde van een veilige schoolcultuur.',
+                'Mijn telefoon is mijn agenda, woordenboek en communicatiemiddel met mijn ouders. Ik kan mezelf prima beheersen. Als ik hem afgeef voelt dat alsof de school me niet vertrouwt. Bovendien gebruik ik soms apps die écht nuttig zijn tijdens de les, zoals een rekenmachine of een woordenboekapp.',
             keyArgument:
-                'Bewaking creëert geen veiligheid, het creëert conformiteit. Echte veiligheid komt van vertrouwen, niet van toezicht.',
+                'Leerlingen leren verantwoordelijk omgaan met technologie beter door oefening dan door verbod. Een smartphone hoort bij het dagelijks leven en dat verdwijnt niet na school.',
         },
         {
-            id: 'wethouder',
-            name: 'Wethouder De Groot',
-            emoji: '🏛️',
-            role: 'Wethouder Onderwijs',
+            id: 'docent',
+            name: 'Meneer Janssen',
+            emoji: '📚',
+            role: 'Docent Nederlands, 12 jaar ervaring',
             perspective:
-                'De EU AI Act verbiedt real-time biometrische identificatie (= herkennen via je lichaam, zoals je gezicht) in openbare ruimtes tenzij er een wettelijke uitzondering is. Schoolpleinen vallen waarschijnlijk onder die regel. We moeten dit eerst laten toetsen door juristen. Ik ben niet tégen de camera\'s, maar we moeten het wettelijk kunnen verantwoorden.',
+                'Ik verlies elke les tijd aan het aanspreken van leerlingen die stiekem op hun telefoon zitten. Als ik een leerling aanspreek, volgt er een discussie. Een duidelijk verbod scheelt me veel energie en geeft de klas meer rust. Onderzoek laat zien dat leerlingen zonder telefoon in de buurt gemiddeld hogere toetsresultaten halen.',
             keyArgument:
-                'Goed beleid begint bij wettigheid. Als we een systeem invoeren dat later juridisch onhoudbaar blijkt, beschadigt dat het vertrouwen in de overheid.',
+                'Rust in de klas is een voorwaarde voor goed onderwijs. Een helder beleid geeft docenten handvatten om de les te leiden zonder eindeloze discussies.',
         },
         {
-            id: 'onderzoeker',
-            name: 'Prof. Bakker',
-            emoji: '🔬',
-            role: 'Onderzoeker sociaal veiligheidsbeleid',
+            id: 'ouder',
+            name: 'De heer Petrov',
+            emoji: '👨‍👧',
+            role: 'Ouder, lid van de medezeggenschapsraad',
             perspective:
-                'Uit onderzoek blijkt dat camera\'s pestgedrag niet verminderen — pestgedrag verplaatst zich buiten het zichtbereik van de camera\'s, of naar online. Bewijs voor de effectiviteit van gezichtsherkenning bij pesten ontbreekt. Beleid op basis van schijnveiligheid is erger dan geen beleid, want het kost geld en legt privacydruk op leerlingen.',
+                'Ik wil mijn dochter kunnen bereiken als er iets thuis is. Een volledig verbod — ook in de pauze — voelt te ver gaan. Tegelijk snap ik dat de school rust wil. Een duidelijk onderscheid tussen lestijd en pauzetijd lijkt me het meest redelijk. Dan behoudt iedereen zijn belang.',
             keyArgument:
-                'Goed beleid is effectief beleid. Als er geen bewijs is dat de maatregel werkt, zijn de kosten — ook de maatschappelijke kosten — niet te rechtvaardigen.',
+                'Ouders en kinderen hebben een bereikbaarheidsbelang. Een totaalverbod gaat voorbij aan dat belang; een gebalanceerd beleid houdt rekening met alle betrokkenen.',
+        },
+        {
+            id: 'schoolleider',
+            name: 'Rector Van den Berg',
+            emoji: '🏫',
+            role: 'Schoolleider',
+            perspective:
+                'De Rijksoverheid heeft scholen opgeroepen om telefoons in de les te verbieden — maar de uitvoering is aan de school zelf. We willen een beleid dat werkt én gedragen wordt. Als leerlingen en ouders het beleid niet accepteren, is handhaving een dagelijkse strijd. Ik wil iets dat realistisch is om vol te houden.',
+            keyArgument:
+                'Goed beleid is uitvoerbaar beleid. Een regel die niemand naleeft werkt erger dan geen regel. Draagvlak is een voorwaarde voor effectiviteit.',
         },
     ],
     positions: [
         {
-            id: 'invoeren',
-            label: 'Invoeren met strikte voorwaarden',
-            description: 'Gezichtsherkenning mag worden ingezet mits er wettelijke toestemming is, data minimaal bewaard wordt en er menselijk toezicht is op elk alarm.',
+            id: 'vrij-gebruik',
+            label: 'Vrij gebruik (leerling beslist zelf)',
+            description: 'Leerlingen mogen hun telefoon gebruiken wanneer zij dat zelf nodig achten — de verantwoordelijkheid ligt bij de leerling.',
         },
         {
-            id: 'verbieden',
-            label: 'Verbieden',
-            description: 'Gezichtsherkenning op schoolpleinen is een disproportionele inbreuk op de privacy van minderjarigen en moet wettelijk verboden worden.',
+            id: 'alleen-pauze',
+            label: 'Alleen in de pauze toegestaan',
+            description: 'Tijdens lessen is de telefoon weg; in de pauze mogen leerlingen hem vrijelijk gebruiken.',
         },
         {
-            id: 'pilot',
-            label: 'Pilot met evaluatie',
-            description: 'Een beperkte pilot op vrijwillige basis, met onafhankelijke evaluatie, voordat een beslissing wordt genomen over brede invoering.',
+            id: 'volledig-verbod',
+            label: 'Volledig verbod tijdens schooltijd',
+            description: 'De telefoon gaat bij binnenkomst in een kluisje of tas en wordt pas na school teruggegeven.',
         },
         {
-            id: 'alternatieven',
-            label: 'Inzetten op alternatieven',
-            description: 'Het pestprobleem aanpakken via meer mentoren, anonieme meldlijnen en sociale programma\'s — zonder biometrische surveillance.',
+            id: 'gedifferentieerd',
+            label: 'Gedifferentieerd per situatie',
+            description: 'Per les of activiteit bepaalt de docent of de telefoon nuttig of storend is — geen universele regel, maar contextafhankelijk gebruik.',
         },
     ],
     argumentPrompts: [
         'Mijn beleidsadvies is...',
         'De reden daarvoor is...',
-        'De groep die het meest geraakt wordt is...',
+        'De groep die het meest profiteert van dit beleid is...',
     ],
     reflectionQuestions: [
-        'Hoe weeg je veiligheid en privacy als beide grondrechten zijn?',
-        'Is er een stakeholder waarvan jij het standpunt veranderd hebt na het debat?',
+        'Welk stakeholder-perspectief had je het minst verwacht? Heeft dat je mening veranderd?',
+        'Is er een oplossing die alle vier de standpunten gedeeltelijk tegemoetkomt?',
     ],
     counterArgument:
-        '"We accepteren al camera\'s in supermarkten, op straat en in het verkeer. Waarom is een schoolplein anders? Als ouders kiezen voor veiligheid van hun kind, is het paternalistisch (= beslissen vóór iemand anders, \'voor zijn eigen bestwil\') om te zeggen dat hun kind geen bewaking mag hebben terwijl andere plekken in de samenleving al volledig gemonitord zijn."',
+        '"Leerlingen gebruiken hun telefoon toch al voor alles buiten school. Als we ze leren ermee om te gaan op school — inclusief de momenten dat je hem moet wegleggen — leren ze zelfregulatie. Een volledig verbod leert niets: zodra ze van school af zijn, hebben ze geen regels meer en geen ervaring met zelf-beheersen."',
     maxScore: 100,
     badges: [
         {
@@ -120,9 +120,9 @@ const config: DebateArenaConfig = {
         },
     ],
     takeaways: [
-        'De EU AI Act verbiedt real-time biometrische identificatie in openbare ruimtes, met strenge uitzonderingen.',
-        'Goed beleid is effectief beleid: als een maatregel niet werkt, zijn de kosten niet te rechtvaardigen.',
-        'Veiligheid en privacy zijn allebei grondrechten — de spanning daartussen vraagt om een zorgvuldige afweging.',
+        'Goed beleid is uitvoerbaar beleid: draagvlak bij alle betrokkenen is een voorwaarde voor effectieve handhaving.',
+        'Verschillende stakeholders hebben legitieme maar tegenstrijdige belangen — beleid moet die afwegen.',
+        'De Rijksoverheid kan scholen een richting geven, maar de uitvoering vraagt maatwerk per school.',
         'Stakeholderanalyse (= in kaart brengen wie er belang bij heeft) is de eerste stap van elk goed beleidsvoorstel.',
     ],
 };
