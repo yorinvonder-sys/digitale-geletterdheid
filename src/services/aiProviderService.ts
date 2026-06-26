@@ -698,7 +698,7 @@ export const generateImage = async (
     }
 
     const mimeType = payload.mimeType || 'image/png';
-    const imageBlob = new Blob([decodeBase64ToBytes(payload.imageBase64)], { type: mimeType });
+    const imageBlob = new Blob([decodeBase64ToBytes(payload.imageBase64) as BlobPart], { type: mimeType });
 
     let finalBlob = imageBlob;
     try {
