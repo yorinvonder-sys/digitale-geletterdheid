@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { KERNDOEL_MISSIONS } from '@/config/slo-kerndoelen-mapping';
 
 const DOMAINS = [
   {
@@ -75,10 +74,6 @@ export const ScholenLandingSloDomains: React.FC = () => {
         ].join(' ')}
       >
         {DOMAINS.map((domain, index) => {
-          const missionCount = KERNDOEL_MISSIONS.filter((m) =>
-            m.sloKerndoelen.some((k) => k.startsWith(domain.code))
-          ).length;
-
           const cardBg =
             index === 1 ? 'bg-duck-bgLight' : 'bg-white';
 
@@ -103,9 +98,6 @@ export const ScholenLandingSloDomains: React.FC = () => {
                   </span>
                 ))}
               </div>
-              <p className="mt-4 text-xs font-bold text-duck-ink/50">
-                {missionCount} missies gekoppeld
-              </p>
             </div>
           );
         })}
