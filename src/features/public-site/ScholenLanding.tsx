@@ -5,6 +5,9 @@ import { HeroEyes } from '@/components/brand/HeroEyes';
 import { AnimatedCounter } from '@/components/brand/AnimatedCounter';
 import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion';
 import { useHomepageAnalytics } from '@/hooks/useHomepageAnalytics';
+import { Target, Clock, FileText, Puzzle, PhoneCall, Map as MapIcon, Rocket, Users, CreditCard, CalendarClock, GraduationCap, Building2, ShieldCheck, FlaskConical, Pointer } from 'lucide-react';
+import { ScholenLandingSloDomains } from '@/features/public-site/ScholenLandingSloDomains';
+import { ScholenLandingAiMissionMoment } from '@/features/public-site/ScholenLandingAiMissionMoment';
 
 type NavItem = { label: string; target: string };
 type SkillTone = 'paper' | 'acid';
@@ -156,52 +159,6 @@ const leaderReasons = [
     { title: 'Past bijna overal', copy: 'Mentorles, projectweek, keuzeuur of gewone les. Als het maar niet de 47e Teams-vergadering is.' },
 ] as const;
 
-const sloRows = [
-    {
-        domain: 'Digitale vaardigheden',
-        icon: <MonitorIcon />,
-        proof: 'Toolgebruik, workflow en uitleg bij keuzes',
-        missions: [
-            { name: 'Prompt Perfectionist', description: 'Leer hoe je AI precies laat doen wat jij wilt door de kunst van het prompting.', image: '/assets/agents/prompt_master.webp' },
-            { name: 'Website Bouwer', description: 'Typ je eerste HTML-code en bouw een persoonlijke webpagina.', image: '/assets/agents/prompt_master.webp' },
-        ],
-    },
-    {
-        domain: 'Informatievaardigheden',
-        icon: <SearchIcon />,
-        proof: 'Bronnen beoordelen, data lezen en conclusies trekken',
-        missions: [
-            { name: 'Data Journalist', description: 'Vertel verhalen die verborgen zitten in data en maak een infographic.', image: '/assets/agents/nepnieuws_speurder_new.webp' },
-            { name: 'Factchecker', description: 'Ontmasker nepnieuws en word een digitale waarheidsvinder.', image: '/assets/agents/nepnieuws_speurder.webp' },
-        ],
-    },
-    {
-        domain: 'Mediawijsheid',
-        icon: <EyeIcon />,
-        proof: 'Kritisch kijken naar media, identiteit en online gedrag',
-        missions: [
-            { name: 'Deepfake Detector', description: 'Leer echte en nep-afbeeldingen van elkaar te onderscheiden.', image: '/assets/agents/social_safeguard.webp' },
-            { name: 'Scroll Stopper', description: 'Begrijp hoe social media-algoritmen je gedrag beïnvloeden.', image: '/assets/agents/social_media_psychologist.webp' },
-        ],
-    },
-    {
-        domain: 'Computational thinking',
-        icon: <CodeIcon />,
-        proof: 'Logica, testen, debuggen en iteratief verbeteren',
-        missions: [
-            { name: 'Game Programmeur', description: 'Ontwerp en programmeer je eigen spelwereld met echte code.', image: '/assets/agents/game_programmeur_new.webp' },
-            { name: 'Robot Bestuurder', description: 'Geef een robot stap-voor-stap instructies om een doolhof op te lossen.', image: '/assets/agents/robot_bestuurder.webp' },
-        ],
-    },
-];
-
-const sloIcons = [
-    <svg key="digital" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5"><rect x="1" y="2" width="14" height="10" rx="1.5" /><path d="M5.5 15h5M8 12v3" /></svg>,
-    <svg key="info" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5"><circle cx="7" cy="7" r="5" /><path d="m13 13-2.5-2.5" /></svg>,
-    <svg key="media" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5"><path d="M1 8s3-5 7-5 7 5 7 5-3 5-7 5-7-5-7-5z" /><circle cx="8" cy="8" r="2" /></svg>,
-    <svg key="ct" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5"><polyline points="4,5 1,8 4,11" /><polyline points="12,5 15,8 12,11" /><path d="M9 3l-2 10" /></svg>,
-];
-
 const ictTrustItems = [
     { title: 'Microsoft 365', copy: 'Inloggen via de schoolomgeving die je al hebt. ICT hoeft niets nieuws in te richten.' },
     { title: 'Verwerkersovereenkomst', copy: 'Privacyteam wil eerst de afspraken zien? Goed plan. Dat kan.' },
@@ -259,6 +216,28 @@ const roleFaqs = [
     { role: 'ICT & privacy', question: 'Kunnen we privacy en AI vooraf beoordelen?', answer: 'Ja — en dat is precies de bedoeling. Verwerkersafspraken, DPIA-ondersteuning en AI-transparantie zitten standaard in de pilot. Neem de tijd die je nodig hebt.' },
     { role: 'Pilot', question: 'Hoe snel kan een school starten?', answer: 'Binnen 10 werkdagen na de eerste afstemming. Geen projectplan van tien pagina\'s, geen maanden aanlooptijd.' },
 ] as const;
+
+const leaderReasonIcons = [
+    <Target className="h-5 w-5 text-duck-ink" strokeWidth={2} aria-hidden="true" />,
+    <Clock className="h-5 w-5 text-duck-ink" strokeWidth={2} aria-hidden="true" />,
+    <FileText className="h-5 w-5 text-duck-ink" strokeWidth={2} aria-hidden="true" />,
+    <Puzzle className="h-5 w-5 text-duck-ink" strokeWidth={2} aria-hidden="true" />,
+];
+const pilotItemIcons = [
+    <PhoneCall className="h-4 w-4 text-duck-ink" strokeWidth={2} aria-hidden="true" />,
+    <MapIcon className="h-4 w-4 text-duck-ink" strokeWidth={2} aria-hidden="true" />,
+    <Rocket className="h-4 w-4 text-duck-ink" strokeWidth={2} aria-hidden="true" />,
+    <Users className="h-4 w-4 text-duck-ink" strokeWidth={2} aria-hidden="true" />,
+    <FileText className="h-4 w-4 text-duck-ink" strokeWidth={2} aria-hidden="true" />,
+    <CreditCard className="h-4 w-4 text-duck-ink" strokeWidth={2} aria-hidden="true" />,
+    <CalendarClock className="h-4 w-4 text-duck-ink" strokeWidth={2} aria-hidden="true" />,
+];
+const roleFaqIcons = [
+    <GraduationCap className="h-4 w-4 text-duck-ink/60" strokeWidth={2} aria-hidden="true" />,
+    <Building2 className="h-4 w-4 text-duck-ink/60" strokeWidth={2} aria-hidden="true" />,
+    <ShieldCheck className="h-4 w-4 text-duck-ink/60" strokeWidth={2} aria-hidden="true" />,
+    <FlaskConical className="h-4 w-4 text-duck-ink/60" strokeWidth={2} aria-hidden="true" />,
+];
 
 const journeyChapters: JourneyChapter[] = [
     {
@@ -579,14 +558,22 @@ export const ScholenLanding: React.FC = () => {
                                 </div>
                             ))}
                         </dl>
-                        <div className="mx-auto mt-12 grid max-w-3xl grid-cols-2 gap-8 border-t border-duck-ink/10 pt-10 md:grid-cols-4">
+                    </div>
+                </section>
+
+                <section className="relative bg-duck-bgLight px-5 py-14 md:px-10 md:py-16">
+                    <Reveal className="mx-auto max-w-4xl">
+                        <p className="text-center text-[11px] font-extrabold uppercase tracking-[0.18em] text-duck-ink/45">DGSkills in cijfers</p>
+                        <div className="mt-8 grid grid-cols-2 gap-x-6 gap-y-10 md:grid-cols-4">
                             <AnimatedCounter value={95} suffix="+" label="AI-missies" />
                             <AnimatedCounter value={14} label="SLO-kerndoelen" />
                             <AnimatedCounter value={3} suffix=" jaar" label="Doorlopende leerlijn" />
                             <AnimatedCounter value={3} suffix=" mnd" label="Gratis pilot" />
                         </div>
-                    </div>
+                    </Reveal>
                 </section>
+
+                <ProductShowcaseBento />
 
                 <SkillMarquee reduceMotion={reduceMotion} />
 
@@ -618,12 +605,9 @@ export const ScholenLanding: React.FC = () => {
                                     ))}
                                 </ol>
                             </div>
-                            <ProductProofFrame
-                                label="Leerlingmissie"
-                                title="Prompt Perfectionist"
-                                screen={<ScreenMissieDetail />}
-                                caption="Leerlingen maken, testen en leggen uit wat ze aanpassen."
-                            />
+                            <div>
+                                <ScholenLandingAiMissionMoment />
+                            </div>
                         </Reveal>
                     </div>
                 </section>
@@ -650,7 +634,12 @@ export const ScholenLanding: React.FC = () => {
                                 {leaderReasons.map((reason, index) => (
                                     <Reveal key={reason.title} delay={0.15 + index * 0.12} y={20} className="flex">
                                         <article className={`h-full rounded-[1.5rem] p-6 shadow-[2px_4px_24px_rgba(199,197,188,0.30)] ${index % 3 === 0 ? 'bg-duck-acid' : 'bg-white'}`}>
-                                            <p className="font-display text-3xl leading-none text-duck-ink/30" aria-hidden="true">{String(index + 1).padStart(2, '0')}</p>
+                                            <div className="flex items-center justify-between">
+                                                <span className={`grid size-11 place-items-center rounded-xl ${index % 3 === 0 ? 'bg-duck-ink/10' : 'bg-duck-ink/5'}`}>
+                                                    {leaderReasonIcons[index]}
+                                                </span>
+                                                <p className="font-display text-3xl leading-none text-duck-ink/25" aria-hidden="true">{String(index + 1).padStart(2, '0')}</p>
+                                            </div>
                                             <h3 className="mt-4 text-xl font-extrabold leading-tight">{reason.title}</h3>
                                             <p className="mt-2.5 text-sm font-semibold leading-6 text-duck-ink/65">{reason.copy}</p>
                                         </article>
@@ -660,22 +649,7 @@ export const ScholenLanding: React.FC = () => {
                         </div>
 
                         <Reveal y={30} className="space-y-5">
-                            <div>
-                                <SectionLabel>SLO &amp; curriculum proof</SectionLabel>
-                                <h2 className="mt-4 text-balance font-display text-3xl leading-[1.08] md:text-4xl">Van losse activiteit naar aantoonbare leerlijn</h2>
-                            </div>
-                            <div className="grid gap-4 sm:grid-cols-2">
-                                {sloRows.map((row, i) => (
-                                    <article key={row.domain} className="rounded-[1.5rem] bg-white p-6 shadow-[2px_4px_24px_rgba(199,197,188,0.30)] md:p-7">
-                                        <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-xl bg-duck-ink text-duck-acid">
-                                            {sloIcons[i]}
-                                        </div>
-                                        <h3 className="text-base font-extrabold">{row.domain}</h3>
-                                        <p className="mt-1 text-sm font-semibold text-duck-ink/65">{Array.isArray(row.missions) ? row.missions.map(m => m.name).join(", ") : row.missions}</p>
-                                        <p className="mt-3 text-xs font-bold leading-5 text-duck-ink/50">{row.proof}</p>
-                                    </article>
-                                ))}
-                            </div>
+                            <ScholenLandingSloDomains />
                             <div className="rounded-[1.5rem] bg-duck-ink p-6 md:p-8">
                                 <div className="mb-6 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
                                     <div>
@@ -716,12 +690,17 @@ export const ScholenLanding: React.FC = () => {
                                 <p className="mt-5 text-pretty text-base font-semibold leading-7 text-duck-ink/70">
                                     Gebouwd vanuit de VO/VSO-praktijk. Klein genoeg om dit semester te starten — concreet genoeg om een schoolbesluit op te baseren.
                                 </p>
+                                <div className="mt-8 hidden sm:grid size-28 place-items-center rounded-full bg-white shadow-duck-soft" aria-hidden="true">
+                                    <DuckMark className="size-20 object-contain" />
+                                </div>
                             </div>
                             <div>
                                 <ul className="grid gap-x-6 sm:grid-cols-2">
-                                    {pilotItems.map((item) => (
-                                        <li key={item} className="flex gap-3 border-b border-duck-ink/10 py-3.5 text-sm font-extrabold leading-6">
-                                            <CheckIcon />
+                                    {pilotItems.map((item, index) => (
+                                        <li key={item} className="flex items-center gap-3 border-b border-duck-ink/10 py-3.5 text-sm font-extrabold leading-6">
+                                            <span className="grid size-8 flex-none place-items-center rounded-lg bg-duck-ink/10">
+                                                {pilotItemIcons[index]}
+                                            </span>
                                             <span>{item}</span>
                                         </li>
                                     ))}
@@ -747,6 +726,72 @@ export const ScholenLanding: React.FC = () => {
         </div>
     );
 };
+
+function ProductShowcaseBento() {
+    return (
+        <section className="relative bg-duck-bg px-5 py-20 md:px-10 md:py-28">
+            <div className="mx-auto max-w-6xl">
+                <p className="text-[11px] font-extrabold uppercase tracking-[0.18em] text-duck-ink/45">Zo ziet DGSkills eruit</p>
+                <h2 className="mt-4 font-display text-[clamp(2.1rem,4.5vw,4rem)] leading-[1.05] text-duck-ink">
+                    Alles wat je nodig hebt. In één omgeving.
+                </h2>
+
+                <div className="mt-10 grid grid-cols-1 gap-4 md:grid-cols-3 md:auto-rows-[minmax(0,1fr)]">
+                    {/* Tile 1 — BIG (2×2), Docent-dashboard */}
+                    <Reveal
+                        delay={0}
+                        y={20}
+                        className="rounded-[1.5rem] bg-duck-ink p-6 flex flex-col gap-4 md:col-span-2 md:row-span-2"
+                    >
+                        <div aria-hidden="true" className="rounded-xl bg-duck-bgLight p-3">
+                            <BrowserFrame url="dgskills.app/klas">
+                                <ScreenDocent />
+                            </BrowserFrame>
+                        </div>
+                        <div className="mt-auto">
+                            <p className="font-display text-xl leading-snug text-white">Docent-dashboard</p>
+                            <p className="mt-1 text-sm font-semibold leading-relaxed text-white/70">Zie wie vastzit, zonder spreadsheet.</p>
+                        </div>
+                    </Reveal>
+
+                    {/* Tile 2 — Missies */}
+                    <Reveal
+                        delay={0.07}
+                        y={20}
+                        className="rounded-[1.5rem] bg-white shadow-duck-soft p-6 flex flex-col gap-4 md:col-span-1"
+                    >
+                        <div aria-hidden="true" className="rounded-xl bg-duck-bgLight p-3">
+                            <BrowserFrame url="dgskills.app/missies">
+                                <ScreenMissies />
+                            </BrowserFrame>
+                        </div>
+                        <div className="mt-auto">
+                            <p className="font-display text-xl leading-snug text-duck-ink">Kant-en-klare AI-missies</p>
+                            <p className="mt-1 text-sm font-semibold leading-relaxed text-duck-ink/65">Leerlingen starten zelfstandig.</p>
+                        </div>
+                    </Reveal>
+
+                    {/* Tile 3 — Avatar & XP */}
+                    <Reveal
+                        delay={0.14}
+                        y={20}
+                        className="rounded-[1.5rem] bg-duck-acid p-6 flex flex-col gap-4 md:col-span-1"
+                    >
+                        <div aria-hidden="true" className="rounded-xl bg-duck-bgLight p-3">
+                            <BrowserFrame url="dgskills.app/profiel">
+                                <ScreenAvatar />
+                            </BrowserFrame>
+                        </div>
+                        <div className="mt-auto">
+                            <p className="font-display text-xl leading-snug text-duck-ink">Avatar, XP &amp; levels</p>
+                            <p className="mt-1 text-sm font-semibold leading-relaxed text-duck-ink/65">Motivatie die werkt.</p>
+                        </div>
+                    </Reveal>
+                </div>
+            </div>
+        </section>
+    );
+}
 
 function useHeaderChrome(menuOpen: boolean) {
     const [hidden, setHidden] = useState(false);
@@ -1590,7 +1635,7 @@ function FaqSection() {
                                         className="flex w-full items-center justify-between gap-4 py-6 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-ink focus-visible:ring-offset-2"
                                     >
                                         <span>
-                                            <span className="text-xs font-extrabold uppercase tracking-[0.16em] text-duck-ink/45">{faq.role}</span>
+                                            <span className="inline-flex items-center gap-1.5 text-xs font-extrabold uppercase tracking-[0.16em] text-duck-ink/45">{roleFaqIcons[index]}{faq.role}</span>
                                             <span className="mt-1.5 block font-display text-xl leading-snug md:text-2xl">{faq.question}</span>
                                         </span>
                                         <span className={`grid size-10 flex-none place-items-center rounded-full border transition-all duration-300 ${isOpen ? 'rotate-45 border-duck-ink bg-duck-acid' : 'border-duck-ink/20'}`} aria-hidden="true">
@@ -1670,7 +1715,7 @@ function FooterCta({ startPilot, scrollTo }: { startPilot: () => void; scrollTo:
                     </div>
                 </div>
                 <div className="mt-8 flex flex-col gap-2 border-t border-white/10 pt-6 text-xs text-white/50 md:flex-row md:items-center md:justify-between">
-                    <p>Eenmanszaak Yorin Vonder · KvK 81819889 · info@dgskills.app</p>
+                    <p>Yorin Vonder · KvK 81819889 · info@dgskills.app</p>
                     <p>Zin om samen te werken?</p>
                 </div>
             </footer>
@@ -2034,6 +2079,12 @@ function ProductbewijsCards() {
                         </p>
                     </div>
                     <div className="mt-auto pt-6">
+                        {submittedCount === 0 && (
+                            <div className="mb-2 flex items-center justify-center gap-1.5" aria-hidden="true">
+                                <Pointer className="size-4 text-duck-ink animate-bounce motion-reduce:animate-none" strokeWidth={2.5} />
+                                <span className="text-[10px] font-extrabold uppercase tracking-[0.14em] text-duck-ink/70">Probeer het zelf — typ een prompt</span>
+                            </div>
+                        )}
                         <div className="rounded-xl bg-duck-bgLight p-3">
                             <BrowserFrame url="dgskills.app">
                                 <ScreenMissieDetail

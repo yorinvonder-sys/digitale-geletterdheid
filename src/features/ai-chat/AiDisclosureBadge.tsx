@@ -6,6 +6,8 @@ interface AiDisclosureBadgeProps {
     text?: string;
     /** Compact mode for inline use (smaller text, no border) */
     compact?: boolean;
+    /** Visual tone: 'lab' (default, teal lab style) or 'duck' (warm DUCK system style) */
+    tone?: 'lab' | 'duck';
     /** Custom className for positioning */
     className?: string;
 }
@@ -25,9 +27,23 @@ interface AiDisclosureBadgeProps {
 export const AiDisclosureBadge: React.FC<AiDisclosureBadgeProps> = ({
     text,
     compact = false,
+    tone = 'lab',
     className = '',
 }) => {
     if (compact) {
+        if (tone === 'duck') {
+            return (
+                <span
+                    className={`inline-flex items-center gap-1 text-[11px] text-duck-ink/55 font-medium ${className}`}
+                    title="Dit antwoord is gegenereerd door kunstmatige intelligentie en kan fouten bevatten."
+                    role="note"
+                    aria-label="AI-gegenereerde inhoud"
+                >
+                    <Sparkles size={10} className="text-duck-ink/45" />
+                    {text || 'AI-gegenereerd'}
+                </span>
+            );
+        }
         return (
             <span
                 className={`inline-flex items-center gap-1 text-[11px] text-lab-muted font-medium ${className}`}
@@ -38,6 +54,19 @@ export const AiDisclosureBadge: React.FC<AiDisclosureBadgeProps> = ({
                 <Sparkles size={10} className="text-lab-teal" />
                 {text || 'AI-gegenereerd'}
             </span>
+        );
+    }
+
+    if (tone === 'duck') {
+        return (
+            <div
+                className={`inline-flex items-center gap-1.5 px-2.5 py-1 bg-duck-ink/5 border border-duck-ink/15 rounded-lg text-xs text-duck-ink/70 font-medium ${className}`}
+                role="note"
+                aria-label="AI-gegenereerde inhoud"
+            >
+                <Sparkles size={12} className="text-duck-ink/50 shrink-0" />
+                <span>{text || 'Gegenereerd door AI — kan fouten bevatten'}</span>
+            </div>
         );
     }
 
