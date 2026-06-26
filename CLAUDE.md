@@ -49,6 +49,16 @@ Audits run in reverse (4 → 1).
 | 6 | Shift-left | `defect-shift-left` | Each error path → earliest stage |
 | 7 | Optimize | `system-optimization` | Constraint analysis |
 
+### Front-door triage (before the gates)
+
+| Step shape | Action |
+|---|---|
+| Mechanical + reversible (one file, fits in a sentence, <~30 lines) | **Skip** — implement directly |
+| Hides a product / permission / identity decision | **Grill** — run the afstemmingscheck; lock intent in 2 sentences first |
+| Hides a *design* (>1 viable shape, high coupling, multi-file, or touches Supabase/RLS/auth/AI) | **Forge** — `rfc-forge` → RFC → then `design-and-refactor` (gates 1–7) |
+
+Rule of thumb: **skip when it's mechanical and reversible; grill when a step hides a decision; forge when a step hides a design.**
+
 Use `design-and-refactor` as the orchestrating skill that sequences these gates automatically.
 
 ## Claude Workflow Notes
