@@ -14,7 +14,8 @@ import { getSystemInstruction, isValidRoleId } from "./systemInstructions.ts";
 import { buildSafeHistory } from "./chatHistory.ts";
 import { checkDurableRateLimit, rateLimitHeaders, RateLimitConfig, RateLimitResult } from "./rateLimiter.ts";
 import { ensureAiInteractionConsent } from "./consent.ts";
-import { getUserSchoolId, logAiUsageEvent, resolveAiRequestId } from "./aiUsageLogger.ts";
+import { countTextChars, getUserSchoolId, logAiUsageEvent, resolveAiRequestId } from "./aiUsageLogger.ts";
+import { moderateMistralText } from "./moderationClient.ts";
 
 // ── Constants ────────────────────────────────────────────────────────────────
 
@@ -328,6 +329,42 @@ export async function validateAndParseRequest(
         role: turn.role,
         parts: turn.parts.map((p) => ({ text: redactPii(p.text).redacted })),
     }));
+
+    const moderationInput = [
+        ...redactedHistory.flatMap((turn) => turn.parts.map((part) => part.text)),
+        typeof rawBody.gameContext === "string" ? rawBody.gameContext : "",
+        redactedSanitized,
+    ].filter(Boolean).join("\n\n");
+    const inputModeration = await moderateMistralText(moderationInput);
+    if (!inputModeration.safe) {
+        console.warn(`[INPUT_MODERATION_BLOCKED] user=${user.id} category=${inputModeration.category ?? "unknown"}`);
+        logAiUsageEvent({
+            requestId,
+            endpoint: rateLimitKey,
+            provider: "mistral",
+            model: selectedModel,
+            status: "blocked",
+            userId: user.id,
+            schoolId,
+            inputChars: moderationInput.length,
+            historyChars: countTextChars(redactedHistory),
+            gameContextChars: rawBody.gameContext?.length ?? 0,
+            metadata: {
+                reason: "mistral_moderation_input",
+                moderation_category: inputModeration.category ?? "unknown",
+                moderation_violated: inputModeration.violated,
+                moderation_fail_closed: Boolean(inputModeration.failClosed),
+            },
+        }).catch((err) => console.error("[chatCore] Usage log error:", err));
+
+        return new Response(
+            JSON.stringify({
+                error: "blocked",
+                reason: inputModeration.fallback || "Je bericht kan niet veilig worden verwerkt.",
+            }),
+            { status: 422, headers: requestHeaders },
+        );
+    }
 
     return {
         body: rawBody as ChatRequestBody,

@@ -27,6 +27,7 @@ const MISTRAL_API_URL = "https://api.mistral.ai/v1/chat/completions";
 const MISTRAL_OCR_API_URL = "https://api.mistral.ai/v1/ocr";
 const DEFAULT_MISTRAL_MODEL = "mistral-small-latest";
 const DEFAULT_MISTRAL_OCR_MODEL = "mistral-ocr-2503-completion";
+const MISTRAL_MODERATION_GUARDRAIL_ID = "moderation_llm_v2";
 
 export function getMistralTextModel(): string {
     return (Deno.env.get("MISTRAL_TEXT_MODEL") || DEFAULT_MISTRAL_MODEL).trim();
@@ -44,6 +45,10 @@ function getMistralApiKey(): string {
     return (Deno.env.get("MISTRAL_API_KEY") || "").trim();
 }
 
+function shouldAttachInlineGuardrail(): boolean {
+    return (Deno.env.get("MISTRAL_INLINE_GUARDRAILS") || "on").trim().toLowerCase() !== "off";
+}
+
 function extractMistralText(payload: unknown): string {
     const message = (payload as any)?.choices?.[0]?.message?.content;
     if (typeof message === "string") return message;
@@ -55,7 +60,7 @@ function extractMistralText(payload: unknown): string {
     return "";
 }
 
-function buildRequestBody(options: MistralCompletionOptions, stream: boolean): Record<string, unknown> {
+function buildRequestBody(options: MistralCompletionOptions, stream: boolean, includeInlineGuardrail = shouldAttachInlineGuardrail()): Record<string, unknown> {
     return {
         model: options.model || getMistralTextModel(),
         messages: options.messages,
@@ -63,8 +68,15 @@ function buildRequestBody(options: MistralCompletionOptions, stream: boolean): R
         max_tokens: options.maxTokens ?? 768,
         stream,
         safe_prompt: true,
+        ...(includeInlineGuardrail ? { guardrails: [MISTRAL_MODERATION_GUARDRAIL_ID] } : {}),
         ...(options.responseFormat ? { response_format: options.responseFormat } : {}),
     };
+}
+
+function looksLikeUnsupportedGuardrail(payload: unknown, status: number): boolean {
+    if (status < 400 || status >= 500) return false;
+    const message = JSON.stringify(payload).toLowerCase();
+    return message.includes("guardrail") || message.includes("guardrails") || message.includes("extra_forbidden") || message.includes("unknown field");
 }
 
 async function fetchMistral(body: Record<string, unknown>): Promise<Response> {
@@ -101,8 +113,14 @@ async function fetchMistralOcr(body: Record<string, unknown>): Promise<Response>
 
 export async function completeMistralChat(options: MistralCompletionOptions): Promise<MistralCompletionResult> {
     const model = options.model || getMistralTextModel();
-    const response = await fetchMistral(buildRequestBody({ ...options, model }, false));
-    const payload = await response.json().catch(() => ({}));
+    let response = await fetchMistral(buildRequestBody({ ...options, model }, false));
+    let payload = await response.json().catch(() => ({}));
+
+    if (!response.ok && shouldAttachInlineGuardrail() && looksLikeUnsupportedGuardrail(payload, response.status)) {
+        console.warn("[mistralClient] Inline guardrail rejected by Mistral; retrying without inline guardrail. Explicit moderation remains active.");
+        response = await fetchMistral(buildRequestBody({ ...options, model }, false, false));
+        payload = await response.json().catch(() => ({}));
+    }
 
     if (!response.ok) {
         const message = (payload as any)?.message || (payload as any)?.error?.message || `Mistral API error (${response.status})`;
@@ -184,7 +202,14 @@ export async function processMistralOcr(options: MistralOcrOptions): Promise<Mis
 
 export async function streamMistralChat(options: MistralCompletionOptions): Promise<{ response: Response; model: string }> {
     const model = options.model || getMistralTextModel();
-    const response = await fetchMistral(buildRequestBody({ ...options, model }, true));
+    let response = await fetchMistral(buildRequestBody({ ...options, model }, true));
+    if (!response.ok && shouldAttachInlineGuardrail()) {
+        const payload = await response.clone().json().catch(() => ({}));
+        if (looksLikeUnsupportedGuardrail(payload, response.status)) {
+            console.warn("[mistralClient] Inline guardrail rejected by Mistral stream; retrying without inline guardrail. Explicit moderation remains active.");
+            response = await fetchMistral(buildRequestBody({ ...options, model }, true, false));
+        }
+    }
     return { response, model };
 }
 

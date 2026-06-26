@@ -25,11 +25,14 @@ const allMigrations = migrations
   .join('\n\n');
 
 const authService = read('src/services/authService.ts');
+const consentHelper = read('supabase/functions/_shared/consent.ts');
 const chatCore = read('supabase/functions/_shared/chatCore.ts');
 const rateLimiter = read('supabase/functions/_shared/rateLimiter.ts');
 const resetStudentPassword = read('supabase/functions/resetStudentPassword/index.ts');
 const generateImage = read('supabase/functions/generateImage/index.ts');
 const analyzeDrawing = read('supabase/functions/analyzeDrawing/index.ts');
+const growthRecommendation = read('supabase/functions/growthRecommendation/index.ts');
+const trackClickEvent = read('supabase/functions/trackClickEvent/index.ts');
 
 assert.match(
   securityMigration,
@@ -80,11 +83,15 @@ assert.match(
 );
 
 assert.match(chatCore, /ensureAiInteractionConsent/, 'chat endpoints must enforce AI consent in shared validation');
+assert.match(consentHelper, /processing_restricted/, 'AI consent helper must enforce processing restriction before provider calls');
+assert.match(consentHelper, /"processing_restricted"/, 'AI consent helper must return a processing_restricted error code');
 assert.match(chatCore, /MAX_GAME_CONTEXT_LENGTH/, 'chat core must bound gameContext size');
 assert.doesNotMatch(chatCore, /roleId === "game-programmeur" \|\| hasGameContext/, 'gameContext alone must not select the expensive code path');
 assert.doesNotMatch(chatCore, /50_000/, 'chat core must not allow 50k output tokens from client-controlled context');
 assert.match(generateImage, /ensureAiInteractionConsent/, 'generateImage must enforce AI consent server-side');
 assert.match(analyzeDrawing, /ensureAiInteractionConsent/, 'analyzeDrawing must enforce AI consent server-side');
+assert.match(growthRecommendation, /ensureAiInteractionConsent/, 'growthRecommendation must enforce AI consent/restriction server-side');
+assert.match(trackClickEvent, /processing_restricted/, 'analytics tracking must skip authenticated users with processing restriction');
 
 assert.match(
   resetStudentPassword,

@@ -239,6 +239,9 @@ CREATE POLICY "users_delete_teacher_only"
   FOR DELETE
   USING (public.is_teacher_in_school(school_id));
 
+GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE public.users TO authenticated;
+GRANT ALL ON TABLE public.users TO service_role;
+
 -- ---------------------------------------------------------------------------
 -- AI oversight and audit logs: use trusted app metadata + MFA + school scope
 -- ---------------------------------------------------------------------------

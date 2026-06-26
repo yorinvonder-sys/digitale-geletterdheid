@@ -20,6 +20,7 @@ import { countTextChars, logAiUsageEvent, resolveAiRequestId } from "../_shared/
 import { buildMistralMessages, completeMistralChat, getMistralTextModel } from "../_shared/mistralClient.ts";
 import { filterAiOutput } from "../_shared/outputFilter.ts";
 import { redactPii } from "../_shared/piiRedactor.ts";
+import { moderateMistralText } from "../_shared/moderationClient.ts";
 
 const MAX_REQUEST_BYTES = 8_000;
 
@@ -224,6 +225,38 @@ Deno.serve(async (req: Request) => {
             parts: turn.parts.map((part) => ({ text: redactPii(part.text).redacted })),
         }));
 
+        const moderationInput = [
+            ...redactedHistory.flatMap((turn) => turn.parts.map((part) => part.text)),
+            redactedMessage,
+        ].filter(Boolean).join("\n\n");
+        const inputModeration = await moderateMistralText(moderationInput);
+        if (!inputModeration.safe) {
+            logAiUsageEvent({
+                requestId,
+                endpoint: "demo-chat",
+                provider: "mistral",
+                model: getMistralTextModel(),
+                status: "blocked",
+                inputChars: moderationInput.length,
+                historyChars: countTextChars(redactedHistory),
+                metadata: {
+                    reason: "mistral_moderation_input",
+                    moderation_category: inputModeration.category ?? "unknown",
+                    moderation_violated: inputModeration.violated,
+                    moderation_fail_closed: Boolean(inputModeration.failClosed),
+                },
+            }).catch((err) => console.error("[demo-chat] Usage log error:", err));
+
+            return new Response(
+                JSON.stringify({
+                    error: "blocked",
+                    reason: inputModeration.fallback || "Je bericht kan niet veilig worden verwerkt.",
+                    remaining: Math.max(rateCheck.remaining, 0),
+                }),
+                { status: 422, headers: responseHeaders }
+            );
+        }
+
         const contents = [
             ...redactedHistory,
             { role: "user", parts: [{ text: redactedMessage }] },
@@ -234,20 +267,30 @@ Deno.serve(async (req: Request) => {
             maxTokens: 512,
         });
 
-        const outputCheck = filterAiOutput(result.text);
-        const text = outputCheck.safe ? result.text : outputCheck.filtered!;
+        const outputModeration = await moderateMistralText(result.text);
+        const moderatedText = outputModeration.safe ? result.text : (outputModeration.fallback || "");
+        const outputCheck = outputModeration.safe ? filterAiOutput(result.text) : { safe: true } as ReturnType<typeof filterAiOutput>;
+        const text = outputCheck.safe ? moderatedText : outputCheck.filtered!;
 
         logAiUsageEvent({
             requestId,
             endpoint: "demo-chat",
             provider: "mistral",
             model: result.model,
-            status: "ok",
+            status: outputModeration.safe && outputCheck.safe ? "ok" : "blocked",
             inputChars: countTextChars(contents) + DEMO_SYSTEM_INSTRUCTION.length,
             historyChars: countTextChars(redactedHistory),
             outputChars: text.length,
             usagePayload: result.usagePayload,
-            metadata: { remaining: Math.max(rateCheck.remaining, 0) },
+            metadata: {
+                remaining: Math.max(rateCheck.remaining, 0),
+                moderation_stage: "output",
+                moderation_category: outputModeration.category ?? "safe",
+                moderation_violated: outputModeration.violated,
+                moderation_fail_closed: Boolean(outputModeration.failClosed),
+                moderation_log_only: outputModeration.logOnlyCategories.join(","),
+                output_filter: outputCheck.safe ? "safe" : outputCheck.category,
+            },
         }).catch((err) => console.error("[demo-chat] Usage log error:", err));
 
         return new Response(

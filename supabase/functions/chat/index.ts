@@ -18,6 +18,7 @@ import {
 } from "../_shared/chatCore.ts";
 import { buildMistralMessages, completeMistralChat } from "../_shared/mistralClient.ts";
 import { filterAiOutput } from "../_shared/outputFilter.ts";
+import { moderateMistralText } from "../_shared/moderationClient.ts";
 import { detectAndLogStepComplete } from "../_shared/stepCompleteDetector.ts";
 import { countTextChars, logAiUsageEvent } from "../_shared/aiUsageLogger.ts";
 
@@ -67,17 +68,24 @@ Deno.serve(async (req: Request) => {
 
         const rawText = result.text;
 
-        // Post-processing safety filter for minors
-        const filterResult = filterAiOutput(rawText);
-        const text = filterResult.safe ? rawText : (filterResult.filtered || "");
-        console.log("[chat] Step 5: Success, text length:", text.length, filterResult.safe ? "" : `(filtered: ${filterResult.category})`);
+        const moderationResult = await moderateMistralText(rawText);
+        const moderatedText = moderationResult.safe ? rawText : (moderationResult.fallback || "");
+
+        // Post-processing safety filter for minors, kept as local fallback.
+        const filterResult = moderationResult.safe ? filterAiOutput(rawText) : { safe: true } as ReturnType<typeof filterAiOutput>;
+        const text = filterResult.safe ? moderatedText : (filterResult.filtered || "");
+        console.log(
+            "[chat] Step 5: Success, text length:",
+            text.length,
+            moderationResult.safe && filterResult.safe ? "" : `(filtered: ${moderationResult.category ?? filterResult.category})`,
+        );
 
         logAiUsageEvent({
             requestId: validated.requestId,
             endpoint: "chat",
             provider: "mistral",
             model: result.model,
-            status: filterResult.safe ? "ok" : "blocked",
+            status: moderationResult.safe && filterResult.safe ? "ok" : "blocked",
             userId: validated.userId,
             schoolId: validated.schoolId,
             inputChars,
@@ -89,6 +97,11 @@ Deno.serve(async (req: Request) => {
                 role_id: validated.body.roleId,
                 mission_id: validated.body.missionId,
                 finish_reason: (result.usagePayload as any)?.choices?.[0]?.finish_reason,
+                moderation_stage: "output",
+                moderation_category: moderationResult.category ?? "safe",
+                moderation_violated: moderationResult.violated,
+                moderation_fail_closed: Boolean(moderationResult.failClosed),
+                moderation_log_only: moderationResult.logOnlyCategories.join(","),
                 output_filter: filterResult.safe ? "safe" : filterResult.category,
             },
         }).catch((err) => console.error("[chat] Usage log error:", err));

@@ -1,6 +1,9 @@
 import { spawnSync } from 'node:child_process';
+import { readFileSync, readdirSync } from 'node:fs';
 
 const dbContainer = findSupabaseDbContainer();
+const processingRestrictionMigration = findLatestProcessingRestrictionMigration();
+const processingRestrictionSql = readFileSync(processingRestrictionMigration, 'utf8');
 
 const sql = String.raw`
 \set ON_ERROR_STOP on
@@ -9,6 +12,8 @@ const sql = String.raw`
 \pset fieldsep ' | '
 
 BEGIN;
+
+${processingRestrictionSql}
 
 CREATE TEMP TABLE rls_function_test_results (
   test_name text PRIMARY KEY,
@@ -41,7 +46,8 @@ WHERE n.nspname = 'public'
     'is_teacher',
     'is_teacher_in_school',
     'get_caller_app_role',
-    'get_caller_school_id'
+    'get_caller_school_id',
+    'current_user_processing_restricted'
   );
 
 DELETE FROM public.users
@@ -99,6 +105,12 @@ INSERT INTO public.users (
   ('00000000-0000-4000-8000-000000000005', '00000000-0000-4000-8000-000000000005', 'rls-legacy-admin@example.test', 'Legacy Admin', 'admin', 'school-a', null, '{"xp":0}'::jsonb),
   ('00000000-0000-4000-8000-000000000006', '00000000-0000-4000-8000-000000000006', 'rls-user-meta-spoof@example.test', 'Spoofed Student', 'student', 'school-a', 'A1', '{"xp":0}'::jsonb);
 
+UPDATE public.users
+SET processing_restricted = true,
+    processing_restricted_at = now(),
+    processing_restricted_reason = 'rls_function_test'
+WHERE id = '00000000-0000-4000-8000-000000000002';
+
 INSERT INTO public.student_consents (
   student_id,
   school_id,
@@ -110,6 +122,17 @@ INSERT INTO public.student_consents (
 ) VALUES
   ('00000000-0000-4000-8000-000000000001', 'school-a', 'ai_interaction', true, 'parent', now(), '1.0'),
   ('00000000-0000-4000-8000-000000000002', 'school-b', 'ai_interaction', false, 'parent', now(), '1.0');
+
+INSERT INTO public.mission_progress (user_id, mission_id, school_id, progress_data, status)
+VALUES (
+  '00000000-0000-4000-8000-000000000002',
+  'restricted-existing',
+  'school-b',
+  '{"step":1}'::jsonb,
+  'in_progress'
+)
+ON CONFLICT (user_id, mission_id)
+DO UPDATE SET progress_data = EXCLUDED.progress_data, status = EXCLUDED.status;
 
 SET LOCAL ROLE authenticated;
 
@@ -237,7 +260,179 @@ SELECT
     AND public.has_student_consent('00000000-0000-4000-8000-000000000001', 'ai_interaction', '2.0') = false,
   'AI consent helper should require granted=true, not revoked, matching version';
 
+INSERT INTO rls_function_test_results
+SELECT
+  'student_a_processing_restriction_helper_false',
+  public.current_user_processing_restricted() = false,
+  'unrestricted student should not be marked processing restricted';
+
+SET LOCAL request.jwt.claim.sub = '00000000-0000-4000-8000-000000000002';
+SET LOCAL request.jwt.claims = '{"sub":"00000000-0000-4000-8000-000000000002","role":"authenticated","aal":"aal1"}';
+
+INSERT INTO rls_function_test_results
+SELECT
+  'restricted_student_reads_own_restriction_status',
+  public.current_user_processing_restricted() = true
+    AND EXISTS (
+      SELECT 1
+      FROM public.users
+      WHERE id = '00000000-0000-4000-8000-000000000002'
+        AND processing_restricted = true
+    ),
+  'restricted student should still read own profile/restriction status';
+
+DO $restriction_write_block$
+DECLARE
+  v_mission_insert_blocked boolean := false;
+  v_mission_update_blocked boolean := false;
+  v_feedback_insert_blocked boolean := false;
+  v_nulmeting_insert_blocked boolean := false;
+  v_growth_insert_blocked boolean := false;
+  v_update_rows integer := 0;
+BEGIN
+  BEGIN
+    INSERT INTO public.mission_progress (user_id, mission_id, school_id, progress_data, status)
+    VALUES (
+      '00000000-0000-4000-8000-000000000002',
+      'restricted-new',
+      'school-b',
+      '{}'::jsonb,
+      'in_progress'
+    );
+  EXCEPTION
+    WHEN insufficient_privilege OR check_violation THEN
+      v_mission_insert_blocked := true;
+  END;
+
+  BEGIN
+    UPDATE public.mission_progress
+    SET progress_data = '{"step":2}'::jsonb
+    WHERE user_id = '00000000-0000-4000-8000-000000000002'
+      AND mission_id = 'restricted-existing';
+
+    GET DIAGNOSTICS v_update_rows = ROW_COUNT;
+    v_mission_update_blocked := v_update_rows = 0;
+  EXCEPTION
+    WHEN insufficient_privilege OR check_violation THEN
+      v_mission_update_blocked := true;
+  END;
+
+  BEGIN
+    INSERT INTO public.feedback (user_id, user_name, user_class, school_id, message)
+    VALUES (
+      '00000000-0000-4000-8000-000000000002',
+      'Student B',
+      'B1',
+      'school-b',
+      'restricted feedback should not persist'
+    );
+  EXCEPTION
+    WHEN insufficient_privilege OR check_violation THEN
+      v_feedback_insert_blocked := true;
+  END;
+
+  BEGIN
+    INSERT INTO public.nulmeting_results (
+      user_id,
+      overall_score,
+      niveau,
+      total_time_seconds,
+      score_digitale_systemen,
+      score_media_en_ai,
+      score_programmeren,
+      score_veiligheid_privacy,
+      score_welzijn_maatschappij
+    )
+    VALUES (
+      '00000000-0000-4000-8000-000000000002',
+      50,
+      'basis',
+      300,
+      50,
+      50,
+      50,
+      50,
+      50
+    );
+  EXCEPTION
+    WHEN insufficient_privilege OR check_violation THEN
+      v_nulmeting_insert_blocked := true;
+  END;
+
+  BEGIN
+    INSERT INTO public.growth_recommendations (
+      user_id,
+      school_year,
+      school_id,
+      recommendation_text,
+      focus_domains,
+      input_context,
+      model_version
+    )
+    VALUES (
+      '00000000-0000-4000-8000-000000000002',
+      2026,
+      'school-b',
+      'restricted recommendation should not persist',
+      ARRAY['mediaEnAI'],
+      '{}'::jsonb,
+      'test-model'
+    );
+  EXCEPTION
+    WHEN insufficient_privilege OR check_violation THEN
+      v_growth_insert_blocked := true;
+  END;
+
+  INSERT INTO rls_function_test_results(test_name, passed, detail)
+  VALUES
+    (
+      'restricted_student_cannot_insert_mission_progress',
+      v_mission_insert_blocked
+        AND NOT EXISTS (
+          SELECT 1 FROM public.mission_progress
+          WHERE user_id = '00000000-0000-4000-8000-000000000002'
+            AND mission_id = 'restricted-new'
+        ),
+      'restricted student should not create new mission progress'
+    ),
+    (
+      'restricted_student_cannot_update_mission_progress',
+      v_mission_update_blocked
+        AND EXISTS (
+          SELECT 1 FROM public.mission_progress
+          WHERE user_id = '00000000-0000-4000-8000-000000000002'
+            AND mission_id = 'restricted-existing'
+            AND progress_data = '{"step":1}'::jsonb
+        ),
+      'restricted student should not update existing mission progress'
+    ),
+    (
+      'restricted_student_cannot_insert_feedback',
+      v_feedback_insert_blocked,
+      'restricted student should not submit new feedback'
+    ),
+    (
+      'restricted_student_cannot_insert_nulmeting',
+      v_nulmeting_insert_blocked,
+      'restricted student should not create a new nulmeting result'
+    ),
+    (
+      'restricted_student_cannot_insert_growth_recommendation',
+      v_growth_insert_blocked,
+      'restricted student should not create a growth recommendation directly'
+    );
+END;
+$restriction_write_block$;
+
 RESET ROLE;
+
+INSERT INTO rls_function_test_results
+SELECT
+  'processing_restriction_helper_not_public',
+  has_function_privilege('anon', 'public.current_user_processing_restricted()', 'execute') = false
+    AND has_function_privilege('authenticated', 'public.current_user_processing_restricted()', 'execute') = true
+    AND has_function_privilege('service_role', 'public.current_user_processing_restricted()', 'execute') = true,
+  'processing restriction helper should not be callable by anon';
 
 INSERT INTO rls_function_test_results
 SELECT
@@ -300,7 +495,8 @@ SELECT
           'is_teacher',
           'is_teacher_in_school',
           'get_caller_app_role',
-          'get_caller_school_id'
+          'get_caller_school_id',
+          'current_user_processing_restricted'
         )
     )
     EXCEPT
@@ -328,7 +524,8 @@ SELECT
         'is_teacher',
         'is_teacher_in_school',
         'get_caller_app_role',
-        'get_caller_school_id'
+        'get_caller_school_id',
+        'current_user_processing_restricted'
       )
   ),
   'test should not alter tracked function grants';
@@ -392,6 +589,7 @@ if (failed) {
 console.log('RLS function checks passed; transaction rolled back.');
 
 function findSupabaseDbContainer() {
+  const requestedContainer = process.env.RLS_DB_CONTAINER?.trim();
   const ps = spawnSync('docker', [
     'ps',
     '--format',
@@ -415,6 +613,13 @@ function findSupabaseDbContainer() {
     .map((line) => line.trim())
     .filter(Boolean);
 
+  if (requestedContainer) {
+    if (containers.includes(requestedContainer)) {
+      return requestedContainer;
+    }
+    throw new Error(`Requested RLS_DB_CONTAINER=${requestedContainer} is not running.`);
+  }
+
   const exact = containers.find((name) => name === 'supabase_db_ai-lab---future-architect');
   const container = exact ?? containers[0];
 
@@ -423,4 +628,17 @@ function findSupabaseDbContainer() {
   }
 
   return container;
+}
+
+function findLatestProcessingRestrictionMigration() {
+  const migration = readdirSync('supabase/migrations')
+    .filter((name) => name.endsWith('_enforce_processing_restriction.sql'))
+    .sort()
+    .at(-1);
+
+  if (!migration) {
+    throw new Error('Missing enforce_processing_restriction migration.');
+  }
+
+  return `supabase/migrations/${migration}`;
 }

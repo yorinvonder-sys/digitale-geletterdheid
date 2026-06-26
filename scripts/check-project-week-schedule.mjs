@@ -58,13 +58,31 @@ const datedContainers = [
 assert.equal(
     getProjectWeekForDate(new Date('2026-12-15T12:00:00+01:00'), datedContainers),
     2,
-    'dated custom containers should use sortOrder + 1'
+    'dated custom containers should use their 1-based dashboard position'
 );
 
 assert.equal(
     getProjectWeekForDate(new Date('2027-01-15T12:00:00+01:00'), datedContainers),
     2,
     'undated gaps should fall back to rough school blocks'
+);
+
+const weeklyLessonContainers = Array.from({ length: 40 }, (_, index) => ({
+    sortOrder: index,
+    startDate: index === 17 ? '2027-01-15' : undefined,
+    endDate: index === 17 ? '2027-01-21' : undefined,
+}));
+
+assert.equal(
+    getProjectWeekForDate(new Date('2027-01-16T12:00:00+01:00'), weeklyLessonContainers),
+    18,
+    'weekly lesson containers should map dated rows to their 1-based dashboard position'
+);
+
+assert.equal(
+    getProjectWeekForDate(new Date('2026-06-15T12:00:00+02:00'), datedContainers.slice(0, 2)),
+    2,
+    'fallback project week should clamp to the available custom container count'
 );
 
 console.log('Projectweek schedule checks passed');

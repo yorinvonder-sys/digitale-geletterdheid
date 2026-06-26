@@ -21,6 +21,7 @@ import {
 } from "../_shared/chatCore.ts";
 import { buildMistralMessages, streamMistralChat } from "../_shared/mistralClient.ts";
 import { filterStreamChunk } from "../_shared/outputFilter.ts";
+import { moderateMistralText } from "../_shared/moderationClient.ts";
 import { detectAndLogStepComplete } from "../_shared/stepCompleteDetector.ts";
 import { countTextChars, logAiUsageEvent } from "../_shared/aiUsageLogger.ts";
 
@@ -124,11 +125,13 @@ Deno.serve(async (req: Request) => {
             let accumulatedText = "";
             let streamBlocked = false;
             let usagePayload: unknown = null;
+            let moderationCategory = "safe";
+            let moderationFailClosed = false;
+            let moderationLogOnly = "";
             try {
                 while (true) {
                     const { done, value } = await reader.read();
                     if (done) break;
-                    if (streamBlocked) continue; // drain remaining chunks silently
 
                     buffer += decoder.decode(value, { stream: true });
                     const lines = buffer.split("\n");
@@ -151,23 +154,6 @@ Deno.serve(async (req: Request) => {
                             const text = chunk?.choices?.[0]?.delta?.content || chunk?.choices?.[0]?.message?.content;
                             if (text) {
                                 accumulatedText += text;
-
-                                // Check safety filter every 200 chars to limit overhead
-                                if (accumulatedText.length % 200 < text.length) {
-                                    const filterResult = filterStreamChunk(accumulatedText);
-                                    if (!filterResult.safe) {
-                                        console.warn(`[chatStream] Blocked output — category: ${filterResult.category}`);
-                                        controller.enqueue(
-                                            encoder.encode(`data: ${JSON.stringify({ text: `\n\n${filterResult.filtered}` })}\n\n`)
-                                        );
-                                        streamBlocked = true;
-                                        break;
-                                    }
-                                }
-
-                                controller.enqueue(
-                                    encoder.encode(`data: ${JSON.stringify({ text })}\n\n`)
-                                );
                             }
                         } catch {
                             // Skip malformed JSON chunks
@@ -190,9 +176,6 @@ Deno.serve(async (req: Request) => {
                             const text = chunk?.choices?.[0]?.delta?.content || chunk?.choices?.[0]?.message?.content;
                             if (text) {
                                 accumulatedText += text;
-                                controller.enqueue(
-                                    encoder.encode(`data: ${JSON.stringify({ text })}\n\n`)
-                                );
                             }
                         } catch {
                             // Skip
@@ -200,8 +183,35 @@ Deno.serve(async (req: Request) => {
                     }
                 }
 
-                // Server-side STEP_COMPLETE detection after stream ends (EU AI Act Art. 12)
+                let approvedText = accumulatedText;
                 if (accumulatedText) {
+                    const moderationResult = await moderateMistralText(accumulatedText);
+                    moderationCategory = moderationResult.category ?? "safe";
+                    moderationFailClosed = Boolean(moderationResult.failClosed);
+                    moderationLogOnly = moderationResult.logOnlyCategories.join(",");
+                    if (!moderationResult.safe) {
+                        console.warn(`[chatStream] Blocked output — category: ${moderationResult.category ?? "unknown"}`);
+                        approvedText = moderationResult.fallback || "";
+                        streamBlocked = true;
+                    } else {
+                        const filterResult = filterStreamChunk(accumulatedText);
+                        if (!filterResult.safe) {
+                            console.warn(`[chatStream] Blocked output — category: ${filterResult.category}`);
+                            approvedText = filterResult.filtered || "";
+                            moderationCategory = filterResult.category ?? "local_output_filter";
+                            streamBlocked = true;
+                        }
+                    }
+                }
+
+                if (approvedText) {
+                    controller.enqueue(
+                        encoder.encode(`data: ${JSON.stringify({ text: approvedText })}\n\n`)
+                    );
+                }
+
+                // Server-side STEP_COMPLETE detection after safety approval (EU AI Act Art. 12)
+                if (accumulatedText && !streamBlocked) {
                     detectAndLogStepComplete(accumulatedText, validated.userId, validated.body.roleId, validated.body.missionId)
                         .catch((err) => console.error("[chatStream] STEP_COMPLETE log error:", err));
                 }
@@ -223,6 +233,10 @@ Deno.serve(async (req: Request) => {
                         role_id: validated.body.roleId,
                         mission_id: validated.body.missionId,
                         stream_blocked: streamBlocked,
+                        moderation_stage: "output",
+                        moderation_category: moderationCategory,
+                        moderation_fail_closed: moderationFailClosed,
+                        moderation_log_only: moderationLogOnly,
                     },
                 }).catch((err) => console.error("[chatStream] Usage log error:", err));
 
