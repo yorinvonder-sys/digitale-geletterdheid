@@ -9,17 +9,43 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
 const STEP_COMPLETE_REGEX = /---STEP_COMPLETE:(\d+)---/g;
+const DEFAULT_MISSION_STEP_COUNT = 3;
+const MISSION_STEP_COUNTS: Record<string, number> = {
+    "cloud-cleaner": 0,
+    "layout-doctor": 0,
+    "pitch-police": 0,
+    "ipad-print-instructies": 1,
+    "innovation-lab": 1,
+    "portfolio-builder": 1,
+    "pitch-perfect": 1,
+    "reflection-report": 1,
+    "research-project": 2,
+    "website-bouwer": 4,
+    "game-programmeur": 5,
+    "bonus-extra-pagina": 5,
+};
 
 export interface StepCompleteEvent {
     stepNumber: number;
+}
+
+export function resolveMissionStepCount(roleId: string, missionId?: string): number {
+    const missionLimit = missionId ? MISSION_STEP_COUNTS[missionId] : undefined;
+    if (Number.isInteger(missionLimit) && missionLimit >= 0) return missionLimit;
+
+    const roleLimit = MISSION_STEP_COUNTS[roleId];
+    if (Number.isInteger(roleLimit) && roleLimit >= 0) return roleLimit;
+
+    return DEFAULT_MISSION_STEP_COUNT;
 }
 
 /**
  * Detecteert STEP_COMPLETE markers in AI response tekst.
  * Retourneert de gevonden step numbers (kan meerdere zijn).
  */
-export function detectStepCompleteMarkers(text: string): StepCompleteEvent[] {
+export function detectStepCompleteMarkers(text: string, maxStepNumber = DEFAULT_MISSION_STEP_COUNT): StepCompleteEvent[] {
     const events: StepCompleteEvent[] = [];
+    const seenSteps = new Set<number>();
     let match: RegExpExecArray | null;
 
     // Reset regex state
@@ -27,7 +53,13 @@ export function detectStepCompleteMarkers(text: string): StepCompleteEvent[] {
 
     while ((match = STEP_COMPLETE_REGEX.exec(text)) !== null) {
         const stepNumber = parseInt(match[1], 10);
-        if (Number.isFinite(stepNumber) && stepNumber >= 0 && stepNumber <= 100) {
+        if (
+            Number.isSafeInteger(stepNumber)
+            && stepNumber >= 1
+            && stepNumber <= maxStepNumber
+            && !seenSteps.has(stepNumber)
+        ) {
+            seenSteps.add(stepNumber);
             events.push({ stepNumber });
         }
     }
@@ -50,7 +82,7 @@ export async function detectAndLogStepComplete(
     roleId: string,
     missionId?: string,
 ): Promise<StepCompleteEvent[]> {
-    const events = detectStepCompleteMarkers(text);
+    const events = detectStepCompleteMarkers(text, resolveMissionStepCount(roleId, missionId));
 
     if (events.length === 0) return events;
 

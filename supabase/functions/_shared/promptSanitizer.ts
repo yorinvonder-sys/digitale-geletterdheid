@@ -124,13 +124,21 @@ export interface SanitizeResult {
     wasTruncated: boolean;
 }
 
-export function sanitizePrompt(input: string): SanitizeResult {
-    const wasTruncated = input.length > MAX_PROMPT_LENGTH;
-    let sanitized = wasTruncated ? input.slice(0, MAX_PROMPT_LENGTH) : input;
+export interface SanitizeOptions {
+    maxLength?: number;
+    maxNewlines?: number;
+}
+
+export function sanitizePrompt(input: string, options: SanitizeOptions = {}): SanitizeResult {
+    const maxLength = Math.max(0, Math.floor(options.maxLength ?? MAX_PROMPT_LENGTH));
+    const maxNewlines = Math.max(0, Math.floor(options.maxNewlines ?? MAX_NEWLINES));
+    let wasTruncated = input.length > maxLength;
+    let sanitized = wasTruncated ? input.slice(0, maxLength) : input;
 
     const newlineCount = (sanitized.match(/\n/g) || []).length;
-    if (newlineCount > MAX_NEWLINES) {
-        sanitized = sanitized.split('\n').slice(0, MAX_NEWLINES).join('\n');
+    if (newlineCount > maxNewlines) {
+        sanitized = sanitized.split('\n').slice(0, maxNewlines).join('\n');
+        wasTruncated = true;
     }
 
     let normalised = sanitized;

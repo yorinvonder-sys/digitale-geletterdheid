@@ -186,6 +186,9 @@ export class Chat {
 
   private buildEdgeErrorMessage(status: number, error?: EdgeErrorPayload): string {
     if (status === 401) return 'Je sessie is verlopen. Log opnieuw in.';
+    if (status === 403 && error?.error === 'processing_restricted') {
+      return 'Verwerking is beperkt voor dit account. Neem contact op met je schoolbeheerder of FG.';
+    }
     if (status === 403) return error?.reason || 'Deze AI-functie is niet toegestaan vanaf deze omgeving.';
     if (status === 422) return error?.reason || 'Je bericht kon niet worden verwerkt.';
     if (status === 429) return error?.reason || 'Te veel AI-verzoeken. Wacht even en probeer opnieuw.';
@@ -199,7 +202,7 @@ export class Chat {
 
   private shouldBubbleError(error: unknown): boolean {
     const message = error instanceof Error ? error.message : String(error);
-    return /sessie|log opnieuw in|niet toegestaan|niet gekoppeld|kon niet worden verwerkt|te veel ai-verzoeken/i.test(message);
+    return /sessie|log opnieuw in|niet toegestaan|niet gekoppeld|kon niet worden verwerkt|te veel ai-verzoeken|verwerking is beperkt/i.test(message);
   }
 
   private async performRequestWithRoleFallback(
@@ -799,8 +802,12 @@ export const analyzeDrawingWithAI = async (
     });
 
     if (!response.ok) {
-      console.warn('Drawing analysis API failed, falling back to local analysis');
-      throw new Error('API not available');
+      const payload = await response.json().catch(() => ({}));
+      const message = payload?.error === 'processing_restricted'
+        ? 'Verwerking is beperkt voor dit account. Neem contact op met je schoolbeheerder of FG.'
+        : payload?.reason || payload?.error || 'API not available';
+      console.warn('Drawing analysis API failed:', message);
+      throw new Error(message);
     }
 
     const data = await response.json();

@@ -1734,6 +1734,51 @@ const AccessoryLayer = memo<{
                     ))}
                 </group>
             );
+        case 'pet_duck':
+            return (
+                <group position={[0.50, 0.10, 0.28]}>
+                    {/* Rond/ovaal geel lichaam */}
+                    <mesh position={[0, 0.12, 0]}>
+                        <boxGeometry args={[0.20, 0.13, 0.16]} />
+                        <meshStandardMaterial color="#F5C842" roughness={0.88} />
+                    </mesh>
+                    {/* Hoofd (iets kleiner, licht naar voren) */}
+                    <mesh position={[0, 0.23, 0.08]}>
+                        <boxGeometry args={[0.13, 0.12, 0.13]} />
+                        <meshStandardMaterial color="#F5C842" roughness={0.86} />
+                    </mesh>
+                    {/* Oranje pil-snavel */}
+                    <mesh position={[0, 0.22, 0.18]} rotation={[0.15, 0, 0]}>
+                        <boxGeometry args={[0.08, 0.04, 0.07]} />
+                        <meshStandardMaterial color="#E8871A" roughness={0.78} />
+                    </mesh>
+                    {/* Linker oogje */}
+                    <mesh position={[-0.04, 0.26, 0.15]}>
+                        <boxGeometry args={[0.025, 0.025, 0.01]} />
+                        {matBlk}
+                    </mesh>
+                    {/* Rechter oogje */}
+                    <mesh position={[0.04, 0.26, 0.15]}>
+                        <boxGeometry args={[0.025, 0.025, 0.01]} />
+                        {matBlk}
+                    </mesh>
+                    {/* Klein staartje omhoog */}
+                    <mesh position={[0, 0.18, -0.11]} rotation={[-0.6, 0, 0]}>
+                        <boxGeometry args={[0.06, 0.10, 0.03]} />
+                        <meshStandardMaterial color="#E8C030" roughness={0.9} />
+                    </mesh>
+                    {/* Linker pootje */}
+                    <mesh position={[-0.055, 0.04, 0.04]}>
+                        <boxGeometry args={[0.04, 0.05, 0.08]} />
+                        <meshStandardMaterial color="#E8871A" roughness={0.82} />
+                    </mesh>
+                    {/* Rechter pootje */}
+                    <mesh position={[0.055, 0.04, 0.04]}>
+                        <boxGeometry args={[0.04, 0.05, 0.08]} />
+                        <meshStandardMaterial color="#E8871A" roughness={0.82} />
+                    </mesh>
+                </group>
+            );
         default:
             return null;
     }

@@ -4,6 +4,7 @@ import { getAllMissionIds, getPeriodConfig } from '@/config/curriculum';
 import { ROLES } from '@/config/agents';
 import { getMissionMeta } from '@/config/slo-kerndoelen-mapping';
 import type { SloKerndoelCode } from '@/config/sloKerndoelen';
+import type { ContainerConfig, ContainerMissionConfig } from '@/config/containerTypes';
 
 export interface Mission {
     id: string;
@@ -159,52 +160,58 @@ export const getMissionTooltipInfo = (
     return fallback || undefined;
 };
 
+function buildMissionFromId(
+    missionId: string,
+    number: string,
+    fallbackSloKerndoelen: SloKerndoelCode[],
+    isReview: boolean,
+): Mission {
+    const role = ROLES.find(r => r.id === missionId);
+    const meta = getMissionMeta(missionId);
+    const overrides = getMissionOverride(missionId);
+
+    return {
+        id: missionId,
+        title: role?.title || missionId,
+        description: role?.description || '',
+        icon: role?.icon ? React.cloneElement(role.icon as React.ReactElement<{ size?: number }>, { size: 40 }) : (isReview ? <RotateCcw size={40} /> : <Puzzle size={40} />),
+        number: overrides.number || number,
+        status: 'available',
+        info: getMissionTooltipInfo(missionId, role),
+        isReview,
+        isExternal: overrides.isExternal,
+        isBonus: overrides.isBonus,
+        isHighlighted: overrides.isHighlighted,
+        classRestriction: overrides.classRestriction || meta?.classRestriction,
+        sloKerndoelen: meta?.sloKerndoelen || fallbackSloKerndoelen,
+        sloVsoKerndoelen: meta?.sloVsoKerndoelen,
+    };
+}
+
 export function buildMissionsForPeriod(yearGroup: number, period: number): Mission[] {
     const periodConfig = getPeriodConfig(yearGroup, period);
     if (!periodConfig) return [];
     const missions: Mission[] = [];
 
     for (const missionId of (periodConfig.reviewMissions || [])) {
-        const role = ROLES.find(r => r.id === missionId);
-        const meta = getMissionMeta(missionId);
-        const overrides = getMissionOverride(missionId);
-        missions.push({
-            id: missionId,
-            title: role?.title || missionId,
-            description: role?.description || '',
-            icon: role?.icon ? React.cloneElement(role.icon as React.ReactElement<{ size?: number }>, { size: 40 }) : <RotateCcw size={40} />,
-            number: 'Review',
-            status: 'available',
-            info: getMissionTooltipInfo(missionId, role),
-            isReview: true,
-            classRestriction: overrides.classRestriction || meta?.classRestriction,
-            isHighlighted: overrides.isHighlighted,
-            sloKerndoelen: meta?.sloKerndoelen || periodConfig.sloFocus,
-            sloVsoKerndoelen: meta?.sloVsoKerndoelen,
-        });
+        missions.push(buildMissionFromId(missionId, 'Review', periodConfig.sloFocus, true));
     }
 
     let missionNum = 1;
     for (const missionId of periodConfig.missions) {
-        const role = ROLES.find(r => r.id === missionId);
-        const meta = getMissionMeta(missionId);
-        const overrides = getMissionOverride(missionId);
-        missions.push({
-            id: missionId,
-            title: role?.title || missionId,
-            description: role?.description || '',
-            icon: role?.icon ? React.cloneElement(role.icon as React.ReactElement<{ size?: number }>, { size: 40 }) : <Puzzle size={40} />,
-            number: overrides.number || String(missionNum).padStart(2, '0'),
-            status: 'available',
-            info: getMissionTooltipInfo(missionId, role),
-            isReview: false,
-            isExternal: overrides.isExternal,
-            isBonus: overrides.isBonus,
-            classRestriction: overrides.classRestriction || meta?.classRestriction,
-            sloKerndoelen: meta?.sloKerndoelen || periodConfig.sloFocus,
-            sloVsoKerndoelen: meta?.sloVsoKerndoelen,
-        });
+        missions.push(buildMissionFromId(missionId, String(missionNum).padStart(2, '0'), periodConfig.sloFocus, false));
         missionNum++;
     }
     return missions;
+}
+
+export function buildMissionsForContainer(container: ContainerConfig): Mission[] {
+    const sortedMissions = [...container.missions].sort((a, b) => a.sortOrder - b.sortOrder);
+    let missionNum = 1;
+
+    return sortedMissions.map((containerMission: ContainerMissionConfig) => {
+        const isReview = containerMission.isReview;
+        const number = isReview ? 'Review' : String(missionNum++).padStart(2, '0');
+        return buildMissionFromId(containerMission.missionId, number, container.sloFocus, isReview);
+    });
 }

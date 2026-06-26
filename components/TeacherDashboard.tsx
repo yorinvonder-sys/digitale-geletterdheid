@@ -172,9 +172,15 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ user, onUpda
         getActiveEvents(user?.schoolId).then(setActiveEvents).catch(console.error);
 
         const fetchAssessments = async () => {
-            const { data } = await supabase
+            let query = supabase
                 .from('hybrid_assessments')
-                .select('*')
+                .select('*');
+
+            if (user?.schoolId) {
+                query = query.eq('school_id', user.schoolId);
+            }
+
+            const { data } = await query
                 .order('timestamp', { ascending: false })
                 .limit(100);
             if (data) setHybridAssessments(data as unknown as HybridAssessmentRecord[]);

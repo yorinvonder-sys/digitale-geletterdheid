@@ -22,7 +22,7 @@ import { ProgressStrip } from '@/features/dashboard/ProgressStrip';
 import { MissionPreviewVisual } from '@/features/dashboard/MissionPreviewVisual';
 import { STUDENT_DASHBOARD_COLORS, PERIOD_THEME, DEFAULT_PERIOD_THEME, getYearGroupTheme, PERIOD_LEERDOELEN, type YearGroupTheme, type PeriodLeerdoel } from '@/config/dashboardThemes';
 import { MISSION_SCREENSHOTS, MISSION_PREVIEW_OVERRIDES, inferMissionPreviewConfig, missionTagFor, type MissionPreviewKind, type MissionPreviewConfig } from '@/config/missionPreviewConfig';
-import { Mission, MISSION_OVERRIDES, CURRICULUM_MISSION_IDS, getMissionOverride, getMissionTooltipInfo, buildMissionsForPeriod } from '@/utils/missionBuilder';
+import { Mission, MISSION_OVERRIDES, CURRICULUM_MISSION_IDS, getMissionOverride, getMissionTooltipInfo, buildMissionsForPeriod, buildMissionsForContainer } from '@/utils/missionBuilder';
 
 interface DashboardProps {
     onSelectModule: (moduleId: string, libraryItemData?: any) => void;
@@ -305,14 +305,47 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
     const currentYearGroup = activeYearGroup ?? 1;
     const isDeveloper = userRole === 'developer';
     const periodNaming = schoolConfig?.periodNaming || CURRICULUM.defaultPeriodNaming;
-    const activeContainer = containers?.find(c => c.sortOrder === activeWeek);
+    const sortedContainers = useMemo(
+        () => [...(containers ?? [])].sort((a, b) => a.sortOrder - b.sortOrder),
+        [containers]
+    );
+    const containerPeriodOptions = useMemo(
+        () => sortedContainers.map((container, index) => ({
+            container,
+            period: index + 1,
+            label: container.label,
+            title: container.subtitle || container.label,
+        })),
+        [sortedContainers]
+    );
+    const activeContainer = containerPeriodOptions.find(option => option.period === activeWeek)?.container;
     const containerLabel = activeContainer?.label || `${periodNaming} ${activeWeek}`;
     const yearConfig = getYearConfig(currentYearGroup);
-    const currentPeriodConfig = getPeriodConfig(currentYearGroup, activeWeek);
-    const periodTheme = containers?.length
-        ? getContainerThemeDuck(containers.find(c => c.sortOrder === activeWeek)?.colorKey)
+    const currentPeriodConfig = activeContainer ? undefined : getPeriodConfig(currentYearGroup, activeWeek);
+    const activeLearningConfig = activeContainer
+        ? {
+            subtitle: activeContainer.subtitle,
+            sloFocus: activeContainer.sloFocus,
+            sloFocusVso: activeContainer.sloFocusVso,
+        }
+        : currentPeriodConfig;
+    const periodOptions = containerPeriodOptions.length > 0
+        ? containerPeriodOptions
+        : Object.keys(yearConfig?.periods || {})
+            .map(Number)
+            .sort((a, b) => a - b)
+            .map((period) => {
+                const pConf = yearConfig?.periods[period];
+                return {
+                    period,
+                    label: `${periodNaming} ${period}`,
+                    title: pConf?.title || `${periodNaming} ${period}`,
+                };
+            });
+    const periodTheme = activeContainer
+        ? getContainerThemeDuck(activeContainer.colorKey)
         : (PERIOD_THEME[activeWeek] || DEFAULT_PERIOD_THEME);
-    const periodLeerdoel = PERIOD_LEERDOELEN[`${currentYearGroup}-${activeWeek}`];
+    const periodLeerdoel = activeContainer ? undefined : PERIOD_LEERDOELEN[`${currentYearGroup}-${activeWeek}`];
     const [showXPPopup, setShowXPPopup] = useState(false);
     const [showProfileMenu, setShowProfileMenu] = React.useState(false);
     const [showYearGroupMenu, setShowYearGroupMenu] = useState(false);
@@ -456,7 +489,9 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
     const [leerdoelenOpen, setLeerdoelenOpen] = useState(isTeacher);
 
     const currentMissions = useMemo(() => {
-        let missions = buildMissionsForPeriod(currentYearGroup, activeWeek);
+        let missions = activeContainer
+            ? buildMissionsForContainer(activeContainer)
+            : buildMissionsForPeriod(currentYearGroup, activeWeek);
 
         // Teachers and temporary launch preview can see all missions without restrictions.
         if (canBypassMissionLocks) {
@@ -488,10 +523,12 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
 
         // 2. Generic review gate: if period has reviewMissions, require them first
         const pConfig = getPeriodConfig(currentYearGroup, activeWeek);
-        const hasReviewGate = pConfig?.reviewMissions && pConfig.reviewMissions.length > 0;
+        const reviewIds = activeContainer
+            ? activeContainer.missions.filter(mission => mission.isReview).map(mission => mission.missionId)
+            : (pConfig?.reviewMissions ?? []);
+        const hasReviewGate = reviewIds.length > 0;
 
         if (hasReviewGate) {
-            const reviewIds = pConfig!.reviewMissions!;
             const completedMissions = stats?.missionsCompleted || [];
             const allReviewsDone = reviewIds.every(id => {
                 if (id === 'ipad-print-instructies' && stats?.studentClass !== 'MH1A') return true;
@@ -511,7 +548,7 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
         }
 
         return missions;
-    }, [currentYearGroup, activeWeek, stats, permissions, canBypassMissionLocks, periodNaming]);
+    }, [activeContainer, currentYearGroup, activeWeek, stats, permissions, canBypassMissionLocks, periodNaming]);
 
     // Stable callbacks for MissionCard memoization (reduces re-renders of mission grid)
     const handleInfoClick = useCallback((info: string, kerndoelen?: SloKerndoelCode[]) => {
@@ -535,18 +572,15 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
         const isLeftSwipe = distance > minSwipeDistance;
         const isRightSwipe = distance < -minSwipeDistance;
 
-        // Find next available week
-        const availableWeeks = containers?.length
-            ? containers.map(c => c.sortOrder)
-            : [1, 2, 3, 4];
+        const availableWeeks = periodOptions.length > 0 ? periodOptions.map(option => option.period) : [1];
 
-        const maxWeek = containers?.length ? Math.max(...containers.map(c => c.sortOrder)) : 4;
+        const maxWeek = Math.max(...availableWeeks);
         if (isLeftSwipe && activeWeek < maxWeek) {
             // Swipe left = next week
             const nextWeek = availableWeeks.find(w => w > activeWeek);
             if (nextWeek) setActiveWeek(nextWeek);
         }
-        const minWeek = containers?.length ? Math.min(...containers.map(c => c.sortOrder)) : 1;
+        const minWeek = Math.min(...availableWeeks);
         if (isRightSwipe && activeWeek > minWeek) {
             // Swipe right = previous week
             const prevWeek = [...availableWeeks].reverse().find(w => w < activeWeek);
@@ -734,24 +768,23 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
                         </div>
                     )}
 
-                    <div className="grid min-w-0 grid-cols-2 gap-2 rounded-full border border-duck-ink/10 bg-white p-1.5 shadow-duck-soft sm:flex-1 sm:grid-cols-4">
-                        {Object.keys(yearConfig?.periods || {}).map(Number).sort((a, b) => a - b).map((period) => {
-                            const pConf = yearConfig?.periods[period];
+                    <div className="flex min-w-0 gap-2 overflow-x-auto rounded-full border border-duck-ink/10 bg-white p-1.5 shadow-duck-soft sm:flex-1">
+                        {periodOptions.map(({ period, label, title }) => {
                             return (
                                 <button
                                     key={period}
                                     onClick={() => setActiveWeek(period)}
-                                    title={pConf?.title}
+                                    title={title}
                                     className={`min-h-[44px] min-w-0 rounded-full px-3 text-sm font-extrabold transition-colors ${activeWeek === period ? 'border border-duck-ink bg-duck-acid text-duck-ink' : 'text-duck-ink/65 hover:bg-duck-bgLight hover:text-duck-ink'}`}
                                 >
-                                    <span className="block truncate">{periodNaming} {period}</span>
+                                    <span className="block max-w-36 truncate">{label}</span>
                                 </button>
                             );
                         })}
                     </div>
                 </div>
 
-                {currentPeriodConfig && (
+                {activeLearningConfig && (
                     <button
                         type="button"
                         onClick={() => setLeerdoelenOpen(!leerdoelenOpen)}
@@ -763,19 +796,19 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
                 )}
             </section>
 
-            {leerdoelenOpen && currentPeriodConfig && (
+            {leerdoelenOpen && activeLearningConfig && (
                 <section className="mb-6 rounded-[1.5rem] border border-duck-ink/10 bg-white p-5 shadow-duck-soft">
                     <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
                         <div>
-                            <h2 className="font-display text-lg text-balance text-duck-ink">Leerdoelen {periodNaming} {activeWeek}</h2>
+                            <h2 className="font-display text-lg text-balance text-duck-ink">Leerdoelen {containerLabel}</h2>
                             <p className="mt-2 max-w-3xl text-sm font-semibold leading-relaxed text-pretty text-duck-ink/65">
                                 {periodLeerdoel
                                     ? (stats?.vsoProfile && periodLeerdoel.descriptionVso ? periodLeerdoel.descriptionVso : periodLeerdoel.description)
-                                    : currentPeriodConfig.subtitle}
+                                    : activeLearningConfig.subtitle}
                             </p>
                         </div>
                         <div className="flex flex-wrap gap-2">
-                            {(stats?.vsoProfile && currentPeriodConfig.sloFocusVso ? currentPeriodConfig.sloFocusVso : currentPeriodConfig.sloFocus).map(code => (
+                            {(stats?.vsoProfile && activeLearningConfig.sloFocusVso ? activeLearningConfig.sloFocusVso : activeLearningConfig.sloFocus).map(code => (
                                 <span key={code} className={`rounded-full border px-2.5 py-1 text-xs font-extrabold ${getKerndoelBadgeClasses(code)}`}>
                                     {code}
                                 </span>

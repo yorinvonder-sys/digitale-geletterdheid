@@ -51,6 +51,25 @@ export interface RequestRecommendationInput {
   schoolYear: number;
 }
 
+async function getFunctionErrorMessage(error: unknown, fallback: string): Promise<string> {
+  const maybeError = error as { context?: Response; message?: string } | null;
+  const context = maybeError?.context;
+  if (context instanceof Response) {
+    const payload = await context.clone().json().catch(() => ({}));
+    if (payload?.error === 'processing_restricted') {
+      return 'Verwerking is beperkt voor dit account. Neem contact op met je schoolbeheerder of FG.';
+    }
+    if (typeof payload?.reason === 'string' && payload.reason.trim()) return payload.reason;
+    if (typeof payload?.error === 'string' && payload.error.trim()) return payload.error;
+  }
+
+  if (/processing_restricted|verwerking is beperkt/i.test(maybeError?.message ?? '')) {
+    return 'Verwerking is beperkt voor dit account. Neem contact op met je schoolbeheerder of FG.';
+  }
+
+  return fallback;
+}
+
 /** Map een database rij terug naar een GrowthRecommendation object */
 function fromRow(row: GrowthRecommendationRow): GrowthRecommendation {
   return {
@@ -158,7 +177,7 @@ export async function requestRecommendation(
 
   if (error) {
     logger.error('[growthRecommendationService] requestRecommendation error:', error);
-    throw new Error('Kon geen groei-aanbeveling genereren.');
+    throw new Error(await getFunctionErrorMessage(error, 'Kon geen groei-aanbeveling genereren.'));
   }
 
   return fromRow(data as GrowthRecommendationRow);

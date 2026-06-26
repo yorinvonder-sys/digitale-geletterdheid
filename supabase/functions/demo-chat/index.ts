@@ -19,6 +19,7 @@ import { checkDurableRateLimit, rateLimitHeaders } from "../_shared/rateLimiter.
 import { countTextChars, logAiUsageEvent, resolveAiRequestId } from "../_shared/aiUsageLogger.ts";
 import { buildMistralMessages, completeMistralChat, getMistralTextModel } from "../_shared/mistralClient.ts";
 import { filterAiOutput } from "../_shared/outputFilter.ts";
+import { redactPii } from "../_shared/piiRedactor.ts";
 
 const MAX_REQUEST_BYTES = 8_000;
 
@@ -217,9 +218,15 @@ Deno.serve(async (req: Request) => {
 
     // 4. Send to Mistral
     try {
+        const redactedMessage = redactPii(validation.sanitized).redacted;
+        const redactedHistory = safeHistory.history.map((turn) => ({
+            role: turn.role,
+            parts: turn.parts.map((part) => ({ text: redactPii(part.text).redacted })),
+        }));
+
         const contents = [
-            ...safeHistory.history,
-            { role: "user", parts: [{ text: validation.sanitized }] },
+            ...redactedHistory,
+            { role: "user", parts: [{ text: redactedMessage }] },
         ];
 
         const result = await completeMistralChat({
@@ -237,7 +244,7 @@ Deno.serve(async (req: Request) => {
             model: result.model,
             status: "ok",
             inputChars: countTextChars(contents) + DEMO_SYSTEM_INSTRUCTION.length,
-            historyChars: countTextChars(safeHistory.history),
+            historyChars: countTextChars(redactedHistory),
             outputChars: text.length,
             usagePayload: result.usagePayload,
             metadata: { remaining: Math.max(rateCheck.remaining, 0) },

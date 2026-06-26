@@ -77,15 +77,15 @@ export const AiTransparencyNotice: React.FC<AiTransparencyNoticeProps> = ({
         <ul className="w-full text-left text-sm space-y-3 mb-6" style={{ color: '#445865' }}>
           <li className="flex items-start gap-2">
             <ShieldCheck size={16} className="mt-0.5 shrink-0" style={{ color: '#5F947D' }} />
-            <span>Alleen je berichttekst gaat naar de AI.</span>
+            <span>Alleen noodzakelijke opdrachtcontext gaat naar de AI.</span>
           </li>
           <li className="flex items-start gap-2">
             <ShieldCheck size={16} className="mt-0.5 shrink-0" style={{ color: '#5F947D' }} />
-            <span>De AI bewaart geen persoonlijke gegevens na de sessie.</span>
+            <span>Providergebruik en bewaartermijnen volgen de school- en providerafspraken.</span>
           </li>
           <li className="flex items-start gap-2">
             <ShieldCheck size={16} className="mt-0.5 shrink-0" style={{ color: '#5F947D' }} />
-            <span>Je gegevens blijven in Europa.</span>
+            <span>Opslag en verwerking volgen de afgesproken EER/EU-projectregio waar contractueel vastgelegd.</span>
           </li>
         </ul>
         <button

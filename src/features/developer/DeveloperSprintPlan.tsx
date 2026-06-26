@@ -650,9 +650,9 @@ export function DeveloperSprintPlan() {
             <div className="flex items-start gap-4 p-5 bg-duck-coral border border-duck-coral rounded-2xl text-white">
                 <AlertTriangle size={20} className="text-white/85 shrink-0 mt-0.5" />
                 <div>
-                    <p className="font-black text-white text-sm uppercase tracking-tight">EU AI Act - 2 augustus 2026</p>
+                    <p className="font-black text-white text-sm uppercase tracking-tight">EU AI Act - 2 december 2027</p>
                     <p className="text-[11px] text-white/85 mt-0.5">
-                        Hoog-risico verplichtingen worden dan afdwingbaar. Dit pakken we na de pilot op — staat in de achtergrondtaken.
+                        High-risk onderwijs-AI verplichtingen gelden volgens actuele Commissie-informatie vanaf dan. Art. 4 geldt al sinds 2 februari 2025; Art. 50 vanaf augustus 2026.
                     </p>
                 </div>
                 <div className="shrink-0 ml-auto text-right">

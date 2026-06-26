@@ -113,12 +113,18 @@ const SYSTEM_INSTRUCTIONS: Record<string, string> = {
  * Returns null if the roleId is not recognized.
  */
 export function getSystemInstruction(roleId: string): string | null {
-  return SYSTEM_INSTRUCTIONS[roleId] ?? null;
+  if (!hasOwnSystemInstruction(roleId)) return null;
+  return SYSTEM_INSTRUCTIONS[roleId];
 }
 
 /**
  * Check if a role ID is valid/known.
  */
 export function isValidRoleId(roleId: string): boolean {
-  return roleId in SYSTEM_INSTRUCTIONS;
+  return hasOwnSystemInstruction(roleId);
+}
+
+function hasOwnSystemInstruction(roleId: string): boolean {
+  return Object.prototype.hasOwnProperty.call(SYSTEM_INSTRUCTIONS, roleId)
+    && typeof SYSTEM_INSTRUCTIONS[roleId] === "string";
 }

@@ -16,6 +16,7 @@ const DEFAULT_BFL_BASE_URL = "https://api.eu.bfl.ai";
 const DEFAULT_BFL_MODEL = "flux-2-klein-9b";
 const MAX_POLL_ATTEMPTS = 60;
 const POLL_INTERVAL_MS = 500;
+const DEFAULT_ALLOWED_BFL_HOSTS = ["api.eu.bfl.ai"];
 
 const ASPECT_RATIO_SIZES: Record<string, { width: number; height: number }> = {
     "1:1": { width: 1024, height: 1024 },
@@ -42,6 +43,105 @@ export function getBflImageModel(): string {
     return (Deno.env.get("BFL_IMAGE_MODEL") || DEFAULT_BFL_MODEL).trim();
 }
 
+function normalizeHostname(hostname: string): string {
+    return hostname.trim().toLowerCase().replace(/^\[|\]$/g, "").replace(/\.$/, "");
+}
+
+function getAllowedBflHosts(): Set<string> {
+    const hosts = new Set(DEFAULT_ALLOWED_BFL_HOSTS);
+
+    try {
+        hosts.add(normalizeHostname(new URL(getBflBaseUrl()).hostname));
+    } catch {
+        // Invalid base URL is rejected when validateBflFetchUrl sees the full URL.
+    }
+
+    const configuredHosts = (Deno.env.get("BFL_ALLOWED_FETCH_HOSTS") || "")
+        .split(",")
+        .map((host) => normalizeHostname(host))
+        .filter(Boolean);
+    for (const host of configuredHosts) hosts.add(host);
+
+    return hosts;
+}
+
+function isPrivateOrReservedIpv4(hostname: string): boolean {
+    if (!/^\d{1,3}(?:\.\d{1,3}){3}$/.test(hostname)) return false;
+    const octets = hostname.split(".").map((part) => Number(part));
+    if (octets.some((part) => !Number.isInteger(part) || part < 0 || part > 255)) return true;
+
+    const [a, b] = octets;
+    return (
+        a === 0
+        || a === 10
+        || a === 127
+        || (a === 100 && b >= 64 && b <= 127)
+        || (a === 169 && b === 254)
+        || (a === 172 && b >= 16 && b <= 31)
+        || (a === 192 && b === 168)
+        || (a === 198 && (b === 18 || b === 19))
+        || a >= 224
+    );
+}
+
+function isPrivateOrReservedHostname(hostname: string): boolean {
+    const normalized = normalizeHostname(hostname);
+    if (!normalized) return true;
+    if (normalized === "localhost" || normalized.endsWith(".localhost")) return true;
+    if (isPrivateOrReservedIpv4(normalized)) return true;
+
+    const ipv6 = normalized.replace(/^::ffff:/, "");
+    return (
+        ipv6 === "::"
+        || ipv6 === "::1"
+        || ipv6.startsWith("fc")
+        || ipv6.startsWith("fd")
+        || ipv6.startsWith("fe80")
+    );
+}
+
+function isAllowedBflHostname(hostname: string): boolean {
+    const normalized = normalizeHostname(hostname);
+    if (getAllowedBflHosts().has(normalized)) return true;
+    return normalized.endsWith(".bfl.ai");
+}
+
+export function validateBflFetchUrl(rawUrl: string, purpose = "BFL URL"): string {
+    let parsed: URL;
+    try {
+        parsed = new URL(rawUrl);
+    } catch {
+        throw new Error(`${purpose} is not a valid URL.`);
+    }
+
+    if (parsed.protocol !== "https:") {
+        throw new Error(`${purpose} must use HTTPS.`);
+    }
+    if (parsed.username || parsed.password) {
+        throw new Error(`${purpose} must not include credentials.`);
+    }
+    if (parsed.port && parsed.port !== "443") {
+        throw new Error(`${purpose} must not use a non-standard port.`);
+    }
+
+    const hostname = normalizeHostname(parsed.hostname);
+    if (isPrivateOrReservedHostname(hostname)) {
+        throw new Error(`${purpose} points to a local or private host.`);
+    }
+    if (!isAllowedBflHostname(hostname)) {
+        throw new Error(`${purpose} host is not an allowed BFL host.`);
+    }
+
+    parsed.hostname = hostname;
+    return parsed.toString();
+}
+
+function rejectRedirect(response: Response, purpose: string): void {
+    if (response.status >= 300 && response.status < 400) {
+        throw new Error(`${purpose} redirected; cross-host provider redirects are not allowed.`);
+    }
+}
+
 function sleep(ms: number): Promise<void> {
     return new Promise((resolve) => setTimeout(resolve, ms));
 }
@@ -55,7 +155,9 @@ function inferMimeType(url: string, response: Response): string {
 }
 
 async function downloadImageAsBase64(url: string): Promise<{ imageBase64: string; mimeType: string }> {
-    const response = await fetch(url);
+    const safeUrl = validateBflFetchUrl(url, "BFL generated image URL");
+    const response = await fetch(safeUrl, { redirect: "manual" });
+    rejectRedirect(response, "BFL generated image URL");
     if (!response.ok) {
         throw new Error(`BFL image download failed (${response.status})`);
     }
@@ -67,18 +169,21 @@ async function downloadImageAsBase64(url: string): Promise<{ imageBase64: string
     }
     return {
         imageBase64: btoa(binary),
-        mimeType: inferMimeType(url, response),
+        mimeType: inferMimeType(safeUrl, response),
     };
 }
 
 async function pollFluxResult(pollingUrl: string, apiKey: string): Promise<Record<string, unknown>> {
+    const safePollingUrl = validateBflFetchUrl(pollingUrl, "BFL polling URL");
     for (let attempt = 0; attempt < MAX_POLL_ATTEMPTS; attempt += 1) {
-        const response = await fetch(pollingUrl, {
+        const response = await fetch(safePollingUrl, {
+            redirect: "manual",
             headers: {
                 "accept": "application/json",
                 "x-key": apiKey,
             },
         });
+        rejectRedirect(response, "BFL polling URL");
         const payload = await response.json().catch(() => ({}));
         if (!response.ok) {
             throw new Error((payload as any)?.detail || `BFL polling error (${response.status})`);
@@ -103,8 +208,10 @@ export async function generateFluxImage(options: FluxImageOptions): Promise<Flux
 
     const model = getBflImageModel();
     const size = ASPECT_RATIO_SIZES[options.aspectRatio] || ASPECT_RATIO_SIZES["1:1"];
-    const createResponse = await fetch(`${getBflBaseUrl()}/v1/${encodeURIComponent(model)}`, {
+    const createUrl = validateBflFetchUrl(`${getBflBaseUrl()}/v1/${encodeURIComponent(model)}`, "BFL create URL");
+    const createResponse = await fetch(createUrl, {
         method: "POST",
+        redirect: "manual",
         headers: {
             "accept": "application/json",
             "Content-Type": "application/json",
@@ -117,6 +224,7 @@ export async function generateFluxImage(options: FluxImageOptions): Promise<Flux
         }),
     });
 
+    rejectRedirect(createResponse, "BFL create URL");
     const createPayload = await createResponse.json().catch(() => ({}));
     if (!createResponse.ok) {
         throw new Error((createPayload as any)?.detail || `BFL API error (${createResponse.status})`);

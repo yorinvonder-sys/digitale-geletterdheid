@@ -42,6 +42,7 @@ export const AVATAR_PET_CATALOG: AvatarPetCatalogItem[] = [
     { value: 'pet_dog', label: 'Hond', emoji: '🐕', locked: false },
     { value: 'pet_cat', label: 'Kat', emoji: '🐱', locked: false },
     { value: 'pet_robo', label: 'Robot', emoji: '🤖', locked: false },
+    { value: 'pet_duck', label: 'Eend', emoji: '🦆', locked: false },
 ];
 
 export const getAvatarHairOptionsForGender = (

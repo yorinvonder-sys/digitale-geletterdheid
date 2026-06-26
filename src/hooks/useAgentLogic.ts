@@ -371,7 +371,10 @@ export const useAgentLogic = ({ selectedRole, userIdentifier, schoolId, initialP
         completedSteps,
         setCompletedSteps,
         parseAndUpdateSteps,
-    } = useStepCompletion({ initialSteps: initialProgress?.completedSteps || [] });
+    } = useStepCompletion({
+        initialSteps: initialProgress?.completedSteps || [],
+        totalSteps: selectedRole?.steps?.length ?? 0,
+    });
 
     // Wrap undoGameCode to pass setMessages
     const undoGameCode = useCallback(() => {

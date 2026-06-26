@@ -366,9 +366,10 @@ export async function uploadFileToDrive(
 export async function revokeToken(refreshTokenEncrypted: string): Promise<void> {
     try {
         const token = await decryptToken(refreshTokenEncrypted);
-        await fetch(`https://oauth2.googleapis.com/revoke?token=${token}`, {
+        await fetch("https://oauth2.googleapis.com/revoke", {
             method: "POST",
             headers: { "Content-Type": "application/x-www-form-urlencoded" },
+            body: new URLSearchParams({ token }),
         });
     } catch {
         // Best effort — don't fail disconnect if revoke fails

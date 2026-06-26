@@ -1,6 +1,6 @@
 import type { ContainerConfig } from '@/config/containerTypes';
 
-export type ProjectWeekNumber = 1 | 2 | 3 | 4;
+export type ProjectWeekNumber = number;
 
 const FALLBACK_PROJECT_WEEK_BY_MONTH: Record<number, ProjectWeekNumber> = {
     0: 2,
@@ -48,13 +48,13 @@ function isDateInsideContainer(dateNumber: number, container: Pick<ContainerConf
     return true;
 }
 
-function normalizeSortOrderToProjectWeek(sortOrder: number, containers: Pick<ContainerConfig, 'sortOrder'>[]): ProjectWeekNumber | null {
-    const usesZeroBasedSortOrder = containers.some(container => container.sortOrder === 0);
-    const candidate = usesZeroBasedSortOrder ? sortOrder + 1 : sortOrder;
+function sortContainersByOrder<T extends Pick<ContainerConfig, 'sortOrder'>>(containers: T[]): T[] {
+    return [...containers].sort((a, b) => a.sortOrder - b.sortOrder);
+}
 
-    if (candidate < 1 || candidate > 4 || !Number.isInteger(candidate)) return null;
-
-    return candidate as ProjectWeekNumber;
+function clampProjectWeekToContainers(projectWeek: ProjectWeekNumber, containers: Pick<ContainerConfig, 'sortOrder'>[]): ProjectWeekNumber {
+    if (containers.length === 0) return projectWeek;
+    return Math.min(Math.max(projectWeek, 1), containers.length);
 }
 
 export function getFallbackProjectWeekForDate(date: Date = new Date()): ProjectWeekNumber {
@@ -65,13 +65,13 @@ export function getProjectWeekForDate(
     date: Date = new Date(),
     containers: Pick<ContainerConfig, 'sortOrder' | 'startDate' | 'endDate'>[] = []
 ): ProjectWeekNumber {
+    const sortedContainers = sortContainersByOrder(containers);
     const dateNumber = toLocalDateNumber(date);
-    const datedContainer = containers.find(container => isDateInsideContainer(dateNumber, container));
+    const datedContainerIndex = sortedContainers.findIndex(container => isDateInsideContainer(dateNumber, container));
 
-    if (datedContainer) {
-        const projectWeek = normalizeSortOrderToProjectWeek(datedContainer.sortOrder, containers);
-        if (projectWeek) return projectWeek;
+    if (datedContainerIndex >= 0) {
+        return datedContainerIndex + 1;
     }
 
-    return getFallbackProjectWeekForDate(date);
+    return clampProjectWeekToContainers(getFallbackProjectWeekForDate(date), sortedContainers);
 }

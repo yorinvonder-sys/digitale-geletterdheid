@@ -175,7 +175,13 @@ export async function validateAndParseRequest(
             { status: 400, headers: requestHeaders },
         );
     }
-    const systemInstruction = getSystemInstruction(rawBody.roleId)!;
+    const systemInstruction = getSystemInstruction(rawBody.roleId);
+    if (typeof systemInstruction !== "string") {
+        return new Response(
+            JSON.stringify({ error: "Ongeldige of ontbrekende roleId." }),
+            { status: 400, headers: requestHeaders },
+        );
+    }
 
     // Validate optional missionId (max 100 chars, alphanumeric + hyphens only)
     if (rawBody.missionId !== undefined) {
@@ -192,6 +198,33 @@ export async function validateAndParseRequest(
                 JSON.stringify({ error: "Game-context is te groot." }),
                 { status: 413, headers: requestHeaders },
             );
+        } else {
+            const gameContextValidation = sanitizePrompt(rawBody.gameContext, {
+                maxLength: MAX_GAME_CONTEXT_LENGTH,
+                maxNewlines: 2_000,
+            });
+            if (gameContextValidation.wasBlocked) {
+                console.warn(`[GAME_CONTEXT_BLOCKED] user=${user.id} label=${gameContextValidation.detectionLabel}`);
+                logAiUsageEvent({
+                    requestId,
+                    endpoint: rateLimitKey,
+                    model: selectModel(rawBody.roleId, true),
+                    status: "blocked",
+                    userId: user.id,
+                    schoolId,
+                    inputChars: rawBody.gameContext.length,
+                    metadata: { reason: "game_context_sanitizer", detection_label: gameContextValidation.detectionLabel ?? "unknown" },
+                }).catch((err) => console.error("[chatCore] Usage log error:", err));
+
+                return new Response(
+                    JSON.stringify({
+                        error: "blocked",
+                        reason: "De game-context bevat een patroon dat niet is toegestaan.",
+                    }),
+                    { status: 422, headers: requestHeaders },
+                );
+            }
+            rawBody.gameContext = redactPii(gameContextValidation.sanitized).redacted;
         }
     }
 
@@ -318,8 +351,8 @@ export function buildAiChatPayload(validated: ValidatedRequest): AiChatPayload {
     const { body, sanitized, safeHistory, systemInstruction } = validated;
     const hasGameContext = !!(body.gameContext && typeof body.gameContext === "string");
 
-    // Build user message parts — include game code context if provided
-    // gameContext bypasses the sanitizer because it's our own application code, not user input
+    // Build user message parts. gameContext was already sanitized and PII-redacted
+    // in validateAndParseRequest before it can reach the provider payload.
     const userParts: AiChatPart[] = [];
     if (hasGameContext) {
         userParts.push({
