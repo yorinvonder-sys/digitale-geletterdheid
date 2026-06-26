@@ -118,8 +118,9 @@ In deze Verwerkersovereenkomst wordt verstaan onder:
    - b. het vermogen om op permanente basis de vertrouwelijkheid, integriteit, beschikbaarheid en veerkracht van de verwerkingssystemen en -diensten te garanderen;
    - c. het vermogen om bij een fysiek of technisch incident de beschikbaarheid van en de toegang tot de Persoonsgegevens tijdig te herstellen;
    - d. een procedure voor het op gezette tijden testen, beoordelen en evalueren van de doeltreffendheid van de beveiligingsmaatregelen.
-3. De Verwerker draagt er zorg voor dat uitsluitend geautoriseerde personen die werkzaam zijn onder het gezag/verantwoordelijkheid van de Verwerker toegang hebben tot Persoonsgegevens.
-4. De Verwerker houdt een registratie bij van aan- en afmeldprocedures, toegangsrechten en relevante gebruikersacties en beveiligingsincidenten. De Verwerkingsverantwoordelijke kan deze registratie periodiek inzien.
+3. Indien de Verwerkingsverantwoordelijke gebruik maakt van SSO via een eigen identity provider (Microsoft Entra ID of vergelijkbaar) en schriftelijk attesteert dat die identity provider meerfactorauthenticatie afdwingt voor docent- en beheerdersaccounts, geldt die door de identity provider afgedwongen MFA als invulling van de MFA-maatregel als bedoeld in lid 2. De Verwerkingsverantwoordelijke is verantwoordelijk voor het correct afdwingen en in stand houden van die MFA in haar eigen tenant; de Verwerker vertrouwt op deze attestatie en kan niet instaan voor de wijze waarop de MFA in de tenant van de Verwerkingsverantwoordelijke wordt gehandhaafd.
+4. De Verwerker draagt er zorg voor dat uitsluitend geautoriseerde personen die werkzaam zijn onder het gezag/verantwoordelijkheid van de Verwerker toegang hebben tot Persoonsgegevens.
+5. De Verwerker houdt een registratie bij van aan- en afmeldprocedures, toegangsrechten en relevante gebruikersacties en beveiligingsincidenten. De Verwerkingsverantwoordelijke kan deze registratie periodiek inzien.
 
 ### Audit
 

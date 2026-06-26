@@ -161,7 +161,7 @@ A: Ja. De schoolbeheerder kan verwijdering van individuele leerlingaccount-hoofd
 A: DGSkills is een webapplicatie en vereist alleen een moderne webbrowser (Chrome, Edge, Firefox, Safari) en internettoegang. Er hoeft geen software geinstalleerd te worden.
 
 **V: Is SSO (Single Sign-On) beschikbaar?**
-A: Ja. DGSkills ondersteunt SSO via Microsoft Entra ID (voorheen Azure AD) en Google Workspace. Dit wordt geconfigureerd tijdens de onboarding.
+A: Ja. DGSkills ondersteunt SSO via Microsoft Entra ID (voorheen Azure AD) en Google Workspace. Dit wordt geconfigureerd tijdens de onboarding. Voor SSO-scholen geldt bovendien dat de door de identity provider afgedwongen MFA de MFA-verplichting van DGSkills kan vervullen, mits de school schriftelijk attesteert dat haar identity provider MFA afdwingt voor docent- en beheerdersaccounts; de school blijft zelf verantwoordelijk voor het correct afdwingen van MFA in haar eigen tenant.
 
 ### Voor schoolbestuurders
 

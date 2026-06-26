@@ -23,6 +23,7 @@ export function MfaGate({ onVerified }: MfaGateProps) {
     const [error, setError] = useState<string | null>(null);
     const [verifying, setVerifying] = useState(false);
     const [copiedSecret, setCopiedSecret] = useState(false);
+    const [showHelp, setShowHelp] = useState(false);
     // Guard against React StrictMode double-invocation of useEffect
     const initiated = React.useRef(false);
 
@@ -143,8 +144,14 @@ export function MfaGate({ onVerified }: MfaGateProps) {
                                     <p className="text-sm font-black text-duck-ink mb-1">
                                         1. Scan de QR-code
                                     </p>
-                                    <p className="text-xs font-semibold text-duck-ink/60 mb-4">
-                                        Gebruik Google Authenticator, Microsoft Authenticator of een andere TOTP-app.
+                                    <p className="text-xs font-semibold text-duck-ink/60 mb-4 leading-relaxed">
+                                        Gebruik de codes-functie (6-cijferige code) van een TOTP-app:{' '}
+                                        <span className="font-black text-duck-ink">Google Authenticator</span>,{' '}
+                                        <span className="font-black text-duck-ink">2FAS</span>,{' '}
+                                        <span className="font-black text-duck-ink">Ente Auth</span> of{' '}
+                                        <span className="font-black text-duck-ink">Microsoft Authenticator</span>. Let op: bij
+                                        Microsoft Authenticator gebruik je de 6-cijferige code, niet de
+                                        "goedkeuren"-pushmelding.
                                     </p>
                                     {qrCode && (
                                         <div className="flex justify-center mb-4">
@@ -221,6 +228,16 @@ export function MfaGate({ onVerified }: MfaGateProps) {
                                     </p>
                                 </div>
 
+                                <div className="rounded-xl border border-duck-ink/15 bg-duck-bgLight p-3">
+                                    <p className="text-xs font-semibold leading-relaxed text-duck-ink/70">
+                                        Gebruik de <span className="font-black text-duck-ink">6-cijferige code</span> uit je
+                                        authenticator-app — <span className="font-black text-duck-ink">niet</span> een
+                                        "tik het getal aan"- of "goedkeuren"-melding. Die pushmelding hoort bij je
+                                        Microsoft-account, niet bij DGSkills. Tik in je app op{' '}
+                                        <span className="font-black text-duck-ink">DGSkills Authenticator</span> om de code te zien.
+                                    </p>
+                                </div>
+
                                 <div className="relative">
                                     <KeyRound size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-duck-ink/50" />
                                     <input
@@ -252,6 +269,30 @@ export function MfaGate({ onVerified }: MfaGateProps) {
                                     )}
                                     Verifieer
                                 </button>
+
+                                <div className="text-center">
+                                    <button
+                                        type="button"
+                                        onClick={() => setShowHelp((v) => !v)}
+                                        className="text-xs font-black text-duck-ink/50 transition-colors hover:text-duck-ink"
+                                    >
+                                        Code werkt niet?
+                                    </button>
+                                    {showHelp && (
+                                        <div className="mt-3 space-y-2 rounded-xl border border-duck-ink/15 bg-duck-bgLight p-3 text-left">
+                                            <p className="text-xs font-semibold leading-relaxed text-duck-ink/70">
+                                                Zet de klok van je telefoon op{' '}
+                                                <span className="font-black text-duck-ink">automatisch</span> — de code is
+                                                tijdgebonden en verloopt elke 30 seconden.
+                                            </p>
+                                            <p className="text-xs font-semibold leading-relaxed text-duck-ink/70">
+                                                Geen <span className="font-black text-duck-ink">DGSkills</span>-vermelding in
+                                                je app? Dan moet je MFA opnieuw instellen — log uit en neem contact op met je
+                                                beheerder.
+                                            </p>
+                                        </div>
+                                    )}
+                                </div>
                             </div>
                         )}
 
