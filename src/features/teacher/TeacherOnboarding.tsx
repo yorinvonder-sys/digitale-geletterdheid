@@ -54,7 +54,7 @@ const GamificationAnimation = () => (
         </div>
         <div className="absolute bottom-4 flex gap-1">
             {[1, 2, 3].map((i) => (
-                <Stars key={i} size={12} className="text-duck-acid animate-spin" style={{ animationDuration: `${i + 2}s` }} />
+                <Stars key={i} size={12} className="text-duck-ink animate-spin" style={{ animationDuration: `${i + 2}s` }} />
             ))}
         </div>
     </div>

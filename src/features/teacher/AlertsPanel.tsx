@@ -33,7 +33,7 @@ export const AlertsPanel: React.FC<AlertsPanelProps> = ({ students, onSelectStud
         <div className="bg-white rounded-2xl shadow-sm border border-duck-ink/15 overflow-hidden p-5 space-y-4">
             {curriculumAlerts.length > 0 && (
                 <div>
-                    <h3 className="text-xs font-black text-duck-acid uppercase tracking-widest mb-3 flex items-center gap-2">
+                    <h3 className="text-xs font-black text-duck-ink uppercase tracking-widest mb-3 flex items-center gap-2">
                         <Target size={12} />
                         Curriculum Signalen ({curriculumAlerts.length})
                     </h3>
@@ -46,14 +46,14 @@ export const AlertsPanel: React.FC<AlertsPanelProps> = ({ students, onSelectStud
                                     : signal.targetClasses[0];
                             const toneClasses = signal.tone === 'attention'
                                 ? {
-                                    panel: 'bg-duck-acid hover:bg-duck-acid hover:text-duck-ink border-duck-acid',
-                                    text: 'text-duck-acid',
-                                    chip: 'bg-white text-duck-acid border-duck-acid',
+                                    panel: 'bg-duck-error/10 hover:bg-duck-error/20 border-duck-error/30',
+                                    text: 'text-duck-error',
+                                    chip: 'bg-white text-duck-error border-duck-error/40',
                                 }
                                 : {
-                                    panel: 'bg-duck-acid hover:bg-duck-acid hover:text-duck-ink border-duck-acid',
-                                    text: 'text-duck-acid',
-                                    chip: 'bg-white text-duck-acid border-duck-acid',
+                                    panel: 'bg-duck-acid/15 hover:bg-duck-acid/25 border-duck-acid/40',
+                                    text: 'text-duck-ink',
+                                    chip: 'bg-white text-duck-ink border-duck-ink/15',
                                 };
 
                             return (
@@ -116,7 +116,7 @@ export const AlertsPanel: React.FC<AlertsPanelProps> = ({ students, onSelectStud
             )}
             {lowXPStudents.length > 0 && (
                 <div>
-                    <h3 className="text-xs font-black text-duck-acid uppercase tracking-widest mb-3 flex items-center gap-2">
+                    <h3 className="text-xs font-black text-duck-ink uppercase tracking-widest mb-3 flex items-center gap-2">
                         <AlertTriangle size={12} />
                         Weinig Voortgang ({lowXPStudents.length})
                     </h3>
@@ -125,13 +125,13 @@ export const AlertsPanel: React.FC<AlertsPanelProps> = ({ students, onSelectStud
                             <button
                                 key={student.uid}
                                 onClick={() => onSelectStudent(student)}
-                                className="flex items-center justify-between p-3 bg-duck-acid hover:bg-duck-acid hover:text-duck-ink rounded-xl border border-duck-acid transition-colors text-left"
+                                className="flex items-center justify-between p-3 bg-duck-acid/15 hover:bg-duck-acid/25 rounded-xl border border-duck-acid/40 transition-colors text-left"
                             >
                                 <div className="min-w-0">
                                     <div className="font-bold text-duck-ink text-xs truncate">{student.displayName}</div>
-                                    <div className="text-[10px] text-duck-acid">{student.stats?.xp || 0} XP — {student.stats?.missionsCompleted?.length || 0} missies</div>
+                                    <div className="text-[10px] text-duck-ink/60">{student.stats?.xp || 0} XP — {student.stats?.missionsCompleted?.length || 0} missies</div>
                                 </div>
-                                <ChevronRight size={14} className="text-duck-acid flex-shrink-0" />
+                                <ChevronRight size={14} className="text-duck-ink/60 flex-shrink-0" />
                             </button>
                         ))}
                     </div>

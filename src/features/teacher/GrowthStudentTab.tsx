@@ -22,9 +22,9 @@ const NIVEAU_LABEL: Record<'starter' | 'basis' | 'gevorderd', string> = {
 };
 
 const NIVEAU_KLEUR: Record<'starter' | 'basis' | 'gevorderd', string> = {
-  starter: 'text-white bg-duck-acid/10 border-duck-acid/30',
-  basis: 'text-duck-acid bg-duck-acid/10 border-duck-acid/30',
-  gevorderd: 'text-duck-ink/60 bg-duck-acid/10 border-duck-acid/30',
+  starter: 'text-duck-ink/60 bg-duck-bg border-duck-ink/15',
+  basis: 'text-duck-ink bg-duck-acid/15 border-duck-acid/30',
+  gevorderd: 'text-duck-ink bg-duck-acid/30 border-duck-acid/40',
 };
 
 interface GrowthRecommendation {
@@ -187,7 +187,7 @@ export const GrowthStudentTab: React.FC<GrowthStudentTabProps> = ({
 
               <div className="flex items-center justify-between mt-2 text-xs text-duck-ink/60">
                 <span>Nulmeting: <span className="text-duck-ink/60 font-medium">{data.nulmeting.toFixed(0)}</span></span>
-                <span className={`font-bold flex items-center gap-1 ${data.groei >= 0 ? 'text-duck-ink/60' : 'text-duck-acid'}`}>
+                <span className={`font-bold flex items-center gap-1 ${data.groei >= 0 ? 'text-duck-ink/60' : 'text-duck-error'}`}>
                   {data.groei >= 0 ? <TrendingUp size={12} /> : <TrendingDown size={12} />}
                   {data.groei >= 0 ? '+' : ''}{data.groei.toFixed(0)}
                 </span>
@@ -200,7 +200,7 @@ export const GrowthStudentTab: React.FC<GrowthStudentTabProps> = ({
 
       {/* AI Recommendation */}
       {recommendation && (
-        <div className="bg-duck-ink/50 border border-duck-ink/15 rounded-xl p-4">
+        <div className="bg-duck-bgLight border border-duck-ink/15 rounded-xl p-4">
           <div className="flex items-center justify-between mb-3">
             <h4 className="text-sm font-semibold text-duck-ink/60">Aanbeveling</h4>
             <span className="inline-flex items-center gap-1 text-xs text-duck-ink bg-duck-acid/10 border border-duck-acid/30 px-2 py-0.5 rounded-full">
@@ -227,7 +227,7 @@ export const GrowthStudentTab: React.FC<GrowthStudentTabProps> = ({
                 <button
                   onClick={() => handleApprove(false)}
                   disabled={approvingId === recommendation.id}
-                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-duck-acid/20 text-duck-acid border border-duck-acid/30 hover:bg-duck-acid/30 transition-colors disabled:opacity-50"
+                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-duck-error/10 text-duck-error border border-duck-error/30 hover:bg-duck-error/20 transition-colors disabled:opacity-50"
                 >
                   <X size={12} />
                   Afwijzen

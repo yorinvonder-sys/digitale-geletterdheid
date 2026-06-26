@@ -19,7 +19,7 @@ export const HybridAssessmentPanel: React.FC<HybridAssessmentPanelProps> = ({ re
         <div className="bg-white rounded-2xl border border-duck-ink/15 shadow-sm overflow-hidden">
             <div className="p-4 border-b border-duck-ink/15 flex items-center justify-between">
                 <h3 className="text-sm font-black text-duck-ink uppercase tracking-widest flex items-center gap-2">
-                    <ClipboardCheck size={16} className="text-duck-acid" />
+                    <ClipboardCheck size={16} className="text-duck-ink" />
                     Hybride Beoordelingen
                 </h3>
                 <span className="text-xs font-bold text-duck-ink/60">{filtered.length} records</span>
@@ -51,7 +51,7 @@ export const HybridAssessmentPanel: React.FC<HybridAssessmentPanelProps> = ({ re
                                     <td className="px-4 py-3 font-medium text-duck-ink/60">{r.missionId}</td>
                                     <td className="px-4 py-3 text-duck-ink/60">{r.autoScore}%</td>
                                     <td className="px-4 py-3 text-duck-ink/60">{r.teacherScore}%</td>
-                                    <td className="px-4 py-3 font-black text-duck-acid">{r.finalScore}%</td>
+                                    <td className="px-4 py-3 font-black text-duck-ink">{r.finalScore}%</td>
                                     <td className="px-4 py-3">
                                         {r.passed ? (
                                             <span className="inline-flex items-center gap-1 text-duck-ink/60 font-bold">

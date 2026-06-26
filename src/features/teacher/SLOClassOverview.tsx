@@ -353,7 +353,7 @@ export const SLOClassOverview: React.FC<SLOClassOverviewProps> = ({ students, sc
             <div className="flex items-center justify-between gap-4">
                 <div className="min-w-0">
                     <h2 className="text-xl font-black text-duck-ink flex items-center gap-2">
-                        <School size={24} className="text-duck-acid" />
+                        <School size={24} className="text-duck-ink" />
                         SLO Kerndoelen per Klas
                     </h2>
                     <p className="text-sm text-duck-ink/60 mt-1">
