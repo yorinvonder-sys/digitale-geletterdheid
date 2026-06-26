@@ -91,7 +91,7 @@ export const ResetPasswordModal: React.FC<ResetPasswordModalProps> = ({ student,
                     onClick={(e) => e.stopPropagation()}
                 >
                     {/* Header */}
-                    <div className="bg-gradient-to-r from-lab-coral to-lab-teal px-6 py-5 text-white relative overflow-hidden">
+                    <div className="bg-gradient-to-r from-duck-error to-duck-ink px-6 py-5 text-white relative overflow-hidden">
                         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.15),transparent)]"></div>
                         <div className="relative flex items-center justify-between">
                             <div className="flex items-center gap-3">
@@ -118,7 +118,7 @@ export const ResetPasswordModal: React.FC<ResetPasswordModalProps> = ({ student,
                         {!result ? (
                             <>
                                 <div className="space-y-2">
-                                    <label className="text-xs font-bold text-lab-muted uppercase tracking-wider block">
+                                    <label className="text-xs font-bold text-duck-ink/60 uppercase tracking-wider block">
                                         Nieuw Wachtwoord
                                     </label>
                                     <div className="relative">
@@ -128,29 +128,29 @@ export const ResetPasswordModal: React.FC<ResetPasswordModalProps> = ({ student,
                                             value={password}
                                             onChange={(e) => setPassword(e.target.value)}
                                             placeholder="Voer nieuw wachtwoord in..."
-                                            className="w-full px-4 py-3 pr-12 bg-lab-cream border-2 border-lab-line rounded-xl text-sm font-medium
-                                                     focus:ring-4 focus:ring-lab-coral/20 focus:border-lab-coral outline-none transition-all"
+                                            className="w-full px-4 py-3 pr-12 bg-duck-bg border-2 border-duck-ink/15 rounded-xl text-sm font-medium
+                                                     focus:ring-4 focus:ring-duck-error/20 focus:border-duck-error outline-none transition-all"
                                         />
                                         <button
                                             type="button"
                                             onClick={() => setShowPassword(!showPassword)}
-                                            className="absolute right-3 top-1/2 -translate-y-1/2 p-1.5 text-lab-muted hover:text-lab-muted transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center"
+                                            className="absolute right-3 top-1/2 -translate-y-1/2 p-1.5 text-duck-ink/60 hover:text-duck-ink/60 transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center"
                                             aria-label={showPassword ? 'Wachtwoord verbergen' : 'Wachtwoord tonen'}
                                         >
                                             {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                                         </button>
                                     </div>
-                                    <p className="text-[11px] text-lab-muted">
+                                    <p className="text-[11px] text-duck-ink/60">
                                         De leerling moet dit wachtwoord wijzigen bij de volgende keer inloggen.
                                     </p>
                                 </div>
 
-                                <div className="bg-lab-gold border border-lab-gold rounded-xl p-4">
+                                <div className="bg-duck-acid border border-duck-acid rounded-xl p-4">
                                     <div className="flex gap-3">
-                                        <AlertCircle size={18} className="text-lab-muted shrink-0 mt-0.5" />
+                                        <AlertCircle size={18} className="text-duck-ink/60 shrink-0 mt-0.5" />
                                         <div>
-                                            <p className="text-xs font-bold text-lab-gold">Let op</p>
-                                            <p className="text-xs text-lab-gold mt-0.5">
+                                            <p className="text-xs font-bold text-duck-ink">Let op</p>
+                                            <p className="text-xs text-duck-ink mt-0.5">
                                                 Het huidige wachtwoord van {student.displayName} wordt overschreven.
                                             </p>
                                         </div>
@@ -158,16 +158,16 @@ export const ResetPasswordModal: React.FC<ResetPasswordModalProps> = ({ student,
                                 </div>
                             </>
                         ) : (
-                            <div className={`rounded-xl p-5 ${result.success ? 'bg-lab-sage border border-lab-sage' : 'bg-lab-coral border border-lab-coral'}`}>
+                            <div className={`rounded-xl p-5 ${result.success ? 'bg-duck-ink border border-duck-ink' : 'bg-duck-error border border-duck-error'}`}>
                                 <div className="flex items-start gap-3">
-                                    <div className={`w-10 h-10 rounded-full flex items-center justify-center shrink-0 ${result.success ? 'bg-lab-sage text-white' : 'bg-lab-coral text-white'}`}>
+                                    <div className={`w-10 h-10 rounded-full flex items-center justify-center shrink-0 ${result.success ? 'bg-duck-ink text-white' : 'bg-duck-error text-white'}`}>
                                         {result.success ? <Check size={20} /> : <AlertCircle size={20} />}
                                     </div>
                                     <div className="flex-1">
-                                        <p className={`font-bold text-sm ${result.success ? 'text-lab-sage' : 'text-lab-coral'}`}>
+                                        <p className={`font-bold text-sm ${result.success ? 'text-duck-ink' : 'text-duck-error'}`}>
                                             {result.success ? 'Succes!' : 'Fout'}
                                         </p>
-                                        <p className={`text-xs mt-0.5 ${result.success ? 'text-lab-sage' : 'text-lab-coral'}`}>
+                                        <p className={`text-xs mt-0.5 ${result.success ? 'text-duck-ink' : 'text-duck-error'}`}>
                                             {result.message}
                                         </p>
 
@@ -178,10 +178,10 @@ export const ResetPasswordModal: React.FC<ResetPasswordModalProps> = ({ student,
                     </div>
 
                     {/* Footer */}
-                    <div className="px-6 py-4 bg-lab-cream border-t border-lab-line flex justify-end gap-3">
+                    <div className="px-6 py-4 bg-duck-bg border-t border-duck-ink/15 flex justify-end gap-3">
                         <button
                             onClick={onClose}
-                            className="px-4 py-2.5 text-lab-muted font-bold text-sm rounded-xl hover:bg-lab-cream transition-colors"
+                            className="px-4 py-2.5 text-duck-ink/60 font-bold text-sm rounded-xl hover:bg-duck-bg transition-colors"
                         >
                             {result ? 'Sluiten' : 'Annuleren'}
                         </button>
@@ -189,8 +189,8 @@ export const ResetPasswordModal: React.FC<ResetPasswordModalProps> = ({ student,
                             <button
                                 onClick={handleReset}
                                 disabled={isResetting || !password.trim()}
-                                className="px-5 py-2.5 bg-lab-coral text-white font-bold text-sm rounded-xl hover:bg-lab-coral hover:text-white
-                                         disabled:opacity-50 disabled:cursor-not-allowed transition-all flex items-center gap-2 shadow-lg shadow-lab-coral"
+                                className="px-5 py-2.5 bg-duck-error text-white font-bold text-sm rounded-xl hover:bg-duck-error hover:text-white
+                                         disabled:opacity-50 disabled:cursor-not-allowed transition-all flex items-center gap-2 shadow-lg shadow-duck-error"
                             >
                                 {isResetting ? (
                                     <>

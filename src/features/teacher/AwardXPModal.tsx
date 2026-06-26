@@ -84,7 +84,7 @@ export const AwardXPModal: React.FC<AwardXPModalProps> = ({ student, onClose, on
                     onClick={(e) => e.stopPropagation()}
                 >
                     {/* Header */}
-                    <div className="bg-gradient-to-r from-lab-coral via-lab-coral to-lab-coral px-6 py-5 text-white relative overflow-hidden">
+                    <div className="bg-gradient-to-r from-duck-error via-duck-error to-duck-error px-6 py-5 text-white relative overflow-hidden">
                         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.2),transparent)]"></div>
                         <div className="absolute -top-4 -right-4 w-24 h-24 bg-white/10 rounded-full blur-2xl"></div>
                         <div className="relative flex items-center justify-between">
@@ -112,15 +112,15 @@ export const AwardXPModal: React.FC<AwardXPModalProps> = ({ student, onClose, on
                         {!success ? (
                             <>
                                 {/* Current XP Display */}
-                                <div className="bg-lab-cream rounded-xl p-4 flex items-center justify-between">
+                                <div className="bg-duck-bg rounded-xl p-4 flex items-center justify-between">
                                     <div>
-                                        <p className="text-[10px] font-bold text-lab-muted uppercase tracking-wider">Huidige XP</p>
-                                        <p className="text-2xl font-black text-lab-ink">{currentXP.toLocaleString()}</p>
+                                        <p className="text-[10px] font-bold text-duck-ink/60 uppercase tracking-wider">Huidige XP</p>
+                                        <p className="text-2xl font-black text-duck-ink">{currentXP.toLocaleString()}</p>
                                     </div>
-                                    <div className="flex items-center gap-2 text-lab-sage">
+                                    <div className="flex items-center gap-2 text-duck-ink">
                                         <TrendingUp size={20} />
                                         <div className="text-right">
-                                            <p className="text-[10px] font-bold text-lab-muted uppercase tracking-wider">Na toekenning</p>
+                                            <p className="text-[10px] font-bold text-duck-ink/60 uppercase tracking-wider">Na toekenning</p>
                                             <p className="text-xl font-black">{newXP.toLocaleString()}</p>
                                         </div>
                                     </div>
@@ -128,7 +128,7 @@ export const AwardXPModal: React.FC<AwardXPModalProps> = ({ student, onClose, on
 
                                 {/* Amount Input */}
                                 <div className="space-y-3">
-                                    <label className="text-xs font-bold text-lab-muted uppercase tracking-wider block">
+                                    <label className="text-xs font-bold text-duck-ink/60 uppercase tracking-wider block">
                                         Aantal XP
                                     </label>
                                     <div className="relative">
@@ -138,10 +138,10 @@ export const AwardXPModal: React.FC<AwardXPModalProps> = ({ student, onClose, on
                                             value={amount}
                                             onChange={(e) => setAmount(Math.max(0, parseInt(e.target.value) || 0))}
                                             min="1"
-                                            className="w-full px-4 py-4 bg-lab-cream border-2 border-lab-line rounded-xl text-2xl font-black text-center
-                                                     focus:ring-4 focus:ring-lab-coral/20 focus:border-lab-coral outline-none transition-all"
+                                            className="w-full px-4 py-4 bg-duck-bg border-2 border-duck-ink/15 rounded-xl text-2xl font-black text-center
+                                                     focus:ring-4 focus:ring-duck-error/20 focus:border-duck-error outline-none transition-all"
                                         />
-                                        <div className="absolute right-4 top-1/2 -translate-y-1/2 text-lab-muted">
+                                        <div className="absolute right-4 top-1/2 -translate-y-1/2 text-duck-ink/60">
                                             <Sparkles size={24} />
                                         </div>
                                     </div>
@@ -154,8 +154,8 @@ export const AwardXPModal: React.FC<AwardXPModalProps> = ({ student, onClose, on
                                             key={quickAmount}
                                             onClick={() => setAmount(quickAmount)}
                                             className={`flex-1 min-w-[60px] py-2.5 rounded-xl font-bold text-sm transition-all ${amount === quickAmount
-                                                    ? 'bg-lab-coral text-white shadow-lg shadow-lab-gold'
-                                                    : 'bg-lab-cream text-lab-muted hover:bg-lab-gold hover:text-lab-ink'
+                                                    ? 'bg-duck-error text-white shadow-lg shadow-duck-acid'
+                                                    : 'bg-duck-bg text-duck-ink/60 hover:bg-duck-acid hover:text-duck-ink'
                                                 }`}
                                         >
                                             +{quickAmount}
@@ -169,12 +169,12 @@ export const AwardXPModal: React.FC<AwardXPModalProps> = ({ student, onClose, on
                                 animate={{ scale: 1, opacity: 1 }}
                                 className="py-8 text-center"
                             >
-                                <div className="w-16 h-16 bg-lab-sage rounded-full flex items-center justify-center mx-auto mb-4">
-                                    <Check size={32} className="text-lab-sage" />
+                                <div className="w-16 h-16 bg-duck-ink rounded-full flex items-center justify-center mx-auto mb-4">
+                                    <Check size={32} className="text-duck-ink" />
                                 </div>
-                                <h3 className="text-xl font-black text-lab-ink mb-2">XP Toegekend!</h3>
-                                <p className="text-lab-muted">
-                                    <span className="font-bold text-lab-gold">+{amount} XP</span> voor {student.displayName}
+                                <h3 className="text-xl font-black text-duck-ink mb-2">XP Toegekend!</h3>
+                                <p className="text-duck-ink/60">
+                                    <span className="font-bold text-duck-ink">+{amount} XP</span> voor {student.displayName}
                                 </p>
                             </motion.div>
                         )}
@@ -182,19 +182,19 @@ export const AwardXPModal: React.FC<AwardXPModalProps> = ({ student, onClose, on
 
                     {/* Footer */}
                     {!success && (
-                        <div className="px-6 py-4 bg-lab-cream border-t border-lab-line flex justify-end gap-3">
+                        <div className="px-6 py-4 bg-duck-bg border-t border-duck-ink/15 flex justify-end gap-3">
                             <button
                                 onClick={onClose}
-                                className="px-4 py-2.5 text-lab-muted font-bold text-sm rounded-xl hover:bg-lab-cream transition-colors"
+                                className="px-4 py-2.5 text-duck-ink/60 font-bold text-sm rounded-xl hover:bg-duck-bg transition-colors"
                             >
                                 Annuleren
                             </button>
                             <button
                                 onClick={handleAward}
                                 disabled={isAwarding || amount <= 0}
-                                className="px-5 py-2.5 bg-gradient-to-r from-lab-coral to-lab-coral text-white font-bold text-sm rounded-xl
-                                         hover:from-lab-gold hover:to-lab-coral disabled:opacity-50 disabled:cursor-not-allowed
-                                         transition-all flex items-center gap-2 shadow-lg shadow-lab-gold"
+                                className="px-5 py-2.5 bg-gradient-to-r from-duck-error to-duck-error text-white font-bold text-sm rounded-xl
+                                         hover:from-duck-acid hover:to-duck-error disabled:opacity-50 disabled:cursor-not-allowed
+                                         transition-all flex items-center gap-2 shadow-lg shadow-duck-acid"
                             >
                                 {isAwarding ? (
                                     <>
