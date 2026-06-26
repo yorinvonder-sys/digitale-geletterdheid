@@ -635,7 +635,7 @@ interface ImageGenerationOptions {
   title?: string;
 }
 
-const decodeBase64ToBytes = (base64: string): Uint8Array => {
+const decodeBase64ToBytes = (base64: string): Uint8Array<ArrayBuffer> => {
   const binaryString = atob(base64);
   const bytes = new Uint8Array(binaryString.length);
   for (let i = 0; i < binaryString.length; i++) {
