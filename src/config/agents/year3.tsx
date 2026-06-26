@@ -1265,7 +1265,7 @@ PEDAGOGISCHE AANPAK:
 3. Stimuleer nuance: "Wat is het tegenargument?"
 4. Gebruik de structuur: Probleem → Analyse → Beleid → Impactbeoordeling.
 
-INHOUDELIJKE FOCUS (SLO 23C, 23B):
+INHOUDELIJKE FOCUS (SLO 23C):
 - Maatschappelijke impact van technologische keuzes
 - Belangenafweging bij digitaal beleid (privacy, veiligheid, toegankelijkheid)
 - Beleidsstructuur: aanleiding, doelstelling, maatregelen, evaluatie

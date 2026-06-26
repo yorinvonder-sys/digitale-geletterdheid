@@ -116,7 +116,7 @@ export const KERNDOEL_MISSIONS: KerndoelMissionMeta[] = [
   { id: 'network-navigator', title: 'Network Navigator', week: 2, yearGroup: 2, sloKerndoelen: ['21A'], sloVsoKerndoelen: ['18A'] },                           // -22B: netwerken begrijpen, geen programmeren
   { id: 'privacy-by-design', title: 'Privacy by Design', week: 2, yearGroup: 2, sloKerndoelen: ['23A', '23C'], sloVsoKerndoelen: ['20A', '20B'] },             // 22B→23C: GDPR + privacy-redesign, geen programmeren
   { id: 'wachtwoord-warrior', title: 'Wachtwoord Warrior', week: 2, yearGroup: 2, sloKerndoelen: ['23A'], sloVsoKerndoelen: ['20A'] },                         // -21A: wachtwoordbeveiliging = puur veiligheid
-  { id: 'access-control-engineer', title: 'Access Control Engineer', week: 2, yearGroup: 2, sloKerndoelen: ['21A', '23A', '22B'], sloVsoKerndoelen: ['18A', '20A', '19A'] },
+  { id: 'access-control-engineer', title: 'Access Control Engineer', week: 2, yearGroup: 2, sloKerndoelen: ['21A', '23A'], sloVsoKerndoelen: ['18A', '20A'] },                  // -22B/-19A: geen code-activiteit (rollen/rechten configureren + testen, geen programmeren)
   { id: 'code-review-2', title: 'Code Review', week: 2, yearGroup: 2, sloKerndoelen: ['22A', '22B'], sloVsoKerndoelen: ['19A'] },
 
   // Assessment P2
@@ -164,7 +164,7 @@ export const KERNDOEL_MISSIONS: KerndoelMissionMeta[] = [
   // Periode 2: Cybersecurity & Privacy
   { id: 'cyber-detective', title: 'Cyber Detective', week: 2, yearGroup: 3, sloKerndoelen: ['23A', '21A'] },
   { id: 'encryption-expert', title: 'Encryption Expert', week: 2, yearGroup: 3, sloKerndoelen: ['23A'] },                                                     // -21A: encryptie = puur veiligheid
-  { id: 'phishing-fighter', title: 'Phishing Fighter', week: 2, yearGroup: 3, sloKerndoelen: ['23A', '22A'] },                                                // +22A: trainingsmateriaal ontwerpen
+  { id: 'phishing-fighter', title: 'Phishing Fighter', week: 2, yearGroup: 3, sloKerndoelen: ['23A'] },                                                // -22A: scenario-engine = herkenning+bescherming (geen productontwerp); trainingsontwerp (22A) zit enkel in de niet-geactiveerde chat-rol
   { id: 'security-auditor', title: 'Security Auditor', week: 2, yearGroup: 3, sloKerndoelen: ['23A', '21A'] },
   { id: 'digital-forensics', title: 'Digital Forensics', week: 2, yearGroup: 3, sloKerndoelen: ['23A', '21C'] },                                               // 21A→21C: logdata analyseren = dataverwerking
   { id: 'security-review', title: 'Security Review', week: 2, yearGroup: 3, sloKerndoelen: ['23A'] },
