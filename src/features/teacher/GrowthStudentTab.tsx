@@ -157,7 +157,7 @@ export const GrowthStudentTab: React.FC<GrowthStudentTabProps> = ({
                     </span>
                   )}
                   {niveauChanged && (
-                    <span className="text-lab-muted text-xs">→</span>
+                    <span className="text-duck-ink/60 text-xs">→</span>
                   )}
                   <span className={`text-xs px-2 py-0.5 rounded-full border font-medium ${NIVEAU_KLEUR[data.niveauEind]}`}>
                     {NIVEAU_LABEL[data.niveauEind]}

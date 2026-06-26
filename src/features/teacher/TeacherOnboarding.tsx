@@ -156,8 +156,8 @@ export const TeacherOnboarding: React.FC<OnboardingProps> = ({ onClose }) => {
                         {slide.component}
                     </div>
 
-                    <h3 className="text-2xl font-black text-lab-ink mb-4 tracking-tight">{slide.title}</h3>
-                    <p className="text-lab-muted font-medium leading-relaxed mb-10 min-h-[5rem]">
+                    <h3 className="text-2xl font-black text-duck-ink mb-4 tracking-tight">{slide.title}</h3>
+                    <p className="text-duck-ink/60 font-medium leading-relaxed mb-10 min-h-[5rem]">
                         {slide.description}
                     </p>
 
@@ -165,14 +165,14 @@ export const TeacherOnboarding: React.FC<OnboardingProps> = ({ onClose }) => {
                         <button
                             onClick={prev}
                             disabled={currentSlide === 0}
-                            className={`p-4 rounded-2xl text-lab-muted hover:bg-lab-cream transition-all ${currentSlide === 0 ? 'opacity-0' : 'opacity-100'}`}
+                            className={`p-4 rounded-2xl text-duck-ink/60 hover:bg-duck-bg transition-all ${currentSlide === 0 ? 'opacity-0' : 'opacity-100'}`}
                         >
                             <ChevronLeft size={24} />
                         </button>
 
                         <button
                             onClick={next}
-                            className={`flex-1 py-4 ${slide.color} text-white rounded-2xl font-black uppercase tracking-widest text-[10px] shadow-lg shadow-lab-line hover:scale-105 transition-all active:scale-95`}
+                            className={`flex-1 py-4 ${slide.color} text-white rounded-2xl font-black uppercase tracking-widest text-[10px] shadow-lg shadow-duck-ink/15 hover:scale-105 transition-all active:scale-95`}
                         >
                             {currentSlide === SLIDES.length - 1 ? "Start Dashboard" : "Volgende Stap"}
                         </button>
@@ -182,7 +182,7 @@ export const TeacherOnboarding: React.FC<OnboardingProps> = ({ onClose }) => {
                 {/* Close button top right */}
                 <button
                     onClick={onClose}
-                    className="absolute top-4 right-4 p-2 text-lab-muted hover:text-lab-muted transition-colors"
+                    className="absolute top-4 right-4 p-2 text-duck-ink/60 hover:text-duck-ink/60 transition-colors"
                 >
                     <X size={20} />
                 </button>
@@ -194,11 +194,11 @@ export const TeacherOnboarding: React.FC<OnboardingProps> = ({ onClose }) => {
 export const TeacherInfoButton: React.FC<{ onClick: () => void }> = ({ onClick }) => (
     <button
         onClick={onClick}
-        className="fixed bottom-6 right-6 w-10 h-10 bg-white border border-lab-line text-lab-muted hover:text-lab-coral hover:border-lab-coral rounded-full flex items-center justify-center shadow-lg transition-all hover:scale-110 z-40 group"
+        className="fixed bottom-6 right-6 w-10 h-10 bg-white border border-duck-ink/15 text-duck-ink/60 hover:text-duck-error hover:border-duck-error rounded-full flex items-center justify-center shadow-lg transition-all hover:scale-110 z-40 group"
         title="Info & Uitleg"
     >
         <Info size={18} />
-        <span className="absolute right-full mr-3 bg-lab-ink text-white text-xs font-bold px-2 py-1 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
+        <span className="absolute right-full mr-3 bg-duck-ink text-white text-xs font-bold px-2 py-1 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
             Uitleg
         </span>
     </button>
