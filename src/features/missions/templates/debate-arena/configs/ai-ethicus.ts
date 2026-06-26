@@ -6,7 +6,7 @@ const config: DebateArenaConfig = {
     introEmoji: '⚖️',
     introTitle: 'AI Ethicus',
     introDescription:
-        'Een AI-systeem op een school deelt leerlingen automatisch in op niveau — maar sommige groepen worden vaker lager ingedeeld. Is dat eerlijk? En wat moet er aan gedaan worden? Debatteer mee over bias in algoritmes.',
+        'Een school overweegt een AI-tool te gebruiken die essays van leerlingen nakijkt en beoordeelt. Dat bespaart tijd — maar is het ook eerlijk? En wat gaat er verloren als een mens de beoordeling niet meer doet? Debatteer mee over de rol van AI in het onderwijs.',
     introFeatures: [
         'Lees de standpunten van 4 betrokkenen',
         'Kies jouw positie in het debat',
@@ -14,84 +14,84 @@ const config: DebateArenaConfig = {
         'Reageer op een tegenargument',
         'Reflecteer: is je mening veranderd?',
     ],
-    topic: 'Bias in AI-systemen op scholen',
+    topic: 'AI als beoordelaar van leerlingwerk',
     dilemma:
-        'Een AI-systeem wijst leerlingen toe aan schoolniveaus. Het systeem is getraind op historische data — en die data bevat ongelijkheid. Is het ethisch om zo\'n systeem te gebruiken?',
+        'Een school wil een AI-tool inzetten die essays van leerlingen nakijkt en een cijfer geeft. De tool is snel en consistent — maar mag een algoritme beoordelen wat een leerling weet en kan?',
     stakeholders: [
         {
-            id: 'anouk',
-            name: 'Anouk',
-            emoji: '👧',
+            id: 'leerkracht',
+            name: 'Mevrouw De Vries',
+            emoji: '👩‍🏫',
+            role: 'Docent Nederlands, 12 jaar ervaring',
+            perspective:
+                'Ik besteed nu 6 uur per week aan nakijken. Als de AI een eerste beoordeling geeft, kan ik die tijd gebruiken voor individuele begeleiding. De uiteindelijke beoordeling blijft bij mij — de AI is een hulpmiddel, geen vervanger.',
+            keyArgument:
+                'Een docent die minder tijd kwijt is aan nakijken, heeft meer tijd voor de leerlingen zelf. Dat is een verbetering van het onderwijs, niet een verslechtering.',
+        },
+        {
+            id: 'leerling',
+            name: 'Sven',
+            emoji: '🧑‍💻',
             role: 'Leerling, 14 jaar',
             perspective:
-                'Het systeem zette mij op vmbo terwijl mijn basisschoolleraar zei dat ik havo aan zou kunnen. Mijn ouders spreken geen goed Nederlands en mijn postcode is arm. Dat zijn dingen die het systeem meewoog. Ik heb niet eens de kans gekregen om het zelf te bewijzen.',
+                'Mijn essays gaan over persoonlijke ervaringen en creatieve ideeën. Een machine begrijpt niet wat ik bedoel. Ik maak soms bewust afwijkende zinnen om een bepaald effect te bereiken — die straft een AI af als fouten. Mijn cijfer voelt dan oneerlijk.',
             keyArgument:
-                'Een AI die leert van het verleden, kopieert de ongelijkheid van het verleden. Dat is geen objectiviteit — dat is systematische discriminatie.',
+                'Schrijven is meer dan spelling en grammatica. Creativiteit en eigen stem zijn moeilijk te meten met een algoritme — en fouten daarin kunnen een eerlijke beoordeling in de weg staan.',
         },
         {
-            id: 'berg',
-            name: 'Dhr. Berg',
-            emoji: '🏫',
-            role: 'Schooldirecteur',
-            perspective:
-                'Dit systeem verwerkt honderden leerlingen per jaar. Zonder AI zouden we dat niet aankunnen. De aanbevelingen zijn niet bindend — een docent kan altijd afwijken. Bovendien is het systeem getraind op grote datasets, dus het is betrouwbaarder dan de gok van één leraar.',
-            keyArgument:
-                'Een algoritme is consistent en transparant. Een menselijke leraar heeft ook vooroordelen, maar die zijn onzichtbaar en oncontroleerbaar.',
-        },
-        {
-            id: 'chen',
-            name: 'Dr. Chen',
+            id: 'ai-expert',
+            name: 'Dr. Karimov',
             emoji: '🔬',
-            role: 'AI-onderzoeker',
+            role: 'Onderzoeker taalverwerking en AI',
             perspective:
-                'Het systeem heeft een ingebouwde bias (= een voorkeur die oneerlijk uitpakt): het is getraind op historische data die al ongelijkheid bevat, en ziet dat als normaal. Een systeem kan alleen eerlijk zijn als de data eerlijk is — en die is het nooit volledig.',
+                'Huidige AI-tools zijn goed in het herkennen van structuur, argumentatielijn en taalfouten. Ze zijn minder goed in het beoordelen van originaliteit of subjectieve kwaliteit. Het beste resultaat krijg je als AI en docent samenwerken: de AI doet het technische deel, de docent beoordeelt de inhoud.',
             keyArgument:
-                'Technische nauwkeurigheid en ethische eerlijkheid zijn twee verschillende dingen. Een systeem kan statistisch kloppen en toch structureel oneerlijk zijn.',
+                'AI is een gereedschap met specifieke sterktes en zwaktes. Transparantie over wat de tool wel en niet kan beoordelen is voorwaarde voor eerlijk gebruik.',
         },
         {
-            id: 'meijer',
-            name: 'Wethouder Meijer',
-            emoji: '🏛️',
-            role: 'Gemeentelijk onderwijsambtenaar',
+            id: 'coordinator',
+            name: 'Dhr. Willems',
+            emoji: '🏫',
+            role: 'Onderwijscoördinator',
             perspective:
-                'De AVG (= de Europese privacywet) en de EU AI Act (= de Europese AI-wet) stellen eisen aan AI-systemen die mensen beoordelen. Onderwijssystemen vallen onder "hoog-risico AI": verplichte transparantie, menselijk toezicht en recht op bezwaar. De vraag is of scholen zich aan die regels houden.',
+                'Bij landelijke examens worden essays al gedeeltelijk door meerdere beoordelaars nagekeken om consistentie te waarborgen. Een AI kan een vergelijkbare rol vervullen: zorgen dat de lat overal gelijk ligt. Maar ik ben ook bezorgd dat scholen de tool gaan gebruiken als bezuiniging — dan komt de kwaliteit onder druk.',
             keyArgument:
-                'Wetgeving dwingt scholen om verantwoording af te leggen. Maar regels werken alleen als ze gehandhaafd worden — en dat ontbreekt nu.',
+                'Consistentie in beoordeling is een reëel probleem: dezelfde docent geeft op maandag soms andere cijfers dan op vrijdag. Een AI is altijd even uitgerust — maar dat is alleen een voordeel als de kwaliteit van de AI-beoordeling hoog genoeg is.',
         },
     ],
     positions: [
         {
-            id: 'verboden',
-            label: 'Verbieden',
-            description: 'AI-systemen mogen nooit zelfstandig beslissen over schoolniveau-indeling. Dat is een menselijke verantwoordelijkheid.',
+            id: 'volledig-inzetten',
+            label: 'Volledig inzetten',
+            description: 'De AI beoordeelt essays zelfstandig. De docent grijpt alleen in bij bezwaar of twijfel.',
         },
         {
-            id: 'toezicht',
-            label: 'Met menselijk toezicht',
-            description: 'AI mag adviseren, maar een mens neemt altijd de eindbeslissing en kan gemotiveerd afwijken.',
+            id: 'assistentie',
+            label: 'Als hulpmiddel',
+            description: 'De AI geeft een eerste beoordeling, maar de docent controleert altijd en stelt het eindcijfer vast.',
         },
         {
-            id: 'verbeteren',
-            label: 'Bias actief aanpakken',
-            description: 'AI-systemen mogen worden gebruikt mits aantoonbaar geaudit op bias, met publieke verantwoording en recht op bezwaar.',
+            id: 'beperkt',
+            label: 'Alleen technisch',
+            description: 'De AI checkt alleen spelling, grammatica en structuur — de inhoudelijke beoordeling blijft volledig bij de docent.',
         },
         {
-            id: 'vrij',
-            label: 'Scholen vrij laten kiezen',
-            description: 'Scholen mogen zelf beslissen welke tools ze gebruiken. Overregulering remt innovatie in het onderwijs.',
+            id: 'niet-inzetten',
+            label: 'Niet inzetten',
+            description: 'Essays nakijken blijft een menselijke taak. De relatie tussen docent en leerling staat centraal in beoordeling.',
         },
     ],
     argumentPrompts: [
         'Ik vind dat...',
-        'Want onderzoek of de wet zegt dat...',
+        'Want onderzoek of de praktijk laat zien dat...',
         'Dit raakt met name...',
     ],
     reflectionQuestions: [
-        'Wat is het verschil tussen een algoritme dat consistent is en een algoritme dat eerlijk is?',
-        'Heeft dit debat je kijk op "objectiviteit" veranderd?',
+        'Wat is het verschil tussen een beoordeling die consistent is en een beoordeling die eerlijk is?',
+        'Heeft dit debat je kijk op wat "goed onderwijs" betekent veranderd?',
     ],
     counterArgument:
-        '"Menselijke leraren hebben ook vooroordelen — alleen zijn die onzichtbaar. Een algoritme kun je in ieder geval auditen en verbeteren. Door AI te verbieden, vervangen we een controleerbaar systeem door een oncontroleerbaar menselijk oordeel."',
+        '"Menselijke docenten zijn ook inconsistent — dezelfde docent geeft vrijdagmiddag gemiddeld lagere cijfers dan maandagochtend. Een AI-tool is altijd even uitgerust en objectief. Door AI te weigeren, houden we een systeem in stand dat ook niet perfect eerlijk is."',
     maxScore: 100,
     badges: [
         {
@@ -120,10 +120,10 @@ const config: DebateArenaConfig = {
         },
     ],
     takeaways: [
-        'AI leert van historische data — en die data bevat de ongelijkheid van het verleden.',
-        'Statistisch nauwkeurig en ethisch eerlijk zijn niet hetzelfde.',
-        'De EU AI Act (de Europese AI-wet) classificeert onderwijssystemen als hoog-risico AI met extra verplichtingen.',
-        'Menselijk toezicht is geen formaliteit — het is de kern van verantwoord AI-gebruik.',
+        'AI-tools kunnen essays beoordelen op structuur en taalgebruik, maar hebben moeite met originaliteit en creatieve afwijkingen.',
+        'Consistent en eerlijk zijn niet hetzelfde: een algoritme kan consistent onjuist beoordelen.',
+        'Transparantie over wat een AI wel en niet kan is een voorwaarde voor verantwoord gebruik in onderwijs.',
+        'Menselijk toezicht op AI-beoordelingen is niet optioneel — het is de kern van verantwoord AI-gebruik in de klas.',
     ],
 };
 

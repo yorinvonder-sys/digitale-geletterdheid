@@ -1846,7 +1846,7 @@ WERKWIJZE:
 
 BEGRIPPEN DIE JE UITLEGT (wanneer relevant):
 - Huisstijl: de vaste visuele regels van een merk (kleuren, fonts, logo)
-- Merkwaarden: waar het merk voor staat (bijv. duurzaam, speels, luxe)
+- Merkwaarden: waar het merk voor staat (bijv. sportief, speels, luxe)
 - Kleurenpalet: de vaste set kleuren die een merk gebruikt
 - Typografie: de lettertypes die bij een merk horen
 - Doelgroep: de mensen die het product willen kopen
@@ -1878,17 +1878,17 @@ Jij bouwt vandaag een merkidentiteit. Vertel me: wat voor bedrijf of product wil
             {
                 title: "Doelgroep bepalen",
                 description: "Beschrijf je merk, product en doelgroep. Wat maakt jouw merk bijzonder?",
-                example: "Zeg: 'Mijn merk heet EcoStep, we maken duurzame sneakers voor jongeren van 14-20 die om het milieu geven.'"
+                example: "Zeg: 'Mijn merk heet SprintUp, we maken sportieve sneakers voor jongeren van 14-20 die van bewegen houden.'"
             },
             {
                 title: "Logo en stijl ontwerpen",
                 description: "Kies een kleurenpalet, beschrijf je logo-idee en kies lettertypes die passen bij je merk.",
-                example: "Zeg: 'Mijn kleuren zijn groen en wit, het logo is een voetafdruk in een blad, en ik gebruik een modern rond lettertype.'"
+                example: "Zeg: 'Mijn kleuren zijn oranje en wit, het logo is een gestileerde hardloopschoen, en ik gebruik een strak vet lettertype.'"
             },
             {
                 title: "Merkidentiteit presenteren",
                 description: "Vat je complete merkidentiteit samen en leg uit waarom elke keuze past bij je doelgroep.",
-                example: "Zeg: 'Groen staat voor natuur, het ronde font voelt vriendelijk aan, en het logo combineert lopen met duurzaamheid.'"
+                example: "Zeg: 'Oranje staat voor energie en actie, het vette font voelt krachtig aan, en het logo combineert snelheid met stijl.'"
             }
         ],
         bonusChallenges: null
@@ -2058,7 +2058,7 @@ Noem 2 dingen die hier misgaan en geef een verbeterde versie van deze opening."
 
 STAP 4: CHALLENGE 3 ⭐⭐⭐ - KENNIS COMBINEREN
 "CHALLENGE 3 ⭐⭐⭐ [TAKE 3: PRODUCTIE]
-Een nieuw duurzaam kledingmerk wil viral gaan bij tieners.
+Een nieuw sportief sneakermerk wil viral gaan bij tieners.
 Combineer je kennis: noem het kleurenpalet (branding), een meme-idee (viraliteit), en een 15-seconden video-concept (video).
 Leg bij elke keuze uit WAAROM."
 
@@ -2115,12 +2115,12 @@ Elke challenge test een ander mediadomein. Klaar? Zeg 'ACTIE' om te starten!"
         title: 'AI Ethicus',
         icon: <Scale size={28} />,
         color: '#202023',
-        description: 'Ontmasker vooroordelen die verstopt zitten in AI-systemen.',
-        problemScenario: 'Een AI-systeem op een school wijst automatisch leerlingen toe aan niveaus, maar sommige groepen worden vaker lager ingedeeld. Is dat eerlijk? Jij onderzoekt hoe bias in algoritmes sluipt en wat je eraan kunt doen.',
-        missionObjective: 'Analyseer een AI-systeem op bias en stel een ethisch advies op.',
+        description: 'Debatteer over een actueel AI-dilemma: mag een algoritme essays nakijken?',
+        problemScenario: 'Een school overweegt een AI-tool in te zetten die essays van leerlingen beoordeelt. De tool is snel en consistent — maar mag een algoritme bepalen of jouw werk goed genoeg is? Jij voert het debat.',
+        missionObjective: 'Analyseer meerdere standpunten over AI-beoordeling en formuleer een onderbouwde positie.',
         briefingImage: '/assets/agents/ai-ethicus.webp',
         difficulty: 'Hard',
-        examplePrompt: 'Welke vormen van bias kunnen er in een AI-aanbevelingssysteem zitten?',
+        examplePrompt: 'Wat zijn de voor- en nadelen van een AI die essays nakijkt?',
         visualPreview: (
             <div className="w-full h-full bg-gradient-to-br from-lab-teal to-lab-teal flex items-center justify-center relative overflow-hidden">
                 <div className="absolute inset-0 opacity-10">
@@ -2131,54 +2131,55 @@ Elke challenge test een ander mediadomein. Klaar? Zeg 'ACTIE' om te starten!"
                 <Scale size={64} className="text-white/80 drop-shadow-lg" />
             </div>
         ),
-        systemInstruction: `Je bent een AI-ethiekexpert en onderzoeker. Je helpt leerlingen begrijpen hoe bias en vooroordelen in AI-systemen terechtkomen en wat de maatschappelijke gevolgen daarvan zijn.
+        systemInstruction: `Je bent een AI-ethiekexpert die leerlingen begeleidt bij een debat over de inzet van AI om essays na te kijken.
 
 JOUW ROL:
-- Je bespreekt ethische dilemma's rondom kunstmatige intelligentie op een begrijpelijke manier.
-- Je legt uit hoe data, algoritmes en menselijke keuzes samen bias kunnen veroorzaken.
-- Je stimuleert kritisch denken: niet alles wat een AI zegt of doet is eerlijk of neutraal.
-- Je helpt de leerling om een onderbouwd ethisch advies te formuleren.
+- Je presenteert meerdere perspectieven op het dilemma "mag een AI essays beoordelen?" eerlijk en zonder voorkeur.
+- Je helpt de leerling een onderbouwde positie te kiezen en argumenten te formuleren.
+- Je daagt de leerling uit met tegenargumenten, zonder één kant als "de juiste" neer te zetten.
+- Je stimuleert kritisch denken: wat zijn de echte voor- en nadelen voor leerlingen, docenten en de school?
 
 SLO KERNDOELEN: 21D (Maatschappelijke gevolgen van digitale technologie herkennen), 23C (Ethische en maatschappelijke aspecten van technologie bespreken).
 
 WERKWIJZE:
-1. Laat de leerling een concreet AI-systeem kiezen of geef er een (bijv. gezichtsherkenning, chatbot, aanbevelingsalgoritme).
-2. Begeleid het onderzoek naar mogelijke vormen van bias (data-bias, selectiebias, bevestigingsbias).
-3. Help bij het schrijven van een ethisch adviesrapport met concrete aanbevelingen.
+1. Introduceer het dilemma: een school overweegt een AI-tool die essays beoordeelt. Wat vind jij hiervan?
+2. Help de leerling de standpunten van de betrokkenen te begrijpen (docent, leerling, AI-expert, coördinator).
+3. Begeleid het kiezen van een positie en het formuleren van 2-3 sterke argumenten.
+4. Presenteer een tegenargument en help de leerling daarop te reageren.
 
-Geef ALTIJD concrete voorbeelden die aansluiten bij de leefwereld van 13-14 jarigen.
+Wees ALTIJD neutraal: zowel "wel gebruiken" als "niet gebruiken" zijn verdedigbare posities.
 KERNIDEE:
-Leerlingen leren AI-systemen beoordelen op ethische aspecten: bias, transparantie, privacy en macht. Ze ontdekken dat technologie nooit neutraal is en dat kritisch denken over AI een essentiële maatschappelijke vaardigheid is.
+Leerlingen leren redeneren over een actueel AI-dilemma dat hen direct raakt. Ze ontdekken dat technologie in het onderwijs voor- en nadelen heeft en dat een goed argument altijd onderbouwing nodig heeft.
 
 STAP-VOLTOOIING:
-- Stuur ---STEP_COMPLETE:1--- als de leerling een AI-systeem heeft gekozen en onderzocht: hoe werkt het, wie gebruikt het, en welke data wordt gebruikt?
-- Stuur ---STEP_COMPLETE:2--- als de leerling minimaal 2 ethische kwesties heeft geïdentificeerd (bijv. bias, privacy, transparantie) en voor elke kwestie uitgelegd heeft wie er mogelijk door wordt benadeeld.
-- Stuur ---STEP_COMPLETE:3--- als de leerling een ethisch adviesrapport heeft geschreven met concrete aanbevelingen om het AI-systeem eerlijker of transparanter te maken.
+- Stuur ---STEP_COMPLETE:1--- als de leerling de standpunten van de betrokkenen heeft samengevat en een positie heeft gekozen.
+- Stuur ---STEP_COMPLETE:2--- als de leerling minimaal 2 argumenten heeft geformuleerd die hun positie onderbouwen, inclusief een reactie op een tegenargument.
+- Stuur ---STEP_COMPLETE:3--- als de leerling heeft gereflecteerd: is hun mening veranderd door het debat, en waarom wel of niet?
 
 SCOPE GUARD:
-- Blijf bij AI-ethiek en maatschappelijke impact. Als de leerling technische details wil, stuur ze terug: "Goede technische interesse! Voor nu focussen we op de ethische kant: wie wordt geraakt door dit systeem en hoe?"
-- Gebruik altijd voorbeelden die aansluiten bij de leefwereld van 13-14 jarigen.
+- Blijf bij het AI-essays-dilemma. Als de leerling naar andere AI-toepassingen afdwaalt, stuur ze terug: "Interessant voorbeeld! Maar laten we focussen op het essay-beoordelingsdilemma. Welk argument vind jij het sterkst?"
+- Neem zelf geen positie in: jij begeleidt het debat, je wint het niet.
 
 EERSTE BERICHT:
-"⚖️ Welkom bij het AI Ethics Institute!
-Jij bent aangesteld als ethisch adviseur. Grote bedrijven en overheden gebruiken AI-systemen die het leven van mensen beïnvloeden — soms zonder dat die mensen het weten.
-Jouw missie: een AI-systeem doorlichten. Welk systeem wil jij onderzoeken? (bijv. gezichtsherkenning, TikTok-algoritme, sollicitatiefilter)"
+"⚖️ Welkom bij het AI Ethicus debat!
+Stel: jouw school gebruikt voortaan een AI-tool die jouw essays nakijkt en een cijfer geeft. De docent kijkt het daarna nog even na, maar de AI doet het zware werk.
+Is dat een goed idee? Er zijn goede redenen vóór en goed redenen tégen. Jij mag het debat openen: wat is jouw eerste reactie?"
 ` + SYSTEM_INSTRUCTION_SUFFIX,
         steps: [
             {
-                title: "AI-systeem onderzoeken",
-                description: "Kies een AI-systeem en onderzoek hoe het werkt en welke data het gebruikt.",
-                example: "Typ: 'Ik wil het aanbevelingsalgoritme van TikTok onderzoeken.'"
+                title: "Standpunten verkennen",
+                description: "Lees de standpunten van alle betrokkenen en kies zelf een positie in het debat.",
+                example: "Typ: 'Ik denk dat de AI alleen als hulpmiddel mag worden gebruikt, omdat de docent de eindverantwoordelijkheid moet houden.'"
             },
             {
-                title: "Ethische kwesties identificeren",
-                description: "Benoem minstens twee vormen van bias of ethische problemen die je hebt gevonden.",
-                example: "Typ: 'Ik zie dat het algoritme bepaalde groepen minder zichtbaar maakt.'"
+                title: "Argumenten formuleren",
+                description: "Bouw 2-3 sterke argumenten op voor jouw positie en reageer op een tegenargument.",
+                example: "Typ: 'Mijn argument is dat een AI geen creatieve afwijkingen kan waarderen die een docent wél ziet.'"
             },
             {
-                title: "Advies formuleren",
-                description: "Schrijf een kort ethisch advies met concrete aanbevelingen om de bias te verminderen.",
-                example: "Typ: 'Mijn advies is dat het bedrijf diversere trainingsdata moet gebruiken.'"
+                title: "Reflecteren",
+                description: "Blik terug op het debat: is jouw mening veranderd door de tegenargumenten?",
+                example: "Typ: 'Na het tegenargument snap ik beter dat consistentie ook een voordeel is, maar ik blijf bij mijn standpunt omdat...'"
             }
         ],
         bonusChallenges: null
@@ -2422,15 +2423,15 @@ We beginnen met trends: noem 3 technologieën of ontwikkelingen die je de afgelo
         id: 'sustainability-scanner',
         yearGroup: 2,
         educationLevels: ['mavo', 'havo', 'vwo'] as EducationLevel[],
-        title: 'Sustainability Scanner',
+        title: 'Trend Scanner',
         icon: <Leaf size={28} />,
         color: '#202023',
-        description: 'Bereken de verborgen milieu-impact van jouw favoriete technologie.',
-        problemScenario: 'Elke keer dat je een video streamt, een zoekopdracht doet of een bericht stuurt, kost dat energie. Datacenters draaien 24/7 en verbruiken evenveel stroom als kleine landen. Hoe groot is jouw digitale voetafdruk?',
-        missionObjective: 'Analyseer de milieu-impact van een technologie en stel duurzame alternatieven voor.',
+        description: 'Ontdek patronen in hoe jongeren digitale media gebruiken — van gaming tot streaming.',
+        problemScenario: 'Hoe besteden jongeren wereldwijd hun online tijd? Van video streamen en gamen tot berichten sturen — de data vertelt een verrassend verhaal. Jij analyseert de trends en trekt je eigen conclusies.',
+        missionObjective: 'Analyseer digitale gebruikstrends, doe berekeningen en formuleer jouw eigen observaties.',
         briefingImage: '/assets/agents/sustainability-scanner.webp',
         difficulty: 'Medium',
-        examplePrompt: 'Hoeveel CO2 kost het om een uur Netflix te kijken?',
+        examplePrompt: 'Hoeveel minuten per week streamen jongeren gemiddeld?',
         visualPreview: (
             <div className="w-full h-full bg-gradient-to-br from-lab-coral to-lab-sage flex items-center justify-center relative overflow-hidden">
                 <div className="absolute bottom-0 left-0 right-0 h-1/3 bg-lab-sage/30"></div>
@@ -2438,55 +2439,55 @@ We beginnen met trends: noem 3 technologieën of ontwikkelingen die je de afgelo
                 <Leaf size={64} className="text-white/80 drop-shadow-lg" />
             </div>
         ),
-        systemInstruction: `Je bent een duurzaamheidsexpert die gespecialiseerd is in de milieu-impact van digitale technologie. Je helpt leerlingen begrijpen hoeveel energie en grondstoffen technologie kost.
+        systemInstruction: `Je bent een data-analist die leerlingen begeleidt bij het lezen en interpreteren van digitale gebruikstrends.
 
 JOUW ROL:
-- Je legt uit hoe technologie het milieu belast: datacenters, e-waste, mineralen, energieverbruik.
-- Je helpt de leerling de milieu-impact van een specifieke technologie te onderzoeken en te berekenen (in begrijpelijke eenheden).
-- Je bespreekt duurzame alternatieven en oplossingen.
-- Je maakt abstracte getallen concreet: "Dat is evenveel als 10 keer met de auto naar school rijden."
+- Je helpt leerlingen trenddata begrijpen: wat zeggen de cijfers over hoe jongeren online tijd besteden?
+- Je legt uit hoe je patronen herkent in tabellen en grafieken.
+- Je stelt vragen die de leerling aanzetten tot eigen observaties en berekeningen.
+- Je maakt getallen concreet: "595 minuten gamen per week — is dat veel of weinig vergeleken met een schoolweek?"
 
-SLO KERNDOELEN: 23C (Ethische en maatschappelijke aspecten van technologie bespreken), 23B (Standpunt innemen over digitale vraagstukken).
+SLO KERNDOELEN: 21C (Informatie verwerken en analyseren), 22A (Digitale media begrijpen en gebruiken).
 
 WERKWIJZE:
-1. Laat de leerling een technologie kiezen (streaming, gaming, social media, AI, etc.).
-2. Onderzoek samen het energieverbruik en de milieu-impact.
-3. Reken de impact om naar begrijpelijke vergelijkingen.
-4. Bedenk samen minstens drie duurzame alternatieven of verbeteringen.
+1. Laat de leerling de trenddata verkennen: welke activiteiten vallen op, wat verrast je?
+2. Begeleid berekeningen op basis van de data (bijv. wekelijkse totalen).
+3. Help de leerling patronen te benoemen en te vergelijken.
+4. Stimuleer eigen observaties: koppel de data aan de eigen media-ervaring.
 
-BELANGRIJK: Gebruik realistische maar vereenvoudigde getallen. Het doel is bewustwording, niet exacte wetenschap.
+BELANGRIJK: Geef antwoorden niet cadeau. Stel vragen: "Wat zie jij als je de kolom sorteert op gebruikersaantal?"
 KERNIDEE:
-Leerlingen leren de milieu-impact van digitale technologie kwantificeren en vergelijken. Ze ontdekken dat het internet en onze apparaten een grote ecologische voetafdruk hebben, en denken na over duurzame alternatieven.
+Leerlingen leren digitale gebruiksdata lezen, berekeningen uitvoeren en conclusies trekken. Ze ontdekken dat cijfers over mediagebruik verhalen vertellen over hoe mensen communiceren, gamen en consumeren.
 
 STAP-VOLTOOIING:
-- Stuur ---STEP_COMPLETE:1--- als de leerling het energieverbruik van een specifiek digitaal apparaat of dienst heeft onderzocht en omgezet naar een begrijpelijke vergelijking (bijv. uren autorijden of lampen branden).
-- Stuur ---STEP_COMPLETE:2--- als de leerling de totale impact heeft berekend over een jaar en de resultaten heeft uitgelegd in termen die iedereen begrijpt.
-- Stuur ---STEP_COMPLETE:3--- als de leerling minimaal 3 concrete, haalbare alternatieven of verbeteringen heeft beschreven die de impact verminderen.
+- Stuur ---STEP_COMPLETE:1--- als de leerling de trenddata heeft verkend en minimaal 2 concrete observaties heeft geformuleerd over opvallende cijfers of patronen.
+- Stuur ---STEP_COMPLETE:2--- als de leerling een berekening heeft gedaan op basis van de data (bijv. wekelijks totaal) en de uitkomst heeft uitgelegd in begrijpelijke termen.
+- Stuur ---STEP_COMPLETE:3--- als de leerling een eigen observatie heeft geformuleerd die de data verbindt met de eigen mediagebruik-ervaring.
 
 SCOPE GUARD:
-- Blijf bij digitale duurzaamheid en energie-impact. Als de leerling afdwaalt naar klimaatpolitiek, stuur ze terug: "Goede achtergrond! Maar laten we focussen op wat wij als digitale gebruikers concreet kunnen doen. Welk alternatief wil je uitwerken?"
-- Gebruik realistische getallen, geen sciencefiction-scenarios.
+- Blijf bij data-analyse van digitale gebruikstrends. Als de leerling afdwaalt, stuur ze terug: "Interessante gedachte! Maar laten we focussen op wat de data laat zien. Wat valt jou op als je de tabel bekijkt?"
+- Gebruik de data uit de missie als vertrekpunt; verzin geen nieuwe cijfers.
 
 EERSTE BERICHT:
-"🌱 Sustainability Scanner — online gaan voor het klimaat!
-Wist je dat één Google-zoekopdracht CO₂ uitstoot? Of dat streaming van 1 uur video net zoveel energie kost als een gloeilamp die een uur brandt?
-Jij gaat vandaag de digitale voetafdruk meten. Kies een apparaat of dienst die jij veel gebruikt. Wat wil jij onderzoeken?"
+"📊 Trend Scanner — ontdek hoe jongeren online tijd besteden!
+Wist je dat jongeren wereldwijd gemiddeld meer tijd besteden aan berichten sturen dan aan video kijken?
+Jij gaat vandaag de cijfers onderzoeken. Open de dataset en vertel me: wat valt jou als eerste op?"
 ` + SYSTEM_INSTRUCTION_SUFFIX,
         steps: [
             {
-                title: "Energieverbruik onderzoeken",
-                description: "Kies een technologie en onderzoek hoeveel energie en grondstoffen het kost.",
-                example: "Typ: 'Ik wil onderzoeken hoeveel energie online gamen kost per dag.'"
+                title: "Data verkennen",
+                description: "Bekijk de trenddata en beschrijf wat je opvalt: welke activiteit heeft de meeste gebruikers, welke neemt de meeste tijd?",
+                example: "Typ: 'Ik zie dat berichten sturen 2.100 miljoen gebruikers heeft — veel meer dan gamen.'"
             },
             {
-                title: "Impact berekenen",
-                description: "Reken de milieu-impact om naar begrijpelijke vergelijkingen.",
-                example: "Typ: 'Mijn dagelijks gamegebruik kost evenveel stroom als 5 uur een lamp laten branden.'"
+                title: "Berekening maken",
+                description: "Doe een berekening op basis van de data, bijvoorbeeld een wekelijks totaal of een vergelijking tussen twee activiteiten.",
+                example: "Typ: '85 minuten per dag gamen is 595 minuten per week — bijna 10 uur.'"
             },
             {
-                title: "Alternatieven voorstellen",
-                description: "Bedenk minstens drie manieren om de milieu-impact te verminderen.",
-                example: "Typ: 'Alternatief 1: Speel offline games die minder energie kosten.'"
+                title: "Eigen observatie formuleren",
+                description: "Koppel een patroon uit de data aan jouw eigen mediagebruik of dat van mensen om je heen.",
+                example: "Typ: 'Ik herken dat streaming op de smartphone het meest voorkomt, want ik gebruik ook vooral mijn telefoon.'"
             }
         ],
         bonusChallenges: null

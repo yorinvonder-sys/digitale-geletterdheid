@@ -140,7 +140,7 @@ export const KERNDOEL_MISSIONS: KerndoelMissionMeta[] = [
   { id: 'digital-rights-defender', title: 'Digital Rights Defender', week: 4, yearGroup: 2, sloKerndoelen: ['23A', '23C'], sloVsoKerndoelen: ['20A', '20B'] }, // 23B→23C: GDPR-rechten = privacy + regelgeving
   { id: 'tech-court', title: 'Tech Court', week: 4, yearGroup: 2, sloKerndoelen: ['23C'], sloVsoKerndoelen: ['20B'] },                                         // -23B: rechtszaak = puur maatschappij/ethiek
   { id: 'future-forecaster', title: 'Future Forecaster', week: 4, yearGroup: 2, sloKerndoelen: ['21D', '23C'], sloVsoKerndoelen: ['18C', '20B'] },
-  { id: 'sustainability-scanner', title: 'Sustainability Scanner', week: 4, yearGroup: 2, sloKerndoelen: ['23C'], sloVsoKerndoelen: ['20B'] },                  // -23B: milieu-impact = maatschappij
+  { id: 'sustainability-scanner', title: 'Trend Scanner', week: 4, yearGroup: 2, sloKerndoelen: ['23C'], sloVsoKerndoelen: ['20B'] },                  // -23B: digitale gebruikstrends = data + maatschappij
   { id: 'eindproject-j2', title: 'Eindproject Jaar 2', week: 4, yearGroup: 2, sloKerndoelen: ['21A', '21B', '21C', '21D', '22A', '22B', '23A', '23B', '23C'], sloVsoKerndoelen: ['18A', '18B', '18C', '19A', '20A', '20B'] }, // capstone: alle kerndoelen
 
   // Assessment P4
@@ -176,7 +176,7 @@ export const KERNDOEL_MISSIONS: KerndoelMissionMeta[] = [
   { id: 'startup-simulator', title: 'Startup Simulator', week: 3, yearGroup: 3, sloKerndoelen: ['23C', '22A'] },                                               // 23B→22A: business model = maatschappij + product
   { id: 'policy-maker', title: 'Policy Maker', week: 3, yearGroup: 3, sloKerndoelen: ['23C'] },                                                                // -23B: beleidsvoorstel = puur maatschappij
   { id: 'innovation-lab', title: 'Innovation Lab', week: 3, yearGroup: 3, sloKerndoelen: ['23C', '22A'] },                                                     // 21D→23C: Design Thinking voor maatschappelijke problemen
-  { id: 'digital-divide-researcher', title: 'Digital Divide Researcher', week: 3, yearGroup: 3, sloKerndoelen: ['23C', '21B'] },                                // 23B→21B: onderzoek + bronnen evalueren
+  { id: 'digital-divide-researcher', title: 'Connectivity Researcher', week: 3, yearGroup: 3, sloKerndoelen: ['23C', '21B'] },                                // 23B→21B: onderzoek + bronnen evalueren
   { id: 'tech-impact-analyst', title: 'Tech Impact Analyst', week: 3, yearGroup: 3, sloKerndoelen: ['23C', '21D'] },
   { id: 'impact-review', title: 'Impact Review', week: 3, yearGroup: 3, sloKerndoelen: ['23C'] },                                                              // -23B: review = puur maatschappij
   { id: 'welzijnsonderzoeker', title: 'Welzijnsonderzoeker', week: 3, yearGroup: 3, sloKerndoelen: ['23B', '21C', '23C'] },                                    // welzijnsonderzoek via data-analyse + maatschappij

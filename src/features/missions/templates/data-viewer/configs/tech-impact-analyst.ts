@@ -6,20 +6,20 @@ export const techImpactAnalystConfig: DataViewerConfig = {
     introEmoji: '🔎',
     introTitle: 'Word een Tech Impact Analyst',
     introDescription:
-        'Elke technologie heeft gevolgen — voor mensen, samenleving en milieu. Jij gaat als onafhankelijk analist de maatschappelijke impact van AI-systemen en andere technologieën in kaart brengen. Voordelen én risico\'s. Want technologie is nooit neutraal.',
+        'Elke technologie heeft gevolgen — voor mensen, samenleving en milieu. Jij gaat als onafhankelijk analist de maatschappelijke impact van bezorgdrones in kaart brengen. Voordelen én risico\'s, eerlijk en evenwichtig.',
     introFeatures: [
-        'Analyseer de maatschappelijke impact van gezichtsherkenning',
-        'Vergelijk beleidsposities van landen over AI-regulering',
-        'Beoordeel welke ethische afwegingen relevant zijn',
+        'Analyseer de maatschappelijke impact van bezorgdrones',
+        'Vergelijk drone-bezorgtijden en adoptie per land',
+        'Pas de 4-stappen impact-analysemethode toe',
     ],
 
     datasets: [
         // ── Dataset 1: Tabel ──────────────────────────────────────────────────
         {
-            id: 'gezichtsherkenning-impact',
-            title: 'Impact-analyse: gezichtsherkenning in de openbare ruimte',
+            id: 'bezorgdrones-impact',
+            title: 'Impact-analyse: bezorgdrones in de samenleving',
             description:
-                'Gezichtsherkenning wordt steeds vaker gebruikt door overheden en bedrijven. Bekijk de impact-matrix met positieve en negatieve effecten per domein.',
+                'Bezorgdrones worden door logistieke bedrijven getest en ingezet. Bekijk de impact-matrix met positieve en negatieve effecten per domein.',
             type: 'table',
             columns: [
                 { key: 'domein', label: 'Domein', sortable: true },
@@ -29,48 +29,48 @@ export const techImpactAnalystConfig: DataViewerConfig = {
                 { key: 'zekerheid', label: 'Wetenschappelijke zekerheid', sortable: true },
             ],
             rows: [
-                { domein: 'Veiligheid', positief_effect: 'Sneller criminelen opsporen', negatief_risico: 'Massasurveillance van onschuldigen', ernst_risico: 5, zekerheid: 'Hoog' },
-                { domein: 'Privacy', positief_effect: 'Geen direct voordeel', negatief_risico: 'Permanente registratie van bewegingen', ernst_risico: 5, zekerheid: 'Hoog' },
-                { domein: 'Discriminatie', positief_effect: 'Objectievere identificatie (theoretisch)', negatief_risico: 'Algoritme discrimineert donkere huidskleur (hogere foutkans)', ernst_risico: 4, zekerheid: 'Hoog' },
-                { domein: 'Economie', positief_effect: 'Snellere paspoortcontrole, minder personeel nodig', negatief_risico: 'Verlies van banen in beveiliging', ernst_risico: 3, zekerheid: 'Matig' },
-                { domein: 'Democratie', positief_effect: 'Fraude bij verkiezingen voorkomen', negatief_risico: 'Burgers gaan protesten vermijden uit angst voor registratie', ernst_risico: 5, zekerheid: 'Matig' },
-                { domein: 'Gezondheid', positief_effect: 'Patiëntidentificatie in ziekenhuizen', negatief_risico: 'Medische data koppelen aan identiteit zonder toestemming', ernst_risico: 4, zekerheid: 'Laag' },
+                { domein: 'Snelheid & gemak', positief_effect: 'Bezorging binnen 30 minuten zonder verkeer', negatief_risico: 'Afhankelijkheid van drone-beschikbaarheid en batterijleven', ernst_risico: 2, zekerheid: 'Hoog' },
+                { domein: 'Veiligheid luchtruim', positief_effect: 'Minder bestelwagens in stadsverkeer, minder ongelukken', negatief_risico: 'Risico op botsingen met vliegtuigen en andere drones', ernst_risico: 4, zekerheid: 'Hoog' },
+                { domein: 'Geluidsoverlast', positief_effect: 'Geen diesel-bestelwagens in woonwijken', negatief_risico: 'Constant zoemend geluid boven woongebieden', ernst_risico: 3, zekerheid: 'Hoog' },
+                { domein: 'Werkgelegenheid bezorgers', positief_effect: 'Nieuwe technische banen voor drone-onderhoud', negatief_risico: 'Minder werk voor traditionele bezorgers', ernst_risico: 3, zekerheid: 'Matig' },
+                { domein: 'Bereikbaarheid platteland', positief_effect: 'Pakketten bezorgen in gebieden zonder goede wegen', negatief_risico: 'Hoge kosten maken plattelandsdienst minder rendabel', ernst_risico: 2, zekerheid: 'Matig' },
+                { domein: 'Kosten', positief_effect: 'Lagere bezorgkosten op lange termijn door automatisering', negatief_risico: 'Hoge investeringskosten maken dienst voorlopig duur', ernst_risico: 2, zekerheid: 'Laag' },
             ],
             questions: [
                 {
                     id: 'q1-hoogste-ernst',
                     question:
-                        'Hoeveel domeinen hebben een ernst-score van 5 (maximaal ernstig risico)?',
+                        'Hoeveel domeinen hebben een ernst-score van 3 of hoger?',
                     type: 'number-input',
                     correctAnswer: 3,
                     explanation:
-                        'Veiligheid, Privacy en Democratie hebben allemaal ernst-score 5. Dit zijn de drie domeinen waar het risico het ernstigst is. Sorteer op "Ernst risico" om ze te groeperen. Een impact-analist zou deze drie als "high priority" markeren in het rapport.',
+                        'Veiligheid luchtruim (4), Geluidsoverlast (3) en Werkgelegenheid bezorgers (3) hebben een ernst-score van 3 of hoger — dat zijn 3 domeinen. De andere drie (Snelheid & gemak, Bereikbaarheid platteland en Kosten) scoren elk 2. Sorteer op "Ernst risico" om ze te groeperen.',
                     points: 15,
                 },
                 {
-                    id: 'q2-bias-probleem',
+                    id: 'q2-luchtruim-probleem',
                     question:
-                        'Gezichtsherkenning-algoritmes maken meer fouten bij donkere huidskleur — dit kan komen doordat het model getraind is op data die niet alle groepen goed vertegenwoordigt. Wat is dit een voorbeeld van?',
+                        'Veiligheid in het luchtruim krijgt de hoogste ernst-score (4). Welke van de volgende omschrijvingen legt de reden hiervoor het best uit?',
                     type: 'multiple-choice',
                     options: [
-                        'Een softwarebug die makkelijk te repareren is',
-                        'Algoritmische bias door niet-representatieve trainingsdata',
-                        'Een hardwareprobleem met camera-sensoren',
-                        'Bewuste discriminatie door de ontwikkelaars',
+                        'Drones zijn te langzaam om gevaarlijk te zijn',
+                        'Botsingen met vliegtuigen of andere drones kunnen ernstige gevolgen hebben voor mensenlevens',
+                        'Het luchtruim is al zo druk dat een paar drones er niets aan toevoegen',
+                        'Batterijproblemen maken drones onbetrouwbaar maar niet gevaarlijk',
                     ],
-                    correctAnswer: 'Algoritmische bias door niet-representatieve trainingsdata',
+                    correctAnswer: 'Botsingen met vliegtuigen of andere drones kunnen ernstige gevolgen hebben voor mensenlevens',
                     explanation:
-                        'De meeste gezichtsherkenning-modellen zijn getraind op datasets met overwegend lichte huidskleur. Het model heeft daardoor minder voorbeelden gezien van donkere gezichten en maakt er meer fouten op. Dit heet algoritmische bias. Het is geen bewuste keuze, maar een structureel probleem door niet-representatieve data.',
+                        'Veiligheid in het luchtruim scoort 4 omdat een botsing van een drone met een vliegtuig of helikopter desastreuze gevolgen kan hebben. Dit is een risico met lage kans maar hoge ernst — precies wat een score van 4 rechtvaardigt. Regelgeving (zoals het verplicht registreren van drones) probeert dit risico te beheersen.',
                     points: 15,
                 },
                 {
                     id: 'q3-afweging-observatie',
                     question:
-                        'Het argument voor gezichtsherkenning bij veiligheid is "sneller criminelen opsporen". Welk tegenargument zou een privacy-advocaat direct geven?',
+                        'Het argument vóór bezorgdrones bij werkgelegenheid is "nieuwe technische banen voor drone-onderhoud". Welk tegenargument zou een vakbond direct geven?',
                     type: 'text-observation',
                     correctAnswer: '',
                     explanation:
-                        'Een privacy-advocaat zou zeggen: om criminelen te vinden, moeten alle onschuldige burgers ook worden gescand en geregistreerd. Dit is massasurveillance — je behandelt iedereen als verdachte. Dit schendt het principe van "onschuldig totdat het tegendeel bewezen is". Bovendien toont onderzoek dat de foutmarge bij donkere huidskleur leidt tot valse aanhoudingen van onschuldigen.',
+                        'Een vakbond zou zeggen: het aantal nieuwe technische banen is veel kleiner dan het aantal verloren bezorgbanen. Bovendien vereisen die nieuwe banen een andere opleiding — een bezorger kan niet zomaar drone-technicus worden. Dit heet structurele werkloosheid: de banen die verdwijnen en de banen die ontstaan, zijn niet uitwisselbaar. Een impact-analist zou vragen: hoeveel banen verdwijnen, hoeveel komen er terug, en voor wie?',
                     points: 10,
                 },
             ],
@@ -78,48 +78,48 @@ export const techImpactAnalystConfig: DataViewerConfig = {
 
         // ── Dataset 2: Staafgrafiek ───────────────────────────────────────────
         {
-            id: 'ai-regulering-landen',
-            title: 'AI-regulering: hoe streng zijn landen?',
+            id: 'drone-bezorging-landen',
+            title: 'Gemiddelde bezorgtijd (minuten) met drone vs. traditioneel — 2024',
             description:
-                'Landen kiezen verschillende posities bij het reguleren van AI. Onderzoekers gaven landen een score van 0-100 voor de strengheid van hun AI-wetgeving (2024).',
+                'Landen en steden testen bezorgdrones op verschillende schaal. Onderzoekers maten de gemiddelde bezorgtijd in minuten voor een pakket van 1 kg binnen een straal van 5 km.',
             type: 'bar-chart',
             chartData: [
-                { label: 'EU', value: 78, color: '#202023' },
-                { label: 'VK', value: 52, color: '#202023' },
-                { label: 'VS', value: 38, color: '#ff3c21' },
-                { label: 'China', value: 65, color: '#ff3c21' },
-                { label: 'Japan', value: 44, color: '#e1ff01' },
-                { label: 'India', value: 28, color: '#202023' },
+                { label: 'Drone (US)', value: 28, color: '#202023' },
+                { label: 'Traditioneel (US)', value: 52, color: '#ff3c21' },
+                { label: 'Drone (AU)', value: 22, color: '#202023' },
+                { label: 'Traditioneel (AU)', value: 48, color: '#ff3c21' },
+                { label: 'Drone (NL pilot)', value: 35, color: '#e1ff01' },
+                { label: 'Traditioneel (NL)', value: 58, color: '#202023' },
             ],
             questions: [
                 {
-                    id: 'q4-strengste-regelgeving',
-                    question: 'Welke regio heeft de strengste AI-regulering op basis van de data?',
+                    id: 'q4-snelste-drone',
+                    question: 'In welk land is de drone het snelst ten opzichte van de traditionele bezorging?',
                     type: 'multiple-choice',
-                    options: ['VS', 'China', 'EU', 'Japan'],
-                    correctAnswer: 'EU',
+                    options: ['VS (US)', 'Australië (AU)', 'Nederland (NL)', 'Alle landen zijn even snel'],
+                    correctAnswer: 'Australië (AU)',
                     explanation:
-                        'De EU scoort het hoogst met 78 — dat klopt met de werkelijkheid: de EU AI Act (2024, de Europese AI-wet) is \'s werelds eerste uitgebreide AI-wetgeving. De VS heeft bewust minder strenge regels om innovatie te stimuleren. China heeft eigen strikte regels, maar die zijn meer gericht op inhoudelijke controle dan op mensenrechten.',
+                        'In Australië is het tijdverschil 48 − 22 = 26 minuten. In de VS is dat 52 − 28 = 24 minuten. In Nederland 58 − 35 = 23 minuten. Australië heeft het grootste voordeel voor drones, waarschijnlijk door minder stedelijke bebouwing en gunstige regelgeving.',
                     points: 10,
                 },
                 {
-                    id: 'q5-vs-eu-verschil',
+                    id: 'q5-nl-verschil',
                     question:
-                        'Hoeveel punten verschil zit er in AI-regulering tussen de EU en de VS?',
+                        'Hoeveel minuten sneller is de drone-bezorging in de Nederlandse pilot vergeleken met traditionele bezorging?',
                     type: 'number-input',
-                    correctAnswer: 40,
+                    correctAnswer: 23,
                     explanation:
-                        'EU: 78 punten. VS: 38 punten. Verschil: 78 − 38 = 40 punten. Dit grote verschil heeft directe gevolgen: technologiebedrijven moeten hun producten aanpassen om aan EU-regels te voldoen, ook al zijn ze gevestigd in de VS.',
+                        'Traditioneel in NL: 58 minuten. Drone in NL: 35 minuten. Verschil: 58 − 35 = 23 minuten. De Nederlandse pilot is trager dan in de VS en Australië, deels door strengere luchtruimregels en dichter bebouwd stedelijk gebied.',
                     points: 10,
                 },
                 {
                     id: 'q6-regulering-observatie',
                     question:
-                        'Waarom zou een techbedrijf strenge AI-regulering soms niet erg vinden? En wanneer wel? Beschrijf beide kanten.',
+                        'Waarom zou een bezorgbedrijf drone-bezorging willen invoeren ook als het duurder is dan traditionele bezorging? En wanneer is het economisch pas interessant?',
                     type: 'text-observation',
                     correctAnswer: '',
                     explanation:
-                        'Voordeel voor het bedrijf: duidelijke regels geven zekerheid over wat wel en niet mag. Gevestigde grote bedrijven hebben de middelen om aan regels te voldoen — kleine concurrenten soms niet. Regels kunnen zo een "moat" creëren die grote spelers beschermt. Nadeel: compliance kost geld en vertraagt innovatie. Nieuwe toepassingen kunnen verboden worden voordat hun nut bewezen is.',
+                        'Voordeel voor het bedrijf: drones kunnen 24/7 rijden zonder chauffeur, worden nooit ziek en vermijden verkeersfiles. Op hoog volume (veel pakketten per dag) zijn de vaste kosten van drones lager dan de arbeidskosten van bezorgers. Economisch interessant als: volume hoog genoeg is om de aanschaf- en onderhoudskosten te dekken, én de regelgeving ruimte biedt voor commerciële vluchten.',
                     points: 10,
                 },
             ],
@@ -149,7 +149,7 @@ export const techImpactAnalystConfig: DataViewerConfig = {
                     title: 'Stap 3: Risico\'s analyseren',
                     icon: '⚠️',
                     content:
-                        'Identificeer negatieve effecten op privacy, mensenrechten, milieu en ongelijkheid. Beoordeel ernst (hoe erg als het misgaat?) en waarschijnlijkheid (hoe groot is de kans?). Vraag: "Wie draagt het risico — en is dat dezelfde persoon als wie het voordeel krijgt?" Dit is de kern van ethische impact-analyse.',
+                        'Identificeer negatieve effecten op veiligheid, privacy, milieu en werkgelegenheid. Beoordeel ernst (hoe erg als het misgaat?) en waarschijnlijkheid (hoe groot is de kans?). Vraag: "Wie draagt het risico — en is dat dezelfde persoon als wie het voordeel krijgt?" Dit is de kern van een zorgvuldige impact-analyse.',
                 },
                 {
                     title: 'Stap 4: Conclusie en aanbeveling',
@@ -162,7 +162,7 @@ export const techImpactAnalystConfig: DataViewerConfig = {
                 {
                     id: 'q7-methode-toepassen',
                     question:
-                        'Een overheid wil AI inzetten om sollicitaties te beoordelen. Welk stap in de impact-analyse zou als eerste een serieus risico blootleggen?',
+                        'Een gemeente wil bezorgdrones toestaan boven woonwijken. Welke stap in de impact-analyse zou als eerste een serieus risico blootleggen?',
                     type: 'multiple-choice',
                     options: [
                         'Stap 1: Technologie beschrijven',
@@ -172,7 +172,7 @@ export const techImpactAnalystConfig: DataViewerConfig = {
                     ],
                     correctAnswer: 'Stap 3: Risico\'s analyseren',
                     explanation:
-                        'In Stap 3 worden risico\'s geanalyseerd. Voor AI bij sollicitaties: risico op discriminatie (als de trainingsdata bias bevat), gebrek aan transparantie (sollicitant weet niet waarom hij is afgewezen) en schending van arbeidsrecht (recht op uitleg bij een afwijzing). Dit zijn serieuze mensenrechtenrisico\'s die de EU AI Act als "hoog risico" classificeert.',
+                        'In Stap 3 worden risico\'s geanalyseerd. Voor drones boven woonwijken: risico op geluidsoverlast, technisch falen boven mensen (vallende drone), veiligheid in het luchtruim en privacyzorgen bij camera\'s aan boord. Dit zijn concrete risico\'s die specifieke regels vereisen voordat je kunt adviseren.',
                     points: 15,
                 },
                 {
@@ -182,7 +182,7 @@ export const techImpactAnalystConfig: DataViewerConfig = {
                     type: 'text-observation',
                     correctAnswer: '',
                     explanation:
-                        'Positief: het algoritme helpt je precies de content vinden die je interessant vindt — efficiënte ontdekking van nieuwe creators en onderwerpen. Negatief: filterbubbel — je ziet steeds extremere versies van wat je al leuk vindt, en nooit tegengestelde perspectieven. Dit kan polarisering versterken en je informatieverwerving eenzijdig maken.',
+                        'Positief: het algoritme helpt je precies de content vinden die je interessant vindt — efficiënte ontdekking van nieuwe creators en onderwerpen. Negatief: filterbubbel — je ziet steeds extremere versies van wat je al leuk vindt, en nooit tegengestelde perspectieven. Dit kan de informatieverwerving eenzijdig maken.',
                     points: 0,
                 },
             ],
@@ -219,11 +219,11 @@ export const techImpactAnalystConfig: DataViewerConfig = {
     ],
 
     takeaways: [
-        'Elke technologie heeft zowel voordelen als risico\'s — eerlijke analyse erkent beide',
-        'Algoritmische bias ontstaat als trainingsdata niet representatief is voor alle groepen',
-        'De EU heeft met de AI Act \'s werelds strengste AI-regulering ingevoerd',
-        'Een impact-analyse beoordeelt ernst én waarschijnlijkheid van risico\'s',
-        'Technologie is nooit neutraal: het heeft altijd winnaars en verliezers',
+        'Elke technologie heeft voordelen én nadelen — een eerlijke analyse weegt beide',
+        'Ernst van een risico is niet hetzelfde als de kans dat het optreedt — een impact-analyse beoordeelt allebei',
+        'Bezorgdrones zijn gemiddeld 23-26 minuten sneller dan traditionele bezorging in testpilots',
+        'Een impact-analyse weegt voordelen en risico\'s per domein en geeft een concrete aanbeveling',
+        'Technische banen die een technologie creëert vervangen niet altijd de banen die ze doet verdwijnen',
     ],
 };
 

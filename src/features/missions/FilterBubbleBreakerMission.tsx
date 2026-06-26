@@ -26,7 +26,7 @@ const FEED_A: FeedItem[] = [
 ];
 
 const FEED_B: FeedItem[] = [
-    { emoji: '🌍', title: 'Klimaattop: nieuwe afspraken bereikt', source: 'BBC World', engagement: '12K shares', category: 'Nieuws' },
+    { emoji: '🚀', title: 'ESA-ruimtemissie landt succesvol op maan', source: 'BBC World', engagement: '12K shares', category: 'Nieuws' },
     { emoji: '🍛', title: 'Authentiek curry recept uit Mumbai', source: 'Chef Sanjeev', engagement: '340K saves', category: 'Koken' },
     { emoji: '🤖', title: 'AI doorbraak: robot leert zelf lopen', source: 'Tech Today', engagement: '67K likes', category: 'Technologie' },
     { emoji: '💊', title: 'Ayurveda: oude wijsheid, modern bewijs', source: 'Health India', engagement: 'Gesponsord', category: 'Gezondheid' },
@@ -35,7 +35,7 @@ const FEED_B: FeedItem[] = [
 
 const CHALLENGES: Challenge[] = [
     { question: 'Waarom ziet Daan (14, NL) HEEL andere content dan Priya (35, India)?', options: ['Omdat het internet willekeurig content toont', 'Omdat een algoritme content selecteert op basis van leeftijd, locatie en interesses', 'Omdat Priya meer betaalt voor het internet', 'Omdat Daan een betere telefoon heeft'], correctIndex: 1, explanation: 'Algoritmes analyseren je leeftijd, locatie, klikgedrag en interesses om te voorspellen wat jij wilt zien. Daardoor leeft iedereen in een eigen "bubbel" van content.' },
-    { question: 'Daan ziet NOOIT nieuws over klimaat of technologie. Wat is het gevaar hiervan?', options: ['Niets, hij is pas 14', 'Hij mist belangrijke informatie en denkt dat de wereld alleen uit sport en gaming bestaat', 'Het algoritme beschermt hem', 'Iedereen ziet hetzelfde'], correctIndex: 1, explanation: 'Dit heet een filterbubbel: je ziet alleen content die bevestigt wat je al leuk vindt. Je mist dan belangrijke perspectieven.' },
+    { question: 'Daan ziet NOOIT nieuws over wetenschap of technologie. Wat is het gevaar hiervan?', options: ['Niets, hij is pas 14', 'Hij mist belangrijke informatie en denkt dat de wereld alleen uit sport en gaming bestaat', 'Het algoritme beschermt hem', 'Iedereen ziet hetzelfde'], correctIndex: 1, explanation: 'Dit heet een filterbubbel: je ziet alleen content die bevestigt wat je al leuk vindt. Je mist dan belangrijke perspectieven.' },
     { question: 'Daan ziet een "Gesponsord" bericht over Nike sneakers. Waarom juist HIJ?', options: ['Nike stuurt reclame naar iedereen', 'Daan heeft eerder gezocht naar sneakers, dus het algoritme target hem', 'Het is toeval', 'Zijn ouders hebben Nike gekocht'], correctIndex: 1, explanation: 'Adverteerders betalen om reclame te tonen aan specifieke doelgroepen. Omdat Daan "sneakers" als interesse heeft, wordt hij getarget.' },
     { question: 'Hoe kun je je eigen filterbubbel doorbreken?', options: ['Je kunt er niks aan doen', 'Bewust zoeken naar andere onderwerpen en diverse bronnen volgen', 'Een andere telefoon kopen', 'Alle apps verwijderen'], correctIndex: 1, explanation: 'Je kunt actief je bubbel doorbreken door andere onderwerpen op te zoeken, diverse nieuwsbronnen te volgen, en "Niet geïnteresseerd" te gebruiken.' },
     { question: 'Is een filterbubbel ALTIJD slecht?', options: ['Ja, het is altijd gevaarlijk', 'Nee, het kan handig zijn maar wordt een probleem als je geen ander perspectief meer ziet', 'Nee, want je ziet wat je leuk vindt', 'Ja, want het is illegaal'], correctIndex: 1, explanation: 'Een filterbubbel heeft voordelen én nadelen. Het probleem ontstaat als je niet WEET dat je in een bubbel zit.' }
@@ -217,7 +217,7 @@ export const FilterBubbleBreakerMission: React.FC<Props> = ({ onBack, onComplete
                         <textarea
                             value={analyzeResponse}
                             onChange={e => setAnalyzeResponse(e.target.value)}
-                            placeholder="Bijv: Daan mist nieuws over klimaatverandering. Dit is belangrijk omdat..."
+                            placeholder="Bijv: Daan mist nieuws over ruimtevaart en wetenschap. Dit is belangrijk omdat..."
                             className="w-full p-4 rounded-2xl border-2 border-duck-gray bg-white text-sm text-duck-ink placeholder-[#E7D8BD] focus:border-duck-ink focus:outline-none transition-all duration-300 resize-none"
                             style={{ fontFamily: "'Outfit', system-ui, sans-serif", minHeight: '120px' }}
                         />
