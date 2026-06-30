@@ -32,8 +32,8 @@ export const IntroScreen: React.FC<IntroScreenProps> = ({
     coachMessage,
     attribution,
 }) => (
-    <div className="min-h-screen overflow-y-auto bg-duck-bg flex flex-col px-4 py-5 sm:py-6" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
-        <div className="m-auto w-full max-w-lg text-center">
+    <div className="min-h-screen overflow-y-auto bg-duck-bg flex flex-col [justify-content:safe_center] px-4 pb-10 pt-[max(1.5rem,env(safe-area-inset-top))] sm:pb-12" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+        <div className="mx-auto w-full max-w-lg text-center">
             <KeesMessage
                 message={coachMessage ?? getKeesMissionIntro(title)}
                 mood="wave"
