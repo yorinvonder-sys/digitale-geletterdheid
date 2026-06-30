@@ -128,7 +128,7 @@ export const TrainerPreview: React.FC<TrainerPreviewProps> = ({ data }) => {
                             Wat ga je doen?
                         </h3>
                         <p className="text-xs md:text-sm mb-3 leading-snug" style={{ color: '#6f6e69' }}>
-                            Je typt zinnen in het chatveld links. De AI leest jouw zin en sorteert het in de juiste bak hier rechts.
+                            Je typt zinnen in het chatveld onderaan. De AI leest jouw zin en sorteert het in de juiste bak hierboven.
                         </p>
 
                         <div className="space-y-2">
@@ -251,7 +251,7 @@ export const TrainerPreview: React.FC<TrainerPreviewProps> = ({ data }) => {
                         <div>
                             <h4 className="font-bold text-sm mb-1" style={{ color: '#202023' }}>Wat moet je nu doen?</h4>
                             <p className="text-xs leading-relaxed mb-2" style={{ color: '#6f6e69' }}>
-                                Typ een zin in het <strong>chatveld links</strong>. Vertel de AI wat voor soort afval iets is.
+                                Typ een zin in het <strong>chatveld onderaan</strong>. Vertel de AI wat voor soort afval iets is.
                             </p>
                             <div className="rounded-lg px-3 py-2 space-y-1" style={{ backgroundColor: '#f2f1ec', border: '1px solid #E7D8BD' }}>
                                 <p className="text-xs font-medium" style={{ color: '#6f6e69' }}>Typ bijvoorbeeld:</p>
