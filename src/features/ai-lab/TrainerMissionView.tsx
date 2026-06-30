@@ -160,8 +160,7 @@ export const TrainerMissionView: React.FC<TrainerMissionViewProps> = ({
         {suggestions.length > 0 && !isLoading && (
           <div className="flex flex-wrap gap-2 mb-3">
             <div
-              className="flex items-center gap-1 text-xs font-bold text-white mr-1 px-2 py-1 rounded-lg"
-              style={{ backgroundColor: selectedRole.color }}
+              className="flex items-center gap-1 text-xs font-bold text-duck-ink mr-1 px-2 py-1 rounded-lg border border-duck-ink/15 bg-duck-acid/20"
             >
               <Lightbulb size={12} fill="currentColor" aria-hidden="true" /> Tips:
             </div>
@@ -173,8 +172,7 @@ export const TrainerMissionView: React.FC<TrainerMissionViewProps> = ({
               >
                 <span className="whitespace-normal leading-tight">{suggestion}</span>
                 <span
-                  className="text-[9px] font-bold text-white px-1.5 py-0.5 rounded flex-shrink-0 whitespace-nowrap"
-                  style={{ backgroundColor: selectedRole.color, border: `1px solid ${selectedRole.color}` }}
+                  className="text-[9px] font-bold text-white px-1.5 py-0.5 rounded flex-shrink-0 whitespace-nowrap bg-duck-ink"
                 >
                   -{tipCost} XP
                 </span>
