@@ -102,7 +102,7 @@ const StorySetupForm = ({ onCancel, onSubmit }: { onCancel: () => void, onSubmit
                         </button>
                         <button
                             type="submit"
-                            className="flex-[2] py-3 text-white font-bold rounded-xl shadow-lg hover:shadow-xl hover:scale-[1.02] active:scale-95 transition-all" style={{ backgroundColor: '#ff3c21' }}
+                            className="flex-[2] py-3 bg-duck-acid text-duck-ink font-black rounded-full shadow-lg hover:shadow-xl hover:scale-[1.02] active:scale-95 transition-all"
                         >
                             Start Verhaal! 🚀
                         </button>
@@ -874,10 +874,9 @@ Maak nu de titel met [TITLE] tags en de tekst van de eerste pagina met [PAGE] ta
                             </p>
                             <button
                                 onClick={() => setShowForm(true)}
-                                className="w-full py-4 text-white font-bold rounded-2xl shadow-lg hover:opacity-90 transition-all flex items-center justify-center gap-2 active:scale-95 group"
-                                style={{ backgroundColor: '#ff3c21' }}
+                                className="w-full py-4 bg-duck-acid text-duck-ink font-black rounded-full shadow-lg hover:opacity-90 transition-all flex items-center justify-center gap-2 active:scale-95 group"
                             >
-                                <Sparkles size={18} className="text-white/80 group-hover:animate-spin" />
+                                <Sparkles size={18} className="text-duck-ink/70 group-hover:animate-spin" />
                                 Start Mijn Boek
                             </button>
                         </div>

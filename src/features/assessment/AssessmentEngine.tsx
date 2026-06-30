@@ -205,7 +205,7 @@ export const AssessmentEngine: React.FC<Props> = ({ tasks, config, onComplete, o
 
                     <button
                         onClick={handleStart}
-                        className="w-full py-4 bg-lab-primary hover:bg-lab-primaryDark text-white rounded-xl font-black text-xl shadow-xl hover:scale-105 transition-all active:scale-95"
+                        className="w-full py-4 bg-duck-acid hover:bg-duck-acid/80 text-duck-ink rounded-full font-black text-xl shadow-xl hover:scale-105 transition-all active:scale-95"
                     >
                         START DE MISSIE
                     </button>
