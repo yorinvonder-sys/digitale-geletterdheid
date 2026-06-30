@@ -114,12 +114,24 @@
    "interactivity": 0,
    "total": 7
   },
-  "lastReviewed": null,
-  "reviewStatus": "pending",
-  "reportPath": null,
+  "lastReviewed": "2026-06-26",
+  "reviewStatus": "reviewed",
+  "reportPath": "business/dgskills-reviews/wave-3a-2026-06-26.md",
   "autoFixesApplied": 0,
-  "openEscalations": [],
-  "codexVerdict": null
+  "openEscalations": [
+   "argumentPrompts wat minimaal als scaffolding voor 14-jarigen — optioneel didactisch"
+  ],
+  "codexVerdict": null,
+  "reviewScores": {
+   "uiux": 8,
+   "didactiek": 9,
+   "tech": 10
+  },
+  "proposedFixes": 0,
+  "escalationCount": 1,
+  "topIssues": [
+   "geen defecten; sterkste van de wave"
+  ]
  },
  {
   "missionId": "ai-spiegel",
@@ -150,12 +162,25 @@
    "interactivity": 0,
    "total": 7
   },
-  "lastReviewed": null,
-  "reviewStatus": "pending",
-  "reportPath": null,
+  "lastReviewed": "2026-06-26",
+  "reviewStatus": "reviewed",
+  "reportPath": "business/dgskills-reviews/wave-3a-2026-06-26.md",
   "autoFixesApplied": 0,
-  "openEscalations": [],
-  "codexVerdict": null
+  "openEscalations": [
+   "SLO-inconsistentie: ProjectZeroDashboard toont 21B, canonical mapping = 21D — verkeerde SLO-rapportage",
+   "missionObjective 'Teken 10 korte objecten' — 'korte' semantisch onduidelijk (auteur-intentie)"
+  ],
+  "codexVerdict": null,
+  "reviewScores": {
+   "uiux": 8,
+   "didactiek": 8,
+   "tech": 7
+  },
+  "proposedFixes": 0,
+  "escalationCount": 2,
+  "topIssues": [
+   "SLO 21B vs 21D dashboard-mismatch [ESCALATIE]"
+  ]
  },
  {
   "missionId": "ai-trainer",
@@ -927,12 +952,26 @@
    "interactivity": 0,
    "total": 9
   },
-  "lastReviewed": null,
-  "reviewStatus": "pending",
-  "reportPath": null,
+  "lastReviewed": "2026-06-26",
+  "reviewStatus": "reviewed",
+  "reportPath": "business/dgskills-reviews/wave-3a-2026-06-26.md",
   "autoFixesApplied": 0,
-  "openEscalations": [],
-  "codexVerdict": null
+  "openEscalations": [
+   "dubbele STEP_COMPLETE-markers (rol-systemInstruction vs gedeelde suffix) — mogelijk conflict",
+   "kleine goal-formulering-nuance missionGoals vs rol (geen defect)"
+  ],
+  "codexVerdict": null,
+  "reviewScores": {
+   "uiux": 6,
+   "didactiek": 5,
+   "tech": 6
+  },
+  "proposedFixes": 0,
+  "escalationCount": 2,
+  "topIssues": [
+   "reviewer-claim 'dormant chat' ONJUIST — draait via AiLab (geverifieerd)",
+   "dubbele STEP_COMPLETE-markers [ESCALATIE]"
+  ]
  },
  {
   "missionId": "impact-review",
@@ -1257,12 +1296,25 @@
    "interactivity": 0,
    "total": 9
   },
-  "lastReviewed": null,
-  "reviewStatus": "pending",
-  "reportPath": null,
+  "lastReviewed": "2026-06-26",
+  "reviewStatus": "reviewed",
+  "reportPath": "business/dgskills-reviews/wave-3a-2026-06-26.md",
   "autoFixesApplied": 0,
-  "openEscalations": [],
-  "codexVerdict": null
+  "openEscalations": [
+   "select-correct ronde zonder minSelections (engine-gedrag checken) — optioneel",
+   "introFeatures i.p.v. learningObjectives-array — optioneel sterker voor SLO-rapportage"
+  ],
+  "codexVerdict": null,
+  "reviewScores": {
+   "uiux": 8,
+   "didactiek": 9,
+   "tech": 9
+  },
+  "proposedFixes": 0,
+  "escalationCount": 2,
+  "topIssues": [
+   "geen defecten; klein verbeterpotentieel"
+  ]
  },
  {
   "missionId": "open-source-contributor",
@@ -1481,12 +1533,27 @@
    "interactivity": 0,
    "total": 14
   },
-  "lastReviewed": null,
-  "reviewStatus": "pending",
-  "reportPath": null,
-  "autoFixesApplied": 0,
-  "openEscalations": [],
-  "codexVerdict": null
+  "lastReviewed": "2026-06-26",
+  "reviewStatus": "fixes-applied",
+  "reportPath": "business/dgskills-reviews/wave-3a-2026-06-26.md",
+  "autoFixesApplied": 1,
+  "openEscalations": [
+   "missionGoals criteria-type ('component-complete') wijkt af van component-constante ('score-threshold' 60) — reporting-consistentie",
+   "dubbele input-sanitization (inline + promptSanitizer) — ontwerpkeuze",
+   "visualPreview gebruikt legacy lab-* tokens (dashboard-kaart) — losse opschoning"
+  ],
+  "codexVerdict": null,
+  "reviewScores": {
+   "uiux": 8,
+   "didactiek": 8,
+   "tech": 9
+  },
+  "proposedFixes": 1,
+  "escalationCount": 3,
+  "topIssues": [
+   "a11y: label niet gekoppeld aan textarea [GEFIXED]",
+   "criteria-type-inconsistentie missionGoals [ESCALATIE]"
+  ]
  },
  {
   "missionId": "prototype-developer",
@@ -1619,12 +1686,25 @@
    "interactivity": 0,
    "total": 9
   },
-  "lastReviewed": null,
-  "reviewStatus": "pending",
-  "reportPath": null,
+  "lastReviewed": "2026-06-26",
+  "reviewStatus": "reviewed",
+  "reportPath": "business/dgskills-reviews/wave-3a-2026-06-26.md",
   "autoFixesApplied": 0,
-  "openEscalations": [],
-  "codexVerdict": null
+  "openEscalations": [
+   "missionGoals criteria-type ('rounds-complete') wijkt af van config-inline ('steps-complete' min 5) — reporting-consistentie",
+   "introDescription aan de lange kant voor leerjaar 1 — didactische afweging"
+  ],
+  "codexVerdict": null,
+  "reviewScores": {
+   "uiux": 8,
+   "didactiek": 9,
+   "tech": 7
+  },
+  "proposedFixes": 0,
+  "escalationCount": 2,
+  "topIssues": [
+   "criteria-type-inconsistentie missionGoals [ESCALATIE]"
+  ]
  },
  {
   "missionId": "scroll-stopper",
@@ -1813,12 +1893,26 @@
    "interactivity": 0,
    "total": 8
   },
-  "lastReviewed": null,
-  "reviewStatus": "pending",
-  "reportPath": null,
+  "lastReviewed": "2026-06-26",
+  "reviewStatus": "reviewed",
+  "reportPath": "business/dgskills-reviews/wave-3a-2026-06-26.md",
   "autoFixesApplied": 0,
-  "openEscalations": [],
-  "codexVerdict": null
+  "openEscalations": [
+   "argumentPrompts wordt door debate-engine niet gebruikt (dood veld over alle debate-configs) — gedeelde-engine",
+   "SLO alleen 23C; 21D (AI) verdedigbaar — curator-afweging (mapping read-only)"
+  ],
+  "codexVerdict": null,
+  "reviewScores": {
+   "uiux": 8,
+   "didactiek": 8,
+   "tech": 7
+  },
+  "proposedFixes": 0,
+  "escalationCount": 2,
+  "topIssues": [
+   "reviewer-claim 'ontbrekende chat-rol' ONJUIST — rol in year2.tsx:2264",
+   "argumentPrompts dood veld [ESCALATIE — shared-engine]"
+  ]
  },
  {
   "missionId": "tech-impact-analyst",
@@ -1849,12 +1943,27 @@
    "interactivity": 0,
    "total": 9
   },
-  "lastReviewed": null,
-  "reviewStatus": "pending",
-  "reportPath": null,
+  "lastReviewed": "2026-06-26",
+  "reviewStatus": "reviewed",
+  "reportPath": "business/dgskills-reviews/wave-3a-2026-06-26.md",
   "autoFixesApplied": 0,
-  "openEscalations": [],
-  "codexVerdict": null
+  "openEscalations": [
+   "INHOUDELIJKE FOUT q2: 4 navigatie-rijen (ernst 5,5,3,5 -> gem. 4.5) maar correctAnswer = 4.3 (3 rijen) — leerling die correct rekent wordt fout gerekend",
+   "maxScore (100) != som punten (90), q8 = 0 punten — scoringsbalans-keuze",
+   "frequentie 'Dagelijks' (Leerling 5) vs 'Elke dag' (rest) — cosmetisch"
+  ],
+  "codexVerdict": null,
+  "reviewScores": {
+   "uiux": 8,
+   "didactiek": 9,
+   "tech": 7
+  },
+  "proposedFixes": 0,
+  "escalationCount": 3,
+  "topIssues": [
+   "q2 antwoordmodel fout (4.3 i.p.v. 4.5) [ESCALATIE — inhoudelijk]",
+   "maxScore/punten-mismatch [ESCALATIE]"
+  ]
  },
  {
   "missionId": "verhalen-ontwerper",

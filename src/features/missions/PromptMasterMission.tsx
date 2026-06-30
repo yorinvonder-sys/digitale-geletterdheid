@@ -1169,10 +1169,11 @@ export const PromptMasterMission: React.FC<Props> = ({ onBack, onComplete, vsoPr
                                 </div>
                             )}
 
-                            <label className="block text-sm font-bold text-duck-ink/60 mb-3">
+                            <label htmlFor="prompt-master-textarea" className="block text-sm font-bold text-duck-ink/60 mb-3">
                                 {attempts > 0 ? 'Verbeter je prompt:' : 'Nu jij: typ je prompt aan de AI:'}
                             </label>
                             <textarea
+                                id="prompt-master-textarea"
                                 data-qa="prompt-master-input"
                                 value={userPrompt}
                                 onChange={e => setUserPrompt(e.target.value)}
