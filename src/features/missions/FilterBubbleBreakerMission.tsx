@@ -3,6 +3,7 @@ import { ArrowLeft, Trophy, ChevronRight, Check, X, Brain, Sparkles, ArrowLeftRi
 import { useMissionAutoSave } from '@/hooks/useMissionAutoSave';
 import { getMissionGoal } from '@/config/missionGoals';
 import { MissionGoalBanner } from './templates/shared/MissionGoalBanner';
+import { DuckMascot } from '@/components/brand/DuckMascot';
 
 interface Props {
     onBack: () => void;
@@ -119,7 +120,7 @@ export const FilterBubbleBreakerMission: React.FC<Props> = ({ onBack, onComplete
             <div className="min-h-screen bg-duck-bg text-duck-ink overflow-y-auto p-4 pb-safe">
                 <button onClick={onBack} className="flex items-center gap-2 text-duck-ink/60 hover:text-duck-ink transition-all duration-300 mb-6"><ArrowLeft size={18} /> <span className="text-sm font-bold" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>Terug</span></button>
                 <div className="max-w-lg mx-auto text-center space-y-6">
-                    <div className="w-20 h-20 bg-duck-ink/10 rounded-3xl flex items-center justify-center mx-auto border border-duck-ink/20 animate-bounce"><span className="text-4xl">🫧</span></div>
+                    <div className="w-20 h-20 bg-duck-ink/10 rounded-3xl flex items-center justify-center mx-auto border border-duck-ink/20"><DuckMascot className="w-12 h-12" /></div>
                     <h1 className="text-3xl font-black" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>Filter Bubble Breaker</h1>
                     <p className="text-duck-ink/60 text-sm leading-relaxed max-w-sm mx-auto" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>Twee mensen openen dezelfde app — maar zien <span className="text-duck-ink font-bold">totaal andere content</span>. Hoe kan dat?</p>
                     <MissionGoalBanner goal={getMissionGoal('filter-bubble-breaker')!} compact />

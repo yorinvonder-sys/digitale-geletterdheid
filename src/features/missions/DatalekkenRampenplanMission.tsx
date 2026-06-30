@@ -3,6 +3,7 @@ import { ArrowLeft, Trophy, ChevronRight, Search, ListOrdered, Mail, PiggyBank, 
 import { useMissionAutoSave } from '@/hooks/useMissionAutoSave';
 import { getMissionGoal } from '@/config/missionGoals';
 import { MissionGoalBanner } from './templates/shared/MissionGoalBanner';
+import { DuckMascot } from '@/components/brand/DuckMascot';
 
 interface Props {
     onBack: () => void;
@@ -689,8 +690,8 @@ export const DatalekkenRampenplanMission: React.FC<Props> = ({ onBack, onComplet
                     <span className="text-sm font-bold" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>Terug</span>
                 </button>
                 <div className="max-w-lg mx-auto text-center space-y-6">
-                    <div className="w-20 h-20 bg-duck-acid/10 rounded-3xl flex items-center justify-center mx-auto border border-duck-acid/20 animate-pulse">
-                        <span className="text-4xl">🚨</span>
+                    <div className="w-20 h-20 bg-duck-acid/10 rounded-3xl flex items-center justify-center mx-auto border border-duck-acid/20">
+                        <DuckMascot className="w-12 h-12" mood="wave" />
                     </div>
                     <h1 className="text-3xl font-black" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>
                         Datalekken Rampenplan
