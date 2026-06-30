@@ -111,6 +111,7 @@ export const sharedTailwindConfig = {
                 'duck-float-delayed': 'duckFloat 7s ease-in-out 2.4s infinite',
                 'duck-blink': 'duckBlink 5.2s ease-in-out infinite',
                 'duck-rise': 'duckRise 0.85s cubic-bezier(0.22, 1, 0.36, 1) forwards',
+                'kees-bob': 'keesBob 3.6s ease-in-out infinite',
                 'hero-eye-blink': 'heroEyeBlink 5.5s ease-in-out infinite',
             },
             keyframes: {
@@ -181,6 +182,10 @@ export const sharedTailwindConfig = {
                 duckRise: {
                     '0%': { transform: 'translateY(115%)' },
                     '100%': { transform: 'translateY(0)' },
+                },
+                keesBob: {
+                    '0%, 100%': { transform: 'translateY(0)' },
+                    '50%': { transform: 'translateY(-5px)' },
                 },
             }
         },

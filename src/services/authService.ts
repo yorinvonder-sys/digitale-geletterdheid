@@ -5,7 +5,7 @@ import { logAccountCreated } from './auditService';
 import { enforcePasswordPolicy } from '@/utils/passwordValidator';
 import { validateEmail } from '@/utils/emailValidator';
 import { revokeAllMfaTrust } from './mfaTrustService';
-import { getAllSSODomains } from './curriculumService';
+import { getAllSSODomains, getSchoolConfig } from './curriculumService';
 import type { AuthChangeEvent, Session, User as SupabaseUser } from '@supabase/supabase-js';
 
 // --- Helpers ---
@@ -37,6 +37,14 @@ const getRoleFromMeta = (user: SupabaseUser): UserRole | null => {
 
 const getSchoolIdFromMeta = (user: SupabaseUser): string | null => {
     return (user.app_metadata?.schoolId as string) ?? null;
+};
+
+// True when this session was authenticated via Microsoft (Entra) SSO.
+// app_metadata is server-set (trusted); `provider` reflects this session's login method.
+const isAzureSession = (user: SupabaseUser): boolean => {
+    const providers = user.app_metadata?.providers;
+    return user.app_metadata?.provider === 'azure'
+        || (Array.isArray(providers) && providers.includes('azure'));
 };
 
 // --- SSO ---
@@ -416,11 +424,25 @@ export const subscribeToAuthChanges = (callback: (user: ParentUser | null) => vo
                 }
             );
 
-        const mfaPromise = requiresMfa(finalRole)
-            ? supabase.auth.mfa.getAuthenticatorAssuranceLevel()
-                .then(({ data: aal }) => aal?.currentLevel !== 'aal2')
-                .catch(() => { console.warn('MFA check failed, requiring verification'); return true; })
-            : Promise.resolve(false);
+        const mfaPromise = !requiresMfa(finalRole)
+            ? Promise.resolve(false)
+            : (async () => {
+                // Microsoft 365 (azure) SSO already enforces MFA for schools that opt in,
+                // so DGSkills' own TOTP gate would be a redundant second factor. A per-school
+                // flag prevents blanket trust: a school must attest its tenant enforces MFA.
+                // Uses metaSchoolId (app_metadata, trusted); if absent we fall through (fail-closed).
+                if (isAzureSession(supabaseUser) && metaSchoolId) {
+                    try {
+                        const cfg = await getSchoolConfig(metaSchoolId);
+                        if (cfg?.ssoSatisfiesMfa) return false;
+                    } catch (e) {
+                        console.warn('School SSO-MFA config check failed, falling back to TOTP gate:', e);
+                    }
+                }
+                return supabase.auth.mfa.getAuthenticatorAssuranceLevel()
+                    .then(({ data: aal }) => aal?.currentLevel !== 'aal2')
+                    .catch(() => { console.warn('MFA check failed, requiring verification'); return true; });
+            })();
 
         const [profile, mfaPending] = await Promise.all([profilePromise, mfaPromise]);
 

@@ -7,7 +7,7 @@ import MissionWelcomeCard from '@/features/missions/shared/MissionWelcomeCard';
 import { MissionBriefing } from '@/features/missions/shared/MissionBriefing';
 import { AgentRole, UserStats, AiLabProps } from '@/types';
 import { ROLES } from '@/config/agents';
-import { getXPReward } from '@/config/xp';
+import { readableTextOn, tintOf } from '@/config/duckUi';
 import { useAgentLogic } from '@/hooks/useAgentLogic';
 import { Loader2, ChevronRight, Trophy, ArrowLeft, Target, Lightbulb, Sparkles, RotateCcw, Send, AlertCircle, Gamepad2, Download, CheckCircle2, PenTool, Palette, BrainCircuit } from 'lucide-react';
 import { WebPreviewModal } from '@/features/ai-lab/WebPreviewModal';
@@ -37,7 +37,7 @@ const FORBIDDEN_WORDS = [
 const GamePreview = lazy(() => import('@/features/games/GamePreview').then(m => ({ default: m.GamePreview })));
 const BookPreview = lazy(() => import('@/features/student/BookPreview').then(m => ({ default: m.BookPreview })));
 const WordWizardPreview = lazy(() => import('@/features/ai-lab/previews/WordWizardPreview').then(m => ({ default: m.WordWizardPreview })));
-const TrainerPreview = lazy(() => import('@/features/ai-lab/previews/TrainerPreview').then(m => ({ default: m.TrainerPreview })));
+const TrainerMissionView = lazy(() => import('@/features/ai-lab/TrainerMissionView').then(m => ({ default: m.TrainerMissionView })));
 const ChatbotTrainerPreview = lazy(() => import('@/features/ai-lab/previews/ChatbotTrainerPreview').then(m => ({ default: m.ChatbotTrainerPreview })));
 const DrawingGamePreview = lazy(() => import('@/features/ai-lab/previews/DrawingGamePreview').then(m => ({ default: m.DrawingGamePreview })));
 const AiBeleidBrainstormPreview = lazy(() => import('@/features/ai-lab/previews/AiBeleidBrainstormPreview').then(m => ({ default: m.AiBeleidBrainstormPreview })));
@@ -96,6 +96,15 @@ const ConfettiExplosion = () => {
       `}</style>
     </div>
   );
+};
+
+const getXPReward = (difficulty: string): number => {
+  switch (difficulty) {
+    case 'Easy': return 50;
+    case 'Medium': return 100;
+    case 'Hard': return 150;
+    default: return 75;
+  }
 };
 
 export const AiLab: React.FC<AiLabProps> = ({ user, onExit, saveProgress, initialRole, libraryData, vsoProfile, devPreviewMode = false }) => {
@@ -1074,17 +1083,39 @@ export const AiLab: React.FC<AiLabProps> = ({ user, onExit, saveProgress, initia
                 );
               })()}
             </div>
+          ) : selectedRole.id === 'ai-trainer' ? (
+            // Integrated full-width view for AI Trainer (chat docked as command bar)
+            <Suspense fallback={<div className="flex-1 w-full h-full flex items-center justify-center"><Loader2 className="animate-spin text-duck-ink/60" size={32} /></div>}>
+              <TrainerMissionView
+                data={activeTrainerData}
+                selectedRole={selectedRole}
+                goalAchieved={goalAchieved}
+                messages={messages}
+                isLoading={isLoading}
+                thinkingStep={thinkingStep}
+                messagesEndRef={messagesEndRef}
+                input={input}
+                setInput={setInput}
+                onSend={handleSendWithTipCheck}
+                error={error}
+                suggestions={suggestions}
+                onSuggestionClick={handleSuggestionClick}
+                tipCost={TIP_COST}
+                onLinkClick={setPreviewUrl}
+                onReset={() => setShowResetConfirm(true)}
+              />
+            </Suspense>
           ) : (
             // Standard Split View for other missions
             <div className={`flex-1 flex flex-col ${showRightPanel ? 'md:flex-row ipad-stack' : ''} gap-3 h-full min-h-0 pb-1 animate-in fade-in slide-in-from-right-4 duration-500`}>
 
               {/* Chat Column */}
-              <section className={`chat-column ${selectedRole.id === 'game-programmeur' ? 'game-programmeur-chat' : ''} ${selectedRole.id === 'ai-trainer' ? 'ai-trainer-chat' : ''} flex flex-col bg-white rounded-2xl shadow-sm border border-duck-ink/15 overflow-hidden min-h-0 h-full max-h-full ${chatWidthClass} print:hidden`}>
+              <section className={`chat-column ${selectedRole.id === 'game-programmeur' ? 'game-programmeur-chat' : ''} flex flex-col bg-white rounded-2xl shadow-sm border border-duck-ink/15 overflow-hidden min-h-0 h-full max-h-full ${chatWidthClass} print:hidden`}>
                 {/* Goal Banner - Show primaryGoal prominently */}
                 <div className={`px-4 py-3 backdrop-blur border-b flex items-center gap-3 shrink-0 transition-all ${goalAchieved ? 'bg-duck-ink/10 border-duck-ink/20' : 'bg-duck-bg/80 border-duck-ink/15'}`}>
                   <div
-                    className="p-2 rounded-lg text-white"
-                    style={{ backgroundColor: goalAchieved ? '#202023' : selectedRole.color }}
+                    className="p-2 rounded-lg"
+                    style={{ backgroundColor: goalAchieved ? '#202023' : selectedRole.color, color: readableTextOn(goalAchieved ? '#202023' : selectedRole.color) }}
                   >
                     {goalAchieved ? <CheckCircle2 size={16} /> : <Target size={16} />}
                   </div>
@@ -1207,23 +1238,23 @@ export const AiLab: React.FC<AiLabProps> = ({ user, onExit, saveProgress, initia
                     </div>
                   )}
                   {suggestions.length > 0 && !isLoading && (
-                    <div className="flex flex-wrap gap-2 mb-3 animate-in slide-in-from-bottom-2">
+                    <div className="flex flex-wrap gap-1.5 mb-2 animate-in slide-in-from-bottom-2">
                       <div
-                        className="flex items-center gap-1 text-xs font-bold text-white mr-1 px-2 py-1 rounded-lg"
-                        style={{ backgroundColor: selectedRole.color }}
+                        className="flex items-center gap-1 text-[11px] font-bold mr-1 px-1.5 py-0.5 rounded-md border border-duck-ink/15"
+                        style={{ backgroundColor: tintOf(selectedRole.color, 0.2), color: '#202023' }}
                       >
-                        <Lightbulb size={12} fill="currentColor" /> Tips:
+                        <Lightbulb size={11} fill="currentColor" /> Tips:
                       </div>
                       {suggestions.slice(0, 3).map((suggestion, idx) => (
                         <button
                           key={idx}
                           onClick={() => handleSuggestionClick(suggestion)}
-                          className="group relative px-3 py-2 bg-white border border-duck-ink/15 hover:border-duck-acid text-duck-ink/60 hover:text-duck-ink rounded-xl text-xs font-medium shadow-sm transition-all active:scale-95 flex items-center gap-2 hover:shadow-md text-left"
+                          className="group relative px-2 py-1 bg-white border border-duck-ink/15 hover:border-duck-acid text-duck-ink/60 hover:text-duck-ink rounded-lg text-[11px] font-medium shadow-sm transition-all active:scale-95 flex items-center gap-1.5 hover:shadow-md text-left"
                         >
                           <span className="whitespace-normal leading-tight">{suggestion}</span>
                           <span
-                            className="text-[9px] font-bold text-white px-1.5 py-0.5 rounded flex-shrink-0 whitespace-nowrap"
-                            style={{ backgroundColor: selectedRole.color, border: `1px solid ${selectedRole.color}` }}
+                            className="text-[9px] font-bold px-1 py-0.5 rounded flex-shrink-0 whitespace-nowrap"
+                            style={{ backgroundColor: selectedRole.color, color: readableTextOn(selectedRole.color), border: `1px solid ${selectedRole.color}` }}
                           >
                             -{TIP_COST} XP
                           </span>
@@ -1323,8 +1354,6 @@ export const AiLab: React.FC<AiLabProps> = ({ user, onExit, saveProgress, initia
                         onSendPrompt={(prompt) => handleSend(prompt)}
                       />
 
-                    ) : selectedRole?.id === 'ai-trainer' ? (
-                      <TrainerPreview data={activeTrainerData} />
                     ) : selectedRole?.id === 'data-verzamelaar' ? (
                       <DataVerzamelaarPreview currentStep={completedSteps?.length || 0} />
                     ) : selectedRole?.id === 'data-journalist' ? (

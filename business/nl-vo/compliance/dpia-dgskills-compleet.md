@@ -226,7 +226,7 @@ De Article 29 Working Party (nu EDPB) heeft in richtlijn WP 248 rev.01 negen cri
 | **Dataminimalisatie** (Art. 5(1)(c)) | Alleen strikt noodzakelijke gegevens: naam, schoolmail, rol. Geen BSN, geen woonadres, geen foto. Chatgeschiedenis is sessiegebaseerd en wordt niet persistent opgeslagen in de database. |
 | **Opslagbeperking** (Art. 5(1)(e)) | Gedifferentieerde bewaartermijnen per datacategorie, technisch afgedwongen via `pg_cron` cron-jobs: ephemere data (1-7 dagen), operationele data (1 jaar), compliance data (3 jaar). |
 | **Juistheid** (Art. 5(1)(d)) | Leerlingen en docenten kunnen profielgegevens aanpassen. AI-output wordt niet als feitelijke beoordeling gebruikt. |
-| **Integriteit en vertrouwelijkheid** (Art. 5(1)(f)) | TLS 1.3 voor alle datatransmissie, Row-Level Security (RLS) op databaseniveau, JWT-authenticatie, rolgebaseerde toegang, prompt injection filtering. |
+| **Integriteit en vertrouwelijkheid** (Art. 5(1)(f)) | TLS 1.3 voor alle datatransmissie, Row-Level Security (RLS) op databaseniveau, JWT-authenticatie, rolgebaseerde toegang, prompt injection filtering. MFA voor docent-/beheerdersrollen via DGSkills' eigen TOTP (AAL2, standaard) of, via per-school opt-in, via door de school's identity provider (Microsoft Entra ID of Google Workspace) afgedwongen MFA mits de school schriftelijk attesteert dat haar IdP MFA afdwingt (AVG Art. 32). Restrisico: geen per-login amr/acr-verificatie in v1; hardening voorzien. |
 
 ### 4.3 Conclusie noodzaak en evenredigheid
 
@@ -341,6 +341,7 @@ Op basis van analyse van de 30+ AI-agents in `config/agents.tsx`:
 |---|---|---|
 | **TLS 1.3 versleuteling** | Alle communicatie is end-to-end versleuteld via HTTPS | R01, R02 |
 | **JWT-authenticatie** | Elke API-aanroep vereist een geldig JWT-token via Supabase Auth | R01, R08, R15 |
+| **Federated MFA (per-school opt-in)** | Scholen die schriftelijk attesteren dat hun identity provider (Microsoft Entra ID of Google Workspace) MFA afdwingt voor docent-/beheerdersaccounts, kunnen die IdP-MFA laten gelden als invulling van de MFA-eis (alternatief voor DGSkills' eigen TOTP). De school blijft als verwerkingsverantwoordelijke zelf verantwoordelijk voor het afdwingen van MFA in haar eigen tenant (AVG Art. 28/32). DGSkills' TOTP blijft de standaard voor e-mail/wachtwoord-logins en voor scholen zonder attestatie. Restrisico: geen per-login amr/acr-verificatie in v1; hardening voorzien. | R09 |
 | **Row-Level Security (RLS)** | Database-beleid op rijniveau: leerlingen zien alleen eigen data; docenten alleen hun klas | R01, R08 |
 | **Server-side autorisatie** | `is_teacher()` helper function verifieert rol op database-niveau; RPC-functies voor gevoelige operaties | R08 |
 | **Prompt injection filtering (defense-in-depth)** | Zowel client-side als server-side sanitizer met 20+ detectiepatronen (NL + EN), URI-decodering, Unicode-normalisatie | R03 |

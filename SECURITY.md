@@ -26,6 +26,7 @@ Please do **not** open a public GitHub issue for security vulnerabilities.
 - HTTPS enforced via Vercel (HSTS preload, 2-year max-age)
 - Content Security Policy (CSP) with `script-src 'self'`, `object-src 'none'`, `child-src 'none'`
 - MFA (TOTP) required for teacher and admin roles (AAL2)
+  - Schools that attest their identity provider (Microsoft Entra ID / Google Workspace) enforces MFA may opt in to have that IdP-enforced MFA satisfy this requirement instead of DGSkills' own TOTP (per-school flag; TOTP remains the default for email/password logins and schools without attestation).
 - Role-Based Access Control enforced via Supabase `app_metadata` (server-set, tamper-resistant)
 - DOMPurify v3 for XSS sanitization on all user input
 - Prompt injection detection for AI interactions (40+ patterns, English + Dutch)

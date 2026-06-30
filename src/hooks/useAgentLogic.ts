@@ -1,14 +1,14 @@
 
 import { useState, useRef, useEffect, useCallback } from 'react';
-import { AgentRole, ChatMessage, BookData, DetectiveCase, TrainerData, CodeChange, BonusChallenge } from '@/types';
+import { AgentRole, ChatMessage, BookData, DetectiveCase, TrainerData, BonusChallenge } from '@/types';
 import { createChatSession, generateImage, Chat, type ImageAspectRatio, type ImageGenerationStyle } from '@/services/aiProviderService';
 import { enhancePrompt, shouldShowEnhancementDiff } from '@/services/promptEnhancer';
-import { computeCodeChanges } from '@/features/ai-lab/CodeChangeCard';
+import { applyGameCommand } from '@/services/gameCommands';
 import { saveMissionProgress, loadMissionProgress, resetMissionProgress } from '@/services/missionService';
 import { stripAiProvenance } from '@/utils/aiContentMarker';
 import DOMPurify from 'dompurify';
 import { useChatSession, MAX_UI_MESSAGES } from './useChatSession';
-import { useGameCode, extractGameHtmlDocument, stripGameCodeFromResponse } from './useGameCode';
+import { useGameCode, stripGameCodeFromResponse } from './useGameCode';
 import { useStepCompletion } from './useStepCompletion';
 
 // ============================================================================
@@ -593,6 +593,27 @@ export const useAgentLogic = ({ selectedRole, userIdentifier, schoolId, initialP
         setError(null);
         setSuggestions([]);
 
+        // =====================================================================
+        // GAME PROGRAMMEUR: deterministic command system.
+        // Known requests (colour, jump, speed, sound, background) change the game
+        // instantly and safely — the AI never rewrites the game, it only coaches.
+        // Unrecognized input falls through to the normal chat path below.
+        // =====================================================================
+        if (selectedRole?.id === 'game-programmeur') {
+            const currentGame = activeGameCode || selectedRole.initialCode || '';
+            const command = applyGameCommand(currentGame, textInput);
+            if (command) {
+                pushToHistory(currentGame);
+                previousGameCodeRef.current = command.code;
+                setActiveGameCode(command.code);
+                const coachText = parseAndUpdateSteps(`${command.summary}\n---STEP_COMPLETE:${command.stepId}---`);
+                setMessages(prev => [...prev, { role: 'model', text: coachText, timestamp: new Date() }]);
+                setSuggestions(getStarterTips('game-programmeur', selectedRole.examplePrompt));
+                setIsLoading(false);
+                return;
+            }
+        }
+
         if (cloudSyncDisabled) {
             setThinkingStep('Preview antwoord maken...');
             window.setTimeout(() => {
@@ -635,10 +656,10 @@ export const useAgentLogic = ({ selectedRole, userIdentifier, schoolId, initialP
 
             let promptForAI = enhancementResult.enhancedPrompt;
 
-            // GAME PROGRAMMEUR: Set current game code as context on the chat session
-            if (selectedRole?.id === 'game-programmeur' && activeGameCode) {
-                chatSessionRef.current.setGameContext(activeGameCode);
-            }
+            // GAME PROGRAMMEUR note: the game is changed deterministically via
+            // applyGameCommand() at the top of handleSend. We intentionally do NOT
+            // send the game code to the AI, so the AI can only coach in chat and
+            // can never rewrite (and possibly break) the student's game.
 
             if (enhancementResult.wasEnhanced && import.meta.env.DEV) {
                 console.log('[PromptEnhancer] Original:', textInput);
@@ -885,71 +906,12 @@ export const useAgentLogic = ({ selectedRole, userIdentifier, schoolId, initialP
                 responseText = responseText.replace(MODEL_IMAGE_TAG_REGEX, '');
             }
 
-            // GAME MAKER -> game-programmeur
+            // GAME PROGRAMMEUR: the game itself is changed deterministically via
+            // applyGameCommand() at the top of handleSend. Here we only keep the chat
+            // clean — strip any code the AI may have emitted; it is never applied.
             if (selectedRole?.id === 'game-programmeur') {
-                const newCode = extractGameHtmlDocument(responseText);
-                if (newCode) {
-
-                    // =====================================================================
-                    // CODE VALIDATION - Protect student work from broken AI responses
-                    // =====================================================================
-                    const currentCode = previousGameCodeRef.current;
-                    let shouldUpdate = true;
-                    let rejectionReason = '';
-
-                    if (currentCode && currentCode.length > 500) {
-                        const lengthRatio = newCode.length / currentCode.length;
-                        if (lengthRatio < 0.5) {
-                            shouldUpdate = false;
-                            rejectionReason = `Code te kort (${Math.round(lengthRatio * 100)}% van origineel)`;
-                        }
-
-                        const hasCanvas = newCode.includes('<canvas') || newCode.includes('getContext');
-                        const hasScript = newCode.includes('<script') && newCode.includes('</script>');
-                        const hasGameLoop = newCode.includes('requestAnimationFrame') || newCode.includes('setInterval');
-
-                        if (!hasCanvas || !hasScript || !hasGameLoop) {
-                            shouldUpdate = false;
-                            rejectionReason = 'Essentiële game elementen ontbreken (canvas/script/loop)';
-                        }
-
-                        const openCount = (newCode.match(/<script/gi) || []).length;
-                        const closeCount = (newCode.match(/<\/script>/gi) || []).length;
-                        if (openCount !== closeCount) {
-                            shouldUpdate = false;
-                            rejectionReason = 'Onvolledige code (script tags niet gesloten)';
-                        }
-                    }
-
-                    let codeChanges: CodeChange[] = [];
-
-                    if (shouldUpdate && currentCode && currentCode !== newCode) {
-                        pushToHistory(currentCode);
-
-                        codeChanges = computeCodeChanges(currentCode, newCode);
-                        if (codeChanges.length > 0) {
-                            setMessages(prev => {
-                                const newArr = [...prev];
-                                const lastIdx = newArr.length - 1;
-                                if (newArr[lastIdx] && newArr[lastIdx].role === 'model') {
-                                    newArr[lastIdx] = { ...newArr[lastIdx], codeChanges };
-                                }
-                                return newArr;
-                            });
-                        }
-                        previousGameCodeRef.current = newCode;
-                        setActiveGameCode(newCode);
-                    } else if (!shouldUpdate && rejectionReason) {
-                        console.warn('[GameCode Protection] Rejected update:', rejectionReason);
-                        responseText = `⚠️ **Code-bescherming actief!**\n\nDe AI probeerde je code te vervangen met iets dat mogelijk kapot was (${rejectionReason}).\n\nJe huidige game is veilig. Probeer je vraag opnieuw te formuleren, of klik op ↩️ **Ongedaan** als je toch iets wilt herstellen.`;
-                    } else if (!currentCode) {
-                        previousGameCodeRef.current = newCode;
-                        setActiveGameCode(newCode);
-                    }
-
-                    const cleanedExplanation = stripGameCodeFromResponse(responseText);
-                    responseText = cleanedExplanation || '✅ Ik heb je game bijgewerkt. Bekijk de preview en test meteen of alles werkt.';
-                }
+                responseText = stripGameCodeFromResponse(responseText)
+                    || '💡 Vertel wat je wilt veranderen, bijvoorbeeld "maak de speler rood" of "laat hem hoger springen".';
             }
 
             // TRAINER -> ai-trainer

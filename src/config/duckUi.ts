@@ -15,3 +15,24 @@ export const duckUi = {
     progressTrack: 'rounded-full bg-duck-ink/10',
     progressFill: 'rounded-full bg-duck-acid ring-1 ring-duck-ink/15',
 } as const;
+
+// Leesbare tekst-/icoonkleur op een dynamische rolkleur-achtergrond:
+// donkere ink op lichte vlakken (zoals acid #e1ff01), wit op donkere vlakken.
+// Voorkomt witte tekst op fel geel (zie comment bovenaan).
+export const readableTextOn = (hex: string): string => {
+    const c = hex.replace('#', '');
+    const r = parseInt(c.slice(0, 2), 16);
+    const g = parseInt(c.slice(2, 4), 16);
+    const b = parseInt(c.slice(4, 6), 16);
+    const yiq = (r * 299 + g * 587 + b * 114) / 1000;
+    return yiq >= 150 ? '#202023' : '#ffffff'; // acid → ink, ink → wit
+};
+
+// Zachte tint van een rolkleur voor grote highlight-vlakken (design.md: acid/20-stijl).
+export const tintOf = (hex: string, alpha = 0.14): string => {
+    const c = hex.replace('#', '');
+    const r = parseInt(c.slice(0, 2), 16);
+    const g = parseInt(c.slice(2, 4), 16);
+    const b = parseInt(c.slice(4, 6), 16);
+    return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+};

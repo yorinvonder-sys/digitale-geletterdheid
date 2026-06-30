@@ -14,6 +14,10 @@ export interface SchoolConfig {
     allowedSSODomains?: string[];
     curriculumModel?: 'project' | 'sequential' | 'elective';
     disabledMissions?: string[];
+    /** When true, a Microsoft (azure) SSO login satisfies the teacher/admin MFA
+     *  obligation, so DGSkills' own TOTP gate is skipped. Enable ONLY for schools
+     *  whose Microsoft tenant enforces MFA (contractually attested). Cbw/NIS2 Art. 21. */
+    ssoSatisfiesMfa?: boolean;
     customConfig: Record<string, any>;
 }
 
@@ -69,6 +73,7 @@ export async function getSchoolConfig(schoolId: string): Promise<SchoolConfig | 
         disabledMissions: Array.isArray(customConfig.disabledMissions)
             ? customConfig.disabledMissions.filter((mission): mission is string => typeof mission === 'string')
             : undefined,
+        ssoSatisfiesMfa: customConfig.ssoSatisfiesMfa === true,
         customConfig,
     };
 }

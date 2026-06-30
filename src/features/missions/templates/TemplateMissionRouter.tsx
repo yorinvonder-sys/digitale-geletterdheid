@@ -12,6 +12,7 @@ const BuilderCanvas = lazy(() => import('./builder-canvas/BuilderCanvas').then(m
 const DataViewer = lazy(() => import('./data-viewer/DataViewer').then(m => ({ default: m.DataViewer })));
 const DebateArena = lazy(() => import('./debate-arena/DebateArena').then(m => ({ default: m.DebateArena })));
 const ToolGuide = lazy(() => import('./tool-guide/ToolGuide').then(m => ({ default: m.ToolGuide })));
+const EthicsCouncil = lazy(() => import('./ethics-council/EthicsCouncil').then(m => ({ default: m.EthicsCouncil })));
 
 const TemplateLoadingFallback = () => (
     <div className="min-h-screen bg-duck-bg flex items-center justify-center">
@@ -52,6 +53,7 @@ export const TemplateMissionRouter: React.FC<TemplateMissionProps> = (props) => 
             {entry.templateType === 'data-viewer' && <DataViewer {...templateProps} />}
             {entry.templateType === 'debate-arena' && <DebateArena {...templateProps} />}
             {entry.templateType === 'tool-guide' && <ToolGuide {...templateProps} />}
+            {entry.templateType === 'ethics-council' && <EthicsCouncil {...templateProps} />}
         </Suspense>
     );
 };
