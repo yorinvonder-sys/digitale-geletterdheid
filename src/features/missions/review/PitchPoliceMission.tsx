@@ -334,8 +334,8 @@ export const PitchPoliceMission: React.FC<PitchPoliceProps> = ({ onComplete, onB
         const introReady = visibleIntroSteps >= introSteps.length;
 
         return (
-            <div className="h-screen bg-duck-bg flex flex-col items-center justify-center p-4 text-duck-ink relative overflow-hidden" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
-                <div className="max-w-xl w-full text-center relative z-10">
+            <div className="min-h-screen bg-duck-bg flex flex-col p-4 text-duck-ink relative overflow-y-auto" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                <div className="m-auto max-w-xl w-full text-center relative z-10">
                     {/* Icon + Title row */}
                     <div className="flex items-center justify-center gap-4 mb-3">
                         <div className="relative shrink-0">
@@ -351,14 +351,14 @@ export const PitchPoliceMission: React.FC<PitchPoliceProps> = ({ onComplete, onB
                         </h1>
                     </div>
 
-                    <p className="text-base text-duck-ink/60 mb-5 max-w-md mx-auto">
+                    <p className="text-base text-duck-ink/60 mb-3 max-w-md mx-auto">
                         Jij bent de presentatie-expert. Help medeleerlingen hun rommelige slides te verbeteren!
                     </p>
 
-                    <MissionGoalBanner goal={getMissionGoal('pitch-police')!} compact className="mb-5" />
+                    <MissionGoalBanner goal={getMissionGoal('pitch-police')!} compact className="mb-3" />
 
                     {/* Instructions Card — compact */}
-                    <div className="bg-white border border-duck-gray rounded-xl p-5 mb-5 text-left shadow-sm">
+                    <div className="bg-white border border-duck-gray rounded-xl p-4 mb-4 text-left shadow-sm">
                         <h3 className="text-xs font-black text-duck-ink uppercase tracking-widest mb-3 flex items-center gap-2">
                             <Zap size={14} /> Hoe werkt het?
                         </h3>
@@ -385,7 +385,7 @@ export const PitchPoliceMission: React.FC<PitchPoliceProps> = ({ onComplete, onB
                     </div>
 
                     {/* Tips */}
-                    <div className="flex flex-wrap justify-center gap-2 mb-6">
+                    <div className="flex flex-wrap justify-center gap-2 mb-4">
                         <div className="bg-white border border-duck-gray rounded-full px-3 py-1.5 flex items-center gap-1.5 text-xs">
                             <Type size={14} className="text-duck-ink" />
                             <span className="text-duck-ink/60">Minder tekst = beter</span>

@@ -261,8 +261,8 @@ export const PrintInstructiesMission: React.FC<Props> = ({ onBack, onComplete })
     if (showIntro) {
         return (
             <div className="min-h-screen overflow-y-auto" style={{ backgroundColor: '#f2f1ec' }}>
-                <div className="min-h-full flex items-center justify-center p-4">
-                    <div className="max-w-lg w-full text-center space-y-8">
+                <div className="min-h-full flex flex-col p-4">
+                    <div className="m-auto max-w-lg w-full text-center space-y-4">
                         <button
                             onClick={onBack}
                             className="flex items-center gap-2 transition-all duration-300 font-bold text-sm uppercase tracking-widest mx-auto"
@@ -273,16 +273,16 @@ export const PrintInstructiesMission: React.FC<Props> = ({ onBack, onComplete })
 
                         <div className="relative inline-block">
                             <div className="absolute inset-0 blur-3xl rounded-full animate-pulse" style={{ backgroundColor: 'rgba(217, 120, 72, 0.2)' }} />
-                            <div className="relative w-32 h-32 rounded-3xl flex items-center justify-center shadow-2xl" style={{ background: 'linear-gradient(to bottom right, #D97848, #D97848)' }}>
-                                <Printer size={64} className="text-white" />
+                            <div className="relative w-16 h-16 rounded-3xl flex items-center justify-center shadow-2xl sm:w-20 sm:h-20" style={{ background: 'linear-gradient(to bottom right, #D97848, #D97848)' }}>
+                                <Printer size={36} className="text-white" />
                             </div>
                         </div>
 
-                        <div className="space-y-4">
-                            <h1 className="text-4xl font-black" style={{ fontFamily: "'Newsreader', Georgia, serif", color: '#202023' }}>
+                        <div className="space-y-2">
+                            <h1 className="text-2xl font-black sm:text-3xl" style={{ fontFamily: "'Newsreader', Georgia, serif", color: '#202023' }}>
                                 Print Troubleshooter
                             </h1>
-                            <p className="text-lg" style={{ fontFamily: "'Outfit', system-ui, sans-serif", color: '#6f6e69' }}>
+                            <p className="text-sm sm:text-base" style={{ fontFamily: "'Outfit', system-ui, sans-serif", color: '#6f6e69' }}>
                                 Er gaat van alles mis met de printer! Kun jij elk probleem oplossen?
                             </p>
                             <p className="text-sm font-semibold" style={{ fontFamily: "'Outfit', system-ui, sans-serif", color: '#6f6e69' }}>
@@ -293,23 +293,23 @@ export const PrintInstructiesMission: React.FC<Props> = ({ onBack, onComplete })
                         <MissionGoalBanner goal={getMissionGoal('ipad-print-instructies')!} compact />
 
                         <div className="grid grid-cols-3 gap-4 text-center">
-                            <div className="rounded-2xl p-4" style={{ backgroundColor: '#FFFFFF', border: '1px solid #E7D8BD' }}>
-                                <span className="text-2xl block mb-2">🔍</span>
+                            <div className="rounded-2xl p-3" style={{ backgroundColor: '#FFFFFF', border: '1px solid #E7D8BD' }}>
+                                <span className="text-2xl block mb-1.5">🔍</span>
                                 <p className="font-bold text-sm" style={{ color: '#202023', fontFamily: "'Outfit', system-ui, sans-serif" }}>Diagnose</p>
                             </div>
-                            <div className="rounded-2xl p-4" style={{ backgroundColor: '#FFFFFF', border: '1px solid #E7D8BD' }}>
-                                <span className="text-2xl block mb-2">🛠️</span>
+                            <div className="rounded-2xl p-3" style={{ backgroundColor: '#FFFFFF', border: '1px solid #E7D8BD' }}>
+                                <span className="text-2xl block mb-1.5">🛠️</span>
                                 <p className="font-bold text-sm" style={{ color: '#202023', fontFamily: "'Outfit', system-ui, sans-serif" }}>Oplossen</p>
                             </div>
-                            <div className="rounded-2xl p-4" style={{ backgroundColor: '#FFFFFF', border: '1px solid #E7D8BD' }}>
-                                <span className="text-2xl block mb-2">💡</span>
+                            <div className="rounded-2xl p-3" style={{ backgroundColor: '#FFFFFF', border: '1px solid #E7D8BD' }}>
+                                <span className="text-2xl block mb-1.5">💡</span>
                                 <p className="font-bold text-sm" style={{ color: '#202023', fontFamily: "'Outfit', system-ui, sans-serif" }}>Onthouden</p>
                             </div>
                         </div>
 
                         <button
                             onClick={() => setState(prev => ({ ...prev, showIntro: false }))}
-                            className="w-full py-4 text-white rounded-full font-black uppercase tracking-wide transition-all duration-300 focus-visible:ring-2 focus-visible:ring-duck-acid"
+                            className="w-full py-3 text-white rounded-full font-black uppercase tracking-wide transition-all duration-300 focus-visible:ring-2 focus-visible:ring-duck-acid"
                             style={{ backgroundColor: '#ff3c21', fontFamily: "'Outfit', system-ui, sans-serif" }}
                             onMouseEnter={e => (e.currentTarget.style.backgroundColor = '#ff3c21')}
                             onMouseLeave={e => (e.currentTarget.style.backgroundColor = '#ff3c21')}

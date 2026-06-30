@@ -406,18 +406,18 @@ export const DataDetectiveMission: React.FC<Props> = ({ onBack, onComplete, vsoP
     if (showIntro) {
         return (
             <div className="min-h-screen overflow-y-auto" style={{ backgroundColor: '#f2f1ec' }}>
-            <div className="min-h-full flex items-center justify-center p-4 pb-24 sm:pb-4">
-                <div className="max-w-lg w-full text-center space-y-5 sm:space-y-8">
+            <div className="min-h-full flex flex-col p-4">
+                <div className="m-auto max-w-lg w-full text-center space-y-3 sm:space-y-4">
                     <div className="relative inline-block">
                         <div className="absolute inset-0 blur-3xl rounded-full animate-pulse" style={{ backgroundColor: 'rgba(11, 69, 63, 0.22)' }} />
-                        <div className="relative w-24 h-24 rounded-3xl flex items-center justify-center shadow-2xl sm:w-32 sm:h-32" style={{ background: 'linear-gradient(to bottom right, #0B453F, #0B453F)' }}>
-                            <BarChart3 size={56} className="text-white" />
+                        <div className="relative w-16 h-16 rounded-3xl flex items-center justify-center shadow-2xl sm:w-20 sm:h-20" style={{ background: 'linear-gradient(to bottom right, #0B453F, #0B453F)' }}>
+                            <BarChart3 size={36} className="text-white" />
                         </div>
                     </div>
 
                     <div className="space-y-3 sm:space-y-4">
-                        <h1 className="text-3xl font-black sm:text-4xl" style={{ fontFamily: "'Newsreader', Georgia, serif", color: '#202023' }}>Data Detective</h1>
-                        <p className="text-base sm:text-lg" style={{ fontFamily: "'Outfit', system-ui, sans-serif", color: '#6f6e69' }}>
+                        <h1 className="text-2xl font-black sm:text-3xl" style={{ fontFamily: "'Newsreader', Georgia, serif", color: '#202023' }}>Data Detective</h1>
+                        <p className="text-sm sm:text-base" style={{ fontFamily: "'Outfit', system-ui, sans-serif", color: '#6f6e69' }}>
                             Onderzoek hoe bedrijven data gebruiken, ontdek gevaren en kansen,
                             en train jezelf om online slimme keuzes te maken.
                         </p>
@@ -429,23 +429,23 @@ export const DataDetectiveMission: React.FC<Props> = ({ onBack, onComplete, vsoP
                     <MissionGoalBanner goal={MISSION_GOAL} />
 
                     <div className="grid grid-cols-3 gap-2 text-center sm:gap-4">
-                        <div className="rounded-2xl p-3 sm:p-4" style={{ backgroundColor: '#FFFFFF', border: '1px solid #E7D8BD' }}>
-                            <Eye className="w-7 h-7 mx-auto mb-2 sm:w-8 sm:h-8" style={{ color: '#202023' }} />
+                        <div className="rounded-2xl p-2.5 sm:p-3" style={{ backgroundColor: '#FFFFFF', border: '1px solid #E7D8BD' }}>
+                            <Eye className="w-6 h-6 mx-auto mb-1.5 sm:w-7 sm:h-7" style={{ color: '#202023' }} />
                             <p className="font-bold text-xs sm:text-sm" style={{ color: '#202023' }}>Patronen Zien</p>
                         </div>
-                        <div className="rounded-2xl p-3 sm:p-4" style={{ backgroundColor: '#FFFFFF', border: '1px solid #E7D8BD' }}>
-                            <AlertTriangle className="w-7 h-7 mx-auto mb-2 sm:w-8 sm:h-8" style={{ color: '#ff3c21' }} />
+                        <div className="rounded-2xl p-2.5 sm:p-3" style={{ backgroundColor: '#FFFFFF', border: '1px solid #E7D8BD' }}>
+                            <AlertTriangle className="w-6 h-6 mx-auto mb-1.5 sm:w-7 sm:h-7" style={{ color: '#ff3c21' }} />
                             <p className="font-bold text-xs sm:text-sm" style={{ color: '#202023' }}>Misleiding Spotten</p>
                         </div>
-                        <div className="rounded-2xl p-3 sm:p-4" style={{ backgroundColor: '#FFFFFF', border: '1px solid #E7D8BD' }}>
-                            <Brain className="w-7 h-7 mx-auto mb-2 sm:w-8 sm:h-8" style={{ color: '#202023' }} />
+                        <div className="rounded-2xl p-2.5 sm:p-3" style={{ backgroundColor: '#FFFFFF', border: '1px solid #E7D8BD' }}>
+                            <Brain className="w-6 h-6 mx-auto mb-1.5 sm:w-7 sm:h-7" style={{ color: '#202023' }} />
                             <p className="font-bold text-xs sm:text-sm" style={{ color: '#202023' }}>Kritisch Denken</p>
                         </div>
                     </div>
 
                     <button
                         onClick={() => setState(prev => ({ ...prev, showIntro: false }))}
-                        className="fixed inset-x-4 bottom-4 z-30 py-4 text-white rounded-full font-black uppercase tracking-wide shadow-2xl transition-all duration-300 focus-visible:ring-2 focus-visible:ring-[#0B453F] sm:static sm:w-full sm:shadow-none"
+                        className="w-full py-3 text-white rounded-full font-black uppercase tracking-wide shadow-lg transition-all duration-300 focus-visible:ring-2 focus-visible:ring-[#0B453F]"
                         style={{ backgroundColor: '#202023' }}
                         onMouseEnter={e => (e.currentTarget.style.backgroundColor = '#202023')}
                         onMouseLeave={e => (e.currentTarget.style.backgroundColor = '#202023')}

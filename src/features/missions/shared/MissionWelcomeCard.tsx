@@ -3,6 +3,7 @@ import { Target, BookOpen, Lightbulb, ChevronDown } from 'lucide-react';
 import { AgentRole } from '@/types';
 import { getMissionGoal } from '@/config/missionGoals';
 import { MissionGoalBanner } from '@/features/missions/templates/shared/MissionGoalBanner';
+import { readableTextOn, tintOf } from '@/config/duckUi';
 
 interface MissionWelcomeCardProps {
     role: AgentRole;
@@ -20,6 +21,8 @@ const MissionWelcomeCard: React.FC<MissionWelcomeCardProps> = ({ role }) => {
     const isGameProgrammer = role.id === 'game-programmeur';
     const isCompactBriefing = isGameProgrammer || role.id === 'ai-trainer';
     const missionGoal = getMissionGoal(role.id);
+    // Felle rolkleuren (zoals acid #e1ff01) dragen donkere ink-tekst i.p.v. wit.
+    const onLightHeader = readableTextOn(role.color) === '#202023';
 
     return (
         <div className={`${isCompactBriefing ? 'max-w-[96%] md:max-w-[92%]' : 'max-w-[92%] md:max-w-[80%]'} w-full animate-fade-in-up`}>
@@ -31,14 +34,14 @@ const MissionWelcomeCard: React.FC<MissionWelcomeCardProps> = ({ role }) => {
                         background: `linear-gradient(135deg, ${role.color}, ${role.color}CC)`,
                     }}
                 >
-                    <div className="w-11 h-11 rounded-xl bg-white/20 backdrop-blur-sm border border-white/30 flex items-center justify-center text-white shrink-0">
+                    <div className={`w-11 h-11 rounded-xl backdrop-blur-sm border flex items-center justify-center shrink-0 ${onLightHeader ? 'bg-duck-ink/10 border-duck-ink/20 text-duck-ink' : 'bg-white/20 border-white/30 text-white'}`}>
                         {role.icon}
                     </div>
                     <div className="flex-1 min-w-0">
-                        <p className="text-[10px] font-bold uppercase tracking-widest text-white/70">
+                        <p className={`text-[10px] font-bold uppercase tracking-widest ${onLightHeader ? 'text-duck-ink/70' : 'text-white/70'}`}>
                             Missie Briefing
                         </p>
-                        <h2 className={`${isCompactBriefing ? 'text-base' : 'text-lg'} font-bold text-white font-serif truncate`}>
+                        <h2 className={`${isCompactBriefing ? 'text-base' : 'text-lg'} font-bold ${onLightHeader ? 'text-duck-ink' : 'text-white'} font-serif truncate`}>
                             {role.title}
                         </h2>
                     </div>
@@ -86,11 +89,11 @@ const MissionWelcomeCard: React.FC<MissionWelcomeCardProps> = ({ role }) => {
                                 {firstStep.description}
                             </p>
                             <div
-                                className="flex items-start gap-2 rounded-lg px-3 py-2"
-                                style={{ backgroundColor: role.color, border: `1px solid ${role.color}` }}
+                                className="flex items-start gap-2 rounded-lg px-3 py-2 border border-duck-ink/15"
+                                style={{ backgroundColor: tintOf(role.color, 0.2) }}
                             >
-                                <Lightbulb size={14} className="mt-0.5 shrink-0 text-white" />
-                                <p className="text-xs italic text-white">
+                                <Lightbulb size={14} className="mt-0.5 shrink-0 text-duck-ink" />
+                                <p className="text-xs italic text-duck-ink">
                                     {firstStep.example}
                                 </p>
                             </div>
