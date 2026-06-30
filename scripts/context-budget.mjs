@@ -68,7 +68,6 @@ const hotspots = [
   'dist',
   'node_modules',
   'public',
-  'components',
   'supabase',
 ].map((path) => ({ path, size: dirSize(path) }))
   .filter((entry) => entry.size > 0)
