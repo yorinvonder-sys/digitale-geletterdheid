@@ -1238,22 +1238,22 @@ export const AiLab: React.FC<AiLabProps> = ({ user, onExit, saveProgress, initia
                     </div>
                   )}
                   {suggestions.length > 0 && !isLoading && (
-                    <div className="flex flex-wrap gap-2 mb-3 animate-in slide-in-from-bottom-2">
+                    <div className="flex flex-wrap gap-1.5 mb-2 animate-in slide-in-from-bottom-2">
                       <div
-                        className="flex items-center gap-1 text-xs font-bold mr-1 px-2 py-1 rounded-lg border border-duck-ink/15"
+                        className="flex items-center gap-1 text-[11px] font-bold mr-1 px-1.5 py-0.5 rounded-md border border-duck-ink/15"
                         style={{ backgroundColor: tintOf(selectedRole.color, 0.2), color: '#202023' }}
                       >
-                        <Lightbulb size={12} fill="currentColor" /> Tips:
+                        <Lightbulb size={11} fill="currentColor" /> Tips:
                       </div>
                       {suggestions.slice(0, 3).map((suggestion, idx) => (
                         <button
                           key={idx}
                           onClick={() => handleSuggestionClick(suggestion)}
-                          className="group relative px-3 py-2 bg-white border border-duck-ink/15 hover:border-duck-acid text-duck-ink/60 hover:text-duck-ink rounded-xl text-xs font-medium shadow-sm transition-all active:scale-95 flex items-center gap-2 hover:shadow-md text-left"
+                          className="group relative px-2 py-1 bg-white border border-duck-ink/15 hover:border-duck-acid text-duck-ink/60 hover:text-duck-ink rounded-lg text-[11px] font-medium shadow-sm transition-all active:scale-95 flex items-center gap-1.5 hover:shadow-md text-left"
                         >
                           <span className="whitespace-normal leading-tight">{suggestion}</span>
                           <span
-                            className="text-[9px] font-bold px-1.5 py-0.5 rounded flex-shrink-0 whitespace-nowrap"
+                            className="text-[9px] font-bold px-1 py-0.5 rounded flex-shrink-0 whitespace-nowrap"
                             style={{ backgroundColor: selectedRole.color, color: readableTextOn(selectedRole.color), border: `1px solid ${selectedRole.color}` }}
                           >
                             -{TIP_COST} XP
