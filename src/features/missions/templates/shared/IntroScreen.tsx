@@ -32,8 +32,8 @@ export const IntroScreen: React.FC<IntroScreenProps> = ({
     coachMessage,
     attribution,
 }) => (
-    <div className="min-h-screen overflow-y-auto bg-duck-bg flex items-start justify-center px-4 py-6 sm:py-8" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
-        <div className="w-full max-w-lg text-center">
+    <div className="min-h-screen overflow-y-auto bg-duck-bg flex flex-col px-4 py-5 sm:py-6" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+        <div className="m-auto w-full max-w-lg text-center">
             <KeesMessage
                 message={coachMessage ?? getKeesMissionIntro(title)}
                 mood="wave"
@@ -70,7 +70,7 @@ export const IntroScreen: React.FC<IntroScreenProps> = ({
                     {features.map((f, i) => (
                         <div
                             key={i}
-                            className={`flex items-center gap-3 py-2.5 ${
+                            className={`flex items-center gap-3 py-2 ${
                                 i < features.length - 1 ? 'border-b border-duck-gray' : ''
                             }`}
                         >
