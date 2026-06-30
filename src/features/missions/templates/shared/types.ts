@@ -67,7 +67,8 @@ export type TemplateType =
     | 'builder-canvas'
     | 'data-viewer'
     | 'debate-arena'
-    | 'tool-guide';
+    | 'tool-guide'
+    | 'ethics-council';
 
 // === Template registry entry ===
 export interface TemplateMissionEntry {
