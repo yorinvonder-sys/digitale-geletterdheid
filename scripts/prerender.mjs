@@ -26,6 +26,7 @@ const BUILD_DATE = new Date().toISOString().split('T')[0];
 const ROUTES = [
   '/', 
   '/scholen', 
+  '/leerlingdemo',
   '/login', 
   '/ict', 
   '/ict/integraties', 
@@ -118,6 +119,14 @@ function prerenderRoutes() {
       ogTitle: 'Digitale Geletterdheid voor Scholen — Gratis Pilot | DGSkills',
       ogDescription: 'AI-missies, gamification en SLO Kerndoelen 2025 in één platform. Start een gratis pilot van 3 maanden.',
       ogUrl: 'https://dgskills.app/scholen',
+    },
+    '/leerlingdemo': {
+      title: 'Leerlingdemo — DGSkills | Digitale Geletterdheid',
+      description: 'Bekijk de DGSkills leerlingdemo met fictieve data. Ontdek Leerjaar 1 missies, portfolio-bewijs en de digitale geletterdheid leerlijn.',
+      canonical: 'https://dgskills.app/leerlingdemo',
+      ogTitle: 'Leerlingdemo — DGSkills',
+      ogDescription: 'Probeer de DGSkills leerlingdemo met fictieve data en bekijk hoe Leerjaar 1 missies werken.',
+      ogUrl: 'https://dgskills.app/leerlingdemo',
     },
     '/login': {
       title: 'Inloggen — DGSkills | Digitale Geletterdheid',
