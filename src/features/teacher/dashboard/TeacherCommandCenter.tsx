@@ -2,14 +2,12 @@ import React, { useMemo, useState } from 'react';
 import {
     AlertTriangle,
     ArrowRight,
-    BarChart3,
     BookOpen,
     ChevronRight,
     Clock,
     Flag,
     Map,
     Plus,
-    Send,
     Shield,
     Sparkles,
     Target,
@@ -81,7 +79,7 @@ const MissionThumbnail: React.FC<{ image: string | null; name: string }> = ({ im
 
     if (showFallback) {
         return (
-            <div className="flex h-full w-full items-center justify-center text-lab-coral" aria-label={`${name} thumbnail niet beschikbaar`}>
+            <div className="flex h-full w-full items-center justify-center text-duck-ink/40" aria-label={`${name} thumbnail niet beschikbaar`}>
                 <Map size={28} />
             </div>
         );
@@ -144,35 +142,12 @@ function buildSloStats(students: StudentData[], missions: MissionInfo[]) {
     });
 }
 
-const colorMap: Record<string, { icon: string; bar: string; label: string }> = {
-    sage: { icon: 'bg-lab-sage/15 text-lab-tealDark', bar: 'bg-lab-sage', label: 'text-lab-tealDark' },
-    terracotta: { icon: 'bg-lab-creamDeep text-lab-coral', bar: 'bg-lab-coral', label: 'text-lab-coral' },
-    amber: { icon: 'bg-lab-gold/25 text-lab-olive', bar: 'bg-lab-gold', label: 'text-lab-olive' },
-    sky: { icon: 'bg-lab-tealDark/10 text-lab-tealDark', bar: 'bg-lab-tealDark', label: 'text-lab-tealDark' },
+const colorMap: Record<string, { icon: string; bar: string }> = {
+    sage: { icon: 'bg-duck-gray/15 text-duck-ink', bar: 'bg-duck-gray' },
+    terracotta: { icon: 'bg-duck-error/10 text-duck-error', bar: 'bg-duck-error' },
+    amber: { icon: 'bg-duck-acid/25 text-duck-ink', bar: 'bg-duck-acid' },
+    sky: { icon: 'bg-duck-ink/10 text-duck-ink', bar: 'bg-duck-ink' },
 };
-
-const columnStyles = [
-    'bg-lab-creamDeep text-lab-tealDark',
-    'bg-lab-tealDark text-white',
-    'bg-lab-gold text-lab-ink',
-];
-
-function toChartPoints(values: number[], width = 320, height = 116, padding = 18) {
-    const min = 25;
-    const max = 75;
-    const usableWidth = width - padding * 2;
-    const usableHeight = height - padding * 2;
-
-    return values.map((value, index) => {
-        const x = padding + (index / Math.max(values.length - 1, 1)) * usableWidth;
-        const y = padding + ((max - value) / (max - min)) * usableHeight;
-        return { x, y, value };
-    });
-}
-
-function pointsToPolyline(points: { x: number; y: number }[]) {
-    return points.map(point => `${point.x.toFixed(1)},${point.y.toFixed(1)}`).join(' ');
-}
 
 export const TeacherCommandCenter: React.FC<TeacherCommandCenterProps> = ({
     students,
@@ -185,7 +160,6 @@ export const TeacherCommandCenter: React.FC<TeacherCommandCenterProps> = ({
     onToggleFocusMode,
     onNavigate,
     onSelectStudent,
-    onSendMessage,
 }) => {
     const missions = useMemo(() => getMissionsForYear(yearGroup), [yearGroup]);
     const filteredStudents = useMemo(() => students.filter(student => {
@@ -200,29 +174,33 @@ export const TeacherCommandCenter: React.FC<TeacherCommandCenterProps> = ({
         ? Math.round((completedMissionCount / (filteredStudents.length * missions.length)) * 100)
         : 0;
 
-    const missionCards = useMemo(() => missions.slice(0, 5).map(mission => ({
+    const missionCards = useMemo(() => missions.slice(0, 6).map(mission => ({
         mission,
         image: getMissionImage(mission.id),
         progress: getMissionProgress(mission, filteredStudents),
         kerndoelen: getKerndoelenForMission(mission.id).slice(0, 2),
     })), [missions, filteredStudents]);
 
-    const missionColumns = [
-        { label: 'Nu actief', items: missionCards.slice(0, 2) },
-        { label: 'Deze week', items: missionCards.slice(2, 3) },
-        { label: 'Volgende les', items: missionCards.slice(3, 5) },
-    ];
+    const sortedMissionCards = useMemo(
+        () => [...missionCards].sort((a, b) => b.progress.started - a.progress.started),
+        [missionCards],
+    );
+
+    const sloGoalCount = useMemo(
+        () => new Set(missions.flatMap(mission => getKerndoelenForMission(mission.id))).size,
+        [missions],
+    );
 
     const attentionStudents = useMemo(() => filteredStudents
         .map(student => {
             const daysInactive = getLastActiveMs(student) > 0 ? Math.floor((now - getLastActiveMs(student)) / DAY_MS) : 99;
             const xp = student.stats?.xp || 0;
             if (daysInactive > 7) return { student, reason: 'Lange inactiviteit' };
-            if (xp < 50) return { student, reason: 'Hulp gevraagd bij Data Detective' };
+            if (xp < 50) return { student, reason: 'Lage voortgang' };
             return null;
         })
         .filter(Boolean)
-        .slice(0, 3) as { student: StudentData; reason: string }[], [filteredStudents, now]);
+        .slice(0, 4) as { student: StudentData; reason: string }[], [filteredStudents, now]);
 
     const studentGroups = useMemo(() => {
         const sorted = [...filteredStudents].sort((a, b) => (b.stats?.xp || 0) - (a.stats?.xp || 0));
@@ -233,8 +211,6 @@ export const TeacherCommandCenter: React.FC<TeacherCommandCenterProps> = ({
     }, [filteredStudents, attentionStudents]);
 
     const sloStats = useMemo(() => buildSloStats(filteredStudents, missions), [filteredStudents, missions]);
-    const currentDgIndex = Math.max(61, missionProgressAverage);
-    const growthPoints = [34, 38, 43, 49, 46, 53, 56, 60, currentDgIndex];
 
     const [insightLoading, setInsightLoading] = useState(false);
     const [insightError, setInsightError] = useState<string | null>(null);
@@ -257,130 +233,112 @@ export const TeacherCommandCenter: React.FC<TeacherCommandCenterProps> = ({
 
     if (loading) {
         return (
-            <div className="rounded-2xl border border-lab-line bg-lab-paper/80 p-8 text-center text-sm font-bold text-lab-muted">
+            <div className="rounded-2xl border border-duck-ink/15 bg-duck-bgLight p-8 text-center text-sm font-medium text-duck-ink/60">
                 Docentendashboard laden...
             </div>
         );
     }
 
     return (
-        <div className="space-y-4">
+        <div className="space-y-6">
             <div className="flex flex-col gap-4 xl:flex-row xl:items-start xl:justify-between">
                 <div>
-                    <h1 className="text-4xl font-black tracking-tight text-lab-ink">Docentendashboard</h1>
-                    <div className="mt-3 flex flex-wrap items-center gap-4 text-sm font-bold text-lab-ink">
-                        <span className="text-xl font-black">{selectedClassLabel}</span>
-                        <span className="inline-flex items-center gap-2 text-lab-muted"><Users size={17} /> {filteredStudents.length} leerlingen</span>
-                        <span className="inline-flex items-center gap-2 text-lab-muted"><span className="h-2 w-2 rounded-full bg-lab-sage" /> Les actief</span>
+                    <h1 className="text-3xl font-black tracking-tight text-duck-ink">Docentendashboard</h1>
+                    <div className="mt-2 flex flex-wrap items-center gap-3 text-sm font-medium text-duck-ink/60">
+                        <span className="text-base font-bold text-duck-ink">{selectedClassLabel}</span>
+                        <span className="inline-flex items-center gap-1.5"><Users size={16} /> {filteredStudents.length} leerlingen</span>
                         {activeEvents.length > 0 && (
-                            <span className="rounded-full bg-lab-gold/20 px-2.5 py-1 text-xs font-black text-lab-olive">{activeEvents.length} actief event</span>
+                            <span className="rounded-full bg-duck-acid/20 px-2.5 py-1 text-xs font-bold text-duck-ink">{activeEvents.length} actief event</span>
                         )}
                     </div>
                 </div>
                 <button
                     onClick={onToggleFocusMode}
-                    className="inline-flex h-11 items-center justify-center gap-2 rounded-xl border border-lab-coral bg-white px-7 text-sm font-black text-lab-ink transition hover:bg-lab-creamDeep"
+                    className={`inline-flex h-11 items-center justify-center gap-2 rounded-xl border px-6 text-sm font-bold transition ${
+                        focusMode
+                            ? 'border-duck-ink bg-duck-ink text-white hover:bg-duck-ink/90'
+                            : 'border-duck-ink/15 bg-white text-duck-ink hover:border-duck-gray'
+                    }`}
                 >
-                    <Zap size={17} className={focusMode ? 'text-lab-sage' : 'text-lab-tealDark'} />
+                    <Zap size={17} />
                     {focusMode && focusModeRemaining > 0 ? `${Math.floor(focusModeRemaining / 60)} min focus` : 'Focusmodus'}
                 </button>
             </div>
 
-            <section className="space-y-4">
-                <div className="relative overflow-hidden rounded-2xl border border-lab-line bg-lab-paper p-5 shadow-sm lg:p-6">
+            <section className="space-y-6">
+                <div className="rounded-2xl border border-duck-ink/15 bg-duck-bgLight p-5 shadow-sm lg:p-6">
                     <div className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
                         <div>
-                            <h2 className="text-2xl font-black text-lab-ink">Missiekaart</h2>
-                            <p className="mt-1 text-sm font-medium text-lab-muted">Overzicht van de leerreis van je klas</p>
+                            <h2 className="text-xl font-bold text-duck-ink">Missiekaart</h2>
+                            <p className="mt-1 text-sm font-medium text-duck-ink/60">Waar je klas op dit moment aan werkt</p>
                         </div>
-                        <button onClick={() => onNavigate('slo')} className="flex items-center gap-3 rounded-xl border border-lab-line bg-white/80 px-4 py-3 text-left">
-                            <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-lab-tealDark text-sm font-black text-white">SLO</span>
-                            <span className="text-sm font-black text-lab-ink">6 doelen actief<br /><span className="font-bold text-lab-tealDark">Bekijk SLO-overzicht</span></span>
-                            <ArrowRight size={16} className="text-lab-tealDark" />
+                        <button onClick={() => onNavigate('slo')} className="flex items-center gap-3 rounded-xl border border-duck-ink/15 bg-white px-4 py-3 text-left transition hover:border-duck-gray">
+                            <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-duck-ink text-sm font-black text-white">SLO</span>
+                            <span className="text-sm font-bold text-duck-ink">{sloGoalCount} doelen in beeld<br /><span className="font-medium text-duck-ink/60">Bekijk SLO-overzicht</span></span>
+                            <ArrowRight size={16} className="text-duck-ink" />
                         </button>
                     </div>
 
-                    <div className="pointer-events-none my-4 h-20 rounded-xl bg-[linear-gradient(180deg,rgba(255,249,236,0),rgba(255,249,236,0.85)),url('/assets/agents/de_blauwdruk.webp')] bg-cover bg-center opacity-80 lg:h-24">
-                        <div className="h-full w-full bg-[radial-gradient(circle_at_20%_80%,rgba(217,120,72,0.14),transparent_30%),radial-gradient(circle_at_80%_30%,rgba(93,139,85,0.18),transparent_26%)]" />
-                    </div>
-
-                    <div className="grid gap-4 xl:grid-cols-3">
-                        {missionColumns.map((column, columnIndex) => (
-                            <div key={column.label} className="rounded-2xl border border-lab-line bg-lab-paper p-3">
-                                <div className={`mb-4 flex items-center justify-between gap-2 rounded-xl px-5 py-2 text-base font-black shadow-sm ${columnStyles[columnIndex]}`}>
-                                    {column.label}
-                                    <span className="flex h-6 min-w-6 items-center justify-center rounded-full bg-white/90 px-2 text-xs text-lab-ink">{column.items.length}</span>
+                    <div className="mt-5 grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+                        {sortedMissionCards.map((item) => (
+                            <button
+                                key={item.mission.id}
+                                onClick={() => onNavigate('progress')}
+                                className="w-full overflow-hidden rounded-xl border border-duck-ink/15 bg-white text-left transition hover:-translate-y-0.5 hover:border-duck-gray hover:shadow-md"
+                            >
+                                <div className="grid grid-cols-[88px_minmax(0,1fr)] gap-4 p-4">
+                                    <div className="h-[88px] w-[88px] overflow-hidden rounded-xl bg-duck-bg">
+                                        <MissionThumbnail image={item.image} name={item.mission.name} />
+                                    </div>
+                                    <div className="min-w-0">
+                                        <div className="flex min-w-0 items-start justify-between gap-3">
+                                            <p className="line-clamp-2 min-w-0 text-base font-bold leading-tight text-duck-ink">{item.mission.name}</p>
+                                            <span className="shrink-0 rounded-full border border-duck-ink/15 bg-duck-bg px-2.5 py-1 text-xs font-black leading-none text-duck-ink">
+                                                {item.progress.percentage}%
+                                            </span>
+                                        </div>
+                                        <p className="mt-2 text-sm font-medium leading-tight text-duck-ink/60">{item.progress.started} gestart · {item.progress.completed} klaar</p>
+                                        <div className="mt-3 flex min-w-0 flex-wrap gap-1.5">
+                                            {item.kerndoelen.map(code => (
+                                                <span key={code} className="rounded-md bg-duck-gray/15 px-2 py-1 text-[10px] font-bold text-duck-ink">SLO {code}</span>
+                                            ))}
+                                        </div>
+                                    </div>
                                 </div>
-                                <div className="space-y-3">
-                                    {column.items.map((item) => (
-                                        <button
-                                            key={item.mission.id}
-                                            onClick={() => onNavigate('progress')}
-                                            className="w-full overflow-hidden rounded-xl border border-lab-line bg-white text-left transition hover:-translate-y-0.5 hover:border-lab-coral hover:shadow-md"
-                                        >
-                                            <div className="grid grid-cols-[96px_minmax(0,1fr)] gap-4 p-4">
-                                                <div className="h-24 w-24 overflow-hidden rounded-xl bg-lab-cream">
-                                                    <MissionThumbnail image={item.image} name={item.mission.name} />
-                                                </div>
-                                                <div className="min-w-0">
-                                                    <div className="flex min-w-0 items-start justify-between gap-3">
-                                                        <p className="line-clamp-2 min-w-0 text-base font-black leading-tight text-lab-ink">{item.mission.name}</p>
-                                                        <span className="shrink-0 rounded-full border border-lab-line bg-lab-paper px-2.5 py-1 text-xs font-black leading-none text-lab-ink">
-                                                            {item.progress.percentage}%
-                                                        </span>
-                                                    </div>
-                                                    <p className="mt-2 text-sm font-medium leading-tight text-lab-muted">{item.progress.started} gestart · {item.progress.completed} klaar</p>
-                                                    <div className="mt-3 flex min-w-0 flex-wrap gap-1.5">
-                                                        {item.kerndoelen.map(code => (
-                                                            <span key={code} className="rounded-md bg-lab-sage/15 px-2 py-1 text-[10px] font-black text-lab-tealDark">SLO {code}</span>
-                                                        ))}
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div className="flex items-center gap-1 border-t border-lab-line px-4 py-2">
-                                                <div className="flex -space-x-2">
-                                                    {item.progress.activeStudents.slice(0, 5).map(student => (
-                                                        <span key={student.uid} className="flex h-6 w-6 items-center justify-center rounded-full border-2 border-white bg-lab-creamDeep text-[9px] font-black text-lab-ink">
-                                                            {initials(student.displayName)}
-                                                        </span>
-                                                    ))}
-                                                </div>
-                                                {item.progress.activeStudents.length > 5 && <span className="ml-1 text-xs font-black text-lab-muted">+{item.progress.activeStudents.length - 5}</span>}
-                                            </div>
-                                        </button>
-                                    ))}
-                                    {columnIndex === 1 && (
-                                        <button onClick={() => onNavigate('settings')} className="flex min-h-[96px] w-full items-center justify-center gap-2 rounded-xl border border-dashed border-lab-line px-4 text-sm font-bold text-lab-tealDark">
-                                            <Plus size={18} />
-                                            Missie toevoegen
-                                        </button>
-                                    )}
-                                </div>
-                            </div>
+                                {item.progress.activeStudents.length > 0 && (
+                                    <div className="flex items-center gap-1 border-t border-duck-ink/15 px-4 py-2">
+                                        <div className="flex -space-x-2">
+                                            {item.progress.activeStudents.slice(0, 5).map(student => (
+                                                <span key={student.uid} className="flex h-6 w-6 items-center justify-center rounded-full border-2 border-white bg-duck-acid/20 text-[9px] font-black text-duck-ink">
+                                                    {initials(student.displayName)}
+                                                </span>
+                                            ))}
+                                        </div>
+                                        {item.progress.activeStudents.length > 5 && <span className="ml-1 text-xs font-bold text-duck-ink/60">+{item.progress.activeStudents.length - 5}</span>}
+                                    </div>
+                                )}
+                            </button>
                         ))}
-                    </div>
-
-                    <div className="mt-4 flex flex-wrap gap-5 rounded-xl border border-lab-line bg-white/70 px-4 py-3 text-xs font-bold text-lab-muted">
-                        <span className="inline-flex items-center gap-2"><span className="h-2 w-2 rounded-full bg-lab-sage" /> Op schema</span>
-                        <span className="inline-flex items-center gap-2"><span className="h-2 w-2 rounded-full bg-lab-gold" /> Bezig</span>
-                        <span className="inline-flex items-center gap-2"><span className="h-2 w-2 rounded-full bg-lab-coral" /> Achter</span>
-                        <span className="inline-flex items-center gap-2"><span className="h-2 w-2 rounded-full bg-lab-muted" /> Niet gestart</span>
+                        <button onClick={() => onNavigate('settings')} className="flex min-h-[120px] w-full items-center justify-center gap-2 rounded-xl border border-dashed border-duck-ink/15 px-4 text-sm font-medium text-duck-ink/60 transition hover:border-duck-gray hover:text-duck-ink">
+                            <Plus size={18} />
+                            Missie toevoegen
+                        </button>
                     </div>
                 </div>
 
-                <div className="grid gap-4 lg:grid-cols-2 xl:grid-cols-3">
+                <div className="grid gap-4 lg:grid-cols-2">
                     <Panel title="Aandacht" action={`${attentionStudents.length || 0}`}>
                         <div className="space-y-1">
                             {attentionStudents.length > 0 ? attentionStudents.map(item => (
-                                <button key={item.student.uid} onClick={() => onSelectStudent(item.student)} className="flex w-full items-center gap-3 border-b border-lab-line py-2 text-left last:border-0">
-                                    <span className="flex h-10 w-10 items-center justify-center rounded-full bg-lab-creamDeep text-xs font-black text-lab-ink">{initials(item.student.displayName)}</span>
+                                <button key={item.student.uid} onClick={() => onSelectStudent(item.student)} className="flex w-full items-center gap-3 border-b border-duck-ink/15 py-2 text-left last:border-0">
+                                    <span className="flex h-10 w-10 items-center justify-center rounded-full bg-duck-bg text-xs font-black text-duck-ink">{initials(item.student.displayName)}</span>
                                     <span className="min-w-0 flex-1">
-                                        <span className="block truncate text-sm font-black">{item.student.displayName || 'Naamloos'}</span>
-                                        <span className="block text-xs font-medium text-lab-coral">{item.reason}</span>
+                                        <span className="block truncate text-sm font-bold text-duck-ink">{item.student.displayName || 'Naamloos'}</span>
+                                        <span className="block text-xs font-medium text-duck-error">{item.reason}</span>
                                     </span>
-                                    <ChevronRight size={16} />
+                                    <ChevronRight size={16} className="text-duck-ink/60" />
                                 </button>
-                            )) : <p className="text-sm font-bold text-lab-tealDark">Geen aandachtspunten.</p>}
+                            )) : <p className="text-sm font-medium text-duck-ink/60">Geen aandachtspunten — iedereen op koers.</p>}
                         </div>
                     </Panel>
 
@@ -391,13 +349,13 @@ export const TeacherCommandCenter: React.FC<TeacherCommandCenterProps> = ({
                                 const colors = colorMap[stat.color];
                                 return (
                                     <div key={stat.label} className="flex items-center gap-3">
-                                        <span className={`flex h-8 w-8 items-center justify-center rounded-lg ${colors.icon}`}><Icon size={14} /></span>
+                                        <span className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg ${colors.icon}`}><Icon size={14} /></span>
                                         <div className="min-w-0 flex-1">
                                             <div className="flex items-center justify-between gap-3">
-                                                <p className="truncate text-xs font-bold">{stat.label}</p>
-                                                <p className="text-sm font-black">{stat.percentage}%</p>
+                                                <p className="truncate text-xs font-medium text-duck-ink">{stat.label}</p>
+                                                <p className="text-sm font-black text-duck-ink">{stat.percentage}%</p>
                                             </div>
-                                            <div className="mt-1 h-1.5 overflow-hidden rounded-full bg-lab-line/50">
+                                            <div className="mt-1 h-1.5 overflow-hidden rounded-full bg-duck-ink/10">
                                                 <div className={`h-full rounded-full ${colors.bar}`} style={{ width: `${stat.percentage}%` }} />
                                             </div>
                                         </div>
@@ -406,62 +364,36 @@ export const TeacherCommandCenter: React.FC<TeacherCommandCenterProps> = ({
                             })}
                         </div>
                     </Panel>
-
-                    <Panel title="Groei deze week" buttonLabel="DG-index">
-                        <GrowthWeekChart values={growthPoints} currentValue={currentDgIndex} />
-                    </Panel>
                 </div>
-            </section>
 
-            <section className="grid gap-4 xl:grid-cols-[minmax(0,1fr)_330px_300px]">
-                <div className="rounded-2xl border border-lab-line bg-lab-paper p-4 shadow-sm">
-                    <div className="grid gap-4 md:grid-cols-[160px_1fr_1fr_1fr_160px] md:items-center">
+                <div className="rounded-2xl border border-duck-ink/15 bg-duck-bgLight p-5 shadow-sm">
+                    <div className="mb-4 flex items-center gap-3">
+                        <Flag className="text-duck-error" size={20} />
+                        <h3 className="text-lg font-bold text-duck-ink">Klasprogressie</h3>
+                    </div>
+                    <div className="grid gap-6 sm:grid-cols-3">
                         <div className="flex items-center gap-3">
-                            <Flag className="text-lab-coral" size={28} />
-                            <div><p className="text-sm font-black">Klasprogressie</p></div>
-                        </div>
-                        <div className="flex items-center gap-3">
-                            <div className="flex h-14 w-14 items-center justify-center rounded-full border-[6px] border-lab-sage text-lg font-black">{missionProgressAverage}%</div>
-                            <p className="text-xs font-bold text-lab-muted">Gemiddelde missievoortgang</p>
+                            <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full border-[6px] border-duck-acid text-base font-black text-duck-ink">{missionProgressAverage}%</div>
+                            <p className="text-xs font-medium text-duck-ink/60">Gemiddelde missievoortgang</p>
                         </div>
                         <MiniAvatarGroup label="Meest voortgang" students={studentGroups.leaders} />
                         <MiniAvatarGroup label="Hulp nodig" students={studentGroups.help} />
-                        <div className="text-sm font-bold">Volgende mijlpaal<br /><span className="text-xs text-lab-muted">6 van 10 missies gemiddeld</span></div>
                     </div>
                 </div>
-
-                <div className="rounded-2xl border border-lab-line bg-lab-tealDark/5 p-4 shadow-sm">
-                    <p className="text-xs font-black uppercase text-lab-muted">Volgende les</p>
-                    <h3 className="mt-1 text-lg font-black">3. Verhalenmakers</h3>
-                    <p className="mt-1 text-xs font-bold text-lab-muted">Les 2: Structuur & Perspectief</p>
-                    <div className="mt-4 flex gap-2">
-                        <button onClick={() => onNavigate('games')} className="rounded-lg bg-lab-tealDark px-4 py-2 text-sm font-black text-white">Les openen</button>
-                        <button onClick={() => onNavigate('documenten')} className="rounded-lg border border-lab-line bg-white px-3 py-2 text-sm font-black">Voorbereiding</button>
-                    </div>
-                </div>
-
-                <Panel title="Aanbevolen acties" action="3 nieuw">
-                    <div className="space-y-2">
-                        <ActionRow label="Versterk digitale veiligheid" onClick={() => onNavigate('slo')} />
-                        <ActionRow label="Samenwerken stimuleren" onClick={() => onNavigate('students')} />
-                        <ActionRow label="Laat creativiteit zien" onClick={onSendMessage} />
-                        <button onClick={() => onNavigate('progress')} className="mt-2 text-sm font-black text-lab-coral">Bekijk rapport</button>
-                    </div>
-                </Panel>
             </section>
 
             <section>
                 <Panel title="Klas-inzicht">
                     {!classInsight && !insightLoading && !insightError && (
                         <div className="space-y-3">
-                            <p className="text-xs font-bold text-lab-muted">
+                            <p className="text-xs font-medium text-duck-ink/60">
                                 Genereer een AI-samenvatting van waar{' '}
                                 {classFilter !== 'all' ? `klas ${classFilter}` : 'de klas'}{' '}
                                 vastloopt. Gebaseerd op anonieme voortgangsdata — geen namen zichtbaar voor de AI.
                             </p>
                             <button
                                 onClick={handleGenerateInsight}
-                                className="flex items-center gap-2 rounded-lg bg-lab-tealDark px-4 py-2 text-sm font-black text-white"
+                                className="flex items-center gap-2 rounded-lg bg-duck-ink px-4 py-2 text-sm font-bold text-white transition hover:bg-duck-ink/90"
                             >
                                 <Sparkles size={14} />
                                 Genereer samenvatting
@@ -470,7 +402,7 @@ export const TeacherCommandCenter: React.FC<TeacherCommandCenterProps> = ({
                     )}
 
                     {insightLoading && (
-                        <div className="flex items-center gap-2 text-sm font-bold text-lab-muted">
+                        <div className="flex items-center gap-2 text-sm font-medium text-duck-ink/60">
                             <Clock size={14} className="animate-spin" />
                             Samenvatting wordt gegenereerd...
                         </div>
@@ -478,14 +410,14 @@ export const TeacherCommandCenter: React.FC<TeacherCommandCenterProps> = ({
 
                     {insightError && (
                         <div className="space-y-3">
-                            <p className="text-sm font-bold text-lab-coral">
+                            <p className="text-sm font-bold text-duck-error">
                                 {insightError.toLowerCase().includes('mfa') || insightError.toLowerCase().includes('verificatie')
                                     ? 'Zet MFA aan om klas-inzicht te zien. Ga naar je accountinstellingen.'
                                     : insightError}
                             </p>
                             <button
                                 onClick={handleGenerateInsight}
-                                className="rounded-lg border border-lab-line bg-white px-3 py-2 text-xs font-bold"
+                                className="rounded-lg border border-duck-ink/15 bg-white px-3 py-2 text-xs font-bold text-duck-ink transition hover:border-duck-gray"
                             >
                                 Opnieuw proberen
                             </button>
@@ -495,19 +427,19 @@ export const TeacherCommandCenter: React.FC<TeacherCommandCenterProps> = ({
                     {classInsight && !insightLoading && (
                         <div className="space-y-4">
                             <div className="flex items-center justify-between gap-3">
-                                <p className="text-xs font-bold text-lab-muted">
+                                <p className="text-xs font-medium text-duck-ink/60">
                                     {classInsight.classScope} &middot; {classInsight.classSize} leerling{classInsight.classSize !== 1 ? 'en' : ''}
                                 </p>
                                 <button
                                     onClick={handleGenerateInsight}
-                                    className="text-xs font-bold text-lab-coral"
+                                    className="text-xs font-bold text-duck-ink/60 transition hover:text-duck-ink"
                                 >
                                     Vernieuwen
                                 </button>
                             </div>
 
                             {classInsight.note && (
-                                <p className="text-xs font-bold text-lab-muted">{classInsight.note}</p>
+                                <p className="text-xs font-medium text-duck-ink/60">{classInsight.note}</p>
                             )}
 
                             {classInsight.points.length > 0 && (
@@ -515,23 +447,23 @@ export const TeacherCommandCenter: React.FC<TeacherCommandCenterProps> = ({
                                     {classInsight.points.map((point, i) => (
                                         <div
                                             key={i}
-                                            className="rounded-xl border border-lab-line bg-white p-3"
+                                            className="rounded-xl border border-duck-ink/15 bg-white p-3"
                                         >
-                                            <p className="text-sm font-black text-lab-ink">{point.title}</p>
-                                            <p className="mt-1 text-xs font-bold text-lab-muted">{point.observation}</p>
-                                            <p className="mt-1 text-xs font-bold text-lab-tealDark">{point.suggestion}</p>
+                                            <p className="text-sm font-bold text-duck-ink">{point.title}</p>
+                                            <p className="mt-1 text-xs font-medium text-duck-ink/60">{point.observation}</p>
+                                            <p className="mt-1 text-xs font-medium text-duck-ink">{point.suggestion}</p>
                                         </div>
                                     ))}
                                 </div>
                             )}
 
                             {classInsight.points.length === 0 && !classInsight.note && (
-                                <p className="text-xs font-bold text-lab-muted">Geen aandachtspunten gevonden.</p>
+                                <p className="text-xs font-medium text-duck-ink/60">Geen aandachtspunten gevonden.</p>
                             )}
 
-                            <div className="flex items-center gap-1.5 rounded-lg border border-lab-gold/40 bg-lab-gold/10 px-3 py-2">
-                                <AlertTriangle size={12} className="shrink-0 text-lab-olive" />
-                                <p className="text-[11px] font-bold text-lab-olive">
+                            <div className="flex items-center gap-1.5 rounded-lg border border-duck-acid/40 bg-duck-acid/10 px-3 py-2">
+                                <AlertTriangle size={12} className="shrink-0 text-duck-ink" />
+                                <p className="text-[11px] font-medium text-duck-ink">
                                     AI-gegenereerd — controleer dit zelf
                                 </p>
                             </div>
@@ -542,69 +474,6 @@ export const TeacherCommandCenter: React.FC<TeacherCommandCenterProps> = ({
         </div>
     );
 };
-
-function GrowthWeekChart({ values, currentValue }: { values: number[]; currentValue: number }) {
-    const benchmarkValues = [31, 33, 36, 39, 41, 44, 47, 49, 51];
-    const classPoints = toChartPoints(values);
-    const benchmarkPoints = toChartPoints(benchmarkValues);
-    const classPolyline = pointsToPolyline(classPoints);
-    const benchmarkPolyline = pointsToPolyline(benchmarkPoints);
-    const areaPath = `M ${classPolyline} L 302,104 L 18,104 Z`;
-    const weeklyDelta = Math.max(0, currentValue - values[0]);
-
-    return (
-        <div className="overflow-hidden rounded-xl border border-lab-line bg-white">
-            <div className="flex items-start justify-between gap-3 px-4 pt-4">
-                <div>
-                    <p className="text-[10px] font-black uppercase tracking-widest text-lab-muted">Klasgemiddelde</p>
-                    <div className="mt-1 flex items-baseline gap-2">
-                        <span className="text-4xl font-black leading-none text-lab-tealDark">{currentValue}</span>
-                        <span className="text-xs font-black text-lab-tealDark">DG</span>
-                    </div>
-                </div>
-                <div className="rounded-lg bg-lab-sage/15 px-3 py-2 text-right">
-                    <p className="text-sm font-black leading-none text-lab-tealDark">+{weeklyDelta}</p>
-                    <p className="mt-1 text-[10px] font-bold text-lab-tealDark">deze week</p>
-                </div>
-            </div>
-
-            <div className="relative mt-1 h-32 px-2 pb-1">
-                <svg viewBox="0 0 320 116" className="h-full w-full" role="img" aria-label={`DG-index groei deze week: klas staat op ${currentValue}`}>
-                    <defs>
-                        <linearGradient id="growthWeekFill" x1="0" x2="0" y1="0" y2="1">
-                            <stop offset="0%" stopColor="#5F947D" stopOpacity="0.20" />
-                            <stop offset="100%" stopColor="#5F947D" stopOpacity="0" />
-                        </linearGradient>
-                    </defs>
-                    <line x1="18" y1="26" x2="302" y2="26" stroke="#E7D8BD" strokeDasharray="3 7" />
-                    <line x1="18" y1="64" x2="302" y2="64" stroke="#E7D8BD" strokeDasharray="3 7" />
-                    <line x1="18" y1="104" x2="302" y2="104" stroke="#E7D8BD" />
-                    <path d={areaPath} fill="url(#growthWeekFill)" />
-                    <polyline points={benchmarkPolyline} fill="none" stroke="#445865" strokeWidth="2" strokeDasharray="5 7" strokeLinecap="round" />
-                    <polyline points={classPolyline} fill="none" stroke="#5F947D" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" />
-                    {classPoints.map((point, index) => (
-                        <circle
-                            key={`${point.value}-${index}`}
-                            cx={point.x}
-                            cy={point.y}
-                            r={index === classPoints.length - 1 ? 5 : 3.5}
-                            fill="#FFFDF7"
-                            stroke="#5F947D"
-                            strokeWidth={index === classPoints.length - 1 ? 4 : 3}
-                        />
-                    ))}
-                    <text x="18" y="114" fill="#445865" fontSize="9" fontWeight="700">ma</text>
-                    <text x="284" y="114" fill="#445865" fontSize="9" fontWeight="700">vandaag</text>
-                </svg>
-            </div>
-
-            <div className="flex flex-wrap items-center gap-x-4 gap-y-2 border-t border-lab-line px-4 py-3 text-[11px] font-bold text-lab-muted">
-                <span className="inline-flex items-center gap-2"><span aria-hidden="true" style={{ display: 'block', width: 20, height: 8, borderRadius: 999, background: '#5F947D' }} /> Klas</span>
-                <span className="inline-flex items-center gap-2"><span aria-hidden="true" style={{ display: 'block', width: 20, borderTop: '2px dashed #445865' }} /> Vorige week</span>
-            </div>
-        </div>
-    );
-}
 
 function Panel({
     title,
@@ -620,11 +489,11 @@ function Panel({
     onButtonClick?: () => void;
 }) {
     return (
-        <div className="rounded-2xl border border-lab-line bg-lab-paper p-4 shadow-sm">
+        <div className="rounded-2xl border border-duck-ink/15 bg-duck-bgLight p-4 shadow-sm">
             <div className="mb-3 flex items-center justify-between gap-3">
-                <h3 className="text-xl font-black text-lab-ink">{title}</h3>
-                {action && <span className="rounded-full bg-lab-creamDeep px-2.5 py-1 text-xs font-black text-lab-coral">{action}</span>}
-                {buttonLabel && <button onClick={onButtonClick} className="rounded-lg border border-lab-line bg-white px-3 py-2 text-xs font-bold">{buttonLabel}</button>}
+                <h3 className="text-lg font-bold text-duck-ink">{title}</h3>
+                {action && <span className="rounded-full bg-duck-bg px-2.5 py-1 text-xs font-black text-duck-error">{action}</span>}
+                {buttonLabel && <button onClick={onButtonClick} className="rounded-lg border border-duck-ink/15 bg-white px-3 py-2 text-xs font-bold text-duck-ink transition hover:border-duck-gray">{buttonLabel}</button>}
             </div>
             {children}
         </div>
@@ -634,23 +503,14 @@ function Panel({
 function MiniAvatarGroup({ label, students }: { label: string; students: StudentData[] }) {
     return (
         <div>
-            <p className="mb-2 text-xs font-black">{label}</p>
+            <p className="mb-2 text-xs font-bold text-duck-ink">{label}</p>
             <div className="flex -space-x-2">
                 {students.length > 0 ? students.map(student => (
-                    <span key={student.uid} className="flex h-8 w-8 items-center justify-center rounded-full border-2 border-white bg-lab-gold/20 text-[10px] font-black text-lab-olive">
+                    <span key={student.uid} className="flex h-8 w-8 items-center justify-center rounded-full border-2 border-white bg-duck-acid/20 text-[10px] font-black text-duck-ink">
                         {initials(student.displayName)}
                     </span>
-                )) : <span className="text-xs font-bold text-lab-muted">Geen data</span>}
+                )) : <span className="text-xs font-medium text-duck-ink/60">Geen data</span>}
             </div>
         </div>
-    );
-}
-
-function ActionRow({ label, onClick }: { label: string; onClick: () => void }) {
-    return (
-        <button onClick={onClick} className="flex w-full items-center justify-between rounded-lg border-b border-lab-line py-2 text-left text-sm font-bold last:border-0">
-            {label}
-            <ChevronRight size={15} />
-        </button>
     );
 }

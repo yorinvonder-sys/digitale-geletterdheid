@@ -92,7 +92,7 @@ export const RosterImportModal: React.FC<RosterImportModalProps> = ({ open, onCl
                     onClick={(e) => e.stopPropagation()}
                 >
                     {/* Header */}
-                    <div className="bg-gradient-to-r from-lab-tealDark to-lab-teal px-6 py-5 text-white">
+                    <div className="bg-gradient-to-r from-duck-ink to-duck-ink px-6 py-5 text-white">
                         <div className="flex items-center justify-between">
                             <div className="flex items-center gap-3">
                                 <div className="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center"><Users size={20} /></div>
@@ -109,46 +109,46 @@ export const RosterImportModal: React.FC<RosterImportModalProps> = ({ open, onCl
                     <div className="p-6 space-y-4 overflow-y-auto">
                         {!result ? (
                             <>
-                                <p className="text-xs text-lab-muted">
+                                <p className="text-xs text-duck-ink/60">
                                     Exporteer uit Magister een CSV met de kolommen <strong>email, voornaam, achternaam, geboortedatum</strong> (optioneel: klas, leerjaar, niveau, leerlingnummer). De geboortedatum bepaalt de leeftijd; AI-functies blijven voor leerlingen onder de 13 jaar geblokkeerd.
                                 </p>
 
                                 <label className="block">
-                                    <span className="text-xs font-bold text-lab-muted uppercase tracking-wider block mb-2">CSV-bestand</span>
-                                    <div className="border-2 border-dashed border-lab-line rounded-xl p-5 text-center hover:border-lab-teal transition-colors cursor-pointer">
-                                        <Upload size={22} className="mx-auto text-lab-muted mb-2" />
-                                        <span className="text-sm font-medium text-lab-muted">{fileName || 'Kies een CSV-bestand'}</span>
+                                    <span className="text-xs font-bold text-duck-ink/60 uppercase tracking-wider block mb-2">CSV-bestand</span>
+                                    <div className="border-2 border-dashed border-duck-ink/15 rounded-xl p-5 text-center hover:border-duck-ink transition-colors cursor-pointer">
+                                        <Upload size={22} className="mx-auto text-duck-ink/60 mb-2" />
+                                        <span className="text-sm font-medium text-duck-ink/60">{fileName || 'Kies een CSV-bestand'}</span>
                                         <input type="file" accept=".csv,text/csv" className="hidden" onChange={(e) => handleFile(e.target.files?.[0])} />
                                     </div>
                                 </label>
 
                                 {rows.length > 0 && (
-                                    <div className="bg-lab-sage/20 border border-lab-sage rounded-xl p-3 text-sm text-lab-ink flex items-center gap-2">
-                                        <Check size={16} className="text-lab-tealDark shrink-0" />
+                                    <div className="bg-duck-ink/20 border border-duck-ink rounded-xl p-3 text-sm text-duck-ink flex items-center gap-2">
+                                        <Check size={16} className="text-duck-ink shrink-0" />
                                         <span><strong>{rows.length}</strong> geldige leerling(en) klaar om te importeren.</span>
                                     </div>
                                 )}
 
                                 {parseErrors.length > 0 && (
-                                    <div className="bg-lab-gold/20 border border-lab-gold rounded-xl p-3 max-h-32 overflow-y-auto">
-                                        <p className="text-xs font-bold text-lab-ink mb-1">{parseErrors.length} regel(s) overgeslagen:</p>
-                                        <ul className="text-[11px] text-lab-muted list-disc list-inside space-y-0.5">
+                                    <div className="bg-duck-acid/20 border border-duck-acid rounded-xl p-3 max-h-32 overflow-y-auto">
+                                        <p className="text-xs font-bold text-duck-ink mb-1">{parseErrors.length} regel(s) overgeslagen:</p>
+                                        <ul className="text-[11px] text-duck-ink/60 list-disc list-inside space-y-0.5">
                                             {parseErrors.slice(0, 20).map((er, i) => <li key={i}>{er}</li>)}
                                         </ul>
                                     </div>
                                 )}
 
                                 {error && (
-                                    <div className="bg-lab-coral/15 border border-lab-coral rounded-xl p-3 text-sm text-lab-coral flex items-start gap-2">
+                                    <div className="bg-duck-error/15 border border-duck-error rounded-xl p-3 text-sm text-duck-error flex items-start gap-2">
                                         <AlertCircle size={16} className="shrink-0 mt-0.5" /><span>{error}</span>
                                     </div>
                                 )}
                             </>
                         ) : (
                             <>
-                                <div className="bg-lab-sage/20 border border-lab-sage rounded-xl p-4">
-                                    <div className="flex items-center gap-2 mb-2"><Check size={18} className="text-lab-tealDark" /><p className="font-bold text-sm text-lab-ink">Import voltooid</p></div>
-                                    <ul className="text-xs text-lab-muted space-y-0.5">
+                                <div className="bg-duck-ink/20 border border-duck-ink rounded-xl p-4">
+                                    <div className="flex items-center gap-2 mb-2"><Check size={18} className="text-duck-ink" /><p className="font-bold text-sm text-duck-ink">Import voltooid</p></div>
+                                    <ul className="text-xs text-duck-ink/60 space-y-0.5">
                                         <li><strong>{result.created}</strong> nieuwe accounts aangemaakt</li>
                                         <li><strong>{result.updated}</strong> bestaande accounts bijgewerkt</li>
                                         <li><strong>{result.skipped}</strong> overgeslagen</li>
@@ -156,21 +156,21 @@ export const RosterImportModal: React.FC<RosterImportModalProps> = ({ open, onCl
                                 </div>
 
                                 {result.errors.length > 0 && (
-                                    <div className="bg-lab-gold/20 border border-lab-gold rounded-xl p-3 max-h-32 overflow-y-auto">
-                                        <p className="text-xs font-bold text-lab-ink mb-1">{result.errors.length} fout(en):</p>
-                                        <ul className="text-[11px] text-lab-muted list-disc list-inside space-y-0.5">
+                                    <div className="bg-duck-acid/20 border border-duck-acid rounded-xl p-3 max-h-32 overflow-y-auto">
+                                        <p className="text-xs font-bold text-duck-ink mb-1">{result.errors.length} fout(en):</p>
+                                        <ul className="text-[11px] text-duck-ink/60 list-disc list-inside space-y-0.5">
                                             {result.errors.slice(0, 20).map((er, i) => <li key={i}>Regel {er.row + 1}: {er.reason}</li>)}
                                         </ul>
                                     </div>
                                 )}
 
                                 {result.credentials.length > 0 && (
-                                    <div className="bg-lab-coral/10 border border-lab-coral rounded-xl p-4 space-y-2">
+                                    <div className="bg-duck-error/10 border border-duck-error rounded-xl p-4 space-y-2">
                                         <div className="flex items-start gap-2">
-                                            <AlertCircle size={16} className="text-lab-coral shrink-0 mt-0.5" />
-                                            <p className="text-xs text-lab-ink"><strong>{result.credentials.length} tijdelijke wachtwoorden</strong> aangemaakt. Download ze nu en deel ze veilig — ze worden <strong>niet opnieuw getoond</strong>. Leerlingen wijzigen hun wachtwoord bij de eerste login.</p>
+                                            <AlertCircle size={16} className="text-duck-error shrink-0 mt-0.5" />
+                                            <p className="text-xs text-duck-ink"><strong>{result.credentials.length} tijdelijke wachtwoorden</strong> aangemaakt. Download ze nu en deel ze veilig — ze worden <strong>niet opnieuw getoond</strong>. Leerlingen wijzigen hun wachtwoord bij de eerste login.</p>
                                         </div>
-                                        <button onClick={downloadCredentials} className="w-full px-4 py-2.5 bg-lab-coral text-white font-bold text-sm rounded-xl flex items-center justify-center gap-2">
+                                        <button onClick={downloadCredentials} className="w-full px-4 py-2.5 bg-duck-error text-white font-bold text-sm rounded-xl flex items-center justify-center gap-2">
                                             <Download size={16} /> Download inloggegevens (CSV)
                                         </button>
                                     </div>
@@ -180,15 +180,15 @@ export const RosterImportModal: React.FC<RosterImportModalProps> = ({ open, onCl
                     </div>
 
                     {/* Footer */}
-                    <div className="px-6 py-4 bg-lab-cream border-t border-lab-line flex justify-end gap-3">
-                        <button onClick={onClose} className="px-4 py-2.5 text-lab-muted font-bold text-sm rounded-xl hover:bg-lab-line/40 transition-colors">
+                    <div className="px-6 py-4 bg-duck-bg border-t border-duck-ink/15 flex justify-end gap-3">
+                        <button onClick={onClose} className="px-4 py-2.5 text-duck-ink/60 font-bold text-sm rounded-xl hover:bg-duck-ink/15/40 transition-colors">
                             {result ? 'Sluiten' : 'Annuleren'}
                         </button>
                         {!result && (
                             <button
                                 onClick={handleImport}
                                 disabled={importing || rows.length === 0}
-                                className="px-5 py-2.5 bg-lab-tealDark text-white font-bold text-sm rounded-xl disabled:opacity-50 disabled:cursor-not-allowed transition-all flex items-center gap-2"
+                                className="px-5 py-2.5 bg-duck-ink text-white font-bold text-sm rounded-xl disabled:opacity-50 disabled:cursor-not-allowed transition-all flex items-center gap-2"
                             >
                                 {importing ? <><Loader2 size={16} className="animate-spin motion-reduce:animate-none" /> Bezig...</> : <><Upload size={16} /> Importeer {rows.length > 0 ? `${rows.length} leerling(en)` : ''}</>}
                             </button>

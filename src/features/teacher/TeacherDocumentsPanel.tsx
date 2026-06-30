@@ -30,9 +30,9 @@ const CATEGORY_LABELS: Record<SloDocument['category'], string> = {
 };
 
 const CATEGORY_COLORS: Record<SloDocument['category'], { bg: string; text: string; border: string; iconBg: string }> = {
-    slo: { bg: 'bg-lab-coral', text: 'text-lab-coral', border: 'border-lab-coral', iconBg: 'bg-lab-coral' },
-    compliance: { bg: 'bg-lab-teal', text: 'text-lab-teal', border: 'border-lab-teal', iconBg: 'bg-lab-teal' },
-    handleiding: { bg: 'bg-lab-sage', text: 'text-lab-sage', border: 'border-lab-sage', iconBg: 'bg-lab-sage' },
+    slo: { bg: 'bg-duck-error', text: 'text-duck-error', border: 'border-duck-error', iconBg: 'bg-duck-error' },
+    compliance: { bg: 'bg-duck-ink', text: 'text-duck-ink', border: 'border-duck-ink', iconBg: 'bg-duck-ink' },
+    handleiding: { bg: 'bg-duck-ink', text: 'text-duck-ink', border: 'border-duck-ink', iconBg: 'bg-duck-ink' },
 };
 
 export const TeacherDocumentsPanel: React.FC = () => {
@@ -54,23 +54,23 @@ export const TeacherDocumentsPanel: React.FC = () => {
     return (
         <div className="space-y-6">
             {/* Header */}
-            <div className="bg-white rounded-2xl border border-lab-line shadow-sm p-6">
+            <div className="bg-white rounded-2xl border border-duck-ink/15 shadow-sm p-6">
                 <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                     <div>
-                        <h2 className="text-lg font-bold text-lab-ink flex items-center gap-2">
-                            <BookOpen size={20} className="text-lab-coral" />
+                        <h2 className="text-lg font-bold text-duck-ink flex items-center gap-2">
+                            <BookOpen size={20} className="text-duck-error" />
                             Documenten
                         </h2>
-                        <p className="text-sm text-lab-muted mt-1">
+                        <p className="text-sm text-duck-ink/60 mt-1">
                             Officiële SLO-documenten en handleidingen voor docenten.
                         </p>
                     </div>
                     <div className="relative w-full sm:w-72">
-                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-lab-muted" size={16} />
+                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-duck-ink/60" size={16} />
                         <input
                             type="text"
                             placeholder="Zoek documenten..."
-                            className="w-full pl-9 pr-4 py-2.5 bg-lab-cream border border-lab-line rounded-xl text-sm focus:ring-2 focus:ring-lab-coral outline-none transition-all"
+                            className="w-full pl-9 pr-4 py-2.5 bg-duck-bg border border-duck-ink/15 rounded-xl text-sm focus:ring-2 focus:ring-duck-error outline-none transition-all"
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
                         />
@@ -79,14 +79,14 @@ export const TeacherDocumentsPanel: React.FC = () => {
 
                 {/* Category filter */}
                 {categories.length > 2 && (
-                    <div className="flex gap-2 mt-4 pt-4 border-t border-lab-line">
+                    <div className="flex gap-2 mt-4 pt-4 border-t border-duck-ink/15">
                         {categories.map(cat => (
                             <button
                                 key={cat}
                                 onClick={() => setActiveCategory(cat)}
                                 className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${activeCategory === cat
-                                    ? 'bg-lab-coral text-white'
-                                    : 'text-lab-muted hover:text-lab-muted hover:bg-lab-cream'
+                                    ? 'bg-duck-error text-white'
+                                    : 'text-duck-ink/60 hover:text-duck-ink/60 hover:bg-duck-bg'
                                 }`}
                             >
                                 {cat === 'all' ? 'Alles' : CATEGORY_LABELS[cat]}
@@ -103,7 +103,7 @@ export const TeacherDocumentsPanel: React.FC = () => {
                     return (
                         <div
                             key={doc.id}
-                            className="bg-white rounded-2xl border border-lab-line shadow-sm hover:shadow-md transition-all overflow-hidden"
+                            className="bg-white rounded-2xl border border-duck-ink/15 shadow-sm hover:shadow-md transition-all overflow-hidden"
                         >
                             <div className="flex flex-col md:flex-row">
                                 {/* Icon area */}
@@ -121,36 +121,36 @@ export const TeacherDocumentsPanel: React.FC = () => {
                                                 <span className={`text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full ${colors.bg} ${colors.text}`}>
                                                     {CATEGORY_LABELS[doc.category]}
                                                 </span>
-                                                <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-lab-coral text-white">
+                                                <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-duck-error text-white">
                                                     PDF
                                                 </span>
                                             </div>
-                                            <h3 className="text-base font-bold text-lab-ink leading-tight">
+                                            <h3 className="text-base font-bold text-duck-ink leading-tight">
                                                 {doc.title}
                                             </h3>
                                         </div>
                                     </div>
 
-                                    <p className="text-sm text-lab-muted leading-relaxed">
+                                    <p className="text-sm text-duck-ink/60 leading-relaxed">
                                         {doc.description}
                                     </p>
 
                                     <div className="flex flex-wrap gap-1.5 mt-1">
                                         {doc.tags.map(tag => (
-                                            <span key={tag} className="text-[9px] font-bold text-lab-muted border border-lab-line px-2 py-0.5 rounded-full uppercase tracking-tight">
+                                            <span key={tag} className="text-[9px] font-bold text-duck-ink/60 border border-duck-ink/15 px-2 py-0.5 rounded-full uppercase tracking-tight">
                                                 {tag}
                                             </span>
                                         ))}
                                     </div>
 
-                                    <div className="flex items-center justify-between pt-3 border-t border-lab-line mt-auto">
-                                        <span className="text-xs text-lab-muted">
+                                    <div className="flex items-center justify-between pt-3 border-t border-duck-ink/15 mt-auto">
+                                        <span className="text-xs text-duck-ink/60">
                                             Bijgewerkt: {new Date(doc.updatedAt).toLocaleDateString('nl-NL', { year: 'numeric', month: 'long', day: 'numeric' })}
                                         </span>
                                         <div className="flex gap-2">
                                             <button
                                                 onClick={() => setPreviewDoc(previewDoc?.id === doc.id ? null : doc)}
-                                                className="flex items-center gap-1.5 px-3 py-2 text-xs font-bold text-lab-coral hover:bg-lab-coral hover:text-white rounded-xl transition-colors"
+                                                className="flex items-center gap-1.5 px-3 py-2 text-xs font-bold text-duck-error hover:bg-duck-error hover:text-white rounded-xl transition-colors"
                                             >
                                                 <ExternalLink size={14} />
                                                 Bekijken
@@ -158,7 +158,7 @@ export const TeacherDocumentsPanel: React.FC = () => {
                                             <a
                                                 href={doc.path}
                                                 download
-                                                className="flex items-center gap-1.5 px-3 py-2 text-xs font-bold text-lab-muted hover:bg-lab-cream rounded-xl transition-colors"
+                                                className="flex items-center gap-1.5 px-3 py-2 text-xs font-bold text-duck-ink/60 hover:bg-duck-bg rounded-xl transition-colors"
                                             >
                                                 <Download size={14} />
                                                 Download
@@ -170,10 +170,10 @@ export const TeacherDocumentsPanel: React.FC = () => {
 
                             {/* Inline PDF preview */}
                             {previewDoc?.id === doc.id && (
-                                <div className="border-t border-lab-line">
+                                <div className="border-t border-duck-ink/15">
                                     <iframe
                                         src={doc.path}
-                                        className="w-full h-[70vh] bg-lab-cream"
+                                        className="w-full h-[70vh] bg-duck-bg"
                                         title={doc.title}
                                     />
                                 </div>
@@ -184,21 +184,21 @@ export const TeacherDocumentsPanel: React.FC = () => {
             </div>
 
             {filteredDocs.length === 0 && (
-                <div className="bg-white rounded-2xl border border-lab-line p-12 text-center">
-                    <BookOpen size={40} className="text-lab-muted mx-auto mb-3" />
-                    <p className="text-lab-muted font-medium">Geen documenten gevonden</p>
-                    <p className="text-sm text-lab-muted mt-1">Probeer een andere zoekterm of categorie.</p>
+                <div className="bg-white rounded-2xl border border-duck-ink/15 p-12 text-center">
+                    <BookOpen size={40} className="text-duck-ink/60 mx-auto mb-3" />
+                    <p className="text-duck-ink/60 font-medium">Geen documenten gevonden</p>
+                    <p className="text-sm text-duck-ink/60 mt-1">Probeer een andere zoekterm of categorie.</p>
                 </div>
             )}
 
             {/* Info banner */}
-            <div className="bg-lab-coral rounded-2xl p-5 flex items-start gap-4 border border-lab-coral">
-                <div className="bg-lab-coral p-2 rounded-xl shrink-0">
-                    <BookOpen size={20} className="text-lab-coral" />
+            <div className="bg-duck-error rounded-2xl p-5 flex items-start gap-4 border border-duck-error">
+                <div className="bg-duck-error p-2 rounded-xl shrink-0">
+                    <BookOpen size={20} className="text-duck-error" />
                 </div>
                 <div>
-                    <h4 className="text-sm font-bold text-lab-coral">Over de SLO Kerndoelen</h4>
-                    <p className="text-sm text-lab-coral mt-1 leading-relaxed">
+                    <h4 className="text-sm font-bold text-duck-error">Over de SLO Kerndoelen</h4>
+                    <p className="text-sm text-duck-error mt-1 leading-relaxed">
                         De definitieve conceptkerndoelen voor digitale geletterdheid zijn in 2025 opgeleverd door SLO aan het ministerie van OCW.
                         DGSkills dekt alle vier domeinen af: Digitale vaardigheden, Informatievaardigheden, Mediawijsheid en Computational Thinking.
                     </p>
@@ -207,7 +207,7 @@ export const TeacherDocumentsPanel: React.FC = () => {
                             const sloDoc = TEACHER_DOCUMENTS.find(d => d.category === 'slo');
                             if (sloDoc) setPreviewDoc(sloDoc);
                         }}
-                        className="mt-3 text-xs font-bold text-lab-coral hover:text-lab-coral flex items-center gap-1"
+                        className="mt-3 text-xs font-bold text-duck-error hover:text-duck-error flex items-center gap-1"
                     >
                         Bekijk het kerndoelendocument
                         <ChevronRight size={14} />

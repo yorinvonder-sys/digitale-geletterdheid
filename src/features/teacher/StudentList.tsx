@@ -100,31 +100,31 @@ export const StudentList: React.FC<StudentListProps> = ({
     const getLastActiveMs = (student: StudentData) => getTimestampMs(student.lastActive);
 
     return (
-        <div className="bg-white rounded-[2rem] shadow-sm border border-lab-line overflow-hidden">
+        <div className="bg-white rounded-[2rem] shadow-sm border border-duck-ink/15 overflow-hidden">
             {/* Search & Filter */}
             <div className="p-4 flex flex-col md:flex-row md:items-center justify-between gap-3">
                 <div className="relative flex-1 max-w-md">
-                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-lab-muted" size={16} />
+                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-duck-ink/60" size={16} />
                     <input
                         type="text"
                         placeholder="Zoek leerling..."
                         value={searchTerm}
                         onChange={(e) => onSearchChange(e.target.value)}
-                        className="w-full pl-9 pr-4 py-2 min-h-[44px] bg-lab-cream border-none rounded-xl outline-none focus:ring-2 focus:ring-lab-line transition-all text-sm font-medium"
+                        className="w-full pl-9 pr-4 py-2 min-h-[44px] bg-duck-bg border-none rounded-xl outline-none focus:ring-2 focus:ring-duck-ink/15 transition-all text-sm font-medium"
                     />
                 </div>
                 <div className="flex items-center gap-3">
                     {lastUpdated && (
-                        <div className="flex items-center gap-1.5 text-[10px] text-lab-muted font-medium">
-                            <Radio size={10} className="text-lab-muted animate-pulse" />
+                        <div className="flex items-center gap-1.5 text-[10px] text-duck-ink/60 font-medium">
+                            <Radio size={10} className="text-duck-ink/60 animate-pulse" />
                             <span>Live — {lastUpdated.toLocaleTimeString('nl-NL', { hour: '2-digit', minute: '2-digit', second: '2-digit' })}</span>
                         </div>
                     )}
-                    <Filter size={12} className="text-lab-muted" />
+                    <Filter size={12} className="text-duck-ink/60" />
                     <select
                         value={classFilter}
                         onChange={(e) => onClassFilterChange(e.target.value)}
-                        className="px-3 py-2 min-h-[44px] bg-white border border-lab-line rounded-xl text-xs font-bold text-lab-muted outline-none hover:bg-lab-cream"
+                        className="px-3 py-2 min-h-[44px] bg-white border border-duck-ink/15 rounded-xl text-xs font-bold text-duck-ink/60 outline-none hover:bg-duck-bg"
                     >
                         <option value="all">Alle Klassen</option>
                         {classGroups.map(g => (
@@ -139,7 +139,7 @@ export const StudentList: React.FC<StudentListProps> = ({
                 <table className="w-full">
                     <thead>
 
-                        <tr className="text-left text-[9px] font-black text-lab-muted uppercase tracking-widest border-b border-lab-line">
+                        <tr className="text-left text-[9px] font-black text-duck-ink/60 uppercase tracking-widest border-b border-duck-ink/15">
                             <th className="px-4 py-3">Leerling</th>
                             <th className="px-4 py-3">Status</th>
                             <th className="px-4 py-3">XP</th>
@@ -166,7 +166,7 @@ export const StudentList: React.FC<StudentListProps> = ({
                                     animate={{ opacity: 1 }}
                                     exit={{ opacity: 0 }}
                                 >
-                                    <td colSpan={6} className="px-4 py-8 text-center text-lab-muted">Geen leerlingen gevonden</td>
+                                    <td colSpan={6} className="px-4 py-8 text-center text-duck-ink/60">Geen leerlingen gevonden</td>
                                 </motion.tr>
                             ) : students.map((student) => (
                                 <motion.tr
@@ -175,7 +175,7 @@ export const StudentList: React.FC<StudentListProps> = ({
                                     animate={{ opacity: 1, y: 0 }}
                                     exit={{ opacity: 0, scale: 0.95 }}
                                     key={student.uid}
-                                    className="hover:bg-lab-cream/50 active:bg-lab-coral/50 transition-colors cursor-pointer select-none"
+                                    className="hover:bg-duck-bg/50 active:bg-duck-error/50 transition-colors cursor-pointer select-none"
                                     onClick={() => onSelectStudent(student)}
                                     role="button"
                                     tabIndex={0}
@@ -183,14 +183,14 @@ export const StudentList: React.FC<StudentListProps> = ({
                                 >
                                     <td className="px-4 py-3">
                                         <div className="flex items-center gap-2">
-                                            <div className="w-8 h-8 bg-lab-creamDeep rounded-lg flex items-center justify-center text-lab-muted">
+                                            <div className="w-8 h-8 bg-duck-bg rounded-lg flex items-center justify-center text-duck-ink/60">
                                                 <GraduationCap size={16} />
                                             </div>
                                             <div>
-                                                <div className="font-bold text-lab-ink text-sm">{student.displayName || 'Naamloos'}</div>
-                                                <div className="text-[10px] text-lab-muted">{student.identifier}</div>
+                                                <div className="font-bold text-duck-ink text-sm">{student.displayName || 'Naamloos'}</div>
+                                                <div className="text-[10px] text-duck-ink/60">{student.identifier}</div>
                                                 {getActiveMissionName(student) && (
-                                                    <div className="text-[9px] text-lab-muted font-medium flex items-center gap-1 mt-0.5">
+                                                    <div className="text-[9px] text-duck-ink/60 font-medium flex items-center gap-1 mt-0.5">
                                                         <BookOpen size={9} />
                                                         {getActiveMissionName(student)}
                                                     </div>
@@ -201,10 +201,10 @@ export const StudentList: React.FC<StudentListProps> = ({
                                     <td className="px-4 py-3">
                                         <div className="flex items-center gap-2">
                                             <div className={`inline-flex items-center gap-1 px-2 py-1 rounded-lg text-[10px] font-bold ${now - getLastActiveMs(student) < fiveMinutes
-                                                ? 'bg-lab-sage text-white'
-                                                : 'bg-lab-cream text-lab-muted'
+                                                ? 'bg-duck-ink text-white'
+                                                : 'bg-duck-bg text-duck-ink/60'
                                                 }`}>
-                                                <span className={`w-1.5 h-1.5 rounded-full ${now - getLastActiveMs(student) < fiveMinutes ? 'bg-lab-coral animate-pulse' : 'bg-lab-muted'}`}></span>
+                                                <span className={`w-1.5 h-1.5 rounded-full ${now - getLastActiveMs(student) < fiveMinutes ? 'bg-duck-error animate-pulse' : 'bg-duck-ink/60'}`}></span>
                                                 {now - getLastActiveMs(student) < fiveMinutes ? 'Online' : 'Offline'}
                                             </div>
                                             <button
@@ -212,7 +212,7 @@ export const StudentList: React.FC<StudentListProps> = ({
                                                     e.stopPropagation();
                                                     setNow(new Date().getTime());
                                                 }}
-                                                className="p-1 text-lab-muted hover:text-lab-sage hover:bg-lab-sage hover:text-white rounded-md transition-colors"
+                                                className="p-1 text-duck-ink/60 hover:text-duck-ink hover:bg-duck-ink hover:text-white rounded-md transition-colors"
                                                 title="Ververs status"
                                             >
                                                 <RotateCcw size={12} />
@@ -221,8 +221,8 @@ export const StudentList: React.FC<StudentListProps> = ({
                                     </td>
                                     <td className="px-4 py-3">
                                         <div className="flex items-center gap-1">
-                                            <span className="font-black text-lab-ink">{student.stats?.xp || 0}</span>
-                                            <span className="text-[9px] font-bold text-white bg-lab-coral px-1 py-0.5 rounded">L{student.stats?.level || 1}</span>
+                                            <span className="font-black text-duck-ink">{student.stats?.xp || 0}</span>
+                                            <span className="text-[9px] font-bold text-white bg-duck-error px-1 py-0.5 rounded">L{student.stats?.level || 1}</span>
                                         </div>
                                     </td>
                                     <td className="px-4 py-3 hidden sm:table-cell">
@@ -232,13 +232,13 @@ export const StudentList: React.FC<StudentListProps> = ({
                                             return (
                                                 <div className="flex items-center gap-2">
                                                     <div className="flex-1 max-w-[80px]">
-                                                        <div className="h-1.5 bg-lab-cream rounded-full overflow-hidden">
-                                                            <div className="h-full bg-lab-coral rounded-full transition-all" style={{ width: `${pct}%` }} />
+                                                        <div className="h-1.5 bg-duck-bg rounded-full overflow-hidden">
+                                                            <div className="h-full bg-duck-error rounded-full transition-all" style={{ width: `${pct}%` }} />
                                                         </div>
                                                     </div>
-                                                    <span className="text-[10px] font-bold text-lab-muted">{counts.completed}/{counts.total}</span>
+                                                    <span className="text-[10px] font-bold text-duck-ink/60">{counts.completed}/{counts.total}</span>
                                                     {counts.inProgress > 0 && (
-                                                        <span className="inline-flex items-center gap-0.5 text-[9px] font-bold text-lab-gold" title={`${counts.inProgress} missie(s) bezig`}>
+                                                        <span className="inline-flex items-center gap-0.5 text-[9px] font-bold text-duck-ink" title={`${counts.inProgress} missie(s) bezig`}>
                                                             <Clock size={9} />
                                                             {counts.inProgress}
                                                         </span>
@@ -255,7 +255,7 @@ export const StudentList: React.FC<StudentListProps> = ({
                                                     <div
                                                         key={m.id}
                                                         title={`${m.name}${status === 'in-progress' ? ' (bezig)' : status === 'completed' ? ' (klaar)' : ''}`}
-                                                        className={`w-5 h-5 rounded flex items-center justify-center text-[7px] font-black ${status === 'completed' ? 'bg-lab-sage text-white' : status === 'in-progress' ? 'bg-lab-gold text-lab-ink' : 'bg-lab-cream text-lab-muted'
+                                                        className={`w-5 h-5 rounded flex items-center justify-center text-[7px] font-black ${status === 'completed' ? 'bg-duck-ink text-white' : status === 'in-progress' ? 'bg-duck-acid text-duck-ink' : 'bg-duck-bg text-duck-ink/60'
                                                             }`}
                                                     >
                                                         {status === 'completed' ? '✓' : status === 'in-progress' ? '⏳' : m.short[0]}
@@ -271,7 +271,7 @@ export const StudentList: React.FC<StudentListProps> = ({
                                                 return badge ? <span key={b} title={badge.name}>{badge.emoji}</span> : null;
                                             })}
                                             {(student.stats?.badges?.length || 0) > 3 && (
-                                                <span className="text-[10px] text-lab-muted">+{(student.stats?.badges?.length || 0) - 3}</span>
+                                                <span className="text-[10px] text-duck-ink/60">+{(student.stats?.badges?.length || 0) - 3}</span>
                                             )}
                                         </div>
                                     </td>
@@ -279,16 +279,16 @@ export const StudentList: React.FC<StudentListProps> = ({
                                         <td className="px-4 py-3 hidden md:table-cell">
                                             {(() => {
                                                 const focusMissionId = classroomConfig.focusMissionId;
-                                                if (!focusMissionId) return <span className="text-lab-muted">-</span>;
+                                                if (!focusMissionId) return <span className="text-duck-ink/60">-</span>;
                                                 const isOnFocusMission = student.stats?.activeMission === focusMissionId;
                                                 const hasCompleted = (student.stats?.missionsCompleted || []).includes(focusMissionId);
                                                 if (hasCompleted) {
-                                                    return <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg text-[10px] font-bold bg-lab-sage text-white">Klaar</span>;
+                                                    return <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg text-[10px] font-bold bg-duck-ink text-white">Klaar</span>;
                                                 }
                                                 if (isOnFocusMission) {
-                                                    return <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg text-[10px] font-bold bg-lab-sage text-white"><Focus size={10} /> Actief</span>;
+                                                    return <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg text-[10px] font-bold bg-duck-ink text-white"><Focus size={10} /> Actief</span>;
                                                 }
-                                                return <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg text-[10px] font-bold bg-lab-coral text-white">Niet actief</span>;
+                                                return <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg text-[10px] font-bold bg-duck-error text-white">Niet actief</span>;
                                             })()}
                                         </td>
                                     )}
@@ -296,12 +296,12 @@ export const StudentList: React.FC<StudentListProps> = ({
                                         <div className="flex items-center justify-end gap-2">
                                             <button
                                                 onClick={(e) => handleResetPasswordClick(e, student)}
-                                                className="p-2 text-lab-muted hover:text-lab-coral hover:bg-lab-coral hover:text-white rounded-full transition-colors"
+                                                className="p-2 text-duck-ink/60 hover:text-duck-error hover:bg-duck-error hover:text-white rounded-full transition-colors"
                                                 title="Reset Wachtwoord"
                                             >
                                                 <KeyRound size={16} />
                                             </button>
-                                            <ChevronRight size={16} className="text-lab-muted" />
+                                            <ChevronRight size={16} className="text-duck-ink/60" />
                                         </div>
                                     </td>
                                 </motion.tr>

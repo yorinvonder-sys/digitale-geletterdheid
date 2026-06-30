@@ -129,7 +129,7 @@ export const FeedbackPanel: React.FC<FeedbackPanelProps> = ({ schoolId }) => {
     return (
         <div className="space-y-6">
             {/* Header */}
-            <div className="bg-gradient-to-br from-lab-coral via-lab-coral to-lab-coral rounded-[2rem] p-6 md:p-8 text-white shadow-xl">
+            <div className="bg-gradient-to-br from-duck-error via-duck-error to-duck-error rounded-[2rem] p-6 md:p-8 text-white shadow-xl">
                 <div className="flex items-center justify-between">
                     <div className="flex items-center gap-4">
                         <div className="w-16 h-16 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center">
@@ -164,15 +164,15 @@ export const FeedbackPanel: React.FC<FeedbackPanelProps> = ({ schoolId }) => {
             <div className="flex flex-wrap gap-4 items-center justify-between">
                 <div className="flex items-center gap-4">
                     {/* Class Filter */}
-                    <div className="flex items-center gap-2 bg-white rounded-xl border border-lab-line px-3 py-2 shadow-sm">
-                        <Filter size={16} className="text-lab-muted" />
+                    <div className="flex items-center gap-2 bg-white rounded-xl border border-duck-ink/15 px-3 py-2 shadow-sm">
+                        <Filter size={16} className="text-duck-ink/60" />
                         <select
                             value={classFilter}
                             onChange={(e) => {
                                 setClassFilter(e.target.value);
                                 setSelectedIds(new Set()); // Reset selection on filter change
                             }}
-                            className="bg-transparent border-none text-sm font-bold text-lab-muted focus:outline-none cursor-pointer"
+                            className="bg-transparent border-none text-sm font-bold text-duck-ink/60 focus:outline-none cursor-pointer"
                         >
                             <option value="all">Alle klassen ({feedback.length})</option>
                             {uniqueClasses.map(cls => (
@@ -187,9 +187,9 @@ export const FeedbackPanel: React.FC<FeedbackPanelProps> = ({ schoolId }) => {
                     {filteredFeedback.length > 0 && (
                         <button
                             onClick={toggleSelectAll}
-                            className="flex items-center gap-2 text-lab-muted text-sm font-bold hover:text-lab-muted transition-colors"
+                            className="flex items-center gap-2 text-duck-ink/60 text-sm font-bold hover:text-duck-ink/60 transition-colors"
                         >
-                            {selectedIds.size === filteredFeedback.length ? <CheckSquare size={18} className="text-lab-coral" /> : <Square size={18} />}
+                            {selectedIds.size === filteredFeedback.length ? <CheckSquare size={18} className="text-duck-error" /> : <Square size={18} />}
                             Selecteer alles
                         </button>
                     )}
@@ -201,7 +201,7 @@ export const FeedbackPanel: React.FC<FeedbackPanelProps> = ({ schoolId }) => {
                         <button
                             onClick={handleMassDelete}
                             disabled={massDeleting}
-                            className="flex items-center gap-2 px-4 py-2 bg-lab-coral text-white hover:bg-lab-coral hover:text-white rounded-xl font-bold text-sm transition-colors animate-in fade-in"
+                            className="flex items-center gap-2 px-4 py-2 bg-duck-error text-white hover:bg-duck-error hover:text-white rounded-xl font-bold text-sm transition-colors animate-in fade-in"
                         >
                             {massDeleting ? <Loader2 size={16} className="animate-spin" /> : <Trash2 size={16} />}
                             Verwijder ({selectedIds.size})
@@ -209,12 +209,12 @@ export const FeedbackPanel: React.FC<FeedbackPanelProps> = ({ schoolId }) => {
                     )}
 
                     {/* Feedback Count */}
-                    <div className="bg-white rounded-xl border border-lab-line px-4 py-2 shadow-sm">
+                    <div className="bg-white rounded-xl border border-duck-ink/15 px-4 py-2 shadow-sm">
                         <div className="flex items-center gap-2">
-                            <span className="text-sm font-bold text-lab-muted">
+                            <span className="text-sm font-bold text-duck-ink/60">
                                 {classFilter === 'all' ? 'Totaal' : classFilter}
                             </span>
-                            <span className="text-xl font-black text-lab-gold">{filteredFeedback.length}</span>
+                            <span className="text-xl font-black text-duck-ink">{filteredFeedback.length}</span>
                         </div>
                     </div>
                 </div>
@@ -223,40 +223,40 @@ export const FeedbackPanel: React.FC<FeedbackPanelProps> = ({ schoolId }) => {
             {/* Feedback List */}
             {loading ? (
                 <div className="flex items-center justify-center py-12">
-                    <Loader2 size={32} className="animate-spin text-lab-muted" />
+                    <Loader2 size={32} className="animate-spin text-duck-ink/60" />
                 </div>
             ) : filteredFeedback.length === 0 ? (
-                <div className="bg-white rounded-2xl border border-dashed border-lab-line p-12 text-center">
-                    <MessageSquare size={48} className="text-lab-muted mx-auto mb-4" />
-                    <p className="text-lab-muted font-bold">
+                <div className="bg-white rounded-2xl border border-dashed border-duck-ink/15 p-12 text-center">
+                    <MessageSquare size={48} className="text-duck-ink/60 mx-auto mb-4" />
+                    <p className="text-duck-ink/60 font-bold">
                         {classFilter === 'all' ? 'Nog geen feedback ontvangen' : `Geen feedback van ${classFilter}`}
                     </p>
-                    <p className="text-lab-muted text-sm mt-1">Leerlingen kunnen feedback geven via de knop in de header</p>
+                    <p className="text-duck-ink/60 text-sm mt-1">Leerlingen kunnen feedback geven via de knop in de header</p>
                 </div>
             ) : (
                 <div className="space-y-3">
                     {filteredFeedback.map((item) => (
                         <div
                             key={item.id}
-                            className={`bg-white rounded-2xl border p-5 shadow-sm hover:shadow-md transition-shadow relative ${selectedIds.has(item.id!) ? 'border-lab-coral ring-1 ring-lab-coral bg-lab-coral' : 'border-lab-line'}`}
+                            className={`bg-white rounded-2xl border p-5 shadow-sm hover:shadow-md transition-shadow relative ${selectedIds.has(item.id!) ? 'border-duck-error ring-1 ring-duck-error bg-duck-error' : 'border-duck-ink/15'}`}
                         >
                             <div className="flex items-start gap-4">
                                 <button
                                     onClick={() => item.id && toggleSelect(item.id)}
-                                    className="mt-1 text-lab-muted hover:text-lab-coral transition-colors shrink-0"
+                                    className="mt-1 text-duck-ink/60 hover:text-duck-error transition-colors shrink-0"
                                 >
-                                    {selectedIds.has(item.id!) ? <CheckSquare size={20} className="text-lab-coral" /> : <Square size={20} />}
+                                    {selectedIds.has(item.id!) ? <CheckSquare size={20} className="text-duck-error" /> : <Square size={20} />}
                                 </button>
 
                                 <div className="flex-1">
                                     <div className="flex items-center gap-3 mb-3">
-                                        <div className="w-10 h-10 bg-lab-gold rounded-xl flex items-center justify-center shrink-0">
-                                            <User size={18} className="text-lab-gold" />
+                                        <div className="w-10 h-10 bg-duck-acid rounded-xl flex items-center justify-center shrink-0">
+                                            <User size={18} className="text-duck-ink" />
                                         </div>
                                         <div>
-                                            <div className="font-bold text-lab-ink">{item.user_name}</div>
-                                            <div className="text-xs text-lab-muted flex items-center gap-2">
-                                                <span className="bg-lab-cream px-2 py-0.5 rounded-full">{item.user_class}</span>
+                                            <div className="font-bold text-duck-ink">{item.user_name}</div>
+                                            <div className="text-xs text-duck-ink/60 flex items-center gap-2">
+                                                <span className="bg-duck-bg px-2 py-0.5 rounded-full">{item.user_class}</span>
                                                 <span className="flex items-center gap-1">
                                                     <Clock size={10} />
                                                     {formatDate(item.created_at)}
@@ -264,7 +264,7 @@ export const FeedbackPanel: React.FC<FeedbackPanelProps> = ({ schoolId }) => {
                                             </div>
                                         </div>
                                     </div>
-                                    <p className="text-lab-muted text-sm leading-relaxed bg-lab-cream p-4 rounded-xl">
+                                    <p className="text-duck-ink/60 text-sm leading-relaxed bg-duck-bg p-4 rounded-xl">
                                         {item.message}
                                     </p>
                                 </div>
@@ -272,7 +272,7 @@ export const FeedbackPanel: React.FC<FeedbackPanelProps> = ({ schoolId }) => {
                                 <button
                                     onClick={() => item.id && handleDelete(item.id)}
                                     disabled={deleting === item.id}
-                                    className="p-2 text-lab-muted hover:text-lab-muted hover:bg-lab-coral hover:text-white rounded-lg transition-colors shrink-0"
+                                    className="p-2 text-duck-ink/60 hover:text-duck-ink/60 hover:bg-duck-error hover:text-white rounded-lg transition-colors shrink-0"
                                     title="Verwijderen"
                                 >
                                     {deleting === item.id ? (
