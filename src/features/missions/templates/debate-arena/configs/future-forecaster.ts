@@ -81,11 +81,6 @@ const config: DebateArenaConfig = {
             description: 'Leerlingen en ouders kiezen zelf welk model het beste bij hen past. De overheid bepaalt geen standaard.',
         },
     ],
-    argumentPrompts: [
-        'Ik vind dat...',
-        'Mijn onderbouwing is...',
-        'Dit is belangrijk voor de toekomst omdat...',
-    ],
     reflectionQuestions: [
         'Wat maakt onderwijs tot meer dan alleen informatieoverdracht?',
         'Is jouw visie op de toekomst veranderd door het standpunt van een andere betrokkene?',

@@ -85,11 +85,6 @@ const config: DebateArenaConfig = {
                 'Alleen wetten en regels kunnen grote techbedrijven dwingen verantwoord te ontwerpen. Vrijwilligheid werkt niet als er zoveel geld mee gemoeid is.',
         },
     ],
-    argumentPrompts: [
-        'Welk perspectief spreekt jou het meest aan, en waarom herken je je daarin?',
-        'Welk argument vind je het sterkst als je kijkt naar wat er in de praktijk werkt — thuis, op school, of in de wet?',
-        'Als je eerlijk bent over je eigen gedrag: welke aanpak zou voor jou persoonlijk het meeste verschil maken?',
-    ],
     reflectionQuestions: [
         'Wat vind jij het belangrijkste aan je online tijd — en helpt hoe je het nu gebruikt daarbij?',
         'Is je mening veranderd na het horen van alle perspectieven? Waarom wel of niet?',

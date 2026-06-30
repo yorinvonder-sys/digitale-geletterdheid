@@ -81,11 +81,6 @@ const config: DebateArenaConfig = {
             description: 'Per les of activiteit bepaalt de docent of de telefoon nuttig of storend is — geen universele regel, maar contextafhankelijk gebruik.',
         },
     ],
-    argumentPrompts: [
-        'Mijn beleidsadvies is...',
-        'De reden daarvoor is...',
-        'De groep die het meest profiteert van dit beleid is...',
-    ],
     reflectionQuestions: [
         'Welk stakeholder-perspectief had je het minst verwacht? Heeft dat je mening veranderd?',
         'Is er een oplossing die alle vier de standpunten gedeeltelijk tegemoetkomt?',
