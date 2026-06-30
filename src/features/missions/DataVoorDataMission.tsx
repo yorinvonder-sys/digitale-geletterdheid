@@ -2,8 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { ArrowLeft, Trophy, ChevronRight, ThumbsUp, ThumbsDown, Sparkles, Pause } from 'lucide-react';
 import { useMissionAutoSave } from '@/hooks/useMissionAutoSave';
 import { getMissionGoal } from '@/config/missionGoals';
-import { MissionGoalBanner } from './templates/shared/MissionGoalBanner';
-import { DuckMascot } from '@/components/brand/DuckMascot';
+import { IntroScreen } from '@/features/missions/templates/shared/IntroScreen';
 import {
     type DataVoorDataRoundStat,
     getDataVoorDataRoundStats,
@@ -187,38 +186,16 @@ export const DataVoorDataMission: React.FC<Props> = ({ onBack, onComplete }) => 
 
     if (phase === 'intro') {
         return (
-            <div className="min-h-screen bg-duck-bg text-duck-ink overflow-y-auto p-4 pb-safe">
-                {renderBackButton()}
-                <div className="max-w-lg mx-auto text-center space-y-6">
-                    <div className="w-20 h-20 bg-duck-acid/10 rounded-3xl flex items-center justify-center mx-auto border border-duck-acid/20"><DuckMascot className="w-12 h-12" mood="wave" /></div>
-                    <h1 className="text-3xl font-black" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>Data voor Data</h1>
-                    <p className="text-duck-ink/60 text-sm leading-relaxed max-w-sm mx-auto" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
-                        Hoeveel van je persoonlijke data zou jij inruilen voor gratis diensten? In deze veiling bepaal jij je prijs — maar elke <span className="text-duck-ink font-bold">deal heeft een keerzijde</span>.
-                    </p>
-                    <MissionGoalBanner goal={getMissionGoal('data-voor-data')!} compact />
-                    <div className="bg-white border border-duck-gray rounded-2xl p-4 max-w-sm mx-auto">
-                        <p className="text-xs text-duck-ink/60" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
-                            Je vergelijkt je keuzes met <span className="font-bold text-duck-ink">echte, anonieme leerlingantwoorden</span>.
-                            We tonen alleen percentages als er genoeg antwoorden zijn om iedereen anoniem te houden.
-                        </p>
-                    </div>
-                    <div className="bg-white border border-duck-gray rounded-2xl p-4 max-w-xs mx-auto">
-                        <div className="flex items-center justify-around">
-                            <div className="text-center">
-                                <ThumbsUp size={24} className="text-duck-ink mx-auto" />
-                                <p className="text-[10px] text-duck-ink/60 mt-1" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>DEAL!</p>
-                            </div>
-                            <div className="text-2xl text-duck-gray">of</div>
-                            <div className="text-center">
-                                <ThumbsDown size={24} className="text-duck-ink mx-auto" />
-                                <p className="text-[10px] text-duck-ink/60 mt-1" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>NO DEAL!</p>
-                            </div>
-                        </div>
-                    </div>
-                    <p className="text-duck-ink/60 text-xs" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>5 rondes - vergelijk je keuzes met anonieme leerlingdata</p>
-                    <button onClick={() => setPhase('auction')} className="px-8 py-4 bg-duck-acid hover:bg-duck-acid text-duck-ink rounded-full font-black text-lg transition-all duration-300 active:scale-95 shadow-xl shadow-duck-acid/30 focus-visible:ring-2 focus-visible:ring-duck-acid">Start de veiling →</button>
-                </div>
-            </div>
+            <IntroScreen
+                missionId="data-voor-data"
+                emoji="💰"
+                title="Data voor Data"
+                description="Hoeveel van je persoonlijke data zou jij inruilen voor gratis diensten? In deze veiling bepaal jij je prijs — maar elke deal heeft een keerzijde."
+                goal={getMissionGoal('data-voor-data')!}
+                features={["5 rondes data-veilingen", "DEAL of NO DEAL kiezen", "Vergelijken met anonieme leerlingantwoorden"]}
+                tone="default"
+                onStart={() => setPhase('auction')}
+            />
         );
     }
 

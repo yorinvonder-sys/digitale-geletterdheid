@@ -8,12 +8,12 @@
  */
 
 import React, { useState } from 'react';
-import { ArrowLeft, Trophy, ChevronRight, Check, X, Eye, Brain, Shield, Sparkles, ThumbsUp, ThumbsDown, HelpCircle, Zap, Camera, FileText, MessageSquare, MessageCircle, Lightbulb } from 'lucide-react';
+import { ArrowLeft, Trophy, ChevronRight, Check, X, Brain, Sparkles, ThumbsUp, ThumbsDown, HelpCircle, Zap, Camera, FileText, MessageSquare, MessageCircle, Lightbulb } from 'lucide-react';
 import { UserStats, VsoProfile } from '@/types';
 import { useMissionAutoSave } from '@/hooks/useMissionAutoSave';
 import { StudentAIChat } from '@/features/ai-chat/StudentAIChat';
-import { MissionGoalBanner } from './templates/shared/MissionGoalBanner';
 import type { MissionGoal } from './templates/shared/types';
+import { IntroScreen } from '@/features/missions/templates/shared/IntroScreen';
 
 interface DeepfakeDetectorState {
     currentLevel: 'beginner' | 'gevorderd' | 'expert';
@@ -334,54 +334,16 @@ export const DeepfakeDetectorMission: React.FC<Props> = ({ onBack, onComplete, v
     // Intro screen
     if (showIntro) {
         return (
-            <div className="min-h-screen bg-duck-bg flex flex-col overflow-y-auto p-4" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
-                <div className="m-auto max-w-lg w-full text-center space-y-3 sm:space-y-4">
-                    <div className="relative inline-block">
-                        <div className="absolute inset-0 bg-duck-acid/20 blur-3xl rounded-full animate-pulse" />
-                        <div className="relative bg-gradient-to-br from-duck-acid to-duck-acid w-16 h-16 rounded-3xl flex items-center justify-center shadow-2xl sm:w-20 sm:h-20">
-                            <Eye size={36} className="text-white" />
-                        </div>
-                    </div>
-
-                    <div className="space-y-3 sm:space-y-4">
-                        <h1 className="text-2xl font-black text-duck-ink sm:text-3xl" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>Deepfake Detector</h1>
-                        <p className="text-duck-ink/60 text-sm sm:text-base">
-                            Kun jij AI-gegenereerde content herkennen (= iets dat niet door een mens maar door een computerprogramma is gemaakt)? Leer de tekenen te spotten die verraden of iets echt of AI is!
-                        </p>
-                    </div>
-
-                    <MissionGoalBanner goal={MISSION_GOAL} />
-
-                    <div className="grid grid-cols-3 gap-2 text-center sm:gap-4">
-                        <div className="bg-white rounded-xl p-2.5 border border-duck-gray sm:p-3">
-                            <Camera className="w-6 h-6 text-duck-ink mx-auto mb-1.5 sm:w-7 sm:h-7" />
-                            <p className="text-duck-ink font-bold text-xs sm:text-sm">AI Afbeeldingen</p>
-                        </div>
-                        <div className="bg-white rounded-xl p-2.5 border border-duck-gray sm:p-3">
-                            <FileText className="w-6 h-6 text-duck-ink mx-auto mb-1.5 sm:w-7 sm:h-7" />
-                            <p className="text-duck-ink font-bold text-xs sm:text-sm">AI Teksten</p>
-                        </div>
-                        <div className="bg-white rounded-xl p-2.5 border border-duck-gray sm:p-3">
-                            <Shield className="w-6 h-6 text-duck-ink mx-auto mb-1.5 sm:w-7 sm:h-7" />
-                            <p className="text-duck-ink font-bold text-xs sm:text-sm">Nepnieuws</p>
-                        </div>
-                    </div>
-
-                    <div className="bg-duck-acid/10 rounded-xl p-3 border border-duck-acid/20">
-                        <p className="text-duck-ink/60 text-sm">
-                            <strong className="text-duck-ink">Let op:</strong> In deze missie beschrijven we afbeeldingen met tekst
-                            in plaats van echte foto's te tonen. Dit helpt je te focussen op de details!
-                        </p>
-                    </div>
-
-                    <button
-                        onClick={() => setState(prev => ({ ...prev, showIntro: false }))}
-                        className="w-full py-3 bg-duck-acid hover:bg-duck-acid text-duck-ink rounded-full font-black uppercase tracking-wide shadow-lg shadow-duck-acid/25 transition-all duration-300 focus-visible:ring-2 focus-visible:ring-duck-acid"
-                    >
-                        Start Detectie
-                    </button>
-                </div>
-            </div>
+            <IntroScreen
+                missionId="deepfake-detector"
+                emoji=""
+                title="Deepfake Detector"
+                description="Kun jij AI-gegenereerde content herkennen (= iets dat niet door een mens maar door een computerprogramma is gemaakt)? Leer de tekenen te spotten die verraden of iets echt of AI is!"
+                goal={MISSION_GOAL}
+                features={["AI Afbeeldingen", "AI Teksten", "Nepnieuws"]}
+                tone="default"
+                onStart={() => setState(prev => ({ ...prev, showIntro: false }))}
+            />
         );
     }
 

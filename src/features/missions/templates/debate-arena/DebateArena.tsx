@@ -169,6 +169,7 @@ const DebateArenaInner: React.FC<DebateArenaProps> = ({ config, onBack, onComple
     if (state.phase === 'intro') {
         return (
             <IntroScreen
+                missionId={config.missionId}
                 emoji={config.introEmoji}
                 title={config.introTitle}
                 description={config.introDescription}

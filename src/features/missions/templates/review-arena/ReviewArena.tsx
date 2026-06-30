@@ -219,6 +219,7 @@ const ReviewArenaWithConfig: React.FC<ReviewArenaProps> = ({
         const features = config.introFeatures ?? config.rounds.map((r) => `${ROUND_ICONS[r.type]} ${r.title}`);
         return (
             <IntroScreen
+                missionId={config.missionId}
                 emoji={config.introEmoji}
                 title={config.introTitle}
                 description={config.introDescription}

@@ -2,8 +2,7 @@ import React, { useState, useMemo } from 'react';
 import { ArrowLeft, Trophy, ChevronRight, Search, ListOrdered, Mail, PiggyBank, Check, X, RotateCcw, Sparkles, Shield, AlertTriangle, Clock } from 'lucide-react';
 import { useMissionAutoSave } from '@/hooks/useMissionAutoSave';
 import { getMissionGoal } from '@/config/missionGoals';
-import { MissionGoalBanner } from './templates/shared/MissionGoalBanner';
-import { DuckMascot } from '@/components/brand/DuckMascot';
+import { IntroScreen } from '@/features/missions/templates/shared/IntroScreen';
 
 interface Props {
     onBack: () => void;
@@ -684,46 +683,17 @@ export const DatalekkenRampenplanMission: React.FC<Props> = ({ onBack, onComplet
     // === INTRO ===
     if (phase === 'intro') {
         return (
-            <div className="min-h-screen bg-duck-bg text-duck-ink overflow-y-auto p-4 pb-safe">
-                <button onClick={onBack} className="flex items-center gap-2 text-duck-ink/60 hover:text-duck-ink transition-all duration-300 mb-6">
-                    <ArrowLeft size={18} />
-                    <span className="text-sm font-bold" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>Terug</span>
-                </button>
-                <div className="max-w-lg mx-auto text-center space-y-6">
-                    <div className="w-20 h-20 bg-duck-acid/10 rounded-3xl flex items-center justify-center mx-auto border border-duck-acid/20">
-                        <DuckMascot className="w-12 h-12" mood="wave" />
-                    </div>
-                    <h1 className="text-3xl font-black" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>
-                        Datalekken Rampenplan
-                    </h1>
-                    <p className="text-duck-ink/60 text-sm leading-relaxed max-w-sm mx-auto" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
-                        <span className="text-duck-ink font-bold">BREAKING:</span> De school is gehackt! 800 leerlinggegevens liggen op straat.
-                        Analyseer bewijs, stel prioriteiten, schrijf de crisiscommunicatie en verdeel het beveiligingsbudget.
-                    </p>
-                    <MissionGoalBanner goal={getMissionGoal('datalekken-rampenplan')!} compact />
-                    <div className="grid grid-cols-2 gap-3 max-w-xs mx-auto">
-                        {[
-                            { icon: <Search size={16} />, label: 'Bewijs analyseren' },
-                            { icon: <ListOrdered size={16} />, label: 'Prioriteiten stellen' },
-                            { icon: <Mail size={16} />, label: 'Brief schrijven' },
-                            { icon: <PiggyBank size={16} />, label: 'Budget verdelen' },
-                        ].map((item, i) => (
-                            <div key={i} className="bg-white border border-duck-gray rounded-2xl p-3 flex items-center gap-2">
-                                <div className="text-duck-ink">{item.icon}</div>
-                                <span className="text-xs font-bold text-duck-ink/60" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
-                                    {item.label}
-                                </span>
-                            </div>
-                        ))}
-                    </div>
-                    <button
-                        onClick={() => setPhase('evidence')}
-                        className="px-8 py-4 bg-duck-acid hover:bg-duck-acid text-duck-ink rounded-full font-black text-lg transition-all duration-300 active:scale-95 shadow-xl shadow-duck-acid/30 focus-visible:ring-2 focus-visible:ring-duck-acid"
-                    >
-                        Start de crisis →
-                    </button>
-                </div>
-            </div>
+            <IntroScreen
+                missionId="datalekken-rampenplan"
+                emoji="🚨"
+                title="Datalekken Rampenplan"
+                description="BREAKING: De school is gehackt! 800 leerlinggegevens liggen op straat. Analyseer bewijs, stel prioriteiten, schrijf de crisiscommunicatie en verdeel het beveiligingsbudget."
+                goal={getMissionGoal('datalekken-rampenplan')!}
+                features={["Bewijs analyseren", "Prioriteiten stellen", "Brief schrijven", "Budget verdelen"]}
+                tone="crisis"
+                eyebrow="Crisis"
+                onStart={() => setPhase('evidence')}
+            />
         );
     }
 

@@ -203,6 +203,7 @@ const ScenarioEngineInner: React.FC<{
     if (state.phase === 'intro') {
         return (
             <IntroScreen
+                missionId={config.missionId}
                 emoji={config.introEmoji}
                 title={config.introTitle}
                 description={config.introDescription}
