@@ -7,6 +7,7 @@ import MissionWelcomeCard from '@/features/missions/shared/MissionWelcomeCard';
 import { MissionBriefing } from '@/features/missions/shared/MissionBriefing';
 import { AgentRole, UserStats, AiLabProps } from '@/types';
 import { ROLES } from '@/config/agents';
+import { getXPReward } from '@/config/xp';
 import { useAgentLogic } from '@/hooks/useAgentLogic';
 import { Loader2, ChevronRight, Trophy, ArrowLeft, Target, Lightbulb, Sparkles, RotateCcw, Send, AlertCircle, Gamepad2, Download, CheckCircle2, PenTool, Palette, BrainCircuit } from 'lucide-react';
 import { WebPreviewModal } from '@/features/ai-lab/WebPreviewModal';
@@ -95,15 +96,6 @@ const ConfettiExplosion = () => {
       `}</style>
     </div>
   );
-};
-
-const getXPReward = (difficulty: string): number => {
-  switch (difficulty) {
-    case 'Easy': return 50;
-    case 'Medium': return 100;
-    case 'Hard': return 150;
-    default: return 75;
-  }
 };
 
 export const AiLab: React.FC<AiLabProps> = ({ user, onExit, saveProgress, initialRole, libraryData, vsoProfile, devPreviewMode = false }) => {

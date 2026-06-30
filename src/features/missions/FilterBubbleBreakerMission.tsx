@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { ArrowLeft, Trophy, ChevronRight, Check, X, Brain, Sparkles, ArrowLeftRight, Search } from 'lucide-react';
+import { ArrowLeft, Trophy, ChevronRight, Check, X, Brain, Sparkles, Search } from 'lucide-react';
 import { useMissionAutoSave } from '@/hooks/useMissionAutoSave';
 import { getMissionGoal } from '@/config/missionGoals';
-import { MissionGoalBanner } from './templates/shared/MissionGoalBanner';
+import { IntroScreen } from '@/features/missions/templates/shared/IntroScreen';
 
 interface Props {
     onBack: () => void;
@@ -116,31 +116,16 @@ export const FilterBubbleBreakerMission: React.FC<Props> = ({ onBack, onComplete
 
     if (phase === 'intro') {
         return (
-            <div className="min-h-screen bg-duck-bg text-duck-ink overflow-y-auto p-4 pb-safe">
-                <button onClick={onBack} className="flex items-center gap-2 text-duck-ink/60 hover:text-duck-ink transition-all duration-300 mb-6"><ArrowLeft size={18} /> <span className="text-sm font-bold" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>Terug</span></button>
-                <div className="max-w-lg mx-auto text-center space-y-6">
-                    <div className="w-20 h-20 bg-duck-ink/10 rounded-3xl flex items-center justify-center mx-auto border border-duck-ink/20 animate-bounce"><span className="text-4xl">🫧</span></div>
-                    <h1 className="text-3xl font-black" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>Filter Bubble Breaker</h1>
-                    <p className="text-duck-ink/60 text-sm leading-relaxed max-w-sm mx-auto" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>Twee mensen openen dezelfde app — maar zien <span className="text-duck-ink font-bold">totaal andere content</span>. Hoe kan dat?</p>
-                    <MissionGoalBanner goal={getMissionGoal('filter-bubble-breaker')!} compact />
-                    <div className="flex gap-4 justify-center">
-                        <div className="bg-duck-ink/10 border border-duck-ink/20 rounded-2xl p-4 text-center w-36">
-                            <span className="text-2xl">{PROFILE_A.emoji}</span>
-                            <p className="text-sm font-black mt-1" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>{PROFILE_A.name}</p>
-                            <p className="text-[10px] text-duck-ink">{PROFILE_A.age} jaar, {PROFILE_A.country}</p>
-                            <div className="flex flex-wrap gap-1 justify-center mt-2">{PROFILE_A.interests.map(i => <span key={i} className="text-[8px] bg-duck-ink/15 text-duck-ink px-1.5 py-0.5 rounded-full border border-duck-ink/20">{i}</span>)}</div>
-                        </div>
-                        <div className="flex items-center"><ArrowLeftRight size={24} className="text-duck-gray" /></div>
-                        <div className="bg-duck-ink/10 border border-duck-ink/20 rounded-2xl p-4 text-center w-36">
-                            <span className="text-2xl">{PROFILE_B.emoji}</span>
-                            <p className="text-sm font-black mt-1" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>{PROFILE_B.name}</p>
-                            <p className="text-[10px] text-duck-ink">{PROFILE_B.age} jaar, {PROFILE_B.country}</p>
-                            <div className="flex flex-wrap gap-1 justify-center mt-2">{PROFILE_B.interests.map(i => <span key={i} className="text-[8px] bg-duck-ink/15 text-duck-ink px-1.5 py-0.5 rounded-full border border-duck-ink/20">{i}</span>)}</div>
-                        </div>
-                    </div>
-                    <button onClick={() => setPhase('compare')} className="px-8 py-4 bg-duck-acid hover:bg-duck-acid text-duck-ink rounded-full font-black text-lg transition-all duration-300 active:scale-95 shadow-xl shadow-duck-acid/30 focus-visible:ring-2 focus-visible:ring-duck-acid">Bekijk hun feeds →</button>
-                </div>
-            </div>
+            <IntroScreen
+                missionId="filter-bubble-breaker"
+                emoji="🫧"
+                title="Filter Bubble Breaker"
+                description="Twee mensen openen dezelfde app — maar zien totaal andere content. Hoe kan dat?"
+                goal={getMissionGoal('filter-bubble-breaker')!}
+                features={["Daan (14 jaar, NL): Sport, Gaming, Sneakers", "Priya (35 jaar, India): Nieuws, Koken, Technologie"]}
+                tone="default"
+                onStart={() => setPhase('compare')}
+            />
         );
     }
 

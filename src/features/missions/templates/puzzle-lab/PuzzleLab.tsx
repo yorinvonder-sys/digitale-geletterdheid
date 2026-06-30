@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { ArrowLeft, Terminal, Eye, EyeOff, ChevronRight } from 'lucide-react';
+import { ArrowLeft, Eye, EyeOff } from 'lucide-react';
 import { useMissionAutoSave } from '@/hooks/useMissionAutoSave';
 import { CompletionScreen } from '../shared/CompletionScreen';
-import { MissionGoalBanner } from '../shared/MissionGoalBanner';
+import { IntroScreen } from '../shared/IntroScreen';
 import { getMissionGoal } from '@/config/missionGoals';
 import type { TemplateMissionProps } from '../shared/types';
 import { PUZZLE_LAB_CONFIGS } from './puzzleLabRegistry';
@@ -241,75 +241,17 @@ export const PuzzleLab: React.FC<TemplateMissionProps> = ({
     // === INTRO ===
     if (state.phase === 'intro') {
         return (
-            <div className="min-h-screen bg-duck-ink flex items-center justify-center p-4 pb-24 sm:pb-4">
-                <div className="w-full max-w-md">
-                    {/* Terminal header bar */}
-                    <div className="bg-duck-ink rounded-t-2xl border border-duck-gray/30 px-4 py-2.5 flex items-center gap-2">
-                        <div className="w-3 h-3 rounded-full bg-duck-error/70" />
-                        <div className="w-3 h-3 rounded-full bg-duck-error/70" />
-                        <div className="w-3 h-3 rounded-full bg-duck-error/70" />
-                        <span className="ml-2 font-mono text-xs text-duck-gray">
-                            puzzle-lab — {config.missionId}
-                        </span>
-                    </div>
-
-                    <div className="bg-duck-ink rounded-b-2xl border border-t-0 border-duck-gray/30 p-6">
-                        {/* Boot sequence */}
-                        <div className="font-mono text-xs text-duck-gray/60 mb-5 space-y-0.5">
-                            <div>$ initializing puzzle-lab v2.4...</div>
-                            <div>$ loading mission: {config.missionId}</div>
-                            <div>$ {config.puzzles.length} puzzles queued</div>
-                            <div className="text-duck-ink">$ ready.</div>
-                        </div>
-
-                        <div className="text-4xl mb-3 text-center">{config.introEmoji}</div>
-                        <h1
-                            className="text-xl font-black text-white mb-3 text-center"
-                            style={{ fontFamily: "'Newsreader', Georgia, serif" }}
-                        >
-                            {config.introTitle}
-                        </h1>
-                        <p className="font-mono text-xs text-duck-gray leading-relaxed mb-5 text-center">
-                            {config.introDescription}
-                        </p>
-
-                        {missionGoal && (
-                            <MissionGoalBanner goal={missionGoal} className="mb-5" />
-                        )}
-
-                        {config.introFeatures && config.introFeatures.length > 0 && (
-                            <div className="bg-duck-ink rounded-xl border border-duck-gray/30 p-4 mb-5 space-y-2">
-                                {config.introFeatures.map((f, i) => (
-                                    <div key={i} className="flex items-start gap-2 font-mono text-xs text-duck-gray">
-                                        <span className="text-duck-gray shrink-0">&gt;</span>
-                                        <span>{f}</span>
-                                    </div>
-                                ))}
-                            </div>
-                        )}
-
-                        <div className="flex items-center gap-3 mb-5 font-mono text-xs text-duck-gray">
-                            <Terminal size={12} className="text-duck-gray shrink-0" />
-                            <span>{config.puzzles.length} puzzels — max {config.maxScore} punten</span>
-                        </div>
-
-                        <button
-                            onClick={() => setState(prev => ({ ...prev, phase: 'puzzle' }))}
-                            className="fixed inset-x-4 bottom-4 z-30 py-3 bg-duck-acid hover:bg-duck-acid hover:brightness-95 hover:text-duck-ink text-duck-ink font-mono font-bold text-sm rounded-xl shadow-2xl transition-all duration-200 active:scale-[0.98] flex items-center justify-center gap-2 sm:static sm:w-full sm:shadow-none"
-                        >
-                            $ START_MISSION
-                            <ChevronRight size={15} />
-                        </button>
-
-                        <button
-                            onClick={onBack}
-                            className="w-full mt-3 py-2 font-mono text-xs text-duck-gray hover:text-duck-bg transition-colors flex items-center justify-center gap-1"
-                        >
-                            <ArrowLeft size={12} /> back
-                        </button>
-                    </div>
-                </div>
-            </div>
+            <IntroScreen
+                missionId={config.missionId}
+                emoji={config.introEmoji}
+                title={config.introTitle}
+                description={config.introDescription}
+                goal={missionGoal}
+                features={config.introFeatures}
+                tone="terminal"
+                eyebrow={`> ${config.missionId}`}
+                onStart={() => setState(prev => ({ ...prev, phase: 'puzzle' }))}
+            />
         );
     }
 

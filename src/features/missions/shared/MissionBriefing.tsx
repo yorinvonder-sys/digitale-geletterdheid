@@ -4,6 +4,10 @@ import { AgentRole } from '@/types';
 import { ChevronRight, ChevronLeft, Target, Play } from 'lucide-react';
 import { getMissionGoal } from '@/config/missionGoals';
 import { MissionGoalBanner } from '@/features/missions/templates/shared/MissionGoalBanner';
+import { MissionMetaChips } from '@/features/missions/templates/shared/MissionMetaChips';
+import { KeesMessage } from '@/components/brand/KeesMessage';
+import { getMissionMeta } from '@/config/missionMeta';
+import { getKeesMissionIntro } from '@/config/keesVoice';
 
 interface MissionBriefingProps {
     role: AgentRole;
@@ -20,6 +24,10 @@ export const MissionBriefing: React.FC<MissionBriefingProps> = ({ role, onStart,
     const isLastStep = steps.length === 0 || currentStepIndex === steps.length - 1;
     const currentStep = steps[currentStepIndex];
     const missionGoal = getMissionGoal(role.id);
+    const meta = getMissionMeta(role.id);
+    const heroLabel = [meta.topicLabel, meta.leerjaar != null ? `Leerjaar ${meta.leerjaar}` : null]
+        .filter(Boolean)
+        .join(' · ');
 
     // Reset and start countdown when reaching the last step
     useEffect(() => {
@@ -69,14 +77,15 @@ export const MissionBriefing: React.FC<MissionBriefingProps> = ({ role, onStart,
 
                     {/* Header */}
                     <div className="flex items-center gap-4 mb-6 border-b border-duck-ink/15 pb-6 shrink-0">
-                        <div className="p-3 bg-duck-bg rounded-2xl text-duck-ink shadow-sm">
+                        <div className="flex size-14 shrink-0 items-center justify-center rounded-[1.1rem] bg-duck-acid text-duck-ink shadow-duck-soft">
                             {role.icon}
                         </div>
-                        <div>
-                            <h2 className="max-w-full whitespace-normal break-words [overflow-wrap:anywhere] text-2xl font-black leading-tight text-duck-ink" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>{role.title}</h2>
-                            <div className="flex items-center gap-2 mt-1">
-                                <span className="text-xs font-bold bg-duck-bg text-duck-ink/60 px-2 py-0.5 rounded-full uppercase tracking-wider border border-duck-ink/15 inline-flex">{role.difficulty} Level</span>
-                            </div>
+                        <div className="min-w-0">
+                            {heroLabel && (
+                                <p className="mb-0.5 text-[10px] font-black uppercase tracking-[0.14em] text-duck-ink/55">{heroLabel}</p>
+                            )}
+                            <h2 className="max-w-full whitespace-normal break-words [overflow-wrap:anywhere] text-2xl font-black leading-tight text-duck-ink" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>{role.title}</h2>
+                            <MissionMetaChips meta={meta} className="mt-2" />
                         </div>
                     </div>
 
@@ -124,6 +133,13 @@ export const MissionBriefing: React.FC<MissionBriefingProps> = ({ role, onStart,
                             {missionGoal && (
                                 <MissionGoalBanner goal={missionGoal} compact />
                             )}
+
+                            <KeesMessage
+                                message={getKeesMissionIntro(role.title)}
+                                mood="wave"
+                                layout="row"
+                                duckClassName="h-9 w-9"
+                            />
                         </div>
                     )}
 
@@ -136,7 +152,7 @@ export const MissionBriefing: React.FC<MissionBriefingProps> = ({ role, onStart,
                                         <span className="bg-duck-ink text-white text-xs font-bold px-2.5 py-1 rounded-lg">
                                             STAP {currentStepIndex + 1} VAN {steps.length}
                                         </span>
-                                        <h3 className="text-xl font-extrabold text-duck-ink" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>{currentStep.title}</h3>
+                                        <h3 className="text-xl font-extrabold text-duck-ink" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>{currentStep.title}</h3>
                                     </div>
 
                                     <p className="text-duck-ink text-lg leading-relaxed mb-6 font-medium" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
