@@ -6,6 +6,7 @@ import { MissionGoalBanner } from '../shared/MissionGoalBanner';
 import { getMissionGoal } from '@/config/missionGoals';
 import type { TemplateMissionProps } from '../shared/types';
 import { PUZZLE_LAB_CONFIGS } from './puzzleLabRegistry';
+import { DuckMascot } from '@/components/brand/DuckMascot';
 export type { Puzzle, PuzzleLabConfig } from './puzzleLabTypes';
 
 // === State ===
@@ -262,7 +263,7 @@ export const PuzzleLab: React.FC<TemplateMissionProps> = ({
                             <div className="text-duck-ink">$ ready.</div>
                         </div>
 
-                        <div className="text-4xl mb-3 text-center">{config.introEmoji}</div>
+                        <div className="mb-3 flex justify-center"><DuckMascot className="w-14 h-14" /></div>
                         <h1
                             className="text-xl font-black text-white mb-3 text-center"
                             style={{ fontFamily: "'Newsreader', Georgia, serif" }}
