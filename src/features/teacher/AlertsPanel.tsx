@@ -46,14 +46,14 @@ export const AlertsPanel: React.FC<AlertsPanelProps> = ({ students, onSelectStud
                                     : signal.targetClasses[0];
                             const toneClasses = signal.tone === 'attention'
                                 ? {
-                                    panel: 'bg-duck-acid hover:bg-duck-acid hover:text-duck-ink border-duck-acid',
-                                    text: 'text-duck-acid',
-                                    chip: 'bg-white text-duck-acid border-duck-acid',
+                                    panel: 'bg-duck-acid border-duck-ink/15',
+                                    text: 'text-duck-ink/70',
+                                    chip: 'bg-duck-ink text-white border-duck-ink',
                                 }
                                 : {
-                                    panel: 'bg-duck-acid hover:bg-duck-acid hover:text-duck-ink border-duck-acid',
-                                    text: 'text-duck-acid',
-                                    chip: 'bg-white text-duck-acid border-duck-acid',
+                                    panel: 'bg-duck-acid border-duck-ink/15',
+                                    text: 'text-duck-ink/70',
+                                    chip: 'bg-duck-ink text-white border-duck-ink',
                                 };
 
                             return (
