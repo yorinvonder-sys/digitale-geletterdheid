@@ -142,23 +142,23 @@ export const StudentSloReport: React.FC<StudentSloReportProps> = ({ student, yea
 
     return createPortal(
         <div
-            className="print-section fixed inset-0 z-[90] bg-lab-ink/60 backdrop-blur-sm flex items-start justify-center p-0 md:p-6 overflow-y-auto print:static print:inset-auto print:bg-white print:backdrop-blur-none print:p-0 print:overflow-visible"
+            className="print-section fixed inset-0 z-[90] bg-duck-ink/60 backdrop-blur-sm flex items-start justify-center p-0 md:p-6 overflow-y-auto print:static print:inset-auto print:bg-white print:backdrop-blur-none print:p-0 print:overflow-visible"
             role="dialog"
             aria-modal="true"
             aria-labelledby="student-slo-report-title"
         >
             <div className="relative bg-white w-full max-w-4xl rounded-none md:rounded-2xl shadow-2xl my-0 md:my-4 print:shadow-none print:max-w-none print:rounded-none print:my-0">
                 {/* Toolbar — hidden in print */}
-                <div className="sticky top-0 z-10 flex items-center justify-between gap-3 p-4 md:p-5 bg-white border-b border-lab-line rounded-t-2xl print:hidden">
+                <div className="sticky top-0 z-10 flex items-center justify-between gap-3 p-4 md:p-5 bg-white border-b border-duck-ink/15 rounded-t-2xl print:hidden">
                     <div className="flex items-center gap-3 min-w-0">
-                        <div className="w-10 h-10 rounded-xl bg-lab-coral text-white flex items-center justify-center flex-shrink-0">
+                        <div className="w-10 h-10 rounded-xl bg-duck-ink text-white flex items-center justify-center flex-shrink-0">
                             <GraduationCap size={20} />
                         </div>
                         <div className="min-w-0">
-                            <h2 id="student-slo-report-title" className="text-sm md:text-base font-bold text-lab-ink truncate">
+                            <h2 id="student-slo-report-title" className="text-sm md:text-base font-bold text-duck-ink truncate">
                                 SLO-leerlingrapport — {displayName}
                             </h2>
-                            <p className="text-xs text-lab-muted truncate">
+                            <p className="text-xs text-duck-ink/60 truncate">
                                 Klas {studentClass}
                                 {yearGroup != null && ` · Leerjaar ${yearGroup}`}
                                 {vsoProfile && ` · VSO (${vsoProfile})`}
@@ -169,7 +169,7 @@ export const StudentSloReport: React.FC<StudentSloReportProps> = ({ student, yea
                         <button
                             type="button"
                             onClick={handleExportCsv}
-                            className="inline-flex items-center gap-1.5 px-3 py-2 bg-white border border-lab-line text-lab-muted hover:border-lab-coral hover:text-lab-coral rounded-lg text-xs font-semibold transition-colors"
+                            className="inline-flex items-center gap-1.5 px-3 py-2 bg-white border border-duck-ink/15 text-duck-ink/60 hover:border-duck-ink hover:text-duck-ink rounded-lg text-xs font-semibold transition-colors"
                             aria-label="Exporteer als CSV"
                         >
                             <FileDown size={14} />
@@ -178,7 +178,7 @@ export const StudentSloReport: React.FC<StudentSloReportProps> = ({ student, yea
                         <button
                             type="button"
                             onClick={handlePrint}
-                            className="inline-flex items-center gap-1.5 px-3 py-2 bg-lab-coral text-white hover:bg-lab-coral hover:text-white rounded-lg text-xs font-semibold transition-colors"
+                            className="inline-flex items-center gap-1.5 px-3 py-2 bg-duck-ink text-white hover:bg-duck-ink hover:text-white rounded-lg text-xs font-semibold transition-colors"
                             aria-label="Print of opslaan als PDF"
                         >
                             <Printer size={14} />
@@ -187,7 +187,7 @@ export const StudentSloReport: React.FC<StudentSloReportProps> = ({ student, yea
                         <button
                             type="button"
                             onClick={onClose}
-                            className="p-2 text-lab-muted hover:text-lab-muted transition-colors rounded-lg hover:bg-lab-cream"
+                            className="p-2 text-duck-ink/60 hover:text-duck-ink/60 transition-colors rounded-lg hover:bg-duck-bgLight"
                             aria-label="Sluit rapport"
                         >
                             <X size={18} />
@@ -196,16 +196,16 @@ export const StudentSloReport: React.FC<StudentSloReportProps> = ({ student, yea
                 </div>
 
                 {/* Printbaar rapport */}
-                <article className="p-6 md:p-10 print:p-8 text-lab-ink">
+                <article className="p-6 md:p-10 print:p-8 text-duck-ink">
                     {/* School-achtige briefkop */}
-                    <header className="border-b-2 border-lab-line pb-4 mb-8 flex flex-wrap items-end justify-between gap-3">
+                    <header className="border-b-2 border-duck-ink/15 pb-4 mb-8 flex flex-wrap items-end justify-between gap-3">
                         <div>
-                            <p className="text-[10px] font-black tracking-widest uppercase text-lab-coral">DGSkills — SLO-leerlingrapport</p>
+                            <p className="text-[10px] font-black tracking-widest uppercase text-duck-ink">DGSkills — SLO-leerlingrapport</p>
                             <h1 className="text-2xl md:text-3xl font-bold mt-1" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>
                                 {displayName}
                             </h1>
                         </div>
-                        <div className="text-right text-xs text-lab-muted">
+                        <div className="text-right text-xs text-duck-ink/60">
                             <p>Gegenereerd op {generatedAt}</p>
                             <p className="mt-0.5">
                                 SLO Definitieve Conceptkerndoelen (sept. 2025)
@@ -232,13 +232,13 @@ export const StudentSloReport: React.FC<StudentSloReportProps> = ({ student, yea
 
                     {/* Detail per kerndoel */}
                     {applicableCodes.length === 0 ? (
-                        <div className="rounded-xl border border-dashed border-lab-line bg-lab-cream p-8 text-center">
-                            <p className="text-sm text-lab-muted">Nog geen voltooide missies om te rapporteren.</p>
-                            <p className="text-xs text-lab-muted mt-2">Zodra de leerling de eerste missie afrondt, verschijnt hier automatisch een SLO-dekkingsoverzicht.</p>
+                        <div className="rounded-xl border border-dashed border-duck-ink/15 bg-duck-bgLight p-8 text-center">
+                            <p className="text-sm text-duck-ink/60">Nog geen voltooide missies om te rapporteren.</p>
+                            <p className="text-xs text-duck-ink/60 mt-2">Zodra de leerling de eerste missie afrondt, verschijnt hier automatisch een SLO-dekkingsoverzicht.</p>
                         </div>
                     ) : (
                         <section>
-                            <h2 className="text-xs font-black tracking-widest uppercase text-lab-muted mb-4">
+                            <h2 className="text-xs font-black tracking-widest uppercase text-duck-ink/60 mb-4">
                                 Dekking per SLO-kerndoel
                             </h2>
                             <ul className="list-none p-0 m-0 space-y-6">
@@ -258,16 +258,16 @@ export const StudentSloReport: React.FC<StudentSloReportProps> = ({ student, yea
                     )}
 
                     {/* Legenda + didactische noot */}
-                    <footer className="mt-10 pt-6 border-t border-lab-line text-xs text-lab-muted space-y-3">
+                    <footer className="mt-10 pt-6 border-t border-duck-ink/15 text-xs text-duck-ink/60 space-y-3">
                         <div>
-                            <p className="font-bold text-lab-muted mb-1">Over dit rapport</p>
+                            <p className="font-bold text-duck-ink/60 mb-1">Over dit rapport</p>
                             <p className="leading-relaxed">
                                 Dit rapport toont de dekking van SLO-kerndoelen voor Digitale Geletterdheid op basis van de door de leerling voltooide DGSkills-missies.
                                 De percentages zijn afgeleid van missie-afronding en dekking, niet van beoordelingscijfers.
                                 Het rapport is een docent-hulpmiddel en geen formele beoordeling.
                             </p>
                         </div>
-                        <p className="text-[10px] text-lab-muted">
+                        <p className="text-[10px] text-duck-ink/60">
                             DGSkills.app · © {new Date().getFullYear()} · Dit rapport is alleen bedoeld voor intern schoolgebruik.
                         </p>
                     </footer>
@@ -284,8 +284,8 @@ export const StudentSloReport: React.FC<StudentSloReportProps> = ({ student, yea
 
 const MetaBlock: React.FC<{ label: string; value: string }> = ({ label, value }) => (
     <div>
-        <p className="text-[10px] font-bold uppercase tracking-wider text-lab-muted mb-1">{label}</p>
-        <p className="text-sm font-semibold text-lab-ink">{value}</p>
+        <p className="text-[10px] font-bold uppercase tracking-wider text-duck-ink/60 mb-1">{label}</p>
+        <p className="text-sm font-semibold text-duck-ink">{value}</p>
     </div>
 );
 
@@ -293,12 +293,12 @@ type StatTone = 'neutral' | 'success' | 'warn';
 
 const StatBlock: React.FC<{ label: string; value: React.ReactNode; tone?: StatTone }> = ({ label, value, tone = 'neutral' }) => {
     const toneClass =
-        tone === 'success' ? 'text-lab-sage'
-            : tone === 'warn' ? 'text-lab-gold'
-                : 'text-lab-ink';
+        tone === 'success' ? 'text-duck-ink'
+            : tone === 'warn' ? 'text-duck-ink/60'
+                : 'text-duck-ink';
     return (
-        <div className="rounded-xl bg-lab-cream border border-lab-line px-4 py-3 print:border-lab-line">
-            <p className="text-[10px] font-bold uppercase tracking-wider text-lab-muted mb-1">{label}</p>
+        <div className="rounded-xl bg-duck-bgLight border border-duck-ink/15 px-4 py-3 print:border-duck-ink/15">
+            <p className="text-[10px] font-bold uppercase tracking-wider text-duck-ink/60 mb-1">{label}</p>
             <p className={`text-xl font-bold ${toneClass}`}>{value}</p>
         </div>
     );
@@ -317,17 +317,11 @@ const KerndoelRow: React.FC<KerndoelRowProps> = ({ code, completed, total, perce
     const kd = SLO_KERNDOELEN[code];
     const openMissions = totalMissions.filter((m) => !completedMissions.includes(m));
 
-    const barClass = kd.kleur === 'blue'
-        ? 'bg-lab-coral'
-        : kd.kleur === 'purple'
-            ? 'bg-lab-coral'
-            : 'bg-lab-coral';
+    const barClass = 'bg-duck-acid';
 
-    const badgeClass = kd.kleur === 'blue'
-        ? 'bg-lab-teal text-white border-lab-teal'
-        : kd.kleur === 'purple'
-            ? 'bg-lab-teal text-white border-lab-teal'
-            : 'bg-lab-gold text-lab-ink border-lab-gold';
+    const badgeClass = percentage >= 75
+        ? 'bg-duck-acid text-duck-ink border-duck-acid'
+        : 'bg-duck-ink/5 text-duck-ink/60 border-duck-ink/15';
 
     const statusLabel = percentage === 100 ? 'Volledig gedekt'
         : percentage >= 75 ? 'Grotendeels gedekt'
@@ -336,41 +330,41 @@ const KerndoelRow: React.FC<KerndoelRowProps> = ({ code, completed, total, perce
                     : 'Nog open';
 
     return (
-        <li className="border border-lab-line rounded-xl p-5 print:border-lab-line print:break-inside-avoid">
+        <li className="border border-duck-ink/15 rounded-xl p-5 print:border-duck-ink/15 print:break-inside-avoid">
             <div className="flex flex-wrap items-start justify-between gap-3 mb-3">
                 <div className="min-w-0">
                     <div className="flex flex-wrap items-center gap-2 mb-1">
                         <span className={`inline-block px-2 py-0.5 border rounded text-[11px] font-bold ${badgeClass}`}>{code}</span>
-                        <h3 className="text-base font-bold text-lab-ink">{kd.label}</h3>
+                        <h3 className="text-base font-bold text-duck-ink">{kd.label}</h3>
                         {kd.isVso && (
-                            <span className="text-[10px] font-bold text-white bg-lab-sage border border-lab-sage px-1.5 py-0.5 rounded uppercase tracking-wider">VSO</span>
+                            <span className="text-[10px] font-bold text-duck-ink bg-duck-acid border border-duck-acid px-1.5 py-0.5 rounded uppercase tracking-wider">VSO</span>
                         )}
                     </div>
-                    <p className="text-xs text-lab-muted max-w-xl">{kd.omschrijving}</p>
-                    <p className="text-[11px] text-lab-muted mt-1">Domein: {kd.domein}</p>
+                    <p className="text-xs text-duck-ink/60 max-w-xl">{kd.omschrijving}</p>
+                    <p className="text-[11px] text-duck-ink/60 mt-1">Domein: {kd.domein}</p>
                 </div>
                 <div className="text-right flex-shrink-0">
-                    <p className="text-2xl font-bold text-lab-ink">{percentage}%</p>
-                    <p className="text-[11px] text-lab-muted">{completed} van {total} missies</p>
-                    <p className="text-[10px] font-bold uppercase tracking-wider text-lab-muted mt-1">{statusLabel}</p>
+                    <p className="text-2xl font-bold text-duck-ink">{percentage}%</p>
+                    <p className="text-[11px] text-duck-ink/60">{completed} van {total} missies</p>
+                    <p className="text-[10px] font-bold uppercase tracking-wider text-duck-ink/60 mt-1">{statusLabel}</p>
                 </div>
             </div>
 
             {/* Voortgangsbalk */}
-            <div className="h-2 bg-lab-cream rounded-full overflow-hidden mb-4 print:border print:border-lab-line" aria-hidden="true">
+            <div className="h-2 bg-duck-ink/10 rounded-full overflow-hidden mb-4 print:border print:border-duck-ink/15" aria-hidden="true">
                 <div className={`h-full ${barClass} transition-all`} style={{ width: `${percentage}%` }} />
             </div>
 
             {/* Missie-lijsten */}
             <div className="grid md:grid-cols-2 gap-4 text-xs">
                 <div>
-                    <p className="font-bold text-lab-sage mb-1.5 text-[11px] uppercase tracking-wider">
+                    <p className="font-bold text-duck-ink mb-1.5 text-[11px] uppercase tracking-wider">
                         Afgeronde missies ({completedMissions.length})
                     </p>
                     {completedMissions.length === 0 ? (
-                        <p className="text-lab-muted italic">Nog geen.</p>
+                        <p className="text-duck-ink/60 italic">Nog geen.</p>
                     ) : (
-                        <ul className="list-disc list-inside space-y-1 text-lab-muted">
+                        <ul className="list-disc list-inside space-y-1 text-duck-ink/60">
                             {completedMissions.map((id) => (
                                 <li key={id}>{getMissionMeta(id)?.title || id}</li>
                             ))}
@@ -378,13 +372,13 @@ const KerndoelRow: React.FC<KerndoelRowProps> = ({ code, completed, total, perce
                     )}
                 </div>
                 <div>
-                    <p className="font-bold text-lab-muted mb-1.5 text-[11px] uppercase tracking-wider">
+                    <p className="font-bold text-duck-ink/60 mb-1.5 text-[11px] uppercase tracking-wider">
                         Nog open missies ({openMissions.length})
                     </p>
                     {openMissions.length === 0 ? (
-                        <p className="text-lab-sage font-medium">Alle toepasbare missies voltooid.</p>
+                        <p className="text-duck-ink font-medium">Alle toepasbare missies voltooid.</p>
                     ) : (
-                        <ul className="list-disc list-inside space-y-1 text-lab-muted">
+                        <ul className="list-disc list-inside space-y-1 text-duck-ink/60">
                             {openMissions.map((id) => (
                                 <li key={id}>{getMissionMeta(id)?.title || id}</li>
                             ))}

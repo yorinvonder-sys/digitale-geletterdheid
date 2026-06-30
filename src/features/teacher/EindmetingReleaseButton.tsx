@@ -88,14 +88,14 @@ export const EindmetingReleaseButton: React.FC<EindmetingReleaseButtonProps> = (
 
   return (
     <>
-      <div className="bg-white rounded-2xl border border-lab-line p-6">
+      <div className="bg-white rounded-[1.75rem] border border-duck-ink/15 p-6">
         <div className="flex items-start gap-3 mb-4">
-          <div className="p-2 bg-lab-coral rounded-xl">
-            <ClipboardCheck size={18} className="text-lab-coral" />
+          <div className="p-2 bg-duck-acid rounded-xl">
+            <ClipboardCheck size={18} className="text-duck-ink" />
           </div>
           <div>
-            <h3 className="text-sm font-black text-lab-ink">Eindmeting vrijgeven</h3>
-            <p className="text-xs text-lab-muted mt-0.5">
+            <h3 className="text-sm font-black text-duck-ink">Eindmeting vrijgeven</h3>
+            <p className="text-xs text-duck-ink/60 mt-0.5">
               Geef de eindmeting vrij voor een klas. Leerlingen zien de eindmeting bij hun volgende
               login.
             </p>
@@ -107,7 +107,7 @@ export const EindmetingReleaseButton: React.FC<EindmetingReleaseButtonProps> = (
             <select
               value={selectedClass}
               onChange={(e) => setSelectedClass(e.target.value)}
-              className="w-full p-3 border border-lab-line rounded-xl text-sm font-bold bg-white hover:border-lab-coral focus:border-lab-coral focus:ring-2 focus:ring-lab-coral/20 outline-none transition-all cursor-pointer"
+              className="w-full p-3 border border-duck-ink/15 rounded-xl text-sm font-bold bg-duck-bg text-duck-ink placeholder:text-duck-ink/40 hover:border-duck-ink focus:border-duck-ink focus:ring-2 focus:ring-duck-ink/10 outline-none transition-all cursor-pointer"
             >
               <option value="">-- Selecteer een klas --</option>
               {availableClasses.map((cls) => (
@@ -121,11 +121,11 @@ export const EindmetingReleaseButton: React.FC<EindmetingReleaseButtonProps> = (
         )}
 
         {targetClass && alreadyReleased && (
-          <div className="flex items-center gap-2 px-4 py-3 bg-lab-sage border border-lab-sage rounded-xl">
-            <Check size={16} className="text-lab-sage flex-shrink-0" />
+          <div className="flex items-center gap-2 px-4 py-3 bg-duck-acid/20 border border-duck-ink/15 rounded-xl">
+            <Check size={16} className="text-duck-ink flex-shrink-0" />
             <div>
-              <span className="text-sm font-bold text-lab-sage">Vrijgegeven</span>
-              <span className="text-xs text-lab-sage flex items-center gap-1 mt-0.5">
+              <span className="text-sm font-bold text-duck-ink">Vrijgegeven</span>
+              <span className="text-xs text-duck-ink/60 flex items-center gap-1 mt-0.5">
                 <Calendar size={11} />
                 {formatDate(releaseRecord!.released_at)}
               </span>
@@ -138,7 +138,7 @@ export const EindmetingReleaseButton: React.FC<EindmetingReleaseButtonProps> = (
             type="button"
             disabled={loading}
             onClick={() => handleRelease(targetClass)}
-            className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-lab-coral hover:bg-lab-coral hover:text-white disabled:opacity-60 disabled:cursor-not-allowed text-white text-sm font-black rounded-xl transition-colors"
+            className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-duck-acid hover:bg-duck-ink hover:text-duck-acid disabled:opacity-60 disabled:cursor-not-allowed text-duck-ink text-sm font-black rounded-full transition-colors"
           >
             <ClipboardCheck size={16} />
             {loading ? 'Bezig...' : `Eindmeting vrijgeven voor ${targetClass}`}
@@ -146,7 +146,7 @@ export const EindmetingReleaseButton: React.FC<EindmetingReleaseButtonProps> = (
         )}
 
         {!targetClass && classFilter === 'all' && (
-          <div className="px-4 py-3 bg-lab-cream text-lab-muted text-sm rounded-xl text-center">
+          <div className="px-4 py-3 bg-duck-bgLight text-duck-ink/60 text-sm rounded-xl text-center">
             Selecteer eerst een klas.
           </div>
         )}

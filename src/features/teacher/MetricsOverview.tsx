@@ -84,30 +84,30 @@ export const MetricsOverview: React.FC<MetricsOverviewProps> = ({ students, acti
 
     const curriculumStyles = !curriculumSignal
         ? {
-            panel: 'border-lab-coral bg-lab-coral/80 hover:border-lab-coral',
-            icon: 'bg-lab-coral text-white',
-            label: 'text-lab-coral',
-            badge: 'bg-white text-lab-coral border-lab-coral',
+            panel: 'border-duck-error bg-duck-error/10 hover:border-duck-error',
+            icon: 'bg-duck-error text-white',
+            label: 'text-duck-error',
+            badge: 'bg-white text-duck-error border-duck-error',
         }
         : curriculumSignal.tone === 'success'
         ? {
-            panel: 'border-lab-sage bg-lab-sage/80 hover:border-lab-sage',
-            icon: 'bg-lab-sage text-white',
-            label: 'text-lab-sage',
-            badge: 'bg-white text-lab-sage border-lab-sage',
+            panel: 'border-duck-acid bg-duck-acid/20 hover:border-duck-acid',
+            icon: 'bg-duck-acid text-duck-ink',
+            label: 'text-duck-ink',
+            badge: 'bg-white text-duck-ink border-duck-acid',
         }
         : curriculumSignal.tone === 'attention'
             ? {
-                panel: 'border-lab-gold bg-lab-gold/80 hover:border-lab-gold',
-                icon: 'bg-lab-gold text-lab-ink',
-                label: 'text-lab-gold',
-                badge: 'bg-white text-lab-gold border-lab-gold',
+                panel: 'border-duck-ink/30 bg-duck-ink/5 hover:border-duck-ink/50',
+                icon: 'bg-duck-ink text-white',
+                label: 'text-duck-ink',
+                badge: 'bg-white text-duck-ink border-duck-ink/30',
             }
             : {
-                panel: 'border-lab-coral bg-lab-coral/80 hover:border-lab-coral',
-                icon: 'bg-lab-coral text-white',
-                label: 'text-lab-coral',
-                badge: 'bg-white text-lab-coral border-lab-coral',
+                panel: 'border-duck-error bg-duck-error/10 hover:border-duck-error',
+                icon: 'bg-duck-error text-white',
+                label: 'text-duck-error',
+                badge: 'bg-white text-duck-error border-duck-error',
             };
 
     // Class stats for comparison (only show when not filtering individual student)
@@ -151,9 +151,9 @@ export const MetricsOverview: React.FC<MetricsOverviewProps> = ({ students, acti
 
         // Domain metadata derived from kerndoel numbers
         const domainMeta: Record<number, { id: string; color: string }> = {
-            21: { id: 'practical', color: 'indigo' },
-            22: { id: 'creation', color: 'emerald' },
-            23: { id: 'digital-world', color: 'amber' },
+            21: { id: 'practical', color: 'ink' },
+            22: { id: 'creation', color: 'acid' },
+            23: { id: 'digital-world', color: 'gray' },
         };
 
         // Calculate average percentage per kerndoel code for displayed students
@@ -258,8 +258,8 @@ export const MetricsOverview: React.FC<MetricsOverviewProps> = ({ students, acti
                     <button
                         onClick={() => setShowStudentDropdown(!showStudentDropdown)}
                         className={`flex items-center gap-2 px-4 py-2.5 rounded-xl border transition-all ${selectedStudentId
-                            ? 'bg-lab-coral border-lab-coral text-lab-coral'
-                            : 'bg-white border-lab-line text-lab-muted hover:border-lab-coral'
+                            ? 'bg-duck-acid border-duck-acid text-duck-ink'
+                            : 'bg-white border-duck-ink/15 text-duck-ink/60 hover:border-duck-ink/40'
                             }`}
                     >
                         <Filter size={16} />
@@ -271,17 +271,17 @@ export const MetricsOverview: React.FC<MetricsOverviewProps> = ({ students, acti
 
                     {/* Dropdown */}
                     {showStudentDropdown && (
-                        <div className="absolute top-full left-0 mt-2 w-72 bg-white rounded-xl shadow-xl border border-lab-line z-50 overflow-hidden">
+                        <div className="absolute top-full left-0 mt-2 w-72 bg-white rounded-xl shadow-xl border border-duck-ink/15 z-50 overflow-hidden">
                             {/* Search */}
-                            <div className="p-2 border-b border-lab-line">
+                            <div className="p-2 border-b border-duck-ink/15">
                                 <div className="relative">
-                                    <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-lab-muted" />
+                                    <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-duck-ink/40" />
                                     <input
                                         type="text"
                                         placeholder="Zoek leerling..."
                                         value={studentSearch}
                                         onChange={(e) => setStudentSearch(e.target.value)}
-                                        className="w-full pl-9 pr-3 py-2 text-sm border border-lab-line rounded-lg focus:outline-none focus:border-lab-coral"
+                                        className="w-full pl-9 pr-3 py-2 text-sm border border-duck-ink/15 rounded-lg focus:outline-none focus:border-duck-ink/40"
                                         autoFocus
                                     />
                                 </div>
@@ -296,16 +296,16 @@ export const MetricsOverview: React.FC<MetricsOverviewProps> = ({ students, acti
                                         setShowStudentDropdown(false);
                                         setStudentSearch('');
                                     }}
-                                    className={`w-full px-3 py-2 text-left hover:bg-lab-cream transition-colors flex items-center gap-2 ${!selectedStudentId ? 'bg-lab-coral text-white' : 'text-lab-muted'
+                                    className={`w-full px-3 py-2 text-left hover:bg-duck-bgLight transition-colors flex items-center gap-2 ${!selectedStudentId ? 'bg-duck-acid text-duck-ink' : 'text-duck-ink/60'
                                         }`}
                                 >
                                     <Users size={14} />
                                     <span className="font-bold text-sm">Alle Leerlingen</span>
-                                    <span className="ml-auto text-xs text-lab-muted">{students.length}</span>
+                                    <span className="ml-auto text-xs text-duck-ink/40">{students.length}</span>
                                 </button>
 
                                 {/* Divider */}
-                                <div className="border-t border-lab-line my-1" />
+                                <div className="border-t border-duck-ink/15 my-1" />
 
                                 {/* Student List */}
                                 {filteredStudentOptions.map(student => (
@@ -316,22 +316,22 @@ export const MetricsOverview: React.FC<MetricsOverviewProps> = ({ students, acti
                                             setShowStudentDropdown(false);
                                             setStudentSearch('');
                                         }}
-                                        className={`w-full px-3 py-2 text-left hover:bg-lab-cream transition-colors flex items-center gap-2 ${selectedStudentId === student.uid ? 'bg-lab-coral text-white' : 'text-lab-muted'
+                                        className={`w-full px-3 py-2 text-left hover:bg-duck-bgLight transition-colors flex items-center gap-2 ${selectedStudentId === student.uid ? 'bg-duck-acid text-duck-ink' : 'text-duck-ink/60'
                                             }`}
                                     >
-                                        <div className="w-6 h-6 rounded-full bg-gradient-to-br from-lab-coral to-lab-coral flex items-center justify-center text-white text-[10px] font-bold">
+                                        <div className="w-6 h-6 rounded-full bg-duck-ink flex items-center justify-center text-white text-[10px] font-bold">
                                             {student.displayName?.charAt(0) || '?'}
                                         </div>
                                         <div className="flex-1 min-w-0">
                                             <div className="font-bold text-sm truncate">{student.displayName}</div>
-                                            <div className="text-[10px] text-lab-muted">{student.identifier}</div>
+                                            <div className="text-[10px] text-duck-ink/40">{student.identifier}</div>
                                         </div>
-                                        <span className="text-xs text-lab-gold font-bold">{student.stats?.xp || 0} XP</span>
+                                        <span className="text-xs text-duck-ink font-bold">{student.stats?.xp || 0} XP</span>
                                     </button>
                                 ))}
 
                                 {filteredStudentOptions.length === 0 && (
-                                    <div className="px-3 py-4 text-center text-lab-muted text-sm">Geen leerlingen gevonden</div>
+                                    <div className="px-3 py-4 text-center text-duck-ink/60 text-sm">Geen leerlingen gevonden</div>
                                 )}
                             </div>
                         </div>
@@ -342,7 +342,7 @@ export const MetricsOverview: React.FC<MetricsOverviewProps> = ({ students, acti
                 {selectedStudentId && (
                     <button
                         onClick={() => onSelectStudentFilter?.(null)}
-                        className="flex items-center gap-1 px-3 py-2 text-sm font-bold text-lab-coral hover:bg-lab-coral hover:text-white rounded-lg transition-colors"
+                        className="flex items-center gap-1 px-3 py-2 text-sm font-bold text-duck-ink hover:bg-duck-ink hover:text-white rounded-lg transition-colors"
                     >
                         <X size={14} />
                         Reset
@@ -351,9 +351,9 @@ export const MetricsOverview: React.FC<MetricsOverviewProps> = ({ students, acti
 
                 {/* Selected student indicator */}
                 {selectedStudent && (
-                    <div className="ml-auto flex items-center gap-2 bg-lab-coral px-3 py-1.5 rounded-lg border border-lab-coral">
-                        <span className="text-xs font-bold text-lab-coral">Bekijk data van:</span>
-                        <span className="text-xs font-black text-lab-coral">{selectedStudent.displayName}</span>
+                    <div className="ml-auto flex items-center gap-2 bg-duck-acid px-3 py-1.5 rounded-lg border border-duck-acid">
+                        <span className="text-xs font-bold text-duck-ink">Bekijk data van:</span>
+                        <span className="text-xs font-black text-duck-ink">{selectedStudent.displayName}</span>
                     </div>
                 )}
             </div>
@@ -371,80 +371,80 @@ export const MetricsOverview: React.FC<MetricsOverviewProps> = ({ students, acti
                     <>
                         <div
                             onClick={() => onNavigate?.('overview')}
-                            className="bg-white rounded-2xl p-4 shadow-sm border border-lab-line cursor-pointer hover:border-lab-coral hover:shadow-md transition-all active:scale-95"
+                            className="bg-white rounded-2xl p-4 shadow-sm border border-duck-ink/15 cursor-pointer hover:border-duck-ink/40 hover:shadow-md transition-all active:scale-95"
                         >
                             <div className="flex items-center gap-2 mb-2">
-                                <div className="w-8 h-8 bg-lab-coral text-white rounded-lg flex items-center justify-center">
+                                <div className="w-8 h-8 bg-duck-ink text-white rounded-lg flex items-center justify-center">
                                     <Users size={16} />
                                 </div>
-                                <div className="text-[9px] font-bold text-lab-muted uppercase">Leerlingen</div>
+                                <div className="text-[9px] font-bold text-duck-ink/60 uppercase">Leerlingen</div>
                             </div>
-                            <div className="text-2xl font-black text-lab-ink">{students.length}</div>
-                            <div className="text-[10px] text-lab-sage font-bold flex items-center gap-1">
-                                <span className="w-1.5 h-1.5 bg-lab-coral rounded-full animate-pulse"></span>
+                            <div className="text-2xl font-black text-duck-ink">{students.length}</div>
+                            <div className="text-[10px] text-duck-ink/60 font-bold flex items-center gap-1">
+                                <span className="w-1.5 h-1.5 bg-duck-acid rounded-full animate-pulse"></span>
                                 {activeNow} online
                             </div>
                         </div>
 
                         <div
                             onClick={() => onNavigate?.('leaderboard')}
-                            className="bg-white rounded-2xl p-4 shadow-sm border border-lab-line cursor-pointer hover:border-lab-gold hover:shadow-md transition-all active:scale-95"
+                            className="bg-white rounded-2xl p-4 shadow-sm border border-duck-ink/15 cursor-pointer hover:border-duck-ink/40 hover:shadow-md transition-all active:scale-95"
                         >
                             <div className="flex items-center gap-2 mb-2">
-                                <div className="w-8 h-8 bg-lab-gold text-lab-ink rounded-lg flex items-center justify-center">
+                                <div className="w-8 h-8 bg-duck-acid text-duck-ink rounded-lg flex items-center justify-center">
                                     <Zap size={16} />
                                 </div>
-                                <div className="text-[9px] font-bold text-lab-muted uppercase">Totaal XP</div>
+                                <div className="text-[9px] font-bold text-duck-ink/60 uppercase">Totaal XP</div>
                             </div>
-                            <div className="text-2xl font-black text-lab-ink">{totalXP.toLocaleString()}</div>
-                            <div className="text-[10px] text-lab-muted font-medium">Ø {avgXP} per leerling</div>
+                            <div className="text-2xl font-black text-duck-ink">{totalXP.toLocaleString()}</div>
+                            <div className="text-[10px] text-duck-ink/60 font-medium">Ø {avgXP} per leerling</div>
                         </div>
 
                         <div
                             onClick={() => onNavigate?.('overview')}
-                            className="bg-white rounded-2xl p-4 shadow-sm border border-lab-line cursor-pointer hover:border-lab-coral hover:shadow-md transition-all active:scale-95"
+                            className="bg-white rounded-2xl p-4 shadow-sm border border-duck-ink/15 cursor-pointer hover:border-duck-ink/40 hover:shadow-md transition-all active:scale-95"
                         >
                             <div className="flex items-center gap-2 mb-2">
-                                <div className="w-8 h-8 bg-lab-coral text-white rounded-lg flex items-center justify-center">
+                                <div className="w-8 h-8 bg-duck-ink text-white rounded-lg flex items-center justify-center">
                                     <Target size={16} />
                                 </div>
-                                <div className="text-[9px] font-bold text-lab-muted uppercase">Populair</div>
+                                <div className="text-[9px] font-bold text-duck-ink/60 uppercase">Populair</div>
                             </div>
-                            <div className="text-lg font-black text-lab-ink truncate">
+                            <div className="text-lg font-black text-duck-ink truncate">
                                 {popularMission ? yearMissions.find(m => m.id === popularMission[0])?.short || '?' : '-'}
                             </div>
-                            <div className="text-[10px] text-lab-muted font-medium truncate">
+                            <div className="text-[10px] text-duck-ink/60 font-medium truncate">
                                 {popularMission ? `${popularMission[1]}x voltooid` : 'Geen data'}
                             </div>
                         </div>
 
                         <div
                             onClick={() => onNavigate?.('overview')}
-                            className="bg-white rounded-2xl p-4 shadow-sm border border-lab-line cursor-pointer hover:border-lab-sage hover:shadow-md transition-all active:scale-95"
+                            className="bg-white rounded-2xl p-4 shadow-sm border border-duck-ink/15 cursor-pointer hover:border-duck-ink/40 hover:shadow-md transition-all active:scale-95"
                         >
                             <div className="flex items-center gap-2 mb-2">
-                                <div className="w-8 h-8 bg-lab-sage text-white rounded-lg flex items-center justify-center">
+                                <div className="w-8 h-8 bg-duck-acid text-duck-ink rounded-lg flex items-center justify-center">
                                     <Activity size={16} />
                                 </div>
-                                <div className="text-[9px] font-bold text-lab-muted uppercase">Vandaag</div>
+                                <div className="text-[9px] font-bold text-duck-ink/60 uppercase">Vandaag</div>
                             </div>
-                            <div className="text-2xl font-black text-lab-ink">{activeToday}</div>
-                            <div className="text-[10px] text-lab-muted font-medium">actief vandaag</div>
+                            <div className="text-2xl font-black text-duck-ink">{activeToday}</div>
+                            <div className="text-[10px] text-duck-ink/60 font-medium">actief vandaag</div>
                         </div>
 
                         <div
                             onClick={() => onNavigate?.('alerts')}
-                            className="bg-white rounded-2xl p-4 shadow-sm border border-lab-line cursor-pointer hover:border-lab-coral hover:shadow-md transition-all active:scale-95"
+                            className="bg-white rounded-2xl p-4 shadow-sm border border-duck-ink/15 cursor-pointer hover:border-duck-error/40 hover:shadow-md transition-all active:scale-95"
                             title="Leerlingen die al even niet actief zijn of weinig voortgang boeken."
                         >
                             <div className="flex items-center gap-2 mb-2">
-                                <div className="w-8 h-8 bg-lab-coral text-white rounded-lg flex items-center justify-center">
+                                <div className="w-8 h-8 bg-duck-error text-white rounded-lg flex items-center justify-center">
                                     <AlertTriangle size={16} />
                                 </div>
-                                <div className="text-[9px] font-bold text-lab-muted uppercase">Aandacht</div>
+                                <div className="text-[9px] font-bold text-duck-ink/60 uppercase">Aandacht</div>
                             </div>
-                            <div className="text-2xl font-black text-lab-ink">{inactiveStudents.length + lowXPStudents.length}</div>
-                            <div className="text-[10px] text-lab-muted font-bold uppercase tracking-tight">Hulp nodig</div>
+                            <div className="text-2xl font-black text-duck-ink">{inactiveStudents.length + lowXPStudents.length}</div>
+                            <div className="text-[10px] text-duck-ink/60 font-bold uppercase tracking-tight">Hulp nodig</div>
                         </div>
                     </>
                 )}
@@ -469,15 +469,15 @@ export const MetricsOverview: React.FC<MetricsOverviewProps> = ({ students, acti
                                             J{curriculumFocus.spotlight.yearGroup} • {curriculumFocus.spotlight.periodLabel}
                                         </span>
                                         {selectedStudentId && (
-                                            <span className="inline-flex items-center rounded-full border border-lab-line bg-white px-2 py-1 text-[10px] font-bold uppercase tracking-wider text-lab-muted">
+                                            <span className="inline-flex items-center rounded-full border border-duck-ink/15 bg-white px-2 py-1 text-[10px] font-bold uppercase tracking-wider text-duck-ink/60">
                                                 Schoolbreed
                                             </span>
                                         )}
                                     </div>
-                                    <h3 className="text-lg font-black text-lab-ink mt-1">
+                                    <h3 className="text-lg font-black text-duck-ink mt-1">
                                         {curriculumSignal?.title || curriculumFocus.spotlight.title}
                                     </h3>
-                                    <p className="text-sm text-lab-muted mt-1 max-w-3xl">
+                                    <p className="text-sm text-duck-ink/60 mt-1 max-w-3xl">
                                         {curriculumSignal?.summary || `${curriculumFocus.spotlight.title}: ${curriculumFocus.startedPercentage}% gestart en ${curriculumFocus.completedPercentage}% afgerond in deze jaarlaag.`}
                                     </p>
                                 </div>
@@ -485,11 +485,11 @@ export const MetricsOverview: React.FC<MetricsOverviewProps> = ({ students, acti
 
                             <div className="mt-4 flex flex-wrap gap-2">
                                 {curriculumFocus.spotlight.kerndoelen.map(code => (
-                                    <span key={code} className="inline-flex rounded-full bg-white/90 px-2.5 py-1 text-[11px] font-black text-lab-muted border border-white">
+                                    <span key={code} className="inline-flex rounded-full bg-white/90 px-2.5 py-1 text-[11px] font-black text-duck-ink/60 border border-white">
                                         {code}
                                     </span>
                                 ))}
-                                <span className="inline-flex items-center gap-1 rounded-full bg-lab-ink px-3 py-1 text-[11px] font-black text-white">
+                                <span className="inline-flex items-center gap-1 rounded-full bg-duck-ink px-3 py-1 text-[11px] font-black text-white">
                                     Open SLO-rapportage <ArrowRight size={12} />
                                 </span>
                             </div>
@@ -497,26 +497,26 @@ export const MetricsOverview: React.FC<MetricsOverviewProps> = ({ students, acti
 
                         <div className="grid grid-cols-3 gap-3 xl:min-w-[340px]">
                             <div className="rounded-2xl border border-white bg-white/90 px-3 py-3">
-                                <p className="text-[10px] font-bold uppercase tracking-wider text-lab-muted">Gestart</p>
-                                <p className="text-2xl font-black text-lab-coral mt-1">{curriculumFocus.startedStudents}</p>
-                                <p className="text-[10px] text-lab-muted mt-1">{curriculumFocus.startedPercentage}% van leerlingen</p>
+                                <p className="text-[10px] font-bold uppercase tracking-wider text-duck-ink/60">Gestart</p>
+                                <p className="text-2xl font-black text-duck-ink mt-1">{curriculumFocus.startedStudents}</p>
+                                <p className="text-[10px] text-duck-ink/60 mt-1">{curriculumFocus.startedPercentage}% van leerlingen</p>
                             </div>
                             <div className="rounded-2xl border border-white bg-white/90 px-3 py-3">
-                                <p className="text-[10px] font-bold uppercase tracking-wider text-lab-muted">Nog Bezig</p>
-                                <p className="text-2xl font-black text-lab-gold mt-1">{curriculumFocus.inProgressStudents}</p>
-                                <p className="text-[10px] text-lab-muted mt-1">Wel gestart, nog niet af</p>
+                                <p className="text-[10px] font-bold uppercase tracking-wider text-duck-ink/60">Nog Bezig</p>
+                                <p className="text-2xl font-black text-duck-ink mt-1">{curriculumFocus.inProgressStudents}</p>
+                                <p className="text-[10px] text-duck-ink/60 mt-1">Wel gestart, nog niet af</p>
                             </div>
                             <div className="rounded-2xl border border-white bg-white/90 px-3 py-3">
-                                <p className="text-[10px] font-bold uppercase tracking-wider text-lab-muted">Afgerond</p>
-                                <p className="text-2xl font-black text-lab-sage mt-1">{curriculumFocus.completedStudents}</p>
-                                <p className="text-[10px] text-lab-muted mt-1">{curriculumFocus.completedPercentage}% van leerlingen</p>
+                                <p className="text-[10px] font-bold uppercase tracking-wider text-duck-ink/60">Afgerond</p>
+                                <p className="text-2xl font-black text-duck-acid mt-1">{curriculumFocus.completedStudents}</p>
+                                <p className="text-[10px] text-duck-ink/60 mt-1">{curriculumFocus.completedPercentage}% van leerlingen</p>
                             </div>
                         </div>
                     </div>
 
                     <div className="mt-4 rounded-2xl border border-white bg-white/85 px-4 py-3">
-                        <p className="text-[10px] font-black uppercase tracking-wider text-lab-muted">Docentnudge</p>
-                        <p className="text-sm text-lab-muted mt-1">
+                        <p className="text-[10px] font-black uppercase tracking-wider text-duck-ink/60">Docentnudge</p>
+                        <p className="text-sm text-duck-ink/60 mt-1">
                             {curriculumSignal?.nudge || 'Open de SLO-rapportage om per klas te zien waar leerlingen starten, blijven hangen of juist al sterk afronden.'}
                         </p>
                     </div>
@@ -525,47 +525,47 @@ export const MetricsOverview: React.FC<MetricsOverviewProps> = ({ students, acti
 
             {/* ACTION QUEUE — Wat moet je nu doen? */}
             {!loading && actionQueue.length > 0 && (
-                <div className="bg-white rounded-2xl shadow-sm border border-lab-line overflow-hidden">
-                    <div className="px-5 py-4 border-b border-lab-line flex items-center justify-between">
-                        <h3 className="text-sm font-black text-lab-ink flex items-center gap-2">
-                            <div className="w-2 h-2 bg-lab-coral rounded-full animate-pulse" />
+                <div className="bg-white rounded-2xl shadow-sm border border-duck-ink/15 overflow-hidden">
+                    <div className="px-5 py-4 border-b border-duck-ink/15 flex items-center justify-between">
+                        <h3 className="text-sm font-black text-duck-ink flex items-center gap-2">
+                            <div className="w-2 h-2 bg-duck-error rounded-full animate-pulse" />
                             Acties voor jou
-                            <span className="text-[10px] font-bold text-lab-muted bg-lab-cream px-2 py-0.5 rounded-full">{actionQueue.length}</span>
+                            <span className="text-[10px] font-bold text-duck-ink/60 bg-duck-bgLight px-2 py-0.5 rounded-full">{actionQueue.length}</span>
                         </h3>
                         <div className="flex items-center gap-2">
                             <button
                                 onClick={() => onNavigate?.('students')}
-                                className="text-[10px] font-bold text-lab-coral hover:text-lab-coral flex items-center gap-1"
+                                className="text-[10px] font-bold text-duck-ink/60 hover:text-duck-ink flex items-center gap-1"
                             >
                                 Alle leerlingen <ArrowRight size={10} />
                             </button>
                         </div>
                     </div>
-                    <div className="divide-y divide-slate-50">
+                    <div className="divide-y divide-duck-ink/5">
                         {actionQueue.map((item, i) => {
                             const Icon = item.icon;
                             return (
                                 <button
                                     key={item.student.uid}
                                     onClick={() => onSelectStudent?.(item.student)}
-                                    className="w-full px-5 py-3 flex items-center gap-4 hover:bg-lab-cream transition-colors text-left group"
+                                    className="w-full px-5 py-3 flex items-center gap-4 hover:bg-duck-bgLight transition-colors text-left group"
                                 >
-                                    <div className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 ${item.priority === 'high' ? 'bg-lab-coral text-white' : 'bg-lab-gold text-lab-ink'}`}>
+                                    <div className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 ${item.priority === 'high' ? 'bg-duck-error text-white' : 'bg-duck-acid text-duck-ink'}`}>
                                         <Icon size={16} />
                                     </div>
                                     <div className="flex-1 min-w-0">
                                         <div className="flex items-center gap-2">
-                                            <span className="font-bold text-sm text-lab-ink truncate">{item.student.displayName}</span>
-                                            <span className="text-[9px] text-lab-muted">{item.student.identifier}</span>
+                                            <span className="font-bold text-sm text-duck-ink truncate">{item.student.displayName}</span>
+                                            <span className="text-[9px] text-duck-ink/40">{item.student.identifier}</span>
                                         </div>
-                                        <div className="text-[10px] text-lab-muted">{item.reason}</div>
+                                        <div className="text-[10px] text-duck-ink/60">{item.reason}</div>
                                     </div>
                                     <div className="flex items-center gap-2 flex-shrink-0">
-                                        <span className="text-[10px] font-bold text-lab-muted">{item.student.stats?.xp || 0} XP</span>
-                                        <span className={`text-[9px] font-black uppercase tracking-wider px-2 py-1 rounded-lg ${item.priority === 'high' ? 'text-white bg-lab-coral border border-lab-coral' : 'text-lab-ink bg-lab-gold border border-lab-gold'}`}>
+                                        <span className="text-[10px] font-bold text-duck-ink/60">{item.student.stats?.xp || 0} XP</span>
+                                        <span className={`text-[9px] font-black uppercase tracking-wider px-2 py-1 rounded-lg ${item.priority === 'high' ? 'text-white bg-duck-error border border-duck-error' : 'text-duck-ink bg-duck-acid border border-duck-acid'}`}>
                                             {item.action}
                                         </span>
-                                        <ChevronRight size={14} className="text-lab-muted group-hover:translate-x-1 transition-transform" />
+                                        <ChevronRight size={14} className="text-duck-ink/40 group-hover:translate-x-1 transition-transform" />
                                     </div>
                                 </button>
                             );
@@ -579,28 +579,28 @@ export const MetricsOverview: React.FC<MetricsOverviewProps> = ({ students, acti
                 <div className="flex items-center gap-3 flex-wrap">
                     <button
                         onClick={() => onNavigate?.('progress')}
-                        className="flex items-center gap-2 px-4 py-2.5 bg-white border border-lab-line rounded-xl text-sm font-bold text-lab-muted hover:border-lab-coral hover:text-lab-coral transition-all"
+                        className="flex items-center gap-2 px-4 py-2.5 bg-white border border-duck-ink/15 rounded-xl text-sm font-bold text-duck-ink/60 hover:border-duck-ink/40 hover:text-duck-ink transition-all"
                     >
                         <BarChart3 size={14} /> Missie-voortgang
                     </button>
                     <button
                         onClick={() => onNavigate?.('slo')}
-                        className="flex items-center gap-2 px-4 py-2.5 bg-white border border-lab-line rounded-xl text-sm font-bold text-lab-muted hover:border-lab-coral hover:text-lab-coral transition-all"
+                        className="flex items-center gap-2 px-4 py-2.5 bg-white border border-duck-ink/15 rounded-xl text-sm font-bold text-duck-ink/60 hover:border-duck-ink/40 hover:text-duck-ink transition-all"
                     >
                         <Target size={14} /> SLO Rapportage
                     </button>
                     {onSendMessage && (
                         <button
                             onClick={onSendMessage}
-                            className="flex items-center gap-2 px-4 py-2.5 bg-lab-coral text-white rounded-xl text-sm font-bold hover:bg-lab-coral hover:text-white transition-all shadow-sm"
+                            className="flex items-center gap-2 px-4 py-2.5 bg-duck-ink text-white rounded-xl text-sm font-bold hover:bg-duck-acid hover:text-duck-ink transition-all shadow-sm"
                         >
                             <Send size={14} /> Bericht aan klas
                         </button>
                     )}
                     {activeEvents.length > 0 && (
-                        <div className="flex items-center gap-2 px-3 py-2 bg-lab-gold border border-lab-gold rounded-xl">
-                            <Flame size={14} className="text-lab-gold" />
-                            <span className="text-[10px] font-bold text-lab-gold">{activeEvents.length} actief event</span>
+                        <div className="flex items-center gap-2 px-3 py-2 bg-duck-acid border border-duck-acid rounded-xl">
+                            <Flame size={14} className="text-duck-ink" />
+                            <span className="text-[10px] font-bold text-duck-ink">{activeEvents.length} actief event</span>
                         </div>
                     )}
                 </div>
@@ -630,24 +630,24 @@ export const MetricsOverview: React.FC<MetricsOverviewProps> = ({ students, acti
                 const hasSignals = signalStudents.length > 0;
 
                 return (
-                    <div className="bg-white rounded-2xl shadow-sm border border-lab-line overflow-hidden">
+                    <div className="bg-white rounded-2xl shadow-sm border border-duck-ink/15 overflow-hidden">
                         <button
                             onClick={() => setExpandedSignaling(!expandedSignaling)}
                             className="w-full px-5 py-4 text-left flex items-center justify-between"
                         >
                             <div className="flex items-center gap-3">
-                                <div className={`size-8 rounded-lg flex items-center justify-center ${hasSignals ? 'bg-lab-gold' : 'bg-lab-sage'}`}>
+                                <div className={`size-8 rounded-lg flex items-center justify-center ${hasSignals ? 'bg-duck-acid' : 'bg-duck-acid'}`}>
                                     {hasSignals
-                                        ? <AlertTriangle size={16} className="text-lab-gold" />
-                                        : <CheckCircle2 size={16} className="text-lab-sage" />
+                                        ? <AlertTriangle size={16} className="text-duck-ink" />
+                                        : <CheckCircle2 size={16} className="text-duck-ink" />
                                     }
                                 </div>
                                 <div>
-                                    <h3 className="text-xs font-black text-lab-ink uppercase tracking-widest text-balance">
+                                    <h3 className="text-xs font-black text-duck-ink uppercase tracking-widest text-balance">
                                         Vroege Signalering
                                     </h3>
                                     {!expandedSignaling && (
-                                        <p className="text-[10px] text-lab-muted mt-0.5">
+                                        <p className="text-[10px] text-duck-ink/60 mt-0.5">
                                             {hasSignals ? `${signalStudents.length} leerling${signalStudents.length !== 1 ? 'en' : ''} verdien${signalStudents.length !== 1 ? 'en' : 't'} aandacht` : 'Iedereen ligt op koers'}
                                         </p>
                                     )}
@@ -655,11 +655,11 @@ export const MetricsOverview: React.FC<MetricsOverviewProps> = ({ students, acti
                             </div>
                             <div className="flex items-center gap-2">
                                 {hasSignals && (
-                                    <span className="inline-flex items-center justify-center size-5 rounded-full bg-lab-coral text-[10px] font-black text-white tabular-nums">
+                                    <span className="inline-flex items-center justify-center size-5 rounded-full bg-duck-error text-[10px] font-black text-white tabular-nums">
                                         {signalStudents.length}
                                     </span>
                                 )}
-                                <ChevronDown size={18} className={`text-lab-muted transition-transform ${expandedSignaling ? 'rotate-180' : ''}`} />
+                                <ChevronDown size={18} className={`text-duck-ink/40 transition-transform ${expandedSignaling ? 'rotate-180' : ''}`} />
                             </div>
                         </button>
 
@@ -677,41 +677,41 @@ export const MetricsOverview: React.FC<MetricsOverviewProps> = ({ students, acti
                                             type="button"
                                             className={`w-full p-3 rounded-xl flex items-center justify-between group transition-colors text-left ${
                                                 tone === 'warning'
-                                                    ? 'bg-lab-gold border border-lab-gold hover:bg-lab-gold hover:text-lab-ink'
-                                                    : 'bg-lab-cream border border-lab-line hover:bg-lab-cream'
+                                                    ? 'bg-duck-error/10 border border-duck-error/30 hover:bg-duck-error/15 hover:text-duck-ink'
+                                                    : 'bg-duck-bgLight border border-duck-ink/15 hover:bg-duck-bgLight'
                                             }`}
                                             onClick={() => onSelectStudent?.(student)}
                                         >
                                             <div className="flex items-center gap-3 min-w-0">
                                                 <div className={`size-9 rounded-lg flex items-center justify-center flex-shrink-0 ${
-                                                    tone === 'warning' ? 'bg-lab-gold text-lab-ink' : 'bg-lab-creamDeep text-lab-muted'
+                                                    tone === 'warning' ? 'bg-duck-error text-white' : 'bg-duck-ink/10 text-duck-ink/60'
                                                 }`}>
                                                     <GraduationCap size={18} />
                                                 </div>
                                                 <div className="min-w-0">
-                                                    <div className="text-xs font-bold text-lab-ink truncate">{student.displayName}</div>
-                                                    <div className={`text-[10px] mt-0.5 ${tone === 'warning' ? 'text-lab-gold' : 'text-lab-muted'}`}>{reason}</div>
+                                                    <div className="text-xs font-bold text-duck-ink truncate">{student.displayName}</div>
+                                                    <div className={`text-[10px] mt-0.5 ${tone === 'warning' ? 'text-duck-error' : 'text-duck-ink/60'}`}>{reason}</div>
                                                 </div>
                                             </div>
                                             <div className="flex items-center gap-2 flex-shrink-0 ml-2">
                                                 <span className={`text-[10px] font-bold uppercase tracking-wider px-2 py-1 rounded-lg border ${
                                                     tone === 'warning'
-                                                        ? 'text-lab-gold bg-white border-lab-gold'
-                                                        : 'text-lab-muted bg-white border-lab-line'
+                                                        ? 'text-duck-error bg-white border-duck-error/30'
+                                                        : 'text-duck-ink/60 bg-white border-duck-ink/15'
                                                 }`}>
                                                     Begeleid
                                                 </span>
-                                                <ChevronRight size={14} className="text-lab-muted group-hover:translate-x-0.5 transition-transform" />
+                                                <ChevronRight size={14} className="text-duck-ink/40 group-hover:translate-x-0.5 transition-transform" />
                                             </div>
                                         </button>
                                     ))}
                                     {!hasSignals && (
                                         <div className="flex flex-col items-center py-6 gap-2">
-                                            <div className="size-10 rounded-full bg-lab-sage flex items-center justify-center">
-                                                <CheckCircle2 size={20} className="text-lab-sage" />
+                                            <div className="size-10 rounded-full bg-duck-acid flex items-center justify-center">
+                                                <CheckCircle2 size={20} className="text-duck-ink" />
                                             </div>
-                                            <p className="text-sm font-bold text-lab-muted text-balance text-center">Iedereen ligt op koers</p>
-                                            <p className="text-[11px] text-lab-muted text-center text-pretty max-w-xs">Geen leerlingen die extra aandacht nodig hebben op dit moment.</p>
+                                            <p className="text-sm font-bold text-duck-ink/60 text-balance text-center">Iedereen ligt op koers</p>
+                                            <p className="text-[11px] text-duck-ink/60 text-center text-pretty max-w-xs">Geen leerlingen die extra aandacht nodig hebben op dit moment.</p>
                                         </div>
                                     )}
                                 </motion.div>
@@ -722,25 +722,25 @@ export const MetricsOverview: React.FC<MetricsOverviewProps> = ({ students, acti
             })()}
 
             {/* SLO KERNDOELEN DIGITALE GELETTERDHEID - Collapsible */}
-            <div className="bg-white rounded-[2rem] shadow-xl shadow-lab-line/50 border border-lab-line overflow-hidden">
+            <div className="bg-white rounded-[2rem] shadow-xl shadow-duck-ink/5 border border-duck-ink/15 overflow-hidden">
                 <button
                     onClick={() => setExpandedSlo(!expandedSlo)}
                     className="w-full p-6 text-left flex items-center justify-between"
                 >
-                    <h3 className="text-sm font-black text-lab-ink uppercase tracking-widest flex items-center gap-2">
-                        <div className="w-2 h-2 bg-lab-coral rounded-full"></div>
+                    <h3 className="text-sm font-black text-duck-ink uppercase tracking-widest flex items-center gap-2">
+                        <div className="w-2 h-2 bg-duck-acid rounded-full"></div>
                         SLO Kerndoelen Digitale Geletterdheid
                     </h3>
                     <div className="flex items-center gap-4">
                         {!expandedSlo && (
                             <div className="hidden md:flex items-center gap-2">
-                                <div className="w-3 h-3 bg-lab-coral border border-lab-coral rounded"></div>
-                                <span className="text-[9px] font-bold text-lab-muted uppercase">Moeite</span>
-                                <div className="w-3 h-3 bg-lab-sage border border-lab-sage rounded ml-2"></div>
-                                <span className="text-[9px] font-bold text-lab-muted uppercase">Beheerst</span>
+                                <div className="w-3 h-3 bg-duck-error border border-duck-error rounded"></div>
+                                <span className="text-[9px] font-bold text-duck-ink/60 uppercase">Moeite</span>
+                                <div className="w-3 h-3 bg-duck-acid border border-duck-acid rounded ml-2"></div>
+                                <span className="text-[9px] font-bold text-duck-ink/60 uppercase">Beheerst</span>
                             </div>
                         )}
-                        <ChevronDown size={20} className={`text-lab-muted transition-transform ${expandedSlo ? 'rotate-180' : ''}`} />
+                        <ChevronDown size={20} className={`text-duck-ink/40 transition-transform ${expandedSlo ? 'rotate-180' : ''}`} />
                     </div>
                 </button>
 
@@ -753,26 +753,26 @@ export const MetricsOverview: React.FC<MetricsOverviewProps> = ({ students, acti
                             className="px-6 pb-6"
                         >
                             {/* EXPLANATION FOR NEW TEACHERS */}
-                            <div className="bg-lab-coral border border-lab-coral rounded-xl p-4 mb-6">
-                                <p className="text-sm text-lab-coral leading-relaxed">
-                                    <strong>📚 SLO Kerndoelen</strong> Dit overzicht toont de voortgang per officieel kerndoel Digitale Geletterdheid (SLO 2025).
-                                    Georganiseerd in <strong>3 domeinen</strong> met <strong>9 leerdoelen</strong>. <span className="text-lab-coral font-bold">Rood = extra aandacht nodig</span>.
+                            <div className="bg-duck-bgLight border border-duck-ink/15 rounded-xl p-4 mb-6">
+                                <p className="text-sm text-duck-ink/60 leading-relaxed">
+                                    <strong>SLO Kerndoelen</strong> Dit overzicht toont de voortgang per officieel kerndoel Digitale Geletterdheid (SLO 2025).
+                                    Georganiseerd in <strong>3 domeinen</strong> met <strong>9 leerdoelen</strong>. <span className="text-duck-error font-bold">Rood = extra aandacht nodig</span>.
                                 </p>
                             </div>
 
                             {conceptFilter && (
-                                <div className="mb-4 flex items-center justify-between bg-lab-coral p-2 rounded-xl border border-lab-coral">
-                                    <span className="text-xs font-bold text-lab-coral">Filter actief: {conceptFilter}</span>
-                                    <button onClick={onResetFilters} className="text-[9px] font-black text-lab-coral uppercase border border-lab-coral px-2 py-1 rounded-lg hover:bg-lab-coral hover:text-white transition-colors">Reset Filter</button>
+                                <div className="mb-4 flex items-center justify-between bg-duck-acid p-2 rounded-xl border border-duck-acid">
+                                    <span className="text-xs font-bold text-duck-ink">Filter actief: {conceptFilter}</span>
+                                    <button onClick={onResetFilters} className="text-[9px] font-black text-duck-ink uppercase border border-duck-ink/30 px-2 py-1 rounded-lg hover:bg-duck-ink hover:text-white transition-colors">Reset Filter</button>
                                 </div>
                             )}
 
                             {/* DOMAIN-GROUPED GOALS */}
                             <div className="space-y-6">
                                 {[
-                                    { id: 'practical', title: 'Praktische kennis & vaardigheden', description: 'Hoe leerlingen digitale technologie en digitale media functioneel inzetten', color: 'indigo' },
-                                    { id: 'creation', title: 'Ontwerpen & maken', description: 'Digitale producten creëren en programmeren', color: 'emerald' },
-                                    { id: 'digital-world', title: 'De gedigitaliseerde wereld', description: 'Participeren in de gedigitaliseerde wereld met kritisch bewustzijn', color: 'amber' },
+                                    { id: 'practical', title: 'Praktische kennis & vaardigheden', description: 'Hoe leerlingen digitale technologie en digitale media functioneel inzetten', color: 'ink' },
+                                    { id: 'creation', title: 'Ontwerpen & maken', description: 'Digitale producten creëren en programmeren', color: 'acid' },
+                                    { id: 'digital-world', title: 'De gedigitaliseerde wereld', description: 'Participeren in de gedigitaliseerde wereld met kritisch bewustzijn', color: 'gray' },
                                 ].map(domain => {
                                     const domainGoals = sloProgress.filter(g => g.domainId === domain.id);
                                     const avgDomainScore = domainGoals.length > 0
@@ -780,11 +780,11 @@ export const MetricsOverview: React.FC<MetricsOverviewProps> = ({ students, acti
                                         : 0;
 
                                     const colorClasses: Record<string, { bg: string; border: string; text: string; light: string }> = {
-                                        'indigo': { bg: 'bg-lab-coral', border: 'border-lab-coral', text: 'text-lab-coral', light: 'bg-lab-coral' },
-                                        'emerald': { bg: 'bg-lab-coral', border: 'border-lab-sage', text: 'text-lab-sage', light: 'bg-lab-sage' },
-                                        'amber': { bg: 'bg-lab-coral', border: 'border-lab-gold', text: 'text-lab-gold', light: 'bg-lab-gold' }
+                                        'ink': { bg: 'bg-duck-ink', border: 'border-duck-ink/20', text: 'text-duck-ink', light: 'bg-duck-bgLight' },
+                                        'acid': { bg: 'bg-duck-acid', border: 'border-duck-acid', text: 'text-duck-ink', light: 'bg-duck-acid/20' },
+                                        'gray': { bg: 'bg-duck-gray', border: 'border-duck-gray', text: 'text-duck-ink', light: 'bg-duck-gray/30' }
                                     };
-                                    const colors = colorClasses[domain.color] || colorClasses['indigo'];
+                                    const colors = colorClasses[domain.color] || colorClasses['ink'];
 
                                     return (
                                         <div key={domain.id} className={`rounded-2xl border ${colors.border} overflow-hidden`}>
@@ -794,14 +794,14 @@ export const MetricsOverview: React.FC<MetricsOverviewProps> = ({ students, acti
                                                     <div className={`w-3 h-3 ${colors.bg} rounded-full`}></div>
                                                     <div>
                                                         <h4 className={`text-xs font-black uppercase tracking-wider ${colors.text}`}>{domain.title}</h4>
-                                                        <p className="text-[10px] text-lab-muted">{domain.description}</p>
+                                                        <p className="text-[10px] text-duck-ink/60">{domain.description}</p>
                                                     </div>
                                                 </div>
                                                 <div className="flex items-center gap-2">
-                                                    <span className={`text-lg font-black ${avgDomainScore < 50 ? 'text-lab-coral' : avgDomainScore >= 75 ? 'text-lab-sage' : 'text-lab-gold'}`}>
+                                                    <span className={`text-lg font-black ${avgDomainScore < 50 ? 'text-duck-error' : avgDomainScore >= 75 ? 'text-duck-ink' : 'text-duck-ink/60'}`}>
                                                         {avgDomainScore}%
                                                     </span>
-                                                    <span className="text-[9px] font-bold text-lab-muted uppercase">gemiddeld</span>
+                                                    <span className="text-[9px] font-bold text-duck-ink/60 uppercase">gemiddeld</span>
                                                 </div>
                                             </div>
 
@@ -814,20 +814,20 @@ export const MetricsOverview: React.FC<MetricsOverviewProps> = ({ students, acti
                                                             <div
                                                                 key={item.id}
                                                                 onClick={() => onFilterConcept?.(item.title)}
-                                                                className={`p-3 rounded-xl bg-lab-cream border transition-all cursor-pointer active:scale-95 ${conceptFilter === item.title ? 'border-lab-coral ring-2 ring-lab-coral/20' : 'border-lab-line hover:border-lab-line'}`}
+                                                                className={`p-3 rounded-xl bg-duck-bgLight border transition-all cursor-pointer active:scale-95 ${conceptFilter === item.title ? 'border-duck-acid ring-2 ring-duck-acid/20' : 'border-duck-ink/15 hover:border-duck-ink/30'}`}
                                                             >
                                                                 <div className="flex items-center gap-2 mb-2">
-                                                                    <div className={`w-7 h-7 rounded-lg flex items-center justify-center ${item.score < 50 ? 'bg-lab-coral text-white' : item.score >= 75 ? 'bg-lab-sage text-white' : 'bg-lab-gold text-lab-ink'}`}>
+                                                                    <div className={`w-7 h-7 rounded-lg flex items-center justify-center ${item.score < 50 ? 'bg-duck-error text-white' : item.score >= 75 ? 'bg-duck-acid text-duck-ink' : 'bg-duck-ink/10 text-duck-ink'}`}>
                                                                         <Icon size={14} />
                                                                     </div>
-                                                                    <span className={`text-lg font-black ${item.score < 50 ? 'text-lab-coral' : item.score >= 75 ? 'text-lab-sage' : 'text-lab-gold'}`}>
+                                                                    <span className={`text-lg font-black ${item.score < 50 ? 'text-duck-error' : item.score >= 75 ? 'text-duck-ink' : 'text-duck-ink/60'}`}>
                                                                         {item.score}%
                                                                     </span>
                                                                 </div>
-                                                                <div className="text-[10px] font-bold text-lab-muted mb-0.5 line-clamp-1">{item.title}</div>
-                                                                <div className="text-[9px] text-lab-muted line-clamp-1">{item.description}</div>
+                                                                <div className="text-[10px] font-bold text-duck-ink/60 mb-0.5 line-clamp-1">{item.title}</div>
+                                                                <div className="text-[9px] text-duck-ink/40 line-clamp-1">{item.description}</div>
                                                                 {item.score < 50 && (
-                                                                    <div className="mt-2 text-[8px] font-bold text-lab-coral flex items-center gap-1">
+                                                                    <div className="mt-2 text-[8px] font-bold text-duck-error flex items-center gap-1">
                                                                         <AlertTriangle size={8} />
                                                                         Aandacht nodig
                                                                     </div>
@@ -848,13 +848,13 @@ export const MetricsOverview: React.FC<MetricsOverviewProps> = ({ students, acti
 
             {/* CLASS COMPARISON CHART - Collapsible */}
             {classStats.length > 1 && (
-                <div className="bg-white rounded-[2rem] shadow-xl shadow-lab-line/50 border border-lab-line overflow-hidden">
+                <div className="bg-white rounded-[2rem] shadow-xl shadow-duck-ink/5 border border-duck-ink/15 overflow-hidden">
                     <button
                         onClick={() => setExpandedComparison(!expandedComparison)}
                         className="w-full p-6 text-left flex items-center justify-between"
                     >
-                        <h3 className="text-sm font-black text-lab-muted uppercase tracking-widest">Klas Vergelijking (Gem. XP)</h3>
-                        <ChevronDown size={20} className={`text-lab-muted transition-transform ${expandedComparison ? 'rotate-180' : ''}`} />
+                        <h3 className="text-sm font-black text-duck-ink/60 uppercase tracking-widest">Klas Vergelijking (Gem. XP)</h3>
+                        <ChevronDown size={20} className={`text-duck-ink/40 transition-transform ${expandedComparison ? 'rotate-180' : ''}`} />
                     </button>
 
                     <AnimatePresence>
@@ -871,13 +871,13 @@ export const MetricsOverview: React.FC<MetricsOverviewProps> = ({ students, acti
                                         const height = maxXP > 0 ? (cls.avgXP / maxXP) * 100 : 0;
                                         return (
                                             <div key={cls.name} className="flex-1 flex flex-col items-center gap-2 group">
-                                                <div className="opacity-0 group-hover:opacity-100 transition-opacity bg-lab-ink text-white text-[10px] font-bold px-2 py-1 rounded mb-1">{cls.avgXP} XP</div>
+                                                <div className="opacity-0 group-hover:opacity-100 transition-opacity bg-duck-ink text-white text-[10px] font-bold px-2 py-1 rounded mb-1">{cls.avgXP} XP</div>
                                                 <div
-                                                    className={`w-full rounded-t-xl transition-all ${i % 3 === 0 ? 'bg-lab-coral' : i % 3 === 1 ? 'bg-lab-coral' : 'bg-lab-coral'
+                                                    className={`w-full rounded-t-xl transition-all ${i % 3 === 0 ? 'bg-duck-acid' : i % 3 === 1 ? 'bg-duck-ink' : 'bg-duck-gray'
                                                         } hover:brightness-110 shadow-sm`}
                                                     style={{ height: `${height}%`, minHeight: '8px' }}
                                                 ></div>
-                                                <div className="text-[10px] font-black text-lab-muted uppercase">{cls.name}</div>
+                                                <div className="text-[10px] font-black text-duck-ink/60 uppercase">{cls.name}</div>
                                             </div>
                                         );
                                     })}

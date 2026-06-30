@@ -188,7 +188,7 @@ export const TeacherSetupChecklist: React.FC<TeacherSetupChecklistProps> = ({ on
     if (dismissed) return null;
 
     return (
-        <div className="overflow-hidden rounded-xl border border-lab-line bg-lab-paper shadow-sm">
+        <div className="overflow-hidden rounded-xl border border-duck-ink/15 bg-white shadow-sm">
             {/* Header */}
             <div className="flex items-center justify-between gap-3 px-4 py-3 md:px-5">
                 <div className="flex items-center gap-3 min-w-0">
@@ -238,22 +238,22 @@ export const TeacherSetupChecklist: React.FC<TeacherSetupChecklistProps> = ({ on
             </div>
 
             {/* Items */}
-            <div className={collapsed ? 'border-t border-lab-line bg-lab-cream/35 px-4 py-3 md:px-5' : ''}>
+            <div className={collapsed ? 'border-t border-duck-ink/15 bg-duck-bgLight px-4 py-3 md:px-5' : ''}>
                 {collapsed && !allDone && (
-                    <p className="mb-2 text-[11px] font-black uppercase text-lab-muted">Volgende stappen</p>
+                    <p className="mb-2 text-[11px] font-black uppercase text-duck-ink/60">Volgende stappen</p>
                 )}
-                <ul className={collapsed ? 'grid gap-2 md:grid-cols-2' : 'divide-y divide-lab-line'}>
+                <ul className={collapsed ? 'grid gap-2 md:grid-cols-2' : 'divide-y divide-duck-ink/10'}>
                     {visibleItems.map((item) => {
                         const isDone = completed.has(item.id);
                         return (
-                            <li key={item.id} className={`${collapsed ? 'flex items-start gap-3 rounded-lg border border-lab-line bg-lab-paper p-3' : 'flex items-start gap-4 p-3 md:p-4'} transition-colors hover:bg-lab-cream/45`}>
+                            <li key={item.id} className={`${collapsed ? 'flex items-start gap-3 rounded-lg border border-duck-ink/15 bg-white p-3' : 'flex items-start gap-4 p-3 md:p-4'} transition-colors hover:bg-duck-bgLight`}>
                                 <button
                                     type="button"
                                     onClick={() => toggle(item.id)}
                                     className={`flex size-6 flex-shrink-0 items-center justify-center rounded-full border-2 transition-all ${
                                         isDone
-                                            ? 'border-lab-sage bg-lab-sage text-white'
-                                            : 'border-lab-line hover:border-lab-primary hover:bg-lab-primary/10'
+                                            ? 'border-duck-acid bg-duck-acid text-duck-ink'
+                                            : 'border-duck-ink/15 hover:border-duck-ink hover:bg-duck-ink/5'
                                     }`}
                                     aria-pressed={isDone}
                                     aria-label={isDone ? `${item.title} — afgerond, klik om ongedaan te maken` : `${item.title} — markeer als afgerond`}
@@ -261,17 +261,17 @@ export const TeacherSetupChecklist: React.FC<TeacherSetupChecklistProps> = ({ on
                                     {isDone && <Check size={14} strokeWidth={3} />}
                                 </button>
                                 <div className="min-w-0 flex-1">
-                                    <h3 className={`mb-1 text-sm font-black ${isDone ? 'text-lab-muted line-through' : 'text-lab-ink'}`}>
+                                    <h3 className={`mb-1 text-sm font-black ${isDone ? 'text-duck-ink/50 line-through' : 'text-duck-ink'}`}>
                                         {item.title}
                                     </h3>
-                                    <p className={`mb-2 text-xs leading-relaxed ${collapsed ? 'line-clamp-1' : ''} ${isDone ? 'text-lab-muted' : 'text-lab-muted'}`}>
+                                    <p className={`mb-2 text-xs leading-relaxed ${collapsed ? 'line-clamp-1' : ''} text-duck-ink/60`}>
                                         {item.description}
                                     </p>
                                     {!isDone && (item.actionHref || item.actionOnClick) && (
                                         item.actionHref ? (
                                             <a
                                                 href={item.actionHref}
-                                                className="inline-flex items-center gap-1 text-xs font-black text-lab-primary hover:underline"
+                                                className="inline-flex items-center gap-1 text-xs font-black text-duck-ink hover:underline"
                                             >
                                                 {item.actionLabel} →
                                             </a>
@@ -279,7 +279,7 @@ export const TeacherSetupChecklist: React.FC<TeacherSetupChecklistProps> = ({ on
                                             <button
                                                 type="button"
                                                 onClick={item.actionOnClick}
-                                                className="inline-flex items-center gap-1 text-xs font-black text-lab-primary hover:underline"
+                                                className="inline-flex items-center gap-1 text-xs font-black text-duck-ink hover:underline"
                                             >
                                                 {item.actionLabel} →
                                             </button>
@@ -294,17 +294,17 @@ export const TeacherSetupChecklist: React.FC<TeacherSetupChecklistProps> = ({ on
 
             {/* Completion footer */}
             {allDone && !collapsed && (
-                <div className="border-t border-lab-line bg-lab-sage/10 p-5 text-center">
-                    <p className="mb-2 text-sm font-bold text-lab-ink">
+                <div className="border-t border-duck-ink/15 bg-duck-bgLight p-5 text-center">
+                    <p className="mb-2 text-sm font-bold text-duck-ink">
                         Je hebt alle startstappen afgerond.
                     </p>
-                    <p className="mb-3 text-xs text-lab-muted">
+                    <p className="mb-3 text-xs text-duck-ink/60">
                         Tijd om je eerste les met digitale geletterdheid te geven. Veel plezier!
                     </p>
                     <button
                         type="button"
                         onClick={handleDismiss}
-                        className="inline-flex min-h-11 items-center justify-center rounded-lg bg-lab-sage px-4 py-2 text-xs font-black text-white transition-colors hover:bg-lab-teal hover:text-white"
+                        className="inline-flex min-h-11 items-center justify-center rounded-full bg-duck-acid px-4 py-2 text-xs font-black text-duck-ink transition-colors hover:bg-duck-ink hover:text-duck-acid"
                     >
                         Checklist sluiten
                     </button>

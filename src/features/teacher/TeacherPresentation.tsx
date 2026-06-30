@@ -35,7 +35,7 @@ const WEEKS_DATA: WeekConfig[] = [
     {
         id: 'week-1',
         title: 'Week 1: Digital Master',
-        theme: '#0B453F', // Blue
+        theme: '#202023', // Blue
         description: 'De basis voor je digitale leven.',
         slides: [
             {
@@ -49,7 +49,7 @@ const WEEKS_DATA: WeekConfig[] = [
                 title: 'Waarom doen we dit?',
                 subtitle: 'Van chaos naar controle',
                 content: (
-                    <div className="space-y-6 text-xl text-lab-teal max-w-4xl mx-auto leading-relaxed">
+                    <div className="space-y-6 text-xl text-white/80 max-w-4xl mx-auto leading-relaxed">
                         <p>
                             Je iPad is je krachtigste tool op school. Maar gebruik jij hem, of gebruikt hij jou?
                             Zonder skills is het gewoon een duur stuk glas.
@@ -84,7 +84,7 @@ const WEEKS_DATA: WeekConfig[] = [
                         </div>
                     </div>
                 ),
-                bgColor: 'from-lab-ink to-lab-teal',
+                bgColor: 'from-duck-ink to-duck-ink',
             },
             {
                 type: 'goals',
@@ -106,13 +106,13 @@ const WEEKS_DATA: WeekConfig[] = [
                                 key={i}
                                 className="flex items-start gap-4"
                             >
-                                <Target className="min-w-8 text-lab-sage mt-1" />
+                                <Target className="min-w-8 text-duck-acid mt-1" />
                                 <span>{goal}</span>
                             </motion.li>
                         ))}
                     </ul>
                 ),
-                bgColor: 'from-lab-teal to-lab-ink',
+                bgColor: 'from-duck-ink to-duck-ink',
             },
             {
                 type: 'preview',
@@ -121,26 +121,26 @@ const WEEKS_DATA: WeekConfig[] = [
                 content: (
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-6xl mx-auto">
                         {[
-                            { title: 'Magister Meester', icon: <ShieldAlert />, color: 'bg-lab-coral', desc: 'Beheers je cijfers' },
-                            { title: 'Cloud Commander', icon: <Database />, color: 'bg-lab-coral', desc: 'OneDrive expert' },
-                            { title: 'Word Expert', icon: <Pencil />, color: 'bg-lab-coral', desc: 'Schrijf als een pro' },
-                            { title: 'Presentatie Expert', icon: <Play />, color: 'bg-lab-coral', desc: 'Presenteer als een baas' },
+                            { title: 'Magister Meester', icon: <ShieldAlert />, color: 'bg-duck-acid', desc: 'Beheers je cijfers' },
+                            { title: 'Cloud Commander', icon: <Database />, color: 'bg-duck-acid', desc: 'OneDrive expert' },
+                            { title: 'Word Expert', icon: <Pencil />, color: 'bg-duck-acid', desc: 'Schrijf als een pro' },
+                            { title: 'Presentatie Expert', icon: <Play />, color: 'bg-duck-acid', desc: 'Presenteer als een baas' },
                         ].map((m, i) => (
                             <motion.div
                                 key={i}
                                 initial={{ opacity: 0, y: 20 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ delay: 0.2 * i }}
-                                className={`p-6 rounded-2xl ${m.color} bg-opacity-90 backdrop-blur-xl border border-white/20 text-white flex flex-col items-center text-center shadow-xl transform hover:scale-105 transition-transform`}
+                                className={`p-6 rounded-2xl ${m.color} backdrop-blur-xl border border-white/20 text-duck-ink flex flex-col items-center text-center shadow-xl transform hover:scale-105 transition-transform`}
                             >
-                                <div className="mb-4 p-3 bg-white/20 rounded-full">{m.icon}</div>
+                                <div className="mb-4 p-3 bg-duck-ink/10 rounded-full">{m.icon}</div>
                                 <h3 className="font-bold text-lg mb-1">{m.title}</h3>
                                 <p className="text-sm opacity-80">{m.desc}</p>
                             </motion.div>
                         ))}
                     </div>
                 ),
-                bgColor: 'from-lab-ink to-lab-ink',
+                bgColor: 'from-duck-ink to-duck-ink',
             },
             {
                 type: 'disclaimer',
@@ -148,8 +148,8 @@ const WEEKS_DATA: WeekConfig[] = [
                 subtitle: 'Sommige functies zijn nog in ontwikkeling',
                 content: (
                     <div className="max-w-4xl mx-auto space-y-8">
-                        <div className="bg-lab-coral/20 border-2 border-lab-gold/50 rounded-3xl p-8 backdrop-blur-sm">
-                            <p className="text-2xl text-lab-gold font-bold leading-relaxed mb-6">
+                        <div className="bg-duck-acid/20 border-2 border-duck-acid/50 rounded-3xl p-8 backdrop-blur-sm">
+                            <p className="text-2xl text-duck-acid font-bold leading-relaxed mb-6">
                                 Dit platform is nieuw. Werkt iets nog niet perfect? 
                                 Geen probleem — dat hoort bij het leren!
                             </p>
@@ -176,7 +176,7 @@ const WEEKS_DATA: WeekConfig[] = [
                         </p>
                     </div>
                 ),
-                bgColor: 'from-lab-gold to-lab-ink',
+                bgColor: 'from-duck-ink to-duck-ink',
             },
             {
                 type: 'start',
@@ -188,7 +188,7 @@ const WEEKS_DATA: WeekConfig[] = [
                         <motion.button
                             whileHover={{ scale: 1.1 }}
                             whileTap={{ scale: 0.95 }}
-                            className="bg-white text-lab-teal px-12 py-4 rounded-full font-black text-2xl shadow-glow hover:shadow-xl transition-all"
+                            className="bg-duck-acid text-duck-ink px-12 py-4 rounded-full font-black text-2xl shadow-glow hover:shadow-xl transition-all"
                         >
                             Start de missies
                         </motion.button>
@@ -201,21 +201,21 @@ const WEEKS_DATA: WeekConfig[] = [
     {
         id: 'week-2',
         title: 'Week 2: Creative AI',
-        theme: '#D97848', // Pink
+        theme: '#e1ff01', // Pink
         description: 'Bouw, Design & Codeer met AI.',
         slides: [
             {
                 type: 'title',
                 title: 'Week 2: Creative AI 🎨',
                 subtitle: 'Van consument naar creator.',
-                bgColor: 'from-lab-coral to-lab-teal',
+                bgColor: 'from-duck-ink to-duck-ink',
             },
             {
                 type: 'context',
                 title: 'De Toekomst is NIET saai',
                 subtitle: 'AI gaat je baan niet afpakken. Iemand die AI gebruikt wel.',
                 content: (
-                    <div className="space-y-8 text-xl text-lab-coral max-w-5xl mx-auto leading-relaxed">
+                    <div className="space-y-8 text-xl text-white/80 max-w-5xl mx-auto leading-relaxed">
                         <p className="text-2xl">
                             Vroeger moest je jaren oefenen om iets moois te maken.
                             Nu heb je een superkracht in je broekzak. 🧞‍♂️
@@ -277,13 +277,13 @@ const WEEKS_DATA: WeekConfig[] = [
                                 key={i}
                                 className="flex items-start gap-4"
                             >
-                                <Sparkles className="min-w-8 text-lab-gold mt-1" />
+                                <Sparkles className="min-w-8 text-duck-acid mt-1" />
                                 <span className="text-white/90">{goal}</span>
                             </motion.li>
                         ))}
                     </ul>
                 ),
-                bgColor: 'from-fuchsia-900 to-lab-ink',
+                bgColor: 'from-duck-ink to-duck-ink',
             },
             {
                 type: 'preview',
@@ -295,21 +295,21 @@ const WEEKS_DATA: WeekConfig[] = [
                             {
                                 title: 'Verhalen Ontwerper',
                                 icon: <Feather size={32} />,
-                                color: 'from-lab-coral to-lab-coral',
+                                color: 'from-duck-ink to-duck-ink',
                                 desc: 'Maak je eigen prentenboek met AI-gegenereerde illustraties',
                                 image: 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=400&q=80'
                             },
                             {
                                 title: 'Game Programmeur',
                                 icon: <Gamepad2 size={32} />,
-                                color: 'from-lab-coral to-lab-teal',
+                                color: 'from-duck-ink to-duck-ink',
                                 desc: 'Bouw Super Jump - een platformer die jij ontwerpt',
                                 image: 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=400&q=80'
                             },
                             {
                                 title: 'AI Trainer',
                                 icon: <Cpu size={32} />,
-                                color: 'from-lab-coral to-lab-teal',
+                                color: 'from-duck-ink to-duck-ink',
                                 desc: 'Train een neuraal netwerk om objecten te herkennen',
                                 image: 'https://images.unsplash.com/photo-1677442136019-21780ecad995?w=400&q=80'
                             },
@@ -336,7 +336,7 @@ const WEEKS_DATA: WeekConfig[] = [
                         ))}
                     </div>
                 ),
-                bgColor: 'from-lab-ink to-lab-coral',
+                bgColor: 'from-duck-ink to-duck-ink',
             },
             {
                 type: 'disclaimer',
@@ -344,9 +344,9 @@ const WEEKS_DATA: WeekConfig[] = [
                 subtitle: 'Sommige functies zijn nog in ontwikkeling',
                 content: (
                     <div className="max-w-4xl mx-auto space-y-8">
-                        <div className="bg-lab-coral/20 border-2 border-lab-gold/50 rounded-3xl p-8 backdrop-blur-sm">
-                            <p className="text-2xl text-lab-gold font-bold leading-relaxed mb-6">
-                                Dit platform is nieuw. Werkt iets nog niet perfect? 
+                        <div className="bg-duck-acid/20 border-2 border-duck-acid/50 rounded-3xl p-8 backdrop-blur-sm">
+                            <p className="text-2xl text-duck-acid font-bold leading-relaxed mb-6">
+                                Dit platform is nieuw. Werkt iets nog niet perfect?
                                 Geen probleem — dat hoort bij het leren!
                             </p>
                             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
@@ -372,7 +372,7 @@ const WEEKS_DATA: WeekConfig[] = [
                         </p>
                     </div>
                 ),
-                bgColor: 'from-lab-gold to-lab-ink',
+                bgColor: 'from-duck-ink to-duck-ink',
             },
             {
                 type: 'start',
@@ -383,34 +383,34 @@ const WEEKS_DATA: WeekConfig[] = [
                         <motion.button
                             whileHover={{ scale: 1.1 }}
                             whileTap={{ scale: 0.95 }}
-                            className="bg-gradient-to-r from-lab-coral to-lab-teal text-white px-12 py-4 rounded-full font-black text-2xl shadow-glow hover:shadow-xl transition-all border-4 border-white/20"
+                            className="bg-duck-acid text-duck-ink px-12 py-4 rounded-full font-black text-2xl shadow-glow hover:shadow-xl transition-all border-4 border-duck-ink/20"
                         >
                             Aan de slag
                         </motion.button>
                     </div>
                 ),
-                bgColor: 'from-lab-coral to-lab-teal',
+                bgColor: 'from-duck-ink to-duck-ink',
             }
         ]
     },
     {
         id: 'week-3',
         title: 'Week 3: Social & Safety',
-        theme: '#0B453F', // Violet
+        theme: '#202023', // Violet
         description: 'Mediawijsheid en online veiligheid.',
         slides: [
             {
                 type: 'title',
                 title: 'Week 3: Social & Safety 🛡️',
                 subtitle: 'Weet wat je deelt, weet wie je bent.',
-                bgColor: 'from-lab-teal to-lab-ink',
+                bgColor: 'from-duck-ink to-duck-ink',
             },
             {
                 type: 'context',
                 title: 'Ben jij het product?',
                 subtitle: 'Als het gratis is, betaal je met je data.',
                 content: (
-                    <div className="space-y-6 text-xl text-lab-teal max-w-4xl mx-auto leading-relaxed">
+                    <div className="space-y-6 text-xl text-white/80 max-w-4xl mx-auto leading-relaxed">
                         <p>
                             We scrollen, liken en delen elke dag. Maar wie kijkt er mee?
                             Bedrijven bouwen profielen van jou. En screenshots van 'privé' grappen zijn zo gemaakt.
@@ -420,7 +420,7 @@ const WEEKS_DATA: WeekConfig[] = [
                         </p>
                     </div>
                 ),
-                bgColor: 'from-lab-ink to-lab-teal',
+                bgColor: 'from-duck-ink to-duck-ink',
             },
             {
                 type: 'goals',
@@ -441,13 +441,13 @@ const WEEKS_DATA: WeekConfig[] = [
                                 key={i}
                                 className="flex items-start gap-4"
                             >
-                                <ShieldCheck className="min-w-8 text-lab-coral mt-1" />
+                                <ShieldCheck className="min-w-8 text-duck-acid mt-1" />
                                 <span>{goal}</span>
                             </motion.li>
                         ))}
                     </ul>
                 ),
-                bgColor: 'from-lab-teal to-lab-ink',
+                bgColor: 'from-duck-ink to-duck-ink',
             },
             {
                 type: 'preview',
@@ -456,15 +456,15 @@ const WEEKS_DATA: WeekConfig[] = [
                 content: (
                     <div className="grid grid-cols-2 gap-8 max-w-4xl mx-auto">
                         {[
-                            { title: 'AI Spiegel', icon: <UserCheck />, color: 'bg-lab-teal', desc: 'Zie jezelf zoals adverteerders jou zien' },
-                            { title: 'Online Beschermer', icon: <AlertCircle />, color: 'bg-lab-coral', desc: 'Los conflicten in de groepsapp op' },
+                            { title: 'AI Spiegel', icon: <UserCheck />, color: 'bg-duck-acid', desc: 'Zie jezelf zoals adverteerders jou zien' },
+                            { title: 'Online Beschermer', icon: <AlertCircle />, color: 'bg-duck-acid', desc: 'Los conflicten in de groepsapp op' },
                         ].map((m, i) => (
                             <motion.div
                                 key={i}
                                 initial={{ opacity: 0, x: i % 2 === 0 ? -50 : 50 }}
                                 animate={{ opacity: 1, x: 0 }}
                                 transition={{ delay: 0.2 * i }}
-                                className={`p-8 rounded-3xl ${m.color} bg-opacity-90 backdrop-blur-xl border border-white/20 text-white flex flex-col items-center text-center shadow-2xl`}
+                                className={`p-8 rounded-3xl ${m.color} backdrop-blur-xl border border-duck-ink/20 text-duck-ink flex flex-col items-center text-center shadow-2xl`}
                             >
                                 <div className="mb-6 p-4 bg-white/20 rounded-full shadow-inner">{m.icon}</div>
                                 <h3 className="font-bold text-2xl mb-2">{m.title}</h3>
@@ -473,7 +473,7 @@ const WEEKS_DATA: WeekConfig[] = [
                         ))}
                     </div>
                 ),
-                bgColor: 'from-lab-ink to-lab-teal',
+                bgColor: 'from-duck-ink to-duck-ink',
             },
             {
                 type: 'disclaimer',
@@ -481,9 +481,9 @@ const WEEKS_DATA: WeekConfig[] = [
                 subtitle: 'Sommige functies zijn nog in ontwikkeling',
                 content: (
                     <div className="max-w-4xl mx-auto space-y-8">
-                        <div className="bg-lab-coral/20 border-2 border-lab-gold/50 rounded-3xl p-8 backdrop-blur-sm">
-                            <p className="text-2xl text-lab-gold font-bold leading-relaxed mb-6">
-                                Dit platform is nieuw. Werkt iets nog niet perfect? 
+                        <div className="bg-duck-acid/20 border-2 border-duck-acid/50 rounded-3xl p-8 backdrop-blur-sm">
+                            <p className="text-2xl text-duck-acid font-bold leading-relaxed mb-6">
+                                Dit platform is nieuw. Werkt iets nog niet perfect?
                                 Geen probleem — dat hoort bij het leren!
                             </p>
                             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
@@ -509,21 +509,21 @@ const WEEKS_DATA: WeekConfig[] = [
                         </p>
                     </div>
                 ),
-                bgColor: 'from-lab-gold to-lab-ink',
+                bgColor: 'from-duck-ink to-duck-ink',
             },
         ]
     },
     {
         id: 'week-4',
         title: 'Week 4: The Project',
-        theme: '#5F947D', // Green
+        theme: '#e1ff01', // Green
         description: 'Je meesterwerk.',
         slides: [
             {
                 type: 'title',
                 title: 'Week 4: The Project 🚀',
                 subtitle: 'Tijd om alles samen te brengen.',
-                bgColor: 'from-lab-sage to-lab-sage',
+                bgColor: 'from-duck-ink to-duck-ink',
             },
             {
                 type: 'goals',
@@ -544,13 +544,13 @@ const WEEKS_DATA: WeekConfig[] = [
                                 key={i}
                                 className="flex items-start gap-4"
                             >
-                                <Rocket className="min-w-8 text-lab-sage mt-1" />
+                                <Rocket className="min-w-8 text-duck-acid mt-1" />
                                 <span>{goal}</span>
                             </motion.li>
                         ))}
                     </ul>
                 ),
-                bgColor: 'from-lab-sage to-lab-ink',
+                bgColor: 'from-duck-ink to-duck-ink',
             },
             {
                 type: 'preview',
@@ -559,17 +559,17 @@ const WEEKS_DATA: WeekConfig[] = [
                 content: (
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-6xl mx-auto">
                         {[
-                            { title: 'De Blauwdruk', icon: <Map />, color: 'bg-lab-muted', desc: 'Projectplan' },
-                            { title: 'De Visie', icon: <Lightbulb />, color: 'bg-lab-coral', desc: 'Moodboard & Pitch' },
-                            { title: 'De Ethische Raad', icon: <Scale />, color: 'bg-lab-coral', desc: 'Slimme Keuzes' },
-                            { title: 'De Lancering', icon: <Rocket />, color: 'bg-lab-sage', desc: 'Nu live!' },
+                            { title: 'De Blauwdruk', icon: <Map />, color: 'bg-duck-ink/5', desc: 'Projectplan' },
+                            { title: 'De Visie', icon: <Lightbulb />, color: 'bg-duck-acid', desc: 'Moodboard & Pitch' },
+                            { title: 'De Ethische Raad', icon: <Scale />, color: 'bg-duck-acid', desc: 'Slimme Keuzes' },
+                            { title: 'De Lancering', icon: <Rocket />, color: 'bg-duck-acid', desc: 'Nu live!' },
                         ].map((m, i) => (
                             <motion.div
                                 key={i}
                                 initial={{ opacity: 0, y: 30 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ delay: 0.1 * i }}
-                                className={`p-4 rounded-xl ${m.color} bg-opacity-90 backdrop-blur-xl border border-white/20 text-white flex flex-col items-center text-center shadow-lg`}
+                                className={`p-4 rounded-xl ${m.color} backdrop-blur-xl border border-duck-ink/15 text-duck-ink flex flex-col items-center text-center shadow-lg`}
                             >
                                 <div className="mb-3 p-2 bg-white/20 rounded-full">{m.icon}</div>
                                 <h3 className="font-bold text-base mb-1">{m.title}</h3>
@@ -578,7 +578,7 @@ const WEEKS_DATA: WeekConfig[] = [
                         ))}
                     </div>
                 ),
-                bgColor: 'from-lab-ink to-lab-sage',
+                bgColor: 'from-duck-ink to-duck-ink',
             },
             {
                 type: 'disclaimer',
@@ -586,9 +586,9 @@ const WEEKS_DATA: WeekConfig[] = [
                 subtitle: 'Sommige functies zijn nog in ontwikkeling',
                 content: (
                     <div className="max-w-4xl mx-auto space-y-8">
-                        <div className="bg-lab-coral/20 border-2 border-lab-gold/50 rounded-3xl p-8 backdrop-blur-sm">
-                            <p className="text-2xl text-lab-gold font-bold leading-relaxed mb-6">
-                                Dit platform is nieuw. Werkt iets nog niet perfect? 
+                        <div className="bg-duck-acid/20 border-2 border-duck-acid/50 rounded-3xl p-8 backdrop-blur-sm">
+                            <p className="text-2xl text-duck-acid font-bold leading-relaxed mb-6">
+                                Dit platform is nieuw. Werkt iets nog niet perfect?
                                 Geen probleem — dat hoort bij het leren!
                             </p>
                             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
@@ -614,7 +614,7 @@ const WEEKS_DATA: WeekConfig[] = [
                         </p>
                     </div>
                 ),
-                bgColor: 'from-lab-gold to-lab-ink',
+                bgColor: 'from-duck-ink to-duck-ink',
             },
         ]
     }
@@ -674,7 +674,7 @@ export const TeacherPresentation = ({ activeWeekId, onClose }: { activeWeekId: s
                         <button
                             key={week.id}
                             onClick={() => { setSelectedWeekId(week.id); setCurrentSlideIndex(0); }}
-                            className={`px-4 py-2 rounded-full text-sm font-bold transition-all ${selectedWeekId === week.id ? 'bg-white text-black' : 'bg-white/10 text-white/50 hover:bg-white/20'}`}
+                            className={`px-4 py-2 rounded-full text-sm font-bold transition-all ${selectedWeekId === week.id ? 'bg-duck-acid text-duck-ink' : 'bg-white/10 text-white/50 hover:bg-white/20'}`}
                         >
                             {week.title}
                         </button>
@@ -684,7 +684,7 @@ export const TeacherPresentation = ({ activeWeekId, onClose }: { activeWeekId: s
                     <button onClick={toggleFullscreen} className="p-2 bg-white/10 hover:bg-white/20 rounded-full transition-colors">
                         <Maximize2 size={24} />
                     </button>
-                    <button onClick={onClose} className="p-2 bg-lab-coral/80 hover:bg-lab-coral hover:text-white rounded-full transition-colors">
+                    <button onClick={onClose} className="p-2 bg-duck-error/80 hover:bg-duck-error text-white rounded-full transition-colors">
                         <X size={24} />
                     </button>
                 </div>
@@ -698,7 +698,7 @@ export const TeacherPresentation = ({ activeWeekId, onClose }: { activeWeekId: s
                     animate={{ opacity: 1, scale: 1 }}
                     exit={{ opacity: 0 }}
                     transition={{ duration: 0.6, ease: "circOut" }}
-                    className={`flex-1 flex flex-col items-center justify-center relative p-12 bg-gradient-to-br ${currentSlide.bgColor || 'from-lab-ink to-black'}`}
+                    className={`flex-1 flex flex-col items-center justify-center relative p-12 bg-gradient-to-br ${currentSlide.bgColor || 'from-duck-ink to-duck-ink'}`}
                 >
                     {/* Background Noise/Texture */}
                     <div className="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] mix-blend-overlay pointer-events-none"></div>
@@ -831,15 +831,15 @@ export const TeacherPresentation = ({ activeWeekId, onClose }: { activeWeekId: s
                             onClick={(e) => e.stopPropagation()}
                         >
                             <div className="text-center">
-                                <span className="inline-block px-4 py-1.5 bg-lab-teal text-white rounded-full font-black text-xs uppercase tracking-widest mb-4">
+                                <span className="inline-block px-4 py-1.5 bg-duck-acid text-duck-ink rounded-full font-black text-xs uppercase tracking-widest mb-4">
                                     Directe Toegang
                                 </span>
-                                <h2 className="text-lab-ink text-4xl font-black mb-1 tracking-tight">Klaar om te beginnen?</h2>
-                                <p className="text-lab-muted font-bold text-lg">Ga naar <span className="text-lab-teal">www.dgskills.app</span></p>
+                                <h2 className="text-duck-ink text-4xl font-black mb-1 tracking-tight">Klaar om te beginnen?</h2>
+                                <p className="text-duck-ink/60 font-bold text-lg">Ga naar <span className="text-duck-ink">www.dgskills.app</span></p>
                             </div>
 
                             <div className="relative group">
-                                <div className="absolute -inset-4 bg-lab-coral/10 rounded-[3rem] blur-2xl group-hover:bg-lab-coral/20 transition-all duration-500" />
+                                <div className="absolute -inset-4 bg-duck-acid/10 rounded-[3rem] blur-2xl group-hover:bg-duck-acid/20 transition-all duration-500" />
                                 <div className="relative bg-white p-4 rounded-[2rem] shadow-inner">
                                     <img
                                         src="/assets/qr-dgskills.webp"
@@ -852,12 +852,12 @@ export const TeacherPresentation = ({ activeWeekId, onClose }: { activeWeekId: s
                             <div className="flex flex-col items-center gap-4 w-full">
                                 <button
                                     onClick={() => setShowLargeQR(false)}
-                                    className="w-full py-4 bg-lab-ink text-white rounded-2xl font-black text-lg hover:bg-lab-ink transition-all hover:scale-[1.02] active:scale-[0.98] shadow-xl group flex items-center justify-center gap-3"
+                                    className="w-full py-4 bg-duck-ink text-white rounded-2xl font-black text-lg hover:bg-duck-ink transition-all hover:scale-[1.02] active:scale-[0.98] shadow-xl group flex items-center justify-center gap-3"
                                 >
                                     <span>Begrepen</span>
-                                    <Sparkles className="text-lab-gold group-hover:rotate-12 transition-transform" />
+                                    <Sparkles className="text-duck-acid group-hover:rotate-12 transition-transform" />
                                 </button>
-                                <p className="text-lab-muted font-medium text-sm">Klik buiten het venster of op de knop om te sluiten</p>
+                                <p className="text-duck-ink/60 font-medium text-sm">Klik buiten het venster of op de knop om te sluiten</p>
                             </div>
                         </motion.div>
                     </motion.div>

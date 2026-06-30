@@ -44,10 +44,10 @@ interface CellData {
 }
 
 function getIntensityClass(count: number): string {
-    if (count === 0) return 'bg-lab-cream text-lab-muted';
-    if (count <= 2) return 'bg-lab-teal text-white';
-    if (count <= 4) return 'bg-lab-teal text-white';
-    return 'bg-lab-coral text-white';
+    if (count === 0) return 'bg-duck-ink/5 text-duck-ink/40';
+    if (count <= 2) return 'bg-duck-ink/10 text-duck-ink';
+    if (count <= 4) return 'bg-duck-acid text-duck-ink';
+    return 'bg-duck-acid text-duck-ink';
 }
 
 // ============================================================================
@@ -218,24 +218,24 @@ export const SamenhangMatrix: React.FC<SamenhangMatrixProps> = ({ selectedYear, 
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4 }}
-            className="bg-white rounded-[2rem] shadow-xl shadow-lab-line/50 border border-lab-line overflow-hidden"
+            className="bg-white rounded-[1.75rem] shadow-xl border border-duck-ink/15 overflow-hidden"
         >
             {/* Header */}
             <div className="p-6 pb-4">
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                     <div>
-                        <h3 className="text-sm font-black text-lab-ink uppercase tracking-widest flex items-center gap-2">
-                            <div className="w-2 h-2 bg-lab-coral rounded-full"></div>
+                        <h3 className="text-sm font-black text-duck-ink uppercase tracking-widest flex items-center gap-2">
+                            <div className="w-2 h-2 bg-duck-acid rounded-full"></div>
                             Samenhang Basisvaardigheden
                         </h3>
-                        <p className="text-xs text-lab-muted mt-1">
+                        <p className="text-xs text-duck-ink/60 mt-1">
                             Hoe digitale geletterdheid samenhangt met taal, rekenen en burgerschap
                         </p>
                     </div>
 
                     {/* Filter */}
                     <div className="flex items-center gap-2">
-                        <Filter size={14} className="text-lab-muted" />
+                        <Filter size={14} className="text-duck-ink/60" />
                         <select
                             value={yearFilter}
                             onChange={(e) => {
@@ -243,7 +243,7 @@ export const SamenhangMatrix: React.FC<SamenhangMatrixProps> = ({ selectedYear, 
                                 setYearFilter(val === 'all' ? 'all' : Number(val));
                                 setExpandedCell(null);
                             }}
-                            className="px-3 py-2 bg-white border border-lab-line rounded-xl text-xs font-bold text-lab-muted outline-none hover:bg-lab-cream transition-colors"
+                            className="px-3 py-2 bg-white border border-duck-ink/15 rounded-xl text-xs font-bold text-duck-ink/60 outline-none hover:bg-duck-bgLight transition-colors"
                         >
                             <option value="all">Alle leerjaren</option>
                             <option value={1}>Leerjaar 1</option>
@@ -259,11 +259,11 @@ export const SamenhangMatrix: React.FC<SamenhangMatrixProps> = ({ selectedYear, 
                 <table className="w-full border-collapse">
                     <thead>
                         <tr>
-                            <th className="text-left text-[9px] font-black text-lab-muted uppercase tracking-widest py-2 pr-3 w-40">
+                            <th className="text-left text-[9px] font-black text-duck-ink/60 uppercase tracking-widest py-2 pr-3 w-40">
                                 Periode
                             </th>
                             {CATEGORIEEN.map(cat => (
-                                <th key={cat} className="text-center text-[9px] font-black text-lab-muted uppercase tracking-widest py-2 px-2">
+                                <th key={cat} className="text-center text-[9px] font-black text-duck-ink/60 uppercase tracking-widest py-2 px-2">
                                     <span className="mr-1">{CATEGORIE_CONFIG[cat].icon}</span>
                                     {CATEGORIE_CONFIG[cat].label}
                                 </th>
@@ -275,8 +275,8 @@ export const SamenhangMatrix: React.FC<SamenhangMatrixProps> = ({ selectedYear, 
                             <React.Fragment key={row.key}>
                                 <tr>
                                     <td className="py-1.5 pr-3">
-                                        <div className="text-xs font-bold text-lab-muted">{row.label}</div>
-                                        <div className="text-[10px] text-lab-muted truncate max-w-[160px]">{row.sublabel}</div>
+                                        <div className="text-xs font-bold text-duck-ink/60">{row.label}</div>
+                                        <div className="text-[10px] text-duck-ink/40 truncate max-w-[160px]">{row.sublabel}</div>
                                     </td>
                                     {CATEGORIEEN.map(cat => {
                                         const cellKey = `${row.key}-${cat}`;
@@ -288,9 +288,9 @@ export const SamenhangMatrix: React.FC<SamenhangMatrixProps> = ({ selectedYear, 
                                                     onClick={() => cell.count > 0 && handleCellClick(cellKey)}
                                                     className={`w-full rounded-xl py-3 px-2 text-center font-black text-lg transition-all ${getIntensityClass(cell.count)} ${
                                                         cell.count > 0
-                                                            ? 'cursor-pointer hover:ring-2 hover:ring-lab-teal/40 hover:scale-105 active:scale-95'
+                                                            ? 'cursor-pointer hover:ring-2 hover:ring-duck-acid hover:scale-105 active:scale-95'
                                                             : 'cursor-default'
-                                                    } ${isExpanded ? 'ring-2 ring-lab-coral' : ''}`}
+                                                    } ${isExpanded ? 'ring-2 ring-duck-acid' : ''}`}
                                                 >
                                                     {cell.count}
                                                 </button>
@@ -315,15 +315,15 @@ export const SamenhangMatrix: React.FC<SamenhangMatrixProps> = ({ selectedYear, 
                                                         transition={{ duration: 0.25 }}
                                                         className="overflow-hidden"
                                                     >
-                                                        <div className="bg-lab-cream rounded-xl border border-lab-line p-4 mt-1">
+                                                        <div className="bg-duck-bgLight rounded-xl border border-duck-ink/10 p-4 mt-1">
                                                             <div className="flex items-center gap-2 mb-3">
                                                                 <span className="text-sm">{CATEGORIE_CONFIG[cat].icon}</span>
-                                                                <h4 className="text-xs font-black text-lab-muted uppercase tracking-wider">
+                                                                <h4 className="text-xs font-black text-duck-ink/60 uppercase tracking-wider">
                                                                     {row.sublabel} — {CATEGORIE_CONFIG[cat].label}
                                                                 </h4>
                                                                 <button
                                                                     onClick={() => setExpandedCell(null)}
-                                                                    className="ml-auto text-[10px] font-bold text-lab-muted hover:text-lab-muted transition-colors"
+                                                                    className="ml-auto text-[10px] font-bold text-duck-ink/60 hover:text-duck-ink transition-colors"
                                                                 >
                                                                     Sluiten
                                                                 </button>
@@ -332,18 +332,18 @@ export const SamenhangMatrix: React.FC<SamenhangMatrixProps> = ({ selectedYear, 
                                                                 {cell.details.map(detail => (
                                                                     <div
                                                                         key={detail.missionId}
-                                                                        className="bg-white rounded-lg border border-lab-line p-3"
+                                                                        className="bg-white rounded-lg border border-duck-ink/10 p-3"
                                                                     >
-                                                                        <div className="text-xs font-bold text-lab-ink">
+                                                                        <div className="text-xs font-bold text-duck-ink">
                                                                             {detail.missionTitle}
                                                                         </div>
                                                                         <div className="mt-1.5 space-y-1">
                                                                             {detail.tags.map((tag, i) => (
                                                                                 <div key={i} className="flex items-start gap-2 text-[11px]">
-                                                                                    <span className="inline-block mt-0.5 w-1.5 h-1.5 rounded-full bg-lab-teal shrink-0"></span>
+                                                                                    <span className="inline-block mt-0.5 w-1.5 h-1.5 rounded-full bg-duck-acid shrink-0"></span>
                                                                                     <span>
-                                                                                        <span className="font-bold text-lab-muted">{tag.subcategorie}:</span>{' '}
-                                                                                        <span className="text-lab-muted">{tag.toelichting}</span>
+                                                                                        <span className="font-bold text-duck-ink/60">{tag.subcategorie}:</span>{' '}
+                                                                                        <span className="text-duck-ink/60">{tag.toelichting}</span>
                                                                                     </span>
                                                                                 </div>
                                                                             ))}
@@ -366,22 +366,22 @@ export const SamenhangMatrix: React.FC<SamenhangMatrixProps> = ({ selectedYear, 
 
             {/* Legenda */}
             <div className="px-6 pb-4">
-                <div className="flex items-center gap-3 text-[9px] font-bold text-lab-muted uppercase tracking-wider">
+                <div className="flex items-center gap-3 text-[9px] font-bold text-duck-ink/60 uppercase tracking-wider">
                     <span>Intensiteit:</span>
                     <div className="flex items-center gap-1.5">
-                        <div className="w-4 h-4 rounded bg-lab-cream border border-lab-line"></div>
+                        <div className="w-4 h-4 rounded bg-duck-ink/5 border border-duck-ink/10"></div>
                         <span>0</span>
                     </div>
                     <div className="flex items-center gap-1.5">
-                        <div className="w-4 h-4 rounded bg-lab-teal"></div>
+                        <div className="w-4 h-4 rounded bg-duck-ink/10"></div>
                         <span>1-2</span>
                     </div>
                     <div className="flex items-center gap-1.5">
-                        <div className="w-4 h-4 rounded bg-lab-teal"></div>
+                        <div className="w-4 h-4 rounded bg-duck-acid"></div>
                         <span>3-4</span>
                     </div>
                     <div className="flex items-center gap-1.5">
-                        <div className="w-4 h-4 rounded bg-lab-coral"></div>
+                        <div className="w-4 h-4 rounded bg-duck-acid"></div>
                         <span>5+</span>
                     </div>
                 </div>
@@ -394,12 +394,7 @@ export const SamenhangMatrix: React.FC<SamenhangMatrixProps> = ({ selectedYear, 
                         const config = CATEGORIE_CONFIG[cat];
                         const data = summary[cat];
                         const topSub = getTopSubcategorie(cat);
-                        const colorMap: Record<Categorie, { bg: string; border: string; iconBg: string; text: string }> = {
-                            taal: { bg: 'bg-lab-coral', border: 'border-lab-coral', iconBg: 'bg-lab-coral', text: 'text-lab-coral' },
-                            rekenen: { bg: 'bg-lab-gold', border: 'border-lab-gold', iconBg: 'bg-lab-gold', text: 'text-lab-gold' },
-                            burgerschap: { bg: 'bg-lab-sage', border: 'border-lab-sage', iconBg: 'bg-lab-sage', text: 'text-lab-sage' },
-                        };
-                        const colors = colorMap[cat];
+                        const colors = { bg: 'bg-duck-bgLight', border: 'border-duck-ink/15', iconBg: 'bg-duck-acid', text: 'text-duck-ink' };
 
                         return (
                             <div
@@ -416,10 +411,10 @@ export const SamenhangMatrix: React.FC<SamenhangMatrixProps> = ({ selectedYear, 
                                         </div>
                                     </div>
                                 </div>
-                                <div className="text-2xl font-black text-lab-ink">{data.total}</div>
-                                <div className="text-[10px] text-lab-muted font-medium">raakvlakken totaal</div>
+                                <div className="text-2xl font-black text-duck-ink">{data.total}</div>
+                                <div className="text-[10px] text-duck-ink/60 font-medium">raakvlakken totaal</div>
                                 {topSub !== '-' && (
-                                    <div className="mt-2 text-[10px] font-bold text-lab-muted flex items-center gap-1">
+                                    <div className="mt-2 text-[10px] font-bold text-duck-ink/60 flex items-center gap-1">
                                         <ChevronDown size={10} className="rotate-[-90deg]" />
                                         Meest: {topSub}
                                     </div>

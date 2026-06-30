@@ -105,7 +105,7 @@ export const TeacherFirstLoginWizard: React.FC<TeacherFirstLoginWizardProps> = (
         >
             <div className="bg-white rounded-3xl shadow-2xl w-full max-w-lg my-8 overflow-hidden">
                 <div className="px-8 pt-8 pb-4 flex items-center justify-between">
-                    <span className="inline-flex items-center gap-2 px-3 py-1 bg-lab-coral text-white text-xs font-bold rounded-full uppercase tracking-wide">
+                    <span className="inline-flex items-center gap-2 px-3 py-1 bg-duck-acid text-duck-ink text-xs font-bold rounded-full uppercase tracking-wide">
                         <Sparkles size={14} />
                         Eerste keer
                     </span>
@@ -114,38 +114,38 @@ export const TeacherFirstLoginWizard: React.FC<TeacherFirstLoginWizardProps> = (
 
                 <h1
                     id="teacher-wizard-title"
-                    className="px-8 text-2xl md:text-3xl font-bold text-lab-ink mb-3"
+                    className="px-8 text-2xl md:text-3xl font-bold text-duck-ink mb-3"
                 >
                     {STEP_TITLES[step]}
                 </h1>
 
                 {step === 'welcome' && (
                     <div className="px-8 pb-8">
-                        <p className="text-lab-muted mb-6">
+                        <p className="text-duck-ink/60 mb-6">
                             Fijn dat je de pilot start. We hebben een paar dingen nodig voordat je
                             naar je dashboard gaat. Het kost minder dan een minuut.
                         </p>
                         <ul className="space-y-3 mb-8">
                             <li className="flex items-start gap-3">
-                                <span className="mt-0.5 w-6 h-6 rounded-full bg-lab-coral text-white text-xs font-bold flex items-center justify-center shrink-0">
+                                <span className="mt-0.5 w-6 h-6 rounded-full bg-duck-acid text-duck-ink text-xs font-bold flex items-center justify-center shrink-0">
                                     1
                                 </span>
-                                <span className="text-sm text-lab-muted">
+                                <span className="text-sm text-duck-ink/60">
                                     Bevestig de naam waarmee leerlingen jou zien.
                                 </span>
                             </li>
                             <li className="flex items-start gap-3">
-                                <span className="mt-0.5 w-6 h-6 rounded-full bg-lab-coral text-white text-xs font-bold flex items-center justify-center shrink-0">
+                                <span className="mt-0.5 w-6 h-6 rounded-full bg-duck-acid text-duck-ink text-xs font-bold flex items-center justify-center shrink-0">
                                     2
                                 </span>
-                                <span className="text-sm text-lab-muted">
+                                <span className="text-sm text-duck-ink/60">
                                     Daarna kom je direct in het docent-dashboard.
                                 </span>
                             </li>
                         </ul>
-                        <div className="flex items-center gap-2 text-xs text-lab-muted mb-6">
-                            <ShieldCheck size={14} className="text-lab-sage" />
-                            <span>
+                        <div className="flex items-center gap-2 text-xs text-duck-ink/60 mb-6">
+                            <ShieldCheck size={14} className="text-duck-ink/60" />
+                            <span className="text-duck-ink/60">
                                 Je account is gekoppeld aan jouw school. Data blijft binnen de EER
                                 en wordt alleen gedeeld binnen je eigen schoolomgeving.
                             </span>
@@ -153,7 +153,7 @@ export const TeacherFirstLoginWizard: React.FC<TeacherFirstLoginWizardProps> = (
                         <button
                             type="button"
                             onClick={() => setStep('profile')}
-                            className="w-full inline-flex items-center justify-center gap-2 px-6 py-3 bg-lab-coral hover:bg-lab-coral hover:text-white text-white font-bold rounded-lg text-sm transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-lab-coral"
+                            className="w-full inline-flex items-center justify-center gap-2 px-6 py-3 bg-duck-acid hover:bg-duck-ink hover:text-duck-acid text-duck-ink font-bold rounded-full text-sm transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-duck-ink"
                         >
                             Aan de slag
                             <ChevronRight size={16} />
@@ -163,14 +163,14 @@ export const TeacherFirstLoginWizard: React.FC<TeacherFirstLoginWizardProps> = (
 
                 {step === 'profile' && (
                     <div className="px-8 pb-8">
-                        <p className="text-lab-muted text-sm mb-6">
+                        <p className="text-duck-ink/60 text-sm mb-6">
                             Dit is de naam die in het leerling-dashboard verschijnt bij berichten
                             en feedback. Je kunt deze later aanpassen via je profiel.
                         </p>
 
                         <label
                             htmlFor="teacher-display-name"
-                            className="block text-xs font-semibold text-lab-muted mb-1.5"
+                            className="block text-xs font-semibold text-duck-ink/60 mb-1.5"
                         >
                             Naam
                         </label>
@@ -184,16 +184,16 @@ export const TeacherFirstLoginWizard: React.FC<TeacherFirstLoginWizardProps> = (
                             maxLength={DISPLAY_NAME_MAX}
                             placeholder="Bijv. Mevrouw De Vries of Meneer Janssen"
                             autoComplete="name"
-                            className="w-full px-3.5 min-h-[44px] bg-lab-cream border border-lab-line rounded-lg outline-none focus:ring-2 focus:ring-lab-coral focus:border-lab-coral transition-all text-sm text-lab-ink placeholder:text-lab-muted"
+                            className="w-full px-3.5 min-h-[44px] bg-duck-bg border border-duck-ink/15 rounded-xl outline-none focus:ring-2 focus:ring-duck-ink/10 focus:border-duck-ink transition-all text-sm text-duck-ink placeholder:text-duck-ink/40"
                         />
-                        <p className="text-[11px] text-lab-muted mt-1.5">
+                        <p className="text-[11px] text-duck-ink/60 mt-1.5">
                             {sanitizedName.length}/{DISPLAY_NAME_MAX} tekens
                         </p>
 
                         {errorMessage && (
                             <p
                                 role="alert"
-                                className="mt-4 text-sm text-white bg-lab-coral border border-lab-coral rounded-lg px-3 py-2"
+                                className="mt-4 text-sm text-white bg-duck-error border border-duck-error rounded-lg px-3 py-2"
                             >
                                 {errorMessage}
                             </p>
@@ -205,7 +205,7 @@ export const TeacherFirstLoginWizard: React.FC<TeacherFirstLoginWizardProps> = (
                                 onClick={() => {
                                     if (validateName()) setStep('done');
                                 }}
-                                className="flex-1 inline-flex items-center justify-center gap-2 px-6 py-3 bg-lab-coral hover:bg-lab-coral hover:text-white text-white font-bold rounded-lg text-sm transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-lab-coral"
+                                className="flex-1 inline-flex items-center justify-center gap-2 px-6 py-3 bg-duck-acid hover:bg-duck-ink hover:text-duck-acid text-duck-ink font-bold rounded-full text-sm transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-duck-ink"
                             >
                                 Volgende
                                 <ChevronRight size={16} />
@@ -213,7 +213,7 @@ export const TeacherFirstLoginWizard: React.FC<TeacherFirstLoginWizardProps> = (
                             <button
                                 type="button"
                                 onClick={() => setStep('welcome')}
-                                className="px-4 py-3 text-sm font-semibold text-lab-muted hover:text-lab-ink transition-colors"
+                                className="px-4 py-3 text-sm font-semibold text-duck-ink/60 hover:text-duck-ink transition-colors"
                             >
                                 Terug
                             </button>
@@ -223,23 +223,23 @@ export const TeacherFirstLoginWizard: React.FC<TeacherFirstLoginWizardProps> = (
 
                 {step === 'done' && (
                     <div className="px-8 pb-8">
-                        <p className="text-lab-muted mb-6">
+                        <p className="text-duck-ink/60 mb-6">
                             Hieronder zie je hoe leerlingen je naam zullen zien. Klopt het? Dan
                             ben je klaar om je dashboard te openen.
                         </p>
 
-                        <div className="bg-lab-cream rounded-2xl p-5 mb-6">
-                            <p className="text-[10px] uppercase tracking-wide text-lab-muted font-bold mb-1">
+                        <div className="bg-duck-bgLight rounded-2xl p-5 mb-6">
+                            <p className="text-[10px] uppercase tracking-wide text-duck-ink/60 font-bold mb-1">
                                 Zichtbaar voor leerlingen
                             </p>
-                            <p className="text-lg font-bold text-lab-ink">{sanitizedName}</p>
+                            <p className="text-lg font-bold text-duck-ink">{sanitizedName}</p>
                         </div>
 
-                        <div className="bg-lab-coral rounded-2xl p-5 mb-6">
-                            <p className="text-[10px] uppercase tracking-wide text-lab-coral font-bold mb-2">
+                        <div className="bg-duck-acid rounded-2xl p-5 mb-6">
+                            <p className="text-[10px] uppercase tracking-wide text-duck-ink font-bold mb-2">
                                 Wat je hierna kunt
                             </p>
-                            <ul className="space-y-1.5 text-sm text-lab-muted">
+                            <ul className="space-y-1.5 text-sm text-duck-ink/60">
                                 <li>· Leerlingen aan je klas koppelen vanuit het dashboard.</li>
                                 <li>· De missiekalender per periode bekijken.</li>
                                 <li>· De rondleiding starten voor een uitleg per onderdeel.</li>
@@ -249,7 +249,7 @@ export const TeacherFirstLoginWizard: React.FC<TeacherFirstLoginWizardProps> = (
                         {errorMessage && (
                             <p
                                 role="alert"
-                                className="mb-4 text-sm text-white bg-lab-coral border border-lab-coral rounded-lg px-3 py-2"
+                                className="mb-4 text-sm text-white bg-duck-error border border-duck-error rounded-lg px-3 py-2"
                             >
                                 {errorMessage}
                             </p>
@@ -261,7 +261,7 @@ export const TeacherFirstLoginWizard: React.FC<TeacherFirstLoginWizardProps> = (
                                 onClick={handleSave}
                                 disabled={isSaving}
                                 aria-busy={isSaving}
-                                className="flex-1 inline-flex items-center justify-center gap-2 px-6 py-3 bg-lab-coral hover:bg-lab-coral hover:text-white text-white font-bold rounded-lg text-sm transition-colors disabled:opacity-60 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-lab-coral"
+                                className="flex-1 inline-flex items-center justify-center gap-2 px-6 py-3 bg-duck-acid hover:bg-duck-ink hover:text-duck-acid text-duck-ink font-bold rounded-full text-sm transition-colors disabled:opacity-60 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-duck-ink"
                             >
                                 {isSaving ? (
                                     <>
@@ -284,7 +284,7 @@ export const TeacherFirstLoginWizard: React.FC<TeacherFirstLoginWizardProps> = (
                                     }
                                 }}
                                 disabled={isSaving}
-                                className="px-4 py-3 text-sm font-semibold text-lab-muted hover:text-lab-ink transition-colors disabled:opacity-60"
+                                className="px-4 py-3 text-sm font-semibold text-duck-ink/60 hover:text-duck-ink transition-colors disabled:opacity-60"
                             >
                                 Naam aanpassen
                             </button>

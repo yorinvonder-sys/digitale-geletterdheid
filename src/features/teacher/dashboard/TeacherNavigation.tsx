@@ -21,7 +21,7 @@ const SubTabBar: React.FC<{
         initial={{ opacity: 0, height: 0 }}
         animate={{ opacity: 1, height: 'auto' }}
         exit={{ opacity: 0, height: 0 }}
-        className="flex justify-center gap-1 pt-3 mt-2 border-t border-lab-line overflow-x-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
+        className="flex justify-center gap-1 pt-3 mt-2 border-t border-duck-ink/15 overflow-x-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
     >
         {tabs.map(sub => (
             <button
@@ -30,8 +30,8 @@ const SubTabBar: React.FC<{
                 onClick={() => setActiveTab(sub.id as MainTab)}
                 title={sub.tooltip}
                 className={`px-3 py-2 min-h-[36px] rounded-lg text-xs font-bold transition-all flex-shrink-0 ${activeTab === sub.id
-                    ? 'bg-lab-creamDeep text-lab-coral'
-                    : 'text-lab-muted hover:text-lab-muted hover:bg-lab-cream'
+                    ? 'bg-duck-acid text-duck-ink'
+                    : 'text-duck-ink/60 hover:text-duck-ink/60 hover:bg-duck-bg'
                     }`}
             >
                 {sub.label}
@@ -77,7 +77,7 @@ export const TeacherNavigation: React.FC<TeacherNavigationProps> = ({ activeTab,
     const activeSection = MAIN_TABS.find(t => t.subTabIds.includes(activeTab))?.id || 'overview';
 
     return (
-        <div data-tutorial="main-tabs" className="bg-white rounded-2xl border border-lab-line shadow-sm p-2">
+        <div data-tutorial="main-tabs" className="bg-white rounded-2xl border border-duck-ink/15 shadow-sm p-2">
             <div className="flex items-center justify-center gap-1 md:gap-2 overflow-x-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
                 {MAIN_TABS.map(tab => {
                     const isActive = tab.subTabIds.includes(activeTab);
@@ -89,8 +89,8 @@ export const TeacherNavigation: React.FC<TeacherNavigationProps> = ({ activeTab,
                             onClick={() => setActiveTab(tab.subTabIds[0] as MainTab)}
                             title={tab.tooltip}
                             className={`relative flex items-center gap-2 px-2 sm:px-3 md:px-6 py-3 min-h-[44px] rounded-xl text-sm font-bold transition-all flex-shrink-0 ${isActive
-                                ? 'bg-lab-ink text-white shadow-lg shadow-lab-ink/10'
-                                : 'text-lab-muted hover:text-lab-muted hover:bg-lab-cream'
+                                ? 'bg-duck-ink text-white shadow-lg shadow-duck-ink/10'
+                                : 'text-duck-ink/60 hover:text-duck-ink/60 hover:bg-duck-bg'
                                 }`}
                         >
                             <Icon size={18} />

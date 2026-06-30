@@ -77,13 +77,13 @@ export const StepOverrideModal: React.FC<StepOverrideModalProps> = ({
     const getStatusBadge = (status: ReturnType<typeof getStepStatus>) => {
         switch (status) {
             case 'ai_completed':
-                return { label: 'AI voltooid', className: 'bg-lab-sage text-white', icon: <CheckCircle2 size={10} /> };
+                return { label: 'AI voltooid', className: 'bg-duck-acid text-duck-ink', icon: <CheckCircle2 size={10} /> };
             case 'teacher_approved':
-                return { label: 'Docent goedgekeurd', className: 'bg-lab-coral text-white', icon: <Shield size={10} /> };
+                return { label: 'Docent goedgekeurd', className: 'bg-duck-ink text-white', icon: <Shield size={10} /> };
             case 'teacher_rejected':
-                return { label: 'Docent afgewezen', className: 'bg-lab-coral text-white', icon: <XCircle size={10} /> };
+                return { label: 'Docent afgewezen', className: 'bg-duck-error text-white', icon: <XCircle size={10} /> };
             case 'not_completed':
-                return { label: 'Niet voltooid', className: 'bg-lab-cream text-lab-muted', icon: null };
+                return { label: 'Niet voltooid', className: 'bg-duck-bgLight text-duck-ink/60', icon: null };
         }
     };
 
@@ -151,7 +151,7 @@ export const StepOverrideModal: React.FC<StepOverrideModalProps> = ({
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                className="fixed inset-0 z-[70] bg-black/60 backdrop-blur-sm flex items-center justify-center p-4"
+                className="fixed inset-0 z-[70] bg-duck-ink/40 backdrop-blur-sm flex items-center justify-center p-4"
                 onClick={onClose}
             >
                 <motion.div
@@ -162,11 +162,11 @@ export const StepOverrideModal: React.FC<StepOverrideModalProps> = ({
                     role="dialog"
                     aria-modal="true"
                     aria-labelledby="step-override-modal-title"
-                    className="bg-white rounded-2xl shadow-2xl max-w-lg w-full max-h-[85vh] overflow-hidden flex flex-col"
+                    className="bg-white rounded-[1.75rem] shadow-duck-soft border border-duck-ink/15 max-w-lg w-full max-h-[85vh] overflow-hidden flex flex-col"
                     onClick={(e) => e.stopPropagation()}
                 >
                     {/* Header */}
-                    <div className="bg-gradient-to-r from-lab-coral via-lab-teal to-lab-coral px-6 py-5 text-white relative overflow-hidden shrink-0">
+                    <div className="bg-duck-ink px-6 py-5 text-white relative overflow-hidden shrink-0">
                         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.15),transparent)]" />
                         <div className="absolute -top-4 -right-4 w-24 h-24 bg-white/10 rounded-full blur-2xl" />
                         <div className="relative flex items-center justify-between">
@@ -197,32 +197,32 @@ export const StepOverrideModal: React.FC<StepOverrideModalProps> = ({
                                 animate={{ scale: 1, opacity: 1 }}
                                 className="py-8 text-center"
                             >
-                                <div className="w-16 h-16 bg-lab-sage rounded-full flex items-center justify-center mx-auto mb-4">
-                                    <Check size={32} className="text-lab-sage" />
+                                <div className="w-16 h-16 bg-duck-acid rounded-full flex items-center justify-center mx-auto mb-4">
+                                    <Check size={32} className="text-duck-ink" />
                                 </div>
-                                <h3 className="text-xl font-black text-lab-ink mb-2">Override Opgeslagen!</h3>
-                                <p className="text-lab-muted text-sm">
+                                <h3 className="text-xl font-black text-duck-ink mb-2">Override Opgeslagen!</h3>
+                                <p className="text-duck-ink/60 text-sm">
                                     Stap {selectedStep !== null ? selectedStep + 1 : ''} is {overrideType === 'approve' ? 'goedgekeurd' : 'afgewezen'}.
                                 </p>
                             </motion.div>
                         ) : (
                             <>
                                 {/* Info banner */}
-                                <div className="bg-lab-coral rounded-xl p-3 flex items-start gap-3">
-                                    <AlertTriangle size={16} className="text-lab-coral shrink-0 mt-0.5" />
-                                    <p className="text-xs text-lab-coral">
+                                <div className="bg-duck-bgLight border border-duck-gray rounded-xl p-3 flex items-start gap-3">
+                                    <AlertTriangle size={16} className="text-duck-ink/60 shrink-0 mt-0.5" />
+                                    <p className="text-xs text-duck-ink/60">
                                         Als docent kun je AI-beoordelingen overrulen. Kies een stap en geef aan of je deze goedkeurt of afwijst. Dit wordt gelogd voor verantwoording (EU AI Act Art. 14).
                                     </p>
                                 </div>
 
                                 {/* Steps list */}
                                 <div>
-                                    <h3 className="text-[10px] font-black text-lab-muted uppercase tracking-wider mb-3">
+                                    <h3 className="text-[10px] font-black text-duck-ink/60 uppercase tracking-wider mb-3">
                                         Stappen ({steps.length})
                                     </h3>
                                     {loadingOverrides ? (
                                         <div className="flex items-center justify-center py-4">
-                                            <Loader2 size={20} className="animate-spin motion-reduce:animate-none text-lab-muted" />
+                                            <Loader2 size={20} className="animate-spin motion-reduce:animate-none text-duck-ink/60" />
                                         </div>
                                     ) : (
                                         <div className="space-y-2">
@@ -238,8 +238,8 @@ export const StepOverrideModal: React.FC<StepOverrideModalProps> = ({
                                                         onClick={() => selectStep(index)}
                                                         className={`w-full text-left p-3 rounded-xl border-2 transition-all ${
                                                             isSelected
-                                                                ? 'border-lab-coral bg-lab-coral/50 ring-2 ring-lab-coral/20'
-                                                                : 'border-lab-line bg-lab-cream hover:border-lab-line hover:bg-lab-cream'
+                                                                ? 'border-duck-ink bg-duck-bgLight ring-2 ring-duck-ink/10'
+                                                                : 'border-duck-ink/15 bg-duck-bg hover:border-duck-gray hover:bg-duck-bgLight'
                                                         }`}
                                                     >
                                                         <div className="flex items-center gap-3">
@@ -247,20 +247,20 @@ export const StepOverrideModal: React.FC<StepOverrideModalProps> = ({
                                                                 {index + 1}
                                                             </div>
                                                             <div className="flex-1 min-w-0">
-                                                                <div className="font-bold text-sm text-lab-ink truncate">{step.title}</div>
+                                                                <div className="font-bold text-sm text-duck-ink truncate">{step.title}</div>
                                                                 <div className="flex items-center gap-2 mt-0.5 flex-wrap">
                                                                     <span className={`inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[9px] font-bold ${badge.className}`}>
                                                                         {badge.icon} {badge.label}
                                                                     </span>
                                                                     {existingOverride && (
-                                                                        <span className="flex items-center gap-1 text-[9px] text-lab-muted">
+                                                                        <span className="flex items-center gap-1 text-[9px] text-duck-ink/60">
                                                                             <Clock size={8} />
                                                                             {new Date(existingOverride.created_at).toLocaleDateString('nl-NL', { day: 'numeric', month: 'short' })}
                                                                         </span>
                                                                     )}
                                                                 </div>
                                                                 {existingOverride?.reason && (
-                                                                    <p className="text-[10px] text-lab-muted mt-1 italic truncate">
+                                                                    <p className="text-[10px] text-duck-ink/60 mt-1 italic truncate">
                                                                         &ldquo;{existingOverride.reason}&rdquo;
                                                                     </p>
                                                                 )}
@@ -282,14 +282,14 @@ export const StepOverrideModal: React.FC<StepOverrideModalProps> = ({
                                             exit={{ height: 0, opacity: 0 }}
                                             className="overflow-hidden"
                                         >
-                                            <div className="bg-lab-cream rounded-xl p-4 space-y-4 border border-lab-line">
-                                                <h4 className="text-xs font-black text-lab-muted uppercase tracking-wider">
+                                            <div className="bg-duck-bgLight rounded-xl p-4 space-y-4 border border-duck-ink/15">
+                                                <h4 className="text-xs font-black text-duck-ink/60 uppercase tracking-wider">
                                                     Override voor: Stap {selectedStep + 1} — {steps[selectedStep]?.title}
                                                 </h4>
 
                                                 {/* Override type toggle */}
                                                 <div>
-                                                    <label className="text-[10px] font-bold text-lab-muted uppercase tracking-wider block mb-2">
+                                                    <label className="text-[10px] font-bold text-duck-ink/60 uppercase tracking-wider block mb-2">
                                                         Beoordeling
                                                     </label>
                                                     <div className="grid grid-cols-2 gap-2">
@@ -297,8 +297,8 @@ export const StepOverrideModal: React.FC<StepOverrideModalProps> = ({
                                                             onClick={() => { setOverrideType('approve'); setError(null); }}
                                                             className={`flex items-center justify-center gap-2 p-3 rounded-xl font-bold text-sm transition-all ${
                                                                 overrideType === 'approve'
-                                                                    ? 'bg-lab-coral text-white shadow-lg shadow-lab-sage ring-2 ring-lab-coral/30'
-                                                                    : 'bg-white text-lab-muted border border-lab-line hover:bg-lab-sage hover:text-white'
+                                                                    ? 'bg-duck-acid text-duck-ink shadow-lg ring-2 ring-duck-ink/10'
+                                                                    : 'bg-white text-duck-ink/60 border border-duck-ink/15 hover:bg-duck-ink hover:text-white'
                                                             }`}
                                                         >
                                                             <CheckCircle2 size={16} />
@@ -308,8 +308,8 @@ export const StepOverrideModal: React.FC<StepOverrideModalProps> = ({
                                                             onClick={() => { setOverrideType('reject'); setError(null); }}
                                                             className={`flex items-center justify-center gap-2 p-3 rounded-xl font-bold text-sm transition-all ${
                                                                 overrideType === 'reject'
-                                                                    ? 'bg-lab-coral text-white shadow-lg shadow-lab-coral ring-2 ring-lab-coral/30'
-                                                                    : 'bg-white text-lab-muted border border-lab-line hover:bg-lab-coral hover:text-white'
+                                                                    ? 'bg-duck-error text-white shadow-lg ring-2 ring-duck-error/20'
+                                                                    : 'bg-white text-duck-ink/60 border border-duck-ink/15 hover:bg-duck-error hover:text-white'
                                                             }`}
                                                         >
                                                             <XCircle size={16} />
@@ -320,7 +320,7 @@ export const StepOverrideModal: React.FC<StepOverrideModalProps> = ({
 
                                                 {/* Reason */}
                                                 <div>
-                                                    <label className="text-[10px] font-bold text-lab-muted uppercase tracking-wider block mb-2">
+                                                    <label className="text-[10px] font-bold text-duck-ink/60 uppercase tracking-wider block mb-2">
                                                         Reden {overrideType === 'reject' ? '(verplicht)' : '(optioneel)'}
                                                     </label>
                                                     <textarea
@@ -330,14 +330,14 @@ export const StepOverrideModal: React.FC<StepOverrideModalProps> = ({
                                                             ? 'Waarom wijst u deze stap af? Bijv. "Leerling heeft niet aangetoond het concept te begrijpen."'
                                                             : 'Optionele toelichting, bijv. "Leerling heeft dit mondeling aangetoond."'
                                                         }
-                                                        className="w-full p-3 border border-lab-line rounded-xl text-sm resize-none focus:outline-none focus:ring-2 focus:ring-lab-coral/20 focus:border-lab-coral"
+                                                        className="w-full p-3 border border-duck-ink/15 rounded-xl text-sm text-duck-ink placeholder:text-duck-ink/40 bg-white resize-none focus:outline-none focus:ring-2 focus:ring-duck-ink/10 focus:border-duck-ink"
                                                         rows={3}
                                                     />
                                                 </div>
 
                                                 {/* Error */}
                                                 {error && (
-                                                    <div className="flex items-center gap-2 p-3 bg-lab-coral border border-lab-coral rounded-xl text-lab-coral text-xs font-medium">
+                                                    <div className="flex items-center gap-2 p-3 bg-duck-error/10 border border-duck-error rounded-xl text-duck-error text-xs font-medium">
                                                         <AlertTriangle size={14} className="shrink-0" />
                                                         {error}
                                                     </div>
@@ -352,20 +352,20 @@ export const StepOverrideModal: React.FC<StepOverrideModalProps> = ({
 
                     {/* Footer */}
                     {!success && selectedStep !== null && (
-                        <div className="px-6 py-4 bg-lab-cream border-t border-lab-line flex justify-end gap-3 shrink-0">
+                        <div className="px-6 py-4 bg-duck-bgLight border-t border-duck-ink/15 flex justify-end gap-3 shrink-0">
                             <button
                                 onClick={onClose}
-                                className="px-4 py-2.5 text-lab-muted font-bold text-sm rounded-xl hover:bg-lab-cream transition-colors"
+                                className="px-4 py-2.5 text-duck-ink/60 font-bold text-sm rounded-full border border-duck-ink hover:bg-duck-bg transition-colors"
                             >
                                 Annuleren
                             </button>
                             <button
                                 onClick={handleSave}
                                 disabled={saving}
-                                className={`px-5 py-2.5 font-bold text-sm rounded-xl transition-all flex items-center gap-2 shadow-lg ${
+                                className={`px-5 py-2.5 font-bold text-sm rounded-full transition-all flex items-center gap-2 shadow-lg ${
                                     overrideType === 'approve'
-                                        ? 'bg-gradient-to-r from-lab-coral to-lab-coral text-white hover:from-lab-sage hover:to-lab-sage shadow-lab-sage'
-                                        : 'bg-gradient-to-r from-lab-coral to-lab-coral text-white hover:from-lab-coral hover:to-lab-coral shadow-lab-coral'
+                                        ? 'bg-duck-acid text-duck-ink hover:bg-duck-ink hover:text-duck-acid'
+                                        : 'bg-duck-error text-white hover:bg-duck-ink hover:text-white'
                                 } disabled:opacity-50 disabled:cursor-not-allowed`}
                             >
                                 {saving ? (
