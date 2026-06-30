@@ -254,31 +254,29 @@ export const PuzzleLab: React.FC<TemplateMissionProps> = ({
                     </div>
 
                     <div className="bg-duck-ink rounded-b-2xl border border-t-0 border-duck-gray/30 p-4">
-                        {/* Boot sequence */}
-                        <div className="font-mono text-xs text-duck-gray/60 mb-3 space-y-0.5">
-                            <div>$ initializing puzzle-lab v2.4...</div>
+                        {/* Boot sequence — 2 lines to save vertical space */}
+                        <div className="font-mono text-[10px] leading-tight text-duck-gray/60 mb-2 space-y-0.5">
                             <div>$ loading mission: {config.missionId}</div>
-                            <div>$ {config.puzzles.length} puzzles queued</div>
                             <div className="text-duck-ink">$ ready.</div>
                         </div>
 
-                        <div className="text-3xl mb-2 text-center">{config.introEmoji}</div>
+                        <div className="text-2xl mb-1 text-center">{config.introEmoji}</div>
                         <h1
-                            className="text-xl font-black text-white mb-2 text-center"
+                            className="text-xl font-black text-white mb-1 text-center"
                             style={{ fontFamily: "'Newsreader', Georgia, serif" }}
                         >
                             {config.introTitle}
                         </h1>
-                        <p className="font-mono text-xs text-duck-gray leading-relaxed mb-3 text-center">
+                        <p className="font-mono text-xs text-duck-gray leading-snug mb-2 text-center">
                             {config.introDescription}
                         </p>
 
                         {missionGoal && (
-                            <MissionGoalBanner goal={missionGoal} className="mb-3" />
+                            <MissionGoalBanner goal={missionGoal} compact className="mb-2" />
                         )}
 
                         {config.introFeatures && config.introFeatures.length > 0 && (
-                            <div className="bg-duck-ink rounded-xl border border-duck-gray/30 p-3 mb-3 space-y-2">
+                            <div className="bg-duck-ink rounded-xl border border-duck-gray/30 p-2.5 mb-2 space-y-1.5">
                                 {config.introFeatures.map((f, i) => (
                                     <div key={i} className="flex items-start gap-2 font-mono text-xs text-duck-gray">
                                         <span className="text-duck-gray shrink-0">&gt;</span>
@@ -288,14 +286,14 @@ export const PuzzleLab: React.FC<TemplateMissionProps> = ({
                             </div>
                         )}
 
-                        <div className="flex items-center gap-3 mb-4 font-mono text-xs text-duck-gray">
+                        <div className="flex items-center gap-3 mb-2 font-mono text-xs text-duck-gray">
                             <Terminal size={12} className="text-duck-gray shrink-0" />
                             <span>{config.puzzles.length} puzzels — max {config.maxScore} punten</span>
                         </div>
 
                         <button
                             onClick={() => setState(prev => ({ ...prev, phase: 'puzzle' }))}
-                            className="w-full py-3 bg-duck-acid hover:bg-duck-acid hover:brightness-95 hover:text-duck-ink text-duck-ink font-mono font-bold text-sm rounded-xl shadow-lg transition-all duration-200 active:scale-[0.98] flex items-center justify-center gap-2"
+                            className="w-full py-2.5 bg-duck-acid hover:bg-duck-acid hover:brightness-95 hover:text-duck-ink text-duck-ink font-mono font-bold text-sm rounded-xl shadow-lg transition-all duration-200 active:scale-[0.98] flex items-center justify-center gap-2"
                         >
                             $ START_MISSION
                             <ChevronRight size={15} />
