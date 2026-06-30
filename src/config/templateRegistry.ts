@@ -91,7 +91,7 @@ export const TEMPLATE_MISSIONS: Record<string, TemplateMissionEntry> = {
     'future-forecaster':    { missionId: 'future-forecaster',    templateType: 'debate-arena', enableChat: true, chatRoleId: 'future-forecaster' },
     'policy-maker':         { missionId: 'policy-maker',         templateType: 'debate-arena', enableChat: true, chatRoleId: 'policy-maker' },
     'reflection-report':    { missionId: 'reflection-report',    templateType: 'debate-arena', enableChat: true, chatRoleId: 'reflection-report' },
-    'review-week-3':        { missionId: 'review-week-3',        templateType: 'debate-arena' },
+    'review-week-3':        { missionId: 'review-week-3',        templateType: 'ethics-council' },
 
     // === ToolGuide (7) ===
     'magister-master':      { missionId: 'magister-master',      templateType: 'tool-guide' },
