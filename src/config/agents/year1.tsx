@@ -1294,6 +1294,11 @@ Wat wil je als eerste veranderen?"` + SYSTEM_INSTRUCTION_SUFFIX,
             }
         });
 
+        // Tell the parent that the iframe + its 'start' listener are ready.
+        // The parent uses this handshake to deliver 'start' reliably, even if
+        // the iframe's onLoad event is slow or missed (production timing race).
+        try { if (window.parent) window.parent.postMessage({ type: 'iframeReady' }, '*'); } catch (e) {}
+
 
         function update() {
             if (!gameActive) return;

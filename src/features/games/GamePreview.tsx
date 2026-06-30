@@ -5,7 +5,6 @@ import { MissionConclusion } from '@/features/missions/shared/MissionConclusion'
 import { hasUserPublishedGame, publishGame } from '@/services/gameGalleryService';
 import { GameGallery } from '@/features/games/GameGallery';
 import { saveToLibrary, getLibraryCount, getLibraryItems, deleteLibraryItem, LibraryItem } from '@/services/libraryService';
-import { DGSKILLS_COLORS } from '@/config/designTokens';
 import { Toast, ToastType } from '@/components/app-shell/Toast';
 
 interface GamePreviewProps {
@@ -72,6 +71,7 @@ export const GamePreview: React.FC<GamePreviewProps> = ({ code, autoStart = fals
   const [blobUrl, setBlobUrl] = useState<string | null>(null);
   const [gameStarted, setGameStarted] = useState(autoStart);
   const [iframeLoaded, setIframeLoaded] = useState(false);
+  const [iframeReady, setIframeReady] = useState(false);
   const [updateCount, setUpdateCount] = useState(0);
   const [showUpdateBanner, setShowUpdateBanner] = useState(false);
   const [showConclusion, setShowConclusion] = useState(false);
@@ -117,6 +117,7 @@ export const GamePreview: React.FC<GamePreviewProps> = ({ code, autoStart = fals
 
     // Reset iframe loaded state when code changes
     setIframeLoaded(false);
+    setIframeReady(false);
 
     // Revoke previous URL using ref (avoids stale closure)
     if (prevBlobUrlRef.current) {
@@ -167,14 +168,22 @@ export const GamePreview: React.FC<GamePreviewProps> = ({ code, autoStart = fals
       if (isComplete) {
         setShowConclusion(true);
       }
+      // Handshake: the game iframe announces it is ready to receive 'start'.
+      // Used as a load-independent trigger so the start signal lands reliably
+      // even if the iframe's onLoad event is slow or missed (prod timing race).
+      if (typeof data === 'object' && data !== null && data.type === 'iframeReady') {
+        setIframeReady(true);
+      }
     };
     window.addEventListener('message', handleMessage);
     return () => window.removeEventListener('message', handleMessage);
   }, []);
 
-  // Auto-start logic when blobUrl changes or iframe loads
+  // Auto-start logic when blobUrl changes or iframe loads.
+  // Accept either React's onLoad (iframeLoaded) OR the iframe's own ready
+  // handshake (iframeReady) so a slow/missed load event can't block the start.
   useEffect(() => {
-    if (gameStarted && blobUrl && iframeLoaded) {
+    if (gameStarted && blobUrl && (iframeLoaded || iframeReady)) {
       // Try multiple times to send start message (iframe might need time to initialize)
       const sendStartMessage = (attempt: number) => {
         const iframe = iframeRef.current;
@@ -202,7 +211,7 @@ export const GamePreview: React.FC<GamePreviewProps> = ({ code, autoStart = fals
       const timer = setTimeout(() => sendStartMessage(0), 300);
       return () => clearTimeout(timer);
     }
-  }, [blobUrl, gameStarted, iframeLoaded]);
+  }, [blobUrl, gameStarted, iframeLoaded, iframeReady]);
 
   const handleIframeLoad = () => {
     setIframeLoaded(true);
@@ -599,16 +608,9 @@ export const GamePreview: React.FC<GamePreviewProps> = ({ code, autoStart = fals
                   {/* BIG Start Button */}
                   <button
                     onClick={handleStartGame}
-                    className="w-full py-4 md:py-5 rounded-xl md:rounded-full font-black text-lg md:text-xl transition-all flex items-center justify-center gap-3 shadow-xl active:scale-95"
-                    style={{
-                      backgroundColor: DGSKILLS_COLORS.gold,
-                      color: DGSKILLS_COLORS.ink,
-                      boxShadow: `0 18px 36px rgba(153, 152, 77, 0.22)`,
-                    }}
-                    onMouseEnter={e => (e.currentTarget.style.backgroundColor = DGSKILLS_COLORS.olive)}
-                    onMouseLeave={e => (e.currentTarget.style.backgroundColor = DGSKILLS_COLORS.gold)}
+                    className="w-full py-4 md:py-5 rounded-full font-black text-lg md:text-xl transition-all flex items-center justify-center gap-3 shadow-xl active:scale-95 active:translate-y-0 bg-duck-ink text-duck-acid hover:-translate-y-0.5"
                   >
-                    <Play size={24} fill={DGSKILLS_COLORS.ink} className="md:w-8 md:h-8" /> START DE GAME!
+                    <Play size={24} fill="currentColor" className="md:w-8 md:h-8" /> START DE GAME!
                   </button>
 
                   <p className="text-xs md:text-sm mt-3 flex items-center justify-center gap-2" style={{ color: '#445865' }}>
