@@ -844,6 +844,21 @@ export const ShirtOverlay = memo<{
                     </mesh>
                 </group>
             );
+        case 't-shirt':
+            return (
+                <group>
+                    {/* Crew-neck collar so the default tee reads as a garment, not a bare box */}
+                    <mesh position={[0, 0.3, 0]}>
+                        <boxGeometry args={[bodyWidth * 0.5, 0.05, bodyDepth + 0.02]} />
+                        {mcMat(darker)}
+                    </mesh>
+                    {/* Bottom hem */}
+                    <mesh position={[0, -0.3, 0]}>
+                        <boxGeometry args={[bodyWidth + 0.02, 0.04, bodyDepth + 0.02]} />
+                        {mcMat(darker)}
+                    </mesh>
+                </group>
+            );
         default:
             return null;
     }
@@ -1909,7 +1924,9 @@ const AvatarModel = memo<{
         : [0, 0, 0];
 
     return (
-        <group position={[0, variant === 'head' ? -1.5 : -0.22, 0]}>
+        // Full-body dropped to -0.56 (was -0.22) so the feet rest on the platform instead of
+        // floating above it; the companion pet re-adds this 0.34 drop below to stay grounded.
+        <group position={[0, variant === 'head' ? -1.5 : -0.56, 0]}>
 
             {/* Head – cube with mouse-look */}
             <group ref={headRef} position={[0, 2.0, 0]}>
@@ -2083,14 +2100,18 @@ const AvatarModel = memo<{
                         headMount={false}
                     />
 
-                    {/* Companion pet (separate from accessory) */}
+                    {/* Companion pet (separate from accessory). The body is dropped 0.34 so the
+                        feet rest on the platform; the pet is positioned to sit on the floor, so it
+                        re-adds that drop to stay grounded instead of sinking through the platform. */}
                     {config.pet && config.pet !== 'none' && config.accessory !== config.pet && (
-                        <AccessoryLayer
-                            accessory={config.pet}
-                            color={config.accessoryColor ?? config.shirtColor}
-                            gender={config.gender}
-                            headMount={false}
-                        />
+                        <group position={[0, 0.34, 0]}>
+                            <AccessoryLayer
+                                accessory={config.pet}
+                                color={config.accessoryColor ?? config.shirtColor}
+                                gender={config.gender}
+                                headMount={false}
+                            />
+                        </group>
                     )}
                 </group>
             )}
