@@ -7,7 +7,7 @@ import MissionWelcomeCard from '@/features/missions/shared/MissionWelcomeCard';
 import { MissionBriefing } from '@/features/missions/shared/MissionBriefing';
 import { AgentRole, UserStats, AiLabProps } from '@/types';
 import { ROLES } from '@/config/agents';
-import { readableTextOn, tintOf } from '@/config/duckUi';
+import { readableTextOn } from '@/config/duckUi';
 import { useAgentLogic } from '@/hooks/useAgentLogic';
 import { Loader2, ChevronRight, Trophy, ArrowLeft, Target, Lightbulb, Sparkles, RotateCcw, Send, AlertCircle, Gamepad2, Download, CheckCircle2, PenTool, Palette, BrainCircuit } from 'lucide-react';
 import { WebPreviewModal } from '@/features/ai-lab/WebPreviewModal';
@@ -1240,8 +1240,7 @@ export const AiLab: React.FC<AiLabProps> = ({ user, onExit, saveProgress, initia
                   {suggestions.length > 0 && !isLoading && (
                     <div className="flex flex-wrap gap-1.5 mb-2 animate-in slide-in-from-bottom-2">
                       <div
-                        className="flex items-center gap-1 text-[11px] font-bold mr-1 px-1.5 py-0.5 rounded-md border border-duck-ink/15"
-                        style={{ backgroundColor: tintOf(selectedRole.color, 0.2), color: '#202023' }}
+                        className="flex items-center gap-1 text-[11px] font-bold mr-1 px-1.5 py-0.5 rounded-md border border-duck-ink/15 bg-duck-acid/20 text-duck-ink"
                       >
                         <Lightbulb size={11} fill="currentColor" /> Tips:
                       </div>
@@ -1253,8 +1252,7 @@ export const AiLab: React.FC<AiLabProps> = ({ user, onExit, saveProgress, initia
                         >
                           <span className="whitespace-normal leading-tight">{suggestion}</span>
                           <span
-                            className="text-[9px] font-bold px-1 py-0.5 rounded flex-shrink-0 whitespace-nowrap"
-                            style={{ backgroundColor: selectedRole.color, color: readableTextOn(selectedRole.color), border: `1px solid ${selectedRole.color}` }}
+                            className="text-[9px] font-bold px-1 py-0.5 rounded flex-shrink-0 whitespace-nowrap bg-duck-ink text-white"
                           >
                             -{TIP_COST} XP
                           </span>
