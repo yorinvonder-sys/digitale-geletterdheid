@@ -37,7 +37,7 @@ const FORBIDDEN_WORDS = [
 const GamePreview = lazy(() => import('@/features/games/GamePreview').then(m => ({ default: m.GamePreview })));
 const BookPreview = lazy(() => import('@/features/student/BookPreview').then(m => ({ default: m.BookPreview })));
 const WordWizardPreview = lazy(() => import('@/features/ai-lab/previews/WordWizardPreview').then(m => ({ default: m.WordWizardPreview })));
-const TrainerPreview = lazy(() => import('@/features/ai-lab/previews/TrainerPreview').then(m => ({ default: m.TrainerPreview })));
+const TrainerMissionView = lazy(() => import('@/features/ai-lab/TrainerMissionView').then(m => ({ default: m.TrainerMissionView })));
 const ChatbotTrainerPreview = lazy(() => import('@/features/ai-lab/previews/ChatbotTrainerPreview').then(m => ({ default: m.ChatbotTrainerPreview })));
 const DrawingGamePreview = lazy(() => import('@/features/ai-lab/previews/DrawingGamePreview').then(m => ({ default: m.DrawingGamePreview })));
 const AiBeleidBrainstormPreview = lazy(() => import('@/features/ai-lab/previews/AiBeleidBrainstormPreview').then(m => ({ default: m.AiBeleidBrainstormPreview })));
@@ -1083,12 +1083,34 @@ export const AiLab: React.FC<AiLabProps> = ({ user, onExit, saveProgress, initia
                 );
               })()}
             </div>
+          ) : selectedRole.id === 'ai-trainer' ? (
+            // Integrated full-width view for AI Trainer (chat docked as command bar)
+            <Suspense fallback={<div className="flex-1 w-full h-full flex items-center justify-center"><Loader2 className="animate-spin text-duck-ink/60" size={32} /></div>}>
+              <TrainerMissionView
+                data={activeTrainerData}
+                selectedRole={selectedRole}
+                goalAchieved={goalAchieved}
+                messages={messages}
+                isLoading={isLoading}
+                thinkingStep={thinkingStep}
+                messagesEndRef={messagesEndRef}
+                input={input}
+                setInput={setInput}
+                onSend={handleSendWithTipCheck}
+                error={error}
+                suggestions={suggestions}
+                onSuggestionClick={handleSuggestionClick}
+                tipCost={TIP_COST}
+                onLinkClick={setPreviewUrl}
+                onReset={() => setShowResetConfirm(true)}
+              />
+            </Suspense>
           ) : (
             // Standard Split View for other missions
             <div className={`flex-1 flex flex-col ${showRightPanel ? 'md:flex-row ipad-stack' : ''} gap-3 h-full min-h-0 pb-1 animate-in fade-in slide-in-from-right-4 duration-500`}>
 
               {/* Chat Column */}
-              <section className={`chat-column ${selectedRole.id === 'game-programmeur' ? 'game-programmeur-chat' : ''} ${selectedRole.id === 'ai-trainer' ? 'ai-trainer-chat' : ''} flex flex-col bg-white rounded-2xl shadow-sm border border-duck-ink/15 overflow-hidden min-h-0 h-full max-h-full ${chatWidthClass} print:hidden`}>
+              <section className={`chat-column ${selectedRole.id === 'game-programmeur' ? 'game-programmeur-chat' : ''} flex flex-col bg-white rounded-2xl shadow-sm border border-duck-ink/15 overflow-hidden min-h-0 h-full max-h-full ${chatWidthClass} print:hidden`}>
                 {/* Goal Banner - Show primaryGoal prominently */}
                 <div className={`px-4 py-3 backdrop-blur border-b flex items-center gap-3 shrink-0 transition-all ${goalAchieved ? 'bg-duck-ink/10 border-duck-ink/20' : 'bg-duck-bg/80 border-duck-ink/15'}`}>
                   <div
@@ -1332,8 +1354,6 @@ export const AiLab: React.FC<AiLabProps> = ({ user, onExit, saveProgress, initia
                         onSendPrompt={(prompt) => handleSend(prompt)}
                       />
 
-                    ) : selectedRole?.id === 'ai-trainer' ? (
-                      <TrainerPreview data={activeTrainerData} />
                     ) : selectedRole?.id === 'data-verzamelaar' ? (
                       <DataVerzamelaarPreview currentStep={completedSteps?.length || 0} />
                     ) : selectedRole?.id === 'data-journalist' ? (
