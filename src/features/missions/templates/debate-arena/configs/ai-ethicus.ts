@@ -81,11 +81,6 @@ const config: DebateArenaConfig = {
             description: 'Essays nakijken blijft een menselijke taak. De relatie tussen docent en leerling staat centraal in beoordeling.',
         },
     ],
-    argumentPrompts: [
-        'Ik vind dat...',
-        'Want onderzoek of de praktijk laat zien dat...',
-        'Dit raakt met name...',
-    ],
     reflectionQuestions: [
         'Wat is het verschil tussen een beoordeling die consistent is en een beoordeling die eerlijk is?',
         'Heeft dit debat je kijk op wat "goed onderwijs" betekent veranderd?',

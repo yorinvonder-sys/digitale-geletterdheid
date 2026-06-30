@@ -81,11 +81,6 @@ const config: DebateArenaConfig = {
             description: 'De toetsen onthullen een fundamenteel probleem. Ik schets een beter ontwerp.',
         },
     ],
-    argumentPrompts: [
-        'Mijn project is LEGAAL omdat...',
-        'Mijn project is EERLIJK omdat...',
-        'Mijn project is TRANSPARANT omdat...',
-    ],
     reflectionQuestions: [
         'Welke van de drie toetsen was het lastigst toe te passen op jóuw project, en waarom?',
         'Stel je voor dat een klasgenoot jouw project beoordeelt: welk ethisch punt zou hij of zij als grootste zorg aanwijzen?',

@@ -81,11 +81,6 @@ const config: DebateArenaConfig = {
             description: 'Leerlingen moeten de ruimte krijgen om zelf te kiezen hoeveel nadruk ze leggen op technische verdieping versus persoonlijke reflectie.',
         },
     ],
-    argumentPrompts: [
-        'Ik vind dat...',
-        'Mijn ervaring of redenering is...',
-        'Dit is relevant voor de toekomst omdat...',
-    ],
     reflectionQuestions: [
         'Wat heb jij de afgelopen jaren het meest geleerd — en was dat wat je verwachtte te leren?',
         'Heeft het debat jouw kijk op de waarde van informatica als vak veranderd?',

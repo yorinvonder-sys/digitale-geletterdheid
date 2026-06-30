@@ -81,11 +81,6 @@ const config: DebateArenaConfig = {
             description: 'Het echte probleem is structurele ongelijkheid in de arbeidsmarkt. Dat is een maatschappelijk probleem dat niet op één bedrijf kan worden afgewenteld.',
         },
     ],
-    argumentPrompts: [
-        'Mijn sterkste argument is...',
-        'Het bewijs daarvoor is...',
-        'Het tegenargument dat ik weerleg is...',
-    ],
     reflectionQuestions: [
         'Maakt het uit of een bedrijf bewust of onbewust discrimineert? Waarom wel of niet?',
         'Wat zou jij als rechter anders doen dan je debatpartner?',

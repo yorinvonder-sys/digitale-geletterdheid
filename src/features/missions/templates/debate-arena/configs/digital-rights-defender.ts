@@ -81,11 +81,6 @@ const config: DebateArenaConfig = {
             description: 'Scholen weten zelf het best wat goed is voor hun leerlingen. Overregulering hindert innovatief onderwijs.',
         },
     ],
-    argumentPrompts: [
-        'Ik vind dat...',
-        'Want de wet of het onderzoek zegt dat...',
-        'Dit raakt specifiek...',
-    ],
     reflectionQuestions: [
         'Is er een verschil tussen data verzamelen om te helpen en data verzamelen om te controleren? Leg uit.',
         'Welk recht vind jij het belangrijkst: privacy of toegang tot gepersonaliseerd onderwijs?',

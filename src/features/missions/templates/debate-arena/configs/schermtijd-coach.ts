@@ -90,11 +90,6 @@ const config: DebateArenaConfig = {
             description: 'App-bedrijven moeten wettelijk aansprakelijk worden gesteld als hun ontwerp aantoonbaar schadelijk gedrag veroorzaakt bij jongeren.',
         },
     ],
-    argumentPrompts: [
-        'Ik vind dat...',
-        'Want uit onderzoek of de praktijk blijkt dat...',
-        'Dit is belangrijk omdat...',
-    ],
     reflectionQuestions: [
         'Welk belang van welke partij vind jij het zwaarst wegen? Waarom?',
         'Is jouw mening over eigen verantwoordelijkheid veranderd na dit debat?',

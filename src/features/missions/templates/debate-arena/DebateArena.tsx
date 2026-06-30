@@ -41,7 +41,6 @@ export interface DebateArenaConfig {
     dilemma: string;
     stakeholders: Stakeholder[];
     positions: Position[];
-    argumentPrompts: string[];
     reflectionQuestions: string[];
     counterArgument: string;
     maxScore: number;

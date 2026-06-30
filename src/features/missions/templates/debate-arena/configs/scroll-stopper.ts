@@ -81,11 +81,6 @@ const config: DebateArenaConfig = {
             description: 'Bedrijven mogen hun apps ontwerpen zoals ze willen. Gebruikers hebben de vrijheid om zelf grenzen te stellen.',
         },
     ],
-    argumentPrompts: [
-        'Ik vind dat...',
-        'Want uit onderzoek blijkt dat...',
-        'Dit raakt vooral...',
-    ],
     reflectionQuestions: [
         'Wat heb je geleerd over de belangen van de verschillende partijen?',
         'Is je mening veranderd tijdens dit debat? Waarom wel of niet?',
