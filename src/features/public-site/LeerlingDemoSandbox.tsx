@@ -1,6 +1,7 @@
 import React, { lazy, Suspense, useState } from 'react';
 import '@/styles/app.css';
 import '@/styles/authenticated.css';
+import { CURRICULUM, getPeriodConfig } from '@/config/curriculum';
 import { DemoMissionHost } from '@/features/public-site/demo/DemoMissionHost';
 import { DEMO_STUDENT_STATS, DEMO_STUDENTS } from '@/features/public-site/demo/demoFixtures';
 
@@ -15,6 +16,8 @@ const DEMO_USER_NAME = 'Demo-leerling';
 // 'capture-student' skips the 3D avatar loader (isVisualCapture check in ProjectZeroDashboard)
 // which would crash without a Supabase session due to the @react-three/fiber ESM mismatch.
 const DEMO_UID = 'capture-student';
+const DEFAULT_DEMO_YEAR_GROUP = 1;
+const DEFAULT_DEMO_PERIOD = 1;
 
 const Loading = () => (
     <div className="flex min-h-screen items-center justify-center bg-duck-bg">
@@ -33,11 +36,36 @@ interface LeerlingDemoSandboxProps {
     initialView?: SandboxView;
 }
 
+function parseDemoParam(value: string | null): number | null {
+    if (!value || !/^\d+$/.test(value)) return null;
+    return Number(value);
+}
+
+function getInitialDemoSelection() {
+    const fallback = {
+        yearGroup: DEFAULT_DEMO_YEAR_GROUP,
+        period: DEFAULT_DEMO_PERIOD,
+    };
+
+    if (typeof window === 'undefined') return fallback;
+
+    const params = new URLSearchParams(window.location.search);
+    const yearGroup = parseDemoParam(params.get('year')) ?? fallback.yearGroup;
+    const period = parseDemoParam(params.get('period')) ?? fallback.period;
+
+    if (!CURRICULUM.yearGroups[yearGroup] || !getPeriodConfig(yearGroup, period)) {
+        return fallback;
+    }
+
+    return { yearGroup, period };
+}
+
 export const LeerlingDemoSandbox: React.FC<LeerlingDemoSandboxProps> = ({ initialView = 'student' }) => {
+    const initialSelection = getInitialDemoSelection();
     const [sandboxView, setSandboxView] = useState<SandboxView>(initialView);
     const [activeDemoMission, setActiveDemoMission] = useState<string | null>(null);
-    const [activeWeek, setActiveWeek] = useState(2);
-    const [activeYearGroup, setActiveYearGroup] = useState(2);
+    const [activeWeek, setActiveWeek] = useState(initialSelection.period);
+    const [activeYearGroup, setActiveYearGroup] = useState(initialSelection.yearGroup);
 
     if (activeDemoMission) {
         return (

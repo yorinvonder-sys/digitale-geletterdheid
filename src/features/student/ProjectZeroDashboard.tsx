@@ -214,14 +214,25 @@ interface StudentProjectCardProps {
     isCompleted?: boolean;
     index: number;
     onSelectModule: (id: string) => void;
+    onLockedDemoMission?: () => void;
     onInfoClick?: (info: string, kerndoelen?: SloKerndoelCode[]) => void;
     vsoProfile?: string;
 }
 
-const StudentProjectCard: React.FC<StudentProjectCardProps> = ({ mission, isCompleted, index, onSelectModule, onInfoClick, vsoProfile }) => {
+const StudentProjectCard: React.FC<StudentProjectCardProps> = ({ mission, isCompleted, index, onSelectModule, onLockedDemoMission, onInfoClick, vsoProfile }) => {
     const displayKerndoelen = vsoProfile && mission.sloVsoKerndoelen ? mission.sloVsoKerndoelen : mission.sloKerndoelen;
     const canOpen = mission.status === 'available';
     const isLocked = mission.status === 'locked';
+    const canOpenCard = canOpen || Boolean(isLocked && onLockedDemoMission);
+    const handleOpen = () => {
+        if (canOpen) {
+            onSelectModule(mission.id);
+            return;
+        }
+        if (isLocked && onLockedDemoMission) {
+            onLockedDemoMission();
+        }
+    };
 
     return (
         <article
@@ -235,8 +246,8 @@ const StudentProjectCard: React.FC<StudentProjectCardProps> = ({ mission, isComp
                 <div className="flex items-start justify-between gap-3">
                     <button
                         type="button"
-                        onClick={() => canOpen && onSelectModule(mission.id)}
-                        disabled={!canOpen}
+                        onClick={handleOpen}
+                        disabled={!canOpenCard}
                         className="min-w-0 flex-1 text-left disabled:cursor-not-allowed"
                         aria-label={`${mission.title} openen`}
                     >
@@ -267,9 +278,19 @@ const StudentProjectCard: React.FC<StudentProjectCardProps> = ({ mission, isComp
                             <ShieldCheck size={16} /> Voltooid
                         </span>
                     ) : isLocked ? (
-                        <span className="inline-flex min-h-[44px] items-center gap-2 rounded-full border border-duck-ink/10 bg-duck-bgLight px-4 text-sm font-bold text-duck-ink/65">
-                            <Lock size={14} /> {mission.lockLabel ?? 'Voltooi eerst de herhalingen'}
-                        </span>
+                        onLockedDemoMission ? (
+                            <button
+                                type="button"
+                                onClick={onLockedDemoMission}
+                                className="inline-flex min-h-[44px] items-center gap-2 rounded-full border border-duck-ink/10 bg-duck-bgLight px-4 text-sm font-bold text-duck-ink/65 transition-colors hover:border-duck-ink/30 hover:text-duck-ink"
+                            >
+                                <Lock size={14} /> {mission.lockLabel ?? 'Beschikbaar na aanmelding'}
+                            </button>
+                        ) : (
+                            <span className="inline-flex min-h-[44px] items-center gap-2 rounded-full border border-duck-ink/10 bg-duck-bgLight px-4 text-sm font-bold text-duck-ink/65">
+                                <Lock size={14} /> {mission.lockLabel ?? 'Voltooi eerst de herhalingen'}
+                            </span>
+                        )
                     ) : (
                         <button
                             type="button"
@@ -1329,6 +1350,7 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
                                             mission={mission}
                                             index={index}
                                             onSelectModule={onSelectModule}
+                                            onLockedDemoMission={userUid === 'capture-student' ? () => onOpenProfile() : undefined}
                                             onInfoClick={handleInfoClick}
                                             isCompleted={stats?.missionsCompleted?.includes(mission.id) || (mission.id === 'ipad-print-instructies' && stats?.studentClass !== 'MH1A')}
                                             vsoProfile={stats?.vsoProfile}
@@ -1364,6 +1386,7 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
                                                 mission={mission}
                                                 index={index}
                                                 onSelectModule={onSelectModule}
+                                                onLockedDemoMission={userUid === 'capture-student' ? () => onOpenProfile() : undefined}
                                                 onInfoClick={handleInfoClick}
                                                 isCompleted={stats?.missionsCompleted?.includes(mission.id)}
                                                 vsoProfile={stats?.vsoProfile}
