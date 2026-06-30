@@ -7,6 +7,7 @@ import MissionWelcomeCard from '@/features/missions/shared/MissionWelcomeCard';
 import { MissionBriefing } from '@/features/missions/shared/MissionBriefing';
 import { AgentRole, UserStats, AiLabProps } from '@/types';
 import { ROLES } from '@/config/agents';
+import { readableTextOn, tintOf } from '@/config/duckUi';
 import { useAgentLogic } from '@/hooks/useAgentLogic';
 import { Loader2, ChevronRight, Trophy, ArrowLeft, Target, Lightbulb, Sparkles, RotateCcw, Send, AlertCircle, Gamepad2, Download, CheckCircle2, PenTool, Palette, BrainCircuit } from 'lucide-react';
 import { WebPreviewModal } from '@/features/ai-lab/WebPreviewModal';
@@ -1091,8 +1092,8 @@ export const AiLab: React.FC<AiLabProps> = ({ user, onExit, saveProgress, initia
                 {/* Goal Banner - Show primaryGoal prominently */}
                 <div className={`px-4 py-3 backdrop-blur border-b flex items-center gap-3 shrink-0 transition-all ${goalAchieved ? 'bg-duck-ink/10 border-duck-ink/20' : 'bg-duck-bg/80 border-duck-ink/15'}`}>
                   <div
-                    className="p-2 rounded-lg text-white"
-                    style={{ backgroundColor: goalAchieved ? '#202023' : selectedRole.color }}
+                    className="p-2 rounded-lg"
+                    style={{ backgroundColor: goalAchieved ? '#202023' : selectedRole.color, color: readableTextOn(goalAchieved ? '#202023' : selectedRole.color) }}
                   >
                     {goalAchieved ? <CheckCircle2 size={16} /> : <Target size={16} />}
                   </div>
@@ -1217,8 +1218,8 @@ export const AiLab: React.FC<AiLabProps> = ({ user, onExit, saveProgress, initia
                   {suggestions.length > 0 && !isLoading && (
                     <div className="flex flex-wrap gap-2 mb-3 animate-in slide-in-from-bottom-2">
                       <div
-                        className="flex items-center gap-1 text-xs font-bold text-white mr-1 px-2 py-1 rounded-lg"
-                        style={{ backgroundColor: selectedRole.color }}
+                        className="flex items-center gap-1 text-xs font-bold mr-1 px-2 py-1 rounded-lg border border-duck-ink/15"
+                        style={{ backgroundColor: tintOf(selectedRole.color, 0.2), color: '#202023' }}
                       >
                         <Lightbulb size={12} fill="currentColor" /> Tips:
                       </div>
@@ -1230,8 +1231,8 @@ export const AiLab: React.FC<AiLabProps> = ({ user, onExit, saveProgress, initia
                         >
                           <span className="whitespace-normal leading-tight">{suggestion}</span>
                           <span
-                            className="text-[9px] font-bold text-white px-1.5 py-0.5 rounded flex-shrink-0 whitespace-nowrap"
-                            style={{ backgroundColor: selectedRole.color, border: `1px solid ${selectedRole.color}` }}
+                            className="text-[9px] font-bold px-1.5 py-0.5 rounded flex-shrink-0 whitespace-nowrap"
+                            style={{ backgroundColor: selectedRole.color, color: readableTextOn(selectedRole.color), border: `1px solid ${selectedRole.color}` }}
                           >
                             -{TIP_COST} XP
                           </span>
