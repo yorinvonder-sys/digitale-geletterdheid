@@ -301,12 +301,24 @@
    "interactivity": 0,
    "total": 7
   },
-  "lastReviewed": null,
-  "reviewStatus": "pending",
-  "reportPath": null,
+  "lastReviewed": "2026-06-26",
+  "reviewStatus": "reviewed",
+  "reportPath": "business/dgskills-reviews/wave-3b-2026-06-26.md",
   "autoFixesApplied": 0,
-  "openEscalations": [],
-  "codexVerdict": null
+  "openEscalations": [
+   "SLO 22A (digitale producten) wankel — leerling schrijft tekstbeschrijvingen, geen digitaal artefact; 21B mogelijk passender (mapping read-only)"
+  ],
+  "codexVerdict": null,
+  "reviewScores": {
+   "uiux": 9,
+   "didactiek": 6,
+   "tech": 9
+  },
+  "proposedFixes": 0,
+  "escalationCount": 1,
+  "topIssues": [
+   "SLO 22A-fit wankel [ESCALATIE]"
+  ]
  },
  {
   "missionId": "bug-hunter",
@@ -776,12 +788,25 @@
    "interactivity": 0,
    "total": 7
   },
-  "lastReviewed": null,
-  "reviewStatus": "pending",
-  "reportPath": null,
+  "lastReviewed": "2026-06-26",
+  "reviewStatus": "reviewed",
+  "reportPath": "business/dgskills-reviews/wave-3b-2026-06-26.md",
   "autoFixesApplied": 0,
-  "openEscalations": [],
-  "codexVerdict": null
+  "openEscalations": [
+   "argumentPrompts dood veld (gedeelde debate-engine)",
+   "4 badges met identieke kleur #202023 — geen visueel niveau-onderscheid (ontwerpkeuze)"
+  ],
+  "codexVerdict": null,
+  "reviewScores": {
+   "uiux": 9,
+   "didactiek": 9,
+   "tech": 9
+  },
+  "proposedFixes": 0,
+  "escalationCount": 2,
+  "topIssues": [
+   "geen defecten; sterke missie"
+  ]
  },
  {
   "missionId": "digital-storyteller",
@@ -794,12 +819,24 @@
    "interactivity": 1,
    "total": 6
   },
-  "lastReviewed": null,
-  "reviewStatus": "pending",
-  "reportPath": null,
+  "lastReviewed": "2026-06-26",
+  "reviewStatus": "reviewed",
+  "reportPath": "business/dgskills-reviews/wave-3b-2026-06-26.md",
   "autoFixesApplied": 0,
-  "openEscalations": [],
-  "codexVerdict": null
+  "openEscalations": [
+   "step-id 'scène-schrijven' bevat accent (è) — fragiel in keys/URLs; engine-audit nodig vóór hernoemen"
+  ],
+  "codexVerdict": null,
+  "reviewScores": {
+   "uiux": 9,
+   "didactiek": 9,
+   "tech": 8
+  },
+  "proposedFixes": 0,
+  "escalationCount": 1,
+  "topIssues": [
+   "accent in step-id [ESCALATIE — robuustheid]"
+  ]
  },
  {
   "missionId": "digitale-balans-coach",
@@ -902,12 +939,25 @@
    "interactivity": 0,
    "total": 7
   },
-  "lastReviewed": null,
-  "reviewStatus": "pending",
-  "reportPath": null,
+  "lastReviewed": "2026-06-26",
+  "reviewStatus": "reviewed",
+  "reportPath": "business/dgskills-reviews/wave-3b-2026-06-26.md",
   "autoFixesApplied": 0,
-  "openEscalations": [],
-  "codexVerdict": null
+  "openEscalations": [
+   "argumentPrompts dood veld (gedeelde debate-engine)",
+   "NB reviewer-melding maxScore was vals alarm (rekenfout: componenten = 100 = maxScore)"
+  ],
+  "codexVerdict": null,
+  "reviewScores": {
+   "uiux": 8,
+   "didactiek": 9,
+   "tech": 8
+  },
+  "proposedFixes": 0,
+  "escalationCount": 1,
+  "topIssues": [
+   "argumentPrompts dood veld [ESCALATIE — shared-engine]"
+  ]
  },
  {
   "missionId": "game-director",
@@ -1086,12 +1136,24 @@
    "interactivity": 0,
    "total": 7
   },
-  "lastReviewed": null,
-  "reviewStatus": "pending",
-  "reportPath": null,
+  "lastReviewed": "2026-06-26",
+  "reviewStatus": "reviewed",
+  "reportPath": "business/dgskills-reviews/wave-3b-2026-06-26.md",
   "autoFixesApplied": 0,
-  "openEscalations": [],
-  "codexVerdict": null
+  "openEscalations": [
+   "(optioneel) introDescription eindigt op \"begrijpt\" — flavor-tekst, geen defect"
+  ],
+  "codexVerdict": null,
+  "reviewScores": {
+   "uiux": 8,
+   "didactiek": 9,
+   "tech": 9
+  },
+  "proposedFixes": 0,
+  "escalationCount": 0,
+  "topIssues": [
+   "schoon; alleen optionele copy-suggestie"
+  ]
  },
  {
   "missionId": "meesterproef",
@@ -1515,12 +1577,24 @@
    "interactivity": 0,
    "total": 6
   },
-  "lastReviewed": null,
-  "reviewStatus": "pending",
-  "reportPath": null,
+  "lastReviewed": "2026-06-26",
+  "reviewStatus": "reviewed",
+  "reportPath": "business/dgskills-reviews/wave-3b-2026-06-26.md",
   "autoFixesApplied": 0,
-  "openEscalations": [],
-  "codexVerdict": null
+  "openEscalations": [
+   "inline missionGoal wint at runtime → missionGoals.ts-entry is dode code (afwijkende formulering); één bron canoniek maken"
+  ],
+  "codexVerdict": null,
+  "reviewScores": {
+   "uiux": 9,
+   "didactiek": 8,
+   "tech": 9
+  },
+  "proposedFixes": 0,
+  "escalationCount": 1,
+  "topIssues": [
+   "dode missionGoals-entry [ESCALATIE — cleanup]"
+  ]
  },
  {
   "missionId": "prompt-master",
@@ -1994,12 +2068,24 @@
    "interactivity": 1,
    "total": 6
   },
-  "lastReviewed": null,
-  "reviewStatus": "pending",
-  "reportPath": null,
-  "autoFixesApplied": 0,
-  "openEscalations": [],
-  "codexVerdict": null
+  "lastReviewed": "2026-06-26",
+  "reviewStatus": "fixes-applied",
+  "reportPath": "business/dgskills-reviews/wave-3b-2026-06-26.md",
+  "autoFixesApplied": 1,
+  "openEscalations": [
+   "(optioneel) takeaway \"Je begrijpt hoe een shotlist werkt\" — actievere formulering mogelijk, geen defect"
+  ],
+  "codexVerdict": null,
+  "reviewScores": {
+   "uiux": 8,
+   "didactiek": 7,
+   "tech": 10
+  },
+  "proposedFixes": 1,
+  "escalationCount": 0,
+  "topIssues": [
+   "grammatica \"die\" -> \"dat\" [GEFIXED]"
+  ]
  },
  {
   "missionId": "wachtwoord-warrior",
@@ -2012,12 +2098,22 @@
    "interactivity": 0,
    "total": 6
   },
-  "lastReviewed": null,
-  "reviewStatus": "pending",
-  "reportPath": null,
+  "lastReviewed": "2026-06-26",
+  "reviewStatus": "reviewed",
+  "reportPath": "business/dgskills-reviews/wave-3b-2026-06-26.md",
   "autoFixesApplied": 0,
   "openEscalations": [],
-  "codexVerdict": null
+  "codexVerdict": null,
+  "reviewScores": {
+   "uiux": 9,
+   "didactiek": 9,
+   "tech": 10
+  },
+  "proposedFixes": 0,
+  "escalationCount": 0,
+  "topIssues": [
+   "schoon; antwoordmodellen + scoring (4x25=100) geverifieerd"
+  ]
  },
  {
   "missionId": "web-developer",
