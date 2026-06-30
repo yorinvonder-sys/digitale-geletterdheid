@@ -10,6 +10,7 @@ import { EerlijkDossier } from './sub/EerlijkDossier';
 import { TransparantDossier } from './sub/TransparantDossier';
 import { UitdagingBoss } from './sub/UitdagingBoss';
 import { VonnisClimax } from './sub/VonnisClimax';
+import { RewardHud } from './sub/RewardHud';
 
 // ═══════════════════════════════════════════════════════════════
 // Config contract (exported so configs/review-week-3.ts can import it)
@@ -210,6 +211,13 @@ const EthicsCouncilWithConfig: React.FC<EthicsCouncilWithConfigProps> = ({
 
     // ── Render ────────────────────────────────────────────────
 
+    // A stale (old debate-arena) save lacks our _template discriminator; the
+    // guard effect above resets it. Until that lands, show the loader so we
+    // never read undefined fields from a mismatched blob.
+    if (state._template !== 'ethics-council') {
+        return <LoadingScreen />;
+    }
+
     if (state.stage === 'intro') {
         return (
             <IntroDuck
@@ -259,6 +267,8 @@ const EthicsCouncilWithConfig: React.FC<EthicsCouncilWithConfigProps> = ({
                     totalScore={totalScore}
                     onBack={onBack}
                 />
+
+                <RewardHud completedDossiers={phaseIndex} totalDossiers={ACTIVE_STAGES.length} />
 
                 <div className="bg-white rounded-2xl border border-duck-gray p-5">
                     {state.stage === 'legaal' && (

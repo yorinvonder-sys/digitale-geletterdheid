@@ -40,10 +40,11 @@ export const LegaalDossier: React.FC<LegaalDossierProps> = ({
     const canSubmit = verdict !== null && justification.trim().length >= 10;
 
     const scoreForVerdict = (): number => {
-        // Any reasoned verdict earns base points; nee/twijfel + justification are just as valid
-        const base = verdict === 'ja' ? maxScore : Math.round(maxScore * 0.85);
-        // Justification quality bonus (up to 10 chars threshold)
-        const qualityBonus = justification.trim().length >= 40 ? Math.round(maxScore * 0.1) : 0;
+        // Score the REASONING, not which answer was picked. An honest "nee" must
+        // earn as much as "ja" — penalising it would reward claiming compliance
+        // over honesty, the opposite of what this mission teaches.
+        const base = Math.round(maxScore * 0.8);
+        const qualityBonus = justification.trim().length >= 40 ? Math.round(maxScore * 0.2) : 0;
         return Math.min(base + qualityBonus, maxScore);
     };
 

@@ -26,14 +26,16 @@ const config: EthicsCouncilConfig = {
             'Ik bekijk jouw project door de bril van de wet (de AVG — de Europese privacywet). Verwerk jij persoonsgegevens — namen, foto\'s, e-mailadressen? Dan moet je kunnen aantonen dat je toestemming hebt én dat duidelijk is wie verantwoordelijk is voor die gegevens. "Ik dacht dat het mocht" is geen verdediging als de rechter ernaar kijkt.',
     },
     // === Dossier 2: Eerlijk (Categorize-ronde) ===
-    eerlijkCategories: ['Werkt voor iedereen', 'Valt buiten de boot'],
+    // Sorteer ONTWERPKEUZES (niet mensen): maakt de keuze je project eerlijk
+    // voor iedereen, of sluit hij per ongeluk mensen uit?
+    eerlijkCategories: ['Eerlijk ontwerp', 'Sluit mensen uit'],
     eerlijkItems: [
-        { label: 'Kleurenblinde gebruiker', correctCategory: 'Valt buiten de boot' },
-        { label: 'Trage internetverbinding', correctCategory: 'Valt buiten de boot' },
-        { label: 'Schermlezer (slechtziende)', correctCategory: 'Valt buiten de boot' },
-        { label: 'Kleine dataset (< 50 items)', correctCategory: 'Valt buiten de boot' },
-        { label: 'Desktop-browser Chrome', correctCategory: 'Werkt voor iedereen' },
-        { label: 'Leerling zonder dyslexie', correctCategory: 'Werkt voor iedereen' },
+        { label: 'Knoppen hebben tekst, niet alleen kleur', correctCategory: 'Eerlijk ontwerp' },
+        { label: "Video's hebben ondertiteling", correctCategory: 'Eerlijk ontwerp' },
+        { label: 'Tekst en achtergrond hebben genoeg contrast', correctCategory: 'Eerlijk ontwerp' },
+        { label: 'Werkt alleen met een muis, niet met toetsenbord', correctCategory: 'Sluit mensen uit' },
+        { label: 'Uitleg staat alleen in moeilijk, formeel Nederlands', correctCategory: 'Sluit mensen uit' },
+        { label: 'AI is maar met één soort gebruiker getest', correctCategory: 'Sluit mensen uit' },
     ],
     // === Dossier 3: Transparant ===
     transparantHint:

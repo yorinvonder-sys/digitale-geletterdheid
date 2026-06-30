@@ -58,8 +58,8 @@ export const EerlijkDossier: React.FC<EerlijkDossierProps> = ({
         <div className="bg-white rounded-2xl border border-duck-gray p-4">
             {/* Wire Categorize: its onComplete passes (score, maxScore); we only need score */}
             <Categorize
-                title="Wie valt buiten de boot?"
-                description="Sorteer elke situatie: werkt jouw project hiervoor even goed, of valt deze gebruiker buiten de boot?"
+                title="Welke keuzes zijn eerlijk?"
+                description="Sorteer elke ontwerpkeuze: maakt die je project eerlijk voor iedereen, of sluit hij per ongeluk mensen uit?"
                 categories={categories}
                 items={items}
                 maxScore={maxScore}
