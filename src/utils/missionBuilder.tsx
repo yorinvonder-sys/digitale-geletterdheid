@@ -161,6 +161,112 @@ export const getMissionTooltipInfo = (
     return fallback || undefined;
 };
 
+const DUTCH_MISSION_TITLE_OVERRIDES: Record<string, string> = {
+    'cloud-commander': 'Digitale opslagbeheerder',
+    'word-wizard': 'Wordexpert',
+    'slide-specialist': 'Presentatiespecialist',
+    'print-pro': 'Afdrukexpert',
+    'ipad-print-instructies': 'iPad afdrukinstructies',
+    'cloud-cleaner': 'Digitale opslagopruimer',
+    'layout-doctor': 'Opmaakdokter',
+    'pitch-police': 'Presentatiepolitie',
+    'prompt-master': 'Vraagmeester',
+    'game-programmeur': 'Spelprogrammeur',
+    'ai-trainer': 'KI-opleider',
+    'chatbot-trainer': 'Gespreksbotopleider',
+    'ai-tekengame': 'KI-tekenspel',
+    'game-director': 'De spelregisseur',
+    'ai-beleid-brainstorm': 'KI-beleidsdenker',
+    'code-denker': 'Programmeerdenker',
+    'website-bouwer': 'Websitebouwer',
+    'schermtijd-coach': 'Schermtijdbegeleider',
+    'notificatie-ninja': 'Meldingenmeester',
+    'review-week-2': 'De programmeercriticus',
+    'data-detective': 'Dataspeurder',
+    'deepfake-detector': 'Nepvideospeurder',
+    'ai-spiegel': 'De KI-spiegel',
+    'social-safeguard': 'Sociale veiligheidshelper',
+    'cookie-crusher': 'Volgkoekjeskraker',
+    'mail-detective': 'Mailspeurder',
+    'filter-bubble-breaker': 'Filterbubbelbreker',
+    'digitale-balans-coach': 'Digitale balansbegeleider',
+    'social-media-psychologist': 'Sociale media psycholoog',
+    'data-journalist': 'Datajournalist',
+    'spreadsheet-specialist': 'Rekenbladspecialist',
+    'factchecker': 'Feitencontroleur',
+    'api-verkenner': 'Koppelvlakverkenner',
+    'dashboard-designer': 'Overzichtsbordontwerper',
+    'ai-bias-detective': 'KI-vooroordelenspeurder',
+    'data-review': 'Dataterugblik',
+    'algorithm-architect': 'Algoritme-architect',
+    'web-developer': 'Webbouwer',
+    'app-prototyper': 'App-prototypemaker',
+    'bug-hunter': 'Foutenspeurder',
+    'automation-engineer': 'Automatiseringsbouwer',
+    'code-reviewer': 'Programmacodebeoordelaar',
+    'network-navigator': 'Netwerkverkenner',
+    'privacy-by-design': 'Privacybewust ontwerp',
+    'wachtwoord-warrior': 'Wachtwoordstrijder',
+    'access-control-engineer': 'Toegangsrechtenbouwer',
+    'code-review-2': 'Codeterugblik',
+    'ux-detective': 'Gebruikservaringsspeurder',
+    'podcast-producer': 'Podcastmaker',
+    'meme-machine': 'Internetgrapmaker',
+    'digital-storyteller': 'Digitale verhalenmaker',
+    'brand-builder': 'Merkenbouwer',
+    'video-editor': 'Videomonteur',
+    'media-review': 'Mediaterugblik',
+    'ai-ethicus': 'KI-ethicus',
+    'digital-rights-defender': 'Digitale rechtenverdediger',
+    'tech-court': 'Technologierechtbank',
+    'future-forecaster': 'Toekomstvoorspeller',
+    'sustainability-scanner': 'Duurzaamheidsspeurder',
+    'ml-trainer': 'Machineleeropleider',
+    'api-architect': 'Koppelvlakarchitect',
+    'neural-navigator': 'Neurale verkenner',
+    'data-pipeline': 'Datastroom',
+    'open-source-contributor': 'Opensourcebijdrager',
+    'advanced-code-review': 'Geavanceerde codebeoordeling',
+    'cyber-detective': 'Cyberspeurder',
+    'encryption-expert': 'Versleutelexpert',
+    'phishing-fighter': 'Phishingbestrijder',
+    'security-auditor': 'Veiligheidscontroleur',
+    'digital-forensics': 'Digitaal sporenonderzoek',
+    'security-review': 'Veiligheidsterugblik',
+    'startup-simulator': 'Bedrijfsidee-simulator',
+    'policy-maker': 'Beleidsmaker',
+    'innovation-lab': 'Innovatielab',
+    'digital-divide-researcher': 'Onderzoeker digitale kloof',
+    'tech-impact-analyst': 'Technologie-impactanalist',
+    'impact-review': 'Impactterugblik',
+    'startup-pitch': 'Bedrijfsideepresentatie',
+    'portfolio-builder': 'Portfoliobouwer',
+    'research-project': 'Onderzoeksproject',
+    'prototype-developer': 'Prototypebouwer',
+    'pitch-perfect': 'Perfect presenteren',
+    'reflection-report': 'Reflectieverslag',
+};
+
+export const normalizeMissionTitle = (rawTitle: string): string => {
+    const withoutEdgeSeparators = rawTitle
+        .trim()
+        .replace(/^[\s\-_–—:|]+|[\s\-_–—:|]+$/g, '')
+        .replace(/[-_]+/g, ' ')
+        .replace(/\s+/g, ' ')
+        .trim();
+
+    return withoutEdgeSeparators.replace(/^(\P{L}*)(\p{L})/u, (_match, prefix: string, letter: string) =>
+        `${prefix}${letter.toLocaleUpperCase('nl-NL')}`
+    );
+};
+
+export const getMissionDisplayTitle = (
+    missionId: string,
+    roleTitle?: string,
+    metaTitle?: string,
+): string =>
+    normalizeMissionTitle(DUTCH_MISSION_TITLE_OVERRIDES[missionId] || roleTitle || metaTitle || missionId);
+
 export function buildMissionsForPeriod(yearGroup: number, period: number): Mission[] {
     const periodConfig = getPeriodConfig(yearGroup, period);
     if (!periodConfig) return [];
@@ -172,7 +278,7 @@ export function buildMissionsForPeriod(yearGroup: number, period: number): Missi
         const overrides = getMissionOverride(missionId);
         missions.push({
             id: missionId,
-            title: role?.title || missionId,
+            title: getMissionDisplayTitle(missionId, role?.title, meta?.title),
             description: role?.description || '',
             icon: role?.icon ? React.cloneElement(role.icon as React.ReactElement<{ size?: number }>, { size: 40 }) : <RotateCcw size={40} />,
             number: 'Review',
@@ -193,7 +299,7 @@ export function buildMissionsForPeriod(yearGroup: number, period: number): Missi
         const overrides = getMissionOverride(missionId);
         missions.push({
             id: missionId,
-            title: role?.title || missionId,
+            title: getMissionDisplayTitle(missionId, role?.title, meta?.title),
             description: role?.description || '',
             icon: role?.icon ? React.cloneElement(role.icon as React.ReactElement<{ size?: number }>, { size: 40 }) : <Puzzle size={40} />,
             number: overrides.number || String(missionNum).padStart(2, '0'),
@@ -234,7 +340,7 @@ export function buildMissionsFromContainer(container: ContainerConfig): Mission[
         const overrides = getMissionOverride(missionId);
         missions.push({
             id: missionId,
-            title: role?.title || missionId,
+            title: getMissionDisplayTitle(missionId, role?.title, meta?.title),
             description: role?.description || '',
             icon: role?.icon ? React.cloneElement(role.icon as React.ReactElement<{ size?: number }>, { size: 40 }) : <RotateCcw size={40} />,
             number: 'Review',
@@ -255,7 +361,7 @@ export function buildMissionsFromContainer(container: ContainerConfig): Mission[
         const overrides = getMissionOverride(missionId);
         missions.push({
             id: missionId,
-            title: role?.title || missionId,
+            title: getMissionDisplayTitle(missionId, role?.title, meta?.title),
             description: role?.description || '',
             icon: role?.icon ? React.cloneElement(role.icon as React.ReactElement<{ size?: number }>, { size: 40 }) : <Puzzle size={40} />,
             number: overrides.number || String(missionNum).padStart(2, '0'),

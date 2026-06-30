@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Target, Sparkles, ChevronRight } from 'lucide-react';
 import { getAdaptiveSuggestions, type RankedMission } from '@/utils/adaptiveEngine';
+import { getMissionDisplayTitle } from '@/utils/missionBuilder';
 import { extractDomeinScores, getDomeinLabel, getDomeinKleur, type DomeinKey } from '@/utils/growthCalculation';
 import { getAssessmentResult, getCurrentSchoolYear, type AssessmentType } from '@/services/assessmentService';
 import { ROLES } from '@/config/agents';
@@ -131,7 +132,7 @@ export const AdaptiveMissionSuggestions: React.FC<AdaptiveMissionSuggestionsProp
       >
         {suggestions.map((mission) => {
           const role = ROLES.find((r) => r.id === mission.missionId);
-          const title = role?.title ?? mission.title;
+          const title = getMissionDisplayTitle(mission.missionId, role?.title, mission.title);
           const indicator = relevanceIndicator(mission.relevanceScore);
 
           return (
