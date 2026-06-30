@@ -11,7 +11,7 @@ export const videoEditorConfig: BuilderCanvasConfig = {
         'Ontwerp een storyboard met scènes en cameraposities',
         'Schrijf een shotlist met beschrijvingen per shot',
         'Plan de montage: volgorde, overgangen en muziek',
-        'Bedenk een openingsshot die direct de aandacht trekt',
+        'Bedenk een openingsshot dat direct de aandacht trekt',
     ],
     enableChat: true,
     chatRoleId: 'video-editor',
