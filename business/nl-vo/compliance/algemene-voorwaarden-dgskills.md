@@ -248,7 +248,7 @@ In deze Algemene Voorwaarden worden de volgende begrippen met een hoofdletter ge
    - versleutelde gegevensoverdracht (HTTPS, HSTS);
    - Content Security Policy (CSP);
    - rolgebaseerde toegangscontrole (RBAC) via Supabase Row Level Security;
-   - meerfactorauthenticatie (MFA/AAL2) voor docent- en beheerdersrollen;
+   - meerfactorauthenticatie (MFA/AAL2) voor docent- en beheerdersrollen, waaronder begrepen de door de identity provider (Microsoft Entra ID of gelijkwaardig) afgedwongen MFA voor scholen die schriftelijk attesteren dat hun identity provider MFA afdwingt en die gebruik maken van de per-school opt-in als bedoeld in de Beveiligingsbijlage;
    - inputvalidatie en sanitization (DOMPurify, prompt injection preventie);
    - auditlogging conform AVG.
 2. Beveiligingsincidenten kunnen worden gemeld via security@dgskills.app. DGSkills streeft naar een eerste reactie binnen **4 uur** voor kritieke incidenten.
