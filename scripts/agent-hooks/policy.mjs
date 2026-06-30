@@ -331,12 +331,15 @@ function isRedRiskPath(path) {
 
   return [
     /^supabase\//,
-    /^services\//,
-    /^contexts\//,
-    /^AuthenticatedApp\.tsx$/,
-    /^AppRouter\.tsx$/,
-    /^components\/(?:developer|consent|assessment|teacher|games)\//,
-    /^components\/(?:Login|ChangePassword|MfaGate|ParentConsentApproval|PrivacyModal|StudentAIChat)\.tsx$/,
+    /^src\/services\//,
+    /^src\/contexts\//,
+    /^src\/app\/AuthenticatedApp\.tsx$/,
+    /^src\/app\/AppRouter\.tsx$/,
+    /^src\/features\/(?:developer|consent|assessment|teacher|games)\//,
+    /^src\/features\/auth\/(?:Login|ChangePassword|MfaGate)\.tsx$/,
+    /^src\/features\/consent\/ParentConsentApproval\.tsx$/,
+    /^src\/components\/app-shell\/PrivacyModal\.tsx$/,
+    /^src\/features\/ai-chat\/StudentAIChat\.tsx$/,
   ].some((pattern) => pattern.test(normalized));
 }
 
