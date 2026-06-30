@@ -12,7 +12,7 @@ interface TrainerMissionViewProps {
   messages: ChatMessage[];
   isLoading: boolean;
   thinkingStep: string;
-  messagesEndRef: React.RefObject<HTMLDivElement>;
+  messagesEndRef: React.RefObject<HTMLDivElement | null>;
   input: string;
   setInput: (value: string) => void;
   onSend: (text?: string) => void;
