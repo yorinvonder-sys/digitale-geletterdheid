@@ -73,8 +73,9 @@ export const MISSION_GOALS: Record<string, MissionGoal> = {
     'prompt-master': {
         primaryGoal: 'Ik schrijf prompts die steeds beter worden doordat ik context, vorm en duidelijke eisen toevoeg.',
         criteria: {
-            type: 'component-complete',
-            description: 'Je doorloopt de promptlevels en verbetert je prompt op basis van feedback.',
+            type: 'score-threshold',
+            threshold: 60,
+            description: 'De missie is behaald als je eindscore minstens 60% is.',
         },
         evidence: 'Je eindprompt bevat context, opdracht, vorm en kwaliteitscriteria.',
     },
@@ -154,8 +155,9 @@ export const MISSION_GOALS: Record<string, MissionGoal> = {
     'schermtijd-coach': {
         primaryGoal: 'Ik bouw een onderbouwd standpunt over wie verantwoordelijk is voor gezonde schermtijd.',
         criteria: {
-            type: 'rounds-complete',
-            description: 'Je leest standpunten, kiest positie, geeft argumenten en reflecteert.',
+            type: 'steps-complete',
+            min: 5,
+            description: 'Verkennen, positie kiezen, argumenten bouwen, tegenargument beantwoorden en reflecteren.',
         },
         evidence: 'Je eindstandpunt bevat minimaal twee argumenten en een reflectie op je eigen gedrag.',
     },
@@ -442,11 +444,11 @@ export const MISSION_GOALS: Record<string, MissionGoal> = {
 
     // === SimulationLab ===
     'privacy-by-design': {
-        primaryGoal: 'Ik pas privacy-instellingen aan op sociale media, apps en cookiebanners en zie hoe keuzes mijn datablootstelling beïnvloeden.',
+        primaryGoal: 'Ik maak privacykeuzes die een app veiliger maken en leg uit welke data echt nodig is.',
         criteria: {
             type: 'rounds-complete',
             min: 3,
-            description: 'Je doorloopt drie simulaties met profielinstellingen, app-rechten en cookiekeuzes.',
+            description: 'Alle drie privacy-simulaties zijn onderzocht met vragen en reflectie.',
         },
         evidence: 'Je kunt per simulator uitleggen welke instelling meer of minder data deelt en waarom.',
     },

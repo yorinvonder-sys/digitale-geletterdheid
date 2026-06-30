@@ -62,9 +62,9 @@ export const uxDetectiveConfig: DataViewerConfig = {
                     question:
                         'Wat is de gemiddelde ernst-score van de navigatie-problemen?',
                     type: 'number-input',
-                    correctAnswer: 4.3,
+                    correctAnswer: 4.5,
                     explanation:
-                        'De drie navigatie-problemen hebben ernst 5, 5 en 3. Gemiddelde: (5 + 5 + 3) ÷ 3 = 13 ÷ 3 ≈ 4,3. Filter op "Categorie" = "Navigatie" om de drie rijen te isoleren.',
+                        'De vier navigatie-problemen hebben ernst 5, 5, 3 en 5. Gemiddelde: (5 + 5 + 3 + 5) ÷ 4 = 18 ÷ 4 = 4,5. Filter op "Categorie" = "Navigatie" om de vier rijen te isoleren.',
                     points: 15,
                 },
                 {
