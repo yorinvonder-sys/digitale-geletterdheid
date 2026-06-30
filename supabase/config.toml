@@ -1,0 +1,8 @@
+project_id = "tdaylulsnbhhjuufmdzk"
+
+# import-ai-cost is een server-to-server endpoint: de beveiliging loopt via de
+# geheime header X-Import-Secret, niet via een Supabase-JWT. Pin verify_jwt=false
+# zodat een toekomstige redeploy de scheduled aanroep niet stil breekt (Supabase
+# default is verify_jwt=true).
+[functions.import-ai-cost]
+verify_jwt = false

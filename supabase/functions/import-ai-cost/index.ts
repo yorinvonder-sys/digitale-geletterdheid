@@ -98,23 +98,41 @@ serve(async (req: Request) => {
     const supplier = clean(body.supplier, 200);
     const invoiceNumber = clean(body.invoiceNumber, 200);
     const issueDate = clean(body.issueDate, 10);
-    const amount = typeof body.amount === 'number' ? body.amount : parseFloat(String(body.amount));
     const source = clean(body.source, 50) || 'ai-billing';
 
     if (!supplier) return jsonResponse({ error: 'supplier is verplicht.' }, 400);
     if (!invoiceNumber) return jsonResponse({ error: 'invoiceNumber is verplicht (idempotentie-sleutel).' }, 400);
     if (!/^\d{4}-\d{2}-\d{2}$/.test(issueDate)) return jsonResponse({ error: 'issueDate moet YYYY-MM-DD zijn.' }, 400);
-    if (!Number.isFinite(amount) || amount <= 0) return jsonResponse({ error: 'amount moet een positief getal zijn.' }, 400);
+
+    // Vereis een numeriek JSON-bedrag: een gelokaliseerde string als "12,50" of "1.234,56"
+    // zou door parseFloat verminkt worden tot een verkeerd bedrag (€12 i.p.v. €12,50).
+    const rawAmount = body.amount;
+    if (typeof rawAmount !== 'number' || !Number.isFinite(rawAmount) || rawAmount <= 0) {
+        return jsonResponse({ error: 'amount moet een positief JSON-getal zijn (geen string).' }, 400);
+    }
+    const roundedAmount = Math.round(rawAmount * 100) / 100;
 
     const vatRate = body.vatRate === undefined ? 0 : Number(body.vatRate);
     if (!VALID_VAT_RATES.has(vatRate)) return jsonResponse({ error: 'vatRate moet 0, 9 of 21 zijn.' }, 400);
-    const vatAmount = body.vatAmount === undefined ? 0 : Number(body.vatAmount);
-    if (!Number.isFinite(vatAmount) || vatAmount < 0) return jsonResponse({ error: 'vatAmount ongeldig.' }, 400);
+
+    // BTW-bedrag bij een belast tarief (9/21): afleiden uit het bruto bedrag als het ontbreekt,
+    // anders zou de voorbelasting in het BTW-overzicht ten onrechte op 0 staan.
+    let vatAmount: number;
+    const rawVat = body.vatAmount;
+    if (rawVat === undefined) {
+        vatAmount = vatRate > 0 ? Math.round((roundedAmount * vatRate / (100 + vatRate)) * 100) / 100 : 0;
+    } else if (typeof rawVat === 'number' && Number.isFinite(rawVat) && rawVat >= 0) {
+        vatAmount = Math.round(rawVat * 100) / 100;
+    } else {
+        return jsonResponse({ error: 'vatAmount moet een getal >= 0 zijn (geen string).' }, 400);
+    }
+    if (vatRate > 0 && vatAmount <= 0) {
+        return jsonResponse({ error: 'vatAmount moet > 0 zijn bij vatRate 9 of 21.' }, 400);
+    }
 
     const cleanedCategory = clean(body.category, 40);
     const category = VALID_CATEGORIES.has(cleanedCategory) ? cleanedCategory : 'automatisering';
     const extraDescription = clean(body.description, 200);
-    const roundedAmount = Math.round(amount * 100) / 100;
 
     const supabaseUrl = Deno.env.get('SUPABASE_URL');
     const serviceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY');
@@ -125,12 +143,14 @@ serve(async (req: Request) => {
     const supabase = createClient(supabaseUrl, serviceKey);
 
     try {
-        // --- Idempotentie: al geboekt? ---
+        // --- Idempotentie: al geboekt? Gescoped per leverancier via imported_from,
+        //     zodat hetzelfde factuurnummer bij twee providers niet ten onrechte botst. ---
         const { data: existing, error: checkError } = await supabase
             .from('accountant_transactions')
             .select('id')
             .eq('user_id', userId)
             .eq('bank_reference', invoiceNumber)
+            .eq('imported_from', source)
             .limit(1);
 
         if (checkError) {
@@ -150,7 +170,7 @@ serve(async (req: Request) => {
                 supplier,
                 date: issueDate,
                 amount: roundedAmount,
-                vat_amount: Math.round(vatAmount * 100) / 100,
+                vat_amount: vatAmount,
                 vat_rate: vatRate,
                 description: receiptDescription,
                 category,
