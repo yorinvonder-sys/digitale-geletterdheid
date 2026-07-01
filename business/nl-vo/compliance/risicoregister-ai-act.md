@@ -91,7 +91,7 @@ Art. 9(9) vereist specifieke aandacht voor de impact op personen jonger dan 18 j
 | R12 | **AI-service uitval** — AI-provider is niet beschikbaar, waardoor leerlingen geen missies kunnen doen en les-uren verstoord worden | Operationeel | 2 | 3 | **6 MIDDEN** | Error handling retourneert "AI-service tijdelijk niet beschikbaar" (502), provider-rate-limit retourneert duidelijke 429-melding | **MIDDEN (6)** — Geen fallback-mechanisme. Bij uitval tijdens een les is het platform onbruikbaar. Geen provider-SLA specifiek voor DGSkills. | Actief | Implementeer graceful degradation (bijv. offline modus met read-only voortgang), communiceer verwachte beschikbaarheid naar scholen, overweeg caching van niet-AI content |
 | R13 | **Onbegrensde kosten door token-misbruik** — Leerlingen of aanvallers versturen massaal berichten, waardoor AI-providerkosten oplopen | Operationeel | 3 | 3 | **9 MIDDEN** | Rate limiting: 15 requests per minuut per gebruiker (server-side via durable rate limiter), max berichtlengte 4.000 tekens, max request body 20KB, max output tokens 1.024, chathistorie beperkt tot 12 berichten / 6.000 tekens totaal | **LAAG (3)** — Rate limiting is robuust. Kosten per gebruiker zijn begrensd. Risico zit in scenario's met veel gelijktijdige gebruikers (bijv. hele school start tegelijk). | Beheerst | Monitor AI-providerkosten via provider billing alerts, stel budget-caps in, bereken maximale kosten per school per maand |
 | R14 | **Supply chain aanval via dependencies** — Kwaadaardige code in een npm- of Deno-dependency compromitteert het platform | Operationeel | 2 | 5 | **10 HOOG** | Edge functions gebruiken `esm.sh` imports met versie-pinning, client-side dependencies via `package.json` met lockfile | **MIDDEN (6)** — Geen geautomatiseerde dependency-scanning (Dependabot/Snyk). `esm.sh` imports zijn minder gecontroleerd dan npm registry. | Actief | Configureer geautomatiseerde dependency-scanning, review `esm.sh` imports periodiek, overweeg migratie naar Supabase native imports |
-| R15 | **Docent kan AI-beslissing niet overrulen** — Docent ziet dat de AI een stap onterecht heeft goedgekeurd/afgekeurd maar kan dit niet corrigeren | Operationeel | 5 | 3 | **15 HOOG** | Docent-override voor STEP_COMPLETE geimplementeerd (15 mrt 2026): migratie 20260315500000, `teacherOverrideService.ts`, `StepOverrideModal.tsx` — docent kan AI-goedkeuringen handmatig goedkeuren of terugdraaien | **HOOG (15) — herscoring nodig:** de technische correctiemogelijkheid bestaat; restrisico verschuift naar docenttraining, adoptie en monitoring van override-gebruik. Formele herscoring bij de eerstvolgende risico-review (jurist/FG). | Grotendeels beheerst — herscoring open | Borg docenttraining en monitoring van override-gebruik voor de toepassingsdatum van 2 december 2027; herscoor W/I bij de volgende risico-review |
+| R15 | **Docent kan AI-beslissing niet overrulen** — Docent ziet dat de AI een stap onterecht heeft goedgekeurd/afgekeurd maar kan dit niet corrigeren | Operationeel | 2 | 3 | **6 MIDDEN** (herscoord na implementatie override; was 15 HOOG) | Docent-override voor STEP_COMPLETE geimplementeerd (15 mrt 2026): migratie 20260315500000, `teacherOverrideService.ts`, `StepOverrideModal.tsx` — docent kan AI-goedkeuringen handmatig goedkeuren of terugdraaien | **MIDDEN (6)** — de technische correctiemogelijkheid bestaat; restrisico: docenttraining, adoptie en monitoring van override-gebruik. Formele bevestiging bij de eerstvolgende jurist/FG-risico-review. | Beheerst — herscoring te bevestigen | Borg docenttraining en monitoring van override-gebruik; bevestig de herscoring bij de volgende jurist/FG-risico-review |
 
 ### 3.5 Juridische risico's
 
@@ -302,7 +302,7 @@ DGSkills is expliciet en uitsluitend gericht op minderjarigen van 12-18 jaar. Di
 | 1 | R01 | Prompt injection door leerlingen | 16 | KRITIEK |
 | 2 | R02 | Onjuiste AI-beoordelingen | 12 | HOOG |
 | 2 | R04 | Welzijnsrisico (zelfbeschadiging/suicidaliteit) | 15 | HOOG |
-| 3 | R15 | Docent kan niet overrulen | 15 | HOOG |
+| 3 | R15 | Docent kan niet overrulen | ~~15~~ 6 | ~~HOOG~~ MIDDEN |
 | 4 | R16 | Niet-naleving EU AI Act | 15 | HOOG |
 | 5 | R06 | Taalniveau-bias | 12 | HOOG |
 | 6 | R11 | Schending ouderlijke toestemming | 12 | HOOG |
@@ -318,11 +318,13 @@ DGSkills is expliciet en uitsluitend gericht op minderjarigen van 12-18 jaar. Di
 | 16 | R12 | AI-service uitval | 6 | MIDDEN |
 | 17 | R10 | Chatinhoud lekt naar derden | 5 | MIDDEN |
 
+> *R15 is na implementatie van de docent-override (15 mrt 2026) herscoord van 15 HOOG naar 6 MIDDEN; de positie #3 hierboven weerspiegelt de oorspronkelijke inherente score vóór de control. Herscoring te bevestigen bij de eerstvolgende jurist/FG-review.*
+
 ### 8.2 Non-compliant items (vereisen actie voor 2 december 2027)
 
 | ID | Risico | Vereiste maatregel | Status |
 |---|---|---|---|
-| R15 | Docent kan niet overrulen | TM-13: Docent-override STEP_COMPLETE | Geimplementeerd (15 mrt 2026) — herscoring bij volgende risico-review |
+| R15 | Docent kan niet overrulen | TM-13: Docent-override STEP_COMPLETE | Geimplementeerd (15 mrt 2026); herscoord 15 → 6 MIDDEN — te bevestigen bij volgende jurist/FG-review |
 | R18 | Geen beroepsmogelijkheid | OM-11: Beroepsprocedure | NIET opgesteld |
 | R16 | EU AI Act non-compliance | OM-12: QMS, TM-13, TM-14, OM-08 t/m OM-11 | Deels niet geimplementeerd |
 
