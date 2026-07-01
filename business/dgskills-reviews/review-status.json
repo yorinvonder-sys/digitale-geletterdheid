@@ -71,7 +71,7 @@
    "a11y-follow-up: aria-label stemknop in AiBeleidBrainstormPreview.tsx:675 (component buiten missie-whitelist)",
    "data/persoonsgegevens: studentName niet opgeslagen bij ai_beleid_feedback insert (teacherService.ts:558-576) — docent-rapportage-gap, raakt DB-insert-logica"
   ],
-  "codexVerdict": null,
+  "codexVerdict": "ALLOW",
   "escalationCount": 3,
   "reviewScores": {
    "uiux": 7,
@@ -390,13 +390,13 @@
    "total": 6
   },
   "lastReviewed": "2026-07-01",
-  "reviewStatus": "reviewed",
+  "reviewStatus": "blocked",
   "reportPath": "business/dgskills-reviews/cloud-commander-2026-07-01.md",
   "autoFixesApplied": 2,
   "openEscalations": [
    "avg-persoonsgegevens: stap-3 foto-instructie (portretfoto-risico 12-jarigen) — Yorin beslist of verdere aanscherping naar schoolboek/oefenbestand nodig is"
   ],
-  "codexVerdict": null,
+  "codexVerdict": "ALLOW",
   "reviewScores": {
    "uiux": 2,
    "didactiek": 2,
@@ -410,7 +410,8 @@
    "maxScore:60 maar engine-max 50 → gouden badge onbereikbaar",
    "duck-namespace tokens ontbreken (engine-breed) [ESCALATIE]",
    "stap-3 foto-instructie AVG-risico: portretten 12-jarigen [ESCALATIE]"
-  ]
+  ],
+  "statusNote": "wave 5: 2 fixes ge-ALLOWed; blocked op AVG-foto-instructie (Yorin)"
  },
  {
   "missionId": "code-denker",
@@ -424,11 +425,11 @@
    "total": 6
   },
   "lastReviewed": "2026-07-01",
-  "reviewStatus": "reviewed",
+  "reviewStatus": "fixed",
   "reportPath": "business/dgskills-reviews/code-denker-2026-07-01.md",
-  "autoFixesApplied": 1,
+  "autoFixesApplied": 2,
   "openEscalations": [],
-  "codexVerdict": null,
+  "codexVerdict": "ALLOW",
   "escalationCount": 0,
   "reviewScores": {
    "uiux": 8,
@@ -440,7 +441,8 @@
    "missionGoal beschrijft conditionals die niet voorkomen",
    "alle 4 badges identieke kleur #202023 (geen visueel onderscheid)",
    "takeaways zonder actieve verwerking"
-  ]
+  ],
+  "statusNote": "wave 5: primaryGoal + evidence hersteld na 2x gate-BLOCK; ronde 3 ALLOW"
  },
  {
   "missionId": "code-review-2",
@@ -759,12 +761,13 @@
   "lastReviewed": "2026-07-01",
   "reviewStatus": "blocked",
   "reportPath": "business/dgskills-reviews/digital-forensics-2026-07-01.md",
-  "autoFixesApplied": 2,
+  "autoFixesApplied": 1,
   "openEscalations": [
+   "content-ontwerp: ronde 1 (admin, titel '×5' vs log ×4, succes 22:54:19) vs ronde 2 (dr_bakker, 2 fails, succes 22:54:22) — mogelijk zelfde incident met tegenstrijdige details; kies één verhaallijn (agent-fix hierop is teruggedraaid)",
    "design-identiteit: lab-coral/lab-teal in agent visualPreview — duck-palet heeft geen equivalent (Yorin beslist)",
    "curriculum-keuze: SLO 21C (mapping regel 169) valt buiten sloFocus ['23A','21A'] van J3-P2 — mapping aanpassen of sloFocus uitbreiden"
   ],
-  "codexVerdict": null,
+  "codexVerdict": "BLOCK",
   "reviewScores": {
    "uiux": 2,
    "didactiek": 2,
@@ -773,13 +776,13 @@
   "goalClear": true,
   "goalAchieved": true,
   "proposedFixes": 3,
-  "escalationCount": 2,
+  "escalationCount": 3,
   "topIssues": [
    "SLO 21C valt buiten J3-P2 sloFocus → mismatch",
    "Badge color '#202023' hardcoded hex",
    "missionGoal ontbreekt in missionGoals.ts"
   ],
-  "statusNote": "wave 6 fix-pass 2026-07-01: 1 fix toegepast; rest wacht op Yorin"
+  "statusNote": "wave 6: agent-fix teruggedraaid na gate-BLOCK (verhaallijn-inconsistentie); content-ontwerpkeuze bij Yorin"
  },
  {
   "missionId": "digital-rights-defender",
@@ -1284,13 +1287,13 @@
    "total": 7
   },
   "lastReviewed": "2026-07-01",
-  "reviewStatus": "fixed",
+  "reviewStatus": "blocked",
   "reportPath": "business/dgskills-reviews/network-navigator-2026-07-01.md",
   "autoFixesApplied": 1,
   "openEscalations": [
    "goalCriteria-type ambigu: config+missionGoals 'rounds-complete' vs year2.tsx 'steps-complete' — Yorin kiest de canonieke waarde"
   ],
-  "codexVerdict": null,
+  "codexVerdict": "ALLOW",
   "reviewScores": {
    "uiux": 2,
    "didactiek": 3,
@@ -1304,7 +1307,8 @@
    "goalCriteria type-mismatch: config='rounds-complete' vs agent='steps-complete'",
    "Hardcoded hex in badges/chartData",
    "A11y: aria-sort + aria-label ontbreken"
-  ]
+  ],
+  "statusNote": "wave 4: fix ge-ALLOWed; blocked op goalCriteria-keuze (Yorin)"
  },
  {
   "missionId": "neural-navigator",
@@ -1426,7 +1430,7 @@
   "openEscalations": [
    "design-identiteit: visualPreview-gradient legacy lab-gold/lab-coral — duck-palet heeft geen warm equivalent (Yorin beslist; agent-swap naar acid/ink is teruggedraaid in eindreview)"
   ],
-  "codexVerdict": null,
+  "codexVerdict": "ALLOW",
   "reviewScores": {
    "uiux": 2,
    "didactiek": 2,
@@ -1567,9 +1571,9 @@
   "lastReviewed": "2026-07-01",
   "reviewStatus": "fixed",
   "reportPath": "business/dgskills-reviews/print-pro-2026-07-01.md",
-  "autoFixesApplied": 3,
+  "autoFixesApplied": 4,
   "openEscalations": [],
-  "codexVerdict": null,
+  "codexVerdict": "ALLOW",
   "reviewScores": {
    "uiux": 2,
    "didactiek": 2,
@@ -1583,7 +1587,8 @@
    "takeaways missen Bloom-actiewerkwoorden",
    "stap 2 instructie >60w + geen verificationQuestion",
    "SLO-claim dekt inhoud niet (stap 4 = 23A, claim alleen 21A)"
-  ]
+  ],
+  "statusNote": "wave 4: 3 fixer-fixes + 1 orchestrator-correctie (maxScore 60) na gate-BLOCK; re-gate ALLOW"
  },
  {
   "missionId": "privacy-by-design",
@@ -1724,7 +1729,7 @@
    "product-beslissing: enableChat overwegen voor data-viewer zodat de Onderzoekscoach ook binnen dataset 3 bereikbaar is",
    "ai-endpoint: systemInstruction client-side in year3.tsx bundle — verificatie nodig of dit richting AI-provider gaat of alleen UI-referentie is"
   ],
-  "codexVerdict": null,
+  "codexVerdict": "ALLOW",
   "reviewScores": {
    "uiux": 2,
    "didactiek": 2,
@@ -1875,11 +1880,11 @@
    "total": 6
   },
   "lastReviewed": "2026-07-01",
-  "reviewStatus": "reviewed",
+  "reviewStatus": "fixed",
   "reportPath": "business/dgskills-reviews/slide-specialist-2026-07-01.md",
   "autoFixesApplied": 1,
   "openEscalations": [],
-  "codexVerdict": null,
+  "codexVerdict": "ALLOW",
   "reviewScores": {
    "uiux": 1,
    "didactiek": 1,
