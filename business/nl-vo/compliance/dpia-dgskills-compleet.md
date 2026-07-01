@@ -380,7 +380,7 @@ Op basis van analyse van de 30+ AI-agents in `config/agents.tsx`:
 | **A03** | **Datalekregister en -procedure operationaliseren** - Inclusief 72-uurs meldprotocol richting AP | Organisatorisch | R02 | **Blokkerend** | 1 week |
 | **A04** | ~~**Contactgegevens invullen in privacy-documenten**~~ **Afgerond** — Alle `[invullen]` placeholders zijn ingevuld met KvK 81819889, DGSkills.app (eenmanszaak), Oldruitenborghstraat 39, 8043TP Zwolle, FG: Yorin Vonder, privacy@dgskills.app | Organisatorisch | R10 | ~~**Blokkerend**~~ **Afgerond** | Voltooid |
 | **A05** | **AI-provider DPA/regio/retentie/subprocessors bevestigen** - Mistral AI en Black Forest Labs moeten vóór schoolgebruik contractueel en projectmatig zijn geverifieerd; bewijs voor uitsluiting van provider-modeltraining bewaren. | Juridisch/Technisch | R12 | **Hoog** | Open |
-| **A06** | **Docent-override voor STEP_COMPLETE** - Docent moet AI-gegenereerde voortgangsmarkeringen kunnen corrigeren (Art. 14 AI Act) | Technisch | R06, R13 | **Hoog** | 2-4 weken |
+| **A06** | ~~**Docent-override voor STEP_COMPLETE**~~ **Afgerond (15 mrt 2026)** — Docent kan AI-gegenereerde voortgangsmarkeringen corrigeren/terugdraaien (Art. 14 AI Act); migratie 20260315500000 + `teacherOverrideService.ts` + `StepOverrideModal.tsx` | Technisch | R06, R13 | ~~**Hoog**~~ **Afgerond** | Voltooid |
 | **A07** | **Periodieke AI-outputvalidatie** - Steekproefsgewijze beoordeling van AI-responses op kwaliteit, juistheid en gepastheid | Organisatorisch | R04, R06, R14 | **Hoog** | Doorlopend |
 | **A08** | **Privacy-informatie in leeftijdsgeschikte taal** - Aanvullende uitleg specifiek voor 12-14 jarigen | Organisatorisch | R10 | **Midden** | 1 week |
 | **A09** | **Aansluiting Privacyconvenant Onderwijs** - Gebruik Model DPA 4.0 en word erkend leverancier | Organisatorisch | R02, R10 | **Midden** | 6-10 weken |
@@ -526,7 +526,7 @@ Dit is van toepassing omdat:
 | Art. 11 | Technische documentatie (Annex IV) | **Nog niet voldaan** | 2 dec 2027 |
 | Art. 12 | Traceerbaarheid/logging | **Voldaan** | 2 dec 2027 |
 | Art. 13 | Transparantie | **Voldaan** | 2 dec 2027 |
-| Art. 14 | Menselijk toezicht | **Gedeeltelijk** (docent-override nodig) | 2 dec 2027 |
+| Art. 14 | Menselijk toezicht | **Gedeeltelijk** (docent-override geïmplementeerd 15 mrt 2026; noodstop + automation-bias-borging nog open) | 2 dec 2027 |
 | Art. 15 | Nauwkeurigheid, robuustheid | **Gedeeltelijk** | 2 dec 2027 |
 | Art. 49 | Registratie EU AI-database | **Nog niet voldaan** | 2 dec 2027 |
 | Art. 50 | Transparantieplichten | **Voldaan** | 2 dec 2027 |
@@ -636,7 +636,7 @@ Na implementatie van de aanvullende maatregelen zijn de risico's voor de rechten
 | # | Actie | Verantwoordelijke | Deadline | Status |
 |---|---|---|---|---|
 | A05 | AI-providerregio, DPA, retentie en subprocessorroute voor Mistral AI en Black Forest Labs bevestigen | Future Architect | Voor school-DPIA/FG-review | Open |
-| A06 | Docent-override voor STEP_COMPLETE | Future Architect (dev) | Binnen 4 weken | Open |
+| A06 | Docent-override voor STEP_COMPLETE | Future Architect (dev) | Afgerond | **Afgerond (15 mrt 2026)** |
 | A07 | Periodieke AI-outputvalidatie opzetten | Future Architect | Doorlopend | Open |
 | A08 | Privacy-informatie in leeftijdsgeschikte taal | Future Architect | Binnen 6 weken | Open |
 | A09 | Aansluiting Privacyconvenant Onderwijs | Future Architect | Binnen 10 weken | Open |
