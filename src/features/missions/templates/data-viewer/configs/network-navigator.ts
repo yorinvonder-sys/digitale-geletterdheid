@@ -93,12 +93,12 @@ export const networkNavigatorConfig: DataViewerConfig = {
                 'Onderzoekers maten de reactietijd (ping) van populaire websites vanuit Nederland in milliseconden. Hoe lager, hoe sneller.',
             type: 'bar-chart',
             chartData: [
-                { label: 'Google.nl', value: 8, color: '#202023' },
-                { label: 'Wikipedia', value: 15, color: '#202023' },
-                { label: 'Instagram', value: 34, color: '#ff3c21' },
-                { label: 'YouTube', value: 12, color: '#ff3c21' },
-                { label: 'TikTok', value: 45, color: '#202023' },
-                { label: 'Amazon.com', value: 72, color: '#e1ff01' },
+                { label: 'Google.nl', value: 8 },
+                { label: 'Wikipedia', value: 15 },
+                { label: 'Instagram', value: 34 },
+                { label: 'YouTube', value: 12 },
+                { label: 'TikTok', value: 45 },
+                { label: 'Amazon.com', value: 72 },
             ],
             questions: [
                 {

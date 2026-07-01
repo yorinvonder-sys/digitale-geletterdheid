@@ -127,6 +127,10 @@ export const MISSION_GOALS: Record<string, MissionGoal> = {
         },
         evidence: 'Je kunt voorbeelden noemen van tekeningen die de AI goed en minder goed herkende.',
     },
+    // Impliciete leerdoelen voor ai-beleid-brainstorm (leerjaar 1, SLO 21D + 23C):
+    // 1. De leerling benoemt minimaal één voordeel en één risico van AI-gebruik op school.
+    // 2. De leerling formuleert een concrete schoolregel voor AI (actiewerkwoord: formuleert).
+    // 3. De leerling evalueert ideeën van anderen door te stemmen en zijn keuze toe te lichten.
     'ai-beleid-brainstorm': {
         primaryGoal: 'Ik bedenk bruikbare AI-afspraken voor school en onderbouw waarom ze nodig zijn.',
         criteria: {
@@ -136,12 +140,12 @@ export const MISSION_GOALS: Record<string, MissionGoal> = {
         evidence: 'Je hebt minimaal twee concrete AI-regels met reden en schoolsituatie.',
     },
     'code-denker': {
-        primaryGoal: 'Ik herken programmeerlogica door stappen, voorwaarden en volgorde goed te lezen.',
+        primaryGoal: 'Ik herken de vier bouwstenen van computational thinking: decompositie, patroonherkenning, abstractie en algoritmen.',
         criteria: {
             type: 'rounds-complete',
             description: 'Je rondt de scenario-rondes af en verklaart je keuzes.',
         },
-        evidence: 'Je kunt uitleggen welke volgorde of voorwaarde de juiste uitkomst geeft.',
+        evidence: 'Je kunt per ronde uitleggen of je decompositie, algoritme-volgorde, abstractie of patroonherkenning toepast en waarom je keuze klopt.',
     },
     'website-bouwer': {
         primaryGoal: 'Ik bouw een werkende Over Mij-webpagina met HTML, CSS en een korte uitleg van mijn keuzes.',

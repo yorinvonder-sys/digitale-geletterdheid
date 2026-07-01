@@ -565,7 +565,7 @@ Ik begin met een vraag. Antwoord zo volledig mogelijk in je eigen woorden:
         difficulty: 'Hard',
         examplePrompt: 'Ik heb verdachte loginpogingen gevonden in de serverlogboeken. Hoe analyseer ik deze?',
         visualPreview: (
-            <div className="w-full h-full bg-gradient-to-br from-lab-coral to-lab-coral flex items-center justify-center relative overflow-hidden">
+            <div className="w-full h-full bg-lab-coral flex items-center justify-center relative overflow-hidden">
                 <div className="absolute inset-0 opacity-10">
                     {[...Array(6)].map((_, i) => (
                         <div key={i} className="absolute bg-white/5 rounded" style={{ width: `${Math.random() * 80 + 20}px`, height: '2px', top: `${i * 18 + 10}%`, left: `${Math.random() * 60}%` }}></div>
@@ -1454,7 +1454,7 @@ PEDAGOGISCHE AANPAK:
 3. Stimuleer nieuwsgierigheid: "Waarom zou dat land hogere snelheden hebben?"
 4. Dring aan op onderbouwing: "Waar baseer je dat op? Heb je cijfers?"
 
-INHOUDELIJKE FOCUS (SLO 23C, 23B):
+INHOUDELIJKE FOCUS (SLO 23C, 21B):
 - Internetsnelheid en -penetratie: hoe worden die gemeten en vergeleken?
 - Apparaatgebruik: welke apparaten gebruikt welke leeftijdsgroep?
 - Wereldwijde trends: hoe verschilt connectiviteit tussen landen en regio's?
@@ -1487,7 +1487,7 @@ SCOPE GUARD:
 EERSTE BERICHT:
 "Onderzoeker, welkom bij het team.
 
-Internetconnectiviteit verschilt enorm per land en per leeftijdsgroep. Zuid-Korea heeft gemiddeld 254 Mbps vaste internetsnelheid. Nigeria zit op 21 Mbps. En in Nederland gebruikt 99% van de 18-24 jarigen een smartphone — bij 75-plussers is dat 44%.
+Internetconnectiviteit verschilt enorm per land en per leeftijdsgroep. Zuid-Korea heeft gemiddeld 254 Mbps vaste internetsnelheid. Nigeria zit op 21 Mbps (vast). En in Nederland gebruikt 99% van de 18-24 jarigen een smartphone — bij 75-plussers is dat 44%.
 
 Jouw taak: onderzoek die verschillen en vind een verklaring.
 
@@ -1838,8 +1838,8 @@ Begin met: welke projecten zijn je het meest bijgebleven?"` + SYSTEM_INSTRUCTION
     difficulty: 'Hard',
     examplePrompt: 'Ik wil onderzoeken hoeveel tijd jongeren per dag op social media zitten. Hoe begin ik?',
     visualPreview: (
-        <div className="w-full h-full bg-gradient-to-br from-lab-teal to-lab-teal flex flex-col items-center justify-center relative overflow-hidden p-4">
-            <div className="absolute bottom-4 left-4 w-24 h-24 bg-lab-teal/20 rounded-full blur-xl"></div>
+        <div className="w-full h-full bg-gradient-to-br from-duck-ink to-duck-ink flex flex-col items-center justify-center relative overflow-hidden p-4">
+            <div className="absolute bottom-4 left-4 w-24 h-24 bg-duck-ink/20 rounded-full blur-xl"></div>
             <div className="bg-white/10 backdrop-blur-md rounded-2xl p-5 border border-white/20 w-full max-w-[180px]">
                 <Search size={32} className="text-white mb-3" />
                 <div className="w-full h-2 bg-white/30 rounded-full mb-2"></div>

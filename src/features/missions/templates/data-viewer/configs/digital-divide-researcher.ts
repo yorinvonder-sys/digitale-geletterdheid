@@ -181,7 +181,7 @@ export const digitalDivideResearcherConfig: DataViewerConfig = {
                     correctAnswer: '',
                     explanation:
                         'Mogelijke factoren: (1) Vroege glasvezelinvestering — de Koreaanse overheid investeerde al in de jaren 2000 massaal in glasvezelnetwerken, waardoor de infrastructuur nu is afgeschreven en uitgebouwd. (2) Bevolkingsdichtheid — de meeste Koreanen wonen in steden, wat het goedkoper maakt om snel internet aan te leggen. (3) Concurrentie — meerdere grote providers concurreren, wat innovatie en snelheid stimuleert. (4) Overheidsbeleid — de overheid stelde snelheidsdoelen en subsidieerde uitrol.',
-                    points: 0,
+                    points: 10,
                 },
             ],
         },

@@ -11,7 +11,7 @@
    "total": 6
   },
   "lastReviewed": "2026-06-17",
-  "reviewStatus": "fixes-applied",
+  "reviewStatus": "blocked",
   "reportPath": "business/dgskills-reviews/access-control-engineer-2026-06-17.md",
   "autoFixesApplied": 4,
   "openEscalations": [
@@ -30,7 +30,8 @@
    "onzichtbare tekst op hover (text-duck-ink op bg-duck-ink) [GEFIXED]",
    "ontbrekend missionGoals-entry [GEFIXED]",
    "SLO 22B programmeer-claim zonder programmeeractiviteit [ESCALATIE]"
-  ]
+  ],
+  "statusNote": "normalisatie 2026-07-01 (run wave 4+): wacht op Yorin-beslissing over openEscalations"
  },
  {
   "missionId": "advanced-code-review",
@@ -61,18 +62,17 @@
    "interactivity": 0,
    "total": 6
   },
-  "lastReviewed": "2026-06-17",
-  "reviewStatus": "reviewed",
-  "reportPath": "business/dgskills-reviews/ai-beleid-brainstorm-2026-06-17.md",
-  "autoFixesApplied": 0,
+  "lastReviewed": "2026-07-01",
+  "reviewStatus": "blocked",
+  "reportPath": "business/dgskills-reviews/ai-beleid-brainstorm-2026-07-01.md",
+  "autoFixesApplied": 2,
   "openEscalations": [
-   "design token swap lab-coral/lab-teal -> duck (coral->rood = visuele identiteitswijziging; Yorin beslist)",
-   "aria-label stemknop in AiBeleidBrainstormPreview.tsx (buiten missie-whitelist)",
-   "SLO-inconsistentie: ProjectZeroDashboard 23B vs centrale mapping 21D/23C",
-   "studentName niet opgeslagen in ai_beleid_feedback insert (teacher-rapportage-gap)"
+   "design-identiteit: lab-coral/lab-teal in visualPreview (year1.tsx:3724-3740) — duck-tokens bestaan niet voor deze kleuren (Yorin beslist)",
+   "a11y-follow-up: aria-label stemknop in AiBeleidBrainstormPreview.tsx:675 (component buiten missie-whitelist)",
+   "data/persoonsgegevens: studentName niet opgeslagen bij ai_beleid_feedback insert (teacherService.ts:558-576) — docent-rapportage-gap, raakt DB-insert-logica"
   ],
-  "codexVerdict": null,
-  "escalationCount": 4,
+  "codexVerdict": "ALLOW",
+  "escalationCount": 3,
   "reviewScores": {
    "uiux": 7,
    "didactiek": 6,
@@ -83,12 +83,13 @@
    "geen expliciete Bloom-leerdoelen in config-entry",
    "XP-farming mogelijk: stemmen dwingt geen redeneer-moment af",
    "SLO-mismatch dashboard vs centrale mapping"
-  ]
+  ],
+  "statusNote": "wave 6 fix-pass 2026-07-01: Bloom-doc + dashboard-SLO gefixt; rest wacht op Yorin"
  },
  {
   "missionId": "ai-bias-detective",
   "templateType": "scenario-engine",
-  "priorityBand": "medium",
+  "priorityBand": "low",
   "triageScores": {
    "uiux": 2,
    "slo": 1,
@@ -96,12 +97,21 @@
    "interactivity": 0,
    "total": 5
   },
-  "lastReviewed": null,
-  "reviewStatus": "pending",
-  "reportPath": null,
+  "lastReviewed": "2026-07-01",
+  "reviewStatus": "fixed",
+  "reportPath": "business/dgskills-reviews/ai-bias-detective-2026-07-01.md",
   "autoFixesApplied": 0,
   "openEscalations": [],
-  "codexVerdict": null
+  "codexVerdict": null,
+  "escalationCount": 0,
+  "reviewScores": {
+   "uiux": 8,
+   "didactiek": 9,
+   "tech": 8
+  },
+  "triageScore": 1.6,
+  "statusNote": "wave 7 verse review: schoon; dormante chat-rol -> platform-brede beslislijst",
+  "verdict": "ok"
  },
  {
   "missionId": "ai-ethicus",
@@ -115,7 +125,7 @@
    "total": 7
   },
   "lastReviewed": "2026-06-26",
-  "reviewStatus": "reviewed",
+  "reviewStatus": "blocked",
   "reportPath": "business/dgskills-reviews/wave-3a-2026-06-26.md",
   "autoFixesApplied": 0,
   "openEscalations": [
@@ -131,7 +141,8 @@
   "escalationCount": 1,
   "topIssues": [
    "geen defecten; sterkste van de wave"
-  ]
+  ],
+  "statusNote": "normalisatie 2026-07-01 (run wave 4+): wacht op Yorin-beslissing over openEscalations"
  },
  {
   "missionId": "ai-spiegel",
@@ -163,7 +174,7 @@
    "total": 7
   },
   "lastReviewed": "2026-06-26",
-  "reviewStatus": "reviewed",
+  "reviewStatus": "blocked",
   "reportPath": "business/dgskills-reviews/wave-3a-2026-06-26.md",
   "autoFixesApplied": 0,
   "openEscalations": [
@@ -180,12 +191,13 @@
   "escalationCount": 2,
   "topIssues": [
    "SLO 21B vs 21D dashboard-mismatch [ESCALATIE]"
-  ]
+  ],
+  "statusNote": "normalisatie 2026-07-01 (run wave 4+): wacht op Yorin-beslissing over openEscalations"
  },
  {
   "missionId": "ai-trainer",
   "templateType": "agent-role",
-  "priorityBand": "medium",
+  "priorityBand": "low",
   "triageScores": {
    "uiux": 0,
    "slo": 0,
@@ -193,17 +205,28 @@
    "interactivity": 0,
    "total": 5
   },
-  "lastReviewed": null,
-  "reviewStatus": "pending",
-  "reportPath": null,
+  "lastReviewed": "2026-07-01",
+  "reviewStatus": "blocked",
+  "reportPath": "business/dgskills-reviews/ai-trainer-2026-07-01.md",
   "autoFixesApplied": 0,
-  "openEscalations": [],
-  "codexVerdict": null
+  "openEscalations": [
+   "ai-endpoint: client-side systemInstruction (year1.tsx:1568) en server-side versie (systemInstructions.ts:28) zijn inhoudelijk uiteengelopen (GIGO-demo alleen server-side) — sync-keuze + verificatie welke bron de AI stuurt"
+  ],
+  "codexVerdict": null,
+  "escalationCount": 1,
+  "reviewScores": {
+   "uiux": 8,
+   "didactiek": 9,
+   "tech": 8
+  },
+  "triageScore": 1.6,
+  "statusNote": "wave 7 verse review: werkbank gezond; drift-escalatie",
+  "verdict": "ok"
  },
  {
   "missionId": "algorithm-architect",
   "templateType": "simulation-lab",
-  "priorityBand": "medium",
+  "priorityBand": "low",
   "triageScores": {
    "uiux": 1,
    "slo": 1,
@@ -211,12 +234,21 @@
    "interactivity": 0,
    "total": 4
   },
-  "lastReviewed": null,
-  "reviewStatus": "pending",
-  "reportPath": null,
+  "lastReviewed": "2026-07-02",
+  "reviewStatus": "fixed",
+  "reportPath": "business/dgskills-reviews/algorithm-architect-2026-07-02.md",
   "autoFixesApplied": 0,
   "openEscalations": [],
-  "codexVerdict": null
+  "codexVerdict": null,
+  "escalationCount": 0,
+  "reviewScores": {
+   "uiux": 10,
+   "didactiek": 10,
+   "tech": 10
+  },
+  "triageScore": 0.0,
+  "statusNote": "wave 11: intern volledig consistent geverifieerd; agent echode kwaliteitsscore als triage (10.0), gecorrigeerd naar 0.0",
+  "verdict": "ok"
  },
  {
   "missionId": "api-architect",
@@ -229,17 +261,28 @@
    "interactivity": 0,
    "total": 3
   },
-  "lastReviewed": null,
-  "reviewStatus": "pending",
-  "reportPath": null,
+  "lastReviewed": "2026-07-02",
+  "reviewStatus": "blocked",
+  "reportPath": "business/dgskills-reviews/api-architect-2026-07-02.md",
   "autoFixesApplied": 0,
-  "openEscalations": [],
-  "codexVerdict": null
+  "openEscalations": [
+   "curriculum-keuze: SLO-codes inconsistent over 3 bronnen — mapping 22A/22B/21A, coach-instructie 22A/22B, periode-sloFocus 21D/21C (geen overlap) — welke set is leidend?"
+  ],
+  "codexVerdict": null,
+  "escalationCount": 1,
+  "reviewScores": {
+   "uiux": 7.5,
+   "didactiek": 5.5,
+   "tech": 8
+  },
+  "triageScore": 3.15,
+  "statusNote": "wave 14: SLO-driebronnen-conflict naar Yorin; coach-desync 6e geval (3/4 stappen) -> platform-lijst",
+  "verdict": "fix-eerst"
  },
  {
   "missionId": "api-verkenner",
   "templateType": "data-viewer",
-  "priorityBand": "medium",
+  "priorityBand": "low",
   "triageScores": {
    "uiux": 2,
    "slo": 1,
@@ -247,12 +290,21 @@
    "interactivity": 0,
    "total": 4
   },
-  "lastReviewed": null,
-  "reviewStatus": "pending",
-  "reportPath": null,
+  "lastReviewed": "2026-07-02",
+  "reviewStatus": "fixed",
+  "reportPath": "business/dgskills-reviews/api-verkenner-2026-07-02.md",
   "autoFixesApplied": 0,
   "openEscalations": [],
-  "codexVerdict": null
+  "codexVerdict": null,
+  "escalationCount": 0,
+  "reviewScores": {
+   "uiux": 9,
+   "didactiek": 9,
+   "tech": 9
+  },
+  "triageScore": 1.0,
+  "statusNote": "wave 11: alle antwoordmodellen + puntensom (100=100) nagerekend; schoon",
+  "verdict": "ok"
  },
  {
   "missionId": "app-prototyper",
@@ -302,7 +354,7 @@
    "total": 7
   },
   "lastReviewed": "2026-06-26",
-  "reviewStatus": "reviewed",
+  "reviewStatus": "blocked",
   "reportPath": "business/dgskills-reviews/wave-3b-2026-06-26.md",
   "autoFixesApplied": 0,
   "openEscalations": [
@@ -318,12 +370,13 @@
   "escalationCount": 1,
   "topIssues": [
    "SLO 22A-fit wankel [ESCALATIE]"
-  ]
+  ],
+  "statusNote": "normalisatie 2026-07-01 (run wave 4+): wacht op Yorin-beslissing over openEscalations"
  },
  {
   "missionId": "bug-hunter",
   "templateType": "simulation-lab",
-  "priorityBand": "medium",
+  "priorityBand": "low",
   "triageScores": {
    "uiux": 1,
    "slo": 1,
@@ -331,17 +384,26 @@
    "interactivity": 0,
    "total": 4
   },
-  "lastReviewed": null,
-  "reviewStatus": "pending",
-  "reportPath": null,
+  "lastReviewed": "2026-07-02",
+  "reviewStatus": "fixed",
+  "reportPath": "business/dgskills-reviews/bug-hunter-2026-07-02.md",
   "autoFixesApplied": 0,
   "openEscalations": [],
-  "codexVerdict": null
+  "codexVerdict": null,
+  "escalationCount": 0,
+  "reviewScores": {
+   "uiux": 10,
+   "didactiek": 10,
+   "tech": 10
+  },
+  "triageScore": 0.0,
+  "statusNote": "wave 11: debug-voorbeelden feitelijk correct (off-by-one klopt), scoring 30+40+30=100; schoon",
+  "verdict": "ok"
  },
  {
   "missionId": "chatbot-trainer",
   "templateType": "agent-role",
-  "priorityBand": "medium",
+  "priorityBand": "low",
   "triageScores": {
    "uiux": 1,
    "slo": 0,
@@ -349,12 +411,25 @@
    "interactivity": 0,
    "total": 4
   },
-  "lastReviewed": null,
-  "reviewStatus": "pending",
-  "reportPath": null,
-  "autoFixesApplied": 0,
-  "openEscalations": [],
-  "codexVerdict": null
+  "lastReviewed": "2026-07-02",
+  "reviewStatus": "blocked",
+  "reportPath": "business/dgskills-reviews/chatbot-trainer-2026-07-02.md",
+  "autoFixesApplied": 1,
+  "openEscalations": [
+   "slo-fit: mapping zegt 22B met curator-comment 'IF-THEN regels = programmeerlogica', reviewer twijfelt (geen 'echte' programmeeractiviteit) — dashboard is nu conform mapping gezet (22B); inhoudelijk oordeel aan Yorin",
+   "structureel: training-modus heeft vaste 3-koloms layout (w-64 + w-80) zonder responsive breakpoints — vermoedelijk mobiele layoutbreuk, herontwerp-kandidaat",
+   "a11y: verwijderknop van intent zit genest in de rij-knop (geneste buttons = invalide HTML) — vereist rij-refactor naar sibling-knoppen (gate-voorstel in rapport); mijn button-fix is teruggedraaid na gate-BLOCK"
+  ],
+  "codexVerdict": "ALLOW",
+  "escalationCount": 3,
+  "reviewScores": {
+   "uiux": 7,
+   "didactiek": 8,
+   "tech": 7
+  },
+  "triageScore": 2.6,
+  "statusNote": "wave 11: dashboard-SLO 22A→22B conform autoritaire mapping (5e alignment-fix); div→button-fix TERUGGEDRAAID na gate-BLOCK (delete-knop zit genest in rij-knop — rij-refactor nodig); re-gate na revert: ALLOW",
+  "verdict": "fix-eerst"
  },
  {
   "missionId": "cloud-cleaner",
@@ -367,12 +442,24 @@
    "interactivity": 0,
    "total": 4
   },
-  "lastReviewed": null,
-  "reviewStatus": "pending",
-  "reportPath": null,
-  "autoFixesApplied": 0,
-  "openEscalations": [],
-  "codexVerdict": null
+  "lastReviewed": "2026-07-02",
+  "reviewStatus": "blocked",
+  "reportPath": "business/dgskills-reviews/cloud-cleaner-2026-07-02.md",
+  "autoFixesApplied": 1,
+  "openEscalations": [
+   "a11y: drag-and-drop heeft geen enkel toetsenbord-alternatief (0 aria/rol/tabIndex) — leerling zonder muis/touch kan de missie niet doen; kandidaat voor aparte toegankelijkheidsronde",
+   "mobiel: zwevende actieknop overlapt de laatste bestandskaarten — staat al sinds de UI/UX-audit van 30 juni open (prioriteit 4)"
+  ],
+  "codexVerdict": "ALLOW",
+  "escalationCount": 2,
+  "reviewScores": {
+   "uiux": 6.5,
+   "didactiek": 7.5,
+   "tech": 5.5
+  },
+  "triageScore": 3.4,
+  "statusNote": "wave 12: dashboard-SLO +23A conform mapping (6e alignment-fix); a11y + FAB-overlap naar Yorin",
+  "verdict": "fix-eerst"
  },
  {
   "missionId": "cloud-commander",
@@ -385,12 +472,14 @@
    "interactivity": 1,
    "total": 6
   },
-  "lastReviewed": "2026-06-17",
-  "reviewStatus": "reviewed",
-  "reportPath": "business/dgskills-reviews/cloud-commander-2026-06-17.md",
-  "autoFixesApplied": 0,
-  "openEscalations": [],
-  "codexVerdict": null,
+  "lastReviewed": "2026-07-01",
+  "reviewStatus": "blocked",
+  "reportPath": "business/dgskills-reviews/cloud-commander-2026-07-01.md",
+  "autoFixesApplied": 2,
+  "openEscalations": [
+   "avg-persoonsgegevens: stap-3 foto-instructie (portretfoto-risico 12-jarigen) — Yorin beslist of verdere aanscherping naar schoolboek/oefenbestand nodig is"
+  ],
+  "codexVerdict": "ALLOW",
   "reviewScores": {
    "uiux": 2,
    "didactiek": 2,
@@ -399,12 +488,13 @@
   "goalClear": false,
   "goalAchieved": true,
   "proposedFixes": 4,
-  "escalationCount": 2,
+  "escalationCount": 1,
   "topIssues": [
    "maxScore:60 maar engine-max 50 → gouden badge onbereikbaar",
    "duck-namespace tokens ontbreken (engine-breed) [ESCALATIE]",
    "stap-3 foto-instructie AVG-risico: portretten 12-jarigen [ESCALATIE]"
-  ]
+  ],
+  "statusNote": "wave 5: 2 fixes ge-ALLOWed; blocked op AVG-foto-instructie (Yorin)"
  },
  {
   "missionId": "code-denker",
@@ -417,16 +507,13 @@
    "interactivity": 0,
    "total": 6
   },
-  "lastReviewed": "2026-06-17",
-  "reviewStatus": "reviewed",
-  "reportPath": "business/dgskills-reviews/code-denker-2026-06-17.md",
-  "autoFixesApplied": 0,
-  "openEscalations": [
-   "missionGoals primaryGoal noemt 'voorwaarden' die de missie niet behandelt — content-reword voorgesteld (Yorin beslist; before/after in rapport)",
-   "Bloom-balans: geen reflectie/zelf-formulering (Bloom 5-6); takeaways puur informatief"
-  ],
-  "codexVerdict": null,
-  "escalationCount": 2,
+  "lastReviewed": "2026-07-01",
+  "reviewStatus": "fixed",
+  "reportPath": "business/dgskills-reviews/code-denker-2026-07-01.md",
+  "autoFixesApplied": 2,
+  "openEscalations": [],
+  "codexVerdict": "ALLOW",
+  "escalationCount": 0,
   "reviewScores": {
    "uiux": 8,
    "didactiek": 7,
@@ -437,12 +524,13 @@
    "missionGoal beschrijft conditionals die niet voorkomen",
    "alle 4 badges identieke kleur #202023 (geen visueel onderscheid)",
    "takeaways zonder actieve verwerking"
-  ]
+  ],
+  "statusNote": "wave 5: primaryGoal + evidence hersteld na 2x gate-BLOCK; ronde 3 ALLOW"
  },
  {
   "missionId": "code-review-2",
   "templateType": "review-arena",
-  "priorityBand": "medium",
+  "priorityBand": "low",
   "triageScores": {
    "uiux": 2,
    "slo": 1,
@@ -450,17 +538,26 @@
    "interactivity": 0,
    "total": 5
   },
-  "lastReviewed": null,
-  "reviewStatus": "pending",
-  "reportPath": null,
+  "lastReviewed": "2026-07-01",
+  "reviewStatus": "fixed",
+  "reportPath": "business/dgskills-reviews/code-review-2-2026-07-01.md",
   "autoFixesApplied": 0,
   "openEscalations": [],
-  "codexVerdict": null
+  "codexVerdict": null,
+  "escalationCount": 0,
+  "reviewScores": {
+   "uiux": 9,
+   "didactiek": 8,
+   "tech": 9
+  },
+  "triageScore": 1.4,
+  "statusNote": "wave 7 verse review: schoon; dormante chat-rol (template-breed, alle 7 review-arena) -> platform-brede beslislijst",
+  "verdict": "ok"
  },
  {
   "missionId": "code-reviewer",
   "templateType": "simulation-lab",
-  "priorityBand": "medium",
+  "priorityBand": "low",
   "triageScores": {
    "uiux": 1,
    "slo": 1,
@@ -468,12 +565,21 @@
    "interactivity": 0,
    "total": 4
   },
-  "lastReviewed": null,
-  "reviewStatus": "pending",
-  "reportPath": null,
+  "lastReviewed": "2026-07-02",
+  "reviewStatus": "fixed",
+  "reportPath": "business/dgskills-reviews/code-reviewer-2026-07-02.md",
   "autoFixesApplied": 0,
   "openEscalations": [],
-  "codexVerdict": null
+  "codexVerdict": null,
+  "escalationCount": 0,
+  "reviewScores": {
+   "uiux": 8,
+   "didactiek": 9,
+   "tech": 9
+  },
+  "triageScore": 1.3,
+  "statusNote": "wave 12: registratie + scoring (30+40+30=100) volledig geverifieerd; 1 cosmetisch icoon-mix-punt in rapport",
+  "verdict": "ok"
  },
  {
   "missionId": "cookie-crusher",
@@ -504,17 +610,28 @@
    "interactivity": 0,
    "total": 5
   },
-  "lastReviewed": null,
-  "reviewStatus": "pending",
-  "reportPath": null,
-  "autoFixesApplied": 0,
-  "openEscalations": [],
-  "codexVerdict": null
+  "lastReviewed": "2026-07-01",
+  "reviewStatus": "blocked",
+  "reportPath": "business/dgskills-reviews/cyber-detective-2026-07-01.md",
+  "autoFixesApplied": 1,
+  "openEscalations": [
+   "asset ontbreekt: briefingImage verwijst naar niet-bestaand /assets/agents/cyber-detective.webp (year3.tsx:564) — leerling ziet kapotte afbeelding; vereist assetgeneratie"
+  ],
+  "codexVerdict": "ALLOW",
+  "escalationCount": 1,
+  "reviewScores": {
+   "uiux": 6.5,
+   "didactiek": 8,
+   "tech": 5
+  },
+  "triageScore": 3.35,
+  "statusNote": "wave 7: no-op gradient gefixt; asset-escalatie; gate ALLOW (nevenbevinding over research-project-hunk was al apart ge-gate-t)",
+  "verdict": "fix-eerst"
  },
  {
   "missionId": "dashboard-designer",
   "templateType": "data-viewer",
-  "priorityBand": "medium",
+  "priorityBand": "low",
   "triageScores": {
    "uiux": 2,
    "slo": 1,
@@ -522,17 +639,26 @@
    "interactivity": 0,
    "total": 4
   },
-  "lastReviewed": null,
-  "reviewStatus": "pending",
-  "reportPath": null,
+  "lastReviewed": "2026-07-02",
+  "reviewStatus": "fixed",
+  "reportPath": "business/dgskills-reviews/dashboard-designer-2026-07-02.md",
   "autoFixesApplied": 0,
   "openEscalations": [],
-  "codexVerdict": null
+  "codexVerdict": null,
+  "escalationCount": 0,
+  "reviewScores": {
+   "uiux": 9,
+   "didactiek": 8,
+   "tech": 9
+  },
+  "triageScore": 1.4,
+  "statusNote": "wave 12: antwoordmodellen 100% nagerekend; dormant-scenario-mismatch hoort bij platform-dormant-beslispunt",
+  "verdict": "ok"
  },
  {
   "missionId": "data-detective",
   "templateType": "dedicated",
-  "priorityBand": "medium",
+  "priorityBand": "high",
   "triageScores": {
    "uiux": 1,
    "slo": 0,
@@ -540,17 +666,29 @@
    "interactivity": 0,
    "total": 5
   },
-  "lastReviewed": null,
-  "reviewStatus": "pending",
-  "reportPath": null,
-  "autoFixesApplied": 0,
-  "openEscalations": [],
-  "codexVerdict": null
+  "lastReviewed": "2026-07-01",
+  "reviewStatus": "blocked",
+  "reportPath": "business/dgskills-reviews/data-detective-2026-07-01.md",
+  "autoFixesApplied": 1,
+  "openEscalations": [
+   "didactiek: geen expliciete leerdoelen per level (alleen brede primaryGoal) — leerdoel-formulering is SLO-content, Yorin keurt",
+   "design: duck-error (#ff3c21) als primaire CTA-kleur i.p.v. foutstatus + inline hex door hele component — design-cleanup-keuze"
+  ],
+  "codexVerdict": "ALLOW",
+  "escalationCount": 2,
+  "reviewScores": {
+   "uiux": 4,
+   "didactiek": 2,
+   "tech": 4
+  },
+  "triageScore": 6.8,
+  "statusNote": "wave 7: aria-label terugknop gefixt (orchestrator); triageScore agent-rekenfout gecorrigeerd (3.2 -> 6.8)",
+  "verdict": "fix-eerst"
  },
  {
   "missionId": "data-handelaar",
   "templateType": "puzzle-lab",
-  "priorityBand": "medium",
+  "priorityBand": "low",
   "triageScores": {
    "uiux": 1,
    "slo": 0,
@@ -558,17 +696,26 @@
    "interactivity": 0,
    "total": 3
   },
-  "lastReviewed": null,
-  "reviewStatus": "pending",
-  "reportPath": null,
-  "autoFixesApplied": 0,
+  "lastReviewed": "2026-07-02",
+  "reviewStatus": "fixed",
+  "reportPath": "business/dgskills-reviews/data-handelaar-2026-07-02.md",
+  "autoFixesApplied": 1,
   "openEscalations": [],
-  "codexVerdict": null
+  "codexVerdict": "ALLOW",
+  "escalationCount": 0,
+  "reviewScores": {
+   "uiux": 9,
+   "didactiek": 9,
+   "tech": 8.5
+  },
+  "triageScore": 1.15,
+  "statusNote": "wave 14: validator puzzel 4 accepteert nu ook \"data deal\" met spatie; welzijns-/AVG-content expliciet gecheckt en in orde; gate ALLOW (gecombineerde call met spreadsheet-specialist, per-missie verdict)",
+  "verdict": "ok"
  },
  {
   "missionId": "data-journalist",
   "templateType": "data-viewer",
-  "priorityBand": "medium",
+  "priorityBand": "low",
   "triageScores": {
    "uiux": 2,
    "slo": 1,
@@ -576,17 +723,28 @@
    "interactivity": 1,
    "total": 5
   },
-  "lastReviewed": null,
-  "reviewStatus": "pending",
-  "reportPath": null,
-  "autoFixesApplied": 0,
-  "openEscalations": [],
-  "codexVerdict": null
+  "lastReviewed": "2026-07-01",
+  "reviewStatus": "blocked",
+  "reportPath": "business/dgskills-reviews/data-journalist-2026-07-01.md",
+  "autoFixesApplied": 3,
+  "openEscalations": [
+   "slo-fit: 22A-claim (digitale producten) oppervlakkig — missie heeft alleen analysevragen, geen productbouw (curator-keuze)"
+  ],
+  "codexVerdict": "ALLOW",
+  "escalationCount": 1,
+  "reviewScores": {
+   "uiux": 8,
+   "didactiek": 6,
+   "tech": 9
+  },
+  "triageScore": 2.5,
+  "statusNote": "wave 8: AI-coach-briefing gelijkgetrokken met echte missie-inhoud (problemScenario + missionObjective + examplePrompt; objective was orchestrator-aanvulling voor interne consistentie)",
+  "verdict": "fix-eerst"
  },
  {
   "missionId": "data-pipeline",
   "templateType": "data-viewer",
-  "priorityBand": "medium",
+  "priorityBand": "low",
   "triageScores": {
    "uiux": 1,
    "slo": 0,
@@ -594,17 +752,26 @@
    "interactivity": 1,
    "total": 4
   },
-  "lastReviewed": null,
-  "reviewStatus": "pending",
-  "reportPath": null,
-  "autoFixesApplied": 0,
+  "lastReviewed": "2026-07-02",
+  "reviewStatus": "fixed",
+  "reportPath": "business/dgskills-reviews/data-pipeline-2026-07-02.md",
+  "autoFixesApplied": 1,
   "openEscalations": [],
-  "codexVerdict": null
+  "codexVerdict": "ALLOW",
+  "escalationCount": 0,
+  "reviewScores": {
+   "uiux": 8,
+   "didactiek": 7,
+   "tech": 8
+  },
+  "triageScore": 2.4,
+  "statusNote": "wave 12: q8 participatiepunten 0->10 (som=100=maxScore; 3e geval, 2 gate-precedenten); som-gat blijkt engine-breed patroon (7/15 data-viewer-configs) -> gedeelde lijst",
+  "verdict": "ok"
  },
  {
   "missionId": "data-review",
   "templateType": "review-arena",
-  "priorityBand": "medium",
+  "priorityBand": "low",
   "triageScores": {
    "uiux": 2,
    "slo": 0,
@@ -612,12 +779,21 @@
    "interactivity": 0,
    "total": 3
   },
-  "lastReviewed": null,
-  "reviewStatus": "pending",
-  "reportPath": null,
+  "lastReviewed": "2026-07-02",
+  "reviewStatus": "fixed",
+  "reportPath": "business/dgskills-reviews/data-review-2026-07-02.md",
   "autoFixesApplied": 0,
   "openEscalations": [],
-  "codexVerdict": null
+  "codexVerdict": null,
+  "escalationCount": 0,
+  "reviewScores": {
+   "uiux": 9,
+   "didactiek": 9,
+   "tech": 9.5
+  },
+  "triageScore": 0.85,
+  "statusNote": "wave 15: vrijwel vlekkeloos; dode CATEGORY_COLORS-velden in gedeelde Categorize.tsx -> engine-lijst (buiten whitelist)",
+  "verdict": "ok"
  },
  {
   "missionId": "data-speurder",
@@ -630,17 +806,15 @@
    "interactivity": 0,
    "total": 6
   },
-  "lastReviewed": "2026-06-17",
-  "reviewStatus": "reviewed",
-  "reportPath": "business/dgskills-reviews/data-speurder-2026-06-17.md",
+  "lastReviewed": "2026-07-01",
+  "reviewStatus": "blocked",
+  "reportPath": "business/dgskills-reviews/data-speurder-2026-07-01.md",
   "autoFixesApplied": 0,
   "openEscalations": [
-   "GEDEELDE ENGINE: FeedbackBanner 'Volgende ronde'-knop text-white op duck-acid = WCAG ~1.3:1 onleesbaar — raakt ALLE scenario-engine missies",
-   "ontbrekende learningObjectives — AI-voorstel gemaakt maar geescaleerd (SLO-content, Yorin keurt)",
-   "VSO-code 18B indirecte match voor data-analyse (beperking VSO-codeset)"
+   "slo-content: learningObjectives-array voor data-speurder.ts — inhoudelijke leerdoelformulering, Yorin keurt"
   ],
   "codexVerdict": null,
-  "escalationCount": 3,
+  "escalationCount": 1,
   "reviewScores": {
    "uiux": 8,
    "didactiek": 7,
@@ -651,7 +825,8 @@
    "gedeelde FeedbackBanner contrast-bug (alle scenario-missies)",
    "geen expliciete learningObjectives-array",
    "VSO-code indirecte SLO-match"
-  ]
+  ],
+  "statusNote": "wave 5 fix-pass 2026-07-01: 0 toepasbaar; wacht op Yorin"
  },
  {
   "missionId": "data-verzamelaar",
@@ -710,7 +885,7 @@
  {
   "missionId": "deepfake-detector",
   "templateType": "dedicated",
-  "priorityBand": "medium",
+  "priorityBand": "low",
   "triageScores": {
    "uiux": 1,
    "slo": 0,
@@ -718,17 +893,28 @@
    "interactivity": 0,
    "total": 5
   },
-  "lastReviewed": null,
-  "reviewStatus": "pending",
-  "reportPath": null,
-  "autoFixesApplied": 0,
-  "openEscalations": [],
-  "codexVerdict": null
+  "lastReviewed": "2026-07-01",
+  "reviewStatus": "blocked",
+  "reportPath": "business/dgskills-reviews/deepfake-detector-2026-07-01.md",
+  "autoFixesApplied": 1,
+  "openEscalations": [
+   "content-keuze: systemInstruction beschrijft 5 cases, component-CHALLENGES tonen er 9 — AI-hulp en spel vertellen verschillende verhalen; kies welke bron leidend is"
+  ],
+  "codexVerdict": "ALLOW",
+  "escalationCount": 1,
+  "reviewScores": {
+   "uiux": 8,
+   "didactiek": 7,
+   "tech": 9
+  },
+  "triageScore": 2.1,
+  "statusNote": "wave 8: dashboard-SLO +21D conform mapping; agent-scoreschaal was omgekeerd, gecorrigeerd naar kwaliteit 8/7/9",
+  "verdict": "fix-eerst"
  },
  {
   "missionId": "digital-divide-researcher",
   "templateType": "data-viewer",
-  "priorityBand": "medium",
+  "priorityBand": "low",
   "triageScores": {
    "uiux": 2,
    "slo": 1,
@@ -736,12 +922,21 @@
    "interactivity": 0,
    "total": 3
   },
-  "lastReviewed": null,
-  "reviewStatus": "pending",
-  "reportPath": null,
-  "autoFixesApplied": 0,
+  "lastReviewed": "2026-07-02",
+  "reviewStatus": "fixed",
+  "reportPath": "business/dgskills-reviews/digital-divide-researcher-2026-07-02.md",
+  "autoFixesApplied": 3,
   "openEscalations": [],
-  "codexVerdict": null
+  "codexVerdict": "ALLOW",
+  "escalationCount": 0,
+  "reviewScores": {
+   "uiux": 8,
+   "didactiek": 8,
+   "tech": 5.5
+  },
+  "triageScore": 2.75,
+  "statusNote": "wave 15: q8 participatiepunten 0->10 (som=100, 5e geval) + SLO-code in coach-tekst 23B->21B conform mapping + Nigeria-cijfer gespecificeerd als (vast); alle 7 rekensommen geverifieerd, anti-stigmatiserende framing geprezen",
+  "verdict": "fix-eerst"
  },
  {
   "missionId": "digital-forensics",
@@ -754,14 +949,16 @@
    "interactivity": 0,
    "total": 8
   },
-  "lastReviewed": "2026-06-17",
-  "reviewStatus": "fixes-applied",
-  "reportPath": "business/dgskills-reviews/digital-forensics-2026-06-17.md",
+  "lastReviewed": "2026-07-01",
+  "reviewStatus": "blocked",
+  "reportPath": "business/dgskills-reviews/digital-forensics-2026-07-01.md",
   "autoFixesApplied": 1,
   "openEscalations": [
-   "hardcoded hex -> duck-token swap vereist refactor van gedeelde CompletionScreen/SimpleChart (geescaleerd)"
+   "content-ontwerp: ronde 1 (admin, titel '×5' vs log ×4, succes 22:54:19) vs ronde 2 (dr_bakker, 2 fails, succes 22:54:22) — mogelijk zelfde incident met tegenstrijdige details; kies één verhaallijn (agent-fix hierop is teruggedraaid)",
+   "design-identiteit: lab-coral/lab-teal in agent visualPreview — duck-palet heeft geen equivalent (Yorin beslist)",
+   "curriculum-keuze: SLO 21C (mapping regel 169) valt buiten sloFocus ['23A','21A'] van J3-P2 — mapping aanpassen of sloFocus uitbreiden"
   ],
-  "codexVerdict": null,
+  "codexVerdict": "BLOCK",
   "reviewScores": {
    "uiux": 2,
    "didactiek": 2,
@@ -775,7 +972,8 @@
    "SLO 21C valt buiten J3-P2 sloFocus → mismatch",
    "Badge color '#202023' hardcoded hex",
    "missionGoal ontbreekt in missionGoals.ts"
-  ]
+  ],
+  "statusNote": "wave 6: agent-fix teruggedraaid na gate-BLOCK (verhaallijn-inconsistentie); content-ontwerpkeuze bij Yorin"
  },
  {
   "missionId": "digital-rights-defender",
@@ -789,7 +987,7 @@
    "total": 7
   },
   "lastReviewed": "2026-06-26",
-  "reviewStatus": "reviewed",
+  "reviewStatus": "blocked",
   "reportPath": "business/dgskills-reviews/wave-3b-2026-06-26.md",
   "autoFixesApplied": 0,
   "openEscalations": [
@@ -806,7 +1004,8 @@
   "escalationCount": 2,
   "topIssues": [
    "geen defecten; sterke missie"
-  ]
+  ],
+  "statusNote": "normalisatie 2026-07-01 (run wave 4+): wacht op Yorin-beslissing over openEscalations"
  },
  {
   "missionId": "digital-storyteller",
@@ -820,7 +1019,7 @@
    "total": 6
   },
   "lastReviewed": "2026-06-26",
-  "reviewStatus": "reviewed",
+  "reviewStatus": "blocked",
   "reportPath": "business/dgskills-reviews/wave-3b-2026-06-26.md",
   "autoFixesApplied": 0,
   "openEscalations": [
@@ -836,12 +1035,13 @@
   "escalationCount": 1,
   "topIssues": [
    "accent in step-id [ESCALATIE — robuustheid]"
-  ]
+  ],
+  "statusNote": "normalisatie 2026-07-01 (run wave 4+): wacht op Yorin-beslissing over openEscalations"
  },
  {
   "missionId": "digitale-balans-coach",
   "templateType": "debate-arena",
-  "priorityBand": "medium",
+  "priorityBand": "low",
   "triageScores": {
    "uiux": 2,
    "slo": 0,
@@ -849,17 +1049,26 @@
    "interactivity": 0,
    "total": 4
   },
-  "lastReviewed": null,
-  "reviewStatus": "pending",
-  "reportPath": null,
+  "lastReviewed": "2026-07-02",
+  "reviewStatus": "fixed",
+  "reportPath": "business/dgskills-reviews/digitale-balans-coach-2026-07-02.md",
   "autoFixesApplied": 0,
   "openEscalations": [],
-  "codexVerdict": null
+  "codexVerdict": null,
+  "escalationCount": 0,
+  "reviewScores": {
+   "uiux": 8.5,
+   "didactiek": 9,
+   "tech": 9
+  },
+  "triageScore": 1.15,
+  "statusNote": "wave 12: welzijnscheck expliciet schoon (gevoelig thema correct behandeld)",
+  "verdict": "ok"
  },
  {
   "missionId": "eindproject-j2",
   "templateType": "data-viewer",
-  "priorityBand": "medium",
+  "priorityBand": "low",
   "triageScores": {
    "uiux": 1,
    "slo": 0,
@@ -867,17 +1076,26 @@
    "interactivity": 0,
    "total": 3
   },
-  "lastReviewed": null,
-  "reviewStatus": "pending",
-  "reportPath": null,
-  "autoFixesApplied": 0,
+  "lastReviewed": "2026-07-02",
+  "reviewStatus": "fixed",
+  "reportPath": "business/dgskills-reviews/eindproject-j2-2026-07-02.md",
+  "autoFixesApplied": 2,
   "openEscalations": [],
-  "codexVerdict": null
+  "codexVerdict": "ALLOW",
+  "escalationCount": 0,
+  "reviewScores": {
+   "uiux": 8.5,
+   "didactiek": 9,
+   "tech": 6.5
+  },
+  "triageScore": 1.9,
+  "statusNote": "wave 15: q2-vraagtekst 5->6 (dataset+uitleg zeggen 6) + maxScore 100->85 (som punten=85; topbadge 85 = perfecte run, conventie); alle 16 eindcijfers nagerekend",
+  "verdict": "fix-eerst"
  },
  {
   "missionId": "encryption-expert",
   "templateType": "puzzle-lab",
-  "priorityBand": "medium",
+  "priorityBand": "low",
   "triageScores": {
    "uiux": 1,
    "slo": 1,
@@ -885,17 +1103,26 @@
    "interactivity": 0,
    "total": 5
   },
-  "lastReviewed": null,
-  "reviewStatus": "pending",
-  "reportPath": null,
+  "lastReviewed": "2026-07-01",
+  "reviewStatus": "fixed",
+  "reportPath": "business/dgskills-reviews/encryption-expert-2026-07-01.md",
   "autoFixesApplied": 0,
   "openEscalations": [],
-  "codexVerdict": null
+  "codexVerdict": null,
+  "escalationCount": 0,
+  "reviewScores": {
+   "uiux": 9,
+   "didactiek": 9,
+   "tech": 8
+  },
+  "triageScore": 1.3,
+  "statusNote": "wave 8: alle puzzel-antwoorden zelf gedecodeerd en correct; puntensom 100=maxScore; agent-scoreschaal (issue-counts) gecorrigeerd",
+  "verdict": "ok"
  },
  {
   "missionId": "factchecker",
   "templateType": "scenario-engine",
-  "priorityBand": "medium",
+  "priorityBand": "low",
   "triageScores": {
    "uiux": 2,
    "slo": 1,
@@ -903,12 +1130,21 @@
    "interactivity": 0,
    "total": 5
   },
-  "lastReviewed": null,
-  "reviewStatus": "pending",
-  "reportPath": null,
+  "lastReviewed": "2026-07-01",
+  "reviewStatus": "fixed",
+  "reportPath": "business/dgskills-reviews/factchecker-2026-07-01.md",
   "autoFixesApplied": 0,
   "openEscalations": [],
-  "codexVerdict": null
+  "codexVerdict": null,
+  "escalationCount": 0,
+  "reviewScores": {
+   "uiux": 8.5,
+   "didactiek": 8.5,
+   "tech": 7
+  },
+  "triageScore": 1.95,
+  "statusNote": "wave 8: 22 inhoudsclaims feitelijk gecheckt, 0 fouten; schoon",
+  "verdict": "ok"
  },
  {
   "missionId": "filter-bubble-breaker",
@@ -940,7 +1176,7 @@
    "total": 7
   },
   "lastReviewed": "2026-06-26",
-  "reviewStatus": "reviewed",
+  "reviewStatus": "blocked",
   "reportPath": "business/dgskills-reviews/wave-3b-2026-06-26.md",
   "autoFixesApplied": 0,
   "openEscalations": [
@@ -957,7 +1193,8 @@
   "escalationCount": 1,
   "topIssues": [
    "argumentPrompts dood veld [ESCALATIE — shared-engine]"
-  ]
+  ],
+  "statusNote": "normalisatie 2026-07-01 (run wave 4+): wacht op Yorin-beslissing over openEscalations"
  },
  {
   "missionId": "game-director",
@@ -970,12 +1207,12 @@
    "interactivity": 0,
    "total": 13
   },
-  "lastReviewed": "2026-06-17",
-  "reviewStatus": "reviewed",
-  "reportPath": "business/dgskills-reviews/game-director-2026-06-17.md",
-  "autoFixesApplied": 0,
+  "lastReviewed": "2026-07-01",
+  "reviewStatus": "fixed",
+  "reportPath": "business/dgskills-reviews/game-director-2026-07-01.md",
+  "autoFixesApplied": 8,
   "openEscalations": [],
-  "codexVerdict": null,
+  "codexVerdict": "ALLOW",
   "reviewScores": {
    "uiux": 2,
    "didactiek": 2,
@@ -1003,7 +1240,7 @@
    "total": 9
   },
   "lastReviewed": "2026-06-26",
-  "reviewStatus": "reviewed",
+  "reviewStatus": "blocked",
   "reportPath": "business/dgskills-reviews/wave-3a-2026-06-26.md",
   "autoFixesApplied": 0,
   "openEscalations": [
@@ -1021,7 +1258,8 @@
   "topIssues": [
    "reviewer-claim 'dormant chat' ONJUIST — draait via AiLab (geverifieerd)",
    "dubbele STEP_COMPLETE-markers [ESCALATIE]"
-  ]
+  ],
+  "statusNote": "normalisatie 2026-07-01 (run wave 4+): wacht op Yorin-beslissing over openEscalations"
  },
  {
   "missionId": "impact-review",
@@ -1092,7 +1330,7 @@
  {
   "missionId": "magister-master",
   "templateType": "tool-guide",
-  "priorityBand": "medium",
+  "priorityBand": "low",
   "triageScores": {
    "uiux": 2,
    "slo": 1,
@@ -1100,17 +1338,26 @@
    "interactivity": 1,
    "total": 5
   },
-  "lastReviewed": null,
-  "reviewStatus": "pending",
-  "reportPath": null,
+  "lastReviewed": "2026-07-01",
+  "reviewStatus": "fixed",
+  "reportPath": "business/dgskills-reviews/magister-master-2026-07-01.md",
   "autoFixesApplied": 0,
   "openEscalations": [],
-  "codexVerdict": null
+  "codexVerdict": null,
+  "escalationCount": 0,
+  "reviewScores": {
+   "uiux": 8,
+   "didactiek": 8,
+   "tech": 8
+  },
+  "triageScore": 2.0,
+  "statusNote": "wave 8: alle 3 juni-blockers bevestigd opgelost (tokens, focus-ring, maxScore 55=4x10+3x5); agent-scoreschaal omgekeerd, gecorrigeerd",
+  "verdict": "ok"
  },
  {
   "missionId": "mail-detective",
   "templateType": "scenario-engine",
-  "priorityBand": "medium",
+  "priorityBand": "low",
   "triageScores": {
    "uiux": 1,
    "slo": 1,
@@ -1118,12 +1365,24 @@
    "interactivity": 0,
    "total": 3
   },
-  "lastReviewed": null,
-  "reviewStatus": "pending",
-  "reportPath": null,
+  "lastReviewed": "2026-07-02",
+  "reviewStatus": "blocked",
+  "reportPath": "business/dgskills-reviews/mail-detective-2026-07-02.md",
   "autoFixesApplied": 0,
-  "openEscalations": [],
-  "codexVerdict": null
+  "openEscalations": [
+   "didactiek: ronde 1 en 4 hebben elk 8 items per scherm — boven de leerjaar-1-richtlijn van 3-4 (zelfde beslisklasse als notificatie-ninja)",
+   "curator: phishing-fighter-overlap resteert op het Magister-kanaal-item (bijna identieke uitleg in beide missies)"
+  ],
+  "codexVerdict": null,
+  "escalationCount": 2,
+  "reviewScores": {
+   "uiux": 9,
+   "didactiek": 7,
+   "tech": 9
+  },
+  "triageScore": 1.8,
+  "statusNote": "wave 15: 7 mei-punten bevestigd opgelost; agentRoleIds-registratieconventie (union wel, array niet — geen runtime-effect) -> engine-lijst",
+  "verdict": "ok"
  },
  {
   "missionId": "media-review",
@@ -1137,7 +1396,7 @@
    "total": 7
   },
   "lastReviewed": "2026-06-26",
-  "reviewStatus": "reviewed",
+  "reviewStatus": "blocked",
   "reportPath": "business/dgskills-reviews/wave-3b-2026-06-26.md",
   "autoFixesApplied": 0,
   "openEscalations": [
@@ -1153,12 +1412,13 @@
   "escalationCount": 0,
   "topIssues": [
    "schoon; alleen optionele copy-suggestie"
-  ]
+  ],
+  "statusNote": "normalisatie 2026-07-01 (run wave 4+): wacht op Yorin-beslissing over openEscalations"
  },
  {
   "missionId": "meesterproef",
   "templateType": "builder-canvas",
-  "priorityBand": "medium",
+  "priorityBand": "low",
   "triageScores": {
    "uiux": 0,
    "slo": 0,
@@ -1166,17 +1426,28 @@
    "interactivity": 1,
    "total": 5
   },
-  "lastReviewed": null,
-  "reviewStatus": "pending",
-  "reportPath": null,
+  "lastReviewed": "2026-07-01",
+  "reviewStatus": "blocked",
+  "reportPath": "business/dgskills-reviews/meesterproef-2026-07-01.md",
   "autoFixesApplied": 0,
-  "openEscalations": [],
-  "codexVerdict": null
+  "openEscalations": [
+   "content-keuze: coach-fasenmodel (3 STEP_COMPLETE-fasen) dekt de 4 canvas-stappen niet — herschrijfvoorstel ligt klaar in rapport (zelfde beslisklasse als podcast-producer)"
+  ],
+  "codexVerdict": null,
+  "escalationCount": 1,
+  "reviewScores": {
+   "uiux": 8.5,
+   "didactiek": 7.5,
+   "tech": 8.5
+  },
+  "triageScore": 1.9,
+  "statusNote": "wave 9: gezond; fasenmodel-gelijktrekking bewust naar Yorin (consistentie met podcast-producer)",
+  "verdict": "ok"
  },
  {
   "missionId": "meme-machine",
   "templateType": "builder-canvas",
-  "priorityBand": "medium",
+  "priorityBand": "low",
   "triageScores": {
    "uiux": 0,
    "slo": 0,
@@ -1184,17 +1455,28 @@
    "interactivity": 1,
    "total": 4
   },
-  "lastReviewed": null,
-  "reviewStatus": "pending",
-  "reportPath": null,
-  "autoFixesApplied": 0,
-  "openEscalations": [],
-  "codexVerdict": null
+  "lastReviewed": "2026-07-02",
+  "reviewStatus": "blocked",
+  "reportPath": "business/dgskills-reviews/meme-machine-2026-07-02.md",
+  "autoFixesApplied": 1,
+  "openEscalations": [
+   "platform-patroon: builder-canvas coach-briefing (3-stappen) dekt de canvas-stappen niet — één productkeuze (nu 5 missies: podcast-producer, meesterproef, portfolio-builder, prototype-developer, meme-machine); meme-machine PRIORITEIT in de fix-batch: de gemiste 4e stap is het welzijns-/ethiek-onderdeel (AI-coach kan 'klaar' zeggen vóór de reflectie)"
+  ],
+  "codexVerdict": "ALLOW",
+  "escalationCount": 1,
+  "reviewScores": {
+   "uiux": 8.5,
+   "didactiek": 7.5,
+   "tech": 8.5
+  },
+  "triageScore": 1.9,
+  "statusNote": "wave 13: checklist-item auteursrecht/bronvermelding toegevoegd (print-pro-precedent); coach-desync 5e geval, welzijnsprioriteit",
+  "verdict": "ok"
  },
  {
   "missionId": "mission-blueprint",
   "templateType": "builder-canvas",
-  "priorityBand": "medium",
+  "priorityBand": "low",
   "triageScores": {
    "uiux": 1,
    "slo": 0,
@@ -1202,17 +1484,26 @@
    "interactivity": 0,
    "total": 3
   },
-  "lastReviewed": null,
-  "reviewStatus": "pending",
-  "reportPath": null,
+  "lastReviewed": "2026-07-02",
+  "reviewStatus": "fixed",
+  "reportPath": "business/dgskills-reviews/mission-blueprint-2026-07-02.md",
   "autoFixesApplied": 0,
   "openEscalations": [],
-  "codexVerdict": null
+  "codexVerdict": null,
+  "escalationCount": 0,
+  "reviewScores": {
+   "uiux": 8,
+   "didactiek": 8.5,
+   "tech": 9
+  },
+  "triageScore": 1.5,
+  "statusNote": "wave 15: coach-plan en canvas 1-op-1 congruent (geen desync); schoon",
+  "verdict": "ok"
  },
  {
   "missionId": "mission-launch",
   "templateType": "tool-guide",
-  "priorityBand": "medium",
+  "priorityBand": "low",
   "triageScores": {
    "uiux": 2,
    "slo": 0,
@@ -1220,12 +1511,21 @@
    "interactivity": 1,
    "total": 4
   },
-  "lastReviewed": null,
-  "reviewStatus": "pending",
-  "reportPath": null,
+  "lastReviewed": "2026-07-02",
+  "reviewStatus": "fixed",
+  "reportPath": "business/dgskills-reviews/mission-launch-2026-07-02.md",
   "autoFixesApplied": 0,
   "openEscalations": [],
-  "codexVerdict": null
+  "codexVerdict": null,
+  "escalationCount": 0,
+  "reviewScores": {
+   "uiux": 8.5,
+   "didactiek": 9,
+   "tech": 9.5
+  },
+  "triageScore": 1.0,
+  "statusNote": "wave 13: scoreplafond 60=60 nagerekend; registratie compleet incl. briefing-asset",
+  "verdict": "ok"
  },
  {
   "missionId": "mission-vision",
@@ -1256,12 +1556,21 @@
    "interactivity": 1,
    "total": 5
   },
-  "lastReviewed": null,
-  "reviewStatus": "pending",
-  "reportPath": null,
-  "autoFixesApplied": 0,
+  "lastReviewed": "2026-07-01",
+  "reviewStatus": "fixed",
+  "reportPath": "business/dgskills-reviews/ml-trainer-2026-07-01.md",
+  "autoFixesApplied": 2,
   "openEscalations": [],
-  "codexVerdict": null
+  "codexVerdict": "ALLOW",
+  "escalationCount": 0,
+  "reviewScores": {
+   "uiux": 8,
+   "didactiek": 8,
+   "tech": 3
+  },
+  "triageScore": 3.5,
+  "statusNote": "wave 9: q1-antwoordmodel gecorrigeerd (dataset telt 5/12 spam = 42%, was 50; uitleg verzon 6e rij) + q8 participatiepunten 0->10 (som=100=maxScore; engine geeft text-observation altijd volle punten). Orphan MLTrainerMission.tsx apart geflagd door reviewer",
+  "verdict": "fix-eerst"
  },
  {
   "missionId": "network-navigator",
@@ -1274,12 +1583,14 @@
    "interactivity": 0,
    "total": 7
   },
-  "lastReviewed": "2026-06-17",
-  "reviewStatus": "reviewed",
-  "reportPath": "business/dgskills-reviews/network-navigator-2026-06-17.md",
-  "autoFixesApplied": 0,
-  "openEscalations": [],
-  "codexVerdict": null,
+  "lastReviewed": "2026-07-01",
+  "reviewStatus": "blocked",
+  "reportPath": "business/dgskills-reviews/network-navigator-2026-07-01.md",
+  "autoFixesApplied": 1,
+  "openEscalations": [
+   "goalCriteria-type ambigu: config+missionGoals 'rounds-complete' vs year2.tsx 'steps-complete' — Yorin kiest de canonieke waarde"
+  ],
+  "codexVerdict": "ALLOW",
   "reviewScores": {
    "uiux": 2,
    "didactiek": 3,
@@ -1293,12 +1604,13 @@
    "goalCriteria type-mismatch: config='rounds-complete' vs agent='steps-complete'",
    "Hardcoded hex in badges/chartData",
    "A11y: aria-sort + aria-label ontbreken"
-  ]
+  ],
+  "statusNote": "wave 4: fix ge-ALLOWed; blocked op goalCriteria-keuze (Yorin)"
  },
  {
   "missionId": "neural-navigator",
   "templateType": "data-viewer",
-  "priorityBand": "medium",
+  "priorityBand": "low",
   "triageScores": {
    "uiux": 1,
    "slo": 0,
@@ -1306,12 +1618,21 @@
    "interactivity": 0,
    "total": 4
   },
-  "lastReviewed": null,
-  "reviewStatus": "pending",
-  "reportPath": null,
-  "autoFixesApplied": 0,
+  "lastReviewed": "2026-07-02",
+  "reviewStatus": "fixed",
+  "reportPath": "business/dgskills-reviews/neural-navigator-2026-07-02.md",
+  "autoFixesApplied": 4,
   "openEscalations": [],
-  "codexVerdict": null
+  "codexVerdict": "ALLOW",
+  "escalationCount": 0,
+  "reviewScores": {
+   "uiux": 8,
+   "didactiek": 7,
+   "tech": 8
+  },
+  "triageScore": 2.4,
+  "statusNote": "wave 13: tabelwaarden Neuron A 0.69->0.68 en Neuron C 0.81->1.01 (formule zelf nagerekend; C was bias-vergeten) + q8 participatiepunten 0->10 (som=100; 4e geval); gate-BLOCK gevangen: q2 rekende na de C-correctie nog Neuron D goed -> q2 naar Neuron C (1.01), re-gate ALLOW",
+  "verdict": "fix-eerst"
  },
  {
   "missionId": "notificatie-ninja",
@@ -1324,17 +1645,16 @@
    "interactivity": 0,
    "total": 6
   },
-  "lastReviewed": "2026-06-17",
-  "reviewStatus": "reviewed",
-  "reportPath": "business/dgskills-reviews/notificatie-ninja-2026-06-17.md",
+  "lastReviewed": "2026-07-01",
+  "reviewStatus": "blocked",
+  "reportPath": "business/dgskills-reviews/notificatie-ninja-2026-07-01.md",
   "autoFixesApplied": 0,
   "openEscalations": [
-   "ronde 4: absolute claim over apps verwijderen — nuance voorgesteld (pedagogische content, Yorin beslist)",
-   "ronde 2 order-priority: 8 items = te hoge cognitieve load leerjaar 1 (max 3-4)",
-   "showConfidence ontbreekt op complexe rondes (metacognitieve scaffolding, vgl. phishing-fighter)"
+   "pedagogische-content: ronde 4 item 6 nuancering absolute claim over apps (before/after ligt klaar in rapport, Yorin keurt)",
+   "structureel-didactisch: ronde 2 order-priority met 8 items = cognitieve overload leerjaar 1 (ontwerpbeslissing)"
   ],
   "codexVerdict": null,
-  "escalationCount": 3,
+  "escalationCount": 2,
   "reviewScores": {
    "uiux": 7,
    "didactiek": 7,
@@ -1345,7 +1665,8 @@
    "cognitieve load ronde 2 (8 items)",
    "absolute pedagogische claim ronde 4",
    "showConfidence-scaffolding ontbreekt"
-  ]
+  ],
+  "statusNote": "wave 5 fix-pass 2026-07-01: 0 toepasbaar; wacht op Yorin"
  },
  {
   "missionId": "online-helden",
@@ -1359,7 +1680,7 @@
    "total": 9
   },
   "lastReviewed": "2026-06-26",
-  "reviewStatus": "reviewed",
+  "reviewStatus": "blocked",
   "reportPath": "business/dgskills-reviews/wave-3a-2026-06-26.md",
   "autoFixesApplied": 0,
   "openEscalations": [
@@ -1376,7 +1697,8 @@
   "escalationCount": 2,
   "topIssues": [
    "geen defecten; klein verbeterpotentieel"
-  ]
+  ],
+  "statusNote": "normalisatie 2026-07-01 (run wave 4+): wacht op Yorin-beslissing over openEscalations"
  },
  {
   "missionId": "open-source-contributor",
@@ -1407,14 +1729,14 @@
    "interactivity": 0,
    "total": 8
   },
-  "lastReviewed": "2026-06-17",
-  "reviewStatus": "fixes-applied",
-  "reportPath": "business/dgskills-reviews/phishing-fighter-2026-06-17.md",
-  "autoFixesApplied": 1,
+  "lastReviewed": "2026-07-01",
+  "reviewStatus": "blocked",
+  "reportPath": "business/dgskills-reviews/phishing-fighter-2026-07-01.md",
+  "autoFixesApplied": 2,
   "openEscalations": [
-   "hardcoded hex -> duck-token swap vereist refactor van gedeelde CompletionScreen/SimpleChart (geescaleerd)"
+   "design-identiteit: visualPreview-gradient legacy lab-gold/lab-coral — duck-palet heeft geen warm equivalent (Yorin beslist; agent-swap naar acid/ink is teruggedraaid in eindreview)"
   ],
-  "codexVerdict": null,
+  "codexVerdict": "ALLOW",
   "reviewScores": {
    "uiux": 2,
    "didactiek": 2,
@@ -1423,17 +1745,18 @@
   "goalClear": false,
   "goalAchieved": false,
   "proposedFixes": 3,
-  "escalationCount": 2,
+  "escalationCount": 1,
   "topIssues": [
    "missionGoal ontbreekt → IntroScreen toont geen doel",
    "22A alleen via agent-chat, niet engine-rondes [ESCALATIE]",
    "Badge-kleuren hardcoded hex"
-  ]
+  ],
+  "statusNote": "wave 6 fix-pass 2026-07-01: 1 fix netto; gradient-swap teruggedraaid (identiteitsbeslissing)"
  },
  {
   "missionId": "pitch-perfect",
   "templateType": "builder-canvas",
-  "priorityBand": "medium",
+  "priorityBand": "low",
   "triageScores": {
    "uiux": 0,
    "slo": 0,
@@ -1441,17 +1764,28 @@
    "interactivity": 1,
    "total": 5
   },
-  "lastReviewed": null,
-  "reviewStatus": "pending",
-  "reportPath": null,
+  "lastReviewed": "2026-07-01",
+  "reviewStatus": "blocked",
+  "reportPath": "business/dgskills-reviews/pitch-perfect-2026-07-01.md",
   "autoFixesApplied": 0,
-  "openEscalations": [],
-  "codexVerdict": null
+  "openEscalations": [
+   "slo-fit: 22A-claim (digitale producten) zwak onderbouwd — geen product-maak-activiteit (curator-keuze, vgl. brand-builder/data-journalist)"
+  ],
+  "codexVerdict": null,
+  "escalationCount": 1,
+  "reviewScores": {
+   "uiux": 8,
+   "didactiek": 7,
+   "tech": 8.5
+  },
+  "triageScore": 2.25,
+  "statusNote": "wave 9: schoon op de 22A-precisievraag na",
+  "verdict": "ok"
  },
  {
   "missionId": "pitch-police",
   "templateType": "dedicated",
-  "priorityBand": "medium",
+  "priorityBand": "high",
   "triageScores": {
    "uiux": 2,
    "slo": 1,
@@ -1459,17 +1793,28 @@
    "interactivity": 0,
    "total": 5
   },
-  "lastReviewed": null,
-  "reviewStatus": "pending",
-  "reportPath": null,
-  "autoFixesApplied": 0,
-  "openEscalations": [],
-  "codexVerdict": null
+  "lastReviewed": "2026-07-01",
+  "reviewStatus": "blocked",
+  "reportPath": "business/dgskills-reviews/pitch-police-2026-07-01.md",
+  "autoFixesApplied": 1,
+  "openEscalations": [
+   "kwaliteit laag over de hele linie (3/4/2, 2 blockers + 4 warnings) — intro-CTA oogt disabled (platform-intro-patroon) en missie verdient een opknapronde zodra de platform-shell-fix landt"
+  ],
+  "codexVerdict": "ALLOW",
+  "escalationCount": 1,
+  "reviewScores": {
+   "uiux": 3,
+   "didactiek": 4,
+   "tech": 2
+  },
+  "triageScore": 6.9,
+  "statusNote": "wave 9: dashboard-SLO 22B->22A gefixt conform mapping; ontbrekende briefing-afbeelding is platform-breed patroon",
+  "verdict": "fix-eerst"
  },
  {
   "missionId": "podcast-producer",
   "templateType": "builder-canvas",
-  "priorityBand": "medium",
+  "priorityBand": "low",
   "triageScores": {
    "uiux": 0,
    "slo": 1,
@@ -1477,12 +1822,23 @@
    "interactivity": 0,
    "total": 5
   },
-  "lastReviewed": null,
-  "reviewStatus": "pending",
-  "reportPath": null,
+  "lastReviewed": "2026-07-01",
+  "reviewStatus": "blocked",
+  "reportPath": "business/dgskills-reviews/podcast-producer-2026-07-01.md",
   "autoFixesApplied": 0,
-  "openEscalations": [],
-  "codexVerdict": null
+  "openEscalations": [
+   "content-keuze: ACTIEVE chat-coach hanteert een eigen 3-stappenplan (3 STEP_COMPLETE-markers) terwijl het canvas 4 stappen heeft — herschrijfvoorstel (~20 regels) ligt klaar in rapport; structurele coach-herschrijving bewust niet auto-toegepast"
+  ],
+  "codexVerdict": null,
+  "escalationCount": 1,
+  "reviewScores": {
+   "uiux": 8,
+   "didactiek": 6,
+   "tech": 8
+  },
+  "triageScore": 2.8,
+  "statusNote": "wave 9: desync chat-plan vs canvas naar Yorin (na digital-forensics-les geen structurele content-herschrijvingen meer mechanisch)",
+  "verdict": "fix-eerst"
  },
  {
   "missionId": "policy-maker",
@@ -1495,11 +1851,16 @@
    "interactivity": 0,
    "total": 7
   },
-  "lastReviewed": "2026-06-17",
-  "reviewStatus": "reviewed",
-  "reportPath": "business/dgskills-reviews/policy-maker-2026-06-17.md",
+  "lastReviewed": "2026-07-01",
+  "reviewStatus": "blocked",
+  "reportPath": "business/dgskills-reviews/policy-maker-2026-07-01.md",
   "autoFixesApplied": 0,
-  "openEscalations": [],
+  "openEscalations": [
+   "design-tokenisatie: badge-color #202023 template-breed in alle 4 debate-arena-configs; rapportvoorstel var(--color-duck-ink) is technisch onjuist (geen CSS-vars in dit project)",
+   "didactiek: missionObjective 'schrijf beleidsvoorstel' maar template heeft geen schrijfveld — geen whitelist-conform tekstvoorstel in rapport",
+   "ai-endpoint: systemInstruction client-side in year3.tsx — mogelijk prompt-injection-oppervlak, verificatie nodig",
+   "security-verificatie: promptSanitizer-toepassing op chat-input niet verifieerbaar zonder edge-function-inspectie"
+  ],
   "codexVerdict": null,
   "reviewScores": {
    "uiux": 2,
@@ -1509,17 +1870,18 @@
   "goalClear": true,
   "goalAchieved": false,
   "proposedFixes": 5,
-  "escalationCount": 3,
+  "escalationCount": 4,
   "topIssues": [
    "missionGoal ontbreekt → IntroScreen goal-blok leeg",
    "missionObjective 'schrijf beleidsvoorstel' maar template heeft geen schrijfstap [ESCALATIE]",
    "systemInstruction client-side in year3.tsx [ESCALATIE]"
-  ]
+  ],
+  "statusNote": "wave 4 fix-pass 2026-07-01: 0 toepasbaar; wacht op Yorin-beslissingen"
  },
  {
   "missionId": "portfolio-builder",
   "templateType": "builder-canvas",
-  "priorityBand": "medium",
+  "priorityBand": "low",
   "triageScores": {
    "uiux": 0,
    "slo": 0,
@@ -1527,12 +1889,23 @@
    "interactivity": 1,
    "total": 5
   },
-  "lastReviewed": null,
-  "reviewStatus": "pending",
-  "reportPath": null,
+  "lastReviewed": "2026-07-01",
+  "reviewStatus": "blocked",
+  "reportPath": "business/dgskills-reviews/portfolio-builder-2026-07-01.md",
   "autoFixesApplied": 0,
-  "openEscalations": [],
-  "codexVerdict": null
+  "openEscalations": [
+   "platform-patroon: builder-canvas coach-briefing (3-stappen STEP_COMPLETE-model) dekt de 4 canvas-stappen niet — één productkeuze voor alle 4 getroffen missies (podcast-producer, meesterproef, portfolio-builder, prototype-developer); herschrijfvoorstel per missie ligt in het rapport"
+  ],
+  "codexVerdict": null,
+  "escalationCount": 1,
+  "reviewScores": {
+   "uiux": 8,
+   "didactiek": 6,
+   "tech": 8
+  },
+  "triageScore": 2.8,
+  "statusNote": "wave 10: coach-briefing wijkt af van canvas (3 vs 4 stappen) — onderdeel platform-patroon",
+  "verdict": "fix-eerst"
  },
  {
   "missionId": "print-pro",
@@ -1545,12 +1918,12 @@
    "interactivity": 2,
    "total": 8
   },
-  "lastReviewed": "2026-06-17",
-  "reviewStatus": "reviewed",
-  "reportPath": "business/dgskills-reviews/print-pro-2026-06-17.md",
-  "autoFixesApplied": 0,
+  "lastReviewed": "2026-07-01",
+  "reviewStatus": "fixed",
+  "reportPath": "business/dgskills-reviews/print-pro-2026-07-01.md",
+  "autoFixesApplied": 4,
   "openEscalations": [],
-  "codexVerdict": null,
+  "codexVerdict": "ALLOW",
   "reviewScores": {
    "uiux": 2,
    "didactiek": 2,
@@ -1559,12 +1932,13 @@
   "goalClear": true,
   "goalAchieved": false,
   "proposedFixes": 4,
-  "escalationCount": 1,
+  "escalationCount": 0,
   "topIssues": [
    "takeaways missen Bloom-actiewerkwoorden",
    "stap 2 instructie >60w + geen verificationQuestion",
    "SLO-claim dekt inhoud niet (stap 4 = 23A, claim alleen 21A)"
-  ]
+  ],
+  "statusNote": "wave 4: 3 fixer-fixes + 1 orchestrator-correctie (maxScore 60) na gate-BLOCK; re-gate ALLOW"
  },
  {
   "missionId": "privacy-by-design",
@@ -1578,7 +1952,7 @@
    "total": 6
   },
   "lastReviewed": "2026-06-26",
-  "reviewStatus": "reviewed",
+  "reviewStatus": "blocked",
   "reportPath": "business/dgskills-reviews/wave-3b-2026-06-26.md",
   "autoFixesApplied": 0,
   "openEscalations": [
@@ -1594,7 +1968,8 @@
   "escalationCount": 1,
   "topIssues": [
    "dode missionGoals-entry [ESCALATIE — cleanup]"
-  ]
+  ],
+  "statusNote": "normalisatie 2026-07-01 (run wave 4+): wacht op Yorin-beslissing over openEscalations"
  },
  {
   "missionId": "prompt-master",
@@ -1608,7 +1983,7 @@
    "total": 14
   },
   "lastReviewed": "2026-06-26",
-  "reviewStatus": "fixes-applied",
+  "reviewStatus": "blocked",
   "reportPath": "business/dgskills-reviews/wave-3a-2026-06-26.md",
   "autoFixesApplied": 1,
   "openEscalations": [
@@ -1627,12 +2002,13 @@
   "topIssues": [
    "a11y: label niet gekoppeld aan textarea [GEFIXED]",
    "criteria-type-inconsistentie missionGoals [ESCALATIE]"
-  ]
+  ],
+  "statusNote": "normalisatie 2026-07-01 (run wave 4+): wacht op Yorin-beslissing over openEscalations"
  },
  {
   "missionId": "prototype-developer",
   "templateType": "builder-canvas",
-  "priorityBand": "medium",
+  "priorityBand": "low",
   "triageScores": {
    "uiux": 0,
    "slo": 0,
@@ -1640,12 +2016,23 @@
    "interactivity": 1,
    "total": 5
   },
-  "lastReviewed": null,
-  "reviewStatus": "pending",
-  "reportPath": null,
+  "lastReviewed": "2026-07-01",
+  "reviewStatus": "blocked",
+  "reportPath": "business/dgskills-reviews/prototype-developer-2026-07-01.md",
   "autoFixesApplied": 0,
-  "openEscalations": [],
-  "codexVerdict": null
+  "openEscalations": [
+   "platform-patroon: builder-canvas coach-briefing (3-stappen STEP_COMPLETE-model) dekt de 4 canvas-stappen niet — één productkeuze voor alle 4 getroffen missies (podcast-producer, meesterproef, portfolio-builder, prototype-developer); herschrijfvoorstel per missie ligt in het rapport; hier extra: markers 1 positie verschoven, canvas-stap 1 (scopen, kern tegen feature creep) mist een eigen marker"
+  ],
+  "codexVerdict": null,
+  "escalationCount": 1,
+  "reviewScores": {
+   "uiux": 9,
+   "didactiek": 6,
+   "tech": 7
+  },
+  "triageScore": 2.8,
+  "statusNote": "wave 10: coach-briefing desync — onderdeel platform-patroon",
+  "verdict": "fix-eerst"
  },
  {
   "missionId": "reflection-report",
@@ -1658,11 +2045,15 @@
    "interactivity": 2,
    "total": 10
   },
-  "lastReviewed": "2026-06-17",
-  "reviewStatus": "reviewed",
-  "reportPath": "business/dgskills-reviews/reflection-report-2026-06-17.md",
+  "lastReviewed": "2026-07-01",
+  "reviewStatus": "blocked",
+  "reportPath": "business/dgskills-reviews/reflection-report-2026-07-01.md",
   "autoFixesApplied": 0,
-  "openEscalations": [],
+  "openEscalations": [
+   "structureel: template/doel-mismatch — agent beschrijft essay-schrijfopdracht, debate-arena implementeert debat (productkeuze)",
+   "ai-endpoint: systemInstruction client-side inline in year3.tsx vs server-side systemInstructions.ts — verificatie nodig welke de AI-aanroep stuurt",
+   "design: lab-coral -> duck-token-swap onuitvoerbaar — duck-palet heeft geen coral-equivalent (design-beslissing)"
+  ],
   "codexVerdict": null,
   "reviewScores": {
    "uiux": 2,
@@ -1672,12 +2063,13 @@
   "goalClear": false,
   "goalAchieved": false,
   "proposedFixes": 5,
-  "escalationCount": 2,
+  "escalationCount": 3,
   "topIssues": [
    "Template/doel-mismatch: agent beschrijft essay, template implementeert debat [ESCALATIE]",
    "Ontbrekende missionGoal → IntroScreen krijgt undefined goal",
    "systemInstruction client-side inline in year3.tsx [ESCALATIE]"
-  ]
+  ],
+  "statusNote": "wave 4 fix-pass 2026-07-01: 0 toepasbaar; wacht op Yorin-beslissingen"
  },
  {
   "missionId": "research-project",
@@ -1690,14 +2082,15 @@
    "interactivity": 1,
    "total": 7
   },
-  "lastReviewed": "2026-06-17",
-  "reviewStatus": "fixes-applied",
-  "reportPath": "business/dgskills-reviews/research-project-2026-06-17.md",
-  "autoFixesApplied": 1,
+  "lastReviewed": "2026-07-01",
+  "reviewStatus": "blocked",
+  "reportPath": "business/dgskills-reviews/research-project-2026-07-01.md",
+  "autoFixesApplied": 4,
   "openEscalations": [
-   "hardcoded hex -> duck-token swap vereist refactor van gedeelde CompletionScreen/SimpleChart (geescaleerd)"
+   "product-beslissing: enableChat overwegen voor data-viewer zodat de Onderzoekscoach ook binnen dataset 3 bereikbaar is",
+   "ai-endpoint: systemInstruction client-side in year3.tsx bundle — verificatie nodig of dit richting AI-provider gaat of alleen UI-referentie is"
   ],
-  "codexVerdict": null,
+  "codexVerdict": "ALLOW",
   "reviewScores": {
    "uiux": 2,
    "didactiek": 2,
@@ -1706,17 +2099,18 @@
   "goalClear": true,
   "goalAchieved": true,
   "proposedFixes": 7,
-  "escalationCount": 3,
+  "escalationCount": 2,
   "topIssues": [
    "missionGoal ontbreekt in config en missionGoals.ts",
    "Hardcoded hex + accent buiten token-systeem",
    "q8 (zwaarste open vraag) heeft points:0 — inconsistent"
-  ]
+  ],
+  "statusNote": "wave 6 fix-pass 2026-07-01: 3 fixes toegepast; rest wacht op Yorin"
  },
  {
   "missionId": "review-week-2",
   "templateType": "review-arena",
-  "priorityBand": "medium",
+  "priorityBand": "low",
   "triageScores": {
    "uiux": 2,
    "slo": 0,
@@ -1724,17 +2118,26 @@
    "interactivity": 0,
    "total": 5
   },
-  "lastReviewed": null,
-  "reviewStatus": "pending",
-  "reportPath": null,
+  "lastReviewed": "2026-07-01",
+  "reviewStatus": "fixed",
+  "reportPath": "business/dgskills-reviews/review-week-2-2026-07-01.md",
   "autoFixesApplied": 0,
   "openEscalations": [],
-  "codexVerdict": null
+  "codexVerdict": null,
+  "escalationCount": 0,
+  "reviewScores": {
+   "uiux": 9,
+   "didactiek": 8,
+   "tech": 9
+  },
+  "triageScore": 1.4,
+  "statusNote": "wave 10: alle antwoordmodellen (5/5, 8/8, 8/8, 2/2) en score-som nagerekend; CTA volgt #186-patroon; schoon",
+  "verdict": "ok"
  },
  {
   "missionId": "review-week-3",
-  "templateType": "debate-arena",
-  "priorityBand": "medium",
+  "templateType": "ethics-council",
+  "priorityBand": "low",
   "triageScores": {
    "uiux": 2,
    "slo": 0,
@@ -1742,12 +2145,21 @@
    "interactivity": 1,
    "total": 5
   },
-  "lastReviewed": null,
-  "reviewStatus": "pending",
-  "reportPath": null,
+  "lastReviewed": "2026-07-01",
+  "reviewStatus": "fixed",
+  "reportPath": "business/dgskills-reviews/review-week-3-2026-07-01.md",
   "autoFixesApplied": 0,
   "openEscalations": [],
-  "codexVerdict": null
+  "codexVerdict": null,
+  "escalationCount": 0,
+  "reviewScores": {
+   "uiux": 8.5,
+   "didactiek": 8,
+   "tech": 8
+  },
+  "triageScore": 1.85,
+  "statusNote": "wave 10: gezond op nieuw ethics-council-template (#184); cross-template-imports naar engine-lijst",
+  "verdict": "ok"
  },
  {
   "missionId": "schermtijd-coach",
@@ -1761,7 +2173,7 @@
    "total": 9
   },
   "lastReviewed": "2026-06-26",
-  "reviewStatus": "reviewed",
+  "reviewStatus": "blocked",
   "reportPath": "business/dgskills-reviews/wave-3a-2026-06-26.md",
   "autoFixesApplied": 0,
   "openEscalations": [
@@ -1778,12 +2190,13 @@
   "escalationCount": 2,
   "topIssues": [
    "criteria-type-inconsistentie missionGoals [ESCALATIE]"
-  ]
+  ],
+  "statusNote": "normalisatie 2026-07-01 (run wave 4+): wacht op Yorin-beslissing over openEscalations"
  },
  {
   "missionId": "scroll-stopper",
   "templateType": "debate-arena",
-  "priorityBand": "medium",
+  "priorityBand": "low",
   "triageScores": {
    "uiux": 2,
    "slo": 0,
@@ -1791,17 +2204,28 @@
    "interactivity": 0,
    "total": 4
   },
-  "lastReviewed": null,
-  "reviewStatus": "pending",
-  "reportPath": null,
+  "lastReviewed": "2026-07-02",
+  "reviewStatus": "blocked",
+  "reportPath": "business/dgskills-reviews/scroll-stopper-2026-07-02.md",
   "autoFixesApplied": 0,
-  "openEscalations": [],
-  "codexVerdict": null
+  "openEscalations": [
+   "content-keuze (welzijnsgevoelig): briefing belooft een dark-pattern-CEO-rollenspel, de missie is een stakeholder-debat — herschrijfvoorstel ligt klaar in rapport; thema schermtijd/verslaving dus Yorin beslist"
+  ],
+  "codexVerdict": null,
+  "escalationCount": 1,
+  "reviewScores": {
+   "uiux": 8,
+   "didactiek": 5,
+   "tech": 9
+  },
+  "triageScore": 2.9,
+  "statusNote": "wave 13: briefing-missie-mismatch bewust geescaleerd (welzijnsthema)",
+  "verdict": "fix-eerst"
  },
  {
   "missionId": "security-auditor",
   "templateType": "puzzle-lab",
-  "priorityBand": "medium",
+  "priorityBand": "low",
   "triageScores": {
    "uiux": 1,
    "slo": 0,
@@ -1809,17 +2233,26 @@
    "interactivity": 0,
    "total": 4
   },
-  "lastReviewed": null,
-  "reviewStatus": "pending",
-  "reportPath": null,
+  "lastReviewed": "2026-07-02",
+  "reviewStatus": "fixed",
+  "reportPath": "business/dgskills-reviews/security-auditor-2026-07-02.md",
   "autoFixesApplied": 0,
   "openEscalations": [],
-  "codexVerdict": null
+  "codexVerdict": null,
+  "escalationCount": 0,
+  "reviewScores": {
+   "uiux": 8.5,
+   "didactiek": 8,
+   "tech": 8.5
+  },
+  "triageScore": 1.7,
+  "statusNote": "wave 13: alle 4 puzzels feitelijk nagerekend (SQL-injectie/ernst/XSS/validator); punten 100=100; alleen vaknuances",
+  "verdict": "ok"
  },
  {
   "missionId": "security-review",
   "templateType": "review-arena",
-  "priorityBand": "medium",
+  "priorityBand": "low",
   "triageScores": {
    "uiux": 2,
    "slo": 1,
@@ -1827,12 +2260,21 @@
    "interactivity": 0,
    "total": 5
   },
-  "lastReviewed": null,
-  "reviewStatus": "pending",
-  "reportPath": null,
+  "lastReviewed": "2026-07-01",
+  "reviewStatus": "fixed",
+  "reportPath": "business/dgskills-reviews/security-review-2026-07-01.md",
   "autoFixesApplied": 0,
   "openEscalations": [],
-  "codexVerdict": null
+  "codexVerdict": null,
+  "escalationCount": 0,
+  "reviewScores": {
+   "uiux": 9,
+   "didactiek": 9,
+   "tech": 8.5
+  },
+  "triageScore": 1.15,
+  "statusNote": "wave 10: security-adviezen inhoudelijk geverifieerd, niets verouderds; schoonste missie van de run",
+  "verdict": "ok"
  },
  {
   "missionId": "slide-specialist",
@@ -1845,12 +2287,12 @@
    "interactivity": 1,
    "total": 6
   },
-  "lastReviewed": "2026-06-17",
-  "reviewStatus": "reviewed",
-  "reportPath": "business/dgskills-reviews/slide-specialist-2026-06-17.md",
-  "autoFixesApplied": 0,
+  "lastReviewed": "2026-07-01",
+  "reviewStatus": "fixed",
+  "reportPath": "business/dgskills-reviews/slide-specialist-2026-07-01.md",
+  "autoFixesApplied": 1,
   "openEscalations": [],
-  "codexVerdict": null,
+  "codexVerdict": "ALLOW",
   "reviewScores": {
    "uiux": 1,
    "didactiek": 1,
@@ -1859,7 +2301,7 @@
   "goalClear": true,
   "goalAchieved": false,
   "proposedFixes": 5,
-  "escalationCount": 2,
+  "escalationCount": 0,
   "topIssues": [
    "'Zetelen' bestaat niet als PowerPoint-overgang (stap 4 onuitvoerbaar)",
    "'Animatievenster' bestaat niet in iOS PowerPoint (stap 3 onuitvoerbaar)",
@@ -1887,7 +2329,7 @@
  {
   "missionId": "spreadsheet-specialist",
   "templateType": "data-viewer",
-  "priorityBand": "medium",
+  "priorityBand": "low",
   "triageScores": {
    "uiux": 2,
    "slo": 1,
@@ -1895,17 +2337,26 @@
    "interactivity": 0,
    "total": 4
   },
-  "lastReviewed": null,
-  "reviewStatus": "pending",
-  "reportPath": null,
-  "autoFixesApplied": 0,
+  "lastReviewed": "2026-07-02",
+  "reviewStatus": "fixed",
+  "reportPath": "business/dgskills-reviews/spreadsheet-specialist-2026-07-02.md",
+  "autoFixesApplied": 1,
   "openEscalations": [],
-  "codexVerdict": null
+  "codexVerdict": "ALLOW",
+  "escalationCount": 0,
+  "reviewScores": {
+   "uiux": 8,
+   "didactiek": 9,
+   "tech": 5
+  },
+  "triageScore": 2.5,
+  "statusNote": "wave 14: no-op zelfde-kleur-gradient -> effen kleur (cyber-detective-precedent; agent-voorstel dat het uiterlijk zou VERANDEREN afgewezen); ontbrekend briefing-asset = platform-breed gat, geen missie-blokkade; gate ALLOW (gecombineerde call met data-handelaar, per-missie verdict)",
+  "verdict": "fix-eerst"
  },
  {
   "missionId": "startup-pitch",
   "templateType": "tool-guide",
-  "priorityBand": "medium",
+  "priorityBand": "low",
   "triageScores": {
    "uiux": 2,
    "slo": 0,
@@ -1913,12 +2364,21 @@
    "interactivity": 1,
    "total": 4
   },
-  "lastReviewed": null,
-  "reviewStatus": "pending",
-  "reportPath": null,
-  "autoFixesApplied": 0,
+  "lastReviewed": "2026-07-02",
+  "reviewStatus": "fixed",
+  "reportPath": "business/dgskills-reviews/startup-pitch-2026-07-02.md",
+  "autoFixesApplied": 2,
   "openEscalations": [],
-  "codexVerdict": null
+  "codexVerdict": "ALLOW",
+  "escalationCount": 0,
+  "reviewScores": {
+   "uiux": 8.5,
+   "didactiek": 6.5,
+   "tech": 7
+  },
+  "triageScore": 2.75,
+  "statusNote": "wave 14: maxScore 60->55 (plafond = 4 stappen + 3 vragen, print-pro-familie; topbadge stond al op 55) + yearGroup 1->3 conform mapping/curriculum (rol telde onterecht mee in leerjaar-1-dekking en -suggesties)",
+  "verdict": "fix-eerst"
  },
  {
   "missionId": "startup-simulator",
@@ -1968,7 +2428,7 @@
    "total": 8
   },
   "lastReviewed": "2026-06-26",
-  "reviewStatus": "reviewed",
+  "reviewStatus": "blocked",
   "reportPath": "business/dgskills-reviews/wave-3a-2026-06-26.md",
   "autoFixesApplied": 0,
   "openEscalations": [
@@ -1986,7 +2446,8 @@
   "topIssues": [
    "reviewer-claim 'ontbrekende chat-rol' ONJUIST — rol in year2.tsx:2264",
    "argumentPrompts dood veld [ESCALATIE — shared-engine]"
-  ]
+  ],
+  "statusNote": "normalisatie 2026-07-01 (run wave 4+): wacht op Yorin-beslissing over openEscalations"
  },
  {
   "missionId": "tech-impact-analyst",
@@ -2018,7 +2479,7 @@
    "total": 9
   },
   "lastReviewed": "2026-06-26",
-  "reviewStatus": "reviewed",
+  "reviewStatus": "blocked",
   "reportPath": "business/dgskills-reviews/wave-3a-2026-06-26.md",
   "autoFixesApplied": 0,
   "openEscalations": [
@@ -2037,7 +2498,20 @@
   "topIssues": [
    "q2 antwoordmodel fout (4.3 i.p.v. 4.5) [ESCALATIE — inhoudelijk]",
    "maxScore/punten-mismatch [ESCALATIE]"
-  ]
+  ],
+  "statusNote": "normalisatie 2026-07-01 (run wave 4+): wacht op Yorin-beslissing over openEscalations"
+ },
+ {
+  "missionId": "veilig-internet",
+  "templateType": "scenario-engine",
+  "priorityBand": "unknown",
+  "triageScores": null,
+  "lastReviewed": null,
+  "reviewStatus": "pending",
+  "reportPath": null,
+  "autoFixesApplied": 0,
+  "openEscalations": [],
+  "codexVerdict": null
  },
  {
   "missionId": "verhalen-ontwerper",
@@ -2069,7 +2543,7 @@
    "total": 6
   },
   "lastReviewed": "2026-06-26",
-  "reviewStatus": "fixes-applied",
+  "reviewStatus": "blocked",
   "reportPath": "business/dgskills-reviews/wave-3b-2026-06-26.md",
   "autoFixesApplied": 1,
   "openEscalations": [
@@ -2085,7 +2559,8 @@
   "escalationCount": 0,
   "topIssues": [
    "grammatica \"die\" -> \"dat\" [GEFIXED]"
-  ]
+  ],
+  "statusNote": "normalisatie 2026-07-01 (run wave 4+): wacht op Yorin-beslissing over openEscalations"
  },
  {
   "missionId": "wachtwoord-warrior",
@@ -2099,7 +2574,7 @@
    "total": 6
   },
   "lastReviewed": "2026-06-26",
-  "reviewStatus": "reviewed",
+  "reviewStatus": "fixed",
   "reportPath": "business/dgskills-reviews/wave-3b-2026-06-26.md",
   "autoFixesApplied": 0,
   "openEscalations": [],
@@ -2113,7 +2588,8 @@
   "escalationCount": 0,
   "topIssues": [
    "schoon; antwoordmodellen + scoring (4x25=100) geverifieerd"
-  ]
+  ],
+  "statusNote": "normalisatie 2026-07-01 (run wave 4+): review schoon, geen open punten"
  },
  {
   "missionId": "web-developer",
@@ -2136,7 +2612,7 @@
  {
   "missionId": "website-bouwer",
   "templateType": "builder-canvas",
-  "priorityBand": "medium",
+  "priorityBand": "low",
   "triageScores": {
    "uiux": 0,
    "slo": 0,
@@ -2144,12 +2620,21 @@
    "interactivity": 0,
    "total": 4
   },
-  "lastReviewed": null,
-  "reviewStatus": "pending",
-  "reportPath": null,
+  "lastReviewed": "2026-07-02",
+  "reviewStatus": "fixed",
+  "reportPath": "business/dgskills-reviews/website-bouwer-2026-07-02.md",
   "autoFixesApplied": 0,
   "openEscalations": [],
-  "codexVerdict": null
+  "codexVerdict": null,
+  "escalationCount": 0,
+  "reviewScores": {
+   "uiux": 8,
+   "didactiek": 9,
+   "tech": 8.5
+  },
+  "triageScore": 1.45,
+  "statusNote": "wave 14: schoon; geen coach-desync; sandboxed preview + strakke copiloot-discipline geprezen",
+  "verdict": "ok"
  },
  {
   "missionId": "welzijnsonderzoeker",
@@ -2172,7 +2657,7 @@
  {
   "missionId": "word-wizard",
   "templateType": "tool-guide",
-  "priorityBand": "medium",
+  "priorityBand": "low",
   "triageScores": {
    "uiux": 2,
    "slo": 1,
@@ -2180,11 +2665,23 @@
    "interactivity": 1,
    "total": 5
   },
-  "lastReviewed": null,
-  "reviewStatus": "pending",
-  "reportPath": null,
-  "autoFixesApplied": 0,
-  "openEscalations": [],
-  "codexVerdict": null
+  "lastReviewed": "2026-07-02",
+  "reviewStatus": "blocked",
+  "reportPath": "business/dgskills-reviews/word-wizard-2026-07-02.md",
+  "autoFixesApplied": 2,
+  "openEscalations": [
+   "avg-groep: foto-instructie verder aanscherpen ('geen klasgenoten op de foto')? — zelfde beslissing als cloud-commander stap 3, graag in één keer beslissen",
+   "slo-fit: 22A-claim oppervlakkig + Bloom blijft niveau 1-2 (curator-afweging)"
+  ],
+  "codexVerdict": "ALLOW",
+  "escalationCount": 2,
+  "reviewScores": {
+   "uiux": 8.5,
+   "didactiek": 6.5,
+   "tech": 9
+  },
+  "triageScore": 2.15,
+  "statusNote": "wave 11: iPad-route inhoudsopgave gecorrigeerd (Invoegen→Documentelementen→Inhoud, 2 reviews bevestigden de fout) + badges gedifferentieerd; foto-aanscherping bewust naar AVG-groep",
+  "verdict": "fix-eerst"
  }
 ]

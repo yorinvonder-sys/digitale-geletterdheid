@@ -3,11 +3,13 @@
 
 export type BlockCategory = 'event' | 'motion' | 'control' | 'variable';
 
+type BlockInputValue = string | number;
+
 export interface BlockInput {
     name: string;
     type: 'number' | 'string' | 'dropdown' | 'key';
-    default: any;
-    options?: { label: string; value: any }[];
+    default: BlockInputValue;
+    options?: { label: string; value: BlockInputValue }[];
     min?: number;
     max?: number;
 }
@@ -15,7 +17,7 @@ export interface BlockInput {
 export interface PlacedBlock {
     id: string;
     definitionId: string;
-    inputs: Record<string, any>;
+    inputs: Record<string, BlockInputValue>;
     children?: PlacedBlock[]; // For control blocks that contain other blocks
 }
 

@@ -12,11 +12,11 @@ export const YEAR2_ROLES: AgentRole[] = [
         icon: <BarChart2 size={28} />,
         color: '#202023',
         description: 'Vertel verhalen die verborgen zitten in data.',
-        problemScenario: 'Een lokale krant heeft een enorme dataset gekregen over het energieverbruik van scholen in Nederland, maar niemand begrijpt de cijfers. Jij wordt ingehuurd als data-journalist om de belangrijkste patronen te ontdekken en er een heldere infographic van te maken.',
-        missionObjective: 'Analyseer een dataset, vind patronen en ontwerp een overtuigende infographic.',
+        problemScenario: 'Een lokale krant vraagt jou als data-journalist om cijfers over social media-gebruik en schermtijd te analyseren en nieuwsberichten over dit onderwerp kritisch te beoordelen op betrouwbaarheid.',
+        missionObjective: 'Analyseer datasets over social media en schermtijd, vind patronen en beoordeel nieuwsberichten op betrouwbaarheid.',
         briefingImage: '/assets/agents/data-journalist.webp',
         difficulty: 'Medium',
-        examplePrompt: 'Ik heb een tabel met cijfers over waterverbruik per maand. Hoe vind ik trends?',
+        examplePrompt: 'Ik zie in de tabel dat sommige leerlingen "Moe" invullen na social media-gebruik. Hoe weet ik of dat een echt patroon is?',
         visualPreview: (
             <div className="w-full h-full bg-gradient-to-br from-lab-sage to-lab-sage flex items-center justify-center">
                 <div className="w-20 h-20 bg-gradient-to-br from-lab-coral to-lab-sage rounded-2xl flex items-center justify-center shadow-xl">
@@ -102,7 +102,7 @@ Je eerste opdracht: open de dataset en vertel me — wat valt je als eerste op?"
         difficulty: 'Medium',
         examplePrompt: 'Hoe maak ik een SOM-formule om alle uitgaven bij elkaar op te tellen?',
         visualPreview: (
-            <div className="w-full h-full bg-gradient-to-br from-lab-teal to-lab-teal flex items-center justify-center">
+            <div className="w-full h-full bg-lab-teal flex items-center justify-center">
                 <div className="w-20 h-20 bg-gradient-to-br from-lab-coral to-lab-teal rounded-2xl flex items-center justify-center shadow-xl">
                     <Table2 size={40} className="text-white" />
                 </div>

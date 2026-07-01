@@ -197,7 +197,7 @@ REGELS:
         difficulty: 'Medium',
         examplePrompt: 'Hoe laat ik mijn karakter bewegen?',
         primaryGoal: 'Ik programmeer Robbie door vijf levels heen en leg uit wat duidelijke instructies met AI te maken hebben.',
-        goalCriteria: { type: 'steps-complete', min: 3 },
+        goalCriteria: { type: 'steps-complete', min: 5 },
         visualPreview: (
             <div className="w-full h-full bg-lab-coral flex flex-col items-center justify-center p-4 relative overflow-hidden">
                 <div className="absolute inset-0 bg-gradient-to-br from-lab-gold to-lab-coral"></div>
@@ -3382,7 +3382,7 @@ Maar eerst: **vertel me over je project!** Wat heb je gemaakt, en wat is het all
     },
     {
         id: 'startup-pitch',
-        yearGroup: 1,
+        yearGroup: 3,
         educationLevels: ['mavo', 'havo', 'vwo'] as EducationLevel[],
         title: 'Startup Pitch',
         icon: <Rocket size={28} />,

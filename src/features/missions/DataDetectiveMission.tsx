@@ -549,6 +549,7 @@ export const DataDetectiveMission: React.FC<Props> = ({ onBack, onComplete, vsoP
                 <div className="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between">
                     <button
                         onClick={onBack}
+                        aria-label="Terug naar Mission Control"
                         className="p-2 transition-colors"
                         style={{ color: '#6f6e69' }}
                         onMouseEnter={e => (e.currentTarget.style.color = '#202023')}
