@@ -5,6 +5,8 @@
 **Scope:** Volledige codebase-audit op 8 categorieën, 60+ checkpunten
 **Classificatie:** HIGH RISK onder EU AI Act Annex III punt 3(b)
 
+> **Historische status 01-07-2026:** Dit securityrapport beschrijft de situatie op 15 maart 2026; enkele bevindingen en datums zijn sindsdien achterhaald (o.a. de docent-override voor STEP_COMPLETE is geïmplementeerd op 15 mrt 2026, en de hoog-risico-toepassingsdatum voor Annex III-onderwijs is via de Digital Omnibus naar verwachting verschoven naar 2 december 2027). Gebruik voor actuele claims `docs/compliance/legal-claim-source-of-truth.md`.
+
 ---
 
 ## Managementsamenvatting
