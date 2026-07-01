@@ -545,7 +545,7 @@
   "openEscalations": [
    "asset ontbreekt: briefingImage verwijst naar niet-bestaand /assets/agents/cyber-detective.webp (year3.tsx:564) — leerling ziet kapotte afbeelding; vereist assetgeneratie"
   ],
-  "codexVerdict": null,
+  "codexVerdict": "ALLOW",
   "escalationCount": 1,
   "reviewScores": {
    "uiux": 6.5,
@@ -553,7 +553,7 @@
    "tech": 5
   },
   "triageScore": 3.35,
-  "statusNote": "wave 7: no-op gradient gefixt; asset-escalatie",
+  "statusNote": "wave 7: no-op gradient gefixt; asset-escalatie; gate ALLOW (nevenbevinding over research-project-hunk was al apart ge-gate-t)",
   "verdict": "fix-eerst"
  },
  {
@@ -593,7 +593,7 @@
    "didactiek: geen expliciete leerdoelen per level (alleen brede primaryGoal) — leerdoel-formulering is SLO-content, Yorin keurt",
    "design: duck-error (#ff3c21) als primaire CTA-kleur i.p.v. foutstatus + inline hex door hele component — design-cleanup-keuze"
   ],
-  "codexVerdict": null,
+  "codexVerdict": "ALLOW",
   "escalationCount": 2,
   "reviewScores": {
    "uiux": 4,
