@@ -1403,7 +1403,7 @@
   "openEscalations": [
    "platform-patroon: builder-canvas coach-briefing (3-stappen) dekt de canvas-stappen niet — één productkeuze (nu 5 missies: podcast-producer, meesterproef, portfolio-builder, prototype-developer, meme-machine); meme-machine PRIORITEIT in de fix-batch: de gemiste 4e stap is het welzijns-/ethiek-onderdeel (AI-coach kan 'klaar' zeggen vóór de reflectie)"
   ],
-  "codexVerdict": null,
+  "codexVerdict": "ALLOW",
   "escalationCount": 1,
   "reviewScores": {
    "uiux": 8.5,
@@ -1553,9 +1553,9 @@
   "lastReviewed": "2026-07-02",
   "reviewStatus": "fixed",
   "reportPath": "business/dgskills-reviews/neural-navigator-2026-07-02.md",
-  "autoFixesApplied": 3,
+  "autoFixesApplied": 4,
   "openEscalations": [],
-  "codexVerdict": null,
+  "codexVerdict": "ALLOW",
   "escalationCount": 0,
   "reviewScores": {
    "uiux": 8,
@@ -1563,7 +1563,7 @@
    "tech": 8
   },
   "triageScore": 2.4,
-  "statusNote": "wave 13: tabelwaarden Neuron A 0.69->0.68 en Neuron C 0.81->1.01 (formule zelf nagerekend; C was bias-vergeten) + q8 participatiepunten 0->10 (som=100; 4e geval)",
+  "statusNote": "wave 13: tabelwaarden Neuron A 0.69->0.68 en Neuron C 0.81->1.01 (formule zelf nagerekend; C was bias-vergeten) + q8 participatiepunten 0->10 (som=100; 4e geval); gate-BLOCK gevangen: q2 rekende na de C-correctie nog Neuron D goed -> q2 naar Neuron C (1.01), re-gate ALLOW",
   "verdict": "fix-eerst"
  },
  {
