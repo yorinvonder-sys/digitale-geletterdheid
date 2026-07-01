@@ -145,12 +145,20 @@
         <ul class="checklist">
             <li><strong>Modeltraining:</strong> Leerlinginput wordt server-side verwerkt en is ingericht om niet voor provider-modeltraining te worden gebruikt waar dit door de toepasselijke providerafspraken en instellingen wordt gedekt.</li>
             <li><strong>Herkenbaarheid:</strong> Elke AI-interactie is duidelijk gemarkeerd met het "AI Coach" label.</li>
-            <li><strong>Human-in-the-loop:</strong> De AI heeft een adviserende rol. De docent behoudt altijd de regie over de beoordeling en heeft volledig inzicht in de AI-leerling interacties.</li>
-            <li><strong>Safety Filtering:</strong> Actieve filtering op schadelijke content via enterprise-grade safety settings.</li>
+            <li><strong>Human-in-the-loop:</strong> De AI heeft een adviserende rol. De docent behoudt de regie over de beoordeling en kan AI-voortgangsbeslissingen overrulen; de docent heeft inzicht in de leervoortgang per leerling en in het AI-gebruik op klasniveau. AI-gesprekken worden niet permanent opgeslagen.</li>
+            <li><strong>Safety Filtering:</strong> Actieve server-side filtering: invoer-sanitisatie en een output-veiligheidsvangnet blokkeren schadelijke content en verwijzen kindveilig door (welzijnsprotocol, o.a. Kindertelefoon).</li>
             <li><strong>Dataminimalisatie in AI-flow:</strong> Alleen noodzakelijke context wordt meegestuurd; geen marketingprofilering.</li>
         </ul>
 
-        <h2>3. Documentatie voor Inkoop & Toezicht</h2>
+        <h2>3. ePrivacy & Security Hardening</h2>
+        <ul class="checklist">
+            <li><strong>Consent Enforcement:</strong> Niet-essentiële analytics wordt technisch pas uitgevoerd na expliciete toestemming.</li>
+            <li><strong>First-party analytics:</strong> Geen Google Analytics; alleen interne geaggregeerde klikstatistieken.</li>
+            <li><strong>CSP-hardening:</strong> Inline scripts verwijderd uit de hoofdpagina; `script-src` zonder `unsafe-inline`.</li>
+            <li><strong>Password reset hardening:</strong> API retourneert geen plaintext wachtwoorden meer.</li>
+        </ul>
+
+        <h2>4. Documentatie voor Inkoop & Toezicht</h2>
         <table>
             <thead>
                 <tr>
@@ -178,7 +186,7 @@
             </tbody>
         </table>
 
-        <h2>4. Stappenplan voor de School</h2>
+        <h2>5. Stappenplan voor de School</h2>
         <p>Om de implementatie juridisch correct af te ronden, adviseren wij de school de volgende stappen:</p>
         <ul class="checklist">
             <li><strong>FG Check:</strong> Leg dit dossier voor aan uw Functionaris Gegevensbescherming.</li>
