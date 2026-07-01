@@ -439,7 +439,7 @@
    "a11y: drag-and-drop heeft geen enkel toetsenbord-alternatief (0 aria/rol/tabIndex) — leerling zonder muis/touch kan de missie niet doen; kandidaat voor aparte toegankelijkheidsronde",
    "mobiel: zwevende actieknop overlapt de laatste bestandskaarten — staat al sinds de UI/UX-audit van 30 juni open (prioriteit 4)"
   ],
-  "codexVerdict": null,
+  "codexVerdict": "ALLOW",
   "escalationCount": 2,
   "reviewScores": {
    "uiux": 6.5,
@@ -737,7 +737,7 @@
   "reportPath": "business/dgskills-reviews/data-pipeline-2026-07-02.md",
   "autoFixesApplied": 1,
   "openEscalations": [],
-  "codexVerdict": null,
+  "codexVerdict": "ALLOW",
   "escalationCount": 0,
   "reviewScores": {
    "uiux": 8,
