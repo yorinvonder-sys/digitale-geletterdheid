@@ -1271,7 +1271,7 @@
  {
   "missionId": "meesterproef",
   "templateType": "builder-canvas",
-  "priorityBand": "medium",
+  "priorityBand": "low",
   "triageScores": {
    "uiux": 0,
    "slo": 0,
@@ -1279,12 +1279,23 @@
    "interactivity": 1,
    "total": 5
   },
-  "lastReviewed": null,
-  "reviewStatus": "pending",
-  "reportPath": null,
+  "lastReviewed": "2026-07-01",
+  "reviewStatus": "blocked",
+  "reportPath": "business/dgskills-reviews/meesterproef-2026-07-01.md",
   "autoFixesApplied": 0,
-  "openEscalations": [],
-  "codexVerdict": null
+  "openEscalations": [
+   "content-keuze: coach-fasenmodel (3 STEP_COMPLETE-fasen) dekt de 4 canvas-stappen niet — herschrijfvoorstel ligt klaar in rapport (zelfde beslisklasse als podcast-producer)"
+  ],
+  "codexVerdict": null,
+  "escalationCount": 1,
+  "reviewScores": {
+   "uiux": 8.5,
+   "didactiek": 7.5,
+   "tech": 8.5
+  },
+  "triageScore": 1.9,
+  "statusNote": "wave 9: gezond; fasenmodel-gelijktrekking bewust naar Yorin (consistentie met podcast-producer)",
+  "verdict": "ok"
  },
  {
   "missionId": "meme-machine",
@@ -1369,12 +1380,21 @@
    "interactivity": 1,
    "total": 5
   },
-  "lastReviewed": null,
-  "reviewStatus": "pending",
-  "reportPath": null,
-  "autoFixesApplied": 0,
+  "lastReviewed": "2026-07-01",
+  "reviewStatus": "fixed",
+  "reportPath": "business/dgskills-reviews/ml-trainer-2026-07-01.md",
+  "autoFixesApplied": 2,
   "openEscalations": [],
-  "codexVerdict": null
+  "codexVerdict": null,
+  "escalationCount": 0,
+  "reviewScores": {
+   "uiux": 8,
+   "didactiek": 8,
+   "tech": 3
+  },
+  "triageScore": 3.5,
+  "statusNote": "wave 9: q1-antwoordmodel gecorrigeerd (dataset telt 5/12 spam = 42%, was 50; uitleg verzon 6e rij) + q8 participatiepunten 0->10 (som=100=maxScore; engine geeft text-observation altijd volle punten). Orphan MLTrainerMission.tsx apart geflagd door reviewer",
+  "verdict": "fix-eerst"
  },
  {
   "missionId": "network-navigator",
@@ -1551,7 +1571,7 @@
  {
   "missionId": "pitch-perfect",
   "templateType": "builder-canvas",
-  "priorityBand": "medium",
+  "priorityBand": "low",
   "triageScores": {
    "uiux": 0,
    "slo": 0,
@@ -1559,17 +1579,28 @@
    "interactivity": 1,
    "total": 5
   },
-  "lastReviewed": null,
-  "reviewStatus": "pending",
-  "reportPath": null,
+  "lastReviewed": "2026-07-01",
+  "reviewStatus": "blocked",
+  "reportPath": "business/dgskills-reviews/pitch-perfect-2026-07-01.md",
   "autoFixesApplied": 0,
-  "openEscalations": [],
-  "codexVerdict": null
+  "openEscalations": [
+   "slo-fit: 22A-claim (digitale producten) zwak onderbouwd — geen product-maak-activiteit (curator-keuze, vgl. brand-builder/data-journalist)"
+  ],
+  "codexVerdict": null,
+  "escalationCount": 1,
+  "reviewScores": {
+   "uiux": 8,
+   "didactiek": 7,
+   "tech": 8.5
+  },
+  "triageScore": 2.25,
+  "statusNote": "wave 9: schoon op de 22A-precisievraag na",
+  "verdict": "ok"
  },
  {
   "missionId": "pitch-police",
   "templateType": "dedicated",
-  "priorityBand": "medium",
+  "priorityBand": "high",
   "triageScores": {
    "uiux": 2,
    "slo": 1,
@@ -1577,17 +1608,28 @@
    "interactivity": 0,
    "total": 5
   },
-  "lastReviewed": null,
-  "reviewStatus": "pending",
-  "reportPath": null,
-  "autoFixesApplied": 0,
-  "openEscalations": [],
-  "codexVerdict": null
+  "lastReviewed": "2026-07-01",
+  "reviewStatus": "blocked",
+  "reportPath": "business/dgskills-reviews/pitch-police-2026-07-01.md",
+  "autoFixesApplied": 1,
+  "openEscalations": [
+   "kwaliteit laag over de hele linie (3/4/2, 2 blockers + 4 warnings) — intro-CTA oogt disabled (platform-intro-patroon) en missie verdient een opknapronde zodra de platform-shell-fix landt"
+  ],
+  "codexVerdict": null,
+  "escalationCount": 1,
+  "reviewScores": {
+   "uiux": 3,
+   "didactiek": 4,
+   "tech": 2
+  },
+  "triageScore": 6.9,
+  "statusNote": "wave 9: dashboard-SLO 22B->22A gefixt conform mapping; ontbrekende briefing-afbeelding is platform-breed patroon",
+  "verdict": "fix-eerst"
  },
  {
   "missionId": "podcast-producer",
   "templateType": "builder-canvas",
-  "priorityBand": "medium",
+  "priorityBand": "low",
   "triageScores": {
    "uiux": 0,
    "slo": 1,
@@ -1595,12 +1637,23 @@
    "interactivity": 0,
    "total": 5
   },
-  "lastReviewed": null,
-  "reviewStatus": "pending",
-  "reportPath": null,
+  "lastReviewed": "2026-07-01",
+  "reviewStatus": "blocked",
+  "reportPath": "business/dgskills-reviews/podcast-producer-2026-07-01.md",
   "autoFixesApplied": 0,
-  "openEscalations": [],
-  "codexVerdict": null
+  "openEscalations": [
+   "content-keuze: ACTIEVE chat-coach hanteert een eigen 3-stappenplan (3 STEP_COMPLETE-markers) terwijl het canvas 4 stappen heeft — herschrijfvoorstel (~20 regels) ligt klaar in rapport; structurele coach-herschrijving bewust niet auto-toegepast"
+  ],
+  "codexVerdict": null,
+  "escalationCount": 1,
+  "reviewScores": {
+   "uiux": 8,
+   "didactiek": 6,
+   "tech": 8
+  },
+  "triageScore": 2.8,
+  "statusNote": "wave 9: desync chat-plan vs canvas naar Yorin (na digital-forensics-les geen structurele content-herschrijvingen meer mechanisch)",
+  "verdict": "fix-eerst"
  },
  {
   "missionId": "policy-maker",
