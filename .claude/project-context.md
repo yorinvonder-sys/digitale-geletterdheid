@@ -36,7 +36,7 @@ Elke missie is gekoppeld aan specifieke SLO-leerdoelen.
 
 - **EU AI Act:** HIGH RISK (Annex III, punt 3b — AI voor beoordeling leerresultaten)
 - **AVG:** Verwerking persoonsgegevens minderjarigen, DPIA verplicht
-- **Data residency:** EU (europe-west4, Nederland)
+- **Data residency:** EER/EU-projectregio (server-side, waar contractueel vastgelegd)
 
 ## Businessmodel
 
