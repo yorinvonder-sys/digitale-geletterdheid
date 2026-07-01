@@ -86,15 +86,28 @@ Bewust NIET aangeraakt: Art. 9-statussen (overal consistent "NIET VOLDAAN" — c
 
 ---
 
-## 3. Voor jurist/FG — bewust NIET gewijzigd (juridisch bindende documenten of juridisch oordeel vereist)
+## 2bis. Deel 2 (01-07-2026) — jurist-lijst opgepakt + Google-tooling verwijderd
 
-1. **`business/nl-vo/compliance/algemene-voorwaarden-dgskills.md:393`** — "Docent-override functie — … technisch nog niet volledig geïmplementeerd (TODO in product)". Feitelijk achterhaald, maar corrigeren **versterkt een toezegging in een bindend contract** en raakt de scope van Art. 11.3 AV. Voorstel voor de jurist: *"…is technisch geïmplementeerd (docent kan STEP_COMPLETE-beoordelingen goedkeuren/terugdraaien, sinds 15 maart 2026); definitieve verwerking in de AV onder voorbehoud van juridische review."*
-2. **`business/nl-vo/compliance/dpia-dgskills-compleet.md:529,639`** — Art. 14 "Gedeeltelijk **(docent-override nodig)**" en actie A06 "Open" zijn achterhaald (en intern strijdig met r407, die de override al als mitigatie telt). DPIA is juridisch bindend → voorstel: r529 "(docent-override geïmplementeerd 15-3-2026; training/monitoring te borgen)", r639 A06 → "Afgerond (15 mrt 2026)".
-3. **`business/nl-vo/compliance/privacyverklaring-dgskills.md:219`** — "GDPR-compliant EU-datacenter" (over Zoho). Laag risico (beschrijft de subverwerker, niet DGSkills), maar het is het verboden woordpatroon in een bindend document → voorstel: "DPA; EU-datacenter (smtp.zoho.eu)".
-4. **`risicoregister-ai-act.md` R15-herscoring** — W/I-score (5×3=15 HOOG) staat er nog met expliciete "herscoring nodig"-markering; formele herscoring is een risico-oordeel voor jurist/FG bij de eerstvolgende review.
-5. **`eu-ai-act-conformiteitsplan.md` FASE 5–6-planning** — de W1–W4/GO-LIVE-fasering is op de oude augustus-2026-deadline gebouwd. Herijken van de planning op 2-12-2027 is een strategische/juridische beslissing (Yorin + jurist), geen tekstcorrectie.
-6. **`business/nl-vo/compliance/legal-matrix.md`** — heeft een "Correctie 25-06-2026"-header maar géén historisch-label, terwijl de Art. 9–17-statustabel deels ouder is. Beslissing nodig: is dít het levende status-overzicht (dan bijwerken bij elke wijziging) of historisch (dan header)?
-7. **`.env.production.template`** — bevat volgens de sweep 1× "Vertex" + 1× "Gemini" (vermoedelijk stale env-var-namen). De credential-beveiliging blokkeert geautomatiseerd lezen/schrijven van `.env*`-bestanden → **handmatig door Yorin controleren/opschonen**.
+Op expliciet verzoek van Yorin (na goedkeuring) alsnog uitgevoerd, met behoud van de conservatieve grens (feit corrigeren, geen juridische "VOLDAAN"-status ophogen, alles onder voorbehoud van juridische review):
+
+- **Commit `9de7726`** — bindende docs: AV `:393` (override "TODO" → technisch geïmplementeerd, AV-verwerking onder voorbehoud jurist) + DPIA `:383/:529/:639` (A06 Afgerond; Art. 14-status blijft GEDEELTELIJK).
+- **Commit `07dde66`** — herijking: conformiteitsplan-tijdlijn voorzien van re-anchor-notitie (feb-aug-2026-planning gebouwd op oude 2-aug-2026-deadline; echte toepassingsdatum ~2 dec 2027) + FASE-2 W1 override afgevinkt; risicoregister **R15 herscoord 5×3=15 HOOG → 2×3=6 MIDDEN** (kans omlaag nu de control bestaat; restrisico training/adoptie/monitoring), consistent in detail-rij, §8.1-ranking (met voetnoot) en §8.2 — **formele herscoring te bevestigen bij jurist/FG-review**.
+- **Commit `8379af1`** — twee residu-claims die #192 miste in dezelfde bestanden (later gevangen door guard-uitbreiding #196): `.claude/project-context.md:39` (`europe-west4` → EER/EU-projectregio) + `strategisch-implementatieplan.md:149` (`2 aug 2026` → verwacht 2 dec 2027).
+- **Commit `afb31e2`** — 5 Google-asset-generatie-scripts (Gemini favicons, Veo 3 video/intro) verwijderd + dode ignore-entries + JSDoc-voorbeeld (`gemini-pro` → `mistral-large-latest`). Product-AI blijft Mistral + BFL.
+
+## 3. Nog open voor jurist/FG en voor jou
+
+**Voor jurist/FG-bevestiging (correcties zijn gedaan, onder voorbehoud):**
+- AV `:393` + DPIA-correcties (commit `9de7726`) — bevestig de AV-verwerking en de DPIA-statusformulering.
+- R15-herscoring naar 6 MIDDEN (commit `07dde66`) — bevestig W/I bij de eerstvolgende risico-review.
+- **`business/nl-vo/compliance/privacyverklaring-dgskills.md:219`** — "GDPR-compliant EU-datacenter" (Zoho-rij). Bewust NIET gewijzigd: bindend doc, niet in de opdracht (AV+DPIA) genoemd. Voorstel voor jurist: "DPA; EU-datacenter (smtp.zoho.eu)". (Wordt door guard-uitbreiding #196 gevlagd.)
+
+**Nog te beslissen:**
+- **`eu-ai-act-conformiteitsplan.md` FASE 5–6-weekplanning** — alleen de re-anchor-notitie toegevoegd; de daadwerkelijke nieuwe weekplanning op 2-12-2027 is een strategische/juridische beslissing (Yorin + jurist), geen tekstcorrectie.
+- **`business/nl-vo/compliance/legal-matrix.md`** — "Correctie 25-06-2026"-header zonder historisch-label; beslis of dit het levende status-overzicht is (dan bijwerken) of historisch (dan header).
+
+**Nog open voor jou (harness-blokkade):**
+- **Env-bestanden (`.env.production.template` + lokale `.env*`)** — de credential-hook én de auto-mode-classifier blokkeren élke `.env`-toegang (lezen, git-object én `ls | grep .env`). Yorins in-chat-toestemming heft dit niet op. **Handmatig verwijderen:** elke Google-AI-variabele (`GEMINI_API_KEY`, `VERTEX_*`, `GOOGLE_SERVICE_ACCOUNT_KEY`, `GOOGLE_*` AI). Product heeft server-side alleen `MISTRAL_API_KEY` + `BFL_API_KEY` nodig (+ Supabase-vars).
 
 ---
 
@@ -106,7 +119,7 @@ Bewust NIET aangeraakt: Art. 9-statussen (overal consistent "NIET VOLDAAN" — c
 | `public/guides/avg-compliance-school-software.md:1` | titel "AVG Compliance bij de inkoop van onderwijssoftware" | **OK** — generiek adviesartikel over inkoopcriteria, geen zelf-claim; body is conditioneel |
 | `docs/compliance/ai-act-control-matrix.md` | "Needs Flow Test" (logging + human oversight) | **OK** — eerlijke verificatiestatus ("artefact bestaat ≠ getoetst"); de oversight-rij verwijst al naar "teacher override logs" |
 | "AVG-ready dossier" — `PilotAanmelden.tsx:54,164,267,293`, `ScholenLandingContact.tsx:102`, `overdracht/03-pilot-propositie-school.md:22` | "AVG-ready dossier" / "Data binnen EU, AVG-ready" | **Grensgeval, aanbeveling** — beschrijft het dossier-artefact (bestaat), staat niet op de verboden lijst; strikter zou "AVG-dossier" of "AVG-bewust dossier" zijn. Beslissing Yorin; niet auto-gefixt (6 UI-plekken incl. SEO-meta) |
-| `src/utils/aiContentMarker.ts:45` | JSDoc-voorbeeld `'gemini-pro'` | code-commentaar, geen claim; stale voorbeeldstring (cosmetisch) |
+| `src/utils/aiContentMarker.ts:45` | JSDoc-voorbeeld `'gemini-pro'` | **Opgeschoond in Deel 2** (commit `afb31e2`) → `'mistral-large-latest'` |
 | `LAUNCH-PLAN.md:7,31,32,157` | Gemini als **ontwikkeltool** (analyse/codebase) | **OK** — dev-tooling, geen product-/verwerkersclaim |
 | `eu-ai-act-conformiteitsplan.md:611,687`, `dpia:476`, `annex-iv:220` | noemen Vertex/Gemini om te zeggen dat het **historisch** is | **OK** — dit zijn juist de goede disclaimers (dpia:294 "ge**mini**maliseerde" = false positive) |
 | Historisch gemarkeerde docs: `verwerkersovereenkomsten-rapport.md` (o.a. "gegarandeerd…zero data retention"), `audit-report.md`, `08-lanceringsrapport`, `09-juridisch-rapport` (o.a. "2 AUGUSTUS 2026"-kop) | dragen sinds 25-06 de "Historische status"-header | **OK** — conventie gerespecteerd; niet herschreven |
