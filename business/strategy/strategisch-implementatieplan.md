@@ -118,7 +118,7 @@ Geclusterd per horizon. Dit is de kern van de opdracht: concrete, uitvoerbare st
 
 ### Cross-cutting — blokkeert alles (nu)
 - [ ] **Juridische basis afronden:** KvK-inschrijving, zakelijke rekening, btw-administratie (open in `LAUNCH-PLAN.md`). Zonder dit geen facturatie/contract.
-- [ ] **EU AI Act hoog-risico-documentatie compleet** vóór **2 augustus 2026** (harde wettelijke deadline; `business/nl-vo/compliance/eu-ai-act-conformiteitsplan.md`).
+- [ ] **EU AI Act hoog-risico-documentatie compleet** ruim vóór de toepassingsdatum voor Annex III-onderwijs — oorspronkelijk 2 augustus 2026, via de Digital Omnibus naar verwachting **2 december 2027**, nog niet gepubliceerd in het EU-Publicatieblad (`business/nl-vo/compliance/eu-ai-act-conformiteitsplan.md`).
 
 ### H1 — NL diepte (nu → mei 2026): uitvoeren, niet opnieuw bedenken
 - [ ] Eigen school als showcase activeren; 3–5 netwerkscholen selecteren en persoonlijk benaderen (templates bestaan in `10-marketing-campagne-strategie.md`).
@@ -146,7 +146,7 @@ Geclusterd per horizon. Dit is de kern van de opdracht: concrete, uitvoerbare st
 | Risico / afhankelijkheid | Impact | Mitigatie |
 |---|---|---|
 | **Founder-bandbreedte (~8–10 u/wk)** | Beperkt alles | Product-led keuzes (zelf-start, gratis apps) i.p.v. high-touch; lage-drempel-beachhead BE |
-| **AI Act-deadline 2 aug 2026** | Wettelijk; blokkeert verkoop bij niet-naleving | Documentatie afronden vóór deadline (cross-cutting actie) |
+| **AI Act-toepassingsdatum (Annex III-onderwijs)** | Wettelijk; blokkeert verkoop bij niet-naleving | Documentatie afronden ruim vóór de toepassingsdatum — naar verwachting 2 dec 2027 (Digital Omnibus, nog niet gepubliceerd) |
 | **i18n-kosten €15–25k** | Blokkeert anderstalig | Vlaanderen eerst (geen i18n); daarna gefaseerd, kern-missies eerst |
 | **Curriculum-mapping per land** | Verborgen kostenpost (inhoud, niet vertaling) | Per-markt sjabloon §7; pas committen na bewezen vraag |
 | **Freemium-kannibalisatie** | Ondermijnt licentie-omzet | Strikte gratis-vs-betaald-featurelijn (§6) |

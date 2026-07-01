@@ -42,7 +42,7 @@ const DEFAULT_DISCLAIMER_NL = 'AI-gegenereerd — kan fouten bevatten';
  * Embeds a JSON-LD compatible metadata block as an HTML comment.
  * 
  * @param text - The AI-generated text content
- * @param model - The model identifier (e.g., 'gemini-pro', 'gemini-flash')
+ * @param model - The model identifier (e.g., 'mistral-large-latest', 'mistral-small-latest')
  * @returns The text with embedded provenance metadata
  */
 export const markAiGeneratedText = (

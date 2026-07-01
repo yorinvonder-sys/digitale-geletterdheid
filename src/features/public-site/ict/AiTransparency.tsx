@@ -17,7 +17,7 @@ export const AiTransparency: React.FC = () => {
                         </div>
                         <div>
                             <h1 className="text-3xl font-black text-duck-ink">AI-Transparantieverklaring</h1>
-                            <p className="text-duck-ink/60">Conform EU AI Act (Art. 50)</p>
+                            <p className="text-duck-ink/60">Opgesteld met het oog op de transparantie-eisen van de EU AI Act (Art. 50, van toepassing vanaf augustus 2026)</p>
                         </div>
                     </div>
 
@@ -104,7 +104,7 @@ export const AiTransparency: React.FC = () => {
 
                         <h2 className="text-xl font-bold mt-8 mb-4">7. Contactpunt AI Act</h2>
                         <p>
-                            Conform de AI Act stellen wij een contactpunt beschikbaar voor vragen over ons AI-gebruik:
+                            Met het oog op de transparantieverplichtingen van de AI Act stellen wij een contactpunt beschikbaar voor vragen over ons AI-gebruik:
                         </p>
                         <div className="bg-duck-bg border border-duck-ink/15 rounded-xl p-4 my-4">
                             <p className="text-sm text-duck-ink/60 mb-1"><strong>E-mail:</strong> <a href="mailto:privacy@dgskills.app" className="text-duck-acid underline">privacy@dgskills.app</a></p>

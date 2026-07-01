@@ -17,7 +17,7 @@ DGSkills (dgskills.app) is een AI-gestuurd platform voor **digitale geletterdhei
 
 - **Frontend:** React 19 + TypeScript + Vite, Tailwind CSS, Framer Motion
 - **Backend:** Supabase (PostgreSQL, Auth, RLS, Edge Functions)
-- **AI:** Google Gemini via Vertex AI (europe-west4), server-side only
+- **AI:** Mistral AI (tekst/chat/vision/OCR) + Black Forest Labs FLUX (beeldgeneratie), server-side via Supabase Edge Functions; opslag/verwerking binnen de EER/EU-projectregio waar contractueel vastgelegd
 - **Hosting:** Vercel (frontend), Supabase (backend + edge functions)
 - **Auth:** Supabase Auth met RLS als primaire access control
 
@@ -36,7 +36,7 @@ Elke missie is gekoppeld aan specifieke SLO-leerdoelen.
 
 - **EU AI Act:** HIGH RISK (Annex III, punt 3b — AI voor beoordeling leerresultaten)
 - **AVG:** Verwerking persoonsgegevens minderjarigen, DPIA verplicht
-- **Data residency:** EU (europe-west4, Nederland)
+- **Data residency:** EER/EU-projectregio (server-side, waar contractueel vastgelegd)
 
 ## Businessmodel
 

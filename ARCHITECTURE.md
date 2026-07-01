@@ -31,7 +31,7 @@ Begin bij `src/services/supabase.ts`, `src/services/authService.ts`, `src/hooks/
 
 ## AI-Assistenten En Edge Functions
 
-Client-code mag geen provider secrets bevatten. AI-interactie loopt via Supabase Edge Functions en gedeelde servercode onder `supabase/functions/`. Relevante clientlagen zitten in `src/services/geminiService.ts`, `src/hooks/useAgentLogic.ts`, `src/hooks/useChatSession.ts`, `src/features/ai-chat/` en mission components.
+Client-code mag geen provider secrets bevatten. AI-interactie loopt via Supabase Edge Functions en gedeelde servercode onder `supabase/functions/`. Relevante clientlagen zitten in `src/services/aiProviderService.ts`, `src/hooks/useAgentLogic.ts`, `src/hooks/useChatSession.ts`, `src/features/ai-chat/` en mission components.
 
 ## Feature Map
 

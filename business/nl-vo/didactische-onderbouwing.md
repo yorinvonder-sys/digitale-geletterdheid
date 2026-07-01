@@ -272,6 +272,6 @@ DGSkills biedt een didactisch onderbouwd, driejarig curriculum voor digitale gel
 - **Veiligheid en welzijn** borgt via welzijnsprotocol, content safety en gevoeligheidsinstructies
 - **93 missies** biedt, verdeeld over 3 leerjaren en 12 periodes
 - De **docent centraal** houdt als eindverantwoordelijke, ondersteund door een dashboard voor monitoring en beheer
-- Voldoet aan **AVG, DPIA en EU AI Act** vereisten voor gebruik in het onderwijs
+- Is **AVG-bewust ontworpen** met privacy-by-design maatregelen en ondersteunt scholen bij hun AVG-, DPIA- en EU AI Act-verplichtingen, onder voorbehoud van DPA, school-DPIA en FG-review
 
 Voor vragen of een demo: neem contact op via [info@dgskills.app](mailto:info@dgskills.app).
