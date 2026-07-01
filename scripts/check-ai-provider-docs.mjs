@@ -39,8 +39,6 @@ const allowedGoogleContexts = [
 
 const ignoredFiles = new Set([
   'docs/compliance/legal-claim-source-of-truth.md',
-  'scripts/generate-hero-greenscreen.mjs',
-  'scripts/generate-hero-video.mjs',
   'scripts/check-ai-provider-docs.mjs',
   'scripts/check-gdpr-rights-coverage.mjs',
   'scripts/check-legal-claims.mjs',
