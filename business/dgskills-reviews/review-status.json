@@ -62,18 +62,17 @@
    "interactivity": 0,
    "total": 6
   },
-  "lastReviewed": "2026-06-17",
-  "reviewStatus": "reviewed",
-  "reportPath": "business/dgskills-reviews/ai-beleid-brainstorm-2026-06-17.md",
-  "autoFixesApplied": 0,
+  "lastReviewed": "2026-07-01",
+  "reviewStatus": "blocked",
+  "reportPath": "business/dgskills-reviews/ai-beleid-brainstorm-2026-07-01.md",
+  "autoFixesApplied": 2,
   "openEscalations": [
-   "design token swap lab-coral/lab-teal -> duck (coral->rood = visuele identiteitswijziging; Yorin beslist)",
-   "aria-label stemknop in AiBeleidBrainstormPreview.tsx (buiten missie-whitelist)",
-   "SLO-inconsistentie: ProjectZeroDashboard 23B vs centrale mapping 21D/23C",
-   "studentName niet opgeslagen in ai_beleid_feedback insert (teacher-rapportage-gap)"
+   "design-identiteit: lab-coral/lab-teal in visualPreview (year1.tsx:3724-3740) — duck-tokens bestaan niet voor deze kleuren (Yorin beslist)",
+   "a11y-follow-up: aria-label stemknop in AiBeleidBrainstormPreview.tsx:675 (component buiten missie-whitelist)",
+   "data/persoonsgegevens: studentName niet opgeslagen bij ai_beleid_feedback insert (teacherService.ts:558-576) — docent-rapportage-gap, raakt DB-insert-logica"
   ],
   "codexVerdict": null,
-  "escalationCount": 4,
+  "escalationCount": 3,
   "reviewScores": {
    "uiux": 7,
    "didactiek": 6,
@@ -84,7 +83,8 @@
    "geen expliciete Bloom-leerdoelen in config-entry",
    "XP-farming mogelijk: stemmen dwingt geen redeneer-moment af",
    "SLO-mismatch dashboard vs centrale mapping"
-  ]
+  ],
+  "statusNote": "wave 6 fix-pass 2026-07-01: Bloom-doc + dashboard-SLO gefixt; rest wacht op Yorin"
  },
  {
   "missionId": "ai-bias-detective",
@@ -756,12 +756,13 @@
    "interactivity": 0,
    "total": 8
   },
-  "lastReviewed": "2026-06-17",
-  "reviewStatus": "fixes-applied",
-  "reportPath": "business/dgskills-reviews/digital-forensics-2026-06-17.md",
-  "autoFixesApplied": 1,
+  "lastReviewed": "2026-07-01",
+  "reviewStatus": "blocked",
+  "reportPath": "business/dgskills-reviews/digital-forensics-2026-07-01.md",
+  "autoFixesApplied": 2,
   "openEscalations": [
-   "hardcoded hex -> duck-token swap vereist refactor van gedeelde CompletionScreen/SimpleChart (geescaleerd)"
+   "design-identiteit: lab-coral/lab-teal in agent visualPreview — duck-palet heeft geen equivalent (Yorin beslist)",
+   "curriculum-keuze: SLO 21C (mapping regel 169) valt buiten sloFocus ['23A','21A'] van J3-P2 — mapping aanpassen of sloFocus uitbreiden"
   ],
   "codexVerdict": null,
   "reviewScores": {
@@ -772,12 +773,13 @@
   "goalClear": true,
   "goalAchieved": true,
   "proposedFixes": 3,
-  "escalationCount": 3,
+  "escalationCount": 2,
   "topIssues": [
    "SLO 21C valt buiten J3-P2 sloFocus → mismatch",
    "Badge color '#202023' hardcoded hex",
    "missionGoal ontbreekt in missionGoals.ts"
-  ]
+  ],
+  "statusNote": "wave 6 fix-pass 2026-07-01: 1 fix toegepast; rest wacht op Yorin"
  },
  {
   "missionId": "digital-rights-defender",
@@ -1417,12 +1419,12 @@
    "interactivity": 0,
    "total": 8
   },
-  "lastReviewed": "2026-06-17",
-  "reviewStatus": "fixes-applied",
-  "reportPath": "business/dgskills-reviews/phishing-fighter-2026-06-17.md",
-  "autoFixesApplied": 1,
+  "lastReviewed": "2026-07-01",
+  "reviewStatus": "blocked",
+  "reportPath": "business/dgskills-reviews/phishing-fighter-2026-07-01.md",
+  "autoFixesApplied": 2,
   "openEscalations": [
-   "hardcoded hex -> duck-token swap vereist refactor van gedeelde CompletionScreen/SimpleChart (geescaleerd)"
+   "design-identiteit: visualPreview-gradient legacy lab-gold/lab-coral — duck-palet heeft geen warm equivalent (Yorin beslist; agent-swap naar acid/ink is teruggedraaid in eindreview)"
   ],
   "codexVerdict": null,
   "reviewScores": {
@@ -1433,12 +1435,13 @@
   "goalClear": false,
   "goalAchieved": false,
   "proposedFixes": 3,
-  "escalationCount": 2,
+  "escalationCount": 1,
   "topIssues": [
    "missionGoal ontbreekt → IntroScreen toont geen doel",
    "22A alleen via agent-chat, niet engine-rondes [ESCALATIE]",
    "Badge-kleuren hardcoded hex"
-  ]
+  ],
+  "statusNote": "wave 6 fix-pass 2026-07-01: 1 fix netto; gradient-swap teruggedraaid (identiteitsbeslissing)"
  },
  {
   "missionId": "pitch-perfect",
@@ -1713,12 +1716,13 @@
    "interactivity": 1,
    "total": 7
   },
-  "lastReviewed": "2026-06-17",
-  "reviewStatus": "fixes-applied",
-  "reportPath": "business/dgskills-reviews/research-project-2026-06-17.md",
-  "autoFixesApplied": 1,
+  "lastReviewed": "2026-07-01",
+  "reviewStatus": "blocked",
+  "reportPath": "business/dgskills-reviews/research-project-2026-07-01.md",
+  "autoFixesApplied": 4,
   "openEscalations": [
-   "hardcoded hex -> duck-token swap vereist refactor van gedeelde CompletionScreen/SimpleChart (geescaleerd)"
+   "product-beslissing: enableChat overwegen voor data-viewer zodat de Onderzoekscoach ook binnen dataset 3 bereikbaar is",
+   "ai-endpoint: systemInstruction client-side in year3.tsx bundle — verificatie nodig of dit richting AI-provider gaat of alleen UI-referentie is"
   ],
   "codexVerdict": null,
   "reviewScores": {
@@ -1729,12 +1733,13 @@
   "goalClear": true,
   "goalAchieved": true,
   "proposedFixes": 7,
-  "escalationCount": 3,
+  "escalationCount": 2,
   "topIssues": [
    "missionGoal ontbreekt in config en missionGoals.ts",
    "Hardcoded hex + accent buiten token-systeem",
    "q8 (zwaarste open vraag) heeft points:0 — inconsistent"
-  ]
+  ],
+  "statusNote": "wave 6 fix-pass 2026-07-01: 3 fixes toegepast; rest wacht op Yorin"
  },
  {
   "missionId": "review-week-2",

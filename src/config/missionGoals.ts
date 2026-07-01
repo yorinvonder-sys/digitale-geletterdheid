@@ -127,6 +127,10 @@ export const MISSION_GOALS: Record<string, MissionGoal> = {
         },
         evidence: 'Je kunt voorbeelden noemen van tekeningen die de AI goed en minder goed herkende.',
     },
+    // Impliciete leerdoelen voor ai-beleid-brainstorm (leerjaar 1, SLO 21D + 23C):
+    // 1. De leerling benoemt minimaal één voordeel en één risico van AI-gebruik op school.
+    // 2. De leerling formuleert een concrete schoolregel voor AI (actiewerkwoord: formuleert).
+    // 3. De leerling evalueert ideeën van anderen door te stemmen en zijn keuze toe te lichten.
     'ai-beleid-brainstorm': {
         primaryGoal: 'Ik bedenk bruikbare AI-afspraken voor school en onderbouw waarom ze nodig zijn.',
         criteria: {

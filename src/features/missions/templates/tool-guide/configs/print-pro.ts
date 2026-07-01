@@ -115,10 +115,10 @@ const config: ToolGuideConfig = {
             },
         },
     ],
-    maxScore: 55,
+    maxScore: 60,
     badges: [
         {
-            minScore: 55,
+            minScore: 60,
             emoji: '🏆',
             title: 'Print Expert',
             color: '#D97848',

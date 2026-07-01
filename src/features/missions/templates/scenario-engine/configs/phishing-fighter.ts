@@ -13,6 +13,12 @@ const config: ScenarioEngineConfig = {
         'Oefen: echt of nep? Test jouw instinct',
         'Ontdek hoe aanvallers inspelen op emotie en tijdsdruk',
     ],
+    learningObjectives: [
+        'Benoem minimaal 4 rode vlaggen in een gesimuleerd phishing-bericht.',
+        'Rangschik phishing-aanvallen op gevaar op basis van doelwit en schade.',
+        'Onderscheid echte berichten van phishing in realistische scenario\'s.',
+        'Adviseer een klasgenoot over de veiligste reactie op een verdacht bericht.',
+    ],
     maxScore: 100,
     badges: [
         {

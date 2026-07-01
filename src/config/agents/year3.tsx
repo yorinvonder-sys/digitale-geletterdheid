@@ -1838,8 +1838,8 @@ Begin met: welke projecten zijn je het meest bijgebleven?"` + SYSTEM_INSTRUCTION
     difficulty: 'Hard',
     examplePrompt: 'Ik wil onderzoeken hoeveel tijd jongeren per dag op social media zitten. Hoe begin ik?',
     visualPreview: (
-        <div className="w-full h-full bg-gradient-to-br from-lab-teal to-lab-teal flex flex-col items-center justify-center relative overflow-hidden p-4">
-            <div className="absolute bottom-4 left-4 w-24 h-24 bg-lab-teal/20 rounded-full blur-xl"></div>
+        <div className="w-full h-full bg-gradient-to-br from-duck-ink to-duck-ink flex flex-col items-center justify-center relative overflow-hidden p-4">
+            <div className="absolute bottom-4 left-4 w-24 h-24 bg-duck-ink/20 rounded-full blur-xl"></div>
             <div className="bg-white/10 backdrop-blur-md rounded-2xl p-5 border border-white/20 w-full max-w-[180px]">
                 <Search size={32} className="text-white mb-3" />
                 <div className="w-full h-2 bg-white/30 rounded-full mb-2"></div>
