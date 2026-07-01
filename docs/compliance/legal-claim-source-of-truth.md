@@ -49,3 +49,18 @@ This document is the working source of truth for school-facing legal, privacy an
 - Essential cookies/storage support login and security. Optional first-party analytics runs only after consent.
 - Analytics should be described as first-party and consent-gated, pseudonymous or aggregated where possible, not as purely anonymous unless technically proven.
 - Retention must match the database policy: operational activity, feedback and shared work are kept for up to 1 year; audit/compliance logs for up to 3 years; chat content is session-only if not persistently stored.
+
+## School Compliance Guide — Canonical Source And Sync
+
+The school compliance guide (`school-compliance-guide.html`) exists in three locations that must stay identical:
+
+- **Canonical source:** `business/nl-vo/compliance/school-compliance-guide.html` — the single hand-edited master.
+- **Published copy:** `public/compliance/school-compliance-guide.html` — served live at `/compliance/school-compliance-guide.html` and linked from ComplianceHub and the ICT/privacy page.
+- **Dev-docs mirror:** `public/dev-docs/school-compliance-guide.html` — part of the internal docs bundle (`public/dev-docs/manifest.json`); `.vercelignore`'d, so it is not deployed.
+
+Only edit the canonical source. Propagate changes to the published copy and the dev-docs mirror with:
+
+- `npm run sync:compliance-guide` — copy the source verbatim into both copies.
+- `npm run check:compliance-guide-sync` — verify the copies match the source (exit 1 on drift; safe to add to CI once the copies are in sync).
+
+Claim wording in this guide is school-facing legal/privacy content: change it only in the canonical source and only per the wording rules above, then sync. Because the published copy is live, promoting new content to it should go through the same lawyer/FG review as any other public compliance claim.
