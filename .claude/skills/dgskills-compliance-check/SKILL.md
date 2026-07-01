@@ -5,7 +5,7 @@ description: Use this skill BEFORE marking any DGSkills task, feature, or pull r
 
 # DGSkills Compliance Check — Playbook
 
-DGSkills is een **HIGH RISK AI-systeem** onder EU AI Act Annex III 3(b) — AI voor beoordeling van leerresultaten bij **minderjarigen**. Elke wijziging loopt langs deze checklist voordat iets "done" mag zijn. Deadline AI Act-verplichtingen: **2 augustus 2026**.
+DGSkills is een **HIGH RISK AI-systeem** onder EU AI Act Annex III 3(b) — AI voor beoordeling van leerresultaten bij **minderjarigen**. Elke wijziging loopt langs deze checklist voordat iets "done" mag zijn. Toepassingsdatum hoog-risico-verplichtingen (Annex III-onderwijs): **naar verwachting 2 december 2027** (via Digital Omnibus; oorspronkelijk 2 augustus 2026, nog niet gepubliceerd in het EU-Publicatieblad).
 
 ## Wanneer activeren
 
@@ -70,7 +70,7 @@ DGSkills is een **HIGH RISK AI-systeem** onder EU AI Act Annex III 3(b) — AI v
 ### Blok D — EU AI Act HIGH RISK (Annex III 3b)
 
 - [ ] **Art. 9 Risk Management**: raakt de wijziging een risico-categorie? Update risk register in `business/nl-vo/compliance/`
-- [ ] **Art. 10 Data Governance**: trainingsdata-claims kloppen? (Gemini via Vertex AI, geen trainings-gebruik door Anthropic/Google)
+- [ ] **Art. 10 Data Governance**: trainingsdata-claims kloppen? (Mistral AI + Black Forest Labs FLUX server-side; gebruik voor provider-modeltraining uitgesloten waar door providerafspraken/instellingen gedekt)
 - [ ] **Art. 12 Logging**: AI-interacties, beoordelingsresultaten en bias-signalen worden audit-logged (server-side)
 - [ ] **Art. 13 Transparantie**: leerling/docent ziet dat AI wordt gebruikt, welke beslissingen AI neemt
 - [ ] **Art. 14 Human Oversight**: docent heeft override-mogelijkheid voor AI-gegenereerde beoordelingen
@@ -84,7 +84,7 @@ DGSkills is een **HIGH RISK AI-systeem** onder EU AI Act Annex III 3(b) — AI v
 - [ ] Bij minderjarigen: parental consent-flow intact (`approveParentalConsent` edge function)
 - [ ] Privacyverklaring en AI-transparantieverklaring reflecteren de code-werkelijkheid
 - [ ] Recht op inzage/verwijdering blijft werken (`exportMyData`, `deleteMyAccount` edge functions)
-- [ ] Data residency: EU (europe-west4). Geen calls naar US-regio's toegevoegd
+- [ ] Datalocatie: opslag/verwerking binnen de EER/EU-projectregio waar contractueel vastgelegd. Geen ongedekte doorgifte toegevoegd
 - [ ] Verwerkingsregister klopt voor nieuwe verwerkingen
 
 ### Blok F — Codekwaliteit
@@ -168,7 +168,7 @@ Leg in 2-3 zinnen uit aan een niet-technische product owner:
 - ❌ RLS disabling "tijdelijk voor debug"
 - ❌ `console.log` met PII in edge functions
 - ❌ Privacyverklaring aanpassen zonder code-werkelijkheid te checken
-- ❌ AI Act-verplichtingen "voor later" uitstellen — we hebben tot 2 aug 2026
+- ❌ AI Act-verplichtingen "voor later" uitstellen — de toepassingsdatum (Annex III-onderwijs) is naar verwachting 2 december 2027, maar de voorbereiding loopt nú
 
 ## Referentie
 

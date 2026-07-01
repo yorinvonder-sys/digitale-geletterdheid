@@ -37,7 +37,7 @@
 |-------|-----------|
 | Chat endpoint | `supabase/functions/chat/index.ts` |
 | Chat streaming | `supabase/functions/chatStream/index.ts` |
-| Vertex AI auth | `supabase/functions/_shared/vertexAuth.ts` |
+| AI-providerclients (server-side) | `supabase/functions/_shared/mistralClient.ts`, `_shared/bflImageClient.ts`, `_shared/moderationClient.ts` |
 | System prompts | Server-side via `getSystemInstruction()` |
 | Chat UI | `src/components/chat/` |
 
