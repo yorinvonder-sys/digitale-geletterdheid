@@ -145,7 +145,7 @@ export const MISSION_GOALS: Record<string, MissionGoal> = {
             type: 'rounds-complete',
             description: 'Je rondt de scenario-rondes af en verklaart je keuzes.',
         },
-        evidence: 'Je kunt uitleggen welke volgorde of voorwaarde de juiste uitkomst geeft.',
+        evidence: 'Je kunt bij elke ronde uitleggen welke bouwsteen je gebruikt en waarom die stappen in deze volgorde werken.',
     },
     'website-bouwer': {
         primaryGoal: 'Ik bouw een werkende Over Mij-webpagina met HTML, CSS en een korte uitleg van mijn keuzes.',
