@@ -701,7 +701,7 @@
   "reportPath": "business/dgskills-reviews/data-handelaar-2026-07-02.md",
   "autoFixesApplied": 1,
   "openEscalations": [],
-  "codexVerdict": null,
+  "codexVerdict": "ALLOW",
   "escalationCount": 0,
   "reviewScores": {
    "uiux": 9,
@@ -709,7 +709,7 @@
    "tech": 8.5
   },
   "triageScore": 1.15,
-  "statusNote": "wave 14: validator puzzel 4 accepteert nu ook \"data deal\" met spatie; welzijns-/AVG-content expliciet gecheckt en in orde",
+  "statusNote": "wave 14: validator puzzel 4 accepteert nu ook \"data deal\" met spatie; welzijns-/AVG-content expliciet gecheckt en in orde; gate ALLOW (gecombineerde call met spreadsheet-specialist, per-missie verdict)",
   "verdict": "ok"
  },
  {
@@ -2294,7 +2294,7 @@
   "reportPath": "business/dgskills-reviews/spreadsheet-specialist-2026-07-02.md",
   "autoFixesApplied": 1,
   "openEscalations": [],
-  "codexVerdict": null,
+  "codexVerdict": "ALLOW",
   "escalationCount": 0,
   "reviewScores": {
    "uiux": 8,
@@ -2302,7 +2302,7 @@
    "tech": 5
   },
   "triageScore": 2.5,
-  "statusNote": "wave 14: no-op zelfde-kleur-gradient -> effen kleur (cyber-detective-precedent; agent-voorstel dat het uiterlijk zou VERANDEREN afgewezen); ontbrekend briefing-asset = platform-breed gat, geen missie-blokkade",
+  "statusNote": "wave 14: no-op zelfde-kleur-gradient -> effen kleur (cyber-detective-precedent; agent-voorstel dat het uiterlijk zou VERANDEREN afgewezen); ontbrekend briefing-asset = platform-breed gat, geen missie-blokkade; gate ALLOW (gecombineerde call met data-handelaar, per-missie verdict)",
   "verdict": "fix-eerst"
  },
  {
@@ -2321,7 +2321,7 @@
   "reportPath": "business/dgskills-reviews/startup-pitch-2026-07-02.md",
   "autoFixesApplied": 2,
   "openEscalations": [],
-  "codexVerdict": null,
+  "codexVerdict": "ALLOW",
   "escalationCount": 0,
   "reviewScores": {
    "uiux": 8.5,
