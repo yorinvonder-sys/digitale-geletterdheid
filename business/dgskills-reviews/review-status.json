@@ -927,7 +927,7 @@
   "reportPath": "business/dgskills-reviews/digital-divide-researcher-2026-07-02.md",
   "autoFixesApplied": 3,
   "openEscalations": [],
-  "codexVerdict": null,
+  "codexVerdict": "ALLOW",
   "escalationCount": 0,
   "reviewScores": {
    "uiux": 8,
@@ -1081,7 +1081,7 @@
   "reportPath": "business/dgskills-reviews/eindproject-j2-2026-07-02.md",
   "autoFixesApplied": 2,
   "openEscalations": [],
-  "codexVerdict": null,
+  "codexVerdict": "ALLOW",
   "escalationCount": 0,
   "reviewScores": {
    "uiux": 8.5,
