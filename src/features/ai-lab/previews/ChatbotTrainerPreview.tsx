@@ -952,12 +952,14 @@ export const ChatbotTrainerPreview: React.FC<ChatbotTrainerPreviewProps> = ({ on
                                     <div className="text-[10px] opacity-70 mt-1 flex justify-between items-center">
                                         <span>{intent.trainingExamples.length} voorbeelden</span>
                                         {activeScenario.isCustom && !intent.required && (
-                                            <div
+                                            <button
+                                                type="button"
                                                 onClick={(e) => deleteIntent(intent.id, e)}
+                                                aria-label={`Verwijder intent ${intent.name}`}
                                                 className="opacity-0 group-hover:opacity-100 hover:text-duck-error p-1"
                                             >
                                                 <Trash2 size={12} />
-                                            </div>
+                                            </button>
                                         )}
                                     </div>
                                 </button>

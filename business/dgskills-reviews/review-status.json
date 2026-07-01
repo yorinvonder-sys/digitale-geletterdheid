@@ -226,7 +226,7 @@
  {
   "missionId": "algorithm-architect",
   "templateType": "simulation-lab",
-  "priorityBand": "medium",
+  "priorityBand": "low",
   "triageScores": {
    "uiux": 1,
    "slo": 1,
@@ -234,12 +234,21 @@
    "interactivity": 0,
    "total": 4
   },
-  "lastReviewed": null,
-  "reviewStatus": "pending",
-  "reportPath": null,
+  "lastReviewed": "2026-07-02",
+  "reviewStatus": "fixed",
+  "reportPath": "business/dgskills-reviews/algorithm-architect-2026-07-02.md",
   "autoFixesApplied": 0,
   "openEscalations": [],
-  "codexVerdict": null
+  "codexVerdict": null,
+  "escalationCount": 0,
+  "reviewScores": {
+   "uiux": 10,
+   "didactiek": 10,
+   "tech": 10
+  },
+  "triageScore": 0.0,
+  "statusNote": "wave 11: intern volledig consistent geverifieerd; agent echode kwaliteitsscore als triage (10.0), gecorrigeerd naar 0.0",
+  "verdict": "ok"
  },
  {
   "missionId": "api-architect",
@@ -262,7 +271,7 @@
  {
   "missionId": "api-verkenner",
   "templateType": "data-viewer",
-  "priorityBand": "medium",
+  "priorityBand": "low",
   "triageScores": {
    "uiux": 2,
    "slo": 1,
@@ -270,12 +279,21 @@
    "interactivity": 0,
    "total": 4
   },
-  "lastReviewed": null,
-  "reviewStatus": "pending",
-  "reportPath": null,
+  "lastReviewed": "2026-07-02",
+  "reviewStatus": "fixed",
+  "reportPath": "business/dgskills-reviews/api-verkenner-2026-07-02.md",
   "autoFixesApplied": 0,
   "openEscalations": [],
-  "codexVerdict": null
+  "codexVerdict": null,
+  "escalationCount": 0,
+  "reviewScores": {
+   "uiux": 9,
+   "didactiek": 9,
+   "tech": 9
+  },
+  "triageScore": 1.0,
+  "statusNote": "wave 11: alle antwoordmodellen + puntensom (100=100) nagerekend; schoon",
+  "verdict": "ok"
  },
  {
   "missionId": "app-prototyper",
@@ -347,7 +365,7 @@
  {
   "missionId": "bug-hunter",
   "templateType": "simulation-lab",
-  "priorityBand": "medium",
+  "priorityBand": "low",
   "triageScores": {
    "uiux": 1,
    "slo": 1,
@@ -355,17 +373,26 @@
    "interactivity": 0,
    "total": 4
   },
-  "lastReviewed": null,
-  "reviewStatus": "pending",
-  "reportPath": null,
+  "lastReviewed": "2026-07-02",
+  "reviewStatus": "fixed",
+  "reportPath": "business/dgskills-reviews/bug-hunter-2026-07-02.md",
   "autoFixesApplied": 0,
   "openEscalations": [],
-  "codexVerdict": null
+  "codexVerdict": null,
+  "escalationCount": 0,
+  "reviewScores": {
+   "uiux": 10,
+   "didactiek": 10,
+   "tech": 10
+  },
+  "triageScore": 0.0,
+  "statusNote": "wave 11: debug-voorbeelden feitelijk correct (off-by-one klopt), scoring 30+40+30=100; schoon",
+  "verdict": "ok"
  },
  {
   "missionId": "chatbot-trainer",
   "templateType": "agent-role",
-  "priorityBand": "medium",
+  "priorityBand": "low",
   "triageScores": {
    "uiux": 1,
    "slo": 0,
@@ -373,12 +400,24 @@
    "interactivity": 0,
    "total": 4
   },
-  "lastReviewed": null,
-  "reviewStatus": "pending",
-  "reportPath": null,
-  "autoFixesApplied": 0,
-  "openEscalations": [],
-  "codexVerdict": null
+  "lastReviewed": "2026-07-02",
+  "reviewStatus": "blocked",
+  "reportPath": "business/dgskills-reviews/chatbot-trainer-2026-07-02.md",
+  "autoFixesApplied": 2,
+  "openEscalations": [
+   "slo-fit: mapping zegt 22B met curator-comment 'IF-THEN regels = programmeerlogica', reviewer twijfelt (geen 'echte' programmeeractiviteit) — dashboard is nu conform mapping gezet (22B); inhoudelijk oordeel aan Yorin",
+   "structureel: training-modus heeft vaste 3-koloms layout (w-64 + w-80) zonder responsive breakpoints — vermoedelijk mobiele layoutbreuk, herontwerp-kandidaat"
+  ],
+  "codexVerdict": null,
+  "escalationCount": 2,
+  "reviewScores": {
+   "uiux": 7,
+   "didactiek": 8,
+   "tech": 7
+  },
+  "triageScore": 2.6,
+  "statusNote": "wave 11: dashboard-SLO 22A→22B conform autoritaire mapping (5e alignment-fix; agent stelde omgekeerde richting voor — afgewezen, mapping is autoritair) + delete-intent div→button met aria-label; auto-save-edge (AiLab-analyse) naar follow-up",
+  "verdict": "fix-eerst"
  },
  {
   "missionId": "cloud-cleaner",
@@ -2425,7 +2464,7 @@
  {
   "missionId": "word-wizard",
   "templateType": "tool-guide",
-  "priorityBand": "medium",
+  "priorityBand": "low",
   "triageScores": {
    "uiux": 2,
    "slo": 1,
@@ -2433,11 +2472,23 @@
    "interactivity": 1,
    "total": 5
   },
-  "lastReviewed": null,
-  "reviewStatus": "pending",
-  "reportPath": null,
-  "autoFixesApplied": 0,
-  "openEscalations": [],
-  "codexVerdict": null
+  "lastReviewed": "2026-07-02",
+  "reviewStatus": "blocked",
+  "reportPath": "business/dgskills-reviews/word-wizard-2026-07-02.md",
+  "autoFixesApplied": 2,
+  "openEscalations": [
+   "avg-groep: foto-instructie verder aanscherpen ('geen klasgenoten op de foto')? — zelfde beslissing als cloud-commander stap 3, graag in één keer beslissen",
+   "slo-fit: 22A-claim oppervlakkig + Bloom blijft niveau 1-2 (curator-afweging)"
+  ],
+  "codexVerdict": null,
+  "escalationCount": 2,
+  "reviewScores": {
+   "uiux": 8.5,
+   "didactiek": 6.5,
+   "tech": 9
+  },
+  "triageScore": 2.15,
+  "statusNote": "wave 11: iPad-route inhoudsopgave gecorrigeerd (Invoegen→Documentelementen→Inhoud, 2 reviews bevestigden de fout) + badges gedifferentieerd; foto-aanscherping bewust naar AVG-groep",
+  "verdict": "fix-eerst"
  }
 ]
