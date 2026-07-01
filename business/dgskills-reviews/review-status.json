@@ -640,7 +640,7 @@
   "openEscalations": [
    "slo-fit: 22A-claim (digitale producten) oppervlakkig — missie heeft alleen analysevragen, geen productbouw (curator-keuze)"
   ],
-  "codexVerdict": null,
+  "codexVerdict": "ALLOW",
   "escalationCount": 1,
   "reviewScores": {
    "uiux": 8,
@@ -792,7 +792,7 @@
   "openEscalations": [
    "content-keuze: systemInstruction beschrijft 5 cases, component-CHALLENGES tonen er 9 — AI-hulp en spel vertellen verschillende verhalen; kies welke bron leidend is"
   ],
-  "codexVerdict": null,
+  "codexVerdict": "ALLOW",
   "escalationCount": 1,
   "reviewScores": {
    "uiux": 8,
