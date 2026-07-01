@@ -1696,7 +1696,7 @@
  {
   "missionId": "portfolio-builder",
   "templateType": "builder-canvas",
-  "priorityBand": "medium",
+  "priorityBand": "low",
   "triageScores": {
    "uiux": 0,
    "slo": 0,
@@ -1704,12 +1704,23 @@
    "interactivity": 1,
    "total": 5
   },
-  "lastReviewed": null,
-  "reviewStatus": "pending",
-  "reportPath": null,
+  "lastReviewed": "2026-07-01",
+  "reviewStatus": "blocked",
+  "reportPath": "business/dgskills-reviews/portfolio-builder-2026-07-01.md",
   "autoFixesApplied": 0,
-  "openEscalations": [],
-  "codexVerdict": null
+  "openEscalations": [
+   "platform-patroon: builder-canvas coach-briefing (3-stappen STEP_COMPLETE-model) dekt de 4 canvas-stappen niet — één productkeuze voor alle 4 getroffen missies (podcast-producer, meesterproef, portfolio-builder, prototype-developer); herschrijfvoorstel per missie ligt in het rapport"
+  ],
+  "codexVerdict": null,
+  "escalationCount": 1,
+  "reviewScores": {
+   "uiux": 8,
+   "didactiek": 6,
+   "tech": 8
+  },
+  "triageScore": 2.8,
+  "statusNote": "wave 10: coach-briefing wijkt af van canvas (3 vs 4 stappen) — onderdeel platform-patroon",
+  "verdict": "fix-eerst"
  },
  {
   "missionId": "print-pro",
@@ -1812,7 +1823,7 @@
  {
   "missionId": "prototype-developer",
   "templateType": "builder-canvas",
-  "priorityBand": "medium",
+  "priorityBand": "low",
   "triageScores": {
    "uiux": 0,
    "slo": 0,
@@ -1820,12 +1831,23 @@
    "interactivity": 1,
    "total": 5
   },
-  "lastReviewed": null,
-  "reviewStatus": "pending",
-  "reportPath": null,
+  "lastReviewed": "2026-07-01",
+  "reviewStatus": "blocked",
+  "reportPath": "business/dgskills-reviews/prototype-developer-2026-07-01.md",
   "autoFixesApplied": 0,
-  "openEscalations": [],
-  "codexVerdict": null
+  "openEscalations": [
+   "platform-patroon: builder-canvas coach-briefing (3-stappen STEP_COMPLETE-model) dekt de 4 canvas-stappen niet — één productkeuze voor alle 4 getroffen missies (podcast-producer, meesterproef, portfolio-builder, prototype-developer); herschrijfvoorstel per missie ligt in het rapport; hier extra: markers 1 positie verschoven, canvas-stap 1 (scopen, kern tegen feature creep) mist een eigen marker"
+  ],
+  "codexVerdict": null,
+  "escalationCount": 1,
+  "reviewScores": {
+   "uiux": 9,
+   "didactiek": 6,
+   "tech": 7
+  },
+  "triageScore": 2.8,
+  "statusNote": "wave 10: coach-briefing desync — onderdeel platform-patroon",
+  "verdict": "fix-eerst"
  },
  {
   "missionId": "reflection-report",
@@ -1903,7 +1925,7 @@
  {
   "missionId": "review-week-2",
   "templateType": "review-arena",
-  "priorityBand": "medium",
+  "priorityBand": "low",
   "triageScores": {
    "uiux": 2,
    "slo": 0,
@@ -1911,17 +1933,26 @@
    "interactivity": 0,
    "total": 5
   },
-  "lastReviewed": null,
-  "reviewStatus": "pending",
-  "reportPath": null,
+  "lastReviewed": "2026-07-01",
+  "reviewStatus": "fixed",
+  "reportPath": "business/dgskills-reviews/review-week-2-2026-07-01.md",
   "autoFixesApplied": 0,
   "openEscalations": [],
-  "codexVerdict": null
+  "codexVerdict": null,
+  "escalationCount": 0,
+  "reviewScores": {
+   "uiux": 9,
+   "didactiek": 8,
+   "tech": 9
+  },
+  "triageScore": 1.4,
+  "statusNote": "wave 10: alle antwoordmodellen (5/5, 8/8, 8/8, 2/2) en score-som nagerekend; CTA volgt #186-patroon; schoon",
+  "verdict": "ok"
  },
  {
   "missionId": "review-week-3",
-  "templateType": "debate-arena",
-  "priorityBand": "medium",
+  "templateType": "ethics-council",
+  "priorityBand": "low",
   "triageScores": {
    "uiux": 2,
    "slo": 0,
@@ -1929,12 +1960,21 @@
    "interactivity": 1,
    "total": 5
   },
-  "lastReviewed": null,
-  "reviewStatus": "pending",
-  "reportPath": null,
+  "lastReviewed": "2026-07-01",
+  "reviewStatus": "fixed",
+  "reportPath": "business/dgskills-reviews/review-week-3-2026-07-01.md",
   "autoFixesApplied": 0,
   "openEscalations": [],
-  "codexVerdict": null
+  "codexVerdict": null,
+  "escalationCount": 0,
+  "reviewScores": {
+   "uiux": 8.5,
+   "didactiek": 8,
+   "tech": 8
+  },
+  "triageScore": 1.85,
+  "statusNote": "wave 10: gezond op nieuw ethics-council-template (#184); cross-template-imports naar engine-lijst",
+  "verdict": "ok"
  },
  {
   "missionId": "schermtijd-coach",
@@ -2007,7 +2047,7 @@
  {
   "missionId": "security-review",
   "templateType": "review-arena",
-  "priorityBand": "medium",
+  "priorityBand": "low",
   "triageScores": {
    "uiux": 2,
    "slo": 1,
@@ -2015,12 +2055,21 @@
    "interactivity": 0,
    "total": 5
   },
-  "lastReviewed": null,
-  "reviewStatus": "pending",
-  "reportPath": null,
+  "lastReviewed": "2026-07-01",
+  "reviewStatus": "fixed",
+  "reportPath": "business/dgskills-reviews/security-review-2026-07-01.md",
   "autoFixesApplied": 0,
   "openEscalations": [],
-  "codexVerdict": null
+  "codexVerdict": null,
+  "escalationCount": 0,
+  "reviewScores": {
+   "uiux": 9,
+   "didactiek": 9,
+   "tech": 8.5
+  },
+  "triageScore": 1.15,
+  "statusNote": "wave 10: security-adviezen inhoudelijk geverifieerd, niets verouderds; schoonste missie van de run",
+  "verdict": "ok"
  },
  {
   "missionId": "slide-specialist",
