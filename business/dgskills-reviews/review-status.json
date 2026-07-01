@@ -1385,7 +1385,7 @@
   "reportPath": "business/dgskills-reviews/ml-trainer-2026-07-01.md",
   "autoFixesApplied": 2,
   "openEscalations": [],
-  "codexVerdict": null,
+  "codexVerdict": "ALLOW",
   "escalationCount": 0,
   "reviewScores": {
    "uiux": 8,
@@ -1615,7 +1615,7 @@
   "openEscalations": [
    "kwaliteit laag over de hele linie (3/4/2, 2 blockers + 4 warnings) — intro-CTA oogt disabled (platform-intro-patroon) en missie verdient een opknapronde zodra de platform-shell-fix landt"
   ],
-  "codexVerdict": null,
+  "codexVerdict": "ALLOW",
   "escalationCount": 1,
   "reviewScores": {
    "uiux": 3,
