@@ -11,7 +11,7 @@
    "total": 6
   },
   "lastReviewed": "2026-06-17",
-  "reviewStatus": "fixes-applied",
+  "reviewStatus": "blocked",
   "reportPath": "business/dgskills-reviews/access-control-engineer-2026-06-17.md",
   "autoFixesApplied": 4,
   "openEscalations": [
@@ -30,7 +30,8 @@
    "onzichtbare tekst op hover (text-duck-ink op bg-duck-ink) [GEFIXED]",
    "ontbrekend missionGoals-entry [GEFIXED]",
    "SLO 22B programmeer-claim zonder programmeeractiviteit [ESCALATIE]"
-  ]
+  ],
+  "statusNote": "normalisatie 2026-07-01 (run wave 4+): wacht op Yorin-beslissing over openEscalations"
  },
  {
   "missionId": "advanced-code-review",
@@ -115,7 +116,7 @@
    "total": 7
   },
   "lastReviewed": "2026-06-26",
-  "reviewStatus": "reviewed",
+  "reviewStatus": "blocked",
   "reportPath": "business/dgskills-reviews/wave-3a-2026-06-26.md",
   "autoFixesApplied": 0,
   "openEscalations": [
@@ -131,7 +132,8 @@
   "escalationCount": 1,
   "topIssues": [
    "geen defecten; sterkste van de wave"
-  ]
+  ],
+  "statusNote": "normalisatie 2026-07-01 (run wave 4+): wacht op Yorin-beslissing over openEscalations"
  },
  {
   "missionId": "ai-spiegel",
@@ -163,7 +165,7 @@
    "total": 7
   },
   "lastReviewed": "2026-06-26",
-  "reviewStatus": "reviewed",
+  "reviewStatus": "blocked",
   "reportPath": "business/dgskills-reviews/wave-3a-2026-06-26.md",
   "autoFixesApplied": 0,
   "openEscalations": [
@@ -180,7 +182,8 @@
   "escalationCount": 2,
   "topIssues": [
    "SLO 21B vs 21D dashboard-mismatch [ESCALATIE]"
-  ]
+  ],
+  "statusNote": "normalisatie 2026-07-01 (run wave 4+): wacht op Yorin-beslissing over openEscalations"
  },
  {
   "missionId": "ai-trainer",
@@ -302,7 +305,7 @@
    "total": 7
   },
   "lastReviewed": "2026-06-26",
-  "reviewStatus": "reviewed",
+  "reviewStatus": "blocked",
   "reportPath": "business/dgskills-reviews/wave-3b-2026-06-26.md",
   "autoFixesApplied": 0,
   "openEscalations": [
@@ -318,7 +321,8 @@
   "escalationCount": 1,
   "topIssues": [
    "SLO 22A-fit wankel [ESCALATIE]"
-  ]
+  ],
+  "statusNote": "normalisatie 2026-07-01 (run wave 4+): wacht op Yorin-beslissing over openEscalations"
  },
  {
   "missionId": "bug-hunter",
@@ -789,7 +793,7 @@
    "total": 7
   },
   "lastReviewed": "2026-06-26",
-  "reviewStatus": "reviewed",
+  "reviewStatus": "blocked",
   "reportPath": "business/dgskills-reviews/wave-3b-2026-06-26.md",
   "autoFixesApplied": 0,
   "openEscalations": [
@@ -806,7 +810,8 @@
   "escalationCount": 2,
   "topIssues": [
    "geen defecten; sterke missie"
-  ]
+  ],
+  "statusNote": "normalisatie 2026-07-01 (run wave 4+): wacht op Yorin-beslissing over openEscalations"
  },
  {
   "missionId": "digital-storyteller",
@@ -820,7 +825,7 @@
    "total": 6
   },
   "lastReviewed": "2026-06-26",
-  "reviewStatus": "reviewed",
+  "reviewStatus": "blocked",
   "reportPath": "business/dgskills-reviews/wave-3b-2026-06-26.md",
   "autoFixesApplied": 0,
   "openEscalations": [
@@ -836,7 +841,8 @@
   "escalationCount": 1,
   "topIssues": [
    "accent in step-id [ESCALATIE — robuustheid]"
-  ]
+  ],
+  "statusNote": "normalisatie 2026-07-01 (run wave 4+): wacht op Yorin-beslissing over openEscalations"
  },
  {
   "missionId": "digitale-balans-coach",
@@ -940,7 +946,7 @@
    "total": 7
   },
   "lastReviewed": "2026-06-26",
-  "reviewStatus": "reviewed",
+  "reviewStatus": "blocked",
   "reportPath": "business/dgskills-reviews/wave-3b-2026-06-26.md",
   "autoFixesApplied": 0,
   "openEscalations": [
@@ -957,7 +963,8 @@
   "escalationCount": 1,
   "topIssues": [
    "argumentPrompts dood veld [ESCALATIE — shared-engine]"
-  ]
+  ],
+  "statusNote": "normalisatie 2026-07-01 (run wave 4+): wacht op Yorin-beslissing over openEscalations"
  },
  {
   "missionId": "game-director",
@@ -1003,7 +1010,7 @@
    "total": 9
   },
   "lastReviewed": "2026-06-26",
-  "reviewStatus": "reviewed",
+  "reviewStatus": "blocked",
   "reportPath": "business/dgskills-reviews/wave-3a-2026-06-26.md",
   "autoFixesApplied": 0,
   "openEscalations": [
@@ -1021,7 +1028,8 @@
   "topIssues": [
    "reviewer-claim 'dormant chat' ONJUIST — draait via AiLab (geverifieerd)",
    "dubbele STEP_COMPLETE-markers [ESCALATIE]"
-  ]
+  ],
+  "statusNote": "normalisatie 2026-07-01 (run wave 4+): wacht op Yorin-beslissing over openEscalations"
  },
  {
   "missionId": "impact-review",
@@ -1137,7 +1145,7 @@
    "total": 7
   },
   "lastReviewed": "2026-06-26",
-  "reviewStatus": "reviewed",
+  "reviewStatus": "blocked",
   "reportPath": "business/dgskills-reviews/wave-3b-2026-06-26.md",
   "autoFixesApplied": 0,
   "openEscalations": [
@@ -1153,7 +1161,8 @@
   "escalationCount": 0,
   "topIssues": [
    "schoon; alleen optionele copy-suggestie"
-  ]
+  ],
+  "statusNote": "normalisatie 2026-07-01 (run wave 4+): wacht op Yorin-beslissing over openEscalations"
  },
  {
   "missionId": "meesterproef",
@@ -1359,7 +1368,7 @@
    "total": 9
   },
   "lastReviewed": "2026-06-26",
-  "reviewStatus": "reviewed",
+  "reviewStatus": "blocked",
   "reportPath": "business/dgskills-reviews/wave-3a-2026-06-26.md",
   "autoFixesApplied": 0,
   "openEscalations": [
@@ -1376,7 +1385,8 @@
   "escalationCount": 2,
   "topIssues": [
    "geen defecten; klein verbeterpotentieel"
-  ]
+  ],
+  "statusNote": "normalisatie 2026-07-01 (run wave 4+): wacht op Yorin-beslissing over openEscalations"
  },
  {
   "missionId": "open-source-contributor",
@@ -1578,7 +1588,7 @@
    "total": 6
   },
   "lastReviewed": "2026-06-26",
-  "reviewStatus": "reviewed",
+  "reviewStatus": "blocked",
   "reportPath": "business/dgskills-reviews/wave-3b-2026-06-26.md",
   "autoFixesApplied": 0,
   "openEscalations": [
@@ -1594,7 +1604,8 @@
   "escalationCount": 1,
   "topIssues": [
    "dode missionGoals-entry [ESCALATIE — cleanup]"
-  ]
+  ],
+  "statusNote": "normalisatie 2026-07-01 (run wave 4+): wacht op Yorin-beslissing over openEscalations"
  },
  {
   "missionId": "prompt-master",
@@ -1608,7 +1619,7 @@
    "total": 14
   },
   "lastReviewed": "2026-06-26",
-  "reviewStatus": "fixes-applied",
+  "reviewStatus": "blocked",
   "reportPath": "business/dgskills-reviews/wave-3a-2026-06-26.md",
   "autoFixesApplied": 1,
   "openEscalations": [
@@ -1627,7 +1638,8 @@
   "topIssues": [
    "a11y: label niet gekoppeld aan textarea [GEFIXED]",
    "criteria-type-inconsistentie missionGoals [ESCALATIE]"
-  ]
+  ],
+  "statusNote": "normalisatie 2026-07-01 (run wave 4+): wacht op Yorin-beslissing over openEscalations"
  },
  {
   "missionId": "prototype-developer",
@@ -1761,7 +1773,7 @@
    "total": 9
   },
   "lastReviewed": "2026-06-26",
-  "reviewStatus": "reviewed",
+  "reviewStatus": "blocked",
   "reportPath": "business/dgskills-reviews/wave-3a-2026-06-26.md",
   "autoFixesApplied": 0,
   "openEscalations": [
@@ -1778,7 +1790,8 @@
   "escalationCount": 2,
   "topIssues": [
    "criteria-type-inconsistentie missionGoals [ESCALATIE]"
-  ]
+  ],
+  "statusNote": "normalisatie 2026-07-01 (run wave 4+): wacht op Yorin-beslissing over openEscalations"
  },
  {
   "missionId": "scroll-stopper",
@@ -1968,7 +1981,7 @@
    "total": 8
   },
   "lastReviewed": "2026-06-26",
-  "reviewStatus": "reviewed",
+  "reviewStatus": "blocked",
   "reportPath": "business/dgskills-reviews/wave-3a-2026-06-26.md",
   "autoFixesApplied": 0,
   "openEscalations": [
@@ -1986,7 +1999,8 @@
   "topIssues": [
    "reviewer-claim 'ontbrekende chat-rol' ONJUIST — rol in year2.tsx:2264",
    "argumentPrompts dood veld [ESCALATIE — shared-engine]"
-  ]
+  ],
+  "statusNote": "normalisatie 2026-07-01 (run wave 4+): wacht op Yorin-beslissing over openEscalations"
  },
  {
   "missionId": "tech-impact-analyst",
@@ -2018,7 +2032,7 @@
    "total": 9
   },
   "lastReviewed": "2026-06-26",
-  "reviewStatus": "reviewed",
+  "reviewStatus": "blocked",
   "reportPath": "business/dgskills-reviews/wave-3a-2026-06-26.md",
   "autoFixesApplied": 0,
   "openEscalations": [
@@ -2037,7 +2051,20 @@
   "topIssues": [
    "q2 antwoordmodel fout (4.3 i.p.v. 4.5) [ESCALATIE — inhoudelijk]",
    "maxScore/punten-mismatch [ESCALATIE]"
-  ]
+  ],
+  "statusNote": "normalisatie 2026-07-01 (run wave 4+): wacht op Yorin-beslissing over openEscalations"
+ },
+ {
+  "missionId": "veilig-internet",
+  "templateType": "scenario-engine",
+  "priorityBand": "unknown",
+  "triageScores": null,
+  "lastReviewed": null,
+  "reviewStatus": "pending",
+  "reportPath": null,
+  "autoFixesApplied": 0,
+  "openEscalations": [],
+  "codexVerdict": null
  },
  {
   "missionId": "verhalen-ontwerper",
@@ -2069,7 +2096,7 @@
    "total": 6
   },
   "lastReviewed": "2026-06-26",
-  "reviewStatus": "fixes-applied",
+  "reviewStatus": "blocked",
   "reportPath": "business/dgskills-reviews/wave-3b-2026-06-26.md",
   "autoFixesApplied": 1,
   "openEscalations": [
@@ -2085,7 +2112,8 @@
   "escalationCount": 0,
   "topIssues": [
    "grammatica \"die\" -> \"dat\" [GEFIXED]"
-  ]
+  ],
+  "statusNote": "normalisatie 2026-07-01 (run wave 4+): wacht op Yorin-beslissing over openEscalations"
  },
  {
   "missionId": "wachtwoord-warrior",
@@ -2099,7 +2127,7 @@
    "total": 6
   },
   "lastReviewed": "2026-06-26",
-  "reviewStatus": "reviewed",
+  "reviewStatus": "fixed",
   "reportPath": "business/dgskills-reviews/wave-3b-2026-06-26.md",
   "autoFixesApplied": 0,
   "openEscalations": [],
@@ -2113,7 +2141,8 @@
   "escalationCount": 0,
   "topIssues": [
    "schoon; antwoordmodellen + scoring (4x25=100) geverifieerd"
-  ]
+  ],
+  "statusNote": "normalisatie 2026-07-01 (run wave 4+): review schoon, geen open punten"
  },
  {
   "missionId": "web-developer",
