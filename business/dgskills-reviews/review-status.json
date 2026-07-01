@@ -431,12 +431,24 @@
    "interactivity": 0,
    "total": 4
   },
-  "lastReviewed": null,
-  "reviewStatus": "pending",
-  "reportPath": null,
-  "autoFixesApplied": 0,
-  "openEscalations": [],
-  "codexVerdict": null
+  "lastReviewed": "2026-07-02",
+  "reviewStatus": "blocked",
+  "reportPath": "business/dgskills-reviews/cloud-cleaner-2026-07-02.md",
+  "autoFixesApplied": 1,
+  "openEscalations": [
+   "a11y: drag-and-drop heeft geen enkel toetsenbord-alternatief (0 aria/rol/tabIndex) — leerling zonder muis/touch kan de missie niet doen; kandidaat voor aparte toegankelijkheidsronde",
+   "mobiel: zwevende actieknop overlapt de laatste bestandskaarten — staat al sinds de UI/UX-audit van 30 juni open (prioriteit 4)"
+  ],
+  "codexVerdict": null,
+  "escalationCount": 2,
+  "reviewScores": {
+   "uiux": 6.5,
+   "didactiek": 7.5,
+   "tech": 5.5
+  },
+  "triageScore": 3.4,
+  "statusNote": "wave 12: dashboard-SLO +23A conform mapping (6e alignment-fix); a11y + FAB-overlap naar Yorin",
+  "verdict": "fix-eerst"
  },
  {
   "missionId": "cloud-commander",
@@ -534,7 +546,7 @@
  {
   "missionId": "code-reviewer",
   "templateType": "simulation-lab",
-  "priorityBand": "medium",
+  "priorityBand": "low",
   "triageScores": {
    "uiux": 1,
    "slo": 1,
@@ -542,12 +554,21 @@
    "interactivity": 0,
    "total": 4
   },
-  "lastReviewed": null,
-  "reviewStatus": "pending",
-  "reportPath": null,
+  "lastReviewed": "2026-07-02",
+  "reviewStatus": "fixed",
+  "reportPath": "business/dgskills-reviews/code-reviewer-2026-07-02.md",
   "autoFixesApplied": 0,
   "openEscalations": [],
-  "codexVerdict": null
+  "codexVerdict": null,
+  "escalationCount": 0,
+  "reviewScores": {
+   "uiux": 8,
+   "didactiek": 9,
+   "tech": 9
+  },
+  "triageScore": 1.3,
+  "statusNote": "wave 12: registratie + scoring (30+40+30=100) volledig geverifieerd; 1 cosmetisch icoon-mix-punt in rapport",
+  "verdict": "ok"
  },
  {
   "missionId": "cookie-crusher",
@@ -599,7 +620,7 @@
  {
   "missionId": "dashboard-designer",
   "templateType": "data-viewer",
-  "priorityBand": "medium",
+  "priorityBand": "low",
   "triageScores": {
    "uiux": 2,
    "slo": 1,
@@ -607,12 +628,21 @@
    "interactivity": 0,
    "total": 4
   },
-  "lastReviewed": null,
-  "reviewStatus": "pending",
-  "reportPath": null,
+  "lastReviewed": "2026-07-02",
+  "reviewStatus": "fixed",
+  "reportPath": "business/dgskills-reviews/dashboard-designer-2026-07-02.md",
   "autoFixesApplied": 0,
   "openEscalations": [],
-  "codexVerdict": null
+  "codexVerdict": null,
+  "escalationCount": 0,
+  "reviewScores": {
+   "uiux": 9,
+   "didactiek": 8,
+   "tech": 9
+  },
+  "triageScore": 1.4,
+  "statusNote": "wave 12: antwoordmodellen 100% nagerekend; dormant-scenario-mismatch hoort bij platform-dormant-beslispunt",
+  "verdict": "ok"
  },
  {
   "missionId": "data-detective",
@@ -694,7 +724,7 @@
  {
   "missionId": "data-pipeline",
   "templateType": "data-viewer",
-  "priorityBand": "medium",
+  "priorityBand": "low",
   "triageScores": {
    "uiux": 1,
    "slo": 0,
@@ -702,12 +732,21 @@
    "interactivity": 1,
    "total": 4
   },
-  "lastReviewed": null,
-  "reviewStatus": "pending",
-  "reportPath": null,
-  "autoFixesApplied": 0,
+  "lastReviewed": "2026-07-02",
+  "reviewStatus": "fixed",
+  "reportPath": "business/dgskills-reviews/data-pipeline-2026-07-02.md",
+  "autoFixesApplied": 1,
   "openEscalations": [],
-  "codexVerdict": null
+  "codexVerdict": null,
+  "escalationCount": 0,
+  "reviewScores": {
+   "uiux": 8,
+   "didactiek": 7,
+   "tech": 8
+  },
+  "triageScore": 2.4,
+  "statusNote": "wave 12: q8 participatiepunten 0->10 (som=100=maxScore; 3e geval, 2 gate-precedenten); som-gat blijkt engine-breed patroon (7/15 data-viewer-configs) -> gedeelde lijst",
+  "verdict": "ok"
  },
  {
   "missionId": "data-review",
@@ -964,7 +1003,7 @@
  {
   "missionId": "digitale-balans-coach",
   "templateType": "debate-arena",
-  "priorityBand": "medium",
+  "priorityBand": "low",
   "triageScores": {
    "uiux": 2,
    "slo": 0,
@@ -972,12 +1011,21 @@
    "interactivity": 0,
    "total": 4
   },
-  "lastReviewed": null,
-  "reviewStatus": "pending",
-  "reportPath": null,
+  "lastReviewed": "2026-07-02",
+  "reviewStatus": "fixed",
+  "reportPath": "business/dgskills-reviews/digitale-balans-coach-2026-07-02.md",
   "autoFixesApplied": 0,
   "openEscalations": [],
-  "codexVerdict": null
+  "codexVerdict": null,
+  "escalationCount": 0,
+  "reviewScores": {
+   "uiux": 8.5,
+   "didactiek": 9,
+   "tech": 9
+  },
+  "triageScore": 1.15,
+  "statusNote": "wave 12: welzijnscheck expliciet schoon (gevoelig thema correct behandeld)",
+  "verdict": "ok"
  },
  {
   "missionId": "eindproject-j2",
