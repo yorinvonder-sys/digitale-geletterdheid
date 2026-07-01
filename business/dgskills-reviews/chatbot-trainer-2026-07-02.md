@@ -152,3 +152,9 @@ Static: 6/7 criteria geslaagd (1 aandachtspunt, 1 mogelijk-maar-ongeverifieerd e
 ## Samenvatting
 
 `chatbot-trainer` is een sterke, volledig zelfstandige agent-role missie met een ongebruikelijk hoge Bloom-balans voor leerjaar 1 (bereikt creëren + reflecteren via de bias/dataset-conclusie). Het enige harde, autoFixable probleem is de SLO-mapping-mismatch (`22B`→`22A`). De overige bevindingen zijn kleine a11y/tech-tweaks (delete-knop als `<div>`) en twee ongeverifieerde vermoedens (mobiele 3-koloms layout, auto-save re-render-edge-case) die een dynamische Chrome-plugin-pass vragen — niet mechanisch autoFixable binnen deze static review.
+
+---
+
+## Orchestrator-eindreview (aanvulling, 2026-07-02)
+
+De div→button-fix voor de verwijderknop is **teruggedraaid** na Codex-gate-BLOCK: de intent-rij zelf is al een `<button>` (regel ~932), waardoor de nieuwe knop genest zou zitten in een andere knop — invalide HTML met React-warning en inconsistent toetsenbord-/screenreader-gedrag over browsers. Dat is slechter dan de oorspronkelijke (ongelabelde div-)situatie. **Escalatie:** de echte a11y-fix vereist een rij-refactor — selecteer- en verwijderknop als siblings, of de buitenrij als niet-interactieve container met een expliciet selecteerbaar kind (gate-aanbeveling). Netto toegepast in deze wave: 1 fix (dashboard-SLO 22A→22B).

@@ -403,20 +403,21 @@
   "lastReviewed": "2026-07-02",
   "reviewStatus": "blocked",
   "reportPath": "business/dgskills-reviews/chatbot-trainer-2026-07-02.md",
-  "autoFixesApplied": 2,
+  "autoFixesApplied": 1,
   "openEscalations": [
    "slo-fit: mapping zegt 22B met curator-comment 'IF-THEN regels = programmeerlogica', reviewer twijfelt (geen 'echte' programmeeractiviteit) — dashboard is nu conform mapping gezet (22B); inhoudelijk oordeel aan Yorin",
-   "structureel: training-modus heeft vaste 3-koloms layout (w-64 + w-80) zonder responsive breakpoints — vermoedelijk mobiele layoutbreuk, herontwerp-kandidaat"
+   "structureel: training-modus heeft vaste 3-koloms layout (w-64 + w-80) zonder responsive breakpoints — vermoedelijk mobiele layoutbreuk, herontwerp-kandidaat",
+   "a11y: verwijderknop van intent zit genest in de rij-knop (geneste buttons = invalide HTML) — vereist rij-refactor naar sibling-knoppen (gate-voorstel in rapport); mijn button-fix is teruggedraaid na gate-BLOCK"
   ],
   "codexVerdict": null,
-  "escalationCount": 2,
+  "escalationCount": 3,
   "reviewScores": {
    "uiux": 7,
    "didactiek": 8,
    "tech": 7
   },
   "triageScore": 2.6,
-  "statusNote": "wave 11: dashboard-SLO 22A→22B conform autoritaire mapping (5e alignment-fix; agent stelde omgekeerde richting voor — afgewezen, mapping is autoritair) + delete-intent div→button met aria-label; auto-save-edge (AiLab-analyse) naar follow-up",
+  "statusNote": "wave 11: dashboard-SLO 22A→22B conform autoritaire mapping (5e alignment-fix); div→button-fix TERUGGEDRAAID na gate-BLOCK (delete-knop zit genest in rij-knop — rij-refactor nodig)",
   "verdict": "fix-eerst"
  },
  {
