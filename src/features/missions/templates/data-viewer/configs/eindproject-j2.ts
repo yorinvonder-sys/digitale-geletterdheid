@@ -62,7 +62,7 @@ export const eindprojectJ2Config: DataViewerConfig = {
                 {
                     id: 'q2-presentatie-impact',
                     question:
-                        'Chiara scoort 9 voor originaliteit, maar slechts 5 voor techniek. Toch haalt ze een 8,0. Wat maakt het verschil?',
+                        'Chiara scoort 9 voor originaliteit, maar slechts 6 voor techniek. Toch haalt ze een 8,0. Wat maakt het verschil?',
                     type: 'multiple-choice',
                     options: [
                         'Originaliteit weegt zwaarder dan techniek in het eindcijfer',
@@ -206,7 +206,7 @@ export const eindprojectJ2Config: DataViewerConfig = {
         },
     ],
 
-    maxScore: 100,
+    maxScore: 85,
 
     badges: [
         {
