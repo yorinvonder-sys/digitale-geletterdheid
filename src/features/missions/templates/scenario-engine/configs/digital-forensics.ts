@@ -174,7 +174,7 @@ const config: ScenarioEngineConfig = {
                     icon: '❌',
                     title: 'Mislukte inlogpogingen',
                     description:
-                        '22:54:10–22:54:19 | LOGIN FAILED (×5) | user: dr_bakker — aanvaller probeert wachtwoord te raden.',
+                        '22:54:17 en 22:54:19 | LOGIN FAILED | user: dr_bakker — aanvaller probeert wachtwoord te raden.',
                     correctPosition: 1,
                     explanation:
                         'Tweede stap: toegang proberen te krijgen. Na de verkenning richt de aanvaller zich op een specifiek account en probeert in te loggen.',

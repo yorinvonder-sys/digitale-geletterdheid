@@ -31,3 +31,11 @@
 ## Volgende stap
 
 Eén fix toegepast (timestamp-consistentie). De drie escalaties (badge-color, lab→duck gradient, SLO 21C) vereisen alle een expliciete beslissing van Yorin voordat ze autonoom fixbaar zijn — dit zijn geen scope-uitbreidingen die de fixer zelf kan oplossen. Aanbeveling: bundel de drie escalaties in één beslismoment (Yorin), aangezien twee ervan (badge-color, lab→duck) allebei wachten op een concreet, gevalideerd duck-token-besluit voor de scenario-engine.
+
+---
+
+## Orchestrator-eindreview (aanvulling, 2026-07-01)
+
+De timestamp-fix in ronde 2 (regel 177) is **teruggedraaid** na Codex-gate-BLOCK. De gate telde na: ronde 1 toont vier LOGIN FAILED (22:54:10–13) + SUCCESS om 22:54:19 (user admin), terwijl de agent-fix "×5 over 10–19" claimde én ronde 2's eigen uitlegregel ("Na twee mislukte pogingen lukt het", regel 190) tegensprak. De oorspronkelijke ronde-2-regel (2 fails om 22:54:17/19, succes 22:54:22, user dr_bakker) was intern consistent en is hersteld.
+
+**Nieuwe escalatie (content-ontwerp, Yorin beslist):** de verhaallijnen van ronde 1 (user admin, titel zegt "Vijf mislukte" maar log toont er vier, succes 22:54:19) en ronde 2 (user dr_bakker, 2 fails, succes 22:54:22) beschrijven mogelijk hetzelfde incident met tegenstrijdige details. Kies: (a) één consistente verhaallijn over beide rondes, of (b) expliciet twee verschillende accounts/incidenten maken, en corrigeer daarbij de ronde-1-titel (×5 vs ×4).
