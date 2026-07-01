@@ -1388,7 +1388,7 @@
  {
   "missionId": "meme-machine",
   "templateType": "builder-canvas",
-  "priorityBand": "medium",
+  "priorityBand": "low",
   "triageScores": {
    "uiux": 0,
    "slo": 0,
@@ -1396,12 +1396,23 @@
    "interactivity": 1,
    "total": 4
   },
-  "lastReviewed": null,
-  "reviewStatus": "pending",
-  "reportPath": null,
-  "autoFixesApplied": 0,
-  "openEscalations": [],
-  "codexVerdict": null
+  "lastReviewed": "2026-07-02",
+  "reviewStatus": "blocked",
+  "reportPath": "business/dgskills-reviews/meme-machine-2026-07-02.md",
+  "autoFixesApplied": 1,
+  "openEscalations": [
+   "platform-patroon: builder-canvas coach-briefing (3-stappen) dekt de canvas-stappen niet — één productkeuze (nu 5 missies: podcast-producer, meesterproef, portfolio-builder, prototype-developer, meme-machine); meme-machine PRIORITEIT in de fix-batch: de gemiste 4e stap is het welzijns-/ethiek-onderdeel (AI-coach kan 'klaar' zeggen vóór de reflectie)"
+  ],
+  "codexVerdict": null,
+  "escalationCount": 1,
+  "reviewScores": {
+   "uiux": 8.5,
+   "didactiek": 7.5,
+   "tech": 8.5
+  },
+  "triageScore": 1.9,
+  "statusNote": "wave 13: checklist-item auteursrecht/bronvermelding toegevoegd (print-pro-precedent); coach-desync 5e geval, welzijnsprioriteit",
+  "verdict": "ok"
  },
  {
   "missionId": "mission-blueprint",
@@ -1424,7 +1435,7 @@
  {
   "missionId": "mission-launch",
   "templateType": "tool-guide",
-  "priorityBand": "medium",
+  "priorityBand": "low",
   "triageScores": {
    "uiux": 2,
    "slo": 0,
@@ -1432,12 +1443,21 @@
    "interactivity": 1,
    "total": 4
   },
-  "lastReviewed": null,
-  "reviewStatus": "pending",
-  "reportPath": null,
+  "lastReviewed": "2026-07-02",
+  "reviewStatus": "fixed",
+  "reportPath": "business/dgskills-reviews/mission-launch-2026-07-02.md",
   "autoFixesApplied": 0,
   "openEscalations": [],
-  "codexVerdict": null
+  "codexVerdict": null,
+  "escalationCount": 0,
+  "reviewScores": {
+   "uiux": 8.5,
+   "didactiek": 9,
+   "tech": 9.5
+  },
+  "triageScore": 1.0,
+  "statusNote": "wave 13: scoreplafond 60=60 nagerekend; registratie compleet incl. briefing-asset",
+  "verdict": "ok"
  },
  {
   "missionId": "mission-vision",
@@ -1522,7 +1542,7 @@
  {
   "missionId": "neural-navigator",
   "templateType": "data-viewer",
-  "priorityBand": "medium",
+  "priorityBand": "low",
   "triageScores": {
    "uiux": 1,
    "slo": 0,
@@ -1530,12 +1550,21 @@
    "interactivity": 0,
    "total": 4
   },
-  "lastReviewed": null,
-  "reviewStatus": "pending",
-  "reportPath": null,
-  "autoFixesApplied": 0,
+  "lastReviewed": "2026-07-02",
+  "reviewStatus": "fixed",
+  "reportPath": "business/dgskills-reviews/neural-navigator-2026-07-02.md",
+  "autoFixesApplied": 3,
   "openEscalations": [],
-  "codexVerdict": null
+  "codexVerdict": null,
+  "escalationCount": 0,
+  "reviewScores": {
+   "uiux": 8,
+   "didactiek": 7,
+   "tech": 8
+  },
+  "triageScore": 2.4,
+  "statusNote": "wave 13: tabelwaarden Neuron A 0.69->0.68 en Neuron C 0.81->1.01 (formule zelf nagerekend; C was bias-vergeten) + q8 participatiepunten 0->10 (som=100; 4e geval)",
+  "verdict": "fix-eerst"
  },
  {
   "missionId": "notificatie-ninja",
@@ -2099,7 +2128,7 @@
  {
   "missionId": "scroll-stopper",
   "templateType": "debate-arena",
-  "priorityBand": "medium",
+  "priorityBand": "low",
   "triageScores": {
    "uiux": 2,
    "slo": 0,
@@ -2107,17 +2136,28 @@
    "interactivity": 0,
    "total": 4
   },
-  "lastReviewed": null,
-  "reviewStatus": "pending",
-  "reportPath": null,
+  "lastReviewed": "2026-07-02",
+  "reviewStatus": "blocked",
+  "reportPath": "business/dgskills-reviews/scroll-stopper-2026-07-02.md",
   "autoFixesApplied": 0,
-  "openEscalations": [],
-  "codexVerdict": null
+  "openEscalations": [
+   "content-keuze (welzijnsgevoelig): briefing belooft een dark-pattern-CEO-rollenspel, de missie is een stakeholder-debat — herschrijfvoorstel ligt klaar in rapport; thema schermtijd/verslaving dus Yorin beslist"
+  ],
+  "codexVerdict": null,
+  "escalationCount": 1,
+  "reviewScores": {
+   "uiux": 8,
+   "didactiek": 5,
+   "tech": 9
+  },
+  "triageScore": 2.9,
+  "statusNote": "wave 13: briefing-missie-mismatch bewust geescaleerd (welzijnsthema)",
+  "verdict": "fix-eerst"
  },
  {
   "missionId": "security-auditor",
   "templateType": "puzzle-lab",
-  "priorityBand": "medium",
+  "priorityBand": "low",
   "triageScores": {
    "uiux": 1,
    "slo": 0,
@@ -2125,12 +2165,21 @@
    "interactivity": 0,
    "total": 4
   },
-  "lastReviewed": null,
-  "reviewStatus": "pending",
-  "reportPath": null,
+  "lastReviewed": "2026-07-02",
+  "reviewStatus": "fixed",
+  "reportPath": "business/dgskills-reviews/security-auditor-2026-07-02.md",
   "autoFixesApplied": 0,
   "openEscalations": [],
-  "codexVerdict": null
+  "codexVerdict": null,
+  "escalationCount": 0,
+  "reviewScores": {
+   "uiux": 8.5,
+   "didactiek": 8,
+   "tech": 8.5
+  },
+  "triageScore": 1.7,
+  "statusNote": "wave 13: alle 4 puzzels feitelijk nagerekend (SQL-injectie/ernst/XSS/validator); punten 100=100; alleen vaknuances",
+  "verdict": "ok"
  },
  {
   "missionId": "security-review",
