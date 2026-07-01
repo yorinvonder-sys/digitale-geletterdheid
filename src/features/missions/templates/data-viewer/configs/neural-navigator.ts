@@ -52,9 +52,9 @@ export const neuralNavigatorConfig: DataViewerConfig = {
                     question: 'Welk neuron heeft de hoogste output?',
                     type: 'multiple-choice',
                     options: ['Neuron A', 'Neuron B', 'Neuron C', 'Neuron D'],
-                    correctAnswer: 'Neuron D',
+                    correctAnswer: 'Neuron C',
                     explanation:
-                        'Neuron D heeft de hoogste output: 0,84. Sorteer op "Output" om het snel te zien. Een hogere output betekent dat dit neuron sterker "actief" is dan de anderen. In een netwerk voor beeldherkenning zou een sterk actief neuron een specifiek kenmerk (lijn, kleur, vorm) kunnen vertegenwoordigen.',
+                        'Neuron C heeft de hoogste output: 1,01 (0,5 × 0,9 + 0,9 × 0,4 + 0,2). Sorteer op "Output" om het snel te zien. Een hogere output betekent dat dit neuron sterker "actief" is dan de anderen. In een netwerk voor beeldherkenning zou een sterk actief neuron een specifiek kenmerk (lijn, kleur, vorm) kunnen vertegenwoordigen.',
                     points: 10,
                 },
                 {
