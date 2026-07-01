@@ -174,17 +174,17 @@ export function BackupSection({ userId, year }: BackupSectionProps) {
     return (
         <div className="space-y-5">
             {/* Handmatige backup card */}
-            <div className="bg-white rounded-[2rem] border border-duck-line shadow-sm p-5 sm:p-8">
+            <div className="bg-white rounded-[2rem] border border-duck-ink/15 shadow-sm p-5 sm:p-8">
                 {/* Header */}
                 <div className="flex items-center gap-3 mb-6">
-                    <div className="w-10 h-10 bg-duck-coral rounded-xl flex items-center justify-center">
-                        <Archive size={20} className="text-duck-coral" />
+                    <div className="w-10 h-10 bg-duck-acid rounded-xl flex items-center justify-center">
+                        <Archive size={20} className="text-duck-ink" />
                     </div>
                     <div>
                         <h3 className="text-lg font-black text-duck-ink uppercase tracking-tight">
                             Backup & Bewaarplicht
                         </h3>
-                        <p className="text-[10px] text-duck-muted font-bold uppercase tracking-widest">
+                        <p className="text-[10px] text-duck-ink/60 font-bold uppercase tracking-widest">
                             Belastingdienst: administratie 7 jaar bewaren
                         </p>
                     </div>
@@ -193,7 +193,7 @@ export function BackupSection({ userId, year }: BackupSectionProps) {
                 {/* Waarschuwing als backup oud is */}
                 {!loading && stale && (
                     <div className="flex items-start gap-3 bg-duck-acid border border-duck-acid rounded-2xl px-5 py-4 mb-5">
-                        <AlertTriangle size={18} className="text-duck-muted shrink-0 mt-0.5" />
+                        <AlertTriangle size={18} className="text-duck-ink/60 shrink-0 mt-0.5" />
                         <div>
                             <p className="text-sm font-black text-duck-ink">
                                 {lastBackup
@@ -211,10 +211,10 @@ export function BackupSection({ userId, year }: BackupSectionProps) {
                 {/* Succes melding */}
                 {done && (
                     <div className="flex items-center gap-3 bg-duck-ink border border-duck-ink rounded-2xl px-5 py-4 mb-5">
-                        <CheckCircle size={18} className="text-duck-muted shrink-0" />
+                        <CheckCircle size={18} className="text-white/60 shrink-0" />
                         <div>
-                            <p className="text-sm font-black text-duck-ink">Backup succesvol gedownload</p>
-                            <p className="text-xs text-duck-ink mt-0.5">
+                            <p className="text-sm font-black text-white">Backup succesvol gedownload</p>
+                            <p className="text-xs text-white/80 mt-0.5">
                                 Sla het ZIP-bestand op een veilige plek op (bijv. externe schijf of cloud).
                             </p>
                         </div>
@@ -223,7 +223,7 @@ export function BackupSection({ userId, year }: BackupSectionProps) {
 
                 {/* Error */}
                 {error && (
-                    <div className="flex items-center gap-2 text-white bg-duck-coral border border-duck-coral rounded-xl px-4 py-3 text-sm mb-5">
+                    <div className="flex items-center gap-2 text-white bg-duck-error border border-duck-error rounded-xl px-4 py-3 text-sm mb-5">
                         <AlertTriangle size={14} />
                         {error}
                     </div>
@@ -233,12 +233,12 @@ export function BackupSection({ userId, year }: BackupSectionProps) {
                 {downloading && progress && (
                     <div className="mb-5">
                         <div className="flex justify-between mb-1.5">
-                            <span className="text-xs font-bold text-duck-muted">{progress.phase}</span>
-                            <span className="text-xs font-black text-duck-coral tabular-nums">{progressPct}%</span>
+                            <span className="text-xs font-bold text-duck-ink/60">{progress.phase}</span>
+                            <span className="text-xs font-black text-duck-ink tabular-nums">{progressPct}%</span>
                         </div>
                         <div className="h-2.5 bg-duck-bg rounded-full overflow-hidden">
                             <div
-                                className="h-full bg-duck-coral rounded-full transition-all duration-300"
+                                className="h-full bg-duck-acid rounded-full transition-all duration-300"
                                 style={{ width: `${progressPct}%` }}
                             />
                         </div>
@@ -250,7 +250,7 @@ export function BackupSection({ userId, year }: BackupSectionProps) {
                     <button
                         onClick={() => handleDownload(year)}
                         disabled={downloading}
-                        className="w-full sm:w-auto flex items-center gap-2 px-5 py-3 bg-duck-coral text-white rounded-xl font-bold text-sm hover:bg-duck-coral hover:text-white disabled:opacity-50 transition-colors shadow-sm"
+                        className="w-full sm:w-auto flex items-center gap-2 px-5 py-3 bg-duck-acid text-duck-ink rounded-xl font-bold text-sm disabled:opacity-50 transition-colors shadow-sm"
                     >
                         {downloading ? (
                             <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
@@ -263,7 +263,7 @@ export function BackupSection({ userId, year }: BackupSectionProps) {
                     <button
                         onClick={() => handleDownload()}
                         disabled={downloading}
-                        className="w-full sm:w-auto flex items-center gap-2 px-5 py-3 bg-white border border-duck-line text-duck-muted rounded-xl font-bold text-sm hover:bg-duck-bg disabled:opacity-50 transition-colors"
+                        className="w-full sm:w-auto flex items-center gap-2 px-5 py-3 bg-white border border-duck-ink/15 text-duck-ink/60 rounded-xl font-bold text-sm hover:bg-duck-bg disabled:opacity-50 transition-colors"
                     >
                         <Shield size={16} />
                         Volledige backup (alle jaren)
@@ -271,20 +271,20 @@ export function BackupSection({ userId, year }: BackupSectionProps) {
                 </div>
 
                 {/* Laatste backup info */}
-                <div className="mt-5 pt-5 border-t border-duck-line">
+                <div className="mt-5 pt-5 border-t border-duck-ink/15">
                     <div className="flex items-center gap-2">
-                        <Clock size={14} className="text-duck-muted" />
+                        <Clock size={14} className="text-duck-ink/60" />
                         {loading ? (
-                            <span className="text-xs text-duck-muted">Laden...</span>
+                            <span className="text-xs text-duck-ink/60">Laden...</span>
                         ) : lastBackup ? (
-                            <span className={`text-xs font-bold ${stale ? 'text-duck-ink' : 'text-duck-muted'}`}>
+                            <span className={`text-xs font-bold ${stale ? 'text-duck-ink' : 'text-duck-ink/60'}`}>
                                 Laatste backup: {formatBackupDate(lastBackup)}
                             </span>
                         ) : (
-                            <span className="text-xs text-duck-muted italic">Nog geen backup gemaakt</span>
+                            <span className="text-xs text-duck-ink/60 italic">Nog geen backup gemaakt</span>
                         )}
                     </div>
-                    <p className="text-[10px] text-duck-muted mt-2 leading-relaxed">
+                    <p className="text-[10px] text-duck-ink/60 mt-2 leading-relaxed">
                         De backup bevat alle transacties, bonnetjes (incl. afbeeldingen), abonnementen,
                         uren, facturen en instellingen als ZIP-bestand. Inclusief CSV-export van transacties
                         voor gebruik in Excel of andere software.
@@ -293,16 +293,16 @@ export function BackupSection({ userId, year }: BackupSectionProps) {
             </div>
 
             {/* Google Drive Auto-Backup card */}
-            <div className="bg-white rounded-[2rem] border border-duck-line shadow-sm p-5 sm:p-8">
+            <div className="bg-white rounded-[2rem] border border-duck-ink/15 shadow-sm p-5 sm:p-8">
                 <div className="flex items-center gap-3 mb-6">
                     <div className="w-10 h-10 bg-duck-ink rounded-xl flex items-center justify-center">
-                        <Cloud size={20} className="text-duck-ink" />
+                        <Cloud size={20} className="text-white" />
                     </div>
                     <div>
                         <h3 className="text-lg font-black text-duck-ink uppercase tracking-tight">
                             Google Drive Auto-Backup
                         </h3>
-                        <p className="text-[10px] text-duck-muted font-bold uppercase tracking-widest">
+                        <p className="text-[10px] text-duck-ink/60 font-bold uppercase tracking-widest">
                             Automatisch elke zondag om 03:00
                         </p>
                     </div>
@@ -310,7 +310,7 @@ export function BackupSection({ userId, year }: BackupSectionProps) {
 
                 {/* Drive error */}
                 {driveError && (
-                    <div className="flex items-center gap-2 text-white bg-duck-coral border border-duck-coral rounded-xl px-4 py-3 text-sm mb-5">
+                    <div className="flex items-center gap-2 text-white bg-duck-error border border-duck-error rounded-xl px-4 py-3 text-sm mb-5">
                         <AlertTriangle size={14} />
                         {driveError}
                     </div>
@@ -319,8 +319,8 @@ export function BackupSection({ userId, year }: BackupSectionProps) {
                 {/* Drive success */}
                 {driveDone && (
                     <div className="flex items-center gap-3 bg-duck-ink border border-duck-ink rounded-2xl px-5 py-4 mb-5">
-                        <CheckCircle size={18} className="text-duck-muted shrink-0" />
-                        <p className="text-sm font-black text-duck-ink">
+                        <CheckCircle size={18} className="text-white/60 shrink-0" />
+                        <p className="text-sm font-black text-white">
                             {driveStatus?.connected && !driveStatus.lastBackupAt
                                 ? 'Google Drive succesvol gekoppeld!'
                                 : 'Backup succesvol naar Google Drive geüpload!'}
@@ -329,8 +329,8 @@ export function BackupSection({ userId, year }: BackupSectionProps) {
                 )}
 
                 {driveLoading ? (
-                    <div className="flex items-center gap-2 text-duck-muted text-sm">
-                        <div className="w-4 h-4 border-2 border-duck-line border-t-transparent rounded-full animate-spin" />
+                    <div className="flex items-center gap-2 text-duck-ink/60 text-sm">
+                        <div className="w-4 h-4 border-2 border-duck-ink/15 border-t-transparent rounded-full animate-spin" />
                         Laden...
                     </div>
                 ) : driveStatus?.connected ? (
@@ -338,16 +338,16 @@ export function BackupSection({ userId, year }: BackupSectionProps) {
                     <div className="space-y-4">
                         {/* Connection info */}
                         <div className="flex items-center gap-3 bg-duck-ink border border-duck-ink rounded-2xl px-5 py-4">
-                            <CheckCircle size={18} className="text-duck-muted shrink-0" />
+                            <CheckCircle size={18} className="text-white/60 shrink-0" />
                             <div className="flex-1 min-w-0">
-                                <p className="text-sm font-black text-duck-ink">
+                                <p className="text-sm font-black text-white">
                                     Verbonden met {driveStatus.googleEmail}
                                 </p>
                                 {driveStatus.lastBackupAt && (
-                                    <p className="text-xs text-duck-ink mt-0.5">
+                                    <p className="text-xs text-white/80 mt-0.5">
                                         Laatste backup: {formatBackupDate(driveStatus.lastBackupAt)}
                                         {driveStatus.lastBackupStatus === 'failed' && (
-                                            <span className="text-duck-coral ml-1">(mislukt)</span>
+                                            <span className="text-duck-error ml-1">(mislukt)</span>
                                         )}
                                     </p>
                                 )}
@@ -356,7 +356,7 @@ export function BackupSection({ userId, year }: BackupSectionProps) {
 
                         {/* Last backup error detail */}
                         {driveStatus.lastBackupStatus === 'failed' && driveStatus.lastBackupError && (
-                            <div className="flex items-start gap-2 text-white bg-duck-coral border border-duck-coral rounded-xl px-4 py-3 text-xs">
+                            <div className="flex items-start gap-2 text-white bg-duck-error border border-duck-error rounded-xl px-4 py-3 text-xs">
                                 <AlertTriangle size={12} className="shrink-0 mt-0.5" />
                                 <span>{driveStatus.lastBackupError}</span>
                             </div>
@@ -380,10 +380,10 @@ export function BackupSection({ userId, year }: BackupSectionProps) {
                             <button
                                 onClick={handleDriveDisconnect}
                                 disabled={driveAction !== null}
-                                className="w-full sm:w-auto flex items-center gap-2 px-5 py-3 bg-white border border-duck-line text-duck-muted rounded-xl font-bold text-sm hover:bg-duck-coral hover:text-white hover:border-duck-coral disabled:opacity-50 transition-colors"
+                                className="w-full sm:w-auto flex items-center gap-2 px-5 py-3 bg-white border border-duck-ink/15 text-duck-ink/60 rounded-xl font-bold text-sm hover:bg-duck-error hover:text-white hover:border-duck-error disabled:opacity-50 transition-colors"
                             >
                                 {driveAction === 'disconnecting' ? (
-                                    <div className="w-4 h-4 border-2 border-duck-line border-t-transparent rounded-full animate-spin" />
+                                    <div className="w-4 h-4 border-2 border-duck-ink/15 border-t-transparent rounded-full animate-spin" />
                                 ) : (
                                     <Unlink size={16} />
                                 )}
@@ -394,13 +394,13 @@ export function BackupSection({ userId, year }: BackupSectionProps) {
                 ) : (
                     /* Not connected state */
                     <div className="space-y-4">
-                        <div className="flex items-start gap-3 bg-duck-bg border border-duck-line rounded-2xl px-5 py-4">
-                            <CloudOff size={18} className="text-duck-muted shrink-0 mt-0.5" />
+                        <div className="flex items-start gap-3 bg-duck-bg border border-duck-ink/15 rounded-2xl px-5 py-4">
+                            <CloudOff size={18} className="text-duck-ink/60 shrink-0 mt-0.5" />
                             <div>
-                                <p className="text-sm font-bold text-duck-muted">
+                                <p className="text-sm font-bold text-duck-ink/60">
                                     Nog niet verbonden
                                 </p>
-                                <p className="text-xs text-duck-muted mt-0.5">
+                                <p className="text-xs text-duck-ink/60 mt-0.5">
                                     Koppel je Google Drive om automatisch wekelijkse backups te ontvangen.
                                     De backups worden opgeslagen in een map "DGSkills Backups" op je Drive.
                                 </p>

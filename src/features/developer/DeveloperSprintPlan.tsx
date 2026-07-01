@@ -460,22 +460,22 @@ export function DeveloperSprintPlan() {
 
             {/* ── Top stats ──────────────────────────────────────────────── */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <div className="bg-white p-5 rounded-2xl border border-duck-line shadow-sm">
-                    <p className="text-[10px] font-black text-duck-muted uppercase tracking-widest mb-1">Voortgang</p>
+                <div className="bg-white p-5 rounded-2xl border border-duck-ink/15 shadow-sm">
+                    <p className="text-[10px] font-black text-duck-ink/60 uppercase tracking-widest mb-1">Voortgang</p>
                     <p className="text-3xl font-black text-duck-ink">{pct}%</p>
                     <div className="mt-3 h-1.5 bg-duck-bg rounded-full overflow-hidden">
-                        <div className="h-full bg-duck-coral transition-all duration-700" style={{ width: `${pct}%` }} />
+                        <div className="h-full bg-duck-acid transition-all duration-700" style={{ width: `${pct}%` }} />
                     </div>
                 </div>
-                <div className="bg-white p-5 rounded-2xl border border-duck-line shadow-sm">
-                    <p className="text-[10px] font-black text-duck-muted uppercase tracking-widest mb-1">Taken</p>
-                    <p className="text-3xl font-black text-duck-ink">{doneTasks}<span className="text-lg text-duck-muted">/{totalTasks}</span></p>
-                    <p className="text-[10px] text-duck-muted mt-2 font-medium">afgevinkt</p>
+                <div className="bg-white p-5 rounded-2xl border border-duck-ink/15 shadow-sm">
+                    <p className="text-[10px] font-black text-duck-ink/60 uppercase tracking-widest mb-1">Taken</p>
+                    <p className="text-3xl font-black text-duck-ink">{doneTasks}<span className="text-lg text-duck-ink/60">/{totalTasks}</span></p>
+                    <p className="text-[10px] text-duck-ink/60 mt-2 font-medium">afgevinkt</p>
                 </div>
-                <div className={`p-5 rounded-2xl border shadow-sm ${deadlineDays <= 30 ? 'bg-duck-acid border-duck-acid text-duck-ink' : 'bg-white border-duck-line text-duck-ink'}`}>
-                    <p className={`text-[10px] font-black uppercase tracking-widest mb-1 ${deadlineDays <= 30 ? 'text-duck-ink/70' : 'text-duck-muted'}`}>Deadline</p>
+                <div className={`p-5 rounded-2xl border shadow-sm ${deadlineDays <= 30 ? 'bg-duck-acid border-duck-acid text-duck-ink' : 'bg-white border-duck-ink/15 text-duck-ink'}`}>
+                    <p className={`text-[10px] font-black uppercase tracking-widest mb-1 ${deadlineDays <= 30 ? 'text-duck-ink/70' : 'text-duck-ink/60'}`}>Deadline</p>
                     <p className="text-3xl font-black">{deadlineDays}d</p>
-                    <p className={`text-[10px] mt-2 font-medium ${deadlineDays <= 30 ? 'text-duck-ink/75' : 'text-duck-muted'}`}>tot 9 mei 2026</p>
+                    <p className={`text-[10px] mt-2 font-medium ${deadlineDays <= 30 ? 'text-duck-ink/75' : 'text-duck-ink/60'}`}>tot 9 mei 2026</p>
                 </div>
                 <div className="bg-duck-ink p-5 rounded-2xl shadow-sm">
                     <p className="text-[10px] font-black text-white/80 uppercase tracking-widest mb-1">Harde deadline</p>
@@ -485,9 +485,9 @@ export function DeveloperSprintPlan() {
             </div>
 
             {/* ── Legenda ────────────────────────────────────────────────── */}
-            <div className="p-4 bg-duck-bg border border-duck-line rounded-2xl flex flex-wrap gap-3 items-center">
-                <span className="text-[11px] font-black text-duck-muted uppercase tracking-widest shrink-0">Klik op een taak</span>
-                <span className="text-[11px] text-duck-muted">→ je ziet wat je zelf moet doen en wat Claude doet</span>
+            <div className="p-4 bg-duck-bg border border-duck-ink/15 rounded-2xl flex flex-wrap gap-3 items-center">
+                <span className="text-[11px] font-black text-duck-ink/60 uppercase tracking-widest shrink-0">Klik op een taak</span>
+                <span className="text-[11px] text-duck-ink/60">→ je ziet wat je zelf moet doen en wat Claude doet</span>
             </div>
 
             {/* ── Sprints ────────────────────────────────────────────────── */}
@@ -513,58 +513,58 @@ export function DeveloperSprintPlan() {
 
                     const statusConfig = {
                         active: { badge: 'bg-duck-ink text-white border-duck-ink', label: 'Actief nu' },
-                        done:   { badge: 'bg-duck-bg text-duck-muted border-duck-line', label: 'Gereed' },
-                        upcoming: { badge: 'bg-duck-bg text-duck-muted border-duck-line', label: 'Gepland' },
+                        done:   { badge: 'bg-duck-bg text-duck-ink/60 border-duck-ink/15', label: 'Gereed' },
+                        upcoming: { badge: 'bg-duck-bg text-duck-ink/60 border-duck-ink/15', label: 'Gepland' },
                         pause:  { badge: 'bg-duck-acid text-duck-ink border-duck-acid', label: 'Pauze' },
                     }[status];
 
                     return (
-                        <div key={sprint.id} className={`bg-white rounded-2xl border overflow-hidden transition-all duration-300 ${status === 'active' ? 'border-duck-coral shadow-md shadow-duck-coral' : 'border-duck-line'}`}>
+                        <div key={sprint.id} className={`bg-white rounded-2xl border overflow-hidden transition-all duration-300 ${status === 'active' ? 'border-duck-acid shadow-md' : 'border-duck-ink/15'}`}>
                             {/* Sprint header */}
                             <button
                                 onClick={() => toggleCollapse(sprint.id)}
                                 className="w-full flex items-center gap-4 px-6 py-5 text-left hover:bg-duck-bg transition-colors"
                             >
-                                <div className={`shrink-0 w-8 h-8 rounded-xl flex items-center justify-center font-black text-sm ${status === 'active' ? 'bg-duck-coral text-white shadow-sm shadow-duck-coral' : status === 'done' ? 'bg-duck-bg text-duck-muted' : 'bg-duck-bg text-duck-muted'}`}>
+                                <div className={`shrink-0 w-8 h-8 rounded-xl flex items-center justify-center font-black text-sm ${status === 'active' ? 'bg-duck-acid text-duck-ink shadow-sm' : status === 'done' ? 'bg-duck-bg text-duck-ink/60' : 'bg-duck-bg text-duck-ink/60'}`}>
                                     {sprintPct === 100 ? <CheckCircle2 size={16} /> : sprint.number}
                                 </div>
                                 <div className="flex-1 min-w-0">
                                     <div className="flex items-center gap-2 mb-0.5">
-                                        <h3 className={`font-black text-base truncate ${status === 'done' ? 'text-duck-muted' : 'text-duck-ink'}`}>
+                                        <h3 className={`font-black text-base truncate ${status === 'done' ? 'text-duck-ink/60' : 'text-duck-ink'}`}>
                                             Sprint {sprint.number} — {sprint.title}
                                         </h3>
                                         <span className={`shrink-0 px-2 py-0.5 rounded-full text-[9px] font-black uppercase tracking-widest border ${statusConfig.badge}`}>
                                             {statusConfig.label}
                                         </span>
                                     </div>
-                                    <p className="text-xs text-duck-muted font-medium">{sprint.subtitle}</p>
+                                    <p className="text-xs text-duck-ink/60 font-medium">{sprint.subtitle}</p>
                                 </div>
                                 <div className="shrink-0 flex items-center gap-4">
                                     <div className="hidden sm:flex flex-col items-end gap-1">
-                                        <span className="flex items-center gap-1 text-[10px] font-bold text-duck-muted">
+                                        <span className="flex items-center gap-1 text-[10px] font-bold text-duck-ink/60">
                                             <CalendarDays size={12} />{sprint.dateRange}
                                         </span>
-                                        <span className="flex items-center gap-1 text-[10px] font-bold text-duck-muted">
+                                        <span className="flex items-center gap-1 text-[10px] font-bold text-duck-ink/60">
                                             <Clock size={12} />{sprint.hours}
                                         </span>
                                     </div>
-                                    <span className="text-xs font-black text-duck-muted">{sprintDone}/{sprintTotal}</span>
-                                    {isCollapsed ? <ChevronRight size={18} className="text-duck-muted" /> : <ChevronDown size={18} className="text-duck-muted" />}
+                                    <span className="text-xs font-black text-duck-ink/60">{sprintDone}/{sprintTotal}</span>
+                                    {isCollapsed ? <ChevronRight size={18} className="text-duck-ink/60" /> : <ChevronDown size={18} className="text-duck-ink/60" />}
                                 </div>
                             </button>
 
                             {/* Sprint tasks */}
                             {!isCollapsed && (
-                                <div className="border-t border-duck-line">
+                                <div className="border-t border-duck-ink/15">
                                     {sprintTotal > 0 && (
                                         <div className="px-6 pt-4 pb-2">
                                             <div className="h-1 bg-duck-bg rounded-full overflow-hidden">
-                                                <div className="h-full bg-duck-coral transition-all duration-500" style={{ width: `${sprintPct}%` }} />
+                                                <div className="h-full bg-duck-acid transition-all duration-500" style={{ width: `${sprintPct}%` }} />
                                             </div>
                                         </div>
                                     )}
 
-                                    <ul className="divide-y divide-duck-line">
+                                    <ul className="divide-y divide-duck-ink/15">
                                         {sprint.tasks.map((task) => {
                                             const isDone = !!checked[task.id];
                                             const isExpanded = expandedTask === task.id;
@@ -575,7 +575,7 @@ export function DeveloperSprintPlan() {
                                                     <div className="flex gap-4 px-6 py-4">
                                                         <button
                                                             onClick={() => toggleTask(task.id)}
-                                                            className={`mt-0.5 shrink-0 transition-colors ${isDone ? 'text-duck-muted' : 'text-duck-muted hover:text-duck-muted'}`}
+                                                            className={`mt-0.5 shrink-0 transition-colors ${isDone ? 'text-duck-ink/60' : 'text-duck-ink/60 hover:text-duck-ink'}`}
                                                             aria-label={isDone ? 'Markeer als niet gedaan' : 'Markeer als gedaan'}
                                                         >
                                                             {isDone ? <CheckCircle2 size={22} /> : <Circle size={22} />}
@@ -587,7 +587,7 @@ export function DeveloperSprintPlan() {
                                                                 className="w-full text-left group"
                                                             >
                                                                 <div className="flex flex-wrap items-center gap-2 mb-1">
-                                                                    <p className={`font-bold text-sm group-hover:text-duck-ink transition-colors ${isDone ? 'line-through text-duck-muted' : 'text-duck-ink'}`}>
+                                                                    <p className={`font-bold text-sm group-hover:text-duck-ink transition-colors ${isDone ? 'line-through text-duck-ink/60' : 'text-duck-ink'}`}>
                                                                         {task.title}
                                                                     </p>
                                                                     <span className={`px-2 py-0.5 rounded-full text-[9px] font-black uppercase tracking-widest border ${PRIORITY_COLORS[task.priority]}`}>
@@ -595,10 +595,10 @@ export function DeveloperSprintPlan() {
                                                                     </span>
                                                                 </div>
                                                                 <div className="flex flex-wrap items-center gap-4">
-                                                                    <span className="flex items-center gap-1 text-[11px] text-duck-muted font-medium">
+                                                                    <span className="flex items-center gap-1 text-[11px] text-duck-ink/60 font-medium">
                                                                         <Clock size={12} />{task.time}
                                                                     </span>
-                                                                    <span className="flex items-center gap-1 text-[11px] text-duck-muted font-medium group-hover:text-duck-muted transition-colors">
+                                                                    <span className="flex items-center gap-1 text-[11px] text-duck-ink/60 font-medium group-hover:text-duck-ink transition-colors">
                                                                         {isExpanded ? <ChevronUp size={12} /> : <ChevronDown size={12} />}
                                                                         {isExpanded ? 'Minder info' : 'Wat moet ik doen?'}
                                                                     </span>
@@ -609,18 +609,18 @@ export function DeveloperSprintPlan() {
                                                             {isExpanded && (
                                                                 <div className="mt-4 space-y-4 animate-in slide-in-from-top-2 duration-200">
                                                                     {/* Uitleg */}
-                                                                    <div className="p-4 bg-duck-bg rounded-xl border border-duck-line">
-                                                                        <p className="text-[10px] font-black text-duck-muted uppercase tracking-widest mb-2">Wat is dit?</p>
-                                                                        <p className="text-sm text-duck-muted leading-relaxed">{task.description}</p>
+                                                                    <div className="p-4 bg-duck-bg rounded-xl border border-duck-ink/15">
+                                                                        <p className="text-[10px] font-black text-duck-ink/60 uppercase tracking-widest mb-2">Wat is dit?</p>
+                                                                        <p className="text-sm text-duck-ink/60 leading-relaxed">{task.description}</p>
                                                                     </div>
 
                                                                     {/* Jij doet */}
-                                                                    <div className="p-4 bg-duck-coral rounded-xl border border-duck-coral">
-                                                                        <p className="text-[10px] font-black text-white/75 uppercase tracking-widest mb-2 flex items-center gap-1.5">
+                                                                    <div className="p-4 bg-duck-acid rounded-xl border border-duck-acid">
+                                                                        <p className="text-[10px] font-black text-duck-ink/75 uppercase tracking-widest mb-2 flex items-center gap-1.5">
                                                                             <User size={12} />
                                                                             Jij doet
                                                                         </p>
-                                                                        <p className="text-sm text-white leading-relaxed">{task.youDo}</p>
+                                                                        <p className="text-sm text-duck-ink leading-relaxed">{task.youDo}</p>
                                                                     </div>
 
                                                                     {/* Claude doet */}
@@ -647,7 +647,7 @@ export function DeveloperSprintPlan() {
             </div>
 
             {/* ── AI Act deadline ────────────────────────────────────────── */}
-            <div className="flex items-start gap-4 p-5 bg-duck-coral border border-duck-coral rounded-2xl text-white">
+            <div className="flex items-start gap-4 p-5 bg-duck-error border border-duck-error rounded-2xl text-white">
                 <AlertTriangle size={20} className="text-white/85 shrink-0 mt-0.5" />
                 <div>
                     <p className="font-black text-white text-sm uppercase tracking-tight">EU AI Act - 2 december 2027</p>
@@ -662,9 +662,9 @@ export function DeveloperSprintPlan() {
             </div>
 
             {/* ── Prioriteiten ───────────────────────────────────────────── */}
-            <div className="bg-white border border-duck-line rounded-2xl p-6">
+            <div className="bg-white border border-duck-ink/15 rounded-2xl p-6">
                 <div className="flex items-center gap-2 mb-4">
-                    <Target size={16} className="text-duck-muted" />
+                    <Target size={16} className="text-duck-ink/60" />
                     <h3 className="font-black text-duck-ink text-sm uppercase tracking-tight">Waarom deze volgorde?</h3>
                 </div>
                 <div className="space-y-2">
@@ -680,7 +680,7 @@ export function DeveloperSprintPlan() {
                             <span className={`mt-0.5 shrink-0 px-2 py-0.5 rounded-full text-[9px] font-black uppercase tracking-widest border ${PRIORITY_COLORS[key]}`}>
                                 {PRIORITY_LABELS[key]}
                             </span>
-                            <p className="text-xs text-duck-muted font-medium leading-relaxed">{why}</p>
+                            <p className="text-xs text-duck-ink/60 font-medium leading-relaxed">{why}</p>
                         </div>
                     ))}
                 </div>

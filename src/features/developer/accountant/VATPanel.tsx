@@ -167,10 +167,10 @@ export function VATPanel({ receipts, transactions, invoices, year }: VATPanelPro
     return (
         <div className="space-y-6">
             {/* Jaaroverzicht kaart */}
-            <div className="bg-white rounded-[2rem] border border-duck-line shadow-sm p-8">
+            <div className="bg-white rounded-[2rem] border border-duck-ink/15 shadow-sm p-8">
                 <div className="flex items-center gap-3 mb-6">
-                    <div className="w-10 h-10 bg-duck-coral rounded-xl flex items-center justify-center">
-                        <TrendingUp size={20} className="text-duck-coral" />
+                    <div className="w-10 h-10 bg-duck-error rounded-xl flex items-center justify-center">
+                        <TrendingUp size={20} className="text-white" />
                     </div>
                     <div>
                         <h3 className="text-lg font-black text-duck-ink uppercase tracking-tight">
@@ -186,38 +186,38 @@ export function VATPanel({ receipts, transactions, invoices, year }: VATPanelPro
 
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
                     <div className="bg-duck-ink rounded-2xl p-5 border border-duck-ink">
-                        <p className="text-[10px] font-black text-duck-ink uppercase tracking-widest mb-1">
+                        <p className="text-[10px] font-black text-white uppercase tracking-widest mb-1">
                             BTW Ontvangen
                         </p>
-                        <p className="text-2xl font-black text-duck-ink">
+                        <p className="text-2xl font-black text-white">
                             {formatEuro(totalVatCollected)}
                         </p>
-                        <p className="text-[10px] text-duck-muted mt-1">
+                        <p className="text-[10px] text-white/60 mt-1">
                             {hasInvoices ? 'Betaalde facturen' : 'Geschatte BTW 21%'}
                         </p>
                     </div>
 
-                    <div className="bg-duck-coral rounded-2xl p-5 border border-duck-coral">
-                        <p className="text-[10px] font-black text-duck-coral uppercase tracking-widest mb-1">
+                    <div className="bg-duck-error rounded-2xl p-5 border border-duck-error">
+                        <p className="text-[10px] font-black text-white uppercase tracking-widest mb-1">
                             BTW Betaald
                         </p>
-                        <p className="text-2xl font-black text-duck-coral">
+                        <p className="text-2xl font-black text-white">
                             {formatEuro(totalVatPaid)}
                         </p>
-                        <p className="text-[10px] text-duck-muted mt-1">Via bonnetjes</p>
+                        <p className="text-[10px] text-white/60 mt-1">Via bonnetjes</p>
                     </div>
 
                     <div className={`rounded-2xl p-5 border ${totalSaldo >= 0
-                        ? 'bg-duck-coral border-duck-coral'
+                        ? 'bg-duck-error border-duck-error'
                         : 'bg-duck-ink border-duck-ink'
                         }`}>
-                        <p className={`text-[10px] font-black uppercase tracking-widest mb-1 ${totalSaldo >= 0 ? 'text-duck-coral' : 'text-duck-ink'}`}>
+                        <p className={`text-[10px] font-black uppercase tracking-widest mb-1 ${totalSaldo >= 0 ? 'text-white' : 'text-white'}`}>
                             {totalSaldo >= 0 ? 'Af te Dragen' : 'Te Vorderen'}
                         </p>
-                        <p className={`text-2xl font-black ${totalSaldo >= 0 ? 'text-duck-coral' : 'text-duck-ink'}`}>
+                        <p className={`text-2xl font-black ${totalSaldo >= 0 ? 'text-white' : 'text-white'}`}>
                             {formatEuro(Math.abs(totalSaldo))}
                         </p>
-                        <p className={`text-[10px] mt-1 ${totalSaldo >= 0 ? 'text-duck-muted' : 'text-duck-muted'}`}>
+                        <p className={`text-[10px] mt-1 ${totalSaldo >= 0 ? 'text-white/60' : 'text-white/60'}`}>
                             Jaarssaldo
                         </p>
                     </div>
@@ -229,22 +229,22 @@ export function VATPanel({ receipts, transactions, invoices, year }: VATPanelPro
                 <div
                     key={i}
                     className={`bg-white rounded-[2rem] border shadow-sm overflow-hidden ${q.isCurrentQuarter
-                        ? 'border-duck-coral ring-2 ring-duck-coral'
-                        : 'border-duck-line'
+                        ? 'border-duck-acid ring-2 ring-duck-acid'
+                        : 'border-duck-ink/15'
                         }`}
                 >
                     {/* Header */}
-                    <div className={`px-8 py-5 flex flex-wrap items-center justify-between gap-3 ${q.isCurrentQuarter ? 'bg-duck-coral' : 'bg-duck-bg'
-                        } border-b ${q.isCurrentQuarter ? 'border-duck-coral' : 'border-duck-line'}`}>
+                    <div className={`px-8 py-5 flex flex-wrap items-center justify-between gap-3 ${q.isCurrentQuarter ? 'bg-duck-acid' : 'bg-duck-bg'
+                        } border-b ${q.isCurrentQuarter ? 'border-duck-acid' : 'border-duck-ink/15'}`}>
                         <div className="flex items-center gap-3">
-                            <Calendar size={18} className={q.isCurrentQuarter ? 'text-duck-muted' : 'text-duck-muted'} />
+                            <Calendar size={18} className={q.isCurrentQuarter ? 'text-duck-ink/60' : 'text-duck-ink/60'} />
                             <div>
                                 <h4 className="font-black text-duck-ink text-sm uppercase tracking-tight">
                                     {q.label} — {q.months}
                                 </h4>
                                 <p className={`text-xs font-medium mt-0.5 flex items-center gap-1 ${q.isDeadlinePassed && q.saldo > 0
-                                    ? 'text-duck-muted'
-                                    : 'text-duck-muted'
+                                    ? 'text-duck-ink/60'
+                                    : 'text-duck-ink/60'
                                     }`}>
                                     <span>Deadline aangifte: {q.deadline}</span>
                                     {q.isDeadlinePassed && q.saldo > 0 && (
@@ -256,17 +256,17 @@ export function VATPanel({ receipts, transactions, invoices, year }: VATPanelPro
 
                         <div className="flex items-center gap-2">
                             {q.isCurrentQuarter && (
-                                <span className="text-[10px] font-black bg-duck-coral text-white px-2.5 py-1 rounded-full uppercase tracking-widest">
+                                <span className="text-[10px] font-black bg-duck-acid text-duck-ink px-2.5 py-1 rounded-full uppercase tracking-widest">
                                     Huidig kwartaal
                                 </span>
                             )}
                             {!q.isCurrentQuarter && q.isDeadlinePassed && (
-                                <span className="text-[10px] font-black bg-duck-creamDeep text-duck-muted px-2.5 py-1 rounded-full uppercase tracking-widest">
+                                <span className="text-[10px] font-black bg-duck-ink/10 text-duck-ink/60 px-2.5 py-1 rounded-full uppercase tracking-widest">
                                     Verstreken
                                 </span>
                             )}
                             {!q.isCurrentQuarter && !q.isDeadlinePassed && (
-                                <span className="text-[10px] font-black bg-duck-bg text-duck-muted px-2.5 py-1 rounded-full uppercase tracking-widest">
+                                <span className="text-[10px] font-black bg-duck-bg text-duck-ink/60 px-2.5 py-1 rounded-full uppercase tracking-widest">
                                     Aankomend
                                 </span>
                             )}
@@ -278,11 +278,11 @@ export function VATPanel({ receipts, transactions, invoices, year }: VATPanelPro
                         {/* 3-koloms BTW overzicht */}
                         <div className="grid grid-cols-3 gap-4 mb-6">
                             <div>
-                                <p className="text-[10px] font-black text-duck-muted uppercase tracking-widest mb-1.5">
+                                <p className="text-[10px] font-black text-duck-ink/60 uppercase tracking-widest mb-1.5">
                                     BTW Ontvangen
                                 </p>
                                 <div className="flex items-center gap-1.5">
-                                    <TrendingUp size={14} className="text-duck-muted shrink-0" />
+                                    <TrendingUp size={14} className="text-duck-ink/60 shrink-0" />
                                     <span className="text-lg font-black text-duck-ink">
                                         {formatEuro(q.vatCollected)}
                                     </span>
@@ -290,31 +290,31 @@ export function VATPanel({ receipts, transactions, invoices, year }: VATPanelPro
                             </div>
 
                             <div>
-                                <p className="text-[10px] font-black text-duck-muted uppercase tracking-widest mb-1.5">
+                                <p className="text-[10px] font-black text-duck-ink/60 uppercase tracking-widest mb-1.5">
                                     BTW Betaald
                                 </p>
                                 <div className="flex items-center gap-1.5">
-                                    <TrendingDown size={14} className="text-duck-coral shrink-0" />
-                                    <span className="text-lg font-black text-duck-muted">
+                                    <TrendingDown size={14} className="text-duck-error shrink-0" />
+                                    <span className="text-lg font-black text-duck-ink/60">
                                         {formatEuro(q.vatPaid)}
                                     </span>
                                 </div>
                             </div>
 
                             <div>
-                                <p className="text-[10px] font-black text-duck-muted uppercase tracking-widest mb-1.5">
+                                <p className="text-[10px] font-black text-duck-ink/60 uppercase tracking-widest mb-1.5">
                                     Saldo
                                 </p>
                                 {q.saldo >= 0 ? (
                                     <div className="flex items-center gap-1.5">
-                                        <AlertCircle size={14} className="text-duck-muted shrink-0" />
-                                        <span className="text-lg font-black text-duck-coral">
+                                        <AlertCircle size={14} className="text-duck-ink/60 shrink-0" />
+                                        <span className="text-lg font-black text-duck-error">
                                             Af te dragen {formatEuro(q.saldo)}
                                         </span>
                                     </div>
                                 ) : (
                                     <div className="flex items-center gap-1.5">
-                                        <CheckCircle size={14} className="text-duck-muted shrink-0" />
+                                        <CheckCircle size={14} className="text-duck-ink/60 shrink-0" />
                                         <span className="text-lg font-black text-duck-ink">
                                             Te vorderen {formatEuro(Math.abs(q.saldo))}
                                         </span>
@@ -325,9 +325,9 @@ export function VATPanel({ receipts, transactions, invoices, year }: VATPanelPro
 
                         {/* Waarschuwing te laat */}
                         {q.saldo > 0 && q.isDeadlinePassed && (
-                            <div className="flex items-center gap-3 bg-duck-coral border border-duck-coral rounded-xl px-4 py-3 mb-4">
-                                <AlertCircle size={16} className="text-duck-muted shrink-0" />
-                                <p className="text-sm font-bold text-duck-coral">
+                            <div className="flex items-center gap-3 bg-duck-error border border-duck-error rounded-xl px-4 py-3 mb-4">
+                                <AlertCircle size={16} className="text-white/60 shrink-0" />
+                                <p className="text-sm font-bold text-white">
                                     Aangifte mogelijk te laat! De deadline van {q.deadline} is verstreken.
                                     Dien zo snel mogelijk aangifte in om boetes te vermijden.
                                 </p>
@@ -340,8 +340,8 @@ export function VATPanel({ receipts, transactions, invoices, year }: VATPanelPro
                             target="_blank"
                             rel="noopener noreferrer"
                             className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold transition-colors ${q.saldo > 0 && q.isDeadlinePassed
-                                ? 'bg-duck-coral text-white hover:bg-duck-coral hover:text-white'
-                                : 'bg-duck-coral text-white hover:bg-duck-coral hover:text-white'
+                                ? 'bg-duck-acid text-duck-ink'
+                                : 'bg-duck-acid text-duck-ink'
                                 }`}
                         >
                             <ExternalLink size={14} />
@@ -352,34 +352,34 @@ export function VATPanel({ receipts, transactions, invoices, year }: VATPanelPro
             ))}
 
             {/* Voetnoot-kaart */}
-            <div className="bg-duck-bg rounded-[2rem] border border-duck-line p-8">
+            <div className="bg-duck-bg rounded-[2rem] border border-duck-ink/15 p-8">
                 <div className="flex items-start gap-3">
-                    <Info size={18} className="text-duck-muted shrink-0 mt-0.5" />
+                    <Info size={18} className="text-duck-ink/60 shrink-0 mt-0.5" />
                     <div className="space-y-2">
-                        <h4 className="font-black text-duck-muted text-sm uppercase tracking-tight">
+                        <h4 className="font-black text-duck-ink/60 text-sm uppercase tracking-tight">
                             Hoe werkt BTW-aangifte als ZZP'er?
                         </h4>
-                        <ul className="space-y-1.5 text-sm text-duck-muted">
+                        <ul className="space-y-1.5 text-sm text-duck-ink/60">
                             <li>
-                                <span className="font-bold text-duck-muted">Kwartaalaangifte:</span>{' '}
+                                <span className="font-bold text-duck-ink/60">Kwartaalaangifte:</span>{' '}
                                 Als ZZP'er doe je in de meeste gevallen elk kwartaal BTW-aangifte bij de Belastingdienst.
                             </li>
                             <li>
-                                <span className="font-bold text-duck-muted">Deadlines:</span>{' '}
+                                <span className="font-bold text-duck-ink/60">Deadlines:</span>{' '}
                                 Q1 → 30 april, Q2 → 31 juli, Q3 → 31 oktober, Q4 → 31 januari volgend jaar.
                             </li>
                             <li>
-                                <span className="font-bold text-duck-muted">BTW betalen:</span>{' '}
+                                <span className="font-bold text-duck-ink/60">BTW betalen:</span>{' '}
                                 Als het saldo positief is, draag je dit af. Bij negatief saldo kun je BTW terugvragen.
                             </li>
                             <li>
-                                <span className="font-bold text-duck-muted">Bonnetjes:</span>{' '}
+                                <span className="font-bold text-duck-ink/60">Bonnetjes:</span>{' '}
                                 Sla al je bonnetjes op via het tabblad "Bonnetjes" — de BTW hierop wordt automatisch verrekend.
                             </li>
                         </ul>
                         {!hasInvoices && (
                             <div className="mt-4 flex items-start gap-2 bg-duck-acid border border-duck-acid rounded-xl px-4 py-3">
-                                <AlertCircle size={14} className="text-duck-muted shrink-0 mt-0.5" />
+                                <AlertCircle size={14} className="text-duck-ink/60 shrink-0 mt-0.5" />
                                 <p className="text-xs text-duck-ink font-medium">
                                     <span className="font-black">Disclaimer:</span>{' '}
                                     De weergegeven BTW-ontvangen bedragen zijn schattingen op basis van je inkomsttransacties

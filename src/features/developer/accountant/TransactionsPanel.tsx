@@ -185,10 +185,10 @@ export function TransactionsPanel({ transactions, userId, year, onRefresh }: Tra
         <div className="space-y-6">
             {/* Foutmelding buiten modal (bijv. verwijder-fout of privacy-fout) */}
             {error && !showAddModal && (
-                <div className="flex items-center gap-2 text-white bg-duck-coral border border-duck-coral rounded-xl px-4 py-3 text-sm">
+                <div className="flex items-center gap-2 text-white bg-duck-error border border-duck-error rounded-xl px-4 py-3 text-sm">
                     <AlertCircle size={16} />
                     {error}
-                    <button onClick={() => setError('')} className="ml-auto p-1 hover:bg-duck-coral hover:text-white rounded-lg">
+                    <button onClick={() => setError('')} className="ml-auto p-1 hover:bg-duck-error hover:text-white rounded-lg">
                         <X size={12} />
                     </button>
                 </div>
@@ -198,14 +198,14 @@ export function TransactionsPanel({ transactions, userId, year, onRefresh }: Tra
             <div className="flex flex-wrap items-center gap-3">
                 <button
                     onClick={() => setShowAddModal(true)}
-                    className="flex items-center gap-2 px-4 py-2.5 bg-duck-coral text-white rounded-xl font-bold text-sm hover:bg-duck-coral hover:text-white transition-colors shadow-sm"
+                    className="flex items-center gap-2 px-4 py-2.5 bg-duck-acid text-duck-ink rounded-xl font-bold text-sm transition-colors shadow-sm"
                 >
                     <Plus size={16} />
                     Toevoegen
                 </button>
                 <button
                     onClick={() => setShowImport(!showImport)}
-                    className="flex items-center gap-2 px-4 py-2.5 bg-white border border-duck-line text-duck-muted rounded-xl font-bold text-sm hover:bg-duck-bg transition-colors"
+                    className="flex items-center gap-2 px-4 py-2.5 bg-white border border-duck-ink/15 text-duck-ink/60 rounded-xl font-bold text-sm hover:bg-duck-bg transition-colors"
                 >
                     <Upload size={16} />
                     CSV Importeren
@@ -215,7 +215,7 @@ export function TransactionsPanel({ transactions, userId, year, onRefresh }: Tra
                 <select
                     value={filterType}
                     onChange={e => setFilterType(e.target.value as 'alle' | 'inkomst' | 'uitgave')}
-                    className="ml-auto px-3 py-2 bg-white border border-duck-line rounded-xl text-sm font-medium text-duck-muted focus:outline-none focus:ring-2 focus:ring-duck-coral"
+                    className="ml-auto px-3 py-2 bg-white border border-duck-ink/15 rounded-xl text-sm font-medium text-duck-ink/60 focus:outline-none focus:ring-2 focus:ring-duck-ink/15"
                 >
                     <option value="alle">Alle types</option>
                     <option value="inkomst">Inkomsten</option>
@@ -225,7 +225,7 @@ export function TransactionsPanel({ transactions, userId, year, onRefresh }: Tra
                 <select
                     value={filterCat}
                     onChange={e => setFilterCat(e.target.value)}
-                    className="px-3 py-2 bg-white border border-duck-line rounded-xl text-sm font-medium text-duck-muted focus:outline-none focus:ring-2 focus:ring-duck-coral"
+                    className="px-3 py-2 bg-white border border-duck-ink/15 rounded-xl text-sm font-medium text-duck-ink/60 focus:outline-none focus:ring-2 focus:ring-duck-ink/15"
                 >
                     {categories.map(c => (
                         <option key={c} value={c}>
@@ -237,7 +237,7 @@ export function TransactionsPanel({ transactions, userId, year, onRefresh }: Tra
                 <select
                     value={filterPrivacy}
                     onChange={e => setFilterPrivacy(e.target.value as FilterPrivacy)}
-                    className="px-3 py-2 bg-white border border-duck-line rounded-xl text-sm font-medium text-duck-muted focus:outline-none focus:ring-2 focus:ring-duck-coral"
+                    className="px-3 py-2 bg-white border border-duck-ink/15 rounded-xl text-sm font-medium text-duck-ink/60 focus:outline-none focus:ring-2 focus:ring-duck-ink/15"
                 >
                     <option value="alle">Zakelijk & Privé</option>
                     <option value="zakelijk">Alleen Zakelijk</option>
@@ -247,7 +247,7 @@ export function TransactionsPanel({ transactions, userId, year, onRefresh }: Tra
 
             {/* CSV Import panel */}
             {showImport && (
-                <div className="bg-duck-bg border border-duck-line rounded-2xl p-6 space-y-4">
+                <div className="bg-duck-bg border border-duck-ink/15 rounded-2xl p-6 space-y-4">
                     <h4 className="font-bold text-duck-ink">Bankafschrift importeren</h4>
                     <div className="flex flex-wrap gap-2">
                         {BANK_OPTIONS.map(b => (
@@ -255,8 +255,8 @@ export function TransactionsPanel({ transactions, userId, year, onRefresh }: Tra
                                 key={b.id}
                                 onClick={() => setImportBank(b.id)}
                                 className={`px-4 py-2 rounded-xl text-sm font-bold transition-colors ${importBank === b.id
-                                    ? 'bg-duck-coral text-white'
-                                    : 'bg-white border border-duck-line text-duck-muted hover:bg-duck-bg'
+                                    ? 'bg-duck-acid text-duck-ink'
+                                    : 'bg-white border border-duck-ink/15 text-duck-ink/60 hover:bg-duck-bg'
                                     }`}
                             >
                                 {b.label}
@@ -264,7 +264,7 @@ export function TransactionsPanel({ transactions, userId, year, onRefresh }: Tra
                         ))}
                     </div>
                     <div
-                        className="border-2 border-dashed border-duck-line rounded-xl p-4 sm:p-8 text-center cursor-pointer hover:border-duck-coral hover:bg-duck-coral hover:text-white transition-colors"
+                        className="border-2 border-dashed border-duck-ink/15 rounded-xl p-4 sm:p-8 text-center cursor-pointer hover:border-duck-ink transition-colors"
                         onClick={() => fileRef.current?.click()}
                         onDragOver={e => e.preventDefault()}
                         onDrop={e => {
@@ -281,14 +281,14 @@ export function TransactionsPanel({ transactions, userId, year, onRefresh }: Tra
                             onChange={e => { const f = e.target.files?.[0]; if (f) handleImport(f); }}
                         />
                         {importing ? (
-                            <p className="text-duck-coral font-bold animate-pulse">Importeren...</p>
+                            <p className="text-duck-ink font-bold animate-pulse">Importeren...</p>
                         ) : (
                             <>
-                                <Upload size={24} className="mx-auto text-duck-muted mb-2" />
-                                <p className="text-sm text-duck-muted font-medium">
+                                <Upload size={24} className="mx-auto text-duck-ink/60 mb-2" />
+                                <p className="text-sm text-duck-ink/60 font-medium">
                                     Sleep je CSV-bestand hierheen of klik om te selecteren
                                 </p>
-                                <p className="text-xs text-duck-muted mt-1">
+                                <p className="text-xs text-duck-ink/60 mt-1">
                                     Download het bestand via Mijn {BANK_OPTIONS.find(b => b.id === importBank)?.label} → Transacties exporteren
                                 </p>
                             </>
@@ -304,7 +304,7 @@ export function TransactionsPanel({ transactions, userId, year, onRefresh }: Tra
                         </div>
                     )}
                     {importError && (
-                        <div className="flex items-center gap-2 text-white bg-duck-coral rounded-xl px-4 py-3">
+                        <div className="flex items-center gap-2 text-white bg-duck-error rounded-xl px-4 py-3">
                             <AlertCircle size={16} />
                             <span className="text-sm font-bold">{importError}</span>
                         </div>
@@ -313,41 +313,41 @@ export function TransactionsPanel({ transactions, userId, year, onRefresh }: Tra
             )}
 
             {/* Tabel */}
-            <div className="bg-white rounded-[2rem] border border-duck-line shadow-sm overflow-hidden">
+            <div className="bg-white rounded-[2rem] border border-duck-ink/15 shadow-sm overflow-hidden">
                 {filtered.length === 0 ? (
                     <div className="py-16 text-center">
-                        <p className="text-duck-muted text-sm italic">Geen transacties gevonden voor {year}.</p>
-                        <p className="text-duck-muted text-xs mt-1">Voeg een transactie toe of importeer een bankafschrift.</p>
+                        <p className="text-duck-ink/60 text-sm italic">Geen transacties gevonden voor {year}.</p>
+                        <p className="text-duck-ink/60 text-xs mt-1">Voeg een transactie toe of importeer een bankafschrift.</p>
                     </div>
                 ) : (
                     <div className="overflow-x-auto">
                         <table className="w-full text-sm">
                             <thead>
-                                <tr className="border-b border-duck-line">
+                                <tr className="border-b border-duck-ink/15">
                                     <th
-                                        className="text-left px-6 py-4 text-[10px] font-black text-duck-muted uppercase tracking-widest cursor-pointer hover:text-duck-muted"
+                                        className="text-left px-6 py-4 text-[10px] font-black text-duck-ink/60 uppercase tracking-widest cursor-pointer hover:text-duck-ink"
                                         onClick={() => toggleSort('date')}
                                     >
                                         <span className="flex items-center gap-1">
                                             Datum {sortKey === 'date' && (sortAsc ? <ChevronUp size={12} /> : <ChevronDown size={12} />)}
                                         </span>
                                     </th>
-                                    <th className="text-left px-6 py-4 text-[10px] font-black text-duck-muted uppercase tracking-widest">
+                                    <th className="text-left px-6 py-4 text-[10px] font-black text-duck-ink/60 uppercase tracking-widest">
                                         Omschrijving
                                     </th>
                                     <th
-                                        className="text-left px-6 py-4 text-[10px] font-black text-duck-muted uppercase tracking-widest cursor-pointer hover:text-duck-muted"
+                                        className="text-left px-6 py-4 text-[10px] font-black text-duck-ink/60 uppercase tracking-widest cursor-pointer hover:text-duck-ink"
                                         onClick={() => toggleSort('category')}
                                     >
                                         <span className="flex items-center gap-1">
                                             Categorie {sortKey === 'category' && (sortAsc ? <ChevronUp size={12} /> : <ChevronDown size={12} />)}
                                         </span>
                                     </th>
-                                    <th className="text-left px-6 py-4 text-[10px] font-black text-duck-muted uppercase tracking-widest">
+                                    <th className="text-left px-6 py-4 text-[10px] font-black text-duck-ink/60 uppercase tracking-widest">
                                         Type
                                     </th>
                                     <th
-                                        className="text-right px-6 py-4 text-[10px] font-black text-duck-muted uppercase tracking-widest cursor-pointer hover:text-duck-muted"
+                                        className="text-right px-6 py-4 text-[10px] font-black text-duck-ink/60 uppercase tracking-widest cursor-pointer hover:text-duck-ink"
                                         onClick={() => toggleSort('amount')}
                                     >
                                         <span className="flex items-center justify-end gap-1">
@@ -365,13 +365,13 @@ export function TransactionsPanel({ transactions, userId, year, onRefresh }: Tra
                                             key={tx.id}
                                             className={`hover:bg-duck-bg transition-colors group ${isPrivate ? 'opacity-60' : ''}`}
                                         >
-                                            <td className="px-6 py-4 text-duck-muted text-xs whitespace-nowrap">
+                                            <td className="px-6 py-4 text-duck-ink/60 text-xs whitespace-nowrap">
                                                 {formatDate(tx.date)}
                                             </td>
                                             <td className="px-6 py-4">
                                                 <span className="font-medium text-duck-ink text-xs">{tx.description}</span>
                                                 {tx.imported_from && tx.imported_from !== 'manual' && (
-                                                    <span className="ml-2 text-[9px] bg-duck-bg text-duck-muted px-1.5 py-0.5 rounded-full uppercase font-bold">
+                                                    <span className="ml-2 text-[9px] bg-duck-bg text-duck-ink/60 px-1.5 py-0.5 rounded-full uppercase font-bold">
                                                         {tx.imported_from}
                                                     </span>
                                                 )}
@@ -382,7 +382,7 @@ export function TransactionsPanel({ transactions, userId, year, onRefresh }: Tra
                                                 )}
                                             </td>
                                             <td className="px-6 py-4">
-                                                <span className="text-[10px] bg-duck-coral text-white px-2 py-1 rounded-lg font-bold">
+                                                <span className="text-[10px] text-duck-ink bg-duck-acid/30 px-2 py-1 rounded-lg font-bold">
                                                     {CATEGORY_LABELS[tx.category] || tx.category}
                                                 </span>
                                             </td>
@@ -393,7 +393,7 @@ export function TransactionsPanel({ transactions, userId, year, onRefresh }: Tra
                                                     className="focus:outline-none"
                                                 >
                                                     {isPrivate ? (
-                                                        <span className="inline-flex items-center gap-1 text-[10px] bg-duck-bg text-duck-muted px-2 py-1 rounded-lg font-bold hover:bg-duck-creamDeep transition-colors cursor-pointer">
+                                                        <span className="inline-flex items-center gap-1 text-[10px] bg-duck-bg text-duck-ink/60 px-2 py-1 rounded-lg font-bold hover:bg-duck-ink/10 transition-colors cursor-pointer">
                                                             privé
                                                         </span>
                                                     ) : (
@@ -404,13 +404,13 @@ export function TransactionsPanel({ transactions, userId, year, onRefresh }: Tra
                                                     )}
                                                 </button>
                                             </td>
-                                            <td className={`px-6 py-4 text-right font-black text-sm whitespace-nowrap ${tx.amount >= 0 ? 'text-duck-ink' : 'text-duck-muted'}`}>
+                                            <td className={`px-6 py-4 text-right font-black text-sm whitespace-nowrap ${tx.amount >= 0 ? 'text-duck-ink' : 'text-duck-ink/60'}`}>
                                                 {tx.amount >= 0 ? '+' : ''}{formatEuro(tx.amount)}
                                             </td>
                                             <td className="px-4 py-4">
                                                 <button
                                                     onClick={() => tx.id && handleDelete(tx.id)}
-                                                    className="opacity-0 group-hover:opacity-100 p-2.5 text-duck-muted hover:text-duck-muted hover:bg-duck-coral hover:text-white rounded-lg transition-all"
+                                                    className="opacity-0 group-hover:opacity-100 p-2.5 text-duck-ink/60 hover:text-white hover:bg-duck-error rounded-lg transition-all"
                                                 >
                                                     <Trash2 size={16} />
                                                 </button>
@@ -427,8 +427,8 @@ export function TransactionsPanel({ transactions, userId, year, onRefresh }: Tra
             {/* Totaalregel */}
             {filtered.length > 0 && (
                 <div className="flex justify-end gap-6 px-2 text-sm font-bold">
-                    <span className="text-duck-muted">{filtered.length} transacties</span>
-                    <span className={filtered.reduce((s, t) => s + t.amount, 0) >= 0 ? 'text-duck-ink' : 'text-duck-muted'}>
+                    <span className="text-duck-ink/60">{filtered.length} transacties</span>
+                    <span className={filtered.reduce((s, t) => s + t.amount, 0) >= 0 ? 'text-duck-ink' : 'text-duck-ink/60'}>
                         Saldo: {formatEuro(filtered.reduce((s, t) => s + t.amount, 0))}
                     </span>
                 </div>
@@ -441,12 +441,12 @@ export function TransactionsPanel({ transactions, userId, year, onRefresh }: Tra
                         <div className="flex items-center justify-between mb-6">
                             <h3 className="text-lg font-black text-duck-ink uppercase tracking-tight">Transactie Toevoegen</h3>
                             <button onClick={() => { setShowAddModal(false); setError(''); }} className="p-2 hover:bg-duck-bg rounded-xl">
-                                <X size={20} className="text-duck-muted" />
+                                <X size={20} className="text-duck-ink/60" />
                             </button>
                         </div>
 
                         {error && (
-                            <div className="flex items-center gap-2 text-white bg-duck-coral rounded-xl px-4 py-3 mb-4 text-sm">
+                            <div className="flex items-center gap-2 text-white bg-duck-error rounded-xl px-4 py-3 mb-4 text-sm">
                                 <AlertCircle size={16} />
                                 {error}
                             </div>
@@ -454,7 +454,7 @@ export function TransactionsPanel({ transactions, userId, year, onRefresh }: Tra
 
                         <div className="space-y-4">
                             {/* Type */}
-                            <div className="flex rounded-xl overflow-hidden border border-duck-line">
+                            <div className="flex rounded-xl overflow-hidden border border-duck-ink/15">
                                 {(['inkomst', 'uitgave'] as const).map(type => (
                                     <button
                                         key={type}
@@ -466,8 +466,8 @@ export function TransactionsPanel({ transactions, userId, year, onRefresh }: Tra
                                             }));
                                         }}
                                         className={`flex-1 py-2.5 text-sm font-bold capitalize transition-colors ${form.type === type
-                                            ? type === 'inkomst' ? 'bg-duck-coral text-white' : 'bg-duck-coral text-white'
-                                            : 'bg-white text-duck-muted hover:bg-duck-bg'
+                                            ? 'bg-duck-acid text-duck-ink'
+                                            : 'bg-white text-duck-ink/60 hover:bg-duck-bg'
                                             }`}
                                     >
                                         {type}
@@ -477,18 +477,18 @@ export function TransactionsPanel({ transactions, userId, year, onRefresh }: Tra
 
                             {/* Datum */}
                             <div>
-                                <label className="block text-xs font-bold text-duck-muted uppercase tracking-widest mb-1">Datum</label>
+                                <label className="block text-xs font-bold text-duck-ink/60 uppercase tracking-widest mb-1">Datum</label>
                                 <input
                                     type="date"
                                     value={form.date}
                                     onChange={e => setForm(f => ({ ...f, date: e.target.value }))}
-                                    className="w-full px-4 py-2.5 border border-duck-line rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-duck-coral"
+                                    className="w-full px-4 py-2.5 border border-duck-ink/15 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-duck-ink/15"
                                 />
                             </div>
 
                             {/* Bedrag */}
                             <div>
-                                <label className="block text-xs font-bold text-duck-muted uppercase tracking-widest mb-1">Bedrag (€)</label>
+                                <label className="block text-xs font-bold text-duck-ink/60 uppercase tracking-widest mb-1">Bedrag (€)</label>
                                 <input
                                     type="number"
                                     step="0.01"
@@ -496,29 +496,29 @@ export function TransactionsPanel({ transactions, userId, year, onRefresh }: Tra
                                     placeholder="0,00"
                                     value={form.amount}
                                     onChange={e => setForm(f => ({ ...f, amount: e.target.value }))}
-                                    className="w-full px-4 py-2.5 border border-duck-line rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-duck-coral"
+                                    className="w-full px-4 py-2.5 border border-duck-ink/15 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-duck-ink/15"
                                 />
                             </div>
 
                             {/* Omschrijving */}
                             <div>
-                                <label className="block text-xs font-bold text-duck-muted uppercase tracking-widest mb-1">Omschrijving</label>
+                                <label className="block text-xs font-bold text-duck-ink/60 uppercase tracking-widest mb-1">Omschrijving</label>
                                 <input
                                     type="text"
                                     placeholder="Bijv. Factuur #001, Kantoorbenodigdheden..."
                                     value={form.description}
                                     onChange={e => setForm(f => ({ ...f, description: e.target.value }))}
-                                    className="w-full px-4 py-2.5 border border-duck-line rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-duck-coral"
+                                    className="w-full px-4 py-2.5 border border-duck-ink/15 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-duck-ink/15"
                                 />
                             </div>
 
                             {/* Categorie */}
                             <div>
-                                <label className="block text-xs font-bold text-duck-muted uppercase tracking-widest mb-1">Categorie</label>
+                                <label className="block text-xs font-bold text-duck-ink/60 uppercase tracking-widest mb-1">Categorie</label>
                                 <select
                                     value={form.category}
                                     onChange={e => setForm(f => ({ ...f, category: e.target.value as TransactionCategory }))}
-                                    className="w-full px-4 py-2.5 border border-duck-line rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-duck-coral"
+                                    className="w-full px-4 py-2.5 border border-duck-ink/15 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-duck-ink/15"
                                 >
                                     {(form.type === 'inkomst' ? INCOME_CATEGORIES : EXPENSE_CATEGORIES).map(cat => (
                                         <option key={cat} value={cat}>{CATEGORY_LABELS[cat]}</option>
@@ -529,7 +529,7 @@ export function TransactionsPanel({ transactions, userId, year, onRefresh }: Tra
                             {/* Kilometerveld (alleen bij reiskosten) */}
                             {form.category === 'reiskosten' && (
                                 <div>
-                                    <label className="block text-xs font-bold text-duck-muted uppercase tracking-widest mb-1">
+                                    <label className="block text-xs font-bold text-duck-ink/60 uppercase tracking-widest mb-1">
                                         Kilometers (km)
                                     </label>
                                     <input
@@ -539,9 +539,9 @@ export function TransactionsPanel({ transactions, userId, year, onRefresh }: Tra
                                         placeholder="Bijv. 42"
                                         value={form.km_distance}
                                         onChange={e => setForm(f => ({ ...f, km_distance: e.target.value }))}
-                                        className="w-full px-4 py-2.5 border border-duck-line rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-duck-coral"
+                                        className="w-full px-4 py-2.5 border border-duck-ink/15 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-duck-ink/15"
                                     />
-                                    <p className="text-[10px] text-duck-muted mt-1 font-medium">
+                                    <p className="text-[10px] text-duck-ink/60 mt-1 font-medium">
                                         €0,23/km aftrekbaar. Vul in voor administratie.
                                     </p>
                                 </div>
@@ -549,14 +549,14 @@ export function TransactionsPanel({ transactions, userId, year, onRefresh }: Tra
 
                             {/* Privé toggle */}
                             <div className={`flex items-center justify-between p-4 rounded-xl border transition-colors ${form.is_private
-                                ? 'bg-duck-bg border-duck-line border-dashed'
+                                ? 'bg-duck-bg border-duck-ink/15 border-dashed'
                                 : 'bg-duck-ink border-duck-ink'
                                 }`}>
                                 <div>
-                                    <p className={`text-sm font-bold ${form.is_private ? 'text-duck-muted line-through decoration-dotted' : 'text-duck-ink'}`}>
+                                    <p className={`text-sm font-bold ${form.is_private ? 'text-duck-ink/60 line-through decoration-dotted' : 'text-duck-ink'}`}>
                                         {form.is_private ? 'Privé transactie' : 'Zakelijke transactie'}
                                     </p>
-                                    <p className="text-[10px] text-duck-muted mt-0.5">
+                                    <p className="text-[10px] text-duck-ink/60 mt-0.5">
                                         {form.is_private
                                             ? 'Niet aftrekbaar voor de belasting'
                                             : 'Telt mee als zakelijke kosten of omzet'}
@@ -569,7 +569,7 @@ export function TransactionsPanel({ transactions, userId, year, onRefresh }: Tra
                                         checked={form.is_private}
                                         onChange={e => setForm(f => ({ ...f, is_private: e.target.checked }))}
                                     />
-                                    <div className="w-10 h-6 bg-duck-coral peer-checked:bg-duck-creamDeep rounded-full peer peer-focus:ring-2 peer-focus:ring-duck-coral transition-colors after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:after:translate-x-4" />
+                                    <div className="w-10 h-6 bg-duck-acid peer-checked:bg-duck-ink/10 rounded-full peer peer-focus:ring-2 peer-focus:ring-duck-ink/15 transition-colors after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:after:translate-x-4" />
                                 </label>
                             </div>
                         </div>
@@ -577,14 +577,14 @@ export function TransactionsPanel({ transactions, userId, year, onRefresh }: Tra
                         <div className="flex gap-3 mt-6">
                             <button
                                 onClick={() => { setShowAddModal(false); setError(''); }}
-                                className="flex-1 py-3 border border-duck-line rounded-xl text-sm font-bold text-duck-muted hover:bg-duck-bg transition-colors"
+                                className="flex-1 py-3 border border-duck-ink/15 rounded-xl text-sm font-bold text-duck-ink/60 hover:bg-duck-bg transition-colors"
                             >
                                 Annuleren
                             </button>
                             <button
                                 onClick={handleAdd}
                                 disabled={saving}
-                                className="flex-1 py-3 bg-duck-coral text-white rounded-xl text-sm font-bold hover:bg-duck-coral hover:text-white disabled:opacity-50 transition-colors"
+                                className="flex-1 py-3 bg-duck-acid text-duck-ink rounded-xl text-sm font-bold disabled:opacity-50 transition-colors"
                             >
                                 {saving ? 'Opslaan...' : 'Opslaan'}
                             </button>
