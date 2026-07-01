@@ -238,7 +238,7 @@ Positief:
 - AI-output is visueel herkenbaar als AI-gegenereerd
 
 Aandachtspunten:
-- Docent kan STEP_COMPLETE momenteel NIET overriden
+- ~~Docent kan STEP_COMPLETE momenteel NIET overriden~~ **Opgelost (15 mrt 2026):** docent-override voor STEP_COMPLETE is geïmplementeerd (migratie `20260315500000_teacher_step_override.sql`, `teacherOverrideService.ts`, `StepOverrideModal.tsx`)
 - Geen docentdashboard voor real-time monitoring van AI-interacties
 - Geen "noodstop" functionaliteit voor docenten
 
@@ -246,7 +246,7 @@ Aandachtspunten:
 
 | # | Actie | Geschatte tijd | Prioriteit |
 |---|-------|---------------|------------|
-| 14.1 | **Implementeer docent-override voor STEP_COMPLETE** (docent kan stappen terugdraaien of handmatig goedkeuren) | 2 weken | KRITIEK |
+| 14.1 | ~~Implementeer docent-override voor STEP_COMPLETE~~ **AFGEROND (15 mrt 2026)** — docent kan stappen terugdraaien of handmatig goedkeuren (migratie 20260315500000 + teacherOverrideService.ts + StepOverrideModal.tsx) | 2 weken | ✅ Afgerond |
 | 14.2 | Bouw docentdashboard voor monitoring AI-interacties (aggregaat, niet PII) | 2 weken | HOOG |
 | 14.3 | Implementeer "noodstop": docent kan AI-functionaliteit per klas/leerling uitschakelen | 1 week | HOOG |
 | 14.4 | Voeg waarschuwing toe tegen "automation bias" in docenthandleiding | 2 dagen | MIDDEN |
@@ -562,7 +562,7 @@ De conformiteitsbeoordelingsprocedure op basis van interne controle omvat drie o
 | W4 (21-25 jul) | Registratie in EU AI-databank (Art. 49) | Registratiebewijs |
 | W4 | Definitieve controle complete dossier | Definitief compliance-dossier |
 
-#### FASE 6: GO-LIVE (Augustus 2026)
+#### FASE 6: GO-LIVE (interne planning: augustus 2026; wettelijke toepassingsdatum hoog-risico Annex III-onderwijs: naar verwachting 2 december 2027 — zie tabel)
 
 | Datum | Actie |
 |-------|-------|
