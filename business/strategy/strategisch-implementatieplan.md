@@ -146,7 +146,7 @@ Geclusterd per horizon. Dit is de kern van de opdracht: concrete, uitvoerbare st
 | Risico / afhankelijkheid | Impact | Mitigatie |
 |---|---|---|
 | **Founder-bandbreedte (~8–10 u/wk)** | Beperkt alles | Product-led keuzes (zelf-start, gratis apps) i.p.v. high-touch; lage-drempel-beachhead BE |
-| **AI Act-deadline (Annex III-onderwijs, verwacht 2 dec 2027)** | Wettelijk; blokkeert verkoop bij niet-naleving | Documentatie afronden ruim vóór de deadline (cross-cutting actie) |
+| **AI Act-toepassingsdatum (Annex III-onderwijs)** | Wettelijk; blokkeert verkoop bij niet-naleving | Documentatie afronden ruim vóór de toepassingsdatum — naar verwachting 2 dec 2027 (Digital Omnibus, nog niet gepubliceerd) |
 | **i18n-kosten €15–25k** | Blokkeert anderstalig | Vlaanderen eerst (geen i18n); daarna gefaseerd, kern-missies eerst |
 | **Curriculum-mapping per land** | Verborgen kostenpost (inhoud, niet vertaling) | Per-markt sjabloon §7; pas committen na bewezen vraag |
 | **Freemium-kannibalisatie** | Ondermijnt licentie-omzet | Strikte gratis-vs-betaald-featurelijn (§6) |
