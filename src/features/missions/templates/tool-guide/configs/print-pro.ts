@@ -40,6 +40,7 @@ const config: ToolGuideConfig = {
                 explanation:
                     'Precies! Je kijkt in de App Library of in de Instellingen van je apparaat, of je vraagt het gewoon aan je docent of de IT-helpdesk. Die weten precies welk systeem de school gebruikt.',
             },
+            teacherCheck: 'Laat je docent zien welk printsysteem jouw school gebruikt.',
         },
         {
             id: 'stap-2-verbinden',
@@ -52,6 +53,18 @@ const config: ToolGuideConfig = {
                 { id: 'ingelogd-printer', label: 'Ik ben ingelogd met mijn schoolaccount (als dat nodig was)' },
                 { id: 'printer-verbonden', label: 'Mijn apparaat is verbonden met de schoolprinter' },
             ],
+            verificationQuestion: {
+                question: 'Hoe open je het printvenster op een Chromebook of Windows-laptop?',
+                options: [
+                    'Via App Library > Afdrukken',
+                    'Ctrl+P in het document',
+                    'Via Instellingen > Printers > Afdrukken',
+                    'Door de print-app te installeren',
+                ],
+                correctIndex: 1,
+                explanation:
+                    'Ctrl+P opent het printvenster direct in bijna elk programma — op Chromebook én Windows. Snel en handig!',
+            },
         },
         {
             id: 'stap-3-instellingen',
@@ -108,19 +121,19 @@ const config: ToolGuideConfig = {
             minScore: 55,
             emoji: '🏆',
             title: 'Print Expert',
-            color: '#202023',
+            color: '#D97848',
         },
         {
             minScore: 40,
             emoji: '🖨️',
             title: 'Print Pro',
-            color: '#202023',
+            color: '#445865',
         },
         {
             minScore: 0,
             emoji: '🌱',
             title: 'Aan de slag',
-            color: '#202023',
+            color: '#7B8794',
         },
     ],
     learningObjectives: [

@@ -52,7 +52,7 @@ const CHALLENGES: Challenge[] = [
         title: '🐾 Level 1: Robbie Ontwaakt',
         description: 'Robbie de speurhond ruikt een spoor! Programmeer hem om naar rechts te lopen naar het eerste bewijs.',
         hint: 'Sleep een geel "wanneer game start" blok in je werkveld, en voeg dan een "ga naar rechts" blok toe.',
-        check: (ctx) => ctx.player.x > 150
+        check: (ctx) => ctx.reachedGoal
     },
     {
         id: 'jumping',
@@ -842,7 +842,7 @@ export const GameDirectorMission: React.FC<GameDirectorProps> = ({ onComplete, o
                             {challengeComplete ? (
                                 <button
                                     onClick={handleNextChallenge}
-                                    className="px-3 py-1.5 bg-duck-ink hover:bg-duck-ink text-white rounded-full font-bold text-xs transition-all duration-300 flex items-center gap-1 shadow-lg shadow-duck-ink/20"
+                                    className="px-3 py-1.5 bg-duck-ink hover:opacity-80 text-white rounded-full font-bold text-xs transition-all duration-300 flex items-center gap-1 shadow-lg shadow-duck-ink/20"
                                 >
                                     Volgende <ArrowLeft size={12} className="rotate-180" />
                                 </button>
@@ -871,6 +871,7 @@ export const GameDirectorMission: React.FC<GameDirectorProps> = ({ onComplete, o
             <MissionGoalBanner goal={MISSION_GOAL} compact className="mx-4 my-2 shrink-0" />
 
             <StudentAIChat
+                roleId="game-director"
                 userIdentifier={userId || 'anonymous'}
                 isOpen={isChatOpen}
                 onOpenChange={setIsChatOpen}
@@ -948,7 +949,7 @@ export const GameDirectorMission: React.FC<GameDirectorProps> = ({ onComplete, o
 
                     <div className="flex-1 p-4 lg:p-6 flex flex-col gap-4 overflow-y-auto bg-duck-bg relative">
                         {/* Game Screen Container - Maintains Aspect Ratio but fills space */}
-                        <div className="flex-1 relative bg-duck-ink rounded-2xl overflow-hidden shadow-2xl border-4 border-duck-gray ring-1 ring-black/5 group">
+                        <div className="flex-1 min-h-[280px] relative bg-duck-ink rounded-2xl overflow-hidden shadow-2xl border-4 border-duck-gray ring-1 ring-black/5 group">
                             {/* Canvas needs to respond to size */}
                             <div className="absolute inset-0 flex items-center justify-center bg-[radial-gradient(circle_at_center,#0B453F_0%,#08283B_100%)]">
                                 <canvas
@@ -964,6 +965,7 @@ export const GameDirectorMission: React.FC<GameDirectorProps> = ({ onComplete, o
                             <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 bg-white/90 backdrop-blur-sm p-1.5 rounded-full border border-duck-gray shadow-xl opacity-100 lg:opacity-0 lg:group-hover:opacity-100 transition-all duration-300">
                                 <button
                                     onClick={handleTogglePlay}
+                                    aria-label={isPlaying ? 'Stop game' : 'Start game'}
                                     className={`p-3 rounded-full transition-all duration-300 active:scale-95 ${isPlaying
                                         ? 'bg-duck-acid/20 text-duck-ink/60 hover:bg-duck-acid hover:text-duck-ink'
                                         : 'bg-duck-acid/20 text-duck-ink hover:bg-duck-acid hover:text-duck-ink'}`}

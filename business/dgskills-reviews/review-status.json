@@ -977,11 +977,14 @@
    "interactivity": 0,
    "total": 13
   },
-  "lastReviewed": "2026-06-17",
-  "reviewStatus": "reviewed",
-  "reportPath": "business/dgskills-reviews/game-director-2026-06-17.md",
-  "autoFixesApplied": 0,
-  "openEscalations": [],
+  "lastReviewed": "2026-07-01",
+  "reviewStatus": "fixed",
+  "reportPath": "business/dgskills-reviews/game-director-2026-07-01.md",
+  "autoFixesApplied": 8,
+  "openEscalations": [
+   "prose-only: dashboardbeschrijving suggereert productontwerp (22A) terwijl missie alleen 22B checkt — rapport gaf geen concrete vervangtekst",
+   "prose-only: reflectievraag te open/cognitief zwaar voor onderbouw J1 — geen concrete vervangende prompt-tekst in rapport"
+  ],
   "codexVerdict": null,
   "reviewScores": {
    "uiux": 2,
@@ -991,7 +994,7 @@
   "goalClear": true,
   "goalAchieved": true,
   "proposedFixes": 6,
-  "escalationCount": 0,
+  "escalationCount": 2,
   "topIssues": [
    "roleId='game-director' ontbreekt bij StudentAIChat → generieke fallback",
    "SLO-dashboard claimt ['22A','22B'] maar mapping heeft alleen ['22B']",
@@ -1283,11 +1286,14 @@
    "interactivity": 0,
    "total": 7
   },
-  "lastReviewed": "2026-06-17",
-  "reviewStatus": "reviewed",
-  "reportPath": "business/dgskills-reviews/network-navigator-2026-06-17.md",
-  "autoFixesApplied": 0,
-  "openEscalations": [],
+  "lastReviewed": "2026-07-01",
+  "reviewStatus": "fixed",
+  "reportPath": "business/dgskills-reviews/network-navigator-2026-07-01.md",
+  "autoFixesApplied": 1,
+  "openEscalations": [
+   "template-breed: 4 a11y/design-voorstellen raken gedeelde DataViewer.tsx/InteractiveTable.tsx (gradient, accent-hex, aria-sort, aria-label) — buiten whitelist",
+   "goalCriteria-type ambigu: config+missionGoals 'rounds-complete' vs year2.tsx 'steps-complete'; geen runtime-consumer gevonden — Yorin kiest de canonieke waarde"
+  ],
   "codexVerdict": null,
   "reviewScores": {
    "uiux": 2,
@@ -1297,7 +1303,7 @@
   "goalClear": true,
   "goalAchieved": true,
   "proposedFixes": 6,
-  "escalationCount": 1,
+  "escalationCount": 2,
   "topIssues": [
    "goalCriteria type-mismatch: config='rounds-complete' vs agent='steps-complete'",
    "Hardcoded hex in badges/chartData",
@@ -1505,11 +1511,16 @@
    "interactivity": 0,
    "total": 7
   },
-  "lastReviewed": "2026-06-17",
-  "reviewStatus": "reviewed",
-  "reportPath": "business/dgskills-reviews/policy-maker-2026-06-17.md",
+  "lastReviewed": "2026-07-01",
+  "reviewStatus": "blocked",
+  "reportPath": "business/dgskills-reviews/policy-maker-2026-07-01.md",
   "autoFixesApplied": 0,
-  "openEscalations": [],
+  "openEscalations": [
+   "design-tokenisatie: badge-color #202023 template-breed in alle 4 debate-arena-configs; rapportvoorstel var(--color-duck-ink) is technisch onjuist (geen CSS-vars in dit project)",
+   "didactiek: missionObjective 'schrijf beleidsvoorstel' maar template heeft geen schrijfveld — geen whitelist-conform tekstvoorstel in rapport",
+   "ai-endpoint: systemInstruction client-side in year3.tsx — mogelijk prompt-injection-oppervlak, verificatie nodig",
+   "security-verificatie: promptSanitizer-toepassing op chat-input niet verifieerbaar zonder edge-function-inspectie"
+  ],
   "codexVerdict": null,
   "reviewScores": {
    "uiux": 2,
@@ -1519,12 +1530,13 @@
   "goalClear": true,
   "goalAchieved": false,
   "proposedFixes": 5,
-  "escalationCount": 3,
+  "escalationCount": 4,
   "topIssues": [
    "missionGoal ontbreekt → IntroScreen goal-blok leeg",
    "missionObjective 'schrijf beleidsvoorstel' maar template heeft geen schrijfstap [ESCALATIE]",
    "systemInstruction client-side in year3.tsx [ESCALATIE]"
-  ]
+  ],
+  "statusNote": "wave 4 fix-pass 2026-07-01: 0 toepasbaar; wacht op Yorin-beslissingen"
  },
  {
   "missionId": "portfolio-builder",
@@ -1555,11 +1567,13 @@
    "interactivity": 2,
    "total": 8
   },
-  "lastReviewed": "2026-06-17",
-  "reviewStatus": "reviewed",
-  "reportPath": "business/dgskills-reviews/print-pro-2026-06-17.md",
-  "autoFixesApplied": 0,
-  "openEscalations": [],
+  "lastReviewed": "2026-07-01",
+  "reviewStatus": "fixed",
+  "reportPath": "business/dgskills-reviews/print-pro-2026-07-01.md",
+  "autoFixesApplied": 3,
+  "openEscalations": [
+   "engine-gap: ToolGuide.tsx rendert config.learningObjectives nergens (alleen takeaways) — engine-wijziging buiten missie-whitelist"
+  ],
   "codexVerdict": null,
   "reviewScores": {
    "uiux": 2,
@@ -1670,11 +1684,15 @@
    "interactivity": 2,
    "total": 10
   },
-  "lastReviewed": "2026-06-17",
-  "reviewStatus": "reviewed",
-  "reportPath": "business/dgskills-reviews/reflection-report-2026-06-17.md",
+  "lastReviewed": "2026-07-01",
+  "reviewStatus": "blocked",
+  "reportPath": "business/dgskills-reviews/reflection-report-2026-07-01.md",
   "autoFixesApplied": 0,
-  "openEscalations": [],
+  "openEscalations": [
+   "structureel: template/doel-mismatch — agent beschrijft essay-schrijfopdracht, debate-arena implementeert debat (productkeuze)",
+   "ai-endpoint: systemInstruction client-side inline in year3.tsx vs server-side systemInstructions.ts — verificatie nodig welke de AI-aanroep stuurt",
+   "design: lab-coral -> duck-token-swap onuitvoerbaar — duck-palet heeft geen coral-equivalent (design-beslissing)"
+  ],
   "codexVerdict": null,
   "reviewScores": {
    "uiux": 2,
@@ -1684,12 +1702,13 @@
   "goalClear": false,
   "goalAchieved": false,
   "proposedFixes": 5,
-  "escalationCount": 2,
+  "escalationCount": 3,
   "topIssues": [
    "Template/doel-mismatch: agent beschrijft essay, template implementeert debat [ESCALATIE]",
    "Ontbrekende missionGoal → IntroScreen krijgt undefined goal",
    "systemInstruction client-side inline in year3.tsx [ESCALATIE]"
-  ]
+  ],
+  "statusNote": "wave 4 fix-pass 2026-07-01: 0 toepasbaar; wacht op Yorin-beslissingen"
  },
  {
   "missionId": "research-project",
