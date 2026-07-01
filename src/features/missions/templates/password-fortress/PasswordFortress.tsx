@@ -348,7 +348,10 @@ const PasswordFortressInner: React.FC<{
 
     const visibleHints = round.hints.slice(0, hintsUsed);
     const canHint = hintsUsed < round.hints.length && !isCleared;
-    const canSkip = attempts >= config.skipAfterAttempts && !isCleared;
+    // De laatste ronde (credential stuffing) is de kernles en is nooit overslaanbaar;
+    // eerdere rondes mogen na herhaald vastlopen wél worden overgeslagen als vangnet.
+    const isFinalRound = state.currentRound === config.rounds.length - 1;
+    const canSkip = attempts >= config.skipAfterAttempts && !isCleared && !isFinalRound;
     const pointsForRound = Math.max(0, config.pointsPerRound - hintsUsed * config.hintCost);
 
     return (

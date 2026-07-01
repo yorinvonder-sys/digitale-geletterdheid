@@ -122,3 +122,14 @@ Codex flagde twee terechte punten, beide inmiddels in dit rapport verwerkt:
 2. **[medium] Privacyclaim sterker dan het bewijs** — oorspronkelijk alleen op localStorage gebaseerd. **Opgelost:** de privacyclaim is nu onderbouwd met localStorage + sessionStorage + een volledige netwerktrace (geen egress), en expliciet afgebakend met het resterende voorbehoud (console/error-reporting niet uitputtend getest).
 
 **Netto:** de BLOCK was inhoudelijk correct en valt samen met de netto-aanbeveling van dit rapport — **geblokkeerd voor curriculum-opname** tot de 2 didactische fixes zijn toegepast. De technische/registratie/privacy-bevindingen blijven schoon.
+
+---
+
+## Fix-status (opgelost 2026-07-02)
+
+Beide release-blocking didactische punten zijn toegepast en browser-geverifieerd:
+
+1. **Ronde 4 verplicht** — `PasswordFortress.tsx`: overslaan-knop is nu uitgeschakeld op de laatste ronde (`canSkip` sluit `isFinalRound` uit). Ronde 4 (credential stuffing) kan alleen nog worden voltooid door 'm te halen; het vangnet blijft bestaan voor rondes 1–3. Doeltekst bijgewerkt in `configs/wachtwoord-fortress.ts` + `missionGoals.ts` (synchroon). **Geverifieerd:** ronde 4 met 6 mislukte pogingen toont géén overslaan-knop; ronde 1 met 6 pogingen toont die wél; ronde 4 blijft haalbaar met een passphrase (geen soft-lock).
+2. **Overlap-brug** — `configs/wachtwoord-fortress.ts` `introDescription` opent nu met "In Wachtwoord Warrior leerde je hoe aanvallers denken — nu ga je dat zelf toepassen." (67 woorden, binnen de leerjaar-2-grens; geen layout-overflow). Positioneert Fortress als toepassing ná Warrior.
+
+`vite build` groen na de fixes. **Status: technisch + didactisch klaar; kan richting PR** (branch nog rebasen op actueel `origin/main`).

@@ -437,7 +437,7 @@ export const MISSION_GOALS: Record<string, MissionGoal> = {
         criteria: {
             type: 'rounds-complete',
             min: 3,
-            description: 'Minimaal drie van de vier aanvalsrondes overleefd met een wachtwoord dat het sterktedoel haalt.',
+            description: 'Minimaal drie van de vier aanvalsrondes overleefd — de laatste ronde (credential stuffing) is altijd verplicht.',
         },
         evidence: 'Je kunt uitleggen hoe brute-force, woordenboek-, leetspeak- en credential-stuffing-aanvallen werken en waarom jouw wachtwoord ze weerstaat.',
     },

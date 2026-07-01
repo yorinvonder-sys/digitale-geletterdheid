@@ -9,13 +9,13 @@ const config: PasswordFortressConfig = {
     introEmoji: '🏰',
     introTitle: 'Wachtwoord Fortress',
     introDescription:
-        'Jouw digitale leven zit achter één poort: je wachtwoord. In dit lab bouw je een wachtwoord-fort en sturen we er vier gesimuleerde kraakaanvallen op af — van botte rekenkracht tot gelekte wachtwoordlijsten. Je ziet live hoe lang elke aanval over jouw fort doet. Overleef alle vier de rondes! Let op: gebruik nooit je échte wachtwoord — verzin er hier eentje. Alles blijft in je browser.',
+        'In Wachtwoord Warrior leerde je hoe aanvallers denken — nu ga je dat zelf toepassen. Je bouwt een wachtwoord-fort en wij sturen er vier gesimuleerde kraakaanvallen op af, van botte rekenkracht tot gelekte wachtwoordlijsten. Je ziet live hoe lang elke aanval over jouw fort doet. Overleef alle vier de rondes! Let op: gebruik nooit je échte wachtwoord — verzin er hier eentje. Alles blijft in je browser.',
     missionGoal: {
         primaryGoal: 'Ik bouw een wachtwoord-fort dat vier soorten kraakaanvallen overleeft.',
         criteria: {
             type: 'rounds-complete',
             min: 3,
-            description: 'Minimaal drie van de vier aanvalsrondes overleefd met een wachtwoord dat het sterktedoel haalt.',
+            description: 'Minimaal drie van de vier aanvalsrondes overleefd — de laatste ronde (credential stuffing) is altijd verplicht.',
         },
         evidence: 'Uitleg over brute-force, woordenboekaanvallen, leetspeak-variaties en credential stuffing — en waarom jouw wachtwoord ze weerstaat.',
     },
