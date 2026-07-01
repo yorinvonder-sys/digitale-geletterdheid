@@ -625,7 +625,7 @@
  {
   "missionId": "data-journalist",
   "templateType": "data-viewer",
-  "priorityBand": "medium",
+  "priorityBand": "low",
   "triageScores": {
    "uiux": 2,
    "slo": 1,
@@ -633,12 +633,23 @@
    "interactivity": 1,
    "total": 5
   },
-  "lastReviewed": null,
-  "reviewStatus": "pending",
-  "reportPath": null,
-  "autoFixesApplied": 0,
-  "openEscalations": [],
-  "codexVerdict": null
+  "lastReviewed": "2026-07-01",
+  "reviewStatus": "blocked",
+  "reportPath": "business/dgskills-reviews/data-journalist-2026-07-01.md",
+  "autoFixesApplied": 3,
+  "openEscalations": [
+   "slo-fit: 22A-claim (digitale producten) oppervlakkig — missie heeft alleen analysevragen, geen productbouw (curator-keuze)"
+  ],
+  "codexVerdict": null,
+  "escalationCount": 1,
+  "reviewScores": {
+   "uiux": 8,
+   "didactiek": 6,
+   "tech": 9
+  },
+  "triageScore": 2.5,
+  "statusNote": "wave 8: AI-coach-briefing gelijkgetrokken met echte missie-inhoud (problemScenario + missionObjective + examplePrompt; objective was orchestrator-aanvulling voor interne consistentie)",
+  "verdict": "fix-eerst"
  },
  {
   "missionId": "data-pipeline",
@@ -766,7 +777,7 @@
  {
   "missionId": "deepfake-detector",
   "templateType": "dedicated",
-  "priorityBand": "medium",
+  "priorityBand": "low",
   "triageScores": {
    "uiux": 1,
    "slo": 0,
@@ -774,12 +785,23 @@
    "interactivity": 0,
    "total": 5
   },
-  "lastReviewed": null,
-  "reviewStatus": "pending",
-  "reportPath": null,
-  "autoFixesApplied": 0,
-  "openEscalations": [],
-  "codexVerdict": null
+  "lastReviewed": "2026-07-01",
+  "reviewStatus": "blocked",
+  "reportPath": "business/dgskills-reviews/deepfake-detector-2026-07-01.md",
+  "autoFixesApplied": 1,
+  "openEscalations": [
+   "content-keuze: systemInstruction beschrijft 5 cases, component-CHALLENGES tonen er 9 — AI-hulp en spel vertellen verschillende verhalen; kies welke bron leidend is"
+  ],
+  "codexVerdict": null,
+  "escalationCount": 1,
+  "reviewScores": {
+   "uiux": 8,
+   "didactiek": 7,
+   "tech": 9
+  },
+  "triageScore": 2.1,
+  "statusNote": "wave 8: dashboard-SLO +21D conform mapping; agent-scoreschaal was omgekeerd, gecorrigeerd naar kwaliteit 8/7/9",
+  "verdict": "fix-eerst"
  },
  {
   "missionId": "digital-divide-researcher",
@@ -938,7 +960,7 @@
  {
   "missionId": "encryption-expert",
   "templateType": "puzzle-lab",
-  "priorityBand": "medium",
+  "priorityBand": "low",
   "triageScores": {
    "uiux": 1,
    "slo": 1,
@@ -946,17 +968,26 @@
    "interactivity": 0,
    "total": 5
   },
-  "lastReviewed": null,
-  "reviewStatus": "pending",
-  "reportPath": null,
+  "lastReviewed": "2026-07-01",
+  "reviewStatus": "fixed",
+  "reportPath": "business/dgskills-reviews/encryption-expert-2026-07-01.md",
   "autoFixesApplied": 0,
   "openEscalations": [],
-  "codexVerdict": null
+  "codexVerdict": null,
+  "escalationCount": 0,
+  "reviewScores": {
+   "uiux": 9,
+   "didactiek": 9,
+   "tech": 8
+  },
+  "triageScore": 1.3,
+  "statusNote": "wave 8: alle puzzel-antwoorden zelf gedecodeerd en correct; puntensom 100=maxScore; agent-scoreschaal (issue-counts) gecorrigeerd",
+  "verdict": "ok"
  },
  {
   "missionId": "factchecker",
   "templateType": "scenario-engine",
-  "priorityBand": "medium",
+  "priorityBand": "low",
   "triageScores": {
    "uiux": 2,
    "slo": 1,
@@ -964,12 +995,21 @@
    "interactivity": 0,
    "total": 5
   },
-  "lastReviewed": null,
-  "reviewStatus": "pending",
-  "reportPath": null,
+  "lastReviewed": "2026-07-01",
+  "reviewStatus": "fixed",
+  "reportPath": "business/dgskills-reviews/factchecker-2026-07-01.md",
   "autoFixesApplied": 0,
   "openEscalations": [],
-  "codexVerdict": null
+  "codexVerdict": null,
+  "escalationCount": 0,
+  "reviewScores": {
+   "uiux": 8.5,
+   "didactiek": 8.5,
+   "tech": 7
+  },
+  "triageScore": 1.95,
+  "statusNote": "wave 8: 22 inhoudsclaims feitelijk gecheckt, 0 fouten; schoon",
+  "verdict": "ok"
  },
  {
   "missionId": "filter-bubble-breaker",
@@ -1155,7 +1195,7 @@
  {
   "missionId": "magister-master",
   "templateType": "tool-guide",
-  "priorityBand": "medium",
+  "priorityBand": "low",
   "triageScores": {
    "uiux": 2,
    "slo": 1,
@@ -1163,12 +1203,21 @@
    "interactivity": 1,
    "total": 5
   },
-  "lastReviewed": null,
-  "reviewStatus": "pending",
-  "reportPath": null,
+  "lastReviewed": "2026-07-01",
+  "reviewStatus": "fixed",
+  "reportPath": "business/dgskills-reviews/magister-master-2026-07-01.md",
   "autoFixesApplied": 0,
   "openEscalations": [],
-  "codexVerdict": null
+  "codexVerdict": null,
+  "escalationCount": 0,
+  "reviewScores": {
+   "uiux": 8,
+   "didactiek": 8,
+   "tech": 8
+  },
+  "triageScore": 2.0,
+  "statusNote": "wave 8: alle 3 juni-blockers bevestigd opgelost (tokens, focus-ring, maxScore 55=4x10+3x5); agent-scoreschaal omgekeerd, gecorrigeerd",
+  "verdict": "ok"
  },
  {
   "missionId": "mail-detective",
