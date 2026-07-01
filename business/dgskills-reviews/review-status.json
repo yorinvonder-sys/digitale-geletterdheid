@@ -409,7 +409,7 @@
    "structureel: training-modus heeft vaste 3-koloms layout (w-64 + w-80) zonder responsive breakpoints — vermoedelijk mobiele layoutbreuk, herontwerp-kandidaat",
    "a11y: verwijderknop van intent zit genest in de rij-knop (geneste buttons = invalide HTML) — vereist rij-refactor naar sibling-knoppen (gate-voorstel in rapport); mijn button-fix is teruggedraaid na gate-BLOCK"
   ],
-  "codexVerdict": null,
+  "codexVerdict": "ALLOW",
   "escalationCount": 3,
   "reviewScores": {
    "uiux": 7,
@@ -417,7 +417,7 @@
    "tech": 7
   },
   "triageScore": 2.6,
-  "statusNote": "wave 11: dashboard-SLO 22A→22B conform autoritaire mapping (5e alignment-fix); div→button-fix TERUGGEDRAAID na gate-BLOCK (delete-knop zit genest in rij-knop — rij-refactor nodig)",
+  "statusNote": "wave 11: dashboard-SLO 22A→22B conform autoritaire mapping (5e alignment-fix); div→button-fix TERUGGEDRAAID na gate-BLOCK (delete-knop zit genest in rij-knop — rij-refactor nodig); re-gate na revert: ALLOW",
   "verdict": "fix-eerst"
  },
  {
@@ -2481,7 +2481,7 @@
    "avg-groep: foto-instructie verder aanscherpen ('geen klasgenoten op de foto')? — zelfde beslissing als cloud-commander stap 3, graag in één keer beslissen",
    "slo-fit: 22A-claim oppervlakkig + Bloom blijft niveau 1-2 (curator-afweging)"
   ],
-  "codexVerdict": null,
+  "codexVerdict": "ALLOW",
   "escalationCount": 2,
   "reviewScores": {
    "uiux": 8.5,
