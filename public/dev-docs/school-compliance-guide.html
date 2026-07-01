@@ -150,7 +150,15 @@
             <li><strong>Dataminimalisatie in AI-flow:</strong> Alleen noodzakelijke context wordt meegestuurd; geen marketingprofilering.</li>
         </ul>
 
-        <h2>3. Documentatie voor Inkoop & Toezicht</h2>
+        <h2>3. ePrivacy & Security Hardening</h2>
+        <ul class="checklist">
+            <li><strong>Consent Enforcement:</strong> Niet-essentiële analytics wordt technisch pas uitgevoerd na expliciete toestemming.</li>
+            <li><strong>First-party analytics:</strong> Geen Google Analytics; alleen interne geaggregeerde klikstatistieken.</li>
+            <li><strong>CSP-hardening:</strong> Inline scripts verwijderd uit de hoofdpagina; `script-src` zonder `unsafe-inline`.</li>
+            <li><strong>Password reset hardening:</strong> API retourneert geen plaintext wachtwoorden meer.</li>
+        </ul>
+
+        <h2>4. Documentatie voor Inkoop & Toezicht</h2>
         <table>
             <thead>
                 <tr>
@@ -178,7 +186,7 @@
             </tbody>
         </table>
 
-        <h2>4. Stappenplan voor de School</h2>
+        <h2>5. Stappenplan voor de School</h2>
         <p>Om de implementatie juridisch correct af te ronden, adviseren wij de school de volgende stappen:</p>
         <ul class="checklist">
             <li><strong>FG Check:</strong> Leg dit dossier voor aan uw Functionaris Gegevensbescherming.</li>
