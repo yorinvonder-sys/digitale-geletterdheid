@@ -31,7 +31,7 @@ export const cloudCommanderConfig: ToolGuideConfig = {
             id: 'stap-2-map',
             title: 'Map aanmaken',
             instruction:
-                'Maak een nieuwe map aan in OneDrive. Tik op het **+-icoon** (rechtsboven of rechtsonder) en kies **Map aanmaken**. Geef de map de naam **"School"**. Let op: gebruik precies die naam — hoofdletter S, geen spaties ervoor of erna.',
+                'Maak een nieuwe map aan in OneDrive. Tik op het **+-icoon** rechtsonder in de navigatiebalk. Zie je het niet? Kijk dan rechtsboven in de toolbar. Kies **Map aanmaken**. Geef de map de naam **"School"**. Let op: gebruik precies die naam — hoofdletter S, geen spaties ervoor of erna.',
             tip: 'Een goede mappenstructuur spaart je later veel zoekwerk. Maak later ook submappen aan per vak, zoals "School/Nederlands" of "School/Wiskunde".',
             checklistItems: [
                 { id: 'map-aangemaakt', label: 'Ik heb een nieuwe map aangemaakt' },
@@ -65,7 +65,7 @@ export const cloudCommanderConfig: ToolGuideConfig = {
             id: 'stap-4-delen',
             title: 'Bestand delen',
             instruction:
-                'Open het bestand dat je net hebt geüpload. Tik op het **deelicoon** (het deel-/verzend-icoontje: een vierkantje met een pijltje omhoog) of hou je vinger op het bestand en kies **Delen**. Kies **Koppeling kopiëren** (een link naar je bestand) of **Persoon uitnodigen**. Als je een koppeling kopieert, stuur die dan via Teams of Magister naar een klasgenoot.',
+                'Open het bestand dat je net hebt geüpload. Tik op het **deelicoon** (het deel-/verzend-icoontje: een vierkantje met een pijltje omhoog) of tik op de **drie puntjes** (•••) naast het bestand en kies **Delen**. Kies **Koppeling kopiëren** (een link naar je bestand) of **Persoon uitnodigen**. Als je een koppeling kopieert, stuur die dan via Teams of Magister naar een klasgenoot.',
             tip: 'Een deellink is veiliger dan je bestand als **bijlage** sturen (een bestand dat je meestuurt in een bericht). De ontvanger kan het bestand altijd bekijken met de meest recente versie — en jij bepaalt wie toegang heeft.',
             checklistItems: [
                 { id: 'deellink', label: 'Ik heb een deellink aangemaakt of iemand uitgenodigd' },

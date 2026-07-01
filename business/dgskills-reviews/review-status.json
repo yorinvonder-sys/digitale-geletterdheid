@@ -389,11 +389,13 @@
    "interactivity": 1,
    "total": 6
   },
-  "lastReviewed": "2026-06-17",
+  "lastReviewed": "2026-07-01",
   "reviewStatus": "reviewed",
-  "reportPath": "business/dgskills-reviews/cloud-commander-2026-06-17.md",
-  "autoFixesApplied": 0,
-  "openEscalations": [],
+  "reportPath": "business/dgskills-reviews/cloud-commander-2026-07-01.md",
+  "autoFixesApplied": 2,
+  "openEscalations": [
+   "avg-persoonsgegevens: stap-3 foto-instructie (portretfoto-risico 12-jarigen) — Yorin beslist of verdere aanscherping naar schoolboek/oefenbestand nodig is"
+  ],
   "codexVerdict": null,
   "reviewScores": {
    "uiux": 2,
@@ -403,7 +405,7 @@
   "goalClear": false,
   "goalAchieved": true,
   "proposedFixes": 4,
-  "escalationCount": 2,
+  "escalationCount": 1,
   "topIssues": [
    "maxScore:60 maar engine-max 50 → gouden badge onbereikbaar",
    "duck-namespace tokens ontbreken (engine-breed) [ESCALATIE]",
@@ -421,16 +423,13 @@
    "interactivity": 0,
    "total": 6
   },
-  "lastReviewed": "2026-06-17",
+  "lastReviewed": "2026-07-01",
   "reviewStatus": "reviewed",
-  "reportPath": "business/dgskills-reviews/code-denker-2026-06-17.md",
-  "autoFixesApplied": 0,
-  "openEscalations": [
-   "missionGoals primaryGoal noemt 'voorwaarden' die de missie niet behandelt — content-reword voorgesteld (Yorin beslist; before/after in rapport)",
-   "Bloom-balans: geen reflectie/zelf-formulering (Bloom 5-6); takeaways puur informatief"
-  ],
+  "reportPath": "business/dgskills-reviews/code-denker-2026-07-01.md",
+  "autoFixesApplied": 1,
+  "openEscalations": [],
   "codexVerdict": null,
-  "escalationCount": 2,
+  "escalationCount": 0,
   "reviewScores": {
    "uiux": 8,
    "didactiek": 7,
@@ -634,17 +633,15 @@
    "interactivity": 0,
    "total": 6
   },
-  "lastReviewed": "2026-06-17",
-  "reviewStatus": "reviewed",
-  "reportPath": "business/dgskills-reviews/data-speurder-2026-06-17.md",
+  "lastReviewed": "2026-07-01",
+  "reviewStatus": "blocked",
+  "reportPath": "business/dgskills-reviews/data-speurder-2026-07-01.md",
   "autoFixesApplied": 0,
   "openEscalations": [
-   "GEDEELDE ENGINE: FeedbackBanner 'Volgende ronde'-knop text-white op duck-acid = WCAG ~1.3:1 onleesbaar — raakt ALLE scenario-engine missies",
-   "ontbrekende learningObjectives — AI-voorstel gemaakt maar geescaleerd (SLO-content, Yorin keurt)",
-   "VSO-code 18B indirecte match voor data-analyse (beperking VSO-codeset)"
+   "slo-content: learningObjectives-array voor data-speurder.ts — inhoudelijke leerdoelformulering, Yorin keurt"
   ],
   "codexVerdict": null,
-  "escalationCount": 3,
+  "escalationCount": 1,
   "reviewScores": {
    "uiux": 8,
    "didactiek": 7,
@@ -655,7 +652,8 @@
    "gedeelde FeedbackBanner contrast-bug (alle scenario-missies)",
    "geen expliciete learningObjectives-array",
    "VSO-code indirecte SLO-match"
-  ]
+  ],
+  "statusNote": "wave 5 fix-pass 2026-07-01: 0 toepasbaar; wacht op Yorin"
  },
  {
   "missionId": "data-verzamelaar",
@@ -981,11 +979,8 @@
   "reviewStatus": "fixed",
   "reportPath": "business/dgskills-reviews/game-director-2026-07-01.md",
   "autoFixesApplied": 8,
-  "openEscalations": [
-   "prose-only: dashboardbeschrijving suggereert productontwerp (22A) terwijl missie alleen 22B checkt — rapport gaf geen concrete vervangtekst",
-   "prose-only: reflectievraag te open/cognitief zwaar voor onderbouw J1 — geen concrete vervangende prompt-tekst in rapport"
-  ],
-  "codexVerdict": null,
+  "openEscalations": [],
+  "codexVerdict": "ALLOW",
   "reviewScores": {
    "uiux": 2,
    "didactiek": 2,
@@ -994,7 +989,7 @@
   "goalClear": true,
   "goalAchieved": true,
   "proposedFixes": 6,
-  "escalationCount": 2,
+  "escalationCount": 0,
   "topIssues": [
    "roleId='game-director' ontbreekt bij StudentAIChat → generieke fallback",
    "SLO-dashboard claimt ['22A','22B'] maar mapping heeft alleen ['22B']",
@@ -1291,8 +1286,7 @@
   "reportPath": "business/dgskills-reviews/network-navigator-2026-07-01.md",
   "autoFixesApplied": 1,
   "openEscalations": [
-   "template-breed: 4 a11y/design-voorstellen raken gedeelde DataViewer.tsx/InteractiveTable.tsx (gradient, accent-hex, aria-sort, aria-label) — buiten whitelist",
-   "goalCriteria-type ambigu: config+missionGoals 'rounds-complete' vs year2.tsx 'steps-complete'; geen runtime-consumer gevonden — Yorin kiest de canonieke waarde"
+   "goalCriteria-type ambigu: config+missionGoals 'rounds-complete' vs year2.tsx 'steps-complete' — Yorin kiest de canonieke waarde"
   ],
   "codexVerdict": null,
   "reviewScores": {
@@ -1303,7 +1297,7 @@
   "goalClear": true,
   "goalAchieved": true,
   "proposedFixes": 6,
-  "escalationCount": 2,
+  "escalationCount": 1,
   "topIssues": [
    "goalCriteria type-mismatch: config='rounds-complete' vs agent='steps-complete'",
    "Hardcoded hex in badges/chartData",
@@ -1339,17 +1333,16 @@
    "interactivity": 0,
    "total": 6
   },
-  "lastReviewed": "2026-06-17",
-  "reviewStatus": "reviewed",
-  "reportPath": "business/dgskills-reviews/notificatie-ninja-2026-06-17.md",
+  "lastReviewed": "2026-07-01",
+  "reviewStatus": "blocked",
+  "reportPath": "business/dgskills-reviews/notificatie-ninja-2026-07-01.md",
   "autoFixesApplied": 0,
   "openEscalations": [
-   "ronde 4: absolute claim over apps verwijderen — nuance voorgesteld (pedagogische content, Yorin beslist)",
-   "ronde 2 order-priority: 8 items = te hoge cognitieve load leerjaar 1 (max 3-4)",
-   "showConfidence ontbreekt op complexe rondes (metacognitieve scaffolding, vgl. phishing-fighter)"
+   "pedagogische-content: ronde 4 item 6 nuancering absolute claim over apps (before/after ligt klaar in rapport, Yorin keurt)",
+   "structureel-didactisch: ronde 2 order-priority met 8 items = cognitieve overload leerjaar 1 (ontwerpbeslissing)"
   ],
   "codexVerdict": null,
-  "escalationCount": 3,
+  "escalationCount": 2,
   "reviewScores": {
    "uiux": 7,
    "didactiek": 7,
@@ -1360,7 +1353,8 @@
    "cognitieve load ronde 2 (8 items)",
    "absolute pedagogische claim ronde 4",
    "showConfidence-scaffolding ontbreekt"
-  ]
+  ],
+  "statusNote": "wave 5 fix-pass 2026-07-01: 0 toepasbaar; wacht op Yorin"
  },
  {
   "missionId": "online-helden",
@@ -1571,9 +1565,7 @@
   "reviewStatus": "fixed",
   "reportPath": "business/dgskills-reviews/print-pro-2026-07-01.md",
   "autoFixesApplied": 3,
-  "openEscalations": [
-   "engine-gap: ToolGuide.tsx rendert config.learningObjectives nergens (alleen takeaways) — engine-wijziging buiten missie-whitelist"
-  ],
+  "openEscalations": [],
   "codexVerdict": null,
   "reviewScores": {
    "uiux": 2,
@@ -1583,7 +1575,7 @@
   "goalClear": true,
   "goalAchieved": false,
   "proposedFixes": 4,
-  "escalationCount": 1,
+  "escalationCount": 0,
   "topIssues": [
    "takeaways missen Bloom-actiewerkwoorden",
    "stap 2 instructie >60w + geen verificationQuestion",
@@ -1877,10 +1869,10 @@
    "interactivity": 1,
    "total": 6
   },
-  "lastReviewed": "2026-06-17",
+  "lastReviewed": "2026-07-01",
   "reviewStatus": "reviewed",
-  "reportPath": "business/dgskills-reviews/slide-specialist-2026-06-17.md",
-  "autoFixesApplied": 0,
+  "reportPath": "business/dgskills-reviews/slide-specialist-2026-07-01.md",
+  "autoFixesApplied": 1,
   "openEscalations": [],
   "codexVerdict": null,
   "reviewScores": {
@@ -1891,7 +1883,7 @@
   "goalClear": true,
   "goalAchieved": false,
   "proposedFixes": 5,
-  "escalationCount": 2,
+  "escalationCount": 0,
   "topIssues": [
    "'Zetelen' bestaat niet als PowerPoint-overgang (stap 4 onuitvoerbaar)",
    "'Animatievenster' bestaat niet in iOS PowerPoint (stap 3 onuitvoerbaar)",

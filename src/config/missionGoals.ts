@@ -136,7 +136,7 @@ export const MISSION_GOALS: Record<string, MissionGoal> = {
         evidence: 'Je hebt minimaal twee concrete AI-regels met reden en schoolsituatie.',
     },
     'code-denker': {
-        primaryGoal: 'Ik herken programmeerlogica door stappen, voorwaarden en volgorde goed te lezen.',
+        primaryGoal: 'Ik herken de vier bouwstenen van computational thinking: decompositie, patroonherkenning, abstractie en algoritmen.',
         criteria: {
             type: 'rounds-complete',
             description: 'Je rondt de scenario-rondes af en verklaart je keuzes.',
