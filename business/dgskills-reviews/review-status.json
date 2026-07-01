@@ -89,7 +89,7 @@
  {
   "missionId": "ai-bias-detective",
   "templateType": "scenario-engine",
-  "priorityBand": "medium",
+  "priorityBand": "low",
   "triageScores": {
    "uiux": 2,
    "slo": 1,
@@ -97,12 +97,21 @@
    "interactivity": 0,
    "total": 5
   },
-  "lastReviewed": null,
-  "reviewStatus": "pending",
-  "reportPath": null,
+  "lastReviewed": "2026-07-01",
+  "reviewStatus": "fixed",
+  "reportPath": "business/dgskills-reviews/ai-bias-detective-2026-07-01.md",
   "autoFixesApplied": 0,
   "openEscalations": [],
-  "codexVerdict": null
+  "codexVerdict": null,
+  "escalationCount": 0,
+  "reviewScores": {
+   "uiux": 8,
+   "didactiek": 9,
+   "tech": 8
+  },
+  "triageScore": 1.6,
+  "statusNote": "wave 7 verse review: schoon; dormante chat-rol -> platform-brede beslislijst",
+  "verdict": "ok"
  },
  {
   "missionId": "ai-ethicus",
@@ -188,7 +197,7 @@
  {
   "missionId": "ai-trainer",
   "templateType": "agent-role",
-  "priorityBand": "medium",
+  "priorityBand": "low",
   "triageScores": {
    "uiux": 0,
    "slo": 0,
@@ -196,12 +205,23 @@
    "interactivity": 0,
    "total": 5
   },
-  "lastReviewed": null,
-  "reviewStatus": "pending",
-  "reportPath": null,
+  "lastReviewed": "2026-07-01",
+  "reviewStatus": "blocked",
+  "reportPath": "business/dgskills-reviews/ai-trainer-2026-07-01.md",
   "autoFixesApplied": 0,
-  "openEscalations": [],
-  "codexVerdict": null
+  "openEscalations": [
+   "ai-endpoint: client-side systemInstruction (year1.tsx:1568) en server-side versie (systemInstructions.ts:28) zijn inhoudelijk uiteengelopen (GIGO-demo alleen server-side) — sync-keuze + verificatie welke bron de AI stuurt"
+  ],
+  "codexVerdict": null,
+  "escalationCount": 1,
+  "reviewScores": {
+   "uiux": 8,
+   "didactiek": 9,
+   "tech": 8
+  },
+  "triageScore": 1.6,
+  "statusNote": "wave 7 verse review: werkbank gezond; drift-escalatie",
+  "verdict": "ok"
  },
  {
   "missionId": "algorithm-architect",
@@ -447,7 +467,7 @@
  {
   "missionId": "code-review-2",
   "templateType": "review-arena",
-  "priorityBand": "medium",
+  "priorityBand": "low",
   "triageScores": {
    "uiux": 2,
    "slo": 1,
@@ -455,12 +475,21 @@
    "interactivity": 0,
    "total": 5
   },
-  "lastReviewed": null,
-  "reviewStatus": "pending",
-  "reportPath": null,
+  "lastReviewed": "2026-07-01",
+  "reviewStatus": "fixed",
+  "reportPath": "business/dgskills-reviews/code-review-2-2026-07-01.md",
   "autoFixesApplied": 0,
   "openEscalations": [],
-  "codexVerdict": null
+  "codexVerdict": null,
+  "escalationCount": 0,
+  "reviewScores": {
+   "uiux": 9,
+   "didactiek": 8,
+   "tech": 9
+  },
+  "triageScore": 1.4,
+  "statusNote": "wave 7 verse review: schoon; dormante chat-rol (template-breed, alle 7 review-arena) -> platform-brede beslislijst",
+  "verdict": "ok"
  },
  {
   "missionId": "code-reviewer",
@@ -509,12 +538,23 @@
    "interactivity": 0,
    "total": 5
   },
-  "lastReviewed": null,
-  "reviewStatus": "pending",
-  "reportPath": null,
-  "autoFixesApplied": 0,
-  "openEscalations": [],
-  "codexVerdict": null
+  "lastReviewed": "2026-07-01",
+  "reviewStatus": "blocked",
+  "reportPath": "business/dgskills-reviews/cyber-detective-2026-07-01.md",
+  "autoFixesApplied": 1,
+  "openEscalations": [
+   "asset ontbreekt: briefingImage verwijst naar niet-bestaand /assets/agents/cyber-detective.webp (year3.tsx:564) — leerling ziet kapotte afbeelding; vereist assetgeneratie"
+  ],
+  "codexVerdict": null,
+  "escalationCount": 1,
+  "reviewScores": {
+   "uiux": 6.5,
+   "didactiek": 8,
+   "tech": 5
+  },
+  "triageScore": 3.35,
+  "statusNote": "wave 7: no-op gradient gefixt; asset-escalatie",
+  "verdict": "fix-eerst"
  },
  {
   "missionId": "dashboard-designer",
@@ -537,7 +577,7 @@
  {
   "missionId": "data-detective",
   "templateType": "dedicated",
-  "priorityBand": "medium",
+  "priorityBand": "high",
   "triageScores": {
    "uiux": 1,
    "slo": 0,
@@ -545,12 +585,24 @@
    "interactivity": 0,
    "total": 5
   },
-  "lastReviewed": null,
-  "reviewStatus": "pending",
-  "reportPath": null,
-  "autoFixesApplied": 0,
-  "openEscalations": [],
-  "codexVerdict": null
+  "lastReviewed": "2026-07-01",
+  "reviewStatus": "blocked",
+  "reportPath": "business/dgskills-reviews/data-detective-2026-07-01.md",
+  "autoFixesApplied": 1,
+  "openEscalations": [
+   "didactiek: geen expliciete leerdoelen per level (alleen brede primaryGoal) — leerdoel-formulering is SLO-content, Yorin keurt",
+   "design: duck-error (#ff3c21) als primaire CTA-kleur i.p.v. foutstatus + inline hex door hele component — design-cleanup-keuze"
+  ],
+  "codexVerdict": null,
+  "escalationCount": 2,
+  "reviewScores": {
+   "uiux": 4,
+   "didactiek": 2,
+   "tech": 4
+  },
+  "triageScore": 6.8,
+  "statusNote": "wave 7: aria-label terugknop gefixt (orchestrator); triageScore agent-rekenfout gecorrigeerd (3.2 -> 6.8)",
+  "verdict": "fix-eerst"
  },
  {
   "missionId": "data-handelaar",

@@ -565,7 +565,7 @@ Ik begin met een vraag. Antwoord zo volledig mogelijk in je eigen woorden:
         difficulty: 'Hard',
         examplePrompt: 'Ik heb verdachte loginpogingen gevonden in de serverlogboeken. Hoe analyseer ik deze?',
         visualPreview: (
-            <div className="w-full h-full bg-gradient-to-br from-lab-coral to-lab-coral flex items-center justify-center relative overflow-hidden">
+            <div className="w-full h-full bg-lab-coral flex items-center justify-center relative overflow-hidden">
                 <div className="absolute inset-0 opacity-10">
                     {[...Array(6)].map((_, i) => (
                         <div key={i} className="absolute bg-white/5 rounded" style={{ width: `${Math.random() * 80 + 20}px`, height: '2px', top: `${i * 18 + 10}%`, left: `${Math.random() * 60}%` }}></div>
