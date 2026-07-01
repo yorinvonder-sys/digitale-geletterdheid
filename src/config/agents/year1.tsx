@@ -3382,7 +3382,7 @@ Maar eerst: **vertel me over je project!** Wat heb je gemaakt, en wat is het all
     },
     {
         id: 'startup-pitch',
-        yearGroup: 1,
+        yearGroup: 3,
         educationLevels: ['mavo', 'havo', 'vwo'] as EducationLevel[],
         title: 'Startup Pitch',
         icon: <Rocket size={28} />,

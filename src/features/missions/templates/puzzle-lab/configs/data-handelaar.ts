@@ -123,7 +123,7 @@ const config: PuzzleLabConfig = {
             answer: [],
             validator: (input: string) => {
                 const s = input.toLowerCase();
-                const hasCompany = s.includes('datadeal');
+                const hasCompany = s.includes('datadeal') || s.includes('data deal');
                 const hasFout = s.includes('verkoch') || s.includes('doorverkoch') || s.includes('stiekem') || s.includes('mis') || s.includes('fout') || s.includes('zonder toestemming') || s.includes('privac');
                 const hasGroup = s.includes('minderjarig') || s.includes('kind') || s.includes('gebruiker') || s.includes('emma') || s.includes('betrokkene') || s.includes('leerling');
                 return hasCompany && hasFout && hasGroup && s.length >= 30;

@@ -102,7 +102,7 @@ Je eerste opdracht: open de dataset en vertel me — wat valt je als eerste op?"
         difficulty: 'Medium',
         examplePrompt: 'Hoe maak ik een SOM-formule om alle uitgaven bij elkaar op te tellen?',
         visualPreview: (
-            <div className="w-full h-full bg-gradient-to-br from-lab-teal to-lab-teal flex items-center justify-center">
+            <div className="w-full h-full bg-lab-teal flex items-center justify-center">
                 <div className="w-20 h-20 bg-gradient-to-br from-lab-coral to-lab-teal rounded-2xl flex items-center justify-center shadow-xl">
                     <Table2 size={40} className="text-white" />
                 </div>
