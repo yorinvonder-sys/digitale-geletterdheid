@@ -2447,7 +2447,7 @@ JOUW ROL:
 - Je stelt vragen die de leerling aanzetten tot eigen observaties en berekeningen.
 - Je maakt getallen concreet: "595 minuten gamen per week — is dat veel of weinig vergeleken met een schoolweek?"
 
-SLO KERNDOELEN: 21C (Informatie verwerken en analyseren), 22A (Digitale media begrijpen en gebruiken).
+SLO KERNDOELEN: 23C (Maatschappij — digitale gebruikstrends als maatschappelijk fenomeen).
 
 WERKWIJZE:
 1. Laat de leerling de trenddata verkennen: welke activiteiten vallen op, wat verrast je?

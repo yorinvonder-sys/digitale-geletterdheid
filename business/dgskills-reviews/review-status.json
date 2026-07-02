@@ -1530,7 +1530,7 @@
  {
   "missionId": "mission-vision",
   "templateType": "builder-canvas",
-  "priorityBand": "medium",
+  "priorityBand": "low",
   "triageScores": {
    "uiux": 1,
    "slo": 0,
@@ -1538,12 +1538,21 @@
    "interactivity": 0,
    "total": 3
   },
-  "lastReviewed": null,
-  "reviewStatus": "pending",
-  "reportPath": null,
+  "lastReviewed": "2026-07-02",
+  "reviewStatus": "fixed",
+  "reportPath": "business/dgskills-reviews/mission-vision-2026-07-02.md",
   "autoFixesApplied": 0,
   "openEscalations": [],
-  "codexVerdict": null
+  "codexVerdict": null,
+  "escalationCount": 0,
+  "reviewScores": {
+   "uiux": 9,
+   "didactiek": 8.5,
+   "tech": 9
+  },
+  "triageScore": 1.2,
+  "statusNote": "wave 16: gezond; geen coach-desync; zachte tekstlengte-notities in rapport",
+  "verdict": "ok"
  },
  {
   "missionId": "ml-trainer",
@@ -1711,12 +1720,24 @@
    "interactivity": 0,
    "total": 3
   },
-  "lastReviewed": null,
-  "reviewStatus": "pending",
-  "reportPath": null,
+  "lastReviewed": "2026-07-02",
+  "reviewStatus": "blocked",
+  "reportPath": "business/dgskills-reviews/open-source-contributor-2026-07-02.md",
   "autoFixesApplied": 0,
-  "openEscalations": [],
-  "codexVerdict": null
+  "openEscalations": [
+   "curriculum-keuze: SLO-bronconflict — autoritaire mapping zegt 22B/23C, coach-instructie zegt 22A/22B (23C ontbreekt in rol, 22A niet in mapping); welke set is leidend? (voorstellen in rapport)",
+   "content-keuze: basisvaardigheden-mapping claimt een ETHIEK-leerdoel over licenties (MIT/GPL), maar licenties komen nergens in de missie voor — leerdoel schrappen of content toevoegen (voorstel in rapport)"
+  ],
+  "codexVerdict": null,
+  "escalationCount": 2,
+  "reviewScores": {
+   "uiux": 7,
+   "didactiek": 6,
+   "tech": 8
+  },
+  "triageScore": 3.1,
+  "statusNote": "wave 16: Git/PR-inhoud feitelijk correct; twee didactische gaten naar Yorin",
+  "verdict": "fix-eerst"
  },
  {
   "missionId": "phishing-fighter",
@@ -2311,7 +2332,7 @@
  {
   "missionId": "social-safeguard",
   "templateType": "scenario-engine",
-  "priorityBand": "medium",
+  "priorityBand": "low",
   "triageScores": {
    "uiux": 2,
    "slo": 0,
@@ -2319,12 +2340,24 @@
    "interactivity": 0,
    "total": 3
   },
-  "lastReviewed": null,
-  "reviewStatus": "pending",
-  "reportPath": null,
+  "lastReviewed": "2026-07-02",
+  "reviewStatus": "blocked",
+  "reportPath": "business/dgskills-reviews/social-safeguard-2026-07-02.md",
   "autoFixesApplied": 0,
-  "openEscalations": [],
-  "codexVerdict": null
+  "openEscalations": [
+   "didactiek: ronde 1 en 4 tonen 8 items per scherm (leerjaar-1-richtlijn 3-4) — zelfde beslisklasse als notificatie-ninja/mail-detective",
+   "welzijnsgevoelig: bij een scenario met concrete fysieke dreiging wordt het niet-spoednummer 0900-8844 genoemd zonder 112-verwijzing — veiligheidsprecisering, Yorin beslist"
+  ],
+  "codexVerdict": null,
+  "escalationCount": 2,
+  "reviewScores": {
+   "uiux": 8.5,
+   "didactiek": 9,
+   "tech": 9.5
+  },
+  "triageScore": 1.0,
+  "statusNote": "wave 16: welzijnscontent verder in orde; twee Yorin-keuzes",
+  "verdict": "fix-eerst"
  },
  {
   "missionId": "spreadsheet-specialist",
@@ -2409,12 +2442,23 @@
    "interactivity": 0,
    "total": 3
   },
-  "lastReviewed": null,
-  "reviewStatus": "pending",
-  "reportPath": null,
-  "autoFixesApplied": 0,
-  "openEscalations": [],
-  "codexVerdict": null
+  "lastReviewed": "2026-07-02",
+  "reviewStatus": "blocked",
+  "reportPath": "business/dgskills-reviews/sustainability-scanner-2026-07-02.md",
+  "autoFixesApplied": 2,
+  "openEscalations": [
+   "identiteit: naam/icoon ('sustainability', blad-icoon) suggereren duurzaamheid maar de content gaat volledig over digitale-mediaconsumptie-trends, zonder ethiekcomponent in een 'Ethiek & Maatschappij'-periode — hernoem-/plaatsingskeuze (icoon-swap-voorstel in rapport; id-hernoemen raakt 8+ bestanden)"
+  ],
+  "codexVerdict": null,
+  "escalationCount": 1,
+  "reviewScores": {
+   "uiux": 7,
+   "didactiek": 6,
+   "tech": 8
+  },
+  "triageScore": 3.1,
+  "statusNote": "wave 16 (rapport hersteld na sessielimiet): coach-tekst SLO 21C/22A -> 23C conform mapping + q8 participatiepunten 0->10 (som=100, 6e geval); briefing-asset -> platform-lijst",
+  "verdict": "fix-eerst"
  },
  {
   "missionId": "tech-court",
@@ -2452,7 +2496,7 @@
  {
   "missionId": "tech-impact-analyst",
   "templateType": "data-viewer",
-  "priorityBand": "medium",
+  "priorityBand": "low",
   "triageScores": {
    "uiux": 2,
    "slo": 0,
@@ -2460,12 +2504,21 @@
    "interactivity": 0,
    "total": 3
   },
-  "lastReviewed": null,
-  "reviewStatus": "pending",
-  "reportPath": null,
-  "autoFixesApplied": 0,
+  "lastReviewed": "2026-07-02",
+  "reviewStatus": "fixed",
+  "reportPath": "business/dgskills-reviews/tech-impact-analyst-2026-07-02.md",
+  "autoFixesApplied": 1,
   "openEscalations": [],
-  "codexVerdict": null
+  "codexVerdict": null,
+  "escalationCount": 0,
+  "reviewScores": {
+   "uiux": 9,
+   "didactiek": 8.5,
+   "tech": 6
+  },
+  "triageScore": 2.1,
+  "statusNote": "wave 16 (rapport hersteld na sessielimiet): q8 0->15 (som=100; rapport prefereerde dit — q8 is de enige 21D/AI-vraag, 0 punten ondergewaardeerde het AI-kerndoel); VSO-dekking -> platform-afweging; scores = orchestrator-mapping uit criteria (7/7, 9/9, 6/7+blocking)",
+  "verdict": "fix-eerst"
  },
  {
   "missionId": "ux-detective",
