@@ -97,3 +97,9 @@ Techniek is solide: alle rekenmodellen kloppen aantoonbaar, de registratie is co
 - **Techniek: 8/10** — alle antwoordmodellen kloppen aantoonbaar tegen de dataset, volledige en correcte registratie; enige min is het ontbrekende briefing-asset (T1).
 
 **triageScore = (10-7)×0.3 + (10-6)×0.4 + (10-8)×0.3 = 3.1**
+
+---
+
+## Orchestrator-addendum ná Codex-gate (2026-07-02)
+
+**Gate-verdict: BLOCK (fix onvolledig).** De gate ontdekte dat de productie-chat de coach-prompt **server-side** resolvet (per roleId via chatCore) uit `supabase/functions/_shared/systemInstructions.ts:74` — de client-tekst in year2.tsx is alleen een lokale fallback. De server-entry voor sustainability-scanner beschrijft nog de oude duurzaamheids-/milieu-coach. Edge-function-bestanden vallen per harde pipeline-regel buiten auto-fix-scope (AI-endpoint) → geëscaleerd naar Yorin: server-entry gelijktrekken met de werkelijke missie-inhoud (mediaconsumptie-trends, 23C) of de rol uitschakelen. De toegepaste client-fixes (fallback-tekst + q8-participatiepunten) blijven staan als verbetering; de q8-som (100=maxScore) werd door de gate niet betwist. **Platform-inzicht:** dit bevestigt dat álle eerdere "systemInstruction client-side"-escalaties in werkelijkheid over client/server-drift gaan — een drift-audit over alle rollen (client year*.tsx vs server systemInstructions.ts) is de structurele oplossing.

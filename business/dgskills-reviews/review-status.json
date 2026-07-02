@@ -2447,17 +2447,18 @@
   "reportPath": "business/dgskills-reviews/sustainability-scanner-2026-07-02.md",
   "autoFixesApplied": 2,
   "openEscalations": [
+   "ai-endpoint (HOOG, gate-vondst): de ECHTE coach-prompt staat server-side in supabase/functions/_shared/systemInstructions.ts:74 en beschrijft nog de oude duurzaamheids-/milieu-coach (SLO 23C/23B) — client-tekst is slechts fallback; server-bestand valt buiten auto-fix-scope (edge function), Yorin/dgskills-supabase-edge moet de server-entry gelijktrekken of de rol uitschakelen",
    "identiteit: naam/icoon ('sustainability', blad-icoon) suggereren duurzaamheid maar de content gaat volledig over digitale-mediaconsumptie-trends, zonder ethiekcomponent in een 'Ethiek & Maatschappij'-periode — hernoem-/plaatsingskeuze (icoon-swap-voorstel in rapport; id-hernoemen raakt 8+ bestanden)"
   ],
-  "codexVerdict": null,
-  "escalationCount": 1,
+  "codexVerdict": "BLOCK",
+  "escalationCount": 2,
   "reviewScores": {
    "uiux": 7,
    "didactiek": 6,
    "tech": 8
   },
   "triageScore": 3.1,
-  "statusNote": "wave 16 (rapport hersteld na sessielimiet): coach-tekst SLO 21C/22A -> 23C conform mapping + q8 participatiepunten 0->10 (som=100, 6e geval); briefing-asset -> platform-lijst",
+  "statusNote": "wave 16 (rapport hersteld na sessielimiet): coach-tekst SLO 21C/22A -> 23C conform mapping + q8 participatiepunten 0->10 (som=100, 6e geval); briefing-asset -> platform-lijst; gate-BLOCK: client-fix onvolledig omdat server-side prompt leidend is (edge function = escalatie per harde regel)",
   "verdict": "fix-eerst"
  },
  {
@@ -2509,7 +2510,7 @@
   "reportPath": "business/dgskills-reviews/tech-impact-analyst-2026-07-02.md",
   "autoFixesApplied": 1,
   "openEscalations": [],
-  "codexVerdict": null,
+  "codexVerdict": "ALLOW",
   "escalationCount": 0,
   "reviewScores": {
    "uiux": 9,
