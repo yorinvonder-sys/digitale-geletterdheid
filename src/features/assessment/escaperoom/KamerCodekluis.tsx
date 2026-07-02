@@ -56,7 +56,7 @@ const PRODUCT_OPTIES: ProductOptie[] = [
   {
     id: 'p3',
     label: 'Schrijf een stappenplan',
-    beschrijving: 'Een tekstdocument met uitleg over het alarmsysteem',
+    beschrijving: 'Een tekstdocument met uitleg over het systeem',
     score: 75,
     feedback: 'Goed! Een schriftelijk stappenplan werkt, al is een video of presentatie nog toegankelijker.',
   },
@@ -159,7 +159,7 @@ export const KamerCodekluis: React.FC<Props> = ({ onComplete, variant }) => {
             <h2 className="text-xl md:text-2xl font-black text-lab-teal">Digitaal product</h2>
           </div>
           <p className="text-lab-muted text-sm md:text-base max-w-lg mx-auto">
-            Goed gedaan! Je hebt het alarmsysteem geprogrammeerd. Nu wil je uitleggen hoe het werkt
+            Je programma staat klaar. Nu wil je uitleggen hoe het werkt
             aan de schooldirecteur die geen code kent. Welk digitaal product maak je?
           </p>
         </div>
@@ -225,8 +225,10 @@ export const KamerCodekluis: React.FC<Props> = ({ onComplete, variant }) => {
           <h2 className="text-xl md:text-2xl font-black text-lab-teal">Codekluis</h2>
         </div>
         <p className="text-lab-muted text-sm md:text-base max-w-lg mx-auto">
-          De deur zit op slot! Sleep de codeblokken in de juiste volgorde om de kluis te openen.
-          Maak een alarmsysteem: als de deur opengaat, moet het alarm afgaan.
+          De deur zit op slot! Klik de codeblokken in de juiste volgorde om de kluis te openen.
+          {variant === 'eindmeting'
+            ? ' Maak een weerstation: als het warmer is dan 30 graden, moet de ventilator aangaan.'
+            : ' Maak een alarmsysteem: als de deur opengaat, moet het alarm afgaan.'}
         </p>
       </div>
 
@@ -291,8 +293,8 @@ export const KamerCodekluis: React.FC<Props> = ({ onComplete, variant }) => {
           animate={{ opacity: 1, y: 0 }}
           className={`mt-4 p-4 rounded-xl border text-center ${
             resultaat === 'success'
-              ? 'bg-lab-sage border-lab-sage text-lab-sage'
-              : 'bg-lab-coral border-lab-coral text-lab-coral'
+              ? 'bg-lab-sage/10 border-lab-sage text-lab-sage'
+              : 'bg-lab-coral/10 border-lab-coral text-lab-coral'
           }`}
         >
           <div className="flex items-center justify-center gap-2 font-bold">

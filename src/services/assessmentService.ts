@@ -75,7 +75,7 @@ function toRow(
     details_programmeren: result.kamers.programmeren.details,
     details_veiligheid_privacy: result.kamers.veiligheidPrivacy.details,
     details_welzijn_maatschappij: result.kamers.welzijnMaatschappij.details,
-    reflectie_dilemma: result.kamers.welzijnMaatschappij.details?.reflectie ?? null,
+    reflectie_dilemma: result.kamers.welzijnMaatschappij.details?.reflectieTekst ?? result.kamers.welzijnMaatschappij.details?.reflectie ?? null,
     completed_at: result.completedAt,
   };
 }

@@ -52,8 +52,11 @@ export const EscaperoomNulmeting: React.FC<Props> = ({ variant = 'nulmeting', on
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const mountedRef = useRef(true);
 
-  // Cleanup on unmount
+  // Cleanup on unmount. De ref moet in de effect-body expliciet op true,
+  // anders laat StrictMode's dubbele mount hem permanent op false staan
+  // en vuurt handleKamerComplete nooit (dev-blokkade kamer 1 → 2).
   useEffect(() => {
+    mountedRef.current = true;
     return () => {
       mountedRef.current = false;
     };
@@ -276,12 +279,12 @@ export const EscaperoomNulmeting: React.FC<Props> = ({ variant = 'nulmeting', on
         : { border: 'border-lab-coral', bg: 'bg-lab-coral', tekst: 'text-lab-coral', icon: 'text-lab-muted' };
     const niveauLabel = resultaat.niveau === 'gevorderd' ? 'Gevorderd' : resultaat.niveau === 'basis' ? 'Basis' : 'Starter';
 
-    const kamerResultaten = [
+    const kamerResultaten: { naam: string; score: number; indicatie?: boolean }[] = [
       { naam: 'Digitale Systemen', score: resultaat.kamers.digitaleSystemen.score },
       { naam: 'Media & AI', score: resultaat.kamers.mediaEnAI.score },
       { naam: 'Programmeren', score: resultaat.kamers.programmeren.score },
       { naam: 'Veiligheid & Privacy', score: resultaat.kamers.veiligheidPrivacy.score },
-      { naam: 'Welzijn & Maatschappij', score: resultaat.kamers.welzijnMaatschappij.score },
+      { naam: 'Welzijn & Maatschappij', score: resultaat.kamers.welzijnMaatschappij.score, indicatie: true },
     ];
 
     return (
@@ -299,7 +302,7 @@ export const EscaperoomNulmeting: React.FC<Props> = ({ variant = 'nulmeting', on
 
             <h1 className="text-2xl font-black text-center mb-1 text-lab-ink">Escaperoom Voltooid!</h1>
             <p className={`text-center font-bold ${niveauStijl.tekst} mb-6`}>
-              Niveau: {niveauLabel} — Score: {resultaat.overallScore}%
+              {variant === 'eindmeting' ? 'Niveau' : 'Jouw startpunt'}: {niveauLabel} — Score: {resultaat.overallScore}%
             </p>
 
             <div className="flex items-center justify-center gap-4 text-xs text-lab-muted mb-6">
@@ -312,7 +315,10 @@ export const EscaperoomNulmeting: React.FC<Props> = ({ variant = 'nulmeting', on
               {kamerResultaten.map((kamer, i) => (
                 <div key={i} className="bg-lab-cream rounded-xl p-3">
                   <div className="flex items-center justify-between mb-2">
-                    <span className="text-sm font-medium text-lab-muted">{kamer.naam}</span>
+                    <span className="text-sm font-medium text-lab-muted">
+                      {kamer.naam}
+                      {kamer.indicatie && <span className="text-[10px] italic ml-1">(indicatie — 1 vraag)</span>}
+                    </span>
                     <span className={`text-sm font-bold ${
                       kamer.score >= 75 ? 'text-lab-sage' : kamer.score >= 40 ? 'text-lab-gold' : 'text-lab-coral'
                     }`}>
@@ -326,9 +332,9 @@ export const EscaperoomNulmeting: React.FC<Props> = ({ variant = 'nulmeting', on
                       transition={{ duration: 0.8, delay: i * 0.15 }}
                       className={`h-full rounded-full ${
                         kamer.score >= 75
-                          ? 'bg-lab-coral'
+                          ? 'bg-lab-sage'
                           : kamer.score >= 40
-                            ? 'bg-lab-coral'
+                            ? 'bg-lab-gold'
                             : 'bg-lab-coral'
                       }`}
                     />
@@ -366,15 +372,15 @@ export const EscaperoomNulmeting: React.FC<Props> = ({ variant = 'nulmeting', on
   const renderKamer = () => {
     switch (stap) {
       case 'kamer1':
-        return <KamerVergrendeldeLaptop onComplete={(s) => handleKamerComplete('kamer1', s)} />;
+        return <KamerVergrendeldeLaptop variant={variant} onComplete={(s) => handleKamerComplete('kamer1', s)} />;
       case 'kamer2':
-        return <KamerNepnieuwsfabriek onComplete={(s) => handleKamerComplete('kamer2', s)} />;
+        return <KamerNepnieuwsfabriek variant={variant} onComplete={(s) => handleKamerComplete('kamer2', s)} />;
       case 'kamer3':
-        return <KamerCodekluis onComplete={(s) => handleKamerComplete('kamer3', s)} />;
+        return <KamerCodekluis variant={variant} onComplete={(s) => handleKamerComplete('kamer3', s)} />;
       case 'kamer4':
-        return <KamerDatalek onComplete={(s) => handleKamerComplete('kamer4', s)} />;
+        return <KamerDatalek variant={variant} onComplete={(s) => handleKamerComplete('kamer4', s)} />;
       case 'kamer5':
-        return <KamerDilemma onComplete={(s) => handleKamerComplete('kamer5', s)} />;
+        return <KamerDilemma variant={variant} onComplete={(s) => handleKamerComplete('kamer5', s)} />;
       default:
         return null;
     }

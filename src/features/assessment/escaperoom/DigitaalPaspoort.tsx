@@ -9,11 +9,11 @@ interface DigitaalPaspoortProps {
 }
 
 const DOMEINEN = [
-  { key: 'digitaleSystemen' as const, label: 'Digitale\nSystemen', short: '21A' },
-  { key: 'mediaEnAI' as const, label: 'Media\n& AI', short: '21B/21D' },
-  { key: 'programmeren' as const, label: 'Programmeren', short: '22A/22B' },
-  { key: 'veiligheidPrivacy' as const, label: 'Veiligheid', short: '23A' },
-  { key: 'welzijnMaatschappij' as const, label: 'Welzijn', short: '23B/23C' },
+  { key: 'digitaleSystemen' as const, label: 'Digitale\nSystemen', short: '21A', indicatief: false },
+  { key: 'mediaEnAI' as const, label: 'Media\n& AI', short: '21B/21D', indicatief: false },
+  { key: 'programmeren' as const, label: 'Programmeren', short: '22A/22B', indicatief: false },
+  { key: 'veiligheidPrivacy' as const, label: 'Veiligheid', short: '23A', indicatief: false },
+  { key: 'welzijnMaatschappij' as const, label: 'Welzijn', short: '23B/23C', indicatief: true },
 ] as const;
 
 const CENTER = 150;
@@ -215,6 +215,7 @@ export const DigitaalPaspoort: React.FC<DigitaalPaspoortProps> = ({ result, onCo
                   <div className="text-xs font-bold text-lab-muted">
                     {domein.label.replace('\n', ' ')}
                     <span className="text-lab-muted ml-1">({domein.short})</span>
+                    {domein.indicatief && <span className="text-[10px] font-medium italic ml-1">· indicatie (1 vraag)</span>}
                   </div>
                   <div className="text-[11px] text-lab-muted">{feedback.tekst}</div>
                 </div>
@@ -234,7 +235,7 @@ export const DigitaalPaspoort: React.FC<DigitaalPaspoortProps> = ({ result, onCo
           className="text-center space-y-3"
         >
           <div className="inline-flex items-center gap-2">
-            <span className="text-xs font-bold text-lab-muted uppercase tracking-widest">Jouw niveau</span>
+            <span className="text-xs font-bold text-lab-muted uppercase tracking-widest">Jouw startpunt</span>
           </div>
           <div className={`inline-block px-6 py-2 rounded-full bg-gradient-to-r ${niveauInfo.color} text-white font-black text-lg tracking-wide shadow-lg`}>
             {niveauInfo.label}

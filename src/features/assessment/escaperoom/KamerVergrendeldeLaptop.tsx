@@ -145,7 +145,7 @@ export const KamerVergrendeldeLaptop: React.FC<Props> = ({ onComplete, variant }
         </div>
         <p className="text-lab-muted text-sm md:text-base max-w-lg mx-auto">
           Je vindt een oude laptop op school. De bestanden staan door elkaar.
-          Sleep ze naar de juiste map om het wachtwoord te vinden!
+          Sleep elk bestand naar de juiste map — of tik erop om het naar de volgende map te verplaatsen.
         </p>
       </div>
 
@@ -198,7 +198,8 @@ export const KamerVergrendeldeLaptop: React.FC<Props> = ({ onComplete, variant }
                   {bestandenInMap.map(b => (
                     <div
                       key={b.id}
-                      className="flex items-center justify-between px-3 py-2 bg-lab-cream rounded-lg text-sm"
+                      onClick={() => { if (!ingediend) handleBestandKlik(b.id); }}
+                      className={`flex items-center justify-between px-3 py-2 bg-lab-cream rounded-lg text-sm select-none ${!ingediend ? 'cursor-pointer' : ''}`}
                     >
                       <span className="text-lab-muted flex items-center gap-2">
                         <span className="text-lab-muted">{b.icon}</span>
@@ -206,7 +207,7 @@ export const KamerVergrendeldeLaptop: React.FC<Props> = ({ onComplete, variant }
                       </span>
                       {!ingediend && (
                         <button
-                          onClick={() => verwijderPlaatsing(b.id)}
+                          onClick={e => { e.stopPropagation(); verwijderPlaatsing(b.id); }}
                           className="text-lab-muted hover:text-lab-muted transition-colors p-1"
                           aria-label={`${b.naam} verwijderen`}
                         >
@@ -229,8 +230,8 @@ export const KamerVergrendeldeLaptop: React.FC<Props> = ({ onComplete, variant }
           animate={{ opacity: 1, y: 0 }}
           className={`mt-4 p-4 rounded-xl border text-center font-bold ${
             feedback.correct
-              ? 'bg-lab-sage border-lab-sage text-lab-sage'
-              : 'bg-lab-gold border-lab-gold text-lab-gold'
+              ? 'bg-lab-sage/10 border-lab-sage text-lab-sage'
+              : 'bg-lab-gold/10 border-lab-gold text-lab-gold'
           }`}
         >
           <div className="flex items-center justify-center gap-2">

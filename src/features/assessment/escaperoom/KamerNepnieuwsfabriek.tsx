@@ -180,8 +180,8 @@ export const KamerNepnieuwsfabriek: React.FC<Props> = ({ onComplete, variant }) 
                 animate={{ opacity: 1, y: 0 }}
                 className={`mt-3 p-4 rounded-xl border ${
                   isCorrect
-                    ? 'bg-lab-sage border-lab-sage text-lab-sage'
-                    : 'bg-lab-coral border-lab-coral text-lab-coral'
+                    ? 'bg-lab-sage/10 border-lab-sage text-lab-sage'
+                    : 'bg-lab-coral/10 border-lab-coral text-lab-coral'
                 }`}
               >
                 <div className="flex items-start gap-2">
@@ -200,13 +200,13 @@ export const KamerNepnieuwsfabriek: React.FC<Props> = ({ onComplete, variant }) 
                 <>
                   <button
                     onClick={() => geefAntwoord(false)}
-                    className="flex-1 py-3 rounded-xl font-bold text-sm bg-lab-sage border border-lab-sage text-lab-sage hover:bg-lab-sage hover:text-white transition-colors active:scale-[0.98]"
+                    className="flex-1 py-3 rounded-xl font-bold text-sm bg-white border border-lab-sage text-lab-sage hover:bg-lab-sage hover:text-white transition-colors active:scale-[0.98]"
                   >
                     Echt
                   </button>
                   <button
                     onClick={() => geefAntwoord(true)}
-                    className="flex-1 py-3 rounded-xl font-bold text-sm bg-lab-coral border border-lab-coral text-lab-coral hover:bg-lab-coral hover:text-white transition-colors active:scale-[0.98]"
+                    className="flex-1 py-3 rounded-xl font-bold text-sm bg-white border border-lab-coral text-lab-coral hover:bg-lab-coral hover:text-white transition-colors active:scale-[0.98]"
                   >
                     Nep
                   </button>

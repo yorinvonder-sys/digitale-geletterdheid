@@ -117,6 +117,8 @@ Een instroom-meting moet elk kind een gelijke kans geven om te laten zien wat he
 
 ## 9. Fixlijst (P0 = misleidend label, gebroken kindbelofte of kapotte kernfunctie)
 
+> **Statusupdate (2 juli 2026, zelfde PR):** P0-1 t/m P0-7 én P1-16 zijn uitgevoerd en live geverifieerd (build groen; playthrough desktop + mobiel, beide varianten). Daarbij extra ontdekt en meegefixt: de dev-preview-route laadde het app-stylesheet niet (waardoor sommige kleurklassen alléén dáár niet renderden — productie had dit probleem niet) en de kamer-3-productteksten verwezen in de eindmeting nog naar het nulmeting-scenario ("alarmsysteem"). Nieuw P1-punt uit de verificatie: de volgorde-sleutel van kamer 3 keurt een logisch gelijkwaardige blokvolgorde af (TOON/ZET binnen het ALS-blok moet exact de sleutel volgen) — meenemen bij P1-9. Nog open: P1-8 t/m P1-15, P1-17 en alle P2-items.
+
 ### P0
 1. **Eindmeting-vragenset activeren:** geef `variant={variant}` door aan alle 5 kamers in `renderKamer()` — [EscaperoomNulmeting.tsx:366-381](../../src/features/assessment/escaperoom/EscaperoomNulmeting.tsx#L366). *Zonder dit meet de eindmeting met identieke vragen en is "groei" deels geheugeneffect.*
 2. **Mobiele bediening kamer 1 repareren:** klik-alternatief bereikbaar maken (de wissel-logica bestaat, maar geplaatste bestanden zijn niet meer aanklikbaar; alles belandt in map 1) of echte touch-ondersteuning toevoegen + één regel bedieningsuitleg — [KamerVergrendeldeLaptop.tsx:83-89](../../src/features/assessment/escaperoom/KamerVergrendeldeLaptop.tsx#L83). *Nu kan een leerling op een telefoon deze kamer niet goed maken.* Eerst op een echt toestel verifiëren.

@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import '@/styles/app.css';
+import '@/styles/authenticated.css';
 import { NulmetingFlow } from '@/features/assessment/escaperoom/NulmetingFlow';
 import { EindmetingFlow } from '@/features/assessment/escaperoom/EindmetingFlow';
 import type { NulmetingResult } from '@/features/assessment/escaperoom/types';

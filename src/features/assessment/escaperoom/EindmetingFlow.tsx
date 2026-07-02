@@ -29,7 +29,7 @@ export const EindmetingFlow: React.FC<EindmetingFlowProps> = ({ nulmetingResult,
     return (
       <div className="w-full h-full bg-lab-cream flex items-center justify-center p-6">
         <div className="max-w-md w-full bg-white rounded-2xl p-6 md:p-8 border border-lab-line shadow-sm text-center">
-          <div className="w-20 h-20 rounded-full mx-auto mb-6 flex items-center justify-center bg-gradient-to-br from-lab-sage to-lab-sage shadow-lg shadow-lab-sage">
+          <div className="w-20 h-20 rounded-full mx-auto mb-6 flex items-center justify-center bg-lab-sage shadow-lg shadow-lab-sage">
             <span className="text-white text-3xl font-black">+</span>
           </div>
           <h2 className="text-2xl font-black text-lab-ink mb-2">Groei wordt berekend...</h2>
