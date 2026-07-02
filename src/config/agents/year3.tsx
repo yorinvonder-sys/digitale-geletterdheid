@@ -455,7 +455,7 @@ Stel je voor dat je de repo hebt geforkt en lokaal gedownload. Beschrijf:
         color: '#202023',
         description: 'Review je kennis van geavanceerde programmeerconcepten en AI.',
         problemScenario: 'De periode zit erop, maar voor je verder gaat moet je bewijzen dat je de geavanceerde concepten echt beheerst. De Code Review Terminal scant je kennis van ML, API\'s, neurale netwerken en data pipelines. Alleen wie alles begrijpt, mag door.',
-        missionObjective: 'Doorloop drie review-rondes en bewijs je kennis van geavanceerd programmeren en AI.',
+        missionObjective: 'Doorloop vier review-rondes en bewijs je kennis van geavanceerd programmeren en AI.',
         briefingImage: '/assets/agents/advanced-code-review.webp',
         difficulty: 'Medium',
         examplePrompt: 'START',

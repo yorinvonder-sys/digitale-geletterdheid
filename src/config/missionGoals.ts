@@ -526,9 +526,9 @@ export const MISSION_GOALS: Record<string, MissionGoal> = {
         criteria: {
             type: 'rounds-complete',
             min: 4,
-            description: 'Je sorteert ML-stappen, koppelt geavanceerde begrippen, categoriseert leerstijlen en beantwoordt AI/ML-vragen.',
+            description: 'Je sorteert ML-stappen, koppelt geavanceerde begrippen, categoriseert supervised en unsupervised learning en beantwoordt AI/ML-vragen.',
         },
-        evidence: 'Je kunt de stappen van een ML-pipeline in de juiste volgorde zetten en overfitting van underfitting onderscheiden.',
+        evidence: 'Je kunt de stappen van een ML-pipeline in de juiste volgorde zetten en supervised van unsupervised learning onderscheiden.',
     },
     'impact-review': {
         primaryGoal: 'Ik beoordeel maatschappelijke effecten van technologie en onderscheid kansen van risico\'s vanuit ethisch en beleidsmatig perspectief.',

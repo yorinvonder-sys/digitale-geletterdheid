@@ -44,12 +44,21 @@
    "interactivity": 0,
    "total": 2
   },
-  "lastReviewed": null,
-  "reviewStatus": "pending",
-  "reportPath": null,
-  "autoFixesApplied": 0,
+  "lastReviewed": "2026-07-02",
+  "reviewStatus": "fixes-applied",
+  "reportPath": "business/dgskills-reviews/advanced-code-review-2026-07-02.md",
+  "autoFixesApplied": 3,
   "openEscalations": [],
-  "codexVerdict": null
+  "codexVerdict": null,
+  "reviewScores": {
+   "uiux": 9.0,
+   "didactiek": 7.5,
+   "tech": 8.5
+  },
+  "triageScore": 1.75,
+  "verdict": "fix-eerst",
+  "statusNote": "wave 17: 3 fixes (missionGoals description leerstijlen->supervised/unsupervised + evidence-claim underfitting->getoetste stof; year3 missionObjective drie->vier rondes); alle 4 rondes feitelijk correct, som 100=maxScore; systemInstruction-drift is dormant (platform-breed review-arena)",
+  "escalationCount": 0
  },
  {
   "missionId": "ai-beleid-brainstorm",
@@ -155,12 +164,24 @@
    "interactivity": 0,
    "total": 2
   },
-  "lastReviewed": null,
-  "reviewStatus": "pending",
-  "reportPath": null,
-  "autoFixesApplied": 0,
-  "openEscalations": [],
-  "codexVerdict": null
+  "lastReviewed": "2026-07-02",
+  "reviewStatus": "fixes-applied",
+  "reportPath": "business/dgskills-reviews/ai-spiegel-2026-07-02.md",
+  "autoFixesApplied": 1,
+  "openEscalations": [
+   "curriculum-keuze: basisvaardigheden-mapping (FORMULEREN+ETHIEK) mist een privacy-gerichte categorie voor deze privacy-missie — welke categorie toevoegen is Yorin-keuze (vgl. social-safeguard: ONLINE_VEILIGHEID)",
+   "design-keuze: bar-chart Sim 2 middencategorie is no-op (beide ternary-takken '#ff3c21', ai-spiegel.ts:52/57/62) — voorgestelde middenkleur '#ffb020' bestaat niet in het palet, kleurkeuze aan Yorin"
+  ],
+  "codexVerdict": null,
+  "reviewScores": {
+   "uiux": 8.0,
+   "didactiek": 8.0,
+   "tech": 9.0
+  },
+  "triageScore": 1.7,
+  "verdict": "fix-eerst",
+  "statusNote": "wave 17: 1 fix (dashboard-SLO-rij naar autoritaire mapping 23A/23B/21C); privacy-adviezen feitelijk correct, scoring sluitend",
+  "escalationCount": 2
  },
  {
   "missionId": "ai-tekengame",
@@ -317,12 +338,23 @@
    "interactivity": 0,
    "total": 2
   },
-  "lastReviewed": null,
-  "reviewStatus": "pending",
-  "reportPath": null,
+  "lastReviewed": "2026-07-02",
+  "reviewStatus": "blocked",
+  "reportPath": "business/dgskills-reviews/app-prototyper-2026-07-02.md",
   "autoFixesApplied": 0,
-  "openEscalations": [],
-  "codexVerdict": null
+  "openEscalations": [
+   "platform-patroon: builder-canvas coach-briefing (3 stappen, client én server identiek) dekt de 4 canvas-stappen niet (stap 3/4 gebruikersflow/testplan vs 'prototype presenteren') — zelfde productkeuze als podcast-producer/meesterproef/portfolio-builder/prototype-developer/meme-machine (nu 6 missies)"
+  ],
+  "codexVerdict": null,
+  "reviewScores": {
+   "uiux": 8,
+   "didactiek": 8,
+   "tech": 9
+  },
+  "triageScore": 1.7,
+  "verdict": "ok",
+  "statusNote": "wave 17: inhoudelijk gezond; enige punt is het platform-brede coach-plan-desync-patroon",
+  "escalationCount": 1
  },
  {
   "missionId": "automation-engineer",
@@ -335,12 +367,21 @@
    "interactivity": 0,
    "total": 2
   },
-  "lastReviewed": null,
-  "reviewStatus": "pending",
-  "reportPath": null,
+  "lastReviewed": "2026-07-02",
+  "reviewStatus": "fixed",
+  "reportPath": "business/dgskills-reviews/automation-engineer-2026-07-02.md",
   "autoFixesApplied": 0,
   "openEscalations": [],
-  "codexVerdict": null
+  "codexVerdict": null,
+  "reviewScores": {
+   "uiux": 10,
+   "didactiek": 10,
+   "tech": 10
+  },
+  "triageScore": 0.0,
+  "verdict": "ok",
+  "statusNote": "wave 17: foutloos — SLO-registratie consistent, 4 canvas-stappen logisch, scoring exact; 1 niet-blokkerend tekstlengte-puntje stap 1",
+  "escalationCount": 0
  },
  {
   "missionId": "brand-builder",
@@ -2693,7 +2734,7 @@
  {
   "missionId": "welzijnsonderzoeker",
   "templateType": "data-viewer",
-  "priorityBand": "medium",
+  "priorityBand": "low",
   "triageScores": {
    "uiux": 2,
    "slo": 0,
@@ -2701,12 +2742,21 @@
    "interactivity": 0,
    "total": 3
   },
-  "lastReviewed": null,
-  "reviewStatus": "pending",
-  "reportPath": null,
+  "lastReviewed": "2026-07-02",
+  "reviewStatus": "fixed",
+  "reportPath": "business/dgskills-reviews/welzijnsonderzoeker-2026-07-02.md",
   "autoFixesApplied": 0,
   "openEscalations": [],
-  "codexVerdict": null
+  "codexVerdict": null,
+  "reviewScores": {
+   "uiux": 8.5,
+   "didactiek": 9.0,
+   "tech": 9.0
+  },
+  "triageScore": 1.15,
+  "verdict": "ok",
+  "statusNote": "wave 17: schoon — antwoordmodellen nagerekend (kloppen), som=100, welzijnsthema niet-stigmatiserend; geen fixes nodig",
+  "escalationCount": 0
  },
  {
   "missionId": "word-wizard",
