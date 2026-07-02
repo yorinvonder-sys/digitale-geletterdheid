@@ -42,6 +42,9 @@ const DevMissionPreview = import.meta.env.DEV
 const DevShellPreview = import.meta.env.DEV
     ? React.lazy(() => import('@/features/dev-tools/DevShellPreview'))
     : null;
+const DevNulmetingPreview = import.meta.env.DEV
+    ? React.lazy(() => import('@/features/dev-tools/DevNulmetingPreview'))
+    : null;
 
 /** Minimal spinner — no lucide to avoid blocking LCP */
 import { DuckMark } from '@/components/brand/DuckMark';
@@ -520,6 +523,15 @@ export function AppRouter() {
         return (
             <React.Suspense fallback={<LoadingFallback />}>
                 <DevShellPreview />
+            </React.Suspense>
+        );
+    }
+
+    // DEV ONLY: Nulmeting/eindmeting escaperoom-preview — QA zonder login of database-writes.
+    if (import.meta.env.DEV && DevNulmetingPreview && normalizedPath === '/dev/nulmeting-preview') {
+        return (
+            <React.Suspense fallback={<LoadingFallback />}>
+                <DevNulmetingPreview />
             </React.Suspense>
         );
     }
