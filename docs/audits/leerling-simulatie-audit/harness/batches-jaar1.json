@@ -1,0 +1,33 @@
+{
+  "jaar": 1,
+  "totaal": 40,
+  "bron": "src/config/curriculum.ts (inventaris 2026-07-02)",
+  "pilots_afgerond": ["mail-detective", "prompt-master"],
+  "voorwaarden": {
+    "alle_waves": "PR #194 gemerged + worktree gelijk aan verse origin/main",
+    "wave_F_chat": "testaccounts-bestand ~/.dgskills-test-accounts.json aanwezig"
+  },
+  "waves_nonchat": {
+    "A_tool_guide": ["magister-master", "cloud-commander", "word-wizard", "slide-specialist", "print-pro", "mission-launch"],
+    "B_scenario_engine": ["code-denker", "notificatie-ninja", "social-safeguard", "veilig-internet", "cookie-crusher", "data-speurder"],
+    "C_gemengd": ["data-handelaar", "ai-spiegel", "review-week-2", "review-week-3", "digitale-balans-coach", "game-director"],
+    "D_dedicated": ["cloud-cleaner", "layout-doctor", "pitch-police", "data-detective", "deepfake-detector", "filter-bubble-breaker"],
+    "E_dedicated_rest": ["datalekken-rampenplan", "data-voor-data"]
+  },
+  "wave_F_chat_serieel": {
+    "debate_arena_chat": ["schermtijd-coach (eerst, = pilot-3 chatroute)", "scroll-stopper"],
+    "builder_canvas_chat": ["website-bouwer", "mission-blueprint", "mission-vision"],
+    "pure_chat_rollen": ["game-programmeur", "ai-trainer", "chatbot-trainer", "verhalen-ontwerper", "ai-tekengame", "ai-beleid-brainstorm", "data-verzamelaar"]
+  },
+  "familie_per_missie_notities": {
+    "digitale-balans-coach": "debate-arena met chat UIT — kan in non-chat-wave",
+    "review-week-3": "ethics-council template (enige)",
+    "game-programmeur": "deterministisch commando-systeem; AI coacht alleen in chat; verken bonus-substappen binnen de ouderflow",
+    "verhalen-ontwerper": "heeft geneste bonus-subs; verken die binnen de ouderflow",
+    "layout-doctor": "draait op WordSimulator-component",
+    "mail-detective": "PILOT KLAAR — advies fix-eerst (Geel), 0 BLOCK / 6 WARN",
+    "prompt-master": "PILOT KLAAR — advies fix-eerst (Geel), 0 BLOCK / 3 WARN"
+  },
+  "slots": "wave = 6 missies parallel op slots 1-6 (poorten 9101-9106); wave E met 2; chat-wave F serieel per testaccount (15 chatberichten/min per account, max ~6 AI-berichten per profiel per missie)",
+  "spawn_procedure": "per missie één Sonnet-agent (geen thinking); prompt = PROMPT-TEMPLATE.md-verwijzing + parameters MISSION_ID/FAMILIE/SLOT/PORT/JAAR=1/DELIVERY + missie-notitie; na elke wave: JSONL valideren + slots-locks checken vóór volgende wave"
+}
