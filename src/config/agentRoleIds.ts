@@ -103,6 +103,7 @@ export const AGENT_ROLE_IDS = [
   'scroll-stopper',
   'data-speurder',
   'wachtwoord-warrior',
+  'wachtwoord-fortress',
 ] as const;
 
 const AGENT_ROLE_ID_SET = new Set<string>(AGENT_ROLE_IDS);

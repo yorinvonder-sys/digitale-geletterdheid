@@ -68,7 +68,8 @@ export type TemplateType =
     | 'data-viewer'
     | 'debate-arena'
     | 'tool-guide'
-    | 'ethics-council';
+    | 'ethics-council'
+    | 'password-fortress';
 
 // === Template registry entry ===
 export interface TemplateMissionEntry {

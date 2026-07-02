@@ -432,6 +432,15 @@ export const MISSION_GOALS: Record<string, MissionGoal> = {
         },
         evidence: 'Je kunt uitleggen waarom veelgebruikte wachtwoorden zwak zijn en hebt een eigen sterk wachtwoord aangemaakt.',
     },
+    'wachtwoord-fortress': {
+        primaryGoal: 'Ik bouw een wachtwoord-fort dat vier soorten kraakaanvallen overleeft.',
+        criteria: {
+            type: 'rounds-complete',
+            min: 3,
+            description: 'Minimaal drie van de vier aanvalsrondes overleefd — de laatste ronde (credential stuffing) is altijd verplicht.',
+        },
+        evidence: 'Je kunt uitleggen hoe brute-force, woordenboek-, leetspeak- en credential-stuffing-aanvallen werken en waarom jouw wachtwoord ze weerstaat.',
+    },
     'security-auditor': {
         primaryGoal: 'Ik spoor kwetsbaarheden op in een webshop, classificeer ze op ernst en schrijf een concrete aanbeveling.',
         criteria: {

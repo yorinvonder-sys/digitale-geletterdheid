@@ -88,6 +88,7 @@ export const MISSION_OVERRIDES: Record<string, Partial<Mission>> = {
     'code-reviewer': { info: 'Ik beoordeel code kritisch en zoek naar onduidelijkheden, fouten en verbeterpunten. Ik leer hoe goede code leesbaar en onderhoudbaar blijft.' },
     'privacy-by-design': { info: 'Ik analyseer een app op privacyrisico\'s en ontwerp veiligere keuzes vanaf het begin. Ik vertaal privacyregels naar concrete ontwerpbeslissingen.' },
     'wachtwoord-warrior': { info: 'Ik test hoe sterk of zwak wachtwoorden zijn en leer waarom sommige wachtwoorden snel te kraken zijn. Ik formuleer regels voor betere beveiliging.' },
+    'wachtwoord-fortress': { info: 'Ik bouw een wachtwoord-fort en zie live hoe snel vier soorten kraakaanvallen het proberen te breken. Ik maak mijn wachtwoord elke ronde sterker.' },
     'access-control-engineer': { info: 'Ik stel rollen en rechten zo in dat alleen de juiste mensen toegang krijgen. Ik test of gevoelige informatie goed is afgeschermd.' },
     'code-review-2': { info: 'Ik herhaal programmeerconcepten en test of ik codeproblemen kan herkennen en uitleggen. Ik laat zien dat ik kritisch naar software kan kijken.' },
     // Leerjaar 2 — Periode 3
@@ -207,6 +208,7 @@ const DUTCH_MISSION_TITLE_OVERRIDES: Record<string, string> = {
     'network-navigator': 'Netwerkverkenner',
     'privacy-by-design': 'Privacybewust ontwerp',
     'wachtwoord-warrior': 'Wachtwoordstrijder',
+    'wachtwoord-fortress': 'Wachtwoordfort',
     'access-control-engineer': 'Toegangsrechtenbouwer',
     'code-review-2': 'Codeterugblik',
     'ux-detective': 'Gebruikservaringsspeurder',

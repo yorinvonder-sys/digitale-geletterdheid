@@ -2708,6 +2708,79 @@ REGELS:
         ],
     },
     {
+        id: 'wachtwoord-fortress',
+        yearGroup: 2,
+        educationLevels: ['mavo', 'havo', 'vwo'] as EducationLevel[],
+        title: 'Wachtwoord Fortress',
+        icon: <ShieldCheck size={28} />,
+        color: '#202023',
+        description: 'Bouw een wachtwoord-fort en test het live tegen vier gesimuleerde kraakaanvallen.',
+        problemScenario: 'Een kraakcomputer probeert 1 miljard wachtwoorden per seconde. Woordenboekaanvallen kennen elk woord, elke naam en elk jaartal. En gelekte wachtwoorden worden automatisch op honderden andere sites geprobeerd. Overleeft jouw wachtwoord dat geweld?',
+        missionObjective: 'Bouw in vier rondes een wachtwoord dat steeds zwaardere gesimuleerde aanvallen weerstaat: brute-force, woordenboekaanval, leetspeak-variaties en credential stuffing.',
+        briefingImage: '/assets/agents/prompt_master.webp',
+        difficulty: 'Medium',
+        examplePrompt: 'Waarom kraakt een woordenboekaanval "Zomer2024!" in een paar seconden?',
+        primaryGoal: 'Ik bouw een wachtwoord-fort dat vier soorten kraakaanvallen overleeft.',
+        goalCriteria: { type: 'steps-complete', min: 3 },
+        visualPreview: (
+            <div className="w-full h-full bg-duck-ink flex flex-col items-center justify-center p-4 relative overflow-hidden">
+                <div className="relative z-10 flex flex-col items-center gap-3">
+                    <div className="w-40 bg-white/10 backdrop-blur rounded-xl p-3 border border-white/20">
+                        <div className="text-[8px] text-white/60 mb-1 font-mono">FORTSTERKTE:</div>
+                        <div className="flex gap-1 items-center mb-2">
+                            <div className="h-1.5 w-6 rounded-full bg-duck-acid"></div>
+                            <div className="h-1.5 w-6 rounded-full bg-duck-acid"></div>
+                            <div className="h-1.5 w-6 rounded-full bg-duck-acid"></div>
+                            <div className="h-1.5 w-6 rounded-full bg-white/20"></div>
+                        </div>
+                        <div className="text-[7px] text-white/50 font-mono">Kraaktijd: 949 jaar</div>
+                    </div>
+                </div>
+                <ShieldCheck size={20} className="text-duck-acid absolute top-3 right-3" />
+            </div>
+        ),
+        systemInstruction: `Je bent een Cybersecurity Coach die leerlingen (13-16 jaar, leerjaar 2) begeleidt tijdens de missie Wachtwoord Fortress: een simulatiegame waarin ze een oefenwachtwoord bouwen en het testen tegen vier gesimuleerde kraakaanvallen.
+
+KERNIDEE:
+De leerling ziet in de game live hoe lang vier aanvalstypen over hun oefenwachtwoord doen: brute-force (alle combinaties proberen), woordenboekaanval (bekende woorden, namen, jaartallen en reeksen), leetspeak-variaties (@→a, 0→o terugvertalen) en credential stuffing (gelekte wachtwoordlijsten). De game rekent zelf — deterministisch en lokaal in de browser. Jouw rol is de resultaten helpen DUIDEN.
+
+JOUW MISSIE:
+Help de leerling begrijpen WAAROM een aanval snel of langzaam is, zonder het antwoord voor te zeggen. Laat ze zelf itereren: testen → begrijpen → verbeteren.
+
+WERKWIJZE:
+- Verwijs naar wat de game laat zien: "Welke aanval was je zwakste schakel? Wat vond die aanval precies?"
+- Leg aanvalstechnieken uit op een begrijpelijk niveau, ZONDER te leren hoe je ze uitvoert.
+- Gebruik vergelijkingen: "Een woordenboekaanval probeert eerst alle sleutels die mensen het vaakst gebruiken — pas daarna de rest."
+- Stel vragen die naar de kerninzichten leiden: lengte wint van complexiteit; herkenbare woorden en jaartallen tellen amper mee; hetzelfde wachtwoord op meerdere sites is één datalek verwijderd van een ramp.
+- Kernboodschap passphrases: 3-4 willekeurige woorden + een cijfer of teken = lang, sterk én te onthouden.
+- Laat de leerling ZELF conclusies trekken door vragen te stellen, niet door antwoorden te geven.
+
+REGELS:
+- Leer NOOIT hoe je daadwerkelijk wachtwoorden kraakt, kraaktools downloadt of accounts aanvalt. Dit is DEFENSIEF onderwijs.
+- Als de leerling vraagt hoe ze iemands wachtwoord kunnen hacken: "Dat gaan we hier niet doen. We leren hoe je je BESCHERMT — niet hoe je aanvalt. Dat is het verschil tussen een beveiligingsexpert en een hacker."
+- Als de leerling een echt wachtwoord deelt of wil testen: "Stop! Deel of gebruik nooit je échte wachtwoord — ook niet in deze game of met een AI. Verzin altijd een oefenwachtwoord."
+- Benadruk dat de kraaktijden uit de game een educatief rekenmodel zijn, geen garantie: echte aanvallers combineren methodes en worden steeds sneller.
+- Gebruik NOOIT echte gelekte wachtwoorden van specifieke personen. Alleen geanonimiseerde, wereldwijd bekende voorbeelden zoals "123456" en "password".
+- Moedig de leerling aan om na de missie een wachtwoordmanager en tweestapsverificatie (2FA) te gebruiken — maar dwing het niet af.` + SYSTEM_INSTRUCTION_SUFFIX,
+        steps: [
+            {
+                title: "Versla de kraakcomputer",
+                description: "Bouw een wachtwoord dat brute-force minstens een dag tegenhoudt.",
+                example: "Test hoeveel langzamer de aanval wordt als je wachtwoord vier tekens langer is."
+            },
+            {
+                title: "Doorzie de trucs",
+                description: "Overleef de woordenboek- en leetspeak-aanvallen.",
+                example: "Waarom valt 'P@ssw0rd!' in ronde 3, terwijl het ronde 1 en 2 overleefde?"
+            },
+            {
+                title: "Bouw voor de eeuwigheid",
+                description: "Maak een passphrase die ook gelekte lijsten en 100 jaar kraken overleeft.",
+                example: "Combineer 3-4 willekeurige woorden met een cijfer of teken."
+            }
+        ],
+    },
+    {
         id: 'access-control-engineer',
         yearGroup: 2,
         educationLevels: ['mavo', 'havo', 'vwo'] as EducationLevel[],

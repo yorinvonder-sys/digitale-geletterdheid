@@ -50,11 +50,11 @@ const LABEL_CONFIG: Record<DeveloperNoteLabel, {
     handoff: {
         label: 'Handoff',
         icon: ArrowRightCircle,
-        bg: 'bg-duck-coral/15',
-        text: 'text-duck-coral',
-        border: 'border-duck-coral/35',
-        btnActive: 'bg-duck-coral text-white',
-        btnInactive: 'bg-duck-bg text-duck-coral hover:bg-duck-coral hover:text-white',
+        bg: 'bg-duck-acid/30',
+        text: 'text-duck-ink',
+        border: 'border-duck-ink/35',
+        btnActive: 'bg-duck-acid text-duck-ink',
+        btnInactive: 'bg-duck-bg text-duck-ink hover:bg-duck-acid hover:text-duck-ink',
     },
 };
 
@@ -171,7 +171,7 @@ export const DeveloperNotesPanel: React.FC = () => {
     if (loading) {
         return (
             <div className="flex items-center justify-center py-24">
-                <div className="w-8 h-8 border-3 border-duck-coral border-t-transparent rounded-full animate-spin" />
+                <div className="w-8 h-8 border-2 border-duck-ink border-t-transparent rounded-full animate-spin" />
             </div>
         );
     }
@@ -181,16 +181,16 @@ export const DeveloperNotesPanel: React.FC = () => {
 
             {/* Laatste handoff banner */}
             {lastHandoff && (
-                <div className="bg-duck-coral border border-duck-coral rounded-2xl p-5 flex gap-4 items-start text-white">
-                    <div className="w-10 h-10 bg-white/15 rounded-xl flex items-center justify-center shrink-0">
-                        <ArrowRightCircle size={20} className="text-white" />
+                <div className="bg-duck-acid border border-duck-acid rounded-2xl p-5 flex gap-4 items-start text-duck-ink">
+                    <div className="w-10 h-10 bg-white/40 rounded-xl flex items-center justify-center shrink-0">
+                        <ArrowRightCircle size={20} className="text-duck-ink" />
                     </div>
                     <div className="flex-1 min-w-0">
-                        <p className="text-[10px] font-black text-white/75 uppercase tracking-widest mb-1">Laatste handoff - hoe verder</p>
-                        <p className="text-sm text-white leading-relaxed whitespace-pre-wrap line-clamp-3">
+                        <p className="text-[10px] font-black text-duck-ink/60 uppercase tracking-widest mb-1">Laatste handoff - hoe verder</p>
+                        <p className="text-sm text-duck-ink leading-relaxed whitespace-pre-wrap line-clamp-3">
                             {lastHandoff.body}
                         </p>
-                        <p className="text-[10px] text-white/75 mt-1.5" title={fullDate(lastHandoff.createdAt)}>
+                        <p className="text-[10px] text-duck-ink/60 mt-1.5" title={fullDate(lastHandoff.createdAt)}>
                             {relativeTime(lastHandoff.createdAt)}
                         </p>
                     </div>
@@ -198,7 +198,7 @@ export const DeveloperNotesPanel: React.FC = () => {
             )}
 
             {/* Invoergedeelte */}
-            <div className="bg-white rounded-3xl border border-duck-line shadow-sm p-6 space-y-4">
+            <div className="bg-white rounded-3xl border border-duck-ink/15 shadow-sm p-6 space-y-4">
                 <h3 className="text-sm font-black text-duck-ink uppercase tracking-widest">Nieuwe notitie</h3>
 
                 <textarea
@@ -207,7 +207,7 @@ export const DeveloperNotesPanel: React.FC = () => {
                     onKeyDown={handleKeyDown}
                     placeholder="Schrijf een gedachte, werklog of handoff... (Cmd+Enter om op te slaan)"
                     rows={4}
-                    className="w-full px-4 py-3 bg-duck-bg border border-duck-line rounded-xl text-sm text-duck-ink placeholder-slate-400 focus:ring-2 focus:ring-duck-coral outline-none resize-none transition-all"
+                    className="w-full px-4 py-3 bg-duck-bg border border-duck-ink/15 rounded-xl text-sm text-duck-ink placeholder-slate-400 focus:ring-2 focus:ring-duck-ink/15 outline-none resize-none transition-all"
                 />
 
                 <div className="flex flex-wrap items-center gap-2">
@@ -232,7 +232,7 @@ export const DeveloperNotesPanel: React.FC = () => {
                     <button
                         onClick={handleSave}
                         disabled={!body.trim() || saving}
-                        className="ml-auto inline-flex items-center gap-2 px-4 py-2 bg-duck-coral text-white rounded-xl text-xs font-bold hover:bg-duck-coral hover:text-white disabled:opacity-40 disabled:cursor-not-allowed transition-all"
+                        className="ml-auto inline-flex items-center gap-2 px-4 py-2 bg-duck-acid text-duck-ink rounded-xl text-xs font-bold disabled:opacity-40 disabled:cursor-not-allowed transition-all"
                     >
                         <Save size={14} />
                         {saving ? 'Opslaan...' : 'Opslaan'}
@@ -252,7 +252,7 @@ export const DeveloperNotesPanel: React.FC = () => {
                             className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all capitalize ${
                                 isActive
                                     ? (cfg ? cfg.btnActive : 'bg-duck-ink text-white')
-                                    : (cfg ? cfg.btnInactive : 'bg-duck-bg text-duck-muted hover:bg-duck-creamDeep')
+                                    : (cfg ? cfg.btnInactive : 'bg-duck-bg text-duck-ink/60 hover:bg-duck-ink/10')
                             }`}
                         >
                             {lbl === 'alle' ? 'Alle' : LABEL_CONFIG[lbl].label}
@@ -268,13 +268,13 @@ export const DeveloperNotesPanel: React.FC = () => {
 
             {/* Lijst */}
             {filtered.length === 0 ? (
-                <div className="bg-white rounded-2xl border border-duck-line p-12 text-center">
+                <div className="bg-white rounded-2xl border border-duck-ink/15 p-12 text-center">
                     <div className="space-y-3">
-                        <p className="text-duck-muted font-bold">Nog geen notities</p>
-                        <p className="text-sm text-duck-muted max-w-sm mx-auto leading-relaxed">
+                        <p className="text-duck-ink/60 font-bold">Nog geen notities</p>
+                        <p className="text-sm text-duck-ink/60 max-w-sm mx-auto leading-relaxed">
                             Gebruik <span className="font-bold text-duck-ink">Gedachte</span> voor ideeën en twijfels,{' '}
                             <span className="font-bold text-duck-ink">Werklog</span> voor wat je gedaan hebt, en{' '}
-                            <span className="font-bold text-duck-muted">Handoff</span> om morgen meteen te weten hoe je verder gaat.
+                            <span className="font-bold text-duck-ink/60">Handoff</span> om morgen meteen te weten hoe je verder gaat.
                         </p>
                     </div>
                 </div>
@@ -303,7 +303,7 @@ export const DeveloperNotesPanel: React.FC = () => {
                                                 {cfg.label}
                                             </span>
                                             <span
-                                                className="text-[10px] text-duck-muted font-medium"
+                                                className="text-[10px] text-duck-ink/60 font-medium"
                                                 title={fullDate(note.createdAt)}
                                             >
                                                 {relativeTime(note.createdAt)}
@@ -340,21 +340,21 @@ export const DeveloperNotesPanel: React.FC = () => {
                                                     value={editBody}
                                                     onChange={(e) => setEditBody(e.target.value)}
                                                     rows={4}
-                                                    className="w-full px-3 py-2 bg-duck-bg border border-duck-line rounded-xl text-sm text-duck-ink focus:ring-2 focus:ring-duck-coral outline-none resize-none transition-all"
+                                                    className="w-full px-3 py-2 bg-duck-bg border border-duck-ink/15 rounded-xl text-sm text-duck-ink focus:ring-2 focus:ring-duck-ink/15 outline-none resize-none transition-all"
                                                     autoFocus
                                                 />
                                                 <div className="flex gap-2">
                                                     <button
                                                         onClick={() => handleEditSave(note.id)}
                                                         disabled={!editBody.trim() || editSaving}
-                                                        className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-duck-coral text-white rounded-lg text-xs font-bold hover:bg-duck-coral hover:text-white disabled:opacity-40 disabled:cursor-not-allowed transition-all"
+                                                        className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-duck-acid text-duck-ink rounded-lg text-xs font-bold disabled:opacity-40 disabled:cursor-not-allowed transition-all"
                                                     >
                                                         <Save size={12} />
                                                         {editSaving ? 'Opslaan...' : 'Opslaan'}
                                                     </button>
                                                     <button
                                                         onClick={cancelEdit}
-                                                        className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-duck-bg text-duck-muted rounded-lg text-xs font-bold hover:bg-duck-creamDeep transition-all"
+                                                        className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-duck-bg text-duck-ink/60 rounded-lg text-xs font-bold hover:bg-duck-ink/10 transition-all"
                                                     >
                                                         <X size={12} />
                                                         Annuleren
@@ -363,7 +363,7 @@ export const DeveloperNotesPanel: React.FC = () => {
                                             </div>
                                         ) : (
                                             <p
-                                                className="text-sm text-duck-ink leading-relaxed whitespace-pre-wrap cursor-pointer hover:text-duck-muted transition-colors"
+                                                className="text-sm text-duck-ink leading-relaxed whitespace-pre-wrap cursor-pointer hover:text-duck-ink transition-colors"
                                                 onClick={() => startEdit(note)}
                                                 title="Klik om te bewerken"
                                             >
@@ -377,14 +377,14 @@ export const DeveloperNotesPanel: React.FC = () => {
                                         <div className="flex gap-1 shrink-0">
                                             <button
                                                 onClick={() => startEdit(note)}
-                                                className="p-1.5 text-duck-muted hover:text-duck-muted hover:bg-duck-bg rounded-lg transition-all"
+                                                className="p-1.5 text-duck-ink/60 hover:text-duck-ink hover:bg-duck-bg rounded-lg transition-all"
                                                 title="Bewerken"
                                             >
                                                 <Edit2 size={14} />
                                             </button>
                                             <button
                                                 onClick={() => handleDelete(note.id)}
-                                                className="p-1.5 text-duck-muted hover:text-duck-muted hover:bg-duck-coral hover:text-white rounded-lg transition-all"
+                                                className="p-1.5 text-duck-ink/60 hover:bg-duck-error hover:text-white rounded-lg transition-all"
                                                 title="Verwijderen"
                                             >
                                                 <Trash2 size={14} />

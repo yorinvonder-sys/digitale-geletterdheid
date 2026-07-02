@@ -49,10 +49,10 @@ const STATUS_LABELS: Record<Invoice['status'], string> = {
 };
 
 const STATUS_COLORS: Record<Invoice['status'], string> = {
-    concept: 'bg-duck-bg text-duck-muted',
+    concept: 'bg-duck-bg text-duck-ink/60',
     verzonden: 'bg-duck-ink text-white',
     betaald: 'bg-duck-ink text-white',
-    vervallen: 'bg-duck-coral text-white',
+    vervallen: 'bg-duck-error text-white',
 };
 
 // ============================================================================
@@ -123,24 +123,24 @@ function InvoiceDetailModal({
     return (
         <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
             <div className="bg-white rounded-3xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
-                <div className="sticky top-0 bg-white rounded-t-3xl border-b border-duck-line px-8 py-5 flex items-center justify-between">
+                <div className="sticky top-0 bg-white rounded-t-3xl border-b border-duck-ink/15 px-8 py-5 flex items-center justify-between">
                     <div>
                         <h3 className="text-lg font-black text-duck-ink uppercase tracking-tight">
                             Factuur {invoice.invoice_number}
                         </h3>
-                        <p className="text-xs text-duck-muted mt-0.5">{invoice.client_name}</p>
+                        <p className="text-xs text-duck-ink/60 mt-0.5">{invoice.client_name}</p>
                     </div>
                     <div className="flex items-center gap-2">
                         <button
                             onClick={() => onDownloadPDF(invoice)}
-                            className="flex items-center gap-1.5 px-4 py-2 bg-duck-coral text-white rounded-xl text-xs font-bold hover:bg-duck-coral hover:text-white transition-colors"
+                            className="flex items-center gap-1.5 px-4 py-2 bg-duck-acid text-duck-ink rounded-xl text-xs font-bold transition-colors"
                         >
                             <Download size={13} />
                             PDF
                         </button>
                         <button
                             onClick={onClose}
-                            className="px-4 py-2 border border-duck-line rounded-xl text-xs font-bold text-duck-muted hover:bg-duck-bg transition-colors"
+                            className="px-4 py-2 border border-duck-ink/15 rounded-xl text-xs font-bold text-duck-ink/60 hover:bg-duck-bg transition-colors"
                         >
                             Sluiten
                         </button>
@@ -151,19 +151,19 @@ function InvoiceDetailModal({
                     {/* Meta gegevens */}
                     <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
                         <div>
-                            <p className="text-[10px] font-black text-duck-muted uppercase tracking-widest mb-1">Status</p>
+                            <p className="text-[10px] font-black text-duck-ink/60 uppercase tracking-widest mb-1">Status</p>
                             <span className={`inline-block text-xs font-bold px-2.5 py-1 rounded-lg ${STATUS_COLORS[invoice.status]}`}>
                                 {STATUS_LABELS[invoice.status]}
                             </span>
                         </div>
                         <div>
-                            <p className="text-[10px] font-black text-duck-muted uppercase tracking-widest mb-1">Factuurdatum</p>
+                            <p className="text-[10px] font-black text-duck-ink/60 uppercase tracking-widest mb-1">Factuurdatum</p>
                             <p className="font-bold text-duck-ink text-sm">{formatDateShort(invoice.issue_date)}</p>
                         </div>
                         {invoice.due_date && (
                             <div>
-                                <p className="text-[10px] font-black text-duck-muted uppercase tracking-widest mb-1">Vervaldatum</p>
-                                <p className={`font-bold text-sm ${isOverdue(invoice) ? 'text-duck-coral' : 'text-duck-ink'}`}>
+                                <p className="text-[10px] font-black text-duck-ink/60 uppercase tracking-widest mb-1">Vervaldatum</p>
+                                <p className={`font-bold text-sm ${isOverdue(invoice) ? 'text-duck-error' : 'text-duck-ink'}`}>
                                     {formatDateShort(invoice.due_date)}
                                 </p>
                             </div>
@@ -172,16 +172,16 @@ function InvoiceDetailModal({
 
                     {/* Klantgegevens */}
                     <div className="bg-duck-bg rounded-2xl p-4">
-                        <p className="text-[10px] font-black text-duck-muted uppercase tracking-widest mb-2">Klant</p>
+                        <p className="text-[10px] font-black text-duck-ink/60 uppercase tracking-widest mb-2">Klant</p>
                         <p className="font-bold text-duck-ink">{invoice.client_name}</p>
                         {invoice.client_address && (
-                            <p className="text-sm text-duck-muted mt-1 whitespace-pre-wrap">{invoice.client_address}</p>
+                            <p className="text-sm text-duck-ink/60 mt-1 whitespace-pre-wrap">{invoice.client_address}</p>
                         )}
                         {invoice.client_vat_number && (
-                            <p className="text-xs text-duck-muted mt-1">BTW: {invoice.client_vat_number}</p>
+                            <p className="text-xs text-duck-ink/60 mt-1">BTW: {invoice.client_vat_number}</p>
                         )}
                         {invoice.client_email && (
-                            <p className="text-xs text-duck-muted mt-1">{invoice.client_email}</p>
+                            <p className="text-xs text-duck-ink/60 mt-1">{invoice.client_email}</p>
                         )}
                     </div>
 
@@ -190,21 +190,21 @@ function InvoiceDetailModal({
                         <div className="overflow-x-auto">
                             <table className="w-full text-sm">
                                 <thead>
-                                    <tr className="border-b border-duck-line">
-                                        <th className="text-left py-2 text-[10px] font-black text-duck-muted uppercase tracking-widest">Omschrijving</th>
-                                        <th className="text-right py-2 text-[10px] font-black text-duck-muted uppercase tracking-widest">Aantal</th>
-                                        <th className="text-right py-2 text-[10px] font-black text-duck-muted uppercase tracking-widest">Tarief</th>
-                                        <th className="text-right py-2 text-[10px] font-black text-duck-muted uppercase tracking-widest">BTW%</th>
-                                        <th className="text-right py-2 text-[10px] font-black text-duck-muted uppercase tracking-widest">Totaal</th>
+                                    <tr className="border-b border-duck-ink/15">
+                                        <th className="text-left py-2 text-[10px] font-black text-duck-ink/60 uppercase tracking-widest">Omschrijving</th>
+                                        <th className="text-right py-2 text-[10px] font-black text-duck-ink/60 uppercase tracking-widest">Aantal</th>
+                                        <th className="text-right py-2 text-[10px] font-black text-duck-ink/60 uppercase tracking-widest">Tarief</th>
+                                        <th className="text-right py-2 text-[10px] font-black text-duck-ink/60 uppercase tracking-widest">BTW%</th>
+                                        <th className="text-right py-2 text-[10px] font-black text-duck-ink/60 uppercase tracking-widest">Totaal</th>
                                     </tr>
                                 </thead>
                                 <tbody className="divide-y divide-slate-50">
                                     {lines.map((line, idx) => (
                                         <tr key={line.id || idx}>
                                             <td className="py-2.5 text-duck-ink font-medium">{line.description}</td>
-                                            <td className="py-2.5 text-right text-duck-muted">{line.quantity}</td>
-                                            <td className="py-2.5 text-right text-duck-muted">{formatEuro(line.unit_price)}</td>
-                                            <td className="py-2.5 text-right text-duck-muted">{line.vat_rate}%</td>
+                                            <td className="py-2.5 text-right text-duck-ink/60">{line.quantity}</td>
+                                            <td className="py-2.5 text-right text-duck-ink/60">{formatEuro(line.unit_price)}</td>
+                                            <td className="py-2.5 text-right text-duck-ink/60">{line.vat_rate}%</td>
                                             <td className="py-2.5 text-right font-bold text-duck-ink">{formatEuro(line.line_total)}</td>
                                         </tr>
                                     ))}
@@ -214,16 +214,16 @@ function InvoiceDetailModal({
                     )}
 
                     {/* Totaalblok */}
-                    <div className="border-t border-duck-line pt-4 space-y-1">
+                    <div className="border-t border-duck-ink/15 pt-4 space-y-1">
                         <div className="flex justify-between text-sm">
-                            <span className="text-duck-muted">Subtotaal (excl. BTW)</span>
+                            <span className="text-duck-ink/60">Subtotaal (excl. BTW)</span>
                             <span className="font-medium text-duck-ink">{formatEuro(invoice.subtotal)}</span>
                         </div>
                         <div className="flex justify-between text-sm">
-                            <span className="text-duck-muted">BTW</span>
+                            <span className="text-duck-ink/60">BTW</span>
                             <span className="font-medium text-duck-ink">{formatEuro(invoice.vat_amount)}</span>
                         </div>
-                        <div className="flex justify-between text-base font-black pt-2 border-t border-duck-line">
+                        <div className="flex justify-between text-base font-black pt-2 border-t border-duck-ink/15">
                             <span className="text-duck-ink">Totaal incl. BTW</span>
                             <span className="text-duck-ink">{formatEuro(invoice.total)}</span>
                         </div>
@@ -380,11 +380,11 @@ function NewInvoiceModal({
         <div className="fixed inset-0 bg-black/50 z-50 flex items-start justify-center p-4 overflow-y-auto">
             <div className="bg-white rounded-3xl shadow-2xl w-full max-w-2xl my-8">
                 {/* Header */}
-                <div className="border-b border-duck-line px-8 py-5 flex items-center justify-between">
+                <div className="border-b border-duck-ink/15 px-8 py-5 flex items-center justify-between">
                     <div>
                         <h3 className="text-lg font-black text-duck-ink uppercase tracking-tight">Nieuwe Factuur</h3>
-                        <p className="text-xs text-duck-muted mt-0.5">
-                            Factuurnummer: <span className="font-bold text-duck-coral">{nextInvoiceNumber}</span>
+                        <p className="text-xs text-duck-ink/60 mt-0.5">
+                            Factuurnummer: <span className="font-bold text-duck-ink">{nextInvoiceNumber}</span>
                         </p>
                     </div>
                     <button
@@ -392,18 +392,18 @@ function NewInvoiceModal({
                         className="p-2 hover:bg-duck-bg rounded-xl transition-colors"
                         aria-label="Sluiten"
                     >
-                        <ChevronDown size={20} className="text-duck-muted rotate-180" />
+                        <ChevronDown size={20} className="text-duck-ink/60 rotate-180" />
                     </button>
                 </div>
 
                 {/* Stap indicator */}
-                <div className="flex border-b border-duck-line">
+                <div className="flex border-b border-duck-ink/15">
                     <button
                         onClick={() => setStep(1)}
                         className={`flex-1 py-3 text-xs font-black uppercase tracking-widest transition-colors ${
                             step === 1
-                                ? 'text-duck-coral border-b-2 border-duck-coral'
-                                : 'text-duck-muted hover:text-duck-muted'
+                                ? 'text-duck-ink border-b-2 border-duck-ink'
+                                : 'text-duck-ink/60 hover:text-duck-ink'
                         }`}
                     >
                         1. Klantgegevens
@@ -414,8 +414,8 @@ function NewInvoiceModal({
                         }}
                         className={`flex-1 py-3 text-xs font-black uppercase tracking-widest transition-colors ${
                             step === 2
-                                ? 'text-duck-coral border-b-2 border-duck-coral'
-                                : 'text-duck-muted hover:text-duck-muted'
+                                ? 'text-duck-ink border-b-2 border-duck-ink'
+                                : 'text-duck-ink/60 hover:text-duck-ink'
                         }`}
                     >
                         2. Factuurregels
@@ -424,7 +424,7 @@ function NewInvoiceModal({
 
                 <div className="p-8">
                     {error && (
-                        <div className="flex items-center gap-2 text-white bg-duck-coral rounded-xl px-4 py-3 mb-5 text-sm">
+                        <div className="flex items-center gap-2 text-white bg-duck-error rounded-xl px-4 py-3 mb-5 text-sm">
                             <AlertCircle size={16} />
                             {error}
                         </div>
@@ -435,44 +435,44 @@ function NewInvoiceModal({
                         <div className="space-y-4">
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                 <div>
-                                    <label className="block text-[10px] font-black text-duck-muted uppercase tracking-widest mb-1">
+                                    <label className="block text-[10px] font-black text-duck-ink/60 uppercase tracking-widest mb-1">
                                         Factuurdatum
                                     </label>
                                     <input
                                         type="date"
                                         value={issueDate}
                                         onChange={e => setIssueDate(e.target.value)}
-                                        className="w-full px-4 py-2.5 border border-duck-line rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-duck-coral"
+                                        className="w-full px-4 py-2.5 border border-duck-ink/15 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-duck-ink/15"
                                     />
                                 </div>
                                 <div>
-                                    <label className="block text-[10px] font-black text-duck-muted uppercase tracking-widest mb-1">
+                                    <label className="block text-[10px] font-black text-duck-ink/60 uppercase tracking-widest mb-1">
                                         Vervaldatum
                                     </label>
                                     <input
                                         type="date"
                                         value={dueDate}
                                         onChange={e => setDueDate(e.target.value)}
-                                        className="w-full px-4 py-2.5 border border-duck-line rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-duck-coral"
+                                        className="w-full px-4 py-2.5 border border-duck-ink/15 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-duck-ink/15"
                                     />
                                 </div>
                             </div>
 
                             <div>
-                                <label className="block text-[10px] font-black text-duck-muted uppercase tracking-widest mb-1">
-                                    Klantnaam <span className="text-duck-coral">*</span>
+                                <label className="block text-[10px] font-black text-duck-ink/60 uppercase tracking-widest mb-1">
+                                    Klantnaam <span className="text-duck-ink">*</span>
                                 </label>
                                 <input
                                     type="text"
                                     value={form.client_name}
                                     onChange={e => setForm(f => ({ ...f, client_name: e.target.value }))}
                                     placeholder="Naam van de klant of het bedrijf"
-                                    className="w-full px-4 py-2.5 border border-duck-line rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-duck-coral"
+                                    className="w-full px-4 py-2.5 border border-duck-ink/15 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-duck-ink/15"
                                 />
                             </div>
 
                             <div>
-                                <label className="block text-[10px] font-black text-duck-muted uppercase tracking-widest mb-1">
+                                <label className="block text-[10px] font-black text-duck-ink/60 uppercase tracking-widest mb-1">
                                     Adres
                                 </label>
                                 <textarea
@@ -480,13 +480,13 @@ function NewInvoiceModal({
                                     onChange={e => setForm(f => ({ ...f, client_address: e.target.value }))}
                                     placeholder="Straat en huisnummer&#10;Postcode en stad"
                                     rows={3}
-                                    className="w-full px-4 py-2.5 border border-duck-line rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-duck-coral resize-none"
+                                    className="w-full px-4 py-2.5 border border-duck-ink/15 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-duck-ink/15 resize-none"
                                 />
                             </div>
 
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                 <div>
-                                    <label className="block text-[10px] font-black text-duck-muted uppercase tracking-widest mb-1">
+                                    <label className="block text-[10px] font-black text-duck-ink/60 uppercase tracking-widest mb-1">
                                         BTW-nummer klant
                                     </label>
                                     <input
@@ -494,11 +494,11 @@ function NewInvoiceModal({
                                         value={form.client_vat_number}
                                         onChange={e => setForm(f => ({ ...f, client_vat_number: e.target.value }))}
                                         placeholder="NL000000000B01"
-                                        className="w-full px-4 py-2.5 border border-duck-line rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-duck-coral"
+                                        className="w-full px-4 py-2.5 border border-duck-ink/15 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-duck-ink/15"
                                     />
                                 </div>
                                 <div>
-                                    <label className="block text-[10px] font-black text-duck-muted uppercase tracking-widest mb-1">
+                                    <label className="block text-[10px] font-black text-duck-ink/60 uppercase tracking-widest mb-1">
                                         E-mailadres klant
                                     </label>
                                     <input
@@ -506,13 +506,13 @@ function NewInvoiceModal({
                                         value={form.client_email}
                                         onChange={e => setForm(f => ({ ...f, client_email: e.target.value }))}
                                         placeholder="klant@bedrijf.nl"
-                                        className="w-full px-4 py-2.5 border border-duck-line rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-duck-coral"
+                                        className="w-full px-4 py-2.5 border border-duck-ink/15 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-duck-ink/15"
                                     />
                                 </div>
                             </div>
 
                             <div>
-                                <label className="block text-[10px] font-black text-duck-muted uppercase tracking-widest mb-1">
+                                <label className="block text-[10px] font-black text-duck-ink/60 uppercase tracking-widest mb-1">
                                     Notities (optioneel)
                                 </label>
                                 <textarea
@@ -520,13 +520,13 @@ function NewInvoiceModal({
                                     onChange={e => setForm(f => ({ ...f, notes: e.target.value }))}
                                     placeholder="Extra informatie op de factuur..."
                                     rows={3}
-                                    className="w-full px-4 py-2.5 border border-duck-line rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-duck-coral resize-none"
+                                    className="w-full px-4 py-2.5 border border-duck-ink/15 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-duck-ink/15 resize-none"
                                 />
                             </div>
 
                             <button
                                 onClick={() => { if (validateStep1()) setStep(2); }}
-                                className="w-full py-3 bg-duck-coral text-white rounded-xl text-sm font-bold hover:bg-duck-coral hover:text-white transition-colors"
+                                className="w-full py-3 bg-duck-acid text-duck-ink rounded-xl text-sm font-bold transition-colors"
                             >
                                 Volgende: Factuurregels
                             </button>
@@ -540,13 +540,13 @@ function NewInvoiceModal({
                             <div className="overflow-x-auto">
                                 <table className="w-full text-sm">
                                     <thead>
-                                        <tr className="border-b border-duck-line">
-                                            <th className="text-left pb-2 text-[10px] font-black text-duck-muted uppercase tracking-widest">Omschrijving</th>
-                                            <th className="text-right pb-2 text-[10px] font-black text-duck-muted uppercase tracking-widest w-16">Aantal</th>
-                                            <th className="text-right pb-2 text-[10px] font-black text-duck-muted uppercase tracking-widest w-24">Tarief (€)</th>
-                                            <th className="text-right pb-2 text-[10px] font-black text-duck-muted uppercase tracking-widest w-16">BTW%</th>
-                                            <th className="text-right pb-2 text-[10px] font-black text-duck-muted uppercase tracking-widest w-24">BTW</th>
-                                            <th className="text-right pb-2 text-[10px] font-black text-duck-muted uppercase tracking-widest w-24">Totaal</th>
+                                        <tr className="border-b border-duck-ink/15">
+                                            <th className="text-left pb-2 text-[10px] font-black text-duck-ink/60 uppercase tracking-widest">Omschrijving</th>
+                                            <th className="text-right pb-2 text-[10px] font-black text-duck-ink/60 uppercase tracking-widest w-16">Aantal</th>
+                                            <th className="text-right pb-2 text-[10px] font-black text-duck-ink/60 uppercase tracking-widest w-24">Tarief (€)</th>
+                                            <th className="text-right pb-2 text-[10px] font-black text-duck-ink/60 uppercase tracking-widest w-16">BTW%</th>
+                                            <th className="text-right pb-2 text-[10px] font-black text-duck-ink/60 uppercase tracking-widest w-24">BTW</th>
+                                            <th className="text-right pb-2 text-[10px] font-black text-duck-ink/60 uppercase tracking-widest w-24">Totaal</th>
                                             <th className="w-8" />
                                         </tr>
                                     </thead>
@@ -563,7 +563,7 @@ function NewInvoiceModal({
                                                             value={line.description}
                                                             onChange={e => updateLine(idx, 'description', e.target.value)}
                                                             placeholder="Omschrijving werkzaamheden"
-                                                            className="w-full px-3 py-2 border border-duck-line rounded-lg text-xs focus:outline-none focus:ring-2 focus:ring-duck-coral"
+                                                            className="w-full px-3 py-2 border border-duck-ink/15 rounded-lg text-xs focus:outline-none focus:ring-2 focus:ring-duck-ink/15"
                                                         />
                                                     </td>
                                                     <td className="py-2 pr-2">
@@ -573,7 +573,7 @@ function NewInvoiceModal({
                                                             step="0.5"
                                                             value={line.quantity}
                                                             onChange={e => updateLine(idx, 'quantity', parseFloat(e.target.value) || 0)}
-                                                            className="w-full px-2 py-2 border border-duck-line rounded-lg text-xs text-right focus:outline-none focus:ring-2 focus:ring-duck-coral"
+                                                            className="w-full px-2 py-2 border border-duck-ink/15 rounded-lg text-xs text-right focus:outline-none focus:ring-2 focus:ring-duck-ink/15"
                                                         />
                                                     </td>
                                                     <td className="py-2 pr-2">
@@ -583,21 +583,21 @@ function NewInvoiceModal({
                                                             step="0.01"
                                                             value={line.unit_price}
                                                             onChange={e => updateLine(idx, 'unit_price', parseFloat(e.target.value) || 0)}
-                                                            className="w-full px-2 py-2 border border-duck-line rounded-lg text-xs text-right focus:outline-none focus:ring-2 focus:ring-duck-coral"
+                                                            className="w-full px-2 py-2 border border-duck-ink/15 rounded-lg text-xs text-right focus:outline-none focus:ring-2 focus:ring-duck-ink/15"
                                                         />
                                                     </td>
                                                     <td className="py-2 pr-2">
                                                         <select
                                                             value={line.vat_rate}
                                                             onChange={e => updateLine(idx, 'vat_rate', parseInt(e.target.value) as 0 | 9 | 21)}
-                                                            className="w-full px-2 py-2 border border-duck-line rounded-lg text-xs focus:outline-none focus:ring-2 focus:ring-duck-coral"
+                                                            className="w-full px-2 py-2 border border-duck-ink/15 rounded-lg text-xs focus:outline-none focus:ring-2 focus:ring-duck-ink/15"
                                                         >
                                                             <option value={0}>0%</option>
                                                             <option value={9}>9%</option>
                                                             <option value={21}>21%</option>
                                                         </select>
                                                     </td>
-                                                    <td className="py-2 pr-2 text-right text-xs text-duck-muted tabular-nums whitespace-nowrap">
+                                                    <td className="py-2 pr-2 text-right text-xs text-duck-ink/60 tabular-nums whitespace-nowrap">
                                                         {formatEuro(Math.round(lineVat * 100) / 100)}
                                                     </td>
                                                     <td className="py-2 pr-2 text-right text-xs font-bold text-duck-ink tabular-nums whitespace-nowrap">
@@ -607,7 +607,7 @@ function NewInvoiceModal({
                                                         <button
                                                             onClick={() => removeLine(idx)}
                                                             disabled={lines.length === 1}
-                                                            className="p-1.5 text-duck-muted hover:text-duck-muted hover:bg-duck-coral hover:text-white rounded-lg transition-all disabled:opacity-30 disabled:cursor-not-allowed"
+                                                            className="p-1.5 text-duck-ink/60 hover:bg-duck-error hover:text-white rounded-lg transition-all disabled:opacity-30 disabled:cursor-not-allowed"
                                                         >
                                                             <Trash2 size={13} />
                                                         </button>
@@ -621,25 +621,25 @@ function NewInvoiceModal({
 
                             <button
                                 onClick={addLine}
-                                className="flex items-center gap-1.5 text-xs font-bold text-duck-coral hover:text-duck-coral transition-colors"
+                                className="flex items-center gap-1.5 text-xs font-bold text-duck-ink hover:text-duck-ink transition-colors"
                             >
                                 <Plus size={14} />
                                 Regel toevoegen
                             </button>
 
                             {/* Totaalblok */}
-                            <div className="border-t border-duck-line pt-4 space-y-1.5">
+                            <div className="border-t border-duck-ink/15 pt-4 space-y-1.5">
                                 <div className="flex justify-between text-sm">
-                                    <span className="text-duck-muted">Subtotaal (excl. BTW)</span>
+                                    <span className="text-duck-ink/60">Subtotaal (excl. BTW)</span>
                                     <span className="font-medium text-duck-ink tabular-nums">{formatEuro(totals.subtotal)}</span>
                                 </div>
                                 <div className="flex justify-between text-sm">
-                                    <span className="text-duck-muted">BTW</span>
+                                    <span className="text-duck-ink/60">BTW</span>
                                     <span className="font-medium text-duck-ink tabular-nums">{formatEuro(totals.vat_amount)}</span>
                                 </div>
-                                <div className="flex justify-between text-base font-black pt-2 border-t border-duck-line">
+                                <div className="flex justify-between text-base font-black pt-2 border-t border-duck-ink/15">
                                     <span className="text-duck-ink">Totaal incl. BTW</span>
-                                    <span className="text-duck-coral tabular-nums">{formatEuro(totals.total)}</span>
+                                    <span className="text-duck-ink tabular-nums">{formatEuro(totals.total)}</span>
                                 </div>
                             </div>
 
@@ -647,14 +647,14 @@ function NewInvoiceModal({
                             <div className="flex gap-3 pt-2">
                                 <button
                                     onClick={() => setStep(1)}
-                                    className="px-5 py-3 border border-duck-line rounded-xl text-sm font-bold text-duck-muted hover:bg-duck-bg transition-colors"
+                                    className="px-5 py-3 border border-duck-ink/15 rounded-xl text-sm font-bold text-duck-ink/60 hover:bg-duck-bg transition-colors"
                                 >
                                     Terug
                                 </button>
                                 <button
                                     onClick={() => handleSave('concept')}
                                     disabled={saving}
-                                    className="flex-1 flex items-center justify-center gap-2 py-3 border border-duck-line text-duck-muted rounded-xl text-sm font-bold hover:bg-duck-bg disabled:opacity-50 transition-colors"
+                                    className="flex-1 flex items-center justify-center gap-2 py-3 border border-duck-ink/15 text-duck-ink/60 rounded-xl text-sm font-bold hover:bg-duck-bg disabled:opacity-50 transition-colors"
                                 >
                                     <FileText size={15} />
                                     {saving ? 'Opslaan...' : 'Opslaan als concept'}
@@ -662,7 +662,7 @@ function NewInvoiceModal({
                                 <button
                                     onClick={() => handleSave('verzonden')}
                                     disabled={saving}
-                                    className="flex-1 flex items-center justify-center gap-2 py-3 bg-duck-coral text-white rounded-xl text-sm font-bold hover:bg-duck-coral hover:text-white disabled:opacity-50 transition-colors"
+                                    className="flex-1 flex items-center justify-center gap-2 py-3 bg-duck-acid text-duck-ink rounded-xl text-sm font-bold disabled:opacity-50 transition-colors"
                                 >
                                     <Send size={15} />
                                     {saving ? 'Opslaan...' : 'Opslaan & Verzonden'}
@@ -816,7 +816,7 @@ export function InvoicesPanel({ userId, year, onRefresh }: InvoicesPanelProps) {
     if (loading) {
         return (
             <div className="py-20 text-center">
-                <p className="text-duck-muted text-sm animate-pulse">Facturen laden...</p>
+                <p className="text-duck-ink/60 text-sm animate-pulse">Facturen laden...</p>
             </div>
         );
     }
@@ -825,12 +825,12 @@ export function InvoicesPanel({ userId, year, onRefresh }: InvoicesPanelProps) {
         <div className="space-y-6">
             {/* Foutmelding */}
             {error && (
-                <div className="flex items-center gap-2 text-white bg-duck-coral border border-duck-coral rounded-xl px-4 py-3 text-sm">
+                <div className="flex items-center gap-2 text-white bg-duck-error border border-duck-error rounded-xl px-4 py-3 text-sm">
                     <AlertCircle size={16} />
                     {error}
                     <button
                         onClick={() => setError('')}
-                        className="ml-auto text-duck-coral hover:text-duck-coral font-bold text-xs"
+                        className="ml-auto text-duck-error hover:text-duck-error font-bold text-xs"
                     >
                         Sluiten
                     </button>
@@ -843,25 +843,25 @@ export function InvoicesPanel({ userId, year, onRefresh }: InvoicesPanelProps) {
                     label="Openstaand"
                     value={formatEuro(summary.unpaid - summary.overdue)}
                     color="bg-duck-acid border-duck-acid text-duck-ink"
-                    icon={<Clock size={16} className="text-duck-muted" />}
+                    icon={<Clock size={16} className="text-duck-ink/60" />}
                 />
                 <StatCard
                     label="Betaald dit jaar"
                     value={formatEuro(summary.paid)}
-                    color="bg-duck-ink border-duck-ink text-duck-ink"
-                    icon={<Check size={16} className="text-duck-muted" />}
+                    color="bg-duck-ink border-duck-ink text-white"
+                    icon={<Check size={16} className="text-white/60" />}
                 />
                 <StatCard
                     label="Vervallen"
                     value={formatEuro(summary.overdue)}
-                    color="bg-duck-coral border-duck-coral text-duck-coral"
-                    icon={<AlertCircle size={16} className="text-duck-muted" />}
+                    color="bg-duck-error border-duck-error text-white"
+                    icon={<AlertCircle size={16} className="text-white/60" />}
                 />
                 <StatCard
                     label="BTW ontvangen"
                     value={formatEuro(summary.vatCollected)}
-                    color="bg-duck-coral border-duck-coral text-duck-coral"
-                    icon={<Euro size={16} className="text-duck-muted" />}
+                    color="bg-duck-acid border-duck-acid text-duck-ink"
+                    icon={<Euro size={16} className="text-duck-ink/60" />}
                 />
             </div>
 
@@ -869,7 +869,7 @@ export function InvoicesPanel({ userId, year, onRefresh }: InvoicesPanelProps) {
             <div className="flex flex-wrap items-center gap-3">
                 <button
                     onClick={openNewModal}
-                    className="flex items-center gap-2 px-4 py-2.5 bg-duck-coral text-white rounded-xl font-bold text-sm hover:bg-duck-coral hover:text-white transition-colors shadow-sm"
+                    className="flex items-center gap-2 px-4 py-2.5 bg-duck-acid text-duck-ink rounded-xl font-bold text-sm transition-colors shadow-sm"
                 >
                     <Plus size={16} />
                     Nieuwe Factuur
@@ -883,8 +883,8 @@ export function InvoicesPanel({ userId, year, onRefresh }: InvoicesPanelProps) {
                             onClick={() => setStatusFilter(opt.key)}
                             className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-colors ${
                                 statusFilter === opt.key
-                                    ? 'bg-white text-duck-coral shadow-sm'
-                                    : 'text-duck-muted hover:text-duck-muted'
+                                    ? 'bg-white text-duck-ink shadow-sm'
+                                    : 'text-duck-ink/60 hover:text-duck-ink'
                             }`}
                         >
                             {opt.label}
@@ -892,23 +892,23 @@ export function InvoicesPanel({ userId, year, onRefresh }: InvoicesPanelProps) {
                     ))}
                 </div>
 
-                <span className="ml-auto text-xs text-duck-muted font-medium">
+                <span className="ml-auto text-xs text-duck-ink/60 font-medium">
                     {filtered.length} factuur{filtered.length !== 1 ? 'en' : ''}
                 </span>
             </div>
 
             {/* Tabel */}
-            <div className="bg-white rounded-[2rem] border border-duck-line shadow-sm overflow-hidden">
+            <div className="bg-white rounded-[2rem] border border-duck-ink/15 shadow-sm overflow-hidden">
                 {filtered.length === 0 ? (
                     <div className="py-16 text-center">
-                        <FileText size={32} className="mx-auto text-duck-muted mb-3" />
-                        <p className="text-duck-muted text-sm italic">
+                        <FileText size={32} className="mx-auto text-duck-ink/60 mb-3" />
+                        <p className="text-duck-ink/60 text-sm italic">
                             {invoices.length === 0
                                 ? `Geen facturen gevonden voor ${year}.`
                                 : 'Geen facturen voor dit filter.'}
                         </p>
                         {invoices.length === 0 && (
-                            <p className="text-duck-muted text-xs mt-1">
+                            <p className="text-duck-ink/60 text-xs mt-1">
                                 Maak je eerste factuur aan via de knop hierboven.
                             </p>
                         )}
@@ -917,14 +917,14 @@ export function InvoicesPanel({ userId, year, onRefresh }: InvoicesPanelProps) {
                     <div className="overflow-x-auto">
                         <table className="w-full text-sm">
                             <thead>
-                                <tr className="border-b border-duck-line">
-                                    <th className="text-left px-6 py-4 text-[10px] font-black text-duck-muted uppercase tracking-widest">Nr</th>
-                                    <th className="text-left px-6 py-4 text-[10px] font-black text-duck-muted uppercase tracking-widest">Klant</th>
-                                    <th className="text-left px-4 py-4 text-[10px] font-black text-duck-muted uppercase tracking-widest">Datum</th>
-                                    <th className="text-left px-4 py-4 text-[10px] font-black text-duck-muted uppercase tracking-widest">Verval</th>
-                                    <th className="text-right px-6 py-4 text-[10px] font-black text-duck-muted uppercase tracking-widest">Bedrag</th>
-                                    <th className="text-left px-4 py-4 text-[10px] font-black text-duck-muted uppercase tracking-widest">Status</th>
-                                    <th className="px-4 py-4 text-[10px] font-black text-duck-muted uppercase tracking-widest text-right">Acties</th>
+                                <tr className="border-b border-duck-ink/15">
+                                    <th className="text-left px-6 py-4 text-[10px] font-black text-duck-ink/60 uppercase tracking-widest">Nr</th>
+                                    <th className="text-left px-6 py-4 text-[10px] font-black text-duck-ink/60 uppercase tracking-widest">Klant</th>
+                                    <th className="text-left px-4 py-4 text-[10px] font-black text-duck-ink/60 uppercase tracking-widest">Datum</th>
+                                    <th className="text-left px-4 py-4 text-[10px] font-black text-duck-ink/60 uppercase tracking-widest">Verval</th>
+                                    <th className="text-right px-6 py-4 text-[10px] font-black text-duck-ink/60 uppercase tracking-widest">Bedrag</th>
+                                    <th className="text-left px-4 py-4 text-[10px] font-black text-duck-ink/60 uppercase tracking-widest">Status</th>
+                                    <th className="px-4 py-4 text-[10px] font-black text-duck-ink/60 uppercase tracking-widest text-right">Acties</th>
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-slate-50">
@@ -940,7 +940,7 @@ export function InvoicesPanel({ userId, year, onRefresh }: InvoicesPanelProps) {
                                         >
                                             {/* Factuurnummer */}
                                             <td className="px-6 py-4">
-                                                <span className="font-mono text-xs font-bold text-duck-coral">
+                                                <span className="font-mono text-xs font-bold text-duck-ink">
                                                     {invoice.invoice_number}
                                                 </span>
                                             </td>
@@ -949,24 +949,24 @@ export function InvoicesPanel({ userId, year, onRefresh }: InvoicesPanelProps) {
                                             <td className="px-6 py-4">
                                                 <p className="font-medium text-duck-ink text-sm">{invoice.client_name}</p>
                                                 {invoice.client_email && (
-                                                    <p className="text-[10px] text-duck-muted">{invoice.client_email}</p>
+                                                    <p className="text-[10px] text-duck-ink/60">{invoice.client_email}</p>
                                                 )}
                                             </td>
 
                                             {/* Datum */}
-                                            <td className="px-4 py-4 text-xs text-duck-muted whitespace-nowrap">
+                                            <td className="px-4 py-4 text-xs text-duck-ink/60 whitespace-nowrap">
                                                 {formatDateShort(invoice.issue_date)}
                                             </td>
 
                                             {/* Verval */}
                                             <td className="px-4 py-4 whitespace-nowrap">
                                                 {invoice.due_date ? (
-                                                    <span className={`text-xs ${overdue ? 'text-duck-coral font-bold' : 'text-duck-muted'}`}>
+                                                    <span className={`text-xs ${overdue ? 'text-duck-error font-bold' : 'text-duck-ink/60'}`}>
                                                         {formatDateShort(invoice.due_date)}
                                                         {overdue && <span className="ml-1">(!)</span>}
                                                     </span>
                                                 ) : (
-                                                    <span className="text-xs text-duck-muted">—</span>
+                                                    <span className="text-xs text-duck-ink/60">—</span>
                                                 )}
                                             </td>
 
@@ -992,7 +992,7 @@ export function InvoicesPanel({ userId, year, onRefresh }: InvoicesPanelProps) {
                                                     <button
                                                         onClick={() => setSelectedInvoice(invoice)}
                                                         title="Bekijk factuur"
-                                                        className="p-1.5 text-duck-muted hover:text-duck-coral hover:bg-duck-coral hover:text-white rounded-lg transition-all"
+                                                        className="p-1.5 text-duck-ink/60 hover:text-duck-ink hover:bg-duck-acid rounded-lg transition-all"
                                                     >
                                                         <Eye size={14} />
                                                     </button>
@@ -1001,7 +1001,7 @@ export function InvoicesPanel({ userId, year, onRefresh }: InvoicesPanelProps) {
                                                     <button
                                                         onClick={() => handleDownloadPDF(invoice)}
                                                         title="Download PDF"
-                                                        className="p-1.5 text-duck-muted hover:text-duck-coral hover:bg-duck-coral hover:text-white rounded-lg transition-all"
+                                                        className="p-1.5 text-duck-ink/60 hover:text-duck-ink hover:bg-duck-acid rounded-lg transition-all"
                                                     >
                                                         <Download size={14} />
                                                     </button>
@@ -1012,7 +1012,7 @@ export function InvoicesPanel({ userId, year, onRefresh }: InvoicesPanelProps) {
                                                             onClick={() => handleMarkVerzonden(invoice)}
                                                             disabled={isLoadingThis}
                                                             title="Markeer als verzonden"
-                                                            className="p-1.5 text-duck-muted hover:text-duck-ink hover:bg-duck-ink hover:text-white rounded-lg transition-all disabled:opacity-50"
+                                                            className="p-1.5 text-duck-ink/60 hover:bg-duck-ink hover:text-white rounded-lg transition-all disabled:opacity-50"
                                                         >
                                                             <Send size={14} />
                                                         </button>
@@ -1024,7 +1024,7 @@ export function InvoicesPanel({ userId, year, onRefresh }: InvoicesPanelProps) {
                                                             onClick={() => handleMarkBetaald(invoice)}
                                                             disabled={isLoadingThis}
                                                             title="Markeer als betaald"
-                                                            className="p-1.5 text-duck-muted hover:text-duck-ink hover:bg-duck-ink hover:text-white rounded-lg transition-all disabled:opacity-50"
+                                                            className="p-1.5 text-duck-ink/60 hover:bg-duck-ink hover:text-white rounded-lg transition-all disabled:opacity-50"
                                                         >
                                                             <Check size={14} />
                                                         </button>
@@ -1036,7 +1036,7 @@ export function InvoicesPanel({ userId, year, onRefresh }: InvoicesPanelProps) {
                                                             onClick={() => handleDelete(invoice)}
                                                             disabled={isLoadingThis}
                                                             title="Verwijder factuur"
-                                                            className="p-1.5 text-duck-muted hover:text-duck-muted hover:bg-duck-coral hover:text-white rounded-lg transition-all disabled:opacity-50"
+                                                            className="p-1.5 text-duck-ink/60 hover:bg-duck-error hover:text-white rounded-lg transition-all disabled:opacity-50"
                                                         >
                                                             <Trash2 size={14} />
                                                         </button>
@@ -1055,8 +1055,8 @@ export function InvoicesPanel({ userId, year, onRefresh }: InvoicesPanelProps) {
             {/* Totaalregel */}
             {filtered.length > 0 && (
                 <div className="flex justify-end gap-6 px-2 text-sm font-bold">
-                    <span className="text-duck-muted">{filtered.length} facturen</span>
-                    <span className="text-duck-muted">
+                    <span className="text-duck-ink/60">{filtered.length} facturen</span>
+                    <span className="text-duck-ink/60">
                         Totaal: {formatEuro(filtered.reduce((s, inv) => s + inv.total, 0))}
                     </span>
                 </div>

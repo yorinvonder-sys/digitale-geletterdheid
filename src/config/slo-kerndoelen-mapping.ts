@@ -116,6 +116,7 @@ export const KERNDOEL_MISSIONS: KerndoelMissionMeta[] = [
   { id: 'network-navigator', title: 'Network Navigator', week: 2, yearGroup: 2, sloKerndoelen: ['21A'], sloVsoKerndoelen: ['18A'] },                           // -22B: netwerken begrijpen, geen programmeren
   { id: 'privacy-by-design', title: 'Privacy by Design', week: 2, yearGroup: 2, sloKerndoelen: ['23A', '23C'], sloVsoKerndoelen: ['20A', '20B'] },             // 22B→23C: GDPR + privacy-redesign, geen programmeren
   { id: 'wachtwoord-warrior', title: 'Wachtwoord Warrior', week: 2, yearGroup: 2, sloKerndoelen: ['23A'], sloVsoKerndoelen: ['20A'] },                         // -21A: wachtwoordbeveiliging = puur veiligheid
+  { id: 'wachtwoord-fortress', title: 'Wachtwoord Fortress', week: 2, yearGroup: 2, sloKerndoelen: ['23A'], sloVsoKerndoelen: ['20A'] },                       // zelfde domein als wachtwoord-warrior: puur veiligheid
   { id: 'access-control-engineer', title: 'Access Control Engineer', week: 2, yearGroup: 2, sloKerndoelen: ['21A', '23A'], sloVsoKerndoelen: ['18A', '20A'] },                  // -22B/-19A: geen code-activiteit (rollen/rechten configureren + testen, geen programmeren)
   { id: 'code-review-2', title: 'Code Review', week: 2, yearGroup: 2, sloKerndoelen: ['22A', '22B'], sloVsoKerndoelen: ['19A'] },
 

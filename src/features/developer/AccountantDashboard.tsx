@@ -114,8 +114,8 @@ export function AccountantDashboard({ userId }: AccountantDashboardProps) {
         return (
             <div className="flex items-center justify-center py-24">
                 <div className="space-y-4 text-center">
-                    <div className="w-12 h-12 border-4 border-duck-coral border-t-transparent rounded-full animate-spin mx-auto" />
-                    <p className="text-duck-muted text-sm font-medium">Boekhouddata laden...</p>
+                    <div className="w-12 h-12 border-4 border-duck-ink border-t-transparent rounded-full animate-spin mx-auto" />
+                    <p className="text-duck-ink/60 text-sm font-medium">Boekhouddata laden...</p>
                 </div>
             </div>
         );
@@ -123,11 +123,11 @@ export function AccountantDashboard({ userId }: AccountantDashboardProps) {
 
     if (error) {
         return (
-            <div className="bg-duck-coral border border-duck-coral rounded-2xl p-8 text-center">
-                <p className="text-duck-coral font-bold">{error}</p>
+            <div className="bg-duck-error border border-duck-error rounded-2xl p-8 text-center">
+                <p className="text-white font-bold">{error}</p>
                 <button
                     onClick={loadData}
-                    className="mt-4 px-4 py-2 bg-duck-coral text-white rounded-xl text-sm font-bold hover:bg-duck-coral hover:text-white"
+                    className="mt-4 px-4 py-2 bg-white text-duck-error rounded-xl text-sm font-bold"
                 >
                     Opnieuw proberen
                 </button>
@@ -142,14 +142,14 @@ export function AccountantDashboard({ userId }: AccountantDashboardProps) {
             {/* Header met jaar-selector en sub-tabs */}
             <div className="flex flex-col sm:flex-row sm:items-center gap-4">
                 {/* Sub-tabs */}
-                <div className="flex bg-white border border-duck-line rounded-2xl p-1 gap-1 overflow-x-auto">
+                <div className="flex bg-white border border-duck-ink/15 rounded-2xl p-1 gap-1 overflow-x-auto">
                     {SUB_TABS.map(tab => (
                         <button
                             key={tab.id}
                             onClick={() => setActiveTab(tab.id)}
                             className={`flex items-center gap-2 px-2.5 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-bold whitespace-nowrap transition-all ${activeTab === tab.id
-                                ? 'bg-duck-coral text-white shadow-sm'
-                                : 'text-duck-muted hover:text-duck-ink hover:bg-duck-bg'
+                                ? 'bg-duck-acid text-duck-ink shadow-sm'
+                                : 'text-duck-ink/60 hover:text-duck-ink hover:bg-duck-bg'
                                 }`}
                         >
                             {tab.icon}
@@ -163,33 +163,33 @@ export function AccountantDashboard({ userId }: AccountantDashboardProps) {
                     <select
                         value={year}
                         onChange={e => setYear(Number(e.target.value))}
-                        className="appearance-none pl-4 pr-8 py-2 bg-white border border-duck-line rounded-xl text-sm font-bold text-duck-muted focus:outline-none focus:ring-2 focus:ring-duck-coral cursor-pointer"
+                        className="appearance-none pl-4 pr-8 py-2 bg-white border border-duck-ink/15 rounded-xl text-sm font-bold text-duck-ink/60 focus:outline-none focus:ring-2 focus:ring-duck-ink/15 cursor-pointer"
                     >
                         {YEAR_OPTIONS.map(y => (
                             <option key={y} value={y}>{y}</option>
                         ))}
                     </select>
-                    <ChevronDown size={14} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-duck-muted pointer-events-none" />
+                    <ChevronDown size={14} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-duck-ink/60 pointer-events-none" />
                 </div>
             </div>
 
             {/* Snelle statistieken */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
-                <div className="bg-white rounded-2xl border border-duck-line px-4 py-3 text-center">
-                    <p className="text-[9px] font-black text-duck-muted uppercase tracking-widest">Transacties</p>
+                <div className="bg-white rounded-2xl border border-duck-ink/15 px-4 py-3 text-center">
+                    <p className="text-[9px] font-black text-duck-ink/60 uppercase tracking-widest">Transacties</p>
                     <p className="text-xl font-black text-duck-ink mt-0.5">{transactions.length}</p>
                 </div>
-                <div className="bg-white rounded-2xl border border-duck-line px-4 py-3 text-center">
-                    <p className="text-[9px] font-black text-duck-muted uppercase tracking-widest">Bonnetjes</p>
+                <div className="bg-white rounded-2xl border border-duck-ink/15 px-4 py-3 text-center">
+                    <p className="text-[9px] font-black text-duck-ink/60 uppercase tracking-widest">Bonnetjes</p>
                     <p className="text-xl font-black text-duck-ink mt-0.5">{receipts.length}</p>
                 </div>
-                <div className="bg-white rounded-2xl border border-duck-line px-4 py-3 text-center">
-                    <p className="text-[9px] font-black text-duck-muted uppercase tracking-widest">Facturen</p>
+                <div className="bg-white rounded-2xl border border-duck-ink/15 px-4 py-3 text-center">
+                    <p className="text-[9px] font-black text-duck-ink/60 uppercase tracking-widest">Facturen</p>
                     <p className="text-xl font-black text-duck-ink mt-0.5">{invoices.length}</p>
                 </div>
-                <div className={`rounded-2xl border px-4 py-3 text-center ${summary.profit >= 0 ? 'bg-duck-ink border-duck-ink' : 'bg-duck-coral border-duck-coral'}`}>
-                    <p className="text-[9px] font-black text-duck-muted uppercase tracking-widest">Winst {year}</p>
-                    <p className={`text-xl font-black mt-0.5 ${summary.profit >= 0 ? 'text-duck-ink' : 'text-duck-coral'}`}>
+                <div className={`rounded-2xl border px-4 py-3 text-center ${summary.profit >= 0 ? 'bg-duck-ink border-duck-ink' : 'bg-duck-error border-duck-error'}`}>
+                    <p className="text-[9px] font-black text-white/60 uppercase tracking-widest">Winst {year}</p>
+                    <p className={`text-xl font-black mt-0.5 ${summary.profit >= 0 ? 'text-white' : 'text-white'}`}>
                         {new Intl.NumberFormat('nl-NL', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(summary.profit)}
                     </p>
                 </div>
