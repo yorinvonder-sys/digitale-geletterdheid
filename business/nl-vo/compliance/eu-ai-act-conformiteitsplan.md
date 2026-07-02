@@ -238,7 +238,7 @@ Positief:
 - AI-output is visueel herkenbaar als AI-gegenereerd
 
 Aandachtspunten:
-- Docent kan STEP_COMPLETE momenteel NIET overriden
+- ~~Docent kan STEP_COMPLETE momenteel NIET overriden~~ **Opgelost (15 mrt 2026):** docent-override voor STEP_COMPLETE is geïmplementeerd (migratie `20260315500000_teacher_step_override.sql`, `teacherOverrideService.ts`, `StepOverrideModal.tsx`)
 - Geen docentdashboard voor real-time monitoring van AI-interacties
 - Geen "noodstop" functionaliteit voor docenten
 
@@ -246,7 +246,7 @@ Aandachtspunten:
 
 | # | Actie | Geschatte tijd | Prioriteit |
 |---|-------|---------------|------------|
-| 14.1 | **Implementeer docent-override voor STEP_COMPLETE** (docent kan stappen terugdraaien of handmatig goedkeuren) | 2 weken | KRITIEK |
+| 14.1 | ~~Implementeer docent-override voor STEP_COMPLETE~~ **AFGEROND (15 mrt 2026)** — docent kan stappen terugdraaien of handmatig goedkeuren (migratie 20260315500000 + teacherOverrideService.ts + StepOverrideModal.tsx) | 2 weken | ✅ Afgerond |
 | 14.2 | Bouw docentdashboard voor monitoring AI-interacties (aggregaat, niet PII) | 2 weken | HOOG |
 | 14.3 | Implementeer "noodstop": docent kan AI-functionaliteit per klas/leerling uitschakelen | 1 week | HOOG |
 | 14.4 | Voeg waarschuwing toe tegen "automation bias" in docenthandleiding | 2 dagen | MIDDEN |
@@ -487,6 +487,8 @@ De conformiteitsbeoordelingsprocedure op basis van interne controle omvat drie o
 
 ### D.1 Maand-voor-maand plan (februari 2026 - augustus 2026)
 
+> **Herijking 01-07-2026:** Onderstaande maand-voor-maand-planning (feb-aug 2026) is opgesteld op de eerdere, inmiddels achterhaalde AI Act-toepassingsdatum van 2 augustus 2026. Die datum is via de Digital Omnibus naar verwachting verschoven naar 2 december 2027 (nog niet in het EU-Publicatieblad). De fasen hieronder zijn grotendeels verstreken; afgeronde items zijn als zodanig gemarkeerd. Resterend werk (formeel QMS, Annex IV-dossier, conformiteitsbeoordeling, CE-markering, EU-databankregistratie) wordt opnieuw ingepland ruim vóór 2 december 2027; de exacte nieuwe weekplanning stelt Future Architect vast met jurist/FG en valt buiten deze tekstuele herijking.
+
 #### FASE 1: FUNDAMENT (Maart 2026)
 
 **Thema: Documentatie en risicoanalyse**
@@ -513,7 +515,7 @@ De conformiteitsbeoordelingsprocedure op basis van interne controle omvat drie o
 
 | Week | Actie | Deliverable |
 |------|-------|-------------|
-| W1 (1-4 apr) | **Implementeer docent-override voor STEP_COMPLETE (Art. 14)** | Feature in productie |
+| W1 (1-4 apr) | ~~Implementeer docent-override voor STEP_COMPLETE (Art. 14)~~ **Afgerond (15 mrt 2026)** | Feature in productie ✅ |
 | W2 (7-11 apr) | Implementeer noodstop-functionaliteit (docent schakelt AI uit per klas) | Feature in productie |
 | W2 | Voeg STEP_COMPLETE logging toe aan audit systeem | Uitgebreide logging |
 | W3 (14-18 apr) | Technische documentatie Annex IV sectie 3-4 (monitoring, prestatiemetrieken) | TD Hoofdstuk 3-4 (concept) |
@@ -562,7 +564,7 @@ De conformiteitsbeoordelingsprocedure op basis van interne controle omvat drie o
 | W4 (21-25 jul) | Registratie in EU AI-databank (Art. 49) | Registratiebewijs |
 | W4 | Definitieve controle complete dossier | Definitief compliance-dossier |
 
-#### FASE 6: GO-LIVE (Augustus 2026)
+#### FASE 6: GO-LIVE (interne planning: augustus 2026; wettelijke toepassingsdatum hoog-risico Annex III-onderwijs: naar verwachting 2 december 2027 — zie tabel)
 
 | Datum | Actie |
 |-------|-------|

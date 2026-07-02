@@ -390,7 +390,7 @@ In deze Algemene Voorwaarden worden de volgende begrippen met een hoofdletter ge
 
 ### Openstaande aandachtspunten (niet in AV verwerkt — vereist zakelijke beslissing)
 
-1. **Docent-override functie** — Art. 14 EU AI Act vereist dat docenten AI-voortgang kunnen overriden. Dit is benoemd in Art. 11.3 maar technisch nog niet volledig geïmplementeerd (TODO in product).
+1. **Docent-override functie** — Art. 14 EU AI Act vereist dat docenten AI-voortgang kunnen overriden. Dit is benoemd in Art. 11.3 en is technisch geïmplementeerd (docent kan STEP_COMPLETE-beoordelingen goedkeuren of terugdraaien, sinds 15 maart 2026); definitieve verwerking in de AV-tekst onder voorbehoud van juridische review.
 2. **SIVON Model VWO 5.0** — In ontwikkeling (feb 2026), zal AI Act-bepalingen bevatten. Monitor en update AV/DPA wanneer 5.0 beschikbaar is.
 3. **NLdigital lidmaatschap** — Overweeg als aanvulling (EUR 400-600/jaar) voor modelvoorwaarden die door juristen worden onderhouden inclusief AI Act, NIS2, Data Act updates.
 4. **Conformiteitsbeoordeling** — Art. 43 EU AI Act vereist conformiteitsbeoordeling voordat het hoog-risico systeem onder de toepasselijke high-risk verplichtingen in de handel/in gebruik wordt gebracht; huidige planning moet worden afgestemd op de actuele toepassingsdatum van 2 december 2027 voor Annex III onderwijs-AI en op juridisch advies.

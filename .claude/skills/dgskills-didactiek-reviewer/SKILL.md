@@ -51,7 +51,7 @@ Voor `templateType === "handcrafted"` gelden onderstaande afwijkingen op de crit
 - **Bron van content:** alle inhoud (titel, intro, opdrachten, leerdoelen) zit in het component (`enginePath`), niet in config. Extract uit JSX text-nodes, string literals en comments.
 - **Criterium 3 (Leerdoelen helder):** zoek naar `learningObjectives`, `leerdoelen`, of vergelijkbare arrays/objecten in het component. Als niet aanwezig: extract impliciete leerdoelen uit intro-tekst en opdracht-formuleringen. Bij ontbreken daarvan: flag als bevinding "geen expliciete leerdoelen in handcrafted component".
 - **Criterium 4 (Opdracht-beknoptheid):** tel woorden in JSX text en string literals binnen het component; pas dezelfde leerjaar-grenzen toe.
-- **Criterium 8 (AI-as-copilot):** check of component een chat-component importeert (`<MissionChat>`, `useChat`, Gemini/Vertex helper, etc.) en hoe `systemInstruction` of `roleId` wordt bepaald (server-side via `getSystemInstruction()` is gewenst).
+- **Criterium 8 (AI-as-copilot):** check of component een chat-component importeert (`<MissionChat>`, `useChat`, Mistral/FLUX-providerhelper, etc.) en hoe `systemInstruction` of `roleId` wordt bepaald (server-side via `getSystemInstruction()` is gewenst).
 - **Criteria 1, 2, 5, 6, 7, 9:** gelden onveranderd (komen uit `sloEntry`, `curriculumLocation`, en algemene tekst-analyse).
 
 ### Stap 3 — Doorloop de didactiek-criteria

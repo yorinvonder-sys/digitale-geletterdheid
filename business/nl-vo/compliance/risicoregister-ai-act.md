@@ -91,13 +91,13 @@ Art. 9(9) vereist specifieke aandacht voor de impact op personen jonger dan 18 j
 | R12 | **AI-service uitval** — AI-provider is niet beschikbaar, waardoor leerlingen geen missies kunnen doen en les-uren verstoord worden | Operationeel | 2 | 3 | **6 MIDDEN** | Error handling retourneert "AI-service tijdelijk niet beschikbaar" (502), provider-rate-limit retourneert duidelijke 429-melding | **MIDDEN (6)** — Geen fallback-mechanisme. Bij uitval tijdens een les is het platform onbruikbaar. Geen provider-SLA specifiek voor DGSkills. | Actief | Implementeer graceful degradation (bijv. offline modus met read-only voortgang), communiceer verwachte beschikbaarheid naar scholen, overweeg caching van niet-AI content |
 | R13 | **Onbegrensde kosten door token-misbruik** — Leerlingen of aanvallers versturen massaal berichten, waardoor AI-providerkosten oplopen | Operationeel | 3 | 3 | **9 MIDDEN** | Rate limiting: 15 requests per minuut per gebruiker (server-side via durable rate limiter), max berichtlengte 4.000 tekens, max request body 20KB, max output tokens 1.024, chathistorie beperkt tot 12 berichten / 6.000 tekens totaal | **LAAG (3)** — Rate limiting is robuust. Kosten per gebruiker zijn begrensd. Risico zit in scenario's met veel gelijktijdige gebruikers (bijv. hele school start tegelijk). | Beheerst | Monitor AI-providerkosten via provider billing alerts, stel budget-caps in, bereken maximale kosten per school per maand |
 | R14 | **Supply chain aanval via dependencies** — Kwaadaardige code in een npm- of Deno-dependency compromitteert het platform | Operationeel | 2 | 5 | **10 HOOG** | Edge functions gebruiken `esm.sh` imports met versie-pinning, client-side dependencies via `package.json` met lockfile | **MIDDEN (6)** — Geen geautomatiseerde dependency-scanning (Dependabot/Snyk). `esm.sh` imports zijn minder gecontroleerd dan npm registry. | Actief | Configureer geautomatiseerde dependency-scanning, review `esm.sh` imports periodiek, overweeg migratie naar Supabase native imports |
-| R15 | **Docent kan AI-beslissing niet overrulen** — Docent ziet dat de AI een stap onterecht heeft goedgekeurd/afgekeurd maar kan dit niet corrigeren | Operationeel | 5 | 3 | **15 HOOG** | Geen maatregel geimplementeerd — dit is een bekende gap (zie conformiteitsplan Art. 14) | **HOOG (15)** — Volledige afhankelijkheid van AI-beoordeling zonder menselijke correctiemogelijkheid. Dit is een directe schending van Art. 14 EU AI Act (menselijk toezicht). | Non-compliant | **BLOKKEREND**: Implementeer docent-override voor `STEP_COMPLETE` voor de toepassingsdatum van 2 december 2027 |
+| R15 | **Docent kan AI-beslissing niet overrulen** — Docent ziet dat de AI een stap onterecht heeft goedgekeurd/afgekeurd maar kan dit niet corrigeren | Operationeel | 2 | 3 | **6 MIDDEN** (herscoord na implementatie override; was 15 HOOG) | Docent-override voor STEP_COMPLETE geimplementeerd (15 mrt 2026): migratie 20260315500000, `teacherOverrideService.ts`, `StepOverrideModal.tsx` — docent kan AI-goedkeuringen handmatig goedkeuren of terugdraaien | **MIDDEN (6)** — de technische correctiemogelijkheid bestaat; restrisico: docenttraining, adoptie en monitoring van override-gebruik. Formele bevestiging bij de eerstvolgende jurist/FG-risico-review. | Beheerst — herscoring te bevestigen | Borg docenttraining en monitoring van override-gebruik; bevestig de herscoring bij de volgende jurist/FG-risico-review |
 
 ### 3.5 Juridische risico's
 
 | ID | Risico | Categorie | W | I | Score | Huidige maatregelen | Restrisico | Status | Actie nodig |
 |---|---|---|---|---|---|---|---|---|---|
-| R16 | **Niet-naleving EU AI Act** — DGSkills voldoet niet aan alle hoog-risico verplichtingen voor de toepassingsdatum van 2 december 2027 | Juridisch | 3 | 5 | **15 HOOG** | Conformiteitsbeoordelingsplan opgesteld (23 feb 2026), tijdlijn bij te werken richting 2 december 2027, DPIA en verwerkersovereenkomsten afgerond, audit logging geimplementeerd, AI-transparantieverklaring actief | **MIDDEN (9)** — Significante gaps: geen QMS, geen technische documentatie (Annex IV), geen conformiteitsverklaring, geen CE-markering, geen EU-databank registratie, geen docent-override. | Actief — tijdgebonden | Volg het conformiteitsplan strikt, prioriteer KRITIEK-items, plan juridische review in Q2 2026 |
+| R16 | **Niet-naleving EU AI Act** — DGSkills voldoet niet aan alle hoog-risico verplichtingen voor de toepassingsdatum van 2 december 2027 | Juridisch | 3 | 5 | **15 HOOG** | Conformiteitsbeoordelingsplan opgesteld (23 feb 2026), tijdlijn bij te werken richting 2 december 2027, DPIA en verwerkersovereenkomsten afgerond, audit logging geimplementeerd, AI-transparantieverklaring actief | **MIDDEN (9)** — Significante gaps: geen QMS, geen technische documentatie (Annex IV), geen conformiteitsverklaring, geen CE-markering, geen EU-databank registratie. | Actief — tijdgebonden | Volg het conformiteitsplan strikt, prioriteer KRITIEK-items, plan juridische review in Q2 2026 |
 | R17 | **AVG-schending bij dataverwerking minderjarigen** — Onvoldoende bescherming van persoonsgegevens van leerlingen van 12-18 jaar | Juridisch | 2 | 5 | **10 HOOG** | DPIA opgesteld, verwerkersovereenkomst (DPA Model 4.0) beschikbaar, privacyverklaring gepubliceerd, dataminimalisatie (geen BSN, geen adres), provider-DPA/regio/retentie nog te verifiëren, dataminimalisatie, RLS op database, auditlogging | **LAAG (4)** — AVG-maatregelen zijn goed gevorderd, maar providerbewijs blijft een aandachtspunt. Restrisico's: KvK-inschrijving is actief (81819889), privacy-doc placeholders zijn ingevuld (28 mrt 2026), consent-flow afhankelijk van school. | Actief | Vul privacy-doc placeholders in na KvK-inschrijving, versterk consent-verificatie |
 | R18 | **Geen beroepsmogelijkheid bij AI-beoordeling** — Leerling is het oneens met AI-beoordeling maar kan niet in beroep gaan of een menselijke herbeoordeling aanvragen | Juridisch | 4 | 3 | **12 HOOG** | Geen maatregel geimplementeerd | **HOOG (12)** — Art. 14 EU AI Act en Art. 22 AVG (recht om niet aan geautomatiseerde besluitvorming te worden onderworpen) vereisen dat betrokkenen menselijke tussenkomst kunnen verzoeken. | Non-compliant | Implementeer beroepsmogelijkheid: leerling kan via docent een herbeoordeling aanvragen. Docent-override (R15) lost dit deels op. |
 
@@ -192,7 +192,7 @@ Art. 9(9) vereist specifieke aandacht voor de impact op personen jonger dan 18 j
 | **TM-10: Audit Logging** | `auditService.ts` logt privacy- en AI-interactie events: account lifecycle, consent, data access, AI-interacties (metadata, geen PII). Conform AVG Art. 30 en EU AI Act Art. 12. | R09, R16, R17 | Geimplementeerd |
 | **TM-11: AI Content Marking** | `aiContentMarker.ts` markeert alle AI-output met machine-readable provenance metadata (JSON-LD): generator, model, timestamp, type, disclaimer. | R16 | Geimplementeerd |
 | **TM-12: AI-provider contract- en regioverificatie** | DPA, regio, retentie, subprocessorroute, SCC/TIA en modeltraining-uitsluiting per Mistral AI en Black Forest Labs vastleggen. | R10, R17 | Open / hoog |
-| **TM-13: Docent-override STEP_COMPLETE** | Docent kan AI-beoordelingen (STEP_COMPLETE) handmatig goedkeuren of terugdraaien. | R02, R15, R18 | **NIET geimplementeerd — BLOKKEREND** |
+| **TM-13: Docent-override STEP_COMPLETE** | Docent kan AI-beoordelingen (STEP_COMPLETE) handmatig goedkeuren of terugdraaien. | R02, R15, R18 | **Geimplementeerd (15 mrt 2026)** — migratie 20260315500000 + `teacherOverrideService.ts` + `StepOverrideModal.tsx` |
 | **TM-14: Noodstop-functionaliteit** | Docent kan AI-functionaliteit per klas of per leerling uitschakelen. | R01, R03, R04 | **NIET geimplementeerd** |
 | **TM-15: Output-filtering** | Server-side filtering van AI-output op schadelijke content, aanvullend op providermaatregelen. | R03 | **NIET geimplementeerd** |
 
@@ -260,7 +260,7 @@ DGSkills is expliciet en uitsluitend gericht op minderjarigen van 12-18 jaar. Di
 | Risico | Toelichting | Doelleeftijd | Mitigatie |
 |---|---|---|---|
 | **Automation bias** | Leerlingen van 12-14 jaar hebben een minder ontwikkeld kritisch denkvermogen en nemen AI-output sneller als "de waarheid" aan dan oudere leerlingen of volwassenen. | 12-14 | AI-disclaimers ("AI-gegenereerd -- kan fouten bevatten"), missies over AI-kritiek (AI Spiegel), docentbegeleiding |
-| **Oververtrouwen op AI-beoordelingen** | Leerlingen internaliseren de AI-beoordeling ("de AI zei dat het goed was, dus het is goed"). Dit is schadelijker dan bij volwassenen omdat het hun leerstrategie beinvloedt in een formatieve fase. | 12-18 | System instructions benadrukken dat de AI een hulpmiddel is, niet een beoordelaar. Docent is eindverantwoordelijk (zodra override is geimplementeerd). |
+| **Oververtrouwen op AI-beoordelingen** | Leerlingen internaliseren de AI-beoordeling ("de AI zei dat het goed was, dus het is goed"). Dit is schadelijker dan bij volwassenen omdat het hun leerstrategie beinvloedt in een formatieve fase. | 12-18 | System instructions benadrukken dat de AI een hulpmiddel is, niet een beoordelaar. Docent is eindverantwoordelijk (override is geimplementeerd sinds 15 mrt 2026). |
 | **Emotionele gehechtheid aan AI** | Jongere leerlingen kunnen een quasi-persoonlijke band ontwikkelen met een AI-agent die enthousiast en bemoedigend communiceert. Dit kan leiden tot ongewenste afhankelijkheid of teleurstelling. | 12-15 | System instructions vermijden te persoonlijke taal. AI stelt zich op als coach, niet als vriend. Geen namen, geen "ik vind jou leuk". |
 | **Gamification en compulsief gebruik** | Het XP- en level-systeem kan compulsief gedrag uitlokken, vergelijkbaar met social media-mechanismen. Leerlingen met ADHD of gamesverslaving zijn hier extra kwetsbaar. | 12-18 | XP-farming detectie, rate limiting (15 req/min), eindige missie-omvang (3 stappen per missie). Overweeg: daglimieten, notificaties voor docenten bij overmatig gebruik. |
 
@@ -270,7 +270,7 @@ DGSkills is expliciet en uitsluitend gericht op minderjarigen van 12-18 jaar. Di
 |---|---|---|
 | **Beperkt privacybewustzijn** | Leerlingen van 12-14 begrijpen onvoldoende wat er met hun chatberichten gebeurt. Ze delen mogelijk persoonlijke informatie zonder te beseffen dat dit wordt verwerkt. | Privacyuitleg in leeftijdsadequaat taalgebruik, dataminimalisatie (geen PII opvragen), missies over privacy (Data Detective, Cookie Crusher) |
 | **Druk van schoolcontext** | Leerlingen kunnen het gevoel hebben dat ze het platform moeten gebruiken (schoolopdracht) en geen echte keuze hebben, waardoor "informed consent" problematisch is. | Duidelijke communicatie dat consent vrijwillig is, alternatieve opdrachten beschikbaar via school, consent-intrekking zonder gevolgen voor cijfer |
-| **Profiling van minderjarigen** | Het XP-, level- en voortgangssysteem bouwt een profiel op van elke leerling. Hoewel dit geen commerciele profiling is, valt het wel onder Art. 22 AVG (geautomatiseerde individuele besluitvorming) en Art. 6(3) AI Act (profiling-override). | Profiling dient uitsluitend onderwijsdoel, geen commercieel gebruik, geen doorverkoop, recht op verwijdering, docent kan inzien en corrigeren (zodra override is geimplementeerd) |
+| **Profiling van minderjarigen** | Het XP-, level- en voortgangssysteem bouwt een profiel op van elke leerling. Hoewel dit geen commerciele profiling is, valt het wel onder Art. 22 AVG (geautomatiseerde individuele besluitvorming) en Art. 6(3) AI Act (profiling-override). | Profiling dient uitsluitend onderwijsdoel, geen commercieel gebruik, geen doorverkoop, recht op verwijdering, docent kan inzien en corrigeren (override is geimplementeerd sinds 15 mrt 2026) |
 
 ### 7.3 Veiligheid en welzijn
 
@@ -302,7 +302,7 @@ DGSkills is expliciet en uitsluitend gericht op minderjarigen van 12-18 jaar. Di
 | 1 | R01 | Prompt injection door leerlingen | 16 | KRITIEK |
 | 2 | R02 | Onjuiste AI-beoordelingen | 12 | HOOG |
 | 2 | R04 | Welzijnsrisico (zelfbeschadiging/suicidaliteit) | 15 | HOOG |
-| 3 | R15 | Docent kan niet overrulen | 15 | HOOG |
+| 3 | R15 | Docent kan niet overrulen | ~~15~~ 6 | ~~HOOG~~ MIDDEN |
 | 4 | R16 | Niet-naleving EU AI Act | 15 | HOOG |
 | 5 | R06 | Taalniveau-bias | 12 | HOOG |
 | 6 | R11 | Schending ouderlijke toestemming | 12 | HOOG |
@@ -318,11 +318,13 @@ DGSkills is expliciet en uitsluitend gericht op minderjarigen van 12-18 jaar. Di
 | 16 | R12 | AI-service uitval | 6 | MIDDEN |
 | 17 | R10 | Chatinhoud lekt naar derden | 5 | MIDDEN |
 
+> *R15 is na implementatie van de docent-override (15 mrt 2026) herscoord van 15 HOOG naar 6 MIDDEN; de positie #3 hierboven weerspiegelt de oorspronkelijke inherente score vóór de control. Herscoring te bevestigen bij de eerstvolgende jurist/FG-review.*
+
 ### 8.2 Non-compliant items (vereisen actie voor 2 december 2027)
 
 | ID | Risico | Vereiste maatregel | Status |
 |---|---|---|---|
-| R15 | Docent kan niet overrulen | TM-13: Docent-override STEP_COMPLETE | NIET geimplementeerd |
+| R15 | Docent kan niet overrulen | TM-13: Docent-override STEP_COMPLETE | Geimplementeerd (15 mrt 2026); herscoord 15 → 6 MIDDEN — te bevestigen bij volgende jurist/FG-review |
 | R18 | Geen beroepsmogelijkheid | OM-11: Beroepsprocedure | NIET opgesteld |
 | R16 | EU AI Act non-compliance | OM-12: QMS, TM-13, TM-14, OM-08 t/m OM-11 | Deels niet geimplementeerd |
 

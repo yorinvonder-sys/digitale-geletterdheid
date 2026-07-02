@@ -43,7 +43,7 @@ Drie modellen, elk voor een ander type taak. Gebruik de router hieronder als geh
 - [x] DPIA volledig uitgevoerd
 - [x] DPA Model 4.0 Privacyconvenant (A-E bijlagen compleet)
 - [x] Verwerkingsregister opgesteld
-- [x] Vertex AI migratie — data in EU (europe-west4, Nederland)
+- [x] AI-providers server-side via Supabase Edge Functions (Mistral AI + Black Forest Labs FLUX) — opslag/verwerking binnen de EER/EU-projectregio waar contractueel vastgelegd
 - [x] Privacyverklaring opgesteld
 - [x] AI-transparantieverklaring op website (hoog-risico classificatie)
 - [x] FG/DPO adviesrapport

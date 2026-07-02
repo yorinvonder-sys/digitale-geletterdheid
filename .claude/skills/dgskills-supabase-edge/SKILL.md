@@ -1,6 +1,6 @@
 ---
 name: dgskills-supabase-edge
-description: Use this skill when creating, modifying, debugging, or reviewing any Supabase Edge Function in the DGSkills project — including AI endpoints (chat, chatStream, scanReceipt), auth flows (parental consent, MFA, account deletion), data exports (GDPR), or any new function under `supabase/functions/`. Also trigger when editing shared code in `supabase/functions/_shared/` (cors, vertexAuth, promptSanitizer, rateLimiter, outputFilter, chatCore, systemInstructions). Trigger phrases: "edge function", "supabase function", "deno function", "nieuwe edge function", "vertex ai", "chat endpoint".
+description: Use this skill when creating, modifying, debugging, or reviewing any Supabase Edge Function in the DGSkills project — including AI endpoints (chat, chatStream, scanReceipt), auth flows (parental consent, MFA, account deletion), data exports (GDPR), or any new function under `supabase/functions/`. Also trigger when editing shared code in `supabase/functions/_shared/` (cors, mistralClient, bflImageClient, promptSanitizer, rateLimiter, outputFilter, chatCore, systemInstructions). Trigger phrases: "edge function", "supabase function", "deno function", "nieuwe edge function", "mistral", "chat endpoint".
 ---
 
 # DGSkills Supabase Edge Functions — Playbook
@@ -14,7 +14,7 @@ Gebaseerd op de officiële [Supabase Agent Skills](https://github.com/supabase/a
 - Nieuwe edge function aanmaken onder `supabase/functions/<name>/index.ts`
 - Bestaande edge function aanpassen (logica, validatie, response, secrets)
 - Shared-code-wijziging in `supabase/functions/_shared/`
-- Debug van AI-endpoints (Vertex AI via `_shared/vertexAuth.ts`)
+- Debug van AI-endpoints (Mistral via `_shared/mistralClient.ts`, FLUX via `_shared/bflImageClient.ts`)
 - Migratie van client-side logica naar edge function
 
 ## Verplichte leesvolgorde
@@ -22,7 +22,7 @@ Gebaseerd op de officiële [Supabase Agent Skills](https://github.com/supabase/a
 1. `supabase/CLAUDE.md` — data safety regels (verplicht voor deze subtree)
 2. `SECURITY.md` — project security controls
 3. `supabase/functions/_shared/cors.ts` — allowed origins
-4. `supabase/functions/_shared/vertexAuth.ts` — Vertex AI service account flow
+4. `supabase/functions/_shared/mistralClient.ts` / `_shared/bflImageClient.ts` — Mistral- en FLUX-providerclients (server-side API keys)
 5. `supabase/functions/_shared/promptSanitizer.ts` — injection patronen
 6. `supabase/functions/_shared/rateLimiter.ts` — rate limit patroon
 7. `supabase/functions/_shared/systemInstructions.ts` — server-side prompt logic
@@ -93,7 +93,7 @@ if (error || !user) {
 - ✅ `Deno.env.get("SECRET_NAME")` — set via `supabase secrets set` of Supabase dashboard
 - ❌ Nooit hardcoden
 - ❌ Nooit in logs printen (`console.log(Deno.env.get(...))` is een blokker)
-- ✅ Bij Vertex AI: gebruik `_shared/vertexAuth.ts` → `GOOGLE_SERVICE_ACCOUNT_KEY`
+- ✅ Bij AI-calls: gebruik `_shared/mistralClient.ts` → `MISTRAL_API_KEY` (en `_shared/bflImageClient.ts` → `BFL_API_KEY`)
 
 ### 5. Input-validatie (server-side, altijd)
 
@@ -124,8 +124,8 @@ if (typeof message !== "string" || message.length === 0 || message.length > 4000
 - [ ] User message door `promptSanitizer` (homoglyph-normalisatie + 40+ injection-patronen NL+EN)
 - [ ] Rate limiting via `_shared/rateLimiter.ts` (per user + per IP)
 - [ ] AI-respons door `_shared/outputFilter.ts` vóór terugsturen
-- [ ] Vertex AI-endpoint: `europe-west4-aiplatform.googleapis.com` (data residency EU)
-- [ ] Timeout op Vertex calls (30s max) om hangende requests te voorkomen
+- [ ] AI-endpoints: `api.mistral.ai` en `api.eu.bfl.ai`; opslag/verwerking binnen de EER/EU-projectregio waar contractueel vastgelegd
+- [ ] Timeout op provider-calls (30s max) om hangende requests te voorkomen
 - [ ] Audit-log elk AI-gesprek (Art. 12 AI Act): user-id, roleId, timestamp, token-count (niet de volledige tekst als dat de DPIA overschrijdt)
 
 ### 7. Error responses
@@ -277,7 +277,7 @@ supabase functions logs <name>
 - ❌ `systemInstruction` vanuit client accepteren
 - ❌ `Access-Control-Allow-Origin: *`
 - ❌ Secrets hardcoden of loggen
-- ❌ User input direct in SQL of Vertex-prompt zonder validatie/sanitization
+- ❌ User input direct in SQL of AI-prompt zonder validatie/sanitization
 - ❌ `console.log` met PII (email, naam, leerling-ID zonder reden)
 - ❌ RLS omzeilen met service role zonder expliciete rechtvaardiging
 - ❌ Stack traces of DB-errors naar client sturen
@@ -301,4 +301,4 @@ Lever altijd:
 - Anoniem public endpoint: `supabase/functions/submitPilotRequest/index.ts`
 - GDPR data-export: `supabase/functions/exportMyData/index.ts`
 - Parental consent flow: `supabase/functions/approveParentalConsent/index.ts`
-- Vertex AI vision: `supabase/functions/scanReceipt/index.ts`
+- Mistral OCR/vision: `supabase/functions/scanReceipt/index.ts`

@@ -5,6 +5,8 @@
 **Scope:** Alle Supabase Edge Functions die Mistral/BFL aanroepen
 **Classificatie:** HIGH RISK (EU AI Act Annex III, punt 3b)
 
+> **Historische status 01-07-2026:** Dit auditrapport beschrijft de situatie op 3 april 2026 en mag niet als actuele school-facing complianceclaim worden gebruikt. De "N/A" voor Art. 14 betrof uitsluitend de toen geauditeerde nieuwe functies; de docent-override voor STEP_COMPLETE is platformbreed geïmplementeerd (15 mrt 2026). Gebruik voor actuele claims `docs/compliance/legal-claim-source-of-truth.md` en `business/nl-vo/compliance/eu-ai-act-conformiteitsplan.md`.
+
 ---
 
 ## 1. Samenvatting

@@ -30,7 +30,7 @@ Please do **not** open a public GitHub issue for security vulnerabilities.
 - Role-Based Access Control enforced via Supabase `app_metadata` (server-set, tamper-resistant)
 - DOMPurify v3 for XSS sanitization on all user input
 - Prompt injection detection for AI interactions (40+ patterns, English + Dutch)
-- GDPR-compliant audit logging (EU data residency via Supabase)
+- Audit logging designed to support GDPR obligations (data stored and processed within the EU/EEA project region as contractually and operationally agreed)
 - `blob:`, `javascript:`, `data:`, `vbscript:` protocols blocked in URL sanitizer
 
 ## Supported Versions

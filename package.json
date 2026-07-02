@@ -28,6 +28,8 @@
     "check:prompt-master:visual": "node scripts/chrome-prompt-master-qa.mjs",
     "check:image-generation": "node scripts/check-image-generation.mjs",
     "check:legal": "node scripts/check-legal-claims.mjs",
+    "sync:compliance-guide": "node scripts/sync-compliance-guide.mjs",
+    "check:compliance-guide-sync": "node scripts/sync-compliance-guide.mjs --check",
     "check:postmarket": "node scripts/check-post-market-monitoring.mjs",
     "check:ai-provider-docs": "node scripts/check-ai-provider-docs.mjs",
     "check:ai-usage": "node scripts/check-ai-usage-telemetry.mjs && node scripts/check-mistral-bfl-providers.mjs",

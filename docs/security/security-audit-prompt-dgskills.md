@@ -154,7 +154,9 @@ C8. **Circulaire policies:** Controleer of er geen circulaire afhankelijkheden z
 - ALLE bestanden in `supabase/functions/`
 - `supabase/functions/_shared/cors.ts`
 - `supabase/functions/_shared/rateLimiter.ts`
-- `supabase/functions/_shared/vertexAuth.ts`
+- `supabase/functions/_shared/mistralClient.ts`
+- `supabase/functions/_shared/bflImageClient.ts`
+- `supabase/functions/_shared/moderationClient.ts`
 
 **Checkpunten:**
 
