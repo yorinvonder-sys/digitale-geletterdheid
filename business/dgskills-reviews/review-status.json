@@ -1408,14 +1408,25 @@
  {
   "missionId": "ipad-print-instructies",
   "templateType": "dedicated",
-  "priorityBand": "unknown",
+  "priorityBand": "low",
   "triageScores": null,
-  "lastReviewed": null,
-  "reviewStatus": "pending",
-  "reportPath": null,
+  "lastReviewed": "2026-07-02",
+  "reviewStatus": "blocked",
+  "reportPath": "business/dgskills-reviews/ipad-print-instructies-2026-07-02.md",
   "autoFixesApplied": 0,
-  "openEscalations": [],
-  "codexVerdict": null
+  "openEscalations": [
+   "content-authoring: missie belooft iPad-specifiek printen (titel+lesdoel) maar alle 5 scenario's zijn generieke desktop-printerproblemen (WiFi/kleur/papierformaat/kopieën/marges) — geen enkele dekt de echte iPad-route (Deel-icoon -> Print); voorstel-scenario ligt klaar in rapport, auteurskeuze aan Yorin"
+  ],
+  "codexVerdict": null,
+  "reviewScores": {
+   "uiux": 7,
+   "didactiek": 5,
+   "tech": 9
+  },
+  "triageScore": 3.2,
+  "verdict": "fix-eerst",
+  "statusNote": "wave 20: technisch prima (9); curriculum-registratie ontbreekt bewust (MH1A classRestriction, buiten weekrooster); dormante rol verwijst naar school-lokaal Boeken-app-bestand (niet verifieerbaar) = notitie",
+  "escalationCount": 1
  },
  {
   "missionId": "layout-doctor",
@@ -2688,14 +2699,23 @@
  {
   "missionId": "veilig-internet",
   "templateType": "scenario-engine",
-  "priorityBand": "unknown",
+  "priorityBand": "low",
   "triageScores": null,
-  "lastReviewed": null,
-  "reviewStatus": "pending",
-  "reportPath": null,
+  "lastReviewed": "2026-07-02",
+  "reviewStatus": "fixed",
+  "reportPath": "business/dgskills-reviews/veilig-internet-2026-07-02.md",
   "autoFixesApplied": 0,
   "openEscalations": [],
-  "codexVerdict": null
+  "codexVerdict": null,
+  "reviewScores": {
+   "uiux": 9,
+   "didactiek": 9.5,
+   "tech": 9.5
+  },
+  "triageScore": 0.65,
+  "verdict": "ok",
+  "statusNote": "wave 20: schoon — 10-punts import-registratie compleet, CC-BY-attributie zichtbaar gerenderd, scoring exact, welzijnsbril in orde",
+  "escalationCount": 0
  },
  {
   "missionId": "verhalen-ontwerper",
@@ -2797,12 +2817,21 @@
    "interactivity": 0,
    "total": 2
   },
-  "lastReviewed": null,
-  "reviewStatus": "pending",
-  "reportPath": null,
+  "lastReviewed": "2026-07-02",
+  "reviewStatus": "fixed",
+  "reportPath": "business/dgskills-reviews/web-developer-2026-07-02.md",
   "autoFixesApplied": 0,
   "openEscalations": [],
-  "codexVerdict": null
+  "codexVerdict": null,
+  "reviewScores": {
+   "uiux": 7,
+   "didactiek": 8,
+   "tech": 8
+  },
+  "triageScore": 2.3,
+  "verdict": "ok",
+  "statusNote": "wave 20: schoon — HTML/CSS/JS-feiten correct, opbouw sterk; vervolgtaak-suggestie: PreviewPanel-sandbox (bestaat voor website-bouwer) hergebruiken zodat leerlingen hun code live zien",
+  "escalationCount": 0
  },
  {
   "missionId": "website-bouwer",
