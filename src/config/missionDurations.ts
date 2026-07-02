@@ -6,6 +6,7 @@ import { TEMPLATE_MISSIONS } from './templateRegistry';
 const ENGINE_MINUTES: Record<string, number> = {
     'scenario-engine': 15,
     'puzzle-lab': 15,
+    'password-fortress': 15,
     'tool-guide': 15,
     'review-arena': 15,
     'simulation-lab': 20,

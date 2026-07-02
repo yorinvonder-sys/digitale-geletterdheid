@@ -91,6 +91,11 @@ const TEMPLATE_ENGINES = {
     varName: 'PUZZLE_LAB_CONFIGS',
     dir: 'puzzle-lab',
   },
+  'password-fortress': {
+    file: 'src/features/missions/templates/password-fortress/PasswordFortress.tsx',
+    varName: 'VALID_PASSWORD_FORTRESS_IDS',
+    dir: 'password-fortress',
+  },
 };
 
 /**

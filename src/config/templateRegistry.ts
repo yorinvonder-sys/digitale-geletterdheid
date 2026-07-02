@@ -27,6 +27,9 @@ export const TEMPLATE_MISSIONS: Record<string, TemplateMissionEntry> = {
     'data-handelaar':       { missionId: 'data-handelaar',       templateType: 'puzzle-lab' },
     'security-auditor':     { missionId: 'security-auditor',     templateType: 'puzzle-lab' },
 
+    // === PasswordFortress (1) ===
+    'wachtwoord-fortress':  { missionId: 'wachtwoord-fortress',  templateType: 'password-fortress' },
+
     // === SimulationLab (5) ===
     'privacy-by-design':    { missionId: 'privacy-by-design',    templateType: 'simulation-lab' },
     'bug-hunter':           { missionId: 'bug-hunter',           templateType: 'simulation-lab' },

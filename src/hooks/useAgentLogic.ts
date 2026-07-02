@@ -257,6 +257,7 @@ const getStarterTips = (roleId: string, examplePrompt?: string): string[] => {
         'code-reviewer': ['Lees de code hardop voor', 'Wat kan beter aan deze code?', 'Is deze code veilig?'],
         'privacy-by-design': ['Welke data verzamelt deze app?', 'Is dit privacy-vriendelijk?', 'Hoe kan het met minder data?'],
         'wachtwoord-warrior': ['Hoe sterk is dit wachtwoord?', 'Maak een onkraakbaar wachtwoord', 'Wat is tweestapsverificatie?'],
+        'wachtwoord-fortress': ['Hoe werkt een woordenboekaanval?', 'Waarom wint lengte van speciale tekens?', 'Wat is credential stuffing?'],
         'access-control-engineer': ['Wie mag wat zien?', 'Stel de rechten in per rol', 'Test of de beveiliging klopt'],
         'code-review-2': ['Test mijn programmeerkennis', 'Wat doet deze code?', 'Vind de bug in dit voorbeeld'],
         // === J2P3: Media & Creatie ===

@@ -28,7 +28,7 @@ const REVIEW_GROUPS: ReviewGroup[] = [
     { id: 'j1-p3', label: 'J1 P3', assignments: ['data-detective', 'data-verzamelaar', 'deepfake-detector', 'ai-spiegel', 'social-safeguard', 'scroll-stopper', 'cookie-crusher', 'mail-detective', 'data-handelaar', 'filter-bubble-breaker', 'datalekken-rampenplan', 'data-voor-data', 'data-speurder', 'digitale-balans-coach'] },
     { id: 'j1-p4', label: 'J1 P4', assignments: ['mission-blueprint', 'mission-vision', 'mission-launch', 'review-week-3'] },
     { id: 'j2-p1', label: 'J2 P1', assignments: ['data-journalist', 'spreadsheet-specialist', 'factchecker', 'api-verkenner', 'dashboard-designer', 'ai-bias-detective', 'data-review'] },
-    { id: 'j2-p2', label: 'J2 P2', assignments: ['algorithm-architect', 'web-developer', 'app-prototyper', 'bug-hunter', 'automation-engineer', 'code-reviewer', 'wachtwoord-warrior', 'access-control-engineer', 'code-review-2'] },
+    { id: 'j2-p2', label: 'J2 P2', assignments: ['algorithm-architect', 'web-developer', 'app-prototyper', 'bug-hunter', 'automation-engineer', 'code-reviewer', 'wachtwoord-warrior', 'wachtwoord-fortress', 'access-control-engineer', 'code-review-2'] },
     { id: 'j2-p3', label: 'J2 P3', assignments: ['ux-detective', 'podcast-producer', 'meme-machine', 'digital-storyteller', 'brand-builder', 'video-editor', 'online-helden', 'media-review'] },
     { id: 'j2-p4', label: 'J2 P4', assignments: ['ai-ethicus', 'digital-rights-defender', 'tech-court', 'future-forecaster', 'sustainability-scanner', 'eindproject-j2'] },
     { id: 'j3-p1', label: 'J3 P1', assignments: ['ml-trainer', 'api-architect', 'neural-navigator', 'data-pipeline', 'open-source-contributor', 'advanced-code-review'] },
