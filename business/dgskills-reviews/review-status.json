@@ -946,11 +946,11 @@
    "total": 2
   },
   "lastReviewed": "2026-07-02",
-  "reviewStatus": "fixes-applied",
+  "reviewStatus": "fixed",
   "reportPath": "business/dgskills-reviews/datalekken-rampenplan-2026-07-02.md",
   "autoFixesApplied": 1,
   "openEscalations": [],
-  "codexVerdict": null,
+  "codexVerdict": "ALLOW",
   "reviewScores": {
    "uiux": 8.5,
    "didactiek": 9,
@@ -958,7 +958,7 @@
   },
   "triageScore": 1.15,
   "verdict": "ok",
-  "statusNote": "wave 19: 1 fix (aria-label op icon-only terugknop); AVG-meldplicht-feiten geverifieerd correct; BSN-risico-framing = verrijkingssuggestie in rapport; focus-visible op 4 fase-knoppen = niet-blokkerende notitie; stats:any = platform-contract",
+  "statusNote": "wave 19: 1 fix (aria-label op icon-only terugknop); AVG-meldplicht-feiten geverifieerd correct; BSN-risico-framing = verrijkingssuggestie in rapport; focus-visible op 4 fase-knoppen = niet-blokkerende notitie; stats:any = platform-contract; gate-vangst: eerste label (Terug naar dashboard) was misleidend -> gecorrigeerd naar missie-intro, daarna ALLOW",
   "escalationCount": 0
  },
  {

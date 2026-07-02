@@ -22,3 +22,7 @@ Vijf missies beoordeeld, één met een fix. (Modus: sweep, waveSize 5.)
 ## Codex-gates
 
 - datalekken-rampenplan (1): uitslag in status-index en PR.
+
+## Gate-uitslag (addendum)
+
+datalekken-rampenplan: eerste poging **BLOCK** — Codex ving dat het voorgestelde label "Terug naar dashboard" een bestemming beloofde die de knop niet heeft (hij gaat naar de missie-intro, en alleen vanaf fase 1). Label gecorrigeerd naar "Terug naar de missie-intro" → re-gate **ALLOW**. Negende echte gate-vangst van de run; de stille no-op op latere fases staat als suggestie bij de a11y-opknapronde.
