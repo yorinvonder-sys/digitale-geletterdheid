@@ -1296,12 +1296,10 @@
    "total": 13
   },
   "lastReviewed": "2026-07-01",
-  "reviewStatus": "blocked",
+  "reviewStatus": "fixed",
   "reportPath": "business/dgskills-reviews/game-director-2026-07-01.md",
-  "autoFixesApplied": 9,
-  "openEscalations": [
-   "ai-endpoint (HOOG, GitHub-Codex-vondst): server-side rol-prompt in supabase/functions/_shared/systemInstructions.ts beschrijft nog de oude mechanica (start via toetsaanslag, finish = groene streep) terwijl Level 1 nu 'wanneer game start' + een botten-doel gebruikt — de AI-hulp in de chat geeft leerlingen dus verouderde eerste-stap-instructies; server-entry hergenereren (buiten auto-fix-scope, edge function)"
-  ],
+  "autoFixesApplied": 10,
+  "openEscalations": [],
   "codexVerdict": "ALLOW",
   "reviewScores": {
    "uiux": 2,
@@ -1311,13 +1309,13 @@
   "goalClear": true,
   "goalAchieved": true,
   "proposedFixes": 6,
-  "escalationCount": 1,
+  "escalationCount": 0,
   "topIssues": [
    "roleId='game-director' ontbreekt bij StudentAIChat → generieke fallback",
    "SLO-dashboard claimt ['22A','22B'] maar mapping heeft alleen ['22B']",
    "Mobiel canvas 0x0-bug uit mei-review nog onopgelost"
   ],
-  "statusNote": "; GitHub-Codex-review op PR #194 (2026-07-02): (1) Level 1-doel stond onbereikbaar ver voor het standaard gehinte blok (600px, blok haalt 150px) -> gefixt: doel terug naar x:150 (exact de eerder gevalideerde drempel, botsings-/bewegingslogica nagerekend); (2) server-prompt-drift -> escalatie"
+  "statusNote": "; GitHub-Codex-review op PR #194 (2026-07-02): (1) Level 1-doel stond onbereikbaar ver voor het standaard gehinte blok (600px, blok haalt 150px) -> gefixt: doel terug naar x:150 (exact de eerder gevalideerde drempel, botsings-/bewegingslogica nagerekend); (2) server-prompt-drift -> escalatie; opdracht van Yorin (2026-07-02): server- EN client-systemInstruction gelijkgetrokken (4+1 verwijzingen, incl. steps[0].example die Codex niet noemde maar dezelfde staleness deelde); alleen bron in repo aangepast, GEEN Supabase-deploy uitgevoerd"
  },
  {
   "missionId": "game-programmeur",
