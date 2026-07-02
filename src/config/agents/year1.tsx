@@ -203,7 +203,7 @@ REGELS:
                 <div className="absolute inset-0 bg-gradient-to-br from-lab-gold to-lab-coral"></div>
                 <div className="relative z-10 flex flex-col gap-2">
                     <div className="w-32 h-8 bg-lab-gold rounded-lg border-2 border-lab-coral flex items-center px-2 text-[9px] font-bold text-lab-gold">🚀 wanneer start</div>
-                    <div className="w-32 h-8 bg-lab-teal rounded-lg border-2 border-lab-coral flex items-center px-2 text-[9px] font-bold text-white ml-4">➡️ ga 5 rechts</div>
+                    <div className="w-32 h-8 bg-lab-teal rounded-lg border-2 border-lab-coral flex items-center px-2 text-[9px] font-bold text-white ml-4">➡️ ga naar rechts</div>
                     <div className="w-32 h-8 bg-lab-teal rounded-lg border-2 border-lab-coral flex items-center px-2 text-[9px] font-bold text-white ml-4">🦘 spring!</div>
                 </div>
             </div>
@@ -259,7 +259,7 @@ REGELS:
             },
             {
                 title: "Finish bereiken",
-                description: "Combineer beweging en springen om de groene finish te bereiken.",
+                description: "Combineer beweging en springen om het bewijs (het gouden botje) te bereiken.",
                 example: "Gebruik je blokken om het karakter helemaal naar rechts te sturen."
             }
         ],
