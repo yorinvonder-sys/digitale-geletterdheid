@@ -172,7 +172,7 @@ const PhaseHeader: React.FC<{
     onBack: () => void;
 }> = ({ currentPhase, totalPhases, totalScore, onBack }) => (
     <div className="flex items-center justify-between mb-6">
-        <button onClick={onBack} aria-label="Terug naar dashboard" className="text-duck-ink/60 hover:text-duck-ink transition-all duration-300">
+        <button onClick={onBack} aria-label="Terug naar de missie-intro" className="text-duck-ink/60 hover:text-duck-ink transition-all duration-300">
             <ArrowLeft size={18} />
         </button>
         <div className="flex gap-1.5">

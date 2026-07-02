@@ -152,3 +152,9 @@ Geen — geen compliance-gevoelige feitenfout gevonden (72-uurs AP-meldplicht, p
 
 ## Samenvattend oordeel
 **Verdict: ok** — triageScore 1.15 (laag = weinig verbeterpotentieel nodig). Twee kleine a11y-fixes (aria-label + focus-visible) zijn autoFixable en beknopt; de BSN-verrijking is optioneel en niet blocking. Geen herontwerp, geen fix-eerst-vereiste.
+
+---
+
+## Orchestrator-addendum ná Codex-gate (2026-07-02)
+
+**Gate-vangst (BLOCK op eerste poging):** het voorgestelde `aria-label="Terug naar dashboard"` was misleidend — de knop is bedraad op `goBackPhase` (regel 651), die alleen vanaf de eerste fase terugkeert naar het missie-introscherm en daarna bewust niets doet ("geen teruggaan na inzending"). Gecorrigeerd naar `aria-label="Terug naar de missie-intro"` (beschrijft de echte bestemming). Restpunt voor de a11y-lijst: op latere fases is de knop een stille no-op — verbergen/disablen op die fases zou netter zijn, maar dat is een gedragswijziging buiten auto-fix-scope (suggestie voor de dedicated-component-opknapronde).
