@@ -945,12 +945,21 @@
    "interactivity": 0,
    "total": 2
   },
-  "lastReviewed": null,
-  "reviewStatus": "pending",
-  "reportPath": null,
-  "autoFixesApplied": 0,
+  "lastReviewed": "2026-07-02",
+  "reviewStatus": "fixes-applied",
+  "reportPath": "business/dgskills-reviews/datalekken-rampenplan-2026-07-02.md",
+  "autoFixesApplied": 1,
   "openEscalations": [],
-  "codexVerdict": null
+  "codexVerdict": null,
+  "reviewScores": {
+   "uiux": 8.5,
+   "didactiek": 9,
+   "tech": 9
+  },
+  "triageScore": 1.15,
+  "verdict": "ok",
+  "statusNote": "wave 19: 1 fix (aria-label op icon-only terugknop); AVG-meldplicht-feiten geverifieerd correct; BSN-risico-framing = verrijkingssuggestie in rapport; focus-visible op 4 fase-knoppen = niet-blokkerende notitie; stats:any = platform-contract",
+  "escalationCount": 0
  },
  {
   "missionId": "deepfake-detector",
@@ -1227,12 +1236,21 @@
    "interactivity": 0,
    "total": 1
   },
-  "lastReviewed": null,
-  "reviewStatus": "pending",
-  "reportPath": null,
+  "lastReviewed": "2026-07-02",
+  "reviewStatus": "fixed",
+  "reportPath": "business/dgskills-reviews/filter-bubble-breaker-2026-07-02.md",
   "autoFixesApplied": 0,
   "openEscalations": [],
-  "codexVerdict": null
+  "codexVerdict": null,
+  "reviewScores": {
+   "uiux": 8.5,
+   "didactiek": 9.0,
+   "tech": 9.0
+  },
+  "triageScore": 1.15,
+  "verdict": "ok",
+  "statusNote": "wave 19: schoon — filterbubbel-uitleg feitelijk en genuanceerd, scoring klopt; dode isB-ternary (identieke class beide takken) = code-smell zonder leerling-effect; personage-drift chat vs component valt onder dormante-chat-dossier",
+  "escalationCount": 0
  },
  {
   "missionId": "future-forecaster",
@@ -1369,12 +1387,23 @@
    "interactivity": 0,
    "total": 2
   },
-  "lastReviewed": null,
-  "reviewStatus": "pending",
-  "reportPath": null,
+  "lastReviewed": "2026-07-02",
+  "reviewStatus": "blocked",
+  "reportPath": "business/dgskills-reviews/innovation-lab-2026-07-02.md",
   "autoFixesApplied": 0,
-  "openEscalations": [],
-  "codexVerdict": null
+  "openEscalations": [
+   "ai-endpoint (HOOG): server-coach (systemInstructions.ts) vraagt nog 'maatschappelijk probleem gekoppeld aan SDG' terwijl de missie herschreven is naar 'alledaags probleem (school/sport/thuis)' — leerling krijgt in de chat een zwaardere opdracht dan de missie belooft; server-entry hergenereren (buiten auto-fix-scope)"
+  ],
+  "codexVerdict": null,
+  "reviewScores": {
+   "uiux": 9,
+   "didactiek": 7,
+   "tech": 8
+  },
+  "triageScore": 2.1,
+  "verdict": "ok",
+  "statusNote": "wave 19: registratie/scoring kloppen; KEES-avatar-clipping = zwaarste instantie van bekend shared-shell-patroon (platform); interne SCOPE GUARD-inconsistentie year3.tsx in rapport",
+  "escalationCount": 1
  },
  {
   "missionId": "ipad-print-instructies",
@@ -1399,12 +1428,23 @@
    "interactivity": 0,
    "total": 2
   },
-  "lastReviewed": null,
-  "reviewStatus": "pending",
-  "reportPath": null,
+  "lastReviewed": "2026-07-02",
+  "reviewStatus": "blocked",
+  "reportPath": "business/dgskills-reviews/layout-doctor-2026-07-02.md",
   "autoFixesApplied": 0,
-  "openEscalations": [],
-  "codexVerdict": null
+  "openEscalations": [
+   "a11y/UX-opknapcluster dedicated component: mobiel start opdrachtkaart uitgeklapt (werkveld onder de vouw), ribbon-knoppen B/I/U onder touch-formaat (p-1), focus-ring ontbreekt op meeste ribbon-knoppen — voorstellen in rapport, componentwijziging = Yorin-keuze"
+  ],
+  "codexVerdict": null,
+  "reviewScores": {
+   "uiux": 7,
+   "didactiek": 8.5,
+   "tech": 8
+  },
+  "triageScore": 2.1,
+  "verdict": "ok",
+  "statusNote": "wave 19: alle 5 criteria inhoudelijk juist en overal haalbaar, scoring geverifieerd; NB reviewer rapporteerde omgekeerde schaal (4/2/2, triage 7.4) — bij intake herijkt naar 7/8.5/8 conform het eigen narratief (zelfde correctie als encryption-expert/magister-master/deepfake-detector)",
+  "escalationCount": 1
  },
  {
   "missionId": "magister-master",
@@ -2503,12 +2543,23 @@
    "interactivity": 0,
    "total": 2
   },
-  "lastReviewed": null,
-  "reviewStatus": "pending",
-  "reportPath": null,
+  "lastReviewed": "2026-07-02",
+  "reviewStatus": "blocked",
+  "reportPath": "business/dgskills-reviews/startup-simulator-2026-07-02.md",
   "autoFixesApplied": 0,
-  "openEscalations": [],
-  "codexVerdict": null
+  "openEscalations": [
+   "platform-patroon: builder-canvas coach-briefing (3 stappen, client en server byte-identiek, zonder marktanalyse en zonder STEP_COMPLETE:4) dekt de 4 canvas-stappen niet — zelfde productkeuze als podcast-producer/meesterproef/portfolio-builder/prototype-developer/meme-machine/app-prototyper (nu 7 missies)"
+  ],
+  "codexVerdict": null,
+  "reviewScores": {
+   "uiux": 10,
+   "didactiek": 9,
+   "tech": 9.5
+  },
+  "triageScore": 0.55,
+  "verdict": "ok",
+  "statusNote": "wave 19: sterkste missie van de wave — 100/100 haalbaar, alle criteria geslaagd; optionele verrijking: coach belooft ethiek-aandacht (privacy/duurzaamheid) die geen checklistItem toetst",
+  "escalationCount": 1
  },
  {
   "missionId": "sustainability-scanner",
