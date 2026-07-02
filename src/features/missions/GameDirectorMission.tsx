@@ -113,7 +113,7 @@ const LEVEL_LAYOUTS = [
                 { x: -50, y: 0, w: 50, h: 600 },
                 { x: 800, y: 0, w: 50, h: 600 },
             ],
-            goal: { x: 600, y: 500, w: 50, h: 60 }
+            goal: { x: 150, y: 500, w: 50, h: 60 }
         },
         hard: {
             walls: [
