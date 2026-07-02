@@ -1343,11 +1343,11 @@
    "total": 4
   },
   "lastReviewed": "2026-07-02",
-  "reviewStatus": "fixes-applied",
+  "reviewStatus": "fixed",
   "reportPath": "business/dgskills-reviews/impact-review-2026-07-02.md",
   "autoFixesApplied": 1,
   "openEscalations": [],
-  "codexVerdict": null,
+  "codexVerdict": "ALLOW",
   "reviewScores": {
    "uiux": 8,
    "didactiek": 8,
