@@ -2,10 +2,15 @@ import { readdirSync, readFileSync, statSync } from 'node:fs';
 import path from 'node:path';
 
 const roots = [
+  'ARCHITECTURE.md',
   'CLAUDE.md',
+  'LAUNCH-PLAN.md',
   'README.md',
   'index.html',
+  '.claude/project-context.md',
+  '.claude/skills',
   'business/nl-vo',
+  'business/strategy',
   'docs',
   'public/compliance',
   'public/dev-docs',
@@ -54,7 +59,6 @@ const historicalFilePatterns = [
   /(^|\/)verwerkersovereenkomsten-rapport\.md$/,
   /^docs\/audits\//,
   /^docs\/compliance\/regulations\//,
-  /^docs\/security\//,
 ];
 
 const allowedHistoricalLine = [
@@ -65,6 +69,15 @@ const allowedHistoricalLine = [
   /was onjuist/i,
   /Claim nooit/i,
   /Do not claim|Do not use|Avoid blanket claims/i,
+  // Reviewer skills / audit prompts that quote a forbidden phrase to warn against it.
+  /nooit\b.*claim/i,
+  /verboden claim/i,
+  /laten staan/i,
+  /markeer dit als|markeer\b.*kritiek/i,
+  // Safe conditional framing of the shifted high-risk deadline.
+  /Digital Omnibus/i,
+  // Explicit "not yet compliant / in progress" framing is not an overclaim.
+  /compliancetraject|niet volledig compliant/i,
 ];
 
 const blockedRules = [
@@ -78,7 +91,7 @@ const blockedRules = [
   },
   {
     label: 'blanket compliance overclaim',
-    pattern: /\b(AVG-compliant|AVG compliant|AVG-proof|AVG proof|volledige AVG-compliance|voldoet aan de AVG|voldoet aan (de )?AI Act|voldoe aan de EU AI Act|EU AI Act conform|volledig compliant|volledige naleving|volledige conformiteit|volledig in lijn met de AVG|strengste AVG-normen)\b/i,
+    pattern: /\b(AVG-compliant|AVG compliant|AVG-proof|AVG proof|GDPR-compliant|GDPR compliant|GDPR-proof|GDPR proof|volledige AVG-compliance|voldoet aan (de )?AVG|voldoet aan (de )?AI Act|voldoe aan de EU AI Act|EU AI Act conform|volledig compliant|volledige naleving|volledige conformiteit|volledig in lijn met de AVG|strengste AVG-normen)\b/i,
   },
   {
     label: 'unsafe high-risk deadline text',
@@ -131,6 +144,18 @@ function isPublicRetentionClaim(line) {
   return /\b(90 dagen|90 days|90-day)\b/i.test(line) && /\b(chat|audit|log|activity|activiteit|bewaar|retention|gegevens|data|purge)\b/i.test(line);
 }
 
+function stripMarkdownEmphasis(line) {
+  // Emphasis / code / strike markers can split a claim across characters
+  // (e.g. "voldoet aan **AVG**"); strip them so word-based rules still match.
+  return line.replace(/[*_`~]+/g, '');
+}
+
+function hasHistoricalStatusHeader(source) {
+  // A dated snapshot that opens with a "Historische status" header is
+  // intentionally left as-is; its superseded claims are not live claims.
+  return /Historische status/i.test(source.split(/\r?\n/, 20).join('\n'));
+}
+
 function walk(entry) {
   const stat = statSync(entry);
   if (stat.isDirectory()) {
@@ -141,16 +166,21 @@ function walk(entry) {
   if (!shouldScan(entry)) return;
 
   const source = readFileSync(entry, 'utf8');
+  if (hasHistoricalStatusHeader(source)) return;
+
   const lines = source.split(/\r?\n/);
   for (const [index, line] of lines.entries()) {
-    if (isAllowedLine(line)) continue;
-    const isAllowedGoogleContext = allowedGoogleContexts.some((pattern) => pattern.test(line));
+    const normalized = stripMarkdownEmphasis(line);
+    if (isAllowedLine(line) || isAllowedLine(normalized)) continue;
+    const isAllowedGoogleContext = allowedGoogleContexts.some(
+      (pattern) => pattern.test(line) || pattern.test(normalized),
+    );
     for (const rule of blockedRules) {
-      if (rule.pattern.test(line) && !isAllowedGoogleContext) {
+      if ((rule.pattern.test(line) || rule.pattern.test(normalized)) && !isAllowedGoogleContext) {
         failures.push(`${entry}:${index + 1}: ${rule.label}`);
       }
     }
-    if (isPublicRetentionClaim(line)) {
+    if (isPublicRetentionClaim(line) || isPublicRetentionClaim(normalized)) {
       failures.push(`${entry}:${index + 1}: unsafe 90-day activity/audit/chat retention claim`);
     }
   }
