@@ -216,7 +216,7 @@ Wij delen je gegevens alleen wanneer dat noodzakelijk is voor de werking van het
 | **Mistral AI** | AI-chat, feedback, vision en OCR | AI-invoer die nodig is voor de lesfunctie | Providerregio en subprocessors te verifiëren | Mistral DPA; SCC's/TIA waar nodig; gebruik voor provider-modeltraining uitgesloten waar providerafspraken en instellingen dit dekken |
 | **Black Forest Labs** | FLUX image generation | Beeldprompts en gegenereerde afbeeldingen | Providerregio en subprocessors te verifiëren | Provider-DPA/subprocessorbewijs vereist; server-side verwerking |
 | **Vercel Inc.** | Hosting van de website (frontend) | IP-adres, sessiegegevens (geen opslag van persoonsgegevens in database) | VS en wereldwijd (CDN/edge) | DPA; EU Standard Contractual Clauses (SCC) |
-| **Zoho Corporation** | E-mailservice (SMTP) | E-mailadres en naam (alleen bij pilot-aanvragen en notificaties) | EU (smtp.zoho.eu, datacenter in EU) | Verwerkersovereenkomst (DPA); GDPR-compliant EU-datacenter |
+| **Zoho Corporation** | E-mailservice (SMTP) | E-mailadres en naam (alleen bij pilot-aanvragen en notificaties) | EU (smtp.zoho.eu, datacenter in EU) | Verwerkersovereenkomst (DPA); EU-datacenter (smtp.zoho.eu) |
 
 ### 8.2 Overige ontvangers
 
