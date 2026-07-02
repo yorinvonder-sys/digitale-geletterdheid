@@ -20,7 +20,7 @@ const config: ToolGuideConfig = {
             id: 'stap-1-thema',
             title: 'Thema kiezen',
             instruction:
-                'Open de **PowerPoint**-app op je iPad en tik op **Nieuw** om een lege presentatie te starten. Ga naar het tabblad **Ontwerp** bovenaan. Je ziet een rij met thema\'s — klik er een aan om een voorbeeld te zien. Kies een thema dat past bij je onderwerp: zakelijk, kleurrijk of minimalistisch. Tik daarna op **Kleurvariant** om een kleurenschema te kiezen.',
+                'Open de **PowerPoint**-app op je iPad en tik op **Nieuw** om een lege presentatie te starten. Ga naar het tabblad **Ontwerp** bovenaan. Je ziet een rij met thema\'s — tik er een aan om een voorbeeld te zien. Kies een thema dat past bij je onderwerp: zakelijk, kleurrijk of minimalistisch. Tik daarna op **Kleurvariant** om een kleurenschema te kiezen.',
             tip: 'Een goed thema geeft je presentatie een professionele uitstraling zonder dat je zelf alles hoeft op te maken. Kies een thema dat past bij het gevoel dat je wilt overbrengen: serieus, vrolijk of modern.',
             checklistItems: [
                 { id: 'presentatie-nieuw', label: 'Ik heb een nieuwe lege presentatie aangemaakt' },

@@ -31,9 +31,9 @@ export const neuralNavigatorConfig: DataViewerConfig = {
                 { key: 'output', label: 'Output', sortable: true },
             ],
             rows: [
-                { neuron: 'Neuron A', input1: 0.8, gewicht1: 0.5, input2: 0.6, gewicht2: 0.3, bias: 0.1, output: 0.69 },
+                { neuron: 'Neuron A', input1: 0.8, gewicht1: 0.5, input2: 0.6, gewicht2: 0.3, bias: 0.1, output: 0.68 },
                 { neuron: 'Neuron B', input1: 1.0, gewicht1: 0.2, input2: 0.4, gewicht2: 0.7, bias: 0.0, output: 0.48 },
-                { neuron: 'Neuron C', input1: 0.5, gewicht1: 0.9, input2: 0.9, gewicht2: 0.4, bias: 0.2, output: 0.81 },
+                { neuron: 'Neuron C', input1: 0.5, gewicht1: 0.9, input2: 0.9, gewicht2: 0.4, bias: 0.2, output: 1.01 },
                 { neuron: 'Neuron D', input1: 0.3, gewicht1: 0.6, input2: 0.7, gewicht2: 0.8, bias: 0.1, output: 0.84 },
             ],
             questions: [
@@ -52,9 +52,9 @@ export const neuralNavigatorConfig: DataViewerConfig = {
                     question: 'Welk neuron heeft de hoogste output?',
                     type: 'multiple-choice',
                     options: ['Neuron A', 'Neuron B', 'Neuron C', 'Neuron D'],
-                    correctAnswer: 'Neuron D',
+                    correctAnswer: 'Neuron C',
                     explanation:
-                        'Neuron D heeft de hoogste output: 0,84. Sorteer op "Output" om het snel te zien. Een hogere output betekent dat dit neuron sterker "actief" is dan de anderen. In een netwerk voor beeldherkenning zou een sterk actief neuron een specifiek kenmerk (lijn, kleur, vorm) kunnen vertegenwoordigen.',
+                        'Neuron C heeft de hoogste output: 1,01 (0,5 × 0,9 + 0,9 × 0,4 + 0,2). Sorteer op "Output" om het snel te zien. Een hogere output betekent dat dit neuron sterker "actief" is dan de anderen. In een netwerk voor beeldherkenning zou een sterk actief neuron een specifiek kenmerk (lijn, kleur, vorm) kunnen vertegenwoordigen.',
                     points: 10,
                 },
                 {
@@ -177,7 +177,7 @@ export const neuralNavigatorConfig: DataViewerConfig = {
                     correctAnswer: '',
                     explanation:
                         'Goede voorbeelden: gezichtsontgrendeling van je telefoon (input: pixelwaarden, output: jij/niet jij), TikTok aanbevelingsalgoritme (input: kijkgedrag en likes, output: kans dat je een video leuk vindt), autocorrectie (input: getypte letters, output: waarschijnlijkste woord). Neurale netwerken zitten overal in moderne apps.',
-                    points: 0,
+                    points: 10,
                 },
             ],
         },
