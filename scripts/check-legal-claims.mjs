@@ -6,6 +6,7 @@ const commands = [
   ['node', ['scripts/check-gdpr-rights-coverage.mjs']],
   ['node', ['scripts/check-retention-policy.mjs']],
   ['node', ['scripts/check-processing-restriction-enforcement.mjs']],
+  ['node', ['scripts/sync-compliance-guide.mjs', '--check']],
 ];
 
 for (const [command, args] of commands) {
