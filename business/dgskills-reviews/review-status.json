@@ -45,11 +45,11 @@
    "total": 2
   },
   "lastReviewed": "2026-07-02",
-  "reviewStatus": "fixes-applied",
+  "reviewStatus": "fixed",
   "reportPath": "business/dgskills-reviews/advanced-code-review-2026-07-02.md",
   "autoFixesApplied": 3,
   "openEscalations": [],
-  "codexVerdict": null,
+  "codexVerdict": "ALLOW",
   "reviewScores": {
    "uiux": 9.0,
    "didactiek": 7.5,
@@ -165,14 +165,14 @@
    "total": 2
   },
   "lastReviewed": "2026-07-02",
-  "reviewStatus": "fixes-applied",
+  "reviewStatus": "blocked",
   "reportPath": "business/dgskills-reviews/ai-spiegel-2026-07-02.md",
   "autoFixesApplied": 1,
   "openEscalations": [
    "curriculum-keuze: basisvaardigheden-mapping (FORMULEREN+ETHIEK) mist een privacy-gerichte categorie voor deze privacy-missie — welke categorie toevoegen is Yorin-keuze (vgl. social-safeguard: ONLINE_VEILIGHEID)",
    "design-keuze: bar-chart Sim 2 middencategorie is no-op (beide ternary-takken '#ff3c21', ai-spiegel.ts:52/57/62) — voorgestelde middenkleur '#ffb020' bestaat niet in het palet, kleurkeuze aan Yorin"
   ],
-  "codexVerdict": null,
+  "codexVerdict": "ALLOW",
   "reviewScores": {
    "uiux": 8.0,
    "didactiek": 8.0,
@@ -180,7 +180,7 @@
   },
   "triageScore": 1.7,
   "verdict": "fix-eerst",
-  "statusNote": "wave 17: 1 fix (dashboard-SLO-rij naar autoritaire mapping 23A/23B/21C); privacy-adviezen feitelijk correct, scoring sluitend",
+  "statusNote": "wave 17: 1 fix (dashboard-SLO-rij naar autoritaire mapping 23A/23B/21C); privacy-adviezen feitelijk correct, scoring sluitend; gate-bijvangst: ProjectZeroDashboard-rij is volgens Codex legacy/unreferenced (live dashboard put uit canonieke mapping) — fix onschadelijk, opruimen van dat bestand is aparte beslissing",
   "escalationCount": 2
  },
  {

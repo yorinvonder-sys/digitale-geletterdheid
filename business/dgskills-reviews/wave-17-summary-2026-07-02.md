@@ -20,3 +20,7 @@ Vijf missies beoordeeld, twee met fixes. (Modus: sweep, waveSize 5.)
 ## Codex-gates
 
 - advanced-code-review (3) en ai-spiegel (1): uitslag in status-index en PR.
+
+## Gate-uitslag (addendum)
+
+Beide missies **ALLOW**. Codex verifieerde: 4 rondes aanwezig, ronde 3 = supervised/unsupervised, underfitting wordt nergens getoetst, SLO-rij matcht de autoritaire mapping. Bijvangst: volgens Codex is de aangepaste dashboard-rij (ProjectZeroDashboard.tsx) legacy/unreferenced — het live dashboard leest uit de canonieke mapping. De fix is onschadelijk (consistentie), maar het eventueel opruimen van dat legacy-bestand is een aparte beslissing voor Yorin.
