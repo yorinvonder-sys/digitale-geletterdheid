@@ -633,12 +633,21 @@
    "interactivity": 0,
    "total": 2
   },
-  "lastReviewed": null,
-  "reviewStatus": "pending",
-  "reportPath": null,
+  "lastReviewed": "2026-07-02",
+  "reviewStatus": "fixed",
+  "reportPath": "business/dgskills-reviews/cookie-crusher-2026-07-02.md",
   "autoFixesApplied": 0,
   "openEscalations": [],
-  "codexVerdict": null
+  "codexVerdict": null,
+  "reviewScores": {
+   "uiux": 8,
+   "didactiek": 8,
+   "tech": 9
+  },
+  "triageScore": 1.7,
+  "verdict": "ok",
+  "statusNote": "wave 18: schoon — scenario-feiten (AVG/dark patterns) en scoreformules nagerekend; geen client/server-promptdrift; resterende punten zijn platform-breed",
+  "escalationCount": 0
  },
  {
   "missionId": "cyber-detective",
@@ -880,12 +889,21 @@
    "interactivity": 0,
    "total": 1
   },
-  "lastReviewed": null,
-  "reviewStatus": "pending",
-  "reportPath": null,
+  "lastReviewed": "2026-07-02",
+  "reviewStatus": "fixed",
+  "reportPath": "business/dgskills-reviews/data-verzamelaar-2026-07-02.md",
   "autoFixesApplied": 0,
   "openEscalations": [],
-  "codexVerdict": null
+  "codexVerdict": null,
+  "reviewScores": {
+   "uiux": 7.5,
+   "didactiek": 8.5,
+   "tech": 8.0
+  },
+  "triageScore": 1.95,
+  "verdict": "ok",
+  "statusNote": "wave 18: geen missie-fouten; briefingImage-hergebruik (social_safeguard.webp) = platform-copy-paste over 7 missies; rol ONTBREEKT server-side in systemInstructions.ts -> dekkingsgat voor het drift-audit-dossier",
+  "escalationCount": 0
  },
  {
   "missionId": "data-voor-data",
@@ -898,12 +916,23 @@
    "interactivity": 0,
    "total": 1
   },
-  "lastReviewed": null,
-  "reviewStatus": "pending",
-  "reportPath": null,
+  "lastReviewed": "2026-07-02",
+  "reviewStatus": "blocked",
+  "reportPath": "business/dgskills-reviews/data-voor-data-2026-07-02.md",
   "autoFixesApplied": 0,
-  "openEscalations": [],
-  "codexVerdict": null
+  "openEscalations": [
+   "content-keuze: basisvaardigheden-claim (dataminimalisatie/recht op vergetelheid) wordt inhoudelijk niet gedekt — kies: 1-zins-toevoeging aan eindscherm (voorstel klaar in rapport) of claim aanpassen"
+  ],
+  "codexVerdict": null,
+  "reviewScores": {
+   "uiux": 8,
+   "didactiek": 6.5,
+   "tech": 8.5
+  },
+  "triageScore": 2.45,
+  "verdict": "fix-eerst",
+  "statusNote": "wave 18: registratie compleet, k-anonimiteit (klas n>=5/school n>=10) geverifieerd correct; server-prompt beschrijft 8 vs 5 rondes maar dedicated component gebruikt geen chat (drift-dossier); signalering: max-score alleen via DEAL ronde 1",
+  "escalationCount": 1
  },
  {
   "missionId": "datalekken-rampenplan",
@@ -1313,12 +1342,21 @@
    "interactivity": 0,
    "total": 4
   },
-  "lastReviewed": null,
-  "reviewStatus": "pending",
-  "reportPath": null,
-  "autoFixesApplied": 0,
+  "lastReviewed": "2026-07-02",
+  "reviewStatus": "fixes-applied",
+  "reportPath": "business/dgskills-reviews/impact-review-2026-07-02.md",
+  "autoFixesApplied": 1,
   "openEscalations": [],
-  "codexVerdict": null
+  "codexVerdict": null,
+  "reviewScores": {
+   "uiux": 8,
+   "didactiek": 8,
+   "tech": 9
+  },
+  "triageScore": 1.7,
+  "verdict": "ok",
+  "statusNote": "wave 18: 1 fix (missionObjective beschreef chat-achtig 3-stappenproces i.p.v. de echte 4 rondes: ordenen/koppelen/categoriseren/rapid-fire); alle 4 rondes + 2 bonusvragen feitelijk geverifieerd, som 4x25=100=maxScore",
+  "escalationCount": 0
  },
  {
   "missionId": "innovation-lab",
@@ -2611,7 +2649,7 @@
  {
   "missionId": "verhalen-ontwerper",
   "templateType": "agent-role",
-  "priorityBand": "medium",
+  "priorityBand": "low",
   "triageScores": {
    "uiux": 0,
    "slo": 0,
@@ -2619,12 +2657,23 @@
    "interactivity": 0,
    "total": 5
   },
-  "lastReviewed": null,
-  "reviewStatus": "pending",
-  "reportPath": null,
+  "lastReviewed": "2026-07-02",
+  "reviewStatus": "blocked",
+  "reportPath": "business/dgskills-reviews/verhalen-ontwerper-2026-07-02.md",
   "autoFixesApplied": 0,
-  "openEscalations": [],
-  "codexVerdict": null
+  "openEscalations": [
+   "ai-endpoint (HOOG): server-instructie in supabase/functions/_shared/systemInstructions.ts:26 is OUDER dan de client-config (mist SCENARIO A/B + 'illustraties op aanvraag'-herziening) op een ACTIEVE chat-missie — server-entry hergenereren vanuit year1.tsx:903-1002 (buiten auto-fix-scope)"
+  ],
+  "codexVerdict": null,
+  "reviewScores": {
+   "uiux": 8.0,
+   "didactiek": 8.5,
+   "tech": 7.5
+  },
+  "triageScore": 1.95,
+  "verdict": "ok",
+  "statusNote": "wave 18: missie ship-ready, leveringspad actief (BookPreview in AiLab); rode CTA uit juni-audit bleek al gefixt (#190); inline-hex in BookPreview = bestandsbreed patroon",
+  "escalationCount": 1
  },
  {
   "missionId": "video-editor",

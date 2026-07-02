@@ -1623,7 +1623,7 @@ Laten we beginnen met het kiezen van jouw technologie. Wat wil je analyseren?
     color: '#202023',
     description: 'Herhaal en verdiep je kennis over maatschappelijke impact van technologie.',
     problemScenario: 'Het is bijna examentijd en het Impact Archief is gehackt! Alle samenvattingen over maatschappelijke impact van technologie zijn door elkaar gehusseld. Alleen iemand die de stof écht begrijpt kan de concepten herstellen en de cases opnieuw analyseren.',
-    missionObjective: 'Bewijs je kennis door kernbegrippen te herhalen, cases te analyseren en alles samen te vatten.',
+    missionObjective: 'Bewijs je kennis door impact-analyse-stappen te ordenen, technologieën aan effecten te koppelen, kansen van risico\'s te onderscheiden en snelle kennisvragen te beantwoorden.',
     briefingImage: '/assets/agents/impact-review.webp',
     difficulty: 'Medium',
     examplePrompt: 'Wat is de digitale kloof en waarom is het een probleem?',
