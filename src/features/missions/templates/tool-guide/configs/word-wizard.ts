@@ -81,7 +81,7 @@ const config: ToolGuideConfig = {
             id: 'stap-4-inhoudsopgave',
             title: 'Automatische inhoudsopgave',
             instruction:
-                'Ga naar het **begin van je document** — net na de titelpagina of als eerste element. Tik op **Invoegen** (tabblad bovenaan) en zoek naar **Inhoudsopgave**. Kies een stijl (bijv. de eerste automatische optie). Word maakt nu een inhoudsopgave op basis van je kopstijlen. Als je daarna tekst toevoegt of koppen aanpast, tik je op de inhoudsopgave en kies je **Bijwerken** om hem te vernieuwen.',
+                'Ga naar het **begin van je document** — net na de titelpagina of als eerste element. Tik op **Invoegen** → **Documentelementen** → **Inhoud** en kies een stijl (bijv. de eerste automatische optie). Als je daarna tekst toevoegt of koppen aanpast, tik je op de inhoudsopgave en kies je **Bijwerken** om hem te vernieuwen.',
             tip: 'Als je koppen later aanpast, vergeet dan niet de inhoudsopgave bij te werken. Tik erop en kies "Bijwerken" of "Alles bijwerken".',
             checklistItems: [
                 { id: 'inhoudsopgave-ingevoegd', label: 'Ik heb een automatische inhoudsopgave ingevoegd' },
@@ -114,13 +114,13 @@ const config: ToolGuideConfig = {
             minScore: 40,
             emoji: '✍️',
             title: 'Word Wizard',
-            color: '#202023',
+            color: '#3D3D40',
         },
         {
             minScore: 0,
             emoji: '🌱',
             title: 'Aan de slag',
-            color: '#202023',
+            color: '#6B6B70',
         },
     ],
     learningObjectives: [

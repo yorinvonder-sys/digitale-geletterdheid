@@ -197,13 +197,13 @@ REGELS:
         difficulty: 'Medium',
         examplePrompt: 'Hoe laat ik mijn karakter bewegen?',
         primaryGoal: 'Ik programmeer Robbie door vijf levels heen en leg uit wat duidelijke instructies met AI te maken hebben.',
-        goalCriteria: { type: 'steps-complete', min: 3 },
+        goalCriteria: { type: 'steps-complete', min: 5 },
         visualPreview: (
             <div className="w-full h-full bg-lab-coral flex flex-col items-center justify-center p-4 relative overflow-hidden">
                 <div className="absolute inset-0 bg-gradient-to-br from-lab-gold to-lab-coral"></div>
                 <div className="relative z-10 flex flex-col gap-2">
                     <div className="w-32 h-8 bg-lab-gold rounded-lg border-2 border-lab-coral flex items-center px-2 text-[9px] font-bold text-lab-gold">🚀 wanneer start</div>
-                    <div className="w-32 h-8 bg-lab-teal rounded-lg border-2 border-lab-coral flex items-center px-2 text-[9px] font-bold text-white ml-4">➡️ ga 5 rechts</div>
+                    <div className="w-32 h-8 bg-lab-teal rounded-lg border-2 border-lab-coral flex items-center px-2 text-[9px] font-bold text-white ml-4">➡️ ga naar rechts</div>
                     <div className="w-32 h-8 bg-lab-teal rounded-lg border-2 border-lab-coral flex items-center px-2 text-[9px] font-bold text-white ml-4">🦘 spring!</div>
                 </div>
             </div>
@@ -229,28 +229,28 @@ BESCHIKBARE BLOKKEN:
 
 WERKWIJZE:
 1. Leg uit dat de leerling blokken naar rechts sleept om een programma te bouwen.
-2. Begin simpel: "Sleep een 'wanneer pijl rechts' blok en een 'ga 5 rechts' blok."
+2. Begin simpel: "Sleep een 'wanneer game start' blok en een 'ga naar rechts' blok."
 3. Laat de leerling op ▶️ Play drukken om te testen.
 4. Bouw stap voor stap uit: spring, wat er gebeurt als je de rand raakt, score.
-5. Doel: het karakter bereikt de groene finish (rechterrand).
+5. Doel: het karakter bereikt het bewijs (het gouden botje op het speelveld).
 
 EERSTE BERICHT:
 "Hoi! Ik ben je Game Design Coach! 🎮
 
 Je gaat een game-besturing bouwen met **codeblokken** — net als in Scratch! Links zie je de blokken, en rechts het speelveld met je karakter.
 
-Laten we beginnen! **Sleep het blok '⌨️ wanneer → ingedrukt' naar het werkgebied.** Sleep dan het blok '➡️ ga 5 naar rechts' eronder. Druk op ▶️ en kijk wat er gebeurt!"
+Laten we beginnen! **Sleep het blok '🐾 wanneer game start' naar het werkgebied.** Sleep dan het blok '➡️ ga naar rechts' eronder. Druk op ▶️ en kijk wat er gebeurt!"
 
 REGELS:
 - Verwijs ALTIJD naar de bloknamen zoals ze in de editor staan.
 - Geef NOOIT tekstcode — alleen blok-instructies.
 - Als de leerling vastloopt: stel een diagnosevraag ("Welke blokken heb je nu in je werkruimte?").
-- De finish is rechts in beeld (groene streep). Als het karakter daar komt, is het level klaar.` + SYSTEM_INSTRUCTION_SUFFIX,
+- Het doel is het gouden botje (🦴 BEWIJS) op het speelveld — niet per se rechts of aan de rand. Als het karakter daar komt, is het level klaar.` + SYSTEM_INSTRUCTION_SUFFIX,
         steps: [
             {
                 title: "Eerste beweging",
                 description: "Sleep blokken om je karakter naar rechts te laten bewegen.",
-                example: "Sleep '⌨️ wanneer → ingedrukt' en '➡️ ga 5 rechts' naar het werkgebied."
+                example: "Sleep '🐾 wanneer game start' en '➡️ ga naar rechts' naar het werkgebied."
             },
             {
                 title: "Springen",
@@ -259,7 +259,7 @@ REGELS:
             },
             {
                 title: "Finish bereiken",
-                description: "Combineer beweging en springen om de groene finish te bereiken.",
+                description: "Combineer beweging en springen om het bewijs (het gouden botje) te bereiken.",
                 example: "Gebruik je blokken om het karakter helemaal naar rechts te sturen."
             }
         ],
@@ -3382,7 +3382,7 @@ Maar eerst: **vertel me over je project!** Wat heb je gemaakt, en wat is het all
     },
     {
         id: 'startup-pitch',
-        yearGroup: 1,
+        yearGroup: 3,
         educationLevels: ['mavo', 'havo', 'vwo'] as EducationLevel[],
         title: 'Startup Pitch',
         icon: <Rocket size={28} />,

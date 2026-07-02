@@ -176,7 +176,7 @@ export const sustainabilityScannerConfig: DataViewerConfig = {
                     correctAnswer: '',
                     explanation:
                         'Goede antwoorden benoemen een specifiek feit uit de kaart (bijv. het datagebruik bij 4K, de werking van PEGI-labels, de 20-40% onderschatting van schermtijd, of de rol van collaborative filtering) en koppelen dat aan een eigen ervaring. Het gaat om het verbinden van informatie aan de eigen leefwereld.',
-                    points: 0,
+                    points: 10,
                 },
             ],
         },

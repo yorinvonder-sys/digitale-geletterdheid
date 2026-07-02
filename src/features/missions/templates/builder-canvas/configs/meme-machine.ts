@@ -75,6 +75,7 @@ export const memeMachineConfig: BuilderCanvasConfig = {
             checklistItems: [
                 { id: 'perspectief', label: 'Ik heb nagedacht vanuit het perspectief van iemand die geraakt wordt' },
                 { id: 'inclusief', label: 'Ik heb uitgelegd hoe je humor maakt zonder groepen te targeten' },
+                { id: 'bron', label: 'Ik heb benoemd of mijn meme een bestaande foto/afbeelding gebruikt en of dat mag' },
                 { id: 'richtlijn', label: 'Ik heb 1 persoonlijke richtlijn voor verantwoord posten geformuleerd' },
             ],
             textPrompt: 'Schrijf je reflectie op verantwoorde content',
