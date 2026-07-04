@@ -21,9 +21,9 @@ const DOMEINEN = [
   { key: 'welzijnMaatschappij' as const, label: 'Welzijn', short: '23B/23C', indicatief: true },
 ] as const;
 
-const CENTER = 150;
+const CENTER = 180;
 const RADIUS = 120;
-const VIEWBOX = 300;
+const VIEWBOX = 360;
 const LEVELS = [0.25, 0.5, 0.75, 1];
 
 function polarToCartesian(angle: number, radius: number): [number, number] {

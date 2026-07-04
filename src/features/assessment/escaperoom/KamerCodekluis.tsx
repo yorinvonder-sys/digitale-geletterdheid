@@ -11,12 +11,12 @@ interface CodeBlok {
 }
 
 const BESCHIKBARE_BLOKKEN: CodeBlok[] = [
-  { id: 'c1', tekst: 'START programma' },
-  { id: 'c2', tekst: 'LEES sensor deur' },
-  { id: 'c3', tekst: 'ALS deur == open' },
-  { id: 'c4', tekst: '  ZET alarm AAN' },
-  { id: 'c5', tekst: '  STUUR melding naar telefoon' },
-  { id: 'c6', tekst: 'EINDE ALS' },
+  { id: 'c1', tekst: 'START het programma' },
+  { id: 'c2', tekst: 'LEES de deursensor' },
+  { id: 'c3', tekst: 'ALS de deur open is:' },
+  { id: 'c4', tekst: '  ZET het alarm aan' },
+  { id: 'c5', tekst: '  STUUR een melding naar de telefoon' },
+  { id: 'c6', tekst: 'EINDE van de controle' },
 ];
 
 const JUISTE_VOLGORDE = ['c1', 'c2', 'c3', 'c4', 'c5', 'c6'];
@@ -41,10 +41,10 @@ interface ProductOptie {
 const PRODUCT_OPTIES: ProductOptie[] = [
   {
     id: 'p1',
-    label: 'Stuur de broncode (.py)',
-    beschrijving: 'Het Python-bestand mailen naar de directeur',
+    label: 'Stuur het codebestand op',
+    beschrijving: 'Het bestand met alle programmacode mailen naar de directeur',
     score: 0,
-    feedback: 'Broncode is alleen leesbaar voor programmeurs. De directeur kan dit niet begrijpen.',
+    feedback: 'Programmacode is alleen leesbaar voor programmeurs. De directeur kan er niets mee.',
   },
   {
     id: 'p2',
@@ -98,6 +98,8 @@ export const KamerCodekluis: React.FC<Props> = ({ onComplete, variant }) => {
     setGekozen(prev => prev.filter((_, i) => i !== index));
   };
 
+  // Wist de opbouw vóór het controleren (de Reset-knop in de bouwfase);
+  // ná het scoren is er bewust geen herkansing meer
   const reset = () => {
     setGekozen([]);
     setResultaat(null);
@@ -111,12 +113,16 @@ export const KamerCodekluis: React.FC<Props> = ({ onComplete, variant }) => {
 
   const controleer = () => {
     const gekozenIds = gekozen.map(b => b.id);
-    let correctePosities = 0;
-    juisteVolgorde.forEach((id, index) => {
-      if (gekozenIds[index] === id) correctePosities++;
-    });
+    // De twee actieregels binnen het ALS-blok (posities 3 en 4) zijn logisch
+    // gelijkwaardig — beide volgordes tellen als juist
+    const alternatief = [...juisteVolgorde];
+    [alternatief[3], alternatief[4]] = [alternatief[4], alternatief[3]];
+    const geldigeVolgordes = [juisteVolgorde, alternatief];
+    const correctePosities = Math.max(...geldigeVolgordes.map(volgorde =>
+      volgorde.reduce((acc, id, index) => acc + (gekozenIds[index] === id ? 1 : 0), 0)
+    ));
     const score = Math.round((correctePosities / juisteVolgorde.length) * 100);
-    const isPerfect = JSON.stringify(gekozenIds) === JSON.stringify(juisteVolgorde);
+    const isPerfect = geldigeVolgordes.some(v => JSON.stringify(gekozenIds) === JSON.stringify(v));
     const tijdSeconds = Math.round((Date.now() - startTijd) / 1000);
     const details = { gekozenVolgorde: gekozenIds, correctePosities };
 
@@ -232,7 +238,7 @@ export const KamerCodekluis: React.FC<Props> = ({ onComplete, variant }) => {
         </p>
       </div>
 
-      <div className="flex-1 flex flex-col md:flex-row gap-4 min-h-0">
+      <div className="flex-1 flex flex-col md:flex-row gap-4 min-h-0 overflow-y-auto">
         {/* Gekozen volgorde */}
         <div className="md:w-1/2 bg-white rounded-xl border border-lab-line shadow-sm p-4 flex flex-col">
           <h3 className="text-xs font-bold uppercase tracking-wider text-lab-muted mb-3">Jouw code (klik om toe te voegen)</h3>
@@ -301,7 +307,7 @@ export const KamerCodekluis: React.FC<Props> = ({ onComplete, variant }) => {
             {resultaat === 'success' ? (
               <><CheckCircle size={20} /> De kluis gaat open! Code correct.</>
             ) : (
-              <><XCircle size={20} /> Dat klopt nog niet helemaal. Probeer opnieuw of ga door.</>
+              <><XCircle size={20} /> Dat klopt nog niet helemaal — geen zorgen, je gaat gewoon door.</>
             )}
           </div>
         </motion.div>
@@ -310,20 +316,12 @@ export const KamerCodekluis: React.FC<Props> = ({ onComplete, variant }) => {
       {/* Knoppen */}
       <div className="mt-4 flex gap-3">
         {resultaat === 'fail' ? (
-          <>
-            <button
-              onClick={() => { reset(); }}
-              className="px-4 py-3 bg-white border border-lab-line text-lab-muted rounded-xl font-bold hover:bg-lab-cream transition-colors flex items-center gap-2"
-            >
-              <RotateCcw size={18} /> Opnieuw
-            </button>
-            <button
-              onClick={() => gaNaarProductFase(codeScore, codeDetails)}
-              className="flex-1 py-3 rounded-xl font-bold text-lg transition-all bg-lab-teal hover:bg-lab-teal hover:text-white text-white shadow-lg shadow-lab-teal active:scale-[0.98] flex items-center justify-center gap-2"
-            >
-              <ArrowRight size={18} /> Ga door
-            </button>
-          </>
+          <button
+            onClick={() => gaNaarProductFase(codeScore, codeDetails)}
+            className="flex-1 py-3 rounded-xl font-bold text-lg transition-all bg-lab-teal hover:bg-lab-teal hover:text-white text-white shadow-lg shadow-lab-teal active:scale-[0.98] flex items-center justify-center gap-2"
+          >
+            <ArrowRight size={18} /> Ga door
+          </button>
         ) : (
           <>
             <button

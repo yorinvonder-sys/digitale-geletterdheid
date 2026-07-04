@@ -38,7 +38,7 @@ export const KERNDOEL_MISSIONS: KerndoelMissionMeta[] = [
   { id: 'pitch-police', title: 'Pitch Politie', week: 2, yearGroup: 1, sloKerndoelen: ['21A', '22A'], sloVsoKerndoelen: ['18A', '19A'] },
 
   // Assessment P1
-  { id: 'assessment-j1-p1', title: 'Nulmeting Periode 1', week: 1, yearGroup: 1, sloKerndoelen: ['21A', '22A', '23A'] },
+  { id: 'assessment-j1-p1', title: 'Periodetoets 1', week: 1, yearGroup: 1, sloKerndoelen: ['21A', '22A', '23A'] },
 
   // Periode 2: AI & Creatie
   { id: 'prompt-master', title: 'Prompt Perfectionist', week: 2, yearGroup: 1, sloKerndoelen: ['21D', '22A'], sloVsoKerndoelen: ['18C', '19A', '20B'] },
@@ -59,7 +59,7 @@ export const KERNDOEL_MISSIONS: KerndoelMissionMeta[] = [
   { id: 'review-week-2', title: 'De Code-Criticus', week: 3, yearGroup: 1, sloKerndoelen: ['21D', '22B'], sloVsoKerndoelen: ['18C'] },                        // 21B→22B: review bevat code-bugs herkennen
 
   // Assessment P2
-  { id: 'assessment-j1-p2', title: 'Nulmeting Periode 2', week: 2, yearGroup: 1, sloKerndoelen: ['21D', '22A', '22B', '23C'] },
+  { id: 'assessment-j1-p2', title: 'Periodetoets 2', week: 2, yearGroup: 1, sloKerndoelen: ['21D', '22A', '22B', '23C'] },
 
   // Periode 3: Digitaal Burgerschap
   { id: 'data-detective', title: 'Data Detective', week: 3, yearGroup: 1, sloKerndoelen: ['23A', '21C'], sloVsoKerndoelen: ['18B', '20A'] },                  // 21B,23C→23A,21C: app-permissies en data-tracking = privacy + data
@@ -79,7 +79,7 @@ export const KERNDOEL_MISSIONS: KerndoelMissionMeta[] = [
   { id: 'digitale-balans-coach', title: 'Digitale Balans Coach', week: 3, yearGroup: 1, sloKerndoelen: ['23B', '23A'], sloVsoKerndoelen: ['20A', '20B'] },     // waarden-gebaseerde zelfregulatie + privacy-bewustzijn
 
   // Assessment P3
-  { id: 'assessment-j1-p3', title: 'Nulmeting Periode 3', week: 3, yearGroup: 1, sloKerndoelen: ['23A', '23B', '23C', '21B', '21C'] },
+  { id: 'assessment-j1-p3', title: 'Periodetoets 3', week: 3, yearGroup: 1, sloKerndoelen: ['23A', '23B', '23C', '21B', '21C'] },
 
   // Periode 4: Eindproject
   { id: 'review-week-3', title: 'De Ethische Raad', week: 4, yearGroup: 1, sloKerndoelen: ['23C', '21D'], sloVsoKerndoelen: ['20B'] },                         // +21D: bevat AI-bias dilemma
@@ -88,7 +88,7 @@ export const KERNDOEL_MISSIONS: KerndoelMissionMeta[] = [
   { id: 'mission-launch', title: 'De Lancering', week: 4, yearGroup: 1, sloKerndoelen: ['22A', '21B'], sloVsoKerndoelen: ['19A', '18B'] },                     // 21A,21C→22A,21B: flyer ontwerpen = product + communicatie
 
   // Assessment P4
-  { id: 'assessment-j1-p4', title: 'Nulmeting Periode 4', week: 4, yearGroup: 1, sloKerndoelen: ['21A', '21B', '21D', '22A', '23C'] },
+  { id: 'assessment-j1-p4', title: 'Periodetoets 4', week: 4, yearGroup: 1, sloKerndoelen: ['21A', '21B', '21D', '22A', '23C'] },
 
   // ============================================================
   // LEERJAAR 2
@@ -104,7 +104,7 @@ export const KERNDOEL_MISSIONS: KerndoelMissionMeta[] = [
   { id: 'data-review', title: 'Data Review', week: 1, yearGroup: 2, sloKerndoelen: ['21B', '21C', '21D'], sloVsoKerndoelen: ['18B', '18C'] },
 
   // Assessment P1
-  { id: 'assessment-j2-p1', title: 'Nulmeting Periode 1', week: 1, yearGroup: 2, sloKerndoelen: ['21B', '21C', '21D'], sloVsoKerndoelen: ['18B', '18C'] },
+  { id: 'assessment-j2-p1', title: 'Periodetoets 1', week: 1, yearGroup: 2, sloKerndoelen: ['21B', '21C', '21D'], sloVsoKerndoelen: ['18B', '18C'] },
 
   // Periode 2: Programmeren & Computational Thinking
   { id: 'algorithm-architect', title: 'Algorithm Architect', week: 2, yearGroup: 2, sloKerndoelen: ['22B'], sloVsoKerndoelen: ['19A'] },
@@ -121,7 +121,7 @@ export const KERNDOEL_MISSIONS: KerndoelMissionMeta[] = [
   { id: 'code-review-2', title: 'Code Review', week: 2, yearGroup: 2, sloKerndoelen: ['22A', '22B'], sloVsoKerndoelen: ['19A'] },
 
   // Assessment P2
-  { id: 'assessment-j2-p2', title: 'Nulmeting Periode 2', week: 2, yearGroup: 2, sloKerndoelen: ['21A', '22A', '22B', '23A'], sloVsoKerndoelen: ['18A', '19A', '20A'] },
+  { id: 'assessment-j2-p2', title: 'Periodetoets 2', week: 2, yearGroup: 2, sloKerndoelen: ['21A', '22A', '22B', '23A'], sloVsoKerndoelen: ['18A', '19A', '20A'] },
 
   // Periode 3: Digitale Media & Creatie
   { id: 'ux-detective', title: 'UX Detective', week: 3, yearGroup: 2, sloKerndoelen: ['22A', '21B'], sloVsoKerndoelen: ['19A', '18B'] },
@@ -134,7 +134,7 @@ export const KERNDOEL_MISSIONS: KerndoelMissionMeta[] = [
   { id: 'online-helden', title: 'Online Helden & Helpers', week: 3, yearGroup: 2, sloKerndoelen: ['23B', '23C'], sloVsoKerndoelen: ['20A', '20B'] },           // cyberpesten + bijstander-training = welzijn + maatschappij
 
   // Assessment P3
-  { id: 'assessment-j2-p3', title: 'Nulmeting Periode 3', week: 3, yearGroup: 2, sloKerndoelen: ['22A', '21B', '23B'], sloVsoKerndoelen: ['19A', '18B', '20B'] },
+  { id: 'assessment-j2-p3', title: 'Periodetoets 3', week: 3, yearGroup: 2, sloKerndoelen: ['22A', '21B', '23B'], sloVsoKerndoelen: ['19A', '18B', '20B'] },
 
   // Periode 4: Ethiek, Maatschappij & Eindproject
   { id: 'ai-ethicus', title: 'AI Ethicus', week: 4, yearGroup: 2, sloKerndoelen: ['21D', '23C'], sloVsoKerndoelen: ['18C', '20B'] },
@@ -145,7 +145,7 @@ export const KERNDOEL_MISSIONS: KerndoelMissionMeta[] = [
   { id: 'eindproject-j2', title: 'Eindproject Jaar 2', week: 4, yearGroup: 2, sloKerndoelen: ['21A', '21B', '21C', '21D', '22A', '22B', '23A', '23B', '23C'], sloVsoKerndoelen: ['18A', '18B', '18C', '19A', '20A', '20B'] }, // capstone: alle kerndoelen
 
   // Assessment P4
-  { id: 'assessment-j2-p4', title: 'Nulmeting Periode 4', week: 4, yearGroup: 2, sloKerndoelen: ['23A', '23B', '23C', '21D'], sloVsoKerndoelen: ['20A', '20B', '18C'] },
+  { id: 'assessment-j2-p4', title: 'Periodetoets 4', week: 4, yearGroup: 2, sloKerndoelen: ['23A', '23B', '23C', '21D'], sloVsoKerndoelen: ['20A', '20B', '18C'] },
 
   // ============================================================
   // LEERJAAR 3 (alleen havo + vwo)
@@ -160,7 +160,7 @@ export const KERNDOEL_MISSIONS: KerndoelMissionMeta[] = [
   { id: 'advanced-code-review', title: 'Advanced Code Review', week: 1, yearGroup: 3, sloKerndoelen: ['21D', '22B'] },                                         // +21D: review bevat ML/AI-concepten
 
   // Assessment P1
-  { id: 'assessment-j3-p1', title: 'Nulmeting Periode 1', week: 1, yearGroup: 3, sloKerndoelen: ['22B', '21D', '21C'] },
+  { id: 'assessment-j3-p1', title: 'Periodetoets 1', week: 1, yearGroup: 3, sloKerndoelen: ['22B', '21D', '21C'] },
 
   // Periode 2: Cybersecurity & Privacy
   { id: 'cyber-detective', title: 'Cyber Detective', week: 2, yearGroup: 3, sloKerndoelen: ['23A', '21A'] },
@@ -171,7 +171,7 @@ export const KERNDOEL_MISSIONS: KerndoelMissionMeta[] = [
   { id: 'security-review', title: 'Security Review', week: 2, yearGroup: 3, sloKerndoelen: ['23A'] },
 
   // Assessment P2
-  { id: 'assessment-j3-p2', title: 'Nulmeting Periode 2', week: 2, yearGroup: 3, sloKerndoelen: ['23A', '21A'] },
+  { id: 'assessment-j3-p2', title: 'Periodetoets 2', week: 2, yearGroup: 3, sloKerndoelen: ['23A', '21A'] },
 
   // Periode 3: Maatschappelijke Impact & Innovatie
   { id: 'startup-simulator', title: 'Startup Simulator', week: 3, yearGroup: 3, sloKerndoelen: ['23C', '22A'] },                                               // 23B→22A: business model = maatschappij + product
@@ -184,7 +184,7 @@ export const KERNDOEL_MISSIONS: KerndoelMissionMeta[] = [
   { id: 'startup-pitch', title: 'Startup Pitch', week: 3, yearGroup: 3, sloKerndoelen: ['22A', '21D', '23C'] },                                              // AI-startup bedenken + pitchen → creatie + AI + maatschappij
 
   // Assessment P3
-  { id: 'assessment-j3-p3', title: 'Nulmeting Periode 3', week: 3, yearGroup: 3, sloKerndoelen: ['23C', '21D'] },
+  { id: 'assessment-j3-p3', title: 'Periodetoets 3', week: 3, yearGroup: 3, sloKerndoelen: ['23C', '21D'] },
 
   // Periode 4: Meesterproef
   { id: 'portfolio-builder', title: 'Portfolio Builder', week: 4, yearGroup: 3, sloKerndoelen: ['22A', '21B'] },                                                // 21A→21B: portfolio presentatie = product + informatievaardigheden
@@ -195,7 +195,7 @@ export const KERNDOEL_MISSIONS: KerndoelMissionMeta[] = [
   { id: 'meesterproef', title: 'Meesterproef', week: 4, yearGroup: 3, sloKerndoelen: ['21A', '21B', '21C', '21D', '22A', '22B', '23A', '23B', '23C'] },
 
   // Assessment P4
-  { id: 'assessment-j3-p4', title: 'Nulmeting Periode 4', week: 4, yearGroup: 3, sloKerndoelen: ['21A', '21B', '21C', '21D', '22A', '22B', '23A', '23B', '23C'] },
+  { id: 'assessment-j3-p4', title: 'Periodetoets 4', week: 4, yearGroup: 3, sloKerndoelen: ['21A', '21B', '21C', '21D', '22A', '22B', '23A', '23B', '23C'] },
 ];
 
 export const KERNDOEL_CODES: SloKerndoelCode[] = [

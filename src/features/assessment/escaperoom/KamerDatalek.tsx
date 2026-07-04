@@ -13,7 +13,7 @@ interface GegevensItem {
 
 const GEGEVENS: GegevensItem[] = [
   { id: 'g1', label: 'Volledige naam', isGevoelig: true },
-  { id: 'g2', label: 'BSN (burgerservicenummer)', isGevoelig: true },
+  { id: 'g2', label: 'BSN — het persoonlijke nummer dat je van de overheid krijgt', isGevoelig: true },
   { id: 'g3', label: 'Favoriete kleur', isGevoelig: false },
   { id: 'g4', label: 'Wachtwoord', isGevoelig: true },
   { id: 'g5', label: 'E-mailadres', isGevoelig: true },
@@ -113,7 +113,7 @@ export const KamerDatalek: React.FC<Props> = ({ onComplete, variant }) => {
         </div>
         <p className="text-lab-muted text-sm md:text-base max-w-lg mx-auto">
           {fase === 'selectie'
-            ? 'Er is een datalek ontdekt! Welke gegevens zijn gevoelig en moeten als eerste beveiligd worden?'
+            ? 'Er is een datalek ontdekt: gegevens die privé horen te blijven, liggen op straat! Welke gegevens zijn gevoelig en moeten als eerste beveiligd worden?'
             : fase === 'actie'
               ? 'Je selectie is opgeslagen. Wat is je eerste actie?'
               : 'Resultaat bekijken...'}

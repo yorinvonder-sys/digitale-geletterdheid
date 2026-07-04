@@ -161,16 +161,19 @@ export const KamerNepnieuwsfabriek: React.FC<Props> = ({ onComplete, variant }) 
                 <p className="text-lab-muted text-sm leading-relaxed">{huidigBericht.tekst}</p>
               </div>
 
-              {/* Hints */}
-              <div className="px-5 pb-4">
-                <div className="flex flex-wrap gap-2">
-                  {huidigBericht.hints.map((hint, i) => (
-                    <span key={i} className="text-xs px-2 py-1 rounded-full bg-lab-cream text-lab-muted">
-                      {hint}
-                    </span>
-                  ))}
+              {/* Hints — pas ná het antwoord tonen, anders verklappen ze het */}
+              {heeftGeantwoord && (
+                <div className="px-5 pb-4">
+                  <p className="text-[10px] font-bold uppercase tracking-wider text-lab-muted mb-1.5">Waar je op kon letten</p>
+                  <div className="flex flex-wrap gap-2">
+                    {huidigBericht.hints.map((hint, i) => (
+                      <span key={i} className="text-xs px-2 py-1 rounded-full bg-lab-cream text-lab-muted">
+                        {hint}
+                      </span>
+                    ))}
+                  </div>
                 </div>
-              </div>
+              )}
             </div>
 
             {/* Uitleg */}

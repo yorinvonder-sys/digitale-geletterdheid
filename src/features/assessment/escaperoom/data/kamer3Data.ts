@@ -8,12 +8,12 @@ export interface CodeBlok {
 }
 
 export const BLOKKEN_V2: CodeBlok[] = [
-  { id: 'c1', tekst: 'START programma' },
-  { id: 'c2', tekst: 'LEES sensor temperatuur' },
-  { id: 'c3', tekst: 'ALS temperatuur > 30' },
-  { id: 'c4', tekst: '  TOON "Het is warm!"' },
-  { id: 'c5', tekst: '  ZET ventilator AAN' },
-  { id: 'c6', tekst: 'EINDE ALS' },
+  { id: 'c1', tekst: 'START het programma' },
+  { id: 'c2', tekst: 'LEES de temperatuursensor' },
+  { id: 'c3', tekst: 'ALS het warmer is dan 30 graden:' },
+  { id: 'c4', tekst: '  TOON het bericht "Het is warm!"' },
+  { id: 'c5', tekst: '  ZET de ventilator aan' },
+  { id: 'c6', tekst: 'EINDE van de controle' },
 ];
 
 // De juiste volgorde voor het weerstation-programma

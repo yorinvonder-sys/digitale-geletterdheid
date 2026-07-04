@@ -145,7 +145,7 @@ export const KamerVergrendeldeLaptop: React.FC<Props> = ({ onComplete, variant }
         </div>
         <p className="text-lab-muted text-sm md:text-base max-w-lg mx-auto">
           Je vindt een oude laptop op school. De bestanden staan door elkaar.
-          Sleep elk bestand naar de juiste map — of tik erop om het naar de volgende map te verplaatsen.
+          Sleep elk bestand naar de juiste map — of tik erop: elke tik schuift het bestand één map op.
         </p>
       </div>
 

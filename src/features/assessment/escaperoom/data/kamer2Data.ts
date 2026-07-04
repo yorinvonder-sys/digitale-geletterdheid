@@ -1,6 +1,7 @@
 // Kamer 2: Nepnieuwsfabriek — nepnieuws herkennen (true/false)
-// v1 = nulmeting (in KamerNepnieuwsfabriek.tsx): telefoonverbod, robotleraar, game-verslaving, TikTok-wet, UNESCO AI
-// v2 = eindmeting: andere onderwerpen, zelfde moeilijkheidsgraad, zelfde verhouding (2 echt / 3 nep)
+// v1 = nulmeting (in KamerNepnieuwsfabriek.tsx): telefoonverbod, robotleraar, social-media-onderzoek, gedachtenlees-AI, skatepark — 3 echt / 2 nep
+// v2 = eindmeting: andere onderwerpen, zelfde moeilijkheidsgraad — LET OP: 2 echt / 3 nep, dus níét dezelfde
+// verhouding als v1; gelijktrekken vergt een inhoudelijke herschrijving van een bericht (auteurskeuze)
 
 export interface NieuwsBericht {
   id: string;
