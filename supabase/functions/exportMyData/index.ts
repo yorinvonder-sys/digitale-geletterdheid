@@ -59,7 +59,7 @@ serve(async (req: Request) => {
       feedbackRes, activitiesRes, auditRes, surveysRes, surveyFeedbackRes,
       messagesRes, libraryRes, duelsRes, devTasksRes, devMilestonesRes,
       devPlansRes, devSettingsRes, studentConsentsRes, parentalConsentReqRes,
-      peerFeedbackRes, wellbeingRes, nulmetingRes, overridesRes,
+      peerFeedbackRes, wellbeingRes, nulmetingRes, assessmentRes, overridesRes,
     ] = await Promise.all([
       supabase.from('users').select('*').eq('id', uid).single(),
       supabase.from('mission_progress').select('*').eq('user_id', uid),
@@ -83,6 +83,7 @@ serve(async (req: Request) => {
       supabase.from('peer_feedback').select('*').or(`from_student_id.eq.${uid},to_student_id.eq.${uid}`),
       supabase.from('wellbeing_alerts').select('id, category, severity, created_at').eq('student_id', uid),
       supabase.from('nulmeting_results').select('*').eq('user_id', uid),
+      supabase.from('assessment_results').select('*').eq('user_id', uid),
       supabase.from('teacher_step_overrides').select('*').eq('student_id', uid),
     ]);
 
@@ -118,6 +119,7 @@ serve(async (req: Request) => {
       peer_feedback: peerFeedbackRes.data ?? [],
       wellbeing_alerts: wellbeingRes.data ?? [],
       nulmeting_results: nulmetingRes.data ?? [],
+      assessment_results: assessmentRes.data ?? [],
       teacher_step_overrides: overridesRes.data ?? [],
     };
 

@@ -28,8 +28,8 @@ const OPTIES: DilemmaOptie[] = [
   {
     id: 'd3',
     tekst: 'Melden bij een leraar of vertrouwenspersoon',
-    score: 75,
-    feedback: 'Goed! Een volwassene kan helpen de situatie op te lossen. Dit is een sterke keuze.',
+    score: 100,
+    feedback: 'Uitstekend! Melden bij een volwassene is precies wat je op school leert — een sterke keuze die je vriend echt helpt.',
   },
   {
     id: 'd4',

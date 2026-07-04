@@ -13,7 +13,7 @@ interface GegevensItem {
 
 const GEGEVENS: GegevensItem[] = [
   { id: 'g1', label: 'Volledige naam', isGevoelig: true },
-  { id: 'g2', label: 'BSN (burgerservicenummer)', isGevoelig: true },
+  { id: 'g2', label: 'BSN — het persoonlijke nummer dat je van de overheid krijgt', isGevoelig: true },
   { id: 'g3', label: 'Favoriete kleur', isGevoelig: false },
   { id: 'g4', label: 'Wachtwoord', isGevoelig: true },
   { id: 'g5', label: 'E-mailadres', isGevoelig: true },
@@ -113,9 +113,9 @@ export const KamerDatalek: React.FC<Props> = ({ onComplete, variant }) => {
         </div>
         <p className="text-lab-muted text-sm md:text-base max-w-lg mx-auto">
           {fase === 'selectie'
-            ? 'Er is een datalek ontdekt! Welke gegevens zijn gevoelig en moeten als eerste beveiligd worden?'
+            ? 'Er is een datalek ontdekt: gegevens die privé horen te blijven, liggen op straat! Welke gegevens zijn gevoelig en moeten als eerste beveiligd worden?'
             : fase === 'actie'
-              ? 'Goed, je hebt de gevoelige gegevens geidentificeerd. Wat is je eerste actie?'
+              ? 'Je selectie is opgeslagen. Wat is je eerste actie?'
               : 'Resultaat bekijken...'}
         </p>
       </div>
@@ -136,7 +136,7 @@ export const KamerDatalek: React.FC<Props> = ({ onComplete, variant }) => {
                       onClick={() => toggleSelectie(item.id)}
                       className={`px-4 py-3 rounded-lg text-sm font-medium text-left transition-all border ${
                         geselecteerd.has(item.id)
-                          ? 'bg-lab-coral border-lab-coral text-lab-coral'
+                          ? 'bg-lab-coral/10 border-lab-coral text-lab-coral'
                           : 'bg-lab-cream border-lab-line text-lab-muted hover:border-lab-line'
                       }`}
                     >
@@ -193,8 +193,8 @@ export const KamerDatalek: React.FC<Props> = ({ onComplete, variant }) => {
                 return (
                   <div className={`p-5 rounded-xl border ${
                     (actie?.score ?? 0) >= 75
-                      ? 'bg-lab-sage border-lab-sage'
-                      : 'bg-lab-gold border-lab-gold'
+                      ? 'bg-lab-sage/10 border-lab-sage'
+                      : 'bg-lab-gold/10 border-lab-gold'
                   }`}>
                     <div className="flex items-start gap-3">
                       <CheckCircle size={20} className={`mt-0.5 shrink-0 ${

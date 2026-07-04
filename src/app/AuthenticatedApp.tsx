@@ -388,6 +388,13 @@ export function AuthenticatedApp() {
                 };
                 await handleSaveProgress(newStats);
                 setUser({ ...user, stats: newStats });
+                try {
+                    const { saveAssessmentResult, getCurrentSchoolYear } = await import('@/services/assessmentService');
+                    await saveAssessmentResult(user.uid, result, 'nulmeting', getCurrentSchoolYear(), user.schoolId);
+                } catch (e) {
+                    // Mag het afronden nooit blokkeren; het profiel (stats) is al opgeslagen
+                    console.warn('[nulmeting] opslaan in assessment_results mislukt:', e);
+                }
             }
             setShowNulmeting(false);
         };

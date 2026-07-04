@@ -14,16 +14,16 @@ interface DigitaalPaspoortTeacherProps {
 }
 
 const DOMEINEN = [
-  { key: 'digitaleSystemen' as const, label: 'Digitale Systemen', short: '21A' },
-  { key: 'mediaEnAI' as const, label: 'Media & AI', short: '21B/21D' },
-  { key: 'programmeren' as const, label: 'Programmeren', short: '22A/22B' },
-  { key: 'veiligheidPrivacy' as const, label: 'Veiligheid', short: '23A' },
-  { key: 'welzijnMaatschappij' as const, label: 'Welzijn', short: '23B/23C' },
+  { key: 'digitaleSystemen' as const, label: 'Digitale Systemen', short: '21A', indicatief: false },
+  { key: 'mediaEnAI' as const, label: 'Media & AI', short: '21B/21D', indicatief: false },
+  { key: 'programmeren' as const, label: 'Programmeren', short: '22A/22B', indicatief: false },
+  { key: 'veiligheidPrivacy' as const, label: 'Veiligheid', short: '23A', indicatief: false },
+  { key: 'welzijnMaatschappij' as const, label: 'Welzijn', short: '23B/23C', indicatief: true },
 ] as const;
 
-const CENTER = 150;
+const CENTER = 180;
 const RADIUS = 120;
-const VIEWBOX = 300;
+const VIEWBOX = 360;
 const LEVELS = [0.25, 0.5, 0.75, 1];
 
 function polarToCartesian(angle: number, radius: number): [number, number] {
@@ -221,7 +221,7 @@ export const DigitaalPaspoortTeacher: React.FC<DigitaalPaspoortTeacherProps> = (
               <div className={`text-sm font-black ${gemiddeldeScores[i] >= 80 ? 'text-lab-sage' : gemiddeldeScores[i] >= 50 ? 'text-lab-gold' : 'text-lab-coral'}`}>
                 {gemiddeldeScores[i]}
               </div>
-              <div className="text-[8px] font-bold text-lab-muted uppercase">{d.short}</div>
+              <div className="text-[8px] font-bold text-lab-muted uppercase">{d.short}{d.indicatief ? ' *' : ''}</div>
             </div>
           ))}
         </div>
@@ -263,7 +263,7 @@ export const DigitaalPaspoortTeacher: React.FC<DigitaalPaspoortTeacherProps> = (
                 </th>
                 {DOMEINEN.map(d => (
                   <th key={d.key} className="text-center px-2 py-3">
-                    <span className="text-[9px] font-bold text-lab-muted uppercase">{d.short}</span>
+                    <span className="text-[9px] font-bold text-lab-muted uppercase">{d.short}{d.indicatief ? ' *' : ''}</span>
                   </th>
                 ))}
               </tr>
@@ -303,6 +303,9 @@ export const DigitaalPaspoortTeacher: React.FC<DigitaalPaspoortTeacherProps> = (
             </tbody>
           </table>
         </div>
+        <p className="px-4 py-3 text-[11px] text-lab-muted border-t border-lab-line">
+          * Welzijn & Maatschappij is gebaseerd op één vraag — lees deze score als indicatie, niet als cijfer.
+        </p>
       </div>
 
       {/* Aanbeveling */}
