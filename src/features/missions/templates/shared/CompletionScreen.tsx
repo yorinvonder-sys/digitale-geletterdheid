@@ -46,6 +46,11 @@ export const CompletionScreen: React.FC<CompletionScreenProps> = ({
 
     const percentage = Math.round((score / maxScore) * 100);
 
+    // A learner who skipped or failed most of a mission has not actually mastered
+    // the takeaways, so we must not present them as achieved (green ✓) nor claim a
+    // celebratory "voltooid". 40% mirrors the pass threshold used elsewhere.
+    const passed = maxScore > 0 && percentage >= 40;
+
     return (
         <div className="min-h-screen overflow-y-auto bg-duck-bg flex items-start justify-center px-4 py-6 sm:py-8">
             <div className="w-full max-w-lg">
@@ -116,10 +121,11 @@ export const CompletionScreen: React.FC<CompletionScreenProps> = ({
                     className="mb-4 w-full py-3.5 bg-duck-acid hover:bg-duck-acid/80 text-duck-ink rounded-full font-black text-sm transition-all duration-200 active:scale-[0.98] shadow-lg shadow-duck-acid/25 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-ink focus-visible:ring-offset-2"
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                 >
-                    Missie voltooid! 🎉
+                    {passed ? 'Missie voltooid! 🎉' : 'Afronden — probeer het gerust nog eens'}
                 </button>
 
-                {/* Takeaways */}
+                {/* Takeaways — framed as achieved (✓) only when the learner actually
+                    passed; otherwise shown neutrally as the mission's learning goals. */}
                 <div className="bg-white rounded-2xl border border-duck-gray p-4">
                     <div className="flex items-center gap-2 mb-3">
                         <Sparkles size={16} className="text-duck-ink" />
@@ -127,7 +133,7 @@ export const CompletionScreen: React.FC<CompletionScreenProps> = ({
                             className="text-xs font-black text-duck-ink uppercase tracking-widest"
                             style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                         >
-                            Wat je hebt geleerd
+                            {passed ? 'Wat je hebt geleerd' : 'Wat deze missie je wilde leren'}
                         </span>
                     </div>
                     <ul className="space-y-2">
@@ -137,7 +143,7 @@ export const CompletionScreen: React.FC<CompletionScreenProps> = ({
                                 className="text-sm text-duck-ink/60 flex items-start gap-2"
                                 style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                             >
-                                <span className="text-duck-ink mt-0.5">✓</span>
+                                <span className="text-duck-ink mt-0.5">{passed ? '✓' : '•'}</span>
                                 {t}
                             </li>
                         ))}
