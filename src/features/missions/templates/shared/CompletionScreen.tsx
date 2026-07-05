@@ -15,6 +15,9 @@ interface CompletionScreenProps {
     score: number;
     maxScore: number;
     badges: BadgeConfig[];
+    /** Mission name, shown as an eyebrow above the badge title so the earned badge
+     *  ("Screen Bewust", "Blijf Oefenen", …) is never mistaken for the mission title. */
+    missionTitle?: string;
     phases?: PhaseScore[];
     takeaways: string[];
     onComplete: () => void;
@@ -31,6 +34,7 @@ export const CompletionScreen: React.FC<CompletionScreenProps> = ({
     score,
     maxScore,
     badges,
+    missionTitle,
     phases,
     takeaways,
     onComplete,
@@ -57,6 +61,14 @@ export const CompletionScreen: React.FC<CompletionScreenProps> = ({
                         duckClassName="h-12 w-12"
                         className="mx-auto mb-3 max-w-xs"
                     />
+                    {missionTitle && (
+                        <p
+                            className="text-[11px] font-black text-duck-ink/50 uppercase tracking-widest mb-1"
+                            style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
+                        >
+                            {missionTitle} · afgerond
+                        </p>
+                    )}
                     <h2
                         className="text-2xl font-black text-duck-ink mb-1"
                         style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
