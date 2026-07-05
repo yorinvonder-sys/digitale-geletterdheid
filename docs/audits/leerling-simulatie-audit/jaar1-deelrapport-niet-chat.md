@@ -62,6 +62,57 @@ bewijs. De fixes zijn aan jou.
 
 ---
 
+## Fix-status (bijgewerkt na fix-ronde 2026-07-05)
+
+Na dit deelrapport is een fix-ronde uitgevoerd (Opus-agents, per fix live in de browser
+geverifieerd + `vite build` groen). Dat leverde óók een aantal **correcties op de audit
+zelf** op — enkele "blokkerende" meldingen bleken preview-artefact of een contentkeuze,
+geen code-bug.
+
+### Echte bugs — gefixt en geverifieerd
+- **Dubbelklik-corruptie** (tool-guide sjabloon) — bewijs-vinkjes zijn nu één-richting
+  (aan-only), dubbelklik onschadelijk. Lost mission-launch' permanente vastloop op.
+- **cloud-cleaner** dode eindknop — reflectie-modal ving de klik af; op het laatste
+  bestand alleen het eindscherm tonen. (Dit wás een echte overlay-bug.)
+- **filter-bubble-breaker** score-exploit via verversen — scoring nu idempotent.
+- **data-voor-data** permanente crash-lockout — half-opgeslagen ronde crasht niet meer
+  en herstelt zichzelf.
+- **Valse "Perfect!"** (scenario-engine sjabloon, alle 12 missies) — "Perfect" alleen
+  bij een echt maximale score, anders passende feedback.
+- **deepfake-detector** — hulp-AI toonde content van een andere missie (nu juiste
+  context) + reload-score-exploit dichtgezet.
+- **data-handelaar valse voltooiing** (gedeeld eindscherm, alle 11 templates) — onder
+  40% geen "geslaagd"-framing/alle-groen meer; geen vals "gehaald" naar de docent.
+- **game-director** — was écht onwinbaar (Level 2 eiste doel-bereiken terwijl de eigen
+  hint alleen springen voorschreef + sprong werkte niet tijdens beweging); nu speelbaar
+  t/m minstens Level 3.
+- **layout-doctor** — afbeelding kreeg een toegankelijk selecteer-handvat (muis +
+  toetsenbord + screenreader).
+
+### Meldingen die géén code-bug bleken (correctie op de audit)
+- **Dode eindknop bij pitch-police, datalekken-rampenplan, filter-bubble-breaker,
+  data-voor-data = 4× PREVIEW-ARTEFACT.** De knop vuurt functioneel (voortgang wordt
+  gewist + afronding aangeroepen); in de dev-preview is het afrond-signaal een no-op,
+  dus er verandert niets zichtbaar. De testleerlingen lazen "er gebeurt niks" als
+  "kapot". Alleen cloud-cleaner had écht een blokkerende overlay. → **Het
+  cross-cutting patroon "dode eindknop op 5 missies" was te breed: 1 echt, 4 artefact.**
+- **notificatie-ninja "verkeerde eindtitel"** — was niet de missietitel maar de
+  *badge*-naam ("Screen Bewust" hoort bij 40-59%). Geen bug; missienaam nu wél zichtbaar
+  voor duidelijkheid.
+- **layout-doctor "onspeelbaar"** — op desktop met een echte muis wérkte het; het
+  test-tool kon de afbeelding niet raken door ontbrekend a11y-handvat. Reëel gat, gefixt.
+
+### Open voor Yorin (geen code-fix in deze ronde)
+- **deepfake-detector**: 4 van 9 beeld-opdrachten zijn bewust "beschrijf de afbeelding"
+  (tekst, geen beeld). Keuze: zo laten óf echte afbeeldingen laten sourcen (content).
+- **layout-doctor mobiel**: op smal scherm valt de afbeelding achter de vaste zijbalk —
+  aparte responsive-layout-kwestie in de simulator.
+- **Didactische WARNs** (inhoudloze validatie, geen herkansing, statische feedback bij
+  vastlopen) — bredere ontwerpkeuzes, niet in deze fix-ronde meegenomen.
+
+Fix-commits: `1908135`, `5d42031`, `18b79ef`, `85929b9`, `91f4fa9`, `8a7178e`,
+`31d8500`, `4dd2c93`, `5603b5d`, `532a9d6`.
+
 ## Cijfers
 
 - **28 niet-chat missies**, elk 4× gespeeld = 112 doorlopen.
