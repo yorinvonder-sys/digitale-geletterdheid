@@ -89,6 +89,10 @@ export const DraggableImage: React.FC<DraggableImageProps> = ({ item, isSelected
     return (
         <div
             ref={elementRef}
+            role="button"
+            tabIndex={0}
+            aria-label={`Afbeelding${isSelected ? ' (geselecteerd)' : ''} — klik of druk Enter om te selecteren`}
+            aria-pressed={isSelected}
             style={getStyles()}
             onPointerDown={onPointerDown}
             onPointerMove={onPointerMove}
@@ -99,10 +103,18 @@ export const DraggableImage: React.FC<DraggableImageProps> = ({ item, isSelected
                 // Ensure selection is maintained on click
                 onSelect();
             }}
+            onKeyDown={(e) => {
+                // Keyboard access: Enter/Space selects the image
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    onSelect();
+                }
+            }}
         >
             <img
                 src={item.src}
-                alt="Afbeelding"
+                alt=""
                 draggable={false}
                 className="w-full h-full object-cover pointer-events-none select-none"
                 onError={(e) => {
