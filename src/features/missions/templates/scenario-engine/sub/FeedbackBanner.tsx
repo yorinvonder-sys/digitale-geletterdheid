@@ -47,6 +47,16 @@ export const FeedbackBanner: React.FC<{
 }> = ({ round, selections, onNext, isLast, hideButton }) => {
     const score = scoreRound(round, selections);
     const good = score >= 15; // 60% of 25
+    const perfect = score >= round.maxScore; // only a flawless answer earns the celebratory feedback
+
+    // The config's `feedbackCorrect` often celebrates a flawless answer ("Perfect!"),
+    // so only show it at a perfect score. A good-but-imperfect answer gets an
+    // accurate, non-perfect message instead of a false "Perfect!".
+    const heading = perfect
+        ? (round.feedbackCorrect ?? 'Helemaal goed!')
+        : good
+            ? 'Goed bezig! Bijna foutloos — bekijk de uitleg voor de laatste puntjes.'
+            : (round.feedbackIncorrect ?? 'Bijna!');
 
     return (
         <div
@@ -55,12 +65,12 @@ export const FeedbackBanner: React.FC<{
             }`}
         >
             <div className="flex items-center gap-2 mb-2">
-                <span className="text-lg">{good ? '🎉' : '💡'}</span>
+                <span className="text-lg">{perfect ? '🎉' : good ? '👍' : '💡'}</span>
                 <span
                     className="text-sm font-black text-duck-ink"
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                 >
-                    {good ? (round.feedbackCorrect ?? 'Goed gedaan!') : (round.feedbackIncorrect ?? 'Bijna!')}
+                    {heading}
                 </span>
             </div>
             <p
