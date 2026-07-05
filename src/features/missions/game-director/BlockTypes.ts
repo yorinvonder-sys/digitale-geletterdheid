@@ -37,6 +37,8 @@ export interface GameContext {
         vy: number;
         grounded: boolean;
         facingRight: boolean;
+        // Whether the player has performed at least one jump this run
+        hasJumped: boolean;
         // Action queue for smooth sequential movement
         actionQueue: MoveAction[];
     };
@@ -220,6 +222,7 @@ export const BLOCK_DEFINITIONS: BlockDefinition[] = [
             if (ctx.player.grounded) {
                 // Multiply force for visible jumps (force 15 = -15px/frame initial velocity)
                 ctx.player.vy = -inputs.force * 1.5;
+                ctx.player.hasJumped = true;
                 ctx.log('🦘 Sprong!');
             }
         }
