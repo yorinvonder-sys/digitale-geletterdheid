@@ -197,15 +197,20 @@ export const CloudCleanerMission: React.FC<CloudCleanerProps> = ({ onComplete, o
             setSelectedFile(null);
             setSelectedFolder(null);
 
+            // Bij het laatste bestand geen "waarom"-modal openen: die zou tegelijk
+            // met het voltooiingsscherm renderen (beide fixed inset-0 z-50) en de
+            // "Voltooien"-klik onderscheppen. Toon dan alleen het eindscherm.
+            const isLastFile = files.length === 1;
+
             // Show "waarom" reflectie vraag
-            if (WHY_QUESTIONS[folderId]) {
+            if (!isLastFile && WHY_QUESTIONS[folderId]) {
                 setTimeout(() => {
                     setWhyQuestion({ folderId, fileName: file.name });
                 }, 800);
             }
 
             // Check win condition
-            if (files.length === 1) {
+            if (isLastFile) {
                 setTimeout(() => setShowSuccess(true), 1500);
             }
         } else {
