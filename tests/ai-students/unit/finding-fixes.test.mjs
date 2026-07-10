@@ -24,3 +24,24 @@ test('eerste Mail Detective-signaal gebruikt korte A2/B1-zinnen', async () => {
   const { longestSentence } = await import('../evaluation/language-evaluator.mjs');
   assert.equal(longestSentence(description).words < 20, true);
 });
+
+test('Code Denker legt decompositie uit in korte A2/B1-zinnen', async () => {
+  const source = await readFile('src/features/missions/templates/scenario-engine/configs/code-denker.ts', 'utf8');
+  const description = [
+    'De voorbeelden gebruiken vier bouwstenen van computational thinking.',
+    'Decompositie deelt een groot probleem op in kleine stukken.',
+    'Patroonherkenning zoekt herhalingen.',
+    'Abstractie bewaart alleen belangrijke details.',
+    'Een algoritme is een stap-voor-staprecept.',
+    'Welke voorbeelden tonen decompositie?',
+    'Selecteer ze.',
+  ].join(' ');
+
+  assert.doesNotMatch(source, /Elk voorbeeld hieronder past bij één van de vier bouwstenen/);
+  for (const sentence of description.split(/(?<=[.?])\s+/)) {
+    assert.match(source, new RegExp(sentence.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
+  }
+
+  const { longestSentence } = await import('../evaluation/language-evaluator.mjs');
+  assert.equal(longestSentence(description).words < 20, true);
+});
