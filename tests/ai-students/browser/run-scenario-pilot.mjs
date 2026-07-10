@@ -198,12 +198,19 @@ export async function runScenarioPilot({ browser, config, missionId, persona, de
       if (observation.phase === 'intro') {
         await adapter.perform(page, { action: 'start' });
       } else if (observation.phase === 'round' || observation.phase === 'confidence' || observation.phase === 'follow-up') {
+        if (!refreshProbe && adapter.id === 'puzzle-lab' && trace.some((entry) => (
+          entry.observation.phase === 'round' && entry.observation.stepId !== observation.stepId
+        ))) {
+          refreshProbe = await verifyRefreshRecovery(page, missionId, adapter.observe);
+        }
         const decision = decideNextAction({ observation, persona, seed: `${config.seed}:${deviceId}` });
         trace.at(-1).decision = decision;
         await adapter.perform(page, decision);
       } else if (observation.phase === 'feedback') {
         if (!refreshProbe) refreshProbe = await verifyRefreshRecovery(page, missionId, adapter.observe);
         await adapter.perform(page, { action: 'next' });
+      } else if (observation.phase === 'transition') {
+        await adapter.perform(page, { action: 'wait-transition' });
       } else if (observation.phase === 'completion') {
         final = parseFinalScore(observation.scoreText);
         const completionScreenshot = `screenshots/${deviceId}-completion.png`;
