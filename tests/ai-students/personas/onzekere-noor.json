@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "id": "onzekere-noor",
+  "displayName": "Onzekere Noor",
+  "age": 12,
+  "readingLevel": "average",
+  "digitalSkill": "low",
+  "deviceProfile": "desktop",
+  "readingBehavior": ["leest zorgvuldig", "herleest keuzes bij twijfel"],
+  "decisionBehavior": ["zoekt bevestiging voordat zij verdergaat"],
+  "errorBehavior": ["blijft hangen bij onduidelijke feedback"],
+  "helpBehavior": ["gebruikt beschikbare hints", "zoekt een duidelijke vervolgstap"],
+  "testGoals": ["beoordeel veiligheid, bevestiging en herstel na twijfel"],
+  "preferredViewports": ["desktop"],
+  "behaviorWeights": {
+    "readingCoverage": 0.95,
+    "decisionSpeed": 0.25,
+    "uncertainty": 0.9,
+    "errorRate": 0.35,
+    "hintUsage": 0.9,
+    "backtrackRate": 0.3,
+    "shortcutSeeking": 0.05,
+    "manipulationAttempt": 0,
+    "touchReliance": 0
+  },
+  "seedSalt": "onzekere-noor-v1"
+}

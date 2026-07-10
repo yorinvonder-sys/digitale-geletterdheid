@@ -73,7 +73,7 @@ const config: ScenarioEngineConfig = {
                     icon: '📧',
                     title: 'Afzender: docent.smits@magister-berichten.com',
                     description:
-                        'De mail beweert van je docent te komen, maar het adres eindigt op "@magister-berichten.com" — niet op het domein (= het stuk na de @ of na www., bv. school.nl) van je school.',
+                        'De mail lijkt van je docent te komen. Het adres eindigt op "@magister-berichten.com", niet op het domein van je school. Een domein is het stuk na de @, bijvoorbeeld "school.nl".',
                     correct: true,
                     explanation:
                         'Je docent heeft een schoolmailadres dat eindigt op het schooldomein (bijv. @onsschool.nl). Een adres als "@magister-berichten.com" is niet officieel. Aanvallers kiezen namen die vertrouwd klinken, maar het domein achter het @-teken verraadt hen.',

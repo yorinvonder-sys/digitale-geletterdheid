@@ -76,6 +76,8 @@ export const FollowUpCard: React.FC<FollowUpCardProps> = ({ followUp, onComplete
                     return (
                         <button
                             key={i}
+                            data-qa="followup-option"
+                            data-followup-option-index={i}
                             onClick={() => handleSelect(i)}
                             disabled={answered}
                             className={`w-full text-left px-3 py-2.5 rounded-xl border-2 text-xs transition-all duration-200 ${optStyle} ${textMain}`}
@@ -105,6 +107,7 @@ export const FollowUpCard: React.FC<FollowUpCardProps> = ({ followUp, onComplete
                         {correct ? '✓ Goed!' : '✕ Niet helemaal.'} {followUp.explanation}
                     </div>
                     <button
+                        data-qa="followup-submit"
                         onClick={() => onComplete(correct)}
                         className={`w-full py-2.5 rounded-full font-black text-sm transition-all duration-200 ${
                             isLight

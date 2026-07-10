@@ -106,6 +106,7 @@ export const IntroScreen: React.FC<IntroScreenProps> = ({
 
     return (
         <div
+            data-qa="mission-intro"
             className={`min-h-screen overflow-y-auto ${t.page} flex items-start justify-center px-4 py-6 sm:py-8`}
             style={FONT}
         >
@@ -173,6 +174,7 @@ export const IntroScreen: React.FC<IntroScreenProps> = ({
                 />
 
                 <button
+                    data-qa="mission-start"
                     onClick={onStart}
                     className="w-full py-3.5 bg-duck-acid hover:bg-duck-acid/80 text-duck-ink rounded-full font-black text-sm transition-all duration-200 active:scale-[0.98] flex items-center justify-center gap-2 shadow-lg shadow-duck-acid/25 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-ink focus-visible:ring-offset-2"
                     style={FONT}
