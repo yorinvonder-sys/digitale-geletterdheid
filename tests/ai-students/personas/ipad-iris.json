@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "id": "ipad-iris",
+  "displayName": "iPad-Iris",
+  "age": 13,
+  "readingLevel": "average",
+  "digitalSkill": "average",
+  "deviceProfile": "tablet",
+  "readingBehavior": ["leest op een tablet in staande en liggende stand"],
+  "decisionBehavior": ["bedient met touch", "swipet en gebruikt het schermtoetsenbord"],
+  "errorBehavior": ["kan hover-informatie niet openen", "mist kleine touchdoelen"],
+  "helpBehavior": ["zoekt zichtbare knoppen en labels"],
+  "testGoals": ["controleer touchdoelen, oriëntatie, invoervelden en schermtoetsenbord"],
+  "preferredViewports": ["ipad-portrait", "ipad-landscape"],
+  "behaviorWeights": {
+    "readingCoverage": 0.8,
+    "decisionSpeed": 0.6,
+    "uncertainty": 0.3,
+    "errorRate": 0.35,
+    "hintUsage": 0.3,
+    "backtrackRate": 0.25,
+    "shortcutSeeking": 0.25,
+    "manipulationAttempt": 0.1,
+    "touchReliance": 1
+  },
+  "seedSalt": "ipad-iris-v1"
+}

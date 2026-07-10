@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "id": "creatieve-cheater",
+  "displayName": "Creatieve Cheater",
+  "age": 14,
+  "readingLevel": "average",
+  "digitalSkill": "high",
+  "deviceProfile": "desktop",
+  "readingBehavior": ["scant op antwoorden en voorspelbare patronen"],
+  "decisionBehavior": ["probeert over te slaan", "kopieert en manipuleert eigen invoer"],
+  "errorBehavior": ["verstoort bewust de normale volgorde"],
+  "helpBehavior": ["probeert hints zonder leeractiviteit te benutten"],
+  "testGoals": ["vind zwakke validatie, zichtbare antwoorden en ongewenste shortcuts"],
+  "preferredViewports": ["desktop"],
+  "behaviorWeights": {
+    "readingCoverage": 0.5,
+    "decisionSpeed": 0.95,
+    "uncertainty": 0.1,
+    "errorRate": 0.45,
+    "hintUsage": 0.1,
+    "backtrackRate": 0.2,
+    "shortcutSeeking": 1,
+    "manipulationAttempt": 1,
+    "touchReliance": 0
+  },
+  "seedSalt": "creatieve-cheater-v1"
+}

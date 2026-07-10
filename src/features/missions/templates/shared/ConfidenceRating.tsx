@@ -27,6 +27,8 @@ export const ConfidenceRating: React.FC<ConfidenceRatingProps> = ({ onSelect }) 
             {levels.map((l) => (
                 <button
                     key={l.value}
+                    data-qa="confidence-option"
+                    data-confidence-level={l.value}
                     onClick={() => onSelect(l.value)}
                     className={`flex-1 py-2.5 px-2 rounded-xl border-2 text-center transition-all duration-200 active:scale-[0.97] ${l.color}`}
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}

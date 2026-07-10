@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "id": "snelle-sam",
+  "displayName": "Snelle Sam",
+  "age": 12,
+  "readingLevel": "average",
+  "digitalSkill": "average",
+  "deviceProfile": "desktop",
+  "readingBehavior": ["scant tekst", "leest meestal alleen de eerste zin"],
+  "decisionBehavior": ["kiest snel de eerste logisch ogende actie"],
+  "errorBehavior": ["mist waarschuwingen", "slaat uitzonderingen over"],
+  "helpBehavior": ["gebruikt zelden hints"],
+  "testGoals": ["controleer of oppervlakkig gelezen instructies toch begrijpelijk blijven"],
+  "preferredViewports": ["desktop"],
+  "behaviorWeights": {
+    "readingCoverage": 0.3,
+    "decisionSpeed": 0.95,
+    "uncertainty": 0.15,
+    "errorRate": 0.35,
+    "hintUsage": 0.1,
+    "backtrackRate": 0.05,
+    "shortcutSeeking": 0.7,
+    "manipulationAttempt": 0.1,
+    "touchReliance": 0
+  },
+  "seedSalt": "snelle-sam-v1"
+}

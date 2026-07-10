@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "id": "letterlijke-luca",
+  "displayName": "Letterlijke Luca",
+  "age": 13,
+  "readingLevel": "average",
+  "digitalSkill": "average",
+  "deviceProfile": "desktop",
+  "readingBehavior": ["neemt iedere instructie letterlijk"],
+  "decisionBehavior": ["doet alleen wat expliciet gevraagd wordt"],
+  "errorBehavior": ["mist impliciete interfaceconventies", "negeert verborgen aannames"],
+  "helpBehavior": ["gebruikt hulp alleen wanneer dit expliciet wordt aangeboden"],
+  "testGoals": ["vind ontbrekende instructies en impliciete aannames"],
+  "preferredViewports": ["desktop"],
+  "behaviorWeights": {
+    "readingCoverage": 1,
+    "decisionSpeed": 0.4,
+    "uncertainty": 0.35,
+    "errorRate": 0.25,
+    "hintUsage": 0.3,
+    "backtrackRate": 0.15,
+    "shortcutSeeking": 0,
+    "manipulationAttempt": 0,
+    "touchReliance": 0
+  },
+  "seedSalt": "letterlijke-luca-v1"
+}

@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "id": "afgeleide-amir",
+  "displayName": "Afgeleide Amir",
+  "age": 12,
+  "readingLevel": "average",
+  "digitalSkill": "average",
+  "deviceProfile": "mixed",
+  "readingBehavior": ["verliest bij lange opdrachten de rode draad", "vergeet eerdere informatie"],
+  "decisionBehavior": ["navigeert terug", "klikt soms per ongeluk verkeerd"],
+  "errorBehavior": ["raakt context kwijt", "herhaalt een eerdere actie"],
+  "helpBehavior": ["zoekt opnieuw naar de huidige stap"],
+  "testGoals": ["beoordeel korte stappen, oriëntatie en behoud van voortgang"],
+  "preferredViewports": ["desktop", "mobile"],
+  "behaviorWeights": {
+    "readingCoverage": 0.55,
+    "decisionSpeed": 0.65,
+    "uncertainty": 0.45,
+    "errorRate": 0.5,
+    "hintUsage": 0.25,
+    "backtrackRate": 0.65,
+    "shortcutSeeking": 0.25,
+    "manipulationAttempt": 0.05,
+    "touchReliance": 0.4
+  },
+  "seedSalt": "afgeleide-amir-v1"
+}

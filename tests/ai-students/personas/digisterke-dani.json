@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "id": "digisterke-dani",
+  "displayName": "Digisterke Dani",
+  "age": 14,
+  "readingLevel": "high",
+  "digitalSkill": "high",
+  "deviceProfile": "desktop",
+  "readingBehavior": ["leest doelgericht", "zoekt alleen relevante details"],
+  "decisionBehavior": ["zoekt snellere routes", "probeert alternatieve navigatie"],
+  "errorBehavior": ["omzeilt mogelijk tussenstappen"],
+  "helpBehavior": ["gebruikt hulp alleen als die tijd bespaart"],
+  "testGoals": ["controleer technische robuustheid en ongewenste snelroutes"],
+  "preferredViewports": ["desktop"],
+  "behaviorWeights": {
+    "readingCoverage": 0.85,
+    "decisionSpeed": 0.85,
+    "uncertainty": 0.1,
+    "errorRate": 0.12,
+    "hintUsage": 0.1,
+    "backtrackRate": 0.15,
+    "shortcutSeeking": 0.9,
+    "manipulationAttempt": 0.45,
+    "touchReliance": 0
+  },
+  "seedSalt": "digisterke-dani-v1"
+}

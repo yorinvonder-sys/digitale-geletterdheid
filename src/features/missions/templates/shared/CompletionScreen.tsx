@@ -43,7 +43,10 @@ export const CompletionScreen: React.FC<CompletionScreenProps> = ({
     const percentage = Math.round((score / maxScore) * 100);
 
     return (
-        <div className="min-h-screen overflow-y-auto bg-duck-bg flex items-start justify-center px-4 py-6 sm:py-8">
+        <div
+            data-qa="mission-completion"
+            className="min-h-screen overflow-y-auto bg-duck-bg flex items-start justify-center px-4 py-6 sm:py-8"
+        >
             <div className="w-full max-w-lg">
                 {/* Badge */}
                 <div
@@ -100,6 +103,7 @@ export const CompletionScreen: React.FC<CompletionScreenProps> = ({
 
                 {/* Complete button */}
                 <button
+                    data-qa="confirm-completion"
                     onClick={onComplete}
                     className="mb-4 w-full py-3.5 bg-duck-acid hover:bg-duck-acid/80 text-duck-ink rounded-full font-black text-sm transition-all duration-200 active:scale-[0.98] shadow-lg shadow-duck-acid/25 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-ink focus-visible:ring-offset-2"
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}

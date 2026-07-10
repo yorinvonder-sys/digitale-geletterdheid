@@ -50,6 +50,7 @@ export const FeedbackBanner: React.FC<{
 
     return (
         <div
+            data-qa="scenario-feedback"
             className={`rounded-2xl border-2 p-4 mt-4 ${
                 good ? 'border-duck-ink bg-duck-ink/5' : 'border-duck-acid bg-duck-acid/5'
             }`}
@@ -72,8 +73,9 @@ export const FeedbackBanner: React.FC<{
             </p>
             {!hideButton && (
                 <button
+                    data-qa="scenario-next"
                     onClick={onNext}
-                    className="w-full py-2.5 rounded-full font-black text-sm bg-gradient-to-r from-duck-acid to-duck-acid hover:from-duck-acid hover:to-duck-acid text-duck-ink transition-all duration-200"
+                    className="w-full min-h-[44px] py-2.5 rounded-full font-black text-sm bg-gradient-to-r from-duck-acid to-duck-acid hover:from-duck-acid hover:to-duck-acid text-duck-ink transition-all duration-200"
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                 >
                     {isLast ? 'Bekijk eindresultaat' : 'Volgende ronde →'}
