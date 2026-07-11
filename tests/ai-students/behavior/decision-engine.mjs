@@ -125,6 +125,30 @@ function puzzleDecision(observation, persona, random) {
   };
 }
 
+function fortressDecision(observation, persona) {
+  if (observation.roundType === 'fortress-next') {
+    return { action: 'next-fortress-round', reason: 'Gaat door nadat het fort zichtbaar standhield.' };
+  }
+  if (
+    observation.attemptCount > 0 &&
+    observation.availableRecoveryActions?.includes('hint') &&
+    (persona.behaviorWeights?.hintUsage ?? 0) >= 0.65
+  ) {
+    return { action: 'request-hint', reason: 'Gebruikt zichtbare hulp na een mislukte aanval.' };
+  }
+  const startsWeak = (persona.behaviorWeights?.errorRate ?? 0) >= 0.4;
+  const value = startsWeak && observation.attemptCount === 0
+    ? 'abc123'
+    : 'Kobalt-Vork!7Rivier-Mist';
+  return {
+    action: 'test-password',
+    value,
+    reason: startsWeak && observation.attemptCount === 0
+      ? 'Probeert eerst een kort herkenbaar fictief patroon.'
+      : 'Bouwt een lange unieke synthetische passphrase.',
+  };
+}
+
 export function decideNextAction({ observation, persona, seed }) {
   const random = createSeededRandom(`${seed}:${persona.seedSalt}:${observation.stepId}:${observation.phase}`);
   switch (observation.phase) {
@@ -134,6 +158,7 @@ export function decideNextAction({ observation, persona, seed }) {
       if (observation.roundType === 'binary-choice') return binaryDecision(observation, persona, random);
       if (observation.roundType === 'puzzle-text' || observation.roundType === 'puzzle-choice') return puzzleDecision(observation, persona, random);
       if (observation.roundType === 'puzzle-recovery') return puzzleDecision(observation, persona, random);
+      if (observation.roundType === 'password-entry' || observation.roundType === 'fortress-next') return fortressDecision(observation, persona);
       break;
     case 'confidence': {
       const uncertainty = persona.behaviorWeights?.uncertainty ?? 0.5;
