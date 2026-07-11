@@ -285,7 +285,7 @@ const SimulationLabInner: React.FC<SimulationLabProps> = ({ onBack, onComplete, 
     const canAdvance = allQuestionsSubmitted && !followUpPending;
 
     return (
-        <div className="min-h-screen bg-duck-bg p-4">
+        <div data-qa="simulation-lab" className="min-h-screen bg-duck-bg p-4">
             <div className="max-w-2xl mx-auto">
                 <PhaseHeader
                     currentPhase={state.currentSim + 1}
@@ -403,7 +403,7 @@ const SimulationLabInner: React.FC<SimulationLabProps> = ({ onBack, onComplete, 
                     {state.currentSim > 0 ? (
                         <button
                             onClick={() => setState((prev) => ({ ...prev, currentSim: prev.currentSim - 1 }))}
-                            className="flex items-center gap-1.5 px-4 py-2.5 text-sm font-bold text-duck-ink/60 hover:text-duck-ink transition-colors"
+                            className="flex min-h-[44px] items-center gap-1.5 px-4 py-2.5 text-sm font-bold text-duck-ink/60 hover:text-duck-ink transition-colors"
                             style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                         >
                             <ChevronLeft size={16} />
@@ -414,9 +414,10 @@ const SimulationLabInner: React.FC<SimulationLabProps> = ({ onBack, onComplete, 
                     )}
 
                     <button
+                        data-qa="simulation-next"
                         disabled={!canAdvance}
                         onClick={handleNextSim}
-                        className={`flex items-center gap-1.5 px-5 py-2.5 rounded-xl text-sm font-bold transition-all duration-200 active:scale-[0.98] ${
+                        className={`flex min-h-[44px] items-center gap-1.5 px-5 py-2.5 rounded-xl text-sm font-bold transition-all duration-200 active:scale-[0.98] ${
                             canAdvance
                                 ? 'bg-gradient-to-r from-duck-acid to-duck-acid text-duck-ink hover:from-duck-acid hover:to-duck-acid'
                                 : 'bg-duck-gray text-duck-ink/60 cursor-not-allowed'

@@ -198,7 +198,7 @@ export async function runScenarioPilot({ browser, config, missionId, persona, de
       if (observation.phase === 'intro') {
         await adapter.perform(page, { action: 'start' });
       } else if (observation.phase === 'round' || observation.phase === 'confidence' || observation.phase === 'follow-up') {
-        if (!refreshProbe && ['puzzle-lab', 'password-fortress'].includes(adapter.id) && trace.some((entry) => (
+        if (!refreshProbe && ['puzzle-lab', 'password-fortress', 'simulation-lab'].includes(adapter.id) && trace.some((entry) => (
           entry.observation.phase === 'round' && entry.observation.stepId !== observation.stepId
         ))) {
           refreshProbe = await verifyRefreshRecovery(page, missionId, adapter.observe);

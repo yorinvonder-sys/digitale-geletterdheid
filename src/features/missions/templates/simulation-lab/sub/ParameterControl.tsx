@@ -25,6 +25,7 @@ export const ParameterControl: React.FC<{
                     </span>
                 </div>
                 <input
+                    data-qa="simulation-parameter-slider"
                     type="range"
                     min={param.min ?? 0}
                     max={param.max ?? 100}
@@ -52,6 +53,7 @@ export const ParameterControl: React.FC<{
                     {param.label}
                 </label>
                 <button
+                    data-qa="simulation-parameter-toggle"
                     onClick={() => onChange(!v)}
                     className={`relative min-h-[44px] min-w-14 rounded-full transition-colors duration-300 ${
                         v ? 'bg-duck-acid' : 'bg-duck-gray'
@@ -82,8 +84,9 @@ export const ParameterControl: React.FC<{
                     {(param.options ?? []).map((opt) => (
                         <button
                             key={opt}
+                            data-qa="simulation-parameter-option"
                             onClick={() => onChange(opt)}
-                            className={`text-left px-3 py-2 rounded-lg text-xs font-medium transition-all duration-200 border ${
+                            className={`min-h-[44px] text-left px-3 py-2 rounded-lg text-xs font-medium transition-all duration-200 border ${
                                 v === opt
                                     ? 'bg-duck-acid/10 border-duck-acid text-duck-ink font-bold'
                                     : 'bg-white border-duck-gray text-duck-ink/60 hover:border-duck-acid/50'

@@ -149,6 +149,25 @@ function fortressDecision(observation, persona) {
   };
 }
 
+function simulationDecision(observation, persona, random) {
+  if (observation.roundType === 'simulation-parameter') {
+    return { action: 'change-simulation-parameter', reason: 'Probeert een zichtbare instelling uit.' };
+  }
+  if (observation.roundType === 'simulation-submit') {
+    return { action: 'submit-simulation-answer', reason: 'Controleert de gemaakte keuze.' };
+  }
+  if (observation.roundType === 'simulation-next') {
+    return { action: 'next-simulation', reason: 'Gaat door na alle zichtbare vragen.' };
+  }
+  const ranked = rankedOptions(observation.options, persona, random)
+    .sort((a, b) => b.score - a.score || a.index - b.index);
+  return {
+    action: 'answer-simulation-question',
+    optionId: ranked[0]?.id,
+    reason: 'Kiest op basis van zichtbare woorden en persona-ruis.',
+  };
+}
+
 export function decideNextAction({ observation, persona, seed }) {
   const random = createSeededRandom(`${seed}:${persona.seedSalt}:${observation.stepId}:${observation.phase}`);
   switch (observation.phase) {
@@ -159,6 +178,7 @@ export function decideNextAction({ observation, persona, seed }) {
       if (observation.roundType === 'puzzle-text' || observation.roundType === 'puzzle-choice') return puzzleDecision(observation, persona, random);
       if (observation.roundType === 'puzzle-recovery') return puzzleDecision(observation, persona, random);
       if (observation.roundType === 'password-entry' || observation.roundType === 'fortress-next') return fortressDecision(observation, persona);
+      if (observation.roundType?.startsWith('simulation-')) return simulationDecision(observation, persona, random);
       break;
     case 'confidence': {
       const uncertainty = persona.behaviorWeights?.uncertainty ?? 0.5;

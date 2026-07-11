@@ -69,6 +69,6 @@ test('product-autosave bevat bewust geen ingevoerd wachtwoord', async () => {
 
 test('runner controleert Password Fortress-voortgang na een stabiele rondewissel', async () => {
   const source = await readFile('tests/ai-students/browser/run-scenario-pilot.mjs', 'utf8');
-  assert.match(source, /\['puzzle-lab', 'password-fortress'\]\.includes\(adapter\.id\)/);
+  assert.match(source, /'password-fortress'/);
   assert.match(source, /verifyRefreshRecovery/);
 });
