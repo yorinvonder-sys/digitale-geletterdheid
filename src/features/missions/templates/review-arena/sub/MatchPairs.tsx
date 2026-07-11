@@ -120,9 +120,11 @@ export const MatchPairs: React.FC<MatchPairsProps> = ({
 
                         return (
                             <motion.button
+                                data-qa="review-match-left"
+                                data-matched={isMatched}
                                 key={item.id}
                                 onClick={() => handleLeftClick(item.id)}
-                                className={`w-full text-left p-2.5 rounded-xl border text-xs font-medium transition-all duration-200
+                                className={`min-h-[44px] w-full text-left p-2.5 rounded-xl border text-xs font-medium transition-all duration-200
                                     ${isMatched
                                         ? 'bg-duck-ink/10 border-duck-ink text-duck-ink opacity-60 cursor-default'
                                         : isSelected
@@ -147,9 +149,11 @@ export const MatchPairs: React.FC<MatchPairsProps> = ({
 
                         return (
                             <motion.button
+                                data-qa="review-match-right"
+                                data-matched={isMatched}
                                 key={item.id}
                                 onClick={() => handleRightClick(item.id)}
-                                className={`w-full text-left p-2.5 rounded-xl border text-xs font-medium transition-all duration-200
+                                className={`min-h-[44px] w-full text-left p-2.5 rounded-xl border text-xs font-medium transition-all duration-200
                                     ${isMatched
                                         ? 'bg-duck-ink/10 border-duck-ink text-duck-ink opacity-60 cursor-default'
                                         : isFlashing
@@ -199,6 +203,7 @@ export const MatchPairs: React.FC<MatchPairsProps> = ({
                             Alle koppels gevonden! <span className="font-black">{score}/{maxScore} punten</span>
                         </div>
                         <button
+                            data-qa="review-continue"
                             onClick={handleContinue}
                             className="w-full py-3 bg-gradient-to-r from-duck-ink to-duck-ink hover:from-duck-ink hover:to-duck-ink text-white rounded-xl font-bold text-sm transition-all duration-200 active:scale-[0.98] flex items-center justify-center gap-2"
                             style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}

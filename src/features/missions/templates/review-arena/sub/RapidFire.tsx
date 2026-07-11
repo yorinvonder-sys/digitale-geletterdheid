@@ -162,6 +162,7 @@ export const RapidFire: React.FC<RapidFireProps> = ({
                 </div>
 
                 <button
+                    data-qa="review-continue"
                     onClick={handleContinue}
                     className="w-full py-3 bg-gradient-to-r from-duck-ink to-duck-ink hover:from-duck-ink hover:to-duck-ink text-white rounded-xl font-bold text-sm transition-all duration-200 active:scale-[0.98] flex items-center justify-center gap-2"
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
@@ -295,6 +296,7 @@ export const RapidFire: React.FC<RapidFireProps> = ({
             {/* Answer buttons */}
             <div className="grid grid-cols-2 gap-3">
                 <button
+                    data-qa="review-rapid-true"
                     onClick={() => handleAnswer(true)}
                     disabled={answered !== null}
                     className={`py-4 rounded-xl font-black text-sm transition-all duration-200 active:scale-[0.97]
@@ -311,6 +313,7 @@ export const RapidFire: React.FC<RapidFireProps> = ({
                     {trueLabel}
                 </button>
                 <button
+                    data-qa="review-rapid-false"
                     onClick={() => handleAnswer(false)}
                     disabled={answered !== null}
                     className={`py-4 rounded-xl font-black text-sm transition-all duration-200 active:scale-[0.97]
