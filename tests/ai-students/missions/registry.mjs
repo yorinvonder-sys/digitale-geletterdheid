@@ -1,5 +1,6 @@
 import { observeScenario, performScenarioDecision } from './scenario-engine.mjs';
 import { observePuzzle, performPuzzleDecision } from './puzzle-lab.mjs';
+import { observeFortress, performFortressDecision, redactFortressDecision } from './password-fortress.mjs';
 
 const SCENARIO_ENGINE_IDS = new Set(['mail-detective']);
 const PUZZLE_LAB_IDS = new Set([
@@ -24,6 +25,15 @@ export function getMissionAdapter(missionId) {
       id: 'puzzle-lab',
       observe: observePuzzle,
       perform: performPuzzleDecision,
+      previewPath: `/dev/mission-preview?mission=${encodeURIComponent(missionId)}&reset=1`,
+    };
+  }
+  if (missionId === 'wachtwoord-fortress') {
+    return {
+      id: 'password-fortress',
+      observe: observeFortress,
+      perform: performFortressDecision,
+      redactDecision: redactFortressDecision,
       previewPath: `/dev/mission-preview?mission=${encodeURIComponent(missionId)}&reset=1`,
     };
   }
