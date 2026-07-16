@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ScholenLanding } from '@/features/public-site/ScholenLanding';
+import { ScholenLandingStory } from '@/features/public-site/ScholenLandingStory';
 const IctLandingPage = React.lazy(() => import('@/features/public-site/IctLandingPage').then(m => ({ default: m.IctLandingPage })));
 const IctIntegraties = React.lazy(() => import('@/features/public-site/ict/IctIntegraties').then(m => ({ default: m.IctIntegraties })));
 const IctPrivacy = React.lazy(() => import('@/features/public-site/ict/IctPrivacy').then(m => ({ default: m.IctPrivacy })));
@@ -333,7 +333,7 @@ function PublicRoute() {
         <PublicPageShell>
             <SecureErrorBoundary>
                 <React.Suspense fallback={<LoadingFallback />}>
-                    <ScholenLanding />
+                    <ScholenLandingStory />
                 </React.Suspense>
             </SecureErrorBoundary>
         </PublicPageShell>

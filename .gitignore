@@ -63,6 +63,7 @@ screenshots/
 .tmp-context/
 tmp/
 .superpowers/
+.worktrees/
 public/dev-docs/
 
 # Firebase (legacy - migrated to Supabase)
