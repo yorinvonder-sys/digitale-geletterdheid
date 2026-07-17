@@ -15,8 +15,14 @@ export const CHAPTERS = [
 /* Fixed left rail: chapter dots that fill as the story advances. */
 export function ChapterRail() {
   const [active, setActive] = useState('film')
+  // The film chapter only exists for first-time visitors.
+  const [hasFilm, setHasFilm] = useState(false)
 
   useEffect(() => {
+    const filmEl = document.getElementById('film')
+    setHasFilm(!!filmEl)
+    if (!filmEl) setActive('proloog')
+
     const observer = new IntersectionObserver(
       (entries) => {
         for (const e of entries) {
@@ -32,12 +38,14 @@ export function ChapterRail() {
     return () => observer.disconnect()
   }, [])
 
+  const chapters = CHAPTERS.filter((c) => c.id !== 'film' || hasFilm)
+
   return (
     <nav
       aria-label="Hoofdstukken"
       className="fixed left-4 lg:left-6 top-1/2 -translate-y-1/2 z-40 hidden md:flex flex-col gap-1"
     >
-      {CHAPTERS.map((c) => {
+      {chapters.map((c) => {
         const isActive = active === c.id
         return (
           <a

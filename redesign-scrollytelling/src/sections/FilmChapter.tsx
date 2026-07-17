@@ -1,9 +1,27 @@
+import { useEffect, useState } from 'react'
 import { Film } from '../film/Film'
 import { LogoLockup } from '../components/brand'
 
+const SEEN_KEY = 'dgskills-film-seen'
+
 /* Homepage opening: the Jayden film, embedded as "chapter zero".
-   First visit → autoplays. Revisit → ends state with replay. */
+   Only shown to first-time visitors — anyone who has already seen the
+   film lands directly on the Proloog instead. */
 export function FilmChapter() {
+  const [seen, setSeen] = useState<boolean | null>(null)
+
+  useEffect(() => {
+    try {
+      setSeen(localStorage.getItem(SEEN_KEY) === '1')
+    } catch {
+      setSeen(false) // private mode → treat as new visitor
+    }
+  }, [])
+
+  // Don't render anything until we know (avoids a flash of the film for
+  // returning visitors, and a flash of nothing for new ones).
+  if (seen === null || seen) return null
+
   return (
     <section id="film" className="relative bg-ink grain">
       {/* cinema header */}
@@ -16,7 +34,7 @@ export function FilmChapter() {
 
       {/* the screen */}
       <div className="relative border-b-[3px] border-lime/40">
-        <Film autoSkipSeen />
+        <Film />
       </div>
     </section>
   )
