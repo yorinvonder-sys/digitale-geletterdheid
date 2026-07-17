@@ -4,8 +4,6 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { LogoLockup, Marquee } from './components/brand'
 import { ChapterRail, ScrollProgress } from './components/ChapterRail'
 import { FilmChapter } from './sections/FilmChapter'
-import { Hero } from './sections/Hero'
-import { Problem } from './sections/Problem'
 import { Meet } from './sections/Meet'
 import { StudentJourney } from './sections/StudentJourney'
 import { Teacher } from './sections/Teacher'
@@ -33,7 +31,7 @@ function Nav() {
           className="fixed top-0 inset-x-0 z-40 border-b-[3px] border-ink bg-paper/90 backdrop-blur-md"
         >
           <div className="mx-auto flex max-w-7xl items-center justify-between px-5 md:px-10 py-3">
-            <a href="#proloog" className="flex items-center gap-2.5">
+            <a href="#film" className="flex items-center gap-2.5">
               <LogoLockup height={30} />
             </a>
             <div className="flex items-center gap-3">
@@ -65,8 +63,6 @@ function StoryPage() {
       <ChapterRail />
       <main>
         <FilmChapter />
-        <Hero />
-        <Problem />
         <Meet />
         <StudentJourney />
         <Marquee

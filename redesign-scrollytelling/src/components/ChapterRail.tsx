@@ -3,18 +3,16 @@ import { motion } from 'framer-motion'
 
 export const CHAPTERS = [
   { id: 'film', label: 'De film', num: '▶' },
-  { id: 'proloog', label: 'Proloog', num: '·' },
-  { id: 'probleem', label: 'Het probleem', num: '1' },
-  { id: 'ontmoeting', label: 'De ontmoeting', num: '2' },
-  { id: 'mila', label: 'Mila', num: '3' },
-  { id: 'docent', label: 'De docent', num: '4' },
-  { id: 'bewijs', label: 'Het bewijs', num: '5' },
+  { id: 'ontmoeting', label: 'De ontmoeting', num: '1' },
+  { id: 'mila', label: 'Mila', num: '2' },
+  { id: 'docent', label: 'De docent', num: '3' },
+  { id: 'bewijs', label: 'Het bewijs', num: '4' },
   { id: 'epiloog', label: 'Epiloog', num: '·' },
 ]
 
 /* Fixed left rail: chapter dots that fill as the story advances. */
 export function ChapterRail() {
-  const [active, setActive] = useState('proloog')
+  const [active, setActive] = useState('film')
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -52,10 +50,8 @@ export function ChapterRail() {
               }`}
             />
             <span
-              className={`pointer-events-none absolute left-6 whitespace-nowrap rounded-full border-2 border-ink px-3 py-1 text-[11px] font-bold uppercase tracking-widest transition-all duration-200 ${
-                isActive
-                  ? 'bg-ink text-paper opacity-100 translate-x-0'
-                  : 'bg-paper text-ink opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0'
+              className={`pointer-events-none absolute left-6 whitespace-nowrap rounded-full border-2 border-ink px-3 py-1 text-[11px] font-bold uppercase tracking-widest transition-all duration-200 opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 ${
+                isActive ? 'bg-ink text-paper' : 'bg-paper text-ink'
               }`}
             >
               {c.num !== '·' && c.num !== '▶' && <span className="mr-1.5 text-lime-deep">{c.num}</span>}

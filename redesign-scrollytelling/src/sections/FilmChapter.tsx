@@ -22,7 +22,7 @@ export function FilmChapter() {
       <div className="relative border-y-[3px] border-lime/40">
         <Film
           autoSkipSeen
-          storyHref="#proloog"
+          storyHref="#ontmoeting"
           onFinish={() => setWatched(true)}
         />
       </div>
@@ -41,7 +41,7 @@ export function FilmChapter() {
           <span className="text-lime">hoofdstuk voor hoofdstuk ↓</span>
         </p>
         <motion.a
-          href="#proloog"
+          href="#ontmoeting"
           className="mt-6 inline-flex flex-col items-center gap-2 text-paper/50"
           animate={{ y: [0, 8, 0] }}
           transition={{ repeat: Infinity, duration: 2.2, ease: 'easeInOut' }}
