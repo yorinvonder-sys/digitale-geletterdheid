@@ -64,12 +64,12 @@ export function Meet() {
     <section id="ontmoeting" className="relative bg-paper grain">
       <div className="mx-auto max-w-6xl px-6 md:px-14 py-24 md:py-36">
         <ChapterMarker
-          kicker="Hoofdstuk 2 · De ontmoeting"
-          number="2"
+          kicker="Hoofdstuk 1 · De ontmoeting"
+          number="1"
           title={
             <>
               En toen verscheen <em className="italic text-transparent bg-clip-text bg-gradient-to-r from-ink to-ink/60">DGSkills</em>.
-          </>
+            </>
           }
         />
 

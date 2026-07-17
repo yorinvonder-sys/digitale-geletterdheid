@@ -42,8 +42,8 @@ export function Teacher() {
     <section id="docent" ref={ref} className="relative bg-paper grain overflow-hidden">
       <div className="mx-auto max-w-6xl px-6 md:px-14 py-24 md:py-36">
         <ChapterMarker
-          kicker="Hoofdstuk 4 · De docent"
-          number="4"
+          kicker="Hoofdstuk 3 · De docent"
+          number="3"
           title={
             <>
               Ondertussen, <em className="italic">twee meter verderop</em>: jij.
