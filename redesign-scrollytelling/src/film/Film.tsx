@@ -7,30 +7,59 @@ import {
   SceneBewijs,
   SceneEpiloog,
 } from './scenes'
+import { Leader } from './Leader'
 
 const SCENES = [
+  { id: 'leader', label: 'Leader', dur: 3.6, bg: 'bg-[#3a3a38]', Comp: Leader },
   { id: 'frustratie', label: 'De frustratie', dur: 10, bg: 'bg-ink', Comp: SceneFrustratie },
-  { id: 'raadsel', label: 'Het raadsel', dur: 8, bg: 'bg-lime', Comp: SceneRaadsel },
+  { id: 'raadsel', label: 'Het raadsel', dur: 9, bg: 'bg-lime', Comp: SceneRaadsel },
   { id: 'antwoord', label: 'Het antwoord', dur: 10, bg: 'bg-ink', Comp: SceneAntwoord },
   { id: 'bewijs', label: 'Het bewijs', dur: 10, bg: 'bg-ink', Comp: SceneBewijs },
   { id: 'epiloog', label: 'Epiloog', dur: 7, bg: 'bg-lime', Comp: SceneEpiloog },
 ]
-const TOTAL = SCENES.reduce((a, s) => a + s.dur, 0) // 45s
+const TOTAL = SCENES.reduce((a, s) => a + s.dur, 0)
+const SEEN_KEY = 'dgskills-film-seen'
 
-export function Film() {
+export function Film({
+  onFinish,
+  autoSkipSeen = false,
+  storyHref = '/',
+}: {
+  onFinish?: () => void
+  autoSkipSeen?: boolean
+  storyHref?: string
+}) {
   const [elapsed, setElapsed] = useState(0) // seconds
   const [done, setDone] = useState(false)
   const [paused, setPaused] = useState(false)
   const raf = useRef<number | undefined>(undefined)
   const start = useRef<number | undefined>(undefined)
+  const finished = useRef(false)
+
+  const markDone = () => {
+    if (finished.current) return
+    finished.current = true
+    try { localStorage.setItem(SEEN_KEY, '1') } catch { /* private mode */ }
+    setDone(true)
+    onFinish?.()
+  }
 
   useEffect(() => {
+    // Returning visitor on the homepage: land directly on the finished end state.
+    if (autoSkipSeen) {
+      try {
+        if (localStorage.getItem(SEEN_KEY) === '1') {
+          jumpTo(TOTAL)
+          return
+        }
+      } catch { /* private mode */ }
+    }
     const tick = (now: number) => {
       if (start.current === undefined) start.current = now
       const t = (now - start.current) / 1000
       setElapsed(t)
       if (t >= TOTAL) {
-        setDone(true)
+        markDone()
         return
       }
       raf.current = requestAnimationFrame(tick)
@@ -39,12 +68,17 @@ export function Film() {
     return () => {
       if (raf.current) cancelAnimationFrame(raf.current)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [paused, done])
 
   const jumpTo = (target: number) => {
     start.current = performance.now() - target * 1000
     setElapsed(target)
-    setDone(target >= TOTAL)
+    if (target >= TOTAL) markDone()
+    else {
+      finished.current = false
+      setDone(false)
+    }
   }
 
   // scene lookup
@@ -56,11 +90,16 @@ export function Film() {
     idx = i
   }
   const scene = SCENES[done ? SCENES.length - 1 : idx]
-  const sceneStart = SCENES.slice(0, done ? SCENES.length - 1 : idx).reduce((a, s) => a + s.dur, 0)
+  const sceneStart = SCENES.slice(0, done ? SCENES.length - 1 : idx).reduce((a, s) => s.dur + a, 0)
   const localT = Math.min(scene.dur, Math.max(0, elapsed - sceneStart))
 
-  const skip = () => jumpTo(TOTAL - scene.dur + 0.01) // start of epiloog
-  const replay = () => { setDone(false); setPaused(false); jumpTo(0) }
+  const skip = () => jumpTo(TOTAL - SCENES[SCENES.length - 1].dur + 0.01) // start of epiloog
+  const replay = () => {
+    finished.current = false
+    setDone(false)
+    setPaused(false)
+    jumpTo(0)
+  }
 
   return (
     <div className={`relative h-[100svh] overflow-hidden transition-colors duration-700 ${scene.bg} grain`}>
@@ -113,7 +152,11 @@ export function Film() {
           transition={{ duration: 0.45 }}
           className="absolute inset-0"
         >
-          <scene.Comp t={localT} />
+          {scene.id === 'epiloog' ? (
+            <SceneEpiloog t={localT} storyHref={storyHref} />
+          ) : (
+            <scene.Comp t={localT} />
+          )}
         </motion.div>
       </AnimatePresence>
 

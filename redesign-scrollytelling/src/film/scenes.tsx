@@ -1,5 +1,6 @@
 import { motion, AnimatePresence } from 'framer-motion'
 import { Duck } from '../components/brand'
+import { MinecraftLift, VideoEditIcon } from './MinecraftLift'
 
 /* Shared easing */
 const EASE = [0.22, 1, 0.36, 1] as const
@@ -78,43 +79,35 @@ export function SceneRaadsel({ t }: { t: number }) {
         En díézelfde Jayden…
       </motion.p>
 
-      {/* pixel lift rising */}
+      {/* the Minecraft lift — actually looks like one */}
       <motion.div
-        initial={{ opacity: 0, y: 40 }}
-        animate={t > 1.3 ? { opacity: 1, y: 0 } : {}}
+        initial={{ opacity: 0, y: 40, rotate: -1.5 }}
+        animate={t > 1.3 ? { opacity: 1, y: 0, rotate: -1.5 } : {}}
         transition={{ duration: 0.7, ease: EASE }}
-        className="mt-8 flex items-center gap-3 rounded-2xl border-[3px] border-ink bg-paper px-5 py-4 shadow-[6px_6px_0_0_rgba(23,20,14,1)]"
+        className="mt-8 flex items-center gap-4 rounded-2xl border-[3px] border-ink bg-paper px-5 py-4 shadow-[6px_6px_0_0_rgba(23,20,14,1)]"
       >
-        <div className="grid grid-cols-4 gap-1">
-          {Array.from({ length: 12 }).map((_, i) => (
-            <motion.span
-              key={i}
-              initial={{ scale: 0 }}
-              animate={t > 1.5 ? { scale: 1 } : {}}
-              transition={{ delay: 0.06 * i, type: 'spring', bounce: 0.6 }}
-              className={`h-4 w-4 md:h-5 md:w-5 rounded-[3px] border border-ink ${
-                [1, 5, 9].includes(i) ? 'bg-lime' : i % 3 === 0 ? 'bg-ink/70' : 'bg-ink/20'
-              }`}
-            />
-          ))}
-        </div>
+        <MinecraftLift t={t} />
         <p className="max-w-[220px] text-left text-sm md:text-base font-bold leading-snug">
           bouwde een werkende lift in Minecraft. Met redstone-logica.
         </p>
       </motion.div>
 
-      <motion.p
-        initial={{ opacity: 0, y: 20 }}
-        animate={t > 3.2 ? { opacity: 1, y: 0 } : {}}
-        transition={{ duration: 0.6, ease: EASE }}
-        className="mt-5 max-w-lg text-center text-base md:text-xl font-bold text-ink/75"
+      {/* the video-edit — now framed like the first card */}
+      <motion.div
+        initial={{ opacity: 0, y: 40, rotate: 1.5 }}
+        animate={t > 3.2 ? { opacity: 1, y: 0, rotate: 1.5 } : {}}
+        transition={{ duration: 0.7, ease: EASE }}
+        className="mt-5 flex items-center gap-4 rounded-2xl border-[3px] border-ink bg-paper px-5 py-4 shadow-[6px_6px_0_0_rgba(23,20,14,1)]"
       >
-        Maakte een video-edit die de hele groepsapp domineerde.
-      </motion.p>
+        <VideoEditIcon />
+        <p className="max-w-[220px] text-left text-sm md:text-base font-bold leading-snug">
+          Maakte een video-edit die de hele groepsapp domineerde.
+        </p>
+      </motion.div>
 
       <motion.p
         initial={{ opacity: 0, scale: 0.8, rotate: -2 }}
-        animate={t > 5.2 ? { opacity: 1, scale: 1, rotate: -1 } : {}}
+        animate={t > 5.8 ? { opacity: 1, scale: 1, rotate: -1 } : {}}
         transition={{ type: 'spring', bounce: 0.45 }}
         className="mt-9 rounded-2xl border-[3px] border-ink bg-ink px-6 py-4 font-display text-2xl md:text-4xl font-black text-lime shadow-[6px_6px_0_0_rgba(23,20,14,0.35)]"
       >
@@ -314,7 +307,7 @@ export function SceneBewijs({ t }: { t: number }) {
 }
 
 /* --------------------- Scene 5 · Epiloog (38–45s) ------------------------- */
-export function SceneEpiloog({ t }: { t: number }) {
+export function SceneEpiloog({ t, storyHref = '/' }: { t: number; storyHref?: string }) {
   return (
     <div className="flex h-full flex-col items-center justify-center px-6 text-center text-ink">
       <motion.div
@@ -353,7 +346,7 @@ export function SceneEpiloog({ t }: { t: number }) {
           Plan mijn pilot →
         </a>
         <a
-          href="/"
+          href={storyHref}
           className="rounded-full border-[3px] border-ink bg-paper px-8 py-4 font-bold text-ink shadow-[6px_6px_0_0_rgba(23,20,14,1)] transition-transform hover:-translate-y-0.5"
         >
           Bekijk de uitgebreide versie

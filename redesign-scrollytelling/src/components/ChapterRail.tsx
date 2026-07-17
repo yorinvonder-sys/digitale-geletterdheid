@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 
 export const CHAPTERS = [
+  { id: 'film', label: 'De film', num: '▶' },
   { id: 'proloog', label: 'Proloog', num: '·' },
   { id: 'probleem', label: 'Het probleem', num: '1' },
   { id: 'ontmoeting', label: 'De ontmoeting', num: '2' },
@@ -57,7 +58,8 @@ export function ChapterRail() {
                   : 'bg-paper text-ink opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0'
               }`}
             >
-              {c.num !== '·' && <span className="mr-1.5 text-lime-deep">{c.num}</span>}
+              {c.num !== '·' && c.num !== '▶' && <span className="mr-1.5 text-lime-deep">{c.num}</span>}
+              {c.num === '▶' && <span className="mr-1.5 text-lime-deep">▶</span>}
               {c.label}
             </span>
           </a>

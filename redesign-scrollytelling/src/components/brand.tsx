@@ -65,7 +65,7 @@ export function Duck({ size = 120, className = '' }: { size?: number; className?
 
 /* ------------------------------ LogoLockup --------------------------------- */
 /* Duck mark + wordmark, as used on the live site. */
-export function LogoLockup({ height = 34, className = '' }: { height?: number; className?: string }) {
+export function LogoLockup({ height = 34, dark = false, className = '' }: { height?: number; dark?: boolean; className?: string }) {
   return (
     <span className={`inline-flex items-center gap-2.5 ${className}`}>
       <img
@@ -74,7 +74,10 @@ export function LogoLockup({ height = 34, className = '' }: { height?: number; c
         style={{ height, width: height }}
         draggable={false}
       />
-      <span className="font-display font-black text-ink" style={{ fontSize: height * 0.62, letterSpacing: '-0.02em' }}>
+      <span
+        className={`font-display font-black ${dark ? 'text-paper' : 'text-ink'}`}
+        style={{ fontSize: height * 0.62, letterSpacing: '-0.02em' }}
+      >
         DGSkills
       </span>
     </span>
