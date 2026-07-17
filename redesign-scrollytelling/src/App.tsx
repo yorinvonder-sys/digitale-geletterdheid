@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Eyes, Marquee } from './components/brand'
+import { LogoLockup, Marquee } from './components/brand'
 import { ChapterRail, ScrollProgress } from './components/ChapterRail'
 import { Hero } from './sections/Hero'
 import { Problem } from './sections/Problem'
@@ -31,8 +31,7 @@ function Nav() {
         >
           <div className="mx-auto flex max-w-7xl items-center justify-between px-5 md:px-10 py-3">
             <a href="#proloog" className="flex items-center gap-2.5">
-              <Eyes size={26} />
-              <span className="font-display text-lg font-black text-ink">DGSkills</span>
+              <LogoLockup height={30} />
             </a>
             <div className="flex items-center gap-3">
               <a
