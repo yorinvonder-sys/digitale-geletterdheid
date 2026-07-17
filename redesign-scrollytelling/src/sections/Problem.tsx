@@ -67,10 +67,11 @@ export function Problem() {
 
             <motion.div style={{ opacity: beatBop, y: beatBy }} className="absolute inset-0 flex flex-col justify-center">
               <p className="font-display text-3xl md:text-5xl font-black leading-tight">
-                Negentien wachtwoorden kwijt. Vijf schermen op YouTube.
+                De helft van de klas komt niet eens ingelogd.
               </p>
               <p className="mt-5 max-w-md text-paper/70 text-base md:text-lg leading-relaxed">
-                En de voortgang? Die staat in een spreadsheet. Ergens. Waarschijnlijk.
+                De andere helft zit inmiddels op YouTube. En de voortgang? Die staat in een
+                spreadsheet. Ergens. Waarschijnlijk.
               </p>
             </motion.div>
 

@@ -1,4 +1,4 @@
-import { Reveal, Duck, Pill, Eyes } from '../components/brand'
+import { Reveal, Duck, Pill } from '../components/brand'
 
 const PILOT = [
   'Kickoff-call — wij bereiden ons voor, niet alleen jij',
@@ -48,12 +48,7 @@ export function Finale() {
 
           <div className="relative flex flex-col items-center">
             <Reveal delay={0.15}>
-              <div className="relative">
-                <Duck size={200} className="animate-bob" />
-                <div className="absolute -right-6 -top-4">
-                  <Eyes size={44} />
-                </div>
-              </div>
+              <Duck size={200} className="animate-bob" />
             </Reveal>
             <Reveal delay={0.25} className="mt-8 w-full max-w-sm">
               <div className="rounded-2xl border-[3px] border-ink bg-paper p-5 shadow-[6px_6px_0_0_rgba(23,20,14,1)]">
