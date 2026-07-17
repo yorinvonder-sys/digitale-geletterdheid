@@ -223,16 +223,38 @@ export function MiniMissionBuilder() {
                                         LEVEL 04 · CODEWERELD
                                     </span>
                                     <span className="inline-flex items-center gap-1.5 rounded-full bg-duck-acid px-3 py-1.5 text-xs font-black text-duck-ink">
-                                        <Star className="size-3.5 fill-current" aria-hidden="true" /> 0/1
+                                        <Star className="size-3.5 fill-current" aria-hidden="true" /> {state.result === 'success' ? '1/1' : '0/1'}
                                     </span>
                                 </div>
 
-                                <div className="absolute inset-x-[8%] bottom-[18%] flex items-end justify-between" aria-hidden="true">
-                                    {[Rocket, ArrowUp, Star].map((Icon, index) => (
-                                        <span key={index} className="grid size-9 place-items-center rounded-full border-2 border-white/70 bg-duck-ink/75 text-white shadow-lg">
-                                            <Icon className="size-4" />
-                                        </span>
-                                    ))}
+                                <div className="absolute inset-x-4 top-[4.5rem] z-10 text-center">
+                                    <span className="inline-flex rounded-full bg-duck-ink/80 px-3 py-1.5 text-[10px] font-black uppercase tracking-[0.12em] text-white backdrop-blur-sm">
+                                        Tik 3 commando&apos;s in volgorde
+                                    </span>
+                                </div>
+
+                                <div data-testid="game-board-controls" className="absolute inset-x-[7%] bottom-[20%] z-10 flex items-end justify-between gap-2">
+                                    {COMMANDS.map((item) => {
+                                        const step = state.commands.findIndex((command) => command === item.command);
+                                        const isSelected = step >= 0;
+                                        return (
+                                            <button
+                                                key={item.command}
+                                                type="button"
+                                                onClick={() => dispatch({ type: 'add', command: item.command })}
+                                                disabled={state.commands.length >= 3 || state.result === 'success'}
+                                                aria-label={`${item.label} toevoegen aan je route`}
+                                                className={`relative grid size-12 place-items-center rounded-full border-2 shadow-lg backdrop-blur-sm transition-all focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-duck-acid/60 disabled:cursor-not-allowed sm:size-14 ${isSelected ? 'border-duck-ink bg-duck-acid text-duck-ink' : 'border-white/80 bg-duck-ink/80 text-white hover:-translate-y-1 hover:bg-duck-error'} disabled:hover:translate-y-0`}
+                                            >
+                                                {item.icon}
+                                                {isSelected && (
+                                                    <span className="absolute -right-1 -top-1 grid size-5 place-items-center rounded-full bg-duck-error text-[10px] font-black text-white">
+                                                        {step + 1}
+                                                    </span>
+                                                )}
+                                            </button>
+                                        );
+                                    })}
                                 </div>
 
                                 <motion.div
@@ -253,6 +275,16 @@ export function MiniMissionBuilder() {
                                     <DuckMark className="size-10 object-contain" />
                                 </motion.div>
 
+                                <button
+                                    type="button"
+                                    onClick={() => dispatch({ type: 'run' })}
+                                    disabled={!isReady || state.result === 'success'}
+                                    className="absolute bottom-4 right-4 z-10 inline-flex min-h-11 items-center gap-2 rounded-full border-2 border-white/70 bg-duck-ink/90 px-4 text-xs font-black text-duck-acid shadow-lg backdrop-blur-sm transition-transform hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-45 disabled:hover:translate-y-0 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-duck-acid/60"
+                                >
+                                    <Play className="size-3.5 fill-current" aria-hidden="true" />
+                                    Test route
+                                </button>
+
                                 <AnimatePresence>
                                     {state.result === 'success' && (
                                         <motion.div
@@ -266,7 +298,32 @@ export function MiniMissionBuilder() {
                                                 <Sparkles className="mx-auto size-6 text-duck-ink" aria-hidden="true" />
                                                 <p className="mt-2 font-display text-3xl leading-none text-duck-ink">Level gehaald!</p>
                                                 <p className="mt-2 text-sm font-extrabold text-duck-ink/65">Je programma werkt.</p>
+                                                <button
+                                                    type="button"
+                                                    onClick={() => dispatch({ type: 'reset' })}
+                                                    className="mt-4 inline-flex min-h-11 items-center gap-2 rounded-full bg-duck-ink px-4 text-xs font-black text-duck-acid focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-white"
+                                                >
+                                                    <RotateCcw className="size-3.5" aria-hidden="true" />
+                                                    Nog een keer
+                                                </button>
                                             </div>
+                                        </motion.div>
+                                    )}
+                                    {state.result === 'retry' && (
+                                        <motion.div
+                                            initial={{ opacity: 0, y: 8 }}
+                                            animate={{ opacity: 1, y: 0 }}
+                                            exit={{ opacity: 0, y: 8 }}
+                                            className="absolute inset-x-4 bottom-20 z-20 flex justify-center"
+                                        >
+                                            <button
+                                                type="button"
+                                                onClick={() => dispatch({ type: 'reset' })}
+                                                className="inline-flex min-h-11 items-center gap-2 rounded-full border-2 border-white bg-duck-error px-4 text-xs font-black text-white shadow-lg focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-duck-acid/60"
+                                            >
+                                                <RotateCcw className="size-3.5" aria-hidden="true" />
+                                                Probeer opnieuw
+                                            </button>
                                         </motion.div>
                                     )}
                                 </AnimatePresence>

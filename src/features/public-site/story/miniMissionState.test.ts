@@ -47,6 +47,9 @@ test('mini mission exposes accessible controls and teacher evidence', async () =
 
     for (const expected of [
         'Test mijn game',
+        'Test route',
+        'Nog een keer',
+        'data-testid="game-board-controls"',
         'Programma wissen',
         'aria-live="polite"',
         'Computational thinking',
@@ -96,6 +99,27 @@ test('second preview integrates human classroom visuals and the guided mission r
     }
 
     assert.doesNotMatch(source, /bottom-\[0\.06em\]/);
+});
+
+test('mobile story content stays inside the viewport and dashboard controls are real buttons', async () => {
+    const source = await readFile(
+        new URL('../ScholenLandingStory.tsx', import.meta.url),
+        'utf8',
+    );
+
+    for (const expected of [
+        'data-testid="hero-story-grid"',
+        'data-testid="hero-proof-badge"',
+        'left-3 right-3',
+        'aria-label={`Leerling ${index + 1}:',
+        'Bekijk leerling 14',
+        'Help leerling 19',
+        'aria-live="polite"',
+    ]) {
+        assert.ok(source.includes(expected), `expected story source to include ${expected}`);
+    }
+
+    assert.doesNotMatch(source, /border-b-\[0\.09em\]/);
 });
 
 test('public route and critical shell render the new story homepage', async () => {

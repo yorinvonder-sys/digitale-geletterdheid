@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useReducer, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import {
     ArrowDown,
@@ -32,6 +32,11 @@ import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion';
 import { KeesNarrator } from '@/features/public-site/story/KeesNarrator';
 import { MiniMissionBuilder } from '@/features/public-site/story/MiniMissionBuilder';
 import { MissionWalkthrough } from '@/features/public-site/story/MissionWalkthrough';
+import {
+    INITIAL_LESSON_STAGE_STATE,
+    activeStudentCount,
+    lessonStageReducer,
+} from '@/features/public-site/story/lessonStageState';
 
 const LESSON_CHAPTERS = [
     {
@@ -240,9 +245,9 @@ function HeroLessonPreview({ reduceMotion }: { reduceMotion: boolean }) {
             initial={reduceMotion ? false : { opacity: 0, y: 34 }}
             animate={reduceMotion ? undefined : { opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
-            className="relative mx-auto w-full max-w-[640px] pb-8"
+            className="relative mx-auto min-w-0 w-full max-w-[640px] pb-8"
         >
-            <div className="overflow-hidden rounded-[2rem] border-2 border-duck-ink bg-white shadow-[10px_12px_0_#202023]">
+            <div className="min-w-0 max-w-full overflow-hidden rounded-[2rem] border-2 border-duck-ink bg-white shadow-[8px_10px_0_#202023] sm:shadow-[10px_12px_0_#202023]">
                 <div className="relative aspect-[1.45/1] min-h-[360px] overflow-hidden sm:min-h-[430px]">
                     <img
                         src="/assets/story/students-coding-dgskills.webp"
@@ -252,8 +257,8 @@ function HeroLessonPreview({ reduceMotion }: { reduceMotion: boolean }) {
                         decoding="async"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-duck-ink/80 via-transparent to-transparent" aria-hidden="true" />
-                    <div className="absolute inset-x-4 bottom-4 flex flex-wrap items-end justify-between gap-3 sm:inset-x-6 sm:bottom-6">
-                        <div className="max-w-sm text-white">
+                    <div className="absolute inset-x-4 bottom-4 flex min-w-0 flex-wrap items-end justify-between gap-3 sm:inset-x-6 sm:bottom-6">
+                        <div className="min-w-0 max-w-sm text-white">
                             <p className="text-[10px] font-black uppercase tracking-[0.16em] text-duck-acid">09:20 · aan het bouwen</p>
                             <p className="mt-1 text-lg font-extrabold leading-6 sm:text-xl">Samen testen tot het werkt.</p>
                         </div>
@@ -266,10 +271,11 @@ function HeroLessonPreview({ reduceMotion }: { reduceMotion: boolean }) {
                 initial={reduceMotion ? false : { opacity: 0, scale: 0.85, x: 14 }}
                 animate={reduceMotion ? undefined : { opacity: 1, scale: 1, x: 0 }}
                 transition={{ duration: 0.6, delay: 0.9 }}
-                className="absolute bottom-0 right-3 flex items-center gap-3 rounded-2xl border-2 border-duck-ink bg-duck-acid px-4 py-3 shadow-[5px_6px_0_#202023] sm:-right-5 sm:px-5"
+                data-testid="hero-proof-badge"
+                className="absolute bottom-0 left-3 right-3 flex min-w-0 items-center gap-3 rounded-2xl border-2 border-duck-ink bg-duck-acid px-4 py-3 shadow-[4px_5px_0_#202023] sm:left-auto sm:-right-5 sm:px-5 sm:shadow-[5px_6px_0_#202023]"
             >
-                <span className="grid size-9 place-items-center rounded-full bg-duck-ink text-duck-acid"><Check className="size-5" strokeWidth={3} aria-hidden="true" /></span>
-                <div>
+                <span className="grid size-9 shrink-0 place-items-center rounded-full bg-duck-ink text-duck-acid"><Check className="size-5" strokeWidth={3} aria-hidden="true" /></span>
+                <div className="min-w-0">
                     <p className="text-[10px] font-black uppercase tracking-[0.14em] text-duck-ink/45">Automatisch zichtbaar</p>
                     <p className="text-sm font-extrabold text-duck-ink">SLO 22B · bewijs</p>
                 </div>
@@ -283,8 +289,8 @@ function HeroSection() {
 
     return (
         <section className="relative overflow-hidden bg-duck-bg px-4 pb-24 pt-28 sm:px-6 md:pb-32 md:pt-36 lg:px-10">
-            <div className="relative mx-auto grid min-h-[720px] max-w-7xl items-center gap-16 lg:grid-cols-[0.92fr_1.08fr] lg:gap-12">
-                <div className="relative z-10">
+            <div data-testid="hero-story-grid" className="relative mx-auto grid min-h-[720px] min-w-0 max-w-7xl items-center gap-16 lg:grid-cols-[minmax(0,0.92fr)_minmax(0,1.08fr)] lg:gap-12">
+                <div className="relative z-10 min-w-0 max-w-full">
                     <motion.p
                         initial={reduceMotion ? false : { opacity: 0, y: 16 }}
                         animate={reduceMotion ? undefined : { opacity: 1, y: 0 }}
@@ -299,13 +305,13 @@ function HeroSection() {
                         transition={{ duration: 0.7, delay: 0.08, ease: [0.22, 1, 0.36, 1] }}
                         className="mt-7 max-w-[9.5ch] text-balance font-display text-[clamp(3.15rem,7.3vw,7rem)] leading-[1.01] tracking-[-0.025em] text-duck-ink sm:leading-[0.97] lg:leading-[0.93] lg:tracking-[-0.045em]"
                     >
-                        Eén les.<br />Van eerste klik tot <span className="inline border-b-[0.09em] border-duck-acid pb-[0.02em]">zichtbaar bewijs.</span>
+                        Eén les.<br />Van eerste klik tot <span className="text-duck-error">zichtbaar bewijs.</span>
                     </motion.h1>
                     <motion.p
                         initial={reduceMotion ? false : { opacity: 0, y: 20 }}
                         animate={reduceMotion ? undefined : { opacity: 1, y: 0 }}
                         transition={{ duration: 0.65, delay: 0.18 }}
-                        className="mt-7 max-w-xl text-pretty text-base font-semibold leading-7 text-duck-ink/68 sm:text-lg sm:leading-8"
+                        className="mt-7 min-w-0 max-w-xl break-words text-pretty text-base font-semibold leading-7 text-duck-ink/68 sm:text-lg sm:leading-8"
                     >
                         Leerlingen bouwen games, websites en AI-projecten. Jij ziet tijdens de les wie vooruitgaat, waar hulp nodig is en welk leerdoel zichtbaar wordt.
                     </motion.p>
@@ -313,12 +319,12 @@ function HeroSection() {
                         initial={reduceMotion ? false : { opacity: 0, y: 18 }}
                         animate={reduceMotion ? undefined : { opacity: 1, y: 0 }}
                         transition={{ duration: 0.6, delay: 0.28 }}
-                        className="mt-9 flex flex-col gap-3 sm:flex-row"
+                        className="mt-9 flex min-w-0 flex-col gap-3 sm:flex-row"
                     >
-                        <a href="/pilot" className="inline-flex min-h-[54px] items-center justify-center gap-2 rounded-full border-2 border-duck-ink bg-duck-ink px-7 text-base font-extrabold text-duck-acid transition-all hover:-translate-y-0.5 hover:bg-duck-error hover:text-white focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-duck-error/30">
+                        <a href="/pilot" className="inline-flex min-h-[54px] w-full min-w-0 items-center justify-center gap-2 rounded-full border-2 border-duck-ink bg-duck-ink px-5 text-center text-base font-extrabold text-duck-acid transition-all hover:-translate-y-0.5 hover:bg-duck-error hover:text-white focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-duck-error/30 sm:w-auto sm:px-7">
                             Plan een schoolpilot <ArrowRight className="size-5" aria-hidden="true" />
                         </a>
-                        <a href="#missies" className="inline-flex min-h-[54px] items-center justify-center gap-2 rounded-full border-2 border-duck-ink bg-white px-7 text-base font-extrabold text-duck-ink transition-transform hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-duck-error/30">
+                        <a href="#missies" className="inline-flex min-h-[54px] w-full min-w-0 items-center justify-center gap-2 rounded-full border-2 border-duck-ink bg-white px-5 text-center text-base font-extrabold text-duck-ink transition-transform hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-duck-error/30 sm:w-auto sm:px-7">
                             Bekijk een echte opdracht <Play className="size-4 fill-current" aria-hidden="true" />
                         </a>
                     </motion.div>
@@ -326,14 +332,14 @@ function HeroSection() {
                         initial={reduceMotion ? false : { opacity: 0 }}
                         animate={reduceMotion ? undefined : { opacity: 1 }}
                         transition={{ duration: 0.8, delay: 0.45 }}
-                        className="mt-8 flex flex-wrap gap-x-5 gap-y-2 text-xs font-extrabold text-duck-ink/55"
+                        className="mt-8 grid min-w-0 gap-2 text-xs font-extrabold text-duck-ink/55 sm:flex sm:flex-wrap sm:gap-x-5 sm:gap-y-2"
                     >
                         <span className="inline-flex items-center gap-1.5"><CheckCircle2 className="size-4" aria-hidden="true" /> Kant-en-klare missies</span>
                         <span className="inline-flex items-center gap-1.5"><CheckCircle2 className="size-4" aria-hidden="true" /> SLO gekoppeld</span>
                         <span className="inline-flex items-center gap-1.5"><CheckCircle2 className="size-4" aria-hidden="true" /> Start met één klas</span>
                     </motion.div>
                     <KeesNarrator
-                        className="mt-8 max-w-xl"
+                        className="mt-8 min-w-0 max-w-xl"
                         eyebrow="Kees neemt je mee"
                         message="Scroll niet alleen langs functies. Kies zo meteen zelf een missie en ervaar hoe een leerling van opdracht naar bewijs gaat."
                         tone="paper"
@@ -353,6 +359,23 @@ function HeroSection() {
 function LessonStage({ active, compact = false }: { active: number; compact?: boolean }) {
     const chapter = LESSON_CHAPTERS[active];
     const reduceMotion = usePrefersReducedMotion();
+    const [stageState, dispatchStage] = useReducer(
+        lessonStageReducer,
+        INITIAL_LESSON_STAGE_STATE,
+    );
+    const activeCount = activeStudentCount(stageState);
+    const stageStat = active === 1
+        ? `${activeCount} van 28 actief`
+        : active === 2
+            ? `${stageState.studentHelped ? 2 : 3} signalen`
+            : chapter.stat;
+    const stageDetail = active === 1
+        ? `${28 - activeCount} leerlingen lezen de uitleg`
+        : active === 2
+            ? stageState.studentHelped
+                ? 'Hulpvraag van leerling 19 is opgepakt'
+                : 'Eén leerling vraagt om hulp'
+            : chapter.detail;
 
     return (
         <div className={`overflow-hidden rounded-[1.8rem] border-2 border-duck-ink bg-white shadow-[7px_8px_0_#202023] ${compact ? 'mt-7' : ''}`}>
@@ -395,21 +418,26 @@ function LessonStage({ active, compact = false }: { active: number; compact?: bo
 
                         {active === 1 && (
                             <div className="rounded-2xl bg-duck-bg p-5">
-                                <div className="flex items-center justify-between">
+                                <div className="flex flex-wrap items-center justify-between gap-3">
                                     <div>
                                         <p className="text-[10px] font-black uppercase tracking-[0.18em] text-duck-ink/40">Live voortgang</p>
-                                        <p className="mt-1 font-display text-4xl leading-none text-duck-ink">24/28</p>
+                                        <p className="mt-1 font-display text-4xl leading-none text-duck-ink" aria-live="polite">{activeCount}/28</p>
                                     </div>
                                     <span className="rounded-full bg-duck-acid px-3 py-1.5 text-xs font-black text-duck-ink">Klas gestart</span>
                                 </div>
-                                <div className="mt-6 grid grid-cols-7 gap-2" aria-hidden="true">
-                                    {Array.from({ length: 28 }, (_, index) => (
-                                        <motion.span
+                                <p className="mt-4 text-xs font-bold leading-5 text-duck-ink/55">Tik een leerling aan om de live status te wijzigen.</p>
+                                <div data-testid="student-activity-grid" className="mt-3 grid grid-cols-7 gap-2">
+                                    {stageState.activeStudents.map((isActive, index) => (
+                                        <motion.button
                                             key={index}
+                                            type="button"
+                                            onClick={() => dispatchStage({ type: 'toggle-student', index })}
                                             initial={reduceMotion ? false : { opacity: 0, scale: 0.5 }}
                                             animate={{ opacity: 1, scale: 1 }}
                                             transition={{ delay: reduceMotion ? 0 : index * 0.015 }}
-                                            className={`aspect-square rounded-md ${index < 24 ? 'bg-duck-ink' : 'border border-duck-ink/15 bg-white'}`}
+                                            className={`aspect-square min-h-8 rounded-md transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-error focus-visible:ring-offset-2 ${isActive ? 'bg-duck-ink' : 'border border-duck-ink/20 bg-white'}`}
+                                            aria-pressed={isActive}
+                                            aria-label={`Leerling ${index + 1}: ${isActive ? 'actief' : 'leest uitleg'}`}
                                         />
                                     ))}
                                 </div>
@@ -429,18 +457,54 @@ function LessonStage({ active, compact = false }: { active: number; compact?: bo
                                     <span className="absolute bottom-3 left-3 rounded-full bg-duck-ink/85 px-3 py-1.5 text-[10px] font-black uppercase tracking-[0.12em] text-duck-acid backdrop-blur-sm">Coach waar het telt</span>
                                 </div>
                                 <div className="mt-3 space-y-2">
-                                    {[
-                                        ['Leerling 14', 'Probeert stap 2 opnieuw', 'Bekijk'],
-                                        ['Leerling 19', 'Heeft om hulp gevraagd', 'Help'],
-                                    ].map(([student, signal, action], index) => (
-                                        <div key={student} className={`flex items-center justify-between gap-3 rounded-xl border px-3.5 py-3 ${index === 1 ? 'border-duck-error bg-duck-error/[0.07]' : 'border-duck-ink/10 bg-white'}`}>
-                                            <div className="min-w-0">
-                                                <p className="text-xs font-extrabold text-duck-ink">{student}</p>
-                                                <p className="truncate text-[11px] font-semibold text-duck-ink/50">{signal}</p>
-                                            </div>
-                                            <span className={`rounded-full px-3 py-1.5 text-[10px] font-black ${index === 1 ? 'bg-duck-error text-white' : 'bg-duck-bg text-duck-ink'}`}>{action}</span>
+                                    <div className={`flex min-w-0 items-center justify-between gap-3 rounded-xl border px-3.5 py-3 ${stageState.selectedStudent === '14' ? 'border-duck-ink bg-duck-acid/20' : 'border-duck-ink/10 bg-white'}`}>
+                                        <div className="min-w-0">
+                                            <p className="text-xs font-extrabold text-duck-ink">Leerling 14</p>
+                                            <p className="text-[11px] font-semibold leading-4 text-duck-ink/50">Probeert stap 2 opnieuw</p>
                                         </div>
-                                    ))}
+                                        <button
+                                            type="button"
+                                            onClick={() => dispatchStage({ type: 'view-signal', student: '14' })}
+                                            aria-label="Bekijk leerling 14"
+                                            aria-pressed={stageState.selectedStudent === '14'}
+                                            className="min-h-10 shrink-0 rounded-full bg-duck-bg px-3 text-[10px] font-black text-duck-ink transition-colors hover:bg-duck-acid focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-ink"
+                                        >
+                                            Bekijk
+                                        </button>
+                                    </div>
+                                    <div className={`flex min-w-0 items-center justify-between gap-3 rounded-xl border px-3.5 py-3 ${stageState.studentHelped ? 'border-duck-ink/10 bg-duck-acid/20' : 'border-duck-error bg-duck-error/[0.07]'}`}>
+                                        <div className="min-w-0">
+                                            <p className="text-xs font-extrabold text-duck-ink">Leerling 19</p>
+                                            <p className="text-[11px] font-semibold leading-4 text-duck-ink/50">{stageState.studentHelped ? 'Hulp is onderweg' : 'Heeft om hulp gevraagd'}</p>
+                                        </div>
+                                        <button
+                                            type="button"
+                                            onClick={() => dispatchStage({ type: 'help-student' })}
+                                            aria-label="Help leerling 19"
+                                            aria-pressed={stageState.studentHelped}
+                                            className={`min-h-10 shrink-0 rounded-full px-3 text-[10px] font-black transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-ink ${stageState.studentHelped ? 'bg-duck-ink text-duck-acid' : 'bg-duck-error text-white hover:bg-duck-ink'}`}
+                                        >
+                                            {stageState.studentHelped ? 'Geholpen' : 'Help'}
+                                        </button>
+                                    </div>
+                                    <AnimatePresence mode="wait">
+                                        {stageState.selectedStudent && (
+                                            <motion.div
+                                                key={`${stageState.selectedStudent}-${stageState.studentHelped}`}
+                                                initial={reduceMotion ? false : { opacity: 0, y: -6 }}
+                                                animate={{ opacity: 1, y: 0 }}
+                                                exit={reduceMotion ? undefined : { opacity: 0, y: -4 }}
+                                                className="rounded-xl bg-duck-ink px-4 py-3 text-xs font-bold leading-5 text-white"
+                                                aria-live="polite"
+                                            >
+                                                {stageState.selectedStudent === '14'
+                                                    ? 'Stap 2: de sprong staat vóór de boost. Open het project en geef een denkprompt.'
+                                                    : stageState.studentHelped
+                                                        ? 'Kees meldt leerling 19 dat je onderweg bent. De hulpvraag staat als opgepakt.'
+                                                        : 'Leerling 19 wacht op hulp bij de volgorde van de commando’s.'}
+                                            </motion.div>
+                                        )}
+                                    </AnimatePresence>
                                 </div>
                             </div>
                         )}
@@ -460,10 +524,10 @@ function LessonStage({ active, compact = false }: { active: number; compact?: bo
                             </div>
                         )}
 
-                        <div className="mt-4 flex items-center justify-between gap-3 border-t border-duck-ink/10 pt-4">
-                            <div>
-                                <p className="text-sm font-extrabold text-duck-ink">{chapter.stat}</p>
-                                <p className="text-xs font-semibold text-duck-ink/48">{chapter.detail}</p>
+                        <div className="mt-4 flex items-center justify-between gap-3 border-t border-duck-ink/10 pt-4" aria-live="polite">
+                            <div className="min-w-0">
+                                <p className="text-sm font-extrabold text-duck-ink">{stageStat}</p>
+                                <p className="text-xs font-semibold leading-5 text-duck-ink/48">{stageDetail}</p>
                             </div>
                             <span className="grid size-9 place-items-center rounded-full bg-duck-ink text-duck-acid"><CheckCircle2 className="size-4" aria-hidden="true" /></span>
                         </div>

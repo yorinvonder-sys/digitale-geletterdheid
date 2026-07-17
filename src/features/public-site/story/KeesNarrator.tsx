@@ -25,7 +25,7 @@ export function KeesNarrator({
 
     return (
         <aside
-            className={`grid gap-3 sm:grid-cols-[4.5rem_1fr] sm:items-center ${className}`}
+            className={`grid min-w-0 max-w-full gap-3 sm:grid-cols-[4.5rem_minmax(0,1fr)] sm:items-center ${className}`}
             aria-label="Uitleg van Kees"
         >
             <motion.div
@@ -47,7 +47,7 @@ export function KeesNarrator({
                 initial={reduceMotion ? false : { opacity: 0, x: -8 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: reduceMotion ? 0 : 0.32 }}
-                className={`relative rounded-[1.35rem] border px-4 py-3.5 sm:px-5 ${toneClasses[tone]}`}
+                className={`relative min-w-0 max-w-full rounded-[1.35rem] border px-4 py-3.5 sm:px-5 ${toneClasses[tone]}`}
             >
                 <span
                     className="absolute -left-2 top-7 hidden size-4 rotate-45 border-b border-l border-inherit bg-inherit sm:block"
@@ -56,7 +56,7 @@ export function KeesNarrator({
                 <p className={`text-[10px] font-black uppercase tracking-[0.14em] ${tone === 'ink' ? 'text-duck-acid/70' : 'text-duck-error'}`}>
                     {eyebrow}
                 </p>
-                <p className={`mt-1.5 text-sm font-extrabold leading-5 ${tone === 'ink' ? 'text-white/82' : 'text-duck-ink/75'}`}>
+                <p className={`mt-1.5 break-words text-sm font-extrabold leading-5 ${tone === 'ink' ? 'text-white/82' : 'text-duck-ink/75'}`}>
                     {message}
                 </p>
             </motion.div>
