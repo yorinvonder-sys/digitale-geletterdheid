@@ -266,7 +266,7 @@ export function StudentJourney() {
     <section id="mila" ref={ref} className="relative h-[560vh] bg-paper-soft grain">
       <div className="sticky top-0 flex h-screen flex-col overflow-hidden">
         <div className="flex items-center justify-between px-6 md:px-14 pt-20 md:pt-24">
-          <Pill>Hoofdstuk 3 · Mila, leerjaar 2</Pill>
+          <Pill>Hoofdstuk 2 · Mila, leerjaar 2</Pill>
           <div className="flex items-center gap-1.5">
             {BEATS.map((b, i) => (
               <span
