@@ -82,15 +82,20 @@ test('selecting another mission resets its stage and choices', () => {
     });
 });
 
-test('Kees narrator uses the official duck and an announced message', async () => {
-    const source = await readFile(
-        new URL('./KeesNarrator.tsx', import.meta.url),
-        'utf8',
-    );
+test('mascot is limited to the two official logos and one purposeful assignment guide', async () => {
+    const [story, walkthrough, guide, game] = await Promise.all([
+        readFile(new URL('../ScholenLandingStory.tsx', import.meta.url), 'utf8'),
+        readFile(new URL('./MissionWalkthrough.tsx', import.meta.url), 'utf8'),
+        readFile(new URL('./AssignmentGuide.tsx', import.meta.url), 'utf8'),
+        readFile(new URL('./GameProgrammerDemo.tsx', import.meta.url), 'utf8'),
+    ]);
 
-    assert.match(source, /@\/components\/brand\/DuckMark/);
-    assert.match(source, /aria-live=/);
-    assert.doesNotMatch(source, /generated_images|localStorage|fetch\(/);
+    assert.equal((story.match(/<DuckMark/g) ?? []).length, 2);
+    assert.doesNotMatch(story, /KeesNarrator/);
+    assert.doesNotMatch(walkthrough, /KeesNarrator|DuckMark/);
+    assert.match(guide, /\/assets\/story\/assignment-guide-kees\.webp/);
+    assert.match(guide, /aria-live=/);
+    assert.equal((game.match(/<AssignmentGuide/g) ?? []).length, 1);
 });
 
 test('mission walkthrough exposes three missions and explicit step navigation', async () => {

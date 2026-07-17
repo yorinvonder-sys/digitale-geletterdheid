@@ -29,12 +29,11 @@ import {
 } from 'lucide-react';
 import { DuckMark } from '@/components/brand/DuckMark';
 import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion';
-import { KeesNarrator } from '@/features/public-site/story/KeesNarrator';
-import { MiniMissionBuilder } from '@/features/public-site/story/MiniMissionBuilder';
+import { GameProgrammerDemo } from '@/features/public-site/story/GameProgrammerDemo';
 import { MissionWalkthrough } from '@/features/public-site/story/MissionWalkthrough';
+import { TeacherActionDemo } from '@/features/public-site/story/TeacherActionDemo';
 import {
     INITIAL_LESSON_STAGE_STATE,
-    activeStudentCount,
     lessonStageReducer,
 } from '@/features/public-site/story/lessonStageState';
 
@@ -338,12 +337,10 @@ function HeroSection() {
                         <span className="inline-flex items-center gap-1.5"><CheckCircle2 className="size-4" aria-hidden="true" /> SLO gekoppeld</span>
                         <span className="inline-flex items-center gap-1.5"><CheckCircle2 className="size-4" aria-hidden="true" /> Start met één klas</span>
                     </motion.div>
-                    <KeesNarrator
-                        className="mt-8 min-w-0 max-w-xl"
-                        eyebrow="Kees neemt je mee"
-                        message="Scroll niet alleen langs functies. Kies zo meteen zelf een missie en ervaar hoe een leerling van opdracht naar bewijs gaat."
-                        tone="paper"
-                    />
+                    <div className="mt-8 flex min-w-0 max-w-xl items-start gap-3 rounded-2xl border border-duck-ink/12 bg-white px-4 py-4 sm:px-5">
+                        <span className="grid size-10 shrink-0 place-items-center rounded-xl bg-duck-ink text-duck-acid"><Route className="size-5" aria-hidden="true" /></span>
+                        <div className="min-w-0"><p className="text-[10px] font-black uppercase tracking-[0.14em] text-duck-error">Wat je gaat ervaren</p><p className="mt-1 text-sm font-extrabold leading-5 text-duck-ink/70">Kies zelf een missie en volg één leerling van opdracht naar zichtbaar bewijs.</p></div>
+                    </div>
                 </div>
 
                 <HeroLessonPreview reduceMotion={reduceMotion} />
@@ -363,15 +360,10 @@ function LessonStage({ active, compact = false }: { active: number; compact?: bo
         lessonStageReducer,
         INITIAL_LESSON_STAGE_STATE,
     );
-    const activeCount = activeStudentCount(stageState);
-    const stageStat = active === 1
-        ? `${activeCount} van 28 actief`
-        : active === 2
+    const stageStat = active === 2
             ? `${stageState.studentHelped ? 2 : 3} signalen`
             : chapter.stat;
-    const stageDetail = active === 1
-        ? `${28 - activeCount} leerlingen lezen de uitleg`
-        : active === 2
+    const stageDetail = active === 2
             ? stageState.studentHelped
                 ? 'Hulpvraag van leerling 19 is opgepakt'
                 : 'Eén leerling vraagt om hulp'
@@ -417,31 +409,7 @@ function LessonStage({ active, compact = false }: { active: number; compact?: bo
                         )}
 
                         {active === 1 && (
-                            <div className="rounded-2xl bg-duck-bg p-5">
-                                <div className="flex flex-wrap items-center justify-between gap-3">
-                                    <div>
-                                        <p className="text-[10px] font-black uppercase tracking-[0.18em] text-duck-ink/40">Live voortgang</p>
-                                        <p className="mt-1 font-display text-4xl leading-none text-duck-ink" aria-live="polite">{activeCount}/28</p>
-                                    </div>
-                                    <span className="rounded-full bg-duck-acid px-3 py-1.5 text-xs font-black text-duck-ink">Klas gestart</span>
-                                </div>
-                                <p className="mt-4 text-xs font-bold leading-5 text-duck-ink/55">Tik een leerling aan om de live status te wijzigen.</p>
-                                <div data-testid="student-activity-grid" className="mt-3 grid grid-cols-7 gap-2">
-                                    {stageState.activeStudents.map((isActive, index) => (
-                                        <motion.button
-                                            key={index}
-                                            type="button"
-                                            onClick={() => dispatchStage({ type: 'toggle-student', index })}
-                                            initial={reduceMotion ? false : { opacity: 0, scale: 0.5 }}
-                                            animate={{ opacity: 1, scale: 1 }}
-                                            transition={{ delay: reduceMotion ? 0 : index * 0.015 }}
-                                            className={`aspect-square min-h-8 rounded-md transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-error focus-visible:ring-offset-2 ${isActive ? 'bg-duck-ink' : 'border border-duck-ink/20 bg-white'}`}
-                                            aria-pressed={isActive}
-                                            aria-label={`Leerling ${index + 1}: ${isActive ? 'actief' : 'leest uitleg'}`}
-                                        />
-                                    ))}
-                                </div>
-                            </div>
+                            <TeacherActionDemo reduceMotion={reduceMotion} />
                         )}
 
                         {active === 2 && (
@@ -524,13 +492,13 @@ function LessonStage({ active, compact = false }: { active: number; compact?: bo
                             </div>
                         )}
 
-                        <div className="mt-4 flex items-center justify-between gap-3 border-t border-duck-ink/10 pt-4" aria-live="polite">
+                        {active !== 1 && <div className="mt-4 flex items-center justify-between gap-3 border-t border-duck-ink/10 pt-4" aria-live="polite">
                             <div className="min-w-0">
                                 <p className="text-sm font-extrabold text-duck-ink">{stageStat}</p>
                                 <p className="text-xs font-semibold leading-5 text-duck-ink/48">{stageDetail}</p>
                             </div>
                             <span className="grid size-9 place-items-center rounded-full bg-duck-ink text-duck-acid"><CheckCircle2 className="size-4" aria-hidden="true" /></span>
-                        </div>
+                        </div>}
                     </motion.div>
                 </AnimatePresence>
             </div>
@@ -629,11 +597,10 @@ function ProjectGallery() {
                         <span className="absolute bottom-4 left-4 rounded-full bg-duck-acid px-3 py-1.5 text-[10px] font-black uppercase tracking-[0.12em] text-duck-ink">Van maker naar verteller</span>
                     </div>
                     <div className="p-5 sm:p-7 lg:p-9">
-                        <KeesNarrator
-                            eyebrow="Kees vertelt"
-                            message="Het project is niet het eindpunt. Leerlingen laten ook zien welke keuzes ze maakten, wat misging en hoe ze het verbeterden."
-                            tone="acid"
-                        />
+                        <div className="rounded-2xl border border-white/15 bg-white/[0.08] p-5">
+                            <p className="text-[10px] font-black uppercase tracking-[0.14em] text-duck-acid">Van product naar bewijs</p>
+                            <p className="mt-2 text-sm font-extrabold leading-6 text-white/82">Leerlingen laten zien welke keuzes ze maakten, wat misging en hoe ze hun project verbeterden.</p>
+                        </div>
                         <p className="mt-6 text-sm font-semibold leading-6 text-white/58">Zo wordt een game, website of bronnenonderzoek tegelijk een gesprek over digitale vaardigheden.</p>
                     </div>
                 </Reveal>
@@ -683,12 +650,10 @@ function TeacherEvidence() {
                             <li key={item} className="flex items-center gap-3 text-sm font-extrabold text-duck-ink"><span className="grid size-7 place-items-center rounded-full bg-duck-acid"><Check className="size-4" strokeWidth={3} aria-hidden="true" /></span>{item}</li>
                         ))}
                     </ul>
-                    <KeesNarrator
-                        className="mt-8 max-w-xl"
-                        eyebrow="Kees rondt af"
-                        message="De leerling ziet een afgerond project. Jij ziet daarnaast de voortgang, reflectie en het gekoppelde leerdoel."
-                        tone="acid"
-                    />
+                    <div className="mt-8 max-w-xl rounded-2xl border border-duck-ink/15 bg-duck-acid px-5 py-4">
+                        <p className="text-[10px] font-black uppercase tracking-[0.14em] text-duck-ink/45">Twee perspectieven</p>
+                        <p className="mt-1.5 text-sm font-extrabold leading-6 text-duck-ink/72">De leerling ziet een afgerond project. Jij ziet daarnaast de voortgang, reflectie en het gekoppelde leerdoel.</p>
+                    </div>
                     <a href="/docentdemo" className="mt-8 inline-flex min-h-12 items-center gap-2 rounded-full border-2 border-duck-ink bg-white px-6 text-sm font-extrabold text-duck-ink transition-transform hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-duck-error/30">Bekijk de docentdemo <ArrowRight className="size-4" aria-hidden="true" /></a>
                 </Reveal>
 
@@ -764,7 +729,6 @@ function SchoolPilot() {
                 <Reveal className="mt-12 overflow-hidden rounded-[2rem] border-2 border-duck-ink bg-duck-acid shadow-[9px_10px_0_#202023]" delay={0.1}>
                     <div className="grid items-center gap-8 px-5 py-9 sm:px-8 md:py-12 lg:grid-cols-[0.8fr_1.2fr] lg:px-12">
                         <div className="flex items-center gap-5">
-                            <span className="hidden size-24 shrink-0 place-items-center rounded-full border-2 border-duck-ink bg-white sm:grid"><DuckMark className="size-17 object-contain" /></span>
                             <div><p className="text-xs font-black uppercase tracking-[0.18em] text-duck-ink/45">Schoolpilot</p><h3 className="mt-2 max-w-[12ch] font-display text-4xl leading-[1.02] text-duck-ink md:text-5xl">Zie het werken in jouw klas.</h3></div>
                         </div>
                         <div className="lg:justify-self-end">
@@ -811,7 +775,7 @@ export const ScholenLandingStory: React.FC = () => {
                 <HeroSection />
                 <LessonStory />
                 <MissionWalkthrough />
-                <MiniMissionBuilder />
+                <GameProgrammerDemo />
                 <ProjectGallery />
                 <TeacherEvidence />
                 <SchoolPilot />

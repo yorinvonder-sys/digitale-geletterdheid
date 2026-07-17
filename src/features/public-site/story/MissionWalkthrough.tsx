@@ -14,13 +14,27 @@ import {
     Sparkles,
 } from 'lucide-react';
 import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion';
-import { KeesNarrator } from './KeesNarrator';
 import {
     INITIAL_WALKTHROUGH_STATE,
     missionWalkthroughReducer,
     type MissionId,
     type WalkthroughStep,
 } from './missionWalkthroughState';
+
+const STEP_NOTE_TONES = {
+    paper: 'border-duck-ink/12 bg-white text-duck-ink',
+    acid: 'border-duck-ink bg-duck-acid text-duck-ink',
+    ink: 'border-duck-ink bg-duck-ink text-white',
+} as const;
+
+function StepNote({ eyebrow, message, tone = 'paper' }: { eyebrow: string; message: string; tone?: 'paper' | 'acid' | 'ink' }) {
+    return (
+        <aside className={`min-w-0 rounded-[1.35rem] border p-5 ${STEP_NOTE_TONES[tone]}`} aria-label={eyebrow}>
+            <p className={`text-[10px] font-black uppercase tracking-[0.14em] ${tone === 'ink' ? 'text-duck-acid/70' : 'text-duck-error'}`}>{eyebrow}</p>
+            <p className={`mt-2 text-sm font-extrabold leading-6 ${tone === 'ink' ? 'text-white/78' : 'text-duck-ink/72'}`}>{message}</p>
+        </aside>
+    );
+}
 
 type MissionDefinition = {
     id: MissionId;
@@ -215,7 +229,7 @@ export function MissionWalkthrough() {
                             >
                                 {state.step === 'choose' && (
                                     <div className="grid gap-7 lg:grid-cols-[0.72fr_1.28fr] lg:items-center">
-                                        <KeesNarrator
+                                        <StepNote
                                             eyebrow="Stap 1 · kies"
                                             message="Welke opdracht zou jij willen proberen? Kies er één; daarna neem ik je stap voor stap mee."
                                             tone="acid"
@@ -230,7 +244,7 @@ export function MissionWalkthrough() {
 
                                 {mission && state.step === 'briefing' && (
                                     <div className="grid gap-8 lg:grid-cols-[0.78fr_1.22fr] lg:items-start">
-                                        <KeesNarrator eyebrow="Stap 2 · briefing" message={mission.narrator.briefing} tone="paper" />
+                                        <StepNote eyebrow="Stap 2 · briefing" message={mission.narrator.briefing} tone="paper" />
                                         <div className="rounded-[1.4rem] bg-duck-ink p-5 text-white sm:p-7">
                                             <div className="flex flex-wrap items-start justify-between gap-4">
                                                 <div><p className="text-[10px] font-black uppercase tracking-[0.16em] text-duck-acid/65">Missie #{mission.number}</p><h3 className="mt-2 font-display text-3xl leading-[1.05] sm:text-4xl">{mission.title}</h3></div>
@@ -247,7 +261,7 @@ export function MissionWalkthrough() {
 
                                 {mission && state.step === 'build' && (
                                     <div className="grid gap-8 lg:grid-cols-[0.72fr_1.28fr] lg:items-start">
-                                        <KeesNarrator eyebrow="Stap 3 · bouw" message={mission.narrator.build} tone="acid" />
+                                        <StepNote eyebrow="Stap 3 · bouw" message={mission.narrator.build} tone="acid" />
                                         <div>
                                             <p className="text-xs font-black uppercase tracking-[0.14em] text-duck-error">Jouw beslissing</p>
                                             <h3 className="mt-2 text-balance text-2xl font-extrabold leading-8 text-duck-ink">{mission.instruction}</h3>
@@ -274,7 +288,7 @@ export function MissionWalkthrough() {
 
                                 {mission && state.step === 'proof' && (
                                     <div className="grid gap-8 lg:grid-cols-[0.72fr_1.28fr] lg:items-start">
-                                        <KeesNarrator eyebrow="Stap 4 · bewijs" message={mission.narrator.proof} tone="ink" />
+                                        <StepNote eyebrow="Stap 4 · bewijs" message={mission.narrator.proof} tone="ink" />
                                         <div className={`rounded-[1.4rem] p-5 sm:p-7 ${selectedChoice && choiceIsCorrect ? 'bg-duck-acid' : 'bg-duck-bg'}`}>
                                             <div className="flex items-start gap-4">
                                                 <span className={`grid size-12 shrink-0 place-items-center rounded-full ${selectedChoice && choiceIsCorrect ? 'bg-duck-ink text-duck-acid' : 'bg-white text-duck-error'}`}>{selectedChoice && choiceIsCorrect ? <CheckCircle2 className="size-6" aria-hidden="true" /> : <MousePointer2 className="size-5" aria-hidden="true" />}</span>
