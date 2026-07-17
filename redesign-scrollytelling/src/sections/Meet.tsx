@@ -109,7 +109,7 @@ export function Meet() {
               ))}
             </div>
             <p className="mt-4 text-xs text-ink/50 italic">
-              “Kees, de AI-coach, kijkt mee: start klein. Eén goede prompt is al werk genoeg.”
+              “De AI-coach kijkt mee: start klein. Eén goede prompt is al werk genoeg.”
             </p>
           </BrowserFrame>
         </Reveal>
