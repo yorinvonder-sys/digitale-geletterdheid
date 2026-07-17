@@ -29,7 +29,9 @@ import {
 } from 'lucide-react';
 import { DuckMark } from '@/components/brand/DuckMark';
 import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion';
+import { KeesNarrator } from '@/features/public-site/story/KeesNarrator';
 import { MiniMissionBuilder } from '@/features/public-site/story/MiniMissionBuilder';
+import { MissionWalkthrough } from '@/features/public-site/story/MissionWalkthrough';
 
 const LESSON_CHAPTERS = [
     {
@@ -182,7 +184,7 @@ function StoryHeader() {
 
                 <nav className="hidden items-center gap-7 lg:flex" aria-label="Hoofdnavigatie">
                     <a className="text-sm font-extrabold text-duck-ink/65 transition-colors hover:text-duck-ink" href="#lesverhaal">Zo werkt een les</a>
-                    <a className="text-sm font-extrabold text-duck-ink/65 transition-colors hover:text-duck-ink" href="#probeer-het">Probeer het</a>
+                    <a className="text-sm font-extrabold text-duck-ink/65 transition-colors hover:text-duck-ink" href="#missies">Probeer een opdracht</a>
                     <a className="text-sm font-extrabold text-duck-ink/65 transition-colors hover:text-duck-ink" href="#leerlingwerk">Leerlingwerk</a>
                     <a className="text-sm font-extrabold text-duck-ink/65 transition-colors hover:text-duck-ink" href="#docentbewijs">Voor docenten</a>
                 </nav>
@@ -217,7 +219,7 @@ function StoryHeader() {
                         <div className="mx-auto grid max-w-7xl gap-1">
                             {[
                                 ['Zo werkt een les', '#lesverhaal'],
-                                ['Probeer het', '#probeer-het'],
+                                ['Probeer een opdracht', '#missies'],
                                 ['Leerlingwerk', '#leerlingwerk'],
                                 ['Voor docenten', '#docentbewijs'],
                             ].map(([label, href]) => (
@@ -235,69 +237,27 @@ function StoryHeader() {
 function HeroLessonPreview({ reduceMotion }: { reduceMotion: boolean }) {
     return (
         <motion.div
-            initial={reduceMotion ? false : { opacity: 0, y: 34, rotate: 1.4 }}
-            animate={reduceMotion ? undefined : { opacity: 1, y: 0, rotate: 0 }}
+            initial={reduceMotion ? false : { opacity: 0, y: 34 }}
+            animate={reduceMotion ? undefined : { opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
-            className="relative mx-auto w-full max-w-[620px]"
+            className="relative mx-auto w-full max-w-[640px] pb-8"
         >
             <div className="overflow-hidden rounded-[2rem] border-2 border-duck-ink bg-white shadow-[10px_12px_0_#202023]">
-                <div className="flex items-center justify-between border-b-2 border-duck-ink px-4 py-3 sm:px-5">
-                    <div className="flex items-center gap-2.5">
-                        <span className="relative flex size-3" aria-hidden="true">
-                            <span className="absolute inline-flex size-full animate-ping rounded-full bg-duck-error opacity-35 motion-reduce:animate-none" />
-                            <span className="relative inline-flex size-3 rounded-full bg-duck-error" />
-                        </span>
-                        <p className="text-sm font-extrabold text-duck-ink">Live les · Klas 2B</p>
-                    </div>
-                    <p className="font-mono text-xs font-bold text-duck-ink/45">09:20</p>
-                </div>
-
-                <div className="grid gap-0 sm:grid-cols-[1.12fr_0.88fr]">
-                    <div className="border-b-2 border-duck-ink bg-duck-ink p-4 sm:border-b-0 sm:border-r-2 sm:p-5">
-                        <p className="text-[10px] font-black uppercase tracking-[0.18em] text-duck-acid/60">Wat de leerling ziet</p>
-                        <div className="mt-3 overflow-hidden rounded-2xl border border-white/15 bg-white">
-                            <img
-                                src="/assets/agents/game_programmeur_new.webp"
-                                alt="Pixelwereld van de missie Game Programmeur"
-                                className="aspect-[4/3] w-full object-cover"
-                                fetchPriority="high"
-                                decoding="async"
-                            />
-                            <div className="p-3">
-                                <div className="flex items-center justify-between gap-3">
-                                    <p className="text-sm font-extrabold text-duck-ink">Bouw je eerste level</p>
-                                    <span className="rounded-full bg-duck-acid px-2.5 py-1 text-[10px] font-black text-duck-ink">STAP 3/5</span>
-                                </div>
-                                <div className="mt-3 h-2 overflow-hidden rounded-full bg-duck-gray/35">
-                                    <motion.div
-                                        className="h-full rounded-full bg-duck-error"
-                                        initial={{ width: reduceMotion ? '68%' : '8%' }}
-                                        animate={{ width: '68%' }}
-                                        transition={{ duration: reduceMotion ? 0 : 1.1, delay: 0.75 }}
-                                    />
-                                </div>
-                            </div>
+                <div className="relative aspect-[1.45/1] min-h-[360px] overflow-hidden sm:min-h-[430px]">
+                    <img
+                        src="/assets/story/students-coding-dgskills.webp"
+                        alt="Drie middelbare scholieren bouwen samen een game op laptops"
+                        className="absolute inset-0 size-full object-cover object-center"
+                        fetchPriority="high"
+                        decoding="async"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-duck-ink/80 via-transparent to-transparent" aria-hidden="true" />
+                    <div className="absolute inset-x-4 bottom-4 flex flex-wrap items-end justify-between gap-3 sm:inset-x-6 sm:bottom-6">
+                        <div className="max-w-sm text-white">
+                            <p className="text-[10px] font-black uppercase tracking-[0.16em] text-duck-acid">09:20 · aan het bouwen</p>
+                            <p className="mt-1 text-lg font-extrabold leading-6 sm:text-xl">Samen testen tot het werkt.</p>
                         </div>
-                    </div>
-
-                    <div className="bg-duck-bg p-4 sm:p-5">
-                        <p className="text-[10px] font-black uppercase tracking-[0.18em] text-duck-ink/40">Wat jij ziet</p>
-                        <div className="mt-3 space-y-2">
-                            {[
-                                ['Actief', '24', '#e1ff01'],
-                                ['Kijken uitleg', '3', '#ffffff'],
-                                ['Hulp nodig', '1', '#ff3c21'],
-                            ].map(([label, value, color]) => (
-                                <div key={label} className="flex items-center justify-between rounded-xl border border-duck-ink/10 bg-white px-3 py-2.5">
-                                    <span className="flex items-center gap-2 text-xs font-bold text-duck-ink/65"><span className="size-2 rounded-full" style={{ backgroundColor: color }} />{label}</span>
-                                    <span className="font-display text-2xl leading-none text-duck-ink">{value}</span>
-                                </div>
-                            ))}
-                        </div>
-                        <div className="mt-3 rounded-xl bg-duck-acid p-3">
-                            <p className="text-[10px] font-black uppercase tracking-[0.16em] text-duck-ink/45">Nieuw signaal</p>
-                            <p className="mt-1 text-xs font-extrabold leading-5 text-duck-ink">Leerling 14 probeert stap 2 opnieuw.</p>
-                        </div>
+                        <span className="rounded-full border border-white/20 bg-white/90 px-3 py-1.5 text-xs font-black text-duck-ink backdrop-blur-sm">Game Programmeur</span>
                     </div>
                 </div>
             </div>
@@ -306,7 +266,7 @@ function HeroLessonPreview({ reduceMotion }: { reduceMotion: boolean }) {
                 initial={reduceMotion ? false : { opacity: 0, scale: 0.85, x: 14 }}
                 animate={reduceMotion ? undefined : { opacity: 1, scale: 1, x: 0 }}
                 transition={{ duration: 0.6, delay: 0.9 }}
-                className="absolute -bottom-7 right-3 flex items-center gap-3 rounded-2xl border-2 border-duck-ink bg-duck-acid px-4 py-3 shadow-[5px_6px_0_#202023] sm:-right-5 sm:px-5"
+                className="absolute bottom-0 right-3 flex items-center gap-3 rounded-2xl border-2 border-duck-ink bg-duck-acid px-4 py-3 shadow-[5px_6px_0_#202023] sm:-right-5 sm:px-5"
             >
                 <span className="grid size-9 place-items-center rounded-full bg-duck-ink text-duck-acid"><Check className="size-5" strokeWidth={3} aria-hidden="true" /></span>
                 <div>
@@ -322,8 +282,7 @@ function HeroSection() {
     const reduceMotion = usePrefersReducedMotion();
 
     return (
-        <section className="relative overflow-hidden bg-duck-bg px-4 pb-28 pt-32 sm:px-6 md:pb-36 md:pt-40 lg:px-10">
-            <div className="pointer-events-none absolute inset-x-0 top-24 mx-auto h-px max-w-7xl bg-duck-ink/10" aria-hidden="true" />
+        <section className="relative overflow-hidden bg-duck-bg px-4 pb-24 pt-28 sm:px-6 md:pb-32 md:pt-36 lg:px-10">
             <div className="relative mx-auto grid min-h-[720px] max-w-7xl items-center gap-16 lg:grid-cols-[0.92fr_1.08fr] lg:gap-12">
                 <div className="relative z-10">
                     <motion.p
@@ -338,9 +297,9 @@ function HeroSection() {
                         initial={reduceMotion ? false : { opacity: 0, y: 24 }}
                         animate={reduceMotion ? undefined : { opacity: 1, y: 0 }}
                         transition={{ duration: 0.7, delay: 0.08, ease: [0.22, 1, 0.36, 1] }}
-                        className="mt-7 text-balance font-display text-[clamp(3.7rem,8.1vw,7.8rem)] leading-[0.88] tracking-[-0.05em] text-duck-ink"
+                        className="mt-7 max-w-[9.5ch] text-balance font-display text-[clamp(3.15rem,7.3vw,7rem)] leading-[1.01] tracking-[-0.025em] text-duck-ink sm:leading-[0.97] lg:leading-[0.93] lg:tracking-[-0.045em]"
                     >
-                        Eén les.<br />Van eerste klik tot <span className="relative inline-block"><span className="relative z-10">zichtbaar bewijs.</span><span className="absolute inset-x-0 bottom-[0.06em] -z-0 h-[0.18em] bg-duck-acid" aria-hidden="true" /></span>
+                        Eén les.<br />Van eerste klik tot <span className="inline border-b-[0.09em] border-duck-acid pb-[0.02em]">zichtbaar bewijs.</span>
                     </motion.h1>
                     <motion.p
                         initial={reduceMotion ? false : { opacity: 0, y: 20 }}
@@ -359,8 +318,8 @@ function HeroSection() {
                         <a href="/pilot" className="inline-flex min-h-[54px] items-center justify-center gap-2 rounded-full border-2 border-duck-ink bg-duck-ink px-7 text-base font-extrabold text-duck-acid transition-all hover:-translate-y-0.5 hover:bg-duck-error hover:text-white focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-duck-error/30">
                             Plan een schoolpilot <ArrowRight className="size-5" aria-hidden="true" />
                         </a>
-                        <a href="#probeer-het" className="inline-flex min-h-[54px] items-center justify-center gap-2 rounded-full border-2 border-duck-ink bg-white px-7 text-base font-extrabold text-duck-ink transition-transform hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-duck-error/30">
-                            Probeer de mini-missie <Play className="size-4 fill-current" aria-hidden="true" />
+                        <a href="#missies" className="inline-flex min-h-[54px] items-center justify-center gap-2 rounded-full border-2 border-duck-ink bg-white px-7 text-base font-extrabold text-duck-ink transition-transform hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-duck-error/30">
+                            Bekijk een echte opdracht <Play className="size-4 fill-current" aria-hidden="true" />
                         </a>
                     </motion.div>
                     <motion.div
@@ -373,6 +332,12 @@ function HeroSection() {
                         <span className="inline-flex items-center gap-1.5"><CheckCircle2 className="size-4" aria-hidden="true" /> SLO gekoppeld</span>
                         <span className="inline-flex items-center gap-1.5"><CheckCircle2 className="size-4" aria-hidden="true" /> Start met één klas</span>
                     </motion.div>
+                    <KeesNarrator
+                        className="mt-8 max-w-xl"
+                        eyebrow="Kees neemt je mee"
+                        message="Scroll niet alleen langs functies. Kies zo meteen zelf een missie en ervaar hoe een leerling van opdracht naar bewijs gaat."
+                        tone="paper"
+                    />
                 </div>
 
                 <HeroLessonPreview reduceMotion={reduceMotion} />
@@ -452,20 +417,31 @@ function LessonStage({ active, compact = false }: { active: number; compact?: bo
                         )}
 
                         {active === 2 && (
-                            <div className="space-y-2.5">
-                                {[
-                                    ['Leerling 14', 'Probeert stap 2 opnieuw', 'Bekijk'],
-                                    ['Leerling 07', 'Leest de uitleg', 'Volgt'],
-                                    ['Leerling 19', 'Heeft om hulp gevraagd', 'Help'],
-                                ].map(([student, signal, action], index) => (
-                                    <div key={student} className={`flex items-center justify-between gap-3 rounded-xl border px-3.5 py-3 ${index === 2 ? 'border-duck-error bg-duck-error/[0.07]' : 'border-duck-ink/10 bg-white'}`}>
-                                        <div className="min-w-0">
-                                            <p className="text-xs font-extrabold text-duck-ink">{student}</p>
-                                            <p className="truncate text-[11px] font-semibold text-duck-ink/50">{signal}</p>
+                            <div>
+                                <div className="relative aspect-[1.7/1] overflow-hidden rounded-2xl">
+                                    <img
+                                        src="/assets/story/teacher-coaching-dgskills.webp"
+                                        alt="Een docent coacht drie leerlingen terwijl zij hun digitale project verbeteren"
+                                        className="size-full object-cover object-center"
+                                        loading="lazy"
+                                        decoding="async"
+                                    />
+                                    <span className="absolute bottom-3 left-3 rounded-full bg-duck-ink/85 px-3 py-1.5 text-[10px] font-black uppercase tracking-[0.12em] text-duck-acid backdrop-blur-sm">Coach waar het telt</span>
+                                </div>
+                                <div className="mt-3 space-y-2">
+                                    {[
+                                        ['Leerling 14', 'Probeert stap 2 opnieuw', 'Bekijk'],
+                                        ['Leerling 19', 'Heeft om hulp gevraagd', 'Help'],
+                                    ].map(([student, signal, action], index) => (
+                                        <div key={student} className={`flex items-center justify-between gap-3 rounded-xl border px-3.5 py-3 ${index === 1 ? 'border-duck-error bg-duck-error/[0.07]' : 'border-duck-ink/10 bg-white'}`}>
+                                            <div className="min-w-0">
+                                                <p className="text-xs font-extrabold text-duck-ink">{student}</p>
+                                                <p className="truncate text-[11px] font-semibold text-duck-ink/50">{signal}</p>
+                                            </div>
+                                            <span className={`rounded-full px-3 py-1.5 text-[10px] font-black ${index === 1 ? 'bg-duck-error text-white' : 'bg-duck-bg text-duck-ink'}`}>{action}</span>
                                         </div>
-                                        <span className={`rounded-full px-3 py-1.5 text-[10px] font-black ${index === 2 ? 'bg-duck-error text-white' : 'bg-duck-bg text-duck-ink'}`}>{action}</span>
-                                    </div>
-                                ))}
+                                    ))}
+                                </div>
                             </div>
                         )}
 
@@ -524,7 +500,7 @@ function LessonStory() {
             <div className="mx-auto max-w-7xl">
                 <Reveal className="max-w-4xl">
                     <p className="text-xs font-black uppercase tracking-[0.18em] text-duck-error">Eén doorlopend verhaal</p>
-                    <h2 className="mt-4 text-balance font-display text-[clamp(3rem,7vw,6.7rem)] leading-[0.92] tracking-[-0.04em] text-duck-ink">Van lesstart tot bewijs. Zonder verhaalwissel.</h2>
+                    <h2 className="mt-4 max-w-[15ch] text-balance font-display text-[clamp(2.75rem,6.5vw,6.2rem)] leading-[1.02] tracking-[-0.025em] text-duck-ink lg:leading-[0.96] lg:tracking-[-0.04em]">Van lesstart tot bewijs. Zonder verhaalwissel.</h2>
                     <p className="mt-6 max-w-2xl text-pretty text-base font-semibold leading-7 text-duck-ink/65 md:text-lg md:leading-8">Dezelfde missie beweegt mee door de les. Zo ziet de docent niet vier losse functies, maar één werkbare routine.</p>
                 </Reveal>
 
@@ -541,7 +517,7 @@ function LessonStory() {
                                     <span className={`grid size-10 place-items-center rounded-full text-xs font-black transition-colors ${active === index ? 'bg-duck-error text-white' : 'bg-duck-ink/7 text-duck-ink/50'}`}>{index + 1}</span>
                                     <p className="font-mono text-sm font-bold text-duck-ink/45">{chapter.time} · {chapter.eyebrow}</p>
                                 </div>
-                                <h3 className="mt-6 text-balance font-display text-[clamp(2.5rem,5vw,4.6rem)] leading-[0.96] tracking-[-0.035em] text-duck-ink">{chapter.title}</h3>
+                                <h3 className="mt-6 max-w-[13ch] text-balance font-display text-[clamp(2.35rem,4.6vw,4.35rem)] leading-[1.03] tracking-[-0.022em] text-duck-ink lg:leading-[0.98] lg:tracking-[-0.035em]">{chapter.title}</h3>
                                 <p className="mt-5 max-w-xl text-pretty text-base font-semibold leading-7 text-duck-ink/62">{chapter.copy}</p>
                                 <div className="lg:hidden"><LessonStage active={index} compact /></div>
                             </article>
@@ -568,7 +544,7 @@ function ProjectGallery() {
                 <div className="grid gap-7 lg:grid-cols-[0.78fr_1.22fr] lg:items-end">
                     <Reveal>
                         <p className="text-xs font-black uppercase tracking-[0.18em] text-duck-acid">Wat leerlingen bouwen</p>
-                        <h2 className="mt-4 text-balance font-display text-[clamp(3rem,7vw,6.6rem)] leading-[0.9] tracking-[-0.04em]">Geen werkblad. Iets van henzelf.</h2>
+                        <h2 className="mt-4 max-w-[12ch] text-balance font-display text-[clamp(2.75rem,6.4vw,6rem)] leading-[1.02] tracking-[-0.025em] lg:leading-[0.96] lg:tracking-[-0.04em]">Geen werkblad. Iets van henzelf.</h2>
                     </Reveal>
                     <Reveal className="max-w-2xl lg:justify-self-end" delay={0.08}>
                         <p className="text-pretty text-base font-semibold leading-7 text-white/62 md:text-lg md:leading-8">Elke missie eindigt in een zichtbaar product. Dat maakt digitale geletterdheid concreet voor de leerling én bespreekbaar voor de docent.</p>
@@ -576,7 +552,29 @@ function ProjectGallery() {
                     </Reveal>
                 </div>
 
-                <div className="mt-12 grid auto-cols-[84%] grid-flow-col gap-4 overflow-x-auto pb-5 pr-4 snap-x snap-mandatory md:auto-cols-[46%] lg:grid-flow-row lg:grid-cols-5 lg:overflow-visible lg:pb-0 lg:pr-0">
+                <Reveal className="mt-12 grid overflow-hidden rounded-[2rem] border border-white/15 bg-white/[0.06] lg:grid-cols-[1.2fr_0.8fr] lg:items-center">
+                    <div className="relative aspect-[1.5/1] min-h-[300px] overflow-hidden lg:aspect-auto lg:h-full">
+                        <img
+                            src="/assets/story/students-presenting-dgskills.webp"
+                            alt="Twee middelbare scholieren presenteren hun digitale project aan klasgenoten"
+                            className="absolute inset-0 size-full object-cover object-center"
+                            loading="lazy"
+                            decoding="async"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-duck-ink/70 via-transparent to-transparent" aria-hidden="true" />
+                        <span className="absolute bottom-4 left-4 rounded-full bg-duck-acid px-3 py-1.5 text-[10px] font-black uppercase tracking-[0.12em] text-duck-ink">Van maker naar verteller</span>
+                    </div>
+                    <div className="p-5 sm:p-7 lg:p-9">
+                        <KeesNarrator
+                            eyebrow="Kees vertelt"
+                            message="Het project is niet het eindpunt. Leerlingen laten ook zien welke keuzes ze maakten, wat misging en hoe ze het verbeterden."
+                            tone="acid"
+                        />
+                        <p className="mt-6 text-sm font-semibold leading-6 text-white/58">Zo wordt een game, website of bronnenonderzoek tegelijk een gesprek over digitale vaardigheden.</p>
+                    </div>
+                </Reveal>
+
+                <div className="mt-8 grid auto-cols-[84%] grid-flow-col gap-4 overflow-x-auto pb-5 pr-4 snap-x snap-mandatory md:auto-cols-[46%] lg:grid-flow-row lg:grid-cols-3 lg:overflow-visible lg:pb-0 lg:pr-0">
                     {PROJECTS.map((project, index) => {
                         const Icon = project.icon;
                         return (
@@ -589,13 +587,13 @@ function ProjectGallery() {
                                 transition={{ duration: 0.55, delay: reduceMotion ? 0 : index * 0.055 }}
                                 className="group snap-center overflow-hidden rounded-[1.5rem] border border-white/15 bg-white text-duck-ink"
                             >
-                                <div className="relative aspect-square overflow-hidden">
+                                <div className="relative aspect-[1.15/1] overflow-hidden">
                                     <img src={project.image} alt={project.title} className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.04] motion-reduce:transition-none" loading="lazy" decoding="async" />
                                     <span className="absolute left-3 top-3 grid size-9 place-items-center rounded-full border border-duck-ink/15 text-duck-ink shadow-sm" style={{ backgroundColor: project.color }}><Icon className="size-4" aria-hidden="true" /></span>
                                     <span className="absolute bottom-3 left-3 rounded-full bg-duck-ink/80 px-3 py-1.5 text-[10px] font-black uppercase tracking-[0.12em] text-white backdrop-blur-sm">{project.label}</span>
                                 </div>
                                 <div className="p-4">
-                                    <h3 className="font-display text-2xl leading-none">{project.title}</h3>
+                                    <h3 className="font-display text-2xl leading-7">{project.title}</h3>
                                     <p className="mt-2 text-xs font-semibold leading-5 text-duck-ink/55">{project.output}</p>
                                 </div>
                             </motion.article>
@@ -614,13 +612,19 @@ function TeacherEvidence() {
             <div className="mx-auto grid max-w-7xl gap-12 lg:grid-cols-[0.78fr_1.22fr] lg:items-center lg:gap-16">
                 <Reveal>
                     <p className="text-xs font-black uppercase tracking-[0.18em] text-duck-error">09:45 · terug bij de docent</p>
-                    <h2 className="mt-4 text-balance font-display text-[clamp(3rem,6.5vw,6rem)] leading-[0.92] tracking-[-0.04em] text-duck-ink">Wat de leerling maakt, wordt jouw overzicht.</h2>
+                    <h2 className="mt-4 max-w-[13ch] text-balance font-display text-[clamp(2.75rem,6vw,5.6rem)] leading-[1.02] tracking-[-0.025em] text-duck-ink lg:leading-[0.96] lg:tracking-[-0.04em]">Wat de leerling maakt, wordt jouw overzicht.</h2>
                     <p className="mt-6 max-w-xl text-pretty text-base font-semibold leading-7 text-duck-ink/64 md:text-lg md:leading-8">Je ziet voortgang tijdens de les en ontvangt daarna bewijs dat je kunt bespreken. Geen extra spreadsheet en geen zondagavondadministratie.</p>
                     <ul className="mt-8 space-y-3">
                         {['Wie is gestart en wie loopt vast', 'Welk product is afgerond', 'Welk leerdoel zichtbaar is aangetoond'].map((item) => (
                             <li key={item} className="flex items-center gap-3 text-sm font-extrabold text-duck-ink"><span className="grid size-7 place-items-center rounded-full bg-duck-acid"><Check className="size-4" strokeWidth={3} aria-hidden="true" /></span>{item}</li>
                         ))}
                     </ul>
+                    <KeesNarrator
+                        className="mt-8 max-w-xl"
+                        eyebrow="Kees rondt af"
+                        message="De leerling ziet een afgerond project. Jij ziet daarnaast de voortgang, reflectie en het gekoppelde leerdoel."
+                        tone="acid"
+                    />
                     <a href="/docentdemo" className="mt-8 inline-flex min-h-12 items-center gap-2 rounded-full border-2 border-duck-ink bg-white px-6 text-sm font-extrabold text-duck-ink transition-transform hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-duck-error/30">Bekijk de docentdemo <ArrowRight className="size-4" aria-hidden="true" /></a>
                 </Reveal>
 
@@ -675,7 +679,7 @@ function SchoolPilot() {
             <div className="mx-auto max-w-7xl">
                 <Reveal className="text-center">
                     <p className="text-xs font-black uppercase tracking-[0.18em] text-duck-error">Van één les naar een leerlijn</p>
-                    <h2 className="mx-auto mt-4 max-w-5xl text-balance font-display text-[clamp(3rem,7vw,6.5rem)] leading-[0.9] tracking-[-0.04em] text-duck-ink">Klein genoeg om te starten. Sterk genoeg om op te bouwen.</h2>
+                    <h2 className="mx-auto mt-4 max-w-[16ch] text-balance font-display text-[clamp(2.75rem,6.4vw,6rem)] leading-[1.02] tracking-[-0.025em] text-duck-ink lg:leading-[0.96] lg:tracking-[-0.04em]">Klein genoeg om te starten. Sterk genoeg om op te bouwen.</h2>
                 </Reveal>
 
                 <div className="mt-12 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
@@ -685,7 +689,7 @@ function SchoolPilot() {
                             <Reveal key={item.title} delay={index * 0.07} className="h-full">
                                 <article className={`h-full rounded-[1.5rem] border border-duck-ink/10 p-5 ${index === 0 ? 'bg-duck-acid' : 'bg-white'}`}>
                                     <span className="grid size-11 place-items-center rounded-xl bg-duck-ink text-duck-acid"><Icon className="size-5" aria-hidden="true" /></span>
-                                    <h3 className="mt-6 font-display text-2xl leading-none text-duck-ink">{item.title}</h3>
+                                    <h3 className="mt-6 font-display text-2xl leading-7 text-duck-ink">{item.title}</h3>
                                     <p className="mt-3 text-sm font-semibold leading-6 text-duck-ink/58">{item.copy}</p>
                                 </article>
                             </Reveal>
@@ -697,7 +701,7 @@ function SchoolPilot() {
                     <div className="grid items-center gap-8 px-5 py-9 sm:px-8 md:py-12 lg:grid-cols-[0.8fr_1.2fr] lg:px-12">
                         <div className="flex items-center gap-5">
                             <span className="hidden size-24 shrink-0 place-items-center rounded-full border-2 border-duck-ink bg-white sm:grid"><DuckMark className="size-17 object-contain" /></span>
-                            <div><p className="text-xs font-black uppercase tracking-[0.18em] text-duck-ink/45">Schoolpilot</p><h3 className="mt-2 font-display text-4xl leading-[0.95] text-duck-ink md:text-5xl">Zie het werken in jouw klas.</h3></div>
+                            <div><p className="text-xs font-black uppercase tracking-[0.18em] text-duck-ink/45">Schoolpilot</p><h3 className="mt-2 max-w-[12ch] font-display text-4xl leading-[1.02] text-duck-ink md:text-5xl">Zie het werken in jouw klas.</h3></div>
                         </div>
                         <div className="lg:justify-self-end">
                             <p className="max-w-xl text-sm font-semibold leading-6 text-duck-ink/65 md:text-base md:leading-7">We richten samen één klas, route en eerste les in. Zo beoordeel je DGSkills op wat leerlingen maken en wat docenten werkelijk nodig hebben.</p>
@@ -742,6 +746,7 @@ export const ScholenLandingStory: React.FC = () => {
             <main>
                 <HeroSection />
                 <LessonStory />
+                <MissionWalkthrough />
                 <MiniMissionBuilder />
                 <ProjectGallery />
                 <TeacherEvidence />

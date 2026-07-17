@@ -92,7 +92,7 @@ export function MiniMissionBuilder() {
                         <p className="text-xs font-extrabold uppercase tracking-[0.18em] text-duck-ink/55">
                             09:20 · nu ben jij de leerling
                         </p>
-                        <h2 className="mt-4 text-balance font-display text-[clamp(2.6rem,6vw,5.8rem)] leading-[0.92] tracking-[-0.035em] text-duck-ink">
+                        <h2 className="mt-4 max-w-[12ch] text-balance font-display text-[clamp(2.6rem,6vw,5.8rem)] leading-[1.02] tracking-[-0.022em] text-duck-ink lg:leading-[0.96] lg:tracking-[-0.04em]">
                             Bouw iets dat meteen werkt.
                         </h2>
                     </div>

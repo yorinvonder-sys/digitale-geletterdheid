@@ -78,6 +78,26 @@ test('story landing keeps the complete lesson journey and public destinations', 
     }
 });
 
+test('second preview integrates human classroom visuals and the guided mission route', async () => {
+    const source = await readFile(
+        new URL('../ScholenLandingStory.tsx', import.meta.url),
+        'utf8',
+    );
+
+    for (const expected of [
+        'KeesNarrator',
+        'MissionWalkthrough',
+        '/assets/story/students-coding-dgskills.webp',
+        '/assets/story/teacher-coaching-dgskills.webp',
+        '/assets/story/students-presenting-dgskills.webp',
+        'href="#missies"',
+    ]) {
+        assert.match(source, new RegExp(expected));
+    }
+
+    assert.doesNotMatch(source, /bottom-\[0\.06em\]/);
+});
+
 test('public route and critical shell render the new story homepage', async () => {
     const [router, shell] = await Promise.all([
         readFile(new URL('../../../app/AppRouter.tsx', import.meta.url), 'utf8'),
