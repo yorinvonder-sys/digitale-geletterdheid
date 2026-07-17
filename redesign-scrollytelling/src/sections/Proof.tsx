@@ -64,8 +64,8 @@ export function Proof() {
       <div className="mx-auto max-w-6xl px-6 md:px-14 py-24 md:py-36">
         <ChapterMarker
           dark
-          kicker="Hoofdstuk 4 · Het bewijs"
-          number="4"
+          kicker="Hoofdstuk 5 · Het bewijs"
+          number="5"
           title={
             <>
               Elk goed verhaal <em className="italic text-lime">laat iets achter</em>.
