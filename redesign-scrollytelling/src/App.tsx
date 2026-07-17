@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { Routes, Route } from 'react-router'
 import { motion, AnimatePresence } from 'framer-motion'
 import { LogoLockup, Marquee } from './components/brand'
 import { ChapterRail, ScrollProgress } from './components/ChapterRail'
@@ -9,6 +10,7 @@ import { StudentJourney } from './sections/StudentJourney'
 import { Teacher } from './sections/Teacher'
 import { Proof } from './sections/Proof'
 import { Finale } from './sections/Finale'
+import { Film } from './film/Film'
 
 function Nav() {
   const [show, setShow] = useState(false)
@@ -54,7 +56,7 @@ function Nav() {
   )
 }
 
-export default function App() {
+function StoryPage() {
   return (
     <div className="relative bg-paper text-ink antialiased">
       <ScrollProgress />
@@ -79,5 +81,14 @@ export default function App() {
         <Finale />
       </main>
     </div>
+  )
+}
+
+export default function App() {
+  return (
+    <Routes>
+      <Route path="/start" element={<Film />} />
+      <Route path="*" element={<StoryPage />} />
+    </Routes>
   )
 }
