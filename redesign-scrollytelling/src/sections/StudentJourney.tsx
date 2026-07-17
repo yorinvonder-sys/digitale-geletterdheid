@@ -9,7 +9,7 @@ import { Pill, BrowserFrame } from '../components/brand'
 
 const BEATS = [
   { id: 'ontdek', kicker: 'Ontdek', title: 'Mila kiest haar route.', body: 'Geen rondleiding, geen uitlegscherm. Ze ziet direct welke missies er liggen — en welke SLO-doelen daarbij horen.' },
-  { id: 'leer', kicker: 'Leer', title: 'Korte challenges, directe feedback.', body: 'Echte tools, en AI-coach Kees kijkt mee. Mila hoeft niet te raden of ze het goed doet.' },
+  { id: 'leer', kicker: 'Leer', title: 'Korte challenges, directe feedback.', body: 'Echte tools, en de AI-coach kijkt mee. Mila hoeft niet te raden of ze het goed doet.' },
   { id: 'maak', kicker: 'Maak', title: 'Dan: projectmodus.', body: 'Een platformer bouwen, een robotroute ontwerpen. Echte projecten, geen nagebootste oefeningen.' },
   { id: 'bewijs', kicker: 'Bewijs', title: 'Trofeeën en XP.', body: 'Levels en badges die ze zélf wil laten zien. Motivatie hoef je niet af te dwingen.' },
   { id: 'groei', kicker: 'Groei', title: 'Alles landt in haar portfolio.', body: 'Wat ze maakte én welke keuzes ze maakte — zichtbaar als bewijs. Niet in een excelbestand van de docent.' },
@@ -85,7 +85,7 @@ function VisualLeer() {
           transition={{ delay: 0.7 }}
           className="w-fit max-w-[90%] rounded-2xl rounded-bl-sm border-2 border-ink bg-paper px-4 py-2.5 text-sm"
         >
-          <span className="font-bold text-lime-deep">Kees:</span> Goed begin! Maar vaag. Voor welke gelegenheid, welke stijl, welke tekst?
+          <span className="font-bold text-lime-deep">AI-coach:</span> Goed begin! Maar vaag. Voor welke gelegenheid, welke stijl, welke tekst?
         </motion.div>
         <motion.div
           initial={{ opacity: 0, y: 10 }}

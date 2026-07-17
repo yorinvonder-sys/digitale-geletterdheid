@@ -77,7 +77,7 @@ export function Finale() {
         <footer className="mt-24 border-t-[3px] border-ink pt-8 pb-4">
           <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
             <div className="flex items-center gap-3">
-              <Eyes size={34} />
+              <Duck size={40} />
               <div>
                 <p className="font-display text-xl font-black text-ink">DGSkills</p>
                 <p className="text-xs text-ink/60">Digitale geletterdheid voor VO &amp; VSO</p>
