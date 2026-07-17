@@ -49,44 +49,35 @@ export function Eyes({ size = 84, className = '' }: { size?: number; className?:
 }
 
 /* ---------------------------------- Duck ---------------------------------- */
-/* The school-pilot mascot: a minimal rubber duck in brand lime. */
+/* The real DGSkills duck: graduation cap, lime beak. */
 export function Duck({ size = 120, className = '' }: { size?: number; className?: string }) {
   return (
-    <svg
+    <img
+      src="/brand/duck-mark.webp"
       width={size}
-      height={size * 0.9}
-      viewBox="0 0 120 108"
-      fill="none"
+      height={size}
+      alt="De DGSkills eend"
       className={className}
-      aria-label="De DGSkills eend"
-    >
-      {/* body */}
-      <path
-        d="M18 78 C10 62 22 48 38 50 C40 36 52 26 66 28 C80 30 88 42 86 54 C98 56 108 66 106 80 C104 94 90 102 74 102 L40 102 C28 102 22 92 18 78 Z"
-        fill="#d7f70c"
-        stroke="#17140e"
-        strokeWidth="3.5"
+      draggable={false}
+    />
+  )
+}
+
+/* ------------------------------ LogoLockup --------------------------------- */
+/* Duck mark + wordmark, as used on the live site. */
+export function LogoLockup({ height = 34, className = '' }: { height?: number; className?: string }) {
+  return (
+    <span className={`inline-flex items-center gap-2.5 ${className}`}>
+      <img
+        src="/brand/duck-mark.webp"
+        alt=""
+        style={{ height, width: height }}
+        draggable={false}
       />
-      {/* wing */}
-      <path
-        d="M46 72 C52 62 66 60 74 66 C70 76 58 80 46 72 Z"
-        fill="#b8dd00"
-        stroke="#17140e"
-        strokeWidth="3"
-      />
-      {/* beak */}
-      <path
-        d="M18 66 C10 62 4 64 2 70 C6 76 14 76 20 72 Z"
-        fill="#f59e0b"
-        stroke="#17140e"
-        strokeWidth="3"
-      />
-      {/* eye */}
-      <circle cx="34" cy="56" r="4.5" fill="#17140e" />
-      {/* water line */}
-      <path d="M8 104 C20 100 30 108 42 104 C54 100 64 108 76 104 C88 100 98 108 112 103"
-        stroke="#17140e" strokeWidth="3" strokeLinecap="round" opacity="0.35" />
-    </svg>
+      <span className="font-display font-black text-ink" style={{ fontSize: height * 0.62, letterSpacing: '-0.02em' }}>
+        DGSkills
+      </span>
+    </span>
   )
 }
 
