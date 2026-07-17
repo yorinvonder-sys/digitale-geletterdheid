@@ -4,6 +4,8 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { LogoLockup, Marquee } from './components/brand'
 import { ChapterRail, ScrollProgress } from './components/ChapterRail'
 import { FilmChapter } from './sections/FilmChapter'
+import { Hero } from './sections/Hero'
+import { Problem } from './sections/Problem'
 import { Meet } from './sections/Meet'
 import { StudentJourney } from './sections/StudentJourney'
 import { Teacher } from './sections/Teacher'
@@ -63,6 +65,8 @@ function StoryPage() {
       <ChapterRail />
       <main>
         <FilmChapter />
+        <Hero />
+        <Problem />
         <Meet />
         <StudentJourney />
         <Marquee

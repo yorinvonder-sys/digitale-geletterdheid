@@ -3,10 +3,12 @@ import { motion } from 'framer-motion'
 
 export const CHAPTERS = [
   { id: 'film', label: 'De film', num: '▶' },
-  { id: 'ontmoeting', label: 'De ontmoeting', num: '1' },
-  { id: 'mila', label: 'Mila', num: '2' },
-  { id: 'docent', label: 'De docent', num: '3' },
-  { id: 'bewijs', label: 'Het bewijs', num: '4' },
+  { id: 'proloog', label: 'Proloog', num: '·' },
+  { id: 'probleem', label: 'Het probleem', num: '1' },
+  { id: 'ontmoeting', label: 'De ontmoeting', num: '2' },
+  { id: 'mila', label: 'Mila', num: '3' },
+  { id: 'docent', label: 'De docent', num: '4' },
+  { id: 'bewijs', label: 'Het bewijs', num: '5' },
   { id: 'epiloog', label: 'Epiloog', num: '·' },
 ]
 

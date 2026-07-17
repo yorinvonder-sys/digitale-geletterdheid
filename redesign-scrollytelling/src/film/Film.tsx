@@ -5,7 +5,6 @@ import {
   SceneRaadsel,
   SceneAntwoord,
   SceneBewijs,
-  SceneEpiloog,
 } from './scenes'
 import { Leader } from './Leader'
 
@@ -15,7 +14,6 @@ const SCENES = [
   { id: 'raadsel', label: 'Het raadsel', dur: 9, bg: 'bg-lime', Comp: SceneRaadsel },
   { id: 'antwoord', label: 'Het antwoord', dur: 10, bg: 'bg-ink', Comp: SceneAntwoord },
   { id: 'bewijs', label: 'Het bewijs', dur: 10, bg: 'bg-ink', Comp: SceneBewijs },
-  { id: 'epiloog', label: 'Epiloog', dur: 7, bg: 'bg-lime', Comp: SceneEpiloog },
 ]
 const TOTAL = SCENES.reduce((a, s) => a + s.dur, 0)
 const SEEN_KEY = 'dgskills-film-seen'
@@ -23,11 +21,9 @@ const SEEN_KEY = 'dgskills-film-seen'
 export function Film({
   onFinish,
   autoSkipSeen = false,
-  storyHref = '/',
 }: {
   onFinish?: () => void
   autoSkipSeen?: boolean
-  storyHref?: string
 }) {
   const [elapsed, setElapsed] = useState(0) // seconds
   const [done, setDone] = useState(false)
@@ -75,10 +71,7 @@ export function Film({
     start.current = performance.now() - target * 1000
     setElapsed(target)
     if (target >= TOTAL) markDone()
-    else {
-      finished.current = false
-      setDone(false)
-    }
+    else setDone(false)
   }
 
   // scene lookup
@@ -90,10 +83,10 @@ export function Film({
     idx = i
   }
   const scene = SCENES[done ? SCENES.length - 1 : idx]
-  const sceneStart = SCENES.slice(0, done ? SCENES.length - 1 : idx).reduce((a, s) => s.dur + a, 0)
+  const sceneStart = SCENES.slice(0, done ? SCENES.length - 1 : idx).reduce((a, s) => a + s.dur, 0)
   const localT = Math.min(scene.dur, Math.max(0, elapsed - sceneStart))
 
-  const skip = () => jumpTo(TOTAL - SCENES[SCENES.length - 1].dur + 0.01) // start of epiloog
+  const skip = () => jumpTo(TOTAL - SCENES[SCENES.length - 1].dur + 0.01) // jump to the final scene
   const replay = () => {
     finished.current = false
     setDone(false)
@@ -152,11 +145,7 @@ export function Film({
           transition={{ duration: 0.45 }}
           className="absolute inset-0"
         >
-          {scene.id === 'epiloog' ? (
-            <SceneEpiloog t={localT} storyHref={storyHref} />
-          ) : (
-            <scene.Comp t={localT} />
-          )}
+          <scene.Comp t={localT} />
         </motion.div>
       </AnimatePresence>
 
