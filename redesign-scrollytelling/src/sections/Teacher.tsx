@@ -1,5 +1,4 @@
-import { useRef } from 'react'
-import { motion, useScroll, useTransform } from 'framer-motion'
+import { motion } from 'framer-motion'
 import { ChapterMarker, Reveal, BrowserFrame } from '../components/brand'
 
 const STUDENTS = [
@@ -31,15 +30,8 @@ const POINTS = [
 ]
 
 export function Teacher() {
-  const ref = useRef<HTMLDivElement>(null)
-  const { scrollYProgress } = useScroll({ target: ref, offset: ['start end', 'center center'] })
-  const sheetY = useTransform(scrollYProgress, [0.15, 0.85], [0, -560])
-  const sheetR = useTransform(scrollYProgress, [0.15, 0.85], [-6, -28])
-  const sheetO = useTransform(scrollYProgress, [0.15, 0.7], [1, 0])
-  const waveO = useTransform(scrollYProgress, [0.3, 0.55, 0.8], [0, 1, 0])
-
   return (
-    <section id="docent" ref={ref} className="relative bg-paper grain overflow-hidden">
+    <section id="docent" className="relative bg-paper grain overflow-hidden">
       <div className="mx-auto max-w-6xl px-6 md:px-14 py-24 md:py-36">
         <ChapterMarker
           kicker="Hoofdstuk 4 · De docent"
@@ -58,24 +50,6 @@ export function Teacher() {
         </Reveal>
 
         <div className="relative mt-14">
-          {/* the retiring spreadsheet */}
-          <motion.div
-            style={{ y: sheetY, rotate: sheetR, opacity: sheetO }}
-            className="absolute -top-10 right-2 md:right-16 z-20 w-52 rounded-xl border-[3px] border-ink bg-[#e8f5e2] p-3 shadow-[6px_6px_0_0_rgba(23,20,14,1)]"
-          >
-            <p className="text-[10px] font-bold uppercase tracking-widest text-ink/50">voortgang_definitief_v3.xlsx</p>
-            <div className="mt-2 grid grid-cols-4 gap-px bg-ink/15 rounded overflow-hidden text-[8px]">
-              {Array.from({ length: 16 }).map((_, i) => (
-                <span key={i} className="bg-[#f6fbf3] px-1 py-1 text-ink/40">
-                  {i % 5 === 0 ? '??' : i % 3 === 0 ? '#!' : '·'}
-                </span>
-              ))}
-            </div>
-            <motion.p style={{ opacity: waveO }} className="mt-2 text-xs font-bold text-ink/70">
-              ik ga met pensioen 👋
-            </motion.p>
-          </motion.div>
-
           <Reveal>
             <BrowserFrame url="dgskills.app/klas" className="max-w-4xl mx-auto">
               <div className="flex flex-wrap items-center justify-between gap-2">
