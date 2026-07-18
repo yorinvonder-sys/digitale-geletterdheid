@@ -2,6 +2,52 @@ import { useRef } from 'react'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { Pill, Reveal } from '../components/brand'
 
+/* Hand-drawn SVG icons, matching the site style: chunky ink strokes, lime
+   accents, hard offset shadow, slightly tilted — like the rest of the brand. */
+function BeatIcon({ children, rotate = -4 }: { children: React.ReactNode; rotate?: number }) {
+  return (
+    <span
+      className="mt-1 inline-flex h-16 w-16 md:h-20 md:w-20 shrink-0 items-center justify-center rounded-2xl border-[3px] border-paper bg-lime shadow-[4px_4px_0_0_rgba(244,240,230,0.25)]"
+      style={{ transform: `rotate(${rotate}deg)` }}
+    >
+      <svg viewBox="0 0 48 48" className="h-9 w-9 md:h-11 md:w-11" fill="none" strokeLinecap="round" strokeLinejoin="round">
+        {children}
+      </svg>
+    </span>
+  )
+}
+
+const STROKE = { stroke: '#17140e', strokeWidth: 3 }
+
+const icons = [
+  /* 1 · lost key — niet ingelogd */
+  <BeatIcon key="key" rotate={-5}>
+    <circle cx="17" cy="20" r="8" {...STROKE} />
+    <circle cx="17" cy="20" r="2.6" fill="#17140e" />
+    <path d="M23 26 36 39" {...STROKE} />
+    <path d="M31 34l4-4M35 38l4-4" {...STROKE} />
+    <path d="M10 10c1.5-1.6 3.4-2.6 5.5-3" {...STROKE} opacity="0.5" />
+  </BeatIcon>,
+  /* 2 · play button on a screen — YouTube */
+  <BeatIcon key="play" rotate={4}>
+    <rect x="6" y="10" width="36" height="26" rx="6" {...STROKE} />
+    <path d="M21 17.5v11l9.5-5.5z" fill="#17140e" />
+    <path d="M14 42h20" {...STROKE} opacity="0.5" />
+  </BeatIcon>,
+  /* 3 · sneaky spark — AI via de achterdeur */
+  <BeatIcon key="spark" rotate={-3}>
+    <path d="M24 4l4.6 12.4L42 18l-10 8.8 3.4 13.2L24 32.4 12.6 40 16 26.8 6 18l13.4-1.6z" {...STROKE} fill="#f4f0e6" fillOpacity="0.35" />
+    <path d="M38 6l2 5M42 4l1.2 3.2" {...STROKE} />
+  </BeatIcon>,
+  /* 4 · split circle — de kloof */
+  <BeatIcon key="split" rotate={5}>
+    <path d="M24 6a18 18 0 0 1 0 36" {...STROKE} />
+    <path d="M24 6a18 18 0 0 0 0 36" {...STROKE} strokeDasharray="4 5" />
+    <path d="M24 4v40" {...STROKE} />
+    <path d="M31 12l4-3M33 38l4 3" {...STROKE} opacity="0.6" />
+  </BeatIcon>,
+]
+
 const BEATS = [
   {
     kicker: 'Maandag, 8:30',
@@ -40,7 +86,10 @@ function Beat({ beat, index }: { beat: (typeof BEATS)[number]; index: number }) 
         {index < BEATS.length - 1 && <span className="mt-2 w-[2px] flex-1 bg-paper/20" />}
       </div>
       <div className="pb-20 md:pb-28">
-        <Pill dark>{beat.kicker}</Pill>
+        <div className="flex flex-wrap items-center gap-4 md:gap-5">
+          {icons[index]}
+          <Pill dark>{beat.kicker}</Pill>
+        </div>
         <h3 className="mt-5 max-w-2xl font-display text-3xl md:text-5xl font-black leading-[1.05]">
           {beat.title}
         </h3>
