@@ -2,41 +2,42 @@ import { useRef } from 'react'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { Pill, Reveal } from '../components/brand'
 
-/* Hand-drawn SVG icons, matching the site style: chunky ink strokes, lime
-   accents, hard offset shadow, slightly tilted — like the rest of the brand. */
-function BeatIcon({ children, rotate = -4 }: { children: React.ReactNode; rotate?: number }) {
+/* Hand-drawn SVG icons, matching the site style: chunky ink strokes.
+   Rendered as subtle watermarks in the bottom-right corner of each beat. */
+function BeatIcon({ children, rotate = -8 }: { children: React.ReactNode; rotate?: number }) {
   return (
     <span
-      className="mt-1 inline-flex h-16 w-16 md:h-20 md:w-20 shrink-0 items-center justify-center rounded-2xl border-[3px] border-paper bg-lime shadow-[4px_4px_0_0_rgba(244,240,230,0.25)]"
+      aria-hidden
+      className="pointer-events-none absolute -bottom-4 right-0 md:right-6 inline-flex h-24 w-24 md:h-36 md:w-36 items-center justify-center rounded-3xl border-[3px] border-paper/20 bg-lime/10 opacity-40"
       style={{ transform: `rotate(${rotate}deg)` }}
     >
-      <svg viewBox="0 0 48 48" className="h-9 w-9 md:h-11 md:w-11" fill="none" strokeLinecap="round" strokeLinejoin="round">
+      <svg viewBox="0 0 48 48" className="h-14 w-14 md:h-20 md:w-20 opacity-60" fill="none" strokeLinecap="round" strokeLinejoin="round">
         {children}
       </svg>
     </span>
   )
 }
 
-const STROKE = { stroke: '#17140e', strokeWidth: 3 }
+const STROKE = { stroke: '#f4f0e6', strokeWidth: 3 }
 
 const icons = [
   /* 1 · lost key — niet ingelogd */
-  <BeatIcon key="key" rotate={-5}>
+  <BeatIcon key="key" rotate={-8}>
     <circle cx="17" cy="20" r="8" {...STROKE} />
-    <circle cx="17" cy="20" r="2.6" fill="#17140e" />
+    <circle cx="17" cy="20" r="2.6" fill="#f4f0e6" />
     <path d="M23 26 36 39" {...STROKE} />
     <path d="M31 34l4-4M35 38l4-4" {...STROKE} />
     <path d="M10 10c1.5-1.6 3.4-2.6 5.5-3" {...STROKE} opacity="0.5" />
   </BeatIcon>,
   /* 2 · play button on a screen — YouTube */
-  <BeatIcon key="play" rotate={4}>
+  <BeatIcon key="play" rotate={6}>
     <rect x="6" y="10" width="36" height="26" rx="6" {...STROKE} />
-    <path d="M21 17.5v11l9.5-5.5z" fill="#17140e" />
+    <path d="M21 17.5v11l9.5-5.5z" fill="#f4f0e6" />
     <path d="M14 42h20" {...STROKE} opacity="0.5" />
   </BeatIcon>,
   /* 3 · sneaky spark — AI via de achterdeur */
-  <BeatIcon key="spark" rotate={-3}>
-    <path d="M24 4l4.6 12.4L42 18l-10 8.8 3.4 13.2L24 32.4 12.6 40 16 26.8 6 18l13.4-1.6z" {...STROKE} fill="#f4f0e6" fillOpacity="0.35" />
+  <BeatIcon key="spark" rotate={-6}>
+    <path d="M24 4l4.6 12.4L42 18l-10 8.8 3.4 13.2L24 32.4 12.6 40 16 26.8 6 18l13.4-1.6z" {...STROKE} fill="#f4f0e6" fillOpacity="0.15" />
     <path d="M38 6l2 5M42 4l1.2 3.2" {...STROKE} />
   </BeatIcon>,
   /* 4 · split circle — de kloof */
@@ -85,11 +86,9 @@ function Beat({ beat, index }: { beat: (typeof BEATS)[number]; index: number }) 
         </span>
         {index < BEATS.length - 1 && <span className="mt-2 w-[2px] flex-1 bg-paper/20" />}
       </div>
-      <div className="pb-20 md:pb-28">
-        <div className="flex flex-wrap items-center gap-4 md:gap-5">
-          {icons[index]}
-          <Pill dark>{beat.kicker}</Pill>
-        </div>
+      <div className="relative pb-20 md:pb-28">
+        {icons[index]}
+        <Pill dark>{beat.kicker}</Pill>
         <h3 className="mt-5 max-w-2xl font-display text-3xl md:text-5xl font-black leading-[1.05]">
           {beat.title}
         </h3>
