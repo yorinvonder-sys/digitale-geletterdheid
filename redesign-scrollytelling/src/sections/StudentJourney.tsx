@@ -263,7 +263,7 @@ export function StudentJourney() {
   const Active = VISUALS[beat]
 
   return (
-    <section id="mila" ref={ref} className="relative h-[560vh] bg-paper-soft grain">
+    <section id="mila" ref={ref} className="relative h-[320vh] bg-paper-soft grain">
       <div className="sticky top-0 flex h-screen flex-col overflow-hidden">
         <div className="flex items-center justify-between px-6 md:px-14 pt-20 md:pt-24">
           <Pill>Hoofdstuk 3 · Mila, leerjaar 2</Pill>
@@ -285,10 +285,10 @@ export function StudentJourney() {
             <AnimatePresence mode="wait">
               <motion.div
                 key={beat}
-                initial={{ opacity: 0, y: 26 }}
+                initial={{ opacity: 0, y: 16 }}
                 animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -26 }}
-                transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+                exit={{ opacity: 0, y: -16 }}
+                transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
               >
                 <span className="inline-block rounded-full border-2 border-ink bg-white px-4 py-1 text-[11px] font-bold uppercase tracking-[0.2em]">
                   {String(beat + 1).padStart(2, '0')} / 05 · {BEATS[beat].kicker}
@@ -308,10 +308,10 @@ export function StudentJourney() {
             <AnimatePresence mode="wait">
               <motion.div
                 key={beat}
-                initial={{ opacity: 0, y: 40, rotate: 1.5 }}
+                initial={{ opacity: 0, y: 24, rotate: 1 }}
                 animate={{ opacity: 1, y: 0, rotate: 0 }}
-                exit={{ opacity: 0, y: -40, rotate: -1.5 }}
-                transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+                exit={{ opacity: 0, y: -24, rotate: -1 }}
+                transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
               >
                 <Active />
               </motion.div>
