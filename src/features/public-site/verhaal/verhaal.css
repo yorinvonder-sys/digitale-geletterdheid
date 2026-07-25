@@ -1,0 +1,109 @@
+/*
+ * Stijlen voor de scrollytelling-verhaalpagina (/verhaal).
+ *
+ * Alles staat onder `.verhaal`, zodat deze regels de rest van de app niet
+ * kunnen raken. Dit bestand wordt alleen geïmporteerd door VerhaalPage.tsx en
+ * belandt daardoor in de lazy chunk — het root-CSS-budget blijft ongemoeid.
+ */
+
+.verhaal {
+    scroll-behavior: smooth;
+}
+
+/* Filmkorrel. Ligt over het vlak heen, vangt geen klikken. */
+.verhaal .grain {
+    position: relative;
+}
+
+.verhaal .grain::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0.5;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+}
+
+/* Lintstrook tussen secties. */
+@keyframes verhaal-marquee {
+    from {
+        transform: translateX(0);
+    }
+    to {
+        transform: translateX(-50%);
+    }
+}
+
+.verhaal .verhaal-marquee {
+    animation: verhaal-marquee 28s linear infinite;
+}
+
+/* Dobberende eend. */
+@keyframes verhaal-bob {
+    0%,
+    100% {
+        transform: translateY(0) rotate(-3deg);
+    }
+    50% {
+        transform: translateY(-14px) rotate(4deg);
+    }
+}
+
+.verhaal .verhaal-bob {
+    animation: verhaal-bob 5s ease-in-out infinite;
+}
+
+/* Knipperende cursor achter de getypte filmregels. */
+@keyframes verhaal-caret {
+    0%,
+    45% {
+        opacity: 1;
+    }
+    55%,
+    100% {
+        opacity: 0;
+    }
+}
+
+.verhaal .verhaal-caret {
+    animation: verhaal-caret 1s steps(1, end) infinite;
+}
+
+/* Groot hoofdstuknummer als outline-watermerk. */
+.verhaal .verhaal-watermark {
+    -webkit-text-stroke: 1.5px rgba(32, 32, 35, 0.14);
+    color: transparent;
+}
+
+.verhaal .verhaal-watermark-light {
+    -webkit-text-stroke: 1.5px rgba(242, 241, 236, 0.16);
+    color: transparent;
+}
+
+/* Papierlijnen voor de "schrift"-marge. */
+.verhaal .verhaal-lines {
+    background-image: repeating-linear-gradient(
+        to bottom,
+        transparent 0,
+        transparent 31px,
+        rgba(32, 32, 35, 0.05) 31px,
+        rgba(32, 32, 35, 0.05) 32px
+    );
+}
+
+/*
+ * design.md: respecteer prefers-reduced-motion — content blijft zichtbaar,
+ * beweging gaat uit.
+ */
+@media (prefers-reduced-motion: reduce) {
+    .verhaal {
+        scroll-behavior: auto;
+    }
+
+    .verhaal .verhaal-marquee,
+    .verhaal .verhaal-bob,
+    .verhaal .verhaal-caret {
+        animation: none;
+    }
+}
