@@ -21,7 +21,8 @@ interface ChatMessage {
 
 export interface GameLabChatProps {
     currentSpec: GameSpec;
-    onAssistantText: (rawText: string) => void;
+    /** Geeft terug of er daadwerkelijk een nieuwe game-staat uit kwam. */
+    onAssistantText: (rawText: string) => boolean;
     maxMessages?: number;
 }
 
@@ -72,7 +73,11 @@ export const GameLabChat: React.FC<GameLabChatProps> = ({ currentSpec, onAssista
         // De historie draagt de gestripte tekst; het ruwe GAME_STATE-blok zou
         // het server-budget van 2000 tekens opblazen. De actuele spec gaat
         // daarom apart mee als `spec`.
-        const history = messages
+        // Bij een retry staat het mislukte bericht al in `messages`, terwijl het
+        // ook opnieuw als `message` meegaat. Zonder deze correctie ziet het model
+        // "maak het moeilijker" twee keer en past het de wijziging dubbel toe.
+        const priorMessages = isRetry ? messages.slice(0, -1) : messages;
+        const history = priorMessages
             .slice(1)
             .map((m) => ({ role: m.role === 'assistant' ? 'model' : 'user', parts: [{ text: m.text }] }));
 
@@ -116,7 +121,18 @@ export const GameLabChat: React.FC<GameLabChatProps> = ({ currentSpec, onAssista
             const raw = typeof data.text === 'string' ? data.text : '';
             // De ouder leest de spec uit het ruwe antwoord; de bezoeker ziet
             // alleen het proza, nooit het GAME_STATE-blok.
-            onAssistantText(raw);
+            const applied = onAssistantText(raw);
+
+            if (!applied) {
+                // Het model liet het GAME_STATE-blok vallen of stuurde onzin. Er is
+                // dan niets veranderd, en "Klaar! Je game is aangepast." zou een
+                // leugen zijn. Zeg dat eerlijk in plaats van een no-op als succes
+                // te presenteren.
+                setErrorKind('server');
+                setErrorText('De AI gaf geen bruikbare aanpassing terug. Probeer het anders te formuleren.');
+                return;
+            }
+
             setMessages((prev) => [...prev, { role: 'assistant', text: stripGameStateBlock(raw) }]);
             if (typeof data.remaining !== 'number') {
                 setRemaining((prev) => Math.max(0, prev - 1));

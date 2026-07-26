@@ -18,9 +18,14 @@ export default {
         './src/features/profile/avatar/AvatarSetup.tsx',
         './src/features/profile/avatar/AvatarViewer.tsx',
         './src/features/public-site/**/*.{js,ts,jsx,tsx}',
-        // Live ingebedde dashboards op /scholen en /verhaal.
+        // Live ingebedde dashboards op /scholen en /verhaal. Tailwind volgt geen
+        // imports, dus de componenten die deze twee renderen moeten er los bij:
+        // MissionPreviewVisual e.d. leven in features/dashboard en gebruiken
+        // utilities die anders alleen in de ingelogde bundel belanden.
         './src/features/student/**/*.{js,ts,jsx,tsx}',
         './src/features/teacher/**/*.{js,ts,jsx,tsx}',
+        './src/features/dashboard/**/*.{js,ts,jsx,tsx}',
+        './src/components/**/*.{js,ts,jsx,tsx}',
         './src/features/seo/**/*.{js,ts,jsx,tsx}',
         './src/components/brand/**/*.{js,ts,jsx,tsx}',
     ],

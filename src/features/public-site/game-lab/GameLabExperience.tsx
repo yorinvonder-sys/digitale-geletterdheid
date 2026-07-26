@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion';
 import { PlayableGame } from '@/features/public-site/game-lab/PlayableGame';
 import { GameLabChat } from '@/features/public-site/game-lab/GameLabChat';
@@ -18,10 +18,17 @@ const MAX_PROMPTS = 10;
 
 const GameLabExperience: React.FC = () => {
     const [spec, setSpec] = useState<GameSpec>(() => structuredClone(DEFAULT_GAME_SPEC) as GameSpec);
+    const specRef = useRef(spec);
+    useEffect(() => { specRef.current = spec; }, [spec]);
     const reduceMotion = usePrefersReducedMotion();
 
+    // Geeft terug of het antwoord echt een nieuwe staat opleverde; de chat
+    // gebruikt dat om een no-op niet als succes te presenteren.
     const handleAssistantText = useCallback((rawText: string) => {
-        setSpec((previous) => parseGameSpec(rawText, previous).spec);
+        const result = parseGameSpec(rawText, specRef.current);
+        specRef.current = result.spec;
+        if (result.applied) setSpec(result.spec);
+        return result.applied;
     }, []);
 
     return (

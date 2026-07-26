@@ -189,7 +189,7 @@ export function EchtProduct() {
                     leerlinggegevens. Op een smal scherm is het dashboard sterk verkleind;{' '}
                     <a href="/leerlingdemo" className="underline underline-offset-2 hover:text-duck-bg/70">
                         open de demo
-                    </a>{' '}
+                    </a>{rol === 'docent' ? ' en kies daar Docent' : ''}{' '}
                     om erin te klikken.
                 </p>
             </Reveal>

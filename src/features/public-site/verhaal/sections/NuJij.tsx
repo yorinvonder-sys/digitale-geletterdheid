@@ -85,7 +85,12 @@ export function NuJij() {
                         Een code eraan hangen zou een dekkingsclaim zijn die het
                         product hier niet waarmaakt. */}
                     <p className="text-xs font-bold text-duck-bg/45">
-                        Geen account nodig. We slaan de inhoud van je gesprek niet op.
+                        Geen account nodig. DGSkills bewaart de inhoud van je gesprek niet in
+                        de eigen database; de AI-verwerking loopt via Mistral, onder de
+                        afspraken uit onze{' '}
+                        <a href="/ict/privacy/ai" className="underline underline-offset-2 hover:text-duck-bg/70">
+                            AI-transparantie
+                        </a>.
                     </p>
                 </Reveal>
             </div>

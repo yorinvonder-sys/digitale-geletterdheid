@@ -100,12 +100,20 @@ function buildWorld(spec: GameSpec): World {
         cursor += 170 + random() * 130;
     }
 
+    // Hoogte van de items volgt uit de werkelijke sprongfysica. Met een vaste
+    // 34-86px kon een geldige spec (bv. jumpHeight 6 met gravity 2, piek ~12px)
+    // een spel opleveren dat rekenkundig onwinbaar was: de items hingen buiten
+    // bereik terwijl je ze allemaal moest pakken.
+    const peak = (spec.jumpHeight * JUMP_SCALE) ** 2 / (2 * spec.gravity * GRAVITY_SCALE * 3.4);
+    const jumps = spec.powerup === 'dubbelsprong' ? 2 : 1;
+    const reach = Math.max(8, Math.min(120, peak * jumps * 0.8));
+
     const collectibles: Collectible[] = [];
     cursor = WORLD_W + 130;
     for (let i = 0; i < collectibleTotal; i += 1) {
         collectibles.push({
             x: cursor,
-            y: GROUND_Y - 34 - Math.round(random() * 52),
+            y: GROUND_Y - PLAYER_SIZE - Math.round(random() * reach),
             taken: false,
         });
         cursor += 140 + random() * 110;
@@ -326,7 +334,12 @@ export const PlayableGame: React.FC<PlayableGameProps> = ({ spec, reduceMotion, 
 
     /* ── Loop ─────────────────────────────────────────────────────── */
 
-    const shouldRun = status === 'running' && inView && pageVisible && !reduceMotion;
+    // Bewust GEEN `!reduceMotion` hierin. De game start nooit vanzelf — `status`
+    // wordt alleen 'running' door een klik op Start, Opnieuw of Springen. Die
+    // expliciete keuze ís de opt-in. Stond `reduceMotion` hier wel in, dan
+    // verdween de overlay wel maar draaide de loop nooit: een bevroren spel,
+    // terwijl de tekst eronder belooft dat Start hem speelt.
+    const shouldRun = status === 'running' && inView && pageVisible;
 
     useEffect(() => {
         if (!shouldRun) {
