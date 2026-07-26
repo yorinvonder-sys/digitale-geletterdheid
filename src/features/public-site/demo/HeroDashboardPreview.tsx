@@ -128,6 +128,7 @@ export const HeroDashboardPreview: React.FC<Props> = ({ which }) => {
                     )}
                     {mounted && which === 'teacher' && (
                         <TeacherDashboard
+                            embedded
                             demoMode
                             demoStudents={DEMO_STUDENTS}
                             onLogout={noop}

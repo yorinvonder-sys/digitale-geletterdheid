@@ -847,7 +847,7 @@ export function AuthenticatedApp() {
                     <div className="relative">
                         <button
                             onClick={() => setDevViewOverride('developer')}
-                            className="fixed bottom-20 sm:bottom-6 right-4 sm:right-6 z-50 flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-2 sm:py-3 bg-duck-ink text-white rounded-full font-bold text-xs sm:text-sm shadow-duck-soft hover:opacity-90 transition-colors"
+                            className="fixed bottom-24 lg:bottom-6 right-4 sm:right-6 z-50 flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-2 sm:py-3 bg-duck-ink text-white rounded-full font-bold text-xs sm:text-sm shadow-duck-soft hover:opacity-90 transition-colors"
                         >
                             <Code2 size={16} />
                             <span className="hidden sm:inline">Terug naar Developer</span>
@@ -871,7 +871,7 @@ export function AuthenticatedApp() {
                     <div className="relative">
                         <button
                             onClick={() => setDevViewOverride('developer')}
-                            className="fixed bottom-20 sm:bottom-6 right-4 sm:right-6 z-50 flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-2 sm:py-3 bg-duck-ink text-white rounded-full font-bold text-xs sm:text-sm shadow-duck-soft hover:opacity-90 transition-colors"
+                            className="fixed bottom-24 lg:bottom-6 right-4 sm:right-6 z-50 flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-2 sm:py-3 bg-duck-ink text-white rounded-full font-bold text-xs sm:text-sm shadow-duck-soft hover:opacity-90 transition-colors"
                         >
                             <Code2 size={16} />
                             <span className="hidden sm:inline">Terug naar Developer</span>

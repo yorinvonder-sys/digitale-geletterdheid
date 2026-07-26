@@ -35,6 +35,9 @@ import TutorialSpotlight, { TutorialRestartButton } from '@/features/teacher/Tut
 
 import { TeacherModals } from '@/features/teacher/dashboard/TeacherModals';
 import { TeacherCommandCenter } from '@/features/teacher/dashboard/TeacherCommandCenter';
+import { TeacherEvidence } from '@/features/teacher/dashboard/TeacherEvidence';
+import { TeacherMobileNav, type TeacherNavItem } from '@/features/teacher/dashboard/TeacherMobileNav';
+import { TeacherAccountMenu } from '@/features/teacher/dashboard/TeacherAccountMenu';
 import { TeacherDocumentsPanel } from '@/features/teacher/TeacherDocumentsPanel';
 import { SchedulingConfigurator } from '@/features/coordinator/SchedulingConfigurator';
 import { downloadCsv } from '@/utils/csvExport';
@@ -56,9 +59,11 @@ interface TeacherDashboardProps {
     onOpenGames?: (gameId?: string) => void;
     demoMode?: boolean;
     demoStudents?: StudentData[];
+    /** Ingebed in een geschaalde preview: onderdrukt de mobiele navigatiebalk. */
+    embedded?: boolean;
 }
 
-export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ user, onUpdateStats, onViewAssignments, onLogout, onOpenGames, demoMode = false, demoStudents }) => {
+export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ user, onUpdateStats, onViewAssignments, onLogout, onOpenGames, demoMode = false, demoStudents, embedded = false }) => {
     const [students, setStudents] = useState<StudentData[]>(demoMode && demoStudents ? demoStudents : []);
     const [searchTerm, setSearchTerm] = useState('');
     const [loading, setLoading] = useState(true);
@@ -88,6 +93,7 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ user, onUpda
     const classDropdownRef = useRef<HTMLDivElement | null>(null);
     const [classRoomConfig, setClassRoomConfig] = useState<ClassroomConfig | null>(null);
     const [showLiveModal, setShowLiveModal] = useState(false);
+    const [accountMenuOpen, setAccountMenuOpen] = useState(false);
     const [showSchedulingConfig, setShowSchedulingConfig] = useState(false);
 
     // Focus mode
@@ -503,15 +509,18 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ user, onUpda
         setActiveTab(tab);
     };
 
-    const sideNavItems: { id: MainTab; label: string; icon: typeof BarChart3; badge?: number }[] = [
-        { id: 'overview', label: 'Overzicht', icon: BarChart3, badge: attentionCount },
+    // Drie items, één per docenttaak: monitoren, ingrijpen, verantwoorden.
+    // Alles wat niet dagelijks is, staat in het accountmenu in de header.
+    const sideNavItems: TeacherNavItem[] = [
+        { id: 'overview', label: 'Vandaag', icon: BarChart3, badge: attentionCount },
         { id: 'students', label: 'Leerlingen', icon: Users },
-        { id: 'games', label: 'Missies', icon: BookOpen },
-        { id: 'slo', label: 'SLO-dekking', icon: ShieldCheck },
-        { id: 'progress', label: 'Rapporten', icon: TrendingUp },
-        { id: 'documenten', label: 'Documenten', icon: Folder },
-        { id: 'settings', label: 'Beheer', icon: Settings },
+        { id: 'progress', label: 'Bewijs', icon: ShieldCheck },
     ];
+
+    // Panelen uit het accountmenu horen bij geen enkel nav-item: dan is er
+    // bewust niets actief in plaats van een item dat je niet gekozen hebt.
+    const MENU_TABS: MainTab[] = ['settings', 'games', 'gamification', 'ai-beleid', 'feedback', 'documenten'];
+    const navActiveTab: MainTab | null = MENU_TABS.includes(activeTab) ? null : activeTab;
 
     return (
         <TutorialProvider
@@ -548,10 +557,11 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ user, onUpda
                         <nav className="flex-1 space-y-2 px-4 py-5">
                             {sideNavItems.map((item, index) => {
                                 const Icon = item.icon;
-                                const isActive = activeTab === item.id;
+                                const isActive = navActiveTab === item.id;
                                 return (
                                     <button
                                         key={`${item.label}-${index}`}
+                                        data-tutorial={`${item.id}-tab`}
                                         onClick={() => navigateTo(item.id)}
                                         className={`flex w-full items-center gap-3 rounded-xl px-3 py-3 text-left text-sm font-bold transition ${
                                             isActive
@@ -642,27 +652,32 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ user, onUpda
                                     {/* Geen belicoon: het aantal aandachtspunten staat al op het
                                         Overzicht-navigatie-item én bovenaan het overzicht zelf. */}
                                     <button
+                                        data-tutorial="presentation-btn"
                                         onClick={() => setShowPresentation(true)}
                                         className="hidden h-11 items-center gap-2 rounded-xl bg-duck-acid px-4 text-sm font-black text-duck-ink transition hover:bg-duck-ink hover:text-duck-acid md:flex"
                                     >
                                         <Presentation size={17} />
                                         Presentatie
                                     </button>
-                                    {onLogout && (
-                                        <button onClick={onLogout} className="flex h-11 w-11 items-center justify-center rounded-full bg-duck-bg text-duck-ink/60 hover:text-duck-error" aria-label="Uitloggen">
-                                            <LogOut size={18} />
-                                        </button>
-                                    )}
-                                    <div className="hidden h-11 w-11 shrink-0 items-center justify-center rounded-full bg-duck-acid/35 text-sm font-black text-duck-ink min-[430px]:flex">
-                                        {user?.displayName?.charAt(0)?.toUpperCase() || 'D'}
-                                    </div>
+                                    {/* Uitloggen zit nu in het accountmenu; één plek in plaats van twee. */}
+                                    <TeacherAccountMenu
+                                        open={accountMenuOpen}
+                                        onToggle={() => setAccountMenuOpen(o => !o)}
+                                        onClose={() => setAccountMenuOpen(false)}
+                                        initial={user?.displayName?.charAt(0)?.toUpperCase() || 'D'}
+                                        displayName={user?.displayName ?? undefined}
+                                        onNavigate={navigateTo}
+                                        onOpenRosterImport={() => setShowRosterImport(true)}
+                                        onOpenPresentation={() => setShowPresentation(true)}
+                                        onLogout={onLogout}
+                                    />
                                 </div>
                             </div>
                         </header>
 
                         {error && <div className="m-4 rounded-xl border border-duck-error bg-duck-error/10 p-4 text-sm text-duck-error">{error}</div>}
 
-                        <main className="min-w-0 p-4 lg:p-6">
+                        <main className="min-w-0 p-4 pb-28 lg:p-6 lg:pb-6">
                             <AnimatePresence mode="wait">
                                 {activeTab === 'overview' && (
                                     <PageTransition key="overview">
@@ -751,39 +766,29 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ user, onUpda
                         {activeTab === 'games' && <PageTransition key="games"><GamesPanel onOpenGame={onOpenGames || (() => { })} availableClasses={classGroups} /></PageTransition>}
                         {activeTab === 'ai-beleid' && <PageTransition key="ai-beleid"><div className="bg-white rounded-[2rem] border border-duck-ink/15 p-6"><AiBeleidFeedbackPanel classFilter={classFilter !== 'all' ? classFilter : undefined} schoolId={user?.schoolId} /></div></PageTransition>}
                         {activeTab === 'feedback' && <PageTransition key="feedback"><FeedbackPanel schoolId={user?.schoolId} /></PageTransition>}
-                        {activeTab === 'progress' && <PageTransition key="progress" className="space-y-6"><MissionProgressPanel students={students} classFilter={classFilter} onSelectStudent={setSelectedStudent} yearGroup={yearGroupFilter} /><HybridAssessmentPanel records={hybridAssessments} classFilter={classFilter} /><GrowthOverviewPanel studentIds={students.filter(s => classFilter === 'all' || s.studentClass === classFilter).map(s => s.uid)} /></PageTransition>}
-                        {activeTab === 'slo' && <PageTransition key="slo"><SLOClassOverview students={students} schoolId={user?.schoolId} selectedYear={yearGroupFilter} /></PageTransition>}
-                        {activeTab === 'nulmeting' && (
-                            <PageTransition key="nulmeting" className="space-y-6">
-                                <EindmetingReleaseButton classFilter={classFilter} schoolId={user?.schoolId} availableClasses={classGroups} />
-                                <Suspense fallback={<div className="flex items-center justify-center py-12"><div className="h-8 w-8 animate-spin rounded-full border-b-2 border-duck-ink" /></div>}>
-                                    <LazyDigitaalPaspoortTeacher
-                                        klasResults={students
-                                            .filter(s => {
-                                                const mC = classFilter === 'all' || s.studentClass === classFilter || s.identifier?.startsWith(classFilter);
-                                                return mC && s.stats?.nulmetingResult;
-                                            })
-                                            .map(s => ({
-                                                studentName: s.displayName || 'Naamloos',
-                                                studentId: s.uid,
-                                                result: s.stats!.nulmetingResult!,
-                                            }))}
-                                    />
-                                </Suspense>
+                        {activeTab === 'progress' && (
+                            <PageTransition key="progress">
+                                <TeacherEvidence
+                                    students={students}
+                                    classFilter={classFilter}
+                                    availableClasses={classGroups}
+                                    yearGroup={yearGroupFilter}
+                                    schoolId={user?.schoolId}
+                                    hybridAssessments={hybridAssessments}
+                                    onSelectStudent={setSelectedStudent}
+                                />
                             </PageTransition>
                         )}
-                        {activeTab === 'samenhang' && (
-                            <PageTransition key="samenhang">
-                                <Suspense fallback={<div className="flex items-center justify-center py-12"><div className="h-8 w-8 animate-spin rounded-full border-b-2 border-duck-ink" /></div>}>
-                                    <LazySamenhangMatrix selectedYear={yearGroupFilter} schoolId={user?.schoolId} />
-                                </Suspense>
-                            </PageTransition>
-                        )}
+                        {/* 'documenten' blijft bereikbaar via het accountmenu (Kennisbank). */}
                         {activeTab === 'documenten' && <PageTransition key="documenten"><TeacherDocumentsPanel /></PageTransition>}
                             </AnimatePresence>
                         </main>
                     </div>
                 </div>
+
+                {!embedded && (
+                    <TeacherMobileNav items={sideNavItems} activeTab={navActiveTab ?? 'overview'} onNavigate={navigateTo} />
+                )}
 
                 <RosterImportModal open={showRosterImport} onClose={() => setShowRosterImport(false)} />
                 <TeacherModals
