@@ -3,11 +3,11 @@ import {
   AppWindow,
   ArrowDown,
   Braces,
-  Browser,
   ChevronDown,
   ChevronUp,
   Database,
   FolderTree,
+  Monitor,
   Route,
   ShieldCheck,
 } from 'lucide-react';
@@ -17,7 +17,7 @@ const ARCHITECTURE_STEPS = [
     label: 'Browser',
     file: 'index.html',
     detail: 'Laadt de pagina en biedt het root-element.',
-    icon: Browser,
+    icon: Monitor,
   },
   {
     label: 'React start',
