@@ -30,13 +30,7 @@ jobs:
         run: node scripts/validate-claude-handoff.mjs
 
   quality-checks:
-    # Bewust geen branchfilter. Deze job draaide alleen op claude/*-branches,
-    # waardoor de contributor met een branchnaam kon kiezen of type-check,
-    # audit, Gitleaks en Semgrep überhaupt liepen. Een door `if` overgeslagen
-    # job geldt bij GitHub als geslaagd en blokkeert de merge niet, ook niet
-    # als hij required is — de gate was dus optioneel voor wie dat wilde.
-    # Alleen validate-handoff blijft Claude-specifiek; dat controleert een
-    # Claude-conventie, geen beveiligingseigenschap.
+    if: startsWith(github.head_ref, 'claude/')
     runs-on: ubuntu-latest
 
     steps:
@@ -76,65 +70,13 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      # Deze stap rapporteert wel, maar blokkeert nog niet op bevindingen.
-      # Reden: de vorige opzet (semgrep/semgrep-action@v1) pinde semgrep
-      # 1.36.0, en die versie kent de severity 'MEDIUM' niet die de huidige
-      # registryregels gebruiken. Semgrep crashte op het inlezen van zijn
-      # eigen regelset ("invalid rule severity value: MEDIUM"), de action
-      # slikte die crash in, en de stap werd tóch groen. Er is dus nooit één
-      # regel uitgevoerd. De codebase is daarmee feitelijk ongescand, en de
-      # eerste echte scan levert vermoedelijk een stapel bevindingen op.
-      # Die meteen hard laten blokkeren zou lopende PR's stilzetten voordat
-      # iemand heeft kunnen triageren. Zie #216 voor het wegwerken en het
-      # daarna blokkerend maken.
-      #
-      # Het onderscheid dat de oude action níét maakte, staat hieronder wel:
-      #   exit 0   geen bevindingen              → groen
-      #   exit 1   bevindingen                   → waarschuwing, nog niet rood
-      #   exit >1  Semgrep zelf is stuk          → rood
-      #
-      # Die laatste regel is het punt van deze hele stap: een kapotte scan
-      # mag nooit meer als "veilig" doorgaan.
-      - name: SAST scan (Semgrep, rapporterend)
-        run: |
-          status=0
-          docker run --rm \
-            -v "${{ github.workspace }}:/src" \
-            -v "${{ runner.temp }}:/out" \
-            -w /src \
-            semgrep/semgrep:1.171.0 \
-            semgrep scan \
-              --config=p/owasp-top-ten \
-              --config=p/javascript \
-              --config=p/typescript \
-              --metrics=off \
-              --sarif --output=/out/semgrep.sarif || status=$?
-
-          findings() {
-            node -e 'const fs=require("node:fs");
-              const r=JSON.parse(fs.readFileSync(process.argv[1],"utf8"));
-              console.log(r.runs.reduce((n,x)=>n+(x.results?.length??0),0))' "$1"
-          }
-
-          if [ "$status" -eq 0 ]; then
-            echo "Semgrep: scan voltooid, geen bevindingen."
-            echo "Semgrep: geen bevindingen." >> "$GITHUB_STEP_SUMMARY"
-          elif [ "$status" -eq 1 ]; then
-            n=$(findings "${{ runner.temp }}/semgrep.sarif" 2>/dev/null || echo "een onbekend aantal")
-            echo "::warning::Semgrep vond $n bevinding(en). Deze stap blokkeert nog niet — zie het artifact semgrep-results.sarif en issue #216."
-            echo "Semgrep: $n bevinding(en), nog niet blokkerend. Zie #216." >> "$GITHUB_STEP_SUMMARY"
-          else
-            echo "::error::Semgrep is zelf gefaald (exit $status). Dit is geen bevinding maar een kapotte scan; de gate mag hier niet groen op worden."
-            exit "$status"
-          fi
-
-      - name: Upload Semgrep-resultaten
-        if: always()
-        uses: actions/upload-artifact@v4
+      - name: SAST scan (Semgrep)
+        uses: semgrep/semgrep-action@v1
         with:
-          name: semgrep-results.sarif
-          path: ${{ runner.temp }}/semgrep.sarif
-          if-no-files-found: warn
+          config: >-
+            p/owasp-top-ten
+            p/javascript
+            p/typescript
 
       - name: Production build
         run: npm run build:prod
