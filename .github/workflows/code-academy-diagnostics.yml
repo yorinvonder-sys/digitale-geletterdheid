@@ -1,0 +1,46 @@
+name: Code Academy Diagnostics
+
+on:
+  push:
+    branches:
+      - feat/developer-code-academy
+
+permissions:
+  contents: read
+
+jobs:
+  typecheck-log:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22.12.0'
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Capture TypeScript output
+        shell: bash
+        run: |
+          set +e
+          npm run typecheck:app > typecheck.log 2>&1
+          status=$?
+          echo "TYPECHECK_EXIT_CODE=$status" >> "$GITHUB_ENV"
+          cat typecheck.log
+          exit 0
+
+      - name: Upload typecheck log
+        uses: actions/upload-artifact@v4
+        with:
+          name: code-academy-typecheck-log
+          path: typecheck.log
+          if-no-files-found: error
+
+      - name: Preserve failing status
+        if: env.TYPECHECK_EXIT_CODE != '0'
+        run: exit 1
