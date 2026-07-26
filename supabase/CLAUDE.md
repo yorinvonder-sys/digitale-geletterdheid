@@ -46,3 +46,13 @@ This subtree contains migrations and edge functions for a school-facing educatio
 ## Output expectations
 - Explain privacy and security impact in plain Dutch.
 - Explain whether the change affects compliance, school trust, or learner safety.
+
+## Model- en denkniveau (domeinaanvulling)
+Volg de standaard in de root `CLAUDE.md`. Dit is een hoog-risicodomein:
+- Ondergrens **Opus 5 high** voor elke wijziging aan auth, RLS, edge functions,
+  secrets, CORS of role-checks.
+- **Opus 5 xhigh** voor database-/datamigraties, dependencyconflicten en
+  regressies over meerdere systemen.
+- **Opus 5 max** alleen als finale adversarial review bij mogelijk gegevensverlies
+  of securitykritieke merges.
+- Onafhankelijke read-only eindreview vóór merge is hier verplicht, niet optioneel.
