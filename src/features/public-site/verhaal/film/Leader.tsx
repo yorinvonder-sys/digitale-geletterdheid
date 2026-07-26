@@ -1,16 +1,20 @@
 import React from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 
 /**
- * Ouderwetse film-leader: aftelling 3 · 2 · 1 met roterende sweep hand,
+ * Ouderwetse film-leader: één seconde celluloid met een roterende sweep hand,
  * korrel, krassen en perforatiegaten.
+ *
+ * Er wordt bewust niet afgeteld. De aftelling 3 · 2 · 1 duurde 3,6 seconden en
+ * liet de bezoeker wachten voordat het verhaal begon; wat overblijft is een
+ * korte filmische aanloop van één omwenteling.
  *
  * De kleuren hier zijn bewust géén merktokens: dit is celluloid (#3a3a38 /
  * #e8e4d8), geen DGSkills-vlak.
  */
 export function Leader({ t }: { t: number }) {
-    const num = t < 1 ? 3 : t < 2 ? 2 : 1;
-    const frac = t % 1; // 0→1 binnen elke seconde
+    // Eén volledige omwenteling over de duur van de scène.
+    const frac = Math.min(1, Math.max(0, t));
     const sweep = (1 - frac) * 360;
 
     return (
@@ -92,23 +96,6 @@ export function Leader({ t }: { t: number }) {
                     />
                     <circle cx="150" cy="150" r="5" fill="#e8e4d8" />
                 </svg>
-
-                {/* het aftelgetal */}
-                <div className="absolute inset-0 flex items-center justify-center">
-                    <AnimatePresence mode="popLayout">
-                        <motion.span
-                            key={num}
-                            initial={{ scale: 1.35, opacity: 0 }}
-                            animate={{ scale: 1, opacity: 1 }}
-                            exit={{ scale: 0.85, opacity: 0 }}
-                            transition={{ duration: 0.22 }}
-                            className="font-display font-black leading-none text-[#e8e4d8]"
-                            style={{ fontSize: 'min(22svh, 130px)' }}
-                        >
-                            {num}
-                        </motion.span>
-                    </AnimatePresence>
-                </div>
             </div>
 
             <p className="mt-8 text-[10px] font-bold uppercase tracking-[0.4em] text-[#e8e4d8]/60 md:text-xs">

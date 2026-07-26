@@ -1,8 +1,15 @@
-const LEADER_DURATION = 3.6;
-const FRUSTRATION_DURATION = 10;
-const PUZZLE_DURATION = 9;
-const ANSWER_DURATION = 10;
-const PROOF_DURATION = 10;
+/**
+ * De scèneduren in seconden — de enige bron. `Film.tsx` bouwt zijn SCENES
+ * hiermee op, zodat de render-sleutels hieronder niet uit de pas kunnen lopen
+ * met de werkelijke scènegrenzen. Stonden deze getallen op twee plekken, dan
+ * zou één aanpassing de getypte tekst op het verkeerde moment laten beginnen
+ * zonder dat er iets zichtbaar breekt.
+ */
+export const LEADER_DURATION = 1;
+export const FRUSTRATION_DURATION = 10;
+export const PUZZLE_DURATION = 9;
+export const ANSWER_DURATION = 10;
+export const PROOF_DURATION = 10;
 
 const LEADER_FPS = 24;
 

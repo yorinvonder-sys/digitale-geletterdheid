@@ -3,7 +3,14 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion';
 import { SceneFrustratie, SceneRaadsel, SceneAntwoord, SceneBewijs } from './scenes';
 import { Leader } from './Leader';
-import { getFilmRenderKey } from './timeline';
+import {
+    getFilmRenderKey,
+    LEADER_DURATION,
+    FRUSTRATION_DURATION,
+    PUZZLE_DURATION,
+    ANSWER_DURATION,
+    PROOF_DURATION,
+} from './timeline';
 
 interface Scene {
     id: string;
@@ -16,15 +23,18 @@ interface Scene {
     Comp: React.ComponentType<{ t: number }>;
 }
 
+// De duren komen uit timeline.ts, dat ze ook gebruikt om te bepalen wanneer
+// React nieuwe scène-inhoud moet tekenen. Één bron, dus die twee kunnen niet
+// uit elkaar lopen.
 const SCENES: Scene[] = [
-    { id: 'leader', label: 'Leader', dur: 3.6, bg: 'bg-[#3a3a38]', light: false, Comp: Leader },
-    { id: 'frustratie', label: 'De frustratie', dur: 10, bg: 'bg-duck-ink', light: false, Comp: SceneFrustratie },
-    { id: 'raadsel', label: 'Het raadsel', dur: 9, bg: 'bg-duck-acid', light: true, Comp: SceneRaadsel },
-    { id: 'antwoord', label: 'Het antwoord', dur: 10, bg: 'bg-duck-ink', light: false, Comp: SceneAntwoord },
-    { id: 'bewijs', label: 'Het bewijs', dur: 10, bg: 'bg-duck-ink', light: false, Comp: SceneBewijs },
+    { id: 'leader', label: 'Leader', dur: LEADER_DURATION, bg: 'bg-[#3a3a38]', light: false, Comp: Leader },
+    { id: 'frustratie', label: 'De frustratie', dur: FRUSTRATION_DURATION, bg: 'bg-duck-ink', light: false, Comp: SceneFrustratie },
+    { id: 'raadsel', label: 'Het raadsel', dur: PUZZLE_DURATION, bg: 'bg-duck-acid', light: true, Comp: SceneRaadsel },
+    { id: 'antwoord', label: 'Het antwoord', dur: ANSWER_DURATION, bg: 'bg-duck-ink', light: false, Comp: SceneAntwoord },
+    { id: 'bewijs', label: 'Het bewijs', dur: PROOF_DURATION, bg: 'bg-duck-ink', light: false, Comp: SceneBewijs },
 ];
 
-/** Totale speelduur: 42,6 seconden. */
+/** Totale speelduur: 40 seconden. */
 export const TOTAL = SCENES.reduce((a, s) => a + s.dur, 0);
 
 export const FILM_SEEN_KEY = 'dgskills-film-seen';
@@ -46,7 +56,7 @@ export function hasSeenFilm(): boolean {
 }
 
 /**
- * De korte film over Jayden (43 sec), gedreven door een requestAnimationFrame-
+ * De korte film over Jayden (40 sec), gedreven door een requestAnimationFrame-
  * klok in plaats van video. Bediening: pauze, overslaan, scènestippen, opnieuw
  * afspelen en een voortgangsbalk.
  *
@@ -275,14 +285,14 @@ export function Film({ onFinish }: { onFinish?: () => void }) {
                                 onClick={() => (armed ? setPaused((v) => !v) : startFromBeginning())}
                                 className={`min-h-[44px] rounded-full border-2 px-4 py-1.5 text-xs font-bold transition-colors ${controlClass}`}
                             >
-                                {!armed ? '▶ Speel de film af' : paused ? '▶ Verder' : '⏸ Pauze'}
+                                {!armed ? 'Speel de film af' : paused ? 'Verder' : 'Pauze'}
                             </button>
                             <button
                                 type="button"
                                 onClick={skip}
                                 className={`min-h-[44px] rounded-full border-2 px-4 py-1.5 text-xs font-bold transition-colors ${controlClass}`}
                             >
-                                Sla over →
+                                Sla over
                             </button>
                         </>
                     )}
@@ -292,7 +302,7 @@ export function Film({ onFinish }: { onFinish?: () => void }) {
                             onClick={replay}
                             className={`min-h-[44px] rounded-full border-2 px-4 py-1.5 text-xs font-bold transition-colors ${controlClass}`}
                         >
-                            ↺ Opnieuw afspelen
+                            Opnieuw afspelen
                         </button>
                     )}
                 </div>
