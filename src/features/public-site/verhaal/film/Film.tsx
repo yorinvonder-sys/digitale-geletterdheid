@@ -60,7 +60,20 @@ export function Film({ onFinish }: { onFinish?: () => void }) {
     const [elapsed, setElapsed] = useState(0);
     const [done, setDone] = useState(false);
     const [paused, setPaused] = useState(false);
-    const [visible, setVisible] = useState(true);
+    /*
+     * Twee onafhankelijke voorwaarden, bewust in twee states.
+     *
+     * Eén gedeelde `visible`-state werkte niet: de IntersectionObserver en de
+     * visibilitychange-handler overschreven elkaar ("last writer wins"). Terug-
+     * keren naar het tabblad zette de klok dan weer aan terwijl de film buiten
+     * beeld stond — de observer vuurt namelijk niet opnieuw, want de intersectie
+     * veranderde niet. De film speelde ongezien uit en markeerde zichzelf als
+     * gezien, zodat hoofdstuk nul nooit meer verscheen.
+     */
+    const [inViewport, setInViewport] = useState(false);
+    const [documentVisible, setDocumentVisible] = useState(
+        () => (typeof document === 'undefined' ? true : !document.hidden),
+    );
     /** Bij reduced motion pas spelen nadat de bezoeker er zelf om vraagt. */
     const [armed, setArmed] = useState(true);
 
@@ -105,7 +118,7 @@ export function Film({ onFinish }: { onFinish?: () => void }) {
         const el = containerRef.current;
         if (!el) return;
         const observer = new IntersectionObserver(
-            ([entry]) => setVisible(entry.isIntersecting),
+            ([entry]) => setInViewport(entry.isIntersecting),
             { threshold: 0.25 },
         );
         observer.observe(el);
@@ -114,14 +127,17 @@ export function Film({ onFinish }: { onFinish?: () => void }) {
 
     // Pauzeer wanneer het tabblad naar de achtergrond gaat.
     useEffect(() => {
-        const onVisibility = () => setVisible(!document.hidden);
+        const onVisibility = () => setDocumentVisible(!document.hidden);
         document.addEventListener('visibilitychange', onVisibility);
         return () => document.removeEventListener('visibilitychange', onVisibility);
     }, []);
 
+    /** De film speelt alleen als hij én in beeld is én het tabblad actief is. */
+    const canPlay = inViewport && documentVisible;
+
     // De klok.
     useEffect(() => {
-        if (paused || done || !visible || !armed) return;
+        if (paused || done || !canPlay || !armed) return;
 
         // Hervat exact waar we gebleven waren — pauzetijd telt niet mee.
         startedAt.current = performance.now() - elapsedRef.current * 1000;
@@ -141,9 +157,12 @@ export function Film({ onFinish }: { onFinish?: () => void }) {
 
         rafId.current = requestAnimationFrame(tick);
         return () => {
-            if (rafId.current) cancelAnimationFrame(rafId.current);
+            if (rafId.current !== undefined) {
+                cancelAnimationFrame(rafId.current);
+                rafId.current = undefined;
+            }
         };
-    }, [paused, done, visible, armed, markDone]);
+    }, [paused, done, canPlay, armed, markDone]);
 
     // Welke scène hoort bij de huidige tijd?
     let acc = 0;
