@@ -116,9 +116,15 @@ const isDevEdgeProxy = (() => {
     }
 })();
 
-export const EDGE_FUNCTION_URL = isDevEdgeProxy
-    ? '/functions/v1'
-    : `${supabaseUrl}/functions/v1`;
+function getEdgeFunctionUrl(): string {
+    if (isDevEdgeProxy) {
+        return '/functions/v1';
+    }
+    if (!isSupabaseConfigured) {
+        throw new SupabaseConfigError();
+    }
+    return `${supabaseUrl}/functions/v1`;
+}
 
 export interface EdgeFunctionOptions<T = any> {
     /** Optional response validator. Throw or return null to reject. */
@@ -317,7 +323,7 @@ export async function callEdgeFunction<T = any>(
     body?: Record<string, unknown>,
     options?: EdgeFunctionOptions<T>
 ): Promise<T> {
-    const response = await authenticatedFetch(`${EDGE_FUNCTION_URL}/${functionName}`, {
+    const response = await authenticatedFetch(`${getEdgeFunctionUrl()}/${functionName}`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -364,7 +370,7 @@ export async function callStreamingEdgeFunction(
     body: Record<string, unknown>,
     onChunk: (text: string) => void
 ): Promise<void> {
-    const response = await authenticatedFetch(`${EDGE_FUNCTION_URL}/${functionName}`, {
+    const response = await authenticatedFetch(`${getEdgeFunctionUrl()}/${functionName}`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
