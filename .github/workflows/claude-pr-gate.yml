@@ -30,7 +30,13 @@ jobs:
         run: node scripts/validate-claude-handoff.mjs
 
   quality-checks:
-    if: startsWith(github.head_ref, 'claude/')
+    # Bewust geen branchfilter. Deze job draaide alleen op claude/*-branches,
+    # waardoor de contributor met een branchnaam kon kiezen of type-check,
+    # audit, Gitleaks en Semgrep überhaupt liepen. Een door `if` overgeslagen
+    # job geldt bij GitHub als geslaagd en blokkeert de merge niet, ook niet
+    # als hij required is — de gate was dus optioneel voor wie dat wilde.
+    # Alleen validate-handoff blijft Claude-specifiek; dat controleert een
+    # Claude-conventie, geen beveiligingseigenschap.
     runs-on: ubuntu-latest
 
     steps:
@@ -53,6 +59,14 @@ jobs:
 
       - name: Type-check
         run: npx tsc --noEmit
+
+      # De auditstap accepteert één tijdelijke uitzondering. Deze tests bewijzen
+      # dat die uitzondering nog steeds smal is: een nieuwe advisory, een
+      # onverwacht dependency-pad of een verstreken vervaldatum moet falen.
+      # Zonder deze stap zou een te ruime allowlist onopgemerkt blijven, want
+      # de auditstap zelf zou dan gewoon groen zijn.
+      - name: Audit-allowlist tests
+        run: npm run test:audit-security
 
       - name: Security audit
         run: npm run audit:security
