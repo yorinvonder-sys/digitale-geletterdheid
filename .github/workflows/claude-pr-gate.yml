@@ -55,7 +55,7 @@ jobs:
         run: npx tsc --noEmit
 
       - name: Security audit
-        run: npm audit --audit-level=moderate
+        run: npm run audit:security
 
       - name: Secret scanning (Gitleaks)
         uses: gitleaks/gitleaks-action@v3
