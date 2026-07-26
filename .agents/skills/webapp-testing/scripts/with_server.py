@@ -68,7 +68,7 @@ def main():
             # Use shell=True to support commands with cd and &&
             process = subprocess.Popen(
                 server['cmd'],
-                shell=True,
+                shell=True,  # nosemgrep: python.lang.security.audit.subprocess-shell-true.subprocess-shell-true — Bewust alleen voor vertrouwde lokale testcommando's met cd/&&; de aanroeper heeft al code-uitvoerrechten.
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE
             )

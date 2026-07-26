@@ -22,7 +22,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
 
       - name: Validate Claude handoff
         env:
@@ -41,7 +41,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
           # Full history so gitleaks-action can resolve the <sha>^..<sha>
           # diff range; a shallow clone misses the parent commit and the
@@ -49,7 +49,7 @@ jobs:
           fetch-depth: 0
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
           node-version: 22
           cache: npm
@@ -72,22 +72,10 @@ jobs:
         run: npm run audit:security
 
       - name: Secret scanning (Gitleaks)
-        uses: gitleaks/gitleaks-action@v3
+        uses: gitleaks/gitleaks-action@e0c47f4f8be36e29cdc102c57e68cb5cbf0e8d1e # v3
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      # Deze stap rapporteert wel, maar blokkeert nog niet op bevindingen.
-      # Reden: de vorige opzet (semgrep/semgrep-action@v1) pinde semgrep
-      # 1.36.0, en die versie kent de severity 'MEDIUM' niet die de huidige
-      # registryregels gebruiken. Semgrep crashte op het inlezen van zijn
-      # eigen regelset ("invalid rule severity value: MEDIUM"), de action
-      # slikte die crash in, en de stap werd tóch groen. Er is dus nooit één
-      # regel uitgevoerd. De codebase is daarmee feitelijk ongescand, en de
-      # eerste echte scan levert vermoedelijk een stapel bevindingen op.
-      # Die meteen hard laten blokkeren zou lopende PR's stilzetten voordat
-      # iemand heeft kunnen triageren. Zie #216 voor het wegwerken en het
-      # daarna blokkerend maken.
-      #
       # Het aantal bevindingen komt uit de SARIF, niet uit de exitcode. Dat is
       # met opzet: `semgrep scan` geeft exit 0 óók als er bevindingen zijn —
       # alleen `semgrep ci` of `--error` maakt daar exit 1 van. Een stap die op
@@ -99,11 +87,11 @@ jobs:
       #   geen SARIF          er is niets gescand             → rood
       #   SARIF onleesbaar    uitkomst niet te beoordelen     → rood
       #   0 bevindingen       schoon                          → groen
-      #   >0 bevindingen      rapporteren, nog niet rood      → waarschuwing
+      #   >0 bevindingen      kwetsbaarheid of niet-getriageerde ruis → rood
       #
       # De eerste drie regels zijn het punt van deze hele stap: een scan die
       # niet heeft gelopen of niet te lezen is, mag nooit als "veilig" gelden.
-      - name: SAST scan (Semgrep, rapporterend)
+      - name: SAST scan (Semgrep)
         run: |
           sarif="${{ runner.temp }}/semgrep.sarif"
           status=0
@@ -142,13 +130,14 @@ jobs:
             echo "Semgrep: scan voltooid, geen bevindingen."
             echo "Semgrep: geen bevindingen." >> "$GITHUB_STEP_SUMMARY"
           else
-            echo "::warning::Semgrep vond $n bevinding(en). Deze stap blokkeert nog niet — zie het artifact semgrep-results.sarif en issue #216."
-            echo "Semgrep: $n bevinding(en), nog niet blokkerend. Zie #216." >> "$GITHUB_STEP_SUMMARY"
+            echo "::error::Semgrep vond $n bevinding(en). Zie het artifact semgrep-results.sarif."
+            echo "Semgrep: $n blokkerende bevinding(en). Zie het artifact semgrep-results.sarif." >> "$GITHUB_STEP_SUMMARY"
+            exit 1
           fi
 
       - name: Upload Semgrep-resultaten
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: semgrep-results.sarif
           path: ${{ runner.temp }}/semgrep.sarif

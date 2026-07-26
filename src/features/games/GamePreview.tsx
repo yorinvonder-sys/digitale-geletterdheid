@@ -196,7 +196,7 @@ export const GamePreview: React.FC<GamePreviewProps> = ({ code, autoStart = fals
             // acceptable because the message content ('start') is a non-sensitive
             // command string. The receiving side's message handler (lines 138-142)
             // validates the source window reference to prevent spoofing.
-            iframe.contentWindow.postMessage('start', '*');
+            iframe.contentWindow.postMessage('start', '*'); // nosemgrep: javascript.browser.security.wildcard-postmessage-configuration.wildcard-postmessage-configuration — Vereist voor het opaque sandbox-origin; alleen de niet-gevoelige constante 'start' wordt verstuurd.
           } catch (e) {
             console.error('Failed to send start message:', e);
           }
