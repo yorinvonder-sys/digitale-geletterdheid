@@ -121,7 +121,10 @@ jobs:
             const r=JSON.parse(fs.readFileSync(process.argv[1],"utf8"));
             const runs=r.runs;
             if(!Array.isArray(runs)||runs.length===0) throw new Error("SARIF bevat geen runs");
-            console.log(runs.reduce((t,x)=>t+(x.results?.length??0),0));' "$sarif"); then
+            console.log(runs.reduce((t,x)=>{
+              const results=Array.isArray(x.results)?x.results:[];
+              return t+results.filter(y=>!Array.isArray(y.suppressions)||y.suppressions.length===0).length;
+            },0));' "$sarif"); then
             echo "::error::De SARIF van Semgrep is niet te lezen. De uitkomst is daarmee onbekend, en onbekend is niet groen."
             exit 1
           fi
