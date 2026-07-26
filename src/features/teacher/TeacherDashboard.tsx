@@ -639,14 +639,8 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ user, onUpda
                                             )}
                                         </AnimatePresence>
                                     </div>
-                                    <button className="relative hidden h-11 w-11 items-center justify-center rounded-full text-duck-ink hover:bg-duck-bg sm:flex" aria-label="Meldingen">
-                                        <Bell size={22} />
-                                        {attentionCount > 0 && (
-                                            <span className="absolute right-1 top-1 flex h-5 min-w-5 items-center justify-center rounded-full bg-duck-acid px-1 text-[10px] font-black text-duck-ink">
-                                                {attentionCount}
-                                            </span>
-                                        )}
-                                    </button>
+                                    {/* Geen belicoon: het aantal aandachtspunten staat al op het
+                                        Overzicht-navigatie-item én bovenaan het overzicht zelf. */}
                                     <button
                                         onClick={() => setShowPresentation(true)}
                                         className="hidden h-11 items-center gap-2 rounded-xl bg-duck-acid px-4 text-sm font-black text-duck-ink transition hover:bg-duck-ink hover:text-duck-acid md:flex"
@@ -701,8 +695,8 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ user, onUpda
                             <PageTransition key="students" className="space-y-4">
                                 <div className="bg-duck-bgLight rounded-xl border border-duck-ink/15 p-3 flex items-center justify-between gap-3">
                                     <div className="flex items-center gap-2">
-                                        <button onClick={() => setRetryCount(prev => prev + 1)} className="p-2 text-duck-ink/60 hover:bg-duck-bg rounded-lg"><RotateCcw size={16} /></button>
-                                        <button onClick={exportCSV} className="p-2 text-duck-ink/60 hover:bg-duck-bg rounded-lg"><Download size={16} /></button>
+                                        <button onClick={() => setRetryCount(prev => prev + 1)} aria-label="Ververs leerlinggegevens" title="Ververs leerlinggegevens" className="p-2 text-duck-ink/60 hover:bg-duck-bg rounded-lg"><RotateCcw size={16} /></button>
+                                        <button onClick={exportCSV} aria-label="Exporteer leerlingen als CSV" title="Exporteer leerlingen als CSV" className="p-2 text-duck-ink/60 hover:bg-duck-bg rounded-lg"><Download size={16} /></button>
                                     </div>
                                     <div className="flex items-center gap-2">
                                         <button onClick={() => setShowRosterImport(true)} className="px-4 py-2 bg-duck-bgLight border border-duck-ink/15 text-duck-ink rounded-lg text-sm font-bold flex items-center gap-2 hover:bg-duck-bg"><Upload size={14} /> Importeren</button>
@@ -718,8 +712,6 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ user, onUpda
                                     loading={loading}
                                     searchTerm={searchTerm}
                                     onSearchChange={setSearchTerm}
-                                    classFilter={classFilter}
-                                    onClassFilterChange={setClassFilter}
                                     onSelectStudent={setSelectedStudent}
                                     yearGroup={yearGroupFilter}
                                     lastUpdated={lastUpdated}
@@ -748,18 +740,18 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ user, onUpda
                             </PageTransition>
                         )}
 
-                        {activeTab === 'settings' && <PageTransition key="settings" className="space-y-6"><SettingsPanel classFilter={classFilter} onClassFilterChange={setClassFilter} availableClasses={classGroups} enabledMissions={enabledMissions} onToggleMission={handleToggleMission} onTestGame={onOpenGames} yearGroup={yearGroupFilter} classroomConfig={classRoomConfig} onUpdateConfig={async u => {
+                        {activeTab === 'settings' && <PageTransition key="settings" className="space-y-6"><SettingsPanel classFilter={classFilter} enabledMissions={enabledMissions} onToggleMission={handleToggleMission} onTestGame={onOpenGames} yearGroup={yearGroupFilter} classroomConfig={classRoomConfig} onUpdateConfig={async u => {
                             if (!selectedClassId || !user?.schoolId) {
                                 addToast('Selecteer een klas', 'Klasconfiguratie kan niet voor alle klassen tegelijk worden opgeslagen.', 'warning');
                                 return;
                             }
                             await updateClassroomConfig(user.schoolId, selectedClassId, u);
                             setClassRoomConfig(p => p ? { ...p, ...u } : null);
-                        }} onOpenSchedulingConfig={(user?.role === 'admin' || user?.role === 'developer') ? () => setShowSchedulingConfig(true) : undefined} />{onLogout && <button onClick={onLogout} className="w-full py-4 border-2 border-duck-error text-duck-error rounded-2xl font-bold flex items-center justify-center gap-2 hover:bg-duck-error hover:text-white"><RotateCcw size={18} /> Uitloggen</button>}</PageTransition>}
-                        {activeTab === 'games' && <PageTransition key="games"><GamesPanel onOpenGame={onOpenGames || (() => { })} /></PageTransition>}
+                        }} onOpenSchedulingConfig={(user?.role === 'admin' || user?.role === 'developer') ? () => setShowSchedulingConfig(true) : undefined} /></PageTransition>}
+                        {activeTab === 'games' && <PageTransition key="games"><GamesPanel onOpenGame={onOpenGames || (() => { })} availableClasses={classGroups} /></PageTransition>}
                         {activeTab === 'ai-beleid' && <PageTransition key="ai-beleid"><div className="bg-white rounded-[2rem] border border-duck-ink/15 p-6"><AiBeleidFeedbackPanel classFilter={classFilter !== 'all' ? classFilter : undefined} schoolId={user?.schoolId} /></div></PageTransition>}
                         {activeTab === 'feedback' && <PageTransition key="feedback"><FeedbackPanel schoolId={user?.schoolId} /></PageTransition>}
-                        {activeTab === 'progress' && <PageTransition key="progress" className="space-y-6"><MissionProgressPanel students={students} classFilter={classFilter} availableClasses={classGroups} onClassFilterChange={setClassFilter} onSelectStudent={setSelectedStudent} yearGroup={yearGroupFilter} /><HybridAssessmentPanel records={hybridAssessments} classFilter={classFilter} /><GrowthOverviewPanel studentIds={students.filter(s => classFilter === 'all' || s.studentClass === classFilter).map(s => s.uid)} /></PageTransition>}
+                        {activeTab === 'progress' && <PageTransition key="progress" className="space-y-6"><MissionProgressPanel students={students} classFilter={classFilter} onSelectStudent={setSelectedStudent} yearGroup={yearGroupFilter} /><HybridAssessmentPanel records={hybridAssessments} classFilter={classFilter} /><GrowthOverviewPanel studentIds={students.filter(s => classFilter === 'all' || s.studentClass === classFilter).map(s => s.uid)} /></PageTransition>}
                         {activeTab === 'slo' && <PageTransition key="slo"><SLOClassOverview students={students} schoolId={user?.schoolId} selectedYear={yearGroupFilter} /></PageTransition>}
                         {activeTab === 'nulmeting' && (
                             <PageTransition key="nulmeting" className="space-y-6">

@@ -29,10 +29,12 @@ const CATEGORY_LABELS: Record<SloDocument['category'], string> = {
     handleiding: 'Handleidingen',
 };
 
+// Achtergrond altijd een tint, tekst altijd het volle token — nooit hetzelfde
+// token voor `bg` en `text`, anders valt de tekst weg tegen het vlak.
 const CATEGORY_COLORS: Record<SloDocument['category'], { bg: string; text: string; border: string; iconBg: string }> = {
-    slo: { bg: 'bg-duck-error', text: 'text-duck-error', border: 'border-duck-error', iconBg: 'bg-duck-error' },
-    compliance: { bg: 'bg-duck-ink', text: 'text-duck-ink', border: 'border-duck-ink', iconBg: 'bg-duck-ink' },
-    handleiding: { bg: 'bg-duck-ink', text: 'text-duck-ink', border: 'border-duck-ink', iconBg: 'bg-duck-ink' },
+    slo: { bg: 'bg-duck-acid/20', text: 'text-duck-ink', border: 'border-duck-ink/15', iconBg: 'bg-white' },
+    compliance: { bg: 'bg-duck-ink/10', text: 'text-duck-ink', border: 'border-duck-ink/15', iconBg: 'bg-white' },
+    handleiding: { bg: 'bg-duck-ink/10', text: 'text-duck-ink', border: 'border-duck-ink/15', iconBg: 'bg-white' },
 };
 
 export const TeacherDocumentsPanel: React.FC = () => {
@@ -58,7 +60,7 @@ export const TeacherDocumentsPanel: React.FC = () => {
                 <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                     <div>
                         <h2 className="text-lg font-bold text-duck-ink flex items-center gap-2">
-                            <BookOpen size={20} className="text-duck-error" />
+                            <BookOpen size={20} className="text-duck-ink" />
                             Documenten
                         </h2>
                         <p className="text-sm text-duck-ink/60 mt-1">
@@ -70,7 +72,7 @@ export const TeacherDocumentsPanel: React.FC = () => {
                         <input
                             type="text"
                             placeholder="Zoek documenten..."
-                            className="w-full pl-9 pr-4 py-2.5 bg-duck-bg border border-duck-ink/15 rounded-xl text-sm focus:ring-2 focus:ring-duck-error outline-none transition-all"
+                            className="w-full pl-9 pr-4 py-2.5 bg-duck-bg border border-duck-ink/15 rounded-xl text-sm focus:ring-2 focus:ring-duck-ink outline-none transition-all"
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
                         />
@@ -85,8 +87,8 @@ export const TeacherDocumentsPanel: React.FC = () => {
                                 key={cat}
                                 onClick={() => setActiveCategory(cat)}
                                 className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${activeCategory === cat
-                                    ? 'bg-duck-error text-white'
-                                    : 'text-duck-ink/60 hover:text-duck-ink/60 hover:bg-duck-bg'
+                                    ? 'bg-duck-ink text-white'
+                                    : 'text-duck-ink/60 hover:text-duck-ink hover:bg-duck-bg'
                                 }`}
                             >
                                 {cat === 'all' ? 'Alles' : CATEGORY_LABELS[cat]}
@@ -121,7 +123,7 @@ export const TeacherDocumentsPanel: React.FC = () => {
                                                 <span className={`text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full ${colors.bg} ${colors.text}`}>
                                                     {CATEGORY_LABELS[doc.category]}
                                                 </span>
-                                                <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-duck-error text-white">
+                                                <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-duck-ink text-white">
                                                     PDF
                                                 </span>
                                             </div>
@@ -150,7 +152,7 @@ export const TeacherDocumentsPanel: React.FC = () => {
                                         <div className="flex gap-2">
                                             <button
                                                 onClick={() => setPreviewDoc(previewDoc?.id === doc.id ? null : doc)}
-                                                className="flex items-center gap-1.5 px-3 py-2 text-xs font-bold text-duck-error hover:bg-duck-error hover:text-white rounded-xl transition-colors"
+                                                className="flex items-center gap-1.5 px-3 py-2 text-xs font-bold text-duck-ink hover:bg-duck-ink hover:text-white rounded-xl transition-colors"
                                             >
                                                 <ExternalLink size={14} />
                                                 Bekijken
@@ -173,7 +175,7 @@ export const TeacherDocumentsPanel: React.FC = () => {
                                 <div className="border-t border-duck-ink/15">
                                     <iframe
                                         src={doc.path}
-                                        className="w-full h-[70vh] bg-duck-bg"
+                                        className="w-full h-[50vh] bg-duck-bg lg:h-[70vh]"
                                         title={doc.title}
                                     />
                                 </div>
@@ -192,13 +194,13 @@ export const TeacherDocumentsPanel: React.FC = () => {
             )}
 
             {/* Info banner */}
-            <div className="bg-duck-error rounded-2xl p-5 flex items-start gap-4 border border-duck-error">
-                <div className="bg-duck-error p-2 rounded-xl shrink-0">
-                    <BookOpen size={20} className="text-duck-error" />
+            <div className="bg-duck-bgLight rounded-2xl p-5 flex items-start gap-4 border border-duck-ink/15">
+                <div className="bg-duck-acid/20 p-2 rounded-xl shrink-0">
+                    <BookOpen size={20} className="text-duck-ink" />
                 </div>
                 <div>
-                    <h4 className="text-sm font-bold text-duck-error">Over de SLO Kerndoelen</h4>
-                    <p className="text-sm text-duck-error mt-1 leading-relaxed">
+                    <h4 className="text-sm font-bold text-duck-ink">Over de SLO Kerndoelen</h4>
+                    <p className="text-sm text-duck-ink/60 mt-1 leading-relaxed">
                         De definitieve conceptkerndoelen voor digitale geletterdheid zijn in 2025 opgeleverd door SLO aan het ministerie van OCW.
                         DGSkills dekt alle vier domeinen af: Digitale vaardigheden, Informatievaardigheden, Mediawijsheid en Computational Thinking.
                     </p>
@@ -207,7 +209,7 @@ export const TeacherDocumentsPanel: React.FC = () => {
                             const sloDoc = TEACHER_DOCUMENTS.find(d => d.category === 'slo');
                             if (sloDoc) setPreviewDoc(sloDoc);
                         }}
-                        className="mt-3 text-xs font-bold text-duck-error hover:text-duck-error flex items-center gap-1"
+                        className="mt-3 text-xs font-bold text-duck-ink hover:text-duck-ink/60 flex items-center gap-1"
                     >
                         Bekijk het kerndoelendocument
                         <ChevronRight size={14} />
