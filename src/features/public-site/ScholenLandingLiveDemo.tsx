@@ -1,5 +1,5 @@
 import React, { useState, useRef, useCallback, useEffect } from 'react';
-import { EDGE_FUNCTION_URL } from '@/services/supabase';
+import { getEdgeFunctionUrl } from '@/services/supabase';
 import { DuckMark } from '@/components/brand/DuckMark';
 
 /* ═══════════════════════════════════════════════════════════
@@ -338,7 +338,7 @@ export const ScholenLandingLiveDemo: React.FC = () => {
         }));
 
         try {
-            const res = await fetch(`${EDGE_FUNCTION_URL}/demo-chat`, {
+            const res = await fetch(`${getEdgeFunctionUrl()}/demo-chat`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({

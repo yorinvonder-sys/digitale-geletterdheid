@@ -1,8 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { trackEvent } from '@/services/analyticsService';
-import { EDGE_FUNCTION_URL } from '@/services/supabase';
+import { getEdgeFunctionUrl } from '@/services/supabase';
 
-const PILOT_ENDPOINT = `${EDGE_FUNCTION_URL}/submitPilotRequest`;
+/*
+ * Bewust geen module-constante: getEdgeFunctionUrl() gooit als de Supabase-
+ * configuratie ontbreekt, en op moduleniveau zou die throw de hele publieke
+ * pagina slopen bij het importeren. Daarom pas oplossen bij het versturen.
+ */
+const pilotEndpoint = () => `${getEdgeFunctionUrl()}/submitPilotRequest`;
 
 interface PilotFormData {
     schoolNaam: string;
@@ -186,7 +191,7 @@ export const PilotAanmelden: React.FC = () => {
         setSubmitError(null);
         try {
             trackEvent('pilot_request_start', { rol: formData.rol || 'onbekend' });
-            const response = await fetch(PILOT_ENDPOINT, {
+            const response = await fetch(pilotEndpoint(), {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ ...formData, submittedAt: formStartedAt }),

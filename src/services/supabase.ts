@@ -78,9 +78,16 @@ try {
 type SupabaseClientInstance = ReturnType<typeof createClient<DatabaseWithPendingMigrations>>;
 
 /**
- * Stand-in wanneer de configuratie ontbreekt: elke property-toegang gooit.
- * Zo blijft "Supabase gebruiken zonder config" een harde fout, terwijl het
- * enkel importeren van deze module onschadelijk is.
+ * Stand-in wanneer de configuratie ontbreekt.
+ *
+ * Gooit bij property-toegang (`supabase.auth`), bij `await supabase` (dat leest
+ * `then`), bij `'auth' in supabase` en bij sleutel-inspectie zoals
+ * `Object.keys(supabase)` of `{ ...supabase }`. Die laatste twee lopen via
+ * `ownKeys`; zonder die trap zouden ze stil `[]` en `{}` opleveren, en dan
+ * verdwijnt een misconfiguratie geruisloos in plaats van luid te falen.
+ *
+ * Geen `apply`- of `construct`-trap: het target is een gewoon object, dus die
+ * bewerkingen zijn hier niet mogelijk en zulke traps zouden dode code zijn.
  */
 function createUnconfiguredClient(): SupabaseClientInstance {
     const fail = (): never => {
@@ -88,8 +95,8 @@ function createUnconfiguredClient(): SupabaseClientInstance {
     };
     return new Proxy({} as SupabaseClientInstance, {
         get: fail,
-        apply: fail,
-        construct: fail,
+        has: fail,
+        ownKeys: fail,
     });
 }
 
@@ -116,7 +123,19 @@ const isDevEdgeProxy = (() => {
     }
 })();
 
-function getEdgeFunctionUrl(): string {
+/**
+ * Basis-URL voor edge functions, opgelost op het moment van GEBRUIK.
+ *
+ * Bewust een functie en geen constante: zonder configuratie zou een constante
+ * `/functions/v1` worden — een relatief pad. In development is dat geldig via de
+ * Vite-proxy, maar op Vercel bestaat die proxy niet en geeft de SPA-rewrite HTML
+ * terug, waardoor `response.json()` faalt met een onbegrijpelijke parsefout in
+ * plaats van een duidelijke configuratiefout.
+ *
+ * Roep dit aan BINNEN de functie die de fetch doet, nooit op moduleniveau — dat
+ * zou de throw terugbrengen naar importtijd en de publieke site opnieuw slopen.
+ */
+export function getEdgeFunctionUrl(): string {
     if (isDevEdgeProxy) {
         return '/functions/v1';
     }

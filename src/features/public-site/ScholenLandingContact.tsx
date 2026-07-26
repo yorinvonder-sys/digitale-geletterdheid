@@ -4,7 +4,7 @@
  */
 import React, { useState } from 'react';
 import { trackEvent } from '@/services/analyticsService';
-import { EDGE_FUNCTION_URL } from '@/services/supabase';
+import { getEdgeFunctionUrl } from '@/services/supabase';
 
 const IconCheckCircle = ({ className = '', style }: { className?: string; style?: React.CSSProperties }) => (
     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className} style={style} aria-hidden="true">
@@ -29,7 +29,12 @@ interface PilotFormData {
     website: string;
 }
 
-const PILOT_ENDPOINT = `${EDGE_FUNCTION_URL}/submitPilotRequest`;
+/*
+ * Bewust geen module-constante: getEdgeFunctionUrl() gooit als de Supabase-
+ * configuratie ontbreekt, en op moduleniveau zou die throw deze publieke sectie
+ * al bij het importeren slopen. Daarom pas oplossen bij het versturen.
+ */
+const pilotEndpoint = () => `${getEdgeFunctionUrl()}/submitPilotRequest`;
 
 export const ScholenLandingContact: React.FC = () => {
     const [formData, setFormData] = useState<PilotFormData>({
@@ -52,7 +57,7 @@ export const ScholenLandingContact: React.FC = () => {
         setSubmitError(null);
         try {
             trackEvent('pilot_request_start', { rol: formData.rol || 'onbekend' });
-            const response = await fetch(PILOT_ENDPOINT, {
+            const response = await fetch(pilotEndpoint(), {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
