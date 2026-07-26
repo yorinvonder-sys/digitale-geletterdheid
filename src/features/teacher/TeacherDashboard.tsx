@@ -1,14 +1,14 @@
 
-import React, { useState, useEffect, useRef, useMemo, lazy, Suspense } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { DuckMark } from '@/components/brand/DuckMark';
 import { AnimatePresence, motion } from 'framer-motion';
 import { PageTransition } from '@/components/ui/PageTransition';
 import { supabase } from '@/services/supabase';
 import { ParentUser, UserStats, StudentData, GamificationEvent, ClassroomConfig, HybridAssessmentRecord, TeacherDashboardTab } from '@/types';
 import {
-    Award, BarChart3, Bell, BookOpen, Check, ChevronDown, ChevronRight,
-    Download, Folder, LogOut, Presentation, RotateCcw, Send,
-    Settings, ShieldCheck, Sparkles, Stars, TrendingUp, Upload, Users, Zap
+    Award, BarChart3, BookOpen, Check, ChevronDown, ChevronRight,
+    Download, Presentation, RotateCcw, Send,
+    ShieldCheck, Sparkles, Stars, Upload, Users, Zap
 } from 'lucide-react';
 import { GoudenPromptGallery } from '@/features/teacher/GoudenPromptGallery';
 import {
@@ -24,11 +24,6 @@ import { SettingsPanel } from '@/features/teacher/SettingsPanel';
 import { AiBeleidFeedbackPanel } from '@/features/teacher/AiBeleidFeedbackPanel';
 import { GamesPanel } from '@/features/teacher/GamesPanel';
 import { FeedbackPanel } from '@/features/teacher/FeedbackPanel';
-import { MissionProgressPanel } from '@/features/teacher/MissionProgressPanel';
-import { SLOClassOverview } from '@/features/teacher/SLOClassOverview';
-import { HybridAssessmentPanel } from '@/features/teacher/HybridAssessmentPanel';
-import { GrowthOverviewPanel } from '@/features/teacher/GrowthOverviewPanel';
-import { EindmetingReleaseButton } from '@/features/teacher/EindmetingReleaseButton';
 import { RosterImportModal } from '@/features/teacher/RosterImportModal';
 import { TutorialProvider } from '@/contexts/TutorialContext';
 import TutorialSpotlight, { TutorialRestartButton } from '@/features/teacher/TutorialSpotlight';
@@ -41,10 +36,6 @@ import { TeacherAccountMenu } from '@/features/teacher/dashboard/TeacherAccountM
 import { TeacherDocumentsPanel } from '@/features/teacher/TeacherDocumentsPanel';
 import { SchedulingConfigurator } from '@/features/coordinator/SchedulingConfigurator';
 import { downloadCsv } from '@/utils/csvExport';
-
-// Lazy loaded panels
-const LazyDigitaalPaspoortTeacher = lazy(() => import('@/features/assessment/escaperoom/DigitaalPaspoortTeacher').then(m => ({ default: m.DigitaalPaspoortTeacher })));
-const LazySamenhangMatrix = lazy(() => import('@/features/teacher/SamenhangMatrix').then(m => ({ default: m.SamenhangMatrix })));
 
 // Tab type definitions
 type MainTab = TeacherDashboardTab;
@@ -75,7 +66,17 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ user, onUpda
     const [classFilter, setClassFilter] = useState<string>(() => {
         try { return sessionStorage.getItem('dgskills_teacher_classFilter') || 'all'; } catch { return 'all'; }
     });
-    const [yearGroupFilter, setYearGroupFilter] = useState<number>(() => {
+    // BEKEND PROBLEEM (buiten scope van deze UI-wijziging): `setYearGroupFilter`
+    // wordt nergens aangeroepen — er is geen leerjaarkeuze in de UI, dus dit
+    // staat vast op 1. Klassen in leerjaar 2 zien daardoor de missielijst van
+    // leerjaar 1 en dus overal 0%.
+    // Een leerjaarkeuze toevoegen legt een bestaande inconsistentie bloot in
+    // SLOClassOverview.exportToExcel: het detailblad roept
+    // calculateStudentKerndoelStats(student, selectedYear) aan, het cumulatieve
+    // blad diezelfde functie zónder jaar. Zolang het jaar op 1 vastzit valt dat
+    // niet op. Dit raakt inspectiebewijs en hoort daarom in een eigen wijziging
+    // met onafhankelijke review, niet in een navigatie-/stijlaanpassing.
+    const [yearGroupFilter] = useState<number>(() => {
         try { const v = sessionStorage.getItem('dgskills_teacher_yearGroup'); return v ? Number(v) : 1; } catch { return 1; }
     });
 
@@ -692,14 +693,7 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ user, onUpda
                                             focusMode={focusMode}
                                             focusModeRemaining={focusModeRemaining}
                                             onToggleFocusMode={handleToggleFocusMode}
-                                            onNavigate={(tab) => {
-                                                if (tab === 'events' || tab === 'leaderboard') {
-                                                    setActiveTab('gamification');
-                                                    setGamificationSubTab(tab);
-                                                } else {
-                                                    setActiveTab(tab as MainTab);
-                                                }
-                                            }}
+                                            onNavigate={navigateTo}
                                             onSelectStudent={setSelectedStudent}
                                             onSendMessage={() => setShowMessageModal(true)}
                                         />

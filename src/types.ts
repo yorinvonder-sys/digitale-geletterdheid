@@ -344,30 +344,21 @@ export interface HighlightedWork {
   timestamp: any;
 }
 
+/**
+ * Alleen waarden die daadwerkelijk een paneel renderen.
+ * De eerste drie zijn de navigatie-items; de rest is bereikbaar via het
+ * accountmenu of als subweergave binnen 'progress' (Bewijs).
+ */
 export type TeacherDashboardTab =
   | 'overview'
   | 'students'
-  | 'missions'
-  | 'games'
-  | 'growth'
-  | 'messages'
-  | 'settings'
-  | 'slo'
-  | 'assessment'
-  | 'activity'
-  | 'events'
-  | 'groups'
-  | 'notes'
-  | 'work'
-  | 'analytics'
   | 'progress'
-  | 'documenten'
-  | 'leaderboard'
+  | 'settings'
+  | 'games'
   | 'gamification'
   | 'ai-beleid'
   | 'feedback'
-  | 'nulmeting'
-  | 'samenhang';
+  | 'documenten';
 
 export interface ClassroomConfig {
   id: string; // Class name (e.g. MH1A)
