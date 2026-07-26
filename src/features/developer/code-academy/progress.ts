@@ -3,13 +3,25 @@ import { ACADEMY_LESSON_IDS } from './academyContent';
 const STORAGE_KEY_V2 = 'dgskills-code-academy-progress-v2';
 const STORAGE_KEY_V1 = 'dgskills-code-academy-progress-v1';
 
-function normalizeLessonIds(value: unknown): string[] {
+const LEGACY_ID_MAP: Record<string, string> = {
+  main: 'main-entry',
+  app: 'app-shell',
+  router: 'router',
+  'authenticated-app': 'authenticated-app',
+  dashboard: 'student-dashboard',
+  card: 'mission-card-flow',
+  'props-data': 'props',
+  'ai-review': 'pull-request-review',
+};
+
+function normalizeLessonIds(value: unknown, migrateLegacy = false): string[] {
   if (!Array.isArray(value)) return [];
 
   return [...new Set(
-    value.filter((item): item is string =>
-      typeof item === 'string' && ACADEMY_LESSON_IDS.has(item)
-    )
+    value
+      .filter((item): item is string => typeof item === 'string')
+      .map((item) => migrateLegacy ? (LEGACY_ID_MAP[item] ?? item) : item)
+      .filter((item) => ACADEMY_LESSON_IDS.has(item))
   )];
 }
 
@@ -32,7 +44,7 @@ export function readAcademyProgress(): string[] {
     return current;
   }
 
-  const legacy = normalizeLessonIds(readJson(STORAGE_KEY_V1));
+  const legacy = normalizeLessonIds(readJson(STORAGE_KEY_V1), true);
   if (legacy.length > 0) {
     writeAcademyProgress(legacy);
   }
