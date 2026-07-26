@@ -30,7 +30,13 @@ jobs:
         run: node scripts/validate-claude-handoff.mjs
 
   quality-checks:
-    if: startsWith(github.head_ref, 'claude/')
+    # Bewust geen branchfilter. Deze job draaide alleen op claude/*-branches,
+    # waardoor de contributor met een branchnaam kon kiezen of type-check,
+    # audit, Gitleaks en Semgrep überhaupt liepen. Een door `if` overgeslagen
+    # job geldt bij GitHub als geslaagd en blokkeert de merge niet, ook niet
+    # als hij required is — de gate was dus optioneel voor wie dat wilde.
+    # Alleen validate-handoff houdt zijn filter: dat toetst een
+    # Claude-conventie, geen beveiligingseigenschap.
     runs-on: ubuntu-latest
 
     steps:
@@ -70,13 +76,83 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: SAST scan (Semgrep)
-        uses: semgrep/semgrep-action@v1
+      # Deze stap rapporteert wel, maar blokkeert nog niet op bevindingen.
+      # Reden: de vorige opzet (semgrep/semgrep-action@v1) pinde semgrep
+      # 1.36.0, en die versie kent de severity 'MEDIUM' niet die de huidige
+      # registryregels gebruiken. Semgrep crashte op het inlezen van zijn
+      # eigen regelset ("invalid rule severity value: MEDIUM"), de action
+      # slikte die crash in, en de stap werd tóch groen. Er is dus nooit één
+      # regel uitgevoerd. De codebase is daarmee feitelijk ongescand, en de
+      # eerste echte scan levert vermoedelijk een stapel bevindingen op.
+      # Die meteen hard laten blokkeren zou lopende PR's stilzetten voordat
+      # iemand heeft kunnen triageren. Zie #216 voor het wegwerken en het
+      # daarna blokkerend maken.
+      #
+      # Het aantal bevindingen komt uit de SARIF, niet uit de exitcode. Dat is
+      # met opzet: `semgrep scan` geeft exit 0 óók als er bevindingen zijn —
+      # alleen `semgrep ci` of `--error` maakt daar exit 1 van. Een stap die op
+      # de exitcode vertrouwt, meldt dus "geen bevindingen" terwijl er vijftien
+      # liggen. Dat is precies de vals-groene uitkomst die deze stap moet
+      # voorkomen, dus de exitcode wordt alleen gebruikt om een crash te zien:
+      #
+      #   exit >=2            Semgrep zelf is stuk            → rood
+      #   geen SARIF          er is niets gescand             → rood
+      #   SARIF onleesbaar    uitkomst niet te beoordelen     → rood
+      #   0 bevindingen       schoon                          → groen
+      #   >0 bevindingen      rapporteren, nog niet rood      → waarschuwing
+      #
+      # De eerste drie regels zijn het punt van deze hele stap: een scan die
+      # niet heeft gelopen of niet te lezen is, mag nooit als "veilig" gelden.
+      - name: SAST scan (Semgrep, rapporterend)
+        run: |
+          sarif="${{ runner.temp }}/semgrep.sarif"
+          status=0
+          docker run --rm \
+            -v "${{ github.workspace }}:/src" \
+            -v "${{ runner.temp }}:/out" \
+            -w /src \
+            semgrep/semgrep:1.171.0 \
+            semgrep scan \
+              --config=p/owasp-top-ten \
+              --config=p/javascript \
+              --config=p/typescript \
+              --metrics=off \
+              --sarif --output=/out/semgrep.sarif || status=$?
+
+          if [ "$status" -ge 2 ]; then
+            echo "::error::Semgrep is zelf gefaald (exit $status). Dit is geen bevinding maar een kapotte scan; de gate mag hier niet groen op worden."
+            exit "$status"
+          fi
+
+          if [ ! -f "$sarif" ]; then
+            echo "::error::Semgrep produceerde geen SARIF. Er is dus niet gescand, ongeacht de exitcode ($status)."
+            exit 1
+          fi
+
+          if ! n=$(node -e 'const fs=require("node:fs");
+            const r=JSON.parse(fs.readFileSync(process.argv[1],"utf8"));
+            const runs=r.runs;
+            if(!Array.isArray(runs)||runs.length===0) throw new Error("SARIF bevat geen runs");
+            console.log(runs.reduce((t,x)=>t+(x.results?.length??0),0));' "$sarif"); then
+            echo "::error::De SARIF van Semgrep is niet te lezen. De uitkomst is daarmee onbekend, en onbekend is niet groen."
+            exit 1
+          fi
+
+          if [ "$n" -eq 0 ]; then
+            echo "Semgrep: scan voltooid, geen bevindingen."
+            echo "Semgrep: geen bevindingen." >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "::warning::Semgrep vond $n bevinding(en). Deze stap blokkeert nog niet — zie het artifact semgrep-results.sarif en issue #216."
+            echo "Semgrep: $n bevinding(en), nog niet blokkerend. Zie #216." >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      - name: Upload Semgrep-resultaten
+        if: always()
+        uses: actions/upload-artifact@v4
         with:
-          config: >-
-            p/owasp-top-ten
-            p/javascript
-            p/typescript
+          name: semgrep-results.sarif
+          path: ${{ runner.temp }}/semgrep.sarif
+          if-no-files-found: warn
 
       - name: Production build
         run: npm run build:prod
