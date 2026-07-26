@@ -54,8 +54,16 @@ jobs:
       - name: Type-check
         run: npx tsc --noEmit
 
+      # De auditstap accepteert één tijdelijke uitzondering. Deze tests bewijzen
+      # dat die uitzondering nog steeds smal is: een nieuwe advisory, een
+      # onverwacht dependency-pad of een verstreken vervaldatum moet falen.
+      # Zonder deze stap zou een te ruime allowlist onopgemerkt blijven, want
+      # de auditstap zelf zou dan gewoon groen zijn.
+      - name: Audit-allowlist tests
+        run: npm run test:audit-security
+
       - name: Security audit
-        run: npm audit --audit-level=moderate
+        run: npm run audit:security
 
       - name: Secret scanning (Gitleaks)
         uses: gitleaks/gitleaks-action@v3
