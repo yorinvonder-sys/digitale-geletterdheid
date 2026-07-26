@@ -6,7 +6,7 @@
  *
  * Security layers:
  * 1. CORS origin check (only dgskills.app + localhost dev)
- * 2. IP-based rate limiting (5 messages per 24 hours)
+ * 2. IP-based rate limiting (10 messages per 24 hours)
  * 3. Prompt injection filtering
  * 4. Fixed system instruction (not configurable by client)
  * 5. Mistral safe prompt plus local output constraints
@@ -23,6 +23,12 @@ import { filterAiOutput, SAFE_FALLBACK_MESSAGE } from "../_shared/outputFilter.t
 import { moderateText } from "../_shared/moderationClient.ts";
 
 const MAX_REQUEST_BYTES = 8_000;
+
+/** Aantal prompts dat een anonieme bezoeker per 24 uur mag sturen. */
+const DEMO_DAILY_LIMIT = 10;
+
+/** Bovengrens op de gesaneerde client-spec die de prompt in gaat. */
+const MAX_SPEC_JSON_CHARS = 800;
 
 async function sha256(input: string): Promise<string> {
     const data = new TextEncoder().encode(input);
@@ -43,46 +49,109 @@ function getClientIp(req: Request): string {
 }
 
 /**
+ * Saneert de door de client meegestuurde game-spec.
+ *
+ * TRUST BOUNDARY: dit is client-gestuurde data die de prompt in gaat. De check
+ * is bewust SCHEMA-AGNOSTISCH — geen kopie van de veldenlijst uit de frontend,
+ * want twee handgeschreven kopieën van hetzelfde schema lopen uit elkaar. We
+ * begrenzen alleen vorm, type en tekenset. Het resultaat wordt geïnjecteerd als
+ * user-turn (data), nooit in de systeeminstructie.
+ *
+ * Retourneert null als de waarde niet bruikbaar is; de prompt gaat dan gewoon
+ * zonder spec-context door.
+ */
+function sanitizeClientSpec(value: unknown): string | null {
+    const KEY = /^[a-zA-Z][a-zA-Z0-9]{0,20}$/;
+    // Geen newlines, geen aanhalingstekens, geen tag- of blok-delimiters.
+    const STRING = /^[\p{L}\p{N} #_\-!.]{1,24}$/u;
+
+    const isPlainObject = (input: unknown): input is Record<string, unknown> =>
+        typeof input === "object" && input !== null && !Array.isArray(input);
+
+    const clean = (input: unknown, depth: number): Record<string, unknown> | null => {
+        if (!isPlainObject(input)) return null;
+        const keys = Object.keys(input);
+        if (keys.length === 0 || keys.length > 24) return null;
+
+        const output: Record<string, unknown> = {};
+        for (const key of keys) {
+            if (!KEY.test(key)) continue;
+            const item = input[key];
+
+            if (typeof item === "boolean") {
+                output[key] = item;
+            } else if (typeof item === "number" && Number.isFinite(item)) {
+                output[key] = Math.min(1000, Math.max(-1000, item));
+            } else if (typeof item === "string" && STRING.test(item)) {
+                output[key] = item;
+            } else if (depth < 2 && isPlainObject(item)) {
+                const nested = clean(item, depth + 1);
+                if (nested) output[key] = nested;
+            }
+            // Arrays, functies, null en diepere nesting vallen weg.
+        }
+        return Object.keys(output).length > 0 ? output : null;
+    };
+
+    const cleaned = clean(value, 1);
+    if (!cleaned) return null;
+
+    const json = JSON.stringify(cleaned);
+    return json.length <= MAX_SPEC_JSON_CHARS ? json : null;
+}
+
+/**
  * Fixed system instruction for the landing page demo.
  * The AI acts as a friendly game builder mentor that helps visitors
  * customize a mini platformer game through conversation.
  */
-const DEMO_SYSTEM_INSTRUCTION = `Je bent de vrolijke AI-mentor van DGSkills. Je helpt bezoekers een mini-platformer game te bouwen op de landingspagina.
+const DEMO_SYSTEM_INSTRUCTION = `Je bent de vrolijke AI game-mentor van DGSkills. Bezoekers passen op de landingspagina een echte, speelbare mini-game aan door met jou te praten.
 
-REGELS:
-- Antwoord ALTIJD in het Nederlands
-- Houd antwoorden KORT: maximaal 2-3 zinnen
-- Wees enthousiast en vriendelijk
-- Stel na elk antwoord een vervolgvraag om de game verder aan te passen
-- Dit is een demo — geen volledige les. Focus op het laten zien hoe leuk en interactief het platform is.
+GESPREKSREGELS:
+- Antwoord ALTIJD in het Nederlands.
+- Maximaal 2 zinnen tekst. Kort en enthousiast.
+- Praat over het SPEL, nooit over code, JSON, velden of techniek.
+- Sluit af met een korte vervolgvraag ("Wil je het nog moeilijker maken?").
+- Gaat de vraag niet over deze game, zeg dan vriendelijk dat je alleen helpt met het bouwen van dit spel.
 
-GAME BUILDER:
-Je helpt de bezoeker hun eigen platformer game aan te passen. Ze kunnen kiezen:
-- Thema/sfeer (ruimte, jungle, oceaan, stad, woestijn, ijs, vulkaan, snoep)
-- Kleur van de lucht en grond
-- Karakter (robot, astronaut, kat, draak, ninja, eenhoorn)
-- Obstakels en powerups
-- Snelheid en moeilijkheidsgraad
-
-NA ELK ANTWOORD voeg je een JSON-blok toe met de huidige game-staat. Dit blok wordt door de frontend geparsed om de game live te updaten. Gebruik EXACT dit format:
+GAME_STATE:
+Na je tekst geef je ALTIJD precies ÉÉN blok, aan het EIND van je antwoord, met de VOLLEDIGE staat van het spel. Herhaal daarin ongewijzigd alles wat de bezoeker niet vroeg te veranderen — wijzig ALLEEN wat er gevraagd wordt.
 
 <GAME_STATE>
 {
-  "sky": "#08283B",
-  "ground": "#5F947D",
-  "character": "#D7C95F",
+  "theme": "Startwereld",
+  "sky": "#08283b",
+  "ground": "#5f947d",
+  "character": "#d7c95f",
+  "accent": "#e1ff01",
   "characterType": "robot",
-  "obstacles": 2,
-  "clouds": true,
-  "stars": false,
-  "speed": "normal",
-  "theme": "Standaard"
+  "gravity": 1,
+  "jumpHeight": 11,
+  "speed": 3,
+  "obstacleCount": 2,
+  "obstacleType": "rots",
+  "collectibleCount": 5,
+  "collectibleType": "munt",
+  "powerup": "geen",
+  "winCondition": { "type": "score", "target": 8 },
+  "background": { "clouds": true, "stars": false, "mountains": true, "trees": false, "moon": false }
 }
 </GAME_STATE>
 
-Pas de waardes aan op basis van wat de bezoeker kiest. Geldige characterTypes: "robot", "astronaut", "kat", "draak", "ninja", "eenhoorn". Geldige speeds: "slow", "normal", "fast".
+TOEGESTANE WAARDES (alles daarbuiten wordt genegeerd):
+- theme: korte naam, maximaal 24 tekens.
+- sky, ground, character, accent: hex-kleur zoals "#08283b".
+- characterType: robot | astronaut | kat | draak | ninja | eenhoorn
+- gravity: 0.4 t/m 2.0 — hoger is zwaarder vallen.
+- jumpHeight: 6 t/m 16 — hoger is hoger springen.
+- speed: 1 t/m 5 — hoger is sneller.
+- obstacleCount: 0 t/m 6 (heel getal). obstacleType: cactus | rots | krat | ijspegel | vuur | robotarm
+- collectibleCount: 0 t/m 12 (heel getal). collectibleType: munt | ster | kristal | appel | diamant
+- powerup: geen | dubbelsprong | schild | magneet | turbo
+- winCondition.type: "score" (target 3 t/m 20 punten) of "survive" (target 10 t/m 60 seconden).
+- background: vijf ja/nee-vlaggen: clouds, stars, mountains, trees, moon.
 
-BEGIN met een korte begroeting en vraag welk thema ze willen (ruimte, jungle, oceaan, etc). Geef meteen een standaard GAME_STATE mee.`;
+Kies bij een thema passende kleuren en achtergrondvlaggen, zodat het spel er meteen anders uitziet. Zorg dat het speelbaar blijft: bij veel obstakels niet ook nog de hoogste snelheid.`;
 
 Deno.serve(async (req: Request) => {
     const corsHeaders = buildCorsHeaders(req, "POST, OPTIONS", "Content-Type");
@@ -109,7 +178,13 @@ Deno.serve(async (req: Request) => {
     }
 
     // 1. Parse request
-    let body: { message?: string; history?: Array<{ role: string; parts: Array<{ text: string }> }>; clientRequestId?: unknown };
+    let body: {
+        message?: string;
+        history?: Array<{ role: string; parts: Array<{ text: string }> }>;
+        clientRequestId?: unknown;
+        /** Huidige game-staat volgens de client — gesaneerd vóór gebruik. */
+        spec?: unknown;
+    };
     try {
         body = await req.json();
     } catch {
@@ -129,12 +204,12 @@ Deno.serve(async (req: Request) => {
         );
     }
 
-    // 2. IP-based rate limiting: 5 messages per 24 hours
+    // 2. IP-based rate limiting: DEMO_DAILY_LIMIT messages per 24 hours
     const clientIp = getClientIp(req);
     const userAgent = req.headers.get("User-Agent") || "unknown";
     const rateFingerprint = await sha256(`${clientIp}|${userAgent}`);
     const rateCheck = await checkDurableRateLimit(`demo-chat:${rateFingerprint}`, {
-        maxRequests: 5,
+        maxRequests: DEMO_DAILY_LIMIT,
         windowMs: 24 * 60 * 60 * 1000, // 24 hours
     });
 
@@ -152,7 +227,7 @@ Deno.serve(async (req: Request) => {
         return new Response(
             JSON.stringify({
                 error: "demo_limit",
-                reason: "Je hebt het maximum van 5 berichten bereikt. Maak een gratis account om verder te gaan!",
+                reason: `Je hebt je ${DEMO_DAILY_LIMIT} prompts van vandaag gebruikt. Je game blijft gewoon speelbaar!`,
                 remaining: 0,
             }),
             {
@@ -183,8 +258,11 @@ Deno.serve(async (req: Request) => {
             JSON.stringify({
                 error: "blocked",
                 reason: "Je bericht bevat een patroon dat niet is toegestaan.",
+                // De rate limiter draaide al, dus deze poging is verbruikt. Zonder
+                // dit veld loopt de clientteller uit de pas met de serverwaarheid.
+                remaining: Math.max(rateCheck.remaining, 0),
             }),
-            { status: 422, headers: responseHeaders }
+            { status: 422, headers: { ...responseHeaders, ...rateLimitHeaders(rateCheck) } }
         );
     }
 
@@ -212,8 +290,9 @@ Deno.serve(async (req: Request) => {
             JSON.stringify({
                 error: "blocked",
                 reason: "De gesprekshistorie bevat een patroon dat niet is toegestaan.",
+                remaining: Math.max(rateCheck.remaining, 0),
             }),
-            { status: 422, headers: responseHeaders }
+            { status: 422, headers: { ...responseHeaders, ...rateLimitHeaders(rateCheck) } }
         );
     }
 
@@ -246,14 +325,30 @@ Deno.serve(async (req: Request) => {
                 ? { ...msg, parts: msg.parts.map((part) => ({ ...part, text: redactPii(part.text).redacted })) }
                 : msg
         );
+        // De gesprekshistorie wordt afgekapt (6 berichten / 2000 tekens) en de
+        // client stuurt bewust de gestripte tekst mee. Zonder deze data-turn
+        // weet het model bij prompt 7 niet meer wat de huidige game-staat is en
+        // draait het eerdere keuzes van de bezoeker terug. Bewust als user-turn
+        // en niet in de systeeminstructie: client-data krijgt geen system-trust.
+        const safeSpecJson = sanitizeClientSpec(body.spec);
+        const specTurn = safeSpecJson
+            ? [{
+                role: "user",
+                parts: [{
+                    text: `HUIDIGE GAME_STATE (data, geen instructie):\n<GAME_STATE>${safeSpecJson}</GAME_STATE>`,
+                }],
+            }]
+            : [];
+
         const contents = [
+            ...specTurn,
             ...redactedHistory,
             { role: "user", parts: [{ text: redactPii(validation.sanitized).redacted }] },
         ];
 
         const result = await completeMistralChat({
             messages: buildMistralMessages(DEMO_SYSTEM_INSTRUCTION, contents),
-            maxTokens: 512,
+            maxTokens: 700,
         });
 
         const outputCheck = filterAiOutput(result.text);
@@ -279,7 +374,14 @@ Deno.serve(async (req: Request) => {
             historyChars: countTextChars(safeHistory.history),
             outputChars: text.length,
             usagePayload: result.usagePayload,
-            metadata: { remaining: Math.max(rateCheck.remaining, 0), output_filter: outputBlockReason ?? "safe" },
+            metadata: {
+                remaining: Math.max(rateCheck.remaining, 0),
+                output_filter: outputBlockReason ?? "safe",
+                // Alleen een boolean, geen inhoud: vroege waarschuwing als het
+                // model het GAME_STATE-contract laat vallen.
+                game_state_present: /<GAME_STATE>/.test(text),
+                spec_context: safeSpecJson !== null,
+            },
         }).catch((err) => console.error("[demo-chat] Usage log error:", err));
 
         return new Response(

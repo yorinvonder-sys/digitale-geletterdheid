@@ -6,3 +6,10 @@ project_id = "tdaylulsnbhhjuufmdzk"
 # default is verify_jwt=true).
 [functions.import-ai-cost]
 verify_jwt = false
+
+# demo-chat is het anonieme game-lab op de publieke landingspagina: bewust zonder
+# account. De beveiliging loopt via CORS-origin, IP+UA-rate-limiting (10/24u),
+# promptsanitizer, moderatie en outputfilter — niet via een JWT. Pin verify_jwt=false
+# zodat een gewone redeploy de sectie niet stil op 401 zet.
+[functions.demo-chat]
+verify_jwt = false

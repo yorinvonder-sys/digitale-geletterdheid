@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { Suspense, lazy, useCallback, useEffect, useRef, useState } from 'react';
 import { HeroDashboardPreview } from '@/features/public-site/demo/HeroDashboardPreview';
 import { DuckMark } from '@/components/brand/DuckMark';
 import { HeroEyes } from '@/components/brand/HeroEyes';
@@ -8,6 +8,9 @@ import { useHomepageAnalytics } from '@/hooks/useHomepageAnalytics';
 import { Target, Clock, FileText, Puzzle, PhoneCall, Map as MapIcon, Rocket, Users, CreditCard, CalendarClock, GraduationCap, Building2, ShieldCheck, FlaskConical, Pointer } from 'lucide-react';
 import { ScholenLandingSloDomains } from '@/features/public-site/ScholenLandingSloDomains';
 import { ScholenLandingAiMissionMoment } from '@/features/public-site/ScholenLandingAiMissionMoment';
+import { Reveal, SectionLabel } from '@/features/public-site/homepageChrome';
+
+const GameLabExperience = lazy(() => import('@/features/public-site/game-lab/GameLabExperience'));
 
 type NavItem = { label: string; target: string };
 type SkillTone = 'paper' | 'acid';
@@ -38,6 +41,7 @@ type JourneyChapter = {
 const NAV_ITEMS: NavItem[] = [
     { label: 'Hoe het werkt', target: 'journey' },
     { label: 'Skills', target: 'skills' },
+    { label: 'Bouw je game', target: 'game-lab' },
     { label: 'Leerlingdemo', target: 'game-demo' },
     { label: 'Portfolio', target: 'portfolio' },
 ];
@@ -581,6 +585,7 @@ export const ScholenLanding: React.FC = () => {
 
                 <SkillsSection scrollTo={scrollTo} />
 
+                <GameLabSection />
 
                 <PortfolioStorySection startPilot={startPilot} />
 
@@ -904,15 +909,6 @@ function useHomepageGsapEffects(reduceMotion: boolean) {
             ctx?.revert();
         };
     }, [reduceMotion]);
-}
-
-function SectionLabel({ children }: { children: React.ReactNode }) {
-    return (
-        <p className="inline-flex items-center gap-2 rounded-full border border-duck-ink bg-duck-bgLight px-4 py-1.5 text-xs font-extrabold uppercase tracking-[0.16em] text-duck-ink">
-            <span className="size-1.5 rounded-full bg-duck-ink" aria-hidden="true" />
-            {children}
-        </p>
-    );
 }
 
 function SkillMarquee({ reduceMotion }: { reduceMotion: boolean }) {
@@ -1723,64 +1719,71 @@ function FooterCta({ startPilot, scrollTo }: { startPilot: () => void; scrollTo:
     );
 }
 
-function Reveal({
-    children,
-    className,
-    delay = 0,
-    y = 24,
-    style,
-}: {
-    children: React.ReactNode;
-    className?: string;
-    delay?: number;
-    y?: number;
-    style?: React.CSSProperties;
-}) {
-    const reduceMotion = usePrefersReducedMotion();
-    const [inView, setInView] = useState(false);
-    const ref = useRef<HTMLDivElement | null>(null);
+function GameLabSkeleton() {
+    return (
+        <div>
+            <div className="max-w-2xl">
+                <SectionLabel>Probeer het zelf</SectionLabel>
+                <h2 className="mt-4 text-balance font-display text-[clamp(2.1rem,4.5vw,4rem)] leading-[1.05] text-white">
+                    Bouw je eigen game. Tien prompts, geen account.
+                </h2>
+                <p className="mt-5 text-pretty text-base font-semibold leading-7 text-white/65">
+                    Speel de game direct en vraag de AI om een ander thema, karakter, obstakels of doel.
+                    Je ziet je aanpassing meteen terug in het spel.
+                </p>
+            </div>
+            <div className="mt-10 min-h-[480px] rounded-[1.25rem] border border-white/10 bg-white/[0.03]" aria-hidden="true" />
+        </div>
+    );
+}
+
+/**
+ * De <section> met `data-section` staat hier en wordt nooit vervangen:
+ * `useHomepageAnalytics` scant `[data-section]` maar één keer bij mount, dus een
+ * volledig lazy sectie zou nooit getrackt worden en het anker zou vóór mount
+ * niet werken. Alleen de binnenkant wisselt.
+ */
+function GameLabSection() {
+    const [show, setShow] = useState(false);
+    const ref = useRef<HTMLElement | null>(null);
 
     useEffect(() => {
-        if (reduceMotion) {
-            setInView(true);
-            return;
-        }
-
         const element = ref.current;
         if (!element) return;
-
+        if (typeof IntersectionObserver !== 'function') {
+            setShow(true);
+            return;
+        }
         const observer = new IntersectionObserver(
             ([entry]) => {
                 if (entry.isIntersecting) {
-                    setInView(true);
+                    setShow(true);
                     observer.disconnect();
                 }
             },
-            { rootMargin: '0px 0px -10% 0px', threshold: 0.16 }
+            { rootMargin: '400px 0px' }
         );
-
         observer.observe(element);
         return () => observer.disconnect();
-    }, [reduceMotion]);
-
-    if (reduceMotion) {
-        return <div className={className} style={style}>{children}</div>;
-    }
+    }, []);
 
     return (
-        <div
+        <section
             ref={ref}
-            className={className}
-            style={{
-                ...style,
-                opacity: inView ? 1 : 0.92,
-                transform: inView ? 'translate3d(0,0,0)' : `translate3d(0,${y}px,0)`,
-                transition: `opacity 680ms cubic-bezier(.22,1,.36,1) ${delay}s, transform 680ms cubic-bezier(.22,1,.36,1) ${delay}s`,
-                willChange: inView ? 'auto' : 'opacity, transform',
-            }}
+            id="game-lab"
+            data-section="game-lab"
+            className="relative scroll-mt-24 overflow-x-clip bg-duck-ink px-5 py-20 text-white md:px-10 md:py-28"
         >
-            {children}
-        </div>
+            <div className="mx-auto max-w-6xl">
+                {show ? (
+                    <Suspense fallback={<GameLabSkeleton />}>
+                        <GameLabExperience />
+                    </Suspense>
+                ) : (
+                    <GameLabSkeleton />
+                )}
+            </div>
+        </section>
     );
 }
 

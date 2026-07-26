@@ -1,6 +1,7 @@
 import React, { lazy, Suspense } from 'react';
-import { ScholenLandingLiveDemo } from '@/features/public-site/ScholenLandingLiveDemo';
 import { PLAYABLE_MISSION_IDS } from './demoGalleryConfig';
+
+const GameLabExperience = lazy(() => import('@/features/public-site/game-lab/GameLabExperience'));
 
 const CloudCleanerMission = lazy(() =>
     import('@/features/missions/review/CloudCleanerMission').then(m => ({ default: m.CloudCleanerMission }))
@@ -27,7 +28,7 @@ interface Props {
 
 const Loading = () => (
     <div className="flex min-h-screen items-center justify-center bg-duck-bg">
-        <p className="text-duck-muted font-medium">Missie laden...</p>
+        <p className="text-duck-ink/65 font-medium">Missie laden...</p>
     </div>
 );
 
@@ -37,7 +38,7 @@ const AccountCta: React.FC<{ onBack: () => void }> = ({ onBack }) => (
         <h2 className="max-w-sm font-display text-3xl text-duck-ink">
             Deze missie is alleen beschikbaar voor leerlingen met een account
         </h2>
-        <p className="max-w-sm text-base font-semibold text-duck-muted">
+        <p className="max-w-sm text-base font-semibold text-duck-ink/65">
             Meld je school aan voor een pilot om toegang te krijgen tot alle missies.
         </p>
         <div className="flex flex-col gap-3 sm:flex-row">
@@ -64,19 +65,23 @@ export const DemoMissionHost: React.FC<Props> = ({ missionId, onBack }) => {
 
     if (missionId === AI_MISSION_ID) {
         return (
-            <div className="min-h-screen bg-duck-bg">
-                <div className="flex items-center gap-3 border-b border-duck-line bg-duck-bgLight px-4 py-3">
+            <div className="min-h-screen bg-duck-ink">
+                <div className="flex items-center gap-3 border-b border-white/10 px-4 py-3">
                     <button
                         onClick={onBack}
-                        className="text-sm font-bold text-duck-muted transition-colors hover:text-duck-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-ink"
+                        className="text-sm font-bold text-white/70 transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-acid"
                     >
                         ← Terug naar demo
                     </button>
-                    <span className="text-sm font-semibold text-duck-muted">
-                        AI Game Builder — demo (max. 5 berichten per dag)
+                    <span className="text-sm font-semibold text-white/55">
+                        AI Game Builder — demo (max. 10 prompts per dag)
                     </span>
                 </div>
-                <ScholenLandingLiveDemo />
+                <div className="mx-auto max-w-6xl px-5 py-10 text-white md:px-10">
+                    <Suspense fallback={<Loading />}>
+                        <GameLabExperience />
+                    </Suspense>
+                </div>
             </div>
         );
     }
