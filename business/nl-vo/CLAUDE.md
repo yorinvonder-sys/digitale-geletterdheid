@@ -31,3 +31,11 @@ This subtree contains school-facing business, pilot, sales, didactic, and compli
 - State what changed in the document.
 - State whether it reflects current product behavior, future roadmap, or a proposal.
 - Flag any claims that need product verification before external use.
+
+## Model- en denkniveau (domeinaanvulling)
+Volg de standaard in de root `CLAUDE.md`. Voor deze docs geldt:
+- Gewone tekst- en salescopy: **Sonnet 5 low/medium**.
+- Wijzigingen aan compliance-, privacy-, DPIA- of AI Act-claims: minimaal
+  **Opus 5 high**, met juridische/compliance-review vóór extern gebruik
+  (zie `dgskills-jurist-check` en `dgskills-compliance-check`).
+- Privacy-documenten zijn juridisch bindend: escaleren, nooit alleen zelf goedkeuren.
