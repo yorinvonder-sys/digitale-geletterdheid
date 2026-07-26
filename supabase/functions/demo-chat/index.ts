@@ -328,9 +328,26 @@ Deno.serve(async (req: Request) => {
         // De gesprekshistorie wordt afgekapt (6 berichten / 2000 tekens) en de
         // client stuurt bewust de gestripte tekst mee. Zonder deze data-turn
         // weet het model bij prompt 7 niet meer wat de huidige game-staat is en
-        // draait het eerdere keuzes van de bezoeker terug. Bewust als user-turn
-        // en niet in de systeeminstructie: client-data krijgt geen system-trust.
-        const safeSpecJson = sanitizeClientSpec(body.spec);
+        // draait het eerdere keuzes van de bezoeker terug.
+        //
+        // `sanitizeClientSpec` begrenst alleen VORM (vorm, type, tekenset, diepte).
+        // Dat houdt de delimiters buiten de deur, maar niet de inhoud: 24 velden
+        // van 24 tekens is ruim genoeg om er een injectie-instructie in te
+        // schrijven. Daarom gaat de spec door exact dezelfde inhoudelijke keten
+        // als het bericht zelf — sanitizePrompt en redactPii. Wordt hij geblokkeerd,
+        // dan valt alleen de context weg en gaat de prompt gewoon door; de
+        // bezoeker verliest zijn beurt niet aan een geweigerd verzoek.
+        const rawSpecJson = sanitizeClientSpec(body.spec);
+        let safeSpecJson: string | null = null;
+        if (rawSpecJson) {
+            const specCheck = sanitizePrompt(rawSpecJson);
+            if (specCheck.wasBlocked) {
+                console.warn(`[DEMO_SPEC_BLOCKED] ip=${clientIp} label=${specCheck.detectionLabel}`);
+            } else {
+                safeSpecJson = redactPii(specCheck.sanitized).redacted;
+            }
+        }
+
         const specTurn = safeSpecJson
             ? [{
                 role: "user",

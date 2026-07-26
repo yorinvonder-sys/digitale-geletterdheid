@@ -74,8 +74,11 @@ function normalizeHex(value, fallback) {
     if (typeof value !== 'string') return fallback;
     const trimmed = value.trim();
 
-    const named = COLOR_NAMES[trimmed.toLowerCase()];
-    if (named) return named;
+    // hasOwnProperty, niet een gewone lookup: anders levert "constructor" of
+    // "__proto__" een waarde uit de prototypeketen op in plaats van een kleur,
+    // en dan is niet langer waar dat elke kleur regex-gevalideerd is.
+    const key = trimmed.toLowerCase();
+    if (Object.prototype.hasOwnProperty.call(COLOR_NAMES, key)) return COLOR_NAMES[key];
 
     const short = trimmed.match(SHORT_HEX);
     if (short) {

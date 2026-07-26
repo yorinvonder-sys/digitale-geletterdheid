@@ -80,8 +80,12 @@ export function NuJij() {
                 </div>
 
                 <Reveal className="mt-8">
+                    {/* Bewust geen kerndoelcode: dit blok is een demo, geen
+                        geregistreerde missie, en staat niet in de SLO-mapping.
+                        Een code eraan hangen zou een dekkingsclaim zijn die het
+                        product hier niet waarmaakt. */}
                     <p className="text-xs font-bold text-duck-bg/45">
-                        SLO-kerndoel 21A — Computational thinking · Geen account nodig. We slaan de inhoud van je gesprek niet op.
+                        Geen account nodig. We slaan de inhoud van je gesprek niet op.
                     </p>
                 </Reveal>
             </div>

@@ -27,8 +27,13 @@ const ROLLEN: { id: Rol; label: string; url: string; zin: string }[] = [
     },
 ];
 
-/** Nog vast te leggen met `npm run capture:product`. */
-const TROFEEEN_SRC = '/assets/product/leerling-trofeeen.webp';
+/**
+ * Nog vast te leggen met `npm run capture:product`. Zolang het bestand er niet
+ * is blijft dit `null`: een `<img>` naar een ontbrekend pad laat elke bezoeker
+ * een 404 ophalen, en de `onError`-terugval verbergt dat alleen visueel.
+ * Zet dit op '/assets/product/leerling-trofeeen.webp' zodra de opname staat.
+ */
+const TROFEEEN_SRC: string | null = null;
 
 /**
  * Trofeeën/unlocks staan naast het live scherm en niet erin: die omgeving zit
@@ -40,7 +45,7 @@ function TrofeeenFiguur() {
 
     return (
         <figure className="mt-4 flex flex-col gap-4 sm:flex-row sm:items-center">
-            {failed ? (
+            {failed || TROFEEEN_SRC === null ? (
                 <div
                     className="flex h-[180px] w-full shrink-0 items-center justify-center rounded-xl border-2 border-dashed border-duck-bg/20 px-4 text-center sm:w-[280px]"
                     aria-hidden="true"
