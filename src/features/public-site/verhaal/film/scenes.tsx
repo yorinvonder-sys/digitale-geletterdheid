@@ -2,6 +2,7 @@ import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Duck, INK_SOFT, HARD_SHADOW } from '../components/storyBrand';
 import { MinecraftLift, VideoEditIcon } from './MinecraftLift';
+import { FRUSTRATION_LINES } from './timeline';
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
@@ -50,16 +51,26 @@ export function SceneFrustratie({ t }: { t: number }) {
                 <p className="font-display text-2xl font-black leading-snug text-duck-bg/95 md:text-4xl">
                     <Typed
                         t={t}
-                        from={0.8}
-                        text="“Jayden kan geen bestand bijvoegen in een e-mail.”"
-                        speed={38}
+                        from={FRUSTRATION_LINES[0].from}
+                        text={FRUSTRATION_LINES[0].text}
+                        speed={FRUSTRATION_LINES[0].speed}
                     />
                 </p>
                 <p className="font-display text-2xl font-black leading-snug text-duck-bg/70 md:text-4xl">
-                    <Typed t={t} from={2.8} text="“Herkent geen nepnieuws als het hem bijt.”" speed={38} />
+                    <Typed
+                        t={t}
+                        from={FRUSTRATION_LINES[1].from}
+                        text={FRUSTRATION_LINES[1].text}
+                        speed={FRUSTRATION_LINES[1].speed}
+                    />
                 </p>
                 <p className="font-display text-2xl font-black leading-snug text-duck-bg/50 md:text-4xl">
-                    <Typed t={t} from={4.6} text="“Vraagt hoe je een pdf opslaat.”" speed={38} />
+                    <Typed
+                        t={t}
+                        from={FRUSTRATION_LINES[2].from}
+                        text={FRUSTRATION_LINES[2].text}
+                        speed={FRUSTRATION_LINES[2].speed}
+                    />
                 </p>
             </div>
 

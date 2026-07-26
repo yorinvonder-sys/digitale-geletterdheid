@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion';
 import { SceneFrustratie, SceneRaadsel, SceneAntwoord, SceneBewijs } from './scenes';
 import { Leader } from './Leader';
+import { getFilmRenderKey } from './timeline';
 
 interface Scene {
     id: string;
@@ -78,10 +79,27 @@ export function Film({ onFinish }: { onFinish?: () => void }) {
     const [armed, setArmed] = useState(true);
 
     const containerRef = useRef<HTMLDivElement>(null);
+    const progressBarRef = useRef<HTMLDivElement>(null);
+    const progressFillRef = useRef<HTMLDivElement>(null);
     const rafId = useRef<number | undefined>(undefined);
     const startedAt = useRef<number>(0);
     const elapsedRef = useRef(0);
+    const renderKeyRef = useRef(getFilmRenderKey(0));
+    const progressPercentRef = useRef(0);
     const finished = useRef(false);
+
+    const syncProgress = useCallback((nextElapsed: number) => {
+        const progress = Math.min(1, Math.max(0, nextElapsed / TOTAL));
+        if (progressFillRef.current) {
+            progressFillRef.current.style.transform = `scaleX(${progress})`;
+        }
+
+        const roundedPercent = Math.round(progress * 100);
+        if (roundedPercent !== progressPercentRef.current) {
+            progressPercentRef.current = roundedPercent;
+            progressBarRef.current?.setAttribute('aria-valuenow', String(roundedPercent));
+        }
+    }, []);
 
     // Beperkte beweging: niet automatisch spelen. We tonen de slotscène als
     // stilstaand beeld — dat is de clou van de film — met een startknop erbij.
@@ -90,8 +108,10 @@ export function Film({ onFinish }: { onFinish?: () => void }) {
         setArmed(false);
         const payoff = SCENES.slice(0, SCENES.length - 1).reduce((a, s) => a + s.dur, 0) + 7;
         elapsedRef.current = payoff;
+        renderKeyRef.current = getFilmRenderKey(payoff);
+        syncProgress(payoff);
         setElapsed(payoff);
-    }, [reduceMotion]);
+    }, [reduceMotion, syncProgress]);
 
     const markDone = useCallback(() => {
         if (finished.current) return;
@@ -105,12 +125,14 @@ export function Film({ onFinish }: { onFinish?: () => void }) {
         (target: number) => {
             const clamped = Math.min(TOTAL, Math.max(0, target));
             elapsedRef.current = clamped;
+            renderKeyRef.current = getFilmRenderKey(clamped);
             startedAt.current = performance.now() - clamped * 1000;
+            syncProgress(clamped);
             setElapsed(clamped);
             if (clamped >= TOTAL) markDone();
             else setDone(false);
         },
-        [markDone],
+        [markDone, syncProgress],
     );
 
     // Pauzeer wanneer de film buiten beeld is: geen rAF-loop voor niets.
@@ -138,31 +160,46 @@ export function Film({ onFinish }: { onFinish?: () => void }) {
     // De klok.
     useEffect(() => {
         if (paused || done || !canPlay || !armed) return;
+        let cancelled = false;
 
         // Hervat exact waar we gebleven waren — pauzetijd telt niet mee.
         startedAt.current = performance.now() - elapsedRef.current * 1000;
 
         const tick = (now: number) => {
+            if (cancelled) return;
+            rafId.current = undefined;
+
             const t = (now - startedAt.current) / 1000;
             if (t >= TOTAL) {
                 elapsedRef.current = TOTAL;
+                renderKeyRef.current = getFilmRenderKey(TOTAL);
+                syncProgress(TOTAL);
                 setElapsed(TOTAL);
                 markDone();
                 return;
             }
+
             elapsedRef.current = t;
-            setElapsed(t);
-            rafId.current = requestAnimationFrame(tick);
+            syncProgress(t);
+
+            const nextRenderKey = getFilmRenderKey(t);
+            if (nextRenderKey !== renderKeyRef.current) {
+                renderKeyRef.current = nextRenderKey;
+                setElapsed(t);
+            }
+
+            if (!cancelled) rafId.current = requestAnimationFrame(tick);
         };
 
         rafId.current = requestAnimationFrame(tick);
         return () => {
+            cancelled = true;
             if (rafId.current !== undefined) {
                 cancelAnimationFrame(rafId.current);
                 rafId.current = undefined;
             }
         };
-    }, [paused, done, canPlay, armed, markDone]);
+    }, [paused, done, canPlay, armed, markDone, syncProgress]);
 
     // Welke scène hoort bij de huidige tijd?
     let acc = 0;
@@ -309,6 +346,7 @@ export function Film({ onFinish }: { onFinish?: () => void }) {
                     })}
                 </div>
                 <div
+                    ref={progressBarRef}
                     className={`h-1 w-full overflow-hidden rounded-full ${
                         scene.light ? 'bg-duck-ink/15' : 'bg-duck-bg/15'
                     }`}
@@ -319,8 +357,11 @@ export function Film({ onFinish }: { onFinish?: () => void }) {
                     aria-valuenow={Math.round((elapsed / TOTAL) * 100)}
                 >
                     <div
-                        className={`h-full ${scene.light ? 'bg-duck-ink' : 'bg-duck-acid'}`}
-                        style={{ width: `${Math.min(100, (elapsed / TOTAL) * 100)}%` }}
+                        ref={progressFillRef}
+                        className={`h-full origin-left transform-gpu ${
+                            scene.light ? 'bg-duck-ink' : 'bg-duck-acid'
+                        }`}
+                        style={{ transform: `scaleX(${Math.min(1, elapsed / TOTAL)})` }}
                     />
                 </div>
             </div>
