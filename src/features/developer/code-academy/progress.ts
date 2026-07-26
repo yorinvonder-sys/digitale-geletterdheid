@@ -1,28 +1,41 @@
-import { ACADEMY_LESSON_IDS } from './academyContent';
+import { ACADEMY_LESSON_IDS, ACADEMY_LESSONS } from './academyContent';
 
 const STORAGE_KEY_V2 = 'dgskills-code-academy-progress-v2';
 const STORAGE_KEY_V1 = 'dgskills-code-academy-progress-v1';
 
-const LEGACY_ID_MAP: Record<string, string> = {
-  main: 'main-entry',
-  app: 'app-shell',
-  router: 'router',
-  'authenticated-app': 'authenticated-app',
-  dashboard: 'student-dashboard',
-  card: 'mission-card-flow',
-  'props-data': 'props',
-  'ai-review': 'pull-request-review',
-};
+const LEGACY_LESSON_IDS = new Set([
+  'main',
+  'app',
+  'router',
+  'authenticated-app',
+  'dashboard',
+  'card',
+  'props-data',
+  'ai-review',
+]);
 
-function normalizeLessonIds(value: unknown, migrateLegacy = false): string[] {
+function normalizeLessonIds(value: unknown): string[] {
   if (!Array.isArray(value)) return [];
 
   return [...new Set(
-    value
-      .filter((item): item is string => typeof item === 'string')
-      .map((item) => migrateLegacy ? (LEGACY_ID_MAP[item] ?? item) : item)
-      .filter((item) => ACADEMY_LESSON_IDS.has(item))
+    value.filter((item): item is string =>
+      typeof item === 'string' && ACADEMY_LESSON_IDS.has(item)
+    )
   )];
+}
+
+function migrateLegacyProgress(value: unknown): string[] {
+  if (!Array.isArray(value)) return [];
+
+  const completedLegacyCount = new Set(
+    value.filter((item): item is string =>
+      typeof item === 'string' && LEGACY_LESSON_IDS.has(item)
+    )
+  ).size;
+
+  return ACADEMY_LESSONS
+    .slice(0, Math.min(completedLegacyCount, ACADEMY_LESSONS.length))
+    .map((lesson) => lesson.id);
 }
 
 function readJson(key: string): unknown {
@@ -44,7 +57,7 @@ export function readAcademyProgress(): string[] {
     return current;
   }
 
-  const legacy = normalizeLessonIds(readJson(STORAGE_KEY_V1), true);
+  const legacy = migrateLegacyProgress(readJson(STORAGE_KEY_V1));
   if (legacy.length > 0) {
     writeAcademyProgress(legacy);
   }
