@@ -461,7 +461,7 @@ export const PlayableGame: React.FC<PlayableGameProps> = ({ spec, reduceMotion, 
 
     return (
         <div className={className}>
-            <div ref={wrapperRef} role="group" aria-label="Speelveld" className="relative overflow-hidden rounded-[1.25rem] border border-white/15 bg-duck-ink">
+            <div ref={wrapperRef} role="group" aria-label="Speelveld" className="relative overflow-hidden rounded-[1.25rem] border border-duck-bg/20 bg-duck-ink">
                 <canvas
                     ref={canvasRef}
                     tabIndex={0}
@@ -476,10 +476,10 @@ export const PlayableGame: React.FC<PlayableGameProps> = ({ spec, reduceMotion, 
                 {status !== 'running' && (
                     <div className="pointer-events-none absolute inset-0 flex items-center justify-center bg-duck-ink/55 px-4">
                         <div className="pointer-events-auto text-center">
-                            <p className="font-display text-2xl text-white">
+                            <p className="font-display text-2xl text-duck-bg">
                                 {status === 'won' ? 'Gehaald!' : status === 'lost' ? 'Game over' : 'Klaar om te spelen'}
                             </p>
-                            <p className="mt-1 text-sm font-semibold text-white/65">
+                            <p className="mt-1 text-sm font-semibold text-duck-bg/65">
                                 {status === 'idle'
                                     ? 'Springen met spatie, pijl omhoog of tikken.'
                                     : `Score ${score}`}
@@ -512,14 +512,14 @@ export const PlayableGame: React.FC<PlayableGameProps> = ({ spec, reduceMotion, 
                 <button
                     type="button"
                     onClick={restart}
-                    className="inline-flex min-h-[56px] items-center justify-center rounded-full border border-white/25 px-6 text-sm font-extrabold text-white/80 transition-colors hover:border-white hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-acid focus-visible:ring-offset-2 focus-visible:ring-offset-duck-ink"
+                    className="inline-flex min-h-[56px] items-center justify-center rounded-full border border-duck-bg/25 px-6 text-sm font-extrabold text-duck-bg/80 transition-colors hover:border-duck-bg hover:text-duck-bg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-acid focus-visible:ring-offset-2 focus-visible:ring-offset-duck-ink"
                 >
                     Opnieuw
                 </button>
             </div>
 
             {reduceMotion && (
-                <p className="mt-2 text-xs font-semibold text-white/55">
+                <p className="mt-2 text-xs font-semibold text-duck-bg/55">
                     Je systeem vraagt om minder beweging, dus de game staat stil. Druk op Start om hem toch te spelen.
                 </p>
             )}

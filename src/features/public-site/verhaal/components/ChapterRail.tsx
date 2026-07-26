@@ -12,6 +12,8 @@ export const CHAPTERS: Chapter[] = [
     { id: 'probleem', label: 'Het probleem', num: '1' },
     { id: 'ontmoeting', label: 'De ontmoeting', num: '2' },
     { id: 'mila', label: 'Mila', num: '3' },
+    // Tussendoortje zonder nummer, zodat de bestaande hoofdstuknummering klopt.
+    { id: 'zelf', label: 'Nu jij', num: '·' },
     { id: 'docent', label: 'De docent', num: '4' },
     { id: 'bewijs', label: 'Het bewijs', num: '5' },
     { id: 'epiloog', label: 'Epiloog', num: '·' },

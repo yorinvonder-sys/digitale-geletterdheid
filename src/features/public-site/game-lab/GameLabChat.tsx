@@ -144,18 +144,18 @@ export const GameLabChat: React.FC<GameLabChatProps> = ({ currentSpec, onAssista
     }, [isLoading, send]);
 
     return (
-        <div className="flex min-h-[420px] flex-col overflow-hidden rounded-[1.25rem] border border-white/15 bg-white/[0.04]">
-            <div className="flex items-center gap-3 border-b border-white/10 px-4 py-3">
+        <div className="flex min-h-[420px] flex-col overflow-hidden rounded-[1.25rem] border border-duck-bg/20 bg-[#2b2b30]">
+            <div className="flex items-center gap-3 border-b border-duck-bg/15 px-4 py-3">
                 <span className="flex size-8 items-center justify-center rounded-lg bg-duck-acid">
                     <DuckMark className="size-5" />
                 </span>
                 <div className="min-w-0">
-                    <p className="text-sm font-extrabold text-white">AI game-mentor</p>
-                    <p className="text-xs font-semibold text-white/55">Draait op Mistral AI</p>
+                    <p className="text-sm font-extrabold text-duck-bg">AI game-mentor</p>
+                    <p className="text-xs font-semibold text-duck-bg/55">Draait op Mistral AI</p>
                 </div>
                 <span
                     className={`ml-auto shrink-0 rounded-full px-3 py-1 text-xs font-extrabold ${
-                        isLocked ? 'bg-white/10 text-white/60' : 'bg-duck-acid text-duck-ink'
+                        isLocked ? 'bg-duck-bg/10 text-duck-bg/60' : 'bg-duck-acid text-duck-ink'
                     }`}
                 >
                     {isLocked ? 'Demo klaar' : `${remaining} van ${maxMessages}`}
@@ -177,7 +177,7 @@ export const GameLabChat: React.FC<GameLabChatProps> = ({ currentSpec, onAssista
                             className={`max-w-[85%] rounded-2xl px-3.5 py-2.5 text-sm font-semibold leading-6 ${
                                 message.role === 'user'
                                     ? 'rounded-br-sm bg-duck-acid text-duck-ink'
-                                    : 'rounded-bl-sm bg-white/10 text-white/85'
+                                    : 'rounded-bl-sm bg-duck-bg/10 text-duck-bg/85'
                             }`}
                         >
                             {message.text}
@@ -186,17 +186,17 @@ export const GameLabChat: React.FC<GameLabChatProps> = ({ currentSpec, onAssista
                 ))}
 
                 {isLoading && (
-                    <p className="text-xs font-semibold text-white/55">De mentor bouwt je game om…</p>
+                    <p className="text-xs font-semibold text-duck-bg/55">De mentor bouwt je game om…</p>
                 )}
 
                 {errorText && (
                     <div className="rounded-xl border border-duck-error/40 bg-duck-error/10 px-3 py-2">
-                        <p className="text-xs font-semibold text-white/85">{errorText}</p>
+                        <p className="text-xs font-semibold text-duck-bg/85">{errorText}</p>
                         {(errorKind === 'network' || errorKind === 'server') && (
                             <button
                                 type="button"
                                 onClick={retry}
-                                className="mt-2 inline-flex min-h-[36px] items-center rounded-full border border-white/30 px-3 text-xs font-extrabold text-white transition-colors hover:border-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-acid"
+                                className="mt-2 inline-flex min-h-[36px] items-center rounded-full border border-duck-bg/30 px-3 text-xs font-extrabold text-duck-bg transition-colors hover:border-duck-bg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-acid"
                             >
                                 Probeer opnieuw
                             </button>
@@ -205,10 +205,10 @@ export const GameLabChat: React.FC<GameLabChatProps> = ({ currentSpec, onAssista
                 )}
             </div>
 
-            <div className="border-t border-white/10 px-4 py-4">
+            <div className="border-t border-duck-bg/15 px-4 py-4">
                 {isLocked ? (
                     <div className="space-y-3 text-center">
-                        <p className="text-sm font-semibold text-white/70">
+                        <p className="text-sm font-semibold text-duck-bg/70">
                             {limitReason ?? `Je hebt je ${maxMessages} prompts gebruikt. Je game blijft gewoon speelbaar!`}
                         </p>
                         <a
@@ -230,7 +230,7 @@ export const GameLabChat: React.FC<GameLabChatProps> = ({ currentSpec, onAssista
                                             setInput(suggestion);
                                             inputRef.current?.focus();
                                         }}
-                                        className="inline-flex min-h-[44px] items-center rounded-full border border-white/25 px-4 text-xs font-extrabold text-white/75 transition-colors hover:border-duck-acid hover:text-duck-acid focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-acid"
+                                        className="inline-flex min-h-[44px] items-center rounded-full border border-duck-bg/25 px-4 text-xs font-extrabold text-duck-bg/75 transition-colors hover:border-duck-acid hover:text-duck-acid focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-acid"
                                     >
                                         {suggestion}
                                     </button>
@@ -238,7 +238,7 @@ export const GameLabChat: React.FC<GameLabChatProps> = ({ currentSpec, onAssista
                             </div>
                         )}
 
-                        <form onSubmit={handleSubmit} className="flex items-center gap-2 rounded-xl border border-white/15 bg-duck-ink px-3 py-2">
+                        <form onSubmit={handleSubmit} className="flex items-center gap-2 rounded-xl border border-duck-bg/20 bg-duck-ink px-3 py-2">
                             <input
                                 ref={inputRef}
                                 type="text"
@@ -248,7 +248,7 @@ export const GameLabChat: React.FC<GameLabChatProps> = ({ currentSpec, onAssista
                                 maxLength={500}
                                 disabled={isLoading}
                                 aria-label="Vertel wat er aan je game moet veranderen"
-                                className="min-h-[44px] flex-1 bg-transparent text-sm font-semibold text-white outline-none placeholder:text-white/40 disabled:opacity-50"
+                                className="min-h-[44px] flex-1 bg-transparent text-sm font-semibold text-duck-bg outline-none placeholder:text-duck-bg/40 disabled:opacity-50"
                             />
                             <button
                                 type="submit"

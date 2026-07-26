@@ -66,18 +66,24 @@ export const DemoMissionHost: React.FC<Props> = ({ missionId, onBack }) => {
     if (missionId === AI_MISSION_ID) {
         return (
             <div className="min-h-screen bg-duck-ink">
-                <div className="flex items-center gap-3 border-b border-white/10 px-4 py-3">
+                <div className="flex items-center gap-3 border-b border-duck-bg/15 px-4 py-3">
                     <button
                         onClick={onBack}
-                        className="text-sm font-bold text-white/70 transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-acid"
+                        className="text-sm font-bold text-duck-bg/70 transition-colors hover:text-duck-bg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-acid"
                     >
                         ← Terug naar demo
                     </button>
-                    <span className="text-sm font-semibold text-white/55">
+                    <span className="text-sm font-semibold text-duck-bg/55">
                         AI Game Builder — demo (max. 10 prompts per dag)
                     </span>
                 </div>
-                <div className="mx-auto max-w-6xl px-5 py-10 text-white md:px-10">
+                <div className="mx-auto max-w-6xl px-5 py-10 text-duck-bg md:px-10">
+                    <h1 className="font-display text-3xl font-black leading-tight text-duck-bg md:text-4xl">
+                        Bouw je eigen game
+                    </h1>
+                    <p className="mb-8 mt-3 max-w-2xl text-base font-semibold text-duck-bg/65">
+                        Speel de game en vertel de AI wat je wilt veranderen. Je hebt 10 prompts.
+                    </p>
                     <Suspense fallback={<Loading />}>
                         <GameLabExperience />
                     </Suspense>
