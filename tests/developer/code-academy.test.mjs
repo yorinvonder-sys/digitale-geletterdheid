@@ -50,17 +50,17 @@ const requiredLessonIds = [
 ];
 
 const requiredTrackIds = ['fundament', 'react', 'data', 'review'];
-const richFields = [
-  'objective:',
-  'durationMinutes:',
-  'explanation:',
-  'concepts:',
-  'dataFlow:',
-  'pitfalls:',
-  'practice:',
-  'aiPrompt:',
-  'quiz:',
-  'visual:',
+const richFieldPatterns = [
+  /\n    objective:/g,
+  /\n    durationMinutes:/g,
+  /\n    explanation: \[/g,
+  /\n    concepts: \[/g,
+  /\n    dataFlow: \[/g,
+  /\n    pitfalls: \[/g,
+  /\n    practice: \{/g,
+  /\n    aiPrompt:/g,
+  /\n    quiz: \{/g,
+  /\n    visual: \{/g,
 ];
 
 test('Code Academie bevat 24 unieke lessen verdeeld over vier routes', () => {
@@ -76,11 +76,11 @@ test('Code Academie bevat 24 unieke lessen verdeeld over vier routes', () => {
 });
 
 test('elke les bevat rijke uitleg, code, data en een oefening', () => {
-  for (const field of richFields) {
+  for (const pattern of richFieldPatterns) {
     assert.equal(
-      (allContent.match(new RegExp(field, 'g')) ?? []).length,
+      (allContent.match(pattern) ?? []).length,
       24,
-      `verwacht 24 keer ${field}`
+      `verwacht 24 treffers voor ${pattern}`
     );
   }
 });
@@ -109,6 +109,7 @@ test('voortgang blijft lokaal, migreert v1 en gebruikt geen Supabase', () => {
   assert.match(sources.progress, /dgskills-code-academy-progress-v2/);
   assert.match(sources.progress, /dgskills-code-academy-progress-v1/);
   assert.match(sources.progress, /window\.localStorage/);
+  assert.match(sources.progress, /migrateLegacyProgress/);
   assert.doesNotMatch(sources.progress, /supabase/i);
   assert.doesNotMatch(sources.academy, /supabase/i);
 });
