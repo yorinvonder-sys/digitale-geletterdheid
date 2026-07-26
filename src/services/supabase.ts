@@ -1,20 +1,48 @@
 import { createClient } from '@supabase/supabase-js';
 import type { DatabaseWithPendingMigrations } from '@/types/database.pending-migrations';
 
-const supabaseUrl = ((import.meta as any).env.VITE_SUPABASE_URL as string)?.trim();
-const supabaseAnonKey = ((import.meta as any).env.VITE_SUPABASE_ANON_KEY as string)?.trim();
+const supabaseUrl = ((import.meta as any).env.VITE_SUPABASE_URL as string)?.trim() ?? '';
+const supabaseAnonKey = ((import.meta as any).env.VITE_SUPABASE_ANON_KEY as string)?.trim() ?? '';
 
-if (!supabaseUrl || !supabaseAnonKey) {
-    throw new Error(
-        'Missing Supabase environment variables. ' +
-        'Set VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY in your .env.local file.'
-    );
+const MISSING_CONFIG_MESSAGE =
+    'Missing Supabase environment variables. '
+    + 'Set VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY in your .env.local file.';
+
+/** Is de Supabase-configuratie compleet? */
+export const isSupabaseConfigured = Boolean(supabaseUrl && supabaseAnonKey);
+
+/** Gegooid zodra Supabase wordt gebruikt terwijl de configuratie ontbreekt. */
+export class SupabaseConfigError extends Error {
+    constructor(message = MISSING_CONFIG_MESSAGE) {
+        super(message);
+        this.name = 'SupabaseConfigError';
+    }
+}
+
+/*
+ * Ontbrekende configuratie faalt bij GEBRUIK, niet bij het importeren van deze
+ * module.
+ *
+ * Waarom: dit bestand ligt op het importpad van de publieke schoolsite. Een
+ * `throw` hierboven haalde de hele marketingsite onderuit — inclusief pagina's
+ * die Supabase helemaal niet nodig hebben — bij één ontbrekende variabele in
+ * bijvoorbeeld een preview-omgeving.
+ *
+ * De fail-fast blijft wél overeind waar het telt: elke aanraking van de client
+ * (auth, database, edge functions) gooit direct een SupabaseConfigError met
+ * dezelfde melding. Zo blijft een misconfiguratie luid, maar valt de publieke
+ * site er niet meer door om.
+ */
+if (!isSupabaseConfigured) {
+    console.error(`[supabase] ${MISSING_CONFIG_MESSAGE}`);
 }
 
 // Opschoning VOOR client-init: verwijder stale/verlopen auth-tokens.
 // Dit moet VOOR createClient() gebeuren, anders start Supabase een
 // auto-refresh loop op een ongeldig token (→ eindeloze AbortErrors).
+// Zonder configuratie is er geen project om op te schonen.
 try {
+    if (!isSupabaseConfigured) throw new Error('geen configuratie');
     const projectId = new URL(supabaseUrl).hostname.split('.')[0];
     const activeKey = `sb-${projectId}-auth-token`;
 
@@ -47,18 +75,38 @@ try {
     }
 } catch { /* negeer als URL-parsing of localStorage faalt */ }
 
-export const supabase = createClient<DatabaseWithPendingMigrations>(supabaseUrl, supabaseAnonKey, {
-    auth: {
-        persistSession: true,
-        autoRefreshToken: true,
-        detectSessionInUrl: true,
-    },
-    realtime: {
-        params: {
-            eventsPerSecond: 10,
+type SupabaseClientInstance = ReturnType<typeof createClient<DatabaseWithPendingMigrations>>;
+
+/**
+ * Stand-in wanneer de configuratie ontbreekt: elke property-toegang gooit.
+ * Zo blijft "Supabase gebruiken zonder config" een harde fout, terwijl het
+ * enkel importeren van deze module onschadelijk is.
+ */
+function createUnconfiguredClient(): SupabaseClientInstance {
+    const fail = (): never => {
+        throw new SupabaseConfigError();
+    };
+    return new Proxy({} as SupabaseClientInstance, {
+        get: fail,
+        apply: fail,
+        construct: fail,
+    });
+}
+
+export const supabase: SupabaseClientInstance = isSupabaseConfigured
+    ? createClient<DatabaseWithPendingMigrations>(supabaseUrl, supabaseAnonKey, {
+        auth: {
+            persistSession: true,
+            autoRefreshToken: true,
+            detectSessionInUrl: true,
         },
-    },
-});
+        realtime: {
+            params: {
+                eventsPerSecond: 10,
+            },
+        },
+    })
+    : createUnconfiguredClient();
 
 const isDevEdgeProxy = (() => {
     try {
