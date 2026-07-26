@@ -61,6 +61,73 @@ Rule of thumb: **skip when it's mechanical and reversible; grill when a step hid
 
 Use `design-and-refactor` as the orchestrating skill that sequences these gates automatically.
 
+## Model- en Denkniveau-Selectie
+
+Bepaal vóór iedere taak zelf welk model en denkniveau past, op basis van
+complexiteit, risico en benodigde verificatie. Deze standaard geldt
+repository-breed; domein-`CLAUDE.md`'s voegen alleen een strengere ondergrens toe
+(geen herhaling van deze tabel).
+
+### Taakclassificatie
+
+| Model + niveau | Wanneer |
+|---|---|
+| Sonnet 5 low/medium | Teksten, documentatie, eenvoudige styling, kleine componentwijzigingen, repetitief werk, duidelijk afgebakend onderhoud. |
+| Opus 5 low | Standaard voor normale codewijzigingen, overzichtelijke bugs, reguliere implementatie. |
+| Opus 5 medium | Complexe features, frontendinteracties, animaties, state-samenwerking, normale PR-reviews, wijzigingen over meerdere bestanden. |
+| Opus 5 high | Supabase, auth, rollen, sessies, dependencies, CI/CD, Vercel-config, performanceproblemen, architectuur, moeilijk reproduceerbare regressies. |
+| Opus 5 xhigh | Grote productie-impact, complexe securityvragen, dependencyconflicten, database-/datamigraties, regressies over meerdere systemen of branches. |
+| Opus 5 max | Alleen finale adversarial review van securitykritieke wijzigingen, mogelijk gegevensverlies, incidentonderzoek of finale go/no-go. Nooit de automatische standaard. |
+
+### Kostenregel
+
+Beoordeel totale taakkosten, niet prijs per token. Opus 5 low/medium kan
+goedkoper zijn dan Sonnet high/xhigh wanneer het minder herstelpogingen,
+redeneertokens en toolrondes kost. Kies Sonnet voor eenvoudig volume; Opus
+wanneer de taak werkelijk redeneerkwaliteit vereist.
+
+### Zelfevaluatie vóór uitvoering
+
+Bepaal kort — sluit aan op de Front-door triage hierboven: taaktype; impact bij
+een fout; omkeerbaarheid; betrokken kritieke domeinen; onzekerheden; benodigd
+model + denkniveau; vereiste tests/bewijs; of onafhankelijke review nodig is.
+
+### Escalatieregels
+
+- Verhoog het denkniveau bij nieuwe onzekerheid, onverwachte dependency-effecten,
+  productie-impact of securityrisico.
+- Verlaag het niveau niet enkel om kosten te besparen zolang relevante risico's
+  niet onderzocht zijn.
+- Meer denkvermogen vervangt nooit runtimeproeven, tests, directe
+  configuratiecontrole of onafhankelijke review.
+- Groen bouwen, linten of `npm audit` bewijst geen runtimecompatibiliteit of
+  veiligheid.
+- Verifieer kritieke claims via de echte downstream consumer en het werkelijk
+  bereikbare productiepad.
+- Een model mag zijn eigen kritieke wijziging niet als enige reviewer goedkeuren.
+- Voor auth, RLS, security, dependencies, migraties en productieconfiguratie is
+  een onafhankelijke read-only eindreview verplicht vóór merge.
+- Wijzig draft/ready-status, merge-status, externe configuratie of productie
+  alleen als de gebruiker daar expliciet om vraagt.
+
+### Zelfevaluatie ná uitvoering
+
+Controleer vóór afronding: (1) alle eisen echt uitgevoerd; (2) welke claims
+direct bewezen; (3) welke alleen afgeleid; (4) echte risicopaden getest i.p.v.
+alleen een nabijgelegen happy path; (5) tests écht in CI of alleen lokaal; (6)
+kunnen branchnamen, ontbrekende jobs of conditionele workflows controles
+omzeilen; (7) config en omgevingsvariabelen in de bedoelde scope gecontroleerd;
+(8) resterende aannames, ongeteste paden of risico's; (9) onafhankelijke
+reviewer nodig vóór merge/deploy; (10) was het denkniveau passend of moet
+vervolgwerk hoger worden ingeschaald.
+
+### Rapportage
+
+Houd zichtbare rapportage kort. Vermeld alleen: gekozen classificatie (als
+relevant); uitgevoerd bewijs/tests; resterende onzekerheden; nodige
+onafhankelijke review; en een duidelijke conclusie — gereed / gereed onder
+voorwaarden / niet gereed.
+
 ## Claude Workflow Notes
 
 - Default language is Dutch unless code/docs context is English.

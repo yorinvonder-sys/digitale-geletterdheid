@@ -37,3 +37,11 @@ This subtree is teacher-facing. Optimize for reliability, clarity, and evidencin
 - Explain what changed for teachers.
 - Explain whether exports, SLO progress, or inspection-facing evidence changed.
 - Explain risks in plain Dutch.
+
+## Model- en denkniveau (domeinaanvulling)
+Volg de standaard in de root `CLAUDE.md`. Voor docentflows geldt:
+- UI- en labelwijzigingen zonder logica: **Sonnet 5 low/medium** of **Opus 5 low**.
+- Rapportagelogica (`calculateStudentKerndoelStats`, SLO-percentages, exports):
+  **Opus 5 medium**.
+- RLS-scoping, MFA/AAL2 of role-checks via `app_metadata`: minimaal **Opus 5 high**
+  met onafhankelijke eindreview vóór merge.

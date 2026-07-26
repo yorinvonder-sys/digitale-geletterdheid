@@ -34,3 +34,9 @@ This subtree is school-facing marketing, procurement, and ICT communication UI.
 ## Output expectations
 - Explain what a school would understand from the change.
 - Flag any claim that is persuasive but not yet fully evidenced.
+
+## Model- en denkniveau (domeinaanvulling)
+Volg de standaard in de root `CLAUDE.md`. Voor school-facing UI geldt:
+- Copy en styling: **Sonnet 5 low/medium**.
+- Wijzigingen die compliance-, AI Act-, privacy- of dekkingsclaims raken:
+  minimaal **Opus 5 high** en pas na productbewijs (zie Claim discipline hierboven).
