@@ -53,3 +53,11 @@ This subtree contains learner-facing missions. Treat mission work as curriculum 
 - Explain what the teacher can observe or report later.
 - Name the SLO goals explicitly.
 - Explain the didactic rationale in plain Dutch.
+
+## Model- en denkniveau (domeinaanvulling)
+Volg de standaard in de root `CLAUDE.md`. Voor missies geldt:
+- Reguliere missie-UI en copy: **Sonnet 5 low/medium** of **Opus 5 low**.
+- Wijzigingen aan completion-/kerndoelen-semantiek of over meerdere bestanden:
+  **Opus 5 medium**.
+- AI-interactie, prompt-injection-verdediging of input-sanitisatie: minimaal
+  **Opus 5 high**.
