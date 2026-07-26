@@ -18,6 +18,9 @@ export default {
         './src/features/profile/avatar/AvatarSetup.tsx',
         './src/features/profile/avatar/AvatarViewer.tsx',
         './src/features/public-site/**/*.{js,ts,jsx,tsx}',
+        // Live ingebedde dashboards op /scholen en /verhaal.
+        './src/features/student/**/*.{js,ts,jsx,tsx}',
+        './src/features/teacher/**/*.{js,ts,jsx,tsx}',
         './src/features/seo/**/*.{js,ts,jsx,tsx}',
         './src/components/brand/**/*.{js,ts,jsx,tsx}',
     ],
