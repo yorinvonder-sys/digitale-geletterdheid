@@ -15,6 +15,17 @@ developer-settingsobject opgeslagen.
 **Tech Stack:** React 19, TypeScript 6, Vite 8, Tailwind utility classes,
 Lucide, Node test runner, Playwright Chromium.
 
+## Uitvoeringsstatus (26 juli 2026)
+
+- Taken 1–3 zijn geïmplementeerd en geverifieerd met model-/broncontracttests,
+  TypeScript en een productiebuild.
+- De annotatie- en koppelingenlaag uit taak 4 is geïmplementeerd, maar het
+  evidencebestand blijft bewust leeg: in deze werkruimte was geen lokale
+  Chrome-binary beschikbaar en de cloudbrowser mocht de localhost-preview niet
+  openen. Er is daarom geen screenshot of viewportmatrix als bewijs opgevoerd.
+- Taak 5 is uitgevoerd voor scope, React, security en bronwaarheid; de
+  browsercheck blijft het expliciete open verificatiepunt.
+
 ## Global Constraints
 
 - Gebruik 99 actuele missies uit `CURRICULUM` als noemer.

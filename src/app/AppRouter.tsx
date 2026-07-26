@@ -45,6 +45,9 @@ const DevShellPreview = import.meta.env.DEV
 const DevNulmetingPreview = import.meta.env.DEV
     ? React.lazy(() => import('@/features/dev-tools/DevNulmetingPreview'))
     : null;
+const DevMissionQualityPreview = import.meta.env.DEV
+    ? React.lazy(() => import('@/features/dev-tools/DevMissionQualityPreview'))
+    : null;
 
 /** Minimal spinner — no lucide to avoid blocking LCP */
 import { DuckMark } from '@/components/brand/DuckMark';
@@ -514,6 +517,15 @@ export function AppRouter() {
         return (
             <React.Suspense fallback={<LoadingFallback />}>
                 <DevMissionPreview />
+            </React.Suspense>
+        );
+    }
+
+    // DEV ONLY: Missiekwaliteitsdashboard met fixturestaat en zonder database-writes.
+    if (import.meta.env.DEV && DevMissionQualityPreview && normalizedPath === '/dev/mission-quality') {
+        return (
+            <React.Suspense fallback={<LoadingFallback />}>
+                <DevMissionQualityPreview />
             </React.Suspense>
         );
     }

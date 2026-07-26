@@ -52,6 +52,12 @@ test('valideert versiebeheerbewijs en percentagecoördinaten', () => {
             evidenceType: 'OBJECTIVE',
             beforeImage: '/screenshots/voorbeeld.webp',
             afterImage: null,
+            references: {
+                mission: '/dev/mission-preview?mission=voorbeeld-missie',
+                test: 'tests/ai-students/voorbeeld.test.mjs',
+                code: 'src/features/missions/VoorbeeldMissie.tsx',
+                pullRequest: null,
+            },
             findings: [{
                 id: 'voorbeeld-ux-1',
                 title: 'Knop is onduidelijk',
@@ -76,6 +82,12 @@ test('valideert versiebeheerbewijs en percentagecoördinaten', () => {
     });
 
     assert.equal(items[0].findings[0].annotations[0].width, 30);
+    assert.deepEqual(items[0].references, {
+        mission: '/dev/mission-preview?mission=voorbeeld-missie',
+        test: 'tests/ai-students/voorbeeld.test.mjs',
+        code: 'src/features/missions/VoorbeeldMissie.tsx',
+        pullRequest: null,
+    });
 });
 
 test('weigert bewijs zonder beeld en annotaties buiten het beeldvlak', () => {
@@ -90,6 +102,12 @@ test('weigert bewijs zonder beeld en annotaties buiten het beeldvlak', () => {
             evidenceType: 'OBJECTIVE',
             beforeImage: null,
             afterImage: null,
+            references: {
+                mission: '/dev/mission-preview?mission=voorbeeld-missie',
+                test: null,
+                code: null,
+                pullRequest: null,
+            },
             findings: [],
         }],
     };

@@ -74,6 +74,13 @@ export interface EvidenceFinding {
     annotations: EvidenceAnnotation[];
 }
 
+export interface EvidenceReferences {
+    mission: string;
+    test: string | null;
+    code: string | null;
+    pullRequest: string | null;
+}
+
 export interface MissionEvidence {
     id: string;
     missionId: string;
@@ -86,6 +93,7 @@ export interface MissionEvidence {
     evidenceType: EvidenceType;
     beforeImage: string | null;
     afterImage: string | null;
+    references: EvidenceReferences;
     findings: EvidenceFinding[];
 }
 
@@ -121,10 +129,19 @@ export interface MissionQualitySummary {
     missingAuditCount: number;
     supplementalAuditCount: number;
     openDecisionCount: number;
+    currentOpenDecisionCount: number;
+    supplementalOpenDecisionCount: number;
     reviewedDecisionCount: number;
     approvedDecisionCount: number;
     changesRequestedCount: number;
     browserEvidenceMissionCount: number;
+}
+
+export interface MissionDecisionProgress {
+    total: number;
+    reviewed: number;
+    approved: number;
+    changesRequested: number;
 }
 
 export interface MissionQualityFilters {
@@ -317,10 +334,70 @@ export function getDecisionKey(missionId: string, escalationIndex: number): stri
     return `${missionId}:escalation:${escalationIndex}`;
 }
 
+export function applyMissionQualityDecision(
+    decisions: MissionQualityDecisionMap,
+    decisionKey: string,
+    status: DecisionStatus | null,
+    decidedAt = new Date().toISOString(),
+): MissionQualityDecisionMap {
+    if (status === null) {
+        const next = { ...decisions };
+        delete next[decisionKey];
+        return next;
+    }
+    return {
+        ...decisions,
+        [decisionKey]: {
+            status,
+            decidedAt,
+        },
+    };
+}
+
+export function getMissionDecisionProgress(
+    audit: AuditRecord | null,
+    decisions: MissionQualityDecisionMap,
+): MissionDecisionProgress {
+    if (!audit) {
+        return {
+            total: 0,
+            reviewed: 0,
+            approved: 0,
+            changesRequested: 0,
+        };
+    }
+
+    const missionDecisions = audit.openEscalations
+        .map((_, index) => decisions[getDecisionKey(audit.missionId, index)])
+        .filter((decision): decision is MissionQualityDecision => Boolean(decision?.status));
+
+    return {
+        total: audit.openEscalations.length,
+        reviewed: missionDecisions.length,
+        approved: missionDecisions.filter(decision => decision.status === 'approved').length,
+        changesRequested: missionDecisions.filter(
+            decision => decision.status === 'changes_requested',
+        ).length,
+    };
+}
+
+export function resolveSelectedMissionId(
+    missions: MissionQualityRecord[],
+    currentMissionId: string | null,
+): string | null {
+    if (currentMissionId && missions.some(mission => mission.id === currentMissionId)) {
+        return currentMissionId;
+    }
+    return missions[0]?.id || null;
+}
+
 export function summarizeMissionQuality(
     quality: MissionQualityReconciliation,
     decisions: MissionQualityDecisionMap = {},
 ): MissionQualitySummary {
+    const currentAuditRecords = quality.missions
+        .map(mission => mission.audit)
+        .filter((record): record is AuditRecord => record !== null);
     const validDecisionKeys = new Set(
         quality.auditRecords.flatMap(record => (
             record.openEscalations.map((_, index) => getDecisionKey(record.missionId, index))
@@ -338,6 +415,14 @@ export function summarizeMissionQuality(
         missingAuditCount: quality.missingAuditMissionIds.length,
         supplementalAuditCount: quality.supplementalAuditRecords.length,
         openDecisionCount: quality.auditRecords.reduce(
+            (total, record) => total + record.openEscalations.length,
+            0,
+        ),
+        currentOpenDecisionCount: currentAuditRecords.reduce(
+            (total, record) => total + record.openEscalations.length,
+            0,
+        ),
+        supplementalOpenDecisionCount: quality.supplementalAuditRecords.reduce(
             (total, record) => total + record.openEscalations.length,
             0,
         ),

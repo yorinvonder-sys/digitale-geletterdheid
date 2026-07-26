@@ -46,6 +46,11 @@ export interface DeveloperSettings {
     preferred_language?: string;
     globalPolicy?: string;
     assignmentReviewChecklist?: Record<string, boolean>;
+    missionQualityDecisions?: Record<string, {
+        status: 'approved' | 'changes_requested';
+        decidedAt: string;
+        note?: string;
+    }>;
 }
 
 // --- Tasks ---

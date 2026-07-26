@@ -2,6 +2,7 @@ import type {
     AuditRecord,
     EvidenceAnnotation,
     EvidenceFinding,
+    EvidenceReferences,
     MissionEvidence,
 } from './missionQualityModel';
 
@@ -123,6 +124,33 @@ function parseFinding(value: unknown, path: string): EvidenceFinding {
     };
 }
 
+function parseReferences(value: unknown, path: string): EvidenceReferences {
+    const references = asObject(value, path);
+    const pullRequest = asNullableString(
+        references.pullRequest,
+        `${path}.pullRequest`,
+    );
+
+    if (pullRequest) {
+        let parsedUrl: URL;
+        try {
+            parsedUrl = new URL(pullRequest);
+        } catch {
+            throw new Error(`${path}.pullRequest moet een geldige URL zijn.`);
+        }
+        if (parsedUrl.protocol !== 'https:') {
+            throw new Error(`${path}.pullRequest moet https gebruiken.`);
+        }
+    }
+
+    return {
+        mission: asString(references.mission, `${path}.mission`),
+        test: asNullableString(references.test, `${path}.test`),
+        code: asNullableString(references.code, `${path}.code`),
+        pullRequest,
+    };
+}
+
 function parseEvidenceItem(value: unknown, path: string): MissionEvidence {
     const item = asObject(value, path);
     const viewport = asObject(item.viewport, `${path}.viewport`);
@@ -155,6 +183,7 @@ function parseEvidenceItem(value: unknown, path: string): MissionEvidence {
         evidenceType: evidenceType as MissionEvidence['evidenceType'],
         beforeImage,
         afterImage,
+        references: parseReferences(item.references, `${path}.references`),
         findings: item.findings.map((finding, index) => (
             parseFinding(finding, `${path}.findings[${index}]`)
         )),

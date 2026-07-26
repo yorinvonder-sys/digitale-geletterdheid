@@ -2,11 +2,14 @@ import assert from 'node:assert/strict';
 import test from 'node:test';
 
 import {
+    applyMissionQualityDecision,
     buildMissionCatalog,
     filterMissionQuality,
     getDecisionKey,
     getEvidenceLabel,
+    getMissionDecisionProgress,
     reconcileMissionQuality,
+    resolveSelectedMissionId,
     sortMissionQuality,
     summarizeMissionQuality,
     type AuditRecord,
@@ -130,6 +133,12 @@ test('reconcileert ontbrekende actuele missies en aanvullende auditrecords afzon
             evidenceType: 'OBJECTIVE',
             beforeImage: '/screenshots/alpha.webp',
             afterImage: null,
+            references: {
+                mission: '/dev/mission-preview?mission=alpha',
+                test: null,
+                code: null,
+                pullRequest: null,
+            },
             findings: [],
         }],
     });
@@ -155,6 +164,12 @@ test('leidt KPI’s af zonder statische audit en browserbewijs te verwarren', ()
             evidenceType: 'OBJECTIVE',
             beforeImage: '/screenshots/alpha.webp',
             afterImage: null,
+            references: {
+                mission: '/dev/mission-preview?mission=alpha',
+                test: null,
+                code: null,
+                pullRequest: null,
+            },
             findings: [],
         }],
     });
@@ -178,6 +193,8 @@ test('leidt KPI’s af zonder statische audit en browserbewijs te verwarren', ()
         missingAuditCount: 3,
         supplementalAuditCount: 1,
         openDecisionCount: 3,
+        currentOpenDecisionCount: 2,
+        supplementalOpenDecisionCount: 1,
         reviewedDecisionCount: 2,
         approvedDecisionCount: 1,
         changesRequestedCount: 1,
@@ -237,6 +254,12 @@ test('geeft een bewijslabel dat de verificatiemethode expliciet maakt', () => {
             evidenceType: 'OBJECTIVE',
             beforeImage: '/screenshots/alpha.webp',
             afterImage: null,
+            references: {
+                mission: '/dev/mission-preview?mission=alpha',
+                test: null,
+                code: null,
+                pullRequest: null,
+            },
             findings: [],
         }],
     }).missions;
@@ -249,4 +272,62 @@ test('geeft een bewijslabel dat de verificatiemethode expliciet maakt', () => {
 test('maakt stabiele sleutels voor afzonderlijke menselijke beslissingen', () => {
     assert.equal(getDecisionKey('pitch-police', 0), 'pitch-police:escalation:0');
     assert.equal(getDecisionKey('pitch-police', 1), 'pitch-police:escalation:1');
+});
+
+test('houdt een zichtbare selectie vast en kiest anders het eerste resultaat', () => {
+    const missions = reconcileMissionQuality({
+        catalog: buildMissionCatalog(yearGroups),
+        auditRecords,
+        evidence: [],
+    }).missions;
+
+    assert.equal(resolveSelectedMissionId(missions, 'beta'), 'beta');
+    assert.equal(resolveSelectedMissionId(missions, 'niet-zichtbaar'), 'alpha');
+    assert.equal(resolveSelectedMissionId([], 'alpha'), null);
+});
+
+test('berekent besluitvoortgang alleen uit geldige beslispunten van de missie', () => {
+    const decisions: MissionQualityDecisionMap = {
+        [getDecisionKey('alpha', 0)]: {
+            status: 'approved',
+            decidedAt: '2026-07-26T13:00:00.000Z',
+        },
+        [getDecisionKey('andere-missie', 0)]: {
+            status: 'changes_requested',
+            decidedAt: '2026-07-26T13:05:00.000Z',
+        },
+    };
+
+    assert.deepEqual(getMissionDecisionProgress(auditRecords[0], decisions), {
+        total: 2,
+        reviewed: 1,
+        approved: 1,
+        changesRequested: 0,
+    });
+});
+
+test('past één beslissing immutabel toe of zet haar terug naar open', () => {
+    const initial: MissionQualityDecisionMap = {
+        'alpha:escalation:1': {
+            status: 'changes_requested',
+            decidedAt: '2026-07-26T12:00:00.000Z',
+        },
+    };
+    const approved = applyMissionQualityDecision(
+        initial,
+        'alpha:escalation:0',
+        'approved',
+        '2026-07-26T13:00:00.000Z',
+    );
+
+    assert.notEqual(approved, initial);
+    assert.equal(initial['alpha:escalation:0'], undefined);
+    assert.deepEqual(approved['alpha:escalation:0'], {
+        status: 'approved',
+        decidedAt: '2026-07-26T13:00:00.000Z',
+    });
+    assert.deepEqual(
+        applyMissionQualityDecision(approved, 'alpha:escalation:0', null),
+        initial,
+    );
 });
