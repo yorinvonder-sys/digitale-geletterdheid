@@ -27,6 +27,7 @@ const ROUTES = [
   '/', 
   '/scholen', 
   '/leerlingdemo',
+  '/verhaal',
   '/login', 
   '/ict', 
   '/ict/integraties', 
@@ -127,6 +128,14 @@ function prerenderRoutes() {
       ogTitle: 'Leerlingdemo — DGSkills',
       ogDescription: 'Probeer de DGSkills leerlingdemo met fictieve data en bekijk hoe Leerjaar 1 missies werken.',
       ogUrl: 'https://dgskills.app/leerlingdemo',
+    },
+    '/verhaal': {
+      title: 'Het verhaal van een les die wél werkt | DGSkills',
+      description: 'Digitale geletterdheid voor VO en VSO, verteld als verhaal: van de pijn in de klas naar missies, docentdashboard en aantoonbare SLO-dekking.',
+      canonical: 'https://dgskills.app/verhaal',
+      ogTitle: 'Het verhaal van een les die wél werkt — DGSkills',
+      ogDescription: 'Van Jayden en Mila tot het docentdashboard: hoe digitale geletterdheid er in de praktijk uitziet.',
+      ogUrl: 'https://dgskills.app/verhaal',
     },
     '/login': {
       title: 'Inloggen — DGSkills | Digitale Geletterdheid',
