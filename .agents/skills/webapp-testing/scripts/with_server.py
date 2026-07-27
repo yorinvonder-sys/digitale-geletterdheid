@@ -66,9 +66,10 @@ def main():
             print(f"Starting server {i+1}/{len(servers)}: {server['cmd']}")
 
             # Use shell=True to support commands with cd and &&
+            # Semgrep-uitzondering: bewust alleen voor vertrouwde lokale testcommando's; de aanroeper heeft al code-uitvoerrechten.
             process = subprocess.Popen(
                 server['cmd'],
-                shell=True,
+                shell=True,  # nosemgrep: python.lang.security.audit.subprocess-shell-true.subprocess-shell-true
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE
             )
