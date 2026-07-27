@@ -77,3 +77,7 @@ Elke les bevat:
 - Test controleert lokale opslag en afwezigheid van Supabase in academieprogressie.
 - Bestaande integratie met de documentenomgeving blijft gecontroleerd.
 - CI moet typecheck en productiebuild bevestigen.
+
+## Previewvalidatie
+
+- Een nieuwe previewdeployment mag met een documentatie-only commit worden getriggerd wanneer de vorige Vercel-poging uitsluitend door de deploymentdaglimiet is geblokkeerd.
