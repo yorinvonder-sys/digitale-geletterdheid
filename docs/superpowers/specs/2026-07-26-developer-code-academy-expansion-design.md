@@ -82,4 +82,5 @@ Elke les bevat:
 - Test controleert mobiele route-accordions, swipebare architectuur, code-wrapping, datakaarten en expliciete leerfasen.
 - Bestaande integratie met de documentenomgeving blijft gecontroleerd.
 - Een tijdelijke Playwright-audit rendert de echte academiecomponent op 1440 × 1050 en 390 × 844, legt overzicht, les, visual, datareis en kennischeck vast en wordt na beoordeling weer verwijderd.
+- De tweede screenshotset is handmatig geïnspecteerd: het overzicht is gehalveerd in mobiele lengte en code, datareis, oefeningen en kennischeck blijven volledig binnen het scherm.
 - CI moet typecheck, security checks, productiebuild en performancebudgetten bevestigen.
