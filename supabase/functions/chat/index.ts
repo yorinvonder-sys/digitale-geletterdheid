@@ -17,7 +17,7 @@ import {
     selectModel,
 } from "../_shared/chatCore.ts";
 import { buildMistralMessages, completeMistralChat } from "../_shared/mistralClient.ts";
-import { filterAiOutput, SAFE_FALLBACK_MESSAGE } from "../_shared/outputFilter.ts";
+import { filterAiOutput, SAFE_FALLBACK_MESSAGE, SAFETY_UNAVAILABLE_MESSAGE } from "../_shared/outputFilter.ts";
 import { moderateText } from "../_shared/moderationClient.ts";
 import { detectAndLogStepComplete } from "../_shared/stepCompleteDetector.ts";
 import { countTextChars, logAiUsageEvent } from "../_shared/aiUsageLogger.ts";
@@ -44,6 +44,29 @@ Deno.serve(async (req: Request) => {
 
         // Input moderation (Mistral classifier) — additioneel op de sanitizer.
         const inputModeration = await moderateText(validated.sanitized);
+        if (inputModeration.errored) {
+            logAiUsageEvent({
+                requestId: validated.requestId,
+                endpoint: "chat",
+                provider: "mistral",
+                model: requestedModel,
+                status: "error",
+                userId: validated.userId,
+                schoolId: validated.schoolId,
+                inputChars,
+                historyChars,
+                metadata: {
+                    reason: "moderation_unavailable_fail_closed",
+                    moderation_stage: "input",
+                    moderation_error_reason: inputModeration.errorReason ?? "unknown",
+                },
+            }).catch((err) => console.error("[chat] Usage log error:", err));
+
+            return new Response(JSON.stringify({ text: SAFETY_UNAVAILABLE_MESSAGE }), {
+                headers: { ...corsHeaders, "Content-Type": "application/json", "X-AI-Request-Id": validated.requestId, ...rateLimitHeaders(validated.rateCheck) },
+            });
+        }
+
         if (inputModeration.flagged) {
             logAiUsageEvent({
                 requestId: validated.requestId,
@@ -97,6 +120,34 @@ Deno.serve(async (req: Request) => {
 
         if (filterResult.safe) {
             const outputModeration = await moderateText(rawText);
+            if (outputModeration.errored) {
+                logAiUsageEvent({
+                    requestId: validated.requestId,
+                    endpoint: "chat",
+                    provider: "mistral",
+                    model: result.model,
+                    status: "error",
+                    userId: validated.userId,
+                    schoolId: validated.schoolId,
+                    inputChars,
+                    historyChars,
+                    gameContextChars: validated.body.gameContext?.length ?? 0,
+                    outputChars: 0,
+                    usagePayload: result.usagePayload,
+                    metadata: {
+                        role_id: validated.body.roleId,
+                        mission_id: validated.body.missionId,
+                        reason: "moderation_unavailable_fail_closed",
+                        moderation_stage: "output",
+                        moderation_error_reason: outputModeration.errorReason ?? "unknown",
+                    },
+                }).catch((err) => console.error("[chat] Usage log error:", err));
+
+                return new Response(JSON.stringify({ text: SAFETY_UNAVAILABLE_MESSAGE }), {
+                    headers: { ...corsHeaders, "Content-Type": "application/json", "X-AI-Request-Id": validated.requestId, ...rateLimitHeaders(validated.rateCheck) },
+                });
+            }
+
             if (outputModeration.flagged) {
                 text = SAFE_FALLBACK_MESSAGE;
                 outputBlockReason = `moderation:${outputModeration.categories.join("|")}`;

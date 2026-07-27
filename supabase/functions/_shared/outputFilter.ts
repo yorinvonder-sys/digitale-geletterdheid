@@ -17,6 +17,9 @@
 export const SAFE_FALLBACK_MESSAGE =
     'Sorry, ik kan deze vraag niet beantwoorden. Als je ergens mee zit, praat dan met een vertrouwenspersoon op school of bel de Kindertelefoon (0800-0432).';
 
+export const SAFETY_UNAVAILABLE_MESSAGE =
+    'De AI-chat is tijdelijk niet beschikbaar omdat de veiligheidscontrole niet kon worden uitgevoerd. Probeer het later opnieuw.';
+
 const CONCERNING_PATTERNS: Array<{ pattern: RegExp; category: string }> = [
     // Zelfbeschadiging / suïcide instructies
     { pattern: /\b(snij|snijd)\s+(jezelf|je\s+polsen?|in\s+je)/i, category: 'zelfbeschadiging' },

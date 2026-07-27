@@ -1,8 +1,9 @@
 /**
  * Edge Function: /chatStream — Streaming AI Chat Proxy (SSE)
  *
- * Identical security layers as /chat, but streams the Mistral response
- * back to the client via Server-Sent Events for real-time text display.
+ * Identical security layers as /chat, but keeps the SSE response shape.
+ * For child-safety, provider output is fully moderated before any text is sent
+ * to the client.
  *
  * Security layers:
  * 1. JWT auth verification (Supabase)
@@ -19,11 +20,31 @@ import {
     buildAiChatPayload,
     selectModel,
 } from "../_shared/chatCore.ts";
-import { buildMistralMessages, streamMistralChat } from "../_shared/mistralClient.ts";
-import { filterStreamChunk, SAFE_FALLBACK_MESSAGE } from "../_shared/outputFilter.ts";
+import { buildMistralMessages, completeMistralChat } from "../_shared/mistralClient.ts";
+import { filterAiOutput, SAFE_FALLBACK_MESSAGE, SAFETY_UNAVAILABLE_MESSAGE } from "../_shared/outputFilter.ts";
 import { moderateText } from "../_shared/moderationClient.ts";
 import { detectAndLogStepComplete } from "../_shared/stepCompleteDetector.ts";
 import { countTextChars, logAiUsageEvent } from "../_shared/aiUsageLogger.ts";
+
+function buildSseTextResponse(text: string, headers: Record<string, string>): Response {
+    const encoder = new TextEncoder();
+    const stream = new ReadableStream({
+        start(controller) {
+            controller.enqueue(encoder.encode(`data: ${JSON.stringify({ text })}\n\n`));
+            controller.enqueue(encoder.encode("data: [DONE]\n\n"));
+            controller.close();
+        },
+    });
+
+    return new Response(stream, {
+        headers: {
+            ...headers,
+            "Content-Type": "text/event-stream",
+            "Cache-Control": "no-cache",
+            "Connection": "keep-alive",
+        },
+    });
+}
 
 Deno.serve(async (req: Request) => {
     const corsHeaders = buildCorsHeaders(req, "POST, OPTIONS", "Content-Type, Authorization");
@@ -37,8 +58,7 @@ Deno.serve(async (req: Request) => {
     const validated = await validateAndParseRequest(req, corsHeaders, "chat-stream");
     if (validated instanceof Response) return validated;
 
-    // Forward sanitized message to Mistral streaming endpoint
-    let mistralResponse: Response;
+    // Keep the SSE contract, but moderate full provider output before sending.
     const hasGameContext = !!(validated.body.gameContext && typeof validated.body.gameContext === "string");
     let model = selectModel(validated.body.roleId, hasGameContext);
     const aiPayload = buildAiChatPayload(validated);
@@ -47,6 +67,31 @@ Deno.serve(async (req: Request) => {
 
     // Input moderation (Mistral classifier) — blokkeer vóór we streamen.
     const inputModeration = await moderateText(validated.sanitized);
+    if (inputModeration.errored) {
+        logAiUsageEvent({
+            requestId: validated.requestId,
+            endpoint: "chatStream",
+            provider: "mistral",
+            model,
+            status: "error",
+            userId: validated.userId,
+            schoolId: validated.schoolId,
+            inputChars,
+            historyChars,
+            metadata: {
+                reason: "moderation_unavailable_fail_closed",
+                moderation_stage: "input",
+                moderation_error_reason: inputModeration.errorReason ?? "unknown",
+            },
+        }).catch((err) => console.error("[chatStream] Usage log error:", err));
+
+        return buildSseTextResponse(SAFETY_UNAVAILABLE_MESSAGE, {
+            ...corsHeaders,
+            "X-AI-Request-Id": validated.requestId,
+            ...rateLimitHeaders(validated.rateCheck),
+        });
+    }
+
     if (inputModeration.flagged) {
         logAiUsageEvent({
             requestId: validated.requestId,
@@ -61,26 +106,20 @@ Deno.serve(async (req: Request) => {
             metadata: { reason: "moderation_input", moderation_categories: inputModeration.categories.join(",") },
         }).catch((err) => console.error("[chatStream] Usage log error:", err));
 
-        const blockedEncoder = new TextEncoder();
-        const blockedStream = new ReadableStream({
-            start(controller) {
-                controller.enqueue(blockedEncoder.encode(`data: ${JSON.stringify({ text: SAFE_FALLBACK_MESSAGE })}\n\n`));
-                controller.enqueue(blockedEncoder.encode("data: [DONE]\n\n"));
-                controller.close();
-            },
-        });
-        return new Response(blockedStream, {
-            headers: { ...corsHeaders, "Content-Type": "text/event-stream", "Cache-Control": "no-cache", "Connection": "keep-alive", "X-AI-Request-Id": validated.requestId, ...rateLimitHeaders(validated.rateCheck) },
+        return buildSseTextResponse(SAFE_FALLBACK_MESSAGE, {
+            ...corsHeaders,
+            "X-AI-Request-Id": validated.requestId,
+            ...rateLimitHeaders(validated.rateCheck),
         });
     }
 
+    let result: Awaited<ReturnType<typeof completeMistralChat>>;
     try {
-        const result = await streamMistralChat({
+        result = await completeMistralChat({
             messages: buildMistralMessages(validated.systemInstruction, aiPayload.contents),
             temperature: aiPayload.generationConfig.temperature,
             maxTokens: aiPayload.generationConfig.maxOutputTokens,
         });
-        mistralResponse = result.response;
         model = result.model;
     } catch (err: unknown) {
         const message = err instanceof Error ? err.message : String(err);
@@ -90,7 +129,7 @@ Deno.serve(async (req: Request) => {
             endpoint: "chatStream",
             provider: "mistral",
             model,
-            status: "error",
+            status: message.includes("429") ? "rate_limited" : "error",
             userId: validated.userId,
             schoolId: validated.schoolId,
             inputChars,
@@ -105,199 +144,80 @@ Deno.serve(async (req: Request) => {
         );
     }
 
-    if (!mistralResponse.ok) {
-        const status = mistralResponse.status;
-        const errBody = await mistralResponse.text().catch(() => "");
-        console.error(`[chatStream] Mistral error (${status}):`, errBody);
-        logAiUsageEvent({
-            requestId: validated.requestId,
-            endpoint: "chatStream",
-            provider: "mistral",
-            model,
-            status: status === 429 ? "rate_limited" : "error",
-            userId: validated.userId,
-            schoolId: validated.schoolId,
-            inputChars,
-            historyChars,
-            gameContextChars: validated.body.gameContext?.length ?? 0,
-            metadata: { http_status: status },
-        }).catch((logErr) => console.error("[chatStream] Usage log error:", logErr));
+    const rawText = result.text;
+    const filterResult = filterAiOutput(rawText);
+    let text = filterResult.safe ? rawText : (filterResult.filtered || SAFE_FALLBACK_MESSAGE);
+    let outputBlockReason: string | null = filterResult.safe ? null : `regex:${filterResult.category}`;
 
-        if (status === 429) {
-            return new Response(
-                JSON.stringify({ error: "rate_limit", reason: "Te veel verzoeken. Wacht even." }),
-                { status: 429, headers: { ...corsHeaders, "Content-Type": "application/json", "X-AI-Request-Id": validated.requestId } },
-            );
+    if (filterResult.safe) {
+        const outputModeration = await moderateText(rawText);
+        if (outputModeration.errored) {
+            logAiUsageEvent({
+                requestId: validated.requestId,
+                endpoint: "chatStream",
+                provider: "mistral",
+                model,
+                status: "error",
+                userId: validated.userId,
+                schoolId: validated.schoolId,
+                inputChars,
+                historyChars,
+                gameContextChars: validated.body.gameContext?.length ?? 0,
+                outputChars: 0,
+                usagePayload: result.usagePayload,
+                metadata: {
+                    role_id: validated.body.roleId,
+                    mission_id: validated.body.missionId,
+                    reason: "moderation_unavailable_fail_closed",
+                    moderation_stage: "output",
+                    moderation_error_reason: outputModeration.errorReason ?? "unknown",
+                },
+            }).catch((logErr) => console.error("[chatStream] Usage log error:", logErr));
+
+            return buildSseTextResponse(SAFETY_UNAVAILABLE_MESSAGE, {
+                ...corsHeaders,
+                "X-AI-Request-Id": validated.requestId,
+                ...rateLimitHeaders(validated.rateCheck),
+            });
         }
-        return new Response(
-            JSON.stringify({ error: "AI-service tijdelijk niet beschikbaar." }),
-            { status: 502, headers: { ...corsHeaders, "Content-Type": "application/json", "X-AI-Request-Id": validated.requestId } },
-        );
+
+        if (outputModeration.flagged) {
+            text = SAFE_FALLBACK_MESSAGE;
+            outputBlockReason = `moderation:${outputModeration.categories.join("|")}`;
+        }
     }
 
-    // Stream the Mistral SSE response back to the client
-    // We transform each chunk into our simplified SSE format: data: {"text": "..."}\n\n
-    const reader = mistralResponse.body?.getReader();
-    if (!reader) {
-        return new Response(
-            JSON.stringify({ error: "Geen stream beschikbaar." }),
-            { status: 502, headers: { ...corsHeaders, "Content-Type": "application/json" } },
-        );
+    const outputSafe = outputBlockReason === null;
+
+    if (outputSafe && rawText) {
+        detectAndLogStepComplete(rawText, validated.userId, validated.body.roleId, validated.body.missionId)
+            .catch((err) => console.error("[chatStream] STEP_COMPLETE log error:", err));
     }
 
-    const encoder = new TextEncoder();
-    const decoder = new TextDecoder();
-
-    const stream = new ReadableStream({
-        async start(controller) {
-            let buffer = "";
-            let accumulatedText = "";
-            let streamBlocked = false;
-            let usagePayload: unknown = null;
-            try {
-                while (true) {
-                    const { done, value } = await reader.read();
-                    if (done) break;
-                    if (streamBlocked) continue; // drain remaining chunks silently
-
-                    buffer += decoder.decode(value, { stream: true });
-                    const lines = buffer.split("\n");
-                    // Keep the last (potentially incomplete) line in the buffer
-                    buffer = lines.pop() || "";
-
-                    for (const line of lines) {
-                        if (!line.startsWith("data: ")) continue;
-                        const jsonStr = line.slice(6).trim();
-                        if (!jsonStr) continue;
-
-                        try {
-                            const chunk = JSON.parse(jsonStr);
-                            if (chunk?.usageMetadata || chunk?.usage_metadata) {
-                                usagePayload = chunk;
-                            }
-                            if (chunk?.usage) {
-                                usagePayload = chunk;
-                            }
-                            const text = chunk?.choices?.[0]?.delta?.content || chunk?.choices?.[0]?.message?.content;
-                            if (text) {
-                                accumulatedText += text;
-
-                                // Check safety filter every 200 chars to limit overhead
-                                if (accumulatedText.length % 200 < text.length) {
-                                    const filterResult = filterStreamChunk(accumulatedText);
-                                    if (!filterResult.safe) {
-                                        console.warn(`[chatStream] Blocked output — category: ${filterResult.category}`);
-                                        controller.enqueue(
-                                            encoder.encode(`data: ${JSON.stringify({ text: `\n\n${filterResult.filtered}` })}\n\n`)
-                                        );
-                                        streamBlocked = true;
-                                        break;
-                                    }
-                                }
-
-                                controller.enqueue(
-                                    encoder.encode(`data: ${JSON.stringify({ text })}\n\n`)
-                                );
-                            }
-                        } catch {
-                            // Skip malformed JSON chunks
-                        }
-                    }
-                }
-
-                // Process any remaining buffer
-                if (buffer.startsWith("data: ")) {
-                    const jsonStr = buffer.slice(6).trim();
-                    if (jsonStr) {
-                        try {
-                            const chunk = JSON.parse(jsonStr);
-                            if (chunk?.usageMetadata || chunk?.usage_metadata) {
-                                usagePayload = chunk;
-                            }
-                            if (chunk?.usage) {
-                                usagePayload = chunk;
-                            }
-                            const text = chunk?.choices?.[0]?.delta?.content || chunk?.choices?.[0]?.message?.content;
-                            if (text) {
-                                accumulatedText += text;
-                                controller.enqueue(
-                                    encoder.encode(`data: ${JSON.stringify({ text })}\n\n`)
-                                );
-                            }
-                        } catch {
-                            // Skip
-                        }
-                    }
-                }
-
-                // Server-side STEP_COMPLETE detection after stream ends (EU AI Act Art. 12)
-                if (accumulatedText) {
-                    detectAndLogStepComplete(accumulatedText, validated.userId, validated.body.roleId, validated.body.missionId)
-                        .catch((err) => console.error("[chatStream] STEP_COMPLETE log error:", err));
-                }
-
-                // Post-stream Mistral-moderatie: kan reeds-gestreamde tekst NIET
-                // terugtrekken — alleen detectie + logging (Art. 12 / monitoring).
-                let postStreamModeration = "";
-                if (!streamBlocked && accumulatedText) {
-                    const outputModeration = await moderateText(accumulatedText);
-                    if (outputModeration.flagged) postStreamModeration = outputModeration.categories.join("|");
-                }
-
-                logAiUsageEvent({
-                    requestId: validated.requestId,
-                    endpoint: "chatStream",
-                    provider: "mistral",
-                    model,
-                    status: (streamBlocked || postStreamModeration) ? "blocked" : "ok",
-                    userId: validated.userId,
-                    schoolId: validated.schoolId,
-                    inputChars,
-                    historyChars,
-                    gameContextChars: validated.body.gameContext?.length ?? 0,
-                    outputChars: accumulatedText.length,
-                    usagePayload,
-                    metadata: {
-                        role_id: validated.body.roleId,
-                        mission_id: validated.body.missionId,
-                        stream_blocked: streamBlocked,
-                        post_stream_moderation: postStreamModeration || "clean",
-                    },
-                }).catch((err) => console.error("[chatStream] Usage log error:", err));
-
-                controller.enqueue(encoder.encode("data: [DONE]\n\n"));
-                controller.close();
-            } catch (err) {
-                console.error("[chatStream] Stream error:", err);
-                logAiUsageEvent({
-                    requestId: validated.requestId,
-                    endpoint: "chatStream",
-                    provider: "mistral",
-                    model,
-                    status: "error",
-                    userId: validated.userId,
-                    schoolId: validated.schoolId,
-                    inputChars,
-                    historyChars,
-                    gameContextChars: validated.body.gameContext?.length ?? 0,
-                    outputChars: accumulatedText.length,
-                    usagePayload,
-                    metadata: { error_stage: "stream" },
-                }).catch((logErr) => console.error("[chatStream] Usage log error:", logErr));
-                controller.enqueue(encoder.encode("data: [DONE]\n\n"));
-                controller.close();
-            }
+    logAiUsageEvent({
+        requestId: validated.requestId,
+        endpoint: "chatStream",
+        provider: "mistral",
+        model,
+        status: outputSafe ? "ok" : "blocked",
+        userId: validated.userId,
+        schoolId: validated.schoolId,
+        inputChars,
+        historyChars,
+        gameContextChars: validated.body.gameContext?.length ?? 0,
+        outputChars: text.length,
+        usagePayload: result.usagePayload,
+        metadata: {
+            role_id: validated.body.roleId,
+            mission_id: validated.body.missionId,
+            output_filter: outputBlockReason ?? "safe",
+            delivery_mode: "moderated_full_sse",
         },
-    });
+    }).catch((err) => console.error("[chatStream] Usage log error:", err));
 
-    return new Response(stream, {
-        headers: {
-            ...corsHeaders,
-            "Content-Type": "text/event-stream",
-            "Cache-Control": "no-cache",
-            "Connection": "keep-alive",
-            "X-AI-Request-Id": validated.requestId,
-            ...rateLimitHeaders(validated.rateCheck),
-        },
+    return buildSseTextResponse(text, {
+        ...corsHeaders,
+        "X-AI-Request-Id": validated.requestId,
+        ...rateLimitHeaders(validated.rateCheck),
     });
 });
