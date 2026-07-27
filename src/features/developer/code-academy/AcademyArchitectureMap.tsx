@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import {
   AppWindow,
-  ArrowDown,
+  ArrowRight,
   Braces,
   ChevronDown,
   ChevronUp,
@@ -80,28 +80,32 @@ export function AcademyArchitectureMap() {
         </button>
       </div>
 
-      <div className='grid gap-0 p-5 md:p-8 lg:grid-cols-6'>
+      <div className='flex items-center justify-between gap-3 px-5 pt-5 text-xs font-black text-duck-ink/55 md:px-8 lg:hidden'>
+        <span>Veeg horizontaal door de zes stappen</span>
+        <ArrowRight size={18} aria-hidden='true' />
+      </div>
+
+      <div
+        className='flex snap-x snap-mandatory gap-3 overflow-x-auto px-5 pb-5 pt-3 md:px-8 lg:grid lg:grid-cols-6 lg:gap-0 lg:overflow-visible lg:p-8'
+        aria-label='Architectuurstappen van DGskills'
+      >
         {ARCHITECTURE_STEPS.map((step, index) => {
           const Icon = step.icon;
           return (
-            <React.Fragment key={step.label}>
-              <div className='relative rounded-3xl border border-duck-ink/15 bg-duck-bgLight p-4 lg:min-h-[210px]'>
-                <div className='flex items-start justify-between gap-3'>
-                  <div className='flex size-10 items-center justify-center rounded-2xl bg-duck-ink text-duck-acid'>
-                    <Icon size={20} />
-                  </div>
-                  <span className='text-xs font-black text-duck-ink/35'>{index + 1}</span>
+            <div
+              key={step.label}
+              className='relative min-w-[82%] snap-center rounded-3xl border border-duck-ink/15 bg-duck-bgLight p-5 sm:min-w-[46%] lg:min-w-0 lg:rounded-none lg:first:rounded-l-3xl lg:last:rounded-r-3xl'
+            >
+              <div className='flex items-start justify-between gap-3'>
+                <div className='flex size-10 items-center justify-center rounded-2xl bg-duck-ink text-duck-acid'>
+                  <Icon size={20} />
                 </div>
-                <p className='mt-4 font-black text-duck-ink'>{step.label}</p>
-                <p className='mt-2 rounded-xl bg-white px-3 py-2 font-mono text-[11px] font-bold text-duck-ink'>{step.file}</p>
-                {expanded && <p className='mt-3 text-sm font-semibold leading-relaxed text-duck-ink/60'>{step.detail}</p>}
+                <span className='text-xs font-black text-duck-ink/35'>{index + 1}</span>
               </div>
-              {index < ARCHITECTURE_STEPS.length - 1 && (
-                <div className='flex h-8 items-center justify-center text-duck-ink/25 lg:absolute lg:hidden' aria-hidden='true'>
-                  <ArrowDown size={20} />
-                </div>
-              )}
-            </React.Fragment>
+              <p className='mt-4 font-black text-duck-ink'>{step.label}</p>
+              <p className='mt-2 break-words rounded-xl bg-white px-3 py-2 font-mono text-[11px] font-bold text-duck-ink'>{step.file}</p>
+              {expanded && <p className='mt-3 text-sm font-semibold leading-relaxed text-duck-ink/60'>{step.detail}</p>}
+            </div>
           );
         })}
       </div>
