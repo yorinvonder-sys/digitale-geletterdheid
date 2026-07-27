@@ -218,18 +218,18 @@ export const FocusMissionSelector: React.FC<FocusMissionSelectorProps> = ({
                                             <button
                                                 key={className}
                                                 onClick={() => setSelectedClass(className)}
-                                                className="group p-5 bg-duck-bg hover:bg-duck-error hover:text-white border border-duck-ink/15 hover:border-duck-error rounded-xl text-left transition-all hover:shadow-md"
+                                                className="group p-5 bg-duck-bg hover:bg-duck-acid/20 border border-duck-ink/15 hover:border-duck-ink rounded-xl text-left transition-all hover:shadow-md"
                                             >
                                                 <div className="flex items-center justify-between">
                                                     <div className="flex items-center gap-3">
-                                                        <div className="w-12 h-12 bg-white group-hover:bg-duck-error rounded-xl flex items-center justify-center text-duck-ink/60 group-hover:text-duck-error transition-colors border border-duck-ink/15 font-black text-lg">
+                                                        <div className="w-12 h-12 bg-white rounded-xl flex items-center justify-center text-duck-ink/60 group-hover:text-duck-ink transition-colors border border-duck-ink/15 font-black text-lg">
                                                             {className}
                                                         </div>
                                                         <div>
                                                             <h3 className="font-bold text-duck-ink text-base">Klas {className}</h3>
                                                             <div className="flex items-center gap-2 mt-1">
                                                                 <div className="flex items-center gap-1">
-                                                                    <div className={`w-2 h-2 rounded-full ${activeCount > 0 ? 'bg-duck-error animate-pulse' : 'bg-duck-bg'}`} />
+                                                                    <div className={`w-2 h-2 rounded-full ${activeCount > 0 ? 'bg-duck-acid ring-1 ring-duck-ink/20 animate-pulse' : 'bg-duck-gray'}`} />
                                                                     <span className={`text-xs font-bold ${activeCount > 0 ? 'text-duck-ink' : 'text-duck-ink/60'}`}>
                                                                         {activeCount} online
                                                                     </span>
@@ -239,7 +239,7 @@ export const FocusMissionSelector: React.FC<FocusMissionSelectorProps> = ({
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <ChevronRight size={20} className="text-duck-ink/60 group-hover:text-duck-ink/60 transition-colors" />
+                                                    <ChevronRight size={20} className="text-duck-ink/60 group-hover:text-duck-ink transition-colors" />
                                                 </div>
                                             </button>
                                         );
@@ -258,10 +258,10 @@ export const FocusMissionSelector: React.FC<FocusMissionSelectorProps> = ({
                                         <button
                                             key={mission.id}
                                             onClick={() => handleSelect(mission)}
-                                            className="group p-4 bg-duck-bg hover:bg-duck-error hover:text-white border border-duck-ink/15 hover:border-duck-error rounded-xl text-left transition-all hover:shadow-md"
+                                            className="group p-4 bg-duck-bg hover:bg-duck-acid/20 border border-duck-ink/15 hover:border-duck-ink rounded-xl text-left transition-all hover:shadow-md"
                                         >
                                             <div className="flex items-start gap-3">
-                                                <div className="w-10 h-10 bg-white group-hover:bg-duck-error rounded-xl flex items-center justify-center text-duck-ink/60 group-hover:text-duck-error transition-colors border border-duck-ink/15">
+                                                <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center text-duck-ink/60 group-hover:text-duck-ink transition-colors border border-duck-ink/15">
                                                     <Target size={20} />
                                                 </div>
                                                 <div className="flex-1 min-w-0">

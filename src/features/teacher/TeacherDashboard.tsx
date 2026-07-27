@@ -1,14 +1,14 @@
 
-import React, { useState, useEffect, useRef, useMemo, lazy, Suspense } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { DuckMark } from '@/components/brand/DuckMark';
 import { AnimatePresence, motion } from 'framer-motion';
 import { PageTransition } from '@/components/ui/PageTransition';
 import { supabase } from '@/services/supabase';
 import { ParentUser, UserStats, StudentData, GamificationEvent, ClassroomConfig, HybridAssessmentRecord, TeacherDashboardTab } from '@/types';
 import {
-    Award, BarChart3, Bell, BookOpen, Check, ChevronDown, ChevronRight,
-    Download, Folder, LogOut, Presentation, RotateCcw, Send,
-    Settings, ShieldCheck, Sparkles, Stars, TrendingUp, Upload, Users, Zap
+    Award, BarChart3, BookOpen, Check, ChevronDown, ChevronRight,
+    Download, Presentation, RotateCcw, Send,
+    ShieldCheck, Sparkles, Stars, Upload, Users, Zap
 } from 'lucide-react';
 import { GoudenPromptGallery } from '@/features/teacher/GoudenPromptGallery';
 import {
@@ -24,24 +24,18 @@ import { SettingsPanel } from '@/features/teacher/SettingsPanel';
 import { AiBeleidFeedbackPanel } from '@/features/teacher/AiBeleidFeedbackPanel';
 import { GamesPanel } from '@/features/teacher/GamesPanel';
 import { FeedbackPanel } from '@/features/teacher/FeedbackPanel';
-import { MissionProgressPanel } from '@/features/teacher/MissionProgressPanel';
-import { SLOClassOverview } from '@/features/teacher/SLOClassOverview';
-import { HybridAssessmentPanel } from '@/features/teacher/HybridAssessmentPanel';
-import { GrowthOverviewPanel } from '@/features/teacher/GrowthOverviewPanel';
-import { EindmetingReleaseButton } from '@/features/teacher/EindmetingReleaseButton';
 import { RosterImportModal } from '@/features/teacher/RosterImportModal';
 import { TutorialProvider } from '@/contexts/TutorialContext';
 import TutorialSpotlight, { TutorialRestartButton } from '@/features/teacher/TutorialSpotlight';
 
 import { TeacherModals } from '@/features/teacher/dashboard/TeacherModals';
 import { TeacherCommandCenter } from '@/features/teacher/dashboard/TeacherCommandCenter';
+import { TeacherEvidence } from '@/features/teacher/dashboard/TeacherEvidence';
+import { TeacherMobileNav, type TeacherNavItem } from '@/features/teacher/dashboard/TeacherMobileNav';
+import { TeacherAccountMenu } from '@/features/teacher/dashboard/TeacherAccountMenu';
 import { TeacherDocumentsPanel } from '@/features/teacher/TeacherDocumentsPanel';
 import { SchedulingConfigurator } from '@/features/coordinator/SchedulingConfigurator';
 import { downloadCsv } from '@/utils/csvExport';
-
-// Lazy loaded panels
-const LazyDigitaalPaspoortTeacher = lazy(() => import('@/features/assessment/escaperoom/DigitaalPaspoortTeacher').then(m => ({ default: m.DigitaalPaspoortTeacher })));
-const LazySamenhangMatrix = lazy(() => import('@/features/teacher/SamenhangMatrix').then(m => ({ default: m.SamenhangMatrix })));
 
 // Tab type definitions
 type MainTab = TeacherDashboardTab;
@@ -56,9 +50,11 @@ interface TeacherDashboardProps {
     onOpenGames?: (gameId?: string) => void;
     demoMode?: boolean;
     demoStudents?: StudentData[];
+    /** Ingebed in een geschaalde preview: onderdrukt de mobiele navigatiebalk. */
+    embedded?: boolean;
 }
 
-export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ user, onUpdateStats, onViewAssignments, onLogout, onOpenGames, demoMode = false, demoStudents }) => {
+export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ user, onUpdateStats, onViewAssignments, onLogout, onOpenGames, demoMode = false, demoStudents, embedded = false }) => {
     const [students, setStudents] = useState<StudentData[]>(demoMode && demoStudents ? demoStudents : []);
     const [searchTerm, setSearchTerm] = useState('');
     const [loading, setLoading] = useState(true);
@@ -70,7 +66,17 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ user, onUpda
     const [classFilter, setClassFilter] = useState<string>(() => {
         try { return sessionStorage.getItem('dgskills_teacher_classFilter') || 'all'; } catch { return 'all'; }
     });
-    const [yearGroupFilter, setYearGroupFilter] = useState<number>(() => {
+    // BEKEND PROBLEEM (buiten scope van deze UI-wijziging): `setYearGroupFilter`
+    // wordt nergens aangeroepen — er is geen leerjaarkeuze in de UI, dus dit
+    // staat vast op 1. Klassen in leerjaar 2 zien daardoor de missielijst van
+    // leerjaar 1 en dus overal 0%.
+    // Een leerjaarkeuze toevoegen legt een bestaande inconsistentie bloot in
+    // SLOClassOverview.exportToExcel: het detailblad roept
+    // calculateStudentKerndoelStats(student, selectedYear) aan, het cumulatieve
+    // blad diezelfde functie zónder jaar. Zolang het jaar op 1 vastzit valt dat
+    // niet op. Dit raakt inspectiebewijs en hoort daarom in een eigen wijziging
+    // met onafhankelijke review, niet in een navigatie-/stijlaanpassing.
+    const [yearGroupFilter] = useState<number>(() => {
         try { const v = sessionStorage.getItem('dgskills_teacher_yearGroup'); return v ? Number(v) : 1; } catch { return 1; }
     });
 
@@ -88,6 +94,7 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ user, onUpda
     const classDropdownRef = useRef<HTMLDivElement | null>(null);
     const [classRoomConfig, setClassRoomConfig] = useState<ClassroomConfig | null>(null);
     const [showLiveModal, setShowLiveModal] = useState(false);
+    const [accountMenuOpen, setAccountMenuOpen] = useState(false);
     const [showSchedulingConfig, setShowSchedulingConfig] = useState(false);
 
     // Focus mode
@@ -503,15 +510,18 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ user, onUpda
         setActiveTab(tab);
     };
 
-    const sideNavItems: { id: MainTab; label: string; icon: typeof BarChart3; badge?: number }[] = [
-        { id: 'overview', label: 'Overzicht', icon: BarChart3, badge: attentionCount },
+    // Drie items, één per docenttaak: monitoren, ingrijpen, verantwoorden.
+    // Alles wat niet dagelijks is, staat in het accountmenu in de header.
+    const sideNavItems: TeacherNavItem[] = [
+        { id: 'overview', label: 'Vandaag', icon: BarChart3, badge: attentionCount },
         { id: 'students', label: 'Leerlingen', icon: Users },
-        { id: 'games', label: 'Missies', icon: BookOpen },
-        { id: 'slo', label: 'SLO-dekking', icon: ShieldCheck },
-        { id: 'progress', label: 'Rapporten', icon: TrendingUp },
-        { id: 'documenten', label: 'Documenten', icon: Folder },
-        { id: 'settings', label: 'Beheer', icon: Settings },
+        { id: 'progress', label: 'Bewijs', icon: ShieldCheck },
     ];
+
+    // Panelen uit het accountmenu horen bij geen enkel nav-item: dan is er
+    // bewust niets actief in plaats van een item dat je niet gekozen hebt.
+    const MENU_TABS: MainTab[] = ['settings', 'games', 'gamification', 'ai-beleid', 'feedback', 'documenten'];
+    const navActiveTab: MainTab | null = MENU_TABS.includes(activeTab) ? null : activeTab;
 
     return (
         <TutorialProvider
@@ -548,10 +558,11 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ user, onUpda
                         <nav className="flex-1 space-y-2 px-4 py-5">
                             {sideNavItems.map((item, index) => {
                                 const Icon = item.icon;
-                                const isActive = activeTab === item.id;
+                                const isActive = navActiveTab === item.id;
                                 return (
                                     <button
                                         key={`${item.label}-${index}`}
+                                        data-tutorial={`${item.id}-tab`}
                                         onClick={() => navigateTo(item.id)}
                                         className={`flex w-full items-center gap-3 rounded-xl px-3 py-3 text-left text-sm font-bold transition ${
                                             isActive
@@ -639,36 +650,35 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ user, onUpda
                                             )}
                                         </AnimatePresence>
                                     </div>
-                                    <button className="relative hidden h-11 w-11 items-center justify-center rounded-full text-duck-ink hover:bg-duck-bg sm:flex" aria-label="Meldingen">
-                                        <Bell size={22} />
-                                        {attentionCount > 0 && (
-                                            <span className="absolute right-1 top-1 flex h-5 min-w-5 items-center justify-center rounded-full bg-duck-acid px-1 text-[10px] font-black text-duck-ink">
-                                                {attentionCount}
-                                            </span>
-                                        )}
-                                    </button>
+                                    {/* Geen belicoon: het aantal aandachtspunten staat al op het
+                                        Overzicht-navigatie-item én bovenaan het overzicht zelf. */}
                                     <button
+                                        data-tutorial="presentation-btn"
                                         onClick={() => setShowPresentation(true)}
                                         className="hidden h-11 items-center gap-2 rounded-xl bg-duck-acid px-4 text-sm font-black text-duck-ink transition hover:bg-duck-ink hover:text-duck-acid md:flex"
                                     >
                                         <Presentation size={17} />
                                         Presentatie
                                     </button>
-                                    {onLogout && (
-                                        <button onClick={onLogout} className="flex h-11 w-11 items-center justify-center rounded-full bg-duck-bg text-duck-ink/60 hover:text-duck-error" aria-label="Uitloggen">
-                                            <LogOut size={18} />
-                                        </button>
-                                    )}
-                                    <div className="hidden h-11 w-11 shrink-0 items-center justify-center rounded-full bg-duck-acid/35 text-sm font-black text-duck-ink min-[430px]:flex">
-                                        {user?.displayName?.charAt(0)?.toUpperCase() || 'D'}
-                                    </div>
+                                    {/* Uitloggen zit nu in het accountmenu; één plek in plaats van twee. */}
+                                    <TeacherAccountMenu
+                                        open={accountMenuOpen}
+                                        onToggle={() => setAccountMenuOpen(o => !o)}
+                                        onClose={() => setAccountMenuOpen(false)}
+                                        initial={user?.displayName?.charAt(0)?.toUpperCase() || 'D'}
+                                        displayName={user?.displayName ?? undefined}
+                                        onNavigate={navigateTo}
+                                        onOpenRosterImport={() => setShowRosterImport(true)}
+                                        onOpenPresentation={() => setShowPresentation(true)}
+                                        onLogout={onLogout}
+                                    />
                                 </div>
                             </div>
                         </header>
 
                         {error && <div className="m-4 rounded-xl border border-duck-error bg-duck-error/10 p-4 text-sm text-duck-error">{error}</div>}
 
-                        <main className="min-w-0 p-4 lg:p-6">
+                        <main className="min-w-0 p-4 pb-28 lg:p-6 lg:pb-6">
                             <AnimatePresence mode="wait">
                                 {activeTab === 'overview' && (
                                     <PageTransition key="overview">
@@ -683,14 +693,7 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ user, onUpda
                                             focusMode={focusMode}
                                             focusModeRemaining={focusModeRemaining}
                                             onToggleFocusMode={handleToggleFocusMode}
-                                            onNavigate={(tab) => {
-                                                if (tab === 'events' || tab === 'leaderboard') {
-                                                    setActiveTab('gamification');
-                                                    setGamificationSubTab(tab);
-                                                } else {
-                                                    setActiveTab(tab as MainTab);
-                                                }
-                                            }}
+                                            onNavigate={navigateTo}
                                             onSelectStudent={setSelectedStudent}
                                             onSendMessage={() => setShowMessageModal(true)}
                                         />
@@ -701,8 +704,8 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ user, onUpda
                             <PageTransition key="students" className="space-y-4">
                                 <div className="bg-duck-bgLight rounded-xl border border-duck-ink/15 p-3 flex items-center justify-between gap-3">
                                     <div className="flex items-center gap-2">
-                                        <button onClick={() => setRetryCount(prev => prev + 1)} className="p-2 text-duck-ink/60 hover:bg-duck-bg rounded-lg"><RotateCcw size={16} /></button>
-                                        <button onClick={exportCSV} className="p-2 text-duck-ink/60 hover:bg-duck-bg rounded-lg"><Download size={16} /></button>
+                                        <button onClick={() => setRetryCount(prev => prev + 1)} aria-label="Ververs leerlinggegevens" title="Ververs leerlinggegevens" className="p-2 text-duck-ink/60 hover:bg-duck-bg rounded-lg"><RotateCcw size={16} /></button>
+                                        <button onClick={exportCSV} aria-label="Exporteer leerlingen als CSV" title="Exporteer leerlingen als CSV" className="p-2 text-duck-ink/60 hover:bg-duck-bg rounded-lg"><Download size={16} /></button>
                                     </div>
                                     <div className="flex items-center gap-2">
                                         <button onClick={() => setShowRosterImport(true)} className="px-4 py-2 bg-duck-bgLight border border-duck-ink/15 text-duck-ink rounded-lg text-sm font-bold flex items-center gap-2 hover:bg-duck-bg"><Upload size={14} /> Importeren</button>
@@ -718,8 +721,6 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ user, onUpda
                                     loading={loading}
                                     searchTerm={searchTerm}
                                     onSearchChange={setSearchTerm}
-                                    classFilter={classFilter}
-                                    onClassFilterChange={setClassFilter}
                                     onSelectStudent={setSelectedStudent}
                                     yearGroup={yearGroupFilter}
                                     lastUpdated={lastUpdated}
@@ -748,50 +749,40 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ user, onUpda
                             </PageTransition>
                         )}
 
-                        {activeTab === 'settings' && <PageTransition key="settings" className="space-y-6"><SettingsPanel classFilter={classFilter} onClassFilterChange={setClassFilter} availableClasses={classGroups} enabledMissions={enabledMissions} onToggleMission={handleToggleMission} onTestGame={onOpenGames} yearGroup={yearGroupFilter} classroomConfig={classRoomConfig} onUpdateConfig={async u => {
+                        {activeTab === 'settings' && <PageTransition key="settings" className="space-y-6"><SettingsPanel classFilter={classFilter} enabledMissions={enabledMissions} onToggleMission={handleToggleMission} onTestGame={onOpenGames} yearGroup={yearGroupFilter} classroomConfig={classRoomConfig} onUpdateConfig={async u => {
                             if (!selectedClassId || !user?.schoolId) {
                                 addToast('Selecteer een klas', 'Klasconfiguratie kan niet voor alle klassen tegelijk worden opgeslagen.', 'warning');
                                 return;
                             }
                             await updateClassroomConfig(user.schoolId, selectedClassId, u);
                             setClassRoomConfig(p => p ? { ...p, ...u } : null);
-                        }} onOpenSchedulingConfig={(user?.role === 'admin' || user?.role === 'developer') ? () => setShowSchedulingConfig(true) : undefined} />{onLogout && <button onClick={onLogout} className="w-full py-4 border-2 border-duck-error text-duck-error rounded-2xl font-bold flex items-center justify-center gap-2 hover:bg-duck-error hover:text-white"><RotateCcw size={18} /> Uitloggen</button>}</PageTransition>}
-                        {activeTab === 'games' && <PageTransition key="games"><GamesPanel onOpenGame={onOpenGames || (() => { })} /></PageTransition>}
+                        }} onOpenSchedulingConfig={(user?.role === 'admin' || user?.role === 'developer') ? () => setShowSchedulingConfig(true) : undefined} /></PageTransition>}
+                        {activeTab === 'games' && <PageTransition key="games"><GamesPanel onOpenGame={onOpenGames || (() => { })} availableClasses={classGroups} /></PageTransition>}
                         {activeTab === 'ai-beleid' && <PageTransition key="ai-beleid"><div className="bg-white rounded-[2rem] border border-duck-ink/15 p-6"><AiBeleidFeedbackPanel classFilter={classFilter !== 'all' ? classFilter : undefined} schoolId={user?.schoolId} /></div></PageTransition>}
                         {activeTab === 'feedback' && <PageTransition key="feedback"><FeedbackPanel schoolId={user?.schoolId} /></PageTransition>}
-                        {activeTab === 'progress' && <PageTransition key="progress" className="space-y-6"><MissionProgressPanel students={students} classFilter={classFilter} availableClasses={classGroups} onClassFilterChange={setClassFilter} onSelectStudent={setSelectedStudent} yearGroup={yearGroupFilter} /><HybridAssessmentPanel records={hybridAssessments} classFilter={classFilter} /><GrowthOverviewPanel studentIds={students.filter(s => classFilter === 'all' || s.studentClass === classFilter).map(s => s.uid)} /></PageTransition>}
-                        {activeTab === 'slo' && <PageTransition key="slo"><SLOClassOverview students={students} schoolId={user?.schoolId} selectedYear={yearGroupFilter} /></PageTransition>}
-                        {activeTab === 'nulmeting' && (
-                            <PageTransition key="nulmeting" className="space-y-6">
-                                <EindmetingReleaseButton classFilter={classFilter} schoolId={user?.schoolId} availableClasses={classGroups} />
-                                <Suspense fallback={<div className="flex items-center justify-center py-12"><div className="h-8 w-8 animate-spin rounded-full border-b-2 border-duck-ink" /></div>}>
-                                    <LazyDigitaalPaspoortTeacher
-                                        klasResults={students
-                                            .filter(s => {
-                                                const mC = classFilter === 'all' || s.studentClass === classFilter || s.identifier?.startsWith(classFilter);
-                                                return mC && s.stats?.nulmetingResult;
-                                            })
-                                            .map(s => ({
-                                                studentName: s.displayName || 'Naamloos',
-                                                studentId: s.uid,
-                                                result: s.stats!.nulmetingResult!,
-                                            }))}
-                                    />
-                                </Suspense>
+                        {activeTab === 'progress' && (
+                            <PageTransition key="progress">
+                                <TeacherEvidence
+                                    students={students}
+                                    classFilter={classFilter}
+                                    availableClasses={classGroups}
+                                    yearGroup={yearGroupFilter}
+                                    schoolId={user?.schoolId}
+                                    hybridAssessments={hybridAssessments}
+                                    onSelectStudent={setSelectedStudent}
+                                />
                             </PageTransition>
                         )}
-                        {activeTab === 'samenhang' && (
-                            <PageTransition key="samenhang">
-                                <Suspense fallback={<div className="flex items-center justify-center py-12"><div className="h-8 w-8 animate-spin rounded-full border-b-2 border-duck-ink" /></div>}>
-                                    <LazySamenhangMatrix selectedYear={yearGroupFilter} schoolId={user?.schoolId} />
-                                </Suspense>
-                            </PageTransition>
-                        )}
+                        {/* 'documenten' blijft bereikbaar via het accountmenu (Kennisbank). */}
                         {activeTab === 'documenten' && <PageTransition key="documenten"><TeacherDocumentsPanel /></PageTransition>}
                             </AnimatePresence>
                         </main>
                     </div>
                 </div>
+
+                {!embedded && (
+                    <TeacherMobileNav items={sideNavItems} activeTab={navActiveTab ?? 'overview'} onNavigate={navigateTo} />
+                )}
 
                 <RosterImportModal open={showRosterImport} onClose={() => setShowRosterImport(false)} />
                 <TeacherModals

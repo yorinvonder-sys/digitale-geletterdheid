@@ -8,6 +8,8 @@ import { subscribeToActiveLobbies, forceStartAllLobbies, forceStartLobbiesByClas
 
 interface GamesPanelProps {
     onOpenGame: (gameId?: string) => void;
+    /** Echte klassen van de docent; geen hardgecodeerde lijst. */
+    availableClasses?: string[];
 }
 
 // Define available games - map to permission IDs
@@ -40,10 +42,7 @@ const GAMES = [
     }
 ];
 
-// Available classes for per-class force start
-const CLASSES = ['MH1A', 'MH1B', 'MH1C', 'MH1D', 'MH1E', 'MH2A', 'MH2B', 'MH2C', 'MH2D', 'MH2E'];
-
-export const GamesPanel: React.FC<GamesPanelProps> = ({ onOpenGame }) => {
+export const GamesPanel: React.FC<GamesPanelProps> = ({ onOpenGame, availableClasses = [] }) => {
     const [permissions, setPermissions] = useState<GamePermissions | null>(null);
     const [loading, setLoading] = useState<string | null>(null);
     const [activeLobbies, setActiveLobbies] = useState<BombermanLobby[]>([]);
@@ -116,21 +115,21 @@ export const GamesPanel: React.FC<GamesPanelProps> = ({ onOpenGame }) => {
     return (
         <div className="space-y-6">
             {/* Header */}
-            <div className="bg-gradient-to-br from-duck-acid via-duck-ink to-duck-acid rounded-[2rem] p-6 md:p-8 text-white shadow-xl">
+            <div className="bg-duck-ink rounded-[2rem] p-6 md:p-8 text-white shadow-sm">
                 <div className="flex items-center gap-4">
                     <div className="w-16 h-16 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center">
                         <Gamepad2 size={32} />
                     </div>
                     <div>
                         <h2 className="text-2xl font-black">Games Beheer</h2>
-                        <p className="text-white/80">Activeer en beheer games voor je leerlingen</p>
+                        <p className="text-white/70">Activeer en beheer games voor je leerlingen</p>
                     </div>
                 </div>
             </div>
 
             {/* Active Lobbies Section - Only show if there are active lobbies */}
             {activeLobbies.length > 0 && (
-                <div className="bg-gradient-to-br from-duck-acid to-duck-acid rounded-2xl border-2 border-duck-acid p-6 shadow-lg">
+                <div className="bg-duck-bgLight rounded-2xl border border-duck-ink/15 p-6 shadow-sm">
                     <div className="flex items-center justify-between mb-4">
                         <div className="flex items-center gap-3">
                             <div className="w-10 h-10 bg-duck-acid rounded-xl flex items-center justify-center text-duck-ink">
@@ -176,7 +175,7 @@ export const GamesPanel: React.FC<GamesPanelProps> = ({ onOpenGame }) => {
                                     className="px-3 py-2 bg-white border border-duck-ink/15 rounded-xl text-sm font-medium text-duck-ink/60 focus:ring-2 focus:ring-duck-acid focus:border-duck-acid"
                                 >
                                     <option value="">Kies klas...</option>
-                                    {CLASSES.map(c => (
+                                    {availableClasses.map(c => (
                                         <option key={c} value={c}>{c}</option>
                                     ))}
                                 </select>
@@ -270,8 +269,8 @@ export const GamesPanel: React.FC<GamesPanelProps> = ({ onOpenGame }) => {
                                         onClick={() => handleToggleGame(game.permissionId, enabled)}
                                         disabled={isLoading}
                                         className={`flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-full text-xs font-bold transition-all ${enabled
-                                            ? 'bg-duck-error text-white hover:bg-duck-error hover:text-white'
-                                            : 'bg-duck-ink text-white hover:bg-duck-ink hover:text-white shadow-duck-soft'
+                                            ? 'bg-duck-bgLight border border-duck-ink text-duck-ink hover:bg-duck-bg'
+                                            : 'bg-duck-ink text-white hover:bg-duck-ink/90 shadow-duck-soft'
                                             } ${isLoading ? 'opacity-50 cursor-wait' : ''}`}
                                     >
                                         {isLoading ? (
