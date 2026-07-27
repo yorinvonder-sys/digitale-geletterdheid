@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - feat/developer-code-academy
+  pull_request:
+    branches:
+      - main
 
 permissions:
   contents: read
