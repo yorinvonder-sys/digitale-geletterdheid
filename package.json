@@ -5,8 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build && node scripts/prerender.mjs",
-    "build:prod": "vite build --mode production --sourcemap false && node scripts/prerender.mjs",
+    "build": "node scripts/check-env.mjs && vite build && node scripts/prerender.mjs",
+    "build:prod": "node scripts/check-env.mjs && vite build --mode production --sourcemap false && node scripts/prerender.mjs",
     "bridge:chatgpt": "node scripts/github-agent-bridge.mjs process-all --agent chatgpt",
     "bridge:claude": "node scripts/github-agent-bridge.mjs process-all --agent claude",
     "bridge:reasonix": "node scripts/github-agent-bridge.mjs process-all --agent reasonix",

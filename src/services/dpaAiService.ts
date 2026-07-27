@@ -8,7 +8,7 @@
  * GEEN opslag — puur een eenmalige extractie om het formulier voor te vullen.
  */
 
-import { EDGE_FUNCTION_URL, authenticatedFetch } from './supabase';
+import { getEdgeFunctionUrl, authenticatedFetch } from './supabase';
 
 /** De 7 school-zijde velden die de AI mag invullen (subset van DpaFormData). */
 export interface DpaExtraction {
@@ -26,7 +26,7 @@ export interface DpaExtraction {
  * @throws Error met een nette NL-melding als de call faalt.
  */
 export async function extractDpaSchoolData(rawText: string): Promise<DpaExtraction> {
-    const response = await authenticatedFetch(`${EDGE_FUNCTION_URL}/extractDpaSchoolData`, {
+    const response = await authenticatedFetch(`${getEdgeFunctionUrl()}/extractDpaSchoolData`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
