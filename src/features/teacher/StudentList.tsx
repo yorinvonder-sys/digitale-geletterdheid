@@ -1,4 +1,4 @@
-import { Search, Filter, GraduationCap, ChevronRight, KeyRound, RotateCcw, Radio, Focus, Clock, BookOpen } from 'lucide-react';
+import { Search, GraduationCap, ChevronRight, KeyRound, RotateCcw, Radio, Focus, Clock, BookOpen } from 'lucide-react';
 import { StudentData, ClassroomConfig } from '@/types';
 import { getMissionsForYear } from '@/config/missions';
 import { AVAILABLE_BADGES } from '@/config/badges';
@@ -23,8 +23,6 @@ interface StudentListProps {
     loading: boolean;
     searchTerm: string;
     onSearchChange: (term: string) => void;
-    classFilter: string;
-    onClassFilterChange: (cls: string) => void;
     onSelectStudent: (student: StudentData) => void;
     yearGroup?: number;
     lastUpdated?: Date | null;
@@ -36,21 +34,12 @@ export const StudentList: React.FC<StudentListProps> = ({
     loading,
     searchTerm,
     onSearchChange,
-    classFilter,
-    onClassFilterChange,
     onSelectStudent,
     yearGroup = 1,
     lastUpdated,
     classroomConfig
 }) => {
-    const classGroups = useMemo(() => {
-        const groups = new Set<string>();
-        students.forEach(s => {
-            const cls = s.studentClass || s.stats?.studentClass;
-            if (cls) groups.add(cls);
-        });
-        return Array.from(groups).sort();
-    }, [students]);
+    // Klasfilter staat in de header van het dashboard — bewust niet nog eens hier.
     const yearMissions = useMemo(() => getMissionsForYear(yearGroup), [yearGroup]);
     const [now, setNow] = useState(new Date().getTime());
     const fiveMinutes = 5 * 60 * 1000;
@@ -120,17 +109,6 @@ export const StudentList: React.FC<StudentListProps> = ({
                             <span>Live — {lastUpdated.toLocaleTimeString('nl-NL', { hour: '2-digit', minute: '2-digit', second: '2-digit' })}</span>
                         </div>
                     )}
-                    <Filter size={12} className="text-duck-ink/60" />
-                    <select
-                        value={classFilter}
-                        onChange={(e) => onClassFilterChange(e.target.value)}
-                        className="px-3 py-2 min-h-[44px] bg-white border border-duck-ink/15 rounded-xl text-xs font-bold text-duck-ink/60 outline-none hover:bg-duck-bg"
-                    >
-                        <option value="all">Alle Klassen</option>
-                        {classGroups.map(g => (
-                            <option key={g} value={g}>{g}</option>
-                        ))}
-                    </select>
                 </div>
             </div>
 
@@ -144,7 +122,7 @@ export const StudentList: React.FC<StudentListProps> = ({
                             <th className="px-4 py-3">Status</th>
                             <th className="px-4 py-3">XP</th>
                             <th className="px-4 py-3 hidden sm:table-cell">Voortgang</th>
-                            <th className="px-4 py-3 hidden lg:table-cell">Missies</th>
+                            <th className="px-4 py-3 hidden lg:table-cell">Nu bezig</th>
                             <th className="px-4 py-3 hidden xl:table-cell">Badges</th>
                             {classroomConfig?.focusMode && <th className="px-4 py-3 hidden md:table-cell">Focus</th>}
                             <th className="px-4 py-3"></th>
@@ -166,7 +144,7 @@ export const StudentList: React.FC<StudentListProps> = ({
                                     animate={{ opacity: 1 }}
                                     exit={{ opacity: 0 }}
                                 >
-                                    <td colSpan={6} className="px-4 py-8 text-center text-duck-ink/60">Geen leerlingen gevonden</td>
+                                    <td colSpan={8} className="px-4 py-8 text-center text-duck-ink/60">Geen leerlingen gevonden</td>
                                 </motion.tr>
                             ) : students.map((student) => (
                                 <motion.tr
@@ -175,7 +153,7 @@ export const StudentList: React.FC<StudentListProps> = ({
                                     animate={{ opacity: 1, y: 0 }}
                                     exit={{ opacity: 0, scale: 0.95 }}
                                     key={student.uid}
-                                    className="hover:bg-duck-bg/50 active:bg-duck-error/50 transition-colors cursor-pointer select-none"
+                                    className="hover:bg-duck-bg/50 active:bg-duck-bg transition-colors cursor-pointer select-none"
                                     onClick={() => onSelectStudent(student)}
                                     role="button"
                                     tabIndex={0}
@@ -204,7 +182,7 @@ export const StudentList: React.FC<StudentListProps> = ({
                                                 ? 'bg-duck-ink text-white'
                                                 : 'bg-duck-bg text-duck-ink/60'
                                                 }`}>
-                                                <span className={`w-1.5 h-1.5 rounded-full ${now - getLastActiveMs(student) < fiveMinutes ? 'bg-duck-error animate-pulse' : 'bg-duck-ink/60'}`}></span>
+                                                <span className={`w-1.5 h-1.5 rounded-full ${now - getLastActiveMs(student) < fiveMinutes ? 'bg-duck-acid ring-1 ring-duck-ink/20 animate-pulse' : 'bg-duck-gray'}`}></span>
                                                 {now - getLastActiveMs(student) < fiveMinutes ? 'Online' : 'Offline'}
                                             </div>
                                             <button
@@ -222,7 +200,7 @@ export const StudentList: React.FC<StudentListProps> = ({
                                     <td className="px-4 py-3">
                                         <div className="flex items-center gap-1">
                                             <span className="font-black text-duck-ink">{student.stats?.xp || 0}</span>
-                                            <span className="text-[9px] font-bold text-white bg-duck-error px-1 py-0.5 rounded">L{student.stats?.level || 1}</span>
+                                            <span className="text-[9px] font-bold text-white bg-duck-ink px-1 py-0.5 rounded">L{student.stats?.level || 1}</span>
                                         </div>
                                     </td>
                                     <td className="px-4 py-3 hidden sm:table-cell">
@@ -233,7 +211,7 @@ export const StudentList: React.FC<StudentListProps> = ({
                                                 <div className="flex items-center gap-2">
                                                     <div className="flex-1 max-w-[80px]">
                                                         <div className="h-1.5 bg-duck-bg rounded-full overflow-hidden">
-                                                            <div className="h-full bg-duck-error rounded-full transition-all" style={{ width: `${pct}%` }} />
+                                                            <div className="h-full bg-duck-ink rounded-full transition-all" style={{ width: `${pct}%` }} />
                                                         </div>
                                                     </div>
                                                     <span className="text-[10px] font-bold text-duck-ink/60">{counts.completed}/{counts.total}</span>
@@ -247,22 +225,26 @@ export const StudentList: React.FC<StudentListProps> = ({
                                             );
                                         })()}
                                     </td>
+                                    {/* Per-missie detail staat in het leerlingdetail (StudentModal → tab Missies).
+                                        Hier alleen waar de leerling nú aan werkt. */}
                                     <td className="px-4 py-3 hidden lg:table-cell">
-                                        <div className="flex gap-0.5 flex-wrap max-w-[200px]">
-                                            {yearMissions.map(m => {
-                                                const status = getMissionStatus(student, m.id);
-                                                return (
-                                                    <div
-                                                        key={m.id}
-                                                        title={`${m.name}${status === 'in-progress' ? ' (bezig)' : status === 'completed' ? ' (klaar)' : ''}`}
-                                                        className={`w-5 h-5 rounded flex items-center justify-center text-[7px] font-black ${status === 'completed' ? 'bg-duck-ink text-white' : status === 'in-progress' ? 'bg-duck-acid text-duck-ink' : 'bg-duck-bg text-duck-ink/60'
-                                                            }`}
-                                                    >
-                                                        {status === 'completed' ? '✓' : status === 'in-progress' ? '⏳' : m.short[0]}
-                                                    </div>
-                                                );
-                                            })}
-                                        </div>
+                                        {(() => {
+                                            const activeName = getActiveMissionName(student);
+                                            const { inProgress } = getMissionCounts(student);
+                                            if (!activeName) {
+                                                return <span className="text-xs font-medium text-duck-ink/40">—</span>;
+                                            }
+                                            return (
+                                                <div className="max-w-[220px]">
+                                                    <span className="block truncate text-xs font-bold text-duck-ink">{activeName}</span>
+                                                    {inProgress > 1 && (
+                                                        <span className="block text-[10px] font-medium text-duck-ink/60">
+                                                            +{inProgress - 1} andere bezig
+                                                        </span>
+                                                    )}
+                                                </div>
+                                            );
+                                        })()}
                                     </td>
                                     <td className="px-4 py-3 hidden xl:table-cell">
                                         <div className="flex gap-0.5">
@@ -296,7 +278,7 @@ export const StudentList: React.FC<StudentListProps> = ({
                                         <div className="flex items-center justify-end gap-2">
                                             <button
                                                 onClick={(e) => handleResetPasswordClick(e, student)}
-                                                className="p-2 text-duck-ink/60 hover:text-duck-error hover:bg-duck-error hover:text-white rounded-full transition-colors"
+                                                className="p-2 text-duck-ink/60 hover:bg-duck-ink hover:text-white rounded-full transition-colors"
                                                 title="Reset Wachtwoord"
                                             >
                                                 <KeyRound size={16} />

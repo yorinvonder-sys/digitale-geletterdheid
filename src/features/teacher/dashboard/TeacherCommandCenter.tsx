@@ -253,6 +253,7 @@ export const TeacherCommandCenter: React.FC<TeacherCommandCenterProps> = ({
                     </div>
                 </div>
                 <button
+                    data-tutorial="focus-toggle"
                     onClick={onToggleFocusMode}
                     className={`inline-flex h-11 items-center justify-center gap-2 rounded-xl border px-6 text-sm font-bold transition ${
                         focusMode
@@ -266,13 +267,32 @@ export const TeacherCommandCenter: React.FC<TeacherCommandCenterProps> = ({
             </div>
 
             <section className="space-y-6">
+                {/* Signalering eerst: dit is het enige blok dat om een beslissing
+                    vraagt. De missiekaart is context en staat er onder. */}
+                <div id="aandacht">
+                    <Panel title="Aandacht" action={`${attentionStudents.length || 0}`}>
+                        <div className="space-y-1">
+                            {attentionStudents.length > 0 ? attentionStudents.map(item => (
+                                <button key={item.student.uid} onClick={() => onSelectStudent(item.student)} className="flex w-full items-center gap-3 border-b border-duck-ink/15 py-2 text-left last:border-0">
+                                    <span className="flex h-10 w-10 items-center justify-center rounded-full bg-duck-bg text-xs font-black text-duck-ink">{initials(item.student.displayName)}</span>
+                                    <span className="min-w-0 flex-1">
+                                        <span className="block truncate text-sm font-bold text-duck-ink">{item.student.displayName || 'Naamloos'}</span>
+                                        <span className="block text-xs font-medium text-duck-ink/60">{item.reason}</span>
+                                    </span>
+                                    <ChevronRight size={16} className="text-duck-ink/60" />
+                                </button>
+                            )) : <p className="text-sm font-medium text-duck-ink/60">Geen aandachtspunten — iedereen op koers.</p>}
+                        </div>
+                    </Panel>
+                </div>
+
                 <div className="rounded-2xl border border-duck-ink/15 bg-duck-bgLight p-5 shadow-sm lg:p-6">
                     <div className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
                         <div>
                             <h2 className="text-xl font-bold text-duck-ink">Missiekaart</h2>
                             <p className="mt-1 text-sm font-medium text-duck-ink/60">Waar je klas op dit moment aan werkt</p>
                         </div>
-                        <button onClick={() => onNavigate('slo')} className="flex items-center gap-3 rounded-xl border border-duck-ink/15 bg-white px-4 py-3 text-left transition hover:border-duck-gray">
+                        <button onClick={() => onNavigate('progress')} className="flex items-center gap-3 rounded-xl border border-duck-ink/15 bg-white px-4 py-3 text-left transition hover:border-duck-gray">
                             <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-duck-ink text-sm font-black text-white">SLO</span>
                             <span className="text-sm font-bold text-duck-ink">{sloGoalCount} doelen in beeld<br /><span className="font-medium text-duck-ink/60">Bekijk SLO-overzicht</span></span>
                             <ArrowRight size={16} className="text-duck-ink" />
@@ -327,22 +347,7 @@ export const TeacherCommandCenter: React.FC<TeacherCommandCenterProps> = ({
                 </div>
 
                 <div className="grid gap-4 lg:grid-cols-2">
-                    <Panel title="Aandacht" action={`${attentionStudents.length || 0}`}>
-                        <div className="space-y-1">
-                            {attentionStudents.length > 0 ? attentionStudents.map(item => (
-                                <button key={item.student.uid} onClick={() => onSelectStudent(item.student)} className="flex w-full items-center gap-3 border-b border-duck-ink/15 py-2 text-left last:border-0">
-                                    <span className="flex h-10 w-10 items-center justify-center rounded-full bg-duck-bg text-xs font-black text-duck-ink">{initials(item.student.displayName)}</span>
-                                    <span className="min-w-0 flex-1">
-                                        <span className="block truncate text-sm font-bold text-duck-ink">{item.student.displayName || 'Naamloos'}</span>
-                                        <span className="block text-xs font-medium text-duck-error">{item.reason}</span>
-                                    </span>
-                                    <ChevronRight size={16} className="text-duck-ink/60" />
-                                </button>
-                            )) : <p className="text-sm font-medium text-duck-ink/60">Geen aandachtspunten — iedereen op koers.</p>}
-                        </div>
-                    </Panel>
-
-                    <Panel title="SLO dekking" buttonLabel="Bekijk alle SLO" onButtonClick={() => onNavigate('slo')}>
+                    <Panel title="SLO dekking" buttonLabel="Bekijk alle SLO" onButtonClick={() => onNavigate('progress')}>
                         <div className="space-y-3">
                             {sloStats.map(stat => {
                                 const Icon = stat.icon;

@@ -8,7 +8,7 @@ De codebase gebruikt React 19, TypeScript, Vite, Tailwind CSS, Supabase en serve
 
 Vereisten:
 
-- Node.js 18 of nieuwer
+- Node.js 24.x
 - Supabase project URL en anon key
 
 ```bash

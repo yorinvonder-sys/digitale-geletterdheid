@@ -395,9 +395,10 @@ export const SamenhangMatrix: React.FC<SamenhangMatrixProps> = ({ selectedYear, 
                         const data = summary[cat];
                         const topSub = getTopSubcategorie(cat);
                         const colorMap: Record<Categorie, { bg: string; border: string; iconBg: string; text: string }> = {
-                            taal: { bg: 'bg-duck-error', border: 'border-duck-error', iconBg: 'bg-duck-error', text: 'text-duck-error' },
-                            rekenen: { bg: 'bg-duck-acid', border: 'border-duck-acid', iconBg: 'bg-duck-acid', text: 'text-duck-ink' },
-                            burgerschap: { bg: 'bg-duck-ink', border: 'border-duck-ink', iconBg: 'bg-duck-ink', text: 'text-duck-ink' },
+                            // Achtergrond is altijd een tint, tekst altijd het volle token.
+                            taal: { bg: 'bg-duck-error/10', border: 'border-duck-error/30', iconBg: 'bg-duck-error/15', text: 'text-duck-error' },
+                            rekenen: { bg: 'bg-duck-acid/20', border: 'border-duck-ink/15', iconBg: 'bg-duck-acid/40', text: 'text-duck-ink' },
+                            burgerschap: { bg: 'bg-duck-ink/10', border: 'border-duck-ink/20', iconBg: 'bg-duck-ink/15', text: 'text-duck-ink' },
                         };
                         const colors = colorMap[cat];
 
