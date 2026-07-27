@@ -51,6 +51,12 @@ const dismissOpenOverlays = () => {
 };
 
 // Tutorial steps definition
+//
+// De navigatie-selectors staan zowel op de sidebar (`data-tutorial`) als op de
+// mobiele balk (`data-tutorial-mobile`); querySelector pakt de eerste die
+// bestaat, zodat de rondleiding op elk schermformaat werkt.
+const navTarget = (tab: string) => `[data-tutorial="${tab}-tab"], [data-tutorial-mobile="${tab}-tab"]`;
+
 export const TEACHER_TUTORIAL_STEPS: TutorialStep[] = [
     {
         id: 'start-lesson',
@@ -63,14 +69,17 @@ export const TEACHER_TUTORIAL_STEPS: TutorialStep[] = [
     {
         id: 'focus-task',
         target: '[data-tutorial="focus-toggle"]',
-        title: 'Focus-modus',
+        title: 'Focusmodus',
         content: 'Stuur alle leerlingen naar dezelfde opdracht.',
         requireClick: true,
         position: 'bottom',
+        onEnter: () => {
+            clickTutorialTarget(navTarget('overview'));
+        },
     },
     {
         id: 'students-tab',
-        target: '[data-tutorial="students-tab"]',
+        target: navTarget('students'),
         title: 'Leerlingen',
         content: 'Beheer individuele leerlingen en stuur berichten.',
         requireClick: true,
@@ -84,34 +93,22 @@ export const TEACHER_TUTORIAL_STEPS: TutorialStep[] = [
         requireClick: true,
         position: 'bottom',
         onEnter: () => {
-            clickTutorialTarget('[data-tutorial="students-tab"]');
+            clickTutorialTarget(navTarget('students'));
         },
     },
     {
-        id: 'activities-tab',
-        target: '[data-tutorial="activities-tab"]',
-        title: 'Activiteiten',
-        content: 'Games en gamification voor de klas.',
+        id: 'evidence-tab',
+        target: navTarget('progress'),
+        title: 'Bewijs',
+        content: 'Voortgang, SLO-dekking en groei — de onderbouwing voor school en inspectie.',
         requireClick: true,
         position: 'bottom',
     },
     {
-        id: 'xp-boost',
-        target: '[data-tutorial="xp-boost-btn"]',
-        title: 'XP Boost',
-        content: 'Start motivatie-events voor extra betrokkenheid.',
-        requireClick: true,
-        position: 'bottom',
-        onEnter: () => {
-            clickTutorialTarget('[data-tutorial="activities-tab"]');
-            clickTutorialTarget('[data-tutorial="gamification-subtab"]', 50);
-        },
-    },
-    {
-        id: 'slo-overview',
-        target: '[data-tutorial="dashboard-tab"]',
-        title: 'Dashboard',
-        content: 'Klasstatus, signalering en voortgang richting SLO-doelen.',
+        id: 'today-tab',
+        target: navTarget('overview'),
+        title: 'Vandaag',
+        content: 'Je startscherm: wie aandacht nodig heeft, en waar de klas aan werkt.',
         requireClick: true,
         position: 'bottom',
     },

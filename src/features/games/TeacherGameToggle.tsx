@@ -72,16 +72,16 @@ export const TeacherGameToggle: React.FC<TeacherGameToggleProps> = ({ onTestGame
     };
 
     return (
-        <div className="bg-white rounded-2xl shadow-lg border border-lab-line overflow-hidden">
+        <div className="bg-white rounded-2xl shadow-sm border border-duck-ink/15 overflow-hidden">
             {/* Header */}
-            <div className="bg-gradient-to-r from-lab-coral to-lab-coral px-6 py-4">
+            <div className="border-b border-duck-ink/15 bg-duck-bgLight px-6 py-4">
                 <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center">
-                        <Shield size={24} className="text-white" />
+                    <div className="w-10 h-10 bg-duck-acid/20 rounded-xl flex items-center justify-center">
+                        <Shield size={24} className="text-duck-ink" />
                     </div>
                     <div>
-                        <h2 className="text-lg font-black text-white">Game Permissies</h2>
-                        <p className="text-white/80 text-xs">Beheer welke games beschikbaar zijn voor leerlingen</p>
+                        <h2 className="text-lg font-black text-duck-ink">Game permissies</h2>
+                        <p className="text-duck-ink/60 text-xs">Beheer welke games beschikbaar zijn voor leerlingen</p>
                     </div>
                 </div>
             </div>
@@ -95,20 +95,20 @@ export const TeacherGameToggle: React.FC<TeacherGameToggleProps> = ({ onTestGame
                         <div
                             key={game.id}
                             className={`flex items-center justify-between p-4 rounded-xl border transition-all ${isEnabled
-                                ? 'bg-lab-sage border-lab-sage'
-                                : 'bg-lab-cream border-lab-line'
+                                ? 'bg-duck-acid/15 border-duck-ink'
+                                : 'bg-duck-bg border-duck-ink/15'
                                 }`}
                         >
                             <div className="flex items-center gap-3">
                                 <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${isEnabled
-                                    ? 'bg-lab-sage text-white'
-                                    : 'bg-lab-creamDeep text-lab-muted'
+                                    ? 'bg-duck-ink text-white'
+                                    : 'bg-duck-bgLight text-duck-ink/60'
                                     }`}>
                                     {game.icon}
                                 </div>
                                 <div>
-                                    <h3 className="font-bold text-lab-ink">{game.name}</h3>
-                                    <p className="text-xs text-lab-muted">{game.description}</p>
+                                    <h3 className="font-bold text-duck-ink">{game.name}</h3>
+                                    <p className="text-xs text-duck-ink/60">{game.description}</p>
                                 </div>
                             </div>
 
@@ -116,7 +116,7 @@ export const TeacherGameToggle: React.FC<TeacherGameToggleProps> = ({ onTestGame
                                 {onTestGame && (
                                     <button
                                         onClick={() => onTestGame(game.id)}
-                                        className="flex items-center gap-2 px-3 py-2 rounded-lg font-bold text-xs bg-lab-coral text-white hover:bg-lab-coral hover:text-white transition-all"
+                                        className="flex items-center gap-2 px-3 py-2 rounded-lg font-bold text-xs bg-duck-bgLight border border-duck-ink/15 text-duck-ink hover:bg-duck-bg transition-all"
                                         title="Test de game zelf"
                                     >
                                         <Play size={14} fill="currentColor" />
@@ -127,8 +127,8 @@ export const TeacherGameToggle: React.FC<TeacherGameToggleProps> = ({ onTestGame
                                     onClick={() => handleToggle(game.id, !isEnabled)}
                                     disabled={saving === game.id}
                                     className={`flex items-center gap-2 px-4 py-2 rounded-lg font-bold text-sm transition-all ${isEnabled
-                                        ? 'bg-lab-coral text-white hover:bg-lab-sage hover:text-white'
-                                        : 'bg-lab-creamDeep text-lab-muted hover:bg-lab-creamDeep'
+                                        ? 'bg-duck-ink text-white hover:bg-duck-ink/90'
+                                        : 'bg-duck-bgLight border border-duck-ink/15 text-duck-ink/60 hover:bg-duck-bg'
                                         } ${saving === game.id ? 'opacity-50' : ''}`}
                                 >
                                     {isEnabled ? (
@@ -150,8 +150,8 @@ export const TeacherGameToggle: React.FC<TeacherGameToggleProps> = ({ onTestGame
             </div>
 
             {/* Footer info */}
-            <div className="px-6 py-3 bg-lab-cream border-t border-lab-line">
-                <div className="flex items-center gap-2 text-xs text-lab-muted">
+            <div className="px-6 py-3 bg-duck-bgLight border-t border-duck-ink/15">
+                <div className="flex items-center gap-2 text-xs text-duck-ink/60">
                     <Users size={14} />
                     <span>Wijzigingen worden direct toegepast voor alle leerlingen</span>
                 </div>
