@@ -63,7 +63,7 @@
     "review:handoff": "node scripts/validate-claude-handoff.mjs"
   },
   "engines": {
-    "node": ">=22.12.0"
+    "node": "24.x"
   },
   "dependencies": {
     "@react-three/drei": "^10.7.7",
