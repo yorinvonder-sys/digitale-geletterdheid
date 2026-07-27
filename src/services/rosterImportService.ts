@@ -6,7 +6,7 @@
  * (service-role, school-scoped, MFA-vereist). De server hervalideert ALLES; deze
  * client-parsing is puur voor gebruiksgemak/preview.
  */
-import { EDGE_FUNCTION_URL, authenticatedFetch } from './supabase';
+import { getEdgeFunctionUrl, authenticatedFetch } from './supabase';
 
 export interface RosterStudent {
   email: string;
@@ -139,7 +139,7 @@ export function parseRosterCsv(text: string): RosterParseResult {
 
 /** Stuur de geparste rijen naar de server (service-role provisioning). */
 export async function importRoster(students: RosterStudent[]): Promise<RosterImportResult> {
-  const response = await authenticatedFetch(`${EDGE_FUNCTION_URL}/importRoster`, {
+  const response = await authenticatedFetch(`${getEdgeFunctionUrl()}/importRoster`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ students }),

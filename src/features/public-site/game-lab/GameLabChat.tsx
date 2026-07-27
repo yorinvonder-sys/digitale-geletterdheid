@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { EDGE_FUNCTION_URL } from '@/services/supabase';
+import { getEdgeFunctionUrl } from '@/services/supabase';
 import { DuckMark } from '@/components/brand/DuckMark';
 import { specToPromptJson, stripGameStateBlock } from '@/features/public-site/game-lab/gameSpec';
 import type { GameSpec } from '@/features/public-site/game-lab/gameSpec';
@@ -82,7 +82,10 @@ export const GameLabChat: React.FC<GameLabChatProps> = ({ currentSpec, onAssista
             .map((m) => ({ role: m.role === 'assistant' ? 'model' : 'user', parts: [{ text: m.text }] }));
 
         try {
-            const response = await fetch(`${EDGE_FUNCTION_URL}/demo-chat`, {
+            // Bewust binnen de `try`: zonder Supabase-configuratie gooit dit een
+            // SupabaseConfigError, en die hoort hier als foutmelding in de chat te
+            // landen — niet als onafgevangen throw op een publieke pagina.
+            const response = await fetch(`${getEdgeFunctionUrl()}/demo-chat`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({

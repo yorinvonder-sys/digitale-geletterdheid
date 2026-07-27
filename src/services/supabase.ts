@@ -1,20 +1,48 @@
 import { createClient } from '@supabase/supabase-js';
 import type { DatabaseWithPendingMigrations } from '@/types/database.pending-migrations';
 
-const supabaseUrl = ((import.meta as any).env.VITE_SUPABASE_URL as string)?.trim();
-const supabaseAnonKey = ((import.meta as any).env.VITE_SUPABASE_ANON_KEY as string)?.trim();
+const supabaseUrl = ((import.meta as any).env.VITE_SUPABASE_URL as string)?.trim() ?? '';
+const supabaseAnonKey = ((import.meta as any).env.VITE_SUPABASE_ANON_KEY as string)?.trim() ?? '';
 
-if (!supabaseUrl || !supabaseAnonKey) {
-    throw new Error(
-        'Missing Supabase environment variables. ' +
-        'Set VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY in your .env.local file.'
-    );
+const MISSING_CONFIG_MESSAGE =
+    'Missing Supabase environment variables. '
+    + 'Set VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY in your .env.local file.';
+
+/** Is de Supabase-configuratie compleet? */
+export const isSupabaseConfigured = Boolean(supabaseUrl && supabaseAnonKey);
+
+/** Gegooid zodra Supabase wordt gebruikt terwijl de configuratie ontbreekt. */
+export class SupabaseConfigError extends Error {
+    constructor(message = MISSING_CONFIG_MESSAGE) {
+        super(message);
+        this.name = 'SupabaseConfigError';
+    }
+}
+
+/*
+ * Ontbrekende configuratie faalt bij GEBRUIK, niet bij het importeren van deze
+ * module.
+ *
+ * Waarom: dit bestand ligt op het importpad van de publieke schoolsite. Een
+ * `throw` hierboven haalde de hele marketingsite onderuit — inclusief pagina's
+ * die Supabase helemaal niet nodig hebben — bij één ontbrekende variabele in
+ * bijvoorbeeld een preview-omgeving.
+ *
+ * De fail-fast blijft wél overeind waar het telt: elke aanraking van de client
+ * (auth, database, edge functions) gooit direct een SupabaseConfigError met
+ * dezelfde melding. Zo blijft een misconfiguratie luid, maar valt de publieke
+ * site er niet meer door om.
+ */
+if (!isSupabaseConfigured) {
+    console.error(`[supabase] ${MISSING_CONFIG_MESSAGE}`);
 }
 
 // Opschoning VOOR client-init: verwijder stale/verlopen auth-tokens.
 // Dit moet VOOR createClient() gebeuren, anders start Supabase een
 // auto-refresh loop op een ongeldig token (→ eindeloze AbortErrors).
+// Zonder configuratie is er geen project om op te schonen.
 try {
+    if (!isSupabaseConfigured) throw new Error('geen configuratie');
     const projectId = new URL(supabaseUrl).hostname.split('.')[0];
     const activeKey = `sb-${projectId}-auth-token`;
 
@@ -47,18 +75,45 @@ try {
     }
 } catch { /* negeer als URL-parsing of localStorage faalt */ }
 
-export const supabase = createClient<DatabaseWithPendingMigrations>(supabaseUrl, supabaseAnonKey, {
-    auth: {
-        persistSession: true,
-        autoRefreshToken: true,
-        detectSessionInUrl: true,
-    },
-    realtime: {
-        params: {
-            eventsPerSecond: 10,
+type SupabaseClientInstance = ReturnType<typeof createClient<DatabaseWithPendingMigrations>>;
+
+/**
+ * Stand-in wanneer de configuratie ontbreekt.
+ *
+ * Gooit bij property-toegang (`supabase.auth`), bij `await supabase` (dat leest
+ * `then`), bij `'auth' in supabase` en bij sleutel-inspectie zoals
+ * `Object.keys(supabase)` of `{ ...supabase }`. Die laatste twee lopen via
+ * `ownKeys`; zonder die trap zouden ze stil `[]` en `{}` opleveren, en dan
+ * verdwijnt een misconfiguratie geruisloos in plaats van luid te falen.
+ *
+ * Geen `apply`- of `construct`-trap: het target is een gewoon object, dus die
+ * bewerkingen zijn hier niet mogelijk en zulke traps zouden dode code zijn.
+ */
+function createUnconfiguredClient(): SupabaseClientInstance {
+    const fail = (): never => {
+        throw new SupabaseConfigError();
+    };
+    return new Proxy({} as SupabaseClientInstance, {
+        get: fail,
+        has: fail,
+        ownKeys: fail,
+    });
+}
+
+export const supabase: SupabaseClientInstance = isSupabaseConfigured
+    ? createClient<DatabaseWithPendingMigrations>(supabaseUrl, supabaseAnonKey, {
+        auth: {
+            persistSession: true,
+            autoRefreshToken: true,
+            detectSessionInUrl: true,
         },
-    },
-});
+        realtime: {
+            params: {
+                eventsPerSecond: 10,
+            },
+        },
+    })
+    : createUnconfiguredClient();
 
 const isDevEdgeProxy = (() => {
     try {
@@ -68,9 +123,33 @@ const isDevEdgeProxy = (() => {
     }
 })();
 
-export const EDGE_FUNCTION_URL = isDevEdgeProxy
-    ? '/functions/v1'
-    : `${supabaseUrl}/functions/v1`;
+/**
+ * Basis-URL voor edge functions, opgelost op het moment van GEBRUIK.
+ *
+ * Bewust een functie en geen constante: zonder configuratie zou een constante
+ * `/functions/v1` worden — een relatief pad. In development is dat geldig via de
+ * Vite-proxy, maar op Vercel bestaat die proxy niet en geeft de SPA-rewrite HTML
+ * terug, waardoor `response.json()` faalt met een onbegrijpelijke parsefout in
+ * plaats van een duidelijke configuratiefout.
+ *
+ * Roep dit aan BINNEN de functie die de fetch doet, nooit op moduleniveau — dat
+ * zou de throw terugbrengen naar importtijd en de publieke site opnieuw slopen.
+ */
+export function getEdgeFunctionUrl(): string {
+    // De configuratiecheck staat bewust vóór de dev-proxy. `vite.config.ts`
+    // installeert de proxy op /functions/v1 alleen als VITE_SUPABASE_URL bestaat;
+    // zonder configuratie zou dit pad in development dus op een 404 van de
+    // dev-server landen en weer die onbegrijpelijke parsefout opleveren, in
+    // plaats van de duidelijke SupabaseConfigError die de rest van deze module
+    // belooft.
+    if (!isSupabaseConfigured) {
+        throw new SupabaseConfigError();
+    }
+    if (isDevEdgeProxy) {
+        return '/functions/v1';
+    }
+    return `${supabaseUrl}/functions/v1`;
+}
 
 export interface EdgeFunctionOptions<T = any> {
     /** Optional response validator. Throw or return null to reject. */
@@ -269,7 +348,7 @@ export async function callEdgeFunction<T = any>(
     body?: Record<string, unknown>,
     options?: EdgeFunctionOptions<T>
 ): Promise<T> {
-    const response = await authenticatedFetch(`${EDGE_FUNCTION_URL}/${functionName}`, {
+    const response = await authenticatedFetch(`${getEdgeFunctionUrl()}/${functionName}`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -316,7 +395,7 @@ export async function callStreamingEdgeFunction(
     body: Record<string, unknown>,
     onChunk: (text: string) => void
 ): Promise<void> {
-    const response = await authenticatedFetch(`${EDGE_FUNCTION_URL}/${functionName}`, {
+    const response = await authenticatedFetch(`${getEdgeFunctionUrl()}/${functionName}`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',

@@ -1,8 +1,14 @@
 import React, { useState } from 'react';
 import { trackEvent } from '@/services/analyticsService';
-import { EDGE_FUNCTION_URL } from '@/services/supabase';
+import { getEdgeFunctionUrl, SupabaseConfigError } from '@/services/supabase';
 
-const PILOT_ENDPOINT = `${EDGE_FUNCTION_URL}/submitPilotRequest`;
+/*
+ * Bewust geen module-constante: getEdgeFunctionUrl() gooit als de Supabase-
+ * configuratie ontbreekt, en op moduleniveau zou die throw elke pagina slopen
+ * die dit formulier importeert — /pilot én de verhaalpagina. Daarom pas
+ * oplossen bij het versturen.
+ */
+const pilotEndpoint = () => `${getEdgeFunctionUrl()}/submitPilotRequest`;
 
 export interface PilotFormData {
     schoolNaam: string;
@@ -85,7 +91,7 @@ export const PilotForm: React.FC<{ idPrefix?: string }> = ({ idPrefix = 'pilot' 
         setSubmitError(null);
         try {
             trackEvent('pilot_request_start', { rol: formData.rol || 'onbekend' });
-            const response = await fetch(PILOT_ENDPOINT, {
+            const response = await fetch(pilotEndpoint(), {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ ...formData, submittedAt: formStartedAt }),
@@ -99,6 +105,16 @@ export const PilotForm: React.FC<{ idPrefix?: string }> = ({ idPrefix = 'pilot' 
             trackEvent('pilot_request_success', { rol: formData.rol });
             setIsSubmitted(true);
         } catch (err) {
+            // Een configuratiefout is een interne deploymentkwestie: de melding
+            // noemt VITE_SUPABASE_URL, VITE_SUPABASE_ANON_KEY en .env.local. Die
+            // hoort een school nooit te zien — school-facing pagina's lekken geen
+            // technische details. Het detail gaat naar de console, de bezoeker
+            // krijgt dezelfde generieke tekst als op het formulier in /scholen.
+            if (err instanceof SupabaseConfigError) {
+                console.error('Pilotformulier: Supabase-configuratie ontbreekt.', err);
+                setSubmitError('Er ging iets mis. Probeer het opnieuw of mail ons op info@dgskills.app.');
+                return;
+            }
             const message = err instanceof Error && err.message ? err.message : 'Er ging iets mis.';
             setSubmitError(`${message} Probeer het opnieuw of mail ons op info@dgskills.app.`);
         } finally {
