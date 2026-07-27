@@ -30,7 +30,7 @@ de huidige vraag nodig heeft.
 - Services: camelCase bestandsnamen; edge-functionproxy heeft de voorkeur voor
   AI- en providercalls.
 - Hooks: `use*` camelCase.
-- Types: PascalCase interfaces in `types/` of lokaal in de feature.
+- Types: PascalCase interfaces in `src/types/` of lokaal in de feature.
 
 ## A.L.C.H.E.M.Y. Gate Sequence
 

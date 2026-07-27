@@ -32,9 +32,16 @@ Centrale navigatie-index voor alle technische en pedagogische documentatie.
 
 | Pad | Inhoud |
 |---|---|
+| [architecture/](architecture/) | Ontwerpdocumenten en architectuurnotities |
 | [architecture/agent-context-strategy.md](architecture/agent-context-strategy.md) | AI-context strategie |
 | [agent/AGENT_RULES.md](agent/AGENT_RULES.md) | Agent-regels en constraints |
 | [workflows/](workflows/) | Claude prompts per feature |
+| [testing/](testing/) | Teststrategie en QA-documentatie |
+| [superpowers/](superpowers/) | Werkplannen en specs per traject (gedateerd) |
+
+Voor code-navigatie: `ARCHITECTURE.md` in de repo-root is de structurele kaart,
+`.claude/skill-router.md` de taak-naar-pad-index. Beide worden bewaakt door
+`npm run check:agent-docs`.
 
 ## Security & Compliance
 

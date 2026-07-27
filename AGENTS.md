@@ -89,8 +89,8 @@ privacy leaks. Keep secrets out of code, logs, prompts, and client bundles.
 Extra caution around:
 
 - `supabase/functions/`
-- `services/PermissionService.ts`
-- `services/supabase.ts`
+- `src/services/PermissionService.ts`
+- `src/services/supabase.ts`
 - `supabase/migrations/`
 - auth, consent, teacher/admin, exports, and AI chat flows
 
