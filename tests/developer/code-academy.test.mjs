@@ -11,6 +11,7 @@ const paths = {
   data: new URL(`${base}code-academy/content/data.ts`, import.meta.url),
   review: new URL(`${base}code-academy/content/review.ts`, import.meta.url),
   visual: new URL(`${base}code-academy/AcademyVisual.tsx`, import.meta.url),
+  architectureMap: new URL(`${base}code-academy/AcademyArchitectureMap.tsx`, import.meta.url),
   overview: new URL(`${base}code-academy/AcademyOverview.tsx`, import.meta.url),
   lessonView: new URL(`${base}code-academy/AcademyLessonView.tsx`, import.meta.url),
   progress: new URL(`${base}code-academy/progress.ts`, import.meta.url),
@@ -103,6 +104,33 @@ test('overzicht toont afgeleide leerdata en aanbevolen volgende les', () => {
   assert.match(sources.overview, /recommendedLesson/);
   assert.match(sources.overview, /AcademyArchitectureMap/);
   assert.doesNotMatch(sources.overview, /Math\.random/);
+});
+
+test('overzicht doseert de 24 lessen met toegankelijke route-accordions', () => {
+  assert.match(sources.overview, /expandedTrack/);
+  assert.match(sources.overview, /aria-expanded/);
+  assert.match(sources.overview, /Toon .* lessen/);
+  assert.match(sources.overview, /Verberg lessen/);
+});
+
+test('architectuurkaart blijft op mobiel compact en horizontaal navigeerbaar', () => {
+  assert.match(sources.architectureMap, /overflow-x-auto/);
+  assert.match(sources.architectureMap, /snap-x/);
+  assert.match(sources.architectureMap, /Veeg horizontaal/);
+});
+
+test('mobiele lesweergave voorkomt afgekapte code en datatabellen', () => {
+  assert.match(sources.lessonView, /whitespace-pre-wrap/);
+  assert.match(sources.lessonView, /sm:whitespace-pre/);
+  assert.match(sources.lessonView, /md:hidden/);
+  assert.match(sources.lessonView, /hidden md:block/);
+  assert.match(sources.lessonView, /Van .* Naar/);
+});
+
+test('lesweergave maakt de leerfasen expliciet', () => {
+  assert.match(sources.lessonView, /1\. Begrijpen/);
+  assert.match(sources.lessonView, /2\. Verdiepen/);
+  assert.match(sources.lessonView, /3\. Oefenen/);
 });
 
 test('voortgang blijft lokaal, migreert v1 en gebruikt geen Supabase', () => {
