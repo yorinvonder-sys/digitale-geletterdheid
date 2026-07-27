@@ -5,13 +5,18 @@ a non-coding founder to direct, and keep AI context small by default.
 
 ## Model And Delegation
 
-- Keep `gpt-5.5` as the main model for architecture, integration, ambiguous
-  debugging, security-sensitive work, release decisions, and final validation.
+- Model choice and reasoning effort: see `CLAUDE.md` § Model- en
+  Denkniveau-Selectie. That table is the single source of truth; do not restate
+  it here.
 - Use cheaper delegated agents only for explicit, narrow, low-risk sidecar work:
   targeted file discovery, log reading, one-route QA, or one-file review.
-- Do not delegate auth, Supabase/RLS, payments, invoices, personal data,
-  webhooks, secrets, AI endpoints, or final validation decisions.
-- Use the lowest reasoning effort that safely handles the current slice.
+- Never delegate Rood work — auth, Supabase/RLS, payments, invoices, personal
+  data, webhooks, secrets, AI endpoints, migrations — to a cheaper or weaker
+  agent. If you delegate it at all, the delegated agent holds the same model and
+  effort floor as the main session.
+- Final go/no-go stays with the user. An independent reviewer that did not write
+  the change is required before merging Rood work; that review informs the
+  decision, it does not replace it.
 
 ## Lean Context Rules
 

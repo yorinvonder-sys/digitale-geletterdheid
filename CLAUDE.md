@@ -5,33 +5,32 @@ does not load long baton, launch, or reference files by default.
 
 ## Lean Startup
 
-- Do not auto-load `.claude/*.md` at session start.
-- Open only the file needed for the current request:
-  - project context: `.claude/project-context.md`
-  - skill routing: `.claude/skill-router.md`
-  - acceptance checks: `.claude/acceptance-checklist.md`
-  - workstream/status format: `.claude/workstreams.md`,
-    `.claude/adhd-format.md`
-  - previous-work continuation only: `.claude/current-task.md`,
-    `.claude/task-queue.md`, `.claude/progress-log.md`
-- Do not read `LAUNCH-PLAN.md` unless the user asks for launch-plan work.
-- Start broad investigations with `npm run context:budget`, then inspect only
-  the paths that matter.
+`AGENTS.md` § Lean Context Rules geldt onverkort. Aanvullend voor Claude: laad
+`.claude/*.md` niet automatisch bij sessiestart, en open alleen het bestand dat
+de huidige vraag nodig heeft.
+
+- project context: `.claude/project-context.md`
+- skill routing: `.claude/skill-router.md`
+- kosten, escalatie en afrondingscontrole: `.claude/model-selection.md`
+- acceptance checks: `.claude/acceptance-checklist.md`
+- workstream/status format: `.claude/workstreams.md`, `.claude/adhd-format.md`
 
 ## Stack And Conventions
 
-- React 19 + TypeScript + Vite.
-- Supabase for auth, database, edge functions, and RLS.
-- Tailwind inline classes, no `@apply`; use `duck-*` tokens (DUCK English design system) for new components; `lab-*` tokens are legacy.
-- Mistral AI en Black Forest Labs calls stay server-side through Supabase Edge Functions.
-- Vercel deployment uses `npm run build:prod`.
-- State is React hooks + Contexts; no Redux.
-- Components: PascalCase named exports with `React.FC<Props>` where the local
-  codebase already uses that style.
-- Services: camelCase filenames; edge function proxy preferred for AI/provider
-  calls.
+`AGENTS.md` § Project Shape beschrijft de stack en de mappenindeling. Aanvullend:
+
+- Tailwind: geen `@apply`; gebruik `duck-*` tokens (DUCK English design system)
+  voor nieuwe componenten, `lab-*` is legacy.
+- Mistral AI en Black Forest Labs calls blijven server-side via Supabase Edge
+  Functions.
+- State is React hooks + Contexts; geen Redux.
+- Productiebuild voor Vercel: `npm run build:prod`.
+- Components: PascalCase named exports met `React.FC<Props>` waar de omliggende
+  code die stijl al gebruikt.
+- Services: camelCase bestandsnamen; edge-functionproxy heeft de voorkeur voor
+  AI- en providercalls.
 - Hooks: `use*` camelCase.
-- Types: PascalCase interfaces in `types/` or local feature types.
+- Types: PascalCase interfaces in `types/` of lokaal in de feature.
 
 ## A.L.C.H.E.M.Y. Gate Sequence
 
@@ -68,6 +67,26 @@ complexiteit, risico en benodigde verificatie. Deze standaard geldt
 repository-breed; domein-`CLAUDE.md`'s voegen alleen een strengere ondergrens toe
 (geen herhaling van deze tabel).
 
+### Sessiestart-check (verplicht, elke nieuwe sessie)
+
+Bij de eerste taak van een sessie: bepaal expliciet model + denkniveau vóór de
+eerste tooluitvoering, en meld dat in één regel. Herhaal de check zodra het
+taaktype wisselt (bijv. van copy naar auth) — niet bij elke deelstap.
+
+Formaat: `Classificatie: <model> <niveau> — <reden in max 8 woorden>`
+
+Ontbreekt de informatie om te classificeren, vraag dat vóór uitvoering, niet
+erna.
+
+### Modelpalet
+
+| Model | Kies bij |
+|---|---|
+| Haiku 4.5 | Bulkwerk, classificatie, goedkope read-only subagents. Let op: 200K context i.p.v. 1M. Nooit voor code die gemerged wordt. |
+| Sonnet 5 | Teksten, docs, styling, afgebakende componentwijzigingen, repetitief onderhoud. |
+| Opus 5 | Standaard voor echte codewijzigingen en alles in de kritieke domeinen. |
+| Fable 5 | Niet gebruiken in deze repo (stand juli 2026). De securityclassifier geeft hoge false positives op auth-, RLS- en security-adjacent werk en routeert dan stil door naar een zwakker model — precies de kritieke domeinen van dit project, tegen dubbel tarief ($10/$50 vs $5/$25). Opus 5 scoort bovendien hoger op codeerbenchmarks. Herbeoordeel als de false-positive-rate aantoonbaar is opgelost. |
+
 ### Taakclassificatie
 
 | Model + niveau | Wanneer |
@@ -76,57 +95,49 @@ repository-breed; domein-`CLAUDE.md`'s voegen alleen een strengere ondergrens to
 | Opus 5 low | Standaard voor normale codewijzigingen, overzichtelijke bugs, reguliere implementatie. |
 | Opus 5 medium | Complexe features, frontendinteracties, animaties, state-samenwerking, normale PR-reviews, wijzigingen over meerdere bestanden. |
 | Opus 5 high | Supabase, auth, rollen, sessies, dependencies, CI/CD, Vercel-config, performanceproblemen, architectuur, moeilijk reproduceerbare regressies. |
-| Opus 5 xhigh | Grote productie-impact, complexe securityvragen, dependencyconflicten, database-/datamigraties, regressies over meerdere systemen of branches. |
-| Opus 5 max | Alleen finale adversarial review van securitykritieke wijzigingen, mogelijk gegevensverlies, incidentonderzoek of finale go/no-go. Nooit de automatische standaard. |
+| Opus 5 xhigh | Grote productie-impact, complexe securityvragen, dependencyconflicten, database-/datamigraties, regressies over meerdere systemen of branches. Ook: agentische codeertaken over veel bestanden. |
+| Opus 5 max | Zelden. Alleen wanneer correctheid zwaarder weegt dan kosten én latency, en er geen tweede reviewer beschikbaar is. |
 
-### Kostenregel
+Denkniveau-gebruik in de praktijk:
 
-Beoordeel totale taakkosten, niet prijs per token. Opus 5 low/medium kan
-goedkoper zijn dan Sonnet high/xhigh wanneer het minder herstelpogingen,
-redeneertokens en toolrondes kost. Kies Sonnet voor eenvoudig volume; Opus
-wanneer de taak werkelijk redeneerkwaliteit vereist.
+- `high` is de default; ga daar niet standaard boven zitten.
+- Voor agentisch codeerwerk begin je op `xhigh` en werk je omláág zodra het werkt.
+- `low` en `medium` presteren op Opus 5 uitzonderlijk goed tegen een fractie van
+  de tokens. Test omlaag voordat je omhoog escaleert.
+- `max` is niet "veiliger" — het leidt vaker tot overthinking en diminishing
+  returns. Een onafhankelijke tweede reviewer op `xhigh` is sterker dan één
+  reviewer op `max`.
+- Op `xhigh`/`max`: reken op een ruim outputbudget, anders kapt het werk af.
 
-### Zelfevaluatie vóór uitvoering
+### Agents en subagents
 
-Bepaal kort — sluit aan op de Front-door triage hierboven: taaktype; impact bij
-een fout; omkeerbaarheid; betrokken kritieke domeinen; onzekerheden; benodigd
-model + denkniveau; vereiste tests/bewijs; of onafhankelijke review nodig is.
+Kies model + denkniveau per subagent apart; erf niet automatisch het niveau van
+de hoofdsessie.
 
-### Escalatieregels
+- Zoeken, inventariseren, read-only verkenning: Haiku 4.5 of Sonnet 5, `low`.
+- Implementerende subagent op niet-kritieke code: Opus 5 `low`/`medium`.
+- Subagent die auth, RLS, migraties of productieconfiguratie raakt: Opus 5
+  `high` minimaal — dezelfde ondergrens als de hoofdsessie.
+- Onafhankelijke eindreview: Opus 5 `xhigh`, en het mag niet dezelfde agent zijn
+  die de wijziging schreef.
+- Delegeer alleen wanneer de opbrengst de overhead overtreft. Een subagent
+  herbouwt zijn context, rapporteert terug, en jij leest die rapportage — voor
+  een paar bestandslezingen of een simpele edit is dat verlies. Gebruik geen
+  subagent om je eigen werk te verifiëren; verificatie hoort in de hoofdloop.
 
-- Verhoog het denkniveau bij nieuwe onzekerheid, onverwachte dependency-effecten,
-  productie-impact of securityrisico.
-- Verlaag het niveau niet enkel om kosten te besparen zolang relevante risico's
-  niet onderzocht zijn.
-- Meer denkvermogen vervangt nooit runtimeproeven, tests, directe
-  configuratiecontrole of onafhankelijke review.
-- Groen bouwen, linten of `npm audit` bewijst geen runtimecompatibiliteit of
-  veiligheid.
-- Verifieer kritieke claims via de echte downstream consumer en het werkelijk
-  bereikbare productiepad.
-- Een model mag zijn eigen kritieke wijziging niet als enige reviewer goedkeuren.
-- Voor auth, RLS, security, dependencies, migraties en productieconfiguratie is
-  een onafhankelijke read-only eindreview verplicht vóór merge.
-- Wijzig draft/ready-status, merge-status, externe configuratie of productie
-  alleen als de gebruiker daar expliciet om vraagt.
+### Beknoptheid
 
-### Zelfevaluatie ná uitvoering
+Opus 5 schrijft standaard langere antwoorden én langere bestanden dan eerdere
+modellen. Een lager denkniveau lost dat niet op — dat vergt een expliciete
+instructie. Houd zichtbare antwoorden en rapportage kort, en beperk
+Markdown-deliverables tot de inhoud: geen vulsecties, geen herhaalde
+samenvattingen, geen boilerplate.
 
-Controleer vóór afronding: (1) alle eisen echt uitgevoerd; (2) welke claims
-direct bewezen; (3) welke alleen afgeleid; (4) echte risicopaden getest i.p.v.
-alleen een nabijgelegen happy path; (5) tests écht in CI of alleen lokaal; (6)
-kunnen branchnamen, ontbrekende jobs of conditionele workflows controles
-omzeilen; (7) config en omgevingsvariabelen in de bedoelde scope gecontroleerd;
-(8) resterende aannames, ongeteste paden of risico's; (9) onafhankelijke
-reviewer nodig vóór merge/deploy; (10) was het denkniveau passend of moet
-vervolgwerk hoger worden ingeschaald.
+### Verdieping
 
-### Rapportage
-
-Houd zichtbare rapportage kort. Vermeld alleen: gekozen classificatie (als
-relevant); uitgevoerd bewijs/tests; resterende onzekerheden; nodige
-onafhankelijke review; en een duidelijke conclusie — gereed / gereed onder
-voorwaarden / niet gereed.
+Kostenregel, escalatieregels, zelfevaluatie vóór/ná uitvoering en het
+rapportageformat staan in `.claude/model-selection.md`. Open dat bestand bij
+twijfel over kosten, bij escalatie en vóór afronding — niet standaard.
 
 ## Claude Workflow Notes
 
@@ -144,9 +155,6 @@ voorwaarden / niet gereed.
 
 - **Docs overview**: `docs/README.md` — centrale navigatie-index voor alle documentatie
 - **Pedagogisch fundament**: `docs/pedagogy/README.md` — frameworks, rubric en missie-audit
-- AI context strategy: `docs/architecture/agent-context-strategy.md`
-- Feature-domain rules: `src/features/AGENTS.md` and local
-  `src/features/<domain>/AGENTS.md`
 - Security overview: `SECURITY.md`, `docs/security/`, and compliance docs under
   `business/nl-vo/compliance/`
 - Supabase-specific guidance: `supabase/CLAUDE.md`
