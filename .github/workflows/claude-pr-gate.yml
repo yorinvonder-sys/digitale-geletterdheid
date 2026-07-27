@@ -60,6 +60,14 @@ jobs:
       - name: Type-check
         run: npx tsc --noEmit
 
+      # De navigatiedocumenten voor AI-agents verouderen stil: een pad dat na een
+      # herstructurering verdwijnt blijft in de kaart staan en stuurt elke agent die
+      # de kaart volgt naar een mislukte read, waarna die alsnog de hele repo
+      # doorzoekt. Bij invoering wees 15 van de 17 rijen in .claude/skill-router.md
+      # naar niet-bestaande paden. Deze stap houdt dat tegen.
+      - name: Agent-navigatiedocumenten
+        run: npm run check:agent-docs
+
       # De auditstap accepteert één tijdelijke uitzondering. Deze tests bewijzen
       # dat die uitzondering nog steeds smal is: een nieuwe advisory, een
       # onverwacht dependency-pad of een verstreken vervaldatum moet falen.

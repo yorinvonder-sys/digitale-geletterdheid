@@ -4,6 +4,9 @@
 
 DGSkills is een leerplatform voor digitale geletterdheid in het voortgezet onderwijs. Het product werkt met minderjarige leerlingen, docentdashboards, consent flows en AI-ondersteunde missies; behandel wijzigingen aan auth, Supabase, AI, rapportage, consent en leerlingdata als hoog risico.
 
+Dit document is de structurele kaart. Zoek je bij een concrete taak de bestanden
+om te openen, gebruik dan `.claude/skill-router.md` — een taak-naar-pad-index.
+
 ## Repo-Kaart
 
 ```text
@@ -63,4 +66,6 @@ Gebruik compacte, path-scoped inspectie. Vermijd brede `git diff`, `git show` of
 
 ## Bekende Gaps
 
-Historische audit- en reviewdocumenten onder `business/dgskills-reviews/` kunnen nog pre-restructure paden zoals `components/missions/...` noemen. Gebruik voor actuele code-navigatie altijd `src/app/`, `src/features/`, `src/components/app-shell/` en `src/components/ui/`.
+Historische audit- en reviewdocumenten onder `business/dgskills-reviews/` kunnen nog pre-restructure paden noemen: componentmappen direct onder src in plaats van onder src/features. Gebruik voor actuele code-navigatie altijd `src/app/`, `src/features/`, `src/components/app-shell/` en `src/components/ui/`.
+
+De navigatiedocumenten zelf liepen hetzelfde risico. `npm run check:agent-docs` controleert nu dat elk pad in `ARCHITECTURE.md`, `.claude/skill-router.md`, `docs/architecture/agent-context-strategy.md`, `docs/README.md`, `AGENTS.md` en `CLAUDE.md` bestaat, en faalt in CI zodra dat niet meer klopt.
