@@ -109,7 +109,7 @@ test('overzicht toont afgeleide leerdata en aanbevolen volgende les', () => {
 test('overzicht doseert de 24 lessen met toegankelijke route-accordions', () => {
   assert.match(sources.overview, /expandedTrack/);
   assert.match(sources.overview, /aria-expanded/);
-  assert.match(sources.overview, /Toon .* lessen/);
+  assert.match(sources.overview, /Toon \$\{trackLessons\.length\} lessen/);
   assert.match(sources.overview, /Verberg lessen/);
 });
 
@@ -123,8 +123,8 @@ test('mobiele lesweergave voorkomt afgekapte code en datatabellen', () => {
   assert.match(sources.lessonView, /whitespace-pre-wrap/);
   assert.match(sources.lessonView, /sm:whitespace-pre/);
   assert.match(sources.lessonView, /md:hidden/);
-  assert.match(sources.lessonView, /hidden md:block/);
-  assert.match(sources.lessonView, /Van .* Naar/);
+  assert.match(sources.lessonView, /hidden[^'\n]*md:block/);
+  assert.match(sources.lessonView, /Van → Naar/);
 });
 
 test('lesweergave maakt de leerfasen expliciet', () => {
