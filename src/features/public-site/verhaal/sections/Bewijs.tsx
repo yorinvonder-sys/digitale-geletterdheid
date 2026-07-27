@@ -1,6 +1,7 @@
 import React from 'react';
 import { ChapterMarker, Reveal, Pill, INK_SOFT } from '../components/storyBrand';
 import { Accordion, type AccordionItem } from '../components/Accordion';
+import { EchtProduct } from './EchtProduct';
 
 /*
  * De domeinen en kerndoelcodes komen één-op-één uit `src/config/sloKerndoelen.ts`
@@ -153,6 +154,8 @@ export function Bewijs() {
                         volgt via een AMvB.
                     </p>
                 </Reveal>
+
+                <EchtProduct />
 
                 {/* schoolleiding + ICT */}
                 <div className="mt-16 grid gap-10 lg:grid-cols-2">

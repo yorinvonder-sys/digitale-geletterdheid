@@ -110,6 +110,11 @@ const publicEndpointRules = {
     'checkDurableRateLimit',
     'sanitizePrompt',
     'DEMO_SYSTEM_INSTRUCTION',
+    // De client-spec gaat de prompt in en moet dezelfde inhoudelijke keten door
+    // als het bericht zelf. Zonder deze twee regels omzeilt hij de injectie- en
+    // PII-filters, wat eerder is gebeurd en pas bij review is opgemerkt.
+    'sanitizePrompt(rawSpecJson)',
+    'redactPii(specCheck.sanitized)',
   ],
   'gdrive-callback': [
     'google_drive_oauth_states',

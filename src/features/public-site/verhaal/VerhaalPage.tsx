@@ -8,6 +8,7 @@ import { Proloog } from './sections/Proloog';
 import { Probleem } from './sections/Probleem';
 import { Ontmoeting } from './sections/Ontmoeting';
 import { MilaReis } from './sections/MilaReis';
+import { NuJij } from './sections/NuJij';
 import { Docent } from './sections/Docent';
 import { Bewijs } from './sections/Bewijs';
 import { Epiloog } from './sections/Epiloog';
@@ -108,6 +109,7 @@ export function VerhaalPage() {
                 <Probleem />
                 <Ontmoeting />
                 <MilaReis />
+                <NuJij />
                 <Marquee
                     dark
                     items={[
