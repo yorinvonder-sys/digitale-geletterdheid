@@ -27,7 +27,7 @@ Elke les bevat:
 - een visuele representatie van flow, boom, lagen, vergelijking of datareis;
 - echte relevante bestandspaden en een compact codefragment;
 - begrippenkaarten;
-- een tabel met gegevens die door de flow reizen;
+- een tabel of mobiele kaartweergave met gegevens die door de flow reizen;
 - herkenbare risico's en fouten;
 - een praktische controle-opdracht;
 - een herbruikbare prompt om AI-code te laten uitleggen;
@@ -41,14 +41,17 @@ Elke les bevat:
 - Vier routekaarten met voortgangsbalken die uitsluitend uit werkelijke voltooiingsdata worden berekend.
 - Aanbevolen volgende les.
 - Visuele architectuurkaart van de volledige applicatiestroom.
-- Leskaarten gegroepeerd per route.
+- Eén route tegelijk uitgeklapt om de 24 lessen behapbaar te houden.
+- De architectuurkaart wordt op mobiel een horizontale swipe-reeks met zichtbare hint en doorkijk naar de volgende stap.
 
 ### Lesweergave
 
 - Duidelijke kop met route, lesnummer, duur en doel.
+- Drie expliciete leerfasen: **Begrijpen**, **Verdiepen** en **Oefenen**.
 - Visueel diagram als belangrijkste uitleg.
 - Uitleg, begrippen en echte code naast elkaar op brede schermen.
-- Datareistabel en risico's.
+- Code loopt op mobiel door op meerdere regels in plaats van buiten beeld.
+- De datareis gebruikt op mobiel leesbare kaarten en op bredere schermen een tabel.
 - Praktijkcontrole, AI-uitlegprompt en controlevraag.
 - Navigatie naar vorige/volgende les.
 
@@ -58,8 +61,9 @@ Elke les bevat:
 - `code-academy/content/*.ts`: lesinhoud per route.
 - `code-academy/academyContent.ts`: route- en lesaggregatie.
 - `code-academy/AcademyVisual.tsx`: generieke visualisaties.
-- `code-academy/AcademyOverview.tsx`: overzicht en leerdata.
-- `code-academy/AcademyLessonView.tsx`: lespagina.
+- `code-academy/AcademyOverview.tsx`: overzicht, route-accordions en leerdata.
+- `code-academy/AcademyArchitectureMap.tsx`: responsieve overzichtskaart.
+- `code-academy/AcademyLessonView.tsx`: lespagina en responsieve leerfasen.
 - `code-academy/progress.ts`: lokale opslag en migratie.
 - `DeveloperCodeAcademy.tsx`: compacte orchestrator.
 
@@ -75,9 +79,7 @@ Elke les bevat:
 - Contracttest controleert 24 unieke lessen, vier routes en vereiste rijke velden.
 - Test controleert dat visualisaties meerdere representaties ondersteunen.
 - Test controleert lokale opslag en afwezigheid van Supabase in academieprogressie.
+- Test controleert mobiele route-accordions, swipebare architectuur, code-wrapping, datakaarten en expliciete leerfasen.
 - Bestaande integratie met de documentenomgeving blijft gecontroleerd.
-- CI moet typecheck en productiebuild bevestigen.
-
-## Previewvalidatie
-
-- Een nieuwe previewdeployment mag met een documentatie-only commit worden getriggerd wanneer de vorige Vercel-poging uitsluitend door de deploymentdaglimiet is geblokkeerd.
+- Een tijdelijke Playwright-audit rendert de echte academiecomponent op 1440 × 1050 en 390 × 844, legt overzicht, les, visual, datareis en kennischeck vast en wordt na beoordeling weer verwijderd.
+- CI moet typecheck, security checks, productiebuild en performancebudgetten bevestigen.
