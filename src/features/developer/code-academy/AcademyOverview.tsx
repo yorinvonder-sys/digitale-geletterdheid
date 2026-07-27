@@ -1,10 +1,12 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import {
   ArrowRight,
   BarChart3,
   BookOpen,
   BrainCircuit,
   Check,
+  ChevronDown,
+  ChevronUp,
   Clock3,
   Code2,
   Database,
@@ -96,6 +98,9 @@ export function AcademyOverview({ completed, onSelectLesson, onReset }: AcademyO
   const recommendedLesson = ACADEMY_LESSONS.find((lesson) => !completedSet.has(lesson.id));
   const conceptCount = ACADEMY_LESSONS.reduce((total, lesson) => total + lesson.concepts.length, 0);
   const dataFlowCount = ACADEMY_LESSONS.reduce((total, lesson) => total + lesson.dataFlow.length, 0);
+  const [expandedTrack, setExpandedTrack] = useState<AcademyTrackId | null>(
+    () => recommendedLesson?.track ?? 'fundament'
+  );
 
   return (
     <div className='space-y-7 animate-in fade-in duration-300'>
@@ -178,52 +183,74 @@ export function AcademyOverview({ completed, onSelectLesson, onReset }: AcademyO
         <div>
           <p className='text-[10px] font-black uppercase tracking-[0.2em] text-duck-ink/50'>Leerroutes</p>
           <h3 className='mt-1 text-2xl font-black text-duck-ink'>Van basis naar kritische AI-review</h3>
+          <p className='mt-2 max-w-3xl text-sm font-semibold leading-relaxed text-duck-ink/55'>Open één route tegelijk. Zo houd je overzicht terwijl alle 24 lessen beschikbaar blijven.</p>
         </div>
 
         {ACADEMY_TRACKS.map((track) => {
           const trackLessons = ACADEMY_LESSONS.filter((lesson) => lesson.track === track.id);
           const completedInTrack = trackLessons.filter((lesson) => completedSet.has(lesson.id)).length;
           const trackPercentage = Math.round((completedInTrack / trackLessons.length) * 100);
+          const nextTrackLesson = trackLessons.find((lesson) => !completedSet.has(lesson.id));
           const style = TRACK_STYLES[track.id];
+          const isExpanded = expandedTrack === track.id;
+          const lessonsId = `academy-track-${track.id}-lessons`;
 
           return (
             <article key={track.id} className={`rounded-[2rem] border p-5 shadow-sm md:p-7 ${style.panel}`}>
-              <div className='flex flex-col gap-5 md:flex-row md:items-center md:justify-between'>
+              <div className='flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between'>
                 <div className='flex items-start gap-4'>
                   <div className={`flex size-12 shrink-0 items-center justify-center rounded-2xl ${style.badge}`}>{style.icon}</div>
                   <div>
                     <p className='text-[10px] font-black uppercase tracking-[0.18em] text-duck-ink/45'>{track.subtitle}</p>
                     <h3 className='mt-1 text-xl font-black text-duck-ink'>{track.title}</h3>
                     <p className='mt-2 max-w-3xl text-sm font-semibold leading-relaxed text-duck-ink/60'>{track.description}</p>
+                    {nextTrackLesson && (
+                      <p className='mt-3 text-xs font-black text-duck-ink/55'>Volgende: les {nextTrackLesson.number} · {nextTrackLesson.title}</p>
+                    )}
                   </div>
                 </div>
-                <div className='min-w-[180px] rounded-2xl bg-white/75 p-4 ring-1 ring-duck-ink/10'>
-                  <div className='flex items-center justify-between text-xs font-black text-duck-ink'>
-                    <span>{completedInTrack}/{trackLessons.length}</span>
-                    <span>{trackPercentage}%</span>
+
+                <div className='flex flex-col gap-3 sm:flex-row sm:items-center'>
+                  <div className='min-w-[180px] rounded-2xl bg-white/75 p-4 ring-1 ring-duck-ink/10'>
+                    <div className='flex items-center justify-between text-xs font-black text-duck-ink'>
+                      <span>{completedInTrack}/{trackLessons.length}</span>
+                      <span>{trackPercentage}%</span>
+                    </div>
+                    <div className='mt-3 h-2 overflow-hidden rounded-full bg-duck-ink/10'>
+                      <div className='h-full rounded-full bg-duck-ink transition-all' style={{ width: `${trackPercentage}%` }} />
+                    </div>
                   </div>
-                  <div className='mt-3 h-2 overflow-hidden rounded-full bg-duck-ink/10'>
-                    <div className='h-full rounded-full bg-duck-ink transition-all' style={{ width: `${trackPercentage}%` }} />
-                  </div>
+                  <button
+                    type='button'
+                    onClick={() => setExpandedTrack((current) => current === track.id ? null : track.id)}
+                    aria-expanded={isExpanded}
+                    aria-controls={lessonsId}
+                    className='inline-flex min-h-[48px] items-center justify-center gap-2 rounded-full border border-duck-ink/15 bg-white px-5 text-sm font-black text-duck-ink shadow-sm hover:border-duck-ink/35'
+                  >
+                    {isExpanded ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
+                    {isExpanded ? 'Verberg lessen' : `Toon ${trackLessons.length} lessen`}
+                  </button>
                 </div>
               </div>
 
-              <div className='mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-3'>
-                {trackLessons.map((lesson) => {
-                  const lessonIndex = ACADEMY_LESSONS.findIndex((item) => item.id === lesson.id);
-                  const previousLesson = lessonIndex > 0 ? ACADEMY_LESSONS[lessonIndex - 1] : undefined;
-                  const locked = Boolean(previousLesson && !completedSet.has(previousLesson.id));
-                  return (
-                    <LessonCard
-                      key={lesson.id}
-                      lesson={lesson}
-                      completed={completedSet.has(lesson.id)}
-                      locked={locked}
-                      onSelect={() => onSelectLesson(lesson.id)}
-                    />
-                  );
-                })}
-              </div>
+              {isExpanded && (
+                <div id={lessonsId} className='mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-3'>
+                  {trackLessons.map((lesson) => {
+                    const lessonIndex = ACADEMY_LESSONS.findIndex((item) => item.id === lesson.id);
+                    const previousLesson = lessonIndex > 0 ? ACADEMY_LESSONS[lessonIndex - 1] : undefined;
+                    const locked = Boolean(previousLesson && !completedSet.has(previousLesson.id));
+                    return (
+                      <LessonCard
+                        key={lesson.id}
+                        lesson={lesson}
+                        completed={completedSet.has(lesson.id)}
+                        locked={locked}
+                        onSelect={() => onSelectLesson(lesson.id)}
+                      />
+                    );
+                  })}
+                </div>
+              )}
             </article>
           );
         })}
