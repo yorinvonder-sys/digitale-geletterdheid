@@ -9,6 +9,7 @@ does not load long baton, launch, or reference files by default.
 - Open only the file needed for the current request:
   - project context: `.claude/project-context.md`
   - skill routing: `.claude/skill-router.md`
+  - kosten, escalatie en afrondingscontrole: `.claude/model-selection.md`
   - acceptance checks: `.claude/acceptance-checklist.md`
   - workstream/status format: `.claude/workstreams.md`,
     `.claude/adhd-format.md`
@@ -126,60 +127,19 @@ de hoofdsessie.
   een paar bestandslezingen of een simpele edit is dat verlies. Gebruik geen
   subagent om je eigen werk te verifiëren; verificatie hoort in de hoofdloop.
 
-### Kostenregel
-
-Beoordeel totale taakkosten, niet prijs per token. Opus 5 low/medium kan
-goedkoper zijn dan Sonnet high/xhigh wanneer het minder herstelpogingen,
-redeneertokens en toolrondes kost. Kies Sonnet voor eenvoudig volume; Opus
-wanneer de taak werkelijk redeneerkwaliteit vereist.
-
 ### Beknoptheid
 
 Opus 5 schrijft standaard langere antwoorden én langere bestanden dan eerdere
 modellen. Een lager denkniveau lost dat niet op — dat vergt een expliciete
-instructie. Houd zichtbare antwoorden kort en beperk Markdown-deliverables tot
-de inhoud: geen vulsecties, geen herhaalde samenvattingen, geen boilerplate.
+instructie. Houd zichtbare antwoorden en rapportage kort, en beperk
+Markdown-deliverables tot de inhoud: geen vulsecties, geen herhaalde
+samenvattingen, geen boilerplate.
 
-### Zelfevaluatie vóór uitvoering
+### Verdieping
 
-Bepaal kort — sluit aan op de Front-door triage hierboven: taaktype; impact bij
-een fout; omkeerbaarheid; betrokken kritieke domeinen; onzekerheden; benodigd
-model + denkniveau; vereiste tests/bewijs; of onafhankelijke review nodig is.
-
-### Escalatieregels
-
-- Verhoog het denkniveau bij nieuwe onzekerheid, onverwachte dependency-effecten,
-  productie-impact of securityrisico.
-- Verlaag het niveau niet enkel om kosten te besparen zolang relevante risico's
-  niet onderzocht zijn.
-- Meer denkvermogen vervangt nooit runtimeproeven, tests, directe
-  configuratiecontrole of onafhankelijke review.
-- Groen bouwen, linten of `npm audit` bewijst geen runtimecompatibiliteit of
-  veiligheid.
-- Verifieer kritieke claims via de echte downstream consumer en het werkelijk
-  bereikbare productiepad.
-- Een model mag zijn eigen kritieke wijziging niet als enige reviewer goedkeuren.
-- Voor auth, RLS, security, dependencies, migraties en productieconfiguratie is
-  een onafhankelijke read-only eindreview verplicht vóór merge.
-- Wijzig draft/ready-status, merge-status, externe configuratie of productie
-  alleen als de gebruiker daar expliciet om vraagt.
-
-### Zelfevaluatie ná uitvoering
-
-Geen aparte verificatieronde en geen "dubbelcheck je werk"-instructies — die
-leiden tot over-verificatie. Verifieer tijdens het werk en controleer vóór
-afronding alleen dit: zijn alle eisen echt uitgevoerd; welke claims zijn direct
-bewezen versus alleen afgeleid; draaien de tests écht in CI (en kunnen
-branchnamen of conditionele workflows dat omzeilen); welke risicopaden en
-configuratiescopes zijn ongetest gebleven; is een onafhankelijke reviewer nodig
-vóór merge.
-
-### Rapportage
-
-Houd zichtbare rapportage kort. Vermeld alleen: gekozen classificatie (als
-relevant); uitgevoerd bewijs/tests; resterende onzekerheden; nodige
-onafhankelijke review; en een duidelijke conclusie — gereed / gereed onder
-voorwaarden / niet gereed.
+Kostenregel, escalatieregels, zelfevaluatie vóór/ná uitvoering en het
+rapportageformat staan in `.claude/model-selection.md`. Open dat bestand bij
+twijfel over kosten, bij escalatie en vóór afronding — niet standaard.
 
 ## Claude Workflow Notes
 
