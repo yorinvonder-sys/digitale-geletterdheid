@@ -136,11 +136,17 @@ const isDevEdgeProxy = (() => {
  * zou de throw terugbrengen naar importtijd en de publieke site opnieuw slopen.
  */
 export function getEdgeFunctionUrl(): string {
-    if (isDevEdgeProxy) {
-        return '/functions/v1';
-    }
+    // De configuratiecheck staat bewust vóór de dev-proxy. `vite.config.ts`
+    // installeert de proxy op /functions/v1 alleen als VITE_SUPABASE_URL bestaat;
+    // zonder configuratie zou dit pad in development dus op een 404 van de
+    // dev-server landen en weer die onbegrijpelijke parsefout opleveren, in
+    // plaats van de duidelijke SupabaseConfigError die de rest van deze module
+    // belooft.
     if (!isSupabaseConfigured) {
         throw new SupabaseConfigError();
+    }
+    if (isDevEdgeProxy) {
+        return '/functions/v1';
     }
     return `${supabaseUrl}/functions/v1`;
 }
