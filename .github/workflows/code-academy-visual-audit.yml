@@ -1,0 +1,163 @@
+name: Code Academy Visual Audit
+
+on:
+  push:
+    branches:
+      - feat/developer-code-academy
+
+permissions:
+  contents: read
+
+jobs:
+  capture:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22.12.0'
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+
+      - name: Create isolated visual audit page
+        shell: bash
+        run: |
+          mkdir -p .visual-qa artifacts/code-academy
+          cat > code-academy-visual-qa.html <<'HTML'
+          <!doctype html>
+          <html lang="nl">
+            <head>
+              <meta charset="UTF-8" />
+              <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+              <title>Code Academie Visual QA</title>
+            </head>
+            <body>
+              <div id="root"></div>
+              <script type="module" src="/.visual-qa/code-academy-entry.tsx"></script>
+            </body>
+          </html>
+          HTML
+
+          cat > .visual-qa/code-academy-entry.tsx <<'TSX'
+          import React from 'react';
+          import ReactDOM from 'react-dom/client';
+          import { DeveloperCodeAcademy } from '../src/features/developer/DeveloperCodeAcademy';
+          import '../src/styles/app.css';
+          import '../src/styles/authenticated.css';
+          import '../src/styles/accessibility.css';
+
+          document.body.className = 'bg-duck-bg text-duck-ink';
+
+          const root = document.getElementById('root');
+          if (!root) throw new Error('Visual QA root missing');
+
+          ReactDOM.createRoot(root).render(
+            <React.StrictMode>
+              <main className="min-h-screen bg-duck-bg px-4 py-6 md:px-8 md:py-8">
+                <DeveloperCodeAcademy />
+              </main>
+            </React.StrictMode>
+          );
+          TSX
+
+          cat > .visual-qa/capture.mjs <<'JS'
+          import { chromium } from 'playwright';
+          import { mkdir } from 'node:fs/promises';
+
+          const baseUrl = 'http://127.0.0.1:4177/code-academy-visual-qa.html';
+          const output = 'artifacts/code-academy';
+          await mkdir(output, { recursive: true });
+
+          const browser = await chromium.launch();
+
+          async function preparePage(viewport) {
+            const context = await browser.newContext({ viewport, deviceScaleFactor: 1 });
+            const page = await context.newPage();
+            const pageErrors = [];
+            page.on('pageerror', (error) => pageErrors.push(error.message));
+            await page.goto(baseUrl, { waitUntil: 'networkidle' });
+            await page.addStyleTag({ content: `
+              *, *::before, *::after {
+                animation-duration: 0s !important;
+                animation-delay: 0s !important;
+                transition-duration: 0s !important;
+                caret-color: transparent !important;
+              }
+            ` });
+            await page.waitForTimeout(250);
+            if (pageErrors.length > 0) {
+              throw new Error(`Page errors: ${pageErrors.join(' | ')}`);
+            }
+            return { context, page };
+          }
+
+          async function openFirstLesson(page) {
+            const continueButton = page.getByRole('button', { name: /Ga verder met les 1/i });
+            await continueButton.click();
+            await page.getByRole('heading', { name: /Waar start/i }).waitFor();
+            await page.waitForTimeout(150);
+          }
+
+          {
+            const { context, page } = await preparePage({ width: 1440, height: 1050 });
+            await page.screenshot({ path: `${output}/01-overview-desktop.png`, fullPage: true });
+            await openFirstLesson(page);
+            await page.screenshot({ path: `${output}/03-lesson-desktop.png`, fullPage: true });
+            const visual = page.locator('section').filter({ hasText: 'Visuele uitleg' }).first();
+            if (await visual.count()) await visual.screenshot({ path: `${output}/05-visual-desktop.png` });
+            const check = page.locator('section').filter({ hasText: 'Kennischeck' }).last();
+            if (await check.count()) await check.screenshot({ path: `${output}/07-knowledge-check-desktop.png` });
+            await context.close();
+          }
+
+          {
+            const { context, page } = await preparePage({ width: 390, height: 844 });
+            await page.screenshot({ path: `${output}/02-overview-mobile.png`, fullPage: true });
+            await openFirstLesson(page);
+            await page.screenshot({ path: `${output}/04-lesson-mobile.png`, fullPage: true });
+            const dataJourney = page.locator('section').filter({ hasText: 'Datareis' }).first();
+            if (await dataJourney.count()) await dataJourney.screenshot({ path: `${output}/06-datareis-mobile.png` });
+            const check = page.locator('section').filter({ hasText: 'Kennischeck' }).last();
+            if (await check.count()) await check.screenshot({ path: `${output}/08-knowledge-check-mobile.png` });
+            await context.close();
+          }
+
+          await browser.close();
+          JS
+
+      - name: Start Vite
+        shell: bash
+        run: |
+          npx vite --host 127.0.0.1 --port 4177 > /tmp/code-academy-vite.log 2>&1 &
+          echo $! > /tmp/code-academy-vite.pid
+          for attempt in {1..60}; do
+            if curl --fail --silent http://127.0.0.1:4177/code-academy-visual-qa.html > /dev/null; then
+              exit 0
+            fi
+            sleep 1
+          done
+          cat /tmp/code-academy-vite.log
+          exit 1
+
+      - name: Capture visual audit screenshots
+        run: node .visual-qa/capture.mjs
+
+      - name: Upload screenshots
+        uses: actions/upload-artifact@v4
+        with:
+          name: code-academy-visual-audit
+          path: artifacts/code-academy
+          if-no-files-found: error
+          retention-days: 7
+
+      - name: Print Vite log on failure
+        if: failure()
+        run: cat /tmp/code-academy-vite.log || true
