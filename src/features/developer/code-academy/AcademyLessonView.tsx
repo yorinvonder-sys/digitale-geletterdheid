@@ -59,17 +59,32 @@ function CodePanel({ file, code }: { file: string; code: string }) {
           {copied ? 'Gekopieerd' : 'Kopieer code'}
         </button>
       </div>
-      <div className='overflow-x-auto bg-[#111827] py-5'>
-        <pre className='min-w-max text-xs leading-6 text-slate-100'>
+      <div className='overflow-hidden bg-[#111827] py-5 sm:overflow-x-auto'>
+        <pre className='text-xs leading-6 text-slate-100 sm:min-w-max'>
           {lines.map((line, index) => (
-            <div key={`${line}-${index}`} className='grid grid-cols-[48px_1fr] px-4 hover:bg-white/5'>
-              <span className='select-none pr-4 text-right text-slate-500'>{index + 1}</span>
-              <code className='pr-6'>{line || ' '}</code>
+            <div key={`${line}-${index}`} className='grid grid-cols-[38px_minmax(0,1fr)] px-2 hover:bg-white/5 sm:grid-cols-[48px_1fr] sm:px-4'>
+              <span className='select-none pr-3 text-right text-slate-500 sm:pr-4'>{index + 1}</span>
+              <code className='whitespace-pre-wrap break-words pr-2 sm:whitespace-pre sm:break-normal sm:pr-6'>{line || ' '}</code>
             </div>
           ))}
         </pre>
       </div>
     </section>
+  );
+}
+
+function PhaseHeader({ title, description }: { title: string; description: string }) {
+  return (
+    <div className='flex items-start gap-4 pt-1'>
+      <div className='mt-0.5 flex size-10 shrink-0 items-center justify-center rounded-2xl bg-duck-ink text-sm font-black text-duck-acid'>
+        {title.slice(0, 1)}
+      </div>
+      <div>
+        <p className='text-[10px] font-black uppercase tracking-[0.2em] text-duck-ink/45'>Lesroute</p>
+        <h3 className='mt-1 text-xl font-black text-duck-ink'>{title}</h3>
+        <p className='mt-1 text-sm font-semibold leading-relaxed text-duck-ink/55'>{description}</p>
+      </div>
+    </div>
   );
 }
 
@@ -135,6 +150,8 @@ export function AcademyLessonView({
         </div>
       </section>
 
+      <PhaseHeader title='1. Begrijpen' description='Lees de kern en bouw eerst een helder mentaal beeld op.' />
+
       <section className='grid gap-4 lg:grid-cols-[1.4fr_0.8fr]'>
         <div className='rounded-[2rem] border border-duck-ink/15 bg-white p-6 shadow-sm md:p-8'>
           <div className='flex items-center gap-3'><BookCheck size={22} /><h3 className='text-xl font-black text-duck-ink'>Uitleg</h3></div>
@@ -153,6 +170,8 @@ export function AcademyLessonView({
       </section>
 
       <AcademyVisual config={lesson.visual} />
+
+      <PhaseHeader title='2. Verdiepen' description='Koppel begrippen, echte code en de reis van data aan elkaar.' />
 
       <section className='grid gap-5 xl:grid-cols-[1fr_1.2fr]'>
         <div className='rounded-[2rem] border border-duck-ink/15 bg-white p-6 shadow-sm md:p-8'>
@@ -178,7 +197,29 @@ export function AcademyLessonView({
             <p className='mt-1 text-sm font-medium text-duck-ink/55'>Welke informatie gaat waarheen en waarom?</p>
           </div>
         </div>
-        <div className='overflow-x-auto'>
+
+        <div className='space-y-3 p-4 md:hidden'>
+          {lesson.dataFlow.map((row, index) => (
+            <article key={`${row.from}-${row.to}-${index}`} className='rounded-2xl border border-duck-ink/10 bg-duck-bgLight p-4'>
+              <p className='text-[10px] font-black uppercase tracking-[0.16em] text-duck-ink/45'>Van → Naar</p>
+              <div className='mt-2 flex flex-wrap items-center gap-2'>
+                <span className='rounded-full bg-white px-3 py-1.5 text-sm font-black text-duck-ink'>{row.from}</span>
+                <ArrowRight size={16} className='text-duck-ink/40' aria-hidden='true' />
+                <span className='rounded-full bg-duck-ink px-3 py-1.5 text-sm font-black text-white'>{row.to}</span>
+              </div>
+              <div className='mt-4'>
+                <p className='text-[10px] font-black uppercase tracking-[0.16em] text-duck-ink/45'>Data</p>
+                <code className='mt-1 block break-words rounded-xl bg-white px-3 py-2 text-xs font-bold text-duck-ink'>{row.data}</code>
+              </div>
+              <div className='mt-4'>
+                <p className='text-[10px] font-black uppercase tracking-[0.16em] text-duck-ink/45'>Waarom</p>
+                <p className='mt-1 text-sm font-semibold leading-relaxed text-duck-ink/65'>{row.reason}</p>
+              </div>
+            </article>
+          ))}
+        </div>
+
+        <div className='hidden overflow-x-auto md:block'>
           <table className='min-w-[760px] w-full text-left text-sm'>
             <thead className='bg-duck-bgLight text-[10px] font-black uppercase tracking-[0.16em] text-duck-ink/50'>
               <tr><th className='px-6 py-4'>Van</th><th className='px-6 py-4'>Naar</th><th className='px-6 py-4'>Data</th><th className='px-6 py-4'>Waarom</th></tr>
@@ -196,6 +237,8 @@ export function AcademyLessonView({
           </table>
         </div>
       </section>
+
+      <PhaseHeader title='3. Oefenen' description='Controleer risico’s, onderzoek de echte code en test wat je onthoudt.' />
 
       <section className='grid gap-5 lg:grid-cols-2'>
         <div className='rounded-[2rem] border border-orange-200 bg-orange-50 p-6 shadow-sm md:p-8'>
