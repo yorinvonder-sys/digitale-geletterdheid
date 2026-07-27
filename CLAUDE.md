@@ -86,7 +86,7 @@ erna.
 | Haiku 4.5 | Bulkwerk, classificatie, goedkope read-only subagents. Let op: 200K context i.p.v. 1M. Nooit voor code die gemerged wordt. |
 | Sonnet 5 | Teksten, docs, styling, afgebakende componentwijzigingen, repetitief onderhoud. |
 | Opus 5 | Standaard voor echte codewijzigingen en alles in de kritieke domeinen. |
-| Fable 5 | **Nooit.** Duurder ($10/$50 vs $5/$25) én zwakker dan Opus 5 op codeerbenchmarks. |
+| Fable 5 | Niet gebruiken in deze repo (stand juli 2026). De securityclassifier geeft hoge false positives op auth-, RLS- en security-adjacent werk en routeert dan stil door naar een zwakker model — precies de kritieke domeinen van dit project, tegen dubbel tarief ($10/$50 vs $5/$25). Opus 5 scoort bovendien hoger op codeerbenchmarks. Herbeoordeel als de false-positive-rate aantoonbaar is opgelost. |
 
 ### Taakclassificatie
 
