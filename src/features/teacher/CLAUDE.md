@@ -4,9 +4,9 @@ This subtree is teacher-facing. Optimize for reliability, clarity, and evidencin
 
 ## Read first when editing teacher flows
 - `src/features/teacher/SLOClassOverview.tsx`
-- `components/TeacherDashboard.tsx`
-- `config/sloKerndoelen.ts`
-- `config/slo-kerndoelen-mapping.ts`
+- `src/features/teacher/TeacherDashboard.tsx`
+- `src/config/sloKerndoelen.ts`
+- `src/config/slo-kerndoelen-mapping.ts`
 - `business/nl-vo/didactische-onderbouwing.md`
 - `business/nl-vo/sales-assets/01-one-pager-vo.md`
 - `business/nl-vo/sales-assets/02-demo-script-vo.md`
@@ -19,7 +19,7 @@ This subtree is teacher-facing. Optimize for reliability, clarity, and evidencin
 
 ## Reporting rules
 - Do not break `calculateStudentKerndoelStats` assumptions.
-- Keep labels, codes, and percentages consistent with `config/sloKerndoelen.ts` and `config/slo-kerndoelen-mapping.ts`.
+- Keep labels, codes, and percentages consistent with `src/config/sloKerndoelen.ts` and `src/config/slo-kerndoelen-mapping.ts`.
 - If you change what counts as completion, explain the impact on reporting.
 
 ## Security rules

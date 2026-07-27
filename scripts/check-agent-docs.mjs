@@ -11,12 +11,15 @@
  * Wat het doet: leest de documenten in DOCS, verzamelt elke backtick-span die op een
  * repo-relatief pad lijkt, en controleert of dat pad op schijf bestaat.
  *
- * Herkenningsregel — een backtick-span telt als pad wanneer die
- *   - een `/` bevat (een losse bestandsnaam is prozashorthand, geen navigeerbaar pad), en
- *   - niet begint met een commando (npm, npx, node, git, ...), en
- *   - geen glob-, placeholder- of wildcardteken bevat (* < > { } | $).
- * Daardoor blijven `npm run doctor`, `duck-*`, `use*` en `src/features/<domain>/`
- * buiten beschouwing zonder dat je ze los hoeft uit te zonderen.
+ * Herkenningsregel — een backtick-span telt als pad wanneer die geen commando is
+ * (npm, npx, node, git, ...), geen glob- of placeholderteken bevat (* < > { } | $),
+ * en vervolgens:
+ *   - een `/` bevat, of
+ *   - eindigt op een broncode-extensie én in een mapgebonden document staat.
+ * Die tweede regel bestaat voor de feature-README's: daar is `Login.tsx` de normale
+ * schrijfwijze voor een buurbestand, geen proza. In de repo-brede documenten telt een
+ * losse bestandsnaam wél als prozashorthand — `App.tsx` in een zin over de
+ * entrypointketen is geen navigatiedoel.
  *
  * Overgeslagen worden paden die gitignored zijn, en paden die in .rgignore staan.
  * Beide categorieën komen voor in de "never broad-read"-lijsten van de kaarten:
@@ -30,15 +33,15 @@
  * Exit 0 = alle paden bestaan. Exit 1 = ten minste één dood pad, met vindplaats.
  */
 
-import { existsSync, readFileSync } from 'node:fs';
+import { existsSync, readFileSync, readdirSync } from 'node:fs';
 import { resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { spawnSync } from 'node:child_process';
 
 const repoRoot = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 
-/** Documenten die agents gebruiken om de repo te navigeren. */
-const DOCS = [
+/** Repo-brede documenten die agents gebruiken om te navigeren. */
+const ROOT_DOCS = [
   'ARCHITECTURE.md',
   'AGENTS.md',
   'CLAUDE.md',
@@ -47,6 +50,28 @@ const DOCS = [
   'docs/README.md',
   'docs/architecture/agent-context-strategy.md',
 ];
+
+/**
+ * Per-feature ingangen. De intake schrijft voor dat je na de router de README van
+ * de betreffende feature leest, dus die zijn navigatiedocumenten met hetzelfde
+ * vervalrisico. Dynamisch verzameld zodat een nieuwe feature vanzelf meedoet.
+ */
+function featureDocs() {
+  const featuresDir = resolve(repoRoot, 'src/features');
+  if (!existsSync(featuresDir)) return [];
+  return readdirSync(featuresDir, { withFileTypes: true })
+    .filter((entry) => entry.isDirectory())
+    .flatMap((entry) =>
+      ['README.md', 'CLAUDE.md']
+        .map((name) => `src/features/${entry.name}/${name}`)
+        .filter((relative) => existsSync(resolve(repoRoot, relative))),
+    );
+}
+
+const DOCS = [...ROOT_DOCS, ...featureDocs()];
+
+/** Extensies die een losse bestandsnaam in een mapgebonden document als pad markeren. */
+const FILE_EXTENSIONS = ['.ts', '.tsx', '.js', '.jsx', '.mjs', '.cjs', '.md', '.json', '.css'];
 
 /** Prefixen die een span als commando markeren in plaats van als pad. */
 const COMMAND_PREFIXES = ['npm ', 'npx ', 'node ', 'git ', 'rg ', 'supabase ', 'deno ', 'tsc '];
@@ -62,16 +87,17 @@ const IGNORED_PATHS = new Set([
   // Voorbeeld: 'docs/toekomstig-plan.md', // nog niet geschreven, gepland in RFC-12
 ]);
 
-function looksLikePath(span) {
+function looksLikePath(span, { folderScoped }) {
   if (!span || span.length > 120) return false;
   if (PLACEHOLDER_CHARS.test(span)) return false;
   if (COMMAND_PREFIXES.some((prefix) => span.startsWith(prefix))) return false;
   if (span.startsWith('http://') || span.startsWith('https://')) return false;
   // Een span met spaties is een zin of commando, geen pad.
   if (/\s/.test(span)) return false;
-  // Een losse bestandsnaam zonder map is prozashorthand ("zie `App.tsx`"), geen
-  // navigeerbaar pad. Een kaart hoort volledige paden te geven; die hebben een `/`.
-  return span.includes('/');
+  if (span.includes('/')) return true;
+  // In een mapgebonden document (feature-README, feature-CLAUDE.md) verwijst een losse
+  // bestandsnaam naar een buurbestand en is dus wél navigeerbaar.
+  return folderScoped && FILE_EXTENSIONS.some((ext) => span.endsWith(ext));
 }
 
 /**
@@ -104,13 +130,13 @@ function readRgIgnorePrefixes() {
     .map((line) => line.replace(/\/$/, ''));
 }
 
-function collectCandidates(content) {
+function collectCandidates(content, options) {
   const found = new Map(); // pad -> eerste regelnummer
   content.split('\n').forEach((line, index) => {
     const spans = line.match(/`([^`]+)`/g) ?? [];
     for (const raw of spans) {
       const span = raw.slice(1, -1).trim().replace(/[.,;:]$/, '');
-      if (!looksLikePath(span)) continue;
+      if (!looksLikePath(span, options)) continue;
       if (IGNORED_PATHS.has(span)) continue;
       if (!found.has(span)) found.set(span, index + 1);
     }
@@ -118,7 +144,7 @@ function collectCandidates(content) {
   return found;
 }
 
-const collected = []; // { doc, line, path, target }
+const collected = []; // { doc, line, path, target, docDir }
 let checkedDocs = 0;
 
 for (const doc of DOCS) {
@@ -128,10 +154,25 @@ for (const doc of DOCS) {
     continue;
   }
   checkedDocs += 1;
-  const candidates = collectCandidates(readFileSync(absolute, 'utf8'));
+  const docDir = dirname(doc);
+  const folderScoped = docDir !== '.' && docDir.startsWith('src/features/');
+  const candidates = collectCandidates(readFileSync(absolute, 'utf8'), { folderScoped });
   for (const [candidate, line] of candidates) {
-    collected.push({ doc, line, path: candidate, target: candidate.replace(/\/$/, '') });
+    collected.push({ doc, line, path: candidate, target: candidate.replace(/\/$/, ''), docDir });
   }
+}
+
+/**
+ * Een pad in een document mag repo-relatief zijn of relatief aan het document zelf.
+ * Een feature-README die naar `avatar/AvatarViewer.tsx` verwijst bedoelt zijn eigen
+ * buurmap, niet een map in de repo-root — beide vormen zijn legitiem en navigeerbaar.
+ */
+function pathResolves(entry) {
+  if (existsSync(resolve(repoRoot, entry.target))) return true;
+  if (entry.docDir && entry.docDir !== '.') {
+    return existsSync(resolve(repoRoot, entry.docDir, entry.target));
+  }
+  return false;
 }
 
 const gitIgnored = selectGitIgnored([...new Set(collected.map((entry) => entry.target))]);
@@ -141,9 +182,7 @@ const isNoise = (target) =>
   rgPrefixes.some((prefix) => target === prefix || target.startsWith(`${prefix}/`));
 
 const considered = collected.filter((entry) => !isNoise(entry.target));
-const dead = considered.filter(
-  (entry) => entry.missingDoc || !existsSync(resolve(repoRoot, entry.target)),
-);
+const dead = considered.filter((entry) => entry.missingDoc || !pathResolves(entry));
 
 if (dead.length === 0) {
   const skipped = collected.length - considered.length;

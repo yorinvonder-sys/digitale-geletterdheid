@@ -9,18 +9,20 @@ on the smallest useful slice of DGSkills.
 2. Look the task up in `.claude/skill-router.md` — a task-to-path index that
    names the files to open. Use `ARCHITECTURE.md` when you need the structural
    picture instead: repo layout, entrypoints, verification commands.
-3. Read the local README in the feature folder, then only the specific
-   component, hook, or service the task needs.
+3. Read the `README.md` in the feature folder. Every folder under
+   `src/features/` has one: what lives there, the entry file, where its data
+   comes from, and its risk class. Then open only the specific component, hook,
+   or service the task needs.
 4. Use path-scoped `rg`, `git status --short -- <paths>`, and
    `git diff -- <paths>`.
 
 Do not start by reading baton files, progress logs, screenshots, generated
 build output, broad business docs, or all feature folders.
 
-Every path named in this file, in `.claude/skill-router.md`, and in
-`ARCHITECTURE.md` is verified by `npm run check:agent-docs`. If a path here
-does not resolve, that is a bug in this document — report it rather than
-searching around it.
+Every path named in this file, in `.claude/skill-router.md`, in
+`ARCHITECTURE.md`, and in each feature `README.md` is verified by
+`npm run check:agent-docs`. If a path does not resolve, that is a bug in the
+document — report it rather than searching around it.
 
 ## Task-To-Context Map
 

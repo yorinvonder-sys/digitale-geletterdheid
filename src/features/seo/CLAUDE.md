@@ -7,9 +7,9 @@ This subtree contains search-facing landing pages and topical authority pages.
 - `business/nl-vo/didactische-onderbouwing.md`
 - `business/nl-vo/slo-gap-analyse.md`
 - `business/nl-vo/compliance/legal-matrix.md`
-- `config/curriculum.ts`
-- `config/sloKerndoelen.ts`
-- `config/slo-kerndoelen-mapping.ts`
+- `src/config/curriculum.ts`
+- `src/config/sloKerndoelen.ts`
+- `src/config/slo-kerndoelen-mapping.ts`
 
 ## Security rules
 - SEO-pagina's mogen geen interne paden, API-structuur, of technische implementatiedetails bevatten.
