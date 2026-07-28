@@ -3,20 +3,20 @@
 This subtree contains learner-facing missions. Treat mission work as curriculum work, not just UI work.
 
 ## Read first when editing mission flows
-- `config/curriculum.ts`
-- `config/agents.tsx`
-- `config/slo-kerndoelen-mapping.ts`
-- `components/ProjectZeroDashboard.tsx`
-- `hooks/useMissionAutoSave.ts`
+- `src/config/curriculum.ts`
+- `src/config/agents/`
+- `src/config/slo-kerndoelen-mapping.ts`
+- `src/features/student/ProjectZeroDashboard.tsx`
+- `src/hooks/useMissionAutoSave.ts`
 - `business/nl-vo/didactische-onderbouwing.md`
 - inspect at least one comparable mission component in this folder
 
 ## Mission invariants
-- Every mission must fit a real leerjaar + periode in `config/curriculum.ts`.
+- Every mission must fit a real leerjaar + periode in `src/config/curriculum.ts`.
 - Every mission must have coherent identity across:
-  - `config/agents.tsx`
-  - `config/slo-kerndoelen-mapping.ts`
-  - learner visibility in `components/ProjectZeroDashboard.tsx`
+  - `src/config/agents/`
+  - `src/config/slo-kerndoelen-mapping.ts`
+  - learner visibility in `src/features/student/ProjectZeroDashboard.tsx`
 - Do not create a mission that exists in UI but not in SLO mapping, or vice versa.
 
 ## Didactic rules
