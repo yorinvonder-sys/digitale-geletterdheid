@@ -1,0 +1,4 @@
+interface:
+  display_name: "Opdracht Live Check"
+  short_description: "Speel en check opdrachten live als leerling"
+  default_prompt: "Use $opdracht-live-check to play this DGSkills assignment live as a student and report whether the UI and flow are correct."
