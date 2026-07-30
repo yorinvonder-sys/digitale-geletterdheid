@@ -15,7 +15,7 @@ Bulk-browserwerk loopt hard op. Harde regels:
 
 - Eén sub-agent per **(missie × leerling)**. Nooit meerdere agents voor dezelfde combinatie.
 - De sub-agent geeft **uitsluitend compact JSON** terug. Geen a11y-dumps, geen schermteksten, geen bestandsinhoud in de terugkoppeling — die horen op schijf.
-- Alle ruwe bewijsstukken (snapshots, screenshots) schrijft de agent zelf naar schijf. De orchestrator leest ze niet in, alleen de paden.
+- Alle ruwe bewijsstukken (a11y-snapshots, metingen, telemetrie, actielijst) schrijft de agent zelf naar schijf. De orchestrator leest ze niet in, alleen de paden.
 - De orchestrator plakt nooit missie-code tussen agents door — alleen missie-id, route, bekende bevindingen en het klasprofiel.
 - Bekende bevindingen geef je **samengevat** mee (titel + één regel), nooit hele rapporten.
 
