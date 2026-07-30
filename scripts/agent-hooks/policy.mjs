@@ -59,24 +59,13 @@ export function buildUserPromptContext(input = {}) {
     return null;
   }
 
+  // Kort gehouden: de volledige werkwijze staat in AGENTS.md en is al bij
+  // sessiestart geladen. Dit is alleen de herinnering op het moment zelf.
   return {
     additionalContext: [
-      'DGSkills UserPromptSubmit safety gate for code/config changes:',
-      '',
-      'Begin elke assistant-reply met deze afstemmingscheck, vóór planning, uitleg, toolgebruik of edits:',
-      '- Decide if the request is clear enough to execute safely.',
-      '- If vague, broad, risky, or multi-interpretation, ask critical clarifying questions / kritische vragen and wait for the answer.',
-      '- Prefer one question at a time; include a recommended answer when useful.',
-      '- If no question is needed, briefly say why it is clear enough to proceed.',
-      '',
-      'Before editing, give this short block in normal Dutch:',
-      'Plan: what changes.',
-      'Risico: Groen / Geel / Rood, plus one sentence why.',
-      'Waarschijnlijke bestanden: likely files/areas.',
-      'Bewijs: test, build, browser check, or manual check.',
-      '',
-      'Keep scope small. Treat auth, admin, Supabase, AI endpoints, secrets, payments, invoices, and personal data as Rood risk.',
-      'After changes: explain what changed, why, changed files, checks run, and remaining risk.',
+      'DGSkills safety gate (code/config):',
+      'Vóór een edit één kort blok — Plan: wat verandert. Risico: Groen/Geel/Rood + waarom. Waarschijnlijke bestanden. Bewijs: test, build of check.',
+      'Rood = auth, admin, Supabase, AI-endpoints, secrets, betalingen, leerlinggegevens. Houd scope klein; ná de edit: wat veranderde + restrisico.',
     ].join('\n'),
   };
 }
