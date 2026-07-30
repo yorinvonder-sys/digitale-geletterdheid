@@ -145,10 +145,15 @@ REGELS VOOR JOU:
             chatSessionRef.current = createChatSession(roleId, systemInstruction, {
                 localMissionContext: assistantMissionContext,
             });
-            // Add welcome message
+            // Welcome message — the iPad/Week 1 greeting only fits the Week 1 onboarding
+            // context; other missions get a neutral greeting so the buddy never introduces
+            // itself with an unrelated mission's content.
+            const isWeek1 = context?.week === 1;
             setMessages([{
                 role: 'model',
-                text: "Hoi! 👋 Ik ben je AI-buddy. Voor Week 1 help ik je met de apps op je iPad (Magister, OneDrive, Word, PowerPoint). Het echte werk doe je in die apps, en ik help je bij elke stap. Vertel me: bij welke app ben je nu?",
+                text: isWeek1
+                    ? "Hoi! 👋 Ik ben je AI-buddy. Voor Week 1 help ik je met de apps op je iPad (Magister, OneDrive, Word, PowerPoint). Het echte werk doe je in die apps, en ik help je bij elke stap. Vertel me: bij welke app ben je nu?"
+                    : "Hoi! 👋 Ik ben je AI-buddy. Ik help je met deze opdracht — ik geef geen kant-en-klare antwoorden, maar hints en uitleg. Waar loop je op vast?",
                 timestamp: new Date()
             }]);
         }

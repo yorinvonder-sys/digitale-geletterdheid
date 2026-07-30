@@ -69,8 +69,15 @@ export const DataVoorDataMission: React.FC<Props> = ({ onBack, onComplete }) => 
         { phase: 'intro', currentRound: 0, choices: [] }
     );
     const phase = saved.phase;
-    const currentRound = saved.currentRound;
-    const choices = saved.choices;
+    // Defensief: opgeslagen state kan corrupt zijn (bv. herladen tijdens de feedback
+    // van een ronde, waardoor choices méér items kan bevatten dan er ROUNDS zijn).
+    // Clamp choices en currentRound binnen de grenzen zodat ROUNDS[i] nooit undefined
+    // is bij het lezen — anders crasht de missie permanent (localStorage-corruptie).
+    const choices = (Array.isArray(saved.choices) ? saved.choices : []).slice(0, ROUNDS.length);
+    const currentRound = Math.min(
+        Math.max(0, Number.isFinite(saved.currentRound) ? saved.currentRound : 0),
+        ROUNDS.length - 1,
+    );
     const setPhase = (p: DataVoorDataState['phase']) => setSaved(prev => ({ ...prev, phase: p }));
     const setCurrentRound = (updater: React.SetStateAction<number>) => setSaved(prev => ({
         ...prev,
@@ -105,6 +112,31 @@ export const DataVoorDataMission: React.FC<Props> = ({ onBack, onComplete }) => 
         };
     }, []);
 
+    // Repareer corrupte opgeslagen state één keer bij mount: als de bewaarde
+    // choices/currentRound buiten de grenzen liggen, schrijf de geclampte versie
+    // terug zodat de localStorage-corruptie definitief verdwijnt.
+    useEffect(() => {
+        const rawChoices = Array.isArray(saved.choices) ? saved.choices : [];
+        const needsRepair =
+            rawChoices.length !== choices.length ||
+            saved.currentRound !== currentRound;
+        if (needsRepair) {
+            setSaved(prev => ({ ...prev, choices, currentRound }));
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    // Herstel de "gekozen"-weergave na een reload: als de huidige ronde al een keuze
+    // heeft (choices.length > currentRound), toon dan de uitleg + "Volgende ronde"
+    // i.p.v. de keuzeknoppen opnieuw open te zetten.
+    const currentRoundAlreadyChosen = choices.length > currentRound;
+    useEffect(() => {
+        if (phase === 'auction' && currentRoundAlreadyChosen) {
+            setHasChosen(true);
+            setShowExplanation(true);
+        }
+    }, [phase, currentRound, currentRoundAlreadyChosen]);
+
     const refreshRoundStats = async () => {
         const stats = await getDataVoorDataRoundStats();
         setRoundStats(stats);
@@ -138,7 +170,10 @@ export const DataVoorDataMission: React.FC<Props> = ({ onBack, onComplete }) => 
     );
 
     const handleChoice = (choice: 'deal' | 'no-deal') => {
-        if (hasChosen) return;
+        // hasChosen is transient en reset bij herladen; choices.length > currentRound
+        // (persistent) voorkomt dat een al-gekozen ronde na een reload opnieuw een keuze
+        // toevoegt — dat liet choices voorbij ROUNDS groeien en corrumpeerde de state.
+        if (hasChosen || choices.length > currentRound) return;
         const nextChoices = [...choices, choice];
         setHasChosen(true);
         setChoices(nextChoices);
@@ -161,7 +196,8 @@ export const DataVoorDataMission: React.FC<Props> = ({ onBack, onComplete }) => 
     const getScore = () => {
         let score = 0;
         choices.forEach((choice, i) => {
-            const risk = ROUNDS[i].privacyRisk;
+            const risk = ROUNDS[i]?.privacyRisk;
+            if (!risk) return;
             if (choice === 'no-deal' && (risk === 'high' || risk === 'extreme')) score += 25;
             else if (choice === 'no-deal' && risk === 'medium') score += 15;
             else if (choice === 'deal' && risk === 'low') score += 10;
@@ -263,6 +299,10 @@ export const DataVoorDataMission: React.FC<Props> = ({ onBack, onComplete }) => 
 
     if (phase === 'auction') {
         const round = ROUNDS[currentRound];
+        // currentRound is geclampt, dus round is normaal altijd gedefinieerd. Mocht de
+        // state ondanks alles corrupt zijn, val dan veilig terug op het resultaat i.p.v.
+        // te crashen — de leerling zit zo nooit permanent vast.
+        if (!round) return null;
         const currentStat = roundStats[currentRound];
         return (
             <div className="min-h-screen bg-duck-bg text-duck-ink overflow-y-auto p-4 pb-safe">

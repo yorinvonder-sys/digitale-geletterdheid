@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ArrowLeft, Trophy, ChevronRight, Check, X, Brain, Sparkles, Search } from 'lucide-react';
 import { useMissionAutoSave } from '@/hooks/useMissionAutoSave';
 import { getMissionGoal } from '@/config/missionGoals';
@@ -76,8 +76,19 @@ export const FilterBubbleBreakerMission: React.FC<Props> = ({ onBack, onComplete
     const [showExplanation, setShowExplanation] = useState(false);
     const [activeFeed, setActiveFeed] = useState<'A' | 'B' | 'both'>('both');
 
+    // De score en answers-array worden persistent opgeslagen, maar selectedAnswer/showExplanation niet.
+    // Een reeds gescoorde vraag (answers.length > currentChallenge) mag bij herladen niet opnieuw
+    // scoren. Herstel daarom de "beantwoord"-weergave i.p.v. de vraag weer open te zetten.
+    const alreadyAnswered = answers.length > currentChallenge;
+    useEffect(() => {
+        if (alreadyAnswered) {
+            setSelectedAnswer(CHALLENGES[currentChallenge].correctIndex);
+            setShowExplanation(true);
+        }
+    }, [currentChallenge, alreadyAnswered]);
+
     const handleAnswer = (index: number) => {
-        if (selectedAnswer !== null) return;
+        if (selectedAnswer !== null || alreadyAnswered) return;
         setSelectedAnswer(index);
         const isCorrect = index === CHALLENGES[currentChallenge].correctIndex;
         if (isCorrect) setScore(s => s + 20);

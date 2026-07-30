@@ -21,6 +21,8 @@ interface DeepfakeDetectorState {
     score: number;
     streak: number;
     correctAnswers: number;
+    /** IDs of challenges already scored — prevents re-scoring the same challenge after a reload. */
+    scoredChallengeIds: string[];
     showIntro: boolean;
     showLevelComplete: boolean;
     showMissionComplete: boolean;
@@ -261,13 +263,14 @@ export const DeepfakeDetectorMission: React.FC<Props> = ({ onBack, onComplete, v
             score: 0,
             streak: 0,
             correctAnswers: 0,
+            scoredChallengeIds: [],
             showIntro: true,
             showLevelComplete: false,
             showMissionComplete: false,
         }
     );
 
-    const { currentLevel, currentChallengeIndex, score, streak, correctAnswers, showIntro, showLevelComplete, showMissionComplete } = state;
+    const { currentLevel, currentChallengeIndex, score, streak, correctAnswers, scoredChallengeIds, showIntro, showLevelComplete, showMissionComplete } = state;
 
     // Transient UI state - niet opgeslagen
     const [answer, setAnswer] = useState<'real' | 'ai' | null>(null);
@@ -290,6 +293,12 @@ export const DeepfakeDetectorMission: React.FC<Props> = ({ onBack, onComplete, v
         setAnswer(userAnswer);
         setShowFeedback(true);
 
+        // Idempotency: a challenge may only score once. After a reload the transient
+        // feedback state is gone, so without this guard the same challenge could be
+        // answered — and scored — again, inflating the total.
+        const alreadyScored = (currentChallenge && (scoredChallengeIds ?? []).includes(currentChallenge.id));
+        if (alreadyScored) return;
+
         const isCorrect = (userAnswer === 'ai') === currentChallenge.isAIGenerated;
 
         if (isCorrect) {
@@ -299,9 +308,14 @@ export const DeepfakeDetectorMission: React.FC<Props> = ({ onBack, onComplete, v
                 score: prev.score + 100 + streakBonus,
                 streak: prev.streak + 1,
                 correctAnswers: prev.correctAnswers + 1,
+                scoredChallengeIds: [...(prev.scoredChallengeIds ?? []), currentChallenge.id],
             }));
         } else {
-            setState(prev => ({ ...prev, streak: 0 }));
+            setState(prev => ({
+                ...prev,
+                streak: 0,
+                scoredChallengeIds: [...(prev.scoredChallengeIds ?? []), currentChallenge.id],
+            }));
         }
     };
 

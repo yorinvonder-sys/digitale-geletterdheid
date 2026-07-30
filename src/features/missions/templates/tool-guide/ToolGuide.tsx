@@ -483,10 +483,16 @@ const ToolGuideInner: React.FC<ToolGuideProps> = ({
 
     function handleCheckItem(stepId: string, itemId: string) {
         const key = `${stepId}-${itemId}`;
-        setState((prev) => ({
-            ...prev,
-            checklist: { ...prev.checklist, [key]: !prev.checklist[key] },
-        }));
+        setState((prev) => {
+            // Bewijs-item is een eenrichtings-bevestiging: alleen aanvinken, nooit
+            // afvinken. Zo is de handler idempotent en dubbelklik-veilig — twee
+            // snelle klikken heffen elkaar niet op en corrumperen de voortgang niet.
+            if (prev.checklist[key]) return prev;
+            return {
+                ...prev,
+                checklist: { ...prev.checklist, [key]: true },
+            };
+        });
     }
 
     function handleToggleTeacherCheck(stepId: string) {
