@@ -41,17 +41,23 @@ Ontbreekt input, gebruik de default en noteer die in de samenvatting. Vraag niet
 | `scout` | een heel leerjaar (~33 missies) | 1 (slot A) | Snel blokkades vinden |
 | `deep` | één missie | alle 12 | Een missie die je echt wilt begrijpen |
 
-## Stap 1 — Dev-server starten
+## Stap 1 — Dev-servers starten (één baan per leerling)
 
-`preview_start` met `{name: "ai-classroom-dev"}` (poort 3011). Ontbreekt die configuratie — `.claude/launch.json` staat in `.gitignore`, dus op een verse machine bestaat hij niet — voeg hem toe of start handmatig:
+Leerlingen draaien parallel, en elke leerling heeft een **eigen poort** nodig. Reden: `localStorage` is gedeeld per origin. Twee leerlingen op dezelfde poort die dezelfde missie spelen, overschrijven elkaars `dgskills_mission_<missionId>`-sleutel — en dan is de herstel-test (stap 5, punt 6) stilletjes waardeloos. Eén server per baan lost dat volledig op; empirisch geverifieerd: een waarde geschreven op 3011 is op 3012 niet zichtbaar.
+
+Start drie banen met `preview_start`: `ai-classroom-dev` (3011), `ai-classroom-dev-2` (3012), `ai-classroom-dev-3` (3013). Elke aanroep geeft een eigen `tabId` terug — noteer welke baan bij welke leerling hoort.
+
+`.claude/launch.json` staat in `.gitignore`, dus op een verse machine bestaan die configuraties niet. Voeg ze toe of start handmatig:
 
 ```
-node <repo>/node_modules/.bin/vite --port 3011 --root <worktree>
+node <repo>/node_modules/.bin/vite --port 3011
 ```
 
-met `VITE_SUPABASE_URL=https://dummy.supabase.co` en `VITE_SUPABASE_ANON_KEY=dummy-anon-key-not-real` in de omgeving. Zonder die twee gooit `src/services/supabase.ts` bij import en is de pagina leeg.
+met `cwd` op de worktree-root, en `VITE_SUPABASE_URL=https://dummy.supabase.co` plus `VITE_SUPABASE_ANON_KEY=dummy-anon-key-not-real` in de omgeving. Zonder die twee gooit `src/services/supabase.ts` bij import en blijft de pagina leeg. Gebruik **geen** `--root`-vlag: die bestaat niet in de Vite-versie van dit project en de server start dan niet op.
 
-**Verificatie vóór je verder gaat:** open `http://localhost:3011/dev/mission-preview?mission=mail-detective` en bevestig dat het introscherm (`[data-qa="mission-intro"]`) verschijnt. Zie je niets, dan compileert de dev-server de grote preview-chunk nog — wacht tot de globale "Laden..."-indicator wég is. Screenshotten tijdens die spinner levert waardeloos bewijs.
+Drie tot vier banen is het verstandige maximum — elke dev-server kost een paar honderd MB.
+
+**Verificatie vóór je verder gaat:** open op elke baan `/dev/mission-preview?mission=mail-detective` en bevestig dat `[data-qa="mission-intro"]` verschijnt. Zie je niets, dan compileert de dev-server de grote preview-chunk nog — wacht tot de globale "Laden..."-indicator wég is. Screenshotten tijdens die spinner levert waardeloos bewijs.
 
 ## Stap 2 — Missielijst en metadata bepalen
 
@@ -99,14 +105,20 @@ Viewport = `preferredViewports[0]` van het profiel. `ipad-iris` draait altijd **
 
 Vóór de runs: haal voor elke missie op wat al bekend is.
 
-- `business/dgskills-reviews/review-status.json` → `openEscalations` van deze missie
+- `business/dgskills-reviews/review-status.json` → `openEscalations` van deze missie. **Let op:** dat bestand is een **array** van entries met een `missionId`-veld, niet een object met missie-ids als sleutels (de beschrijving in `dgskills-batch-review` klopt daar niet). Zoek dus met `.find(x => x.missionId === id)`.
 - `business/dgskills-reviews/{missionId}-*.md` → de kopjes van bestaande bevindingen
 
 Vat samen tot maximaal 10 regels van één zin en geef die mee in de opdracht van elke sub-agent. Elke bevinding krijgt straks `novel: true|false`. **Alleen `novel: true` telt mee in het oordeel en haalt de samenvatting.** Zo groeit de bestaande stapel openstaande bevindingen niet.
 
 ## Stap 5 — De runs (fan-out)
 
-Eén sub-agent per (missie × leerling), `subagent_type: "general-purpose"`, `model: "sonnet"`. Draai ze **sequentieel** zolang alle agents dezelfde browser delen — parallelle Playwright-sessies vechten om dezelfde pagina en leveren vervuild bewijs.
+Eén sub-agent per (missie × leerling), `subagent_type: "general-purpose"`, `model: "sonnet"`.
+
+**Draai de drie leerlingen van één missie parallel, en de missies achter elkaar.** Elke leerling krijgt een eigen baan (poort + `tabId`) uit stap 1. Zo kost een golf van 8 missies 8 stappen in plaats van 24 runs.
+
+Twee harde regels:
+- **Nooit twee leerlingen op dezelfde poort.** Dan delen ze `localStorage` en vervuilen ze elkaars voortgang.
+- Geef elke agent expliciet zijn `tabId` mee. Alle browsertools accepteren `tabId` en respecteren die — geverifieerd voor pagina-inspectie, JavaScript én screenshots. Zonder expliciete `tabId` werkt een agent op het tabblad dat toevallig vooraan staat.
 
 ### Opdrachtsjabloon voor de sub-agent
 
@@ -123,7 +135,8 @@ Eén sub-agent per (missie × leerling), `subagent_type: "general-purpose"`, `mo
 >
 > **Verplicht bewijs**, weg te schrijven naar `~/dgskills-audit/ai-classroom/<missionId>/<personaId>/`:
 > 1. een a11y-snapshot bij elk beslismoment (`snapshot-<n>.txt`) — dit is het primaire bewijs, niet de screenshot
-> 2. drie screenshots: intro, halverwege, eind
+> 2. bij elke snapshot een korte beschrijving van wat je visueel zag. **Sla geen PNG's op** — de browsertools geven een screenshot alleen inline terug, er is geen pad naar schijf. Bekijk ze wel voor je eigen oordeel; leg de waarneming vast in tekst.
+> 2b. **Meten in plaats van kijken.** Voor alles wat een getal heeft, gebruik `javascript_tool` en noteer de uitkomst: knopformaten met `getBoundingClientRect()` (drempel 44×44), contrast en tekengrootte met `getComputedStyle`, en of een element binnen de viewport valt. Een gemeten waarde is `OBJECTIVE`; "de knop leek me klein" is dat niet.
 > 3. consolefouten en mislukte verzoeken (alleen HTTP ≥400 en `requestfailed`) in `telemetry.json`
 > 4. `actions.json` — wat je in welke volgorde deed
 > 5. verscheen `[data-qa="mission-completion"]`? Zo ja: de snapshot die dat aantoont
@@ -223,7 +236,7 @@ Vermeld in `## Risico's` altijd wat **niet** getest is: serveropslag, XP en dash
 
 | Verleiding | Waarom fout |
 |---|---|
-| Agents parallel op één browser draaien om tijd te winnen | Ze vechten om dezelfde pagina; bewijs raakt vervuild en onreproduceerbaar |
+| Meerdere leerlingen op dezelfde poort draaien om servers te besparen | Ze delen `localStorage` en overschrijven elkaars missievoortgang; de herstel-test wordt dan stil onbetrouwbaar. Parallel draaien is prima — maar met één poort per leerling |
 | "De agent besluit het oordeel wel" | Het oordeel volgt de tabel in stap 6. Anders is geen enkele golf met een andere vergelijkbaar |
 | Een bevinding melden zonder bestandsverwijzing | Dan is het een gevoel, geen bevinding. Zonder bewijs melden we niet |
 | Alle bevindingen in de golfsamenvatting zetten | Yorin heeft al 88 openstaande bevindingen. De samenvatting is een beslistabel, geen ticketlijst |
