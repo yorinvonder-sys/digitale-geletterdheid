@@ -86,6 +86,7 @@ erna.
 | Sonnet 5 | Teksten, docs, styling, afgebakende componentwijzigingen, repetitief onderhoud. |
 | Opus 5 | Standaard voor echte codewijzigingen en alles in de kritieke domeinen. |
 | Fable 5 | Niet gebruiken in deze repo (stand juli 2026). De securityclassifier geeft hoge false positives op auth-, RLS- en security-adjacent werk en routeert dan stil door naar een zwakker model — precies de kritieke domeinen van dit project, tegen dubbel tarief ($10/$50 vs $5/$25). Opus 5 scoort bovendien hoger op codeerbenchmarks. Herbeoordeel als de false-positive-rate aantoonbaar is opgelost. |
+| DeepSeek Flash / Pro | Extern model zonder tool- of codebasetoegang, aangeroepen via `~/.claude/scripts/deepseek-{flash,pro}.sh`. Kies bij tekstwerk waarvan jij de context al hebt: commit- en PR-teksten uit een diff, changelogs, samenvattingen van logs of testuitvoer, documentatie uit meegeleverde code, een aanpak laten narekenen. Lever context via `--file`/`--stdin`, nooit uitgetypt in de prompt. **Nooit** voor auth, RLS, secrets, edge functions, compliance- of juridische teksten, en nooit voor iets met leerlinggegevens — alles wat je meestuurt verlaat de vertrouwensgrens. Output is een voorstel: Opus reviewt vóór commit of oplevering. De volledige regels staan in de globale model-workflowregels van de gebruiker, buiten deze repo. |
 
 ### Taakclassificatie
 
