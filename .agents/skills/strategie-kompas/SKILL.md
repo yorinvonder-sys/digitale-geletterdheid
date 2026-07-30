@@ -15,7 +15,7 @@ Use this skill to turn a DGSkills idea into a strategic decision. It is a pre-bu
 - Do not implement code or rewrite product copy from this skill alone.
 - Do not install or copy external PM skills as part of this skill.
 - Treat auth, admin, Supabase/RLS, AI endpoints, secrets, payments, invoices, exports, personal data, and minors' data as Rood.
-- If a claim touches AVG, DPIA, DPA, AI Act, minors' data, or school governance, route the claim through `dgskills-legal-compliance` before public use.
+- If a claim touches AVG, DPIA, DPA, AI Act, minors' data, or school governance, route the claim through `dgskills-jurist-check` before public use.
 - Prefer `small slice -> evidence -> ship -> next slice` over broad audits, big rewrites, or strategy theater.
 
 ## Strategy Sources

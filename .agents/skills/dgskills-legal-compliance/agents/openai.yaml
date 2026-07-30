@@ -1,4 +1,0 @@
-interface:
-  display_name: "DGSkills Legal Compliance"
-  short_description: "AVG and AI Act triage for Dutch schools"
-  default_prompt: "Use $dgskills-legal-compliance to review this DGSkills school-facing claim for AVG, AI Act, DPIA, DPA, and FG/DPO risks."
