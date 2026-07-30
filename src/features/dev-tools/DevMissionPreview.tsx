@@ -64,14 +64,17 @@ const DevMissionPreview: React.FC = () => {
     const startedParam = searchParams.get('started') === '1';
     const [agentRoleStarted, setAgentRoleStarted] = React.useState(startedParam);
 
-    React.useEffect(() => {
-        if (!resetPreview) return;
-
+    // Wissen moet tijdens de render gebeuren, niet in een effect: een missie die zijn
+    // eigen voortgang herstelt (useMissionAutoSave) leest localStorage al tijdens de
+    // render van het kind, dus vóór parent-effecten draaien.
+    const lastResetRef = React.useRef<string | null>(null);
+    if (resetPreview && lastResetRef.current !== missionId) {
+        lastResetRef.current = missionId;
         const directKey = `dgskills_mission_${missionId}`;
         Object.keys(window.localStorage)
             .filter((key) => key === directKey || key.endsWith(`_${missionId}`))
             .forEach((key) => window.localStorage.removeItem(key));
-    }, [missionId, resetPreview]);
+    }
 
     React.useEffect(() => {
         setAgentRoleStarted(startedParam);

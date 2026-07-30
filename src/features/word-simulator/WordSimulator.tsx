@@ -6,6 +6,7 @@ import { DocumentCanvas } from './DocumentCanvas';
 import { SimulatorState, DragItem, LevelConfig } from './types';
 import { MissionConclusion } from '@/features/missions/shared/MissionConclusion';
 import { getMissionGoal } from '@/config/missionGoals';
+import { useMissionAutoSave } from '@/hooks/useMissionAutoSave';
 import { MissionGoalBanner } from '../missions/templates/shared/MissionGoalBanner';
 import { ArrowLeft, Check, Eye, Search, Undo, X, Save, RotateCcw, RotateCw, ChevronDown, ZoomIn, ZoomOut, FileText, PanelLeft, Minus, Plus } from 'lucide-react';
 import type { VsoProfile } from '@/types';
@@ -24,8 +25,19 @@ export const WordSimulator: React.FC<WordSimulatorProps> = ({
     initialLevelIndex = 0,
     onProgressUpdate
 }) => {
-    // Game State
-    const [currentLevelIndex, setCurrentLevelIndex] = useState(initialLevelIndex);
+    // Progress persistence — werkt ongeacht welke parent de simulator mount
+    const { state: savedProgress, setState: setSavedProgress, clearSave } = useMissionAutoSave<{ levelIndex: number }>(
+        'layout-doctor',
+        { levelIndex: initialLevelIndex }
+    );
+
+    // Game State — herstel de verste voortgang (opgeslagen of via prop), altijd binnen bereik
+    const [currentLevelIndex, setCurrentLevelIndex] = useState(() => {
+        const saved = Number.isFinite(savedProgress?.levelIndex) ? savedProgress.levelIndex : 0;
+        const furthest = Math.max(saved, Number.isFinite(initialLevelIndex) ? initialLevelIndex : 0);
+        return Math.min(Math.max(furthest, 0), levels.length - 1);
+    });
+    const [saveConfirmed, setSaveConfirmed] = useState(false);
     const [showConclusion, setShowConclusion] = useState(false);
     const [showSuccessFeedback, setShowSuccessFeedback] = useState(false);
     const [autoRedirectCountdown, setAutoRedirectCountdown] = useState(3);
@@ -92,7 +104,19 @@ export const WordSimulator: React.FC<WordSimulatorProps> = ({
         }
     }, [showSuccessFeedback, autoRedirectCountdown]);
 
+    // Verberg de opslag-bevestiging automatisch weer
+    useEffect(() => {
+        if (!saveConfirmed) return;
+        const timer = setTimeout(() => setSaveConfirmed(false), 2000);
+        return () => clearTimeout(timer);
+    }, [saveConfirmed]);
+
     // --- ACTIONS ---
+
+    const handleSave = () => {
+        setSavedProgress({ levelIndex: currentLevelIndex });
+        setSaveConfirmed(true);
+    };
 
     const handleSimulatorAction = (action: string, payload?: any) => {
         // Focus the editor before any text action to ensure execCommand works
@@ -486,6 +510,19 @@ export const WordSimulator: React.FC<WordSimulatorProps> = ({
         return () => window.removeEventListener('keydown', handleKeyDown);
     }, [selectedImageId]);
 
+    // Paginanummer-dialoog sluiten met Escape
+    useEffect(() => {
+        if (!showPageNumberDialog) return;
+        const handleEscape = (e: KeyboardEvent) => {
+            if (e.key === 'Escape') {
+                e.preventDefault();
+                setShowPageNumberDialog(false);
+            }
+        };
+        window.addEventListener('keydown', handleEscape);
+        return () => window.removeEventListener('keydown', handleEscape);
+    }, [showPageNumberDialog]);
+
     const checkLevelSuccess = (content: string, imgs: DragItem[], currentState: SimulatorState, hasIds?: boolean, pagePos?: { vertical: 'top' | 'bottom'; horizontal: 'left' | 'center' | 'right' } | null) => {
         let isSuccess = false;
 
@@ -528,10 +565,16 @@ export const WordSimulator: React.FC<WordSimulatorProps> = ({
         const nextIndex = currentLevelIndex + 1;
         if (nextIndex < levels.length) {
             setCurrentLevelIndex(nextIndex);
+            setSavedProgress({ levelIndex: nextIndex });
             if (onProgressUpdate) {
                 onProgressUpdate(nextIndex);
             }
         } else {
+            // Missie klaar: eerst de bewaarde stand terugzetten naar casus 1, dan wissen.
+            // Zonder die reset schrijft de auto-save bij het verlaten van het diploma
+            // de laatste casus terug, waardoor de missie op 4/4 zou heropenen.
+            setSavedProgress({ levelIndex: 0 });
+            clearSave();
             setShowConclusion(true);
             if (onLevelComplete) onLevelComplete(1);
         }
@@ -570,7 +613,12 @@ export const WordSimulator: React.FC<WordSimulatorProps> = ({
                                 <span className="hidden sm:inline">Dashboard</span>
                             </button>
                         )}
-                        <button className="flex items-center justify-center w-6 h-6 hover:bg-white/15 rounded-sm transition-colors" title="Opslaan">
+                        <button
+                            onClick={handleSave}
+                            className="flex items-center justify-center w-6 h-6 hover:bg-white/15 rounded-sm transition-colors"
+                            title="Opslaan"
+                            aria-label="Voortgang opslaan"
+                        >
                             <Save size={12} />
                         </button>
                         <button className="flex items-center justify-center w-6 h-6 hover:bg-white/15 rounded-sm transition-colors" title="Ongedaan maken">
@@ -1010,6 +1058,18 @@ export const WordSimulator: React.FC<WordSimulatorProps> = ({
                             Nu Doorgaan <Check size={20} />
                         </button>
                     </div>
+                </div>
+            )}
+
+            {/* OPSLAG-BEVESTIGING */}
+            {saveConfirmed && (
+                <div
+                    role="status"
+                    aria-live="polite"
+                    className="fixed bottom-8 right-8 z-[210] flex items-center gap-2 rounded-xl bg-lab-sage px-4 py-3 text-white shadow-2xl animate-in fade-in slide-in-from-bottom-2 duration-200"
+                >
+                    <Check size={16} />
+                    <span className="text-sm font-bold">Voortgang opgeslagen</span>
                 </div>
             )}
         </div>
