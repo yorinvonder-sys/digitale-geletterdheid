@@ -7,9 +7,14 @@ interface FollowUpCardProps {
     onComplete: (correct: boolean) => void;
     /** Visueel thema — 'light' voor ScenarioEngine, 'dark' voor PuzzleLab */
     theme?: 'light' | 'dark';
+    /**
+     * Punten die deze vraag bijdraagt aan de rondescore (niet bovenop, maar als
+     * onderdeel ervan). Bij > 0 ziet de leerling dat het antwoord meetelt.
+     */
+    scoreWeight?: number;
 }
 
-export const FollowUpCard: React.FC<FollowUpCardProps> = ({ followUp, onComplete, theme = 'light' }) => {
+export const FollowUpCard: React.FC<FollowUpCardProps> = ({ followUp, onComplete, theme = 'light', scoreWeight = 0 }) => {
     const [selected, setSelected] = useState<number | null>(null);
     const answered = selected !== null;
     const correct = selected === followUp.correctIndex;
@@ -41,11 +46,15 @@ export const FollowUpCard: React.FC<FollowUpCardProps> = ({ followUp, onComplete
                 <span className="text-base">🧠</span>
                 <span className={`text-xs font-black ${textMain}`} style={fontBody}>
                     Verdiepingsvraag
-                    {followUp.bonusPoints > 0 && (
+                    {followUp.bonusPoints > 0 ? (
                         <span className={`ml-1.5 font-bold ${isLight ? 'text-duck-ink' : 'text-duck-acid'}`}>
                             +{followUp.bonusPoints} bonus
                         </span>
-                    )}
+                    ) : scoreWeight > 0 ? (
+                        <span className={`ml-1.5 font-bold ${isLight ? 'text-duck-ink' : 'text-duck-acid'}`}>
+                            telt mee voor {scoreWeight} punten
+                        </span>
+                    ) : null}
                 </span>
             </div>
 

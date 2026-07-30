@@ -39,6 +39,13 @@ export interface ScenarioRound {
     rejectLabel?: string;
     /** Optional follow-up question after the main round */
     followUp?: FollowUpQuestion;
+    /**
+     * Punten binnen `maxScore` die gereserveerd zijn voor de followUp-vraag.
+     * Bij > 0 telt de followUp mee in de zichtbare score: de itemscore wordt
+     * geschaald naar `maxScore - followUpWeight`, en een goed followUp-antwoord
+     * levert de resterende punten op. Weggelaten of 0 = ongewijzigd gedrag.
+     */
+    followUpWeight?: number;
 }
 
 export interface ScenarioEngineConfig {

@@ -68,6 +68,7 @@ export const BinaryChoiceRound: React.FC<{
                                         data-qa="scenario-binary-accept"
                                         data-scenario-item-id={item.id}
                                         aria-label={`${acceptLabel}: ${item.title}`}
+                                        aria-pressed={isAccepted}
                                         onClick={() => onChoice(item.id, true)}
                                         className={`flex-1 min-h-[44px] py-2 rounded-lg text-xs font-bold transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-acid/40 ${
                                             isAccepted
@@ -82,6 +83,7 @@ export const BinaryChoiceRound: React.FC<{
                                         data-qa="scenario-binary-reject"
                                         data-scenario-item-id={item.id}
                                         aria-label={`${rejectLabel}: ${item.title}`}
+                                        aria-pressed={isRejected}
                                         onClick={() => onChoice(item.id, false)}
                                         className={`flex-1 min-h-[44px] py-2 rounded-lg text-xs font-bold transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-ink/30 ${
                                             isRejected
