@@ -38,6 +38,31 @@ export function scoreRound(round: ScenarioRound, selections: number[]): number {
     }
 }
 
+/** Schaal waarop de scoreRound-functies hierboven rekenen. */
+const ITEM_SCORE_SCALE = 25;
+
+/** Punten binnen round.maxScore die voor de followUp-vraag gereserveerd zijn. */
+export function followUpWeight(round: ScenarioRound): number {
+    if (!round.followUp) return 0;
+    return Math.max(0, Math.min(round.followUpWeight ?? 0, round.maxScore));
+}
+
+/**
+ * Maximaal haalbare itemscore. Zonder followUpWeight blijft dit de historische
+ * schaal van 25 die scoreRound hanteert, ook als round.maxScore daarvan afwijkt.
+ */
+export function itemsMaxScore(round: ScenarioRound): number {
+    const weight = followUpWeight(round);
+    return weight > 0 ? round.maxScore - weight : ITEM_SCORE_SCALE;
+}
+
+/** Itemscore geschaald naar itemsMaxScore. Zonder followUpWeight identiek aan scoreRound. */
+export function scaledItemScore(round: ScenarioRound, selections: number[]): number {
+    const base = scoreRound(round, selections);
+    if (followUpWeight(round) <= 0) return base;
+    return Math.round((base / ITEM_SCORE_SCALE) * itemsMaxScore(round));
+}
+
 export const FeedbackBanner: React.FC<{
     round: ScenarioRound;
     selections: number[];
@@ -45,13 +70,21 @@ export const FeedbackBanner: React.FC<{
     isLast: boolean;
     hideButton?: boolean;
 }> = ({ round, selections, onNext, isLast, hideButton }) => {
-    const score = scoreRound(round, selections);
-    const good = score >= 15; // 60% of 25
-    const perfect = score >= round.maxScore; // only a flawless answer earns the celebratory feedback
+    // rawScore staat altijd op de schaal 0–25; drempels horen daarop te rekenen.
+    // score/scoreMax zijn wat de leerling ziet en zijn geschaald wanneer de ronde
+    // punten reserveert voor de followUp-vraag.
+    const rawScore = scoreRound(round, selections);
+    const good = rawScore >= 15; // 60% of 25
+    const score = scaledItemScore(round, selections);
+    const scoreMax = itemsMaxScore(round);
+    // Alleen een foutloos antwoord verdient de feestelijke tekst. Vergelijk op de
+    // getoonde schaal (score/scoreMax), niet op round.maxScore: die bevat ook de
+    // punten die voor de followUp-vraag zijn gereserveerd, en die meet deze banner niet.
+    const perfect = scoreMax > 0 && score >= scoreMax;
 
-    // The config's `feedbackCorrect` often celebrates a flawless answer ("Perfect!"),
-    // so only show it at a perfect score. A good-but-imperfect answer gets an
-    // accurate, non-perfect message instead of a false "Perfect!".
+    // De config-tekst `feedbackCorrect` viert vaak een foutloos antwoord ("Perfect!"),
+    // dus die tonen we alleen bij een volledige itemscore. Goed-maar-niet-foutloos
+    // krijgt een kloppende tekst in plaats van een vals "Perfect!".
     const heading = perfect
         ? (round.feedbackCorrect ?? 'Helemaal goed!')
         : good
@@ -60,6 +93,7 @@ export const FeedbackBanner: React.FC<{
 
     return (
         <div
+            data-qa="scenario-feedback"
             className={`rounded-2xl border-2 p-4 mt-4 ${
                 good ? 'border-duck-ink bg-duck-ink/5' : 'border-duck-acid bg-duck-acid/5'
             }`}
@@ -78,12 +112,13 @@ export const FeedbackBanner: React.FC<{
                 style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
             >
                 Ronde score:{' '}
-                <strong className={good ? 'text-duck-ink' : 'text-duck-error'}>{score}/25</strong>
+                <strong className={good ? 'text-duck-ink' : 'text-duck-error'}>{score}/{scoreMax}</strong>
             </p>
             {!hideButton && (
                 <button
+                    data-qa="scenario-next"
                     onClick={onNext}
-                    className="w-full py-2.5 rounded-full font-black text-sm bg-gradient-to-r from-duck-acid to-duck-acid hover:from-duck-acid hover:to-duck-acid text-duck-ink transition-all duration-200"
+                    className="w-full min-h-[44px] py-2.5 rounded-full font-black text-sm bg-gradient-to-r from-duck-acid to-duck-acid hover:from-duck-acid hover:to-duck-acid text-duck-ink transition-all duration-200"
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                 >
                     {isLast ? 'Bekijk eindresultaat' : 'Volgende ronde →'}

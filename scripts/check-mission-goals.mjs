@@ -11,6 +11,17 @@ const expectIncludes = (path, needle, label) => {
   }
 };
 
+const expectMissionGoalRendering = (path, missionId) => {
+  const content = read(path);
+  const rendersDirectBanner = content.includes('MissionGoalBanner');
+  const rendersViaIntroScreen = content.includes('IntroScreen')
+    && /\bgoal\s*=\s*\{\s*MISSION_GOAL\s*\}/.test(content);
+
+  if (!rendersDirectBanner && !rendersViaIntroScreen) {
+    checks.push(`${path}: mist zichtbare missiedoelweergave voor ${missionId}`);
+  }
+};
+
 const templateGoals = [
   ['algorithm-architect', 'src/features/missions/templates/simulation-lab/configs/algorithm-architect.ts'],
   ['web-developer', 'src/features/missions/templates/builder-canvas/configs/web-developer.ts'],
@@ -46,7 +57,7 @@ for (const [missionId, path] of templateGoals) {
 
 for (const [missionId, path] of dedicatedGoals) {
   expectIncludes(path, 'MISSION_GOAL', `MISSION_GOAL voor ${missionId}`);
-  expectIncludes(path, 'MissionGoalBanner', `MissionGoalBanner voor ${missionId}`);
+  expectMissionGoalRendering(path, missionId);
 }
 
 expectIncludes(

@@ -7,9 +7,9 @@ This subtree contains search-facing landing pages and topical authority pages.
 - `business/nl-vo/didactische-onderbouwing.md`
 - `business/nl-vo/slo-gap-analyse.md`
 - `business/nl-vo/compliance/legal-matrix.md`
-- `config/curriculum.ts`
-- `config/sloKerndoelen.ts`
-- `config/slo-kerndoelen-mapping.ts`
+- `src/config/curriculum.ts`
+- `src/config/sloKerndoelen.ts`
+- `src/config/slo-kerndoelen-mapping.ts`
 
 ## Security rules
 - SEO-pagina's mogen geen interne paden, API-structuur, of technische implementatiedetails bevatten.
@@ -24,3 +24,9 @@ This subtree contains search-facing landing pages and topical authority pages.
 ## Output expectations
 - Explain both the SEO intent and the product truth behind the copy.
 - Flag any time-sensitive claim that may need human confirmation.
+
+## Model- en denkniveau (domeinaanvulling)
+Volg de standaard in de root `CLAUDE.md`. Voor SEO-pagina's geldt:
+- Reguliere content en keywords: **Sonnet 5 low/medium**.
+- Juridische, beleids- of tijdsgevoelige claims: minimaal **Opus 5 high** en
+  menselijke bevestiging vóór publicatie.

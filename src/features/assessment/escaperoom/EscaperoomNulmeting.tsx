@@ -44,20 +44,59 @@ const KAMER_STIJLEN: Record<string, { dot: string; dotActive: string; shadow: st
   },
 };
 
+// Voortgang per kamer in localStorage, zodat verversen niet de hele meting wist.
+// Alleen op het eigen apparaat; wordt gewist zodra de meting is afgerond.
+interface OpgeslagenVoortgang {
+  stap: EscaperoomStap;
+  scores: Partial<Record<string, KamerScore>>;
+  verstrekenTijd: number;
+}
+
+const voortgangKey = (variant: string) => `escaperoom-voortgang-${variant}`;
+
+function leesVoortgang(variant: string): OpgeslagenVoortgang | null {
+  try {
+    const raw = localStorage.getItem(voortgangKey(variant));
+    return raw ? (JSON.parse(raw) as OpgeslagenVoortgang) : null;
+  } catch {
+    return null;
+  }
+}
+
 export const EscaperoomNulmeting: React.FC<Props> = ({ variant = 'nulmeting', onComplete, onBack }) => {
-  const [stap, setStap] = useState<EscaperoomStap>('intro');
-  const [scores, setScores] = useState<Partial<Record<string, KamerScore>>>({});
-  const [startTijd, setStartTijd] = useState<number | null>(null);
-  const [verstrekenTijd, setVerstrekenTijd] = useState(0);
+  const [stap, setStap] = useState<EscaperoomStap>(() => leesVoortgang(variant)?.stap ?? 'intro');
+  const [scores, setScores] = useState<Partial<Record<string, KamerScore>>>(() => leesVoortgang(variant)?.scores ?? {});
+  const [startTijd, setStartTijd] = useState<number | null>(() => {
+    const voortgang = leesVoortgang(variant);
+    return voortgang ? Date.now() - voortgang.verstrekenTijd * 1000 : null;
+  });
+  const [verstrekenTijd, setVerstrekenTijd] = useState(() => leesVoortgang(variant)?.verstrekenTijd ?? 0);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const mountedRef = useRef(true);
 
-  // Cleanup on unmount
+  // Cleanup on unmount. De ref moet in de effect-body expliciet op true,
+  // anders laat StrictMode's dubbele mount hem permanent op false staan
+  // en vuurt handleKamerComplete nooit (dev-blokkade kamer 1 → 2).
   useEffect(() => {
+    mountedRef.current = true;
     return () => {
       mountedRef.current = false;
     };
   }, []);
+
+  // Bewaar voortgang bij elke kamer-/scorewissel (niet elke seconde — de
+  // timerstand van de lopende kamer gaat bij herstel dus iets terug)
+  useEffect(() => {
+    if (stap === 'intro') return;
+    try {
+      localStorage.setItem(
+        voortgangKey(variant),
+        JSON.stringify({ stap, scores, verstrekenTijd } as OpgeslagenVoortgang)
+      );
+    } catch {
+      // opslag niet beschikbaar — dan geen hervatten, verder geen gevolgen
+    }
+  }, [stap, scores, variant]);
 
   // Timer — pauzeer bij verborgen tab (Page Visibility API)
   useEffect(() => {
@@ -133,7 +172,11 @@ export const EscaperoomNulmeting: React.FC<Props> = ({ variant = 'nulmeting', on
 
     if (!k1 || !k2 || !k3 || !k4 || !k5) return null;
 
-    const overall = Math.round((k1.score + k2.score + k3.score + k4.score + k5.score) / 5);
+    // Weging naar aantal meetpunten per kamer (8/5/2/9/1): een domein met één
+    // vraag mag de eindscore niet even zwaar trekken als een domein met acht
+    const overall = Math.round(
+      (k1.score * 8 + k2.score * 5 + k3.score * 2 + k4.score * 9 + k5.score * 1) / 25
+    );
     const niveau: NulmetingResult['niveau'] =
       overall >= 75 ? 'gevorderd' : overall >= 40 ? 'basis' : 'starter';
 
@@ -224,7 +267,7 @@ export const EscaperoomNulmeting: React.FC<Props> = ({ variant = 'nulmeting', on
                 <p className="text-lab-muted text-xs">
                   {variant === 'eindmeting'
                     ? 'Je resultaten worden vergeleken met je nulmeting, zodat je je groei kunt zien.'
-                    : 'Dit is geen toets — er zijn geen foute antwoorden. We willen alleen weten waar je staat, zodat we je het beste kunnen helpen.'}
+                    : 'Dit is geen toets voor een cijfer. We willen zien wat je nu al kunt, zodat de missies straks goed bij jou passen.'}
                 </p>
               </div>
 
@@ -276,12 +319,12 @@ export const EscaperoomNulmeting: React.FC<Props> = ({ variant = 'nulmeting', on
         : { border: 'border-lab-coral', bg: 'bg-lab-coral', tekst: 'text-lab-coral', icon: 'text-lab-muted' };
     const niveauLabel = resultaat.niveau === 'gevorderd' ? 'Gevorderd' : resultaat.niveau === 'basis' ? 'Basis' : 'Starter';
 
-    const kamerResultaten = [
+    const kamerResultaten: { naam: string; score: number; indicatie?: boolean }[] = [
       { naam: 'Digitale Systemen', score: resultaat.kamers.digitaleSystemen.score },
       { naam: 'Media & AI', score: resultaat.kamers.mediaEnAI.score },
       { naam: 'Programmeren', score: resultaat.kamers.programmeren.score },
       { naam: 'Veiligheid & Privacy', score: resultaat.kamers.veiligheidPrivacy.score },
-      { naam: 'Welzijn & Maatschappij', score: resultaat.kamers.welzijnMaatschappij.score },
+      { naam: 'Welzijn & Maatschappij', score: resultaat.kamers.welzijnMaatschappij.score, indicatie: true },
     ];
 
     return (
@@ -299,7 +342,7 @@ export const EscaperoomNulmeting: React.FC<Props> = ({ variant = 'nulmeting', on
 
             <h1 className="text-2xl font-black text-center mb-1 text-lab-ink">Escaperoom Voltooid!</h1>
             <p className={`text-center font-bold ${niveauStijl.tekst} mb-6`}>
-              Niveau: {niveauLabel} — Score: {resultaat.overallScore}%
+              {variant === 'eindmeting' ? 'Niveau' : 'Jouw startpunt'}: {niveauLabel} — Score: {resultaat.overallScore}%
             </p>
 
             <div className="flex items-center justify-center gap-4 text-xs text-lab-muted mb-6">
@@ -312,7 +355,10 @@ export const EscaperoomNulmeting: React.FC<Props> = ({ variant = 'nulmeting', on
               {kamerResultaten.map((kamer, i) => (
                 <div key={i} className="bg-lab-cream rounded-xl p-3">
                   <div className="flex items-center justify-between mb-2">
-                    <span className="text-sm font-medium text-lab-muted">{kamer.naam}</span>
+                    <span className="text-sm font-medium text-lab-muted">
+                      {kamer.naam}
+                      {kamer.indicatie && <span className="text-[10px] italic ml-1">(indicatie — 1 vraag)</span>}
+                    </span>
                     <span className={`text-sm font-bold ${
                       kamer.score >= 75 ? 'text-lab-sage' : kamer.score >= 40 ? 'text-lab-gold' : 'text-lab-coral'
                     }`}>
@@ -326,9 +372,9 @@ export const EscaperoomNulmeting: React.FC<Props> = ({ variant = 'nulmeting', on
                       transition={{ duration: 0.8, delay: i * 0.15 }}
                       className={`h-full rounded-full ${
                         kamer.score >= 75
-                          ? 'bg-lab-coral'
+                          ? 'bg-lab-sage'
                           : kamer.score >= 40
-                            ? 'bg-lab-coral'
+                            ? 'bg-lab-gold'
                             : 'bg-lab-coral'
                       }`}
                     />
@@ -351,10 +397,13 @@ export const EscaperoomNulmeting: React.FC<Props> = ({ variant = 'nulmeting', on
             </div>
 
             <button
-              onClick={() => onComplete(resultaat)}
+              onClick={() => {
+                try { localStorage.removeItem(voortgangKey(variant)); } catch { /* geen opslag */ }
+                onComplete(resultaat);
+              }}
               className="w-full py-4 bg-lab-coral hover:bg-lab-coral hover:text-white rounded-xl font-black text-lg text-white shadow-lg shadow-lab-coral hover:scale-[1.02] transition-all active:scale-[0.98]"
             >
-              Ga naar je Dashboard
+              {variant === 'eindmeting' ? 'Bekijk je groei' : 'Bekijk je Digitaal Paspoort'}
             </button>
           </motion.div>
         </div>
@@ -366,15 +415,15 @@ export const EscaperoomNulmeting: React.FC<Props> = ({ variant = 'nulmeting', on
   const renderKamer = () => {
     switch (stap) {
       case 'kamer1':
-        return <KamerVergrendeldeLaptop onComplete={(s) => handleKamerComplete('kamer1', s)} />;
+        return <KamerVergrendeldeLaptop variant={variant} onComplete={(s) => handleKamerComplete('kamer1', s)} />;
       case 'kamer2':
-        return <KamerNepnieuwsfabriek onComplete={(s) => handleKamerComplete('kamer2', s)} />;
+        return <KamerNepnieuwsfabriek variant={variant} onComplete={(s) => handleKamerComplete('kamer2', s)} />;
       case 'kamer3':
-        return <KamerCodekluis onComplete={(s) => handleKamerComplete('kamer3', s)} />;
+        return <KamerCodekluis variant={variant} onComplete={(s) => handleKamerComplete('kamer3', s)} />;
       case 'kamer4':
-        return <KamerDatalek onComplete={(s) => handleKamerComplete('kamer4', s)} />;
+        return <KamerDatalek variant={variant} onComplete={(s) => handleKamerComplete('kamer4', s)} />;
       case 'kamer5':
-        return <KamerDilemma onComplete={(s) => handleKamerComplete('kamer5', s)} />;
+        return <KamerDilemma variant={variant} onComplete={(s) => handleKamerComplete('kamer5', s)} />;
       default:
         return null;
     }

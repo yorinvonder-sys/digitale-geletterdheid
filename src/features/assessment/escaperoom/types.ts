@@ -47,15 +47,3 @@ export const KAMER_NAMEN: Record<string, string> = {
   kamer4: 'Datalek',
   kamer5: 'Dilemma',
 };
-
-/**
- * SLO Kerndoelen per escaperoom-kamer.
- * Gebruikt voor voortgangsrapportage in het docentdashboard.
- */
-export const KAMER_KERNDOELEN: Record<string, string[]> = {
-  kamer1: ['21A'],              // Digitale systemen (wachtwoorden, login, bestandsbeheer)
-  kamer2: ['21B', '21D'],       // Media & Informatie + AI (nepnieuws, broncontrole, AI-claims beoordelen)
-  kamer3: ['22A', '22B'],       // Digitale producten + Programmeren (product kiezen + code sorteren)
-  kamer4: ['23A', '21C'],       // Veiligheid & privacy + Data & Dataverwerking (datalekken, gevoelige data)
-  kamer5: ['23B', '23C'],       // Digitaal welzijn + Maatschappij (online pesten, dilemma's)
-};

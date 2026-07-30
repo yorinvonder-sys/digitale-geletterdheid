@@ -274,11 +274,19 @@ export const StudentModal: React.FC<StudentModalProps> = ({ student, onClose, on
                     ) : activeTab === 'groei' ? (
                         <GrowthStudentTab studentId={student.uid} />
                     ) : activeTab === 'paspoort' && student.stats?.nulmetingResult ? (
-                        <Suspense fallback={<div className="flex items-center justify-center py-8"><div className="animate-spin rounded-full h-6 w-6 border-b-2 border-duck-error" /></div>}>
-                            <div className="rounded-2xl overflow-hidden [&>div]:min-h-0 [&>div]:p-4">
-                                <LazyDigitaalPaspoort result={student.stats.nulmetingResult} onContinue={() => setActiveTab('overview')} />
-                            </div>
-                        </Suspense>
+                        <>
+                            <Suspense fallback={<div className="flex items-center justify-center py-8"><div className="animate-spin rounded-full h-6 w-6 border-b-2 border-duck-error" /></div>}>
+                                <div className="rounded-2xl overflow-hidden [&>div]:min-h-0 [&>div]:p-4">
+                                    <LazyDigitaalPaspoort result={student.stats.nulmetingResult} onContinue={() => setActiveTab('overview')} />
+                                </div>
+                            </Suspense>
+                            {typeof student.stats.nulmetingResult.kamers?.welzijnMaatschappij?.details?.reflectieTekst === 'string' && student.stats.nulmetingResult.kamers.welzijnMaatschappij.details.reflectieTekst.trim() !== '' && (
+                                <div className="bg-duck-bg rounded-xl p-4">
+                                    <div className="text-[10px] font-black uppercase tracking-widest text-duck-ink/60 mb-1">Reflectie van de leerling (dilemma-kamer)</div>
+                                    <p className="text-sm text-duck-ink italic">"{student.stats.nulmetingResult.kamers.welzijnMaatschappij.details.reflectieTekst}"</p>
+                                </div>
+                            )}
+                        </>
                     ) : (
                         <>
                             {/* Quick Stats */}

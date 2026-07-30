@@ -22,7 +22,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
 
       - name: Validate Claude handoff
         env:
@@ -30,12 +30,18 @@ jobs:
         run: node scripts/validate-claude-handoff.mjs
 
   quality-checks:
-    if: startsWith(github.head_ref, 'claude/')
+    # Bewust geen branchfilter. Deze job draaide alleen op claude/*-branches,
+    # waardoor de contributor met een branchnaam kon kiezen of type-check,
+    # audit, Gitleaks en Semgrep überhaupt liepen. Een door `if` overgeslagen
+    # job geldt bij GitHub als geslaagd en blokkeert de merge niet, ook niet
+    # als hij required is — de gate was dus optioneel voor wie dat wilde.
+    # Alleen validate-handoff houdt zijn filter: dat toetst een
+    # Claude-conventie, geen beveiligingseigenschap.
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
           # Full history so gitleaks-action can resolve the <sha>^..<sha>
           # diff range; a shallow clone misses the parent commit and the
@@ -43,9 +49,9 @@ jobs:
           fetch-depth: 0
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
-          node-version: 22
+          node-version: 24
           cache: npm
 
       - name: Install dependencies
@@ -54,21 +60,99 @@ jobs:
       - name: Type-check
         run: npx tsc --noEmit
 
+      # De navigatiedocumenten voor AI-agents verouderen stil: een pad dat na een
+      # herstructurering verdwijnt blijft in de kaart staan en stuurt elke agent die
+      # de kaart volgt naar een mislukte read, waarna die alsnog de hele repo
+      # doorzoekt. Bij invoering wees 15 van de 17 rijen in .claude/skill-router.md
+      # naar niet-bestaande paden. Deze stap houdt dat tegen.
+      - name: Agent-navigatiedocumenten
+        run: npm run check:agent-docs
+
+      # De auditstap accepteert één tijdelijke uitzondering. Deze tests bewijzen
+      # dat die uitzondering nog steeds smal is: een nieuwe advisory, een
+      # onverwacht dependency-pad of een verstreken vervaldatum moet falen.
+      # Zonder deze stap zou een te ruime allowlist onopgemerkt blijven, want
+      # de auditstap zelf zou dan gewoon groen zijn.
+      - name: Audit-allowlist tests
+        run: npm run test:audit-security
+
       - name: Security audit
-        run: npm audit --audit-level=moderate
+        run: npm run audit:security
 
       - name: Secret scanning (Gitleaks)
-        uses: gitleaks/gitleaks-action@v3
+        uses: gitleaks/gitleaks-action@e0c47f4f8be36e29cdc102c57e68cb5cbf0e8d1e # v3
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      # Het aantal bevindingen komt uit de SARIF, niet uit de exitcode. Dat is
+      # met opzet: `semgrep scan` geeft exit 0 óók als er bevindingen zijn —
+      # alleen `semgrep ci` of `--error` maakt daar exit 1 van. Een stap die op
+      # de exitcode vertrouwt, meldt dus "geen bevindingen" terwijl er vijftien
+      # liggen. Dat is precies de vals-groene uitkomst die deze stap moet
+      # voorkomen, dus de exitcode wordt alleen gebruikt om een crash te zien:
+      #
+      #   exit >=2            Semgrep zelf is stuk            → rood
+      #   geen SARIF          er is niets gescand             → rood
+      #   SARIF onleesbaar    uitkomst niet te beoordelen     → rood
+      #   0 bevindingen       schoon                          → groen
+      #   >0 bevindingen      kwetsbaarheid of niet-getriageerde ruis → rood
+      #
+      # De eerste drie regels zijn het punt van deze hele stap: een scan die
+      # niet heeft gelopen of niet te lezen is, mag nooit als "veilig" gelden.
       - name: SAST scan (Semgrep)
-        uses: semgrep/semgrep-action@v1
+        run: |
+          sarif="${{ runner.temp }}/semgrep.sarif"
+          status=0
+          docker run --rm \
+            -v "${{ github.workspace }}:/src" \
+            -v "${{ runner.temp }}:/out" \
+            -w /src \
+            semgrep/semgrep:1.171.0 \
+            semgrep scan \
+              --config=p/owasp-top-ten \
+              --config=p/javascript \
+              --config=p/typescript \
+              --metrics=off \
+              --sarif --output=/out/semgrep.sarif || status=$?
+
+          if [ "$status" -ge 2 ]; then
+            echo "::error::Semgrep is zelf gefaald (exit $status). Dit is geen bevinding maar een kapotte scan; de gate mag hier niet groen op worden."
+            exit "$status"
+          fi
+
+          if [ ! -f "$sarif" ]; then
+            echo "::error::Semgrep produceerde geen SARIF. Er is dus niet gescand, ongeacht de exitcode ($status)."
+            exit 1
+          fi
+
+          if ! n=$(node -e 'const fs=require("node:fs");
+            const r=JSON.parse(fs.readFileSync(process.argv[1],"utf8"));
+            const runs=r.runs;
+            if(!Array.isArray(runs)||runs.length===0) throw new Error("SARIF bevat geen runs");
+            console.log(runs.reduce((t,x)=>{
+              const results=Array.isArray(x.results)?x.results:[];
+              return t+results.filter(y=>!Array.isArray(y.suppressions)||y.suppressions.length===0).length;
+            },0));' "$sarif"); then
+            echo "::error::De SARIF van Semgrep is niet te lezen. De uitkomst is daarmee onbekend, en onbekend is niet groen."
+            exit 1
+          fi
+
+          if [ "$n" -eq 0 ]; then
+            echo "Semgrep: scan voltooid, geen bevindingen."
+            echo "Semgrep: geen bevindingen." >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "::error::Semgrep vond $n bevinding(en). Zie het artifact semgrep-results.sarif."
+            echo "Semgrep: $n blokkerende bevinding(en). Zie het artifact semgrep-results.sarif." >> "$GITHUB_STEP_SUMMARY"
+            exit 1
+          fi
+
+      - name: Upload Semgrep-resultaten
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
-          config: >-
-            p/owasp-top-ten
-            p/javascript
-            p/typescript
+          name: semgrep-results.sarif
+          path: ${{ runner.temp }}/semgrep.sarif
+          if-no-files-found: warn
 
       - name: Production build
         run: npm run build:prod

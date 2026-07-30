@@ -5,7 +5,7 @@
 // Tot de database types opnieuw gegenereerd zijn, gebruiken we `as any` casts
 // op supabase.from() calls. Dit is veilig zolang de migratie is gedraaid.
 
-import { EDGE_FUNCTION_URL, supabase } from './supabase';
+import { getEdgeFunctionUrl, supabase } from './supabase';
 import { logger } from '@/utils/logger';
 
 export type ConsentType = 'data_processing' | 'ai_interaction' | 'analytics' | 'peer_feedback';
@@ -180,7 +180,7 @@ async function callParentalConsentApprovalEndpoint(
   token: string,
   preview: boolean,
 ): Promise<ParentalConsentRequestPreview> {
-  const response = await fetch(`${EDGE_FUNCTION_URL}/approveParentalConsent`, {
+  const response = await fetch(`${getEdgeFunctionUrl()}/approveParentalConsent`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

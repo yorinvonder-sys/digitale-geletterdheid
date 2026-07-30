@@ -1,14 +1,12 @@
 import React, { useMemo, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Users, ChevronRight, CheckCircle2, Clock, AlertTriangle, BarChart3, X } from 'lucide-react';
+import { Users, ChevronRight, CheckCircle2, Clock, Circle, BarChart3, X } from 'lucide-react';
 import { StudentData } from '@/types';
 import { getMissionsForYear } from '@/config/missions';
 
 interface MissionProgressPanelProps {
     students: StudentData[];
     classFilter: string;
-    availableClasses: string[];
-    onClassFilterChange: (cls: string) => void;
     onSelectStudent?: (student: StudentData) => void;
     yearGroup?: number;
 }
@@ -30,13 +28,12 @@ interface MissionStats {
 export const MissionProgressPanel: React.FC<MissionProgressPanelProps> = ({
     students,
     classFilter,
-    availableClasses,
-    onClassFilterChange,
     onSelectStudent,
     yearGroup = 1
 }) => {
     const yearMissions = useMemo(() => getMissionsForYear(yearGroup), [yearGroup]);
     const [expandedMission, setExpandedMission] = useState<string | null>(null);
+    const [showNotStarted, setShowNotStarted] = useState(false);
     const [showStudentList, setShowStudentList] = useState<{ mission: string; type: 'completed' | 'inProgress' | 'notStarted' } | null>(null);
 
     // Filter students by class
@@ -95,17 +92,22 @@ export const MissionProgressPanel: React.FC<MissionProgressPanelProps> = ({
         return totalMissions > 0 ? Math.round((completedMissions / totalMissions) * 100) : 0;
     }, [filteredStudents, yearMissions]);
 
+    // Lage voortgang is geen fout. `duck-error` blijft gereserveerd voor echte
+    // problemen; "nog niet ver" is neutraal grijs.
     const getProgressColor = (percentage: number) => {
         if (percentage >= 70) return 'bg-duck-ink';
         if (percentage >= 30) return 'bg-duck-acid';
-        return 'bg-duck-error';
+        return 'bg-duck-gray';
     };
 
     const getProgressTextColor = (percentage: number) => {
         if (percentage >= 70) return 'text-duck-ink';
-        if (percentage >= 30) return 'text-duck-ink/60';
-        return 'text-duck-error';
+        return 'text-duck-ink/60';
     };
+
+    // Missies zonder enige activiteit vullen anders het hele scherm met 0%-tegels.
+    const activeMissions = missionStats.filter(m => m.completed > 0 || m.inProgress > 0);
+    const notStartedMissions = missionStats.filter(m => m.completed === 0 && m.inProgress === 0);
 
     const currentList = showStudentList ?
         missionStats.find(m => m.missionId === showStudentList.mission)?.[
@@ -128,19 +130,13 @@ export const MissionProgressPanel: React.FC<MissionProgressPanelProps> = ({
                         </div>
                     </div>
 
-                    {/* Class Selector */}
-                    <div className="flex min-h-[44px] items-center gap-3 rounded-xl border border-duck-ink/15 bg-duck-bg px-3 text-duck-ink/60">
+                    {/* Klas volgt de keuze in de dashboardheader — bewust geen tweede filter */}
+                    <div className="flex min-h-[44px] items-center gap-3 rounded-xl border border-duck-ink/15 bg-duck-bg px-3">
                         <Users size={18} className="text-duck-ink" />
-                        <select
-                            value={classFilter}
-                            onChange={(e) => onClassFilterChange(e.target.value)}
-                            className="min-h-[44px] cursor-pointer bg-transparent py-2 text-sm font-bold text-duck-ink focus:outline-none focus:ring-2 focus:ring-duck-ink/15"
-                        >
-                            <option value="all">Alle klassen</option>
-                            {availableClasses.map(cls => (
-                                <option key={cls} value={cls}>{cls}</option>
-                            ))}
-                        </select>
+                        <span className="text-sm font-bold text-duck-ink">
+                            {classFilter === 'all' ? 'Alle klassen' : `Klas ${classFilter}`}
+                        </span>
+                        <span className="text-sm font-medium text-duck-ink/60">· leerjaar {yearGroup}</span>
                     </div>
                 </div>
 
@@ -192,9 +188,19 @@ export const MissionProgressPanel: React.FC<MissionProgressPanelProps> = ({
                 </div>
             </div>
 
+            {/* Missies zonder activiteit: rustige lege staat i.p.v. een muur van 0%-tegels */}
+            {activeMissions.length === 0 && (
+                <div className="rounded-2xl border border-duck-ink/15 bg-duck-bgLight p-8 text-center">
+                    <p className="text-base font-bold text-duck-ink">Nog niemand gestart in leerjaar {yearGroup}</p>
+                    <p className="mx-auto mt-1 max-w-md text-sm font-medium text-duck-ink/60">
+                        Zodra leerlingen aan een missie beginnen, verschijnt hun voortgang hier.
+                    </p>
+                </div>
+            )}
+
             {/* Mission Progress Cards */}
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
-                {missionStats.map((mission) => (
+                {activeMissions.map((mission) => (
                     <motion.div
                         key={mission.missionId}
                         layout
@@ -253,7 +259,7 @@ export const MissionProgressPanel: React.FC<MissionProgressPanelProps> = ({
                                         <span className="truncate tabular-nums">{mission.inProgress}</span>
                                     </span>
                                     <span className="flex min-w-0 items-center gap-1 rounded-lg bg-duck-bg px-2 py-2 text-duck-ink/60">
-                                        <AlertTriangle size={12} className="shrink-0" />
+                                        <Circle size={12} className="shrink-0" />
                                         <span className="truncate tabular-nums">{mission.notStarted}</span>
                                     </span>
                                 </div>
@@ -299,6 +305,46 @@ export const MissionProgressPanel: React.FC<MissionProgressPanelProps> = ({
                     </motion.div>
                 ))}
             </div>
+
+            {/* Niet-gestarte missies: standaard ingeklapt, als compacte lijst i.p.v. tegels */}
+            {notStartedMissions.length > 0 && (
+                <div className="overflow-hidden rounded-2xl border border-duck-ink/15 bg-duck-bgLight">
+                    <button
+                        type="button"
+                        onClick={() => setShowNotStarted(v => !v)}
+                        aria-expanded={showNotStarted}
+                        className="flex min-h-[52px] w-full items-center justify-between gap-3 px-5 py-3 text-left transition hover:bg-duck-bg"
+                    >
+                        <span className="text-sm font-bold text-duck-ink">
+                            Toon niet-gestarte missies ({notStartedMissions.length})
+                        </span>
+                        <ChevronRight
+                            size={18}
+                            className={`shrink-0 text-duck-ink/60 transition-transform ${showNotStarted ? 'rotate-90' : ''}`}
+                        />
+                    </button>
+                    {showNotStarted && (
+                        <ul className="border-t border-duck-ink/15">
+                            {notStartedMissions.map(mission => (
+                                <li key={mission.missionId}>
+                                    <button
+                                        type="button"
+                                        onClick={() => setShowStudentList({ mission: mission.missionId, type: 'notStarted' })}
+                                        className="flex min-h-[44px] w-full items-center justify-between gap-4 border-b border-duck-ink/10 px-5 py-3 text-left transition last:border-0 hover:bg-duck-bg"
+                                    >
+                                        <span className="min-w-0 flex-1 truncate text-sm font-bold text-duck-ink">
+                                            {mission.missionName}
+                                        </span>
+                                        <span className="shrink-0 text-xs font-medium tabular-nums text-duck-ink/60">
+                                            0/{mission.notStarted} · Nog niet gestart
+                                        </span>
+                                    </button>
+                                </li>
+                            ))}
+                        </ul>
+                    )}
+                </div>
+            )}
 
             {/* Student List Modal */}
             <AnimatePresence>

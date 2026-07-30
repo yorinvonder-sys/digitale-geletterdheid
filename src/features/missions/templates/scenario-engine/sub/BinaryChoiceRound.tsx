@@ -65,6 +65,10 @@ export const BinaryChoiceRound: React.FC<{
                             {!submitted && (
                                 <div className="flex gap-2">
                                     <button
+                                        data-qa="scenario-binary-accept"
+                                        data-scenario-item-id={item.id}
+                                        aria-label={`${acceptLabel}: ${item.title}`}
+                                        aria-pressed={isAccepted}
                                         onClick={() => onChoice(item.id, true)}
                                         className={`flex-1 min-h-[44px] py-2 rounded-lg text-xs font-bold transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-acid/40 ${
                                             isAccepted
@@ -76,6 +80,10 @@ export const BinaryChoiceRound: React.FC<{
                                         ✓ {acceptLabel}
                                     </button>
                                     <button
+                                        data-qa="scenario-binary-reject"
+                                        data-scenario-item-id={item.id}
+                                        aria-label={`${rejectLabel}: ${item.title}`}
+                                        aria-pressed={isRejected}
                                         onClick={() => onChoice(item.id, false)}
                                         className={`flex-1 min-h-[44px] py-2 rounded-lg text-xs font-bold transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-ink/30 ${
                                             isRejected
@@ -107,6 +115,7 @@ export const BinaryChoiceRound: React.FC<{
 
             {!submitted && allAnswered && (
                 <button
+                    data-qa="scenario-submit"
                     onClick={onSubmit}
                     className="w-full py-3 rounded-full font-black text-sm bg-duck-acid hover:bg-duck-acid hover:brightness-95 hover:shadow-md active:scale-[0.98] text-duck-ink transition-all duration-300"
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}

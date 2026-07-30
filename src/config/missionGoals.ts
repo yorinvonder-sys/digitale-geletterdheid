@@ -238,7 +238,7 @@ export const MISSION_GOALS: Record<string, MissionGoal> = {
         evidence: 'Je kunt uitleggen welke knop of tekst je richting onnodig delen duwt.',
     },
     'mail-detective': {
-        primaryGoal: 'Ik herken signalen van phishing en kies een veilige actie bij verdachte mail.',
+        primaryGoal: 'Ik herken phishing — nepmail die naar je gegevens vist — en kies een veilige actie bij verdachte mail.',
         criteria: {
             type: 'rounds-complete',
             description: 'Je onderzoekt mails op afzender, link, taal en urgentie.',

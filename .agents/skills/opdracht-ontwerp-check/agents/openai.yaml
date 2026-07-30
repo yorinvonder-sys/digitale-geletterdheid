@@ -1,0 +1,4 @@
+interface:
+  display_name: "Opdracht Ontwerp Check"
+  short_description: "Check DGSkills opdrachten voor het bouwen"
+  default_prompt: "Use $opdracht-ontwerp-check to check whether this DGSkills assignment is well designed before building it."

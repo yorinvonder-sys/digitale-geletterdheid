@@ -19,15 +19,16 @@ try {
   });
 
   assert.match(
-    promptContext.additionalContext.split('\n').slice(0, 4).join('\n'),
-    /Begin elke assistant-reply met deze afstemmingscheck/,
+    promptContext.additionalContext.split('\n').slice(0, 2).join('\n'),
+    /Vóór een edit/,
   );
-  assert.match(promptContext.additionalContext, /vóór planning, uitleg, toolgebruik of edits/);
-  assert.match(promptContext.additionalContext, /wait for the answer/);
   assert.match(promptContext.additionalContext, /Plan:/);
   assert.match(promptContext.additionalContext, /Risico:/);
   assert.match(promptContext.additionalContext, /Bewijs:/);
-  assert.match(promptContext.additionalContext, /kritische vragen/i);
+  assert.match(promptContext.additionalContext, /Waarschijnlijke bestanden/);
+  assert.match(promptContext.additionalContext, /leerlinggegevens/);
+  // Bewust kort: de volledige werkwijze staat in AGENTS.md, niet in deze injectie.
+  assert.ok(promptContext.additionalContext.split(/\s+/).length < 60);
 
   assert.deepEqual(
     extractTouchedPaths({

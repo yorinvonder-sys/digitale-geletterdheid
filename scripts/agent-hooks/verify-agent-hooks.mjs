@@ -2,8 +2,7 @@ import assert from 'node:assert/strict';
 import { spawnSync } from 'node:child_process';
 import { readFileSync } from 'node:fs';
 
-const USER_PROMPT_GATE =
-  'Begin elke assistant-reply met deze afstemmingscheck';
+const USER_PROMPT_GATE = 'Vóór een edit';
 
 const CONFIG_FILES = [
   '.codex/hooks.json',
@@ -63,16 +62,17 @@ const output = JSON.parse(smoke.stdout);
 assert.equal(output.hookSpecificOutput?.hookEventName, 'UserPromptSubmit');
 
 const context = String(output.hookSpecificOutput?.additionalContext ?? '');
-assert.ok(context.startsWith('DGSkills UserPromptSubmit safety gate'));
-assert.ok(
-  context.indexOf(USER_PROMPT_GATE) < context.indexOf('Before editing'),
-  'The user-question gate must appear before the edit plan block',
-);
+assert.ok(context.startsWith('DGSkills safety gate'));
 assert.ok(
   context.indexOf(USER_PROMPT_GATE) < context.indexOf('Plan:'),
-  'The user-question gate must appear before Plan/Risico/Bewijs',
+  'De edit-instructie moet vóór Plan/Risico/Bewijs staan',
 );
-assert.match(context, /ask critical clarifying questions/i);
-assert.match(context, /wait for the answer/i);
+assert.match(context, /Risico: Groen\/Geel\/Rood/);
+assert.match(context, /leerlinggegevens/);
+// De injectie blijft bewust kort; de volledige werkwijze staat in AGENTS.md.
+assert.ok(
+  context.split(/\s+/).length < 60,
+  'De safety-gate-injectie moet kort blijven (< 60 woorden)',
+);
 
 console.log('agent hook wiring verified');

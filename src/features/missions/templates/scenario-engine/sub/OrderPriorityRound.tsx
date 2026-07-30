@@ -34,6 +34,7 @@ export const OrderPriorityRound: React.FC<{
                         </span>
                         {!submitted && (
                             <button
+                                data-qa="scenario-reset-order"
                                 onClick={onReset}
                                 className="min-h-[44px] min-w-[44px] inline-flex items-center justify-center rounded-lg text-duck-ink/60 hover:text-duck-ink transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-acid/40"
                                 aria-label="Opnieuw beginnen"
@@ -97,6 +98,8 @@ export const OrderPriorityRound: React.FC<{
                     {remaining.map((item) => (
                         <button
                             key={item.id}
+                            data-qa="scenario-order-item"
+                            data-scenario-item-id={item.id}
                             onClick={() => onAdd(item.id)}
                             className="w-full min-h-[44px] p-3 rounded-xl border-2 border-duck-gray bg-white hover:border-duck-acid hover:bg-duck-acid/5 text-left transition-all duration-200 flex items-center gap-3 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-acid/40"
                         >
@@ -144,6 +147,7 @@ export const OrderPriorityRound: React.FC<{
 
             {!submitted && selections.length === round.items.length && (
                 <button
+                    data-qa="scenario-submit"
                     onClick={onSubmit}
                     className="w-full py-3 rounded-full font-black text-sm bg-duck-acid hover:bg-duck-acid text-duck-ink transition-all duration-300"
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}

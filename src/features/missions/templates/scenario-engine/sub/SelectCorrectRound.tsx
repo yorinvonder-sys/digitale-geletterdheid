@@ -53,6 +53,8 @@ export const SelectCorrectRound: React.FC<{
                 return (
                     <button
                         key={item.id}
+                        data-qa="scenario-option"
+                        data-scenario-item-id={item.id}
                         onClick={() => !submitted && onToggle(item.id)}
                         disabled={submitted}
                         className={`w-full p-4 rounded-2xl border-2 text-left transition-all duration-200 ${border} ${bg}`}
@@ -109,6 +111,7 @@ export const SelectCorrectRound: React.FC<{
         )}
         {!submitted && (
             <button
+                data-qa="scenario-submit"
                 onClick={onSubmit}
                 disabled={!canSubmit}
                 className={`w-full py-3 rounded-full font-black text-sm transition-all duration-300 ${

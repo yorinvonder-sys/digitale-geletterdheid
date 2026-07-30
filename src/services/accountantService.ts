@@ -8,7 +8,7 @@
  * - Instellingen (KvK, bedrijfsnaam, startersaftrek)
  */
 
-import { supabase, EDGE_FUNCTION_URL, authenticatedFetch } from './supabase';
+import { supabase, getEdgeFunctionUrl, authenticatedFetch } from './supabase';
 
 // De nieuwe accountant-tabellen zitten nog niet in de auto-gegenereerde database.types.ts.
 // Na het uitvoeren van de migratie kunnen de types gegenereerd worden via:
@@ -520,7 +520,7 @@ export async function uploadAndScanReceipt(
     const mimeType    = file.type || 'image/jpeg';
 
     // Stuur naar de Mistral OCR-boekhoudscanner (EU)
-    const response = await authenticatedFetch(`${EDGE_FUNCTION_URL}/scanReceipt`, {
+    const response = await authenticatedFetch(`${getEdgeFunctionUrl()}/scanReceipt`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -551,7 +551,7 @@ export async function scanSubscriptionScreenshot(
     const base64 = btoa(binary);
     const mimeType    = file.type || 'image/jpeg';
 
-    const response = await authenticatedFetch(`${EDGE_FUNCTION_URL}/scanReceipt`, {
+    const response = await authenticatedFetch(`${getEdgeFunctionUrl()}/scanReceipt`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -586,7 +586,7 @@ export async function scanSubscriptionWithClaude(
     const base64 = btoa(binary);
     const mimeType    = file.type || 'image/jpeg';
 
-    const response = await authenticatedFetch(`${EDGE_FUNCTION_URL}/scanReceipt`, {
+    const response = await authenticatedFetch(`${getEdgeFunctionUrl()}/scanReceipt`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',

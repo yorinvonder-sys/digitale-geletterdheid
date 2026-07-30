@@ -350,7 +350,7 @@ export const TutorialRestartButton: React.FC = () => {
     return (
         <button
             onClick={startTutorial}
-            className="fixed bottom-6 right-6 w-10 h-10 rounded-full flex items-center justify-center shadow-md transition-all hover:scale-110 z-40 bg-duck-bgLight border border-duck-ink/15 text-duck-ink/60"
+            className="fixed bottom-24 lg:bottom-6 right-6 w-10 h-10 rounded-full flex items-center justify-center shadow-md transition-all hover:scale-110 z-40 bg-duck-bgLight border border-duck-ink/15 text-duck-ink/60"
             title="Tutorial Herhalen"
         >
             <span className="text-sm">?</span>

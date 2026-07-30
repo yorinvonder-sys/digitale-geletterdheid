@@ -21,6 +21,7 @@ const ComplianceChecklist = React.lazy(() => import('@/features/seo/ComplianceCh
 const SloRapport = React.lazy(() => import('@/features/seo/SloRapport').then(m => ({ default: m.SloRapport })));
 const ComparisonPage = React.lazy(() => import('@/features/seo/ComparisonPage').then(m => ({ default: m.ComparisonPage })));
 const PilotAanmelden = React.lazy(() => import('@/features/public-site/PilotAanmelden').then(m => ({ default: m.PilotAanmelden })));
+const VerhaalPage = React.lazy(() => import('@/features/public-site/verhaal/VerhaalPage').then(m => ({ default: m.VerhaalPage })));
 const NotFound = React.lazy(() => import('@/components/app-shell/NotFound').then(m => ({ default: m.NotFound })));
 const MobileReceiptPage = React.lazy(() => import('@/components/app-shell/MobileReceiptPage').then(m => ({ default: m.MobileReceiptPage })));
 const ParentConsentApproval = React.lazy(() => import('@/features/consent/ParentConsentApproval').then(m => ({ default: m.ParentConsentApproval })));
@@ -41,6 +42,9 @@ const DevMissionPreview = import.meta.env.DEV
     : null;
 const DevShellPreview = import.meta.env.DEV
     ? React.lazy(() => import('@/features/dev-tools/DevShellPreview'))
+    : null;
+const DevNulmetingPreview = import.meta.env.DEV
+    ? React.lazy(() => import('@/features/dev-tools/DevNulmetingPreview'))
     : null;
 
 /** Minimal spinner — no lucide to avoid blocking LCP */
@@ -524,8 +528,31 @@ export function AppRouter() {
         );
     }
 
+    // DEV ONLY: Nulmeting/eindmeting escaperoom-preview — QA zonder login of database-writes.
+    if (import.meta.env.DEV && DevNulmetingPreview && normalizedPath === '/dev/nulmeting-preview') {
+        return (
+            <React.Suspense fallback={<LoadingFallback />}>
+                <DevNulmetingPreview />
+            </React.Suspense>
+        );
+    }
+
     if (normalizedPath === '/bonnetje') {
         return <BonnetjeRoute />;
+    }
+
+    // Scrollytelling-verhaalpagina. Zware chunk: bewust lazy zodat de root-bundle
+    // (budget 200 KB JS) er niet door groeit.
+    if (normalizedPath === '/verhaal') {
+        return (
+            <PublicPageShell>
+                <SecureErrorBoundary>
+                    <React.Suspense fallback={<LoadingFallback />}>
+                        <VerhaalPage />
+                    </React.Suspense>
+                </SecureErrorBoundary>
+            </PublicPageShell>
+        );
     }
 
     if (normalizedPath === '/digitale-geletterdheid-vo' || normalizedPath === '/slo-kerndoelen-digitale-geletterdheid' || normalizedPath === '/ai-geletterdheid-onderwijs-ai-act' || normalizedPath === '/compliance-hub' || normalizedPath === '/compliance/checklist' || normalizedPath === '/compliance/slo-rapport' || normalizedPath === '/pilot' || normalizedPath.startsWith('/vergelijking/')) {
@@ -558,7 +585,7 @@ export function AppRouter() {
     }
 
     // 404 handler for public routes
-    const isPublicRoute = normalizedPath === '' || normalizedPath === '/' || normalizedPath === '/scholen' || normalizedPath === '/ict' || normalizedPath.startsWith('/ict/') || normalizedPath === '/login' || normalizedPath === '/ouderlijke-toestemming' || normalizedPath === '/digitale-geletterdheid-vo' || normalizedPath === '/slo-kerndoelen-digitale-geletterdheid' || normalizedPath === '/ai-geletterdheid-onderwijs-ai-act' || normalizedPath === '/compliance-hub' || normalizedPath.startsWith('/compliance/') || normalizedPath === '/pilot' || normalizedPath.startsWith('/vergelijking/') || normalizedPath.startsWith('/gids/') || normalizedPath === '/speeltuin' || normalizedPath === '/leerlingdemo';
+    const isPublicRoute = normalizedPath === '' || normalizedPath === '/' || normalizedPath === '/scholen' || normalizedPath === '/ict' || normalizedPath.startsWith('/ict/') || normalizedPath === '/login' || normalizedPath === '/ouderlijke-toestemming' || normalizedPath === '/digitale-geletterdheid-vo' || normalizedPath === '/slo-kerndoelen-digitale-geletterdheid' || normalizedPath === '/ai-geletterdheid-onderwijs-ai-act' || normalizedPath === '/compliance-hub' || normalizedPath.startsWith('/compliance/') || normalizedPath === '/pilot' || normalizedPath.startsWith('/vergelijking/') || normalizedPath.startsWith('/gids/') || normalizedPath === '/speeltuin' || normalizedPath === '/leerlingdemo' || normalizedPath === '/verhaal';
 
     if (isPublicRoute) {
         return (

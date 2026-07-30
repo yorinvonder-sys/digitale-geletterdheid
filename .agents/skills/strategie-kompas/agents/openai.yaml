@@ -1,0 +1,4 @@
+interface:
+  display_name: "Strategie Kompas"
+  short_description: "Toets DGSkills ideeen aan strategie"
+  default_prompt: "Use $strategie-kompas to check whether this DGSkills idea fits the mission, audience, USP, trade-offs, and evidence bar."

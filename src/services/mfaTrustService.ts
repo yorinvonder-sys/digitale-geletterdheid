@@ -4,10 +4,10 @@
  * We store a short-lived trusted session after MFA verification so the backend
  * can use it in additional risk checks and revoke it on logout/password changes.
  */
-import { EDGE_FUNCTION_URL, authenticatedFetch } from './supabase';
+import { getEdgeFunctionUrl, authenticatedFetch } from './supabase';
 
 async function callMfaTrust<T = any>(method: 'GET' | 'POST' | 'DELETE'): Promise<T> {
-    const response = await authenticatedFetch(`${EDGE_FUNCTION_URL}/mfa-trust`, {
+    const response = await authenticatedFetch(`${getEdgeFunctionUrl()}/mfa-trust`, {
         method,
         headers: {
             'Content-Type': 'application/json',

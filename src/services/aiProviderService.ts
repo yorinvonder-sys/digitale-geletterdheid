@@ -3,7 +3,7 @@
 
 import { logger } from '@/utils/logger';
 import { toServiceError } from '@/utils/errorMessages';
-import { EDGE_FUNCTION_URL, authenticatedFetch } from './supabase';
+import { getEdgeFunctionUrl, authenticatedFetch } from './supabase';
 import { logAiInteraction } from './auditService';
 import { sanitizePrompt } from '@/utils/promptSanitizer';
 import { markAiGeneratedText } from '@/utils/aiContentMarker';
@@ -156,7 +156,7 @@ export class Chat {
     roleId: string,
     clientRequestId: string
   ): Promise<Response> {
-    return authenticatedFetch(`${EDGE_FUNCTION_URL}/${endpoint}`, {
+    return authenticatedFetch(`${getEdgeFunctionUrl()}/${endpoint}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -665,7 +665,7 @@ export const generateImage = async (
   try {
     const style = options.style || 'general';
     const aspectRatio = options.aspectRatio || '1:1';
-      const response = await authenticatedFetch(`${EDGE_FUNCTION_URL}/generateImage`, {
+      const response = await authenticatedFetch(`${getEdgeFunctionUrl()}/generateImage`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -789,7 +789,7 @@ export const analyzeDrawingWithAI = async (
     
     De confidence scores moeten optellen tot 100. Geef je top 3 gokken.`;
 
-    const response = await authenticatedFetch(`${EDGE_FUNCTION_URL}/analyzeDrawing`, {
+    const response = await authenticatedFetch(`${getEdgeFunctionUrl()}/analyzeDrawing`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

@@ -11,7 +11,7 @@ const config: ScenarioEngineConfig = {
         'Herken verdachte signalen in gesimuleerde e-mails',
         'Rangschik e-mails van gevaarlijkst naar minst gevaarlijk',
         'Oefen: echt schoolbericht of valstrik?',
-        'Ontdek welke trucs aanvallers gebruiken om jou te misleiden',
+        'Leer wat je wél doet als er een verdachte mail binnenkomt',
     ],
     learningObjectives: [
         'De leerling herkent minimaal 4 verdachte signalen in een gesimuleerde e-mail (afzenderadres, urgentietaal, linkbestemming, bijlagetype).',
@@ -60,7 +60,7 @@ const config: ScenarioEngineConfig = {
             emoji: '🚩',
             title: 'Wat is er verdacht aan deze mail?',
             description:
-                'Je opent je e-mail en ziet dit bericht. Welke onderdelen hieronder zijn verdachte signalen? Selecteer alles wat je waarschuwt.',
+                'Je opent je e-mail en ziet dit bericht. Twee dingen weet je al: docenten van jouw school mailen vanaf een adres dat eindigt op @onsschool.nl, en het echte Magister staat op magister.net. Welke onderdelen hieronder zijn verdachte signalen? Selecteer alles wat je waarschuwt.',
             type: 'select-correct',
             maxScore: 25,
             feedbackCorrect:
@@ -73,37 +73,37 @@ const config: ScenarioEngineConfig = {
                     icon: '📧',
                     title: 'Afzender: docent.smits@magister-berichten.com',
                     description:
-                        'De mail beweert van je docent te komen, maar het adres eindigt op "@magister-berichten.com" — niet op het domein (= het stuk na de @ of na www., bv. school.nl) van je school.',
+                        'In je inbox staat als naam "Meneer Smits". Het volledige adres daarachter is docent.smits@magister-berichten.com.',
                     correct: true,
                     explanation:
-                        'Je docent heeft een schoolmailadres dat eindigt op het schooldomein (bijv. @onsschool.nl). Een adres als "@magister-berichten.com" is niet officieel. Aanvallers kiezen namen die vertrouwd klinken, maar het domein achter het @-teken verraadt hen.',
+                        'Het stuk achter het @-teken heet het domein. Je docenten mailen vanaf het schooldomein @onsschool.nl; "magister-berichten.com" is een heel ander domein, dat iedereen zelf kan aanvragen. Aanvallers kiezen een naam die vertrouwd klinkt, maar het domein achter het @-teken verraadt hen.',
                 },
                 {
                     id: 2,
                     icon: '📎',
                     title: 'Bijlage: "huiswerk_opdracht_wiskunde.exe"',
                     description:
-                        'De mail heeft een bijlage die eruit ziet als een huiswerkopdracht, maar de bestandsnaam eindigt op ".exe".',
+                        'Bij de mail zit één bijlage: huiswerk_opdracht_wiskunde.exe.',
                     correct: true,
                     explanation:
-                        'Een .exe-bestand is een uitvoerbaar programma — geen document. Echte huiswerkopdrachten zijn altijd .pdf of .docx. Als je dit opent, kan er malware (= schadelijke software) op je apparaat worden geïnstalleerd.',
+                        'De letters na de punt vertellen wat voor bestand het is. Een .exe is een uitvoerbaar programma — geen document. Echte huiswerkopdrachten zijn altijd .pdf of .docx. Als je dit opent, kan er malware (= schadelijke software) op je apparaat worden geïnstalleerd.',
                 },
                 {
                     id: 3,
                     icon: '🔗',
-                    title: '"Log in op Magister" knop verwijst naar magister-rooster-app.net',
+                    title: 'Blauwe knop: "Bekijk je roosterwijziging op Magister"',
                     description:
-                        'De blauwe knop staat "Bekijk je roosterwijziging op Magister", maar als je erover zweeft zie je een ander adres dan het echte magister.net.',
+                        'Houd je je muis boven de knop — dat heet zweven — dan verschijnt onderin je scherm de bestemming: magister-rooster-app.net.',
                     correct: true,
                     explanation:
-                        'De tekst op een knop kan van alles zeggen — het werkelijke adres achter de knop is wat telt. Het echte Magister gebruikt altijd het domein magister.net. Zweef over een link om het echte adres te zien voor je klikt.',
+                        'De tekst op een knop kan van alles zeggen — het adres dat bij zweven verschijnt is waar je werkelijk heen gaat. Het echte Magister gebruikt altijd het domein magister.net. Zweef dus over een link om het echte adres te zien voor je klikt.',
                 },
                 {
                     id: 4,
                     icon: '📬',
                     title: 'Roosterwijziging via het berichtencentrum van Magister',
                     description:
-                        'Je docent stuurt via het berichtencentrum van Magister een bericht dat morgen het eerste uur uitvalt.',
+                        'Via het berichtencentrum van Magister komt een bericht van je mentor binnen: morgen valt het eerste uur uit.',
                     correct: false,
                     explanation:
                         'Berichten via het echte Magister-platform zijn betrouwbaar — aanvallers kunnen normaal gesproken geen berichten sturen vanuit beveiligde schoolsystemen. Het kanaal is hier het kenmerk van echtheid.',
@@ -119,7 +119,7 @@ const config: ScenarioEngineConfig = {
             emoji: '📊',
             title: 'Welke mail is het gevaarlijkst?',
             description:
-                'Rangschik deze vijf e-mails van gevaarlijkst (1e) naar minst gevaarlijk (5e). Klik ze in die volgorde aan.',
+                'Rangschik deze vijf e-mails van gevaarlijkst (1e) naar minst gevaarlijk (5e). Vuistregel: hoe groter de schade als iemand erin trapt, hoe gevaarlijker. Klik ze in die volgorde aan.',
             type: 'order-priority',
             maxScore: 25,
             feedbackCorrect:
@@ -222,7 +222,7 @@ const config: ScenarioEngineConfig = {
                         'Je docent stuurt via het berichtencentrum van Magister de taakinstructies voor morgen, als bijlage een Word-document. Geen externe links.',
                     correct: true,
                     explanation:
-                        'Dit is normaal en veilig schoolverkeer. Verstuurd via een beveiligd platform, een herkenbare afzender, geen externe links. Geen reden tot argwaan.',
+                        'Dit is normaal en veilig schoolverkeer. Verstuurd via een beveiligd platform, een herkenbare afzender, geen externe links. Geen reden om te twijfelen.',
                     wrongFeedback:
                         'Begrijpelijk dat je voorzichtig bent! Maar dit bericht komt via Magister zelf — een beveiligd platform. De docent is de afzender, er zijn geen externe links en de bijlage is een Word-document. Dit is gewone schoolcommunicatie.',
                 },
@@ -253,7 +253,7 @@ const config: ScenarioEngineConfig = {
                     icon: '📎',
                     title: '"Factuur bijgevoegd — betaal voor 1 november"',
                     description:
-                        'Van: boekhouding@schoolpas-facturen.com. Een factuur voor schoolmaterialen als bijlage (.exe-bestand). Je ouders moeten betalen via iDEAL via de bijlage.',
+                        'Van: boekhouding@schoolpas-facturen.com. Bijlage: factuur_schoolmaterialen.exe. In de mail staat dat je ouders via die bijlage met iDEAL moeten betalen voor 1 november.',
                     correct: false,
                     explanation:
                         'Nep-mail. Scholen sturen facturen nooit als .exe-bestand. iDEAL-betalingen gaan via een website, niet via een programmabestand in een e-mail. Het domein "schoolpas-facturen.com" is ook niet officieel.',
@@ -274,6 +274,9 @@ const config: ScenarioEngineConfig = {
                 'Goed! Je weet hoe je veilig omgaat met verdachte mail.',
             feedbackIncorrect:
                 'Sommige reacties lijken logisch maar zijn gevaarlijk. Lees de uitleg goed.',
+            // 20 punten voor de kaarten + 5 punten voor de praktijkvraag hieronder.
+            // De veilige vervolgstap staat expliciet in het missiedoel, dus die telt mee.
+            followUpWeight: 5,
             followUp: {
                 question:
                     'Je krijgt een mail: "Je schoolaccount wordt vandaag geblokkeerd. Klik hier om in te loggen." Wat is de slimste reactie?',

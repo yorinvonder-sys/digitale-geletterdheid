@@ -29,15 +29,22 @@ const Skeleton: React.FC<{ which: 'student' | 'teacher' }> = ({ which }) => (
 
 interface Props {
     which: 'student' | 'teacher';
+    /**
+     * Hoogte van het podium in CSS-pixels. Standaard is 16:10, genoeg voor een
+     * kleine impressie in de hero. Een grotere waarde toont meer van het
+     * dashboard — op /verhaal is dat nodig om het Aandacht-paneel in beeld te
+     * krijgen, dat net onder 800px begint.
+     */
+    baseHeight?: number;
 }
 
-export const HeroDashboardPreview: React.FC<Props> = ({ which }) => {
+export const HeroDashboardPreview: React.FC<Props> = ({ which, baseHeight }) => {
     const containerRef = useRef<HTMLDivElement | null>(null);
     const [scale, setScale] = useState(1);
     const [mounted, setMounted] = useState(false);
 
     const BASE_W = which === 'student' ? STUDENT_BASE_W : TEACHER_BASE_W;
-    const BASE_H = which === 'student' ? STUDENT_BASE_H : TEACHER_BASE_H;
+    const BASE_H = baseHeight ?? (which === 'student' ? STUDENT_BASE_H : TEACHER_BASE_H);
 
     // ResizeObserver: recompute scale whenever the container resizes
     useEffect(() => {
@@ -128,6 +135,7 @@ export const HeroDashboardPreview: React.FC<Props> = ({ which }) => {
                     )}
                     {mounted && which === 'teacher' && (
                         <TeacherDashboard
+                            embedded
                             demoMode
                             demoStudents={DEMO_STUDENTS}
                             onLogout={noop}

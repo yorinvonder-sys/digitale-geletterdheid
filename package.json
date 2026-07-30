@@ -5,8 +5,9 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build && node scripts/prerender.mjs",
-    "build:prod": "vite build --mode production --sourcemap false && node scripts/prerender.mjs",
+    "build": "node scripts/check-env.mjs && vite build && node scripts/prerender.mjs",
+    "capture:product": "node scripts/capture-product-shots.mjs",
+    "build:prod": "node scripts/check-env.mjs && vite build --mode production --sourcemap false && node scripts/prerender.mjs",
     "bridge:chatgpt": "node scripts/github-agent-bridge.mjs process-all --agent chatgpt",
     "bridge:claude": "node scripts/github-agent-bridge.mjs process-all --agent claude",
     "bridge:reasonix": "node scripts/github-agent-bridge.mjs process-all --agent reasonix",
@@ -18,6 +19,7 @@
     "check:agent-bridge:review": "node scripts/check-agent-bridge-review-flow.mjs",
     "context:budget": "node scripts/context-budget.mjs",
     "context:check": "node scripts/context-budget.mjs --check",
+    "check:agent-docs": "node scripts/check-agent-docs.mjs",
     "lint": "echo 'Linting not configured'",
     "preview": "vite preview",
     "clean": "./scripts/cleanup_dev_env.sh",
@@ -53,10 +55,17 @@
     "perf:bundle:check": "node scripts/check-bundle-budgets.mjs",
     "performance:ci": "npm run lighthouse:median && npm run perf:assert:network && npm run perf:bundle:check",
     "qa:journey:desktop": "node scripts/audit-journey-desktop.mjs",
-    "audit:security": "npm audit --audit-level=moderate",
+    "test:ai-students": "node tests/ai-students/cli.mjs",
+    "test:ai-students:unit": "node --test tests/ai-students/unit/*.test.mjs",
+    "test:ai-students:pilot": "node tests/ai-students/local-pilot.mjs --mission=mail-detective --persona=snelle-sam,taalzwakke-tess,ipad-iris --device=desktop,ipad-portrait,ipad-landscape",
+    "audit:security": "node scripts/audit-security.mjs",
+    "test:audit-security": "node --test tests/security/audit-security.test.mjs",
     "security:check": "node scripts/security-report-core-check.mjs && node scripts/check-website-security-posture.mjs",
     "postmarket:review": "node scripts/generate-post-market-review.mjs",
     "review:handoff": "node scripts/validate-claude-handoff.mjs"
+  },
+  "engines": {
+    "node": "24.x"
   },
   "dependencies": {
     "@react-three/drei": "^10.7.7",
@@ -85,7 +94,7 @@
     "openai": "^6.27.0",
     "playwright": "^1.60.0",
     "postcss": "^8.5.6",
-    "sharp": "^0.34.5",
+    "sharp": "^0.35.3",
     "tailwindcss": "^3.4.17",
     "typescript": "^6.0.3",
     "vite": "^8.0.16"

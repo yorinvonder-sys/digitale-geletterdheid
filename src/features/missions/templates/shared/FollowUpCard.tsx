@@ -7,9 +7,14 @@ interface FollowUpCardProps {
     onComplete: (correct: boolean) => void;
     /** Visueel thema — 'light' voor ScenarioEngine, 'dark' voor PuzzleLab */
     theme?: 'light' | 'dark';
+    /**
+     * Punten die deze vraag bijdraagt aan de rondescore (niet bovenop, maar als
+     * onderdeel ervan). Bij > 0 ziet de leerling dat het antwoord meetelt.
+     */
+    scoreWeight?: number;
 }
 
-export const FollowUpCard: React.FC<FollowUpCardProps> = ({ followUp, onComplete, theme = 'light' }) => {
+export const FollowUpCard: React.FC<FollowUpCardProps> = ({ followUp, onComplete, theme = 'light', scoreWeight = 0 }) => {
     const [selected, setSelected] = useState<number | null>(null);
     const answered = selected !== null;
     const correct = selected === followUp.correctIndex;
@@ -41,11 +46,15 @@ export const FollowUpCard: React.FC<FollowUpCardProps> = ({ followUp, onComplete
                 <span className="text-base">🧠</span>
                 <span className={`text-xs font-black ${textMain}`} style={fontBody}>
                     Verdiepingsvraag
-                    {followUp.bonusPoints > 0 && (
+                    {followUp.bonusPoints > 0 ? (
                         <span className={`ml-1.5 font-bold ${isLight ? 'text-duck-ink' : 'text-duck-acid'}`}>
                             +{followUp.bonusPoints} bonus
                         </span>
-                    )}
+                    ) : scoreWeight > 0 ? (
+                        <span className={`ml-1.5 font-bold ${isLight ? 'text-duck-ink' : 'text-duck-acid'}`}>
+                            telt mee voor {scoreWeight} punten
+                        </span>
+                    ) : null}
                 </span>
             </div>
 
@@ -76,6 +85,8 @@ export const FollowUpCard: React.FC<FollowUpCardProps> = ({ followUp, onComplete
                     return (
                         <button
                             key={i}
+                            data-qa="followup-option"
+                            data-followup-option-index={i}
                             onClick={() => handleSelect(i)}
                             disabled={answered}
                             className={`w-full text-left px-3 py-2.5 rounded-xl border-2 text-xs transition-all duration-200 ${optStyle} ${textMain}`}
@@ -105,6 +116,7 @@ export const FollowUpCard: React.FC<FollowUpCardProps> = ({ followUp, onComplete
                         {correct ? '✓ Goed!' : '✕ Niet helemaal.'} {followUp.explanation}
                     </div>
                     <button
+                        data-qa="followup-submit"
                         onClick={() => onComplete(correct)}
                         className={`w-full py-2.5 rounded-full font-black text-sm transition-all duration-200 ${
                             isLight

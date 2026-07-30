@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "id": "taalzwakke-tess",
+  "displayName": "Taalzwakke Tess",
+  "age": 12,
+  "readingLevel": "a2-b1",
+  "digitalSkill": "average",
+  "deviceProfile": "desktop",
+  "readingBehavior": ["heeft moeite met lange zinnen", "herkent vooral bekende woorden"],
+  "decisionBehavior": ["kiest op basis van herkenbare woorden"],
+  "errorBehavior": ["maakt fouten door vaktaal", "mist abstracte nuances"],
+  "helpBehavior": ["gebruikt korte en visuele hulp"],
+  "testGoals": ["scheid taalbelasting van digitale vaardigheid"],
+  "preferredViewports": ["desktop"],
+  "behaviorWeights": {
+    "readingCoverage": 0.65,
+    "decisionSpeed": 0.45,
+    "uncertainty": 0.55,
+    "errorRate": 0.55,
+    "hintUsage": 0.5,
+    "backtrackRate": 0.2,
+    "shortcutSeeking": 0.2,
+    "manipulationAttempt": 0.05,
+    "touchReliance": 0
+  },
+  "seedSalt": "taalzwakke-tess-v1"
+}

@@ -66,6 +66,11 @@ const TEMPLATE_ENGINES = {
     varName: 'VALID_DEBATE_ARENA_IDS',
     dir: 'debate-arena',
   },
+  'ethics-council': {
+    file: 'src/features/missions/templates/ethics-council/EthicsCouncil.tsx',
+    varName: 'VALID_ETHICS_COUNCIL_IDS',
+    dir: 'ethics-council',
+  },
   'review-arena': {
     file: 'src/features/missions/templates/review-arena/ReviewArena.tsx',
     varName: 'VALID_REVIEW_ARENA_IDS',

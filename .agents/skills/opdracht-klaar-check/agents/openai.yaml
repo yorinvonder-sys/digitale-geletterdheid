@@ -1,0 +1,4 @@
+interface:
+  display_name: "Opdracht Klaar Check"
+  short_description: "Check of opdrachten klaar zijn voor leerlingen"
+  default_prompt: "Use $opdracht-klaar-check to verify whether this DGSkills assignment is ready for learners."

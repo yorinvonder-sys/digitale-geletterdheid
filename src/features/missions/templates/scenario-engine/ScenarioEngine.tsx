@@ -17,19 +17,24 @@ import type {
 import { SelectCorrectRound } from './sub/SelectCorrectRound';
 import { OrderPriorityRound } from './sub/OrderPriorityRound';
 import { BinaryChoiceRound } from './sub/BinaryChoiceRound';
-import { FeedbackBanner, scoreRound } from './sub/FeedbackBanner';
+import { FeedbackBanner, followUpWeight, scaledItemScore, scoreRound } from './sub/FeedbackBanner';
 
 // ── Scoring ───────────────────────────────────────────────────────────────────
 
-/** Berekent de gecorrigeerde score voor een ronde inclusief confidence multiplier en followUp bonus. */
+/**
+ * Berekent de gecorrigeerde score voor een ronde inclusief confidence multiplier,
+ * followUp bonus en — wanneer de ronde `followUpWeight` zet — de punten die voor
+ * de followUp-vraag zijn gereserveerd.
+ */
 function adjustedScoreRound(round: ScenarioRound, rs: RoundState): number {
     if (!rs.submitted) return 0;
     const base = scoreRound(round, rs.selections);
-    const multiplied = Math.round(base * confidenceMultiplier(rs.confidence, base >= 15));
-    const withBonus = rs.followUpAnswered && rs.followUpCorrect && round.followUp
-        ? multiplied + round.followUp.bonusPoints
-        : multiplied;
-    return Math.min(withBonus, round.maxScore);
+    const items = scaledItemScore(round, rs.selections);
+    const multiplied = Math.round(items * confidenceMultiplier(rs.confidence, base >= 15));
+    const followUpEarned = rs.followUpAnswered && rs.followUpCorrect && round.followUp
+        ? followUpWeight(round) + round.followUp.bonusPoints
+        : 0;
+    return Math.min(multiplied + followUpEarned, round.maxScore);
 }
 
 // ── Loading / error screens ───────────────────────────────────────────────────
@@ -313,6 +318,7 @@ const ScenarioEngineInner: React.FC<{
                             {followUpPending && currentRound.followUp && (
                                 <FollowUpCard
                                     followUp={currentRound.followUp}
+                                    scoreWeight={followUpWeight(currentRound)}
                                     onComplete={(correct) => {
                                         updateRoundState(currentRound.id, {
                                             followUpAnswered: true,

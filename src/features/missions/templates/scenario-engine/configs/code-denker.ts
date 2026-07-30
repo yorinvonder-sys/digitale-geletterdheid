@@ -60,7 +60,7 @@ const config: ScenarioEngineConfig = {
             emoji: '🧱',
             title: 'Welke bouwsteen is dit?',
             description:
-                'Elk voorbeeld hieronder past bij één van de vier bouwstenen van computational thinking: decompositie (= een groot probleem in kleine stukjes hakken), patroonherkenning (= herhalingen herkennen), abstractie (= alleen de belangrijke details bewaren) of algoritme (= een stap-voor-stap recept). Welke voorbeelden zijn voorbeelden van DECOMPOSITIE? Selecteer ze.',
+                'De voorbeelden gebruiken vier bouwstenen van computational thinking. Decompositie deelt een groot probleem op in kleine stukken. Patroonherkenning zoekt herhalingen. Abstractie bewaart alleen belangrijke details. Een algoritme is een stap-voor-staprecept. Welke voorbeelden tonen decompositie? Selecteer ze.',
             type: 'select-correct',
             maxScore: 25,
             feedbackCorrect:

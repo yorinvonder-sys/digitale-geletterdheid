@@ -6,25 +6,38 @@ on the smallest useful slice of DGSkills.
 ## Default Intake
 
 1. Run `npm run context:budget` before context-heavy work.
-2. Read the nearest `AGENTS.md` for the files you will touch.
-3. Read only the domain README or source files needed for the task.
+2. Look the task up in `.claude/skill-router.md` — a task-to-path index that
+   names the files to open. Use `ARCHITECTURE.md` when you need the structural
+   picture instead: repo layout, entrypoints, verification commands.
+3. Read the `README.md` in the feature folder. Every folder under
+   `src/features/` has one: what lives there, the entry file, where its data
+   comes from, and its risk class. Then open only the specific component, hook,
+   or service the task needs.
 4. Use path-scoped `rg`, `git status --short -- <paths>`, and
    `git diff -- <paths>`.
 
 Do not start by reading baton files, progress logs, screenshots, generated
 build output, broad business docs, or all feature folders.
 
+Every path named in this file, in `.claude/skill-router.md`, in
+`ARCHITECTURE.md`, and in each feature `README.md` is verified by
+`npm run check:agent-docs`. If a path does not resolve, that is a bug in the
+document — report it rather than searching around it.
+
 ## Task-To-Context Map
 
-- Feature UI/product logic: `src/features/AGENTS.md`, the local
-  `src/features/<domain>/AGENTS.md`, local README, then the specific component,
-  hook, or service.
-- Missions/opdrachten: `src/features/missions/AGENTS.md`, the specific mission
-  or template, mission config, and the most specific check script.
-- Public site/SEO: local public-site or SEO agent rules, the route/component,
-  and prerender script only when route output changes.
-- Auth/admin/consent/teacher data: local feature rules plus the relevant
-  service and database types. Treat as Rood risk.
+- Feature UI/product logic: `.claude/skill-router.md` for the entry paths, the
+  local README in that feature folder, then the specific component, hook, or
+  service.
+- Missions/opdrachten: `src/features/missions/`, the specific mission or
+  template under `src/features/missions/templates/`, `src/config/missions.ts`,
+  and the most specific check script.
+- Public site/SEO: `src/features/public-site/CLAUDE.md` or
+  `src/features/seo/CLAUDE.md`, the route/component, and the prerender script
+  only when route output changes.
+- Auth/admin/consent/teacher data: `src/services/authService.ts`,
+  `src/services/PermissionService.ts`, `src/features/consent/`, and
+  `src/types/database.types.ts`. Treat as Rood risk.
 - Supabase/Edge Functions/RLS: `supabase/CLAUDE.md`, the specific function or
   migration, and security docs only when behavior or claims depend on them.
 - Docs-only work: read the target doc and directly linked sources, not the
