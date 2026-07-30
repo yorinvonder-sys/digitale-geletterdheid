@@ -1,6 +1,6 @@
 ---
 name: dgskills-jurist-check
-description: Use this skill when a legal/juridical opinion is needed on DGSkills (dgskills.app) — whether a change, feature, document, or claim is lawful under Dutch + EU law and education law. Acts as a "jurist" specialised in AVG/UAVG (GDPR), EU AI Act (Verordening 2024/1689, hoog-risico Annex III 3(b)), Privacyconvenant Onderwijs, en Nederlands onderwijsrecht (publieke taak). Complements (does NOT duplicate) dgskills-compliance-check, which covers the technical/security gate. Trigger phrases include "juridische check", "mag dit van de wet", "is dit rechtmatig", "AVG check", "privacy juridisch", "AI Act juridisch", "jurist", "wettelijk oordeel", "legal review", "onderwijsrecht", "mag dit live volgens de wet".
+description: Use this skill when a legal/juridical opinion is needed on DGSkills (dgskills.app) — whether a change, feature, document, or claim is lawful under Dutch + EU law and education law. Acts as a "jurist" specialised in AVG/UAVG (GDPR), EU AI Act (Verordening 2024/1689, hoog-risico Annex III 3(b)), Privacyconvenant Onderwijs, en Nederlands onderwijsrecht (publieke taak). Complements (does NOT duplicate) dgskills-compliance-check, which covers the technical/security gate. Covers ook compliance-triage en bronroutering voor school-facing claims, DPIA/DPA-bewijs, subverwerkers en bewijsgaten (overgenomen uit de voormalige skill dgskills-legal-compliance, die hierin is opgegaan). Trigger phrases include "juridische check", "mag dit van de wet", "is dit rechtmatig", "AVG check", "privacy juridisch", "AI Act juridisch", "jurist", "wettelijk oordeel", "legal review", "onderwijsrecht", "mag dit live volgens de wet", "compliance-triage", "claim check", "subverwerker", "DPIA-bewijs".
 ---
 
 # DGSkills Jurist-Check — Juridisch Playbook
@@ -24,6 +24,13 @@ DGSkills is een **HIGH RISK AI-systeem** onder EU AI Act **Annex III 3(b)** (AI 
 
 ## Leesvolgorde (kennisbasis — open de relevante bron, gok niet)
 
+**Eerst de source-of-truth, dán de rest.** Bij claims zijn deze twee leidend; wijkt een business-document ervan af, dan geldt de source-of-truth en meld je de mismatch:
+
+- `docs/compliance/legal-claim-source-of-truth.md` — leidende claim-status
+- `docs/compliance/legal-evidence-register.md` — bewijsregister per claim
+
+Daarna, naar onderwerp:
+
 1. `business/nl-vo/compliance/legal-matrix.md` — toetsmatrix AVG + AI Act
 2. `business/nl-vo/09-juridisch-rapport-compleet.md` — meest complete juridische synthese
 3. `business/nl-vo/compliance/dpia-dgskills-compleet.md` — DPIA (AVG Art. 35)
@@ -43,6 +50,20 @@ DGSkills is een **HIGH RISK AI-systeem** onder EU AI Act **Annex III 3(b)** (AI 
 - **Grondslag minderjarigen:** **publieke taak van de school** (AVG Art. 6(1)(e), via onderwijswetgeving/WVO 2020), niet individuele toestemming van de leerling. De **16-jaargrens** (AVG Art. 8 / UAVG Art. 5) geldt alleen waar toestemming de grondslag is; de school is verantwoordelijk voor het verkrijgen van ouderlijke toestemming.
 - **NL DPA-standaard:** Privacyconvenant Onderwijs **Model Verwerkersovereenkomst 4.0** (Kennisnet/SIVON, ROSA, Normenkader IBP). Versie 5.0 voor AI-verwerkingen is in de maak.
 - **NOOIT "AI Act compliant" of "AVG-compliant/proof" claimen.** Hooguit: "voldoet aan eis X" of "in compliancetraject".
+
+## Claim-discipline (formuleringen)
+
+Voorzichtige, bewijsgedragen taal — gebruik dit als woordenlijst bij elke school-facing claim.
+
+**Wel:** "AVG-bewust ontworpen" · "privacy-by-design maatregelen" · "ondersteunt scholen bij hun AVG-verplichtingen" · "voorbereid op AI Act-verplichtingen" · "onder voorbehoud van DPA, DPIA en FG/DPO-review" · "voldoet aan eis X".
+
+**Nooit claimen** (afkeuren zodra je het ziet staan): "AVG-compliant" · "voldoet volledig aan de AVG" · "AI Act compliant" · "juridisch goedgekeurd" · "zero-training guarantee" · "geen risico" · "100% veilig" · "school kan direct live zonder DPIA".
+
+Verder:
+
+- Maak van een concept-document, een historische audit, een ongecontroleerde providerpagina of modelgeheugen **nooit** een publieke compliance-claim.
+- "Klaar voor schoolreview" is niet hetzelfde als "juridisch goedgekeurd" of "klaar voor uitrol" — houd die gescheiden.
+- Raakt een claim providertraining, bewaartermijn, datalocatie, subverwerkerstatus of doorgiftewaarborg? Dan is providerbewijs vereist; ontbreekt dat, leg het bewijsgat vast als "te verifiëren" in plaats van het te vullen met een aanname.
 
 ## Juridisch toetsingskader
 
@@ -96,12 +117,13 @@ Loop de relevante blokken langs. Per bevinding: **wetsartikel → bevinding → 
 
 ## Werkwijze
 
-1. Bepaal de scope: lees de diff/gewijzigde bestanden (`git diff`) of het gevraagde onderwerp.
-2. Open de relevante kennisbasis-bron(nen) uit de leesvolgorde — **citeer er minstens één** als die relevant is.
-3. Koppel elke bevinding aan het juiste blok (J1–J5) en het **exacte wetsartikel**.
-4. Geef per bevinding een oordeel + concreet advies + bronverwijzing.
+1. Bepaal de scope: lees de diff/gewijzigde bestanden (`git diff`) of het gevraagde onderwerp. Benoem welk soort werk het is — copy/claim, productgedrag, technische maatregel, schoolonboarding, DPIA/DPA-bewijs, subverwerkersbewijs of juridische classificatie.
+2. Open de relevante kennisbasis-bron(nen) uit de leesvolgorde — **citeer er minstens één** als die relevant is. Zoek het kleinste relevante document op via `references/dgskills-routing.md`; gebruik `references/source-priority.md` voor de bronhiërarchie en officiële links.
+3. Koppel elke bevinding aan het juiste blok (J1–J5) en het **exacte wetsartikel**. Voor praktische gates per werksoort: `references/review-checklists.md`.
+4. Geef per bevinding een oordeel + concreet advies + bronverwijzing. Scheid daarbij expliciet: bevestigd bewijs · aanname uit de repo · openstaand bewijsgat · vereist jurist/FG-review.
 5. Verifieer tijdsgevoelige rechtsfeiten online (zie waarborgen) vóór je ze stelt.
-6. Sluit af met het rapport-format + gewone-taal-samenvatting.
+6. Heb je school-facing juridische of compliance-tekst gewijzigd, draai dan `npm run check:legal`. Bij code- of configwijzigingen: de normale repo-checks.
+7. Sluit af met het rapport-format + gewone-taal-samenvatting.
 
 ## Uitvoer-format (rapportage)
 
@@ -112,7 +134,7 @@ Loop de relevante blokken langs. Per bevinding: **wetsartikel → bevinding → 
 Disclaimer: informatieve analyse, geen formeel juridisch advies.
 
 Per bevinding:
-• [Wet + Art.] — [bevinding]
+• [BLOCK | WARN | ALLOW] [Wet + Art.] — [bevinding]
   Grondslag: [korte onderbouwing]
   Advies: [concrete actie]
   Bron: [kennisbasis-bestand of externe bron]
@@ -121,6 +143,12 @@ Oordeel: [RECHTMATIG / JURIDISCH RISICO / ONRECHTMATIG]
 Open punten (verifiëren): [bv. AI Act-deadline]
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
+
+Labels per bevinding (zelfde vocabulaire als `references/review-checklists.md`):
+
+- **BLOCK** — claim niet gedragen door de bron, in tegenspraak met de source-of-truth, vereiste juridische/FG-review ontbreekt, of privacy-/securityrisico.
+- **WARN** — alleen acceptabel mét tekstwijziging, voorbehoud, providerbewijs of schoolspecifieke bevestiging.
+- **ALLOW** — bronbevestigd, voorzichtig geformuleerd en binnen het huidige bewijsspoor.
 
 ## Gewone-taal samenvatting (altijd bijleveren)
 
@@ -143,6 +171,15 @@ Leg in 2–3 zinnen uit aan een niet-jurist (Yorin als product-owner):
 - Een nieuwe verwerking raakt minderjarigen en staat niet in de bestaande DPIA.
 - De actuele AI Act-deadline wijkt af van wat de documenten stellen.
 
+Escaleer daarnaast naar een **echte jurist, FG/DPO of formele schoolreview** (niet zelf afronden) zodra:
+
+- definitieve DPIA-goedkeuring, ondertekening van de verwerkersovereenkomst, goedkeuring van een subverwerker of een Transfer Impact Assessment nodig is;
+- een feature op een nieuwe manier persoonsgegevens van minderjarigen verwerkt, of er een nieuwe AI-provider, analytics-tool, export, bewaarpad of extern deelpad bij komt;
+- AI-output leerresultaten beoordeelt, een leerroute stuurt, toegang tot kansen beïnvloedt, of menselijk toezicht vereist onder de AI Act;
+- het antwoord een systeem zou classificeren als verboden, hoog-risico, beperkt-risico of buiten scope;
+- het gaat om AVG Art. 9 (bijzondere categorieën), Art. 10 (strafrechtelijke gegevens), Art. 22 (geautomatiseerde besluitvorming), profilering van minderjarigen, toestemming onder de 16, of doorgifte buiten de EU;
+- publieke tekst compliance, conformiteit, certificering, garantie of uitrolgereedheid zou claimen.
+
 ## Anti-patronen
 
 - ❌ "AI Act compliant" / "AVG-proof" als verkoopargument laten staan.
@@ -157,3 +194,11 @@ Leg in 2–3 zinnen uit aan een niet-jurist (Yorin als product-owner):
 - Technische gate: `.claude/skills/dgskills-compliance-check/SKILL.md`
 - Juridische kennisbasis: `business/nl-vo/compliance/` + `business/nl-vo/09-juridisch-rapport-compleet.md`
 - Acceptatie-checklist: `.claude/acceptance-checklist.md`
+
+Detailbestanden bij deze skill — open alleen wat je nodig hebt:
+
+- `references/source-priority.md` — bronhiërarchie + officiële links (EUR-Lex, AP, Kennisnet, SIVON, Privacyconvenant).
+- `references/dgskills-routing.md` — welk DGSkills-document je voor welk soort werk opent, plus codepointers voor claims die van de implementatie afhangen.
+- `references/review-checklists.md` — praktische gates per werksoort: claims, AI-feature-risico, AVG/minderjarigen, DPA/DPIA/onboarding, subverwerkers.
+
+> Deze skill is per 30 juli 2026 samengevoegd met de voormalige Codex-skill `dgskills-legal-compliance`; die bestaat niet meer als aparte skill.

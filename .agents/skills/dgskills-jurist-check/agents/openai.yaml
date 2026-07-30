@@ -1,0 +1,4 @@
+interface:
+  display_name: "DGSkills Jurist-Check"
+  short_description: "AVG and AI Act judgment for Dutch schools"
+  default_prompt: "Use $dgskills-jurist-check to review this DGSkills school-facing claim or change for AVG, AI Act, DPIA, DPA, and FG/DPO risks."

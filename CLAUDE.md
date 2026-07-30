@@ -165,4 +165,7 @@ twijfel over kosten, bij escalatie en vóór afronding — niet standaard.
 - Supabase: schema, logs, migrations, edge function context.
 - Tavily or web search: use only when current external facts are needed.
 - Sequential thinking: use only for genuinely complex reasoning chains.
-- Notion: gebruik altijd het Kanban-board als taaktracker. Bij elke Notion-interactie (lezen of schrijven) de bijbehorende taak naar de juiste kolom verplaatsen: Backlog → In Progress (Coding) → Review → Done. Nieuwe taken starten in Backlog.
+- Linear: gebruik altijd het DGSkills-board (team `DGS`) als taaktracker. Verplaats de
+  bijbehorende taak bij elke fase naar de juiste status: Backlog → Todo → In Progress →
+  In Review → Done. Nieuwe taken starten in Backlog. Notion is legacy en wordt niet meer
+  bijgewerkt.
