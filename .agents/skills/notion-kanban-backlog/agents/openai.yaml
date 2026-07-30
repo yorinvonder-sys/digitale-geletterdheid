@@ -1,0 +1,11 @@
+interface:
+  display_name: "Notion Kanban Backlog"
+  short_description: "Plan, review, then execute Notion backlog work"
+  default_prompt: "Use $notion-kanban-backlog to pick one open Notion Kanban backlog item, plan it for my review, and only execute after approval."
+dependencies:
+  tools:
+    - type: "mcp"
+      value: "notion"
+      description: "Read and update the Notion Kanban board used as the task tracker."
+policy:
+  allow_implicit_invocation: true
