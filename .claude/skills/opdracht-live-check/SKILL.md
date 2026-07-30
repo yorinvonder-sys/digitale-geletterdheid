@@ -10,12 +10,13 @@ Use this skill for the live, human-facing QA pass: behave like a student, play t
 ## Operating Rules
 
 - Write in Dutch unless the user explicitly asks otherwise.
-- Start from the live URL or running local/dev URL the user provides. If none is provided, resolve the likely mission URL from the repo and state the assumption.
+- **Default to the side-effect-free preview route**: `/dev/mission-preview?mission=<id>&reset=1` on the running dev server. Completion there is a deliberate no-op, so playing the assignment writes no progress, no XP, and no activity log. Use it unless the user explicitly points you somewhere else.
+- **Never play through on production with an existing learner account.** A normal completion on the real site marks the mission done, awards XP through a server call, and writes an activity log entry carrying the learner's name and school — visible to their teacher. A production playthrough needs both explicit approval from the user and a designated test account created for this purpose; without both, stop and say so.
 - Prefer Chrome/browser evidence over static code claims.
 - Behave like a normal student: read what is on screen, click/tap expected controls, make reasonable learner choices, and notice confusion.
-- Do not use admin shortcuts, database edits, local state manipulation, or hidden implementation knowledge to complete the assignment.
+- Do not use admin shortcuts, database edits, or hidden implementation knowledge to fake progress or completion. The preview route's own `reset=1` is not a shortcut — it clears that mission's local state so you start clean, and it is the intended way to replay.
 - Do not enter real personal data, learner data, secrets, or sensitive information. Use harmless test text.
-- If login or a real student account is required and unavailable, stop at the blocker and report what could and could not be checked.
+- If the assignment cannot be reached without a real student account, stop at the blocker and report what could and could not be checked. Reaching for a learner's session is never the fallback.
 
 ## What To Check
 
