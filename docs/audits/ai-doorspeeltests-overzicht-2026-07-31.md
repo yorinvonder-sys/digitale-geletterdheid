@@ -9,37 +9,34 @@ doorgespeeld, wat eruit kwam, en wat er met de uitkomsten is gebeurd.
 
 ## In het kort
 
-Leerlingen die de DGSkills-website gebruiken, stuiten nog steeds op fouten die in juli
-2026 al zijn ontdekt en gerepareerd. De reparaties liggen klaar, maar zijn nooit op de
-live-omgeving doorgevoerd. Voor de leerling betekent dit bijvoorbeeld dat mission-launch
-vastloopt na dubbelklikken op de bewijs-vinkjes, data-voor-data crasht bij tussentijds
-verversen en de eindknop van cloud-cleaner onklikbaar is door een venster eroverheen —
-de enige echte eindknopfout; vier andere meldingen daarover bleken na controle een
-testartefact. In totaal zijn 48 van de 99 missies uit het hele curriculum doorgespeeld
-door AI-nagespeelde leerlingen, iets minder dan de helft. Ronde A (begin juli) testte 32
-missies uit leerjaar 1; 11 werden direct goedgekeurd, 20 hadden problemen, en de tien
-gemaakte reparaties staan in voorstel 203 dat nooit is samengevoegd. Ronde B testte
-achttien missies met acht gedragsprofielen en vond geen resterende problemen, maar ook
-die verbeteringen haalden de website niet. Alleen uit ronde C kwamen twee reparaties die
-wél live zijn gegaan.
+Tien fouten, verspreid over de missies van leerjaar 1, zijn opgelost en staan sinds
+31 juli 2026 live. Ze lagen bijna vier weken klaar zonder doorgevoerd te zijn. Bij het
+alsnog samenvoegen botste het werk met nieuwere code; die botsing is met de hand
+opgelost, en daarbij is een fout in de oorspronkelijke reparatie gecorrigeerd — die
+vergeleek de score met een totaal waar ook de punten van een bonusvraag in zitten,
+waardoor de felicitatie bij zulke rondes nooit meer zou zijn verschenen. Na publicatie
+is gecontroleerd dat de reparaties in de daadwerkelijk uitgeleverde programmacode van de
+site zitten en dat de site bereikbaar is. In een echte browser is nagespeeld dat een
+score van 15 van de 25 punten nu "Goed bezig! Bijna foutloos" toont, terwijl een foutloos
+antwoord de felicitatie wél geeft. Wat nog openstaat: 51 van de 99 missies zijn nooit
+doorgespeeld, en de verbeteringen uit ronde B zijn nog niet doorgevoerd.
 
 ## Wat dit betekent
 
-1. De reparaties uit ronde A en B liggen in losse voorstellen (waaronder 203) en zijn
-   nooit samengevoegd met de hoofdversie. Doordat voorstel 203 inmiddels botst met
-   nieuwere code, is automatisch samenvoegen onmogelijk en is handmatige integratie
-   nodig. Leerlingen ervaren daardoor nog steeds fouten die sinds begin juli in de
-   testomgeving al waren verholpen.
+1. De reparaties zijn nu live, maar doordat het voorstel bijna vier weken bleef liggen,
+   botste het met latere wijzigingen en moest het met de hand worden rechtgezet. Een
+   voorstel dat blijft liggen wordt vanzelf duurder om alsnog door te voeren — en tot dat
+   moment merken leerlingen niets van werk dat allang gedaan is.
 
 2. Van de 99 missies zijn er 48 getest, waardoor vooral leerjaar 2 (24 van de 33 nog
    ongetest) en leerjaar 3 (20 van de 26 nog ongetest) grotendeels ongezien blijven,
    inclusief de eindprojecten van beide leerjaren. Gevorderde leerstof is nog nooit in
    een echte browsersessie doorgelopen en onbekende fouten liggen daardoor op de loer.
 
-3. De auditresultaten zijn verspreid over meerdere openstaande voorstellen (203 en 205
-   tot en met 208) en een extern rapport, zonder één actueel totaalbeeld. Er ontbreekt
-   een centrale plek waar precies te zien is wat getest is, wat gerepareerd is en wat
-   nog een probleem vormt.
+3. De verbeteringen van ronde B staan nog als concept-voorstel open (205 tot en met 208)
+   en zijn dus niet live. Het bewijsmateriaal van ronde A staat sinds 31 juli wel in het
+   project — 62 bestanden met deelrapport, per-missie rapporten en bevindingen — dat van
+   ronde B nog niet.
 
 ---
 
@@ -93,13 +90,13 @@ niet voorbij de verplichte nulmeting op de live site kwam):
 Risicoverdeling over de 28 niet-chat missies: 4 rood (permanente vastloop of crash),
 14 geel (fix nodig, spelen lukt wel), 10 groen.
 
-### De reparaties — gemaakt, nagelopen, niet doorgevoerd
+### De reparaties — gemaakt, nagelopen, sinds 31 juli live
 
 Direct na ronde A zijn tien reparaties gemaakt en stuk voor stuk in de browser
-gecontroleerd. Ze staan sinds 5 juli in voorstel 203 en zijn **niet samengevoegd**.
-Geverifieerd op 31 juli: de code ontbreekt in de hoofdversie.
+gecontroleerd. Ze stonden sinds 5 juli in voorstel 203 en zijn op **31 juli alsnog
+samengevoegd** (merge-commit `9be8afe`). Tot dat moment merkten leerlingen er niets van.
 
-| Wat er kapot is | Missie(s) | Gerepareerd in 203 |
+| Wat er kapot was | Missie(s) | Gerepareerd |
 |---|---|---|
 | Dubbelklikken corrumpeert bewijs-vinkjes, permanente vastloop | mission-launch en alle missies met dezelfde stappenlijst | ja |
 | Level 2 echt onwinbaar, sprong werkt niet | game-director | ja |
@@ -112,9 +109,13 @@ Geverifieerd op 31 juli: de code ontbreekt in de hoofdversie.
 | Hulp-AI toont inhoud van een andere missie | deepfake-detector | ja |
 | Badge-naam las als missietitel op eindscherm | notificatie-ninja | ja |
 
-Voorstel 203 botst nu met de hoofdversie op één bestand
-(`src/features/missions/templates/scenario-engine/sub/FeedbackBanner.tsx`), dus
-samenvoegen vraagt handwerk.
+Het samenvoegen botste op één bestand
+(`src/features/missions/templates/scenario-engine/sub/FeedbackBanner.tsx`): main had
+intussen een geschaalde puntentelling gekregen voor rondes die punten reserveren voor een
+bonusvraag. De oorspronkelijke reparatie vergeleek met `round.maxScore` — inclusief die
+bonuspunten — waardoor de felicitatie bij zulke rondes nooit meer zou verschijnen. In de
+samenvoeging vergelijkt de code nu met de maximaal haalbare itemscore, dus met wat de
+leerling daadwerkelijk als "Ronde score" ziet staan.
 
 ### De audit heeft zichzelf gecorrigeerd
 
@@ -166,14 +167,11 @@ kerndoel dichtzetten (mail-detective).
 
 | Wat | Waar |
 |---|---|
-| Per-missie rapporten ronde A (32) | Buiten het project: `~/dgskills-audit/reports/` |
-| Bevindingen ronde A (JSONL) | Buiten het project: `~/dgskills-audit/findings/` |
+| Deelrapport ronde A | In het project: [leerling-simulatie-audit/jaar1-deelrapport-niet-chat.md](leerling-simulatie-audit/jaar1-deelrapport-niet-chat.md) |
+| Per-missie rapporten en bevindingen ronde A (62 bestanden) | In het project: `docs/audits/leerling-simulatie-audit/` (sinds 31 juli) |
 | Schermteksten en kliklogs ronde A | Buiten het project: `~/dgskills-audit/evidence/` |
-| Deelrapport ronde A + kopie van bovenstaande | Alleen in voorstel 203, niet samengevoegd |
 | Rapporten ronde B | Alleen in voorstellen 205 t/m 208, niet samengevoegd |
 | Testklas-skill ronde C | Voorstel 246, nog open |
-
-Alleen dit overzicht staat in het project zelf.
 
 ---
 
