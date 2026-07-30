@@ -58,11 +58,14 @@ const CHALLENGES: Challenge[] = [
         id: 'jumping',
         title: '🦴 Level 2: Over het Hek',
         description: 'Er staat een hek in de weg! Programmeer Robbie om te springen als je op de spatiebalk drukt.',
-        hint: 'Gebruik het "wanneer toets ingedrukt" blok met Spatiebalk, en voeg het "spring" blok toe.',
+        hint: 'Gebruik het "wanneer toets ingedrukt" blok met Spatiebalk, en voeg het "spring" blok toe. Druk daarna op START en op de spatiebalk om Robbie te laten springen!',
         check: (ctx, blocks) => {
-            // Must have jump block AND reach the goal
+            // Level 2 teaches wiring a key press to a jump. It is complete when the
+            // learner has a jump block AND Robbie has actually jumped at least once
+            // during play (proves the key→jump wiring works). Reaching the far goal
+            // is a navigation skill saved for the later levels.
             const hasJumpBlock = blocks.some(b => b.definitionId === 'jump');
-            return hasJumpBlock && ctx.reachedGoal;
+            return hasJumpBlock && ctx.player.hasJumped;
         }
     },
     {
@@ -239,8 +242,9 @@ export const GameDirectorMission: React.FC<GameDirectorProps> = ({ onComplete, o
         vy: number;
         grounded: boolean;
         facingRight: boolean;
+        hasJumped: boolean;
         actionQueue: MoveAction[];
-    }>({ x: 50, y: 512, vx: 0, vy: 0, grounded: true, facingRight: true, actionQueue: [] });
+    }>({ x: 50, y: 512, vx: 0, vy: 0, grounded: true, facingRight: true, hasJumped: false, actionQueue: [] });
     const keysRef = useRef<Record<string, boolean>>({});
     const reqRef = useRef<number | undefined>(undefined);
     const enemiesRef = useRef<{ x: number, y: number }[]>([]);
@@ -404,11 +408,13 @@ export const GameDirectorMission: React.FC<GameDirectorProps> = ({ onComplete, o
         if (isPlaying) {
             const gameCtx = createGameContext();
 
-            // Only execute blocks if no actions are pending in the queue
-            if (p.actionQueue.length === 0) {
-                const executor = createExecutor(blocks, gameCtx);
-                executor.execute();
-            }
+            // Run the block executor every frame. Event blocks are edge/once-based
+            // (when_game_starts fires once, when_key_pressed fires on the rising edge),
+            // so they do not spam the action queue. Running every frame ensures key
+            // events like the space-jump are detected even while a move action is still
+            // draining from the queue (otherwise jumping while walking is impossible).
+            const executor = createExecutor(blocks, gameCtx);
+            executor.execute();
 
             // Process current action (first in queue)
             if (p.actionQueue.length > 0) {
@@ -671,7 +677,7 @@ export const GameDirectorMission: React.FC<GameDirectorProps> = ({ onComplete, o
 
     // Reset game state
     const handleReset = useCallback(() => {
-        playerRef.current = { x: 50, y: 512, vx: 0, vy: 0, grounded: true, facingRight: true, actionQueue: [] };
+        playerRef.current = { x: 50, y: 512, vx: 0, vy: 0, grounded: true, facingRight: true, hasJumped: false, actionQueue: [] };
         enemiesRef.current = [];
         variablesRef.current = { gravity: 0.5, speed: 5 };
         BlockExecutor.reset(); // Reset executor state so when_game_starts can trigger again

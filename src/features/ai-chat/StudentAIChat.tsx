@@ -45,7 +45,9 @@ const formatChatTimestamp = (timestamp: ChatMessage['timestamp'] | string | numb
 export const StudentAIChat: React.FC<StudentAIChatProps> = ({ userIdentifier, context, isOpen: controlledIsOpen, onOpenChange, roleId }) => {
     const getQuickPromptLabel = () => {
         const week = typeof context?.week === 'number' ? context.week : null;
-        if (context?.currentChallenge) return 'Game Challenge Hulp';
+        if (context?.currentChallenge) {
+            return roleId === 'game-director' ? 'Game Challenge Hulp' : 'Opdracht Hulp';
+        }
         if (week && week >= 1 && week <= 4) return `Week ${week} Hulp`;
         return 'Opdracht Hulp';
     };
@@ -53,14 +55,26 @@ export const StudentAIChat: React.FC<StudentAIChatProps> = ({ userIdentifier, co
     const getQuickPrompts = () => {
         const week = typeof context?.week === 'number' ? context.week : null;
 
-        // Mission context (e.g., Game Director): keep prompts aligned to current challenge.
-        if (context?.currentChallenge) {
+        // Game Director draws blocks — keep its game-specific prompts.
+        if (context?.currentChallenge && roleId === 'game-director') {
             return [
                 'Ik snap deze challenge niet, leg de eerste stap uit.',
                 'Welke block moet ik als eerste slepen?',
                 'Wat betekent deze fout in mijn game?',
                 'Geef 1 hint zonder het antwoord te geven.',
                 'Hoe controleer ik of mijn oplossing klopt?'
+            ];
+        }
+
+        // Any other challenge-based mission (deepfake-detector, factchecker, …):
+        // generic prompts that fit the current challenge without game wording.
+        if (context?.currentChallenge) {
+            return [
+                'Ik snap deze opdracht niet, leg de eerste stap uit.',
+                'Waar moet ik op letten bij deze opdracht?',
+                'Geef 1 hint zonder het antwoord te geven.',
+                'Kun je dit in makkelijkere woorden uitleggen?',
+                'Hoe controleer ik of mijn antwoord klopt?'
             ];
         }
 

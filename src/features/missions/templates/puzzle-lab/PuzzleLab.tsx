@@ -275,7 +275,9 @@ export const PuzzleLab: React.FC<TemplateMissionProps> = ({
                 takeaways={config.takeaways}
                 onComplete={() => {
                     clearSave();
-                    onComplete(true);
+                    // Reflect real performance: only a >=40% score counts as a pass,
+                    // so a skipped/failed run is not reported as a success.
+                    onComplete(totalScore >= config.maxScore * 0.4);
                 }}
             />
         );

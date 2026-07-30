@@ -15,6 +15,9 @@ interface CompletionScreenProps {
     score: number;
     maxScore: number;
     badges: BadgeConfig[];
+    /** Mission name, shown as an eyebrow above the badge title so the earned badge
+     *  ("Screen Bewust", "Blijf Oefenen", …) is never mistaken for the mission title. */
+    missionTitle?: string;
     phases?: PhaseScore[];
     takeaways: string[];
     onComplete: () => void;
@@ -31,6 +34,7 @@ export const CompletionScreen: React.FC<CompletionScreenProps> = ({
     score,
     maxScore,
     badges,
+    missionTitle,
     phases,
     takeaways,
     onComplete,
@@ -41,6 +45,11 @@ export const CompletionScreen: React.FC<CompletionScreenProps> = ({
         .find((b) => score >= b.minScore) || badges[badges.length - 1];
 
     const percentage = Math.round((score / maxScore) * 100);
+
+    // A learner who skipped or failed most of a mission has not actually mastered
+    // the takeaways, so we must not present them as achieved (green ✓) nor claim a
+    // celebratory "voltooid". 40% mirrors the pass threshold used elsewhere.
+    const passed = maxScore > 0 && percentage >= 40;
 
     return (
         <div
@@ -60,6 +69,14 @@ export const CompletionScreen: React.FC<CompletionScreenProps> = ({
                         duckClassName="h-12 w-12"
                         className="mx-auto mb-3 max-w-xs"
                     />
+                    {missionTitle && (
+                        <p
+                            className="text-[11px] font-black text-duck-ink/50 uppercase tracking-widest mb-1"
+                            style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
+                        >
+                            {missionTitle} · afgerond
+                        </p>
+                    )}
                     <h2
                         className="text-2xl font-black text-duck-ink mb-1"
                         style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
@@ -108,10 +125,11 @@ export const CompletionScreen: React.FC<CompletionScreenProps> = ({
                     className="mb-4 w-full py-3.5 bg-duck-acid hover:bg-duck-acid/80 text-duck-ink rounded-full font-black text-sm transition-all duration-200 active:scale-[0.98] shadow-lg shadow-duck-acid/25 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-ink focus-visible:ring-offset-2"
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                 >
-                    Missie voltooid! 🎉
+                    {passed ? 'Missie voltooid! 🎉' : 'Afronden — probeer het gerust nog eens'}
                 </button>
 
-                {/* Takeaways */}
+                {/* Takeaways — framed as achieved (✓) only when the learner actually
+                    passed; otherwise shown neutrally as the mission's learning goals. */}
                 <div className="bg-white rounded-2xl border border-duck-gray p-4">
                     <div className="flex items-center gap-2 mb-3">
                         <Sparkles size={16} className="text-duck-ink" />
@@ -119,7 +137,7 @@ export const CompletionScreen: React.FC<CompletionScreenProps> = ({
                             className="text-xs font-black text-duck-ink uppercase tracking-widest"
                             style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                         >
-                            Wat je hebt geleerd
+                            {passed ? 'Wat je hebt geleerd' : 'Wat deze missie je wilde leren'}
                         </span>
                     </div>
                     <ul className="space-y-2">
@@ -129,7 +147,7 @@ export const CompletionScreen: React.FC<CompletionScreenProps> = ({
                                 className="text-sm text-duck-ink/60 flex items-start gap-2"
                                 style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                             >
-                                <span className="text-duck-ink mt-0.5">✓</span>
+                                <span className="text-duck-ink mt-0.5">{passed ? '✓' : '•'}</span>
                                 {t}
                             </li>
                         ))}

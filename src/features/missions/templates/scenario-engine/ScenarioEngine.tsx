@@ -227,6 +227,7 @@ const ScenarioEngineInner: React.FC<{
                 score={totalScore}
                 maxScore={config.maxScore}
                 badges={config.badges}
+                missionTitle={config.title}
                 phases={config.rounds.map((round) => ({
                     icon: round.emoji,
                     title: round.title,

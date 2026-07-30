@@ -77,6 +77,19 @@ export const FeedbackBanner: React.FC<{
     const good = rawScore >= 15; // 60% of 25
     const score = scaledItemScore(round, selections);
     const scoreMax = itemsMaxScore(round);
+    // Alleen een foutloos antwoord verdient de feestelijke tekst. Vergelijk op de
+    // getoonde schaal (score/scoreMax), niet op round.maxScore: die bevat ook de
+    // punten die voor de followUp-vraag zijn gereserveerd, en die meet deze banner niet.
+    const perfect = scoreMax > 0 && score >= scoreMax;
+
+    // De config-tekst `feedbackCorrect` viert vaak een foutloos antwoord ("Perfect!"),
+    // dus die tonen we alleen bij een volledige itemscore. Goed-maar-niet-foutloos
+    // krijgt een kloppende tekst in plaats van een vals "Perfect!".
+    const heading = perfect
+        ? (round.feedbackCorrect ?? 'Helemaal goed!')
+        : good
+            ? 'Goed bezig! Bijna foutloos — bekijk de uitleg voor de laatste puntjes.'
+            : (round.feedbackIncorrect ?? 'Bijna!');
 
     return (
         <div
@@ -86,12 +99,12 @@ export const FeedbackBanner: React.FC<{
             }`}
         >
             <div className="flex items-center gap-2 mb-2">
-                <span className="text-lg">{good ? '🎉' : '💡'}</span>
+                <span className="text-lg">{perfect ? '🎉' : good ? '👍' : '💡'}</span>
                 <span
                     className="text-sm font-black text-duck-ink"
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                 >
-                    {good ? (round.feedbackCorrect ?? 'Goed gedaan!') : (round.feedbackIncorrect ?? 'Bijna!')}
+                    {heading}
                 </span>
             </div>
             <p
