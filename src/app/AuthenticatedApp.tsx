@@ -14,6 +14,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { useNavigation } from '@/hooks/useNavigation';
 import { useFocusMode } from '@/hooks/useFocusMode';
 import { awardXP } from '@/services/XPService';
+import { getMissionXPReward } from '@/config/xp';
 import { TutorialProvider, STUDENT_TUTORIAL_STEPS, STUDENT_STORAGE_KEY, TutorialStep } from '@/contexts/TutorialContext';
 import { AccessibilityProvider } from '@/contexts/AccessibilityContext';
 import { lazyWithRetry } from '@/utils/lazyWithRetry';
@@ -567,7 +568,11 @@ export function AuthenticatedApp() {
                         await handleSaveProgress(newStats);
 
                         // Award XP via server-side RPC (enforces rate limiting + daily cap)
-                        const xpResult = await awardXP(user.uid, 50, 'Missie Voltooid', missionId);
+                        // This shell historically awards 50 XP to every mission.
+                        // Mission-scoped overrides keep audited UI promises aligned
+                        // without silently changing unrelated mission rewards.
+                        const requestedXP = getMissionXPReward(missionId, 'Easy');
+                        const xpResult = await awardXP(user.uid, requestedXP, 'Missie Voltooid', missionId);
                         if (xpResult.awarded && xpResult.newXP !== undefined) {
                             setUser(prev => prev ? {
                                 ...prev,
@@ -575,12 +580,13 @@ export function AuthenticatedApp() {
                             } : prev);
                         }
 
+                        const awardedAmount = xpResult.awarded ? (xpResult.awardedAmount ?? requestedXP) : 0;
                         logActivity({
                             uid: user.uid,
                             schoolId: user.schoolId,
                             studentName: user.displayName || 'Naamloos',
                             type: 'mission_complete',
-                            data: `Missie voltooid: ${missionId} (+50 XP)`,
+                            data: `Missie voltooid: ${missionId} (+${awardedAmount} XP)`,
                             missionId
                         });
                         if (focusMissionId && missionId === focusMissionId) {

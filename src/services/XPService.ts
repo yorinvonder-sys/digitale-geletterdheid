@@ -19,7 +19,7 @@ export const awardXP = async (
     amount: number,
     source: string,
     missionId?: string
-): Promise<{ awarded: boolean; newXP?: number; newLevel?: number; reason?: string }> => {
+): Promise<{ awarded: boolean; awardedAmount?: number; newXP?: number; newLevel?: number; reason?: string }> => {
     try {
         const { data, error } = await supabase.rpc('award_xp', {
             p_user_id: userId,
@@ -36,6 +36,7 @@ export const awardXP = async (
         const result = data as Record<string, any> || {};
         return {
             awarded: !!result.awarded,
+            awardedAmount: result.awardedAmount ?? result.awarded_amount,
             newXP: result.newXP ?? result.newxp,
             newLevel: result.newLevel ?? result.newlevel,
             reason: result.reason,

@@ -12,3 +12,13 @@ export const getXPReward = (difficulty: string): number => {
             return 75;
     }
 };
+
+// Production evidence for this mission confirms that the server-enforced
+// per-action cap is the amount actually awarded. Keep the override mission
+// scoped so other rewards can be reviewed in their own audit batch.
+const MISSION_XP_OVERRIDES: Record<string, number> = {
+    'magister-master': 25,
+};
+
+export const getMissionXPReward = (missionId: string, difficulty: string): number =>
+    MISSION_XP_OVERRIDES[missionId] ?? getXPReward(difficulty);
