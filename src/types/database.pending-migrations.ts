@@ -444,8 +444,16 @@ type PendingTables = {
 
 type PublicSchema = GeneratedDatabase['public'];
 
+type PendingFunctions = {
+  mark_mission_completed: {
+    Args: { p_mission_id: string };
+    Returns: Json;
+  };
+};
+
 export type DatabaseWithPendingMigrations = Omit<GeneratedDatabase, 'public'> & {
-  public: Omit<PublicSchema, 'Tables'> & {
+  public: Omit<PublicSchema, 'Tables' | 'Functions'> & {
     Tables: Omit<PublicSchema['Tables'], keyof PendingTables> & PendingTables;
+    Functions: Omit<PublicSchema['Functions'], keyof PendingFunctions> & PendingFunctions;
   };
 };
