@@ -125,6 +125,7 @@ Static: 7/7 · Dynamic: 4/4 viewports · Aanbeveling: **ship**
 - `npm run doctor`: geslaagd.
 - `npm run build:prod`: geslaagd.
 - GitHub-checks op PR #256: groen; squash-mergecommit `3ac58caabf38aee2ea16a487bf2b0ca0d6a8770e`.
+- Draft evidence-PR [#257](https://github.com/yorinvonder-sys/digitale-geletterdheid/pull/257) verzamelt de rapporten voor de vijf missies van deze periode.
 - Vercel-productiedeployment `dpl_3hnM9DQEAdAdE6QLZ6vszxo9p3xz`: READY op `https://dgskills.app/`.
 
 ## Open acties en resterend risico
