@@ -164,7 +164,7 @@ export async function runScenarioPilot({ browser, config, missionId, persona, de
     const introScreenshot = `screenshots/${deviceId}-intro.png`;
     await page.screenshot({ path: path.join(personaDir, introScreenshot), fullPage: true });
 
-    for (let step = 0; step < 30; step += 1) {
+    for (let step = 0; step < (adapter.maxSteps ?? 30); step += 1) {
       const observation = await adapter.observe(page);
       const viewport = await captureViewportState(page);
       addDomTelemetry(telemetry, viewport);
@@ -198,13 +198,14 @@ export async function runScenarioPilot({ browser, config, missionId, persona, de
       if (observation.phase === 'intro') {
         await adapter.perform(page, { action: 'start' });
       } else if (observation.phase === 'round' || observation.phase === 'confidence' || observation.phase === 'follow-up') {
-        if (!refreshProbe && adapter.id === 'puzzle-lab' && trace.some((entry) => (
+        if (!refreshProbe && ['puzzle-lab', 'password-fortress', 'simulation-lab', 'review-arena'].includes(adapter.id) && trace.some((entry) => (
           entry.observation.phase === 'round' && entry.observation.stepId !== observation.stepId
         ))) {
           refreshProbe = await verifyRefreshRecovery(page, missionId, adapter.observe);
+          continue;
         }
         const decision = decideNextAction({ observation, persona, seed: `${config.seed}:${deviceId}` });
-        trace.at(-1).decision = decision;
+        trace.at(-1).decision = adapter.redactDecision ? adapter.redactDecision(decision) : decision;
         await adapter.perform(page, decision);
       } else if (observation.phase === 'feedback') {
         if (!refreshProbe) refreshProbe = await verifyRefreshRecovery(page, missionId, adapter.observe);
@@ -225,7 +226,7 @@ export async function runScenarioPilot({ browser, config, missionId, persona, de
       await page.waitForTimeout(120);
     }
 
-    if (status !== 'completed') throw new Error('De missie bereikte de voltooiingspagina niet binnen 30 stappen.');
+    if (status !== 'completed') throw new Error(`De missie bereikte de voltooiingspagina niet binnen ${adapter.maxSteps ?? 30} stappen.`);
   } catch (error) {
     const blockerScreenshot = `screenshots/${deviceId}-blocker.png`;
     await page.screenshot({ path: path.join(personaDir, blockerScreenshot), fullPage: true }).catch(() => undefined);

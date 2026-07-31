@@ -19,6 +19,8 @@ export const QuestionCard: React.FC<{
 
     return (
         <div
+            data-qa="simulation-question"
+            data-question-id={question.id}
             className={`rounded-2xl border p-4 transition-all duration-300 ${
                 isCorrect
                     ? 'border-duck-ink bg-duck-ink/5'
@@ -47,9 +49,11 @@ export const QuestionCard: React.FC<{
                         return (
                             <button
                                 key={opt}
+                                data-qa="simulation-answer"
+                                data-option-index={question.options?.indexOf(opt)}
                                 disabled={submitted}
                                 onClick={() => onAnswer(opt)}
-                                className={`w-full text-left px-3 py-2 rounded-lg text-xs transition-all duration-200 border flex items-center gap-2 ${
+                                className={`min-h-[44px] w-full text-left px-3 py-2 rounded-lg text-xs transition-all duration-200 border flex items-center gap-2 ${
                                     isThisCorrect
                                         ? 'bg-duck-ink/10 border-duck-ink text-duck-ink font-bold'
                                         : isThisWrong
@@ -79,9 +83,10 @@ export const QuestionCard: React.FC<{
             {/* Submit button */}
             {!submitted && answer !== undefined && (
                 <button
+                    data-qa="simulation-submit"
                     onClick={onSubmit}
                     disabled={submitDisabled}
-                    className={`w-full py-2 rounded-lg text-xs font-bold transition-all duration-200 active:scale-[0.98] ${
+                    className={`min-h-[44px] w-full py-2 rounded-lg text-xs font-bold transition-all duration-200 active:scale-[0.98] ${
                         submitDisabled
                             ? 'bg-duck-gray text-duck-ink/60 cursor-not-allowed'
                             : 'bg-gradient-to-r from-duck-acid to-duck-acid text-duck-ink'

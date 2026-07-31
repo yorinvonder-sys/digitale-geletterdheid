@@ -256,7 +256,7 @@ const ReviewArenaWithConfig: React.FC<ReviewArenaProps> = ({
     if (!round) return null;
 
     return (
-        <div className="min-h-screen bg-duck-bg p-4">
+        <div data-qa="review-arena" className="min-h-screen bg-duck-bg p-4">
             <div className="max-w-md mx-auto">
                 <PhaseHeader
                     currentPhase={state.currentRound}
