@@ -12,17 +12,22 @@ test('ScenarioEngine-feedbackactie heeft een touchdoel van minimaal 44px', async
 
 test('eerste Mail Detective-signaal gebruikt korte A2/B1-zinnen', async () => {
   const source = await readFile('src/features/missions/templates/scenario-engine/configs/mail-detective.ts', 'utf8');
-  const description = [
-    'De mail lijkt van je docent te komen.',
-    'Het adres eindigt op "@magister-berichten.com", niet op het domein van je school.',
-    'Een domein is het stuk na de @, bijvoorbeeld "school.nl".',
-  ].join(' ');
+
+  // Lees de daadwerkelijke beschrijving uit de config in plaats van letterlijke
+  // zinnen te matchen: de copy mag om didactische redenen wijzigen (#248
+  // maakte de kaarten platte waarnemingen), het taalniveau niet.
+  const roundStart = source.indexOf("id: 'signalen-herkennen'");
+  assert.notEqual(roundStart, -1, "ronde 'signalen-herkennen' niet gevonden in mail-detective.ts");
+  const items = source.slice(source.indexOf('items: [', roundStart));
+  const match = /description:\s*'((?:[^'\\]|\\.)*)'/.exec(items);
+  assert.ok(match, 'beschrijving van het eerste signaal niet gevonden');
+  const description = match[1].replace(/\\'/g, "'");
 
   assert.doesNotMatch(source, /De mail beweert van je docent te komen, maar/);
-  for (const sentence of description.split(/(?<=[.])\s+/)) assert.match(source, new RegExp(sentence.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
 
   const { longestSentence } = await import('../evaluation/language-evaluator.mjs');
-  assert.equal(longestSentence(description).words < 20, true);
+  const longest = longestSentence(description);
+  assert.ok(longest.words < 20, `langste zin telt ${longest.words} woorden: "${longest.sentence}"`);
 });
 
 test('Code Denker legt decompositie uit in korte A2/B1-zinnen', async () => {
