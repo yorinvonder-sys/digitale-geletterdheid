@@ -125,6 +125,61 @@ function puzzleDecision(observation, persona, random) {
   };
 }
 
+function fortressDecision(observation, persona) {
+  if (observation.roundType === 'fortress-next') {
+    return { action: 'next-fortress-round', reason: 'Gaat door nadat het fort zichtbaar standhield.' };
+  }
+  if (
+    observation.attemptCount > 0 &&
+    observation.availableRecoveryActions?.includes('hint') &&
+    (persona.behaviorWeights?.hintUsage ?? 0) >= 0.65
+  ) {
+    return { action: 'request-hint', reason: 'Gebruikt zichtbare hulp na een mislukte aanval.' };
+  }
+  const startsWeak = (persona.behaviorWeights?.errorRate ?? 0) >= 0.4;
+  const value = startsWeak && observation.attemptCount === 0
+    ? 'abc123'
+    : 'Kobalt-Vork!7Rivier-Mist';
+  return {
+    action: 'test-password',
+    value,
+    reason: startsWeak && observation.attemptCount === 0
+      ? 'Probeert eerst een kort herkenbaar fictief patroon.'
+      : 'Bouwt een lange unieke synthetische passphrase.',
+  };
+}
+
+function simulationDecision(observation, persona, random) {
+  if (observation.roundType === 'simulation-parameter') {
+    return { action: 'change-simulation-parameter', reason: 'Probeert een zichtbare instelling uit.' };
+  }
+  if (observation.roundType === 'simulation-submit') {
+    return { action: 'submit-simulation-answer', reason: 'Controleert de gemaakte keuze.' };
+  }
+  if (observation.roundType === 'simulation-next') {
+    return { action: 'next-simulation', reason: 'Gaat door na alle zichtbare vragen.' };
+  }
+  const ranked = rankedOptions(observation.options, persona, random)
+    .sort((a, b) => b.score - a.score || a.index - b.index);
+  return {
+    action: 'answer-simulation-question',
+    optionId: ranked[0]?.id,
+    reason: 'Kiest op basis van zichtbare woorden en persona-ruis.',
+  };
+}
+
+function reviewDecision(observation, persona, random) {
+  if (observation.roundType === 'review-drag-sort') return { action: 'submit-review-order', reason: 'Bevestigt de zichtbare volgorde.' };
+  if (observation.roundType === 'review-match-pairs') return { action: 'match-visible-pair', reason: 'Probeert zichtbare koppels uit.' };
+  if (observation.roundType === 'review-categorize-submit') return { action: 'submit-review-categories', reason: 'Bevestigt de gemaakte indeling.' };
+  if (observation.roundType === 'review-categorize') {
+    return { action: 'place-review-item', categoryIndex: Math.floor(random() * observation.options.length), reason: 'Plaatst het volgende zichtbare item volgens persona-ruis.' };
+  }
+  if (observation.roundType === 'review-rapid-fire') return { action: 'answer-review-rapid', value: random() >= (persona.behaviorWeights?.errorRate ?? 0.3), reason: 'Maakt een snelle waar/onwaar-inschatting.' };
+  if (observation.roundType === 'review-continue') return { action: 'continue-review', reason: 'Gaat door na zichtbare feedback.' };
+  throw new Error(`Geen Review Arena-beslissing voor ${observation.roundType}.`);
+}
+
 export function decideNextAction({ observation, persona, seed }) {
   const random = createSeededRandom(`${seed}:${persona.seedSalt}:${observation.stepId}:${observation.phase}`);
   switch (observation.phase) {
@@ -134,6 +189,9 @@ export function decideNextAction({ observation, persona, seed }) {
       if (observation.roundType === 'binary-choice') return binaryDecision(observation, persona, random);
       if (observation.roundType === 'puzzle-text' || observation.roundType === 'puzzle-choice') return puzzleDecision(observation, persona, random);
       if (observation.roundType === 'puzzle-recovery') return puzzleDecision(observation, persona, random);
+      if (observation.roundType === 'password-entry' || observation.roundType === 'fortress-next') return fortressDecision(observation, persona);
+      if (observation.roundType?.startsWith('simulation-')) return simulationDecision(observation, persona, random);
+      if (observation.roundType?.startsWith('review-')) return reviewDecision(observation, persona, random);
       break;
     case 'confidence': {
       const uncertainty = persona.behaviorWeights?.uncertainty ?? 0.5;

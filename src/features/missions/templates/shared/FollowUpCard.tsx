@@ -89,7 +89,7 @@ export const FollowUpCard: React.FC<FollowUpCardProps> = ({ followUp, onComplete
                             data-followup-option-index={i}
                             onClick={() => handleSelect(i)}
                             disabled={answered}
-                            className={`w-full text-left px-3 py-2.5 rounded-xl border-2 text-xs transition-all duration-200 ${optStyle} ${textMain}`}
+                            className={`min-h-[44px] w-full text-left px-3 py-2.5 rounded-xl border-2 text-xs transition-all duration-200 ${optStyle} ${textMain}`}
                             style={fontBody}
                         >
                             <span className={textSub}>{String.fromCharCode(65 + i)}. </span>

@@ -121,6 +121,7 @@ export const Categorize: React.FC<CategorizeProps> = ({
 
                     return (
                         <motion.div
+                            data-qa="review-category"
                             key={cat}
                             onClick={() => handleCategoryClick(cat)}
                             className={`rounded-xl border-2 p-2 min-h-[80px] transition-all duration-200
@@ -134,6 +135,7 @@ export const Categorize: React.FC<CategorizeProps> = ({
                             }}
                         >
                             <div
+                                data-qa="review-category-label"
                                 className="text-xs font-black mb-2 uppercase tracking-wider"
                                 style={{ color: color.bg, fontFamily: "'Outfit', system-ui, sans-serif" }}
                             >
@@ -185,10 +187,11 @@ export const Categorize: React.FC<CategorizeProps> = ({
                     <div className="flex flex-wrap gap-2">
                         {unplacedItems.map((item) => (
                             <motion.button
+                                data-qa="review-category-item"
                                 key={item.id}
                                 layout
                                 onClick={() => handleItemClick(item.id)}
-                                className={`px-3 py-1.5 rounded-lg border text-xs font-medium transition-all duration-200
+                                className={`min-h-[44px] px-3 py-1.5 rounded-lg border text-xs font-medium transition-all duration-200
                                     ${selectedItem === item.id
                                         ? 'bg-duck-acid/15 border-duck-acid text-duck-ink scale-105'
                                         : 'bg-white border-duck-gray text-duck-ink/60 hover:border-duck-acid/40'
@@ -225,6 +228,7 @@ export const Categorize: React.FC<CategorizeProps> = ({
 
             {!submitted ? (
                 <button
+                    data-qa="review-submit"
                     onClick={handleSubmit}
                     disabled={!allPlaced}
                     className={`w-full py-3 rounded-xl font-bold text-sm transition-all duration-200 active:scale-[0.98]
@@ -238,6 +242,7 @@ export const Categorize: React.FC<CategorizeProps> = ({
                 </button>
             ) : (
                 <button
+                    data-qa="review-continue"
                     onClick={handleContinue}
                     className="w-full py-3 bg-gradient-to-r from-duck-ink to-duck-ink hover:from-duck-ink hover:to-duck-ink text-white rounded-xl font-bold text-sm transition-all duration-200 active:scale-[0.98] flex items-center justify-center gap-2"
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
