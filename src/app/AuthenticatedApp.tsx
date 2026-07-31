@@ -14,6 +14,8 @@ import { useAuth } from '@/hooks/useAuth';
 import { useNavigation } from '@/hooks/useNavigation';
 import { useFocusMode } from '@/hooks/useFocusMode';
 import { awardXP } from '@/services/XPService';
+import { markMissionCompleted } from '@/services/missionCompletionService';
+import { getMissionXPReward } from '@/config/xp';
 import { TutorialProvider, STUDENT_TUTORIAL_STEPS, STUDENT_STORAGE_KEY, TutorialStep } from '@/contexts/TutorialContext';
 import { AccessibilityProvider } from '@/contexts/AccessibilityContext';
 import { lazyWithRetry } from '@/utils/lazyWithRetry';
@@ -558,16 +560,24 @@ export function AuthenticatedApp() {
                 if (!currentCompleted.includes(missionId)) {
                     completingMissionRef.current.add(missionId);
                     try {
+                        // Persist completion through the dedicated, auth-bound RPC.
+                        // The generic stats save is intentionally not used here: remote
+                        // whitelisting and concurrent stats writes can silently lose
+                        // missionsCompleted while a later XP write still succeeds.
+                        const persistedCompleted = await markMissionCompleted(missionId);
                         const newStats: UserStats = {
                             ...DEFAULT_STATS,
                             ...user.stats,
-                            missionsCompleted: [...currentCompleted, missionId],
+                            missionsCompleted: persistedCompleted,
                         };
                         setUser({ ...user, stats: newStats });
-                        await handleSaveProgress(newStats);
 
                         // Award XP via server-side RPC (enforces rate limiting + daily cap)
-                        const xpResult = await awardXP(user.uid, 50, 'Missie Voltooid', missionId);
+                        // This shell historically awards 50 XP to every mission.
+                        // Mission-scoped overrides keep audited UI promises aligned
+                        // without silently changing unrelated mission rewards.
+                        const requestedXP = getMissionXPReward(missionId, 'Easy');
+                        const xpResult = await awardXP(user.uid, requestedXP, 'Missie Voltooid', missionId);
                         if (xpResult.awarded && xpResult.newXP !== undefined) {
                             setUser(prev => prev ? {
                                 ...prev,
@@ -575,12 +585,13 @@ export function AuthenticatedApp() {
                             } : prev);
                         }
 
+                        const awardedAmount = xpResult.awarded ? (xpResult.awardedAmount ?? requestedXP) : 0;
                         logActivity({
                             uid: user.uid,
                             schoolId: user.schoolId,
                             studentName: user.displayName || 'Naamloos',
                             type: 'mission_complete',
-                            data: `Missie voltooid: ${missionId} (+50 XP)`,
+                            data: `Missie voltooid: ${missionId} (+${awardedAmount} XP)`,
                             missionId
                         });
                         if (focusMissionId && missionId === focusMissionId) {
@@ -588,13 +599,21 @@ export function AuthenticatedApp() {
                             setFocusMissionId(null);
                             setFocusMissionTitle(null);
                         }
+                        // Only show the post-mission flow after durable completion.
+                        setPeerFeedbackMissionId(missionId);
+                    } catch {
+                        console.error('[mission-completion] Durable save failed');
+                        setToast({
+                            message: 'Missie kon niet worden opgeslagen. Probeer het opnieuw.',
+                            type: 'error',
+                        });
                     } finally {
                         completingMissionRef.current.delete(missionId);
                     }
+                } else {
+                    setPeerFeedbackMissionId(missionId);
                 }
             }
-            // Show peer feedback panel instead of immediately exiting
-            setPeerFeedbackMissionId(missionId);
         };
 
         // Peer feedback overlay after mission completion

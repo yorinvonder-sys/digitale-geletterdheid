@@ -1,7 +1,7 @@
 import { KERNDOEL_MISSIONS } from './slo-kerndoelen-mapping';
 import { SLO_KERNDOELEN } from './sloKerndoelen';
 import { ROLES } from './agents';
-import { getXPReward } from './xp';
+import { getMissionXPReward } from './xp';
 import { getMissionDurationLabel } from './missionDurations';
 
 export interface MissionChipMeta {
@@ -34,7 +34,7 @@ export function getMissionMeta(missionId: string): MissionChipMeta {
         topicColor: kerndoel?.kleur,
         leerjaar: slo?.yearGroup,
         difficulty: role?.difficulty,
-        xp: role ? getXPReward(role.difficulty) : undefined,
+        xp: role ? getMissionXPReward(missionId, role.difficulty) : undefined,
         durationLabel: getMissionDurationLabel(missionId),
     };
 }
