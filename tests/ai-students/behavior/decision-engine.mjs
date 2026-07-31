@@ -91,6 +91,40 @@ function followUpDecision(observation, persona, random) {
   };
 }
 
+function visibleTextAttempt(instruction, persona) {
+  const text = String(instruction || '');
+  const spelled = text.match(/letters (?:zijn|vormen)\s+([a-z](?:[-–][a-z]){2,})/i)?.[1];
+  if (spelled) return spelled.replace(/[-–]/g, '');
+  const explicit = text.match(/antwoord is(?: een [^:.,]+[:])?\s*["“']?([\p{L}\d!@#$%^&*_-]{3,})/iu)?.[1];
+  if (explicit) return explicit;
+  const codeResult = text.match(/[A-Z0-9+/=]{4,}\s*(?:→|wordt|betekent)\s*["“']?([\p{L}\d!@#$%^&*_-]{3,})/u)?.[1];
+  if (codeResult) return codeResult;
+  return persona.readingLevel === 'a2-b1' ? 'weet ik niet' : 'onbekend';
+}
+
+function puzzleDecision(observation, persona, random) {
+  if (observation.roundType === 'puzzle-recovery') {
+    return { action: 'skip', reason: 'Gaat verder via de enige zichtbare herstelactie.' };
+  }
+  if (observation.availableRecoveryActions?.includes('skip') && random() < 0.35 + (persona.behaviorWeights?.errorRate ?? 0)) {
+    return { action: 'skip', reason: 'Gebruikt de zichtbare herstelactie na meerdere mislukte pogingen.' };
+  }
+  if (observation.roundType === 'puzzle-choice') {
+    const ranked = rankedOptions(observation.options, persona, random)
+      .sort((a, b) => b.score - a.score || a.index - b.index);
+    return {
+      action: 'answer-puzzle-choice',
+      optionId: ranked[0]?.id,
+      reason: 'Meerkeuze op basis van zichtbare sleutelwoorden en persona-ruis.',
+    };
+  }
+  return {
+    action: 'answer-puzzle-text',
+    value: visibleTextAttempt(observation.instruction, persona),
+    reason: 'Tekstpoging uitsluitend afgeleid uit zichtbare aanwijzingen.',
+  };
+}
+
 export function decideNextAction({ observation, persona, seed }) {
   const random = createSeededRandom(`${seed}:${persona.seedSalt}:${observation.stepId}:${observation.phase}`);
   switch (observation.phase) {
@@ -98,6 +132,8 @@ export function decideNextAction({ observation, persona, seed }) {
       if (observation.roundType === 'select-correct') return selectDecision(observation, persona, random);
       if (observation.roundType === 'order-priority') return orderDecision(observation, persona, random);
       if (observation.roundType === 'binary-choice') return binaryDecision(observation, persona, random);
+      if (observation.roundType === 'puzzle-text' || observation.roundType === 'puzzle-choice') return puzzleDecision(observation, persona, random);
+      if (observation.roundType === 'puzzle-recovery') return puzzleDecision(observation, persona, random);
       break;
     case 'confidence': {
       const uncertainty = persona.behaviorWeights?.uncertainty ?? 0.5;

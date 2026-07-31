@@ -290,7 +290,7 @@ export const PuzzleLab: React.FC<TemplateMissionProps> = ({
     const pointsForPuzzle = Math.max(0, puzzle.points - hintsUsed * puzzle.hintCost);
 
     return (
-        <div className="min-h-screen bg-duck-ink flex items-center justify-center p-4">
+        <div data-qa="puzzle-lab" className="min-h-screen bg-duck-ink flex items-center justify-center p-4">
             <div className="w-full max-w-md">
                 {/* Terminal chrome */}
                 <div className="bg-duck-ink rounded-t-2xl border border-duck-gray/30 px-4 py-2.5 flex items-center gap-2">
@@ -350,7 +350,7 @@ export const PuzzleLab: React.FC<TemplateMissionProps> = ({
                         >
                             {puzzle.title}
                         </h2>
-                        <p className="font-mono text-xs text-duck-gray leading-relaxed">
+                        <p className="whitespace-pre-line font-mono text-xs text-duck-gray leading-relaxed">
                             {puzzle.description}
                         </p>
                     </div>
@@ -402,9 +402,11 @@ export const PuzzleLab: React.FC<TemplateMissionProps> = ({
                                     {puzzle.options.map((opt, i) => (
                                         <button
                                             key={i}
+                                            data-qa="puzzle-option"
+                                            data-puzzle-option-index={i}
                                             onClick={() => checkAnswer(opt)}
                                             disabled={celebrating}
-                                            className="w-full text-left px-4 py-3 bg-duck-ink hover:bg-duck-ink border border-duck-gray/30 hover:border-duck-acid/40 rounded-xl font-mono text-xs text-duck-gray transition-all duration-150 flex items-center gap-3"
+                                            className="min-h-[44px] w-full text-left px-4 py-3 bg-duck-ink hover:bg-duck-ink border border-duck-gray/30 hover:border-duck-acid/40 rounded-xl font-mono text-xs text-duck-gray transition-all duration-150 flex items-center gap-3"
                                         >
                                             <span className="text-duck-gray w-5">{String.fromCharCode(65 + i)}.</span>
                                             {opt}
@@ -416,6 +418,7 @@ export const PuzzleLab: React.FC<TemplateMissionProps> = ({
                                     <div className="flex items-center bg-duck-ink border border-duck-gray/30 focus-within:border-duck-acid/60 rounded-xl px-3 py-2.5 gap-2 transition-colors">
                                         <span className="font-mono text-xs text-duck-gray shrink-0">$</span>
                                         <input
+                                            data-qa="puzzle-input"
                                             ref={inputRef}
                                             type="text"
                                             value={inputValue}
@@ -423,14 +426,15 @@ export const PuzzleLab: React.FC<TemplateMissionProps> = ({
                                             onKeyDown={handleKeyDown}
                                             disabled={celebrating}
                                             placeholder="antwoord..."
-                                            className="flex-1 bg-transparent font-mono text-xs text-duck-ink placeholder:text-duck-gray/50 outline-none"
+                                            className="min-h-[44px] flex-1 bg-transparent font-mono text-xs text-duck-ink placeholder:text-duck-gray/50 outline-none"
                                         />
                                         <BlinkingCursor />
                                     </div>
                                     <button
+                                        data-qa="puzzle-submit"
                                         onClick={handleSubmit}
                                         disabled={!inputValue.trim() || celebrating}
-                                        className="w-full mt-2 py-2.5 bg-duck-acid hover:bg-duck-acid hover:brightness-95 hover:text-duck-ink disabled:bg-duck-gray/30 disabled:text-duck-gray/60 text-duck-ink disabled:cursor-not-allowed font-mono font-bold text-xs rounded-xl transition-all duration-150"
+                                        className="min-h-[44px] w-full mt-2 py-2.5 bg-duck-acid hover:bg-duck-acid hover:brightness-95 hover:text-duck-ink disabled:bg-duck-gray/30 disabled:text-duck-gray/60 text-duck-ink disabled:cursor-not-allowed font-mono font-bold text-xs rounded-xl transition-all duration-150"
                                     >
                                         SUBMIT
                                     </button>
@@ -449,8 +453,9 @@ export const PuzzleLab: React.FC<TemplateMissionProps> = ({
                                 <div className="flex items-center gap-2">
                                     {visibleClues.length > puzzle.clues.length + hintsUsed && (
                                         <button
+                                            data-qa="puzzle-hint"
                                             onClick={handleHint}
-                                            className="flex items-center gap-1 font-mono text-[10px] text-duck-gray/70 hover:text-duck-ink transition-colors"
+                                            className="min-h-[44px] flex items-center gap-1 px-2 font-mono text-[10px] text-duck-gray/70 hover:text-duck-ink transition-colors"
                                         >
                                             <Eye size={10} />
                                             hint (-{puzzle.hintCost} pts)
@@ -458,8 +463,9 @@ export const PuzzleLab: React.FC<TemplateMissionProps> = ({
                                     )}
                                     {attempts >= 2 && (
                                         <button
+                                            data-qa="puzzle-skip"
                                             onClick={handleSkip}
-                                            className="font-mono text-[10px] text-duck-gray hover:text-duck-bg transition-colors"
+                                            className="min-h-[44px] px-2 font-mono text-[10px] text-duck-gray hover:text-duck-bg transition-colors"
                                         >
                                             overslaan →
                                         </button>
@@ -476,8 +482,9 @@ export const PuzzleLab: React.FC<TemplateMissionProps> = ({
                                 Max pogingen bereikt. Je kunt doorgaan naar de volgende puzzel.
                             </div>
                             <button
+                                data-qa="puzzle-skip"
                                 onClick={handleSkip}
-                                className="w-full py-2.5 bg-duck-ink hover:bg-duck-ink border border-duck-gray/30 font-mono font-bold text-xs text-duck-gray rounded-xl transition-all duration-150"
+                                className="min-h-[44px] w-full py-2.5 bg-duck-ink hover:bg-duck-ink border border-duck-gray/30 font-mono font-bold text-xs text-duck-gray rounded-xl transition-all duration-150"
                             >
                                 VOLGENDE PUZZEL →
                             </button>
@@ -491,8 +498,9 @@ export const PuzzleLab: React.FC<TemplateMissionProps> = ({
                                 ✓ opgelost
                             </div>
                             <button
+                                data-qa="puzzle-skip"
                                 onClick={handleSkip}
-                                className="w-full py-2.5 bg-duck-acid hover:bg-duck-acid hover:brightness-95 font-mono font-bold text-xs text-duck-ink rounded-xl transition-all duration-150"
+                                className="min-h-[44px] w-full py-2.5 bg-duck-acid hover:bg-duck-acid hover:brightness-95 font-mono font-bold text-xs text-duck-ink rounded-xl transition-all duration-150"
                             >
                                 VOLGENDE PUZZEL →
                             </button>
