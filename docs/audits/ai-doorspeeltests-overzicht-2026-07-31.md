@@ -18,8 +18,8 @@ waardoor de felicitatie bij zulke rondes nooit meer zou zijn verschenen. Na publ
 is gecontroleerd dat de reparaties in de daadwerkelijk uitgeleverde programmacode van de
 site zitten en dat de site bereikbaar is. In een echte browser is nagespeeld dat een
 score van 15 van de 25 punten nu "Goed bezig! Bijna foutloos" toont, terwijl een foutloos
-antwoord de felicitatie wél geeft. Wat nog openstaat: 51 van de 99 missies zijn nooit
-doorgespeeld, en de verbeteringen uit ronde B zijn nog niet doorgevoerd.
+antwoord de felicitatie wél geeft. Ook de verbeteringen uit ronde B staan sinds diezelfde
+dag live. Wat nog openstaat: 51 van de 99 missies zijn nooit doorgespeeld.
 
 ## Wat dit betekent
 
@@ -33,10 +33,14 @@ doorgespeeld, en de verbeteringen uit ronde B zijn nog niet doorgevoerd.
    inclusief de eindprojecten van beide leerjaren. Gevorderde leerstof is nog nooit in
    een echte browsersessie doorgelopen en onbekende fouten liggen daardoor op de loer.
 
-3. De verbeteringen van ronde B staan nog als concept-voorstel open (205 tot en met 208)
-   en zijn dus niet live. Het bewijsmateriaal van ronde A staat sinds 31 juli wel in het
-   project — 62 bestanden met deelrapport, per-missie rapporten en bevindingen — dat van
-   ronde B nog niet.
+3. Sinds 31 juli staat al het bewijsmateriaal in het project zelf: 62 bestanden van
+   ronde A en de vier batchrapporten van ronde B. Alleen de schermteksten en kliklogs
+   van ronde A staan nog buiten het project. Dat maakt controleerbaar wat er getest is,
+   in plaats van dat het in losse voorstellen en op een laptop blijft hangen.
+
+4. De testsuite die bij ronde B hoort — inmiddels 100 tests — draait niet mee in de
+   automatische controles. Daardoor bleef een kapotte test drie weken onopgemerkt
+   (hersteld op 31 juli). De tests bestaan dus wel, maar bewaken nog niets vanzelf.
 
 ---
 
@@ -149,8 +153,14 @@ in totaal, allemaal voltooid, nul overgebleven problemen.
 | Review Arena | review-week-2, data-review, code-review-2, media-review, security-review, advanced-code-review, impact-review | 70 |
 
 Tijdens de ronde zijn verbeteringen doorgevoerd, vooral knoppen die te klein waren om
-op een tablet aan te tikken en het bewaren van voortgang na verversen. Deze vier
-voorstellen (205 tot en met 208) staan nog als concept open.
+op een tablet aan te tikken en het bewaren van voortgang na verversen — samen 11
+bestanden in de missie-sjablonen.
+
+Deze vier voorstellen zijn op 31 juli live gegaan. #205 rechtstreeks (`d6b334d`); #206,
+#207 en #208 waren daarop gestapeld en kregen na het squashen van #205 een verweesde
+merge-base, waardoor ze schijn-conflicten toonden. Ze zijn samengevoegd via #254
+(`869c813`) en daarna gesloten als vervangen. De testsuite groeide daarbij van 73 naar
+100 tests.
 
 ---
 
@@ -170,7 +180,8 @@ kerndoel dichtzetten (mail-detective).
 | Deelrapport ronde A | In het project: [leerling-simulatie-audit/jaar1-deelrapport-niet-chat.md](leerling-simulatie-audit/jaar1-deelrapport-niet-chat.md) |
 | Per-missie rapporten en bevindingen ronde A (62 bestanden) | In het project: `docs/audits/leerling-simulatie-audit/` (sinds 31 juli) |
 | Schermteksten en kliklogs ronde A | Buiten het project: `~/dgskills-audit/evidence/` |
-| Rapporten ronde B | Alleen in voorstellen 205 t/m 208, niet samengevoegd |
+| Batchrapporten ronde B (4) | In het project: `docs/testing/ai-students-*-batch.md` (sinds 31 juli) |
+| Schermteksten en traces ronde B | Niet bewaard: staan in de genegeerde map `test-results/ai-students/` |
 | Testklas-skill ronde C | Voorstel 246, nog open |
 
 ---
