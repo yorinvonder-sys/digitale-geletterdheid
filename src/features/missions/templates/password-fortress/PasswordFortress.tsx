@@ -355,7 +355,7 @@ const PasswordFortressInner: React.FC<{
     const pointsForRound = Math.max(0, config.pointsPerRound - hintsUsed * config.hintCost);
 
     return (
-        <div className="min-h-screen bg-duck-ink flex items-center justify-center p-4">
+        <div data-qa="password-fortress" className="min-h-screen bg-duck-ink flex items-center justify-center p-4">
             <div className="w-full max-w-xl">
                 {/* Terminal chrome */}
                 <div className="bg-duck-ink rounded-t-2xl border border-duck-gray/30 px-4 py-2.5 flex items-center gap-2">
@@ -492,6 +492,7 @@ const PasswordFortressInner: React.FC<{
                             <div className="flex items-center bg-duck-ink border border-duck-gray/30 focus-within:border-duck-acid/60 rounded-xl px-3 py-2.5 gap-2 transition-colors">
                                 <span className="font-mono text-xs text-duck-gray shrink-0">$</span>
                                 <input
+                                    data-qa="fortress-input"
                                     ref={inputRef}
                                     id="fortress-input"
                                     type={showPw ? 'text' : 'password'}
@@ -502,11 +503,12 @@ const PasswordFortressInner: React.FC<{
                                     maxLength={64}
                                     autoComplete="off"
                                     placeholder="verzin een oefenwachtwoord..."
-                                    className="flex-1 bg-transparent font-mono text-xs text-duck-bg placeholder:text-duck-gray/50 outline-none"
+                                    className="min-h-[44px] flex-1 bg-transparent font-mono text-xs text-duck-bg placeholder:text-duck-gray/50 outline-none"
                                 />
                                 <button
+                                    data-qa="fortress-reveal"
                                     onClick={() => setShowPw(v => !v)}
-                                    className="text-duck-gray hover:text-duck-bg transition-colors"
+                                    className="flex min-h-[44px] min-w-[44px] items-center justify-center text-duck-gray hover:text-duck-bg transition-colors"
                                     aria-label={showPw ? 'Verberg wachtwoord' : 'Toon wachtwoord'}
                                 >
                                     {showPw ? <EyeOff size={14} /> : <Eye size={14} />}
@@ -516,9 +518,10 @@ const PasswordFortressInner: React.FC<{
                                 Gebruik nóóit je echte wachtwoord — verzin er een. Alles blijft in je browser.
                             </p>
                             <button
+                                data-qa="fortress-test"
                                 onClick={handleTest}
                                 disabled={!input.trim() || revealing}
-                                className="w-full mt-2 py-2.5 bg-duck-acid hover:bg-duck-acid hover:brightness-95 disabled:bg-duck-gray/30 disabled:text-duck-gray/60 text-duck-ink disabled:cursor-not-allowed font-mono font-bold text-xs rounded-xl transition-all duration-150"
+                                className="min-h-[44px] w-full mt-2 py-2.5 bg-duck-acid hover:bg-duck-acid hover:brightness-95 disabled:bg-duck-gray/30 disabled:text-duck-gray/60 text-duck-ink disabled:cursor-not-allowed font-mono font-bold text-xs rounded-xl transition-all duration-150"
                             >
                                 {revealing ? 'AANVAL LOOPT…' : 'TEST MIJN FORT'}
                             </button>
@@ -528,8 +531,9 @@ const PasswordFortressInner: React.FC<{
                     {/* Ronde gehaald → volgende */}
                     {isCleared && !revealing && (
                         <button
+                            data-qa="fortress-next"
                             onClick={goNextRound}
-                            className="w-full py-2.5 bg-duck-acid hover:bg-duck-acid hover:brightness-95 font-mono font-bold text-xs text-duck-ink rounded-xl transition-all duration-150 mb-4"
+                            className="min-h-[44px] w-full py-2.5 bg-duck-acid hover:bg-duck-acid hover:brightness-95 font-mono font-bold text-xs text-duck-ink rounded-xl transition-all duration-150 mb-4"
                         >
                             {state.currentRound < config.rounds.length - 1 ? 'VOLGENDE RONDE →' : 'BEKIJK RESULTAAT →'}
                         </button>
@@ -559,8 +563,9 @@ const PasswordFortressInner: React.FC<{
                             <div className="flex items-center gap-3">
                                 {canHint && (
                                     <button
+                                        data-qa="fortress-hint"
                                         onClick={handleHint}
-                                        className="flex items-center gap-1 font-mono text-[10px] text-duck-gray/70 hover:text-duck-bg transition-colors"
+                                        className="flex min-h-[44px] items-center gap-1 px-2 font-mono text-[10px] text-duck-gray/70 hover:text-duck-bg transition-colors"
                                     >
                                         <Lightbulb size={10} />
                                         hint (-{config.hintCost} pts)
@@ -568,8 +573,9 @@ const PasswordFortressInner: React.FC<{
                                 )}
                                 {canSkip && (
                                     <button
+                                        data-qa="fortress-skip"
                                         onClick={handleSkip}
-                                        className="font-mono text-[10px] text-duck-gray hover:text-duck-bg transition-colors"
+                                        className="min-h-[44px] px-2 font-mono text-[10px] text-duck-gray hover:text-duck-bg transition-colors"
                                     >
                                         overslaan →
                                     </button>

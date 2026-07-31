@@ -91,6 +91,95 @@ function followUpDecision(observation, persona, random) {
   };
 }
 
+function visibleTextAttempt(instruction, persona) {
+  const text = String(instruction || '');
+  const spelled = text.match(/letters (?:zijn|vormen)\s+([a-z](?:[-–][a-z]){2,})/i)?.[1];
+  if (spelled) return spelled.replace(/[-–]/g, '');
+  const explicit = text.match(/antwoord is(?: een [^:.,]+[:])?\s*["“']?([\p{L}\d!@#$%^&*_-]{3,})/iu)?.[1];
+  if (explicit) return explicit;
+  const codeResult = text.match(/[A-Z0-9+/=]{4,}\s*(?:→|wordt|betekent)\s*["“']?([\p{L}\d!@#$%^&*_-]{3,})/u)?.[1];
+  if (codeResult) return codeResult;
+  return persona.readingLevel === 'a2-b1' ? 'weet ik niet' : 'onbekend';
+}
+
+function puzzleDecision(observation, persona, random) {
+  if (observation.roundType === 'puzzle-recovery') {
+    return { action: 'skip', reason: 'Gaat verder via de enige zichtbare herstelactie.' };
+  }
+  if (observation.availableRecoveryActions?.includes('skip') && random() < 0.35 + (persona.behaviorWeights?.errorRate ?? 0)) {
+    return { action: 'skip', reason: 'Gebruikt de zichtbare herstelactie na meerdere mislukte pogingen.' };
+  }
+  if (observation.roundType === 'puzzle-choice') {
+    const ranked = rankedOptions(observation.options, persona, random)
+      .sort((a, b) => b.score - a.score || a.index - b.index);
+    return {
+      action: 'answer-puzzle-choice',
+      optionId: ranked[0]?.id,
+      reason: 'Meerkeuze op basis van zichtbare sleutelwoorden en persona-ruis.',
+    };
+  }
+  return {
+    action: 'answer-puzzle-text',
+    value: visibleTextAttempt(observation.instruction, persona),
+    reason: 'Tekstpoging uitsluitend afgeleid uit zichtbare aanwijzingen.',
+  };
+}
+
+function fortressDecision(observation, persona) {
+  if (observation.roundType === 'fortress-next') {
+    return { action: 'next-fortress-round', reason: 'Gaat door nadat het fort zichtbaar standhield.' };
+  }
+  if (
+    observation.attemptCount > 0 &&
+    observation.availableRecoveryActions?.includes('hint') &&
+    (persona.behaviorWeights?.hintUsage ?? 0) >= 0.65
+  ) {
+    return { action: 'request-hint', reason: 'Gebruikt zichtbare hulp na een mislukte aanval.' };
+  }
+  const startsWeak = (persona.behaviorWeights?.errorRate ?? 0) >= 0.4;
+  const value = startsWeak && observation.attemptCount === 0
+    ? 'abc123'
+    : 'Kobalt-Vork!7Rivier-Mist';
+  return {
+    action: 'test-password',
+    value,
+    reason: startsWeak && observation.attemptCount === 0
+      ? 'Probeert eerst een kort herkenbaar fictief patroon.'
+      : 'Bouwt een lange unieke synthetische passphrase.',
+  };
+}
+
+function simulationDecision(observation, persona, random) {
+  if (observation.roundType === 'simulation-parameter') {
+    return { action: 'change-simulation-parameter', reason: 'Probeert een zichtbare instelling uit.' };
+  }
+  if (observation.roundType === 'simulation-submit') {
+    return { action: 'submit-simulation-answer', reason: 'Controleert de gemaakte keuze.' };
+  }
+  if (observation.roundType === 'simulation-next') {
+    return { action: 'next-simulation', reason: 'Gaat door na alle zichtbare vragen.' };
+  }
+  const ranked = rankedOptions(observation.options, persona, random)
+    .sort((a, b) => b.score - a.score || a.index - b.index);
+  return {
+    action: 'answer-simulation-question',
+    optionId: ranked[0]?.id,
+    reason: 'Kiest op basis van zichtbare woorden en persona-ruis.',
+  };
+}
+
+function reviewDecision(observation, persona, random) {
+  if (observation.roundType === 'review-drag-sort') return { action: 'submit-review-order', reason: 'Bevestigt de zichtbare volgorde.' };
+  if (observation.roundType === 'review-match-pairs') return { action: 'match-visible-pair', reason: 'Probeert zichtbare koppels uit.' };
+  if (observation.roundType === 'review-categorize-submit') return { action: 'submit-review-categories', reason: 'Bevestigt de gemaakte indeling.' };
+  if (observation.roundType === 'review-categorize') {
+    return { action: 'place-review-item', categoryIndex: Math.floor(random() * observation.options.length), reason: 'Plaatst het volgende zichtbare item volgens persona-ruis.' };
+  }
+  if (observation.roundType === 'review-rapid-fire') return { action: 'answer-review-rapid', value: random() >= (persona.behaviorWeights?.errorRate ?? 0.3), reason: 'Maakt een snelle waar/onwaar-inschatting.' };
+  if (observation.roundType === 'review-continue') return { action: 'continue-review', reason: 'Gaat door na zichtbare feedback.' };
+  throw new Error(`Geen Review Arena-beslissing voor ${observation.roundType}.`);
+}
+
 export function decideNextAction({ observation, persona, seed }) {
   const random = createSeededRandom(`${seed}:${persona.seedSalt}:${observation.stepId}:${observation.phase}`);
   switch (observation.phase) {
@@ -98,6 +187,11 @@ export function decideNextAction({ observation, persona, seed }) {
       if (observation.roundType === 'select-correct') return selectDecision(observation, persona, random);
       if (observation.roundType === 'order-priority') return orderDecision(observation, persona, random);
       if (observation.roundType === 'binary-choice') return binaryDecision(observation, persona, random);
+      if (observation.roundType === 'puzzle-text' || observation.roundType === 'puzzle-choice') return puzzleDecision(observation, persona, random);
+      if (observation.roundType === 'puzzle-recovery') return puzzleDecision(observation, persona, random);
+      if (observation.roundType === 'password-entry' || observation.roundType === 'fortress-next') return fortressDecision(observation, persona);
+      if (observation.roundType?.startsWith('simulation-')) return simulationDecision(observation, persona, random);
+      if (observation.roundType?.startsWith('review-')) return reviewDecision(observation, persona, random);
       break;
     case 'confidence': {
       const uncertainty = persona.behaviorWeights?.uncertainty ?? 0.5;

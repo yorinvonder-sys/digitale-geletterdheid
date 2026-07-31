@@ -88,6 +88,15 @@ test('writes summary and per-persona JSON/Markdown with screenshot directories',
   assert.match(personaMarkdown, /desktop/);
 });
 
+test('maakt een ontbrekende bovenliggende rapportmap veilig aan', async () => {
+  const { createRunDirectory } = await loadWriter();
+  const root = await mkdtemp(path.join(tmpdir(), 'dgskills-report-parent-'));
+  const missing = path.join(root, 'test-results', 'ai-students');
+  const runDir = await createRunDirectory(missing, new Date('2026-07-11T09:00:00.000Z'));
+  assert.equal(runDir, path.join(missing, '2026-07-11T09-00-00-000Z'));
+  assert.ok(await stat(runDir));
+});
+
 test('marks one shared issue as multi-persona priority', async () => {
   const { aggregateRun } = await import('../reporting/aggregate.mjs').catch((error) => {
     assert.fail(`aggregate.mjs ontbreekt: ${error.message}`);

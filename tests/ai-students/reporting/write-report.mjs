@@ -95,6 +95,7 @@ function renderSummaryMarkdown(run, summary, personaReports) {
 export async function createRunDirectory(root, now = new Date()) {
   const runName = now.toISOString().replace(/[:.]/g, '-');
   const runDir = path.resolve(root, runName);
+  await mkdir(root, { recursive: true });
   await mkdir(runDir, { recursive: false });
   return runDir;
 }

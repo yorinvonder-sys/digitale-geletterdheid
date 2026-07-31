@@ -42,6 +42,7 @@ const ItemRow: React.FC<ItemRowProps> = ({ item, submitted, currentIndex, totalI
 
     return (
         <Reorder.Item
+            data-qa="review-drag-item"
             value={item}
             dragListener={false}
             dragControls={controls}
@@ -82,20 +83,22 @@ const ItemRow: React.FC<ItemRowProps> = ({ item, submitted, currentIndex, totalI
             {!submitted && (
                 <div className="flex shrink-0 gap-1">
                     <button
+                        data-qa="review-drag-up"
                         type="button"
                         onClick={() => onMove(item.id, -1)}
                         disabled={currentIndex === 0}
                         aria-label={`${item.label} omhoog verplaatsen`}
-                        className="grid min-h-[36px] min-w-[36px] place-items-center rounded-lg border border-duck-gray text-duck-ink/60 transition-colors hover:border-duck-acid hover:text-duck-ink disabled:opacity-30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-acid/40"
+                        className="grid min-h-[44px] min-w-[44px] place-items-center rounded-lg border border-duck-gray text-duck-ink/60 transition-colors hover:border-duck-acid hover:text-duck-ink disabled:opacity-30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-acid/40"
                     >
                         <ArrowUp size={14} />
                     </button>
                     <button
+                        data-qa="review-drag-down"
                         type="button"
                         onClick={() => onMove(item.id, 1)}
                         disabled={currentIndex === totalItems - 1}
                         aria-label={`${item.label} omlaag verplaatsen`}
-                        className="grid min-h-[36px] min-w-[36px] place-items-center rounded-lg border border-duck-gray text-duck-ink/60 transition-colors hover:border-duck-acid hover:text-duck-ink disabled:opacity-30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-acid/40"
+                        className="grid min-h-[44px] min-w-[44px] place-items-center rounded-lg border border-duck-gray text-duck-ink/60 transition-colors hover:border-duck-acid hover:text-duck-ink disabled:opacity-30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-acid/40"
                     >
                         <ArrowDown size={14} />
                     </button>
@@ -199,6 +202,7 @@ export const DragSort: React.FC<DragSortProps> = ({
 
             {!submitted ? (
                 <button
+                    data-qa="review-submit"
                     onClick={handleSubmit}
                     className="w-full py-3 bg-gradient-to-r from-duck-acid to-duck-acid hover:from-duck-acid hover:to-duck-acid text-duck-ink rounded-xl font-bold text-sm transition-all duration-200 active:scale-[0.98]"
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
@@ -207,6 +211,7 @@ export const DragSort: React.FC<DragSortProps> = ({
                 </button>
             ) : (
                 <button
+                    data-qa="review-continue"
                     onClick={handleContinue}
                     className="w-full py-3 bg-gradient-to-r from-duck-ink to-duck-ink hover:from-duck-ink hover:to-duck-ink text-white rounded-xl font-bold text-sm transition-all duration-200 active:scale-[0.98] flex items-center justify-center gap-2"
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
