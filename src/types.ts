@@ -153,23 +153,21 @@ export interface AvatarConfig {
   // Companion pet (separate from accessory)
   pet?: 'none' | 'pet_dog' | 'pet_cat' | 'pet_robo' | 'pet_duck';
   gender: 'male' | 'female';
-  avatarKind?: 'human' | 'duck';
 }
 
 export const DEFAULT_AVATAR_CONFIG: AvatarConfig = {
   baseModel: 'standard',
-  skinColor: '#e1ff01',
+  skinColor: '#f5d0b0',
   shirtColor: '#D97848',
   pantsColor: '#08283B',
   accessory: 'none',
-  pet: 'pet_dog',
+  pet: 'none',
   hairStyle: 'short',
   shirtStyle: 't-shirt',
   hairColor: '#08283B',
   eyeColor: '#08283B',
   shoeColor: '#08283B',
   gender: 'male',
-  avatarKind: 'duck',
 };
 
 // Alias for game components

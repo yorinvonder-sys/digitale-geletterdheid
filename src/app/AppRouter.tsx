@@ -493,7 +493,7 @@ export function AppRouter() {
     }
 
     // DEV ONLY: Avatar preview route
-    if (normalizedPath === '/dev/avatar') {
+    if (import.meta.env.DEV && normalizedPath === '/dev/avatar') {
         return (
             <React.Suspense fallback={<LoadingFallback />}>
                 <DevAvatarPreview />
@@ -502,7 +502,7 @@ export function AppRouter() {
     }
 
     // DEV ONLY: Design preview (Anthropic-inspired redesign)
-    if (normalizedPath === '/dev/design') {
+    if (import.meta.env.DEV && normalizedPath === '/dev/design') {
         return (
             <React.Suspense fallback={<LoadingFallback />}>
                 <DesignPreview />

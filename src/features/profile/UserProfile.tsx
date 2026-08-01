@@ -2,8 +2,7 @@ import React, { useState, lazy, Suspense } from 'react';
 import { User, Shield, Trophy, ChevronLeft, Sparkles, ShoppingBag, Palette, Crown, Headphones, Shirt, Columns as Pants, Glasses, Bot, Backpack, Zap, Scissors, X, Award, Gamepad2, BookOpen, BrainCircuit, Search, RotateCcw, Calendar, Printer, Projector, FileText, Cloud, Share2, MessageSquare, Scale, Save, Star, Heart, Dumbbell, CheckCircle2, AlertTriangle, ShieldCheck, Lock } from 'lucide-react';
 import { ParentUser, UserStats, AvatarConfig, DEFAULT_AVATAR_CONFIG, EducationLevel } from '@/types';
 import { LazyAvatarViewer } from '@/features/profile/avatar/LazyAvatarViewer';
-import { AvatarViewer2D } from '@/features/profile/avatar/AvatarViewer2D';
-import { AVATAR_HAIR_CATALOG, getAvatarHairOptionsForGender } from '@/config/avatarCatalog';
+import { AVATAR_HAIR_CATALOG, getAvatarHairOptionsForGender, normalizeAvatarConfig } from '@/config/avatarCatalog';
 
 const ConsentManager = lazy(() => import('@/features/consent/ConsentManager').then(m => ({ default: m.ConsentManager })));
 
@@ -317,7 +316,7 @@ export const UserProfile: React.FC<UserProfileProps> = ({ user, onBack, onUpdate
         ...defaultStats,
         ...user.stats,
         inventory: user.stats?.inventory || [],
-        avatarConfig: user.stats?.avatarConfig ? { ...DEFAULT_AVATAR_CONFIG, ...user.stats.avatarConfig } : DEFAULT_AVATAR_CONFIG
+        avatarConfig: normalizeAvatarConfig(user.stats?.avatarConfig)
     };
 
     const hasDoneOnboarding = stats.hasCompletedOnboarding;
@@ -1038,27 +1037,7 @@ const BadgeDisplay = ({ icon, label, unlocked, color }: { icon: string, label: s
     </div>
 );
 
-const HEAD_TYPES = ['hairStyle', 'skinColor', 'expression', 'gender'];
-
-const getItemPreviewConfig = (item: any, baseConfig: AvatarConfig): AvatarConfig => {
-    const config = { ...baseConfig };
-    if (item.type === 'baseModel') config.baseModel = item.value;
-    if (item.type === 'shirtColor') config.shirtColor = item.value;
-    if (item.type === 'pantsColor') config.pantsColor = item.value;
-    if (item.type === 'pantsStyle') config.pantsStyle = item.value;
-    if (item.type === 'skinColor') config.skinColor = item.value;
-    if (item.type === 'accessory') config.accessory = item.value;
-    if (item.type === 'hairStyle') config.hairStyle = item.value;
-    if (item.type === 'shirtStyle') config.shirtStyle = item.value;
-    if (item.type === 'gender') config.gender = item.value;
-    if (item.type === 'pose') config.pose = item.value;
-    if (item.type === 'expression') config.expression = item.value;
-    return config;
-};
-
 const CategorySection = ({ title, items, stats, handlePurchase, handleEquip, previewConfig, setPreviewConfig, equippedConfigRef, ...props }: any) => {
-    const baseConfig = equippedConfigRef?.current || stats.avatarConfig || DEFAULT_AVATAR_CONFIG;
-
     return (
     <div>
         <h4 className="font-display font-bold text-duck-ink mb-4 px-1">{title}</h4>
@@ -1077,8 +1056,7 @@ const CategorySection = ({ title, items, stats, handlePurchase, handleEquip, pre
                     (item.type === 'shirtStyle' && stats.avatarConfig?.shirtStyle === item.value) ||
                     (item.type === 'gender' && stats.avatarConfig?.gender === item.value);
 
-                const itemPreviewConfig = getItemPreviewConfig(item, baseConfig);
-                const useHeadVariant = HEAD_TYPES.includes(item.type);
+                const isColorItem = typeof item.type === 'string' && item.type.endsWith('Color');
 
                 return (
                     <button
@@ -1107,12 +1085,17 @@ const CategorySection = ({ title, items, stats, handlePurchase, handleEquip, pre
                             ${notEnoughMoney ? 'opacity-40 grayscale cursor-not-allowed' : ''}
                         `}
                     >
-                        <div className={`w-20 h-20 rounded-2xl overflow-hidden flex items-center justify-center transition-transform group-hover:scale-105 ${isOwned ? 'bg-duck-bgLight' : 'bg-duck-bgLight opacity-60'}`}>
-                            <AvatarViewer2D
-                                config={itemPreviewConfig}
-                                interactive={false}
-                                variant={useHeadVariant ? 'head' : 'full'}
-                            />
+                        {/* Tegels tonen een icoon of kleurstaal, geen avatar: één grote
+                            3D-preview links laat het item op de eigen avatar zien. */}
+                        <div
+                            className={`w-20 h-20 rounded-2xl overflow-hidden flex items-center justify-center transition-transform group-hover:scale-105 border border-duck-ink/10 ${isOwned ? 'bg-duck-bgLight' : 'bg-duck-bgLight opacity-60'}`}
+                            style={isColorItem ? { backgroundColor: item.value } : undefined}
+                        >
+                            {!isColorItem && (
+                                <span className="text-duck-ink [&_svg]:w-8 [&_svg]:h-8 [&_img]:w-8 [&_img]:h-8">
+                                    {item.icon}
+                                </span>
+                            )}
                         </div>
 
                         <div className="w-full">

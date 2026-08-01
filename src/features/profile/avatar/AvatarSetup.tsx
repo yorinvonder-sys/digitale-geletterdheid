@@ -1,131 +1,148 @@
 import React, { useState } from 'react';
-import { Crown, ChevronRight, ChevronLeft, Sparkles, User, Lock } from 'lucide-react';
+import { Crown, ChevronRight, ChevronLeft, Sparkles, Lock, Shuffle } from 'lucide-react';
 import { LazyAvatarViewer } from '@/features/profile/avatar/LazyAvatarViewer';
-import { AvatarConfig, DEFAULT_AVATAR_CONFIG } from '@/types';
-import { AVATAR_PET_CATALOG, getAvatarHairOptionsForGender } from '@/config/avatarCatalog';
+import { AvatarConfig } from '@/types';
+import {
+    AvatarCatalogItem,
+    AvatarSlot,
+    applyCatalogItem,
+    getItemsForSlot,
+    isOwned,
+    normalizeAvatarConfig,
+    randomizeAvatarConfig,
+} from '@/config/avatarCatalog';
 
 interface AvatarSetupProps {
     onComplete: (avatarConfig: AvatarConfig) => void;
     userName?: string;
     initialConfig?: AvatarConfig;
+    /** Gekochte item-ids. Leeg voor een nieuwe leerling: alles wat geld kost
+     *  staat dan op slot en is te koop in de winkel. */
+    inventory?: string[];
 }
 
-const SKIN_COLORS = [
-    { id: 'acid', value: '#e1ff01', label: 'Acid Geel' },
-    { id: 'orange', value: '#F2A23C', label: 'Oranje' },
-    { id: 'mint', value: '#A8E6CF', label: 'Mint' },
-    { id: 'sky', value: '#87CEEB', label: 'Hemelsblauw' },
-    { id: 'lavender', value: '#C9B1FF', label: 'Lavendel' },
-    { id: 'coral', value: '#FF6B6B', label: 'Koraal' },
-    { id: 'white', value: '#F8F8F0', label: 'Wit' },
+const STEPS = [
+    { id: 'welcome', title: 'Kies je karakter', subtitle: 'Welkom!' },
+    { id: 'face', title: 'Gezicht & Haar', subtitle: 'Maak het uniek' },
+    { id: 'clothing', title: 'Kleding & Accessoires', subtitle: 'Personaliseer verder' },
+    { id: 'done', title: 'Klaar!', subtitle: 'Je avatar is af' },
 ];
 
-const SHIRT_COLORS = [
-    '#D97848', '#D97848', '#D97848', '#5F947D', '#0B453F', '#D97848',
-    '#D97848', '#D7C95F', '#5F947D', '#0B453F', '#0B453F', '#0B453F',
-    '#D97848', '#08283B', '#445865', '#ffffff'
-];
+const SectionLabel: React.FC<{ children: React.ReactNode }> = ({ children }) => (
+    <p className="text-xs font-semibold uppercase tracking-widest mb-2 text-duck-ink/65">{children}</p>
+);
 
-const HAIR_COLORS = [
-    '#08283B', '#08283B', '#08283B', '#8B4513', '#A0522D', '#D4A574',
-    '#E8C07D', '#FFF8DC', '#C41E3A', '#FF6B6B', '#D97848', '#5F947D'
-];
+/** Tegelraster voor stijl-items (kapsel, shirt, broek, accessoire). */
+const OptionGrid: React.FC<{
+    items: AvatarCatalogItem[];
+    inventory: string[];
+    isSelected: (item: AvatarCatalogItem) => boolean;
+    onPick: (item: AvatarCatalogItem) => void;
+}> = ({ items, inventory, isSelected, onPick }) => (
+    <div className="grid grid-cols-4 gap-2">
+        {items.map(item => {
+            const owned = isOwned(item, inventory);
+            const selected = isSelected(item);
+            return (
+                <button
+                    key={item.id}
+                    onClick={() => owned && onPick(item)}
+                    disabled={!owned}
+                    title={owned ? item.label : `${item.label} — ${item.price} XP in de winkel`}
+                    aria-pressed={selected}
+                    className={`min-h-[44px] p-3 rounded-xl border-2 transition-all text-center ${!owned
+                        ? 'border-duck-ink/10 bg-duck-ink/5 text-duck-ink/50 cursor-not-allowed opacity-60'
+                        : selected
+                            ? 'border-duck-ink bg-duck-acid text-duck-ink'
+                            : 'border-duck-ink/10 bg-white text-duck-ink hover:border-duck-ink/40 active:scale-95'
+                        }`}
+                >
+                    <div className="font-bold text-xs flex items-center justify-center gap-1">
+                        {item.label}
+                        {!owned && <Lock size={11} className="text-duck-ink/45" />}
+                    </div>
+                </button>
+            );
+        })}
+    </div>
+);
 
-const SHOE_COLORS = [
-    '#08283B', '#08283B', '#08283B', '#ffffff', '#D97848', '#D97848',
-    '#D97848', '#0B453F', '#5F947D', '#D7C95F', '#445865', '#08283B'
-];
+/** Kleurstalen. Kleuren zijn altijd gratis. */
+const SwatchGrid: React.FC<{
+    items: AvatarCatalogItem[];
+    selectedValue?: string;
+    onPick: (item: AvatarCatalogItem) => void;
+    size?: 'sm' | 'lg';
+}> = ({ items, selectedValue, onPick, size = 'sm' }) => (
+    <div className="flex flex-wrap gap-2.5 justify-center">
+        {items.map(item => (
+            <button
+                key={item.id}
+                onClick={() => onPick(item)}
+                aria-label={item.label}
+                aria-pressed={selectedValue === item.value}
+                title={item.label}
+                className={`${size === 'lg' ? 'w-12 h-12 rounded-xl' : 'w-9 h-9 rounded-full border-2'} transition-all ${selectedValue === item.value
+                    ? 'scale-110 ring-[3px] ring-duck-ink ring-offset-2 ring-offset-duck-bgLight border-duck-ink'
+                    : 'border-transparent hover:scale-110 hover:border-duck-ink/30'
+                    }`}
+                style={{ backgroundColor: item.swatch }}
+            />
+        ))}
+    </div>
+);
 
-const EXPRESSIONS = [
-    { value: 'happy', label: 'Blij', iconSrc: '/assets/brand/ui-icons/dgskills-duck-happy.webp' },
-    { value: 'cool', label: 'Cool', iconSrc: '/assets/brand/ui-icons/dgskills-duck-default.webp' },
-    { value: 'neutral', label: 'Neutraal', iconSrc: '/assets/brand/ui-icons/dgskills-duck-neutral.webp' },
-    { value: 'surprised', label: 'Verrast', iconSrc: '/assets/brand/ui-icons/dgskills-duck-surprised.webp' },
-] as const;
+/** Raster met emoji-tegels (geslacht, huisdier). */
+const EmojiGrid: React.FC<{
+    items: AvatarCatalogItem[];
+    columns: 2 | 4;
+    isSelected: (item: AvatarCatalogItem) => boolean;
+    onPick: (item: AvatarCatalogItem) => void;
+}> = ({ items, columns, isSelected, onPick }) => (
+    <div className={`grid ${columns === 2 ? 'grid-cols-2 gap-4' : 'grid-cols-4 gap-2'}`}>
+        {items.map(item => (
+            <button
+                key={item.id}
+                onClick={() => onPick(item)}
+                aria-pressed={isSelected(item)}
+                className={`${columns === 2 ? 'p-5 rounded-2xl' : 'min-h-[44px] p-3 rounded-xl flex flex-col items-center gap-1'} border-2 transition-all active:scale-95 ${isSelected(item)
+                    ? 'border-duck-ink bg-duck-acid'
+                    : 'border-duck-ink/10 bg-white hover:border-duck-ink/40'
+                    }`}
+            >
+                <div className={columns === 2 ? 'text-4xl mb-2' : 'text-xl'}>{item.emoji}</div>
+                <div className={`font-bold text-duck-ink ${columns === 2 ? '' : 'text-[11px]'}`}>{item.label}</div>
+            </button>
+        ))}
+    </div>
+);
 
-const SHIRT_STYLES = [
-    { value: 't-shirt', label: 'T-Shirt', locked: false },
-    { value: 'hoodie', label: 'Hoodie', locked: false },
-    { value: 'varsity', label: 'Varsity', locked: false },
-    { value: 'polo', label: 'Polo', locked: false },
-    { value: 'tank', label: 'Tanktop', locked: false },
-    { value: 'sweater', label: 'Trui', locked: false },
-    { value: 'denim', label: 'Denim', locked: true },
-    { value: 'jersey', label: 'Jersey', locked: true },
-    { value: 'trackjacket', label: 'Trainingsjack', locked: true },
-    { value: 'leather', label: 'Leer', locked: true },
-    { value: 'bomber', label: 'Bomber', locked: true },
-    { value: 'blazer', label: 'Blazer', locked: true },
-    { value: 'puffer', label: 'Puffer', locked: true },
-    { value: 'kimono', label: 'Kimono', locked: true },
-    { value: 'suit_diamond', label: 'Pak', locked: true },
-];
-
-const PANTS_STYLES = [
-    { value: 'standard', label: 'Standaard', locked: false },
-    { value: 'chinos', label: 'Chino', locked: false },
-    { value: 'shorts', label: 'Korte broek', locked: false },
-    { value: 'joggers', label: 'Joggers', locked: false },
-    { value: 'skirt', label: 'Rok', locked: false },
-    { value: 'cargo', label: 'Cargo', locked: true },
-    { value: 'skinny', label: 'Skinny', locked: true },
-    { value: 'ripped', label: 'Gescheurd', locked: true },
-    { value: 'baggy', label: 'Baggy', locked: true },
-    { value: 'sweatpants', label: 'Joggingbroek', locked: true },
-    { value: 'formal', label: 'Formeel', locked: true },
-    { value: 'pleated', label: 'Plooirok', locked: true },
-];
-
-const ACCESSORIES = [
-    { value: 'none', label: 'Geen', locked: false },
-    { value: 'cap', label: 'Pet', locked: false },
-    { value: 'beanie', label: 'Muts', locked: false },
-    { value: 'glasses', label: 'Bril', locked: false },
-    { value: 'headphones', label: 'Koptelefoon', locked: false },
-    { value: 'backpack', label: 'Rugzak', locked: false },
-    { value: 'watch', label: 'Horloge', locked: true },
-    { value: 'chain', label: 'Ketting', locked: true },
-    { value: 'scarf', label: 'Sjaal', locked: true },
-    { value: 'skateboard', label: 'Skateboard', locked: true },
-    { value: 'cape', label: 'Cape', locked: true },
-    { value: 'wings', label: 'Vleugels', locked: true },
-    { value: 'crown', label: 'Kroon', locked: true },
-    { value: 'sword', label: 'Zwaard', locked: true },
-];
-
-// Poses removed — animations were inaccurate
-
-export const AvatarSetup: React.FC<AvatarSetupProps> = ({ onComplete, userName, initialConfig }) => {
+export const AvatarSetup: React.FC<AvatarSetupProps> = ({
+    onComplete,
+    userName,
+    initialConfig,
+    inventory = [],
+}) => {
     const [currentStep, setCurrentStep] = useState(0);
-    const [config, setConfig] = useState<AvatarConfig>({ ...(initialConfig || DEFAULT_AVATAR_CONFIG), avatarKind: 'duck' });
-    const isDuck = true;
-
-    const STEPS = [
-        { id: 'welcome', title: 'Kies je karakter', subtitle: 'Welkom!' },
-        { id: 'face', title: isDuck ? 'Snavel & Kuif' : 'Gezicht & Haar', subtitle: 'Maak het uniek' },
-        { id: 'clothing', title: isDuck ? 'Outfit & Accessoires' : 'Kleding & Accessoires', subtitle: 'Personaliseer verder' },
-        { id: 'done', title: 'Klaar!', subtitle: 'Je avatar is af' },
-    ];
+    const [config, setConfig] = useState<AvatarConfig>(() => normalizeAvatarConfig(initialConfig));
 
     const step = STEPS[currentStep];
     const isLastStep = currentStep === STEPS.length - 1;
     const isFirstStep = currentStep === 0;
 
     const handleNext = () => {
-        if (isLastStep) {
-            onComplete(config);
-        } else {
-            setCurrentStep(prev => prev + 1);
-        }
+        if (isLastStep) onComplete(config);
+        else setCurrentStep(prev => prev + 1);
     };
 
     const handlePrevious = () => {
-        if (currentStep > 0) {
-            setCurrentStep(prev => prev - 1);
-        }
+        if (currentStep > 0) setCurrentStep(prev => prev - 1);
     };
 
-    const hairStyles = getAvatarHairOptionsForGender(config.gender);
+    const pick = (item: AvatarCatalogItem) =>
+        setConfig(prev => applyCatalogItem(prev, item, inventory));
+
+    const optionsFor = (slot: AvatarSlot) => getItemsForSlot(slot, config.gender);
 
     return (
         <div className="fixed inset-0 z-[200] overflow-hidden bg-duck-bg font-sans text-duck-ink">
@@ -160,152 +177,71 @@ export const AvatarSetup: React.FC<AvatarSetupProps> = ({ onComplete, userName, 
 
                         {/* Step Content */}
                         <div className="mb-6">
-                            {/* Step 0: Welcome + Avatar Kind + Gender Selection */}
+                            {/* Step 0: Welcome + Gender + Skin */}
                             {currentStep === 0 && (
                                 <div className="space-y-5 animate-in fade-in">
                                     <p className="font-medium text-center text-sm text-duck-ink/65">
                                         Hoi{userName ? ` ${userName}` : ''}! Maak je eigen avatar en begin je avontuur.
                                     </p>
 
-                                    {/* Gender Selection */}
-                                    <div className="grid grid-cols-2 gap-4">
-                                        <button
-                                            onClick={() => setConfig({
-                                                ...config,
-                                                gender: 'male',
-                                                hairStyle: 'spiky',
-                                                baseModel: 'standard',
-                                                shirtColor: '#D97848',
-                                                pantsColor: '#08283B',
-                                                shoeColor: '#0B453F',
-                                                hairColor: '#08283B',
-                                                expression: 'cool',
-                                            })}
-                                            className={`p-5 rounded-2xl border-2 transition-all ${config.gender === 'male'
-                                                ? 'border-duck-ink bg-duck-acid'
-                                                : 'border-duck-ink/10 bg-white hover:border-duck-ink/40'
-                                                }`}
-                                        >
-                                            <div className="text-4xl mb-2">👦</div>
-                                            <div className="font-bold text-duck-ink">Jongen</div>
-                                        </button>
-                                        <button
-                                            onClick={() => setConfig({
-                                                ...config,
-                                                gender: 'female',
-                                                hairStyle: 'pigtails',
-                                                baseModel: 'slim',
-                                                shirtColor: '#D97848',
-                                                pantsColor: '#08283B',
-                                                shoeColor: '#1f2937',
-                                                hairColor: '#08283B',
-                                                expression: 'happy',
-                                            })}
-                                            className={`p-5 rounded-2xl border-2 transition-all ${config.gender === 'female'
-                                                ? 'border-duck-ink bg-duck-acid'
-                                                : 'border-duck-ink/10 bg-white hover:border-duck-ink/40'
-                                                }`}
-                                        >
-                                            <div className="text-4xl mb-2">👧</div>
-                                            <div className="font-bold text-duck-ink">Meisje</div>
-                                        </button>
+                                    <EmojiGrid
+                                        items={optionsFor('gender')}
+                                        columns={2}
+                                        isSelected={item => config.gender === item.value}
+                                        onPick={pick}
+                                    />
+
+                                    <div>
+                                        <SectionLabel>Huidskleur</SectionLabel>
+                                        <SwatchGrid
+                                            items={optionsFor('skinColor')}
+                                            selectedValue={config.skinColor}
+                                            onPick={pick}
+                                            size="lg"
+                                        />
                                     </div>
 
-                                    {/* Skin Color Selection */}
-                                    <div>
-                                        <p className="text-xs font-semibold uppercase tracking-widest mb-2 text-duck-ink/65">{isDuck ? 'Verenkleur' : 'Huidskleur'}</p>
-                                        <div className="flex flex-wrap gap-2.5 justify-center">
-                                            {SKIN_COLORS.map(skin => (
-                                                <button
-                                                    key={skin.id}
-                                                    onClick={() => setConfig({ ...config, skinColor: skin.value })}
-                                                    className={`w-12 h-12 rounded-xl transition-all ${config.skinColor === skin.value
-                                                        ? 'scale-110 ring-[3px] ring-duck-ink ring-offset-2 ring-offset-duck-bgLight'
-                                                        : 'hover:scale-105'
-                                                        }`}
-                                                    style={{ backgroundColor: skin.value }}
-                                                    aria-label={`Selecteer huidskleur: ${skin.label}`}
-                                                    aria-pressed={config.skinColor === skin.value}
-                                                    title={skin.label}
-                                                />
-                                            ))}
-                                        </div>
-                                    </div>
+                                    <button
+                                        onClick={() => setConfig(prev => randomizeAvatarConfig(prev, inventory))}
+                                        className="w-full min-h-[44px] rounded-full border-2 border-duck-ink/15 bg-white font-extrabold text-sm text-duck-ink flex items-center justify-center gap-2 transition-all hover:border-duck-ink active:scale-95"
+                                    >
+                                        <Shuffle size={16} />
+                                        Verras me
+                                    </button>
                                 </div>
                             )}
 
                             {/* Step 1: Gezicht & Haar */}
                             {currentStep === 1 && (
                                 <div className="space-y-4 animate-in fade-in">
-                                    {/* Expression */}
                                     <div>
-                                        <p className="text-xs font-semibold uppercase tracking-widest mb-2 text-duck-ink/65">{isDuck ? 'Snavel & Ogen' : 'Gezicht'}</p>
-                                        <div className="grid grid-cols-4 gap-2">
-                                            {EXPRESSIONS.map(expression => (
-                                                <button
-                                                    key={expression.value}
-                                                    onClick={() => setConfig({ ...config, expression: expression.value })}
-                                                    className={`min-h-[44px] p-3 rounded-xl border-2 transition-all flex flex-col items-center gap-1 active:scale-95 ${config.expression === expression.value
-                                                        ? 'border-duck-ink bg-duck-acid text-duck-ink'
-                                                        : 'border-duck-ink/10 bg-white text-duck-ink hover:border-duck-ink/40'
-                                                        }`}
-                                                >
-                                                    <img
-                                                        src={expression.iconSrc}
-                                                        alt=""
-                                                        className="h-6 w-6 object-contain"
-                                                        width={24}
-                                                        height={24}
-                                                        loading="lazy"
-                                                        decoding="async"
-                                                    />
-                                                    <span className="font-bold text-[11px]">{expression.label}</span>
-                                                </button>
-                                            ))}
-                                        </div>
+                                        <SectionLabel>Gezicht</SectionLabel>
+                                        <OptionGrid
+                                            items={optionsFor('expression')}
+                                            inventory={inventory}
+                                            isSelected={item => (config.expression ?? 'neutral') === item.value}
+                                            onPick={pick}
+                                        />
                                     </div>
 
-                                    {/* Hair Style */}
                                     <div>
-                                        <p className="text-xs font-semibold uppercase tracking-widest mb-2 text-duck-ink/65">{isDuck ? 'Kuif' : 'Haarstijl'}</p>
-                                        <div className="grid grid-cols-4 gap-2">
-                                            {hairStyles.map(hair => (
-                                                <button
-                                                    key={hair.value}
-                                                    onClick={() => !hair.locked && setConfig({ ...config, hairStyle: hair.value as any })}
-                                                    disabled={hair.locked}
-                                                    className={`min-h-[44px] p-3 rounded-xl border-2 transition-all text-center relative ${hair.locked
-                                                        ? 'border-duck-ink/10 bg-duck-ink/5 text-duck-ink/50 cursor-not-allowed opacity-60'
-                                                        : config.hairStyle === hair.value
-                                                            ? 'border-duck-ink bg-duck-acid text-duck-ink'
-                                                            : 'border-duck-ink/10 bg-white text-duck-ink hover:border-duck-ink/40 active:scale-95'
-                                                        }`}
-                                                >
-                                                    <div className="font-bold text-xs flex items-center justify-center gap-1">
-                                                        {hair.label}
-                                                        {hair.locked && <Lock size={11} className="text-duck-ink/45" />}
-                                                    </div>
-                                                </button>
-                                            ))}
-                                        </div>
+                                        <SectionLabel>Oogkleur</SectionLabel>
+                                        <SwatchGrid items={optionsFor('eyeColor')} selectedValue={config.eyeColor} onPick={pick} />
                                     </div>
 
-                                    {/* Hair Color */}
                                     <div>
-                                        <p className="text-xs font-semibold uppercase tracking-widest mb-2 text-duck-ink/65">{isDuck ? 'Kuifkleur' : 'Haarkleur'}</p>
-                                        <div className="flex flex-wrap gap-2.5 justify-center">
-                                            {HAIR_COLORS.map(color => (
-                                                <button
-                                                    key={color}
-                                                    onClick={() => setConfig({ ...config, hairColor: color })}
-                                                    className={`w-9 h-9 rounded-full transition-all border-2 ${config.hairColor === color
-                                                        ? 'ring-[3px] ring-duck-ink ring-offset-2 ring-offset-duck-bgLight scale-110 border-duck-ink'
-                                                        : 'border-transparent hover:scale-110 hover:border-duck-ink/30'
-                                                        }`}
-                                                    style={{ backgroundColor: color }}
-                                                />
-                                            ))}
-                                        </div>
+                                        <SectionLabel>Haarstijl</SectionLabel>
+                                        <OptionGrid
+                                            items={optionsFor('hairStyle')}
+                                            inventory={inventory}
+                                            isSelected={item => config.hairStyle === item.value}
+                                            onPick={pick}
+                                        />
+                                    </div>
+
+                                    <div>
+                                        <SectionLabel>Haarkleur</SectionLabel>
+                                        <SwatchGrid items={optionsFor('hairColor')} selectedValue={config.hairColor} onPick={pick} />
                                     </div>
                                 </div>
                             )}
@@ -313,153 +249,59 @@ export const AvatarSetup: React.FC<AvatarSetupProps> = ({ onComplete, userName, 
                             {/* Step 2: Kleding & Extras */}
                             {currentStep === 2 && (
                                 <div className="space-y-4 animate-in fade-in">
-                                    {/* Shirt Style */}
                                     <div>
-                                        <p className="text-xs font-semibold uppercase tracking-widest mb-2 text-duck-ink/65">{isDuck ? 'Outfit' : 'Shirt'}</p>
-                                        <div className="grid grid-cols-4 gap-2">
-                                            {SHIRT_STYLES.map(shirt => (
-                                                <button
-                                                    key={shirt.value}
-                                                    onClick={() => !shirt.locked && setConfig({ ...config, shirtStyle: shirt.value as any })}
-                                                    disabled={shirt.locked}
-                                                    className={`min-h-[44px] p-3 rounded-xl border-2 transition-all text-center relative ${shirt.locked
-                                                        ? 'border-duck-ink/10 bg-duck-ink/5 text-duck-ink/50 cursor-not-allowed opacity-60'
-                                                        : config.shirtStyle === shirt.value
-                                                            ? 'border-duck-ink bg-duck-acid text-duck-ink'
-                                                            : 'border-duck-ink/10 bg-white text-duck-ink hover:border-duck-ink/40 active:scale-95'
-                                                        }`}
-                                                >
-                                                    <div className="font-bold text-xs flex items-center justify-center gap-1">
-                                                        {shirt.label}
-                                                        {shirt.locked && <Lock size={11} className="text-duck-ink/45" />}
-                                                    </div>
-                                                </button>
-                                            ))}
-                                        </div>
+                                        <SectionLabel>Shirt</SectionLabel>
+                                        <OptionGrid
+                                            items={optionsFor('shirtStyle')}
+                                            inventory={inventory}
+                                            isSelected={item => config.shirtStyle === item.value}
+                                            onPick={pick}
+                                        />
                                     </div>
 
-                                    {/* Shirt Color */}
                                     <div>
-                                        <p className="text-xs font-semibold uppercase tracking-widest mb-2 text-duck-ink/65">{isDuck ? 'Outfit kleur' : 'Shirt kleur'}</p>
-                                        <div className="flex flex-wrap gap-2.5 justify-center">
-                                            {SHIRT_COLORS.map(color => (
-                                                <button
-                                                    key={color}
-                                                    onClick={() => setConfig({ ...config, shirtColor: color })}
-                                                    className={`w-9 h-9 rounded-full transition-all border-2 ${config.shirtColor === color
-                                                        ? 'ring-[3px] ring-duck-ink ring-offset-2 ring-offset-duck-bgLight scale-110 border-duck-ink'
-                                                        : 'border-transparent hover:scale-110 hover:border-duck-ink/30'
-                                                        }`}
-                                                    style={{ backgroundColor: color }}
-                                                />
-                                            ))}
-                                        </div>
+                                        <SectionLabel>Shirt kleur</SectionLabel>
+                                        <SwatchGrid items={optionsFor('shirtColor')} selectedValue={config.shirtColor} onPick={pick} />
                                     </div>
 
-                                    {/* Pants Style */}
                                     <div>
-                                        <p className="text-xs font-semibold uppercase tracking-widest mb-2 text-duck-ink/65">Broek stijl</p>
-                                        <div className="grid grid-cols-4 gap-2">
-                                            {PANTS_STYLES.map(pants => (
-                                                <button
-                                                    key={pants.value}
-                                                    onClick={() => !pants.locked && setConfig({ ...config, pantsStyle: pants.value as any })}
-                                                    disabled={pants.locked}
-                                                    className={`min-h-[44px] p-3 rounded-xl border-2 transition-all text-center relative ${pants.locked
-                                                        ? 'border-duck-ink/10 bg-duck-ink/5 text-duck-ink/50 cursor-not-allowed opacity-60'
-                                                        : config.pantsStyle === pants.value
-                                                            ? 'border-duck-ink bg-duck-acid text-duck-ink'
-                                                            : 'border-duck-ink/10 bg-white text-duck-ink hover:border-duck-ink/40 active:scale-95'
-                                                        }`}
-                                                >
-                                                    <div className="font-bold text-xs flex items-center justify-center gap-1">
-                                                        {pants.label}
-                                                        {pants.locked && <Lock size={11} className="text-duck-ink/45" />}
-                                                    </div>
-                                                </button>
-                                            ))}
-                                        </div>
+                                        <SectionLabel>Broek stijl</SectionLabel>
+                                        <OptionGrid
+                                            items={optionsFor('pantsStyle')}
+                                            inventory={inventory}
+                                            isSelected={item => config.pantsStyle === item.value}
+                                            onPick={pick}
+                                        />
                                     </div>
 
-                                    {/* Pants Color */}
                                     <div>
-                                        <p className="text-xs font-semibold uppercase tracking-widest mb-2 text-duck-ink/65">Broek kleur</p>
-                                        <div className="flex flex-wrap gap-2.5 justify-center">
-                                            {SHIRT_COLORS.map(color => (
-                                                <button
-                                                    key={color}
-                                                    onClick={() => setConfig({ ...config, pantsColor: color })}
-                                                    className={`w-9 h-9 rounded-full transition-all border-2 ${config.pantsColor === color
-                                                        ? 'ring-[3px] ring-duck-ink ring-offset-2 ring-offset-duck-bgLight scale-110 border-duck-ink'
-                                                        : 'border-transparent hover:scale-110 hover:border-duck-ink/30'
-                                                        }`}
-                                                    style={{ backgroundColor: color }}
-                                                />
-                                            ))}
-                                        </div>
+                                        <SectionLabel>Broek kleur</SectionLabel>
+                                        <SwatchGrid items={optionsFor('pantsColor')} selectedValue={config.pantsColor} onPick={pick} />
                                     </div>
 
-                                    {/* Shoe Color */}
                                     <div>
-                                        <p className="text-xs font-semibold uppercase tracking-widest mb-2 text-duck-ink/65">{isDuck ? 'Voetjes kleur' : 'Schoenen kleur'}</p>
-                                        <div className="flex flex-wrap gap-2.5 justify-center">
-                                            {SHOE_COLORS.map(color => (
-                                                <button
-                                                    key={color}
-                                                    onClick={() => setConfig({ ...config, shoeColor: color })}
-                                                    className={`w-9 h-9 rounded-full transition-all border-2 ${config.shoeColor === color
-                                                        ? 'ring-[3px] ring-duck-ink ring-offset-2 ring-offset-duck-bgLight scale-110 border-duck-ink'
-                                                        : 'border-transparent hover:scale-110 hover:border-duck-ink/30'
-                                                        }`}
-                                                    style={{ backgroundColor: color }}
-                                                />
-                                            ))}
-                                        </div>
+                                        <SectionLabel>Schoenen kleur</SectionLabel>
+                                        <SwatchGrid items={optionsFor('shoeColor')} selectedValue={config.shoeColor} onPick={pick} />
                                     </div>
 
-                                    {/* Accessory */}
                                     <div>
-                                        <p className="text-xs font-semibold uppercase tracking-widest mb-2 text-duck-ink/65">Accessoire</p>
-                                        <div className="grid grid-cols-4 gap-2">
-                                            {ACCESSORIES.map(acc => (
-                                                <button
-                                                    key={acc.value}
-                                                    onClick={() => !acc.locked && setConfig({ ...config, accessory: acc.value as any })}
-                                                    disabled={acc.locked}
-                                                    className={`min-h-[44px] p-3 rounded-xl border-2 transition-all text-center relative ${acc.locked
-                                                        ? 'border-duck-ink/10 bg-duck-ink/5 text-duck-ink/50 cursor-not-allowed opacity-60'
-                                                        : config.accessory === acc.value
-                                                            ? 'border-duck-ink bg-duck-acid text-duck-ink'
-                                                            : 'border-duck-ink/10 bg-white text-duck-ink hover:border-duck-ink/40 active:scale-95'
-                                                        }`}
-                                                >
-                                                    <div className="font-bold text-xs flex items-center justify-center gap-1">
-                                                        {acc.label}
-                                                        {acc.locked && <Lock size={11} className="text-duck-ink/45" />}
-                                                    </div>
-                                                </button>
-                                            ))}
-                                        </div>
+                                        <SectionLabel>Accessoire</SectionLabel>
+                                        <OptionGrid
+                                            items={optionsFor('accessory')}
+                                            inventory={inventory}
+                                            isSelected={item => config.accessory === item.value}
+                                            onPick={pick}
+                                        />
                                     </div>
 
-                                    {/* Huisdier */}
                                     <div>
-                                        <p className="text-xs font-semibold uppercase tracking-widest mb-2 text-duck-ink/65">Huisdier</p>
-                                        <div className="grid grid-cols-4 gap-2">
-                                            {AVATAR_PET_CATALOG.map(pet => (
-                                                <button
-                                                    key={pet.value}
-                                                    onClick={() => setConfig({ ...config, pet: pet.value as any })}
-                                                    className={`min-h-[44px] p-3 rounded-xl border-2 transition-all flex flex-col items-center gap-1 active:scale-95 ${config.pet === pet.value || (!config.pet && pet.value === 'pet_dog')
-                                                        ? 'border-duck-ink bg-duck-acid text-duck-ink'
-                                                        : 'border-duck-ink/10 bg-white text-duck-ink hover:border-duck-ink/40'
-                                                        }`}
-                                                >
-                                                    <span className="text-xl">{pet.emoji}</span>
-                                                    <span className="font-bold text-[11px]">{pet.label}</span>
-                                                </button>
-                                            ))}
-                                        </div>
+                                        <SectionLabel>Huisdier</SectionLabel>
+                                        <EmojiGrid
+                                            items={optionsFor('pet')}
+                                            columns={4}
+                                            isSelected={item => (config.pet ?? 'none') === item.value}
+                                            onPick={pick}
+                                        />
                                     </div>
                                 </div>
                             )}
@@ -473,6 +315,9 @@ export const AvatarSetup: React.FC<AvatarSetupProps> = ({ onComplete, userName, 
                                     <p className="font-medium text-duck-ink/65">
                                         Je avatar ziet er geweldig uit!<br />
                                         We laten je zo zien hoe alles werkt.
+                                    </p>
+                                    <p className="text-sm font-medium text-duck-ink/65">
+                                        In de winkel kun je later meer kleding, accessoires en emotes vrijspelen met de XP die je verdient.
                                     </p>
                                 </div>
                             )}
