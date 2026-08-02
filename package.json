@@ -36,6 +36,7 @@
     "check:ai-provider-docs": "node scripts/check-ai-provider-docs.mjs",
     "check:ai-usage": "node scripts/check-ai-usage-telemetry.mjs && node scripts/check-mistral-bfl-providers.mjs",
     "check:rls:functions": "node scripts/check-rls-functions.mjs",
+    "check:avatar-shop": "node scripts/sync-avatar-shop-seed.mjs --check",
     "check:rls:throwaway": "node scripts/check-rls-throwaway.mjs",
     "check:supabase:remote-migrations": "node scripts/check-supabase-remote-migrations.mjs",
     "biastest": "node scripts/biastest.mjs",

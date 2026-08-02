@@ -18,6 +18,7 @@ import {
     randomizeAvatarConfig,
 } from '@/config/avatarCatalog';
 import { getXpBalance } from '@/utils/xp';
+import { purchaseAvatarItem } from '@/services/avatarShopService';
 
 interface AvatarShopProps {
     stats: UserStats;
@@ -150,6 +151,8 @@ export const AvatarShop: React.FC<AvatarShopProps> = ({ stats, onStatsChange }) 
     const [tryingItem, setTryingItem] = useState<AvatarCatalogItem | null>(null);
     const [itemToBuy, setItemToBuy] = useState<AvatarCatalogItem | null>(null);
     const [notEnough, setNotEnough] = useState<{ item: AvatarCatalogItem; needed: number } | null>(null);
+    const [isPurchasing, setIsPurchasing] = useState(false);
+    const [purchaseError, setPurchaseError] = useState<string | null>(null);
 
     // Wat de leerling in de preview ziet: het gedragen setje, of het item dat
     // hij aan het passen is.
@@ -177,17 +180,38 @@ export const AvatarShop: React.FC<AvatarShopProps> = ({ stats, onStatsChange }) 
         else setNotEnough({ item, needed: item.price - balance });
     };
 
-    const confirmPurchase = () => {
-        if (!itemToBuy) return;
+    const confirmPurchase = async () => {
+        if (!itemToBuy || isPurchasing) return;
+        setIsPurchasing(true);
+        setPurchaseError(null);
+
+        // De server rekent af en geeft het gezaghebbende saldo terug; hier
+        // wordt niets meer zelf uitgerekend.
+        const result = await purchaseAvatarItem(itemToBuy.id);
+        setIsPurchasing(false);
+
+        if (!result.ok) {
+            setItemToBuy(null);
+            if (result.code === 'INSUFFICIENT_XP') {
+                setNotEnough({ item: itemToBuy, needed: result.needed ?? itemToBuy.price });
+            } else {
+                setPurchaseError(
+                    result.code === 'ITEM_NOT_FOUND'
+                        ? 'Dit item bestaat niet meer in de winkel.'
+                        : 'Kopen lukte even niet. Probeer het zo nog eens.'
+                );
+            }
+            return;
+        }
+
         // Bouwt bewust vanuit het GEDRAGEN setje, niet vanuit de preview: anders
         // kan een item dat je alleen aan het passen was stilletjes meegekocht
         // worden.
-        const nextConfig = applyCatalogItem(equipped, itemToBuy, inventory);
         onStatsChange({
             ...stats,
-            xpSpent: (stats.xpSpent ?? 0) + itemToBuy.price,
-            inventory: [...inventory, itemToBuy.id],
-            avatarConfig: nextConfig,
+            xpSpent: result.xpSpent ?? stats.xpSpent ?? 0,
+            inventory: result.inventory ?? inventory,
+            avatarConfig: applyCatalogItem(equipped, itemToBuy, inventory),
         });
         setItemToBuy(null);
         setTryingItem(null);
@@ -353,6 +377,22 @@ export const AvatarShop: React.FC<AvatarShopProps> = ({ stats, onStatsChange }) 
                 </div>
             </div>
 
+            {/* Aankoop mislukte om een andere reden dan te weinig XP */}
+            {purchaseError && (
+                <div className="fixed inset-0 z-[100] flex items-center justify-center bg-duck-ink/40 backdrop-blur-sm p-4 animate-in fade-in duration-200">
+                    <div className="bg-white rounded-[1.5rem] shadow-duck-soft w-full max-w-sm p-8 text-center animate-in zoom-in-95 duration-200">
+                        <h3 className="font-display text-xl font-black text-duck-ink mb-2">Even niet gelukt</h3>
+                        <p className="text-duck-ink/65 text-sm mb-6">{purchaseError}</p>
+                        <button
+                            onClick={() => setPurchaseError(null)}
+                            className="w-full py-4 bg-duck-acid border border-duck-ink text-duck-ink rounded-xl font-bold transition-transform hover:-translate-y-0.5"
+                        >
+                            Oké
+                        </button>
+                    </div>
+                </div>
+            )}
+
             {/* Te weinig XP */}
             {notEnough && (
                 <div className="fixed inset-0 z-[100] flex items-center justify-center bg-duck-ink/40 backdrop-blur-sm p-4 animate-in fade-in duration-200">
@@ -396,10 +436,11 @@ export const AvatarShop: React.FC<AvatarShopProps> = ({ stats, onStatsChange }) 
                                 </button>
                                 <button
                                     onClick={confirmPurchase}
-                                    className="flex-1 py-4 bg-duck-acid border border-duck-ink text-duck-ink rounded-xl font-bold transition-all hover:-translate-y-0.5 active:scale-95 flex items-center justify-center gap-2"
+                                    disabled={isPurchasing}
+                                    className="flex-1 py-4 bg-duck-acid border border-duck-ink text-duck-ink rounded-xl font-bold transition-all hover:-translate-y-0.5 active:scale-95 flex items-center justify-center gap-2 disabled:opacity-60 disabled:hover:translate-y-0"
                                 >
                                     <ShoppingBag size={18} />
-                                    Ja, kopen!
+                                    {isPurchasing ? 'Bezig…' : 'Ja, kopen!'}
                                 </button>
                             </div>
                         </div>
