@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
 import test from 'node:test';
 
 import { cloudCommanderConfig } from '../src/features/missions/templates/tool-guide/configs/cloud-commander.ts';
@@ -22,4 +23,15 @@ test('Cloud Commander toetst veilig delen in plaats van alleen versiebeheer', ()
     assert.ok(question);
     assert.equal(question.options[question.correctIndex], 'Specifieke personen mogen bekijken');
     assert.match(question.explanation, /beperk je de toegang/);
+});
+
+test('ToolGuide toont nadruk in tips zonder letterlijke markdownsterretjes', () => {
+    const shareStep = cloudCommanderConfig.steps.find((step) => step.id === 'stap-4-delen');
+    const toolGuideSource = readFileSync(
+        new URL('../src/features/missions/templates/tool-guide/ToolGuide.tsx', import.meta.url),
+        'utf8',
+    );
+
+    assert.match(shareStep?.tip ?? '', /\*\*Bekijken\*\*/);
+    assert.match(toolGuideSource, /<RichText text=\{step\.tip\} \/>/);
 });
