@@ -222,7 +222,7 @@ const StepCard: React.FC<StepCardProps> = ({
                         className="text-xs text-duck-ink/60 leading-relaxed"
                         style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                     >
-                        {step.tip}
+                        <RichText text={step.tip} />
                     </p>
                 </div>
             )}
