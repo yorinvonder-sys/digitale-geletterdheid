@@ -186,7 +186,10 @@ export interface ChatMessageSummary {
 }
 
 export interface UserStats {
+  /** Totaal ooit verdiend. Wordt nooit verlaagd — zie getXpBalance(). */
   xp: number;
+  /** Som van alle XP-uitgaven in de winkel. Saldo = xp - xpSpent. */
+  xpSpent?: number;
   level: number;
   missionsCompleted: string[];
   inventory: string[];
