@@ -78,7 +78,9 @@ BEGIN
       AND s.slot  = v_slot
       AND s.price = 0
       AND (s.gender IS NULL OR s.gender = v_gender)
-    ORDER BY s.sort_order
+    -- s.id als tiebreak: sort_order is vandaag uniek omdat het de index uit
+    -- de TypeScript-catalogus is, maar er staat geen UNIQUE op.
+    ORDER BY s.sort_order, s.id
     LIMIT 1;
 
     IF v_fallback IS NOT NULL THEN

@@ -84,6 +84,14 @@ CREATE TABLE IF NOT EXISTS public.user_avatar_items (
   UNIQUE (user_id, item_id)
 );
 
+-- Apart toegevoegd, niet alleen in de CREATE TABLE hierboven: die wordt door
+-- IF NOT EXISTS overgeslagen op een omgeving die een eerdere versie van deze
+-- migratie al draaide. Zonder deze regel zou avatar_ownership_mirror daar
+-- falen op een ontbrekende kolom — en die functie zit op het pad van élke
+-- stats-opslag, dus dan kan geen enkele leerling meer voortgang bewaren.
+ALTER TABLE public.user_avatar_items
+  ADD COLUMN IF NOT EXISTS voided_at timestamptz;
+
 CREATE INDEX IF NOT EXISTS idx_user_avatar_items_user
   ON public.user_avatar_items (user_id, acquired_at DESC);
 
