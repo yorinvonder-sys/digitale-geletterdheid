@@ -594,9 +594,29 @@ export const getArmColor = (
     shirtColor: string,
     skinColor: string,
 ): string => {
-    const shortSleeveStyles = ['tank', 't-shirt', 'polo'];
+    const shortSleeveStyles = ['tank', 't-shirt', 'polo', 'jersey'];
     if (shortSleeveStyles.includes(shirtStyle ?? 't-shirt')) return skinColor;
     return shirtColor;
+};
+
+/** Het deel van OrbitControls dat we nodig hebben om te weten of de leerling
+ *  de camera aan het slepen is. */
+interface DragEventControls {
+    addEventListener: (type: 'start' | 'end', listener: () => void) => void;
+    removeEventListener: (type: 'start' | 'end', listener: () => void) => void;
+}
+
+// --- Hoofddeksels die het haar platdrukken ---
+// Per accessoire hoeveel het haar samengedrukt en omlaag geschoven wordt.
+// De halo ontbreekt bewust: die zweeft boven het hoofd en hoort het haar
+// niet te vervormen.
+
+const HEAD_COVER_FLATTEN: Partial<Record<AvatarConfig['accessory'], { scaleY: number; offsetY: number }>> = {
+    beanie: { scaleY: 0.35, offsetY: -0.10 },
+    cap: { scaleY: 0.50, offsetY: -0.06 },
+    crown: { scaleY: 0.68, offsetY: -0.04 },
+    crown_gold: { scaleY: 0.68, offsetY: -0.04 },
+    bandana: { scaleY: 0.78, offsetY: -0.02 },
 };
 
 // --- ShirtOverlay: box details on top of torso ---
@@ -1011,30 +1031,33 @@ export const LegsSection = memo<{
                         {mcMat(pantsColor, emissiveColor, emissiveIntVal)}
                     </mesh>
 
+                    {/* Detailgeometrie is bewust fors: op de oorspronkelijke maten
+                        (zakken van 0.04, naden van 0.008) zag een leerling geen
+                        enkel verschil met de standaardbroek die hij al had. */}
                     {style === 'cargo' && (
-                        <mesh position={[(i === 0 ? -1 : 1) * (legWidth / 2 + 0.02), -0.05, 0]}>
-                            <boxGeometry args={[0.04, 0.08, 0.06]} />
+                        <mesh position={[(i === 0 ? -1 : 1) * (legWidth / 2 + 0.03), -0.04, 0]}>
+                            <boxGeometry args={[0.07, 0.16, 0.13]} />
                             {mcMat(darker)}
                         </mesh>
                     )}
 
                     {style === 'ripped' && (
                         <group>
-                            <mesh position={[0, -0.05, legWidth / 2 + 0.005]}>
-                                <boxGeometry args={[0.08, 0.03, 0.01]} />
+                            <mesh position={[0, -0.05, legWidth / 2 + 0.008]}>
+                                <boxGeometry args={[legWidth * 0.7, 0.075, 0.02]} />
                                 {mcMat(skinColor)}
                             </mesh>
-                            <mesh position={[0, 0.08, legWidth / 2 + 0.005]}>
-                                <boxGeometry args={[0.06, 0.025, 0.01]} />
+                            <mesh position={[0, 0.09, legWidth / 2 + 0.008]}>
+                                <boxGeometry args={[legWidth * 0.5, 0.055, 0.02]} />
                                 {mcMat(skinColor)}
                             </mesh>
                         </group>
                     )}
 
                     {style === 'formal' && (
-                        <mesh position={[0, 0, legWidth / 2 + 0.005]}>
-                            <boxGeometry args={[0.008, legHeight * 0.9, 0.005]} />
-                            {mcMat(darkenColor(pantsColor, 1.15))}
+                        <mesh position={[0, 0, legWidth / 2 + 0.008]}>
+                            <boxGeometry args={[0.035, legHeight * 0.92, 0.015]} />
+                            {mcMat(darkenColor(pantsColor, 1.35))}
                         </mesh>
                     )}
 
@@ -1750,6 +1773,56 @@ export const AccessoryLayer = memo<{
                     </mesh>
                 </group>
             );
+        case 'pet_duck':
+            return (
+                <group position={[0.46, 0.10, 0.28]}>
+                    {/* Lijf */}
+                    <mesh position={[0, 0.11, 0]}>
+                        <boxGeometry args={[0.21, 0.13, 0.16]} />
+                        <meshStandardMaterial color="#F5E050" roughness={0.85} />
+                    </mesh>
+                    {/* Staart */}
+                    <mesh position={[0, 0.15, -0.11]} rotation={[0.5, 0, 0]}>
+                        <boxGeometry args={[0.09, 0.06, 0.05]} />
+                        <meshStandardMaterial color="#E8D043" roughness={0.85} />
+                    </mesh>
+                    {/* Vleugels */}
+                    {[-1, 1].map(side => (
+                        <mesh key={`duck-wing-${side}`} position={[side * 0.11, 0.11, 0]}>
+                            <boxGeometry args={[0.02, 0.09, 0.12]} />
+                            <meshStandardMaterial color="#E8D043" roughness={0.88} />
+                        </mesh>
+                    ))}
+                    {/* Hals en kop */}
+                    <mesh position={[0, 0.21, 0.05]}>
+                        <boxGeometry args={[0.07, 0.09, 0.07]} />
+                        <meshStandardMaterial color="#F5E050" roughness={0.85} />
+                    </mesh>
+                    <mesh position={[0, 0.28, 0.07]}>
+                        <boxGeometry args={[0.11, 0.10, 0.11]} />
+                        <meshStandardMaterial color="#F5E050" roughness={0.84} />
+                    </mesh>
+                    {/* Snavel */}
+                    <mesh position={[0, 0.27, 0.15]}>
+                        <boxGeometry args={[0.08, 0.035, 0.06]} />
+                        <meshStandardMaterial color="#F2A23C" roughness={0.8} />
+                    </mesh>
+                    {/* Ogen */}
+                    {[-1, 1].map(side => (
+                        <mesh key={`duck-eye-${side}`} position={[side * 0.03, 0.30, 0.125]}>
+                            <boxGeometry args={[0.016, 0.016, 0.01]} />
+                            {matBlk}
+                        </mesh>
+                    ))}
+                    {/* Zwempoten */}
+                    {[-1, 1].map(side => (
+                        <mesh key={`duck-foot-${side}`} position={[side * 0.05, 0.025, 0.04]}>
+                            <boxGeometry args={[0.06, 0.02, 0.09]} />
+                            <meshStandardMaterial color="#F2A23C" roughness={0.85} />
+                        </mesh>
+                    ))}
+                </group>
+            );
         case 'pet_robo':
             return (
                 <group position={[-0.52, 0.10, 0.28]}>
@@ -1799,7 +1872,12 @@ const AvatarModel = memo<{
         [config.baseModel, config.gender]
     );
 
-    const skinColor = dims.isRobot ? '#C0C0C0' : config.skinColor;
+    // Het robot-lichaam kleurde de huid hard naar zilver, waardoor elke gekozen
+    // huidskleur onzichtbaar werd. Nu wordt de keuze richting metaal getrokken
+    // maar blijft hij herkenbaar.
+    const skinColor = dims.isRobot
+        ? new THREE.Color(config.skinColor).lerp(new THREE.Color('#C0C0C0'), 0.6).getStyle()
+        : config.skinColor;
     const hairColor = config.hairColor ?? '#08283B';
     const shirtColor = config.shirtColor ?? '#D97848';
     const pantsColor = config.pantsColor ?? '#08283B';
@@ -1816,6 +1894,25 @@ const AvatarModel = memo<{
     const blinkProgressRef = useRef(0);
 
     const [hoveredPart, setHoveredPart] = useState<string | null>(null);
+
+    // Tijdens het rondslepen van de camera beweegt state.pointer mee. Zonder
+    // deze vlag draait de kop dan tegen de camera in.
+    // r3f typeert state.controls zonder event-namen, vandaar het minimale
+    // contract dat we hier daadwerkelijk gebruiken.
+    const controls = useThree((s) => s.controls) as unknown as DragEventControls | null;
+    const isDraggingRef = useRef(false);
+
+    useEffect(() => {
+        if (!controls) return;
+        const onStart = () => { isDraggingRef.current = true; };
+        const onEnd = () => { isDraggingRef.current = false; };
+        controls.addEventListener('start', onStart);
+        controls.addEventListener('end', onEnd);
+        return () => {
+            controls.removeEventListener('start', onStart);
+            controls.removeEventListener('end', onEnd);
+        };
+    }, [controls]);
 
     useEffect(() => { bounceProgressRef.current = 1; }, [config.expression]);
 
@@ -1840,8 +1937,9 @@ const AvatarModel = memo<{
         }
 
         if (headRef.current) {
-            const targetRotX = -state.pointer.y * 0.2;
-            const targetRotY = state.pointer.x * 0.3;
+            const looking = !isDraggingRef.current;
+            const targetRotX = looking ? -state.pointer.y * 0.2 : 0;
+            const targetRotY = looking ? state.pointer.x * 0.3 : 0;
             headRef.current.rotation.x = THREE.MathUtils.lerp(headRef.current.rotation.x, targetRotX, d * 3);
             headRef.current.rotation.y = THREE.MathUtils.lerp(headRef.current.rotation.y, targetRotY, d * 3);
         }
@@ -1915,13 +2013,12 @@ const AvatarModel = memo<{
     const armColor = getArmColor(config.shirtStyle, shirtColor, skinColor);
 
     // Flatten hair under headwear (cap/beanie)
-    const hasHeadCover = config.accessory === 'cap' || config.accessory === 'beanie';
-    const hairScale: [number, number, number] = hasHeadCover
-        ? [1, config.accessory === 'beanie' ? 0.35 : 0.5, 1]
-        : [1, 1, 1];
-    const hairOffset: [number, number, number] = hasHeadCover
-        ? [0, config.accessory === 'beanie' ? -0.10 : -0.06, 0]
-        : [0, 0, 0];
+    // Haar platdrukken onder hoofddeksels. Voorheen alleen pet en muts, waardoor
+    // kroon en bandana door hoge kapsels (mohawk, afro, knot) heen staken.
+    // De halo staat bewust niet in deze lijst: die zweeft boven het hoofd.
+    const headCover = HEAD_COVER_FLATTEN[config.accessory];
+    const hairScale: [number, number, number] = headCover ? [1, headCover.scaleY, 1] : [1, 1, 1];
+    const hairOffset: [number, number, number] = headCover ? [0, headCover.offsetY, 0] : [0, 0, 0];
 
     return (
         // Full-body dropped to -0.56 (was -0.22) so the feet rest on the platform instead of
@@ -2125,7 +2222,7 @@ export const AvatarViewer: React.FC<AvatarViewerProps> = ({
     config, interactive = true, onPartClick, variant = 'full',
 }) => {
     return (
-        <AvatarScene variant={variant}>
+        <AvatarScene variant={variant} interactive={interactive}>
             <AvatarModel
                 config={config}
                 variant={variant}
