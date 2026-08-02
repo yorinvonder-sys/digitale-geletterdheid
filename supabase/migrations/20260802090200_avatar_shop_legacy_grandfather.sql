@@ -18,6 +18,19 @@
 -- grootboek nog leeg, dan zou de eerstvolgende opslag ieders items wissen.
 -- ===========================================================================
 
+-- Expliciete transactie: set_config(..., is_local => true) geldt alleen binnen
+-- de lopende transactie. De Supabase-CLI draait een migratiebestand als één
+-- transactie, maar via de SQL-editor of een autocommit-runner zou de vlag na
+-- het eigen statement vervallen en zou de UPDATE hieronder afketsen op
+-- protect_stats_column. BEGIN/COMMIT haalt die aanname weg.
+BEGIN;
+
+-- ELK id uit de bestaande inventaris wordt vastgelegd, ook ids die de huidige
+-- catalogus niet (meer) kent. De spiegel hieronder overschrijft
+-- stats.inventory met dit register; filteren zou die items onherroepelijk
+-- wissen. Denk aan acc_pet_dog/acc_pet_cat/acc_pet_robo: die zijn op productie
+-- voor 700-4000 XP verkocht en heten in de nieuwe catalogus anders.
+-- Het register betekent "wat de leerling bezit", niet "wat de catalogus kent".
 INSERT INTO public.user_avatar_items (user_id, item_id, price_paid, source, acquired_at)
 SELECT
   u.id,
@@ -32,16 +45,12 @@ CROSS JOIN LATERAL jsonb_array_elements_text(
     ELSE '[]'::jsonb
   END
 ) AS inv(item_id)
--- Alleen ids die de catalogus kent. Oude demo-fixtures bevatten bijvoorbeeld
--- badge-ids die nooit winkelitems zijn geweest; die horen niet in het
--- eigendomsregister thuis.
+-- Enige filter is het id-formaat, dat de CHECK-constraint sowieso afdwingt.
 WHERE inv.item_id ~ '^[a-z0-9_]{1,64}$'
-  AND EXISTS (SELECT 1 FROM public.avatar_shop_items s WHERE s.id = inv.item_id)
 ON CONFLICT (user_id, item_id) DO NOTHING;
 
 -- protect_stats_column blokkeert ook migraties: auth.uid() is hier NULL, dus
 -- de rolcontrole in de trigger vindt geen teacher/admin en gooit een fout.
--- De vlag is transactie-lokaal.
 SELECT set_config('app.bypass_stats_protection', 'true', true);
 
 -- Spiegel stats.inventory gelijk aan het grootboek en zet xpSpent op 0.
@@ -59,3 +68,5 @@ WHERE u.stats ? 'inventory'
    OR EXISTS (SELECT 1 FROM public.user_avatar_items i WHERE i.user_id = u.id);
 
 SELECT set_config('app.bypass_stats_protection', 'false', true);
+
+COMMIT;

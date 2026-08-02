@@ -77,6 +77,10 @@ CREATE TABLE IF NOT EXISTS public.user_avatar_items (
   source      text NOT NULL DEFAULT 'purchase'
               CHECK (source IN ('purchase', 'legacy_grandfathered', 'teacher_grant')),
   acquired_at timestamptz NOT NULL DEFAULT now(),
+  -- Gezet bij een docentreset: de uitgave telt niet meer mee voor het saldo,
+  -- maar de rij blijft ongewijzigd staan. price_paid overschrijven zou precies
+  -- het auditspoor wissen waarvoor deze tabel bestaat.
+  voided_at   timestamptz,
   UNIQUE (user_id, item_id)
 );
 

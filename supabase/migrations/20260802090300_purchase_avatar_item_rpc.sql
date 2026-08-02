@@ -6,8 +6,17 @@
 -- breken en de ranglijst en docentexports vervuilen. Uitgaven staan apart in
 -- stats.xpSpent. Besteedbaar saldo = xp - xpSpent.
 --
--- Dicht tegelijk het gat waardoor een leerling zichzelf elk item kon geven:
--- update_student_stats nam inventory klakkeloos van de client over.
+-- Dicht de BOEKHOUDKUNDIGE helft van het cheat-gat: update_student_stats nam
+-- inventory klakkeloos van de client over, dus een leerling kon zichzelf elk
+-- item in bezit schrijven. Dat kan nu niet meer.
+--
+-- NIET GEDICHT — bewust, en belangrijk om te weten: `avatarConfig` wordt nog
+-- steeds ongevalideerd overgenomen. Een leerling die rechtstreeks
+-- update_student_stats aanroept met bijvoorbeeld shirtStyle 'suit_diamond'
+-- (5000 XP) draagt dat pak zichtbaar, terwijl inventory en xpSpent leeg
+-- blijven. Hetzelfde geldt voor savedOutfits. Het bezit klopt dan wél, het
+-- uiterlijk niet. Volledig dichten vraagt server-side validatie van elke
+-- config-sleutel tegen de catalogus; dat is een aparte stap.
 -- ===========================================================================
 
 -- --------------------------------------------------------------------------
@@ -21,9 +30,13 @@ LANGUAGE sql
 STABLE
 SET search_path = public
 AS $$
+  -- Bezit telt altijd; kwijtgescholden uitgaven tellen niet meer mee voor het
+  -- saldo. Zo houdt een leerling na een docentreset zijn items én is zijn
+  -- opnieuw verdiende XP weer besteedbaar, zonder dat het aankoopbewijs
+  -- verdwijnt.
   SELECT jsonb_build_object(
     'inventory', coalesce(jsonb_agg(item_id ORDER BY acquired_at, item_id), '[]'::jsonb),
-    'xpSpent',   coalesce(sum(price_paid), 0)::integer
+    'xpSpent',   coalesce(sum(price_paid) FILTER (WHERE voided_at IS NULL), 0)::integer
   )
   FROM public.user_avatar_items
   WHERE user_id = p_user_id;
@@ -195,8 +208,10 @@ GRANT EXECUTE ON FUNCTION public.update_student_stats(jsonb) TO authenticated;
 -- --------------------------------------------------------------------------
 -- Docentreset: zette xp op 0 maar liet uitgaven staan, waardoor het saldo op 0
 -- bleef tot de leerling zijn oude uitgaven opnieuw verdiend had. Bij een reset
--- worden items daarom kwijtgescholden: ze blijven, maar hun prijs gaat naar 0
--- en de herkomst wordt 'teacher_grant', zodat het grootboek eerlijk blijft.
+-- worden uitgaven daarom kwijtgescholden via voided_at. De rij zelf blijft
+-- onaangeroerd: price_paid en source overschrijven zou het aankoopbewijs
+-- wissen — precies waarvoor deze tabel bestaat — en na een reset zou niemand
+-- meer kunnen zien dat er ooit iets gekocht is.
 --
 -- Meteen ook de ontbrekende bypass-vlag toegevoegd: is_teacher() staat ook
 -- 'developer' toe, terwijl de trigger alleen teacher/admin doorlaat — een
@@ -234,8 +249,8 @@ BEGIN
   WHERE user_id = p_student_id;
 
   UPDATE public.user_avatar_items
-  SET price_paid = 0, source = 'teacher_grant'
-  WHERE user_id = p_student_id AND price_paid > 0;
+  SET voided_at = now()
+  WHERE user_id = p_student_id AND price_paid > 0 AND voided_at IS NULL;
 
   v_current_stats := coalesce(v_current_stats, '{}'::jsonb) - 'missionProgress'
     || jsonb_build_object(
