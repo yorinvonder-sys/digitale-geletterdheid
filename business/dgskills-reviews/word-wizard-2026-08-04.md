@@ -11,13 +11,13 @@
 
 ## Eindoordeel
 
-De herstelde opdracht is inhoudelijk, didactisch, technisch en responsief releasewaardig op de exacte mergecommit. De formele sluiting is nog geblokkeerd omdat de aangewezen productie-Luna geen interne ChatGPT-browser kon binden. Volgens de harde browser- en mutatieregels is daarom niet overgeschakeld naar Chrome, headless Playwright of een Sol-productiemutatie. Er zijn exact nul productie-, auth-, antwoord-, completion-, XP- of voortgangsmutaties uitgevoerd.
+De herstelde opdracht is inhoudelijk, didactisch, technisch en responsief releasewaardig op de exacte mergecommit. Na expliciete toestemming heeft Sol de resterende productiejourney in de interne ChatGPT-browser voorbereid. De private route toonde wel de gedeelde synthetische naam, maar onverwacht een verplichte avatar-onboarding. De read-only productiedata voor het bedoelde 50-XP/2-missierecord zegt juist dat onboarding voltooid is, terwijl een tweede record met dezelfde zichtbare naam 0 XP/0 missies en onvoltooide onboarding heeft. Daardoor konden zichtbare identiteit, XP, missietelling en unlock niet samen en uniek worden bewezen. Volgens de fail-closed-regels is onmiddellijk gestopt. Er zijn exact nul Word Wizard-antwoord-, checklist-, completion-, XP- of voortgangsmutaties uitgevoerd.
 
 De opdracht mag pas `SHIP` krijgen nadat één geserialiseerde productieflow op de synthetische account zichtbaar 55/55 bereikt, precies 25 XP toekent en completion plus XP na een volledige reload bewaart.
 
 ## Telling open bevindingen
 
-- **Blocker: 1** — verplichte exact-once-productiecompletion en persistencebewijs ontbreken door onbeschikbare interne browser bij de productie-Luna.
+- **Blocker: 1** — verplichte exact-once-productiecompletion en persistencebewijs ontbreken omdat de zichtbare interne-browsersessie niet uniek aan het bedoelde 50-XP/2-missierecord kon worden gekoppeld vóór de eerste mutatie.
 - **High: 0**
 - **Medium: 1** — fysieke iPad Safari en de fysieke Word-app blijven niet getest; versie, licentie, tenant en schermstand kunnen de zichtbare Word-interface beïnvloeden.
 - **Low: 0**
@@ -84,7 +84,7 @@ Dit bewijst Chromium-CSS-emulatie in de interne ChatGPT-browser. Het bewijst gee
 
 ## Technische review
 
-**PASS in preview; productie-persistence nog onbewezen.**
+**PASS in preview; productie-persistence nog onbewezen door een fail-closed identity/onboarding-gate.**
 
 - Zichtbare score bereikt 55/55 op ieder viewport.
 - De foutstatus heeft `role=status` met `aria-live=polite`.
@@ -125,6 +125,7 @@ Daarom noemt de opdracht geen specifieke fysieke knop als universeel, vraagt zij
 - `screenshots/mission-audit/batches/j1p1/word-wizard/298c1bb/local-preview` — oud, alleen desktop/portrait, geen herstel, geen landscape/mobile/productie.
 - `screenshots/mission-audit/batches/j1p1/word-wizard/f227626/worker-landscape-mobile/pre-capture-plan.md` — alleen planning/preflight.
 - `screenshots/mission-audit/batches/j1p1/word-wizard/97c382b/pre-merge-preview/` — nuttige pre-merge QA, maar niet de finale mergecommit.
+- `screenshots/mission-audit/batches/j1p1/word-wizard/58f902c/production/sol-authorized-blocked/` — geldige blocker-evidence, maar geen finale productieflow: de sessie stopte vóór iedere Word Wizard-mutatie wegens een niet-uniek bewijsbare accountstate.
 - Alle ontbrekende, mislukte, onvolledige of wrong-commit manifests.
 
 ## Luna-resultaten
@@ -132,7 +133,7 @@ Daarom noemt de opdracht geen specifieke fysieke knop als universeel, vraagt zij
 - Productie-Luna: fail-closed STOP. Directe interne-browserselectie en één gedocumenteerde reconnectpoging gaven beide `Browser is not available: iab`; exact nul mutaties.
 - Desktop/iPad-portrait-Luna: fail-closed STOP wegens onbeschikbare interne browser; blocker-evidence geschreven, nul mutaties.
 - Landscape/mobile/fix-Luna: kandidaat schoon gereplayed, fixes en tests uitgevoerd, PR #265 gemaakt en checks gemonitord; geen productie/auth.
-- Sol: valideerde diff, tests, build, security, release, Vercel-SHA en nam alleen de side-effect-free interne-browsercaptures over na de concrete Luna-blokkade.
+- Sol: valideerde diff, tests, build, security, release en Vercel-SHA, nam de side-effect-free interne-browsercaptures over en probeerde na expliciete toestemming de productiejourney. Sol stopte vóór de missie toen de zichtbare onboardingstate niet overeenkwam met het bedoelde read-only accountrecord en dezelfde zichtbare naam op een tweede synthetisch record voorkwam.
 
 ## Productie en cleanup
 
@@ -140,9 +141,10 @@ Daarom noemt de opdracht geen specifieke fysieke knop als universeel, vraagt zij
 - Productiescore: niet bewezen.
 - Toegekende XP: niet bewezen.
 - Reload-persistence: niet bewezen.
-- Bekende eerdere synthetische baseline `50 XP / 2 missies` is niet opnieuw zichtbaar bevestigd en wordt daarom niet als actuele waarheid gebruikt.
+- Read-only productiebaseline van het bedoelde record: `50 XP / 2 missies`, Word Wizard niet voltooid, avatar- en nulmeting-onboarding voltooid. Deze baseline kon niet gelijktijdig zichtbaar en uniek in de browser worden bevestigd en telt daarom niet als browsergate.
+- De interne browser toonde de synthetische naam met een verplichte avatar-onboarding. Omdat een tweede synthetisch record dezelfde naam heeft met `0 XP / 0 missies` en onvoltooide onboarding, is geen keuze of onboardingactie uitgevoerd.
 - De gedeelde synthetische account blijft behouden tot de volledige J1P1-period cleanup.
-- De productie-Luna maakte geen lokale auth-artifacts of browsersessie aan; er is niets van die worker op te ruimen.
+- De Sol-productietab is gesloten; de interne-browser-tablist is leeg; het tijdelijke lokale loginhulpmiddel is verwijderd.
 - Lokale preview-auth is niet gebruikt.
 
 ## Evidence-PR en batchstatus
@@ -151,6 +153,6 @@ Evidence-PR [#257](https://github.com/yorinvonder-sys/digitale-geletterdheid/pul
 
 ## Volgende toegestane actie
 
-Herstel de interne ChatGPT-browser voor dezelfde productie-Luna, of geef expliciet een uitzondering dat Sol de reeds verbonden interne browser voor de ene productiecompletion mag gebruiken. Daarna: zichtbare gates opnieuw bevestigen, één completion uitvoeren, 25 XP-delta en reload-persistence bewijzen, report/PR/Linear naar gesloten bijwerken en de lokale auth-/browserartifacts opruimen zonder de synthetische account te verwijderen.
+Los eerst de dubbele zichtbare synthetische identiteit en de tegenstrijdige onboardingstate veilig op, zonder leerlingdata of een nieuwe account aan te maken. Daarna mag Sol in deze Word Wizard-chat opnieuw vanaf een schone interne-browsersessie de zichtbare gates bevestigen en de nog ongebruikte exact-once-productiecompletion uitvoeren. Zonder die unieke zichtbare koppeling blijft de juiste beslissing `FIX EERST` en blijft evidence-PR #257 op 2/5.
 
 Start geen volgende opdracht in deze chat.
