@@ -82,6 +82,26 @@ test('Cloud Commander laat een leerling na foutfeedback opnieuw kiezen', () => {
     assert.match(toolGuideSource, /questionAnswered =[^;]+verificationSubmitted[^;]+isCorrect/s);
 });
 
+test('Cloud Commander verbergt het juiste antwoord bij herkansbare foutfeedback', () => {
+    const toolGuideSource = readFileSync(
+        new URL('../src/features/missions/templates/tool-guide/ToolGuide.tsx', import.meta.url),
+        'utf8',
+    );
+
+    assert.match(toolGuideSource, /const revealCorrectAnswer = Boolean\(/);
+    assert.match(
+        toolGuideSource,
+        /i === step\.verificationQuestion!\.correctIndex\s*&&\s*\(!step\.verificationQuestion!\.allowRetry \|\| isCorrect\)/s,
+    );
+    assert.match(toolGuideSource, /if \(revealCorrectAnswer\)/);
+    assert.match(toolGuideSource, /revealCorrectAnswer\s*\?\s*'bg-duck-ink border-duck-ink'/s);
+    assert.match(toolGuideSource, /aria-pressed=\{verificationAnswer === i\}/);
+    assert.match(toolGuideSource, /role="status"/);
+    assert.match(toolGuideSource, /aria-live="polite"/);
+    assert.match(toolGuideSource, /aria-atomic="true"/);
+    assert.match(toolGuideSource, /revealCorrectAnswer \|\|\s*selected/s);
+});
+
 test('ToolGuide toont nadruk in tips zonder letterlijke markdownsterretjes', () => {
     const shareStep = cloudCommanderConfig.steps.find((step) => step.id === 'stap-4-delen');
     const toolGuideSource = readFileSync(
