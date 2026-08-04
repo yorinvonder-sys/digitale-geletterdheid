@@ -212,6 +212,10 @@ export function AuthenticatedApp() {
     // Onboarding triggers: useEffect i.p.v. setTimeout-in-render (React 19 compatibiliteit).
     // Moeten vóór early returns staan om Rules of Hooks te respecteren.
     useEffect(() => {
+        if (showAvatarSetup && (user?.role !== 'student' || user.stats?.hasCompletedAvatarSetup === true)) {
+            setShowAvatarSetup(false);
+            return;
+        }
         if (user?.role === 'student' && !user.stats?.hasCompletedAvatarSetup && !showAvatarSetup) {
             const id = setTimeout(() => setShowAvatarSetup(true), 100);
             return () => clearTimeout(id);
@@ -350,7 +354,7 @@ export function AuthenticatedApp() {
 
     const hasCompletedAvatarSetup = user.stats?.hasCompletedAvatarSetup === true;
 
-    if (showAvatarSetup && user.role === 'student') {
+    if (showAvatarSetup && user.role === 'student' && !hasCompletedAvatarSetup) {
         const handleAvatarComplete = async (avatarConfig: AvatarConfig) => {
             if (user) {
                 const newStats: UserStats = {
