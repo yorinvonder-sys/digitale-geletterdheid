@@ -6,12 +6,12 @@ const config: ToolGuideConfig = {
     introEmoji: '✍️',
     introTitle: 'Word Wizard',
     introDescription:
-        'Leer werken met Microsoft Word op je iPad. Je maakt een professioneel verslag met koppen, een afbeelding en een automatische inhoudsopgave — precies zoals het op school verwacht wordt.',
+        'Leer werken met Microsoft Word op je iPad. Je maakt een verzorgd verslag met koppen en een afbeelding. Daarna zie je op een laptop of desktop hoe Word van je koppen een automatische inhoudsopgave maakt.',
     introFeatures: [
         'Een nieuw Word-document aanmaken en opslaan',
         'Tekst opmaken met kopstijlen (Kop 1, Kop 2)',
         'Een afbeelding invoegen en tekstomloop instellen',
-        'Een automatische inhoudsopgave toevoegen',
+        'Een automatische inhoudsopgave voorbereiden en op desktop toevoegen',
     ],
     toolName: 'Microsoft Word',
     toolIcon: '📄',
@@ -28,6 +28,8 @@ const config: ToolGuideConfig = {
                 { id: 'opgeslagen', label: 'Ik heb het document opgeslagen met een duidelijke naam in OneDrive' },
                 { id: 'bestandsnaam', label: 'De bestandsnaam volgt het format Naam_Verslag_Vak.docx' },
             ],
+            teacherCheck:
+                'Laat je docent in OneDrive de bestandsnaam en opslaglocatie van je document zien.',
             verificationQuestion: {
                 question: 'Waarom sla je een document meteen op als je begint, en niet pas aan het einde?',
                 options: [
@@ -37,6 +39,9 @@ const config: ToolGuideConfig = {
                     'Omdat de docent het anders niet kan zien',
                 ],
                 correctIndex: 1,
+                allowRetry: true,
+                retryHint:
+                    'Nog niet. Denk aan wat er met je werk gebeurt als de app sluit voordat het bestand een naam en opslaglocatie heeft. Kies daarna opnieuw.',
                 explanation:
                     'Precies! Als je document al een naam en locatie heeft, slaat Word het automatisch op terwijl je werkt. Zo verlies je nooit je werk bij een crash of lege batterij.',
             },
@@ -52,6 +57,8 @@ const config: ToolGuideConfig = {
                 { id: 'kop2-gezet', label: 'Ik heb minstens één tekst de stijl "Kop 2" gegeven' },
                 { id: 'stijlen-zichtbaar', label: 'Ik zie de koppen er visueel anders uitzien dan de gewone tekst' },
             ],
+            teacherCheck:
+                'Laat je docent in het document minimaal één Kop 1 en één Kop 2 zien.',
             verificationQuestion: {
                 question: 'Waarvoor gebruikt Word de stijlen "Kop 1" en "Kop 2" naast de opmaak?',
                 options: [
@@ -61,8 +68,11 @@ const config: ToolGuideConfig = {
                     'Om spelfouten in de koptekst te controleren',
                 ],
                 correctIndex: 1,
+                allowRetry: true,
+                retryHint:
+                    'Nog niet. Denk aan hoe Word hoofdstukken en paragrafen kan herkennen zonder de tekst zelf te begrijpen. Kies daarna opnieuw.',
                 explanation:
-                    'Goed! Word leest je kopstijlen en gebruikt die om een automatische inhoudsopgave te bouwen. Als je later een hoofdstuk verplaatst, past de inhoudsopgave zich vanzelf aan.',
+                    'Goed! Word leest je kopstijlen en gebruikt die om een automatische inhoudsopgave te bouwen. Na een wijziging werk je de inhoudsopgave op laptop of desktop opnieuw bij.',
             },
         },
         {
@@ -76,29 +86,36 @@ const config: ToolGuideConfig = {
                 { id: 'tekstomloop', label: 'Ik heb de tekstomloop ingesteld op "Strak" of "Vierkant"' },
                 { id: 'afbeelding-verplaatst', label: 'Ik kan de afbeelding op de gewenste plek zetten' },
             ],
+            teacherCheck:
+                'Laat je docent de gekozen afbeelding, de bron en de ingestelde tekstomloop zien.',
         },
         {
             id: 'stap-4-inhoudsopgave',
-            title: 'Automatische inhoudsopgave',
+            title: 'Inhoudsopgave voorbereiden',
             instruction:
-                'Ga naar het **begin van je document** — net na de titelpagina of als eerste element. Tik op **Invoegen** → **Documentelementen** → **Inhoud** en kies een stijl (bijv. de eerste automatische optie). Als je daarna tekst toevoegt of koppen aanpast, tik je op de inhoudsopgave en kies je **Bijwerken** om hem te vernieuwen.',
-            tip: 'Als je koppen later aanpast, vergeet dan niet de inhoudsopgave bij te werken. Tik erop en kies "Bijwerken" of "Alles bijwerken".',
+                'Op de **iPad** kun je een bestaande inhoudsopgave openen, maar niet toevoegen of bijwerken. Controleer daarom of hoofdstukken **Kop 1** en paragrafen **Kop 2** gebruiken. Open het bestand daarna op een laptop of desktop in Word. Kies **Verwijzingen** → **Inhoudsopgave** → **Automatische inhoudsopgave**. Kies na wijzigingen **Tabel bijwerken**.',
+            tip: 'Geen laptop of desktop beschikbaar? Laat je kopstructuur aan je docent zien. De docent kan deze desktopstap demonstreren; zoek niet naar een iPad-knop die er niet is.',
             checklistItems: [
-                { id: 'inhoudsopgave-ingevoegd', label: 'Ik heb een automatische inhoudsopgave ingevoegd' },
-                { id: 'koppen-zichtbaar', label: 'Mijn koppen staan in de inhoudsopgave' },
-                { id: 'paginanummers', label: 'De inhoudsopgave toont paginanummers bij de koppen' },
+                { id: 'kopstructuur-gecontroleerd', label: 'Op de iPad heb ik gecontroleerd dat mijn koppen Kop 1 en Kop 2 gebruiken' },
+                { id: 'desktopstap-bekeken', label: 'Ik heb op laptop of desktop gezien hoe Word een automatische inhoudsopgave toevoegt' },
+                { id: 'bijwerken-bekeken', label: 'Ik heb gezien hoe Tabel bijwerken een gewijzigde kop toevoegt' },
             ],
+            teacherCheck:
+                'Laat je docent je kopstructuur zien en leg uit waarom toevoegen en bijwerken op een laptop of desktop gebeurt.',
             verificationQuestion: {
-                question: 'Wat moet je doen als je na het invoegen van de inhoudsopgave nog een hoofdstuk toevoegt?',
+                question: 'Waarom gebruik je op de iPad al Kop 1 en Kop 2 voordat je op desktop de inhoudsopgave toevoegt?',
                 options: [
-                    'De inhoudsopgave verwijderen en opnieuw invoegen',
-                    'Het nieuwe hoofdstuk handmatig toevoegen aan de inhoudsopgave',
-                    'Op de inhoudsopgave tikken en kiezen voor "Bijwerken"',
-                    'Niets — Word doet dit automatisch zonder dat je iets hoeft te doen',
+                    'Omdat Word anders geen afbeeldingen kan openen',
+                    'Omdat Word de kopstijlen gebruikt om de inhoudsopgave op te bouwen',
+                    'Omdat Kop 1 het document automatisch naar de docent stuurt',
+                    'Omdat de iPad dan zelf paginanummers toevoegt',
                 ],
-                correctIndex: 2,
+                correctIndex: 1,
+                allowRetry: true,
+                retryHint:
+                    'Nog niet. Denk aan hoe Word bepaalt welke regels hoofdstukken en paragrafen zijn. Kies daarna opnieuw.',
                 explanation:
-                    'Goed! Je hoeft de inhoudsopgave niet te verwijderen. Tik erop en kies "Bijwerken" — Word past hem automatisch aan op basis van je nieuwe koppen.',
+                    'Goed! Word gebruikt Kop 1 en Kop 2 als bron voor de automatische inhoudsopgave. Na wijzigingen kies je op laptop of desktop Tabel bijwerken.',
             },
         },
     ],
@@ -127,13 +144,13 @@ const config: ToolGuideConfig = {
         'De leerling maakt een Word-document aan, geeft het een naam en slaat het op in OneDrive.',
         'De leerling past Kop 1 en Kop 2 toe op titels en paragrafen in een verslag.',
         'De leerling voegt een afbeelding in en stelt de tekstomloop in op "Strak" of "Vierkant".',
-        'De leerling voegt een automatische inhoudsopgave in en werkt deze bij na een wijziging.',
+        'De leerling bereidt met kopstijlen een automatische inhoudsopgave voor en voegt die op laptop of desktop toe en werkt die bij.',
     ],
     takeaways: [
         'Je kunt een nieuw Word-document aanmaken en direct opslaan in OneDrive',
         'Je snapt hoe je kopstijlen (Kop 1, Kop 2) toepast voor structuur',
         'Je kunt een afbeelding invoegen en de tekstomloop instellen',
-        'Je weet hoe je een automatische inhoudsopgave maakt en bijwerkt',
+        'Je weet waarom je de automatische inhoudsopgave op laptop of desktop toevoegt en bijwerkt',
         'Je begrijpt waarom kopstijlen en automatische inhoudsopgaven samenwerken',
     ],
 };
