@@ -102,6 +102,35 @@ test('Cloud Commander verbergt het juiste antwoord bij herkansbare foutfeedback'
     assert.match(toolGuideSource, /revealCorrectAnswer \|\|\s*selected/s);
 });
 
+test('ToolGuide houdt missiecontrols minimaal 44px hoog', () => {
+    const toolGuideSource = readFileSync(
+        new URL('../src/features/missions/templates/tool-guide/ToolGuide.tsx', import.meta.url),
+        'utf8',
+    );
+    const phaseHeaderSource = readFileSync(
+        new URL('../src/features/missions/templates/shared/PhaseHeader.tsx', import.meta.url),
+        'utf8',
+    );
+    const buttonBlockAround = (source: string, anchor: string) => {
+        const anchorIndex = source.indexOf(anchor);
+        assert.notEqual(anchorIndex, -1, `anchor ontbreekt: ${anchor}`);
+        const buttonStart = source.lastIndexOf('<button', anchorIndex);
+        const buttonEnd = source.indexOf('</button>', anchorIndex);
+        assert.ok(buttonStart >= 0 && buttonEnd > anchorIndex, `buttonblok ontbreekt: ${anchor}`);
+        return source.slice(buttonStart, buttonEnd);
+    };
+
+    assert.match(buttonBlockAround(toolGuideSource, 'onCheckItem(step.id, item.id)'), /w-full min-h-11/);
+    assert.match(buttonBlockAround(toolGuideSource, 'onToggleTeacherCheck(step.id)'), /w-full min-h-11/);
+    assert.match(buttonBlockAround(toolGuideSource, 'onSelectAnswer(step.id, i)'), /w-full min-h-11/);
+    assert.match(buttonBlockAround(toolGuideSource, 'onSubmitAnswer(step.id)'), /w-full min-h-11/);
+    assert.match(buttonBlockAround(toolGuideSource, 'onClick={onBack}'), /min-h-11 min-w-11/);
+
+    const phaseBackButton = buttonBlockAround(phaseHeaderSource, 'aria-label="Terug"');
+    assert.match(phaseBackButton, /min-h-\[44px\]/);
+    assert.match(phaseBackButton, /min-w-\[44px\]/);
+});
+
 test('ToolGuide toont nadruk in tips zonder letterlijke markdownsterretjes', () => {
     const shareStep = cloudCommanderConfig.steps.find((step) => step.id === 'stap-4-delen');
     const toolGuideSource = readFileSync(
