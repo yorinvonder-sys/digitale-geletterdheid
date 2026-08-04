@@ -15,6 +15,10 @@ test('Word Wizard belooft de 25 XP die productie werkelijk toekent', () => {
     assert.equal(getMissionXPReward('word-wizard', 'Medium'), 25);
 });
 
+test('Slide Specialist belooft de 25 XP die productie werkelijk toekent', () => {
+    assert.equal(getMissionXPReward('slide-specialist', 'Medium'), 25);
+});
+
 test('andere missies behouden hun bestaande moeilijkheidsbeloning', () => {
     assert.equal(getMissionXPReward('mission-zonder-override', 'Hard'), getXPReward('Hard'));
 });
