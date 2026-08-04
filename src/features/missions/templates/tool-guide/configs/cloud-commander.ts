@@ -45,6 +45,9 @@ export const cloudCommanderConfig: ToolGuideConfig = {
                     'Op de printer van school',
                 ],
                 correctIndex: 1,
+                allowRetry: true,
+                retryHint:
+                    'Nog niet. Denk aan waar je het bestand nog kunt openen als je iPad niet bij je is. Kies daarna opnieuw.',
                 explanation:
                     'Juist! OneDrive slaat je bestanden op in de cloud — dat zijn servers van Microsoft. Daardoor kun je ze op elk apparaat openen, zolang je verbinding hebt met internet.',
             },
@@ -80,6 +83,9 @@ export const cloudCommanderConfig: ToolGuideConfig = {
                     'Iedereen op internet mag het openen',
                 ],
                 correctIndex: 1,
+                allowRetry: true,
+                retryHint:
+                    'Nog niet. Kies de instelling waarmee alleen de bedoelde klasgenoot toegang krijgt en niets per ongeluk kan aanpassen.',
                 explanation:
                     'Juist! Met Specifieke personen beperk je de toegang tot de klasgenoot die jij kiest. Met Bekijken kan diegene het bestand niet per ongeluk aanpassen.',
             },
