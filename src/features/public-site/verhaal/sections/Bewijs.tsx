@@ -178,6 +178,15 @@ export function Bewijs() {
                                 </Reveal>
                             ))}
                         </div>
+                        <div className="mt-8 flex justify-center" aria-hidden="true">
+                            <img
+                                src="/verhaal/school-proof.webp"
+                                alt=""
+                                className="h-32 w-32 object-contain md:h-40 md:w-40"
+                                loading="lazy"
+                                decoding="async"
+                            />
+                        </div>
                     </div>
 
                     <div>
@@ -203,6 +212,15 @@ export function Bewijs() {
                                     </div>
                                 </Reveal>
                             ))}
+                        </div>
+                        <div className="mt-8 flex justify-center" aria-hidden="true">
+                            <img
+                                src="/verhaal/privacy-shield.webp"
+                                alt=""
+                                className="h-32 w-32 object-contain md:h-40 md:w-40"
+                                loading="lazy"
+                                decoding="async"
+                            />
                         </div>
                     </div>
                 </div>

@@ -6,8 +6,7 @@ import { VERHAAL_STATS } from '../verhaalStats';
 const EASE = [0.22, 1, 0.36, 1] as const;
 
 /**
- * Decoratieve zijkaartjes: de spreadsheet die met pensioen mag en de XP die
- * ervoor in de plaats komt.
+ * Decoratieve zijkaartjes: een korte missiekaart, XP en de streak van Mila.
  *
  * Ze verschijnen pas vanaf `xl` en staan buiten de tekstkolom (max-w-4xl,
  * gecentreerd), zodat ze nooit over de kop of de lopende tekst vallen.
@@ -19,14 +18,14 @@ function ZwevendeProps() {
                 initial={{ opacity: 0, y: 30, rotate: -8 }}
                 animate={{ opacity: 1, y: 0, rotate: -8 }}
                 transition={{ delay: 1.1, duration: 0.7, ease: EASE }}
-                className={`absolute left-[6%] top-[30%] hidden w-40 rounded-xl border-[3px] border-duck-ink bg-white p-3 ${HARD_SHADOW} xl:block`}
+                className={`absolute left-[4%] top-[31%] hidden w-32 rounded-xl border-[3px] border-duck-ink bg-white p-2 ${HARD_SHADOW} xl:block`}
             >
                 <p className="text-[10px] font-bold uppercase tracking-widest text-duck-ink/50">
-                    voortgang_2025.xlsx
+                    MILA · MISSIE 01
                 </p>
-                <div className="mt-2 space-y-1.5">
-                    {['Wie was er ook alweer klaar?', 'Tabblad 7 van 12', '#VERW!.xls'].map((r) => (
-                        <p key={r} className="rounded bg-duck-ink/5 px-2 py-1 text-[10px] text-duck-ink/50">
+                <div className="mt-1.5 space-y-1">
+                    {['Startklaar', '1 van 93 missies', 'Bewijs verzamelen'].map((r) => (
+                        <p key={r} className="rounded bg-duck-ink/5 px-1.5 py-0.5 text-[9px] text-duck-ink/50">
                             {r}
                         </p>
                     ))}
@@ -89,12 +88,12 @@ export function Proloog() {
             >
                 Dit is het verhaal van een les die{' '}
                 <span className="relative inline-block">
-                    <span className="relative z-10">wél</span>
+                    <span className="relative z-10 inline-block px-1">wél</span>
                     <motion.span
                         initial={{ scaleX: 0 }}
                         animate={{ scaleX: 1 }}
                         transition={{ delay: 1.4, duration: 0.5, ease: EASE }}
-                        className="absolute inset-x-0 bottom-1 z-0 h-4 origin-left bg-duck-acid md:h-6"
+                        className="absolute inset-x-0 bottom-0 z-0 h-[0.52em] origin-left bg-duck-acid"
                         aria-hidden="true"
                     />
                 </span>{' '}
@@ -109,7 +108,7 @@ export function Proloog() {
             >
                 Met in de hoofdrol: <strong className="text-duck-ink">Mila</strong>, leerling.{' '}
                 <strong className="text-duck-ink">Haar docent</strong>, {VERHAAL_STATS.missies}{' '}
-                kant-en-klare missies — en een spreadsheet die met pensioen mag.
+                kant-en-klare missies — en eindelijk een les die blijft hangen.
             </motion.p>
 
             <motion.div
@@ -132,16 +131,6 @@ export function Proloog() {
                 </a>
             </motion.div>
 
-            {/* scroll-hint */}
-            <motion.div
-                className="absolute bottom-8 flex flex-col items-center gap-2 text-duck-ink/40"
-                animate={{ y: [0, 8, 0] }}
-                transition={{ repeat: Infinity, duration: 2.2, ease: 'easeInOut' }}
-                aria-hidden="true"
-            >
-                <span className="text-[11px] font-bold uppercase tracking-[0.22em]">Hoofdstuk 1</span>
-                <span className="block h-10 w-[2px] bg-duck-ink/30" />
-            </motion.div>
         </section>
     );
 }
