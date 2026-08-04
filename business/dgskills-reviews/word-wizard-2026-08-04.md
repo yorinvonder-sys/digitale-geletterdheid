@@ -17,7 +17,7 @@ Open severity:
 
 - **Blocker: 0**
 - **High: 0**
-- **Medium: 1** — een fysieke iPad met Safari en de fysieke Word-app zijn niet getest; versie, licentie, tenant, schermgrootte en schermstand kunnen de Word-interface beïnvloeden.
+- **Medium: 2** — een fysieke iPad met Safari en de fysieke Word-app zijn niet getest; daarnaast toonde het dashboard na herladen tijdelijk verkeerde missie-inhoud terwijl Leerjaar 1 geselecteerd bleef. De juiste kaarten verschenen na het opnieuw kiezen van diezelfde route; XP en opgeslagen voortgang waren correct.
 - **Low: 0**
 
 ## Fixes, commits en release
@@ -94,7 +94,7 @@ Dit is bewijs van Chromium-CSS-emulatie in de interne ChatGPT-browser. Het is ge
 - Het XP-contract bewaakt exact 25 XP voor `word-wizard`.
 - De productiecompletion werd exact één keer uitgevoerd.
 - Read-only backendcontrole vond exact één Word Wizard-XP-transactie van 25 XP.
-- Voltooiing en XP bleven na een volledige herlaad aanwezig.
+- XP bleef direct na een volledige herlaad aanwezig. Het dashboard toonde daarbij tijdelijk verkeerde missie-inhoud ondanks de zichtbare Leerjaar 1-selectie; na het opnieuw kiezen van dezelfde route verscheen Wordexpert nog steeds als voltooid. De backendcontrole bevestigde dat de completion zelf duurzaam bewaard was.
 
 ## Productiebewijs
 
@@ -119,9 +119,10 @@ Flow en resultaat:
 
 Persistentie na volledige herlaad:
 
-- 75 XP;
-- 3 voltooide missies;
-- Wordexpert bleef voltooid;
+- 75 XP was direct zichtbaar;
+- de routeknop bleef Leerjaar 1 tonen, maar de missiekaarten kwamen tijdelijk uit een andere route;
+- opnieuw kiezen van dezelfde Leerjaar 1-route herstelde de juiste kaarten en toonde Wordexpert voltooid;
+- 3 voltooide missies bleven backendmatig aanwezig;
 - read-only backendcontrole: missies `cloud-commander`, `magister-master`, `word-wizard`;
 - precies één Word Wizard-XP-transactie, bedrag 25, bron `Missie Voltooid`.
 
@@ -178,6 +179,7 @@ Daarom claimt DGSkills geen universele fysieke knop of bewezen Word-interface. D
 - Alle interne-browsertabs zijn gesloten.
 - Tijdelijke lokale login- en backendverificatiescripts zijn verwijderd.
 - De synthetische account blijft behouden tot de volledige J1P1-period cleanup.
+- Open medium follow-up: herstel de routehydratie zodat een volledige reload direct de kaarten toont die bij de zichtbaar geselecteerde leerlijn horen.
 - Evidence-PR [#257](https://github.com/yorinvonder-sys/digitale-geletterdheid/pull/257) blijft open en draft.
 - Veilige batchsamenvatting: **3/5 formeel gesloten** — Magister Meester, Cloud Commander en Word Wizard.
 
