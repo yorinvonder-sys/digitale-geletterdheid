@@ -25,6 +25,23 @@ test('Cloud Commander toetst veilig delen in plaats van alleen versiebeheer', ()
     assert.match(question.explanation, /beperk je de toegang/);
 });
 
+test('Cloud Commander laat een leerling na foutfeedback opnieuw kiezen', () => {
+    const verificationQuestions = cloudCommanderConfig.steps
+        .map((step) => step.verificationQuestion)
+        .filter((question) => question !== undefined);
+    const toolGuideSource = readFileSync(
+        new URL('../src/features/missions/templates/tool-guide/ToolGuide.tsx', import.meta.url),
+        'utf8',
+    );
+
+    assert.ok(verificationQuestions.length > 0);
+    assert.ok(verificationQuestions.every((question) => question.allowRetry));
+    assert.ok(verificationQuestions.every((question) => /Kies|kies/.test(question.retryHint ?? '')));
+    assert.match(toolGuideSource, /Opnieuw kiezen/);
+    assert.match(toolGuideSource, /onRetryAnswer\(step\.id\)/);
+    assert.match(toolGuideSource, /!step\.verificationQuestion\.allowRetry \|\| isCorrect/);
+});
+
 test('ToolGuide toont nadruk in tips zonder letterlijke markdownsterretjes', () => {
     const shareStep = cloudCommanderConfig.steps.find((step) => step.id === 'stap-4-delen');
     const toolGuideSource = readFileSync(

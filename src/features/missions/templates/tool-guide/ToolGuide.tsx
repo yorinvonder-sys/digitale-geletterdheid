@@ -20,6 +20,8 @@ export interface VerificationQuestion {
     options: string[];
     correctIndex: number;
     explanation: string;
+    allowRetry?: boolean;
+    retryHint?: string;
 }
 
 export interface ToolStep {
@@ -129,6 +131,7 @@ interface StepCardProps {
     onToggleTeacherCheck: (stepId: string) => void;
     onSelectAnswer: (stepId: string, index: number) => void;
     onSubmitAnswer: (stepId: string) => void;
+    onRetryAnswer: (stepId: string) => void;
     onNext: () => void;
     isLastStep: boolean;
 }
@@ -146,6 +149,7 @@ const StepCard: React.FC<StepCardProps> = ({
     onToggleTeacherCheck,
     onSelectAnswer,
     onSubmitAnswer,
+    onRetryAnswer,
     onNext,
     isLastStep,
 }) => {
@@ -153,22 +157,27 @@ const StepCard: React.FC<StepCardProps> = ({
         (item) => checklist[`${step.id}-${item.id}`]
     );
 
-    const questionAnswered = !step.verificationQuestion || verificationSubmitted;
-    const teacherApproved = !step.teacherCheck || !!teacherChecks[step.id];
-    const canProceed = allChecked && questionAnswered && teacherApproved;
-
     const isCorrect =
         step.verificationQuestion &&
         verificationSubmitted &&
         verificationAnswer === step.verificationQuestion.correctIndex;
 
+    const questionAnswered =
+        !step.verificationQuestion ||
+        (verificationSubmitted && (!step.verificationQuestion.allowRetry || isCorrect));
+    const teacherApproved = !step.teacherCheck || !!teacherChecks[step.id];
+    const canProceed = allChecked && questionAnswered && teacherApproved;
+
     const feedbackText =
         step.verificationQuestion && verificationSubmitted
             ? isCorrect
                 ? step.verificationQuestion.explanation
-                : `Nog niet. Het juiste antwoord is: ${
-                      step.verificationQuestion.options[step.verificationQuestion.correctIndex]
-                  }. ${step.verificationQuestion.explanation.replace(/^(Precies|Goed|Juist|Goed gedacht)!\s*/i, '')}`
+                : step.verificationQuestion.allowRetry
+                  ? step.verificationQuestion.retryHint ??
+                    'Nog niet. Lees de vraag en de uitleg nog eens en kies opnieuw.'
+                  : `Nog niet. Het juiste antwoord is: ${
+                        step.verificationQuestion.options[step.verificationQuestion.correctIndex]
+                    }. ${step.verificationQuestion.explanation.replace(/^(Precies|Goed|Juist|Goed gedacht)!\s*/i, '')}`
             : '';
 
     return (
@@ -391,23 +400,32 @@ const StepCard: React.FC<StepCardProps> = ({
                     )}
 
                     {verificationSubmitted && (
-                        <div
-                            className={`flex gap-2 rounded-xl p-3 ${
-                                isCorrect
-                                    ? 'bg-duck-ink/8 border border-duck-ink/20'
-                                    : 'bg-duck-acid/20 border border-duck-acid/50'
-                            }`}
-                        >
-                            <span>{isCorrect ? '✓' : '!'}</span>
-                            <p
-                                className={`text-xs leading-relaxed ${
-                                    isCorrect ? 'text-duck-ink' : 'text-duck-ink'
+                        <>
+                            <div
+                                className={`flex gap-2 rounded-xl p-3 ${
+                                    isCorrect
+                                        ? 'bg-duck-ink/8 border border-duck-ink/20'
+                                        : 'bg-duck-acid/20 border border-duck-acid/50'
                                 }`}
-                                style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                             >
-                                {feedbackText}
-                            </p>
-                        </div>
+                                <span>{isCorrect ? '✓' : '!'}</span>
+                                <p
+                                    className="text-xs leading-relaxed text-duck-ink"
+                                    style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
+                                >
+                                    {feedbackText}
+                                </p>
+                            </div>
+                            {!isCorrect && step.verificationQuestion.allowRetry && (
+                                <button
+                                    onClick={() => onRetryAnswer(step.id)}
+                                    className="mt-2 w-full min-h-11 rounded-xl border border-duck-ink/30 bg-white px-4 py-2.5 text-sm font-bold text-duck-ink transition-colors hover:bg-duck-ink/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-ink focus-visible:ring-offset-2"
+                                    style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
+                                >
+                                    Opnieuw kiezen
+                                </button>
+                            )}
+                        </>
                     )}
                 </div>
             )}
@@ -516,6 +534,19 @@ const ToolGuideInner: React.FC<ToolGuideProps> = ({
         }));
     }
 
+    function handleRetryAnswer(stepId: string) {
+        setState((prev) => {
+            const verificationAnswers = { ...prev.verificationAnswers };
+            delete verificationAnswers[stepId];
+
+            return {
+                ...prev,
+                verificationAnswers,
+                verificationSubmitted: { ...prev.verificationSubmitted, [stepId]: false },
+            };
+        });
+    }
+
     function handleNext() {
         const isLast = state.currentStep >= config.steps.length - 1;
         if (isLast) {
@@ -580,6 +611,7 @@ const ToolGuideInner: React.FC<ToolGuideProps> = ({
                     onToggleTeacherCheck={handleToggleTeacherCheck}
                     onSelectAnswer={handleSelectAnswer}
                     onSubmitAnswer={handleSubmitAnswer}
+                    onRetryAnswer={handleRetryAnswer}
                     onNext={handleNext}
                     isLastStep={state.currentStep === config.steps.length - 1}
                 />
