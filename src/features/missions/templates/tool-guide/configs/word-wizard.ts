@@ -20,7 +20,7 @@ const config: ToolGuideConfig = {
             id: 'stap-1-nieuw-document',
             title: 'Nieuw document aanmaken',
             instruction:
-                'Open de **Word**-app op je iPad. Je hebt een **Microsoft 365-licentie** (je gratis Office-account via school) nodig — vraag je docent als de app om betaling vraagt. Tik op **Nieuw** (of het +-icoon) en kies **Leeg document**. Typ de titel van je verslag bovenaan. Sla het document daarna direct op: tik op het **menu linksboven** en kies **Opslaan als** in OneDrive onder je schoolmap.',
+                'Controleer eerst: **Word voor iPad** is geïnstalleerd en je kunt met je **schoolaccount** bij **OneDrive**. Bij een iPad groter dan 10,1 inch, OneDrive van school of premiumfuncties kan Microsoft 365 nodig zijn. Vraagt Word om een abonnement? Vraag je docent. Maak een leeg document, typ je titel en sla het direct met een duidelijke naam op in je schoolmap.',
             tip: 'Sla je document altijd meteen op als je begint — niet pas als je klaar bent. Word slaat automatisch op in de cloud als je OneDrive gebruikt, maar alleen als je het bestand een naam hebt gegeven.',
             checklistItems: [
                 { id: 'app-open', label: 'Ik heb de Word-app geopend' },
@@ -43,14 +43,14 @@ const config: ToolGuideConfig = {
                 retryHint:
                     'Nog niet. Denk aan wat er met je werk gebeurt als de app sluit voordat het bestand een naam en opslaglocatie heeft. Kies daarna opnieuw.',
                 explanation:
-                    'Precies! Als je document al een naam en locatie heeft, slaat Word het automatisch op terwijl je werkt. Zo verlies je nooit je werk bij een crash of lege batterij.',
+                    'Precies! Als je document al een naam en locatie heeft, slaat Word het automatisch op terwijl je werkt. Zo is de kans kleiner dat je werk verliest bij een crash of lege batterij.',
             },
         },
         {
             id: 'stap-2-koppen',
             title: 'Kopstijlen gebruiken',
             instruction:
-                'Typ een hoofdstuktitel (bijv. "Inleiding"). Selecteer die tekst door erop te tikken en te slepen. Tik op de **A-knop** rechtsboven (Opmaak) en ga naar het tabblad **Stijlen**. Kies **Kop 1**. Typ dan een paragraaftitel (bijv. "Achtergrond") en geef die de stijl **Kop 2**. Normale alineatekst krijgt automatisch de stijl **Standaard** of **Normale tekst**.',
+                'Typ een hoofdstuktitel, selecteer die en ga via **Start** (Home) naar **Stijlen**. Kies **Kop 1**. Afhankelijk van je Word-versie en schermstand staat Stijlen achter het stijlen-pictogram of in **Lettertype** (Font). Zie je Stijlen niet? Vraag je docent. Geef daarna een paragraaftitel **Kop 2**; gewone tekst gebruikt **Standaard** of **Normale tekst**.',
             tip: 'Kopstijlen zijn niet alleen voor de opmaak — Word gebruikt ze ook om automatisch een inhoudsopgave te bouwen. Gebruik Kop 1 voor hoofdstukken, Kop 2 voor paragrafen.',
             checklistItems: [
                 { id: 'kop1-gezet', label: 'Ik heb minstens één tekst de stijl "Kop 1" gegeven' },
@@ -79,10 +79,11 @@ const config: ToolGuideConfig = {
             id: 'stap-3-afbeelding',
             title: 'Afbeelding invoegen',
             instruction:
-                'Tik in je document op de plek waar je de afbeelding wilt. Tik op **Invoegen** (tabblad bovenaan) en kies **Online afbeelding** voor vrij beschikbare afbeeldingen, of **Foto\'s** voor een eigen schoolfoto — geen willekeurige Google-foto\'s (**auteursrecht**: je mag niet zomaar andermans foto\'s gebruiken). Tik op de afbeelding nadat je hem hebt ingevoegd en zoek in het menu naar **Tekstomloop**. Kies **Strak** of **Vierkant** zodat de tekst netjes om de afbeelding heen loopt.',
+                'Gebruik een neutrale afbeelding die je docent aanlevert of die aantoonbaar herbruikbaar is. Gebruik geen persoonlijke foto\'s of afbeeldingen van mensen. Noteer de bron. Voeg de afbeelding toe via **Invoegen**, selecteer de afbeelding, kies **Tekstomloop** en daarna **Strak** of **Vierkant**.',
             tip: 'Met de instelling "Strak" loopt tekst direct om de rand van de afbeelding. Met "Vierkant" loopt tekst om een denkbeeldig vierkant eromheen. Beide zien er professioneler uit dan de standaardinstelling "In lijn met tekst".',
             checklistItems: [
                 { id: 'afbeelding-ingevoegd', label: 'Ik heb een afbeelding in mijn document ingevoegd' },
+                { id: 'bron-genoteerd', label: 'Ik heb gecontroleerd dat ik de afbeelding mag gebruiken en de bron genoteerd' },
                 { id: 'tekstomloop', label: 'Ik heb de tekstomloop ingesteld op "Strak" of "Vierkant"' },
                 { id: 'afbeelding-verplaatst', label: 'Ik kan de afbeelding op de gewenste plek zetten' },
             ],
@@ -144,7 +145,7 @@ const config: ToolGuideConfig = {
         'De leerling maakt een Word-document aan, geeft het een naam en slaat het op in OneDrive.',
         'De leerling past Kop 1 en Kop 2 toe op titels en paragrafen in een verslag.',
         'De leerling voegt een afbeelding in en stelt de tekstomloop in op "Strak" of "Vierkant".',
-        'De leerling bereidt met kopstijlen een automatische inhoudsopgave voor en voegt die op laptop of desktop toe en werkt die bij.',
+        'De leerling bereidt met Kop 1 en Kop 2 een automatische inhoudsopgave voor en legt uit hoe Word die kopstijlen gebruikt.',
     ],
     takeaways: [
         'Je kunt een nieuw Word-document aanmaken en direct opslaan in OneDrive',
