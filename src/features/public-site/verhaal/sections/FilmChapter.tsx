@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Film, hasSeenFilm } from '../film/Film';
 import { LogoLockup } from '../components/storyBrand';
 
@@ -6,17 +6,13 @@ import { LogoLockup } from '../components/storyBrand';
  * Hoofdstuk nul: de film over Jayden, bovenaan de pagina.
  *
  * Alleen eerste bezoekers krijgen de film te zien. Wie hem al gezien heeft komt
- * direct op de Proloog uit. We renderen niets tot we het zeker weten, zodat er
- * geen flits van de film ontstaat voor terugkerende bezoekers.
+ * direct op de Proloog uit. De status wordt in de eerste render bepaald, zodat
+ * de pagina niet verspringt wanneer de film wordt toegevoegd.
  */
 export function FilmChapter() {
-    const [seen, setSeen] = useState<boolean | null>(null);
+    const [seen] = useState(hasSeenFilm);
 
-    useEffect(() => {
-        setSeen(hasSeenFilm());
-    }, []);
-
-    if (seen === null || seen) return null;
+    if (seen) return null;
 
     return (
         <section id="film" className="relative bg-duck-ink grain">
