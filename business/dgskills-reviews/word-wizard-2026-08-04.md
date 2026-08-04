@@ -11,13 +11,15 @@
 
 ## Eindoordeel
 
-De herstelde opdracht is inhoudelijk, didactisch, technisch en responsief releasewaardig op de exacte mergecommit. Na expliciete toestemming heeft Sol de resterende productiejourney in de interne ChatGPT-browser voorbereid. De private route toonde wel de gedeelde synthetische naam, maar onverwacht een verplichte avatar-onboarding. De read-only productiedata voor het bedoelde 50-XP/2-missierecord zegt juist dat onboarding voltooid is, terwijl een tweede record met dezelfde zichtbare naam 0 XP/0 missies en onvoltooide onboarding heeft. Daardoor konden zichtbare identiteit, XP, missietelling en unlock niet samen en uniek worden bewezen. Volgens de fail-closed-regels is onmiddellijk gestopt. Er zijn exact nul Word Wizard-antwoord-, checklist-, completion-, XP- of voortgangsmutaties uitgevoerd.
+De herstelde opdracht is inhoudelijk, didactisch, technisch en responsief releasewaardig. De concrete avatar-onboardingrace die de eerste geautoriseerde productiepreflight blokkeerde is met PR #266 testgedekt opgelost en op productie gedeployd. De exacte finale productiecommit is nu `67eb2a61e1330f8d151afa8b9089a5aa8886f2c6`.
+
+Formele sluiting blijft geblokkeerd. Op de nieuwe commit is desktop 1440x900 volledig opnieuw bewezen, maar tijdens de vervolgcaptures kwam de interne browser door een korte lokale serveronderbreking op een beveiligde foutpagina. Het browserbeleid blokkeerde daarna zowel directe navigatie als de zichtbare herlaadknop. Daarom zijn iPad-portret, iPad-landschap, mobiel en de productiejourney niet uitgevoerd. Er zijn exact nul Word Wizard-productieantwoord-, checklist-, completion-, XP- of voortgangsmutaties uitgevoerd.
 
 De opdracht mag pas `SHIP` krijgen nadat één geserialiseerde productieflow op de synthetische account zichtbaar 55/55 bereikt, precies 25 XP toekent en completion plus XP na een volledige reload bewaart.
 
 ## Telling open bevindingen
 
-- **Blocker: 1** — verplichte exact-once-productiecompletion en persistencebewijs ontbreken omdat de zichtbare interne-browsersessie niet uniek aan het bedoelde 50-XP/2-missierecord kon worden gekoppeld vóór de eerste mutatie.
+- **Blocker: 1** — drie exact-final viewports plus de verplichte exact-once-productiecompletion en persistence ontbreken door de harde interne-browserbeleidsstop.
 - **High: 0**
 - **Medium: 1** — fysieke iPad Safari en de fysieke Word-app blijven niet getest; versie, licentie, tenant en schermstand kunnen de zichtbare Word-interface beïnvloeden.
 - **Low: 0**
@@ -30,8 +32,10 @@ De productcode zelf heeft na de fixes geen resterende blocker/high-bevindingen.
 - Geldige kandidaatwijzigingen schoon gereplayed op `37062155fe50b153efec591f00d06e13dce03074`.
 - Aanvullende fixcommit: `97c382b1f54b7d9fb4dd1d655b96a18b399109e4`.
 - Fix-PR: [#265](https://github.com/yorinvonder-sys/digitale-geletterdheid/pull/265), checks groen, gesquasht en gemerged.
-- Exacte mergecommit: `58f902c856fab0b514b0565ff79b47f91fac328f`.
-- Exacte productie-deployment: `dpl_Csskxcsdo5auZtZ73YEWhp2daqj6`, `READY`, target `production`, GitHub-SHA `58f902c856fab0b514b0565ff79b47f91fac328f`.
+- Word Wizard-mergecommit: `58f902c856fab0b514b0565ff79b47f91fac328f`.
+- Aanvullende auth-hydratatiefix: PR [#266](https://github.com/yorinvonder-sys/digitale-geletterdheid/pull/266), commit `8188b59664781f7addf79ca99ab615fb003ff305`, checks groen, gesquasht en gemerged.
+- Exacte finale productiecommit: `67eb2a61e1330f8d151afa8b9089a5aa8886f2c6`.
+- Exacte finale productie-deployment: `dpl_E4iTU2gmmCEbySnFas7sANrgg1SA`, `READY`, target `production`, GitHub-SHA `67eb2a61e1330f8d151afa8b9089a5aa8886f2c6`.
 
 De fix bevat:
 
@@ -50,24 +54,25 @@ De fix bevat:
 
 - Worker-gerichte suite: 23/23 PASS.
 - Sol-hercheck: `node --test tests/word-wizard-contract.test.ts tests/mission-xp-contract.test.ts tests/mission-completion-contract.test.ts` — 17/17 PASS.
+- Auth-hydratieregressie: vóór fix 0/2 FAIL, na fix 2/2 PASS; Sol-hercheck 2/2 PASS.
 - `npm run doctor` — PASS.
 - `npm run build:prod` — PASS; alleen de verwachte lokale waarschuwing voor ontbrekende Supabase-envvariabelen.
 - `npm run audit:security` — PASS.
 - `npm audit --omit=dev` — 0 kwetsbaarheden.
 - `git diff --check` — PASS.
-- PR-checks: `quality-checks` PASS, `performance` PASS, Vercel PASS, Vercel Preview Comments PASS, `validate-handoff` SKIPPED.
+- PR #265 en #266: `quality-checks` PASS, `performance` PASS, Vercel PASS, Vercel Preview Comments PASS, `validate-handoff` SKIPPED.
 - Aanvullende Opus-review — **geen PASS**; OAuth refresh mislukte.
 
 ## Designreview
 
-**PASS op de vier vereiste CSS-viewports.**
+**PASS op de vier vereiste CSS-viewports op `58f902c`; exact-final set op `67eb2a6` is nog onvolledig.**
 
 - Desktop 1440x900
 - iPad portrait-emulatie 820x1180
 - iPad landscape-emulatie 1180x820
 - Mobile 390x844
 
-Alle vier flows zijn vers uitgevoerd vanaf een schone worktree op de exacte mergecommit. Intro, normale flow, foutfeedback, herstel, privacy-middenstap, score 55 en results zijn vastgelegd. Er is geen horizontale overflow gemeten, er zijn geen interactieve targets onder 44x44 px gevonden en er is geen overlap, clipping of onleesbare tekst waargenomen.
+Alle vier flows waren vers uitgevoerd vanaf een schone worktree op de Word Wizard-mergecommit `58f902c`. Na de gedeelde auth-fix is desktop 1440x900 opnieuw compleet bewezen op finale productiecommit `67eb2a6`: intro, foutfeedback, herstel, privacy-middenstap en 55/55; geen horizontale overflow en geen targets onder 44x44 px. De drie andere exacte-final viewports ontbreken door de browserbeleidsstop en mogen niet uit de eerdere set worden afgeleid.
 
 Dit bewijst Chromium-CSS-emulatie in de interne ChatGPT-browser. Het bewijst geen fysieke iPad Safari en geen fysieke Microsoft Word-app.
 
@@ -107,7 +112,7 @@ Daarom noemt de opdracht geen specifieke fysieke knop als universeel, vraagt zij
 
 ## Evidence
 
-### Geaccepteerd
+### Geaccepteerd als regressiebewijs, niet als complete finalevidence
 
 - `screenshots/mission-audit/batches/j1p1/word-wizard/58f902c/final-merged-preview/sol-iab/`
   - `manifest.json`
@@ -126,14 +131,16 @@ Daarom noemt de opdracht geen specifieke fysieke knop als universeel, vraagt zij
 - `screenshots/mission-audit/batches/j1p1/word-wizard/f227626/worker-landscape-mobile/pre-capture-plan.md` — alleen planning/preflight.
 - `screenshots/mission-audit/batches/j1p1/word-wizard/97c382b/pre-merge-preview/` — nuttige pre-merge QA, maar niet de finale mergecommit.
 - `screenshots/mission-audit/batches/j1p1/word-wizard/58f902c/production/sol-authorized-blocked/` — geldige blocker-evidence, maar geen finale productieflow: de sessie stopte vóór iedere Word Wizard-mutatie wegens een niet-uniek bewijsbare accountstate.
+- `screenshots/mission-audit/batches/j1p1/word-wizard/67eb2a6/final-merged-preview/sol-iab/` — desktop op de finale productiecommit is geldig, maar de package is expliciet `INCOMPLETE`; portrait, landscape en mobile ontbreken.
 - Alle ontbrekende, mislukte, onvolledige of wrong-commit manifests.
 
 ## Luna-resultaten
 
 - Productie-Luna: fail-closed STOP. Directe interne-browserselectie en één gedocumenteerde reconnectpoging gaven beide `Browser is not available: iab`; exact nul mutaties.
 - Desktop/iPad-portrait-Luna: fail-closed STOP wegens onbeschikbare interne browser; blocker-evidence geschreven, nul mutaties.
-- Landscape/mobile/fix-Luna: kandidaat schoon gereplayed, fixes en tests uitgevoerd, PR #265 gemaakt en checks gemonitord; geen productie/auth.
-- Sol: valideerde diff, tests, build, security, release en Vercel-SHA, nam de side-effect-free interne-browsercaptures over en probeerde na expliciete toestemming de productiejourney. Sol stopte vóór de missie toen de zichtbare onboardingstate niet overeenkwam met het bedoelde read-only accountrecord en dezelfde zichtbare naam op een tweede synthetisch record voorkwam.
+- Landscape/mobile/fix-Luna: kandidaat schoon gereplayed, fixes en tests uitgevoerd, PR #265 gemaakt; later de hydratatierace bevestigd, twee regressietests toegevoegd en PR #266 met groene checks opgeleverd; geen productie/auth.
+- Beide viewport-Luna's: nieuwe exacte-final previewpreflight op `67eb2a6`, maar hun interne browser bleef onbeschikbaar; nul captures en mutaties.
+- Sol: valideerde en merge-deployde PR #266, bewees desktop opnieuw op `67eb2a6` en stopte bij de harde browserbeleidsblokkade zonder fallback. De productiejourney is niet heropend.
 
 ## Productie en cleanup
 
@@ -142,9 +149,9 @@ Daarom noemt de opdracht geen specifieke fysieke knop als universeel, vraagt zij
 - Toegekende XP: niet bewezen.
 - Reload-persistence: niet bewezen.
 - Read-only productiebaseline van het bedoelde record: `50 XP / 2 missies`, Word Wizard niet voltooid, avatar- en nulmeting-onboarding voltooid. Deze baseline kon niet gelijktijdig zichtbaar en uniek in de browser worden bevestigd en telt daarom niet als browsergate.
-- De interne browser toonde de synthetische naam met een verplichte avatar-onboarding. Omdat een tweede synthetisch record dezelfde naam heeft met `0 XP / 0 missies` en onvoltooide onboarding, is geen keuze of onboardingactie uitgevoerd.
+- De avatar-hydratatierace is in code opgelost. De dubbele synthetische displaynaam blijft een operationeel risico; een volgende productiepreflight moet daarom naam, 50 XP, 2 missies en Word Wizard-unlock samen zichtbaar bevestigen.
 - De gedeelde synthetische account blijft behouden tot de volledige J1P1-period cleanup.
-- De Sol-productietab is gesloten; de interne-browser-tablist is leeg; het tijdelijke lokale loginhulpmiddel is verwijderd.
+- De eerdere Sol-productietab is gesloten en het tijdelijke loginhulpmiddel is verwijderd. De latere side-effect-free browserrun bevatte geen auth; de lokale previewserver is gestopt.
 - Lokale preview-auth is niet gebruikt.
 
 ## Evidence-PR en batchstatus
@@ -153,6 +160,6 @@ Evidence-PR [#257](https://github.com/yorinvonder-sys/digitale-geletterdheid/pul
 
 ## Volgende toegestane actie
 
-Los eerst de dubbele zichtbare synthetische identiteit en de tegenstrijdige onboardingstate veilig op, zonder leerlingdata of een nieuwe account aan te maken. Daarna mag Sol in deze Word Wizard-chat opnieuw vanaf een schone interne-browsersessie de zichtbare gates bevestigen en de nog ongebruikte exact-once-productiecompletion uitvoeren. Zonder die unieke zichtbare koppeling blijft de juiste beslissing `FIX EERST` en blijft evidence-PR #257 op 2/5.
+Herstart of herstel eerst de interne ChatGPT-browsersessie zodat een schone tab niet op de beveiligde localhost-foutpagina vastzit. Leg daarna op `67eb2a6` nog iPad-portret, iPad-landschap en mobiel vast, en voer pas vervolgens de nog ongebruikte exact-once-productiecompletion uit na de zichtbare naam/50-XP/2-missies/unlock-poort. Zonder die evidence blijft de juiste beslissing `FIX EERST` en evidence-PR #257 op 2/5.
 
 Start geen volgende opdracht in deze chat.
