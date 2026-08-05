@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Film, hasSeenFilm } from '../film/Film';
+import { Film, hasSeenFilm, TOTAL } from '../film/Film';
 import { LogoLockup } from '../components/storyBrand';
 
 /**
@@ -16,11 +16,19 @@ export function FilmChapter() {
 
     return (
         <section id="film" className="relative bg-duck-ink grain">
-            <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4 md:px-14">
+            <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-6 py-4 md:px-14">
                 <LogoLockup height={28} dark />
-                <span className="hidden text-xs font-bold uppercase tracking-[0.25em] text-duck-bg/50 sm:block">
-                    Een korte film over Jayden · 43 sec
-                </span>
+                <div className="flex items-center gap-4">
+                    <span className="hidden text-xs font-bold uppercase tracking-[0.25em] text-duck-bg/50 sm:block">
+                        Een korte film over Jayden · {Math.round(TOTAL)} sec
+                    </span>
+                    <a
+                        href="/login"
+                        className="min-h-[44px] rounded-full border-[3px] border-duck-acid bg-duck-acid px-5 py-2 text-sm font-bold text-duck-ink transition-transform hover:-translate-y-0.5"
+                    >
+                        Inloggen
+                    </a>
+                </div>
             </div>
 
             <div className="relative border-b-[3px] border-duck-acid/40">

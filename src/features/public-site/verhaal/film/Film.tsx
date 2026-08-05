@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion';
-import { SceneFrustratie, SceneRaadsel, SceneAntwoord, SceneBewijs } from './scenes';
+import { SceneFrustratie, SceneRaadsel, SceneAntwoord, SceneBewijs, SceneBeloning } from './scenes';
 import { Leader } from './Leader';
 import {
     getFilmRenderKey,
@@ -10,6 +10,7 @@ import {
     PUZZLE_DURATION,
     ANSWER_DURATION,
     PROOF_DURATION,
+    REWARD_DURATION,
 } from './timeline';
 
 interface Scene {
@@ -32,9 +33,10 @@ const SCENES: Scene[] = [
     { id: 'raadsel', label: 'Het raadsel', dur: PUZZLE_DURATION, bg: 'bg-duck-acid', light: true, Comp: SceneRaadsel },
     { id: 'antwoord', label: 'Het antwoord', dur: ANSWER_DURATION, bg: 'bg-duck-ink', light: false, Comp: SceneAntwoord },
     { id: 'bewijs', label: 'Het bewijs', dur: PROOF_DURATION, bg: 'bg-duck-ink', light: false, Comp: SceneBewijs },
+    { id: 'beloning', label: 'De beloning', dur: REWARD_DURATION, bg: 'bg-duck-ink', light: false, Comp: SceneBeloning },
 ];
 
-/** Totale speelduur: 40 seconden. */
+/** Totale speelduur: 49 seconden. */
 export const TOTAL = SCENES.reduce((a, s) => a + s.dur, 0);
 
 export const FILM_SEEN_KEY = 'dgskills-film-seen';
@@ -56,7 +58,7 @@ export function hasSeenFilm(): boolean {
 }
 
 /**
- * De korte film over Jayden (40 sec), gedreven door een requestAnimationFrame-
+ * De korte film over Jayden (49 sec), gedreven door een requestAnimationFrame-
  * klok in plaats van video. Bediening: pauze, overslaan, scènestippen, opnieuw
  * afspelen en een voortgangsbalk.
  *
