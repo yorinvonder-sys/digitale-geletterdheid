@@ -283,6 +283,7 @@ export function containsLikelySecret(value) {
     /\bAIza[0-9A-Za-z_-]{35}\b/,
     /\beyJ[A-Za-z0-9_-]{20,}\.[A-Za-z0-9_-]{20,}\.[A-Za-z0-9_-]{20,}\b/,
     /\bAuthorization:\s*Bearer\s+\S+/i,
+    /\b(?:api[_-]?key|access[_-]?token|client[_-]?secret|password|cookie|session)\s*[:=]\s*(?:\\?["'])?[^\s"'\\]{12,}/i,
   ].some((pattern) => pattern.test(text));
 }
 
@@ -368,7 +369,7 @@ function getDangerousCommandReason(commandValue) {
     },
     {
       pattern:
-        /(?:scripts\/(?:[^/\s]+\/\.\.\/)*agent-hooks\/|\.claude\/settings\.json|\.codex\/hooks\.json)/,
+        /(?:\bagent-hooks\b|\.claude\/settings\.json|\.codex\/hooks\.json)/,
       reason: 'Shell access to active hook enforcement is blocked. Use a dedicated human-reviewed maintenance workflow.',
     },
   ];

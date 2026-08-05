@@ -5,6 +5,7 @@ import { join } from 'node:path';
 
 import {
   buildUserPromptContext,
+  containsLikelySecret,
   extractTouchedPaths,
   handlePreToolUse,
   handlePostToolUse,
@@ -13,6 +14,8 @@ import {
 
 const tempStateDir = mkdtempSync(join(tmpdir(), 'dgskills-agent-hooks-test-'));
 const fakeOpenAiKey = ['sk', 'proj', 'abcdefghijklmnopqrstuvwxyz123456'].join('-');
+const fakeGenericCredential = `${['api', 'key'].join('_')}=abcdefghijklmnop`;
+const fakeQuotedCredential = `${['password'].join('')}="abcdefghijklmnop"`;
 
 try {
   const promptContext = buildUserPromptContext({
@@ -43,6 +46,8 @@ try {
     ),
     null,
   );
+  assert.equal(containsLikelySecret(fakeGenericCredential), true);
+  assert.equal(containsLikelySecret({ content: fakeQuotedCredential }), true);
 
   assert.deepEqual(
     extractTouchedPaths({
@@ -134,6 +139,30 @@ try {
   });
   assert.equal(
     aliasedHookShellDecision.hookSpecificOutput.permissionDecision,
+    'deny',
+  );
+
+  const changedDirectoryHookShellDecision = handlePreToolUse({
+    hook_event_name: 'PreToolUse',
+    tool_name: 'Bash',
+    tool_input: {
+      command: 'cd scripts/agent-hooks && sed -i test policy.mjs',
+    },
+  });
+  assert.equal(
+    changedDirectoryHookShellDecision.hookSpecificOutput.permissionDecision,
+    'deny',
+  );
+
+  const splitDirectoryHookShellDecision = handlePreToolUse({
+    hook_event_name: 'PreToolUse',
+    tool_name: 'Bash',
+    tool_input: {
+      command: 'cd scripts && cd agent-hooks && sed -i test policy.mjs',
+    },
+  });
+  assert.equal(
+    splitDirectoryHookShellDecision.hookSpecificOutput.permissionDecision,
     'deny',
   );
 
