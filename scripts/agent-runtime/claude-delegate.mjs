@@ -19,6 +19,7 @@ import { pathToFileURL } from 'node:url';
 const MAX_PACKET_BYTES = 256 * 1024;
 const MAX_OUTPUT_BYTES = 8 * 1024 * 1024;
 const MAX_ALLOWED_PATHS = 20;
+const RELEASE_BASE_REF = 'origin/main';
 
 const FORBIDDEN_BUILD_PATHS = [
   /^\.env(?:\.|$)/,
@@ -397,16 +398,22 @@ export function resolveGitBinary(
 }
 
 export function appendCanonicalCommitDiff(packet, worktree, run = spawnSync) {
+  const base = getSingleCommitHeader(packet, 'BASE_SHA');
+  if (!base) {
+    throw new Error('Release evidence requires an exact base commit');
+  }
+
   const result = run(
     resolveGitBinary(),
     [
       '--no-pager',
-      'show',
-      '--format=format:COMMIT %H%nDATE %aI%nSUBJECT %s',
+      'diff',
       '--no-ext-diff',
       '--no-textconv',
       '--no-renames',
+      base,
       worktree.head,
+      '--',
     ],
     {
       cwd: worktree.root,
@@ -421,22 +428,55 @@ export function appendCanonicalCommitDiff(packet, worktree, run = spawnSync) {
   }
 
   return validateEvidencePacket(
-    `${packet}\n\nCANONICAL_COMMIT_DIFF (generated locally)\n${result.stdout}`,
+    `${packet}\n\nCANONICAL_BRANCH_DIFF (generated locally)\nBASE ${base}\nHEAD ${worktree.head}\n${result.stdout}`,
   );
 }
 
-export function validateCommitBinding(packet, worktree, required) {
+export function validateCommitBinding(packet, worktree, required, run = spawnSync) {
   if (!required) {
     return;
   }
 
-  const commit = packet.match(/^COMMIT_SHA=([a-f0-9]{40})$/m)?.[1];
+  const commit = getSingleCommitHeader(packet, 'COMMIT_SHA');
+  const base = getSingleCommitHeader(packet, 'BASE_SHA');
 
-  if (!commit || commit !== worktree.head || worktree.status) {
+  if (
+    !base ||
+    !commit ||
+    base === commit ||
+    commit !== worktree.head ||
+    worktree.status
+  ) {
     throw new Error(
-      'Release evidence must match the clean current worktree commit',
+      'Release evidence must match exact base and clean current worktree commits',
     );
   }
+
+  const mergeBase = run(
+    resolveGitBinary(),
+    ['merge-base', RELEASE_BASE_REF, worktree.head],
+    {
+      cwd: worktree.root,
+      env: cleanGitEnvironment(),
+      encoding: 'utf8',
+      maxBuffer: MAX_OUTPUT_BYTES,
+    },
+  );
+
+  if (mergeBase.status !== 0) {
+    throw new Error('Unable to resolve the trusted release base');
+  }
+
+  if (String(mergeBase.stdout).trim() !== base) {
+    throw new Error('Release base does not match the trusted target merge-base');
+  }
+}
+
+function getSingleCommitHeader(packet, name) {
+  const matches = [
+    ...String(packet).matchAll(new RegExp(`^${name}=([a-f0-9]{40})$`, 'gm')),
+  ];
+  return matches.length === 1 ? matches[0][1] : '';
 }
 
 function assertCanonicalBuildPath(root, path) {
@@ -575,7 +615,7 @@ export function runClaudeDelegate(options, run = spawnSync) {
   const packet = readEvidencePacket(options.promptFile);
   const worktree = validateWorkingTree(options.cwd, mode.write, run);
   const allowedPaths = parseAllowedBuildPaths(packet, mode.write, worktree.root);
-  validateCommitBinding(packet, worktree, mode.requiresCleanCommit);
+  validateCommitBinding(packet, worktree, mode.requiresCleanCommit, run);
   const evidence = mode.requiresCleanCommit
     ? appendCanonicalCommitDiff(packet, worktree, run)
     : packet;

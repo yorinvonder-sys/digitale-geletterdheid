@@ -88,7 +88,7 @@ const openCodeEnvironment = cleanOpenCodeEnvironment(
     OPENCODE_PURE: '1',
     OPENCODE_CONFIG: '/tmp/unsafe.json',
     OPENCODE_CONFIG_CONTENT: '{}',
-    DEEPSEEK_API_KEY: 'not-a-real-key',
+    DEEPSEEK_API_KEY: 'fake',
     PATH: '/tmp/untrusted-bin',
     TERM: 'xterm-256color',
   },
@@ -296,6 +296,7 @@ assert.doesNotMatch(opencodeSurface, /opusplan/i);
 const releaseCommand = readFileSync('.opencode/commands/release-review.md', 'utf8');
 assert.match(releaseCommand, /^variant: xhigh$/m);
 assert.match(releaseCommand, /release-opus48/);
+assert.match(releaseCommand, /BASE_SHA/);
 assert.match(releaseCommand, /COMMIT_SHA/);
 
 const incidentCommand = readFileSync('.opencode/commands/security-incident.md', 'utf8');

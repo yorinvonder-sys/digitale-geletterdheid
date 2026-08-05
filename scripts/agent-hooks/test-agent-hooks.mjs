@@ -12,6 +12,7 @@ import {
 } from './policy.mjs';
 
 const tempStateDir = mkdtempSync(join(tmpdir(), 'dgskills-agent-hooks-test-'));
+const fakeOpenAiKey = ['sk', 'proj', 'abcdefghijklmnopqrstuvwxyz123456'].join('-');
 
 try {
   const promptContext = buildUserPromptContext({
@@ -296,7 +297,7 @@ try {
       tool_name: 'Write',
       tool_input: {
         file_path: 'src/services/example.ts',
-        content: 'const key = "sk-proj-abcdefghijklmnopqrstuvwxyz123456";',
+        content: `const key = "${fakeOpenAiKey}";`,
       },
     },
     { stateDir: tempStateDir },

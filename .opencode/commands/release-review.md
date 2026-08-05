@@ -7,8 +7,11 @@ variant: xhigh
 
 Prepare a sanitized mode-0600 release evidence packet for: $ARGUMENTS
 
-Include `COMMIT_SHA=<the exact 40-hex clean HEAD>`, diff scope, tests, build
-result, permissions/privacy impact, rollback and open risks. Invoke
+Include `BASE_SHA=<the exact 40-hex reviewed base>` and
+`COMMIT_SHA=<the exact 40-hex clean HEAD>`, diff scope, tests, build result,
+permissions/privacy impact, rollback and open risks. The wrapper must prove the
+base exactly matches the trusted `origin/main` merge-base, reject duplicate or
+empty ranges, and append the complete `BASE_SHA..COMMIT_SHA` diff. Invoke
 `scripts/agent-runtime/claude-delegate.mjs`
 in `release-opus48` mode for an independent read-only review. Do not show Opus
 Sol's conclusions before it reviews. Fail closed on missing evidence, unavailable

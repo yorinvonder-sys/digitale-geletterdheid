@@ -35,14 +35,16 @@ const safePacket = [
   '',
   'Review a synthetic authentication diff with no production data.',
 ].join('\n');
+const fakeAuthorization = `${['Authorization', 'Bearer'].join(': ')} fake-secret-value`;
+const fakeAccessToken = `${['access', 'token'].join('_')}=abcdefghijklmnop`;
 
 assert.equal(validateEvidencePacket(safePacket), safePacket);
 assert.throws(
-  () => validateEvidencePacket(`${safePacket}\nAuthorization: Bearer fake-secret-value`),
+  () => validateEvidencePacket(`${safePacket}\n${fakeAuthorization}`),
   /secret or personal data/,
 );
 assert.throws(
-  () => validateEvidencePacket(`${safePacket}\naccess_token=abcdefghijklmnop`),
+  () => validateEvidencePacket(`${safePacket}\n${fakeAccessToken}`),
   /secret or personal data/,
 );
 assert.throws(
@@ -123,7 +125,7 @@ assert.throws(
 );
 
 const environment = cleanClaudeEnvironment({
-  ANTHROPIC_API_KEY: 'not-a-real-key',
+  ANTHROPIC_API_KEY: 'fake',
   ANTHROPIC_BASE_URL: 'https://example.invalid',
   PATH: '/tmp/untrusted-bin',
   HTTPS_PROXY: 'https://proxy.invalid',
@@ -148,15 +150,57 @@ try {
 }
 
 const commit = 'a'.repeat(40);
-validateCommitBinding(`COMMIT_SHA=${commit}`, { head: commit, status: '' }, true);
+const baseCommit = 'b'.repeat(40);
+const releaseBinding = `BASE_SHA=${baseCommit}\nCOMMIT_SHA=${commit}`;
+const trustedMergeBase = () => ({
+  status: 0,
+  stdout: `${baseCommit}\n`,
+  stderr: '',
+});
+validateCommitBinding(
+  releaseBinding,
+  { root: '/tmp/project', head: commit, status: '' },
+  true,
+  trustedMergeBase,
+);
 assert.throws(
   () =>
     validateCommitBinding(
-      `COMMIT_SHA=${'b'.repeat(40)}`,
-      { head: commit, status: '' },
+      `BASE_SHA=${baseCommit}\nCOMMIT_SHA=${'c'.repeat(40)}`,
+      { root: '/tmp/project', head: commit, status: '' },
       true,
     ),
-  /clean current worktree commit/,
+  /exact base and clean current worktree commits/,
+);
+assert.throws(
+  () =>
+    validateCommitBinding(
+      releaseBinding,
+      { root: '/tmp/project', head: commit, status: '' },
+      true,
+      () => ({ status: 0, stdout: `${'c'.repeat(40)}\n`, stderr: '' }),
+    ),
+  /trusted target merge-base/,
+);
+assert.throws(
+  () =>
+    validateCommitBinding(
+      `BASE_SHA=${commit}\nCOMMIT_SHA=${commit}`,
+      { root: '/tmp/project', head: commit, status: '' },
+      true,
+      () => ({ status: 0, stdout: `${commit}\n`, stderr: '' }),
+    ),
+  /exact base and clean current worktree commits/,
+);
+assert.throws(
+  () =>
+    validateCommitBinding(
+      `${releaseBinding}\nBASE_SHA=${baseCommit}`,
+      { root: '/tmp/project', head: commit, status: '' },
+      true,
+      trustedMergeBase,
+    ),
+  /exact base and clean current worktree commits/,
 );
 
 const binaryDirectory = mkdtempSync(join(tmpdir(), 'claude-binary-test-'));
@@ -172,11 +216,13 @@ try {
 }
 
 const canonicalPacket = appendCanonicalCommitDiff(
-  safePacket,
+  `${safePacket}\nBASE_SHA=${baseCommit}`,
   { root: '/tmp/project', head: commit },
   () => ({ status: 0, stdout: 'diff --git a/a b/a\n', stderr: '' }),
 );
-assert.match(canonicalPacket, /CANONICAL_COMMIT_DIFF/);
+assert.match(canonicalPacket, /CANONICAL_BRANCH_DIFF/);
+assert.match(canonicalPacket, new RegExp(`BASE ${baseCommit}`));
+assert.match(canonicalPacket, new RegExp(`HEAD ${commit}`));
 assert.match(canonicalPacket, /diff --git/);
 
 const diffDirectory = mkdtempSync(join(tmpdir(), 'claude-diff-test-'));
@@ -208,11 +254,12 @@ try {
 assert.throws(
   () =>
     validateCommitBinding(
-      `COMMIT_SHA=${commit}`,
-      { head: commit, status: ' M file' },
+      releaseBinding,
+      { root: '/tmp/project', head: commit, status: ' M file' },
       true,
+      trustedMergeBase,
     ),
-  /clean current worktree commit/,
+  /exact base and clean current worktree commits/,
 );
 
 const buildPathDirectory = mkdtempSync(join(tmpdir(), 'claude-build-path-test-'));
