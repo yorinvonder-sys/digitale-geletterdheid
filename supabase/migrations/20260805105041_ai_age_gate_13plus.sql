@@ -1,29 +1,27 @@
--- ============================================================================
 -- AI 13+ leeftijdspoort
--- ----------------------------------------------------------------------------
--- Mistral AI (Commercial Terms §2.2(c) / Consumer ToS) en Black Forest Labs
--- (ToS §1.2) staan kinderen jonger dan 13 NIET toe — ook niet met ouderlijke
+-- Mistral AI (Commercial Terms 2.2(c) / Consumer ToS) en Black Forest Labs
+-- (ToS 1.2) staan kinderen jonger dan 13 NIET toe, ook niet met ouderlijke
 -- toestemming. Daarom mag leerlingdata van <13 niet naar deze AI-providers.
 --
--- Deze migratie voegt een geboortedatum toe (uitsluitend om de leeftijd te
--- bepalen) en een SECURITY DEFINER-functie die per leerling teruggeeft of
--- AI-toegang is toegestaan. De edge functions roepen die functie aan vóór elke
--- AI-call (zie _shared/consent.ts). De geboortedatum zelf wordt nooit naar de
--- client of de AI gestuurd — de functie geeft alleen een boolean terug.
+-- Deze migratie plaatst de kolom (bestaat al op deze database) en de
+-- SECURITY DEFINER-functie die per leerling teruggeeft of AI-toegang is
+-- toegestaan. De geboortedatum zelf gaat nooit naar client of AI; de functie
+-- geeft alleen een boolean terug.
 --
 -- FAIL-CLOSED: een leerling zonder bekende geboortedatum krijgt GEEN AI-toegang.
--- ============================================================================
+--
+-- LET OP bij uitrol: op het moment van toepassen roept GEEN ENKELE edge function
+-- deze functie aan, en 195 van de 198 leerlingen hebben geen geboortedatum.
+-- De poort is dus geplaatst maar niet actief. Activeren mag pas nadat (a) de
+-- controle achter een standaard uitgeschakelde vlag is ingebouwd en (b) de
+-- geboortedatums via de roster-import zijn gevuld. Zie PR #268.
 
--- 1. Geboortedatum (alleen voor de leeftijdspoort) ---------------------------
 ALTER TABLE public.users
   ADD COLUMN IF NOT EXISTS date_of_birth date;
 
 COMMENT ON COLUMN public.users.date_of_birth IS
   'Geboortedatum leerling — uitsluitend voor de 13+ AI-leeftijdspoort (provider-ToS Mistral/BFL). Wordt server-side gebruikt via student_ai_age_ok(); niet naar client/AI sturen in de applicatie.';
 
--- 2. Leeftijdspoort-functie (gespiegeld aan student_requires_parental_consent)
---    true  = AI toegestaan (niet-leerling, of leerling >= 13 met bekende DOB)
---    false = AI geblokkeerd (leerling <13, of leerling zonder bekende DOB)
 CREATE OR REPLACE FUNCTION public.student_ai_age_ok(p_student_id uuid DEFAULT auth.uid())
 RETURNS boolean
 LANGUAGE plpgsql
