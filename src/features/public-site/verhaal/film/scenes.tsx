@@ -425,62 +425,205 @@ function SaldoPil({ from, to, delay = 0 }: { from: number; to: number; delay?: n
     );
 }
 
-/** Jayden als blokjesfiguur — dezelfde voxelvorm als de 3D-avatar in de app. */
-function JaydenAvatar({ jetpack }: { jetpack: boolean }) {
-    const HUID = '#f5d0b0';
-    const SHIRT = '#D97848';
-    const MOUW = '#b95c31'; // donkerder, anders vloeien de armen samen met de romp
-    const BROEK = '#08283B';
-    const HAAR = '#2b2118';
+/* ---------------------------------------------------------------------------
+ * Jayden als 3D-blokjesfiguur.
+ *
+ * Dezelfde voxelvorm als de 3D-avatar in de app (`AvatarViewer`), maar
+ * opgebouwd uit CSS-kubussen in plaats van three.js: elk lichaamsdeel is één
+ * blok met drie zichtbare vlakken — voorkant, rechterzijde en bovenkant — elk
+ * in een eigen tint van dezelfde kleur. Dat scheelt de complete WebGL-bundel op
+ * de homepage, waar de avatar zeven seconden in beeld is.
+ *
+ * Drie dingen die bewust zo staan:
+ *  - Blokken en vlakken staan in DOM-volgorde van achter naar voor. Een ouder
+ *    met opacity < 1 — zoals de intro van de jetpack — dwingt de browser de
+ *    3D-context plat te slaan; met deze volgorde levert dat exact hetzelfde
+ *    beeld op in plaats van omgeklapte vlakken.
+ *  - De ademhaling staat als keyframe in `verhaal.css`, niet in framer-motion:
+ *    `getFilmRenderKey` tekent deze scène maar vier keer opnieuw, dus een
+ *    animatie die aan een React-render hangt zou schokken.
+ *  - De jetpack zit op zijn rug, net als in de app (`AvatarViewer`, case
+ *    'jetpack'): tanks erachter, schouderbanden over de borst, vlammen eronder.
+ *    Een plat vooraanzicht kon dat niet en zette de tanks naast zijn armen.
+ * ------------------------------------------------------------------------- */
 
+/** Drie tinten van één kleur: de bovenkant vangt licht, de zijkant valt weg. */
+function tinten(basis: string) {
+    const kanalen = [1, 3, 5].map((i) => parseInt(basis.slice(i, i + 2), 16));
+    const meng = (doel: number, deel: number) =>
+        `#${kanalen
+            .map((c) => Math.round(c + (doel - c) * deel).toString(16).padStart(2, '0'))
+            .join('')}`;
+    return { voor: basis, boven: meng(255, 0.2), zij: meng(0, 0.3) };
+}
+
+type Tint = ReturnType<typeof tinten>;
+
+const HUID = tinten('#f5d0b0');
+const SHIRT = tinten('#d97848');
+const MOUW = tinten('#b95c31');
+const BROEK = tinten('#08283b');
+const HAAR = tinten('#2b2118');
+const TANK = tinten('#e1ff01'); // duck-acid
+const METAAL = tinten('#f2f1ec'); // duck-bg
+const BAND = tinten('#202023'); // duck-ink
+
+const VLAK = 'absolute border-[3px] border-duck-ink';
+
+interface BlokMaat {
+    /** Breedte, hoogte en diepte in px bij schaal 1. */
+    b: number;
+    h: number;
+    d: number;
+    tint: Tint;
+    /** Details óp een vlak, zoals ogen op het gezicht of haar op de kruin. */
+    voor?: React.ReactNode;
+    boven?: React.ReactNode;
+    zij?: React.ReactNode;
+}
+
+/** De drie zichtbare vlakken van één blok, gesorteerd van achter naar voor. */
+function Vlakken({ b, h, d, tint, voor, boven, zij }: BlokMaat) {
     return (
-        <div className="relative scale-90 md:scale-125" aria-hidden="true">
-            {/*
-             * De jetpack. Een vooraanzicht kan een rugstuk niet tonen, dus de tanks
-             * steken naast de armen uit; de dop bovenop en de vlam eronder maken er
-             * een jetpack van in plaats van twee losse balken.
-             */}
-            <motion.div
-                initial={{ opacity: 0, y: -20, scale: 0.5 }}
-                animate={jetpack ? { opacity: 1, y: 0, scale: 1 } : {}}
-                transition={{ type: 'spring', bounce: 0.45, delay: 0.35 }}
-                className="absolute inset-x-0 top-[3.2rem] flex justify-center gap-[3.9rem]"
+        <>
+            <div
+                className={VLAK}
+                style={{
+                    width: b,
+                    height: d,
+                    left: 0,
+                    top: (h - d) / 2,
+                    background: tint.boven,
+                    transform: `rotateX(90deg) translateZ(${h / 2}px)`,
+                }}
             >
-                {[0, 1].map((i) => (
-                    <span key={i} className="flex flex-col items-center">
-                        <span className="h-2 w-3 border-[3px] border-duck-ink bg-duck-bg" />
-                        <span className="-mt-[3px] h-12 w-5 border-[3px] border-duck-ink bg-duck-acid" />
-                        <motion.span
-                            initial={{ scaleY: 0 }}
-                            animate={jetpack ? { scaleY: [0, 1, 0.75, 1] } : {}}
-                            transition={{ duration: 0.7, delay: 0.75 + i * 0.1 }}
-                            className="flex origin-top flex-col items-center"
-                        >
-                            <span className="-mt-[3px] h-4 w-3 border-x-[3px] border-b-[3px] border-duck-ink bg-duck-bg" />
-                            <span className="-mt-[3px] h-2 w-1.5 bg-duck-bg/70" />
-                        </motion.span>
-                    </span>
-                ))}
-            </motion.div>
+                {boven}
+            </div>
+            <div
+                className={VLAK}
+                style={{
+                    width: d,
+                    height: h,
+                    left: (b - d) / 2,
+                    top: 0,
+                    background: tint.zij,
+                    transform: `rotateY(90deg) translateZ(${b / 2}px)`,
+                }}
+            >
+                {zij}
+            </div>
+            <div
+                className={VLAK}
+                style={{ width: b, height: h, left: 0, top: 0, background: tint.voor }}
+            >
+                {voor}
+            </div>
+        </>
+    );
+}
 
-            <div className="relative flex flex-col items-center">
-                {/* hoofd */}
-                <div className="relative h-14 w-14 border-[3px] border-duck-ink" style={{ background: HUID }}>
-                    <span className="absolute inset-x-0 top-0 h-3.5" style={{ background: HAAR }} />
-                    <span className="absolute left-3 top-6 h-1.5 w-1.5 bg-duck-ink" />
-                    <span className="absolute right-3 top-6 h-1.5 w-1.5 bg-duck-ink" />
-                    <span className="absolute bottom-2.5 left-1/2 h-1 w-4 -translate-x-1/2 bg-duck-ink/70" />
-                </div>
-                {/* armen + romp */}
-                <div className="-mt-[3px] flex items-start">
-                    <div className="h-14 w-4 border-[3px] border-duck-ink" style={{ background: MOUW }} />
-                    <div className="-mx-[3px] h-16 w-12 border-[3px] border-duck-ink" style={{ background: SHIRT }} />
-                    <div className="h-14 w-4 border-[3px] border-duck-ink" style={{ background: MOUW }} />
-                </div>
-                {/* benen */}
-                <div className="-mt-[3px] flex">
-                    <div className="h-12 w-5 border-[3px] border-duck-ink" style={{ background: BROEK }} />
-                    <div className="-ml-[3px] h-12 w-5 border-[3px] border-duck-ink" style={{ background: BROEK }} />
+/**
+ * Eén blok op zijn plek. `x` is het midden ten opzichte van de middenas, `y` de
+ * bovenkant ten opzichte van de kruin, `z` het midden in de diepte (negatief =
+ * naar achteren, want de kijker staat aan de positieve kant).
+ */
+function Blok({ x = 0, y = 0, z = 0, ...maat }: BlokMaat & { x?: number; y?: number; z?: number }) {
+    return (
+        <div
+            className="jayden-3d absolute left-1/2 top-0"
+            style={{
+                width: maat.b,
+                height: maat.h,
+                transform: `translate3d(${x - maat.b / 2}px, ${y}px, ${z}px)`,
+            }}
+        >
+            <Vlakken {...maat} />
+        </div>
+    );
+}
+
+const OOG = 'absolute h-[6px] w-[6px] bg-duck-ink';
+
+/** Tanks, doppen en vlammen: op de rug, dus vóór de rest in de DOM. */
+function Jetpack() {
+    return (
+        <motion.div
+            initial={{ opacity: 0, y: -18, scale: 0.6 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            transition={{ type: 'spring', bounce: 0.45, delay: 0.35 }}
+            className="jayden-3d absolute inset-0"
+        >
+            {[-1, 1].map((kant) => (
+                <React.Fragment key={kant}>
+                    <Blok b={10} h={8} d={10} x={kant * 32} y={32} z={-24} tint={METAAL} />
+                    <Blok b={16} h={64} d={16} x={kant * 32} y={40} z={-24} tint={TANK} />
+                    {/*
+                     * De vlam schaalt vanaf zijn bovenkant. Framer zet dat als
+                     * `translate3d(...) scaleY(...)`: eerst schalen, dan
+                     * verplaatsen, zodat de vlam op zijn plek blijft staan.
+                     */}
+                    <motion.div
+                        className="jayden-3d absolute left-1/2 top-0 origin-top"
+                        style={{ width: 10, height: 20 }}
+                        initial={{ x: kant * 32 - 5, y: 104, z: -24, scaleY: 0 }}
+                        animate={{ x: kant * 32 - 5, y: 104, z: -24, scaleY: [0, 1, 0.72, 1] }}
+                        transition={{ duration: 0.8, delay: 0.85 + (kant + 1) * 0.05 }}
+                    >
+                        <Vlakken b={10} h={20} d={10} tint={METAAL} />
+                    </motion.div>
+                </React.Fragment>
+            ))}
+        </motion.div>
+    );
+}
+
+function JaydenAvatar({ jetpack }: { jetpack: boolean }) {
+    return (
+        <div className="scale-90 md:scale-125" aria-hidden="true">
+            <div className="jayden-scene relative h-[162px] w-[104px]">
+                <div className="jayden-stage absolute inset-0">
+                    {jetpack && <Jetpack />}
+
+                    {/* De achterste arm eerst: zie de DOM-volgorde hierboven. */}
+                    <Blok b={16} h={56} d={22} x={-29} y={53} tint={MOUW} />
+                    <Blok b={20} h={48} d={22} x={-8.5} y={114} tint={BROEK} />
+                    <Blok b={20} h={48} d={22} x={8.5} y={114} tint={BROEK} />
+                    <Blok b={48} h={64} d={26} x={0} y={53} tint={SHIRT} />
+
+                    {/* Schouderbanden: lopen over de borst naar de tanks achter hem. */}
+                    {jetpack &&
+                        [-1, 1].map((kant) => (
+                            <Blok key={kant} b={8} h={18} d={44} x={kant * 13} y={58} tint={BAND} />
+                        ))}
+
+                    <Blok
+                        b={56}
+                        h={56}
+                        d={56}
+                        x={0}
+                        y={0}
+                        tint={HUID}
+                        boven={<span className="absolute inset-0" style={{ background: HAAR.boven }} />}
+                        zij={
+                            <span
+                                className="absolute inset-x-0 top-0 h-[14px]"
+                                style={{ background: HAAR.zij }}
+                            />
+                        }
+                        voor={
+                            <>
+                                <span
+                                    className="absolute inset-x-0 top-0 h-[14px]"
+                                    style={{ background: HAAR.voor }}
+                                />
+                                <span className={OOG} style={{ left: 11, top: 22 }} />
+                                <span className={OOG} style={{ right: 11, top: 22 }} />
+                                <span className="absolute bottom-[9px] left-1/2 h-[4px] w-4 -translate-x-1/2 bg-duck-ink/70" />
+                            </>
+                        }
+                    />
+
+                    <Blok b={16} h={56} d={22} x={29} y={53} tint={MOUW} />
                 </div>
             </div>
         </div>
