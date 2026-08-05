@@ -60,7 +60,7 @@ export function NuJij() {
                     }
                 />
 
-                <Reveal delay={0.15} className="mt-8 max-w-2xl">
+                <Reveal delay={0.15} className="mx-auto mt-8 max-w-2xl text-center">
                     <p className="text-lg leading-relaxed text-duck-bg/70 md:text-xl">
                         Hieronder staat een echte, speelbare game. Vertel de AI wat je wilt veranderen —
                         een ander thema, een ander karakter, meer obstakels, een nieuw doel — en{' '}

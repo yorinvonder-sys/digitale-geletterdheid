@@ -319,9 +319,9 @@ export function ChapterMarker({
     dark?: boolean;
 }) {
     return (
-        <div className="relative">
+        <div className="relative text-center">
             <span
-                className={`pointer-events-none absolute -top-24 right-0 select-none font-display text-[9rem] font-black leading-none md:-top-40 md:text-[15rem] ${
+                className={`pointer-events-none absolute -top-24 left-1/2 -translate-x-1/2 select-none font-display text-[9rem] font-black leading-none md:-top-40 md:text-[15rem] ${
                     dark ? 'verhaal-watermark-light' : 'verhaal-watermark'
                 }`}
                 aria-hidden="true"
@@ -333,7 +333,7 @@ export function ChapterMarker({
             </Reveal>
             <Reveal delay={0.08}>
                 <h2
-                    className={`mt-6 font-display text-4xl font-black leading-[1.02] tracking-tight md:text-6xl lg:text-7xl ${
+                    className={`mx-auto mt-6 max-w-4xl font-display text-4xl font-black leading-[1.02] tracking-tight md:text-6xl lg:text-7xl ${
                         dark ? 'text-duck-bg' : 'text-duck-ink'
                     }`}
                 >

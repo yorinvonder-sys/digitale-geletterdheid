@@ -111,6 +111,9 @@ function Beat({ beat, index }: { beat: (typeof BEATS)[number]; index: number }) 
                 </p>
                 {ICONS[index]}
             </div>
+            {/* Spiegelt de tijdlijnkolom, zodat de gecentreerde tekst op de sectie-as
+                valt in plaats van naar rechts te schuiven. */}
+            <span aria-hidden="true" className="w-12 shrink-0" />
         </motion.div>
     );
 }
@@ -124,7 +127,7 @@ export function Probleem() {
                         <Pill dark>Hoofdstuk 1 · Het probleem</Pill>
                     </Reveal>
                     <Reveal delay={0.08}>
-                        <h2 className="mt-6 max-w-3xl font-display text-4xl font-black leading-[1.02] tracking-tight md:text-6xl lg:text-7xl">
+                        <h2 className="mx-auto mt-6 max-w-3xl font-display text-4xl font-black leading-[1.02] tracking-tight md:text-6xl lg:text-7xl">
                             Eerst even <em className="italic text-duck-acid">de pijn</em>. Je kent hem wel.
                         </h2>
                     </Reveal>

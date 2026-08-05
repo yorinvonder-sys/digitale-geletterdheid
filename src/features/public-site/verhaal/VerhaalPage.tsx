@@ -35,7 +35,7 @@ function Nav() {
                     transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
                     className="fixed inset-x-0 top-0 z-40 border-b-[3px] border-duck-ink bg-duck-bg/90 backdrop-blur-md"
                 >
-                    <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-3 md:px-10">
+                    <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-3 md:px-14">
                         <a href="#proloog" className="flex items-center gap-2.5" aria-label="Naar het begin">
                             <LogoLockup height={30} />
                         </a>

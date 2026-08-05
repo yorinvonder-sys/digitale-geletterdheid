@@ -89,7 +89,7 @@ export function Ontmoeting() {
                     title={<>En toen verscheen DGSkills.</>}
                 />
 
-                <Reveal delay={0.15} className="mt-8 max-w-2xl">
+                <Reveal delay={0.15} className="mx-auto mt-8 max-w-2xl text-center">
                     <p className="text-lg leading-relaxed text-duck-ink/70 md:text-xl">
                         Geen cursus, geen werkbladen-fabriek.{' '}
                         <strong className="text-duck-ink">Kant-en-klare AI-missies</strong> gekoppeld aan

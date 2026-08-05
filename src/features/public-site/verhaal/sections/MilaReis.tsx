@@ -334,7 +334,7 @@ export function MilaReis() {
     return (
         <section id="mila" ref={ref} className="relative h-[320vh] scroll-mt-24 bg-duck-bg grain">
             <div className="sticky top-0 flex h-screen flex-col overflow-hidden">
-                <div className="flex items-center justify-between gap-4 px-6 pt-20 md:px-14 md:pt-24">
+                <div className="mx-auto flex w-full max-w-6xl items-center justify-between gap-4 px-6 pt-20 md:px-14 md:pt-24">
                     <Pill>Hoofdstuk 3 · Mila, leerjaar 2</Pill>
                     <div className="flex shrink-0 items-center gap-1.5" aria-hidden="true">
                         {BEATS.map((b, i) => (
@@ -352,7 +352,7 @@ export function MilaReis() {
                     </div>
                 </div>
 
-                <div className="mx-auto grid w-full max-w-7xl flex-1 items-center gap-6 px-6 py-6 md:px-14 lg:grid-cols-[1fr_1.1fr] lg:gap-12">
+                <div className="mx-auto grid w-full max-w-6xl flex-1 items-center gap-6 px-6 py-6 md:px-14 lg:grid-cols-[1fr_1.1fr] lg:gap-12">
                     {/* verhaallijn */}
                     <div className="relative min-h-[180px] md:min-h-[210px]">
                         <AnimatePresence mode="wait">
