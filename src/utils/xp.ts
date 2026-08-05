@@ -144,3 +144,14 @@ export const generateXPTable = (): string => {
 
     return table;
 };
+
+/**
+ * Besteedbaar XP-saldo.
+ *
+ * `stats.xp` is het totaal dat een leerling ooit verdiend heeft en blijft
+ * eigendom van `award_xp` op de server — verlagen zou het level omlaag halen,
+ * de XP-badges breken en de ranglijst vervuilen. Uitgaven worden daarom apart
+ * bijgehouden in `stats.xpSpent`.
+ */
+export const getXpBalance = (stats?: { xp?: number; xpSpent?: number } | null): number =>
+    Math.max(0, (stats?.xp ?? 0) - (stats?.xpSpent ?? 0));

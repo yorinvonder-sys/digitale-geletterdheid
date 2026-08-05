@@ -375,6 +375,7 @@ export function AuthenticatedApp() {
                     onComplete={handleAvatarComplete}
                     userName={user.displayName || undefined}
                     initialConfig={user.stats?.avatarConfig}
+                    inventory={user.stats?.inventory}
                 />
             </Suspense>
         );

@@ -15,8 +15,9 @@ if (previewCardStart === -1 || previewCardEnd === -1) {
 }
 
 const previewCardBody = source.slice(previewCardStart, previewCardEnd);
-if (previewCardBody.includes('<AvatarViewer config=')) {
-  throw new Error('PreviewCard still renders full 3D AvatarViewer thumbnails; use 2D thumbnails to avoid WebGL context loss');
+// Thumbnails moeten DOM-only blijven: 25+ WebGL-contexten naast elkaar loopt vast.
+if (previewCardBody.includes('<AvatarViewer')) {
+  throw new Error('PreviewCard still renders an AvatarViewer thumbnail; keep thumbnails DOM-only to avoid WebGL context loss');
 }
 
 requireSource('getInitialPresetKey');
@@ -24,7 +25,6 @@ requireSource('URLSearchParams');
 requireSource("searchParams.get('preset')");
 requireSource('handleSelectPreset');
 requireSource('window.history.replaceState');
-requireSource('<AvatarViewer2D config={preset.config} interactive={false} />');
 requireSource('<AvatarViewer config={selectedPreset.config} interactive={true} />');
 
-console.log('Dev avatar preview contract OK: query preset support and 2D thumbnails.');
+console.log('Dev avatar preview contract OK: query preset support and DOM-only thumbnails.');

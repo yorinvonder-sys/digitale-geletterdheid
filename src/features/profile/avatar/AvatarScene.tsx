@@ -1,8 +1,20 @@
-import React, { useEffect, useMemo, memo, useRef } from 'react';
+import React, { useEffect, useMemo, memo, useRef, useState } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { useThree, useFrame, invalidate } from '@react-three/fiber';
 import { OrbitControls, ContactShadows, Sparkles } from '@react-three/drei';
+import { RotateCw } from 'lucide-react';
 import * as THREE from 'three';
+
+/** Zowel de OS-voorkeur als de in-app toegankelijkheidsschakelaar, die zijn
+ *  stand als class op <html> zet. Bewust géén useAccessibility(): de avatar
+ *  wordt ook gerenderd buiten die provider (dev-route). */
+const prefersReducedMotion = (): boolean => {
+    if (typeof window === 'undefined') return false;
+    return (
+        document.documentElement.classList.contains('reduced-motion') ||
+        window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    );
+};
 
 // --- Background sync ---
 
@@ -61,11 +73,21 @@ const InvalidateWhileVisible: React.FC = () => {
 
 // --- Reusable scene shell ---
 
-export const AvatarScene: React.FC<{ variant?: 'full' | 'head'; children: React.ReactNode }> = ({ variant = 'full', children }) => {
+export const AvatarScene: React.FC<{
+    variant?: 'full' | 'head';
+    interactive?: boolean;
+    children: React.ReactNode;
+}> = ({ variant = 'full', interactive = true, children }) => {
     const cameraPos = useMemo<[number, number, number]>(
         () => (variant === 'head' ? [0, 0.5, 2.1] : [0, 0.85, 5.8]),
         [variant]
     );
+
+    const showcase = variant === 'full' && interactive;
+    // Langzaam ronddraaien tot de leerling zelf sleept; daarna niet meer, want
+    // een bewegend doelwit is vervelend als je iets wilt bekijken.
+    const [spinning, setSpinning] = useState(() => showcase && !prefersReducedMotion());
+    const [hasInteracted, setHasInteracted] = useState(false);
 
     return (
         <div className={`w-full h-full relative ${variant === 'head' ? '' : 'min-h-[300px]'}`} style={{ backgroundColor: variant === 'full' ? '#FCF6EA' : 'transparent' }}>
@@ -139,13 +161,35 @@ export const AvatarScene: React.FC<{ variant?: 'full' | 'head'; children: React.
                 )}
 
                 <OrbitControls
+                    makeDefault
                     enablePan={false}
                     enableZoom={variant === 'full'}
-                    minPolarAngle={Math.PI / 3}
-                    maxPolarAngle={Math.PI / 1.5}
+                    enableDamping
+                    dampingFactor={0.08}
+                    rotateSpeed={0.75}
+                    zoomSpeed={0.6}
+                    // Horizontaal is bewust onbegrensd: volledige 360 graden.
+                    // Verticaal was een smalle band van 60 graden; nu van
+                    // schuin boven tot net boven de vloerplaat — daaronder
+                    // kijk je tegen de onverlichte onderkant aan.
+                    minPolarAngle={Math.PI * 0.18}
+                    maxPolarAngle={Math.PI * 0.62}
+                    // Zonder deze grenzen kon een leerling het hoofd in zoomen.
+                    minDistance={variant === 'head' ? 1.4 : 3.2}
+                    maxDistance={variant === 'head' ? 3.0 : 9.0}
                     target={variant === 'head' ? [0, 0.5, 0] : [0, 1.0, 0]}
+                    autoRotate={spinning}
+                    autoRotateSpeed={0.6}
+                    onStart={() => { setSpinning(false); setHasInteracted(true); }}
                 />
             </Canvas>
+
+            {showcase && !hasInteracted && (
+                <div className="pointer-events-none absolute bottom-3 left-1/2 -translate-x-1/2 flex items-center gap-1.5 rounded-full bg-duck-ink/80 px-3 py-1.5 text-[10px] font-black uppercase tracking-widest text-duck-acid">
+                    <RotateCw size={12} />
+                    Sleep me rond
+                </div>
+            )}
         </div>
     );
 };
