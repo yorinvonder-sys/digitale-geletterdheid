@@ -113,7 +113,7 @@ export function Bewijs() {
                         </>
                     }
                 />
-                <Reveal delay={0.15} className="mt-8 max-w-2xl">
+                <Reveal delay={0.15} className="mx-auto mt-8 max-w-2xl text-center">
                     <p className="text-lg leading-relaxed text-duck-bg/70 md:text-xl">
                         Geen PowerPoint vol beloften, maar deelname, voortgang en SLO-koppeling op papier.
                         Iets om een schoolbesluit op te baseren.
@@ -149,7 +149,7 @@ export function Bewijs() {
                     ))}
                 </div>
                 <Reveal delay={0.2}>
-                    <p className="mt-4 text-xs italic text-duck-bg/45">
+                    <p className="mt-4 text-center text-xs italic text-duck-bg/45">
                         Gebaseerd op de SLO-conceptkerndoelen (september 2025). Definitieve vaststelling
                         volgt via een AMvB.
                     </p>

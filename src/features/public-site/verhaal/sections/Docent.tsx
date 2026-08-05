@@ -44,7 +44,7 @@ export function Docent() {
                         </>
                     }
                 />
-                <Reveal delay={0.15} className="mt-8 max-w-2xl">
+                <Reveal delay={0.15} className="mx-auto mt-8 max-w-2xl text-center">
                     <p className="text-lg leading-relaxed text-duck-ink/70 md:text-xl">
                         Terwijl de klas werkt, kijk jij mee in je dashboard. Wie is klaar, wie heeft hulp
                         nodig, welke SLO-doelen zijn geraakt —{' '}

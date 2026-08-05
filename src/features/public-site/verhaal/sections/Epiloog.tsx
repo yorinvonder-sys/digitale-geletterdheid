@@ -15,26 +15,28 @@ export function Epiloog() {
     return (
         <section id="epiloog" className="scroll-mt-24 relative overflow-hidden bg-duck-acid grain">
             <div className="mx-auto max-w-6xl px-6 pb-16 pt-24 md:px-14 md:pt-36">
-                <div className="grid items-start gap-12 lg:grid-cols-[1.1fr_1fr]">
-                    <div>
-                        <Reveal>
-                            <Pill>Epiloog · Jouw beurt</Pill>
-                        </Reveal>
-                        <Reveal delay={0.1}>
-                            <h2 className="mt-6 font-display text-5xl font-black leading-[1.0] tracking-tight text-duck-ink md:text-7xl">
-                                Klaar voor het <em className="italic">volgende hoofdstuk</em>?
-                            </h2>
-                        </Reveal>
-                        <Reveal delay={0.18}>
-                            <p className="mt-6 max-w-xl text-lg leading-relaxed text-duck-ink/75">
-                                Plan een schoolpilot. Live binnen 10 werkdagen, geen creditcard — echt
-                                niet. De eend houdt de agenda alvast vrij.
-                            </p>
-                        </Reveal>
+                <div className="mx-auto max-w-4xl text-center">
+                    <Reveal>
+                        <Pill>Epiloog · Jouw beurt</Pill>
+                    </Reveal>
+                    <Reveal delay={0.1}>
+                        <h2 className="mt-6 font-display text-5xl font-black leading-[1.0] tracking-tight text-duck-ink md:text-7xl">
+                            Klaar voor het <em className="italic">volgende hoofdstuk</em>?
+                        </h2>
+                    </Reveal>
+                    <Reveal delay={0.18}>
+                        <p className="mx-auto mt-6 max-w-xl text-lg leading-relaxed text-duck-ink/75">
+                            Plan een schoolpilot. Live binnen 10 werkdagen, geen creditcard — echt
+                            niet. De eend houdt de agenda alvast vrij.
+                        </p>
+                    </Reveal>
+                </div>
 
+                <div className="mt-14 grid items-start gap-12 lg:grid-cols-[1.1fr_1fr]">
+                    <div>
                         <Reveal delay={0.3}>
                             <div
-                                className={`mt-8 max-w-md rounded-2xl border-[3px] border-duck-ink bg-duck-bg p-5 ${HARD_SHADOW}`}
+                                className={`max-w-md rounded-2xl border-[3px] border-duck-ink bg-duck-bg p-5 ${HARD_SHADOW}`}
                             >
                                 <p className="text-xs font-black uppercase tracking-[0.2em] text-duck-ink/50">
                                     In de schoolpilot — zonder reclametaal
