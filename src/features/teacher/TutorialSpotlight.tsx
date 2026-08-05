@@ -1,7 +1,9 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useLayoutEffect, useRef, useState, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronRight, ChevronLeft, X } from 'lucide-react';
 import { useTutorial } from '@/contexts/TutorialContext';
+import { pickVisibleIndex } from '@/features/onboarding/core/visibleTarget';
+import { computeTooltipStyle } from '@/features/onboarding/core/placement';
 
 interface SpotlightRect {
     top: number;
@@ -11,7 +13,24 @@ interface SpotlightRect {
 }
 
 const PADDING = 10;
-const TOOLTIP_GAP = 12;
+const TOOLTIP_MAX_WIDTH = 320;
+/** Startschatting; wordt na de eerste render vervangen door de echte afmeting. */
+const TOOLTIP_SIZE_ESTIMATE = { width: TOOLTIP_MAX_WIDTH, height: 200 };
+
+/**
+ * Zoekt het element dat de gebruiker daadwerkelijk ziet.
+ *
+ * Dezelfde `data-tutorial`-sleutel staat vaak twee keer in de DOM: mobiele en
+ * desktopvariant van dezelfde knop. `querySelector` pakt de eerste, ook als die
+ * door `display:none` verborgen is — dat leverde een spotlight van 0×0 in de
+ * hoek op. Zie src/features/onboarding/core/visibleTarget.ts.
+ */
+const findVisibleTarget = (selector: string): HTMLElement | null => {
+    const candidates = Array.from(document.querySelectorAll<HTMLElement>(selector));
+    if (candidates.length === 0) return null;
+    const index = pickVisibleIndex(candidates.map((el) => el.getBoundingClientRect()));
+    return index === -1 ? null : candidates[index];
+};
 
 const TutorialSpotlight: React.FC = () => {
     const {
@@ -23,10 +42,20 @@ const TutorialSpotlight: React.FC = () => {
         prevStep,
         skipTutorial,
         completeStep,
+        isBlocked,
     } = useTutorial();
 
     const [rect, setRect] = useState<SpotlightRect | null>(null);
     const [targetNotFound, setTargetNotFound] = useState(false);
+    /** Het element waar deze stap over gaat — gedeeld met de klik-doorvoer. */
+    const targetElRef = useRef<HTMLElement | null>(null);
+    /**
+     * De echte afmeting van de ballon. Een vaste schatting volstaat niet: de
+     * teksten verschillen per stap, en met een te grote schatting schuift de
+     * ballon onnodig weg van zijn element.
+     */
+    const tooltipRef = useRef<HTMLDivElement | null>(null);
+    const [tooltipSize, setTooltipSize] = useState(TOOLTIP_SIZE_ESTIMATE);
 
     const isFirstStep = currentStepIndex === 0;
     const isLastStep = currentStepIndex === steps.length - 1;
@@ -36,11 +65,27 @@ const TutorialSpotlight: React.FC = () => {
         setTargetNotFound(false);
     }, [currentStepIndex]);
 
+    // Meet de ballon nadat hij gerenderd is en herplaats hem met de echte maat.
+    useLayoutEffect(() => {
+        const el = tooltipRef.current;
+        if (!el) return;
+        const { width, height } = el.getBoundingClientRect();
+        if (width === 0 || height === 0) return;
+        setTooltipSize((vorige) => (
+            Math.abs(vorige.width - width) < 1 && Math.abs(vorige.height - height) < 1
+                ? vorige
+                : { width, height }
+        ));
+    }, [currentStepIndex, rect, isActive]);
+
     // Track target element position
     useEffect(() => {
-        if (!isActive || !currentStep) return;
+        // Zolang een modal het scherm bezit meten we niets: het doel kan
+        // eronder verdwenen zijn en de spotlight is toch verborgen.
+        if (!isActive || !currentStep || isBlocked) return;
 
         if (!currentStep.target) {
+            targetElRef.current = null;
             setRect(null);
             return;
         }
@@ -58,11 +103,13 @@ const TutorialSpotlight: React.FC = () => {
         };
 
         const measure = () => {
-            const el = document.querySelector(currentStep.target!);
+            const el = findVisibleTarget(currentStep.target!);
             if (!el) {
+                targetElRef.current = null;
                 setRect(null);
                 return false;
             }
+            targetElRef.current = el;
             if (!hasScrolled) {
                 hasScrolled = true;
                 const r = el.getBoundingClientRect();
@@ -119,61 +166,52 @@ const TutorialSpotlight: React.FC = () => {
             window.removeEventListener('scroll', onLayout, true);
             window.removeEventListener('resize', onLayout);
         };
-    }, [isActive, currentStep, completeStep]);
+    }, [isActive, currentStep, completeStep, isBlocked]);
+
+    /**
+     * Doel blijft weg: ga door in plaats van vastlopen.
+     *
+     * De oude foutmelding ("target not found") stond in beeld bij een
+     * dertienjarige die er niets mee kon. Een ontbrekend doel is een fout in de
+     * staplijst, niet iets waar de gebruiker op moet wachten — de waarschuwing
+     * hoort in de console en in de dekkingstest, niet op het scherm.
+     */
+    useEffect(() => {
+        if (!targetNotFound || !isActive || isBlocked) return;
+        console.warn(`[rondleiding] doel ontbreekt voor stap "${currentStep?.id}" — stap overgeslagen`);
+        const timer = window.setTimeout(() => nextStep(), 600);
+        return () => clearTimeout(timer);
+    }, [targetNotFound, isActive, isBlocked, currentStep?.id, nextStep]);
 
     // Compute tooltip position relative to spotlight rect
     const isFullscreen = !currentStep?.target;
 
     const getTooltipStyle = useCallback((): React.CSSProperties => {
+        const viewport = { width: window.innerWidth, height: window.innerHeight };
+        const base: React.CSSProperties = { position: 'absolute', maxWidth: TOOLTIP_MAX_WIDTH };
+
+        // Schermvullende stap: precies in het midden, zonder transform (framer-motion
+        // schrijft die eigenschap zelf en zou hem overschrijven).
         if (!rect) {
             return {
-                position: 'absolute',
-                top: '50%',
-                left: '50%',
-                transform: 'translate(-50%, -50%)',
-                maxWidth: 360,
+                ...base,
+                left: Math.max(0, (viewport.width - tooltipSize.width) / 2),
+                top: Math.max(0, (viewport.height - tooltipSize.height) / 2),
             };
         }
 
-        const pos = currentStep?.position || 'bottom';
-        const style: React.CSSProperties = { position: 'absolute', maxWidth: 320 };
-        const TOOLTIP_HEIGHT_ESTIMATE = 160; // approx tooltip height for clamping
-        const VIEWPORT_MARGIN = 12;
+        return {
+            ...base,
+            ...computeTooltipStyle(rect, currentStep?.position ?? 'bottom', viewport, tooltipSize),
+        };
+    }, [rect, currentStep?.position, tooltipSize]);
 
-        if (pos === 'bottom') {
-            let top = rect.top + rect.height + TOOLTIP_GAP;
-            // If tooltip would go below viewport, flip to top
-            if (top + TOOLTIP_HEIGHT_ESTIMATE > window.innerHeight - VIEWPORT_MARGIN) {
-                top = Math.max(VIEWPORT_MARGIN, rect.top - TOOLTIP_HEIGHT_ESTIMATE - TOOLTIP_GAP);
-            }
-            style.top = top;
-            style.left = Math.min(Math.max(VIEWPORT_MARGIN, rect.left + rect.width / 2), window.innerWidth - VIEWPORT_MARGIN);
-            style.transform = 'translateX(-50%)';
-        } else if (pos === 'top') {
-            let top = rect.top - TOOLTIP_HEIGHT_ESTIMATE - TOOLTIP_GAP;
-            // If tooltip would go above viewport, flip to bottom
-            if (top < VIEWPORT_MARGIN) {
-                top = rect.top + rect.height + TOOLTIP_GAP;
-            }
-            // Clamp to viewport bottom
-            top = Math.min(top, window.innerHeight - TOOLTIP_HEIGHT_ESTIMATE - VIEWPORT_MARGIN);
-            style.top = Math.max(VIEWPORT_MARGIN, top);
-            style.left = Math.min(Math.max(VIEWPORT_MARGIN, rect.left + rect.width / 2), window.innerWidth - VIEWPORT_MARGIN);
-            style.transform = 'translateX(-50%)';
-        } else if (pos === 'left') {
-            style.top = Math.max(VIEWPORT_MARGIN, Math.min(rect.top + rect.height / 2, window.innerHeight - TOOLTIP_HEIGHT_ESTIMATE - VIEWPORT_MARGIN));
-            style.right = window.innerWidth - rect.left + TOOLTIP_GAP;
-            style.transform = 'translateY(-50%)';
-        } else {
-            style.top = Math.max(VIEWPORT_MARGIN, Math.min(rect.top + rect.height / 2, window.innerHeight - TOOLTIP_HEIGHT_ESTIMATE - VIEWPORT_MARGIN));
-            style.left = rect.left + rect.width + TOOLTIP_GAP;
-            style.transform = 'translateY(-50%)';
-        }
+    // Verbergen zolang een modal het scherm bezit; de stap blijft bewaard en de
+    // rondleiding gaat verder zodra de modal dicht is.
+    if (!isActive || !currentStep || isBlocked) return null;
 
-        return style;
-    }, [rect, currentStep?.position]);
-
-    if (!isActive || !currentStep) return null;
+    /** Deze stap wil dat de gebruiker het element zelf aanklikt. */
+    const needsClick = currentStep.requireClick === true && rect !== null && !targetNotFound;
 
     return (
         <AnimatePresence>
@@ -223,9 +261,9 @@ const TutorialSpotlight: React.FC = () => {
                             boxShadow: '0 0 0 3px rgba(217, 120, 72,0.5), 0 0 20px 4px rgba(217, 120, 72,0.15)',
                         }}
                         onClick={() => {
-                            // Let clicks pass through to the actual element
-                            const el = document.querySelector(currentStep.target!) as HTMLElement;
-                            el?.click();
+                            // Klik doorgeven aan het element dat we ook opgemeten hebben,
+                            // niet aan de eerste treffer in de DOM (die verborgen kan zijn).
+                            targetElRef.current?.click();
                         }}
                     />
                 )}
@@ -233,6 +271,7 @@ const TutorialSpotlight: React.FC = () => {
                 {/* Tooltip */}
                 <motion.div
                     key={currentStep.id}
+                    ref={tooltipRef}
                     initial={{ opacity: 0, y: 8 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -8 }}
@@ -300,7 +339,7 @@ const TutorialSpotlight: React.FC = () => {
                             <p className="text-xs leading-relaxed mb-3 text-duck-ink/60">{currentStep.content}</p>
 
                             {/* Required click hint */}
-                            {currentStep.requireClick && rect && !targetNotFound && (
+                            {needsClick && (
                                 <p className="text-[11px] font-semibold mb-3 flex items-center gap-1.5 text-duck-ink">
                                     <span className="w-1.5 h-1.5 rounded-full animate-pulse bg-duck-acid" />
                                     Klik op het uitgelichte element
@@ -321,17 +360,27 @@ const TutorialSpotlight: React.FC = () => {
                                             <ChevronLeft size={16} />
                                         </button>
                                     )}
-                                    {(!currentStep.requireClick || targetNotFound) && (
-                                        <button
-                                            onClick={isLastStep ? skipTutorial : nextStep}
-                                            className="flex items-center gap-1 px-3 py-1.5 text-duck-ink text-xs font-semibold rounded-full transition-all duration-300 bg-duck-acid"
-                                            onMouseEnter={(e) => e.currentTarget.style.backgroundColor = ''}
-                                            onMouseLeave={(e) => e.currentTarget.style.backgroundColor = ''}
-                                        >
-                                            {isLastStep ? 'Klaar' : 'Volgende'}
-                                            <ChevronRight size={14} />
-                                        </button>
-                                    )}
+                                    {/*
+                                      * De doorknop is er altijd. Hij was verborgen bij
+                                      * `requireClick`-stappen, waardoor iemand die de klik
+                                      * miste — of alleen een toetsenbord gebruikt — alleen
+                                      * nog kon afbreken. Bij zo'n stap klikt de knop het
+                                      * uitgelichte element namens de gebruiker aan.
+                                      */}
+                                    <button
+                                        onClick={() => {
+                                            if (needsClick) {
+                                                targetElRef.current?.click();
+                                                return;
+                                            }
+                                            if (isLastStep) skipTutorial();
+                                            else nextStep();
+                                        }}
+                                        className="flex items-center gap-1 px-3 py-1.5 text-duck-ink text-xs font-semibold rounded-full transition-all duration-300 bg-duck-acid"
+                                    >
+                                        {needsClick ? 'Doe het' : isLastStep ? 'Klaar' : 'Volgende'}
+                                        <ChevronRight size={14} />
+                                    </button>
                                 </div>
                             </div>
                         </div>

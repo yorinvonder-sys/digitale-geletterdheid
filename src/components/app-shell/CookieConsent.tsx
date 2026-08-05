@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useTourBlocker } from '@/contexts/TutorialContext';
 
 interface CookieConsentProps {
     onAccept?: () => void;
@@ -80,6 +81,10 @@ async function logConsentAudit(action: 'accept' | 'decline', schoolId?: string):
 export const CookieConsent: React.FC<CookieConsentProps> = ({ onAccept, onDecline, schoolId }) => {
     const [isVisible, setIsVisible] = useState(false);
     const [showDetails, setShowDetails] = useState(false);
+
+    // De banner verschijnt precies bij de eerste login, in dezelfde hoek als de
+    // rondleiding. Zolang hij er staat houdt hij de rondleiding tegen.
+    useTourBlocker('cookie-consent', isVisible);
 
     useEffect(() => {
         const consent = localStorage.getItem(CONSENT_KEY);

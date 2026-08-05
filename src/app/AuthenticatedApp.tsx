@@ -16,7 +16,7 @@ import { useFocusMode } from '@/hooks/useFocusMode';
 import { awardXP } from '@/services/XPService';
 import { markMissionCompleted } from '@/services/missionCompletionService';
 import { getMissionXPReward } from '@/config/xp';
-import { TutorialProvider, STUDENT_TUTORIAL_STEPS, TutorialStep } from '@/contexts/TutorialContext';
+import { TutorialProvider, STUDENT_TUTORIAL_STEPS, TEACHER_TUTORIAL_STEPS, TutorialStep } from '@/contexts/TutorialContext';
 import { DEFAULT_STATS } from '@/config/userStats';
 import { AccessibilityProvider } from '@/contexts/AccessibilityContext';
 import { lazyWithRetry } from '@/utils/lazyWithRetry';
@@ -987,7 +987,7 @@ export function AuthenticatedApp() {
             )}
 
             <main id="main-content" className={`flex-1 flex flex-col${showFooter ? '' : ' min-h-0'}`} tabIndex={-1}>
-                {user.role === 'student' && (
+                {(user.role === 'student' || user.role === 'teacher') && (
                     <Suspense fallback={null}>
                         <TutorialSpotlight />
                         <TutorialRestartButton />
@@ -1072,19 +1072,48 @@ export function AuthenticatedApp() {
         </div>
     );
 
-    const wrapped = user.role === 'student' ? (
+    /**
+     * De rondleiding hoort pas te starten als het dashboard écht het scherm heeft.
+     *
+     * Alle blokkerende poorten (wachtwoord, MFA, docentwizard, avatar, nulmeting)
+     * zijn early returns hierboven, dus die zijn hier per definitie voorbij. Wat
+     * overblijft zijn schermen die ná het dashboard opengaan. `useFocusMode` opent
+     * bijvoorbeeld kort na mount vanzelf een missie — zonder `!activeModule` zou de
+     * rondleiding daar bovenop starten en klopt geen enkel doel meer.
+     *
+     * De cookiebanner regelt zichzelf via `useTourBlocker`, want die state zit
+     * in het component zelf.
+     */
+    const tourReady = !activeModule
+        && !isProfileOpen
+        && !showGames
+        && !showExitConfirm
+        && !showInactivityWarning
+        && !showTeacherMessage
+        && !showAvatarSetup
+        && !showNulmeting
+        && !showEindmeting;
+
+    // Alleen echte leerlingen en docenten krijgen een rondleiding. Developer-previews
+    // en de publieke demo's renderen het dashboard zonder provider, zodat daar nooit
+    // een spotlight kan opduiken.
+    const tourConfig = user.role === 'student'
+        ? { tourId: 'student' as const, steps: studentTutorialSteps, completed: user.stats?.hasCompletedStudentTutorial, flag: 'hasCompletedStudentTutorial' as const }
+        : user.role === 'teacher'
+            ? { tourId: 'teacher' as const, steps: TEACHER_TUTORIAL_STEPS, completed: user.stats?.hasCompletedTeacherTutorial, flag: 'hasCompletedTeacherTutorial' as const }
+            : null;
+
+    const wrapped = tourConfig ? (
         <TutorialProvider
-            steps={studentTutorialSteps}
-            tourId="student"
-            userId={user?.uid}
-            autoStart={true}
-            completed={user?.stats?.hasCompletedStudentTutorial}
+            steps={tourConfig.steps}
+            tourId={tourConfig.tourId}
+            userId={user.uid}
+            autoStart={tourReady}
+            completed={tourConfig.completed}
             onComplete={async () => {
-                if (user) {
-                    const newStats: UserStats = { ...DEFAULT_STATS, ...user.stats, hasCompletedStudentTutorial: true };
-                    setUser({ ...user, stats: newStats });
-                    await handleSaveProgress(newStats);
-                }
+                const newStats: UserStats = { ...DEFAULT_STATS, ...user.stats, [tourConfig.flag]: true };
+                setUser({ ...user, stats: newStats });
+                await handleSaveProgress(newStats);
             }}
         >
             {appShell}

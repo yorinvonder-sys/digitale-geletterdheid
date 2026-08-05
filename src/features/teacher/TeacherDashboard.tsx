@@ -25,9 +25,7 @@ import { AiBeleidFeedbackPanel } from '@/features/teacher/AiBeleidFeedbackPanel'
 import { GamesPanel } from '@/features/teacher/GamesPanel';
 import { FeedbackPanel } from '@/features/teacher/FeedbackPanel';
 import { RosterImportModal } from '@/features/teacher/RosterImportModal';
-import { TutorialProvider } from '@/contexts/TutorialContext';
-import { DEFAULT_STATS } from '@/config/userStats';
-import TutorialSpotlight, { TutorialRestartButton } from '@/features/teacher/TutorialSpotlight';
+import { useTourActions, useTourBlocker, type TourActions } from '@/contexts/TutorialContext';
 
 import { TeacherModals } from '@/features/teacher/dashboard/TeacherModals';
 import { TeacherCommandCenter } from '@/features/teacher/dashboard/TeacherCommandCenter';
@@ -524,22 +522,47 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ user, onUpda
     const MENU_TABS: MainTab[] = ['settings', 'games', 'gamification', 'ai-beleid', 'feedback', 'documenten'];
     const navActiveTab: MainTab | null = MENU_TABS.includes(activeTab) ? null : activeTab;
 
+    // De rondleiding stuurt het dashboard aan via deze acties, in plaats van
+    // zelf knoppen uit de DOM te vissen en aan te klikken. Die oude aanpak was
+    // gekoppeld aan klassenamen die na de duck-migratie niet meer bestonden.
+    const tourActions = useMemo<TourActions>(() => ({
+        goTo: (area) => {
+            const navigable: readonly MainTab[] = ['overview', 'students', 'progress'];
+            if (!navigable.includes(area as MainTab)) {
+                console.warn(`[rondleiding] onbekend gebied "${area}" — navigatie overgeslagen`);
+                return;
+            }
+            setActiveTab(area as MainTab);
+        },
+        closeOverlays: () => {
+            setShowMessageModal(false);
+            setShowEventModal(false);
+            setShowBadgeModal(false);
+            setShowHighlightModal(false);
+            setShowRosterImport(false);
+            setShowFocusMissionModal(false);
+            setShowLiveModal(false);
+            setShowPresentation(false);
+            setAccountMenuOpen(false);
+            setClassDropdownOpen(false);
+            setSelectedStudent(null);
+        },
+    }), []);
+    useTourActions(tourActions);
+
+    // Zolang een van deze het scherm bezit, verbergt de rondleiding zich en
+    // onthoudt hij de stap. Zonder dit bleef de spotlight (z-[9999]) wijzen naar
+    // elementen achter een schermvullende presentatie.
+    useTourBlocker(
+        'teacher-overlay',
+        showPresentation || showMessageModal || showEventModal || showBadgeModal
+        || showHighlightModal || showRosterImport || showFocusMissionModal
+        || showLiveModal || showSchedulingConfig || showResetConfirm
+        || selectedStudent !== null || studentToDelete !== null,
+    );
+
     return (
-        <TutorialProvider
-            tourId="teacher"
-            userId={user?.uid}
-            completed={user?.stats?.hasCompletedTeacherTutorial}
-            onComplete={() => {
-                if (user && onUpdateStats) {
-                    onUpdateStats({
-                        ...DEFAULT_STATS,
-                        ...user.stats,
-                        hasCompletedTeacherTutorial: true
-                    } as UserStats);
-                }
-            }}
-        >
-            <TutorialSpotlight />
+        <>
             <div className="min-h-screen overflow-x-hidden bg-duck-bg text-duck-ink">
                 {/* Toasts */}
                 <div className="fixed top-4 right-4 z-[200] flex flex-col gap-2 pointer-events-none">
@@ -822,8 +845,6 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ user, onUpda
                     handleDeleteStudent={handleDeleteStudent}
                 />
 
-                <TutorialRestartButton />
-
                 {showSchedulingConfig && user?.schoolId && (
                     <div className="fixed inset-0 z-50 bg-black/40 flex items-start justify-center overflow-y-auto p-4 pt-12">
                         <div className="bg-duck-bg rounded-[2rem] shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto">
@@ -836,6 +857,6 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ user, onUpda
                     </div>
                 )}
             </div>
-        </TutorialProvider>
+        </>
     );
 };

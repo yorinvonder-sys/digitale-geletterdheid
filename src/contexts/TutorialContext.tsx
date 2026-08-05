@@ -2,14 +2,31 @@ import React, { createContext, useContext, useState, useCallback, ReactNode } fr
 import { shouldAutoStart } from '@/features/onboarding/core/autostart';
 import { isTourDisabled, isTourSeen, markTourSeen, type TourId } from '@/features/onboarding/core/tourStorage';
 
+/**
+ * Wat een stap het omliggende dashboard mag laten doen.
+ *
+ * Hiervóór stuurde de rondleiding het dashboard aan door zelf knoppen uit de DOM
+ * te vissen en `.click()` aan te roepen, en door een backdrop met een `lab-*`
+ * klassenaam te zoeken die na de duck-migratie niet meer bestond. Dat is
+ * gekoppeld aan opmaak die verandert. Het dashboard levert nu zijn eigen acties
+ * aan, die zijn React-state aansturen.
+ */
+export interface TourActions {
+    /** Navigeer naar een tabblad of gebied binnen het huidige dashboard. */
+    goTo?: (area: string) => void;
+    /** Sluit menu's en modals die de rondleiding in de weg zitten. */
+    closeOverlays?: () => void;
+}
+
 export interface TutorialStep {
     id: string;
-    target: string | null; // CSS selector or null for fullscreen
+    target: string | null; // CSS-selector, of null voor een schermvullende stap
     title: string;
     content: string;
     requireClick?: boolean;
     position?: 'top' | 'bottom' | 'left' | 'right';
-    onEnter?: () => void; // Callback when step becomes active
+    /** Zet het dashboard klaar voordat deze stap in beeld komt. */
+    beforeEnter?: (actions: TourActions) => void;
 }
 
 interface TutorialContextType {
@@ -24,39 +41,17 @@ interface TutorialContextType {
     skipTutorial: () => void;
     completeStep: () => void;
     hasCompleted: boolean;
+    /** Waar terwijl een modal het scherm bezit — de overlay verbergt zich dan. */
+    isBlocked: boolean;
+    setBlocker: (id: string, active: boolean) => void;
+    /** Het dashboard meldt hier welke acties de rondleiding mag uitvoeren. */
+    registerActions: (actions: TourActions | null) => void;
 }
 
 const TutorialContext = createContext<TutorialContextType | null>(null);
 
-const clickTutorialTarget = (selector: string, delayMs = 0) => {
-    const run = () => {
-        const element = document.querySelector(selector) as HTMLElement | null;
-        element?.click();
-    };
-    if (delayMs > 0) {
-        window.setTimeout(run, delayMs);
-        return;
-    }
-    run();
-};
-
-/** Close any open modals/overlays by clicking their backdrop or close button */
-const dismissOpenOverlays = () => {
-    // Close feedback modal backdrop (z-[100] overlay)
-    const feedbackBackdrop = document.querySelector('.fixed.inset-0.z-\\[100\\] .bg-lab-ink\\/60') as HTMLElement | null;
-    feedbackBackdrop?.click();
-    // Close profile dropdown by clicking outside
-    const profileMenu = document.querySelector('[aria-haspopup="true"][aria-expanded="true"]') as HTMLElement | null;
-    if (profileMenu) {
-        document.body.click();
-    }
-};
-
-// Tutorial steps definition
-//
-// De navigatie-selectors staan zowel op de sidebar (`data-tutorial`) als op de
-// mobiele balk (`data-tutorial-mobile`); querySelector pakt de eerste die
-// bestaat, zodat de rondleiding op elk schermformaat werkt.
+// De navigatiesleutel staat zowel op de zijbalk als op de mobiele balk. De
+// spotlight kiest zelf het zichtbare exemplaar, dus één sleutel volstaat.
 const navTarget = (tab: string) => `[data-tutorial="${tab}-tab"], [data-tutorial-mobile="${tab}-tab"]`;
 
 export const TEACHER_TUTORIAL_STEPS: TutorialStep[] = [
@@ -75,9 +70,7 @@ export const TEACHER_TUTORIAL_STEPS: TutorialStep[] = [
         content: 'Stuur alle leerlingen naar dezelfde opdracht.',
         requireClick: true,
         position: 'bottom',
-        onEnter: () => {
-            clickTutorialTarget(navTarget('overview'));
-        },
+        beforeEnter: (actions) => actions.goTo?.('overview'),
     },
     {
         id: 'students-tab',
@@ -94,9 +87,7 @@ export const TEACHER_TUTORIAL_STEPS: TutorialStep[] = [
         content: 'Stuur berichten naar de hele klas of individuele leerlingen.',
         requireClick: true,
         position: 'bottom',
-        onEnter: () => {
-            clickTutorialTarget(navTarget('students'));
-        },
+        beforeEnter: (actions) => actions.goTo?.('students'),
     },
     {
         id: 'evidence-tab',
@@ -174,6 +165,8 @@ interface TutorialProviderProps {
     onComplete?: () => void;
 }
 
+const NO_ACTIONS: TourActions = {};
+
 const getSessionStore = (): Storage | null => {
     try {
         return typeof window === 'undefined' ? null : window.sessionStorage;
@@ -203,6 +196,26 @@ export const TutorialProvider: React.FC<TutorialProviderProps> = ({
     const [isActive, setIsActive] = useState(false);
     const [currentStepIndex, setCurrentStepIndex] = useState(0);
 
+    // Componenten die het scherm even opeisen (presentatie, roosterimport,
+    // berichtvenster) melden zich hier. De rondleiding verbergt zich dan en
+    // onthoudt de stap, in plaats van boven een zwart scherm te blijven wijzen.
+    const [blockers, setBlockers] = useState<readonly string[]>([]);
+    const setBlocker = useCallback((id: string, active: boolean) => {
+        setBlockers((prev) => {
+            const present = prev.includes(id);
+            if (active === present) return prev;
+            return active ? [...prev, id] : prev.filter((entry) => entry !== id);
+        });
+    }, []);
+
+    // Het dashboard dat onder deze provider hangt levert zijn eigen acties aan.
+    // In een ref, niet in state: een stap leest ze op het moment dat hij start,
+    // en een nieuwe actieset hoeft geen herrender te veroorzaken.
+    const actionsRef = React.useRef<TourActions>(NO_ACTIONS);
+    const registerActions = useCallback((actions: TourActions | null) => {
+        actionsRef.current = actions ?? NO_ACTIONS;
+    }, []);
+
     // De server is leidend. Het sessievangnet dekt alleen het geval dat de
     // RPC faalde nadat de gebruiker de rondleiding wél had afgerond; het is
     // per gebruiker gescheiden, dus een volgende leerling erft het niet.
@@ -217,6 +230,20 @@ export const TutorialProvider: React.FC<TutorialProviderProps> = ({
 
     const hasCompleted = completed === true || seenThisSession;
 
+    /**
+     * Zet het dashboard klaar voor een stap.
+     *
+     * Dit gebeurde eerder alleen bij vooruit navigeren, waardoor teruggaan je op
+     * het verkeerde tabblad achterliet en de spotlight naar een element wees dat
+     * niet in beeld was.
+     */
+    const enterStep = useCallback((index: number) => {
+        const step = steps[index];
+        if (!step) return;
+        actionsRef.current.closeOverlays?.();
+        step.beforeEnter?.(actionsRef.current);
+    }, [steps]);
+
     // Auto-start voor wie hem nog niet gezien heeft.
     React.useEffect(() => {
         const mayStart = shouldAutoStart({
@@ -229,16 +256,20 @@ export const TutorialProvider: React.FC<TutorialProviderProps> = ({
         });
         if (!mayStart) return;
         // Korte vertraging zodat het dashboard eerst kan renderen.
-        const timer = setTimeout(() => setIsActive(true), 800);
+        const timer = setTimeout(() => {
+            setIsActive(true);
+            enterStep(0);
+        }, 800);
         return () => clearTimeout(timer);
-    }, [autoStart, hasCompleted, seenThisSession, isDemo]);
+    }, [autoStart, hasCompleted, seenThisSession, isDemo, enterStep]);
 
     const currentStep = isActive ? steps[currentStepIndex] : null;
 
     const startTutorial = useCallback(() => {
         setCurrentStepIndex(0);
         setIsActive(true);
-    }, []);
+        enterStep(0);
+    }, [enterStep]);
 
     const endTutorial = useCallback(() => {
         setIsActive(false);
@@ -250,22 +281,22 @@ export const TutorialProvider: React.FC<TutorialProviderProps> = ({
     }, [userId, tourId, onComplete]);
 
     const nextStep = useCallback(() => {
-        dismissOpenOverlays();
         if (currentStepIndex < steps.length - 1) {
             const newIndex = currentStepIndex + 1;
             setCurrentStepIndex(newIndex);
-            steps[newIndex]?.onEnter?.();
+            enterStep(newIndex);
         } else {
             endTutorial();
         }
-    }, [currentStepIndex, steps, endTutorial]);
+    }, [currentStepIndex, steps, endTutorial, enterStep]);
 
     const prevStep = useCallback(() => {
-        dismissOpenOverlays();
         if (currentStepIndex > 0) {
-            setCurrentStepIndex(currentStepIndex - 1);
+            const newIndex = currentStepIndex - 1;
+            setCurrentStepIndex(newIndex);
+            enterStep(newIndex);
         }
-    }, [currentStepIndex]);
+    }, [currentStepIndex, enterStep]);
 
     const skipTutorial = useCallback(() => {
         endTutorial();
@@ -288,6 +319,9 @@ export const TutorialProvider: React.FC<TutorialProviderProps> = ({
             skipTutorial,
             completeStep,
             hasCompleted,
+            isBlocked: blockers.length > 0,
+            setBlocker,
+            registerActions,
         }}>
             {children}
         </TutorialContext.Provider>
@@ -308,3 +342,40 @@ export const useTutorial = (): TutorialContextType => {
  * componenten die zowel binnen als buiten de app-shell gerenderd worden.
  */
 export const useTutorialOptional = (): TutorialContextType | null => useContext(TutorialContext);
+
+/**
+ * Meld dat dit component het scherm opeist zolang `active` waar is.
+ *
+ * De rondleiding verbergt zich dan en onthoudt de stap. Nodig omdat de spotlight
+ * op `z-[9999]` staat: zonder dit bleef hij elementen aanwijzen die achter een
+ * schermvullende presentatie of modal verdwenen waren.
+ *
+ * Veilig buiten een provider (publieke demo) — dan doet de hook niets.
+ */
+export const useTourBlocker = (id: string, active: boolean): void => {
+    const tour = useContext(TutorialContext);
+    const setBlocker = tour?.setBlocker;
+
+    React.useEffect(() => {
+        if (!setBlocker) return;
+        setBlocker(id, active);
+        return () => setBlocker(id, false);
+    }, [setBlocker, id, active]);
+};
+
+/**
+ * Meld welke acties de rondleiding op dit dashboard mag uitvoeren.
+ *
+ * Geef een stabiele `actions` mee (bijvoorbeeld uit `useMemo`); state-setters
+ * uit `useState` zijn zelf al stabiel. Veilig buiten een provider.
+ */
+export const useTourActions = (actions: TourActions): void => {
+    const tour = useContext(TutorialContext);
+    const registerActions = tour?.registerActions;
+
+    React.useEffect(() => {
+        if (!registerActions) return;
+        registerActions(actions);
+        return () => registerActions(null);
+    }, [registerActions, actions]);
+};
