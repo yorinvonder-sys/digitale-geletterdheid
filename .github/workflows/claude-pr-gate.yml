@@ -85,6 +85,15 @@ jobs:
       - name: Avatar-winkel prijzenlijst in sync
         run: npm run check:avatar-shop
 
+      # De film op de homepage speelt op een eigen klok en laat React alleen
+      # tekenen wanneer getFilmRenderKey een nieuwe sleutel teruggeeft. Vergeet
+      # iemand daar de tak van een scène, dan geeft die functie 'done' terug: de
+      # film loopt door terwijl die scène stilstaat voor de bezoeker, en niets
+      # faalt. Deze tests draaiden nergens en stonden daardoor maanden rood op
+      # een filmleader die allang was ingekort.
+      - name: Filmtijdlijn-tests
+        run: npm run test:film-timeline
+
       - name: Secret scanning (Gitleaks)
         uses: gitleaks/gitleaks-action@e0c47f4f8be36e29cdc102c57e68cb5cbf0e8d1e # v3
         env:
