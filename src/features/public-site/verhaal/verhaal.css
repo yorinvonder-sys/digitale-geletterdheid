@@ -91,6 +91,21 @@
     animation: jayden-adem 7s ease-in-out infinite;
 }
 
+/* De jetpack blijft branden: korte, harde sprongen in plaats van een pulsje. */
+.verhaal .jayden-vlam {
+    animation: jayden-vlam 0.42s steps(2, end) infinite;
+}
+
+@keyframes jayden-vlam {
+    0%,
+    100% {
+        transform: scaleY(1);
+    }
+    50% {
+        transform: scaleY(0.78);
+    }
+}
+
 @keyframes jayden-adem {
     0%,
     100% {
@@ -135,7 +150,8 @@
     .verhaal .verhaal-marquee,
     .verhaal .verhaal-bob,
     .verhaal .verhaal-caret,
-    .verhaal .jayden-stage {
+    .verhaal .jayden-stage,
+    .verhaal .jayden-vlam {
         animation: none;
     }
 }

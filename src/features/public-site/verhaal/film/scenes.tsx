@@ -555,21 +555,29 @@ function Jetpack() {
         >
             {[-1, 1].map((kant) => (
                 <React.Fragment key={kant}>
-                    <Blok b={10} h={8} d={10} x={kant * 32} y={32} z={-24} tint={METAAL} />
-                    <Blok b={16} h={64} d={16} x={kant * 32} y={40} z={-24} tint={TANK} />
+                    <Blok b={16} h={8} d={16} x={kant * 36} y={26} z={-24} tint={METAAL} />
+                    <Blok b={24} h={66} d={22} x={kant * 36} y={34} z={-24} tint={TANK} />
+                    <Blok b={16} h={10} d={16} x={kant * 36} y={100} z={-24} tint={BAND} />
                     {/*
-                     * De vlam schaalt vanaf zijn bovenkant. Framer zet dat als
+                     * De vlam schiet aan vanaf zijn bovenkant. Framer zet dat als
                      * `translate3d(...) scaleY(...)`: eerst schalen, dan
-                     * verplaatsen, zodat de vlam op zijn plek blijft staan.
+                     * verplaatsen, zodat de vlam op zijn plek blijft staan. Het
+                     * flakkeren daarna zit op de binnenste laag (`jayden-vlam`),
+                     * die geen eigen positie heeft — anders vechten de twee
+                     * animaties om dezelfde transform.
                      */}
                     <motion.div
                         className="jayden-3d absolute left-1/2 top-0 origin-top"
-                        style={{ width: 10, height: 20 }}
-                        initial={{ x: kant * 32 - 5, y: 104, z: -24, scaleY: 0 }}
-                        animate={{ x: kant * 32 - 5, y: 104, z: -24, scaleY: [0, 1, 0.72, 1] }}
+                        style={{ width: 14, height: 32 }}
+                        initial={{ x: kant * 36 - 7, y: 110, z: -24, scaleY: 0 }}
+                        animate={{ x: kant * 36 - 7, y: 110, z: -24, scaleY: [0, 1, 0.72, 1] }}
                         transition={{ duration: 0.8, delay: 0.85 + (kant + 1) * 0.05 }}
                     >
-                        <Vlakken b={10} h={20} d={10} tint={METAAL} />
+                        {/* Breed bij de mond, smal aan de punt: een straal, geen balk. */}
+                        <div className="jayden-3d jayden-vlam relative h-full w-full origin-top">
+                            <Blok b={14} h={18} d={14} tint={METAAL} />
+                            <Blok b={8} h={14} d={8} y={18} tint={METAAL} />
+                        </div>
                     </motion.div>
                 </React.Fragment>
             ))}
