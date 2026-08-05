@@ -4,6 +4,12 @@
 ## Wat Is Veranderd
 <!-- Noem de belangrijkste code- of productwijzigingen. -->
 
+## Agentroute
+<!-- Verplicht voor agent/** branches. Voorbeeld: Sol high -> Luna medium -> Sol high. -->
+- Modellen + thinking:
+- Externe context gesaniteerd: ja / n.v.t.
+- Menselijke beslisser voor merge/deploy:
+
 ## Tests
 <!-- Welke checks heb je uitgevoerd? Noem commands, handmatige checks of waarom iets niet is getest. -->
 

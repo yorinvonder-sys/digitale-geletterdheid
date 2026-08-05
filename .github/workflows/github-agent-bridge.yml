@@ -2,9 +2,6 @@ name: GitHub Agent Bridge
 
 on:
   workflow_dispatch:
-  push:
-    paths:
-      - "bridge/inbox/**/*.json"
 
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
@@ -18,6 +15,8 @@ concurrency:
 
 jobs:
   process-bridge:
+    # Retired: this legacy bridge bypasses the OpenCode routing and DLP gates.
+    if: ${{ false }}
     runs-on: ubuntu-latest
     timeout-minutes: 15
 

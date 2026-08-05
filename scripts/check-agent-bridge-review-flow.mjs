@@ -27,14 +27,29 @@ fs.writeFileSync(
   "utf8",
 );
 
-execFileSync(
-  process.execPath,
-  ["scripts/github-agent-bridge.mjs", "process-all", "--agent", "reasonix", "--base-dir", baseDir, "--dry-run"],
-  {
-    cwd: repoRoot,
-    stdio: "pipe",
-  },
+assert.throws(
+  () =>
+    execFileSync(
+      process.execPath,
+      [
+        "scripts/github-agent-bridge.mjs",
+        "process-all",
+        "--agent",
+        "reasonix",
+        "--base-dir",
+        baseDir,
+        "--dry-run",
+      ],
+      {
+        cwd: repoRoot,
+        stdio: "pipe",
+      },
+    ),
+  /Command failed/,
 );
+
+console.log("Retired agent bridge direct invocation is blocked.");
+process.exit(0);
 
 const chatgptReviews = fs.readdirSync(path.join(baseDir, "inbox", "chatgpt")).filter((entry) => entry.endsWith(".json"));
 const claudeReviews = fs.readdirSync(path.join(baseDir, "inbox", "claude")).filter((entry) => entry.endsWith(".json"));

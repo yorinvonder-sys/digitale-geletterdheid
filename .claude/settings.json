@@ -1,9 +1,4 @@
 {
-  "permissions": {
-    "allow": [
-      "mcp__Notion__notion-update-page"
-    ]
-  },
   "hooks": {
     "UserPromptSubmit": [
       {
@@ -32,7 +27,7 @@
     ],
     "PostToolUse": [
       {
-        "matcher": "Edit|Write|MultiEdit",
+        "matcher": "Bash|Edit|Write|MultiEdit",
         "hooks": [
           {
             "type": "command",
@@ -43,6 +38,17 @@
         ]
       }
     ],
-    "Stop": []
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"$CLAUDE_PROJECT_DIR/scripts/agent-hooks/policy.mjs\" stop",
+            "timeout": 180,
+            "statusMessage": "Running DGSkills verification hook"
+          }
+        ]
+      }
+    ]
   }
 }

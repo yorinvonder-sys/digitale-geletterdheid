@@ -1,5 +1,9 @@
 import fs from "node:fs";
-import { validateHandoffBody } from "./lib/claudePrUtils.mjs";
+import {
+  REQUIRED_HANDOFF_SECTIONS,
+  validateAgentRoute,
+  validateHandoffBody,
+} from "./lib/claudePrUtils.mjs";
 
 function setGitHubOutput(name, value) {
   const outputFile = process.env.GITHUB_OUTPUT;
@@ -23,7 +27,20 @@ if (!body) {
   process.exit(1);
 }
 
-const result = validateHandoffBody(body);
+const requiredSections =
+  process.env.REQUIRE_AGENT_ROUTE === "true"
+    ? [...REQUIRED_HANDOFF_SECTIONS, "Agentroute"]
+    : REQUIRED_HANDOFF_SECTIONS;
+const result = validateHandoffBody(body, requiredSections);
+
+if (
+  process.env.REQUIRE_AGENT_ROUTE === "true" &&
+  !validateAgentRoute(body).ok &&
+  !result.empty.includes("Agentroute")
+) {
+  result.empty.push("Agentroute");
+  result.ok = false;
+}
 
 if (!result.ok) {
   const parts = [];

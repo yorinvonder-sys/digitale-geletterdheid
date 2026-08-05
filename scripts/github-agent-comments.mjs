@@ -713,7 +713,7 @@ async function main() {
   fail(`Unknown command "${command}".`);
 }
 
-main().catch((error) => {
-  console.error(error.message);
-  process.exit(1);
-});
+process.stderr.write(
+  "Legacy agent comments retired: use the OpenCode DGSkills control plane.\n",
+);
+process.exitCode = 1;

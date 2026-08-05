@@ -5,18 +5,47 @@ a non-coding founder to direct, and keep AI context small by default.
 
 ## Model And Delegation
 
-- Model choice and reasoning effort: see `CLAUDE.md` § Model- en
-  Denkniveau-Selectie. That table is the single source of truth; do not restate
-  it here.
-- Use cheaper delegated agents only for explicit, narrow, low-risk sidecar work:
-  targeted file discovery, log reading, one-route QA, or one-file review.
-- Never delegate Rood work — auth, Supabase/RLS, payments, invoices, personal
-  data, webhooks, secrets, AI endpoints, migrations — to a cheaper or weaker
-  agent. If you delegate it at all, the delegated agent holds the same model and
-  effort floor as the main session.
-- Final go/no-go stays with the user. An independent reviewer that did not write
-  the change is required before merging Rood work; that review informs the
-  decision, it does not replace it.
+- OpenCode is the control plane. Start every work slice with `Model`, `Thinking`,
+  `Why`, and `Escalate when`.
+- Launch project sessions with argument-free `npm run agent:opencode`. The safe
+  launcher rejects all CLI overrides, removes provider/config override variables,
+  and isolates global OpenCode config while preserving the local OAuth store.
+  Direct worker/external-agent selection is forbidden.
+- Use the lowest effort that safely handles the task. If a worker needs a level
+  above its ceiling, switch model instead of buying more reasoning on the wrong
+  model.
+- Only one agent may write in a worktree at a time. Claude writes only in a
+  disposable `claude/**` worktree; Sol reviews and integrates its diff.
+
+| Route | Allowed effort | Use | Ceiling |
+|---|---|---|---|
+| DeepSeek V4 Flash | `none`, `low`, `high` | Sanitized Groen discovery and analysis | `max` is eval-only; never Rood or personal data |
+| Luna | `low`, `medium`, `high` | Bounded reversible implementation | `xhigh`/`max` routes to Sol |
+| Terra | `medium`, `high` | Shadow evaluation only | No applied edits until the eval gate passes |
+| Sol | `low` through `max` | Orchestration, integration, architecture, Rood and final validation | `ultra` only for manual, independently verifiable delegation |
+| Claude Opus 5 | `low` through `max` | Independent review or isolated implementation | No push, merge, deploy or production credentials |
+| Claude Opus 4.8 | `xhigh` | Independent ordinary release review only | Read-only |
+| Claude Fable 5 | `max` | Independent security-incident review only | Read-only |
+
+- Claude Sonnet, Haiku, `opusplan`, automatic model-family fallback and the
+  default Claude model are excluded from this workflow.
+- DeepSeek and Terra analyze only the strict, single-part sanitized packet
+  supplied by Sol; duplicate/unknown safety headers and likely PII fail closed.
+  Every external delegation also requires user approval before provider access.
+  They have no repository, shell, network, skill or MCP tools. Luna has no shell
+  or grep and machine-enforced denies for Rood and agent-policy paths.
+- OpenCode internal title, summary and compaction work uses Sol, not Luna, so a
+  sensitive session is never silently handed to a lower-risk route.
+- Legacy GitHub inbox/comment bridge workflows and npm entrypoints are retired.
+  Do not re-enable them without DLP, trusted-actor checks and exact model proof.
+- Ordinary release gate: Sol `xhigh` prepares the release evidence, Opus 4.8
+  `xhigh` reviews it independently, and the user makes the go/no-go decision.
+- Security-incident gate: Sol `max` owns investigation and remediation; Fable 5
+  `max` and Opus 5 `max` review the same sanitized evidence independently and
+  blind to each other's conclusions. Any critical finding blocks release. Sol
+  reconciles; the user makes the incident and release decision.
+- Do not send secrets, personal data, learner records, raw prompts, auth/session
+  details or production dumps to DeepSeek, Claude, Linear, Sentry or Notion.
 
 ## Lean Context Rules
 
@@ -33,9 +62,39 @@ a non-coding founder to direct, and keep AI context small by default.
 - If a prompt is broad, choose the smallest useful slice first and state the
   assumption. Ask only when a wrong assumption would be costly or risky.
 
+## Linear And Sentry Workflow
+
+- Use the existing Linear DGSkills project for substantial work. New work starts
+  in Backlog, moves to In Progress when the branch starts, In Review when the PR
+  opens, and Done only after merge and proof.
+- Agent branches use `agent/<LINEAR-ID>-<slug>`. A one-time bootstrap branch may
+  omit the Linear ID until OAuth is connected, then records the issue in its PR.
+- Agents may create branches, push and open PRs. They may not merge, enable
+  auto-merge, deploy, or change branch protection.
+- Use Sentry as evidence for production-only failures. Sentry and Linear never
+  replace security, privacy or release judgment.
+
+## Infrastructure MCP Boundaries
+
+- Only `dg-orchestrator` may use Linear, Supabase or Vercel MCP tools. Workers,
+  shadow evaluators and independent reviewers receive sanitized evidence only.
+- Supabase MCP is pinned to the non-production project in `supabase/config.toml`,
+  with `read_only=true` and only schema metadata plus documentation tools. Never
+  query table rows, execute arbitrary SQL, deploy functions or apply migrations.
+- Vercel MCP OAuth is team/account scoped because Vercel does not offer a hard
+  project scope. Use it only for DGSkills project and deployment metadata. Raw
+  logs, runtime errors, analytics, agent traces, protected URLs, deploys,
+  purchases, comments and CLI execution stay disabled.
+- MCP OAuth tokens remain in OpenCode's local credential store. Never commit,
+  print, copy into prompts or send them to another model or service.
+- OpenCode CLI tool traces can print MCP arguments even when the model is told
+  not to. Capture subprocess output for MCP checks and emit only a sanitized
+  final status; never stream raw tool traces into chat, CI logs or Linear.
+
 ## Before Code Or Config Changes
 
-Begin every assistant reply for code/config work with an afstemmingscheck:
+Begin each code/config work slice, pre-edit moment, and scope change with an
+afstemmingscheck:
 
 - Decide if the request is clear enough to execute safely.
 - If vague, broad, risky, or multi-interpretation, ask critical clarifying

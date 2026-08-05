@@ -61,12 +61,15 @@ export function cleanSectionContent(markdown) {
     .trim();
 }
 
-export function validateHandoffBody(markdown) {
+export function validateHandoffBody(
+  markdown,
+  requiredSections = REQUIRED_HANDOFF_SECTIONS,
+) {
   const sections = parseMarkdownSections(markdown);
   const missing = [];
   const empty = [];
 
-  for (const required of REQUIRED_HANDOFF_SECTIONS) {
+  for (const required of requiredSections) {
     const normalized = normalizeHeading(required);
     const section = sections.get(normalized);
 
@@ -85,6 +88,51 @@ export function validateHandoffBody(markdown) {
     missing,
     empty,
     sections,
+  };
+}
+
+export function validateAgentRoute(markdown) {
+  const section = parseMarkdownSections(markdown).get(
+    normalizeHeading("Agentroute"),
+  );
+  const values = new Map();
+
+  for (const line of stripHtmlComments(section?.content ?? "").split("\n")) {
+    const normalizedLine = line.trim().replace(/^[-*]\s+/, "");
+    const separator = normalizedLine.indexOf(":");
+
+    if (separator > 0) {
+      values.set(
+        normalizeHeading(normalizedLine.slice(0, separator)),
+        normalizedLine.slice(separator + 1).trim(),
+      );
+    }
+  }
+
+  const models = values.get(normalizeHeading("Modellen + thinking")) ?? "";
+  const sanitized =
+    values.get(normalizeHeading("Externe context gesaniteerd")) ?? "";
+  const decisionMaker =
+    values.get(normalizeHeading("Menselijke beslisser voor merge/deploy")) ??
+    "";
+  const usesExternalReviewer = /\b(?:deepseek|terra|claude|opus|fable)\b/i.test(
+    models,
+  );
+  const modelsComplete =
+    /\b(?:sol|luna|deepseek|terra|opus|fable)\b/i.test(models) &&
+    !/\b(?:sonnet|haiku|default|best|opusplan)\b/i.test(models);
+  const sanitizedComplete = usesExternalReviewer
+    ? /^ja$/i.test(sanitized)
+    : /^(?:ja|n\.?v\.?t\.?)$/i.test(sanitized);
+  const decisionMakerComplete = /\b(?:yorin|user|gebruiker|human|mens)\b/i.test(
+    decisionMaker,
+  );
+
+  return {
+    ok: Boolean(modelsComplete && sanitizedComplete && decisionMakerComplete),
+    models,
+    sanitized,
+    decisionMaker,
   };
 }
 

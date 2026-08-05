@@ -27,7 +27,7 @@
     ],
     "PostToolUse": [
       {
-        "matcher": "Edit|Write|apply_patch",
+        "matcher": "Bash|Edit|Write|apply_patch",
         "hooks": [
           {
             "type": "command",
@@ -44,7 +44,7 @@
           {
             "type": "command",
             "command": "node \"$(git rev-parse --show-toplevel)/scripts/agent-hooks/policy.mjs\" stop",
-            "timeout": 140,
+            "timeout": 180,
             "statusMessage": "Running DGSkills verification hook"
           }
         ]

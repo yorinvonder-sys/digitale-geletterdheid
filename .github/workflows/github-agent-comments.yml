@@ -1,19 +1,7 @@
 name: GitHub Agent Comments
 
 on:
-  issues:
-    types:
-      - opened
-      - edited
-      - reopened
-  issue_comment:
-    types:
-      - created
-      - edited
-  pull_request_review_comment:
-    types:
-      - created
-      - edited
+  workflow_dispatch:
 
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
@@ -25,7 +13,8 @@ permissions:
 
 jobs:
   respond:
-    if: github.actor != 'github-actions[bot]'
+    # Retired: public comments must not trigger unsanitized paid model calls.
+    if: ${{ false }}
     runs-on: ubuntu-latest
     timeout-minutes: 15
 
