@@ -38,18 +38,19 @@ export const cloudCommanderConfig: ToolGuideConfig = {
                 { id: 'naam-correct', label: 'De map heet precies "School"' },
             ],
             verificationQuestion: {
-                question: 'Waar worden je bestanden opgeslagen als je ze uploadt naar OneDrive?',
+                question:
+                    'Je hebt net de map School op je school-iPad gemaakt en daarin een verslag. Thuis heb je die iPad niet bij je, maar je wilt het verslag op een schoolcomputer openen. Waar sla je het bestand op?',
                 options: [
-                    'Op mijn iPad, zodat ik ze altijd bij me heb',
-                    'In de cloud, op servers van Microsoft',
-                    'Op de printer van school',
+                    'Alleen op mijn iPad',
+                    'In OneDrive',
+                    'Op de schoolprinter',
                 ],
                 correctIndex: 1,
                 allowRetry: true,
                 retryHint:
-                    'Nog niet. Denk aan waar je het bestand nog kunt openen als je iPad niet bij je is. Kies daarna opnieuw.',
+                    'Nog niet. Denk aan de plek waar je het verslag ook kunt openen als je iPad niet bij je is. Kies daarna opnieuw.',
                 explanation:
-                    'Juist! OneDrive slaat je bestanden op in de cloud — dat zijn servers van Microsoft. Daardoor kun je ze op elk apparaat openen, zolang je verbinding hebt met internet.',
+                    'Juist! OneDrive slaat je verslag op in de cloud — dat zijn servers van Microsoft. Daardoor kun je het op een ander apparaat openen, zolang je verbinding hebt met internet.',
             },
         },
         {
@@ -76,11 +77,12 @@ export const cloudCommanderConfig: ToolGuideConfig = {
                 { id: 'rechten-gecontroleerd', label: 'Ik heb de juiste klasgenoot en het recht Bekijken of Bewerken gecontroleerd' },
             ],
             verificationQuestion: {
-                question: 'Welke instelling kies je als alleen één klasgenoot het bestand mag bekijken?',
+                question:
+                    'Je wilt een foto van je schoolwerk delen met één klasgenoot. Die klasgenoot mag het bestand bekijken, maar niets wijzigen. Welke instelling kies je?',
                 options: [
-                    'Iedereen met de koppeling mag bewerken',
-                    'Specifieke personen mogen bekijken',
-                    'Iedereen op internet mag het openen',
+                    'Iedereen + bewerken',
+                    'Specifieke personen + bekijken',
+                    'Iedereen op internet',
                 ],
                 correctIndex: 1,
                 allowRetry: true,

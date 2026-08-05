@@ -106,11 +106,11 @@ function prerenderRoutes() {
 
   const routeMeta = {
     '/': {
-      title: 'Digitale Geletterdheid voor Scholen — Gratis Pilot | DGSkills',
-      description: 'DGSkills is het interactieve platform voor digitale geletterdheid in het voortgezet onderwijs. AI-missies, gamification en SLO Kerndoelen 2025. Start een gratis pilot voor jouw school.',
+      title: 'Het verhaal van een les die wél werkt | DGSkills',
+      description: 'Digitale geletterdheid voor VO en VSO, verteld als verhaal: van de pijn in de klas naar missies, docentdashboard en aantoonbare SLO-dekking.',
       canonical: 'https://dgskills.app/',
-      ogTitle: 'DGSkills — Digitale Geletterdheid voor het Onderwijs',
-      ogDescription: 'Interactief platform met AI-missies, gamification en SLO Kerndoelen 2025 voor het voortgezet onderwijs. Gratis pilot voor scholen.',
+      ogTitle: 'Het verhaal van een les die wél werkt — DGSkills',
+      ogDescription: 'Digitale geletterdheid voor VO en VSO, verteld als verhaal: van de pijn in de klas naar missies, docentdashboard en aantoonbare SLO-dekking.',
       ogUrl: 'https://dgskills.app/',
     },
     '/scholen': {
@@ -134,7 +134,7 @@ function prerenderRoutes() {
       description: 'Digitale geletterdheid voor VO en VSO, verteld als verhaal: van de pijn in de klas naar missies, docentdashboard en aantoonbare SLO-dekking.',
       canonical: 'https://dgskills.app/verhaal',
       ogTitle: 'Het verhaal van een les die wél werkt — DGSkills',
-      ogDescription: 'Van Jayden en Mila tot het docentdashboard: hoe digitale geletterdheid er in de praktijk uitziet.',
+      ogDescription: 'Digitale geletterdheid voor VO en VSO, verteld als verhaal: van de pijn in de klas naar missies, docentdashboard en aantoonbare SLO-dekking.',
       ogUrl: 'https://dgskills.app/verhaal',
     },
     '/login': {

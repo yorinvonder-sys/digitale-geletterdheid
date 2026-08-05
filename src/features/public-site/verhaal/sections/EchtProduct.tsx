@@ -27,54 +27,6 @@ const ROLLEN: { id: Rol; label: string; url: string; zin: string }[] = [
     },
 ];
 
-/**
- * Nog vast te leggen met `npm run capture:product`. Zolang het bestand er niet
- * is blijft dit `null`: een `<img>` naar een ontbrekend pad laat elke bezoeker
- * een 404 ophalen, en de `onError`-terugval verbergt dat alleen visueel.
- * Zet dit op '/assets/product/leerling-trofeeen.webp' zodra de opname staat.
- */
-const TROFEEEN_SRC: string | null = null;
-
-/**
- * Trofeeën/unlocks staan naast het live scherm en niet erin: die omgeving zit
- * achter een login en is dus niet live in te bedden. Klein gehouden — het
- * dashboard moet de volle breedte houden, anders wordt de tekst erin onleesbaar.
- */
-function TrofeeenFiguur() {
-    const [failed, setFailed] = useState(false);
-
-    return (
-        <figure className="mt-4 flex flex-col gap-4 sm:flex-row sm:items-center">
-            {failed || TROFEEEN_SRC === null ? (
-                <div
-                    className="flex h-[180px] w-full shrink-0 items-center justify-center rounded-xl border-2 border-dashed border-duck-bg/20 px-4 text-center sm:w-[280px]"
-                    aria-hidden="true"
-                >
-                    <span className="text-xs font-bold uppercase tracking-widest text-duck-bg/40">
-                        Badges en unlocks
-                    </span>
-                </div>
-            ) : (
-                <img
-                    src={TROFEEEN_SRC}
-                    alt="Trofeeënscherm van een leerling: behaalde badges naast badges die nog te verdienen zijn."
-                    width={1200}
-                    height={800}
-                    loading="lazy"
-                    decoding="async"
-                    onError={() => setFailed(true)}
-                    className="w-full shrink-0 rounded-xl border-2 border-duck-bg/20 sm:w-[280px]"
-                />
-            )}
-            <figcaption className="text-sm leading-relaxed text-duck-bg/60">
-                XP geef je uit aan je avatar. Wat je nog niet hebt vrijgespeeld zie je staan — dat is
-                wat leerlingen terugbrengt.{' '}
-                <span className="text-duck-bg/40">Dit scherm zit achter een login.</span>
-            </figcaption>
-        </figure>
-    );
-}
-
 export function EchtProduct() {
     const [rol, setRol] = useState<Rol>('leerling');
     const [zichtbaar, setZichtbaar] = useState(false);
@@ -178,7 +130,6 @@ export function EchtProduct() {
                                 <HeroDashboardPreview which="student" />
                             )}
                         </BrowserFrame>
-                        {rol === 'leerling' && <TrofeeenFiguur />}
                     </>
                 )}
             </div>

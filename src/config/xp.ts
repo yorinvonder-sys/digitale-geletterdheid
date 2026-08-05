@@ -19,6 +19,8 @@ export const getXPReward = (difficulty: string): number => {
 const MISSION_XP_OVERRIDES: Record<string, number> = {
     'magister-master': 25,
     'cloud-commander': 25,
+    'word-wizard': 25,
+    'slide-specialist': 25,
 };
 
 export const getMissionXPReward = (missionId: string, difficulty: string): number =>

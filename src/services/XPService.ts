@@ -47,6 +47,68 @@ export const awardXP = async (
     }
 };
 
+/**
+ * Spend XP via server-side RPC.
+ *
+ * XP is never deducted from stats.xp — that value is lifetime earned XP and
+ * drives level, badges and the leaderboard. Spending is recorded in a separate
+ * ledger; the spendable balance is stats.xp minus everything spent.
+ *
+ * The `spend_xp` PostgreSQL function enforces:
+ * - the spender is always auth.uid() (no spending on someone else's behalf)
+ * - sufficient balance, checked under a FOR UPDATE row lock (no double-spend)
+ * - append-only ledger insert (clients have no write access to the table)
+ */
+export const spendXP = async (
+    amount: number,
+    reason: string,
+    refId?: string
+): Promise<{ spent: boolean; balance?: number; reason?: string }> => {
+    try {
+        const { data, error } = await supabase.rpc('spend_xp', {
+            p_amount: amount,
+            p_reason: reason,
+            p_ref_id: refId ?? undefined,
+        });
+
+        if (error) {
+            console.error('[XP] RPC spend_xp error:', error);
+            return { spent: false, reason: 'Fout bij XP afschrijving' };
+        }
+
+        const result = (data as Record<string, any>) || {};
+        return {
+            spent: !!result.spent,
+            balance: result.balance,
+            reason: result.reason,
+        };
+    } catch (error) {
+        console.error('Error spending XP:', error);
+        return { spent: false, reason: 'Fout bij XP afschrijving' };
+    }
+};
+
+/**
+ * Spendable XP balance: lifetime earned XP minus everything spent.
+ */
+export const getXPBalance = async (): Promise<{ earned: number; spent: number; balance: number }> => {
+    try {
+        const { data, error } = await supabase.rpc('get_xp_balance');
+
+        if (error) throw error;
+
+        const result = (data as Record<string, any>) || {};
+        return {
+            earned: result.earned ?? 0,
+            spent: result.spent ?? 0,
+            balance: result.balance ?? 0,
+        };
+    } catch (error) {
+        console.error('Error getting XP balance:', error);
+        return { earned: 0, spent: 0, balance: 0 };
+    }
+};
+
 export const getXPHistory = async (userId: string, limit = 20): Promise<any[]> => {
     try {
         const { data, error } = await supabase

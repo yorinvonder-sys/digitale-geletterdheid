@@ -252,7 +252,7 @@ const StepCard: React.FC<StepCardProps> = ({
                             <button
                                 key={item.id}
                                 onClick={() => onCheckItem(step.id, item.id)}
-                                className={`w-full flex items-center gap-3 p-2.5 rounded-xl border transition-all duration-200 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-acid focus-visible:ring-offset-2 ${
+                                className={`w-full min-h-11 flex items-center gap-3 p-2.5 rounded-xl border transition-all duration-200 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-acid focus-visible:ring-offset-2 ${
                                     checked
                                         ? 'bg-duck-ink/8 border-duck-ink/30'
                                         : 'bg-duck-bg border-duck-gray hover:border-duck-acid/40'
@@ -298,7 +298,7 @@ const StepCard: React.FC<StepCardProps> = ({
                     </p>
                     <button
                         onClick={() => onToggleTeacherCheck(step.id)}
-                        className={`w-full flex items-center gap-3 p-3 rounded-xl border transition-all duration-200 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-ink focus-visible:ring-offset-2 ${
+                        className={`w-full min-h-11 flex items-center gap-3 p-3 rounded-xl border transition-all duration-200 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-ink focus-visible:ring-offset-2 ${
                             teacherChecks[step.id]
                                 ? 'bg-duck-ink border-duck-ink text-white'
                                 : 'bg-white border-duck-gray text-duck-ink hover:border-duck-ink/50'
@@ -338,10 +338,15 @@ const StepCard: React.FC<StepCardProps> = ({
                     <div className="space-y-2 mb-3">
                         {step.verificationQuestion.options.map((option, i) => {
                             const selected = verificationAnswer === i;
+                            const revealCorrectAnswer = Boolean(
+                                verificationSubmitted &&
+                                    i === step.verificationQuestion!.correctIndex &&
+                                    (!step.verificationQuestion!.allowRetry || isCorrect)
+                            );
                             let style = 'bg-duck-bg border-duck-gray hover:border-duck-acid/40';
                             let textStyle = 'text-duck-ink/60';
                             if (verificationSubmitted) {
-                                if (i === step.verificationQuestion!.correctIndex) {
+                                if (revealCorrectAnswer) {
                                     style = 'bg-duck-ink/8 border-duck-ink/40';
                                     textStyle = 'text-duck-ink';
                                 } else if (selected) {
@@ -360,21 +365,20 @@ const StepCard: React.FC<StepCardProps> = ({
                                         !verificationSubmitted && onSelectAnswer(step.id, i)
                                     }
                                     disabled={verificationSubmitted}
-                                    className={`w-full flex items-center gap-3 p-2.5 rounded-xl border transition-all duration-200 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-acid focus-visible:ring-offset-2 ${style}`}
+                                    aria-pressed={verificationAnswer === i}
+                                    className={`w-full min-h-11 flex items-center gap-3 p-2.5 rounded-xl border transition-all duration-200 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-acid focus-visible:ring-offset-2 ${style}`}
                                 >
                                     <div
                                         className={`w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0 transition-all duration-200 ${
-                                            verificationSubmitted &&
-                                            i === step.verificationQuestion!.correctIndex
+                                            revealCorrectAnswer
                                                 ? 'bg-duck-ink border-duck-ink'
-                                                : selected && !verificationSubmitted
+                                                : selected
                                                   ? 'border-duck-acid bg-duck-acid'
                                                   : 'border-duck-gray'
                                         }`}
                                     >
-                                        {((verificationSubmitted &&
-                                            i === step.verificationQuestion!.correctIndex) ||
-                                            (selected && !verificationSubmitted)) && (
+                                        {(revealCorrectAnswer ||
+                                            selected) && (
                                             <div className="w-2 h-2 rounded-full bg-white" />
                                         )}
                                     </div>
@@ -392,7 +396,7 @@ const StepCard: React.FC<StepCardProps> = ({
                     {!verificationSubmitted && verificationAnswer !== undefined && (
                         <button
                             onClick={() => onSubmitAnswer(step.id)}
-                            className="w-full py-2.5 bg-duck-acid/10 hover:bg-duck-acid/20 text-duck-ink rounded-xl text-sm font-bold transition-all duration-200 border border-duck-acid/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-acid focus-visible:ring-offset-2"
+                            className="w-full min-h-11 py-2.5 bg-duck-acid/10 hover:bg-duck-acid/20 text-duck-ink rounded-xl text-sm font-bold transition-all duration-200 border border-duck-acid/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-acid focus-visible:ring-offset-2"
                             style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                         >
                             Controleer antwoord
@@ -402,6 +406,9 @@ const StepCard: React.FC<StepCardProps> = ({
                     {verificationSubmitted && (
                         <>
                             <div
+                                role="status"
+                                aria-live="polite"
+                                aria-atomic="true"
                                 className={`flex gap-2 rounded-xl p-3 ${
                                     isCorrect
                                         ? 'bg-duck-ink/8 border border-duck-ink/20'
@@ -649,7 +656,7 @@ export const ToolGuide: React.FC<TemplateMissionProps> = ({ missionId, onBack, o
                 <p className="text-duck-ink/60 mb-4" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                     Config niet gevonden: {missionId}
                 </p>
-                <button onClick={onBack} className="px-4 py-2 bg-duck-acid text-duck-ink rounded-xl text-sm font-bold">Terug</button>
+                <button onClick={onBack} className="min-h-11 min-w-11 px-4 py-2 bg-duck-acid text-duck-ink rounded-xl text-sm font-bold">Terug</button>
             </div>
         </div>
     );
