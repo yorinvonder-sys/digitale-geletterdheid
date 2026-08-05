@@ -129,6 +129,12 @@ export function Proloog() {
                 >
                     Plan schoolpilot →
                 </a>
+                <a
+                    href="/login"
+                    className="min-h-[44px] rounded-full border-[3px] border-duck-ink bg-transparent px-8 py-4 font-bold text-duck-ink transition-transform hover:-translate-y-0.5"
+                >
+                    Inloggen
+                </a>
             </motion.div>
 
         </section>
