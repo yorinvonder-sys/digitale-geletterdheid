@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Film, hasSeenFilm } from '../film/Film';
+import { Film, hasSeenFilm, TOTAL } from '../film/Film';
 import { LogoLockup } from '../components/storyBrand';
 
 /**
@@ -19,7 +19,7 @@ export function FilmChapter() {
             <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4 md:px-14">
                 <LogoLockup height={28} dark />
                 <span className="hidden text-xs font-bold uppercase tracking-[0.25em] text-duck-bg/50 sm:block">
-                    Een korte film over Jayden · 43 sec
+                    Een korte film over Jayden · {Math.round(TOTAL)} sec
                 </span>
             </div>
 
