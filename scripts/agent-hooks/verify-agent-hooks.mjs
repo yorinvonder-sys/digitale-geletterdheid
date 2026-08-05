@@ -60,7 +60,7 @@ for (const configPath of CONFIG_FILES) {
     .flatMap((entry) => entry?.hooks ?? [])
     .map((hook) => Number(hook?.timeout ?? 0));
   assert.ok(
-    stopTimeouts.every((timeout) => timeout >= 360),
+    stopTimeouts.every((timeout) => timeout >= 420),
     `${configPath} Stop hooks must cover agent check plus doctor timeouts`,
   );
 }

@@ -14,6 +14,8 @@ permission:
     "opencode.json": deny
     "package.json": deny
     "package-lock.json": deny
+    ".git": deny
+    ".git/**": deny
     ".claude/**": deny
     ".codex/**": deny
     ".github/**": deny
@@ -41,6 +43,8 @@ permission:
     "src/features/teacher/**": deny
   read:
     "*": allow
+    ".git": deny
+    ".git/**": deny
     ".env*": deny
     "**/.env*": deny
     "supabase/**": deny

@@ -10,6 +10,8 @@ import { homedir, tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { pathToFileURL } from 'node:url';
 
+export const OPENCODE_VERSION = '1.18.11';
+
 export function validateOpenCodeArgs(args) {
   if (args.length > 0) {
     throw new Error(
@@ -74,6 +76,19 @@ export function resolveOpenCodeBinary(
   throw new Error('No trusted OpenCode executable is installed');
 }
 
+export function assertOpenCodeVersion(binary, environment, run = spawnSync) {
+  const result = run(binary, ['--version'], {
+    env: environment,
+    encoding: 'utf8',
+    maxBuffer: 1024 * 1024,
+    timeout: 10000,
+  });
+
+  if (result.status !== 0 || String(result.stdout).trim() !== OPENCODE_VERSION) {
+    throw new Error(`OpenCode ${OPENCODE_VERSION} is required`);
+  }
+}
+
 const isMain = process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href;
 
 if (isMain) {
@@ -83,9 +98,12 @@ if (isMain) {
     const args = process.argv.slice(2);
     validateOpenCodeArgs(args);
     configHome = mkdtempSync(join(tmpdir(), 'dgskills-opencode-config-'));
-    const result = spawnSync(resolveOpenCodeBinary(), args, {
+    const binary = resolveOpenCodeBinary();
+    const environment = cleanOpenCodeEnvironment(process.env, configHome);
+    assertOpenCodeVersion(binary, environment);
+    const result = spawnSync(binary, args, {
       cwd: process.cwd(),
-      env: cleanOpenCodeEnvironment(process.env, configHome),
+      env: environment,
       stdio: 'inherit',
     });
     process.exitCode = result.status ?? 1;

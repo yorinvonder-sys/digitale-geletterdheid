@@ -17,11 +17,14 @@ import {
   validateHandoffBody,
 } from './lib/claudePrUtils.mjs';
 import {
+  createExternalDelegationHooks,
   resolveExternalRoute,
   validateExternalMessage,
 } from './agent-runtime/external-delegation-dlp.mjs';
 import {
+  assertOpenCodeVersion,
   cleanOpenCodeEnvironment,
+  OPENCODE_VERSION,
   resolveOpenCodeBinary,
   validateOpenCodeArgs,
 } from './agent-runtime/opencode-safe.mjs';
@@ -116,6 +119,22 @@ try {
   const binaryPath = join(openCodeBinaryDirectory, 'opencode');
   writeFileSync(binaryPath, '#!/bin/sh\n', { mode: 0o700 });
   assert.equal(resolveOpenCodeBinary([binaryPath]), realpathSync(binaryPath));
+  assert.doesNotThrow(() =>
+    assertOpenCodeVersion(binaryPath, openCodeEnvironment, () => ({
+      status: 0,
+      stdout: `${OPENCODE_VERSION}\n`,
+      stderr: '',
+    })),
+  );
+  assert.throws(
+    () =>
+      assertOpenCodeVersion(binaryPath, openCodeEnvironment, () => ({
+        status: 0,
+        stdout: 'unexpected-version\n',
+        stderr: '',
+      })),
+    /is required/,
+  );
 } finally {
   rmSync(openCodeBinaryDirectory, { recursive: true, force: true });
 }
@@ -124,6 +143,29 @@ assert.equal(
   'deepseek-scout',
 );
 assert.equal(resolveExternalRoute('', 'openai/gpt-5.6-terra'), 'terra-shadow');
+const externalHooks = createExternalDelegationHooks();
+const safeHookOutput = {
+  parts: [{ type: 'text', text: `${safeExternalPacket}\n\n` }],
+};
+let providerParts;
+await externalHooks['chat.message'](
+  { agent: 'deepseek-scout', model: { modelID: 'deepseek-v4-flash' } },
+  safeHookOutput,
+);
+providerParts = safeHookOutput.parts;
+assert.deepEqual(providerParts, [{ type: 'text', text: safeExternalPacket }]);
+let unsafeProviderReached = false;
+await assert.rejects(async () => {
+  const unsafeHookOutput = {
+    parts: [{ type: 'text', text: `${safeExternalPacket}\nleerling: Testpersoon` }],
+  };
+  await externalHooks['chat.message'](
+    { agent: 'deepseek-scout', model: { modelID: 'deepseek-v4-flash' } },
+    unsafeHookOutput,
+  );
+  unsafeProviderReached = true;
+}, /appears sensitive/);
+assert.equal(unsafeProviderReached, false);
 assert.deepEqual(config.enabled_providers, ['openai', 'deepseek']);
 assert.deepEqual(config.provider?.deepseek?.whitelist, ['deepseek-v4-flash']);
 assert.equal(config.mcp?.linear?.url, 'https://mcp.linear.app/mcp');
@@ -288,6 +330,8 @@ for (const file of agentFiles.filter((name) => name.startsWith('luna-'))) {
   assert.match(contents, /^\s+"supabase\/\*\*": deny$/m);
   assert.match(contents, /^\s+"src\/services\/\*\*": deny$/m);
   assert.match(contents, /^\s+"\.opencode\/\*\*": deny$/m);
+  assert.match(contents, /^\s+"\.git": deny$/m);
+  assert.match(contents, /^\s+"\.git\/\*\*": deny$/m);
   assert.match(contents, /^\s+"src\/features\/student\/\*\*": deny$/m);
   assert.match(contents, /^\s+"src\/features\/missions\/\*\*": deny$/m);
 }
@@ -319,8 +363,7 @@ const delegationPlugin = readFileSync(
   '.opencode/plugins/delegation-dlp.js',
   'utf8',
 );
-assert.match(delegationPlugin, /'chat\.message'/);
-assert.match(delegationPlugin, /validateExternalMessage/);
+assert.match(delegationPlugin, /createExternalDelegationHooks/);
 
 const releaseCommand = readFileSync('.opencode/commands/release-review.md', 'utf8');
 assert.match(releaseCommand, /^variant: xhigh$/m);
@@ -358,6 +401,11 @@ assert.match(workflow, /startsWith\(github\.head_ref, 'agent\/'\)/);
 assert.match(workflow, /startsWith\(github\.head_ref, 'claude\/'\)/);
 assert.match(workflow, /REQUIRE_AGENT_ROUTE/);
 assert.match(workflow, /npm run agent:check/);
+const qualityJobHeader = workflow.slice(
+  workflow.indexOf('  quality-checks:'),
+  workflow.indexOf('\n    steps:', workflow.indexOf('  quality-checks:')),
+);
+assert.doesNotMatch(qualityJobHeader, /^\s{4}if:/m);
 
 for (const legacyWorkflow of [
   '.github/workflows/github-agent-bridge.yml',
