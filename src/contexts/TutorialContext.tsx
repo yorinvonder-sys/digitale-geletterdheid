@@ -1,4 +1,6 @@
 import React, { createContext, useContext, useState, useCallback, ReactNode } from 'react';
+import { shouldAutoStart } from '@/features/onboarding/core/autostart';
+import { isTourDisabled, isTourSeen, markTourSeen, type TourId } from '@/features/onboarding/core/tourStorage';
 
 export interface TutorialStep {
     id: string;
@@ -157,65 +159,95 @@ export const STUDENT_TUTORIAL_STEPS: TutorialStep[] = [
     },
 ];
 
-const TEACHER_STORAGE_KEY = 'teacher_tutorial_completed';
-const STUDENT_STORAGE_KEY = 'student_tutorial_completed';
-
 interface TutorialProviderProps {
     children: ReactNode;
     steps?: TutorialStep[];
     autoStart?: boolean;
-    storageKey?: string;
+    /** Welke rondleiding dit is — bepaalt de sessiesleutel. */
+    tourId?: TourId;
+    /** Gebruikers-id: maakt het sessievangnet uniek per persoon. */
+    userId?: string | null;
+    /** Serverwaarheid uit `users.stats`. Ontbreekt hij, dan geldt "nog niet gedaan". */
+    completed?: boolean;
+    /** Publieke demo of marketingpreview — daar start nooit een rondleiding. */
+    isDemo?: boolean;
     onComplete?: () => void;
-    isCompleted?: boolean;
 }
+
+const getSessionStore = (): Storage | null => {
+    try {
+        return typeof window === 'undefined' ? null : window.sessionStorage;
+    } catch {
+        return null;
+    }
+};
+
+const getLocalStore = (): Storage | null => {
+    try {
+        return typeof window === 'undefined' ? null : window.localStorage;
+    } catch {
+        return null;
+    }
+};
 
 export const TutorialProvider: React.FC<TutorialProviderProps> = ({
     children,
     steps = TEACHER_TUTORIAL_STEPS,
-    autoStart = false, // Changed from true to false for clean screenshots
-    storageKey = TEACHER_STORAGE_KEY,
-    onComplete,
-    isCompleted
+    autoStart = false,
+    tourId = 'teacher',
+    userId,
+    completed,
+    isDemo = false,
+    onComplete
 }) => {
     const [isActive, setIsActive] = useState(false);
     const [currentStepIndex, setCurrentStepIndex] = useState(0);
-    const [hasCompleted, setHasCompleted] = useState(() => {
-        if (isCompleted !== undefined) return isCompleted;
-        return localStorage.getItem(storageKey) === 'true';
-    });
 
+    // De server is leidend. Het sessievangnet dekt alleen het geval dat de
+    // RPC faalde nadat de gebruiker de rondleiding wél had afgerond; het is
+    // per gebruiker gescheiden, dus een volgende leerling erft het niet.
+    const [seenThisSession, setSeenThisSession] = useState(
+        () => isTourSeen(getSessionStore(), userId, tourId)
+    );
+
+    // Wisselt de gebruiker binnen dezelfde tab, dan hoort het vangnet mee te wisselen.
     React.useEffect(() => {
-        if (isCompleted !== undefined) {
-            setHasCompleted(isCompleted);
-        }
-    }, [isCompleted]);
+        setSeenThisSession(isTourSeen(getSessionStore(), userId, tourId));
+    }, [userId, tourId]);
 
+    const hasCompleted = completed === true || seenThisSession;
 
-    // Auto-start tutorial for first-time users
+    // Auto-start voor wie hem nog niet gezien heeft.
     React.useEffect(() => {
-        if (autoStart && !hasCompleted) {
-            // Small delay to let dashboard render first
-            const timer = setTimeout(() => setIsActive(true), 800);
-            return () => clearTimeout(timer);
-        }
-    }, [autoStart, hasCompleted]);
+        const mayStart = shouldAutoStart({
+            enabled: autoStart,
+            completed: hasCompleted,
+            seenThisSession,
+            disabled: isTourDisabled(window.location.search, getLocalStore()),
+            ready: true,
+            isDemo,
+        });
+        if (!mayStart) return;
+        // Korte vertraging zodat het dashboard eerst kan renderen.
+        const timer = setTimeout(() => setIsActive(true), 800);
+        return () => clearTimeout(timer);
+    }, [autoStart, hasCompleted, seenThisSession, isDemo]);
 
     const currentStep = isActive ? steps[currentStepIndex] : null;
 
     const startTutorial = useCallback(() => {
         setCurrentStepIndex(0);
         setIsActive(true);
-        // Adoption event logging could be added here
-        console.log('[Tutorial] Started');
     }, []);
 
     const endTutorial = useCallback(() => {
         setIsActive(false);
-        setHasCompleted(true);
-        localStorage.setItem(storageKey, 'true');
+        // Eerst het sessievangnet, dan pas de server: faalt de RPC, dan start de
+        // rondleiding deze sessie in elk geval niet opnieuw.
+        markTourSeen(getSessionStore(), userId, tourId);
+        setSeenThisSession(true);
         onComplete?.();
-        console.log('[Tutorial] Completed');
-    }, [storageKey, onComplete]);
+    }, [userId, tourId, onComplete]);
 
     const nextStep = useCallback(() => {
         dismissOpenOverlays();
@@ -270,13 +302,9 @@ export const useTutorial = (): TutorialContextType => {
     return context;
 };
 
-// Reset tutorial (for testing)
-export const resetTutorial = (key: string = TEACHER_STORAGE_KEY) => {
-    localStorage.removeItem(key);
-};
-
-export const resetStudentTutorial = () => {
-    localStorage.removeItem(STUDENT_STORAGE_KEY);
-};
-
-export { STUDENT_STORAGE_KEY, TEACHER_STORAGE_KEY };
+/**
+ * Buiten een provider (publieke demo, marketingpreview) is er geen rondleiding.
+ * `useTutorial` gooit daar bewust; deze variant geeft `null` terug voor
+ * componenten die zowel binnen als buiten de app-shell gerenderd worden.
+ */
+export const useTutorialOptional = (): TutorialContextType | null => useContext(TutorialContext);

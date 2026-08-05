@@ -16,7 +16,8 @@ import { useFocusMode } from '@/hooks/useFocusMode';
 import { awardXP } from '@/services/XPService';
 import { markMissionCompleted } from '@/services/missionCompletionService';
 import { getMissionXPReward } from '@/config/xp';
-import { TutorialProvider, STUDENT_TUTORIAL_STEPS, STUDENT_STORAGE_KEY, TutorialStep } from '@/contexts/TutorialContext';
+import { TutorialProvider, STUDENT_TUTORIAL_STEPS, TutorialStep } from '@/contexts/TutorialContext';
+import { DEFAULT_STATS } from '@/config/userStats';
 import { AccessibilityProvider } from '@/contexts/AccessibilityContext';
 import { lazyWithRetry } from '@/utils/lazyWithRetry';
 import { SecureErrorBoundary } from '@/components/app-shell/SecureErrorBoundary';
@@ -75,9 +76,6 @@ const LoadingFallback = () => (
         </div>
     </div>
 );
-
-/** Fallback base so spreading optional stats always yields a valid UserStats. */
-const DEFAULT_STATS: UserStats = { xp: 0, level: 1, missionsCompleted: [], inventory: [] };
 
 const DEDICATED_MISSIONS = new Set([
     'prompt-master',
@@ -265,6 +263,20 @@ export function AuthenticatedApp() {
             console.error("Error saving progress to Supabase:", error);
             setToast({ message: 'Voortgang kon niet worden opgeslagen. Probeer het opnieuw.', type: 'error' });
         }
+    };
+
+    /**
+     * Opslaan én de gebruiker in het geheugen bijwerken.
+     *
+     * `handleSaveProgress` schrijft alleen naar de server. Voor vlaggen die de
+     * UI meteen aanstuurt — zoals het afronden van de rondleiding — laat dat
+     * `user.stats` achter op de oude waarde, waardoor het scherm terugvalt op
+     * "nog niet gedaan" tot de volgende volledige herlaadbeurt.
+     */
+    const handleUpdateStats = async (stats: UserStats) => {
+        if (!user) return;
+        setUser({ ...user, stats });
+        await handleSaveProgress(stats);
     };
 
     const handleUpdateProfile = async (data: Partial<ParentUser>) => {
@@ -854,7 +866,7 @@ export function AuthenticatedApp() {
             return (
                 <TeacherDashboard
                     user={user}
-                    onUpdateStats={handleSaveProgress}
+                    onUpdateStats={handleUpdateStats}
                     onViewAssignments={() => setViewMode('assignments')}
                     onLogout={handleLogout}
                     onOpenGames={(gameId) => {
@@ -879,7 +891,7 @@ export function AuthenticatedApp() {
                         </button>
                         <TeacherDashboard
                             user={user}
-                            onUpdateStats={handleSaveProgress}
+                            onUpdateStats={handleUpdateStats}
                             onViewAssignments={() => setViewMode('assignments')}
                             onLogout={handleLogout}
                             onOpenGames={(gameId) => {
@@ -1063,9 +1075,10 @@ export function AuthenticatedApp() {
     const wrapped = user.role === 'student' ? (
         <TutorialProvider
             steps={studentTutorialSteps}
-            storageKey={STUDENT_STORAGE_KEY}
+            tourId="student"
+            userId={user?.uid}
             autoStart={true}
-            isCompleted={user?.stats?.hasCompletedStudentTutorial}
+            completed={user?.stats?.hasCompletedStudentTutorial}
             onComplete={async () => {
                 if (user) {
                     const newStats: UserStats = { ...DEFAULT_STATS, ...user.stats, hasCompletedStudentTutorial: true };

@@ -1,6 +1,7 @@
 // Auth: Microsoft SSO, email/password, role detection, MFA
 import { supabase, cleanupSupabaseAuthStorage } from './supabase';
 import type { ParentUser, UserRole } from '@/types';
+import { normalizeStats } from '@/config/userStats';
 import { logAccountCreated } from './auditService';
 import { enforcePasswordPolicy } from '@/utils/passwordValidator';
 import { validateEmail } from '@/utils/emailValidator';
@@ -281,20 +282,29 @@ export const logout = async () => {
         window.location.href = '/login';
     };
 
-    // Clear privacy-sensitive localStorage data (shared school computers)
+    // Clear privacy-sensitive browser data (shared school computers).
+    // Let op: 'student-tutorial-' stond hier met koppeltekens terwijl de sleutel
+    // 'student_tutorial_completed' heette — die is dus nooit gewist, waardoor de
+    // volgende leerling op dezelfde computer de rondleiding oversloeg. De
+    // voortgang staat nu op de server; wat resteert valt onder 'dgskills.tour.'.
     const sensitiveKeyPrefixes = [
         'mission-autosave-',     // missie-voortgang
         'chat-history-',         // chatgeschiedenis
-        'student-tutorial-',     // tutorial-voortgang
+        'dgskills.tour.',        // rondleiding-vangnet per gebruiker
         'focus-mode-',           // focusmodus-status
         'game-state-',           // spelstatus
         'permission-cache-',     // permissie-cache
     ];
-    Object.keys(localStorage).forEach(key => {
-        if (sensitiveKeyPrefixes.some(prefix => key.startsWith(prefix))) {
-            localStorage.removeItem(key);
-        }
-    });
+    const clearSensitive = (store: Storage) => {
+        Object.keys(store).forEach(key => {
+            if (sensitiveKeyPrefixes.some(prefix => key.startsWith(prefix))) {
+                store.removeItem(key);
+            }
+        });
+    };
+    try { clearSensitive(localStorage); } catch { /* opslag niet beschikbaar */ }
+    // sessionStorage werd hier niet meegenomen; het rondleiding-vangnet leeft daar.
+    try { clearSensitive(sessionStorage); } catch { /* opslag niet beschikbaar */ }
 
     // Revoke MFA trusted sessions on logout (security: prevents trust lingering)
     try {
@@ -372,6 +382,7 @@ export const subscribeToAuthChanges = (callback: (user: ParentUser | null) => vo
             role: finalRole,
             schoolId: getSchoolIdFromMeta(supabaseUser) || undefined,
             identifier,
+            stats: normalizeStats(),
             // Veilig default: bij een fallback-identity geen verplichte password/MFA bypasses introduceren.
             mustChangePassword: false,
             mfaPending: requiresMfa(finalRole),
@@ -500,7 +511,10 @@ export const subscribeToAuthChanges = (callback: (user: ParentUser | null) => vo
             schoolId: finalSchoolId || undefined,
             identifier: finalIdentifier,
             studentClass: existingStudentClass,
-            stats: existingStats,
+            // Normaliseren maakt de tutorialvlaggen expliciet `false` in plaats van
+            // `undefined`. Daardoor kan de rondleiding niet terugvallen op een
+            // gedeelde browsersleutel — zie src/config/userStats.ts.
+            stats: normalizeStats(existingStats),
             mustChangePassword,
             chatLocked,
             chatLockReason,

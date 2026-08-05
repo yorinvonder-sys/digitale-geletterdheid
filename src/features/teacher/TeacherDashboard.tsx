@@ -26,6 +26,7 @@ import { GamesPanel } from '@/features/teacher/GamesPanel';
 import { FeedbackPanel } from '@/features/teacher/FeedbackPanel';
 import { RosterImportModal } from '@/features/teacher/RosterImportModal';
 import { TutorialProvider } from '@/contexts/TutorialContext';
+import { DEFAULT_STATS } from '@/config/userStats';
 import TutorialSpotlight, { TutorialRestartButton } from '@/features/teacher/TutorialSpotlight';
 
 import { TeacherModals } from '@/features/teacher/dashboard/TeacherModals';
@@ -525,10 +526,13 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ user, onUpda
 
     return (
         <TutorialProvider
-            isCompleted={user?.stats?.hasCompletedTeacherTutorial}
+            tourId="teacher"
+            userId={user?.uid}
+            completed={user?.stats?.hasCompletedTeacherTutorial}
             onComplete={() => {
                 if (user && onUpdateStats) {
                     onUpdateStats({
+                        ...DEFAULT_STATS,
                         ...user.stats,
                         hasCompletedTeacherTutorial: true
                     } as UserStats);
