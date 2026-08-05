@@ -10,6 +10,7 @@ export const FRUSTRATION_DURATION = 10;
 export const PUZZLE_DURATION = 9;
 export const ANSWER_DURATION = 10;
 export const PROOF_DURATION = 10;
+export const REWARD_DURATION = 9;
 
 const LEADER_FPS = 24;
 
@@ -73,6 +74,11 @@ export function getFilmRenderKey(elapsed: number): string {
     localT -= ANSWER_DURATION;
     if (localT < PROOF_DURATION) {
         return `bewijs:${crossedThresholds(localT, [2.4, 3.2, 6.4])}`;
+    }
+
+    localT -= PROOF_DURATION;
+    if (localT < REWARD_DURATION) {
+        return `beloning:${crossedThresholds(localT, [2.8, 3.6, 5.4, 6.2])}`;
     }
 
     return 'done';

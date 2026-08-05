@@ -59,6 +59,7 @@
     "test:ai-students": "node tests/ai-students/cli.mjs",
     "test:ai-students:unit": "node --test tests/ai-students/unit/*.test.mjs",
     "test:avatar-shop": "node --test tests/avatar-shop-economy.test.mjs",
+    "test:film-timeline": "node --test tests/public-site/film-timeline.test.ts",
     "test:ai-students:pilot": "node tests/ai-students/local-pilot.mjs --mission=mail-detective --persona=snelle-sam,taalzwakke-tess,ipad-iris --device=desktop,ipad-portrait,ipad-landscape",
     "audit:security": "node scripts/audit-security.mjs",
     "test:audit-security": "node --test tests/security/audit-security.test.mjs",
