@@ -3294,6 +3294,7 @@ export type Database = {
           status: string
         }[]
       }
+      get_xp_balance: { Args: never; Returns: Json }
       has_mfa_trust: {
         Args: {
           p_ip_hash: string
@@ -3367,6 +3368,10 @@ export type Database = {
           p_granted: boolean
         }
         Returns: boolean
+      }
+      spend_xp: {
+        Args: { p_amount: number; p_reason: string; p_ref_id?: string }
+        Returns: Json
       }
       student_requires_parental_consent: {
         Args: { p_student_id?: string }

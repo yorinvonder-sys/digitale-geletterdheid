@@ -115,7 +115,7 @@ const WEEK_MISSIONS: Record<number, Mission[]> = {
             status: 'available',
             isExternal: true,
             info: getMissionTooltipInfo('slide-specialist'),
-            sloKerndoelen: ['21A', '21C', '22A']
+            sloKerndoelen: ['21A', '22A']
         },
         {
             id: 'print-pro',

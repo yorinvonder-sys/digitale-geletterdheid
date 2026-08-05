@@ -32,12 +32,6 @@ export function Epiloog() {
                             </p>
                         </Reveal>
 
-                        <Reveal delay={0.24}>
-                            <div className="mt-9 flex justify-center lg:justify-start">
-                                <Duck size={180} className="verhaal-bob" />
-                            </div>
-                        </Reveal>
-
                         <Reveal delay={0.3}>
                             <div
                                 className={`mt-8 max-w-md rounded-2xl border-[3px] border-duck-ink bg-duck-bg p-5 ${HARD_SHADOW}`}
@@ -109,7 +103,7 @@ export function Epiloog() {
                         </nav>
                     </div>
                     <div className="mt-6 flex flex-col justify-between gap-2 text-xs font-medium text-duck-ink/70 md:flex-row">
-                        <p>Yorin Vonder · KvK 81819889 · info@dgskills.app</p>
+                        <p>Yorin Vonder · info@dgskills.app</p>
                     </div>
                 </footer>
             </div>
