@@ -47,6 +47,13 @@ function Nav() {
                                 SLO-koppeling
                             </a>
                             <a
+                                href="/login"
+                                className="group relative inline-flex min-h-[44px] items-center px-2 text-sm font-bold text-duck-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-ink focus-visible:ring-offset-2"
+                            >
+                                Inloggen
+                                <span className="absolute bottom-1.5 left-2 h-0.5 w-[calc(100%-1rem)] origin-left scale-x-0 bg-duck-ink transition-transform duration-300 group-hover:scale-x-100" aria-hidden="true" />
+                            </a>
+                            <a
                                 href="#epiloog"
                                 className={`min-h-[44px] rounded-full border-[3px] border-duck-ink bg-duck-acid px-5 py-2 text-sm font-bold text-duck-ink ${HARD_SHADOW} transition-transform hover:-translate-y-0.5`}
                             >
