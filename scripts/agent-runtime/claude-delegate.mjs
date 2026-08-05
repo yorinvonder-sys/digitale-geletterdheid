@@ -427,9 +427,44 @@ export function appendCanonicalCommitDiff(packet, worktree, run = spawnSync) {
     throw new Error('Unable to generate canonical release diff');
   }
 
+  const diff = sanitizeCanonicalDiff(result.stdout);
+
   return validateEvidencePacket(
-    `${packet}\n\nCANONICAL_BRANCH_DIFF (generated locally)\nBASE ${base}\nHEAD ${worktree.head}\n${result.stdout}`,
+    `${packet}\n\nCANONICAL_BRANCH_DIFF (generated locally)\nBASE ${base}\nHEAD ${worktree.head}\n${diff}`,
   );
+}
+
+export function sanitizeCanonicalDiff(diff) {
+  let inHunk = false;
+
+  return String(diff)
+    .split('\n')
+    .map((line) => {
+      if (line.startsWith('diff --git ')) {
+        inHunk = false;
+      } else if (line.startsWith('@@')) {
+        inHunk = true;
+      }
+
+      if (!SENSITIVE_PATTERNS.some((pattern) => pattern.test(line))) {
+        return line;
+      }
+
+      if (inHunk && line.startsWith('+')) {
+        throw new Error('Canonical release diff adds sensitive content');
+      }
+
+      let sanitized = line;
+      for (const pattern of SENSITIVE_PATTERNS) {
+        const flags = pattern.flags.includes('g') ? pattern.flags : `${pattern.flags}g`;
+        sanitized = sanitized.replace(
+          new RegExp(pattern.source, flags),
+          '[REDACTED_SENSITIVE_CONTENT]',
+        );
+      }
+      return sanitized;
+    })
+    .join('\n');
 }
 
 export function validateCommitBinding(packet, worktree, required, run = spawnSync) {

@@ -19,6 +19,7 @@ import {
   resolveClaudeBinary,
   resolveGitBinary,
   resolveMode,
+  sanitizeCanonicalDiff,
   parseAllowedBuildPaths,
   validateBuildDiff,
   validateCommitBinding,
@@ -224,6 +225,18 @@ assert.match(canonicalPacket, /CANONICAL_BRANCH_DIFF/);
 assert.match(canonicalPacket, new RegExp(`BASE ${baseCommit}`));
 assert.match(canonicalPacket, new RegExp(`HEAD ${commit}`));
 assert.match(canonicalPacket, /diff --git/);
+assert.match(
+  sanitizeCanonicalDiff(`-removed ${fakeAuthorization}`),
+  /REDACTED_SENSITIVE_CONTENT/,
+);
+assert.throws(
+  () => sanitizeCanonicalDiff(`@@ -1 +1 @@\n+added ${fakeAuthorization}`),
+  /adds sensitive content/,
+);
+assert.throws(
+  () => sanitizeCanonicalDiff(`@@ -1 +1 @@\n+++${fakeAuthorization}`),
+  /adds sensitive content/,
+);
 
 const diffDirectory = mkdtempSync(join(tmpdir(), 'claude-diff-test-'));
 try {
