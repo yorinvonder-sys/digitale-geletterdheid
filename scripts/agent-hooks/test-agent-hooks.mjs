@@ -31,6 +31,19 @@ try {
   // Bewust kort: de volledige werkwijze staat in AGENTS.md, niet in deze injectie.
   assert.ok(promptContext.additionalContext.split(/\s+/).length < 60);
 
+  assert.equal(
+    handleStop(
+      {
+        hook_event_name: 'Stop',
+        session_id: 'no-state-session',
+        cwd: '/tmp/project',
+        stop_hook_active: false,
+      },
+      { stateDir: tempStateDir },
+    ),
+    null,
+  );
+
   assert.deepEqual(
     extractTouchedPaths({
       tool_name: 'apply_patch',

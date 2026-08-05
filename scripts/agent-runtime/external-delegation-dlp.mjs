@@ -81,10 +81,13 @@ export function resolveExternalRoute(agent, model) {
   if (EXTERNAL_AGENTS.has(agent)) {
     return agent;
   }
-  if (model === 'deepseek-v4-flash') {
+  if (
+    model === 'deepseek-v4-flash' ||
+    model === 'deepseek/deepseek-v4-flash'
+  ) {
     return 'deepseek-scout';
   }
-  if (model === 'gpt-5.6-terra') {
+  if (model === 'gpt-5.6-terra' || model === 'openai/gpt-5.6-terra') {
     return 'terra-shadow';
   }
   return '';

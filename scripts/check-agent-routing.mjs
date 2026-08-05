@@ -1,6 +1,14 @@
 import assert from 'node:assert/strict';
 import { spawnSync } from 'node:child_process';
-import { readFileSync, readdirSync } from 'node:fs';
+import {
+  mkdtempSync,
+  readFileSync,
+  readdirSync,
+  realpathSync,
+  rmSync,
+  writeFileSync,
+} from 'node:fs';
+import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 
 import {
@@ -8,7 +16,10 @@ import {
   validateAgentRoute,
   validateHandoffBody,
 } from './lib/claudePrUtils.mjs';
-import { validateExternalMessage } from './agent-runtime/external-delegation-dlp.mjs';
+import {
+  resolveExternalRoute,
+  validateExternalMessage,
+} from './agent-runtime/external-delegation-dlp.mjs';
 import {
   cleanOpenCodeEnvironment,
   resolveOpenCodeBinary,
@@ -100,7 +111,19 @@ assert.equal(openCodeEnvironment.OPENCODE_CONFIG_CONTENT, undefined);
 assert.equal(openCodeEnvironment.DEEPSEEK_API_KEY, undefined);
 assert.equal(openCodeEnvironment.PATH, '/usr/bin:/bin:/usr/sbin:/sbin');
 assert.equal(openCodeEnvironment.XDG_CONFIG_HOME, '/tmp/dgskills-controlled-config');
-assert.match(resolveOpenCodeBinary(), /opencode/);
+const openCodeBinaryDirectory = mkdtempSync(join(tmpdir(), 'opencode-binary-test-'));
+try {
+  const binaryPath = join(openCodeBinaryDirectory, 'opencode');
+  writeFileSync(binaryPath, '#!/bin/sh\n', { mode: 0o700 });
+  assert.equal(resolveOpenCodeBinary([binaryPath]), realpathSync(binaryPath));
+} finally {
+  rmSync(openCodeBinaryDirectory, { recursive: true, force: true });
+}
+assert.equal(
+  resolveExternalRoute('', 'deepseek/deepseek-v4-flash'),
+  'deepseek-scout',
+);
+assert.equal(resolveExternalRoute('', 'openai/gpt-5.6-terra'), 'terra-shadow');
 assert.deepEqual(config.enabled_providers, ['openai', 'deepseek']);
 assert.deepEqual(config.provider?.deepseek?.whitelist, ['deepseek-v4-flash']);
 assert.equal(config.mcp?.linear?.url, 'https://mcp.linear.app/mcp');
@@ -292,6 +315,12 @@ const opencodeSurface = [
 ].join('\n');
 assert.doesNotMatch(opencodeSurface, /sonnet/i);
 assert.doesNotMatch(opencodeSurface, /opusplan/i);
+const delegationPlugin = readFileSync(
+  '.opencode/plugins/delegation-dlp.js',
+  'utf8',
+);
+assert.match(delegationPlugin, /'chat\.message'/);
+assert.match(delegationPlugin, /validateExternalMessage/);
 
 const releaseCommand = readFileSync('.opencode/commands/release-review.md', 'utf8');
 assert.match(releaseCommand, /^variant: xhigh$/m);

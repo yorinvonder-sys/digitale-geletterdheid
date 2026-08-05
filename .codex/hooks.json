@@ -44,7 +44,7 @@
           {
             "type": "command",
             "command": "node \"$(git rev-parse --show-toplevel)/scripts/agent-hooks/policy.mjs\" stop",
-            "timeout": 180,
+            "timeout": 360,
             "statusMessage": "Running DGSkills verification hook"
           }
         ]
