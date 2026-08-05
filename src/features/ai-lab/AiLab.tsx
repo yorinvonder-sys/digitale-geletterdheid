@@ -15,7 +15,7 @@ import { WebPreviewModal } from '@/features/ai-lab/WebPreviewModal';
 
 import { getSharedProject, SharedProject } from '@/services/missionService';
 import { LEVEL_THRESHOLDS, getLevelProgress, getXPForNextLevel, getXPToNextLevel, getLevelFromXP } from '@/utils/xp';
-import { awardXP } from '@/services/XPService';
+import { awardXP, spendXP, getXPBalance } from '@/services/XPService';
 import { logger } from '@/utils/logger';
 // KnowledgeRunner removed - using AssessmentEngine for all review missions
 
@@ -142,6 +142,12 @@ export const AiLab: React.FC<AiLabProps> = ({ user, onExit, saveProgress, initia
 
   const hasSavedSession = stats.xp > 0 || (stats.missionsCompleted?.length || 0) > 0;
   const TIP_COST = 15;
+
+  // XP already spent (tips, and later the avatar shop). stats.xp stays the
+  // lifetime earned total — it drives level and badges — so what a learner can
+  // actually spend is the earned total minus everything spent.
+  const [xpSpent, setXpSpent] = useState(0);
+  const spendableXP = Math.max(0, stats.xp - xpSpent);
 
   // Memoize initialProgress to prevent re-init of agent logic when stats (XP) change
   // We only want to load progress when switching roles, not when gaining XP
@@ -444,7 +450,49 @@ export const AiLab: React.FC<AiLabProps> = ({ user, onExit, saveProgress, initia
     });
   };
 
-  /* 
+  // Load how much XP was already spent, so the tip price can be checked against
+  // the real balance instead of the lifetime earned total.
+  useEffect(() => {
+    if (devPreviewMode || !user?.uid) return;
+    let cancelled = false;
+    (async () => {
+      const { spent } = await getXPBalance();
+      if (!cancelled) setXpSpent(spent);
+    })();
+    return () => { cancelled = true; };
+  }, [devPreviewMode, user?.uid]);
+
+  /**
+   * Deduct XP for something the learner buys (currently: a tip).
+   * Returns whether the deduction succeeded — only then should the purchase
+   * itself go through.
+   */
+  const handleSpendXP = async (amount: number, label: string, refId?: string): Promise<boolean> => {
+    if (!user?.uid) return false;
+
+    if (devPreviewMode) {
+      setXpSpent(prev => prev + amount);
+      setXpNotification({ amount: -amount, label });
+      setTimeout(() => setXpNotification(null), 3000);
+      return true;
+    }
+
+    const result = await spendXP(amount, label, refId);
+
+    if (!result.spent) {
+      console.warn(`[XP Spend Blocked] ${result.reason}`);
+      setXpNotification({ amount: 0, label: result.reason || 'XP afschrijving mislukt' });
+      setTimeout(() => setXpNotification(null), 3000);
+      return false;
+    }
+
+    setXpSpent(prev => prev + amount);
+    setXpNotification({ amount: -amount, label });
+    setTimeout(() => setXpNotification(null), 3000);
+    return true;
+  };
+
+  /*
     ---------------------------------------------------------------------------
     NAVIGATION HANDLERS
     ---------------------------------------------------------------------------
@@ -541,22 +589,28 @@ export const AiLab: React.FC<AiLabProps> = ({ user, onExit, saveProgress, initia
     setTipToConfirm(suggestion);
   };
 
-  const confirmTipPurchase = () => {
-    if (tipToConfirm) {
-      if (stats.xp >= TIP_COST) {
-        handleAwardXP(-TIP_COST, "Tip Gebruikt");
-        setUsedTips(prev => [...prev, tipToConfirm.toLowerCase()]);
-        handleSend(tipToConfirm);
-      } else {
-        setXpNotification({ amount: 0, label: "Niet genoeg XP!" });
-        setTimeout(() => setXpNotification(null), 2000);
-      }
-      setTipToConfirm(null);
+  const confirmTipPurchase = async () => {
+    if (!tipToConfirm) return;
+
+    const tip = tipToConfirm;
+    setTipToConfirm(null);
+
+    if (spendableXP < TIP_COST) {
+      setXpNotification({ amount: 0, label: "Niet genoeg XP!" });
+      setTimeout(() => setXpNotification(null), 2000);
+      return;
     }
+
+    // Only hand over the tip once the server confirms the deduction.
+    const paid = await handleSpendXP(TIP_COST, "Tip Gebruikt", tip.slice(0, 60));
+    if (!paid) return;
+
+    setUsedTips(prev => [...prev, tip.toLowerCase()]);
+    handleSend(tip);
   };
 
   // Check if user input is similar to a tip (to detect copying)
-  const checkForTipCopy = (userInput: string) => {
+  const checkForTipCopy = async (userInput: string) => {
     const normalizedInput = userInput.toLowerCase().trim();
     for (const tip of suggestions) {
       const normalizedTip = tip.toLowerCase().trim();
@@ -564,9 +618,15 @@ export const AiLab: React.FC<AiLabProps> = ({ user, onExit, saveProgress, initia
       if (normalizedInput.includes(normalizedTip.slice(0, 15)) ||
         normalizedTip.includes(normalizedInput.slice(0, 15))) {
         // Only charge if this tip wasn't already bought
-        if (!usedTips.includes(normalizedTip) && stats.xp >= TIP_COST) {
-          handleAwardXP(-TIP_COST, "Tip Gekopieerd");
+        if (!usedTips.includes(normalizedTip) && spendableXP >= TIP_COST) {
+          // Mark as used up front so a second match cannot charge twice while
+          // the deduction is still in flight.
           setUsedTips(prev => [...prev, normalizedTip]);
+          const paid = await handleSpendXP(TIP_COST, "Tip Gekopieerd", normalizedTip.slice(0, 60));
+          if (!paid) {
+            setUsedTips(prev => prev.filter(t => t !== normalizedTip));
+            return false;
+          }
           return true;
         }
       }
@@ -1399,8 +1459,13 @@ export const AiLab: React.FC<AiLabProps> = ({ user, onExit, saveProgress, initia
                   <h3 className="text-xl font-black text-duck-ink mb-1">Tip gebruiken?</h3>
                   <p className="text-duck-ink/60 font-medium text-sm leading-relaxed">"{tipToConfirm}"</p>
                 </div>
-                <div className="bg-duck-acid text-duck-ink px-4 py-2 rounded-lg font-bold text-xs uppercase tracking-widest border border-duck-acid">
-                  Kost {TIP_COST} XP
+                <div className="flex flex-col items-center gap-1">
+                  <div className="bg-duck-acid text-duck-ink px-4 py-2 rounded-lg font-bold text-xs uppercase tracking-widest border border-duck-acid">
+                    Kost {TIP_COST} XP
+                  </div>
+                  <span className="text-duck-ink/60 font-bold text-xs">
+                    Je hebt {spendableXP} XP te besteden
+                  </span>
                 </div>
                 <div className="flex gap-3 w-full mt-2">
                   <button

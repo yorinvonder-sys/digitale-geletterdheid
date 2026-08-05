@@ -1,0 +1,286 @@
+#!/usr/bin/env node
+/**
+ * Houdt de SQL-prijzenlijst gelijk aan de TypeScript-catalogus.
+ *
+ * De TypeScript-catalogus (src/config/avatarCatalog.ts) is de bron van
+ * waarheid: daar staan ook labels, iconen en zeldzaamheid die de UI nodig
+ * heeft. De database heeft alleen de prijs nodig, maar die moet er wél staan —
+ * anders zou de aankoop-functie de prijs van de client moeten geloven.
+ *
+ *   node scripts/sync-avatar-shop-seed.mjs           # nieuwe migratie bij drift
+ *   node scripts/sync-avatar-shop-seed.mjs --check   # faalt bij drift (CI)
+ *
+ * Supabase past elke migratie precies één keer toe. Een bestaand seed-bestand
+ * herschrijven heeft daarna dus GEEN effect meer op een gemigreerde database:
+ * de winkel zou de nieuwe prijs tonen terwijl de server de oude afschrijft.
+ * Daarom schrijft dit script bij elke wijziging een NIEUWE migratie, en leest
+ * `--check` alle seed-migraties samen uit om de eindstand te bepalen.
+ *
+ * Let op: `--check` simuleert de bestanden in de werkmap. Een al toegepaste
+ * seed-migratie met de hand aanpassen maakt die simulatie groen terwijl de
+ * database ongewijzigd blijft. Bewerk seed-migraties nooit; laat dit script
+ * een nieuwe schrijven.
+ */
+import { readFileSync, writeFileSync, readdirSync } from 'node:fs';
+import { join } from 'node:path';
+import ts from 'typescript';
+
+const CATALOG_SRC = 'src/config/avatarCatalog.ts';
+const MIGRATIONS_DIR = 'supabase/migrations';
+const SEED_SUFFIX = '_avatar_shop_catalogue_seed.sql';
+const COLUMNS = ['id', 'slot', 'value', 'label', 'price', 'gender', 'sort_order'];
+const MAX_PRICE = 100000; // gelijk aan de CHECK-constraint op avatar_shop_items
+
+// ---------------------------------------------------------------------------
+// Catalogus laden
+// ---------------------------------------------------------------------------
+
+/** Transpileert de TypeScript in het geheugen. `@/types` wordt gestubd: de
+ *  catalogusdata hangt er niet van af. */
+function loadCatalogue() {
+    const source = readFileSync(CATALOG_SRC, 'utf8');
+    const js = ts.transpileModule(source, {
+        compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022 },
+    }).outputText;
+
+    const mod = { exports: {} };
+    const stubRequire = (id) => {
+        if (id === '@/types') return { DEFAULT_AVATAR_CONFIG: {} };
+        throw new Error(`Onverwachte import in ${CATALOG_SRC}: ${id}`);
+    };
+    new Function('exports', 'require', 'module', js)(mod.exports, stubRequire, mod);
+
+    const catalogue = mod.exports.AVATAR_CATALOG;
+    if (!Array.isArray(catalogue) || catalogue.length === 0) {
+        throw new Error('AVATAR_CATALOG is leeg of ontbreekt');
+    }
+
+    const seen = new Set();
+    return catalogue.map((item, index) => {
+        // Hier falen is veel beter dan een migratie schrijven die pas bij het
+        // toepassen op de database stukloopt — juist op de prijs, waarvoor dit
+        // script bestaat.
+        if (!/^[a-z0-9_]{1,64}$/.test(item.id)) {
+            throw new Error(`Ongeldige item-id (alleen a-z, 0-9, _): ${item.id}`);
+        }
+        if (seen.has(item.id)) throw new Error(`Dubbele item-id: ${item.id}`);
+        seen.add(item.id);
+
+        if (!Number.isInteger(item.price) || item.price < 0 || item.price > MAX_PRICE) {
+            throw new Error(`Ongeldige prijs voor ${item.id}: ${item.price} (geheel getal, 0..${MAX_PRICE})`);
+        }
+        if (item.gender != null && item.gender !== 'male' && item.gender !== 'female') {
+            throw new Error(`Ongeldig geslacht voor ${item.id}: ${item.gender}`);
+        }
+
+        return {
+            id: item.id,
+            slot: item.slot,
+            value: String(item.value),
+            label: item.label,
+            price: item.price,
+            gender: item.gender ?? null,
+            sort_order: index,
+        };
+    });
+}
+
+// ---------------------------------------------------------------------------
+// Seed-migraties lezen
+// ---------------------------------------------------------------------------
+
+const sqlText = (v) => (v === undefined || v === null ? 'NULL' : `'${String(v).replace(/'/g, "''")}'`);
+
+/** Splitst een VALUES-blok in tuples. Handmatig scannen in plaats van een
+ *  regex, omdat labels aanhalingstekens mogen bevatten (geschreven als ''). */
+function parseTuples(block) {
+    const tuples = [];
+    let current = null;
+    let field = '';
+    // Apart bijgehouden, niet als markerteken in `field`: zo'n teken sneuvelt
+    // op de trim() en dan leest een label dat letterlijk NULL is als SQL-NULL.
+    let quoted = false;
+    let inString = false;
+    let depth = 0;
+
+    const flush = () => {
+        current.push({ text: quoted ? field : field.trim(), quoted });
+        field = '';
+        quoted = false;
+    };
+
+    for (let i = 0; i < block.length; i++) {
+        const ch = block[i];
+
+        if (inString) {
+            if (ch === "'") {
+                if (block[i + 1] === "'") { field += "'"; i++; }
+                else inString = false;
+            } else field += ch;
+            continue;
+        }
+
+        // field leegmaken: de spatie tussen twee velden is al meegelezen en een
+        // gequote literal ís het hele veld.
+        if (ch === "'") { inString = true; quoted = true; field = ''; continue; }
+        if (ch === '(') { depth++; if (depth === 1) { current = []; field = ''; quoted = false; } continue; }
+        if (ch === ',' && depth === 1) { flush(); continue; }
+        if (ch === ')') {
+            depth--;
+            if (depth === 0 && current) { flush(); tuples.push(current); current = null; }
+            continue;
+        }
+        if (depth === 1) field += ch;
+    }
+    return tuples;
+}
+
+/** Een gequote veld is altijd tekst; alleen een kaal NULL is echt NULL. */
+const literal = (cell) => (cell.quoted ? cell.text : cell.text === 'NULL' ? null : cell.text);
+
+function parseSeedFile(sql, file) {
+    const start = sql.indexOf('VALUES');
+    const end = sql.indexOf('ON CONFLICT', start);
+    if (start === -1 || end === -1) {
+        throw new Error(`${file}: niet de verwachte INSERT ... VALUES ... ON CONFLICT-vorm`);
+    }
+
+    const rows = parseTuples(sql.slice(start + 'VALUES'.length, end)).map((t) => {
+        if (t.length !== COLUMNS.length) {
+            throw new Error(`${file}: tuple met ${t.length} velden, verwacht ${COLUMNS.length}`);
+        }
+        const row = {};
+        COLUMNS.forEach((col, i) => { row[col] = literal(t[i]); });
+        row.price = Number(row.price);
+        row.sort_order = Number(row.sort_order);
+        return row;
+    });
+
+    const keepMatch = sql.match(/ARRAY\[([\s\S]*?)\]/);
+    const keep = keepMatch
+        ? parseTuples(`(${keepMatch[1]})`)[0].map(literal)
+        : rows.map((r) => r.id);
+
+    return { rows, keep };
+}
+
+/** Speelt alle seed-migraties in volgorde af en geeft de eindstand terug. */
+function cumulativeState() {
+    const files = readdirSync(MIGRATIONS_DIR).filter((f) => f.endsWith(SEED_SUFFIX)).sort();
+    const state = new Map();
+
+    for (const file of files) {
+        const { rows, keep } = parseSeedFile(readFileSync(join(MIGRATIONS_DIR, file), 'utf8'), file);
+        for (const row of rows) state.set(row.id, { ...row, is_active: true });
+        const keepSet = new Set(keep);
+        for (const [id, row] of state) {
+            if (!keepSet.has(id)) state.set(id, { ...row, is_active: false });
+        }
+    }
+
+    return { files, state };
+}
+
+// ---------------------------------------------------------------------------
+// Vergelijken
+// ---------------------------------------------------------------------------
+
+function diff(catalogue, state) {
+    const problems = [];
+
+    for (const item of catalogue) {
+        const row = state.get(item.id);
+        if (!row || !row.is_active) { problems.push(`ontbreekt in SQL: ${item.id}`); continue; }
+        for (const col of COLUMNS) {
+            if (String(row[col] ?? '') !== String(item[col] ?? '')) {
+                problems.push(
+                    `${item.id}.${col}: SQL heeft ${JSON.stringify(row[col])}, catalogus ${JSON.stringify(item[col])}`
+                );
+            }
+        }
+    }
+
+    const ids = new Set(catalogue.map((i) => i.id));
+    for (const [id, row] of state) {
+        if (row.is_active && !ids.has(id)) {
+            problems.push(`staat nog actief in SQL maar niet in de catalogus: ${id}`);
+        }
+    }
+
+    return problems;
+}
+
+function buildMigration(catalogue) {
+    const rows = catalogue.map(
+        (i) => `  (${sqlText(i.id)}, ${sqlText(i.slot)}, ${sqlText(i.value)}, ${sqlText(i.label)}, ` +
+            `${i.price}, ${sqlText(i.gender)}, ${i.sort_order})`
+    );
+
+    return `-- GEGENEREERD DOOR scripts/sync-avatar-shop-seed.mjs — NIET MET DE HAND BEWERKEN.
+-- Bron: ${CATALOG_SRC}
+--
+-- Alleen de prijs is hier gezaghebbend. Labels staan erbij zodat een beheerder
+-- in de database kan zien wat een id voorstelt; de UI leest ze uit TypeScript.
+--
+-- Bij elke catalogusverandering komt er een NIEUWE migratie bij: een bestaande
+-- herschrijven bereikt een al gemigreerde database niet.
+
+INSERT INTO public.avatar_shop_items (id, slot, value, label, price, gender, sort_order) VALUES
+${rows.join(',\n')}
+ON CONFLICT (id) DO UPDATE SET
+  slot       = EXCLUDED.slot,
+  value      = EXCLUDED.value,
+  label      = EXCLUDED.label,
+  price      = EXCLUDED.price,
+  gender     = EXCLUDED.gender,
+  sort_order = EXCLUDED.sort_order,
+  is_active  = true,
+  updated_at = now();
+
+-- Items die uit de catalogus verdwenen zijn worden gedeactiveerd, nooit
+-- verwijderd: leerlingen kunnen ze bezitten en dat bezit moet blijven kloppen.
+UPDATE public.avatar_shop_items
+   SET is_active = false, updated_at = now()
+ WHERE id <> ALL (ARRAY[${catalogue.map((i) => sqlText(i.id)).join(', ')}]);
+`;
+}
+
+// ---------------------------------------------------------------------------
+
+const catalogue = loadCatalogue();
+const { files, state } = cumulativeState();
+const problems = diff(catalogue, state);
+const isCheck = process.argv.includes('--check');
+
+if (problems.length === 0) {
+    console.log(
+        `Avatar-winkel-catalogus in sync (${catalogue.length} items, ` +
+        `${catalogue.filter((i) => i.price > 0).length} betaald, ${files.length} seed-migratie(s)).`
+    );
+    process.exit(0);
+}
+
+if (isCheck) {
+    console.error('Avatar-winkel: de SQL-prijzenlijst loopt uit de pas met de TypeScript-catalogus.\n');
+    problems.slice(0, 20).forEach((p) => console.error(`  - ${p}`));
+    if (problems.length > 20) console.error(`  … en nog ${problems.length - 20}`);
+    console.error('\nDraai: node scripts/sync-avatar-shop-seed.mjs en commit de nieuwe migratie.');
+    process.exit(1);
+}
+
+// Migraties draaien op alfabetische bestandsnaam. De klok kan achterlopen op
+// een handmatig gekozen tijdstempel van een eerdere migratie; dan zou de
+// correctie vóór het bestand draaien dat hij corrigeert.
+const lastStamp = readdirSync(MIGRATIONS_DIR)
+    .map((f) => f.slice(0, 14))
+    .filter((s) => /^\d{14}$/.test(s))
+    .sort()
+    .pop() ?? '0';
+
+const clockStamp = new Date().toISOString().replace(/[-:T]/g, '').slice(0, 14);
+const stamp = clockStamp > lastStamp ? clockStamp : String(BigInt(lastStamp) + 1n);
+
+const target = join(MIGRATIONS_DIR, `${stamp}${SEED_SUFFIX}`);
+writeFileSync(target, buildMigration(catalogue));
+console.log(`Nieuwe seed-migratie: ${target}`);
+problems.slice(0, 10).forEach((p) => console.log(`  - ${p}`));

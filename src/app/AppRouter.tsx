@@ -312,7 +312,7 @@ function PublicPageShell({ children }: { children: React.ReactNode }) {
 }
 
 /** Public routes: / and /scholen. Render shell immediately; defer auth to avoid blocking LCP. */
-function PublicRoute() {
+function PublicRoute({ story = false }: { story?: boolean }) {
     const shouldProbeAuth = React.useMemo(() => hasLikelySupabaseSession(), []);
     const { user, loading } = useAuthUser({
         enabled: shouldProbeAuth,
@@ -334,7 +334,7 @@ function PublicRoute() {
         <PublicPageShell>
             <SecureErrorBoundary>
                 <React.Suspense fallback={<LoadingFallback />}>
-                    <ScholenLanding />
+                    {story ? <VerhaalPage /> : <ScholenLanding />}
                 </React.Suspense>
             </SecureErrorBoundary>
         </PublicPageShell>
@@ -431,7 +431,11 @@ export function AppRouter() {
     const path = usePath();
     const normalizedPath = path !== '/' ? path.replace(/\/+$/, '') : path;
 
-    if (normalizedPath === '/' || normalizedPath === '/scholen') {
+    if (normalizedPath === '/') {
+        return <PublicRoute story />;
+    }
+
+    if (normalizedPath === '/scholen') {
         return <PublicRoute />;
     }
 
@@ -493,7 +497,7 @@ export function AppRouter() {
     }
 
     // DEV ONLY: Avatar preview route
-    if (normalizedPath === '/dev/avatar') {
+    if (import.meta.env.DEV && normalizedPath === '/dev/avatar') {
         return (
             <React.Suspense fallback={<LoadingFallback />}>
                 <DevAvatarPreview />
@@ -502,7 +506,7 @@ export function AppRouter() {
     }
 
     // DEV ONLY: Design preview (Anthropic-inspired redesign)
-    if (normalizedPath === '/dev/design') {
+    if (import.meta.env.DEV && normalizedPath === '/dev/design') {
         return (
             <React.Suspense fallback={<LoadingFallback />}>
                 <DesignPreview />

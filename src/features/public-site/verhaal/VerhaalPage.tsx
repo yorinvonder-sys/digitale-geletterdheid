@@ -35,7 +35,7 @@ function Nav() {
                     transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
                     className="fixed inset-x-0 top-0 z-40 border-b-[3px] border-duck-ink bg-duck-bg/90 backdrop-blur-md"
                 >
-                    <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-3 md:px-10">
+                    <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-3 md:px-14">
                         <a href="#proloog" className="flex items-center gap-2.5" aria-label="Naar het begin">
                             <LogoLockup height={30} />
                         </a>
@@ -45,6 +45,13 @@ function Nav() {
                                 className="hidden text-sm font-bold text-duck-ink/70 hover:text-duck-ink md:inline-block"
                             >
                                 SLO-koppeling
+                            </a>
+                            <a
+                                href="/login"
+                                className="group relative inline-flex min-h-[44px] items-center px-2 text-sm font-bold text-duck-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-ink focus-visible:ring-offset-2"
+                            >
+                                Inloggen
+                                <span className="absolute bottom-1.5 left-2 h-0.5 w-[calc(100%-1rem)] origin-left scale-x-0 bg-duck-ink transition-transform duration-300 group-hover:scale-x-100" aria-hidden="true" />
                             </a>
                             <a
                                 href="#epiloog"

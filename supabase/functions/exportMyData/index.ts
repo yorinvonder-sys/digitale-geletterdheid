@@ -60,6 +60,7 @@ serve(async (req: Request) => {
       messagesRes, libraryRes, duelsRes, devTasksRes, devMilestonesRes,
       devPlansRes, devSettingsRes, studentConsentsRes, parentalConsentReqRes,
       peerFeedbackRes, wellbeingRes, nulmetingRes, assessmentRes, overridesRes,
+      avatarItemsRes,
     ] = await Promise.all([
       supabase.from('users').select('*').eq('id', uid).single(),
       supabase.from('mission_progress').select('*').eq('user_id', uid),
@@ -85,6 +86,8 @@ serve(async (req: Request) => {
       supabase.from('nulmeting_results').select('*').eq('user_id', uid),
       supabase.from('assessment_results').select('*').eq('user_id', uid),
       supabase.from('teacher_step_overrides').select('*').eq('student_id', uid),
+      // Cosmetisch avatarbezit + betaalde XP-prijs (AVG Art. 15/20).
+      supabase.from('user_avatar_items').select('item_id, price_paid, source, acquired_at').eq('user_id', uid),
     ]);
 
     const exportDate = new Date().toISOString();
@@ -121,6 +124,7 @@ serve(async (req: Request) => {
       nulmeting_results: nulmetingRes.data ?? [],
       assessment_results: assessmentRes.data ?? [],
       teacher_step_overrides: overridesRes.data ?? [],
+      avatar_items: avatarItemsRes.data ?? [],
     };
 
     await supabase.from('audit_logs').insert({

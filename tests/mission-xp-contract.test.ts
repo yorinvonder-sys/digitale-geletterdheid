@@ -7,7 +7,18 @@ test('Magister Meester belooft de 25 XP die productie werkelijk toekent', () => 
     assert.equal(getMissionXPReward('magister-master', 'Easy'), 25);
 });
 
+test('Cloud Commander belooft de 25 XP die productie werkelijk toekent', () => {
+    assert.equal(getMissionXPReward('cloud-commander', 'Easy'), 25);
+});
+
+test('Word Wizard belooft de 25 XP die productie werkelijk toekent', () => {
+    assert.equal(getMissionXPReward('word-wizard', 'Medium'), 25);
+});
+
+test('Slide Specialist belooft de 25 XP die productie werkelijk toekent', () => {
+    assert.equal(getMissionXPReward('slide-specialist', 'Medium'), 25);
+});
+
 test('andere missies behouden hun bestaande moeilijkheidsbeloning', () => {
-    assert.equal(getMissionXPReward('cloud-commander', 'Easy'), getXPReward('Easy'));
     assert.equal(getMissionXPReward('mission-zonder-override', 'Hard'), getXPReward('Hard'));
 });

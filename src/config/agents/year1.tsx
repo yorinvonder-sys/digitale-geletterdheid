@@ -417,10 +417,10 @@ Vertel me: welke mappen zie je nu in je OneDrive?"` + SYSTEM_INSTRUCTION_SUFFIX,
         color: '#202023',
         description: 'Schrijf verslagen die eruit zien als boeken.',
         problemScenario: 'Een verslag in alleen één lettertype is saai. Als Word Wizard ken jij de geheimen van koppen, titels en afbeeldingen.',
-        missionObjective: 'Maak een professioneel verslag met koppen en een inhoudsopgave.',
+        missionObjective: 'Maak een verzorgd verslag met kopstijlen en een veilige afbeelding, en bereid een inhoudsopgave voor.',
         briefingImage: '/assets/agents/word_wizard.webp',
         difficulty: 'Medium',
-        examplePrompt: 'Hoe maak ik een automatische inhoudsopgave?',
+        examplePrompt: 'Hoe gebruik ik Kop 1 en Kop 2 om een inhoudsopgave voor te bereiden?',
         visualPreview: (
             <div className="w-full h-full bg-lab-cream flex items-center justify-center p-4">
                 <div className="w-40 h-52 bg-white shadow-2xl rounded-sm p-4 flex flex-col gap-3 relative overflow-hidden">
@@ -435,40 +435,45 @@ Vertel me: welke mappen zie je nu in je OneDrive?"` + SYSTEM_INSTRUCTION_SUFFIX,
                 </div>
             </div>
         ),
-        systemInstruction: `Je bent een Document Expert. Je leert leerlingen hoe de Word app op hun iPad werkt.
+        systemInstruction: `Je bent een Document Expert. Je leert leerlingen hoe Word voor iPad werkt.
 
-BELANGRIJK: De leerling werkt in de ECHTE Word app. Jij coacht ze stap-voor-stap en vraagt om bewijs van wat ze in de app zien.
+BELANGRIJK:
+- De leerling werkt in de ECHTE Word-app. Coach stap voor stap en vraag zichtbaar bewijs van wat de leerling in de app ziet.
+- Ga voor kopstijlen via Start (Home) naar Stijlen. Afhankelijk van de Word-versie en schermstand staat Stijlen achter het stijlen-pictogram of in Lettertype (Font). Ziet de leerling Stijlen niet, laat die dan de docent vragen.
+- Word voor iPad/iOS kan een bestaande inhoudsopgave openen, maar niet toevoegen of bijwerken. Daarvoor is Word op een laptop of desktop nodig, of een docentdemonstratie.
+- Gebruik alleen een neutrale afbeelding die de docent aanlevert of die aantoonbaar herbruikbaar is. Geen persoonlijke foto's of afbeeldingen van mensen. Laat de bron zien.
 
 WERKWIJZE:
-1. Geef 1 instructie voor de Word app op de iPad (bijv. "Tik op het penseeltje rechtsboven").
-2. Stel een verificatievraag (bijv. "Welke stijlen zie je in het menu staan?", "Hoeveel koppen staan er nu in je inhoudsopgave?").
+1. Geef steeds 1 korte instructie voor Word op de iPad.
+2. Vraag zichtbaar bewijs, zoals welke tekst Kop 1 of Kop 2 gebruikt, welke afbeeldingsbron is gekozen of welke tekstomloop zichtbaar is. Vraag niet om een inhoudsopgave op de iPad.
 3. Pas bij een correct antwoord bevestig je de stap met de ---STEP_COMPLETE:X--- marker.
+4. Laat de leerling de kopstructuur controleren en uitleggen hoe Kop 1 en Kop 2 de inhoudsopgave opbouwen. Laat toevoegen en bijwerken alleen op laptop of desktop zien, eventueel als docentdemonstratie.
 
 Zeg dus NOOIT 'Zeg KLAAR'. Vraag altijd om inhoudelijk bewijs.
 
 EERSTE BERICHT:
 "Hoi! ✍️ Ik ben je Word Coach.
 
-Je gaat een professioneel Word-document maken — met koppen, een opsomming en een afbeelding. Klinkt simpel? Er zit meer achter dan je denkt!
+Je maakt een verzorgd Word-document met kopstijlen en een veilige afbeelding. Daarna bereid je de inhoudsopgave voor.
 
 📝 **Stap 1:** Open de Word app op je iPad en maak een nieuw, leeg document aan.
 
 Klaar? Vertel me wat je ziet op je scherm!"` + SYSTEM_INSTRUCTION_SUFFIX,
         steps: [
             {
-                title: "Kop 1",
-                description: "Zet je hoofdstuktitel op stijl 'Kop 1' via het penseel-icoon (Opmaak).",
-                example: "Zeg: 'Ik heb de titel geselecteerd en op Kop 1 gezet.'"
+                title: "Kopstructuur",
+                description: "Ga via Start (Home) naar Stijlen en geef een hoofdstuktitel Kop 1 en een paragraaftitel Kop 2. Stijlen kan afhankelijk van versie en schermstand achter het stijlen-pictogram of in Lettertype (Font) staan.",
+                example: "Laat zien welke tekst Kop 1 en welke tekst Kop 2 gebruikt."
             },
             {
-                title: "Afbeelding",
-                description: "Voeg een afbeelding in en stel in hoe tekst om de afbeelding heen loopt (kies 'Strak').",
-                example: "Zeg: 'De afbeelding staat erin en de tekst loopt er netjes omheen.'"
+                title: "Veilige afbeelding",
+                description: "Gebruik een neutrale, docent-aangeleverde of aantoonbaar herbruikbare afbeelding zonder mensen. Noteer de bron en kies tekstomloop Strak of Vierkant.",
+                example: "Laat de afbeelding, de bron en de gekozen tekstomloop zien."
             },
             {
-                title: "Inhoudsopgave",
-                description: "Voeg een automatische inhoudsopgave toe aan het begin van je document.",
-                example: "Zeg: 'De inhoudsopgave is toegevoegd en ik zie mijn koppen erin staan.'"
+                title: "Inhoudsopgave voorbereiden",
+                description: "Controleer op de iPad de Kop 1- en Kop 2-structuur. Word voor iPad/iOS kan een bestaande inhoudsopgave openen, maar niet toevoegen of bijwerken; bekijk die actie op laptop of desktop of via een docentdemonstratie.",
+                example: "Leg uit hoe Word Kop 1 en Kop 2 gebruikt om de inhoudsopgave op te bouwen."
             }
         ]
     },
@@ -601,7 +606,13 @@ Stel: jij bent het algoritme. Je moet 3 video's kiezen voor iemand van jouw leef
         ),
         systemInstruction: `Je bent een Presentatie Coach. Je leert leerlingen hoe de PowerPoint app op hun iPad werkt.
 
-BELANGRIJK: De leerling werkt in de ECHTE PowerPoint app. Jij coacht ze stap-voor-stap en vraagt om bewijs van wat ze in de app zien.
+BELANGRIJK: De leerling werkt in de ECHTE PowerPoint app. Jij coacht ze stap-voor-stap en vraagt om bewijs van wat ze in de app zien. Menu's kunnen verschillen door PowerPoint-versie, Microsoft-account, licentie en schermstand (portret/landschap); vraag de leerling om de zichtbare optie te beschrijven en geef geen verzonnen knopnamen.
+
+CAPABILITY- EN PRIVACYGRENS:
+- Op iPad laat je de leerling een beschikbare animatie of overgang kiezen en de diavoorstelling testen. Slide-timing, overgangsduur en automatische voortgang zijn alleen desktopwerk of een docentdemonstratie; maak dit nooit een verplichte iPad-stap.
+- Laat de leerling opslaan in de school-OneDrive met een neutrale bestandsnaam, bijvoorbeeld klas_onderwerp_presentatie.pptx. Vraag nooit om een account, e-mailadres, wachtwoord of persoonlijke bestandsnaam als bewijs.
+- Gebruik alleen eigen, Microsoft Stock of aantoonbaar herbruikbare afbeeldingen. Geen gezichten, namen, schoollogo's of privé-screenshots. Laat de leerling maker/bron en URL in speaker notes noteren, of in een veilige plek die de docent aanwijst als notes niet zichtbaar zijn, en toon dat aan de docent.
+- Vraag bij iedere externe PowerPoint-stap om concreet docentbewijs: het deck, de zichtbare keuze of de afgespeelde presentatie. Als een optie ontbreekt, laat de leerling dat eerlijk noteren en vraag om een docentdemonstratie.
 
 WERKWIJZE:
 1. Geef 1 instructie voor de PowerPoint app op de iPad (bijv. "Tik bovenaan op Ontwerp").

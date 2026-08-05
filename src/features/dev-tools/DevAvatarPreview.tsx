@@ -1,10 +1,7 @@
 import React, { useMemo, useState } from 'react';
-import { LazyAvatarViewer } from '@/features/profile/avatar/LazyAvatarViewer';
 import { AvatarViewer } from '@/features/profile/avatar/AvatarViewer';
-import { AvatarViewer2D } from '@/features/profile/avatar/AvatarViewer2D';
-import { AvatarViewer3DDuck } from '@/features/profile/avatar/AvatarViewer3DDuck';
 import { AvatarConfig, DEFAULT_AVATAR_CONFIG } from '@/types';
-import { AVATAR_HAIR_CATALOG, AVATAR_PET_CATALOG } from '@/config/avatarCatalog';
+import { AVATAR_HAIR_CATALOG, getItemsForSlot } from '@/config/avatarCatalog';
 
 /** Dev-only preview voor avatar QA. Verwijder voor productie. */
 
@@ -68,7 +65,7 @@ const HAIR_PRESETS: PreviewPreset[] = AVATAR_HAIR_CATALOG.map(item => ({
     },
 }));
 
-const PET_PRESETS: PreviewPreset[] = AVATAR_PET_CATALOG
+const PET_PRESETS: PreviewPreset[] = getItemsForSlot('pet', 'male')
     .filter(item => item.value !== 'none')
     .map((item, index) => ({
         key: `pet-${item.value}`,
@@ -111,6 +108,33 @@ const HEADWEAR_PRESETS: PreviewPreset[] = [
             shirtColor: '#e1ff01',
             pet: 'pet_cat',
             expression: 'surprised',
+        },
+    },
+    // Kroon op volumineus haar is het lastigste geval: een pet en een muts
+    // sluiten om het hoofd, een kroon staat er open bovenop. Mohawk en afro
+    // steken het verst uit, dus daar zie je clipping als eerste.
+    {
+        key: 'headwear-mohawk-crown',
+        label: 'Headwear QA — Mohawk + Kroon',
+        category: 'headwear',
+        config: {
+            ...createBaseConfig('male'),
+            hairStyle: 'mohawk',
+            hairColor: '#ff3c21',
+            accessory: 'crown',
+            shirtColor: '#202023',
+        },
+    },
+    {
+        key: 'headwear-afro-crown',
+        label: 'Headwear QA — Afro + Gouden Kroon',
+        category: 'headwear',
+        config: {
+            ...createBaseConfig('female'),
+            hairStyle: 'afro',
+            hairColor: '#1A1A1A',
+            accessory: 'crown_gold',
+            shirtColor: '#e1ff01',
         },
     },
 ];
@@ -164,8 +188,28 @@ const PreviewCard = ({
             boxShadow: selected ? '0 18px 36px -18px rgba(217, 120, 72,0.55)' : '0 10px 28px -20px rgba(26,26,25,0.28)',
         }}
     >
-        <div className={`${CARD_HEIGHT} rounded-[1.3rem] overflow-hidden`} style={{ backgroundColor: '#f2f1ec' }}>
-            <AvatarViewer2D config={preset.config} interactive={false} />
+        {/* Geen avatar per kaart: 25+ WebGL-canvassen lopen vast op een Chromebook.
+            De kaart vat de configuratie samen; rechts staat de echte 3D-render. */}
+        <div className={`${CARD_HEIGHT} rounded-[1.3rem] overflow-hidden flex flex-col justify-center gap-3 p-4`} style={{ backgroundColor: '#f2f1ec' }}>
+            <div className="flex flex-wrap gap-2">
+                {([
+                    ['Huid', preset.config.skinColor],
+                    ['Haar', preset.config.hairColor],
+                    ['Shirt', preset.config.shirtColor],
+                    ['Broek', preset.config.pantsColor],
+                ] as const).map(([label, color]) => (
+                    <div key={label} className="flex items-center gap-1.5">
+                        <span className="w-5 h-5 rounded" style={{ backgroundColor: color, border: '1px solid rgba(32,32,35,0.15)' }} />
+                        <span className="text-[10px] font-bold uppercase tracking-wider" style={{ color: '#445865' }}>{label}</span>
+                    </div>
+                ))}
+            </div>
+            <dl className="text-[11px] leading-snug" style={{ color: '#445865' }}>
+                <div><dt className="inline font-bold">Kapsel: </dt><dd className="inline">{preset.config.hairStyle}</dd></div>
+                <div><dt className="inline font-bold">Accessoire: </dt><dd className="inline">{preset.config.accessory}</dd></div>
+                <div><dt className="inline font-bold">Huisdier: </dt><dd className="inline">{preset.config.pet ?? 'none'}</dd></div>
+                <div><dt className="inline font-bold">Expressie: </dt><dd className="inline">{preset.config.expression ?? 'neutral'}</dd></div>
+            </dl>
         </div>
         <div className="pt-3 px-1">
             <div className="text-[11px] font-black uppercase tracking-[0.18em]" style={{ color: '#ff3c21' }}>
@@ -180,7 +224,6 @@ const PreviewCard = ({
 
 const DevAvatarPreview: React.FC = () => {
     const [selectedKey, setSelectedKey] = useState(getInitialPresetKey);
-    const [avatarKind, setAvatarKind] = useState<'duck' | 'human'>('duck');
 
     const selectedPreset = useMemo(
         () => ALL_PRESETS.find(preset => preset.key === selectedKey) ?? ALL_PRESETS[0],
@@ -215,33 +258,6 @@ const DevAvatarPreview: React.FC = () => {
                     <p className="text-sm md:text-base max-w-3xl mx-auto" style={{ color: '#202023' }}>
                         Dev-only route om alle kapsels, pets en headwear-combinaties visueel te controleren in de echte 3D renderer.
                     </p>
-                    <div className="flex items-center justify-center gap-2 pt-2">
-                        <span className="text-xs font-bold uppercase tracking-widest" style={{ color: '#445865' }}>Avatar:</span>
-                        <button
-                            type="button"
-                            onClick={() => setAvatarKind('duck')}
-                            className="px-4 py-1.5 rounded-full text-sm font-bold transition-all"
-                            style={{
-                                backgroundColor: avatarKind === 'duck' ? '#D97848' : '#FFFFFF',
-                                color: avatarKind === 'duck' ? '#FFFFFF' : '#445865',
-                                border: '2px solid #D97848',
-                            }}
-                        >
-                            3D Eend
-                        </button>
-                        <button
-                            type="button"
-                            onClick={() => setAvatarKind('human')}
-                            className="px-4 py-1.5 rounded-full text-sm font-bold transition-all"
-                            style={{
-                                backgroundColor: avatarKind === 'human' ? '#D97848' : '#FFFFFF',
-                                color: avatarKind === 'human' ? '#FFFFFF' : '#445865',
-                                border: '2px solid #D97848',
-                            }}
-                        >
-                            3D Mens
-                        </button>
-                    </div>
                 </div>
 
                 <div className="grid grid-cols-1 xl:grid-cols-[minmax(0,1.4fr)_minmax(320px,0.9fr)] gap-8 items-start">
@@ -281,30 +297,16 @@ const DevAvatarPreview: React.FC = () => {
                                     {selectedPreset.label}
                                 </h2>
                                 <p className="text-sm" style={{ color: '#202023' }}>
-                                    Vergelijk de live 3D-render met de 2D fallback om silhouetteproblemen sneller te spotten.
+                                    Sleep de avatar rond om clipping en grounding vanuit elke hoek te controleren.
                                 </p>
                             </div>
 
-                            <div className="space-y-5">
-                                <div>
-                                    <div className="text-xs font-black uppercase tracking-[0.16em] mb-2" style={{ color: '#ff3c21' }}>
-                                        3D Renderer
-                                    </div>
-                                    <div className="h-[420px] rounded-[1.5rem] overflow-hidden" style={{ backgroundColor: '#f2f1ec', border: '1px solid #E7D8BD' }}>
-                                        {avatarKind === 'duck'
-                                            ? <AvatarViewer3DDuck config={selectedPreset.config} interactive={true} />
-                                            : <AvatarViewer config={selectedPreset.config} interactive={true} />
-                                        }
-                                    </div>
+                            <div>
+                                <div className="text-xs font-black uppercase tracking-[0.16em] mb-2" style={{ color: '#ff3c21' }}>
+                                    3D Renderer
                                 </div>
-
-                                <div>
-                                    <div className="text-xs font-black uppercase tracking-[0.16em] mb-2" style={{ color: '#202023' }}>
-                                        2D Fallback
-                                    </div>
-                                    <div className="h-[360px] rounded-[1.5rem] overflow-hidden" style={{ backgroundColor: '#f2f1ec', border: '1px solid #E7D8BD' }}>
-                                        <AvatarViewer2D config={selectedPreset.config} interactive={false} />
-                                    </div>
+                                <div className="h-[420px] rounded-[1.5rem] overflow-hidden" style={{ backgroundColor: '#f2f1ec', border: '1px solid #E7D8BD' }}>
+                                    <AvatarViewer config={selectedPreset.config} interactive={true} />
                                 </div>
                             </div>
                         </aside>

@@ -36,6 +36,7 @@
     "check:ai-provider-docs": "node scripts/check-ai-provider-docs.mjs",
     "check:ai-usage": "node scripts/check-ai-usage-telemetry.mjs && node scripts/check-mistral-bfl-providers.mjs",
     "check:rls:functions": "node scripts/check-rls-functions.mjs",
+    "check:avatar-shop": "node scripts/sync-avatar-shop-seed.mjs --check",
     "check:rls:throwaway": "node scripts/check-rls-throwaway.mjs",
     "check:supabase:remote-migrations": "node scripts/check-supabase-remote-migrations.mjs",
     "biastest": "node scripts/biastest.mjs",
@@ -62,6 +63,7 @@
     "qa:journey:desktop": "node scripts/audit-journey-desktop.mjs",
     "test:ai-students": "node tests/ai-students/cli.mjs",
     "test:ai-students:unit": "node --test tests/ai-students/unit/*.test.mjs",
+    "test:avatar-shop": "node --test tests/avatar-shop-economy.test.mjs",
     "test:ai-students:pilot": "node tests/ai-students/local-pilot.mjs --mission=mail-detective --persona=snelle-sam,taalzwakke-tess,ipad-iris --device=desktop,ipad-portrait,ipad-landscape",
     "audit:security": "node scripts/audit-security.mjs",
     "test:audit-security": "node --test tests/security/audit-security.test.mjs",
@@ -105,8 +107,8 @@
     "vite": "^8.0.16"
   },
   "overrides": {
-    "brace-expansion@^1.0.0": "1.1.18",
-    "brace-expansion@^2.0.0": "2.1.4",
-    "uuid": "^11.1.1"
+    "uuid": "^11.1.1",
+    "brace-expansion@<1.1.18": "1.1.18",
+    "brace-expansion@>=2.0.0 <2.1.4": "2.1.4"
   }
 }

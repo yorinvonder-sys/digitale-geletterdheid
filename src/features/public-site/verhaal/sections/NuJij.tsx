@@ -60,7 +60,7 @@ export function NuJij() {
                     }
                 />
 
-                <Reveal delay={0.15} className="mt-8 max-w-2xl">
+                <Reveal delay={0.15} className="mx-auto mt-8 max-w-2xl text-center">
                     <p className="text-lg leading-relaxed text-duck-bg/70 md:text-xl">
                         Hieronder staat een echte, speelbare game. Vertel de AI wat je wilt veranderen —
                         een ander thema, een ander karakter, meer obstakels, een nieuw doel — en{' '}
@@ -79,20 +79,6 @@ export function NuJij() {
                     )}
                 </div>
 
-                <Reveal className="mt-8">
-                    {/* Bewust geen kerndoelcode: dit blok is een demo, geen
-                        geregistreerde missie, en staat niet in de SLO-mapping.
-                        Een code eraan hangen zou een dekkingsclaim zijn die het
-                        product hier niet waarmaakt. */}
-                    <p className="text-xs font-bold text-duck-bg/45">
-                        Geen account nodig. DGSkills bewaart de inhoud van je gesprek niet in
-                        de eigen database; de AI-verwerking loopt via Mistral, onder de
-                        afspraken uit onze{' '}
-                        <a href="/ict/privacy/ai" className="underline underline-offset-2 hover:text-duck-bg/70">
-                            AI-transparantie
-                        </a>.
-                    </p>
-                </Reveal>
             </div>
         </section>
     );

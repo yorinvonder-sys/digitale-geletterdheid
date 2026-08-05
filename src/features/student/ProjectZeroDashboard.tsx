@@ -2,7 +2,7 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { motion } from 'framer-motion';
 
-import { Rocket, BrainCircuit, ShieldCheck, Gamepad2, Stars, Info, Play, Feather, Puzzle, Database, ChevronRight, ChevronLeft, ChevronDown, ChevronUp, Calendar, Pencil, Map, Lightbulb, Trophy, LogOut, User, RotateCcw, Search, Scale, Lock, Settings2, Cloud, Folder, FileText, Monitor, Printer, AlertTriangle, Sparkles, MessageSquare, Send, Loader2, BookOpen, BarChart2, Eye, CheckCircle2, MonitorSmartphone, Home, Bell, Flame, Award } from 'lucide-react';
+import { Rocket, BrainCircuit, ShieldCheck, Gamepad2, Stars, Info, Play, Feather, Puzzle, Database, ChevronRight, ChevronLeft, ChevronDown, ChevronUp, Calendar, Pencil, Map, Lightbulb, Trophy, LogOut, User, RotateCcw, Search, Scale, Lock, Settings2, Cloud, Folder, FileText, Monitor, Printer, AlertTriangle, Sparkles, MessageSquare, Send, Loader2, BookOpen, BarChart2, Eye, CheckCircle2, MonitorSmartphone, Home, Bell, Flame, Award, ShoppingBag } from 'lucide-react';
 import { getLevelProgress, getXPToNextLevel, LEVEL_THRESHOLDS } from '@/utils/xp';
 import { DuckMark } from '@/components/brand/DuckMark';
 import { LazyAvatarViewer } from '@/features/profile/avatar/LazyAvatarViewer';
@@ -115,7 +115,7 @@ const WEEK_MISSIONS: Record<number, Mission[]> = {
             status: 'available',
             isExternal: true,
             info: getMissionTooltipInfo('slide-specialist'),
-            sloKerndoelen: ['21A', '21C', '22A']
+            sloKerndoelen: ['21A', '22A']
         },
         {
             id: 'print-pro',
@@ -936,6 +936,14 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
                                     <span className="text-duck-ink/65">nog {xpToNext} xp voor lvl {level + 1}</span>
                                 </div>
 
+                                {/* Wie zijn XP bekijkt, wil 'm meestal uitgeven. */}
+                                <button
+                                    onClick={() => { setShowXPPopup(false); onOpenProfile('shop'); }}
+                                    className="w-full py-4 mb-3 bg-duck-acid border border-duck-ink text-duck-ink rounded-full font-extrabold uppercase tracking-[0.12em] flex items-center justify-center gap-2 transition-transform duration-300 hover:-translate-y-0.5 active:translate-y-0 motion-reduce:transition-none"
+                                >
+                                    <ShoppingBag size={16} />
+                                    Naar de winkel
+                                </button>
                                 <button
                                     onClick={() => setShowXPPopup(false)}
                                     className="w-full py-4 bg-duck-ink text-duck-acid rounded-full font-extrabold uppercase tracking-[0.12em] transition-transform duration-300 hover:-translate-y-0.5 active:translate-y-0 motion-reduce:transition-none"
@@ -1237,6 +1245,17 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
                                             >
                                                 <User size={18} className="text-duck-ink" />
                                                 <span className="font-extrabold text-duck-ink/65 text-sm group-hover:text-duck-ink">Avatar aanpassen</span>
+                                            </button>
+                                            {/* Winkel Button */}
+                                            <button
+                                                onClick={() => {
+                                                    setShowProfileMenu(false);
+                                                    onOpenProfile('shop');
+                                                }}
+                                                className="w-full flex items-center gap-3 px-4 py-3 min-h-[48px] rounded-xl text-left hover:bg-duck-bgLight transition-colors group"
+                                            >
+                                                <ShoppingBag size={18} className="text-duck-ink" />
+                                                <span className="font-extrabold text-duck-ink/65 text-sm group-hover:text-duck-ink">Winkel</span>
                                             </button>
                                             {/* Trofeeënhal Button */}
                                             <button

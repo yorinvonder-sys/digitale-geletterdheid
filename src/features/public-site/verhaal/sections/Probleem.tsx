@@ -3,15 +3,14 @@ import { motion, useScroll, useTransform } from 'framer-motion';
 import { Pill, Reveal } from '../components/storyBrand';
 
 /**
- * Handgetekende SVG-iconen als subtiel watermerk rechtsonder bij elke beat.
- * Ze staan bewust buiten de titelrij, zijn doorzichtig en licht gekanteld, en
- * vangen geen klikken — zie de gouden regels in het plan.
+ * Handgetekende SVG-iconen als subtiele, doorzichtige illustratie onder elke
+ * beat. Zo sluiten beeld en tekst logisch op elkaar aan en blijft de titel vrij.
  */
 function BeatIcon({ children, rotate = -8 }: { children: React.ReactNode; rotate?: number }) {
     return (
         <span
             aria-hidden="true"
-            className="pointer-events-none absolute -bottom-6 right-0 inline-flex h-24 w-24 items-center justify-center rounded-3xl border-[3px] border-duck-bg/20 bg-duck-acid/10 opacity-40 md:right-6 md:h-36 md:w-36"
+            className="pointer-events-none mt-7 inline-flex h-20 w-20 items-center justify-center rounded-3xl border-[3px] border-duck-bg/20 bg-duck-acid/10 opacity-40 md:h-28 md:w-28"
             style={{ transform: `rotate(${rotate}deg)` }}
         >
             <svg
@@ -94,7 +93,7 @@ function Beat({ beat, index }: { beat: (typeof BEATS)[number]; index: number }) 
     const opacity = useTransform(scrollYProgress, [0, 1], [0, 1]);
 
     return (
-        <motion.div ref={ref} style={{ y, opacity }} className="flex gap-6 md:gap-10">
+        <motion.div ref={ref} style={{ y, opacity }} className="mx-auto flex max-w-4xl justify-center gap-6 md:gap-10">
             <div className="flex flex-col items-center">
                 <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full border-[3px] border-duck-bg/40 font-display text-lg font-black text-duck-acid">
                     {index + 1}
@@ -102,16 +101,19 @@ function Beat({ beat, index }: { beat: (typeof BEATS)[number]; index: number }) 
                 {index < BEATS.length - 1 && <span className="mt-2 w-[2px] flex-1 bg-duck-bg/20" />}
             </div>
             {/* De onderruimte houdt het watermerk vrij van de lopende tekst. */}
-            <div className="relative pb-24 md:pb-32">
-                {ICONS[index]}
+            <div className="relative flex flex-col items-center pb-12 md:pb-20">
                 <Pill dark>{beat.kicker}</Pill>
-                <h3 className="mt-5 max-w-2xl font-display text-3xl font-black leading-[1.05] md:text-5xl">
+                <h3 className="mt-5 max-w-2xl text-center font-display text-3xl font-black leading-[1.05] md:text-5xl">
                     {beat.title}
                 </h3>
-                <p className="relative mt-4 max-w-xl text-base leading-relaxed text-duck-bg/65 md:text-lg">
+                <p className="relative mt-4 max-w-xl text-center text-base leading-relaxed text-duck-bg/65 md:text-lg">
                     {beat.body}
                 </p>
+                {ICONS[index]}
             </div>
+            {/* Spiegelt de tijdlijnkolom, zodat de gecentreerde tekst op de sectie-as
+                valt in plaats van naar rechts te schuiven. */}
+            <span aria-hidden="true" className="w-12 shrink-0" />
         </motion.div>
     );
 }
@@ -120,19 +122,21 @@ export function Probleem() {
     return (
         <section id="probleem" className="scroll-mt-24 relative bg-duck-ink text-duck-bg grain">
             <div className="mx-auto max-w-6xl px-6 py-24 md:px-14 md:py-36">
-                <Reveal>
-                    <Pill dark>Hoofdstuk 1 · Het probleem</Pill>
-                </Reveal>
-                <Reveal delay={0.08}>
-                    <h2 className="mt-6 max-w-3xl font-display text-4xl font-black leading-[1.02] tracking-tight md:text-6xl lg:text-7xl">
-                        Eerst even <em className="italic text-duck-acid">de pijn</em>. Je kent hem wel.
-                    </h2>
-                </Reveal>
+                <div className="mx-auto max-w-4xl text-center">
+                    <Reveal>
+                        <Pill dark>Hoofdstuk 1 · Het probleem</Pill>
+                    </Reveal>
+                    <Reveal delay={0.08}>
+                        <h2 className="mx-auto mt-6 max-w-3xl font-display text-4xl font-black leading-[1.02] tracking-tight md:text-6xl lg:text-7xl">
+                            Eerst even <em className="italic text-duck-acid">de pijn</em>. Je kent hem wel.
+                        </h2>
+                    </Reveal>
 
-                <div className="mt-16 md:mt-24">
-                    {BEATS.map((b, i) => (
-                        <Beat key={b.kicker} beat={b} index={i} />
-                    ))}
+                    <div className="mt-16 md:mt-24">
+                        {BEATS.map((b, i) => (
+                            <Beat key={b.kicker} beat={b} index={i} />
+                        ))}
+                    </div>
                 </div>
             </div>
         </section>

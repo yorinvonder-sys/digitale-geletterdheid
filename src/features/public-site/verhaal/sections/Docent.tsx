@@ -22,8 +22,8 @@ const POINTS = [
         body: 'Voortgang en leervragen in één scherm. Je helpt gericht — in plaats van 29 keer dezelfde vraag te beantwoorden.',
     },
     {
-        title: 'Klas-inzicht, anoniem',
-        body: 'De AI vat samen waar de klas vastloopt. Gebaseerd op anonieme voortgangsdata — geen namen zichtbaar voor de AI.',
+        title: 'Jij hebt het laatste woord',
+        body: 'De AI kijkt mee, jij beslist. Een afgeronde stap draai je terug of keur je alsnog goed — met je eigen reden erbij.',
     },
     {
         title: 'Geen zondagsvoorbereiding',
@@ -44,7 +44,7 @@ export function Docent() {
                         </>
                     }
                 />
-                <Reveal delay={0.15} className="mt-8 max-w-2xl">
+                <Reveal delay={0.15} className="mx-auto mt-8 max-w-2xl text-center">
                     <p className="text-lg leading-relaxed text-duck-ink/70 md:text-xl">
                         Terwijl de klas werkt, kijk jij mee in je dashboard. Wie is klaar, wie heeft hulp
                         nodig, welke SLO-doelen zijn geraakt —{' '}
@@ -131,17 +131,6 @@ export function Docent() {
                                         </div>
                                     ))}
                                 </div>
-                            </div>
-
-                            {/* anoniem klas-inzicht */}
-                            <div className="mt-4 flex flex-wrap items-center justify-between gap-3 rounded-xl border-2 border-dashed border-duck-ink/30 px-4 py-3">
-                                <p className="text-sm text-duck-ink/70">
-                                    <strong>Klas-inzicht:</strong> AI-samenvatting van waar de klas
-                                    vastloopt. Anoniem — geen namen.
-                                </p>
-                                <span className="rounded-full border-2 border-duck-ink bg-white px-4 py-1.5 text-xs font-bold">
-                                    Genereer samenvatting
-                                </span>
                             </div>
                         </BrowserFrame>
                     </Reveal>
