@@ -110,6 +110,33 @@ const HEADWEAR_PRESETS: PreviewPreset[] = [
             expression: 'surprised',
         },
     },
+    // Kroon op volumineus haar is het lastigste geval: een pet en een muts
+    // sluiten om het hoofd, een kroon staat er open bovenop. Mohawk en afro
+    // steken het verst uit, dus daar zie je clipping als eerste.
+    {
+        key: 'headwear-mohawk-crown',
+        label: 'Headwear QA — Mohawk + Kroon',
+        category: 'headwear',
+        config: {
+            ...createBaseConfig('male'),
+            hairStyle: 'mohawk',
+            hairColor: '#ff3c21',
+            accessory: 'crown',
+            shirtColor: '#202023',
+        },
+    },
+    {
+        key: 'headwear-afro-crown',
+        label: 'Headwear QA — Afro + Gouden Kroon',
+        category: 'headwear',
+        config: {
+            ...createBaseConfig('female'),
+            hairStyle: 'afro',
+            hairColor: '#1A1A1A',
+            accessory: 'crown_gold',
+            shirtColor: '#e1ff01',
+        },
+    },
 ];
 
 const ALL_PRESETS = [...HAIR_PRESETS, ...PET_PRESETS, ...HEADWEAR_PRESETS];
