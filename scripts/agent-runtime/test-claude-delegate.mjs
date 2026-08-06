@@ -78,6 +78,7 @@ try {
     ['src/components/Card.tsx', 'src/utils/**'],
   );
   const buildArgs = buildArgsList.join(' ');
+  const tools = buildArgsList[buildArgsList.indexOf('--tools') + 1];
   const allowedTools = buildArgsList[buildArgsList.indexOf('--allowedTools') + 1];
   const settings = JSON.parse(
     buildArgsList[buildArgsList.indexOf('--settings') + 1],
@@ -88,12 +89,14 @@ try {
   ]);
 
   assert.match(buildArgs, /claude-opus-5/);
+  assert.equal(tools, 'Read,Edit');
   assert.match(buildArgs, /--disallowedTools Bash/);
   assert.doesNotMatch(buildArgs, /Bash\(/);
   assert.match(allowedTools, /Read\(\/src\/components\/Card\.tsx\)/);
   assert.match(allowedTools, /Read\(\/src\/utils\/\*\*\)/);
+  assert.doesNotMatch(allowedTools, /Glob\(/);
   assert.doesNotMatch(allowedTools, /Write\(/);
-  assert.match(buildArgs, /--disallowedTools Bash,Grep/);
+  assert.match(buildArgs, /--disallowedTools Bash,Grep,Glob,Write/);
   assert.doesNotMatch(buildArgs, /--allowedTools Read,Grep/);
   assert.doesNotMatch(buildArgs, /sonnet/i);
   assert.ok(
@@ -220,6 +223,19 @@ validateCommitBinding(
   { root: '/tmp/project', head: commit, status: '' },
   true,
   trustedMergeBase,
+);
+assert.throws(
+  () =>
+    validateCommitBinding(
+      releaseBinding,
+      { root: '/tmp/project', head: commit, status: '' },
+      true,
+      (_command, args) =>
+        args[0] === 'fetch'
+          ? { status: 1, stdout: '', stderr: '' }
+          : trustedMergeBase(),
+    ),
+  /refresh the trusted release base/,
 );
 assert.throws(
   () =>

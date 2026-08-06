@@ -152,14 +152,13 @@ export function buildClaudeArgs(mode, effort, worktreeRoot, allowedPaths = []) {
     throw new Error('Claude build mode requires a worktree root');
   }
 
-  const tools = mode.write ? 'Read,Glob,Edit,Write' : '';
+  const tools = mode.write ? 'Read,Edit' : '';
   const root = worktreeRoot ? resolve(worktreeRoot) : '';
   const scopedPaths = allowedPaths.map((path) => `/${path}`);
   const allowedTools = mode.write
     ? scopedPaths
         .flatMap((path) => [
           `Read(${path})`,
-          `Glob(${path})`,
           `Edit(${path})`,
         ])
         .join(',')
@@ -171,6 +170,8 @@ export function buildClaudeArgs(mode, effort, worktreeRoot, allowedPaths = []) {
     ? [
         'Bash',
         'Grep',
+        'Glob',
+        'Write',
         'Agent',
         'mcp__*',
         'Read(/.env*)',
@@ -498,15 +499,33 @@ export function validateCommitBinding(packet, worktree, required, run = spawnSyn
     );
   }
 
+  const gitBinary = resolveGitBinary();
+  const gitOptions = {
+    cwd: worktree.root,
+    env: cleanGitEnvironment(),
+    encoding: 'utf8',
+    maxBuffer: MAX_OUTPUT_BYTES,
+    timeout: 120000,
+  };
+  const fetch = run(
+    gitBinary,
+    [
+      'fetch',
+      '--quiet',
+      'origin',
+      'refs/heads/main:refs/remotes/origin/main',
+    ],
+    gitOptions,
+  );
+
+  if (fetch.status !== 0) {
+    throw new Error('Unable to refresh the trusted release base');
+  }
+
   const mergeBase = run(
-    resolveGitBinary(),
+    gitBinary,
     ['merge-base', RELEASE_BASE_REF, worktree.head],
-    {
-      cwd: worktree.root,
-      env: cleanGitEnvironment(),
-      encoding: 'utf8',
-      maxBuffer: MAX_OUTPUT_BYTES,
-    },
+    gitOptions,
   );
 
   if (mergeBase.status !== 0) {

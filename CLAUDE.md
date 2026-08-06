@@ -66,10 +66,11 @@ classification and worktree boundary are explicit.
 - Never use Sonnet, Haiku, `default`, `best` or `opusplan`; never configure a
   cross-family fallback.
 - Claude build mode requires a clean disposable `claude/**` worktree and may not
-  use Bash, push, commit, merge, deploy or use production credentials. File
-  tools use deny-first absolute rules generated from the filesystem root so only
-  the packet's validated `ALLOWED_PATHS` remain readable or editable; the parent
-  wrapper also rejects any resulting diff outside that slice and Sol verifies it.
+  use Bash, Glob, Write, push, commit, merge, deploy or production credentials.
+  Read and Edit use deny-first absolute rules generated from the filesystem root
+  so only the packet's validated existing `ALLOWED_PATHS` remain accessible; the
+  parent wrapper also rejects any resulting diff outside that slice and Sol
+  verifies it.
 - Claude review modes are tool-less and can inspect only the sanitized evidence
   packet. They cannot browse the repository, home directory, MCP or network.
 - Ordinary-release evidence must be a mode-0600 regular file, bind to the exact
