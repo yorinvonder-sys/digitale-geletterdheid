@@ -37,7 +37,11 @@ const ASSESSMENT_REGISTRY: Record<string, AssessmentEntry> = {
     'assessment-j1-p1': { config: WEEK_1_CONFIG, tasks: WEEK_1_ASSESSMENT },
     'assessment-j1-p2': { config: WEEK_2_CONFIG, tasks: WEEK_2_ASSESSMENT },
     'assessment-j1-p3': { config: WEEK_3_CONFIG, tasks: WEEK_3_ASSESSMENT },
-    'assessment-j1-p4': { config: WEEK_1_CONFIG, tasks: WEEK_1_ASSESSMENT }, // Periode 4 hergebruikt week 1 als fallback
+    // Periode 4 heeft bewust geen aparte periodetoets: die periode is het eindproject en
+    // wordt afgesloten met de Ethische Raad, waarin de leerling zijn eigen gemaakte product
+    // toetst op wetgeving, uitsluiting en transparantie. De eerdere entry hier verwees naar
+    // de toets van periode 1 (Magister/Word/PowerPoint/printen) en dekte de stof van
+    // periode 4 dus niet.
 
     // Legacy mappings (review mission IDs)
     'review-week-1': { config: WEEK_1_CONFIG, tasks: WEEK_1_ASSESSMENT },

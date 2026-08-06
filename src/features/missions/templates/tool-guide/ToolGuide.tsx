@@ -55,6 +55,7 @@ export interface ToolGuideConfig {
 const VALID_TOOL_GUIDE_IDS: ReadonlySet<string> = new Set([
     'cloud-commander',
     'magister-master',
+    'mission-build',
     'mission-launch',
     'print-pro',
     'slide-specialist',

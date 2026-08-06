@@ -314,6 +314,13 @@ export const MISSIE_BASISVAARDIGHEDEN: MissieBasisvaardigheden[] = [
     ],
   },
   {
+    missionId: 'mission-build',
+    basisvaardigheden: [
+      LOGISCH_REDENEREN('Leerling kiest passend gereedschap en bouwt in stappen naar een werkend product.'),
+      FORMULEREN('Leerling verwoordt wat een testgebruiker niet begreep en past het product daarop aan.'),
+    ],
+  },
+  {
     missionId: 'mission-launch',
     basisvaardigheden: [
       FORMULEREN('Leerling presenteert het eindproject en beantwoordt vragen.'),
