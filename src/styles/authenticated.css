@@ -160,6 +160,17 @@
   }
 }
 
+/* Telefoon - dezelfde hoogteverdeling als iPad-portret.
+   Tailwind stapelt hier al (flex-col md:flex-row), maar zonder minimumhoogte
+   pakte de chatkolom alle ruimte en werd het voorbeeldpaneel 0px hoog: op een
+   telefoon was het spel of het boek dan volledig onzichtbaar. */
+@media screen and (max-width: 767px) {
+  .ipad-stack > section {
+    flex: 1 1 auto !important;
+    min-height: 45dvh !important;
+  }
+}
+
 /* Tablet-specific game optimizations */
 @media screen and (min-width: 768px) and (max-width: 1366px) {
   /* Enhanced game UI visibility */
