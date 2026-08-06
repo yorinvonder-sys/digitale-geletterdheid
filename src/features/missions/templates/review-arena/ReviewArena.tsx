@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { MessageCircle } from 'lucide-react';
 import type { TemplateMissionProps, BadgeConfig, FollowUpQuestion, MissionGoal } from '../shared/types';
@@ -149,14 +149,26 @@ const ReviewArenaWithConfig: React.FC<ReviewArenaProps> = ({
     // Local (non-persisted) follow-up UI state
     const [pendingScore, setPendingScore] = useState<number | null>(null);
     const [showFollowUp, setShowFollowUp] = useState(false);
+    const [completionError, setCompletionError] = useState(false);
+    const completionAttemptRef = useRef(false);
+    const roundCompletionLockRef = useRef<number | null>(null);
+    const roundAdvanceLockRef = useRef<number | null>(null);
 
     const totalScore = state.roundScores.reduce((a, b) => a + b, 0);
 
     const advanceRound = useCallback(
-        (score: number) => {
+        (score: number, roundIndex: number) => {
+            if (roundAdvanceLockRef.current === roundIndex) return;
+            roundAdvanceLockRef.current = roundIndex;
+
             setState((s) => {
+                // The lock handles rapid duplicate events; this invariant also
+                // protects against stale callbacks or restored partial state.
+                if (s.phase !== 'round' || s.currentRound !== roundIndex || s.roundScores.length !== roundIndex) {
+                    return s;
+                }
                 const newScores = [...s.roundScores, score];
-                const nextRound = s.currentRound + 1;
+                const nextRound = roundIndex + 1;
                 const isLast = nextRound >= config.rounds.length;
                 return {
                     ...s,
@@ -175,12 +187,16 @@ const ReviewArenaWithConfig: React.FC<ReviewArenaProps> = ({
 
     const handleRoundComplete = useCallback(
         (score: number) => {
-            const round = config.rounds[state.currentRound];
+            const roundIndex = state.currentRound;
+            if (roundCompletionLockRef.current === roundIndex) return;
+            roundCompletionLockRef.current = roundIndex;
+
+            const round = config.rounds[roundIndex];
             if (round?.followUp && score > round.maxScore * 0.5) {
                 setPendingScore(score);
                 setShowFollowUp(true);
             } else {
-                advanceRound(score);
+                advanceRound(score, roundIndex);
             }
         },
         [advanceRound, config.rounds, state.currentRound]
@@ -188,7 +204,10 @@ const ReviewArenaWithConfig: React.FC<ReviewArenaProps> = ({
 
     const handleFollowUpComplete = useCallback(
         (correct: boolean) => {
-            const round = config.rounds[state.currentRound];
+            const roundIndex = state.currentRound;
+            if (roundCompletionLockRef.current !== roundIndex) return;
+
+            const round = config.rounds[roundIndex];
             const bonus = correct ? (round?.followUp?.bonusPoints ?? 0) : 0;
             const base = pendingScore ?? 0;
             const maxScore = round?.maxScore ?? 0;
@@ -198,20 +217,36 @@ const ReviewArenaWithConfig: React.FC<ReviewArenaProps> = ({
                 ...s,
                 followUpResults: {
                     ...s.followUpResults,
-                    [round?.id ?? state.currentRound]: { answered: true, correct },
+                    [round?.id ?? roundIndex]: { answered: true, correct },
                 },
             }));
 
             setShowFollowUp(false);
             setPendingScore(null);
-            advanceRound(finalScore);
+            advanceRound(finalScore, roundIndex);
         },
         [advanceRound, config.rounds, pendingScore, setState, state.currentRound]
     );
 
-    const handleComplete = useCallback(() => {
-        clearSave();
-        onComplete(true);
+    const handleComplete = useCallback(async () => {
+        if (completionAttemptRef.current) return;
+        completionAttemptRef.current = true;
+        setCompletionError(false);
+
+        try {
+            const completionResult = await onComplete(true);
+            if (completionResult === false) {
+                setCompletionError(true);
+                completionAttemptRef.current = false;
+                return;
+            }
+
+            // Keep the autosave until the durable completion handler confirms success.
+            clearSave();
+        } catch {
+            setCompletionError(true);
+            completionAttemptRef.current = false;
+        }
     }, [clearSave, onComplete]);
 
     // === Intro ===
@@ -240,14 +275,25 @@ const ReviewArenaWithConfig: React.FC<ReviewArenaProps> = ({
         }));
 
         return (
-            <CompletionScreen
-                score={totalScore}
-                maxScore={config.maxScore}
-                badges={config.badges}
-                phases={phases}
-                takeaways={config.takeaways}
-                onComplete={handleComplete}
-            />
+            <>
+                {completionError && (
+                    <p
+                        role="alert"
+                        className="px-4 pt-4 text-center text-sm font-bold text-duck-ink"
+                        style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
+                    >
+                        Afronden is nog niet bevestigd. Probeer opnieuw.
+                    </p>
+                )}
+                <CompletionScreen
+                    score={totalScore}
+                    maxScore={config.maxScore}
+                    badges={config.badges}
+                    phases={phases}
+                    takeaways={config.takeaways}
+                    onComplete={handleComplete}
+                />
+            </>
         );
     }
 

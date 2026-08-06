@@ -17,10 +17,11 @@ interface GameDirectorProgress {
     score: number;
     isHardMode: boolean;
     reflectie: string;
+    blocks: PlacedBlock[];
 }
 
 interface GameDirectorProps {
-    onComplete: (success: boolean) => void;
+    onComplete: (success: boolean) => boolean | void | Promise<boolean | void>;
     onBack: () => void;
     stats?: UserStats;
     userId?: string;
@@ -199,11 +200,11 @@ export const GameDirectorMission: React.FC<GameDirectorProps> = ({ onComplete, o
     // Persistent progress state (auto-saved to localStorage)
     const { state: progress, setState: setProgress, clearSave } = useMissionAutoSave<GameDirectorProgress>(
         'game-director',
-        { currentChallengeIndex: 0, score: 0, isHardMode: false, reflectie: '' }
+        { currentChallengeIndex: 0, score: 0, isHardMode: false, reflectie: '', blocks: [] }
     );
 
     // Block programming state
-    const [blocks, setBlocks] = useState<PlacedBlock[]>([]);
+    const [blocks, setBlocks] = useState<PlacedBlock[]>(() => progress.blocks || []);
     const [draggingBlock, setDraggingBlock] = useState<BlockDefinition | null>(null);
 
     // Mobile tab state
@@ -232,6 +233,10 @@ export const GameDirectorMission: React.FC<GameDirectorProps> = ({ onComplete, o
     const [successPulse, setSuccessPulse] = useState(false);
     const [isChatOpen, setIsChatOpen] = useState(false);
     const startTimeRef = useRef<number>(Date.now());
+
+    useEffect(() => {
+        setProgress(prev => ({ ...prev, blocks }));
+    }, [blocks, setProgress]);
 
     // Canvas and game loop
     const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -750,10 +755,12 @@ export const GameDirectorMission: React.FC<GameDirectorProps> = ({ onComplete, o
                         title: "Wie is de baas?",
                         text: "In deze missie was JIJ de baas over Robbie, net zoals programmeurs de baas zijn over AI. We moeten AI (zoals ChatGPT) duidelijke instructies geven, zodat het precies doet wat we willen en altijd veilig blijft. Dat noemen we 'AI Alignment' — dat de AI doet wat jij echt bedoelt."
                     }}
-                    onExit={progress.reflectie.trim().length >= 10 ? () => {
-                        clearSave();
-                        setShowConclusion(false);
-                        onComplete(true);
+                    onExit={progress.reflectie.trim().length >= 10 ? async () => {
+                        const completed = await onComplete(true);
+                        if (completed !== false) {
+                            clearSave();
+                            setShowConclusion(false);
+                        }
                     } : undefined}
                 >
                     {/* Reflectie */}

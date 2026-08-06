@@ -94,3 +94,24 @@ export function buildLocalPromptResult(
 export function calculatePromptMasterMaxScore(challenges: PromptMasterChallenge[]): number {
     return challenges.reduce((total, challenge) => total + challenge.feedbackCriteria.length * 10, 0);
 }
+
+export function calculatePromptMasterPassingPercentage(
+    challenges: PromptMasterChallenge[],
+    vsoProfile?: PromptMasterVsoProfile,
+): number {
+    const defaultThreshold = 60;
+    if (vsoProfile !== 'dagbesteding') return defaultThreshold;
+
+    const totalCriteria = challenges.reduce(
+        (total, challenge) => total + challenge.feedbackCriteria.length,
+        0,
+    );
+    if (totalCriteria === 0) return defaultThreshold;
+
+    const minimumPassingScore = challenges.reduce(
+        (total, challenge) => total + getEffectiveMinScore(challenge, vsoProfile),
+        0,
+    );
+
+    return Math.min(defaultThreshold, Math.round((minimumPassingScore / totalCriteria) * 100));
+}

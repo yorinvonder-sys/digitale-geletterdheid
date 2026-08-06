@@ -35,7 +35,6 @@ export const KERNDOEL_MISSIONS: KerndoelMissionMeta[] = [
   { id: 'ipad-print-instructies', title: 'iPad Print Instructies', week: 2, yearGroup: 1, sloKerndoelen: ['21A'], sloVsoKerndoelen: ['18A'], classRestriction: 'MH1A' },
   { id: 'cloud-cleaner', title: 'Cloud Schoonmaker', week: 2, yearGroup: 1, sloKerndoelen: ['21A', '23A'], sloVsoKerndoelen: ['18A', '20A'] },
   { id: 'layout-doctor', title: 'Word Match', week: 2, yearGroup: 1, sloKerndoelen: ['21A', '22A'], sloVsoKerndoelen: ['18A', '19A'] },
-  { id: 'pitch-police', title: 'Pitch Politie', week: 2, yearGroup: 1, sloKerndoelen: ['21A', '22A'], sloVsoKerndoelen: ['18A', '19A'] },
 
   // Assessment P1
   { id: 'assessment-j1-p1', title: 'Periodetoets 1', week: 1, yearGroup: 1, sloKerndoelen: ['21A', '22A', '23A'] },
@@ -52,10 +51,11 @@ export const KERNDOEL_MISSIONS: KerndoelMissionMeta[] = [
   { id: 'code-denker', title: 'Code Denker', week: 2, yearGroup: 1, sloKerndoelen: ['22B'], sloVsoKerndoelen: ['19A'] },                                      // -21D: puur computational thinking, geen AI
   { id: 'website-bouwer', title: 'Website Bouwer', week: 2, yearGroup: 1, sloKerndoelen: ['22B', '22A'], sloVsoKerndoelen: ['19A'] },
 
-  { id: 'schermtijd-coach', title: 'Schermtijd Coach', week: 2, yearGroup: 1, sloKerndoelen: ['23B', '21D'], sloVsoKerndoelen: ['20A', '18C'] },                  // digitaal welzijn + AI-bewustzijn (hoe apps je sturen)
+  { id: 'schermtijd-coach', title: 'Schermtijd Coach', week: 2, yearGroup: 1, sloKerndoelen: ['23B'], sloVsoKerndoelen: ['20A'] },                              // digitaal welzijn en bewuste mediakeuzes; geen AI-activiteit
   { id: 'notificatie-ninja', title: 'Notificatie Ninja', week: 2, yearGroup: 1, sloKerndoelen: ['23B', '21B'], sloVsoKerndoelen: ['20A', '18B'] },             // dark patterns in notificaties = welzijn + mediawijsheid
 
   // Periode 2 review
+  { id: 'pitch-police', title: 'Pitch Politie', week: 2, yearGroup: 1, sloKerndoelen: ['21A', '22A'], sloVsoKerndoelen: ['18A', '19A'] },
   { id: 'review-week-2', title: 'De Code-Criticus', week: 3, yearGroup: 1, sloKerndoelen: ['21D', '22B'], sloVsoKerndoelen: ['18C'] },                        // 21B→22B: review bevat code-bugs herkennen
 
   // Assessment P2

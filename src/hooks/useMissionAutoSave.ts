@@ -3,15 +3,17 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 const STORAGE_PREFIX = 'dgskills_mission_';
 const DEBOUNCE_MS = 1_000;
 
-/** Best-effort sync extraction of current user ID from Supabase's localStorage session. */
+/** Sync extraction from this app's configured Supabase session only. */
 const getCurrentUserId = (): string | null => {
     try {
-        const key = Object.keys(localStorage).find(k => /^sb-[a-z0-9_-]+-auth-token$/i.test(k));
-        if (!key) return null;
+        const supabaseUrl = ((import.meta as any).env.VITE_SUPABASE_URL as string)?.trim();
+        if (!supabaseUrl) return null;
+        const projectId = new URL(supabaseUrl).hostname.split('.')[0];
+        const key = `sb-${projectId}-auth-token`;
         const raw = localStorage.getItem(key);
         if (!raw) return null;
         const parsed = JSON.parse(raw);
-        return parsed?.user?.id ?? null;
+        return parsed?.user?.id ?? parsed?.currentSession?.user?.id ?? null;
     } catch {
         return null;
     }
@@ -20,23 +22,23 @@ const getCurrentUserId = (): string | null => {
 interface AutoSaveResult<T> {
     /** Current state value */
     state: T;
-    /** Update the state (triggers debounced save to localStorage) */
+    /** Update the state (triggers a debounced browser save) */
     setState: React.Dispatch<React.SetStateAction<T>>;
     /** Whether a previous save was found and restored */
     hasSavedProgress: boolean;
-    /** Clear saved progress from localStorage (call on mission completion) */
+    /** Clear saved progress from browser storage (call on mission completion) */
     clearSave: () => void;
 }
 
 /**
- * Hook die missie-state opslaat in localStorage en herstelt bij mount.
+ * Hook die missie-state opslaat en herstelt bij mount.
  * Voorkomt dat leerlingen voortgang verliezen bij per ongeluk sluiten
  * van de browser of teruggaan tijdens een missie.
  *
  * Features:
- * - Slaat state op in localStorage bij elke wijziging (debounced, 1 seconde)
+ * - Slaat state op bij elke wijziging (debounced, 1 seconde)
  * - Herstelt state bij mount als er een eerdere sessie is
- * - Ruimt localStorage op bij mission completion via clearSave()
+ * - Ruimt de save op bij mission completion via clearSave()
  * - beforeunload event listener als extra vangnet
  *
  * @example
@@ -53,29 +55,31 @@ export function useMissionAutoSave<T>(
     missionId: string,
     initialState: T
 ): AutoSaveResult<T> {
-    // Include userId in key to prevent cross-user data leakage on shared computers
+    // Authenticated state is user-scoped and durable. Anonymous dev-preview
+    // state stays tab-scoped so it cannot leak into another user's session.
     const userId = useRef(getCurrentUserId()).current;
+    const storage = userId ? localStorage : sessionStorage;
     const storageKey = userId
         ? `${STORAGE_PREFIX}${userId}_${missionId}`
-        : `${STORAGE_PREFIX}${missionId}`;
+        : `${STORAGE_PREFIX}anonymous-preview_${missionId}`;
 
     // Try to restore saved state on initial render
     const [state, setState] = useState<T>(() => {
         try {
-            const saved = localStorage.getItem(storageKey);
+            const saved = storage.getItem(storageKey);
             if (saved) {
                 return JSON.parse(saved) as T;
             }
         } catch {
             // Corrupt data — start fresh
-            localStorage.removeItem(storageKey);
+            storage.removeItem(storageKey);
         }
         return initialState;
     });
 
     const [hasSavedProgress] = useState<boolean>(() => {
         try {
-            return localStorage.getItem(storageKey) !== null;
+            return storage.getItem(storageKey) !== null;
         } catch {
             return false;
         }
@@ -83,26 +87,33 @@ export function useMissionAutoSave<T>(
 
     // Keep a ref to the latest state for the beforeunload handler
     const stateRef = useRef<T>(state);
+    const clearedRef = useRef(false);
     stateRef.current = state;
 
-    // Debounced save to localStorage
+    useEffect(() => {
+        clearedRef.current = false;
+    }, [storageKey]);
+
+    // Debounced save to the selected browser storage
     useEffect(() => {
         const timer = setTimeout(() => {
+            if (clearedRef.current) return;
             try {
-                localStorage.setItem(storageKey, JSON.stringify(state));
+                storage.setItem(storageKey, JSON.stringify(state));
             } catch {
-                // localStorage full or unavailable — silent fail
+                // Browser storage full or unavailable — silent fail
             }
         }, DEBOUNCE_MS);
 
         return () => clearTimeout(timer);
-    }, [state, storageKey]);
+    }, [state, storage, storageKey]);
 
     // beforeunload: flush immediately (no debounce) as a safety net
     useEffect(() => {
         const handleBeforeUnload = () => {
+            if (clearedRef.current) return;
             try {
-                localStorage.setItem(storageKey, JSON.stringify(stateRef.current));
+                storage.setItem(storageKey, JSON.stringify(stateRef.current));
             } catch {
                 // Best effort
             }
@@ -110,26 +121,28 @@ export function useMissionAutoSave<T>(
 
         window.addEventListener('beforeunload', handleBeforeUnload);
         return () => window.removeEventListener('beforeunload', handleBeforeUnload);
-    }, [storageKey]);
+    }, [storage, storageKey]);
 
     // Flush on unmount so pending changes aren't lost when leaving a mission
     useEffect(() => {
         return () => {
+            if (clearedRef.current) return;
             try {
-                localStorage.setItem(storageKey, JSON.stringify(stateRef.current));
+                storage.setItem(storageKey, JSON.stringify(stateRef.current));
             } catch {
                 // Best effort
             }
         };
-    }, [storageKey]);
+    }, [storage, storageKey]);
 
     const clearSave = useCallback(() => {
+        clearedRef.current = true;
         try {
-            localStorage.removeItem(storageKey);
+            storage.removeItem(storageKey);
         } catch {
             // Silent fail
         }
-    }, [storageKey]);
+    }, [storage, storageKey]);
 
     return { state, setState, hasSavedProgress, clearSave };
 }

@@ -107,7 +107,23 @@ const getXPReward = (difficulty: string): number => {
   }
 };
 
-export const AiLab: React.FC<AiLabProps> = ({ user, onExit, saveProgress, initialRole, libraryData, vsoProfile, devPreviewMode = false }) => {
+const DEDICATED_PROGRESS_MISSION_IDS = new Set([
+  'chatbot-trainer',
+  'ai-tekengame',
+  'ai-beleid-brainstorm',
+  'data-detective',
+  'deepfake-detector',
+  'filter-bubble-breaker',
+  'datalekken-rampenplan',
+  'data-voor-data',
+  'access-control-engineer',
+]);
+
+const isDedicatedProgressMission = (missionId: string): boolean => (
+  DEDICATED_PROGRESS_MISSION_IDS.has(missionId) || hasAssessment(missionId)
+);
+
+export const AiLab: React.FC<AiLabProps> = ({ user, onExit, saveProgress, completeMission, initialRole, libraryData, vsoProfile, devPreviewMode = false }) => {
   const [showXPPopup, setShowXPPopup] = useState(false);
   const [selectedRole, setSelectedRole] = useState<AgentRole | null>(null);
   const [showLevelUp, setShowLevelUp] = useState(false);
@@ -139,6 +155,7 @@ export const AiLab: React.FC<AiLabProps> = ({ user, onExit, saveProgress, initia
     missionsCompleted: [],
     inventory: []
   });
+  const autoCompletionAttemptsRef = useRef(new Set<string>());
 
   const hasSavedSession = stats.xp > 0 || (stats.missionsCompleted?.length || 0) > 0;
   const TIP_COST = 15;
@@ -267,47 +284,43 @@ export const AiLab: React.FC<AiLabProps> = ({ user, onExit, saveProgress, initia
     if (!selectedRole?.steps || completedSteps.length === 0) return;
 
     const totalSteps = selectedRole.steps.length;
-    const allStepsComplete = completedSteps.length >= totalSteps;
+    const allStepsComplete = selectedRole.steps.every((_, index) => completedSteps.includes(index));
 
     // Check if mission not already completed
     const missionAlreadyComplete = (stats.missionsCompleted || []).includes(selectedRole.id);
 
-    if (allStepsComplete && !missionAlreadyComplete) {
-      // Award XP based on mission difficulty and mark mission complete
-      const xpReward = getXPReward(selectedRole.difficulty);
-      handleAwardXP(xpReward, `${selectedRole.title} Voltooid!`);
+    if (selectedRole.id !== 'ai-trainer' && allStepsComplete && !missionAlreadyComplete) {
+      if (autoCompletionAttemptsRef.current.has(selectedRole.id)) return;
+      autoCompletionAttemptsRef.current.add(selectedRole.id);
 
-      // Trigger confetti celebration
-      setShowConfetti(true);
-      setTimeout(() => setShowConfetti(false), 2500);
+      void (async () => {
+        try {
+          const completed = completeMission
+            ? await completeMission(selectedRole.id)
+            : devPreviewMode;
+          if (!completed) {
+            autoCompletionAttemptsRef.current.delete(selectedRole.id);
+            return;
+          }
 
-      setStats(prev => ({
-        ...prev,
-        missionsCompleted: [...new Set([...(prev.missionsCompleted || []), selectedRole.id])]
-      }));
+          setShowConfetti(true);
+          setTimeout(() => setShowConfetti(false), 2500);
+          setStats(prev => ({
+            ...prev,
+            missionsCompleted: [...new Set([...(prev.missionsCompleted || []), selectedRole.id])],
+          }));
 
-      // Log activity for teacher analytics/export; retention follows the legal retention policy.
-      // This complements the mission_complete logging in App.tsx for non-AiLab missions.
-      if (user && user.role === 'student') {
-        logActivity({
-          uid: user.uid,
-          schoolId: user.schoolId,
-          studentName: user.displayName || 'Naamloos',
-          type: 'mission_complete',
-          data: `Missie voltooid: ${selectedRole.id} (+${xpReward} XP)`,
-          missionId: selectedRole.id
-        });
-      }
-
-      // Save progress
-      if (saveProgress) {
-        saveProgress({
-          ...stats,
-          missionsCompleted: [...new Set([...(stats.missionsCompleted || []), selectedRole.id])]
-        });
-      }
+          if (devPreviewMode && !completeMission) {
+            const xpReward = getXPReward(selectedRole.difficulty);
+            void handleAwardXP(xpReward, `${selectedRole.title} Voltooid!`);
+          }
+        } catch (error) {
+          logger.error('Auth-bound mission completion failed', error);
+          autoCompletionAttemptsRef.current.delete(selectedRole.id);
+        }
+      })();
     }
-  }, [completedSteps, selectedRole, stats.missionsCompleted]);
+  }, [completeMission, completedSteps, devPreviewMode, selectedRole, stats.missionsCompleted]);
 
   // Goal Achievement Detection
   useEffect(() => {
@@ -340,7 +353,7 @@ export const AiLab: React.FC<AiLabProps> = ({ user, onExit, saveProgress, initia
 
   // AUTO-SAVE MISSION PROGRESS (Steps, Data, Chat)
   useEffect(() => {
-    if (!selectedRole || !saveProgress) return;
+    if (!selectedRole || !saveProgress || isDedicatedProgressMission(selectedRole.id)) return;
 
     // Debounce save to prevent database write spam
     const timer = setTimeout(() => {
@@ -976,14 +989,14 @@ export const AiLab: React.FC<AiLabProps> = ({ user, onExit, saveProgress, initia
             <div className="flex-1 w-full h-full min-h-0 relative animate-in zoom-in-95 duration-500 rounded-3xl overflow-hidden shadow-2xl border-4 border-duck-ink/15 bg-duck-ink">
               {selectedRole.id === 'chatbot-trainer' ? (
                 <ChatbotTrainerPreview
-                  onLevelComplete={(level) => handleAwardXP(100, `Chatbot Level ${level} Voltooid`)}
+                  onLevelComplete={() => completeMission?.('chatbot-trainer')}
                   initialState={stats.missionProgress?.['chatbot-trainer']?.data}
                   sharedState={sharedData}
                   onSave={handleMissionDataSave}
                 />
               ) : selectedRole.id === 'ai-tekengame' ? (
                 <DrawingGamePreview
-                  onLevelComplete={(level) => handleAwardXP(100, 'AI Tekengame Voltooid')}
+                  onLevelComplete={() => completeMission?.('ai-tekengame')}
                   onXPEarned={(amount, label) => handleAwardXP(amount, label)}
                   user={user ? {
                     uid: user.uid,
@@ -1001,13 +1014,12 @@ export const AiLab: React.FC<AiLabProps> = ({ user, onExit, saveProgress, initia
                     studentClass: user.studentClass,
                     schoolId: user.schoolId
                   } : undefined}
-                  onComplete={() => {
-                    handleAwardXP(75, 'AI Beleid Brainstorm Voltooid');
-                    setStats(prev => ({
-                      ...prev,
-                      missionsCompleted: [...new Set([...(prev.missionsCompleted || []), 'ai-beleid-brainstorm'])]
-                    }));
-                    handleBackToOverview();
+                  onComplete={async () => {
+                    const completed = completeMission
+                      ? await completeMission('ai-beleid-brainstorm')
+                      : devPreviewMode;
+                    if (completed) handleBackToOverview();
+                    return completed;
                   }}
                 />
               ) : selectedRole.id === 'data-detective' ? (
@@ -1127,14 +1139,14 @@ export const AiLab: React.FC<AiLabProps> = ({ user, onExit, saveProgress, initia
                         weights: result.weights || { autoWeight: 0.6, teacherWeight: 0.4 }
                       });
                     }}
-                    onComplete={(passed, score) => {
-                      if (passed) {
-                        setStats(prev => ({
-                          ...prev,
-                          missionsCompleted: [...new Set([...(prev.missionsCompleted || []), selectedRole.id])]
-                        }));
-                        handleAwardXP(150, `${assessmentData.config.title || 'Praktijk'} Review`);
-                      }
+                    onComplete={async (passed, score) => {
+                      if (!passed) return true;
+                      const missionId = selectedRole.id === 'review-week-2'
+                        ? 'review-week-2'
+                        : selectedRole.id;
+                      return completeMission
+                        ? completeMission(missionId)
+                        : devPreviewMode;
                     }}
                     onExit={handleBackToOverview}
                     initialState={stats.missionProgress?.[selectedRole.id]?.data}
@@ -1163,6 +1175,7 @@ export const AiLab: React.FC<AiLabProps> = ({ user, onExit, saveProgress, initia
                 tipCost={TIP_COST}
                 onLinkClick={setPreviewUrl}
                 onReset={() => setShowResetConfirm(true)}
+                onComplete={() => completeMission?.('ai-trainer')}
               />
             </Suspense>
           ) : (

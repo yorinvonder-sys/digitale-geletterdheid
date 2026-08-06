@@ -125,14 +125,6 @@ export const MISSIE_BASISVAARDIGHEDEN: MissieBasisvaardigheden[] = [
       PATRONEN('Leerling herkent patronen in opmaakfouten en past consistente correcties toe.'),
     ],
   },
-  {
-    missionId: 'pitch-police',
-    basisvaardigheden: [
-      FORMULEREN('Leerling geeft onderbouwde feedback op presentaties van medeleerlingen.'),
-      LEESVAARDIGHEID('Leerling beoordeelt of de boodschap van een presentatie helder overkomt.'),
-    ],
-  },
-
   // =========================================================================
   // LEERJAAR 1 — Periode 2: AI & Creatie
   // =========================================================================
@@ -205,6 +197,12 @@ export const MISSIE_BASISVAARDIGHEDEN: MissieBasisvaardigheden[] = [
     basisvaardigheden: [
       FORMULEREN('Leerling geeft onderbouwde feedback op AI-creaties van medeleerlingen.'),
       BEGRIJPEND_LEZEN('Leerling analyseert en beoordeelt code en AI-output van anderen.'),
+    ],
+  },
+  {
+    missionId: 'pitch-police',
+    basisvaardigheden: [
+      LEESVAARDIGHEID('Leerling leest slideproblemen en kiest per slide een passende verbetering.'),
     ],
   },
 

@@ -10,6 +10,7 @@ interface CloudCleanerState {
     remainingFileIds: string[];
     score: number;
     mistakes: number;
+    correctReflections: number;
 }
 
 // "Waarom" reflectievragen per map
@@ -64,8 +65,17 @@ const WHY_QUESTIONS: Record<string, { question: string; options: { text: string;
     },
 };
 
+const FINAL_REFLECTION = {
+    question: 'Waarom helpt een opgeruimde cloudomgeving?',
+    options: [
+        { text: 'Je vindt betrouwbare bestanden sneller en verwijdert verdachte rommel bewust', correct: true },
+        { text: 'Alle bestanden worden daardoor automatisch kleiner', correct: false },
+        { text: 'Je hoeft daarna nooit meer bestandsnamen te lezen', correct: false },
+    ],
+};
+
 interface CloudCleanerProps {
-    onComplete: (success: boolean) => void;
+    onComplete: (success: boolean) => boolean | void | Promise<boolean | void>;
     onBack: () => void;
     stats?: UserStats;
     vsoProfile?: VsoProfile;
@@ -113,6 +123,7 @@ export const CloudCleanerMission: React.FC<CloudCleanerProps> = ({ onComplete, o
             remainingFileIds: FILES.map(f => f.id),
             score: 0,
             mistakes: 0,
+            correctReflections: 0,
         }
     );
 
@@ -120,9 +131,10 @@ export const CloudCleanerMission: React.FC<CloudCleanerProps> = ({ onComplete, o
     const files = FILES.filter(f => savedState.remainingFileIds.includes(f.id));
     const score = savedState.score;
     const mistakes = savedState.mistakes;
+    const correctReflections = savedState.correctReflections ?? 0;
 
     // Transient UI state - niet opgeslagen
-    const [showSuccess, setShowSuccess] = useState(false);
+    const [showSuccess, setShowSuccess] = useState(() => savedState.remainingFileIds.length === 0);
     const [dragActive, setDragActive] = useState<string | null>(null);
     const [selectedFolder, setSelectedFolder] = useState<string | null>(null);
     const [selectedFile, setSelectedFile] = useState<string | null>(null);
@@ -136,6 +148,7 @@ export const CloudCleanerMission: React.FC<CloudCleanerProps> = ({ onComplete, o
     // "Waarom" reflectie state
     const [whyQuestion, setWhyQuestion] = useState<{ folderId: string; fileName: string } | null>(null);
     const [whyFeedback, setWhyFeedback] = useState<'correct' | 'wrong' | null>(null);
+    const [finalReflectionFeedback, setFinalReflectionFeedback] = useState<'correct' | 'wrong' | null>(null);
 
     // Touch drag state
     const [touchDragFile, setTouchDragFile] = useState<string | null>(null);
@@ -261,7 +274,7 @@ export const CloudCleanerMission: React.FC<CloudCleanerProps> = ({ onComplete, o
         e.dataTransfer.dropEffect = 'move';
     };
 
-    const handleFolderClick = (e: React.MouseEvent, folderId: string) => {
+    const handleFolderClick = (e: React.SyntheticEvent, folderId: string) => {
         e.preventDefault();
         e.stopPropagation();
 
@@ -276,7 +289,7 @@ export const CloudCleanerMission: React.FC<CloudCleanerProps> = ({ onComplete, o
         }
     };
 
-    const handleFileClick = (e: React.MouseEvent, fileId: string) => {
+    const handleFileClick = (e: React.SyntheticEvent, fileId: string) => {
         e.preventDefault();
         e.stopPropagation();
 
@@ -388,6 +401,13 @@ export const CloudCleanerMission: React.FC<CloudCleanerProps> = ({ onComplete, o
                     <button onClick={onBack} className="p-2 hover:bg-white/10 rounded-full transition-all duration-300 focus-visible:ring-2 focus-visible:ring-white" title="Terug naar opdrachten">
                         <ArrowLeft size={20} />
                     </button>
+                    <button
+                        onClick={() => setMobileSidebarOpen(!mobileSidebarOpen)}
+                        className="lg:hidden p-2 hover:bg-white/10 rounded-full transition-all duration-300 focus-visible:ring-2 focus-visible:ring-white"
+                        aria-label={mobileSidebarOpen ? 'Sluit mappen' : 'Open mappen'}
+                    >
+                        {mobileSidebarOpen ? <X size={22} /> : <Folder size={22} />}
+                    </button>
                     <div className="flex items-center gap-2 font-bold text-lg">
                         <Cloud size={24} />
                         <span>OneDrive - School</span>
@@ -412,14 +432,6 @@ export const CloudCleanerMission: React.FC<CloudCleanerProps> = ({ onComplete, o
 
             {/* Main Interface */}
             <div className="flex-1 flex overflow-hidden relative">
-                {/* Mobile sidebar toggle */}
-                <button
-                    onClick={() => setMobileSidebarOpen(!mobileSidebarOpen)}
-                    className="lg:hidden fixed bottom-4 left-4 z-40 w-14 h-14 bg-duck-ink text-white rounded-full shadow-xl flex items-center justify-center hover:opacity-80 transition-all duration-300 focus-visible:ring-2 focus-visible:ring-duck-acid"
-                >
-                    {mobileSidebarOpen ? <X size={24} /> : <Folder size={24} />}
-                </button>
-
                 {/* Mobile sidebar backdrop */}
                 {mobileSidebarOpen && (
                     <div className="lg:hidden fixed inset-0 z-30 bg-duck-ink/30 backdrop-blur-sm" onClick={() => setMobileSidebarOpen(false)} />
@@ -458,7 +470,16 @@ export const CloudCleanerMission: React.FC<CloudCleanerProps> = ({ onComplete, o
                             <motion.div
                                 key={folder.id}
                                 ref={(el) => registerFolderRef(folder.id, el)}
+                                role="button"
+                                tabIndex={0}
+                                aria-label={`Plaats geselecteerd bestand in ${folder.name}`}
                                 onClick={(e) => handleFolderClick(e, folder.id)}
+                                onKeyDown={(e) => {
+                                    if (e.key === 'Enter' || e.key === ' ') {
+                                        e.preventDefault();
+                                        handleFolderClick(e, folder.id);
+                                    }
+                                }}
                                 onDragOver={handleDragOver}
                                 onDragEnter={(e) => handleDragEnter(e, folder.id)}
                                 onDragLeave={handleDragLeave}
@@ -507,7 +528,16 @@ export const CloudCleanerMission: React.FC<CloudCleanerProps> = ({ onComplete, o
                         {/* TRASH BIN */}
                         <motion.div
                             ref={(el) => registerFolderRef('trash', el)}
+                            role="button"
+                            tabIndex={0}
+                            aria-label="Plaats geselecteerd bestand in de prullenbak"
                             onClick={(e) => handleFolderClick(e, 'trash')}
+                            onKeyDown={(e) => {
+                                if (e.key === 'Enter' || e.key === ' ') {
+                                    e.preventDefault();
+                                    handleFolderClick(e, 'trash');
+                                }
+                            }}
                             onDragOver={handleDragOver}
                             onDragEnter={(e) => handleDragEnter(e, 'trash')}
                             onDragLeave={handleDragLeave}
@@ -617,6 +647,10 @@ export const CloudCleanerMission: React.FC<CloudCleanerProps> = ({ onComplete, o
                             {files.map(file => (
                                 <motion.div
                                     key={file.id}
+                                    role="button"
+                                    tabIndex={0}
+                                    aria-pressed={selectedFile === file.id}
+                                    aria-label={`Selecteer bestand ${file.name}`}
                                     layout
                                     initial={{ opacity: 0, scale: 0.8, y: 20 }}
                                     animate={{
@@ -634,6 +668,12 @@ export const CloudCleanerMission: React.FC<CloudCleanerProps> = ({ onComplete, o
                                     whileTap={{ scale: 0.98 }}
                                     draggable="true"
                                     onClick={(e) => handleFileClick(e, file.id)}
+                                    onKeyDown={(e) => {
+                                        if (e.key === 'Enter' || e.key === ' ') {
+                                            e.preventDefault();
+                                            handleFileClick(e, file.id);
+                                        }
+                                    }}
                                     onDragStart={(e) => {
                                         e.stopPropagation();
                                         handleDragStart(e as unknown as React.DragEvent, file.id);
@@ -714,6 +754,10 @@ export const CloudCleanerMission: React.FC<CloudCleanerProps> = ({ onComplete, o
                                         onClick={() => {
                                             if (opt.correct) {
                                                 setWhyFeedback('correct');
+                                                setSavedState(prev => ({
+                                                    ...prev,
+                                                    correctReflections: (prev.correctReflections ?? 0) + 1,
+                                                }));
                                                 setTimeout(() => {
                                                     setWhyQuestion(null);
                                                     setWhyFeedback(null);
@@ -740,12 +784,6 @@ export const CloudCleanerMission: React.FC<CloudCleanerProps> = ({ onComplete, o
                             {whyFeedback === 'correct' && (
                                 <p className="text-xs text-duck-ink text-center mt-3 font-bold">Goed beredeneerd!</p>
                             )}
-                            <button
-                                onClick={() => { setWhyQuestion(null); setWhyFeedback(null); }}
-                                className="w-full mt-4 text-xs text-duck-ink/60 hover:text-duck-ink transition-colors"
-                            >
-                                Overslaan
-                            </button>
                         </motion.div>
                     </motion.div>
                 )}
@@ -785,11 +823,47 @@ export const CloudCleanerMission: React.FC<CloudCleanerProps> = ({ onComplete, o
                                         <p className="text-sm text-duck-ink/60">{mistakes} foutjes gemaakt, maar dat geeft niet!</p>
                                     )}
                                 </div>
+                                {correctReflections === 0 && (
+                                    <div className="mb-6 text-left">
+                                        <p className="mb-3 text-sm font-bold text-duck-ink">{FINAL_REFLECTION.question}</p>
+                                        <div className="space-y-2">
+                                            {FINAL_REFLECTION.options.map((option) => (
+                                                <button
+                                                    key={option.text}
+                                                    type="button"
+                                                    onClick={() => {
+                                                        if (option.correct) {
+                                                            setFinalReflectionFeedback('correct');
+                                                            setSavedState(prev => ({
+                                                                ...prev,
+                                                                correctReflections: (prev.correctReflections ?? 0) + 1,
+                                                            }));
+                                                        } else {
+                                                            setFinalReflectionFeedback('wrong');
+                                                        }
+                                                    }}
+                                                    className="w-full rounded-xl border-2 border-duck-gray p-3 text-left text-sm font-medium text-duck-ink transition-colors hover:border-duck-ink focus-visible:ring-2 focus-visible:ring-duck-acid"
+                                                >
+                                                    {option.text}
+                                                </button>
+                                            ))}
+                                        </div>
+                                        {finalReflectionFeedback === 'wrong' && (
+                                            <p className="mt-2 text-xs font-medium text-duck-ink/60">Denk aan terugvinden, veiligheid en bewuste keuzes.</p>
+                                        )}
+                                    </div>
+                                )}
                                 <button
-                                    onClick={() => { clearSave(); onComplete(true); }}
-                                    className="w-full py-4 bg-duck-acid hover:bg-duck-acid text-duck-ink rounded-full font-bold transition-all duration-300 shadow-lg hover:shadow-duck-acid/30 focus-visible:ring-2 focus-visible:ring-duck-acid"
+                                    onClick={async () => {
+                                        const completed = await onComplete(true);
+                                        if (completed !== false) {
+                                            clearSave();
+                                        }
+                                    }}
+                                    disabled={correctReflections === 0}
+                                    className="w-full py-4 bg-duck-acid hover:bg-duck-acid text-duck-ink rounded-full font-bold transition-all duration-300 shadow-lg hover:shadow-duck-acid/30 focus-visible:ring-2 focus-visible:ring-duck-acid disabled:cursor-not-allowed disabled:opacity-50"
                                 >
-                                    Voltooien
+                                    {correctReflections === 0 ? 'Beantwoord eerst de reflectie' : 'Voltooien'}
                                 </button>
                             </div>
                         </motion.div>

@@ -1,5 +1,6 @@
 import { readFileSync } from 'node:fs';
 import assert from 'node:assert/strict';
+import { normalizeCompletedSteps } from '../src/hooks/useStepCompletion.ts';
 
 const read = (path) => readFileSync(new URL(`../${path}`, import.meta.url), 'utf8');
 
@@ -7,9 +8,16 @@ const year1 = read('src/config/agents/year1.tsx');
 const shared = read('src/config/agents/shared.tsx');
 const useAgentLogic = read('src/hooks/useAgentLogic.ts');
 const useChatSession = read('src/hooks/useChatSession.ts');
+const useStepCompletion = read('src/hooks/useStepCompletion.ts');
 const gamePreview = read('src/features/games/GamePreview.tsx');
 const gameGallery = read('src/features/games/GameGallery.tsx');
 const aiLab = read('src/features/ai-lab/AiLab.tsx');
+
+assert.deepEqual(
+  normalizeCompletedSteps([0, 4, 5, -1, 4, 1.5], 5),
+  [0, 4],
+  'Step normalization should keep unique in-range integer step ids only',
+);
 
 const gameRoleMatch = year1.match(/id: 'game-programmeur'[\s\S]*?initialCode: `/);
 assert.ok(gameRoleMatch, 'Game Programmeur role block should exist');
@@ -46,6 +54,30 @@ assert.match(
 );
 
 assert.match(
+  useStepCompletion,
+  /stepIndex >= 0 && stepIndex < totalSteps/,
+  'Step markers outside the active mission range must be ignored',
+);
+
+assert.match(
+  useStepCompletion,
+  /resetKey/,
+  'Step completion state must reset when the active mission changes',
+);
+
+assert.match(
+  useAgentLogic,
+  /setCompletedSteps\(\[\]\)/,
+  'Mission reset must clear completed step state',
+);
+
+assert.match(
+  aiLab,
+  /selectedRole\.steps\.every\(\(_, index\) => completedSteps\.includes\(index\)\)/,
+  'Mission completion must require every valid step id, not only an array length',
+);
+
+assert.match(
   useChatSession,
   /Stap\s+\$\{index \+ 1\}/,
   'Refreshed chat session context should keep numbered step details',
@@ -75,6 +107,12 @@ assert.match(
   loadProgressBlock[0],
   /selectedRole\.id === 'game-programmeur'[\s\S]*setActiveGameCode\(selectedRole\.initialCode\)/,
   'Game Programmeur should seed Super Code Jumper before async progress loading to avoid flashing the generic preview',
+);
+
+assert.match(
+  useAgentLogic,
+  /initialProgress\?\.data\?\.activeGameCode/,
+  'Game Programmeur should retain its locally persisted fallback code when cloud loading fails',
 );
 
 assert.match(

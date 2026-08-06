@@ -133,7 +133,7 @@ export const ScenarioEngine: React.FC<TemplateMissionProps> = ({ missionId, onBa
 const ScenarioEngineInner: React.FC<{
     config: ScenarioEngineConfig;
     onBack: () => void;
-    onComplete: (success: boolean) => void;
+    onComplete: (success: boolean) => boolean | void | Promise<boolean | void>;
 }> = ({ config, onBack, onComplete }) => {
     const { state, setState, clearSave } = useMissionAutoSave<ScenarioEngineState>(
         config.missionId,
@@ -199,9 +199,15 @@ const ScenarioEngineInner: React.FC<{
         }
     };
 
-    const handleComplete = () => {
-        clearSave();
-        onComplete(totalScore >= config.maxScore * 0.4);
+    const handleComplete = async () => {
+        const missionGoal = config.missionGoal ?? getMissionGoal(config.missionId);
+        const success = missionGoal?.criteria.type === 'score-threshold'
+            ? totalScore >= (missionGoal.criteria.threshold ?? config.maxScore * 0.4)
+            : true;
+        const completed = await onComplete(success);
+        if (completed !== false) {
+            clearSave();
+        }
     };
 
     // ── Intro phase ──

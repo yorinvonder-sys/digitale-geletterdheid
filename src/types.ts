@@ -80,6 +80,7 @@ export interface AiLabProps {
   user: ParentUser | null; // De ingelogde gebruiker vanuit de parent app
   onExit?: () => void;     // Optie om terug te gaan naar het hoofdmenu
   saveProgress?: (stats: UserStats) => void; // Optie om progressie op te slaan
+  completeMission?: (missionId: string) => Promise<boolean>; // Auth-bound durable completion from the app shell
   initialRole?: RoleId; // Optionele start rol voor deep-linking
   libraryData?: any; // Data from library item (gameCode, bookData, etc.)
   vsoProfile?: VsoProfile; // Optional learning-profile hint for missions

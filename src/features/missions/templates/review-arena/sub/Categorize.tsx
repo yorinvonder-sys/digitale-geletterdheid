@@ -123,12 +123,21 @@ export const Categorize: React.FC<CategorizeProps> = ({
                         <motion.div
                             data-qa="review-category"
                             key={cat}
+                            role="button"
+                            tabIndex={submitted ? -1 : 0}
+                            aria-label={`Categorie ${cat}`}
                             onClick={() => handleCategoryClick(cat)}
+                            onKeyDown={(event) => {
+                                if (event.key === 'Enter' || event.key === ' ') {
+                                    event.preventDefault();
+                                    handleCategoryClick(cat);
+                                }
+                            }}
                             className={`rounded-xl border-2 p-2 min-h-[80px] transition-all duration-200
                                 ${isClickable
                                     ? 'cursor-pointer scale-[1.02] shadow-md'
                                     : 'cursor-default'
-                                }`}
+                                } focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-acid focus-visible:ring-offset-2`}
                             style={{
                                 borderColor: isClickable ? color.bg : '#e3e2dc',
                                 background: isClickable ? `${color.bg}18` : '#f2f1ec',

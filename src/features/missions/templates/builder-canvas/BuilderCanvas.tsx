@@ -162,9 +162,11 @@ const BuilderCanvasInner: React.FC<BuilderCanvasProps> = ({
         }));
     };
 
-    const handleComplete = () => {
-        clearSave();
-        onComplete(true);
+    const handleComplete = async () => {
+        const completed = await onComplete(true);
+        if (completed !== false) {
+            clearSave();
+        }
     };
 
     // ─── Phase: Intro ─────────────────────────────────────────────────────
@@ -293,9 +295,19 @@ const BuilderCanvasInner: React.FC<BuilderCanvasProps> = ({
                                 total: config.steps.length,
                                 completedSteps: state.completedSteps.length,
                             },
-                            textEntry: currentStepData
-                                ? state.textEntries[currentStepData.id] ?? ''
-                                : '',
+                            textEntry: config.missionId === 'website-bouwer'
+                                ? undefined
+                                : currentStepData
+                                  ? state.textEntries[currentStepData.id] ?? ''
+                                  : '',
+                            textEntryStatus: config.missionId === 'website-bouwer'
+                                ? {
+                                      hasContent: Boolean(currentStepData && state.textEntries[currentStepData.id]?.trim()),
+                                      characterCount: currentStepData
+                                          ? state.textEntries[currentStepData.id]?.trim().length ?? 0
+                                          : 0,
+                                  }
+                                : undefined,
                         }}
                     />
 

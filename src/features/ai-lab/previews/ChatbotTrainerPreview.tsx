@@ -52,7 +52,7 @@ interface ChatbotPersistState {
 }
 
 interface ChatbotTrainerPreviewProps {
-    onLevelComplete?: (level: number) => void;
+    onLevelComplete?: (level: number) => boolean | void | Promise<boolean | void>;
     initialState?: ChatbotPersistState;
     sharedState?: ChatbotPersistState;
     onSave?: (data: ChatbotPersistState) => void;
@@ -588,9 +588,6 @@ export const ChatbotTrainerPreview: React.FC<ChatbotTrainerPreviewProps> = ({ on
         const maxScore = messages.length * 20;
         const percentage = Math.round((score / maxScore) * 100);
 
-        if (percentage >= activeScenario.minScore && onLevelComplete) {
-            onLevelComplete(1);
-        }
     };
 
     const handleShare = async () => {
@@ -901,13 +898,16 @@ export const ChatbotTrainerPreview: React.FC<ChatbotTrainerPreviewProps> = ({ on
                         title: "Training Data & Bias",
                         text: "Je hebt gemerkt dat de bot alleen antwoord kan geven op dingen die jij hem geleerd hebt. Als je bepaalde vragen vergeet te trainen, 'snapt' de AI het niet. Dit noemen we de beperking van je 'Dataset'."
                     }}
-                    onExit={() => setShowConclusion(false)}
+                    onExit={async () => {
+                        const completed = await onLevelComplete?.(1);
+                        if (completed !== false) setShowConclusion(false);
+                    }}
                 />
             )}
 
-            <div className="flex-1 flex overflow-hidden">
+            <div className="flex-1 flex flex-col md:flex-row overflow-y-auto md:overflow-hidden">
                 {/* Left: Intent List */}
-                <div className="w-64 p-3 flex flex-col shrink-0" style={{ backgroundColor: 'var(--chatbot-surface)', borderRight: '1px solid var(--chatbot-line)' }}>
+                <div className="w-full md:w-64 max-h-[18rem] md:max-h-none p-3 flex flex-col shrink-0" style={{ backgroundColor: 'var(--chatbot-surface)', borderRight: '1px solid var(--chatbot-line)' }}>
                     <div className="flex items-center justify-between mb-3">
                         <h4 className="text-[10px] font-bold uppercase tracking-widest flex items-center gap-2" style={{ color: 'var(--chatbot-muted)' }}>
                             <Target size={12} /> Intents (Onderwerpen)
@@ -1027,7 +1027,7 @@ export const ChatbotTrainerPreview: React.FC<ChatbotTrainerPreviewProps> = ({ on
                 </div>
 
                 {/* Middle: Training Panel */}
-                <div className="flex-1 p-4 md:p-5 flex flex-col min-w-0" style={{ backgroundColor: 'var(--chatbot-bg)' }}>
+                <div className="flex-1 min-h-[28rem] md:min-h-0 p-4 md:p-5 flex flex-col min-w-0 shrink-0 md:shrink" style={{ backgroundColor: 'var(--chatbot-bg)' }}>
                     {selectedIntentData ? (
                         <div className="h-full flex flex-col max-w-4xl mx-auto w-full">
                             <div className="mb-4 flex items-start justify-between">
@@ -1140,7 +1140,7 @@ export const ChatbotTrainerPreview: React.FC<ChatbotTrainerPreviewProps> = ({ on
                 </div>
 
                 {/* Right: Test Chat */}
-                <div className="w-80 flex flex-col shrink-0" style={{ backgroundColor: 'var(--chatbot-surface)', borderLeft: '1px solid var(--chatbot-line)' }}>
+                <div className="w-full md:w-80 min-h-[22rem] md:min-h-0 flex flex-col shrink-0" style={{ backgroundColor: 'var(--chatbot-surface)', borderLeft: '1px solid var(--chatbot-line)' }}>
                     <div className="p-4" style={{ borderBottom: '1px solid var(--chatbot-line)' }}>
                         <h4 className="text-xs font-bold uppercase tracking-widest flex items-center gap-2" style={{ color: 'var(--chatbot-muted)' }}>
                             <MessageCircle size={12} /> Test Omgeving
