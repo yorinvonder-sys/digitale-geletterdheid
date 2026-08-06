@@ -905,9 +905,12 @@ export const ChatbotTrainerPreview: React.FC<ChatbotTrainerPreviewProps> = ({ on
                 />
             )}
 
-            <div className="flex-1 flex flex-col md:flex-row overflow-y-auto md:overflow-hidden">
+            {/* Drie kolommen pas vanaf lg: de zijkolommen zijn samen 576px breed, dus
+                op een iPad in portret (820px) bleef er ~200px over voor het midden.
+                Koppen en invoervelden werden daar afgekapt. Onder lg stapelt het. */}
+            <div className="flex-1 flex flex-col lg:flex-row overflow-y-auto lg:overflow-hidden">
                 {/* Left: Intent List */}
-                <div className="w-full md:w-64 max-h-[18rem] md:max-h-none p-3 flex flex-col shrink-0" style={{ backgroundColor: 'var(--chatbot-surface)', borderRight: '1px solid var(--chatbot-line)' }}>
+                <div className="w-full lg:w-64 max-h-[18rem] lg:max-h-none p-3 flex flex-col shrink-0" style={{ backgroundColor: 'var(--chatbot-surface)', borderRight: '1px solid var(--chatbot-line)' }}>
                     <div className="flex items-center justify-between mb-3">
                         <h4 className="text-[10px] font-bold uppercase tracking-widest flex items-center gap-2" style={{ color: 'var(--chatbot-muted)' }}>
                             <Target size={12} /> Intents (Onderwerpen)
@@ -1140,7 +1143,7 @@ export const ChatbotTrainerPreview: React.FC<ChatbotTrainerPreviewProps> = ({ on
                 </div>
 
                 {/* Right: Test Chat */}
-                <div className="w-full md:w-80 min-h-[22rem] md:min-h-0 flex flex-col shrink-0" style={{ backgroundColor: 'var(--chatbot-surface)', borderLeft: '1px solid var(--chatbot-line)' }}>
+                <div className="w-full lg:w-80 min-h-[22rem] lg:min-h-0 flex flex-col shrink-0" style={{ backgroundColor: 'var(--chatbot-surface)', borderLeft: '1px solid var(--chatbot-line)' }}>
                     <div className="p-4" style={{ borderBottom: '1px solid var(--chatbot-line)' }}>
                         <h4 className="text-xs font-bold uppercase tracking-widest flex items-center gap-2" style={{ color: 'var(--chatbot-muted)' }}>
                             <MessageCircle size={12} /> Test Omgeving
