@@ -700,9 +700,7 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
     ];
     const dashboardNavItems = [
         { label: 'Dashboard', icon: <Home size={19} />, active: activeNav === 'Dashboard', onClick: () => { setActiveNav('Dashboard'); scrollDashboardToTop(); } },
-        // tutorialNav: op desktop is dit de zichtbare profielknop; de mobiele
-        // variant draagt data-tutorial="student-profile-btn" in de bovenbalk.
-        { label: 'Mijn portfolio', icon: <User size={19} />, active: activeNav === 'Mijn portfolio', tutorialNav: 'student-profile-btn', onClick: () => { setActiveNav('Mijn portfolio'); onOpenProfile(); } },
+        { label: 'Mijn portfolio', icon: <User size={19} />, active: activeNav === 'Mijn portfolio', onClick: () => { setActiveNav('Mijn portfolio'); onOpenProfile(); } },
     ];
     const learningProgressControls = (
         <>
@@ -723,7 +721,6 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
                             key={item.label}
                             type="button"
                             onClick={item.onClick}
-                            {...(item.tutorialNav ? { 'data-tutorial-nav': item.tutorialNav } : {})}
                             className={`inline-flex min-h-[44px] min-w-0 flex-1 items-center justify-center gap-2 rounded-full px-4 text-sm font-extrabold transition-colors ${item.active ? 'border border-duck-ink bg-duck-acid text-duck-ink' : 'text-duck-ink/65 hover:bg-duck-bgLight hover:text-duck-ink'}`}
                         >
                             {item.icon}
