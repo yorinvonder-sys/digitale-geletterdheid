@@ -136,6 +136,12 @@ export function AuthenticatedApp() {
     // Guard against double mission completion (race condition on rapid clicks)
     const completingMissionRef = React.useRef<Set<string>>(new Set());
 
+    // Het welkomscherm is één keer per sessie. Zonder deze latch zet een
+    // token-refresh (authService re-resolvet de user ook bij TOKEN_REFRESHED) de
+    // leerling midden in de avatarbouwer terug naar het welkomscherm, want de
+    // vlag wordt pas ná de avatarsetup weggeschreven.
+    const welcomeCompletedRef = React.useRef(false);
+
     // Flexible scheduling: load containers for the current school + year group
     const { containers, model: schedulingModel, loading: containersLoading } = useSchoolContainers(user?.schoolId, activeYearGroup);
     const initialProjectWeekSyncKeyRef = React.useRef<string | null>(null);
@@ -211,6 +217,27 @@ export function AuthenticatedApp() {
 
     // Onboarding triggers: useEffect i.p.v. setTimeout-in-render (React 19 compatibiliteit).
     // Moeten vóór early returns staan om Rules of Hooks te respecteren.
+    useEffect(() => {
+        if (showStudentOnboarding && (
+            user?.role !== 'student'
+            || user.stats?.hasCompletedOnboarding === true
+            || user.stats?.hasCompletedAvatarSetup === true
+        )) {
+            setShowStudentOnboarding(false);
+            return;
+        }
+        if (
+            user?.role === 'student'
+            && !welcomeCompletedRef.current
+            && !user.stats?.hasCompletedOnboarding
+            && !user.stats?.hasCompletedAvatarSetup
+            && !showStudentOnboarding
+        ) {
+            const id = setTimeout(() => setShowStudentOnboarding(true), 100);
+            return () => clearTimeout(id);
+        }
+    }, [user?.role, user?.stats?.hasCompletedOnboarding, user?.stats?.hasCompletedAvatarSetup, showStudentOnboarding]);
+
     useEffect(() => {
         if (showAvatarSetup && (user?.role !== 'student' || user.stats?.hasCompletedAvatarSetup === true)) {
             setShowAvatarSetup(false);
@@ -367,6 +394,29 @@ export function AuthenticatedApp() {
     }
 
     const hasCompletedAvatarSetup = user.stats?.hasCompletedAvatarSetup === true;
+
+    // Welkomscherm (2 schermen) vóór de avatarbouwer. Bewust géén eigen
+    // schrijfactie: `update_student_stats` vervángt het hele stats-blok, dus elke
+    // extra aanroep is een kans om voortgang te wissen als de stats nog niet
+    // gehydrateerd zijn. De vlag gaat mee in de ene RPC ná de avatarsetup.
+    // `hasCompletedAvatarSetup` doet mee als vangnet: bestaande leerlingen die de
+    // avatarsetup al deden mogen dit scherm nooit alsnog krijgen.
+    const hasSeenWelcome = user.stats?.hasCompletedOnboarding === true || hasCompletedAvatarSetup;
+
+    if (showStudentOnboarding && user.role === 'student' && !hasSeenWelcome) {
+        const handleWelcomeComplete = () => {
+            welcomeCompletedRef.current = true;
+            setShowStudentOnboarding(false);
+        };
+        return (
+            <Suspense fallback={<LoadingFallback />}>
+                <StudentOnboarding
+                    onComplete={handleWelcomeComplete}
+                    userName={user.displayName || undefined}
+                />
+            </Suspense>
+        );
+    }
 
     if (showAvatarSetup && user.role === 'student' && !hasCompletedAvatarSetup) {
         const handleAvatarComplete = async (avatarConfig: AvatarConfig) => {
@@ -995,7 +1045,10 @@ export function AuthenticatedApp() {
         && !showTeacherMessage
         && !showAvatarSetup
         && !showNulmeting
-        && !showEindmeting;
+        && !showEindmeting
+        // Sinds #279 gaat er een welkomscherm vóór de avatarbouwer; zonder deze
+        // regel zou de rondleiding daarachter starten.
+        && !showStudentOnboarding;
 
     const showFooter = !activeModule && !isProfileOpen && !showGames && viewMode !== 'monitoring';
 

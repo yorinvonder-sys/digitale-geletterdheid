@@ -37,6 +37,8 @@ const sleutelsInApp = (): Set<string> => {
         for (const m of inhoud.matchAll(/'data-tutorial':\s*'([^']+)'/g)) sleutels.add(m[1]);
         // Doorgegeven via een prop: tutorial: 'student-profile-btn'
         for (const m of inhoud.matchAll(/\btutorial:\s*'([^']+)'/g)) sleutels.add(m[1]);
+        // Via een ankerprop op een component: tutorialAnchor={x ? 'student-first-mission' : undefined}
+        for (const m of inhoud.matchAll(/tutorialAnchor=\{[^}]*?'([^']+)'/g)) sleutels.add(m[1]);
     }
     return sleutels;
 };
