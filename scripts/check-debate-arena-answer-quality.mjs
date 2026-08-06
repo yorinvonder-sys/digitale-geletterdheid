@@ -8,7 +8,7 @@
 
 import { pathToFileURL } from 'node:url';
 
-const SRC = 'src/features/missions/templates/debate-arena/answerQuality.ts';
+const SRC = 'src/utils/answerQuality.ts';
 const { getAnswerStatus, isSubstantiveAnswer } = await import(pathToFileURL(SRC).href);
 
 // [omschrijving, invoer, verwacht]

@@ -1,7 +1,7 @@
 import React from 'react';
 import { ArrowLeft, Sparkles, Trophy } from 'lucide-react';
 import type { DebateArenaConfig, DebateArenaState } from '../DebateArena';
-import { getAnswerStatus, isSubstantiveAnswer } from '../answerQuality';
+import { getAnswerStatus, isSubstantiveAnswer } from '@/utils/answerQuality';
 
 export interface ReflectPhaseProps {
     config: DebateArenaConfig;

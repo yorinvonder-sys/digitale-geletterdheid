@@ -4,6 +4,7 @@ import { Scale, Lightbulb, AlertTriangle, ShieldCheck, Sparkles, ThumbsUp, Send,
 import { submitAiBeleidIdee, getAiBeleidIdeeen, stemOpIdee, submitAiBeleidSurvey, AiBeleidSurveyData } from '@/services/teacherService';
 import { AiBeleidIdee } from '@/types';
 import { MissionConclusion } from '@/features/missions/shared/MissionConclusion';
+import { getAnswerStatus } from '@/utils/answerQuality';
 
 // =====================================================================
 // CONTENT FILTER - Block inappropriate content
@@ -146,6 +147,9 @@ export const AiBeleidBrainstormPreview: React.FC<AiBeleidBrainstormPreviewProps>
 
     const [selectedCategory, setSelectedCategory] = useState<typeof CATEGORIES[0] | null>(null);
     const [ideeText, setIdeeText] = useState('');
+    // De opdracht vraagt per regel om een reden en de schoolcontext, maar het veld
+    // accepteerde elke niet-lege tekst: twee ideeën van een letter rondden de missie af.
+    const ideeStatus = getAnswerStatus(ideeText);
     const [ideeen, setIdeeen] = useState<AiBeleidIdee[]>([]);
     const [myIdeeen, setMyIdeeen] = useState<AiBeleidIdee[]>([]);
     const [loading, setLoading] = useState(false);
@@ -582,11 +586,11 @@ export const AiBeleidBrainstormPreview: React.FC<AiBeleidBrainstormPreviewProps>
 
                                 <div className="flex items-center justify-between mt-3">
                                     <span className={`text-sm font-medium text-duck-ink/60`}>
-                                        {ideeText.length}/280
+                                        {ideeStatus.ok ? `${ideeText.length}/280` : ideeStatus.hint}
                                     </span>
                                     <button
                                         onClick={handleSubmitIdee}
-                                        disabled={!ideeText.trim() || submitting}
+                                        disabled={!ideeStatus.ok || submitting}
                                         className="px-6 py-3 bg-duck-acid text-duck-ink font-bold rounded-full shadow-duck-soft disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-xl hover:scale-105 transition-all flex items-center gap-2"
                                     >
                                         {submitting ? (

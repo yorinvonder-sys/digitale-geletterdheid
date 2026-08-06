@@ -1,7 +1,7 @@
 import React from 'react';
 import { ArrowLeft, ChevronRight } from 'lucide-react';
 import type { DebateArenaConfig, DebateArenaState, ArgumentEntry } from '../DebateArena';
-import { getAnswerStatus, isSubstantiveAnswer } from '../answerQuality';
+import { getAnswerStatus, isSubstantiveAnswer } from '@/utils/answerQuality';
 
 function getArgumentQuality(text: string): { color: string; label: string } {
     // Lengte alleen zei niets: 100 tekens "aaaa" scoorde eerder 'Uitstekend'.

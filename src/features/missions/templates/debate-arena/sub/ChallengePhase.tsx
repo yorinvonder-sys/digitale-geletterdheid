@@ -1,7 +1,7 @@
 import React from 'react';
 import { ArrowLeft, ChevronRight } from 'lucide-react';
 import type { DebateArenaConfig, DebateArenaState } from '../DebateArena';
-import { getAnswerStatus } from '../answerQuality';
+import { getAnswerStatus } from '@/utils/answerQuality';
 
 export interface ChallengePhaseProps {
     config: DebateArenaConfig;

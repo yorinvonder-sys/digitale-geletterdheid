@@ -5,7 +5,7 @@ import { PhaseHeader } from '../shared/PhaseHeader';
 import { IntroScreen } from '../shared/IntroScreen';
 import { CompletionScreen } from '../shared/CompletionScreen';
 import { getMissionGoal } from '@/config/missionGoals';
-import { isSubstantiveAnswer } from './answerQuality';
+import { isSubstantiveAnswer } from '@/utils/answerQuality';
 import type { TemplateMissionProps, BadgeConfig, FollowUpQuestion, MissionGoal } from '../shared/types';
 import { ExplorePhase } from './sub/ExplorePhase';
 import { PositionPhase } from './sub/PositionPhase';
