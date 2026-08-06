@@ -19,6 +19,7 @@ import { getContainerThemeDuck, getAutoTheme } from '@/config/containerThemes';
 import { AdaptiveMissionSuggestions } from '@/features/dashboard/AdaptiveMissionSuggestions';
 import { DashboardHero } from '@/features/dashboard/DashboardHero';
 import { ProgressStrip } from '@/features/dashboard/ProgressStrip';
+import { SecureErrorBoundary } from '@/components/app-shell/SecureErrorBoundary';
 import { MissionPreviewVisual } from '@/features/dashboard/MissionPreviewVisual';
 import { STUDENT_DASHBOARD_COLORS, PERIOD_THEME, DEFAULT_PERIOD_THEME, getYearGroupTheme, PERIOD_LEERDOELEN, type YearGroupTheme, type PeriodLeerdoel } from '@/config/dashboardThemes';
 import { MISSION_SCREENSHOTS, MISSION_PREVIEW_OVERRIDES, inferMissionPreviewConfig, missionTagFor, type MissionPreviewKind, type MissionPreviewConfig } from '@/config/missionPreviewConfig';
@@ -217,9 +218,15 @@ interface StudentProjectCardProps {
     onLockedDemoMission?: () => void;
     onInfoClick?: (info: string, kerndoelen?: SloKerndoelCode[]) => void;
     vsoProfile?: string;
+    /**
+     * data-tutorial-anker voor de rondleiding. Staat bewust op de "Start
+     * missie"-knop en niet op de kaart: de rondleiding klikt het element aan, en
+     * een klik op een wrapper-div bubbelt nooit naar de knop erbinnen.
+     */
+    tutorialAnchor?: string;
 }
 
-const StudentProjectCard: React.FC<StudentProjectCardProps> = ({ mission, isCompleted, index, onSelectModule, onLockedDemoMission, onInfoClick, vsoProfile }) => {
+const StudentProjectCard: React.FC<StudentProjectCardProps> = ({ mission, isCompleted, index, onSelectModule, onLockedDemoMission, onInfoClick, vsoProfile, tutorialAnchor }) => {
     const displayKerndoelen = vsoProfile && mission.sloVsoKerndoelen ? mission.sloVsoKerndoelen : mission.sloKerndoelen;
     const canOpen = mission.status === 'available';
     const isLocked = mission.status === 'locked';
@@ -295,6 +302,7 @@ const StudentProjectCard: React.FC<StudentProjectCardProps> = ({ mission, isComp
                         <button
                             type="button"
                             onClick={() => onSelectModule(mission.id)}
+                            {...(tutorialAnchor ? { 'data-tutorial': tutorialAnchor } : {})}
                             className="inline-flex min-h-[44px] items-center gap-2 rounded-full border border-duck-ink bg-duck-acid px-5 text-sm font-extrabold text-duck-ink transition-all duration-300 hover:-translate-y-0.5 hover:bg-duck-ink hover:text-duck-acid active:translate-y-0 motion-reduce:transition-none motion-reduce:hover:translate-y-0"
                         >
                             Start missie <ChevronRight size={16} />
@@ -446,7 +454,10 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
     const dailyStreak = React.useMemo(() => {
         const today = new Date().toISOString().split('T')[0];
         const lastLogin = stats?.lastLoginDate;
-        if (!lastLogin) return 1;
+        // Dag één: nog geen reeks opgebouwd. Beide weergaves verbergen de badge
+        // bij 0, zodat een nieuwe leerling niet wordt gefeliciteerd met een
+        // streak die hij nog niet heeft.
+        if (!lastLogin) return 0;
         if (lastLogin === today) return stats?.dailyStreak || 1;
         const yesterday = new Date(Date.now() - 86400000).toISOString().split('T')[0];
         return lastLogin === yesterday ? (stats?.dailyStreak || 0) + 1 : 1;
@@ -666,6 +677,21 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
         || mainMissions[0];
     const projectMissions = mainMissions.length > 0 ? mainMissions : currentMissions.filter(m => m.status === 'available');
     const canOpenFeaturedMission = featuredMission?.status === 'available';
+
+    // De rondleiding wijst naar de eerste missie die de leerling NU kan openen.
+    // Tijdens een review-gate is dat een herhalingsopdracht — alle projectkaarten
+    // zijn dan vergrendeld — en anders een projectmissie. De slice(0, 3) spiegelt
+    // de ingeklapte weergave, anders zou het anker op een kaart landen die niet
+    // gerenderd is.
+    const firstStartableMissionId = useMemo(() => {
+        const isDone = (m: Mission) =>
+            stats?.missionsCompleted?.includes(m.id)
+            || (m.id === 'ipad-print-instructies' && stats?.studentClass !== 'MH1A');
+        const pool = reviewMissions.length > 0 && !allReviewsDone
+            ? reviewMissions
+            : (showAllProjects ? projectMissions : projectMissions.slice(0, 3));
+        return pool.find(m => m.status === 'available' && !isDone(m))?.id ?? null;
+    }, [reviewMissions, projectMissions, allReviewsDone, showAllProjects, stats?.missionsCompleted, stats?.studentClass]);
     const dashboardStats = [
         { icon: <Award size={22} />, value: compactNumber(xp), label: 'XP punten', accent: STUDENT_DASHBOARD_COLORS.olive },
         { icon: <Flame size={22} />, value: dailyStreak, label: dailyStreak === 1 ? 'dag streak' : 'dagen streak', accent: STUDENT_DASHBOARD_COLORS.coral },
@@ -1331,26 +1357,34 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
                 >
                     {learningProgressControls}
 
-                    {/* DEBUG: temporarily disabled to isolate crash */}
-                    {/* <DashboardHero
-                        userDisplayName={userDisplayName || 'Mila'}
-                        dailyStreak={dailyStreak}
-                        level={level}
-                        progressPercentage={progressPercentage}
-                        xpToNext={xpToNext}
-                        featuredMission={featuredMission}
-                        canOpenFeaturedMission={canOpenFeaturedMission}
-                        allMissionsDone={completedCount === totalMissions && totalMissions > 0}
-                        onSelectModule={onSelectModule}
-                    /> */}
+                    {/* Beide blokken stonden uit ("DEBUG: temporarily disabled to
+                        isolate crash"), waardoor een leerling op een laptop géén XP,
+                        level of startknop zag. Ze staan nu elk in een eigen
+                        foutgrens: een regressie kost hooguit dit blok, niet het
+                        hele dashboard. */}
+                    <SecureErrorBoundary fallback={null}>
+                        <DashboardHero
+                            userDisplayName={userDisplayName || 'Mila'}
+                            dailyStreak={dailyStreak}
+                            level={level}
+                            progressPercentage={progressPercentage}
+                            xpToNext={xpToNext}
+                            featuredMission={featuredMission}
+                            canOpenFeaturedMission={canOpenFeaturedMission}
+                            allMissionsDone={completedCount === totalMissions && totalMissions > 0}
+                            onSelectModule={onSelectModule}
+                        />
+                    </SecureErrorBoundary>
 
-                    {/* <ProgressStrip
-                        level={level}
-                        progressPercentage={progressPercentage}
-                        completedCount={completedCount}
-                        totalMissions={totalMissions}
-                        nulmetingResult={stats?.nulmetingResult}
-                    /> */}
+                    <SecureErrorBoundary fallback={null}>
+                        <ProgressStrip
+                            level={level}
+                            progressPercentage={progressPercentage}
+                            completedCount={completedCount}
+                            totalMissions={totalMissions}
+                            nulmetingResult={stats?.nulmetingResult}
+                        />
+                    </SecureErrorBoundary>
 
                     {reviewMissions.length > 0 && (
                         <section id="review-missions-container" className="mb-6" data-tutorial="student-review-missions">
@@ -1373,6 +1407,7 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
                                             onInfoClick={handleInfoClick}
                                             isCompleted={stats?.missionsCompleted?.includes(mission.id) || (mission.id === 'ipad-print-instructies' && stats?.studentClass !== 'MH1A')}
                                             vsoProfile={stats?.vsoProfile}
+                                            tutorialAnchor={mission.id === firstStartableMissionId ? 'student-first-mission' : undefined}
                                         />
                                     </motion.div>
                                 ))}
@@ -1399,7 +1434,6 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
                                             initial={{ opacity: 0, y: 12 }}
                                             animate={{ opacity: 1, y: 0 }}
                                             transition={{ duration: 0.25, delay: index * 0.06 }}
-                                            {...(index === 0 && allReviewsDone ? { 'data-tutorial': 'student-first-mission' } : {})}
                                         >
                                             <StudentProjectCard
                                                 mission={mission}
@@ -1409,6 +1443,7 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
                                                 onInfoClick={handleInfoClick}
                                                 isCompleted={stats?.missionsCompleted?.includes(mission.id)}
                                                 vsoProfile={stats?.vsoProfile}
+                                                tutorialAnchor={mission.id === firstStartableMissionId ? 'student-first-mission' : undefined}
                                             />
                                         </motion.div>
                                     ))}

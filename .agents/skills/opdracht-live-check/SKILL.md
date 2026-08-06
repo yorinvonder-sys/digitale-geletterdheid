@@ -1,140 +1,144 @@
 ---
 name: opdracht-live-check
-description: Use this skill when checking a DGSkills assignment or mission in the live website or a running browser as a real student would experience it. Trigger phrases include "opdracht live check", "live-check", "check live als leerling", "speel de opdracht als student", "student-playthrough", "UI/UX live check", "staan logo's en afbeeldingen goed", or requests to verify that a DGSkills assignment is visually correct, playable, logical, and free of obvious browser/UI bugs.
+description: Controleer een bestaande DGSkills-opdracht of missie handmatig als leerling in de interne Codex-browser. Gebruik voor "opdracht live check", "speel als leerling", browser-QA, een missie-ID of een leerjaar-periodeaudit wanneer zichtbare speelbaarheid, responsive UI, foutfeedback, evidence en productievoortgang moeten worden bewezen. Niet gebruiken voor het ontwerpen van een nieuwe opdracht.
 ---
 
 # Opdracht Live Check
 
-Use this skill for the live, human-facing QA pass: behave like a student, play the whole assignment, and verify the page looks and works correctly in the browser. This is not a code review first; it is a lived student-flow check.
+Speel precies één bestaande opdracht end-to-end zoals een leerling die ziet. Schrijf in het Nederlands, behoud het leerdoel en koppel iedere claim aan zichtbaar browserbewijs.
 
-## Operating Rules
+## Routing en scope
 
-- Write in Dutch unless the user explicitly asks otherwise.
-- **Default to the side-effect-free preview route**: `/dev/mission-preview?mission=<id>&reset=1` on the running dev server. Completion there is a deliberate no-op, so playing the assignment writes no progress, no XP, and no activity log. Use it unless the user explicitly points you somewhere else.
-- **Never play through on production with an existing learner account.** A normal completion on the real site marks the mission done, awards XP through a server call, and writes an activity log entry carrying the learner's name and school — visible to their teacher. A production playthrough needs both explicit approval from the user and a designated test account created for this purpose; without both, stop and say so.
-- Prefer Chrome/browser evidence over static code claims.
-- Behave like a normal student: read what is on screen, click/tap expected controls, make reasonable learner choices, and notice confusion.
-- Do not use admin shortcuts, database edits, or hidden implementation knowledge to fake progress or completion. The preview route's own `reset=1` is not a shortcut — it clears that mission's local state so you start clean, and it is the intended way to replay.
-- Do not enter real personal data, learner data, secrets, or sensitive information. Use harmless test text.
-- If the assignment cannot be reached without a real student account, stop at the blocker and report what could and could not be checked. Reaching for a learner's session is never the fallback.
+- Gebruik `gpt-5.6-sol` met `xhigh` als orchestrator, privacy-/authbeslisser en eindvalidator.
+- Gebruik maximaal drie `gpt-5.6-luna`-workers met `high` of `xhigh` voor begrensde klikflows, screenshots en conceptrapportage.
+- Behandel precies één opdracht per hoofdtaak. Start een volgende opdracht pas in een verse taak nadat de huidige formeel is afgesloten.
+- Gebruik nooit Terra. Laat Luna geen auth-, Supabase-, privacy-, architectuur-, release- of Rood-besluit nemen.
+- Gebruik uitsluitend de interne Codex-browser. Gebruik geen Chrome, Computer Use of los Playwright-proces als fallback.
 
-## What To Check
+## Bron en routes vastzetten
 
-### 1. Visual UI/UX
+1. Verifieer actuele `origin/main`, productiecommit en deployment voordat browserbewijs start.
+2. Maak een schone, detached auditworktree op exact die commit. Gebruik nooit de vuile gebruikersworktree als previewbron.
+3. Gebruik voor side-effectvrije flows `/dev/mission-preview?mission=<id>&reset=1` op een gecontroleerde lokale dev-server.
+4. Gebruik productie alleen met expliciete toestemming en een aangewezen synthetisch testaccount.
+5. Zet missionId, commit-SHA, route, browser, viewport en mutatietellingen in ieder manifest.
 
-Check whether the assignment screen looks professionally placed and understandable:
-- logo is visible, sharp, not stretched, and not covering content;
-- images and thumbnails load, fit their containers, and are not cropped in a misleading way;
-- icons match their buttons and are not floating or misaligned;
-- headers, cards, panels, progress indicators, badges, and CTAs align cleanly;
-- text is readable and not clipped, overlapping, too tiny, or outside its container;
-- spacing feels intentional, with no random empty gaps or cramped clusters;
-- colors and contrast make the main action obvious;
-- no weird decorative element blocks the assignment.
+Een lokale preview bewijst flow en responsiviteit, niet productie-login, XP, completion of persistentie. Houd preview- en productiebewijs altijd apart.
 
-### 2. Student Playthrough
+## Browserrollen
 
-Play the whole assignment as a student:
-- start from the entry/intro screen;
-- follow the instructions without using code knowledge;
-- interact with every required step;
-- intentionally try at least one wrong or imperfect answer when possible;
-- observe feedback, hint, retry, progress, score, and completion behavior;
-- finish the assignment or explain the exact blocker.
+| Rol | Viewport | Productiemutaties |
+|---|---:|---:|
+| `DGSkills QA Desktop` | 1440 × 900 | 0 |
+| `DGSkills QA iPad Portret` | 820 × 1180 | 0 |
+| `DGSkills QA iPad Landschap` | 1180 × 820 | 0 |
+| `DGSkills QA Mobiel` | 390 × 844 | Alleen wanneer aangewezen als muterende hoofdworker |
 
-Look for:
-- dead buttons;
-- confusing labels;
-- buttons in weird places;
-- progress that does not update;
-- feedback that does not match the action;
-- impossible or illogical next steps;
-- missing final CTA or unclear completion;
-- accidental navigation away from the task.
+- Geef iedere worker een eigen browser-ID en evidencepad, maar beschouw dat nooit als bewijs van cookie-isolatie.
+- Laat maximaal één worker productievoortgang muteren. Laat de andere workers uitsluitend lokale preview gebruiken.
+- Serialiseer login/logout, authwissels, completion, screenshots en cleanup.
+- Controleer vóór iedere productieactie de zichtbare synthetische identiteit, XP, voltooide missies en unlockstaat.
+- Stop direct bij afwijkende identiteit, onboarding, cookie-, tab-, account-, commit- of evidencevermenging.
 
-### 3. Browser And Device Coverage
+## Handmatige leerlingflow
 
-For visible assignment UI, check at least:
-- desktop/laptop;
-- tablet/iPad portrait;
-- tablet/iPad landscape;
-- mobile.
+Gebruik echte zichtbare kliks. De locator-API binnen de toegewezen interne browsertab mag helpen om een zichtbaar element betrouwbaar te bedienen; verborgen state- of databasewijzigingen mogen niet.
 
-For each format, inspect:
-- start/intro state;
-- normal mid-flow state;
-- wrong/error feedback state;
-- end/completion/next CTA state.
+Leg per viewport minimaal vast:
 
-Mark `Echte iPad-check nodig` when Safari/iPad behavior could differ and only browser emulation was used.
+1. Intro/start.
+2. Normale interactie.
+3. Eén bewuste fout of imperfect antwoord.
+4. Begrijpelijke feedback die het juiste antwoord niet voortijdig weggeeft.
+5. Herstel op dezelfde vraag of stap.
+6. Mid-flow/voortgang.
+7. Eindstaat, score en vervolg-CTA.
+8. Bij productie: dashboard, XP/completion en volledige reload-persistentie.
 
-### 4. Technical Signals From The Browser
+Controleer daarnaast:
 
-Check and report:
-- console errors or warnings that affect the student flow;
-- failed network requests;
-- broken image/logo requests;
-- long loading states;
-- obvious hydration/rendering glitches;
-- page reload or back/forward weirdness if it affects play.
+- logo's, afbeeldingen en iconen laden en zijn niet uitgerekt;
+- alignment, spacing en visuele hiërarchie zijn consistent;
+- tekst, knoppen, badges en feedback clippen of overlappen niet;
+- tappable controls zijn bruikbaar en belangrijke doelen zijn minimaal 44 × 44 px;
+- er is geen horizontale overflow en game/canvas/preview past in beeld;
+- loading-, empty-, fout- en completionstates blijven bruikbaar;
+- console- en netwerkproblemen blokkeren de leerlingflow niet.
 
-Do not over-report harmless dev-only warnings unless they visibly affect the student.
+DOM-, console- en netwerkbewijs ondersteunt screenshots maar vervangt ze niet. Markeer `Echte iPad-check nodig`: Chromium-viewports bewijzen geen fysieke iPad Safari. Een externe Word-, PowerPoint- of printerhandeling is eveneens niet bewezen door de DGSkills-preview.
 
-## Decision Rules
+Ontbreekt herstel op dezelfde vraag, registreer dat als blocker/high. Je mag de lokale preview daarna met `reset=1` herstarten om de rest van de flow te controleren, maar die reset telt nooit als recoverybewijs en maakt het oordeel niet groen.
 
-Return:
-- `ship` when the assignment is visually sound, fully playable, and no student-facing bug remains.
-- `fix-eerst` when the assignment mostly works but one or more visible issues should be fixed before learners use it.
-- `herontwerp` when the flow is confusing, incomplete, visually broken, or cannot be completed by a normal student.
+## Productie- en privacystop
 
-Hard blockers:
-- assignment cannot be started or completed;
-- required CTA or answer control is hidden, clipped, disabled, or placed illogically;
-- logo/image/content overlaps the task;
-- important text is unreadable or clipped;
-- wrong answer/feedback state is broken;
-- console/network failure blocks normal play;
-- mobile or tablet version is not usable.
+- Gebruik nooit een bestaande echte leerling.
+- Gebruik uitsluitend synthetische profiel-, klas- en schooldata.
+- Zet geen credentials, UUID's, service-role keys, sessies of leerlinggegevens in prompts, screenshots, rapporten, GitHub of Linear.
+- Voer completion exact eenmaal uit. Controleer daarna beloofde versus toegekende XP, completiontelling, transactietelling en persistentie na volledige reload.
+- Herhaal een al bewezen completion niet voor een nieuwere read-only commitcontrole.
+- Stop wanneer de startstaat afwijkt; repareer de teststaat niet met een extra completion, directe SQL of adminshortcut.
 
-## Output Format
+Na de laatste opdracht van een batch: log browsers uit, trek refreshsessies in, verwijder het tijdelijke account via de ondersteunde adminroute, controleer dat voortgang/activiteiten weg zijn en verwijder lokale credentials. Een verwijderde gebruiker met nog geldige tokens is geen voltooide cleanup.
+
+## Evidencecontract
+
+Bewaar raw evidence duurzaam onder:
+
+`screenshots/mission-audit/batches/<batch>/<missionId>/<sha>/<run>/`
+
+Gebruik per run `manifest.json`, opeenvolgend genummerde PNG's en `review.md`. Gebruik `/tmp` nooit als enige opslag. Leg in het manifest vast:
+
+- `schemaVersion`, `missionId`, `testedCommit`, route/environment en interne browser;
+- bij productie ook `deploymentId`, een gelijke `deploymentCommit`, de gebruikte CSS-viewport en alle vijf checkpoints;
+- previewmutaties (`productionMutations=0`, `xpMutations=0`) of exact één productiecompletion;
+- CSS-viewport en checkpoints start/flow/feedback/recovery/end;
+- evidencebestanden met relatief pad, SHA-256 en verwachte PNG-afmetingen;
+- productie-before/after, XP, completion, transactie en reload-persistentie;
+- beperkingen en eindresultaat.
+
+Valideer ieder manifest vóór rapportage:
+
+```bash
+node .agents/skills/opdracht-live-check/scripts/validate-evidence.mjs <pad/naar/manifest.json>
+```
+
+Verwerp ontbrekende, stale, wrong-commit, verkeerd gedimensioneerde, verkeerd gehashte of gemengde evidence. Een screenshot-timeout is een evidencefout, geen visuele bevinding.
+
+## Oordeel en vervolg
+
+- `ship`: volledige zichtbare flow werkt, vier viewports zijn bewezen en geen leerlingblokker blijft open.
+- `fix-eerst`: de opdracht is grotendeels bruikbaar, maar een blocker/high of zichtbare fout moet eerst worden hersteld.
+- `herontwerp`: een normale leerling begrijpt of voltooit de kernflow niet betrouwbaar.
+
+Reproduceer blocker/high voordat code wijzigt. Maak alleen een kleine fix, draai gerichte tests, `npm run doctor`, voor Rood-werk ook `npm run build:prod`, en herhaal de relevante volledige browserflow op de finale commit. Registreer medium/low zonder automatische scope-uitbreiding.
+
+Gebruik dit rapportformaat:
 
 ```md
-## Opdracht Live Check: <missionId/title/url>
+## Opdracht Live Check: <missionId>
 
 **Advies:** ship / fix-eerst / herontwerp
 **Risico:** Groen / Geel / Rood
-**Getest als:** leerling / gast / demo / geblokkeerd door login
-**URL:** <url>
+**Commit/deployment:** <sha / id>
+**Getest als:** preview / synthetische leerling / geblokkeerd
 
-### Student-playthrough
-- Start:
-- Normale flow:
-- Fout/feedback:
-- Eind/CTA:
-
-### Visuele UI/UX
-- Logo's:
-- Afbeeldingen:
-- Layout/alignment:
-- Tekst/knoppen:
+### Design
+### Didactiek
+### Techniek
 
 ### Browserbewijs
-| Formaat | Start | Flow | Feedback | Eind/CTA | Opmerking |
-|---|---|---|---|---|---|
-| Desktop/laptop | ja/nee | ja/nee | ja/nee | ja/nee | |
-| Tablet staand | ja/nee | ja/nee | ja/nee | ja/nee | |
-| Tablet liggend | ja/nee | ja/nee | ja/nee | ja/nee | |
-| Mobiel | ja/nee | ja/nee | ja/nee | ja/nee | |
+| Formaat | Start | Flow | Feedback | Recovery | Eind/CTA | Resultaat |
+|---|---|---|---|---|---|---|
 
 ### Bevindingen
-1. `<bewijs of screenshot/viewport>` - BLOCK/WARN/INFO - <one sentence>
+1. `<file:regel, screenshot of URL/state>` — BLOCKER/HIGH/MEDIUM/LOW — <bevinding>
 
+### Productie en cleanup
 ### Nog onzeker
-- <login blocker, real iPad needed, untested state, or none>
 ```
 
-## Relationship To Other Checks
+## Relatie tot andere skills
 
-- Use `opdracht-ontwerp-check` before building or rewriting a concept.
-- Use `opdracht-klaar-check` as the final broad rubric gate.
-- Use this skill when the main question is: "Does the live assignment actually look right and play right for a student?"
+- Gebruik `dgskills-mission-review` als batchorchestrator en voor Design → Didactiek → Techniek, PR/release en Linear-status.
+- Gebruik `opdracht-ontwerp-check` vóór een ontwerp of herschrijving.
+- Gebruik `opdracht-klaar-check` als brede eindgate.

@@ -70,6 +70,52 @@
     animation: verhaal-caret 1s steps(1, end) infinite;
 }
 
+/*
+ * Jayden als 3D-blokjesfiguur in de slotscène van de film (zie scenes.tsx).
+ * `jayden-scene` zet het perspectief, `jayden-stage` draait de hele figuur en
+ * ademt, en elk blok houdt met `jayden-3d` zijn eigen vlakken in de ruimte.
+ * De draaihoek blijft negatief, zodat altijd dezelfde zijkant naar de kijker
+ * wijst en er geen vierde vlak nodig is.
+ */
+.verhaal .jayden-scene {
+    perspective: 900px;
+}
+
+.verhaal .jayden-3d {
+    transform-style: preserve-3d;
+}
+
+.verhaal .jayden-stage {
+    transform: rotateX(-12deg) rotateY(-22deg);
+    transform-style: preserve-3d;
+    animation: jayden-adem 7s ease-in-out infinite;
+}
+
+/* De jetpack blijft branden: korte, harde sprongen in plaats van een pulsje. */
+.verhaal .jayden-vlam {
+    animation: jayden-vlam 0.42s steps(2, end) infinite;
+}
+
+@keyframes jayden-vlam {
+    0%,
+    100% {
+        transform: scaleY(1);
+    }
+    50% {
+        transform: scaleY(0.78);
+    }
+}
+
+@keyframes jayden-adem {
+    0%,
+    100% {
+        transform: rotateX(-12deg) rotateY(-18deg) translate3d(0, 0, 0);
+    }
+    50% {
+        transform: rotateX(-11deg) rotateY(-26deg) translate3d(0, -6px, 0);
+    }
+}
+
 /* Groot hoofdstuknummer als outline-watermerk. */
 .verhaal .verhaal-watermark {
     -webkit-text-stroke: 1.5px rgba(32, 32, 35, 0.14);
@@ -103,7 +149,9 @@
 
     .verhaal .verhaal-marquee,
     .verhaal .verhaal-bob,
-    .verhaal .verhaal-caret {
+    .verhaal .verhaal-caret,
+    .verhaal .jayden-stage,
+    .verhaal .jayden-vlam {
         animation: none;
     }
 }

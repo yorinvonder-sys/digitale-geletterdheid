@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Target, Sparkles, ChevronRight } from 'lucide-react';
+import { Target, Sparkles } from 'lucide-react';
 import { getAdaptiveSuggestions, type RankedMission } from '@/utils/adaptiveEngine';
 import { getMissionDisplayTitle } from '@/utils/missionBuilder';
 import { extractDomeinScores, getDomeinLabel, getDomeinKleur, type DomeinKey } from '@/utils/growthCalculation';
@@ -140,7 +140,9 @@ export const AdaptiveMissionSuggestions: React.FC<AdaptiveMissionSuggestionsProp
               key={mission.missionId}
               variants={cardVariants}
               transition={{ duration: 0.25, ease: 'easeOut' }}
-              className="flex items-center gap-3 bg-duck-bg hover:bg-duck-ink/10 rounded-xl px-3 py-2.5 transition-colors"
+              // Geen hover-effect en geen pijltje: dit is een leeslijst, geen menu.
+              // Er hangt geen onClick aan, dus "klikbaar" ogen misleidt de leerling.
+              className="flex items-center gap-3 bg-duck-bg rounded-xl px-3 py-2.5"
             >
               {/* Relevance dot */}
               <span
@@ -164,8 +166,6 @@ export const AdaptiveMissionSuggestions: React.FC<AdaptiveMissionSuggestionsProp
                   </div>
                 )}
               </div>
-
-              <ChevronRight size={14} className="text-duck-ink/65 shrink-0" />
             </motion.li>
           );
         })}
