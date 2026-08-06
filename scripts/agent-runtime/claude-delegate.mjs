@@ -14,7 +14,7 @@ import {
   writeFileSync,
 } from 'node:fs';
 import { homedir } from 'node:os';
-import { isAbsolute, join, resolve, sep } from 'node:path';
+import { isAbsolute, join, parse, relative, resolve, sep } from 'node:path';
 import { pathToFileURL } from 'node:url';
 
 const MAX_PACKET_BYTES = 256 * 1024;
@@ -39,15 +39,11 @@ const FORBIDDEN_BUILD_PATHS = [
   /^src\/(?:app|contexts|services)(?:\/|$)/,
   /^src\/features\/(?:ai-chat|assessment|auth|consent|dashboard|dev-tools|developer|games|missions|profile|seo|student|teacher)(?:\/|$)/,
 ];
-const SENSITIVE_CLAUDE_PATHS = [
-  '~/.aws/**',
-  '~/.ssh/**',
-  '~/.config/**',
-  '~/.claude/**',
-  '~/.local/share/opencode/**',
-  '~/Library/Keychains/**',
-];
-
+const FORBIDDEN_BUILD_UMBRELLAS = new Set([
+  'scripts/**',
+  'src/**',
+  'src/features/**',
+]);
 export const CLAUDE_MODES = Object.freeze({
   'review-opus5': {
     model: 'claude-opus-5',
@@ -192,13 +188,7 @@ export function buildClaudeArgs(mode, effort, worktreeRoot, allowedPaths = []) {
     ...(mode.write
       ? {
           permissions: {
-            deny: [
-              ...scopeDenyRules,
-              ...SENSITIVE_CLAUDE_PATHS.flatMap((path) => [
-                `Read(${path})`,
-                `Edit(${path})`,
-              ]),
-            ],
+            deny: scopeDenyRules,
             disableBypassPermissionsMode: 'disable',
             disableAutoMode: 'disable',
           },
@@ -581,6 +571,7 @@ export function parseAllowedBuildPaths(packet, required, worktreeRoot) {
       base === '.' ||
       base.startsWith('./') ||
       base.split('/').includes('..') ||
+      FORBIDDEN_BUILD_UMBRELLAS.has(path) ||
       /[(),]/.test(base) ||
       /[*?]/.test(base) ||
       FORBIDDEN_BUILD_PATHS.some((pattern) => pattern.test(base))
@@ -598,6 +589,10 @@ export function parseAllowedBuildPaths(packet, required, worktreeRoot) {
 
 export function buildClaudeScopeDenyRules(worktreeRoot, allowedPaths) {
   const root = realpathSync(resolve(worktreeRoot));
+  const filesystemRoot = parse(root).root;
+  const worktreeSegments = relative(filesystemRoot, root)
+    .split(sep)
+    .filter(Boolean);
   const tree = { children: new Map(), exact: false, recursive: false };
 
   for (const allowedPath of allowedPaths) {
@@ -605,7 +600,7 @@ export function buildClaudeScopeDenyRules(worktreeRoot, allowedPaths) {
     const base = recursive ? allowedPath.slice(0, -3) : allowedPath;
     let node = tree;
 
-    for (const segment of base.split('/')) {
+    for (const segment of [...worktreeSegments, ...base.split('/')]) {
       if (!node.children.has(segment)) {
         node.children.set(segment, {
           children: new Map(),
@@ -622,8 +617,12 @@ export function buildClaudeScopeDenyRules(worktreeRoot, allowedPaths) {
 
   const denyRules = [];
   const denyPath = (relativePath, directory) => {
-    const absolutePath = join(root, relativePath).split(sep).join('/');
-    const pattern = `/${absolutePath}${directory ? '/**' : ''}`;
+    const absolutePath = join(filesystemRoot, relativePath).split(sep).join('/');
+    const drive = absolutePath.match(/^([A-Za-z]):\/(.*)$/);
+    const absolutePattern = drive
+      ? `//${drive[1].toLowerCase()}/${drive[2]}`
+      : `/${absolutePath}`;
+    const pattern = `${absolutePattern}${directory ? '/**' : ''}`;
     denyRules.push(`Read(${pattern})`, `Edit(${pattern})`);
   };
   const walk = (absoluteDirectory, relativeDirectory, node) => {
@@ -668,7 +667,7 @@ export function buildClaudeScopeDenyRules(worktreeRoot, allowedPaths) {
     }
   };
 
-  walk(root, '', tree);
+  walk(filesystemRoot, '', tree);
   return denyRules;
 }
 

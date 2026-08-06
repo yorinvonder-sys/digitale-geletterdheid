@@ -93,6 +93,30 @@ export function resolveExternalRoute(agent, model) {
   return '';
 }
 
+function resolveApprovedExternalTarget(agent, model) {
+  const providerID = model?.providerID ?? '';
+  const modelID = model?.modelID ?? '';
+  const modelName = providerID ? `${providerID}/${modelID}` : modelID;
+  const agentRoute = resolveExternalRoute(agent, '');
+  const modelRoute = resolveExternalRoute('', modelName);
+  const externalAgentName = /^(?:deepseek|terra)-/.test(agent);
+  const externalModel =
+    (providerID !== '' && providerID !== 'openai') || /terra/i.test(modelID);
+
+  if (
+    (externalAgentName && !agentRoute) ||
+    (externalModel && !modelRoute)
+  ) {
+    throw new Error('External delegation target is not approved');
+  }
+
+  if (agentRoute && modelRoute && agentRoute !== modelRoute) {
+    throw new Error('External delegation route metadata is inconsistent');
+  }
+
+  return agentRoute || modelRoute;
+}
+
 export function validateExternalMessage(agent, parts = []) {
   if (!EXTERNAL_AGENTS.has(agent)) {
     return;
@@ -111,19 +135,13 @@ export function validateExternalMessage(agent, parts = []) {
 export function createExternalDelegationHooks() {
   return {
     'chat.message': async (input, output) => {
-      const requestedModel = input.model
-        ? `${input.model.providerID}/${input.model.modelID}`
-        : '';
-      const resolvedModel = output.message?.model
-        ? `${output.message.model.providerID}/${output.message.model.modelID}`
-        : '';
-      const requestedRoute = resolveExternalRoute(
+      const requestedRoute = resolveApprovedExternalTarget(
         input.agent ?? '',
-        requestedModel,
+        input.model,
       );
-      const resolvedRoute = resolveExternalRoute(
+      const resolvedRoute = resolveApprovedExternalTarget(
         output.message?.agent ?? '',
-        resolvedModel,
+        output.message?.model,
       );
 
       if (

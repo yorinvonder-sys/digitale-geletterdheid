@@ -109,11 +109,18 @@ try {
   assert.equal(denyRules.some((rule) => rule.includes('Card.tsx')), false);
   assert.equal(denyRules.some((rule) => rule.includes('/src/utils/')), false);
   assert.ok(
+    denyRules.some((rule) => /^Read\(\/\/usr(?:\/\*\*)?\)$/.test(rule)),
+  );
+  assert.ok(
     settings.permissions.deny.some(
       (rule) => rule.startsWith('Read(//') && rule.endsWith('/package.json)'),
     ),
   );
-  assert.ok(settings.permissions.deny.includes('Read(~/.ssh/**)'));
+  assert.ok(
+    settings.permissions.deny.some((rule) =>
+      /^Read\(\/\/usr(?:\/\*\*)?\)$/.test(rule),
+    ),
+  );
   assert.equal(settings.permissions.disableBypassPermissionsMode, 'disable');
   assert.equal(settings.permissions.disableAutoMode, 'disable');
 } finally {
@@ -144,6 +151,16 @@ assert.throws(
   () => parseAllowedBuildPaths(`${safePacket}\nALLOWED_PATHS=.git/**`, true),
   /not allowed/,
 );
+for (const umbrella of ['scripts/**', 'src/**', 'src/features/**']) {
+  assert.throws(
+    () =>
+      parseAllowedBuildPaths(
+        `${safePacket}\nALLOWED_PATHS=${umbrella}`,
+        true,
+      ),
+    /not allowed/,
+  );
+}
 assert.throws(
   () => parseAllowedBuildPaths(safePacket, true),
   /requires 1-20/,

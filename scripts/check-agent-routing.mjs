@@ -192,6 +192,34 @@ await assert.rejects(
     ),
   /appears sensitive/,
 );
+await assert.rejects(
+  () =>
+    externalHooks['chat.message'](
+      {
+        agent: 'dg-orchestrator',
+        model: { providerID: 'unapproved', modelID: 'external-model' },
+      },
+      {
+        message: {
+          agent: 'dg-orchestrator',
+          model: { providerID: 'unapproved', modelID: 'external-model' },
+        },
+        parts: [{ type: 'text', text: safeExternalPacket }],
+      },
+    ),
+  /target is not approved/,
+);
+await assert.rejects(
+  () =>
+    externalHooks['chat.message'](
+      { agent: 'terra-experimental' },
+      {
+        message: { agent: 'terra-experimental' },
+        parts: [{ type: 'text', text: safeExternalPacket }],
+      },
+    ),
+  /target is not approved/,
+);
 await assertRequiredDlpPlugin(OPENCODE_PROJECT_ROOT);
 assert.doesNotThrow(() =>
   assertOpenCodePluginBootstrap(
