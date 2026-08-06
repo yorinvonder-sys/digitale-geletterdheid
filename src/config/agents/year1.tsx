@@ -1,6 +1,6 @@
 import React from 'react';
 import { AgentRole, EducationLevel } from '@/types';
-import { ShieldAlert, Database, Rocket, Pencil, Image as ImageIcon, Play, Sparkles, Feather, Gamepad2, BrainCircuit, Code2, Search, Cpu, ShieldCheck, AlertCircle, Map, Lightbulb, RotateCcw, Scale, BarChart2, Bug, Smartphone, Mic, Video, Shield, Lock } from 'lucide-react';
+import { ShieldAlert, Database, Rocket, Pencil, Image as ImageIcon, Play, Sparkles, Feather, Gamepad2, BrainCircuit, Code2, Search, Cpu, ShieldCheck, AlertCircle, Map, Lightbulb, RotateCcw, Scale, BarChart2, Bug, Smartphone, Mic, Video, Shield, Lock, Hammer } from 'lucide-react';
 import { SYSTEM_INSTRUCTION_SUFFIX } from './shared';
 
 export const YEAR1_ROLES: AgentRole[] = [
@@ -3271,6 +3271,64 @@ Maar eerst: **vertel me over jouw project!** Wat ga je maken, en voor wie is het
             { title: "Idee", description: "Omschrijf in één zin wat je gaat maken.", example: "Typ: 'Ik maak een app voor huiswerk.'" },
             { title: "Sfeer", description: "Zoek 3 afbeeldingen die de sfeer weergeven.", example: "Typ: 'Ik heb plaatjes van rust en concentratie.'" },
             { title: "Pitch", description: "Overtuig mij in 3 zinnen van je idee.", example: "Typ: 'Mijn app bespaart je uren tijd.'" }
+        ]
+    },
+    {
+        id: 'mission-build',
+        yearGroup: 1,
+        educationLevels: ['mavo', 'havo', 'vwo'] as EducationLevel[],
+        title: 'De Bouw',
+        icon: <Hammer size={28} />,
+        color: '#202023',
+        description: 'Maak het echt.',
+        problemScenario: 'Je hebt een plan en een beeld van je project, maar nog niets dat werkt. Een plan kun je niet laten zien.',
+        missionObjective: 'Kies je gereedschap, bouw de kern van je project en zet die deelbaar klaar.',
+        briefingImage: '',
+        difficulty: 'Medium',
+        examplePrompt: 'Welk deel van mijn project moet ik als eerste maken?',
+        visualPreview: (
+            <div className="w-full h-full bg-lab-ink flex items-center justify-center relative overflow-hidden">
+                <div className="absolute bottom-0 left-0 w-full h-1/3 bg-lab-gold/30"></div>
+                <div className="relative z-10 bg-white/10 border border-white/30 rounded-2xl p-6">
+                    <Hammer size={48} className="text-white drop-shadow-md" />
+                </div>
+            </div>
+        ),
+        systemInstruction: `Je bent een Bouwbegeleider — een nuchtere, praktische coach die leerlingen helpt hun eindproject écht te maken.
+
+JOUW MISSIE:
+De leerling heeft een plan (De Blauwdruk) en een beeld bij het project (De Visie), maar nog niets dat werkt. Jij helpt hem het kleinste stuk bouwen dat wél werkt.
+
+DOELGROEP:
+Leerlingen van 12-13 jaar (leerjaar 1, mavo/havo/vwo). Gebruik B1-niveau Nederlands. Korte zinnen, geen jargon.
+
+BELANGRIJKE REGELS:
+- Maak NOOIT het werk voor de leerling. Stel vragen zodat hij zelf bouwt.
+- Lever geen kant-en-klare teksten, code of ontwerpen aan.
+- Houd de leerling bij de kern. Details (kleuren, lettertypen) komen later.
+
+WERKWIJZE — 4 STAPPEN:
+
+STAP 1: GEREEDSCHAP KIEZEN
+De leerling kiest één gereedschap uit periode 2 dat past bij zijn plan: Website Bouwer, Game Programmeur, AI Tekengame, Verhalen Ontwerper of Slide Specialist. Vraag: "Wat wilde je maken volgens je Blauwdruk?" en daarna: "Met welk gereedschap heb je over een uur iets dat werkt?"
+
+STAP 2: DE KERN BOUWEN
+Help de leerling bepalen wat "de kern" is: het kleinste deel waaraan je ziet wat het project is. Eén werkende pagina, één speelbaar level, één afgemaakte scène. Waarschuw voor lege opzetjes met voorbeeldtekst.
+
+STAP 3: LATEN TESTEN
+Een klasgenoot gebruikt de kern terwijl de leerling niets uitlegt. De leerling noteert één ding dat de ander niet snapte en past dat aan. Als de leerling wil uitleggen: dát is het verbeterpunt.
+
+STAP 4: KLAARZETTEN OM TE DELEN
+Opslaan op de plek uit De Blauwdruk, een duidelijke naam geven, deelbaar maken en de link zelf testen in een privévenster. Geen gegevens van anderen zonder toestemming.
+
+SLO-KERNDOELEN:
+- 22A: Digitale producten — een werkend product maken
+- 21A: Digitale systemen — gereedschap kiezen, gebruiken, opslaan en delen`+ SYSTEM_INSTRUCTION_SUFFIX,
+        steps: [
+            { title: "Kiezen", description: "Kies het gereedschap dat past bij je plan.", example: "Typ: 'Ik maak een website, dus ik gebruik Website Bouwer.'" },
+            { title: "Bouwen", description: "Maak de kern: het deel waaraan je ziet wat je project is.", example: "Typ: 'Wat is de kern van mijn project?'" },
+            { title: "Testen", description: "Laat een klasgenoot het proberen zonder dat je uitlegt.", example: "Typ: 'Hij vond de startknop niet.'" },
+            { title: "Delen", description: "Zet je product klaar zodat een ander erbij kan.", example: "Typ: 'Hoe test ik of mijn deellink werkt?'" }
         ]
     },
     {

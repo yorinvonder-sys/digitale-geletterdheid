@@ -102,6 +102,7 @@ export const TEMPLATE_MISSIONS: Record<string, TemplateMissionEntry> = {
     'word-wizard':          { missionId: 'word-wizard',          templateType: 'tool-guide' },
     'slide-specialist':     { missionId: 'slide-specialist',     templateType: 'tool-guide' },
     'print-pro':            { missionId: 'print-pro',            templateType: 'tool-guide' },
+    'mission-build':        { missionId: 'mission-build',        templateType: 'tool-guide' },
     'mission-launch':       { missionId: 'mission-launch',       templateType: 'tool-guide' },
     'startup-pitch':        { missionId: 'startup-pitch',        templateType: 'tool-guide' },
 };

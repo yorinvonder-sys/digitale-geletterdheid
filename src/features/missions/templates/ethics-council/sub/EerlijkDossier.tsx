@@ -26,7 +26,7 @@ export const EerlijkDossier: React.FC<EerlijkDossierProps> = ({
             <span className="text-xl">🔍</span>
             <div>
                 <p
-                    className="text-[10px] font-black text-duck-ink/50 uppercase tracking-widest"
+                    className="text-[10px] font-black text-duck-ink/70 uppercase tracking-widest"
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                 >
                     Dossier 2 — Eerlijk
@@ -38,7 +38,7 @@ export const EerlijkDossier: React.FC<EerlijkDossierProps> = ({
                     Eerlijkheidsrechter
                 </h3>
                 <p
-                    className="text-xs text-duck-ink/50"
+                    className="text-xs text-duck-ink/70"
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                 >
                     Ethicus voor eerlijkheid en bias
