@@ -133,6 +133,9 @@ const DevShellPreview: React.FC = () => {
     const searchParams = new URLSearchParams(window.location.search);
     const screen = (searchParams.get('screen') ?? 'dashboard') as Screen;
     const withTour = searchParams.get('tour') === '1';
+    // `?kaal=1` laat de DEV-balk weg. De opnames voor de instructievideo's draaien
+    // hierop; die balk hoort niet in beeld bij leerlingen en docenten.
+    const kaal = searchParams.get('kaal') === '1';
 
     const [activeWeek, setActiveWeek] = React.useState(1);
 
@@ -161,7 +164,7 @@ const DevShellPreview: React.FC = () => {
 
     return (
         <>
-            <Nav active={screen} />
+            {!kaal && <Nav active={screen} />}
             <Suspense fallback={<Loading />}>
                 {screen === 'dashboard' && (
                     withTour
