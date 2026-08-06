@@ -6,6 +6,7 @@ import { IntroScreen } from '../shared/IntroScreen';
 import { CompletionScreen } from '../shared/CompletionScreen';
 import { getMissionGoal } from '@/config/missionGoals';
 import type { TemplateMissionProps, BadgeConfig, FollowUpQuestion, MissionGoal } from '../shared/types';
+import { isMeaningfulAnswer } from './answerQuality';
 import { ExplorePhase } from './sub/ExplorePhase';
 import { PositionPhase } from './sub/PositionPhase';
 import { ArguePhase } from './sub/ArguePhase';
@@ -111,17 +112,17 @@ function calcScore(state: DebateArenaState, config: DebateArenaConfig): number {
 
     // Arguments: 20 pts each, max 3
     const validArgs = state.arguments.filter(
-        (a) => a.claim.trim().length >= 20 && a.evidence.trim().length >= 20
+        (a) => isMeaningfulAnswer(a.claim) && isMeaningfulAnswer(a.evidence)
     );
     score += Math.round((Math.min(validArgs.length, 3) / 3) * argumentMax);
 
     // Counter-response: 10 pts
-    if (state.counterResponse.trim().length >= 20) score += 10;
+    if (isMeaningfulAnswer(state.counterResponse)) score += 10;
 
     // Reflection: 10 pts per question
     const reflectionScore = config.reflectionQuestions.filter((q) => {
         const answer = state.reflectionAnswers[q] ?? '';
-        return answer.trim().length >= 20;
+        return isMeaningfulAnswer(answer);
     }).length * 10;
     score += reflectionScore;
 
@@ -188,9 +189,9 @@ const DebateArenaInner: React.FC<DebateArenaProps> = ({ config, onBack, onComple
         const phases = [
             { icon: '👥', title: 'Stakeholders gelezen', score: state.stakeholdersRead.length >= config.stakeholders.length ? 10 : 0, max: 10 },
             { icon: '📍', title: 'Positie gekozen', score: state.selectedPosition ? 10 : 0, max: 10 },
-            { icon: '💬', title: 'Argumenten gebouwd', score: Math.round((Math.min(state.arguments.filter(a => a.claim.trim().length >= 20 && a.evidence.trim().length >= 20).length, 3) / 3) * 50), max: 50 },
-            { icon: '⚡', title: 'Tegenargument beantwoord', score: state.counterResponse.trim().length >= 20 ? 10 : 0, max: 10 },
-            { icon: '🪞', title: 'Gereflecteerd', score: config.reflectionQuestions.filter(q => (state.reflectionAnswers[q] ?? '').trim().length >= 20).length * 10, max: config.reflectionQuestions.length * 10 },
+            { icon: '💬', title: 'Argumenten gebouwd', score: Math.round((Math.min(state.arguments.filter(a => isMeaningfulAnswer(a.claim) && isMeaningfulAnswer(a.evidence)).length, 3) / 3) * 50), max: 50 },
+            { icon: '⚡', title: 'Tegenargument beantwoord', score: isMeaningfulAnswer(state.counterResponse) ? 10 : 0, max: 10 },
+            { icon: '🪞', title: 'Gereflecteerd', score: config.reflectionQuestions.filter(q => isMeaningfulAnswer(state.reflectionAnswers[q] ?? '')).length * 10, max: config.reflectionQuestions.length * 10 },
         ];
 
         return (
