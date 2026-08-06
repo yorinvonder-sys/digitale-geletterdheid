@@ -80,6 +80,7 @@ export const TeacherAccountMenu: React.FC<TeacherAccountMenuProps> = ({
                 aria-haspopup="menu"
                 aria-expanded={open}
                 aria-label="Accountmenu en beheer"
+                data-tutorial="teacher-account-menu"
                 className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-sm font-black text-duck-ink transition ${
                     open ? 'bg-duck-acid' : 'bg-duck-acid/35 hover:bg-duck-acid/60'
                 }`}

@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useCallback, ReactNode } from 'react';
 import { shouldAutoStart } from '@/features/onboarding/core/autostart';
 import { isTourDisabled, isTourSeen, markTourSeen, type TourId } from '@/features/onboarding/core/tourStorage';
+import { resolveTourSteps } from '@/features/onboarding/core/resolveTour';
 
 /**
  * Wat een stap het omliggende dashboard mag laten doen.
@@ -50,101 +51,161 @@ interface TutorialContextType {
 
 const TutorialContext = createContext<TutorialContextType | null>(null);
 
-// De navigatiesleutel staat zowel op de zijbalk als op de mobiele balk. De
-// spotlight kiest zelf het zichtbare exemplaar, dus één sleutel volstaat.
-const navTarget = (tab: string) => `[data-tutorial="${tab}-tab"], [data-tutorial-mobile="${tab}-tab"]`;
+const doel = (sleutel: string) => `[data-tutorial="${sleutel}"]`;
 
+// Zijbalk en mobiele balk dragen dezelfde sleutel; de spotlight kiest zelf het
+// zichtbare exemplaar, dus een apart `data-tutorial-mobile` is niet meer nodig.
+const navTarget = (tab: string) => doel(`teacher-nav-${tab}`);
+
+/**
+ * Volgorde volgt de dag van een docent: eerst zien wat er speelt, dan ingrijpen,
+ * dan verantwoorden. Stappen die een schermvullend venster openen laten we de
+ * gebruiker zelf aanklikken; de rest gaat met de doorknop.
+ */
 export const TEACHER_TUTORIAL_STEPS: TutorialStep[] = [
     {
-        id: 'start-lesson',
-        target: '[data-tutorial="presentation-btn"]',
-        title: 'Start je les',
-        content: 'Klik op Presentatie voor het lespresentatiescherm met QR-code.',
-        requireClick: true,
-        position: 'bottom',
-    },
-    {
-        id: 'focus-task',
-        target: '[data-tutorial="focus-toggle"]',
-        title: 'Focusmodus',
-        content: 'Stuur alle leerlingen naar dezelfde opdracht.',
-        requireClick: true,
-        position: 'bottom',
-        beforeEnter: (actions) => actions.goTo?.('overview'),
-    },
-    {
-        id: 'students-tab',
-        target: navTarget('students'),
-        title: 'Leerlingen',
-        content: 'Beheer individuele leerlingen en stuur berichten.',
-        requireClick: true,
-        position: 'bottom',
-    },
-    {
-        id: 'student-message',
-        target: '[data-tutorial="students-message-btn"]',
-        title: 'Klasbericht',
-        content: 'Stuur berichten naar de hele klas of individuele leerlingen.',
-        requireClick: true,
-        position: 'bottom',
-        beforeEnter: (actions) => actions.goTo?.('students'),
-    },
-    {
-        id: 'evidence-tab',
-        target: navTarget('progress'),
-        title: 'Bewijs',
-        content: 'Voortgang, SLO-dekking en groei — de onderbouwing voor school en inspectie.',
-        requireClick: true,
-        position: 'bottom',
+        id: 'welcome',
+        target: null,
+        title: 'Welkom bij je dashboard',
+        content: 'In een minuut laten we zien waar je klas staat, hoe je bijstuurt en waar het bewijs voor school vandaan komt.',
     },
     {
         id: 'today-tab',
         target: navTarget('overview'),
         title: 'Vandaag',
-        content: 'Je startscherm: wie aandacht nodig heeft, en waar de klas aan werkt.',
-        requireClick: true,
+        content: 'Je startscherm: wie aandacht nodig heeft en waar de klas op dit moment aan werkt.',
+        position: 'right',
+        beforeEnter: (actions) => actions.goTo?.('overview'),
+    },
+    {
+        id: 'class-filter',
+        target: doel('teacher-class-filter'),
+        title: 'Kies je klas',
+        content: 'Alles op dit scherm — cijfers, lijsten en exports — volgt de klas die je hier kiest.',
+        position: 'bottom',
+    },
+    {
+        id: 'attention',
+        target: doel('teacher-attention'),
+        title: 'Wie heeft je nodig',
+        content: 'Leerlingen die vastlopen of achterblijven staan bovenaan, zodat je niet zelf hoeft te zoeken.',
+        position: 'bottom',
+    },
+    {
+        id: 'mission-map',
+        target: doel('teacher-mission-map'),
+        title: 'Waar de klas aan werkt',
+        content: 'Per missie zie je hoeveel leerlingen gestart en klaar zijn, met de SLO-doelen die eronder zitten.',
+        position: 'top',
+    },
+    {
+        id: 'focus-task',
+        target: doel('teacher-focus-toggle'),
+        title: 'Focusmodus',
+        content: 'Zet de hele klas op dezelfde opdracht — handig aan het begin van een les.',
+        position: 'bottom',
+        beforeEnter: (actions) => actions.goTo?.('overview'),
+    },
+    {
+        id: 'students-import',
+        target: doel('teacher-students-import'),
+        title: 'Leerlingen toevoegen',
+        content: 'Zet je klassenlijst in één keer klaar met een import; daarna kun je per leerling verder.',
+        position: 'bottom',
+        beforeEnter: (actions) => actions.goTo?.('students'),
+    },
+    {
+        id: 'student-message',
+        target: doel('teacher-students-message'),
+        title: 'Klasbericht',
+        content: 'Stuur een bericht naar de hele klas of naar één leerling.',
+        position: 'bottom',
+        beforeEnter: (actions) => actions.goTo?.('students'),
+    },
+    {
+        id: 'evidence-views',
+        target: doel('teacher-evidence-views'),
+        title: 'Bewijs voor school',
+        content: 'Voortgang, SLO-dekking en groei — de onderbouwing die je nodig hebt richting school en inspectie.',
+        position: 'bottom',
+        beforeEnter: (actions) => actions.goTo?.('progress'),
+    },
+    {
+        id: 'presentation',
+        target: doel('teacher-presentation'),
+        title: 'Klaar om les te geven',
+        content: 'Hiermee open je het presentatiescherm met QR-code voor op het digibord.',
+        position: 'bottom',
+        beforeEnter: (actions) => actions.goTo?.('overview'),
+    },
+    {
+        id: 'account-menu',
+        target: doel('teacher-account-menu'),
+        title: 'De rest staat hier',
+        content: 'Instellingen, missies aan- of uitzetten, de kennisbank en deze rondleiding vind je in dit menu terug.',
         position: 'bottom',
     },
 ];
 
-// Student tutorial steps — logische volgorde: welkom → missies → profiel → start
+/**
+ * Volgorde: eerst waar je bent, dan wat je moet doen, dan wat je ermee verdient.
+ * Stappen waarvan het doel op dit scherm niet bestaat — de leerlijnkiezer bij één
+ * leerjaar, de XP-balk op desktop — worden bij de start vanzelf weggelaten.
+ */
 export const STUDENT_TUTORIAL_STEPS: TutorialStep[] = [
     {
         id: 'welcome',
-        target: null, // fullscreen
+        target: null, // schermvullend
         title: 'Welkom bij Project DG!',
-        content: 'Dit is jouw dashboard. Hier vind je al je missies, XP en trofeeën. We laten je even zien hoe alles werkt.',
-        requireClick: false,
+        content: 'Dit is jouw dashboard. Hier staan al je missies, je XP en je trofeeën. We laten even zien hoe het werkt.',
     },
     {
         id: 'main-missions',
-        target: '[data-tutorial="student-main-missions"]',
-        title: 'Jouw Missies',
+        target: doel('student-main-missions'),
+        title: 'Jouw missies',
         content: 'Dit zijn je opdrachten. Elke missie levert XP op en brengt je dichter bij een nieuw level.',
-        requireClick: false,
         position: 'top',
     },
     {
         id: 'review-missions',
-        target: '[data-tutorial="student-review-missions"]',
+        target: doel('student-review-missions'),
         title: 'Herhalingsopdrachten',
-        content: 'Oranje opdrachten zijn herhalingen van de vorige periode. Rond deze eerst af om nieuwe missies vrij te spelen.',
-        requireClick: false,
+        content: 'Deze komen uit de vorige periode. Maak ze eerst af, dan spelen je nieuwe missies vrij.',
+        position: 'bottom',
+    },
+    {
+        id: 'period',
+        target: doel('student-period'),
+        title: 'Wisselen van periode',
+        content: 'Hiermee spring je naar een andere periode — handig om terug te kijken wat je al gedaan hebt.',
+        position: 'bottom',
+    },
+    {
+        id: 'yearline',
+        target: doel('student-yearline'),
+        title: 'Jouw leerlijn',
+        content: 'Zit je in meerdere leerjaren? Hier kies je welke leerlijn je nu volgt.',
+        position: 'bottom',
+    },
+    {
+        id: 'xp',
+        target: doel('student-xp'),
+        title: 'Je XP en level',
+        content: 'Elke afgeronde missie levert XP op. Tik erop om te zien hoeveel je nog nodig hebt voor het volgende level.',
         position: 'bottom',
     },
     {
         id: 'profile-btn',
-        target: '[data-tutorial="student-profile-btn"]',
-        title: 'Jouw Profiel',
-        content: 'Bekijk je avatar, trofeeën en de winkel. Verdien XP om nieuwe items vrij te spelen!',
-        requireClick: false,
-        position: 'left',
+        target: doel('student-profile-btn'),
+        title: 'Jouw portfolio',
+        content: 'Hier vind je je avatar, je trofeeën en de winkel waar je XP kunt uitgeven.',
+        position: 'bottom',
     },
     {
         id: 'first-mission',
-        target: '[data-tutorial="student-first-mission"]',
+        target: doel('student-first-mission'),
         title: 'Klaar? Begin hier!',
-        content: 'Klik op een opdracht om je eerste missie te starten. Succes!',
+        content: 'Klik op deze opdracht om je eerste missie te starten. Succes!',
         requireClick: true,
         position: 'bottom',
     },
@@ -230,6 +291,34 @@ export const TutorialProvider: React.FC<TutorialProviderProps> = ({
 
     const hasCompleted = completed === true || seenThisSession;
 
+    // De stappen die deze gebruiker op dit scherm daadwerkelijk krijgt. Wordt bij
+    // de start bepaald; zie resolveTour.ts voor waarom sommige afvallen.
+    const [activeSteps, setActiveSteps] = useState<TutorialStep[]>(steps);
+    const activeStepsRef = React.useRef(activeSteps);
+    activeStepsRef.current = activeSteps;
+
+    React.useEffect(() => { setActiveSteps(steps); }, [steps]);
+
+    const resolveSteps = useCallback((): TutorialStep[] => {
+        const bestaat = (selector: string) => {
+            try {
+                return Array.from(document.querySelectorAll<HTMLElement>(selector)).some((el) => {
+                    const r = el.getBoundingClientRect();
+                    return r.width > 0 && r.height > 0;
+                });
+            } catch {
+                return false;
+            }
+        };
+        const gefilterd = resolveTourSteps(steps, bestaat);
+        // Valt alles weg (bijvoorbeeld doordat het dashboard nog niet gerenderd is),
+        // val dan terug op de volledige lijst in plaats van een lege rondleiding.
+        const resultaat = gefilterd.length > 0 ? gefilterd : steps;
+        activeStepsRef.current = resultaat;
+        setActiveSteps(resultaat);
+        return resultaat;
+    }, [steps]);
+
     /**
      * Zet het dashboard klaar voor een stap.
      *
@@ -238,11 +327,11 @@ export const TutorialProvider: React.FC<TutorialProviderProps> = ({
      * niet in beeld was.
      */
     const enterStep = useCallback((index: number) => {
-        const step = steps[index];
+        const step = activeStepsRef.current[index];
         if (!step) return;
         actionsRef.current.closeOverlays?.();
         step.beforeEnter?.(actionsRef.current);
-    }, [steps]);
+    }, []);
 
     // Auto-start voor wie hem nog niet gezien heeft.
     React.useEffect(() => {
@@ -255,21 +344,25 @@ export const TutorialProvider: React.FC<TutorialProviderProps> = ({
             isDemo,
         });
         if (!mayStart) return;
-        // Korte vertraging zodat het dashboard eerst kan renderen.
+        // Korte vertraging zodat het dashboard eerst kan renderen — pas daarna
+        // valt te zien welke stappen op dit scherm een doel hebben.
         const timer = setTimeout(() => {
+            resolveSteps();
+            setCurrentStepIndex(0);
             setIsActive(true);
             enterStep(0);
         }, 800);
         return () => clearTimeout(timer);
-    }, [autoStart, hasCompleted, seenThisSession, isDemo, enterStep]);
+    }, [autoStart, hasCompleted, seenThisSession, isDemo, enterStep, resolveSteps]);
 
-    const currentStep = isActive ? steps[currentStepIndex] : null;
+    const currentStep = isActive ? activeSteps[currentStepIndex] : null;
 
     const startTutorial = useCallback(() => {
+        resolveSteps();
         setCurrentStepIndex(0);
         setIsActive(true);
         enterStep(0);
-    }, [enterStep]);
+    }, [enterStep, resolveSteps]);
 
     const endTutorial = useCallback(() => {
         setIsActive(false);
@@ -281,14 +374,14 @@ export const TutorialProvider: React.FC<TutorialProviderProps> = ({
     }, [userId, tourId, onComplete]);
 
     const nextStep = useCallback(() => {
-        if (currentStepIndex < steps.length - 1) {
+        if (currentStepIndex < activeSteps.length - 1) {
             const newIndex = currentStepIndex + 1;
             setCurrentStepIndex(newIndex);
             enterStep(newIndex);
         } else {
             endTutorial();
         }
-    }, [currentStepIndex, steps, endTutorial, enterStep]);
+    }, [currentStepIndex, activeSteps, endTutorial, enterStep]);
 
     const prevStep = useCallback(() => {
         if (currentStepIndex > 0) {
@@ -311,7 +404,7 @@ export const TutorialProvider: React.FC<TutorialProviderProps> = ({
             isActive,
             currentStepIndex,
             currentStep,
-            steps,
+            steps: activeSteps,
             startTutorial,
             endTutorial,
             nextStep,

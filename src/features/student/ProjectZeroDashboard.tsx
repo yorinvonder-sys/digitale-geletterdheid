@@ -674,7 +674,9 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
     ];
     const dashboardNavItems = [
         { label: 'Dashboard', icon: <Home size={19} />, active: activeNav === 'Dashboard', onClick: () => { setActiveNav('Dashboard'); scrollDashboardToTop(); } },
-        { label: 'Mijn portfolio', icon: <User size={19} />, active: activeNav === 'Mijn portfolio', onClick: () => { setActiveNav('Mijn portfolio'); onOpenProfile(); } },
+        // `tutorial`: dezelfde sleutel als de mobiele variant verderop. De spotlight
+        // kiest zelf welk exemplaar zichtbaar is, dus één sleutel dekt beide schermen.
+        { label: 'Mijn portfolio', icon: <User size={19} />, active: activeNav === 'Mijn portfolio', onClick: () => { setActiveNav('Mijn portfolio'); onOpenProfile(); }, tutorial: 'student-profile-btn' },
     ];
     const learningProgressControls = (
         <>
@@ -695,6 +697,7 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
                             key={item.label}
                             type="button"
                             onClick={item.onClick}
+                            data-tutorial={item.tutorial}
                             className={`inline-flex min-h-[44px] min-w-0 flex-1 items-center justify-center gap-2 rounded-full px-4 text-sm font-extrabold transition-colors ${item.active ? 'border border-duck-ink bg-duck-acid text-duck-ink' : 'text-duck-ink/65 hover:bg-duck-bgLight hover:text-duck-ink'}`}
                         >
                             {item.icon}
@@ -724,6 +727,7 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
                                 aria-haspopup="listbox"
                                 aria-expanded={showYearGroupMenu}
                                 aria-label="Kies digitale leerlijn"
+                                data-tutorial="student-yearline"
                                 onClick={() => setShowYearGroupMenu(prev => !prev)}
                                 className={`flex min-h-[56px] w-full items-center gap-3 rounded-3xl border-2 px-4 text-left shadow-duck-soft transition-all duration-200 hover:-translate-y-0.5 focus:outline-none focus:ring-4 motion-reduce:transition-none sm:w-[304px] ${activeYearTheme.triggerBg} ${activeYearTheme.activeBorder} ${activeYearTheme.focusRing}`}
                             >
@@ -782,7 +786,7 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
                     )}
 
                     {isCustomSchedule && containers ? (
-                        <div className="flex min-w-0 flex-wrap gap-2 overflow-x-auto rounded-full border border-duck-ink/10 bg-white p-1.5 shadow-duck-soft sm:flex-1">
+                        <div data-tutorial="student-period" className="flex min-w-0 flex-wrap gap-2 overflow-x-auto rounded-full border border-duck-ink/10 bg-white p-1.5 shadow-duck-soft sm:flex-1">
                             {[...containers].sort((a, b) => a.sortOrder - b.sortOrder).map((container) => (
                                 <button
                                     key={container.id}
@@ -795,7 +799,7 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
                             ))}
                         </div>
                     ) : (
-                        <div className="grid min-w-0 grid-cols-2 gap-2 rounded-full border border-duck-ink/10 bg-white p-1.5 shadow-duck-soft sm:flex-1 sm:grid-cols-4">
+                        <div data-tutorial="student-period" className="grid min-w-0 grid-cols-2 gap-2 rounded-full border border-duck-ink/10 bg-white p-1.5 shadow-duck-soft sm:flex-1 sm:grid-cols-4">
                             {Object.keys(yearConfig?.periods || {}).map(Number).sort((a, b) => a - b).map((period) => {
                                 const pConf = yearConfig?.periods[period];
                                 return (
@@ -1178,6 +1182,7 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
                         {stats && (
                             <button
                                 onClick={() => setShowXPPopup(true)}
+                                data-tutorial="student-xp"
                                 aria-label={`Level ${level}, ${xp} XP - Klik voor details`}
                                 className="flex min-h-[44px] flex-col items-end justify-center gap-1.5 hover:opacity-80 transition-opacity p-2 rounded-2xl hover:bg-duck-bgLight border border-transparent hover:border-duck-ink/10 group"
                             >
@@ -1364,6 +1369,7 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
                                         initial={{ opacity: 0, y: 10 }}
                                         animate={{ opacity: 1, y: 0 }}
                                         transition={{ duration: 0.2, delay: index * 0.05 }}
+                                        {...(index === 0 ? { 'data-tutorial': 'student-first-mission' } : {})}
                                     >
                                         <StudentProjectCard
                                             mission={mission}
@@ -1399,7 +1405,10 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
                                             initial={{ opacity: 0, y: 12 }}
                                             animate={{ opacity: 1, y: 0 }}
                                             transition={{ duration: 0.25, delay: index * 0.06 }}
-                                            {...(index === 0 && allReviewsDone ? { 'data-tutorial': 'student-first-mission' } : {})}
+                                            // Alleen de "begin hier"-markering als er geen herhalingsopdrachten
+                                            // boven staan; die gaan voor. Zo bestaat het doel altijd, in plaats
+                                            // van alleen wanneer de herhalingen toevallig af waren.
+                                            {...(index === 0 && reviewMissions.length === 0 ? { 'data-tutorial': 'student-first-mission' } : {})}
                                         >
                                             <StudentProjectCard
                                                 mission={mission}

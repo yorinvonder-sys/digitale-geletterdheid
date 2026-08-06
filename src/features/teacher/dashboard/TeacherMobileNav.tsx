@@ -34,7 +34,7 @@ export const TeacherMobileNav: React.FC<TeacherMobileNavProps> = ({ items, activ
                 return (
                     <button
                         key={item.id}
-                        data-tutorial-mobile={`${item.id}-tab`}
+                        data-tutorial={`teacher-nav-${item.id}`}
                         onClick={() => onNavigate(item.id)}
                         aria-current={isActive ? 'page' : undefined}
                         className={`relative flex min-h-[56px] flex-1 flex-col items-center justify-center gap-1 px-2 py-2 text-[11px] font-bold transition ${
