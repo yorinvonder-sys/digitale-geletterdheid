@@ -1,6 +1,7 @@
 import React from 'react';
 import { ArrowLeft, Sparkles, Trophy } from 'lucide-react';
 import type { DebateArenaConfig, DebateArenaState } from '../DebateArena';
+import { getAnswerStatus, isSubstantiveAnswer } from '../answerQuality';
 
 export interface ReflectPhaseProps {
     config: DebateArenaConfig;
@@ -13,7 +14,7 @@ export interface ReflectPhaseProps {
 
 export const ReflectPhase: React.FC<ReflectPhaseProps> = ({ config, state, onUpdateAnswer, onSelectFinalPosition, onNext, onBack }) => {
     const allAnswered = config.reflectionQuestions.every(
-        (q) => (state.reflectionAnswers[q] ?? '').trim().length >= 20
+        (q) => isSubstantiveAnswer(state.reflectionAnswers[q] ?? '')
     );
 
     return (
@@ -31,7 +32,8 @@ export const ReflectPhase: React.FC<ReflectPhaseProps> = ({ config, state, onUpd
             <div className="space-y-4 mb-5">
                 {config.reflectionQuestions.map((q, i) => {
                     const answer = state.reflectionAnswers[q] ?? '';
-                    const valid = answer.trim().length >= 20;
+                    const answerStatus = getAnswerStatus(answer);
+                    const valid = answerStatus.ok;
                     return (
                         <div key={i} className="bg-white rounded-2xl border border-duck-gray p-4">
                             <div className="flex items-start gap-2 mb-2">
@@ -51,7 +53,7 @@ export const ReflectPhase: React.FC<ReflectPhaseProps> = ({ config, state, onUpd
                                 style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                             />
                             <div className={`text-right text-[10px] mt-1 ${valid ? 'text-duck-ink' : 'text-duck-ink/60'}`} style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
-                                {answer.trim().length}/20 min.
+                                {answerStatus.hint}
                             </div>
                         </div>
                     );
