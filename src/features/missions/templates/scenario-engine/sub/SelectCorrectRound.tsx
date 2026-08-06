@@ -18,12 +18,21 @@ export const SelectCorrectRound: React.FC<{
     onSubmit: () => void;
 }> = ({ round, selections, submitted, onToggle, onSubmit }) => {
     const correctCount = round.items.filter((item) => item.correct).length;
-    const minSelections = round.minSelections ?? correctCount;
-    const canSubmit = selections.length >= Math.max(1, minSelections);
+    // Bewust NIET terugvallen op correctCount: dat getal verscheen als
+    // "selecteer minimaal N" op het scherm en verklapte zo hoeveel antwoorden
+    // juist zijn. De drempel dient alleen om een lege inzending te voorkomen.
+    const minSelections = Math.max(1, round.minSelections ?? 1);
+    const canSubmit = selections.length >= minSelections;
+    /**
+     * Een expliciet gezette drempel mag zichtbaar zijn als hulp, maar nooit
+     * wanneer die gelijk is aan het aantal juiste antwoorden — dan is het
+     * alsnog het antwoord.
+     */
+    const mayShowTarget = round.minSelections !== undefined && round.minSelections !== correctCount;
     const instruction = round.selectionInstruction
-        ?? (minSelections > 1
+        ?? (mayShowTarget
             ? `Selecteer minimaal ${minSelections} opties`
-            : 'Selecteer de beste optie');
+            : 'Selecteer alle opties die volgens jou kloppen');
 
     return (
     <>
@@ -101,12 +110,14 @@ export const SelectCorrectRound: React.FC<{
                 );
             })}
         </div>
-        {!submitted && minSelections > 1 && (
+        {!submitted && selections.length > 0 && (
             <p
                 className="text-center text-xs text-duck-ink/60 mb-3"
                 style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
             >
-                {selections.length} van minimaal {Math.max(1, minSelections)} item{minSelections !== 1 ? 's' : ''} geselecteerd
+                {mayShowTarget
+                    ? `${selections.length} van minimaal ${minSelections} items geselecteerd`
+                    : `${selections.length} item${selections.length === 1 ? '' : 's'} geselecteerd`}
             </p>
         )}
         {!submitted && (
