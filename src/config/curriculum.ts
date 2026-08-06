@@ -131,8 +131,9 @@ export const CURRICULUM: CurriculumConfig = {
                         'mission-blueprint',
                         'mission-vision',
                         'mission-launch',
-                    ],
-                    reviewMissions: [
+                        // Sluit de periode af: de Ethische Raad beoordeelt het eigen project en
+                        // opent met "Je hebt je project gemaakt en gelanceerd". Als reviewMissions
+                        // stond hij vóór de rest en vergrendelde hij die drie tot hij af was.
                         'review-week-3',
                     ],
                     assessmentId: 'assessment-j1-p4',

@@ -17,7 +17,7 @@ export const MobileTabBar: React.FC<MobileTabBarProps> = ({ activeTab, onTabChan
                 className={`flex-1 flex items-center justify-center gap-2 py-3 text-xs font-bold uppercase tracking-wider transition-all duration-300 ${
                     activeTab === tab
                         ? 'text-duck-ink border-b-2 border-duck-acid bg-duck-acid/5'
-                        : 'text-duck-ink/60 hover:text-duck-ink'
+                        : 'text-duck-ink/70 hover:text-duck-ink'
                 }`}
                 style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
             >

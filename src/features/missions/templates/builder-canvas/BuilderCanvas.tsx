@@ -75,7 +75,20 @@ const BuilderCanvasInner: React.FC<BuilderCanvasProps> = ({
     const [mobileTab, setMobileTab] = useState<MobileTab>('instructies');
 
     const currentStepData = config.steps[state.currentStep];
-    const pointsPerStep = Math.floor(config.maxScore / config.steps.length);
+
+    // De bonuspunten van de verdiepingsvragen zijn onderdeel van maxScore, niet iets
+    // erbovenop: het budget voor de stappen is wat er ná aftrek van de maximale bonus
+    // overblijft. Zo betekent 100% precies "alle stappen én alle verdiepingsvragen
+    // goed" en kan de score nooit boven maxScore uitkomen. De rest van de deling gaat
+    // naar de eerste stappen, zodat een perfecte run exact op maxScore uitkomt.
+    const maxBonusScore = config.steps.reduce(
+        (acc, step) => acc + (step.reflectionQuestion?.bonusPoints ?? 0),
+        0
+    );
+    const stepBudget = Math.max(0, config.maxScore - maxBonusScore);
+    const basePointsPerStep = Math.floor(stepBudget / config.steps.length);
+    const stepRemainder = stepBudget - basePointsPerStep * config.steps.length;
+    const pointsForStep = (index: number) => basePointsPerStep + (index < stepRemainder ? 1 : 0);
 
     // ─── Helpers ─────────────────────────────────────────────────────────
 
@@ -100,7 +113,12 @@ const BuilderCanvasInner: React.FC<BuilderCanvasProps> = ({
         return acc;
     }, 0);
 
-    const totalScore = state.completedSteps.length * pointsPerStep + bonusScore;
+    const stepScore = config.steps.reduce(
+        (acc, step, i) => (state.completedSteps.includes(step.id) ? acc + pointsForStep(i) : acc),
+        0
+    );
+
+    const totalScore = Math.min(stepScore + bonusScore, config.maxScore);
 
     // ─── Handlers ────────────────────────────────────────────────────────
 
@@ -154,11 +172,24 @@ const BuilderCanvasInner: React.FC<BuilderCanvasProps> = ({
         }
     };
 
+    // Het eerste antwoord telt: eenmaal onthuld mag een refresh of hermount de uitslag
+    // niet meer verbeteren.
+    const handleReflectionAnswer = (stepId: string, correct: boolean) => {
+        setState((prev) =>
+            prev.reflectionCorrect[stepId] !== undefined
+                ? prev
+                : { ...prev, reflectionCorrect: { ...prev.reflectionCorrect, [stepId]: correct } }
+        );
+    };
+
     const handleReflectionComplete = (stepId: string, correct: boolean) => {
         setState((prev) => ({
             ...prev,
             reflectionAnswered: { ...prev.reflectionAnswered, [stepId]: true },
-            reflectionCorrect: { ...prev.reflectionCorrect, [stepId]: correct },
+            reflectionCorrect:
+                prev.reflectionCorrect[stepId] !== undefined
+                    ? prev.reflectionCorrect
+                    : { ...prev.reflectionCorrect, [stepId]: correct },
         }));
     };
 
@@ -186,12 +217,17 @@ const BuilderCanvasInner: React.FC<BuilderCanvasProps> = ({
     // ─── Phase: Results ───────────────────────────────────────────────────
 
     if (state.phase === 'results') {
-        const phaseBreakdown = config.steps.map((step, i) => ({
-            icon: i === 0 ? '🎯' : i === 1 ? '🗂️' : i === 2 ? '✍️' : '💬',
-            title: step.title,
-            score: state.completedSteps.includes(step.id) ? pointsPerStep : 0,
-            max: pointsPerStep,
-        }));
+        const phaseBreakdown = config.steps.map((step, i) => {
+            const stepBonus = step.reflectionQuestion?.bonusPoints ?? 0;
+            return {
+                icon: i === 0 ? '🎯' : i === 1 ? '🗂️' : i === 2 ? '✍️' : '💬',
+                title: step.title,
+                score:
+                    (state.completedSteps.includes(step.id) ? pointsForStep(i) : 0) +
+                    (state.reflectionCorrect[step.id] ? stepBonus : 0),
+                max: pointsForStep(i) + stepBonus,
+            };
+        });
 
         return (
             <CompletionScreen
@@ -259,6 +295,7 @@ const BuilderCanvasInner: React.FC<BuilderCanvasProps> = ({
                         isStepComplete={currentStepComplete}
                         onChecklistToggle={handleChecklistToggle}
                         onTextChange={handleTextChange}
+                        onReflectionAnswer={handleReflectionAnswer}
                         onReflectionComplete={handleReflectionComplete}
                         onNextStep={handleNextStep}
                     />
@@ -303,7 +340,9 @@ const BuilderCanvasInner: React.FC<BuilderCanvasProps> = ({
                     {!isChatOpen && (
                         <button
                             onClick={() => setIsChatOpen(true)}
-                            className="fixed bottom-6 right-6 z-40 flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-duck-acid to-duck-acid text-duck-ink shadow-lg transition-all duration-200 hover:brightness-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-ink focus-visible:ring-offset-2 active:scale-95"
+                            // Op smalle schermen staat de actieknop van de stap onderaan het
+                            // paneel; op bottom-6 dekte deze bubbel die knop deels af.
+                            className="fixed bottom-24 right-6 z-40 flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-duck-acid to-duck-acid text-duck-ink shadow-lg transition-all duration-200 hover:brightness-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-ink focus-visible:ring-offset-2 active:scale-95 md:bottom-6"
                             aria-label="Open AI-assistent"
                         >
                             <MessageCircle size={22} />
@@ -317,7 +356,7 @@ const BuilderCanvasInner: React.FC<BuilderCanvasProps> = ({
                 <div className="md:hidden fixed bottom-20 left-4 z-30">
                     <button
                         onClick={() => setMobileTab('instructies')}
-                        className="flex min-h-[44px] items-center gap-2 rounded-full border border-duck-gray bg-white px-4 text-sm font-bold text-duck-ink/60 shadow-sm"
+                        className="flex min-h-[44px] items-center gap-2 rounded-full border border-duck-gray bg-white px-4 text-sm font-bold text-duck-ink/70 shadow-sm"
                         style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                     >
                         <ArrowLeft size={14} />
@@ -378,7 +417,7 @@ export const BuilderCanvas: React.FC<TemplateMissionProps> = ({ missionId, onBac
     if (loadError) return (
         <div className="min-h-screen bg-duck-bg flex items-center justify-center p-4">
             <div className="text-center">
-                <p className="text-duck-ink/60 mb-4" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                <p className="text-duck-ink/70 mb-4" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                     Config niet gevonden: {missionId}
                 </p>
                 <button onClick={onBack} className="px-4 py-2 bg-duck-acid text-duck-ink rounded-xl text-sm font-bold">Terug</button>

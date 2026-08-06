@@ -53,7 +53,7 @@ export const TransparantDossier: React.FC<TransparantDossierProps> = ({
                 <span className="text-xl">🪟</span>
                 <div>
                     <p
-                        className="text-[10px] font-black text-duck-ink/50 uppercase tracking-widest"
+                        className="text-[10px] font-black text-duck-ink/70 uppercase tracking-widest"
                         style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                     >
                         Dossier 3 — Transparant
@@ -65,7 +65,7 @@ export const TransparantDossier: React.FC<TransparantDossierProps> = ({
                         Transparantie-officier
                     </h3>
                     <p
-                        className="text-xs text-duck-ink/50"
+                        className="text-xs text-duck-ink/70"
                         style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                     >
                         Expert in openheid en verantwoording
@@ -85,7 +85,7 @@ export const TransparantDossier: React.FC<TransparantDossierProps> = ({
             {/* Explanation field */}
             <div className="bg-white rounded-2xl border border-duck-gray p-4 space-y-3">
                 <label
-                    className="text-xs font-bold text-duck-ink/60 block"
+                    className="text-xs font-bold text-duck-ink/70 block"
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                 >
                     Leg uit wat jouw project doet — voor een gewone gebruiker:
@@ -93,7 +93,7 @@ export const TransparantDossier: React.FC<TransparantDossierProps> = ({
 
                 {hint && (
                     <p
-                        className="text-[11px] text-duck-ink/40 italic"
+                        className="text-[11px] text-duck-ink/70 italic"
                         style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                     >
                         {hint}
@@ -120,7 +120,7 @@ export const TransparantDossier: React.FC<TransparantDossierProps> = ({
                     </div>
                     <div className="flex justify-between">
                         <span
-                            className="text-[10px] text-duck-ink/40"
+                            className="text-[10px] text-duck-ink/70"
                             style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                         >
                             {len} tekens

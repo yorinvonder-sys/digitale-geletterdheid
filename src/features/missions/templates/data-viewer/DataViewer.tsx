@@ -305,6 +305,7 @@ interface DatasetViewProps {
     onTextObservation: (id: string, value: string) => void;
     onConfidence: (id: string, level: 1 | 2 | 3) => void;
     onSubmit: (id: string) => void;
+    onFollowUpAnswer: (datasetId: string, correct: boolean) => void;
     onFollowUpComplete: (datasetId: string, correct: boolean) => void;
     allSubmitted: boolean;
     onNext: () => void;
@@ -324,6 +325,7 @@ const DatasetView: React.FC<DatasetViewProps> = ({
     onTextObservation,
     onConfidence,
     onSubmit,
+    onFollowUpAnswer,
     onFollowUpComplete,
     allSubmitted,
     onNext,
@@ -436,6 +438,7 @@ const DatasetView: React.FC<DatasetViewProps> = ({
         {showFollowUp && (
             <FollowUpCard
                 followUp={dataset.followUp!}
+                onAnswer={(correct) => onFollowUpAnswer(dataset.id, correct)}
                 onComplete={(correct) => onFollowUpComplete(dataset.id, correct)}
                 theme="light"
             />
@@ -527,11 +530,24 @@ const DataViewerInner: React.FC<DataViewerProps> = ({
         setState(prev => ({ ...prev, confidences: { ...prev.confidences, [id]: level } }));
     };
 
+    // Het eerste antwoord telt: eenmaal onthuld mag een refresh of hermount de uitslag
+    // niet meer verbeteren.
+    const handleFollowUpAnswer = (datasetId: string, correct: boolean) => {
+        setState(prev =>
+            prev.followUpCorrect[datasetId] !== undefined
+                ? prev
+                : { ...prev, followUpCorrect: { ...prev.followUpCorrect, [datasetId]: correct } }
+        );
+    };
+
     const handleFollowUpComplete = (datasetId: string, correct: boolean) => {
         setState(prev => ({
             ...prev,
             followUpAnswered: { ...prev.followUpAnswered, [datasetId]: true },
-            followUpCorrect: { ...prev.followUpCorrect, [datasetId]: correct },
+            followUpCorrect:
+                prev.followUpCorrect[datasetId] !== undefined
+                    ? prev.followUpCorrect
+                    : { ...prev.followUpCorrect, [datasetId]: correct },
         }));
     };
 
@@ -660,6 +676,7 @@ const DataViewerInner: React.FC<DataViewerProps> = ({
                     onTextObservation={handleTextObservation}
                     onConfidence={handleConfidence}
                     onSubmit={handleSubmitQuestion}
+                    onFollowUpAnswer={handleFollowUpAnswer}
                     onFollowUpComplete={handleFollowUpComplete}
                     allSubmitted={allQuestionsSubmitted}
                     onNext={handleNextDataset}

@@ -120,11 +120,12 @@ export const Categorize: React.FC<CategorizeProps> = ({
                     const isClickable = !submitted && selectedItem !== null;
 
                     return (
-                        <motion.div
+                        <motion.button
+                            type="button"
                             data-qa="review-category"
                             key={cat}
                             onClick={() => handleCategoryClick(cat)}
-                            className={`rounded-xl border-2 p-2 min-h-[80px] transition-all duration-200
+                            className={`w-full text-left rounded-xl border-2 p-2 min-h-[80px] transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-acid focus-visible:ring-offset-2
                                 ${isClickable
                                     ? 'cursor-pointer scale-[1.02] shadow-md'
                                     : 'cursor-default'
@@ -173,7 +174,7 @@ export const Categorize: React.FC<CategorizeProps> = ({
                                     );
                                 })}
                             </div>
-                        </motion.div>
+                        </motion.button>
                     );
                 })}
             </div>

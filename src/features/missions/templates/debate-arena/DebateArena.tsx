@@ -286,7 +286,8 @@ const DebateArenaInner: React.FC<DebateArenaProps> = ({ config, onBack, onComple
                         onMarkRead={markStakeholderRead}
                         onSetActiveIndex={(i) => setState((s) => ({ ...s, activeStakeholderIndex: i }))}
                         onNext={() => setPhase('position')}
-                        onQuizComplete={(correct) => setState((s) => ({ ...s, explorationQuizAnswered: true, explorationQuizCorrect: correct }))}
+                        onQuizAnswer={(correct) => setState((s) => (s.explorationQuizCorrect !== undefined ? s : { ...s, explorationQuizCorrect: correct }))}
+                        onQuizComplete={(correct) => setState((s) => ({ ...s, explorationQuizAnswered: true, explorationQuizCorrect: s.explorationQuizCorrect ?? correct }))}
                     />
                 )}
 

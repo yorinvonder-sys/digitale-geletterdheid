@@ -218,11 +218,24 @@ const SimulationLabInner: React.FC<SimulationLabProps> = ({ onBack, onComplete, 
         }));
     };
 
+    // Het eerste antwoord telt: eenmaal onthuld mag een refresh of hermount de uitslag
+    // niet meer verbeteren.
+    const handleFollowUpAnswer = (simId: string, correct: boolean) => {
+        setState((prev) =>
+            prev.followUpCorrect[simId] !== undefined
+                ? prev
+                : { ...prev, followUpCorrect: { ...prev.followUpCorrect, [simId]: correct } }
+        );
+    };
+
     const handleFollowUpComplete = (simId: string, correct: boolean) => {
         setState((prev) => ({
             ...prev,
             followUpAnswered: { ...prev.followUpAnswered, [simId]: true },
-            followUpCorrect: { ...prev.followUpCorrect, [simId]: correct },
+            followUpCorrect:
+                prev.followUpCorrect[simId] !== undefined
+                    ? prev.followUpCorrect
+                    : { ...prev.followUpCorrect, [simId]: correct },
         }));
     };
 
@@ -393,6 +406,7 @@ const SimulationLabInner: React.FC<SimulationLabProps> = ({ onBack, onComplete, 
                 {allQuestionsSubmitted && currentSimData.followUp && !state.followUpAnswered[currentSimData.id] && (
                     <FollowUpCard
                         followUp={currentSimData.followUp}
+                        onAnswer={(correct) => handleFollowUpAnswer(currentSimData.id, correct)}
                         onComplete={(correct) => handleFollowUpComplete(currentSimData.id, correct)}
                         theme="light"
                     />

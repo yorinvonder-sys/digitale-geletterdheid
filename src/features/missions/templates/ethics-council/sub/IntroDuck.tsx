@@ -39,7 +39,7 @@ export const IntroDuck: React.FC<IntroDuckProps> = ({
             >
                 <DuckMascot className="h-16 w-16 mb-2" mood="cheer" />
                 <span
-                    className="text-[10px] font-black text-duck-ink/50 uppercase tracking-widest"
+                    className="text-[10px] font-black text-duck-ink/70 uppercase tracking-widest"
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                 >
                     Raadsvoorzitter Kees
@@ -53,7 +53,7 @@ export const IntroDuck: React.FC<IntroDuckProps> = ({
                 {title}
             </h1>
             <p
-                className="text-sm text-duck-ink/60 leading-relaxed mb-5"
+                className="text-sm text-duck-ink/70 leading-relaxed mb-5"
                 style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
             >
                 {description}
@@ -67,7 +67,7 @@ export const IntroDuck: React.FC<IntroDuckProps> = ({
                             <span className="text-duck-ink/30 text-xs font-black">?</span>
                         </div>
                         <span
-                            className="text-[9px] font-black text-duck-ink/40 uppercase tracking-wider"
+                            className="text-[9px] font-black text-duck-ink/70 uppercase tracking-wider"
                             style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                         >
                             {label}
@@ -100,7 +100,7 @@ export const IntroDuck: React.FC<IntroDuckProps> = ({
                                 <span className="text-xs font-black text-duck-ink">{i + 1}</span>
                             </div>
                             <span
-                                className="text-sm font-semibold text-duck-ink/60"
+                                className="text-sm font-semibold text-duck-ink/70"
                                 style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                             >
                                 {f}
