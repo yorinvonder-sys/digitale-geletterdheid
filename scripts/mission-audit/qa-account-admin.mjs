@@ -17,6 +17,9 @@ import { createClient } from '@supabase/supabase-js';
 const EXPECTED_PROJECT_REF = 'tdaylulsnbhhjuufmdzk';
 const PROJECT_URL = `https://${EXPECTED_PROJECT_REF}.supabase.co`;
 const SYNTHETIC_SCHOOL_ID = 'qa-mission-audit';
+const SYNTHETIC_EMAIL_PATTERN =
+  /^dgs-qa-[a-z0-9-]+-[a-z0-9-]+-[a-f0-9]{12}@example\.invalid$/;
+const EXPECTED_AUDIT_BASELINE = { xp: 75, completions: 3 };
 
 const VIEWPORTS = [
   {
@@ -57,8 +60,10 @@ Commands:
   self-test Run local fail-closed identity and not-found checks without Supabase access.
   canary   Create, authenticate, globally sign out, delete, and verify one synthetic user.
   prepare  Create four synthetic havo accounts bound to the four QA browser sessions.
-  verify   Verify that the four users and profiles in the credentials file still exist.
+  prepare-single  Create one synthetic J1P1 production-lead account for the internal browser.
+  verify   Verify that all users and profiles in the credentials file still exist.
   cleanup  Globally revoke sessions, delete exact recorded UUIDs, and verify zero profile rows.
+  cleanup-orphans  Delete strictly matched synthetic accounts without a credentials file.
 
 Required safety options:
   --confirm-project ${EXPECTED_PROJECT_REF}
@@ -76,6 +81,10 @@ Command options:
     --ipad-landscape-browser-id <opaque-id>
     --mobile-browser-id <opaque-id>
 
+  prepare-single:
+    --credentials /absolute/path/to/qa-account-credentials.json
+    --batch-id j1p1-audit
+
   verify:
     --credentials /absolute/path/to/qa-accounts-credentials.json
 
@@ -83,6 +92,19 @@ Command options:
     --credentials /absolute/path/to/qa-accounts-credentials.json
     --evidence /absolute/path/to/safe-cleanup-evidence.json
     --delete-credentials
+
+  cleanup-orphans:
+    --candidate-ids-file /absolute/private/path/to/synthetic-auth-ids.json
+    --confirm-delete-count <exact-integer>
+    --evidence /absolute/path/to/safe-orphan-cleanup-evidence.json
+    --allow-delete-progress
+    --allow-delete-baseline 75:3
+
+cleanup-orphans fails before its first mutation when any namespaced Auth/profile
+identity is malformed or unmatched. It also requires separate acknowledgements
+for progressed accounts and for the expected 75 XP / 3-completion audit baseline.
+The private candidate file must be generated from the strict read-only Supabase
+SQL inventory contract and is deleted separately after the audit.
 
 The script never reads project secrets from .env files and never prints keys,
 passwords, refresh tokens, or synthetic email addresses.
@@ -132,26 +154,32 @@ function assertSafetyGate(options) {
 }
 
 function loadProjectKeys(cliPath) {
-  let raw;
-  try {
-    raw = execFileSync(
-      cliPath,
-      [
-        'projects',
-        'api-keys',
-        '--project-ref',
-        EXPECTED_PROJECT_REF,
-        '--reveal',
-        '--output',
-        'json',
-      ],
-      {
+  const commonArgs = [
+    'projects',
+    'api-keys',
+    '--project-ref',
+    EXPECTED_PROJECT_REF,
+    '--output',
+    'json',
+  ];
+  let raw = null;
+  for (const args of [
+    [...commonArgs.slice(0, 4), '--reveal', ...commonArgs.slice(4)],
+    commonArgs,
+  ]) {
+    try {
+      raw = execFileSync(cliPath, args, {
         encoding: 'utf8',
         maxBuffer: 1024 * 1024,
         stdio: ['ignore', 'pipe', 'pipe'],
-      },
-    );
-  } catch {
+      });
+      break;
+    } catch {
+      // Supabase CLI <2.111 has no --reveal flag; its api-keys JSON already
+      // contains the legacy anon/service_role keys. Never print either form.
+    }
+  }
+  if (raw === null) {
     throw new Error('Supabase CLI could not retrieve project API keys');
   }
 
@@ -167,8 +195,8 @@ function loadProjectKeys(cliPath) {
   }
 
   const secret =
-    keys.find((key) => key.type === 'secret' && !key.disabled)?.api_key ??
-    keys.find((key) => key.name === 'service_role' && !key.disabled)?.api_key;
+    keys.find((key) => key.name === 'service_role' && !key.disabled)?.api_key ??
+    keys.find((key) => key.type === 'secret' && !key.disabled)?.api_key;
   const publishable =
     keys.find((key) => key.type === 'publishable' && !key.disabled)?.api_key ??
     keys.find((key) => key.name === 'anon' && !key.disabled)?.api_key;
@@ -200,6 +228,17 @@ function makePassword() {
 function makeEmail(batchId, role) {
   const suffix = randomBytes(6).toString('hex');
   return `dgs-qa-${batchId}-${role}-${suffix}@example.invalid`;
+}
+
+function isSyntheticEmail(value) {
+  return typeof value === 'string' && SYNTHETIC_EMAIL_PATTERN.test(value);
+}
+
+function parseExactNonNegativeInteger(value, optionName) {
+  if (!/^(0|[1-9][0-9]*)$/.test(String(value))) {
+    throw new Error(`${optionName} must be an exact non-negative integer`);
+  }
+  return Number(value);
 }
 
 function sanitizeErrorMessage(message) {
@@ -318,12 +357,12 @@ function assertSyntheticAuthRecord(user, account) {
   if (
     user.id !== account.userId ||
     user.email !== account.email ||
-    !user.email.startsWith('dgs-qa-') ||
-    !user.email.endsWith('@example.invalid') ||
+    !isSyntheticEmail(user.email) ||
+    !user.email.startsWith(`dgs-qa-${account.batchId}-`) ||
     user.app_metadata?.synthetic_qa !== true ||
     user.app_metadata?.qa_run_id !== account.batchId ||
     user.app_metadata?.role !== 'student' ||
-    user.app_metadata?.schoolId !== SYNTHETIC_SCHOOL_ID ||
+    ![undefined, null, SYNTHETIC_SCHOOL_ID].includes(user.app_metadata?.schoolId) ||
     user.user_metadata?.synthetic_qa !== true ||
     user.user_metadata?.qa_run_id !== account.batchId
   ) {
@@ -336,10 +375,10 @@ function assertSyntheticProfileRecord(profile, account) {
     profile.id !== account.userId ||
     profile.uid !== account.userId ||
     profile.email !== account.email ||
-    !profile.email.startsWith('dgs-qa-') ||
-    !profile.email.endsWith('@example.invalid') ||
+    !isSyntheticEmail(profile.email) ||
+    !profile.email.startsWith(`dgs-qa-${account.batchId}-`) ||
     profile.role !== 'student' ||
-    profile.school_id !== SYNTHETIC_SCHOOL_ID ||
+    ![null, SYNTHETIC_SCHOOL_ID].includes(profile.school_id) ||
     profile.student_class !== 'QA-J1P1' ||
     profile.year_group !== 1 ||
     profile.education_level !== 'havo'
@@ -351,7 +390,7 @@ function assertSyntheticProfileRecord(profile, account) {
 async function getProfile(admin, userId) {
   const { data, error } = await admin
     .from('users')
-    .select('id,uid,email,role,school_id,student_class,year_group,education_level')
+    .select('id,uid,email,role,school_id,student_class,year_group,education_level,stats')
     .eq('id', userId)
     .maybeSingle();
   if (error) {
@@ -645,49 +684,149 @@ async function runPrepare(options, clients) {
   );
 }
 
-async function readCredentials(options) {
-  const credentialsPath = resolve(requireOption(options, '--credentials'));
-  const parsed = JSON.parse(await readFile(credentialsPath, 'utf8'));
+async function runPrepareSingle(options, clients) {
+  const credentialsPath = requireOption(options, '--credentials');
+  const batchId = requireOption(options, '--batch-id')
+    .toLowerCase()
+    .replace(/[^a-z0-9-]+/g, '-');
+  if (!batchId.replaceAll('-', '')) {
+    throw new Error('--batch-id must contain at least one letter or number');
+  }
+  if (await pathExists(credentialsPath)) {
+    throw new Error(`Refusing to overwrite credentials file ${resolve(credentialsPath)}`);
+  }
+
+  const password = makePassword();
+  const account = await createSyntheticUser({
+    admin: clients.admin,
+    batchId,
+    role: 'production-lead',
+    displayName: 'DGSkills QA J1P1',
+    password,
+  });
+  const credentialAccount = {
+    role: 'production-lead',
+    sessionName: 'DGSkills QA J1P1',
+    viewport: '390x844',
+    batchId,
+    userId: account.userId,
+    email: account.email,
+    password,
+  };
+
+  try {
+    await assertSyntheticAccountExists(clients.admin, credentialAccount);
+    const payload = {
+      schemaVersion: 2,
+      accountMode: 'single-production-lead',
+      projectRef: EXPECTED_PROJECT_REF,
+      purpose: 'DGSkills J1P1 learner-mission audit',
+      syntheticOnly: true,
+      createdAt: new Date().toISOString(),
+      batchId,
+      accounts: [credentialAccount],
+    };
+    validateCredentialsPayload(payload);
+    await writeJsonExclusive(credentialsPath, payload);
+  } catch (error) {
+    try {
+      await deleteExactSyntheticUser({
+        admin: clients.admin,
+        publicClient: clients.publicClient,
+        account: credentialAccount,
+        tolerateMissingAuth: true,
+      });
+    } catch (rollbackError) {
+      throw new Error(`${error.message}; single-account rollback failed: ${rollbackError.message}`);
+    }
+    throw error;
+  }
+
+  console.log(
+    `Prepared one synthetic production-lead account; credentials mode 0600: ${resolve(credentialsPath)}`,
+  );
+}
+
+function validateCredentialsPayload(parsed) {
   if (
     parsed?.projectRef !== EXPECTED_PROJECT_REF ||
     parsed?.syntheticOnly !== true ||
-    !Array.isArray(parsed.accounts) ||
-    parsed.accounts.length !== 4
+    !Array.isArray(parsed.accounts)
   ) {
     throw new Error('Credentials file failed the synthetic-project safety contract');
   }
+
   for (const account of parsed.accounts) {
     account.batchId ??= parsed.batchId;
   }
-  if (new Set(parsed.accounts.map((account) => account.userId)).size !== 4) {
-    throw new Error('Credentials file does not contain four unique user UUIDs');
+
+  const isLegacyFourSession = parsed.schemaVersion === 1;
+  const isSingleProductionLead =
+    parsed.schemaVersion === 2 &&
+    parsed.accountMode === 'single-production-lead';
+  if (!isLegacyFourSession && !isSingleProductionLead) {
+    throw new Error('Credentials file has an unsupported account mode');
   }
+
+  const expectedCount = isLegacyFourSession ? 4 : 1;
   if (
-    new Set(parsed.accounts.map((account) => account.browserId)).size !== 4 ||
-    new Set(parsed.accounts.map((account) => account.role)).size !== 4 ||
-    !VIEWPORTS.every((viewport) =>
-      parsed.accounts.some(
-        (account) =>
-          account.role === viewport.key &&
-          account.sessionName === viewport.sessionName &&
-          account.viewport === viewport.viewport &&
-          account.batchId === parsed.batchId,
-      ),
-    ) ||
-    !parsed.accounts.every(
-      (account) =>
-        isCanonicalUuid(account.userId) &&
-        typeof account.browserId === 'string' &&
-        account.browserId.length > 0 &&
-        typeof account.email === 'string' &&
-        account.email.startsWith(`dgs-qa-${parsed.batchId}-${account.role}-`) &&
-        account.email.endsWith('@example.invalid') &&
-        typeof account.password === 'string' &&
-        account.password.length >= 20,
-    )
+    parsed.accounts.length !== expectedCount ||
+    new Set(parsed.accounts.map((account) => account.userId)).size !== expectedCount ||
+    new Set(parsed.accounts.map((account) => account.role)).size !== expectedCount
   ) {
-    throw new Error('Credentials file failed the four-session identity contract');
+    throw new Error('Credentials file has an invalid account count or duplicate identity');
   }
+
+  const commonIdentityValid = parsed.accounts.every(
+    (account) =>
+      isCanonicalUuid(account.userId) &&
+      typeof account.email === 'string' &&
+      isSyntheticEmail(account.email) &&
+      account.email.startsWith(`dgs-qa-${parsed.batchId}-${account.role}-`) &&
+      typeof account.password === 'string' &&
+      account.password.length >= 20 &&
+      account.batchId === parsed.batchId,
+  );
+  if (!commonIdentityValid) {
+    throw new Error('Credentials file failed the synthetic identity contract');
+  }
+
+  if (isLegacyFourSession) {
+    const legacyValid =
+      new Set(parsed.accounts.map((account) => account.browserId)).size === 4 &&
+      VIEWPORTS.every((viewport) =>
+        parsed.accounts.some(
+          (account) =>
+            account.role === viewport.key &&
+            account.sessionName === viewport.sessionName &&
+            account.viewport === viewport.viewport &&
+            typeof account.browserId === 'string' &&
+            account.browserId.length > 0,
+        ),
+      );
+    if (!legacyValid) {
+      throw new Error('Credentials file failed the four-session identity contract');
+    }
+  } else {
+    const [account] = parsed.accounts;
+    if (
+      account.role !== 'production-lead' ||
+      account.sessionName !== 'DGSkills QA J1P1' ||
+      account.viewport !== '390x844' ||
+      Object.hasOwn(account, 'browserId')
+    ) {
+      throw new Error('Credentials file failed the single-account identity contract');
+    }
+  }
+
+  return parsed;
+}
+
+async function readCredentials(options) {
+  const credentialsPath = resolve(requireOption(options, '--credentials'));
+  const parsed = validateCredentialsPayload(
+    JSON.parse(await readFile(credentialsPath, 'utf8')),
+  );
   await chmod(credentialsPath, 0o600);
   return { credentialsPath, parsed };
 }
@@ -764,11 +903,261 @@ async function runCleanup(options, clients) {
   );
 }
 
+function readProgressSnapshot(profile) {
+  const stats = profile.stats ?? {};
+  const xp = Number(stats.xp ?? 0);
+  const missions = stats.missionsCompleted ?? [];
+  if (!Number.isInteger(xp) || xp < 0 || !Array.isArray(missions)) {
+    throw new Error('Synthetic profile has an invalid progress shape');
+  }
+  return { xp, completions: missions.length };
+}
+
+async function listNamespacedProfiles(admin) {
+  const profiles = [];
+  for (let from = 0; from < 100000; from += 1000) {
+    const { data, error } = await admin
+      .from('users')
+      .select('id,uid,email,role,school_id,student_class,year_group,education_level,stats')
+      .like('email', 'dgs-qa-%@example.invalid')
+      .range(from, from + 999);
+    if (error || !Array.isArray(data)) {
+      throw new Error(`Synthetic profile inventory failed: ${error?.message ?? 'invalid response'}`);
+    }
+    profiles.push(...data);
+    if (data.length < 1000) return profiles;
+  }
+  throw new Error('Profile inventory exceeded the fail-closed pagination limit');
+}
+
+function validateCandidateIdsPayload(parsed) {
+  if (
+    parsed?.schemaVersion !== 1 ||
+    parsed?.projectRef !== EXPECTED_PROJECT_REF ||
+    parsed?.syntheticOnly !== true ||
+    parsed?.sourceContract !== 'strict-synthetic-auth-v1' ||
+    !Array.isArray(parsed.authUserIds) ||
+    parsed.authUserIds.length === 0 ||
+    parsed.authUserIds.some((userId) => !isCanonicalUuid(userId)) ||
+    new Set(parsed.authUserIds).size !== parsed.authUserIds.length
+  ) {
+    throw new Error('Candidate IDs file failed the strict synthetic inventory contract');
+  }
+  return parsed;
+}
+
+async function readCandidateIdsFile(options) {
+  const candidatePath = resolve(requireOption(options, '--candidate-ids-file'));
+  const raw = await readFile(candidatePath, 'utf8');
+  const parsed = validateCandidateIdsPayload(JSON.parse(raw));
+  await chmod(candidatePath, 0o600);
+  return {
+    candidatePath,
+    candidateManifestSha256: createHash('sha256').update(raw).digest('hex'),
+    authUserIds: parsed.authUserIds,
+  };
+}
+
+function matchStrictSyntheticCandidates(authUsers, profiles) {
+  if (
+    authUsers.some((user) => !isSyntheticEmail(user.email)) ||
+    profiles.some((profile) => !isSyntheticEmail(profile.email))
+  ) {
+    throw new Error('A namespaced record failed the canonical synthetic email contract');
+  }
+
+  const profileById = new Map(profiles.map((profile) => [profile.id, profile]));
+  if (profileById.size !== profiles.length) {
+    throw new Error('Duplicate synthetic profile UUID detected');
+  }
+
+  const candidates = authUsers.map((user) => {
+    const batchId = user.app_metadata?.qa_run_id;
+    const account = {
+      batchId,
+      userId: user.id,
+      email: user.email,
+    };
+    assertSyntheticAuthRecord(user, account);
+    const profile = profileById.get(user.id);
+    if (!profile) {
+      throw new Error('Namespaced Auth user has no exact synthetic profile');
+    }
+    assertSyntheticProfileRecord(profile, account);
+    return { account, progress: readProgressSnapshot(profile) };
+  });
+
+  const authIds = new Set(authUsers.map((user) => user.id));
+  if (authIds.size !== authUsers.length) {
+    throw new Error('Duplicate synthetic Auth UUID detected');
+  }
+  if (profiles.some((profile) => !authIds.has(profile.id))) {
+    throw new Error('Namespaced synthetic profile has no exact Auth user');
+  }
+  if (candidates.length !== profiles.length) {
+    throw new Error('Synthetic Auth/profile candidate sets are not equal');
+  }
+  return candidates;
+}
+
+async function collectStrictSyntheticCandidates(admin, authUserIds) {
+  const authUsers = [];
+  for (const userId of authUserIds) {
+    const { data, error } = await admin.auth.admin.getUserById(userId);
+    if (error || !data.user) {
+      throw new Error(
+        `Exact candidate Auth lookup failed: ${error?.message ?? 'missing user response'}`,
+      );
+    }
+    authUsers.push(data.user);
+  }
+  const profiles = await listNamespacedProfiles(admin);
+  return matchStrictSyntheticCandidates(authUsers, profiles);
+}
+
+function summarizeProgress(candidates) {
+  const groups = new Map();
+  for (const candidate of candidates) {
+    const key = `${candidate.progress.xp}:${candidate.progress.completions}`;
+    groups.set(key, (groups.get(key) ?? 0) + 1);
+  }
+  return [...groups.entries()]
+    .sort(([left], [right]) => left.localeCompare(right, 'en', { numeric: true }))
+    .map(([key, count]) => {
+      const [xp, completions] = key.split(':').map(Number);
+      return { xp, completions, count };
+    });
+}
+
+function assertOrphanCleanupAcknowledgements(options, candidates) {
+  const expectedCount = parseExactNonNegativeInteger(
+    requireOption(options, '--confirm-delete-count'),
+    '--confirm-delete-count',
+  );
+  if (candidates.length !== expectedCount) {
+    throw new Error(
+      `Refusing orphan cleanup because discovered count ${candidates.length} differs from confirmed count ${expectedCount}`,
+    );
+  }
+
+  const progressed = candidates.filter(
+    ({ progress }) => progress.xp > 0 || progress.completions > 0,
+  );
+  if (progressed.length > 0 && options.get('--allow-delete-progress') !== true) {
+    throw new Error(
+      `Refusing to delete ${progressed.length} progressed synthetic account(s) without --allow-delete-progress`,
+    );
+  }
+
+  const baselineCount = candidates.filter(
+    ({ progress }) =>
+      progress.xp === EXPECTED_AUDIT_BASELINE.xp &&
+      progress.completions === EXPECTED_AUDIT_BASELINE.completions,
+  ).length;
+  if (
+    baselineCount > 0 &&
+    options.get('--allow-delete-baseline') !==
+      `${EXPECTED_AUDIT_BASELINE.xp}:${EXPECTED_AUDIT_BASELINE.completions}`
+  ) {
+    throw new Error(
+      `Refusing to delete ${baselineCount} expected audit-baseline account(s) without --allow-delete-baseline 75:3`,
+    );
+  }
+}
+
+async function runCleanupOrphans(options, clients) {
+  const evidencePath = requireOption(options, '--evidence');
+  if (await pathExists(evidencePath)) {
+    throw new Error(`Refusing to overwrite evidence file ${resolve(evidencePath)}`);
+  }
+
+  const candidateManifest = await readCandidateIdsFile(options);
+  const candidates = await collectStrictSyntheticCandidates(
+    clients.admin,
+    candidateManifest.authUserIds,
+  );
+  assertOrphanCleanupAcknowledgements(options, candidates);
+  const progressBefore = summarizeProgress(candidates);
+  const results = [];
+
+  try {
+    for (const candidate of candidates) {
+      const account = { ...candidate.account, password: makePassword() };
+      const { error: passwordError } = await clients.admin.auth.admin.updateUserById(
+        account.userId,
+        { password: account.password },
+      );
+      if (passwordError) {
+        throw new Error(`Temporary synthetic password reset failed: ${passwordError.message}`);
+      }
+      results.push(
+        await deleteExactSyntheticUser({
+          admin: clients.admin,
+          publicClient: clients.publicClient,
+          account,
+        }),
+      );
+    }
+
+    for (const userId of candidateManifest.authUserIds) {
+      await assertAuthUserMissing(clients.admin, userId);
+    }
+    const remainingProfiles = await listNamespacedProfiles(clients.admin);
+    if (remainingProfiles.length !== 0) {
+      throw new Error(
+        `Synthetic orphan cleanup left ${remainingProfiles.length} namespaced profile(s)`,
+      );
+    }
+    await writeSafeEvidence(evidencePath, {
+      schemaVersion: 1,
+      projectRef: EXPECTED_PROJECT_REF,
+      status: 'complete',
+      completedAt: new Date().toISOString(),
+      discoveredAccountCount: candidates.length,
+      deletedAccountCount: results.length,
+      progressBefore,
+      candidateManifestSha256: candidateManifest.candidateManifestSha256,
+      accountIdSha256: results.map((result) => result.userIdSha256).sort(),
+      globalRefreshRevocationRequestedCount: results.filter(
+        (result) => result.globalRefreshRevocationRequested,
+      ).length,
+      capturedRefreshTokenRejectedCount: results.filter(
+        (result) => result.capturedRefreshTokenRejected,
+      ).length,
+      accessTokensMayRemainValidUntilExpiry: true,
+      remainingStrictSyntheticAccounts: 0,
+      remainingProfileRows: 0,
+    });
+  } catch (error) {
+    await writeSafeEvidence(evidencePath, {
+      schemaVersion: 1,
+      projectRef: EXPECTED_PROJECT_REF,
+      status: 'incomplete',
+      failedAt: new Date().toISOString(),
+      discoveredAccountCount: candidates.length,
+      deletedAccountCount: results.length,
+      progressBefore,
+      candidateManifestSha256: candidateManifest.candidateManifestSha256,
+      deletedAccountIdSha256: results
+        .map((result) => result.userIdSha256)
+        .sort(),
+      error: sanitizeErrorMessage(error.message),
+      manualReviewRequired: true,
+    });
+    throw error;
+  }
+
+  console.log(
+    `Orphan cleanup PASS for ${results.length} strictly matched synthetic accounts`,
+  );
+}
+
 function runSelfTest() {
   const account = {
     batchId: 'dgs-59',
     userId: '123e4567-e89b-42d3-a456-426614174000',
-    email: 'dgs-qa-dgs-59-desktop-a1b2c3@example.invalid',
+    email: 'dgs-qa-dgs-59-desktop-a1b2c3d4e5f6@example.invalid',
+    password: 'Aa1!test-only-password-value',
   };
   const authUser = {
     id: account.userId,
@@ -793,6 +1182,7 @@ function runSelfTest() {
     student_class: 'QA-J1P1',
     year_group: 1,
     education_level: 'havo',
+    stats: { xp: 75, missionsCompleted: ['one', 'two', 'three'] },
   };
 
   if (
@@ -828,7 +1218,68 @@ function runSelfTest() {
     throw new Error('Mismatched login identity was not rejected');
   }
 
-  console.log('Self-test PASS: destructive identity checks fail closed');
+  const candidates = matchStrictSyntheticCandidates([authUser], [profile]);
+  const positiveOptions = new Map([
+    ['--confirm-delete-count', '1'],
+    ['--allow-delete-progress', true],
+    ['--allow-delete-baseline', '75:3'],
+  ]);
+  assertOrphanCleanupAcknowledgements(positiveOptions, candidates);
+
+  let profileMismatchRejected = false;
+  try {
+    matchStrictSyntheticCandidates([authUser], [
+      { ...profile, student_class: 'real-student-class' },
+    ]);
+  } catch {
+    profileMismatchRejected = true;
+  }
+  if (!profileMismatchRejected) {
+    throw new Error('Mismatched synthetic profile was not rejected');
+  }
+
+  let countMismatchRejected = false;
+  try {
+    assertOrphanCleanupAcknowledgements(
+      new Map([
+        ['--confirm-delete-count', '2'],
+        ['--allow-delete-progress', true],
+        ['--allow-delete-baseline', '75:3'],
+      ]),
+      candidates,
+    );
+  } catch {
+    countMismatchRejected = true;
+  }
+  if (!countMismatchRejected) {
+    throw new Error('Orphan delete-count mismatch was not rejected');
+  }
+
+  validateCredentialsPayload({
+    schemaVersion: 2,
+    accountMode: 'single-production-lead',
+    projectRef: EXPECTED_PROJECT_REF,
+    syntheticOnly: true,
+    batchId: account.batchId,
+    accounts: [
+      {
+        ...account,
+        role: 'production-lead',
+        sessionName: 'DGSkills QA J1P1',
+        viewport: '390x844',
+        email: 'dgs-qa-dgs-59-production-lead-a1b2c3d4e5f6@example.invalid',
+      },
+    ],
+  });
+  validateCandidateIdsPayload({
+    schemaVersion: 1,
+    projectRef: EXPECTED_PROJECT_REF,
+    syntheticOnly: true,
+    sourceContract: 'strict-synthetic-auth-v1',
+    authUserIds: [account.userId],
+  });
+
+  console.log('Self-test PASS: identity, orphan cleanup, and credential checks fail closed');
 }
 
 async function main() {
@@ -841,7 +1292,16 @@ async function main() {
     runSelfTest();
     return;
   }
-  if (!['canary', 'prepare', 'verify', 'cleanup'].includes(command)) {
+  if (
+    ![
+      'canary',
+      'prepare',
+      'prepare-single',
+      'verify',
+      'cleanup',
+      'cleanup-orphans',
+    ].includes(command)
+  ) {
     throw new Error(`Unknown command ${command}`);
   }
 
@@ -852,10 +1312,14 @@ async function main() {
     await runCanary(options, clients);
   } else if (command === 'prepare') {
     await runPrepare(options, clients);
+  } else if (command === 'prepare-single') {
+    await runPrepareSingle(options, clients);
   } else if (command === 'verify') {
     await runVerify(options, clients);
-  } else {
+  } else if (command === 'cleanup') {
     await runCleanup(options, clients);
+  } else {
+    await runCleanupOrphans(options, clients);
   }
 }
 
