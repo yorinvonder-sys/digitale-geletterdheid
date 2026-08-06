@@ -170,6 +170,15 @@ export const Categorize: React.FC<CategorizeProps> = ({
                                             style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                                             onClick={(e) => {
                                                 e.stopPropagation();
+                                                // Geplaatste kaartjes vullen het categorievak, dus een
+                                                // klik "op de categorie" landt er al snel bovenop. Wie
+                                                // een item heeft geselecteerd wil plaatsen, niet het
+                                                // vorige antwoord weggooien — anders is een categorie
+                                                // met meerdere antwoorden niet te vullen.
+                                                if (selectedItem !== null) {
+                                                    handleCategoryClick(cat);
+                                                    return;
+                                                }
                                                 handleRemove(item.id);
                                             }}
                                         >
