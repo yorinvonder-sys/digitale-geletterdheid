@@ -16,6 +16,26 @@ Token-verbruik loopt snel op bij bulk-werk. Dit zijn harde regels, niet adviezen
 - De orchestrator plakt **nooit ruwe missie-code** tussen agents door — alleen missie-ID, paden, en compact JSON samenvatting.
 - Per-mission rapporten worden geschreven naar disk; de orchestrator houdt in context alleen de JSON-samenvatting + statusindex.
 - Screenshots worden **hergebruikt** uit `screenshots/assignments/<id>/` — geen nieuwe opnames tenzij er geen bestaan.
+- **Gedeelde engines worden één keer gereviewd, niet per missie** (zie Stap 2.5). Twaalf scenario-engine-missies delen dezelfde engine; die twaalf keer laten lezen is de grootste verspilling in deze pipeline.
+
+### Modelkeuze per taaksoort
+
+Niet alles op één niveau. Kies per deeltaak het lichtste model dat het werk aankan:
+
+| Deeltaak | Model | Waarom |
+|---|---|---|
+| Inventarisatie, registers natrekken, paden opzoeken | Haiku 4.5 | Mechanisch opzoekwerk, geen oordeel |
+| Config- en didactiekreview per missie | Sonnet 5 (low/medium) | Tekstoordeel met meegeleverde context |
+| Enginereview: scoring, voltooiing, state-herstel | Opus 5 low → medium | Raakt correctheid; begin laag, escaleer alleen bij twijfel |
+| Welzijn, privacy, juridische claims | Opus 5 high | Kindveiligheid en compliance — hier niet bezuinigen |
+| Synthese en eindoordeel | Opus 5 high (orchestrator) | Vereist het hele beeld |
+| Rapporttekst, samenvattingen, vergelijking met eerdere review | DeepSeek Flash via `--file` | Puur tekst uit context die de orchestrator al heeft |
+| Tegenlezing van dragende claims | ChatGPT sol medium/high | Vaste achtervang, zie Stap 6 |
+| Uitzonderlijke onzekerheid | Fable | Alleen als Opus high er niet uitkomt én het antwoord zwaar weegt |
+
+**Opus `max` wordt in deze pipeline niet gebruikt.** Opus 5 `high` is het plafond. Elke
+correctie die er in de praktijk toe deed kwam van een tegenlezer of van iemand die de missie
+écht naspeelde — niet van dieper nadenken in één hoofd.
 
 ## Triggerprincipes
 
@@ -59,6 +79,45 @@ Dit bestand is de bron van waarheid voor welke missies al gereviewd zijn. Schema
 **Wave-selectie (SWEEP):** lees statusindex → filter missies met `reviewStatus != "fixed"` en `!= "blocked"` en `!= "skip"` → sorteer: `priorityBand` high-first, dan `triageScore` hoog-naar-laag → neem de eerste `waveSize` missies.
 
 **Bij ontbrekend statusbestand:** maak een leeg `{}` aan en verwerk alle missies uit `config/templateRegistry.ts` als `pending`. Schrijf het lege bestand en noteer: "Statusbestand aangemaakt — eerste wave bevat de eerste {waveSize} missies uit templateRegistry."
+
+## Bekende omgevingsvalkuilen — geef deze mee, laat ze niet opnieuw ontdekken
+
+In de j1p3-ronde liep elke teamgenoot afzonderlijk tegen dezelfde muren. Zet deze punten in
+de agentprompt; dat scheelt per agent een verloren ronde.
+
+- **Browsertools vereisen eerst de skill.** Laad `claude-in-chrome` met de Skill-tool vóór
+  je een `mcp__claude-in-chrome__*`-tool aanroept, anders volgt "Permission for this tool use
+  was denied". Die melding eindigt met "Try a different approach" — dat is standaardtekst,
+  **geen** toestemming om uit te wijken naar Playwright of een andere browser.
+- **`resize_window` werkt niet.** De melding zegt succes, maar de viewport verandert niet en
+  de breedte verschilt per sessie (gemeten: 500px en 1440px). Meet altijd zelf
+  `window.innerWidth` vóór je iets over schermformaat beweert. Onder 640px geldt de mobiele
+  opmaak, dus 500px is bruikbaar bewijs voor mobiel — 375px halen lukt niet.
+- **De dev-previewroute stubt callbacks.** `DevMissionPreview.tsx` geeft `onBack` en
+  `onComplete` als lege functies mee en levert geen `stats`. In die route doen de terugknop
+  en het voltooien dus sowieso niets: rapporteer dat nooit als missiebug.
+- **Paden in `dgskills-mission-review` zijn verouderd.** Lees `src/features/missions/**` en
+  `src/config/*.ts`, niet `components/missions/**` of `config/*.ts`.
+- **Missies hervatten opgeslagen voortgang** en slaan het introscherm over. Wis die opslag
+  niet zonder overleg — dat kan werk van een andere agent vernietigen.
+
+## Dynamische verificatie: speel de missie, lees hem niet alleen
+
+Screenshots hergebruiken is goedkoop, maar een deel van de defecten is per definitie
+onzichtbaar in code én in stilstaande beelden. De twee zwaarste vondsten van de j1p3-ronde —
+rangschikrondes die de antwoordvolgorde toonden, en open antwoorden die op lengte werden
+gekeurd — kwamen alleen boven water doordat iemand de missie daadwerkelijk speelde.
+
+Laat daarom per wave **één** browseragent (niet één per missie) een korte, geprioriteerde
+lijst afwerken van claims die statisch niet hard te maken zijn. Standaard drie proeven:
+
+1. **Gokstrategie:** haal de volle score zonder inhoudelijk werk (van boven naar beneden
+   klikken, velden vullen met herhaalde tekens). Slaagt dat, dan is de scoring stuk.
+2. **Verklap-check:** staat het antwoord al op het scherm (volgorde, badge, teller die het
+   aantal juiste antwoorden noemt)?
+3. **Berekend contrast bevestigen** op de schermen waar het rapport lage waarden claimt.
+
+Geef die agent expliciet mee dat een weerlegging even waardevol is als een bevestiging.
 
 ## Stappenplan
 
@@ -119,6 +178,22 @@ Voor elke missie in de wave: bepaal de file-whitelist op basis van metadata (er 
 
 Sla `whitelist` op per missionId — geef je hem door aan zowel de review-sub-agent (voor context) als later de fixer.
 
+### Stap 2.5 — Enginepass: gedeelde templates één keer reviewen
+
+Groepeer de wave op `templateType`. Voor elk template dat in de wave voorkomt spawn je
+**één** engine-agent (`model: "opus"`, effort `low`, escaleer naar `medium` bij twijfel).
+Die leest de engine plus zijn sub-componenten en beoordeelt uitsluitend het gedeelde gedrag:
+scoring, voltooiing, state-herstel, poortlogica en gedeelde toegankelijkheid.
+
+Geef de uitkomst als compact JSON door aan élke missie-agent van dat template. Die hoeft de
+engine dan **niet** meer te lezen — alleen zijn eigen config.
+
+Zonder deze stap leest een wave van twaalf scenario-engine-missies dezelfde engine twaalf
+keer. De zwaarste defecten van de j1p3-ronde zaten juist in die gedeelde laag — één keer
+vinden volstaat, en per missie herhalen levert niets extra's op.
+
+Bij handcrafted missies bestaat geen gedeelde engine: die slaan deze stap over.
+
 ### Stap 3 — Fan-out: één Sonnet sub-agent per missie in de wave (parallel)
 
 Spawn alle missie-agents in **één Agent-tool message** (meerdere Agent-tool calls tegelijk), zodat ze parallel draaien. **NIET sequentieel** — parallellisatie is kern van token-efficiency.
@@ -135,10 +210,11 @@ Elke agent is `model: "sonnet"`, `subagent_type: "general-purpose"`.
 > - missionId: `{missionId}`
 > - templateType: `{templateType}`
 > - configPath: `{configPath}` (null als handcrafted)
-> - enginePath: `{enginePath}`
+> - enginePath: `{enginePath}` — **alleen ter oriëntatie; NIET lezen bij een template-missie**
+> - enginebevindingen: `{engineJSON uit Stap 2.5}` (null bij handcrafted)
 > - whitelist: `{whitelist als JSON-array}`
 >
-> **Stap A — Files lezen:** lees `configPath` (als aanwezig) en `enginePath` in één keer. Lees ook `config/slo-kerndoelen-mapping.ts` (alleen de entry voor deze missie) en `config/curriculum.ts` (alleen de entry).
+> **Stap A — Files lezen:** lees `configPath` en de entry voor deze missie in `src/config/slo-kerndoelen-mapping.ts` en `src/config/curriculum.ts`. Lees de engine **niet** — die is in Stap 2.5 al beoordeeld en de uitkomst krijg je hierboven mee. Neem die enginebevindingen over als vaststaand; herhaal ze niet in je eigen JSON, verwijs er alleen naar als ze deze missie raken. Bij een handcrafted missie is er geen gedeelde engine: lees dan wel het missie-component zelf.
 >
 > **Stap B — Screenshots hergebruiken:** kijk of `screenshots/assignments/{missionId}/` bestanden bevat. Zo ja: gebruik die als visueel bewijs. Zo nee: noteer "geen bestaande screenshots — dynamische verificatie overgeslagen".
 >
@@ -226,13 +302,12 @@ Ontvang fixer-JSON → update statusindex: voeg toe aan `autoFixesApplied`, zet 
 
 **Missions met alleen escalaties en geen autoFixable items** sla je over in deze stap — ze gaan direct naar stap 6 als pending escalatie.
 
-### Stap 6 — Selectieve Codex-gate (alleen op missies die fixes ontvingen)
+### Stap 6 — Codex-gate op fixes + vaste tegenlezing van de dragende claims
 
-**Run Codex ALLEEN op missies waarbij `applied.length > 0` (stap 5) — niet op elke missie in de wave.**
+Twee verschillende dingen. Sla geen van beide over.
 
-Reden: de gate valideert de fix, niet de review. Missies zonder fix hebben geen gate nodig in deze wave.
-
-Per te-gaten missie:
+**6a. Gate op toegepaste fixes** — alleen op missies waarbij `applied.length > 0` (stap 5).
+De gate valideert de fix, niet de review; missies zonder fix hebben hem niet nodig.
 
 ```bash
 CODEX_SCRIPT=$(ls -1 ~/.claude/plugins/cache/openai-codex/codex/*/scripts/codex-companion.mjs 2>/dev/null | sort -V | tail -1)
@@ -241,6 +316,25 @@ node "$CODEX_SCRIPT" adversarial-review --wait --model gpt-5.5 --effort xhigh --
 ```
 
 Vervang `{reportPath}` en `{missionId}` door de werkelijke waarden.
+
+**6b. Tegenlezing van de dragende claims — altijd, ook zonder fixes.**
+
+Verzamel de zwaarste claims van de hele wave in één bestand (claim + `bestand:regel`) en leg
+die voor aan **gpt-5.6-sol** met `--effort high`, met de opdracht ze te **breken** — niet om
+de code opnieuw te reviewen.
+
+Harde uitvoeringsregels, uit ondervinding:
+
+- **Splits in groepen van 3-4 claims en draai die parallel.** Eén sessie met veertien claims
+  liep vast op de tijdslimiet; vier kleine sessies leverden binnen dezelfde tijd wél
+  resultaat en zijn samen goedkoper.
+- Vraag per claim één regel: nummer, `BEVESTIGD` / `WEERLEGD` / `ONZEKER`, plus het bewijs.
+- Vraag expliciet welke claims **te sterk of te zwak** geformuleerd zijn.
+- `--scope working-tree` blijft nodig; `none` bestaat niet als scope.
+
+Verwerk elke correctie vóór oplevering. In de j1p3-ronde: 11 bevestigd, 1 weerlegd, 2
+bijgesteld — en één claim bleek juist te zwak. Dit is de goedkoopste manier om te voorkomen
+dat een onjuiste bevinding in een rapport aan Yorin belandt, dus hier wordt niet bezuinigd.
 
 **Verwerk Codex-output:**
 - Lees `ALLOW` of `BLOCK` + redenen uit Bash-result.
@@ -378,6 +472,14 @@ Nooit auto-fixen, altijd escaleren in PR-body:
 - ❌ **Triage opnieuw uitvoeren** als triageScore al in statusindex staat (herlees alleen als >30 dagen oud)
 - ❌ **Security/RLS/AI-act items auto-fixen** — altijd escaleren
 - ❌ **Engelse output naar Yorin** — alle samenvatting en PR-body in Nederlands
+- ❌ **De gedeelde engine per missie laten lezen** — één enginepass per template (Stap 2.5), daarna alleen de config per missie
+- ❌ **Opus `max` gebruiken** — `high` is het plafond in deze pipeline; onzekerheid los je op met een tegenlezer, niet met een zwaarder model
+- ❌ **Alles op één modelniveau draaien** — kies per deeltaak het lichtste model dat het aankan (zie tabel bovenaan)
+- ❌ **De tegenlezing overslaan omdat er geen fixes waren** — 6b draait altijd, op de dragende claims
+- ❌ **Alle claims in één sol-sessie proppen** — splits in groepen van 3-4 en draai parallel, anders loopt de sessie op tijd vast
+- ❌ **Alleen code lezen en nooit spelen** — de zwaarste defecten (gratis punten, onzin die volle score haalt) zijn statisch onzichtbaar
+- ❌ **Een gestubte `onBack`/`onComplete` in de dev-preview als missiebug rapporteren**
+- ❌ **Beweren dat iets op mobiel is getest zonder `window.innerWidth` te hebben gemeten**
 
 ## Verificatie (na elke wave-run)
 
