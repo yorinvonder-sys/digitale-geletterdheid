@@ -51,6 +51,7 @@ const VIEWPORTS = [
     browserIdOption: '--mobile-browser-id',
   },
 ];
+const RECOVERABLE_AUTH_ROLES = new Set(VIEWPORTS.map((viewport) => viewport.key));
 
 function usage() {
   return `
@@ -95,14 +96,15 @@ Command options:
 
   cleanup-orphans:
     --candidate-ids-file /absolute/private/path/to/synthetic-auth-ids.json
-    --confirm-delete-count <exact-integer>
+    --confirm-delete-count 7
     --evidence /absolute/path/to/safe-orphan-cleanup-evidence.json
     --allow-delete-progress
-    --allow-delete-baseline 75:3
+    --retain-baseline 75:3
+    --retained-credentials /absolute/private/path/to/retained-account.json
 
 cleanup-orphans fails before its first mutation when any namespaced Auth/profile
-identity is malformed or unmatched. It also requires separate acknowledgements
-for progressed accounts and for the expected 75 XP / 3-completion audit baseline.
+identity is malformed or unmatched. Retention mode requires exactly one expected
+75 XP / 3-completion audit baseline and deletes only the other seven accounts.
 The private candidate file must be generated from the strict read-only Supabase
 SQL inventory contract and is deleted separately after the audit.
 
@@ -782,7 +784,7 @@ function validateCredentialsPayload(parsed) {
       isCanonicalUuid(account.userId) &&
       typeof account.email === 'string' &&
       isSyntheticEmail(account.email) &&
-      account.email.startsWith(`dgs-qa-${parsed.batchId}-${account.role}-`) &&
+      account.email.startsWith(`dgs-qa-${parsed.batchId}-`) &&
       typeof account.password === 'string' &&
       account.password.length >= 20 &&
       account.batchId === parsed.batchId,
@@ -798,6 +800,9 @@ function validateCredentialsPayload(parsed) {
         parsed.accounts.some(
           (account) =>
             account.role === viewport.key &&
+            account.email.startsWith(
+              `dgs-qa-${parsed.batchId}-${account.role}-`,
+            ) &&
             account.sessionName === viewport.sessionName &&
             account.viewport === viewport.viewport &&
             typeof account.browserId === 'string' &&
@@ -809,11 +814,26 @@ function validateCredentialsPayload(parsed) {
     }
   } else {
     const [account] = parsed.accounts;
+    const isRecoveredBaseline =
+      account.recoveredBaseline?.xp === EXPECTED_AUDIT_BASELINE.xp &&
+      account.recoveredBaseline?.completions ===
+        EXPECTED_AUDIT_BASELINE.completions &&
+      RECOVERABLE_AUTH_ROLES.has(account.authRole) &&
+      account.email.startsWith(
+        `dgs-qa-${parsed.batchId}-${account.authRole}-`,
+      );
+    const isNewSingleAccount =
+      account.recoveredBaseline === undefined &&
+      account.authRole === undefined &&
+      account.email.startsWith(
+        `dgs-qa-${parsed.batchId}-production-lead-`,
+      );
     if (
       account.role !== 'production-lead' ||
       account.sessionName !== 'DGSkills QA J1P1' ||
       account.viewport !== '390x844' ||
-      Object.hasOwn(account, 'browserId')
+      Object.hasOwn(account, 'browserId') ||
+      (!isRecoveredBaseline && !isNewSingleAccount)
     ) {
       throw new Error('Credentials file failed the single-account identity contract');
     }
@@ -904,7 +924,7 @@ async function runCleanup(options, clients) {
 }
 
 function readProgressSnapshot(profile) {
-  const stats = profile.stats ?? {};
+  const stats = profile?.stats ?? {};
   const xp = Number(stats.xp ?? 0);
   const missions = stats.missionsCompleted ?? [];
   if (!Number.isInteger(xp) || xp < 0 || !Array.isArray(missions)) {
@@ -1029,6 +1049,67 @@ function summarizeProgress(candidates) {
     });
 }
 
+function selectRetainedBaseline(options, candidates) {
+  const retention = options.get('--retain-baseline');
+  if (retention !== '75:3') {
+    throw new Error('cleanup-orphans requires --retain-baseline 75:3');
+  }
+  if (options.has('--allow-delete-baseline')) {
+    throw new Error('Retention mode forbids --allow-delete-baseline');
+  }
+  const matches = candidates.filter(
+    ({ progress }) =>
+      progress.xp === EXPECTED_AUDIT_BASELINE.xp &&
+      progress.completions === EXPECTED_AUDIT_BASELINE.completions,
+  );
+  if (matches.length !== 1) {
+    throw new Error(
+      `Retention requires exactly one 75:3 baseline account; found ${matches.length}`,
+    );
+  }
+  return {
+    retained: matches[0],
+    deletions: candidates.filter(
+      (candidate) => candidate.account.userId !== matches[0].account.userId,
+    ),
+  };
+}
+
+function inferRecoverableAuthRole(account) {
+  const matches = [...RECOVERABLE_AUTH_ROLES].filter((role) =>
+    account.email.startsWith(`dgs-qa-${account.batchId}-${role}-`),
+  );
+  if (matches.length !== 1) {
+    throw new Error('Retained account email has no unique recoverable Auth role');
+  }
+  return matches[0];
+}
+
+function makeRetainedCredentialsPayload(candidate, password) {
+  const authRole = inferRecoverableAuthRole(candidate.account);
+  const credentialAccount = {
+    ...candidate.account,
+    password,
+    role: 'production-lead',
+    authRole,
+    sessionName: 'DGSkills QA J1P1',
+    viewport: '390x844',
+    recoveredBaseline: { ...EXPECTED_AUDIT_BASELINE },
+  };
+  const payload = {
+    schemaVersion: 2,
+    accountMode: 'single-production-lead',
+    projectRef: EXPECTED_PROJECT_REF,
+    purpose: 'DGSkills J1P1 learner-mission audit',
+    syntheticOnly: true,
+    createdAt: new Date().toISOString(),
+    batchId: candidate.account.batchId,
+    accounts: [credentialAccount],
+  };
+  validateCredentialsPayload(payload);
+  return { credentialAccount, payload };
+}
+
 function assertOrphanCleanupAcknowledgements(options, candidates) {
   const expectedCount = parseExactNonNegativeInteger(
     requireOption(options, '--confirm-delete-count'),
@@ -1049,19 +1130,14 @@ function assertOrphanCleanupAcknowledgements(options, candidates) {
     );
   }
 
-  const baselineCount = candidates.filter(
-    ({ progress }) =>
-      progress.xp === EXPECTED_AUDIT_BASELINE.xp &&
-      progress.completions === EXPECTED_AUDIT_BASELINE.completions,
-  ).length;
   if (
-    baselineCount > 0 &&
-    options.get('--allow-delete-baseline') !==
-      `${EXPECTED_AUDIT_BASELINE.xp}:${EXPECTED_AUDIT_BASELINE.completions}`
+    candidates.some(
+      ({ progress }) =>
+        progress.xp === EXPECTED_AUDIT_BASELINE.xp &&
+        progress.completions === EXPECTED_AUDIT_BASELINE.completions,
+    )
   ) {
-    throw new Error(
-      `Refusing to delete ${baselineCount} expected audit-baseline account(s) without --allow-delete-baseline 75:3`,
-    );
+    throw new Error('Refusing deletion set that still contains the retained 75:3 baseline');
   }
 }
 
@@ -1070,18 +1146,71 @@ async function runCleanupOrphans(options, clients) {
   if (await pathExists(evidencePath)) {
     throw new Error(`Refusing to overwrite evidence file ${resolve(evidencePath)}`);
   }
+  const retainedCredentialsPath = resolve(
+    requireOption(options, '--retained-credentials'),
+  );
+  if (await pathExists(retainedCredentialsPath)) {
+    throw new Error(
+      `Refusing to overwrite credentials file ${retainedCredentialsPath}`,
+    );
+  }
 
   const candidateManifest = await readCandidateIdsFile(options);
   const candidates = await collectStrictSyntheticCandidates(
     clients.admin,
     candidateManifest.authUserIds,
   );
-  assertOrphanCleanupAcknowledgements(options, candidates);
+  const { retained, deletions } = selectRetainedBaseline(options, candidates);
+  assertOrphanCleanupAcknowledgements(options, deletions);
   const progressBefore = summarizeProgress(candidates);
   const results = [];
+  const retainedPassword = makePassword();
+  const { credentialAccount, payload: retainedCredentials } =
+    makeRetainedCredentialsPayload(retained, retainedPassword);
+  let retainedCredentialsWritten = false;
+  let retainedPasswordChanged = false;
+  let retainedRevocation = null;
 
   try {
-    for (const candidate of candidates) {
+    // Persist the future credential first. If the process is interrupted after
+    // the password mutation, the retained synthetic account remains recoverable.
+    await writeJsonExclusive(retainedCredentialsPath, retainedCredentials);
+    retainedCredentialsWritten = true;
+    const { error: retainedPasswordError } =
+      await clients.admin.auth.admin.updateUserById(
+        credentialAccount.userId,
+        { password: retainedPassword },
+      );
+    if (retainedPasswordError) {
+      await unlink(retainedCredentialsPath);
+      retainedCredentialsWritten = false;
+      throw new Error(
+        `Retained synthetic password reset failed: ${retainedPasswordError.message}`,
+      );
+    }
+    retainedPasswordChanged = true;
+    retainedRevocation = await globallyRevokeSessions({
+      admin: clients.admin,
+      publicClient: clients.publicClient,
+      account: credentialAccount,
+    });
+    await assertSyntheticAccountExists(clients.admin, credentialAccount);
+    const retainedProfileBeforeDeletion = await getProfile(
+      clients.admin,
+      credentialAccount.userId,
+    );
+    const retainedProgressBeforeDeletion = readProgressSnapshot(
+      retainedProfileBeforeDeletion,
+    );
+    if (
+      retainedProgressBeforeDeletion.xp !== EXPECTED_AUDIT_BASELINE.xp ||
+      retainedProgressBeforeDeletion.completions !==
+        EXPECTED_AUDIT_BASELINE.completions
+    ) {
+      throw new Error('Retained account progress changed during credential recovery');
+    }
+
+    for (const candidate of deletions) {
       const account = { ...candidate.account, password: makePassword() };
       const { error: passwordError } = await clients.admin.auth.admin.updateUserById(
         account.userId,
@@ -1099,14 +1228,21 @@ async function runCleanupOrphans(options, clients) {
       );
     }
 
-    for (const userId of candidateManifest.authUserIds) {
+    for (const userId of deletions.map(({ account }) => account.userId)) {
       await assertAuthUserMissing(clients.admin, userId);
     }
-    const remainingProfiles = await listNamespacedProfiles(clients.admin);
-    if (remainingProfiles.length !== 0) {
-      throw new Error(
-        `Synthetic orphan cleanup left ${remainingProfiles.length} namespaced profile(s)`,
-      );
+    const remaining = await collectStrictSyntheticCandidates(
+      clients.admin,
+      [credentialAccount.userId],
+    );
+    if (
+      remaining.length !== 1 ||
+      remaining[0].account.userId !== credentialAccount.userId ||
+      remaining[0].progress.xp !== EXPECTED_AUDIT_BASELINE.xp ||
+      remaining[0].progress.completions !==
+        EXPECTED_AUDIT_BASELINE.completions
+    ) {
+      throw new Error('Retained baseline postcondition failed after orphan cleanup');
     }
     await writeSafeEvidence(evidencePath, {
       schemaVersion: 1,
@@ -1115,9 +1251,17 @@ async function runCleanupOrphans(options, clients) {
       completedAt: new Date().toISOString(),
       discoveredAccountCount: candidates.length,
       deletedAccountCount: results.length,
+      retainedAccountCount: 1,
       progressBefore,
       candidateManifestSha256: candidateManifest.candidateManifestSha256,
       accountIdSha256: results.map((result) => result.userIdSha256).sort(),
+      retainedAccountIdSha256: safeIdDigest(credentialAccount.userId),
+      retainedBaseline: { ...EXPECTED_AUDIT_BASELINE },
+      retainedCredentialsWritten,
+      retainedGlobalRefreshRevocationRequested:
+        retainedRevocation.globalRefreshRevocationRequested === true,
+      retainedCapturedRefreshTokenRejected:
+        retainedRevocation.capturedRefreshTokenRejected === true,
       globalRefreshRevocationRequestedCount: results.filter(
         (result) => result.globalRefreshRevocationRequested,
       ).length,
@@ -1125,8 +1269,8 @@ async function runCleanupOrphans(options, clients) {
         (result) => result.capturedRefreshTokenRejected,
       ).length,
       accessTokensMayRemainValidUntilExpiry: true,
-      remainingStrictSyntheticAccounts: 0,
-      remainingProfileRows: 0,
+      remainingStrictSyntheticAccounts: 1,
+      remainingProfileRows: 1,
     });
   } catch (error) {
     await writeSafeEvidence(evidencePath, {
@@ -1136,8 +1280,16 @@ async function runCleanupOrphans(options, clients) {
       failedAt: new Date().toISOString(),
       discoveredAccountCount: candidates.length,
       deletedAccountCount: results.length,
+      retainedAccountCount: 1,
       progressBefore,
       candidateManifestSha256: candidateManifest.candidateManifestSha256,
+      retainedAccountIdSha256: safeIdDigest(credentialAccount.userId),
+      retainedCredentialsWritten,
+      retainedPasswordChanged,
+      retainedGlobalRefreshRevocationRequested:
+        retainedRevocation?.globalRefreshRevocationRequested === true,
+      retainedCapturedRefreshTokenRejected:
+        retainedRevocation?.capturedRefreshTokenRejected === true,
       deletedAccountIdSha256: results
         .map((result) => result.userIdSha256)
         .sort(),
@@ -1148,7 +1300,7 @@ async function runCleanupOrphans(options, clients) {
   }
 
   console.log(
-    `Orphan cleanup PASS for ${results.length} strictly matched synthetic accounts`,
+    `Orphan cleanup PASS: retained one 75:3 baseline and deleted ${results.length} strictly matched synthetic accounts`,
   );
 }
 
@@ -1219,12 +1371,49 @@ function runSelfTest() {
   }
 
   const candidates = matchStrictSyntheticCandidates([authUser], [profile]);
+  const zeroProgressCandidate = {
+    account: {
+      batchId: 'dgs-59',
+      userId: '123e4567-e89b-42d3-a456-426614174001',
+      email: 'dgs-qa-dgs-59-mobile-b1b2c3d4e5f6@example.invalid',
+    },
+    progress: { xp: 0, completions: 0 },
+  };
+  const retentionOptions = new Map([['--retain-baseline', '75:3']]);
+  const retention = selectRetainedBaseline(retentionOptions, [
+    ...candidates,
+    zeroProgressCandidate,
+  ]);
+  if (
+    retention.retained.account.userId !== account.userId ||
+    retention.deletions.length !== 1
+  ) {
+    throw new Error('Unique retained-baseline selection failed');
+  }
   const positiveOptions = new Map([
     ['--confirm-delete-count', '1'],
-    ['--allow-delete-progress', true],
-    ['--allow-delete-baseline', '75:3'],
   ]);
-  assertOrphanCleanupAcknowledgements(positiveOptions, candidates);
+  assertOrphanCleanupAcknowledgements(positiveOptions, retention.deletions);
+
+  let duplicateBaselineRejected = false;
+  try {
+    selectRetainedBaseline(retentionOptions, [...candidates, ...candidates]);
+  } catch {
+    duplicateBaselineRejected = true;
+  }
+  if (!duplicateBaselineRejected) {
+    throw new Error('Multiple retained baselines were not rejected');
+  }
+
+  let missingBaselineRejected = false;
+  try {
+    selectRetainedBaseline(retentionOptions, [zeroProgressCandidate]);
+  } catch {
+    missingBaselineRejected = true;
+  }
+  if (!missingBaselineRejected) {
+    throw new Error('Missing retained baseline was not rejected');
+  }
 
   let profileMismatchRejected = false;
   try {
@@ -1243,10 +1432,8 @@ function runSelfTest() {
     assertOrphanCleanupAcknowledgements(
       new Map([
         ['--confirm-delete-count', '2'],
-        ['--allow-delete-progress', true],
-        ['--allow-delete-baseline', '75:3'],
       ]),
-      candidates,
+      retention.deletions,
     );
   } catch {
     countMismatchRejected = true;
@@ -1271,6 +1458,10 @@ function runSelfTest() {
       },
     ],
   });
+  makeRetainedCredentialsPayload(
+    candidates[0],
+    'Aa1!retained-test-only-password-value',
+  );
   validateCandidateIdsPayload({
     schemaVersion: 1,
     projectRef: EXPECTED_PROJECT_REF,
