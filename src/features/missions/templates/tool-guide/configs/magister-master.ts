@@ -46,6 +46,9 @@ const config: ToolGuideConfig = {
                     'Het account van mijn ouders',
                 ],
                 correctIndex: 1,
+                allowRetry: true,
+                retryHint:
+                    'Nog niet. Denk aan wie de toegang tot je rooster en cijfers beheert. Kies daarna opnieuw.',
                 explanation:
                     'Precies! Je logt altijd in met het schoolaccount dat school aan jou heeft gegeven. Zo zijn je gegevens veilig en kun je alleen jouw eigen rooster en cijfers zien.',
             },
@@ -71,6 +74,9 @@ const config: ToolGuideConfig = {
                     'Omdat de app anders uitlogt',
                 ],
                 correctIndex: 1,
+                allowRetry: true,
+                retryHint:
+                    'Nog niet. Denk aan wat er gedurende een schooldag onverwacht kan wijzigen. Kies daarna opnieuw.',
                 explanation:
                     'Goed! Het rooster kan dagelijks veranderen. Een docent kan ziek zijn, een lokaal kan bezet zijn — in Magister zie je die wijzigingen altijd het eerst.',
             },
@@ -109,6 +115,9 @@ const config: ToolGuideConfig = {
                     'Hoe lang je over de toets hebt gedaan',
                 ],
                 correctIndex: 1,
+                allowRetry: true,
+                retryHint:
+                    'Nog niet. Denk aan waarom sommige cijfers zwaarder wegen in je gemiddelde. Kies daarna opnieuw.',
                 explanation:
                     'Juist! De wegingsfactor laat zien hoe zwaar een cijfer meetelt voor je uiteindelijke rapportcijfer. Een cijfer met weging 2 telt dubbel zo zwaar als een cijfer met weging 1.',
             },
