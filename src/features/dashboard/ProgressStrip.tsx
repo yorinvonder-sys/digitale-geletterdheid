@@ -75,7 +75,10 @@ export const ProgressStrip: React.FC<ProgressStripProps> = ({
     totalMissions,
     nulmetingResult,
 }) => {
-    const domainScores = nulmetingResult ? extractDomeinScores(nulmetingResult) : null;
+    // `extractDomeinScores` leest `result.kamers.<domein>.score` zonder guard, en
+    // `nulmetingResult` komt ongevalideerd uit de opgeslagen leerlingstats. Een
+    // oude of half-afgemaakte nulmeting gooide daardoor tíjdens de render.
+    const domainScores = nulmetingResult?.kamers ? extractDomeinScores(nulmetingResult) : null;
 
     return (
         <section className="mb-6 flex flex-wrap items-center gap-4 rounded-[1.5rem] border border-duck-ink/10 bg-white px-5 py-3.5 shadow-duck-soft">

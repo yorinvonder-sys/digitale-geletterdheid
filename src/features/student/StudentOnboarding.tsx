@@ -1,9 +1,7 @@
 
 import React, { useState } from 'react';
-import { Rocket, MessageSquare, Target, Trophy, ChevronRight, ChevronLeft, Brain, Sparkles, Zap, CheckCircle, Play } from 'lucide-react';
-import { DuckMascot } from '@/components/brand/DuckMascot';
+import { Rocket, Trophy, ChevronRight, ChevronLeft, Play } from 'lucide-react';
 import { KeesMessage } from '@/components/brand/KeesMessage';
-import { duckUi } from '@/config/duckUi';
 import { KEES_INTRO } from '@/config/keesVoice';
 
 interface StudentOnboardingProps {
@@ -11,66 +9,30 @@ interface StudentOnboardingProps {
     userName?: string;
 }
 
+// Twee schermen, bewust kort: hierna volgen nog de avatarbouwer (4 stappen) en de
+// nulmeting. Elk XP-getal hieronder is herleidbaar tot de code — +5/+10 uit
+// AiLab.tsx, en +25 en 200/dag uit de server-side XP-migratie (`LEAST(p_amount,
+// 25)`). Beloof hier nooit meer dan de server daadwerkelijk uitkeert.
 const ONBOARDING_STEPS = [
     {
         id: 'welcome',
         icon: <Rocket size={48} />,
         title: 'Welkom bij DGSkills!',
-        subtitle: 'Jouw digitale vaardigheden avontuur begint nu',
-        description: 'Hier leer jij hoe je digitale tools en AI kunt gebruiken als superkracht. Van slimme presentaties tot je eigen creaties - jij bouwt aan je toekomst.',
+        subtitle: 'Even voorstellen',
+        description: 'Bij DGSkills doe je missies: korte opdrachten waarin je ontdekt wat je met computers, internet en AI kunt. Je hoeft van tevoren niets te kunnen — je leert het gewoon door het te doen.',
         animation: 'rocket',
         showMascot: true,
     },
     {
-        id: 'what',
-        icon: <Target size={48} />,
-        title: 'WAT ga je doen?',
-        subtitle: 'Missies voltooien',
-        description: 'Je werkt aan gave missies: presentaties maken, verhalen schrijven, games bouwen en meer. Direct aan de slag met praktische opdrachten!',
-        features: [
-            { icon: '🎮', text: 'Games bouwen' },
-            { icon: '📖', text: 'Verhalen schrijven' },
-            { icon: '🎨', text: 'Creaties maken' },
-        ],
-        animation: 'pulse',
-        showMascot: false,
-    },
-    {
-        id: 'how',
-        icon: <MessageSquare size={48} />,
-        title: 'HOE werkt het?',
-        subtitle: 'Leren door doen',
-        description: 'Sommige missies hebben een AI-assistent die je helpt. Deze kun je vragen stellen en ideeën mee uitwerken. Andere missies doe je zelfstandig of met je klas.',
-        demoChat: [
-            { role: 'user', text: 'Maak de speler blauw' },
-            { role: 'ai', text: 'Top! Ik pas de kleur aan... 🎨' },
-        ],
-        animation: 'chat',
-        showMascot: false,
-    },
-    {
-        id: 'why',
-        icon: <Brain size={48} />,
-        title: 'WAAROM is dit belangrijk?',
-        subtitle: 'Digitale skills voor de toekomst',
-        description: 'Digitale vaardigheden en AI veranderen de wereld. Door nu te leren hoe je deze tools goed gebruikt, heb jij straks een enorme voorsprong.',
-        stats: [
-            { value: '85%', label: 'van banen gebruikt digitale tools' },
-            { value: '3x', label: 'effectiever met goede skills' },
-        ],
-        animation: 'brain',
-        showMascot: false,
-    },
-    {
         id: 'xp',
         icon: <Trophy size={48} />,
-        title: 'Verdien XP & Level Up!',
-        subtitle: 'Jouw voortgang telt',
-        description: 'Voor elke actie verdien je XP. Stuur berichten, ontdek nieuwe dingen, en behaal missies. Hoe meer je doet, hoe hoger je level!',
+        title: 'Verdien XP terwijl je bezig bent',
+        subtitle: 'Zo werkt XP',
+        description: 'XP zijn punten die je verdient tijdens missies. Hoe meer XP, hoe hoger je level. En je spaart er kleding en accessoires voor je avatar mee in de winkel. Per dag kun je maximaal 200 XP verdienen, dus rustig aan — het is geen race.',
         xpExamples: [
-            { action: 'Bericht versturen', xp: '+5 XP' },
-            { action: 'Goede vraag stellen', xp: '+10 XP' },
-            { action: 'Missie afronden', xp: '+100 XP' },
+            { action: 'Bericht sturen in een missie', xp: '+5 XP' },
+            { action: 'Uitgebreid antwoord geven', xp: '+10 XP' },
+            { action: 'Missie afronden', xp: '+25 XP' },
         ],
         animation: 'sparkle',
         showMascot: false,
@@ -177,52 +139,6 @@ export const StudentOnboarding: React.FC<StudentOnboardingProps> = ({ onComplete
                     </div>
 
                     {/* Step-specific content */}
-                    {step.features && (
-                        <div className="grid grid-cols-3 gap-2 mb-6 w-full">
-                            {step.features.map((feature, i) => (
-                                <div
-                                    key={i}
-                                    className="flex flex-col items-center gap-1 bg-white/5 backdrop-blur border border-white/10 rounded-[1rem] p-3 animate-in zoom-in"
-                                    style={{ animationDelay: `${i * 100}ms` }}
-                                >
-                                    <span className="text-2xl">{feature.icon}</span>
-                                    <span className="text-white font-medium text-xs text-center">{feature.text}</span>
-                                </div>
-                            ))}
-                        </div>
-                    )}
-
-                    {step.demoChat && (
-                        <div className="bg-white/5 backdrop-blur border border-white/10 rounded-[1rem] p-4 mb-6 space-y-3 w-full">
-                            {step.demoChat.map((msg, i) => (
-                                <div
-                                    key={i}
-                                    className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'} animate-in ${msg.role === 'user' ? 'slide-in-from-right' : 'slide-in-from-left'}`}
-                                    style={{ animationDelay: `${i * 300}ms` }}
-                                >
-                                    <div className={`px-4 py-2 rounded-2xl ${msg.role === 'user' ? 'bg-duck-acid text-duck-ink font-semibold' : 'bg-white/10 text-white'}`}>
-                                        {msg.text}
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                    )}
-
-                    {step.stats && (
-                        <div className="grid grid-cols-2 gap-4 mb-6 w-full">
-                            {step.stats.map((stat, i) => (
-                                <div
-                                    key={i}
-                                    className="bg-white/5 backdrop-blur border border-white/10 rounded-[1rem] p-4 text-center animate-in zoom-in"
-                                    style={{ animationDelay: `${i * 200}ms` }}
-                                >
-                                    <div className="font-display text-3xl font-black text-white mb-1">{stat.value}</div>
-                                    <div className="text-xs text-white/65 font-medium">{stat.label}</div>
-                                </div>
-                            ))}
-                        </div>
-                    )}
-
                     {step.xpExamples && (
                         <div className="space-y-2 mb-6 w-full">
                             {step.xpExamples.map((ex, i) => (
@@ -262,7 +178,8 @@ export const StudentOnboarding: React.FC<StudentOnboardingProps> = ({ onComplete
                             {isLastStep ? (
                                 <>
                                     <Play size={20} fill="currentColor" />
-                                    <span>Start je Avontuur!</span>
+                                    {/* Hierna volgt de avatarbouwer, niet het dashboard. */}
+                                    <span>Maak je avatar</span>
                                 </>
                             ) : (
                                 <>
