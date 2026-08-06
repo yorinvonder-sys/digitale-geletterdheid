@@ -149,17 +149,25 @@ const TutorialSpotlight: React.FC = () => {
 
         const pos = currentStep?.position || 'bottom';
         const style: React.CSSProperties = { position: 'absolute', maxWidth: 320 };
-        const TOOLTIP_HEIGHT_ESTIMATE = 160; // approx tooltip height for clamping
+        // Gemeten hoogte is ~185px bij de langste stap; te laag schatten duwde de
+        // knoppenrij onder de onderrand van het scherm.
+        const TOOLTIP_HEIGHT_ESTIMATE = 200;
         const VIEWPORT_MARGIN = 12;
-        const clampCenterX = (x: number) => Math.min(
-            Math.max(VIEWPORT_MARGIN + TOOLTIP_HALF_WIDTH, x),
-            Math.max(VIEWPORT_MARGIN + TOOLTIP_HALF_WIDTH, window.innerWidth - VIEWPORT_MARGIN - TOOLTIP_HALF_WIDTH),
-        );
-        /** Houd een left/right-offset zo dat de hele tooltip in beeld blijft. */
-        const clampEdgeOffset = (offset: number) => Math.min(
-            Math.max(VIEWPORT_MARGIN, offset),
+        // BELANGRIJK: hier géén `transform` zetten. Dit is een framer-motion
+        // `motion.div` met een y-animatie, en die schrijft `transform` zelf — een
+        // `translateX(-50%)` werd dus stil weggegooid, waardoor de tooltip met zijn
+        // LINKERRAND op het middelpunt landde en rechts buiten beeld liep.
+        // We rekenen de linkerbovenhoek daarom direct uit en klemmen die.
+        const clampLeft = (centerX: number) => Math.min(
+            Math.max(VIEWPORT_MARGIN, centerX - TOOLTIP_HALF_WIDTH),
             Math.max(VIEWPORT_MARGIN, window.innerWidth - VIEWPORT_MARGIN - TOOLTIP_HALF_WIDTH * 2),
         );
+        /** Houd de tooltip binnen de boven- en onderrand van het scherm. */
+        const fitTop = (top: number) => Math.min(
+            Math.max(VIEWPORT_MARGIN, top),
+            Math.max(VIEWPORT_MARGIN, window.innerHeight - VIEWPORT_MARGIN - TOOLTIP_HEIGHT_ESTIMATE),
+        );
+        const clampTop = (centerY: number) => fitTop(centerY - TOOLTIP_HEIGHT_ESTIMATE / 2);
 
         if (pos === 'bottom') {
             let top = rect.top + rect.height + TOOLTIP_GAP;
@@ -167,35 +175,25 @@ const TutorialSpotlight: React.FC = () => {
             if (top + TOOLTIP_HEIGHT_ESTIMATE > window.innerHeight - VIEWPORT_MARGIN) {
                 top = Math.max(VIEWPORT_MARGIN, rect.top - TOOLTIP_HEIGHT_ESTIMATE - TOOLTIP_GAP);
             }
-            style.top = top;
-            // Klem op een HALVE tooltipbreedte: door translateX(-50%) schuift hij
-            // anders alsnog buiten beeld bij een doel vlak langs de rand.
-            style.left = clampCenterX(rect.left + rect.width / 2);
-            style.transform = 'translateX(-50%)';
+            style.top = fitTop(top);
+            style.left = clampLeft(rect.left + rect.width / 2);
         } else if (pos === 'top') {
             let top = rect.top - TOOLTIP_HEIGHT_ESTIMATE - TOOLTIP_GAP;
             // If tooltip would go above viewport, flip to bottom
             if (top < VIEWPORT_MARGIN) {
                 top = rect.top + rect.height + TOOLTIP_GAP;
             }
-            // Clamp to viewport bottom
-            top = Math.min(top, window.innerHeight - TOOLTIP_HEIGHT_ESTIMATE - VIEWPORT_MARGIN);
-            style.top = Math.max(VIEWPORT_MARGIN, top);
-            // Klem op een HALVE tooltipbreedte: door translateX(-50%) schuift hij
-            // anders alsnog buiten beeld bij een doel vlak langs de rand.
-            style.left = clampCenterX(rect.left + rect.width / 2);
-            style.transform = 'translateX(-50%)';
+            style.top = fitTop(top);
+            style.left = clampLeft(rect.left + rect.width / 2);
         } else if (pos === 'left') {
-            style.top = Math.max(VIEWPORT_MARGIN, Math.min(rect.top + rect.height / 2, window.innerHeight - TOOLTIP_HEIGHT_ESTIMATE - VIEWPORT_MARGIN));
-            // Klemmen is hier geen luxe: bij een doel links in beeld werd `right`
-            // groter dan de vensterbreedte en verdween de hele tooltip — inclusief
-            // het kruisje en "Volgende" — buiten het scherm.
-            style.right = clampEdgeOffset(window.innerWidth - rect.left + TOOLTIP_GAP);
-            style.transform = 'translateY(-50%)';
+            style.top = clampTop(rect.top + rect.height / 2);
+            // Klemmen is hier geen luxe: bij een doel links in beeld werd dit groter
+            // dan de vensterbreedte en verdween de hele tooltip — inclusief het
+            // kruisje en "Volgende" — buiten het scherm.
+            style.left = clampLeft(rect.left - TOOLTIP_GAP - TOOLTIP_HALF_WIDTH);
         } else {
-            style.top = Math.max(VIEWPORT_MARGIN, Math.min(rect.top + rect.height / 2, window.innerHeight - TOOLTIP_HEIGHT_ESTIMATE - VIEWPORT_MARGIN));
-            style.left = clampEdgeOffset(rect.left + rect.width + TOOLTIP_GAP);
-            style.transform = 'translateY(-50%)';
+            style.top = clampTop(rect.top + rect.height / 2);
+            style.left = clampLeft(rect.left + rect.width + TOOLTIP_GAP + TOOLTIP_HALF_WIDTH);
         }
 
         return style;
