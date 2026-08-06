@@ -63,12 +63,29 @@ export default defineConfig(({ mode }) => {
         '@react-three/fiber',
         '@react-three/drei',
       ],
+      // REGEL: elk CJS-only pakket binnen de hierboven uitgesloten three/R3F-boom
+      // moet hier apart staan. Vite bundelt uitgesloten pakketten niet voor, serveert
+      // hun CJS-afhankelijkheden rauw via /@fs/, en dan faalt de ES-module-import met
+      // "does not provide an export named 'default'". In dev crasht daardoor het hele
+      // leerlingdashboard (dat de 3D-avatar laadt); de docentkant heeft er geen last van.
+      // Nieuwe crash van dit type? Zoek het pakket in de boom op en zet het erbij.
       include: [
-        // drei → tunnel-rat → zustand → use-sync-external-store/shim/with-selector.js
-        // is a CJS file with no ESM default export. Vite serves it raw via /@fs/ when
-        // its parent packages are excluded, which breaks the ES module import. Force
-        // pre-bundling the shim so Vite wraps it correctly.
+        // Beide schrijfwijzen zijn nodig: Vite sleutelt prebundles op de letterlijke
+        // specifier, en zustand's ESM-build (die de browser laadt) importeert de
+        // variant MET extensie — `zustand/esm/traditional.mjs`:
+        //   import … from 'use-sync-external-store/shim/with-selector.js'
         'use-sync-external-store/shim/with-selector',
+        'use-sync-external-store/shim/with-selector.js',
+        // Directe CJS-afhankelijkheden van @react-three/fiber.
+        'scheduler',
+        'buffer',
+        'base64-js',
+        'ieee754',
+        // CJS-afhankelijkheden van @react-three/drei.
+        'stats.js',
+        'draco3d',
+        'glsl-noise',
+        'promise-worker-transferable',
       ],
     },
     // SECURITY: API keys removed from client bundle - all AI calls go through Supabase Edge Functions proxy
