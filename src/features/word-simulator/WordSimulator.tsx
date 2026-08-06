@@ -693,8 +693,9 @@ export const WordSimulator: React.FC<WordSimulatorProps> = ({
 
             {/* HORIZONTAL RULER */}
             <div className="bg-white border-b border-[#E7D8BD] shrink-0 h-[22px] flex items-center overflow-hidden select-none">
-                {/* Left margin area (matches sidebar width) */}
-                <div className="w-[300px] shrink-0 bg-[#f3f3f3] h-full border-r border-[#E7D8BD]" />
+                {/* Left margin area (matches sidebar width) — onder lg staat de zijbalk
+                    boven het document in plaats van ernaast, dus dan is deze uitlijning weg. */}
+                <div className="hidden lg:block w-[300px] shrink-0 bg-[#f3f3f3] h-full border-r border-[#E7D8BD]" />
                 {/* Ruler */}
                 <div className="flex-1 relative h-full flex items-center justify-center">
                     <div className="relative w-[794px] h-full">
@@ -739,11 +740,15 @@ export const WordSimulator: React.FC<WordSimulatorProps> = ({
                 </div>
             </div>
 
-            {/* MAIN CONTENT SPLIT */}
-            <div className="flex-1 flex overflow-hidden">
+            {/* MAIN CONTENT SPLIT
+                Onder lg stapelen: de zijbalk is 300px breed en krimpt niet mee, dus op een
+                telefoon (390px) bleef er 90px over voor het document zelf — te smal om de
+                tekst, de afbeelding of de opdracht te zien, en er is geen knop om de zijbalk
+                te verbergen. */}
+            <div className="flex-1 flex flex-col lg:flex-row overflow-y-auto lg:overflow-hidden">
 
                 {/* LEFT SIDEBAR - Teacher Info & Context */}
-                <div className="w-[300px] bg-lab-paper border-r border-lab-line flex flex-col shrink-0 overflow-y-auto">
+                <div className="w-full lg:w-[300px] max-h-[45vh] lg:max-h-none bg-lab-paper border-b lg:border-b-0 lg:border-r border-lab-line flex flex-col shrink-0 overflow-y-auto">
                     {/* Teacher Profile */}
                     <div className="p-6 border-b border-lab-line">
                         <div className="flex items-center gap-4 mb-4">
