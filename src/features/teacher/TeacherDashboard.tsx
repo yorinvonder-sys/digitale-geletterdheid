@@ -25,7 +25,7 @@ import { AiBeleidFeedbackPanel } from '@/features/teacher/AiBeleidFeedbackPanel'
 import { GamesPanel } from '@/features/teacher/GamesPanel';
 import { FeedbackPanel } from '@/features/teacher/FeedbackPanel';
 import { RosterImportModal } from '@/features/teacher/RosterImportModal';
-import { useTourActions, useTourBlocker, type TourActions } from '@/contexts/TutorialContext';
+import { useTourActions, useTourBlocker, useTutorialOptional, type TourActions } from '@/contexts/TutorialContext';
 
 import { TeacherModals } from '@/features/teacher/dashboard/TeacherModals';
 import { TeacherCommandCenter } from '@/features/teacher/dashboard/TeacherCommandCenter';
@@ -550,6 +550,10 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ user, onUpda
     }), []);
     useTourActions(tourActions);
 
+    // Buiten de app-shell (publieke demo) is er geen rondleiding; dan verdwijnt
+    // het menu-item vanzelf omdat `onStartTour` undefined blijft.
+    const rondleiding = useTutorialOptional();
+
     // Zolang een van deze het scherm bezit, verbergt de rondleiding zich en
     // onthoudt hij de stap. Zonder dit bleef de spotlight (z-[9999]) wijzen naar
     // elementen achter een schermvullende presentatie.
@@ -698,6 +702,7 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ user, onUpda
                                         onNavigate={navigateTo}
                                         onOpenRosterImport={() => setShowRosterImport(true)}
                                         onOpenPresentation={() => setShowPresentation(true)}
+                                        onStartTour={rondleiding?.startTutorial}
                                         onLogout={onLogout}
                                     />
                                 </div>

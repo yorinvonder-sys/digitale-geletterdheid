@@ -19,6 +19,9 @@ const TeacherDashboard = lazy(() =>
     import('@/features/teacher/TeacherDashboard').then(m => ({ default: m.TeacherDashboard }))
 );
 const TutorialSpotlight = lazy(() => import('@/features/teacher/TutorialSpotlight'));
+const TutorialRestartButton = lazy(() =>
+    import('@/features/teacher/TutorialSpotlight').then(m => ({ default: m.TutorialRestartButton }))
+);
 const UserProfile = lazy(() =>
     import('@/features/profile/UserProfile').then(m => ({ default: m.UserProfile }))
 );
@@ -76,7 +79,7 @@ const TourHarness: React.FC<{
         autoStart
         completed={false}
     >
-        <Suspense fallback={null}><TutorialSpotlight /></Suspense>
+        <Suspense fallback={null}><TutorialSpotlight /><TutorialRestartButton /></Suspense>
         {children}
     </TutorialProvider>
 );

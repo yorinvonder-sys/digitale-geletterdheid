@@ -4,6 +4,8 @@ import { ChevronRight, ChevronLeft, X } from 'lucide-react';
 import { useTutorial } from '@/contexts/TutorialContext';
 import { pickVisibleIndex } from '@/features/onboarding/core/visibleTarget';
 import { computeTooltipStyle } from '@/features/onboarding/core/placement';
+import { useFocusTrap } from '@/hooks/useFocusTrap';
+import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion';
 
 interface SpotlightRect {
     top: number;
@@ -56,6 +58,22 @@ const TutorialSpotlight: React.FC = () => {
      */
     const tooltipRef = useRef<HTMLDivElement | null>(null);
     const [tooltipSize, setTooltipSize] = useState(TOOLTIP_SIZE_ESTIMATE);
+
+    const zichtbaar = isActive && !isBlocked;
+    const beperkteBeweging = usePrefersReducedMotion();
+    useFocusTrap(tooltipRef, zichtbaar);
+
+    // Toetsenbordbediening: Escape stopt, pijltjes bladeren.
+    useEffect(() => {
+        if (!zichtbaar) return;
+        const opToets = (event: KeyboardEvent) => {
+            if (event.key === 'Escape') { event.preventDefault(); skipTutorial(); }
+            else if (event.key === 'ArrowRight') { event.preventDefault(); nextStep(); }
+            else if (event.key === 'ArrowLeft') { event.preventDefault(); prevStep(); }
+        };
+        document.addEventListener('keydown', opToets);
+        return () => document.removeEventListener('keydown', opToets);
+    }, [zichtbaar, skipTutorial, nextStep, prevStep]);
 
     const isFirstStep = currentStepIndex === 0;
     const isLastStep = currentStepIndex === steps.length - 1;
@@ -117,7 +135,7 @@ const TutorialSpotlight: React.FC = () => {
                 // Large elements (taller than 60% of viewport): scroll to top edge
                 // Small elements: center them
                 const block: ScrollLogicalPosition = elHeight > window.innerHeight * 0.6 ? 'start' : 'center';
-                el.scrollIntoView({ behavior: 'smooth', block });
+                el.scrollIntoView({ behavior: beperkteBeweging ? 'auto' : 'smooth', block });
                 // Wait for smooth scroll to finish before measuring
                 window.setTimeout(() => measure(), 400);
                 return true; // Return true to stop retries — we'll re-measure after scroll
@@ -166,7 +184,7 @@ const TutorialSpotlight: React.FC = () => {
             window.removeEventListener('scroll', onLayout, true);
             window.removeEventListener('resize', onLayout);
         };
-    }, [isActive, currentStep, completeStep, isBlocked]);
+    }, [isActive, currentStep, completeStep, isBlocked, beperkteBeweging]);
 
     /**
      * Doel blijft weg: ga door in plaats van vastlopen.
@@ -213,6 +231,8 @@ const TutorialSpotlight: React.FC = () => {
     /** Deze stap wil dat de gebruiker het element zelf aanklikt. */
     const needsClick = currentStep.requireClick === true && rect !== null && !targetNotFound;
 
+    const stapMelding = `Stap ${currentStepIndex + 1} van ${steps.length}: ${currentStep.title}`;
+
     return (
         <AnimatePresence>
             <motion.div
@@ -220,9 +240,17 @@ const TutorialSpotlight: React.FC = () => {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
+                transition={{ duration: beperkteBeweging ? 0 : 0.2 }}
                 className="fixed inset-0 z-[9999]"
                 style={{ pointerEvents: 'none' }}
             >
+                {/*
+                  * Losse melding voor schermlezers. Bewust BUITEN de dialoog: staat hij
+                  * erbinnen, dan leest de screenreader elke stap dubbel voor — één keer
+                  * als dialooginhoud en één keer als wijziging in het live-gebied.
+                  */}
+                <span className="sr-only" role="status" aria-live="polite">{stapMelding}</span>
+
                 {/* Semi-transparent backdrop with spotlight cutout */}
                 <svg className="absolute inset-0 w-full h-full" style={{ pointerEvents: 'auto' }} onClick={(e) => { e.stopPropagation(); }}>
                     <defs>
@@ -272,12 +300,16 @@ const TutorialSpotlight: React.FC = () => {
                 <motion.div
                     key={currentStep.id}
                     ref={tooltipRef}
-                    initial={{ opacity: 0, y: 8 }}
+                    initial={beperkteBeweging ? { opacity: 1 } : { opacity: 0, y: 8 }}
                     animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -8 }}
-                    transition={{ duration: 0.25 }}
+                    exit={beperkteBeweging ? { opacity: 0 } : { opacity: 0, y: -8 }}
+                    transition={{ duration: beperkteBeweging ? 0 : 0.25 }}
                     style={{ ...getTooltipStyle(), pointerEvents: 'auto' }}
                     className="rounded-2xl shadow-2xl overflow-hidden bg-duck-bgLight border border-duck-ink/15"
+                    role="dialog"
+                    aria-modal="true"
+                    aria-labelledby="tour-titel"
+                    aria-describedby="tour-tekst"
                 >
                     {/* Step counter bar */}
                     <div className="flex h-1">
@@ -298,7 +330,7 @@ const TutorialSpotlight: React.FC = () => {
                                     alt=""
                                     className="w-12 h-12 object-contain"
                                     aria-hidden="true"
-                                    animate={{ y: [0, -3, 0], rotate: [0, 2, -2, 0] }}
+                                    animate={beperkteBeweging ? undefined : { y: [0, -3, 0], rotate: [0, 2, -2, 0] }}
                                     transition={{ duration: 2.5, repeat: Infinity, ease: 'easeInOut' }}
                                 />
                             </div>
@@ -315,7 +347,7 @@ const TutorialSpotlight: React.FC = () => {
                                         alt=""
                                         className="w-8 h-8 object-contain"
                                         aria-hidden="true"
-                                        animate={{ y: [0, -2, 0] }}
+                                        animate={beperkteBeweging ? undefined : { y: [0, -2, 0] }}
                                         transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
                                     />
                                 </div>
@@ -325,18 +357,19 @@ const TutorialSpotlight: React.FC = () => {
                         <div className={`flex-1 min-w-0 ${isFullscreen ? 'text-center' : ''}`}>
                             {/* Title + skip */}
                             <div className="flex items-center justify-between gap-2 mb-1">
-                                                <h3 className="text-sm font-bold leading-tight text-duck-ink" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>{currentStep.title}</h3>
+                                                <h3 id="tour-titel" className="text-sm font-bold leading-tight text-duck-ink" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>{currentStep.title}</h3>
                                 <button
                                     onClick={skipTutorial}
                                     className="shrink-0 p-1 rounded transition-colors text-duck-ink/60"
-                                    title="Tutorial overslaan"
+                                    title="Rondleiding overslaan"
+                                    aria-label="Rondleiding overslaan"
                                 >
                                     <X size={14} />
                                 </button>
                             </div>
 
                             {/* Description */}
-                            <p className="text-xs leading-relaxed mb-3 text-duck-ink/60">{currentStep.content}</p>
+                            <p id="tour-tekst" className="text-xs leading-relaxed mb-3 text-duck-ink/80">{currentStep.content}</p>
 
                             {/* Required click hint */}
                             {needsClick && (
@@ -348,7 +381,7 @@ const TutorialSpotlight: React.FC = () => {
 
                             {/* Navigation */}
                             <div className={`flex items-center ${isFullscreen ? 'justify-center gap-3' : 'justify-between'}`}>
-                                <span className="text-[10px] font-medium text-duck-ink/60">
+                                <span className="text-[10px] font-medium text-duck-ink/70">
                                     {currentStepIndex + 1}/{steps.length}
                                 </span>
                                 <div className="flex items-center gap-1">
@@ -391,18 +424,29 @@ const TutorialSpotlight: React.FC = () => {
     );
 };
 
-// Small button to restart tutorial (unchanged)
+/**
+ * Zwevende knop om de rondleiding (opnieuw) te starten.
+ *
+ * Verborg zichzelf eerder zolang `!hasCompleted` — precies bij de gebruiker die
+ * hem het hardst nodig had, en de enige plek waar je hem kon starten. Nu staat
+ * hij er altijd, behalve terwijl de rondleiding zelf loopt.
+ *
+ * Voor leerlingen is dit de enige ingang; docenten vinden hem daarnaast onder
+ * "Rondleiding herhalen" in het accountmenu.
+ */
 export const TutorialRestartButton: React.FC = () => {
-    const { startTutorial, hasCompleted } = useTutorial();
-    if (!hasCompleted) return null;
+    const { startTutorial, isActive } = useTutorial();
+    if (isActive) return null;
 
     return (
         <button
             onClick={startTutorial}
-            className="fixed bottom-24 lg:bottom-6 right-6 w-10 h-10 rounded-full flex items-center justify-center shadow-md transition-all hover:scale-110 z-40 bg-duck-bgLight border border-duck-ink/15 text-duck-ink/60"
-            title="Tutorial Herhalen"
+            // Hoger dan de dev-schakelaar, die in dezelfde hoek staat.
+            className="fixed bottom-40 lg:bottom-20 right-6 w-11 h-11 rounded-full flex items-center justify-center shadow-md transition-all hover:scale-110 z-40 bg-duck-bgLight border border-duck-ink/15 text-duck-ink"
+            title="Rondleiding starten"
+            aria-label="Start de rondleiding"
         >
-            <span className="text-sm">?</span>
+            <span className="text-base font-bold" aria-hidden="true">?</span>
         </button>
     );
 };
