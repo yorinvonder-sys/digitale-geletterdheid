@@ -16,7 +16,9 @@ import { useFocusMode } from '@/hooks/useFocusMode';
 import { awardXP } from '@/services/XPService';
 import { markMissionCompleted } from '@/services/missionCompletionService';
 import { getMissionXPReward } from '@/config/xp';
-import { TutorialProvider, STUDENT_TUTORIAL_STEPS, STUDENT_STORAGE_KEY, TutorialStep } from '@/contexts/TutorialContext';
+import { TutorialProvider, STUDENT_TUTORIAL_STEPS, TEACHER_TUTORIAL_STEPS, TutorialStep } from '@/contexts/TutorialContext';
+import { DEFAULT_STATS } from '@/config/userStats';
+import { videoVoorRol } from '@/features/onboarding/tutorialVideos';
 import { AccessibilityProvider } from '@/contexts/AccessibilityContext';
 import { lazyWithRetry } from '@/utils/lazyWithRetry';
 import { SecureErrorBoundary } from '@/components/app-shell/SecureErrorBoundary';
@@ -40,6 +42,7 @@ const Footer = lazyWithRetry(() => import('@/components/app-shell/Footer').then(
 const CookieConsent = lazyWithRetry(() => import('@/components/app-shell/CookieConsent').then(m => ({ default: m.CookieConsent })));
 const TutorialSpotlight = lazyWithRetry(() => import('@/features/teacher/TutorialSpotlight').then(m => ({ default: m.default })));
 const TutorialRestartButton = lazyWithRetry(() => import('@/features/teacher/TutorialSpotlight').then(m => ({ default: m.TutorialRestartButton })));
+const OnboardingWelcome = lazyWithRetry(() => import('@/features/onboarding/OnboardingWelcome').then(m => ({ default: m.OnboardingWelcome })));
 const MfaGate = lazyWithRetry(() => import('@/features/auth/MfaGate').then(m => ({ default: m.MfaGate })));
 const AiLab = lazyWithRetry(() => import('@/features/ai-lab/AiLab').then(m => ({ default: m.AiLab })));
 const TeacherDashboard = lazyWithRetry(() => import('@/features/teacher/TeacherDashboard').then(m => ({ default: m.TeacherDashboard })));
@@ -75,9 +78,6 @@ const LoadingFallback = () => (
         </div>
     </div>
 );
-
-/** Fallback base so spreading optional stats always yields a valid UserStats. */
-const DEFAULT_STATS: UserStats = { xp: 0, level: 1, missionsCompleted: [], inventory: [] };
 
 const DEDICATED_MISSIONS = new Set([
     'prompt-master',
@@ -292,6 +292,20 @@ export function AuthenticatedApp() {
             console.error("Error saving progress to Supabase:", error);
             setToast({ message: 'Voortgang kon niet worden opgeslagen. Probeer het opnieuw.', type: 'error' });
         }
+    };
+
+    /**
+     * Opslaan én de gebruiker in het geheugen bijwerken.
+     *
+     * `handleSaveProgress` schrijft alleen naar de server. Voor vlaggen die de
+     * UI meteen aanstuurt — zoals het afronden van de rondleiding — laat dat
+     * `user.stats` achter op de oude waarde, waardoor het scherm terugvalt op
+     * "nog niet gedaan" tot de volgende volledige herlaadbeurt.
+     */
+    const handleUpdateStats = async (stats: UserStats) => {
+        if (!user) return;
+        setUser({ ...user, stats });
+        await handleSaveProgress(stats);
     };
 
     const handleUpdateProfile = async (data: Partial<ParentUser>) => {
@@ -904,7 +918,7 @@ export function AuthenticatedApp() {
             return (
                 <TeacherDashboard
                     user={user}
-                    onUpdateStats={handleSaveProgress}
+                    onUpdateStats={handleUpdateStats}
                     onViewAssignments={() => setViewMode('assignments')}
                     onLogout={handleLogout}
                     onOpenGames={(gameId) => {
@@ -929,7 +943,7 @@ export function AuthenticatedApp() {
                         </button>
                         <TeacherDashboard
                             user={user}
-                            onUpdateStats={handleSaveProgress}
+                            onUpdateStats={handleUpdateStats}
                             onViewAssignments={() => setViewMode('assignments')}
                             onLogout={handleLogout}
                             onOpenGames={(gameId) => {
@@ -1011,6 +1025,31 @@ export function AuthenticatedApp() {
         );
     };
 
+    /**
+     * De rondleiding hoort pas te starten als het dashboard écht het scherm heeft.
+     *
+     * Alle blokkerende poorten (wachtwoord, MFA, docentwizard, avatar, nulmeting)
+     * zijn early returns hierboven, dus die zijn hier per definitie voorbij. Wat
+     * overblijft zijn schermen die ná het dashboard opengaan. `useFocusMode` opent
+     * bijvoorbeeld kort na mount vanzelf een missie — zonder `!activeModule` zou de
+     * rondleiding daar bovenop starten en klopt geen enkel doel meer.
+     *
+     * De cookiebanner regelt zichzelf via `useTourBlocker`, want die state zit
+     * in het component zelf.
+     */
+    const tourReady = !activeModule
+        && !isProfileOpen
+        && !showGames
+        && !showExitConfirm
+        && !showInactivityWarning
+        && !showTeacherMessage
+        && !showAvatarSetup
+        && !showNulmeting
+        && !showEindmeting
+        // Sinds #279 gaat er een welkomscherm vóór de avatarbouwer; zonder deze
+        // regel zou de rondleiding daarachter starten.
+        && !showStudentOnboarding;
+
     const showFooter = !activeModule && !isProfileOpen && !showGames && viewMode !== 'monitoring';
 
     const appShell = (
@@ -1025,10 +1064,11 @@ export function AuthenticatedApp() {
             )}
 
             <main id="main-content" className={`flex-1 flex flex-col${showFooter ? '' : ' min-h-0'}`} tabIndex={-1}>
-                {user.role === 'student' && (
+                {(user.role === 'student' || user.role === 'teacher') && (
                     <Suspense fallback={null}>
                         <TutorialSpotlight />
                         <TutorialRestartButton />
+                        <OnboardingWelcome rol={user.role} ready={tourReady} />
                     </Suspense>
                 )}
                 <SecureErrorBoundary>
@@ -1110,18 +1150,28 @@ export function AuthenticatedApp() {
         </div>
     );
 
-    const wrapped = user.role === 'student' ? (
+    // Alleen echte leerlingen en docenten krijgen een rondleiding. Developer-previews
+    // en de publieke demo's renderen het dashboard zonder provider, zodat daar nooit
+    // een spotlight kan opduiken.
+    const tourConfig = user.role === 'student'
+        ? { tourId: 'student' as const, steps: studentTutorialSteps, completed: user.stats?.hasCompletedStudentTutorial, flag: 'hasCompletedStudentTutorial' as const }
+        : user.role === 'teacher'
+            ? { tourId: 'teacher' as const, steps: TEACHER_TUTORIAL_STEPS, completed: user.stats?.hasCompletedTeacherTutorial, flag: 'hasCompletedTeacherTutorial' as const }
+            : null;
+
+    const wrapped = tourConfig ? (
         <TutorialProvider
-            steps={studentTutorialSteps}
-            storageKey={STUDENT_STORAGE_KEY}
-            autoStart={true}
-            isCompleted={user?.stats?.hasCompletedStudentTutorial}
+            steps={tourConfig.steps}
+            tourId={tourConfig.tourId}
+            userId={user.uid}
+            // Is er een video mét stem, dan neemt het welkomstkaartje de start over
+            // en kiest de gebruiker zelf: kijken, klikken of overslaan.
+            autoStart={tourReady && videoVoorRol(tourConfig.tourId) === null}
+            completed={tourConfig.completed}
             onComplete={async () => {
-                if (user) {
-                    const newStats: UserStats = { ...DEFAULT_STATS, ...user.stats, hasCompletedStudentTutorial: true };
-                    setUser({ ...user, stats: newStats });
-                    await handleSaveProgress(newStats);
-                }
+                const newStats: UserStats = { ...DEFAULT_STATS, ...user.stats, [tourConfig.flag]: true };
+                setUser({ ...user, stats: newStats });
+                await handleSaveProgress(newStats);
             }}
         >
             {appShell}

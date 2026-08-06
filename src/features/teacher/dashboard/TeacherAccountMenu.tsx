@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
     Settings, Sparkles, Award, ShieldCheck, MessageSquare,
-    BookOpen, Upload, Presentation, LogOut,
+    BookOpen, Upload, Presentation, LogOut, Compass,
 } from 'lucide-react';
 import type { TeacherDashboardTab } from '@/types';
 
@@ -11,7 +11,7 @@ interface MenuEntry {
     label: string;
     icon: typeof Settings;
     tab?: TeacherDashboardTab;
-    action?: 'roster' | 'presentation' | 'logout';
+    action?: 'roster' | 'presentation' | 'logout' | 'tour';
     group: number;
 }
 
@@ -24,6 +24,9 @@ const ENTRIES: MenuEntry[] = [
     { id: 'documenten', label: 'Kennisbank', icon: BookOpen, tab: 'documenten', group: 2 },
     { id: 'roster', label: 'Leerlingen importeren', icon: Upload, action: 'roster', group: 3 },
     { id: 'presentation', label: 'Presentatiemodus', icon: Presentation, action: 'presentation', group: 3 },
+    // Verschijnt alleen als de host een rondleiding aanbiedt; in de publieke
+    // demo's hangt er geen rondleiding onder en blijft het menu ongewijzigd.
+    { id: 'tour', label: 'Rondleiding herhalen', icon: Compass, action: 'tour', group: 3 },
 ];
 
 interface TeacherAccountMenuProps {
@@ -36,6 +39,8 @@ interface TeacherAccountMenuProps {
     onOpenRosterImport: () => void;
     onOpenPresentation: () => void;
     onLogout?: () => void;
+    /** Ontbreekt buiten de app-shell; het menu-item wordt dan verborgen. */
+    onStartTour?: () => void;
 }
 
 /**
@@ -45,7 +50,7 @@ interface TeacherAccountMenuProps {
  */
 export const TeacherAccountMenu: React.FC<TeacherAccountMenuProps> = ({
     open, onToggle, onClose, initial, displayName, onNavigate,
-    onOpenRosterImport, onOpenPresentation, onLogout,
+    onOpenRosterImport, onOpenPresentation, onLogout, onStartTour,
 }) => {
     const ref = useRef<HTMLDivElement | null>(null);
 
@@ -70,6 +75,7 @@ export const TeacherAccountMenu: React.FC<TeacherAccountMenuProps> = ({
         if (entry.tab) return onNavigate(entry.tab);
         if (entry.action === 'roster') return onOpenRosterImport();
         if (entry.action === 'presentation') return onOpenPresentation();
+        if (entry.action === 'tour') return onStartTour?.();
     };
 
     return (
@@ -80,6 +86,7 @@ export const TeacherAccountMenu: React.FC<TeacherAccountMenuProps> = ({
                 aria-haspopup="menu"
                 aria-expanded={open}
                 aria-label="Accountmenu en beheer"
+                data-tutorial="teacher-account-menu"
                 className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-sm font-black text-duck-ink transition ${
                     open ? 'bg-duck-acid' : 'bg-duck-acid/35 hover:bg-duck-acid/60'
                 }`}
@@ -109,7 +116,7 @@ export const TeacherAccountMenu: React.FC<TeacherAccountMenuProps> = ({
 
                         {[1, 2, 3].map(group => (
                             <div key={group} className="border-t border-duck-ink/10 pt-1">
-                                {ENTRIES.filter(e => e.group === group).map(entry => {
+                                {ENTRIES.filter(e => e.group === group && (e.action !== 'tour' || onStartTour)).map(entry => {
                                     const Icon = entry.icon;
                                     return (
                                         <button

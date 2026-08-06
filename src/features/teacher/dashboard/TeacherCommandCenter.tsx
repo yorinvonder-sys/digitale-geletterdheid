@@ -253,7 +253,7 @@ export const TeacherCommandCenter: React.FC<TeacherCommandCenterProps> = ({
                     </div>
                 </div>
                 <button
-                    data-tutorial="focus-toggle"
+                    data-tutorial="teacher-focus-toggle"
                     onClick={onToggleFocusMode}
                     className={`inline-flex h-11 items-center justify-center gap-2 rounded-xl border px-6 text-sm font-bold transition ${
                         focusMode
@@ -269,7 +269,7 @@ export const TeacherCommandCenter: React.FC<TeacherCommandCenterProps> = ({
             <section className="space-y-6">
                 {/* Signalering eerst: dit is het enige blok dat om een beslissing
                     vraagt. De missiekaart is context en staat er onder. */}
-                <div id="aandacht">
+                <div id="aandacht" data-tutorial="teacher-attention">
                     <Panel title="Aandacht" action={`${attentionStudents.length || 0}`}>
                         <div className="space-y-1">
                             {attentionStudents.length > 0 ? attentionStudents.map(item => (
@@ -286,7 +286,7 @@ export const TeacherCommandCenter: React.FC<TeacherCommandCenterProps> = ({
                     </Panel>
                 </div>
 
-                <div className="rounded-2xl border border-duck-ink/15 bg-duck-bgLight p-5 shadow-sm lg:p-6">
+                <div data-tutorial="teacher-mission-map" className="rounded-2xl border border-duck-ink/15 bg-duck-bgLight p-5 shadow-sm lg:p-6">
                     <div className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
                         <div>
                             <h2 className="text-xl font-bold text-duck-ink">Missiekaart</h2>

@@ -1,0 +1,18 @@
+{
+    "student": {
+        "titel": "DGSkills voor leerlingen",
+        "bestand": "/tutorials/student-intro.mp4",
+        "poster": "/tutorials/student-intro.jpg",
+        "ondertitels": "/tutorials/student-intro.vtt",
+        "durationSeconden": 52,
+        "heeftStem": false
+    },
+    "teacher": {
+        "titel": "DGSkills voor docenten",
+        "bestand": "/tutorials/teacher-intro.mp4",
+        "poster": "/tutorials/teacher-intro.jpg",
+        "ondertitels": "/tutorials/teacher-intro.vtt",
+        "durationSeconden": 77,
+        "heeftStem": false
+    }
+}
