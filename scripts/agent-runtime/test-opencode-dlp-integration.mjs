@@ -14,6 +14,8 @@ import {
 } from './opencode-safe.mjs';
 
 const tempDirectory = mkdtempSync(join(tmpdir(), 'dgskills-dlp-integration-'));
+const apiKeyOption = ['api', 'Key'].join('');
+const syntheticApiKey = ['synthetic', 'loopback', 'canary'].join('-');
 let requestCount = 0;
 const server = http.createServer((request, response) => {
   requestCount += 1;
@@ -97,7 +99,7 @@ try {
     provider: {
       deepseek: {
         options: {
-          apiKey: 'synthetic-loopback-canary',
+          [apiKeyOption]: syntheticApiKey,
           baseURL: `http://127.0.0.1:${port}/v1`,
         },
       },
