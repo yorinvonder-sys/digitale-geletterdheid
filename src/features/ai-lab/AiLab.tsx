@@ -1489,9 +1489,10 @@ export const AiLab: React.FC<AiLabProps> = ({ user, onExit, saveProgress, comple
                   </button>
                   <button
                     onClick={confirmTipPurchase}
-                    className="flex-1 py-3 bg-duck-acid hover:bg-duck-acid hover:text-duck-ink text-duck-ink font-bold rounded-full shadow-lg shadow-duck-acid/30 transition-all active:scale-95"
+                    disabled={spendableXP < TIP_COST}
+                    className="flex-1 py-3 bg-duck-acid hover:bg-duck-acid hover:text-duck-ink text-duck-ink font-bold rounded-full shadow-lg shadow-duck-acid/30 transition-all active:scale-95 disabled:cursor-not-allowed disabled:opacity-50 disabled:shadow-none"
                   >
-                    Ja, doe het!
+                    {spendableXP < TIP_COST ? 'Te weinig XP' : 'Ja, doe het!'}
                   </button>
                 </div>
               </div>
