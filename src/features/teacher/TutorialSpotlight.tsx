@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronRight, ChevronLeft, X } from 'lucide-react';
-import { useTutorial, resolveTutorialTarget } from '@/contexts/TutorialContext';
+import { useTutorial } from '@/contexts/TutorialContext';
 
 interface SpotlightRect {
     top: number;
@@ -12,10 +12,6 @@ interface SpotlightRect {
 
 const PADDING = 10;
 const TOOLTIP_GAP = 12;
-/** ~1,2s vangnet. Daarna verschijnt de "Volgende"-knop als uitweg. */
-const MAX_MEASURE_RETRIES = 8;
-/** Halve tooltipbreedte (maxWidth 320) — nodig om hem binnen beeld te klemmen. */
-const TOOLTIP_HALF_WIDTH = 160;
 
 const TutorialSpotlight: React.FC = () => {
     const {
@@ -62,10 +58,7 @@ const TutorialSpotlight: React.FC = () => {
         };
 
         const measure = () => {
-            // resolveTutorialTarget i.p.v. querySelector: een element met
-            // `display:none` (Tailwind `lg:hidden`) staat wél in de DOM maar meet
-            // nul — dat gaf een lege spotlight en een tooltip buiten beeld.
-            const el = resolveTutorialTarget(currentStep.target!);
+            const el = document.querySelector(currentStep.target!);
             if (!el) {
                 setRect(null);
                 return false;
@@ -78,10 +71,9 @@ const TutorialSpotlight: React.FC = () => {
                 // Small elements: center them
                 const block: ScrollLogicalPosition = elHeight > window.innerHeight * 0.6 ? 'start' : 'center';
                 el.scrollIntoView({ behavior: 'smooth', block });
-                // Meet opnieuw ná het scrollen, via dezelfde retry-machine: zo
-                // blijft het vangnet werken als het element intussen verdwijnt.
-                window.setTimeout(() => { if (!measure()) scheduleRetry(); }, 400);
-                return false; // Er is nog geen rect; laat de retry-machine doorlopen.
+                // Wait for smooth scroll to finish before measuring
+                window.setTimeout(() => measure(), 400);
+                return true; // Return true to stop retries — we'll re-measure after scroll
             }
             const r = el.getBoundingClientRect();
             // For large elements, clamp the spotlight to the visible portion of the viewport
@@ -98,24 +90,20 @@ const TutorialSpotlight: React.FC = () => {
             return true;
         };
 
-        // Eén retry-machine voor élk pad dat (nog) geen rect oplevert. Na het
-        // budget verschijnt de "Volgende"-knop, zodat een leerling nooit vastloopt.
-        let retries = 0;
-        const scheduleRetry = () => {
-            if (retryTimer) return;
-            retryTimer = window.setTimeout(() => {
-                retryTimer = null;
+        // Initial attempt + retries with targetNotFound fallback
+        if (!measure()) {
+            let retries = 0;
+            const retry = () => {
                 if (measure()) return;
-                if (retries++ > MAX_MEASURE_RETRIES) {
+                if (retries > 20) {
                     setTargetNotFound(true);
                     return;
                 }
-                scheduleRetry();
-            }, 150);
-        };
-
-        // Initial attempt + retries with targetNotFound fallback
-        if (!measure()) scheduleRetry();
+                retries++;
+                retryTimer = window.setTimeout(retry, 150);
+            };
+            retry();
+        }
 
         // Keep position in sync on scroll/resize
         const onLayout = () => {
@@ -149,25 +137,8 @@ const TutorialSpotlight: React.FC = () => {
 
         const pos = currentStep?.position || 'bottom';
         const style: React.CSSProperties = { position: 'absolute', maxWidth: 320 };
-        // Gemeten hoogte is ~185px bij de langste stap; te laag schatten duwde de
-        // knoppenrij onder de onderrand van het scherm.
-        const TOOLTIP_HEIGHT_ESTIMATE = 200;
+        const TOOLTIP_HEIGHT_ESTIMATE = 160; // approx tooltip height for clamping
         const VIEWPORT_MARGIN = 12;
-        // BELANGRIJK: hier géén `transform` zetten. Dit is een framer-motion
-        // `motion.div` met een y-animatie, en die schrijft `transform` zelf — een
-        // `translateX(-50%)` werd dus stil weggegooid, waardoor de tooltip met zijn
-        // LINKERRAND op het middelpunt landde en rechts buiten beeld liep.
-        // We rekenen de linkerbovenhoek daarom direct uit en klemmen die.
-        const clampLeft = (centerX: number) => Math.min(
-            Math.max(VIEWPORT_MARGIN, centerX - TOOLTIP_HALF_WIDTH),
-            Math.max(VIEWPORT_MARGIN, window.innerWidth - VIEWPORT_MARGIN - TOOLTIP_HALF_WIDTH * 2),
-        );
-        /** Houd de tooltip binnen de boven- en onderrand van het scherm. */
-        const fitTop = (top: number) => Math.min(
-            Math.max(VIEWPORT_MARGIN, top),
-            Math.max(VIEWPORT_MARGIN, window.innerHeight - VIEWPORT_MARGIN - TOOLTIP_HEIGHT_ESTIMATE),
-        );
-        const clampTop = (centerY: number) => fitTop(centerY - TOOLTIP_HEIGHT_ESTIMATE / 2);
 
         if (pos === 'bottom') {
             let top = rect.top + rect.height + TOOLTIP_GAP;
@@ -175,25 +146,28 @@ const TutorialSpotlight: React.FC = () => {
             if (top + TOOLTIP_HEIGHT_ESTIMATE > window.innerHeight - VIEWPORT_MARGIN) {
                 top = Math.max(VIEWPORT_MARGIN, rect.top - TOOLTIP_HEIGHT_ESTIMATE - TOOLTIP_GAP);
             }
-            style.top = fitTop(top);
-            style.left = clampLeft(rect.left + rect.width / 2);
+            style.top = top;
+            style.left = Math.min(Math.max(VIEWPORT_MARGIN, rect.left + rect.width / 2), window.innerWidth - VIEWPORT_MARGIN);
+            style.transform = 'translateX(-50%)';
         } else if (pos === 'top') {
             let top = rect.top - TOOLTIP_HEIGHT_ESTIMATE - TOOLTIP_GAP;
             // If tooltip would go above viewport, flip to bottom
             if (top < VIEWPORT_MARGIN) {
                 top = rect.top + rect.height + TOOLTIP_GAP;
             }
-            style.top = fitTop(top);
-            style.left = clampLeft(rect.left + rect.width / 2);
+            // Clamp to viewport bottom
+            top = Math.min(top, window.innerHeight - TOOLTIP_HEIGHT_ESTIMATE - VIEWPORT_MARGIN);
+            style.top = Math.max(VIEWPORT_MARGIN, top);
+            style.left = Math.min(Math.max(VIEWPORT_MARGIN, rect.left + rect.width / 2), window.innerWidth - VIEWPORT_MARGIN);
+            style.transform = 'translateX(-50%)';
         } else if (pos === 'left') {
-            style.top = clampTop(rect.top + rect.height / 2);
-            // Klemmen is hier geen luxe: bij een doel links in beeld werd dit groter
-            // dan de vensterbreedte en verdween de hele tooltip — inclusief het
-            // kruisje en "Volgende" — buiten het scherm.
-            style.left = clampLeft(rect.left - TOOLTIP_GAP - TOOLTIP_HALF_WIDTH);
+            style.top = Math.max(VIEWPORT_MARGIN, Math.min(rect.top + rect.height / 2, window.innerHeight - TOOLTIP_HEIGHT_ESTIMATE - VIEWPORT_MARGIN));
+            style.right = window.innerWidth - rect.left + TOOLTIP_GAP;
+            style.transform = 'translateY(-50%)';
         } else {
-            style.top = clampTop(rect.top + rect.height / 2);
-            style.left = clampLeft(rect.left + rect.width + TOOLTIP_GAP + TOOLTIP_HALF_WIDTH);
+            style.top = Math.max(VIEWPORT_MARGIN, Math.min(rect.top + rect.height / 2, window.innerHeight - TOOLTIP_HEIGHT_ESTIMATE - VIEWPORT_MARGIN));
+            style.left = rect.left + rect.width + TOOLTIP_GAP;
+            style.transform = 'translateY(-50%)';
         }
 
         return style;
@@ -236,10 +210,7 @@ const TutorialSpotlight: React.FC = () => {
                 </svg>
 
                 {/* Make the spotlight hole clickable (pass-through) */}
-                {/* Alleen bij requireClick: anders kan een leerling bij een puur
-                    informatieve stap doorklikken en de rondleiding achterlaten op
-                    een scherm dat niet meer gemonteerd is. */}
-                {rect && currentStep.requireClick && (
+                {rect && (
                     <div
                         className="absolute"
                         style={{
@@ -253,7 +224,8 @@ const TutorialSpotlight: React.FC = () => {
                         }}
                         onClick={() => {
                             // Let clicks pass through to the actual element
-                            resolveTutorialTarget(currentStep.target!)?.click();
+                            const el = document.querySelector(currentStep.target!) as HTMLElement;
+                            el?.click();
                         }}
                     />
                 )}
@@ -315,13 +287,10 @@ const TutorialSpotlight: React.FC = () => {
                             {/* Title + skip */}
                             <div className="flex items-center justify-between gap-2 mb-1">
                                                 <h3 className="text-sm font-bold leading-tight text-duck-ink" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>{currentStep.title}</h3>
-                                {/* Enige uitweg tijdens een requireClick-stap, dus
-                                    een volwaardig raakvlak van 44px. */}
                                 <button
                                     onClick={skipTutorial}
-                                    className="shrink-0 flex min-h-[44px] min-w-[44px] items-center justify-center rounded transition-colors text-duck-ink/60"
-                                    title="Rondleiding overslaan"
-                                    aria-label="Rondleiding overslaan"
+                                    className="shrink-0 p-1 rounded transition-colors text-duck-ink/60"
+                                    title="Tutorial overslaan"
                                 >
                                     <X size={14} />
                                 </button>

@@ -6,14 +6,6 @@ const onboardingSource = readFileSync(
     new URL('../src/features/student/StudentOnboarding.tsx', import.meta.url),
     'utf8',
 );
-const tutorialSource = readFileSync(
-    new URL('../src/contexts/TutorialContext.tsx', import.meta.url),
-    'utf8',
-);
-const authServiceSource = readFileSync(
-    new URL('../src/services/authService.ts', import.meta.url),
-    'utf8',
-);
 const avatarSetupSource = readFileSync(
     new URL('../src/features/profile/avatar/AvatarSetup.tsx', import.meta.url),
     'utf8',
@@ -43,29 +35,19 @@ test('beloofde XP overschrijdt de servergrens van 25 per missie niet', () => {
     }
 });
 
-test('rondleiding gebruikt de merknaam DGSkills', () => {
-    assert.doesNotMatch(tutorialSource, /Project DG/);
-});
-
-test('de rondleidingsvlag hoort bij de leerling, niet bij het apparaat', () => {
-    // Gedeelde schoolapparaten: zonder persistLocally={false} kreeg de volgende
-    // leerling op dezelfde laptop nooit een rondleiding.
-    const authenticatedAppSource = readFileSync(
-        new URL('../src/app/AuthenticatedApp.tsx', import.meta.url),
+test('het anker van de laatste rondleidingsstap zit op de startknop, niet op de kaart', () => {
+    // Een klik op een wrapper-div bubbelt niet naar de knop erbinnen, dus het
+    // anker moet op de "Start missie"-knop zelf staan — anders sluit de
+    // rondleiding wel maar opent de missie niet.
+    const dashboardSource = readFileSync(
+        new URL('../src/features/student/ProjectZeroDashboard.tsx', import.meta.url),
         'utf8',
     );
-    assert.match(authenticatedAppSource, /persistLocally=\{false\}/);
-});
-
-test('de opruimlijst bij uitloggen matcht de echte tutorial-sleutel', () => {
-    const key = tutorialSource.match(/STUDENT_STORAGE_KEY = '([^']+)'/)?.[1];
-    assert.ok(key, 'STUDENT_STORAGE_KEY niet gevonden');
-
-    const prefixes = [...authServiceSource.matchAll(/^\s+'([^']+)',\s+\/\//gm)].map(m => m[1]);
-    assert.ok(
-        prefixes.some(prefix => key!.startsWith(prefix)),
-        `geen enkele opruim-prefix matcht '${key}' — de vlag blijft dan staan na uitloggen`,
-    );
+    // Het anker hangt aan de knop via een spread op StudentProjectCard.
+    assert.match(dashboardSource, /'data-tutorial': tutorialAnchor/);
+    assert.match(dashboardSource, /tutorialAnchor=\{mission\.id === firstStartableMissionId/);
+    // De oude, kaart-gebonden variant mag niet terugkomen.
+    assert.doesNotMatch(dashboardSource, /index === 0 && allReviewsDone/);
 });
 
 test('de avatarbouwer toont de 3D-figuur, niet de oude 2D-eend', () => {

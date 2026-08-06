@@ -1116,11 +1116,6 @@ export function AuthenticatedApp() {
             storageKey={STUDENT_STORAGE_KEY}
             autoStart={true}
             isCompleted={user?.stats?.hasCompletedStudentTutorial}
-            // Gedeelde schoolapparaten: de vlag hoort bij de LEERLING, niet bij de
-            // laptop. Zonder dit kreeg de volgende leerling nooit een rondleiding.
-            persistLocally={false}
-            // Wacht tot het (lazy geladen) dashboard er echt staat voordat we starten.
-            readySelector='[data-tutorial="student-main-missions"]'
             onComplete={async () => {
                 if (user) {
                     const newStats: UserStats = { ...DEFAULT_STATS, ...user.stats, hasCompletedStudentTutorial: true };

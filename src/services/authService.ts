@@ -285,7 +285,7 @@ export const logout = async () => {
     const sensitiveKeyPrefixes = [
         'mission-autosave-',     // missie-voortgang
         'chat-history-',         // chatgeschiedenis
-        'student_tutorial_',     // tutorial-voortgang (sleutel: STUDENT_STORAGE_KEY in TutorialContext.tsx)
+        'student-tutorial-',     // tutorial-voortgang
         'focus-mode-',           // focusmodus-status
         'game-state-',           // spelstatus
         'permission-cache-',     // permissie-cache
