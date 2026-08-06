@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useCallback, ReactNode } from 'react';
+import { logger } from '@/utils/logger';
 
 export interface TutorialStep {
     id: string;
@@ -8,6 +9,12 @@ export interface TutorialStep {
     requireClick?: boolean;
     position?: 'top' | 'bottom' | 'left' | 'right';
     onEnter?: () => void; // Callback when step becomes active
+    /**
+     * Sla deze stap over als het target bij de start van de rondleiding niet
+     * zichtbaar is. Zonder deze vlag blijft een stap altijd staan (huidig
+     * gedrag), dus de docentrondleiding verandert niet.
+     */
+    skipIfMissing?: boolean;
 }
 
 interface TutorialContextType {
@@ -26,10 +33,26 @@ interface TutorialContextType {
 
 const TutorialContext = createContext<TutorialContextType | null>(null);
 
+/**
+ * Zoek het element dat ECHT op het scherm staat.
+ *
+ * Tailwind's `lg:hidden` / `sm:hidden` haalt een element niet uit de DOM maar
+ * zet `display:none`. `querySelector` vindt zo'n element dus wél, terwijl
+ * `getBoundingClientRect()` daarna nullen teruggeeft — de spotlight licht een
+ * lege hoek uit en de tooltip belandt buiten beeld, inclusief de enige knoppen
+ * om verder te gaan. `getClientRects().length === 0` dekt precies dat geval.
+ *
+ * Loopt bovendien ALLE kandidaten langs: bij een selectorlijst
+ * (`[data-tutorial=x], [data-tutorial-nav=x]`) pakt `querySelector` de eerste in
+ * documentvolgorde, niet de zichtbare.
+ */
+export const resolveTutorialTarget = (selector: string): HTMLElement | null =>
+    Array.from(document.querySelectorAll<HTMLElement>(selector))
+        .find(el => el.getClientRects().length > 0) ?? null;
+
 const clickTutorialTarget = (selector: string, delayMs = 0) => {
     const run = () => {
-        const element = document.querySelector(selector) as HTMLElement | null;
-        element?.click();
+        resolveTutorialTarget(selector)?.click();
     };
     if (delayMs > 0) {
         window.setTimeout(run, delayMs);
@@ -119,7 +142,7 @@ export const STUDENT_TUTORIAL_STEPS: TutorialStep[] = [
     {
         id: 'welcome',
         target: null, // fullscreen
-        title: 'Welkom bij Project DG!',
+        title: 'Welkom bij DGSkills!',
         content: 'Dit is jouw dashboard. Hier vind je al je missies, XP en trofeeën. We laten je even zien hoe alles werkt.',
         requireClick: false,
     },
@@ -138,22 +161,28 @@ export const STUDENT_TUTORIAL_STEPS: TutorialStep[] = [
         content: 'Oranje opdrachten zijn herhalingen van de vorige periode. Rond deze eerst af om nieuwe missies vrij te spelen.',
         requireClick: false,
         position: 'bottom',
+        // Niet elke periode heeft herhalingsopdrachten; dan bestaat de sectie niet.
+        skipIfMissing: true,
     },
     {
+        // Mobiel is dit de avatarknop in de bovenbalk, op desktop de knop
+        // "Mijn portfolio" in de navigatie. De resolver kiest de zichtbare.
         id: 'profile-btn',
-        target: '[data-tutorial="student-profile-btn"]',
+        target: '[data-tutorial="student-profile-btn"], [data-tutorial-nav="student-profile-btn"]',
         title: 'Jouw Profiel',
         content: 'Bekijk je avatar, trofeeën en de winkel. Verdien XP om nieuwe items vrij te spelen!',
         requireClick: false,
-        position: 'left',
+        position: 'bottom',
     },
     {
         id: 'first-mission',
         target: '[data-tutorial="student-first-mission"]',
         title: 'Klaar? Begin hier!',
-        content: 'Klik op een opdracht om je eerste missie te starten. Succes!',
+        content: "Klik op 'Start missie' om je eerste opdracht te openen. Succes!",
         requireClick: true,
         position: 'bottom',
+        // Heeft de docent de periode nog niet geopend, dan is er niets te starten.
+        skipIfMissing: true,
     },
 ];
 
@@ -167,6 +196,18 @@ interface TutorialProviderProps {
     storageKey?: string;
     onComplete?: () => void;
     isCompleted?: boolean;
+    /**
+     * Selector die bewijst dat het scherm waar de rondleiding over gaat
+     * gerenderd is. Zonder dit start de rondleiding op een vaste vertraging en
+     * racet die met een lazy-geladen dashboard.
+     */
+    readySelector?: string;
+    /**
+     * Mag "al gezien" in localStorage staan? Op gedeelde schoolapparaten mag een
+     * apparaatvlag nooit bepalen of DEZE leerling de rondleiding heeft gehad;
+     * geef dan `false` en laat `isCompleted` het werk doen.
+     */
+    persistLocally?: boolean;
 }
 
 export const TutorialProvider: React.FC<TutorialProviderProps> = ({
@@ -175,58 +216,93 @@ export const TutorialProvider: React.FC<TutorialProviderProps> = ({
     autoStart = false, // Changed from true to false for clean screenshots
     storageKey = TEACHER_STORAGE_KEY,
     onComplete,
-    isCompleted
+    isCompleted,
+    readySelector,
+    persistLocally = true,
 }) => {
     const [isActive, setIsActive] = useState(false);
     const [currentStepIndex, setCurrentStepIndex] = useState(0);
+    const [resolvedSteps, setResolvedSteps] = useState<TutorialStep[]>(steps);
     const [hasCompleted, setHasCompleted] = useState(() => {
         if (isCompleted !== undefined) return isCompleted;
+        // Onbekend + gedeeld apparaat = behandelen als "nog niet gehad".
+        if (!persistLocally) return false;
         return localStorage.getItem(storageKey) === 'true';
     });
 
     React.useEffect(() => {
-        if (isCompleted !== undefined) {
-            setHasCompleted(isCompleted);
-        }
+        if (isCompleted === undefined) return;
+        setHasCompleted(isCompleted);
+        // Komt de serverwaarde later alsnog binnen: geen rondleiding bovenop een
+        // leerling die hem al gehad heeft.
+        if (isCompleted) setIsActive(false);
     }, [isCompleted]);
 
+    // Zelfherstellend: ruim een vlag op die een oudere build hier heeft achtergelaten.
+    React.useEffect(() => {
+        if (!persistLocally) localStorage.removeItem(storageKey);
+    }, [persistLocally, storageKey]);
+
+    /** Alleen stappen waarvan het target er ook echt staat. */
+    const pickVisibleSteps = useCallback(
+        () => steps.filter(s => !s.skipIfMissing || !s.target || resolveTutorialTarget(s.target)),
+        [steps],
+    );
 
     // Auto-start tutorial for first-time users
     React.useEffect(() => {
-        if (autoStart && !hasCompleted) {
-            // Small delay to let dashboard render first
-            const timer = setTimeout(() => setIsActive(true), 800);
-            return () => clearTimeout(timer);
-        }
-    }, [autoStart, hasCompleted]);
+        if (!autoStart || hasCompleted) return;
+        let cancelled = false;
+        let attempts = 0;
+        let timer = 0;
 
-    const currentStep = isActive ? steps[currentStepIndex] : null;
+        const tryStart = () => {
+            if (cancelled) return;
+            const ready = !readySelector || resolveTutorialTarget(readySelector);
+            if (!ready) {
+                if (attempts++ > 40) return; // ~8s: het scherm komt niet, geen rondleiding
+                timer = window.setTimeout(tryStart, 200);
+                return;
+            }
+            const visible = pickVisibleSteps();
+            if (visible.length === 0) return;
+            setResolvedSteps(visible);
+            setCurrentStepIndex(0);
+            setIsActive(true);
+        };
+
+        timer = window.setTimeout(tryStart, 400);
+        return () => { cancelled = true; clearTimeout(timer); };
+    }, [autoStart, hasCompleted, readySelector, pickVisibleSteps]);
+
+    const currentStep = isActive ? resolvedSteps[currentStepIndex] : null;
 
     const startTutorial = useCallback(() => {
+        setResolvedSteps(pickVisibleSteps());
         setCurrentStepIndex(0);
         setIsActive(true);
         // Adoption event logging could be added here
-        console.log('[Tutorial] Started');
-    }, []);
+        logger.log('[Tutorial] Started');
+    }, [pickVisibleSteps]);
 
     const endTutorial = useCallback(() => {
         setIsActive(false);
         setHasCompleted(true);
-        localStorage.setItem(storageKey, 'true');
+        if (persistLocally) localStorage.setItem(storageKey, 'true');
         onComplete?.();
-        console.log('[Tutorial] Completed');
-    }, [storageKey, onComplete]);
+        logger.log('[Tutorial] Completed');
+    }, [storageKey, onComplete, persistLocally]);
 
     const nextStep = useCallback(() => {
         dismissOpenOverlays();
-        if (currentStepIndex < steps.length - 1) {
+        if (currentStepIndex < resolvedSteps.length - 1) {
             const newIndex = currentStepIndex + 1;
             setCurrentStepIndex(newIndex);
-            steps[newIndex]?.onEnter?.();
+            resolvedSteps[newIndex]?.onEnter?.();
         } else {
             endTutorial();
         }
-    }, [currentStepIndex, steps, endTutorial]);
+    }, [currentStepIndex, resolvedSteps, endTutorial]);
 
     const prevStep = useCallback(() => {
         dismissOpenOverlays();
@@ -248,7 +324,7 @@ export const TutorialProvider: React.FC<TutorialProviderProps> = ({
             isActive,
             currentStepIndex,
             currentStep,
-            steps,
+            steps: resolvedSteps,
             startTutorial,
             endTutorial,
             nextStep,

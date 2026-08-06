@@ -3,6 +3,8 @@ import '@/styles/app.css';
 import '@/styles/authenticated.css';
 
 import { DEFAULT_AVATAR_CONFIG, ParentUser, UserStats } from '@/types';
+import { TutorialProvider, STUDENT_TUTORIAL_STEPS, STUDENT_STORAGE_KEY } from '@/contexts/TutorialContext';
+import TutorialSpotlight from '@/features/teacher/TutorialSpotlight';
 
 const ProjectZeroDashboard = lazy(() =>
     import('@/features/student/ProjectZeroDashboard').then(m => ({ default: m.ProjectZeroDashboard }))
@@ -91,24 +93,54 @@ const DevShellPreview: React.FC = () => {
 
     const searchParams = new URLSearchParams(window.location.search);
     const screen = (searchParams.get('screen') ?? 'dashboard') as Screen;
+    // Rondleiding-harnas: ?tour=1 start de coachmarks, ?week=N kiest de periode.
+    // Nodig omdat de rondleiding anders alleen te bereiken is via een echte
+    // Supabase-leerling met de vlag op false — precies waarom hij stuk kon gaan.
+    // LET OP: dit bewijst de rondleidings-LOGICA, niet de eerste-login-flow; deze
+    // route slaat de poorten in AuthenticatedApp over.
+    const tourEnabled = searchParams.get('tour') === '1';
 
-    const [activeWeek, setActiveWeek] = React.useState(1);
+    const [activeWeek, setActiveWeek] = React.useState(() => {
+        const raw = Number(searchParams.get('week'));
+        return Number.isFinite(raw) && raw > 0 ? raw : 1;
+    });
+
+    // Dag-één-leerling: niets voltooid, dus een actieve review-gate blijft staan.
+    const dashboardStats: UserStats = tourEnabled
+        ? { ...fixtureStats, xp: 0, level: 1, missionsCompleted: [] }
+        : fixtureStats;
+
+    const dashboard = (
+        <ProjectZeroDashboard
+            onSelectModule={(id) => console.info('[dev-shell] onSelectModule', id)}
+            onOpenProfile={() => undefined}
+            activeWeek={activeWeek}
+            setActiveWeek={setActiveWeek}
+            userDisplayName={fixtureUser.displayName}
+            userUid={fixtureUser.uid}
+            stats={dashboardStats}
+            userRole="student"
+        />
+    );
 
     return (
         <>
             <Nav active={screen} />
             <Suspense fallback={<Loading />}>
                 {screen === 'dashboard' && (
-                    <ProjectZeroDashboard
-                        onSelectModule={() => undefined}
-                        onOpenProfile={() => undefined}
-                        activeWeek={activeWeek}
-                        setActiveWeek={setActiveWeek}
-                        userDisplayName={fixtureUser.displayName}
-                        userUid={fixtureUser.uid}
-                        stats={fixtureStats}
-                        userRole="student"
-                    />
+                    tourEnabled ? (
+                        <TutorialProvider
+                            steps={STUDENT_TUTORIAL_STEPS}
+                            storageKey={STUDENT_STORAGE_KEY}
+                            autoStart
+                            isCompleted={false}
+                            persistLocally={false}
+                            readySelector='[data-tutorial="student-main-missions"]'
+                        >
+                            <TutorialSpotlight />
+                            {dashboard}
+                        </TutorialProvider>
+                    ) : dashboard
                 )}
                 {screen === 'profile' && (
                     <UserProfile
