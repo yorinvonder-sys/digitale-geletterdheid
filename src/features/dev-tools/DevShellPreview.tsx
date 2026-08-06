@@ -22,6 +22,9 @@ const TutorialSpotlight = lazy(() => import('@/features/teacher/TutorialSpotligh
 const TutorialRestartButton = lazy(() =>
     import('@/features/teacher/TutorialSpotlight').then(m => ({ default: m.TutorialRestartButton }))
 );
+const OnboardingWelcome = lazy(() =>
+    import('@/features/onboarding/OnboardingWelcome').then(m => ({ default: m.OnboardingWelcome }))
+);
 const UserProfile = lazy(() =>
     import('@/features/profile/UserProfile').then(m => ({ default: m.UserProfile }))
 );
@@ -70,16 +73,21 @@ type Screen = typeof SCREENS[number];
 const TourHarness: React.FC<{
     tourId: TourId;
     steps: TutorialStep[];
+    welkom: boolean;
     children: React.ReactNode;
-}> = ({ tourId, steps, children }) => (
+}> = ({ tourId, steps, welkom, children }) => (
     <TutorialProvider
         tourId={tourId}
         steps={steps}
         userId={`dev-preview-${tourId}`}
-        autoStart
+        autoStart={!welkom}
         completed={false}
     >
-        <Suspense fallback={null}><TutorialSpotlight /><TutorialRestartButton /></Suspense>
+        <Suspense fallback={null}>
+            <TutorialSpotlight />
+            <TutorialRestartButton />
+            {welkom && <OnboardingWelcome rol={tourId} ready />}
+        </Suspense>
         {children}
     </TutorialProvider>
 );
@@ -136,6 +144,8 @@ const DevShellPreview: React.FC = () => {
     // `?kaal=1` laat de DEV-balk weg. De opnames voor de instructievideo's draaien
     // hierop; die balk hoort niet in beeld bij leerlingen en docenten.
     const kaal = searchParams.get('kaal') === '1';
+    // `?welkom=1` toont het keuzekaartje van de eerste login in plaats van meteen te starten.
+    const welkom = searchParams.get('welkom') === '1';
 
     const [activeWeek, setActiveWeek] = React.useState(1);
 
@@ -168,12 +178,12 @@ const DevShellPreview: React.FC = () => {
             <Suspense fallback={<Loading />}>
                 {screen === 'dashboard' && (
                     withTour
-                        ? <TourHarness tourId="student" steps={STUDENT_TUTORIAL_STEPS}>{studentDashboard}</TourHarness>
+                        ? <TourHarness tourId="student" steps={STUDENT_TUTORIAL_STEPS} welkom={welkom}>{studentDashboard}</TourHarness>
                         : studentDashboard
                 )}
                 {screen === 'teacher' && (
                     withTour
-                        ? <TourHarness tourId="teacher" steps={TEACHER_TUTORIAL_STEPS}>{teacherDashboard}</TourHarness>
+                        ? <TourHarness tourId="teacher" steps={TEACHER_TUTORIAL_STEPS} welkom={welkom}>{teacherDashboard}</TourHarness>
                         : teacherDashboard
                 )}
                 {screen === 'profile' && (

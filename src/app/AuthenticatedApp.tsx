@@ -18,6 +18,7 @@ import { markMissionCompleted } from '@/services/missionCompletionService';
 import { getMissionXPReward } from '@/config/xp';
 import { TutorialProvider, STUDENT_TUTORIAL_STEPS, TEACHER_TUTORIAL_STEPS, TutorialStep } from '@/contexts/TutorialContext';
 import { DEFAULT_STATS } from '@/config/userStats';
+import { videoVoorRol } from '@/features/onboarding/tutorialVideos';
 import { AccessibilityProvider } from '@/contexts/AccessibilityContext';
 import { lazyWithRetry } from '@/utils/lazyWithRetry';
 import { SecureErrorBoundary } from '@/components/app-shell/SecureErrorBoundary';
@@ -41,6 +42,7 @@ const Footer = lazyWithRetry(() => import('@/components/app-shell/Footer').then(
 const CookieConsent = lazyWithRetry(() => import('@/components/app-shell/CookieConsent').then(m => ({ default: m.CookieConsent })));
 const TutorialSpotlight = lazyWithRetry(() => import('@/features/teacher/TutorialSpotlight').then(m => ({ default: m.default })));
 const TutorialRestartButton = lazyWithRetry(() => import('@/features/teacher/TutorialSpotlight').then(m => ({ default: m.TutorialRestartButton })));
+const OnboardingWelcome = lazyWithRetry(() => import('@/features/onboarding/OnboardingWelcome').then(m => ({ default: m.OnboardingWelcome })));
 const MfaGate = lazyWithRetry(() => import('@/features/auth/MfaGate').then(m => ({ default: m.MfaGate })));
 const AiLab = lazyWithRetry(() => import('@/features/ai-lab/AiLab').then(m => ({ default: m.AiLab })));
 const TeacherDashboard = lazyWithRetry(() => import('@/features/teacher/TeacherDashboard').then(m => ({ default: m.TeacherDashboard })));
@@ -973,6 +975,28 @@ export function AuthenticatedApp() {
         );
     };
 
+    /**
+     * De rondleiding hoort pas te starten als het dashboard écht het scherm heeft.
+     *
+     * Alle blokkerende poorten (wachtwoord, MFA, docentwizard, avatar, nulmeting)
+     * zijn early returns hierboven, dus die zijn hier per definitie voorbij. Wat
+     * overblijft zijn schermen die ná het dashboard opengaan. `useFocusMode` opent
+     * bijvoorbeeld kort na mount vanzelf een missie — zonder `!activeModule` zou de
+     * rondleiding daar bovenop starten en klopt geen enkel doel meer.
+     *
+     * De cookiebanner regelt zichzelf via `useTourBlocker`, want die state zit
+     * in het component zelf.
+     */
+    const tourReady = !activeModule
+        && !isProfileOpen
+        && !showGames
+        && !showExitConfirm
+        && !showInactivityWarning
+        && !showTeacherMessage
+        && !showAvatarSetup
+        && !showNulmeting
+        && !showEindmeting;
+
     const showFooter = !activeModule && !isProfileOpen && !showGames && viewMode !== 'monitoring';
 
     const appShell = (
@@ -991,6 +1015,7 @@ export function AuthenticatedApp() {
                     <Suspense fallback={null}>
                         <TutorialSpotlight />
                         <TutorialRestartButton />
+                        <OnboardingWelcome rol={user.role} ready={tourReady} />
                     </Suspense>
                 )}
                 <SecureErrorBoundary>
@@ -1072,28 +1097,6 @@ export function AuthenticatedApp() {
         </div>
     );
 
-    /**
-     * De rondleiding hoort pas te starten als het dashboard écht het scherm heeft.
-     *
-     * Alle blokkerende poorten (wachtwoord, MFA, docentwizard, avatar, nulmeting)
-     * zijn early returns hierboven, dus die zijn hier per definitie voorbij. Wat
-     * overblijft zijn schermen die ná het dashboard opengaan. `useFocusMode` opent
-     * bijvoorbeeld kort na mount vanzelf een missie — zonder `!activeModule` zou de
-     * rondleiding daar bovenop starten en klopt geen enkel doel meer.
-     *
-     * De cookiebanner regelt zichzelf via `useTourBlocker`, want die state zit
-     * in het component zelf.
-     */
-    const tourReady = !activeModule
-        && !isProfileOpen
-        && !showGames
-        && !showExitConfirm
-        && !showInactivityWarning
-        && !showTeacherMessage
-        && !showAvatarSetup
-        && !showNulmeting
-        && !showEindmeting;
-
     // Alleen echte leerlingen en docenten krijgen een rondleiding. Developer-previews
     // en de publieke demo's renderen het dashboard zonder provider, zodat daar nooit
     // een spotlight kan opduiken.
@@ -1108,7 +1111,9 @@ export function AuthenticatedApp() {
             steps={tourConfig.steps}
             tourId={tourConfig.tourId}
             userId={user.uid}
-            autoStart={tourReady}
+            // Is er een video mét stem, dan neemt het welkomstkaartje de start over
+            // en kiest de gebruiker zelf: kijken, klikken of overslaan.
+            autoStart={tourReady && videoVoorRol(tourConfig.tourId) === null}
             completed={tourConfig.completed}
             onComplete={async () => {
                 const newStats: UserStats = { ...DEFAULT_STATS, ...user.stats, [tourConfig.flag]: true };
