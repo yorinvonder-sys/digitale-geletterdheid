@@ -14,6 +14,7 @@ import {
   assertExpectedModel,
   appendCanonicalCommitDiff,
   buildClaudeArgs,
+  buildClaudeScopeDenyRules,
   cleanClaudeEnvironment,
   readEvidencePacket,
   resolveClaudeBinary,
@@ -64,21 +65,60 @@ assert.equal(incidentMode.model, 'claude-fable-5');
 assert.equal(incidentMode.effort, 'max');
 
 const buildMode = resolveMode('build-opus5', 'xhigh');
-const buildArgs = buildClaudeArgs(
-  buildMode,
-  buildMode.effort,
-  '/tmp/claude-worktree',
-  ['src/components/Card.tsx', 'src/utils/**'],
-).join(' ');
-assert.match(buildArgs, /claude-opus-5/);
-assert.match(buildArgs, /--disallowedTools Bash/);
-assert.doesNotMatch(buildArgs, /Bash\(/);
-assert.match(buildArgs, /Read\(\/tmp\/claude-worktree\/src\/components\/Card\.tsx\)/);
-assert.match(buildArgs, /Read\(\/tmp\/claude-worktree\/src\/utils\/\*\*\)/);
-assert.match(buildArgs, /--disallowedTools Bash,Grep/);
-assert.doesNotMatch(buildArgs, /Grep\(\/tmp\/claude-worktree/);
-assert.doesNotMatch(buildArgs, /--allowedTools Read,Grep/);
-assert.doesNotMatch(buildArgs, /sonnet/i);
+const claudeArgsDirectory = mkdtempSync(join(tmpdir(), 'claude-args-test-'));
+try {
+  mkdirSync(join(claudeArgsDirectory, 'src', 'components'), { recursive: true });
+  mkdirSync(join(claudeArgsDirectory, 'src', 'utils'), { recursive: true });
+  writeFileSync(join(claudeArgsDirectory, 'package.json'), '{}');
+  writeFileSync(join(claudeArgsDirectory, 'src', 'components', 'Card.tsx'), '');
+  const buildArgsList = buildClaudeArgs(
+    buildMode,
+    buildMode.effort,
+    claudeArgsDirectory,
+    ['src/components/Card.tsx', 'src/utils/**'],
+  );
+  const buildArgs = buildArgsList.join(' ');
+  const allowedTools = buildArgsList[buildArgsList.indexOf('--allowedTools') + 1];
+  const settings = JSON.parse(
+    buildArgsList[buildArgsList.indexOf('--settings') + 1],
+  );
+  const denyRules = buildClaudeScopeDenyRules(claudeArgsDirectory, [
+    'src/components/Card.tsx',
+    'src/utils/**',
+  ]);
+
+  assert.match(buildArgs, /claude-opus-5/);
+  assert.match(buildArgs, /--disallowedTools Bash/);
+  assert.doesNotMatch(buildArgs, /Bash\(/);
+  assert.match(allowedTools, /Read\(\/src\/components\/Card\.tsx\)/);
+  assert.match(allowedTools, /Read\(\/src\/utils\/\*\*\)/);
+  assert.doesNotMatch(allowedTools, /Write\(/);
+  assert.match(buildArgs, /--disallowedTools Bash,Grep/);
+  assert.doesNotMatch(buildArgs, /--allowedTools Read,Grep/);
+  assert.doesNotMatch(buildArgs, /sonnet/i);
+  assert.ok(
+    denyRules.some(
+      (rule) => rule.startsWith('Read(//') && rule.endsWith('/package.json)'),
+    ),
+  );
+  assert.ok(
+    denyRules.some(
+      (rule) => rule.startsWith('Edit(//') && rule.endsWith('/package.json)'),
+    ),
+  );
+  assert.equal(denyRules.some((rule) => rule.includes('Card.tsx')), false);
+  assert.equal(denyRules.some((rule) => rule.includes('/src/utils/')), false);
+  assert.ok(
+    settings.permissions.deny.some(
+      (rule) => rule.startsWith('Read(//') && rule.endsWith('/package.json)'),
+    ),
+  );
+  assert.ok(settings.permissions.deny.includes('Read(~/.ssh/**)'));
+  assert.equal(settings.permissions.disableBypassPermissionsMode, 'disable');
+  assert.equal(settings.permissions.disableAutoMode, 'disable');
+} finally {
+  rmSync(claudeArgsDirectory, { recursive: true, force: true });
+}
 assert.throws(
   () => buildClaudeArgs(buildMode, buildMode.effort),
   /worktree root/,

@@ -34,9 +34,12 @@ a non-coding founder to direct, and keep AI context small by default.
   Every external delegation also requires user approval before provider access.
   They have no repository, shell, network, skill or MCP tools. Luna has no shell
   or grep and machine-enforced denies for Rood and agent-policy paths.
-- The safe launcher pins OpenCode `1.18.11`. First-party source commit `4a57013`
-  awaits `chat.message` before the provider loop and propagates hook rejection,
-  so the tested DLP throw aborts external egress fail-closed.
+- The safe launcher pins OpenCode `1.18.11`; its release commit is `012c2f5`.
+  It imports and exercises the required DLP module, then verifies the real host
+  bootstrap before starting OpenCode. A loopback integration test proves that
+  an unsafe packet reaches no provider while a safe positive control does.
+  Direct OpenCode CLI and Desktop startup bypass this repository boundary and
+  are unsupported; use only argument-free `npm run agent:opencode`.
 - OpenCode internal title, summary and compaction work uses Sol, not Luna, so a
   sensitive session is never silently handed to a lower-risk route.
 - Legacy GitHub inbox/comment bridge workflows and npm entrypoints are retired.

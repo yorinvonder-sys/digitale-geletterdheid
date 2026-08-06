@@ -1,16 +1,21 @@
 import { spawnSync } from 'node:child_process';
 import {
   existsSync,
+  lstatSync,
   mkdtempSync,
   realpathSync,
   rmSync,
   statSync,
 } from 'node:fs';
 import { homedir, tmpdir } from 'node:os';
-import { join } from 'node:path';
-import { pathToFileURL } from 'node:url';
+import { dirname, join, resolve } from 'node:path';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 
 export const OPENCODE_VERSION = '1.18.11';
+export const OPENCODE_PROJECT_ROOT = resolve(
+  dirname(fileURLToPath(import.meta.url)),
+  '../..',
+);
 
 export function validateOpenCodeArgs(args) {
   if (args.length > 0) {
@@ -54,6 +59,7 @@ export function cleanOpenCodeEnvironment(source = process.env, configHome) {
 
 export function resolveOpenCodeBinary(
   candidates = [
+    join(OPENCODE_PROJECT_ROOT, 'node_modules/.bin/opencode'),
     join(homedir(), '.npm-global/bin/opencode'),
     join(homedir(), '.local/bin/opencode'),
     '/opt/homebrew/bin/opencode',
@@ -74,6 +80,104 @@ export function resolveOpenCodeBinary(
   }
 
   throw new Error('No trusted OpenCode executable is installed');
+}
+
+export async function assertRequiredDlpPlugin(
+  projectRoot = OPENCODE_PROJECT_ROOT,
+) {
+  const root = realpathSync(resolve(projectRoot));
+  const pluginPath = join(root, '.opencode/plugins/delegation-dlp.js');
+
+  if (!existsSync(pluginPath) || lstatSync(pluginPath).isSymbolicLink()) {
+    throw new Error('Required OpenCode DLP plugin is missing or unsafe');
+  }
+
+  const module = await import(
+    `${pathToFileURL(pluginPath).href}?preflight=${process.pid}-${Date.now()}`
+  );
+  if (typeof module.DelegationDlp !== 'function') {
+    throw new Error('Required OpenCode DLP plugin export is missing');
+  }
+
+  const hooks = await module.DelegationDlp();
+  if (typeof hooks?.['chat.message'] !== 'function') {
+    throw new Error('Required OpenCode DLP hook did not initialize');
+  }
+
+  const unsafePacket = [
+    'TASK_ID=DGS-PREFLIGHT',
+    'RISK=Groen',
+    'DATA_CLASSIFICATION=internal-sanitized',
+    'PERSONAL_DATA=none',
+    'SECRETS=none',
+    'RAW_PROMPTS=none',
+    '',
+    'leerling',
+  ].join('\n');
+
+  try {
+    await hooks['chat.message'](
+      {
+        agent: 'deepseek-scout',
+        model: {
+          providerID: 'deepseek',
+          modelID: 'deepseek-v4-flash',
+        },
+      },
+      {
+        message: {
+          agent: 'deepseek-scout',
+          model: {
+            providerID: 'deepseek',
+            modelID: 'deepseek-v4-flash',
+          },
+        },
+        parts: [{ type: 'text', text: unsafePacket }],
+      },
+    );
+  } catch (error) {
+    if (/appears sensitive/.test(String(error?.message))) {
+      return pluginPath;
+    }
+    throw new Error('Required OpenCode DLP hook failed its preflight');
+  }
+
+  throw new Error('Required OpenCode DLP hook accepted its unsafe preflight');
+}
+
+export function assertOpenCodePluginBootstrap(
+  binary,
+  environment,
+  projectRoot = OPENCODE_PROJECT_ROOT,
+  run = spawnSync,
+) {
+  const root = realpathSync(resolve(projectRoot));
+  const pluginPath = join(root, '.opencode/plugins/delegation-dlp.js');
+  const result = run(
+    binary,
+    ['--print-logs', '--log-level', 'DEBUG', 'debug', 'info'],
+    {
+      cwd: root,
+      env: {
+        ...environment,
+        XDG_DATA_HOME: join(environment.XDG_CONFIG_HOME, 'preflight-data'),
+      },
+      encoding: 'utf8',
+      maxBuffer: 8 * 1024 * 1024,
+      timeout: 120000,
+    },
+  );
+  const output = `${String(result.stdout ?? '')}\n${String(result.stderr ?? '')}`;
+
+  if (
+    result.status !== 0 ||
+    !output.includes(pluginPath) ||
+    /failed to load plugin|plugin config hook failed|Plugin export is not a function/i.test(
+      output,
+    )
+  ) {
+    throw new Error('Required OpenCode DLP plugin failed host bootstrap');
+  }
 }
 
 export function assertOpenCodeVersion(binary, environment, run = spawnSync) {
@@ -101,8 +205,14 @@ if (isMain) {
     const binary = resolveOpenCodeBinary();
     const environment = cleanOpenCodeEnvironment(process.env, configHome);
     assertOpenCodeVersion(binary, environment);
+    await assertRequiredDlpPlugin(OPENCODE_PROJECT_ROOT);
+    assertOpenCodePluginBootstrap(
+      binary,
+      environment,
+      OPENCODE_PROJECT_ROOT,
+    );
     const result = spawnSync(binary, args, {
-      cwd: process.cwd(),
+      cwd: OPENCODE_PROJECT_ROOT,
       env: environment,
       stdio: 'inherit',
     });

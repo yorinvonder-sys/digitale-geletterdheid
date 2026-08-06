@@ -7,6 +7,7 @@ import {
   lstatSync,
   openSync,
   readFileSync,
+  readdirSync,
   realpathSync,
   statSync,
   unlinkSync,
@@ -37,6 +38,14 @@ const FORBIDDEN_BUILD_PATHS = [
   /^supabase(?:\/|$)/,
   /^src\/(?:app|contexts|services)(?:\/|$)/,
   /^src\/features\/(?:ai-chat|assessment|auth|consent|dashboard|dev-tools|developer|games|missions|profile|seo|student|teacher)(?:\/|$)/,
+];
+const SENSITIVE_CLAUDE_PATHS = [
+  '~/.aws/**',
+  '~/.ssh/**',
+  '~/.config/**',
+  '~/.claude/**',
+  '~/.local/share/opencode/**',
+  '~/Library/Keychains/**',
 ];
 
 export const CLAUDE_MODES = Object.freeze({
@@ -149,30 +158,27 @@ export function buildClaudeArgs(mode, effort, worktreeRoot, allowedPaths = []) {
 
   const tools = mode.write ? 'Read,Glob,Edit,Write' : '';
   const root = worktreeRoot ? resolve(worktreeRoot) : '';
-  const scopedPaths = allowedPaths.map((path) => {
-    const recursive = path.endsWith('/**');
-    const relative = recursive ? path.slice(0, -3) : path;
-    const absolute = resolve(root, relative);
-    return recursive ? `${absolute}/**` : absolute;
-  });
+  const scopedPaths = allowedPaths.map((path) => `/${path}`);
   const allowedTools = mode.write
     ? scopedPaths
         .flatMap((path) => [
           `Read(${path})`,
           `Glob(${path})`,
           `Edit(${path})`,
-          `Write(${path})`,
         ])
         .join(',')
     : '';
+  const scopeDenyRules = mode.write
+    ? buildClaudeScopeDenyRules(root, allowedPaths)
+    : [];
   const disallowedTools = mode.write
     ? [
         'Bash',
         'Grep',
         'Agent',
         'mcp__*',
-        `Read(${root}/.env*)`,
-        `Read(${root}/**/.env*)`,
+        'Read(/.env*)',
+        'Read(/**/.env*)',
       ].join(',')
     : 'Bash,Read,Grep,Glob,Edit,Write,Agent,mcp__*';
   const settings = {
@@ -183,6 +189,21 @@ export function buildClaudeArgs(mode, effort, worktreeRoot, allowedPaths = []) {
     switchModelsOnFlag: false,
     disableAllHooks: true,
     autoMemoryEnabled: false,
+    ...(mode.write
+      ? {
+          permissions: {
+            deny: [
+              ...scopeDenyRules,
+              ...SENSITIVE_CLAUDE_PATHS.flatMap((path) => [
+                `Read(${path})`,
+                `Edit(${path})`,
+              ]),
+            ],
+            disableBypassPermissionsMode: 'disable',
+            disableAutoMode: 'disable',
+          },
+        }
+      : {}),
   };
 
   return [
@@ -560,6 +581,7 @@ export function parseAllowedBuildPaths(packet, required, worktreeRoot) {
       base === '.' ||
       base.startsWith('./') ||
       base.split('/').includes('..') ||
+      /[(),]/.test(base) ||
       /[*?]/.test(base) ||
       FORBIDDEN_BUILD_PATHS.some((pattern) => pattern.test(base))
     ) {
@@ -572,6 +594,82 @@ export function parseAllowedBuildPaths(packet, required, worktreeRoot) {
   }
 
   return paths;
+}
+
+export function buildClaudeScopeDenyRules(worktreeRoot, allowedPaths) {
+  const root = realpathSync(resolve(worktreeRoot));
+  const tree = { children: new Map(), exact: false, recursive: false };
+
+  for (const allowedPath of allowedPaths) {
+    const recursive = allowedPath.endsWith('/**');
+    const base = recursive ? allowedPath.slice(0, -3) : allowedPath;
+    let node = tree;
+
+    for (const segment of base.split('/')) {
+      if (!node.children.has(segment)) {
+        node.children.set(segment, {
+          children: new Map(),
+          exact: false,
+          recursive: false,
+        });
+      }
+      node = node.children.get(segment);
+    }
+
+    node.exact ||= !recursive;
+    node.recursive ||= recursive;
+  }
+
+  const denyRules = [];
+  const denyPath = (relativePath, directory) => {
+    const absolutePath = join(root, relativePath).split(sep).join('/');
+    const pattern = `/${absolutePath}${directory ? '/**' : ''}`;
+    denyRules.push(`Read(${pattern})`, `Edit(${pattern})`);
+  };
+  const walk = (absoluteDirectory, relativeDirectory, node) => {
+    if (node.recursive) {
+      return;
+    }
+
+    const entries = readdirSync(absoluteDirectory, { withFileTypes: true }).sort(
+      (left, right) => left.name.localeCompare(right.name),
+    );
+
+    for (const entry of entries) {
+      const child = node.children.get(entry.name);
+      const relativePath = relativeDirectory
+        ? `${relativeDirectory}/${entry.name}`
+        : entry.name;
+      const absolutePath = join(absoluteDirectory, entry.name);
+
+      if (!child) {
+        denyPath(relativePath, entry.isDirectory());
+        continue;
+      }
+
+      if (child.recursive) {
+        if (!entry.isDirectory()) {
+          throw new Error(`Claude recursive build path is not a directory: ${relativePath}`);
+        }
+        continue;
+      }
+
+      if (entry.isDirectory()) {
+        if (child.exact && child.children.size === 0) {
+          throw new Error(`Claude directory build path requires /**: ${relativePath}`);
+        }
+        walk(absolutePath, relativePath, child);
+        continue;
+      }
+
+      if (child.children.size > 0) {
+        throw new Error(`Claude build path traverses a file: ${relativePath}`);
+      }
+    }
+  };
+
+  walk(root, '', tree);
+  return denyRules;
 }
 
 function pathMatchesAllowed(path, allowedPath) {

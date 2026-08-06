@@ -22,8 +22,11 @@ import {
   validateExternalMessage,
 } from './agent-runtime/external-delegation-dlp.mjs';
 import {
+  assertOpenCodePluginBootstrap,
   assertOpenCodeVersion,
+  assertRequiredDlpPlugin,
   cleanOpenCodeEnvironment,
+  OPENCODE_PROJECT_ROOT,
   OPENCODE_VERSION,
   resolveOpenCodeBinary,
   validateOpenCodeArgs,
@@ -64,6 +67,10 @@ assert.throws(
 );
 for (const unsafePacket of [
   `${safeExternalPacket}\nRISK=Rood`,
+  safeExternalPacket.replace(
+    'Analyze the supplied synthetic routing decision.',
+    'risk=Rood',
+  ),
   safeExternalPacket.replace('\n\n', '\nPERSONAL_DATA=none\n\n'),
   safeExternalPacket.replace(
     'Analyze the supplied synthetic routing decision.',
@@ -166,6 +173,62 @@ await assert.rejects(async () => {
   unsafeProviderReached = true;
 }, /appears sensitive/);
 assert.equal(unsafeProviderReached, false);
+await assert.rejects(
+  () =>
+    externalHooks['chat.message'](
+      {},
+      {
+        message: {
+          agent: 'deepseek-scout',
+          model: {
+            providerID: 'deepseek',
+            modelID: 'deepseek-v4-flash',
+          },
+        },
+        parts: [
+          { type: 'text', text: `${safeExternalPacket}\nleerling: Testpersoon` },
+        ],
+      },
+    ),
+  /appears sensitive/,
+);
+await assertRequiredDlpPlugin(OPENCODE_PROJECT_ROOT);
+assert.doesNotThrow(() =>
+  assertOpenCodePluginBootstrap(
+    '/trusted/opencode',
+    openCodeEnvironment,
+    OPENCODE_PROJECT_ROOT,
+    (_binary, args, options) => {
+      assert.deepEqual(args, [
+        '--print-logs',
+        '--log-level',
+        'DEBUG',
+        'debug',
+        'info',
+      ]);
+      assert.equal(options.cwd, realpathSync(OPENCODE_PROJECT_ROOT));
+      assert.match(options.env.XDG_DATA_HOME, /preflight-data$/);
+      return {
+        status: 0,
+        stdout: join(
+          realpathSync(OPENCODE_PROJECT_ROOT),
+          '.opencode/plugins/delegation-dlp.js',
+        ),
+        stderr: '',
+      };
+    },
+  ),
+);
+assert.throws(
+  () =>
+    assertOpenCodePluginBootstrap(
+      '/trusted/opencode',
+      openCodeEnvironment,
+      OPENCODE_PROJECT_ROOT,
+      () => ({ status: 0, stdout: '', stderr: '' }),
+    ),
+  /failed host bootstrap/,
+);
 assert.deepEqual(config.enabled_providers, ['openai', 'deepseek']);
 assert.deepEqual(config.provider?.deepseek?.whitelist, ['deepseek-v4-flash']);
 assert.equal(config.mcp?.linear?.url, 'https://mcp.linear.app/mcp');
@@ -426,6 +489,7 @@ for (const legacyWorkflow of [
 
 const packageJson = JSON.parse(readFileSync('package.json', 'utf8'));
 assert.match(packageJson.scripts?.['agent:check'] ?? '', /agent:routing:check/);
+assert.match(packageJson.scripts?.['agent:check'] ?? '', /agent:opencode:test/);
 assert.match(packageJson.scripts?.['agent:check'] ?? '', /hooks:test/);
 assert.match(packageJson.scripts?.['agent:check'] ?? '', /check:agent-bridge/);
 assert.equal(

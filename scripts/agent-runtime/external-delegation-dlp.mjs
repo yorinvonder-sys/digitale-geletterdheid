@@ -66,7 +66,7 @@ function parseExternalPacket(parts) {
     headers[name] = match[2];
   }
 
-  if (/^[A-Z][A-Z_]*=/m.test(body) || BLOCKED_CONTENT.some((pattern) => pattern.test(body))) {
+  if (/^[A-Z][A-Z_]*=/im.test(body) || BLOCKED_CONTENT.some((pattern) => pattern.test(body))) {
     throw new Error('External delegation packet appears sensitive');
   }
 
@@ -111,9 +111,30 @@ export function validateExternalMessage(agent, parts = []) {
 export function createExternalDelegationHooks() {
   return {
     'chat.message': async (input, output) => {
-      const agent = input.agent ?? '';
-      const model = input.model?.modelID ?? '';
-      const route = resolveExternalRoute(agent, model);
+      const requestedModel = input.model
+        ? `${input.model.providerID}/${input.model.modelID}`
+        : '';
+      const resolvedModel = output.message?.model
+        ? `${output.message.model.providerID}/${output.message.model.modelID}`
+        : '';
+      const requestedRoute = resolveExternalRoute(
+        input.agent ?? '',
+        requestedModel,
+      );
+      const resolvedRoute = resolveExternalRoute(
+        output.message?.agent ?? '',
+        resolvedModel,
+      );
+
+      if (
+        requestedRoute &&
+        resolvedRoute &&
+        requestedRoute !== resolvedRoute
+      ) {
+        throw new Error('External delegation route changed during resolution');
+      }
+
+      const route = resolvedRoute || requestedRoute;
 
       if (route) {
         const packet = validateExternalMessage(route, output.parts);
