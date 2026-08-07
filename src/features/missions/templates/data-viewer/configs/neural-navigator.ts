@@ -62,6 +62,8 @@ export const neuralNavigatorConfig: DataViewerConfig = {
                     question:
                         'Wat is de rol van gewichten in een neuraal netwerk? Waarom worden ze aangepast tijdens het leren?',
                     type: 'text-observation',
+                    keywords: ['belangrijk', 'zwaar', 'optimaliseren', 'bijgesteld', 'trainen'],
+                    minKeywords: 1,
                     correctAnswer: '',
                     explanation:
                         'Gewichten bepalen hoe "belangrijk" elke input is voor het neuron. Een hoog gewicht betekent: deze input telt zwaar mee. Tijdens training worden gewichten aangepast (via backpropagation) zodat de outputs beter overeenkomen met de gewenste uitkomsten. Het leerproces van een neuraal netwerk is eigenlijk het optimaliseren van al die gewichten.',
@@ -117,6 +119,8 @@ export const neuralNavigatorConfig: DataViewerConfig = {
                     question:
                         'Beschrijf in eigen woorden hoe backpropagation werkt. Gebruik een vergelijking als hulp.',
                     type: 'text-observation',
+                    keywords: ['fout', 'mis', 'antwoord', 'verandert', 'aanpast'],
+                    minKeywords: 1,
                     correctAnswer: '',
                     explanation:
                         'Backpropagation is het leerproces: het netwerk maakt een voorspelling (forward pass), vergelijkt die met het juiste antwoord, berekent hoe groot de fout is, en past de gewichten aan om de fout kleiner te maken. Vergelijking: als je basketbal leert en je gooit te ver, pas je je worp aan (meer of minder kracht). Het netwerk doet hetzelfde, maar met honderden gewichten tegelijk.',
@@ -174,6 +178,8 @@ export const neuralNavigatorConfig: DataViewerConfig = {
                     question:
                         'Noem een toepassing van neurale netwerken die jij dagelijks gebruikt. Beschrijf wat de input en output van dat netwerk waarschijnlijk zijn.',
                     type: 'text-observation',
+                    keywords: ['gezicht', 'kijkgedrag', 'herkent', 'aanbeveelt', 'woord', 'voorspelt'],
+                    minKeywords: 1,
                     correctAnswer: '',
                     explanation:
                         'Goede voorbeelden: gezichtsontgrendeling van je telefoon (input: pixelwaarden, output: jij/niet jij), TikTok aanbevelingsalgoritme (input: kijkgedrag en likes, output: kans dat je een video leuk vindt), autocorrectie (input: getypte letters, output: waarschijnlijkste woord). Neurale netwerken zitten overal in moderne apps.',

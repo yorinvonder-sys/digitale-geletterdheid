@@ -72,16 +72,16 @@ export const dashboardDesignerConfig: DataViewerConfig = {
         // ── Dataset 2: Cirkelgrafiek ─────────────────────────────────────────
         {
             id: 'vakken-verdeling-onvoldoendes',
-            title: 'Verdeling onvoldoendes per vak — leerjaar 2',
+            title: 'Verdeling onvoldoendes per vak — leerjaar 2, hele schooljaar',
             description:
-                'Een cirkeldiagram laat zien hoe een geheel verdeeld is over delen. De waarden hieronder zijn absolute aantallen onvoldoendes, die toevallig optellen tot 100 — geen percentages. Bekijk de verdeling van onvoldoendes over vakken en beantwoord de vragen.',
+                'Een cirkeldiagram laat zien hoe een geheel verdeeld is over delen. De waarden hieronder zijn absolute aantallen onvoldoendes, geen percentages: samen zijn het er 115. Wil je weten welk aandeel een vak heeft, dan reken je: aantal ÷ 115.',
             type: 'pie-chart',
             chartData: [
-                { label: 'Wiskunde', value: 28, color: '#ff3c21' },
-                { label: 'Engels', value: 18, color: '#202023' },
-                { label: 'Nederlands', value: 14, color: '#99984D' },
-                { label: 'Aardrijkskunde', value: 22, color: '#e1ff01' },
-                { label: 'Overige vakken', value: 18, color: '#c2c1bd' },
+                { label: 'Wiskunde', value: 34, color: '#ff3c21' },
+                { label: 'Engels', value: 21, color: '#202023' },
+                { label: 'Nederlands', value: 15, color: '#99984D' },
+                { label: 'Aardrijkskunde', value: 26, color: '#e1ff01' },
+                { label: 'Overige vakken', value: 19, color: '#c2c1bd' },
             ],
             questions: [
                 {
@@ -91,7 +91,7 @@ export const dashboardDesignerConfig: DataViewerConfig = {
                     options: ['Engels', 'Aardrijkskunde', 'Wiskunde', 'Nederlands'],
                     correctAnswer: 'Wiskunde',
                     explanation:
-                        'Wiskunde vertegenwoordigt 28% van alle onvoldoendes — het grootste segment van het cirkeldiagram. Dit betekent niet dat wiskunde het "slechtste" vak is, maar dat het de meeste hulp nodig heeft.',
+                        'Wiskunde heeft 34 onvoldoendes van de 115 in totaal — het grootste segment van het cirkeldiagram. Wil je het aandeel weten: 34 ÷ 115 ≈ 0,30, dus ongeveer 30%. Let op het verschil tussen het aantal (34) en het aandeel (30%). Dit betekent niet dat wiskunde het "slechtste" vak is, maar dat daar de meeste hulp nodig is.',
                     points: 10,
                 },
                 {
@@ -118,7 +118,7 @@ export const dashboardDesignerConfig: DataViewerConfig = {
                     correctAnswer: '',
                     keywords: ['staafdiagram', 'vergelijken', 'kleine verschillen', 'lengte'],
                     explanation:
-                        'Een cirkeldiagram maakt het moeilijk om kleine verschillen te zien (is 18% groter dan 22%?). Een staafdiagram maakt vergelijking makkelijker door de lengtes van balken. Gebruik een staafdiagram als je de exacte waarden wilt vergelijken, en een cirkeldiagram als het gaat om de verhouding tot het geheel.',
+                        'Een cirkeldiagram maakt het moeilijk om kleine verschillen te zien (welk stuk is groter: dat van 19 of dat van 21?). Een staafdiagram maakt vergelijking makkelijker door de lengtes van balken. Gebruik een staafdiagram als je de exacte waarden wilt vergelijken, en een cirkeldiagram als het gaat om de verhouding tot het geheel.',
                     points: 10,
                 },
             ],

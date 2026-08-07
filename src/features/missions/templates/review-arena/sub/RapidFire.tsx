@@ -14,8 +14,20 @@ interface RapidFireProps {
     questions: RapidFireQuestion[];
     timePerQuestion?: number;
     onComplete: (score: number, maxScore: number) => void;
-    /** Called the moment the round is scored, before the correction is shown. */
+    /**
+     * Called once the LAST question is answered, with the definitive round score.
+     * Not per question: a partial score would lock the round on the value it had
+     * halfway through (0 after the first answer under the class-balanced formula).
+     */
     onSubmit?: (score: number) => void;
+    /**
+     * Uitkomst per al beantwoorde vraag, in volgorde. Hiermee hervat een herladen
+     * ronde op de eerstvolgende onbeantwoorde vraag in plaats van opnieuw te
+     * beginnen — en houdt een eerder gegeven antwoord zijn oorspronkelijke waarde.
+     */
+    initialResults?: boolean[];
+    /** Meldt de reeks uitkomsten na elk antwoord, zodat die bewaard kan worden. */
+    onProgress?: (results: boolean[]) => void;
     maxScore: number;
     trueLabel?: string;
     falseLabel?: string;
@@ -24,21 +36,54 @@ interface RapidFireProps {
 type AnswerState = boolean | 'timeout' | null;
 
 /**
- * Score met aftrek voor fout, zoals de scenario-engine: blind doorklikken op een
- * waar/onwaar-ronde levert gemiddeld evenveel goed als fout, en dus 0 punten.
- * De reeksbonus telt de LANGSTE reeks en kan een niet-foutloze ronde nooit naar
- * de maximumscore tillen.
+ * Accuratesse afgezet tegen de beste gok-strategie, zoals de scenario-engine. De
+ * ondergrens is het aandeel van de grootste klasse: precies wat je haalt door
+ * overal dezelfde knop in te drukken. Dat levert dus 0 op, ook bij een scheve
+ * verdeling — juist-minus-fout gaf bij `code-review-2` en `security-review` (elk
+ * 5 waar, 3 onwaar) nog 6 van 25 voor achtmaal "WAAR".
+ *
+ * De eerder gebruikte klassegebalanceerde vorm (aandeel goed per klasse, min 1)
+ * zette gokken ook op 0, maar woog de kleinste klasse veel zwaarder: één fout in
+ * een klasse van drie kostte meer dan één fout in een klasse van vijf. Deze vorm
+ * telt fouten gelijk, waar ze ook vallen.
+ *
+ * De reeksbonus telt de LANGSTE reeks, vervalt zodra de basisscore 0 is, en kan
+ * een niet-foutloze ronde nooit naar de maximumscore tillen. `answers` bevat het
+ * juiste antwoord per vraag, op index uitgelijnd met `results`; nog niet
+ * beantwoorde vragen tellen als fout.
  */
 export function scoreRapidFire(
     results: Array<{ correct: boolean }>,
-    total: number,
+    answers: boolean[],
     maxScore: number
 ): number {
+    const total = answers.length;
     if (total <= 0 || maxScore <= 0) return 0;
 
-    const correctCount = results.filter((r) => r.correct).length;
-    const wrongCount = results.length - correctCount;
-    const base = Math.max(0, Math.round(((correctCount - wrongCount) / total) * maxScore));
+    let trueTotal = 0;
+    let trueRight = 0;
+    let falseTotal = 0;
+    let falseRight = 0;
+    answers.forEach((expected, i) => {
+        const right = results[i]?.correct === true;
+        if (expected) {
+            trueTotal++;
+            if (right) trueRight++;
+        } else {
+            falseTotal++;
+            if (right) falseRight++;
+        }
+    });
+    const correctCount = trueRight + falseRight;
+
+    const accuracy = correctCount / total;
+    // Beste vaste strategie: altijd de grootste klasse kiezen. Bij één klasse valt
+    // er niets te gokken en telt kale accuratesse.
+    const guessBaseline = Math.max(trueTotal, falseTotal) / total;
+    const ratio = guessBaseline >= 1
+        ? accuracy
+        : (accuracy - guessBaseline) / (1 - guessBaseline);
+    const base = Math.max(0, Math.round(ratio * maxScore));
 
     let longestStreak = 0;
     let running = 0;
@@ -46,7 +91,9 @@ export function scoreRapidFire(
         running = r.correct ? running + 1 : 0;
         if (running > longestStreak) longestStreak = running;
     }
-    const bonus = Math.min(Math.floor(longestStreak / 3) * 2, 10);
+    // Zonder basisscore geen bonus: anders zou blind doorklikken via een toevallige
+    // reeks alsnog punten opleveren.
+    const bonus = base > 0 ? Math.min(Math.floor(longestStreak / 3) * 2, 10) : 0;
 
     // Alleen een foutloze ronde haalt het maximum; de bonus stopt één punt eronder.
     if (correctCount === total) return maxScore;
@@ -60,21 +107,39 @@ export const RapidFire: React.FC<RapidFireProps> = ({
     timePerQuestion,
     onComplete,
     onSubmit,
+    initialResults,
+    onProgress,
     maxScore,
     trueLabel = 'WAAR',
     falseLabel = 'ONWAAR',
 }) => {
-    const [currentIndex, setCurrentIndex] = useState(0);
-    const [results, setResults] = useState<Array<{ correct: boolean; timeLeft: number }>>([]);
+    // Hervat de ronde op de eerstvolgende onbeantwoorde vraag. De bewaarde
+    // uitkomsten blijven staan: herladen levert nooit een tweede kans op een
+    // vraag waarvan de uitleg al in beeld is geweest.
+    const resumed = (initialResults ?? []).slice(0, questions.length);
+    const [currentIndex, setCurrentIndex] = useState(resumed.length);
+    const [results, setResults] = useState<Array<{ correct: boolean; timeLeft: number }>>(
+        resumed.map((correct) => ({ correct, timeLeft: 0 }))
+    );
     const [answered, setAnswered] = useState<AnswerState>(null);
     const [streak, setStreak] = useState(0);
     const [timeLeft, setTimeLeft] = useState(timePerQuestion ?? null);
-    const [done, setDone] = useState(false);
-    const [finalScore, setFinalScore] = useState<number | null>(null);
+    const [done, setDone] = useState(resumed.length >= questions.length);
+    const [finalScore, setFinalScore] = useState<number | null>(
+        resumed.length >= questions.length
+            ? scoreRapidFire(
+                  resumed.map((correct) => ({ correct })),
+                  questions.map((q) => q.answer),
+                  maxScore
+              )
+            : null
+    );
     const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
     const currentQuestion = questions[currentIndex];
     const hasTimer = timePerQuestion !== null && timePerQuestion !== undefined;
+    // Antwoordsleutel voor de klassegebalanceerde score; op index uitgelijnd met results.
+    const answerKey = questions.map((q) => q.answer);
 
     useEffect(() => {
         if (!hasTimer || answered !== null || done) return;
@@ -107,16 +172,21 @@ export const RapidFire: React.FC<RapidFireProps> = ({
         const newResults = [...results, { correct, timeLeft: remainingTime ?? timeLeft ?? 0 }];
         setResults(newResults);
 
-        // Leg direct vast wat deze ronde tot nu toe waard is — nog niet beantwoorde
-        // vragen tellen als fout. Zo levert herladen ná het zien van uitleg nooit
-        // een hogere score op dan het antwoord dat de leerling zelf gaf.
-        onSubmit?.(scoreRapidFire(newResults, questions.length, maxScore));
+        // Bewaar de losse uitkomsten zodat herladen de reeks hervat in plaats van
+        // hem opnieuw te laten beginnen. De RONDESCORE gaat pas vast bij de laatste
+        // vraag: een tussenstand vastleggen zette de ronde op 0 (na één antwoord is
+        // de andere klasse nog volledig onbeantwoord) en sloot de rest af.
+        onProgress?.(newResults.map((r) => r.correct));
+
+        const roundTotal = scoreRapidFire(newResults, answerKey, maxScore);
+        // Alle vragen gehad: nu pas staat de rondescore vast — vóór het
+        // resultatenscherm met de uitleg, zodat herladen niets meer verbetert.
+        if (newResults.length >= questions.length) onSubmit?.(roundTotal);
 
         setTimeout(() => {
             const nextIndex = currentIndex + 1;
             if (nextIndex >= questions.length) {
-                const total = scoreRapidFire(newResults, questions.length, maxScore);
-                setFinalScore(total);
+                setFinalScore(roundTotal);
                 setDone(true);
             } else {
                 setCurrentIndex(nextIndex);

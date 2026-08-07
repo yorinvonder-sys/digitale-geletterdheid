@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronRight } from 'lucide-react';
 
@@ -49,6 +49,27 @@ export const MatchPairs: React.FC<MatchPairsProps> = ({
     const [done, setDone] = useState(false);
     const [score, setScore] = useState(0);
 
+    // Een juiste koppeling schakelt de aangeklikte rechterknop uit, en de laatste
+    // koppeling schakelt alles uit. Zonder overdracht valt de focus terug op <body>.
+    const leftRefs = useRef<Record<number, HTMLButtonElement | null>>({});
+    const resultRef = useRef<HTMLDivElement>(null);
+    const wrongTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+    const [pendingLeftFocus, setPendingLeftFocus] = useState<number | null>(null);
+
+    useEffect(() => {
+        if (pendingLeftFocus === null) return;
+        leftRefs.current[pendingLeftFocus]?.focus();
+        setPendingLeftFocus(null);
+    }, [pendingLeftFocus]);
+
+    useEffect(() => {
+        if (done) resultRef.current?.focus();
+    }, [done]);
+
+    useEffect(() => () => {
+        if (wrongTimer.current) clearTimeout(wrongTimer.current);
+    }, []);
+
     const scoreFor = (wrong: number) =>
         Math.max(0, Math.round(((pairs.length - Math.min(wrong, pairs.length)) / pairs.length) * maxScore));
 
@@ -72,7 +93,14 @@ export const MatchPairs: React.FC<MatchPairsProps> = ({
         }
 
         if (selectedLeft === id) {
-            // Correct match!
+            // Correct match! Een lopende fout-timer zou de flits van een vórige
+            // poging over deze koppeling heen zetten — dus eerst opruimen.
+            if (wrongTimer.current) {
+                clearTimeout(wrongTimer.current);
+                wrongTimer.current = null;
+            }
+            setWrongFlash(null);
+
             const newMatched = new Set(matched);
             newMatched.add(id);
             setMatched(newMatched);
@@ -85,6 +113,9 @@ export const MatchPairs: React.FC<MatchPairsProps> = ({
                 setScore(earned);
                 setDone(true);
                 onSubmit?.(earned);
+            } else {
+                const next = leftItems.find((l) => !newMatched.has(l.id));
+                if (next) setPendingLeftFocus(next.id);
             }
         } else {
             // Wrong — flash red briefly
@@ -96,9 +127,11 @@ export const MatchPairs: React.FC<MatchPairsProps> = ({
             // Leg de opgelopen aftrek meteen vast, zodat herladen na een fout de
             // strafpunten niet wist.
             onSubmit?.(scoreFor(attempts));
-            setTimeout(() => {
+            if (wrongTimer.current) clearTimeout(wrongTimer.current);
+            wrongTimer.current = setTimeout(() => {
                 setSelectedRight(null);
                 setWrongFlash(null);
+                wrongTimer.current = null;
             }, 600);
         }
     };
@@ -148,6 +181,9 @@ export const MatchPairs: React.FC<MatchPairsProps> = ({
                                 data-qa="review-match-left"
                                 data-matched={isMatched}
                                 key={item.id}
+                                ref={(el: HTMLButtonElement | null) => {
+                                    leftRefs.current[item.id] = el;
+                                }}
                                 type="button"
                                 onClick={() => handleLeftClick(item.id)}
                                 disabled={isMatched || done}
@@ -247,9 +283,9 @@ export const MatchPairs: React.FC<MatchPairsProps> = ({
                         className="space-y-3"
                     >
                         <div
-                            role="status"
-                            aria-live="polite"
-                            className="p-3 rounded-xl bg-duck-ink/10 text-duck-ink text-sm font-medium"
+                            ref={resultRef}
+                            tabIndex={-1}
+                            className="p-3 rounded-xl bg-duck-ink/10 text-duck-ink text-sm font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-ink"
                             style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                         >
                             Alle koppels gevonden! <span className="font-black">{score}/{maxScore} punten</span>

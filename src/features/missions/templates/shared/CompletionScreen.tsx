@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useId, useRef } from 'react';
 import { Trophy, Sparkles, CheckCircle2, RotateCcw } from 'lucide-react';
 import { KeesMessage } from '@/components/brand/KeesMessage';
 import { getKeesCompletionLine } from '@/config/keesVoice';
@@ -46,6 +46,17 @@ export const CompletionScreen: React.FC<CompletionScreenProps> = ({
 
     const percentage = Math.round((score / maxScore) * 100);
 
+    // Dit scherm vervangt de hele missie; zonder focusverplaatsing landt de focus op
+    // <body> en hoort een schermlezer niets. De kop is het programmatische beginpunt
+    // en beschrijft zichzelf met score + uitkomst, zodat een live-regio (die
+    // beginhoud niet betrouwbaar aankondigt) niet nodig is.
+    const headingRef = useRef<HTMLHeadingElement>(null);
+    const summaryId = useId();
+
+    useEffect(() => {
+        headingRef.current?.focus();
+    }, []);
+
     // A learner who skipped or failed most of a mission has not actually mastered
     // the takeaways, so we must not present them as achieved (green ✓) nor claim a
     // celebratory "voltooid". 40% mirrors the pass threshold used elsewhere.
@@ -78,16 +89,20 @@ export const CompletionScreen: React.FC<CompletionScreenProps> = ({
                         </p>
                     )}
                     <h2
-                        className="text-2xl font-black text-duck-ink mb-1"
+                        ref={headingRef}
+                        tabIndex={-1}
+                        aria-describedby={summaryId}
+                        data-qa="completion-heading"
+                        className="text-2xl font-black text-duck-ink mb-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-ink focus-visible:ring-offset-2 rounded-lg"
                         style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                     >
                         {badge.title}
                     </h2>
-                    {/* Score en uitkomst worden samen aangekondigd; de uitkomst hangt niet
-                        alleen aan de tekstkleur maar ook aan een icoon en een label. */}
+                    {/* Score en uitkomst horen bij de kop: ze worden meegelezen zodra de
+                        focus daarheen gaat. De uitkomst hangt niet alleen aan de
+                        tekstkleur maar ook aan een icoon en een label. */}
                     <div
-                        role="status"
-                        aria-live="polite"
+                        id={summaryId}
                         className="mt-3 flex flex-col items-center gap-2"
                     >
                         <div className="flex items-center justify-center gap-2">

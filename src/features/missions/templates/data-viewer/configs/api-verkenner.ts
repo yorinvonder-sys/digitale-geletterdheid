@@ -137,7 +137,7 @@ export const apiVerkennerConfig: DataViewerConfig = {
                     title: 'Weer-API: Amsterdam',
                     icon: '🌤️',
                     content:
-                        'URL: https://api.openweathermap.org/data/2.5/weather?q=Amsterdam&units=metric&appid=DEMO_SLEUTEL\n\nDe vraagteken (?) geeft aan dat er parameters volgen. "q=Amsterdam" specificeert de stad. "units=metric" vraagt om graden Celsius (niet Fahrenheit). "appid" is de verplichte sleutel — zonder sleutel werkt geen enkele weer-API. Parameters worden gescheiden door &.',
+                        'URL: https://api.openweathermap.org/data/2.5/weather?q=Amsterdam&units=metric&appid=DEMO_SLEUTEL\n\nDe vraagteken (?) geeft aan dat er parameters volgen. "q=Amsterdam" specificeert de stad. "units=metric" vraagt om graden Celsius (niet Fahrenheit). "appid" is de verplichte sleutel van deze aanbieder — zonder sleutel geeft OpenWeatherMap geen data terug. Dat geldt niet voor élke weer-API: Open-Meteo werkt bijvoorbeeld zonder sleutel. Parameters worden gescheiden door &.',
                 },
                 {
                     title: 'Pokémon-API: Pikachu',

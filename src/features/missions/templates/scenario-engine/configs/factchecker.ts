@@ -246,6 +246,16 @@ const config: ScenarioEngineConfig = {
                 },
                 {
                     id: 3,
+                    icon: '🩺',
+                    title: 'RIVM publiceert griepprik-cijfers',
+                    description:
+                        'Het RIVM zet nieuwe cijfers over de griepprik online op hun eigen website, met duidelijke bronvermelding en cijfers van het CBS erbij.',
+                    correct: true,
+                    explanation:
+                        'Delen mag hier gerust. Het RIVM is de officiële overheidsinstantie voor volksgezondheid en vermeldt transparant waar de cijfers vandaan komen. Dat is precies wat een betrouwbare bron kenmerkt.',
+                },
+                {
+                    id: 4,
                     icon: '📸',
                     title: 'Foto van verwoest gebied "na de aardbeving"',
                     description:
@@ -255,7 +265,7 @@ const config: ScenarioEngineConfig = {
                         'Niet zomaar delen. Foto\'s worden regelmatig hergebruikt uit een andere context. Doe eerst een reverse image search (via Google Images) om te controleren of de foto echt is.',
                 },
                 {
-                    id: 4,
+                    id: 5,
                     icon: '🏫',
                     title: 'Schoolkrant over roosterwijziging',
                     description:
@@ -265,7 +275,7 @@ const config: ScenarioEngineConfig = {
                         'Prima om te delen. Het komt van een directe, betrouwbare bron (de school zelf). Praktische schoolinformatie is precies het soort content dat nuttig is om te delen.',
                 },
                 {
-                    id: 5,
+                    id: 6,
                     icon: '🎭',
                     title: '"Bekende persoon opgepakt" — van satirische site',
                     description:
@@ -275,7 +285,17 @@ const config: ScenarioEngineConfig = {
                         'Niet delen als nieuws. Satire is een kunstvorm, maar als je het deelt zonder de context te vermelden, misleid je anderen. Als je het grappig vindt, deel het dan mét de context: "Dit is satire van De Speld."',
                 },
                 {
-                    id: 6,
+                    id: 7,
+                    icon: '🚨',
+                    title: 'Politie deelt signalement van vermist kind',
+                    description:
+                        'De officiële Instagram-pagina van de politie plaatst een bericht met foto en signalement van een vermist kind, met het verzoek om te delen.',
+                    correct: true,
+                    explanation:
+                        'Delen is hier zinvol. Het bericht komt rechtstreeks van de politie zelf, is tijdgevoelig en verspreiden vergroot de kans dat het kind sneller wordt gevonden.',
+                },
+                {
+                    id: 8,
                     icon: '🔬',
                     title: 'Wetenschappelijke doorbraak: "één studie, voorlopige resultaten"',
                     description:

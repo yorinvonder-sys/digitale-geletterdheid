@@ -5,8 +5,13 @@ const DEBOUNCE_MS = 1_000;
 
 /**
  * Verhoog dit nummer zodra het opslagformaat van missie-state onverenigbaar
- * verandert. Opslag met een andere versie wordt genegeerd en gewist, zodat een
- * leerling met oude opslag verse state krijgt in plaats van een kapot scherm.
+ * verandert. Opslag met een hogere of onbekende versie wordt gewist, zodat een
+ * leerling verse state krijgt in plaats van een kapot scherm.
+ *
+ * Versie 0 is de ongewikkelde opslag van vóór deze versionering: daar stond de
+ * state zélf in localStorage, zonder envelope. Die wordt gemigreerd, niet
+ * gewist — anders verliest elke leerling die op het moment van uitrol midden in
+ * een opdracht zit zijn volledige voortgang.
  */
 const SCHEMA_VERSION = 1;
 
@@ -36,9 +41,30 @@ const isPlainObject = (value: unknown): value is Record<string, unknown> =>
     typeof value === 'object' && value !== null && !Array.isArray(value);
 
 /**
+ * Herkent het opslagformaat. Een envelope `{ v, state }` van de huidige versie
+ * levert de state binnenin; alles wat geen envelope is, is ongewikkelde opslag
+ * van vóór de versionering (versie 0) en wordt als state zelf gelezen. Een
+ * envelope met een ándere versie is onbruikbaar en levert `null`.
+ */
+function unwrapPayload<T>(payload: unknown): { state: T } | null {
+    const isEnvelope =
+        isPlainObject(payload) && typeof payload.v === 'number' && 'state' in payload;
+
+    if (isEnvelope) {
+        return (payload as { v: number }).v === SCHEMA_VERSION
+            ? { state: (payload as unknown as StoredPayload<T>).state }
+            : null;
+    }
+
+    // Versie 0: de state stond ongewikkeld in localStorage.
+    return { state: payload as T };
+}
+
+/**
  * Leest opgeslagen state en geeft die alleen terug als hij veilig te gebruiken
- * is. Bij een versieverschil, corrupte JSON of een gefaalde validatie wordt de
- * opslag gewist en de initiële state teruggegeven.
+ * is. Bij corrupte JSON, een onbekende schemaversie of een gefaalde validatie
+ * wordt de opslag gewist en de initiële state teruggegeven. Opslag in het oude,
+ * ongewikkelde formaat wordt gemigreerd en teruggeschreven als versie 1.
  */
 function restoreState<T>(
     storageKey: string,
@@ -71,9 +97,10 @@ function restoreState<T>(
         return discard();
     }
 
-    if (!isPlainObject(payload) || payload.v !== SCHEMA_VERSION) return discard();
+    const unwrapped = unwrapPayload<T>(payload);
+    if (!unwrapped) return discard();
 
-    const stored = (payload as unknown as StoredPayload<T>).state;
+    const stored = unwrapped.state;
     // Merge over de initiële state, zodat een veld dat in oude opslag ontbreekt
     // geen undefined oplevert in de engine.
     const merged =
@@ -83,6 +110,19 @@ function restoreState<T>(
 
     if (merged === undefined || merged === null) return discard();
     if (validate && !validate(merged)) return discard();
+
+    // Migratie van versie 0: de state is bruikbaar gebleken, dus schrijf hem
+    // meteen terug in het huidige formaat. Lukt dat niet, dan blijft de oude
+    // opslag staan en wordt hij bij het volgende bezoek opnieuw gemigreerd.
+    const wasWrapped =
+        isPlainObject(payload) && typeof payload.v === 'number' && 'state' in payload;
+    if (!wasWrapped) {
+        try {
+            localStorage.setItem(storageKey, serialize(merged));
+        } catch {
+            // Best effort
+        }
+    }
 
     return { state: merged, found: true };
 }
@@ -121,7 +161,8 @@ interface AutoSaveResult<T> {
  * - beforeunload event listener als extra vangnet
  *
  * Herstel gebeurt alleen als de opslag veilig is:
- * 1. schemaversie moet gelijk zijn aan SCHEMA_VERSION, anders wissen;
+ * 1. opslag zonder envelope is versie 0 en wordt gemigreerd naar het huidige
+ *    formaat; een envelope met een ándere versie wordt gewist;
  * 2. corrupte JSON wordt gewist en genegeerd;
  * 3. objecten worden over de initiële state heen gemerged, zodat een veld dat
  *    in oude opslag ontbreekt `undefined` noch een crash oplevert;
@@ -159,8 +200,22 @@ export function useMissionAutoSave<T>(
         restored.current = restoreState(storageKey, initialState, validate);
     }
 
-    const [state, setState] = useState<T>(restored.current.state);
+    const [state, setStateInternal] = useState<T>(restored.current.state);
     const [hasSavedProgress] = useState<boolean>(restored.current.found);
+
+    // Na clearSave() mag niets de zojuist gewiste opslag terugschrijven — niet de
+    // lopende debounce, niet beforeunload en niet de unmount-flush. Zonder deze
+    // vlag herstelde de cleanup direct na afronding de voltooide of vergrendelde
+    // opslag, waardoor een volgend bezoek in die oude toestand begon.
+    const writesSuppressed = useRef(false);
+    const debounceTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+    // Een expliciete state-wijziging heft de blokkade weer op: wie na wissen
+    // opnieuw begint (zoals het herstelscherm doet) moet gewoon weer opslaan.
+    const setState = useCallback<React.Dispatch<React.SetStateAction<T>>>((value) => {
+        writesSuppressed.current = false;
+        setStateInternal(value);
+    }, []);
 
     // Keep a ref to the latest state for the beforeunload handler
     const stateRef = useRef<T>(state);
@@ -168,20 +223,28 @@ export function useMissionAutoSave<T>(
 
     // Debounced save to localStorage
     useEffect(() => {
+        if (writesSuppressed.current) return;
+
         const timer = setTimeout(() => {
+            if (writesSuppressed.current) return;
             try {
                 localStorage.setItem(storageKey, serialize(state));
             } catch {
                 // localStorage full or unavailable — silent fail
             }
         }, DEBOUNCE_MS);
+        debounceTimer.current = timer;
 
-        return () => clearTimeout(timer);
+        return () => {
+            clearTimeout(timer);
+            if (debounceTimer.current === timer) debounceTimer.current = null;
+        };
     }, [state, storageKey]);
 
     // beforeunload: flush immediately (no debounce) as a safety net
     useEffect(() => {
         const handleBeforeUnload = () => {
+            if (writesSuppressed.current) return;
             try {
                 localStorage.setItem(storageKey, serialize(stateRef.current));
             } catch {
@@ -196,6 +259,7 @@ export function useMissionAutoSave<T>(
     // Flush on unmount so pending changes aren't lost when leaving a mission
     useEffect(() => {
         return () => {
+            if (writesSuppressed.current) return;
             try {
                 localStorage.setItem(storageKey, serialize(stateRef.current));
             } catch {
@@ -205,6 +269,11 @@ export function useMissionAutoSave<T>(
     }, [storageKey]);
 
     const clearSave = useCallback(() => {
+        writesSuppressed.current = true;
+        if (debounceTimer.current !== null) {
+            clearTimeout(debounceTimer.current);
+            debounceTimer.current = null;
+        }
         try {
             localStorage.removeItem(storageKey);
         } catch {

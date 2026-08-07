@@ -84,6 +84,97 @@ interface DataViewerState {
 const DEFAULT_MIN_WORDS = 8;
 const DEFAULT_MIN_KEYWORDS = 1;
 
+/**
+ * Hoeveel eigen inhoudswoorden een antwoord naast de kernbegrippen moet delen met
+ * de vraag en de uitleg. Eén treffer met opvultekst eromheen leverde eerst de volle
+ * punten op ("moe ik weet het antwoord niet en gok maar wat" scoorde 10/10 bij
+ * `data-journalist` q3); nu moet er ook echt iets over de data gezegd zijn. Het
+ * aantal keywords zelf verhogen bleek te streng: een goed antwoord in eigen
+ * woorden gebruikt lang niet altijd twee van de begrippen uit de config.
+ */
+const MIN_SUBSTANCE = 1;
+
+/**
+ * Zonder keywords is er geen enkel ander signaal, dus ligt de lat op twee gedeelde
+ * inhoudswoorden. Daar gaf de terugval eerder altijd de volle punten, ook voor
+ * "ik weet het antwoord niet en gok maar wat" bij `network-navigator` q3.
+ */
+const MIN_TOPIC_OVERLAP = 2;
+
+/**
+ * Standaardzinnen waarmee een leerling aangeeft niets te antwoorden. Ze worden uit
+ * het antwoord geknipt vóór de lengte- en inhoudscontrole, zodat "geen idee" met
+ * genoeg opvulwoorden eromheen niet meer als antwoord telt. Een echt antwoord dat
+ * met "ik weet niet zeker of…" begint houdt gewoon zijn inhoud over.
+ */
+const NON_ANSWER_PATTERNS: RegExp[] = [
+    /\bik weet (het |dit |de )?(antwoord |antwoorden )?niet\b/g,
+    /\bweet ik (het )?niet\b/g,
+    /\bweet ik veel\b/g,
+    // Bewust GEEN kale `weet niet`: dat knipt ook echte inhoud weg. "Je weet niet
+    // welke waarde bij welke key hoort" is bij `api-verkenner` q3 een correct
+    // antwoord van negen woorden, en hield er zeven over — te kort voor de
+    // bevestigknop. Alleen expliciete ik-vormen tellen als niet-antwoord.
+    /\bgeen (flauw )?(idee|benul)\b/g,
+    /\bgeen antwoord\b/g,
+    /\bgok (maar )?(wat|iets)\b/g,
+    /\bmaar (wat|iets) gokken\b/g,
+    /\bmaakt niet uit\b/g,
+    /\bboeit (me )?niet\b/g,
+    /\b(idk|nvt|xxx)\b/g,
+];
+
+/**
+ * Veelgebruikte functiewoorden. Ze tellen niet mee voor de inhoudelijke overlap
+ * met de vraag, anders zou een willekeurige zin al aansluiting lijken te hebben.
+ */
+const OBSERVATION_STOPWORDS = new Set([
+    'alle', 'allemaal', 'alleen', 'ander', 'andere', 'beste', 'beschrijf', 'daar',
+    'deze', 'denk', 'denken', 'doen', 'doet', 'door', 'echt', 'eens', 'eigen',
+    'elke', 'even', 'gaan', 'gaat', 'geen', 'geeft', 'gewoon', 'goed', 'haar',
+    'hebben', 'hebt', 'heeft', 'heel', 'hier', 'hoeveel', 'hun', 'iemand', 'iets',
+    'ieder', 'jouw', 'juist', 'kijken', 'kijkt', 'kunnen', 'kunt', 'maar', 'maken',
+    'meer', 'misschien', 'moet', 'moeten', 'mogelijk', 'mogelijke', 'naar', 'niet',
+    'niets', 'nooit', 'omdat', 'ongeveer', 'onze', 'ooit', 'over', 'opvalt', 'soms',
+    'staan', 'staat', 'toch', 'toen', 'vaak', 'vaker', 'valt', 'veel', 'vind',
+    'vinden', 'voor', 'vooral', 'waar', 'waarom', 'want', 'wanneer', 'welke', 'wordt',
+    'worden', 'woorden', 'zeer', 'zegt', 'zeggen', 'zelf', 'zich', 'zien', 'zijn',
+    'zoals', 'zodat', 'zou', 'zouden',
+]);
+
+/**
+ * Een antwoord dat een volledige URL, een pad of een formule is. Zulke antwoorden
+ * zijn per definitie kort: het juiste antwoord op `api-verkenner` q8
+ * (https://pokeapi.co/api/v2/pokemon/charizard) telt zeven woorden en haalde de
+ * generieke eis van acht niet, waardoor de bevestigknop uit bleef én de score 0
+ * was — een leerling met het juiste antwoord kwam niet verder.
+ *
+ * Het patroon eist een volledig adres MET pad. Een kaal domein telt niet: bij
+ * `network-navigator` q3 haalde "https://latency-server.nl" anders het keyword
+ * `latency` plus een woord uit de uitleg, en scoorde 10/10 zonder één observatie.
+ */
+const STRUCTURED_ANSWER = /https?:\/\/[^\s/]+\/\S+|\b[a-z0-9-]+(\.[a-z]{2,})+\/\S+|\d\s*[+\-*/×÷=]\s*\d/i;
+
+/**
+ * Verwacht deze vraag een gestructureerd antwoord? Dat leiden we af uit de uitleg:
+ * staat daar zelf een URL, pad of formule in, dan is dát het modelantwoord en zegt
+ * het aantal woorden niets. In een gewone observatievraag is een URL gewone tekst
+ * en geldt de lengte-eis onverkort.
+ */
+function expectsStructuredAnswer(q: DataQuestion): boolean {
+    return STRUCTURED_ANSWER.test(q.explanation) || STRUCTURED_ANSWER.test(String(q.correctAnswer));
+}
+
+/**
+ * Haalt het antwoord de lengte-eis? Een gestructureerd antwoord is vrijgesteld —
+ * maar alleen bij een vraag die zo'n antwoord ook echt verwacht. Zowel de score
+ * als de bevestigknop gebruiken deze functie, zodat die twee nooit uit elkaar lopen.
+ */
+export function meetsObservationLength(q: DataQuestion, value: string, minWords: number): boolean {
+    if (expectsStructuredAnswer(q) && STRUCTURED_ANSWER.test(value)) return true;
+    return observationWords(meaningfulObservation(value)).length >= minWords;
+}
+
 /** Kleine letters zonder accenten, zodat "Café" en "cafe" hetzelfde matchen. */
 function normalizeObservation(value: string): string {
     return value
@@ -122,18 +213,71 @@ function countKeywordHits(value: string, keywords: string[]): number {
     }).length;
 }
 
-/** 0 = te kort of ontaard, halve punten = te weinig kernbegrippen, anders vol. */
-function scoreObservation(q: DataQuestion, raw: string | number | undefined): number {
+/**
+ * Haalt de standaard niet-antwoorden uit de tekst. Wat overblijft is wat de
+ * leerling echt over de data zegt; dát is waarop lengte en inhoud worden gemeten.
+ */
+function meaningfulObservation(value: string): string {
+    let text = ` ${observationWords(value).join(' ')} `;
+    for (const pattern of NON_ANSWER_PATTERNS) text = text.replace(pattern, ' ');
+    return text.trim().replace(/\s+/g, ' ');
+}
+
+/** Inhoudswoorden, ingekort tot vijf letters zodat "router" en "routers" matchen. */
+function contentStems(text: string): Set<string> {
+    return new Set(
+        observationWords(text)
+            .filter(w => w.length >= 4 && !OBSERVATION_STOPWORDS.has(w))
+            .map(w => w.slice(0, 5))
+    );
+}
+
+/**
+ * Hoeveel inhoudswoorden het antwoord deelt met de vraag en de bijbehorende
+ * uitleg. Dit vervangt de kale lengtecontrole voor vragen zonder keywords: daar
+ * gaf de terugval altijd de volle punten, dus scoorde "ik weet het antwoord niet
+ * en gok maar wat" 10/10 bij `network-navigator` q3.
+ */
+function topicOverlap(text: string, q: DataQuestion, exclude?: Set<string>): number {
+    const topic = contentStems(`${q.question} ${q.explanation}`);
+    let hits = 0;
+    for (const stem of contentStems(text)) {
+        if (exclude?.has(stem)) continue;
+        if (topic.has(stem)) hits++;
+    }
+    return hits;
+}
+
+/** 0 = te kort, ontaard of niet ter zake; halve punten = te weinig inhoud; anders vol. */
+export function scoreObservation(q: DataQuestion, raw: string | number | undefined): number {
     const value = String(raw ?? '');
     const minWords = q.minWords ?? DEFAULT_MIN_WORDS;
     if (isDegenerateObservation(value)) return 0;
-    if (observationWords(value).length < minWords) return 0;
+    const meaningful = meaningfulObservation(value);
+    if (!meetsObservationLength(q, value, minWords)) return 0;
     if (q.keywords && q.keywords.length > 0) {
-        const hits = countKeywordHits(value, q.keywords);
-        const needed = q.minKeywords ?? DEFAULT_MIN_KEYWORDS;
-        return hits >= needed ? q.points : Math.round(q.points / 2);
+        const hits = countKeywordHits(meaningful, q.keywords);
+        const needed = Math.min(q.minKeywords ?? DEFAULT_MIN_KEYWORDS, q.keywords.length);
+        // De kernbegrippen zelf tellen niet mee voor de inhoud: een rij losse
+        // keywords achter elkaar is geen observatie.
+        const keywordStems = contentStems(q.keywords.join(' '));
+        const substance = topicOverlap(meaningful, q, keywordStems);
+        // Een kort maar raak antwoord bestaat soms bijna volledig uit kernbegrippen
+        // en deelt dan weinig andere woorden met de uitleg. Zo'n antwoord telt ook
+        // als inhoudelijk, mits er een echte zin omheen staat — een kale rij
+        // keywords ("moe moe blij uren patroon") haalt die eigen woorden niet.
+        const ownWords = new Set(
+            observationWords(meaningful).filter(w => !keywordStems.has(w.slice(0, 5)))
+        );
+        const substantive = substance >= MIN_SUBSTANCE || (hits >= 3 && ownWords.size >= 5);
+        if (hits >= needed && substantive) return q.points;
+        // Halve punten alleen bij een echt aanknopingspunt: één kernbegrip, of
+        // zonder kernbegrip minstens twee inhoudswoorden uit de vraag of uitleg.
+        return hits > 0 || substance >= MIN_TOPIC_OVERLAP ? Math.round(q.points / 2) : 0;
     }
-    return q.points;
+    const overlap = topicOverlap(meaningful, q);
+    if (overlap >= MIN_TOPIC_OVERLAP) return q.points;
+    return overlap === 1 ? Math.round(q.points / 2) : 0;
 }
 
 function scoreQuestion(q: DataQuestion, answers: Record<string, string | number>): number {
@@ -214,8 +358,9 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
     const positiveFeedback = q.type === 'text-observation'
         ? (observationScore ?? 0) > 0
         : correct === true;
+    const lengthOk = q.type === 'text-observation' && meetsObservationLength(q, observation, minWords);
     const submitDisabled = q.type === 'text-observation'
-        ? wordCount < minWords
+        ? !lengthOk
         : answer === undefined || answer === '';
 
     return (
@@ -294,8 +439,8 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
                                 className="text-xs text-duck-ink/75 mb-3"
                                 style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                             >
-                                {wordCount < minWords
-                                    ? `Schrijf in je eigen woorden wat je in de data ziet — nog minstens ${minWords - wordCount} woord${minWords - wordCount === 1 ? '' : 'en'}.`
+                                {!lengthOk
+                                    ? `Schrijf in je eigen woorden wat je in de data ziet — nog minstens ${Math.max(1, minWords - wordCount)} woord${minWords - wordCount === 1 ? '' : 'en'}.`
                                     : `${wordCount} woorden — je kunt bevestigen.`}
                             </p>
                         </>
@@ -574,19 +719,50 @@ const DataViewerInner: React.FC<DataViewerProps> = ({
         followUpCorrect: {},
     };
 
-    // Een opgeslagen sessie kan van een oudere, grotere config komen. Herstel alleen
-    // wanneer de datasetindex nog bestaat en de vraag-id's nog kloppen.
+    // Een opgeslagen sessie kan van een oudere, grotere config komen, of beschadigd
+    // zijn. Herstel alleen wanneer de datasetindex nog bestaat, elke map een écht
+    // object is met sleutels én waarden van het juiste soort, en fase en index bij
+    // elkaar passen. `?? {}` volstond niet: `answers: null` kwam daar ongezien
+    // doorheen, overschreef de lege beginwaarde en liet de vraagkaart crashen.
     const validateSavedState = useCallback((restored: DataViewerState): boolean => {
         if (!restored || typeof restored !== 'object') return false;
+        if (!['intro', 'explore', 'results'].includes(restored.phase)) return false;
         const index = restored.currentDataset;
         if (!Number.isInteger(index) || index < 0 || index >= config.datasets.length) return false;
-        const knownIds = new Set(config.datasets.flatMap(ds => ds.questions.map(q => q.id)));
-        const usedIds = [
-            ...Object.keys(restored.answers ?? {}),
-            ...Object.keys(restored.submitted ?? {}),
-            ...Object.keys(restored.textObservations ?? {}),
-        ];
-        return usedIds.every(id => knownIds.has(id));
+        // Samenhang fase/index: de intro staat altijd op de eerste dataset, en het
+        // resultatenscherm wordt pas bereikt vanaf de laatste.
+        if (restored.phase === 'intro' && index !== 0) return false;
+        if (restored.phase === 'results' && index !== config.datasets.length - 1) return false;
+
+        const questionIds = new Set(config.datasets.flatMap(ds => ds.questions.map(q => q.id)));
+        // De verdiepingsregistraties worden op DATASET-id gezet, niet op vraag-id.
+        // Ze tegen de vraag-id's toetsen wiste de opslag zodra een leerling één
+        // verdiepingsvraag had beantwoord.
+        const followUpIds = new Set(config.datasets.filter(ds => ds.followUp).map(ds => ds.id));
+
+        const isValidMap = (
+            value: unknown,
+            allowedKeys: Set<string>,
+            isValidValue: (v: unknown) => boolean
+        ): boolean =>
+            typeof value === 'object' && value !== null && !Array.isArray(value) &&
+            Object.entries(value as Record<string, unknown>)
+                .every(([key, v]) => allowedKeys.has(key) && isValidValue(v));
+
+        const isAnswer = (v: unknown) =>
+            typeof v === 'string' || (typeof v === 'number' && Number.isFinite(v));
+        const isBoolean = (v: unknown) => typeof v === 'boolean';
+        const isText = (v: unknown) => typeof v === 'string';
+        const isConfidence = (v: unknown) => v === 1 || v === 2 || v === 3;
+
+        return (
+            isValidMap(restored.answers, questionIds, isAnswer) &&
+            isValidMap(restored.submitted, questionIds, isBoolean) &&
+            isValidMap(restored.textObservations, questionIds, isText) &&
+            isValidMap(restored.confidences, questionIds, isConfidence) &&
+            isValidMap(restored.followUpAnswered, followUpIds, isBoolean) &&
+            isValidMap(restored.followUpCorrect, followUpIds, isBoolean)
+        );
     }, [config]);
 
     const { state, setState, clearSave } = useMissionAutoSave<DataViewerState>(

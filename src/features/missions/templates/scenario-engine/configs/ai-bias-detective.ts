@@ -135,12 +135,12 @@ const config: ScenarioEngineConfig = {
                 {
                     id: 8,
                     icon: '📢',
-                    title: 'Vacatures worden alleen aan jongere mensen getoond',
+                    title: 'Vacatures worden vooral aan jongere mensen getoond',
                     description:
                         'Een AI die vacatures verspreidt op social media, laat advertenties voor goedbetaalde banen vooral zien aan mensen onder de veertig.',
                     correct: true,
                     explanation:
-                        'Dit is leeftijdsbias. Wie een vacature nooit te zien krijgt, kan er ook niet op solliciteren. De AI leerde dat jongere mensen vaker klikken en sluit daarmee oudere mensen systematisch uit van kansen. Bias gaat dus niet alleen over afkomst of gender.',
+                        'Dit is leeftijdsbias. Wie een vacature nauwelijks te zien krijgt, kan er ook bijna niet op solliciteren. Waaróm het systeem dit doet, kun je aan de uitkomst niet aflezen: het kan liggen aan de instellingen van de adverteerder, aan een systeem dat stuurt op zo veel mogelijk klikken, of aan kenmerken die indirect met leeftijd samenhangen. Wat je wél ziet, is dat oudere mensen systematisch kansen mislopen. Bias gaat dus niet alleen over afkomst of gender.',
                 },
                 {
                     id: 9,
@@ -252,7 +252,7 @@ const config: ScenarioEngineConfig = {
                         'Een huizenzoeksite laat automatisch minder dure woningen zien zodra de achternaam van de zoeker bij een bepaalde groep hoort.',
                     correct: false,
                     explanation:
-                        'Dit is ernstige bias. De achternaam wordt gebruikt als vervangende maatstaf voor afkomst, waardoor mensen minder keuze te zien krijgen zonder dat ze het merken. Deze praktijk heeft een naam: redlining — vroeger werden hele wijken op een kaart aangewezen waar bewoners geen lening of verzekering konden krijgen. Een algoritme kan dat onbedoeld herhalen.',
+                        'Dit is ernstige bias. De achternaam wordt gebruikt als vervangende maatstaf voor afkomst, waardoor mensen minder keuze te zien krijgen zonder dat ze het merken. Op de woningmarkt heet dit steering: mensen worden op grond van hun veronderstelde afkomst naar andere woningen gestuurd. Het lijkt op redlining, een oudere vorm waarbij hele wijken op een kaart werden aangewezen waar bewoners geen lening of verzekering konden krijgen. Een algoritme kan zulke patronen onbedoeld herhalen.',
                 },
                 {
                     id: 2,
@@ -409,7 +409,7 @@ const config: ScenarioEngineConfig = {
                         'Overheden stellen regels voor AI die zwaarwegende beslissingen beïnvloedt (aannames, leningen, strafrechtspraak) en laten die systemen controleren voordat ze gebruikt mogen worden.',
                     correct: true,
                     explanation:
-                        'Regels en controle helpen echt. De EU AI Act legt de plicht bij de maker van een hoog-risico AI-systeem: die moet vóór gebruik aantonen dat het systeem gecontroleerd is. Meestal mag de maker die controle zelf uitvoeren; alleen bij de gevoeligste toepassingen, zoals gezichtsherkenning, moet een onafhankelijke instantie meekijken. Controle door een buitenstaander verplichten is dus een echte aanscherping, want een maker heeft er belang bij problemen klein te houden.',
+                        'Regels en controle helpen echt. De EU AI Act legt de plicht bij de maker van een hoog-risico AI-systeem, niet bij de school of het bedrijf dat het gebruikt: de maker moet vóór gebruik aantonen dat het systeem aan de eisen voldoet. Bij de meeste hoog-risico systemen mag de maker die controle zelf uitvoeren. Alleen bij bepaalde systemen die mensen herkennen aan lichaamskenmerken kan een onafhankelijke instantie nodig zijn — en zelfs daar mag de maker het zelf doen als hij de Europese normen volgt. Een buitenstaander verplichten is dus een echte aanscherping, want een maker heeft er belang bij problemen klein te houden.',
                 },
                 {
                     id: 10,

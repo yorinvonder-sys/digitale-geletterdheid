@@ -41,12 +41,12 @@ export const dataReviewConfig: ReviewArenaConfig = {
         },
     ],
     takeaways: [
-        'Een meta-analyse van veel onderzoeken weegt zwaarder als bewijs dan één studie of een mening.',
+        'Een meta-analyse van veel goed uitgevoerde onderzoeken weegt zwaarder dan één studie of een mening — maar kijk altijd naar de methode en naar wie het onderzoek betaalde.',
         'De CRAAP-methode weegt een bron op actualiteit, relevantie, autoriteit, juistheid en doel.',
         '=SOM telt op, =GEMIDDELDE middelt, =MAX en =MIN zoeken de uitersten, =AANTAL telt hoeveel getallen er staan.',
         'Een staafdiagram vergelijkt categorieën, een lijndiagram toont een trend in de tijd, een cirkeldiagram toont de verdeling van een geheel.',
         'In JSON hoort bij elke sleutel een waarde; een API-sleutel bewijst wie het verzoek stuurt.',
-        'AI-bias komt uit de data waarmee een systeem is getraind — testen op groepen, transparantie en menselijk toezicht helpen ertegen.',
+        'AI-bias kan uit de trainingsdata komen, maar net zo goed uit wat een systeem meet, hoe het is ontworpen en waarvoor het wordt ingezet — testen op groepen, transparantie en menselijk toezicht helpen ertegen.',
     ],
     rounds: [
         {
@@ -54,7 +54,7 @@ export const dataReviewConfig: ReviewArenaConfig = {
             type: 'drag-sort',
             title: 'Hoe sterk is dit bewijs?',
             description:
-                'Sorteer deze bronnen van sterkst bewijs (boven) naar zwakst bewijs (onder) voor een uitspraak over jongeren en sociale media.',
+                'Sorteer deze bronnen van sterkst bewijs (boven) naar zwakst bewijs (onder) voor een uitspraak over jongeren en sociale media. Let niet op het etiket, maar op de methode, de omvang en wie het onderzoek betaalde.',
             maxScore: 25,
             followUp: {
                 question: 'De A van Authority in de CRAAP-methode: welke vraag hoort daarbij?',
@@ -72,32 +72,32 @@ export const dataReviewConfig: ReviewArenaConfig = {
             items: [
                 {
                     id: 'bedrijf-eigen-onderzoek',
-                    label: 'Onderzoek dat een social-mediabedrijf zelf over zijn eigen app publiceerde',
+                    label: 'Onderzoek van een social-mediabedrijf over zijn eigen app: 900 gebruikers, ruwe cijfers niet gepubliceerd, betaald door het bedrijf zelf',
                     correctPosition: 3,
                 },
                 {
                     id: 'anoniem',
-                    label: 'Bericht zonder auteursnaam en zonder datum op een onbekende website',
+                    label: 'Bericht op een onbekende website: geen auteursnaam, geen datum, geen enkele bron genoemd',
                     correctPosition: 5,
                 },
                 {
                     id: 'meta-analyse',
-                    label: 'Meta-analyse: één studie die 47 andere onderzoeken samenvat',
+                    label: 'Meta-analyse in een vakblad: vat 47 onderzoeken samen en beschrijft per onderzoek de methode en de zwakke plekken',
                     correctPosition: 0,
                 },
                 {
                     id: 'opiniestuk',
-                    label: 'Opiniestuk in de schoolkrant, gebaseerd op eigen ervaring',
+                    label: 'Opiniestuk in de schoolkrant: één leerling beschrijft haar eigen ervaring, zonder cijfers',
                     correctPosition: 4,
                 },
                 {
                     id: 'krantenartikel',
-                    label: 'Krantenartikel met auteursnaam dat naar het originele onderzoek linkt',
+                    label: 'Krantenartikel met auteursnaam: legt het originele onderzoek uit, linkt ernaar en laat ook een criticus aan het woord',
                     correctPosition: 2,
                 },
                 {
                     id: 'losse-studie',
-                    label: 'Eén wetenschappelijk onderzoek dat 2.400 jongeren twee jaar volgde',
+                    label: 'Eén universitair onderzoek dat 2.400 jongeren twee jaar volgde, betaald met publiek geld',
                     correctPosition: 1,
                 },
             ],
@@ -238,7 +238,7 @@ export const dataReviewConfig: ReviewArenaConfig = {
                     question: 'Een AI kan een groep systematisch benadelen, ook al staat dat nergens in de code.',
                     answer: true,
                     explanation:
-                        'Bias zit meestal in de trainingsdata, niet in een regel code. Een cv-filter dat leerde van jaren aanname-beslissingen neemt de patronen daaruit over.',
+                        'Bias staat zelden als regel in de code. Hij kan in de trainingsdata zitten, maar ook in wát een systeem meet of waarvoor het wordt gebruikt. Een cv-filter dat leerde van jaren aanname-beslissingen neemt de patronen daaruit over.',
                 },
                 {
                     question: 'Een AI vóór de uitrol testen op verschillende groepen helpt om bias op te sporen.',

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { CheckCircle, XCircle, ChevronRight } from 'lucide-react';
 
@@ -49,10 +49,33 @@ export const Categorize: React.FC<CategorizeProps> = ({
     const [selectedItem, setSelectedItem] = useState<number | null>(null);
     const [submitted, setSubmitted] = useState(false);
     const [score, setScore] = useState<number | null>(null);
+    const [statusMessage, setStatusMessage] = useState('');
+
+    // Een plaatsing laat de gefocuste knop verdwijnen (categorieknoppen gaan uit
+    // zodra er niets meer geselecteerd is). Zonder overdracht valt de focus terug
+    // op <body> en moet een toetsenbordgebruiker elke keer opnieuw zoeken.
+    const placedRefs = useRef<Record<number, HTMLButtonElement | null>>({});
+    const unplacedRefs = useRef<Record<number, HTMLButtonElement | null>>({});
+    const resultRef = useRef<HTMLDivElement>(null);
+    const [pendingFocus, setPendingFocus] = useState<{ id: number; where: 'placed' | 'unplaced' } | null>(null);
 
     const unplacedItems = shuffledItems.filter((item) => !(item.id in placements));
     const itemsByCategory = (cat: string) =>
         shuffledItems.filter((item) => placements[item.id] === cat);
+
+    useEffect(() => {
+        if (!pendingFocus) return;
+        const target =
+            pendingFocus.where === 'placed'
+                ? placedRefs.current[pendingFocus.id]
+                : unplacedRefs.current[pendingFocus.id];
+        target?.focus();
+        setPendingFocus(null);
+    }, [pendingFocus]);
+
+    useEffect(() => {
+        if (submitted) resultRef.current?.focus();
+    }, [submitted]);
 
     const handleItemClick = (id: number) => {
         if (submitted) return;
@@ -61,8 +84,14 @@ export const Categorize: React.FC<CategorizeProps> = ({
 
     const handleCategoryClick = (cat: string) => {
         if (submitted || selectedItem === null) return;
-        setPlacements((prev) => ({ ...prev, [selectedItem]: cat }));
+        const placedId = selectedItem;
+        setPlacements((prev) => ({ ...prev, [placedId]: cat }));
         setSelectedItem(null);
+        const remaining = unplacedItems.length - 1;
+        setStatusMessage(
+            `Geplaatst in ${cat}. Nog ${remaining} item${remaining !== 1 ? 's' : ''} te plaatsen.`
+        );
+        setPendingFocus({ id: placedId, where: 'placed' });
     };
 
     const handleRemove = (id: number) => {
@@ -73,6 +102,8 @@ export const Categorize: React.FC<CategorizeProps> = ({
             return next;
         });
         setSelectedItem(null);
+        setStatusMessage('Item teruggezet bij de te categoriseren items.');
+        setPendingFocus({ id, where: 'unplaced' });
     };
 
     const handleSubmit = () => {
@@ -158,6 +189,9 @@ export const Categorize: React.FC<CategorizeProps> = ({
                                         <motion.button
                                             type="button"
                                             key={item.id}
+                                            ref={(el: HTMLButtonElement | null) => {
+                                                placedRefs.current[item.id] = el;
+                                            }}
                                             layout
                                             initial={{ scale: 0.8, opacity: 0 }}
                                             animate={{ scale: 1, opacity: 1 }}
@@ -205,6 +239,9 @@ export const Categorize: React.FC<CategorizeProps> = ({
                             <motion.button
                                 data-qa="review-category-item"
                                 key={item.id}
+                                ref={(el: HTMLButtonElement | null) => {
+                                    unplacedRefs.current[item.id] = el;
+                                }}
                                 type="button"
                                 layout
                                 aria-pressed={selectedItem === item.id}
@@ -224,15 +261,20 @@ export const Categorize: React.FC<CategorizeProps> = ({
                 </div>
             )}
 
-            {/* Result */}
+            {/* Plaatsingsmelding voor schermlezers — één keer per handeling */}
+            <p role="status" aria-live="polite" aria-atomic="true" className="sr-only">
+                {statusMessage}
+            </p>
+
+            {/* Result — krijgt de focus na bevestigen, want de bevestigknop verdwijnt */}
             <AnimatePresence>
                 {submitted && (
                     <motion.div
-                        role="status"
-                        aria-live="polite"
+                        ref={resultRef}
+                        tabIndex={-1}
                         initial={{ opacity: 0, y: 8 }}
                         animate={{ opacity: 1, y: 0 }}
-                        className={`p-3 rounded-xl text-sm font-medium ${
+                        className={`p-3 rounded-xl text-sm font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-ink ${
                             score === maxScore
                                 ? 'bg-duck-ink/10 text-duck-ink'
                                 : 'bg-duck-acid/10 text-duck-ink'

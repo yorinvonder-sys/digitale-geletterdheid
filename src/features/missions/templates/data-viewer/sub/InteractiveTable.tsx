@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect, useRef } from 'react';
 import { ChevronUp, ChevronDown, ChevronsUpDown } from 'lucide-react';
 
 interface Column {
@@ -55,6 +55,32 @@ export const InteractiveTable: React.FC<InteractiveTableProps> = ({ columns, row
             return 0;
         });
     }, [filteredRows, sortKey, sortDir]);
+
+    // Filteren krimpt de tabel terwijl de focus in het invoerveld blijft: zonder
+    // statusmelding hoort een schermlezergebruiker daar niets van. De melding is
+    // vertraagd, zodat alleen de uiteindelijke telling wordt aangekondigd en niet
+    // elke toetsaanslag. Bij de eerste render blijft hij leeg — beginhoud hoort in
+    // de zichtbare tekst, niet in een live-regio.
+    const [announcement, setAnnouncement] = useState(() => `${rows.length} van ${rows.length} rijen zichtbaar.`);
+    const firstRender = useRef(true);
+    const sortLabel = columns.find(c => c.key === sortKey)?.label;
+
+    useEffect(() => {
+        if (firstRender.current) {
+            firstRender.current = false;
+            return;
+        }
+        const t = setTimeout(() => {
+            setAnnouncement(
+                `${sortedRows.length} van ${rows.length} rijen zichtbaar` +
+                    (sortKey && sortDir
+                        ? `, gesorteerd op ${sortLabel} ${sortDir === 'asc' ? 'oplopend' : 'aflopend'}`
+                        : '') +
+                    '.'
+            );
+        }, 700);
+        return () => clearTimeout(t);
+    }, [sortedRows.length, rows.length, sortKey, sortDir, sortLabel]);
 
     return (
         <div className="rounded-xl border border-duck-gray overflow-hidden">
@@ -172,15 +198,19 @@ export const InteractiveTable: React.FC<InteractiveTableProps> = ({ columns, row
             {/* Row count */}
             <div className="bg-duck-bg border-t border-duck-gray px-4 py-1.5">
                 <span
+                    aria-hidden="true"
                     className="text-xs text-duck-ink/75"
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                 >
                     {sortedRows.length} van {rows.length} rijen
                     {sortKey && sortDir && (
                         <span className="ml-2 text-duck-ink">
-                            Gesorteerd op {columns.find(c => c.key === sortKey)?.label} ({sortDir === 'asc' ? 'oplopend' : 'aflopend'})
+                            Gesorteerd op {sortLabel} ({sortDir === 'asc' ? 'oplopend' : 'aflopend'})
                         </span>
                     )}
+                </span>
+                <span role="status" aria-live="polite" aria-atomic="true" className="sr-only">
+                    {announcement}
                 </span>
             </div>
         </div>

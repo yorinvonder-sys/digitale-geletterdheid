@@ -89,6 +89,13 @@ interface ReviewArenaState {
      * antwoorden een verse, opnieuw scoorbare ronde.
      */
     lockedRoundScores: Record<string, number>;
+    /**
+     * Uitkomst per al beantwoorde vraag van een rapid-fire-ronde, in volgorde.
+     * Hiermee hervat een herladen ronde waar de leerling gebleven was. De
+     * rondescore zelf komt pas in `lockedRoundScores` als álle vragen gehad zijn:
+     * een tussenstand vastleggen zette de ronde op 0 en sloot de rest af.
+     */
+    rapidFireProgress: Record<string, boolean[]>;
     followUpResults: Record<string, { answered: boolean; correct: boolean }>;
     configMissionId?: string;
 }
@@ -102,6 +109,78 @@ const ROUND_ICONS: Record<ReviewRound['type'], string> = {
     'categorize': '🗂️',
     'rapid-fire': '⚡',
 };
+
+/**
+ * Toetst herstelde voortgang tegen de huidige config, per fase. `roundScores`
+ * groeit gelijk op met `currentRound` (advanceRound doet beide in één update),
+ * dus een langere lijst betekent beschadigde opslag. De vastgelegde scores staan
+ * in `lockedRoundScores` en tellen niet mee in die telling: die worden vastgelegd
+ * vóórdat `currentRound` opschuift, dus een net ingediende ronde mag daar niet op
+ * afgekeurd worden.
+ *
+ * De fasecheck is bewust strikt: bij `phase: 'round'` moet `currentRound` een
+ * bestaande ronde aanwijzen. Stond daar de lengte van de rondelijst, dan bestond
+ * `config.rounds[currentRound]` niet en kwam de leerling op een leeg scherm zonder
+ * uitweg terecht.
+ *
+ * De bovengrenzen op scores vangen corrupte of knullig bewerkte opslag af. Ze
+ * sluiten manipulatie niet uit — daarvoor is server-side registratie nodig.
+ */
+function isStateValidForConfig(s: ReviewArenaState, config: ReviewArenaConfig): boolean {
+    if (!s || typeof s !== 'object') return false;
+    if (!['intro', 'round', 'complete'].includes(s.phase)) return false;
+    if (!Number.isInteger(s.currentRound) || s.currentRound < 0) return false;
+    if (s.currentRound > config.rounds.length) return false;
+
+    if (!Array.isArray(s.roundScores)) return false;
+    if (s.roundScores.length > config.rounds.length) return false;
+    const scoresValid = s.roundScores.every((n, i) => {
+        const max = config.rounds[i]?.maxScore;
+        return (
+            typeof n === 'number' &&
+            Number.isFinite(n) &&
+            n >= 0 &&
+            typeof max === 'number' &&
+            n <= max
+        );
+    });
+    if (!scoresValid) return false;
+
+    const locked = s.lockedRoundScores ?? {};
+    if (typeof locked !== 'object') return false;
+    const lockedValid = Object.entries(locked).every(([id, value]) => {
+        const round = config.rounds.find((r) => r.id === id);
+        if (!round) return false;
+        return typeof value === 'number' && Number.isFinite(value) && value >= 0 && value <= round.maxScore;
+    });
+    if (!lockedValid) return false;
+
+    const rapidProgress = s.rapidFireProgress ?? {};
+    if (typeof rapidProgress !== 'object' || rapidProgress === null) return false;
+    const rapidValid = Object.entries(rapidProgress).every(([id, values]) => {
+        const round = config.rounds.find((r) => r.id === id);
+        if (!round || round.type !== 'rapid-fire') return false;
+        return (
+            Array.isArray(values) &&
+            values.length <= round.questions.length &&
+            values.every((v) => typeof v === 'boolean')
+        );
+    });
+    if (!rapidValid) return false;
+
+    const followUps = s.followUpResults ?? {};
+    if (typeof followUps !== 'object') return false;
+    if (Object.keys(followUps).some((id) => !config.rounds.some((r) => r.id === id))) return false;
+
+    if (s.phase === 'intro') return s.currentRound === 0 && s.roundScores.length === 0;
+    if (s.phase === 'round') {
+        return s.currentRound < config.rounds.length && s.roundScores.length <= s.currentRound;
+    }
+    // complete: alle rondes gespeeld en een samenhangende scorelijst.
+    return (
+        s.currentRound === config.rounds.length && s.roundScores.length === config.rounds.length
+    );
+}
 
 // === Main component ===
 
@@ -120,6 +199,7 @@ const ReviewArenaWithConfig: React.FC<ReviewArenaProps> = ({
         currentRound: 0,
         roundScores: [],
         lockedRoundScores: {},
+        rapidFireProgress: {},
         followUpResults: {},
         configMissionId: config.missionId,
     };
@@ -128,23 +208,7 @@ const ReviewArenaWithConfig: React.FC<ReviewArenaProps> = ({
         missionId,
         initialState,
         {
-            // Opslag van een oudere configversie mag niet blijven staan. `roundScores`
-            // groeit precies gelijk op met `currentRound` (advanceRound doet beide in
-            // één update), dus een langere lijst betekent beschadigde opslag. De
-            // vastgelegde scores uit reparatie 1 staan in `lockedRoundScores` en tellen
-            // hier bewust niet mee: die worden vastgelegd vóórdat `currentRound`
-            // opschuift, dus een net ingediende ronde mag daar niet op afgekeurd worden.
-            validate: (s) =>
-                ['intro', 'round', 'complete'].includes(s.phase) &&
-                Number.isInteger(s.currentRound) &&
-                s.currentRound >= 0 &&
-                s.currentRound <= config.rounds.length &&
-                Array.isArray(s.roundScores) &&
-                s.roundScores.length <= s.currentRound &&
-                s.roundScores.every((n) => typeof n === 'number' && Number.isFinite(n)) &&
-                Object.keys(s.lockedRoundScores ?? {}).every((id) =>
-                    config.rounds.some((r) => r.id === id)
-                ),
+            validate: (s) => isStateValidForConfig(s, config),
         }
     );
 
@@ -225,37 +289,105 @@ const ReviewArenaWithConfig: React.FC<ReviewArenaProps> = ({
         [config.rounds, setState, state.currentRound]
     );
 
+    /**
+     * Bewaart de losse uitkomsten van een rapid-fire-ronde. Alleen aangroeien:
+     * een kortere reeks zou een al gegeven antwoord kunnen wissen.
+     */
+    const handleRapidProgress = useCallback(
+        (roundId: string, outcomes: boolean[]) => {
+            setState((s) => {
+                const prev = s.rapidFireProgress[roundId] ?? [];
+                if (outcomes.length <= prev.length) return s;
+                return {
+                    ...s,
+                    rapidFireProgress: { ...s.rapidFireProgress, [roundId]: outcomes },
+                };
+            });
+        },
+        [setState]
+    );
+
+    const withFollowUpBonus = useCallback(
+        (base: number, correct: boolean, round: ReviewRound) => {
+            const bonus = correct ? (round.followUp?.bonusPoints ?? 0) : 0;
+            return Math.min(base + bonus, round.maxScore);
+        },
+        []
+    );
+
+    /**
+     * Legt het eerste antwoord op de verdiepingsvraag vast op het moment van
+     * kiezen — dus vóór 'Doorgaan' en vóór de uitleg met het juiste antwoord in
+     * beeld komt. Zonder dit kon een leerling fout kiezen, het antwoord lezen,
+     * herladen en de vraag alsnog goed beantwoorden voor de bonus.
+     */
+    const handleFollowUpAnswer = useCallback(
+        (correct: boolean) => {
+            const round = config.rounds[state.currentRound];
+            if (!round) return;
+            setState((s) =>
+                s.followUpResults[round.id]?.answered
+                    ? s
+                    : {
+                          ...s,
+                          followUpResults: {
+                              ...s.followUpResults,
+                              [round.id]: { answered: true, correct },
+                          },
+                      }
+            );
+        },
+        [config.rounds, setState, state.currentRound]
+    );
+
     const handleRoundComplete = useCallback(
         (score: number) => {
             const round = config.rounds[state.currentRound];
+            if (!round) return;
             // De vastgelegde score wint van wat het subcomponent bij het doorklikken
             // meegeeft; die twee zijn gelijk bij normaal spelen.
-            const locked = round ? state.lockedRoundScores[round.id] : undefined;
+            const locked = state.lockedRoundScores[round.id];
             const finalScore = locked ?? score;
 
-            if (round?.followUp && finalScore > round.maxScore * 0.5) {
-                setPendingScore(finalScore);
-                setShowFollowUp(true);
-            } else {
+            if (!round.followUp || finalScore <= round.maxScore * 0.5) {
                 advanceRound(finalScore);
+                return;
             }
+
+            // Al beantwoord in een eerdere sessie: niet opnieuw tonen, maar het
+            // vastgelegde resultaat verrekenen.
+            const prior = state.followUpResults[round.id];
+            if (prior?.answered) {
+                advanceRound(withFollowUpBonus(finalScore, prior.correct, round));
+                return;
+            }
+
+            setPendingScore(finalScore);
+            setShowFollowUp(true);
         },
-        [advanceRound, config.rounds, state.currentRound, state.lockedRoundScores]
+        [
+            advanceRound,
+            config.rounds,
+            state.currentRound,
+            state.followUpResults,
+            state.lockedRoundScores,
+            withFollowUpBonus,
+        ]
     );
 
     const handleFollowUpComplete = useCallback(
         (correct: boolean) => {
             const round = config.rounds[state.currentRound];
-            const bonus = correct ? (round?.followUp?.bonusPoints ?? 0) : 0;
-            const base = pendingScore ?? 0;
-            const maxScore = round?.maxScore ?? 0;
-            const finalScore = Math.min(base + bonus, maxScore);
+            if (!round) return;
+            // Het vastgelegde antwoord wint: 'Doorgaan' mag geen tweede kans zijn.
+            const settled = state.followUpResults[round.id]?.correct ?? correct;
+            const finalScore = withFollowUpBonus(pendingScore ?? 0, settled, round);
 
             setState((s) => ({
                 ...s,
                 followUpResults: {
                     ...s.followUpResults,
-                    [round?.id ?? state.currentRound]: { answered: true, correct },
+                    [round.id]: { answered: true, correct: settled },
                 },
             }));
 
@@ -263,7 +395,15 @@ const ReviewArenaWithConfig: React.FC<ReviewArenaProps> = ({
             setPendingScore(null);
             advanceRound(finalScore);
         },
-        [advanceRound, config.rounds, pendingScore, setState, state.currentRound]
+        [
+            advanceRound,
+            config.rounds,
+            pendingScore,
+            setState,
+            state.currentRound,
+            state.followUpResults,
+            withFollowUpBonus,
+        ]
     );
 
     const handleComplete = useCallback(() => {
@@ -313,7 +453,49 @@ const ReviewArenaWithConfig: React.FC<ReviewArenaProps> = ({
 
     // === Active round ===
     const round = config.rounds[state.currentRound];
-    if (!round) return null;
+
+    // Vangnet: wijst de herstelde index buiten de huidige rondelijst, toon een
+    // herstart in plaats van een leeg scherm zonder uitweg.
+    if (!round) {
+        return (
+            <div
+                data-qa="review-arena-recovery"
+                className="min-h-screen bg-duck-bg flex items-center justify-center p-4"
+            >
+                <div className="text-center max-w-sm">
+                    <div className="text-4xl mb-4">🔄</div>
+                    <p
+                        className="text-sm text-duck-ink/75 mb-4 leading-relaxed"
+                        style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
+                    >
+                        Deze missie is bijgewerkt sinds je laatste bezoek, dus je oude voortgang past
+                        er niet meer op. Je begint opnieuw.
+                    </p>
+                    <div className="flex gap-2 justify-center">
+                        <button
+                            data-qa="review-arena-restart"
+                            onClick={() => {
+                                clearSave();
+                                submittedThisSession.current.clear();
+                                setState(initialState);
+                            }}
+                            className="min-h-[44px] px-4 py-2.5 bg-duck-acid text-duck-ink rounded-xl text-sm font-bold"
+                            style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
+                        >
+                            Opnieuw beginnen
+                        </button>
+                        <button
+                            onClick={onBack}
+                            className="min-h-[44px] px-4 py-2.5 border-2 border-duck-gray text-duck-ink rounded-xl text-sm font-bold"
+                            style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
+                        >
+                            Terug
+                        </button>
+                    </div>
+                </div>
+            </div>
+        );
+    }
 
     const resumedScore = state.lockedRoundScores[round.id];
     const isAlreadyScored =
@@ -422,6 +604,8 @@ const ReviewArenaWithConfig: React.FC<ReviewArenaProps> = ({
                                 questions={round.questions}
                                 timePerQuestion={round.timePerQuestion}
                                 maxScore={round.maxScore}
+                                initialResults={state.rapidFireProgress[round.id]}
+                                onProgress={(outcomes) => handleRapidProgress(round.id, outcomes)}
                                 onSubmit={handleRoundSubmit}
                                 onComplete={(score) => handleRoundComplete(score)}
                             />
@@ -432,6 +616,7 @@ const ReviewArenaWithConfig: React.FC<ReviewArenaProps> = ({
                         {showFollowUp && round.followUp && (
                             <FollowUpCard
                                 followUp={round.followUp}
+                                onAnswer={handleFollowUpAnswer}
                                 onComplete={handleFollowUpComplete}
                             />
                         )}

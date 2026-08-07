@@ -146,6 +146,16 @@ function isStateValidForConfig(saved: ScenarioEngineState, config: ScenarioEngin
     if (config.rounds.some((round) => {
         const rs = saved.roundStates[round.id];
         if (!rs || !Array.isArray(rs.selections)) return true;
+        if (typeof rs.submitted !== 'boolean') return true;
+        // Goedkope bovengrens: meer selecties dan items betekent bewerkte opslag.
+        if (rs.selections.length > round.items.length) return true;
+        if (rs.selections.some((id) => !Number.isInteger(id))) return true;
+        // Elk item hoogstens één keer, en nooit als accepteren én weigeren tegelijk.
+        // Zonder deze eis telde zevenmaal hetzelfde id zeven keer mee en gaf een
+        // ronde met vijf juiste items 35 van de 25 punten.
+        if (new Set(rs.selections).size !== rs.selections.length) return true;
+        const chosen = new Set(rs.selections.map((id) => Math.abs(id)));
+        if (chosen.size !== rs.selections.length) return true;
         return rs.selections.some((id) => !round.items.some((item) => item.id === Math.abs(id)));
     })) return false;
     // currentRound moet binnen de huidige rondelijst vallen.

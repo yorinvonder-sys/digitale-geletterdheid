@@ -114,7 +114,6 @@ const BarChart: React.FC<{ data: ChartDataPoint[] }> = ({ data }) => {
 // ── Pie chart ────────────────────────────────────────────────────────────────
 
 const PieChart: React.FC<{ data: ChartDataPoint[] }> = ({ data }) => {
-    const [tooltip, setTooltip] = useState<number | null>(null);
     const [mounted, setMounted] = useState(false);
 
     useEffect(() => {
@@ -160,30 +159,24 @@ const PieChart: React.FC<{ data: ChartDataPoint[] }> = ({ data }) => {
 
     return (
         <div className="flex flex-col items-center gap-4">
+            {/* De SVG geeft alleen een korte beschrijving; de legenda hieronder levert de
+                waarden. Het accentueren op muis-in is weggehaald: het gaf geen extra
+                informatie en was met een toetsenbord niet te bedienen. */}
             <div className="relative">
                 <svg
                     width={SIZE}
                     height={SIZE}
                     viewBox={`0 0 ${SIZE} ${SIZE}`}
                     role="img"
-                    aria-label={`Cirkeldiagram. ${data
-                        .map(d => `${d.label}: ${d.value} (${total > 0 ? Math.round((d.value / total) * 100) : 0}%)`)
-                        .join('. ')}`}
+                    aria-label={`Cirkeldiagram met ${data.length} onderdelen. De waarden staan in de legenda hieronder.`}
                     className="overflow-visible"
                     style={{ transform: mounted ? 'scale(1)' : 'scale(0.85)', transition: 'transform 0.5s ease-out' }}
                 >
-                    <title>
-                        {`Cirkeldiagram met ${data.length} onderdelen; de waarden staan ook in de legenda hieronder.`}
-                    </title>
                     {slices.map(s => (
                         <path
                             key={s.index}
                             d={s.path}
                             fill={s.color}
-                            opacity={tooltip !== null && tooltip !== s.index ? 0.55 : 1}
-                            style={{ transition: 'opacity 0.15s ease', cursor: 'pointer' }}
-                            onMouseEnter={() => setTooltip(s.index)}
-                            onMouseLeave={() => setTooltip(null)}
                         />
                     ))}
                     {/* Percentage labels inside slices (only if slice is wide enough) */}
@@ -214,13 +207,7 @@ const PieChart: React.FC<{ data: ChartDataPoint[] }> = ({ data }) => {
                     const color = d.color || DEFAULT_COLORS[i % DEFAULT_COLORS.length];
                     const pct = total > 0 ? Math.round((d.value / total) * 100) : 0;
                     return (
-                        <div
-                            key={i}
-                            className="flex items-center gap-2 cursor-pointer"
-                            onMouseEnter={() => setTooltip(i)}
-                            onMouseLeave={() => setTooltip(null)}
-                            style={{ opacity: tooltip !== null && tooltip !== i ? 0.55 : 1, transition: 'opacity 0.15s ease' }}
-                        >
+                        <div key={i} className="flex items-center gap-2">
                             <div className="w-3 h-3 rounded-sm flex-shrink-0" style={{ backgroundColor: color }} />
                             <span
                                 className="text-xs text-duck-ink/75 flex-1"
