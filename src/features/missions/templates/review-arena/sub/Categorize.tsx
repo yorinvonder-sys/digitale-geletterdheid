@@ -119,12 +119,23 @@ export const Categorize: React.FC<CategorizeProps> = ({
                     const catItems = itemsByCategory(cat);
                     const isClickable = !submitted && selectedItem !== null;
 
+                    // Bewust geen <button>: dit vak bevat zelf knoppen om een geplaatst
+                    // antwoord terug te halen, en een knop in een knop is ongeldige HTML
+                    // waardoor die kaartjes met het toetsenbord onbereikbaar werden.
                     return (
-                        <motion.button
-                            type="button"
+                        <motion.div
                             data-qa="review-category"
                             key={cat}
+                            role="button"
+                            tabIndex={submitted ? -1 : 0}
+                            aria-label={`Categorie ${cat}`}
                             onClick={() => handleCategoryClick(cat)}
+                            onKeyDown={(event) => {
+                                if (event.key === 'Enter' || event.key === ' ') {
+                                    event.preventDefault();
+                                    handleCategoryClick(cat);
+                                }
+                            }}
                             className={`w-full text-left rounded-xl border-2 p-2 min-h-[80px] transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-acid focus-visible:ring-offset-2
                                 ${isClickable
                                     ? 'cursor-pointer scale-[1.02] shadow-md'
@@ -147,9 +158,14 @@ export const Categorize: React.FC<CategorizeProps> = ({
                                     const isCorrect = submitted && item.correctCategory === cat;
                                     const isWrong = submitted && item.correctCategory !== cat;
                                     return (
-                                        <motion.div
+                                        <motion.button
                                             key={item.id}
+                                            type="button"
                                             layout
+                                            disabled={submitted}
+                                            aria-label={selectedItem !== null
+                                                ? `Plaats hier in ${cat}`
+                                                : `${item.label} terughalen uit ${cat}`}
                                             initial={{ scale: 0.8, opacity: 0 }}
                                             animate={{ scale: 1, opacity: 1 }}
                                             className={`flex items-center gap-1 px-2 py-1 rounded-lg text-xs font-medium border
@@ -179,11 +195,11 @@ export const Categorize: React.FC<CategorizeProps> = ({
                                                 : <XCircle size={10} />
                                             )}
                                             {item.label}
-                                        </motion.div>
+                                        </motion.button>
                                     );
                                 })}
                             </div>
-                        </motion.button>
+                        </motion.div>
                     );
                 })}
             </div>

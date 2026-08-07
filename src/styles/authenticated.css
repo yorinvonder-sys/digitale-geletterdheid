@@ -165,9 +165,16 @@
    pakte de chatkolom alle ruimte en werd het voorbeeldpaneel 0px hoog: op een
    telefoon was het spel of het boek dan volledig onzichtbaar. */
 @media screen and (max-width: 767px) {
+  /* 40dvh in plaats van 45: twee panelen van 45dvh plus de navigatiebalk, de gap
+     en de padding passen niet op een kleine telefoon (320x568), en de ouders
+     staan op overflow-hidden. Daarom mag de stapel hier zelf scrollen. */
+  .ipad-stack {
+    overflow-y: auto;
+  }
+
   .ipad-stack > section {
     flex: 1 1 auto !important;
-    min-height: 45dvh !important;
+    min-height: 40dvh !important;
   }
 }
 

@@ -808,7 +808,15 @@ export const CloudCleanerMission: React.FC<CloudCleanerProps> = ({ onComplete, o
                                 <motion.div
                                     initial={{ scale: 0 }}
                                     animate={{ scale: 1, rotate: [0, -10, 10, -5, 5, 0] }}
-                                    transition={{ delay: 0.2, type: 'spring' }}
+                                    // Een spring ondersteunt maximaal twee keyframes; deze
+                                    // rotate heeft er zes. Die combinatie is ongeldig en gaf
+                                    // een Motion-fout in de console. De wiebel krijgt daarom
+                                    // een eigen tween, de schaal houdt zijn spring.
+                                    transition={{
+                                        delay: 0.2,
+                                        scale: { type: 'spring' },
+                                        rotate: { type: 'tween', duration: 0.6, ease: 'easeInOut' },
+                                    }}
                                     className="w-24 h-24 bg-gradient-to-br from-duck-ink to-duck-acid text-white rounded-full flex items-center justify-center mx-auto mb-6 shadow-xl shadow-duck-ink/20"
                                 >
                                     <CheckCircle size={48} />

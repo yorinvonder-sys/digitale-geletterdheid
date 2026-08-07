@@ -43,4 +43,21 @@ const modelZichtbaar = cleanInstructionText(modelBericht);
 assert.match(modelZichtbaar, /Fluffy in het Bos/, 'De titel van de AI moet zichtbaar blijven');
 assert.match(modelZichtbaar, /Diep in het bos woonde een beer/, 'De paginatekst moet zichtbaar blijven');
 
+// Het filter mag NIET elke regel opeten waar toevallig een tag en het woord
+// "tags" in staan. Deze drie werden door een te brede regex volledig gewist.
+const MOET_BLIJVEN = [
+    'Gebruik [TITLE] tags voor koppen.',
+    '[TITLE]Tags in HTML[/TITLE]',
+    'De [IMG target="1"]kat[/IMG] heeft tags.',
+];
+for (const regel of MOET_BLIJVEN) {
+    const over = cleanInstructionText(regel).trim();
+    assert.notEqual(over, '', `Legitieme tekst mag niet volledig verdwijnen: "${regel}"`);
+}
+// En de inhoud binnen de tags moet echt bewaard blijven, niet alleen "iets".
+assert.match(cleanInstructionText('[TITLE]Tags in HTML[/TITLE]'), /Tags in HTML/,
+    'Tekst binnen een titel-tag moet zichtbaar blijven');
+assert.match(cleanInstructionText('De [IMG target="1"]kat[/IMG] heeft tags.'), /heeft tags/,
+    'Zinsinhoud rond een afbeeldingstag moet zichtbaar blijven');
+
 console.log('Chat instruction hygiene contract OK.');

@@ -93,27 +93,38 @@ export const subscribeToOnlinePlayers = (
         onUpdate((data || []) as OnlinePlayer[]);
     };
 
-    fetchPlayers();
+    // Zelfde afscherming als bij subscribeToChallenges: `.subscribe()` roept
+    // synchroon connect() aan, en een fout daar sloeg door naar de useEffect van
+    // de lobby en klapte die uit in een error boundary.
+    let channel: RealtimeChannel | null = null;
+    try {
+        void fetchPlayers();
 
-    const channel: RealtimeChannel = supabase
-        .channel('duel-presence')
-        .on('postgres_changes', {
-            event: '*',
-            schema: 'public',
-            table: 'duel_presence',
-        }, () => {
-            fetchPlayers();
-        })
-        .subscribe();
+        channel = supabase
+            .channel('duel-presence')
+            .on('postgres_changes', {
+                event: '*',
+                schema: 'public',
+                table: 'duel_presence',
+            }, () => {
+                void fetchPlayers();
+            })
+            .subscribe();
+    } catch (error) {
+        console.error('[Duel] Realtime-abonnement op aanwezigheid niet beschikbaar:', error);
+    }
 
-    // Heartbeat to keep presence alive
+    // Heartbeat to keep presence alive — blijft werken zonder realtime.
     const heartbeat = setInterval(() => {
-        fetchPlayers();
+        void fetchPlayers();
     }, 30000);
 
     return () => {
         clearInterval(heartbeat);
-        supabase.removeChannel(channel);
+        if (!channel) return;
+        void Promise.resolve(supabase.removeChannel(channel)).catch(() => {
+            // Kanaal is al weg of de verbinding bestond nooit.
+        });
     };
 };
 
@@ -185,11 +196,11 @@ export const subscribeToChallenges = (
 
     return () => {
         if (!channel) return;
-        try {
-            supabase.removeChannel(channel);
-        } catch {
+        // removeChannel geeft een Promise terug; een synchrone try/catch ving een
+        // afwijzing daarvan niet op en liet die als unhandled rejection lopen.
+        void Promise.resolve(supabase.removeChannel(channel)).catch(() => {
             // Kanaal is al weg of de verbinding bestond nooit.
-        }
+        });
     };
 };
 
@@ -232,31 +243,46 @@ export const subscribeToDuel = (
     onUpdate: (duel: ActiveDuel | null) => void
 ): (() => void) => {
     const fetchDuel = async () => {
-        const { data, error } = await supabase
-            .from('active_duels')
-            .select('*')
-            .eq('id', duelId)
-            .maybeSingle();
+        try {
+            const { data, error } = await supabase
+                .from('active_duels')
+                .select('*')
+                .eq('id', duelId)
+                .maybeSingle();
 
-        if (!error) onUpdate(data as ActiveDuel | null);
+            if (!error) onUpdate(data as ActiveDuel | null);
+        } catch (error) {
+            console.error('[Duel] Duel ophalen mislukt:', error);
+        }
     };
 
-    fetchDuel();
+    // Zelfde afscherming als bij subscribeToChallenges: `.subscribe()` roept
+    // synchroon connect() aan, en een fout daar sloeg door naar de useEffect van
+    // de aanroeper en klapte het scherm uit in een error boundary.
+    let channel: RealtimeChannel | null = null;
+    try {
+        void fetchDuel();
 
-    const channel: RealtimeChannel = supabase
-        .channel(`active-duel-${duelId}`)
-        .on('postgres_changes', {
-            event: '*',
-            schema: 'public',
-            table: 'active_duels',
-            filter: `id=eq.${duelId}`,
-        }, () => {
-            fetchDuel();
-        })
-        .subscribe();
+        channel = supabase
+            .channel(`active-duel-${duelId}`)
+            .on('postgres_changes', {
+                event: '*',
+                schema: 'public',
+                table: 'active_duels',
+                filter: `id=eq.${duelId}`,
+            }, () => {
+                void fetchDuel();
+            })
+            .subscribe();
+    } catch (error) {
+        console.error('[Duel] Realtime-abonnement op het duel niet beschikbaar:', error);
+    }
 
     return () => {
-        supabase.removeChannel(channel);
+        if (!channel) return;
+        void Promise.resolve(supabase.removeChannel(channel)).catch(() => {
+            // Kanaal is al weg of de verbinding bestond nooit.
+        });
     };
 };
 

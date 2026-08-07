@@ -34,12 +34,15 @@ export const cleanInstructionText = (text: string): string => {
   // Remove "Nieuwe titel aanvraag:" lines
   cleaned = cleaned.replace(/Nieuwe titel aanvraag:[^\n]*(?:\n|$)/gi, '');
 
-  // Remove opmaakinstructies die OVER de tags gaan, zoals "Maak nu de titel met
-  // [TITLE] tags en de tekst van de eerste pagina met [PAGE] tags." Die regel
-  // overleefde het strippen hieronder als een halve zin met dubbele spaties, en
-  // stond zo als technische instructie in beeld bij de leerling. Moet vóór het
-  // verwijderen van de tags staan, want die tag is hier het ankerpunt.
-  cleaned = cleaned.replace(/^[^\n]*\[(?:TITLE|PAGE|IMG)[^\]]*\][^\n]*\btags?\b[^\n]*(?:\n|$)/gim, '');
+  // Remove "Maak nu de titel met [TITLE] tags ..." instruction lines.
+  // Deze zin komt uit het startbericht van Verhalen Ontwerper en overleefde het
+  // strippen hieronder als een halve zin met dubbele spaties, waardoor hij als
+  // technische instructie in beeld stond bij de leerling.
+  // Bewust geankerd op de letterlijke openingszin, net als de regels hierboven:
+  // een bredere "regel met een tag én het woord tags"-match at ook legitieme
+  // tekst op, zoals "[TITLE]Tags in HTML[/TITLE]" of een leerling die zelf over
+  // tags schrijft.
+  cleaned = cleaned.replace(/^\s*Maak nu de titel met[^\n]*(?:\n|$)/gim, '');
 
   // Remove [PAGE target="X"]...[/PAGE] tags (keep content inside for model messages)
   cleaned = cleaned.replace(/\[PAGE target="?\d+"?\]/gi, '');

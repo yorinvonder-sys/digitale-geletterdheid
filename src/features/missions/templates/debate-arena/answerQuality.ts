@@ -9,18 +9,40 @@
 
 /** Minimale lengte — ongewijzigd t.o.v. het oude gedrag. */
 const MIN_LENGTH = 20;
-/** Een zin van 20+ tekens bevat in de praktijk minstens vier woorden. */
-const MIN_WORDS = 4;
-/** Echte tekst gebruikt veel verschillende letters; "aaaa bbbb cccc" niet. */
-const MIN_DISTINCT_LETTERS = 8;
+/**
+ * Drie in plaats van vier: een raak kort antwoord als "Eerst toestemming vragen."
+ * haalt de twintig tekens ruim, maar telt maar drie woorden. Vier woorden eisen
+ * blokkeerde zulke antwoorden bij de doorgaan-knop, en een leerling die onterecht
+ * vastloopt is erger dan een leerling die onterecht punten krijgt.
+ */
+const MIN_WORDS = 3;
+/** Echte tekst gebruikt veel verschillende tekens; "aaaa bbbb cccc" niet. */
+const MIN_DISTINCT_LETTERS = 6;
 
-/** Telt woorden van minstens twee tekens. */
+/** Een woord dat uit één herhaald teken bestaat ("aaaa", "1111") is geen woord. */
+const isFillerWord = (word: string): boolean => /^(.)\1*$/u.test(word);
+
+/**
+ * Telt woorden van minstens twee tekens.
+ * Splitst op alles wat geen letter, cijfer of apostrof is, zodat "2FA + pincode
+ * + backup." als drie woorden telt en niet als één brok met plustekens.
+ * Vulwoorden tellen niet mee: anders haalt "aaaa bbbb cccc dddd" de drempel op
+ * woordaantal én op tekenvariatie, terwijl er niets staat.
+ */
 const countWords = (text: string): number =>
-    text.trim().split(/\s+/).filter((w) => w.length >= 2).length;
+    text
+        .trim()
+        .split(/[^\p{L}\p{N}'’]+/u)
+        .filter((w) => w.length >= 2 && !isFillerWord(w)).length;
 
-/** Telt unieke letters, hoofdletterongevoelig en zonder leestekens of cijfers. */
+/**
+ * Telt unieke letters én cijfers, hoofdletterongevoelig.
+ * Bewust Unicode-breed: de oude `[^a-zà-ÿ]`-filter gooide cijfers weg en zag
+ * niet-Latijnse schriften als leeg, waardoor "2024: 55% vóór; 45% tegen." en elk
+ * Arabisch of Cyrillisch antwoord op nul uitkwam en werd geweigerd.
+ */
 const countDistinctLetters = (text: string): number =>
-    new Set(text.toLowerCase().replace(/[^a-zà-ÿ]/g, '')).size;
+    new Set(text.toLowerCase().replace(/[^\p{L}\p{N}]/gu, '')).size;
 
 /**
  * Bepaalt of een antwoord inhoudelijk meetelt voor poort en score.
@@ -40,9 +62,11 @@ export const isMeaningfulAnswer = (text: string): boolean => {
  */
 export const isRealMessage = (text: string): boolean => {
     const trimmed = text.trim();
-    if (trimmed.length < 8) return false;
-    if (countWords(trimmed) < 2) return false;
-    return countDistinctLetters(trimmed) >= 5;
+    if (trimmed.length < 6) return false;
+    // Eén woord mag: "phishing" of "2FA/MFA" is een compleet en correct antwoord
+    // op een vraag. De tekenvariatie weert het geramte dat we hier bedoelen.
+    if (countWords(trimmed) < 1) return false;
+    return countDistinctLetters(trimmed) >= 4;
 };
 
 /**

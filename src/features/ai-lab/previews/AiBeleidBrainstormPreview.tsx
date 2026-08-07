@@ -64,7 +64,11 @@ const filterInappropriateIdeas = (ideas: AiBeleidIdee[]): AiBeleidIdee[] => {
 };
 
 const REASON_WORDS = /\b(omdat|want|zodat|daarom|hierdoor)\b/i;
-const SCHOOL_CONTEXT_WORDS = /\b(school|les|klas|leerling|docent|opdracht|toets|huiswerk)\b/i;
+// Bewust zonder afsluitende woordgrens: met `\bopdracht\b` viel een idee als
+// "AI alleen tijdens opdrachten omdat we tijd besparen." buiten de boot, en dan
+// kon de leerling de missie niet afronden ondanks een compleet regelvoorstel.
+// Nu matchen ook lessen, opdrachten, leerlingen, docenten, toetsen en schoolwerk.
+const SCHOOL_CONTEXT_WORDS = /\b(school|les|klas|leerling|docent|opdracht|toets|huiswerk)/i;
 
 export const isCompleteRuleIdea = (idea: AiBeleidIdee): boolean => {
     const text = idea.idee.trim();
