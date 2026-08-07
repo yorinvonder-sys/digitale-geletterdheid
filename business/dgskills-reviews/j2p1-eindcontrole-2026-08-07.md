@@ -4,7 +4,74 @@ Getoetst door de opdrachten daadwerkelijk te spelen in de browser (dev-preview, 
 met `localStorage` bewerkt om specifieke voortgangsscenario's te prepareren. Metingen (focus, contrast,
 ARIA-aankondigingen) gebeurden met JavaScript, niet op het oog.
 
-## DEEL 1 — nieuwe reparaties
+**Belangrijk:** de code is tijdens deze verificatie nog een keer gewijzigd (een adversariële review vond
+zeven regressies in de vorige reparatieronde, die daarna zijn opgelost). De code stond stil op het moment
+dat de onderstaande DEEL 0-claims zijn getoetst — dat is dus definitief. N1, N2, N3, N5, N6, N7, T1, T2, T3
+en R1 hierbeneden (DEEL 1-3) zijn getoetst VÓÓR die laatste wijzigingsronde, op bestanden die niet meer
+zijn geraakt door de latere fixes (`ReviewArena.tsx`/`Categorize.tsx`/`MatchPairs.tsx` se focus- en
+opslaglogica, `InteractiveTable.tsx`, contrast-styling) — die uitkomsten blijven dus geldig. Overal waar
+een bestand ná mijn eerste meting is gewijzigd, staat dat expliciet vermeld en is opnieuw getoetst in
+DEEL 0.
+
+## DEEL 0 — hertoets na de laatste code-wijzigingen (RapidFire, DataViewer, FeedbackBanner)
+
+### N-nieuw. Rapid-fire-ronde hervatbaar, afgeronde ronde blijft vergrendeld — **GESLAAGD**
+Missie `review-week-2`, ronde 4 (rapid-fire, 8 vragen). 3 vragen beantwoord ("Vraag 4 van 8" bereikt),
+localStorage gecontroleerd: `rapidFireProgress:{"round-rapid-fire":[false,false,true]}` en
+`lockedRoundScores` nog leeg — de rondescore stond dus nog NIET vast na een deelantwoord (de kern van de
+regressie die hersteld is). Herladen (via een tussenstop op `/robots.txt` om race-condities met de
+debounced autosave te vermijden): scherm hervatte op **"Vraag 5 van 8"** — niet terug naar vraag 1.
+Ronde afgemaakt (4/8 goed → 0/25 volgens de nieuwe klassegebalanceerde formule, correct voor een 4-om-4-
+verdeling). Ná afronding: `lockedRoundScores:{"round-rapid-fire":0}`. Herladen ná afronding gaf: "Je had
+deze ronde al ingediend. Je score staat vast op 0/25 punten." — de ronde speelt niet opnieuw af.
+
+### N1/N2-equivalent op DataViewer. Oude voortgang en verdiepingsvraag blijven behouden — **GESLAAGD**
+Team lead wees erop dat `DataViewer.tsx` een eigen validatie voor herstelde voortgang heeft (apart van
+`ReviewArena.tsx`), en dat de verdiepingsvraag-registratie nu op DATASET-id wordt gecontroleerd i.p.v. op
+vraag-id. Getoetst op missie `spreadsheet-specialist` (dataset "kasboek-leerlingenraad" heeft een
+`followUp`): alle 3 vragen van dataset 1 correct beantwoord (45 pts), verdiepingsvraag verschenen, correct
+beantwoord maar NIET op "Doorgaan" geklikt. localStorage toonde `followUpCorrect:{"kasboek-leerlingenraad":true}`
+— dus op dataset-id, niet op vraag-id. Herladen (via `/robots.txt`-tussenstop): alle 3 antwoorden, scores
+(45 pts) en de vastgelegde follow-up-uitkomst bleven **volledig intact** — vóór de fix zou de validatie
+hier hebben gefaald (followUp-check tegen vraag-id's die niet bestaan) en alles hebben gewist. Extra
+gecontroleerd: de verdiepingsvraag zelf toont zich opnieuw (want `followUpAnswered` wordt pas bij
+"Doorgaan" gezet), maar een nieuwe (foute) keuze overschrijft de al vastgelegde `followUpCorrect` niet —
+zelfde anti-herhaal-patroon als in `ReviewArena.tsx`.
+
+### N4-nieuw. Blind/serieus spelen met bijgewerkte `delen-of-niet`-ronde (nu 8 items, 4/4) — **GESLAAGD**
+`FeedbackBanner.tsx` se scoring voor waar/onwaar-rondes is herzien (klassegebalanceerde baseline i.p.v.
+juist-minus-fout) en `factchecker`'s ronde `delen-of-niet` is uitgebreid van 6 naar 8 items (4 "wel
+delen", 4 "niet delen" — was 2/4).
+- **Blind**, volledige missie opnieuw gespeeld: ronde 1 (alles aanvinken, incl. 2 foute) → 0/25. Ronde 2
+  (volledig omgekeerde volgorde) → 10/25. Ronde 3 (`delen-of-niet`, overal "Accepteren" op alle 8 items)
+  → **0/25** (bevestigt dat de nieuwe baseline-formule ook bij de 4-om-4-verdeling "altijd hetzelfde
+  antwoorden" naar 0 duwt — niet meer de 8/25 die de oude juist-minus-fout-formule daar zou hebben
+  gegeven volgens de code-comments). Ronde 4 (alles aanvinken) → 0/25. **Totaal: 10/100 (10%).**
+- **Serieus**, ronde 3 in isolatie getoetst (rondes 1-2 vooraf via localStorage als correct gemarkeerd,
+  om tijd te besparen — ronde 3 zelf via de echte UI beantwoord): alle 8 items correct
+  geaccepteerd/geweigerd → **25/25**, volle score. Dit bevestigt dat de nieuwe formule bij accuratesse
+  100% nog steeds het maximum haalt, ook met de bredere 4/4-verdeling.
+
+### N6-nieuw. "Weet niet" binnen een echt antwoord scoort gewoon — **GESLAAGD**
+Missie `api-verkenner` q3, getypt: **"Je weet niet welke waarde bij welke key hoort zonder de sleutel
+erbij."** — bevat de losse woorden "weet niet", maar niet het specifieke patroon `weet ik (het )?niet`
+dat als niet-antwoord wordt gefilterd. Bevestigknop bleef actief, ingediend, **+10 van de 10 punten**
+("Goed opgeschreven!"). Bevestigt dat de versoepeling van het niet-antwoord-filter precies dit
+onderscheid maakt: "weet ik niet" (niet-antwoord) versus "je weet niet …" als onderdeel van een inhoudelijk
+antwoord (telt gewoon mee).
+
+### N7-nieuw. Verzonnen webadres bij een gewone observatievraag scoort geen punten — **GESLAAGD**
+Missie `network-navigator` q3-router-observatie (een vraag die GEEN URL in de uitleg heeft, dus geen
+gestructureerd-antwoord-vrijstelling). Getypt: **"https://latency-server.nl"** (kaal domein, geen pad).
+De bevestigknop bleef **uitgeschakeld** ("nog minstens 4 woorden") — het kale domein haalt de
+gestructureerd-antwoord-vrijstelling niet (die eist een URL MET pad) en faalt daarom gewoon de
+lengte-eis, dus dit "antwoord" kan niet eens worden ingediend, laat staan scoren. Dit staat in scherp
+contrast met N7 uit DEEL 1 hieronder, waar een echte URL-met-pad (`.../v2/pokemon/charizard`) bij een
+vraag die dat wél verwacht, gewoon volle punten kreeg — precies het bedoelde onderscheid.
+
+---
+
+## DEEL 1 — nieuwe reparaties (eerste ronde, getoetst vóór de laatste code-wijzigingen; nog geldig)
 
 ### N1. Oude voortgang blijft behouden — **GESLAAGD**
 Voorbereid: `dgskills_mission_data-review` gezet op het kale oude formaat (zonder `{v, state}`-omhulsel):
