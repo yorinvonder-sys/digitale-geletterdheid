@@ -85,10 +85,13 @@ export const KERNDOEL_MISSIONS: KerndoelMissionMeta[] = [
   { id: 'review-week-3', title: 'De Ethische Raad', week: 4, yearGroup: 1, sloKerndoelen: ['23C', '21D'], sloVsoKerndoelen: ['20B'] },                         // +21D: bevat AI-bias dilemma
   { id: 'mission-blueprint', title: 'De Blauwdruk', week: 4, yearGroup: 1, sloKerndoelen: ['22A'], sloVsoKerndoelen: ['19A'] },                                // -21A: projectplan maken = product, niet systeemkennis
   { id: 'mission-vision', title: 'De Visie', week: 4, yearGroup: 1, sloKerndoelen: ['22A', '21B'], sloVsoKerndoelen: ['19A', '18B'] },                         // 21D→21B: moodboard + pitch = product + visuele communicatie
+  { id: 'mission-build', title: 'De Bouw', week: 4, yearGroup: 1, sloKerndoelen: ['22A', '21A'], sloVsoKerndoelen: ['19A', '18A'] },                          // 22A: product écht maken; 21A: gereedschap kiezen, gebruiken, opslaan en delen
   { id: 'mission-launch', title: 'De Lancering', week: 4, yearGroup: 1, sloKerndoelen: ['22A', '21B'], sloVsoKerndoelen: ['19A', '18B'] },                     // 21A,21C→22A,21B: flyer ontwerpen = product + communicatie
 
-  // Assessment P4
-  { id: 'assessment-j1-p4', title: 'Periodetoets 4', week: 4, yearGroup: 1, sloKerndoelen: ['21A', '21B', '21D', '22A', '23C'] },
+  // Geen assessment P4: periode 4 wordt afgesloten met de Ethische Raad (`review-week-3`).
+  // De vorige entry claimde vijf kerndoelen voor een toets die nergens werd aangeboden —
+  // papieren dekking in de kerndoelverantwoording. 21A wordt nu wél echt gedekt, door
+  // `mission-build`.
 
   // ============================================================
   // LEERJAAR 2

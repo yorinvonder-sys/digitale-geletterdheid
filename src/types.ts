@@ -26,7 +26,7 @@ export type RoleId =
   // Leerjaar 1 - Periode 3
   'review-week-2' | 'ai-spiegel' | 'social-safeguard' | 'veilig-internet' | 'scroll-stopper' | 'data-detective' | 'deepfake-detector' | 'cookie-crusher' | 'mail-detective' | 'data-handelaar' | 'privacy-profiel-spiegel' | 'filter-bubble-breaker' | 'datalekken-rampenplan' | 'data-voor-data' | 'data-speurder' | 'data-verzamelaar' |
   // Leerjaar 1 - Periode 4
-  'review-week-3' | 'mission-blueprint' | 'mission-vision' | 'mission-launch' | 'startup-pitch' |
+  'review-week-3' | 'mission-blueprint' | 'mission-vision' | 'mission-build' | 'mission-launch' | 'startup-pitch' |
   // Leerjaar 1 - Speciaal
   'ai-beleid-brainstorm' |
   // Leerjaar 1 - Reviews

@@ -5,6 +5,13 @@ import type { FollowUpQuestion } from './types';
 interface FollowUpCardProps {
     followUp: FollowUpQuestion;
     onComplete: (correct: boolean) => void;
+    /**
+     * Aangeroepen op het moment van kiezen, dus vóór 'Doorgaan'. Gebruikers die hun
+     * voortgang bewaren leggen het resultaat hier direct vast: zodra het juiste
+     * antwoord onthuld is, mag een refresh of hermount de vraag niet opnieuw te
+     * winnen maken.
+     */
+    onAnswer?: (correct: boolean) => void;
     /** Visueel thema — 'light' voor ScenarioEngine, 'dark' voor PuzzleLab */
     theme?: 'light' | 'dark';
     /**
@@ -14,7 +21,7 @@ interface FollowUpCardProps {
     scoreWeight?: number;
 }
 
-export const FollowUpCard: React.FC<FollowUpCardProps> = ({ followUp, onComplete, theme = 'light', scoreWeight = 0 }) => {
+export const FollowUpCard: React.FC<FollowUpCardProps> = ({ followUp, onComplete, onAnswer, theme = 'light', scoreWeight = 0 }) => {
     const [selected, setSelected] = useState<number | null>(null);
     const answered = selected !== null;
     const correct = selected === followUp.correctIndex;
@@ -23,7 +30,7 @@ export const FollowUpCard: React.FC<FollowUpCardProps> = ({ followUp, onComplete
     const bg = isLight ? 'bg-duck-bg' : 'bg-duck-ink';
     const border = isLight ? 'border-duck-acid' : 'border-duck-acid/40';
     const textMain = isLight ? 'text-duck-ink' : 'text-white';
-    const textSub = isLight ? 'text-duck-ink/60' : 'text-duck-ink/60';
+    const textSub = isLight ? 'text-duck-ink/70' : 'text-duck-ink/70';
     const fontMain = isLight
         ? { fontFamily: "'Newsreader', Georgia, serif" }
         : { fontFamily: "'Newsreader', Georgia, serif" };
@@ -34,6 +41,7 @@ export const FollowUpCard: React.FC<FollowUpCardProps> = ({ followUp, onComplete
     const handleSelect = (index: number) => {
         if (answered) return;
         setSelected(index);
+        onAnswer?.(index === followUp.correctIndex);
     };
 
     return (

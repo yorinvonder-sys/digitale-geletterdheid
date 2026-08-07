@@ -5,8 +5,8 @@ import { PhaseHeader } from '../shared/PhaseHeader';
 import { IntroScreen } from '../shared/IntroScreen';
 import { CompletionScreen } from '../shared/CompletionScreen';
 import { getMissionGoal } from '@/config/missionGoals';
-import { isSubstantiveAnswer } from '@/utils/answerQuality';
 import type { TemplateMissionProps, BadgeConfig, FollowUpQuestion, MissionGoal } from '../shared/types';
+import { isMeaningfulAnswer } from './answerQuality';
 import { ExplorePhase } from './sub/ExplorePhase';
 import { PositionPhase } from './sub/PositionPhase';
 import { ArguePhase } from './sub/ArguePhase';
@@ -112,17 +112,18 @@ function calcScore(state: DebateArenaState, config: DebateArenaConfig): number {
 
     // Arguments: 20 pts each, max 3
     const validArgs = state.arguments.filter(
-        (a) => isSubstantiveAnswer(a.claim) && isSubstantiveAnswer(a.evidence)
+        (a) => isMeaningfulAnswer(a.claim) && isMeaningfulAnswer(a.evidence)
     );
     score += Math.round((Math.min(validArgs.length, 3) / 3) * argumentMax);
 
     // Counter-response: 10 pts
-    if (isSubstantiveAnswer(state.counterResponse)) score += 10;
+    if (isMeaningfulAnswer(state.counterResponse)) score += 10;
 
     // Reflection: 10 pts per question
-    const reflectionScore = config.reflectionQuestions.filter(
-        (q) => isSubstantiveAnswer(state.reflectionAnswers[q] ?? '')
-    ).length * 10;
+    const reflectionScore = config.reflectionQuestions.filter((q) => {
+        const answer = state.reflectionAnswers[q] ?? '';
+        return isMeaningfulAnswer(answer);
+    }).length * 10;
     score += reflectionScore;
 
     return Math.min(score, config.maxScore);
@@ -188,9 +189,9 @@ const DebateArenaInner: React.FC<DebateArenaProps> = ({ config, onBack, onComple
         const phases = [
             { icon: '👥', title: 'Stakeholders gelezen', score: state.stakeholdersRead.length >= config.stakeholders.length ? 10 : 0, max: 10 },
             { icon: '📍', title: 'Positie gekozen', score: state.selectedPosition ? 10 : 0, max: 10 },
-            { icon: '💬', title: 'Argumenten gebouwd', score: Math.round((Math.min(state.arguments.filter(a => isSubstantiveAnswer(a.claim) && isSubstantiveAnswer(a.evidence)).length, 3) / 3) * 50), max: 50 },
-            { icon: '⚡', title: 'Tegenargument beantwoord', score: isSubstantiveAnswer(state.counterResponse) ? 10 : 0, max: 10 },
-            { icon: '🪞', title: 'Gereflecteerd', score: config.reflectionQuestions.filter(q => isSubstantiveAnswer(state.reflectionAnswers[q] ?? '')).length * 10, max: config.reflectionQuestions.length * 10 },
+            { icon: '💬', title: 'Argumenten gebouwd', score: Math.round((Math.min(state.arguments.filter(a => isMeaningfulAnswer(a.claim) && isMeaningfulAnswer(a.evidence)).length, 3) / 3) * 50), max: 50 },
+            { icon: '⚡', title: 'Tegenargument beantwoord', score: isMeaningfulAnswer(state.counterResponse) ? 10 : 0, max: 10 },
+            { icon: '🪞', title: 'Gereflecteerd', score: config.reflectionQuestions.filter(q => isMeaningfulAnswer(state.reflectionAnswers[q] ?? '')).length * 10, max: config.reflectionQuestions.length * 10 },
         ];
 
         return (
@@ -247,6 +248,8 @@ const DebateArenaInner: React.FC<DebateArenaProps> = ({ config, onBack, onComple
                         phases={phases}
                         takeaways={config.takeaways}
                         onComplete={async () => {
+                            // Pas wissen als de server de voltooiing bevestigd heeft, anders
+                            // raakt een leerling zijn werk kwijt bij een mislukte opslag.
                             const completed = await onComplete(true);
                             if (completed !== false) {
                                 clearSave();
@@ -287,7 +290,8 @@ const DebateArenaInner: React.FC<DebateArenaProps> = ({ config, onBack, onComple
                         onMarkRead={markStakeholderRead}
                         onSetActiveIndex={(i) => setState((s) => ({ ...s, activeStakeholderIndex: i }))}
                         onNext={() => setPhase('position')}
-                        onQuizComplete={(correct) => setState((s) => ({ ...s, explorationQuizAnswered: true, explorationQuizCorrect: correct }))}
+                        onQuizAnswer={(correct) => setState((s) => (s.explorationQuizCorrect !== undefined ? s : { ...s, explorationQuizCorrect: correct }))}
+                        onQuizComplete={(correct) => setState((s) => ({ ...s, explorationQuizAnswered: true, explorationQuizCorrect: s.explorationQuizCorrect ?? correct }))}
                     />
                 )}
 

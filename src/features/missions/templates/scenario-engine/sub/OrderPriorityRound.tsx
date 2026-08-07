@@ -2,6 +2,48 @@ import React from 'react';
 import { Check, RotateCcw } from 'lucide-react';
 import type { ScenarioRound } from '../types';
 
+/**
+ * Stabiele pseudo-random generator op basis van een tekst-seed.
+ * Dezelfde seed geeft altijd dezelfde reeks, zodat de kaartvolgorde na herladen
+ * of een autosave-herstel niet verspringt.
+ */
+const seededRandom = (seed: string) => {
+    let h = 2166136261;
+    for (let i = 0; i < seed.length; i++) {
+        h ^= seed.charCodeAt(i);
+        h = Math.imul(h, 16777619);
+    }
+    return () => {
+        h += 0x6d2b79f5;
+        let t = h;
+        t = Math.imul(t ^ (t >>> 15), t | 1);
+        t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+        return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+    };
+};
+
+/**
+ * Husselt de kaarten met een vaste seed.
+ *
+ * Zonder dit staan de kaarten in configvolgorde, en in alle configs loopt
+ * `correctPosition` in diezelfde volgorde op vanaf 0 — de getoonde volgorde ís
+ * dan het antwoord, en van boven naar beneden klikken levert de volle score op
+ * zonder te lezen. De seed houdt de volgorde stabiel binnen een ronde; de
+ * eindcontrole voorkomt dat de hussel toevallig op de antwoordvolgorde uitkomt.
+ */
+const shuffleForRound = <T extends { id: number }>(items: T[], seed: string): T[] => {
+    if (items.length < 2) return items;
+    const rand = seededRandom(seed);
+    const out = [...items];
+    for (let i = out.length - 1; i > 0; i--) {
+        const j = Math.floor(rand() * (i + 1));
+        [out[i], out[j]] = [out[j], out[i]];
+    }
+    const unchanged = out.every((it, i) => it.id === items[i].id);
+    if (unchanged) [out[0], out[1]] = [out[1], out[0]];
+    return out;
+};
+
 const ScenarioIcon = ({ icon, className }: { icon: string; className: string }) => (
     icon.startsWith('/assets/') ? (
         <img src={icon} alt="" className={`shrink-0 object-contain ${className}`} width={24} height={24} loading="lazy" decoding="async" />
@@ -18,7 +60,11 @@ export const OrderPriorityRound: React.FC<{
     onReset: () => void;
     onSubmit: () => void;
 }> = ({ round, selections, submitted, onAdd, onReset, onSubmit }) => {
-    const remaining = round.items.filter((it) => !selections.includes(it.id));
+    const shuffledItems = React.useMemo(
+        () => shuffleForRound(round.items, round.id),
+        [round.items, round.id]
+    );
+    const remaining = shuffledItems.filter((it) => !selections.includes(it.id));
     const instruction = round.orderInstruction ?? 'Klik de items in de juiste volgorde';
 
     return (

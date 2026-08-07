@@ -345,6 +345,15 @@ export const MISSION_GOALS: Record<string, MissionGoal> = {
         },
         evidence: 'Je kunt laten zien voor wie je project is en welke stijl of boodschap erbij hoort.',
     },
+    'mission-build': {
+        primaryGoal: 'Ik bouw de kern van mijn eindproject echt en zet die deelbaar klaar.',
+        criteria: {
+            type: 'steps-complete',
+            min: 4,
+            description: 'Je kiest gereedschap, bouwt de kern, laat iemand het proberen en zet het klaar om te delen.',
+        },
+        evidence: 'Je docent kan je product zelf openen en er staat jouw eigen inhoud in.',
+    },
     'mission-launch': {
         primaryGoal: 'Ik presenteer mijn eindproject duidelijk met een korte lancering en passende materialen.',
         criteria: {

@@ -60,7 +60,7 @@ export const LegaalDossier: React.FC<LegaalDossierProps> = ({
                 <span className="text-xl">{advocaat.emoji}</span>
                 <div>
                     <p
-                        className="text-[10px] font-black text-duck-ink/50 uppercase tracking-widest"
+                        className="text-[10px] font-black text-duck-ink/70 uppercase tracking-widest"
                         style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                     >
                         Dossier 1 — Legaal
@@ -72,7 +72,7 @@ export const LegaalDossier: React.FC<LegaalDossierProps> = ({
                         {advocaat.name}
                     </h3>
                     <p
-                        className="text-xs text-duck-ink/50"
+                        className="text-xs text-duck-ink/70"
                         style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                     >
                         {advocaat.role}
@@ -92,7 +92,7 @@ export const LegaalDossier: React.FC<LegaalDossierProps> = ({
                 {/* Progressive reveal toggle */}
                 <button
                     onClick={() => setPerspectiveOpen((o) => !o)}
-                    className="mt-3 flex items-center gap-1 text-[11px] font-bold text-duck-ink/50 hover:text-duck-ink transition-colors"
+                    className="mt-3 flex items-center gap-1 text-[11px] font-bold text-duck-ink/70 hover:text-duck-ink transition-colors"
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                 >
                     <ChevronDown
@@ -108,7 +108,7 @@ export const LegaalDossier: React.FC<LegaalDossierProps> = ({
                             initial={{ opacity: 0, height: 0 }}
                             animate={{ opacity: 1, height: 'auto' }}
                             exit={{ opacity: 0, height: 0 }}
-                            className="text-xs text-duck-ink/60 leading-relaxed mt-3 overflow-hidden"
+                            className="text-xs text-duck-ink/70 leading-relaxed mt-3 overflow-hidden"
                             style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                         >
                             {advocaat.perspective}
@@ -120,7 +120,7 @@ export const LegaalDossier: React.FC<LegaalDossierProps> = ({
             {/* Traffic-light verdict */}
             <div className="space-y-2">
                 <p
-                    className="text-xs font-bold text-duck-ink/60"
+                    className="text-xs font-bold text-duck-ink/70"
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                 >
                     Wat is jouw oordeel over jóuw eigen project?
@@ -151,7 +151,7 @@ export const LegaalDossier: React.FC<LegaalDossierProps> = ({
                         className="space-y-1"
                     >
                         <label
-                            className="text-xs font-bold text-duck-ink/60 block"
+                            className="text-xs font-bold text-duck-ink/70 block"
                             style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                         >
                             Onderbouw in één zin waarom:
@@ -165,7 +165,7 @@ export const LegaalDossier: React.FC<LegaalDossierProps> = ({
                             style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                         />
                         <p
-                            className={`text-right text-[10px] ${justification.trim().length >= 10 ? 'text-duck-ink' : 'text-duck-ink/40'}`}
+                            className={`text-right text-[10px] ${justification.trim().length >= 10 ? 'text-duck-ink' : 'text-duck-ink/70'}`}
                             style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                         >
                             {justification.trim().length} / min. 10 tekens

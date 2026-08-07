@@ -362,7 +362,7 @@ export const EthicsCouncil: React.FC<TemplateMissionProps> = (props) => {
             <div className="min-h-screen bg-duck-bg flex items-center justify-center p-4">
                 <div className="text-center">
                     <p
-                        className="text-duck-ink/60 mb-4"
+                        className="text-duck-ink/70 mb-4"
                         style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                     >
                         Config niet gevonden: {missionId}

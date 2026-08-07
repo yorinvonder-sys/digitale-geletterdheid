@@ -1,7 +1,7 @@
 import React from 'react';
 import { ArrowLeft, ChevronRight } from 'lucide-react';
 import type { DebateArenaConfig, DebateArenaState } from '../DebateArena';
-import { getAnswerStatus } from '@/utils/answerQuality';
+import { isMeaningfulAnswer } from '../answerQuality';
 
 export interface ChallengePhaseProps {
     config: DebateArenaConfig;
@@ -12,8 +12,7 @@ export interface ChallengePhaseProps {
 }
 
 export const ChallengePhase: React.FC<ChallengePhaseProps> = ({ config, state, onUpdateResponse, onNext, onBack }) => {
-    const responseStatus = getAnswerStatus(state.counterResponse);
-    const canContinue = responseStatus.ok;
+    const canContinue = isMeaningfulAnswer(state.counterResponse);
 
     return (
         <div>
@@ -55,7 +54,7 @@ export const ChallengePhase: React.FC<ChallengePhaseProps> = ({ config, state, o
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                 />
                 <div className={`text-right text-[10px] mt-1 ${canContinue ? 'text-duck-ink' : 'text-duck-ink/60'}`} style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
-                    {responseStatus.hint}
+                    {state.counterResponse.trim().length}/20 min.
                 </div>
             </div>
 

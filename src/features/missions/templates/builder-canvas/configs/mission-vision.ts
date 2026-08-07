@@ -52,7 +52,7 @@ export const missionVisionConfig: BuilderCanvasConfig = {
                 'Een moodboard is een visuele verzameling van beelden, kleuren en stijlen die de sfeer van je idee weergeven. Designers gebruiken moodboards om anderen te laten voelen wat ze zelf zien.',
             instruction:
                 'Maak nu écht een moodboard — niet alleen beschrijven. 1) Kies je platform: Canva, Pinterest of PowerPoint. 2) Voeg minimaal 5 beelden toe die de sfeer van jouw project uitstralen. 3) Kies een kleurenpalet van 3 kleuren en schrijf er één zin bij waarom deze kleuren passen. 4) Benoem het gevoel van je moodboard in precies 2 woorden. 5) Sla je moodboard op in de map "P4-Eindproject" in OneDrive en maak een deellink. Plak die link hieronder.',
-            tip: 'Een goed moodboard vertelt hetzelfde verhaal als je visie — maar dan zonder woorden. Als iemand je moodboard ziet zonder uitleg, moet hij de juiste sfeer voelen.',
+            tip: 'Een goed moodboard vertelt hetzelfde verhaal als je visie — maar dan zonder woorden. Als iemand je moodboard ziet zonder uitleg, moet hij de juiste sfeer voelen. Gebruik je AI-beelden of foto\'s van Google Afbeeldingen? Check of je ze mag gebruiken en zet erbij waar ze vandaan komen.',
             checklistItems: [
                 { id: 'beelden', label: 'Mijn moodboard heeft minimaal 5 beelden' },
                 { id: 'kleuren', label: 'Ik heb een kleurenpalet van 3 kleuren gekozen met motivatie' },

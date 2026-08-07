@@ -96,7 +96,7 @@ export const VonnisClimax: React.FC<VonnisClimaxProps> = ({
 
             <div className="w-full max-w-md text-center">
                 <p
-                    className="text-[10px] font-black text-duck-ink/50 uppercase tracking-widest mb-2"
+                    className="text-[10px] font-black text-duck-ink/70 uppercase tracking-widest mb-2"
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                 >
                     Het vonnis
@@ -108,7 +108,7 @@ export const VonnisClimax: React.FC<VonnisClimaxProps> = ({
                     De Ethische Raad heeft gesproken
                 </h2>
                 <p
-                    className="text-sm text-duck-ink/60 mb-6"
+                    className="text-sm text-duck-ink/70 mb-6"
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                 >
                     Drie zegels. Jouw project is beoordeeld.

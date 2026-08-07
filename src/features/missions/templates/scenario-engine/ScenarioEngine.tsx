@@ -325,10 +325,15 @@ const ScenarioEngineInner: React.FC<{
                                 <FollowUpCard
                                     followUp={currentRound.followUp}
                                     scoreWeight={followUpWeight(currentRound)}
+                                    onAnswer={(correct) => {
+                                        if (roundState.followUpCorrect === undefined) {
+                                            updateRoundState(currentRound.id, { followUpCorrect: correct });
+                                        }
+                                    }}
                                     onComplete={(correct) => {
                                         updateRoundState(currentRound.id, {
                                             followUpAnswered: true,
-                                            followUpCorrect: correct,
+                                            followUpCorrect: roundState.followUpCorrect ?? correct,
                                         });
                                         handleNextRound();
                                     }}

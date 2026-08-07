@@ -59,16 +59,34 @@ export default defineConfig(({ mode }) => {
         // Keep heavy, lazy feature dependencies out of dev prebundles so the
         // production bundler can split their real dependency graphs.
         'exceljs',
-        'three',
-        '@react-three/fiber',
-        '@react-three/drei',
+        // `three`, `@react-three/fiber` en `@react-three/drei` stonden hier ook, maar dat
+        // maakte het leerlingdashboard onbruikbaar in ontwikkeling: uitgesloten pakketten
+        // worden rauw geserveerd, en elk CJS-only pakket in die boom breekt dan op
+        // "does not provide an export named 'default'". Achter elkaar sneuvelden
+        // use-sync-external-store, scheduler en stats.js — een keten die niet convergeert
+        // door ze los toe te voegen.
+        //
+        // De opgegeven reden gaat voor deze drie niet op: de productie-opdeling wordt
+        // expliciet geregeld in `manualChunks` hieronder, en die functie normaliseert
+        // `.vite/deps`-paden al (zie de `isViteDeps`-tak). Geverifieerd door de
+        // bouwuitvoer te vergelijken vóór en ná deze wijziging.
       ],
       include: [
         // drei → tunnel-rat → zustand → use-sync-external-store/shim/with-selector.js
         // is a CJS file with no ESM default export. Vite serves it raw via /@fs/ when
         // its parent packages are excluded, which breaks the ES module import. Force
         // pre-bundling the shim so Vite wraps it correctly.
+        //
+        // Beide schrijfwijzen zijn nodig: zustand/esm/traditional.mjs importeert het
+        // pad mét .js-extensie, en optimizeDeps.include matcht op de letterlijke
+        // specifier. Zonder de .js-variant blijft de shim onvoorbewerkt en crasht het
+        // leerlingdashboard op "does not provide an export named 'default'".
         'use-sync-external-store/shim/with-selector',
+        'use-sync-external-store/shim/with-selector.js',
+        // Zelfde oorzaak, volgende schakel: @react-three/fiber trekt `scheduler` binnen,
+        // dat CJS-only is. Omdat fiber zelf uitgesloten is, serveert Vite die raw en
+        // faalt de import op dezelfde "does not provide an export named 'default'".
+        'scheduler',
       ],
     },
     // SECURITY: API keys removed from client bundle - all AI calls go through Supabase Edge Functions proxy
