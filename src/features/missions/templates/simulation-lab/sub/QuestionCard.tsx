@@ -1,6 +1,6 @@
 import React from 'react';
 import { Lightbulb, CheckCircle, XCircle } from 'lucide-react';
-import { ConfidenceRating } from '../../shared/ConfidenceRating';
+import { ConfidenceRating, ConfidenceFeedback } from '../../shared/ConfidenceRating';
 import type { SimQuestion } from '../SimulationLab';
 
 export const QuestionCard: React.FC<{
@@ -15,7 +15,6 @@ export const QuestionCard: React.FC<{
     const isCorrect = submitted && answer === question.correctAnswer;
     const isWrong = submitted && answer !== question.correctAnswer;
     const showConfidenceWidget = !submitted && answer !== undefined && question.type === 'prediction' && question.showConfidence;
-    const submitDisabled = showConfidenceWidget && !confidence;
 
     return (
         <div
@@ -60,7 +59,7 @@ export const QuestionCard: React.FC<{
                                         ? 'bg-duck-acid/10 border-duck-acid text-duck-ink font-bold'
                                         : isSelected
                                         ? 'bg-duck-acid/10 border-duck-acid text-duck-ink font-bold'
-                                        : 'bg-white border-duck-gray text-duck-ink/60 hover:border-duck-acid/40 disabled:opacity-70'
+                                        : 'bg-white border-duck-gray text-duck-ink/75 hover:border-duck-acid/40 disabled:opacity-70'
                                 }`}
                                 style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                             >
@@ -76,7 +75,7 @@ export const QuestionCard: React.FC<{
             {/* Confidence rating for prediction questions */}
             {showConfidenceWidget && (
                 <div className="mb-3">
-                    <ConfidenceRating onSelect={onSetConfidence} />
+                    <ConfidenceRating onSelect={onSetConfidence} selected={confidence} />
                 </div>
             )}
 
@@ -85,12 +84,7 @@ export const QuestionCard: React.FC<{
                 <button
                     data-qa="simulation-submit"
                     onClick={onSubmit}
-                    disabled={submitDisabled}
-                    className={`min-h-[44px] w-full py-2 rounded-lg text-xs font-bold transition-all duration-200 active:scale-[0.98] ${
-                        submitDisabled
-                            ? 'bg-duck-gray text-duck-ink/60 cursor-not-allowed'
-                            : 'bg-gradient-to-r from-duck-acid to-duck-acid text-duck-ink'
-                    }`}
+                    className="min-h-[44px] w-full py-2 rounded-lg text-xs font-bold transition-all duration-200 active:scale-[0.98] bg-gradient-to-r from-duck-acid to-duck-acid text-duck-ink"
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                 >
                     Controleer antwoord
@@ -101,7 +95,7 @@ export const QuestionCard: React.FC<{
             {submitted && (
                 <div
                     className={`flex items-start gap-2 mt-2 p-2 rounded-lg text-xs ${
-                        isCorrect ? 'bg-duck-ink/10 text-duck-ink' : 'bg-duck-acid/10 text-duck-acid'
+                        isCorrect ? 'bg-duck-ink/10 text-duck-ink' : 'bg-duck-acid/10 text-duck-ink'
                     }`}
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                 >
@@ -113,6 +107,7 @@ export const QuestionCard: React.FC<{
                     <div>
                         <span className="font-bold">{isCorrect ? 'Goed! ' : 'Niet helemaal. '}</span>
                         {question.explanation}
+                        <ConfidenceFeedback confidence={confidence} correct={isCorrect} className="mt-1.5 block" />
                     </div>
                 </div>
             )}

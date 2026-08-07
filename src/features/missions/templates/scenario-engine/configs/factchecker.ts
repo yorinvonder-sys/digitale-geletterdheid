@@ -160,6 +160,16 @@ const config: ScenarioEngineConfig = {
                 'Denk aan: wie heeft de data? Wie heeft belangen? Wie heeft een peer review gehad?',
             items: [
                 {
+                    id: 4,
+                    icon: '👩‍⚕️',
+                    title: 'Blog van een arts',
+                    description:
+                        'Een opinieblog geschreven door een arts die zegt positieve ervaringen te hebben met het medicijn.',
+                    correctPosition: 3,
+                    explanation:
+                        'Eén expert is geen bewijs. Ervaringen van één arts kunnen afwijken van de wetenschappelijke consensus. Interessant als aanvulling, maar niet voldoende als primaire bron.',
+                },
+                {
                     id: 1,
                     icon: '🔬',
                     title: 'Peer-reviewed wetenschappelijk artikel',
@@ -168,6 +178,16 @@ const config: ScenarioEngineConfig = {
                     correctPosition: 0,
                     explanation:
                         'Meest betrouwbaar. Peer review betekent dat andere experts het onderzoek hebben gecontroleerd op fouten en methodologie. Dit is de gouden standaard voor wetenschappelijke claims.',
+                },
+                {
+                    id: 5,
+                    icon: '📱',
+                    title: 'TikTok-video van een ervaringsdeskundige',
+                    description:
+                        'Een persoon beschrijft in een TikTok hoe het medicijn hem heeft geholpen en raadt het iedereen aan.',
+                    correctPosition: 4,
+                    explanation:
+                        'Minst betrouwbaar voor medische claims. Persoonlijke ervaringen zijn geen wetenschappelijk bewijs. Placebo-effecten, toevalligheid en gebrek aan controlegroep maken anekdotes onbetrouwbaar als bewijs.',
                 },
                 {
                     id: 2,
@@ -188,26 +208,6 @@ const config: ScenarioEngineConfig = {
                     correctPosition: 2,
                     explanation:
                         'Gerenommeerde journalistieke media controleren hun bronnen, citeren experts en corrigeren fouten. Betrouwbaar, maar niet het primaire bewijs zelf — ze interpreteren de wetenschap.',
-                },
-                {
-                    id: 4,
-                    icon: '👩‍⚕️',
-                    title: 'Blog van een arts',
-                    description:
-                        'Een opinieblog geschreven door een arts die zegt positieve ervaringen te hebben met het medicijn.',
-                    correctPosition: 3,
-                    explanation:
-                        'Eén expert is geen bewijs. Ervaringen van één arts kunnen afwijken van de wetenschappelijke consensus. Interessant als aanvulling, maar niet voldoende als primaire bron.',
-                },
-                {
-                    id: 5,
-                    icon: '📱',
-                    title: 'TikTok-video van een ervaringsdeskundige',
-                    description:
-                        'Een persoon beschrijft in een TikTok hoe het medicijn hem heeft geholpen en raadt het iedereen aan.',
-                    correctPosition: 4,
-                    explanation:
-                        'Minst betrouwbaar voor medische claims. Persoonlijke ervaringen zijn geen wetenschappelijk bewijs. Placebo-effecten, toevalligheid en gebrek aan controlegroep maken anekdotes onbetrouwbaar als bewijs.',
                 },
             ],
         },
@@ -293,7 +293,7 @@ const config: ScenarioEngineConfig = {
             emoji: '🧪',
             title: 'De CRAAP-methode toepassen',
             description:
-                'De CRAAP-methode helpt je een bron te beoordelen: Currency (actualiteit — hoe oud?), Relevance (relevantie — past het?), Authority (wie het zegt — wie is de bron?), Accuracy (klopt het?), Purpose (waarom — wat is het doel?). Welke vragen horen bij de CRAAP-methode? Selecteer ze.',
+                'De CRAAP-methode helpt je een bron te beoordelen. Vijf letters, vijf vragen: Currency (hoe oud is het?), Relevance (past het bij je onderwerp?), Authority (wie is de bron?), Accuracy (klopt het?), Purpose (wat is het doel?). Welke vragen horen bij de CRAAP-methode? Selecteer ze.',
             type: 'select-correct',
             maxScore: 25,
             feedbackCorrect:

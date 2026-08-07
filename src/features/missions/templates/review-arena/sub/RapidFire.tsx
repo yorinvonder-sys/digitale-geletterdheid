@@ -14,6 +14,8 @@ interface RapidFireProps {
     questions: RapidFireQuestion[];
     timePerQuestion?: number;
     onComplete: (score: number, maxScore: number) => void;
+    /** Called the moment the round is scored, before the correction is shown. */
+    onSubmit?: (score: number) => void;
     maxScore: number;
     trueLabel?: string;
     falseLabel?: string;
@@ -21,12 +23,43 @@ interface RapidFireProps {
 
 type AnswerState = boolean | 'timeout' | null;
 
+/**
+ * Score met aftrek voor fout, zoals de scenario-engine: blind doorklikken op een
+ * waar/onwaar-ronde levert gemiddeld evenveel goed als fout, en dus 0 punten.
+ * De reeksbonus telt de LANGSTE reeks en kan een niet-foutloze ronde nooit naar
+ * de maximumscore tillen.
+ */
+export function scoreRapidFire(
+    results: Array<{ correct: boolean }>,
+    total: number,
+    maxScore: number
+): number {
+    if (total <= 0 || maxScore <= 0) return 0;
+
+    const correctCount = results.filter((r) => r.correct).length;
+    const wrongCount = results.length - correctCount;
+    const base = Math.max(0, Math.round(((correctCount - wrongCount) / total) * maxScore));
+
+    let longestStreak = 0;
+    let running = 0;
+    for (const r of results) {
+        running = r.correct ? running + 1 : 0;
+        if (running > longestStreak) longestStreak = running;
+    }
+    const bonus = Math.min(Math.floor(longestStreak / 3) * 2, 10);
+
+    // Alleen een foutloze ronde haalt het maximum; de bonus stopt één punt eronder.
+    if (correctCount === total) return maxScore;
+    return Math.max(0, Math.min(base + bonus, maxScore - 1));
+}
+
 export const RapidFire: React.FC<RapidFireProps> = ({
     title,
     description,
     questions,
     timePerQuestion,
     onComplete,
+    onSubmit,
     maxScore,
     trueLabel = 'WAAR',
     falseLabel = 'ONWAAR',
@@ -74,14 +107,15 @@ export const RapidFire: React.FC<RapidFireProps> = ({
         const newResults = [...results, { correct, timeLeft: remainingTime ?? timeLeft ?? 0 }];
         setResults(newResults);
 
+        // Leg direct vast wat deze ronde tot nu toe waard is — nog niet beantwoorde
+        // vragen tellen als fout. Zo levert herladen ná het zien van uitleg nooit
+        // een hogere score op dan het antwoord dat de leerling zelf gaf.
+        onSubmit?.(scoreRapidFire(newResults, questions.length, maxScore));
+
         setTimeout(() => {
             const nextIndex = currentIndex + 1;
             if (nextIndex >= questions.length) {
-                const correctCount = newResults.filter((r) => r.correct).length;
-                const streakBonus = Math.floor(currentStreak / 3);
-                const baseScore = Math.round((correctCount / questions.length) * maxScore);
-                const bonusScore = Math.min(streakBonus * 2, 10);
-                const total = Math.min(baseScore + bonusScore, maxScore);
+                const total = scoreRapidFire(newResults, questions.length, maxScore);
                 setFinalScore(total);
                 setDone(true);
             } else {
@@ -97,6 +131,13 @@ export const RapidFire: React.FC<RapidFireProps> = ({
     };
 
     const correctCount = results.filter((r) => r.correct).length;
+    const longestStreak = results.reduce(
+        (acc, r) => {
+            const running = r.correct ? acc.running + 1 : 0;
+            return { running, best: Math.max(acc.best, running) };
+        },
+        { running: 0, best: 0 }
+    ).best;
 
     if (done && finalScore !== null) {
         return (
@@ -131,8 +172,8 @@ export const RapidFire: React.FC<RapidFireProps> = ({
                                 key={i}
                                 className={`text-xs p-2 rounded-lg ${
                                     result.correct
-                                        ? 'bg-duck-ink/10 text-duck-ink/60'
-                                        : 'bg-duck-acid/10 text-duck-ink/60'
+                                        ? 'bg-duck-ink/10 text-duck-ink/70'
+                                        : 'bg-duck-acid/10 text-duck-ink/70'
                                 }`}
                                 style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                             >
@@ -141,7 +182,7 @@ export const RapidFire: React.FC<RapidFireProps> = ({
                                 </span>{' '}
                                 <span className="font-medium">{q.question}</span>
                                 {!result.correct && (
-                                    <div className="mt-1 text-duck-ink/60">{q.explanation}</div>
+                                    <div className="mt-1 text-duck-ink/70">{q.explanation}</div>
                                 )}
                             </div>
                         );
@@ -149,6 +190,8 @@ export const RapidFire: React.FC<RapidFireProps> = ({
                 </div>
 
                 <div
+                    role="status"
+                    aria-live="polite"
                     className={`p-3 rounded-xl text-sm font-medium ${
                         correctCount === questions.length
                             ? 'bg-duck-ink/10 text-duck-ink'
@@ -157,7 +200,7 @@ export const RapidFire: React.FC<RapidFireProps> = ({
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                 >
                     {correctCount}/{questions.length} goed
-                    {streak >= 3 && <span className="ml-2 text-duck-ink">🔥 Streak bonus!</span>}
+                    {longestStreak >= 3 && <span className="ml-2 text-duck-ink">🔥 Streak bonus!</span>}
                     <span className="font-black ml-2">{finalScore}/{maxScore} punten</span>
                 </div>
 
@@ -185,7 +228,7 @@ export const RapidFire: React.FC<RapidFireProps> = ({
                         {title}
                     </h3>
                     <p
-                        className="text-sm text-duck-ink/60"
+                        className="text-sm text-duck-ink/70"
                         style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                     >
                         {description}
@@ -234,7 +277,7 @@ export const RapidFire: React.FC<RapidFireProps> = ({
                             transition={{ duration: 0.5 }}
                         />
                     </div>
-                    <span className="text-xs font-black text-duck-ink/60 w-6 text-right"
+                    <span className="text-xs font-black text-duck-ink/70 w-6 text-right"
                         style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                         {timeLeft}s
                     </span>
@@ -272,6 +315,8 @@ export const RapidFire: React.FC<RapidFireProps> = ({
             <AnimatePresence>
                 {answered !== null && (
                     <motion.div
+                        role="status"
+                        aria-live="assertive"
                         initial={{ opacity: 0, y: -4 }}
                         animate={{ opacity: 1, y: 0 }}
                         className={`text-xs px-3 py-2 rounded-xl ${
@@ -306,7 +351,7 @@ export const RapidFire: React.FC<RapidFireProps> = ({
                                 ? currentQuestion.answer === true
                                     ? 'bg-duck-ink text-white'
                                     : 'bg-duck-acid text-duck-ink'
-                                : 'bg-duck-gray text-duck-ink/60 cursor-not-allowed'
+                                : 'bg-duck-gray text-duck-ink/70 cursor-not-allowed'
                         }`}
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                 >
@@ -323,7 +368,7 @@ export const RapidFire: React.FC<RapidFireProps> = ({
                                 ? currentQuestion.answer === false
                                     ? 'bg-duck-ink text-white'
                                     : 'bg-duck-acid text-duck-ink'
-                                : 'bg-duck-gray text-duck-ink/60 cursor-not-allowed'
+                                : 'bg-duck-gray text-duck-ink/70 cursor-not-allowed'
                         }`}
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                 >
@@ -332,7 +377,7 @@ export const RapidFire: React.FC<RapidFireProps> = ({
             </div>
 
             <div
-                className="text-center text-xs text-duck-ink/60"
+                className="text-center text-xs text-duck-ink/70"
                 style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
             >
                 Vraag {currentIndex + 1} van {questions.length}

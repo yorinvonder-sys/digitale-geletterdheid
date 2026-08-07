@@ -36,21 +36,33 @@ const BarChart: React.FC<{ data: ChartDataPoint[] }> = ({ data }) => {
                 {data.map((d, i) => {
                     const pct = max > 0 ? (d.value / max) * 100 : 0;
                     const color = d.color || DEFAULT_COLORS[i % DEFAULT_COLORS.length];
+                    const showTooltip = (el: HTMLElement) => {
+                        const rect = containerRef.current?.getBoundingClientRect();
+                        const barRect = el.getBoundingClientRect();
+                        setTooltip({
+                            index: i,
+                            x: barRect.left - (rect?.left ?? 0) + barRect.width / 2,
+                            y: barRect.top - (rect?.top ?? 0) - 8,
+                        });
+                    };
                     return (
-                        <div
+                        <button
                             key={i}
-                            className="flex flex-col items-center flex-1 h-full justify-end cursor-pointer group"
-                            onMouseEnter={e => {
-                                const rect = containerRef.current?.getBoundingClientRect();
-                                const barRect = (e.currentTarget as HTMLElement).getBoundingClientRect();
-                                setTooltip({
-                                    index: i,
-                                    x: barRect.left - (rect?.left ?? 0) + barRect.width / 2,
-                                    y: barRect.top - (rect?.top ?? 0) - 8,
-                                });
-                            }}
+                            type="button"
+                            aria-label={`${d.label}: ${d.value}`}
+                            className="flex flex-col items-center flex-1 h-full justify-end cursor-pointer group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-ink rounded-lg"
+                            onMouseEnter={e => showTooltip(e.currentTarget)}
                             onMouseLeave={() => setTooltip(null)}
+                            onFocus={e => showTooltip(e.currentTarget)}
+                            onBlur={() => setTooltip(null)}
                         >
+                            {/* Waarde ook zonder muis leesbaar */}
+                            <span
+                                className="text-[10px] font-bold text-duck-ink mb-0.5"
+                                style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
+                            >
+                                {d.value}
+                            </span>
                             <div
                                 className="w-full rounded-t-lg transition-all duration-700 ease-out"
                                 style={{
@@ -61,7 +73,7 @@ const BarChart: React.FC<{ data: ChartDataPoint[] }> = ({ data }) => {
                                     transition: 'height 0.7s ease-out, opacity 0.15s ease',
                                 }}
                             />
-                        </div>
+                        </button>
                     );
                 })}
             </div>
@@ -71,7 +83,7 @@ const BarChart: React.FC<{ data: ChartDataPoint[] }> = ({ data }) => {
                 {data.map((d, i) => (
                     <div
                         key={i}
-                        className="flex-1 text-center text-[10px] text-duck-ink/60 leading-tight truncate"
+                        className="flex-1 text-center text-[10px] text-duck-ink/75 leading-tight truncate"
                         style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                         title={d.label}
                     >
@@ -153,9 +165,16 @@ const PieChart: React.FC<{ data: ChartDataPoint[] }> = ({ data }) => {
                     width={SIZE}
                     height={SIZE}
                     viewBox={`0 0 ${SIZE} ${SIZE}`}
+                    role="img"
+                    aria-label={`Cirkeldiagram. ${data
+                        .map(d => `${d.label}: ${d.value} (${total > 0 ? Math.round((d.value / total) * 100) : 0}%)`)
+                        .join('. ')}`}
                     className="overflow-visible"
                     style={{ transform: mounted ? 'scale(1)' : 'scale(0.85)', transition: 'transform 0.5s ease-out' }}
                 >
+                    <title>
+                        {`Cirkeldiagram met ${data.length} onderdelen; de waarden staan ook in de legenda hieronder.`}
+                    </title>
                     {slices.map(s => (
                         <path
                             key={s.index}
@@ -204,7 +223,7 @@ const PieChart: React.FC<{ data: ChartDataPoint[] }> = ({ data }) => {
                         >
                             <div className="w-3 h-3 rounded-sm flex-shrink-0" style={{ backgroundColor: color }} />
                             <span
-                                className="text-xs text-duck-ink/60 flex-1"
+                                className="text-xs text-duck-ink/75 flex-1"
                                 style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                             >
                                 {d.label}
@@ -213,7 +232,7 @@ const PieChart: React.FC<{ data: ChartDataPoint[] }> = ({ data }) => {
                                 className="text-xs font-bold text-duck-ink"
                                 style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                             >
-                                {d.value} <span className="font-normal text-duck-ink/60">({pct}%)</span>
+                                {d.value} <span className="font-normal text-duck-ink/75">({pct}%)</span>
                             </span>
                         </div>
                     );

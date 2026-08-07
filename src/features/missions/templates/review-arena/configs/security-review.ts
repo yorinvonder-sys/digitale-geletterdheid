@@ -55,7 +55,6 @@ const config: ReviewArenaConfig = {
             description:
                 'Sorteer deze wachtwoorden van het sterkste (boven) naar het zwakste (onder) op basis van beveiligingsprincipes.',
             maxScore: 25,
-            showConfidence: true,
             followUp: {
                 question: 'Waarom is een sterk wachtwoord alleen niet voldoende om je account te beschermen?',
                 options: ['Omdat wachtwoorden altijd gekraakt kunnen worden', 'Omdat phishing je wachtwoord kan stelen, ongeacht de sterkte', 'Omdat computers steeds sneller worden', 'Omdat websites wachtwoorden niet goed opslaan'],
@@ -131,7 +130,6 @@ const config: ReviewArenaConfig = {
             title: 'Veilig of onveilig gedrag?',
             description: 'Bepaal of elk digitaal gedrag veilig of onveilig is.',
             maxScore: 25,
-            showConfidence: true,
             categories: ['Veilig gedrag', 'Onveilig gedrag'],
             items: [
                 { label: 'Voor elke dienst een ander wachtwoord gebruiken', correctCategory: 'Veilig gedrag' },

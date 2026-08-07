@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { ChevronRight, ChevronLeft, CheckCircle, XCircle, BookOpen, MessageCircle } from 'lucide-react';
 import type { TemplateMissionProps, FollowUpQuestion, MissionGoal } from '../shared/types';
 import type { BadgeConfig } from '../shared/types';
@@ -9,7 +9,7 @@ import { useMissionAutoSave } from '@/hooks/useMissionAutoSave';
 import { getMissionGoal } from '@/config/missionGoals';
 import { InteractiveTable } from './sub/InteractiveTable';
 import { SimpleChart } from './sub/SimpleChart';
-import { ConfidenceRating, confidenceMultiplier } from '../shared/ConfidenceRating';
+import { ConfidenceRating, ConfidenceFeedback } from '../shared/ConfidenceRating';
 import { FollowUpCard } from '../shared/FollowUpCard';
 import { StudentAIChat } from '@/features/ai-chat/StudentAIChat';
 import { WellbeingAlert } from '@/features/student/WellbeingAlert';
@@ -26,6 +26,12 @@ export interface DataQuestion {
     explanation: string;
     points: number;
     showConfidence?: boolean;
+    /** text-observation: begrippen die in een goed antwoord horen (los woord of woordgroep) */
+    keywords?: string[];
+    /** text-observation: hoeveel keywords nodig zijn voor volle punten (default 1) */
+    minKeywords?: number;
+    /** text-observation: minimale lengte in woorden (default 8) */
+    minWords?: number;
 }
 
 export interface Dataset {
@@ -75,24 +81,76 @@ interface DataViewerState {
 
 // ── Helper ────────────────────────────────────────────────────────────────────
 
-function scoreQuestion(q: DataQuestion, answers: Record<string, string | number>, confidence?: 1 | 2 | 3): number {
-    if (q.type === 'text-observation') return q.points; // always participation points
+const DEFAULT_MIN_WORDS = 8;
+const DEFAULT_MIN_KEYWORDS = 1;
+
+/** Kleine letters zonder accenten, zodat "Café" en "cafe" hetzelfde matchen. */
+function normalizeObservation(value: string): string {
+    return value
+        .toLowerCase()
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '');
+}
+
+/** Splitst op woordniveau, zodat "de" niet in "dezelfde" wordt gevonden. */
+function observationWords(value: string): string[] {
+    return normalizeObservation(value)
+        .split(/[^a-z0-9]+/)
+        .filter(Boolean);
+}
+
+/** Ontaard = één herhaald teken, één herhaald woord, of alleen leestekens/cijfers. */
+function isDegenerateObservation(value: string): boolean {
+    const words = observationWords(value);
+    if (words.length === 0) return true;
+    const letters = normalizeObservation(value).replace(/[^a-z]/g, '');
+    if (letters.length === 0) return true;
+    if (new Set(letters).size === 1) return true;
+    if (new Set(words).size === 1) return true;
+    return false;
+}
+
+function countKeywordHits(value: string, keywords: string[]): number {
+    const words = observationWords(value);
+    const wordSet = new Set(words);
+    const phrase = ` ${words.join(' ')} `;
+    return keywords.filter(kw => {
+        const kwWords = observationWords(kw);
+        if (kwWords.length === 0) return false;
+        if (kwWords.length === 1) return wordSet.has(kwWords[0]);
+        return phrase.includes(` ${kwWords.join(' ')} `);
+    }).length;
+}
+
+/** 0 = te kort of ontaard, halve punten = te weinig kernbegrippen, anders vol. */
+function scoreObservation(q: DataQuestion, raw: string | number | undefined): number {
+    const value = String(raw ?? '');
+    const minWords = q.minWords ?? DEFAULT_MIN_WORDS;
+    if (isDegenerateObservation(value)) return 0;
+    if (observationWords(value).length < minWords) return 0;
+    if (q.keywords && q.keywords.length > 0) {
+        const hits = countKeywordHits(value, q.keywords);
+        const needed = q.minKeywords ?? DEFAULT_MIN_KEYWORDS;
+        return hits >= needed ? q.points : Math.round(q.points / 2);
+    }
+    return q.points;
+}
+
+function scoreQuestion(q: DataQuestion, answers: Record<string, string | number>): number {
+    if (q.type === 'text-observation') return scoreObservation(q, answers[q.id]);
     const raw = answers[q.id];
     if (raw === undefined || raw === '') return 0;
-    let base: number;
     if (q.type === 'number-input') {
         const num = Number(raw);
         const correct = Number(q.correctAnswer);
         if (isNaN(num)) return 0;
         const tolerance = Math.abs(correct) * 0.05;
-        base = Math.abs(num - correct) <= tolerance ? q.points : 0;
-    } else {
-        // multiple-choice
-        base = String(raw).trim().toLowerCase() === String(q.correctAnswer).trim().toLowerCase()
-            ? q.points
-            : 0;
+        return Math.abs(num - correct) <= tolerance ? q.points : 0;
     }
-    return Math.min(q.points, Math.round(base * confidenceMultiplier(confidence, base > 0)));
+    // multiple-choice
+    return String(raw).trim().toLowerCase() === String(q.correctAnswer).trim().toLowerCase()
+        ? q.points
+        : 0;
 }
 
 function clampScore(score: number, maxScore: number): number {
@@ -100,7 +158,7 @@ function clampScore(score: number, maxScore: number): number {
 }
 
 function isCorrect(q: DataQuestion, answers: Record<string, string | number>): boolean | null {
-    if (q.type === 'text-observation') return true; // always accepted
+    if (q.type === 'text-observation') return scoreObservation(q, answers[q.id]) === q.points;
     const raw = answers[q.id];
     if (raw === undefined || raw === '') return null;
     if (q.type === 'number-input') {
@@ -148,9 +206,17 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
         !isSubmitted &&
         answer !== undefined &&
         answer !== '';
+    const minWords = q.minWords ?? DEFAULT_MIN_WORDS;
+    const wordCount = q.type === 'text-observation' ? observationWords(observation).length : 0;
+    const observationScore = q.type === 'text-observation' && isSubmitted
+        ? scoreObservation(q, answers[q.id] ?? observation)
+        : null;
+    const positiveFeedback = q.type === 'text-observation'
+        ? (observationScore ?? 0) > 0
+        : correct === true;
     const submitDisabled = q.type === 'text-observation'
-        ? observation.trim().length < 10
-        : answer === undefined || answer === '' || (q.showConfidence === true && confidence === undefined);
+        ? wordCount < minWords
+        : answer === undefined || answer === '';
 
     return (
         <div className="bg-white rounded-2xl border border-duck-gray p-4 mb-3">
@@ -192,7 +258,7 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
                                         className="accent-duck-error"
                                     />
                                     <span
-                                        className="text-sm text-duck-ink/60"
+                                        className="text-sm text-duck-ink/75"
                                         style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                                     >
                                         {opt}
@@ -215,26 +281,44 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
                     )}
 
                     {q.type === 'text-observation' && (
-                        <textarea
-                            rows={3}
-                            placeholder="Schrijf je observatie hier…"
-                            value={observation}
-                            onChange={e => onTextObservation(q.id, e.target.value)}
-                            className="w-full mb-3 px-3 py-2 text-sm rounded-xl border border-duck-gray bg-duck-bg text-duck-ink focus:outline-none focus:border-duck-acid resize-none"
-                            style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
-                        />
+                        <>
+                            <textarea
+                                rows={3}
+                                placeholder="Schrijf je observatie hier…"
+                                value={observation}
+                                onChange={e => onTextObservation(q.id, e.target.value)}
+                                className="w-full mb-1.5 px-3 py-2 text-sm rounded-xl border border-duck-gray bg-duck-bg text-duck-ink focus:outline-none focus:border-duck-acid resize-none"
+                                style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
+                            />
+                            <p
+                                className="text-xs text-duck-ink/75 mb-3"
+                                style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
+                            >
+                                {wordCount < minWords
+                                    ? `Schrijf in je eigen woorden wat je in de data ziet — nog minstens ${minWords - wordCount} woord${minWords - wordCount === 1 ? '' : 'en'}.`
+                                    : `${wordCount} woorden — je kunt bevestigen.`}
+                            </p>
+                        </>
                     )}
 
                     {showConfidenceWidget && (
                         <div className="mb-3">
-                            <ConfidenceRating onSelect={(level) => onConfidence(q.id, level)} />
+                            <ConfidenceRating selected={confidence} onSelect={(level) => onConfidence(q.id, level)} />
+                            {confidence !== undefined && (
+                                <p
+                                    className="mt-1.5 text-xs text-duck-ink/75 text-center"
+                                    style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
+                                >
+                                    Genoteerd — dit telt niet mee voor je punten.
+                                </p>
+                            )}
                         </div>
                     )}
 
                     <button
                         onClick={() => onSubmit(q.id)}
                         disabled={submitDisabled}
-                        className="w-full py-2 bg-gradient-to-r from-duck-acid to-duck-acid hover:from-duck-acid hover:to-duck-acid disabled:opacity-40 disabled:cursor-not-allowed text-duck-ink rounded-xl font-bold text-sm transition-all duration-200"
+                        className="w-full min-h-[44px] py-2.5 bg-gradient-to-r from-duck-acid to-duck-acid hover:from-duck-acid hover:to-duck-acid disabled:opacity-40 disabled:cursor-not-allowed text-duck-ink rounded-xl font-bold text-sm transition-all duration-200"
                         style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                     >
                         Bevestigen
@@ -246,12 +330,12 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
             {isSubmitted && (
                 <div
                     className={`rounded-xl p-3 flex items-start gap-2.5 ${
-                        correct
+                        positiveFeedback
                             ? 'bg-duck-ink/10 border border-duck-ink/25'
                             : 'bg-duck-acid/8 border border-duck-acid/20'
                     }`}
                 >
-                    {correct ? (
+                    {positiveFeedback ? (
                         <CheckCircle size={16} className="text-duck-ink mt-0.5 flex-shrink-0" />
                     ) : (
                         <XCircle size={16} className="text-duck-ink mt-0.5 flex-shrink-0" />
@@ -262,7 +346,11 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
                                 className="text-xs font-semibold text-duck-ink mb-1"
                                 style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                             >
-                                Goed opgeschreven! Observatie ontvangen.
+                                {observationScore === 0
+                                    ? `Dit telt nog niet mee. Schrijf in je eigen woorden minstens ${minWords} woorden op wat jou opvalt in de data — noem bijvoorbeeld een getal, een groep of een verschil dat je ziet.`
+                                    : observationScore !== null && observationScore < q.points
+                                        ? `Goed begin — +${observationScore} van ${q.points} punten. Je kunt het scherper maken door de begrippen uit de opdracht te gebruiken en concreet te benoemen wat je in de data ziet.`
+                                        : `Goed opgeschreven! +${q.points} punten voor je observatie.`}
                             </p>
                         ) : correct ? (
                             <p
@@ -280,11 +368,15 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
                             </p>
                         )}
                         <p
-                            className="text-xs text-duck-ink/60 leading-snug"
+                            className="text-xs text-duck-ink/75 leading-snug"
                             style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                         >
                             {q.explanation}
                         </p>
+                        {/* Kalibratie: alleen waar goed/fout eenduidig is, dus niet bij observaties */}
+                        {q.type !== 'text-observation' && (
+                            <ConfidenceFeedback confidence={confidence} correct={correct === true} className="mt-1" />
+                        )}
                     </div>
                 </div>
             )}
@@ -355,7 +447,7 @@ const DatasetView: React.FC<DatasetViewProps> = ({
                 {dataset.title}
             </h2>
             <p
-                className="text-sm text-duck-ink/60 leading-relaxed"
+                className="text-sm text-duck-ink/75 leading-relaxed"
                 style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
             >
                 {dataset.description}
@@ -393,7 +485,7 @@ const DatasetView: React.FC<DatasetViewProps> = ({
                                     {card.title}
                                 </p>
                                 <p
-                                    className="text-xs text-duck-ink/60 leading-relaxed"
+                                    className="text-xs text-duck-ink/75 leading-relaxed"
                                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                                 >
                                     {card.content}
@@ -482,9 +574,25 @@ const DataViewerInner: React.FC<DataViewerProps> = ({
         followUpCorrect: {},
     };
 
+    // Een opgeslagen sessie kan van een oudere, grotere config komen. Herstel alleen
+    // wanneer de datasetindex nog bestaat en de vraag-id's nog kloppen.
+    const validateSavedState = useCallback((restored: DataViewerState): boolean => {
+        if (!restored || typeof restored !== 'object') return false;
+        const index = restored.currentDataset;
+        if (!Number.isInteger(index) || index < 0 || index >= config.datasets.length) return false;
+        const knownIds = new Set(config.datasets.flatMap(ds => ds.questions.map(q => q.id)));
+        const usedIds = [
+            ...Object.keys(restored.answers ?? {}),
+            ...Object.keys(restored.submitted ?? {}),
+            ...Object.keys(restored.textObservations ?? {}),
+        ];
+        return usedIds.every(id => knownIds.has(id));
+    }, [config]);
+
     const { state, setState, clearSave } = useMissionAutoSave<DataViewerState>(
         missionId,
-        INITIAL_STATE
+        INITIAL_STATE,
+        { validate: validateSavedState }
     );
 
     const [isChatOpen, setIsChatOpen] = useState(false);
@@ -512,7 +620,7 @@ const DataViewerInner: React.FC<DataViewerProps> = ({
 
     const questionScore = config.datasets.flatMap(ds => ds.questions).reduce((sum, q) => {
         if (!submitted[q.id]) return sum;
-        return sum + scoreQuestion(q, answers, confidences[q.id]);
+        return sum + scoreQuestion(q, answers);
     }, 0);
 
     const followUpBonusScore = config.datasets.reduce((sum, ds) => {
@@ -612,7 +720,7 @@ const DataViewerInner: React.FC<DataViewerProps> = ({
     // Phase breakdown for CompletionScreen
     const phaseScores = config.datasets.map(ds => {
         const max = ds.questions.reduce((s, q) => s + q.points, 0) + (ds.followUp?.bonusPoints ?? 0);
-        const score = ds.questions.reduce((s, q) => (submitted[q.id] ? s + scoreQuestion(q, answers, confidences[q.id]) : s), 0)
+        const score = ds.questions.reduce((s, q) => (submitted[q.id] ? s + scoreQuestion(q, answers) : s), 0)
             + (followUpAnswered[ds.id] && followUpCorrect[ds.id] && ds.followUp ? ds.followUp.bonusPoints : 0);
 
         return {
@@ -647,6 +755,33 @@ const DataViewerInner: React.FC<DataViewerProps> = ({
                 takeaways={config.takeaways}
                 onComplete={handleComplete}
             />
+        );
+    }
+
+    // Vangnet: wijst de herstelde index buiten de huidige config, toon een herstart
+    // in plaats van een wit scherm.
+    if (!currentDs) {
+        return (
+            <div className="min-h-screen bg-duck-bg flex items-center justify-center p-4">
+                <div className="text-center max-w-sm">
+                    <p
+                        className="text-sm text-duck-ink/75 mb-4 leading-relaxed"
+                        style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
+                    >
+                        Deze missie is bijgewerkt sinds je laatste bezoek, dus je oude voortgang past er niet meer op. Je begint opnieuw.
+                    </p>
+                    <button
+                        onClick={() => {
+                            clearSave();
+                            setState(INITIAL_STATE);
+                        }}
+                        className="min-h-[44px] px-4 py-2.5 bg-duck-acid text-duck-ink rounded-xl text-sm font-bold"
+                        style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
+                    >
+                        Opnieuw beginnen
+                    </button>
+                </div>
+            </div>
         );
     }
 
@@ -689,7 +824,7 @@ const DataViewerInner: React.FC<DataViewerProps> = ({
                 {currentDataset > 0 && (
                     <button
                         onClick={handlePrevDataset}
-                        className="mt-3 flex items-center gap-1.5 text-xs text-duck-ink/60 hover:text-duck-ink transition-colors"
+                        className="mt-3 flex items-center gap-1.5 min-h-[44px] px-1 text-xs text-duck-ink/75 hover:text-duck-ink transition-colors"
                         style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                     >
                         <ChevronLeft size={14} />
@@ -779,7 +914,7 @@ export const DataViewer: React.FC<TemplateMissionProps> = ({ missionId, onBack, 
     if (loadError) return (
         <div className="min-h-screen bg-duck-bg flex items-center justify-center p-4">
             <div className="text-center">
-                <p className="text-duck-ink/60 mb-4" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                <p className="text-duck-ink/75 mb-4" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                     Config niet gevonden: {missionId}
                 </p>
                 <button onClick={onBack} className="px-4 py-2 bg-duck-acid text-duck-ink rounded-xl text-sm font-bold">Terug</button>

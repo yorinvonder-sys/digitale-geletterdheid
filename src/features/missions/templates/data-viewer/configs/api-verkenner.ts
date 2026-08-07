@@ -19,7 +19,7 @@ export const apiVerkennerConfig: DataViewerConfig = {
             id: 'json-response-analyse',
             title: 'JSON-response van een weer-API: Amsterdam',
             description:
-                'Een app heeft de volgende JSON-response ontvangen van de OpenWeatherMap API voor Amsterdam. Elke regel heeft een sleutel (de naam), een waarde, en een datatype (het soort waarde: tekst, getal of ja/nee). Bekijk de tabel en beantwoord de vragen.',
+                'Een app heeft data ontvangen van de OpenWeatherMap API voor Amsterdam. Voor het overzicht tonen we de velden hier plat; in het echt zitten ze genest in objecten zoals "main" en "wind". Elke regel heeft een sleutel (de naam), een waarde, en een datatype (het soort waarde: tekst, getal of ja/nee). Bekijk de tabel en beantwoord de vragen.',
             type: 'table',
             columns: [
                 { key: 'key', label: 'JSON-sleutel (key)', sortable: true },
@@ -67,6 +67,7 @@ export const apiVerkennerConfig: DataViewerConfig = {
                         'Wat is het nut van een "key" (sleutel) in een JSON-response? Waarom geeft een API niet gewoon een lijstje getallen terug?',
                     type: 'text-observation',
                     correctAnswer: '',
+                    keywords: ['betekenis', 'sleutel', 'key', 'waarde', 'weten welk'],
                     explanation:
                         'Keys geven betekenis aan de waarden. Zonder keys zou "14.2, 12.8, 78" niks zeggen — je weet niet welk getal de temperatuur is. Met keys zoals "temp" en "humidity" begrijpt elke app wat elk getal betekent, ook als de volgorde verandert. Dit maakt API-communicatie betrouwbaar en leesbaar.',
                     points: 10,
@@ -116,6 +117,7 @@ export const apiVerkennerConfig: DataViewerConfig = {
                         'Waarom denk je dat WhatsApp minder API-verzoeken nodig heeft dan Instagram, terwijl beide sociale apps zijn?',
                     type: 'text-observation',
                     correctAnswer: '',
+                    keywords: ['berichten', 'foto', 'video', 'feed', 'aanbevelingen'],
                     explanation:
                         'WhatsApp stuurt en ontvangt alleen berichten — relatief kleine hoeveelheden tekst en af en toe een foto. Instagram laadt continu een feed met hoge-resolutie foto\'s, video\'s, aanbevelingen, likes en reacties. Meer soorten data betekent meer afzonderlijke API-verzoeken. Instagram heeft ook een aanbevelingsalgoritme dat constant data ophaalt.',
                     points: 10,
@@ -135,7 +137,7 @@ export const apiVerkennerConfig: DataViewerConfig = {
                     title: 'Weer-API: Amsterdam',
                     icon: '🌤️',
                     content:
-                        'URL: https://api.weather.com/current?city=Amsterdam&units=metric&lang=nl\n\nDe vraagteken (?) geeft aan dat er parameters volgen. "city=Amsterdam" specificeert de stad. "units=metric" vraagt om graden Celsius (niet Fahrenheit). "lang=nl" vraagt om Nederlandse beschrijvingen. Parameters worden gescheiden door &.',
+                        'URL: https://api.openweathermap.org/data/2.5/weather?q=Amsterdam&units=metric&appid=DEMO_SLEUTEL\n\nDe vraagteken (?) geeft aan dat er parameters volgen. "q=Amsterdam" specificeert de stad. "units=metric" vraagt om graden Celsius (niet Fahrenheit). "appid" is de verplichte sleutel — zonder sleutel werkt geen enkele weer-API. Parameters worden gescheiden door &.',
                 },
                 {
                     title: 'Pokémon-API: Pikachu',
@@ -153,7 +155,7 @@ export const apiVerkennerConfig: DataViewerConfig = {
                     title: 'Valuta-API: euro naar dollar',
                     icon: '💱',
                     content:
-                        'URL: https://api.exchangerate.host/convert?from=EUR&to=USD&amount=100\n\nDeze API rekent valuta om. "from=EUR" is de bronvaluta. "to=USD" is de doelvaluta. "amount=100" is het bedrag. De response bevat dan de omgerekende waarde. Ideaal voor een webshop die prijzen in meerdere valuta toont.',
+                        'URL: https://api.frankfurter.dev/v1/latest?from=EUR&to=USD&amount=100\n\nDeze API rekent valuta om. "from=EUR" is de bronvaluta. "to=USD" is de doelvaluta. "amount=100" is het bedrag. De response bevat dan de omgerekende waarde. Ideaal voor een webshop die prijzen in meerdere valuta toont.',
                 },
             ],
             questions: [
@@ -179,6 +181,7 @@ export const apiVerkennerConfig: DataViewerConfig = {
                         'Je wilt de Pokémon API vragen om data over "charizard". Hoe zou de URL eruitzien op basis van het patroon dat je hebt gezien?',
                     type: 'text-observation',
                     correctAnswer: '',
+                    keywords: ['pokemon', 'charizard', 'pad', 'pikachu'],
                     explanation:
                         'Op basis van het patroon: https://pokeapi.co/api/v2/pokemon/charizard — je vervangt alleen "pikachu" door "charizard" in het pad. Dit is hoe dit soort API werkt: het "pad" bepaalt welke resource je opvraagt. Dit is een van de meest fundamentele concepten van het moderne web.',
                     points: 15,
@@ -194,19 +197,19 @@ export const apiVerkennerConfig: DataViewerConfig = {
             minScore: 85,
             emoji: '🌐',
             title: 'API-expert!',
-            color: '#202023',
+            color: '#ff3c21',
         },
         {
             minScore: 65,
             emoji: '📡',
             title: 'Digitale ontdekkingsreiziger',
-            color: '#202023',
+            color: '#e1ff01',
         },
         {
             minScore: 40,
             emoji: '🔌',
             title: 'Aan de slag met APIs',
-            color: '#202023',
+            color: '#99984D',
         },
         {
             minScore: 0,

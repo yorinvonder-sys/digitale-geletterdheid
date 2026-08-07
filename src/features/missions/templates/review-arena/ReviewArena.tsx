@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { MessageCircle } from 'lucide-react';
 import type { TemplateMissionProps, BadgeConfig, FollowUpQuestion, MissionGoal } from '../shared/types';
@@ -23,7 +23,6 @@ export interface DragSortRound {
     type: 'drag-sort';
     items: Array<{ id: string; label: string; correctPosition: number }>;
     maxScore: number;
-    showConfidence?: boolean;
     followUp?: FollowUpQuestion;
 }
 
@@ -45,7 +44,6 @@ export interface CategorizeRound {
     categories: string[];
     items: Array<{ label: string; correctCategory: string }>;
     maxScore: number;
-    showConfidence?: boolean;
     followUp?: FollowUpQuestion;
 }
 
@@ -84,9 +82,19 @@ interface ReviewArenaState {
     phase: 'intro' | 'round' | 'complete';
     currentRound: number;
     roundScores: number[];
+    /**
+     * Score per ronde-id, vastgelegd op het moment van INDIENEN — dus vóórdat de
+     * correctie met de juiste antwoorden in beeld komt. Zonder dit leefde het
+     * tussenresultaat alleen in lokale state en gaf herladen na het zien van de
+     * antwoorden een verse, opnieuw scoorbare ronde.
+     */
+    lockedRoundScores: Record<string, number>;
     followUpResults: Record<string, { answered: boolean; correct: boolean }>;
     configMissionId?: string;
 }
+
+/** Mirrors the 40% pass threshold that CompletionScreen shows to the learner. */
+const PASS_THRESHOLD = 0.4;
 
 const ROUND_ICONS: Record<ReviewRound['type'], string> = {
     'drag-sort': '↕️',
@@ -111,24 +119,39 @@ const ReviewArenaWithConfig: React.FC<ReviewArenaProps> = ({
         phase: 'intro',
         currentRound: 0,
         roundScores: [],
+        lockedRoundScores: {},
         followUpResults: {},
         configMissionId: config.missionId,
     };
 
     const { state, setState, clearSave } = useMissionAutoSave<ReviewArenaState>(
         missionId,
-        initialState
+        initialState,
+        {
+            // Opslag van een oudere configversie mag niet blijven staan. `roundScores`
+            // groeit precies gelijk op met `currentRound` (advanceRound doet beide in
+            // één update), dus een langere lijst betekent beschadigde opslag. De
+            // vastgelegde scores uit reparatie 1 staan in `lockedRoundScores` en tellen
+            // hier bewust niet mee: die worden vastgelegd vóórdat `currentRound`
+            // opschuift, dus een net ingediende ronde mag daar niet op afgekeurd worden.
+            validate: (s) =>
+                ['intro', 'round', 'complete'].includes(s.phase) &&
+                Number.isInteger(s.currentRound) &&
+                s.currentRound >= 0 &&
+                s.currentRound <= config.rounds.length &&
+                Array.isArray(s.roundScores) &&
+                s.roundScores.length <= s.currentRound &&
+                s.roundScores.every((n) => typeof n === 'number' && Number.isFinite(n)) &&
+                Object.keys(s.lockedRoundScores ?? {}).every((id) =>
+                    config.rounds.some((r) => r.id === id)
+                ),
+        }
     );
 
     const [isChatOpen, setIsChatOpen] = useState(false);
 
     useEffect(() => {
         if (state.configMissionId && state.configMissionId !== config.missionId) {
-            setState(initialState);
-            return;
-        }
-
-        if (!state.configMissionId && config.missionId !== 'data-review') {
             setState(initialState);
         }
     }, [config.missionId, setState, state.configMissionId]);
@@ -149,6 +172,11 @@ const ReviewArenaWithConfig: React.FC<ReviewArenaProps> = ({
     // Local (non-persisted) follow-up UI state
     const [pendingScore, setPendingScore] = useState<number | null>(null);
     const [showFollowUp, setShowFollowUp] = useState(false);
+
+    // Ronde-id's die de leerling in DEZE sessie zelf heeft ingediend. Staat er een
+    // vastgelegde score zonder dat de ronde hier is gespeeld, dan komt die uit
+    // opslag: de ronde is dan al beantwoord en mag niet opnieuw scoren.
+    const submittedThisSession = useRef<Set<string>>(new Set());
 
     const totalScore = state.roundScores.reduce((a, b) => a + b, 0);
 
@@ -173,17 +201,46 @@ const ReviewArenaWithConfig: React.FC<ReviewArenaProps> = ({
         setState((s) => ({ ...s, phase: 'round' }));
     }, [setState]);
 
+    /**
+     * Legt de score van de huidige ronde vast op het moment van indienen. Binnen
+     * dezelfde sessie mag een ronde zijn eigen waarde nog bijstellen (rapid-fire
+     * en match-pairs melden tussentijds); een score die uit opslag komt staat vast.
+     */
+    const handleRoundSubmit = useCallback(
+        (score: number) => {
+            const round = config.rounds[state.currentRound];
+            if (!round) return;
+            const firstSubmitThisSession = !submittedThisSession.current.has(round.id);
+            submittedThisSession.current.add(round.id);
+
+            setState((s) => {
+                const alreadyLocked = s.lockedRoundScores[round.id] !== undefined;
+                if (firstSubmitThisSession && alreadyLocked) return s;
+                return {
+                    ...s,
+                    lockedRoundScores: { ...s.lockedRoundScores, [round.id]: score },
+                };
+            });
+        },
+        [config.rounds, setState, state.currentRound]
+    );
+
     const handleRoundComplete = useCallback(
         (score: number) => {
             const round = config.rounds[state.currentRound];
-            if (round?.followUp && score > round.maxScore * 0.5) {
-                setPendingScore(score);
+            // De vastgelegde score wint van wat het subcomponent bij het doorklikken
+            // meegeeft; die twee zijn gelijk bij normaal spelen.
+            const locked = round ? state.lockedRoundScores[round.id] : undefined;
+            const finalScore = locked ?? score;
+
+            if (round?.followUp && finalScore > round.maxScore * 0.5) {
+                setPendingScore(finalScore);
                 setShowFollowUp(true);
             } else {
-                advanceRound(score);
+                advanceRound(finalScore);
             }
         },
-        [advanceRound, config.rounds, state.currentRound]
+        [advanceRound, config.rounds, state.currentRound, state.lockedRoundScores]
     );
 
     const handleFollowUpComplete = useCallback(
@@ -210,9 +267,12 @@ const ReviewArenaWithConfig: React.FC<ReviewArenaProps> = ({
     );
 
     const handleComplete = useCallback(() => {
+        // Slagen hangt aan de werkelijke score, niet aan het bereiken van het
+        // eindscherm — dezelfde drempel die CompletionScreen toont.
+        const passed = config.maxScore > 0 && totalScore / config.maxScore >= PASS_THRESHOLD;
         clearSave();
-        onComplete(true);
-    }, [clearSave, onComplete]);
+        onComplete(passed);
+    }, [clearSave, config.maxScore, onComplete, totalScore]);
 
     // === Intro ===
     if (state.phase === 'intro') {
@@ -255,6 +315,10 @@ const ReviewArenaWithConfig: React.FC<ReviewArenaProps> = ({
     const round = config.rounds[state.currentRound];
     if (!round) return null;
 
+    const resumedScore = state.lockedRoundScores[round.id];
+    const isAlreadyScored =
+        resumedScore !== undefined && !submittedThisSession.current.has(round.id);
+
     return (
         <div data-qa="review-arena" className="min-h-screen bg-duck-bg p-4">
             <div className="max-w-md mx-auto">
@@ -290,13 +354,43 @@ const ReviewArenaWithConfig: React.FC<ReviewArenaProps> = ({
                         transition={{ duration: 0.25 }}
                         className="bg-white rounded-2xl border border-duck-gray p-5"
                     >
+                        {isAlreadyScored ? (
+                            <div className="space-y-4">
+                                <h3
+                                    className="text-lg font-black text-duck-ink"
+                                    style={{ fontFamily: "'Newsreader', Georgia, serif" }}
+                                >
+                                    {round.title}
+                                </h3>
+                                <div
+                                    role="status"
+                                    aria-live="polite"
+                                    className="p-3 rounded-xl bg-duck-acid/10 text-duck-ink text-sm font-medium"
+                                    style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
+                                >
+                                    Je had deze ronde al ingediend. Je score staat vast op{' '}
+                                    <span className="font-black">{resumedScore}/{round.maxScore} punten</span>.
+                                </div>
+                                {!showFollowUp && (
+                                <button
+                                    data-qa="review-continue"
+                                    onClick={() => handleRoundComplete(resumedScore ?? 0)}
+                                    className="w-full py-3 bg-gradient-to-r from-duck-ink to-duck-ink text-white rounded-xl font-bold text-sm transition-all duration-200 active:scale-[0.98]"
+                                    style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
+                                >
+                                    Volgende ronde
+                                </button>
+                                )}
+                            </div>
+                        ) : (
+                        <>
                         {round.type === 'drag-sort' && (
                             <DragSort
                                 title={round.title}
                                 description={round.description}
                                 items={round.items}
                                 maxScore={round.maxScore}
-                                showConfidence={round.showConfidence}
+                                onSubmit={handleRoundSubmit}
                                 onComplete={(score) => handleRoundComplete(score)}
                             />
                         )}
@@ -306,6 +400,7 @@ const ReviewArenaWithConfig: React.FC<ReviewArenaProps> = ({
                                 description={round.description}
                                 pairs={round.pairs}
                                 maxScore={round.maxScore}
+                                onSubmit={handleRoundSubmit}
                                 onComplete={(score) => handleRoundComplete(score)}
                             />
                         )}
@@ -316,7 +411,7 @@ const ReviewArenaWithConfig: React.FC<ReviewArenaProps> = ({
                                 categories={round.categories}
                                 items={round.items}
                                 maxScore={round.maxScore}
-                                showConfidence={round.showConfidence}
+                                onSubmit={handleRoundSubmit}
                                 onComplete={(score) => handleRoundComplete(score)}
                             />
                         )}
@@ -327,8 +422,11 @@ const ReviewArenaWithConfig: React.FC<ReviewArenaProps> = ({
                                 questions={round.questions}
                                 timePerQuestion={round.timePerQuestion}
                                 maxScore={round.maxScore}
+                                onSubmit={handleRoundSubmit}
                                 onComplete={(score) => handleRoundComplete(score)}
                             />
+                        )}
+                        </>
                         )}
 
                         {showFollowUp && round.followUp && (
@@ -425,7 +523,7 @@ export const ReviewArena: React.FC<TemplateMissionProps> = (props) => {
     if (loadError) return (
         <div className="min-h-screen bg-duck-bg flex items-center justify-center p-4">
             <div className="text-center">
-                <p className="text-duck-ink/60 mb-4" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                <p className="text-duck-ink/70 mb-4" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                     Config niet gevonden: {missionId}
                 </p>
                 <button onClick={onBack} className="px-4 py-2 bg-duck-acid text-duck-ink rounded-xl text-sm font-bold">Terug</button>

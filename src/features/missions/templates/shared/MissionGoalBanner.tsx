@@ -43,7 +43,7 @@ export const MissionGoalBanner: React.FC<MissionGoalBannerProps> = ({
                         {primaryGoal}
                     </p>
                     {evidence && !compact && (
-                        <p className="mt-1 text-xs leading-relaxed text-duck-ink/60">
+                        <p className="mt-1 text-xs leading-relaxed text-duck-ink/75">
                             Bewijs: {evidence}
                         </p>
                     )}
