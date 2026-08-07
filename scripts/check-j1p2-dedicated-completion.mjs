@@ -68,21 +68,24 @@ assert.match(
   'Chatbot conclusion must wait for durable completion before closing',
 );
 
+// md of lg: de zijkolommen zijn samen 576px breed, dus op een iPad in portret
+// (820px) bleef er te weinig over voor het middenpaneel. Het breekpunt staat
+// daarom op lg. Beide encoderen "stapelen op smalle schermen"; lg doet dat ruimer.
 assert.match(
   chatbot,
-  /flex-col md:flex-row/,
+  /flex-col (?:md|lg):flex-row/,
   'Chatbot training panels should stack on mobile',
 );
 
 assert.match(
   chatbot,
-  /w-full md:w-64/,
+  /w-full (?:md|lg):w-64/,
   'Chatbot intent panel should fit the mobile viewport',
 );
 
 assert.match(
   chatbot,
-  /w-full md:w-80/,
+  /w-full (?:md|lg):w-80/,
   'Chatbot test panel should fit the mobile viewport',
 );
 

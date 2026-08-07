@@ -825,14 +825,29 @@ export const ChatbotTrainerPreview: React.FC<ChatbotTrainerPreviewProps> = ({ on
                                         </div>
                                     </div>
 
-                                    <button
-                                        onClick={startCustomScenario}
-                                        disabled={!customName || !customContext || customTestQuestions.filter(q => q.trim()).length < 2}
-                                        className="w-full py-3 font-bold rounded-xl shadow-lg disabled:opacity-50 disabled:cursor-not-allowed transition-all mt-4 flex items-center justify-center gap-2"
-                                        style={{ backgroundColor: 'var(--chatbot-accent)', color: 'var(--chatbot-ink)' }}
-                                    >
-                                        Start Maken <ArrowRight size={16} />
-                                    </button>
+                                    {/* De knop stond alleen grijs, zonder te zeggen wát er ontbrak;
+                                        een leerling klikte dan tevergeefs. Nu benoemt het label de
+                                        eerstvolgende ontbrekende stap. */}
+                                    {(() => {
+                                        const genoegVragen = customTestQuestions.filter(q => q.trim()).length >= 2;
+                                        const ontbreekt = !customName
+                                            ? 'Geef je bot eerst een naam'
+                                            : !customContext
+                                                ? 'Vul in waar je bot over gaat'
+                                                : !genoegVragen
+                                                    ? 'Bedenk nog minstens 2 testvragen'
+                                                    : null;
+                                        return (
+                                            <button
+                                                onClick={startCustomScenario}
+                                                disabled={ontbreekt !== null}
+                                                className="w-full py-3 font-bold rounded-xl shadow-lg disabled:opacity-50 disabled:cursor-not-allowed transition-all mt-4 flex items-center justify-center gap-2"
+                                                style={{ backgroundColor: 'var(--chatbot-accent)', color: 'var(--chatbot-ink)' }}
+                                            >
+                                                {ontbreekt ?? <>Start Maken <ArrowRight size={16} /></>}
+                                            </button>
+                                        );
+                                    })()}
                                 </div>
                             </div>
                         </div>

@@ -20,8 +20,12 @@ export const RotateDevicePrompt: React.FC<RotateDevicePromptProps> = ({
 
     useEffect(() => {
         const checkOrientation = () => {
-            // Show if tablet + portrait + not dismissed
-            const shouldShow = isTablet() && isPortrait() && !dismissed && !forceDismiss;
+            // Show if tablet + portrait + not dismissed.
+            // Extra breedte-ondergrens: `isTablet()` valt op een Mac met aanraak-
+            // ondersteuning ook aan bij een telefoonbreedte, en dan kreeg een
+            // leerling op een smal scherm een draai-melding die nergens op slaat.
+            const isWideEnoughForLandscape = window.innerWidth >= 600;
+            const shouldShow = isTablet() && isWideEnoughForLandscape && isPortrait() && !dismissed && !forceDismiss;
             setShow(shouldShow);
         };
 
@@ -68,7 +72,7 @@ export const RotateDevicePrompt: React.FC<RotateDevicePromptProps> = ({
 
                 {/* Title */}
                 <h2 className="text-2xl font-black text-white mb-3">
-                    📱 Draai je iPad!
+                    📱 Draai je scherm!
                 </h2>
 
                 {/* Description */}

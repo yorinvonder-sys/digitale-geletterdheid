@@ -159,8 +159,11 @@ const SLIDES: SlideData[] = [
         textColor: "text-duck-ink/60", // Low contrast intentionally for initial state
         issue: "size",
         feedback: "Kan iemand dit lezen? De tekst is veel te klein en valt weg!",
+        // De fout die de leerling moet zien is de LETTERGROOTTE. Eerder stond hier
+        // donkere tekst op dezelfde donkere achtergrond, waardoor er niets te lezen
+        // viel en de pointe ("te klein") wegviel. Nu klein maar zichtbaar.
         customRender: (fixed) => (
-            <div className={`h-full flex flex-col items-center justify-center p-8 transition-all duration-500 ${fixed ? 'bg-duck-ink text-white' : 'bg-duck-ink text-duck-ink/60'}`}>
+            <div className={`h-full flex flex-col items-center justify-center p-8 transition-all duration-500 ${fixed ? 'bg-duck-ink text-white' : 'bg-duck-ink text-white/70'}`}>
                 <h1 className={`font-bold transition-all duration-500 ${fixed ? 'text-6xl mb-8' : 'text-xs mb-2'}`} style={{ fontFamily: "'Newsreader', Georgia, serif" }}>
                     BEDANKT!
                 </h1>

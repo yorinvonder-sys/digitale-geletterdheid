@@ -20,6 +20,7 @@ import { logger } from '@/utils/logger';
 // KnowledgeRunner removed - using AssessmentEngine for all review missions
 
 import { getAssessment, hasAssessment } from '@/features/assessment/data/assessmentRegistry';
+import { isMeaningfulAnswer, isRealMessage } from '@/features/missions/templates/debate-arena/answerQuality';
 import { RotateDevicePrompt } from '@/components/app-shell/RotateDevicePrompt';
 import { logActivity, saveHybridAssessmentRecord } from '@/services/teacherService';
 
@@ -655,11 +656,19 @@ export const AiLab: React.FC<AiLabProps> = ({ user, onExit, saveProgress, comple
       checkForTipCopy(inputText);
     }
 
-    // Award XP for each meaningful interaction (5-10 XP based on message length)
-    // This ensures students earn ~300-400 XP in 90 min (~40-60 interactions)
+    // XP naar inhoud, niet naar lengte. Eerder leverde elk bericht van meer dan
+    // 20 tekens de volle 10 XP op, dus ook twintig willekeurige letters — dat
+    // botst met de regel dat oppervlakkige interactie niet beloond mag worden.
+    // Het bericht wordt nog steeds altijd verstuurd; alleen de beloning verschilt.
     if (inputText && inputText.trim().length > 0) {
-      const xpAmount = inputText.length > 20 ? 10 : 5;
-      handleAwardXP(xpAmount, "Bericht Verstuurd");
+      const xpAmount = isMeaningfulAnswer(inputText)
+        ? 10
+        : isRealMessage(inputText)
+          ? 5
+          : 0;
+      if (xpAmount > 0) {
+        handleAwardXP(xpAmount, "Bericht Verstuurd");
+      }
 
       handleSend(text);
     }

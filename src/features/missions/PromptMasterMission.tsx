@@ -956,9 +956,11 @@ export const PromptMasterMission: React.FC<Props> = ({ onBack, onComplete, vsoPr
             <div data-qa="prompt-master-intro" className="h-dvh overflow-y-auto bg-duck-bg text-duck-ink flex flex-col" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                 {/* Header */}
                 <header className="bg-white border-b border-duck-gray px-6 py-4 flex items-center justify-between">
+                    {/* -mx-2 houdt de tekst optisch op zijn plek terwijl het
+                        aanraakvlak wel de 44px haalt; hij was 71x20px. */}
                     <button
                         onClick={onBack}
-                        className="flex items-center gap-2 text-duck-ink/60 hover:text-duck-ink transition-all duration-300 font-bold text-sm uppercase"
+                        className="-mx-2 flex min-h-[44px] items-center gap-2 rounded-lg px-2 text-sm font-bold uppercase text-duck-ink/60 transition-all duration-300 hover:text-duck-ink"
                     >
                         <ArrowLeft size={16} /> Terug
                     </button>
@@ -1067,7 +1069,9 @@ export const PromptMasterMission: React.FC<Props> = ({ onBack, onComplete, vsoPr
                 {/* Header */}
                 <header className="bg-white border-b border-duck-gray px-4 py-3 md:px-6 md:py-4 sticky top-0 z-10">
                     <div className="max-w-4xl mx-auto flex flex-wrap items-center justify-between gap-2">
-                        <button onClick={onBack} className="flex items-center gap-2 text-duck-ink/60 hover:text-duck-ink text-sm font-bold uppercase transition-all duration-300">
+                        {/* -mx-2 houdt de tekst optisch op zijn plek terwijl het
+                            aanraakvlak wel de 44px haalt; hij was 72x20px. */}
+                        <button onClick={onBack} className="-mx-2 flex min-h-[44px] items-center gap-2 rounded-lg px-2 text-sm font-bold uppercase text-duck-ink/60 transition-all duration-300 hover:text-duck-ink">
                             <ArrowLeft size={16} /> Stoppen
                         </button>
                         <div className="flex min-w-0 flex-wrap items-center justify-end gap-2 md:gap-3">

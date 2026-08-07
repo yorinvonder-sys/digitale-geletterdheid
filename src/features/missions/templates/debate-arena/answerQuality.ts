@@ -34,6 +34,18 @@ export const isMeaningfulAnswer = (text: string): boolean => {
 };
 
 /**
+ * Lichtere drempel voor chatberichten, waar een korte maar echte vraag
+ * ("Wat is een prompt?") niet als geramte mag gelden. Weert alleen wat evident
+ * geen bericht is: te kort, één woord, of nauwelijks letterafwisseling.
+ */
+export const isRealMessage = (text: string): boolean => {
+    const trimmed = text.trim();
+    if (trimmed.length < 8) return false;
+    if (countWords(trimmed) < 2) return false;
+    return countDistinctLetters(trimmed) >= 5;
+};
+
+/**
  * Uitleg voor de leerling wanneer een antwoord lang genoeg is maar niet meetelt.
  * `null` zodra het antwoord voldoet, of nog te kort is — dan volstaat de teller.
  */
