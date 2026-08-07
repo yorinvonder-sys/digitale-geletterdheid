@@ -67,7 +67,7 @@ export const InteractiveTable: React.FC<InteractiveTableProps> = ({ columns, row
                         placeholder={`Filter ${col.label.toLowerCase()}…`}
                         value={filters[col.key] ?? ''}
                         onChange={e => setFilters(prev => ({ ...prev, [col.key]: e.target.value }))}
-                        className="flex-1 min-w-[100px] text-xs px-2.5 py-1.5 rounded-lg border border-duck-gray bg-white text-duck-ink/60 placeholder:text-duck-ink/60 focus:outline-none focus:border-duck-acid"
+                        className="flex-1 min-w-[100px] text-xs px-2.5 py-1.5 rounded-lg border border-duck-gray bg-white text-duck-ink/75 placeholder:text-duck-ink/75 focus:outline-none focus:border-duck-acid"
                         style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                     />
                 ))}
@@ -81,18 +81,26 @@ export const InteractiveTable: React.FC<InteractiveTableProps> = ({ columns, row
                             {columns.map(col => (
                                 <th
                                     key={col.key}
-                                    className={`px-4 py-2.5 text-left text-xs font-black text-duck-ink uppercase tracking-wide select-none ${
-                                        col.sortable !== false
-                                            ? 'cursor-pointer hover:text-duck-ink transition-colors'
-                                            : ''
-                                    } ${sortKey === col.key ? 'text-duck-ink bg-duck-acid/5' : ''}`}
+                                    aria-sort={
+                                        col.sortable === false
+                                            ? undefined
+                                            : sortKey === col.key
+                                                ? sortDir === 'asc' ? 'ascending' : sortDir === 'desc' ? 'descending' : 'none'
+                                                : 'none'
+                                    }
+                                    className={`text-left text-xs font-black text-duck-ink uppercase tracking-wide select-none ${
+                                        sortKey === col.key ? 'text-duck-ink bg-duck-acid/5' : ''
+                                    }`}
                                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
-                                    onClick={() => col.sortable !== false && handleSort(col.key)}
                                 >
-                                    <div className="flex items-center gap-1.5">
-                                        {col.label}
-                                        {col.sortable !== false && (
-                                            <span className="text-duck-ink/60">
+                                    {col.sortable !== false ? (
+                                        <button
+                                            type="button"
+                                            onClick={() => handleSort(col.key)}
+                                            className="flex items-center gap-1.5 min-h-[44px] w-full px-4 py-2.5 text-left hover:text-duck-ink transition-colors"
+                                        >
+                                            {col.label}
+                                            <span className="text-duck-ink/75">
                                                 {sortKey === col.key && sortDir === 'asc' ? (
                                                     <ChevronUp size={12} className="text-duck-ink" />
                                                 ) : sortKey === col.key && sortDir === 'desc' ? (
@@ -101,8 +109,12 @@ export const InteractiveTable: React.FC<InteractiveTableProps> = ({ columns, row
                                                     <ChevronsUpDown size={12} />
                                                 )}
                                             </span>
-                                        )}
-                                    </div>
+                                        </button>
+                                    ) : (
+                                        <div className="flex items-center gap-1.5 px-4 py-2.5">
+                                            {col.label}
+                                        </div>
+                                    )}
                                 </th>
                             ))}
                         </tr>
@@ -112,7 +124,7 @@ export const InteractiveTable: React.FC<InteractiveTableProps> = ({ columns, row
                             <tr>
                                 <td
                                     colSpan={columns.length}
-                                    className="px-4 py-6 text-center text-sm text-duck-ink/60"
+                                    className="px-4 py-6 text-center text-sm text-duck-ink/75"
                                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                                 >
                                     Geen resultaten voor deze filter
@@ -129,7 +141,7 @@ export const InteractiveTable: React.FC<InteractiveTableProps> = ({ columns, row
                                     {columns.map(col => (
                                         <td
                                             key={col.key}
-                                            className={`px-4 py-2.5 text-sm text-duck-ink/60 ${
+                                            className={`px-4 py-2.5 text-sm text-duck-ink/75 ${
                                                 sortKey === col.key ? 'font-semibold text-duck-ink' : ''
                                             }`}
                                             style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
@@ -147,7 +159,7 @@ export const InteractiveTable: React.FC<InteractiveTableProps> = ({ columns, row
             {/* Row count */}
             <div className="bg-duck-bg border-t border-duck-gray px-4 py-1.5">
                 <span
-                    className="text-xs text-duck-ink/60"
+                    className="text-xs text-duck-ink/75"
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                 >
                     {sortedRows.length} van {rows.length} rijen

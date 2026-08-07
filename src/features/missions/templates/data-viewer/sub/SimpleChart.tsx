@@ -12,9 +12,19 @@ interface SimpleChartProps {
 }
 
 const DEFAULT_COLORS = [
-    '#ff3c21', '#202023', '#202023', '#e1ff01', '#202023', '#ff3c21',
-    '#202023', '#99984D', '#ff3c21', '#202023',
+    '#ff3c21', '#202023', '#0d3b66', '#3a5a40', '#8338ec',
+    '#d7263d', '#c2410c', '#0f766e', '#9d174d', '#525252',
 ];
+
+/** Kiest zwart of wit tekstlabel op basis van de relatieve luminantie van de achtergrondkleur. */
+function readableLabelColor(hex: string): string {
+    const c = hex.replace('#', '');
+    const r = parseInt(c.substring(0, 2), 16) / 255;
+    const g = parseInt(c.substring(2, 4), 16) / 255;
+    const b = parseInt(c.substring(4, 6), 16) / 255;
+    const luminance = 0.2126 * r + 0.7152 * g + 0.0722 * b;
+    return luminance > 0.6 ? '#202023' : '#ffffff';
+}
 
 // ── Bar chart ────────────────────────────────────────────────────────────────
 
@@ -36,20 +46,26 @@ const BarChart: React.FC<{ data: ChartDataPoint[] }> = ({ data }) => {
                 {data.map((d, i) => {
                     const pct = max > 0 ? (d.value / max) * 100 : 0;
                     const color = d.color || DEFAULT_COLORS[i % DEFAULT_COLORS.length];
+                    const showTooltip = (target: HTMLElement) => {
+                        const rect = containerRef.current?.getBoundingClientRect();
+                        const barRect = target.getBoundingClientRect();
+                        setTooltip({
+                            index: i,
+                            x: barRect.left - (rect?.left ?? 0) + barRect.width / 2,
+                            y: barRect.top - (rect?.top ?? 0) - 8,
+                        });
+                    };
                     return (
                         <div
                             key={i}
-                            className="flex flex-col items-center flex-1 h-full justify-end cursor-pointer group"
-                            onMouseEnter={e => {
-                                const rect = containerRef.current?.getBoundingClientRect();
-                                const barRect = (e.currentTarget as HTMLElement).getBoundingClientRect();
-                                setTooltip({
-                                    index: i,
-                                    x: barRect.left - (rect?.left ?? 0) + barRect.width / 2,
-                                    y: barRect.top - (rect?.top ?? 0) - 8,
-                                });
-                            }}
+                            tabIndex={0}
+                            role="img"
+                            aria-label={`${d.label}: ${d.value}`}
+                            className="flex flex-col items-center flex-1 h-full justify-end cursor-pointer group rounded focus:outline-none focus-visible:ring-2 focus-visible:ring-duck-ink"
+                            onMouseEnter={e => showTooltip(e.currentTarget as HTMLElement)}
                             onMouseLeave={() => setTooltip(null)}
+                            onFocus={e => showTooltip(e.currentTarget as HTMLElement)}
+                            onBlur={() => setTooltip(null)}
                         >
                             <div
                                 className="w-full rounded-t-lg transition-all duration-700 ease-out"
@@ -66,16 +82,26 @@ const BarChart: React.FC<{ data: ChartDataPoint[] }> = ({ data }) => {
                 })}
             </div>
 
-            {/* X-axis labels */}
+            {/* X-axis labels + waarde (altijd zichtbaar, niet alleen bij hover) */}
             <div className="flex gap-2 px-2 mt-1">
                 {data.map((d, i) => (
                     <div
                         key={i}
-                        className="flex-1 text-center text-[10px] text-duck-ink/60 leading-tight truncate"
-                        style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
+                        className="flex-1 text-center leading-tight"
                         title={d.label}
                     >
-                        {d.label}
+                        <div
+                            className="text-[10px] text-duck-ink/75 truncate"
+                            style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
+                        >
+                            {d.label}
+                        </div>
+                        <div
+                            className="text-[10px] font-bold text-duck-ink"
+                            style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
+                        >
+                            {d.value}
+                        </div>
                     </div>
                 ))}
             </div>
@@ -177,7 +203,7 @@ const PieChart: React.FC<{ data: ChartDataPoint[] }> = ({ data }) => {
                                 textAnchor="middle"
                                 dominantBaseline="middle"
                                 fontSize="9"
-                                fill="white"
+                                fill={readableLabelColor(s.color)}
                                 fontWeight="700"
                                 fontFamily="'Outfit', system-ui, sans-serif"
                                 style={{ pointerEvents: 'none' }}
@@ -204,7 +230,7 @@ const PieChart: React.FC<{ data: ChartDataPoint[] }> = ({ data }) => {
                         >
                             <div className="w-3 h-3 rounded-sm flex-shrink-0" style={{ backgroundColor: color }} />
                             <span
-                                className="text-xs text-duck-ink/60 flex-1"
+                                className="text-xs text-duck-ink/75 flex-1"
                                 style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                             >
                                 {d.label}
@@ -213,7 +239,7 @@ const PieChart: React.FC<{ data: ChartDataPoint[] }> = ({ data }) => {
                                 className="text-xs font-bold text-duck-ink"
                                 style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                             >
-                                {d.value} <span className="font-normal text-duck-ink/60">({pct}%)</span>
+                                {d.value} <span className="font-normal text-duck-ink/75">({pct}%)</span>
                             </span>
                         </div>
                     );

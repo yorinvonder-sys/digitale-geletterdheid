@@ -137,7 +137,15 @@ const SimulationLabInner: React.FC<SimulationLabProps> = ({ onBack, onComplete, 
         INITIAL_STATE
     );
 
-    const currentSimData = config.simulations[state.currentSim];
+    const currentSim = Math.min(Math.max(state.currentSim, 0), config.simulations.length - 1);
+
+    useEffect(() => {
+        if (state.currentSim !== currentSim) {
+            setState((prev) => ({ ...prev, currentSim }));
+        }
+    }, [state.currentSim, currentSim, setState]);
+
+    const currentSimData = config.simulations[currentSim];
 
     const currentParams = state.parameterValues[currentSimData?.id] ?? {};
 
@@ -240,7 +248,7 @@ const SimulationLabInner: React.FC<SimulationLabProps> = ({ onBack, onComplete, 
     };
 
     const handleNextSim = () => {
-        const next = state.currentSim + 1;
+        const next = currentSim + 1;
         if (next >= config.simulations.length) {
             setState((prev) => ({ ...prev, phase: 'results' }));
         } else {
@@ -295,13 +303,13 @@ const SimulationLabInner: React.FC<SimulationLabProps> = ({ onBack, onComplete, 
 
     const hasInteracted = !!state.interacted[currentSimData.id];
     const followUpPending = allQuestionsSubmitted && !!currentSimData.followUp && !state.followUpAnswered[currentSimData.id];
-    const canAdvance = allQuestionsSubmitted && !followUpPending;
+    const canAdvance = allQuestionsSubmitted && !followUpPending && hasInteracted;
 
     return (
         <div data-qa="simulation-lab" className="min-h-screen bg-duck-bg p-4">
             <div className="max-w-2xl mx-auto">
                 <PhaseHeader
-                    currentPhase={state.currentSim + 1}
+                    currentPhase={currentSim + 1}
                     totalPhases={config.simulations.length}
                     totalScore={totalScore}
                     onBack={onBack}
@@ -314,7 +322,7 @@ const SimulationLabInner: React.FC<SimulationLabProps> = ({ onBack, onComplete, 
                             className="text-xs font-black text-duck-ink uppercase tracking-widest"
                             style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                         >
-                            Simulatie {state.currentSim + 1} / {config.simulations.length}
+                            Simulatie {currentSim + 1} / {config.simulations.length}
                         </span>
                     </div>
                     <h2
@@ -324,7 +332,7 @@ const SimulationLabInner: React.FC<SimulationLabProps> = ({ onBack, onComplete, 
                         {currentSimData.title}
                     </h2>
                     <p
-                        className="text-sm text-duck-ink/60 mt-1"
+                        className="text-sm text-duck-ink/75 mt-1"
                         style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                     >
                         {currentSimData.description}
@@ -349,7 +357,7 @@ const SimulationLabInner: React.FC<SimulationLabProps> = ({ onBack, onComplete, 
                     {/* Parameters panel */}
                     <div className="flex-1 bg-white rounded-2xl border border-duck-gray p-4 space-y-4">
                         <span
-                            className="text-xs font-black text-duck-ink/60 uppercase tracking-widest"
+                            className="text-xs font-black text-duck-ink/75 uppercase tracking-widest"
                             style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                         >
                             Instellingen
@@ -371,7 +379,7 @@ const SimulationLabInner: React.FC<SimulationLabProps> = ({ onBack, onComplete, 
                     {/* Visual panel */}
                     <div className="flex-1 bg-white rounded-2xl border border-duck-gray p-4 flex flex-col items-center justify-center min-h-[220px]">
                         <span
-                            className="text-xs font-black text-duck-ink/60 uppercase tracking-widest mb-4 self-start"
+                            className="text-xs font-black text-duck-ink/75 uppercase tracking-widest mb-4 self-start"
                             style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                         >
                             Live resultaat
@@ -383,7 +391,7 @@ const SimulationLabInner: React.FC<SimulationLabProps> = ({ onBack, onComplete, 
                 {/* Questions */}
                 <div className="space-y-3 mb-6">
                     <span
-                        className="text-xs font-black text-duck-ink/60 uppercase tracking-widest"
+                        className="text-xs font-black text-duck-ink/75 uppercase tracking-widest"
                         style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                     >
                         Vragen
@@ -395,6 +403,7 @@ const SimulationLabInner: React.FC<SimulationLabProps> = ({ onBack, onComplete, 
                             answer={state.questionAnswers[q.id]}
                             submitted={!!state.questionSubmitted[q.id]}
                             confidence={state.confidences[q.id]}
+                            locked={!hasInteracted}
                             onAnswer={(val) => handleAnswer(q.id, val)}
                             onSetConfidence={(level) => handleSetConfidence(q.id, level)}
                             onSubmit={() => handleSubmitQuestion(q.id)}
@@ -414,10 +423,10 @@ const SimulationLabInner: React.FC<SimulationLabProps> = ({ onBack, onComplete, 
 
                 {/* Navigation */}
                 <div className="flex justify-between items-center mt-6">
-                    {state.currentSim > 0 ? (
+                    {currentSim > 0 ? (
                         <button
                             onClick={() => setState((prev) => ({ ...prev, currentSim: prev.currentSim - 1 }))}
-                            className="flex min-h-[44px] items-center gap-1.5 px-4 py-2.5 text-sm font-bold text-duck-ink/60 hover:text-duck-ink transition-colors"
+                            className="flex min-h-[44px] items-center gap-1.5 px-4 py-2.5 text-sm font-bold text-duck-ink/75 hover:text-duck-ink transition-colors"
                             style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                         >
                             <ChevronLeft size={16} />
@@ -434,11 +443,11 @@ const SimulationLabInner: React.FC<SimulationLabProps> = ({ onBack, onComplete, 
                         className={`flex min-h-[44px] items-center gap-1.5 px-5 py-2.5 rounded-xl text-sm font-bold transition-all duration-200 active:scale-[0.98] ${
                             canAdvance
                                 ? 'bg-gradient-to-r from-duck-acid to-duck-acid text-duck-ink hover:from-duck-acid hover:to-duck-acid'
-                                : 'bg-duck-gray text-duck-ink/60 cursor-not-allowed'
+                                : 'bg-duck-gray text-duck-ink/75 cursor-not-allowed'
                         }`}
                         style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                     >
-                        {state.currentSim + 1 < config.simulations.length ? (
+                        {currentSim + 1 < config.simulations.length ? (
                             <>
                                 Volgende simulatie
                                 <ChevronRight size={16} />
@@ -454,7 +463,7 @@ const SimulationLabInner: React.FC<SimulationLabProps> = ({ onBack, onComplete, 
 
                 {!allQuestionsSubmitted && (
                     <p
-                        className="text-center text-xs text-duck-ink/60 mt-2"
+                        className="text-center text-xs text-duck-ink/75 mt-2"
                         style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                     >
                         Beantwoord alle vragen om verder te gaan.
@@ -500,7 +509,7 @@ export const SimulationLab: React.FC<TemplateMissionProps> = ({ missionId, onBac
     if (loadError) return (
         <div className="min-h-screen bg-duck-bg flex items-center justify-center p-4">
             <div className="text-center">
-                <p className="text-duck-ink/60 mb-4" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                <p className="text-duck-ink/75 mb-4" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                     Config niet gevonden: {missionId}
                 </p>
                 <button onClick={onBack} className="px-4 py-2 bg-duck-acid text-duck-ink rounded-xl text-sm font-bold">Terug</button>

@@ -14,6 +14,7 @@ import { FollowUpCard } from '../shared/FollowUpCard';
 import { StudentAIChat } from '@/features/ai-chat/StudentAIChat';
 import { WellbeingAlert } from '@/features/student/WellbeingAlert';
 import { useWellbeingMonitor } from '@/hooks/useWellbeingMonitor';
+import { isMeaningfulAnswer, answerQualityHint } from '../shared/answerQuality';
 
 // ── Config types ──────────────────────────────────────────────────────────────
 
@@ -76,7 +77,9 @@ interface DataViewerState {
 // ── Helper ────────────────────────────────────────────────────────────────────
 
 function scoreQuestion(q: DataQuestion, answers: Record<string, string | number>, confidence?: 1 | 2 | 3): number {
-    if (q.type === 'text-observation') return q.points; // always participation points
+    if (q.type === 'text-observation') {
+        return isMeaningfulAnswer(String(answers[q.id] ?? '')) ? q.points : Math.floor(q.points / 2);
+    }
     const raw = answers[q.id];
     if (raw === undefined || raw === '') return 0;
     let base: number;
@@ -149,8 +152,9 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
         answer !== undefined &&
         answer !== '';
     const submitDisabled = q.type === 'text-observation'
-        ? observation.trim().length < 10
+        ? !isMeaningfulAnswer(observation)
         : answer === undefined || answer === '' || (q.showConfidence === true && confidence === undefined);
+    const observationHint = q.type === 'text-observation' ? answerQualityHint(observation) : null;
 
     return (
         <div className="bg-white rounded-2xl border border-duck-gray p-4 mb-3">
@@ -192,7 +196,7 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
                                         className="accent-duck-error"
                                     />
                                     <span
-                                        className="text-sm text-duck-ink/60"
+                                        className="text-sm text-duck-ink/75"
                                         style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                                     >
                                         {opt}
@@ -215,14 +219,24 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
                     )}
 
                     {q.type === 'text-observation' && (
-                        <textarea
-                            rows={3}
-                            placeholder="Schrijf je observatie hier…"
-                            value={observation}
-                            onChange={e => onTextObservation(q.id, e.target.value)}
-                            className="w-full mb-3 px-3 py-2 text-sm rounded-xl border border-duck-gray bg-duck-bg text-duck-ink focus:outline-none focus:border-duck-acid resize-none"
-                            style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
-                        />
+                        <div className="mb-3">
+                            <textarea
+                                rows={3}
+                                placeholder="Schrijf je observatie hier…"
+                                value={observation}
+                                onChange={e => onTextObservation(q.id, e.target.value)}
+                                className="w-full px-3 py-2 text-sm rounded-xl border border-duck-gray bg-duck-bg text-duck-ink focus:outline-none focus:border-duck-acid resize-none"
+                                style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
+                            />
+                            {observationHint && (
+                                <p
+                                    className="text-xs text-duck-ink/75 mt-1"
+                                    style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
+                                >
+                                    {observationHint}
+                                </p>
+                            )}
+                        </div>
                     )}
 
                     {showConfidenceWidget && (
@@ -245,6 +259,8 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
             {/* Feedback after submit */}
             {isSubmitted && (
                 <div
+                    role="status"
+                    aria-live="polite"
                     className={`rounded-xl p-3 flex items-start gap-2.5 ${
                         correct
                             ? 'bg-duck-ink/10 border border-duck-ink/25'
@@ -280,7 +296,7 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
                             </p>
                         )}
                         <p
-                            className="text-xs text-duck-ink/60 leading-snug"
+                            className="text-xs text-duck-ink/75 leading-snug"
                             style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                         >
                             {q.explanation}
@@ -355,7 +371,7 @@ const DatasetView: React.FC<DatasetViewProps> = ({
                 {dataset.title}
             </h2>
             <p
-                className="text-sm text-duck-ink/60 leading-relaxed"
+                className="text-sm text-duck-ink/75 leading-relaxed"
                 style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
             >
                 {dataset.description}
@@ -393,7 +409,7 @@ const DatasetView: React.FC<DatasetViewProps> = ({
                                     {card.title}
                                 </p>
                                 <p
-                                    className="text-xs text-duck-ink/60 leading-relaxed"
+                                    className="text-xs text-duck-ink/75 leading-relaxed"
                                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                                 >
                                     {card.content}
@@ -508,7 +524,14 @@ const DataViewerInner: React.FC<DataViewerProps> = ({
         }
     })();
 
-    const { phase, currentDataset, answers, submitted, textObservations, confidences, followUpAnswered, followUpCorrect } = state;
+    const { phase, answers, submitted, textObservations, confidences, followUpAnswered, followUpCorrect } = state;
+    const currentDataset = Math.min(Math.max(state.currentDataset, 0), config.datasets.length - 1);
+
+    useEffect(() => {
+        if (state.currentDataset !== currentDataset) {
+            setState(prev => ({ ...prev, currentDataset }));
+        }
+    }, [state.currentDataset, currentDataset, setState]);
 
     const questionScore = config.datasets.flatMap(ds => ds.questions).reduce((sum, q) => {
         if (!submitted[q.id]) return sum;
@@ -606,7 +629,7 @@ const DataViewerInner: React.FC<DataViewerProps> = ({
 
     const handleComplete = () => {
         clearSave();
-        onComplete(true);
+        onComplete(config.maxScore > 0 && totalScore / config.maxScore >= 0.4);
     };
 
     // Phase breakdown for CompletionScreen
@@ -689,7 +712,7 @@ const DataViewerInner: React.FC<DataViewerProps> = ({
                 {currentDataset > 0 && (
                     <button
                         onClick={handlePrevDataset}
-                        className="mt-3 flex items-center gap-1.5 text-xs text-duck-ink/60 hover:text-duck-ink transition-colors"
+                        className="mt-3 flex items-center gap-1.5 text-xs text-duck-ink/75 hover:text-duck-ink transition-colors"
                         style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                     >
                         <ChevronLeft size={14} />
@@ -779,7 +802,7 @@ export const DataViewer: React.FC<TemplateMissionProps> = ({ missionId, onBack, 
     if (loadError) return (
         <div className="min-h-screen bg-duck-bg flex items-center justify-center p-4">
             <div className="text-center">
-                <p className="text-duck-ink/60 mb-4" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                <p className="text-duck-ink/75 mb-4" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                     Config niet gevonden: {missionId}
                 </p>
                 <button onClick={onBack} className="px-4 py-2 bg-duck-acid text-duck-ink rounded-xl text-sm font-bold">Terug</button>

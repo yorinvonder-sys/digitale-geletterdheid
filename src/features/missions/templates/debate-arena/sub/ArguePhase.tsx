@@ -1,7 +1,7 @@
 import React from 'react';
 import { ArrowLeft, ChevronRight } from 'lucide-react';
 import type { DebateArenaConfig, DebateArenaState, ArgumentEntry } from '../DebateArena';
-import { isMeaningfulAnswer, answerQualityHint } from '../answerQuality';
+import { isMeaningfulAnswer, answerQualityHint } from '../../shared/answerQuality';
 
 function getArgumentQuality(charCount: number): { color: string; label: string } {
     if (charCount >= 100) return { color: '#ff3c21', label: 'Uitstekend' };

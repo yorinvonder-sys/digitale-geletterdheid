@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { MessageCircle } from 'lucide-react';
+import { MessageCircle, ChevronRight } from 'lucide-react';
 import type { TemplateMissionProps, BadgeConfig, FollowUpQuestion, MissionGoal } from '../shared/types';
 import { PhaseHeader } from '../shared/PhaseHeader';
 import { CompletionScreen } from '../shared/CompletionScreen';
@@ -86,6 +86,10 @@ interface ReviewArenaState {
     roundScores: number[];
     followUpResults: Record<string, { answered: boolean; correct: boolean }>;
     configMissionId?: string;
+    /** Score submitted for the current (not-yet-advanced) round, persisted the moment the
+     * learner submits, so a reload shows the locked outcome instead of a replayable round
+     * with the answers now known. Null while the round is still in progress. */
+    submittedScore: number | null;
 }
 
 const ROUND_ICONS: Record<ReviewRound['type'], string> = {
@@ -113,6 +117,7 @@ const ReviewArenaWithConfig: React.FC<ReviewArenaProps> = ({
         roundScores: [],
         followUpResults: {},
         configMissionId: config.missionId,
+        submittedScore: null,
     };
 
     const { state, setState, clearSave } = useMissionAutoSave<ReviewArenaState>(
@@ -163,6 +168,7 @@ const ReviewArenaWithConfig: React.FC<ReviewArenaProps> = ({
                     roundScores: newScores,
                     currentRound: nextRound,
                     phase: isLast ? 'complete' : 'round',
+                    submittedScore: null,
                 };
             });
         },
@@ -173,8 +179,23 @@ const ReviewArenaWithConfig: React.FC<ReviewArenaProps> = ({
         setState((s) => ({ ...s, phase: 'round' }));
     }, [setState]);
 
+    // Persists the round's score the moment it is submitted (before the "doorgaan" click),
+    // so a reload can never replay the round with the answers already known. Idempotent:
+    // once a score is recorded for the current round, later calls are no-ops.
+    const handleRoundSubmit = useCallback(
+        (score: number) => {
+            setState((s) =>
+                s.submittedScore === null || s.submittedScore === undefined
+                    ? { ...s, submittedScore: score }
+                    : s
+            );
+        },
+        [setState]
+    );
+
     const handleRoundComplete = useCallback(
         (score: number) => {
+            if (showFollowUp) return; // guard against a stray double invocation
             const round = config.rounds[state.currentRound];
             if (round?.followUp && score > round.maxScore * 0.5) {
                 setPendingScore(score);
@@ -183,11 +204,12 @@ const ReviewArenaWithConfig: React.FC<ReviewArenaProps> = ({
                 advanceRound(score);
             }
         },
-        [advanceRound, config.rounds, state.currentRound]
+        [advanceRound, config.rounds, showFollowUp, state.currentRound]
     );
 
     const handleFollowUpComplete = useCallback(
         (correct: boolean) => {
+            if (!showFollowUp) return; // guard against a stray double invocation
             const round = config.rounds[state.currentRound];
             const bonus = correct ? (round?.followUp?.bonusPoints ?? 0) : 0;
             const base = pendingScore ?? 0;
@@ -206,7 +228,7 @@ const ReviewArenaWithConfig: React.FC<ReviewArenaProps> = ({
             setPendingScore(null);
             advanceRound(finalScore);
         },
-        [advanceRound, config.rounds, pendingScore, setState, state.currentRound]
+        [advanceRound, config.rounds, pendingScore, setState, showFollowUp, state.currentRound]
     );
 
     const handleComplete = useCallback(() => {
@@ -290,46 +312,74 @@ const ReviewArenaWithConfig: React.FC<ReviewArenaProps> = ({
                         transition={{ duration: 0.25 }}
                         className="bg-white rounded-2xl border border-duck-gray p-5"
                     >
-                        {round.type === 'drag-sort' && (
-                            <DragSort
-                                title={round.title}
-                                description={round.description}
-                                items={round.items}
-                                maxScore={round.maxScore}
-                                showConfidence={round.showConfidence}
-                                onComplete={(score) => handleRoundComplete(score)}
-                            />
-                        )}
-                        {round.type === 'match-pairs' && (
-                            <MatchPairs
-                                title={round.title}
-                                description={round.description}
-                                pairs={round.pairs}
-                                maxScore={round.maxScore}
-                                onComplete={(score) => handleRoundComplete(score)}
-                            />
-                        )}
-                        {round.type === 'categorize' && (
-                            <Categorize
-                                title={round.title}
-                                description={round.description}
-                                categories={round.categories}
-                                items={round.items}
-                                maxScore={round.maxScore}
-                                showConfidence={round.showConfidence}
-                                onComplete={(score) => handleRoundComplete(score)}
-                            />
-                        )}
-                        {round.type === 'rapid-fire' && (
-                            <RapidFire
-                                title={round.title}
-                                description={round.description}
-                                questions={round.questions}
-                                timePerQuestion={round.timePerQuestion}
-                                maxScore={round.maxScore}
-                                onComplete={(score) => handleRoundComplete(score)}
-                            />
-                        )}
+                        <div className={showFollowUp ? 'pointer-events-none opacity-50 transition-opacity duration-200' : ''}>
+                            {state.submittedScore !== null && state.submittedScore !== undefined ? (
+                                <div data-qa="review-locked-result" className="space-y-4 text-center py-6">
+                                    <p className="text-sm text-duck-ink/80" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                                        Deze ronde is al ingediend.
+                                    </p>
+                                    <p className="text-2xl font-black text-duck-ink" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>
+                                        {state.submittedScore}/{round.maxScore} punten
+                                    </p>
+                                    <button
+                                        data-qa="review-continue"
+                                        onClick={() => handleRoundComplete(state.submittedScore as number)}
+                                        className="w-full py-3 bg-gradient-to-r from-duck-ink to-duck-ink hover:from-duck-ink hover:to-duck-ink text-white rounded-xl font-bold text-sm transition-all duration-200 active:scale-[0.98] flex items-center justify-center gap-2"
+                                        style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
+                                    >
+                                        Doorgaan
+                                        <ChevronRight size={16} />
+                                    </button>
+                                </div>
+                            ) : (
+                                <>
+                                    {round.type === 'drag-sort' && (
+                                        <DragSort
+                                            title={round.title}
+                                            description={round.description}
+                                            items={round.items}
+                                            maxScore={round.maxScore}
+                                            showConfidence={round.showConfidence}
+                                            onSubmit={handleRoundSubmit}
+                                            onComplete={(score) => handleRoundComplete(score)}
+                                        />
+                                    )}
+                                    {round.type === 'match-pairs' && (
+                                        <MatchPairs
+                                            title={round.title}
+                                            description={round.description}
+                                            pairs={round.pairs}
+                                            maxScore={round.maxScore}
+                                            onSubmit={handleRoundSubmit}
+                                            onComplete={(score) => handleRoundComplete(score)}
+                                        />
+                                    )}
+                                    {round.type === 'categorize' && (
+                                        <Categorize
+                                            title={round.title}
+                                            description={round.description}
+                                            categories={round.categories}
+                                            items={round.items}
+                                            maxScore={round.maxScore}
+                                            showConfidence={round.showConfidence}
+                                            onSubmit={handleRoundSubmit}
+                                            onComplete={(score) => handleRoundComplete(score)}
+                                        />
+                                    )}
+                                    {round.type === 'rapid-fire' && (
+                                        <RapidFire
+                                            title={round.title}
+                                            description={round.description}
+                                            questions={round.questions}
+                                            timePerQuestion={round.timePerQuestion}
+                                            maxScore={round.maxScore}
+                                            onSubmit={handleRoundSubmit}
+                                            onComplete={(score) => handleRoundComplete(score)}
+                                        />
+                                    )}
+                                </>
+                            )}
+                        </div>
 
                         {showFollowUp && round.followUp && (
                             <FollowUpCard
@@ -425,7 +475,7 @@ export const ReviewArena: React.FC<TemplateMissionProps> = (props) => {
     if (loadError) return (
         <div className="min-h-screen bg-duck-bg flex items-center justify-center p-4">
             <div className="text-center">
-                <p className="text-duck-ink/60 mb-4" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                <p className="text-duck-ink/80 mb-4" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                     Config niet gevonden: {missionId}
                 </p>
                 <button onClick={onBack} className="px-4 py-2 bg-duck-acid text-duck-ink rounded-xl text-sm font-bold">Terug</button>

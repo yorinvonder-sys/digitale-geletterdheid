@@ -281,9 +281,21 @@ export const AccessControlEngineerMission: React.FC<Props> = ({
     const [coachMessage, setCoachMessage] = useState<string | null>(null);
 
     // Bereken voortgang
-    const aantalProblemen = state.gevondenProblemen.length;
+    const aantalProblemen = state.gevondenProblemen.filter(id => {
+        const regel = ONVEILIGE_REGELS.find(r => r.id === id);
+        return regel && !regel.isVeilig;
+    }).length;
     const aantalOnveilig = ONVEILIGE_REGELS.filter(r => !r.isVeilig).length;
-    const aantalRegelsIngesteld = Object.keys(state.aangepasteRegels).length;
+    // Telt alleen resources waarvan de aangevinkte rollen daadwerkelijk overeenkomen met de
+    // veilige configuratie — niet iedere resource die simpelweg is aangeraakt.
+    const aantalRegelsIngesteld = RESOURCES.filter(resource => {
+        const huidigeRollen = state.aangepasteRegels[resource.id];
+        if (!huidigeRollen) return false;
+        return (
+            huidigeRollen.length === resource.toegestaanVoor.length &&
+            resource.toegestaanVoor.every(rol => huidigeRollen.includes(rol))
+        );
+    }).length;
     const aantalTestsGedaan = Object.values(state.testResultaten).filter(v => v !== null).length;
     const aantalTestsCorrect = Object.values(state.testResultaten).filter(v => v === 'correct').length;
 
@@ -421,7 +433,7 @@ export const AccessControlEngineerMission: React.FC<Props> = ({
                         </div>
 
                         <h3 className="font-bold text-duck-ink">Stap 1: Vind de problemen</h3>
-                        <p className="text-sm text-duck-ink/60">
+                        <p className="text-sm text-duck-ink/75">
                             Hieronder staan de huidige beveiligingsregels van het schoolsysteem.
                             Tik op de regels die <strong>onveilig</strong> zijn.
                             {isVso && ' Tip: kijk welke regels iedereen overal bij laten.'}
@@ -435,6 +447,7 @@ export const AccessControlEngineerMission: React.FC<Props> = ({
                                     <div key={regel.id} className="bg-white rounded-xl border border-duck-ink/15 overflow-hidden">
                                         <button
                                             onClick={() => toggleProbleem(regel.id)}
+                                            aria-pressed={geselecteerd}
                                             className={`w-full text-left p-3 flex items-center gap-3 transition-colors ${
                                                 geselecteerd
                                                     ? regel.isVeilig
@@ -539,6 +552,7 @@ export const AccessControlEngineerMission: React.FC<Props> = ({
                                                                 : [...huidigeRollen, rol];
                                                             updateToegangsRegel(resource.id, nieuw);
                                                         }}
+                                                        aria-pressed={actief}
                                                         className={`min-h-[44px] rounded-full px-3 text-xs font-medium transition-all ${
                                                             actief
                                                                 ? ROLLEN_KLEUREN[rol] + ' ring-2 ring-offset-1 ring-duck-acid'
@@ -558,7 +572,7 @@ export const AccessControlEngineerMission: React.FC<Props> = ({
 
                         <div className="bg-duck-bg rounded-xl p-3 flex items-center justify-between">
                             <p className="text-sm text-duck-ink/60">
-                                Ingesteld: <strong>{aantalRegelsIngesteld}</strong> / {RESOURCES.length} resources
+                                Correct ingesteld: <strong>{aantalRegelsIngesteld}</strong> / {RESOURCES.length} resources
                             </p>
                             <div className="flex gap-2">
                                 <button
@@ -622,7 +636,7 @@ export const AccessControlEngineerMission: React.FC<Props> = ({
                                                 ) : (
                                                     <>
                                                         <div className={`flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-bold ${
-                                                            resultaat === 'correct' ? 'bg-duck-ink text-white' : 'bg-duck-error text-white'
+                                                            resultaat === 'correct' ? 'bg-duck-ink text-white' : 'bg-duck-error text-duck-ink'
                                                         }`}>
                                                             {resultaat === 'correct'
                                                                 ? <><CheckCircle2 size={14} /> Correct</>
@@ -643,14 +657,24 @@ export const AccessControlEngineerMission: React.FC<Props> = ({
                                                     </>
                                                 )}
                                                 <button
-                                                    onClick={() => setShowTestResult(toonDetail ? null : scenario.id)}
-                                                    className="ml-auto flex min-h-[44px] items-center rounded-full px-3 text-xs text-duck-ink hover:underline"
+                                                    onClick={() => {
+                                                        if (resultaat === null || resultaat === undefined) return;
+                                                        setShowTestResult(toonDetail ? null : scenario.id);
+                                                    }}
+                                                    disabled={resultaat === null || resultaat === undefined}
+                                                    className={`ml-auto flex min-h-[44px] items-center rounded-full px-3 text-xs transition-colors ${
+                                                        resultaat === null || resultaat === undefined
+                                                            ? 'text-duck-ink/40 cursor-not-allowed'
+                                                            : 'text-duck-ink hover:underline'
+                                                    }`}
                                                 >
-                                                    {toonDetail ? 'Verberg' : 'Uitleg'}
+                                                    {resultaat === null || resultaat === undefined
+                                                        ? 'Voer eerst de test uit'
+                                                        : toonDetail ? 'Verberg' : 'Uitleg'}
                                                 </button>
                                             </div>
                                         </div>
-                                        {toonDetail && (
+                                        {toonDetail && resultaat !== null && resultaat !== undefined && (
                                             <div className="bg-duck-bg px-4 py-3 border-t border-duck-ink/15">
                                                 <p className="text-xs text-duck-ink/60">
                                                     <strong>Verwacht:</strong> {scenario.verwachtResultaat === 'toegang' ? 'Toegang verlenen' : 'Geblokkeerd'}

@@ -6,7 +6,7 @@ import { IntroScreen } from '../shared/IntroScreen';
 import { CompletionScreen } from '../shared/CompletionScreen';
 import { getMissionGoal } from '@/config/missionGoals';
 import type { TemplateMissionProps, BadgeConfig, FollowUpQuestion, MissionGoal } from '../shared/types';
-import { isMeaningfulAnswer } from './answerQuality';
+import { isMeaningfulAnswer } from '../shared/answerQuality';
 import { ExplorePhase } from './sub/ExplorePhase';
 import { PositionPhase } from './sub/PositionPhase';
 import { ArguePhase } from './sub/ArguePhase';

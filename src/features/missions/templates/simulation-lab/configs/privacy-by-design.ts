@@ -156,15 +156,6 @@ export const privacyByDesignConfig: SimulationLabConfig = {
     introTitle: 'Privacy by Design',
     introDescription:
         'Privacy by Design betekent: privacy vanaf het begin inbouwen in een app of systeem, niet achteraf. Ontdek hoe jouw digitale keuzes bepalen hoeveel anderen over jou weten. Speel met instellingen en zie direct wat er verandert.',
-    missionGoal: {
-        primaryGoal: 'Ik maak privacykeuzes die een app veiliger maken en leg uit welke data echt nodig is.',
-        criteria: {
-            type: 'rounds-complete',
-            min: 3,
-            description: 'Alle drie privacy-simulaties zijn onderzocht met vragen en reflectie.',
-        },
-        evidence: 'Keuzes rond profielzichtbaarheid, app-permissies en cookie-instellingen.',
-    },
     introFeatures: [
         'Sim 1 — Pas je sociale media instellingen aan',
         'Sim 2 — Kies welke app-permissies je geeft',
@@ -216,8 +207,8 @@ export const privacyByDesignConfig: SimulationLabConfig = {
                         'Wat gebeurt er met jouw Privacy Score als je profielfoto op "publiek" staat én je locatie deelt?',
                     type: 'multiple-choice',
                     options: [
-                        'De score is hoog, want iedereen kan je vinden',
                         'De score is laag, want jij deelt veel informatie',
+                        'De score is hoog, want iedereen kan je vinden',
                         'De score verandert niet door de profielfoto',
                         'Locatie-sharing heeft geen effect op de score',
                     ],
@@ -247,8 +238,8 @@ export const privacyByDesignConfig: SimulationLabConfig = {
                     type: 'multiple-choice',
                     options: [
                         'Je profiel ziet er minder mooi uit',
-                        'Mensen weten waar je bent en wanneer je niet thuis bent',
                         'Je batterij gaat sneller leeg',
+                        'Mensen weten waar je bent en wanneer je niet thuis bent',
                         'Je krijgt minder volgers',
                     ],
                     correctAnswer: 'Mensen weten waar je bent en wanneer je niet thuis bent',
@@ -278,7 +269,7 @@ export const privacyByDesignConfig: SimulationLabConfig = {
                     question:
                         'Welke permissie verzamelt de meest privacy-gevoelige data?',
                     type: 'multiple-choice',
-                    options: ['Camera', 'Microfoon of Locatie', 'Opslag', 'Contacten'],
+                    options: ['Microfoon of Locatie', 'Camera', 'Opslag', 'Contacten'],
                     correctAnswer: 'Microfoon of Locatie',
                     explanation:
                         'Microfoon en locatie scoren het hoogst (5 punten elk). Via een microfoon kunnen gesprekken worden afgeluisterd; locatie onthult al je dagelijkse bewegingen.',
@@ -291,9 +282,9 @@ export const privacyByDesignConfig: SimulationLabConfig = {
                     type: 'multiple-choice',
                     options: [
                         'Spellen hebben contacten nodig om scores bij te houden',
-                        'Een spelletje heeft contacten normaal gesproken helemaal niet nodig',
                         'Het is wettelijk verplicht voor apps',
                         'Contacten bevatten geen gevoelige data',
+                        'Een spelletje heeft contacten normaal gesproken helemaal niet nodig',
                     ],
                     correctAnswer: 'Een spelletje heeft contacten normaal gesproken helemaal niet nodig',
                     explanation:
@@ -306,14 +297,14 @@ export const privacyByDesignConfig: SimulationLabConfig = {
                         'Wat is het principe van "data minimalisatie" bij app-permissies?',
                     type: 'multiple-choice',
                     options: [
-                        'Geef apps zo weinig permissies als mogelijk voor ze te laten werken',
                         'Verwijder apps die je niet gebruikt',
+                        'Geef apps zo weinig permissies als mogelijk voor ze te laten werken',
                         'Geef alle permissies om de app optimaal te laten werken',
                         'Permissies zijn alleen relevant bij betaalde apps',
                     ],
                     correctAnswer: 'Geef apps zo weinig permissies als mogelijk voor ze te laten werken',
                     explanation:
-                        'Data minimalisatie is een AVG-recht (AVG = de Europese privacywet) en een privacyprincipe: apps mogen alleen data verzamelen die strikt nodig is. Geef nooit meer toegang dan de app functioneel nodig heeft.',
+                        'Dataminimalisatie is een AVG-beginsel: organisaties mogen alleen persoonsgegevens verzamelen die noodzakelijk zijn voor het doel.',
                     points: 15,
                 },
             ],
@@ -342,8 +333,8 @@ export const privacyByDesignConfig: SimulationLabConfig = {
                     type: 'multiple-choice',
                     options: [
                         'De site wordt sneller voor jou',
-                        'De site slaat jouw gedrag op om gerichte advertenties te tonen',
                         'Je hoeft nooit meer in te loggen',
+                        'De site slaat jouw gedrag op om gerichte advertenties te tonen',
                         'Cookies zijn altijd anoniem en onschadelijk',
                     ],
                     correctAnswer: 'De site slaat jouw gedrag op om gerichte advertenties te tonen',
@@ -372,8 +363,8 @@ export const privacyByDesignConfig: SimulationLabConfig = {
                         'Je kiest "Geen cookies". Welk nadeel heeft dit voor jou als gebruiker?',
                     type: 'multiple-choice',
                     options: [
-                        'De site laadt langzamer',
                         'Je blijft niet ingelogd en je winkelmandje wordt vergeten',
+                        'De site laadt langzamer',
                         'Je kunt de site helemaal niet meer bezoeken',
                         'De site stuurt je meer reclame-e-mails',
                     ],

@@ -75,15 +75,20 @@ export const FollowUpCard: React.FC<FollowUpCardProps> = ({ followUp, onComplete
                     let optStyle = isLight
                         ? 'bg-white border-duck-gray hover:border-duck-acid'
                         : 'bg-duck-ink border-duck-ink hover:border-duck-acid/40';
+                    const isChosenWrong = answered && i === selected && !correct;
+                    let letterStyle = textSub;
 
                     if (answered && i === followUp.correctIndex) {
                         optStyle = isLight
                             ? 'bg-duck-ink/10 border-duck-ink'
                             : 'bg-duck-ink/10 border-duck-acid';
-                    } else if (answered && i === selected && !correct) {
+                    } else if (isChosenWrong) {
                         optStyle = isLight
                             ? 'bg-duck-error border-duck-error'
                             : 'bg-duck-error/30 border-duck-error';
+                        // De gedempte tekstkleur haalt hier maar 3,19:1 op de foutkleur —
+                        // gebruik de donkere hoofdkleur zodat de letter leesbaar blijft.
+                        letterStyle = textMain;
                     } else if (answered) {
                         optStyle = isLight
                             ? 'bg-duck-gray border-duck-gray'
@@ -100,7 +105,7 @@ export const FollowUpCard: React.FC<FollowUpCardProps> = ({ followUp, onComplete
                             className={`min-h-[44px] w-full text-left px-3 py-2.5 rounded-xl border-2 text-xs transition-all duration-200 ${optStyle} ${textMain}`}
                             style={fontBody}
                         >
-                            <span className={textSub}>{String.fromCharCode(65 + i)}. </span>
+                            <span className={letterStyle}>{String.fromCharCode(65 + i)}. </span>
                             {opt}
                         </button>
                     );

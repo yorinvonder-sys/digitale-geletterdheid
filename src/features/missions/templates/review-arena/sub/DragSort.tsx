@@ -13,16 +13,34 @@ interface DragSortProps {
     description: string;
     items: DragSortItem[];
     onComplete: (score: number, maxScore: number) => void;
+    /** Called once, immediately when the round is submitted, so the score can be persisted before the learner has a chance to reload and retry with the answers now known. */
+    onSubmit?: (score: number) => void;
     maxScore: number;
     /** Optional: prompt learner to rate confidence (1-3) before submission */
     showConfidence?: boolean;
 }
 
-function shuffle<T>(arr: T[]): T[] {
-    const a = [...arr];
+// Deterministic shuffle seeded by the item ids, so the order is stable across
+// reloads of the same round instead of re-randomizing every mount, and never
+// lands (by chance) on the fully correct order.
+function seededShuffle(items: DragSortItem[]): DragSortItem[] {
+    let seed = 0;
+    for (const item of items) {
+        for (let i = 0; i < item.id.length; i++) {
+            seed = (seed * 31 + item.id.charCodeAt(i)) >>> 0;
+        }
+    }
+    const next = () => {
+        seed = (seed * 1103515245 + 12345) >>> 0;
+        return seed / 4294967296;
+    };
+    const a = [...items];
     for (let i = a.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
+        const j = Math.floor(next() * (i + 1));
         [a[i], a[j]] = [a[j], a[i]];
+    }
+    if (a.length > 1 && a.every((item, index) => item.correctPosition === index)) {
+        [a[0], a[1]] = [a[1], a[0]];
     }
     return a;
 }
@@ -56,7 +74,7 @@ const ItemRow: React.FC<ItemRowProps> = ({ item, submitted, currentIndex, totalI
         >
             <div
                 onPointerDown={submitted ? undefined : (e) => controls.start(e)}
-                className={`min-h-[44px] min-w-[32px] inline-flex items-center justify-center text-duck-ink/60 ${submitted ? '' : 'cursor-grab active:cursor-grabbing'}`}
+                className={`min-h-[44px] min-w-[32px] inline-flex items-center justify-center text-duck-ink/80 ${submitted ? '' : 'cursor-grab active:cursor-grabbing'}`}
                 style={{ touchAction: 'none' }}
                 aria-hidden="true"
             >
@@ -65,11 +83,11 @@ const ItemRow: React.FC<ItemRowProps> = ({ item, submitted, currentIndex, totalI
 
             <div className="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0"
                 style={{ background: submitted ? (isCorrect ? '#202023' : '#ff3c21') : '#ff3c21' }}>
-                <span className="text-xs font-black text-white">{currentIndex + 1}</span>
+                <span className={`text-xs font-black ${submitted && isCorrect ? 'text-white' : 'text-duck-ink'}`}>{currentIndex + 1}</span>
             </div>
 
             <span
-                className="flex-1 text-sm text-duck-ink/60 font-medium"
+                className="flex-1 text-sm text-duck-ink/80 font-medium"
                 style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
             >
                 {item.label}
@@ -88,7 +106,7 @@ const ItemRow: React.FC<ItemRowProps> = ({ item, submitted, currentIndex, totalI
                         onClick={() => onMove(item.id, -1)}
                         disabled={currentIndex === 0}
                         aria-label={`${item.label} omhoog verplaatsen`}
-                        className="grid min-h-[44px] min-w-[44px] place-items-center rounded-lg border border-duck-gray text-duck-ink/60 transition-colors hover:border-duck-acid hover:text-duck-ink disabled:opacity-30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-acid/40"
+                        className="grid min-h-[44px] min-w-[44px] place-items-center rounded-lg border border-duck-gray text-duck-ink/80 transition-colors hover:border-duck-acid hover:text-duck-ink disabled:opacity-30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-acid/40"
                     >
                         <ArrowUp size={14} />
                     </button>
@@ -98,7 +116,7 @@ const ItemRow: React.FC<ItemRowProps> = ({ item, submitted, currentIndex, totalI
                         onClick={() => onMove(item.id, 1)}
                         disabled={currentIndex === totalItems - 1}
                         aria-label={`${item.label} omlaag verplaatsen`}
-                        className="grid min-h-[44px] min-w-[44px] place-items-center rounded-lg border border-duck-gray text-duck-ink/60 transition-colors hover:border-duck-acid hover:text-duck-ink disabled:opacity-30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-acid/40"
+                        className="grid min-h-[44px] min-w-[44px] place-items-center rounded-lg border border-duck-gray text-duck-ink/80 transition-colors hover:border-duck-acid hover:text-duck-ink disabled:opacity-30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-acid/40"
                     >
                         <ArrowDown size={14} />
                     </button>
@@ -113,9 +131,11 @@ export const DragSort: React.FC<DragSortProps> = ({
     description,
     items,
     onComplete,
+    onSubmit,
     maxScore,
 }) => {
-    const [order, setOrder] = useState<DragSortItem[]>(() => shuffle(items));
+    const [order, setOrder] = useState<DragSortItem[]>(() => seededShuffle(items));
+    const [hasMoved, setHasMoved] = useState(false);
     const [submitted, setSubmitted] = useState(false);
     const [score, setScore] = useState<number | null>(null);
 
@@ -124,9 +144,16 @@ export const DragSort: React.FC<DragSortProps> = ({
         const earned = Math.round((correct / items.length) * maxScore);
         setScore(earned);
         setSubmitted(true);
+        onSubmit?.(earned);
+    };
+
+    const handleReorder = (next: DragSortItem[]) => {
+        setHasMoved(true);
+        setOrder(next);
     };
 
     const handleMove = (id: string, direction: -1 | 1) => {
+        setHasMoved(true);
         setOrder((current) => {
             const index = current.findIndex((item) => item.id === id);
             const nextIndex = index + direction;
@@ -153,14 +180,14 @@ export const DragSort: React.FC<DragSortProps> = ({
                     {title}
                 </h3>
                 <p
-                    className="text-sm text-duck-ink/60"
+                    className="text-sm text-duck-ink/80"
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                 >
                     {description}
                 </p>
             </div>
 
-            <div className="text-xs text-duck-ink/60 flex items-center gap-1.5" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+            <div className="text-xs text-duck-ink/80 flex items-center gap-1.5" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                 <GripVertical size={12} />
                 Sleep de kaarten in de juiste volgorde of gebruik de pijltjes
             </div>
@@ -168,7 +195,7 @@ export const DragSort: React.FC<DragSortProps> = ({
             <Reorder.Group
                 axis="y"
                 values={order}
-                onReorder={submitted ? () => {} : setOrder}
+                onReorder={submitted ? () => {} : handleReorder}
                 className="space-y-2"
             >
                 {order.map((item, index) => (
@@ -204,10 +231,15 @@ export const DragSort: React.FC<DragSortProps> = ({
                 <button
                     data-qa="review-submit"
                     onClick={handleSubmit}
-                    className="w-full py-3 bg-gradient-to-r from-duck-acid to-duck-acid hover:from-duck-acid hover:to-duck-acid text-duck-ink rounded-xl font-bold text-sm transition-all duration-200 active:scale-[0.98]"
+                    disabled={!hasMoved}
+                    className={`w-full py-3 rounded-xl font-bold text-sm transition-all duration-200 active:scale-[0.98] ${
+                        hasMoved
+                            ? 'bg-gradient-to-r from-duck-acid to-duck-acid hover:from-duck-acid hover:to-duck-acid text-duck-ink'
+                            : 'bg-duck-gray text-duck-ink/80 cursor-not-allowed'
+                    }`}
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                 >
-                    Volgorde bevestigen
+                    {hasMoved ? 'Volgorde bevestigen' : 'Versleep eerst minstens één kaart'}
                 </button>
             ) : (
                 <button

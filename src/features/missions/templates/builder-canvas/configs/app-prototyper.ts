@@ -40,6 +40,7 @@ export const appPrototyperConfig: BuilderCanvasConfig = {
                 { id: 'doelgroep-spec', label: 'De doelgroep is specifiek beschreven' },
             ],
             textPrompt: 'Beschrijf het gebruikersprobleem en de waardepropositie',
+            minTextLength: 150,
         },
         {
             id: 'schermen-ontwerpen',
@@ -55,6 +56,7 @@ export const appPrototyperConfig: BuilderCanvasConfig = {
                 { id: 'startscherm', label: 'Ik heb aangegeven welk scherm de gebruiker als eerste ziet' },
             ],
             textPrompt: 'Beschrijf je wireframes hier',
+            minTextLength: 150,
             reflectionQuestion: {
                 question: 'Wat is het belangrijkste doel van een wireframe?',
                 options: ['De app er mooi laten uitzien', 'De structuur en gebruikersflow testen voor je gaat bouwen', 'De app sneller laten laden', 'De klant overtuigen met kleur en animatie'],
@@ -77,6 +79,7 @@ export const appPrototyperConfig: BuilderCanvasConfig = {
                 { id: 'fout-flow', label: 'Ik heb beschreven wat er bij een fout of "terug" gebeurt' },
             ],
             textPrompt: 'Beschrijf je gebruikersflows',
+            minTextLength: 150,
         },
         {
             id: 'testplan',
@@ -93,6 +96,7 @@ export const appPrototyperConfig: BuilderCanvasConfig = {
                 { id: 'verbetering', label: 'Ik heb 1 verbetering beschreven op basis van mogelijke feedback' },
             ],
             textPrompt: 'Schrijf je testplan',
+            minTextLength: 200,
         },
     ],
     maxScore: 100,

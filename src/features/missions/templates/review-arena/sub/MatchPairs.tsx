@@ -12,6 +12,8 @@ interface MatchPairsProps {
     description: string;
     pairs: Pair[];
     onComplete: (score: number, maxScore: number) => void;
+    /** Called once, immediately when the round is submitted, so the score can be persisted before the learner has a chance to reload and retry with the answers now known. */
+    onSubmit?: (score: number) => void;
     maxScore: number;
 }
 
@@ -29,6 +31,7 @@ export const MatchPairs: React.FC<MatchPairsProps> = ({
     description,
     pairs,
     onComplete,
+    onSubmit,
     maxScore,
 }) => {
     const [leftItems] = useState(() => pairs.map((p, i) => ({ id: i, label: p.left })));
@@ -71,6 +74,7 @@ export const MatchPairs: React.FC<MatchPairsProps> = ({
                 const earned = Math.max(0, Math.round(((pairs.length - penalty) / pairs.length) * maxScore));
                 setScore(earned);
                 setDone(true);
+                onSubmit?.(earned);
             }
         } else {
             // Wrong — flash red briefly
@@ -98,7 +102,7 @@ export const MatchPairs: React.FC<MatchPairsProps> = ({
                     {title}
                 </h3>
                 <p
-                    className="text-sm text-duck-ink/60"
+                    className="text-sm text-duck-ink/80"
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                 >
                     {description}
@@ -106,7 +110,7 @@ export const MatchPairs: React.FC<MatchPairsProps> = ({
             </div>
 
             {!done && (
-                <p className="text-xs text-duck-ink/60" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                <p className="text-xs text-duck-ink/80" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                     Klik een item links aan, dan het bijpassende item rechts.
                 </p>
             )}
@@ -129,7 +133,7 @@ export const MatchPairs: React.FC<MatchPairsProps> = ({
                                         ? 'bg-duck-ink/10 border-duck-ink text-duck-ink opacity-60 cursor-default'
                                         : isSelected
                                             ? 'bg-duck-acid/10 border-duck-acid text-duck-ink'
-                                            : 'bg-white border-duck-gray text-duck-ink/60 hover:border-duck-acid/40'
+                                            : 'bg-white border-duck-gray text-duck-ink/80 hover:border-duck-acid/40'
                                     }`}
                                 style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                                 animate={isSelected ? { scale: 1.02 } : { scale: 1 }}
@@ -159,8 +163,8 @@ export const MatchPairs: React.FC<MatchPairsProps> = ({
                                         : isFlashing
                                             ? 'bg-duck-acid/10 border-duck-acid text-duck-ink'
                                             : selectedLeft !== null
-                                                ? 'bg-white border-duck-gray text-duck-ink/60 hover:border-duck-acid/40 cursor-pointer'
-                                                : 'bg-white border-duck-gray text-duck-ink/60'
+                                                ? 'bg-white border-duck-gray text-duck-ink/80 hover:border-duck-acid/40 cursor-pointer'
+                                                : 'bg-white border-duck-gray text-duck-ink/80'
                                     }`}
                                 style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                                 animate={isFlashing ? { x: [0, -4, 4, -4, 0] } : { x: 0 }}
@@ -183,7 +187,7 @@ export const MatchPairs: React.FC<MatchPairsProps> = ({
                         transition={{ duration: 0.3 }}
                     />
                 </div>
-                <span className="text-xs text-duck-ink/60" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                <span className="text-xs text-duck-ink/80" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                     {matched.size}/{pairs.length}
                     {wrongAttempts > 0 && ` · ${wrongAttempts} fout${wrongAttempts === 1 ? '' : 'en'}`}
                 </span>

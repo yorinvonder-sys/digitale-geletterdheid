@@ -13,6 +13,8 @@ interface CategorizeProps {
     categories: string[];
     items: CategorizeItem[];
     onComplete: (score: number, maxScore: number) => void;
+    /** Called once, immediately when the round is submitted, so the score can be persisted before the learner has a chance to reload and retry with the answers now known. */
+    onSubmit?: (score: number) => void;
     maxScore: number;
     /** Optional: prompt learner to rate confidence (1-3) before submission */
     showConfidence?: boolean;
@@ -39,6 +41,7 @@ export const Categorize: React.FC<CategorizeProps> = ({
     categories,
     items,
     onComplete,
+    onSubmit,
     maxScore,
 }) => {
     const [shuffledItems] = useState(() =>
@@ -81,6 +84,7 @@ export const Categorize: React.FC<CategorizeProps> = ({
         const earned = Math.round((correct / items.length) * maxScore);
         setScore(earned);
         setSubmitted(true);
+        onSubmit?.(earned);
     };
 
     const handleContinue = () => {
@@ -99,7 +103,7 @@ export const Categorize: React.FC<CategorizeProps> = ({
                     {title}
                 </h3>
                 <p
-                    className="text-sm text-duck-ink/60"
+                    className="text-sm text-duck-ink/80"
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                 >
                     {description}
@@ -107,7 +111,7 @@ export const Categorize: React.FC<CategorizeProps> = ({
             </div>
 
             {!submitted && (
-                <p className="text-xs text-duck-ink/60" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                <p className="text-xs text-duck-ink/80" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                     Selecteer een item, dan klik op de categorie.
                 </p>
             )}
@@ -120,12 +124,11 @@ export const Categorize: React.FC<CategorizeProps> = ({
                     const isClickable = !submitted && selectedItem !== null;
 
                     return (
-                        <motion.button
-                            type="button"
+                        <motion.div
                             data-qa="review-category"
                             key={cat}
                             onClick={() => handleCategoryClick(cat)}
-                            className={`w-full text-left rounded-xl border-2 p-2 min-h-[80px] transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-acid focus-visible:ring-offset-2
+                            className={`w-full text-left rounded-xl border-2 p-2 min-h-[80px] transition-all duration-200
                                 ${isClickable
                                     ? 'cursor-pointer scale-[1.02] shadow-md'
                                     : 'cursor-default'
@@ -137,8 +140,8 @@ export const Categorize: React.FC<CategorizeProps> = ({
                         >
                             <div
                                 data-qa="review-category-label"
-                                className="text-xs font-black mb-2 uppercase tracking-wider"
-                                style={{ color: color.bg, fontFamily: "'Outfit', system-ui, sans-serif" }}
+                                className="text-xs font-black mb-2 uppercase tracking-wider text-duck-ink"
+                                style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                             >
                                 {cat}
                             </div>
@@ -147,17 +150,20 @@ export const Categorize: React.FC<CategorizeProps> = ({
                                     const isCorrect = submitted && item.correctCategory === cat;
                                     const isWrong = submitted && item.correctCategory !== cat;
                                     return (
-                                        <motion.div
+                                        <motion.button
+                                            type="button"
                                             key={item.id}
                                             layout
                                             initial={{ scale: 0.8, opacity: 0 }}
                                             animate={{ scale: 1, opacity: 1 }}
-                                            className={`flex items-center gap-1 px-2 py-1 rounded-lg text-xs font-medium border
+                                            disabled={submitted}
+                                            aria-label={`${item.label} terugzetten naar te categoriseren`}
+                                            className={`flex min-h-[44px] items-center gap-1 px-2 py-1 rounded-lg text-xs font-medium border
                                                 ${submitted
                                                     ? isCorrect
                                                         ? 'bg-duck-ink/15 border-duck-ink text-duck-ink'
                                                         : 'bg-duck-acid/15 border-duck-acid/60 text-duck-ink'
-                                                    : 'bg-white border-duck-gray text-duck-ink/60 cursor-pointer hover:border-duck-acid/40'
+                                                    : 'bg-white border-duck-gray text-duck-ink/80 cursor-pointer hover:border-duck-acid/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-acid/40'
                                                 }`}
                                             style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                                             onClick={(e) => {
@@ -170,11 +176,11 @@ export const Categorize: React.FC<CategorizeProps> = ({
                                                 : <XCircle size={10} />
                                             )}
                                             {item.label}
-                                        </motion.div>
+                                        </motion.button>
                                     );
                                 })}
                             </div>
-                        </motion.button>
+                        </motion.div>
                     );
                 })}
             </div>
@@ -182,7 +188,7 @@ export const Categorize: React.FC<CategorizeProps> = ({
             {/* Unplaced items */}
             {unplacedItems.length > 0 && (
                 <div>
-                    <p className="text-xs text-duck-ink/60 mb-2" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                    <p className="text-xs text-duck-ink/80 mb-2" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                         Te categoriseren:
                     </p>
                     <div className="flex flex-wrap gap-2">
@@ -195,7 +201,7 @@ export const Categorize: React.FC<CategorizeProps> = ({
                                 className={`min-h-[44px] px-3 py-1.5 rounded-lg border text-xs font-medium transition-all duration-200
                                     ${selectedItem === item.id
                                         ? 'bg-duck-acid/15 border-duck-acid text-duck-ink scale-105'
-                                        : 'bg-white border-duck-gray text-duck-ink/60 hover:border-duck-acid/40'
+                                        : 'bg-white border-duck-gray text-duck-ink/80 hover:border-duck-acid/40'
                                     }`}
                                 style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                             >
@@ -235,7 +241,7 @@ export const Categorize: React.FC<CategorizeProps> = ({
                     className={`w-full py-3 rounded-xl font-bold text-sm transition-all duration-200 active:scale-[0.98]
                         ${allPlaced
                             ? 'bg-gradient-to-r from-duck-acid to-duck-acid hover:from-duck-acid hover:to-duck-acid text-duck-ink'
-                            : 'bg-duck-gray text-duck-ink/60 cursor-not-allowed'
+                            : 'bg-duck-gray text-duck-ink/80 cursor-not-allowed'
                         }`}
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                 >

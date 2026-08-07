@@ -119,25 +119,32 @@ const config: PuzzleLabConfig = {
             title: 'Maak een echt sterk wachtwoord',
             type: 'text-input',
             description:
-                'Nu jij weet hoe aanvallen werken, maak je een wachtwoord dat echt sterk is. Het moet aan ALLE eisen voldoen:\n\n• Minimaal 14 tekens lang\n• Minstens 1 hoofdletter (A–Z)\n• Minstens 1 cijfer (0–9)\n• Minstens 1 speciaal teken (!@#$%&*-_)\n• Geen herkenbaar woord of naam\n\nTip: gebruik een passphrase — meerdere willekeurige woorden met symbolen: "Paraplu#Boot7Ster"',
+                'Nu jij weet hoe aanvallen werken, maak je een wachtwoord dat echt sterk is. Het moet aan ALLE eisen voldoen:\n\n• Minimaal 14 tekens lang\n• Minstens 1 hoofdletter (A–Z)\n• Minstens 1 cijfer (0–9)\n• Minstens 1 speciaal teken (!@#$%&*-_)\n• Geen herkenbaar woord of naam\n\nTip: gebruik een passphrase — meerdere willekeurige woorden met symbolen: "Paraplu#Boot7Ster"\n\nGebruik nooit je échte wachtwoord — verzin er hier een.',
             clues: [
                 'Lengte is de krachtigste factor: 14 tekens is véél sterker dan 8 tekens.',
                 'Willekeurige woorden combineren werkt beter dan trucs op één woord: "Groen-Fiets-42-Maan!" is sterk.',
                 'Probeer iets dat je kunt onthouden maar een computer moeilijk kan raden.',
             ],
             extraClues: [
-                'Voorbeeld dat voldoet: "Tafel!Oranje9Wolk" — 17 tekens, hoofdletter, cijfer, speciaal teken, geen herkenbaar enkel woord.',
+                'Denk aan de vorm, geen kant-en-klaar voorbeeld: vier losse woorden die niets met elkaar te maken hebben, met een cijfer en een leesteken ertussen, samen minstens 14 tekens.',
             ],
             revealExtraAfterAttempts: 2,
             answer: [],
             validator: (input: string) => {
                 const s = input.trim();
-                return (
+                const meetsBasics =
                     s.length >= 14 &&
                     /[A-Z]/.test(s) &&
                     /[0-9]/.test(s) &&
-                    /[!@#$%&*\-_]/.test(s)
-                );
+                    /[!@#$%&*\-_]/.test(s);
+                if (!meetsBasics) return false;
+                // Wijs herhaalde tekens af, bv. "aaaaaaaaaaaaaa".
+                if (/(.)\1{2,}/.test(s)) return false;
+                // Wijs één enkel herkenbaar woord met versieringen af, bv. "Password1234!"
+                // (precies één aaneengesloten letterblok — een echte passphrase heeft er meerdere).
+                const letterBlocks = s.match(/[a-zA-Z]+/g) ?? [];
+                if (letterBlocks.length === 1 && letterBlocks[0].length >= 6) return false;
+                return true;
             },
             caseSensitive: true,
             maxAttempts: 10,

@@ -9,12 +9,14 @@ interface MobileTabBarProps {
 }
 
 export const MobileTabBar: React.FC<MobileTabBarProps> = ({ activeTab, onTabChange }) => (
-    <div className="md:hidden flex border-b border-duck-gray bg-white shrink-0">
+    <div className="md:hidden flex border-b border-duck-gray bg-white shrink-0" role="tablist">
         {(['instructies', 'preview'] as MobileTab[]).map((tab) => (
             <button
                 key={tab}
+                role="tab"
+                aria-selected={activeTab === tab}
                 onClick={() => onTabChange(tab)}
-                className={`flex-1 flex items-center justify-center gap-2 py-3 text-xs font-bold uppercase tracking-wider transition-all duration-300 ${
+                className={`flex-1 flex min-h-[44px] items-center justify-center gap-2 py-3 text-xs font-bold uppercase tracking-wider transition-all duration-300 ${
                     activeTab === tab
                         ? 'text-duck-ink border-b-2 border-duck-acid bg-duck-acid/5'
                         : 'text-duck-ink/70 hover:text-duck-ink'
