@@ -14,6 +14,7 @@ import { FollowUpCard } from '../shared/FollowUpCard';
 import { StudentAIChat } from '@/features/ai-chat/StudentAIChat';
 import { WellbeingAlert } from '@/features/student/WellbeingAlert';
 import { useWellbeingMonitor } from '@/hooks/useWellbeingMonitor';
+import { toScorePercent } from '../shared/scorePercent';
 
 // ── Config types ──────────────────────────────────────────────────────────────
 
@@ -900,7 +901,7 @@ const DataViewerInner: React.FC<DataViewerProps> = ({
     const handleComplete = () => {
         clearSave();
         // maxScore 0 zou met een kale vergelijking altijd "gehaald" opleveren.
-        onComplete(config.maxScore > 0 && totalScore / config.maxScore >= 0.4);
+        onComplete(config.maxScore > 0 && totalScore / config.maxScore >= 0.4, toScorePercent(totalScore, config.maxScore));
     };
 
     // Phase breakdown for CompletionScreen

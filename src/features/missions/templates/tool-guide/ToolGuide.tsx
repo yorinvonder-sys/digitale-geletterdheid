@@ -7,6 +7,7 @@ import { CompletionScreen } from '../shared/CompletionScreen';
 import { PhaseHeader } from '../shared/PhaseHeader';
 import { getMissionGoal } from '@/config/missionGoals';
 import type { TemplateMissionProps, BadgeConfig, MissionGoal } from '../shared/types';
+import { toScorePercent } from '../shared/scorePercent';
 
 // ─── Config types ────────────────────────────────────────────────────────────
 
@@ -568,7 +569,7 @@ const ToolGuideInner: React.FC<ToolGuideProps> = ({
 
     function handleComplete() {
         clearSave();
-        onComplete(true);
+        onComplete(true, toScorePercent(score, config.maxScore));
     }
 
     if (state.phase === 'intro') {
