@@ -28,25 +28,25 @@ const BEATS: Beat[] = [
         body: 'Wachtwoord kwijt. Account werkt niet. “Meneer, moet dit via Teams of via die andere app?” Tien minuten verder en de les is nog niet begonnen.',
     },
     {
-        id: 'youtube',
+        id: 'afhaken',
         marker: '08:41',
         kind: 'time',
-        title: 'De andere helft zit inmiddels op YouTube.',
-        body: 'En de voortgang? Die staat in een spreadsheet. Ergens. Waarschijnlijk. In elk geval niet daar waar je hem nodig hebt als de mentor ernaar vraagt.',
+        title: 'Mila heeft haar hand weer laten zakken.',
+        body: 'Ze stak hem twee keer op. Beide keren stond je aan de andere kant van het lokaal, bij iemand die niet kon inloggen. Ze is niet boos. Ze is gewoon gestopt met vragen.',
     },
     {
         id: 'ai',
-        marker: 'Ondertussen',
-        kind: 'state',
-        title: 'AI is allang de klas binnen — via de achterdeur.',
-        body: 'Leerlingen gebruiken het dagelijks. Zonder richtlijnen, zonder lessen, zonder dat iemand het hen leert. De een wordt er slimmer van, de ander vooral afhankelijker.',
+        marker: '09:04',
+        kind: 'time',
+        title: 'En dus vraagt ze het aan iets dat wél meteen antwoordt.',
+        body: 'Telefoon half onder de tafel, AI open. Niet uit brutaliteit — het is het enige in dit lokaal dat direct reageert. De een wordt er slimmer van, de ander vooral afhankelijker. En aan niets kun je zien wie wie is.',
     },
     {
-        id: 'kloof',
-        marker: 'De scheurlijn',
+        id: 'bel',
+        marker: 'Na de bel',
         kind: 'state',
-        title: 'De kloof groeit. Niet tussen leerjaren — binnen je klas.',
-        body: 'Jayden bouwt een lift in Minecraft maar kan geen bestand bijvoegen in een e-mail. Dat is geen tegenspraak: dat is een fundament dat ontbreekt.',
+        title: 'En wat heeft dit uur opgeleverd?',
+        body: 'Niets wat je kunt aanwijzen. De voortgang staat in een spreadsheet. Ergens. Waarschijnlijk. Straks vraagt de mentor hoe het met Mila gaat en heb je een gevoel — geen antwoord. Zij heeft dit uur wél iets geleerd. Alleen niets van wat op je planning stond.',
     },
 ];
 
@@ -117,7 +117,8 @@ export function Probleem() {
                     </Reveal>
                     <Reveal delay={0.08}>
                         <h2 className="mx-auto mt-6 max-w-3xl font-display text-4xl font-black leading-[1.02] tracking-tight md:text-6xl lg:text-7xl">
-                            Eerst even <em className="italic text-duck-acid">de pijn</em>. Je kent hem wel.
+                            Het begint zoals <em className="italic text-duck-acid">elke maandag</em>{' '}
+                            begint.
                         </h2>
                     </Reveal>
                 </div>
