@@ -86,7 +86,7 @@
     "react": "19.2.3",
     "react-dom": "19.2.3",
     "react-markdown": "^10.1.0",
-    "three": "^0.184.0",
+    "three": "^0.185.1",
     "web-vitals": "^5.2.0"
   },
   "devDependencies": {
