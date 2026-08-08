@@ -112,3 +112,62 @@ test('alle tien de sjablonen geven een score mee bij afronden', () => {
         );
     }
 });
+
+test('voortgang wordt via de server bewaard, vóór de rechtstreekse weg', () => {
+    const source = readFileSync(
+        new URL('../src/services/missionService.ts', import.meta.url),
+        'utf8',
+    );
+    const start = source.indexOf('export const saveMissionProgress');
+    const end = source.indexOf('export const loadMissionProgress', start);
+    const save = source.slice(start, end);
+
+    assert.ok(start >= 0 && end > start);
+    // Een rij op 'completed' is door de leerling zelf niet meer bij te werken:
+    // de RLS-regel filtert hem weg in de USING-clausule. Zonder deze aanroep
+    // verdwijnt al het werk dat na de automatische voltooiing wordt gemaakt.
+    assert.match(save, /rpc\('save_mission_progress'/);
+    // De rechtstreekse weg mag alleen nog de terugval zijn zolang de migratie
+    // niet overal draait -- dus ná de serveraanroep.
+    assert.ok(save.indexOf("rpc('save_mission_progress'") < save.indexOf('.upsert('));
+
+    // En alleen als de functie ONTBREEKT. Terugvallen op elke fout maakt de
+    // grenzen in de functie waardeloos: een te grote opslag zou dan alsnog via
+    // de rechtstreekse weg binnenkomen, waar geen groottegrens op staat.
+    assert.match(save, /PGRST202/);
+    assert.match(save, /42883/);
+    // Let op: `indexOf` geeft -1 als de regel ONTBREEKT, en -1 is kleiner dan
+    // alles. Eerst op bestaan toetsen, anders slaagt deze controle juist wanneer
+    // de beveiliging is weggehaald.
+    const throwIndex = save.indexOf('throw rpcError');
+    assert.notEqual(throwIndex, -1, 'de terugval wordt niet overgeslagen bij een echte fout');
+    assert.ok(
+        throwIndex < save.indexOf('.upsert('),
+        'een fout die niet over een ontbrekende functie gaat moet de terugval overslaan',
+    );
+});
+
+test('de opslagfunctie raakt status, score en attempts niet aan', () => {
+    const sql = readFileSync(
+        new URL('../supabase/migrations/20260808180000_save_progress_after_completion.sql', import.meta.url),
+        'utf8',
+    );
+    const start = sql.indexOf('CREATE OR REPLACE FUNCTION public.save_mission_progress');
+    const body = sql.slice(start);
+
+    assert.ok(start >= 0);
+    assert.match(body, /SECURITY DEFINER/);
+    // Zonder deze guard zou de uitzondering de verwerkingsbeperking omzeilen die
+    // de RLS-regels wel afdwingen (AVG art. 18).
+    assert.match(body, /current_user_processing_restricted/);
+    // De kolommen die de docent ziet horen bij mark_mission_completed en mogen
+    // niet langs deze weg beweegbaar zijn.
+    const setClause = body.slice(body.indexOf('DO UPDATE SET'), body.indexOf('END;'));
+    for (const kolom of ['status', 'score', 'attempts']) {
+        assert.equal(
+            new RegExp(`\\b${kolom}\\s*=`).test(setClause),
+            false,
+            `save_mission_progress schrijft ${kolom}`,
+        );
+    }
+});

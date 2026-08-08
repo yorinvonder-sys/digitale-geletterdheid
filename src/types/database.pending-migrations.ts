@@ -449,6 +449,10 @@ type PendingFunctions = {
     Args: { p_mission_id: string; p_score_percent?: number };
     Returns: Json;
   };
+  save_mission_progress: {
+    Args: { p_mission_id: string; p_progress_data: Json };
+    Returns: undefined;
+  };
 };
 
 export type DatabaseWithPendingMigrations = Omit<GeneratedDatabase, 'public'> & {
