@@ -147,6 +147,12 @@ const DebateArenaInner: React.FC<DebateArenaProps> = ({ config, onBack, onComple
 
     const setPhase = (phase: Phase) => setState((s) => ({ ...s, phase }));
 
+    const handleRetryMission = () => {
+        clearSave();
+        setState(buildInitialState());
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+
     const markStakeholderRead = (id: string) => {
         setState((s) => ({
             ...s,
@@ -255,6 +261,7 @@ const DebateArenaInner: React.FC<DebateArenaProps> = ({ config, onBack, onComple
                                 clearSave();
                             }
                         }}
+                        onRetry={handleRetryMission}
                     />
                 </div>
             </div>
