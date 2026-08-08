@@ -183,17 +183,17 @@ export const eindprojectJ2Config: DataViewerConfig = {
                 {
                     id: 'q7-beste-tip',
                     question:
-                        'Welke tip heeft het meeste impact op de originaliteits-score op basis van de leerlingen die hem gaven?',
+                        'Welke uitspraak over de leerlingen achter Tip 1 en Tip 2 klopt volgens de tabel?',
                     type: 'multiple-choice',
                     options: [
-                        'Tip 1: Begin met een probleem dat jou bezighoudt',
-                        'Tip 2: Maak een plan vóórdat je begint',
-                        'Tip 3: Leg uit waarom, niet alleen hoe',
-                        'Tip 4: Vraag feedback halverwege',
+                        'Elif had 8,3 en Iris had 8,3',
+                        'Elif had 8,3 en Iris had 7,3',
+                        'Elif had 7,3 en Iris had 8,3',
+                        'Elif had 8,0 en Iris had 8,0',
                     ],
-                    correctAnswer: 'Tip 1: Begin met een probleem dat jou bezighoudt',
+                    correctAnswer: 'Elif had 8,3 en Iris had 8,3',
                     explanation:
-                        'Elif en Iris (beiden 8,3) begonnen vanuit een persoonlijk probleem. Een persoonlijk vertrekpunt leidt tot een origineler, specifieker project. Originaliteit is in de tabel de sterkste voorspeller van het eindcijfer. Starten vanuit een echte behoefte in plaats van een vaag idee geeft automatisch meer richting en motivatie.',
+                        'De tabel geeft Elif een eindcijfer van 8,3 en Iris ook 8,3. Uit deze twee voorbeelden kun je aflezen welke resultaten bij de tips horen, maar niet bewijzen welke tip de originaliteit veroorzaakt.',
                     points: 15,
                 },
                 {

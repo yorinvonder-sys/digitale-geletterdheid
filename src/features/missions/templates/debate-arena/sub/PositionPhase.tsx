@@ -29,6 +29,7 @@ export const PositionPhase: React.FC<PositionPhaseProps> = ({ config, state, onS
                         <button
                             key={pos.id}
                             onClick={() => onSelect(pos.id)}
+                            aria-pressed={isSelected}
                             className={`w-full text-left p-4 rounded-2xl border-2 transition-all duration-200 ${
                                 isSelected
                                     ? 'border-duck-ink bg-duck-ink/10'

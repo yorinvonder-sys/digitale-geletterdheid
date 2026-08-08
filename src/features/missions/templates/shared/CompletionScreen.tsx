@@ -20,7 +20,11 @@ interface CompletionScreenProps {
     missionTitle?: string;
     phases?: PhaseScore[];
     takeaways: string[];
+    /** Pass threshold as a ratio (e.g. 0.65); defaults to the shared 40% floor. */
+    passThreshold?: number;
     onComplete: () => void;
+    /** Return to the mission when the learner has not reached the pass threshold. */
+    onRetry?: () => void;
     attribution?: {
         source: string;
         author?: string;
@@ -37,14 +41,18 @@ export const CompletionScreen: React.FC<CompletionScreenProps> = ({
     missionTitle,
     phases,
     takeaways,
+    passThreshold = 0.4,
     onComplete,
+    onRetry,
     attribution,
 }) => {
     const badge = [...badges]
         .sort((a, b) => b.minScore - a.minScore)
         .find((b) => score >= b.minScore) || badges[badges.length - 1];
 
-    const percentage = Math.round((score / maxScore) * 100);
+    const exactPercentage = maxScore > 0 ? (score / maxScore) * 100 : 0;
+    const percentage = Math.round(exactPercentage);
+    const percentageLabel = exactPercentage.toFixed(1).replace(/\.0$/, '');
 
     // Dit scherm vervangt de hele missie; zonder focusverplaatsing landt de focus op
     // <body> en hoort een schermlezer niets. De kop is het programmatische beginpunt
@@ -59,8 +67,10 @@ export const CompletionScreen: React.FC<CompletionScreenProps> = ({
 
     // A learner who skipped or failed most of a mission has not actually mastered
     // the takeaways, so we must not present them as achieved (green ✓) nor claim a
-    // celebratory "voltooid". 40% mirrors the pass threshold used elsewhere.
-    const passed = maxScore > 0 && percentage >= 40;
+    // celebratory "voltooid". The caller supplies the mission-specific threshold.
+    // Compare the unrounded ratio. A display value such as 65% can represent
+    // 64.7%, which must not pass a strict 65% mission threshold.
+    const passed = maxScore > 0 && score / maxScore >= passThreshold;
 
     return (
         <div
@@ -108,7 +118,7 @@ export const CompletionScreen: React.FC<CompletionScreenProps> = ({
                         <div className="flex items-center justify-center gap-2">
                             <Trophy size={16} className="text-duck-ink" aria-hidden="true" />
                             <span className="text-lg font-black text-duck-ink">
-                                {score}/{maxScore} punten ({percentage}%)
+                                {score}/{maxScore} punten ({percentageLabel}%)
                             </span>
                         </div>
                         <span
@@ -160,11 +170,11 @@ export const CompletionScreen: React.FC<CompletionScreenProps> = ({
                 {/* Complete button */}
                 <button
                     data-qa="confirm-completion"
-                    onClick={onComplete}
+                    onClick={passed ? onComplete : (onRetry ?? onComplete)}
                     className="mb-4 w-full py-3.5 bg-duck-acid hover:bg-duck-acid/80 text-duck-ink rounded-full font-black text-sm transition-all duration-200 active:scale-[0.98] shadow-lg shadow-duck-acid/25 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-ink focus-visible:ring-offset-2"
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                 >
-                    {passed ? 'Missie voltooid! 🎉' : 'Afronden — probeer het gerust nog eens'}
+                    {passed ? 'Missie voltooid! 🎉' : 'Opnieuw oefenen'}
                 </button>
 
                 {/* Takeaways — framed as achieved (✓) only when the learner actually

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { ArrowLeft, ChevronRight } from 'lucide-react';
 import type { DebateArenaConfig, DebateArenaState } from '../DebateArena';
 import { isMeaningfulAnswer } from '../../shared/answerQuality';
@@ -12,6 +12,7 @@ export interface ChallengePhaseProps {
 }
 
 export const ChallengePhase: React.FC<ChallengePhaseProps> = ({ config, state, onUpdateResponse, onNext, onBack }) => {
+    const [attemptedContinue, setAttemptedContinue] = useState(false);
     const canContinue = isMeaningfulAnswer(state.counterResponse);
 
     return (
@@ -68,15 +69,22 @@ export const ChallengePhase: React.FC<ChallengePhaseProps> = ({ config, state, o
                     <ArrowLeft size={16} />
                 </button>
                 <button
-                    onClick={onNext}
-                    disabled={!canContinue}
-                    className="flex-1 py-3 bg-gradient-to-r from-duck-acid to-duck-acid hover:from-duck-acid hover:to-duck-acid text-duck-ink rounded-xl font-bold text-sm transition-all duration-200 active:scale-[0.98] disabled:opacity-40 flex items-center justify-center gap-2"
+                    onClick={() => {
+                        setAttemptedContinue(true);
+                        if (canContinue) onNext();
+                    }}
+                    className="flex-1 py-3 bg-gradient-to-r from-duck-acid to-duck-acid hover:from-duck-acid hover:to-duck-acid text-duck-ink rounded-xl font-bold text-sm transition-all duration-200 active:scale-[0.98] flex items-center justify-center gap-2"
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                 >
                     Reflecteer
                     <ChevronRight size={16} />
                 </button>
             </div>
+            {attemptedContinue && !canContinue && (
+                <p role="alert" className="mt-2 text-center text-xs font-semibold text-duck-ink" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                    Schrijf minimaal 20 tekens waarin je het tegenargument uitlegt, nuanceert of tegenspreekt.
+                </p>
+            )}
         </div>
     );
 };

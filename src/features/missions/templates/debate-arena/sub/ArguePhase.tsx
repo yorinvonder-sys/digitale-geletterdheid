@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { ArrowLeft, ChevronRight } from 'lucide-react';
 import type { DebateArenaConfig, DebateArenaState, ArgumentEntry } from '../DebateArena';
 import { isMeaningfulAnswer, answerQualityHint } from '../../shared/answerQuality';
@@ -20,9 +20,10 @@ export interface ArguePhaseProps {
 }
 
 export const ArguePhase: React.FC<ArguePhaseProps> = ({ config, state, onUpdateArgument, onSetActiveIndex, onNext, onBack }) => {
+    const [attemptedContinue, setAttemptedContinue] = useState(false);
     const activeArg = state.arguments[state.activeArgumentIndex];
     const validCount = state.arguments.filter(
-        (a) => isMeaningfulAnswer(a.claim) && isMeaningfulAnswer(a.evidence)
+        (a) => isMeaningfulAnswer(a.claim) && isMeaningfulAnswer(a.evidence) && Boolean(a.stakeholderId)
     ).length;
 
     const selectedPos = config.positions.find((p) => p.id === state.selectedPosition);
@@ -54,6 +55,7 @@ export const ArguePhase: React.FC<ArguePhaseProps> = ({ config, state, onUpdateA
                         <button
                             key={i}
                             onClick={() => onSetActiveIndex(i)}
+                            aria-pressed={isActive}
                             className={`flex-1 py-2 rounded-xl border text-xs font-bold transition-all ${
                                 isActive
                                     ? 'border-duck-acid bg-duck-acid/10 text-duck-ink'
@@ -148,6 +150,7 @@ export const ArguePhase: React.FC<ArguePhaseProps> = ({ config, state, onUpdateA
                             <button
                                 key={sh.id}
                                 onClick={() => onUpdateArgument(state.activeArgumentIndex, 'stakeholderId', sh.id)}
+                                aria-pressed={activeArg.stakeholderId === sh.id}
                                 className={`px-3 py-1.5 rounded-xl border text-xs font-bold transition-all ${
                                     activeArg.stakeholderId === sh.id
                                         ? 'border-duck-acid bg-duck-acid/10 text-duck-ink'
@@ -172,15 +175,22 @@ export const ArguePhase: React.FC<ArguePhaseProps> = ({ config, state, onUpdateA
                     <ArrowLeft size={16} />
                 </button>
                 <button
-                    onClick={onNext}
-                    disabled={validCount < 2}
-                    className="flex-1 py-3 bg-gradient-to-r from-duck-acid to-duck-acid hover:from-duck-acid hover:to-duck-acid text-duck-ink rounded-xl font-bold text-sm transition-all duration-200 active:scale-[0.98] disabled:opacity-40 flex items-center justify-center gap-2"
+                    onClick={() => {
+                        setAttemptedContinue(true);
+                        if (validCount >= 2) onNext();
+                    }}
+                    className="flex-1 py-3 bg-gradient-to-r from-duck-acid to-duck-acid hover:from-duck-acid hover:to-duck-acid text-duck-ink rounded-xl font-bold text-sm transition-all duration-200 active:scale-[0.98] flex items-center justify-center gap-2"
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                 >
                     {validCount < 2 ? `Nog ${2 - validCount} argument${2 - validCount === 1 ? '' : 'en'} nodig` : 'Beantwoord tegenargument'}
                     {validCount >= 2 && <ChevronRight size={16} />}
                 </button>
             </div>
+            {attemptedContinue && validCount < 2 && (
+                <p role="alert" className="mt-2 text-center text-xs font-semibold text-duck-ink" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                    Vul voor elk argument een standpunt, onderbouwing én perspectief in. Je hebt er nog {2 - validCount} nodig.
+                </p>
+            )}
         </div>
     );
 };
