@@ -1,5 +1,5 @@
 import React from 'react';
-import { Check, X, Paperclip, Link2 } from 'lucide-react';
+import { Check, X, Paperclip, Link2, Inbox } from 'lucide-react';
 import type { ScenarioItem, ScenarioRound } from '../types';
 import { RoundInstruction } from './RoundInstruction';
 
@@ -20,6 +20,17 @@ const stateFor = (item: ScenarioItem, selections: number[], submitted: boolean) 
     return { isSelected, isWrong, feedbackText };
 };
 
+/** Twee letters uit een naam voor het avatarrondje, bv. "Meneer Smits" → "MS". */
+const initialsFor = (name: string) => {
+    const words = name.trim().split(/\s+/).filter(Boolean);
+    if (words.length === 0) return '?';
+    if (words.length === 1) return words[0].slice(0, 2).toUpperCase();
+    return (words[0][0] + words[words.length - 1][0]).toUpperCase();
+};
+
+/** Markeerstift-achtige achtergrond voor een aangewezen onderdeel, vóór inzenden. */
+const HIGHLIGHT = 'bg-duck-acid/60 rounded-[2px_10px_3px_9px]';
+
 interface FlagProps {
     item: ScenarioItem;
     selections: number[];
@@ -28,16 +39,22 @@ interface FlagProps {
 }
 
 /** Compacte, inline aanklikbare vlag — voor afzender/onderwerp/metaregel. */
-const InlineFlag: React.FC<FlagProps> = ({ item, selections, submitted, onToggle }) => {
+const InlineFlag: React.FC<FlagProps & { size?: 'lg' | 'sm' | 'xs' }> = ({ item, selections, submitted, onToggle, size = 'sm' }) => {
     const { isSelected, feedbackText } = stateFor(item, selections, submitted);
     let ring = 'border-transparent';
-    if (isSelected && !submitted) ring = 'border-duck-acid bg-duck-acid/10';
+    if (isSelected && !submitted) ring = `border-transparent ${HIGHLIGHT}`;
     if (submitted && isSelected && item.correct) ring = 'border-duck-ink bg-duck-ink/5';
     if (submitted && isSelected && !item.correct) ring = 'border-duck-error bg-duck-acid/10';
     if (submitted && !isSelected && item.correct) ring = 'border-duck-ink/40 bg-duck-ink/5';
 
+    const textClass = size === 'lg'
+        ? 'text-base font-black text-duck-ink'
+        : size === 'xs'
+            ? 'text-xs font-semibold text-duck-ink/60'
+            : 'text-sm font-bold text-duck-ink';
+
     return (
-        <span className="inline-flex flex-col align-top">
+        <span className="inline-flex flex-col align-top max-w-full">
             <button
                 type="button"
                 data-qa="scenario-option"
@@ -46,9 +63,9 @@ const InlineFlag: React.FC<FlagProps> = ({ item, selections, submitted, onToggle
                 disabled={submitted}
                 aria-pressed={isSelected}
                 aria-label={`Verdacht onderdeel: ${item.title}`}
-                className={`inline-flex min-h-[44px] items-center gap-1.5 rounded-xl border-2 px-2.5 py-1.5 text-left transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-acid/40 ${ring}`}
+                className={`inline-flex min-h-[44px] max-w-full items-center gap-1.5 rounded-xl border-2 px-2.5 py-1.5 text-left transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-acid/40 ${ring}`}
             >
-                <span className="text-sm font-bold text-duck-ink break-words" style={{ fontFamily: FONT }}>
+                <span className={`break-words ${textClass}`} style={{ fontFamily: FONT }}>
                     {item.title}
                 </span>
                 {submitted && isSelected && (
@@ -69,17 +86,103 @@ const InlineFlag: React.FC<FlagProps> = ({ item, selections, submitted, onToggle
     );
 };
 
-/** Volledige kaart — voor onderdelen in de mailtekst, links en bijlagen. */
+/** Volledige kaart — voor onderdelen in de mailtekst, de link-knop en de bijlage. */
 const CardFlag: React.FC<FlagProps & { variant: 'body' | 'link' | 'attachment' }> = ({ item, variant, selections, submitted, onToggle }) => {
     const { isSelected, feedbackText } = stateFor(item, selections, submitted);
     let border = 'border-duck-gray';
     let bg = 'bg-white';
+    let extraRadius = '';
 
-    if (isSelected && !submitted) { border = 'border-duck-acid ring-1 ring-duck-acid/20'; bg = 'bg-duck-acid/5'; }
+    if (isSelected && !submitted) { border = 'border-transparent'; bg = 'bg-duck-acid/40'; extraRadius = 'rounded-[3px_14px_4px_12px]'; }
     if (submitted && isSelected && item.correct) { border = 'border-duck-ink'; bg = 'bg-duck-ink/5'; }
     if (submitted && isSelected && !item.correct) { border = 'border-duck-error'; bg = 'bg-duck-acid/10'; }
     if (submitted && !isSelected && item.correct) { border = 'border-duck-ink/40'; bg = 'bg-duck-ink/5'; }
     if (submitted && !isSelected && !item.correct) { bg = 'bg-duck-gray'; }
+
+    const statusMark = (
+        <>
+            {submitted && isSelected && (
+                item.correct
+                    ? <Check size={14} className="shrink-0 text-duck-ink" />
+                    : <X size={14} className="shrink-0 text-duck-ink/70" />
+            )}
+            {submitted && !isSelected && item.correct && (
+                <span className="shrink-0 text-[10px] text-duck-ink font-bold">gemist!</span>
+            )}
+        </>
+    );
+
+    if (variant === 'link') {
+        // Zoals een echte knop in een mail: gevulde balk met de linktekst,
+        // de context (waar de link heen gaat) staat er klein onder.
+        return (
+            <button
+                type="button"
+                data-qa="scenario-option"
+                data-scenario-item-id={item.id}
+                onClick={() => !submitted && onToggle(item.id)}
+                disabled={submitted}
+                aria-pressed={isSelected}
+                aria-label={`Verdacht onderdeel: ${item.title}`}
+                className={`w-full min-h-[44px] p-2.5 rounded-2xl border-2 text-left transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-acid/40 ${border} ${bg} ${extraRadius}`}
+            >
+                <span className="flex w-full items-center justify-center gap-2 rounded-full bg-duck-ink px-4 py-2.5 min-h-[44px]">
+                    <Link2 size={16} className="shrink-0 text-duck-bgLight" />
+                    <span className="text-sm font-bold text-duck-bgLight break-words text-center" style={{ fontFamily: FONT }}>
+                        {item.title}
+                    </span>
+                    {statusMark}
+                </span>
+                <p className="text-xs text-duck-ink/70 leading-relaxed mt-2 px-1" style={{ fontFamily: FONT }}>
+                    {item.description}
+                </p>
+                {submitted && (isSelected || item.correct) && (
+                    <p className="text-[11px] text-duck-ink/70 mt-2 px-1 italic" style={{ fontFamily: FONT }}>
+                        {feedbackText}
+                    </p>
+                )}
+            </button>
+        );
+    }
+
+    if (variant === 'attachment') {
+        // Bestandskaartje zoals mailprogramma's een bijlage tonen: paperclip in
+        // een vakje, links, met de bestandsnaam ernaast.
+        return (
+            <button
+                type="button"
+                data-qa="scenario-option"
+                data-scenario-item-id={item.id}
+                onClick={() => !submitted && onToggle(item.id)}
+                disabled={submitted}
+                aria-pressed={isSelected}
+                aria-label={`Verdacht onderdeel: ${item.title}`}
+                className={`w-full min-h-[44px] p-3 rounded-2xl border-2 text-left transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-acid/40 ${border} ${bg} ${extraRadius}`}
+            >
+                <div className="flex items-center gap-3">
+                    <span className="shrink-0 flex items-center justify-center h-9 w-9 rounded-lg bg-duck-gray/50">
+                        <Paperclip size={16} className="text-duck-ink/70" />
+                    </span>
+                    <div className="flex-1 min-w-0">
+                        <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
+                            <span className="min-w-0 max-w-full text-sm font-bold text-duck-ink break-words" style={{ fontFamily: FONT }}>
+                                {item.title}
+                            </span>
+                            {statusMark}
+                        </div>
+                        <p className="text-xs text-duck-ink/70 leading-relaxed mt-0.5" style={{ fontFamily: FONT }}>
+                            {item.description}
+                        </p>
+                        {submitted && (isSelected || item.correct) && (
+                            <p className="text-[11px] text-duck-ink/70 mt-2 italic" style={{ fontFamily: FONT }}>
+                                {feedbackText}
+                            </p>
+                        )}
+                    </div>
+                </div>
+            </button>
+        );
+    }
 
     return (
         <button
@@ -90,27 +193,15 @@ const CardFlag: React.FC<FlagProps & { variant: 'body' | 'link' | 'attachment' }
             disabled={submitted}
             aria-pressed={isSelected}
             aria-label={`Verdacht onderdeel: ${item.title}`}
-            className={`w-full min-h-[44px] p-3 rounded-2xl border-2 text-left transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-acid/40 ${border} ${bg}`}
+            className={`w-full min-h-[44px] p-3 rounded-2xl border-2 text-left transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-acid/40 ${border} ${bg} ${extraRadius}`}
         >
             <div className="flex items-start gap-2.5">
-                {variant === 'link' && <Link2 size={16} className="shrink-0 text-duck-ink/60 mt-0.5" />}
-                {variant === 'attachment' && <Paperclip size={16} className="shrink-0 text-duck-ink/60 mt-0.5" />}
                 <div className="flex-1 min-w-0">
                     <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
                         <span className="min-w-0 max-w-full text-sm font-bold text-duck-ink break-words" style={{ fontFamily: FONT }}>
                             {item.title}
                         </span>
-                        {isSelected && !submitted && (
-                            <span className="shrink-0 text-[10px] bg-duck-acid/10 text-duck-ink px-2 py-0.5 rounded-full font-bold">aangewezen</span>
-                        )}
-                        {submitted && isSelected && (
-                            item.correct
-                                ? <Check size={14} className="shrink-0 text-duck-ink" />
-                                : <X size={14} className="shrink-0 text-duck-ink/70" />
-                        )}
-                        {submitted && !isSelected && item.correct && (
-                            <span className="shrink-0 text-[10px] text-duck-ink font-bold">gemist!</span>
-                        )}
+                        {statusMark}
                     </div>
                     <p className="text-xs text-duck-ink/70 leading-relaxed mt-0.5" style={{ fontFamily: FONT }}>
                         {item.description}
@@ -170,34 +261,60 @@ export const SpotTheFlagsRound: React.FC<Props> = ({ round, selections, submitte
 
             {frame && (
                 <div className="max-w-md w-full rounded-2xl border-2 border-duck-gray bg-white overflow-hidden mt-4">
-                    <div className="p-4 border-b border-duck-gray space-y-1.5">
-                        <div className="flex flex-wrap items-center gap-2">
-                            <span className="text-[10px] font-black text-duck-ink/50 uppercase tracking-widest shrink-0" style={{ fontFamily: FONT }}>
-                                Van
+                    {/* Balkje bovenaan het venster, zoals de titelbalk van een mailprogramma. */}
+                    <div className="flex items-center gap-2 px-4 py-2 bg-duck-ink">
+                        <Inbox size={14} className="text-duck-bgLight shrink-0" />
+                        <span className="text-[11px] font-black text-duck-bgLight uppercase tracking-widest" style={{ fontFamily: FONT }}>
+                            Postvak IN
+                        </span>
+                    </div>
+
+                    <div className="p-4 border-b border-duck-gray space-y-2.5">
+                        {/* Onderwerp als kop bovenaan het bericht. */}
+                        {subjectItems.length > 0
+                            ? subjectItems.map((item) => (
+                                <InlineFlag key={item.id} item={item} size="lg" selections={selections} submitted={submitted} onToggle={onToggle} />
+                            ))
+                            : <h2 className="text-base font-black text-duck-ink break-words" style={{ fontFamily: FONT }}>{frame.subject}</h2>}
+
+                        <div className="flex items-center gap-2.5">
+                            <span className="shrink-0 flex items-center justify-center h-9 w-9 rounded-full bg-duck-acid text-duck-ink text-xs font-black" style={{ fontFamily: FONT }}>
+                                {initialsFor(frame.fromName)}
                             </span>
-                            {fromItems.length > 0
-                                ? fromItems.map((item) => <InlineFlag key={item.id} item={item} selections={selections} submitted={submitted} onToggle={onToggle} />)
-                                : <span className="text-sm font-bold text-duck-ink" style={{ fontFamily: FONT }}>{frame.fromName}</span>}
+                            <div className="min-w-0 flex-1">
+                                <div className="flex flex-wrap items-baseline justify-between gap-x-2">
+                                    <span className="font-bold text-sm text-duck-ink truncate" style={{ fontFamily: FONT }}>
+                                        {frame.fromName}
+                                    </span>
+                                    <span className="text-[11px] text-duck-ink/50 shrink-0" style={{ fontFamily: FONT }}>
+                                        {frame.receivedLabel}
+                                    </span>
+                                </div>
+                                {fromItems.length > 0 && (
+                                    <div className="mt-0.5 flex flex-wrap items-center gap-2">
+                                        {fromItems.map((item) => (
+                                            <InlineFlag key={item.id} item={item} size="xs" selections={selections} submitted={submitted} onToggle={onToggle} />
+                                        ))}
+                                    </div>
+                                )}
+                                <p className="text-[11px] text-duck-ink/50 mt-0.5" style={{ fontFamily: FONT }}>
+                                    aan mij
+                                </p>
+                            </div>
                         </div>
-                        <div className="flex flex-wrap items-center gap-2">
-                            <span className="text-[10px] font-black text-duck-ink/50 uppercase tracking-widest shrink-0" style={{ fontFamily: FONT }}>
-                                Onderwerp
-                            </span>
-                            {subjectItems.length > 0
-                                ? subjectItems.map((item) => <InlineFlag key={item.id} item={item} selections={selections} submitted={submitted} onToggle={onToggle} />)
-                                : <span className="text-sm font-bold text-duck-ink" style={{ fontFamily: FONT }}>{frame.subject}</span>}
-                        </div>
-                        <div className="flex flex-wrap items-center gap-2">
-                            <span className="text-[10px] text-duck-ink/50 shrink-0" style={{ fontFamily: FONT }}>
-                                {frame.receivedLabel}
-                            </span>
-                            {metaItems.map((item) => <InlineFlag key={item.id} item={item} selections={selections} submitted={submitted} onToggle={onToggle} />)}
-                        </div>
+
+                        {metaItems.length > 0 && (
+                            <div className="flex flex-wrap items-center gap-2 pl-[46px]">
+                                {metaItems.map((item) => (
+                                    <InlineFlag key={item.id} item={item} size="xs" selections={selections} submitted={submitted} onToggle={onToggle} />
+                                ))}
+                            </div>
+                        )}
                     </div>
 
                     <div className="p-4 space-y-3">
                         {frame.body.map((paragraph, index) => (
-                            <p key={index} className="text-sm text-duck-ink/90 leading-relaxed break-words" style={{ fontFamily: FONT }}>
+                            <p key={index} className="text-sm text-duck-ink/90 leading-relaxed break-words whitespace-pre-line" style={{ fontFamily: FONT }}>
                                 {paragraph}
                             </p>
                         ))}

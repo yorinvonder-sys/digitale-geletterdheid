@@ -1,5 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { motion, type PanInfo } from 'framer-motion';
+import { Inbox, FolderCheck, Flag } from 'lucide-react';
 import type { ScenarioRound } from '../types';
 import { RoundInstruction } from './RoundInstruction';
 
@@ -143,10 +144,11 @@ export const InboxTriageRound: React.FC<Props> = ({ round, selections, submitted
                         }`}
                     >
                         <p
-                            className="text-[11px] font-black text-duck-ink mb-1.5"
+                            className="flex items-center gap-1 text-[11px] font-black text-duck-ink mb-1.5"
                             style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                         >
-                            ✓ {acceptLabel} ({acceptedItems.length})
+                            <FolderCheck className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
+                            {acceptLabel} ({acceptedItems.length})
                         </p>
                         <div className="space-y-1">
                             {acceptedItems.map((item) => (
@@ -169,10 +171,11 @@ export const InboxTriageRound: React.FC<Props> = ({ round, selections, submitted
                         }`}
                     >
                         <p
-                            className="text-[11px] font-black text-duck-ink mb-1.5"
+                            className="flex items-center gap-1 text-[11px] font-black text-duck-ink mb-1.5"
                             style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                         >
-                            ✕ {rejectLabel} ({rejectedItems.length})
+                            <Flag className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
+                            {rejectLabel} ({rejectedItems.length})
                         </p>
                         <div className="space-y-1">
                             {rejectedItems.map((item) => (
@@ -191,109 +194,117 @@ export const InboxTriageRound: React.FC<Props> = ({ round, selections, submitted
                 </div>
             )}
 
-            {!submitted && unsortedItems.length > 0 && (
-                <p
-                    className="text-[11px] font-bold text-duck-ink/70 mb-1.5"
-                    style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
-                >
-                    Nog {unsortedItems.length} te sorteren
-                </p>
-            )}
+            {/* Postvak IN: echte inbox-lijst met kopbalk, rijen en dunne scheidingslijnen i.p.v. losse kaarten */}
+            <div className="rounded-2xl border-2 border-duck-gray bg-white overflow-hidden mb-4">
+                {!submitted && (
+                    <div
+                        className="flex items-center gap-1.5 px-3 py-2 bg-duck-bg border-b-2 border-duck-gray"
+                        style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
+                    >
+                        <Inbox className="h-3.5 w-3.5 shrink-0 text-duck-ink" aria-hidden="true" />
+                        <span className="text-[11px] font-black text-duck-ink">Postvak IN</span>
+                        {unsortedItems.length > 0 && (
+                            <span className="ml-auto text-[11px] font-bold text-duck-ink/70">
+                                Nog {unsortedItems.length} te sorteren
+                            </span>
+                        )}
+                    </div>
+                )}
+                <div className="divide-y divide-duck-gray">
+                    {(submitted ? round.items : unsortedItems).map((item) => {
+                        const isAccepted = acceptedIds.has(item.id);
+                        const isRejected = rejectedIds.has(item.id);
+                        const isAnswered = isAccepted || isRejected;
+                        const isCorrectAnswer = item.correct === true ? isAccepted : isRejected;
+                        const isWrong = submitted && isAnswered && !isCorrectAnswer;
+                        const feedbackText = isWrong && item.wrongFeedback ? item.wrongFeedback : item.explanation;
 
-            <div className="space-y-3 mb-4">
-                {(submitted ? round.items : unsortedItems).map((item) => {
-                    const isAccepted = acceptedIds.has(item.id);
-                    const isRejected = rejectedIds.has(item.id);
-                    const isAnswered = isAccepted || isRejected;
-                    const isCorrectAnswer = item.correct === true ? isAccepted : isRejected;
-                    const isWrong = submitted && isAnswered && !isCorrectAnswer;
-                    const feedbackText = isWrong && item.wrongFeedback ? item.wrongFeedback : item.explanation;
-
-                    return (
-                        <motion.div
-                            key={item.id}
-                            data-qa="scenario-inbox-item"
-                            data-scenario-item-id={item.id}
-                            drag={!submitted}
-                            dragMomentum={false}
-                            dragElastic={0.15}
-                            onDrag={submitted ? undefined : handleDrag}
-                            onDragEnd={submitted ? undefined : (_e, info) => handleDragEnd(item, info)}
-                            whileDrag={{ scale: 1.03, zIndex: 10 }}
-                            style={{ touchAction: submitted ? undefined : 'none' }}
-                            className={`rounded-2xl border-2 p-4 transition-colors duration-200 ${
-                                submitted && isAnswered
-                                    ? isCorrectAnswer
-                                        ? 'border-duck-ink bg-duck-ink/5'
-                                        : 'border-duck-error bg-duck-acid/10'
-                                    : 'border-duck-gray bg-white cursor-grab active:cursor-grabbing'
-                            }`}
-                        >
-                            <div className="flex items-start gap-3 mb-3">
-                                <ScenarioIcon icon={item.icon} className="h-6 w-6 text-xl mt-0.5" />
-                                <div className="flex-1">
-                                    <p
-                                        className="text-sm font-bold text-duck-ink mb-1"
-                                        style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
-                                    >
-                                        {item.title}
-                                    </p>
-                                    <p
-                                        className="text-xs text-duck-ink/70 leading-relaxed"
-                                        style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
-                                    >
-                                        {item.description}
-                                    </p>
+                        return (
+                            <motion.div
+                                key={item.id}
+                                data-qa="scenario-inbox-item"
+                                data-scenario-item-id={item.id}
+                                drag={!submitted}
+                                dragMomentum={false}
+                                dragElastic={0.15}
+                                onDrag={submitted ? undefined : handleDrag}
+                                onDragEnd={submitted ? undefined : (_e, info) => handleDragEnd(item, info)}
+                                whileDrag={{ scale: 1.02, zIndex: 10 }}
+                                style={{ touchAction: submitted ? undefined : 'none' }}
+                                className={`px-3 py-2.5 transition-colors duration-200 ${
+                                    submitted && isAnswered
+                                        ? isCorrectAnswer
+                                            ? 'bg-duck-ink/5'
+                                            : 'bg-duck-acid/10'
+                                        : 'bg-white cursor-grab active:cursor-grabbing'
+                                }`}
+                            >
+                                <div className="flex items-start gap-2.5">
+                                    <ScenarioIcon icon={item.icon} className="h-5 w-5 text-base mt-0.5" />
+                                    <div className="flex-1 min-w-0">
+                                        <p
+                                            className="text-sm font-bold text-duck-ink truncate"
+                                            style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
+                                        >
+                                            {item.title}
+                                        </p>
+                                        <p
+                                            className="text-xs text-duck-ink/60 truncate"
+                                            style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
+                                        >
+                                            {item.description}
+                                        </p>
+                                    </div>
                                 </div>
-                            </div>
 
-                            {!submitted && (
-                                <div className="flex gap-2">
-                                    <button
-                                        data-qa="scenario-binary-accept"
-                                        data-scenario-item-id={item.id}
-                                        aria-label={`Markeer als ${acceptLabel.toLowerCase()}: ${item.title}`}
-                                        aria-pressed={isAccepted}
-                                        onClick={() => { onChoice(item.id, true); announce(item.title, true); }}
-                                        className={`flex-1 min-h-[44px] py-2 rounded-lg text-xs font-bold transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-acid/40 ${
-                                            isAccepted
-                                                ? 'bg-duck-acid text-duck-ink'
-                                                : 'bg-duck-bg text-duck-ink/70 hover:bg-duck-acid/10 hover:text-duck-ink border border-duck-gray'
-                                        }`}
+                                {!submitted && (
+                                    <div className="flex gap-2 mt-2">
+                                        <button
+                                            data-qa="scenario-binary-accept"
+                                            data-scenario-item-id={item.id}
+                                            aria-label={`Markeer als ${acceptLabel.toLowerCase()}: ${item.title}`}
+                                            aria-pressed={isAccepted}
+                                            onClick={() => { onChoice(item.id, true); announce(item.title, true); }}
+                                            className={`flex-1 min-h-[44px] py-2 rounded-lg text-xs font-bold transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-acid/40 ${
+                                                isAccepted
+                                                    ? 'bg-duck-acid text-duck-ink'
+                                                    : 'bg-duck-bg text-duck-ink/70 hover:bg-duck-acid/10 hover:text-duck-ink border border-duck-gray'
+                                            }`}
+                                            style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
+                                        >
+                                            ✓ {acceptLabel}
+                                        </button>
+                                        <button
+                                            data-qa="scenario-binary-reject"
+                                            data-scenario-item-id={item.id}
+                                            aria-label={`Markeer als ${rejectLabel.toLowerCase()}: ${item.title}`}
+                                            aria-pressed={isRejected}
+                                            onClick={() => { onChoice(item.id, false); announce(item.title, false); }}
+                                            className={`flex-1 min-h-[44px] py-2 rounded-lg text-xs font-bold transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-ink/30 ${
+                                                isRejected
+                                                    ? 'bg-duck-ink text-white'
+                                                    : 'bg-duck-bg text-duck-ink/70 hover:bg-duck-ink/10 hover:text-duck-ink border border-duck-gray'
+                                            }`}
+                                            style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
+                                        >
+                                            ✕ {rejectLabel}
+                                        </button>
+                                    </div>
+                                )}
+
+                                {submitted && isAnswered && (
+                                    <div
+                                        className="mt-2 text-[11px] italic leading-relaxed text-duck-ink"
                                         style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                                     >
-                                        ✓ {acceptLabel}
-                                    </button>
-                                    <button
-                                        data-qa="scenario-binary-reject"
-                                        data-scenario-item-id={item.id}
-                                        aria-label={`Markeer als ${rejectLabel.toLowerCase()}: ${item.title}`}
-                                        aria-pressed={isRejected}
-                                        onClick={() => { onChoice(item.id, false); announce(item.title, false); }}
-                                        className={`flex-1 min-h-[44px] py-2 rounded-lg text-xs font-bold transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-ink/30 ${
-                                            isRejected
-                                                ? 'bg-duck-ink text-white'
-                                                : 'bg-duck-bg text-duck-ink/70 hover:bg-duck-ink/10 hover:text-duck-ink border border-duck-gray'
-                                        }`}
-                                        style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
-                                    >
-                                        ✕ {rejectLabel}
-                                    </button>
-                                </div>
-                            )}
-
-                            {submitted && isAnswered && (
-                                <div
-                                    className="mt-2 text-[11px] italic leading-relaxed text-duck-ink"
-                                    style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
-                                >
-                                    {isCorrectAnswer ? '✓ ' : '✕ '}
-                                    {feedbackText}
-                                </div>
-                            )}
-                        </motion.div>
-                    );
-                })}
+                                        {isCorrectAnswer ? '✓ ' : '✕ '}
+                                        {feedbackText}
+                                    </div>
+                                )}
+                            </motion.div>
+                        );
+                    })}
+                </div>
             </div>
 
             {!submitted && allAnswered && (

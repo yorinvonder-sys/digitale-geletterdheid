@@ -65,7 +65,9 @@ const config: ScenarioEngineConfig = {
             emailFrame: {
                 fromName: 'Meneer Smits',
                 subject: 'Belangrijk: roosterwijziging morgen',
-                receivedLabel: 'Postvak IN · vandaag',
+                // Kort houden: de kopbalk zegt al "Postvak IN", en het tijdstip
+                // zelf is een aanklikbaar onderdeel in de metaregel.
+                receivedLabel: 'vandaag',
                 body: [
                     'Beste leerling,',
                     'Er is een wijziging in je rooster voor morgen. Bekijk je nieuwe rooster zo snel mogelijk — anders sta je morgen voor een dichte deur.',
@@ -81,7 +83,9 @@ const config: ScenarioEngineConfig = {
                 {
                     id: 1,
                     icon: '📧',
-                    title: 'Afzender: docent.smits@magister-berichten.com',
+                    // De titel is wat er ín de mail staat; de plek in het bericht
+                    // vertelt al dat dit de afzender is.
+                    title: 'docent.smits@magister-berichten.com',
                     description:
                         'In je inbox staat als naam "Meneer Smits". Het volledige adres daarachter is docent.smits@magister-berichten.com.',
                     correct: true,
@@ -92,7 +96,7 @@ const config: ScenarioEngineConfig = {
                 {
                     id: 2,
                     icon: '📎',
-                    title: 'Bijlage: "huiswerk_opdracht_wiskunde.exe"',
+                    title: 'huiswerk_opdracht_wiskunde.exe',
                     description:
                         'Bij de mail zit één bijlage: huiswerk_opdracht_wiskunde.exe.',
                     correct: true,
@@ -103,7 +107,7 @@ const config: ScenarioEngineConfig = {
                 {
                     id: 3,
                     icon: '🕐',
-                    title: 'Onderaan de mail staat: verzonden om 23:47',
+                    title: 'verzonden om 23:47',
                     description:
                         'De mail is midden in de nacht verstuurd, om 23:47 uur.',
                     correct: false,
@@ -116,7 +120,7 @@ const config: ScenarioEngineConfig = {
                 {
                     id: 4,
                     icon: '🔗',
-                    title: 'Blauwe knop: "Bekijk je roosterwijziging op Magister"',
+                    title: 'Bekijk je roosterwijziging op Magister',
                     description:
                         'Houd je je muis boven de knop — dat heet zweven — dan verschijnt onderin je scherm de bestemming: magister-rooster-app.net.',
                     correct: true,
