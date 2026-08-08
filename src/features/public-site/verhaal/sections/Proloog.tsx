@@ -1,142 +1,193 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Eyes, Pill, HARD_SHADOW } from '../components/storyBrand';
+import { Eyes, Pill, LogoLockup, BrowserFrame, HARD_SHADOW } from '../components/storyBrand';
+import { HeroDashboardPreview } from '@/features/public-site/demo/HeroDashboardPreview';
 import { VERHAAL_STATS } from '../verhaalStats';
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
 /**
- * Decoratieve zijkaartjes: een korte missiekaart, XP en de streak van Mila.
+ * Drie korte bewijspunten onder de CTA's.
  *
- * Ze verschijnen pas vanaf `xl` en staan buiten de tekstkolom (max-w-4xl,
- * gecentreerd), zodat ze nooit over de kop of de lopende tekst vallen.
+ * Elk punt is onderbouwd: het missieaantal komt uit `VERHAAL_STATS` (afgeleid
+ * uit het curriculum), de SLO-koppeling is zichtbaar in het docentdashboard en
+ * "gebouwd door een docent" is de kernpositionering uit het merkdocument.
+ * Bewust geen dekkings-, AVG- of AI Act-claims: die zijn niet bewijsbaar op een
+ * publieke pagina.
  */
-function ZwevendeProps() {
+const BEWIJSPUNTEN = [
+    `${VERHAAL_STATS.missies} kant-en-klare missies`,
+    'Gekoppeld aan de SLO-kerndoelen',
+    'Gebouwd door een docent',
+];
+
+/**
+ * Het eerste scherm van de homepage.
+ *
+ * De opdracht aan deze sectie: een bezoeker moet binnen vijf seconden weten wat
+ * DGSkills is, voor wie het bedoeld is, wat leerlingen doen, wat het de docent
+ * oplevert en wat de volgende stap is. Daarom staat hier het merk (logo), de
+ * doelgroep (pill), de categorie (kop), de belofte voor leerling én docent
+ * (subtekst), twee duidelijke acties en een echt stuk product — geen tekening.
+ */
+export function Proloog({ onPlayFilm }: { onPlayFilm: () => void }) {
     return (
-        <div aria-hidden="true">
-            <motion.div
-                initial={{ opacity: 0, y: 30, rotate: -8 }}
-                animate={{ opacity: 1, y: 0, rotate: -8 }}
-                transition={{ delay: 1.1, duration: 0.7, ease: EASE }}
-                className={`absolute left-[4%] top-[31%] hidden w-32 rounded-xl border-[3px] border-duck-ink bg-white p-2 ${HARD_SHADOW} xl:block`}
-            >
-                <p className="text-[10px] font-bold uppercase tracking-widest text-duck-ink/50">
-                    MILA · MISSIE 01
-                </p>
-                <div className="mt-1.5 space-y-1">
-                    {['Startklaar', '1 van 93 missies', 'Bewijs verzamelen'].map((r) => (
-                        <p key={r} className="rounded bg-duck-ink/5 px-1.5 py-0.5 text-[9px] text-duck-ink/50">
-                            {r}
-                        </p>
-                    ))}
-                </div>
-            </motion.div>
-
-            <motion.div
-                initial={{ opacity: 0, y: -20, rotate: 6 }}
-                animate={{ opacity: 1, y: 0, rotate: 6 }}
-                transition={{ delay: 1.3, duration: 0.7, ease: EASE }}
-                className={`absolute right-[2%] top-[24%] hidden rounded-xl border-[3px] border-duck-ink bg-duck-acid px-4 py-3 ${HARD_SHADOW} xl:block`}
-            >
-                <p className="font-display text-2xl font-black">+25 XP</p>
-                <p className="text-[10px] font-bold uppercase tracking-widest">Sterke prompt</p>
-            </motion.div>
-
-            <motion.div
-                initial={{ opacity: 0, y: 20, rotate: -4 }}
-                animate={{ opacity: 1, y: 0, rotate: -4 }}
-                transition={{ delay: 1.5, duration: 0.7, ease: EASE }}
-                className="absolute bottom-[18%] right-[3%] hidden rounded-full border-[3px] border-duck-ink bg-white px-4 py-2 shadow-[5px_5px_0_0_rgba(32,32,35,1)] xl:block"
-            >
-                <p className="text-xs font-bold">🔥 12 dagen streak</p>
-            </motion.div>
-        </div>
-    );
-}
-
-export function Proloog() {
-    return (
+        // De ruimere padding vanaf lg is nodig omdat de tekst daar links
+        // uitlijnt en de vaste hoofdstuknavigatie op ±24-34px van de rand
+        // zweeft; zonder die ruimte lopen de stippen dwars door de kop.
         <section
             id="proloog"
-            className="relative flex min-h-[100svh] scroll-mt-24 flex-col items-center justify-center overflow-hidden bg-duck-bg px-6 text-center grain"
+            className="relative flex min-h-[100svh] scroll-mt-24 flex-col overflow-hidden bg-duck-bg px-6 pb-16 pt-5 grain md:px-10 md:pb-20 lg:px-16"
         >
-            <ZwevendeProps />
-
-            <motion.div
-                initial={{ opacity: 0, scale: 0.6 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 0.3, duration: 0.7, ease: EASE }}
-                className="relative z-10 mb-8"
-            >
-                <Eyes size={64} />
-            </motion.div>
-
-            <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.5, duration: 0.6, ease: EASE }}
-                className="relative z-10"
-            >
-                <Pill filled>Digitale geletterdheid voor VO &amp; VSO</Pill>
-            </motion.div>
-
-            <motion.h1
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.65, duration: 0.7, ease: EASE }}
-                className="relative z-10 mt-8 max-w-4xl font-display text-5xl font-black leading-[0.98] tracking-tight md:text-7xl lg:text-8xl"
-            >
-                Dit is het verhaal van een les die{' '}
-                <span className="relative inline-block">
-                    <span className="relative z-10 inline-block px-1">wél</span>
-                    <motion.span
-                        initial={{ scaleX: 0 }}
-                        animate={{ scaleX: 1 }}
-                        transition={{ delay: 1.4, duration: 0.5, ease: EASE }}
-                        className="absolute inset-x-0 bottom-0 z-0 h-[0.52em] origin-left bg-duck-acid"
-                        aria-hidden="true"
-                    />
-                </span>{' '}
-                werkt.
-            </motion.h1>
-
-            <motion.p
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.85, duration: 0.6, ease: EASE }}
-                className="relative z-10 mt-8 max-w-xl text-lg leading-relaxed text-duck-ink/70 md:text-xl"
-            >
-                Met in de hoofdrol: <strong className="text-duck-ink">Mila</strong>, leerling.{' '}
-                <strong className="text-duck-ink">Haar docent</strong>, {VERHAAL_STATS.missies}{' '}
-                kant-en-klare missies — en eindelijk een les die blijft hangen.
-            </motion.p>
-
-            <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 1.05, duration: 0.6, ease: EASE }}
-                className="relative z-10 mt-10 flex flex-wrap items-center justify-center gap-4"
-            >
+            {/* Merkbalk: de naam DGSkills staat direct in beeld. De zwevende
+                navigatie van de pagina verschijnt pas na het eerste scherm. */}
+            <div className="mx-auto flex w-full max-w-6xl shrink-0 items-center justify-between gap-4">
                 <a
-                    href="#probleem"
-                    className="min-h-[44px] rounded-full border-[3px] border-duck-ink bg-duck-ink px-8 py-4 font-bold text-duck-acid shadow-[6px_6px_0_0_rgba(32,32,35,0.3)] transition-transform hover:-translate-y-0.5"
+                    href="#proloog"
+                    aria-label="DGSkills, naar het begin"
+                    className="inline-flex min-h-[44px] items-center rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-ink focus-visible:ring-offset-2"
                 >
-                    Begin het verhaal ↓
-                </a>
-                <a
-                    href="#epiloog"
-                    className={`min-h-[44px] rounded-full border-[3px] border-duck-ink bg-duck-acid px-8 py-4 font-bold text-duck-ink ${HARD_SHADOW} transition-transform hover:-translate-y-0.5`}
-                >
-                    Plan schoolpilot →
+                    <LogoLockup height={30} />
                 </a>
                 <a
                     href="/login"
-                    className="min-h-[44px] rounded-full border-[3px] border-duck-ink bg-transparent px-8 py-4 font-bold text-duck-ink transition-transform hover:-translate-y-0.5"
+                    className="inline-flex min-h-[44px] items-center rounded-full px-3 text-sm font-bold text-duck-ink underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-ink focus-visible:ring-offset-2"
                 >
                     Inloggen
                 </a>
-            </motion.div>
+            </div>
 
+            <div className="mx-auto grid w-full max-w-6xl flex-1 grid-cols-1 items-center gap-10 py-8 lg:grid-cols-2 lg:gap-12 lg:py-4">
+                {/* ------------------------------ tekstkolom ------------------------------ */}
+                <div className="flex min-w-0 flex-col items-center text-center lg:items-start lg:text-left">
+                    <motion.div
+                        initial={{ opacity: 0, scale: 0.7 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ delay: 0.15, duration: 0.6, ease: EASE }}
+                        className="mb-6"
+                    >
+                        <Eyes size={48} />
+                    </motion.div>
+
+                    <motion.div
+                        initial={{ opacity: 0, y: 16 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.25, duration: 0.5, ease: EASE }}
+                    >
+                        <Pill filled>Digitale geletterdheid voor VO &amp; VSO</Pill>
+                    </motion.div>
+
+                    <motion.h1
+                        initial={{ opacity: 0, y: 24 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.35, duration: 0.6, ease: EASE }}
+                        className="mt-6 max-w-xl font-display text-4xl font-black leading-[1.02] tracking-tight sm:text-5xl xl:text-6xl"
+                    >
+                        Digitale geletterdheid,{' '}
+                        <span className="relative inline-block">
+                            <span className="relative z-10 inline-block px-1">missie voor missie</span>
+                            <motion.span
+                                initial={{ scaleX: 0 }}
+                                animate={{ scaleX: 1 }}
+                                transition={{ delay: 1, duration: 0.5, ease: EASE }}
+                                className="absolute inset-x-0 bottom-0 z-0 h-[0.5em] origin-left bg-duck-acid"
+                                aria-hidden="true"
+                            />
+                        </span>
+                    </motion.h1>
+
+                    <motion.p
+                        initial={{ opacity: 0, y: 16 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.5, duration: 0.5, ease: EASE }}
+                        className="mt-6 max-w-xl text-base leading-relaxed text-duck-ink/75 md:text-lg"
+                    >
+                        DGSkills is de kant-en-klare leeromgeving voor VO en VSO. Leerlingen
+                        oefenen AI, online veiligheid en digitale vaardigheden in{' '}
+                        {VERHAAL_STATS.missies} korte missies, met XP, badges en directe
+                        feedback. Jij ziet per SLO-kerndoel wie het al kan.
+                    </motion.p>
+
+                    <motion.div
+                        initial={{ opacity: 0, y: 16 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.65, duration: 0.5, ease: EASE }}
+                        className="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:flex-wrap lg:items-start lg:justify-start"
+                    >
+                        <a
+                            href="/leerlingdemo"
+                            className={`inline-flex min-h-[44px] items-center rounded-full border-[3px] border-duck-ink bg-duck-acid px-7 py-3.5 font-bold text-duck-ink ${HARD_SHADOW} transition-transform hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-ink focus-visible:ring-offset-2`}
+                        >
+                            Bekijk een missie
+                        </a>
+                        <a
+                            href="/pilot"
+                            className="inline-flex min-h-[44px] items-center rounded-full border-[3px] border-duck-ink bg-duck-ink px-7 py-3.5 font-bold text-duck-acid transition-transform hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-ink focus-visible:ring-offset-2"
+                        >
+                            Plan een schoolpilot
+                        </a>
+                    </motion.div>
+
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ delay: 0.8, duration: 0.5 }}
+                        className="mt-5 flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-sm font-bold text-duck-ink/70 lg:justify-start"
+                    >
+                        <button
+                            type="button"
+                            onClick={onPlayFilm}
+                            className="inline-flex min-h-[44px] items-center gap-1.5 underline-offset-4 hover:text-duck-ink hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-ink focus-visible:ring-offset-2"
+                        >
+                            <span aria-hidden="true">▶</span> Bekijk de film (49 sec)
+                        </button>
+                        <a
+                            href="#probleem"
+                            className="inline-flex min-h-[44px] items-center underline-offset-4 hover:text-duck-ink hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-ink focus-visible:ring-offset-2"
+                        >
+                            Lees het verhaal ↓
+                        </a>
+                    </motion.div>
+
+                    <motion.ul
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ delay: 0.95, duration: 0.5 }}
+                        className="mt-8 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 border-t-2 border-duck-ink/10 pt-5 text-xs font-bold uppercase tracking-[0.14em] text-duck-ink/75 lg:justify-start"
+                    >
+                        {BEWIJSPUNTEN.map((punt) => (
+                            <li key={punt} className="flex items-center gap-2">
+                                <span className="h-1.5 w-1.5 rounded-full bg-duck-ink/50" aria-hidden="true" />
+                                {punt}
+                            </li>
+                        ))}
+                    </motion.ul>
+                </div>
+
+                {/* ----------------------------- productkolom ----------------------------- */}
+                <motion.div
+                    initial={{ opacity: 0, y: 24 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.55, duration: 0.7, ease: EASE }}
+                    className="w-full min-w-0"
+                >
+                    {/*
+                     * Het dashboard is hier een illustratie, geen bedienbaar
+                     * onderdeel: `inert` houdt de tientallen knoppen erin uit de
+                     * tabvolgorde en houdt zijn eigen h1 ("Goedenavond ...") uit
+                     * de voorleesvolgorde, zodat dit scherm één kop houdt. Wie
+                     * het echt wil gebruiken, klikt op "Bekijk een missie".
+                     */}
+                    <div inert>
+                        <BrowserFrame url="dgskills.app · missieoverzicht">
+                            <HeroDashboardPreview which="student" />
+                        </BrowserFrame>
+                    </div>
+                    <p className="mt-3 text-center text-xs italic text-duck-ink/70 lg:text-left">
+                        Live uit het echte product. De leerlinggegevens zijn fictief.
+                    </p>
+                </motion.div>
+            </div>
         </section>
     );
 }
