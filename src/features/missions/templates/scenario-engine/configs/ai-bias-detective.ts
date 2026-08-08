@@ -11,7 +11,7 @@ const config: ScenarioEngineConfig = {
         'Herken vooroordelen in AI-systemen aan de hand van echte voorbeelden',
         'Rangschik AI-toepassingen van meest naar minst risicovol',
         'Ontdek: wanneer is een AI-resultaat scheef of eerlijk?',
-        'Bedenk oplossingen voor eerlijkere technologie',
+        'Beoordeel welke oplossingen voor eerlijkere technologie écht werken',
     ],
     maxScore: 100,
     badges: [
@@ -43,9 +43,9 @@ const config: ScenarioEngineConfig = {
     takeaways: [
         'AI is niet objectief — het leert van menselijke data en menselijke data bevat menselijke vooroordelen.',
         'Bias in AI kan iedereen treffen, maar treft mensen die al in een nadelige positie zitten onevenredig hard.',
-        'Diverse trainingsdata en diverse ontwikkelteams zijn de beste remedie tegen bias.',
+        'Diverse trainingsdata en diverse ontwikkelteams helpen veel — maar niet altijd: soms zit de fout in wát je meet, niet in wie er in de data zit.',
         'Herkennen van bias is een vaardigheid die je kunt leren — je hoeft geen programmeur te zijn.',
-        'Als AI wordt gebruikt voor beslissingen die mensen raken (aanname, leningen, straffen), moet er altijd mensenlijk toezicht zijn.',
+        'Als AI wordt gebruikt voor beslissingen die mensen raken (aanname, leningen, straffen), moet er altijd menselijk toezicht zijn.',
     ],
     rounds: [
         // ── RONDE 1: select-correct ───────────────────────────────────────────────
@@ -115,15 +115,35 @@ const config: ScenarioEngineConfig = {
                 {
                     id: 6,
                     icon: '🏥',
-                    title: 'Pijnbehandelingsalgoritme raadt minder pijnstillers aan voor zwarte patiënten',
+                    title: 'Zorgalgoritme selecteert zwarte patiënten minder vaak voor extra zorg',
                     description:
-                        'Een ziekenhuisalgoritme dat prioriteert wie extra zorg nodig heeft, raadt zwarte patiënten minder behandelingen aan bij gelijke pijnklachten.',
+                        'Een ziekenhuisalgoritme bepaalt wie er in een programma voor extra zorg komt. Zwarte patiënten worden minder vaak gekozen, ook als ze even ziek zijn.',
                     correct: true,
                     explanation:
-                        'Dit is een gedocumenteerd geval uit de VS. Het algoritme gebruikte zorgkosten als vervangende maatstaf voor gezondheidsbehoeften — maar zwarte patiënten hadden historisch minder zorg ontvangen (door ongelijkheid), dus werden als "minder ziek" geclassificeerd.',
+                        'Dit is een gedocumenteerd geval uit de VS (onderzoek van Obermeyer en collega\'s, 2019). Het algoritme gebruikte zorgkosten als vervangende maatstaf voor gezondheidsbehoeften — maar zwarte patiënten hadden historisch minder zorg ontvangen (door ongelijkheid), dus werden als "minder ziek" geclassificeerd.',
                 },
                 {
                     id: 7,
+                    icon: '📧',
+                    title: 'Spamfilter blokkeert reclamemails',
+                    description:
+                        'Een e-mailprogramma verplaatst berichten met veel reclamewoorden automatisch naar de map ongewenst.',
+                    correct: false,
+                    explanation:
+                        'Dit is geen bias. Het filter kijkt naar de inhoud van een bericht, niet naar wie de ontvanger is. Er wordt geen groep mensen anders behandeld dan een andere groep.',
+                },
+                {
+                    id: 8,
+                    icon: '📢',
+                    title: 'Vacatures worden vooral aan jongere mensen getoond',
+                    description:
+                        'Een AI die vacatures verspreidt op social media, laat advertenties voor goedbetaalde banen vooral zien aan mensen onder de veertig.',
+                    correct: true,
+                    explanation:
+                        'Dit is leeftijdsbias. Wie een vacature nauwelijks te zien krijgt, kan er ook bijna niet op solliciteren. Waaróm het systeem dit doet, kun je aan de uitkomst niet aflezen: het kan liggen aan de instellingen van de adverteerder, aan een systeem dat stuurt op zo veel mogelijk klikken, of aan kenmerken die indirect met leeftijd samenhangen. Wat je wél ziet, is dat oudere mensen systematisch kansen mislopen. Bias gaat dus niet alleen over afkomst of gender.',
+                },
+                {
+                    id: 9,
                     icon: '🧮',
                     title: 'Rekenmachine maakt een rekenfout',
                     description:
@@ -133,14 +153,14 @@ const config: ScenarioEngineConfig = {
                         'Een rekenfout door een bug is geen bias — het is een technische fout. Bias gaat specifiek over systematische scheefheid die een groep mensen anders behandelt dan een andere groep.',
                 },
                 {
-                    id: 8,
+                    id: 10,
                     icon: '🗺️',
                     title: 'Navigatieapp stuurt vrachtwagens door woonwijken',
                     description:
-                        'Een navigatieapp routeert zwaar vrachtverkeer consistent door smalle woonstraten in bepaalde wijken.',
+                        'Een navigatieapp routeert zwaar vrachtverkeer consistent door smalle woonstraten in de armste wijken, terwijl duurdere wijken worden ontzien.',
                     correct: true,
                     explanation:
-                        'Als de algoritme kwetsbaardere wijken (lager inkomen, minder politieke invloed) disproportioneel belast ten opzichte van rijkere wijken, is er sprake van algoritmische bias met sociale gevolgen.',
+                        'Het algoritme belast wijken met lagere inkomens en minder politieke invloed structureel zwaarder dan rijkere wijken. Bewoners krijgen meer lawaai, uitstoot en onveilige straten, zonder dat iemand daarvoor gekozen heeft. Dat is algoritmische bias met sociale gevolgen.',
                 },
             ],
         },
@@ -161,26 +181,6 @@ const config: ScenarioEngineConfig = {
             items: [
                 {
                     id: 1,
-                    icon: '⚖️',
-                    title: 'AI die voorspelt of iemand opnieuw een misdrijf pleegt',
-                    description:
-                        'Rechters gebruiken een AI-systeem dat inschat hoe groot de kans is dat een verdachte opnieuw een misdrijf zal plegen. De uitkomst beïnvloedt strafmaat en vrijlating.',
-                    correctPosition: 0,
-                    explanation:
-                        'Meest risicovol. Gebaseerd op COMPAS, een echt gebruikt systeem in de VS. Bias hier betekent dat mensen van kleur hogere risicoscores kregen bij gelijke situaties. Gevolg: ongegronde gevangenisstraf. Dit is direct levensveranderend.',
-                },
-                {
-                    id: 2,
-                    icon: '🏦',
-                    title: 'AI die leningaanvragen beoordeelt',
-                    description:
-                        'Een bank gebruikt AI om te besluiten of iemand een hypotheek of lening krijgt en tegen welke rente.',
-                    correctPosition: 1,
-                    explanation:
-                        'Zeer risicovol. Leningen zijn levensbepalend — huis, studie, onderneming. Bias op basis van postcode, naam of etniciteit heeft grote financiële en sociale gevolgen die generaties meegaan.',
-                },
-                {
-                    id: 3,
                     icon: '💼',
                     title: 'AI die sollicitaties filtert',
                     description:
@@ -188,6 +188,26 @@ const config: ScenarioEngineConfig = {
                     correctPosition: 2,
                     explanation:
                         'Risicovol. Bias betekent dat mensen systematisch worden uitgesloten van kansen. Maar de gevolgen zijn minder acuut dan gevangenisstraf of woningweigering — er zijn meer werkgevers.',
+                },
+                {
+                    id: 2,
+                    icon: '🛒',
+                    title: 'AI die aanbevelingen doet in een webshop',
+                    description:
+                        'Een webshop AI beveelt producten aan op basis van eerder aankoopgedrag.',
+                    correctPosition: 4,
+                    explanation:
+                        'Minst risicovolle bias. Als de AI je de verkeerde spijkerbroek aanbeveelt, is de schade beperkt. Wel kan prijsdiscriminatie op basis van algoritmen een serieuzer probleem zijn.',
+                },
+                {
+                    id: 3,
+                    icon: '⚖️',
+                    title: 'AI die voorspelt of iemand opnieuw een misdrijf pleegt',
+                    description:
+                        'Rechters gebruiken een AI-systeem dat inschat hoe groot de kans is dat een verdachte opnieuw een misdrijf zal plegen. De uitkomst beïnvloedt strafmaat en vrijlating.',
+                    correctPosition: 0,
+                    explanation:
+                        'Meest risicovol. Gebaseerd op COMPAS, een systeem dat in de VS echt is gebruikt. Onderzoekers vonden dat het bij zwarte verdachten vaker ten onrechte voorspelde dat ze in herhaling zouden vallen. Rechters lieten die score meewegen in hun beslissing — een fout kan hier iemands leven veranderen.',
                 },
                 {
                     id: 4,
@@ -201,13 +221,13 @@ const config: ScenarioEngineConfig = {
                 },
                 {
                     id: 5,
-                    icon: '🛒',
-                    title: 'AI die aanbevelingen doet in een webshop',
+                    icon: '🏦',
+                    title: 'AI die leningaanvragen beoordeelt',
                     description:
-                        'Een webshop AI beveelt producten aan op basis van eerder aankoopgedrag.',
-                    correctPosition: 4,
+                        'Een bank gebruikt AI om te besluiten of iemand een hypotheek of lening krijgt en tegen welke rente.',
+                    correctPosition: 1,
                     explanation:
-                        'Minst risicovolle bias. Als de AI je de verkeerde spijkerbroek aanbeveelt, is de schade beperkt. Wel kan prijsdiscriminatie op basis van algoritmen een serieuzer probleem zijn.',
+                        'Zeer risicovol. Leningen zijn levensbepalend — huis, studie, onderneming. Bias op basis van postcode, naam of etniciteit heeft grote financiële en sociale gevolgen die generaties meegaan.',
                 },
             ],
         },
@@ -226,6 +246,16 @@ const config: ScenarioEngineConfig = {
             items: [
                 {
                     id: 1,
+                    icon: '🏠',
+                    title: 'AI toont minder dure huizen aan mensen met bepaalde achternamen',
+                    description:
+                        'Een huizenzoeksite laat automatisch minder dure woningen zien zodra de achternaam van de zoeker bij een bepaalde groep hoort.',
+                    correct: false,
+                    explanation:
+                        'Dit is ernstige bias. De achternaam wordt gebruikt als vervangende maatstaf voor afkomst, waardoor mensen minder keuze te zien krijgen zonder dat ze het merken. Op de woningmarkt heet dit steering: mensen worden op grond van hun veronderstelde afkomst naar andere woningen gestuurd. Het lijkt op redlining, een oudere vorm waarbij hele wijken op een kaart werden aangewezen waar bewoners geen lening of verzekering konden krijgen. Een algoritme kan zulke patronen onbedoeld herhalen.',
+                },
+                {
+                    id: 2,
                     icon: '📖',
                     title: 'AI beveelt Nederlandstalige boeken aan aan Nederlandstalige lezers',
                     description:
@@ -235,37 +265,7 @@ const config: ScenarioEngineConfig = {
                         'Dit is eerlijke personalisatie op basis van een relevante voorkeur (taal). Er wordt geen groep benadeeld — het systeem past zich aan aan de behoeften van de individuele gebruiker.',
                 },
                 {
-                    id: 2,
-                    icon: '🏠',
-                    title: 'AI toont minder huizen in rijke wijken aan zoekers met bepaalde achternamen',
-                    description:
-                        'Een huizenzoeksite-algoritme toont automatisch minder dure huizen in witte wijken aan mensen met niet-westerse achternamen.',
-                    correct: false,
-                    explanation:
-                        'Dit is ernstige bias — vergelijkbaar met een historische praktijk waarbij hele wijken systematisch werden uitgesloten van diensten zoals leningen of verzekeringen. Op basis van naam (een vervangende maatstaf voor etniciteit) worden mensen minder kansen getoond.',
-                },
-                {
                     id: 3,
-                    icon: '🎮',
-                    title: 'Game-AI past moeilijkheidsgraad aan op basis van jouw speelgedrag',
-                    description:
-                        'Een spelletjes-AI maakt het spel moeilijker als je te makkelijk wint en makkelijker als je het te moeilijk vindt.',
-                    correct: true,
-                    explanation:
-                        'Dit is adaptieve technologie — de AI past zich aan om jouw ervaring beter te maken. Niemand wordt benadeeld op basis van een persoonskenmerk.',
-                },
-                {
-                    id: 4,
-                    icon: '🔍',
-                    title: 'Zoekmachine toont alleen nieuws dat past bij jouw eerdere zoekopdrachten',
-                    description:
-                        'Als jij altijd naar tech-nieuws zoekt, laat de zoekmachine je automatisch minder politiek nieuws zien.',
-                    correct: false,
-                    explanation:
-                        'Dit is een filterbubbel — een neveneffect van personalisatie dat je blootstelt aan steeds eenzijdiger informatie. Hoewel niet bedoeld als discriminatie, kan het je wereldbeeld versmallen en bijdragen aan maatschappelijke polarisatie.',
-                },
-                {
-                    id: 5,
                     icon: '💊',
                     title: 'Medisch AI dat doseringen adviseert op basis van lichaamsgewicht',
                     description:
@@ -275,7 +275,7 @@ const config: ScenarioEngineConfig = {
                         'Dosering op basis van gewicht is medisch verantwoord en niet-discriminerend. Het is gebaseerd op een fysiologisch relevante variabele. Dit is correcte, eerlijke toepassing van data.',
                 },
                 {
-                    id: 6,
+                    id: 4,
                     icon: '🚓',
                     title: 'Politie-AI voorspelt criminaliteit op basis van postcodegebied',
                     description:
@@ -283,6 +283,26 @@ const config: ScenarioEngineConfig = {
                     correct: false,
                     explanation:
                         'Dit is een voorbeeld van zelfrefererende bias: meer politie in een wijk → meer arrestaties → meer data die de wijk als "risicovol" bestempelt → nóg meer politie. Arme wijken worden systematisch zwaarder gecontroleerd dan rijke wijken.',
+                },
+                {
+                    id: 5,
+                    icon: '🎙️',
+                    title: 'Spraakassistent verstaat mensen met een spraakbeperking veel slechter',
+                    description:
+                        'Een spraakassistent begrijpt de meeste mensen bijna altijd, maar wie stottert of moeilijk verstaanbaar praat, wordt vaak niet begrepen.',
+                    correct: false,
+                    explanation:
+                        'Dit is bias op basis van beperking. De AI is vooral getraind op stemmen zonder spraakbeperking, dus wie anders klinkt, kan de technologie niet gebruiken. Juist mensen die het meeste baat hebben bij spraakbediening worden zo uitgesloten.',
+                },
+                {
+                    id: 6,
+                    icon: '🎮',
+                    title: 'Game-AI past moeilijkheidsgraad aan op basis van jouw speelgedrag',
+                    description:
+                        'Een spelletjes-AI maakt het spel moeilijker als je te makkelijk wint en makkelijker als je het te moeilijk vindt.',
+                    correct: true,
+                    explanation:
+                        'Dit is adaptieve technologie — de AI past zich aan om jouw ervaring beter te maken. Niemand wordt benadeeld op basis van een persoonskenmerk.',
                 },
             ],
         },
@@ -309,10 +329,20 @@ const config: ScenarioEngineConfig = {
                         'Zorg dat de data waarop het AI-model wordt getraind alle relevante groepen goed vertegenwoordigt.',
                     correct: true,
                     explanation:
-                        'De meest directe oplossing voor data-bias. Als de trainingsdata divers en representatief is, leert het model ook patronen die voor alle groepen gelden, niet alleen voor de meerderheid.',
+                        'Een van de meest directe oplossingen voor data-bias. Als de trainingsdata divers en representatief is, leert het model ook patronen die voor alle groepen gelden, niet alleen voor de meerderheid. Let op: het helpt niet als de fout in de gekozen maatstaf zit, zoals bij het zorgalgoritme.',
                 },
                 {
                     id: 2,
+                    icon: '🙈',
+                    title: 'De AI geslacht en etniciteit helemaal niet meer laten zien',
+                    description:
+                        'Haal kenmerken als geslacht en etniciteit uit de data, zodat de AI er niet meer naar kan kijken.',
+                    correct: false,
+                    explanation:
+                        'Klinkt logisch, maar het werkt niet. De AI vindt vervangende aanwijzingen: een postcode, een achternaam of een school zegt vaak al genoeg — precies wat er bij de huizenzoeksite gebeurt. Erger nog: als je die kenmerken niet meer meet, kun je ook niet meer controleren of een groep wordt benadeeld.',
+                },
+                {
+                    id: 3,
                     icon: '👥',
                     title: 'Diverse ontwikkelteams samenstellen',
                     description:
@@ -322,7 +352,7 @@ const config: ScenarioEngineConfig = {
                         'Diverse teams stellen andere vragen en zien andere risico\'s. Als het team homogeen is, worden bepaalde vormen van bias simpelweg niet opgemerkt tijdens het ontwerp en testen.',
                 },
                 {
-                    id: 3,
+                    id: 4,
                     icon: '⚡',
                     title: 'AI sneller en goedkoper maken',
                     description:
@@ -332,7 +362,7 @@ const config: ScenarioEngineConfig = {
                         'Snellere of goedkopere AI lost bias niet op — het kan het zelfs verspreiden als meer organisaties een bevooroordeeld systeem gebruiken. Schaalbaarheid zonder eerlijkheid vergroot het probleem.',
                 },
                 {
-                    id: 4,
+                    id: 5,
                     icon: '🧪',
                     title: 'AI testen op verschillende groepen voor uitrol',
                     description:
@@ -342,17 +372,27 @@ const config: ScenarioEngineConfig = {
                         'Fairness audits zijn een standaardpraktijk geworden bij verantwoorde AI-ontwikkeling. Door gestructureerd te testen vind je bias voordat het systeem echte schade kan aanrichten.',
                 },
                 {
-                    id: 5,
+                    id: 6,
                     icon: '🔍',
                     title: 'Transparantie over hoe beslissingen worden genomen',
                     description:
-                        'Organisaties die AI gebruiken voor beslissingen over mensen zijn verplicht uit te leggen hoe de AI tot een beslissing komt (explainability).',
+                        'Organisaties die AI gebruiken voor belangrijke beslissingen over mensen (zoals een baan, een lening of zorg) moeten kunnen uitleggen hoe de AI tot die beslissing komt (explainability).',
                     correct: true,
                     explanation:
                         'Explainability is een kernvereiste van de EU AI Act voor hoog-risico AI. Als je niet kunt uitleggen waarom een AI een beslissing neemt, kun je ook niet controleren of het eerlijk is.',
                 },
                 {
-                    id: 6,
+                    id: 7,
+                    icon: '➕',
+                    title: 'Gewoon veel meer data verzamelen',
+                    description:
+                        'Verzamel zo veel mogelijk extra data, want hoe meer voorbeelden een AI ziet, hoe beter hij wordt.',
+                    correct: false,
+                    explanation:
+                        'Méér van dezelfde scheve data verandert de scheefheid niet — het maakt het foute patroon alleen maar zekerder. Het gaat erom wélke data je verzamelt en wát je ermee meet, niet hoeveel.',
+                },
+                {
+                    id: 8,
                     icon: '🤖',
                     title: 'Alle beslissingen volledig aan de AI overlaten',
                     description:
@@ -362,17 +402,17 @@ const config: ScenarioEngineConfig = {
                         'Dit is een veelgemaakte denkfout. AI vervangt menselijke bias niet — het kan menselijke bias versterken en op grote schaal reproduceren. Menselijk toezicht is juist essentieel, zeker bij beslissingen die mensen raken.',
                 },
                 {
-                    id: 7,
+                    id: 9,
                     icon: '📜',
-                    title: 'Wetgeving en externe audits voor hoog-risico AI',
+                    title: 'Wetgeving en onafhankelijke controle voor hoog-risico AI',
                     description:
-                        'Overheden verplichten organisaties die AI gebruiken voor consequente beslissingen (aannames, leningen, strafrechtspraak) om externe audits te ondergaan.',
+                        'Overheden stellen regels voor AI die zwaarwegende beslissingen beïnvloedt (aannames, leningen, strafrechtspraak) en laten die systemen controleren voordat ze gebruikt mogen worden.',
                     correct: true,
                     explanation:
-                        'De EU AI Act verplicht dit al voor hoog-risico AI. Externe controle is nodig omdat organisaties zelf belangen hebben om problemen te minimaliseren. Onafhankelijke audits brengen bias aan het licht.',
+                        'Regels en controle helpen echt. De EU AI Act legt de plicht bij de maker van een hoog-risico AI-systeem, niet bij de school of het bedrijf dat het gebruikt: de maker moet vóór gebruik aantonen dat het systeem aan de eisen voldoet. Bij de meeste hoog-risico systemen mag de maker die controle zelf uitvoeren. Alleen bij bepaalde systemen die mensen herkennen aan lichaamskenmerken kan een onafhankelijke instantie nodig zijn — en zelfs daar mag de maker het zelf doen als hij de Europese normen volgt. Een buitenstaander verplichten is dus een echte aanscherping, want een maker heeft er belang bij problemen klein te houden.',
                 },
                 {
-                    id: 8,
+                    id: 10,
                     icon: '🗣️',
                     title: 'Getroffen groepen betrekken bij het ontwerpen van AI',
                     description:

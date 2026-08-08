@@ -19,6 +19,9 @@ export interface KerndoelMissionMeta {
 //   23A = Veiligheid & privacy, 23B = Digitaal welzijn, 23C = Maatschappij
 //
 // Audit: 2026-03-28 — alle tags gevalideerd tegen systemInstruction-inhoud in agents.tsx
+// Audit: 2026-08-07 — leerjaar 2 periode 1 hertoetst tegen de daadwerkelijke template-configs
+//   (src/features/missions/templates/**/configs). Bij template-missies is de systemInstruction
+//   niet de bron van waarheid: die beschrijft de chatbegeleiding, niet wat de leerling doet.
 export const KERNDOEL_MISSIONS: KerndoelMissionMeta[] = [
   // ============================================================
   // LEERJAAR 1
@@ -98,11 +101,11 @@ export const KERNDOEL_MISSIONS: KerndoelMissionMeta[] = [
   // ============================================================
 
   // Periode 1: Data & Informatie
-  { id: 'data-journalist', title: 'Data Journalist', week: 1, yearGroup: 2, sloKerndoelen: ['21C', '22A'], sloVsoKerndoelen: ['18B', '19A'] },                  // 21B→22A: data-analyse + infographic maken = data + product
-  { id: 'spreadsheet-specialist', title: 'Spreadsheet Specialist', week: 1, yearGroup: 2, sloKerndoelen: ['21C', '22A'], sloVsoKerndoelen: ['18B', '19A'] },
+  { id: 'data-journalist', title: 'Data Journalist', week: 1, yearGroup: 2, sloKerndoelen: ['21C'], sloVsoKerndoelen: ['18B'] },                                 // -22A/-19A: de opdracht is drie datasets aflezen en nieuwsberichten wegen; de leerling maakt geen infographic of ander digitaal product
+  { id: 'spreadsheet-specialist', title: 'Spreadsheet Specialist', week: 1, yearGroup: 2, sloKerndoelen: ['21C'], sloVsoKerndoelen: ['18B'] },                    // -22A/-19A: de leerling leest kasboekdata en kiest de juiste formule, maar bouwt geen eigen spreadsheet
   { id: 'factchecker', title: 'Factchecker', week: 1, yearGroup: 2, sloKerndoelen: ['21B', '23C'], sloVsoKerndoelen: ['18B', '20B'] },
   { id: 'api-verkenner', title: 'API Verkenner', week: 1, yearGroup: 2, sloKerndoelen: ['21A', '21C'], sloVsoKerndoelen: ['18A', '18B'] },                      // 21D→21A: APIs begrijpen = systeemkennis, geen AI
-  { id: 'dashboard-designer', title: 'Dashboard Designer', week: 1, yearGroup: 2, sloKerndoelen: ['21C', '22A'], sloVsoKerndoelen: ['18B', '19A'] },
+  { id: 'dashboard-designer', title: 'Dashboard Designer', week: 1, yearGroup: 2, sloKerndoelen: ['21C'], sloVsoKerndoelen: ['18B'] },                            // -22A/-19A: de leerling leest schooldata en beoordeelt visualisatiekeuzes, maar ontwerpt geen eigen dashboard
   { id: 'ai-bias-detective', title: 'AI Bias Detective', week: 1, yearGroup: 2, sloKerndoelen: ['21D', '23C'], sloVsoKerndoelen: ['18C', '20B'] },
   { id: 'data-review', title: 'Data Review', week: 1, yearGroup: 2, sloKerndoelen: ['21B', '21C', '21D'], sloVsoKerndoelen: ['18B', '18C'] },
 

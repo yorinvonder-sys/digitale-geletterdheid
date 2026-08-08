@@ -67,6 +67,8 @@ export const researchProjectConfig: DataViewerConfig = {
                     question:
                         'De data toont een correlatie tussen schermtijd en welzijn. Leg in eigen woorden uit waarom correlatie NIET hetzelfde is als causaliteit.',
                     type: 'text-observation',
+                    keywords: ['derde factor', 'omgekeerd', 'andersom', 'experiment', 'anders'],
+                    minKeywords: 1,
                     correctAnswer: '',
                     explanation:
                         'Correlatie = twee dingen hangen samen. Causaliteit = het ene veroorzaakt het andere. Het kan ook zijn: leerlingen met laag welzijn zoeken afleiding op hun scherm (omgekeerde richting), of er is een derde factor (bijv. eenzaamheid) die zowel schermtijd als laag welzijn verklaart. Om causaliteit te bewijzen heb je een experiment nodig: willekeurig schermtijd beperken bij een groep en meten of welzijn verandert.',
@@ -116,6 +118,8 @@ export const researchProjectConfig: DataViewerConfig = {
                     question:
                         'Jij wilt onderzoeken of jongeren meer focusproblemen hebben als ze meer schermtijd hebben. Welke methode is het meest haalbaar voor een scholier en waarom?',
                     type: 'text-observation',
+                    keywords: ['enquete', 'vragenlijst', 'beperkingen'],
+                    minKeywords: 1,
                     correctAnswer: '',
                     explanation:
                         'Een enquête is het meest haalbaar: je kunt een vragenlijst maken en afnemen in je klas. Een gecontroleerd experiment (willekeurig schermtijd beperken bij de helft van de klas voor 4 weken) is meer betrouwbaar maar bijna onmogelijk te organiseren als scholier. Een goede onderzoeker erkent de beperkingen van zijn methode — dat is geen zwakte maar wetenschappelijke eerlijkheid.',
@@ -179,6 +183,8 @@ export const researchProjectConfig: DataViewerConfig = {
                     question:
                         'De studie in Dataset 1 heeft n=200 leerlingen. Noem één beperking van deze steekproef en beschrijf hoe je het onderzoek zou verbeteren.',
                     type: 'text-observation',
+                    keywords: ['representatief', 'longitudinaal', 'vergroten', 'meer', 'groter'],
+                    minKeywords: 1,
                     correctAnswer: '',
                     explanation:
                         'Beperkingen: n=200 is relatief klein — resultaten kunnen toeval zijn. Alleen havo/vwo — niet representatief voor alle Nederlandse jongeren. Eenmalige meting — geen longitudinaal beeld. Verbetering: grotere steekproef (n>1000), inclusief mavo-leerlingen, meerdere meetmomenten in de tijd, en objectieve schermtijdmeting (bijv. via telefoondata) in plaats van zelfrapportage.',

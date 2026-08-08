@@ -160,6 +160,16 @@ const config: ScenarioEngineConfig = {
                 'Denk aan: wie heeft de data? Wie heeft belangen? Wie heeft een peer review gehad?',
             items: [
                 {
+                    id: 4,
+                    icon: '👩‍⚕️',
+                    title: 'Blog van een arts',
+                    description:
+                        'Een opinieblog geschreven door een arts die zegt positieve ervaringen te hebben met het medicijn.',
+                    correctPosition: 3,
+                    explanation:
+                        'Eén expert is geen bewijs. Ervaringen van één arts kunnen afwijken van de wetenschappelijke consensus. Interessant als aanvulling, maar niet voldoende als primaire bron.',
+                },
+                {
                     id: 1,
                     icon: '🔬',
                     title: 'Peer-reviewed wetenschappelijk artikel',
@@ -168,6 +178,16 @@ const config: ScenarioEngineConfig = {
                     correctPosition: 0,
                     explanation:
                         'Meest betrouwbaar. Peer review betekent dat andere experts het onderzoek hebben gecontroleerd op fouten en methodologie. Dit is de gouden standaard voor wetenschappelijke claims.',
+                },
+                {
+                    id: 5,
+                    icon: '📱',
+                    title: 'TikTok-video van een ervaringsdeskundige',
+                    description:
+                        'Een persoon beschrijft in een TikTok hoe het medicijn hem heeft geholpen en raadt het iedereen aan.',
+                    correctPosition: 4,
+                    explanation:
+                        'Minst betrouwbaar voor medische claims. Persoonlijke ervaringen zijn geen wetenschappelijk bewijs. Placebo-effecten, toevalligheid en gebrek aan controlegroep maken anekdotes onbetrouwbaar als bewijs.',
                 },
                 {
                     id: 2,
@@ -188,26 +208,6 @@ const config: ScenarioEngineConfig = {
                     correctPosition: 2,
                     explanation:
                         'Gerenommeerde journalistieke media controleren hun bronnen, citeren experts en corrigeren fouten. Betrouwbaar, maar niet het primaire bewijs zelf — ze interpreteren de wetenschap.',
-                },
-                {
-                    id: 4,
-                    icon: '👩‍⚕️',
-                    title: 'Blog van een arts',
-                    description:
-                        'Een opinieblog geschreven door een arts die zegt positieve ervaringen te hebben met het medicijn.',
-                    correctPosition: 3,
-                    explanation:
-                        'Eén expert is geen bewijs. Ervaringen van één arts kunnen afwijken van de wetenschappelijke consensus. Interessant als aanvulling, maar niet voldoende als primaire bron.',
-                },
-                {
-                    id: 5,
-                    icon: '📱',
-                    title: 'TikTok-video van een ervaringsdeskundige',
-                    description:
-                        'Een persoon beschrijft in een TikTok hoe het medicijn hem heeft geholpen en raadt het iedereen aan.',
-                    correctPosition: 4,
-                    explanation:
-                        'Minst betrouwbaar voor medische claims. Persoonlijke ervaringen zijn geen wetenschappelijk bewijs. Placebo-effecten, toevalligheid en gebrek aan controlegroep maken anekdotes onbetrouwbaar als bewijs.',
                 },
             ],
         },
@@ -246,6 +246,16 @@ const config: ScenarioEngineConfig = {
                 },
                 {
                     id: 3,
+                    icon: '🩺',
+                    title: 'RIVM publiceert griepprik-cijfers',
+                    description:
+                        'Het RIVM zet nieuwe cijfers over de griepprik online op hun eigen website, met duidelijke bronvermelding en cijfers van het CBS erbij.',
+                    correct: true,
+                    explanation:
+                        'Delen mag hier gerust. Het RIVM is de officiële overheidsinstantie voor volksgezondheid en vermeldt transparant waar de cijfers vandaan komen. Dat is precies wat een betrouwbare bron kenmerkt.',
+                },
+                {
+                    id: 4,
                     icon: '📸',
                     title: 'Foto van verwoest gebied "na de aardbeving"',
                     description:
@@ -255,7 +265,7 @@ const config: ScenarioEngineConfig = {
                         'Niet zomaar delen. Foto\'s worden regelmatig hergebruikt uit een andere context. Doe eerst een reverse image search (via Google Images) om te controleren of de foto echt is.',
                 },
                 {
-                    id: 4,
+                    id: 5,
                     icon: '🏫',
                     title: 'Schoolkrant over roosterwijziging',
                     description:
@@ -265,7 +275,7 @@ const config: ScenarioEngineConfig = {
                         'Prima om te delen. Het komt van een directe, betrouwbare bron (de school zelf). Praktische schoolinformatie is precies het soort content dat nuttig is om te delen.',
                 },
                 {
-                    id: 5,
+                    id: 6,
                     icon: '🎭',
                     title: '"Bekende persoon opgepakt" — van satirische site',
                     description:
@@ -275,7 +285,17 @@ const config: ScenarioEngineConfig = {
                         'Niet delen als nieuws. Satire is een kunstvorm, maar als je het deelt zonder de context te vermelden, misleid je anderen. Als je het grappig vindt, deel het dan mét de context: "Dit is satire van De Speld."',
                 },
                 {
-                    id: 6,
+                    id: 7,
+                    icon: '🚨',
+                    title: 'Politie deelt signalement van vermist kind',
+                    description:
+                        'De officiële Instagram-pagina van de politie plaatst een bericht met foto en signalement van een vermist kind, met het verzoek om te delen.',
+                    correct: true,
+                    explanation:
+                        'Delen is hier zinvol. Het bericht komt rechtstreeks van de politie zelf, is tijdgevoelig en verspreiden vergroot de kans dat het kind sneller wordt gevonden.',
+                },
+                {
+                    id: 8,
                     icon: '🔬',
                     title: 'Wetenschappelijke doorbraak: "één studie, voorlopige resultaten"',
                     description:
@@ -293,7 +313,7 @@ const config: ScenarioEngineConfig = {
             emoji: '🧪',
             title: 'De CRAAP-methode toepassen',
             description:
-                'De CRAAP-methode helpt je een bron te beoordelen: Currency (actualiteit — hoe oud?), Relevance (relevantie — past het?), Authority (wie het zegt — wie is de bron?), Accuracy (klopt het?), Purpose (waarom — wat is het doel?). Welke vragen horen bij de CRAAP-methode? Selecteer ze.',
+                'De CRAAP-methode helpt je een bron te beoordelen. Vijf letters, vijf vragen: Currency (hoe oud is het?), Relevance (past het bij je onderwerp?), Authority (wie is de bron?), Accuracy (klopt het?), Purpose (wat is het doel?). Welke vragen horen bij de CRAAP-methode? Selecteer ze.',
             type: 'select-correct',
             maxScore: 25,
             feedbackCorrect:

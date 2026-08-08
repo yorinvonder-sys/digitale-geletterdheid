@@ -51,19 +51,19 @@ const TONES: Record<
     default: {
         page: 'bg-duck-bg',
         title: 'text-duck-ink',
-        sub: 'text-duck-ink/55',
-        desc: 'text-duck-ink/60',
+        sub: 'text-duck-ink/75',
+        desc: 'text-duck-ink/75',
         stepText: 'text-duck-ink',
         hero: 'bg-duck-acid',
         stepCircle: 'bg-duck-acid text-duck-ink',
         connector: 'bg-duck-gray',
-        eyebrow: 'text-duck-ink/55 font-black uppercase tracking-[0.16em]',
+        eyebrow: 'text-duck-ink/75 font-black uppercase tracking-[0.16em]',
     },
     crisis: {
         page: 'bg-duck-bg',
         title: 'text-duck-ink',
-        sub: 'text-duck-ink/55',
-        desc: 'text-duck-ink/60',
+        sub: 'text-duck-ink/75',
+        desc: 'text-duck-ink/75',
         stepText: 'text-duck-ink',
         hero: 'bg-duck-error',
         stepCircle: 'bg-duck-acid text-duck-ink',
@@ -184,7 +184,7 @@ export const IntroScreen: React.FC<IntroScreenProps> = ({
                 </button>
 
                 {attribution && (
-                    <p className={`mt-4 text-[11px] leading-relaxed ${tone === 'terminal' ? 'text-duck-gray/70' : 'text-duck-ink/45'}`} style={FONT}>
+                    <p className={`mt-4 text-[11px] leading-relaxed ${tone === 'terminal' ? 'text-duck-gray' : 'text-duck-ink/75'}`} style={FONT}>
                         Eigen bewerking, gebaseerd op{' '}
                         {attribution.sourceUrl ? (
                             <a

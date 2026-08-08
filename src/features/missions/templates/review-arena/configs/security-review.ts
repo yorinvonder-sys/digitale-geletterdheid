@@ -55,7 +55,6 @@ const config: ReviewArenaConfig = {
             description:
                 'Sorteer deze wachtwoorden van het sterkste (boven) naar het zwakste (onder) op basis van beveiligingsprincipes.',
             maxScore: 25,
-            showConfidence: true,
             followUp: {
                 question: 'Waarom is een sterk wachtwoord alleen niet voldoende om je account te beschermen?',
                 options: ['Omdat wachtwoorden altijd gekraakt kunnen worden', 'Omdat phishing je wachtwoord kan stelen, ongeacht de sterkte', 'Omdat computers steeds sneller worden', 'Omdat websites wachtwoorden niet goed opslaan'],
@@ -131,7 +130,6 @@ const config: ReviewArenaConfig = {
             title: 'Veilig of onveilig gedrag?',
             description: 'Bepaal of elk digitaal gedrag veilig of onveilig is.',
             maxScore: 25,
-            showConfidence: true,
             categories: ['Veilig gedrag', 'Onveilig gedrag'],
             items: [
                 { label: 'Voor elke dienst een ander wachtwoord gebruiken', correctCategory: 'Veilig gedrag' },
@@ -173,6 +171,11 @@ const config: ReviewArenaConfig = {
                     explanation: 'Moderne phishing-aanvallen zijn goed geschreven en nauwelijks van echt te onderscheiden.',
                 },
                 {
+                    question: 'Incognito of privé browsen maakt je volledig onzichtbaar en onvindbaar online.',
+                    answer: false,
+                    explanation: 'Incognito-modus verbergt alleen je geschiedenis op je eigen apparaat. Je IP-adres, je school- of werknetwerk en de websites zelf kunnen je nog steeds zien.',
+                },
+                {
                     question: 'Logbestanden kunnen bewijzen wie wanneer ingelogd is op een systeem.',
                     answer: true,
                     explanation: 'Logbestanden slaan tijdstempels, IP-adressen en acties op — essentieel voor digitaal forensisch onderzoek.',
@@ -186,6 +189,11 @@ const config: ReviewArenaConfig = {
                     question: 'Tweefactorauthenticatie maakt je account volledig onhackbaar.',
                     answer: false,
                     explanation: '2FA verhoogt de beveiliging sterk, maar geen systeem is 100% onhackbaar — social engineering blijft een risico.',
+                },
+                {
+                    question: 'Antivirussoftware installeren betekent dat je nooit meer besmet kan raken met malware.',
+                    answer: false,
+                    explanation: 'Antivirussoftware verlaagt het risico flink, maar nieuwe, nog onbekende malware kan er soms doorheen glippen. Voorzichtig gedrag blijft nodig.',
                 },
                 {
                     question: 'Een firewall monitort en filtert inkomend en uitgaand netwerkverkeer.',

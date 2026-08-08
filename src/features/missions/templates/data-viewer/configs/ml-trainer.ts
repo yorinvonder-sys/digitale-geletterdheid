@@ -74,6 +74,8 @@ export const mlTrainerConfig: DataViewerConfig = {
                     question:
                         'Waarom heet dit "supervised learning"? Wat is de rol van de "Label"-kolom in dit leerproces?',
                     type: 'text-observation',
+                    keywords: ['juiste antwoord', 'begeleid', 'vergelijkt', 'voorbeelden', 'vooraf'],
+                    minKeywords: 1,
                     correctAnswer: '',
                     explanation:
                         '"Supervised" betekent begeleid: een mens heeft elke e-mail vooraf gelabeld als spam of niet. Het model leert van die voorbeelden. De Label-kolom is het "juiste antwoord" — het model vergelijkt zijn voorspellingen met de labels en past zijn gewichten aan. Zonder labels (unsupervised learning) moet het model zelf patronen vinden, zonder te weten wat goed is.',
@@ -126,6 +128,8 @@ export const mlTrainerConfig: DataViewerConfig = {
                     question:
                         'Wat betekent een accuracy van 88%? Hoe zou jij aan een niet-technisch persoon uitleggen of dit "goed genoeg" is?',
                     type: 'text-observation',
+                    keywords: ['context', 'afhankelijk', 'toepassing', 'hangt af', 'waarvoor', 'gebruik'],
+                    minKeywords: 1,
                     correctAnswer: '',
                     explanation:
                         '88% accuracy betekent: het model maakt de juiste beslissing bij 88 van de 100 e-mails. Of dit goed genoeg is, hangt af van de toepassing. Voor een spamfilter is 12% fouten misschien acceptabel (je mist wat spam), maar voor een medisch diagnose-model is 88% veel te laag. Context bepaalt altijd of een accuracy "goed" is.',
@@ -189,6 +193,8 @@ export const mlTrainerConfig: DataViewerConfig = {
                     question:
                         'Je wilt een model bouwen dat voorspelt hoeveel uur een leerling per week op zijn telefoon zit. Is dit classificatie of regressie? Leg uit.',
                     type: 'text-observation',
+                    keywords: ['regressie', 'getal', 'aantal'],
+                    minKeywords: 1,
                     correctAnswer: '',
                     explanation:
                         'Dit is regressie: de uitkomst is een getal (bijv. 3,5 uur), geen categorie. Als je zou willen voorspellen of een leerling "veel" of "weinig" telefoongebruik heeft, wordt het classificatie. Het verschil zit in de uitkomstvariabele: getal = regressie, categorie = classificatie.',

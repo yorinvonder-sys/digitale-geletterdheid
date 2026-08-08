@@ -90,6 +90,18 @@ const config: ScenarioEngineConfig = {
                 },
                 {
                     id: 3,
+                    icon: '🕐',
+                    title: 'Onderaan de mail staat: verzonden om 23:47',
+                    description:
+                        'De mail is midden in de nacht verstuurd, om 23:47 uur.',
+                    correct: false,
+                    explanation:
+                        'Het tijdstip zegt op zichzelf weinig: mailsystemen — van scholen én van aanvallers — versturen berichten automatisch, op elk moment van de dag. Kijk liever naar het domein achter het @-teken, de linkbestemming en het bijlagetype; dat zijn de signalen die er echt toe doen.',
+                    wrongFeedback:
+                        'Een laat tijdstip voelt verdacht, maar mailsystemen versturen automatisch — ook echte school-mails kunnen \'s nachts binnenkomen. Het domein, de linkbestemming en het bijlagetype zijn de signalen die je wél kunt vertrouwen.',
+                },
+                {
+                    id: 4,
                     icon: '🔗',
                     title: 'Blauwe knop: "Bekijk je roosterwijziging op Magister"',
                     description:
@@ -99,7 +111,7 @@ const config: ScenarioEngineConfig = {
                         'De tekst op een knop kan van alles zeggen — het adres dat bij zweven verschijnt is waar je werkelijk heen gaat. Het echte Magister gebruikt altijd het domein magister.net. Zweef dus over een link om het echte adres te zien voor je klikt.',
                 },
                 {
-                    id: 4,
+                    id: 5,
                     icon: '📬',
                     title: 'Roosterwijziging via het berichtencentrum van Magister',
                     description:
@@ -314,6 +326,18 @@ const config: ScenarioEngineConfig = {
                 },
                 {
                     id: 3,
+                    icon: '🗑️',
+                    title: 'De mail meteen verwijderen, zonder het verder te melden',
+                    description:
+                        'Je klikt nergens op en gooit de mail direct weg — verder onderneem je niets.',
+                    correct: false,
+                    explanation:
+                        'Verwijderen is beter dan erop klikken, maar je mist zo de kans om anderen te waarschuwen. Meld de mail bij een volwassene of via de "Meld als spam"-knop, zodat ook klasgenoten worden beschermd.',
+                    wrongFeedback:
+                        'Goed dat je niet klikt! Maar alleen verwijderen is niet de slimste stap: meld de mail ook bij een volwassene of via "Meld als spam", zodat anderen niet in dezelfde val trappen.',
+                },
+                {
+                    id: 4,
                     icon: '🌐',
                     title: 'Zelf naar de schoolwebsite gaan via je browser — niet via de link in de mail',
                     description:
@@ -323,7 +347,7 @@ const config: ScenarioEngineConfig = {
                         'Dit is de gouden regel. Als je schoolaccount echt een probleem heeft, zie je dat ook als je zelf inlogt. Je hoeft nooit via een link in een mail te gaan.',
                 },
                 {
-                    id: 4,
+                    id: 5,
                     icon: '📤',
                     title: 'De verdachte mail doorsturen naar je vrienden om te waarschuwen',
                     description:

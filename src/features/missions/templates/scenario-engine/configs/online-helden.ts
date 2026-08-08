@@ -74,6 +74,16 @@ const config: ScenarioEngineConfig = {
                 },
                 {
                     id: 2,
+                    icon: '🚫',
+                    title: 'Tijdelijk geblokkeerd na ruzie',
+                    description:
+                        'Sanne en Tess hebben ruzie gehad. Sanne blokkeert Tess één week op Instagram om even afstand te nemen. Ze stuurt geen vervelende berichten en betrekt niemand anders erbij.',
+                    correct: false,
+                    explanation:
+                        'Grenzen stellen na een ruzie is geen pesten. Sanne isoleert Tess niet publiekelijk, betrekt niemand anders en het is tijdelijk. Dit is een gezonde manier om met conflict om te gaan, geen aanhoudend patroon met de intentie te kwetsen.',
+                },
+                {
+                    id: 3,
                     icon: '📸',
                     title: 'Screenshot gedeeld',
                     description:
@@ -83,7 +93,7 @@ const config: ScenarioEngineConfig = {
                         'Een privébericht zonder toestemming delen is een schending van vertrouwen én privacy. Als dit bedoeld is om Sofie voor gek te zetten of te kwetsen, is het cyberpesten.',
                 },
                 {
-                    id: 3,
+                    id: 4,
                     icon: '🎮',
                     title: 'Comment in een discussie',
                     description:
@@ -93,7 +103,7 @@ const config: ScenarioEngineConfig = {
                         'Oneens zijn en discussiëren is normaal online gedrag. Zolang het over het onderwerp gaat en niet over de persoon, is dit geen pesten.',
                 },
                 {
-                    id: 4,
+                    id: 5,
                     icon: '😂',
                     title: 'Het "grapje" dat herhaalt',
                     description:
@@ -103,7 +113,7 @@ const config: ScenarioEngineConfig = {
                         'Zodra iemand aangeeft dat iets hem kwetst en het gaat gewoon door, is het geen grapje meer. Herhaling na een "stop"-signaal is een kenmerk van pesten.',
                 },
                 {
-                    id: 5,
+                    id: 6,
                     icon: '👻',
                     title: 'Niet terugvolgen',
                     description:
@@ -113,7 +123,7 @@ const config: ScenarioEngineConfig = {
                         'Iemand niet terugvolgen is normaal. Online vriendschappen evolueren. Dit is geen pesten, tenzij het deel uitmaakt van een groter patroon van bewust uitsluiten.',
                 },
                 {
-                    id: 6,
+                    id: 7,
                     icon: '📱',
                     title: 'TikTok zonder toestemming',
                     description:
@@ -123,7 +133,17 @@ const config: ScenarioEngineConfig = {
                         'Een video posten die iemand in verlegenheid brengt zonder toestemming is een ernstige vorm van cyberpesten. Het publieke bereik maakt de schade groter.',
                 },
                 {
-                    id: 7,
+                    id: 8,
+                    icon: '👍',
+                    title: 'Reageert niet op elk bericht',
+                    description:
+                        'In een groepschat van 30 klasgenoten reageert Milan met een like op berichten van sommige mensen, maar niet op alle. Er is geen vast patroon en niemand wordt structureel overgeslagen.',
+                    correct: false,
+                    explanation:
+                        'Niet op elk bericht reageren is normaal gedrag in een grote groep. Er is geen herhaald patroon gericht op één persoon en geen intentie om iemand uit te sluiten — dat onderscheidt dit van echte cyberpesten.',
+                },
+                {
+                    id: 9,
                     icon: '🗣️',
                     title: 'Constructieve kritiek',
                     description:
@@ -133,7 +153,7 @@ const config: ScenarioEngineConfig = {
                         'Eerlijke feedback, ook als die pijn doet, is geen pesten. Pijn voelen bij kritiek is menselijk — maar de intentie hier is helpen, niet kwetsen.',
                 },
                 {
-                    id: 8,
+                    id: 10,
                     icon: '🔁',
                     title: 'Doorgestuurd gerucht',
                     description:

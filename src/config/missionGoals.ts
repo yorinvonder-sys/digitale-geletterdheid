@@ -405,7 +405,7 @@ export const MISSION_GOALS: Record<string, MissionGoal> = {
             threshold: 60,
             description: 'Je herkent rode vlaggen, rangschikt bronnen op betrouwbaarheid en kiest de juiste CRAAP-vragen.',
         },
-        evidence: 'Je kunt minimaal drie rode vlaggen voor onbetrouwbare berichten noemen en uitleggen wanneer je niet deelt.',
+        evidence: 'Je pikt de rode vlaggen uit een reeks berichtkenmerken, zet bronnen op betrouwbaarheid en kiest per bericht of je het deelt.',
     },
     'ai-bias-detective': {
         primaryGoal: 'Ik herken AI-bias in systemen, schat het risico in en kies maatregelen die bijdragen aan eerlijkere AI.',
@@ -414,7 +414,7 @@ export const MISSION_GOALS: Record<string, MissionGoal> = {
             threshold: 60,
             description: 'Je identificeert bias-situaties, rangschikt risico\'s en beoordeelt oplossingen.',
         },
-        evidence: 'Je kunt twee concrete voorbeelden van AI-bias noemen en een maatregel kiezen die écht helpt.',
+        evidence: 'Je herkent concrete voorbeelden van AI-bias tussen verschillen die juist logisch zijn, schat in welke toepassing het meeste risico geeft en kiest een maatregel die écht helpt.',
     },
 
     // === PuzzleLab ===
@@ -504,13 +504,13 @@ export const MISSION_GOALS: Record<string, MissionGoal> = {
 
     // === ReviewArena ===
     'data-review': {
-        primaryGoal: 'Ik beoordeel databronnen op betrouwbaarheid, classificeer persoonsgegevens en beantwoord vragen over AVG-rechten.',
+        primaryGoal: 'Ik haal de kernbegrippen van periode 1 op — datasets lezen, formules kiezen, bronnen wegen, API\'s begrijpen, visualisaties kiezen en AI-bias herkennen — en pas ze toe.',
         criteria: {
             type: 'rounds-complete',
             min: 4,
-            description: 'Je sorteert databronnen, koppelt beveiligingsmaatregelen, categoriseert persoonsgegevens en beantwoordt AVG-vragen.',
+            description: 'Je sorteert bronnen op bewijskracht, koppelt kasboekvragen aan de juiste spreadsheetformule, deelt dashboardvragen in bij het passende grafiektype en beoordeelt stellingen over API\'s en AI-bias.',
         },
-        evidence: 'Je kunt het verschil uitleggen tussen gewone en bijzondere persoonsgegevens en weet welke AVG-rechten je hebt.',
+        evidence: 'Je weegt bronnen op bewijskracht, kiest de juiste formule bij een vraag en het juiste grafiektype bij een datasoort, leest een JSON-antwoord en een API-URL, en herkent wanneer een AI-systeem groepen systematisch anders behandelt.',
     },
     'code-review-2': {
         primaryGoal: 'Ik laat zien dat ik de programmeer- en webdev-concepten uit periode 2 beheers door ze te sorteren, te koppelen en toe te passen.',
@@ -712,7 +712,7 @@ export const MISSION_GOALS: Record<string, MissionGoal> = {
             threshold: 65,
             description: 'Je analyseert drie datasets over schermtijd en sociale media en beantwoordt vragen over bronkwaliteit.',
         },
-        evidence: 'Je conclusie verwijst naar concrete getallen uit de data en je kunt uitleggen waarom een nieuwsartikel betrouwbaar of onbetrouwbaar is.',
+        evidence: 'Je leest gemiddelden en verschillen correct af uit een tabel en een grafiek, en je legt uit waarom onderzoek van een bedrijf zelf minder zwaar weegt dan onafhankelijk onderzoek.',
     },
     'welzijnsonderzoeker': {
         primaryGoal: 'Ik onderzoek de relatie tussen schermtijd en welzijn met enquêtedata en CBS-statistieken en onderscheid correlatie van oorzakelijkheid.',
@@ -724,11 +724,11 @@ export const MISSION_GOALS: Record<string, MissionGoal> = {
         evidence: 'Je kunt uitleggen waarom correlatie geen oorzakelijkheid bewijst en hoe context (examen, vakantie) data beïnvloedt.',
     },
     'spreadsheet-specialist': {
-        primaryGoal: 'Ik gebruik spreadsheet-formules zoals SOM, GEMIDDELDE en MAX om vragen te beantwoorden en data te filteren en sorteren.',
+        primaryGoal: 'Ik kies bij een vraag de juiste spreadsheet-formule zoals SOM, GEMIDDELDE en MAX, en vind gegevens terug door te sorteren en filteren.',
         criteria: {
             type: 'score-threshold',
             threshold: 65,
-            description: 'Je analyseert boekhouddata van de leerlingenraad en beantwoordt vragen met de juiste formules.',
+            description: 'Je analyseert boekhouddata van de leerlingenraad en beantwoordt vragen over de juiste formule.',
         },
         evidence: 'Je kunt uitleggen welke formule een totaal, gemiddelde of maximum berekent en wanneer je filtert of sorteert.',
     },

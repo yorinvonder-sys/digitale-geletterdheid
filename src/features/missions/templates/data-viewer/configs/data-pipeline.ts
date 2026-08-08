@@ -70,6 +70,8 @@ export const dataPipelineConfig: DataViewerConfig = {
                     question:
                         'Waarom is het gevaarlijk om analyses te doen op ruwe data zonder die eerst op te schonen? Geef een concreet voorbeeld met de sensordata.',
                     type: 'text-observation',
+                    keywords: ['gemiddelde', 'duplicaten', 'duplicaat', 'misleidend'],
+                    minKeywords: 1,
                     correctAnswer: '',
                     explanation:
                         'Als je het gemiddelde stroomverbruik berekent met -50 W erin, wordt het resultaat misleidend laag. Als je de duplicaat meeneemt, tel je 08:00 twee keer mee. Als je 215°C als temperatuur gebruikt, beïnvloedt het het gemiddelde enorm (echte gemiddelde is ~21°C maar met die fout wordt het ~47°C). Garbage in, garbage out — slechte data levert slechte conclusies.',
@@ -123,6 +125,8 @@ export const dataPipelineConfig: DataViewerConfig = {
                     question:
                         'Beschrijf de drie stappen van een ETL-proces in eigen woorden. Gebruik de sensordata als voorbeeld.',
                     type: 'text-observation',
+                    keywords: ['extract', 'ophalen', 'transform', 'opschonen', 'opslaan'],
+                    minKeywords: 1,
                     correctAnswer: '',
                     explanation:
                         'Extract: haal de sensordata op uit de database of CSV-bestanden. Transform: schoon de data op — verwijder duplicaten, repareer datumformaten, vervang onmogelijke waarden, standaardiseer lokaal-namen. Load: laad de schoone data in een nieuw bestand of database die klaar is voor analyse. Zonder de Transform-stap zijn de Extract en Load nutteloos.',
@@ -186,6 +190,8 @@ export const dataPipelineConfig: DataViewerConfig = {
                     question:
                         'Benoem één nadeel van imputatie als transformatiestrategie. Wanneer zou je toch liever de rij verwijderen?',
                     type: 'text-observation',
+                    keywords: ['imputatie', 'verzonnen', 'verzint', 'ontbreken', 'schatting'],
+                    minKeywords: 1,
                     correctAnswer: '',
                     explanation:
                         'Nadeel van imputatie: je voegt verzonnen data toe aan je dataset. Als je later precies wilt weten wat er om 09:00 is gemeten, bestaat dat getal niet echt. Je zou liever verwijderen als: de omliggende metingen ook ontbreken (je kunt geen gemiddelde maken), of als de meting over een crisissituatie ging waarbij je géén geschatte waarden wilt invoegen.',

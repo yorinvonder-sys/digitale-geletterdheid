@@ -38,7 +38,7 @@ export const PhaseCard: React.FC<PhaseCardProps> = ({
             </div>
         </div>
         <p
-            className="text-sm text-duck-ink/60 leading-relaxed mb-4"
+            className="text-sm text-duck-ink/75 leading-relaxed mb-4"
             style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
         >
             {description}

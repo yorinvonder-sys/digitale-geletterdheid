@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect, useCallback, ReactNode } from 'react';
+import { MotionConfig } from 'framer-motion';
 
 export interface AccessibilitySettings {
     dyslexiaMode: boolean;
@@ -89,7 +90,16 @@ export function AccessibilityProvider({ children }: { children: ReactNode }) {
             toggleHighContrast,
             setFontSize,
         }}>
-            {children}
+            {/*
+                De CSS-regels voor `.reduced-motion` raken framer-motion niet: die animeert
+                via inline styles/WAAPI, niet via CSS-transitions. MotionConfig is de enige
+                plek waar dat wél doorwerkt. "always" wanneer de leerling het in de app
+                aanzet; anders "user", zodat de systeeminstelling alsnog geldt wanneer die
+                pas ná het opslaan van de voorkeuren is aangezet.
+            */}
+            <MotionConfig reducedMotion={settings.reducedMotion ? 'always' : 'user'}>
+                {children}
+            </MotionConfig>
         </AccessibilityContext.Provider>
     );
 }
