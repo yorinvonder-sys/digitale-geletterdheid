@@ -6,8 +6,10 @@ import { enhancePrompt, shouldShowEnhancementDiff } from '@/services/promptEnhan
 import { applyGameCommand } from '@/services/gameCommands';
 import { saveMissionProgress, loadMissionProgress, resetMissionProgress } from '@/services/missionService';
 import { stripAiProvenance } from '@/utils/aiContentMarker';
+import { supabase } from '@/services/supabase';
 import DOMPurify from 'dompurify';
 import { useChatSession, MAX_UI_MESSAGES } from './useChatSession';
+import { useWellbeingMonitor, WellbeingMatch } from './useWellbeingMonitor';
 import { useGameCode, stripGameCodeFromResponse } from './useGameCode';
 import { useStepCompletion } from './useStepCompletion';
 
@@ -384,6 +386,41 @@ export const useAgentLogic = ({ selectedRole, userIdentifier, schoolId, initialP
         resetKey: selectedRole?.id,
     });
 
+    // --- WELZIJNSDETECTIE ---
+    // Zelfde vangnet als op de sjabloonroute (useStudentAssistant): elk leerlingbericht
+    // wordt gescand VOORDAT het naar de AI gaat. Bij een treffer gaat het bericht niet
+    // weg, ziet de leerling de hulplijnen en krijgt de docent een melding — zonder de
+    // originele tekst, alleen categorie en tijdstip.
+    const shouldUseRemoteStudentControls = Boolean(userIdentifier)
+        && userIdentifier !== 'anonymous'
+        && !((import.meta as any).env?.DEV === true && userIdentifier.startsWith('dev-'));
+
+    const handleWellbeingAlert = useCallback(async (match: WellbeingMatch) => {
+        if (!shouldUseRemoteStudentControls) return;
+
+        // Log alert naar Supabase voor docentnotificatie (zonder originele tekst — privacy)
+        try {
+            await supabase.rpc('log_wellbeing_alert' as any, {
+                p_student_id: userIdentifier,
+                p_category: match.category,
+                p_detected_at: match.timestamp,
+            });
+        } catch (err) {
+            // Tabel/RPC bestaat mogelijk nog niet — fail silently in dev, log in prod
+            console.error('Wellbeing alert logging failed:', err);
+        }
+    }, [shouldUseRemoteStudentControls, userIdentifier]);
+
+    const {
+        scanText: scanWellbeing,
+        showHulplijn,
+        lastMatch: wellbeingMatch,
+        dismissHulplijn,
+    } = useWellbeingMonitor({
+        onAlert: handleWellbeingAlert,
+        studentId: userIdentifier,
+    });
+
     // Wrap undoGameCode to pass setMessages
     const undoGameCode = useCallback(() => {
         undoGameCodeBase(setMessages);
@@ -589,6 +626,16 @@ export const useAgentLogic = ({ selectedRole, userIdentifier, schoolId, initialP
     };
 
     const handleSend = async (textInput: string = input) => {
+        // Welzijnscheck — scan op zorgwekkende taal VOORDAT het bericht naar AI gaat.
+        // Staat bewust vóór de sessiecheck: ook als de AI-sessie niet startte moet een
+        // signaal de hulplijnen tonen. Het bericht wordt NIET verstuurd en NIET in de
+        // chat gezet; de overlay verschijnt via showHulplijn en is te sluiten, waarna de
+        // leerling gewoon verder kan typen.
+        if (scanWellbeing(textInput).isBlocked) {
+            setInput('');
+            return;
+        }
+
         if (!chatSessionRef.current) {
             setError("Kan geen verbinding maken met AI. Ververs de pagina of probeer het later opnieuw.");
             return;
@@ -1051,5 +1098,10 @@ export const useAgentLogic = ({ selectedRole, userIdentifier, schoolId, initialP
         canUndoGameCode: gameCodeHistory.length > 0,
         // Reset game to default
         resetGameToDefault,
+        // Welzijnsdetectie
+        scanWellbeing,
+        showHulplijn,
+        wellbeingMatch,
+        dismissHulplijn,
     };
 };

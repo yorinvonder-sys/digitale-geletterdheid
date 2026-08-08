@@ -791,6 +791,7 @@ export function AuthenticatedApp() {
                     }}
                     stats={user?.stats}
                     vsoProfile={user?.stats?.vsoProfile}
+                    studentId={user?.uid}
                 />
             );
         }

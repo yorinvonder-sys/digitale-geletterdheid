@@ -22,6 +22,7 @@ import { logger } from '@/utils/logger';
 import { getAssessment, hasAssessment } from '@/features/assessment/data/assessmentRegistry';
 import { isMeaningfulAnswer, isRealMessage } from '@/features/missions/templates/shared/answerQuality';
 import { RotateDevicePrompt } from '@/components/app-shell/RotateDevicePrompt';
+import { WellbeingAlert } from '@/features/student/WellbeingAlert';
 import { logActivity, saveHybridAssessmentRecord } from '@/services/teacherService';
 
 
@@ -212,6 +213,10 @@ export const AiLab: React.FC<AiLabProps> = ({ user, onExit, saveProgress, comple
     undoGameCode,
     canUndoGameCode,
     resetGameToDefault,
+    scanWellbeing,
+    showHulplijn,
+    wellbeingMatch,
+    dismissHulplijn,
   } = useAgentLogic({
     selectedRole,
     userIdentifier: user?.uid || '', // IMPORTANT: Must use Supabase UID, not identifier (student number)
@@ -651,6 +656,15 @@ export const AiLab: React.FC<AiLabProps> = ({ user, onExit, saveProgress, comple
   // Wrap handleSend to check for tip copying AND award XP for engagement
   const handleSendWithTipCheck = (text?: string) => {
     const inputText = text || input;
+
+    // Welzijnscheck vóór de tip-controle en de XP-beloning. handleSend blokkeert het
+    // bericht sowieso, maar zonder deze check zou een leerling in nood eerst nog een
+    // XP-melding over zijn hulplijnscherm heen krijgen.
+    if (inputText && scanWellbeing(inputText).isBlocked) {
+      setInput('');
+      return;
+    }
+
     if (inputText && !text) {
       // Only check when user types manually (not from suggestion click)
       checkForTipCopy(inputText);
@@ -769,6 +783,9 @@ export const AiLab: React.FC<AiLabProps> = ({ user, onExit, saveProgress, comple
 
   return (
     <div className="fixed inset-0 overflow-hidden flex flex-col items-center pt-safe pb-safe pl-safe pr-safe">
+
+      {/* Welzijnsdetectie overlay */}
+      {showHulplijn && <WellbeingAlert match={wellbeingMatch} onDismiss={dismissHulplijn} />}
 
       {/* NEW: Web Preview Modal */}
       {previewUrl && (
