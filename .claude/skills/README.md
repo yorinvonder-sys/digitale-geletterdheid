@@ -9,6 +9,7 @@ Map met DGSkills-specifieke Claude Skills (Anthropic SKILL.md format). Elke skil
 | `dgskills-mission-author` | Bij toevoegen/wijzigen van een leerling-missie | Zorgt voor complete SLO-koppeling, curriculum-plaatsing, template-registratie en didactische onderbouwing |
 | `dgskills-compliance-check` | Vóór elke "done"-markering of PR | Draait acceptance-checklist + AI Act HIGH RISK Annex III 3(b) verplichtingen |
 | `dgskills-supabase-edge` | Bij werk aan Supabase edge functions | Security-first playbook voor Deno edge functions (CORS, auth, AI, secrets, RLS) |
+| `dgskills-ai-classroom` | Als missies door leerlingogen beoordeeld moeten worden | Laat 12 gesimuleerde leerlingen een missie in de browser spelen en levert per missie één oordeel: `ship / fix-eerst / herontwerp` |
 
 ## Triggering
 
@@ -25,6 +26,7 @@ Claude activeert een skill op basis van de `description` in de YAML-frontmatter.
 - Bij grote wijzigingen in de stack (bv. Vertex → ander model, of nieuwe template-type): werk de relevante skill bij.
 - Bij nieuwe compliance-eisen (AI Act-updates): werk `dgskills-compliance-check` bij.
 - Bij nieuwe edge-function-patronen: werk `dgskills-supabase-edge` bij.
+- Bij een nieuw leerlingprofiel: voeg een bestand toe aan `tests/ai-students/classroom/` — `dgskills-ai-classroom` pikt het op zonder codewijziging, maar de leerlingkeuze in stap 3 van die skill moet je wél bijwerken.
 
 ## Referenties (onderzoeksbasis)
 
