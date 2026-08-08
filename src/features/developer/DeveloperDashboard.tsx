@@ -22,7 +22,8 @@ import {
     GraduationCap,
     Users,
     NotebookPen,
-    ClipboardCheck
+    ClipboardCheck,
+    ScanSearch
 } from 'lucide-react';
 import { DeveloperSprintPlan } from './DeveloperSprintPlan';
 import { PWAInstallPrompt } from '@/components/app-shell/PWAInstallPrompt';
@@ -35,6 +36,7 @@ const AccountantDashboard = React.lazy(() => import('./AccountantDashboard').the
 const DeveloperNotesPanel = React.lazy(() => import('./DeveloperNotesPanel').then(m => ({ default: m.DeveloperNotesPanel })));
 const DeveloperReviewChecklist = React.lazy(() => import('./DeveloperReviewChecklist').then(m => ({ default: m.DeveloperReviewChecklist })));
 const DpaPdfGenerator = React.lazy(() => import('./DpaPdfGenerator').then(m => ({ default: m.DpaPdfGenerator })));
+const MissionQualityDashboard = React.lazy(() => import('./mission-quality/MissionQualityDashboard').then(m => ({ default: m.MissionQualityDashboard })));
 import {
     subscribeToDeveloperTasks,
     DeveloperTask,
@@ -56,7 +58,7 @@ interface DeveloperDashboardProps {
     onSwitchView?: (view: 'developer' | 'student' | 'teacher') => void;
 }
 
-type TabId = 'overview' | 'tasks' | 'timeline' | 'docs' | 'analytics' | 'boekhouding' | 'sprintplan' | 'notities' | 'reviewChecklist' | 'dpaGenerator';
+type TabId = 'overview' | 'tasks' | 'timeline' | 'docs' | 'analytics' | 'boekhouding' | 'sprintplan' | 'notities' | 'reviewChecklist' | 'missionQuality' | 'dpaGenerator';
 
 export function DeveloperDashboard({ user, onLogout, onSwitchView }: DeveloperDashboardProps) {
     const [activeTab, setActiveTab] = useState<TabId>('sprintplan');
@@ -95,6 +97,7 @@ export function DeveloperDashboard({ user, onLogout, onSwitchView }: DeveloperDa
         { id: 'sprintplan',   label: 'Sprint Plan',   icon: Rocket },
         { id: 'overview',     label: 'Overzicht',     icon: LayoutDashboard },
         { id: 'notities',     label: 'Notities',      icon: NotebookPen },
+        { id: 'missionQuality', label: 'Missiekwaliteit', icon: ScanSearch },
         { id: 'reviewChecklist', label: 'Review checklist', icon: ClipboardCheck },
         { id: 'tasks',        label: 'Takenlijst',    icon: CheckSquare },
         { id: 'timeline',     label: 'Tijdpaden',     icon: Calendar },
@@ -321,6 +324,8 @@ export function DeveloperDashboard({ user, onLogout, onSwitchView }: DeveloperDa
                 return <Suspense fallback={<TabLoader />}><DeveloperNotesPanel /></Suspense>;
             case 'reviewChecklist':
                 return <Suspense fallback={<TabLoader />}><DeveloperReviewChecklist user={user} /></Suspense>;
+            case 'missionQuality':
+                return <Suspense fallback={<TabLoader />}><MissionQualityDashboard userId={user.uid} /></Suspense>;
             case 'dpaGenerator':
                 return <Suspense fallback={<TabLoader />}><DpaPdfGenerator /></Suspense>;
             default:
