@@ -17,15 +17,19 @@ interface Props {
 export const WellbeingAlert: React.FC<Props> = ({ match, onDismiss }) => {
   if (!match) return null;
 
+  // items-start + my-auto op de kaart: past de kaart, dan staat hij gecentreerd; past
+  // hij niet (laag venster, iPad in liggende stand), dan blijven de bovenkant én de
+  // sluitknop bereikbaar door te scrollen. Zonder overflow-y-auto viel de knop buiten
+  // beeld en zat de leerling vast achter de overlay.
   return (
     <div
-      className="fixed inset-0 z-[9999] bg-duck-ink/80 backdrop-blur-sm flex items-center justify-center p-4"
+      className="fixed inset-0 z-[9999] bg-duck-ink/80 backdrop-blur-sm flex items-start justify-center overflow-y-auto p-4"
       role="alertdialog"
       aria-modal="true"
       aria-labelledby="wellbeing-title"
       aria-describedby="wellbeing-desc"
     >
-      <div className="max-w-md w-full bg-white rounded-2xl shadow-2xl overflow-hidden">
+      <div className="max-w-md w-full my-auto bg-white rounded-2xl shadow-2xl overflow-hidden">
         {/* Header */}
         <div className="bg-duck-ink p-6 text-center relative">
           <button

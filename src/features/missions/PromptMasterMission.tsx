@@ -10,12 +10,15 @@
  * 3. Expert: Geavanceerd (persona's, constraints, voorbeelden)
  */
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { ArrowLeft, Sparkles, ArrowRight, Trophy, RotateCcw, Lightbulb, Zap, Target, Send, Bot, ThumbsUp, ThumbsDown, Star, Image, FileText, HelpCircle, Code, ChevronRight, Loader2, Brain, Eye, Palette } from 'lucide-react';
 import { UserStats, VsoProfile } from '@/types';
 import { createChatSession, generateImage, sendMessageToAi } from '@/services/aiProviderService';
 import { isGeneratedImageDataUrl } from '@/services/imageGenerationLogic';
 import { useMissionAutoSave } from '@/hooks/useMissionAutoSave';
+import { supabase } from '@/services/supabase';
+import { useWellbeingMonitor, WellbeingMatch } from '@/hooks/useWellbeingMonitor';
+import { WellbeingAlert } from '@/features/student/WellbeingAlert';
 import {
     buildLocalPromptResult,
     calculatePromptMasterMaxScore,
@@ -41,6 +44,8 @@ interface Props {
     stats?: UserStats;
     vsoProfile?: VsoProfile;
     qaMode?: boolean;
+    /** UID van de ingelogde leerling; nodig om een welzijnssignaal bij de docent te melden. */
+    studentId?: string;
 }
 
 const MISSION_GOAL: MissionGoal = {
@@ -731,7 +736,7 @@ const PromptExampleComparison: React.FC<{ challenge: Challenge }> = ({ challenge
     );
 };
 
-export const PromptMasterMission: React.FC<Props> = ({ onBack, onComplete, vsoProfile, qaMode = false }) => {
+export const PromptMasterMission: React.FC<Props> = ({ onBack, onComplete, vsoProfile, qaMode = false, studentId }) => {
     // Persistent progress state (auto-saved to localStorage)
     const { state: progress, setState: setProgress, clearSave, hasSavedProgress } = useMissionAutoSave<PromptMasterProgress>(
         'prompt-master',
@@ -750,6 +755,41 @@ export const PromptMasterMission: React.FC<Props> = ({ onBack, onComplete, vsoPr
     // NEW: Loading and thinking states
     const [isAnalyzing, setIsAnalyzing] = useState(false);
     const [thinkingStep, setThinkingStep] = useState('');
+
+    // --- WELZIJNSDETECTIE ---
+    // Zelfde vangnet als op de sjabloonroute (useStudentAssistant) en de AiLab-route
+    // (useAgentLogic): de prompt van de leerling wordt gescand VOORDAT hij naar de AI
+    // gaat. Bij een treffer gaat er niets weg, ziet de leerling de hulplijnen en krijgt
+    // de docent een melding — zonder de originele tekst, alleen categorie en tijdstip.
+    const shouldUseRemoteStudentControls = Boolean(studentId)
+        && studentId !== 'anonymous'
+        && !((import.meta as any).env?.DEV === true && studentId!.startsWith('dev-'));
+
+    const handleWellbeingAlert = useCallback(async (match: WellbeingMatch) => {
+        if (!shouldUseRemoteStudentControls) return;
+
+        // Log alert naar Supabase voor docentnotificatie (zonder originele tekst — privacy)
+        try {
+            await supabase.rpc('log_wellbeing_alert' as any, {
+                p_student_id: studentId,
+                p_category: match.category,
+                p_detected_at: match.timestamp,
+            });
+        } catch (err) {
+            // Tabel/RPC bestaat mogelijk nog niet — fail silently in dev, log in prod
+            console.error('Wellbeing alert logging failed:', err);
+        }
+    }, [shouldUseRemoteStudentControls, studentId]);
+
+    const {
+        scanText: scanWellbeing,
+        showHulplijn,
+        lastMatch: wellbeingMatch,
+        dismissHulplijn,
+    } = useWellbeingMonitor({
+        onAlert: handleWellbeingAlert,
+        studentId,
+    });
 
     // Get current challenges for level
     const levelChallenges = CHALLENGES.filter(c => c.level === progress.currentLevel);
@@ -830,6 +870,16 @@ export const PromptMasterMission: React.FC<Props> = ({ onBack, onComplete, vsoPr
     // Handlers
     const handleSubmitPrompt = async () => {
         if (!userPrompt.trim() || !currentChallenge || isAnalyzing) return;
+
+        // Welzijnscheck — staat bewust vóór álles: vóór de AI-aanroep, vóór de
+        // pogingenteller en vóór de puntentoekenning. Een leerling in nood mag geen
+        // scoremelding over zijn hulplijnscherm heen krijgen. Er wordt niets verstuurd
+        // en er verschijnt geen feedbackscherm; de overlay is te sluiten, waarna de
+        // leerling gewoon verder kan met de opdracht.
+        if (scanWellbeing(userPrompt).isBlocked) {
+            setUserPrompt('');
+            return;
+        }
 
         idealImageRequestRef.current += 1;
         setAttempts(a => a + 1);
@@ -1066,6 +1116,9 @@ export const PromptMasterMission: React.FC<Props> = ({ onBack, onComplete, vsoPr
 
         return (
             <div data-qa="prompt-master-challenge" className="h-dvh overflow-y-auto bg-duck-bg text-duck-ink flex flex-col" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                {/* Hulplijnen bij een welzijnssignaal. Staat in deze fase omdat hier de
+                    prompt verstuurd wordt; sluiten brengt de leerling terug bij de opdracht. */}
+                {showHulplijn && <WellbeingAlert match={wellbeingMatch} onDismiss={dismissHulplijn} />}
                 {/* Header */}
                 <header className="bg-white border-b border-duck-gray px-4 py-3 md:px-6 md:py-4 sticky top-0 z-10">
                     <div className="max-w-4xl mx-auto flex flex-wrap items-center justify-between gap-2">

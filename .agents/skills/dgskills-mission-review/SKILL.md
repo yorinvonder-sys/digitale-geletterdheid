@@ -5,7 +5,16 @@ description: Review, audit, visually test, or improve an existing DGSkills learn
 
 # DGSkills Mission Review - Codex Workspace Skill
 
-Gebruik deze skill als project-lokale orchestrator. Gebruik `gpt-5.6-sol` met `xhigh` voor oordeel, auth/privacy, integratie, release en eindvalidatie. Gebruik Luna alleen voor begrensd, controleerbaar uitvoeringswerk wanneer de gebruiker parallel werk of Luna expliciet toestaat.
+Gebruik deze skill als project-lokale orchestrator. Werk tokenzuinig: laat Luna standaard het begrensde, controleerbare uitvoeringswerk doen en reserveer Sol voor integratie, gevoelige beslissingen en het eindverdict. Sol blijft altijd verantwoordelijk voor de uiteindelijke releasebeslissing.
+
+Pas vóór elke coherente slice de routinggate toe:
+- **Luna medium:** standaard voor inventarisatie, config-/broninspectie, contextpakketten, rapportvoorbereiding en normale vier-viewport-previewchecks.
+- **Luna high:** alleen voor een begrensde maar aantoonbaar lastige browserflow, omvangrijke statische inspectie of onverklaarde lokale fout met een goedkope verificatieroute.
+- **Luna xhigh:** toegestaan voor veel maar omkeerbaar, side-effectvrij en zelfstandig verifieerbaar uitvoeringswerk, zoals lange lokale previewflows of evidencecollectie. Gebruik Luna xhigh nooit voor productiecompletion, auth/privacy, severity-integratie of release.
+- **Sol medium:** integratie van Design → Didactiek → Techniek, severitycontrole, fixscope en missieverdict.
+- **Sol xhigh:** uitsluitend voor Rood-gates zoals QA-account/auth, Supabase/privacy, productiecleanup en het definitieve releasebesluit.
+
+Gebruik geen Terra. Verhoog Luna niet automatisch: kies eerst het model en daarna het laagste toereikende thinkingniveau. Escaleer naar Sol zodra ambiguïteit, koppeling, gevoelige data of release-impact de reden voor dieper denken is.
 
 ## DGSkills Mission Factory v1
 
@@ -117,11 +126,28 @@ Als de browsercheck niet lukt, ga niet stil verder. Noteer de blocker en geef aa
 ### 6. Subagents binnen Codex
 
 Als de gebruiker expliciet subagents of parallelisatie wil:
-- Behandel precies één missie in één hoofdtaak. Start de volgende pas in een verse taak nadat rapport, bewijs, fixes en status van de huidige missie zijn afgerond.
-- Gebruik maximaal drie `gpt-5.6-luna`-workers: één muterende productieleerlingflow, één side-effectvrije desktop/iPad-portretflow en één side-effectvrije iPad-landschap/mobielflow plus afgebakende reviewtaken.
-- Laat slechts één worker productievoortgang of XP muteren; laat de andere viewports `/dev/mission-preview` gebruiken op exact dezelfde schone commit.
-- Serialiseer login/logout, authwissels, completion en screenshots. Stop bij onverwachte identiteit of voortgangsstaat.
-- Laat Sol `xhigh` planning, auth/privacy, Supabase, integratie, release en eindvalidatie bezitten. Gebruik nooit Terra.
+- Leg geen vaste numerieke bovengrens op aan `gpt-5.6-luna`-workers. Dispatch zoveel Luna-agents parallel als de runtime toelaat en als er zelfstandig verifieerbare slices beschikbaar zijn; brede Luna-parallelisatie is de voorkeursroute voor snelheid en lager Sol-verbruik.
+- Deze regel vervangt oudere vaste caps zoals “maximaal drie workers” en “één missie per hoofdtaak”. In een periodebatch mag één worker per missie/slice parallel draaien; Sol houdt één batchbrede integratietaak.
+- Verdeel een periodebatch bij voorkeur per missie, gedeelde engine, rubric of side-effectvrije viewportset. Geef iedere worker een klein contextpakket, expliciete outputlimiet en eigen bewijsdoel. Splits geen strak gekoppeld werk alleen om meer agents actief te houden.
+- Laat de orchestrator een sliceregister bijhouden met unieke sleutels zoals `<mission>:<viewport>:<state>`. Wijs een actieve sleutel nooit dubbel toe en pas dynamische backpressure toe bij serververtraging, tool-rate-limits of evidenceconflicten; “geen vaste cap” heft veiligheidsstops niet op.
+- Laat Luna-workers lokale previewviewports, broninspectie, configdelta's, testuitvoer en rapportvoorbereiding parallel uitvoeren. Hergebruik gedeelde engineanalyse tussen missies; missieworkers lezen daarna alleen hun config, metadata en afwijkingen.
+- Wijs één `runtime-owner` aan die dev-server, poort, bron-SHA, healthcheck en cleanup in een `finally`/handoff bezit. Alle browserworkers hergebruiken diens URL met een unieke run-id; individuele workers starten geen eigen server.
+- Wijs één `production-mutator` aan met een door de orchestrator beheerde exclusieve lease en geordende queue. Alleen deze worker mag productievoortgang of XP muteren. Bij workeruitval: geef de lease pas opnieuw uit nadat identiteit, in-flight mutation, sessies en databasestate fail-closed zijn gecontroleerd.
+- Laat nooit twee auth-/productieworkers tegelijk draaien. Verifieer zichtbare identiteit en storage/progress-baseline vóór en na iedere queue-entry; een browser-ID is geen isolatiebewijs. Side-effectvrije checks gebruiken `/dev/mission-preview` op exact dezelfde schone commit.
+- Geef iedere worker een uniek evidencepad `<runId>/<workerId>/<mission>/<viewport>/<state>` en schrijf manifest/hash pas na succesvolle capture. Eén consolidator bezit manifestmerge en cleanup; workers overschrijven geen gedeelde bestanden.
+- Laat Luna maximaal vijf concrete bevindingen, screenshotpaden/hashes en relevante console-/netwerkfouten teruggeven; vermijd DOM-dumps en herhaalde bronlezingen.
+- Laat vóór Sol één Luna-consolidator duplicaten samenvoegen en bewijslinks controleren. Lever maximaal vijf bevindingen per missie en twintig voor de hele periodebatch aan Sol; Blocker/High wordt nooit door de cap verwijderd.
+- Laat Sol integratie, auth/privacy, Supabase, severity, release en eindvalidatie bezitten.
+
+### 6.1 Begrensde Claude CLI-codecontrole
+
+Voer na consolidatie van Blocker/High-kandidaten één aanvullende read-only codecontrole uit met de lokaal beschikbare Claude CLI. Dit is een sidecar, geen beslisser:
+- Controleer eerst `command -v claude` en `claude --version`. Bij ontbrekende CLI of authfout: noteer de blocker; vervang Claude niet stil door een ander model.
+- Laat de hoofdagent vooraf één gesaniteerd tekstpakket maken met alleen relevante diffhunks, bewezen Blocker/High-kandidaten en maximaal één vaste steekproef. Neem dit pakket rechtstreeks in de prompt op; geef Claude geen repo- of bestandspaden.
+- Gebruik als baseline: `claude -p --safe-mode --model opus --effort low --max-turns 6 --max-budget-usd 0.75 --permission-mode dontAsk --no-session-persistence --tools "" --output-format text "<prompt + gesaniteerd pakket>"`. Beperk de parent-call tot circa 120 seconden en 6000 outputtokens. Zonder tools kan Claude geen andere repo-, config-, plugin- of MCP-bronnen lezen of wijzigen.
+- Stuur nooit credentials, identifiers, leerlingdata, sessies, tokens, raw privébewijs of productieprompts naar Claude.
+- Vraag om maximaal vijf bevindingen met severity, `file:regel`, reproductie en bewijsstatus. Sol verifieert iedere Blocker/High zelfstandig en behoudt het eindverdict.
+- Sla de gesaniteerde Claude-uitkomst op als korte rapportsectie; claim geen Claude-review als de CLI-call niet aantoonbaar slaagde.
 
 ### 7. Rapport of verbeterplan
 
