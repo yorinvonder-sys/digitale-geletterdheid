@@ -890,7 +890,7 @@ const DataViewerInner: React.FC<DataViewerProps> = ({
 
     const handleComplete = () => {
         clearSave();
-        onComplete(true);
+        onComplete(totalScore >= config.maxScore * 0.4);
     };
 
     // Phase breakdown for CompletionScreen
