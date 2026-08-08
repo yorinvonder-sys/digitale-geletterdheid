@@ -26,6 +26,23 @@ export const saveMissionProgress = async (
     try {
         const sanitized = sanitizeForPostgres(progressData);
 
+        // Via de server, want een rij die op 'completed' staat is door de leerling
+        // zelf niet meer bij te werken: de RLS-regel filtert hem al weg in de
+        // USING-clausule. Werkbanken als game-programmeur lopen na hun automatische
+        // voltooiing gewoon door, en verloren daardoor stil alles wat daarna kwam.
+        const { error: rpcError } = await supabase.rpc('save_mission_progress', {
+            p_mission_id: missionId,
+            p_progress_data: sanitized,
+        });
+
+        if (!rpcError) return true;
+
+        // Overgangspad: zolang migratie 20260808180000 niet is toegepast bestaat de
+        // functie nog niet. Zonder deze terugval zou een frontend die eerder uitrolt
+        // ELKE opslag laten mislukken in plaats van alleen die na voltooiing.
+        // Weghalen zodra de migratie overal draait.
+        console.error(`Server save failed for ${missionId}, falling back:`, rpcError.message);
+
         const { error } = await supabase
             .from('mission_progress')
             .upsert({
