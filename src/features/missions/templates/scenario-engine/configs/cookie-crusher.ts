@@ -8,7 +8,7 @@ const config: ScenarioEngineConfig = {
     introDescription:
         'Elke dag klikken miljoenen mensen op "Accepteer alles" zonder na te denken. Websites gebruiken slimme trucjes om je dat te laten doen. Jij leert die trucjes herkennen — en er slim mee omgaan.',
     introFeatures: [
-        'Herken manipulatieve cookie-popups (dark patterns)',
+        'Herken dark patterns: oneerlijke ontwerptrucs in cookie-popups die jou iets laten doen wat je eigenlijk niet wil',
         'Rangschik popups van meest naar minst manipulatief',
         'Oefen: accepteren of slim weigeren?',
         'Ontdek welke persoonlijke data op het spel staat',
@@ -80,7 +80,7 @@ const config: ScenarioEngineConfig = {
                         'Alle optionele cookie-categorieën staan al aangevinkt. Je moet actief uitvinken als je iets niet wil.',
                     correct: true,
                     explanation:
-                        'Pre-checked boxes zijn verboden door de AVG voor opt-in toestemming. Echte toestemming is actief, niet passief.',
+                        'Een vakje dat al vast aangevinkt staat, mag niet. De AVG — de Europese privacywet — eist opt-in: jij vinkt zelf aan. Toestemming moet dus iets zijn wat jij actief geeft, niet iets wat al voor je is ingevuld.',
                 },
                 {
                     id: 3,
@@ -100,7 +100,7 @@ const config: ScenarioEngineConfig = {
                         'Er is een "later instellen"-optie, maar die verdwijnt automatisch na 3 tellen. De popup blijft staan totdat je accepteert.',
                     correct: true,
                     explanation:
-                        'Dit heet confirmshaming of een countdown dark pattern. Ze maken weigeren tijdsgevoelig om je te laten schieten.',
+                        'Dit heet confirmshaming (= je een schuldgevoel geven als je weigert, zoals "Jammer, dan mis je alle aanbiedingen") of een countdown dark pattern. Ze maken weigeren tijdsgevoelig om je te laten schieten.',
                 },
                 {
                     id: 5,
@@ -252,7 +252,7 @@ const config: ScenarioEngineConfig = {
                         'Een weer-app vraagt toestemming voor cookies. In de uitleg staat precies: alleen je ingestelde locatie onthouden zodat je niet steeds opnieuw hoeft te zoeken. Geen tracking, geen delen met derden.',
                     correct: true,
                     explanation:
-                        'Accepteren is hier logisch. Het doel is helder en beperkt (locatie onthouden), en er is geen tracking of doorverkoop van data. Transparantie over wat en waarom is precies waar je op moet letten.',
+                        'Accepteren is hier logisch. Het doel is helder en beperkt (locatie onthouden), en er is geen tracking — dus niemand houdt bij welke sites je bezoekt — en geen doorverkoop van data. Transparantie over wat en waarom is precies waar je op moet letten.',
                 },
                 {
                     id: 4,
@@ -272,7 +272,7 @@ const config: ScenarioEngineConfig = {
                         'Je favoriete nieuwssite vraagt cookies. Ze geven je de optie: betaal €2/maand OF accepteer gepersonaliseerde advertenties.',
                     correct: true,
                     explanation:
-                        'Dit is een eerlijk model (ook wel "consent or pay"). Als je de site gratis wil gebruiken en vertrouwen hebt in hun privacy­beleid, is accepteren een bewuste keuze. Betalen is ook prima als je dat kunt.',
+                        'Dit is een eerlijk model: betalen of toestemming geven (in het Engels "consent or pay", waarbij consent gewoon toestemming betekent). Als je de site gratis wil gebruiken en vertrouwen hebt in hun privacy­beleid, is accepteren een bewuste keuze. Betalen is ook prima als je dat kunt.',
                 },
                 {
                     id: 6,
@@ -386,7 +386,7 @@ const config: ScenarioEngineConfig = {
                     icon: '🌐',
                     title: 'Welke andere sites je bezoekt',
                     description:
-                        'Via third-party tracking-pixels en cookies kunnen advertentienetwerken zien welke andere websites je bezoekt.',
+                        'Via third-party (= een ánder bedrijf dan de website waar je op zit, meestal een reclamebedrijf) tracking-pixels en cookies kunnen advertentienetwerken zien welke andere websites je bezoekt.',
                     correct: true,
                     explanation:
                         'Cross-site tracking is de kern van het advertentie-internet. Google en Meta hebben trackers op miljoenen websites. Zij zien een groot deel van je surfgedrag.',
