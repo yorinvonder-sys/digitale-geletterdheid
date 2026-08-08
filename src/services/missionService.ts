@@ -41,7 +41,19 @@ export const saveMissionProgress = async (
         // functie nog niet. Zonder deze terugval zou een frontend die eerder uitrolt
         // ELKE opslag laten mislukken in plaats van alleen die na voltooiing.
         // Weghalen zodra de migratie overal draait.
-        console.error(`Server save failed for ${missionId}, falling back:`, rpcError.message);
+        //
+        // Alleen terugvallen als de functie ONTBREEKT. Op elke fout terugvallen
+        // maakt de grenzen in de functie zelf waardeloos: een te grote opslag zou
+        // dan gewoon via de rechtstreekse weg alsnog binnenkomen, want daar staat
+        // geen groottegrens op.
+        const functieOntbreekt =
+            rpcError.code === 'PGRST202' ||
+            rpcError.code === '42883' ||
+            /could not find the function|does not exist/i.test(rpcError.message ?? '');
+
+        if (!functieOntbreekt) throw rpcError;
+
+        console.error(`Server save function missing for ${missionId}, falling back:`, rpcError.message);
 
         const { error } = await supabase
             .from('mission_progress')

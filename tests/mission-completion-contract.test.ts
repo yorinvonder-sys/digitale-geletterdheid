@@ -130,6 +130,21 @@ test('voortgang wordt via de server bewaard, vóór de rechtstreekse weg', () =>
     // De rechtstreekse weg mag alleen nog de terugval zijn zolang de migratie
     // niet overal draait -- dus ná de serveraanroep.
     assert.ok(save.indexOf("rpc('save_mission_progress'") < save.indexOf('.upsert('));
+
+    // En alleen als de functie ONTBREEKT. Terugvallen op elke fout maakt de
+    // grenzen in de functie waardeloos: een te grote opslag zou dan alsnog via
+    // de rechtstreekse weg binnenkomen, waar geen groottegrens op staat.
+    assert.match(save, /PGRST202/);
+    assert.match(save, /42883/);
+    // Let op: `indexOf` geeft -1 als de regel ONTBREEKT, en -1 is kleiner dan
+    // alles. Eerst op bestaan toetsen, anders slaagt deze controle juist wanneer
+    // de beveiliging is weggehaald.
+    const throwIndex = save.indexOf('throw rpcError');
+    assert.notEqual(throwIndex, -1, 'de terugval wordt niet overgeslagen bij een echte fout');
+    assert.ok(
+        throwIndex < save.indexOf('.upsert('),
+        'een fout die niet over een ontbrekende functie gaat moet de terugval overslaan',
+    );
 });
 
 test('de opslagfunctie raakt status, score en attempts niet aan', () => {
