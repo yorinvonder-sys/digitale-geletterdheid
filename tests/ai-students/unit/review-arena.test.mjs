@@ -36,6 +36,14 @@ test('Review Arena-adapter bevat geen antwoordoracle', async () => {
   assert.doesNotMatch(source, /correctPosition|correctCategory|currentQuestion\.answer|\.\/configs/);
 });
 
+test('Review Arena sluit synchrone dubbele round- en follow-up-completion uit', async () => {
+  const source = await readFile('src/features/missions/templates/review-arena/ReviewArena.tsx', 'utf8');
+  assert.match(source, /completedRoundTransitions\.current\.has\(round\.id\)/);
+  assert.match(source, /completedRoundTransitions\.current\.add\(round\.id\)/);
+  assert.match(source, /completedFollowUpTransitions\.current\.has\(round\.id\)/);
+  assert.match(source, /completedFollowUpTransitions\.current\.add\(round\.id\)/);
+});
+
 test('runner neemt na refresh altijd een verse observatie voor de volgende beslissing', async () => {
   const source = await readFile('tests/ai-students/browser/run-scenario-pilot.mjs', 'utf8');
   assert.match(source, /refreshProbe = await verifyRefreshRecovery[\s\S]{0,120}continue;/);
