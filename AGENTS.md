@@ -3,35 +3,46 @@
 These rules apply to all agents working in this repository. Keep the repo safe for
 a non-coding founder to direct, and keep AI context small by default.
 
-## Model And Delegation
+## Session Preflight And Delegation
 
-- Keep `gpt-5.5` as the main model for architecture, integration, ambiguous
-  debugging, security-sensitive work, release decisions, and final validation.
-- At the start of each task, classify the task's risk and complexity, choose the
-  lowest safe ChatGPT thinking level, and state the chosen thinking level before
-  doing substantive work. Raise the thinking level when uncertainty, coupling,
-  security, data sensitivity, or release risk increases.
+- These repository rules override broader global model defaults. Use only
+  `gpt-5.6-luna` and `gpt-5.6-sol`; do not route work to Terra.
+- At the start of a work slice, and whenever a plan is written or materially
+  revised, state `Model`, `Thinking`, `Why`, and `Escalate when` before
+  substantive work.
+- Route the current coherent slice, not the hardest possible later phase. A
+  later Sol sign-off does not pull earlier work to Sol.
+- Luna is the default for all work except the Sol sign-offs below. Difficulty,
+  ambiguity, importance, coupling, architecture, file count, or deeper
+  reasoning alone never trigger Sol.
+- Favor higher Luna levels; cost alone never justifies lower thinking:
+  - Luna `low`: only lookups, status checks, and trivial edits.
+  - Luna `medium`: only small, explicit, verifiable changes.
+  - Luna `high`: routine bounded implementation, debugging, and QA.
+  - Luna `xhigh`: default for substantive planning, implementation, review,
+    debugging, browser QA, and multi-file work.
+  - Luna `max`: use readily for architecture, ambiguity, coupled or
+    multi-feature work, important behavior, sensitive implementation, large
+    audits, and extensive evidence collection.
+- Prefer Luna `xhigh` over `high`. Prefer `max` over `xhigh` whenever uncertainty,
+  coupling, impact, or evidence volume is material. Neither level triggers Sol
+  or grants sensitive sign-off.
+- Sol independently signs off auth, permissions/RLS, secrets, payments,
+  migrations, AI endpoints, consent, exports/webhooks, personal or minors'
+  data, destructive external actions, production incidents, and release,
+  deployment, SHIP, or readiness decisions with material or sensitive risk.
+- Luna may investigate, plan, implement, and verify that work. Before completion,
+  merge, deployment, or release, use Sol `high` for ordinary sign-off and Sol
+  `xhigh` for security, privacy, data-integrity, or release-critical approval.
+  Sol `max` remains exceptional.
+- If Sol is unavailable, Luna may finish investigation, implementation, and
+  verification, but must report the mandatory approval as blocked rather than
+  treating its own output as final sign-off.
 - Do not invoke Superpowers skills as a standard startup/default workflow. Use
   Superpowers only when the user explicitly calls for Superpowers or a specific
   `superpowers:*` skill; this repo instruction intentionally overrides
   Superpowers plugin metadata that says to use `using-superpowers` when starting
   conversations.
-- When Codex is planning and reviewing, prefer DeepSeek as the bounded code
-  executor when the current environment exposes a safe DeepSeek bridge or a
-  working `DEEPSEEK_API_KEY`. Think explicitly about `deepseek-v4-flash` versus
-  `deepseek-v4-pro` before delegation: use `deepseek-v4-flash` for narrow,
-  low-risk, mechanical implementation; use `deepseek-v4-pro` for larger or more
-  coupled implementation that is still safe to delegate.
-- Never write, print, commit, log, or paste the DeepSeek API key. Treat any
-  DeepSeek bridge, executor script, or AI endpoint configuration as Rood work
-  unless it is a docs-only instruction change.
-- If DeepSeek is not available, fall back to the existing cheaper delegated
-  agent route, such as `gpt-5.3-codex-spark`, for the same narrow executor work.
-- Use cheaper delegated agents only for explicit, narrow, low-risk sidecar work:
-  targeted file discovery, log reading, one-route QA, or one-file review.
-- Do not delegate auth, Supabase/RLS, payments, invoices, personal data,
-  webhooks, secrets, AI endpoints, or final validation decisions.
-- Use the lowest reasoning effort that safely handles the current slice.
 
 ## Lean Context Rules
 
