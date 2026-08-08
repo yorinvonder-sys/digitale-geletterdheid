@@ -194,7 +194,9 @@ const BuilderCanvasInner: React.FC<BuilderCanvasProps> = ({
     };
 
     const handleComplete = async () => {
-        const completed = await onComplete(true);
+        // Pas wissen als de server de voltooiing bevestigd heeft: andersom raakt
+        // een leerling zijn hele bouwwerk kwijt zodra het opslaan mislukt.
+        const completed = await onComplete(totalScore >= config.maxScore * 0.4);
         if (completed !== false) {
             clearSave();
         }
@@ -279,7 +281,11 @@ const BuilderCanvasInner: React.FC<BuilderCanvasProps> = ({
                 />
             </div>
 
-            <MobileTabBar activeTab={mobileTab} onTabChange={setMobileTab} />
+            <MobileTabBar
+                activeTab={mobileTab}
+                onTabChange={setMobileTab}
+                onOpenChat={config.enableChat && !isChatOpen ? () => setIsChatOpen(true) : undefined}
+            />
 
             {/* Main split layout */}
             <div className="min-h-0 flex-1 flex flex-col overflow-hidden md:flex-row">
@@ -332,6 +338,11 @@ const BuilderCanvasInner: React.FC<BuilderCanvasProps> = ({
                                 total: config.steps.length,
                                 completedSteps: state.completedSteps.length,
                             },
+                            // Bij Website Bouwer gaat de ruwe opdrachttekst van de leerling
+                            // NIET mee naar de AI-coach; die krijgt alleen of er iets staat
+                            // en hoe lang het is. De coach heeft de inhoud niet nodig om te
+                            // helpen, en zo verlaat het schrijfwerk van de leerling de
+                            // vertrouwensgrens niet.
                             textEntry: config.missionId === 'website-bouwer'
                                 ? undefined
                                 : currentStepData
@@ -352,9 +363,7 @@ const BuilderCanvasInner: React.FC<BuilderCanvasProps> = ({
                     {!isChatOpen && (
                         <button
                             onClick={() => setIsChatOpen(true)}
-                            // Op smalle schermen staat de actieknop van de stap onderaan het
-                            // paneel; op bottom-6 dekte deze bubbel die knop deels af.
-                            className="fixed bottom-24 right-6 z-40 flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-duck-acid to-duck-acid text-duck-ink shadow-lg transition-all duration-200 hover:brightness-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-ink focus-visible:ring-offset-2 active:scale-95 md:bottom-6"
+                            className="fixed bottom-6 right-6 z-40 hidden h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-duck-acid to-duck-acid text-duck-ink shadow-lg transition-all duration-200 hover:brightness-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-ink focus-visible:ring-offset-2 active:scale-95 md:flex"
                             aria-label="Open AI-assistent"
                         >
                             <MessageCircle size={22} />

@@ -9,7 +9,9 @@ const files = {
 
 assert.match(
   files.builder,
-  /const completed = await onComplete\(true\);[\s\S]*if \(completed !== false\)[\s\S]*clearSave\(\)/,
+  // Het argument mag varieren (main geeft een scoredrempel door in plaats van
+  // `true`); de eis is dat er op bevestiging wordt gewacht voor het wissen.
+  /const completed = await onComplete\([^)]*\);[\s\S]*if \(completed !== false\)[\s\S]*clearSave\(\)/,
   'Website Bouwer must retain local work until durable completion succeeds',
 );
 assert.match(

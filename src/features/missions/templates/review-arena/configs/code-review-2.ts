@@ -172,9 +172,19 @@ const config: ReviewArenaConfig = {
                     explanation: 'UX gaat over hoe prettig en intuïtief een gebruiker een product ervaart.',
                 },
                 {
+                    question: 'Een for-loop kan alleen aflopend tellen, nooit van laag naar hoog.',
+                    answer: false,
+                    explanation: 'Een for-loop kan zowel oplopend als aflopend tellen — je bepaalt zelf de startwaarde, de voorwaarde en de stapgrootte.',
+                },
+                {
                     question: 'Je hoeft geen variabelen te gebruiken als je code werkt.',
                     answer: false,
                     explanation: 'Variabelen maken code leesbaar, herbruikbaar en makkelijk aan te passen.',
+                },
+                {
+                    question: 'Testen is alleen nodig zolang je code nog niet werkt.',
+                    answer: false,
+                    explanation: 'Nieuwe features of wijzigingen kunnen oude functionaliteit stuk maken. Testen blijft nodig, ook bij code die al werkt.',
                 },
                 {
                     question: 'Automatisering vervangt herhalende handmatige taken door code.',

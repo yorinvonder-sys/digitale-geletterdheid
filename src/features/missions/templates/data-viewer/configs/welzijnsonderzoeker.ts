@@ -102,6 +102,8 @@ export const welzijnsonderzoekerConfig: DataViewerConfig = {
                     question:
                         'Beschrijf het verschil in tevredenheid met de digitale balans tussen leerlingen mét en zónder schermtijdlimiet. Wat valt je op?',
                     type: 'text-observation',
+                    keywords: ['kai', 'garandeert', 'uitzondering', 'tevreden', 'ontevreden'],
+                    minKeywords: 1,
                     correctAnswer: '',
                     explanation:
                         'Van de 5 leerlingen MÉT limiet zijn er 4 tevreden ("Ja") en 0 ontevreden. Van de 10 leerlingen ZÓNDER limiet zijn 6 leerlingen ontevreden ("Nee"), 3 soms tevreden ("Soms") en 1 tevreden. Interessant detail: Kai heeft wél een limiet maar zit toch op 4.0 uur — een limiet alleen garandeert dus geen tevredenheid. Dit maakt de data genuanceerder dan een simpel "limiet = goed".',
@@ -147,6 +149,8 @@ export const welzijnsonderzoekerConfig: DataViewerConfig = {
                     question:
                         'Welke categorie wordt het minst erkend als "schermtijd" in het dagelijks gesprek, maar kan wél een andere impact op welzijn hebben dan passief scrollen? Leg uit waarom.',
                     type: 'text-observation',
+                    keywords: ['creatief', 'actief', 'controle'],
+                    minKeywords: 1,
                     correctAnswer: '',
                     explanation:
                         'Creatief gebruik (muziek maken, video\'s produceren) staat onderaan met slechts 0,4 uur, maar onderzoek van Harvard Digital Agency laat zien dat actief creëren een fundamenteel ander effect heeft op welzijn dan passief scrollen. Mensen die iets maken, rapporteren meer controle en voldoening — precies wat bij social media-gebruik vaak ontbreekt. Communicatie via apps (0,9 uur) is ook interessant: dit kan zowel sociaal verbindend als stressverhogend zijn, afhankelijk van de context.',
@@ -198,6 +202,8 @@ export const welzijnsonderzoekerConfig: DataViewerConfig = {
                     question:
                         'Leg in eigen woorden uit waarom het gevaarlijk is om te zeggen: "meer schermtijd = slechter welzijn." Gebruik de contextkolom in je uitleg.',
                     type: 'text-observation',
+                    keywords: ['toetsdruk', 'toetsen', 'vakantie', 'andere factoren', 'andere'],
+                    minKeywords: 1,
                     correctAnswer: '',
                     explanation:
                         'De contextkolom laat zien dat er steeds andere factoren meespelen: toetsdruk in maart, vakantierust in april, eindexamenstress in mei. Het is gevaarlijk omdat je een simpele oorzaak-gevolgrelatie suggereert terwijl er veel andere verklaringen zijn (confounders). Trimbos en Harvard Digital Agency benadrukken dat het HOE (passief scrollen vs. actief gebruik) en de context belangrijker zijn dan de hoeveelheid uren alleen.',

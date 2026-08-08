@@ -77,7 +77,7 @@ export const MISSION_OVERRIDES: Record<string, Partial<Mission>> = {
     'api-verkenner': { info: 'Ik ontdek hoe apps en websites data uitwisselen via API\'s. Ik lees antwoorden uit een API en begrijp wat de velden betekenen.' },
     'dashboard-designer': { info: 'Ik kies passende grafieken en ontwerp een dashboard dat belangrijke data snel zichtbaar maakt. Ik leer hoe ik informatie helder presenteer.' },
     'ai-bias-detective': { info: 'Ik onderzoek of een AI-systeem groepen oneerlijk behandelt. Ik herken bias in de output en bedenk hoe het eerlijker kan.' },
-    'data-review': { info: 'Ik herhaal de belangrijkste dataconcepten uit deze periode. Ik test of ik patronen, visualisaties en bronkritiek goed kan toepassen.' },
+    'data-review': { info: 'Ik herhaal de belangrijkste dataconcepten uit deze periode. Ik test of ik bronnen op bewijskracht kan sorteren, de juiste spreadsheetformule kan kiezen, de passende grafieksoort kan aanwijzen en stellingen over API\'s en AI-bias kan beoordelen.' },
     // Leerjaar 2 — Periode 2
     'algorithm-architect': { info: 'Ik ontwerp een algoritme dat een probleem stap voor stap oplost. Ik denk na over logica, efficiëntie en de beste aanpak.' },
     'web-developer': { info: 'Ik bouw een interactieve webpagina met HTML, CSS en JavaScript. Ik laat code, vormgeving en gedrag samenwerken.' },

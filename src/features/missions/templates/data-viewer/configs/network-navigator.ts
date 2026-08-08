@@ -77,6 +77,8 @@ export const networkNavigatorConfig: DataViewerConfig = {
                     question:
                         'Stap 4 en 6 nemen samen de meeste tijd in beslag. Wat zegt dit over waar je internet-snelheid het meeste van afhangt?',
                     type: 'text-observation',
+                    keywords: ['latency', 'vertraging', 'afstand', 'reis', 'routers', 'netwerk'],
+                    minKeywords: 1,
                     correctAnswer: '',
                     explanation:
                         'De reis door het internet (via routers) neemt het meeste tijd in beslag — niet de app of de server. Dit heet "latency" of vertraging: hoe ver de data moet reizen en via hoeveel routers. Servers in de VS zijn verder weg dan servers in Amsterdam, waardoor de latency hoger is. Dat is waarom Netflix en YouTube servers dichter bij gebruikers plaatsen (CDN).',
@@ -126,6 +128,8 @@ export const networkNavigatorConfig: DataViewerConfig = {
                     question:
                         'Amazon.com is een grote, professionele website maar toch het traagst. Wat is de meest logische verklaring?',
                     type: 'text-observation',
+                    keywords: ['afstand', 'amerika', 'amerikaans', 'datacenter', 'ver'],
+                    minKeywords: 1,
                     correctAnswer: '',
                     explanation:
                         'Amazon.com is een Amerikaans bedrijf. Zelfs met CDN moeten sommige verzoeken naar servers in de VS. De fysieke afstand (over de Atlantische Oceaan) zorgt voor extra latency. Bedrijven die Europa serieus nemen (zoals Google en Netflix) plaatsen servers in Nederlandse datacenters om dit te vermijden.',
@@ -184,6 +188,8 @@ export const networkNavigatorConfig: DataViewerConfig = {
                     question:
                         'Leg in eigen woorden uit wat het verschil is tussen een 404-fout en een 500-fout. Aan welke kant ligt het probleem bij elk?',
                     type: 'text-observation',
+                    keywords: ['server', 'url', 'link'],
+                    minKeywords: 1,
                     correctAnswer: '',
                     explanation:
                         'Bij een 404-fout ligt het probleem aan de kant van de aanvraag: de URL bestaat niet. Bij een 500-fout ligt het probleem aan de kant van de server: er is iets intern misgegaan. Als gebruiker kun je bij een 404 de URL controleren; bij een 500 kun je niets doen — je moet wachten tot de beheerder het repareert.',

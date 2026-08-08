@@ -65,6 +65,8 @@ export const digitalDivideResearcherConfig: DataViewerConfig = {
                     question:
                         'Duitsland scoort lager dan Nederland en Noorwegen, terwijl het een welvarend land is. Noem twee mogelijke verklaringen voor dit verschil.',
                     type: 'text-observation',
+                    keywords: ['glasvezel', 'kabels', 'platteland', 'duurder', 'investering'],
+                    minKeywords: 1,
                     correctAnswer: '',
                     explanation:
                         'Mogelijke verklaringen: (1) Infrastructuurkeuzes — Duitsland heeft lang ingezet op koperbekabeling (DSL) in plaats van glasvezel; Nederland schakelde eerder over op glasvezel. (2) Geografie — Duitsland heeft meer platteland en kleine kernen die moeilijker en duurder zijn aan te sluiten. (3) Regelgeving — het tempo van netwerkinvesteringen verschilt per land. Snelheidsdata meten de huidige staat van het netwerk, niet de welvaart van een land op zichzelf.',
@@ -115,6 +117,8 @@ export const digitalDivideResearcherConfig: DataViewerConfig = {
                     question:
                         'Wat verwacht jij dat er met het smartphonegebruik van de 75+ groep zal gebeuren in de komende 10 jaar? Onderbouw je verwachting.',
                     type: 'text-observation',
+                    keywords: ['stijgen', 'omhoog', 'eenvoudiger', 'gewoontes', 'toenemen'],
+                    minKeywords: 1,
                     correctAnswer: '',
                     explanation:
                         'Verwachting: het gebruik zal waarschijnlijk stijgen. De huidige 65-74 jarigen (68% gebruik) worden de nieuwe 75-84 jarigen en nemen hun smartphonegewoonten mee. Bovendien worden smartphones steeds eenvoudiger in gebruik (grotere letters, spraakbediening). Het is echter ook mogelijk dat de alleroudste groep (85+) altijd een laag gebruik zal houden, ongeacht de trend.',
@@ -178,6 +182,8 @@ export const digitalDivideResearcherConfig: DataViewerConfig = {
                     question:
                         'Beschrijf hoe jij als connectivity-onderzoeker zou uitleggen waarom Zuid-Korea consistente topscoort op internetsnelheid. Gebruik minimaal twee factoren.',
                     type: 'text-observation',
+                    keywords: ['glasvezel', 'overheid', 'steden', 'concurrentie', 'investering'],
+                    minKeywords: 1,
                     correctAnswer: '',
                     explanation:
                         'Mogelijke factoren: (1) Vroege glasvezelinvestering — de Koreaanse overheid investeerde al in de jaren 2000 massaal in glasvezelnetwerken, waardoor de infrastructuur nu is afgeschreven en uitgebouwd. (2) Bevolkingsdichtheid — de meeste Koreanen wonen in steden, wat het goedkoper maakt om snel internet aan te leggen. (3) Concurrentie — meerdere grote providers concurreren, wat innovatie en snelheid stimuleert. (4) Overheidsbeleid — de overheid stelde snelheidsdoelen en subsidieerde uitrol.',

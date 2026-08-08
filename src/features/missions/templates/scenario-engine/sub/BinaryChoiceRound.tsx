@@ -54,7 +54,7 @@ export const BinaryChoiceRound: React.FC<{
                                         {item.title}
                                     </p>
                                     <p
-                                        className="text-xs text-duck-ink/60 leading-relaxed"
+                                        className="text-xs text-duck-ink/70 leading-relaxed"
                                         style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                                     >
                                         {item.description}
@@ -73,7 +73,7 @@ export const BinaryChoiceRound: React.FC<{
                                         className={`flex-1 min-h-[44px] py-2 rounded-lg text-xs font-bold transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-acid/40 ${
                                             isAccepted
                                                 ? 'bg-duck-acid text-duck-ink'
-                                                : 'bg-duck-bg text-duck-ink/60 hover:bg-duck-acid/10 hover:text-duck-ink border border-duck-gray'
+                                                : 'bg-duck-bg text-duck-ink/70 hover:bg-duck-acid/10 hover:text-duck-ink border border-duck-gray'
                                         }`}
                                         style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                                     >
@@ -88,7 +88,7 @@ export const BinaryChoiceRound: React.FC<{
                                         className={`flex-1 min-h-[44px] py-2 rounded-lg text-xs font-bold transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-ink/30 ${
                                             isRejected
                                                 ? 'bg-duck-ink text-white'
-                                                : 'bg-duck-bg text-duck-ink/60 hover:bg-duck-ink/10 hover:text-duck-ink border border-duck-gray'
+                                                : 'bg-duck-bg text-duck-ink/70 hover:bg-duck-ink/10 hover:text-duck-ink border border-duck-gray'
                                         }`}
                                         style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                                     >
@@ -125,7 +125,7 @@ export const BinaryChoiceRound: React.FC<{
             )}
             {!submitted && !allAnswered && (
                 <p
-                    className="text-center text-xs text-duck-ink/60 mt-2"
+                    className="text-center text-xs text-duck-ink/70 mt-2"
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                 >
                     Beantwoord alle scenario's om door te gaan
