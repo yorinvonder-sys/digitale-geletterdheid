@@ -226,8 +226,8 @@ export const algorithmArchitectConfig: SimulationLabConfig = {
                         'Wat is het grootste voordeel van binair zoeken ten opzichte van lineair zoeken?',
                     type: 'multiple-choice',
                     options: [
-                        'Binair zoeken werkt ook op ongesorteerde lijsten',
                         'Binair zoeken halveert elke stap het zoekgebied — veel minder stappen nodig',
+                        'Binair zoeken werkt ook op ongesorteerde lijsten',
                         'Lineair zoeken is altijd sneller bij korte lijsten',
                         'Binair zoeken heeft geen lijst nodig',
                     ],
@@ -242,9 +242,9 @@ export const algorithmArchitectConfig: SimulationLabConfig = {
                     type: 'multiple-choice',
                     options: [
                         'Altijd — binair zoeken werkt bij elke lijst',
-                        'Alleen bij gesorteerde lijsten',
                         'Alleen bij lijsten met minder dan 100 items',
                         'Alleen bij getallen, niet bij namen',
+                        'Alleen bij gesorteerde lijsten',
                     ],
                     correctAnswer: 'Alleen bij gesorteerde lijsten',
                     explanation:
@@ -288,8 +288,8 @@ export const algorithmArchitectConfig: SimulationLabConfig = {
                     question: 'Hoe werkt Bubble Sort in één zin?',
                     type: 'multiple-choice',
                     options: [
-                        'Zoek het kleinste element en zet het vooraan, herhaal voor de rest',
                         'Vergelijk steeds twee naast elkaar liggende elementen en wissel als ze in de verkeerde volgorde staan',
+                        'Zoek het kleinste element en zet het vooraan, herhaal voor de rest',
                         'Verdeel de lijst in twee helften en sorteer die apart',
                         'Voeg elk element in op de juiste plek in een al gesorteerd deel',
                     ],
@@ -305,9 +305,9 @@ export const algorithmArchitectConfig: SimulationLabConfig = {
                     type: 'multiple-choice',
                     options: [
                         'Het maakt niet uit — alle algoritmes zijn even snel',
-                        'Een slecht algoritme op miljoenen rijen data kan minuten of uren langer duren dan een goed algoritme',
                         'Sorteeralgoritmes worden alleen gebruikt in theorie, niet in echte software',
                         'Snelle computers maken algoritmekeuze overbodig',
+                        'Een slecht algoritme op miljoenen rijen data kan minuten of uren langer duren dan een goed algoritme',
                     ],
                     correctAnswer: 'Een slecht algoritme op miljoenen rijen data kan minuten of uren langer duren dan een goed algoritme',
                     explanation:
@@ -355,8 +355,8 @@ export const algorithmArchitectConfig: SimulationLabConfig = {
                     type: 'multiple-choice',
                     options: [
                         'Code die er echt uitziet maar niet werkt',
-                        'Stappen van een algoritme in gewone taal opgeschreven — niet in een echte programmeertaal',
                         'Een speciale programmeertaal voor beginners',
+                        'Stappen van een algoritme in gewone taal opgeschreven — niet in een echte programmeertaal',
                         'Commentaar in je code dat je achteraf toevoegt',
                     ],
                     correctAnswer: 'Stappen van een algoritme in gewone taal opgeschreven — niet in een echte programmeertaal',
@@ -370,8 +370,8 @@ export const algorithmArchitectConfig: SimulationLabConfig = {
                         'Wat zijn de vier basisconcepten van computational thinking?',
                     type: 'multiple-choice',
                     options: [
-                        'HTML, CSS, JavaScript en Python',
                         'Decompositie, patroonherkenning, abstractie en algoritmisch denken',
+                        'HTML, CSS, JavaScript en Python',
                         'Input, output, verwerking en opslag',
                         'Lussen, functies, variabelen en condities',
                     ],
@@ -386,12 +386,12 @@ export const algorithmArchitectConfig: SimulationLabConfig = {
                         'Je schrijft pseudocode voor het vinden van het grootste getal in een lijst. Wat is de eerste stap?',
                     type: 'multiple-choice',
                     options: [
-                        'Begin met het getal 0 als tijdelijke grootste',
                         'Sorteer eerst de hele lijst',
+                        'Begin met het eerste element als tijdelijke grootste',
                         'Tel hoeveel getallen er in de lijst zitten',
                         'Verwijder de kleinste getallen één voor één',
                     ],
-                    correctAnswer: 'Begin met het getal 0 als tijdelijke grootste',
+                    correctAnswer: 'Begin met het eerste element als tijdelijke grootste',
                     explanation:
                         'Je hebt een startwaarde nodig om mee te vergelijken. "Stel tijdelijke grootste in op het eerste element." Dan loop je door de rest: "Als dit getal groter is, vervang dan de tijdelijke grootste." Zo vind je het maximum.',
                     points: 10,

@@ -10,7 +10,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import { pathToFileURL } from 'node:url';
 
-const HELPER = 'src/features/missions/templates/debate-arena/answerQuality.ts';
+const HELPER = 'src/features/missions/templates/shared/answerQuality.ts';
 const { isMeaningfulAnswer, isRealMessage } = await import(pathToFileURL(HELPER).href);
 
 // De beloningsladder zoals AiLab hem toepast.

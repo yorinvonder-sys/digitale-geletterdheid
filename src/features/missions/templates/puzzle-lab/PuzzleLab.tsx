@@ -61,7 +61,7 @@ const FeedbackBanner: React.FC<FeedbackBannerProps> = ({ type, message }) => {
             className={`font-mono text-xs font-bold px-4 py-2 rounded-lg border text-center tracking-widest uppercase animate-pulse ${
                 isGranted
                     ? 'bg-duck-ink/20 border-duck-acid/60 text-duck-acid'
-                    : 'bg-duck-error/40 border-duck-error/60 text-duck-error'
+                    : 'bg-duck-error border-duck-error text-duck-ink'
             }`}
         >
             {isGranted ? '>> ACCESS GRANTED <<' : '>> ACCESS DENIED <<'}
@@ -334,7 +334,7 @@ export const PuzzleLab: React.FC<TemplateMissionProps> = ({
                                 />
                             ))}
                         </div>
-                        <div className="font-mono text-[11px] text-duck-ink font-bold">
+                        <div className="font-mono text-[11px] text-duck-bg font-bold">
                             +{pointsForPuzzle} pts
                         </div>
                     </div>
@@ -378,7 +378,7 @@ export const PuzzleLab: React.FC<TemplateMissionProps> = ({
                                     EXTRA AANWIJZINGEN (ontgrendeld)
                                 </div>
                                 {puzzle.extraClues.map((clue, i) => (
-                                    <div key={i} className="flex items-start gap-2 font-mono text-xs text-duck-ink/80 mb-1">
+                                    <div key={i} className="flex items-start gap-2 font-mono text-xs text-duck-bg mb-1">
                                         <span className="text-duck-gray shrink-0 mt-0.5">!</span>
                                         <span>{clue}</span>
                                     </div>
@@ -389,7 +389,7 @@ export const PuzzleLab: React.FC<TemplateMissionProps> = ({
 
                     {/* Feedback banner */}
                     {feedback && (
-                        <div className="mb-4">
+                        <div className="mb-4" role="status" aria-live="assertive">
                             <FeedbackBanner type={feedback} message={feedbackMessage} />
                         </div>
                     )}
@@ -426,7 +426,8 @@ export const PuzzleLab: React.FC<TemplateMissionProps> = ({
                                             onKeyDown={handleKeyDown}
                                             disabled={celebrating}
                                             placeholder="antwoord..."
-                                            className="min-h-[44px] flex-1 bg-transparent font-mono text-xs text-duck-ink placeholder:text-duck-gray/50 outline-none"
+                                            aria-label={`Antwoord voor: ${puzzle.title}`}
+                                            className="min-h-[44px] flex-1 bg-transparent font-mono text-xs text-duck-bg placeholder:text-duck-gray/50 outline-none"
                                         />
                                         <BlinkingCursor />
                                     </div>
@@ -461,7 +462,8 @@ export const PuzzleLab: React.FC<TemplateMissionProps> = ({
                                             hint (-{puzzle.hintCost} pts)
                                         </button>
                                     )}
-                                    {attempts >= 2 && (
+                                    {(attempts >= 2 ||
+                                        visibleClues.length <= puzzle.clues.length + hintsUsed) && (
                                         <button
                                             data-qa="puzzle-skip"
                                             onClick={handleSkip}
@@ -478,7 +480,7 @@ export const PuzzleLab: React.FC<TemplateMissionProps> = ({
                     {/* Max attempts reached */}
                     {maxAttemptsReached && !isSolved && (
                         <div className="space-y-3">
-                            <div className="font-mono text-xs text-duck-error/80 bg-duck-error/20 border border-duck-error/30 rounded-xl p-3">
+                            <div className="font-mono text-xs text-duck-ink bg-duck-error border border-duck-error rounded-xl p-3">
                                 Max pogingen bereikt. Je kunt doorgaan naar de volgende puzzel.
                             </div>
                             <button
@@ -510,7 +512,7 @@ export const PuzzleLab: React.FC<TemplateMissionProps> = ({
                     {/* Score footer */}
                     <div className="mt-5 pt-4 border-t border-duck-gray/30 flex items-center justify-between">
                         <span className="font-mono text-[10px] text-duck-gray">TOTAAL SCORE</span>
-                        <span className="font-mono text-xs font-bold text-duck-ink">{totalScore} pts</span>
+                        <span className="font-mono text-xs font-bold text-duck-bg">{totalScore} pts</span>
                     </div>
                 </div>
             </div>

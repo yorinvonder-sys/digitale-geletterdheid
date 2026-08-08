@@ -11,7 +11,7 @@ export const BarChartVis: React.FC<{ data: BarChartData }> = ({ data }) => {
                     <div key={bar.label} className="flex-1 flex flex-col items-center gap-1">
                         <span
                             className="text-xs font-bold"
-                            style={{ color: bar.color, fontFamily: "'Outfit', system-ui, sans-serif" }}
+                            style={{ color: '#202023', fontFamily: "'Outfit', system-ui, sans-serif" }}
                         >
                             {bar.value}
                         </span>
@@ -24,7 +24,7 @@ export const BarChartVis: React.FC<{ data: BarChartData }> = ({ data }) => {
                             }}
                         />
                         <span
-                            className="text-[10px] text-duck-ink/60 text-center leading-tight"
+                            className="text-[10px] text-duck-ink/75 text-center leading-tight"
                             style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                         >
                             {bar.label}
@@ -81,7 +81,7 @@ export const MeterVis: React.FC<{ data: MeterData }> = ({ data }) => {
             </span>
             {data.sublabel && (
                 <span
-                    className="text-xs text-duck-ink/60 text-center"
+                    className="text-xs text-duck-ink/75 text-center"
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                 >
                     {data.sublabel}
@@ -102,9 +102,10 @@ export const ComparisonVis: React.FC<{ data: ComparisonData }> = ({ data }) => (
                 className="flex-1 rounded-xl border border-duck-gray overflow-hidden"
             >
                 <div
-                    className="px-3 py-2 text-center text-xs font-black uppercase tracking-wide text-white"
+                    className="px-3 py-2 text-center text-xs font-black uppercase tracking-wide"
                     style={{
                         background: panel.accent,
+                        color: panel.accent === '#ff3c21' ? '#202023' : '#fff',
                         fontFamily: "'Outfit', system-ui, sans-serif",
                     }}
                 >
@@ -119,7 +120,7 @@ export const ComparisonVis: React.FC<{ data: ComparisonData }> = ({ data }) => (
                                 <span className="text-sm">{item.icon}</span>
                             )}
                             <span
-                                className="text-xs text-duck-ink/60 leading-tight"
+                                className="text-xs text-duck-ink/75 leading-tight"
                                 style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                             >
                                 {item.label}

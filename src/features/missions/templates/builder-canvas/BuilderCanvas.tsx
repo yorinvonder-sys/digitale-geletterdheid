@@ -12,6 +12,7 @@ import { MobileTabBar, type MobileTab } from './sub/MobileTabBar';
 import { PreviewPanel } from './sub/PreviewPanel';
 import { StepInstructionPanel } from './sub/StepInstructionPanel';
 import type { BuilderCanvasState } from './sub/types';
+import { isMeaningfulAnswer } from '../shared/answerQuality';
 
 // ─── Config types ────────────────────────────────────────────────────────────
 
@@ -74,7 +75,39 @@ const BuilderCanvasInner: React.FC<BuilderCanvasProps> = ({
     const [isChatOpen, setIsChatOpen] = useState(false);
     const [mobileTab, setMobileTab] = useState<MobileTab>('instructies');
 
-    const currentStepData = config.steps[state.currentStep];
+    // state.currentStep komt ongevalideerd uit localStorage terug; als een missie-
+    // config na een save korter is geworden (of de opslag corrupt raakt), klemmen we
+    // de index binnen bereik en corrigeren we de opgeslagen state, zodat een herlaad
+    // niet blijft crashen op een niet-bestaande stap.
+    const safeCurrentStep = Math.min(Math.max(state.currentStep, 0), config.steps.length - 1);
+    const currentStepData = config.steps[safeCurrentStep];
+
+    useEffect(() => {
+        if (state.currentStep !== safeCurrentStep) {
+            setState((prev) => ({ ...prev, currentStep: safeCurrentStep }));
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [state.currentStep, safeCurrentStep]);
+
+    // Zelfherstel voor een reload tussen het beantwoorden van een verdiepingsvraag en
+    // het klikken op "Doorgaan": reflectionCorrect wordt meteen vastgelegd, maar
+    // reflectionAnswered pas bij Doorgaan. Zonder deze correctie verschijnt de vraag
+    // na een herlaad opnieuw en kan de leerling per ongeluk een andere uitslag te zien
+    // krijgen dan de al vastgelegde score. Draait één keer bij het laden.
+    useEffect(() => {
+        setState((prev) => {
+            const staleStepIds = Object.keys(prev.reflectionCorrect).filter(
+                (stepId) => prev.reflectionCorrect[stepId] !== undefined && !prev.reflectionAnswered[stepId]
+            );
+            if (staleStepIds.length === 0) return prev;
+            const reflectionAnswered = { ...prev.reflectionAnswered };
+            staleStepIds.forEach((stepId) => {
+                reflectionAnswered[stepId] = true;
+            });
+            return { ...prev, reflectionAnswered };
+        });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     // De bonuspunten van de verdiepingsvragen zijn onderdeel van maxScore, niet iets
     // erbovenop: het budget voor de stappen is wat er ná aftrek van de maximale bonus
@@ -96,7 +129,8 @@ const BuilderCanvasInner: React.FC<BuilderCanvasProps> = ({
         (stepId: string, step: BuilderStep): boolean => {
             const checklistComplete = step.checklistItems.every((item) => state.checklist[`${stepId}-${item.id}`]);
             const requiredLength = step.textPrompt ? (step.minTextLength ?? 40) : 0;
-            const textComplete = !requiredLength || (state.textEntries[stepId]?.trim().length ?? 0) >= requiredLength;
+            const text = state.textEntries[stepId] ?? '';
+            const textComplete = !requiredLength || (text.trim().length >= requiredLength && isMeaningfulAnswer(text));
             return checklistComplete && textComplete;
         },
         [state.checklist, state.textEntries]
@@ -150,7 +184,7 @@ const BuilderCanvasInner: React.FC<BuilderCanvasProps> = ({
             ? state.completedSteps
             : [...state.completedSteps, currentStepData.id];
 
-        const isLastStep = state.currentStep === config.steps.length - 1;
+        const isLastStep = safeCurrentStep === config.steps.length - 1;
 
         if (isLastStep) {
             setState((prev) => ({
@@ -162,7 +196,7 @@ const BuilderCanvasInner: React.FC<BuilderCanvasProps> = ({
             setState((prev) => ({
                 ...prev,
                 completedSteps: updatedCompleted,
-                currentStep: prev.currentStep + 1,
+                currentStep: safeCurrentStep + 1,
                 showMilestone: true,
             }));
             setMobileTab('instructies');
@@ -170,6 +204,11 @@ const BuilderCanvasInner: React.FC<BuilderCanvasProps> = ({
                 setState((prev) => ({ ...prev, showMilestone: false }));
             }, 2000);
         }
+    };
+
+    const handlePreviousStep = () => {
+        setState((prev) => ({ ...prev, currentStep: Math.max(0, safeCurrentStep - 1) }));
+        setMobileTab('instructies');
     };
 
     // Het eerste antwoord telt: eenmaal onthuld mag een refresh of hermount de uitslag
@@ -274,7 +313,7 @@ const BuilderCanvasInner: React.FC<BuilderCanvasProps> = ({
             {/* Header */}
             <div className="px-4 pt-4 pb-2 shrink-0">
                 <PhaseHeader
-                    currentPhase={state.currentStep}
+                    currentPhase={safeCurrentStep}
                     totalPhases={config.steps.length}
                     totalScore={totalScore}
                     onBack={onBack}
@@ -297,7 +336,7 @@ const BuilderCanvasInner: React.FC<BuilderCanvasProps> = ({
                 >
                     <StepInstructionPanel
                         stepData={currentStepData}
-                        stepIndex={state.currentStep}
+                        stepIndex={safeCurrentStep}
                         totalSteps={config.steps.length}
                         state={state}
                         isStepComplete={currentStepComplete}
@@ -306,6 +345,7 @@ const BuilderCanvasInner: React.FC<BuilderCanvasProps> = ({
                         onReflectionAnswer={handleReflectionAnswer}
                         onReflectionComplete={handleReflectionComplete}
                         onNextStep={handleNextStep}
+                        onPreviousStep={handlePreviousStep}
                     />
                 </div>
 
@@ -334,7 +374,7 @@ const BuilderCanvasInner: React.FC<BuilderCanvasProps> = ({
                                 tip: currentStepData?.tip,
                             },
                             progress: {
-                                step: state.currentStep + 1,
+                                step: safeCurrentStep + 1,
                                 total: config.steps.length,
                                 completedSteps: state.completedSteps.length,
                             },

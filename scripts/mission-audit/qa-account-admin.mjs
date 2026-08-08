@@ -38,6 +38,16 @@ const SINGLE_AUDIT_PROFILES = Object.freeze({
     purpose: 'DGSkills J2P3 learner-mission audit',
   }),
 });
+const SYNTHETIC_ROW_CLEANUP_TARGETS = Object.freeze([
+  Object.freeze({ table: 'mission_progress', column: 'user_id' }),
+  Object.freeze({ table: 'user_progress', column: 'user_id' }),
+  Object.freeze({ table: 'student_activities', column: 'uid' }),
+  Object.freeze({ table: 'nulmeting_results', column: 'user_id' }),
+  Object.freeze({ table: 'xp_transactions', column: 'user_id' }),
+  Object.freeze({ table: 'xp_suspicious_logs', column: 'user_id' }),
+  Object.freeze({ table: 'user_presence', column: 'uid' }),
+  Object.freeze({ table: 'user_presence', column: 'user_id' }),
+]);
 
 const VIEWPORTS = [
   {
@@ -460,6 +470,65 @@ async function assertAuthUserMissing(admin, userId) {
   }
 }
 
+async function countExactSyntheticRows(admin, target, userId) {
+  const { count, error } = await admin
+    .from(target.table)
+    .select('*', { count: 'exact', head: true })
+    .eq(target.column, userId);
+  if (error) {
+    throw new Error(
+      `Exact synthetic row count failed for ${target.table}.${target.column}: ${error.message}`,
+    );
+  }
+  if (!Number.isInteger(count) || count < 0) {
+    throw new Error(`Exact synthetic row count was invalid for ${target.table}.${target.column}`);
+  }
+  return count;
+}
+
+async function countAllExactSyntheticRows(admin, userId) {
+  const counts = {};
+  for (const target of SYNTHETIC_ROW_CLEANUP_TARGETS) {
+    const key = `${target.table}.${target.column}`;
+    counts[key] = await countExactSyntheticRows(admin, target, userId);
+  }
+  return counts;
+}
+
+async function deleteExactSyntheticRows(admin, userId, allowDeletes) {
+  // Complete the read-only inventory before the first mutation. A later table
+  // error therefore cannot leave a partially cleaned account on first attempt.
+  const deletedRows = await countAllExactSyntheticRows(admin, userId);
+  const totalRows = Object.values(deletedRows).reduce((sum, count) => sum + count, 0);
+  if (!allowDeletes && totalRows > 0) {
+    throw new Error(
+      'Refusing synthetic row deletion because both Auth and profile identity are missing',
+    );
+  }
+
+  for (const target of SYNTHETIC_ROW_CLEANUP_TARGETS) {
+    const key = `${target.table}.${target.column}`;
+    const before = deletedRows[key];
+    if (before > 0) {
+      const { error } = await admin
+        .from(target.table)
+        .delete()
+        .eq(target.column, userId);
+      if (error) {
+        throw new Error(`Exact synthetic row cleanup failed for ${key}: ${error.message}`);
+      }
+    }
+  }
+
+  const remainingRows = await countAllExactSyntheticRows(admin, userId);
+  for (const [key, remaining] of Object.entries(remainingRows)) {
+    if (remaining !== 0) {
+      throw new Error(`Synthetic rows remain after cleanup for ${key}`);
+    }
+  }
+  return { deletedRows, remainingSyntheticRows: 0 };
+}
+
 async function globallyRevokeSessions({
   admin,
   publicClient,
@@ -509,6 +578,8 @@ async function deleteExactSyntheticUser({
   const current = await admin.auth.admin.getUserById(account.userId);
   let authWasPresent = false;
   let revocation = null;
+  let rowCleanup = null;
+  let syntheticIdentityVerified = false;
   if (!current.error && current.data.user) {
     authWasPresent = true;
     assertSyntheticAuthRecord(current.data.user, account);
@@ -517,11 +588,37 @@ async function deleteExactSyntheticUser({
       throw new Error('Refusing cleanup because the synthetic profile is missing');
     }
     assertSyntheticProfileRecord(profile, account);
+    syntheticIdentityVerified = true;
     revocation = await globallyRevokeSessions({
       admin,
       publicClient,
       account,
     });
+  } else if (isConfirmedUserNotFound(current.error)) {
+    if (!tolerateMissingAuth) {
+      throw new Error('Exact synthetic Auth user was missing before cleanup');
+    }
+    const profile = await getProfile(admin, account.userId);
+    if (profile) {
+      assertSyntheticProfileRecord(profile, account);
+      syntheticIdentityVerified = true;
+    }
+  } else {
+    throw new Error(
+      `Auth lookup failed before cleanup: ${current.error?.message ?? 'missing user response'}`,
+    );
+  }
+
+  // Several audit tables intentionally have no FK cascade to auth.users. Delete
+  // only rows that match the already verified synthetic UUID, and prove zero
+  // rows remain before removing the Auth identity and its public profile.
+  rowCleanup = await deleteExactSyntheticRows(
+    admin,
+    account.userId,
+    syntheticIdentityVerified,
+  );
+
+  if (authWasPresent) {
     const { error: deleteError } = await admin.auth.admin.deleteUser(
       account.userId,
       false,
@@ -529,14 +626,6 @@ async function deleteExactSyntheticUser({
     if (deleteError) {
       throw new Error(`Auth Admin deleteUser failed: ${deleteError.message}`);
     }
-  } else if (isConfirmedUserNotFound(current.error)) {
-    if (!tolerateMissingAuth) {
-      throw new Error('Exact synthetic Auth user was missing before cleanup');
-    }
-  } else {
-    throw new Error(
-      `Auth lookup failed before cleanup: ${current.error?.message ?? 'missing user response'}`,
-    );
   }
 
   // A normally deleted Auth user cascades into public.users. This exact-UUID
@@ -563,6 +652,7 @@ async function deleteExactSyntheticUser({
     authAlreadyMissing: !authWasPresent,
     authUserDeleted: authWasPresent,
     profileRowsRemaining: 0,
+    ...rowCleanup,
     ...revocation,
   };
 }
@@ -1360,6 +1450,21 @@ async function runCleanupOrphans(options, clients) {
 }
 
 function runSelfTest() {
+  const cleanupTargetKeys = SYNTHETIC_ROW_CLEANUP_TARGETS.map(
+    ({ table, column }) => `${table}.${column}`,
+  );
+  const requiredCleanupTargetKeys = [
+    'mission_progress.user_id',
+    'student_activities.uid',
+    'nulmeting_results.user_id',
+    'xp_transactions.user_id',
+  ];
+  if (
+    new Set(cleanupTargetKeys).size !== cleanupTargetKeys.length ||
+    requiredCleanupTargetKeys.some((key) => !cleanupTargetKeys.includes(key))
+  ) {
+    throw new Error('Synthetic row cleanup target contract failed');
+  }
   const account = {
     batchId: 'dgs-59',
     userId: '123e4567-e89b-42d3-a456-426614174000',

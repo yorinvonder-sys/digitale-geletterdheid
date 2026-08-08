@@ -20,7 +20,7 @@ import { logger } from '@/utils/logger';
 // KnowledgeRunner removed - using AssessmentEngine for all review missions
 
 import { getAssessment, hasAssessment } from '@/features/assessment/data/assessmentRegistry';
-import { isMeaningfulAnswer, isRealMessage } from '@/features/missions/templates/debate-arena/answerQuality';
+import { isMeaningfulAnswer, isRealMessage } from '@/features/missions/templates/shared/answerQuality';
 import { RotateDevicePrompt } from '@/components/app-shell/RotateDevicePrompt';
 import { logActivity, saveHybridAssessmentRecord } from '@/services/teacherService';
 

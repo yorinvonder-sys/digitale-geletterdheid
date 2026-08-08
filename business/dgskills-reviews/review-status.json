@@ -10,20 +10,17 @@
       "interactivity": 0,
       "total": 6
     },
-    "lastReviewed": "2026-06-17",
-    "reviewStatus": "blocked",
-    "reportPath": "business/dgskills-reviews/access-control-engineer-2026-06-17.md",
+    "lastReviewed": "2026-08-07",
+    "reviewStatus": "fixed",
+    "reportPath": "business/dgskills-reviews/access-control-engineer-2026-08-07.md",
     "autoFixesApplied": 4,
-    "openEscalations": [
-      "SLO 22B (Programmeren) mismatch — missie bevat geen programmeeractiviteit (curriculaire beslissing)",
-      "cognitieve load stap 2: 24 toggle-buttons voor leerjaar 2 (structurele herontwerp)"
-    ],
-    "codexVerdict": "ALLOW",
+    "openEscalations": [],
+    "codexVerdict": null,
     "escalationCount": 2,
     "reviewScores": {
-      "uiux": 7,
-      "didactiek": 7,
-      "tech": 8
+      "uiux": 2,
+      "didactiek": 2,
+      "tech": 4
     },
     "proposedFixes": 4,
     "topIssues": [
@@ -31,7 +28,8 @@
       "ontbrekend missionGoals-entry [GEFIXED]",
       "SLO 22B programmeer-claim zonder programmeeractiviteit [ESCALATIE]"
     ],
-    "statusNote": "normalisatie 2026-07-01 (run wave 4+): wacht op Yorin-beslissing over openEscalations"
+    "statusNote": "normalisatie 2026-07-01 (run wave 4+): wacht op Yorin-beslissing over openEscalations",
+    "triageScore": 7.4
   },
   {
     "missionId": "advanced-code-review",
@@ -71,7 +69,7 @@
       "interactivity": 0,
       "total": 6
     },
-    "lastReviewed": "2026-08-06",
+    "lastReviewed": "2026-08-08",
     "reviewStatus": "klaar",
     "reportPath": "business/dgskills-reviews/j1p2-batch-2026-08-06.md",
     "autoFixesApplied": 2,
@@ -89,9 +87,10 @@
     },
     "proposedFixes": 2,
     "topIssues": [
-      "Afronden accepteerde ideeen van een letter — verholpen"
+      "Afronden accepteerde ideeen van een letter — verholpen",
+      "Schoolcontext herkent nu ook verbuigingen"
     ],
-    "statusNote": "Browserreview op 4 schermformaten. Lokaal; AI-stap en server-side voortgang niet bewezen."
+    "statusNote": "Browserreview op 4 schermformaten, plus adversariële tegenlezing door Codex. Lokaal; AI-stap en server-side voortgang niet bewezen."
   },
   {
     "missionId": "ai-bias-detective",
@@ -192,7 +191,7 @@
       "interactivity": 0,
       "total": 7
     },
-    "lastReviewed": "2026-08-06",
+    "lastReviewed": "2026-08-08",
     "reviewStatus": "klaar",
     "reportPath": "business/dgskills-reviews/j1p2-batch-2026-08-06.md",
     "autoFixesApplied": 0,
@@ -211,7 +210,7 @@
     "topIssues": [
       "Crashte op alle formaten via duel-abonnement — verholpen"
     ],
-    "statusNote": "Browserreview op 4 schermformaten. Lokaal; AI-stap en server-side voortgang niet bewezen."
+    "statusNote": "Browserreview op 4 schermformaten, plus adversariële tegenlezing door Codex. Lokaal; AI-stap en server-side voortgang niet bewezen."
   },
   {
     "missionId": "ai-trainer",
@@ -224,7 +223,7 @@
       "interactivity": 0,
       "total": 5
     },
-    "lastReviewed": "2026-08-06",
+    "lastReviewed": "2026-08-08",
     "reviewStatus": "klaar",
     "reportPath": "business/dgskills-reviews/j1p2-batch-2026-08-06.md",
     "autoFixesApplied": 0,
@@ -239,7 +238,7 @@
       "tech": 8
     },
     "triageScore": 1.6,
-    "statusNote": "Browserreview op 4 schermformaten. Lokaal; AI-stap en server-side voortgang niet bewezen.",
+    "statusNote": "Browserreview op 4 schermformaten, plus adversariële tegenlezing door Codex. Lokaal; AI-stap en server-side voortgang niet bewezen.",
     "verdict": "ok",
     "topIssues": [
       "Tipknop was klikbaar zonder saldo — verholpen"
@@ -248,7 +247,7 @@
   {
     "missionId": "algorithm-architect",
     "templateType": "simulation-lab",
-    "priorityBand": "low",
+    "priorityBand": "medium",
     "triageScores": {
       "uiux": 1,
       "slo": 1,
@@ -256,19 +255,19 @@
       "interactivity": 0,
       "total": 4
     },
-    "lastReviewed": "2026-07-02",
+    "lastReviewed": "2026-08-07",
     "reviewStatus": "fixed",
-    "reportPath": "business/dgskills-reviews/algorithm-architect-2026-07-02.md",
+    "reportPath": "business/dgskills-reviews/algorithm-architect-2026-08-07.md",
     "autoFixesApplied": 0,
     "openEscalations": [],
     "codexVerdict": null,
     "escalationCount": 0,
     "reviewScores": {
-      "uiux": 10,
-      "didactiek": 10,
-      "tech": 10
+      "uiux": 6,
+      "didactiek": 5,
+      "tech": 8
     },
-    "triageScore": 0,
+    "triageScore": 3.8,
     "statusNote": "wave 11: intern volledig consistent geverifieerd; agent echode kwaliteitsscore als triage (10.0), gecorrigeerd naar 0.0",
     "verdict": "ok"
   },
@@ -331,7 +330,7 @@
   {
     "missionId": "app-prototyper",
     "templateType": "builder-canvas",
-    "priorityBand": "low",
+    "priorityBand": "medium",
     "triageScores": {
       "uiux": 0,
       "slo": 1,
@@ -339,20 +338,18 @@
       "interactivity": 0,
       "total": 2
     },
-    "lastReviewed": "2026-07-02",
-    "reviewStatus": "blocked",
-    "reportPath": "business/dgskills-reviews/app-prototyper-2026-07-02.md",
+    "lastReviewed": "2026-08-07",
+    "reviewStatus": "fixed",
+    "reportPath": "business/dgskills-reviews/app-prototyper-2026-08-07.md",
     "autoFixesApplied": 0,
-    "openEscalations": [
-      "platform-patroon: builder-canvas coach-briefing (3 stappen, client én server identiek) dekt de 4 canvas-stappen niet (stap 3/4 gebruikersflow/testplan vs 'prototype presenteren') — zelfde productkeuze als podcast-producer/meesterproef/portfolio-builder/prototype-developer/meme-machine (nu 6 missies)"
-    ],
+    "openEscalations": [],
     "codexVerdict": null,
     "reviewScores": {
-      "uiux": 8,
-      "didactiek": 8,
-      "tech": 9
+      "uiux": 6,
+      "didactiek": 6,
+      "tech": 4
     },
-    "triageScore": 1.7,
+    "triageScore": 4.6,
     "verdict": "ok",
     "statusNote": "wave 17: inhoudelijk gezond; enige punt is het platform-brede coach-plan-desync-patroon",
     "escalationCount": 1
@@ -360,7 +357,7 @@
   {
     "missionId": "automation-engineer",
     "templateType": "builder-canvas",
-    "priorityBand": "low",
+    "priorityBand": "medium",
     "triageScores": {
       "uiux": 0,
       "slo": 1,
@@ -368,18 +365,18 @@
       "interactivity": 0,
       "total": 2
     },
-    "lastReviewed": "2026-07-02",
+    "lastReviewed": "2026-08-07",
     "reviewStatus": "fixed",
-    "reportPath": "business/dgskills-reviews/automation-engineer-2026-07-02.md",
+    "reportPath": "business/dgskills-reviews/automation-engineer-2026-08-07.md",
     "autoFixesApplied": 0,
     "openEscalations": [],
     "codexVerdict": null,
     "reviewScores": {
-      "uiux": 10,
-      "didactiek": 10,
-      "tech": 10
+      "uiux": 6,
+      "didactiek": 5,
+      "tech": 4
     },
-    "triageScore": 0,
+    "triageScore": 5,
     "verdict": "ok",
     "statusNote": "wave 17: foutloos — SLO-registratie consistent, 4 canvas-stappen logisch, scoring exact; 1 niet-blokkerend tekstlengte-puntje stap 1",
     "escalationCount": 0
@@ -418,7 +415,7 @@
   {
     "missionId": "bug-hunter",
     "templateType": "simulation-lab",
-    "priorityBand": "low",
+    "priorityBand": "medium",
     "triageScores": {
       "uiux": 1,
       "slo": 1,
@@ -426,19 +423,19 @@
       "interactivity": 0,
       "total": 4
     },
-    "lastReviewed": "2026-07-02",
+    "lastReviewed": "2026-08-07",
     "reviewStatus": "fixed",
-    "reportPath": "business/dgskills-reviews/bug-hunter-2026-07-02.md",
+    "reportPath": "business/dgskills-reviews/bug-hunter-2026-08-07.md",
     "autoFixesApplied": 0,
     "openEscalations": [],
     "codexVerdict": null,
     "escalationCount": 0,
     "reviewScores": {
-      "uiux": 10,
-      "didactiek": 10,
-      "tech": 10
+      "uiux": 6,
+      "didactiek": 5,
+      "tech": 6
     },
-    "triageScore": 0,
+    "triageScore": 4.4,
     "statusNote": "wave 11: debug-voorbeelden feitelijk correct (off-by-one klopt), scoring 30+40+30=100; schoon",
     "verdict": "ok"
   },
@@ -453,7 +450,7 @@
       "interactivity": 0,
       "total": 4
     },
-    "lastReviewed": "2026-08-06",
+    "lastReviewed": "2026-08-08",
     "reviewStatus": "klaar",
     "reportPath": "business/dgskills-reviews/j1p2-batch-2026-08-06.md",
     "autoFixesApplied": 1,
@@ -470,11 +467,11 @@
       "tech": 7
     },
     "triageScore": 2.6,
-    "statusNote": "Browserreview op 4 schermformaten. Lokaal; AI-stap en server-side voortgang niet bewezen.",
+    "statusNote": "Browserreview op 4 schermformaten, plus adversariële tegenlezing door Codex. Lokaal; AI-stap en server-side voortgang niet bewezen.",
     "verdict": "fix-eerst",
     "topIssues": [
       "3 kolommen braken op iPad-portret — verholpen",
-      "Leeg bot-formulier geeft geen melding"
+      "Knoplabel benoemt nu wat ontbreekt"
     ]
   },
   {
@@ -488,7 +485,7 @@
       "interactivity": 0,
       "total": 4
     },
-    "lastReviewed": "2026-08-06",
+    "lastReviewed": "2026-08-08",
     "reviewStatus": "klaar",
     "reportPath": "business/dgskills-reviews/j1p2-batch-2026-08-06.md",
     "autoFixesApplied": 1,
@@ -504,10 +501,11 @@
       "tech": 5.5
     },
     "triageScore": 3.4,
-    "statusNote": "Browserreview op 4 schermformaten. Lokaal; AI-stap en server-side voortgang niet bewezen.",
+    "statusNote": "Browserreview op 4 schermformaten, plus adversariële tegenlezing door Codex. Lokaal; AI-stap en server-side voortgang niet bewezen.",
     "verdict": "fix-eerst",
     "topIssues": [
-      "Gemeld onzichtbaar eindscherm was een artefact van de testomgeving — weerlegd"
+      "Ongeldige spring-animatie hersteld",
+      "Gemeld onzichtbaar eindscherm was een meetfout — weerlegd"
     ]
   },
   {
@@ -556,7 +554,7 @@
       "interactivity": 0,
       "total": 6
     },
-    "lastReviewed": "2026-08-06",
+    "lastReviewed": "2026-08-08",
     "reviewStatus": "klaar",
     "reportPath": "business/dgskills-reviews/j1p2-batch-2026-08-06.md",
     "autoFixesApplied": 2,
@@ -572,12 +570,12 @@
     "topIssues": [
       "Wereldkaart vraagt extra visuele vertaling"
     ],
-    "statusNote": "Browserreview op 4 schermformaten. Lokaal; AI-stap en server-side voortgang niet bewezen."
+    "statusNote": "Browserreview op 4 schermformaten, plus adversariële tegenlezing door Codex. Lokaal; AI-stap en server-side voortgang niet bewezen."
   },
   {
     "missionId": "code-review-2",
     "templateType": "review-arena",
-    "priorityBand": "low",
+    "priorityBand": "medium",
     "triageScores": {
       "uiux": 2,
       "slo": 1,
@@ -585,26 +583,26 @@
       "interactivity": 0,
       "total": 5
     },
-    "lastReviewed": "2026-07-01",
+    "lastReviewed": "2026-08-07",
     "reviewStatus": "fixed",
-    "reportPath": "business/dgskills-reviews/code-review-2-2026-07-01.md",
+    "reportPath": "business/dgskills-reviews/code-review-2-2026-08-07.md",
     "autoFixesApplied": 0,
     "openEscalations": [],
     "codexVerdict": null,
     "escalationCount": 0,
     "reviewScores": {
-      "uiux": 9,
-      "didactiek": 8,
-      "tech": 9
+      "uiux": 5,
+      "didactiek": 3,
+      "tech": 6
     },
-    "triageScore": 1.4,
+    "triageScore": 5.5,
     "statusNote": "wave 7 verse review: schoon; dormante chat-rol (template-breed, alle 7 review-arena) -> platform-brede beslislijst",
     "verdict": "ok"
   },
   {
     "missionId": "code-reviewer",
     "templateType": "simulation-lab",
-    "priorityBand": "low",
+    "priorityBand": "medium",
     "triageScores": {
       "uiux": 1,
       "slo": 1,
@@ -612,19 +610,19 @@
       "interactivity": 0,
       "total": 4
     },
-    "lastReviewed": "2026-07-02",
+    "lastReviewed": "2026-08-07",
     "reviewStatus": "fixed",
-    "reportPath": "business/dgskills-reviews/code-reviewer-2026-07-02.md",
+    "reportPath": "business/dgskills-reviews/code-reviewer-2026-08-07.md",
     "autoFixesApplied": 0,
     "openEscalations": [],
     "codexVerdict": null,
     "escalationCount": 0,
     "reviewScores": {
-      "uiux": 8,
-      "didactiek": 9,
-      "tech": 9
+      "uiux": 7,
+      "didactiek": 6,
+      "tech": 4
     },
-    "triageScore": 1.3,
+    "triageScore": 4.3,
     "statusNote": "wave 12: registratie + scoring (30+40+30=100) volledig geverifieerd; 1 cosmetisch icoon-mix-punt in rapport",
     "verdict": "ok"
   },
@@ -1301,7 +1299,7 @@
       "interactivity": 0,
       "total": 13
     },
-    "lastReviewed": "2026-08-06",
+    "lastReviewed": "2026-08-08",
     "reviewStatus": "klaar",
     "reportPath": "business/dgskills-reviews/j1p2-batch-2026-08-06.md",
     "autoFixesApplied": 10,
@@ -1319,7 +1317,7 @@
     "topIssues": [
       "Offline AI-hulptekst wees naar Game Programmeur — verholpen"
     ],
-    "statusNote": "Browserreview op 4 schermformaten. Lokaal; AI-stap en server-side voortgang niet bewezen."
+    "statusNote": "Browserreview op 4 schermformaten, plus adversariële tegenlezing door Codex. Lokaal; AI-stap en server-side voortgang niet bewezen."
   },
   {
     "missionId": "game-programmeur",
@@ -1332,7 +1330,7 @@
       "interactivity": 0,
       "total": 9
     },
-    "lastReviewed": "2026-08-06",
+    "lastReviewed": "2026-08-08",
     "reviewStatus": "klaar",
     "reportPath": "business/dgskills-reviews/j1p2-batch-2026-08-06.md",
     "autoFixesApplied": 0,
@@ -1351,7 +1349,7 @@
     "topIssues": [
       "Voorbeeldpaneel was 0px op mobiel — verholpen"
     ],
-    "statusNote": "Browserreview op 4 schermformaten. Lokaal; AI-stap en server-side voortgang niet bewezen."
+    "statusNote": "Browserreview op 4 schermformaten, plus adversariële tegenlezing door Codex. Lokaal; AI-stap en server-side voortgang niet bewezen."
   },
   {
     "missionId": "impact-review",
@@ -1443,7 +1441,7 @@
       "interactivity": 0,
       "total": 2
     },
-    "lastReviewed": "2026-08-06",
+    "lastReviewed": "2026-08-08",
     "reviewStatus": "klaar",
     "reportPath": "business/dgskills-reviews/j1p2-batch-2026-08-06.md",
     "autoFixesApplied": 0,
@@ -1458,7 +1456,7 @@
     },
     "triageScore": 2.1,
     "verdict": "ok",
-    "statusNote": "Browserreview op 4 schermformaten. Lokaal; AI-stap en server-side voortgang niet bewezen.",
+    "statusNote": "Browserreview op 4 schermformaten, plus adversariële tegenlezing door Codex. Lokaal; AI-stap en server-side voortgang niet bewezen.",
     "escalationCount": 1,
     "topIssues": [
       "Op 390px bleef 90px over voor het document — verholpen"
@@ -1729,18 +1727,16 @@
       "interactivity": 0,
       "total": 7
     },
-    "lastReviewed": "2026-07-01",
-    "reviewStatus": "blocked",
-    "reportPath": "business/dgskills-reviews/network-navigator-2026-07-01.md",
+    "lastReviewed": "2026-08-07",
+    "reviewStatus": "fixed",
+    "reportPath": "business/dgskills-reviews/network-navigator-2026-08-07.md",
     "autoFixesApplied": 1,
-    "openEscalations": [
-      "goalCriteria-type ambigu: config+missionGoals 'rounds-complete' vs year2.tsx 'steps-complete' — Yorin kiest de canonieke waarde"
-    ],
-    "codexVerdict": "ALLOW",
+    "openEscalations": [],
+    "codexVerdict": null,
     "reviewScores": {
-      "uiux": 2,
+      "uiux": 3,
       "didactiek": 3,
-      "tech": 2
+      "tech": 3
     },
     "goalClear": true,
     "goalAchieved": true,
@@ -1751,7 +1747,8 @@
       "Hardcoded hex in badges/chartData",
       "A11y: aria-sort + aria-label ontbreken"
     ],
-    "statusNote": "wave 4: fix ge-ALLOWed; blocked op goalCriteria-keuze (Yorin)"
+    "statusNote": "wave 4: fix ge-ALLOWed; blocked op goalCriteria-keuze (Yorin)",
+    "triageScore": 7
   },
   {
     "missionId": "neural-navigator",
@@ -1791,7 +1788,7 @@
       "interactivity": 0,
       "total": 6
     },
-    "lastReviewed": "2026-08-06",
+    "lastReviewed": "2026-08-08",
     "reviewStatus": "klaar",
     "reportPath": "business/dgskills-reviews/j1p2-batch-2026-08-06.md",
     "autoFixesApplied": 0,
@@ -1810,7 +1807,7 @@
     "topIssues": [
       "Veel meldingen tegelijk kan op mobiel cognitief dicht worden"
     ],
-    "statusNote": "Browserreview op 4 schermformaten. Lokaal; AI-stap en server-side voortgang niet bewezen."
+    "statusNote": "Browserreview op 4 schermformaten, plus adversariële tegenlezing door Codex. Lokaal; AI-stap en server-side voortgang niet bewezen."
   },
   {
     "missionId": "online-helden",
@@ -1949,8 +1946,8 @@
       "interactivity": 0,
       "total": 5
     },
-    "lastReviewed": "2026-08-06",
-    "reviewStatus": "fix-eerst",
+    "lastReviewed": "2026-08-08",
+    "reviewStatus": "klaar",
     "reportPath": "business/dgskills-reviews/j1p2-batch-2026-08-06.md",
     "autoFixesApplied": 1,
     "openEscalations": [
@@ -1964,11 +1961,10 @@
       "tech": 2
     },
     "triageScore": 6.9,
-    "statusNote": "Browserreview op 4 schermformaten. Lokaal; AI-stap en server-side voortgang niet bewezen.",
+    "statusNote": "Browserreview op 4 schermformaten, plus adversariële tegenlezing door Codex. Lokaal; AI-stap en server-side voortgang niet bewezen.",
     "verdict": "fix-eerst",
     "topIssues": [
-      "Slotdia: donkere tekst op donkere achtergrond vóór de fix",
-      "Externe media laden correct"
+      "Slotdia was onleesbaar (contrast 1,00:1), nu 8,56:1"
     ]
   },
   {
@@ -2111,25 +2107,24 @@
       "interactivity": 0,
       "total": 6
     },
-    "lastReviewed": "2026-06-26",
-    "reviewStatus": "blocked",
-    "reportPath": "business/dgskills-reviews/wave-3b-2026-06-26.md",
+    "lastReviewed": "2026-08-07",
+    "reviewStatus": "fixed",
+    "reportPath": "business/dgskills-reviews/privacy-by-design-2026-08-07.md",
     "autoFixesApplied": 0,
-    "openEscalations": [
-      "inline missionGoal wint at runtime → missionGoals.ts-entry is dode code (afwijkende formulering); één bron canoniek maken"
-    ],
+    "openEscalations": [],
     "codexVerdict": null,
     "reviewScores": {
-      "uiux": 9,
-      "didactiek": 8,
-      "tech": 9
+      "uiux": 4,
+      "didactiek": 4,
+      "tech": 3
     },
     "proposedFixes": 0,
     "escalationCount": 1,
     "topIssues": [
       "dode missionGoals-entry [ESCALATIE — cleanup]"
     ],
-    "statusNote": "normalisatie 2026-07-01 (run wave 4+): wacht op Yorin-beslissing over openEscalations"
+    "statusNote": "normalisatie 2026-07-01 (run wave 4+): wacht op Yorin-beslissing over openEscalations",
+    "triageScore": 6.3
   },
   {
     "missionId": "prompt-master",
@@ -2142,7 +2137,7 @@
       "interactivity": 0,
       "total": 14
     },
-    "lastReviewed": "2026-08-06",
+    "lastReviewed": "2026-08-08",
     "reviewStatus": "klaar",
     "reportPath": "business/dgskills-reviews/j1p2-batch-2026-08-06.md",
     "autoFixesApplied": 1,
@@ -2160,9 +2155,9 @@
     "proposedFixes": 1,
     "escalationCount": 3,
     "topIssues": [
-      "TERUG-knop 72x20px onder 44px-richtlijn"
+      "TERUG-knop was 71x20px, nu 87x44"
     ],
-    "statusNote": "Browserreview op 4 schermformaten. Lokaal; AI-stap en server-side voortgang niet bewezen."
+    "statusNote": "Browserreview op 4 schermformaten, plus adversariële tegenlezing door Codex. Lokaal; AI-stap en server-side voortgang niet bewezen."
   },
   {
     "missionId": "prototype-developer",
@@ -2277,7 +2272,7 @@
       "interactivity": 0,
       "total": 5
     },
-    "lastReviewed": "2026-08-06",
+    "lastReviewed": "2026-08-08",
     "reviewStatus": "klaar",
     "reportPath": "business/dgskills-reviews/j1p2-batch-2026-08-06.md",
     "autoFixesApplied": 0,
@@ -2290,7 +2285,7 @@
       "tech": 9
     },
     "triageScore": 1.4,
-    "statusNote": "Browserreview op 4 schermformaten. Lokaal; AI-stap en server-side voortgang niet bewezen.",
+    "statusNote": "Browserreview op 4 schermformaten, plus adversariële tegenlezing door Codex. Lokaal; AI-stap en server-side voortgang niet bewezen.",
     "verdict": "ok",
     "topIssues": [
       "Ronde 3 was niet af te maken — verholpen"
@@ -2334,7 +2329,7 @@
       "interactivity": 0,
       "total": 9
     },
-    "lastReviewed": "2026-08-06",
+    "lastReviewed": "2026-08-08",
     "reviewStatus": "klaar",
     "reportPath": "business/dgskills-reviews/j1p2-batch-2026-08-06.md",
     "autoFixesApplied": 0,
@@ -2353,7 +2348,7 @@
     "topIssues": [
       "Score en fasegates hingen op tekstlengte — verholpen"
     ],
-    "statusNote": "Browserreview op 4 schermformaten. Lokaal; AI-stap en server-side voortgang niet bewezen."
+    "statusNote": "Browserreview op 4 schermformaten, plus adversariële tegenlezing door Codex. Lokaal; AI-stap en server-side voortgang niet bewezen."
   },
   {
     "missionId": "scroll-stopper",
@@ -2739,8 +2734,8 @@
       "interactivity": 0,
       "total": 5
     },
-    "lastReviewed": "2026-08-06",
-    "reviewStatus": "fix-eerst",
+    "lastReviewed": "2026-08-08",
+    "reviewStatus": "klaar",
     "reportPath": "business/dgskills-reviews/j1p2-batch-2026-08-06.md",
     "autoFixesApplied": 0,
     "openEscalations": [
@@ -2754,10 +2749,10 @@
     },
     "triageScore": 1.95,
     "verdict": "ok",
-    "statusNote": "Browserreview op 4 schermformaten. Lokaal; AI-stap en server-side voortgang niet bewezen.",
+    "statusNote": "Browserreview op 4 schermformaten, plus adversariële tegenlezing door Codex. Lokaal; AI-stap en server-side voortgang niet bewezen.",
     "escalationCount": 1,
     "topIssues": [
-      "Interne AI-instructie zichtbaar in de chat — voorstel, niet gebouwd",
+      "Interne AI-instructie niet meer zichtbaar in de chat",
       "Voorbeeldpaneel was 0px op mobiel — verholpen"
     ]
   },
@@ -2795,7 +2790,7 @@
   {
     "missionId": "wachtwoord-warrior",
     "templateType": "puzzle-lab",
-    "priorityBand": "high",
+    "priorityBand": "medium",
     "triageScores": {
       "uiux": 1,
       "slo": 1,
@@ -2803,28 +2798,29 @@
       "interactivity": 0,
       "total": 6
     },
-    "lastReviewed": "2026-06-26",
+    "lastReviewed": "2026-08-07",
     "reviewStatus": "fixed",
-    "reportPath": "business/dgskills-reviews/wave-3b-2026-06-26.md",
+    "reportPath": "business/dgskills-reviews/wachtwoord-warrior-2026-08-07.md",
     "autoFixesApplied": 0,
     "openEscalations": [],
     "codexVerdict": null,
     "reviewScores": {
-      "uiux": 9,
-      "didactiek": 9,
-      "tech": 10
+      "uiux": 7,
+      "didactiek": 6,
+      "tech": 7
     },
     "proposedFixes": 0,
     "escalationCount": 0,
     "topIssues": [
       "schoon; antwoordmodellen + scoring (4x25=100) geverifieerd"
     ],
-    "statusNote": "normalisatie 2026-07-01 (run wave 4+): review schoon, geen open punten"
+    "statusNote": "normalisatie 2026-07-01 (run wave 4+): review schoon, geen open punten",
+    "triageScore": 3.4
   },
   {
     "missionId": "web-developer",
     "templateType": "builder-canvas",
-    "priorityBand": "low",
+    "priorityBand": "medium",
     "triageScores": {
       "uiux": 0,
       "slo": 1,
@@ -2832,18 +2828,18 @@
       "interactivity": 0,
       "total": 2
     },
-    "lastReviewed": "2026-07-02",
+    "lastReviewed": "2026-08-07",
     "reviewStatus": "fixed",
-    "reportPath": "business/dgskills-reviews/web-developer-2026-07-02.md",
+    "reportPath": "business/dgskills-reviews/web-developer-2026-08-07.md",
     "autoFixesApplied": 0,
     "openEscalations": [],
     "codexVerdict": null,
     "reviewScores": {
       "uiux": 7,
-      "didactiek": 8,
-      "tech": 8
+      "didactiek": 5,
+      "tech": 4
     },
-    "triageScore": 2.3,
+    "triageScore": 4.7,
     "verdict": "ok",
     "statusNote": "wave 20: schoon — HTML/CSS/JS-feiten correct, opbouw sterk; vervolgtaak-suggestie: PreviewPanel-sandbox (bestaat voor website-bouwer) hergebruiken zodat leerlingen hun code live zien",
     "escalationCount": 0
@@ -2859,7 +2855,7 @@
       "interactivity": 0,
       "total": 4
     },
-    "lastReviewed": "2026-08-06",
+    "lastReviewed": "2026-08-08",
     "reviewStatus": "klaar",
     "reportPath": "business/dgskills-reviews/j1p2-batch-2026-08-06.md",
     "autoFixesApplied": 0,
@@ -2872,11 +2868,11 @@
       "tech": 8.5
     },
     "triageScore": 1.45,
-    "statusNote": "Browserreview op 4 schermformaten. Lokaal; AI-stap en server-side voortgang niet bewezen.",
+    "statusNote": "Browserreview op 4 schermformaten, plus adversariële tegenlezing door Codex. Lokaal; AI-stap en server-side voortgang niet bewezen.",
     "verdict": "ok",
     "topIssues": [
-      "Offline AI-hulptekst wees naar Game Programmeur — verholpen",
-      "Coach stuurt nu naar fictief profiel i.p.v. eigen gegevens"
+      "Ruwe opdrachttekst gaat niet naar de AI-coach",
+      "Werk wordt pas gewist na bevestiging"
     ]
   },
   {
@@ -2935,5 +2931,20 @@
     "triageScore": 2.15,
     "statusNote": "wave 11: iPad-route inhoudsopgave gecorrigeerd (Invoegen→Documentelementen→Inhoud, 2 reviews bevestigden de fout) + badges gedifferentieerd; foto-aanscherping bewust naar AVG-groep",
     "verdict": "fix-eerst"
+  },
+  {
+    "missionId": "wachtwoord-fortress",
+    "lastReviewed": "2026-08-07",
+    "reviewStatus": "fixed",
+    "triageScore": 7,
+    "priorityBand": "high",
+    "reportPath": "business/dgskills-reviews/wachtwoord-fortress-2026-08-07.md",
+    "reviewScores": {
+      "uiux": 3,
+      "didactiek": 3,
+      "tech": 3
+    },
+    "openEscalations": [],
+    "codexVerdict": null
   }
 ]

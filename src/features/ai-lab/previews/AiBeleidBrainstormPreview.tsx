@@ -4,7 +4,7 @@ import { Scale, Lightbulb, AlertTriangle, ShieldCheck, Sparkles, ThumbsUp, Send,
 import { submitAiBeleidIdee, getAiBeleidIdeeen, stemOpIdee, submitAiBeleidSurvey, AiBeleidSurveyData } from '@/services/teacherService';
 import { AiBeleidIdee } from '@/types';
 import { MissionConclusion } from '@/features/missions/shared/MissionConclusion';
-import { isMeaningfulAnswer, answerQualityHint } from '@/features/missions/templates/debate-arena/answerQuality';
+import { isMeaningfulAnswer, answerQualityHint } from '@/features/missions/templates/shared/answerQuality';
 
 // =====================================================================
 // CONTENT FILTER - Block inappropriate content

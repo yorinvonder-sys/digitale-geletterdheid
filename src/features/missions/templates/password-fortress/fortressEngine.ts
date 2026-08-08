@@ -73,6 +73,24 @@ const WORDLIST: readonly string[] = [
     'admin', 'login', 'secret', 'shadow', 'ninja', 'angel', 'happy',
 ];
 
+/** Toetsenbordrijen (QWERTY) waaruit voorspelbare 3+-reeksen worden afgeleid. */
+const KEYBOARD_ROWS: readonly string[] = ['qwertyuiop', 'asdfghjkl', 'zxcvbnm', '1234567890'];
+
+const buildKeyboardSequences = (): string[] => {
+    const seqs = new Set<string>();
+    for (const row of KEYBOARD_ROWS) {
+        for (let i = 0; i <= row.length - 3; i++) {
+            const fwd = row.slice(i, i + 3);
+            seqs.add(fwd);
+            seqs.add([...fwd].reverse().join(''));
+        }
+    }
+    return [...seqs];
+};
+
+/** Voorspelbare toetsenbordreeksen van 3+ tekens, bv. "qwerty", "asdf", "zxcvbn". */
+const KEYBOARD_SEQUENCES: readonly string[] = buildKeyboardSequences();
+
 /** Leetspeak-substituties die aanvallers standaard terugvertalen. */
 const LEET_MAP: Record<string, string> = {
     '@': 'a',
@@ -206,13 +224,27 @@ const scanForPatterns = (lowered: string): ScanResult => {
         }
     }
 
-    // 3) Cijfer-/letterreeksen van 3+ (123, 111, abc) op de rest
-    const seqRe = /([0-9])\1{2,}|012|123|234|345|456|567|678|789|abc|xyz/g;
+    // 3) Herhaalde tekens (3+, ook letters — bv. "aaaa") en cijferreeksen (123, abc) op de rest
+    const seqRe = /(.)\1{2,}|012|123|234|345|456|567|678|789|abc|xyz/g;
     while ((m = seqRe.exec(lowered)) !== null) {
         const len = m[0].length;
         if (claim(m.index, len)) {
             foundPatterns.push(`reeks ${m[0]}`);
             effectiveLength -= len - 1; // reeks ≈ 1 teken
+        }
+    }
+
+    // 4) Toetsenbordreeksen van 3+ (qwerty, asdf, zxcvbn…) op de rest
+    for (const seq of KEYBOARD_SEQUENCES) {
+        let from = 0;
+        while (true) {
+            const idx = lowered.indexOf(seq, from);
+            if (idx === -1) break;
+            if (claim(idx, seq.length)) {
+                foundPatterns.push(`toetsenbordreeks ${seq}`);
+                effectiveLength -= seq.length - 1;
+            }
+            from = idx + 1;
         }
     }
 
@@ -245,7 +277,11 @@ export const formatSeconds = (seconds: number): string => {
 
 const runBruteForce = (pw: string): Omit<AttackResult, 'broken'> => {
     const classes = getCharClasses(pw);
-    const seconds = bruteSeconds(pw.length, classes);
+    // Herhaalde tekens en toetsenbordreeksen leveren geen extra combinaties op,
+    // ook al tellen ze wél mee in de ruwe lengte — begrens de entropie daarom
+    // op de werkelijke variatie in het wachtwoord.
+    const { effectiveLength } = scanForPatterns(pw.toLowerCase());
+    const seconds = bruteSeconds(effectiveLength, classes);
     return {
         attackId: 'brute-force',
         crackSeconds: seconds,
