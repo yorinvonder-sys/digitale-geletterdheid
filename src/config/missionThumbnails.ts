@@ -100,4 +100,12 @@ export const MISSION_SCREENSHOTS: Record<string, string> = {
     'pitch-perfect': '/assets/previews/project_pitch_perfect.webp',
     'reflection-report': '/assets/previews/project_reflection_report.webp',
     'meesterproef': '/assets/previews/project_meesterproef.webp',
+    'bonus-extra-pagina': '/assets/previews/project_bonus_extra_pagina.webp',
+    'bonus-sequel': '/assets/previews/project_bonus_sequel.webp',
+    'bonus-vijand': '/assets/previews/project_bonus_vijand.webp',
+    'bonus-powerup': '/assets/previews/project_bonus_powerup.webp',
+    'bonus-level': '/assets/previews/project_bonus_level.webp',
+    'bonus-investor-pitch': '/assets/previews/project_bonus_investor_pitch.webp',
+    'bonus-competitor-analysis': '/assets/previews/project_bonus_competitor_analysis.webp',
+    'bonus-business-model': '/assets/previews/project_bonus_business_model.webp',
 };
