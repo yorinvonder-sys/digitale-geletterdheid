@@ -92,6 +92,26 @@ function scoreBinaryChoice(items: ScenarioRound['items'], selections: number[]):
     return Math.max(0, Math.round(normalized * ITEM_SCORE_SCALE));
 }
 
+/**
+ * De speelse rondevormen zijn presentatievarianten: ze slaan hun antwoord op in
+ * exact hetzelfde formaat als hun klassieke tegenhanger en worden daarom met
+ * dezelfde formule beoordeeld. Zo levert een missie die overstapt op slepen
+ * dezelfde score op als daarvoor, en blijft opgeslagen voortgang geldig.
+ */
+const SCORING_KIND: Record<ScenarioRound['type'], 'select-correct' | 'order-priority' | 'binary-choice'> = {
+    'select-correct': 'select-correct',
+    'order-priority': 'order-priority',
+    'binary-choice': 'binary-choice',
+    'spot-the-flags': 'select-correct',
+    'order-drag': 'order-priority',
+    'inbox-triage': 'binary-choice',
+};
+
+/** Welke scoreformule bij dit rondetype hoort. */
+export function scoringKind(round: ScenarioRound): 'select-correct' | 'order-priority' | 'binary-choice' {
+    return SCORING_KIND[round.type];
+}
+
 const warnedRounds = new Set<string>();
 
 /**
@@ -104,7 +124,7 @@ const warnedRounds = new Set<string>();
  */
 function warnIfUnscorable(round: ScenarioRound): void {
     if (!import.meta.env.DEV) return;
-    if (round.type !== 'select-correct') return;
+    if (scoringKind(round) !== 'select-correct') return;
     if (warnedRounds.has(round.id)) return;
     const distractors = round.items.filter((i) => !i.correct).length;
     if (distractors >= 2) return;
@@ -123,7 +143,7 @@ function warnIfUnscorable(round: ScenarioRound): void {
  */
 export function scoreRound(round: ScenarioRound, selections: number[]): number {
     const raw = (() => {
-        switch (round.type) {
+        switch (scoringKind(round)) {
             case 'select-correct': return scoreSelectCorrect(round.items, selections);
             case 'order-priority': return scoreOrderPriority(round.items, selections);
             case 'binary-choice': return scoreBinaryChoice(round.items, selections);
