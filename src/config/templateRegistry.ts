@@ -7,7 +7,7 @@ import type { TemplateMissionEntry, TemplateType } from '@/features/missions/tem
  */
 export const TEMPLATE_MISSIONS: Record<string, TemplateMissionEntry> = {
     // === ScenarioEngine (11) ===
-    'mail-detective':       { missionId: 'mail-detective',       templateType: 'scenario-engine' },
+    'mail-detective':       { missionId: 'mail-detective',       templateType: 'helpdesk-shift' },
     'cookie-crusher':       { missionId: 'cookie-crusher',       templateType: 'scenario-engine' },
     'notificatie-ninja':    { missionId: 'notificatie-ninja',    templateType: 'scenario-engine' },
     'online-helden':        { missionId: 'online-helden',        templateType: 'scenario-engine' },
@@ -102,6 +102,7 @@ export const TEMPLATE_MISSIONS: Record<string, TemplateMissionEntry> = {
     'word-wizard':          { missionId: 'word-wizard',          templateType: 'tool-guide' },
     'slide-specialist':     { missionId: 'slide-specialist',     templateType: 'tool-guide' },
     'print-pro':            { missionId: 'print-pro',            templateType: 'tool-guide' },
+    'mission-build':        { missionId: 'mission-build',        templateType: 'tool-guide' },
     'mission-launch':       { missionId: 'mission-launch',       templateType: 'tool-guide' },
     'startup-pitch':        { missionId: 'startup-pitch',        templateType: 'tool-guide' },
 };

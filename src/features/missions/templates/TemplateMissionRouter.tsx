@@ -14,6 +14,7 @@ const DebateArena = lazy(() => import('./debate-arena/DebateArena').then(m => ({
 const ToolGuide = lazy(() => import('./tool-guide/ToolGuide').then(m => ({ default: m.ToolGuide })));
 const EthicsCouncil = lazy(() => import('./ethics-council/EthicsCouncil').then(m => ({ default: m.EthicsCouncil })));
 const PasswordFortress = lazy(() => import('./password-fortress/PasswordFortress').then(m => ({ default: m.PasswordFortress })));
+const HelpdeskShift = lazy(() => import('./helpdesk-shift/HelpdeskShift').then(m => ({ default: m.HelpdeskShift })));
 
 const TemplateLoadingFallback = () => (
     <div className="min-h-screen bg-duck-bg flex items-center justify-center">
@@ -56,6 +57,7 @@ export const TemplateMissionRouter: React.FC<TemplateMissionProps> = (props) => 
             {entry.templateType === 'tool-guide' && <ToolGuide {...templateProps} />}
             {entry.templateType === 'ethics-council' && <EthicsCouncil {...templateProps} />}
             {entry.templateType === 'password-fortress' && <PasswordFortress {...templateProps} />}
+            {entry.templateType === 'helpdesk-shift' && <HelpdeskShift {...templateProps} />}
         </Suspense>
     );
 };

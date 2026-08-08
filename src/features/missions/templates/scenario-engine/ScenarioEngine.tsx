@@ -4,7 +4,7 @@ import { PhaseHeader } from '../shared/PhaseHeader';
 import { PhaseCard } from '../shared/PhaseCard';
 import { CompletionScreen } from '../shared/CompletionScreen';
 import { IntroScreen } from '../shared/IntroScreen';
-import { ConfidenceRating, confidenceMultiplier } from '../shared/ConfidenceRating';
+import { ConfidenceRating, ConfidenceFeedback } from '../shared/ConfidenceRating';
 import { FollowUpCard } from '../shared/FollowUpCard';
 import { getMissionGoal } from '@/config/missionGoals';
 import type { TemplateMissionProps } from '../shared/types';
@@ -17,24 +17,27 @@ import type {
 import { SelectCorrectRound } from './sub/SelectCorrectRound';
 import { OrderPriorityRound } from './sub/OrderPriorityRound';
 import { BinaryChoiceRound } from './sub/BinaryChoiceRound';
+import { SpotTheFlagsRound } from './sub/SpotTheFlagsRound';
+import { OrderDragRound } from './sub/OrderDragRound';
+import { InboxTriageRound } from './sub/InboxTriageRound';
 import { FeedbackBanner, followUpWeight, scaledItemScore, scoreRound } from './sub/FeedbackBanner';
+import { toScorePercent } from '../shared/scorePercent';
 
 // ── Scoring ───────────────────────────────────────────────────────────────────
 
 /**
- * Berekent de gecorrigeerde score voor een ronde inclusief confidence multiplier,
- * followUp bonus en — wanneer de ronde `followUpWeight` zet — de punten die voor
- * de followUp-vraag zijn gereserveerd.
+ * Berekent de gecorrigeerde score voor een ronde: de itemscore plus de followUp
+ * bonus en — wanneer de ronde `followUpWeight` zet — de punten die voor de
+ * followUp-vraag zijn gereserveerd. De zelfingeschatte zekerheid telt bewust
+ * niet mee: die dient voor kalibratie-feedback, niet voor de score.
  */
 function adjustedScoreRound(round: ScenarioRound, rs: RoundState): number {
     if (!rs.submitted) return 0;
-    const base = scoreRound(round, rs.selections);
     const items = scaledItemScore(round, rs.selections);
-    const multiplied = Math.round(items * confidenceMultiplier(rs.confidence, base >= 15));
     const followUpEarned = rs.followUpAnswered && rs.followUpCorrect && round.followUp
         ? followUpWeight(round) + round.followUp.bonusPoints
         : 0;
-    return Math.min(multiplied + followUpEarned, round.maxScore);
+    return Math.min(items + followUpEarned, round.maxScore);
 }
 
 // ── Loading / error screens ───────────────────────────────────────────────────
@@ -47,7 +50,7 @@ const LoadingScreen: React.FC = () => (
                 aria-label="Laden..."
             />
             <p
-                className="text-sm text-duck-ink/60"
+                className="text-sm text-duck-ink/70"
                 style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
             >
                 Missie laden…
@@ -67,7 +70,7 @@ const ErrorScreen: React.FC<{ missionId: string; onBack: () => void }> = ({ miss
                 Missie niet gevonden
             </h2>
             <p
-                className="text-sm text-duck-ink/60 mb-4"
+                className="text-sm text-duck-ink/70 mb-4"
                 style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
             >
                 De configuratie voor <code>{missionId}</code> kon niet worden geladen.
@@ -83,6 +86,42 @@ const ErrorScreen: React.FC<{ missionId: string; onBack: () => void }> = ({ miss
     </div>
 );
 
+const RecoveryScreen: React.FC<{ onRestart: () => void; onBack: () => void }> = ({ onRestart, onBack }) => (
+    <div className="min-h-screen bg-duck-bg flex items-center justify-center p-4">
+        <div className="text-center max-w-sm">
+            <div className="text-4xl mb-4">🔄</div>
+            <h2
+                className="text-lg font-black text-duck-ink mb-2"
+                style={{ fontFamily: "'Newsreader', Georgia, serif" }}
+            >
+                Deze ronde bestaat niet meer
+            </h2>
+            <p
+                className="text-sm text-duck-ink/70 mb-4"
+                style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
+            >
+                De missie is bijgewerkt sinds je opgeslagen voortgang. Begin opnieuw om verder te gaan.
+            </p>
+            <div className="flex gap-2 justify-center">
+                <button
+                    onClick={onRestart}
+                    className="px-5 py-2.5 bg-duck-acid text-duck-ink rounded-xl text-sm font-bold"
+                    style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
+                >
+                    Opnieuw beginnen
+                </button>
+                <button
+                    onClick={onBack}
+                    className="px-5 py-2.5 border-2 border-duck-gray text-duck-ink rounded-xl text-sm font-bold"
+                    style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
+                >
+                    Terug
+                </button>
+            </div>
+        </div>
+    </div>
+);
+
 // ── State helpers ─────────────────────────────────────────────────────────────
 
 function buildInitialState(config: ScenarioEngineConfig): ScenarioEngineState {
@@ -91,6 +130,44 @@ function buildInitialState(config: ScenarioEngineConfig): ScenarioEngineState {
         roundStates[round.id] = { selections: [], submitted: false };
     }
     return { phase: 'intro', currentRound: 0, roundStates };
+}
+
+/**
+ * Toetst herstelde voortgang tegen de huidige config. Is een ronde hernoemd of
+ * verwijderd sinds het opslaan, dan wijst `currentRound` naar niets meer en
+ * ontbreekt de bijbehorende roundState — de engine liet dan een leeg scherm zien
+ * dat na elke herlaad terugkwam. Faalt deze check, dan start de missie vers.
+ */
+function isStateValidForConfig(saved: ScenarioEngineState, config: ScenarioEngineConfig): boolean {
+    if (!saved || typeof saved !== 'object') return false;
+    if (!saved.roundStates || typeof saved.roundStates !== 'object') return false;
+    const knownIds = new Set(config.rounds.map((round) => round.id));
+    // Elke opgeslagen ronde moet nog bestaan, en elke huidige ronde moet state hebben.
+    if (Object.keys(saved.roundStates).some((id) => !knownIds.has(id))) return false;
+    // Elke huidige ronde moet state hebben, en geen selectie mag naar een item
+    // wijzen dat uit de config verdwenen is: de scoreberekening zoekt dat item op
+    // en draait bij elke render over alle rondes heen.
+    if (config.rounds.some((round) => {
+        const rs = saved.roundStates[round.id];
+        if (!rs || !Array.isArray(rs.selections)) return true;
+        if (typeof rs.submitted !== 'boolean') return true;
+        // Goedkope bovengrens: meer selecties dan items betekent bewerkte opslag.
+        if (rs.selections.length > round.items.length) return true;
+        if (rs.selections.some((id) => !Number.isInteger(id))) return true;
+        // Elk item hoogstens één keer, en nooit als accepteren én weigeren tegelijk.
+        // Zonder deze eis telde zevenmaal hetzelfde id zeven keer mee en gaf een
+        // ronde met vijf juiste items 35 van de 25 punten.
+        if (new Set(rs.selections).size !== rs.selections.length) return true;
+        const chosen = new Set(rs.selections.map((id) => Math.abs(id)));
+        if (chosen.size !== rs.selections.length) return true;
+        return rs.selections.some((id) => !round.items.some((item) => item.id === Math.abs(id)));
+    })) return false;
+    // currentRound moet binnen de huidige rondelijst vallen.
+    return (
+        Number.isInteger(saved.currentRound) &&
+        saved.currentRound >= 0 &&
+        saved.currentRound < config.rounds.length
+    );
 }
 
 // ── Allowlist ────────────────────────────────────────────────────────────────
@@ -133,11 +210,12 @@ export const ScenarioEngine: React.FC<TemplateMissionProps> = ({ missionId, onBa
 const ScenarioEngineInner: React.FC<{
     config: ScenarioEngineConfig;
     onBack: () => void;
-    onComplete: (success: boolean) => void;
+    onComplete: (success: boolean, scorePercent?: number) => boolean | void | Promise<boolean | void>;
 }> = ({ config, onBack, onComplete }) => {
     const { state, setState, clearSave } = useMissionAutoSave<ScenarioEngineState>(
         config.missionId,
-        buildInitialState(config)
+        buildInitialState(config),
+        { validate: (saved) => isStateValidForConfig(saved, config) }
     );
 
     const currentRound = config.rounds[state.currentRound];
@@ -179,6 +257,24 @@ const ScenarioEngineInner: React.FC<{
         updateRoundState(currentRound.id, { selections: [] });
     };
 
+    /**
+     * Volledige herordening voor sleep-rondes. De ingestuurde volgorde wordt
+     * gefilterd op items die echt in de ronde staan en ontdubbeld, zodat een
+     * sleepcomponent nooit een selectielijst kan opleveren die de opslagvalidatie
+     * of de scoreformule zou breken.
+     */
+    const handleReorder = (order: number[]) => {
+        if (!roundState || roundState.submitted || !currentRound) return;
+        const known = new Set(currentRound.items.map((item) => item.id));
+        const seen = new Set<number>();
+        const safe = order.filter((id) => {
+            if (!known.has(id) || seen.has(id)) return false;
+            seen.add(id);
+            return true;
+        });
+        updateRoundState(currentRound.id, { selections: safe });
+    };
+
     const handleBinaryChoice = (id: number, accepted: boolean) => {
         if (!roundState || roundState.submitted || !currentRound) return;
         const prev = roundState.selections.filter((x) => Math.abs(x) !== id);
@@ -199,9 +295,15 @@ const ScenarioEngineInner: React.FC<{
         }
     };
 
-    const handleComplete = () => {
-        clearSave();
-        onComplete(totalScore >= config.maxScore * 0.4);
+    const handleComplete = async () => {
+        const missionGoal = config.missionGoal ?? getMissionGoal(config.missionId);
+        const success = missionGoal?.criteria.type === 'score-threshold'
+            ? totalScore >= (missionGoal.criteria.threshold ?? config.maxScore * 0.4)
+            : true;
+        const completed = await onComplete(success, toScorePercent(totalScore, config.maxScore));
+        if (completed !== false) {
+            clearSave();
+        }
     };
 
     // ── Intro phase ──
@@ -242,12 +344,28 @@ const ScenarioEngineInner: React.FC<{
     }
 
     // ── Active phase ──
-    if (!currentRound || !roundState) return null;
+    // Vangnet: als de ronde of zijn state alsnog ontbreekt (bijvoorbeeld doordat
+    // de config wijzigt terwijl de missie openstaat), toon een scherm mét uitweg
+    // in plaats van een leeg scherm zonder terugknop.
+    if (!currentRound || !roundState) {
+        return (
+            <RecoveryScreen
+                onRestart={() => {
+                    clearSave();
+                    setState(buildInitialState(config));
+                }}
+                onBack={onBack}
+            />
+        );
+    }
 
-    const baseScore = scoreRound(currentRound, roundState.selections);
-    const roundIsCorrect = roundState.submitted && baseScore >= 15;
     const hasFollowUp = !!currentRound.followUp;
-    const followUpPending = roundIsCorrect && hasFollowUp && !roundState.followUpAnswered;
+    // De verdiepingsvraag is niet langer voorbehouden aan wie de ronde al goed
+    // had: bij `followUpWeight > 0` zijn die punten anders onbereikbaar voor
+    // precies de leerling die de verdieping het hardst nodig heeft.
+    const followUpPending = roundState.submitted && hasFollowUp && !roundState.followUpAnswered;
+    // Alleen voor de kalibratie-terugkoppeling: klopte de inschatting van de leerling?
+    const roundIsCorrect = roundState.submitted && scoreRound(currentRound, roundState.selections) >= 15;
 
     return (
         <div className="min-h-screen bg-duck-bg p-4">
@@ -297,15 +415,51 @@ const ScenarioEngineInner: React.FC<{
                         />
                     )}
 
-                    {roundState.submitted && currentRound.showConfidence && roundState.confidence === undefined && (
-                        <div className="mt-4">
+                    {currentRound.type === 'spot-the-flags' && (
+                        <SpotTheFlagsRound
+                            round={currentRound}
+                            selections={roundState.selections}
+                            submitted={roundState.submitted}
+                            onToggle={handleToggle}
+                            onSubmit={handleSubmit}
+                        />
+                    )}
+
+                    {currentRound.type === 'order-drag' && (
+                        <OrderDragRound
+                            round={currentRound}
+                            selections={roundState.selections}
+                            submitted={roundState.submitted}
+                            onReorder={handleReorder}
+                            onSubmit={handleSubmit}
+                        />
+                    )}
+
+                    {currentRound.type === 'inbox-triage' && (
+                        <InboxTriageRound
+                            round={currentRound}
+                            selections={roundState.selections}
+                            submitted={roundState.submitted}
+                            onChoice={handleBinaryChoice}
+                            onSubmit={handleSubmit}
+                        />
+                    )}
+
+                    {roundState.submitted && currentRound.showConfidence && (
+                        <div className="mt-4 space-y-2">
                             <ConfidenceRating
+                                selected={roundState.confidence}
                                 onSelect={(level) => updateRoundState(currentRound.id, { confidence: level })}
+                            />
+                            <ConfidenceFeedback
+                                confidence={roundState.confidence}
+                                correct={roundIsCorrect}
                             />
                         </div>
                     )}
 
-                    {roundState.submitted && (currentRound.showConfidence ? roundState.confidence !== undefined : true) && (
+                    {/* De zekerheidskeuze is optioneel: hij mag de feedback niet blokkeren. */}
+                    {roundState.submitted && (
                         <>
                             <FeedbackBanner
                                 round={currentRound}
@@ -319,10 +473,15 @@ const ScenarioEngineInner: React.FC<{
                                 <FollowUpCard
                                     followUp={currentRound.followUp}
                                     scoreWeight={followUpWeight(currentRound)}
+                                    onAnswer={(correct) => {
+                                        if (roundState.followUpCorrect === undefined) {
+                                            updateRoundState(currentRound.id, { followUpCorrect: correct });
+                                        }
+                                    }}
                                     onComplete={(correct) => {
                                         updateRoundState(currentRound.id, {
                                             followUpAnswered: true,
-                                            followUpCorrect: correct,
+                                            followUpCorrect: roundState.followUpCorrect ?? correct,
                                         });
                                         handleNextRound();
                                     }}

@@ -80,6 +80,8 @@ export const eindprojectJ2Config: DataViewerConfig = {
                     question:
                         'Wat valt je op over de relatie tussen originaliteit en eindcijfer? Beschrijf een patroon dat je ziet.',
                     type: 'text-observation',
+                    keywords: ['voorspeller', 'samenhang', 'verband', 'hoger', 'stijgt'],
+                    minKeywords: 1,
                     correctAnswer: '',
                     explanation:
                         'Leerlingen met hoge originaliteitsscores (8-10) halen vrijwel altijd een 7,5 of hoger. Leerlingen met lage originaliteit (5-6) halen zelden boven de 7. Originaliteit lijkt een sterkere voorspeller van het eindcijfer dan techniek alleen. Dit suggereert dat de docent creatief en origineel denken zwaar waardeert.',
@@ -134,6 +136,8 @@ export const eindprojectJ2Config: DataViewerConfig = {
                     question:
                         'Als jij je eindproject moet kiezen: zou je voor een "veilig" type gaan (app-ontwerp) of iets onbekends proberen? Onderbouw je keuze met de data.',
                     type: 'text-observation',
+                    keywords: ['veilig', 'onbekend', 'risico', 'origineel'],
+                    minKeywords: 1,
                     correctAnswer: '',
                     explanation:
                         'Er is geen fout antwoord. Sterke argumenten voor "veilig": app-ontwerp scoort gemiddeld het hoogst en geeft een heldere structuur. Sterke argumenten voor "onbekend": origineelheid scoort hoog in de beoordeling — een verrassend onderwerp kan compenseren. De data laat ook zien dat individuele scores (Pien: 8,3 voor video) een hogere uitloop hebben dan het type alleen.',
@@ -197,6 +201,8 @@ export const eindprojectJ2Config: DataViewerConfig = {
                     question:
                         'Beschrijf in 3 zinnen jouw idee voor een eindproject. Gebruik tip 1: begin met een probleem dat jij ervaart.',
                     type: 'text-observation',
+                    keywords: ['probleem', 'wil', 'maken'],
+                    minKeywords: 1,
                     correctAnswer: '',
                     explanation:
                         'Een goed antwoord benoemt (1) het probleem dat de leerling ervaart, (2) wie er baat bij heeft, en (3) wat voor soort project het wordt (app, website, onderzoek, spel). Voorbeelden: "Ik merk dat klasgenoten nooit weten wanneer de bibliotheek open is. Ik wil een simpele website maken met actuele openingstijden en een agenda." Of: "Ik wil onderzoeken hoeveel schermtijd leerlingen in mijn klas hebben en of dat met hun concentratie samenhangt."',

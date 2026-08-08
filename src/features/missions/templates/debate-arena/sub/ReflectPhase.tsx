@@ -1,6 +1,7 @@
 import React from 'react';
 import { ArrowLeft, Sparkles, Trophy } from 'lucide-react';
 import type { DebateArenaConfig, DebateArenaState } from '../DebateArena';
+import { isMeaningfulAnswer } from '../../shared/answerQuality';
 
 export interface ReflectPhaseProps {
     config: DebateArenaConfig;
@@ -13,7 +14,7 @@ export interface ReflectPhaseProps {
 
 export const ReflectPhase: React.FC<ReflectPhaseProps> = ({ config, state, onUpdateAnswer, onSelectFinalPosition, onNext, onBack }) => {
     const allAnswered = config.reflectionQuestions.every(
-        (q) => (state.reflectionAnswers[q] ?? '').trim().length >= 20
+        (q) => isMeaningfulAnswer(state.reflectionAnswers[q] ?? '')
     );
 
     return (
@@ -31,7 +32,7 @@ export const ReflectPhase: React.FC<ReflectPhaseProps> = ({ config, state, onUpd
             <div className="space-y-4 mb-5">
                 {config.reflectionQuestions.map((q, i) => {
                     const answer = state.reflectionAnswers[q] ?? '';
-                    const valid = answer.trim().length >= 20;
+                    const valid = isMeaningfulAnswer(answer);
                     return (
                         <div key={i} className="bg-white rounded-2xl border border-duck-gray p-4">
                             <div className="flex items-start gap-2 mb-2">

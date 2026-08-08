@@ -13,10 +13,11 @@ export const ChecklistItem: React.FC<ChecklistItemProps> = ({ id, label, checked
         onClick={() => onToggle(id)}
         className={`w-full flex items-center gap-3 p-3 rounded-xl border transition-all duration-200 text-left ${
             checked
-                ? 'bg-duck-ink/8 border-duck-ink/30'
-                : 'bg-white border-duck-gray hover:border-duck-acid/40 hover:bg-duck-acid/4'
+                ? 'bg-duck-ink/10 border-duck-ink/30'
+                : 'bg-white border-duck-gray hover:border-duck-acid/40 hover:bg-duck-acid/5'
         }`}
-        aria-pressed={checked}
+        role="checkbox"
+        aria-checked={checked}
     >
         <div
             className={`w-5 h-5 rounded-md border-2 flex items-center justify-center shrink-0 transition-all duration-200 ${
@@ -27,7 +28,7 @@ export const ChecklistItem: React.FC<ChecklistItemProps> = ({ id, label, checked
         </div>
         <span
             className={`text-sm transition-colors duration-200 ${
-                checked ? 'text-duck-ink/60 line-through' : 'text-duck-ink/60'
+                checked ? 'text-duck-ink/70 line-through' : 'text-duck-ink/70'
             }`}
             style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
         >

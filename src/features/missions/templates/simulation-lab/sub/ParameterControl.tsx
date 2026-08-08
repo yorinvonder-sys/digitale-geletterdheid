@@ -12,7 +12,7 @@ export const ParameterControl: React.FC<{
             <div className="space-y-1">
                 <div className="flex justify-between items-center">
                     <label
-                        className="text-xs font-bold text-duck-ink/60"
+                        className="text-xs font-bold text-duck-ink/75"
                         style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                     >
                         {param.label}
@@ -27,6 +27,7 @@ export const ParameterControl: React.FC<{
                 <input
                     data-qa="simulation-parameter-slider"
                     type="range"
+                    aria-label={param.label}
                     min={param.min ?? 0}
                     max={param.max ?? 100}
                     step={param.step ?? 1}
@@ -34,7 +35,7 @@ export const ParameterControl: React.FC<{
                     onChange={(e) => onChange(Number(e.target.value))}
                     className="min-h-[44px] w-full accent-duck-error"
                 />
-                <div className="flex justify-between text-[10px] text-duck-ink/60">
+                <div className="flex justify-between text-[10px] text-duck-ink/75">
                     <span>{param.min ?? 0}</span>
                     <span>{param.max ?? 100}</span>
                 </div>
@@ -47,7 +48,7 @@ export const ParameterControl: React.FC<{
         return (
             <div className="flex items-center justify-between">
                 <label
-                    className="text-xs font-bold text-duck-ink/60"
+                    className="text-xs font-bold text-duck-ink/75"
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                 >
                     {param.label}
@@ -59,6 +60,7 @@ export const ParameterControl: React.FC<{
                         v ? 'bg-duck-acid' : 'bg-duck-gray'
                     }`}
                     aria-pressed={v}
+                    aria-label={param.label}
                 >
                     <div
                         className={`absolute left-1 top-1/2 h-5 w-5 -translate-y-1/2 rounded-full bg-white shadow transition-transform duration-300 ${
@@ -75,7 +77,7 @@ export const ParameterControl: React.FC<{
         return (
             <div className="space-y-1">
                 <label
-                    className="text-xs font-bold text-duck-ink/60 block"
+                    className="text-xs font-bold text-duck-ink/75 block"
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                 >
                     {param.label}
@@ -89,7 +91,7 @@ export const ParameterControl: React.FC<{
                             className={`min-h-[44px] text-left px-3 py-2 rounded-lg text-xs font-medium transition-all duration-200 border ${
                                 v === opt
                                     ? 'bg-duck-acid/10 border-duck-acid text-duck-ink font-bold'
-                                    : 'bg-white border-duck-gray text-duck-ink/60 hover:border-duck-acid/50'
+                                    : 'bg-white border-duck-gray text-duck-ink/75 hover:border-duck-acid/50'
                             }`}
                             style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                         >

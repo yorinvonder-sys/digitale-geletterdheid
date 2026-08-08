@@ -15,6 +15,12 @@ test('shared mission screens expose stable intro and completion hooks', async ()
   assert.match(completion, /data-qa="confirm-completion"/);
 });
 
+test('failed completion cannot fall through to the completion side effect', async () => {
+  const completion = await source('src/features/missions/templates/shared/CompletionScreen.tsx');
+  assert.match(completion, /onClick=\{passed \? onComplete : onRetry\}/);
+  assert.match(completion, /disabled=\{!passed && !onRetry\}/);
+});
+
 test('ScenarioEngine round controls expose stable hooks and semantic item ids', async () => {
   const select = await source('src/features/missions/templates/scenario-engine/sub/SelectCorrectRound.tsx');
   const order = await source('src/features/missions/templates/scenario-engine/sub/OrderPriorityRound.tsx');
@@ -39,6 +45,26 @@ test('ScenarioEngine round controls expose stable hooks and semantic item ids', 
 
   assert.match(feedback, /data-qa="scenario-feedback"/);
   assert.match(feedback, /data-qa="scenario-next"/);
+});
+
+test('nieuwe ScenarioEngine-rondevarianten expose stable hooks', async () => {
+  const spotTheFlags = await source('src/features/missions/templates/scenario-engine/sub/SpotTheFlagsRound.tsx');
+  const inboxTriage = await source('src/features/missions/templates/scenario-engine/sub/InboxTriageRound.tsx');
+  const orderDrag = await source('src/features/missions/templates/scenario-engine/sub/OrderDragRound.tsx');
+
+  assert.match(spotTheFlags, /data-qa="scenario-option"/);
+  assert.match(spotTheFlags, /data-qa="scenario-submit"/);
+
+  assert.match(inboxTriage, /data-qa="scenario-binary-accept"/);
+  assert.match(inboxTriage, /data-qa="scenario-binary-reject"/);
+  assert.match(inboxTriage, /data-scenario-item-id=\{item\.id\}/);
+  assert.match(inboxTriage, /data-qa="scenario-submit"/);
+
+  assert.match(orderDrag, /data-qa="scenario-drag-item"/);
+  assert.match(orderDrag, /data-qa="scenario-drag-up"/);
+  assert.match(orderDrag, /data-qa="scenario-drag-down"/);
+  assert.match(orderDrag, /data-scenario-item-id=\{itemId\}/);
+  assert.match(orderDrag, /data-qa="scenario-submit"/);
 });
 
 test('confidence and follow-up controls expose stable hooks without answer metadata', async () => {

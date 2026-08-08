@@ -10,6 +10,7 @@ import { AiLab } from '@/features/ai-lab/AiLab';
 import { MissionBriefing } from '@/features/missions/shared/MissionBriefing';
 import { PromptMasterMission } from '@/features/missions/PromptMasterMission';
 import { TemplateMissionRouter } from '@/features/missions/templates/TemplateMissionRouter';
+import { AccessibilityProvider } from '@/contexts/AccessibilityContext';
 
 const GameDirectorMission = lazy(() => import('@/features/missions/GameDirectorMission').then(m => ({ default: m.GameDirectorMission })));
 const DataDetectiveMission = lazy(() => import('@/features/missions/DataDetectiveMission').then(m => ({ default: m.DataDetectiveMission })));
@@ -199,4 +200,13 @@ const DevMissionPreview: React.FC = () => {
     return null;
 };
 
-export default DevMissionPreview;
+// De preview draait buiten AuthenticatedApp, dus zonder deze wrapper mist hij de
+// toegankelijkheidsinstellingen (waaronder verminderde beweging) die een leerling
+// in de echte app wél heeft.
+const DevMissionPreviewWithA11y: React.FC = () => (
+    <AccessibilityProvider>
+        <DevMissionPreview />
+    </AccessibilityProvider>
+);
+
+export default DevMissionPreviewWithA11y;

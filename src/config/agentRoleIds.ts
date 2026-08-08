@@ -35,6 +35,7 @@ export const AGENT_ROLE_IDS = [
   'review-week-3',
   'mission-blueprint',
   'mission-vision',
+  'mission-build',
   'mission-launch',
   'startup-pitch',
   'bonus-investor-pitch',

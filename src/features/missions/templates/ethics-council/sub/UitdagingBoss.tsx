@@ -39,7 +39,7 @@ export const UitdagingBoss: React.FC<UitdagingBossProps> = ({
             {/* Boss header */}
             <div>
                 <p
-                    className="text-[10px] font-black text-duck-ink/50 uppercase tracking-widest mb-1"
+                    className="text-[10px] font-black text-duck-ink/70 uppercase tracking-widest mb-1"
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                 >
                     Miniboss
@@ -51,7 +51,7 @@ export const UitdagingBoss: React.FC<UitdagingBossProps> = ({
                     Verdedig je standpunt
                 </h2>
                 <p
-                    className="text-xs text-duck-ink/60"
+                    className="text-xs text-duck-ink/70"
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                 >
                     Een tegenstander heeft een argument. Wat antwoord jij?
@@ -72,7 +72,7 @@ export const UitdagingBoss: React.FC<UitdagingBossProps> = ({
                     </div>
                 </div>
                 <p
-                    className="text-sm text-duck-ink/60 leading-relaxed italic"
+                    className="text-sm text-duck-ink/70 leading-relaxed italic"
                     style={{ fontFamily: "'Newsreader', Georgia, serif" }}
                 >
                     {counterArgument}
@@ -82,7 +82,7 @@ export const UitdagingBoss: React.FC<UitdagingBossProps> = ({
             {/* Response input */}
             <div className="bg-white rounded-2xl border border-duck-gray p-4">
                 <label
-                    className="text-xs font-bold text-duck-ink/60 block mb-2"
+                    className="text-xs font-bold text-duck-ink/70 block mb-2"
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                 >
                     Jouw reactie
@@ -96,7 +96,7 @@ export const UitdagingBoss: React.FC<UitdagingBossProps> = ({
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                 />
                 <div
-                    className={`text-right text-[10px] mt-1 ${canContinue ? 'text-duck-ink' : 'text-duck-ink/60'}`}
+                    className={`text-right text-[10px] mt-1 ${canContinue ? 'text-duck-ink' : 'text-duck-ink/70'}`}
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                 >
                     {charCount}/{MIN_CHARS} min.

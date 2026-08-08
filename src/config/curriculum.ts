@@ -130,12 +130,18 @@ export const CURRICULUM: CurriculumConfig = {
                     missions: [
                         'mission-blueprint',
                         'mission-vision',
+                        'mission-build',
                         'mission-launch',
-                    ],
-                    reviewMissions: [
+                        // Sluit de periode af: de Ethische Raad beoordeelt het eigen project en
+                        // opent met "Je hebt je project gemaakt en gelanceerd". Als reviewMissions
+                        // stond hij vóór de rest en vergrendelde hij die drie tot hij af was.
                         'review-week-3',
                     ],
-                    assessmentId: 'assessment-j1-p4',
+                    // Geen assessmentId: periode 4 is het eindproject en wordt afgesloten met
+                    // de Ethische Raad, waarin de leerling zijn eigen gemaakte product toetst op
+                    // wetgeving, uitsluiting en transparantie. De vorige `assessment-j1-p4`
+                    // verwees naar de toets van periode 1 (Magister/Word/PowerPoint/printen) en
+                    // werd bovendien nergens aan een leerling aangeboden.
                 },
             },
         },

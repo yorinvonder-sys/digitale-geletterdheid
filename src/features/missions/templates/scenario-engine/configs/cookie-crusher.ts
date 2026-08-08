@@ -246,6 +246,16 @@ const config: ScenarioEngineConfig = {
                 },
                 {
                     id: 3,
+                    icon: '🌦️',
+                    title: 'Weer-app met duidelijke uitleg',
+                    description:
+                        'Een weer-app vraagt toestemming voor cookies. In de uitleg staat precies: alleen je ingestelde locatie onthouden zodat je niet steeds opnieuw hoeft te zoeken. Geen tracking, geen delen met derden.',
+                    correct: true,
+                    explanation:
+                        'Accepteren is hier logisch. Het doel is helder en beperkt (locatie onthouden), en er is geen tracking of doorverkoop van data. Transparantie over wat en waarom is precies waar je op moet letten.',
+                },
+                {
+                    id: 4,
                     icon: '🛍️',
                     title: 'Webshop die je niet kent',
                     description:
@@ -255,7 +265,7 @@ const config: ScenarioEngineConfig = {
                         'Weigeren. 47 externe partners is extreem. Jouw surfgedrag, locatie en aankoopinteresses worden dan gedeeld met tientallen bedrijven die je niet kent.',
                 },
                 {
-                    id: 4,
+                    id: 5,
                     icon: '📰',
                     title: 'Nieuwssite die je dagelijks leest',
                     description:
@@ -265,7 +275,7 @@ const config: ScenarioEngineConfig = {
                         'Dit is een eerlijk model (ook wel "consent or pay"). Als je de site gratis wil gebruiken en vertrouwen hebt in hun privacy­beleid, is accepteren een bewuste keuze. Betalen is ook prima als je dat kunt.',
                 },
                 {
-                    id: 5,
+                    id: 6,
                     icon: '🏫',
                     title: 'Schoolplatform',
                     description:
@@ -275,7 +285,17 @@ const config: ScenarioEngineConfig = {
                         'Geen weigeroptie = geen echte toestemming. Dit schoolplatform gedraagt zich illegaal. Meld dit aan je docent. Klik op "Accepteer alles" alleen als je geen andere keuze hebt om in te loggen.',
                 },
                 {
-                    id: 6,
+                    id: 7,
+                    icon: '🏛️',
+                    title: 'Overheidswebsite met DigiD-inlog',
+                    description:
+                        'Je logt in op een overheidswebsite, bijvoorbeeld om je paspoort aan te vragen. Ze gebruiken alleen technisch noodzakelijke cookies om je sessie ingelogd te houden — geen advertentie- of trackingcookies.',
+                    correct: true,
+                    explanation:
+                        'Deze cookies zijn puur functioneel en nodig om de website te laten werken. Overheden mogen sowieso geen trackingcookies gebruiken zonder expliciete toestemming. Accepteren is hier geen privacyrisico.',
+                },
+                {
+                    id: 8,
                     icon: '📱',
                     title: 'Social media app',
                     description:

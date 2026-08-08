@@ -1,7 +1,8 @@
-import React from 'react';
-import { ChevronRight, Lightbulb } from 'lucide-react';
+import React, { useEffect, useRef } from 'react';
+import { ChevronLeft, ChevronRight, Lightbulb } from 'lucide-react';
 import { FollowUpCard } from '../../shared/FollowUpCard';
 import { ChecklistItem } from './ChecklistItem';
+import { answerQualityHint } from '../../shared/answerQuality';
 import type { BuilderStep } from '../BuilderCanvas';
 import type { BuilderCanvasState } from './types';
 
@@ -13,8 +14,10 @@ interface StepInstructionPanelProps {
     isStepComplete: boolean;
     onChecklistToggle: (itemKey: string) => void;
     onTextChange: (stepId: string, value: string) => void;
+    onReflectionAnswer: (stepId: string, correct: boolean) => void;
     onReflectionComplete: (stepId: string, correct: boolean) => void;
     onNextStep: () => void;
+    onPreviousStep: () => void;
 }
 
 export const StepInstructionPanel: React.FC<StepInstructionPanelProps> = ({
@@ -25,8 +28,10 @@ export const StepInstructionPanel: React.FC<StepInstructionPanelProps> = ({
     isStepComplete,
     onChecklistToggle,
     onTextChange,
+    onReflectionAnswer,
     onReflectionComplete,
     onNextStep,
+    onPreviousStep,
 }) => {
     const reflectionRequired =
         isStepComplete &&
@@ -34,15 +39,27 @@ export const StepInstructionPanel: React.FC<StepInstructionPanelProps> = ({
         !state.reflectionAnswered[stepData.id];
     const canProceed = isStepComplete && !reflectionRequired;
     const requiredTextLength = stepData.textPrompt ? (stepData.minTextLength ?? 40) : 0;
-    const currentTextLength = state.textEntries[stepData.id]?.trim().length ?? 0;
-    const textRequirementMet = !requiredTextLength || currentTextLength >= requiredTextLength;
+    const currentText = state.textEntries[stepData.id] ?? '';
+    const currentTextLength = currentText.trim().length;
+    const lengthRequirementMet = !requiredTextLength || currentTextLength >= requiredTextLength;
+    const qualityHint = requiredTextLength ? answerQualityHint(currentText) : null;
+    const textRequirementMet = lengthRequirementMet && !qualityHint;
+
+    // De knop waarop de focus stond (Volgende stap) wordt bij het wisselen van stap
+    // uitgeschakeld tot de nieuwe stap voltooid is; de browser haalt de focus dan
+    // stil weg. Verplaats 'm expliciet naar de kop van de nieuwe stap, zodat
+    // toetsenbord- en schermlezergebruikers hun plek niet kwijtraken.
+    const headingRef = useRef<HTMLHeadingElement>(null);
+    useEffect(() => {
+        headingRef.current?.focus();
+    }, [stepData.id]);
 
     return (
         <div className="flex min-h-full flex-col p-5">
             {/* Step indicator */}
-            <div className="flex items-center gap-2 mb-4">
+            <div className="flex items-center gap-2 mb-4" role="status" aria-live="polite">
                 <div className="w-7 h-7 rounded-xl bg-gradient-to-br from-duck-acid to-duck-acid flex items-center justify-center">
-                    <span className="text-xs font-black text-white">{stepIndex + 1}</span>
+                    <span className="text-xs font-black text-duck-ink">{stepIndex + 1}</span>
                 </div>
                 <div>
                     <span
@@ -52,7 +69,9 @@ export const StepInstructionPanel: React.FC<StepInstructionPanelProps> = ({
                         Stap {stepIndex + 1} van {totalSteps}
                     </span>
                     <h2
-                        className="text-lg font-black text-duck-ink leading-tight"
+                        ref={headingRef}
+                        tabIndex={-1}
+                        className="text-lg font-black text-duck-ink leading-tight focus:outline-none"
                         style={{ fontFamily: "'Newsreader', Georgia, serif" }}
                     >
                         {stepData.title}
@@ -62,7 +81,7 @@ export const StepInstructionPanel: React.FC<StepInstructionPanelProps> = ({
 
             {/* Description */}
             <p
-                className="text-sm text-duck-ink/60 leading-relaxed mb-4"
+                className="text-sm text-duck-ink/70 leading-relaxed mb-4"
                 style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
             >
                 {stepData.description}
@@ -71,7 +90,7 @@ export const StepInstructionPanel: React.FC<StepInstructionPanelProps> = ({
             {/* Instruction card */}
             <div className="bg-white rounded-2xl border border-duck-gray p-4 mb-4">
                 <p
-                    className="text-sm text-duck-ink/60 leading-relaxed"
+                    className="text-sm text-duck-ink/70 leading-relaxed"
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                 >
                     {stepData.instruction}
@@ -80,7 +99,7 @@ export const StepInstructionPanel: React.FC<StepInstructionPanelProps> = ({
 
             {/* Optional tip */}
             {stepData.tip && (
-                <div className="flex items-start gap-2 bg-duck-acid/8 border border-duck-acid/20 rounded-xl p-3 mb-4">
+                <div className="flex items-start gap-2 bg-duck-acid/10 border border-duck-acid/20 rounded-xl p-3 mb-4">
                     <Lightbulb size={14} className="text-duck-ink mt-0.5 shrink-0" />
                     <p
                         className="text-xs text-duck-ink leading-relaxed"
@@ -94,7 +113,7 @@ export const StepInstructionPanel: React.FC<StepInstructionPanelProps> = ({
             {/* Checklist */}
             <div className="mb-4">
                 <span
-                    className="text-[10px] font-black text-duck-ink/60 uppercase tracking-widest mb-2 block"
+                    className="text-[10px] font-black text-duck-ink/70 uppercase tracking-widest mb-2 block"
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                 >
                     Checklist
@@ -116,7 +135,7 @@ export const StepInstructionPanel: React.FC<StepInstructionPanelProps> = ({
             {stepData.textPrompt && (
                 <div className="mb-4 flex min-h-[160px] flex-1 flex-col">
                     <label
-                        className="text-[10px] font-black text-duck-ink/60 uppercase tracking-widest mb-2 block"
+                        className="text-[10px] font-black text-duck-ink/70 uppercase tracking-widest mb-2 block"
                         style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                         htmlFor={`text-${stepData.id}`}
                     >
@@ -128,9 +147,17 @@ export const StepInstructionPanel: React.FC<StepInstructionPanelProps> = ({
                         onChange={(e) => onTextChange(stepData.id, e.target.value)}
                         placeholder="Schrijf hier jouw antwoord…"
                         rows={5}
-                        className="w-full min-h-[120px] flex-1 resize-none rounded-xl border border-duck-gray bg-white px-4 py-3 text-sm leading-relaxed text-duck-ink/60 placeholder:text-duck-ink/60 transition-all duration-200 focus:border-duck-acid/50 focus:outline-none focus:ring-2 focus:ring-duck-acid/30"
+                        className="w-full min-h-[120px] flex-1 resize-none rounded-xl border border-duck-gray bg-white px-4 py-3 text-sm leading-relaxed text-duck-ink/70 placeholder:text-duck-ink/70 transition-all duration-200 focus:border-duck-acid/50 focus:outline-none focus:ring-2 focus:ring-duck-acid/30"
                         style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                     />
+                    {qualityHint && (
+                        <p
+                            className="text-xs text-duck-ink/70 mt-2"
+                            style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
+                        >
+                            {qualityHint}
+                        </p>
+                    )}
                 </div>
             )}
 
@@ -138,9 +165,22 @@ export const StepInstructionPanel: React.FC<StepInstructionPanelProps> = ({
             {isStepComplete && stepData.reflectionQuestion && !state.reflectionAnswered[stepData.id] && (
                 <FollowUpCard
                     followUp={stepData.reflectionQuestion}
+                    onAnswer={(correct) => onReflectionAnswer(stepData.id, correct)}
                     onComplete={(correct) => onReflectionComplete(stepData.id, correct)}
                     theme="light"
                 />
+            )}
+
+            {/* Previous step button */}
+            {stepIndex > 0 && (
+                <button
+                    onClick={onPreviousStep}
+                    className="mb-2 flex min-h-[44px] w-full items-center justify-center gap-2 rounded-xl border border-duck-gray text-sm font-bold text-duck-ink/70 transition-all duration-200 hover:border-duck-acid/40"
+                    style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
+                >
+                    <ChevronLeft size={16} />
+                    Vorige stap
+                </button>
             )}
 
             {/* Next step button */}
@@ -150,7 +190,7 @@ export const StepInstructionPanel: React.FC<StepInstructionPanelProps> = ({
                 className={`mt-auto flex min-h-[44px] w-full items-center justify-center gap-2 rounded-xl text-sm font-bold transition-all duration-200 ${
                     canProceed
                         ? 'bg-gradient-to-r from-duck-acid to-duck-acid hover:from-duck-acid hover:to-duck-acid text-duck-ink active:scale-[0.98]'
-                        : 'bg-duck-gray text-duck-ink/60 cursor-not-allowed'
+                        : 'bg-duck-gray text-duck-ink/70 cursor-not-allowed'
                 }`}
                 style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
             >
@@ -164,9 +204,9 @@ export const StepInstructionPanel: React.FC<StepInstructionPanelProps> = ({
                 )}
             </button>
 
-            {!textRequirementMet && (
+            {!lengthRequirementMet && (
                 <p
-                    className="text-center text-xs text-duck-ink/60 mt-2"
+                    className="text-center text-xs text-duck-ink/70 mt-2"
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                 >
                     Schrijf eerst minimaal {requiredTextLength} tekens als bewijs van je werk
@@ -175,7 +215,7 @@ export const StepInstructionPanel: React.FC<StepInstructionPanelProps> = ({
 
             {!isStepComplete && textRequirementMet && (
                 <p
-                    className="text-center text-xs text-duck-ink/60 mt-2"
+                    className="text-center text-xs text-duck-ink/70 mt-2"
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                 >
                     Vink alle items af om door te gaan

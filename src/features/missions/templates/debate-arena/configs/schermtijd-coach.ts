@@ -93,6 +93,7 @@ const config: DebateArenaConfig = {
     reflectionQuestions: [
         'Welk belang van welke partij vind jij het zwaarst wegen? Waarom?',
         'Is jouw mening over eigen verantwoordelijkheid veranderd na dit debat?',
+        'Welke concrete afspraak wil jij zelf proberen om bewuster met je schermtijd om te gaan? Leg uit waarom.',
     ],
     counterArgument:
         '"Als we ontwerptrucs verbieden, zijn Europese apps op een nadeel ten opzichte van Amerikaanse concurrenten die dezelfde regels niet hoeven te volgen. Dan verdwijnen onze bedrijven en blijven alleen de grote platforms over die zich toch niets aantrekken van Europese regels."',

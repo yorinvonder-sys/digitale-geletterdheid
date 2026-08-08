@@ -11,10 +11,11 @@ export interface ExplorePhaseProps {
     onMarkRead: (id: string) => void;
     onSetActiveIndex: (i: number) => void;
     onNext: () => void;
+    onQuizAnswer: (correct: boolean) => void;
     onQuizComplete: (correct: boolean) => void;
 }
 
-export const ExplorePhase: React.FC<ExplorePhaseProps> = ({ config, state, onMarkRead, onSetActiveIndex, onNext, onQuizComplete }) => {
+export const ExplorePhase: React.FC<ExplorePhaseProps> = ({ config, state, onMarkRead, onSetActiveIndex, onNext, onQuizAnswer, onQuizComplete }) => {
     const active = config.stakeholders[state.activeStakeholderIndex];
     const color = STAKEHOLDER_COLORS[state.activeStakeholderIndex % STAKEHOLDER_COLORS.length];
     const allRead = state.stakeholdersRead.length >= config.stakeholders.length;
@@ -124,6 +125,7 @@ export const ExplorePhase: React.FC<ExplorePhaseProps> = ({ config, state, onMar
             {allRead && config.explorationQuiz && !state.explorationQuizAnswered && (
                 <FollowUpCard
                     followUp={config.explorationQuiz}
+                    onAnswer={onQuizAnswer}
                     onComplete={onQuizComplete}
                 />
             )}

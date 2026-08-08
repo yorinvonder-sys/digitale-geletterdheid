@@ -18,18 +18,27 @@ export const SelectCorrectRound: React.FC<{
     onSubmit: () => void;
 }> = ({ round, selections, submitted, onToggle, onSubmit }) => {
     const correctCount = round.items.filter((item) => item.correct).length;
-    const minSelections = round.minSelections ?? correctCount;
-    const canSubmit = selections.length >= Math.max(1, minSelections);
+    // Bewust NIET terugvallen op correctCount: dat getal verscheen als
+    // "selecteer minimaal N" op het scherm en verklapte zo hoeveel antwoorden
+    // juist zijn. De drempel dient alleen om een lege inzending te voorkomen.
+    const minSelections = Math.max(1, round.minSelections ?? 1);
+    const canSubmit = selections.length >= minSelections;
+    /**
+     * Een expliciet gezette drempel mag zichtbaar zijn als hulp, maar nooit
+     * wanneer die gelijk is aan het aantal juiste antwoorden — dan is het
+     * alsnog het antwoord.
+     */
+    const mayShowTarget = round.minSelections !== undefined && round.minSelections !== correctCount;
     const instruction = round.selectionInstruction
-        ?? (minSelections > 1
+        ?? (mayShowTarget
             ? `Selecteer minimaal ${minSelections} opties`
-            : 'Selecteer de beste optie');
+            : 'Selecteer alle opties die volgens jou kloppen');
 
     return (
     <>
         {!submitted && (
             <p
-                className="text-[10px] font-black text-duck-ink/60 uppercase tracking-widest mt-4"
+                className="text-[10px] font-black text-duck-ink/70 uppercase tracking-widest mt-4"
                 style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
             >
                 {instruction}
@@ -57,7 +66,8 @@ export const SelectCorrectRound: React.FC<{
                         data-scenario-item-id={item.id}
                         onClick={() => !submitted && onToggle(item.id)}
                         disabled={submitted}
-                        className={`w-full p-4 rounded-2xl border-2 text-left transition-all duration-200 ${border} ${bg}`}
+                        aria-pressed={isSelected}
+                        className={`w-full p-4 rounded-2xl border-2 text-left transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-acid/40 ${border} ${bg}`}
                     >
                         <div className="flex items-start gap-3">
                             <ScenarioIcon icon={item.icon} className="h-6 w-6 shrink-0 text-xl mt-0.5" />
@@ -75,21 +85,21 @@ export const SelectCorrectRound: React.FC<{
                                     {submitted && isSelected && (
                                         item.correct
                                             ? <Check size={14} className="shrink-0 text-duck-ink" />
-                                            : <X size={14} className="shrink-0 text-duck-ink/60" />
+                                            : <X size={14} className="shrink-0 text-duck-ink/70" />
                                     )}
                                     {submitted && !isSelected && item.correct && (
                                         <span className="shrink-0 text-[10px] text-duck-ink font-bold">gemist!</span>
                                     )}
                                 </div>
                                 <p
-                                    className="text-xs text-duck-ink/60 leading-relaxed"
+                                    className="text-xs text-duck-ink/70 leading-relaxed"
                                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                                 >
                                     {item.description}
                                 </p>
                                 {submitted && (isSelected || item.correct) && (
                                     <p
-                                        className="text-[11px] text-duck-ink/60 mt-2 italic"
+                                        className="text-[11px] text-duck-ink/70 mt-2 italic"
                                         style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                                     >
                                         {feedbackText}
@@ -101,12 +111,14 @@ export const SelectCorrectRound: React.FC<{
                 );
             })}
         </div>
-        {!submitted && minSelections > 1 && (
+        {!submitted && selections.length > 0 && (
             <p
-                className="text-center text-xs text-duck-ink/60 mb-3"
+                className="text-center text-xs text-duck-ink/70 mb-3"
                 style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
             >
-                {selections.length} van minimaal {Math.max(1, minSelections)} item{minSelections !== 1 ? 's' : ''} geselecteerd
+                {mayShowTarget
+                    ? `${selections.length} van minimaal ${minSelections} items geselecteerd`
+                    : `${selections.length} item${selections.length === 1 ? '' : 's'} geselecteerd`}
             </p>
         )}
         {!submitted && (
@@ -117,7 +129,7 @@ export const SelectCorrectRound: React.FC<{
                 className={`w-full py-3 rounded-full font-black text-sm transition-all duration-300 ${
                     canSubmit
                         ? 'bg-duck-acid hover:bg-duck-acid hover:brightness-95 hover:shadow-md active:scale-[0.98] text-duck-ink'
-                        : 'bg-duck-gray text-duck-ink/60 cursor-not-allowed'
+                        : 'bg-duck-gray text-duck-ink/70 cursor-not-allowed'
                 }`}
                 style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
             >

@@ -61,6 +61,7 @@ export const dashboardDesignerConfig: DataViewerConfig = {
                         'Als je maar TWEE cijfers (KPI\'s) op het dashboard mag tonen voor de directeur, welke twee kies jij en waarom?',
                     type: 'text-observation',
                     correctAnswer: '',
+                    keywords: ['gemiddelde cijfer', 'aanwezigheid', 'kpi', 'onvoldoendes', 'tevredenheid'],
                     explanation:
                         'Goede keuzes zijn "gemiddeld cijfer" en "aanwezigheidspercentage" — ze geven snel inzicht in prestaties én gedrag. KPI staat voor Key Performance Indicator: de meest relevante maatstaven voor je doel. Een directeur hoeft niet elk getal te zien; alleen de signaalwaarden. "Minder is meer" is een kernprincipe van goed dashboard-design.',
                     points: 10,
@@ -71,16 +72,16 @@ export const dashboardDesignerConfig: DataViewerConfig = {
         // ── Dataset 2: Cirkelgrafiek ─────────────────────────────────────────
         {
             id: 'vakken-verdeling-onvoldoendes',
-            title: 'Verdeling onvoldoendes per vak — leerjaar 2',
+            title: 'Verdeling onvoldoendes per vak — leerjaar 2, hele schooljaar',
             description:
-                'Een cirkeldiagram laat zien hoe een geheel verdeeld is over delen. Bekijk de verdeling van onvoldoendes over vakken en beantwoord de vragen.',
+                'Een cirkeldiagram laat zien hoe een geheel verdeeld is over delen. De waarden hieronder zijn absolute aantallen onvoldoendes, geen percentages: samen zijn het er 115. Wil je weten welk aandeel een vak heeft, dan reken je: aantal ÷ 115.',
             type: 'pie-chart',
             chartData: [
-                { label: 'Wiskunde', value: 28, color: '#ff3c21' },
-                { label: 'Engels', value: 18, color: '#202023' },
-                { label: 'Nederlands', value: 14, color: '#202023' },
-                { label: 'Aardrijkskunde', value: 22, color: '#e1ff01' },
-                { label: 'Overige vakken', value: 18, color: '#202023' },
+                { label: 'Wiskunde', value: 34, color: '#ff3c21' },
+                { label: 'Engels', value: 21, color: '#202023' },
+                { label: 'Nederlands', value: 15, color: '#99984D' },
+                { label: 'Aardrijkskunde', value: 26, color: '#e1ff01' },
+                { label: 'Overige vakken', value: 19, color: '#c2c1bd' },
             ],
             questions: [
                 {
@@ -90,7 +91,7 @@ export const dashboardDesignerConfig: DataViewerConfig = {
                     options: ['Engels', 'Aardrijkskunde', 'Wiskunde', 'Nederlands'],
                     correctAnswer: 'Wiskunde',
                     explanation:
-                        'Wiskunde vertegenwoordigt 28% van alle onvoldoendes — het grootste segment van het cirkeldiagram. Dit betekent niet dat wiskunde het "slechtste" vak is, maar dat het de meeste hulp nodig heeft.',
+                        'Wiskunde heeft 34 onvoldoendes van de 115 in totaal — het grootste segment van het cirkeldiagram. Wil je het aandeel weten: 34 ÷ 115 ≈ 0,30, dus ongeveer 30%. Let op het verschil tussen het aantal (34) en het aandeel (30%). Dit betekent niet dat wiskunde het "slechtste" vak is, maar dat daar de meeste hulp nodig is.',
                     points: 10,
                 },
                 {
@@ -115,8 +116,9 @@ export const dashboardDesignerConfig: DataViewerConfig = {
                         'Waarom is een cirkeldiagram soms minder geschikt dan een staafdiagram? Geef een situatie waarbij je liever een staafdiagram zou gebruiken.',
                     type: 'text-observation',
                     correctAnswer: '',
+                    keywords: ['staafdiagram', 'vergelijken', 'kleine verschillen', 'lengte'],
                     explanation:
-                        'Een cirkeldiagram maakt het moeilijk om kleine verschillen te zien (is 18% groter dan 22%?). Een staafdiagram maakt vergelijking makkelijker door de lengtes van balken. Gebruik een staafdiagram als je de exacte waarden wilt vergelijken, en een cirkeldiagram als het gaat om de verhouding tot het geheel.',
+                        'Een cirkeldiagram maakt het moeilijk om kleine verschillen te zien (welk stuk is groter: dat van 19 of dat van 21?). Een staafdiagram maakt vergelijking makkelijker door de lengtes van balken. Gebruik een staafdiagram als je de exacte waarden wilt vergelijken, en een cirkeldiagram als het gaat om de verhouding tot het geheel.',
                     points: 10,
                 },
             ],
@@ -173,6 +175,7 @@ export const dashboardDesignerConfig: DataViewerConfig = {
                         'Beschrijf in 2-3 zinnen hoe jij een dashboard zou ontwerpen voor klas 2C. Welke KPI\'s zou jij kiezen en waarom?',
                     type: 'text-observation',
                     correctAnswer: '',
+                    keywords: ['aanwezigheid', 'gemiddelde cijfer', 'onvoldoendes', 'kpi', 'tevredenheid'],
                     explanation:
                         'Een effectief antwoord benoemt 2-3 relevante KPI\'s (bijv. aanwezigheid, gemiddeld cijfer, aantal onvoldoendes), legt uit waarom die het belangrijkst zijn voor 2C, en koppelt ze aan een actie voor de docent. Een goed dashboard triggert een gesprek: "Wat doen we nu met deze informatie?"',
                     points: 10,

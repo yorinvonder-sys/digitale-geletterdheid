@@ -483,6 +483,8 @@ const PageContent = ({
     );
 };
 
+const MAX_STORY_PAGES = 5;
+
 export const BookPreview: React.FC<BookPreviewProps> = ({ data, onStart, onSendPrompt, hasStarted: externalHasStarted = false, readOnly = false, user }) => {
     const [internalHasStarted, setInternalHasStarted] = useState(false);
     const [showForm, setShowForm] = useState(false);
@@ -663,6 +665,12 @@ export const BookPreview: React.FC<BookPreviewProps> = ({ data, onStart, onSendP
 
     const handlePlaceholderClick = () => {
         if (readOnly) return;
+        if (totalPages >= MAX_STORY_PAGES) {
+            setToastMessage('Je prentenboek heeft het maximum van 5 pagina\'s bereikt.');
+            setShowToast(true);
+            setTimeout(() => setShowToast(false), 3000);
+            return;
+        }
         setPopupState({
             isOpen: true,
             type: 'new-page',
@@ -1147,6 +1155,12 @@ Maak nu de titel met [TITLE] tags en de tekst van de eerste pagina met [PAGE] ta
                                     onTitleClick={handleTitleClick}
                                     isInteractive={!readOnly}
                                 />
+                            ) : totalPages >= MAX_STORY_PAGES ? (
+                                <div className="flex h-full w-full flex-col items-center justify-center gap-3 bg-white p-6 text-center">
+                                    <BookOpen size={36} className="text-duck-coral" />
+                                    <p className="font-black text-duck-ink">Je verhaal heeft 5 pagina's</p>
+                                    <p className="text-sm text-duck-ink/60">Rond je boek af of verbeter een bestaande pagina.</p>
+                                </div>
                             ) : totalPages > 0 ? (
                                 /* Placeholder for next page - MATCHING LEFT PAGE LAYOUT */
                                 <div className="w-full h-full bg-white flex flex-col relative overflow-hidden rounded-r-md border-r border-b border-stone-200">

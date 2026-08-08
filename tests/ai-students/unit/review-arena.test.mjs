@@ -36,6 +36,39 @@ test('Review Arena-adapter bevat geen antwoordoracle', async () => {
   assert.doesNotMatch(source, /correctPosition|correctCategory|currentQuestion\.answer|\.\/configs/);
 });
 
+test('Review Arena sluit synchrone dubbele round- en follow-up-completion uit', async () => {
+  const source = await readFile('src/features/missions/templates/review-arena/ReviewArena.tsx', 'utf8');
+  assert.match(source, /completedRoundTransitions\.current\.has\(round\.id\)/);
+  assert.match(source, /completedRoundTransitions\.current\.add\(round\.id\)/);
+  assert.match(source, /completedFollowUpTransitions\.current\.has\(round\.id\)/);
+  assert.match(source, /completedFollowUpTransitions\.current\.add\(round\.id\)/);
+});
+
+test('Review Arena wist de doorloop-refs bij een missiewissel en bij opnieuw beginnen', async () => {
+  // Alle zeven review-arena-missies delen dezelfde vier ronde-ids. Blijven de
+  // refs uit de dubbelklik-beveiliging staan bij een wissel of herstart, dan
+  // blokkeren ze de volgende missie meteen op ronde 1.
+  const source = await readFile('src/features/missions/templates/review-arena/ReviewArena.tsx', 'utf8');
+  const resetBlocks = source.match(/setState\(initialState\)/g) ?? [];
+  assert.equal(resetBlocks.length, 2, 'verwacht precies twee reset-paden: missiewissel en opnieuw beginnen');
+
+  for (const ref of ['submittedThisSession', 'completedRoundTransitions', 'completedFollowUpTransitions']) {
+    const clears = source.match(new RegExp(`${ref}\\.current\\.clear\\(\\)`, 'g')) ?? [];
+    assert.equal(clears.length, 2, `${ref} moet in beide reset-paden gewist worden`);
+  }
+});
+
+test('review-arena-missies delen dezelfde ronde-ids, dus refs mogen nooit missie-overstijgend blijven staan', async () => {
+  const ids = new Set();
+  for (const mission of ['review-week-2', 'data-review', 'code-review-2', 'media-review', 'security-review', 'advanced-code-review', 'impact-review']) {
+    const config = await readFile(`src/features/missions/templates/review-arena/configs/${mission}.ts`, 'utf8');
+    for (const [, id] of config.matchAll(/id: '(round-[a-z-]+)'/g)) ids.add(id);
+  }
+  // Deelt de hele familie precies vier ronde-ids, dan is de aanname onder de
+  // vorige test hard: een ref op ronde-id is niet uniek per missie.
+  assert.equal(ids.size, 4, `verwacht vier gedeelde ronde-ids, kreeg: ${[...ids].join(', ')}`);
+});
+
 test('runner neemt na refresh altijd een verse observatie voor de volgende beslissing', async () => {
   const source = await readFile('tests/ai-students/browser/run-scenario-pilot.mjs', 'utf8');
   assert.match(source, /refreshProbe = await verifyRefreshRecovery[\s\S]{0,120}continue;/);

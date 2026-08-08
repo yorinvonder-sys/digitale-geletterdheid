@@ -60,8 +60,20 @@ const config: ScenarioEngineConfig = {
             emoji: '🚩',
             title: 'Wat is er verdacht aan deze mail?',
             description:
-                'Je opent je e-mail en ziet dit bericht. Twee dingen weet je al: docenten van jouw school mailen vanaf een adres dat eindigt op @onsschool.nl, en het echte Magister staat op magister.net. Welke onderdelen hieronder zijn verdachte signalen? Selecteer alles wat je waarschuwt.',
-            type: 'select-correct',
+                'Je opent je inbox en dit bericht staat bovenaan. Twee dingen weet je al: docenten van jouw school mailen vanaf een adres dat eindigt op @onsschool.nl, en het echte Magister staat op magister.net. Speur de mail af en tik elk onderdeel aan dat je waarschuwt. Onder de mail staat ook nog één melding die via een ander kanaal binnenkwam — beoordeel die ook.',
+            type: 'spot-the-flags',
+            emailFrame: {
+                fromName: 'Meneer Smits',
+                subject: 'Belangrijk: roosterwijziging morgen',
+                // Kort houden: de kopbalk zegt al "Postvak IN", en het tijdstip
+                // zelf is een aanklikbaar onderdeel in de metaregel.
+                receivedLabel: 'vandaag',
+                body: [
+                    'Beste leerling,',
+                    'Er is een wijziging in je rooster voor morgen. Bekijk je nieuwe rooster zo snel mogelijk — anders sta je morgen voor een dichte deur.',
+                    'Met vriendelijke groet,\nMeneer Smits',
+                ],
+            },
             maxScore: 25,
             feedbackCorrect:
                 'Scherp gezien! Je herkent de signalen die zeggen: "Wees voorzichtig."',
@@ -71,35 +83,53 @@ const config: ScenarioEngineConfig = {
                 {
                     id: 1,
                     icon: '📧',
-                    title: 'Afzender: docent.smits@magister-berichten.com',
+                    // De titel is wat er ín de mail staat; de plek in het bericht
+                    // vertelt al dat dit de afzender is.
+                    title: 'docent.smits@magister-berichten.com',
                     description:
                         'In je inbox staat als naam "Meneer Smits". Het volledige adres daarachter is docent.smits@magister-berichten.com.',
                     correct: true,
+                    flagSlot: 'from',
                     explanation:
                         'Het stuk achter het @-teken heet het domein. Je docenten mailen vanaf het schooldomein @onsschool.nl; "magister-berichten.com" is een heel ander domein, dat iedereen zelf kan aanvragen. Aanvallers kiezen een naam die vertrouwd klinkt, maar het domein achter het @-teken verraadt hen.',
                 },
                 {
                     id: 2,
                     icon: '📎',
-                    title: 'Bijlage: "huiswerk_opdracht_wiskunde.exe"',
+                    title: 'huiswerk_opdracht_wiskunde.exe',
                     description:
                         'Bij de mail zit één bijlage: huiswerk_opdracht_wiskunde.exe.',
                     correct: true,
+                    flagSlot: 'attachment',
                     explanation:
                         'De letters na de punt vertellen wat voor bestand het is. Een .exe is een uitvoerbaar programma — geen document. Echte huiswerkopdrachten zijn altijd .pdf of .docx. Als je dit opent, kan er malware (= schadelijke software) op je apparaat worden geïnstalleerd.',
                 },
                 {
                     id: 3,
+                    icon: '🕐',
+                    title: 'verzonden om 23:47',
+                    description:
+                        'De mail is midden in de nacht verstuurd, om 23:47 uur.',
+                    correct: false,
+                    flagSlot: 'meta',
+                    explanation:
+                        'Het tijdstip zegt op zichzelf weinig: mailsystemen — van scholen én van aanvallers — versturen berichten automatisch, op elk moment van de dag. Kijk liever naar het domein achter het @-teken, de linkbestemming en het bijlagetype; dat zijn de signalen die er echt toe doen.',
+                    wrongFeedback:
+                        'Een laat tijdstip voelt verdacht, maar mailsystemen versturen automatisch — ook echte school-mails kunnen \'s nachts binnenkomen. Het domein, de linkbestemming en het bijlagetype zijn de signalen die je wél kunt vertrouwen.',
+                },
+                {
+                    id: 4,
                     icon: '🔗',
-                    title: 'Blauwe knop: "Bekijk je roosterwijziging op Magister"',
+                    title: 'Bekijk je roosterwijziging op Magister',
                     description:
                         'Houd je je muis boven de knop — dat heet zweven — dan verschijnt onderin je scherm de bestemming: magister-rooster-app.net.',
                     correct: true,
+                    flagSlot: 'link',
                     explanation:
                         'De tekst op een knop kan van alles zeggen — het adres dat bij zweven verschijnt is waar je werkelijk heen gaat. Het echte Magister gebruikt altijd het domein magister.net. Zweef dus over een link om het echte adres te zien voor je klikt.',
                 },
                 {
-                    id: 4,
+                    id: 5,
                     icon: '📬',
                     title: 'Roosterwijziging via het berichtencentrum van Magister',
                     description:
@@ -119,8 +149,9 @@ const config: ScenarioEngineConfig = {
             emoji: '📊',
             title: 'Welke mail is het gevaarlijkst?',
             description:
-                'Rangschik deze vijf e-mails van gevaarlijkst (1e) naar minst gevaarlijk (5e). Vuistregel: hoe groter de schade als iemand erin trapt, hoe gevaarlijker. Klik ze in die volgorde aan.',
-            type: 'order-priority',
+                'Rangschik deze vijf e-mails van gevaarlijkst (1e) naar minst gevaarlijk (5e). Vuistregel: hoe groter de schade als iemand erin trapt, hoe gevaarlijker.',
+            type: 'order-drag',
+            orderInstruction: 'Zet de mails op volgorde: gevaarlijkst bovenaan',
             maxScore: 25,
             feedbackCorrect:
                 'Sterke analyse! Je begrijpt hoe aanvallers het verschil maken tussen een gevaarlijke en een minder gevaarlijke aanval.',
@@ -186,8 +217,10 @@ const config: ScenarioEngineConfig = {
             emoji: '🤔',
             title: 'Echte schoolmail of valstrik?',
             description:
-                'Bekijk elk e-mailbericht en beslis: is dit een echte schoolmail of een poging om je te misleiden?',
-            type: 'binary-choice',
+                'Je postvak zit vol. Sorteer elk bericht: hoort het bij "Vertrouwen" of bij "Verdacht"? Sleep het naar de juiste bak, of gebruik de knoppen op het bericht.',
+            type: 'inbox-triage',
+            acceptLabel: 'Vertrouwen',
+            rejectLabel: 'Verdacht',
             maxScore: 25,
             feedbackCorrect: 'Goed gescoord! Jij laat je niet zomaar vangen.',
             feedbackIncorrect: 'Lastig hè? Lees de uitleg — zo herken je het de volgende keer wel.',
@@ -314,6 +347,18 @@ const config: ScenarioEngineConfig = {
                 },
                 {
                     id: 3,
+                    icon: '🗑️',
+                    title: 'De mail meteen verwijderen, zonder het verder te melden',
+                    description:
+                        'Je klikt nergens op en gooit de mail direct weg — verder onderneem je niets.',
+                    correct: false,
+                    explanation:
+                        'Verwijderen is beter dan erop klikken, maar je mist zo de kans om anderen te waarschuwen. Meld de mail bij een volwassene of via de "Meld als spam"-knop, zodat ook klasgenoten worden beschermd.',
+                    wrongFeedback:
+                        'Goed dat je niet klikt! Maar alleen verwijderen is niet de slimste stap: meld de mail ook bij een volwassene of via "Meld als spam", zodat anderen niet in dezelfde val trappen.',
+                },
+                {
+                    id: 4,
                     icon: '🌐',
                     title: 'Zelf naar de schoolwebsite gaan via je browser — niet via de link in de mail',
                     description:
@@ -323,7 +368,7 @@ const config: ScenarioEngineConfig = {
                         'Dit is de gouden regel. Als je schoolaccount echt een probleem heeft, zie je dat ook als je zelf inlogt. Je hoeft nooit via een link in een mail te gaan.',
                 },
                 {
-                    id: 4,
+                    id: 5,
                     icon: '📤',
                     title: 'De verdachte mail doorsturen naar je vrienden om te waarschuwen',
                     description:

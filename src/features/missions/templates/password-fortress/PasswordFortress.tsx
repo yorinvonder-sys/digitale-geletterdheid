@@ -7,6 +7,7 @@ import { getMissionGoal } from '@/config/missionGoals';
 import type { TemplateMissionProps } from '../shared/types';
 import type { PasswordFortressConfig, FortressRound } from './passwordFortressTypes';
 import { runAttacks, ATTACK_META, type FortressReport } from './fortressEngine';
+import { toScorePercent } from '../shared/scorePercent';
 
 // ── Allowlist ────────────────────────────────────────────────────────────────
 const VALID_PASSWORD_FORTRESS_IDS: ReadonlySet<string> = new Set([
@@ -160,8 +161,8 @@ const AttackRow: React.FC<{
                 )}
                 {state === 'done' && result && (
                     <span
-                        className={`font-mono text-[10px] font-bold uppercase tracking-wider ${
-                            result.broken ? 'text-duck-error' : 'text-duck-acid'
+                        className={`font-mono text-[10px] font-bold uppercase tracking-wider rounded px-1.5 py-0.5 ${
+                            result.broken ? 'bg-duck-error text-duck-ink' : 'text-duck-acid'
                         }`}
                     >
                         {result.broken ? '>> DOORBROKEN <<' : 'houdt stand'}
@@ -209,7 +210,7 @@ export const PasswordFortress: React.FC<TemplateMissionProps> = ({ missionId, on
 const PasswordFortressInner: React.FC<{
     config: PasswordFortressConfig;
     onBack: () => void;
-    onComplete: (success: boolean) => void;
+    onComplete: (success: boolean, scorePercent?: number) => void;
 }> = ({ config, onBack, onComplete }) => {
     const { state, setState, clearSave } = useMissionAutoSave<FortressState>(
         config.missionId,
@@ -337,7 +338,8 @@ const PasswordFortressInner: React.FC<{
                 takeaways={config.takeaways}
                 onComplete={() => {
                     clearSave();
-                    onComplete(true);
+                    const requiredRounds = missionGoal?.criteria.min ?? config.rounds.length;
+                    onComplete(state.cleared.length >= requiredRounds, toScorePercent(totalScore, config.maxScore));
                 }}
             />
         );
@@ -348,10 +350,9 @@ const PasswordFortressInner: React.FC<{
 
     const visibleHints = round.hints.slice(0, hintsUsed);
     const canHint = hintsUsed < round.hints.length && !isCleared;
-    // De laatste ronde (credential stuffing) is de kernles en is nooit overslaanbaar;
-    // eerdere rondes mogen na herhaald vastlopen wél worden overgeslagen als vangnet.
-    const isFinalRound = state.currentRound === config.rounds.length - 1;
-    const canSkip = attempts >= config.skipAfterAttempts && !isCleared && !isFinalRound;
+    // Elke ronde — ook de laatste — mag na herhaald vastlopen worden overgeslagen
+    // als vangnet, met nul punten voor die ronde.
+    const canSkip = attempts >= config.skipAfterAttempts && !isCleared;
     const pointsForRound = Math.max(0, config.pointsPerRound - hintsUsed * config.hintCost);
 
     return (
@@ -426,7 +427,7 @@ const PasswordFortressInner: React.FC<{
                     </div>
 
                     {/* Aanvallen */}
-                    <div className="space-y-2 mb-4">
+                    <div className="space-y-2 mb-4" role="status" aria-live="polite">
                         <div className="font-mono text-[10px] text-duck-gray uppercase tracking-widest">
                             Actieve aanvallen
                         </div>
@@ -464,7 +465,7 @@ const PasswordFortressInner: React.FC<{
                     {/* Uitslag — gevallen */}
                     {revealed && report && !report.holds && (
                         <div className="mb-4 rounded-xl border border-duck-error/60 bg-duck-error/20 p-4">
-                            <div className="font-mono text-xs font-bold text-duck-error tracking-widest uppercase text-center mb-2">
+                            <div className="font-mono text-xs font-bold text-duck-ink tracking-widest uppercase text-center mb-2 bg-duck-error rounded-md py-1">
                                 &gt;&gt; FORT GEVALLEN &lt;&lt;
                             </div>
                             <p className="font-mono text-[11px] text-duck-gray leading-relaxed">
@@ -501,9 +502,9 @@ const PasswordFortressInner: React.FC<{
                                     onKeyDown={handleKeyDown}
                                     disabled={revealing}
                                     maxLength={64}
-                                    autoComplete="off"
+                                    autoComplete="new-password"
                                     placeholder="verzin een oefenwachtwoord..."
-                                    className="min-h-[44px] flex-1 bg-transparent font-mono text-xs text-duck-bg placeholder:text-duck-gray/50 outline-none"
+                                    className="min-h-[44px] flex-1 bg-transparent font-mono text-xs text-duck-bg placeholder:text-duck-gray outline-none"
                                 />
                                 <button
                                     data-qa="fortress-reveal"

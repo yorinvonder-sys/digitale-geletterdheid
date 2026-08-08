@@ -12,6 +12,8 @@ import { MobileTabBar, type MobileTab } from './sub/MobileTabBar';
 import { PreviewPanel } from './sub/PreviewPanel';
 import { StepInstructionPanel } from './sub/StepInstructionPanel';
 import type { BuilderCanvasState } from './sub/types';
+import { isMeaningfulAnswer } from '../shared/answerQuality';
+import { toScorePercent } from '../shared/scorePercent';
 
 // ─── Config types ────────────────────────────────────────────────────────────
 
@@ -74,8 +76,53 @@ const BuilderCanvasInner: React.FC<BuilderCanvasProps> = ({
     const [isChatOpen, setIsChatOpen] = useState(false);
     const [mobileTab, setMobileTab] = useState<MobileTab>('instructies');
 
-    const currentStepData = config.steps[state.currentStep];
-    const pointsPerStep = Math.floor(config.maxScore / config.steps.length);
+    // state.currentStep komt ongevalideerd uit localStorage terug; als een missie-
+    // config na een save korter is geworden (of de opslag corrupt raakt), klemmen we
+    // de index binnen bereik en corrigeren we de opgeslagen state, zodat een herlaad
+    // niet blijft crashen op een niet-bestaande stap.
+    const safeCurrentStep = Math.min(Math.max(state.currentStep, 0), config.steps.length - 1);
+    const currentStepData = config.steps[safeCurrentStep];
+
+    useEffect(() => {
+        if (state.currentStep !== safeCurrentStep) {
+            setState((prev) => ({ ...prev, currentStep: safeCurrentStep }));
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [state.currentStep, safeCurrentStep]);
+
+    // Zelfherstel voor een reload tussen het beantwoorden van een verdiepingsvraag en
+    // het klikken op "Doorgaan": reflectionCorrect wordt meteen vastgelegd, maar
+    // reflectionAnswered pas bij Doorgaan. Zonder deze correctie verschijnt de vraag
+    // na een herlaad opnieuw en kan de leerling per ongeluk een andere uitslag te zien
+    // krijgen dan de al vastgelegde score. Draait één keer bij het laden.
+    useEffect(() => {
+        setState((prev) => {
+            const staleStepIds = Object.keys(prev.reflectionCorrect).filter(
+                (stepId) => prev.reflectionCorrect[stepId] !== undefined && !prev.reflectionAnswered[stepId]
+            );
+            if (staleStepIds.length === 0) return prev;
+            const reflectionAnswered = { ...prev.reflectionAnswered };
+            staleStepIds.forEach((stepId) => {
+                reflectionAnswered[stepId] = true;
+            });
+            return { ...prev, reflectionAnswered };
+        });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    // De bonuspunten van de verdiepingsvragen zijn onderdeel van maxScore, niet iets
+    // erbovenop: het budget voor de stappen is wat er ná aftrek van de maximale bonus
+    // overblijft. Zo betekent 100% precies "alle stappen én alle verdiepingsvragen
+    // goed" en kan de score nooit boven maxScore uitkomen. De rest van de deling gaat
+    // naar de eerste stappen, zodat een perfecte run exact op maxScore uitkomt.
+    const maxBonusScore = config.steps.reduce(
+        (acc, step) => acc + (step.reflectionQuestion?.bonusPoints ?? 0),
+        0
+    );
+    const stepBudget = Math.max(0, config.maxScore - maxBonusScore);
+    const basePointsPerStep = Math.floor(stepBudget / config.steps.length);
+    const stepRemainder = stepBudget - basePointsPerStep * config.steps.length;
+    const pointsForStep = (index: number) => basePointsPerStep + (index < stepRemainder ? 1 : 0);
 
     // ─── Helpers ─────────────────────────────────────────────────────────
 
@@ -83,7 +130,8 @@ const BuilderCanvasInner: React.FC<BuilderCanvasProps> = ({
         (stepId: string, step: BuilderStep): boolean => {
             const checklistComplete = step.checklistItems.every((item) => state.checklist[`${stepId}-${item.id}`]);
             const requiredLength = step.textPrompt ? (step.minTextLength ?? 40) : 0;
-            const textComplete = !requiredLength || (state.textEntries[stepId]?.trim().length ?? 0) >= requiredLength;
+            const text = state.textEntries[stepId] ?? '';
+            const textComplete = !requiredLength || (text.trim().length >= requiredLength && isMeaningfulAnswer(text));
             return checklistComplete && textComplete;
         },
         [state.checklist, state.textEntries]
@@ -100,7 +148,12 @@ const BuilderCanvasInner: React.FC<BuilderCanvasProps> = ({
         return acc;
     }, 0);
 
-    const totalScore = state.completedSteps.length * pointsPerStep + bonusScore;
+    const stepScore = config.steps.reduce(
+        (acc, step, i) => (state.completedSteps.includes(step.id) ? acc + pointsForStep(i) : acc),
+        0
+    );
+
+    const totalScore = Math.min(stepScore + bonusScore, config.maxScore);
 
     // ─── Handlers ────────────────────────────────────────────────────────
 
@@ -132,7 +185,7 @@ const BuilderCanvasInner: React.FC<BuilderCanvasProps> = ({
             ? state.completedSteps
             : [...state.completedSteps, currentStepData.id];
 
-        const isLastStep = state.currentStep === config.steps.length - 1;
+        const isLastStep = safeCurrentStep === config.steps.length - 1;
 
         if (isLastStep) {
             setState((prev) => ({
@@ -144,7 +197,7 @@ const BuilderCanvasInner: React.FC<BuilderCanvasProps> = ({
             setState((prev) => ({
                 ...prev,
                 completedSteps: updatedCompleted,
-                currentStep: prev.currentStep + 1,
+                currentStep: safeCurrentStep + 1,
                 showMilestone: true,
             }));
             setMobileTab('instructies');
@@ -154,17 +207,39 @@ const BuilderCanvasInner: React.FC<BuilderCanvasProps> = ({
         }
     };
 
+    const handlePreviousStep = () => {
+        setState((prev) => ({ ...prev, currentStep: Math.max(0, safeCurrentStep - 1) }));
+        setMobileTab('instructies');
+    };
+
+    // Het eerste antwoord telt: eenmaal onthuld mag een refresh of hermount de uitslag
+    // niet meer verbeteren.
+    const handleReflectionAnswer = (stepId: string, correct: boolean) => {
+        setState((prev) =>
+            prev.reflectionCorrect[stepId] !== undefined
+                ? prev
+                : { ...prev, reflectionCorrect: { ...prev.reflectionCorrect, [stepId]: correct } }
+        );
+    };
+
     const handleReflectionComplete = (stepId: string, correct: boolean) => {
         setState((prev) => ({
             ...prev,
             reflectionAnswered: { ...prev.reflectionAnswered, [stepId]: true },
-            reflectionCorrect: { ...prev.reflectionCorrect, [stepId]: correct },
+            reflectionCorrect:
+                prev.reflectionCorrect[stepId] !== undefined
+                    ? prev.reflectionCorrect
+                    : { ...prev.reflectionCorrect, [stepId]: correct },
         }));
     };
 
-    const handleComplete = () => {
-        clearSave();
-        onComplete(true);
+    const handleComplete = async () => {
+        // Pas wissen als de server de voltooiing bevestigd heeft: andersom raakt
+        // een leerling zijn hele bouwwerk kwijt zodra het opslaan mislukt.
+        const completed = await onComplete(totalScore >= config.maxScore * 0.4, toScorePercent(totalScore, config.maxScore));
+        if (completed !== false) {
+            clearSave();
+        }
     };
 
     // ─── Phase: Intro ─────────────────────────────────────────────────────
@@ -186,12 +261,17 @@ const BuilderCanvasInner: React.FC<BuilderCanvasProps> = ({
     // ─── Phase: Results ───────────────────────────────────────────────────
 
     if (state.phase === 'results') {
-        const phaseBreakdown = config.steps.map((step, i) => ({
-            icon: i === 0 ? '🎯' : i === 1 ? '🗂️' : i === 2 ? '✍️' : '💬',
-            title: step.title,
-            score: state.completedSteps.includes(step.id) ? pointsPerStep : 0,
-            max: pointsPerStep,
-        }));
+        const phaseBreakdown = config.steps.map((step, i) => {
+            const stepBonus = step.reflectionQuestion?.bonusPoints ?? 0;
+            return {
+                icon: i === 0 ? '🎯' : i === 1 ? '🗂️' : i === 2 ? '✍️' : '💬',
+                title: step.title,
+                score:
+                    (state.completedSteps.includes(step.id) ? pointsForStep(i) : 0) +
+                    (state.reflectionCorrect[step.id] ? stepBonus : 0),
+                max: pointsForStep(i) + stepBonus,
+            };
+        });
 
         return (
             <CompletionScreen
@@ -234,14 +314,18 @@ const BuilderCanvasInner: React.FC<BuilderCanvasProps> = ({
             {/* Header */}
             <div className="px-4 pt-4 pb-2 shrink-0">
                 <PhaseHeader
-                    currentPhase={state.currentStep}
+                    currentPhase={safeCurrentStep}
                     totalPhases={config.steps.length}
                     totalScore={totalScore}
                     onBack={onBack}
                 />
             </div>
 
-            <MobileTabBar activeTab={mobileTab} onTabChange={setMobileTab} />
+            <MobileTabBar
+                activeTab={mobileTab}
+                onTabChange={setMobileTab}
+                onOpenChat={config.enableChat && !isChatOpen ? () => setIsChatOpen(true) : undefined}
+            />
 
             {/* Main split layout */}
             <div className="min-h-0 flex-1 flex flex-col overflow-hidden md:flex-row">
@@ -253,14 +337,16 @@ const BuilderCanvasInner: React.FC<BuilderCanvasProps> = ({
                 >
                     <StepInstructionPanel
                         stepData={currentStepData}
-                        stepIndex={state.currentStep}
+                        stepIndex={safeCurrentStep}
                         totalSteps={config.steps.length}
                         state={state}
                         isStepComplete={currentStepComplete}
                         onChecklistToggle={handleChecklistToggle}
                         onTextChange={handleTextChange}
+                        onReflectionAnswer={handleReflectionAnswer}
                         onReflectionComplete={handleReflectionComplete}
                         onNextStep={handleNextStep}
+                        onPreviousStep={handlePreviousStep}
                     />
                 </div>
 
@@ -289,13 +375,28 @@ const BuilderCanvasInner: React.FC<BuilderCanvasProps> = ({
                                 tip: currentStepData?.tip,
                             },
                             progress: {
-                                step: state.currentStep + 1,
+                                step: safeCurrentStep + 1,
                                 total: config.steps.length,
                                 completedSteps: state.completedSteps.length,
                             },
-                            textEntry: currentStepData
-                                ? state.textEntries[currentStepData.id] ?? ''
-                                : '',
+                            // Bij Website Bouwer gaat de ruwe opdrachttekst van de leerling
+                            // NIET mee naar de AI-coach; die krijgt alleen of er iets staat
+                            // en hoe lang het is. De coach heeft de inhoud niet nodig om te
+                            // helpen, en zo verlaat het schrijfwerk van de leerling de
+                            // vertrouwensgrens niet.
+                            textEntry: config.missionId === 'website-bouwer'
+                                ? undefined
+                                : currentStepData
+                                  ? state.textEntries[currentStepData.id] ?? ''
+                                  : '',
+                            textEntryStatus: config.missionId === 'website-bouwer'
+                                ? {
+                                      hasContent: Boolean(currentStepData && state.textEntries[currentStepData.id]?.trim()),
+                                      characterCount: currentStepData
+                                          ? state.textEntries[currentStepData.id]?.trim().length ?? 0
+                                          : 0,
+                                  }
+                                : undefined,
                         }}
                     />
 
@@ -303,7 +404,7 @@ const BuilderCanvasInner: React.FC<BuilderCanvasProps> = ({
                     {!isChatOpen && (
                         <button
                             onClick={() => setIsChatOpen(true)}
-                            className="fixed bottom-6 right-6 z-40 flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-duck-acid to-duck-acid text-duck-ink shadow-lg transition-all duration-200 hover:brightness-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-ink focus-visible:ring-offset-2 active:scale-95"
+                            className="fixed bottom-6 right-6 z-40 hidden h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-duck-acid to-duck-acid text-duck-ink shadow-lg transition-all duration-200 hover:brightness-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-ink focus-visible:ring-offset-2 active:scale-95 md:flex"
                             aria-label="Open AI-assistent"
                         >
                             <MessageCircle size={22} />
@@ -317,7 +418,7 @@ const BuilderCanvasInner: React.FC<BuilderCanvasProps> = ({
                 <div className="md:hidden fixed bottom-20 left-4 z-30">
                     <button
                         onClick={() => setMobileTab('instructies')}
-                        className="flex min-h-[44px] items-center gap-2 rounded-full border border-duck-gray bg-white px-4 text-sm font-bold text-duck-ink/60 shadow-sm"
+                        className="flex min-h-[44px] items-center gap-2 rounded-full border border-duck-gray bg-white px-4 text-sm font-bold text-duck-ink/70 shadow-sm"
                         style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                     >
                         <ArrowLeft size={14} />
@@ -378,7 +479,7 @@ export const BuilderCanvas: React.FC<TemplateMissionProps> = ({ missionId, onBac
     if (loadError) return (
         <div className="min-h-screen bg-duck-bg flex items-center justify-center p-4">
             <div className="text-center">
-                <p className="text-duck-ink/60 mb-4" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                <p className="text-duck-ink/70 mb-4" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                     Config niet gevonden: {missionId}
                 </p>
                 <button onClick={onBack} className="px-4 py-2 bg-duck-acid text-duck-ink rounded-xl text-sm font-bold">Terug</button>

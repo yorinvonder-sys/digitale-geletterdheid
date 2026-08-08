@@ -1,6 +1,7 @@
 import React from 'react';
 import { ArrowLeft, ChevronRight } from 'lucide-react';
 import type { DebateArenaConfig, DebateArenaState } from '../DebateArena';
+import { isMeaningfulAnswer } from '../../shared/answerQuality';
 
 export interface ChallengePhaseProps {
     config: DebateArenaConfig;
@@ -11,7 +12,7 @@ export interface ChallengePhaseProps {
 }
 
 export const ChallengePhase: React.FC<ChallengePhaseProps> = ({ config, state, onUpdateResponse, onNext, onBack }) => {
-    const canContinue = state.counterResponse.trim().length >= 20;
+    const canContinue = isMeaningfulAnswer(state.counterResponse);
 
     return (
         <div>

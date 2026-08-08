@@ -1,4 +1,4 @@
 interface:
   display_name: "Opdracht Live Check"
-  short_description: "Speel en check opdrachten als leerling in de previewroute"
-  default_prompt: "Use $opdracht-live-check to play this DGSkills assignment as a student on the side-effect-free preview route and report whether the UI and flow are correct."
+  short_description: "Speel DGSkills-opdrachten veilig als leerling"
+  default_prompt: "Use $opdracht-live-check to play one DGSkills assignment in the internal Codex browser and produce validated student-flow evidence."

@@ -600,6 +600,7 @@ export function AuthenticatedApp() {
                     user={user}
                     onExit={handleRequestExitModule}
                     saveProgress={handleSaveProgress}
+                    completeMission={handleMissionComplete}
                     initialRole={role}
                     libraryData={pendingLibraryItem}
                     vsoProfile={user?.stats?.vsoProfile}
@@ -612,17 +613,18 @@ export function AuthenticatedApp() {
 	                <GameDirectorMission
 	                    onBack={handleRequestExitModule}
 	                    onComplete={(success) => {
-	                        if (success) handleMissionComplete('game-director');
-	                        else handleExitModule();
+	                        if (success) return handleMissionComplete('game-director');
+	                        handleExitModule();
+	                        return true;
 	                    }}
 	                    stats={user?.stats}
 	                />
 	            );
 	        }
 
-	        async function handleMissionComplete(missionId: string) {
+        async function handleMissionComplete(missionId: string, scorePercent?: number) {
             // Idempotency guard: prevent double completion from rapid clicks or re-renders
-            if (completingMissionRef.current.has(missionId)) return;
+            if (completingMissionRef.current.has(missionId)) return false;
 
             if (user && user.stats) {
                 const currentCompleted = user.stats.missionsCompleted || [];
@@ -633,7 +635,7 @@ export function AuthenticatedApp() {
                         // The generic stats save is intentionally not used here: remote
                         // whitelisting and concurrent stats writes can silently lose
                         // missionsCompleted while a later XP write still succeeds.
-                        const persistedCompleted = await markMissionCompleted(missionId);
+                        const persistedCompleted = await markMissionCompleted(missionId, scorePercent);
                         const newStats: UserStats = {
                             ...DEFAULT_STATS,
                             ...user.stats,
@@ -670,19 +672,52 @@ export function AuthenticatedApp() {
                         }
                         // Only show the post-mission flow after durable completion.
                         setPeerFeedbackMissionId(missionId);
+                        return true;
                     } catch {
                         console.error('[mission-completion] Durable save failed');
                         setToast({
                             message: 'Missie kon niet worden opgeslagen. Probeer het opnieuw.',
                             type: 'error',
                         });
+                        return false;
                     } finally {
                         completingMissionRef.current.delete(missionId);
                     }
                 } else {
+                    // Herhaalde afronding: leg de poging vast en, als die beter is, de
+                    // score. De RPC ontdubbelt de voltooiingslijst zelf. Mislukt dit,
+                    // dan mag dat de leerling niet ophouden -- het is een docentsignaal,
+                    // geen voortgang.
+                    completingMissionRef.current.add(missionId);
+                    try {
+                        await markMissionCompleted(missionId, scorePercent);
+                    } catch {
+                        console.error('[mission-completion] Retry record failed');
+                    } finally {
+                        completingMissionRef.current.delete(missionId);
+                    }
+
+                    // A previous attempt may have persisted completion but lost the
+                    // subsequent XP request. The server deduplicates successful awards.
+                    const requestedXP = getMissionXPReward(missionId, 'Easy');
+                    const xpResult = await awardXP(user.uid, requestedXP, 'Missie Voltooid', missionId);
+                    if (xpResult.awarded && xpResult.newXP !== undefined) {
+                        setUser(prev => prev ? {
+                            ...prev,
+                            stats: {
+                                ...DEFAULT_STATS,
+                                ...prev.stats,
+                                xp: xpResult.newXP!,
+                                level: xpResult.newLevel ?? prev.stats?.level ?? 1,
+                            },
+                        } : prev);
+                    }
                     setPeerFeedbackMissionId(missionId);
+                    return true;
                 }
             }
+
+            return false;
         };
 
         // Peer feedback overlay after mission completion
@@ -722,9 +757,10 @@ export function AuthenticatedApp() {
                     <TemplateMissionRouter
                         missionId={tmId}
                         onBack={handleRequestExitModule}
-                        onComplete={(success) => {
-                            if (success) handleMissionComplete(tmId);
-                            else handleExitModule();
+                        onComplete={(success, scorePercent) => {
+                            if (success) return handleMissionComplete(tmId, scorePercent);
+                            handleExitModule();
+                            return true;
                         }}
                         stats={user?.stats}
                         vsoProfile={user?.stats?.vsoProfile}
@@ -738,8 +774,9 @@ export function AuthenticatedApp() {
                 <CloudCleanerMission
                     onBack={handleRequestExitModule}
                     onComplete={(success) => {
-                        if (success) handleMissionComplete('cloud-cleaner');
-                        else handleExitModule();
+                        if (success) return handleMissionComplete('cloud-cleaner');
+                        handleExitModule();
+                        return true;
                     }}
                     stats={user?.stats}
                     vsoProfile={user?.stats?.vsoProfile}
@@ -762,7 +799,7 @@ export function AuthenticatedApp() {
                 <PitchPoliceMission
                     onBack={handleRequestExitModule}
                     onComplete={(success) => {
-                        if (success) handleMissionComplete('pitch-police');
+                        if (success) return handleMissionComplete('pitch-police');
                         else handleExitModule();
                     }}
                     vsoProfile={user?.stats?.vsoProfile}
@@ -775,11 +812,13 @@ export function AuthenticatedApp() {
                 <PromptMasterMission
                     onBack={handleRequestExitModule}
                     onComplete={(success) => {
-                        if (success) handleMissionComplete('prompt-master');
-                        else handleExitModule();
+                        if (success) return handleMissionComplete('prompt-master');
+                        handleExitModule();
+                        return true;
                     }}
                     stats={user?.stats}
                     vsoProfile={user?.stats?.vsoProfile}
+                    studentId={user?.uid}
                 />
             );
         }

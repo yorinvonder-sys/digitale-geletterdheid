@@ -1,5 +1,5 @@
-import React from 'react';
-import { Trophy, Sparkles } from 'lucide-react';
+import React, { useEffect, useId, useRef } from 'react';
+import { Trophy, Sparkles, CheckCircle2, RotateCcw } from 'lucide-react';
 import { KeesMessage } from '@/components/brand/KeesMessage';
 import { getKeesCompletionLine } from '@/config/keesVoice';
 import type { BadgeConfig } from './types';
@@ -21,6 +21,7 @@ interface CompletionScreenProps {
     phases?: PhaseScore[];
     takeaways: string[];
     onComplete: () => void;
+    onRetry?: () => void;
     attribution?: {
         source: string;
         author?: string;
@@ -38,6 +39,7 @@ export const CompletionScreen: React.FC<CompletionScreenProps> = ({
     phases,
     takeaways,
     onComplete,
+    onRetry,
     attribution,
 }) => {
     const badge = [...badges]
@@ -45,6 +47,17 @@ export const CompletionScreen: React.FC<CompletionScreenProps> = ({
         .find((b) => score >= b.minScore) || badges[badges.length - 1];
 
     const percentage = Math.round((score / maxScore) * 100);
+
+    // Dit scherm vervangt de hele missie; zonder focusverplaatsing landt de focus op
+    // <body> en hoort een schermlezer niets. De kop is het programmatische beginpunt
+    // en beschrijft zichzelf met score + uitkomst, zodat een live-regio (die
+    // beginhoud niet betrouwbaar aankondigt) niet nodig is.
+    const headingRef = useRef<HTMLHeadingElement>(null);
+    const summaryId = useId();
+
+    useEffect(() => {
+        headingRef.current?.focus();
+    }, []);
 
     // A learner who skipped or failed most of a mission has not actually mastered
     // the takeaways, so we must not present them as achieved (green ✓) nor claim a
@@ -71,22 +84,50 @@ export const CompletionScreen: React.FC<CompletionScreenProps> = ({
                     />
                     {missionTitle && (
                         <p
-                            className="text-[11px] font-black text-duck-ink/50 uppercase tracking-widest mb-1"
+                            className="text-[11px] font-black text-duck-ink/75 uppercase tracking-widest mb-1"
                             style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                         >
                             {missionTitle} · afgerond
                         </p>
                     )}
                     <h2
-                        className="text-2xl font-black text-duck-ink mb-1"
+                        ref={headingRef}
+                        tabIndex={-1}
+                        aria-describedby={summaryId}
+                        data-qa="completion-heading"
+                        className="text-2xl font-black text-duck-ink mb-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-ink focus-visible:ring-offset-2 rounded-lg"
                         style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                     >
                         {badge.title}
                     </h2>
-                    <div className="flex items-center justify-center gap-2 mt-3">
-                        <Trophy size={16} className="text-duck-ink" />
-                        <span className="text-lg font-black text-duck-ink">
-                            {score}/{maxScore} punten ({percentage}%)
+                    {/* Score en uitkomst horen bij de kop: ze worden meegelezen zodra de
+                        focus daarheen gaat. De uitkomst hangt niet alleen aan de
+                        tekstkleur maar ook aan een icoon en een label. */}
+                    <div
+                        id={summaryId}
+                        className="mt-3 flex flex-col items-center gap-2"
+                    >
+                        <div className="flex items-center justify-center gap-2">
+                            <Trophy size={16} className="text-duck-ink" aria-hidden="true" />
+                            <span className="text-lg font-black text-duck-ink">
+                                {score}/{maxScore} punten ({percentage}%)
+                            </span>
+                        </div>
+                        <span
+                            data-qa="completion-outcome"
+                            className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-black ${
+                                passed
+                                    ? 'bg-duck-ink text-duck-acid'
+                                    : 'border-2 border-duck-ink bg-white text-duck-ink'
+                            }`}
+                            style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
+                        >
+                            {passed ? (
+                                <CheckCircle2 size={13} aria-hidden="true" />
+                            ) : (
+                                <RotateCcw size={13} aria-hidden="true" />
+                            )}
+                            {passed ? 'Gehaald' : 'Nog niet gehaald'}
                         </span>
                     </div>
                 </div>
@@ -104,7 +145,7 @@ export const CompletionScreen: React.FC<CompletionScreenProps> = ({
                                 <div className="flex items-center gap-2">
                                     <span>{phase.icon}</span>
                                     <span
-                                        className="text-sm text-duck-ink/60"
+                                        className="text-sm text-duck-ink/75"
                                         style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                                     >
                                         {phase.title}
@@ -121,7 +162,8 @@ export const CompletionScreen: React.FC<CompletionScreenProps> = ({
                 {/* Complete button */}
                 <button
                     data-qa="confirm-completion"
-                    onClick={onComplete}
+                    onClick={passed ? onComplete : onRetry}
+                    disabled={!passed && !onRetry}
                     className="mb-4 w-full py-3.5 bg-duck-acid hover:bg-duck-acid/80 text-duck-ink rounded-full font-black text-sm transition-all duration-200 active:scale-[0.98] shadow-lg shadow-duck-acid/25 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-ink focus-visible:ring-offset-2"
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                 >
@@ -144,10 +186,10 @@ export const CompletionScreen: React.FC<CompletionScreenProps> = ({
                         {takeaways.map((t, i) => (
                             <li
                                 key={i}
-                                className="text-sm text-duck-ink/60 flex items-start gap-2"
+                                className="text-sm text-duck-ink/75 flex items-start gap-2"
                                 style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                             >
-                                <span className="text-duck-ink mt-0.5">{passed ? '✓' : '•'}</span>
+                                <span className="text-duck-ink mt-0.5" aria-hidden="true">{passed ? '✓' : '•'}</span>
                                 {t}
                             </li>
                         ))}
@@ -155,7 +197,7 @@ export const CompletionScreen: React.FC<CompletionScreenProps> = ({
                 </div>
 
                 {attribution && (
-                    <p className="mt-4 text-[11px] leading-relaxed text-duck-ink/45 text-center" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                    <p className="mt-4 text-[11px] leading-relaxed text-duck-ink/75 text-center" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                         Eigen bewerking, gebaseerd op{' '}
                         {attribution.sourceUrl ? (
                             <a

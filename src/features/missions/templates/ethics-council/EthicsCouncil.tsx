@@ -11,6 +11,7 @@ import { TransparantDossier } from './sub/TransparantDossier';
 import { UitdagingBoss } from './sub/UitdagingBoss';
 import { VonnisClimax } from './sub/VonnisClimax';
 import { RewardHud } from './sub/RewardHud';
+import { toScorePercent } from '../shared/scorePercent';
 
 // ═══════════════════════════════════════════════════════════════
 // Config contract (exported so configs/review-week-3.ts can import it)
@@ -206,8 +207,8 @@ const EthicsCouncilWithConfig: React.FC<EthicsCouncilWithConfigProps> = ({
 
     const handleComplete = useCallback(() => {
         clearSave();
-        onComplete(true);
-    }, [clearSave, onComplete]);
+        onComplete(true, toScorePercent(totalScore, config.maxScore));
+    }, [clearSave, onComplete, totalScore, config.maxScore]);
 
     // ── Render ────────────────────────────────────────────────
 
@@ -362,7 +363,7 @@ export const EthicsCouncil: React.FC<TemplateMissionProps> = (props) => {
             <div className="min-h-screen bg-duck-bg flex items-center justify-center p-4">
                 <div className="text-center">
                     <p
-                        className="text-duck-ink/60 mb-4"
+                        className="text-duck-ink/70 mb-4"
                         style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                     >
                         Config niet gevonden: {missionId}

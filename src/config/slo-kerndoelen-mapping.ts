@@ -19,6 +19,9 @@ export interface KerndoelMissionMeta {
 //   23A = Veiligheid & privacy, 23B = Digitaal welzijn, 23C = Maatschappij
 //
 // Audit: 2026-03-28 — alle tags gevalideerd tegen systemInstruction-inhoud in agents.tsx
+// Audit: 2026-08-07 — leerjaar 2 periode 1 hertoetst tegen de daadwerkelijke template-configs
+//   (src/features/missions/templates/**/configs). Bij template-missies is de systemInstruction
+//   niet de bron van waarheid: die beschrijft de chatbegeleiding, niet wat de leerling doet.
 export const KERNDOEL_MISSIONS: KerndoelMissionMeta[] = [
   // ============================================================
   // LEERJAAR 1
@@ -35,7 +38,6 @@ export const KERNDOEL_MISSIONS: KerndoelMissionMeta[] = [
   { id: 'ipad-print-instructies', title: 'iPad Print Instructies', week: 2, yearGroup: 1, sloKerndoelen: ['21A'], sloVsoKerndoelen: ['18A'], classRestriction: 'MH1A' },
   { id: 'cloud-cleaner', title: 'Cloud Schoonmaker', week: 2, yearGroup: 1, sloKerndoelen: ['21A', '23A'], sloVsoKerndoelen: ['18A', '20A'] },
   { id: 'layout-doctor', title: 'Word Match', week: 2, yearGroup: 1, sloKerndoelen: ['21A', '22A'], sloVsoKerndoelen: ['18A', '19A'] },
-  { id: 'pitch-police', title: 'Pitch Politie', week: 2, yearGroup: 1, sloKerndoelen: ['21A', '22A'], sloVsoKerndoelen: ['18A', '19A'] },
 
   // Assessment P1
   { id: 'assessment-j1-p1', title: 'Periodetoets 1', week: 1, yearGroup: 1, sloKerndoelen: ['21A', '22A', '23A'] },
@@ -52,10 +54,11 @@ export const KERNDOEL_MISSIONS: KerndoelMissionMeta[] = [
   { id: 'code-denker', title: 'Code Denker', week: 2, yearGroup: 1, sloKerndoelen: ['22B'], sloVsoKerndoelen: ['19A'] },                                      // -21D: puur computational thinking, geen AI
   { id: 'website-bouwer', title: 'Website Bouwer', week: 2, yearGroup: 1, sloKerndoelen: ['22B', '22A'], sloVsoKerndoelen: ['19A'] },
 
-  { id: 'schermtijd-coach', title: 'Schermtijd Coach', week: 2, yearGroup: 1, sloKerndoelen: ['23B', '21D'], sloVsoKerndoelen: ['20A', '18C'] },                  // digitaal welzijn + AI-bewustzijn (hoe apps je sturen)
+  { id: 'schermtijd-coach', title: 'Schermtijd Coach', week: 2, yearGroup: 1, sloKerndoelen: ['23B'], sloVsoKerndoelen: ['20A'] },                              // digitaal welzijn en bewuste mediakeuzes; geen AI-activiteit
   { id: 'notificatie-ninja', title: 'Notificatie Ninja', week: 2, yearGroup: 1, sloKerndoelen: ['23B', '21B'], sloVsoKerndoelen: ['20A', '18B'] },             // dark patterns in notificaties = welzijn + mediawijsheid
 
   // Periode 2 review
+  { id: 'pitch-police', title: 'Pitch Politie', week: 2, yearGroup: 1, sloKerndoelen: ['21A', '22A'], sloVsoKerndoelen: ['18A', '19A'] },
   { id: 'review-week-2', title: 'De Code-Criticus', week: 3, yearGroup: 1, sloKerndoelen: ['21D', '22B'], sloVsoKerndoelen: ['18C'] },                        // 21B→22B: review bevat code-bugs herkennen
 
   // Assessment P2
@@ -85,21 +88,24 @@ export const KERNDOEL_MISSIONS: KerndoelMissionMeta[] = [
   { id: 'review-week-3', title: 'De Ethische Raad', week: 4, yearGroup: 1, sloKerndoelen: ['23C', '21D'], sloVsoKerndoelen: ['20B'] },                         // +21D: bevat AI-bias dilemma
   { id: 'mission-blueprint', title: 'De Blauwdruk', week: 4, yearGroup: 1, sloKerndoelen: ['22A'], sloVsoKerndoelen: ['19A'] },                                // -21A: projectplan maken = product, niet systeemkennis
   { id: 'mission-vision', title: 'De Visie', week: 4, yearGroup: 1, sloKerndoelen: ['22A', '21B'], sloVsoKerndoelen: ['19A', '18B'] },                         // 21D→21B: moodboard + pitch = product + visuele communicatie
+  { id: 'mission-build', title: 'De Bouw', week: 4, yearGroup: 1, sloKerndoelen: ['22A', '21A'], sloVsoKerndoelen: ['19A', '18A'] },                          // 22A: product écht maken; 21A: gereedschap kiezen, gebruiken, opslaan en delen
   { id: 'mission-launch', title: 'De Lancering', week: 4, yearGroup: 1, sloKerndoelen: ['22A', '21B'], sloVsoKerndoelen: ['19A', '18B'] },                     // 21A,21C→22A,21B: flyer ontwerpen = product + communicatie
 
-  // Assessment P4
-  { id: 'assessment-j1-p4', title: 'Periodetoets 4', week: 4, yearGroup: 1, sloKerndoelen: ['21A', '21B', '21D', '22A', '23C'] },
+  // Geen assessment P4: periode 4 wordt afgesloten met de Ethische Raad (`review-week-3`).
+  // De vorige entry claimde vijf kerndoelen voor een toets die nergens werd aangeboden —
+  // papieren dekking in de kerndoelverantwoording. 21A wordt nu wél echt gedekt, door
+  // `mission-build`.
 
   // ============================================================
   // LEERJAAR 2
   // ============================================================
 
   // Periode 1: Data & Informatie
-  { id: 'data-journalist', title: 'Data Journalist', week: 1, yearGroup: 2, sloKerndoelen: ['21C', '22A'], sloVsoKerndoelen: ['18B', '19A'] },                  // 21B→22A: data-analyse + infographic maken = data + product
-  { id: 'spreadsheet-specialist', title: 'Spreadsheet Specialist', week: 1, yearGroup: 2, sloKerndoelen: ['21C', '22A'], sloVsoKerndoelen: ['18B', '19A'] },
+  { id: 'data-journalist', title: 'Data Journalist', week: 1, yearGroup: 2, sloKerndoelen: ['21C'], sloVsoKerndoelen: ['18B'] },                                 // -22A/-19A: de opdracht is drie datasets aflezen en nieuwsberichten wegen; de leerling maakt geen infographic of ander digitaal product
+  { id: 'spreadsheet-specialist', title: 'Spreadsheet Specialist', week: 1, yearGroup: 2, sloKerndoelen: ['21C'], sloVsoKerndoelen: ['18B'] },                    // -22A/-19A: de leerling leest kasboekdata en kiest de juiste formule, maar bouwt geen eigen spreadsheet
   { id: 'factchecker', title: 'Factchecker', week: 1, yearGroup: 2, sloKerndoelen: ['21B', '23C'], sloVsoKerndoelen: ['18B', '20B'] },
   { id: 'api-verkenner', title: 'API Verkenner', week: 1, yearGroup: 2, sloKerndoelen: ['21A', '21C'], sloVsoKerndoelen: ['18A', '18B'] },                      // 21D→21A: APIs begrijpen = systeemkennis, geen AI
-  { id: 'dashboard-designer', title: 'Dashboard Designer', week: 1, yearGroup: 2, sloKerndoelen: ['21C', '22A'], sloVsoKerndoelen: ['18B', '19A'] },
+  { id: 'dashboard-designer', title: 'Dashboard Designer', week: 1, yearGroup: 2, sloKerndoelen: ['21C'], sloVsoKerndoelen: ['18B'] },                            // -22A/-19A: de leerling leest schooldata en beoordeelt visualisatiekeuzes, maar ontwerpt geen eigen dashboard
   { id: 'ai-bias-detective', title: 'AI Bias Detective', week: 1, yearGroup: 2, sloKerndoelen: ['21D', '23C'], sloVsoKerndoelen: ['18C', '20B'] },
   { id: 'data-review', title: 'Data Review', week: 1, yearGroup: 2, sloKerndoelen: ['21B', '21C', '21D'], sloVsoKerndoelen: ['18B', '18C'] },
 

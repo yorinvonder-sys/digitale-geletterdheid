@@ -7,6 +7,7 @@ import { CompletionScreen } from '../shared/CompletionScreen';
 import { PhaseHeader } from '../shared/PhaseHeader';
 import { getMissionGoal } from '@/config/missionGoals';
 import type { TemplateMissionProps, BadgeConfig, MissionGoal } from '../shared/types';
+import { toScorePercent } from '../shared/scorePercent';
 
 // ─── Config types ────────────────────────────────────────────────────────────
 
@@ -55,6 +56,7 @@ export interface ToolGuideConfig {
 const VALID_TOOL_GUIDE_IDS: ReadonlySet<string> = new Set([
     'cloud-commander',
     'magister-master',
+    'mission-build',
     'mission-launch',
     'print-pro',
     'slide-specialist',
@@ -186,14 +188,14 @@ const StepCard: React.FC<StepCardProps> = ({
             <div className="flex items-center gap-2 mb-4">
                 <div className="w-7 h-7 rounded-full bg-duck-acid flex items-center justify-center">
                     <span
-                        className="text-xs font-black text-white"
+                        className="text-xs font-black text-duck-ink"
                         style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                     >
                         {stepIndex + 1}
                     </span>
                 </div>
                 <span
-                    className="text-xs text-duck-ink/60"
+                    className="text-xs text-duck-ink/70"
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                 >
                     Stap {stepIndex + 1} van {totalSteps}
@@ -228,7 +230,7 @@ const StepCard: React.FC<StepCardProps> = ({
                 <div className="flex gap-2 bg-duck-acid/8 border border-duck-acid/20 rounded-xl p-3 mb-3">
                     <Lightbulb size={15} className="text-duck-ink shrink-0 mt-0.5" />
                     <p
-                        className="text-xs text-duck-ink/60 leading-relaxed"
+                        className="text-xs text-duck-ink/70 leading-relaxed"
                         style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                     >
                         <RichText text={step.tip} />
@@ -269,7 +271,7 @@ const StepCard: React.FC<StepCardProps> = ({
                                 </div>
                                 <span
                                     className={`text-sm transition-all duration-200 ${
-                                        checked ? 'text-duck-ink line-through' : 'text-duck-ink/60'
+                                        checked ? 'text-duck-ink line-through' : 'text-duck-ink/70'
                                     }`}
                                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                                 >
@@ -291,7 +293,7 @@ const StepCard: React.FC<StepCardProps> = ({
                         Docentcheck
                     </p>
                     <p
-                        className="text-sm text-duck-ink/60 leading-relaxed mb-3"
+                        className="text-sm text-duck-ink/70 leading-relaxed mb-3"
                         style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                     >
                         {step.teacherCheck}
@@ -313,8 +315,10 @@ const StepCard: React.FC<StepCardProps> = ({
                         >
                             {teacherChecks[step.id] && <Check size={11} className="text-white" strokeWidth={3} />}
                         </div>
+                        {/* De leerling vinkt dit zelf aan; er is geen docentbevestiging achter.
+                            Formuleer het daarom als eigen handeling, niet als vaststelling over de docent. */}
                         <span className="text-sm font-bold" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
-                            Mijn docent heeft dit gezien
+                            Ik heb dit aan mijn docent laten zien
                         </span>
                     </button>
                 </div>
@@ -344,7 +348,7 @@ const StepCard: React.FC<StepCardProps> = ({
                                     (!step.verificationQuestion!.allowRetry || isCorrect)
                             );
                             let style = 'bg-duck-bg border-duck-gray hover:border-duck-acid/40';
-                            let textStyle = 'text-duck-ink/60';
+                            let textStyle = 'text-duck-ink/70';
                             if (verificationSubmitted) {
                                 if (revealCorrectAnswer) {
                                     style = 'bg-duck-ink/8 border-duck-ink/40';
@@ -565,7 +569,7 @@ const ToolGuideInner: React.FC<ToolGuideProps> = ({
 
     function handleComplete() {
         clearSave();
-        onComplete(true);
+        onComplete(true, toScorePercent(score, config.maxScore));
     }
 
     if (state.phase === 'intro') {
@@ -653,7 +657,7 @@ export const ToolGuide: React.FC<TemplateMissionProps> = ({ missionId, onBack, o
     if (loadError) return (
         <div className="min-h-screen bg-duck-bg flex items-center justify-center p-4">
             <div className="text-center">
-                <p className="text-duck-ink/60 mb-4" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                <p className="text-duck-ink/70 mb-4" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                     Config niet gevonden: {missionId}
                 </p>
                 <button onClick={onBack} className="min-h-11 min-w-11 px-4 py-2 bg-duck-acid text-duck-ink rounded-xl text-sm font-bold">Terug</button>

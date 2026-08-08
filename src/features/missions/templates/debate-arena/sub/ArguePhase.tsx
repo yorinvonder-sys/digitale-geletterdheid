@@ -1,6 +1,7 @@
 import React from 'react';
 import { ArrowLeft, ChevronRight } from 'lucide-react';
 import type { DebateArenaConfig, DebateArenaState, ArgumentEntry } from '../DebateArena';
+import { isMeaningfulAnswer, answerQualityHint } from '../../shared/answerQuality';
 
 function getArgumentQuality(charCount: number): { color: string; label: string } {
     if (charCount >= 100) return { color: '#ff3c21', label: 'Uitstekend' };
@@ -21,7 +22,7 @@ export interface ArguePhaseProps {
 export const ArguePhase: React.FC<ArguePhaseProps> = ({ config, state, onUpdateArgument, onSetActiveIndex, onNext, onBack }) => {
     const activeArg = state.arguments[state.activeArgumentIndex];
     const validCount = state.arguments.filter(
-        (a) => a.claim.trim().length >= 20 && a.evidence.trim().length >= 20
+        (a) => isMeaningfulAnswer(a.claim) && isMeaningfulAnswer(a.evidence)
     ).length;
 
     const selectedPos = config.positions.find((p) => p.id === state.selectedPosition);
@@ -47,7 +48,7 @@ export const ArguePhase: React.FC<ArguePhaseProps> = ({ config, state, onUpdateA
             {/* Argument tabs */}
             <div className="flex gap-2 mb-4">
                 {state.arguments.map((arg, i) => {
-                    const valid = arg.claim.trim().length >= 20 && arg.evidence.trim().length >= 20;
+                    const valid = isMeaningfulAnswer(arg.claim) && isMeaningfulAnswer(arg.evidence);
                     const isActive = i === state.activeArgumentIndex;
                     return (
                         <button
@@ -95,8 +96,13 @@ export const ArguePhase: React.FC<ArguePhaseProps> = ({ config, state, onUpdateA
                             </div>
                         );
                     })() : (
-                        <div className={`text-right text-[10px] mt-0.5 ${activeArg.claim.trim().length >= 20 ? 'text-duck-ink' : 'text-duck-ink/60'}`} style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                        <div className={`text-right text-[10px] mt-0.5 ${isMeaningfulAnswer(activeArg.claim) ? 'text-duck-ink' : 'text-duck-ink/60'}`} style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                             {activeArg.claim.trim().length}/20 min.
+                        </div>
+                    )}
+                    {answerQualityHint(activeArg.claim) && (
+                        <div className="text-[10px] text-duck-ink/60 mt-0.5" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                            {answerQualityHint(activeArg.claim)}
                         </div>
                     )}
                 </div>
@@ -122,8 +128,13 @@ export const ArguePhase: React.FC<ArguePhaseProps> = ({ config, state, onUpdateA
                             </div>
                         );
                     })() : (
-                        <div className={`text-right text-[10px] mt-0.5 ${activeArg.evidence.trim().length >= 20 ? 'text-duck-ink' : 'text-duck-ink/60'}`} style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                        <div className={`text-right text-[10px] mt-0.5 ${isMeaningfulAnswer(activeArg.evidence) ? 'text-duck-ink' : 'text-duck-ink/60'}`} style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                             {activeArg.evidence.trim().length}/20 min.
+                        </div>
+                    )}
+                    {answerQualityHint(activeArg.evidence) && (
+                        <div className="text-[10px] text-duck-ink/60 mt-0.5" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                            {answerQualityHint(activeArg.evidence)}
                         </div>
                     )}
                 </div>

@@ -7,6 +7,7 @@ function normalizedControls(controls = {}) {
   return {
     select: controls.select || [],
     order: controls.order || [],
+    drag: controls.drag || [],
     binaryAccept: controls.binaryAccept || [],
     followUp: controls.followUp || [],
     confidence: controls.confidence || [],
@@ -48,6 +49,15 @@ export function buildObservation(snapshot) {
       availableRecoveryActions: ['reset-order'],
     };
   }
+  if (controls.drag.length) {
+    return {
+      ...base,
+      phase: 'round',
+      roundType: 'order-drag',
+      options: controls.drag,
+      dragOrder: controls.drag.map((item) => item.id),
+    };
+  }
   if (controls.binaryAccept.length) {
     return {
       ...base,
@@ -73,6 +83,7 @@ async function firstText(locator) {
 export async function observeScenario(page) {
   const select = page.locator('[data-qa="scenario-option"]');
   const order = page.locator('[data-qa="scenario-order-item"]');
+  const drag = page.locator('[data-qa="scenario-drag-item"]');
   const binaryAccept = page.locator('[data-qa="scenario-binary-accept"]');
   const followUp = page.locator('[data-qa="followup-option"]');
   const confidence = page.locator('[data-qa="confidence-option"]');
@@ -88,6 +99,7 @@ export async function observeScenario(page) {
     controls: {
       select: await elements(select, 'data-scenario-item-id'),
       order: await elements(order, 'data-scenario-item-id'),
+      drag: await elements(drag, 'data-scenario-item-id'),
       binaryAccept: await elements(binaryAccept, 'data-scenario-item-id'),
       followUp: await elements(followUp, 'data-followup-option-index'),
       confidence: await elements(confidence, 'data-confidence-level'),
@@ -105,6 +117,11 @@ function itemSelector(qa, id) {
   return `[data-qa="${qa}"][data-scenario-item-id="${id}"]`;
 }
 
+async function currentDragOrder(page) {
+  const items = await elements(page.locator('[data-qa="scenario-drag-item"]'), 'data-scenario-item-id');
+  return items.map((item) => item.id);
+}
+
 export async function performScenarioDecision(page, decision) {
   if (decision.action === 'start') {
     await page.getByRole('button', { name: /start de missie/i }).click();
@@ -117,6 +134,26 @@ export async function performScenarioDecision(page, decision) {
   }
   if (decision.action === 'answer-order') {
     for (const id of decision.optionIds) await page.locator(itemSelector('scenario-order-item', id)).click();
+    await page.getByRole('button', { name: /controleer volgorde/i }).click();
+    return;
+  }
+  if (decision.action === 'answer-drag') {
+    const desired = decision.optionIds.map(String);
+    const maxClicks = (desired.length * desired.length) + 10;
+    let clicks = 0;
+    for (let target = 0; target < desired.length; target++) {
+      const wantedId = desired[target];
+      let current = await currentDragOrder(page);
+      let index = current.indexOf(wantedId);
+      if (index === -1) throw new Error(`Ongeldig scenario-item-id: ${wantedId}`);
+      while (index > target) {
+        if (clicks >= maxClicks) throw new Error(`Kon gewenste sleepvolgorde niet bereiken binnen ${maxClicks} klikken`);
+        await page.locator(itemSelector('scenario-drag-up', wantedId)).click();
+        clicks++;
+        current = await currentDragOrder(page);
+        index = current.indexOf(wantedId);
+      }
+    }
     await page.getByRole('button', { name: /controleer volgorde/i }).click();
     return;
   }

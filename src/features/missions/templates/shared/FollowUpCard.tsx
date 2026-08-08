@@ -1,10 +1,17 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import type { FollowUpQuestion } from './types';
 
 interface FollowUpCardProps {
     followUp: FollowUpQuestion;
     onComplete: (correct: boolean) => void;
+    /**
+     * Aangeroepen op het moment van kiezen, dus vóór 'Doorgaan'. Gebruikers die hun
+     * voortgang bewaren leggen het resultaat hier direct vast: zodra het juiste
+     * antwoord onthuld is, mag een refresh of hermount de vraag niet opnieuw te
+     * winnen maken.
+     */
+    onAnswer?: (correct: boolean) => void;
     /** Visueel thema — 'light' voor ScenarioEngine, 'dark' voor PuzzleLab */
     theme?: 'light' | 'dark';
     /**
@@ -14,7 +21,7 @@ interface FollowUpCardProps {
     scoreWeight?: number;
 }
 
-export const FollowUpCard: React.FC<FollowUpCardProps> = ({ followUp, onComplete, theme = 'light', scoreWeight = 0 }) => {
+export const FollowUpCard: React.FC<FollowUpCardProps> = ({ followUp, onComplete, onAnswer, theme = 'light', scoreWeight = 0 }) => {
     const [selected, setSelected] = useState<number | null>(null);
     const answered = selected !== null;
     const correct = selected === followUp.correctIndex;
@@ -23,7 +30,7 @@ export const FollowUpCard: React.FC<FollowUpCardProps> = ({ followUp, onComplete
     const bg = isLight ? 'bg-duck-bg' : 'bg-duck-ink';
     const border = isLight ? 'border-duck-acid' : 'border-duck-acid/40';
     const textMain = isLight ? 'text-duck-ink' : 'text-white';
-    const textSub = isLight ? 'text-duck-ink/60' : 'text-duck-ink/60';
+    const textSub = isLight ? 'text-duck-ink/75' : 'text-white/75';
     const fontMain = isLight
         ? { fontFamily: "'Newsreader', Georgia, serif" }
         : { fontFamily: "'Newsreader', Georgia, serif" };
@@ -31,10 +38,19 @@ export const FollowUpCard: React.FC<FollowUpCardProps> = ({ followUp, onComplete
         ? { fontFamily: "'Outfit', system-ui, sans-serif" }
         : {};
 
+    const continueRef = useRef<HTMLButtonElement>(null);
+
     const handleSelect = (index: number) => {
         if (answered) return;
         setSelected(index);
+        onAnswer?.(index === followUp.correctIndex);
     };
+
+    // De gekozen knop wordt disabled, dus de focus zou naar <body> vallen. Zet hem
+    // op 'Doorgaan' zodat toetsenbord- en schermlezergebruikers verder kunnen.
+    useEffect(() => {
+        if (answered) continueRef.current?.focus();
+    }, [answered]);
 
     return (
         <motion.div
@@ -67,15 +83,20 @@ export const FollowUpCard: React.FC<FollowUpCardProps> = ({ followUp, onComplete
                     let optStyle = isLight
                         ? 'bg-white border-duck-gray hover:border-duck-acid'
                         : 'bg-duck-ink border-duck-ink hover:border-duck-acid/40';
+                    const isChosenWrong = answered && i === selected && !correct;
+                    let letterStyle = textSub;
 
                     if (answered && i === followUp.correctIndex) {
                         optStyle = isLight
                             ? 'bg-duck-ink/10 border-duck-ink'
                             : 'bg-duck-ink/10 border-duck-acid';
-                    } else if (answered && i === selected && !correct) {
+                    } else if (isChosenWrong) {
                         optStyle = isLight
                             ? 'bg-duck-error border-duck-error'
                             : 'bg-duck-error/30 border-duck-error';
+                        // De gedempte tekstkleur haalt hier maar 3,19:1 op de foutkleur —
+                        // gebruik de donkere hoofdkleur zodat de letter leesbaar blijft.
+                        letterStyle = textMain;
                     } else if (answered) {
                         optStyle = isLight
                             ? 'bg-duck-gray border-duck-gray'
@@ -92,7 +113,7 @@ export const FollowUpCard: React.FC<FollowUpCardProps> = ({ followUp, onComplete
                             className={`min-h-[44px] w-full text-left px-3 py-2.5 rounded-xl border-2 text-xs transition-all duration-200 ${optStyle} ${textMain}`}
                             style={fontBody}
                         >
-                            <span className={textSub}>{String.fromCharCode(65 + i)}. </span>
+                            <span className={letterStyle}>{String.fromCharCode(65 + i)}. </span>
                             {opt}
                         </button>
                     );
@@ -106,6 +127,8 @@ export const FollowUpCard: React.FC<FollowUpCardProps> = ({ followUp, onComplete
                     className="space-y-2"
                 >
                     <div
+                        role="status"
+                        aria-live="polite"
                         className={`text-xs px-3 py-2 rounded-xl ${
                             correct
                                 ? isLight ? 'bg-duck-ink/10 text-duck-ink' : 'bg-duck-ink/20 text-duck-acid'
@@ -116,9 +139,10 @@ export const FollowUpCard: React.FC<FollowUpCardProps> = ({ followUp, onComplete
                         {correct ? '✓ Goed!' : '✕ Niet helemaal.'} {followUp.explanation}
                     </div>
                     <button
+                        ref={continueRef}
                         data-qa="followup-submit"
                         onClick={() => onComplete(correct)}
-                        className={`w-full py-2.5 rounded-full font-black text-sm transition-all duration-200 ${
+                        className={`min-h-[44px] w-full py-2.5 rounded-full font-black text-sm transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-ink focus-visible:ring-offset-2 ${
                             isLight
                                 ? 'bg-gradient-to-r from-duck-acid to-duck-acid hover:from-duck-acid hover:to-duck-acid text-duck-ink'
                                 : 'bg-duck-ink hover:bg-duck-ink hover:text-duck-acid text-duck-acid font-mono'

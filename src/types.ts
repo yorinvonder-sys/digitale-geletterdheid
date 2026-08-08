@@ -26,7 +26,7 @@ export type RoleId =
   // Leerjaar 1 - Periode 3
   'review-week-2' | 'ai-spiegel' | 'social-safeguard' | 'veilig-internet' | 'scroll-stopper' | 'data-detective' | 'deepfake-detector' | 'cookie-crusher' | 'mail-detective' | 'data-handelaar' | 'privacy-profiel-spiegel' | 'filter-bubble-breaker' | 'datalekken-rampenplan' | 'data-voor-data' | 'data-speurder' | 'data-verzamelaar' |
   // Leerjaar 1 - Periode 4
-  'review-week-3' | 'mission-blueprint' | 'mission-vision' | 'mission-launch' | 'startup-pitch' |
+  'review-week-3' | 'mission-blueprint' | 'mission-vision' | 'mission-build' | 'mission-launch' | 'startup-pitch' |
   // Leerjaar 1 - Speciaal
   'ai-beleid-brainstorm' |
   // Leerjaar 1 - Reviews
@@ -80,6 +80,7 @@ export interface AiLabProps {
   user: ParentUser | null; // De ingelogde gebruiker vanuit de parent app
   onExit?: () => void;     // Optie om terug te gaan naar het hoofdmenu
   saveProgress?: (stats: UserStats) => void; // Optie om progressie op te slaan
+  completeMission?: (missionId: string) => Promise<boolean>; // Auth-bound durable completion from the app shell
   initialRole?: RoleId; // Optionele start rol voor deep-linking
   libraryData?: any; // Data from library item (gameCode, bookData, etc.)
   vsoProfile?: VsoProfile; // Optional learning-profile hint for missions

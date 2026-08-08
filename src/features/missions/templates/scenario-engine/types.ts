@@ -14,6 +14,21 @@ export interface ScenarioItem {
     explanation: string;
     /** Optional override-feedback for incorrect answers (used by phishing-fighter etc.) */
     wrongFeedback?: string;
+    /** For spot-the-flags rounds: waar dit onderdeel in de nagebootste mail staat. */
+    flagSlot?: 'from' | 'subject' | 'meta' | 'body' | 'link' | 'attachment';
+}
+
+/**
+ * Nagebootste mail-omlijsting voor een `spot-the-flags`-ronde. De leerling ziet
+ * een echt ogend bericht in plaats van een lijst kaartjes; de items uit de ronde
+ * worden als aanklikbare onderdelen ín dat bericht getekend.
+ */
+export interface EmailFrame {
+    fromName: string;
+    subject: string;
+    receivedLabel: string;
+    /** Alinea's van de mailtekst, getoond boven de aanklikbare onderdelen. */
+    body: string[];
 }
 
 export interface ScenarioRound {
@@ -21,8 +36,22 @@ export interface ScenarioRound {
     emoji: string;
     title: string;
     description: string;
-    type: 'select-correct' | 'order-priority' | 'binary-choice';
+    /**
+     * De drie klassieke types zijn keuzelijsten. De drie `-`-varianten daarnaast
+     * tonen dezelfde opgave als handeling (mail doorzoeken, slepen, sorteren) en
+     * gebruiken bewust dezelfde opslag en dezelfde scoreformule als hun klassieke
+     * tegenhanger — zie `SCORING_KIND` in sub/FeedbackBanner.tsx.
+     */
+    type:
+        | 'select-correct'
+        | 'order-priority'
+        | 'binary-choice'
+        | 'spot-the-flags'
+        | 'order-drag'
+        | 'inbox-triage';
     items: ScenarioItem[];
+    /** Verplicht bij `spot-the-flags`: de mail waarin de leerling zoekt. */
+    emailFrame?: EmailFrame;
     maxScore: number;
     feedbackCorrect?: string;
     feedbackIncorrect?: string;

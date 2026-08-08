@@ -62,7 +62,7 @@ for (const [missionId, path] of dedicatedGoals) {
 
 expectIncludes(
   'src/app/AuthenticatedApp.tsx',
-  "if (success) handleMissionComplete('game-director')",
+  "if (success) return handleMissionComplete('game-director')",
   'game-director completion via handleMissionComplete'
 );
 

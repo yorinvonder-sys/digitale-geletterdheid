@@ -19,6 +19,8 @@ export interface WordSimulatorProps {
     vsoProfile?: VsoProfile;
 }
 
+const LAYOUT_DOCTOR_TOC_SELECTOR = 'div[data-layout-doctor-toc="true"]';
+
 export const WordSimulator: React.FC<WordSimulatorProps> = ({
     onLevelComplete,
     onExit,
@@ -427,37 +429,52 @@ export const WordSimulator: React.FC<WordSimulatorProps> = ({
                 return;
             }
 
-            let tocHtml = `
-                <div style="margin: 0 0 30px 0; padding: 0; font-family: 'Calibri', sans-serif;">
-                    <p style="color: #D97848; font-size: 24px; font-weight: bold; margin-bottom: 16px; border-bottom: 2px solid #D97848; padding-bottom: 8px;">Inhoudsopgave</p>
-            `;
+            const tocContainer = document.createElement('div');
+            tocContainer.setAttribute('data-layout-doctor-toc', 'true');
+            tocContainer.style.cssText = "margin: 0 0 30px 0; padding: 0; font-family: 'Calibri', sans-serif;";
+
+            const tocTitle = document.createElement('p');
+            tocTitle.textContent = 'Inhoudsopgave';
+            tocTitle.style.cssText = 'color: #D97848; font-size: 24px; font-weight: bold; margin-bottom: 16px; border-bottom: 2px solid #D97848; padding-bottom: 8px;';
+            tocContainer.appendChild(tocTitle);
 
             h1s.forEach((h1, index) => {
                 const pageNum = index + 1;
-                tocHtml += `
-                    <div style="display: flex; align-items: baseline; margin: 8px 0; font-size: 14px;">
-                        <span style="color: #D97848; font-weight: 500;">${h1.innerText}</span>
-                        <span style="flex: 1; border-bottom: 1px dotted #445865; margin: 0 8px; min-width: 20px;"></span>
-                        <span style="color: #445865; font-weight: 500;">${pageNum}</span>
-                    </div>
-                `;
-            });
+                const row = document.createElement('div');
+                row.style.cssText = 'display: flex; align-items: baseline; margin: 8px 0; font-size: 14px;';
 
-            tocHtml += '<!-- TOC --></div>';
+                const label = document.createElement('span');
+                label.textContent = h1.textContent || '';
+                label.style.cssText = 'color: #D97848; font-weight: 500;';
+
+                const leader = document.createElement('span');
+                leader.setAttribute('aria-hidden', 'true');
+                leader.style.cssText = 'flex: 1; border-bottom: 1px dotted #445865; margin: 0 8px; min-width: 20px;';
+
+                const page = document.createElement('span');
+                page.textContent = String(pageNum);
+                page.style.cssText = 'color: #445865; font-weight: 500;';
+
+                row.append(label, leader, page);
+                tocContainer.appendChild(row);
+            });
 
             // Insert TOC at cursor position
             if (editor) {
                 editor.focus();
 
-                // Generate full HTML
-                const fullToc = `${tocHtml}<!-- TOC --></div>`;
+                // Build from DOM text nodes, then sanitize the serialized HTML before insertHTML.
+                const safeToc = DOMPurify.sanitize(tocContainer.outerHTML, {
+                    ALLOWED_TAGS: ['div', 'p', 'span'],
+                    ALLOWED_ATTR: ['aria-hidden', 'data-layout-doctor-toc', 'style']
+                });
 
                 // Try inserting at cursor
                 if (document.queryCommandSupported('insertHTML')) {
-                    document.execCommand('insertHTML', false, fullToc);
+                    document.execCommand('insertHTML', false, safeToc);
                 } else {
                     // Fallback: Append to end if no cursor support (unlikely on modern browser)
-                    editor.innerHTML += DOMPurify.sanitize(fullToc);
+                    editor.insertAdjacentHTML('beforeend', safeToc);
                 }
 
                 // Update state
@@ -676,8 +693,9 @@ export const WordSimulator: React.FC<WordSimulatorProps> = ({
 
             {/* HORIZONTAL RULER */}
             <div className="bg-white border-b border-[#E7D8BD] shrink-0 h-[22px] flex items-center overflow-hidden select-none">
-                {/* Left margin area (matches sidebar width) */}
-                <div className="w-[300px] shrink-0 bg-[#f3f3f3] h-full border-r border-[#E7D8BD]" />
+                {/* Left margin area (matches sidebar width) — onder lg staat de zijbalk
+                    boven het document in plaats van ernaast, dus dan is deze uitlijning weg. */}
+                <div className="hidden lg:block w-[300px] shrink-0 bg-[#f3f3f3] h-full border-r border-[#E7D8BD]" />
                 {/* Ruler */}
                 <div className="flex-1 relative h-full flex items-center justify-center">
                     <div className="relative w-[794px] h-full">
@@ -722,11 +740,15 @@ export const WordSimulator: React.FC<WordSimulatorProps> = ({
                 </div>
             </div>
 
-            {/* MAIN CONTENT SPLIT */}
-            <div className="flex-1 flex overflow-hidden">
+            {/* MAIN CONTENT SPLIT
+                Onder lg stapelen: de zijbalk is 300px breed en krimpt niet mee, dus op een
+                telefoon (390px) bleef er 90px over voor het document zelf — te smal om de
+                tekst, de afbeelding of de opdracht te zien, en er is geen knop om de zijbalk
+                te verbergen. */}
+            <div className="flex-1 flex flex-col lg:flex-row overflow-y-auto lg:overflow-hidden">
 
                 {/* LEFT SIDEBAR - Teacher Info & Context */}
-                <div className="w-[300px] bg-lab-paper border-r border-lab-line flex flex-col shrink-0 overflow-y-auto">
+                <div className="w-full lg:w-[300px] max-h-[45vh] lg:max-h-none bg-lab-paper border-b lg:border-b-0 lg:border-r border-lab-line flex flex-col shrink-0 overflow-y-auto">
                     {/* Teacher Profile */}
                     <div className="p-6 border-b border-lab-line">
                         <div className="flex items-center gap-4 mb-4">
@@ -1156,9 +1178,12 @@ const levels: LevelConfig[] = [
             `,
         initialImages: [],
         checkSuccess: (content, imgs) => {
-            // Check if Table of Contents (UL/LI structure with links or specific class) exists
-            // The implementation of 'toc' creates a div with class 'toc-container' or similar
-            return content.includes('<!-- TOC -->') || content.includes('Inhoudsopgave');
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(content, 'text/html');
+            const toc = doc.querySelector(LAYOUT_DOCTOR_TOC_SELECTOR);
+            const hasTocTitle = toc?.querySelector('p')?.textContent?.trim() === 'Inhoudsopgave';
+            const hasTocEntry = toc?.querySelector('div > span') !== null;
+            return Boolean(toc && hasTocTitle && hasTocEntry);
         }
     },
     {
