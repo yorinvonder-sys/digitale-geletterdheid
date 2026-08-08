@@ -342,6 +342,7 @@ const ReviewArenaWithConfig: React.FC<ReviewArenaProps> = ({
 
     const handleRoundComplete = useCallback(
         (score: number) => {
+            if (showFollowUp) return; // guard against a stray double invocation
             const round = config.rounds[state.currentRound];
             if (!round) return;
             // De vastgelegde score wint van wat het subcomponent bij het doorklikken
@@ -368,6 +369,7 @@ const ReviewArenaWithConfig: React.FC<ReviewArenaProps> = ({
         [
             advanceRound,
             config.rounds,
+            showFollowUp,
             state.currentRound,
             state.followUpResults,
             state.lockedRoundScores,
@@ -377,6 +379,7 @@ const ReviewArenaWithConfig: React.FC<ReviewArenaProps> = ({
 
     const handleFollowUpComplete = useCallback(
         (correct: boolean) => {
+            if (!showFollowUp) return; // guard against a stray double invocation
             const round = config.rounds[state.currentRound];
             if (!round) return;
             // Het vastgelegde antwoord wint: 'Doorgaan' mag geen tweede kans zijn.
@@ -400,6 +403,7 @@ const ReviewArenaWithConfig: React.FC<ReviewArenaProps> = ({
             config.rounds,
             pendingScore,
             setState,
+            showFollowUp,
             state.currentRound,
             state.followUpResults,
             withFollowUpBonus,
@@ -565,7 +569,9 @@ const ReviewArenaWithConfig: React.FC<ReviewArenaProps> = ({
                                 )}
                             </div>
                         ) : (
-                        <>
+                        // Terwijl de verdiepingsvraag in beeld staat mag de ronde er niet
+                        // nog eens doorheen geklikt worden.
+                        <div className={showFollowUp ? 'pointer-events-none opacity-50 transition-opacity duration-200' : ''}>
                         {round.type === 'drag-sort' && (
                             <DragSort
                                 title={round.title}
@@ -610,7 +616,7 @@ const ReviewArenaWithConfig: React.FC<ReviewArenaProps> = ({
                                 onComplete={(score) => handleRoundComplete(score)}
                             />
                         )}
-                        </>
+                        </div>
                         )}
 
                         {showFollowUp && round.followUp && (

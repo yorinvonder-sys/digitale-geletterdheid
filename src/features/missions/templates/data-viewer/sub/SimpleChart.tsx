@@ -12,9 +12,19 @@ interface SimpleChartProps {
 }
 
 const DEFAULT_COLORS = [
-    '#ff3c21', '#202023', '#202023', '#e1ff01', '#202023', '#ff3c21',
-    '#202023', '#99984D', '#ff3c21', '#202023',
+    '#ff3c21', '#202023', '#0d3b66', '#3a5a40', '#8338ec',
+    '#d7263d', '#c2410c', '#0f766e', '#9d174d', '#525252',
 ];
+
+/** Kiest zwart of wit tekstlabel op basis van de relatieve luminantie van de achtergrondkleur. */
+function readableLabelColor(hex: string): string {
+    const c = hex.replace('#', '');
+    const r = parseInt(c.substring(0, 2), 16) / 255;
+    const g = parseInt(c.substring(2, 4), 16) / 255;
+    const b = parseInt(c.substring(4, 6), 16) / 255;
+    const luminance = 0.2126 * r + 0.7152 * g + 0.0722 * b;
+    return luminance > 0.6 ? '#202023' : '#ffffff';
+}
 
 // ── Bar chart ────────────────────────────────────────────────────────────────
 
@@ -78,7 +88,7 @@ const BarChart: React.FC<{ data: ChartDataPoint[] }> = ({ data }) => {
                 })}
             </div>
 
-            {/* X-axis labels */}
+            {/* X-axis labels + waarde (altijd zichtbaar, niet alleen bij hover) */}
             <div className="flex gap-2 px-2 mt-1">
                 {data.map((d, i) => (
                     <div
@@ -189,7 +199,7 @@ const PieChart: React.FC<{ data: ChartDataPoint[] }> = ({ data }) => {
                                 textAnchor="middle"
                                 dominantBaseline="middle"
                                 fontSize="9"
-                                fill="white"
+                                fill={readableLabelColor(s.color)}
                                 fontWeight="700"
                                 fontFamily="'Outfit', system-ui, sans-serif"
                                 style={{ pointerEvents: 'none' }}

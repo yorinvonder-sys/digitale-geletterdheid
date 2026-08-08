@@ -176,8 +176,8 @@ export const Categorize: React.FC<CategorizeProps> = ({
                             >
                                 <span
                                     data-qa="review-category-label"
-                                    className="block text-xs font-black uppercase tracking-wider"
-                                    style={{ color: color.bg, fontFamily: "'Outfit', system-ui, sans-serif" }}
+                                    className="block text-xs font-black uppercase tracking-wider text-duck-ink"
+                                    style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                                 >
                                     {cat}
                                 </span>
@@ -201,7 +201,7 @@ export const Categorize: React.FC<CategorizeProps> = ({
                                                     ? `${item.label}: ${isCorrect ? 'juist geplaatst' : `fout geplaatst, hoort bij ${item.correctCategory}`}`
                                                     : `${item.label} uit ${cat} halen`
                                             }
-                                            className={`flex items-center gap-1 px-2 py-1 rounded-lg text-xs font-medium border focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-acid
+                                            className={`flex min-h-[44px] items-center gap-1 px-2 py-1 rounded-lg text-xs font-medium border focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-acid
                                                 ${submitted
                                                     ? isCorrect
                                                         ? 'bg-duck-ink/15 border-duck-ink text-duck-ink'

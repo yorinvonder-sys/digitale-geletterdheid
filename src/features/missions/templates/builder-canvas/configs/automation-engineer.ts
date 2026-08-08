@@ -41,6 +41,7 @@ export const automationEngineerConfig: BuilderCanvasConfig = {
                 { id: 'fouten', label: 'Ik heb beschreven wat er bij handmatig uitvoeren misgaat' },
             ],
             textPrompt: 'Analyseer je automatiseringskandidaat',
+            minTextLength: 150,
         },
         {
             id: 'algoritme',
@@ -57,6 +58,7 @@ export const automationEngineerConfig: BuilderCanvasConfig = {
                 { id: 'logisch', label: 'Het algoritme volgt een logische volgorde' },
             ],
             textPrompt: 'Schrijf je pseudocode-algoritme',
+            minTextLength: 150,
         },
         {
             id: 'script-structuur',
@@ -73,6 +75,7 @@ export const automationEngineerConfig: BuilderCanvasConfig = {
                 { id: 'modules', label: 'Benodigde Python-modules zijn beschreven' },
             ],
             textPrompt: 'Schrijf je Python-scriptstructuur',
+            minTextLength: 150,
         },
         {
             id: 'testplan',
@@ -89,6 +92,7 @@ export const automationEngineerConfig: BuilderCanvasConfig = {
                 { id: 'veiligheid', label: 'Ik heb nagedacht over veiligheid voor anderen' },
             ],
             textPrompt: 'Schrijf je testplan',
+            minTextLength: 200,
         },
     ],
     maxScore: 100,
