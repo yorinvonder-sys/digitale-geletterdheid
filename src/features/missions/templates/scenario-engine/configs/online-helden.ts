@@ -6,7 +6,7 @@ const config: ScenarioEngineConfig = {
     introEmoji: '🦸',
     introTitle: 'Online Helden & Helpers',
     introDescription:
-        'Cyberpesten speelt zich af op platforms die jij elke dag gebruikt. Het is niet altijd duidelijk wanneer iets écht pesten is — en wat jij daarin kunt doen. In deze missie leer je patronen herkennen, situaties beoordelen en kiezen hoe jij reageert als bijstander.',
+        'Cyberpesten speelt zich af op platforms die jij elke dag gebruikt. Het is niet altijd duidelijk wanneer iets écht pesten is — en wat jij daarin kunt doen. In deze missie leer je patronen herkennen, situaties beoordelen en kiezen hoe jij reageert als bijstander. Herken je dit uit je eigen leven of voel je je onveilig? Je mag altijd stoppen: praat direct met een vertrouwde volwassene. Bel bij directe dreiging 112.',
     introFeatures: [
         'Herken cyberpesten in echte situaties op echte platforms',
         'Ontdek welke bijstander-acties echt werken',

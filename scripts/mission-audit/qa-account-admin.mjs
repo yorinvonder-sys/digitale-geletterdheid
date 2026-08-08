@@ -20,6 +20,24 @@ const SYNTHETIC_SCHOOL_ID = 'qa-mission-audit';
 const SYNTHETIC_EMAIL_PATTERN =
   /^dgs-qa-[a-z0-9-]+-[a-z0-9-]+-[a-f0-9]{12}@example\.invalid$/;
 const EXPECTED_AUDIT_BASELINE = { xp: 75, completions: 3 };
+const SINGLE_AUDIT_PROFILES = Object.freeze({
+  j1p1: Object.freeze({
+    displayName: 'DGSkills QA J1P1',
+    sessionName: 'DGSkills QA J1P1',
+    studentClass: 'QA-J1P1',
+    yearGroup: 1,
+    educationLevel: 'havo',
+    purpose: 'DGSkills J1P1 learner-mission audit',
+  }),
+  j2p3: Object.freeze({
+    displayName: 'DGSkills QA J2P3',
+    sessionName: 'DGSkills QA J2P3',
+    studentClass: 'QA-J2P3',
+    yearGroup: 2,
+    educationLevel: 'havo',
+    purpose: 'DGSkills J2P3 learner-mission audit',
+  }),
+});
 
 const VIEWPORTS = [
   {
@@ -61,7 +79,7 @@ Commands:
   self-test Run local fail-closed identity and not-found checks without Supabase access.
   canary   Create, authenticate, globally sign out, delete, and verify one synthetic user.
   prepare  Create four synthetic havo accounts bound to the four QA browser sessions.
-  prepare-single  Create one synthetic J1P1 production-lead account for the internal browser.
+  prepare-single  Create one synthetic production-lead account for the internal browser.
   verify   Verify that all users and profiles in the credentials file still exist.
   cleanup  Globally revoke sessions, delete exact recorded UUIDs, and verify zero profile rows.
   cleanup-orphans  Delete strictly matched synthetic accounts without a credentials file.
@@ -85,6 +103,7 @@ Command options:
   prepare-single:
     --credentials /absolute/path/to/qa-account-credentials.json
     --batch-id j1p1-audit
+    --audit-profile j1p1|j2p3  (default: j1p1)
 
   verify:
     --credentials /absolute/path/to/qa-accounts-credentials.json
@@ -140,6 +159,18 @@ function requireOption(options, name) {
     throw new Error(`Missing required option ${name}`);
   }
   return value;
+}
+
+function getSingleAuditProfile(profileId) {
+  if (!Object.hasOwn(SINGLE_AUDIT_PROFILES, profileId)) {
+    throw new Error('--audit-profile must be exactly j1p1 or j2p3');
+  }
+  const profile = SINGLE_AUDIT_PROFILES[profileId];
+  return profile;
+}
+
+function getAccountAuditProfile(account) {
+  return getSingleAuditProfile(account.auditProfile ?? 'j1p1');
 }
 
 function assertSafetyGate(options) {
@@ -305,6 +336,9 @@ async function createSyntheticUser({
   role,
   displayName,
   password,
+  studentClass = SINGLE_AUDIT_PROFILES.j1p1.studentClass,
+  yearGroup = SINGLE_AUDIT_PROFILES.j1p1.yearGroup,
+  educationLevel = SINGLE_AUDIT_PROFILES.j1p1.educationLevel,
 }) {
   const email = makeEmail(batchId, role);
   const { data, error } = await admin.auth.admin.createUser({
@@ -335,9 +369,9 @@ async function createSyntheticUser({
     email,
     role: 'student',
     school_id: SYNTHETIC_SCHOOL_ID,
-    student_class: 'QA-J1P1',
-    year_group: 1,
-    education_level: 'havo',
+    student_class: studentClass,
+    year_group: yearGroup,
+    education_level: educationLevel,
     must_change_password: false,
   });
 
@@ -373,6 +407,7 @@ function assertSyntheticAuthRecord(user, account) {
 }
 
 function assertSyntheticProfileRecord(profile, account) {
+  const auditProfile = getAccountAuditProfile(account);
   if (
     profile.id !== account.userId ||
     profile.uid !== account.userId ||
@@ -381,9 +416,9 @@ function assertSyntheticProfileRecord(profile, account) {
     !profile.email.startsWith(`dgs-qa-${account.batchId}-`) ||
     profile.role !== 'student' ||
     ![null, SYNTHETIC_SCHOOL_ID].includes(profile.school_id) ||
-    profile.student_class !== 'QA-J1P1' ||
-    profile.year_group !== 1 ||
-    profile.education_level !== 'havo'
+    profile.student_class !== auditProfile.studentClass ||
+    profile.year_group !== auditProfile.yearGroup ||
+    profile.education_level !== auditProfile.educationLevel
   ) {
     throw new Error('Profile failed the synthetic identity safety contract');
   }
@@ -697,19 +732,31 @@ async function runPrepareSingle(options, clients) {
   if (await pathExists(credentialsPath)) {
     throw new Error(`Refusing to overwrite credentials file ${resolve(credentialsPath)}`);
   }
+  const auditProfileId = options.get('--audit-profile') ?? 'j1p1';
+  if (typeof auditProfileId !== 'string') {
+    throw new Error('--audit-profile requires a value');
+  }
+  const auditProfile = getSingleAuditProfile(auditProfileId);
 
   const password = makePassword();
   const account = await createSyntheticUser({
     admin: clients.admin,
     batchId,
     role: 'production-lead',
-    displayName: 'DGSkills QA J1P1',
+    displayName: auditProfile.displayName,
     password,
+    studentClass: auditProfile.studentClass,
+    yearGroup: auditProfile.yearGroup,
+    educationLevel: auditProfile.educationLevel,
   });
   const credentialAccount = {
     role: 'production-lead',
-    sessionName: 'DGSkills QA J1P1',
+    sessionName: auditProfile.sessionName,
     viewport: '390x844',
+    auditProfile: auditProfileId,
+    studentClass: auditProfile.studentClass,
+    yearGroup: auditProfile.yearGroup,
+    educationLevel: auditProfile.educationLevel,
     batchId,
     userId: account.userId,
     email: account.email,
@@ -722,7 +769,7 @@ async function runPrepareSingle(options, clients) {
       schemaVersion: 2,
       accountMode: 'single-production-lead',
       projectRef: EXPECTED_PROJECT_REF,
-      purpose: 'DGSkills J1P1 learner-mission audit',
+      purpose: auditProfile.purpose,
       syntheticOnly: true,
       createdAt: new Date().toISOString(),
       batchId,
@@ -814,6 +861,13 @@ function validateCredentialsPayload(parsed) {
     }
   } else {
     const [account] = parsed.accounts;
+    const auditProfile = getAccountAuditProfile(account);
+    const hasExactProfileBinding =
+      account.auditProfile === undefined
+        ? auditProfile === SINGLE_AUDIT_PROFILES.j1p1
+        : account.studentClass === auditProfile.studentClass &&
+          account.yearGroup === auditProfile.yearGroup &&
+          account.educationLevel === auditProfile.educationLevel;
     const isRecoveredBaseline =
       account.recoveredBaseline?.xp === EXPECTED_AUDIT_BASELINE.xp &&
       account.recoveredBaseline?.completions ===
@@ -830,9 +884,10 @@ function validateCredentialsPayload(parsed) {
       );
     if (
       account.role !== 'production-lead' ||
-      account.sessionName !== 'DGSkills QA J1P1' ||
+      account.sessionName !== auditProfile.sessionName ||
       account.viewport !== '390x844' ||
       Object.hasOwn(account, 'browserId') ||
+      !hasExactProfileBinding ||
       (!isRecoveredBaseline && !isNewSingleAccount)
     ) {
       throw new Error('Credentials file failed the single-account identity contract');
@@ -1458,6 +1513,78 @@ function runSelfTest() {
       },
     ],
   });
+  const j2p3Account = {
+    ...account,
+    role: 'production-lead',
+    sessionName: 'DGSkills QA J2P3',
+    viewport: '390x844',
+    auditProfile: 'j2p3',
+    studentClass: 'QA-J2P3',
+    yearGroup: 2,
+    educationLevel: 'havo',
+    email: 'dgs-qa-dgs-59-production-lead-a1b2c3d4e5f6@example.invalid',
+  };
+  validateCredentialsPayload({
+    schemaVersion: 2,
+    accountMode: 'single-production-lead',
+    projectRef: EXPECTED_PROJECT_REF,
+    syntheticOnly: true,
+    batchId: account.batchId,
+    accounts: [j2p3Account],
+  });
+  assertSyntheticProfileRecord(
+    {
+      ...profile,
+      student_class: 'QA-J2P3',
+      year_group: 2,
+      email: j2p3Account.email,
+    },
+    j2p3Account,
+  );
+  let j2p3ProfileMismatchRejected = false;
+  try {
+    assertSyntheticProfileRecord(
+      {
+        ...profile,
+        student_class: 'QA-J1P1',
+        year_group: 2,
+        email: j2p3Account.email,
+      },
+      j2p3Account,
+    );
+  } catch {
+    j2p3ProfileMismatchRejected = true;
+  }
+  if (!j2p3ProfileMismatchRejected) {
+    throw new Error('Mismatched J2P3 profile binding was not rejected');
+  }
+  let unknownAuditProfileRejected = false;
+  try {
+    validateCredentialsPayload({
+      schemaVersion: 2,
+      accountMode: 'single-production-lead',
+      projectRef: EXPECTED_PROJECT_REF,
+      syntheticOnly: true,
+      batchId: account.batchId,
+      accounts: [{ ...j2p3Account, auditProfile: 'j2p2' }],
+    });
+  } catch {
+    unknownAuditProfileRejected = true;
+  }
+  if (!unknownAuditProfileRejected) {
+    throw new Error('Unknown audit profile was not rejected');
+  }
+  for (const inheritedProfileId of ['__proto__', 'constructor', 'toString']) {
+    let inheritedAuditProfileRejected = false;
+    try {
+      getSingleAuditProfile(inheritedProfileId);
+    } catch {
+      inheritedAuditProfileRejected = true;
+    }
+    if (!inheritedAuditProfileRejected) {
+      throw new Error('Inherited audit profile key was not rejected');
+    }
+  }
   makeRetainedCredentialsPayload(
     candidates[0],
     'Aa1!retained-test-only-password-value',

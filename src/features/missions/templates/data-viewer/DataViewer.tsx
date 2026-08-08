@@ -899,6 +899,7 @@ const DataViewerInner: React.FC<DataViewerProps> = ({
 
     const handleComplete = () => {
         clearSave();
+        // maxScore 0 zou met een kale vergelijking altijd "gehaald" opleveren.
         onComplete(config.maxScore > 0 && totalScore / config.maxScore >= 0.4);
     };
 
