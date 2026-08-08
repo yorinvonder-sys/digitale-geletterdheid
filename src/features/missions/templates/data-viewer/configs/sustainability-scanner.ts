@@ -30,11 +30,11 @@ export const sustainabilityScannerConfig: DataViewerConfig = {
             ],
             rows: [
                 { activiteit: 'E-mail versturen (tekst)', co2_gram: 0.3, vergelijking: '= 1 minuut gloeilamp branden', categorie: 'Communicatie', frequentie_nl: 40 },
-                { activiteit: 'Google-zoekopdracht', co2_gram: 0.2, vergelijking: '= LED-lamp 3 seconden', categorie: 'Zoeken', frequentie_nl: 6 },
-                { activiteit: 'Video streamen (1 uur SD)', co2_gram: 36, vergelijking: '= 5 km autorijden', categorie: 'Streaming', frequentie_nl: 2.5 },
-                { activiteit: 'Video streamen (1 uur HD)', co2_gram: 97, vergelijking: '= 13 km autorijden', categorie: 'Streaming', frequentie_nl: 1.8 },
+                { activiteit: 'Google-zoekopdracht', co2_gram: 0.2, vergelijking: '= LED-lamp 1 minuut', categorie: 'Zoeken', frequentie_nl: 6 },
+                { activiteit: 'Video streamen (1 uur SD)', co2_gram: 36, vergelijking: '= 250 meter autorijden', categorie: 'Streaming', frequentie_nl: 2.5 },
+                { activiteit: 'Video streamen (1 uur HD)', co2_gram: 97, vergelijking: '= een halve kilometer autorijden', categorie: 'Streaming', frequentie_nl: 1.8 },
                 { activiteit: 'AI-chatgesprek (10 berichten)', co2_gram: 12, vergelijking: '= LED-lamp 3 uur', categorie: 'AI', frequentie_nl: 0.4 },
-                { activiteit: 'Cryptocurrency transactie (Bitcoin)', co2_gram: 700000, vergelijking: '= 700 km vliegen', categorie: 'Crypto', frequentie_nl: 0.01 },
+                { activiteit: 'Cryptocurrency transactie (Bitcoin)', co2_gram: 700000, vergelijking: '= duizenden kilometers vliegen', categorie: 'Crypto', frequentie_nl: 0.01 },
                 { activiteit: 'Foto uploaden (Instagram)', co2_gram: 0.6, vergelijking: '= 2 minuten gloeilamp', categorie: 'Social media', frequentie_nl: 3 },
                 { activiteit: 'E-mail met bijlage (1 MB)', co2_gram: 19, vergelijking: '= LED-lamp 5 uur', categorie: 'Communicatie', frequentie_nl: 8 },
             ],
@@ -63,7 +63,7 @@ export const sustainabilityScannerConfig: DataViewerConfig = {
                 {
                     id: 'q3-vergelijking-observatie',
                     question:
-                        'De data zegt dat één uur HD-streamen gelijkstaat aan 13 km autorijden. Wat zegt dit over hoe we gewoonlijk digitale technologie beoordelen op milieu-impact?',
+                        'De data zegt dat één uur HD-streamen gelijkstaat aan een halve kilometer autorijden. Wat zegt dit over hoe we gewoonlijk digitale technologie beoordelen op milieu-impact?',
                     type: 'text-observation',
                     correctAnswer: '',
                     explanation:
@@ -217,8 +217,8 @@ export const sustainabilityScannerConfig: DataViewerConfig = {
     ],
 
     takeaways: [
-        'HD-streaming stoot per uur 97 gram CO2 uit — gelijk aan 13 km autorijden',
-        'Een Bitcoin-transactie stoot net zoveel CO2 uit als 700 km vliegen',
+        'HD-streaming stoot per uur 97 gram CO2 uit — gelijk aan een halve kilometer autorijden',
+        'Een Bitcoin-transactie stoot net zoveel CO2 uit als duizenden kilometers vliegen',
         '61% van de Europese datacenter-energie komt al uit hernieuwbare bronnen',
         'Smartphone-productie kost meer CO2 dan een jaar dagelijks gebruik — verleng de levensduur',
         'Digitale technologie lijkt "schoon" maar datacenters verbruiken enorme hoeveelheden energie',

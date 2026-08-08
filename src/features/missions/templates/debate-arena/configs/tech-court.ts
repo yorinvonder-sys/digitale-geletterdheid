@@ -122,7 +122,7 @@ const config: DebateArenaConfig = {
     takeaways: [
         'De wet verbiedt zowel directe als indirecte discriminatie — ook als er geen opzet is.',
         'Historische data bevat historische ongelijkheid. AI die daar niet op corrigeert, bestendigt die ongelijkheid.',
-        'De EU AI Act verplicht bedrijven om hoog-risico systemen te auditen vóór inzet.',
+        'De EU AI Act stelt voor bepaalde hoog-risico AI-systemen extra eisen, zoals risicobeheer, documentatie en menselijk toezicht. Welke eisen gelden, hangt af van de toepassing.',
         'Een goed argument heeft altijd drie componenten: standpunt, bewijs en weerlegging van het tegenargument.',
     ],
 };

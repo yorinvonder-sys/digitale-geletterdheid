@@ -123,7 +123,7 @@ const config: DebateArenaConfig = {
         'De AVG geeft jou als leerling het recht op inzage, correctie en verwijdering van jouw data.',
         'Toestemming is niet vrij als afwijzing toegang tot onderwijs kost.',
         'Dataminimalisatie is een wettelijk principe: verzamel alleen wat noodzakelijk is.',
-        'Scholen zijn verwerkers van persoonsgegevens en zijn wettelijk aansprakelijk voor hoe ze die bewaren.',
+        'De school is in deze context meestal verwerkingsverantwoordelijke; een leverancier kan als verwerker namens de school handelen. Daarover moeten duidelijke afspraken bestaan.',
     ],
 };
 

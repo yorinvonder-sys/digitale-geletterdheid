@@ -54,7 +54,7 @@ const config: DebateArenaConfig = {
             emoji: '🏛️',
             role: 'Gemeentelijk onderwijsambtenaar',
             perspective:
-                'De AVG en de EU AI Act stellen eisen aan AI-systemen die mensen beoordelen. Onderwijssystemen vallen onder de categorie "hoog-risico AI". Dat betekent verplichte transparantie, menselijk toezicht en de mogelijkheid tot bezwaar. De vraag is of scholen zich aan die regels houden.',
+                'De AVG en de EU AI Act stellen eisen aan AI-systemen die mensen beoordelen. Bepaalde toepassingen in het onderwijs, zoals systemen die leerresultaten of het passende onderwijsniveau bepalen, kunnen onder de hoog-risico regels vallen. Dat betekent extra eisen rond transparantie, menselijk toezicht en bezwaar. De vraag is of scholen zich aan die regels houden.',
             keyArgument:
                 'Wetgeving dwingt scholen om verantwoording af te leggen. Maar regels werken alleen als ze gehandhaafd worden — en dat ontbreekt nu.',
         },
@@ -122,7 +122,7 @@ const config: DebateArenaConfig = {
     takeaways: [
         'AI leert van historische data — en die data bevat de ongelijkheid van het verleden.',
         'Statistisch nauwkeurig en ethisch eerlijk zijn niet hetzelfde.',
-        'De EU AI Act classificeert onderwijssystemen als hoog-risico AI met extra verplichtingen.',
+        'De EU AI Act stelt extra eisen aan bepaalde hoog-risico AI-systemen in het onderwijs, bijvoorbeeld systemen die leerresultaten beoordelen of het passende onderwijsniveau bepalen.',
         'Menselijk toezicht is geen formaliteit — het is de kern van verantwoord AI-gebruik.',
     ],
 };

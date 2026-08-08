@@ -82,7 +82,7 @@ export const eindprojectJ2Config: DataViewerConfig = {
                     type: 'text-observation',
                     correctAnswer: '',
                     explanation:
-                        'Leerlingen met hoge originaliteitsscores (8-10) halen vrijwel altijd een 7,5 of hoger. Leerlingen met lage originaliteit (5-6) halen zelden boven de 7. Originaliteit lijkt een sterkere voorspeller van het eindcijfer dan techniek alleen. Dit suggereert dat de docent creatief en origineel denken zwaar waardeert.',
+                        'In deze kleine dataset hangen hoge originaliteitsscores vaak samen met hogere eindcijfers. Dat is een patroon, geen bewijs dat originaliteit het cijfer veroorzaakt. Ook presentatie en techniek tellen mee.',
                     points: 10,
                 },
             ],
@@ -189,7 +189,7 @@ export const eindprojectJ2Config: DataViewerConfig = {
                     ],
                     correctAnswer: 'Tip 1: Begin met een probleem dat jou bezighoudt',
                     explanation:
-                        'Elif en Iris (beiden 8,3) begonnen vanuit een persoonlijk probleem. Een persoonlijk vertrekpunt leidt tot een origineler, specifieker project. Originaliteit is in de tabel de sterkste voorspeller van het eindcijfer. Starten vanuit een echte behoefte in plaats van een vaag idee geeft automatisch meer richting en motivatie.',
+                        'Elif en Iris (beiden 8,3) begonnen vanuit een persoonlijk probleem. In deze kleine dataset zien we bij hen een hoge originaliteitsscore, maar twee voorbeelden bewijzen geen oorzaak. Starten vanuit een echte behoefte in plaats van een vaag idee kan wel meer richting en motivatie geven.',
                     points: 15,
                 },
                 {
@@ -237,7 +237,7 @@ export const eindprojectJ2Config: DataViewerConfig = {
 
     takeaways: [
         'App-ontwerp en video/animatie scoren gemiddeld het hoogst als projecttype',
-        'Originaliteit is de sterkste voorspeller van een hoog eindcijfer',
+        'In deze kleine dataset hangen hogere originaliteitsscores vaak samen met hogere eindcijfers; dat bewijst geen oorzaak',
         'Een goede presentatie kan een lagere techniek-score goed compenseren',
         'Starten vanuit een persoonlijk probleem maakt je project origineler en gemotiveerder',
         'Feedback halverwege je project is professioneel, niet een teken van zwakte',
