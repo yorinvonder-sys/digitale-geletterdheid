@@ -147,9 +147,12 @@ test('voortgang wordt via de server bewaard, vóór de rechtstreekse weg', () =>
     );
 });
 
+// De laatste migratie die deze functie definieert is de geldende versie.
+const OPSLAGFUNCTIE_MIGRATIE = '20260808190000_preserve_completion_markers.sql';
+
 test('de opslagfunctie raakt status, score en attempts niet aan', () => {
     const sql = readFileSync(
-        new URL('../supabase/migrations/20260808180000_save_progress_after_completion.sql', import.meta.url),
+        new URL(`../supabase/migrations/${OPSLAGFUNCTIE_MIGRATIE}`, import.meta.url),
         'utf8',
     );
     const start = sql.indexOf('CREATE OR REPLACE FUNCTION public.save_mission_progress');
@@ -170,4 +173,24 @@ test('de opslagfunctie raakt status, score en attempts niet aan', () => {
             `save_mission_progress schrijft ${kolom}`,
         );
     }
+});
+
+test('de opslagfunctie behoudt de afrondmarkering zonder blind samen te voegen', () => {
+    const sql = readFileSync(
+        new URL(`../supabase/migrations/${OPSLAGFUNCTIE_MIGRATIE}`, import.meta.url),
+        'utf8',
+    );
+    const start = sql.indexOf('CREATE OR REPLACE FUNCTION public.save_mission_progress');
+    const setClause = sql.slice(sql.indexOf('DO UPDATE SET', start), sql.indexOf('END;', start));
+
+    assert.ok(start >= 0 && setClause.length > 0);
+    // Wat mark_mission_completed schreef moet een autosave overleven.
+    assert.match(setClause, /'completedAt'/);
+    assert.match(setClause, /'source'/);
+    // Maar niet ten koste van spookdata: de client stuurt de VOLLEDIGE voortgang,
+    // dus vervangen blijft de regel. Bij `bestaand || nieuw` zou een sleutel die
+    // de leerling weghaalt voor altijd blijven staan.
+    assert.match(setClause, /progress_data\s*=\s*EXCLUDED\.progress_data\s*\|\|/);
+    // En geen `"completedAt": null` op een rij die nooit is afgerond.
+    assert.match(setClause, /jsonb_strip_nulls/);
 });
