@@ -3,6 +3,7 @@ import {
     readPending,
     stashPending,
     clearPending,
+    volgendTicket,
 } from './progressBackupQueue';
 
 /** Recursively strips undefined values and caps nesting depth for Postgres JSONB. */
@@ -28,9 +29,10 @@ export const saveMissionProgress = async (
     progressData: Record<string, any>,
     schoolId?: string
 ): Promise<boolean> => {
-    // Het moment waarop DEZE poging begon. Alles hieronder hangt eraan: het
-    // bepaalt of ons werk nog het nieuwste is als het antwoord binnenkomt.
-    const startedAt = Date.now();
+    // Volgnummer van DEZE poging. Alles hieronder hangt eraan: het bepaalt of
+    // ons werk nog het nieuwste is als het antwoord binnenkomt. Bewust een
+    // teller en geen klok -- zie progressBackupQueue.
+    const ticket = volgendTicket(userId, missionId);
 
     try {
         const sanitized = sanitizeForPostgres(progressData);
@@ -45,7 +47,7 @@ export const saveMissionProgress = async (
         });
 
         if (!rpcError) {
-            clearPending(userId, missionId, startedAt);
+            clearPending(userId, missionId, ticket);
             return true;
         }
 
@@ -80,13 +82,13 @@ export const saveMissionProgress = async (
             });
 
         if (error) throw error;
-        clearPending(userId, missionId, startedAt);
+        clearPending(userId, missionId, ticket);
         return true;
     } catch (error) {
         console.error(`Error saving progress for ${missionId}:`, error);
         // Niets bereikte de server. Bewaar het lokaal, zodat een herlaad of een
         // wegvallend netwerk het werk van de leerling niet wist.
-        stashPending(userId, missionId, sanitizeForPostgres(progressData), startedAt);
+        stashPending(userId, missionId, sanitizeForPostgres(progressData), ticket);
         return false;
     }
 };

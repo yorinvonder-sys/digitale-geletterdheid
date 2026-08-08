@@ -26,16 +26,22 @@ const opslag = (): Storage => globalThis.localStorage;
 // waar deze reservekopie voor bedoeld is. Twee tabbladen delen bovendien
 // dezelfde lokale opslag, dus dat kan ook tussen tabbladen door.
 //
-// Daarom hangt alles aan tijdstempels in plaats van aan volgorde:
+// Daarom krijgt elke poging een VOLGNUMMER en hangt alles daaraan:
 //
-//   * bij het STARTEN van een opslag onthouden we het tijdstip;
-//   * na een GESLAAGDE opslag leggen we dat tijdstip vast als "tot hier staat
-//     het op de server";
-//   * we bewaren alleen lokaal als de poging NA dat tijdstip begon;
+//   * bij het starten van een opslag trekt de poging een nummer;
+//   * na een geslaagde opslag leggen we dat nummer vast als "tot hier staat het
+//     op de server";
+//   * we bewaren alleen lokaal als het nummer niet ouder is dan dat merkteken;
 //   * we wissen de wachtrij alleen als wat erin staat OUDER is dan deze poging.
 //
-// Beide regels werken ook tussen tabbladen, omdat het merkteken in dezelfde
-// lokale opslag staat en beide tabbladen dezelfde klok gebruiken.
+// Nadrukkelijk GEEN Date.now(). De wandklok kan achteruit springen -- een
+// NTP-correctie op een schoollaptop is genoeg -- en dan krijgt een latere poging
+// een lager getal dan een eerdere. Dat is precies de omkering die deze wachtrij
+// moet voorkomen, en die zou langs de achterdeur terugkomen. Een teller in
+// dezelfde opslag loopt altijd vooruit en wordt door alle tabbladen gedeeld.
+//
+// Gelijkspel valt uit in het voordeel van het BEWAREN van werk: een overbodige
+// hervezending is onschadelijk, een verdwenen alinea niet.
 
 const PENDING_PREFIX = 'dgskills:pending-progress:';
 /** Net onder de servergrens van 1 MiB; een halve kopie heeft geen waarde. */
@@ -44,9 +50,13 @@ const PENDING_MAX_BYTES = 1_000_000;
 const pendingKey = (userId: string, missionId: string) =>
     `${PENDING_PREFIX}${userId}:${missionId}`;
 
-/** Tot welk moment het werk aantoonbaar op de server staat. */
+/** Tot welk volgnummer het werk aantoonbaar op de server staat. */
 const syncedKey = (userId: string, missionId: string) =>
     `${PENDING_PREFIX}synced:${userId}:${missionId}`;
+
+/** De teller waaruit pogingen hun volgnummer trekken. */
+const ticketKey = (userId: string, missionId: string) =>
+    `${PENDING_PREFIX}ticket:${userId}:${missionId}`;
 
 const readLastSynced = (userId: string, missionId: string): number => {
     try {
@@ -57,11 +67,11 @@ const readLastSynced = (userId: string, missionId: string): number => {
 };
 
 /** Loopt alleen vooruit: een trage poging die als laatste binnenkomt mag het
- *  merkteken niet terugzetten naar een ouder moment. */
-const markSynced = (userId: string, missionId: string, at: number): void => {
+ *  merkteken niet terugzetten naar een ouder nummer. */
+const markSynced = (userId: string, missionId: string, ticket: number): void => {
     try {
-        if (at <= readLastSynced(userId, missionId)) return;
-        opslag().setItem(syncedKey(userId, missionId), String(at));
+        if (ticket <= readLastSynced(userId, missionId)) return;
+        opslag().setItem(syncedKey(userId, missionId), String(ticket));
     } catch {
         // Zie stashPending.
     }
@@ -70,15 +80,36 @@ const markSynced = (userId: string, missionId: string, at: number): void => {
 const readPendingEnvelope = (
     userId: string,
     missionId: string,
-): { savedAt: number; data: Record<string, any> } | null => {
+): { ticket: number; data: Record<string, any> } | null => {
     try {
         const raw = opslag().getItem(pendingKey(userId, missionId));
         if (!raw) return null;
         const parsed = JSON.parse(raw);
         if (!parsed || typeof parsed !== 'object' || !parsed.data) return null;
-        return { savedAt: Number(parsed.savedAt) || 0, data: parsed.data };
+        return { ticket: Number(parsed.ticket) || 0, data: parsed.data };
     } catch {
         return null;
+    }
+};
+
+/**
+ * Trekt een volgnummer voor een nieuwe opslagpoging.
+ *
+ * Neemt het maximum van de teller, het merkteken en wat er in de wachtrij staat,
+ * zodat het nummer ook klopt als een van die sleutels is opgeruimd. Twee
+ * tabbladen die tegelijk trekken kunnen hetzelfde nummer krijgen; dat is precies
+ * het gelijkspel dat hierboven in het voordeel van bewaren wordt beslecht.
+ */
+export const volgendTicket = (userId: string, missionId: string): number => {
+    try {
+        const teller = Number(opslag().getItem(ticketKey(userId, missionId))) || 0;
+        const wachtend = readPendingEnvelope(userId, missionId)?.ticket ?? 0;
+        const volgend = Math.max(teller, readLastSynced(userId, missionId), wachtend) + 1;
+        opslag().setItem(ticketKey(userId, missionId), String(volgend));
+        return volgend;
+    } catch {
+        // Zonder opslag doet de wachtrij toch niets; elk nummer voldoet.
+        return 0;
     }
 };
 
@@ -86,23 +117,24 @@ export const readPending = (userId: string, missionId: string): Record<string, a
     readPendingEnvelope(userId, missionId)?.data ?? null;
 
 /**
- * Bewaart werk dat de server niet haalde -- maar alleen als deze poging begon
- * nadat er voor het laatst iets aantoonbaar is opgeslagen. Een trage poging die
- * door een nieuwere is ingehaald, hoort niet meer in de wachtrij.
+ * Bewaart werk dat de server niet haalde -- maar alleen als deze poging niet is
+ * ingehaald door een nieuwere die het wél haalde, en alleen als er geen nieuwer
+ * werk klaarstaat.
  */
 export const stashPending = (
     userId: string,
     missionId: string,
     data: Record<string, any>,
-    startedAt: number,
+    ticket: number,
 ): void => {
-    if (startedAt <= readLastSynced(userId, missionId)) return;
+    // Strikt ouder, niet 'ouder of gelijk': bij gelijkspel bewaren we liever.
+    if (ticket < readLastSynced(userId, missionId)) return;
 
     const bestaand = readPendingEnvelope(userId, missionId);
-    if (bestaand && bestaand.savedAt > startedAt) return;
+    if (bestaand && bestaand.ticket >= ticket) return;
 
     try {
-        const raw = JSON.stringify({ savedAt: startedAt, data });
+        const raw = JSON.stringify({ ticket, data });
         if (raw.length > PENDING_MAX_BYTES) return;
         opslag().setItem(pendingKey(userId, missionId), raw);
     } catch {
@@ -116,11 +148,11 @@ export const stashPending = (
  * NIEUWER is dan deze poging. Anders wist een trage poging die als laatste
  * binnenkomt het werk dat een latere poging net had veiliggesteld.
  */
-export const clearPending = (userId: string, missionId: string, startedAt: number): void => {
-    markSynced(userId, missionId, startedAt);
+export const clearPending = (userId: string, missionId: string, ticket: number): void => {
+    markSynced(userId, missionId, ticket);
 
     const bestaand = readPendingEnvelope(userId, missionId);
-    if (bestaand && bestaand.savedAt > startedAt) return;
+    if (bestaand && bestaand.ticket >= ticket) return;
 
     try {
         opslag().removeItem(pendingKey(userId, missionId));
@@ -128,4 +160,3 @@ export const clearPending = (userId: string, missionId: string, startedAt: numbe
         // Zie stashPending.
     }
 };
-
