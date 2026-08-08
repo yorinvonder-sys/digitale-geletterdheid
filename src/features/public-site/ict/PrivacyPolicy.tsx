@@ -17,7 +17,7 @@ export const PrivacyPolicy: React.FC = () => {
                         </div>
                         <div>
                             <h1 className="text-3xl font-black text-duck-ink">Privacyverklaring</h1>
-                            <p className="text-duck-ink/60">Laatst bijgewerkt: 14 februari 2026</p>
+                            <p className="text-duck-ink/60">Laatst bijgewerkt: 8 augustus 2026</p>
                         </div>
                     </div>
 
@@ -65,6 +65,14 @@ export const PrivacyPolicy: React.FC = () => {
                                 <p className="text-xs text-duck-ink/60">XP, levels, voltooide missies, badges en antwoorden op opdrachten.</p>
                             </div>
                         </div>
+                        <p>
+                            <strong>Koppeling aan SLO-kerndoelen:</strong> elke opdracht op het platform is
+                            vooraf gekoppeld aan één of meer SLO-kerndoelen digitale geletterdheid. Rondt een
+                            leerling een opdracht af, dan telt die voortgang mee in het dekkingsoverzicht dat
+                            de school ziet. Die koppeling is onderdeel van het lesaanbod en niet gebaseerd op
+                            een analyse van de leerling; welke opdracht bij welk kerndoel hoort, staat
+                            openbaar op onze <a href="/leerlijn-digitale-geletterdheid" className="font-semibold text-duck-ink underline underline-offset-4">leerlijnpagina</a>.
+                        </p>
 
                         <h2 className="text-xl font-bold mt-8 mb-4">3. Grondslag en Doel</h2>
                         <p>
@@ -108,6 +116,16 @@ export const PrivacyPolicy: React.FC = () => {
                                         <td className="px-4 py-2">FLUX image generation via server-side Edge Functions, geen provider-URL's naar de browser</td>
                                         <td className="px-4 py-2 font-medium">EU endpoint</td>
                                     </tr>
+                                    <tr className="border-t">
+                                        <td className="px-4 py-2 italic text-duck-ink font-medium">Vercel Inc.</td>
+                                        <td className="px-4 py-2">Hosting van de website (frontend). IP-adres en sessiegegevens; er worden geen persoonsgegevens in een Vercel-database opgeslagen — de database staat bij Supabase</td>
+                                        <td className="px-4 py-2 font-medium">VS en wereldwijd (CDN/edge), met EU Standard Contractual Clauses</td>
+                                    </tr>
+                                    <tr className="border-t">
+                                        <td className="px-4 py-2 italic text-duck-ink font-medium">Zoho Corporation</td>
+                                        <td className="px-4 py-2">E-mailservice (SMTP). E-mailadres en naam, alleen bij pilot-aanvragen en notificaties</td>
+                                        <td className="px-4 py-2 font-medium">EU-datacenter (smtp.zoho.eu)</td>
+                                    </tr>
                                 </tbody>
                             </table>
                         </div>
@@ -137,7 +155,25 @@ export const PrivacyPolicy: React.FC = () => {
                             <li><strong>Verwijdering:</strong> Na opzegging door de school worden hoofdgegevens op verzoek binnen 30 dagen verwijderd; back-ups, audit/compliance-logs en wettelijke of contractuele bewaartermijnen volgen de DPA en schoolafspraken.</li>
                         </ul>
 
-                        <h2 className="text-xl font-bold mt-8 mb-4">7. Jouw Rechten</h2>
+                        <h2 className="text-xl font-bold mt-8 mb-4">7. Cookies en meting</h2>
+                        <p>
+                            Wij gebruiken een minimale set opslagtechnieken om het platform te laten werken:
+                            een sessiecookie om je ingelogd te houden, en localStorage voor voorkeuren,
+                            sessiebeheer en rate limiting. Deze zijn strikt noodzakelijk.
+                        </p>
+                        <p className="mt-4">
+                            Daarnaast meten wij optioneel het gebruik van onze eigen website en app met
+                            first-party statistieken, om te zien welke onderdelen werken en waar bezoekers
+                            vastlopen. Die meting start <strong>pas nadat je daar toestemming voor geeft</strong> in
+                            de cookiemelding, en je kunt die toestemming op elk moment intrekken. Wij gebruiken
+                            geen trackingcookies voor advertenties of profilering en geen analysediensten van
+                            derden; de meetgegevens blijven binnen onze eigen omgeving.
+                        </p>
+                        <p className="mt-4">
+                            De volledige uitleg, inclusief een overzicht per opslagtechniek, staat in ons <a href="/ict/privacy/cookies" className="font-semibold text-duck-ink underline underline-offset-4">cookiebeleid</a>.
+                        </p>
+
+                        <h2 className="text-xl font-bold mt-8 mb-4">8. Jouw Rechten</h2>
                         <p>
                             Betrokkenen (via de school als verantwoordelijke) hebben de volgende rechten:
                         </p>
@@ -156,7 +192,7 @@ export const PrivacyPolicy: React.FC = () => {
                             Mocht u van mening zijn dat wij niet correct omgaan met uw gegevens, dan heeft u het recht om een klacht in te dienen bij de <strong>Autoriteit Persoonsgegevens (AP)</strong> via <a href="https://autoriteitpersoonsgegevens.nl" className="text-duck-acid underline" target="_blank" rel="noopener noreferrer">hun website</a>.
                         </p>
 
-                        <h2 className="text-xl font-bold mt-8 mb-4">8. Contact</h2>
+                        <h2 className="text-xl font-bold mt-8 mb-4">9. Contact</h2>
                         <p>
                             Voor vragen over privacy kunt u contact opnemen met uw school of rechtstreeks met ons via:
                         </p>

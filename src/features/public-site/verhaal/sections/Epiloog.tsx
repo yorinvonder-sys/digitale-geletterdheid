@@ -90,6 +90,12 @@ export function Epiloog() {
                             <a href="#bewijs" className="underline-offset-4 hover:underline">
                                 SLO-koppeling
                             </a>
+                            <a
+                                href="/leerlijn-digitale-geletterdheid"
+                                className="underline-offset-4 hover:underline"
+                            >
+                                Leerlijn &amp; opdrachten
+                            </a>
                             <a href="/ict/privacy" className="underline-offset-4 hover:underline">
                                 Privacy &amp; AI
                             </a>

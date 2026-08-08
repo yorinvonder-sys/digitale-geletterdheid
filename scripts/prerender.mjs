@@ -40,6 +40,7 @@ const ROUTES = [
   '/404',
   '/digitale-geletterdheid-vo',
   '/slo-kerndoelen-digitale-geletterdheid',
+  '/leerlijn-digitale-geletterdheid',
   '/ai-geletterdheid-onderwijs-ai-act',
   '/compliance-hub',
   '/compliance/checklist',
@@ -232,6 +233,14 @@ function prerenderRoutes() {
       ogTitle: 'SLO Kerndoelen Digitale Geletterdheid 2025 | DGSkills',
       ogDescription: 'Volledige dekking van alle SLO kerndoelen digitale geletterdheid voor het VO.',
       ogUrl: 'https://dgskills.app/slo-kerndoelen-digitale-geletterdheid',
+    },
+    '/leerlijn-digitale-geletterdheid': {
+      title: 'Leerlijn digitale geletterdheid: opdrachten en SLO-kerndoelen per leerjaar | DGSkills',
+      description: 'Welke opdrachten krijgt een leerling in leerjaar 1, 2 en 3, en welke SLO-kerndoelen digitale geletterdheid dekken ze? Volledig overzicht per periode met dekkingsmatrix.',
+      canonical: 'https://dgskills.app/leerlijn-digitale-geletterdheid',
+      ogTitle: 'Leerlijn digitale geletterdheid: opdrachten per leerjaar | DGSkills',
+      ogDescription: 'Per leerjaar en periode: welke opdrachten leerlingen doen en welke SLO-kerndoelen daarmee gedekt worden.',
+      ogUrl: 'https://dgskills.app/leerlijn-digitale-geletterdheid',
     },
     '/ai-geletterdheid-onderwijs-ai-act': {
       title: 'AI-geletterdheid in het Onderwijs & EU AI Act | DGSkills',
