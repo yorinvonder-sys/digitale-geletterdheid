@@ -172,7 +172,7 @@ export const techImpactAnalystConfig: DataViewerConfig = {
                     ],
                     correctAnswer: 'Stap 3: Risico\'s analyseren',
                     explanation:
-                        'In Stap 3 worden risico\'s geanalyseerd. Voor AI bij sollicitaties: risico op discriminatie (als de trainingsdata bias bevat), gebrek aan transparantie (sollicitant weet niet waarom hij is afgewezen) en schending van arbeidsrecht (recht op uitleg bij een afwijzing). Dit zijn serieuze mensenrechtenrisico\'s die de EU AI Act als "hoog risico" classificeert.',
+                        'In Stap 3 worden risico\'s geanalyseerd. Voor AI bij sollicitaties: risico op discriminatie (als de trainingsdata bias bevat), gebrek aan transparantie (sollicitant weet niet waarom hij is afgewezen) en schending van arbeidsrecht (recht op uitleg bij een afwijzing). Sollicitatie-AI zoals cv-sorteersoftware kan onder de hoog-risicocategorie van de EU AI Act vallen. Voor zulke toepassingen zijn onder meer risicobeheer, documentatie en menselijk toezicht belangrijk.',
                     points: 15,
                 },
                 {

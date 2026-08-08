@@ -150,9 +150,9 @@ const config: ReviewArenaConfig = {
                     explanation: 'De digitale kloof bestaat overal — ook in Nederland zijn er ouderen, mensen met een laag inkomen en mensen met een beperking die minder digitale toegang hebben.',
                 },
                 {
-                    question: 'De EU AI Act verplicht bedrijven om risicovolle AI-systemen transparant te maken.',
+                    question: 'De EU AI Act stelt transparantie-eisen aan bepaalde hoog-risico AI-systemen.',
                     answer: true,
-                    explanation: 'De EU AI Act verdeelt AI in risicocategorieën en stelt eisen aan transparantie, veiligheid en menselijk toezicht.',
+                    explanation: 'De EU AI Act werkt met risicocategorieën. Voor bepaalde hoog-risico AI-systemen gelden onder meer eisen rond risicobeheer, documentatie, transparantie en menselijk toezicht; welke eisen gelden, hangt af van de toepassing.',
                 },
                 {
                     question: 'Een filterbubble zorgt ervoor dat je meer diverse meningen te zien krijgt.',
