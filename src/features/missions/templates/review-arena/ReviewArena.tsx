@@ -216,6 +216,14 @@ const ReviewArenaWithConfig: React.FC<ReviewArenaProps> = ({
 
     useEffect(() => {
         if (state.configMissionId && state.configMissionId !== config.missionId) {
+            // Alle review-arena-opdrachten delen dezelfde ronde-ids
+            // (round-drag-sort, round-match-pairs, round-categorize,
+            // round-rapid-fire). Wisselt de leerling van opdracht zonder dat dit
+            // component opnieuw aankoppelt, dan zouden de refs hieronder die ids
+            // nog kennen en de nieuwe opdracht meteen blokkeren.
+            submittedThisSession.current.clear();
+            completedRoundTransitions.current.clear();
+            completedFollowUpTransitions.current.clear();
             setState(initialState);
         }
     }, [config.missionId, setState, state.configMissionId]);
@@ -497,6 +505,8 @@ const ReviewArenaWithConfig: React.FC<ReviewArenaProps> = ({
                             onClick={() => {
                                 clearSave();
                                 submittedThisSession.current.clear();
+                                completedRoundTransitions.current.clear();
+                                completedFollowUpTransitions.current.clear();
                                 setState(initialState);
                             }}
                             className="min-h-[44px] px-4 py-2.5 bg-duck-acid text-duck-ink rounded-xl text-sm font-bold"
