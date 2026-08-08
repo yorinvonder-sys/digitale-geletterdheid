@@ -14,7 +14,8 @@
 -- attempts. De leerling houdt schrijfrecht op het eigen werk (progress_data en de
 -- projectvelden), zodat opslaan tijdens een opdracht blijft werken.
 
-BEGIN;
+-- Supabase draait elke migratie zelf in een transactie; een eigen BEGIN/COMMIT
+-- hier zou die juist voortijdig afsluiten.
 
 -- 1. Pogingenteller. 0 betekent: nog nooit afgerond.
 ALTER TABLE public.mission_progress
@@ -168,4 +169,3 @@ $$;
 
 GRANT EXECUTE ON FUNCTION public.mark_mission_completed(text, integer) TO authenticated;
 
-COMMIT;
