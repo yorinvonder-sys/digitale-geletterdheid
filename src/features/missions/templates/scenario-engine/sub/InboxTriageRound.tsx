@@ -144,11 +144,15 @@ export const InboxTriageRound: React.FC<Props> = ({ round, selections, submitted
                         }`}
                     >
                         <p
-                            className="flex items-center gap-1 text-[11px] font-black text-duck-ink mb-1.5"
+                            className="flex items-center gap-1.5 text-xs font-black text-duck-ink mb-1.5"
                             style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                         >
-                            <FolderCheck className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
-                            {acceptLabel} ({acceptedItems.length})
+                            <span className="grid h-6 w-6 shrink-0 place-items-center rounded-full bg-duck-acid/30">
+                                <FolderCheck className="h-4 w-4" aria-hidden="true" />
+                            </span>
+                            <span className="min-w-0 break-words">
+                                {acceptLabel} ({acceptedItems.length})
+                            </span>
                         </p>
                         <div className="space-y-1">
                             {acceptedItems.map((item) => (
@@ -171,11 +175,15 @@ export const InboxTriageRound: React.FC<Props> = ({ round, selections, submitted
                         }`}
                     >
                         <p
-                            className="flex items-center gap-1 text-[11px] font-black text-duck-ink mb-1.5"
+                            className="flex items-center gap-1.5 text-xs font-black text-duck-ink mb-1.5"
                             style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                         >
-                            <Flag className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
-                            {rejectLabel} ({rejectedItems.length})
+                            <span className="grid h-6 w-6 shrink-0 place-items-center rounded-full bg-duck-ink/15">
+                                <Flag className="h-4 w-4" aria-hidden="true" />
+                            </span>
+                            <span className="min-w-0 break-words">
+                                {rejectLabel} ({rejectedItems.length})
+                            </span>
                         </p>
                         <div className="space-y-1">
                             {rejectedItems.map((item) => (
