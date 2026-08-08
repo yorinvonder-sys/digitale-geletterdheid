@@ -17,6 +17,9 @@ import type {
 import { SelectCorrectRound } from './sub/SelectCorrectRound';
 import { OrderPriorityRound } from './sub/OrderPriorityRound';
 import { BinaryChoiceRound } from './sub/BinaryChoiceRound';
+import { SpotTheFlagsRound } from './sub/SpotTheFlagsRound';
+import { OrderDragRound } from './sub/OrderDragRound';
+import { InboxTriageRound } from './sub/InboxTriageRound';
 import { FeedbackBanner, followUpWeight, scaledItemScore, scoreRound } from './sub/FeedbackBanner';
 
 // ── Scoring ───────────────────────────────────────────────────────────────────
@@ -253,6 +256,24 @@ const ScenarioEngineInner: React.FC<{
         updateRoundState(currentRound.id, { selections: [] });
     };
 
+    /**
+     * Volledige herordening voor sleep-rondes. De ingestuurde volgorde wordt
+     * gefilterd op items die echt in de ronde staan en ontdubbeld, zodat een
+     * sleepcomponent nooit een selectielijst kan opleveren die de opslagvalidatie
+     * of de scoreformule zou breken.
+     */
+    const handleReorder = (order: number[]) => {
+        if (!roundState || roundState.submitted || !currentRound) return;
+        const known = new Set(currentRound.items.map((item) => item.id));
+        const seen = new Set<number>();
+        const safe = order.filter((id) => {
+            if (!known.has(id) || seen.has(id)) return false;
+            seen.add(id);
+            return true;
+        });
+        updateRoundState(currentRound.id, { selections: safe });
+    };
+
     const handleBinaryChoice = (id: number, accepted: boolean) => {
         if (!roundState || roundState.submitted || !currentRound) return;
         const prev = roundState.selections.filter((x) => Math.abs(x) !== id);
@@ -385,6 +406,36 @@ const ScenarioEngineInner: React.FC<{
 
                     {currentRound.type === 'binary-choice' && (
                         <BinaryChoiceRound
+                            round={currentRound}
+                            selections={roundState.selections}
+                            submitted={roundState.submitted}
+                            onChoice={handleBinaryChoice}
+                            onSubmit={handleSubmit}
+                        />
+                    )}
+
+                    {currentRound.type === 'spot-the-flags' && (
+                        <SpotTheFlagsRound
+                            round={currentRound}
+                            selections={roundState.selections}
+                            submitted={roundState.submitted}
+                            onToggle={handleToggle}
+                            onSubmit={handleSubmit}
+                        />
+                    )}
+
+                    {currentRound.type === 'order-drag' && (
+                        <OrderDragRound
+                            round={currentRound}
+                            selections={roundState.selections}
+                            submitted={roundState.submitted}
+                            onReorder={handleReorder}
+                            onSubmit={handleSubmit}
+                        />
+                    )}
+
+                    {currentRound.type === 'inbox-triage' && (
+                        <InboxTriageRound
                             round={currentRound}
                             selections={roundState.selections}
                             submitted={roundState.submitted}

@@ -41,6 +41,26 @@ test('ScenarioEngine round controls expose stable hooks and semantic item ids', 
   assert.match(feedback, /data-qa="scenario-next"/);
 });
 
+test('nieuwe ScenarioEngine-rondevarianten expose stable hooks', async () => {
+  const spotTheFlags = await source('src/features/missions/templates/scenario-engine/sub/SpotTheFlagsRound.tsx');
+  const inboxTriage = await source('src/features/missions/templates/scenario-engine/sub/InboxTriageRound.tsx');
+  const orderDrag = await source('src/features/missions/templates/scenario-engine/sub/OrderDragRound.tsx');
+
+  assert.match(spotTheFlags, /data-qa="scenario-option"/);
+  assert.match(spotTheFlags, /data-qa="scenario-submit"/);
+
+  assert.match(inboxTriage, /data-qa="scenario-binary-accept"/);
+  assert.match(inboxTriage, /data-qa="scenario-binary-reject"/);
+  assert.match(inboxTriage, /data-scenario-item-id=\{item\.id\}/);
+  assert.match(inboxTriage, /data-qa="scenario-submit"/);
+
+  assert.match(orderDrag, /data-qa="scenario-drag-item"/);
+  assert.match(orderDrag, /data-qa="scenario-drag-up"/);
+  assert.match(orderDrag, /data-qa="scenario-drag-down"/);
+  assert.match(orderDrag, /data-scenario-item-id=\{itemId\}/);
+  assert.match(orderDrag, /data-qa="scenario-submit"/);
+});
+
 test('confidence and follow-up controls expose stable hooks without answer metadata', async () => {
   const confidence = await source('src/features/missions/templates/shared/ConfidenceRating.tsx');
   const followUp = await source('src/features/missions/templates/shared/FollowUpCard.tsx');
