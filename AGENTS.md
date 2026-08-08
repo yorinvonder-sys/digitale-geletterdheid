@@ -3,20 +3,48 @@
 These rules apply to all agents working in this repository. Keep the repo safe for
 a non-coding founder to direct, and keep AI context small by default.
 
-## Model And Delegation
+## Session Preflight And Delegation
 
-- Model choice and reasoning effort: see `CLAUDE.md` § Model- en
-  Denkniveau-Selectie. That table is the single source of truth; do not restate
-  it here.
-- Use cheaper delegated agents only for explicit, narrow, low-risk sidecar work:
-  targeted file discovery, log reading, one-route QA, or one-file review.
-- Never delegate Rood work — auth, Supabase/RLS, payments, invoices, personal
-  data, webhooks, secrets, AI endpoints, migrations — to a cheaper or weaker
-  agent. If you delegate it at all, the delegated agent holds the same model and
-  effort floor as the main session.
-- Final go/no-go stays with the user. An independent reviewer that did not write
-  the change is required before merging Rood work; that review informs the
-  decision, it does not replace it.
+- These repository rules are the model-routing source of truth and override
+  broader global defaults and `CLAUDE.md` when they differ. Use only
+  `gpt-5.6-luna` and `gpt-5.6-sol`; do not route work to Terra.
+- At the start of a work slice, and whenever a plan is written or materially
+  revised, state `Model`, `Thinking`, `Why`, and `Escalate when` before
+  substantive work.
+- Route the current coherent slice, not the hardest possible later phase. A
+  later Sol sign-off does not pull earlier work to Sol.
+- Luna is the default for all work except the Sol sign-offs below. Difficulty,
+  ambiguity, importance, coupling, architecture, file count, or deeper
+  reasoning alone never trigger Sol.
+- Favor higher Luna levels; cost alone never justifies lower thinking:
+  - Luna `low`: only lookups, status checks, and trivial edits.
+  - Luna `medium`: only small, explicit, verifiable changes.
+  - Luna `high`: routine bounded implementation, debugging, and QA.
+  - Luna `xhigh`: default for substantive planning, implementation, review,
+    debugging, browser QA, and multi-file work.
+  - Luna `max`: use readily for architecture, ambiguity, coupled or
+    multi-feature work, important behavior, sensitive implementation, large
+    audits, and extensive evidence collection.
+- Prefer Luna `xhigh` over `high`. Prefer `max` over `xhigh` whenever uncertainty,
+  coupling, impact, or evidence volume is material. Neither level triggers Sol
+  or grants sensitive sign-off.
+- Sol independently signs off auth, permissions/RLS, secrets, payments,
+  migrations, AI endpoints, consent, exports/webhooks, personal or minors'
+  data, destructive external actions, production incidents, and release,
+  deployment, SHIP, or readiness decisions with material or sensitive risk.
+- Luna may investigate, plan, implement, and verify that work. Before completion,
+  merge, deployment, or release, use Sol `high` for ordinary sign-off and Sol
+  `xhigh` for security, privacy, data-integrity, or release-critical approval.
+  Sol `max` remains exceptional.
+- If Sol is unavailable, Luna may finish investigation, implementation, and
+  verification, but must report the mandatory approval as blocked rather than
+  treating its own output as final sign-off.
+- Use delegated agents only for explicit, scoped work. Delegation never lowers
+  the required model or effort; delegated Rood work keeps the main session's
+  model and effort floor.
+- Final go/no-go stays with the user. Before merging Rood work, require an
+  independent reviewer that did not write the change; its review informs but
+  does not replace the user's decision.
 
 ## Lean Context Rules
 
