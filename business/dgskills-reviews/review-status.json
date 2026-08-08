@@ -392,25 +392,29 @@
       "interactivity": 0,
       "total": 7
     },
-    "lastReviewed": "2026-06-26",
-    "reviewStatus": "blocked",
-    "reportPath": "business/dgskills-reviews/wave-3b-2026-06-26.md",
-    "autoFixesApplied": 0,
+    "lastReviewed": "2026-08-08",
+    "reviewStatus": "reviewed",
+    "reportPath": "business/dgskills-reviews/brand-builder-2026-08-08.md",
+    "autoFixesApplied": 2,
     "openEscalations": [
-      "SLO 22A (digitale producten) wankel — leerling schrijft tekstbeschrijvingen, geen digitaal artefact; 21B mogelijk passender (mapping read-only)"
+      "digitaal-product-SLO wordt indirect via tekst bewezen",
+      "geen semantische beoordeling van logo- en huisstijlkwaliteit"
     ],
-    "codexVerdict": null,
+    "codexVerdict": "ALLOW",
     "reviewScores": {
-      "uiux": 9,
-      "didactiek": 6,
-      "tech": 9
+      "uiux": 8.5,
+      "didactiek": 7,
+      "tech": 8.5
     },
     "proposedFixes": 0,
-    "escalationCount": 1,
+    "escalationCount": 2,
     "topIssues": [
-      "SLO 22A-fit wankel [ESCALATIE]"
+      "digitaal-product-SLO wordt indirect via tekst bewezen",
+      "geen semantische beoordeling van logo- en huisstijlkwaliteit"
     ],
-    "statusNote": "normalisatie 2026-07-01 (run wave 4+): wacht op Yorin-beslissing over openEscalations"
+    "statusNote": "Formele J2P3-review: vier viewports en productie bewezen; nul open Blocker/High; Medium/Low geregistreerd.",
+    "triageScore": 2.1,
+    "verdict": "ok"
   },
   {
     "missionId": "bug-hunter",
@@ -1101,25 +1105,29 @@
       "interactivity": 1,
       "total": 6
     },
-    "lastReviewed": "2026-06-26",
-    "reviewStatus": "blocked",
-    "reportPath": "business/dgskills-reviews/wave-3b-2026-06-26.md",
-    "autoFixesApplied": 0,
+    "lastReviewed": "2026-08-08",
+    "reviewStatus": "reviewed",
+    "reportPath": "business/dgskills-reviews/digital-storyteller-2026-08-08.md",
+    "autoFixesApplied": 2,
     "openEscalations": [
-      "step-id 'scène-schrijven' bevat accent (è) — fragiel in keys/URLs; engine-audit nodig vóór hernoemen"
+      "accent in stap-id blijft een niet-aangetoonde toekomstige integratierisico",
+      "geen validatie van een werkelijk interactief verhaal"
     ],
-    "codexVerdict": null,
+    "codexVerdict": "ALLOW",
     "reviewScores": {
-      "uiux": 9,
-      "didactiek": 9,
-      "tech": 8
+      "uiux": 8.5,
+      "didactiek": 8.5,
+      "tech": 8.5
     },
     "proposedFixes": 0,
-    "escalationCount": 1,
+    "escalationCount": 2,
     "topIssues": [
-      "accent in step-id [ESCALATIE — robuustheid]"
+      "accent in stap-id blijft een niet-aangetoonde toekomstige integratierisico",
+      "geen validatie van een werkelijk interactief verhaal"
     ],
-    "statusNote": "normalisatie 2026-07-01 (run wave 4+): wacht op Yorin-beslissing over openEscalations"
+    "statusNote": "Formele J2P3-review: vier viewports en productie bewezen; nul open Blocker/High; Medium/Low geregistreerd.",
+    "triageScore": 1.5,
+    "verdict": "ok"
   },
   {
     "missionId": "digitale-balans-coach",
@@ -1530,25 +1538,29 @@
       "interactivity": 0,
       "total": 7
     },
-    "lastReviewed": "2026-06-26",
-    "reviewStatus": "blocked",
-    "reportPath": "business/dgskills-reviews/wave-3b-2026-06-26.md",
-    "autoFixesApplied": 0,
+    "lastReviewed": "2026-08-08",
+    "reviewStatus": "reviewed",
+    "reportPath": "business/dgskills-reviews/media-review-2026-08-08.md",
+    "autoFixesApplied": 1,
     "openEscalations": [
-      "(optioneel) introDescription eindigt op \"begrijpt\" — flavor-tekst, geen defect"
+      "echte componenttest voor dubbele callback ontbreekt nog",
+      "timer en onderliggende ronde verdienen aanvullende toegankelijkheidscontrole"
     ],
-    "codexVerdict": null,
+    "codexVerdict": "ALLOW",
     "reviewScores": {
       "uiux": 8,
-      "didactiek": 9,
-      "tech": 9
+      "didactiek": 8.5,
+      "tech": 8.5
     },
     "proposedFixes": 0,
-    "escalationCount": 0,
+    "escalationCount": 2,
     "topIssues": [
-      "schoon; alleen optionele copy-suggestie"
+      "echte componenttest voor dubbele callback ontbreekt nog",
+      "timer en onderliggende ronde verdienen aanvullende toegankelijkheidscontrole"
     ],
-    "statusNote": "normalisatie 2026-07-01 (run wave 4+): wacht op Yorin-beslissing over openEscalations"
+    "statusNote": "Formele J2P3-review: vier viewports en productie bewezen; nul open Blocker/High; Medium/Low geregistreerd.",
+    "triageScore": 1.7,
+    "verdict": "ok"
   },
   {
     "missionId": "meesterproef",
@@ -1590,23 +1602,28 @@
       "interactivity": 1,
       "total": 4
     },
-    "lastReviewed": "2026-07-02",
-    "reviewStatus": "blocked",
-    "reportPath": "business/dgskills-reviews/meme-machine-2026-07-02.md",
-    "autoFixesApplied": 1,
+    "lastReviewed": "2026-08-08",
+    "reviewStatus": "reviewed",
+    "reportPath": "business/dgskills-reviews/meme-machine-2026-08-08.md",
+    "autoFixesApplied": 2,
     "openEscalations": [
-      "platform-patroon: builder-canvas coach-briefing (3-stappen) dekt de canvas-stappen niet — één productkeuze (nu 5 missies: podcast-producer, meesterproef, portfolio-builder, prototype-developer, meme-machine); meme-machine PRIORITEIT in de fix-batch: de gemiste 4e stap is het welzijns-/ethiek-onderdeel (AI-coach kan 'klaar' zeggen vóór de reflectie)"
+      "coachfasen kunnen de vierde ethiekstap te vroeg als klaar signaleren",
+      "geen validatie van een werkelijk meme-artefact"
     ],
     "codexVerdict": "ALLOW",
-    "escalationCount": 1,
+    "escalationCount": 2,
     "reviewScores": {
       "uiux": 8.5,
-      "didactiek": 7.5,
+      "didactiek": 8,
       "tech": 8.5
     },
-    "triageScore": 1.9,
-    "statusNote": "wave 13: checklist-item auteursrecht/bronvermelding toegevoegd (print-pro-precedent); coach-desync 5e geval, welzijnsprioriteit",
-    "verdict": "ok"
+    "triageScore": 1.7,
+    "statusNote": "Formele J2P3-review: vier viewports en productie bewezen; nul open Blocker/High; Medium/Low geregistreerd.",
+    "verdict": "ok",
+    "topIssues": [
+      "coachfasen kunnen de vierde ethiekstap te vroeg als klaar signaleren",
+      "geen validatie van een werkelijk meme-artefact"
+    ]
   },
   {
     "missionId": "mission-blueprint",
@@ -1820,15 +1837,15 @@
       "interactivity": 0,
       "total": 9
     },
-    "lastReviewed": "2026-06-26",
-    "reviewStatus": "blocked",
-    "reportPath": "business/dgskills-reviews/wave-3a-2026-06-26.md",
-    "autoFixesApplied": 0,
+    "lastReviewed": "2026-08-08",
+    "reviewStatus": "reviewed",
+    "reportPath": "business/dgskills-reviews/online-helden-2026-08-08.md",
+    "autoFixesApplied": 1,
     "openEscalations": [
-      "select-correct ronde zonder minSelections (engine-gedrag checken) — optioneel",
-      "introFeatures i.p.v. learningObjectives-array — optioneel sterker voor SLO-rapportage"
+      "intro is relatief conceptdicht op mobile",
+      "juridische en bronclaims vragen periodieke inhoudelijke herbevestiging"
     ],
-    "codexVerdict": null,
+    "codexVerdict": "ALLOW",
     "reviewScores": {
       "uiux": 8,
       "didactiek": 9,
@@ -1837,9 +1854,12 @@
     "proposedFixes": 0,
     "escalationCount": 2,
     "topIssues": [
-      "geen defecten; klein verbeterpotentieel"
+      "intro is relatief conceptdicht op mobile",
+      "juridische en bronclaims vragen periodieke inhoudelijke herbevestiging"
     ],
-    "statusNote": "normalisatie 2026-07-01 (run wave 4+): wacht op Yorin-beslissing over openEscalations"
+    "statusNote": "Formele J2P3-review: vier viewports en productie bewezen; nul open Blocker/High; Medium/Low geregistreerd.",
+    "triageScore": 1.4,
+    "verdict": "ok"
   },
   {
     "missionId": "open-source-contributor",
@@ -1978,23 +1998,28 @@
       "interactivity": 0,
       "total": 5
     },
-    "lastReviewed": "2026-07-01",
-    "reviewStatus": "blocked",
-    "reportPath": "business/dgskills-reviews/podcast-producer-2026-07-01.md",
-    "autoFixesApplied": 0,
+    "lastReviewed": "2026-08-08",
+    "reviewStatus": "reviewed",
+    "reportPath": "business/dgskills-reviews/podcast-producer-2026-08-08.md",
+    "autoFixesApplied": 2,
     "openEscalations": [
-      "content-keuze: ACTIEVE chat-coach hanteert een eigen 3-stappenplan (3 STEP_COMPLETE-markers) terwijl het canvas 4 stappen heeft — herschrijfvoorstel (~20 regels) ligt klaar in rapport; structurele coach-herschrijving bewust niet auto-toegepast"
+      "chatcoach gebruikt drie fasen tegenover vier canvasstappen",
+      "canvas valideert tekst en zelfbeoordeling, niet een werkelijk audiobestand"
     ],
-    "codexVerdict": null,
-    "escalationCount": 1,
+    "codexVerdict": "ALLOW",
+    "escalationCount": 2,
     "reviewScores": {
       "uiux": 8,
-      "didactiek": 6,
+      "didactiek": 7,
       "tech": 8
     },
-    "triageScore": 2.8,
-    "statusNote": "wave 9: desync chat-plan vs canvas naar Yorin (na digital-forensics-les geen structurele content-herschrijvingen meer mechanisch)",
-    "verdict": "fix-eerst"
+    "triageScore": 2.4,
+    "statusNote": "Formele J2P3-review: vier viewports en productie bewezen; nul open Blocker/High; Medium/Low geregistreerd.",
+    "verdict": "ok",
+    "topIssues": [
+      "chatcoach gebruikt drie fasen tegenover vier canvasstappen",
+      "canvas valideert tekst en zelfbeoordeling, niet een werkelijk audiobestand"
+    ]
   },
   {
     "missionId": "policy-maker",
@@ -2679,28 +2704,29 @@
       "interactivity": 0,
       "total": 9
     },
-    "lastReviewed": "2026-06-26",
-    "reviewStatus": "blocked",
-    "reportPath": "business/dgskills-reviews/wave-3a-2026-06-26.md",
-    "autoFixesApplied": 0,
+    "lastReviewed": "2026-08-08",
+    "reviewStatus": "reviewed",
+    "reportPath": "business/dgskills-reviews/ux-detective-2026-08-08.md",
+    "autoFixesApplied": 1,
     "openEscalations": [
-      "INHOUDELIJKE FOUT q2: 4 navigatie-rijen (ernst 5,5,3,5 -> gem. 4.5) maar correctAnswer = 4.3 (3 rijen) — leerling die correct rekent wordt fout gerekend",
-      "maxScore (100) != som punten (90), q8 = 0 punten — scoringsbalans-keuze",
-      "frequentie 'Dagelijks' (Leerling 5) vs 'Elke dag' (rest) — cosmetisch"
+      "feedbacktekst onderscheidt geldigheid en nulscore niet altijd helder",
+      "betekenischeck verdient bredere dekking voor beknopte Nederlandse taalvarianten"
     ],
-    "codexVerdict": null,
+    "codexVerdict": "ALLOW",
     "reviewScores": {
       "uiux": 8,
-      "didactiek": 9,
-      "tech": 7
+      "didactiek": 8,
+      "tech": 8
     },
     "proposedFixes": 0,
-    "escalationCount": 3,
+    "escalationCount": 2,
     "topIssues": [
-      "q2 antwoordmodel fout (4.3 i.p.v. 4.5) [ESCALATIE — inhoudelijk]",
-      "maxScore/punten-mismatch [ESCALATIE]"
+      "feedbacktekst onderscheidt geldigheid en nulscore niet altijd helder",
+      "betekenischeck verdient bredere dekking voor beknopte Nederlandse taalvarianten"
     ],
-    "statusNote": "normalisatie 2026-07-01 (run wave 4+): wacht op Yorin-beslissing over openEscalations"
+    "statusNote": "Formele J2P3-review: vier viewports en productie bewezen; nul open Blocker/High; Medium/Low geregistreerd.",
+    "triageScore": 2,
+    "verdict": "ok"
   },
   {
     "missionId": "veilig-internet",
@@ -2767,25 +2793,29 @@
       "interactivity": 1,
       "total": 6
     },
-    "lastReviewed": "2026-06-26",
-    "reviewStatus": "blocked",
-    "reportPath": "business/dgskills-reviews/wave-3b-2026-06-26.md",
-    "autoFixesApplied": 1,
+    "lastReviewed": "2026-08-08",
+    "reviewStatus": "reviewed",
+    "reportPath": "business/dgskills-reviews/video-editor-2026-08-08.md",
+    "autoFixesApplied": 2,
     "openEscalations": [
-      "(optioneel) takeaway \"Je begrijpt hoe een shotlist werkt\" — actievere formulering mogelijk, geen defect"
+      "geen validatie van een werkelijk videobestand of montage",
+      "beknopte vakinhoudelijke antwoorden verdienen bredere betekenischecktests"
     ],
-    "codexVerdict": null,
+    "codexVerdict": "ALLOW",
     "reviewScores": {
-      "uiux": 8,
-      "didactiek": 7,
-      "tech": 10
+      "uiux": 8.5,
+      "didactiek": 8,
+      "tech": 8.5
     },
     "proposedFixes": 1,
-    "escalationCount": 0,
+    "escalationCount": 2,
     "topIssues": [
-      "grammatica \"die\" -> \"dat\" [GEFIXED]"
+      "geen validatie van een werkelijk videobestand of montage",
+      "beknopte vakinhoudelijke antwoorden verdienen bredere betekenischecktests"
     ],
-    "statusNote": "normalisatie 2026-07-01 (run wave 4+): wacht op Yorin-beslissing over openEscalations"
+    "statusNote": "Formele J2P3-review: vier viewports en productie bewezen; nul open Blocker/High; Medium/Low geregistreerd.",
+    "triageScore": 1.7,
+    "verdict": "ok"
   },
   {
     "missionId": "wachtwoord-warrior",
