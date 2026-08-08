@@ -4,6 +4,7 @@ import { readFile } from 'node:fs/promises';
 import {
   buildLocalPromptResult,
   calculatePromptMasterMaxScore,
+  calculatePromptMasterPassingPercentage,
   getEffectiveMinScore,
   isChallengePassed,
   scorePromptByCriteria,
@@ -67,8 +68,24 @@ assert.match(weakFallback.output, /golden|Specifiek ras/i, 'fallback should ment
 assert.match(weakFallback.output, /Locatie|Actie|Sfeer|mist/i, 'fallback should mention missing detail');
 
 assert.equal(calculatePromptMasterMaxScore([dogChallenge, logoChallenge]), 90, 'max score should be the sum of criteria times 10');
+assert.equal(
+  calculatePromptMasterPassingPercentage([dogChallenge, logoChallenge]),
+  60,
+  'regular completion threshold should stay aligned with the published mission goal',
+);
+assert.equal(
+  calculatePromptMasterPassingPercentage([dogChallenge, logoChallenge], 'dagbesteding'),
+  56,
+  'VSO dagbesteding completion threshold should match its reduced per-challenge minimum scores',
+);
 
 const curriculum = await readFile(new URL('../src/config/curriculum.ts', import.meta.url), 'utf8');
+const missionSource = await readFile(new URL('../src/features/missions/PromptMasterMission.tsx', import.meta.url), 'utf8');
+assert.match(
+  missionSource,
+  /const completed = await onComplete\(true\);[\s\S]*if \(completed !== false\) clearSave\(\);/,
+  'saved progress must only be cleared after durable completion succeeds',
+);
 const period1Block = curriculum.match(/1:\s*\{[\s\S]*?assessmentId:\s*'assessment-j1-p1'/)?.[0] ?? '';
 const period2Block = curriculum.match(/2:\s*\{[\s\S]*?assessmentId:\s*'assessment-j1-p2'/)?.[0] ?? '';
 

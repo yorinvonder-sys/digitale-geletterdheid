@@ -6,6 +6,7 @@ import { MissionConclusion } from '@/features/missions/shared/MissionConclusion'
 
 interface TrainerPreviewProps {
     data: TrainerData;
+    onComplete?: () => boolean | void | Promise<boolean | void>;
 }
 
 const AI_TRAINER_ACCENT = '#202023';
@@ -77,7 +78,7 @@ const StartButton: React.FC<{ onStart: () => void; countdown: number }> = ({ onS
     );
 };
 
-export const TrainerPreview: React.FC<TrainerPreviewProps> = ({ data }) => {
+export const TrainerPreview: React.FC<TrainerPreviewProps> = ({ data, onComplete }) => {
     const [showConclusion, setShowConclusion] = useState(false);
     const [hasStarted, setHasStarted] = useState(false);
     const [readCountdown, setReadCountdown] = useState(3);
@@ -239,7 +240,10 @@ export const TrainerPreview: React.FC<TrainerPreviewProps> = ({ data }) => {
                         title: "Supervised Learning",
                         text: "Dit heet 'Supervised Learning' (Leren met toezicht). De AI leert door gelabelde voorbeelden te zien: 'Dit is een banaan', 'Dit is papier'. Hoe meer gevarieerde voorbeelden jij geeft, hoe slimmer en nauwkeuriger het model wordt!"
                     }}
-                    onExit={() => setShowConclusion(false)}
+                    onExit={async () => {
+                        const completed = await onComplete?.();
+                        if (completed !== false) setShowConclusion(false);
+                    }}
                 />
             )}
 

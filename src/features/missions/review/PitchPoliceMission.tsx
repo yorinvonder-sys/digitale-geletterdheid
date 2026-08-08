@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { ArrowLeft, CheckCircle, Monitor, X, Play, Palette, Type, Layout, MousePointer, Image as ImageIcon, Zap, AlertTriangle, ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
 import type { VsoProfile } from '@/types';
 import { useMissionAutoSave } from '@/hooks/useMissionAutoSave';
@@ -12,7 +12,7 @@ interface PitchPoliceState {
 }
 
 interface PitchPoliceProps {
-    onComplete: (success: boolean) => void;
+    onComplete: (success: boolean) => boolean | void | Promise<boolean | void>;
     onBack: () => void;
     vsoProfile?: VsoProfile;
 }
@@ -159,8 +159,11 @@ const SLIDES: SlideData[] = [
         textColor: "text-duck-ink/60", // Low contrast intentionally for initial state
         issue: "size",
         feedback: "Kan iemand dit lezen? De tekst is veel te klein en valt weg!",
+        // De fout die de leerling moet zien is de LETTERGROOTTE. Eerder stond hier
+        // donkere tekst op dezelfde donkere achtergrond, waardoor er niets te lezen
+        // viel en de pointe ("te klein") wegviel. Nu klein maar zichtbaar.
         customRender: (fixed) => (
-            <div className={`h-full flex flex-col items-center justify-center p-8 transition-all duration-500 ${fixed ? 'bg-duck-ink text-white' : 'bg-duck-ink text-duck-ink/60'}`}>
+            <div className={`h-full flex flex-col items-center justify-center p-8 transition-all duration-500 ${fixed ? 'bg-duck-ink text-white' : 'bg-duck-ink text-white/70'}`}>
                 <h1 className={`font-bold transition-all duration-500 ${fixed ? 'text-6xl mb-8' : 'text-xs mb-2'}`} style={{ fontFamily: "'Newsreader', Georgia, serif" }}>
                     BEDANKT!
                 </h1>
@@ -258,6 +261,8 @@ export const PitchPoliceMission: React.FC<PitchPoliceProps> = ({ onComplete, onB
             showIntro: true,
         }
     );
+    const completionLockRef = useRef(false);
+    const [isCompleting, setIsCompleting] = useState(false);
 
     const { currentSlideIndex, slideStates, showIntro } = state;
 
@@ -308,15 +313,24 @@ export const PitchPoliceMission: React.FC<PitchPoliceProps> = ({ onComplete, onB
         }
     };
 
-    const handleNextSlide = () => {
+    const handleNextSlide = async () => {
         if (currentSlideIndex < SLIDES.length - 1) {
             setState(prev => ({
                 ...prev,
                 currentSlideIndex: prev.currentSlideIndex + 1,
             }));
         } else {
-            clearSave();
-            onComplete(true);
+            if (completionLockRef.current) return;
+
+            completionLockRef.current = true;
+            setIsCompleting(true);
+            try {
+                const completed = await onComplete(true);
+                if (completed === true) clearSave();
+            } finally {
+                completionLockRef.current = false;
+                setIsCompleting(false);
+            }
         }
     };
 
@@ -530,9 +544,10 @@ export const PitchPoliceMission: React.FC<PitchPoliceProps> = ({ onComplete, onB
                             )}
                             <button
                                 onClick={handleNextSlide}
+                                disabled={isCompleting}
                                 className="bg-duck-ink text-duck-acid px-6 lg:px-8 py-3 rounded-full font-bold text-sm lg:text-lg shadow-lg hover:bg-duck-ink hover:text-duck-acid hover:scale-105 transition-all duration-300 flex items-center gap-2 focus-visible:ring-2 focus-visible:ring-duck-ink"
                             >
-                                {currentSlideIndex < SLIDES.length - 1 ? 'Volgende Dia' : 'Afronden'} <ArrowRight size={20} />
+                                {isCompleting ? 'Opslaan...' : currentSlideIndex < SLIDES.length - 1 ? 'Volgende Dia' : 'Afronden'} <ArrowRight size={20} />
                             </button>
                         </div>
                     )}

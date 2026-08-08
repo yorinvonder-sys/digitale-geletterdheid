@@ -247,9 +247,13 @@ const DebateArenaInner: React.FC<DebateArenaProps> = ({ config, onBack, onComple
                         badges={config.badges}
                         phases={phases}
                         takeaways={config.takeaways}
-                        onComplete={() => {
-                            clearSave();
-                            onComplete(true);
+                        onComplete={async () => {
+                            // Pas wissen als de server de voltooiing bevestigd heeft, anders
+                            // raakt een leerling zijn werk kwijt bij een mislukte opslag.
+                            const completed = await onComplete(true);
+                            if (completed !== false) {
+                                clearSave();
+                            }
                         }}
                     />
                 </div>

@@ -38,5 +38,35 @@ assert.ok(
   files.agent.includes('Je krijgt een woord en hebt 45 seconden om te tekenen.'),
   'AI Tekengame step copy must match the 45-second timer',
 );
+assert.match(
+  files.game,
+  /const completed = await onLevelComplete\?\.\(1\);[\s\S]*if \(completed !== false\)\s*\{?\s*setShowConclusion\(false\);/,
+  'AI Tekengame conclusion must wait for durable completion before closing',
+);
+assert.doesNotMatch(
+  files.game,
+  /setShowConclusion\(true\);\s*if \(onLevelComplete\) onLevelComplete\(1\);/,
+  'AI Tekengame must not fire completion before the learner reads its conclusion',
+);
+assert.match(
+  files.game,
+  /flex-col md:flex-row/,
+  'AI Tekengame analysis layout should stack on mobile',
+);
+assert.match(
+  files.game,
+  /w-full md:w-64/,
+  'AI Tekengame educational panel should fit the mobile viewport',
+);
+assert.match(
+  files.game,
+  /aria-label="Terug naar menu"/,
+  'AI Tekengame exit control should have an accessible name',
+);
+assert.match(
+  files.game,
+  /aria-label=\{`Tekencanvas voor/,
+  'AI Tekengame canvas should have an accessible label',
+);
 
 console.log('AI Tekengame contract checks passed');

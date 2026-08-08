@@ -137,6 +137,8 @@ export const CodeBlock: React.FC<CodeBlockProps> = ({
 
                     {/* Children container */}
                     <div
+                        data-drop-zone="child"
+                        data-parent-id={block.id}
                         className="pl-4 py-2 min-h-[40px] border-2 border-dashed border-duck-gray rounded-2xl bg-duck-bg/50"
                         onDragOver={(e) => {
                             e.preventDefault();
@@ -240,22 +242,23 @@ export const DraggablePaletteBlock: React.FC<DraggableBlockProps> = ({ definitio
 
         const touch = e.changedTouches[0];
 
-        // Find the drop zone under the touch point
-        const dropZones = document.querySelectorAll('[data-drop-zone]');
-        dropZones.forEach(zone => {
-            zone.classList.remove('touch-drag-over');
-            const rect = zone.getBoundingClientRect();
-            const isOver = touch.clientX >= rect.left && touch.clientX <= rect.right &&
-                touch.clientY >= rect.top && touch.clientY <= rect.bottom;
+        const dropZones = document.querySelectorAll<HTMLElement>('[data-drop-zone]');
+        dropZones.forEach(zone => zone.classList.remove('touch-drag-over'));
 
-            if (isOver) {
-                // Dispatch a custom event to handle the drop
-                const customEvent = new CustomEvent('touchdrop', {
-                    detail: { definition: (window as any).__touchDragBlockDefinition }
-                });
-                zone.dispatchEvent(customEvent);
-            }
-        });
+        const dropZone = document
+            .elementFromPoint(touch.clientX, touch.clientY)
+            ?.closest<HTMLElement>('[data-drop-zone]');
+
+        if (dropZone) {
+            const customEvent = new CustomEvent('touchdrop', {
+                bubbles: true,
+                detail: {
+                    definition: (window as any).__touchDragBlockDefinition,
+                    parentId: dropZone.dataset.parentId || null
+                }
+            });
+            dropZone.dispatchEvent(customEvent);
+        }
 
         // Cleanup
         delete (window as any).__touchDragBlockDefinition;

@@ -488,8 +488,14 @@ Probeer nu of je kunt bewegen!`;
 
   if (systemInstruction.includes('AI-assistent') || systemInstruction.includes('AI Lab')) {
     const msgLower = userMessage.toLowerCase();
+    // Welke missie dit is, staat in de systeeminstructie — niet in de woorden van
+    // de leerling. Op `userMessage` matchen liet elke vraag met "code" of "game"
+    // erin uitkomen op de Game Programmeur-uitleg, ook in Game Director en
+    // Website Bouwer, waar die stappen niet bestaan.
+    const missionLower = systemInstruction.toLowerCase();
 
-    if (msgLower.includes('game') || msgLower.includes('programmeur') || msgLower.includes('code')) {
+    if (missionLower.includes('game programmeur')
+      && (msgLower.includes('game') || msgLower.includes('programmeur') || msgLower.includes('code'))) {
       return `Bij de **Game Programmeur** missie leer je om met AI code te genereren! 🎮
 
 **Tips om te beginnen:**
@@ -506,7 +512,8 @@ Probeer nu of je kunt bewegen!`;
 Loop je nog steeds vast? Vertel me precies wat je probeert te doen!`;
     }
 
-    if (msgLower.includes('verhaal') || msgLower.includes('boek') || msgLower.includes('ontwerper')) {
+    if (missionLower.includes('verhalen ontwerper')
+      && (msgLower.includes('verhaal') || msgLower.includes('boek') || msgLower.includes('ontwerper'))) {
       return `Bij de **Verhalen Ontwerper** missie maak je een prentenboek met AI! 📚
 
 **Hoe het werkt:**

@@ -45,12 +45,18 @@ function extractEersteBericht(systemInstruction: string): string | null {
 
 const MODEL_IMAGE_TAG_REGEX = /\[IMG\s+target=["']?\s*([^"'>\]]+)\s*["']?\]([\s\S]*?)\[\/IMG\]/gi;
 const MAX_AUTO_IMAGE_GENERATIONS_PER_RESPONSE = 2;
+const MAX_STORY_PAGES = 5;
 const DEFAULT_TRAINER_DATA: TrainerData = {
     classALabel: 'Plastic',
     classBLabel: 'Papier',
     classAItems: [],
     classBItems: [],
 };
+
+function normalizeStoryBookData(data?: BookData | null): BookData {
+    const book = data || { title: 'Nieuw Verhaal', pages: [] };
+    return { ...book, pages: (book.pages || []).slice(0, MAX_STORY_PAGES) };
+}
 
 function buildDevPreviewReply(selectedRole: AgentRole | null, textInput: string): string {
     const title = selectedRole?.title || 'deze missie';
@@ -372,7 +378,11 @@ export const useAgentLogic = ({ selectedRole, userIdentifier, schoolId, initialP
         completedSteps,
         setCompletedSteps,
         parseAndUpdateSteps,
-    } = useStepCompletion({ initialSteps: initialProgress?.completedSteps || [] });
+    } = useStepCompletion({
+        initialSteps: initialProgress?.completedSteps || [],
+        totalSteps: selectedRole?.steps?.length || 0,
+        resetKey: selectedRole?.id,
+    });
 
     // Wrap undoGameCode to pass setMessages
     const undoGameCode = useCallback(() => {
@@ -380,7 +390,9 @@ export const useAgentLogic = ({ selectedRole, userIdentifier, schoolId, initialP
     }, [undoGameCodeBase, setMessages]);
 
     // Specific Role State - Restore from initialProgress if available
-    const [activeBookData, setActiveBookData] = useState<BookData>(initialProgress?.data?.activeBookData || { title: "Nieuw Verhaal", pages: [] });
+    const [activeBookData, setActiveBookData] = useState<BookData>(
+        normalizeStoryBookData(initialProgress?.data?.activeBookData)
+    );
     const [activeLogicCode, setActiveLogicCode] = useState<string | null>(initialProgress?.data?.activeLogicCode || null);
     const [activeTrainerData, setActiveTrainerData] = useState<TrainerData>(normalizeTrainerData(initialProgress?.data?.activeTrainerData));
     const [activeBonusChallenges, setActiveBonusChallenges] = useState<BonusChallenge[]>(initialProgress?.data?.activeBonusChallenges || []);
@@ -432,6 +444,20 @@ export const useAgentLogic = ({ selectedRole, userIdentifier, schoolId, initialP
                 setError("Kon AI niet starten. Controleer je sessie of AI-configuratie.");
             }
 
+            const restoreInitialProgress = () => {
+                if (initialProgress?.data?.activeGameCode && selectedRole.id === 'game-programmeur') {
+                    setActiveGameCode(initialProgress.data.activeGameCode);
+                } else if (selectedRole.id === 'game-programmeur' && selectedRole.initialCode) {
+                    setActiveGameCode(selectedRole.initialCode);
+                }
+                if (initialProgress?.data?.activeBookData && selectedRole.id === 'verhalen-ontwerper') {
+                    setActiveBookData(normalizeStoryBookData(initialProgress.data.activeBookData));
+                }
+                if (initialProgress?.data?.activeTrainerData && selectedRole.id === 'ai-trainer') {
+                    setActiveTrainerData(normalizeTrainerData(initialProgress.data.activeTrainerData));
+                }
+            };
+
             // Reset role specific data
             setActiveBookData({ title: "Nieuw Verhaal", pages: [] });
             setActiveLogicCode(null);
@@ -458,35 +484,24 @@ export const useAgentLogic = ({ selectedRole, userIdentifier, schoolId, initialP
                     if (data) {
                         console.log(`[CloudLoad] Success for ${selectedRole.id}`);
                         if (data.gameCode && selectedRole.id === 'game-programmeur') setActiveGameCode(data.gameCode);
-                        if (data.bookData && selectedRole.id === 'verhalen-ontwerper') setActiveBookData(data.bookData);
+                        if (data.bookData && selectedRole.id === 'verhalen-ontwerper') {
+                            setActiveBookData(normalizeStoryBookData(data.bookData));
+                        }
                         if (data.logicCode && (selectedRole.id as string) === 'logica-legende') setActiveLogicCode(data.logicCode);
                         if (data.trainerData && ((selectedRole.id as string) === 'prompt-trainer' || selectedRole.id === 'ai-trainer')) {
                             setActiveTrainerData(normalizeTrainerData(data.trainerData));
                         }
                     } else {
                         console.log(`[CloudLoad] No data or timeout for ${selectedRole.id}, using fallback`);
-                        if (selectedRole.id === 'game-programmeur' && selectedRole.initialCode) {
-                            setActiveGameCode(selectedRole.initialCode);
-                        }
+                        restoreInitialProgress();
                     }
                 }).catch(err => {
                     console.error("[CloudLoad] Error:", err);
-                    if (selectedRole.id === 'game-programmeur' && selectedRole.initialCode) {
-                        setActiveGameCode(selectedRole.initialCode);
-                    }
+                    restoreInitialProgress();
                 });
             } else {
-                if (initialProgress?.data) {
-                    console.log(`[CloudLoad] Using initialProgress data for ${selectedRole.id}`);
-                    if (initialProgress.data.activeGameCode && selectedRole.id === 'game-programmeur') {
-                        setActiveGameCode(initialProgress.data.activeGameCode);
-                    }
-                    if (initialProgress.data.activeBookData && selectedRole.id === 'verhalen-ontwerper') {
-                        setActiveBookData(initialProgress.data.activeBookData);
-                    }
-                } else if (selectedRole.id === 'game-programmeur' && selectedRole.initialCode) {
-                    setActiveGameCode(selectedRole.initialCode);
-                }
+                console.log(`[CloudLoad] Using initialProgress data for ${selectedRole.id}`);
+                restoreInitialProgress();
             }
         }
     }, [selectedRole, userIdentifier, initialProgress, skipLoading, cloudSyncDisabled, refreshChatSession, chatSessionRef, setMessages, setActiveGameCode]);
@@ -545,14 +560,18 @@ export const useAgentLogic = ({ selectedRole, userIdentifier, schoolId, initialP
             } else if (selectedRole.id === 'verhalen-ontwerper') {
                 setActiveBookData({ title: "Nieuw Verhaal", pages: [] });
                 setMessages(prev => [...prev, { role: 'model', text: '♻️ **Verhaal gereset!**\nJe kunt helemaal opnieuw beginnen.', timestamp: new Date() }]);
+            } else if (selectedRole.id === 'ai-trainer') {
+                setActiveTrainerData(DEFAULT_TRAINER_DATA);
+                setMessages(prev => [...prev, { role: 'model', text: '♻️ **Training gereset!**\nJe kunt opnieuw voorbeelden toevoegen.', timestamp: new Date() }]);
             } else {
                 setMessages(prev => [...prev, { role: 'model', text: '♻️ **Missie gereset!**', timestamp: new Date() }]);
             }
+            setCompletedSteps([]);
         } catch (err) {
             console.error("Reset failed:", err);
             setError("Er ging iets mis bij het resetten.");
         }
-    }, [selectedRole, userIdentifier, cloudSyncDisabled, setActiveGameCode, setMessages]);
+    }, [selectedRole, userIdentifier, cloudSyncDisabled, setActiveGameCode, setCompletedSteps, setMessages]);
 
     const unlockBonusChallenge = (challengeId: string) => {
         if (!selectedRole?.bonusChallenges) return;
@@ -797,6 +816,10 @@ export const useAgentLogic = ({ selectedRole, userIdentifier, schoolId, initialP
                     const targetPage = pageMatch[1] ? parseInt(pageMatch[1]) : null;
                     const pageText = pageMatch[2].trim();
 
+                    if (targetPage !== null && (targetPage < 1 || targetPage > MAX_STORY_PAGES)) {
+                        continue;
+                    }
+
                     setActiveBookData(prev => {
                         const newPages = [...prev.pages];
 
@@ -806,10 +829,10 @@ export const useAgentLogic = ({ selectedRole, userIdentifier, schoolId, initialP
                             }
                             const actualIndex = targetPage - 1;
                             newPages[actualIndex] = { ...newPages[actualIndex], text: pageText };
-                        } else {
+                        } else if (newPages.length < MAX_STORY_PAGES) {
                             newPages.push({ text: pageText });
                         }
-                        return { ...prev, pages: newPages };
+                        return { ...prev, pages: newPages.slice(0, MAX_STORY_PAGES) };
                     });
                 }
                 responseText = responseText.replace(pageRegex, '');
@@ -828,6 +851,10 @@ export const useAgentLogic = ({ selectedRole, userIdentifier, schoolId, initialP
 
                         const target = rawTarget.trim().toLowerCase();
                         const prompt = rawPrompt.trim();
+                        const pageNumber = target === 'cover' ? null : Number.parseInt(target, 10);
+                        if (target !== 'cover' && (!Number.isInteger(pageNumber) || pageNumber! < 1 || pageNumber! > MAX_STORY_PAGES)) {
+                            continue;
+                        }
                         const imageOptions = getImageGenerationOptions(selectedRole.id, target);
 
                         setActiveBookData(prev => {
@@ -835,11 +862,11 @@ export const useAgentLogic = ({ selectedRole, userIdentifier, schoolId, initialP
                             if (target === 'cover') {
                                 newData.coverImage = 'loading';
                             } else {
-                                const pageIdx = parseInt(target) - 1;
+                                const pageIdx = pageNumber! - 1;
                                 const newPages = [...newData.pages];
                                 while (newPages.length <= pageIdx) newPages.push({ text: '' });
                                 newPages[pageIdx] = { ...newPages[pageIdx], image: 'loading' };
-                                newData.pages = newPages;
+                                newData.pages = newPages.slice(0, MAX_STORY_PAGES);
                             }
                             return newData;
                         });
@@ -852,7 +879,7 @@ export const useAgentLogic = ({ selectedRole, userIdentifier, schoolId, initialP
                                     if (target === 'cover') {
                                         newData.coverImage = startValue;
                                     } else {
-                                        const pageIdx = parseInt(target) - 1;
+                                        const pageIdx = pageNumber! - 1;
                                         if (newData.pages[pageIdx]) {
                                             const newPages = [...newData.pages];
                                             newPages[pageIdx] = { ...newPages[pageIdx], image: startValue };

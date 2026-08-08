@@ -19,8 +19,10 @@ const checks = [
       files.hook.indexOf('predictMatches') < files.hook.indexOf('responseText = responseText.replace(/\\[PREDICT\\]'),
   },
   {
-    name: 'Klaar requires at least 3 examples per category',
-    pass: files.preview.includes('const canCompleteMission = data.classAItems.length >= 3 && data.classBItems.length >= 3;') &&
+    name: 'Klaar requires a balanced dataset and a model test',
+    pass: files.preview.includes('const hasBalancedDataset = data.classAItems.length >= 3 && data.classBItems.length >= 3;') &&
+      files.preview.includes('const hasTestedModel = Boolean(data.testItem);') &&
+      files.preview.includes('const canCompleteMission = hasBalancedDataset && hasTestedModel;') &&
       files.preview.includes('{canCompleteMission && ('),
   },
   {
@@ -39,14 +41,31 @@ const checks = [
     pass: !files.agent.includes('Vraag de leerling expres om een FOUT voorbeeld'),
   },
   {
-    name: 'Agent instruction ends the flow after a successful test question',
-    pass: files.agent.includes('Vraag na een testvraag niet om extra trainingsvoorbeelden'),
+    name: 'Agent instruction requires a recovery-oriented follow-up after testing',
+    pass: files.agent.includes('Na de eerste test geef je altijd een vervolgactie') &&
+      files.agent.includes('klopt hij niet, voeg dan een beter gelabeld voorbeeld toe en test opnieuw'),
   },
   {
     name: 'AI Trainer has a text fallback when [PREDICT] is missing',
     pass: files.hook.includes('inferTrainerPredictionFromText') &&
       files.hook.includes('isTrainerTestQuestion(textInput)') &&
       files.hook.includes('hasTrainerPredictionTag'),
+  },
+  {
+    name: 'AI Trainer conclusion waits for auth-bound completion',
+    pass: files.preview.includes('onComplete?: () => boolean | void | Promise<boolean | void>') &&
+      files.preview.includes('const completed = await onComplete?.();') &&
+      files.preview.includes('if (completed !== false) setShowConclusion(false);'),
+  },
+  {
+    name: 'AI Trainer reset clears trainer-specific data',
+    pass: files.hook.includes("selectedRole.id === 'ai-trainer'") &&
+      files.hook.includes('setActiveTrainerData(DEFAULT_TRAINER_DATA);'),
+  },
+  {
+    name: 'AI Trainer restores locally persisted fallback data',
+    pass: files.hook.includes('initialProgress?.data?.activeTrainerData') &&
+      files.hook.includes('normalizeTrainerData(initialProgress.data.activeTrainerData)'),
   },
 ];
 

@@ -22,6 +22,7 @@ interface TrainerMissionViewProps {
   tipCost: number;
   onLinkClick: (url: string) => void;
   onReset: () => void;
+  onComplete?: () => boolean | void | Promise<boolean | void>;
 }
 
 // Light cleanup so the collapsed coach line shows readable text (the full,
@@ -56,6 +57,7 @@ export const TrainerMissionView: React.FC<TrainerMissionViewProps> = ({
   tipCost,
   onLinkClick,
   onReset,
+  onComplete,
 }) => {
   const [showLog, setShowLog] = useState(false);
 
@@ -95,7 +97,7 @@ export const TrainerMissionView: React.FC<TrainerMissionViewProps> = ({
 
       {/* Werkbank (scrolt intern) */}
       <div className="flex-1 min-h-0 relative">
-        <TrainerPreview data={data} />
+        <TrainerPreview data={data} onComplete={onComplete} />
       </div>
 
       {/* Commandobalk */}

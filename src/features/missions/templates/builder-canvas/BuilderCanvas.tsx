@@ -232,9 +232,13 @@ const BuilderCanvasInner: React.FC<BuilderCanvasProps> = ({
         }));
     };
 
-    const handleComplete = () => {
-        clearSave();
-        onComplete(totalScore >= config.maxScore * 0.4);
+    const handleComplete = async () => {
+        // Pas wissen als de server de voltooiing bevestigd heeft: andersom raakt
+        // een leerling zijn hele bouwwerk kwijt zodra het opslaan mislukt.
+        const completed = await onComplete(totalScore >= config.maxScore * 0.4);
+        if (completed !== false) {
+            clearSave();
+        }
     };
 
     // ─── Phase: Intro ─────────────────────────────────────────────────────
@@ -374,9 +378,24 @@ const BuilderCanvasInner: React.FC<BuilderCanvasProps> = ({
                                 total: config.steps.length,
                                 completedSteps: state.completedSteps.length,
                             },
-                            textEntry: currentStepData
-                                ? state.textEntries[currentStepData.id] ?? ''
-                                : '',
+                            // Bij Website Bouwer gaat de ruwe opdrachttekst van de leerling
+                            // NIET mee naar de AI-coach; die krijgt alleen of er iets staat
+                            // en hoe lang het is. De coach heeft de inhoud niet nodig om te
+                            // helpen, en zo verlaat het schrijfwerk van de leerling de
+                            // vertrouwensgrens niet.
+                            textEntry: config.missionId === 'website-bouwer'
+                                ? undefined
+                                : currentStepData
+                                  ? state.textEntries[currentStepData.id] ?? ''
+                                  : '',
+                            textEntryStatus: config.missionId === 'website-bouwer'
+                                ? {
+                                      hasContent: Boolean(currentStepData && state.textEntries[currentStepData.id]?.trim()),
+                                      characterCount: currentStepData
+                                          ? state.textEntries[currentStepData.id]?.trim().length ?? 0
+                                          : 0,
+                                  }
+                                : undefined,
                         }}
                     />
 

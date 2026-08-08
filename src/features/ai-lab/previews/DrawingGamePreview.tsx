@@ -20,7 +20,7 @@ interface DrawingGamePersistState {
 }
 
 interface DrawingGamePreviewProps {
-    onLevelComplete?: (level: number) => void;
+    onLevelComplete?: (level: number) => boolean | void | Promise<boolean | void>;
     onStart?: () => void;
     onXPEarned?: (amount: number, label: string) => void;
     user?: {
@@ -614,7 +614,6 @@ export const DrawingGamePreview: React.FC<DrawingGamePreviewProps> = ({ onLevelC
         } else {
             // FINISHED
             setShowConclusion(true);
-            if (onLevelComplete) onLevelComplete(1);
         }
     };
 
@@ -805,6 +804,7 @@ export const DrawingGamePreview: React.FC<DrawingGamePreviewProps> = ({ onLevelC
 
                     {/* Exit Button */}
                     <button
+                        aria-label="Terug naar menu"
                         onClick={() => {
                             setHasStarted(false);
                             setDuelMode('off');
@@ -826,7 +826,12 @@ export const DrawingGamePreview: React.FC<DrawingGamePreviewProps> = ({ onLevelC
                         title: "Neural Networks (Neurale Netwerken)",
                         text: "Net als jouw hersenen bestaat AI uit lagen. De eerste laag ziet pixels, de volgende ziet lijnen, dan vormen, en ten slotte herkent het 'een kat'. Soms raakt de AI in de war als de pixels lijken op iets anders!"
                     }}
-                    onExit={() => setShowConclusion(false)}
+                    onExit={async () => {
+                        const completed = await onLevelComplete?.(1);
+                        if (completed !== false) {
+                            setShowConclusion(false);
+                        }
+                    }}
                     {...(peerFeedbackProps && {
                         currentUserId: peerFeedbackProps.currentUserId,
                         currentUserName: peerFeedbackProps.currentUserName,
@@ -837,9 +842,9 @@ export const DrawingGamePreview: React.FC<DrawingGamePreviewProps> = ({ onLevelC
                 />
             )}
 
-            <div className="flex-1 p-4 flex gap-4 overflow-hidden relative">
+            <div className="flex-1 p-4 flex flex-col md:flex-row gap-4 overflow-y-auto md:overflow-hidden relative">
                 {/* EDUCATIONAL SIDEBAR - ACTIVE DURING ANALYSIS */}
-                <div aria-hidden={gamePhase === 'draw'} className={`absolute left-4 top-4 bottom-4 w-64 rounded-2xl p-4 transition-all duration-500 transform ${gamePhase !== 'draw' ? 'translate-x-0' : '-translate-x-full opacity-0'}`} style={{ backgroundColor: '#FFFFFF', border: '1px solid #E7D8BD' }}>
+                <div aria-hidden={gamePhase === 'draw'} className={`w-full md:w-64 max-h-[16rem] md:max-h-none overflow-y-auto rounded-2xl p-4 transition-all duration-500 transform ${gamePhase !== 'draw' ? 'relative md:absolute md:left-4 md:top-4 md:bottom-4 md:translate-x-0' : 'hidden md:block md:-translate-x-full md:opacity-0'}`} style={{ backgroundColor: '#FFFFFF', border: '1px solid #E7D8BD' }}>
                     <h4 className="font-black mb-4 flex items-center gap-2" style={{ color: '#202023' }}>
                         <Brain size={18} /> Hoe AI Denkt
                     </h4>
@@ -872,9 +877,10 @@ export const DrawingGamePreview: React.FC<DrawingGamePreviewProps> = ({ onLevelC
                 </div>
 
                 {/* MAIN VISUAL AREA */}
-                <div className={`flex-1 flex flex-col items-center justify-center transition-all duration-500 ${gamePhase !== 'draw' ? 'ml-64' : ''}`}>
+                <div className={`flex-1 min-h-[20rem] flex flex-col items-center justify-center transition-all duration-500 ${gamePhase !== 'draw' ? 'md:ml-64' : ''}`}>
                     <div className="relative">
                         <canvas
+                            aria-label={`Tekencanvas voor ${currentPrompt?.word || 'de opdracht'}`}
                             ref={canvasRef}
                             width={400} height={400}
                             onMouseDown={startDrawing} onMouseMove={draw} onMouseUp={stopDrawing} onMouseLeave={stopDrawing}

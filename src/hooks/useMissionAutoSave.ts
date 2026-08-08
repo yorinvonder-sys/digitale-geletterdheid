@@ -20,15 +20,21 @@ interface StoredPayload<T> {
     state: T;
 }
 
-/** Best-effort sync extraction of current user ID from Supabase's localStorage session. */
+/** Sync extraction from this app's configured Supabase session only. */
 const getCurrentUserId = (): string | null => {
     try {
-        const key = Object.keys(localStorage).find(k => /^sb-[a-z0-9_-]+-auth-token$/i.test(k));
-        if (!key) return null;
+        // Bewust de sleutel van hét ingestelde project, niet de eerste de beste
+        // sb-*-auth-token: op een gedeelde schoolcomputer kan een token van een
+        // ander Supabase-project in de browser staan, en dan sla je de voortgang
+        // op onder de verkeerde leerling.
+        const supabaseUrl = ((import.meta as any).env.VITE_SUPABASE_URL as string)?.trim();
+        if (!supabaseUrl) return null;
+        const projectId = new URL(supabaseUrl).hostname.split('.')[0];
+        const key = `sb-${projectId}-auth-token`;
         const raw = localStorage.getItem(key);
         if (!raw) return null;
         const parsed = JSON.parse(raw);
-        return parsed?.user?.id ?? null;
+        return parsed?.user?.id ?? parsed?.currentSession?.user?.id ?? null;
     } catch {
         return null;
     }

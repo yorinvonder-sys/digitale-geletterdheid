@@ -216,18 +216,31 @@ const ReviewArenaWithConfig: React.FC<ReviewArenaProps> = ({
 
     useEffect(() => {
         if (state.configMissionId && state.configMissionId !== config.missionId) {
+            // Alle review-arena-opdrachten delen dezelfde ronde-ids
+            // (round-drag-sort, round-match-pairs, round-categorize,
+            // round-rapid-fire). Wisselt de leerling van opdracht zonder dat dit
+            // component opnieuw aankoppelt, dan zouden de refs hieronder die ids
+            // nog kennen en de nieuwe opdracht meteen blokkeren.
+            submittedThisSession.current.clear();
+            completedRoundTransitions.current.clear();
+            completedFollowUpTransitions.current.clear();
             setState(initialState);
         }
     }, [config.missionId, setState, state.configMissionId]);
 
     const userId = (() => {
         try {
-            const key = Object.keys(localStorage).find((k) =>
-                /^sb-[a-z0-9_-]+-auth-token$/i.test(k)
-            );
-            if (!key) return null;
-            const raw = localStorage.getItem(key);
-            return raw ? JSON.parse(raw)?.user?.id : null;
+            // Zelfde reden als in useMissionAutoSave: pak de sleutel van hét
+            // ingestelde project, niet de eerste de beste sb-*-auth-token. Op een
+            // gedeelde schoolcomputer kan een token van een ander Supabase-project
+            // in de browser staan, en dan hang je dit aan de verkeerde leerling.
+            const supabaseUrl = ((import.meta as any).env.VITE_SUPABASE_URL as string)?.trim();
+            if (!supabaseUrl) return null;
+            const projectId = new URL(supabaseUrl).hostname.split('.')[0];
+            const raw = localStorage.getItem(`sb-${projectId}-auth-token`);
+            if (!raw) return null;
+            const parsed = JSON.parse(raw);
+            return parsed?.user?.id ?? parsed?.currentSession?.user?.id ?? null;
         } catch {
             return null;
         }
@@ -417,12 +430,16 @@ const ReviewArenaWithConfig: React.FC<ReviewArenaProps> = ({
         ]
     );
 
-    const handleComplete = useCallback(() => {
+    const handleComplete = useCallback(async () => {
         // Slagen hangt aan de werkelijke score, niet aan het bereiken van het
         // eindscherm — dezelfde drempel die CompletionScreen toont.
         const passed = config.maxScore > 0 && totalScore / config.maxScore >= PASS_THRESHOLD;
-        clearSave();
-        onComplete(passed);
+        // Pas wissen als de server de voltooiing bevestigd heeft: andersom raakt
+        // een leerling zijn hele reviewronde kwijt zodra het opslaan mislukt.
+        const completionResult = await onComplete(passed);
+        if (completionResult !== false) {
+            clearSave();
+        }
     }, [clearSave, config.maxScore, onComplete, totalScore]);
 
     // === Intro ===
@@ -488,6 +505,8 @@ const ReviewArenaWithConfig: React.FC<ReviewArenaProps> = ({
                             onClick={() => {
                                 clearSave();
                                 submittedThisSession.current.clear();
+                                completedRoundTransitions.current.clear();
+                                completedFollowUpTransitions.current.clear();
                                 setState(initialState);
                             }}
                             className="min-h-[44px] px-4 py-2.5 bg-duck-acid text-duck-ink rounded-xl text-sm font-bold"

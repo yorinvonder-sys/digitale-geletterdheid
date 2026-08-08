@@ -10,7 +10,7 @@ import { Trophy, RotateCcw, CheckCircle, XCircle, ClipboardCheck } from 'lucide-
 interface Props {
     tasks: AssessmentTask[];
     config?: AssessmentConfig; // Optional for backward compatibility, though we'll use it
-    onComplete: (passed: boolean, score: number) => void;
+    onComplete: (passed: boolean, score: number) => boolean | void | Promise<boolean | void>;
     onSubmitResult?: (result: {
         autoScore: number;
         teacherScore: number;
@@ -32,6 +32,7 @@ export const AssessmentEngine: React.FC<Props> = ({ tasks, config, onComplete, o
     const [view, setView] = useState<'intro' | 'task' | 'summary'>('intro');
     const [showTransition, setShowTransition] = useState(false);
     const [teacherChecks, setTeacherChecks] = useState<Record<string, boolean>>({});
+    const [completionState, setCompletionState] = useState<'idle' | 'saving' | 'error'>('idle');
 
     const currentTask = tasks[currentTaskIndex];
     const totalPossibleScore = tasks.reduce((acc, t) => acc + t.xpReward, 0);
@@ -109,12 +110,23 @@ export const AssessmentEngine: React.FC<Props> = ({ tasks, config, onComplete, o
         // Let's verify on button click in summary
     };
 
-    const handleFinish = () => {
+    const handleFinish = async () => {
+        if (completionState === 'saving') return;
         const autoPercentage = Math.round((score / totalPossibleScore) * 100);
+
+        const persistCompletion = async (passed: boolean, percentage: number) => {
+            setCompletionState('saving');
+            try {
+                const completed = await onComplete(passed, percentage);
+                setCompletionState(completed === false ? 'error' : 'idle');
+            } catch {
+                setCompletionState('error');
+            }
+        };
 
         if (!hybridConfig) {
             const passed = autoPercentage >= minPassScore;
-            onComplete(passed, autoPercentage);
+            await persistCompletion(passed, autoPercentage);
             return;
         }
 
@@ -142,7 +154,7 @@ export const AssessmentEngine: React.FC<Props> = ({ tasks, config, onComplete, o
                 teacherWeight: hybridConfig.teacherWeight
             }
         });
-        onComplete(passed, finalPercentage);
+        await persistCompletion(passed, finalPercentage);
     };
 
     // Render Current Task Type
@@ -302,17 +314,18 @@ export const AssessmentEngine: React.FC<Props> = ({ tasks, config, onComplete, o
                         {hybridConfig ? (
                             <button
                                 onClick={handleFinish}
-                                disabled={hasMissingRequired}
+                                disabled={hasMissingRequired || completionState === 'saving'}
                                 className="flex-1 py-4 bg-lab-primary hover:bg-lab-primaryDark disabled:bg-lab-creamDeep disabled:text-lab-muted disabled:cursor-not-allowed text-white rounded-xl font-black text-lg shadow-lg transition-all active:scale-95"
                             >
-                                {hasMissingRequired ? 'Wacht op docentcheck' : 'Definitief beoordelen'}
+                                {hasMissingRequired ? 'Wacht op docentcheck' : completionState === 'saving' ? 'Opslaan...' : 'Definitief beoordelen'}
                             </button>
                         ) : passed ? (
                             <button
                                 onClick={handleFinish}
+                                disabled={completionState === 'saving'}
                                 className="flex-1 py-4 bg-lab-primary hover:bg-lab-primaryDark text-white rounded-xl font-black text-lg shadow-lg transition-all active:scale-95"
                             >
-                                Terug naar Dashboard
+                                {completionState === 'saving' ? 'Opslaan...' : 'Terug naar Dashboard'}
                             </button>
                         ) : (
                             <>
@@ -331,6 +344,11 @@ export const AssessmentEngine: React.FC<Props> = ({ tasks, config, onComplete, o
                             </>
                         )}
                     </div>
+                    {completionState === 'error' && (
+                        <p role="alert" className="mt-3 text-sm font-bold text-lab-coral">
+                            Je resultaat kon niet worden opgeslagen. Probeer het opnieuw.
+                        </p>
+                    )}
                 </div>
             </div>
             </div>
