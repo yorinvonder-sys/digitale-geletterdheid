@@ -1,4 +1,9 @@
 import { supabase } from './supabase';
+import {
+    readPending,
+    stashPending,
+    clearPending,
+} from './progressBackupQueue';
 
 /** Recursively strips undefined values and caps nesting depth for Postgres JSONB. */
 function sanitizeForPostgres(data: any, maxDepth = 5, currentDepth = 0): any {
@@ -17,61 +22,16 @@ function sanitizeForPostgres(data: any, maxDepth = 5, currentDepth = 0): any {
     return result;
 }
 
-// ─── Lokale reservekopie ──────────────────────────────────────────────────────
-//
-// De sjabloon-opdrachten bewaren hun voortgang al lokaal via useMissionAutoSave.
-// De vier AI Lab-werkbanken (game-programmeur, verhalen-ontwerper,
-// logica-legende, ai-trainer) doen dat niet: die slaan alleen naar de server op.
-// Valt het netwerk weg, dan is het werk bij een herlaad weg.
-//
-// Belangrijk: dit is een WACHTRIJ, geen tweede waarheid. Er staat alleen werk in
-// dat de server nooit heeft bereikt. Zodra het alsnog is opgeslagen, wordt het
-// lokaal gewist. Zo kan een oude lokale kopie nooit een nieuwere serverversie
-// overschrijven -- de klassieke synchronisatiefout.
-
-const PENDING_PREFIX = 'dgskills:pending-progress:';
-/** Net onder de servergrens van 1 MiB; een halve kopie heeft geen waarde. */
-const PENDING_MAX_BYTES = 1_000_000;
-
-const pendingKey = (userId: string, missionId: string) =>
-    `${PENDING_PREFIX}${userId}:${missionId}`;
-
-const stashPending = (userId: string, missionId: string, data: Record<string, any>): void => {
-    try {
-        const raw = JSON.stringify({ savedAt: new Date().toISOString(), data });
-        if (raw.length > PENDING_MAX_BYTES) return;
-        localStorage.setItem(pendingKey(userId, missionId), raw);
-    } catch {
-        // Opslag vol of geblokkeerd (privémodus). Dan is er geen reservekopie,
-        // maar de opdracht mag daar niet op omvallen.
-    }
-};
-
-const readPending = (userId: string, missionId: string): Record<string, any> | null => {
-    try {
-        const raw = localStorage.getItem(pendingKey(userId, missionId));
-        if (!raw) return null;
-        const parsed = JSON.parse(raw);
-        return parsed && typeof parsed === 'object' && parsed.data ? parsed.data : null;
-    } catch {
-        return null;
-    }
-};
-
-const clearPending = (userId: string, missionId: string): void => {
-    try {
-        localStorage.removeItem(pendingKey(userId, missionId));
-    } catch {
-        // Zie stashPending.
-    }
-};
-
 export const saveMissionProgress = async (
     userId: string,
     missionId: string,
     progressData: Record<string, any>,
     schoolId?: string
 ): Promise<boolean> => {
+    // Het moment waarop DEZE poging begon. Alles hieronder hangt eraan: het
+    // bepaalt of ons werk nog het nieuwste is als het antwoord binnenkomt.
+    const startedAt = Date.now();
+
     try {
         const sanitized = sanitizeForPostgres(progressData);
 
@@ -85,7 +45,7 @@ export const saveMissionProgress = async (
         });
 
         if (!rpcError) {
-            clearPending(userId, missionId);
+            clearPending(userId, missionId, startedAt);
             return true;
         }
 
@@ -120,13 +80,13 @@ export const saveMissionProgress = async (
             });
 
         if (error) throw error;
-        clearPending(userId, missionId);
+        clearPending(userId, missionId, startedAt);
         return true;
     } catch (error) {
         console.error(`Error saving progress for ${missionId}:`, error);
         // Niets bereikte de server. Bewaar het lokaal, zodat een herlaad of een
         // wegvallend netwerk het werk van de leerling niet wist.
-        stashPending(userId, missionId, sanitizeForPostgres(progressData));
+        stashPending(userId, missionId, sanitizeForPostgres(progressData), startedAt);
         return false;
     }
 };

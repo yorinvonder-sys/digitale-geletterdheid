@@ -230,7 +230,11 @@ test('werk dat de server niet haalt wordt lokaal bewaard en later alsnog verstuu
     const saveStart = source.indexOf('export const saveMissionProgress');
     const loadStart = source.indexOf('export const loadMissionProgress');
     const save = source.slice(saveStart, loadStart);
-    const load = source.slice(loadStart, source.indexOf('export const resetMissionProgress'));
+    const loadEnd = source.indexOf('export const resetMissionProgress');
+    // Zonder deze grenscontrole geeft indexOf -1 als die functie ooit verdwijnt,
+    // en dan rekt slice() het blok stilzwijgend op tot bijna het hele bestand.
+    assert.ok(loadEnd > loadStart, 'grens van loadMissionProgress niet gevonden');
+    const load = source.slice(loadStart, loadEnd);
 
     assert.ok(saveStart >= 0 && loadStart > saveStart);
 
