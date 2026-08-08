@@ -21,6 +21,7 @@ import { SpotTheFlagsRound } from './sub/SpotTheFlagsRound';
 import { OrderDragRound } from './sub/OrderDragRound';
 import { InboxTriageRound } from './sub/InboxTriageRound';
 import { FeedbackBanner, followUpWeight, scaledItemScore, scoreRound } from './sub/FeedbackBanner';
+import { toScorePercent } from '../shared/scorePercent';
 
 // ── Scoring ───────────────────────────────────────────────────────────────────
 
@@ -209,7 +210,7 @@ export const ScenarioEngine: React.FC<TemplateMissionProps> = ({ missionId, onBa
 const ScenarioEngineInner: React.FC<{
     config: ScenarioEngineConfig;
     onBack: () => void;
-    onComplete: (success: boolean) => boolean | void | Promise<boolean | void>;
+    onComplete: (success: boolean, scorePercent?: number) => boolean | void | Promise<boolean | void>;
 }> = ({ config, onBack, onComplete }) => {
     const { state, setState, clearSave } = useMissionAutoSave<ScenarioEngineState>(
         config.missionId,
@@ -299,7 +300,7 @@ const ScenarioEngineInner: React.FC<{
         const success = missionGoal?.criteria.type === 'score-threshold'
             ? totalScore >= (missionGoal.criteria.threshold ?? config.maxScore * 0.4)
             : true;
-        const completed = await onComplete(success);
+        const completed = await onComplete(success, toScorePercent(totalScore, config.maxScore));
         if (completed !== false) {
             clearSave();
         }

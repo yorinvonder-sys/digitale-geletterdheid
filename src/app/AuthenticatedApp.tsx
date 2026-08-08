@@ -608,7 +608,7 @@ export function AuthenticatedApp() {
 	            );
 	        }
 
-        async function handleMissionComplete(missionId: string) {
+        async function handleMissionComplete(missionId: string, scorePercent?: number) {
             // Idempotency guard: prevent double completion from rapid clicks or re-renders
             if (completingMissionRef.current.has(missionId)) return false;
 
@@ -621,7 +621,7 @@ export function AuthenticatedApp() {
                         // The generic stats save is intentionally not used here: remote
                         // whitelisting and concurrent stats writes can silently lose
                         // missionsCompleted while a later XP write still succeeds.
-                        const persistedCompleted = await markMissionCompleted(missionId);
+                        const persistedCompleted = await markMissionCompleted(missionId, scorePercent);
                         const newStats: UserStats = {
                             ...DEFAULT_STATS,
                             ...user.stats,
@@ -670,6 +670,19 @@ export function AuthenticatedApp() {
                         completingMissionRef.current.delete(missionId);
                     }
                 } else {
+                    // Herhaalde afronding: leg de poging vast en, als die beter is, de
+                    // score. De RPC ontdubbelt de voltooiingslijst zelf. Mislukt dit,
+                    // dan mag dat de leerling niet ophouden -- het is een docentsignaal,
+                    // geen voortgang.
+                    completingMissionRef.current.add(missionId);
+                    try {
+                        await markMissionCompleted(missionId, scorePercent);
+                    } catch {
+                        console.error('[mission-completion] Retry record failed');
+                    } finally {
+                        completingMissionRef.current.delete(missionId);
+                    }
+
                     // A previous attempt may have persisted completion but lost the
                     // subsequent XP request. The server deduplicates successful awards.
                     const requestedXP = getMissionXPReward(missionId, 'Easy');
@@ -730,8 +743,8 @@ export function AuthenticatedApp() {
                     <TemplateMissionRouter
                         missionId={tmId}
                         onBack={handleRequestExitModule}
-                        onComplete={(success) => {
-                            if (success) return handleMissionComplete(tmId);
+                        onComplete={(success, scorePercent) => {
+                            if (success) return handleMissionComplete(tmId, scorePercent);
                             handleExitModule();
                             return true;
                         }}

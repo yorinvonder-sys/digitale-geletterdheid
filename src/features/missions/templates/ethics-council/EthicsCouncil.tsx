@@ -11,6 +11,7 @@ import { TransparantDossier } from './sub/TransparantDossier';
 import { UitdagingBoss } from './sub/UitdagingBoss';
 import { VonnisClimax } from './sub/VonnisClimax';
 import { RewardHud } from './sub/RewardHud';
+import { toScorePercent } from '../shared/scorePercent';
 
 // ═══════════════════════════════════════════════════════════════
 // Config contract (exported so configs/review-week-3.ts can import it)
@@ -206,8 +207,8 @@ const EthicsCouncilWithConfig: React.FC<EthicsCouncilWithConfigProps> = ({
 
     const handleComplete = useCallback(() => {
         clearSave();
-        onComplete(true);
-    }, [clearSave, onComplete]);
+        onComplete(true, toScorePercent(totalScore, config.maxScore));
+    }, [clearSave, onComplete, totalScore, config.maxScore]);
 
     // ── Render ────────────────────────────────────────────────
 

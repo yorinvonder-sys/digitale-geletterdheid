@@ -7,6 +7,7 @@ import { getMissionGoal } from '@/config/missionGoals';
 import type { TemplateMissionProps } from '../shared/types';
 import type { PasswordFortressConfig, FortressRound } from './passwordFortressTypes';
 import { runAttacks, ATTACK_META, type FortressReport } from './fortressEngine';
+import { toScorePercent } from '../shared/scorePercent';
 
 // ── Allowlist ────────────────────────────────────────────────────────────────
 const VALID_PASSWORD_FORTRESS_IDS: ReadonlySet<string> = new Set([
@@ -209,7 +210,7 @@ export const PasswordFortress: React.FC<TemplateMissionProps> = ({ missionId, on
 const PasswordFortressInner: React.FC<{
     config: PasswordFortressConfig;
     onBack: () => void;
-    onComplete: (success: boolean) => void;
+    onComplete: (success: boolean, scorePercent?: number) => void;
 }> = ({ config, onBack, onComplete }) => {
     const { state, setState, clearSave } = useMissionAutoSave<FortressState>(
         config.missionId,
@@ -338,7 +339,7 @@ const PasswordFortressInner: React.FC<{
                 onComplete={() => {
                     clearSave();
                     const requiredRounds = missionGoal?.criteria.min ?? config.rounds.length;
-                    onComplete(state.cleared.length >= requiredRounds);
+                    onComplete(state.cleared.length >= requiredRounds, toScorePercent(totalScore, config.maxScore));
                 }}
             />
         );

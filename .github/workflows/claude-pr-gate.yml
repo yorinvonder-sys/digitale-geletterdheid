@@ -113,6 +113,13 @@ jobs:
       - name: Filmtijdlijn-tests
         run: npm run test:film-timeline
 
+      # Sinds migratie 20260808120000 mag de leerlingrol de kolommen status en
+      # score niet meer schrijven. Wie ze terugzet in saveMissionProgress krijgt
+      # geen typefout maar een permissiefout in productie -- en die kost
+      # leerlingwerk, want dan mislukt het tussentijds opslaan.
+      - name: Missieafronding en score-contract
+        run: npm run test:mission-completion
+
       - name: Secret scanning (Gitleaks)
         uses: gitleaks/gitleaks-action@e0c47f4f8be36e29cdc102c57e68cb5cbf0e8d1e # v3
         env:
