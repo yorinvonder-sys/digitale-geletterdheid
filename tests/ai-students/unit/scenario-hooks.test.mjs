@@ -15,6 +15,12 @@ test('shared mission screens expose stable intro and completion hooks', async ()
   assert.match(completion, /data-qa="confirm-completion"/);
 });
 
+test('failed completion cannot fall through to the completion side effect', async () => {
+  const completion = await source('src/features/missions/templates/shared/CompletionScreen.tsx');
+  assert.match(completion, /onClick=\{passed \? onComplete : onRetry\}/);
+  assert.match(completion, /disabled=\{!passed && !onRetry\}/);
+});
+
 test('ScenarioEngine round controls expose stable hooks and semantic item ids', async () => {
   const select = await source('src/features/missions/templates/scenario-engine/sub/SelectCorrectRound.tsx');
   const order = await source('src/features/missions/templates/scenario-engine/sub/OrderPriorityRound.tsx');

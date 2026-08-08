@@ -21,6 +21,7 @@ interface CompletionScreenProps {
     phases?: PhaseScore[];
     takeaways: string[];
     onComplete: () => void;
+    onRetry?: () => void;
     attribution?: {
         source: string;
         author?: string;
@@ -38,6 +39,7 @@ export const CompletionScreen: React.FC<CompletionScreenProps> = ({
     phases,
     takeaways,
     onComplete,
+    onRetry,
     attribution,
 }) => {
     const badge = [...badges]
@@ -160,7 +162,8 @@ export const CompletionScreen: React.FC<CompletionScreenProps> = ({
                 {/* Complete button */}
                 <button
                     data-qa="confirm-completion"
-                    onClick={onComplete}
+                    onClick={passed ? onComplete : onRetry}
+                    disabled={!passed && !onRetry}
                     className="mb-4 w-full py-3.5 bg-duck-acid hover:bg-duck-acid/80 text-duck-ink rounded-full font-black text-sm transition-all duration-200 active:scale-[0.98] shadow-lg shadow-duck-acid/25 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-ink focus-visible:ring-offset-2"
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                 >
