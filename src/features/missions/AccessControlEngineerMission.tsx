@@ -301,7 +301,12 @@ export const AccessControlEngineerMission: React.FC<Props> = ({
 
     const stap1Klaar = aantalProblemen >= 3;
     const stap2Klaar = aantalRegelsIngesteld >= 4;
-    const stap3Klaar = aantalTestsGedaan >= 5 && aantalTestsCorrect >= 4;
+    // "Systeem beveiligd" betekent dat élk scenario is getest en slaagt. Met een
+    // drempel eronder kon een leerling afronden terwijl een scenario nooit was
+    // gedraaid, en dus zonder te weten of dat toegangspad wel klopt.
+    const stap3Klaar =
+        aantalTestsGedaan === TEST_SCENARIOS.length &&
+        aantalTestsCorrect === TEST_SCENARIOS.length;
 
     const isVso = vsoProfile === 'dagbesteding';
 
@@ -710,9 +715,9 @@ export const AccessControlEngineerMission: React.FC<Props> = ({
                             )}
                             {!stap3Klaar && aantalTestsGedaan > 0 && (
                                 <p className="text-xs text-duck-ink mt-1">
-                                    {aantalTestsCorrect < 4
-                                        ? 'Sommige tests mislukken. Ga terug naar Stap 2 en pas de rechten aan.'
-                                        : `Voer minstens 5 tests uit (nu: ${aantalTestsGedaan}).`
+                                    {aantalTestsGedaan < TEST_SCENARIOS.length
+                                        ? `Voer alle ${TEST_SCENARIOS.length} tests uit (nu: ${aantalTestsGedaan}).`
+                                        : 'Sommige tests mislukken. Ga terug naar Stap 2 en pas de rechten aan.'
                                     }
                                 </p>
                             )}
