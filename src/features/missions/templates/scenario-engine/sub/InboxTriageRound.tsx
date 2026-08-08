@@ -1,6 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { motion, type PanInfo } from 'framer-motion';
 import type { ScenarioRound } from '../types';
+import { RoundInstruction } from './RoundInstruction';
 
 const ScenarioIcon = ({ icon, className }: { icon: string; className: string }) => (
     icon.startsWith('/assets/') ? (
@@ -126,6 +127,14 @@ export const InboxTriageRound: React.FC<Props> = ({ round, selections, submitted
             <div aria-live="polite" className="sr-only">{liveMessage}</div>
 
             {!submitted && (
+                <RoundInstruction
+                    icon="📥"
+                    action={`Sorteer elk bericht: "${acceptLabel}" of "${rejectLabel}"`}
+                    hint="Sleep een bericht naar een bak of gebruik de knoppen — je keuze kun je aanpassen tot je inzendt."
+                />
+            )}
+
+            {!submitted && (
                 <div className="grid grid-cols-2 gap-2 mb-4 mt-4">
                     <div
                         ref={acceptZoneRef}
@@ -180,6 +189,15 @@ export const InboxTriageRound: React.FC<Props> = ({ round, selections, submitted
                         </div>
                     </div>
                 </div>
+            )}
+
+            {!submitted && unsortedItems.length > 0 && (
+                <p
+                    className="text-[11px] font-bold text-duck-ink/70 mb-1.5"
+                    style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
+                >
+                    Nog {unsortedItems.length} te sorteren
+                </p>
             )}
 
             <div className="space-y-3 mb-4">

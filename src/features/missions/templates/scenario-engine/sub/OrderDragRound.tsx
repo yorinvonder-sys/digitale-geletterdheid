@@ -2,6 +2,7 @@ import React from 'react';
 import { Reorder, useDragControls } from 'framer-motion';
 import { ArrowDown, ArrowUp, Check, GripVertical } from 'lucide-react';
 import type { ScenarioRound } from '../types';
+import { RoundInstruction } from './RoundInstruction';
 
 const ScenarioIcon = ({ icon, className }: { icon: string; className: string }) => (
     icon.startsWith('/assets/') ? (
@@ -225,12 +226,11 @@ export const OrderDragRound: React.FC<Props> = ({ round, selections, submitted, 
     return (
         <div className="mt-4 max-w-md mx-auto">
             {!submitted && (
-                <p
-                    className="text-[10px] font-black text-duck-ink/70 uppercase tracking-widest mb-2"
-                    style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
-                >
-                    {instruction}
-                </p>
+                <RoundInstruction
+                    icon="↕️"
+                    action={instruction}
+                    hint="Bovenaan = eerste plek. Gebruik de greep links om te slepen, of de pijlknoppen op elke kaart."
+                />
             )}
 
             <Reorder.Group

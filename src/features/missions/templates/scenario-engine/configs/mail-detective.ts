@@ -147,8 +147,7 @@ const config: ScenarioEngineConfig = {
             description:
                 'Rangschik deze vijf e-mails van gevaarlijkst (1e) naar minst gevaarlijk (5e). Vuistregel: hoe groter de schade als iemand erin trapt, hoe gevaarlijker.',
             type: 'order-drag',
-            orderInstruction:
-                'Sleep de mails in de juiste volgorde. Liever met het toetsenbord? Gebruik de pijlknoppen op elke kaart.',
+            orderInstruction: 'Zet de mails op volgorde: gevaarlijkst bovenaan',
             maxScore: 25,
             feedbackCorrect:
                 'Sterke analyse! Je begrijpt hoe aanvallers het verschil maken tussen een gevaarlijke en een minder gevaarlijke aanval.',

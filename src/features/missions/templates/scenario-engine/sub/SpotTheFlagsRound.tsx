@@ -1,6 +1,7 @@
 import React from 'react';
 import { Check, X, Paperclip, Link2 } from 'lucide-react';
 import type { ScenarioItem, ScenarioRound } from '../types';
+import { RoundInstruction } from './RoundInstruction';
 
 const FONT = "'Outfit', system-ui, sans-serif";
 
@@ -160,12 +161,11 @@ export const SpotTheFlagsRound: React.FC<Props> = ({ round, selections, submitte
     return (
         <>
             {!submitted && (
-                <p
-                    className="text-[10px] font-black text-duck-ink/70 uppercase tracking-widest mt-4"
-                    style={{ fontFamily: FONT }}
-                >
-                    {instruction}
-                </p>
+                <RoundInstruction
+                    icon="🔍"
+                    action={instruction}
+                    hint="Tik op een onderdeel om het te markeren. Nog een keer tikken maakt het ongedaan."
+                />
             )}
 
             {frame && (
