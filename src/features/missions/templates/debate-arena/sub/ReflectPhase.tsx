@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { ArrowLeft, Sparkles, Trophy } from 'lucide-react';
 import type { DebateArenaConfig, DebateArenaState } from '../DebateArena';
 import { isMeaningfulAnswer } from '../../shared/answerQuality';
@@ -13,6 +13,7 @@ export interface ReflectPhaseProps {
 }
 
 export const ReflectPhase: React.FC<ReflectPhaseProps> = ({ config, state, onUpdateAnswer, onSelectFinalPosition, onNext, onBack }) => {
+    const [attemptedContinue, setAttemptedContinue] = useState(false);
     const allAnswered = config.reflectionQuestions.every(
         (q) => isMeaningfulAnswer(state.reflectionAnswers[q] ?? '')
     );
@@ -79,6 +80,7 @@ export const ReflectPhase: React.FC<ReflectPhaseProps> = ({ config, state, onUpd
                             <button
                                 key={pos.id}
                                 onClick={() => onSelectFinalPosition(pos.id)}
+                                aria-pressed={isSelected}
                                 className={`w-full text-left px-3 py-2.5 rounded-xl border transition-all text-sm ${
                                     isSelected
                                         ? 'border-duck-ink bg-duck-ink/10 font-bold text-duck-ink'
@@ -104,15 +106,22 @@ export const ReflectPhase: React.FC<ReflectPhaseProps> = ({ config, state, onUpd
                     <ArrowLeft size={16} />
                 </button>
                 <button
-                    onClick={onNext}
-                    disabled={!allAnswered}
-                    className="flex-1 py-3 bg-gradient-to-r from-duck-acid to-duck-acid hover:from-duck-acid hover:to-duck-acid text-duck-ink rounded-xl font-bold text-sm transition-all duration-200 active:scale-[0.98] disabled:opacity-40 flex items-center justify-center gap-2"
+                    onClick={() => {
+                        setAttemptedContinue(true);
+                        if (allAnswered) onNext();
+                    }}
+                    className="flex-1 py-3 bg-gradient-to-r from-duck-acid to-duck-acid hover:from-duck-acid hover:to-duck-acid text-duck-ink rounded-xl font-bold text-sm transition-all duration-200 active:scale-[0.98] flex items-center justify-center gap-2"
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                 >
                     Bekijk resultaat
                     <Trophy size={16} />
                 </button>
             </div>
+            {attemptedContinue && !allAnswered && (
+                <p role="alert" className="mt-2 text-center text-xs font-semibold text-duck-ink" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                    Beantwoord beide reflectievragen met een volledige uitleg voordat je het resultaat bekijkt.
+                </p>
+            )}
         </div>
     );
 };

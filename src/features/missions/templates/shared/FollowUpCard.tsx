@@ -23,6 +23,7 @@ interface FollowUpCardProps {
 
 export const FollowUpCard: React.FC<FollowUpCardProps> = ({ followUp, onComplete, onAnswer, theme = 'light', scoreWeight = 0 }) => {
     const [selected, setSelected] = useState<number | null>(null);
+    const [hasRetried, setHasRetried] = useState(false);
     const answered = selected !== null;
     const correct = selected === followUp.correctIndex;
 
@@ -39,6 +40,7 @@ export const FollowUpCard: React.FC<FollowUpCardProps> = ({ followUp, onComplete
         : {};
 
     const continueRef = useRef<HTMLButtonElement>(null);
+    const firstOptionRef = useRef<HTMLButtonElement>(null);
 
     const handleSelect = (index: number) => {
         if (answered) return;
@@ -49,8 +51,12 @@ export const FollowUpCard: React.FC<FollowUpCardProps> = ({ followUp, onComplete
     // De gekozen knop wordt disabled, dus de focus zou naar <body> vallen. Zet hem
     // op 'Doorgaan' zodat toetsenbord- en schermlezergebruikers verder kunnen.
     useEffect(() => {
-        if (answered) continueRef.current?.focus();
-    }, [answered]);
+        if (answered) {
+            continueRef.current?.focus();
+        } else if (hasRetried) {
+            firstOptionRef.current?.focus();
+        }
+    }, [answered, hasRetried]);
 
     return (
         <motion.div
@@ -106,6 +112,7 @@ export const FollowUpCard: React.FC<FollowUpCardProps> = ({ followUp, onComplete
                     return (
                         <button
                             key={i}
+                            ref={i === 0 ? firstOptionRef : undefined}
                             data-qa="followup-option"
                             data-followup-option-index={i}
                             onClick={() => handleSelect(i)}
@@ -137,6 +144,11 @@ export const FollowUpCard: React.FC<FollowUpCardProps> = ({ followUp, onComplete
                         style={fontBody}
                     >
                         {correct ? '✓ Goed!' : '✕ Niet helemaal.'} {followUp.explanation}
+                        {hasRetried && (
+                            <span className="block mt-1 font-semibold">
+                                Deze tweede poging is om te oefenen; de bonus blijft gebaseerd op je eerste keuze.
+                            </span>
+                        )}
                     </div>
                     <button
                         ref={continueRef}
@@ -151,6 +163,20 @@ export const FollowUpCard: React.FC<FollowUpCardProps> = ({ followUp, onComplete
                     >
                         {isLight ? 'Doorgaan →' : 'DOORGAAN →'}
                     </button>
+                    {!correct && (
+                        <button
+                            type="button"
+                            onClick={() => { setHasRetried(true); setSelected(null); }}
+                            className={`min-h-[44px] w-full rounded-full border-2 py-2.5 text-xs font-bold transition-all ${
+                                isLight
+                                    ? 'border-duck-gray bg-white text-duck-ink hover:border-duck-acid'
+                                    : 'border-white/20 bg-duck-ink text-white hover:border-duck-acid'
+                            }`}
+                            style={fontBody}
+                        >
+                            Opnieuw kiezen
+                        </button>
+                    )}
                 </motion.div>
             )}
         </motion.div>

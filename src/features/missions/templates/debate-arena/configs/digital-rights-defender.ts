@@ -44,7 +44,7 @@ const config: DebateArenaConfig = {
             emoji: '⚖️',
             role: 'Privacy-expert',
             perspective:
-                'De AVG (= de Europese privacywet) schrijft voor dat scholen een goede, wettelijk toegestane reden nodig hebben voor elke gegevensverzameling. Toestemming van minderjarigen is problematisch — ouders moeten toestemmen, maar ook die toestemming is niet vrij als het om toegang tot onderwijs gaat. Scholen zijn verplicht een DPIA (= een verplichte privacy-check) uit te voeren voor dit soort apps.',
+                'De AVG (= de Europese privacywet) vraagt om een passende wettelijke grondslag, noodzakelijkheid en evenredigheid voor gegevensverzameling. Een school gebruikt voor haar onderwijstaak niet automatisch toestemming van iedere leerling; als toestemming wél de grondslag is, gelden extra regels voor kinderen en jongeren. Een DPIA (= privacyrisico-check) kan nodig zijn als een app waarschijnlijk een hoog risico voor leerlingen oplevert.',
             keyArgument:
                 'Dataverzameling mag alleen als het noodzakelijk is, proportioneel is en de betrokkene het weet. Aan alle drie de eisen moet worden voldaan.',
         },
@@ -68,7 +68,7 @@ const config: DebateArenaConfig = {
         {
             id: 'toestemming',
             label: 'Altijd expliciete toestemming',
-            description: 'Scholen mogen data verzamelen, maar leerlingen en ouders moeten vooraf expliciet en geïnformeerd toestemming geven voor elk doel.',
+            description: 'Toestemming is één mogelijke grondslag en moet vrij, specifiek, geïnformeerd en intrekbaar zijn; in een onderwijsrelatie is die vrijheid niet vanzelfsprekend.',
         },
         {
             id: 'reguleren',
@@ -90,21 +90,15 @@ const config: DebateArenaConfig = {
     maxScore: 100,
     badges: [
         {
-            minScore: 80,
+            minScore: 100,
             emoji: '🏆',
             title: 'Debatmeester',
             color: '#202023',
         },
         {
-            minScore: 60,
+            minScore: 83,
             emoji: '⚖️',
             title: 'Scherp Denker',
-            color: '#202023',
-        },
-        {
-            minScore: 40,
-            emoji: '💬',
-            title: 'Goed Bezig',
             color: '#202023',
         },
         {
@@ -115,10 +109,11 @@ const config: DebateArenaConfig = {
         },
     ],
     takeaways: [
-        'De AVG geeft jou als leerling het recht op inzage, correctie en verwijdering van jouw data.',
-        'Toestemming is niet vrij als afwijzing toegang tot onderwijs kost.',
-        'Verzamel alleen wat noodzakelijk is — de wet (AVG) verplicht scholen daartoe.',
+        'Je hebt rechten zoals inzage, rectificatie en — onder voorwaarden — verwijdering van jouw gegevens.',
+        'Een school moet de juiste wettelijke grondslag en noodzaak kunnen uitleggen; toestemming is niet automatisch de oplossing.',
+        'Verzamel niet meer dan noodzakelijk en leg doel en bewaartermijn uit.',
         'Scholen zijn wettelijk verantwoordelijk voor hoe ze leerlinggegevens bewaren en gebruiken.',
+        'Let op: dit is een leeruitleg, geen juridisch advies; school en FG beoordelen de concrete situatie.',
     ],
 };
 

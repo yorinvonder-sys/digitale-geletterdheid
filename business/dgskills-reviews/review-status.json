@@ -130,12 +130,14 @@
       "interactivity": 0,
       "total": 7
     },
-    "lastReviewed": "2026-06-26",
+    "lastReviewed": "2026-08-08",
     "reviewStatus": "blocked",
-    "reportPath": "business/dgskills-reviews/wave-3a-2026-06-26.md",
+    "reportPath": "business/dgskills-reviews/ai-ethicus-2026-08-08.md",
     "autoFixesApplied": 0,
     "openEscalations": [
-      "argumentPrompts wat minimaal als scaffolding voor 14-jarigen — optioneel didactisch"
+      "J2P4: DebateArena minimumscore circa 83 maakt lagere badge-niveaus onbereikbaar",
+      "J2P4: same-question recovery niet bewezen; interne-browser evidence validator BLOCKED",
+      "J2P4: chatRoleId/enableChat geregistreerd maar niet gerenderd"
     ],
     "codexVerdict": null,
     "reviewScores": {
@@ -148,7 +150,7 @@
     "topIssues": [
       "geen defecten; sterkste van de wave"
     ],
-    "statusNote": "normalisatie 2026-07-01 (run wave 4+): wacht op Yorin-beslissing over openEscalations"
+    "statusNote": "J2P4 batch 2026-08-08: lokale vier-viewportflow compleet; productie/auth/cleanup niet bewezen"
   },
   {
     "missionId": "ai-spiegel",
@@ -1073,13 +1075,14 @@
       "interactivity": 0,
       "total": 7
     },
-    "lastReviewed": "2026-06-26",
+    "lastReviewed": "2026-08-08",
     "reviewStatus": "blocked",
-    "reportPath": "business/dgskills-reviews/wave-3b-2026-06-26.md",
+    "reportPath": "business/dgskills-reviews/digital-rights-defender-2026-08-08.md",
     "autoFixesApplied": 0,
     "openEscalations": [
-      "argumentPrompts dood veld (gedeelde debate-engine)",
-      "4 badges met identieke kleur #202023 — geen visueel niveau-onderscheid (ontwerpkeuze)"
+      "J2P4 HIGH: privacy-manifest/actieplan ontbreekt in zichtbare flow",
+      "J2P4 HIGH: minimumscore circa 83 maakt lagere badge-niveaus onbereikbaar",
+      "J2P4 MEDIUM: juristvalidatie nodig voor categorische AVG-/toestemmingstekst"
     ],
     "codexVerdict": null,
     "reviewScores": {
@@ -1092,7 +1095,7 @@
     "topIssues": [
       "geen defecten; sterke missie"
     ],
-    "statusNote": "normalisatie 2026-07-01 (run wave 4+): wacht op Yorin-beslissing over openEscalations"
+    "statusNote": "J2P4 batch 2026-08-08: lokale vier-viewportflow compleet; productie/auth/cleanup niet bewezen"
   },
   {
     "missionId": "digital-storyteller",
@@ -1167,12 +1170,17 @@
       "interactivity": 0,
       "total": 3
     },
-    "lastReviewed": "2026-07-02",
-    "reviewStatus": "fixed",
-    "reportPath": "business/dgskills-reviews/eindproject-j2-2026-07-02.md",
+    "lastReviewed": "2026-08-08",
+    "reviewStatus": "blocked",
+    "reportPath": "business/dgskills-reviews/eindproject-j2-2026-08-08.md",
     "autoFixesApplied": 2,
-    "openEscalations": [],
-    "codexVerdict": "ALLOW",
+    "openEscalations": [
+      "J2P4 HIGH: capstoneflow bevat geen plan/product/presentatie",
+      "J2P4 HIGH: 65%-doel versus 40%-completion callback",
+      "J2P4 HIGH kandidaat: clearSave vóór durable completion",
+      "J2P4 MEDIUM/HIGH: q7-correct antwoord niet datagedragen"
+    ],
+    "codexVerdict": "BLOCK",
     "escalationCount": 0,
     "reviewScores": {
       "uiux": 8.5,
@@ -1180,7 +1188,7 @@
       "tech": 6.5
     },
     "triageScore": 1.9,
-    "statusNote": "wave 15: q2-vraagtekst 5->6 (dataset+uitleg zeggen 6) + maxScore 100->85 (som punten=85; topbadge 85 = perfecte run, conventie); alle 16 eindcijfers nagerekend",
+    "statusNote": "J2P4 batch 2026-08-08: capstoneflow/65%-doel/40%-callback en q7 blijven open; productie niet bewezen",
     "verdict": "fix-eerst"
   },
   {
@@ -1275,13 +1283,14 @@
       "interactivity": 0,
       "total": 7
     },
-    "lastReviewed": "2026-06-26",
+    "lastReviewed": "2026-08-08",
     "reviewStatus": "blocked",
-    "reportPath": "business/dgskills-reviews/wave-3b-2026-06-26.md",
+    "reportPath": "business/dgskills-reviews/future-forecaster-2026-08-08.md",
     "autoFixesApplied": 0,
     "openEscalations": [
-      "argumentPrompts dood veld (gedeelde debate-engine)",
-      "NB reviewer-melding maxScore was vals alarm (rekenfout: componenten = 100 = maxScore)"
+      "J2P4 HIGH: trendanalyse/scenario/presentatie ontbreken in zichtbare flow",
+      "J2P4 HIGH: DebateArena minimumscore circa 83 maakt lagere badges onbereikbaar",
+      "J2P4 MEDIUM: chatRoleId/enableChat geregistreerd maar niet gerenderd"
     ],
     "codexVerdict": null,
     "reviewScores": {
@@ -1294,7 +1303,7 @@
     "topIssues": [
       "argumentPrompts dood veld [ESCALATIE — shared-engine]"
     ],
-    "statusNote": "normalisatie 2026-07-01 (run wave 4+): wacht op Yorin-beslissing over openEscalations"
+    "statusNote": "J2P4 batch 2026-08-08: lokale vier-viewportflow compleet; productie/auth/cleanup niet bewezen"
   },
   {
     "missionId": "game-director",
@@ -2614,13 +2623,15 @@
       "interactivity": 0,
       "total": 3
     },
-    "lastReviewed": "2026-07-02",
+    "lastReviewed": "2026-08-08",
     "reviewStatus": "blocked",
-    "reportPath": "business/dgskills-reviews/sustainability-scanner-2026-07-02.md",
+    "reportPath": "business/dgskills-reviews/sustainability-scanner-2026-08-08.md",
     "autoFixesApplied": 2,
     "openEscalations": [
-      "ai-endpoint (HOOG, gate-vondst): de ECHTE coach-prompt staat server-side in supabase/functions/_shared/systemInstructions.ts:74 en beschrijft nog de oude duurzaamheids-/milieu-coach (SLO 23C/23B) — client-tekst is slechts fallback; server-bestand valt buiten auto-fix-scope (edge function), Yorin/dgskills-supabase-edge moet de server-entry gelijktrekken of de rol uitschakelen",
-      "identiteit: naam/icoon ('sustainability', blad-icoon) suggereren duurzaamheid maar de content gaat volledig over digitale-mediaconsumptie-trends, zonder ethiekcomponent in een 'Ethiek & Maatschappij'-periode — hernoem-/plaatsingskeuze (icoon-swap-voorstel in rapport; id-hernoemen raakt 8+ bestanden)"
+      "J2P4 HIGH: 65%-doel versus 40%-completion callback",
+      "J2P4 HIGH kandidaat: clearSave vóór durable completion",
+      "J2P4 MEDIUM: duurzaamheidsidentiteit wordt niet door content gedragen",
+      "J2P4 BLOCKED: same-question recovery niet bewezen"
     ],
     "codexVerdict": "BLOCK",
     "escalationCount": 2,
@@ -2630,7 +2641,7 @@
       "tech": 8
     },
     "triageScore": 3.1,
-    "statusNote": "wave 16 (rapport hersteld na sessielimiet): coach-tekst SLO 21C/22A -> 23C conform mapping + q8 participatiepunten 0->10 (som=100, 6e geval); briefing-asset -> platform-lijst; gate-BLOCK: client-fix onvolledig omdat server-side prompt leidend is (edge function = escalatie per harde regel)",
+    "statusNote": "J2P4 batch 2026-08-08: lokale vier-viewportflow compleet; completion/autosave/recovery en productie niet bewezen",
     "verdict": "fix-eerst"
   },
   {
@@ -2644,13 +2655,15 @@
       "interactivity": 0,
       "total": 8
     },
-    "lastReviewed": "2026-06-26",
+    "lastReviewed": "2026-08-08",
     "reviewStatus": "blocked",
-    "reportPath": "business/dgskills-reviews/wave-3a-2026-06-26.md",
+    "reportPath": "business/dgskills-reviews/tech-court-2026-08-08.md",
     "autoFixesApplied": 0,
     "openEscalations": [
-      "argumentPrompts wordt door debate-engine niet gebruikt (dood veld over alle debate-configs) — gedeelde-engine",
-      "SLO alleen 23C; 21D (AI) verdedigbaar — curator-afweging (mapping read-only)"
+      "J2P4 HIGH: rechtbankrol/vonnis ontbreken in zichtbare flow",
+      "J2P4 HIGH kandidaat: stakeholder-attributie is niet gated",
+      "J2P4 MEDIUM: minimumscore circa 83 maakt lagere badges onbereikbaar",
+      "J2P4 MEDIUM: selected-state zonder semantische a11y"
     ],
     "codexVerdict": null,
     "reviewScores": {
@@ -2664,7 +2677,7 @@
       "reviewer-claim 'ontbrekende chat-rol' ONJUIST — rol in year2.tsx:2264",
       "argumentPrompts dood veld [ESCALATIE — shared-engine]"
     ],
-    "statusNote": "normalisatie 2026-07-01 (run wave 4+): wacht op Yorin-beslissing over openEscalations"
+    "statusNote": "J2P4 batch 2026-08-08: lokale vier-viewportflow compleet; productie/auth/cleanup niet bewezen"
   },
   {
     "missionId": "tech-impact-analyst",

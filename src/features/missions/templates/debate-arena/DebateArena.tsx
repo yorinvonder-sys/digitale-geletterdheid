@@ -112,7 +112,7 @@ function calcScore(state: DebateArenaState, config: DebateArenaConfig): number {
 
     // Arguments: 20 pts each, max 3
     const validArgs = state.arguments.filter(
-        (a) => isMeaningfulAnswer(a.claim) && isMeaningfulAnswer(a.evidence)
+        (a) => isMeaningfulAnswer(a.claim) && isMeaningfulAnswer(a.evidence) && Boolean(a.stakeholderId)
     );
     score += Math.round((Math.min(validArgs.length, 3) / 3) * argumentMax);
 
@@ -189,7 +189,7 @@ const DebateArenaInner: React.FC<DebateArenaProps> = ({ config, onBack, onComple
         const phases = [
             { icon: '👥', title: 'Stakeholders gelezen', score: state.stakeholdersRead.length >= config.stakeholders.length ? 10 : 0, max: 10 },
             { icon: '📍', title: 'Positie gekozen', score: state.selectedPosition ? 10 : 0, max: 10 },
-            { icon: '💬', title: 'Argumenten gebouwd', score: Math.round((Math.min(state.arguments.filter(a => isMeaningfulAnswer(a.claim) && isMeaningfulAnswer(a.evidence)).length, 3) / 3) * 50), max: 50 },
+            { icon: '💬', title: 'Argumenten gebouwd', score: Math.round((Math.min(state.arguments.filter(a => isMeaningfulAnswer(a.claim) && isMeaningfulAnswer(a.evidence) && Boolean(a.stakeholderId)).length, 3) / 3) * 50), max: 50 },
             { icon: '⚡', title: 'Tegenargument beantwoord', score: isMeaningfulAnswer(state.counterResponse) ? 10 : 0, max: 10 },
             { icon: '🪞', title: 'Gereflecteerd', score: config.reflectionQuestions.filter(q => isMeaningfulAnswer(state.reflectionAnswers[q] ?? '')).length * 10, max: config.reflectionQuestions.length * 10 },
         ];

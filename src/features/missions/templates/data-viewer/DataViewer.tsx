@@ -326,6 +326,7 @@ interface QuestionCardProps {
     onTextObservation: (id: string, value: string) => void;
     onConfidence: (id: string, level: 1 | 2 | 3) => void;
     onSubmit: (id: string) => void;
+    onRetry: (id: string) => void;
 }
 
 const QuestionCard: React.FC<QuestionCardProps> = ({
@@ -338,6 +339,7 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
     onTextObservation,
     onConfidence,
     onSubmit,
+    onRetry,
 }) => {
     const isSubmitted = submitted[q.id];
     const correct = isSubmitted ? isCorrect(q, answers) : null;
@@ -358,6 +360,9 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
     const positiveFeedback = q.type === 'text-observation'
         ? (observationScore ?? 0) > 0
         : correct === true;
+    const canRetry = q.type === 'text-observation'
+        ? observationScore !== null && observationScore < q.points
+        : correct === false;
     const lengthOk = q.type === 'text-observation' && meetsObservationLength(q, observation, minWords);
     const submitDisabled = q.type === 'text-observation'
         ? !lengthOk
@@ -520,6 +525,16 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
                         >
                             {q.explanation}
                         </p>
+                        {canRetry && (
+                            <button
+                                type="button"
+                                onClick={() => onRetry(q.id)}
+                                className="mt-2 min-h-[44px] w-full rounded-xl border border-duck-ink/25 bg-white px-3 py-2 text-xs font-bold text-duck-ink hover:bg-duck-bg"
+                                style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
+                            >
+                                Opnieuw proberen
+                            </button>
+                        )}
                         {/* Kalibratie: alleen waar goed/fout eenduidig is, dus niet bij observaties */}
                         {q.type !== 'text-observation' && (
                             <ConfidenceFeedback confidence={confidence} correct={correct === true} className="mt-1" />
@@ -544,6 +559,7 @@ interface DatasetViewProps {
     onTextObservation: (id: string, value: string) => void;
     onConfidence: (id: string, level: 1 | 2 | 3) => void;
     onSubmit: (id: string) => void;
+    onRetry: (id: string) => void;
     onFollowUpAnswer: (datasetId: string, correct: boolean) => void;
     onFollowUpComplete: (datasetId: string, correct: boolean) => void;
     allSubmitted: boolean;
@@ -564,6 +580,7 @@ const DatasetView: React.FC<DatasetViewProps> = ({
     onTextObservation,
     onConfidence,
     onSubmit,
+    onRetry,
     onFollowUpAnswer,
     onFollowUpComplete,
     allSubmitted,
@@ -669,6 +686,7 @@ const DatasetView: React.FC<DatasetViewProps> = ({
                     onTextObservation={onTextObservation}
                     onConfidence={onConfidence}
                     onSubmit={onSubmit}
+                    onRetry={onRetry}
                 />
             ))}
         </div>
@@ -877,6 +895,13 @@ const DataViewerInner: React.FC<DataViewerProps> = ({
         });
     };
 
+    const handleRetryQuestion = (id: string) => {
+        setState(prev => ({
+            ...prev,
+            submitted: { ...prev.submitted, [id]: false },
+        }));
+    };
+
     const currentDs = config.datasets[currentDataset];
     const allQuestionsSubmitted =
         currentDs?.questions.every(q => submitted[q.id]) ?? false;
@@ -897,10 +922,36 @@ const DataViewerInner: React.FC<DataViewerProps> = ({
         }
     };
 
-    const handleComplete = () => {
-        clearSave();
+    const missionGoal = config.missionGoal ?? getMissionGoal(missionId);
+    const completionThreshold = missionGoal?.criteria.type === 'score-threshold'
+        ? (missionGoal.criteria.threshold ?? 65) / 100
+        : 0.65;
+
+    const handleComplete = async () => {
         // maxScore 0 zou met een kale vergelijking altijd "gehaald" opleveren.
-        onComplete(config.maxScore > 0 && totalScore / config.maxScore >= 0.4);
+        const success = config.maxScore > 0 && totalScore / config.maxScore >= completionThreshold;
+        // An unsuccessful result is not a durable completion. Keep the learner
+        // inside the mission so the result screen offers a real retry route;
+        // calling the shell callback with false would otherwise close the mission.
+        if (!success) return;
+        const completed = await onComplete(success);
+        // Bewaar de antwoorden tot de durable completion-call gelukt is. Bij een
+        // netwerk/RPC-fout of een niet-gehaalde drempel moet de leerling opnieuw
+        // kunnen proberen zonder werkverlies. `onComplete(false)` sluit de preview,
+        // maar is geen durable completion.
+        if (success && completed !== false) clearSave();
+    };
+
+    const handleRetryMission = () => {
+        setState(prev => ({
+            ...prev,
+            phase: 'explore',
+            currentDataset: 0,
+            submitted: {},
+            followUpAnswered: {},
+            followUpCorrect: {},
+        }));
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     };
 
     // Phase breakdown for CompletionScreen
@@ -924,7 +975,7 @@ const DataViewerInner: React.FC<DataViewerProps> = ({
                 emoji={config.introEmoji}
                 title={config.introTitle}
                 description={config.introDescription}
-                goal={config.missionGoal ?? getMissionGoal(config.missionId)}
+                goal={missionGoal}
                 features={config.introFeatures}
                 onStart={() => setState(prev => ({ ...prev, phase: 'explore' }))}
             />
@@ -939,7 +990,9 @@ const DataViewerInner: React.FC<DataViewerProps> = ({
                 badges={config.badges}
                 phases={phaseScores}
                 takeaways={config.takeaways}
+                passThreshold={completionThreshold}
                 onComplete={handleComplete}
+                onRetry={handleRetryMission}
             />
         );
     }
@@ -997,6 +1050,7 @@ const DataViewerInner: React.FC<DataViewerProps> = ({
                     onTextObservation={handleTextObservation}
                     onConfidence={handleConfidence}
                     onSubmit={handleSubmitQuestion}
+                    onRetry={handleRetryQuestion}
                     onFollowUpAnswer={handleFollowUpAnswer}
                     onFollowUpComplete={handleFollowUpComplete}
                     allSubmitted={allQuestionsSubmitted}

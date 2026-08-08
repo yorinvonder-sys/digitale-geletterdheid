@@ -90,21 +90,15 @@ const config: DebateArenaConfig = {
     maxScore: 100,
     badges: [
         {
-            minScore: 80,
+            minScore: 100,
             emoji: '🏆',
             title: 'Debatmeester',
             color: '#202023',
         },
         {
-            minScore: 60,
+            minScore: 83,
             emoji: '⚖️',
             title: 'Scherp Denker',
-            color: '#202023',
-        },
-        {
-            minScore: 40,
-            emoji: '💬',
-            title: 'Goed Bezig',
             color: '#202023',
         },
         {

@@ -1,0 +1,35 @@
+{
+  "schemaVersion": 1,
+  "batch": "j2p4-2026-08-08",
+  "testedCommit": "d157905851f22842a8b9bf5c40ff16b29cdf907c",
+  "originMainAtFinalGate": "554df430e8414c61877e5fa44c58c42a6da8af6e",
+  "linear": {"issue": "DGS-68", "status": "Backlog", "dependency": "DGS-67 Done", "override": false},
+  "missions": [
+    "ai-ethicus",
+    "digital-rights-defender",
+    "tech-court",
+    "future-forecaster",
+    "sustainability-scanner",
+    "eindproject-j2"
+  ],
+  "engines": {"debate-arena": 4, "data-viewer": 2},
+  "browser": "Internal Codex browser",
+  "viewports": ["1440x900", "820x1180", "1180x820", "390x844"],
+  "captures": {"count": 96, "states": ["intro", "mid-flow", "feedback-state", "end"], "productionMutations": 0, "xpMutations": 0, "debateContentFeedbackProven": false},
+  "preflight": {"contextBudget": "PASS", "doctor": "PASS", "buildProd": "PASS_WITH_MISSING_SUPABASE_ENV_WARNING", "qaAccountSelfTest": "PASS"},
+  "claudeSidecar": {"available": true, "version": "2.1.226", "exitCode": 0, "sanitized": true, "decisionOwner": "Sol"},
+  "productionProof": false,
+  "cleanupProof": false,
+  "recoveryProof": false,
+  "validatorSummary": {"debateMissions": {"feedbackMissesPerViewport": 1, "recoveryMissesPerViewport": 1}, "dataMissions": {"feedbackMissesPerViewport": 0, "recoveryMissesPerViewport": 1}},
+  "ipadSafariProof": false,
+  "result": "BLOCKED",
+  "evidenceRoot": "screenshots/mission-audit/batches/j2p4-2026-08-08/d157905851f22842a8b9bf5c40ff16b29cdf907c",
+  "limitations": [
+    "Same-question recovery ontbreekt in de zichtbare flow; validator faalt daarom op recovery per viewport.",
+    "Bij de vier DebateArena-missies is inhoudelijke foutfeedback niet bewezen; de capture toont alleen een disabled CTA.",
+    "Productie/auth/progress/XP/Supabase/cleanup niet uitgevoerd.",
+    "Echte iPad-check nodig; fysieke Safari is niet getest.",
+    "Lokale previewconsole meldt ontbrekende VITE_SUPABASE_URL en VITE_SUPABASE_ANON_KEY."
+  ]
+}

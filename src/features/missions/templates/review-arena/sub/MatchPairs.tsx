@@ -70,8 +70,10 @@ export const MatchPairs: React.FC<MatchPairsProps> = ({
         if (wrongTimer.current) clearTimeout(wrongTimer.current);
     }, []);
 
-    const scoreFor = (wrong: number) =>
-        Math.max(0, Math.round(((pairs.length - Math.min(wrong, pairs.length)) / pairs.length) * maxScore));
+    const scoreFor = (wrong: number) => {
+        const penalty = Math.min(wrong, pairs.length);
+        return Math.max(0, Math.round(((pairs.length - penalty) / pairs.length) * maxScore));
+    };
 
     const handleLeftClick = (id: number) => {
         if (matched.has(id) || done) return;

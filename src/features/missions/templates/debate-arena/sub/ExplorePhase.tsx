@@ -41,6 +41,7 @@ export const ExplorePhase: React.FC<ExplorePhaseProps> = ({ config, state, onMar
                         <button
                             key={sh.id}
                             onClick={() => onSetActiveIndex(i)}
+                            aria-pressed={isActive}
                             className={`shrink-0 flex flex-col items-center gap-1 px-3 py-2 rounded-xl border transition-all duration-200 ${
                                 isActive
                                     ? 'border-duck-ink bg-duck-ink/10'

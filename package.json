@@ -4,6 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
+    "test": "npm run test:ai-students:unit",
     "dev": "vite",
     "build": "node scripts/check-env.mjs && vite build && node scripts/prerender.mjs",
     "capture:product": "node scripts/capture-product-shots.mjs",
