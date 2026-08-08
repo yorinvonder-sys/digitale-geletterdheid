@@ -69,6 +69,34 @@ export const cleanInstructionText = (text: string): string => {
 };
 
 /**
+ * Haalt interne markeringen uit een modelantwoord vóór het aan de leerling wordt
+ * getoond.
+ *
+ * De gedeelde systeeminstructie draagt het model twee markeringen op:
+ * `---STEP_COMPLETE:X---` bij een voltooide stap, en `---TIPS---` aan het eind van
+ * ELK bericht, gevolgd door drie korte tips. In de oude AiLab-route worden allebei
+ * verwerkt: `useAgentLogic` knipt de tips eruit en toont ze als klikbare
+ * suggesties, en `parseAndUpdateSteps` haalt de stapmarkering weg. De leerlingchat
+ * van de sjabloon-opdrachten rendert het antwoord rechtstreeks, dus daar stonden
+ * beide markeringen letterlijk in beeld — bij `---TIPS---` zelfs bij elk bericht.
+ *
+ * De stapmarkering verdwijnt volledig: die zegt een leerling niets. De tips blijven
+ * staan, want die zijn voor hem bedoeld; alleen de markering wordt een kop.
+ *
+ * Bewust smaller dan `cleanInstructionText`: die verwijdert ook `[TITLE]`- en
+ * `[PAGE]`-tags, en juist de webbouw-opdrachten leren leerlingen wat zulke tags
+ * zijn. Daar zou de brede opschoner lesinhoud weghalen.
+ */
+export const stripInternalMarkers = (text: string): string => {
+  if (!text) return text;
+  return text
+    .replace(/\s*---STEP_COMPLETE:\d+---\s*/g, '\n')
+    .replace(/\s*---TIPS---\s*/g, '\n\n**Tips**\n')
+    .replace(/\n{3,}/g, '\n\n')
+    .trim();
+};
+
+/**
  * Check if a message is purely an internal instruction (should be hidden entirely)
  */
 export const isInternalInstruction = (text: string): boolean => {

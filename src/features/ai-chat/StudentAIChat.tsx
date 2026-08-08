@@ -4,6 +4,7 @@ import { useStudentAssistant } from '@/hooks/useStudentAssistant';
 import { MarkdownRenderer } from '@/components/ui/MarkdownRenderer';
 import { AiDisclosureBadge } from '@/features/ai-chat/AiDisclosureBadge';
 import { WellbeingAlert } from '@/features/student/WellbeingAlert';
+import { stripInternalMarkers } from '@/features/ai-chat/instructionText';
 import type { ChatMessage } from '@/types';
 
 /** Context data passed to AI for better responses */
@@ -257,7 +258,7 @@ export const StudentAIChat: React.FC<StudentAIChatProps> = ({ userIdentifier, co
                                 >
                                     {msg.role === 'model' ? (
                                         <div className="prose prose-sm max-w-none prose-p:my-1 prose-headings:my-2">
-                                            <MarkdownRenderer>{msg.text}</MarkdownRenderer>
+                                            <MarkdownRenderer>{stripInternalMarkers(msg.text)}</MarkdownRenderer>
                                             <AiDisclosureBadge compact className="mt-2" />
                                         </div>
                                     ) : (

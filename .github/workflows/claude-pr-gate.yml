@@ -68,6 +68,9 @@ jobs:
       - name: Agent-navigatiedocumenten
         run: npm run check:agent-docs
 
+      - name: Chat-markeringen blijven uit beeld
+        run: npm run check:chat-markers
+
       # De auditstap accepteert één tijdelijke uitzondering. Deze tests bewijzen
       # dat die uitzondering nog steeds smal is: een nieuwe advisory, een
       # onverwacht dependency-pad of een verstreken vervaldatum moet falen.

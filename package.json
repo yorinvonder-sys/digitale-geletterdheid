@@ -20,6 +20,7 @@
     "context:budget": "node scripts/context-budget.mjs",
     "context:check": "node scripts/context-budget.mjs --check",
     "check:agent-docs": "node scripts/check-agent-docs.mjs",
+    "check:chat-markers": "node scripts/check-student-chat-marker-hygiene.mjs",
     "lint": "echo 'Linting not configured'",
     "preview": "vite preview",
     "clean": "./scripts/cleanup_dev_env.sh",
