@@ -241,6 +241,11 @@ const ReviewArenaWithConfig: React.FC<ReviewArenaProps> = ({
     // vastgelegde score zonder dat de ronde hier is gespeeld, dan komt die uit
     // opslag: de ronde is dan al beantwoord en mag niet opnieuw scoren.
     const submittedThisSession = useRef<Set<string>>(new Set());
+    // React-state guards are not synchronous: a double click can invoke the same
+    // callback twice before showFollowUp/currentRound has re-rendered. These refs
+    // close that small window so one learner action can advance at most one round.
+    const completedRoundTransitions = useRef<Set<string>>(new Set());
+    const completedFollowUpTransitions = useRef<Set<string>>(new Set());
 
     const totalScore = state.roundScores.reduce((a, b) => a + b, 0);
 
@@ -342,9 +347,10 @@ const ReviewArenaWithConfig: React.FC<ReviewArenaProps> = ({
 
     const handleRoundComplete = useCallback(
         (score: number) => {
-            if (showFollowUp) return; // guard against a stray double invocation
             const round = config.rounds[state.currentRound];
             if (!round) return;
+            if (showFollowUp || completedRoundTransitions.current.has(round.id)) return;
+            completedRoundTransitions.current.add(round.id);
             // De vastgelegde score wint van wat het subcomponent bij het doorklikken
             // meegeeft; die twee zijn gelijk bij normaal spelen.
             const locked = state.lockedRoundScores[round.id];
@@ -379,9 +385,10 @@ const ReviewArenaWithConfig: React.FC<ReviewArenaProps> = ({
 
     const handleFollowUpComplete = useCallback(
         (correct: boolean) => {
-            if (!showFollowUp) return; // guard against a stray double invocation
             const round = config.rounds[state.currentRound];
             if (!round) return;
+            if (!showFollowUp || completedFollowUpTransitions.current.has(round.id)) return;
+            completedFollowUpTransitions.current.add(round.id);
             // Het vastgelegde antwoord wint: 'Doorgaan' mag geen tweede kans zijn.
             const settled = state.followUpResults[round.id]?.correct ?? correct;
             const finalScore = withFollowUpBonus(pendingScore ?? 0, settled, round);
