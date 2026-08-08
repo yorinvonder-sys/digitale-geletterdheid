@@ -8,13 +8,15 @@ export const QuestionCard: React.FC<{
     answer: string | number | undefined;
     submitted: boolean;
     confidence: 1 | 2 | 3 | undefined;
+    locked?: boolean;
     onAnswer: (val: string | number) => void;
     onSetConfidence: (level: 1 | 2 | 3) => void;
     onSubmit: () => void;
-}> = ({ question, answer, submitted, confidence, onAnswer, onSetConfidence, onSubmit }) => {
+}> = ({ question, answer, submitted, confidence, locked = false, onAnswer, onSetConfidence, onSubmit }) => {
     const isCorrect = submitted && answer === question.correctAnswer;
     const isWrong = submitted && answer !== question.correctAnswer;
     const showConfidenceWidget = !submitted && answer !== undefined && question.type === 'prediction' && question.showConfidence;
+    const submitDisabled = locked;
 
     return (
         <div
@@ -39,7 +41,7 @@ export const QuestionCard: React.FC<{
             </div>
 
             {/* Options */}
-            {question.options && (
+            {question.options ? (
                 <div className="space-y-1.5 mb-3">
                     {question.options.map((opt) => {
                         const isSelected = answer === opt;
@@ -51,6 +53,7 @@ export const QuestionCard: React.FC<{
                                 data-qa="simulation-answer"
                                 data-option-index={question.options?.indexOf(opt)}
                                 disabled={submitted}
+                                aria-pressed={isSelected}
                                 onClick={() => onAnswer(opt)}
                                 className={`min-h-[44px] w-full text-left px-3 py-2 rounded-lg text-xs transition-all duration-200 border flex items-center gap-2 ${
                                     isThisCorrect
@@ -70,6 +73,14 @@ export const QuestionCard: React.FC<{
                         );
                     })}
                 </div>
+            ) : (
+                <div
+                    className="flex items-start gap-2 mb-3 p-2 rounded-lg text-xs bg-duck-error/10 text-duck-ink"
+                    style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
+                >
+                    <XCircle size={12} className="mt-0.5 flex-shrink-0" />
+                    <span>Deze vraag mist antwoordopties — meld dit bij je docent.</span>
+                </div>
             )}
 
             {/* Confidence rating for prediction questions */}
@@ -81,21 +92,38 @@ export const QuestionCard: React.FC<{
 
             {/* Submit button */}
             {!submitted && answer !== undefined && (
-                <button
-                    data-qa="simulation-submit"
-                    onClick={onSubmit}
-                    className="min-h-[44px] w-full py-2 rounded-lg text-xs font-bold transition-all duration-200 active:scale-[0.98] bg-gradient-to-r from-duck-acid to-duck-acid text-duck-ink"
-                    style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
-                >
-                    Controleer antwoord
-                </button>
+                <>
+                    <button
+                        data-qa="simulation-submit"
+                        onClick={onSubmit}
+                        disabled={submitDisabled}
+                        className={`min-h-[44px] w-full py-2 rounded-lg text-xs font-bold transition-all duration-200 active:scale-[0.98] ${
+                            submitDisabled
+                                ? 'bg-duck-gray text-duck-ink/75 cursor-not-allowed'
+                                : 'bg-gradient-to-r from-duck-acid to-duck-acid text-duck-ink'
+                        }`}
+                        style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
+                    >
+                        Controleer antwoord
+                    </button>
+                    {locked && (
+                        <p
+                            className="text-xs text-duck-ink/75 text-center mt-2"
+                            style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
+                        >
+                            Speel eerst met de simulatie voordat je de vragen beantwoordt
+                        </p>
+                    )}
+                </>
             )}
 
             {/* Feedback */}
             {submitted && (
                 <div
+                    role="status"
+                    aria-live="polite"
                     className={`flex items-start gap-2 mt-2 p-2 rounded-lg text-xs ${
-                        isCorrect ? 'bg-duck-ink/10 text-duck-ink' : 'bg-duck-acid/10 text-duck-ink'
+                        isCorrect ? 'bg-duck-ink/10 text-duck-ink' : 'bg-duck-error/10 text-duck-ink'
                     }`}
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                 >

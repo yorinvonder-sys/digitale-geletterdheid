@@ -40,6 +40,7 @@ export const webDeveloperConfig: BuilderCanvasConfig = {
                 { id: 'secties', label: 'Ik heb de secties van de pagina gepland en benoemd' },
             ],
             textPrompt: 'Schrijf je HTML-structuur hier',
+            minTextLength: 150,
         },
         {
             id: 'css-layout',
@@ -48,7 +49,7 @@ export const webDeveloperConfig: BuilderCanvasConfig = {
                 'Een mooie website trekt bezoekers. CSS Flexbox en Grid (= manieren om content netjes te schikken) maken het mogelijk om elementen te rangschikken — ook op smartphones. Een galerij met dierenfoto\'s vraagt om een grid-layout.',
             instruction:
                 'Schrijf CSS voor: 1) een navigatiebalk die horizontaal uitlijnt met Flexbox, 2) een grid-galerij die 3 kolommen toont op desktop en 1 kolom op mobiel (gebruik media queries), 3) een kleurenschema dat past bij het thema "zorg voor dieren". Gebruik minimaal 3 verschillende CSS-eigenschappen.',
-            tip: 'Voor een responsieve grid gebruik je: `display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));`. Dit werkt automatisch op alle schermbreedtes.',
+            tip: 'Voor een responsieve grid gebruik je een media query: `.galerij { grid-template-columns: repeat(3, 1fr); } @media (max-width: 600px) { .galerij { grid-template-columns: 1fr; } }`. Zo toon je 3 kolommen op desktop en 1 kolom op mobiel.',
             checklistItems: [
                 { id: 'nav-flex', label: 'De navigatie gebruikt Flexbox voor horizontale uitlijning' },
                 { id: 'grid', label: 'De galerij gebruikt CSS Grid' },
@@ -56,6 +57,7 @@ export const webDeveloperConfig: BuilderCanvasConfig = {
                 { id: 'kleurenschema', label: 'Ik heb een consistent kleurenschema gekozen' },
             ],
             textPrompt: 'Schrijf je CSS-layout hier',
+            minTextLength: 150,
         },
         {
             id: 'javascript',
@@ -71,6 +73,7 @@ export const webDeveloperConfig: BuilderCanvasConfig = {
                 { id: 'sluitknop', label: 'Er is een sluitknop die de info weer verbergt' },
             ],
             textPrompt: 'Schrijf je JavaScript-functie hier',
+            minTextLength: 150,
         },
         {
             id: 'testen',
@@ -86,6 +89,7 @@ export const webDeveloperConfig: BuilderCanvasConfig = {
                 { id: 'debug', label: 'Ik heb uitgelegd hoe ik een niet-werkende JS-functie zou debuggen' },
             ],
             textPrompt: 'Schrijf je testplan en verbeteringen hier',
+            minTextLength: 200,
         },
     ],
     maxScore: 100,

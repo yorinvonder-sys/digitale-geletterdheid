@@ -474,6 +474,8 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
             {/* Feedback after submit */}
             {isSubmitted && (
                 <div
+                    role="status"
+                    aria-live="polite"
                     className={`rounded-xl p-3 flex items-start gap-2.5 ${
                         positiveFeedback
                             ? 'bg-duck-ink/10 border border-duck-ink/25'
@@ -792,7 +794,14 @@ const DataViewerInner: React.FC<DataViewerProps> = ({
         }
     })();
 
-    const { phase, currentDataset, answers, submitted, textObservations, confidences, followUpAnswered, followUpCorrect } = state;
+    const { phase, answers, submitted, textObservations, confidences, followUpAnswered, followUpCorrect } = state;
+    const currentDataset = Math.min(Math.max(state.currentDataset, 0), config.datasets.length - 1);
+
+    useEffect(() => {
+        if (state.currentDataset !== currentDataset) {
+            setState(prev => ({ ...prev, currentDataset }));
+        }
+    }, [state.currentDataset, currentDataset, setState]);
 
     const questionScore = config.datasets.flatMap(ds => ds.questions).reduce((sum, q) => {
         if (!submitted[q.id]) return sum;
@@ -890,7 +899,8 @@ const DataViewerInner: React.FC<DataViewerProps> = ({
 
     const handleComplete = () => {
         clearSave();
-        onComplete(true);
+        // maxScore 0 zou met een kale vergelijking altijd "gehaald" opleveren.
+        onComplete(config.maxScore > 0 && totalScore / config.maxScore >= 0.4);
     };
 
     // Phase breakdown for CompletionScreen

@@ -63,12 +63,13 @@ export const MISSION_GOALS: Record<string, MissionGoal> = {
         evidence: 'Het document heeft duidelijke koppen, consistente tekst en betere plaatsing van beeld.',
     },
     'pitch-police': {
-        primaryGoal: 'Ik beoordeel en verbeter slides op rust, contrast en duidelijke boodschap.',
+        primaryGoal: 'Ik herken veelvoorkomende slideproblemen en kies per slide een passende verbetering.',
         criteria: {
             type: 'component-complete',
-            description: 'Je spoort slideproblemen op en past verbeteringen toe.',
+            min: 8,
+            description: 'Je kiest voor alle acht slides een passende oplossing en ziet de verbeterde slides.',
         },
-        evidence: 'Je kunt per verbeterde slide noemen wat rustiger, leesbaarder of sterker is geworden.',
+        evidence: 'Alle acht slides zijn verbeterd met keuzes voor minder tekst, beter contrast, meer rust, passend beeld, leesbare tekst, juiste verhoudingen, correcte spelling en een heldere grafiek.',
     },
     'prompt-master': {
         primaryGoal: 'Ik schrijf prompts die steeds beter worden doordat ik context, vorm en duidelijke eisen toevoeg.',
@@ -166,12 +167,12 @@ export const MISSION_GOALS: Record<string, MissionGoal> = {
         evidence: 'Je eindstandpunt bevat minimaal twee argumenten en een reflectie op je eigen gedrag.',
     },
     'notificatie-ninja': {
-        primaryGoal: 'Ik herken hoe notificaties mijn aandacht sturen en kies bewuste instellingen.',
+        primaryGoal: 'Ik herken hoe notificaties mijn aandacht sturen en selecteer instellingen die afleiding verminderen.',
         criteria: {
             type: 'rounds-complete',
             description: 'Je analyseert aandachtstrekkers, rangschikt meldingen en kiest verbeteracties.',
         },
-        evidence: 'Je benoemt minimaal twee notificatie-instellingen of gewoontes die je bewuster maakt.',
+        evidence: 'Je selecteert minimaal twee effectieve notificatie-instellingen of gewoontes en herkent welke meldingen vooral de app helpen.',
     },
     'review-week-2': {
         primaryGoal: 'Ik beoordeel AI- en codevoorbeelden kritisch en herken wat beter moet.',

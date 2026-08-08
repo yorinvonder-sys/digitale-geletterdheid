@@ -4147,7 +4147,7 @@ KERNIDEE:
 Elke website is gebouwd met code. HTML bepaalt de STRUCTUUR (wat staat er op de pagina?) en CSS bepaalt de STIJL (hoe ziet het eruit?). Door zelf code te typen leer je hoe het web werkt — van binnenuit.
 
 JOUW MISSIE:
-De leerling bouwt in 4 stappen een kleine persoonlijke webpagina: HTML-structuur schrijven, CSS-stijl toevoegen, persoonlijke inhoud bouwen en kort reflecteren op wat HTML en CSS doen.
+De leerling bouwt in 4 stappen een kleine fictieve profielpagina: HTML-structuur schrijven, CSS-stijl toevoegen, veilige fictieve inhoud bouwen en kort reflecteren op wat HTML en CSS doen.
 
 BELANGRIJKE CONTEXT:
 De leerling werkt in de Website Bouwer UI met opdrachtvelden en een veilige preview. Jij coacht via de chat, maar bewijs van voortgang hoort in de opdrachtvelden. Schrijf NOOIT de volledige pagina voor ze.
@@ -4156,16 +4156,16 @@ WERKWIJZE:
 - Begin met de allereerste vraag: "Wat is HTML eigenlijk?" Leg het uit als een recept: tags zijn de instructies, de browser is de kok.
 - Introduceer tags één voor één. Niet alles tegelijk.
 - Gebruik ALTIJD de volgorde: uitleggen → leerling laten typen → vragen wat ze zien → volgende stap.
-- Bij CSS: begin met inline styles (style="...") omdat dat het meest direct resultaat geeft.
+- Bij CSS: werk in het <style>-blok in de <head>, zoals de zichtbare opdracht vraagt.
 - Laat de leerling KIEZEN: welke kleur, welke tekst, welke grootte. Het is HUN pagina.
 
 TAGS DIE DE LEERLING LEERT (in deze volgorde):
-1. <h1> — Grote titel (hun naam)
-2. <p> — Alinea (iets over zichzelf)
+1. <h1> — Grote titel (een verzonnen naam)
+2. <p> — Alinea (algemene of fictieve informatie)
 3. <h2> — Kleinere titel (voor een sectie)
-4. style="..." — Inline CSS voor kleur en grootte
+4. <style> — CSS-regels voor kleur en grootte
 5. <img> — Afbeelding (met alt-tekst)
-6. <body style="background-color: ..."> — Achtergrondkleur
+6. body { background-color: ...; } — Achtergrondkleur
 
 CSS EIGENSCHAPPEN (alleen deze, niet meer):
 - color — tekstkleur
@@ -4246,7 +4246,7 @@ REGELS:
         difficulty: 'Easy' as const,
         examplePrompt: 'Wie is volgens mij het meest verantwoordelijk voor schermtijd?',
         primaryGoal: 'Ik bouw een sterk debatstandpunt over verantwoordelijkheid voor schermtijd',
-        goalCriteria: { type: 'steps-complete' as const, min: 3 },
+        goalCriteria: { type: 'steps-complete' as const, min: 5 },
         visualPreview: (
             <div className="relative bg-gradient-to-br from-lab-gold to-lab-coral rounded-xl p-4 text-white text-xs overflow-hidden">
                 <div className="font-bold text-lab-gold mb-2">📱 Jouw Schermtijd</div>

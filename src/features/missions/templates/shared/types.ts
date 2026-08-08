@@ -24,7 +24,7 @@ export interface MissionGoal {
 export interface TemplateMissionProps {
     missionId: string;
     onBack: () => void;
-    onComplete: (success: boolean) => void;
+    onComplete: (success: boolean) => boolean | void | Promise<boolean | void>;
     stats?: any;
     vsoProfile?: string;
 }

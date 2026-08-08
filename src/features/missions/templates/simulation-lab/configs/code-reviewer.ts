@@ -206,8 +206,8 @@ export const codeReviewerConfig: SimulationLabConfig = {
                         'Je ziet een variabele met de naam "temp2". Wat is hiervan het probleem?',
                     type: 'multiple-choice',
                     options: [
-                        'De naam is te lang',
                         'Je kunt niet raden wat de variabele bevat zonder de rest van de code te lezen',
+                        'De naam is te lang',
                         '"temp" is een verboden woord in JavaScript',
                         'Cijfers mogen niet in variabelenamen',
                     ],
@@ -238,9 +238,9 @@ export const codeReviewerConfig: SimulationLabConfig = {
                     type: 'multiple-choice',
                     options: [
                         'De computer werkt sneller met nette inspringing',
-                        'Het maakt de structuur van de code zichtbaar — wat is binnen wat?',
                         'Editors eisen het anders sla je niet op',
                         'Inspringing maakt de code veiliger',
+                        'Het maakt de structuur van de code zichtbaar — wat is binnen wat?',
                     ],
                     correctAnswer: 'Het maakt de structuur van de code zichtbaar — wat is binnen wat?',
                     explanation:
@@ -269,8 +269,8 @@ export const codeReviewerConfig: SimulationLabConfig = {
                     question: 'Wat betekent het DRY-principe (Don\'t Repeat Yourself)?',
                     type: 'multiple-choice',
                     options: [
-                        'Schrijf code zo snel mogelijk, zonder te wachten',
                         'Schrijf dezelfde logica maar één keer en hergebruik het via functies',
+                        'Schrijf code zo snel mogelijk, zonder te wachten',
                         'Nooit dezelfde variabelenaam twee keer gebruiken',
                         'Code altijd opnieuw schrijven in plaats van kopiëren',
                     ],
@@ -302,8 +302,8 @@ export const codeReviewerConfig: SimulationLabConfig = {
                     type: 'multiple-choice',
                     options: [
                         'Één keer, als je de berekening in een functie hebt gezet',
-                        'Vijf keer — één keer per plek in de code',
                         'Helemaal niet — de berekening werkt automatisch bij',
+                        'Vijf keer — één keer per plek in de code',
                         'Twee keer — begin en einde van de code',
                     ],
                     correctAnswer: 'Vijf keer — één keer per plek in de code',
@@ -336,9 +336,9 @@ export const codeReviewerConfig: SimulationLabConfig = {
                     type: 'multiple-choice',
                     options: [
                         'Alleen maar positief zijn zodat de samenwerking goed blijft',
-                        'Positief punt → verbeterpunt met uitleg → positief punt',
                         'Eerst alle fouten noemen, dan de goede dingen',
                         'Code review doe je altijd schriftelijk, nooit mondeling',
+                        'Positief punt → verbeterpunt met uitleg → positief punt',
                     ],
                     correctAnswer: 'Positief punt → verbeterpunt met uitleg → positief punt',
                     explanation:
@@ -351,8 +351,8 @@ export const codeReviewerConfig: SimulationLabConfig = {
                         'Wat is het verschil tussen "Dit is slechte code" en "De functienaam geeft niet aan wat de functie doet"?',
                     type: 'multiple-choice',
                     options: [
-                        'Geen verschil — beide beschrijven een probleem',
                         'De tweede is concreet en actionable — je weet precies wat je kunt verbeteren',
+                        'Geen verschil — beide beschrijven een probleem',
                         'De eerste is vriendelijker',
                         'De tweede is te vaag om nuttig te zijn',
                     ],

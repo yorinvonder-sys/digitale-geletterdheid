@@ -6,7 +6,7 @@ import { IntroScreen } from '../shared/IntroScreen';
 import { CompletionScreen } from '../shared/CompletionScreen';
 import { getMissionGoal } from '@/config/missionGoals';
 import type { TemplateMissionProps, BadgeConfig, FollowUpQuestion, MissionGoal } from '../shared/types';
-import { isMeaningfulAnswer } from './answerQuality';
+import { isMeaningfulAnswer } from '../shared/answerQuality';
 import { ExplorePhase } from './sub/ExplorePhase';
 import { PositionPhase } from './sub/PositionPhase';
 import { ArguePhase } from './sub/ArguePhase';
@@ -247,9 +247,13 @@ const DebateArenaInner: React.FC<DebateArenaProps> = ({ config, onBack, onComple
                         badges={config.badges}
                         phases={phases}
                         takeaways={config.takeaways}
-                        onComplete={() => {
-                            clearSave();
-                            onComplete(true);
+                        onComplete={async () => {
+                            // Pas wissen als de server de voltooiing bevestigd heeft, anders
+                            // raakt een leerling zijn werk kwijt bij een mislukte opslag.
+                            const completed = await onComplete(true);
+                            if (completed !== false) {
+                                clearSave();
+                            }
                         }}
                     />
                 </div>

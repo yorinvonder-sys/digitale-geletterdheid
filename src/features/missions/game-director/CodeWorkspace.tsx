@@ -80,7 +80,7 @@ export const CodeWorkspace: React.FC<CodeWorkspaceProps> = ({
     };
 
     // Add block from definition (used for touch events)
-    const addBlockFromDefinition = useCallback((definition: BlockDefinition) => {
+    const addBlockFromDefinition = useCallback((definition: BlockDefinition, parentId: string | null = null) => {
         const blockToPlace: PlacedBlock = {
             id: generateId(),
             definitionId: definition.id,
@@ -89,8 +89,17 @@ export const CodeWorkspace: React.FC<CodeWorkspaceProps> = ({
                 return acc;
             }, {} as Record<string, any>)
         };
-        onBlocksChange([...blocks, blockToPlace]);
-    }, [blocks, onBlocksChange]);
+        saveToUndo();
+        if (parentId === null) {
+            onBlocksChange([...blocks, blockToPlace]);
+            return;
+        }
+
+        onBlocksChange(updateBlockInTree(blocks, parentId, (parent) => ({
+            ...parent,
+            children: [...(parent.children || []), blockToPlace]
+        })));
+    }, [blocks, onBlocksChange, saveToUndo, updateBlockInTree]);
 
     // Listen for custom touchdrop events (for iPad support)
     useEffect(() => {
@@ -98,7 +107,7 @@ export const CodeWorkspace: React.FC<CodeWorkspaceProps> = ({
             const customEvent = e as CustomEvent;
             const definition = customEvent.detail?.definition as BlockDefinition;
             if (definition) {
-                addBlockFromDefinition(definition);
+                addBlockFromDefinition(definition, customEvent.detail?.parentId || null);
                 setIsDraggingOver(false);
             }
         };

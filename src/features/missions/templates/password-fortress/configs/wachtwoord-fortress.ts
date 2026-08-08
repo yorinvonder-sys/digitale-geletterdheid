@@ -40,7 +40,7 @@ const config: PasswordFortressConfig = {
             targetLabel: 'minstens 1 dag',
             hints: [
                 'Lengte is de krachtigste factor: elk extra teken vermenigvuldigt het aantal combinaties.',
-                'Probeer 11+ kleine letters, of 8+ tekens met hoofdletters en cijfers gemixt.',
+                'Streef naar minimaal 14-15 tekens — een verplichte mix van hoofdletters en cijfers voegt weinig toe als het wachtwoord kort blijft.',
             ],
             clearedLesson:
                 'Lengte wint! Elk extra teken maakt brute-force exponentieel trager: 6 tekens kraak je in seconden, 12 tekens duren eeuwen.',
@@ -85,7 +85,7 @@ const config: PasswordFortressConfig = {
             targetLabel: 'minstens 100 jaar',
             hints: [
                 'Een passphrase van 3–4 willekeurige woorden met een cijfer of teken is vrijwel onkraakbaar én te onthouden.',
-                'Voorbeeldpatroon: "wolk-Gitaar-strand-9!" — lang, uniek en toch makkelijk te onthouden.',
+                'Voorbeeldpatroon: vier losse woorden gescheiden door een streepje, met ergens tussenin een cijfer en een leesteken — bedenk zelf de woorden.',
             ],
             clearedLesson:
                 'Eén gelekt wachtwoord wordt overal opnieuw geprobeerd (credential stuffing). Uniek per site + lang (passphrase!) is de enige echte verdediging.',

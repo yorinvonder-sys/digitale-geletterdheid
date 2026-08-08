@@ -85,7 +85,7 @@ const ItemRow: React.FC<ItemRowProps> = ({ item, submitted, currentIndex, totalI
 
             <div className="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0"
                 style={{ background: submitted ? (isCorrect ? '#202023' : '#ff3c21') : '#ff3c21' }}>
-                <span className="text-xs font-black text-white">{currentIndex + 1}</span>
+                <span className={`text-xs font-black ${submitted && isCorrect ? 'text-white' : 'text-duck-ink'}`}>{currentIndex + 1}</span>
             </div>
 
             <span

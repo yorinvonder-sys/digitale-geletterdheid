@@ -216,18 +216,31 @@ const ReviewArenaWithConfig: React.FC<ReviewArenaProps> = ({
 
     useEffect(() => {
         if (state.configMissionId && state.configMissionId !== config.missionId) {
+            // Alle review-arena-opdrachten delen dezelfde ronde-ids
+            // (round-drag-sort, round-match-pairs, round-categorize,
+            // round-rapid-fire). Wisselt de leerling van opdracht zonder dat dit
+            // component opnieuw aankoppelt, dan zouden de refs hieronder die ids
+            // nog kennen en de nieuwe opdracht meteen blokkeren.
+            submittedThisSession.current.clear();
+            completedRoundTransitions.current.clear();
+            completedFollowUpTransitions.current.clear();
             setState(initialState);
         }
     }, [config.missionId, setState, state.configMissionId]);
 
     const userId = (() => {
         try {
-            const key = Object.keys(localStorage).find((k) =>
-                /^sb-[a-z0-9_-]+-auth-token$/i.test(k)
-            );
-            if (!key) return null;
-            const raw = localStorage.getItem(key);
-            return raw ? JSON.parse(raw)?.user?.id : null;
+            // Zelfde reden als in useMissionAutoSave: pak de sleutel van hét
+            // ingestelde project, niet de eerste de beste sb-*-auth-token. Op een
+            // gedeelde schoolcomputer kan een token van een ander Supabase-project
+            // in de browser staan, en dan hang je dit aan de verkeerde leerling.
+            const supabaseUrl = ((import.meta as any).env.VITE_SUPABASE_URL as string)?.trim();
+            if (!supabaseUrl) return null;
+            const projectId = new URL(supabaseUrl).hostname.split('.')[0];
+            const raw = localStorage.getItem(`sb-${projectId}-auth-token`);
+            if (!raw) return null;
+            const parsed = JSON.parse(raw);
+            return parsed?.user?.id ?? parsed?.currentSession?.user?.id ?? null;
         } catch {
             return null;
         }
@@ -241,6 +254,11 @@ const ReviewArenaWithConfig: React.FC<ReviewArenaProps> = ({
     // vastgelegde score zonder dat de ronde hier is gespeeld, dan komt die uit
     // opslag: de ronde is dan al beantwoord en mag niet opnieuw scoren.
     const submittedThisSession = useRef<Set<string>>(new Set());
+    // React-state guards are not synchronous: a double click can invoke the same
+    // callback twice before showFollowUp/currentRound has re-rendered. These refs
+    // close that small window so one learner action can advance at most one round.
+    const completedRoundTransitions = useRef<Set<string>>(new Set());
+    const completedFollowUpTransitions = useRef<Set<string>>(new Set());
 
     const totalScore = state.roundScores.reduce((a, b) => a + b, 0);
 
@@ -344,6 +362,8 @@ const ReviewArenaWithConfig: React.FC<ReviewArenaProps> = ({
         (score: number) => {
             const round = config.rounds[state.currentRound];
             if (!round) return;
+            if (showFollowUp || completedRoundTransitions.current.has(round.id)) return;
+            completedRoundTransitions.current.add(round.id);
             // De vastgelegde score wint van wat het subcomponent bij het doorklikken
             // meegeeft; die twee zijn gelijk bij normaal spelen.
             const locked = state.lockedRoundScores[round.id];
@@ -368,6 +388,7 @@ const ReviewArenaWithConfig: React.FC<ReviewArenaProps> = ({
         [
             advanceRound,
             config.rounds,
+            showFollowUp,
             state.currentRound,
             state.followUpResults,
             state.lockedRoundScores,
@@ -379,6 +400,8 @@ const ReviewArenaWithConfig: React.FC<ReviewArenaProps> = ({
         (correct: boolean) => {
             const round = config.rounds[state.currentRound];
             if (!round) return;
+            if (!showFollowUp || completedFollowUpTransitions.current.has(round.id)) return;
+            completedFollowUpTransitions.current.add(round.id);
             // Het vastgelegde antwoord wint: 'Doorgaan' mag geen tweede kans zijn.
             const settled = state.followUpResults[round.id]?.correct ?? correct;
             const finalScore = withFollowUpBonus(pendingScore ?? 0, settled, round);
@@ -400,18 +423,23 @@ const ReviewArenaWithConfig: React.FC<ReviewArenaProps> = ({
             config.rounds,
             pendingScore,
             setState,
+            showFollowUp,
             state.currentRound,
             state.followUpResults,
             withFollowUpBonus,
         ]
     );
 
-    const handleComplete = useCallback(() => {
+    const handleComplete = useCallback(async () => {
         // Slagen hangt aan de werkelijke score, niet aan het bereiken van het
         // eindscherm — dezelfde drempel die CompletionScreen toont.
         const passed = config.maxScore > 0 && totalScore / config.maxScore >= PASS_THRESHOLD;
-        clearSave();
-        onComplete(passed);
+        // Pas wissen als de server de voltooiing bevestigd heeft: andersom raakt
+        // een leerling zijn hele reviewronde kwijt zodra het opslaan mislukt.
+        const completionResult = await onComplete(passed);
+        if (completionResult !== false) {
+            clearSave();
+        }
     }, [clearSave, config.maxScore, onComplete, totalScore]);
 
     // === Intro ===
@@ -477,6 +505,8 @@ const ReviewArenaWithConfig: React.FC<ReviewArenaProps> = ({
                             onClick={() => {
                                 clearSave();
                                 submittedThisSession.current.clear();
+                                completedRoundTransitions.current.clear();
+                                completedFollowUpTransitions.current.clear();
                                 setState(initialState);
                             }}
                             className="min-h-[44px] px-4 py-2.5 bg-duck-acid text-duck-ink rounded-xl text-sm font-bold"
@@ -565,7 +595,9 @@ const ReviewArenaWithConfig: React.FC<ReviewArenaProps> = ({
                                 )}
                             </div>
                         ) : (
-                        <>
+                        // Terwijl de verdiepingsvraag in beeld staat mag de ronde er niet
+                        // nog eens doorheen geklikt worden.
+                        <div className={showFollowUp ? 'pointer-events-none opacity-50 transition-opacity duration-200' : ''}>
                         {round.type === 'drag-sort' && (
                             <DragSort
                                 title={round.title}
@@ -610,7 +642,7 @@ const ReviewArenaWithConfig: React.FC<ReviewArenaProps> = ({
                                 onComplete={(score) => handleRoundComplete(score)}
                             />
                         )}
-                        </>
+                        </div>
                         )}
 
                         {showFollowUp && round.followUp && (

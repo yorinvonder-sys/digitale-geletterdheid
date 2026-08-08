@@ -6,9 +6,9 @@ export const websiteBouwerConfig: BuilderCanvasConfig = {
     introEmoji: '🌐',
     introTitle: 'Bouw je eerste website',
     introDescription:
-        'In deze missie leer je hoe echte websites worden gemaakt. HTML is de taal waarmee je vertelt wát er op een pagina staat (een titel, tekst, een plaatje). Je typt je eerste HTML-code, voegt stijl toe met CSS en bouwt een persoonlijke "Over Mij"-pagina — geen drag-and-drop, maar echte code die je zelf schrijft.',
+        'In deze missie leer je hoe echte websites worden gemaakt. HTML is de taal waarmee je vertelt wát er op een pagina staat (een titel, tekst, een plaatje). Je typt je eerste HTML-code, voegt stijl toe met CSS en bouwt een fictieve "Over Mij"-pagina — geen drag-and-drop, maar echte code die je zelf schrijft.',
     missionGoal: {
-        primaryGoal: 'Ik bouw een werkende Over Mij-webpagina met HTML, CSS en een korte uitleg van mijn keuzes.',
+        primaryGoal: 'Ik bouw een werkende fictieve Over Mij-webpagina met HTML, CSS en een korte uitleg van mijn keuzes.',
         criteria: {
             type: 'steps-complete',
             min: 4,
@@ -19,7 +19,7 @@ export const websiteBouwerConfig: BuilderCanvasConfig = {
     introFeatures: [
         'Schrijf je eerste HTML-structuur met tags',
         'Voeg kleur en stijl toe met CSS',
-        'Bouw een persoonlijk profiel met afbeeldingsplek',
+        'Bouw een fictief profiel met afbeeldingsplek',
         'Begrijp hoe browsers je code omzetten naar een webpagina',
     ],
     enableChat: true,
@@ -32,13 +32,13 @@ export const websiteBouwerConfig: BuilderCanvasConfig = {
             description:
                 'Elke website begint met een HTML-bestand. HTML werkt met tags: een instructie tussen punthaken, zoals `<h1>...</h1>` — de eerste opent, de tweede (met /) sluit. Tags vertellen de browser wat er op de pagina staat: een titel, tekst, een afbeelding.',
             instruction:
-                'Schrijf de basisstructuur van een HTML-pagina. Je hebt nodig: `<!DOCTYPE html>`, `<html>`, `<head>` met een `<title>`, en `<body>`. Voeg in de body een `<h1>` toe met jouw naam als paginatitel en een `<p>` met een zin over jezelf. Schrijf de code uit alsof je hem echt in een bestand zou typen.',
+                'Schrijf de basisstructuur van een HTML-pagina. Je hebt nodig: `<!DOCTYPE html>`, `<html>`, `<head>` met een `<title>`, en `<body>`. Voeg in de body een `<h1>` toe met een verzonnen naam als paginatitel en een `<p>` met een algemene of fictieve zin. Gebruik geen echte naam, adres, school, foto of contactgegevens.',
             tip: 'Tags werken in paren: elke `<h1>` heeft een `</h1>`. Vergeet de sluit-tag niet, anders "lekt" je code.',
             checklistItems: [
                 { id: 'doctype', label: 'Mijn code begint met <!DOCTYPE html>' },
                 { id: 'head-title', label: 'Ik heb een <title> in de <head> gezet' },
-                { id: 'h1-naam', label: 'In de <body> staat een <h1> met mijn naam' },
-                { id: 'paragraaf', label: 'Ik heb een <p> toegevoegd met een zin over mezelf' },
+                { id: 'h1-naam', label: 'In de <body> staat een <h1> met een verzonnen naam' },
+                { id: 'paragraaf', label: 'Ik heb een <p> met algemene of fictieve informatie toegevoegd' },
             ],
             textPrompt: 'Schrijf hier je HTML-basisstructuur',
         },
@@ -62,7 +62,7 @@ export const websiteBouwerConfig: BuilderCanvasConfig = {
             id: 'content',
             title: 'Persoonlijke inhoud bouwen',
             description:
-                'Een "Over Mij"-pagina vertelt iets echts over jou. Goede webpagina\'s combineren tekst met structuur: kopjes, lijsten en een plek voor een foto.',
+                'Een fictieve "Over Mij"-pagina combineert tekst met structuur: kopjes, lijsten en een veilige afbeeldingsplek, zonder echte persoonsgegevens.',
             instruction:
                 'Voeg aan je pagina toe: een tweede kopje (`<h2>`) met "Mijn hobbys", een ongeordende lijst (`<ul>`) met minimaal 3 hobbys als `<li>`-items, en een `<img>`-tag met een plaatshouder (je kunt `src="foto.jpg"` gebruiken). Voeg ook een `alt`-attribuut toe aan de afbeelding.',
             tip: 'Het `alt`-attribuut is niet optioneel: het beschrijft de afbeelding voor mensen die hem niet kunnen zien. Altijd invullen!',
@@ -72,7 +72,7 @@ export const websiteBouwerConfig: BuilderCanvasConfig = {
                 { id: 'img-tag', label: 'Ik heb een <img>-tag toegevoegd' },
                 { id: 'alt', label: 'De afbeelding heeft een alt-attribuut' },
             ],
-            textPrompt: 'Schrijf hier de HTML voor je persoonlijke sectie',
+            textPrompt: 'Schrijf hier de HTML voor je fictieve profielsectie',
         },
         {
             id: 'reflectie',

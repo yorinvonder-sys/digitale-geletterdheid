@@ -4,6 +4,7 @@ import { Scale, Lightbulb, AlertTriangle, ShieldCheck, Sparkles, ThumbsUp, Send,
 import { submitAiBeleidIdee, getAiBeleidIdeeen, stemOpIdee, submitAiBeleidSurvey, AiBeleidSurveyData } from '@/services/teacherService';
 import { AiBeleidIdee } from '@/types';
 import { MissionConclusion } from '@/features/missions/shared/MissionConclusion';
+import { isMeaningfulAnswer, answerQualityHint } from '@/features/missions/templates/shared/answerQuality';
 
 // =====================================================================
 // CONTENT FILTER - Block inappropriate content
@@ -62,6 +63,21 @@ const filterInappropriateIdeas = (ideas: AiBeleidIdee[]): AiBeleidIdee[] => {
     return ideas.filter(idea => checkContentFilter(idea.idee) === null);
 };
 
+const REASON_WORDS = /\b(omdat|want|zodat|daarom|hierdoor)\b/i;
+// Bewust zonder afsluitende woordgrens: met `\bopdracht\b` viel een idee als
+// "AI alleen tijdens opdrachten omdat we tijd besparen." buiten de boot, en dan
+// kon de leerling de missie niet afronden ondanks een compleet regelvoorstel.
+// Nu matchen ook lessen, opdrachten, leerlingen, docenten, toetsen en schoolwerk.
+const SCHOOL_CONTEXT_WORDS = /\b(school|les|klas|leerling|docent|opdracht|toets|huiswerk)/i;
+
+export const isCompleteRuleIdea = (idea: AiBeleidIdee): boolean => {
+    const text = idea.idee.trim();
+    return idea.categorie === 'regels'
+        && text.length >= 30
+        && REASON_WORDS.test(text)
+        && SCHOOL_CONTEXT_WORDS.test(text);
+};
+
 interface AiBeleidBrainstormPreviewProps {
     user?: {
         uid: string;
@@ -69,7 +85,7 @@ interface AiBeleidBrainstormPreviewProps {
         studentClass?: string;
         schoolId?: string;
     };
-    onComplete?: () => void;
+    onComplete?: () => boolean | void | Promise<boolean | void>;
 }
 
 const CATEGORIES = [
@@ -135,6 +151,10 @@ export const AiBeleidBrainstormPreview: React.FC<AiBeleidBrainstormPreviewProps>
 
     const [selectedCategory, setSelectedCategory] = useState<typeof CATEGORIES[0] | null>(null);
     const [ideeText, setIdeeText] = useState('');
+    // De opdracht vraagt per regel om een reden en de schoolcontext, maar het veld
+    // accepteerde elke niet-lege tekst: twee ideeën van een letter rondden de missie af.
+    const ideeIsBruikbaar = isMeaningfulAnswer(ideeText);
+    const ideeHint = answerQualityHint(ideeText);
     const [ideeen, setIdeeen] = useState<AiBeleidIdee[]>([]);
     const [myIdeeen, setMyIdeeen] = useState<AiBeleidIdee[]>([]);
     const [loading, setLoading] = useState(false);
@@ -150,10 +170,16 @@ export const AiBeleidBrainstormPreview: React.FC<AiBeleidBrainstormPreviewProps>
         if (phase === 'browse' || phase === 'categories') {
             loadIdeeen();
         }
-    }, [phase]);
+    }, [phase, user?.uid, user?.schoolId]);
 
     const loadIdeeen = async () => {
         setLoading(true);
+        if (!user?.schoolId) {
+            setIdeeen([]);
+            setMyIdeeen([]);
+            setLoading(false);
+            return;
+        }
         const result = await getAiBeleidIdeeen(undefined, user?.schoolId);
         // Filter out inappropriate content before displaying
         const filteredResult = filterInappropriateIdeas(result);
@@ -174,6 +200,10 @@ export const AiBeleidBrainstormPreview: React.FC<AiBeleidBrainstormPreviewProps>
 
     const handleSubmitIdee = async () => {
         if (!ideeText.trim() || !selectedCategory || !user) return;
+        if (!user.schoolId) {
+            setSubmitError('Je schoolkoppeling ontbreekt. Herlaad de pagina of vraag je docent om hulp.');
+            return;
+        }
 
         // Content filter check
         const filterResult = checkContentFilter(ideeText);
@@ -234,6 +264,10 @@ export const AiBeleidBrainstormPreview: React.FC<AiBeleidBrainstormPreviewProps>
 
     const handleSurveySubmit = async () => {
         if (!user) return;
+        if (!user.schoolId) {
+            setSurveyError('Je schoolkoppeling ontbreekt. Herlaad de pagina of vraag je docent om hulp.');
+            return;
+        }
         setSurveyError(null);
         setSurveySubmitting(true);
         try {
@@ -271,7 +305,7 @@ export const AiBeleidBrainstormPreview: React.FC<AiBeleidBrainstormPreviewProps>
                             <Users size={32} />
                         </div>
                         <h1 className="text-2xl font-black text-duck-ink mb-2">Eerst even dit...</h1>
-                        <p className="text-duck-ink/60">We zijn benieuwd hoe jij AI gebruikt! Deze gegevens worden <span className="font-bold text-duck-acid">anoniem</span> verwerkt.</p>
+                        <p className="text-duck-ink/60">We zijn benieuwd hoe jij AI gebruikt. Je antwoorden worden gekoppeld aan je account en school opgeslagen. Deel hier geen namen of gevoelige informatie.</p>
                     </div>
 
                     <div className="space-y-6">
@@ -557,11 +591,11 @@ export const AiBeleidBrainstormPreview: React.FC<AiBeleidBrainstormPreviewProps>
 
                                 <div className="flex items-center justify-between mt-3">
                                     <span className={`text-sm font-medium text-duck-ink/60`}>
-                                        {ideeText.length}/280
+                                        {ideeHint ?? `${ideeText.length}/280`}
                                     </span>
                                     <button
                                         onClick={handleSubmitIdee}
-                                        disabled={!ideeText.trim() || submitting}
+                                        disabled={!ideeIsBruikbaar || submitting}
                                         className="px-6 py-3 bg-duck-acid text-duck-ink font-bold rounded-full shadow-duck-soft disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-xl hover:scale-105 transition-all flex items-center gap-2"
                                     >
                                         {submitting ? (
@@ -589,7 +623,8 @@ export const AiBeleidBrainstormPreview: React.FC<AiBeleidBrainstormPreviewProps>
     if (phase === 'browse') {
         const sortedIdeeen = [...ideeen].sort((a, b) => (b.stemmen || 0) - (a.stemmen || 0));
         const topThree = sortedIdeeen.slice(0, 3);
-        const canComplete = myIdeeen.length > 0 || votedIds.size > 0;
+        const ownRuleIdeas = myIdeeen.filter(isCompleteRuleIdea);
+        const canComplete = ownRuleIdeas.length >= 2;
 
         return (
             <div className="min-h-full bg-gradient-to-br from-duck-acid via-white to-duck-ink p-6">
@@ -610,6 +645,12 @@ export const AiBeleidBrainstormPreview: React.FC<AiBeleidBrainstormPreviewProps>
                             Afronden ✓
                         </button>
                     </div>
+
+                    {!canComplete && (
+                        <p className="mb-6 rounded-xl border border-duck-ink/15 bg-white p-3 text-sm text-duck-ink/60">
+                            Voeg nog {2 - ownRuleIdeas.length} eigen regelvoorstel{2 - ownRuleIdeas.length === 1 ? '' : 'len'} toe om af te ronden. Beschrijf per regel waarom die nodig is en wanneer die op school geldt.
+                        </p>
+                    )}
 
                     {/* Top 3 Leaderboard */}
                     {topThree.length > 0 && (
@@ -699,7 +740,7 @@ export const AiBeleidBrainstormPreview: React.FC<AiBeleidBrainstormPreviewProps>
         return (
             <MissionConclusion
                 title="Brainstorm Voltooid!"
-                description={`Je hebt ${myIdeeen.length} idee${myIdeeen.length !== 1 ? 'ën' : ''} gedeeld en ${votedIds.size} keer gestemd. Bedankt voor je bijdrage aan het AI-beleid van de school!`}
+                description={`Je hebt ${myIdeeen.filter((idee) => idee.categorie === 'regels').length} regelvoorstellen gedeeld en ${votedIds.size} keer gestemd. Bedankt voor je bijdrage aan het AI-beleid van de school!`}
                 aiConcept={{
                     title: "Democratische AI Besluitvorming",
                     text: "Door leerlingen te betrekken bij AI-beleid, wordt het beleid gedragen door de hele schoolgemeenschap. Jouw stem en ideeën helpen de school om AI op een eerlijke en nuttige manier in te zetten."

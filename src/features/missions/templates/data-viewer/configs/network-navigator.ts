@@ -41,9 +41,9 @@ export const networkNavigatorConfig: DataViewerConfig = {
                 { stap: 1, locatie: 'Telefoon', component: 'App', actie: 'Bericht wordt aangemaakt en verpakt als datapakket', tijd_ms: 1 },
                 { stap: 2, locatie: 'Thuis', component: 'WiFi-router', actie: 'Pakket wordt doorgestuurd naar het internet', tijd_ms: 3 },
                 { stap: 3, locatie: 'Buurt', component: 'DNS-server', actie: 'instagram.com wordt vertaald naar IP-adres', tijd_ms: 8 },
-                { stap: 4, locatie: 'Internet', component: 'Routers (x12)', actie: 'Pakket springt via 12 routers naar de server', tijd_ms: 22 },
+                { stap: 4, locatie: 'Internet', component: 'Routers (x12)', actie: 'Pakket springt via 12 routers naar de server', tijd_ms: 40 },
                 { stap: 5, locatie: 'Datacenter VS', component: 'Instagram-server', actie: 'Server ontvangt pakket en slaat bericht op', tijd_ms: 5 },
-                { stap: 6, locatie: 'Internet', component: 'Routers (x12)', actie: 'Bevestiging reist terug naar je telefoon', tijd_ms: 20 },
+                { stap: 6, locatie: 'Internet', component: 'Routers (x12)', actie: 'Bevestiging reist terug naar je telefoon', tijd_ms: 38 },
                 { stap: 7, locatie: 'Telefoon', component: 'App', actie: 'App toont "verzonden" en updatet de chat', tijd_ms: 2 },
             ],
             questions: [
@@ -52,9 +52,9 @@ export const networkNavigatorConfig: DataViewerConfig = {
                     question:
                         'Hoeveel milliseconden duurt de complete reis van het bericht in totaal?',
                     type: 'number-input',
-                    correctAnswer: 61,
+                    correctAnswer: 97,
                     explanation:
-                        'Tel alle tijden op: 1 + 3 + 8 + 22 + 5 + 20 + 2 = 61 ms. Dat is minder dan een tiende van een seconde! Dat voelt "instant" aan voor de gebruiker. Sorteer op "Stap" om de volgorde te zien.',
+                        'Tel alle tijden op: 1 + 3 + 8 + 40 + 5 + 38 + 2 = 97 ms. Dat is minder dan een tiende van een seconde! Dat voelt "instant" aan voor de gebruiker. Sorteer op "Stap" om de volgorde te zien.',
                     points: 15,
                 },
                 {

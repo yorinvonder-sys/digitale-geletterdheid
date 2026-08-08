@@ -17,7 +17,7 @@ const config: ScenarioEngineConfig = {
         'Ik herken minimaal 5 ontwerpkeuzes die mijn aandacht kunnen sturen.',
         'Ik kan notificaties ordenen op urgentie, sociale druk en eigen belang.',
         'Ik kan uitleggen of een melding vooral nuttig is voor mij of voor de app.',
-        'Ik kies minimaal 2 concrete instellingen of gewoontes voor bewuster appgebruik.',
+        'Ik herken en selecteer minimaal 2 concrete instellingen of gewoontes voor bewuster appgebruik.',
     ],
     maxScore: 100,
     badges: [

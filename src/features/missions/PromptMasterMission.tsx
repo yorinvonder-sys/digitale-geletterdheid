@@ -19,6 +19,7 @@ import { useMissionAutoSave } from '@/hooks/useMissionAutoSave';
 import {
     buildLocalPromptResult,
     calculatePromptMasterMaxScore,
+    calculatePromptMasterPassingPercentage,
     isChallengePassed,
     scorePromptByCriteria,
     type PromptMasterChallenge,
@@ -36,7 +37,7 @@ interface PromptMasterProgress {
 
 interface Props {
     onBack: () => void;
-    onComplete: (success: boolean) => void;
+    onComplete: (success: boolean) => boolean | void | Promise<boolean | void>;
     stats?: UserStats;
     vsoProfile?: VsoProfile;
     qaMode?: boolean;
@@ -743,6 +744,7 @@ export const PromptMasterMission: React.FC<Props> = ({ onBack, onComplete, vsoPr
     const [aiResponse, setAiResponse] = useState<PromptMasterAiResponse | null>(null);
     const [showFeedback, setShowFeedback] = useState(false);
     const [attempts, setAttempts] = useState(0);
+    const [isCompleting, setIsCompleting] = useState(false);
     const idealImageRequestRef = useRef(0);
 
     // NEW: Loading and thinking states
@@ -756,6 +758,18 @@ export const PromptMasterMission: React.FC<Props> = ({ onBack, onComplete, vsoPr
     // Global progress across all challenges
     const globalIndex = CHALLENGES.findIndex(c => c.id === currentChallenge?.id);
     const totalChallenges = CHALLENGES.length;
+    const passingPercentage = calculatePromptMasterPassingPercentage(CHALLENGES, vsoProfile);
+    const missionGoal: MissionGoal = passingPercentage === MISSION_GOAL.criteria.threshold
+        ? MISSION_GOAL
+        : {
+            ...MISSION_GOAL,
+            criteria: {
+                ...MISSION_GOAL.criteria,
+                type: 'score-threshold',
+                threshold: passingPercentage,
+                description: `De missie is behaald als je eindscore minstens ${passingPercentage}% is.`,
+            },
+        };
 
     const allLevelsDone = progress.currentLevel === 'expert' && progress.challengeIndex >= levelChallenges.length - 1 && progress.completedChallenges.includes(currentChallenge?.id);
     const currentResponsePassed = Boolean(aiResponse && currentChallenge && isChallengePassed(aiResponse.score, currentChallenge, vsoProfile));
@@ -888,6 +902,17 @@ export const PromptMasterMission: React.FC<Props> = ({ onBack, onComplete, vsoPr
         setShowFeedback(false);
     };
 
+    const handleComplete = async () => {
+        if (isCompleting) return;
+        setIsCompleting(true);
+        try {
+            const completed = await onComplete(true);
+            if (completed !== false) clearSave();
+        } finally {
+            setIsCompleting(false);
+        }
+    };
+
     const handleNext = () => {
         idealImageRequestRef.current += 1;
         setUserPrompt('');
@@ -931,9 +956,11 @@ export const PromptMasterMission: React.FC<Props> = ({ onBack, onComplete, vsoPr
             <div data-qa="prompt-master-intro" className="h-dvh overflow-y-auto bg-duck-bg text-duck-ink flex flex-col" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                 {/* Header */}
                 <header className="bg-white border-b border-duck-gray px-6 py-4 flex items-center justify-between">
+                    {/* -mx-2 houdt de tekst optisch op zijn plek terwijl het
+                        aanraakvlak wel de 44px haalt; hij was 71x20px. */}
                     <button
                         onClick={onBack}
-                        className="flex items-center gap-2 text-duck-ink/60 hover:text-duck-ink transition-all duration-300 font-bold text-sm uppercase"
+                        className="-mx-2 flex min-h-[44px] items-center gap-2 rounded-lg px-2 text-sm font-bold uppercase text-duck-ink/60 transition-all duration-300 hover:text-duck-ink"
                     >
                         <ArrowLeft size={16} /> Terug
                     </button>
@@ -969,7 +996,7 @@ export const PromptMasterMission: React.FC<Props> = ({ onBack, onComplete, vsoPr
                         </p>
 
                         <div className="max-w-2xl mx-auto mb-5 md:mb-6">
-                            <MissionGoalBanner goal={MISSION_GOAL} />
+                            <MissionGoalBanner goal={missionGoal} />
                         </div>
 
                         <div className="grid grid-cols-1 lg:grid-cols-[1.05fr_0.95fr] gap-3 md:gap-4 mb-5 md:mb-6 text-left">
@@ -1042,7 +1069,9 @@ export const PromptMasterMission: React.FC<Props> = ({ onBack, onComplete, vsoPr
                 {/* Header */}
                 <header className="bg-white border-b border-duck-gray px-4 py-3 md:px-6 md:py-4 sticky top-0 z-10">
                     <div className="max-w-4xl mx-auto flex flex-wrap items-center justify-between gap-2">
-                        <button onClick={onBack} className="flex items-center gap-2 text-duck-ink/60 hover:text-duck-ink text-sm font-bold uppercase transition-all duration-300">
+                        {/* -mx-2 houdt de tekst optisch op zijn plek terwijl het
+                            aanraakvlak wel de 44px haalt; hij was 72x20px. */}
+                        <button onClick={onBack} className="-mx-2 flex min-h-[44px] items-center gap-2 rounded-lg px-2 text-sm font-bold uppercase text-duck-ink/60 transition-all duration-300 hover:text-duck-ink">
                             <ArrowLeft size={16} /> Stoppen
                         </button>
                         <div className="flex min-w-0 flex-wrap items-center justify-end gap-2 md:gap-3">
@@ -1329,7 +1358,7 @@ export const PromptMasterMission: React.FC<Props> = ({ onBack, onComplete, vsoPr
     if (phase === 'result') {
         const maxScore = calculatePromptMasterMaxScore(CHALLENGES);
         const percentage = Math.round((progress.totalScore / maxScore) * 100);
-        const passed = percentage >= 60;
+        const passed = percentage >= passingPercentage;
 
         return (
             <div data-qa="prompt-master-result" className="h-dvh overflow-y-auto bg-duck-bg text-duck-ink p-4 md:p-6 flex items-center justify-center" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
@@ -1394,13 +1423,21 @@ export const PromptMasterMission: React.FC<Props> = ({ onBack, onComplete, vsoPr
                     </div>
 
                     <button
-                        onClick={() => { clearSave(); onComplete(passed); }}
-                        className="w-full py-3 md:py-4 rounded-full font-black transition-all duration-300 text-duck-ink shadow-lg hover:shadow-xl"
+                        onClick={passed ? handleComplete : async () => {
+                            clearSave();
+                            await onComplete(false);
+                        }}
+                        disabled={isCompleting}
+                        className="w-full py-3 md:py-4 rounded-full font-black transition-all duration-300 text-duck-ink shadow-lg hover:shadow-xl disabled:cursor-wait disabled:opacity-70"
                         style={{ backgroundColor: '#e1ff01' }}
                         onMouseEnter={e => (e.currentTarget.style.backgroundColor = '#99984D')}
                         onMouseLeave={e => (e.currentTarget.style.backgroundColor = '#e1ff01')}
                     >
-                        Terug naar Dashboard
+                        {isCompleting ? (
+                            <span className="flex items-center justify-center gap-2">
+                                <Loader2 size={18} className="animate-spin" /> Opslaan...
+                            </span>
+                        ) : 'Terug naar Dashboard'}
                     </button>
                 </div>
             </div>

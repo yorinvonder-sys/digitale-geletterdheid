@@ -211,8 +211,8 @@ export const bugHunterConfig: SimulationLabConfig = {
                         'Wat is het eerste wat je doet als je een foutmelding ziet?',
                     type: 'multiple-choice',
                     options: [
-                        'Alle code verwijderen en opnieuw beginnen',
                         'De foutmelding zorgvuldig lezen en de regelnummer noteren',
+                        'Alle code verwijderen en opnieuw beginnen',
                         'Vragen aan een klasgenoot om jouw code over te nemen',
                         'Alles wat je net veranderd hebt ongedaan maken',
                     ],
@@ -228,9 +228,9 @@ export const bugHunterConfig: SimulationLabConfig = {
                     type: 'multiple-choice',
                     options: [
                         'Er is geen verschil — beide stoppen de code',
-                        'Syntax error = schrijffout in code; runtime error = fout die pas optreedt tijdens uitvoering',
                         'Runtime error = schrijffout in code; syntax error = logische fout',
                         'Syntax errors zijn gevaarlijker dan runtime errors',
+                        'Syntax error = schrijffout in code; runtime error = fout die pas optreedt tijdens uitvoering',
                     ],
                     correctAnswer: 'Syntax error = schrijffout in code; runtime error = fout die pas optreedt tijdens uitvoering',
                     explanation:
@@ -275,8 +275,8 @@ export const bugHunterConfig: SimulationLabConfig = {
                     type: 'multiple-choice',
                     options: [
                         'Syntax fout — de editor toont direct een fout',
-                        'Logische fout — de code werkt, maar geeft verkeerde uitkomsten',
                         'Naamgevingsfout — de variabele heet iets anders',
+                        'Logische fout — de code werkt, maar geeft verkeerde uitkomsten',
                         'Off-by-one fout — er staat i <= 10 in plaats van i < 10',
                     ],
                     correctAnswer: 'Logische fout — de code werkt, maar geeft verkeerde uitkomsten',
@@ -290,8 +290,8 @@ export const bugHunterConfig: SimulationLabConfig = {
                         'Een lus die van 0 t/m 4 telt = 5 stappen. Je hebt de code: `for (let i = 0; i <= 5; i++)` maar je wil precies 5 elementen doorlopen (0 t/m 4). Welke bug bevat dit?',
                     type: 'multiple-choice',
                     options: [
-                        'Syntax fout — de lus is verkeerd geschreven',
                         'Off-by-one fout — de lus loopt één stap te ver (tot 5 inclusief)',
+                        'Syntax fout — de lus is verkeerd geschreven',
                         'Type fout — i moet een string zijn',
                         'Logische fout — de lus gaat de verkeerde richting op',
                     ],
@@ -307,9 +307,9 @@ export const bugHunterConfig: SimulationLabConfig = {
                     type: 'multiple-choice',
                     options: [
                         'De computer begrijpt de naam "x" niet',
-                        'Over 2 weken weet jij (of een ander) niet meer wat "x" betekent',
                         'Korte variabelenamen zijn verboden in alle programmeertalen',
                         'Het veroorzaakt automatisch een runtime error',
+                        'Over 2 weken weet jij (of een ander) niet meer wat "x" betekent',
                     ],
                     correctAnswer: 'Over 2 weken weet jij (of een ander) niet meer wat "x" betekent',
                     explanation:
@@ -358,8 +358,8 @@ export const bugHunterConfig: SimulationLabConfig = {
                     type: 'multiple-choice',
                     options: [
                         'Schrijven → Testen → Verwijderen → Opnieuw schrijven',
-                        'Reproduceren → Lokaliseren → Diagnosticeren → Fixen',
                         'Googelen → Kopiëren → Plakken → Hopen',
+                        'Reproduceren → Lokaliseren → Diagnosticeren → Fixen',
                         'Foutmelding negeren → Code opslaan → Opnieuw opstarten → Klaar',
                     ],
                     correctAnswer: 'Reproduceren → Lokaliseren → Diagnosticeren → Fixen',
@@ -373,8 +373,8 @@ export const bugHunterConfig: SimulationLabConfig = {
                         'Na het fixen van een bug doe je: de fix testen met het geval dat de bug triggerde. Waarom is dat extra stap belangrijk?',
                     type: 'multiple-choice',
                     options: [
-                        'Het is niet nodig als je zeker weet dat de fix klopt',
                         'Om te verifiëren dat de bug echt weg is en je geen nieuwe bugs hebt geïntroduceerd',
+                        'Het is niet nodig als je zeker weet dat de fix klopt',
                         'Alleen om te kunnen aantonen aan je docent dat je het hebt gedaan',
                         'Testen is alleen nodig bij professionele software, niet bij schoolopdrachten',
                     ],
