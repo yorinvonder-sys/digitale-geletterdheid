@@ -132,3 +132,43 @@ Volgorde: eenheid 2 eerst — dat is klein en dicht meteen het grofste gat. Daar
 Kies **1A + het plan uit §4**, tenzij je binnen afzienbare tijd echt cijfers op deze opdrachten wilt baseren. Het dicht in een paar uur de twee gaten die er nu toe doen — zelf een score schrijven en zelf een voltooiing melden — zonder de motoren aan te raken die net drie tegenleesrondes hebben doorstaan. Wil je later naar beoordeling, dan is §5 een logische vervolgstap en gooit stap 1 niets weg.
 
 Wat ik afraad: half beginnen aan §5. De server laten rekenen is alleen zinvol als het overal gebeurt; doe je het voor de helft van de opdrachten, dan weet niemand meer welke cijfers waarop steunen.
+
+---
+
+## 8. Naschrift — wat de meting opleverde
+
+Toegevoegd nadat besluit 1A was genomen en §4 was gebouwd (PR #303). Twee dingen bleken anders dan §1 en §2 aannamen, en één ding bleek veel groter.
+
+### Correcties op §1 en §2
+
+§1 leunde op het basismigratiebestand. De regels die **werkelijk op productie draaien** zijn strenger:
+
+| Bewering in §1/§2 | Wat er werkelijk staat |
+|---|---|
+| "Een leerling mag zijn eigen rij invoegen en bijwerken, er is geen controle op wát hij erin zet" | Klopt voor `score`, **niet** voor `status`. De policies heten `mission_progress_owner_insert`/`_owner_update` en weigeren allebei `status = 'completed'`, plus er staat een CHECK op een witte lijst. Zichzelf op voltooid zetten via de tabel kón dus al niet. |
+| "Zichzelf een score geven" | Klopt volledig. Geen grens, geen kolomrecht. Dit was het enige echt open gat. |
+| "Voltooiing melden zonder de opdracht te doen" | Klopt, maar via de RPC — niet via de tabel. Dat gat staat nog open en is met 1A niet gedicht. |
+
+De `score`-kolom bleek bovendien **nooit gebruikt**: 0 van de 110 voortgangsrijen had een waarde, terwijl het docentscherm hem al ophaalde. Die kolom stond dus altijd leeg.
+
+### Waarom §5 eenheid 1 geen verplaatsing is maar een herontwerp
+
+De formulering "de scorefuncties verhuizen naar een gedeelde plek" suggereert dat het om code gaat. Dat is het niet. Het gaat om wat de motoren **bewaren**:
+
+| Motor | Wat er in de opgeslagen voortgang staat | Kan de server narekenen? |
+|---|---|---|
+| data-viewer, scenario-engine, debate-arena | de antwoorden van de leerling | ja |
+| builder-canvas, simulation-lab, tool-guide, puzzle-lab, password-fortress | het oordeel van de browser (`reflectionCorrect`, `solved`, `cleared`, `followUpCorrect`) | nee — de server zou dat oordeel overnemen |
+| review-arena, ethics-council | de punten zelf, als getal (`roundScores`, `legaalScore`) | nee |
+
+Voor zeven van de tien motoren bewaart de browser dus niet wát de leerling deed, alleen zijn eigen conclusie erover. De server laten rekenen vereist daar een nieuwe vorm van de opgeslagen voortgang — en dat is de data die op dit moment in de browsers van leerlingen staat. Precies dat pad leverde in de reviewronde van dezelfde dag een blokkerende bug op: een opslagvalidatie die alleen het nieuwe formaat accepteerde zou het werk hebben gewist van elke leerling die middenin een opdracht zat.
+
+Wat wél meevalt: alle 83 configbestanden zijn pure TypeScript zonder React-afhankelijkheid, dus server-side uitvoeren is technisch mogelijk. De blokkade zit in de vorm van de opgeslagen voortgang, niet in de taal.
+
+### De grens die ook ná §5 blijft staan
+
+De antwoordsleutels zitten in de app die de leerling binnenkrijgt — anders kan hij geen directe feedback zien. Server-side narekenen verhoogt de drempel van "typ een getal" naar "zoek de juiste antwoorden op en stuur die mee", maar sluit niets af. Een score die tegen een vastberaden leerling standhoudt vereist dat de sleutels de browser nooit verlaten en elk antwoord bij de server wordt gecontroleerd. Dat verandert het product: geen directe feedback zonder serveraanroep.
+
+### Genomen besluit
+
+**1A blijft staan.** De score is een signaal voor de docent. §5 is niet afgevoerd maar bewust uitgesteld: de kosten (herontwerp van zeven motoren, migratie van live leerlingvoortgang, opnieuw tegenlezen) staan niet in verhouding tot de opbrengst zolang het resultaat geen cijferwaardig getal is. Wordt beoordeling ooit een echte eis, dan is de eerlijke ondergrens de laatste alinea hierboven — niet §5 eenheid 1.
