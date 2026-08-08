@@ -33,8 +33,6 @@ export const saveMissionProgress = async (
                 mission_id: missionId,
                 progress_data: sanitized,
                 school_id: schoolId,
-                status: sanitized?.status || 'in_progress',
-                score: sanitized?.score || null,
                 updated_at: new Date().toISOString(),
             }, {
                 onConflict: 'user_id,mission_id',

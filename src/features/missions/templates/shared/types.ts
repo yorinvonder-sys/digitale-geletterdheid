@@ -24,7 +24,11 @@ export interface MissionGoal {
 export interface TemplateMissionProps {
     missionId: string;
     onBack: () => void;
-    onComplete: (success: boolean) => boolean | void | Promise<boolean | void>;
+    /**
+     * @param scorePercent 0-100, bedoeld als signaal voor de docent. Weglaten bij
+     *   een opdracht zonder zinnige score; een eerder vastgelegde score blijft dan staan.
+     */
+    onComplete: (success: boolean, scorePercent?: number) => boolean | void | Promise<boolean | void>;
     stats?: any;
     vsoProfile?: string;
 }

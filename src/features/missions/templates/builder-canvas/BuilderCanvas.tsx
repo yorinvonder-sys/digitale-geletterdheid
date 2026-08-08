@@ -13,6 +13,7 @@ import { PreviewPanel } from './sub/PreviewPanel';
 import { StepInstructionPanel } from './sub/StepInstructionPanel';
 import type { BuilderCanvasState } from './sub/types';
 import { isMeaningfulAnswer } from '../shared/answerQuality';
+import { toScorePercent } from '../shared/scorePercent';
 
 // ─── Config types ────────────────────────────────────────────────────────────
 
@@ -235,7 +236,7 @@ const BuilderCanvasInner: React.FC<BuilderCanvasProps> = ({
     const handleComplete = async () => {
         // Pas wissen als de server de voltooiing bevestigd heeft: andersom raakt
         // een leerling zijn hele bouwwerk kwijt zodra het opslaan mislukt.
-        const completed = await onComplete(totalScore >= config.maxScore * 0.4);
+        const completed = await onComplete(totalScore >= config.maxScore * 0.4, toScorePercent(totalScore, config.maxScore));
         if (completed !== false) {
             clearSave();
         }

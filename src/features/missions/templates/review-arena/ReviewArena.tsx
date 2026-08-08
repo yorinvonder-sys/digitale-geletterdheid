@@ -13,6 +13,7 @@ import { RapidFire } from './sub/RapidFire';
 import { useMissionAutoSave } from '@/hooks/useMissionAutoSave';
 import { StudentAIChat } from '@/features/ai-chat/StudentAIChat';
 import { getMissionGoal } from '@/config/missionGoals';
+import { toScorePercent } from '../shared/scorePercent';
 
 // === Config types (exported for test configs) ===
 
@@ -436,7 +437,7 @@ const ReviewArenaWithConfig: React.FC<ReviewArenaProps> = ({
         const passed = config.maxScore > 0 && totalScore / config.maxScore >= PASS_THRESHOLD;
         // Pas wissen als de server de voltooiing bevestigd heeft: andersom raakt
         // een leerling zijn hele reviewronde kwijt zodra het opslaan mislukt.
-        const completionResult = await onComplete(passed);
+        const completionResult = await onComplete(passed, toScorePercent(totalScore, config.maxScore));
         if (completionResult !== false) {
             clearSave();
         }

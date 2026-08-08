@@ -12,6 +12,7 @@ import { PositionPhase } from './sub/PositionPhase';
 import { ArguePhase } from './sub/ArguePhase';
 import { ChallengePhase } from './sub/ChallengePhase';
 import { ReflectPhase } from './sub/ReflectPhase';
+import { toScorePercent } from '../shared/scorePercent';
 
 // ─── Config types ────────────────────────────────────────────────────────────
 
@@ -250,7 +251,7 @@ const DebateArenaInner: React.FC<DebateArenaProps> = ({ config, onBack, onComple
                         onComplete={async () => {
                             // Pas wissen als de server de voltooiing bevestigd heeft, anders
                             // raakt een leerling zijn werk kwijt bij een mislukte opslag.
-                            const completed = await onComplete(true);
+                            const completed = await onComplete(true, toScorePercent(score, config.maxScore));
                             if (completed !== false) {
                                 clearSave();
                             }

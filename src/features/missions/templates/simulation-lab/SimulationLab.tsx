@@ -10,6 +10,7 @@ import type { TemplateMissionProps, BadgeConfig, FollowUpQuestion, MissionGoal }
 import { SimulationVisual } from './sub/SimulationVisuals';
 import { ParameterControl } from './sub/ParameterControl';
 import { QuestionCard } from './sub/QuestionCard';
+import { toScorePercent } from '../shared/scorePercent';
 
 // ─── Config types ─────────────────────────────────────────────────────────────
 
@@ -252,7 +253,7 @@ const SimulationLabInner: React.FC<SimulationLabProps> = ({ onBack, onComplete, 
 
     const handleComplete = () => {
         clearSave();
-        onComplete(true);
+        onComplete(true, toScorePercent(totalScore, config.maxScore));
     };
 
     // ─── Phases ───────────────────────────────────────────────────────────────

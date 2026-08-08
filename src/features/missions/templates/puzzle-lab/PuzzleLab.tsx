@@ -6,6 +6,7 @@ import { IntroScreen } from '../shared/IntroScreen';
 import { getMissionGoal } from '@/config/missionGoals';
 import type { TemplateMissionProps } from '../shared/types';
 import { PUZZLE_LAB_CONFIGS } from './puzzleLabRegistry';
+import { toScorePercent } from '../shared/scorePercent';
 export type { Puzzle, PuzzleLabConfig } from './puzzleLabTypes';
 
 // === State ===
@@ -277,7 +278,7 @@ export const PuzzleLab: React.FC<TemplateMissionProps> = ({
                     clearSave();
                     // Reflect real performance: only a >=40% score counts as a pass,
                     // so a skipped/failed run is not reported as a success.
-                    onComplete(totalScore >= config.maxScore * 0.4);
+                    onComplete(totalScore >= config.maxScore * 0.4, toScorePercent(totalScore, config.maxScore));
                 }}
             />
         );
