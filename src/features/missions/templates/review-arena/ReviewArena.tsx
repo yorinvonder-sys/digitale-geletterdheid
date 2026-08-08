@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { MessageCircle, ChevronRight } from 'lucide-react';
 import type { TemplateMissionProps, BadgeConfig, FollowUpQuestion, MissionGoal } from '../shared/types';
@@ -90,6 +90,9 @@ interface ReviewArenaState {
      * learner submits, so a reload shows the locked outcome instead of a replayable round
      * with the answers now known. Null while the round is still in progress. */
     submittedScore: number | null;
+    /** Ronde waarbij `submittedScore` hoort. Zonder deze koppeling kan een blijven
+     * hangende score de VOLGENDE ronde vergrendelen voordat die gespeeld is. */
+    submittedRoundId: string | null;
 }
 
 const ROUND_ICONS: Record<ReviewRound['type'], string> = {
@@ -118,6 +121,7 @@ const ReviewArenaWithConfig: React.FC<ReviewArenaProps> = ({
         followUpResults: {},
         configMissionId: config.missionId,
         submittedScore: null,
+        submittedRoundId: null,
     };
 
     const { state, setState, clearSave } = useMissionAutoSave<ReviewArenaState>(
@@ -169,6 +173,7 @@ const ReviewArenaWithConfig: React.FC<ReviewArenaProps> = ({
                     currentRound: nextRound,
                     phase: isLast ? 'complete' : 'round',
                     submittedScore: null,
+                    submittedRoundId: null,
                 };
             });
         },
@@ -179,18 +184,26 @@ const ReviewArenaWithConfig: React.FC<ReviewArenaProps> = ({
         setState((s) => ({ ...s, phase: 'round' }));
     }, [setState]);
 
+    // Onthoudt welke ronde in DEZE sessie is ingediend. Zolang dat het geval is
+    // blijft de subronde zelf in beeld, inclusief zijn goed/fout-markering per
+    // item — dat is de hele opbrengst van een reviewronde. Het vergrendelde
+    // resultaatscherm is alleen bedoeld voor een herstelde score na een herlaad.
+    const submittedThisSessionRef = useRef<string | null>(null);
+
     // Persists the round's score the moment it is submitted (before the "doorgaan" click),
     // so a reload can never replay the round with the answers already known. Idempotent:
     // once a score is recorded for the current round, later calls are no-ops.
     const handleRoundSubmit = useCallback(
         (score: number) => {
+            const roundId = config.rounds[state.currentRound]?.id ?? String(state.currentRound);
+            submittedThisSessionRef.current = roundId;
             setState((s) =>
-                s.submittedScore === null || s.submittedScore === undefined
-                    ? { ...s, submittedScore: score }
-                    : s
+                s.submittedRoundId === roundId
+                    ? s
+                    : { ...s, submittedScore: score, submittedRoundId: roundId }
             );
         },
-        [setState]
+        [setState, config.rounds, state.currentRound]
     );
 
     const handleRoundComplete = useCallback(
@@ -313,7 +326,10 @@ const ReviewArenaWithConfig: React.FC<ReviewArenaProps> = ({
                         className="bg-white rounded-2xl border border-duck-gray p-5"
                     >
                         <div className={showFollowUp ? 'pointer-events-none opacity-50 transition-opacity duration-200' : ''}>
-                            {state.submittedScore !== null && state.submittedScore !== undefined ? (
+                            {state.submittedScore !== null &&
+                            state.submittedScore !== undefined &&
+                            state.submittedRoundId === round.id &&
+                            submittedThisSessionRef.current !== round.id ? (
                                 <div data-qa="review-locked-result" className="space-y-4 text-center py-6">
                                     <p className="text-sm text-duck-ink/80" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                                         Deze ronde is al ingediend.
