@@ -1,0 +1,2056 @@
+{
+  "schemaVersion": 1,
+  "reviewDate": "2026-08-08",
+  "productSha": "846e01cf6a3151c6a0570d258f01ee9b49ace716",
+  "finalDeployment": "5807693483",
+  "verdict": "ALLOW",
+  "openBlockerHigh": 0,
+  "runs": [
+    {
+      "sourceSha": "e01c759a314263f738e2ece0b3b373465dfb3bf0",
+      "deployment": null,
+      "entries": [
+        {
+          "mission": "ux-detective",
+          "viewport": "desktop",
+          "state": "start",
+          "sha256": "856db83e997fb04b0e85ac88fe80cfe7c7c61e6edf873737e6852e98c1e17af4",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "High",
+          "verdict": "superseded-by-fix"
+        },
+        {
+          "mission": "ux-detective",
+          "viewport": "desktop",
+          "state": "flow",
+          "sha256": "206a8adbcdcb5a55a3a7aab08fac98ac43bda73ea0553b685d46699bf2f5754b",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "High",
+          "verdict": "superseded-by-fix"
+        },
+        {
+          "mission": "ux-detective",
+          "viewport": "desktop",
+          "state": "feedback",
+          "sha256": "d6a8b87d551d8e083dd0c8c2b7a6341cb097c1a357c005901ec6412f1404d03d",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "High",
+          "verdict": "superseded-by-fix"
+        },
+        {
+          "mission": "ux-detective",
+          "viewport": "desktop",
+          "state": "end",
+          "sha256": "3975d3679ead17b7544245040b1dc20d37f4019b8d32a20438918e59733798cc",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "High",
+          "verdict": "superseded-by-fix"
+        },
+        {
+          "mission": "ux-detective",
+          "viewport": "tablet-portrait",
+          "state": "start",
+          "sha256": "c435af7d1a352f30aef09af3afed05837ccfa72fae82440900e68fc1be720b24",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "High",
+          "verdict": "superseded-by-fix"
+        },
+        {
+          "mission": "ux-detective",
+          "viewport": "tablet-portrait",
+          "state": "flow",
+          "sha256": "db38ea5272474d4b16d1b47892d016d8e0caf97d667f0bffb4d58dbb904ba81b",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "High",
+          "verdict": "superseded-by-fix"
+        },
+        {
+          "mission": "ux-detective",
+          "viewport": "tablet-portrait",
+          "state": "feedback",
+          "sha256": "317d34c425fb24aacbb78b4d64e1bc08b3d6fa2a981d38d044a479b6dfc7a412",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "High",
+          "verdict": "superseded-by-fix"
+        },
+        {
+          "mission": "ux-detective",
+          "viewport": "tablet-portrait",
+          "state": "end",
+          "sha256": "9e7900ac9d2d504f8c809d6e85fe833393fa5d32ac2edab5d387702c3294a817",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "High",
+          "verdict": "superseded-by-fix"
+        },
+        {
+          "mission": "ux-detective",
+          "viewport": "tablet-landscape",
+          "state": "start",
+          "sha256": "79e4b2e7c824e728cde15e339a9eaf8db918fc526713140b13672468c069063c",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "High",
+          "verdict": "superseded-by-fix"
+        },
+        {
+          "mission": "ux-detective",
+          "viewport": "tablet-landscape",
+          "state": "flow",
+          "sha256": "40a52d0504ad9eefcc522f63d8e9d725b81c8f1a5ec95fc7f2781533a894b096",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "High",
+          "verdict": "superseded-by-fix"
+        },
+        {
+          "mission": "ux-detective",
+          "viewport": "tablet-landscape",
+          "state": "feedback",
+          "sha256": "dbc4ec93a174addf87d83de4241b54a9bd4ad880774aaec44c6a0357b46b782d",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "High",
+          "verdict": "superseded-by-fix"
+        },
+        {
+          "mission": "ux-detective",
+          "viewport": "tablet-landscape",
+          "state": "end",
+          "sha256": "f8fbff1744d7eb27a7a302450e804850f6b2beb454240ad3b3b8c934f6795464",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "High",
+          "verdict": "superseded-by-fix"
+        },
+        {
+          "mission": "ux-detective",
+          "viewport": "mobile",
+          "state": "start",
+          "sha256": "6e66e03da46021ee3b855e9e106ddc55650c6520b3547218f7b47dcbd3985ac9",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "High",
+          "verdict": "superseded-by-fix"
+        },
+        {
+          "mission": "ux-detective",
+          "viewport": "mobile",
+          "state": "flow",
+          "sha256": "0eb66b1fa99d2e5392ca66845b58d5173494dbb341fc34c34c8534c4c03221f1",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "High",
+          "verdict": "superseded-by-fix"
+        },
+        {
+          "mission": "ux-detective",
+          "viewport": "mobile",
+          "state": "feedback",
+          "sha256": "042e67aa019c1d0e07b47676f3f4cb5c3d69ee0da22089753fea51e1fd51b67b",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "High",
+          "verdict": "superseded-by-fix"
+        },
+        {
+          "mission": "ux-detective",
+          "viewport": "mobile",
+          "state": "end",
+          "sha256": "0a97a2a4484906c4e2ccc205fd8c886f699c94c1d1efbcd33778b04901a519ef",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "High",
+          "verdict": "superseded-by-fix"
+        },
+        {
+          "mission": "podcast-producer",
+          "viewport": "desktop",
+          "state": "start",
+          "sha256": "eccc404679861834694ca4822373a671868b1c66cd3e5e3c339a1bd88d070e13",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "High",
+          "verdict": "superseded-by-fix"
+        },
+        {
+          "mission": "podcast-producer",
+          "viewport": "desktop",
+          "state": "flow",
+          "sha256": "ea029b47f1986f2e363c16a1643ad71422c93c6c8ba73b85748a2e040a0e51de",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "High",
+          "verdict": "superseded-by-fix"
+        },
+        {
+          "mission": "podcast-producer",
+          "viewport": "desktop",
+          "state": "feedback",
+          "sha256": "e6271bda209ba7c8134dd4ae2d9337ebd41bddaa4ce24af6692768893f0bae08",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "High",
+          "verdict": "superseded-by-fix"
+        },
+        {
+          "mission": "podcast-producer",
+          "viewport": "desktop",
+          "state": "end",
+          "sha256": "82a087b83face61d5bdbc1890636c20502b06066ea2a537cfac7f9e2a5c165f9",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "High",
+          "verdict": "superseded-by-fix"
+        },
+        {
+          "mission": "podcast-producer",
+          "viewport": "tablet-portrait",
+          "state": "start",
+          "sha256": "674ae019f1bd2c8db055a7d9eb864d6b45ea4f72cf61d6dc7c874c54b5a30159",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "High",
+          "verdict": "superseded-by-fix"
+        },
+        {
+          "mission": "podcast-producer",
+          "viewport": "tablet-portrait",
+          "state": "flow",
+          "sha256": "8b388332df3edc3104dc95bab62e96bbd56068d69654b336abde5f1b8a8112c3",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "High",
+          "verdict": "superseded-by-fix"
+        },
+        {
+          "mission": "podcast-producer",
+          "viewport": "tablet-portrait",
+          "state": "feedback",
+          "sha256": "fe5d5b0896ba5c23eda10afc1fb61c338a6c47f87bb054f21a6fdd7978270658",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "High",
+          "verdict": "superseded-by-fix"
+        },
+        {
+          "mission": "podcast-producer",
+          "viewport": "tablet-portrait",
+          "state": "end",
+          "sha256": "c67e7f4e1698c746311df7cedd452e0ec3a2b78278074e23741cf486f775ba72",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "High",
+          "verdict": "superseded-by-fix"
+        },
+        {
+          "mission": "podcast-producer",
+          "viewport": "tablet-landscape",
+          "state": "start",
+          "sha256": "8b09f3ca3ec60ec58f1c6f970f77b2a4ae4126fb056dce1012f2216e443d7cd8",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "High",
+          "verdict": "superseded-by-fix"
+        },
+        {
+          "mission": "podcast-producer",
+          "viewport": "tablet-landscape",
+          "state": "flow",
+          "sha256": "acbcfd6fa066ec8e3f3131d1c05ac868461395ca6a06636639c931e7202864b7",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "High",
+          "verdict": "superseded-by-fix"
+        },
+        {
+          "mission": "podcast-producer",
+          "viewport": "tablet-landscape",
+          "state": "feedback",
+          "sha256": "0e38f9ef6523bef5a9f9fab92d745dd01cab8eeb037eb64ad98ed4f26d00fce3",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "High",
+          "verdict": "superseded-by-fix"
+        },
+        {
+          "mission": "podcast-producer",
+          "viewport": "tablet-landscape",
+          "state": "end",
+          "sha256": "b3174542d310066a63b14cb3a6e5033cd0cefe9bc087acbcaa171f71d6be274c",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "High",
+          "verdict": "superseded-by-fix"
+        },
+        {
+          "mission": "podcast-producer",
+          "viewport": "mobile",
+          "state": "start",
+          "sha256": "f6c7f8a28318f92e371792183bee97b7bcbed549f37631ff880b1ca5d634a290",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "High",
+          "verdict": "superseded-by-fix"
+        },
+        {
+          "mission": "podcast-producer",
+          "viewport": "mobile",
+          "state": "flow",
+          "sha256": "6b0745e86240d4f3c843697627736cb3b65706497313680c9c3a0ec8f2d8a264",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "High",
+          "verdict": "superseded-by-fix"
+        },
+        {
+          "mission": "podcast-producer",
+          "viewport": "mobile",
+          "state": "feedback",
+          "sha256": "9599e67b63074547fc92e639ef8b361eb2a2a2c263011abaf8e655fe6ed5d864",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "High",
+          "verdict": "superseded-by-fix"
+        },
+        {
+          "mission": "podcast-producer",
+          "viewport": "mobile",
+          "state": "end",
+          "sha256": "9403a4498884b828cb049b108530e36fc2fc0d28f35c1bd35f066d2184fcece7",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "High",
+          "verdict": "superseded-by-fix"
+        },
+        {
+          "mission": "meme-machine",
+          "viewport": "desktop",
+          "state": "start",
+          "sha256": "84437ca7a8c3bdbc7483418de576ba159077302e16ff539171ba9e58c17f3f5e",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "High",
+          "verdict": "superseded-by-fix"
+        },
+        {
+          "mission": "meme-machine",
+          "viewport": "desktop",
+          "state": "flow",
+          "sha256": "adfb9641413c07a76ccee198cba93a518268d65a6e3b22e24b89336fd2bd0808",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "High",
+          "verdict": "superseded-by-fix"
+        },
+        {
+          "mission": "meme-machine",
+          "viewport": "desktop",
+          "state": "feedback",
+          "sha256": "907587c750278a735adca3b5c4bab12f694a9dac37dbd0403bebc7f8c493bbf5",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "High",
+          "verdict": "superseded-by-fix"
+        },
+        {
+          "mission": "meme-machine",
+          "viewport": "desktop",
+          "state": "end",
+          "sha256": "9dabd6e3c21299a4699c14d51f5aa2a99ed9b2b3c78a5e88c7682a1fa976b90d",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "High",
+          "verdict": "superseded-by-fix"
+        },
+        {
+          "mission": "meme-machine",
+          "viewport": "tablet-portrait",
+          "state": "start",
+          "sha256": "294dd0d4ee18c24b60e1189043599feac1b4e5e11b86132da010be0fc1302ddc",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "High",
+          "verdict": "superseded-by-fix"
+        },
+        {
+          "mission": "meme-machine",
+          "viewport": "tablet-portrait",
+          "state": "flow",
+          "sha256": "711b51dc4cb706be71fea8370bcd8f6e0cf360b76e2cac112c52ea5968933eb6",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "High",
+          "verdict": "superseded-by-fix"
+        },
+        {
+          "mission": "meme-machine",
+          "viewport": "tablet-portrait",
+          "state": "feedback",
+          "sha256": "8951b4cc27c424f961d18b81fb981237c97a292874a35c956e9659c3b6499d47",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "High",
+          "verdict": "superseded-by-fix"
+        },
+        {
+          "mission": "meme-machine",
+          "viewport": "tablet-portrait",
+          "state": "end",
+          "sha256": "a275fccdbe5676264d32d12c9d516e9635b7ddda034ecddd690cded4f791bc11",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "High",
+          "verdict": "superseded-by-fix"
+        },
+        {
+          "mission": "meme-machine",
+          "viewport": "tablet-landscape",
+          "state": "start",
+          "sha256": "cd388cd08b07b98999e4d2162309dca28e5f3a18f3f81065b23190f93306ee1a",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "High",
+          "verdict": "superseded-by-fix"
+        },
+        {
+          "mission": "meme-machine",
+          "viewport": "tablet-landscape",
+          "state": "flow",
+          "sha256": "58e074042c7c147a05afd86703fd6a4b64af59b80233ebc945e7881bbd9cbe1f",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "High",
+          "verdict": "superseded-by-fix"
+        },
+        {
+          "mission": "meme-machine",
+          "viewport": "tablet-landscape",
+          "state": "feedback",
+          "sha256": "7a34c460b0df1376e52c6997829d33462eeb9e43c0a3ef6ad7175f62063e1580",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "High",
+          "verdict": "superseded-by-fix"
+        },
+        {
+          "mission": "meme-machine",
+          "viewport": "tablet-landscape",
+          "state": "end",
+          "sha256": "7ce456ef9f0dd606544514d93d3d3932b7fc59d8968d72153e7eeedd462d7ff9",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "High",
+          "verdict": "superseded-by-fix"
+        },
+        {
+          "mission": "meme-machine",
+          "viewport": "mobile",
+          "state": "start",
+          "sha256": "9632cc7b361a4fd8f484027e6a7b2ee8e8ccff8270002dc399bf1195b85e94b9",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "High",
+          "verdict": "superseded-by-fix"
+        },
+        {
+          "mission": "meme-machine",
+          "viewport": "mobile",
+          "state": "flow",
+          "sha256": "671a089461109e72f2f89f8fbb0665dbd7e1b7f1770112f0ba8d610e7ce26e14",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "High",
+          "verdict": "superseded-by-fix"
+        },
+        {
+          "mission": "meme-machine",
+          "viewport": "mobile",
+          "state": "feedback",
+          "sha256": "95fdd2009e959c8ddf092be1296c9eb986a6ee9c542fd1200f20cd7f306f639f",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "High",
+          "verdict": "superseded-by-fix"
+        },
+        {
+          "mission": "meme-machine",
+          "viewport": "mobile",
+          "state": "end",
+          "sha256": "2f3dfde954b604fac8a44c9c1fe1e6f46d07cd32860ed57f2a56efea21b0b48c",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "High",
+          "verdict": "superseded-by-fix"
+        },
+        {
+          "mission": "digital-storyteller",
+          "viewport": "desktop",
+          "state": "start",
+          "sha256": "6327149066717fba92e8573c3957eb18ba6ee91d7a7ca874d7a9ad7961ab91db",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "High",
+          "verdict": "superseded-by-fix"
+        },
+        {
+          "mission": "digital-storyteller",
+          "viewport": "desktop",
+          "state": "flow",
+          "sha256": "c18aa76e4da5d415f1438de7a16e1362a21962fdc56ecb96c0676bcdfdb02ded",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "High",
+          "verdict": "superseded-by-fix"
+        },
+        {
+          "mission": "digital-storyteller",
+          "viewport": "desktop",
+          "state": "feedback",
+          "sha256": "db4796767154378cead863547f708962a38be0c00ef9a248a36c76848e814cdc",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "High",
+          "verdict": "superseded-by-fix"
+        },
+        {
+          "mission": "digital-storyteller",
+          "viewport": "desktop",
+          "state": "end",
+          "sha256": "c6bc7cf543bb02b2004678f349d76128a84318641f090667b88bdf3db9a8ef1c",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "High",
+          "verdict": "superseded-by-fix"
+        },
+        {
+          "mission": "digital-storyteller",
+          "viewport": "tablet-portrait",
+          "state": "start",
+          "sha256": "f1c87e284f2cb9af02b1cbf970673b745eb4b6f7a7e2f7d7045e9b2f55c990ec",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "High",
+          "verdict": "superseded-by-fix"
+        },
+        {
+          "mission": "digital-storyteller",
+          "viewport": "tablet-portrait",
+          "state": "flow",
+          "sha256": "93b1b3cf795c3b979bb996b0166e98d1e388a785cc03a0d62bc96c4e57256d43",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "High",
+          "verdict": "superseded-by-fix"
+        },
+        {
+          "mission": "digital-storyteller",
+          "viewport": "tablet-portrait",
+          "state": "feedback",
+          "sha256": "d16544ee21ebe33876448dea780a681587d2ea6ff3f7498d27ab5217727b5793",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "High",
+          "verdict": "superseded-by-fix"
+        },
+        {
+          "mission": "digital-storyteller",
+          "viewport": "tablet-portrait",
+          "state": "end",
+          "sha256": "f62b5529d65830eab7264c2eb39831da647aaa4fc8622983ed45faf3e9f98689",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "High",
+          "verdict": "superseded-by-fix"
+        },
+        {
+          "mission": "digital-storyteller",
+          "viewport": "tablet-landscape",
+          "state": "start",
+          "sha256": "0a55e36b5e5bdd463bad5e9f7011dee5c8aea3c15fd01e1b871354a8f00a8a4b",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "High",
+          "verdict": "superseded-by-fix"
+        },
+        {
+          "mission": "digital-storyteller",
+          "viewport": "tablet-landscape",
+          "state": "flow",
+          "sha256": "3d91e1c28b5f451ab7e2f20c92113a152a798c300994ef9138244305222d3c4d",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "High",
+          "verdict": "superseded-by-fix"
+        },
+        {
+          "mission": "digital-storyteller",
+          "viewport": "tablet-landscape",
+          "state": "feedback",
+          "sha256": "8b33f1c10857e722206ef6d089b686a6ea755644b3a4002f3d17a1fc47b9ecc0",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "High",
+          "verdict": "superseded-by-fix"
+        },
+        {
+          "mission": "digital-storyteller",
+          "viewport": "tablet-landscape",
+          "state": "end",
+          "sha256": "05f346be66d36bf69a24bba5a7410c90cbdd88442fad167bb1ef768c252758ed",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "High",
+          "verdict": "superseded-by-fix"
+        },
+        {
+          "mission": "digital-storyteller",
+          "viewport": "mobile",
+          "state": "start",
+          "sha256": "1f638730aa467b19716c54545e4da1c9000c10c77b46005aff30e09be1f8196c",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "High",
+          "verdict": "superseded-by-fix"
+        },
+        {
+          "mission": "digital-storyteller",
+          "viewport": "mobile",
+          "state": "flow",
+          "sha256": "400cd38b5576720b3df27074d526b225d70036e6df583bb66ccb2595870ad79a",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "High",
+          "verdict": "superseded-by-fix"
+        },
+        {
+          "mission": "digital-storyteller",
+          "viewport": "mobile",
+          "state": "feedback",
+          "sha256": "e7033722a97227cd251ef14dbd03b3621f7b6f1d2ba7a398d79910aeca71ec81",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "High",
+          "verdict": "superseded-by-fix"
+        },
+        {
+          "mission": "digital-storyteller",
+          "viewport": "mobile",
+          "state": "end",
+          "sha256": "16dbffe05c00b40a1697df2804e3a04518210db1b7157c3977ba47136adfb330",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "High",
+          "verdict": "superseded-by-fix"
+        },
+        {
+          "mission": "brand-builder",
+          "viewport": "desktop",
+          "state": "start",
+          "sha256": "9a4ffc4e4beeae6dc550535edd540f2c9e2f3618ead1625853fc91a7cc43364c",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "High",
+          "verdict": "superseded-by-fix"
+        },
+        {
+          "mission": "brand-builder",
+          "viewport": "desktop",
+          "state": "flow",
+          "sha256": "6bf33fe5c6524b55b831a3e48180e275690d573bec04f551f939bc18fe2332aa",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "High",
+          "verdict": "superseded-by-fix"
+        },
+        {
+          "mission": "brand-builder",
+          "viewport": "desktop",
+          "state": "feedback",
+          "sha256": "09f4da58420ce92ff796235ff471edcf3d1b8f9a6d3a0f499d02c98efab16cfe",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "High",
+          "verdict": "superseded-by-fix"
+        },
+        {
+          "mission": "brand-builder",
+          "viewport": "desktop",
+          "state": "end",
+          "sha256": "6320389e50ca3cf5886d0455e0e0b748e25fa4be053f8dd8c0aac4169b9baea7",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "High",
+          "verdict": "superseded-by-fix"
+        },
+        {
+          "mission": "brand-builder",
+          "viewport": "tablet-portrait",
+          "state": "start",
+          "sha256": "95460594524d362b4813e4870ed0756991d43501650882ebeacdc86432abc85e",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "High",
+          "verdict": "superseded-by-fix"
+        },
+        {
+          "mission": "brand-builder",
+          "viewport": "tablet-portrait",
+          "state": "flow",
+          "sha256": "286bb5895cee6011f05f4b0be7f55452df031f90a553ee7ebe2c94d3bdf64e14",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "High",
+          "verdict": "superseded-by-fix"
+        },
+        {
+          "mission": "brand-builder",
+          "viewport": "tablet-portrait",
+          "state": "feedback",
+          "sha256": "246b31da2a365111678505b564af0700369e6c9d8533f5a30de17f611e2d99c7",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "High",
+          "verdict": "superseded-by-fix"
+        },
+        {
+          "mission": "brand-builder",
+          "viewport": "tablet-portrait",
+          "state": "end",
+          "sha256": "1adaba9e0b53753dd51d5e2044fb70991843816c3fb652b89b451b83f4fb3d9e",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "High",
+          "verdict": "superseded-by-fix"
+        },
+        {
+          "mission": "brand-builder",
+          "viewport": "tablet-landscape",
+          "state": "start",
+          "sha256": "2751a8dca967bcd8f041a50731ed2ee972d615fa0c13baab5b812a8390c163b8",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "High",
+          "verdict": "superseded-by-fix"
+        },
+        {
+          "mission": "brand-builder",
+          "viewport": "tablet-landscape",
+          "state": "flow",
+          "sha256": "2584255c6945c63160370d16ddb4b9c4700fa1214a70a1a39920af7bb3c90152",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "High",
+          "verdict": "superseded-by-fix"
+        },
+        {
+          "mission": "brand-builder",
+          "viewport": "tablet-landscape",
+          "state": "feedback",
+          "sha256": "a384d2c7042a68bce5751592ebe8c709b9466686565eb4c9f7c2163860cb0588",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "High",
+          "verdict": "superseded-by-fix"
+        },
+        {
+          "mission": "brand-builder",
+          "viewport": "tablet-landscape",
+          "state": "end",
+          "sha256": "ee3d3a4d9a163d978bc7d7398fa75b8ae7e4dfc077169ba786017f0dfc293c72",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "High",
+          "verdict": "superseded-by-fix"
+        },
+        {
+          "mission": "brand-builder",
+          "viewport": "mobile",
+          "state": "start",
+          "sha256": "44ba0a6a7c1cec3a9459ab27c1f323b94ab08ea5a67096e9add35208648ecc6e",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "High",
+          "verdict": "superseded-by-fix"
+        },
+        {
+          "mission": "brand-builder",
+          "viewport": "mobile",
+          "state": "flow",
+          "sha256": "7bb7d6c2a0181ae50c64f2b516fa7b381962f586dab766452b7b8bd6d2287159",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "High",
+          "verdict": "superseded-by-fix"
+        },
+        {
+          "mission": "brand-builder",
+          "viewport": "mobile",
+          "state": "feedback",
+          "sha256": "aa18fa18f4967d1febcb461a23ce8f30b80cba3e9ff86c24bacfb2631cb80a38",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "High",
+          "verdict": "superseded-by-fix"
+        },
+        {
+          "mission": "brand-builder",
+          "viewport": "mobile",
+          "state": "end",
+          "sha256": "0cda089804f7ab7ab1dd2bfe40369c2545a3413545cb11d8513cb0e81a07997e",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "High",
+          "verdict": "superseded-by-fix"
+        },
+        {
+          "mission": "video-editor",
+          "viewport": "desktop",
+          "state": "start",
+          "sha256": "e7681c3f7849b73b698b153122b900b41de6b0e79d3332202ab7fa66cdb97efd",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "High",
+          "verdict": "superseded-by-fix"
+        },
+        {
+          "mission": "video-editor",
+          "viewport": "desktop",
+          "state": "flow",
+          "sha256": "5e14d888d2b6dffe0df67360332d8d10acf435c1b66e1e36994a928a1c120239",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "High",
+          "verdict": "superseded-by-fix"
+        },
+        {
+          "mission": "video-editor",
+          "viewport": "desktop",
+          "state": "feedback",
+          "sha256": "30d5d77cd4b8c4cbda09957e2ebb947c0ea498bbf04242641c6a62a9ae1038ad",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "High",
+          "verdict": "superseded-by-fix"
+        },
+        {
+          "mission": "video-editor",
+          "viewport": "desktop",
+          "state": "end",
+          "sha256": "c89076fc3ed8d3f2484de012fd5fd40b37e1077ed7d8d3e743a2af19bf2ba7a6",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "High",
+          "verdict": "superseded-by-fix"
+        },
+        {
+          "mission": "video-editor",
+          "viewport": "tablet-portrait",
+          "state": "start",
+          "sha256": "36ed385351f4ea39a5657c7ccaf163dd8243c7bea2536a02ec3c9069d99b8051",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "High",
+          "verdict": "superseded-by-fix"
+        },
+        {
+          "mission": "video-editor",
+          "viewport": "tablet-portrait",
+          "state": "flow",
+          "sha256": "010ef29baac565fb52aa8210fb21edf500a82e2ece3d756fff627af5110d52c7",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "High",
+          "verdict": "superseded-by-fix"
+        },
+        {
+          "mission": "video-editor",
+          "viewport": "tablet-portrait",
+          "state": "feedback",
+          "sha256": "b1f715a2a0384ffc35430e9ee808ae44903ea94052b91d065dabb6841b173c5e",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "High",
+          "verdict": "superseded-by-fix"
+        },
+        {
+          "mission": "video-editor",
+          "viewport": "tablet-portrait",
+          "state": "end",
+          "sha256": "91606c62f7cd3aa02284a29f0bfd1225dd2596b25ebc037aa75ff44828b783a8",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "High",
+          "verdict": "superseded-by-fix"
+        },
+        {
+          "mission": "video-editor",
+          "viewport": "tablet-landscape",
+          "state": "start",
+          "sha256": "4ae1a9dcd2f96a4bbe0c3b3c4311ba2ce07ed3e3296a60e71fc83529e253b294",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "High",
+          "verdict": "superseded-by-fix"
+        },
+        {
+          "mission": "video-editor",
+          "viewport": "tablet-landscape",
+          "state": "flow",
+          "sha256": "e64c708321bcd634d765b423d3b2386127f2fefdd2f31c72505f22d58ac9ac92",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "High",
+          "verdict": "superseded-by-fix"
+        },
+        {
+          "mission": "video-editor",
+          "viewport": "tablet-landscape",
+          "state": "feedback",
+          "sha256": "80fc3106239decfdeb7cf75bfe8248dde8b8ac76dad807e19dbb9d114a247932",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "High",
+          "verdict": "superseded-by-fix"
+        },
+        {
+          "mission": "video-editor",
+          "viewport": "tablet-landscape",
+          "state": "end",
+          "sha256": "18179ab20cc784bc74bfe17e797f5068f40ae28309115add398c01f7e7d2d269",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "High",
+          "verdict": "superseded-by-fix"
+        },
+        {
+          "mission": "video-editor",
+          "viewport": "mobile",
+          "state": "start",
+          "sha256": "9d32026e9c4450c233dd8720c8d1322e1f585582cf317c465f36ac79e79135ee",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "High",
+          "verdict": "superseded-by-fix"
+        },
+        {
+          "mission": "video-editor",
+          "viewport": "mobile",
+          "state": "flow",
+          "sha256": "61e1363dde2e8405b4c2881f556af85c7d41cdec133a25191cea16ca71be4932",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "High",
+          "verdict": "superseded-by-fix"
+        },
+        {
+          "mission": "video-editor",
+          "viewport": "mobile",
+          "state": "feedback",
+          "sha256": "e6d0a62e18878a38ac00492c05560866d5edbb0f537e93c92f13a2f6a38a27e3",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "High",
+          "verdict": "superseded-by-fix"
+        },
+        {
+          "mission": "video-editor",
+          "viewport": "mobile",
+          "state": "end",
+          "sha256": "aa8225db64134637550983a78c2e54b3746688d8c15c248092cf49e62deea258",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "High",
+          "verdict": "superseded-by-fix"
+        },
+        {
+          "mission": "online-helden",
+          "viewport": "desktop",
+          "state": "start",
+          "sha256": "7782a59f91e48891152315f57acb5f1929c86469d533a527d0bf79a9341dc5c1",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "High",
+          "verdict": "superseded-by-fix"
+        },
+        {
+          "mission": "online-helden",
+          "viewport": "desktop",
+          "state": "flow",
+          "sha256": "f306d88c138330dd4d32d2027f60a07891841d77052ea0bd29949cfc0eee89c0",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "High",
+          "verdict": "superseded-by-fix"
+        },
+        {
+          "mission": "online-helden",
+          "viewport": "desktop",
+          "state": "feedback",
+          "sha256": "a1f613a5c7f7743b14b8aebbcf7b08657b98c74286d92f594507d75c43a16ad1",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "High",
+          "verdict": "superseded-by-fix"
+        },
+        {
+          "mission": "online-helden",
+          "viewport": "desktop",
+          "state": "end",
+          "sha256": "ab762066853ea13c0913e82449e105aab7b40177d1eab1928ba958c4773534cc",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "High",
+          "verdict": "superseded-by-fix"
+        },
+        {
+          "mission": "online-helden",
+          "viewport": "tablet-portrait",
+          "state": "start",
+          "sha256": "edf6d9be86d5a73e03fcef2a18bf211e961c16d64536023fc1395e425703b647",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "High",
+          "verdict": "superseded-by-fix"
+        },
+        {
+          "mission": "online-helden",
+          "viewport": "tablet-portrait",
+          "state": "flow",
+          "sha256": "6187b751ca36f1e07d6653c11edf0fbd4cdcb93699c6e3c148e1b82413c8837b",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "High",
+          "verdict": "superseded-by-fix"
+        },
+        {
+          "mission": "online-helden",
+          "viewport": "tablet-portrait",
+          "state": "feedback",
+          "sha256": "ebc520f073a481677a8f8c4c3847ad60bb037933e37b1b81eb7844838a26b06d",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "High",
+          "verdict": "superseded-by-fix"
+        },
+        {
+          "mission": "online-helden",
+          "viewport": "tablet-portrait",
+          "state": "end",
+          "sha256": "468f9f8f69cff7aa773dc96783149a100fbd7cde4fdb9420a6a54948546aaf2c",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "High",
+          "verdict": "superseded-by-fix"
+        },
+        {
+          "mission": "online-helden",
+          "viewport": "tablet-landscape",
+          "state": "start",
+          "sha256": "20ccec4288079b2f04656a1757fe1611d11c2be65dc346cd4b2fc310ab2505b6",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "High",
+          "verdict": "superseded-by-fix"
+        },
+        {
+          "mission": "online-helden",
+          "viewport": "tablet-landscape",
+          "state": "flow",
+          "sha256": "d57f27061688e9b291104714a621d5ba203597433997f030b3f85bf166117691",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "High",
+          "verdict": "superseded-by-fix"
+        },
+        {
+          "mission": "online-helden",
+          "viewport": "tablet-landscape",
+          "state": "feedback",
+          "sha256": "085ee765c76370bcaf884b08ebd28ee3b5965eed45d43576c0ab6a67eaef2714",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "High",
+          "verdict": "superseded-by-fix"
+        },
+        {
+          "mission": "online-helden",
+          "viewport": "tablet-landscape",
+          "state": "end",
+          "sha256": "88b5582210a97bcd945a4910fe26520d74f62680393a0eaee27ced5de9bdc611",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "High",
+          "verdict": "superseded-by-fix"
+        },
+        {
+          "mission": "online-helden",
+          "viewport": "mobile",
+          "state": "start",
+          "sha256": "547a561e1a52757df073dffd075c35f574bb135b524780230e9be5e5eff335b4",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "High",
+          "verdict": "superseded-by-fix"
+        },
+        {
+          "mission": "online-helden",
+          "viewport": "mobile",
+          "state": "flow",
+          "sha256": "08345753b3d9b240c5ece2d0d139ed89e96c5c7ccacae84b2b0eccb8edbd0a57",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "High",
+          "verdict": "superseded-by-fix"
+        },
+        {
+          "mission": "online-helden",
+          "viewport": "mobile",
+          "state": "feedback",
+          "sha256": "fd4b38d387185d3ee0c871fdaa881c6150caa2e843d416a31ebc70556ac6b422",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "High",
+          "verdict": "superseded-by-fix"
+        },
+        {
+          "mission": "online-helden",
+          "viewport": "mobile",
+          "state": "end",
+          "sha256": "74e6d6baa320f501c0b93fb4c7b06fdd2e5549b25d5b44f6e37360a55282f462",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "High",
+          "verdict": "superseded-by-fix"
+        },
+        {
+          "mission": "media-review",
+          "viewport": "desktop",
+          "state": "start",
+          "sha256": "c0e413e99879eda7a8393f87f5eb27f470fb10f273650ae5c00369778fee5d28",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "High",
+          "verdict": "superseded-by-fix"
+        },
+        {
+          "mission": "media-review",
+          "viewport": "desktop",
+          "state": "flow",
+          "sha256": "32ba9675e9abd6113f265b8912f02d77d0f72339e36cb3a15480e318847f6c04",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "High",
+          "verdict": "superseded-by-fix"
+        },
+        {
+          "mission": "media-review",
+          "viewport": "desktop",
+          "state": "feedback",
+          "sha256": "b6ee033048bf48c4934f3bb3c06376f550bdfc5b96afe60aa2d85d4b0cfa3c95",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "High",
+          "verdict": "superseded-by-fix"
+        },
+        {
+          "mission": "media-review",
+          "viewport": "desktop",
+          "state": "end",
+          "sha256": "2f89da33034880c000cd91858f8ad3b0512b9e4390c174722ae20f007cbb80ce",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "High",
+          "verdict": "superseded-by-fix"
+        },
+        {
+          "mission": "media-review",
+          "viewport": "tablet-portrait",
+          "state": "start",
+          "sha256": "07f9ef9f32c23df35b99f5055e77ef907278684bda701f105cb52dea50e8e2c9",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "High",
+          "verdict": "superseded-by-fix"
+        },
+        {
+          "mission": "media-review",
+          "viewport": "tablet-portrait",
+          "state": "flow",
+          "sha256": "d7cd30184b94efd954f0f5a1bfbf04c2bfae5ee99a3113281e47731c945ed67e",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "High",
+          "verdict": "superseded-by-fix"
+        },
+        {
+          "mission": "media-review",
+          "viewport": "tablet-portrait",
+          "state": "feedback",
+          "sha256": "cf764284b1d64e89b150783f4f03b73cbddc5dd065bfdc08eedbbde60b19928a",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "High",
+          "verdict": "superseded-by-fix"
+        },
+        {
+          "mission": "media-review",
+          "viewport": "tablet-portrait",
+          "state": "end",
+          "sha256": "02e796cb3f6ad1513ca558e2f0eac9f53af72d073b4a7120d7542122c212fbe6",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "High",
+          "verdict": "superseded-by-fix"
+        },
+        {
+          "mission": "media-review",
+          "viewport": "tablet-landscape",
+          "state": "start",
+          "sha256": "62a857bc77b11213c9550a8cdb0c8777afb87ff8b94e47196af31e5d93a0e592",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "High",
+          "verdict": "superseded-by-fix"
+        },
+        {
+          "mission": "media-review",
+          "viewport": "tablet-landscape",
+          "state": "flow",
+          "sha256": "58d9765b9358fd76a4d1aae068db15bb9edea94683f2ae3514833350aa98386b",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "High",
+          "verdict": "superseded-by-fix"
+        },
+        {
+          "mission": "media-review",
+          "viewport": "tablet-landscape",
+          "state": "feedback",
+          "sha256": "3d5534e5759733085b784214072283fcd5b498e8ad3258d058f0eb3758ed08fc",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "High",
+          "verdict": "superseded-by-fix"
+        },
+        {
+          "mission": "media-review",
+          "viewport": "tablet-landscape",
+          "state": "end",
+          "sha256": "cce683cb4278cd3d4f81a0669858b0ea5fd00617d94baf11dc6a68d4a8d8415e",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "High",
+          "verdict": "superseded-by-fix"
+        },
+        {
+          "mission": "media-review",
+          "viewport": "mobile",
+          "state": "start",
+          "sha256": "f6d10c89a340d5e56a9cf7b4b0dabac83495a72abf8a0691dce44ae64ebb472b",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "High",
+          "verdict": "superseded-by-fix"
+        },
+        {
+          "mission": "media-review",
+          "viewport": "mobile",
+          "state": "flow",
+          "sha256": "c38eff8363b6c6c47e2c6d4113f1e06764fd7238cea2cfcea6dd982081745893",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "High",
+          "verdict": "superseded-by-fix"
+        },
+        {
+          "mission": "media-review",
+          "viewport": "mobile",
+          "state": "feedback",
+          "sha256": "bc3f9aec2901bdefa07658a8dd636115b9251fbc4800ad6998de25283f6e66a0",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "High",
+          "verdict": "superseded-by-fix"
+        },
+        {
+          "mission": "media-review",
+          "viewport": "mobile",
+          "state": "end",
+          "sha256": "a88815bdab06663bbdbbd0f07ab7a7c52ae322f92903e346f34b12f2296437ea",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "High",
+          "verdict": "superseded-by-fix"
+        }
+      ]
+    },
+    {
+      "sourceSha": "41c1583c8782486da2b2fb50b19646ee4102e86a",
+      "deployment": null,
+      "entries": [
+        {
+          "mission": "ux-detective",
+          "viewport": "desktop",
+          "state": "start",
+          "sha256": "ac8b99d8f1e0a0ee49ea3b193293442af87cbc7ac5f42e0ab22958b140371e77",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "None",
+          "verdict": "pass"
+        },
+        {
+          "mission": "ux-detective",
+          "viewport": "desktop",
+          "state": "flow",
+          "sha256": "fa45fe5567115f728de3ca68186916d41aea39166dbcd0c89b7536ba3f0a19a3",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "None",
+          "verdict": "pass"
+        },
+        {
+          "mission": "ux-detective",
+          "viewport": "desktop",
+          "state": "feedback",
+          "sha256": "9306f2446dbf8d6eff774482882083186174209ab0a20a943af00f9cdb07be1f",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "None",
+          "verdict": "pass"
+        },
+        {
+          "mission": "ux-detective",
+          "viewport": "desktop",
+          "state": "end",
+          "sha256": "859b9a4ac468247de2c1d0a0d705dcbb359541b95858fec68bea767237d8a499",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "None",
+          "verdict": "pass"
+        },
+        {
+          "mission": "ux-detective",
+          "viewport": "tablet-portrait",
+          "state": "start",
+          "sha256": "3491825bcfe0698fe511b748dc6450be0ec3655c74cce239da531099d01fbba8",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "None",
+          "verdict": "pass"
+        },
+        {
+          "mission": "ux-detective",
+          "viewport": "tablet-portrait",
+          "state": "flow",
+          "sha256": "9866b8b39e2a4b4aea800e93cf16435228899bb3e34b86f37b4cadb250cb466d",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "None",
+          "verdict": "pass"
+        },
+        {
+          "mission": "ux-detective",
+          "viewport": "tablet-portrait",
+          "state": "feedback",
+          "sha256": "8ac6211c2d492569f2d038d34181907a2e19619c7afb74f8ab6b281ca4973262",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "None",
+          "verdict": "pass"
+        },
+        {
+          "mission": "ux-detective",
+          "viewport": "tablet-portrait",
+          "state": "end",
+          "sha256": "01a3b18d007c554c9926f570d23e4c7327ac3c31db3ce31c29574761b53fff37",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "None",
+          "verdict": "pass"
+        },
+        {
+          "mission": "ux-detective",
+          "viewport": "tablet-landscape",
+          "state": "start",
+          "sha256": "ede54e2302d415129fd388b741d89e648d87199636e214828f376192ddc582bd",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "None",
+          "verdict": "pass"
+        },
+        {
+          "mission": "ux-detective",
+          "viewport": "tablet-landscape",
+          "state": "flow",
+          "sha256": "60813c98620d5856773777eabadb1a3793cc1040b9ee8daba12013e61b60227b",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "None",
+          "verdict": "pass"
+        },
+        {
+          "mission": "ux-detective",
+          "viewport": "tablet-landscape",
+          "state": "feedback",
+          "sha256": "91952967d69c665c32741d2431c6d2f36dc0ce81fe9a65a4aa9f4ea390e220ed",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "None",
+          "verdict": "pass"
+        },
+        {
+          "mission": "ux-detective",
+          "viewport": "tablet-landscape",
+          "state": "end",
+          "sha256": "1a586fe9f5c095c24c82b235739dcf7233cc0c62d0b52de709db2fc5546a4098",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "None",
+          "verdict": "pass"
+        },
+        {
+          "mission": "ux-detective",
+          "viewport": "mobile",
+          "state": "start",
+          "sha256": "cf956aed574a81d57f7d4a517caae009e3404aa633c7caff32801f317cac1d78",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "None",
+          "verdict": "pass"
+        },
+        {
+          "mission": "ux-detective",
+          "viewport": "mobile",
+          "state": "flow",
+          "sha256": "9e383b1b51098a8cd915b86149bbb351b18bfc37db46da0e4e01049a28d728de",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "None",
+          "verdict": "pass"
+        },
+        {
+          "mission": "ux-detective",
+          "viewport": "mobile",
+          "state": "feedback",
+          "sha256": "6ca1f31e97724b6e10182d73c38cf22ff700ae7b2ebc5d002f749c2edd684066",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "None",
+          "verdict": "pass"
+        },
+        {
+          "mission": "ux-detective",
+          "viewport": "mobile",
+          "state": "end",
+          "sha256": "7b9033a6c64caba8c5954a42c6212e15ba51f7f0ad5a966b94faaeafa44fbdfb",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "None",
+          "verdict": "pass"
+        },
+        {
+          "mission": "online-helden",
+          "viewport": "desktop",
+          "state": "start",
+          "sha256": "ceefb22d17c6760b60afe033a87acd9af3f33253ed77cd596fe2913a2a8c76f9",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "None",
+          "verdict": "pass"
+        },
+        {
+          "mission": "online-helden",
+          "viewport": "desktop",
+          "state": "flow",
+          "sha256": "916a1e662f4c9929e374a0649db54b593b25fcd680b81f2e5d34f88a17e3c44b",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "None",
+          "verdict": "pass"
+        },
+        {
+          "mission": "online-helden",
+          "viewport": "desktop",
+          "state": "feedback",
+          "sha256": "a1c13e9ba83531d5872e5cb0ea62575884f1a4008e2d35c25aa902da6d54d076",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "None",
+          "verdict": "pass"
+        },
+        {
+          "mission": "online-helden",
+          "viewport": "desktop",
+          "state": "end",
+          "sha256": "507883e81adf6312282a3f6a163b8c47a37a8ab69d5153f928b920e4b5f6160d",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "None",
+          "verdict": "pass"
+        },
+        {
+          "mission": "online-helden",
+          "viewport": "tablet-portrait",
+          "state": "start",
+          "sha256": "6fba480da3c741ff85099795874a0eba76b209cebda2531762ae03dcde66918b",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "None",
+          "verdict": "pass"
+        },
+        {
+          "mission": "online-helden",
+          "viewport": "tablet-portrait",
+          "state": "flow",
+          "sha256": "33768d37720107d90361dfe7d78af1f77525b4b2c7353b34a7b0ce5e03201d54",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "None",
+          "verdict": "pass"
+        },
+        {
+          "mission": "online-helden",
+          "viewport": "tablet-portrait",
+          "state": "feedback",
+          "sha256": "0faacdb8e85f9ec0594c8857ab9f20fe57476ab5c14ff5e035dab8c911f3c584",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "None",
+          "verdict": "pass"
+        },
+        {
+          "mission": "online-helden",
+          "viewport": "tablet-portrait",
+          "state": "end",
+          "sha256": "ed371a9c2c8584292b63fffead19985cfedb55e917c719f88a931540d5017912",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "None",
+          "verdict": "pass"
+        },
+        {
+          "mission": "online-helden",
+          "viewport": "tablet-landscape",
+          "state": "start",
+          "sha256": "d7275e6bc40b8d1c95a6e56283be7fc8bbc9be992d8e6a43e4323d8fb40676c1",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "None",
+          "verdict": "pass"
+        },
+        {
+          "mission": "online-helden",
+          "viewport": "tablet-landscape",
+          "state": "flow",
+          "sha256": "05748f4bcbb58c82d262c0f934e83072f4358f8b9fb9acc36870a3367ff99bf2",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "None",
+          "verdict": "pass"
+        },
+        {
+          "mission": "online-helden",
+          "viewport": "tablet-landscape",
+          "state": "feedback",
+          "sha256": "46a9fb5570ea1c3a4f82969d05990df22944475bdd4dda37f322e4abbe7c7a3a",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "None",
+          "verdict": "pass"
+        },
+        {
+          "mission": "online-helden",
+          "viewport": "tablet-landscape",
+          "state": "end",
+          "sha256": "f2a5354e38f067a73fa7e38e4e9562c5c0c90cfe02ca232444b6790e6c02ed31",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "None",
+          "verdict": "pass"
+        },
+        {
+          "mission": "online-helden",
+          "viewport": "mobile",
+          "state": "start",
+          "sha256": "743d41212a4505d08d9c3664b3ba876372e9f44151757dd000f657128e73abd8",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "None",
+          "verdict": "pass"
+        },
+        {
+          "mission": "online-helden",
+          "viewport": "mobile",
+          "state": "flow",
+          "sha256": "0c5d82293082d74ff933937780f10d820b4715db5edbfe0e8c92b64592e088a4",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "None",
+          "verdict": "pass"
+        },
+        {
+          "mission": "online-helden",
+          "viewport": "mobile",
+          "state": "feedback",
+          "sha256": "0be3bfeb37d97c497175ae5bd0d6fdf5fbd1464d3db5df970abc5d13823b884d",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "None",
+          "verdict": "pass"
+        },
+        {
+          "mission": "online-helden",
+          "viewport": "mobile",
+          "state": "end",
+          "sha256": "b73524ccc6c676ec30ea944922d9c67543c88f9b338656b959c70cab3ba3379a",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "None",
+          "verdict": "pass"
+        },
+        {
+          "mission": "media-review",
+          "viewport": "desktop",
+          "state": "start",
+          "sha256": "fc74cd77cfbec41e3028eacb4baae1ca9743b28d4ce3a1082ee887fd3bd5b3d2",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "High",
+          "verdict": "provisional-pass-later-regression-fixed"
+        },
+        {
+          "mission": "media-review",
+          "viewport": "desktop",
+          "state": "flow",
+          "sha256": "e589ffb16ddca4c82114794e164d717ffe9c3016e51d77362d499f1626422977",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "High",
+          "verdict": "provisional-pass-later-regression-fixed"
+        },
+        {
+          "mission": "media-review",
+          "viewport": "desktop",
+          "state": "feedback",
+          "sha256": "a463f1a896c1ffb5e17c399bb1e3014727512982993109c3566304aa11921712",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "High",
+          "verdict": "provisional-pass-later-regression-fixed"
+        },
+        {
+          "mission": "media-review",
+          "viewport": "desktop",
+          "state": "end",
+          "sha256": "f786c2bd06cfb0c52f49cd3e0ff7d21354b2621c464b1f08efd2a85aff609dc3",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "High",
+          "verdict": "provisional-pass-later-regression-fixed"
+        },
+        {
+          "mission": "media-review",
+          "viewport": "tablet-portrait",
+          "state": "start",
+          "sha256": "b9ad33a83464348cabe70a9cfbcf4526d2bcffd0411390d3ed0c7939a70301b1",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "High",
+          "verdict": "provisional-pass-later-regression-fixed"
+        },
+        {
+          "mission": "media-review",
+          "viewport": "tablet-portrait",
+          "state": "flow",
+          "sha256": "c4d95ce2898d62ce8f35562572d80de191ebc21fba9d0ac742c2156d825fbbb9",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "High",
+          "verdict": "provisional-pass-later-regression-fixed"
+        },
+        {
+          "mission": "media-review",
+          "viewport": "tablet-portrait",
+          "state": "feedback",
+          "sha256": "6b833b7e045426dc263712bad37966d67433b0667ad8c7d68c8b9353b381548c",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "High",
+          "verdict": "provisional-pass-later-regression-fixed"
+        },
+        {
+          "mission": "media-review",
+          "viewport": "tablet-portrait",
+          "state": "end",
+          "sha256": "c71ed6e633a2d9682f89a10d97d6b20a8d53913384d00c6dd55d66f594b35cfd",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "High",
+          "verdict": "provisional-pass-later-regression-fixed"
+        },
+        {
+          "mission": "media-review",
+          "viewport": "tablet-landscape",
+          "state": "start",
+          "sha256": "879a75d420ee0193f5cd72def8c8852cef02396dcd3718c4d0844f7326044628",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "High",
+          "verdict": "provisional-pass-later-regression-fixed"
+        },
+        {
+          "mission": "media-review",
+          "viewport": "tablet-landscape",
+          "state": "flow",
+          "sha256": "cbc2c9b45c6f2cfa810786df3b8d0f7d357b3a78cc92f8e6f753a9e80b5b0583",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "High",
+          "verdict": "provisional-pass-later-regression-fixed"
+        },
+        {
+          "mission": "media-review",
+          "viewport": "tablet-landscape",
+          "state": "feedback",
+          "sha256": "98fafe4bb46362ff190a173084ac0db8963e53d329f093cd08f41d65a266b8c1",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "High",
+          "verdict": "provisional-pass-later-regression-fixed"
+        },
+        {
+          "mission": "media-review",
+          "viewport": "tablet-landscape",
+          "state": "end",
+          "sha256": "86ec9068f9c9155303d85880f6e495988f3ecca8f4ca091bf995b55a3af2deb7",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "High",
+          "verdict": "provisional-pass-later-regression-fixed"
+        },
+        {
+          "mission": "media-review",
+          "viewport": "mobile",
+          "state": "start",
+          "sha256": "b38ae671870f15411f8667caa5b147ea022f05a98365bf12c0a5f4a3601c18f3",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "High",
+          "verdict": "provisional-pass-later-regression-fixed"
+        },
+        {
+          "mission": "media-review",
+          "viewport": "mobile",
+          "state": "flow",
+          "sha256": "4273c7515d94ebf8001f91547b00e5a79a41367a38c75af5e5a73dc031cf6ffa",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "High",
+          "verdict": "provisional-pass-later-regression-fixed"
+        },
+        {
+          "mission": "media-review",
+          "viewport": "mobile",
+          "state": "feedback",
+          "sha256": "bdca7ec12bdd84525f2699151d522c1693a5c2a5798bcb02061c5d61c7350929",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "High",
+          "verdict": "provisional-pass-later-regression-fixed"
+        },
+        {
+          "mission": "media-review",
+          "viewport": "mobile",
+          "state": "end",
+          "sha256": "d316f03cb86227851bf488dd389060c0aaf90cc90b5155e0f9c58e1c1ee5b492",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "High",
+          "verdict": "provisional-pass-later-regression-fixed"
+        }
+      ]
+    },
+    {
+      "sourceSha": "41c1583c8782486da2b2fb50b19646ee4102e86a",
+      "deployment": null,
+      "entries": [
+        {
+          "mission": "podcast-producer",
+          "viewport": "mobile",
+          "state": "flow",
+          "sha256": "0d18497e5b8c227bda74dc794c933ad43c5f249cde7f50c2df213349984fe88a",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "None",
+          "verdict": "pass"
+        },
+        {
+          "mission": "meme-machine",
+          "viewport": "mobile",
+          "state": "flow",
+          "sha256": "f584f5ed723f94b5c8c390d60047b10d61a71656eb6a5f3076d235a59236c324",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "None",
+          "verdict": "pass"
+        },
+        {
+          "mission": "digital-storyteller",
+          "viewport": "mobile",
+          "state": "flow",
+          "sha256": "3b6ee1c94a0344836e40c9020d38b611ecda5af45edb059a88cb9c7f4961308c",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "None",
+          "verdict": "pass"
+        },
+        {
+          "mission": "brand-builder",
+          "viewport": "mobile",
+          "state": "flow",
+          "sha256": "38eda768772b22f8599aab922071ff07c0d64d18823442b5cbc5a56adcf4715e",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "None",
+          "verdict": "pass"
+        },
+        {
+          "mission": "video-editor",
+          "viewport": "mobile",
+          "state": "flow",
+          "sha256": "5f306ebbadfff014e2d3c2edf22006457942f521c70267ecea82dfedafab1af6",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "None",
+          "verdict": "pass"
+        }
+      ]
+    },
+    {
+      "sourceSha": "c8c5d4d91f14c7dea94eeb00c88ee5173fac009a",
+      "deployment": "5807156586",
+      "entries": [
+        {
+          "mission": "brand-builder",
+          "viewport": "production-desktop",
+          "state": "end",
+          "sha256": "8dfe3b652873e74600557ddfe5471e095fefb46fc7820a1012c915b6195a3dc8",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "None",
+          "verdict": "pass"
+        },
+        {
+          "mission": "brand-builder",
+          "viewport": "production-desktop",
+          "state": "start",
+          "sha256": "2719a754e3fb38451ce83e460a9c1a28d763e4fe163bf9e6adb18f2433d77ad7",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "None",
+          "verdict": "pass"
+        },
+        {
+          "mission": "batch",
+          "viewport": "production-desktop",
+          "state": "dashboard-after-reload",
+          "sha256": "b3c6116e33205ee4fa909f29aa379f9fa0aacd7d5b03421cc2d677566e3a9720",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "None",
+          "verdict": "pass"
+        },
+        {
+          "mission": "digital-storyteller",
+          "viewport": "production-desktop",
+          "state": "end",
+          "sha256": "2cad6075659e04d55c48013d6c6ed1f7229d54db9a35154869bf252bc9fb1ee1",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "None",
+          "verdict": "pass"
+        },
+        {
+          "mission": "digital-storyteller",
+          "viewport": "production-desktop",
+          "state": "start",
+          "sha256": "44de0eb58aab94c41ad564410b4782fedb2279fda9eb4dd56eb104bb0c60a831",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "None",
+          "verdict": "pass"
+        },
+        {
+          "mission": "media-review",
+          "viewport": "production-desktop",
+          "state": "end",
+          "sha256": "b635c74cc43908eb193da395bcbb9ac8e49786f8c6853ef1f680a2be783748f3",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "High",
+          "verdict": "provisional-pass-later-regression-fixed"
+        },
+        {
+          "mission": "media-review",
+          "viewport": "production-desktop",
+          "state": "start",
+          "sha256": "30872083ac1f235d39b23794cf51123216afc89c28a0fe705f57619446428ee1",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "High",
+          "verdict": "provisional-pass-later-regression-fixed"
+        },
+        {
+          "mission": "meme-machine",
+          "viewport": "production-desktop",
+          "state": "end",
+          "sha256": "a90e2bb3cdc804f4fcf8122b78f24811a11d79650fa11fd23decef183221058d",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "None",
+          "verdict": "pass"
+        },
+        {
+          "mission": "meme-machine",
+          "viewport": "production-desktop",
+          "state": "start",
+          "sha256": "a19086f904311d3b2b4d159aa599d97ae15aa77733f03a5036f999b2d152fab5",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "None",
+          "verdict": "pass"
+        },
+        {
+          "mission": "online-helden",
+          "viewport": "production-desktop",
+          "state": "end",
+          "sha256": "5e50e532103fb80bc967a3d6e117f3cc544a0e9e65ab7e778e996a5593ac62d7",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "None",
+          "verdict": "pass"
+        },
+        {
+          "mission": "online-helden",
+          "viewport": "production-desktop",
+          "state": "start",
+          "sha256": "dda446ecc6c01cdfe1dc4377e0856d5ecc8cd96d44acc9cf1a349fef4c7d94f8",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "None",
+          "verdict": "pass"
+        },
+        {
+          "mission": "podcast-producer",
+          "viewport": "production-desktop",
+          "state": "end",
+          "sha256": "af59860ca7adb0c50db186759b3c5ab0be08b542a17d18c1e1137329858d4695",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "None",
+          "verdict": "pass"
+        },
+        {
+          "mission": "ux-detective",
+          "viewport": "production-desktop",
+          "state": "end",
+          "sha256": "3e546da981cb2c20ac3e58dd6e6930c3284bca1afb227cd7366e372f684084f7",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "None",
+          "verdict": "pass"
+        },
+        {
+          "mission": "ux-detective",
+          "viewport": "production-desktop",
+          "state": "start",
+          "sha256": "dfde2fbaab0bcd8dd88fc93628c18d1ee65bb06003931b89924c3cdc5ed07848",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "None",
+          "verdict": "pass"
+        },
+        {
+          "mission": "video-editor",
+          "viewport": "production-desktop",
+          "state": "end",
+          "sha256": "3ef28a85dd28cdafbdf32571d508259d775d572a6e53ee9bd7a57561f183e965",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "None",
+          "verdict": "pass"
+        },
+        {
+          "mission": "video-editor",
+          "viewport": "production-desktop",
+          "state": "start",
+          "sha256": "0a4454bed23115403dd4ce585371937612c2786484c1ab0eb6203a0823323b75",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "None",
+          "verdict": "pass"
+        }
+      ]
+    },
+    {
+      "sourceSha": "846e01cf6a3151c6a0570d258f01ee9b49ace716",
+      "deployment": null,
+      "entries": [
+        {
+          "mission": "podcast-producer",
+          "viewport": "mobile",
+          "state": "quality-gate",
+          "sha256": "e1f9a442e6a5e34e9e137b17927149d8112f0df04ddb077d4be24df9f935bbf6",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "None",
+          "verdict": "pass"
+        }
+      ]
+    },
+    {
+      "sourceSha": "846e01cf6a3151c6a0570d258f01ee9b49ace716",
+      "deployment": "5807693483",
+      "entries": [
+        {
+          "mission": "media-review",
+          "viewport": "production",
+          "state": "database-before-cleanup",
+          "sha256": "596b7e1b92f3534fbb5d3f0d5576f1501dc1b49018543cfe42e9439874d1eb7c",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "None",
+          "verdict": "pass"
+        },
+        {
+          "mission": "media-review",
+          "viewport": "production",
+          "state": "cleanup",
+          "sha256": "5a1c5e864190ccc187dcb90a559b3ffa56c5875b61a98f1853a9064b555589c8",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "None",
+          "verdict": "pass"
+        },
+        {
+          "mission": "media-review",
+          "viewport": "production",
+          "state": "database-after-cleanup",
+          "sha256": "bf9e1b9943fdfd8ff7d5e22af7b3d019d48836b8ce26868d6de1bacf317935a5",
+          "consoleErrorCount": 0,
+          "networkErrorCount": 0,
+          "severity": "None",
+          "verdict": "pass"
+        }
+      ]
+    }
+  ]
+}
