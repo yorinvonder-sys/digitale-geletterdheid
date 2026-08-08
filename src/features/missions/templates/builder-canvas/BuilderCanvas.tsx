@@ -195,7 +195,7 @@ const BuilderCanvasInner: React.FC<BuilderCanvasProps> = ({
 
     const handleComplete = () => {
         clearSave();
-        onComplete(true);
+        onComplete(totalScore >= config.maxScore * 0.4);
     };
 
     // ─── Phase: Intro ─────────────────────────────────────────────────────
@@ -277,7 +277,11 @@ const BuilderCanvasInner: React.FC<BuilderCanvasProps> = ({
                 />
             </div>
 
-            <MobileTabBar activeTab={mobileTab} onTabChange={setMobileTab} />
+            <MobileTabBar
+                activeTab={mobileTab}
+                onTabChange={setMobileTab}
+                onOpenChat={config.enableChat && !isChatOpen ? () => setIsChatOpen(true) : undefined}
+            />
 
             {/* Main split layout */}
             <div className="min-h-0 flex-1 flex flex-col overflow-hidden md:flex-row">
@@ -340,9 +344,7 @@ const BuilderCanvasInner: React.FC<BuilderCanvasProps> = ({
                     {!isChatOpen && (
                         <button
                             onClick={() => setIsChatOpen(true)}
-                            // Op smalle schermen staat de actieknop van de stap onderaan het
-                            // paneel; op bottom-6 dekte deze bubbel die knop deels af.
-                            className="fixed bottom-24 right-6 z-40 flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-duck-acid to-duck-acid text-duck-ink shadow-lg transition-all duration-200 hover:brightness-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-ink focus-visible:ring-offset-2 active:scale-95 md:bottom-6"
+                            className="fixed bottom-6 right-6 z-40 hidden h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-duck-acid to-duck-acid text-duck-ink shadow-lg transition-all duration-200 hover:brightness-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-ink focus-visible:ring-offset-2 active:scale-95 md:flex"
                             aria-label="Open AI-assistent"
                         >
                             <MessageCircle size={22} />
