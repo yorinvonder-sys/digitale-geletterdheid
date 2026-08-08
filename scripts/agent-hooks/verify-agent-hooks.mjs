@@ -35,8 +35,33 @@ for (const configPath of CONFIG_FILES) {
 
   const stopCommands = collectHookCommands(config.hooks?.Stop);
   assert.ok(
+    stopCommands.some(
+      (command) =>
+        command.includes('scripts/agent-hooks/policy.mjs') &&
+        command.includes('stop'),
+    ),
+    `${configPath} must wire Stop to policy.mjs stop`,
+  );
+  assert.ok(
     stopCommands.every((command) => !command.includes('user-prompt')),
     `${configPath} must not defer the user-prompt gate to Stop hooks`,
+  );
+
+  const postMatchers = (config.hooks?.PostToolUse ?? [])
+    .map((entry) => String(entry?.matcher ?? ''))
+    .join('|');
+  assert.match(
+    postMatchers,
+    /Bash/,
+    `${configPath} must record Bash use for fail-closed verification`,
+  );
+
+  const stopTimeouts = (config.hooks?.Stop ?? [])
+    .flatMap((entry) => entry?.hooks ?? [])
+    .map((hook) => Number(hook?.timeout ?? 0));
+  assert.ok(
+    stopTimeouts.every((timeout) => timeout >= 420),
+    `${configPath} Stop hooks must cover agent check plus doctor timeouts`,
   );
 }
 

@@ -1,10 +1,11 @@
 import assert from 'node:assert/strict';
-import { mkdtempSync, rmSync, writeFileSync } from 'node:fs';
+import { mkdtempSync, readdirSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 
 import {
   buildUserPromptContext,
+  containsLikelySecret,
   extractTouchedPaths,
   handlePreToolUse,
   handlePostToolUse,
@@ -12,6 +13,9 @@ import {
 } from './policy.mjs';
 
 const tempStateDir = mkdtempSync(join(tmpdir(), 'dgskills-agent-hooks-test-'));
+const fakeOpenAiKey = ['sk', 'proj', 'abcdefghijklmnopqrstuvwxyz123456'].join('-');
+const fakeGenericCredential = `${['api', 'key'].join('_')}=abcdefghijklmnop`;
+const fakeQuotedCredential = `${['password'].join('')}="abcdefghijklmnop"`;
 
 try {
   const promptContext = buildUserPromptContext({
@@ -29,6 +33,21 @@ try {
   assert.match(promptContext.additionalContext, /leerlinggegevens/);
   // Bewust kort: de volledige werkwijze staat in AGENTS.md, niet in deze injectie.
   assert.ok(promptContext.additionalContext.split(/\s+/).length < 60);
+
+  assert.equal(
+    handleStop(
+      {
+        hook_event_name: 'Stop',
+        session_id: 'no-state-session',
+        cwd: '/tmp/project',
+        stop_hook_active: false,
+      },
+      { stateDir: tempStateDir },
+    ),
+    null,
+  );
+  assert.equal(containsLikelySecret(fakeGenericCredential), true);
+  assert.equal(containsLikelySecret({ content: fakeQuotedCredential }), true);
 
   assert.deepEqual(
     extractTouchedPaths({
@@ -73,6 +92,77 @@ try {
 
   assert.equal(
     destructiveCommandDecision.hookSpecificOutput.permissionDecision,
+    'deny',
+  );
+
+  const hookEditDecision = handlePreToolUse({
+    hook_event_name: 'PreToolUse',
+    tool_name: 'Edit',
+    tool_input: { file_path: 'scripts/agent-hooks/policy.mjs' },
+  });
+  assert.equal(
+    hookEditDecision.hookSpecificOutput.permissionDecision,
+    'deny',
+  );
+  assert.match(
+    hookEditDecision.hookSpecificOutput.permissionDecisionReason,
+    /hook enforcement/,
+  );
+
+  const aliasedHookEditDecision = handlePreToolUse({
+    hook_event_name: 'PreToolUse',
+    tool_name: 'Edit',
+    cwd: '/tmp/project',
+    tool_input: { file_path: 'scripts/lib/../agent-hooks/policy.mjs' },
+  });
+  assert.equal(
+    aliasedHookEditDecision.hookSpecificOutput.permissionDecision,
+    'deny',
+  );
+
+  const hookShellDecision = handlePreToolUse({
+    hook_event_name: 'PreToolUse',
+    tool_name: 'Bash',
+    tool_input: { command: 'sed -i test scripts/agent-hooks/policy.mjs' },
+  });
+  assert.equal(
+    hookShellDecision.hookSpecificOutput.permissionDecision,
+    'deny',
+  );
+
+  const aliasedHookShellDecision = handlePreToolUse({
+    hook_event_name: 'PreToolUse',
+    tool_name: 'Bash',
+    tool_input: {
+      command: 'sed -i test scripts/lib/../agent-hooks/policy.mjs',
+    },
+  });
+  assert.equal(
+    aliasedHookShellDecision.hookSpecificOutput.permissionDecision,
+    'deny',
+  );
+
+  const changedDirectoryHookShellDecision = handlePreToolUse({
+    hook_event_name: 'PreToolUse',
+    tool_name: 'Bash',
+    tool_input: {
+      command: 'cd scripts/agent-hooks && sed -i test policy.mjs',
+    },
+  });
+  assert.equal(
+    changedDirectoryHookShellDecision.hookSpecificOutput.permissionDecision,
+    'deny',
+  );
+
+  const splitDirectoryHookShellDecision = handlePreToolUse({
+    hook_event_name: 'PreToolUse',
+    tool_name: 'Bash',
+    tool_input: {
+      command: 'cd scripts && cd agent-hooks && sed -i test policy.mjs',
+    },
+  });
+  assert.equal(
+    splitDirectoryHookShellDecision.hookSpecificOutput.permissionDecision,
     'deny',
   );
 
@@ -131,6 +221,116 @@ try {
 
   assert.equal(passingStopDecision.continue, true);
 
+  handlePostToolUse(
+    {
+      hook_event_name: 'PostToolUse',
+      session_id: 'agent-config-session',
+      cwd: '/tmp/project',
+      tool_name: 'Write',
+      tool_input: {
+        file_path: '.opencode/agents/terra-shadow.md',
+        content: '---\nmode: subagent\n---',
+      },
+    },
+    { stateDir: tempStateDir },
+  );
+
+  const failingAgentStop = handleStop(
+    {
+      hook_event_name: 'Stop',
+      session_id: 'agent-config-session',
+      cwd: '/tmp/project',
+      stop_hook_active: false,
+    },
+    {
+      stateDir: tempStateDir,
+      runAgentCheck: () => ({
+        status: 1,
+        stdout: '',
+        stderr: 'routing mismatch',
+      }),
+    },
+  );
+
+  assert.equal(failingAgentStop.decision, 'block');
+  assert.match(failingAgentStop.reason, /npm run agent:check/);
+  assert.match(failingAgentStop.reason, /Red-risk area touched/);
+
+  const passingAgentStop = handleStop(
+    {
+      hook_event_name: 'Stop',
+      session_id: 'agent-config-session',
+      cwd: '/tmp/project',
+      stop_hook_active: false,
+    },
+    {
+      stateDir: tempStateDir,
+      runAgentCheck: () => ({ status: 0, stdout: 'ok', stderr: '' }),
+    },
+  );
+
+  assert.equal(passingAgentStop.continue, true);
+
+  handlePostToolUse(
+    {
+      hook_event_name: 'PostToolUse',
+      session_id: 'bash-session',
+      cwd: '/tmp/project',
+      tool_name: 'Bash',
+      tool_input: { command: 'git status --short' },
+    },
+    { stateDir: tempStateDir },
+  );
+  let agentCheckCalled = false;
+  let doctorCalled = false;
+  const passingBashStop = handleStop(
+    {
+      hook_event_name: 'Stop',
+      session_id: 'bash-session',
+      cwd: '/tmp/project',
+      stop_hook_active: false,
+    },
+    {
+      stateDir: tempStateDir,
+      runAgentCheck: () => {
+        agentCheckCalled = true;
+        return { status: 0, stdout: 'ok', stderr: '' };
+      },
+      runDoctor: () => {
+        doctorCalled = true;
+        return { status: 0, stdout: 'ok', stderr: '' };
+      },
+    },
+  );
+  assert.equal(passingBashStop.continue, true);
+  assert.equal(agentCheckCalled, true);
+  assert.equal(doctorCalled, true);
+
+  handlePostToolUse(
+    {
+      hook_event_name: 'PostToolUse',
+      session_id: 'malformed-session',
+      cwd: '/tmp/project',
+      tool_name: 'Bash',
+      tool_input: { command: 'git status --short' },
+    },
+    { stateDir: tempStateDir },
+  );
+  const malformedStateFile = readdirSync(tempStateDir)[0];
+  writeFileSync(join(tempStateDir, malformedStateFile), '{broken');
+  const malformedStop = handleStop(
+    {
+      hook_event_name: 'Stop',
+      session_id: 'malformed-session',
+      cwd: '/tmp/project',
+      stop_hook_active: false,
+    },
+    { stateDir: tempStateDir },
+  );
+  assert.equal(malformedStop.decision, 'block');
+  assert.match(malformedStop.reason, /malformed/);
+  rmSync(join(tempStateDir, malformedStateFile), { force: true });
+
   const secretDecision = handlePostToolUse(
     {
       hook_event_name: 'PostToolUse',
@@ -139,7 +339,7 @@ try {
       tool_name: 'Write',
       tool_input: {
         file_path: 'src/services/example.ts',
-        content: 'const key = "sk-proj-abcdefghijklmnopqrstuvwxyz123456";',
+        content: `const key = "${fakeOpenAiKey}";`,
       },
     },
     { stateDir: tempStateDir },

@@ -15,6 +15,9 @@ on the smallest useful slice of DGSkills.
    or service the task needs.
 4. Use path-scoped `rg`, `git status --short -- <paths>`, and
    `git diff -- <paths>`.
+5. Record `Model`, `Thinking`, `Why`, `Escalate when`, risk and data class in the
+   task packet before delegating.
+6. Use Linear for durable progress. Use Sentry only as production evidence.
 
 Do not start by reading baton files, progress logs, screenshots, generated
 build output, broad business docs, or all feature folders.
@@ -40,6 +43,10 @@ document — report it rather than searching around it.
   `src/types/database.types.ts`. Treat as Rood risk.
 - Supabase/Edge Functions/RLS: `supabase/CLAUDE.md`, the specific function or
   migration, and security docs only when behavior or claims depend on them.
+- Agent/tooling work: `AGENTS.md`, `opencode.json`, the exact `.opencode/agents`
+  file, and the matching check under `scripts/agent-runtime/`.
+- Production crash/regression: Sentry evidence first when available, then the
+  matching source and runtime logs. Do not send raw learner or auth data.
 - Docs-only work: read the target doc and directly linked sources, not the
   whole `business/` or `docs/` tree.
 
@@ -48,6 +55,7 @@ document — report it rather than searching around it.
 - `.claude/worktrees/`
 - `.playwright-mcp/`
 - `.agent/skills/`
+- `.agents/skills/`
 - `node_modules/`
 - `dist/` and `dist-ssr/`
 - `.vercel/` and `.firebase/`
@@ -62,6 +70,7 @@ Use explicit paths if one of these folders is the actual subject of the task.
 - Context/docs/ignore changes: `npm run context:budget`, plus
   `npm run context:check` when artifact tracking is relevant.
 - Hooks or agent policy changes: `npm run hooks:test`.
+- OpenCode routing or Claude bridge changes: `npm run agent:check`.
 - TypeScript app/config changes: `npm run doctor`.
 - Route/import/build behavior: `npm run build:prod`.
 - Mission or UI QA: targeted browser check; mission review requires the Chrome

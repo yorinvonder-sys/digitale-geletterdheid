@@ -8,10 +8,20 @@ vóór afronding.
 
 ## Kostenregel
 
-Beoordeel totale taakkosten, niet prijs per token. Opus 5 low/medium kan
-goedkoper zijn dan Sonnet high/xhigh wanneer het minder herstelpogingen,
-redeneertokens en toolrondes kost. Kies Sonnet voor eenvoudig volume; Opus
-wanneer de taak werkelijk redeneerkwaliteit vereist.
+Beoordeel totale taakkosten, niet prijs per token. Luna en DeepSeek zijn alleen
+goedkoper zolang de taak binnen hun risico- en effortplafond blijft. Schakel naar
+Sol zodra extra herstelrondes of een te hoog effortniveau nodig zijn. Claude
+Opus/Fable zijn onafhankelijke specialistische routes, geen goedkope fallback.
+
+## Effort Escalation
+
+| Route | Default | Escalate | Stop and reroute |
+|---|---|---|---|
+| DeepSeek V4 Flash | `low` | `high` for sanitized multi-file analysis | `max` or Rood -> Sol |
+| Luna | `medium` | `high` for isolated Geel | `xhigh`/`max` -> Sol |
+| Terra shadow | `medium` | `high` for complex shadow comparison | Never apply output directly |
+| Sol | `high` | `xhigh` for Rood; `max` for security incidents | `ultra` requires manual justification |
+| Opus 5 | `medium` build, `high` review | `xhigh` for Rood; `max` for security review | No family fallback |
 
 ## Escalatieregels
 
@@ -21,6 +31,8 @@ wanneer de taak werkelijk redeneerkwaliteit vereist.
   niet onderzocht zijn.
 - Meer denkvermogen vervangt nooit runtimeproeven, tests, directe
   configuratiecontrole of onafhankelijke review.
+- DeepSeek and Terra receive sanitized packets without tools; Luna may edit only
+  non-Rood paths and never receives Bash. Internal OpenCode maintenance uses Sol.
 - Groen bouwen, linten of `npm audit` bewijst geen runtimecompatibiliteit of
   veiligheid.
 - Verifieer kritieke claims via de echte downstream consumer en het werkelijk
@@ -30,6 +42,10 @@ wanneer de taak werkelijk redeneerkwaliteit vereist.
   een onafhankelijke read-only eindreview verplicht vóór merge.
 - Wijzig draft/ready-status, merge-status, externe configuratie of productie
   alleen als de gebruiker daar expliciet om vraagt.
+- Ordinary release evidence is created by Sol `xhigh`, reviewed by Opus 4.8
+  `xhigh`, and decided by the user.
+- Security-incident remediation is created by Sol `max`, blind-reviewed by
+  Fable 5 `max` and Opus 5 `max`, reconciled by Sol, and decided by the user.
 
 ## Zelfevaluatie vóór uitvoering
 

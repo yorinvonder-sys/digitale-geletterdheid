@@ -27,37 +27,25 @@ fs.writeFileSync(
   "utf8",
 );
 
-execFileSync(
-  process.execPath,
-  ["scripts/github-agent-bridge.mjs", "process-all", "--agent", "reasonix", "--base-dir", baseDir, "--dry-run"],
-  {
-    cwd: repoRoot,
-    stdio: "pipe",
-  },
+assert.throws(
+  () =>
+    execFileSync(
+      process.execPath,
+      [
+        "scripts/github-agent-bridge.mjs",
+        "process-all",
+        "--agent",
+        "reasonix",
+        "--base-dir",
+        baseDir,
+        "--dry-run",
+      ],
+      {
+        cwd: repoRoot,
+        stdio: "pipe",
+      },
+    ),
+  /Command failed/,
 );
 
-const chatgptReviews = fs.readdirSync(path.join(baseDir, "inbox", "chatgpt")).filter((entry) => entry.endsWith(".json"));
-const claudeReviews = fs.readdirSync(path.join(baseDir, "inbox", "claude")).filter((entry) => entry.endsWith(".json"));
-
-assert.equal(chatgptReviews.length, 1);
-assert.equal(claudeReviews.length, 1);
-
-const chatgptReview = JSON.parse(
-  fs.readFileSync(path.join(baseDir, "inbox", "chatgpt", chatgptReviews[0]), "utf8"),
-);
-const claudeReview = JSON.parse(fs.readFileSync(path.join(baseDir, "inbox", "claude", claudeReviews[0]), "utf8"));
-
-for (const review of [chatgptReview, claudeReview]) {
-  assert.equal(review.from, "reasonix");
-  assert.equal(review.threadId, "review-flow-001");
-  assert.match(review.subject, /Review Reasonix output/);
-  assert.match(review.body, /Original request:/);
-  assert.match(review.body, /Reasonix output:/);
-  assert.match(review.body, /Review the output as a coding reviewer/);
-  assert.deepEqual(review.context, ["Source message: 001", "Source model: reasonix-dry-run"]);
-}
-
-assert.equal(chatgptReview.to, "chatgpt");
-assert.equal(claudeReview.to, "claude");
-
-console.log("Agent bridge review flow checks passed.");
+console.log("Retired agent bridge direct invocation is blocked.");
