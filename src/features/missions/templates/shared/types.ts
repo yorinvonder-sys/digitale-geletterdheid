@@ -69,7 +69,8 @@ export type TemplateType =
     | 'debate-arena'
     | 'tool-guide'
     | 'ethics-council'
-    | 'password-fortress';
+    | 'password-fortress'
+    | 'helpdesk-shift';
 
 // === Template registry entry ===
 export interface TemplateMissionEntry {
