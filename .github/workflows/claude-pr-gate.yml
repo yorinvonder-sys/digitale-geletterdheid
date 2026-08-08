@@ -71,6 +71,22 @@ jobs:
       - name: Chat-markeringen blijven uit beeld
         run: npm run check:chat-markers
 
+      # Een leerling kan op drie plekken vrije tekst naar de AI sturen. Krijgt één
+      # daarvan de welzijnsmonitor niet, dan schrijft een kind over pesten of
+      # zelfbeschadiging zonder dat er hulplijnen verschijnen of de docent iets
+      # merkt — en niets faalt. Deze stap houdt dat gat dicht.
+      - name: Welzijnsmonitor op elke leerlingchat-route
+        run: npm run check:wellbeing-routes
+
+      # De systeeminstructies stonden twee keer: één gedeelde staart in
+      # src/config/agents/shared.tsx, en dezelfde staart 84 keer letterlijk
+      # gekopieerd in het serverbestand. Beide werden met de hand onderhouden, dus
+      # ze liepen uiteen — en de server is wat de leerling werkelijk krijgt.
+      # Het serverbestand is nu gegenereerd; deze stap houdt tegen dat iemand het
+      # alsnog met de hand bijwerkt en de twee bronnen opnieuw uit elkaar lopen.
+      - name: Systeeminstructies zijn gegenereerd
+        run: npm run check:system-instructions
+
       # De auditstap accepteert één tijdelijke uitzondering. Deze tests bewijzen
       # dat die uitzondering nog steeds smal is: een nieuwe advisory, een
       # onverwacht dependency-pad of een verstreken vervaldatum moet falen.
