@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useInView, animate } from 'framer-motion';
 import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion';
-import { ChapterMarker, Reveal, BrowserFrame, Marquee } from '../components/storyBrand';
+import { ChapterMarker, Reveal, BrowserFrame, Marquee, HARD_SHADOW_LG } from '../components/storyBrand';
 import { VERHAAL_STATS } from '../verhaalStats';
 
 const PROMISES = [
@@ -96,6 +96,23 @@ export function Ontmoeting() {
                         de SLO-kerndoelen. Leerlingen werken zelfstandig in een veilige leeromgeving —{' '}
                         <strong className="text-duck-ink">jij volgt de voortgang</strong>.
                     </p>
+                </Reveal>
+
+                <Reveal delay={0.2} className="mx-auto mt-12 max-w-3xl">
+                    <figure>
+                        <img
+                            src="/assets/storytelling/klas-aan-het-werk.webp"
+                            width={1400}
+                            height={788}
+                            loading="lazy"
+                            decoding="async"
+                            alt="Drie leerlingen werken samen achter Chromebooks aan een tafel in een klaslokaal."
+                            className={`w-full rounded-2xl border-[3px] border-duck-ink object-cover ${HARD_SHADOW_LG}`}
+                        />
+                        <figcaption className="mt-3 text-center text-xs italic text-duck-ink/70">
+                            Sfeerbeeld
+                        </figcaption>
+                    </figure>
                 </Reveal>
 
                 {/* missiebibliotheek-mockup */}
