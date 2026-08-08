@@ -2,23 +2,23 @@ import type { ReviewArenaConfig } from '../ReviewArena';
 
 export const dataReviewConfig: ReviewArenaConfig = {
     missionId: 'data-review',
-    title: 'Data & Privacy Review',
-    introEmoji: '🔐',
-    introTitle: 'Wat weet jij over data en privacy?',
+    title: 'Data & Informatie Review',
+    introEmoji: '📊',
+    introTitle: 'Wat weet jij over data en informatie?',
     introDescription:
-        'Test je kennis over databronnen, persoonsgegevens en de AVG (= de Europese privacywet) via vier afwisselende ronden. Elk type opgave vraagt iets anders van je.',
+        'Je werkte deze periode als data-journalist, spreadsheet-specialist, factchecker, API-verkenner, dashboard-designer en bias-detective. In vier ronden test je of die kennis is blijven hangen: bronnen wegen, de juiste formule kiezen, de juiste grafiek pakken, JSON lezen en AI-bias herkennen.',
     maxScore: 100,
     badges: [
         {
             minScore: 90,
             emoji: '🏆',
-            title: 'Privacy Expert',
+            title: 'Data Expert',
             color: '#e1ff01',
         },
         {
             minScore: 70,
             emoji: '🎯',
-            title: 'Databewuste leerling',
+            title: 'Scherpe data-analist',
             color: '#202023',
         },
         {
@@ -41,165 +41,216 @@ export const dataReviewConfig: ReviewArenaConfig = {
         },
     ],
     takeaways: [
-        'Overheidsdata en wetenschappelijk onderzoek zijn doorgaans betrouwbaarder dan sociale media.',
-        'Persoonsgegevens zijn alle gegevens waarmee je iemand direct of indirect kunt identificeren.',
-        'De AVG geeft burgers rechten: inzage, correctie, verwijdering en bezwaar.',
-        'Encryptie beschermt data in opslag én tijdens transport.',
-        'Geboortedatum op zichzelf is geen persoonsgegeven, maar in combinatie met naam wel.',
+        'Een meta-analyse van veel goed uitgevoerde onderzoeken weegt zwaarder dan één studie of een mening — maar kijk altijd naar de methode en naar wie het onderzoek betaalde.',
+        'De CRAAP-methode weegt een bron op actualiteit, relevantie, autoriteit, juistheid en doel.',
+        '=SOM telt op, =GEMIDDELDE middelt, =MAX en =MIN zoeken de uitersten, =AANTAL telt hoeveel getallen er staan.',
+        'Een staafdiagram vergelijkt categorieën, een lijndiagram toont een trend in de tijd, een cirkeldiagram toont de verdeling van een geheel.',
+        'In JSON hoort bij elke sleutel een waarde; een API-sleutel bewijst wie het verzoek stuurt.',
+        'AI-bias kan uit de trainingsdata komen, maar net zo goed uit wat een systeem meet, hoe het is ontworpen en waarvoor het wordt ingezet — testen op groepen, transparantie en menselijk toezicht helpen ertegen.',
     ],
     rounds: [
         {
             id: 'round-drag-sort',
             type: 'drag-sort',
-            title: 'Vertrouwbaarheid van databronnen',
+            title: 'Hoe sterk is dit bewijs?',
             description:
-                'Sorteer deze databronnen van meest betrouwbaar (boven) naar minst betrouwbaar (onder).',
+                'Sorteer deze bronnen van sterkst bewijs (boven) naar zwakst bewijs (onder) voor een uitspraak over jongeren en sociale media. Let niet op het etiket, maar op de methode, de omvang en wie het onderzoek betaalde.',
             maxScore: 25,
-            showConfidence: true,
             followUp: {
-                question: 'Wat is het verschil tussen persoonsgegevens en bijzondere persoonsgegevens volgens de AVG?',
-                options: ['Bijzondere gegevens zijn geheimer', 'Bijzondere gegevens onthullen gevoelige kenmerken zoals gezondheid of religie', 'Er is geen verschil', 'Bijzondere gegevens zijn alleen van kinderen'],
+                question: 'De A van Authority in de CRAAP-methode: welke vraag hoort daarbij?',
+                options: [
+                    'Hoe oud is deze informatie?',
+                    'Wie heeft dit geschreven en welke kennis heeft die persoon?',
+                    'Past deze bron bij mijn onderwerp?',
+                    'Waarom is dit geschreven?',
+                ],
                 correctIndex: 1,
-                explanation: 'Bijzondere persoonsgegevens (artikel 9 AVG) onthullen gevoelige kenmerken zoals gezondheid, etniciteit, religie of seksuele geaardheid en vereisen extra bescherming.',
-                bonusPoints: 5,
+                explanation:
+                    'Authority gaat over de auteur: wie zegt het en waarom mag je die persoon geloven? De andere vragen horen ook bij CRAAP, maar bij een andere letter: Currency (hoe oud), Relevance (past het) en Purpose (waarom geschreven).',
+                bonusPoints: 0,
             },
             items: [
                 {
-                    id: 'cbs',
-                    label: 'CBS (Centraal Bureau voor de Statistiek)',
-                    correctPosition: 0,
-                },
-                {
-                    id: 'peer-reviewed',
-                    label: 'Peer-reviewed wetenschappelijk artikel',
-                    correctPosition: 1,
-                },
-                {
-                    id: 'krant',
-                    label: 'Landelijk dagblad (NRC, de Volkskrant)',
-                    correctPosition: 2,
-                },
-                {
-                    id: 'wiki',
-                    label: 'Wikipedia-pagina',
+                    id: 'bedrijf-eigen-onderzoek',
+                    label: 'Onderzoek van een social-mediabedrijf over zijn eigen app: 900 gebruikers, ruwe cijfers niet gepubliceerd, betaald door het bedrijf zelf',
                     correctPosition: 3,
                 },
                 {
-                    id: 'instagram',
-                    label: 'Bericht op Instagram',
+                    id: 'anoniem',
+                    label: 'Bericht op een onbekende website: geen auteursnaam, geen datum, geen enkele bron genoemd',
+                    correctPosition: 5,
+                },
+                {
+                    id: 'meta-analyse',
+                    label: 'Meta-analyse in een vakblad: vat 47 onderzoeken samen en beschrijft per onderzoek de methode en de zwakke plekken',
+                    correctPosition: 0,
+                },
+                {
+                    id: 'opiniestuk',
+                    label: 'Opiniestuk in de schoolkrant: één leerling beschrijft haar eigen ervaring, zonder cijfers',
                     correctPosition: 4,
                 },
                 {
-                    id: 'tiktok',
-                    label: 'TikTok-video zonder bronvermelding',
-                    correctPosition: 5,
+                    id: 'krantenartikel',
+                    label: 'Krantenartikel met auteursnaam: legt het originele onderzoek uit, linkt ernaar en laat ook een criticus aan het woord',
+                    correctPosition: 2,
+                },
+                {
+                    id: 'losse-studie',
+                    label: 'Eén universitair onderzoek dat 2.400 jongeren twee jaar volgde, betaald met publiek geld',
+                    correctPosition: 1,
                 },
             ],
         },
         {
             id: 'round-match-pairs',
             type: 'match-pairs',
-            title: 'Datatype & beveiliging',
-            description: 'Koppel elk datatype aan de passende beveiligingsmaatregel.',
+            title: 'Welke formule hoort bij welke vraag?',
+            description:
+                'Je hebt het kasboek van de leerlingenraad voor je. De bedragen staan in kolom D, het type (Inkomst of Uitgave) in kolom E. Koppel elke vraag aan de formule die het antwoord geeft.',
             maxScore: 25,
+            followUp: {
+                question: 'Je wilt in het kasboek alleen de uitgaven zien, zonder rijen te verwijderen. Wat doe je?',
+                options: [
+                    'Sorteren op bedrag, van hoog naar laag',
+                    'Filteren op de kolom Type, met "Uitgave"',
+                    'De inkomsten met de hand weghalen',
+                    'De kolom Type verbergen',
+                ],
+                correctIndex: 1,
+                explanation:
+                    'Filteren verbergt tijdelijk de rijen die je niet nodig hebt; je data blijft heel. Sorteren verandert alleen de volgorde en laat alle rijen staan.',
+                bonusPoints: 0,
+            },
             pairs: [
                 {
-                    left: 'Wachtwoorden in een database',
-                    right: 'Je wachtwoord versleutelen (hashing)',
+                    left: 'Het totaal van alle bedragen',
+                    right: '=SOM(D2:D11)',
                 },
                 {
-                    left: 'E-mails over het internet',
-                    right: 'Een beveiligde verbinding (https)',
+                    left: 'Het gemiddelde bedrag per transactie',
+                    right: '=GEMIDDELDE(D2:D11)',
                 },
                 {
-                    left: 'Medisch dossier op een USB-stick',
-                    right: 'Encryptie van het apparaat',
+                    left: 'Het hoogste bedrag in de lijst',
+                    right: '=MAX(D2:D11)',
                 },
                 {
-                    left: 'Gezichtsherkenningsdata',
-                    right: 'Expliciete toestemming (opt-in)',
+                    left: 'Het laagste bedrag in de lijst',
+                    right: '=MIN(D2:D11)',
                 },
                 {
-                    left: 'Inlogpogingen op een systeem',
-                    right: 'Logging & monitoring',
+                    left: 'Hoeveel transacties er in het kasboek staan',
+                    right: '=AANTAL(D2:D11)',
+                },
+                {
+                    left: 'Alleen de bedragen met type "Uitgave" optellen',
+                    right: '=SOM.ALS(E2:E11;"Uitgave";D2:D11)',
                 },
             ],
         },
         {
             id: 'round-categorize',
             type: 'categorize',
-            title: 'Persoonsgegeven of niet?',
+            title: 'Welke grafiek past hierbij?',
             description:
-                'Categoriseer elk item als "Persoonsgegeven" of "Geen persoonsgegeven" volgens de AVG.',
+                'Je ontwerpt een dashboard voor de schoolleiding. Kies bij elke vraag het grafiektype dat de boodschap het duidelijkst laat zien.',
             maxScore: 25,
-            showConfidence: true,
-            categories: ['Persoonsgegeven', 'Geen persoonsgegeven'],
+            categories: ['Staafdiagram', 'Lijndiagram', 'Cirkeldiagram'],
             items: [
-                { label: 'Naam + geboortedatum', correctCategory: 'Persoonsgegeven' },
-                { label: 'IP-adres', correctCategory: 'Persoonsgegeven' },
-                { label: 'BSN-nummer', correctCategory: 'Persoonsgegeven' },
-                { label: 'E-mailadres', correctCategory: 'Persoonsgegeven' },
-                { label: 'Locatiedata van een telefoon', correctCategory: 'Persoonsgegeven' },
-                { label: 'Anonieme statistische data', correctCategory: 'Geen persoonsgegeven' },
-                { label: 'Geboortejaar (alleen het jaar)', correctCategory: 'Geen persoonsgegeven' },
-                { label: 'Kleur van een willekeurig huis', correctCategory: 'Geen persoonsgegeven' },
+                {
+                    label: 'Het gemiddelde cijfer van 2A, 2B, 2C en 2D naast elkaar zetten',
+                    correctCategory: 'Staafdiagram',
+                },
+                {
+                    label: 'De aanwezigheid per maand over het hele schooljaar volgen',
+                    correctCategory: 'Lijndiagram',
+                },
+                {
+                    label: 'Welk deel van alle onvoldoendes bij elk vak hoort',
+                    correctCategory: 'Cirkeldiagram',
+                },
+                {
+                    label: 'De uitgaven aan evenementen vergelijken met die aan materiaal',
+                    correctCategory: 'Staafdiagram',
+                },
+                {
+                    label: 'Hoe het aantal bezoekers van de schoolsite zich zes maanden lang ontwikkelde',
+                    correctCategory: 'Lijndiagram',
+                },
+                {
+                    label: 'Welk aandeel van het schoolbudget naar boeken, ICT en gebouw gaat',
+                    correctCategory: 'Cirkeldiagram',
+                },
+                {
+                    label: 'Hoeveel API-verzoeken zes verschillende apps per sessie sturen',
+                    correctCategory: 'Staafdiagram',
+                },
+                {
+                    label: 'De gemiddelde temperatuur per week in het afgelopen jaar',
+                    correctCategory: 'Lijndiagram',
+                },
+                {
+                    label: 'Welk deel van alle leerlingen in leerjaar 2 in elke klas zit',
+                    correctCategory: 'Cirkeldiagram',
+                },
             ],
         },
         {
             id: 'round-rapid-fire',
             type: 'rapid-fire',
-            title: 'AVG & Privacy: Waar of Onwaar?',
-            description: 'Acht snelle vragen. Goed raden telt mee voor je streak-bonus!',
+            title: "API's & AI-bias: waar of onwaar?",
+            description: 'Acht snelle vragen over JSON, API-verzoeken en eerlijke AI. Fout antwoorden kost punten, dus gok niet zomaar.',
             maxScore: 25,
             timePerQuestion: 12,
             questions: [
                 {
-                    question: 'Een school mag leerlingresultaten delen met adverteerders als de ouders dat hebben ondertekend.',
-                    answer: false,
-                    explanation:
-                        'Schoolresultaten zijn bijzondere persoonsgegevens; voor commercieel gebruik is dit onder de AVG vrijwel nooit toegestaan.',
-                },
-                {
-                    question: 'Je hebt het recht om een organisatie te vragen welke gegevens zij over jou hebben.',
+                    question: 'In een JSON-antwoord hoort bij elke sleutel (key) een waarde (value).',
                     answer: true,
                     explanation:
-                        'Dit is het recht op inzage (art. 15 AVG). Elke EU-burger kan dit kosteloos opvragen.',
+                        'JSON werkt met paren: "temp": 14.2. De sleutel geeft betekenis aan de waarde, zodat een app weet dat 14,2 de temperatuur is en niet de luchtvochtigheid.',
                 },
                 {
-                    question: 'Een datalek moet altijd binnen 72 uur worden gemeld bij de Autoriteit Persoonsgegevens.',
-                    answer: true,
-                    explanation:
-                        'Art. 33 AVG verplicht dit bij elk lek dat een risico vormt voor betrokkenen.',
-                },
-                {
-                    question: 'Foto\'s op een beveiligde schoolserver zijn nooit persoonsgegevens.',
+                    question: 'Het getal 78 zonder aanhalingstekens in JSON is van het type string.',
                     answer: false,
                     explanation:
-                        'Foto\'s waarop personen herkenbaar zijn, zijn biometrische persoonsgegevens.',
+                        'Zonder aanhalingstekens is het een number. Een string staat altijd tussen aanhalingstekens, zoals "Amsterdam".',
                 },
                 {
-                    question: 'De AVG geldt alleen voor bedrijven, niet voor scholen.',
+                    question: 'Een API-sleutel (apiKey) versleutelt de data die je terugkrijgt.',
                     answer: false,
                     explanation:
-                        'De AVG geldt voor alle organisaties die persoonsgegevens verwerken, inclusief scholen en overheden.',
+                        'Een API-sleutel bewijst wie het verzoek stuurt, zodat de aanbieder misbruik kan blokkeren. Versleutelen van het verkeer doet https, niet de sleutel. Daarom deel je een echte sleutel nooit.',
                 },
                 {
-                    question: 'Je mag je eigen persoonsgegevens laten verwijderen ("recht op vergetelheid").',
+                    question: 'In een API-URL staan de parameters achter het vraagteken, gescheiden door een &.',
                     answer: true,
                     explanation:
-                        'Art. 17 AVG — je kunt verwijdering vragen, tenzij er een wettelijke bewaarverplichting geldt.',
+                        'Bijvoorbeeld ?city=Amsterdam&units=metric: het vraagteken start de parameters en de & scheidt ze. Zo vraag je precies de data die je nodig hebt.',
                 },
                 {
-                    question: 'Een sterk wachtwoord is altijd voldoende beveiliging voor persoonsgegevens.',
+                    question: 'Als je alle beslissingen volledig aan de AI overlaat, verdwijnt de bias.',
                     answer: false,
                     explanation:
-                        'De AVG vereist passende technische én organisatorische maatregelen — één wachtwoord is niet voldoende.',
+                        'Een AI leert van menselijke data en kan bestaande vooroordelen juist op grote schaal herhalen. Bij beslissingen over mensen blijft menselijk toezicht nodig.',
                 },
                 {
-                    question: 'Data die is geanonimiseerd valt buiten de AVG.',
+                    question: 'Een AI kan een groep systematisch benadelen, ook al staat dat nergens in de code.',
                     answer: true,
                     explanation:
-                        'Echt geanonimiseerde data kan niet worden herleid naar een persoon en valt daarmee buiten de AVG — pseudonimisering is echter niet hetzelfde.',
+                        'Bias staat zelden als regel in de code. Hij kan in de trainingsdata zitten, maar ook in wát een systeem meet of waarvoor het wordt gebruikt. Een cv-filter dat leerde van jaren aanname-beslissingen neemt de patronen daaruit over.',
+                },
+                {
+                    question: 'Een AI vóór de uitrol testen op verschillende groepen helpt om bias op te sporen.',
+                    answer: true,
+                    explanation:
+                        'Zo\'n test laat zien of het systeem voor de ene groep slechter werkt dan voor de andere — je vindt het probleem voordat er schade ontstaat.',
+                },
+                {
+                    question: 'Een AI sneller en goedkoper maken, maakt hem ook eerlijker.',
+                    answer: false,
+                    explanation:
+                        'Snelheid en prijs zeggen niets over eerlijkheid. Een goedkoper bevooroordeeld systeem wordt vaker gebruikt, waardoor het probleem juist groter wordt.',
                 },
             ],
         },

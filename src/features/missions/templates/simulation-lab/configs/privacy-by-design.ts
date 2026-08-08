@@ -156,6 +156,15 @@ export const privacyByDesignConfig: SimulationLabConfig = {
     introTitle: 'Privacy by Design',
     introDescription:
         'Privacy by Design betekent: privacy vanaf het begin inbouwen in een app of systeem, niet achteraf. Ontdek hoe jouw digitale keuzes bepalen hoeveel anderen over jou weten. Speel met instellingen en zie direct wat er verandert.',
+    missionGoal: {
+        primaryGoal: 'Ik maak privacykeuzes die een app veiliger maken en leg uit welke data echt nodig is.',
+        criteria: {
+            type: 'rounds-complete',
+            min: 3,
+            description: 'Alle drie privacy-simulaties zijn onderzocht met vragen en reflectie.',
+        },
+        evidence: 'Keuzes rond profielzichtbaarheid, app-permissies en cookie-instellingen.',
+    },
     introFeatures: [
         'Sim 1 — Pas je sociale media instellingen aan',
         'Sim 2 — Kies welke app-permissies je geeft',

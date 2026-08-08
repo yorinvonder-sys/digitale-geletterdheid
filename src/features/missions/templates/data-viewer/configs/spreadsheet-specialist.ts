@@ -67,6 +67,8 @@ export const spreadsheetSpecialistConfig: DataViewerConfig = {
                     question:
                         'Welke formule gebruik je om het gemiddelde bedrag per uitgave te berekenen? Beschrijf ook wanneer je =GEMIDDELDE() gebruikt in plaats van =SOM().',
                     type: 'text-observation',
+                    keywords: ['typische', 'representatief', 'filteren', 'optellen', 'gemiddeld'],
+                    minKeywords: 1,
                     correctAnswer: '',
                     explanation:
                         '=GEMIDDELDE() gebruik je als je wilt weten wat een "typische" waarde is in een reeks. Hier wil je alleen uitgaven meenemen: =GEMIDDELDE.ALS(E2:E11;"Uitgave";D2:D11). Het gemiddelde van de 6 uitgaven is 513 ÷ 6 = 85,50 euro.',
@@ -121,6 +123,8 @@ export const spreadsheetSpecialistConfig: DataViewerConfig = {
                     question:
                         'Waarom is een staafdiagram beter dan een lijndiagram voor het vergelijken van uitgaven per categorie? Leg uit in eigen woorden.',
                     type: 'text-observation',
+                    keywords: ['tijdsvolgorde', 'trend', 'tijd', 'verandert', 'volgorde'],
+                    minKeywords: 1,
                     correctAnswer: '',
                     explanation:
                         'Een staafdiagram is geschikt voor het vergelijken van losse categorieën die geen tijdsvolgorde hebben. Een lijndiagram gebruik je als je een trend in de tijd wilt tonen (bijv. uitgaven per maand). Categorieën zoals "Evenement" en "Materiaal" hebben geen logische volgorde, dus staafdiagram is de betere keuze.',
@@ -180,6 +184,8 @@ export const spreadsheetSpecialistConfig: DataViewerConfig = {
                     question:
                         'Leg uit: wanneer is het gemiddelde misleidend? Beschrijf een situatie waarbij je beter het maximum of minimum zou gebruiken.',
                     type: 'text-observation',
+                    keywords: ['uitschieter', 'representatief', 'extreem', 'hoog', 'laag'],
+                    minKeywords: 1,
                     correctAnswer: '',
                     explanation:
                         'Het gemiddelde is misleidend als er uitschieters zijn. Stel: 9 leerlingen geven 1 euro uit en 1 leerling 100 euro — het gemiddelde is dan 10,9 euro, maar dat is niet representatief. In dat geval is =MAX() handiger om die uitschieter te spotten. Ook bij sportprestaties is het maximum (record) vaak relevanter dan het gemiddelde.',

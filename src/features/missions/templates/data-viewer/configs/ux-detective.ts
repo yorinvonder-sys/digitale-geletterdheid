@@ -72,6 +72,8 @@ export const uxDetectiveConfig: DataViewerConfig = {
                     question:
                         'Als je maar één probleem mag oplossen met beperkt budget, welk kies je en waarom? Gebruik de data om je keuze te onderbouwen.',
                     type: 'text-observation',
+                    keywords: ['frequentie', 'ernst', 'prioriteit', 'vaakst', 'meeste'],
+                    minKeywords: 1,
                     correctAnswer: '',
                     explanation:
                         'Het sterkste argument is voor "Huiswerk niet vinden in menu": het treft 3 van de 10 gebruikers (30%), heeft ernst 5 (maximum) en gebeurt elke dag. UX-prioritering combineert frequentie, ernst en impact. Een navigatieprobleem raakt alle functies van de app, terwijl "kleuren te flauw" (ernst 3) minder gebruikers treft en minder kritiek is.',
@@ -125,6 +127,8 @@ export const uxDetectiveConfig: DataViewerConfig = {
                     question:
                         'Een SUS-score van 55 voor Itslearning — wat betekent dit voor de gebruikerservaring? Wat zou een UX-designer als eerste aanpakken?',
                     type: 'text-observation',
+                    keywords: ['matig', 'frustrerend', 'lastig', 'moeilijk', 'last'],
+                    minKeywords: 1,
                     correctAnswer: '',
                     explanation:
                         'Een score van 55 valt in de categorie "matig" — gebruikers vinden het moeilijk en frustrerend. Een UX-designer zou beginnen met het meest ernstige en meest voorkomende probleem (zie de gebruikersfeedback-tabel). Navigatieproblemen zijn vaak de eerste prioriteit, omdat ze de toegang tot alle andere functies blokkeren.',
@@ -183,6 +187,8 @@ export const uxDetectiveConfig: DataViewerConfig = {
                     question:
                         'Kies het ernstigste navigatieprobleem uit de tabel (huiswerk niet vinden). Beschrijf een concrete UX-verbetering en welk principe je toepast.',
                     type: 'text-observation',
+                    keywords: ['affordance', 'feedback', 'consistentie', 'foutpreventie'],
+                    minKeywords: 1,
                     correctAnswer: '',
                     explanation:
                         'Een goede verbetering past een UX-principe toe: bijv. "Voeg een "Huiswerk"-knop direct op de startpagina toe (Affordance — zichtbaar en toegankelijk)." Of: "Gebruik consistente navigatie zodat huiswerk altijd op dezelfde plek staat (Consistentie)." Of: "Voeg een zoekfunctie toe die snel huiswerk vindt (Foutpreventie — de gebruiker hoeft niet te zoeken in het menu)."',

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import type { FollowUpQuestion } from './types';
 
@@ -30,7 +30,7 @@ export const FollowUpCard: React.FC<FollowUpCardProps> = ({ followUp, onComplete
     const bg = isLight ? 'bg-duck-bg' : 'bg-duck-ink';
     const border = isLight ? 'border-duck-acid' : 'border-duck-acid/40';
     const textMain = isLight ? 'text-duck-ink' : 'text-white';
-    const textSub = isLight ? 'text-duck-ink/70' : 'text-duck-ink/70';
+    const textSub = isLight ? 'text-duck-ink/75' : 'text-white/75';
     const fontMain = isLight
         ? { fontFamily: "'Newsreader', Georgia, serif" }
         : { fontFamily: "'Newsreader', Georgia, serif" };
@@ -38,11 +38,19 @@ export const FollowUpCard: React.FC<FollowUpCardProps> = ({ followUp, onComplete
         ? { fontFamily: "'Outfit', system-ui, sans-serif" }
         : {};
 
+    const continueRef = useRef<HTMLButtonElement>(null);
+
     const handleSelect = (index: number) => {
         if (answered) return;
         setSelected(index);
         onAnswer?.(index === followUp.correctIndex);
     };
+
+    // De gekozen knop wordt disabled, dus de focus zou naar <body> vallen. Zet hem
+    // op 'Doorgaan' zodat toetsenbord- en schermlezergebruikers verder kunnen.
+    useEffect(() => {
+        if (answered) continueRef.current?.focus();
+    }, [answered]);
 
     return (
         <motion.div
@@ -119,6 +127,8 @@ export const FollowUpCard: React.FC<FollowUpCardProps> = ({ followUp, onComplete
                     className="space-y-2"
                 >
                     <div
+                        role="status"
+                        aria-live="polite"
                         className={`text-xs px-3 py-2 rounded-xl ${
                             correct
                                 ? isLight ? 'bg-duck-ink/10 text-duck-ink' : 'bg-duck-ink/20 text-duck-acid'
@@ -129,9 +139,10 @@ export const FollowUpCard: React.FC<FollowUpCardProps> = ({ followUp, onComplete
                         {correct ? '✓ Goed!' : '✕ Niet helemaal.'} {followUp.explanation}
                     </div>
                     <button
+                        ref={continueRef}
                         data-qa="followup-submit"
                         onClick={() => onComplete(correct)}
-                        className={`w-full py-2.5 rounded-full font-black text-sm transition-all duration-200 ${
+                        className={`min-h-[44px] w-full py-2.5 rounded-full font-black text-sm transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-ink focus-visible:ring-offset-2 ${
                             isLight
                                 ? 'bg-gradient-to-r from-duck-acid to-duck-acid hover:from-duck-acid hover:to-duck-acid text-duck-ink'
                                 : 'bg-duck-ink hover:bg-duck-ink hover:text-duck-acid text-duck-acid font-mono'

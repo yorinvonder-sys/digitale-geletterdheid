@@ -4,7 +4,6 @@ import { useMissionAutoSave } from '@/hooks/useMissionAutoSave';
 import { IntroScreen } from '../shared/IntroScreen';
 import { CompletionScreen } from '../shared/CompletionScreen';
 import { PhaseHeader } from '../shared/PhaseHeader';
-import { confidenceMultiplier } from '../shared/ConfidenceRating';
 import { FollowUpCard } from '../shared/FollowUpCard';
 import { getMissionGoal } from '@/config/missionGoals';
 import type { TemplateMissionProps, BadgeConfig, FollowUpQuestion, MissionGoal } from '../shared/types';
@@ -159,16 +158,11 @@ const SimulationLabInner: React.FC<SimulationLabProps> = ({ onBack, onComplete, 
             if (!state.questionSubmitted[q.id]) return 0;
 
             const correct = state.questionAnswers[q.id] === q.correctAnswer;
-            if (!correct && !(q.showConfidence && state.confidences[q.id])) return 0;
+            if (!correct) return 0;
 
-            const base = correct ? q.points : 0;
-            const multiplier = q.showConfidence
-                ? confidenceMultiplier(state.confidences[q.id], correct)
-                : 1;
-
-            return clampScore(Math.round(base * multiplier), q.points);
+            return clampScore(q.points, q.points);
         },
-        [state.questionAnswers, state.questionSubmitted, state.confidences]
+        [state.questionAnswers, state.questionSubmitted]
     );
 
     // Compute total score

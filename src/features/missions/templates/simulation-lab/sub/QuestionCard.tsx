@@ -1,6 +1,6 @@
 import React from 'react';
 import { Lightbulb, CheckCircle, XCircle } from 'lucide-react';
-import { ConfidenceRating } from '../../shared/ConfidenceRating';
+import { ConfidenceRating, ConfidenceFeedback } from '../../shared/ConfidenceRating';
 import type { SimQuestion } from '../SimulationLab';
 
 export const QuestionCard: React.FC<{
@@ -16,7 +16,7 @@ export const QuestionCard: React.FC<{
     const isCorrect = submitted && answer === question.correctAnswer;
     const isWrong = submitted && answer !== question.correctAnswer;
     const showConfidenceWidget = !submitted && answer !== undefined && question.type === 'prediction' && question.showConfidence;
-    const submitDisabled = (showConfidenceWidget && !confidence) || locked;
+    const submitDisabled = locked;
 
     return (
         <div
@@ -86,7 +86,7 @@ export const QuestionCard: React.FC<{
             {/* Confidence rating for prediction questions */}
             {showConfidenceWidget && (
                 <div className="mb-3">
-                    <ConfidenceRating onSelect={onSetConfidence} />
+                    <ConfidenceRating onSelect={onSetConfidence} selected={confidence} />
                 </div>
             )}
 
@@ -135,6 +135,7 @@ export const QuestionCard: React.FC<{
                     <div>
                         <span className="font-bold">{isCorrect ? 'Goed! ' : 'Niet helemaal. '}</span>
                         {question.explanation}
+                        <ConfidenceFeedback confidence={confidence} correct={isCorrect} className="mt-1.5 block" />
                     </div>
                 </div>
             )}

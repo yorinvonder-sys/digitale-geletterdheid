@@ -13,36 +13,38 @@ interface DragSortProps {
     description: string;
     items: DragSortItem[];
     onComplete: (score: number, maxScore: number) => void;
-    /** Called once, immediately when the round is submitted, so the score can be persisted before the learner has a chance to reload and retry with the answers now known. */
+    /** Called the moment the round is scored, before the correction is shown. */
     onSubmit?: (score: number) => void;
     maxScore: number;
-    /** Optional: prompt learner to rate confidence (1-3) before submission */
-    showConfidence?: boolean;
 }
 
-// Deterministic shuffle seeded by the item ids, so the order is stable across
-// reloads of the same round instead of re-randomizing every mount, and never
-// lands (by chance) on the fully correct order.
-function seededShuffle(items: DragSortItem[]): DragSortItem[] {
-    let seed = 0;
-    for (const item of items) {
-        for (let i = 0; i < item.id.length; i++) {
-            seed = (seed * 31 + item.id.charCodeAt(i)) >>> 0;
-        }
-    }
-    const next = () => {
-        seed = (seed * 1103515245 + 12345) >>> 0;
-        return seed / 4294967296;
-    };
-    const a = [...items];
+function shuffle<T>(arr: T[]): T[] {
+    const a = [...arr];
     for (let i = a.length - 1; i > 0; i--) {
-        const j = Math.floor(next() * (i + 1));
+        const j = Math.floor(Math.random() * (i + 1));
         [a[i], a[j]] = [a[j], a[i]];
     }
-    if (a.length > 1 && a.every((item, index) => item.correctPosition === index)) {
-        [a[0], a[1]] = [a[1], a[0]];
-    }
     return a;
+}
+
+const isSolved = (arr: DragSortItem[]) => arr.every((item, i) => item.correctPosition === i);
+
+/**
+ * Schudt tot de getoonde volgorde afwijkt van de juiste volgorde. Zonder deze
+ * garantie staat de ronde bij drie items in 1 op de 6 gevallen al goed en levert
+ * direct indienen de volle score op.
+ */
+function shuffleUnsolved(items: DragSortItem[]): DragSortItem[] {
+    if (items.length < 2) return [...items];
+
+    let next = shuffle(items);
+    for (let attempt = 0; attempt < 20 && isSolved(next); attempt++) {
+        next = shuffle(items);
+    }
+    if (isSolved(next)) {
+        [next[0], next[1]] = [next[1], next[0]];
+    }
+    return next;
 }
 
 interface ItemRowProps {
@@ -74,7 +76,7 @@ const ItemRow: React.FC<ItemRowProps> = ({ item, submitted, currentIndex, totalI
         >
             <div
                 onPointerDown={submitted ? undefined : (e) => controls.start(e)}
-                className={`min-h-[44px] min-w-[32px] inline-flex items-center justify-center text-duck-ink/80 ${submitted ? '' : 'cursor-grab active:cursor-grabbing'}`}
+                className={`min-h-[44px] min-w-[32px] inline-flex items-center justify-center text-duck-ink/70 ${submitted ? '' : 'cursor-grab active:cursor-grabbing'}`}
                 style={{ touchAction: 'none' }}
                 aria-hidden="true"
             >
@@ -87,7 +89,7 @@ const ItemRow: React.FC<ItemRowProps> = ({ item, submitted, currentIndex, totalI
             </div>
 
             <span
-                className="flex-1 text-sm text-duck-ink/80 font-medium"
+                className="flex-1 text-sm text-duck-ink/70 font-medium"
                 style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
             >
                 {item.label}
@@ -106,7 +108,7 @@ const ItemRow: React.FC<ItemRowProps> = ({ item, submitted, currentIndex, totalI
                         onClick={() => onMove(item.id, -1)}
                         disabled={currentIndex === 0}
                         aria-label={`${item.label} omhoog verplaatsen`}
-                        className="grid min-h-[44px] min-w-[44px] place-items-center rounded-lg border border-duck-gray text-duck-ink/80 transition-colors hover:border-duck-acid hover:text-duck-ink disabled:opacity-30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-acid/40"
+                        className="grid min-h-[44px] min-w-[44px] place-items-center rounded-lg border border-duck-gray text-duck-ink/70 transition-colors hover:border-duck-acid hover:text-duck-ink disabled:opacity-30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-acid/40"
                     >
                         <ArrowUp size={14} />
                     </button>
@@ -116,7 +118,7 @@ const ItemRow: React.FC<ItemRowProps> = ({ item, submitted, currentIndex, totalI
                         onClick={() => onMove(item.id, 1)}
                         disabled={currentIndex === totalItems - 1}
                         aria-label={`${item.label} omlaag verplaatsen`}
-                        className="grid min-h-[44px] min-w-[44px] place-items-center rounded-lg border border-duck-gray text-duck-ink/80 transition-colors hover:border-duck-acid hover:text-duck-ink disabled:opacity-30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-acid/40"
+                        className="grid min-h-[44px] min-w-[44px] place-items-center rounded-lg border border-duck-gray text-duck-ink/70 transition-colors hover:border-duck-acid hover:text-duck-ink disabled:opacity-30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-acid/40"
                     >
                         <ArrowDown size={14} />
                     </button>
@@ -134,12 +136,16 @@ export const DragSort: React.FC<DragSortProps> = ({
     onSubmit,
     maxScore,
 }) => {
-    const [order, setOrder] = useState<DragSortItem[]>(() => seededShuffle(items));
-    const [hasMoved, setHasMoved] = useState(false);
+    const [order, setOrder] = useState<DragSortItem[]>(() => shuffleUnsolved(items));
     const [submitted, setSubmitted] = useState(false);
     const [score, setScore] = useState<number | null>(null);
+    const [hasMoved, setHasMoved] = useState(false);
+
+    // Bij minder dan twee items valt er niets te sorteren; dan is interactie geen eis.
+    const canSubmit = hasMoved || items.length < 2;
 
     const handleSubmit = () => {
+        if (!canSubmit) return;
         const correct = order.filter((item, index) => item.correctPosition === index).length;
         const earned = Math.round((correct / items.length) * maxScore);
         setScore(earned);
@@ -180,14 +186,14 @@ export const DragSort: React.FC<DragSortProps> = ({
                     {title}
                 </h3>
                 <p
-                    className="text-sm text-duck-ink/80"
+                    className="text-sm text-duck-ink/70"
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                 >
                     {description}
                 </p>
             </div>
 
-            <div className="text-xs text-duck-ink/80 flex items-center gap-1.5" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+            <div className="text-xs text-duck-ink/70 flex items-center gap-1.5" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                 <GripVertical size={12} />
                 Sleep de kaarten in de juiste volgorde of gebruik de pijltjes
             </div>
@@ -212,6 +218,8 @@ export const DragSort: React.FC<DragSortProps> = ({
 
             {submitted && (
                 <div
+                    role="status"
+                    aria-live="polite"
                     className={`p-3 rounded-xl text-sm font-medium ${
                         correctCount === items.length
                             ? 'bg-duck-ink/10 text-duck-ink'
@@ -231,15 +239,15 @@ export const DragSort: React.FC<DragSortProps> = ({
                 <button
                     data-qa="review-submit"
                     onClick={handleSubmit}
-                    disabled={!hasMoved}
-                    className={`w-full py-3 rounded-xl font-bold text-sm transition-all duration-200 active:scale-[0.98] ${
-                        hasMoved
+                    disabled={!canSubmit}
+                    className={`w-full py-3 rounded-xl font-bold text-sm transition-all duration-200 active:scale-[0.98]
+                        ${canSubmit
                             ? 'bg-gradient-to-r from-duck-acid to-duck-acid hover:from-duck-acid hover:to-duck-acid text-duck-ink'
-                            : 'bg-duck-gray text-duck-ink/80 cursor-not-allowed'
-                    }`}
+                            : 'bg-duck-gray text-duck-ink/70 cursor-not-allowed'
+                        }`}
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                 >
-                    {hasMoved ? 'Volgorde bevestigen' : 'Versleep eerst minstens één kaart'}
+                    {canSubmit ? 'Volgorde bevestigen' : 'Zet de kaarten eerst in volgorde'}
                 </button>
             ) : (
                 <button

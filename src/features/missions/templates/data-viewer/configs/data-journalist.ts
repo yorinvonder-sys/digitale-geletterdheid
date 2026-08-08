@@ -73,6 +73,7 @@ export const dataJournalistConfig: DataViewerConfig = {
                         'Wat valt je op als je kijkt naar het gevoel na gebruik en het aantal uren per dag? Beschrijf wat je ziet.',
                     type: 'text-observation',
                     correctAnswer: '',
+                    keywords: ['moe', 'blij', 'ontspannen', 'uren', 'patroon'],
                     explanation:
                         'Leerlingen die meer dan 3 uur per dag op TikTok zitten, geven vaker aan zich "Moe" te voelen. Leerlingen met minder gebruik rapporteren vaker "Blij" of "Ontspannen". Sorteer op "Uren/dag" om het patroon te zien.',
                     points: 10,
@@ -131,6 +132,7 @@ export const dataJournalistConfig: DataViewerConfig = {
                         'Wat valt je op als je Nederland vergelijkt met Japan? Wat zou een mogelijke verklaring kunnen zijn voor dit verschil?',
                     type: 'text-observation',
                     correctAnswer: '',
+                    keywords: ['schoolcultuur', 'huiswerk', 'cultuur', 'social media', 'verschil'],
                     explanation:
                         'Mogelijke verklaringen: Japan kent een andere schoolcultuur (meer huiswerk, minder vrije tijd), andere social media populariteit (bijv. LINE i.p.v. Instagram/TikTok), of culturele normen rondom schermgebruik. Er is geen eenduidig antwoord — de vraag stimuleert kritisch denken.',
                     points: 10,
@@ -195,6 +197,7 @@ export const dataJournalistConfig: DataViewerConfig = {
                         'Waarom is het Instagram-bericht minder betrouwbaar dan het RIVM-bericht? Beschrijf het probleem in eigen woorden.',
                     type: 'text-observation',
                     correctAnswer: '',
+                    keywords: ['belang', 'onafhankelijk', 'financieel', 'zelf onderzoek'],
                     explanation:
                         'Het kernprobleem heet "conflict of interest" (= belangenverstrengeling: de onderzoeker heeft er zelf belang bij): Instagram heeft er financieel belang bij dat hun product positief wordt beoordeeld. Onafhankelijk onderzoek (door RIVM, universiteiten) heeft dit belang niet. Goed kritisch denken houdt altijd rekening met wie onderzoek financiert of uitvoert.',
                     points: 5,

@@ -68,6 +68,8 @@ export const techImpactAnalystConfig: DataViewerConfig = {
                     question:
                         'Het argument vóór bezorgdrones bij werkgelegenheid is "nieuwe technische banen voor drone-onderhoud". Welk tegenargument zou een vakbond direct geven?',
                     type: 'text-observation',
+                    keywords: ['opleiding', 'structureel', 'minder banen', 'verdwijnen', 'minder'],
+                    minKeywords: 1,
                     correctAnswer: '',
                     explanation:
                         'Een vakbond zou zeggen: het aantal nieuwe technische banen is veel kleiner dan het aantal verloren bezorgbanen. Bovendien vereisen die nieuwe banen een andere opleiding — een bezorger kan niet zomaar drone-technicus worden. Dit heet structurele werkloosheid: de banen die verdwijnen en de banen die ontstaan, zijn niet uitwisselbaar. Een impact-analist zou vragen: hoeveel banen verdwijnen, hoeveel komen er terug, en voor wie?',
@@ -117,6 +119,8 @@ export const techImpactAnalystConfig: DataViewerConfig = {
                     question:
                         'Waarom zou een bezorgbedrijf drone-bezorging willen invoeren ook als het duurder is dan traditionele bezorging? En wanneer is het economisch pas interessant?',
                     type: 'text-observation',
+                    keywords: ['volume', 'goedkoper', 'pakketten', 'regels'],
+                    minKeywords: 1,
                     correctAnswer: '',
                     explanation:
                         'Voordeel voor het bedrijf: drones kunnen 24/7 rijden zonder chauffeur, worden nooit ziek en vermijden verkeersfiles. Op hoog volume (veel pakketten per dag) zijn de vaste kosten van drones lager dan de arbeidskosten van bezorgers. Economisch interessant als: volume hoog genoeg is om de aanschaf- en onderhoudskosten te dekken, én de regelgeving ruimte biedt voor commerciële vluchten.',
@@ -180,6 +184,8 @@ export const techImpactAnalystConfig: DataViewerConfig = {
                     question:
                         'TikTok gebruikt een aanbevelingsalgoritme dat bepaalt welke video\'s je ziet. Noem één positief effect en één negatief risico van dit systeem.',
                     type: 'text-observation',
+                    keywords: ['filterbubbel', 'hetzelfde', 'dezelfde', 'eenzijdig', 'anders'],
+                    minKeywords: 1,
                     correctAnswer: '',
                     explanation:
                         'Positief: het algoritme helpt je precies de content vinden die je interessant vindt — efficiënte ontdekking van nieuwe creators en onderwerpen. Negatief: filterbubbel — je ziet steeds extremere versies van wat je al leuk vindt, en nooit tegengestelde perspectieven. Dit kan de informatieverwerving eenzijdig maken.',

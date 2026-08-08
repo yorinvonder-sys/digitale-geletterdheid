@@ -337,7 +337,7 @@ const PasswordFortressInner: React.FC<{
                 takeaways={config.takeaways}
                 onComplete={() => {
                     clearSave();
-                    const requiredRounds = missionGoal.criteria.min ?? config.rounds.length;
+                    const requiredRounds = missionGoal?.criteria.min ?? config.rounds.length;
                     onComplete(state.cleared.length >= requiredRounds);
                 }}
             />
