@@ -55,12 +55,12 @@ export function Docent() {
                 <Reveal delay={0.2} className="mx-auto mt-12 max-w-3xl">
                     <figure>
                         <img
-                            src="/assets/storytelling/docent-bekijkt-voortgang.webp"
+                            src="/assets/storytelling/klas-zelfstandig-aan-het-werk.webp"
                             width={1400}
                             height={788}
                             loading="lazy"
                             decoding="async"
-                            alt="Een docent zit aan een bureau in een leeg klaslokaal en kijkt naar een laptopscherm."
+                            alt="Zes leerlingen werken zelfstandig achter Chromebooks in een klaslokaal, gezien vanaf de voorkant van de klas."
                             className={`w-full rounded-2xl border-[3px] border-duck-ink object-cover ${HARD_SHADOW_LG}`}
                         />
                         <figcaption className="mt-3 text-center text-xs italic text-duck-ink/70">
