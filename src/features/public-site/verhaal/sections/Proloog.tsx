@@ -83,17 +83,7 @@ export function Proloog({ onPlayFilm }: { onPlayFilm: () => void }) {
                         transition={{ delay: 0.35, duration: 0.6, ease: EASE }}
                         className="mt-6 max-w-xl font-display text-4xl font-black leading-[1.02] tracking-tight sm:text-5xl xl:text-6xl"
                     >
-                        Digitale geletterdheid,{' '}
-                        <span className="relative inline-block">
-                            <span className="relative z-10 inline-block px-1">missie voor missie</span>
-                            <motion.span
-                                initial={{ scaleX: 0 }}
-                                animate={{ scaleX: 1 }}
-                                transition={{ delay: 1, duration: 0.5, ease: EASE }}
-                                className="absolute inset-x-0 bottom-0 z-0 h-[0.5em] origin-left bg-duck-acid"
-                                aria-hidden="true"
-                            />
-                        </span>
+                        Digitale geletterdheid, missie voor missie
                     </motion.h1>
 
                     <motion.p
@@ -139,7 +129,7 @@ export function Proloog({ onPlayFilm }: { onPlayFilm: () => void }) {
                             onClick={onPlayFilm}
                             className="inline-flex min-h-[44px] items-center gap-1.5 underline-offset-4 hover:text-duck-ink hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-ink focus-visible:ring-offset-2"
                         >
-                            <span aria-hidden="true">▶</span> Bekijk de film (49 sec)
+                            <span aria-hidden="true">▶</span> Film: van vastlopen naar digitaal vaardig (49 sec)
                         </button>
                         <a
                             href="#probleem"

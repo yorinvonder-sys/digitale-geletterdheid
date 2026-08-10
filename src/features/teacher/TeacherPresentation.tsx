@@ -67,7 +67,7 @@ const WEEKS_DATA: WeekConfig[] = [
                                 <img
                                     src="/assets/brand/ui-icons/dgskills-duck-default.webp"
                                     alt=""
-                                    className="mb-4 h-12 w-12 object-contain"
+                                    className="mb-4 h-12 w-12 object-contain mx-auto"
                                     width={48}
                                     height={48}
                                     loading="lazy"

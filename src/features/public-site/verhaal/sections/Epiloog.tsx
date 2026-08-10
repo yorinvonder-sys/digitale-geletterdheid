@@ -105,7 +105,7 @@ export function Epiloog() {
                         </nav>
                     </div>
                     <div className="mt-6 flex flex-col justify-between gap-2 text-xs font-medium text-duck-ink/70 md:flex-row">
-                        <p>Yorin Vonder · info@dgskills.app</p>
+                        <p>info@dgskills.app</p>
                     </div>
                 </footer>
             </div>

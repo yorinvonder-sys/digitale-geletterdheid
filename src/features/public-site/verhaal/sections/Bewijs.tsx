@@ -178,14 +178,13 @@ export function Bewijs() {
                                 </Reveal>
                             ))}
                         </div>
-                        <div className="mt-8 flex justify-center" aria-hidden="true">
-                            <img
-                                src="/verhaal/school-proof.webp"
-                                alt=""
-                                className="h-32 w-32 object-contain md:h-40 md:w-40"
-                                loading="lazy"
-                                decoding="async"
-                            />
+                        <div className="mt-8">
+                            <a
+                                href="/compliance/slo-rapport"
+                                className="inline-flex min-h-[44px] items-center rounded-full border-2 border-duck-acid px-5 py-2 text-sm font-bold text-duck-acid transition-colors hover:bg-duck-acid hover:text-duck-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-acid focus-visible:ring-offset-2 focus-visible:ring-offset-duck-ink"
+                            >
+                                Bekijk een voorbeeldrapportage →
+                            </a>
                         </div>
                     </div>
 
@@ -213,14 +212,13 @@ export function Bewijs() {
                                 </Reveal>
                             ))}
                         </div>
-                        <div className="mt-8 flex justify-center" aria-hidden="true">
-                            <img
-                                src="/verhaal/privacy-shield.webp"
-                                alt=""
-                                className="h-32 w-32 object-contain md:h-40 md:w-40"
-                                loading="lazy"
-                                decoding="async"
-                            />
+                        <div className="mt-8">
+                            <a
+                                href="/compliance-hub"
+                                className="inline-flex min-h-[44px] items-center rounded-full border-2 border-duck-acid px-5 py-2 text-sm font-bold text-duck-acid transition-colors hover:bg-duck-acid hover:text-duck-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-acid focus-visible:ring-offset-2 focus-visible:ring-offset-duck-ink"
+                            >
+                                Naar het privacy- en compliancedossier →
+                            </a>
                         </div>
                     </div>
                 </div>

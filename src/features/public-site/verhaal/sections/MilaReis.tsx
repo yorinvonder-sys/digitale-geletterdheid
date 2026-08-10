@@ -21,7 +21,7 @@ const BEATS = [
     {
         id: 'maak',
         kicker: 'Maak',
-        title: 'Dan: projectmodus.',
+        title: 'Van oefenen naar echt bouwen.',
         body: 'Een platformer bouwen, een robotroute ontwerpen. Echte projecten, geen nagebootste oefeningen.',
     },
     {
@@ -35,6 +35,12 @@ const BEATS = [
         kicker: 'Groei',
         title: 'Alles landt in haar portfolio.',
         body: 'Wat ze maakte én welke keuzes ze maakte — zichtbaar als bewijs. Niet in een excelbestand van de docent.',
+    },
+    {
+        id: 'besteed',
+        kicker: 'Besteed',
+        title: 'En dan mag ze shoppen.',
+        body: 'In de winkel ruilt Mila haar XP voor een zonnebril, een rugzak of een huisdier voor haar avatar. Verdiend met missies — er komt geen cent aan te pas.',
     },
 ];
 
@@ -308,7 +314,56 @@ function VisualGroei() {
     );
 }
 
-const VISUALS = [VisualOntdek, VisualLeer, VisualMaak, VisualBewijs, VisualGroei];
+/**
+ * De avatarwinkel. Items en prijzen komen uit `src/config/avatarCatalog.ts`,
+ * zodat wat een school hier ziet ook is wat een leerling in het product koopt.
+ */
+function VisualWinkel() {
+    const items = [
+        { n: 'Zonnebril', p: 150, gekocht: true },
+        { n: 'Rugzak', p: 175, gekocht: false },
+        { n: 'Coole Bril', p: 100, gekocht: false },
+        { n: 'Pet', p: 125, gekocht: false },
+    ];
+    return (
+        <BrowserFrame url="dgskills.app/profiel/winkel" className="w-full">
+            <div className="flex items-center justify-between gap-3">
+                <p className="font-display text-lg font-black">Winkel — accessoires</p>
+                <span className="shrink-0 rounded-full border-2 border-duck-ink bg-duck-ink px-3 py-1 text-xs font-bold text-duck-acid">
+                    1.840 XP
+                </span>
+            </div>
+            <div className="mt-4 grid grid-cols-2 gap-2">
+                {items.map((it, i) => (
+                    <motion.div
+                        key={it.n}
+                        initial={{ opacity: 0, y: 12 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.2 + i * 0.12 }}
+                        className={`flex items-center justify-between gap-2 rounded-xl border-2 border-duck-ink px-3 py-3 ${
+                            it.gekocht ? 'bg-duck-acid' : 'bg-duck-bg'
+                        }`}
+                    >
+                        <p className="truncate text-sm font-bold">{it.n}</p>
+                        <span className="shrink-0 text-xs font-bold text-duck-ink/70">
+                            {it.gekocht ? 'Gekocht' : `${it.p} XP`}
+                        </span>
+                    </motion.div>
+                ))}
+            </div>
+            <motion.p
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.8 }}
+                className="mt-4 text-xs text-duck-ink/70"
+            >
+                Ook kleding, huisdieren en emotes — allemaal met XP uit missies.
+            </motion.p>
+        </BrowserFrame>
+    );
+}
+
+const VISUALS = [VisualOntdek, VisualLeer, VisualMaak, VisualBewijs, VisualGroei, VisualWinkel];
 
 /* --------------------------------- sectie --------------------------------- */
 
