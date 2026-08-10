@@ -5,19 +5,22 @@
 - **Auditstatus:** **niet formeel gesloten**
 - **Aanbeveling:** **fix-eerst**
 - **DGS-62 voortgang na deze audit:** `0/16/partial`; DGS-62 blijft open
-- **Checkout:** schone auditworktree, branch `codex/dgs-62-prompt-master-audit-20260810`
-- **Checkout/origin/main:** `17c94127309b574a9afbb860d9c904ee48985f06`
-- **Productiedeployment:** `dpl_2WeBRuJ4EhdyDYFSPX3hADEnia3A`, READY, `https://dgskills.app/`, commit `17c94127309b574a9afbb860d9c904ee48985f06`
+- **Browserauditcheckout:** schoon en detached op `17c94127309b574a9afbb860d9c904ee48985f06`; dit was bij preflight exact `origin/main`
+- **Rapportcheckout:** branch `codex/dgs-62-prompt-master-audit-20260810`, uitsluitend dit rapport bovenop auditbasis `17c94127309b574a9afbb860d9c904ee48985f06`; eerste rapportcommit `433bc23fb958003a77d0b359345c7dcf5faa429f`
+- **Geteste productiedeployment:** `dpl_2WeBRuJ4EhdyDYFSPX3hADEnia3A`, READY, commit `17c94127309b574a9afbb860d9c904ee48985f06`
+- **Finale origin/main en productie:** `ac30f8f7452b318c651becb709544e800abf2dec`; `https://dgskills.app/` wijst READY naar `dpl_BEzNsqu2n4aWXhA6NCjkyJtLk984`
+- **Vierweg-binding checkout/main/productie/evidence:** **FAIL**; current-main runtimegedrag is **CANNOT VERIFY**. De browserbeelden zijn terecht op `17c9412` bevroren en niet als `ac30f8f` geretagd
 
-De rapporten van 2026-08-02 en 2026-08-06 zijn alleen als historische context gebruikt. Alle criteria hieronder zijn opnieuw gecontroleerd op de huidige main/deploymentbinding.
+De rapporten van 2026-08-02 en 2026-08-06 zijn alleen als historische context gebruikt. Alle criteria zijn opnieuw gecontroleerd op de tijdens preflight actuele SHA `17c9412`. Tijdens de afronding schoof `origin/main` én productie door naar `ac30f8f`; de negen gewijzigde paden vallen uitsluitend onder de publieke homepage/verhaalroute. Gerichte statische Prompt Master-controles op een schone detached `ac30f8f`-checkout slagen, maar er is geen nieuwe vier-viewport- of productieflow op die SHA vastgelegd.
 
 ## Eindoordeel
 
-Prompt Master heeft een sterke, speelbare lokale leerlingflow en slaagt voor de vier-viewport Visual Precision Gate. Formele sluiting faalt echter op drie verplichte poorten:
+Prompt Master heeft op de bevroren `17c9412`-audit een sterke, speelbare lokale leerlingflow en slaagt daar voor de vier-viewport Visual Precision Gate. Formele sluiting faalt echter op vier verplichte poorten:
 
 1. **HIGH:** herhaald afronden kan opnieuw XP geven; de client roept opnieuw `award_xp` aan en de live server ontdubbelt niet per leerling+missie.
 2. **Productie CANNOT VERIFY:** een verse J1P2-leerling ziet Prompt Master gelockt achter vier herhalingsmissies. Omdat deze audit exact één missie mocht raken, zijn geen andere missies voltooid of vooraf gemarkeerd en is geen directe-route/adminbypass gebruikt.
 3. **Opus CANNOT VERIFY:** Claude Code CLI stopte vóór broninspectie met een verlopen OAuth-token (HTTP 401).
+4. **Current-main runtime CANNOT VERIFY:** `origin/main` en productie staan finaal op `ac30f8f`, terwijl de volledige browseraudit gebonden blijft aan `17c9412`.
 
 Er is daarom geen SHIP-, productie-, merge- of release-readinessclaim.
 
@@ -68,8 +71,9 @@ De lokale scorelogica bepaalt slagen; ontbrekende AI-afbeeldingsgeneratie blokke
 
 | Criterium | Status | Bewijs/oordeel |
 |---|---|---|
-| Huidige main/deploymentbinding | PASS | `HEAD == origin/main == deploymentCommit == 17c94127309b574a9afbb860d9c904ee48985f06`. |
-| Gerichte checks | PASS | `check:prompt-master`, `check:mission-goals`, 9 mission-completiontests en `doctor` slagen. |
+| Vierweg-binding checkout/main/productie/evidence | FAIL | Preflightbrowser en geteste deployment waren exact `17c9412`; finaal staan `origin/main` en productie exact op `ac30f8f` / `dpl_BEzNsqu2n4aWXhA6NCjkyJtLk984`. De bestaande beelden zijn niet geretagd; current-main runtimegedrag is daarom CANNOT VERIFY. |
+| Gerichte checks op auditsnapshot | PASS | Op `17c9412` slagen `check:prompt-master`, `check:mission-goals`, 9 mission-completiontests en `doctor`. |
+| Gerichte checks op finale main | PASS — statisch | Op schone detached `ac30f8f` slagen contextbudget, `check:prompt-master`, `check:mission-goals`, 9 mission-completiontests en de kritieke TypeScript-check. De diff vanaf `17c9412` raakt alleen negen publieke homepage/verhaalpaden; dit vervangt geen browserproof. |
 | Vier-viewport previewmanifest | PASS | Officiële validator: `Evidence PASS: prompt-master (preview, 17c9412)`. |
 | Autosave en lokale recovery | PASS | User-/missiespecifieke opslag, debounce/flush en clear na duurzame completion zijn aanwezig; Prompt Master heeft geen extra state-validator. |
 | Error/loading | PASS | Timeouts en AI-/afbeeldingsfouten hebben leerlingvriendelijke fallback; preview bleef speelbaar. |
@@ -104,6 +108,8 @@ Belangrijkste machineleesbare artefacten:
 
 Alle geregistreerde PNG's zijn op magic bytes, afmetingen en SHA-256 gecontroleerd. De samengestelde contact sheet is visueel geïnspecteerd; afwijkende productie-rasterafmetingen zijn expliciet gemodelleerd, niet als 390x844 vervalst.
 
+De mapnaam `current-main-2026-08-10` beschrijft het geldige capturemoment op `17c9412`; hij is na de SHA-wissel niet hernoemd of als bewijs voor `ac30f8f` voorgesteld.
+
 ## Auth, productie en cleanup
 
 - Eén tijdelijk synthetisch J1P2-account, één interne productie-browserworker.
@@ -120,7 +126,7 @@ Alle geregistreerde PNG's zijn op magic bytes, afmetingen en SHA-256 gecontrolee
 ## Opus en onafhankelijk Sol-oordeel
 
 - **Claude Opus 5 high:** `CANNOT VERIFY`; de CLI-authenticatie was verlopen (HTTP 401) voordat de herstelde 44px sample en de HIGH konden worden gelezen.
-- **Onafhankelijk Sol:** **FAIL — fix-eerst — niet formeel sluiten — 0/16**. Account/profiel/rijen/credentials en refreshrevocation zijn `PASS`; access-JWT-expiry/denial is `CANNOT VERIFY`. Er is geen onafhankelijke positieve signoff. Memo: `screenshots/mission-audit/batches/j1p2/prompt-master/17c94127309b574a9afbb860d9c904ee48985f06/current-main-2026-08-10/sol-independent-review/independent-review.md`.
+- **Onafhankelijk Sol:** **FAIL — fix-eerst — niet formeel sluiten — 0/16**. Account/profiel/rijen/credentials en refreshrevocation zijn `PASS`; access-JWT-expiry/denial én de finale current-main runtimebinding zijn `CANNOT VERIFY`. Er is geen onafhankelijke positieve signoff. Memo: `screenshots/mission-audit/batches/j1p2/prompt-master/17c94127309b574a9afbb860d9c904ee48985f06/current-main-2026-08-10/sol-independent-review/independent-review.md`.
 
 ## Benodigd vóór formele sluiting
 
@@ -129,5 +135,6 @@ Alle geregistreerde PNG's zijn op magic bytes, afmetingen en SHA-256 gecontrolee
 3. Maak een geautoriseerde, één-missie productieproof mogelijk zonder vier andere missies in deze taak te beoordelen; herhaal daarna exact één completion met XP-transactietelling en reloadpersistentie.
 4. Herstel Claude Code-auth en laat Opus 5 high de fixed sample en iedere blocker/high beoordelen.
 5. Laat een fysieke iPad/Safari-check uitvoeren of behoud expliciet `Echte iPad-check nodig`.
+6. Herhaal de vier-viewport- en productie-runtimeaudit op één exact gelijke, actuele `origin/main`- en productie-SHA.
 
 Tot deze poorten groen zijn blijft `prompt-master` **niet formeel gesloten** en blijft DGS-62 op `0/16/partial`.
