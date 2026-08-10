@@ -1,7 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Eyes, Pill, LogoLockup, BrowserFrame, HARD_SHADOW } from '../components/storyBrand';
-import { HeroDashboardPreview } from '@/features/public-site/demo/HeroDashboardPreview';
+import { Eyes, Pill, LogoLockup, HARD_SHADOW, HARD_SHADOW_LG } from '../components/storyBrand';
 import { VERHAAL_STATS } from '../verhaalStats';
 
 const EASE = [0.22, 1, 0.36, 1] as const;
@@ -20,6 +19,46 @@ const BEWIJSPUNTEN = [
     'Gekoppeld aan de SLO-kerndoelen',
     'Gebouwd door een docent',
 ];
+
+/**
+ * Vier dingen die een leerling in een missie máákt. Bewust het resultaat en
+ * niet het opdrachtscherm: een bezoeker moet meteen zien wat er te maken valt,
+ * en een schermafdruk vol uitleg is op deze grootte onleesbaar. De beelden zijn
+ * illustraties van het soort werk, geen schermafdrukken — het onderschrift
+ * onder de kaart zegt dat er ook bij.
+ */
+const UITGELICHT = [
+    {
+        beeld: '/assets/previews/maak/maak-game.webp',
+        titel: 'Bouw je eigen game',
+        onderwerp: 'Programmeren',
+    },
+    {
+        beeld: '/assets/previews/maak/maak-beeld.webp',
+        titel: 'Maak beeld met AI',
+        onderwerp: 'AI',
+    },
+    {
+        beeld: '/assets/previews/maak/maak-website.webp',
+        titel: 'Zet een website in elkaar',
+        onderwerp: 'Digitale producten',
+    },
+    {
+        beeld: '/assets/previews/maak/maak-chatbot.webp',
+        titel: 'Train je eigen chatbot',
+        onderwerp: 'AI & data',
+    },
+];
+
+/**
+ * Alle onderwerpen waar de missies over gaan, op alfabet zodat het leest als
+ * een legenda en niet als een ranglijst. Bewust zonder aantallen erbij: een
+ * missie telt bij meerdere onderwerpen mee, dus die getallen tellen niet op tot
+ * het totaal en dat leest als een rekenfout.
+ */
+const ONDERWERPEN = [...VERHAAL_STATS.onderwerpen]
+    .map((o) => o.label)
+    .sort((a, b) => a.localeCompare(b, 'nl'));
 
 /**
  * Het eerste scherm van de homepage.
@@ -161,20 +200,42 @@ export function Proloog({ onPlayFilm }: { onPlayFilm: () => void }) {
                     transition={{ delay: 0.55, duration: 0.7, ease: EASE }}
                     className="w-full min-w-0"
                 >
-                    {/*
-                     * Het dashboard is hier een illustratie, geen bedienbaar
-                     * onderdeel: `inert` houdt de tientallen knoppen erin uit de
-                     * tabvolgorde en houdt zijn eigen h1 ("Goedenavond ...") uit
-                     * de voorleesvolgorde, zodat dit scherm één kop houdt. Wie
-                     * het echt wil gebruiken, klikt op "Bekijk een missie".
-                     */}
-                    <div inert>
-                        <BrowserFrame url="dgskills.app · missieoverzicht">
-                            <HeroDashboardPreview which="student" />
-                        </BrowserFrame>
+                    <div
+                        className={`rounded-2xl border-[3px] border-duck-ink bg-white p-6 md:p-7 ${HARD_SHADOW_LG}`}
+                    >
+                        <p className="font-display text-lg font-black md:text-xl">
+                            Dit doen leerlingen
+                        </p>
+                        <p className="mt-1 text-sm text-duck-ink/70">
+                            {VERHAAL_STATS.missies} missies over {VERHAAL_STATS.leerjaren} leerjaren
+                        </p>
+                        <ul className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2">
+                            {UITGELICHT.map((missie) => (
+                                <li key={missie.beeld}>
+                                    <img
+                                        src={missie.beeld}
+                                        alt={missie.titel}
+                                        width={800}
+                                        height={500}
+                                        loading="lazy"
+                                        decoding="async"
+                                        className="w-full rounded-xl border-2 border-duck-ink object-cover"
+                                    />
+                                    <p className="mt-2 text-sm font-bold leading-tight">
+                                        {missie.titel}
+                                    </p>
+                                    <p className="text-xs text-duck-ink/70">{missie.onderwerp}</p>
+                                </li>
+                            ))}
+                        </ul>
+                        <p className="mt-6 border-t-2 border-duck-ink/10 pt-4 text-xs leading-relaxed text-duck-ink/70">
+                            <span className="font-bold text-duck-ink">Verder onder meer:</span>{' '}
+                            {ONDERWERPEN.join(' · ')}
+                        </p>
                     </div>
                     <p className="mt-3 text-center text-xs italic text-duck-ink/70 lg:text-left">
-                        Live uit het echte product. De leerlinggegevens zijn fictief.
+                        Voorbeelden van wat leerlingen maken. Klik op "Bekijk een missie" om er zelf
+                        een te spelen.
                     </p>
                 </motion.div>
             </div>

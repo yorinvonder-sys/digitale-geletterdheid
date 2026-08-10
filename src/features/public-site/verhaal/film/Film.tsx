@@ -67,7 +67,7 @@ export function hasSeenFilm(): boolean {
  *  - De klok loopt alleen als de film in beeld is én het tabblad actief is.
  *  - Hervatten na pauze telt de pauzetijd niet mee.
  */
-export function Film({ onFinish }: { onFinish?: () => void }) {
+export function Film({ onFinish, onSkip }: { onFinish?: () => void; onSkip?: () => void }) {
     const reduceMotion = usePrefersReducedMotion();
 
     const [elapsed, setElapsed] = useState(0);
@@ -232,10 +232,17 @@ export function Film({ onFinish }: { onFinish?: () => void }) {
     const sceneStartOf = (i: number) => SCENES.slice(0, i).reduce((a, s) => a + s.dur, 0);
 
     const skip = () => {
-        setArmed(true);
         // Wie bewust overslaat, wil de film niet bij het volgende bezoek opnieuw
         // zien — ook niet als hij wegscrollt vóór de slotscène is uitgespeeld.
         markFilmSeen();
+        if (onSkip) {
+            // De film is opgevraagd vanaf de pagina zelf: sluit hem en zet de
+            // bezoeker terug waar hij was, in plaats van hem naar de slotscène
+            // te sturen die hij juist wilde overslaan.
+            onSkip();
+            return;
+        }
+        setArmed(true);
         jumpTo(TOTAL - SCENES[SCENES.length - 1].dur + 0.01);
     };
 
