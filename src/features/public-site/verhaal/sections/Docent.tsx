@@ -40,7 +40,7 @@ export function Docent() {
                     number="4"
                     title={
                         <>
-                            Ondertussen, <em className="italic">twee meter verderop</em>: jij.
+                            Ondertussen, <em className="italic">twee meter verderop</em>: de docent.
                         </>
                     }
                 />
