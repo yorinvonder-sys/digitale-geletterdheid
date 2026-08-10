@@ -1,7 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Eyes, Pill, LogoLockup, BrowserFrame, HARD_SHADOW } from '../components/storyBrand';
-import { HeroDashboardPreview } from '@/features/public-site/demo/HeroDashboardPreview';
+import { Eyes, Pill, LogoLockup, HARD_SHADOW, HARD_SHADOW_LG } from '../components/storyBrand';
 import { VERHAAL_STATS } from '../verhaalStats';
 
 const EASE = [0.22, 1, 0.36, 1] as const;
@@ -20,6 +19,17 @@ const BEWIJSPUNTEN = [
     'Gekoppeld aan de SLO-kerndoelen',
     'Gebouwd door een docent',
 ];
+
+/**
+ * De onderwerpen waar de missies over gaan, elk met de illustratie van een
+ * echte missie eruit. Op alfabet, zodat het leest als een legenda en niet als
+ * een ranglijst. Bewust zonder aantallen erbij: een missie telt bij meerdere
+ * onderwerpen mee, dus die getallen tellen niet op tot het totaal en dat leest
+ * als een rekenfout.
+ */
+const ONDERWERPEN = [...VERHAAL_STATS.onderwerpen].sort((a, b) =>
+    a.label.localeCompare(b.label, 'nl'),
+);
 
 /**
  * Het eerste scherm van de homepage.
@@ -161,20 +171,43 @@ export function Proloog({ onPlayFilm }: { onPlayFilm: () => void }) {
                     transition={{ delay: 0.55, duration: 0.7, ease: EASE }}
                     className="w-full min-w-0"
                 >
-                    {/*
-                     * Het dashboard is hier een illustratie, geen bedienbaar
-                     * onderdeel: `inert` houdt de tientallen knoppen erin uit de
-                     * tabvolgorde en houdt zijn eigen h1 ("Goedenavond ...") uit
-                     * de voorleesvolgorde, zodat dit scherm één kop houdt. Wie
-                     * het echt wil gebruiken, klikt op "Bekijk een missie".
-                     */}
-                    <div inert>
-                        <BrowserFrame url="dgskills.app · missieoverzicht">
-                            <HeroDashboardPreview which="student" />
-                        </BrowserFrame>
+                    <div
+                        className={`rounded-2xl border-[3px] border-duck-ink bg-white p-6 md:p-7 ${HARD_SHADOW_LG}`}
+                    >
+                        <p className="font-display text-lg font-black md:text-xl">
+                            Waar de missies over gaan
+                        </p>
+                        <p className="mt-1 text-sm text-duck-ink/70">
+                            {VERHAAL_STATS.missies} missies, verdeeld over {VERHAAL_STATS.leerjaren}{' '}
+                            leerjaren
+                        </p>
+                        <ul className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-3">
+                            {ONDERWERPEN.map((onderwerp) => (
+                                <li key={onderwerp.label}>
+                                    <div className="overflow-hidden rounded-xl border-2 border-duck-ink bg-duck-bg">
+                                        {onderwerp.thumbnail ? (
+                                            <img
+                                                src={onderwerp.thumbnail}
+                                                alt=""
+                                                width={320}
+                                                height={180}
+                                                loading="lazy"
+                                                decoding="async"
+                                                className="aspect-video w-full object-cover"
+                                            />
+                                        ) : (
+                                            <div className="aspect-video w-full bg-duck-acid/30" />
+                                        )}
+                                    </div>
+                                    <p className="mt-1.5 text-[13px] font-bold leading-tight">
+                                        {onderwerp.label}
+                                    </p>
+                                </li>
+                            ))}
+                        </ul>
                     </div>
                     <p className="mt-3 text-center text-xs italic text-duck-ink/70 lg:text-left">
-                        Live uit het echte product. De leerlinggegevens zijn fictief.
+                        De onderwerpen komen uit de SLO-kerndoelen waaraan de missies gekoppeld zijn.
                     </p>
                 </motion.div>
             </div>

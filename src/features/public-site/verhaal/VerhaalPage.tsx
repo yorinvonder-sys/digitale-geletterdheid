@@ -90,6 +90,18 @@ export function VerhaalPage() {
         });
     }, []);
 
+    /**
+     * Sluit de film en zet de bezoeker terug bij de hero waar hij hem opende.
+     * Zonder dat terugzetten valt hij na het inklappen midden in een willekeurig
+     * hoofdstuk, omdat de pagina onder hem korter wordt.
+     */
+    const closeFilm = useCallback(() => {
+        setFilmOpen(false);
+        requestAnimationFrame(() => {
+            document.getElementById('proloog')?.scrollIntoView({ block: 'start' });
+        });
+    }, []);
+
     useEffect(() => {
         // Dezelfde pagina staat op twee routes. Op de homepage moet de titel
         // vertellen wát DGSkills is; op /verhaal blijft het de verhaaltitel.
@@ -135,7 +147,7 @@ export function VerhaalPage() {
 
             <main>
                 <Proloog onPlayFilm={openFilm} />
-                <FilmChapter open={filmOpen} />
+                <FilmChapter open={filmOpen} onClose={closeFilm} />
                 <Probleem />
                 <Ontmoeting />
                 <MilaReis />
