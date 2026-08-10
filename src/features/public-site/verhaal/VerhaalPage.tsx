@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { trackEvent } from '@/services/analyticsService';
 import { LogoLockup, Marquee, HARD_SHADOW } from './components/storyBrand';
@@ -68,16 +68,37 @@ function Nav() {
 }
 
 /**
- * `/verhaal` — de scrollytelling-verhaalpagina.
+ * `/` en `/verhaal` — de homepage, opgebouwd als scrollytelling.
  *
- * De opbouw volgt de hoofdstukken: de film over Jayden (alleen voor eerste
- * bezoekers), daarna Proloog → Probleem → Ontmoeting → Mila → Docent → Bewijs
- * → Epiloog.
+ * Het eerste scherm (Proloog) positioneert het product: wat DGSkills is, voor
+ * wie, wat leerlingen doen en wat de docent eraan heeft. Daarna volgt het
+ * verhaal: Probleem → Ontmoeting → Mila → Docent → Bewijs → Epiloog. De film
+ * over Jayden zit ertussen, maar alleen als de bezoeker hem zelf opent.
  */
 export function VerhaalPage() {
+    /**
+     * De film start niet vanzelf meer: de hero moet als eerste vertellen wat
+     * DGSkills is. Wie hem wil zien opent hem zelf; pas dan bestaat de sectie.
+     */
+    const [filmOpen, setFilmOpen] = useState(false);
+
+    const openFilm = useCallback(() => {
+        setFilmOpen(true);
+        // De sectie bestaat pas na deze render, dus scrollen op de volgende frame.
+        requestAnimationFrame(() => {
+            document.getElementById('film')?.scrollIntoView({ block: 'start' });
+        });
+    }, []);
+
     useEffect(() => {
+        // Dezelfde pagina staat op twee routes. Op de homepage moet de titel
+        // vertellen wát DGSkills is; op /verhaal blijft het de verhaaltitel.
+        const isHome = window.location.pathname.replace(/\/+$/, '') === '';
+
         const originalTitle = document.title;
-        document.title = 'Het verhaal van een les die wél werkt | DGSkills';
+        document.title = isHome
+            ? 'DGSkills — digitale geletterdheid voor VO en VSO, missie voor missie'
+            : 'Het verhaal van een les die wél werkt | DGSkills';
 
         const existing = document.querySelector('meta[name="description"]') as HTMLMetaElement | null;
         const originalDescription = existing?.getAttribute('content') ?? null;
@@ -89,10 +110,12 @@ export function VerhaalPage() {
         }
         descriptionEl.setAttribute(
             'content',
-            'Digitale geletterdheid voor VO en VSO, verteld als verhaal: van de pijn in de klas naar missies, docentdashboard en aantoonbare SLO-dekking.',
+            isHome
+                ? 'DGSkills is de missiegedreven leeromgeving voor digitale geletterdheid in VO en VSO. Leerlingen oefenen AI, online veiligheid en digitale vaardigheden in korte missies; docenten volgen de voortgang per SLO-kerndoel.'
+                : 'Digitale geletterdheid voor VO en VSO, verteld als verhaal: van de pijn in de klas naar missies, docentdashboard en aantoonbare SLO-dekking.',
         );
 
-        trackEvent('seo_page_view', { cluster: 'story', page: 'verhaal' });
+        trackEvent('seo_page_view', { cluster: 'story', page: isHome ? 'home' : 'verhaal' });
 
         return () => {
             document.title = originalTitle;
@@ -111,8 +134,8 @@ export function VerhaalPage() {
             <ChapterRail />
 
             <main>
-                <FilmChapter />
-                <Proloog />
+                <Proloog onPlayFilm={openFilm} />
+                <FilmChapter open={filmOpen} />
                 <Probleem />
                 <Ontmoeting />
                 <MilaReis />

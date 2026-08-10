@@ -106,11 +106,11 @@ function prerenderRoutes() {
 
   const routeMeta = {
     '/': {
-      title: 'Het verhaal van een les die wél werkt | DGSkills',
-      description: 'Digitale geletterdheid voor VO en VSO, verteld als verhaal: van de pijn in de klas naar missies, docentdashboard en aantoonbare SLO-dekking.',
+      title: 'DGSkills — digitale geletterdheid voor VO en VSO, missie voor missie',
+      description: 'DGSkills is de missiegedreven leeromgeving voor digitale geletterdheid in VO en VSO. Leerlingen oefenen AI, online veiligheid en digitale vaardigheden in korte missies; docenten volgen de voortgang per SLO-kerndoel.',
       canonical: 'https://dgskills.app/',
-      ogTitle: 'Het verhaal van een les die wél werkt — DGSkills',
-      ogDescription: 'Digitale geletterdheid voor VO en VSO, verteld als verhaal: van de pijn in de klas naar missies, docentdashboard en aantoonbare SLO-dekking.',
+      ogTitle: 'DGSkills — digitale geletterdheid voor VO en VSO',
+      ogDescription: 'Leerlingen oefenen AI, online veiligheid en digitale vaardigheden in korte missies. Docenten krijgen kant-en-klare lessen en zien de voortgang per SLO-kerndoel.',
       ogUrl: 'https://dgskills.app/',
     },
     '/scholen': {

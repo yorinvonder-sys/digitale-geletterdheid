@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { ChapterMarker, Reveal, BrowserFrame } from '../components/storyBrand';
+import { ChapterMarker, Reveal, BrowserFrame, HARD_SHADOW_LG } from '../components/storyBrand';
 import { VERHAAL_STATS } from '../verhaalStats';
 
 const STUDENTS = [
@@ -50,6 +50,23 @@ export function Docent() {
                         nodig, welke SLO-doelen zijn geraakt —{' '}
                         <strong className="text-duck-ink">zonder rondje langs alle tafels</strong>.
                     </p>
+                </Reveal>
+
+                <Reveal delay={0.2} className="mx-auto mt-12 max-w-3xl">
+                    <figure>
+                        <img
+                            src="/assets/storytelling/klas-zelfstandig-aan-het-werk.webp"
+                            width={1400}
+                            height={788}
+                            loading="lazy"
+                            decoding="async"
+                            alt="Zes leerlingen werken zelfstandig achter Chromebooks in een klaslokaal, gezien vanaf de voorkant van de klas."
+                            className={`w-full rounded-2xl border-[3px] border-duck-ink object-cover ${HARD_SHADOW_LG}`}
+                        />
+                        <figcaption className="mt-3 text-center text-xs italic text-duck-ink/70">
+                            Sfeerbeeld
+                        </figcaption>
+                    </figure>
                 </Reveal>
 
                 <div className="relative mt-14">
