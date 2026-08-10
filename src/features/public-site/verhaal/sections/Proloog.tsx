@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Eyes, Pill, LogoLockup, HARD_SHADOW, HARD_SHADOW_LG } from '../components/storyBrand';
+import { Pill, LogoLockup, HARD_SHADOW, HARD_SHADOW_LG } from '../components/storyBrand';
 import { VERHAAL_STATS } from '../verhaalStats';
 
 const EASE = [0.22, 1, 0.36, 1] as const;
@@ -99,15 +99,6 @@ export function Proloog({ onPlayFilm }: { onPlayFilm: () => void }) {
             <div className="mx-auto grid w-full max-w-6xl flex-1 grid-cols-1 items-center gap-10 py-8 lg:grid-cols-2 lg:gap-12 lg:py-4">
                 {/* ------------------------------ tekstkolom ------------------------------ */}
                 <div className="flex min-w-0 flex-col items-center text-center lg:items-start lg:text-left">
-                    <motion.div
-                        initial={{ opacity: 0, scale: 0.7 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        transition={{ delay: 0.15, duration: 0.6, ease: EASE }}
-                        className="mb-6"
-                    >
-                        <Eyes size={48} />
-                    </motion.div>
-
                     <motion.div
                         initial={{ opacity: 0, y: 16 }}
                         animate={{ opacity: 1, y: 0 }}
