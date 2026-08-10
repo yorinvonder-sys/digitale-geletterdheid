@@ -59,7 +59,7 @@ export function Docent() {
                         height={788}
                         loading="lazy"
                         decoding="async"
-                        alt="Over de schouder van een docent: op zijn laptop staat een voortgangsoverzicht van de klas, terwijl de leerlingen achter hem aan het werk zijn."
+                        alt="Over de schouder van een docent: op zijn laptop staat het DGSkills-docentendashboard met de aandachtspunten, de missiekaart van de klas en de SLO-dekking, terwijl de leerlingen achter hem aan het werk zijn."
                         className={`w-full rounded-2xl border-[3px] border-duck-ink object-cover ${HARD_SHADOW_LG}`}
                     />
                 </Reveal>
