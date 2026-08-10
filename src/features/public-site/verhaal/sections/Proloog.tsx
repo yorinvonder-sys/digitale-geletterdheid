@@ -21,15 +21,44 @@ const BEWIJSPUNTEN = [
 ];
 
 /**
- * De onderwerpen waar de missies over gaan, elk met de illustratie van een
- * echte missie eruit. Op alfabet, zodat het leest als een legenda en niet als
- * een ranglijst. Bewust zonder aantallen erbij: een missie telt bij meerdere
- * onderwerpen mee, dus die getallen tellen niet op tot het totaal en dat leest
- * als een rekenfout.
+ * Vier dingen die een leerling in een missie máákt. Bewust het resultaat en
+ * niet het opdrachtscherm: een bezoeker moet meteen zien wat er te maken valt,
+ * en een schermafdruk vol uitleg is op deze grootte onleesbaar. De beelden zijn
+ * illustraties van het soort werk, geen schermafdrukken — het onderschrift
+ * onder de kaart zegt dat er ook bij.
  */
-const ONDERWERPEN = [...VERHAAL_STATS.onderwerpen].sort((a, b) =>
-    a.label.localeCompare(b.label, 'nl'),
-);
+const UITGELICHT = [
+    {
+        beeld: '/assets/previews/maak/maak-game.webp',
+        titel: 'Bouw je eigen game',
+        onderwerp: 'Programmeren',
+    },
+    {
+        beeld: '/assets/previews/maak/maak-beeld.webp',
+        titel: 'Maak beeld met AI',
+        onderwerp: 'AI',
+    },
+    {
+        beeld: '/assets/previews/maak/maak-website.webp',
+        titel: 'Zet een website in elkaar',
+        onderwerp: 'Digitale producten',
+    },
+    {
+        beeld: '/assets/previews/maak/maak-chatbot.webp',
+        titel: 'Train je eigen chatbot',
+        onderwerp: 'AI & data',
+    },
+];
+
+/**
+ * Alle onderwerpen waar de missies over gaan, op alfabet zodat het leest als
+ * een legenda en niet als een ranglijst. Bewust zonder aantallen erbij: een
+ * missie telt bij meerdere onderwerpen mee, dus die getallen tellen niet op tot
+ * het totaal en dat leest als een rekenfout.
+ */
+const ONDERWERPEN = [...VERHAAL_STATS.onderwerpen]
+    .map((o) => o.label)
+    .sort((a, b) => a.localeCompare(b, 'nl'));
 
 /**
  * Het eerste scherm van de homepage.
@@ -175,39 +204,38 @@ export function Proloog({ onPlayFilm }: { onPlayFilm: () => void }) {
                         className={`rounded-2xl border-[3px] border-duck-ink bg-white p-6 md:p-7 ${HARD_SHADOW_LG}`}
                     >
                         <p className="font-display text-lg font-black md:text-xl">
-                            Waar de missies over gaan
+                            Dit doen leerlingen
                         </p>
                         <p className="mt-1 text-sm text-duck-ink/70">
-                            {VERHAAL_STATS.missies} missies, verdeeld over {VERHAAL_STATS.leerjaren}{' '}
-                            leerjaren
+                            {VERHAAL_STATS.missies} missies over {VERHAAL_STATS.leerjaren} leerjaren
                         </p>
-                        <ul className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-3">
-                            {ONDERWERPEN.map((onderwerp) => (
-                                <li key={onderwerp.label}>
-                                    <div className="overflow-hidden rounded-xl border-2 border-duck-ink bg-duck-bg">
-                                        {onderwerp.thumbnail ? (
-                                            <img
-                                                src={onderwerp.thumbnail}
-                                                alt=""
-                                                width={320}
-                                                height={180}
-                                                loading="lazy"
-                                                decoding="async"
-                                                className="aspect-video w-full object-cover"
-                                            />
-                                        ) : (
-                                            <div className="aspect-video w-full bg-duck-acid/30" />
-                                        )}
-                                    </div>
-                                    <p className="mt-1.5 text-[13px] font-bold leading-tight">
-                                        {onderwerp.label}
+                        <ul className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2">
+                            {UITGELICHT.map((missie) => (
+                                <li key={missie.beeld}>
+                                    <img
+                                        src={missie.beeld}
+                                        alt={missie.titel}
+                                        width={800}
+                                        height={500}
+                                        loading="lazy"
+                                        decoding="async"
+                                        className="w-full rounded-xl border-2 border-duck-ink object-cover"
+                                    />
+                                    <p className="mt-2 text-sm font-bold leading-tight">
+                                        {missie.titel}
                                     </p>
+                                    <p className="text-xs text-duck-ink/70">{missie.onderwerp}</p>
                                 </li>
                             ))}
                         </ul>
+                        <p className="mt-6 border-t-2 border-duck-ink/10 pt-4 text-xs leading-relaxed text-duck-ink/70">
+                            <span className="font-bold text-duck-ink">Verder onder meer:</span>{' '}
+                            {ONDERWERPEN.join(' · ')}
+                        </p>
                     </div>
                     <p className="mt-3 text-center text-xs italic text-duck-ink/70 lg:text-left">
-                        De onderwerpen komen uit de SLO-kerndoelen waaraan de missies gekoppeld zijn.
+                        Voorbeelden van wat leerlingen maken. Klik op "Bekijk een missie" om er zelf
+                        een te spelen.
                     </p>
                 </motion.div>
             </div>
