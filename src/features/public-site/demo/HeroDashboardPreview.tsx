@@ -118,7 +118,7 @@ export const HeroDashboardPreview: React.FC<Props> = ({ which, baseHeight }) => 
                         <ProjectZeroDashboard
                             userUid="capture-student"
                             stats={DEMO_STUDENT_STATS}
-                            userDisplayName="Demo-leerling"
+                            userDisplayName="Mila"
                             userRole="student"
                             gamesEnabled={false}
                             containers={[]}

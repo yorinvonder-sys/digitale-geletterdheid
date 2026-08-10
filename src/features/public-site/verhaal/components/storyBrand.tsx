@@ -321,7 +321,14 @@ export function ChapterMarker({
     return (
         <div className="relative text-center">
             <span
-                className={`pointer-events-none absolute -top-24 left-1/2 -translate-x-1/2 select-none font-display text-[9rem] font-black leading-none md:-top-40 md:text-[15rem] ${
+                /*
+                 * Het watermerk moet bóven de kicker uitkomen, niet erdoorheen.
+                 * De ruimte die het heeft is de bovenpadding van de sectie
+                 * (96px mobiel, 144px vanaf md) en de sectie snijdt alles af wat
+                 * daarbuiten valt. Cijferhoogte ≈ fontgrootte, dus die blijft
+                 * een slag onder de offset: 80 onder 96, en 128 onder 144.
+                 */
+                className={`pointer-events-none absolute -top-24 left-1/2 -translate-x-1/2 select-none font-display text-[5rem] font-black leading-none md:-top-36 md:text-[8rem] ${
                     dark ? 'verhaal-watermark-light' : 'verhaal-watermark'
                 }`}
                 aria-hidden="true"
