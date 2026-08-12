@@ -1,6 +1,6 @@
 # Profile
 
-Deze folder bevat het gebruikersprofiel, de toegankelijkheidsinstellingen en de volledige avatarketen: instellen, weergeven in 2D en 3D, en lazy laden.
+Deze folder bevat het gebruikersprofiel, de toegankelijkheidsinstellingen en de volledige avatarketen: instellen, weergeven in 3D en lazy laden.
 
 Belangrijke ingangen:
 
