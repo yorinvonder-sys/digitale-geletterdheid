@@ -5,6 +5,13 @@ import { OrbitControls, ContactShadows, Sparkles } from '@react-three/drei';
 import { RotateCw } from 'lucide-react';
 import * as THREE from 'three';
 
+/** Shared platform contract. AvatarViewer derives every floor anchor from these
+ * values so the renderer, platform, and contact shadow cannot drift apart. */
+export const AVATAR_PLATFORM_CENTER_Y = -0.15;
+export const AVATAR_PLATFORM_THICKNESS = 0.06;
+export const AVATAR_PLATFORM_TOP_Y = AVATAR_PLATFORM_CENTER_Y + AVATAR_PLATFORM_THICKNESS / 2;
+export const AVATAR_CONTACT_SHADOW_Y = AVATAR_PLATFORM_TOP_Y - 0.01;
+
 /** Zowel de OS-voorkeur als de in-app toegankelijkheidsschakelaar, die zijn
  *  stand als class op <html> zet. Bewust géén useAccessibility(): de avatar
  *  wordt ook gerenderd buiten die provider (dev-route). */
@@ -133,14 +140,14 @@ export const AvatarScene: React.FC<{
                 {children}
 
                 {variant === 'full' && (
-                    <mesh position={[0, -0.15, 0]} rotation={[-Math.PI / 2, 0, 0]}>
-                        <boxGeometry args={[2.4, 2.4, 0.06]} />
+                    <mesh position={[0, AVATAR_PLATFORM_CENTER_Y, 0]} rotation={[-Math.PI / 2, 0, 0]}>
+                        <boxGeometry args={[2.4, 2.4, AVATAR_PLATFORM_THICKNESS]} />
                         <meshStandardMaterial color="#E7D8BD" roughness={0.9} metalness={0} polygonOffset polygonOffsetFactor={4} polygonOffsetUnits={4} />
                     </mesh>
                 )}
 
                 <ContactShadows
-                    position={[0, -0.13, 0]}
+                    position={[0, AVATAR_CONTACT_SHADOW_Y, 0]}
                     opacity={0.3}
                     scale={2.2}
                     blur={2.5}

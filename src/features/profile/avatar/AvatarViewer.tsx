@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useRef, memo, useState, useCallback } from '
 import { ThreeEvent, useFrame, useThree } from '@react-three/fiber';
 import * as THREE from 'three';
 import { AvatarConfig } from '@/types';
-import { AvatarScene } from './AvatarScene';
+import { AvatarScene, AVATAR_PLATFORM_TOP_Y } from './AvatarScene';
 
 // --- Types ---
 
@@ -42,6 +42,31 @@ export const darkenColor = (hex: string, factor: number): string => {
     c.multiplyScalar(factor);
     return '#' + c.getHexString();
 };
+
+// The boot sole is the lowest reachable human point: the leg group sits at
+// y=.5, the .65 leg ends at -.325, and the .1 boot is centered .04 lower.
+// Keep every solid just above the platform to avoid coplanar z-fighting.
+export const AVATAR_HUMAN_FOOT_BOTTOM_Y = 0.085;
+export const AVATAR_GROUND_CLEARANCE_Y = 0.005;
+export const AVATAR_FULL_BODY_ROOT_Y =
+    AVATAR_PLATFORM_TOP_Y + AVATAR_GROUND_CLEARANCE_Y - AVATAR_HUMAN_FOOT_BOTTOM_Y;
+
+type AvatarPet = Exclude<NonNullable<AvatarConfig['pet']>, 'none'>;
+
+/** Lowest local solid point for every companion. These values come directly
+ * from each pet's outer-group offset, leg/foot center, and foot half-height. */
+export const AVATAR_PET_FOOT_BOTTOM_Y: Record<AvatarPet, number> = {
+    pet_cat: 0.10,
+    pet_dog: 0.10,
+    pet_duck: 0.115,
+    pet_robo: 0.095,
+};
+
+export const getAvatarPetCompensationY = (pet: AvatarPet): number =>
+    AVATAR_PLATFORM_TOP_Y
+    + AVATAR_GROUND_CLEARANCE_Y
+    - AVATAR_PET_FOOT_BOTTOM_Y[pet]
+    - AVATAR_FULL_BODY_ROOT_Y;
 
 // Shared flat material for Minecraft look
 export const mcMat = (color: string, emissive = '#000000', emissiveIntensity = 0) => (
@@ -589,15 +614,39 @@ export const HairLayer = memo<{ style: string; color: string }>(({ style, color 
 
 // --- Arm color helper ---
 
+export const SHORT_SLEEVE_STYLES = new Set(['tank', 't-shirt', 'polo', 'jersey']);
+
 export const getArmColor = (
     shirtStyle: string | undefined,
     shirtColor: string,
     skinColor: string,
 ): string => {
-    const shortSleeveStyles = ['tank', 't-shirt', 'polo', 'jersey'];
-    if (shortSleeveStyles.includes(shirtStyle ?? 't-shirt')) return skinColor;
+    if (SHORT_SLEEVE_STYLES.has(shirtStyle ?? 't-shirt')) return skinColor;
     return shirtColor;
 };
+
+/** Large-form silhouettes remain readable at normal shop-preview scale. */
+export const SHIRT_SILHOUETTES: Record<string, [number, number, number]> = {
+    't-shirt': [1, 1, 1],
+    tank: [0.94, 0.92, 0.92],
+    polo: [1.02, 1, 1.02],
+    sweater: [1.07, 1.05, 1.05],
+    hoodie: [1.14, 1.08, 1.12],
+    flannel: [1.06, 1.03, 1.04],
+    varsity: [1.14, 1.05, 1.1],
+    jersey: [1.04, 0.96, 1.05],
+    denim: [1.1, 1.05, 1.07],
+    trackjacket: [1.08, 1.04, 1.08],
+    blazer: [1.1, 1.06, 1.06],
+    bomber: [1.16, 1.08, 1.14],
+    puffer: [1.2, 1.1, 1.18],
+    leather: [1.1, 1.05, 1.08],
+    kimono: [1.22, 1.06, 1.12],
+    suit_diamond: [1.16, 1.1, 1.12],
+};
+
+export const getShirtSilhouette = (style: string): [number, number, number] =>
+    SHIRT_SILHOUETTES[style] ?? SHIRT_SILHOUETTES['t-shirt'];
 
 /** Het deel van OrbitControls dat we nodig hebben om te weten of de leerling
  *  de camera aan het slepen is. */
@@ -654,10 +703,20 @@ export const ShirtOverlay = memo<{
             );
         case 'polo':
             return (
-                <mesh position={[0, 0.28, 0]}>
-                    <boxGeometry args={[bodyWidth * 0.6, 0.06, bodyDepth + 0.04]} />
-                    {mcMat(lighter)}
-                </mesh>
+                <group>
+                    <mesh position={[0, 0.28, 0]}>
+                        <boxGeometry args={[bodyWidth * 0.6, 0.06, bodyDepth + 0.04]} />
+                        {mcMat(lighter)}
+                    </mesh>
+                    <mesh position={[0, 0.08, fz]}>
+                        <boxGeometry args={[0.05, 0.28, 0.012]} />
+                        {mcMat(darker)}
+                    </mesh>
+                    <mesh position={[0, -0.3, 0]}>
+                        <boxGeometry args={[bodyWidth + 0.03, 0.04, bodyDepth + 0.03]} />
+                        {mcMat(darker)}
+                    </mesh>
+                </group>
             );
         case 'hoodie':
             return (
@@ -667,17 +726,27 @@ export const ShirtOverlay = memo<{
                         {mcMat(darker)}
                     </mesh>
                     <mesh position={[0, -0.05, fz]}>
-                        <boxGeometry args={[0.12, 0.1, 0.01]} />
+                        <boxGeometry args={[0.28, 0.14, 0.025]} />
                         {mcMat(darker)}
+                    </mesh>
+                    <mesh position={[0, 0.16, fz]}>
+                        <boxGeometry args={[0.18, 0.04, 0.025]} />
+                        {mcMat(lighter)}
                     </mesh>
                 </group>
             );
         case 'sweater':
             return (
-                <mesh position={[0, 0.28, 0]}>
-                    <boxGeometry args={[bodyWidth * 0.7, 0.05, bodyDepth + 0.02]} />
-                    {mcMat(darker)}
-                </mesh>
+                <group>
+                    <mesh position={[0, 0.28, 0]}>
+                        <boxGeometry args={[bodyWidth * 0.7, 0.05, bodyDepth + 0.02]} />
+                        {mcMat(darker)}
+                    </mesh>
+                    <mesh position={[0, -0.3, 0]}>
+                        <boxGeometry args={[bodyWidth + 0.04, 0.06, bodyDepth + 0.04]} />
+                        {mcMat(darker)}
+                    </mesh>
+                </group>
             );
         case 'flannel':
             return (
@@ -698,6 +767,12 @@ export const ShirtOverlay = memo<{
                         <boxGeometry args={[0.015, 0.55, 0.005]} />
                         {mcMat(lighter)}
                     </mesh>
+                    {[-0.18, 0.18].map((x) => (
+                        <mesh key={`p${x}`} position={[x, -0.12, fz + 0.006]}>
+                            <boxGeometry args={[0.12, 0.12, 0.012]} />
+                            {mcMat(lighter)}
+                        </mesh>
+                    ))}
                 </group>
             );
         case 'denim':
@@ -713,27 +788,51 @@ export const ShirtOverlay = memo<{
                             <meshStandardMaterial color={darker} roughness={0.3} metalness={0.2} />
                         </mesh>
                     ))}
+                    {[-1, 1].map((side) => (
+                        <mesh key={`denim-pocket-${side}`} position={[side * bodyWidth * 0.28, -0.16, fz + 0.006]}>
+                            <boxGeometry args={[0.13, 0.12, 0.012]} />
+                            {mcMat(lighter)}
+                        </mesh>
+                    ))}
                 </group>
             );
         case 'jersey':
             return (
                 <group>
+                    {[-1, 1].map((side) => (
+                        <mesh key={`jersey-side-${side}`} position={[side * bodyWidth * 0.42, 0, fz]}>
+                            <boxGeometry args={[0.045, 0.58, 0.012]} />
+                            <meshStandardMaterial color={lighter} roughness={0.55} />
+                        </mesh>
+                    ))}
                     <mesh position={[0.02, 0.02, fz]}>
-                        <boxGeometry args={[0.02, 0.15, 0.005]} />
+                        <boxGeometry args={[0.12, 0.20, 0.012]} />
                         <meshStandardMaterial color="#ffffff" roughness={0.6} />
                     </mesh>
                     <mesh position={[0, 0.08, fz]}>
-                        <boxGeometry args={[0.08, 0.02, 0.005]} />
+                        <boxGeometry args={[0.2, 0.035, 0.012]} />
                         <meshStandardMaterial color="#ffffff" roughness={0.6} />
                     </mesh>
                 </group>
             );
         case 'trackjacket':
             return (
-                <mesh position={[0, 0, fz]}>
-                    <boxGeometry args={[0.02, 0.6, 0.005]} />
-                    <meshStandardMaterial color="#cccccc" roughness={0.2} metalness={0.5} />
-                </mesh>
+                <group>
+                    <mesh position={[0, 0, fz]}>
+                        <boxGeometry args={[0.04, 0.62, 0.012]} />
+                        <meshStandardMaterial color="#cccccc" roughness={0.2} metalness={0.5} />
+                    </mesh>
+                    {[-0.2, -0.12].map((y) => (
+                        <mesh key={y} position={[0, y, fz + 0.004]}>
+                            <boxGeometry args={[bodyWidth * 0.92, 0.035, 0.012]} />
+                            <meshStandardMaterial color="#ffffff" roughness={0.35} metalness={0.2} />
+                        </mesh>
+                    ))}
+                    <mesh position={[0, 0.28, 0]}>
+                        <boxGeometry args={[bodyWidth * 0.75, 0.08, bodyDepth + 0.04]} />
+                        {mcMat(darker)}
+                    </mesh>
+                </group>
             );
         case 'leather':
             return (
@@ -743,13 +842,19 @@ export const ShirtOverlay = memo<{
                         <meshStandardMaterial color="#888888" roughness={0.2} metalness={0.6} />
                     </mesh>
                     <mesh position={[-0.06, 0.18, fz]}>
-                        <boxGeometry args={[0.08, 0.06, 0.005]} />
+                        <boxGeometry args={[0.13, 0.09, 0.012]} />
                         {mcMat(darker)}
                     </mesh>
                     <mesh position={[0.06, 0.18, fz]}>
-                        <boxGeometry args={[0.08, 0.06, 0.005]} />
+                        <boxGeometry args={[0.13, 0.09, 0.012]} />
                         {mcMat(darker)}
                     </mesh>
+                    {[-1, 1].map((side) => (
+                        <mesh key={`leather-lapel-${side}`} position={[side * 0.09, 0.22, fz + 0.006]} rotation={[0, 0, side * 0.35]}>
+                            <boxGeometry args={[0.11, 0.3, 0.012]} />
+                            {mcMat(lighter)}
+                        </mesh>
+                    ))}
                 </group>
             );
         case 'bomber':
@@ -764,22 +869,34 @@ export const ShirtOverlay = memo<{
                         {mcMat(darker)}
                     </mesh>
                     <mesh position={[0, 0, fz]}>
-                        <boxGeometry args={[0.02, 0.55, 0.005]} />
+                        <boxGeometry args={[0.04, 0.55, 0.012]} />
                         <meshStandardMaterial color="#aaaaaa" roughness={0.2} metalness={0.5} />
                     </mesh>
+                    {[-1, 1].map((side) => (
+                        <mesh key={`bomber-pocket-${side}`} position={[side * bodyWidth * 0.28, 0.04, fz + 0.006]}>
+                            <boxGeometry args={[0.13, 0.16, 0.012]} />
+                            {mcMat(lighter)}
+                        </mesh>
+                    ))}
                 </group>
             );
         case 'blazer':
             return (
                 <group>
                     <mesh position={[-0.06, 0.12, fz]}>
-                        <boxGeometry args={[0.08, 0.16, 0.01]} />
+                        <boxGeometry args={[0.16, 0.28, 0.014]} />
                         {mcMat(darker)}
                     </mesh>
                     <mesh position={[0.06, 0.12, fz]}>
-                        <boxGeometry args={[0.08, 0.16, 0.01]} />
+                        <boxGeometry args={[0.16, 0.28, 0.014]} />
                         {mcMat(darker)}
                     </mesh>
+                    {[-1, 1].map((side) => (
+                        <mesh key={`blazer-lapel-${side}`} position={[side * 0.12, 0.16, fz + 0.006]} rotation={[0, 0, side * 0.35]}>
+                            <boxGeometry args={[0.12, 0.32, 0.012]} />
+                            {mcMat(lighter)}
+                        </mesh>
+                    ))}
                     <mesh position={[0, 0.02, fz + 0.005]}>
                         <boxGeometry args={[0.03, 0.03, 0.005]} />
                         <meshStandardMaterial color={darker} roughness={0.3} metalness={0.3} />
@@ -791,13 +908,17 @@ export const ShirtOverlay = memo<{
                 <group>
                     {[-0.12, -0.04, 0.04, 0.12].map((y, i) => (
                         <mesh key={i} position={[0, y, fz]}>
-                            <boxGeometry args={[bodyWidth * 0.95, 0.012, 0.005]} />
+                            <boxGeometry args={[bodyWidth * 0.98, 0.035, 0.012]} />
                             {mcMat(darker)}
                         </mesh>
                     ))}
                     <mesh position={[0, 0, fz]}>
-                        <boxGeometry args={[0.02, 0.55, 0.005]} />
+                        <boxGeometry args={[0.04, 0.55, 0.012]} />
                         <meshStandardMaterial color="#999999" roughness={0.2} metalness={0.5} />
+                    </mesh>
+                    <mesh position={[0, 0.34, 0]}>
+                        <boxGeometry args={[bodyWidth * 0.78, 0.08, bodyDepth + 0.05]} />
+                        {mcMat(lighter)}
                     </mesh>
                 </group>
             );
@@ -813,7 +934,11 @@ export const ShirtOverlay = memo<{
                         {mcMat(color)}
                     </mesh>
                     <mesh position={[0, -0.08, 0]}>
-                        <boxGeometry args={[bodyWidth + 0.02, 0.08, bodyDepth + 0.02]} />
+                        <boxGeometry args={[bodyWidth + 0.08, 0.11, bodyDepth + 0.06]} />
+                        {mcMat(darker)}
+                    </mesh>
+                    <mesh position={[0, -0.02, fz + 0.008]}>
+                        <boxGeometry args={[0.06, 0.4, 0.014]} />
                         {mcMat(darker)}
                     </mesh>
                 </group>
@@ -822,11 +947,11 @@ export const ShirtOverlay = memo<{
             return (
                 <group>
                     <mesh position={[-0.06, 0.12, fz]}>
-                        <boxGeometry args={[0.08, 0.16, 0.01]} />
+                        <boxGeometry args={[0.16, 0.3, 0.014]} />
                         {mcMat(darker)}
                     </mesh>
                     <mesh position={[0.06, 0.12, fz]}>
-                        <boxGeometry args={[0.08, 0.16, 0.01]} />
+                        <boxGeometry args={[0.16, 0.3, 0.014]} />
                         {mcMat(darker)}
                     </mesh>
                     <mesh position={[0, 0.06, fz + 0.01]} rotation={[0, 0, Math.PI / 4]}>
@@ -834,9 +959,15 @@ export const ShirtOverlay = memo<{
                         <meshStandardMaterial color="#88ccff" roughness={0.05} metalness={0.8} />
                     </mesh>
                     <mesh position={[0, -0.08, fz]}>
-                        <boxGeometry args={[0.04, 0.2, 0.005]} />
+                        <boxGeometry args={[0.1, 0.26, 0.014]} />
                         {mcMat(darker)}
                     </mesh>
+                    {[-1, 1].map((side) => (
+                        <mesh key={`diamond-shoulder-${side}`} position={[side * bodyWidth * 0.35, 0.2, 0]} rotation={[0, 0, -side * 0.3]}>
+                            <boxGeometry args={[0.08, 0.24, bodyDepth + 0.04]} />
+                            <meshStandardMaterial color="#88ccff" roughness={0.08} metalness={0.8} emissive="#88ccff" emissiveIntensity={0.12} />
+                        </mesh>
+                    ))}
                 </group>
             );
         case 'tank':
@@ -926,7 +1057,7 @@ export const LegsSection = memo<{
     );
 
     if (style === 'skirt' || style === 'pleated') {
-        const skirtWidth = legSpacing * 2 + legWidth + 0.15;
+        const skirtWidth = legSpacing * 2 + legWidth + (style === 'pleated' ? 0.26 : 0.15);
         return (
             <group
                 position={[0, 0.5, 0]}
@@ -940,9 +1071,9 @@ export const LegsSection = memo<{
                 </mesh>
                 {style === 'pleated' && (
                     <group>
-                        {[-0.08, 0, 0.08].map((x, i) => (
+                        {[-0.18, -0.09, 0, 0.09, 0.18].map((x, i) => (
                             <mesh key={i} position={[x, 0.05, legWidth / 2 + 0.045]}>
-                                <boxGeometry args={[0.01, 0.45, 0.005]} />
+                                <boxGeometry args={[0.025, 0.45, 0.012]} />
                                 {mcMat(darker)}
                             </mesh>
                         ))}
@@ -1005,8 +1136,8 @@ export const LegsSection = memo<{
 
     const getLegScale = (): [number, number, number] => {
         switch (style) {
-            case 'chinos': return [0.9, 1, 0.9];
-            case 'joggers': return [1.08, 1, 1.08];
+            case 'chinos': return [0.94, 1, 0.94];
+            case 'joggers': return [1.06, 1, 1.06];
             case 'skinny': return [0.82, 1, 0.82];
             case 'baggy': return [1.25, 1, 1.25];
             case 'sweatpants': return [1.12, 1, 1.12];
@@ -1035,29 +1166,92 @@ export const LegsSection = memo<{
                         (zakken van 0.04, naden van 0.008) zag een leerling geen
                         enkel verschil met de standaardbroek die hij al had. */}
                     {style === 'cargo' && (
-                        <mesh position={[(i === 0 ? -1 : 1) * (legWidth / 2 + 0.03), -0.04, 0]}>
-                            <boxGeometry args={[0.07, 0.16, 0.13]} />
-                            {mcMat(darker)}
-                        </mesh>
+                        <group>
+                            <mesh position={[(i === 0 ? -1 : 1) * (legWidth / 2 + 0.06), -0.04, 0]}>
+                                <boxGeometry args={[0.14, 0.22, 0.18]} />
+                                {mcMat(darker)}
+                            </mesh>
+                            <mesh position={[(i === 0 ? -1 : 1) * (legWidth / 2 + 0.065), 0.1, 0]}>
+                                <boxGeometry args={[0.12, 0.03, 0.19]} />
+                                {mcMat(pantsColor)}
+                            </mesh>
+                        </group>
                     )}
 
                     {style === 'ripped' && (
                         <group>
                             <mesh position={[0, -0.05, legWidth / 2 + 0.008]}>
-                                <boxGeometry args={[legWidth * 0.7, 0.075, 0.02]} />
+                                <boxGeometry args={[legWidth * 0.82, 0.13, 0.025]} />
                                 {mcMat(skinColor)}
                             </mesh>
                             <mesh position={[0, 0.09, legWidth / 2 + 0.008]}>
-                                <boxGeometry args={[legWidth * 0.5, 0.055, 0.02]} />
+                                <boxGeometry args={[legWidth * 0.62, 0.10, 0.025]} />
                                 {mcMat(skinColor)}
+                            </mesh>
+                            <mesh position={[0.02, -0.05, legWidth / 2 + 0.024]} rotation={[0, 0, 0.18]}>
+                                <boxGeometry args={[legWidth * 0.9, 0.025, 0.02]} />
+                                {mcMat(darker)}
                             </mesh>
                         </group>
                     )}
 
                     {style === 'formal' && (
+                        <group>
+                            <mesh position={[0, 0, legWidth / 2 + 0.008]}>
+                                <boxGeometry args={[0.06, legHeight * 0.92, 0.018]} />
+                                {mcMat(darkenColor(pantsColor, 1.35))}
+                            </mesh>
+                            <mesh position={[0, legHeight / 2 - 0.04, 0]}>
+                                <boxGeometry args={[legWidth * 1.08, 0.07, legWidth * 1.08]} />
+                                {mcMat(darkenColor(pantsColor, 0.72))}
+                            </mesh>
+                        </group>
+                    )}
+
+                    {style === 'chinos' && (
+                        <group>
+                            <mesh position={[0, legHeight / 2 - 0.04, 0]}>
+                                <boxGeometry args={[legWidth * 1.08, 0.06, legWidth * 1.08]} />
+                                {mcMat(darkenColor(pantsColor, 0.78))}
+                            </mesh>
+                            <mesh position={[0, 0, legWidth / 2 + 0.008]}>
+                                <boxGeometry args={[0.03, legHeight * 0.86, 0.014]} />
+                                {mcMat(darkenColor(pantsColor, 1.2))}
+                            </mesh>
+                        </group>
+                    )}
+
+                    {(style === 'joggers' || style === 'sweatpants') && (
+                        <mesh position={[0, -(legHeight / 2) + 0.02, 0]}>
+                            <boxGeometry args={[legWidth * 1.08, 0.09, legWidth * 1.08]} />
+                            {mcMat(darker)}
+                        </mesh>
+                    )}
+
+                    {style === 'joggers' && (
+                        <group>
+                            <mesh position={[0, legHeight / 2 - 0.04, 0]}>
+                                <boxGeometry args={[legWidth * 1.08, 0.06, legWidth * 1.08]} />
+                                {mcMat(darker)}
+                            </mesh>
+                            <mesh position={[0, 0.12, legWidth / 2 + 0.008]}>
+                                <boxGeometry args={[legWidth * 0.55, 0.04, 0.016]} />
+                                {mcMat(darkenColor(pantsColor, 1.2))}
+                            </mesh>
+                        </group>
+                    )}
+
+                    {style === 'sweatpants' && (
                         <mesh position={[0, 0, legWidth / 2 + 0.008]}>
-                            <boxGeometry args={[0.035, legHeight * 0.92, 0.015]} />
-                            {mcMat(darkenColor(pantsColor, 1.35))}
+                            <boxGeometry args={[0.045, legHeight * 0.86, 0.015]} />
+                            {mcMat(darkenColor(pantsColor, 1.25))}
+                        </mesh>
+                    )}
+
+                    {(style === 'baggy' || style === 'skinny') && (
+                        <mesh position={[0, -(legHeight / 2) + 0.01, legWidth / 2 + 0.008]}>
+                            <boxGeometry args={[legWidth * (style === 'baggy' ? 0.9 : 0.72), 0.06, 0.015]} />
+                            {mcMat(darker)}
                         </mesh>
                     )}
 
@@ -2011,6 +2205,14 @@ const AvatarModel = memo<{
     };
 
     const armColor = getArmColor(config.shirtStyle, shirtColor, skinColor);
+    const shirtSilhouette = getShirtSilhouette(config.shirtStyle ?? 't-shirt');
+    const shirtBodyWidth = dims.bodyWidth * shirtSilhouette[0];
+    const shirtBodyHeight = dims.bodyHeight * shirtSilhouette[1];
+    const shirtBodyDepth = dims.bodyDepth * shirtSilhouette[2];
+    const shortSleeves = SHORT_SLEEVE_STYLES.has(config.shirtStyle ?? 't-shirt');
+    const shirtArmWidth = shortSleeves ? dims.armWidth : dims.armWidth * shirtSilhouette[0];
+    const shirtArmHeight = shortSleeves ? dims.armHeight : dims.armHeight * shirtSilhouette[1];
+    const shirtArmDepth = shortSleeves ? dims.armWidth : dims.armWidth * shirtSilhouette[2];
 
     // Flatten hair under headwear (cap/beanie)
     // Haar platdrukken onder hoofddeksels. Voorheen alleen pet en muts, waardoor
@@ -2021,9 +2223,9 @@ const AvatarModel = memo<{
     const hairOffset: [number, number, number] = headCover ? [0, headCover.offsetY, 0] : [0, 0, 0];
 
     return (
-        // Full-body dropped to -0.56 (was -0.22) so the feet rest on the platform instead of
-        // floating above it; the companion pet re-adds this 0.34 drop below to stay grounded.
-        <group position={[0, variant === 'head' ? -1.5 : -0.56, 0]}>
+        // Full-body root is derived from the platform top and boot sole;
+        // head previews keep their independent framing offset.
+        <group position={[0, variant === 'head' ? -1.5 : AVATAR_FULL_BODY_ROOT_Y, 0]}>
 
             {/* Head – cube with mouse-look */}
             <group ref={headRef} position={[0, 2.0, 0]}>
@@ -2090,7 +2292,7 @@ const AvatarModel = memo<{
                             onPointerLeave={handlePointerLeave}
                         >
                             <mesh>
-                                <boxGeometry args={[dims.bodyWidth, dims.bodyHeight, dims.bodyDepth]} />
+                                <boxGeometry args={[shirtBodyWidth, shirtBodyHeight, shirtBodyDepth]} />
                                 <meshStandardMaterial
                                     color={shirtColor}
                                     roughness={config.shirtStyle === 'leather' ? 0.3 : 0.85}
@@ -2105,14 +2307,14 @@ const AvatarModel = memo<{
                             <ShirtOverlay
                                 style={config.shirtStyle ?? 't-shirt'}
                                 color={shirtColor}
-                                bodyWidth={dims.bodyWidth}
-                                bodyDepth={dims.bodyDepth}
+                                bodyWidth={shirtBodyWidth}
+                                bodyDepth={shirtBodyDepth}
                             />
                         </group>
                     </group>
 
                     {/* Left arm — overlap torso by 0.01 to prevent z-fighting at joint */}
-                    <group ref={leftArmRef} position={[-(dims.bodyWidth / 2 + dims.armWidth / 2 - 0.01), 1.35, 0]}>
+                    <group ref={leftArmRef} position={[-(shirtBodyWidth / 2 + shirtArmWidth / 2 - 0.01), 1.35, 0]}>
                         <group
                             position={[0, -0.3, 0]}
                             onClick={(e) => handleClick(e, 'shirt')}
@@ -2120,7 +2322,7 @@ const AvatarModel = memo<{
                             onPointerLeave={handlePointerLeave}
                         >
                             <mesh>
-                                <boxGeometry args={[dims.armWidth, dims.armHeight, dims.armWidth]} />
+                                <boxGeometry args={[shirtArmWidth, shirtArmHeight, shirtArmDepth]} />
                                 <meshStandardMaterial
                                     color={armColor}
                                     roughness={0.85}
@@ -2129,7 +2331,7 @@ const AvatarModel = memo<{
                                 />
                             </mesh>
                             {/* Hand */}
-                            <mesh position={[0, -(dims.armHeight / 2 + 0.04), 0]}>
+                            <mesh position={[0, -(shirtArmHeight / 2 + 0.04), 0]}>
                                 <boxGeometry args={[dims.armWidth * 0.8, 0.08, dims.armWidth * 0.8]} />
                                 <meshStandardMaterial {...skinMatProps} />
                             </mesh>
@@ -2137,7 +2339,7 @@ const AvatarModel = memo<{
                     </group>
 
                     {/* Right arm — overlap torso by 0.01 to prevent z-fighting at joint */}
-                    <group ref={rightArmRef} position={[(dims.bodyWidth / 2 + dims.armWidth / 2 - 0.01), 1.35, 0]}>
+                    <group ref={rightArmRef} position={[(shirtBodyWidth / 2 + shirtArmWidth / 2 - 0.01), 1.35, 0]}>
                         <group
                             position={[0, -0.3, 0]}
                             onClick={(e) => handleClick(e, 'shirt')}
@@ -2145,7 +2347,7 @@ const AvatarModel = memo<{
                             onPointerLeave={handlePointerLeave}
                         >
                             <mesh>
-                                <boxGeometry args={[dims.armWidth, dims.armHeight, dims.armWidth]} />
+                                <boxGeometry args={[shirtArmWidth, shirtArmHeight, shirtArmDepth]} />
                                 <meshStandardMaterial
                                     color={armColor}
                                     roughness={0.85}
@@ -2153,7 +2355,7 @@ const AvatarModel = memo<{
                                     emissiveIntensity={emissiveInt('shirt')}
                                 />
                             </mesh>
-                            <mesh position={[0, -(dims.armHeight / 2 + 0.04), 0]}>
+                            <mesh position={[0, -(shirtArmHeight / 2 + 0.04), 0]}>
                                 <boxGeometry args={[dims.armWidth * 0.8, 0.08, dims.armWidth * 0.8]} />
                                 <meshStandardMaterial {...skinMatProps} />
                             </mesh>
@@ -2197,11 +2399,9 @@ const AvatarModel = memo<{
                         headMount={false}
                     />
 
-                    {/* Companion pet (separate from accessory). The body is dropped 0.34 so the
-                        feet rest on the platform; the pet is positioned to sit on the floor, so it
-                        re-adds that drop to stay grounded instead of sinking through the platform. */}
+                    {/* Companion pets use their own measured lowest solid point. */}
                     {config.pet && config.pet !== 'none' && config.accessory !== config.pet && (
-                        <group position={[0, 0.34, 0]}>
+                        <group position={[0, getAvatarPetCompensationY(config.pet), 0]}>
                             <AccessoryLayer
                                 accessory={config.pet}
                                 color={config.accessoryColor ?? config.shirtColor}

@@ -1,0 +1,18 @@
+{
+  "id": "2026-08-12-avatar-ground-cosmetics",
+  "scope": "MEDIUM",
+  "implementationRisk": "GEEL",
+  "releaseRisk": "ROOD",
+  "workflowLead": "Luna",
+  "reviewAuthority": "Sol",
+  "reason": "The renderer and QA changes are bounded to one feature area, while merge and production verification affect a learner-facing live environment.",
+  "sensitiveAreas": [
+    "production release",
+    "minor-facing avatar economy"
+  ],
+  "outOfScope": [
+    "catalog IDs, prices, rarity, ownership, or inventory",
+    "purchase_avatar_item and update_student_stats behavior",
+    "auth, RLS, migrations, or real learner accounts"
+  ]
+}

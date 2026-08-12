@@ -8,7 +8,7 @@ import { AVATAR_HAIR_CATALOG, getItemsForSlot } from '@/config/avatarCatalog';
 type PreviewPreset = {
     key: string;
     label: string;
-    category: 'hair' | 'pets' | 'headwear';
+    category: 'body' | 'hair' | 'clothing' | 'accessories' | 'pets' | 'headwear';
     config: AvatarConfig;
 };
 
@@ -64,6 +64,21 @@ const HAIR_PRESETS: PreviewPreset[] = AVATAR_HAIR_CATALOG.map(item => ({
         expression: item.gender === 'male' ? 'cool' : 'happy',
     },
 }));
+
+const BODY_PRESETS: PreviewPreset[] = getItemsForSlot('baseModel', 'male').flatMap(item => {
+    const variants: AvatarConfig['gender'][] = item.value === 'slim' ? ['female', 'male'] : ['male'];
+    return variants.map(gender => ({
+        key: item.value === 'slim' && gender === 'male' ? 'body-slim-male' : `body-${item.value}`,
+        label: `Lichaam QA — ${item.label}${item.value === 'slim' ? ` (${gender === 'male' ? 'jongen' : 'meisje'})` : ''}`,
+        category: 'body' as const,
+        config: {
+            ...createBaseConfig(gender),
+            baseModel: item.value,
+            shirtStyle: 't-shirt' as const,
+            pantsStyle: 'standard' as const,
+        },
+    }));
+});
 
 const PET_PRESETS: PreviewPreset[] = getItemsForSlot('pet', 'male')
     .filter(item => item.value !== 'none')
@@ -139,7 +154,54 @@ const HEADWEAR_PRESETS: PreviewPreset[] = [
     },
 ];
 
-const ALL_PRESETS = [...HAIR_PRESETS, ...PET_PRESETS, ...HEADWEAR_PRESETS];
+const CLOTHING_PRESETS: PreviewPreset[] = [
+    ...getItemsForSlot('shirtStyle', 'male').map(item => ({
+        key: `shirt-${item.value}`,
+        label: `Shirt QA — ${item.label}`,
+        category: 'clothing' as const,
+        config: {
+            ...createBaseConfig('male'),
+            shirtStyle: item.value,
+            shirtColor: '#C7683F',
+            pantsStyle: 'standard' as const,
+        },
+    })),
+    ...getItemsForSlot('pantsStyle', 'female').map(item => ({
+        key: `pants-${item.value}`,
+        label: `Broek QA — ${item.label}`,
+        category: 'clothing' as const,
+        config: {
+            ...createBaseConfig('female'),
+            shirtStyle: 't-shirt' as const,
+            shirtColor: '#315A70',
+            pantsStyle: item.value,
+            pantsColor: '#263A59',
+        },
+    })),
+];
+
+const ACCESSORY_PRESETS: PreviewPreset[] = getItemsForSlot('accessory', 'male')
+    .filter(item => item.value !== 'none')
+    .map(item => ({
+        key: `accessory-${item.value}`,
+        label: `Accessoire QA — ${item.label}`,
+        category: 'accessories',
+        config: {
+            ...createBaseConfig('male'),
+            hairStyle: item.value === 'crown' || item.value === 'crown_gold' ? 'mohawk' : 'short',
+            accessory: item.value,
+            accessoryColor: item.rarity === 'legendarisch' ? '#e1ff01' : '#D97848',
+        },
+    }));
+
+const ALL_PRESETS = [
+    ...BODY_PRESETS,
+    ...HAIR_PRESETS,
+    ...CLOTHING_PRESETS,
+    ...ACCESSORY_PRESETS,
+    ...PET_PRESETS,
+    ...HEADWEAR_PRESETS,
+];
 
 const getInitialPresetKey = (): string => {
     const fallbackKey = ALL_PRESETS[0]?.key ?? '';
@@ -153,9 +215,21 @@ const getInitialPresetKey = (): string => {
 };
 
 const SECTION_COPY: Record<PreviewPreset['category'], { title: string; description: string }> = {
+    body: {
+        title: 'Lichaam QA',
+        description: 'Controleer grondcontact en verhoudingen voor standaard, beide slim-varianten en robot.',
+    },
     hair: {
         title: 'Kapsel QA',
         description: 'Controleer silhouette, haarbanden, clipping en verschillen tussen stijlen.',
+    },
+    clothing: {
+        title: 'Kleding QA',
+        description: 'Controleer of elk shirt, elke jas en elke broek op normale previewschaal een eigen silhouet heeft.',
+    },
+    accessories: {
+        title: 'Accessoire QA',
+        description: 'Controleer formaat, plaatsing en onderscheid tussen basis, zeldzame, epische en legendarische details.',
     },
     pets: {
         title: 'Pet QA',
@@ -180,6 +254,7 @@ const PreviewCard = ({
 }) => (
     <button
         type="button"
+        aria-pressed={selected}
         onClick={onSelect}
         className={`group rounded-[1.75rem] p-3 text-left transition-all ${selected ? 'scale-[1.02]' : 'hover:-translate-y-1'}`}
         style={{
@@ -206,6 +281,8 @@ const PreviewCard = ({
             </div>
             <dl className="text-[11px] leading-snug" style={{ color: '#445865' }}>
                 <div><dt className="inline font-bold">Kapsel: </dt><dd className="inline">{preset.config.hairStyle}</dd></div>
+                <div><dt className="inline font-bold">Shirt: </dt><dd className="inline">{preset.config.shirtStyle}</dd></div>
+                <div><dt className="inline font-bold">Broek: </dt><dd className="inline">{preset.config.pantsStyle}</dd></div>
                 <div><dt className="inline font-bold">Accessoire: </dt><dd className="inline">{preset.config.accessory}</dd></div>
                 <div><dt className="inline font-bold">Huisdier: </dt><dd className="inline">{preset.config.pet ?? 'none'}</dd></div>
                 <div><dt className="inline font-bold">Expressie: </dt><dd className="inline">{preset.config.expression ?? 'neutral'}</dd></div>
@@ -232,7 +309,10 @@ const DevAvatarPreview: React.FC = () => {
 
     const groupedPresets = useMemo(
         () => ({
+            body: BODY_PRESETS,
             hair: HAIR_PRESETS,
+            clothing: CLOTHING_PRESETS,
+            accessories: ACCESSORY_PRESETS,
             pets: PET_PRESETS,
             headwear: HEADWEAR_PRESETS,
         }),
@@ -256,12 +336,13 @@ const DevAvatarPreview: React.FC = () => {
                         Avatar 3D QA Preview
                     </h1>
                     <p className="text-sm md:text-base max-w-3xl mx-auto" style={{ color: '#202023' }}>
-                        Dev-only route om alle kapsels, pets en headwear-combinaties visueel te controleren in de echte 3D renderer.
+                        Dev-only route om kapsels, alle kleding, alle accessoires, pets en headwear-combinaties
+                        visueel te controleren in één echte 3D renderer.
                     </p>
                 </div>
 
                 <div className="grid grid-cols-1 xl:grid-cols-[minmax(0,1.4fr)_minmax(320px,0.9fr)] gap-8 items-start">
-                    <div className="space-y-8">
+                    <div className="order-2 space-y-8 xl:order-1">
                         {(Object.keys(groupedPresets) as Array<keyof typeof groupedPresets>).map(sectionKey => (
                             <section key={sectionKey} className="space-y-4">
                                 <div>
@@ -288,7 +369,7 @@ const DevAvatarPreview: React.FC = () => {
                     </div>
 
                     {selectedPreset && (
-                        <aside className="xl:sticky xl:top-6 rounded-[2rem] p-5 md:p-6" style={{ backgroundColor: '#FFFFFF', boxShadow: '0 18px 40px -24px rgba(26,26,25,0.35)' }}>
+                        <aside className="order-1 rounded-[2rem] p-5 md:p-6 xl:order-2 xl:sticky xl:top-6" style={{ backgroundColor: '#FFFFFF', boxShadow: '0 18px 40px -24px rgba(26,26,25,0.35)' }}>
                             <div className="space-y-2 mb-5">
                                 <div className="text-[11px] font-black uppercase tracking-[0.18em]" style={{ color: '#ff3c21' }}>
                                     Focus Review
