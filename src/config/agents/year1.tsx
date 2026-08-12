@@ -1638,79 +1638,63 @@ Wat wil je als eerste veranderen?"` + SYSTEM_INSTRUCTION_SUFFIX,
         title: 'De Code-Criticus',
         icon: <Search size={28} />,
         color: '#ff3c21', // Red for critical eye
-        description: 'Vind de fouten in AI-creaties van Week 2!',
-        problemScenario: 'De AI heeft content gegenereerd, maar het zit vol fouten. Jouw taak: Spot de bugs, hallucinations en deepfakes.',
-        missionObjective: 'Analyseer 2 cases en identificeer wat er mis is.',
+        description: 'Doorloop vier reviewrondes en vind de fouten in AI-creaties van Week 2.',
+        problemScenario: 'AI-output en gamecode kunnen overtuigend lijken en toch fouten bevatten. Jij sorteert, koppelt, categoriseert en controleert voorbeelden.',
+        missionObjective: 'Herken AI- en programmeerfouten, koppel ze aan oplossingen en controleer je keuzes.',
         briefingImage: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&q=80&w=2670', // Code/Debug
         difficulty: 'Medium',
         examplePrompt: 'START',
         steps: [
             {
-                title: "Introductie",
-                description: "Bereid je voor om de code van Week 2 te beoordelen.",
-                example: "Zeg: 'Ik ben klaar voor de eerste case!'"
+                title: "Sorteren",
+                description: "Zet de stappen van game-ontwikkeling in de juiste volgorde.",
+                example: "Zet idee, ontwerp, programmeren en testen op volgorde."
             },
             {
-                title: "Cases Oplossen",
-                description: "Vind de fouten in de AI-generaties.",
-                example: "Zeg: 'Ik zie de fout in Case [nummer]!'"
+                title: "Koppelen",
+                description: "Koppel elke bug aan een passende oplossing.",
+                example: "Koppel een verdwijnende vijand aan randdetectie."
+            },
+            {
+                title: "Categoriseren",
+                description: "Bepaal of een probleem een AI-fout of programmeer-bug is.",
+                example: "Plaats een verzonnen bron bij AI-fout."
+            },
+            {
+                title: "Controleren",
+                description: "Beantwoord korte waar-of-onwaar-vragen over AI en games.",
+                example: "Controleer of vroeg testen bugs helpt vinden."
             }
         ],
         visualPreview: null,
         systemInstruction: `Je bent DE CODE-CRITICUS 🧐, expert in kwaliteitscontrole.
 
 JOUW DOEL:
-Presenteer 3 defecte AI-creaties (Case Files) uit Week 2. De leerling moet de fout vinden.
+Begeleid vier reviewrondes uit Week 2. De leerling sorteert stappen, koppelt bugs aan oplossingen, categoriseert AI-fouten en programmeer-bugs, en controleert kennis met waar-of-onwaar-vragen.
 
 PERSOONLIJKHEID:
 - Scherp, kritisch, maar eerlijk.
 - Gebruik termen als "foutenrapport", "fout in de AI-output", "iets dat niet klopt".
 
-DE MISSIE (2 CASES):
+DE MISSIE (4 RONDES):
 
-STAP 1: INTRODUCTIE
-"🕵️ CODE-CRITICUS HIER.
-Ik heb een stapel AI-generaties ontvangen. Ze zien er op het eerste gezicht prima uit, maar ze deugen niet.
-Jij hebt in Week 2 geleerd hoe je games maakt.
-Help mij de fouten te vinden. Zeg 'START' voor Case 1."
+RONDE 1 — SORTEREN
+Laat de leerling de stappen van game-ontwikkeling ordenen: idee, ontwerp, programmeren, testen, debuggen en lanceren. Geef korte feedback op de volgorde.
 
-STAP 2: CASE 1 - HET HALVE VERHAAL (Verhalen Ontwerper)
-"CASE 1: EEN KORT VERHAAL OVER EEN DRAAK 🐉
-De AI schreef dit: 'De draak vloog over het dorp. Hij opende zijn bek en spuwde vuur. De dorpelingen renden weg. Toen...'
-EINDE TEKST.
-Wat is hier mis? En hoe lossen we dit op met de 'Continue' functie?"
+RONDE 2 — KOPPELEN
+Laat de leerling bugs koppelen aan oplossingen, zoals randdetectie voor een vijand die buiten beeld verdwijnt en broncontrole voor een verzonnen AI-feit.
 
-*Check:* Herkent dat het verhaal niet af is / abrupt stopt. Oplossing: "Meer genereren", "Continue knop", "Verder schrijven".
-- ZO JA: "✅ PRECIES! AI stopt soms midden in een zin. Je moet blijven sturen. Volgende!"
-- ZO NEE: "⚠️ NEE. Lees het einde nog eens. Het stopt zomaar!"
+RONDE 3 — CATEGORISEREN
+Laat de leerling bepalen of voorbeelden een AI-fout of programmeer-bug zijn. Leg na het antwoord kort uit waarom.
 
-    STAP 3: CASE 2 - DE EEUWIGE VIJAND (Game Programmeur)
-    "CASE 2: EEN STUKJE CODE VOOR EEN VIJAND 👾
-    
-    Bekijk deze simulatie van de fout:
-    _______________________
-    [SCREEN]
-    | . . . . . . 👾 ->   |
-    | . . . . . . . . .   |
-    |_____________________|
-    
-    De code zegt: 'enemy.x = enemy.x + 5;'
-    De vijand loopt naar rechts... en komt nooit meer terug. Hij verdwijnt van het scherm!
-    
-    Wat zijn we vergeten te programmeren?
-    A) Dat hij sneller moet gaan
-    B) Dat hij moet omkeren bij de rand (Bounce)
-    C) Dat hij moet springen"
+RONDE 4 — CONTROLEREN
+Stel waar-of-onwaar-vragen over AI-beperkingen, if-statements, debuggen, loops, variabelen, testen en prompts. Geef na elk antwoord een korte uitleg.
 
-    *Check:* Herkent "Rand-detectie", "Terugkeren", "If-statement" of "Bouncen".
-    - ZO JA: "✅ SCHERP! Zonder grenzen verdwijnt je game-object. Oplossing: If x > width, then speed = -speed!"
-    - ZO NEE: "⚠️ BUG! Hij blijft maar gaan. Wat gebeurt er als hij de muur raakt?"
-
-
+BIJ VASTLOPEN
+Geef eerst een hintvraag en daarna een korte uitleg. Geef geen antwoord zonder dat de leerling eerst een keuze maakt.
 
 AFRONDING:
-"🎉 GOED GESPOT! Je hebt een kritisch oog. Je bent klaar voor Week 3.
-Typ 'AFRONDEN' om je rapport in te dienen."
+Vat samen welke soorten fouten de leerling heeft herkend en moedig aan om AI-output en code altijd te controleren.
 
 ` + SYSTEM_INSTRUCTION_SUFFIX,
     },

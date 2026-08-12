@@ -6,9 +6,9 @@ import { PhaseHeader } from '../shared/PhaseHeader';
 import { CompletionScreen } from '../shared/CompletionScreen';
 import { IntroScreen } from '../shared/IntroScreen';
 import { FollowUpCard } from '../shared/FollowUpCard';
-import { DragSort } from './sub/DragSort';
-import { MatchPairs } from './sub/MatchPairs';
-import { Categorize } from './sub/Categorize';
+import { DragSort, type DragSortProgress } from './sub/DragSort';
+import { MatchPairs, type MatchPairsProgress } from './sub/MatchPairs';
+import { Categorize, type CategorizeProgress } from './sub/Categorize';
 import { RapidFire } from './sub/RapidFire';
 import { useMissionAutoSave } from '@/hooks/useMissionAutoSave';
 import { StudentAIChat } from '@/features/ai-chat/StudentAIChat';
@@ -98,8 +98,14 @@ interface ReviewArenaState {
      */
     rapidFireProgress: Record<string, boolean[]>;
     followUpResults: Record<string, { answered: boolean; correct: boolean }>;
+    activeRoundState: ActiveRoundState | null;
     configMissionId?: string;
 }
+
+type ActiveRoundState =
+    | { roundId: string; type: 'drag-sort'; progress: DragSortProgress }
+    | { roundId: string; type: 'match-pairs'; progress: MatchPairsProgress }
+    | { roundId: string; type: 'categorize'; progress: CategorizeProgress };
 
 /** Mirrors the 40% pass threshold that CompletionScreen shows to the learner. */
 const PASS_THRESHOLD = 0.4;
@@ -173,6 +179,28 @@ function isStateValidForConfig(s: ReviewArenaState, config: ReviewArenaConfig): 
     if (typeof followUps !== 'object') return false;
     if (Object.keys(followUps).some((id) => !config.rounds.some((r) => r.id === id))) return false;
 
+    const active = s.activeRoundState;
+    // Oude autosaves hebben dit veld nog niet; behandel ontbrekend als "geen
+    // actieve tussenstand" in plaats van de validator op active.type te laten
+    // crashen tijdens het herstellen.
+    if (active != null) {
+        const round = config.rounds.find((r) => r.id === active?.roundId);
+        if (!round || round.type !== active.type || active.roundId !== config.rounds[s.currentRound]?.id) return false;
+        if (active.type === 'drag-sort') {
+            if (!Array.isArray(active.progress.orderIds) || active.progress.orderIds.length > round.items.length) return false;
+            if (!active.progress.orderIds.every((id) => typeof id === 'string') || typeof active.progress.hasMoved !== 'boolean') return false;
+        }
+        if (active.type === 'match-pairs') {
+            if (!Array.isArray(active.progress.rightOrderIds) || !Array.isArray(active.progress.matchedIds)) return false;
+            if (active.progress.rightOrderIds.length > round.pairs.length || active.progress.matchedIds.length > round.pairs.length) return false;
+            if (typeof active.progress.wrongAttempts !== 'number' || active.progress.wrongAttempts < 0) return false;
+        }
+        if (active.type === 'categorize') {
+            if (!Array.isArray(active.progress.itemOrderIds) || typeof active.progress.placements !== 'object' || active.progress.placements === null) return false;
+            if (active.progress.itemOrderIds.length > round.items.length) return false;
+        }
+    }
+
     if (s.phase === 'intro') return s.currentRound === 0 && s.roundScores.length === 0;
     if (s.phase === 'round') {
         return s.currentRound < config.rounds.length && s.roundScores.length <= s.currentRound;
@@ -202,6 +230,7 @@ const ReviewArenaWithConfig: React.FC<ReviewArenaProps> = ({
         lockedRoundScores: {},
         rapidFireProgress: {},
         followUpResults: {},
+        activeRoundState: null,
         configMissionId: config.missionId,
     };
 
@@ -274,6 +303,7 @@ const ReviewArenaWithConfig: React.FC<ReviewArenaProps> = ({
                     roundScores: newScores,
                     currentRound: nextRound,
                     phase: isLast ? 'complete' : 'round',
+                    activeRoundState: null,
                 };
             });
         },
@@ -324,6 +354,22 @@ const ReviewArenaWithConfig: React.FC<ReviewArenaProps> = ({
             });
         },
         [setState]
+    );
+
+    const handleActiveRoundProgress = useCallback(
+        (progress: ActiveRoundState['progress']) => {
+            const round = config.rounds[state.currentRound];
+            if (!round || round.type === 'rapid-fire') return;
+            setState((s) => ({
+                ...s,
+                activeRoundState: {
+                    roundId: round.id,
+                    type: round.type,
+                    progress,
+                } as ActiveRoundState,
+            }));
+        },
+        [config.rounds, setState, state.currentRound]
     );
 
     const withFollowUpBonus = useCallback(
@@ -605,6 +651,8 @@ const ReviewArenaWithConfig: React.FC<ReviewArenaProps> = ({
                                 description={round.description}
                                 items={round.items}
                                 maxScore={round.maxScore}
+                                initialProgress={state.activeRoundState?.type === 'drag-sort' ? state.activeRoundState.progress : undefined}
+                                onProgress={handleActiveRoundProgress}
                                 onSubmit={handleRoundSubmit}
                                 onComplete={(score) => handleRoundComplete(score)}
                             />
@@ -615,6 +663,8 @@ const ReviewArenaWithConfig: React.FC<ReviewArenaProps> = ({
                                 description={round.description}
                                 pairs={round.pairs}
                                 maxScore={round.maxScore}
+                                initialProgress={state.activeRoundState?.type === 'match-pairs' ? state.activeRoundState.progress : undefined}
+                                onProgress={handleActiveRoundProgress}
                                 onSubmit={handleRoundSubmit}
                                 onComplete={(score) => handleRoundComplete(score)}
                             />
@@ -626,6 +676,8 @@ const ReviewArenaWithConfig: React.FC<ReviewArenaProps> = ({
                                 categories={round.categories}
                                 items={round.items}
                                 maxScore={round.maxScore}
+                                initialProgress={state.activeRoundState?.type === 'categorize' ? state.activeRoundState.progress : undefined}
+                                onProgress={handleActiveRoundProgress}
                                 onSubmit={handleRoundSubmit}
                                 onComplete={(score) => handleRoundComplete(score)}
                             />

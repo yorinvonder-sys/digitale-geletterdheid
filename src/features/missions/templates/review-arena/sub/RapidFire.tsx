@@ -414,7 +414,7 @@ export const RapidFire: React.FC<RapidFireProps> = ({
                     data-qa="review-rapid-true"
                     onClick={() => handleAnswer(true)}
                     disabled={answered !== null}
-                    className={`py-4 rounded-xl font-black text-sm transition-all duration-200 active:scale-[0.97]
+                    className={`py-4 rounded-xl font-black text-sm transition-all duration-200 active:scale-[0.97] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-ink focus-visible:ring-offset-2
                         ${answered === null
                             ? 'bg-duck-ink hover:bg-duck-ink text-white'
                             : answered === true
@@ -431,7 +431,7 @@ export const RapidFire: React.FC<RapidFireProps> = ({
                     data-qa="review-rapid-false"
                     onClick={() => handleAnswer(false)}
                     disabled={answered !== null}
-                    className={`py-4 rounded-xl font-black text-sm transition-all duration-200 active:scale-[0.97]
+                    className={`py-4 rounded-xl font-black text-sm transition-all duration-200 active:scale-[0.97] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-ink focus-visible:ring-offset-2
                         ${answered === null
                             ? 'bg-duck-acid hover:bg-duck-acid text-duck-ink'
                             : answered === false
