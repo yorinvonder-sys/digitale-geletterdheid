@@ -7,6 +7,15 @@ const config: ReviewArenaConfig = {
     introTitle: 'Vind de fouten in AI-creaties!',
     introDescription:
         'Je hebt geleerd hoe AI content maakt en hoe games zijn opgebouwd. Nu test je of je fouten in AI-uitvoer kunt herkennen — van bugs in code tot hallucinaties in tekst.',
+    missionGoal: {
+        primaryGoal: 'Ik herken AI- en programmeerfouten, koppel ze aan een oplossing en controleer mijn keuzes.',
+        criteria: {
+            type: 'rounds-complete',
+            min: 4,
+            description: 'Je rondt sorteren, koppelen, categoriseren en waar-of-onwaar af.',
+        },
+        evidence: 'Je scores en keuzes in de vier rondes laten zien welke fouten je herkent en welke oplossing erbij hoort.',
+    },
     maxScore: 100,
     badges: [
         {

@@ -175,12 +175,13 @@ export const MISSION_GOALS: Record<string, MissionGoal> = {
         evidence: 'Je selecteert minimaal twee effectieve notificatie-instellingen of gewoontes en herkent welke meldingen vooral de app helpen.',
     },
     'review-week-2': {
-        primaryGoal: 'Ik beoordeel AI- en codevoorbeelden kritisch en herken wat beter moet.',
+        primaryGoal: 'Ik herken AI- en programmeerfouten, koppel ze aan een oplossing en controleer mijn keuzes.',
         criteria: {
             type: 'rounds-complete',
-            description: 'Je rondt de reviewrondes af en kiest onderbouwde verbeteringen.',
+            min: 4,
+            description: 'Je rondt sorteren, koppelen, categoriseren en waar-of-onwaar af.',
         },
-        evidence: 'Je kunt per fout uitleggen waarom die fout is en hoe je hem verbetert.',
+        evidence: 'Je scores en keuzes in de vier rondes laten zien welke fouten je herkent en welke oplossing erbij hoort.',
     },
     'data-detective': {
         primaryGoal: 'Ik onderzoek hoe apps data gebruiken en kies bewust welke data ik wel of niet deel.',

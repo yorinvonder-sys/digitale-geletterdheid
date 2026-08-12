@@ -16,6 +16,14 @@ interface CategorizeProps {
     /** Called the moment the round is scored, before the correction is shown. */
     onSubmit?: (score: number) => void;
     maxScore: number;
+    initialProgress?: CategorizeProgress;
+    onProgress?: (progress: CategorizeProgress) => void;
+}
+
+export interface CategorizeProgress {
+    itemOrderIds: number[];
+    placements: Record<string, string>;
+    selectedItem: number | null;
 }
 
 function shuffle<T>(arr: T[]): T[] {
@@ -41,12 +49,22 @@ export const Categorize: React.FC<CategorizeProps> = ({
     onComplete,
     onSubmit,
     maxScore,
+    initialProgress,
+    onProgress,
 }) => {
-    const [shuffledItems] = useState(() =>
-        shuffle(items.map((item, i) => ({ ...item, id: i })))
+    const [shuffledItems] = useState(() => {
+        const all = items.map((item, i) => ({ ...item, id: i }));
+        const restored = initialProgress?.itemOrderIds
+            ?.map((id) => all.find((item) => item.id === id))
+            .filter((item): item is (typeof all)[number] => Boolean(item));
+        return restored?.length === all.length ? restored : shuffle(all);
+    });
+    const [placements, setPlacements] = useState<Record<number, string>>(() =>
+        Object.fromEntries(
+            Object.entries(initialProgress?.placements ?? {}).map(([id, category]) => [Number(id), category])
+        )
     );
-    const [placements, setPlacements] = useState<Record<number, string>>({});
-    const [selectedItem, setSelectedItem] = useState<number | null>(null);
+    const [selectedItem, setSelectedItem] = useState<number | null>(initialProgress?.selectedItem ?? null);
     const [submitted, setSubmitted] = useState(false);
     const [score, setScore] = useState<number | null>(null);
     const [statusMessage, setStatusMessage] = useState('');
@@ -79,7 +97,13 @@ export const Categorize: React.FC<CategorizeProps> = ({
 
     const handleItemClick = (id: number) => {
         if (submitted) return;
-        setSelectedItem(selectedItem === id ? null : id);
+        const nextSelectedItem = selectedItem === id ? null : id;
+        setSelectedItem(nextSelectedItem);
+        onProgress?.({
+            itemOrderIds: shuffledItems.map((item) => item.id),
+            placements: Object.fromEntries(Object.entries(placements)),
+            selectedItem: nextSelectedItem,
+        });
     };
 
     const handleCategoryClick = (cat: string) => {
@@ -87,6 +111,11 @@ export const Categorize: React.FC<CategorizeProps> = ({
         const placedId = selectedItem;
         setPlacements((prev) => ({ ...prev, [placedId]: cat }));
         setSelectedItem(null);
+        onProgress?.({
+            itemOrderIds: shuffledItems.map((item) => item.id),
+            placements: { ...Object.fromEntries(Object.entries(placements).map(([id, category]) => [id, category])), [placedId]: cat },
+            selectedItem: null,
+        });
         const remaining = unplacedItems.length - 1;
         setStatusMessage(
             `Geplaatst in ${cat}. Nog ${remaining} item${remaining !== 1 ? 's' : ''} te plaatsen.`
@@ -102,6 +131,13 @@ export const Categorize: React.FC<CategorizeProps> = ({
             return next;
         });
         setSelectedItem(null);
+        onProgress?.({
+            itemOrderIds: shuffledItems.map((item) => item.id),
+            placements: Object.fromEntries(
+                Object.entries(placements).filter(([itemId]) => Number(itemId) !== id)
+            ),
+            selectedItem: null,
+        });
         setStatusMessage('Item teruggezet bij de te categoriseren items.');
         setPendingFocus({ id, where: 'unplaced' });
     };
@@ -294,7 +330,7 @@ export const Categorize: React.FC<CategorizeProps> = ({
                     data-qa="review-submit"
                     onClick={handleSubmit}
                     disabled={!allPlaced}
-                    className={`w-full py-3 rounded-xl font-bold text-sm transition-all duration-200 active:scale-[0.98]
+                    className={`w-full py-3 rounded-xl font-bold text-sm transition-all duration-200 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-ink focus-visible:ring-offset-2
                         ${allPlaced
                             ? 'bg-gradient-to-r from-duck-acid to-duck-acid hover:from-duck-acid hover:to-duck-acid text-duck-ink'
                             : 'bg-duck-gray text-duck-ink/70 cursor-not-allowed'
@@ -307,7 +343,7 @@ export const Categorize: React.FC<CategorizeProps> = ({
                 <button
                     data-qa="review-continue"
                     onClick={handleContinue}
-                    className="w-full py-3 bg-gradient-to-r from-duck-ink to-duck-ink hover:from-duck-ink hover:to-duck-ink text-white rounded-xl font-bold text-sm transition-all duration-200 active:scale-[0.98] flex items-center justify-center gap-2"
+                    className="w-full py-3 bg-gradient-to-r from-duck-ink to-duck-ink hover:from-duck-ink hover:to-duck-ink text-white rounded-xl font-bold text-sm transition-all duration-200 active:scale-[0.98] flex items-center justify-center gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-ink focus-visible:ring-offset-2"
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                 >
                     Volgende ronde

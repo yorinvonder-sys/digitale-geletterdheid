@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Reorder, useDragControls } from 'framer-motion';
 import { ArrowDown, ArrowUp, GripVertical, CheckCircle, XCircle, ChevronRight } from 'lucide-react';
 
@@ -16,6 +16,13 @@ interface DragSortProps {
     /** Called the moment the round is scored, before the correction is shown. */
     onSubmit?: (score: number) => void;
     maxScore: number;
+    initialProgress?: DragSortProgress;
+    onProgress?: (progress: DragSortProgress) => void;
+}
+
+export interface DragSortProgress {
+    orderIds: string[];
+    hasMoved: boolean;
 }
 
 function shuffle<T>(arr: T[]): T[] {
@@ -135,14 +142,27 @@ export const DragSort: React.FC<DragSortProps> = ({
     onComplete,
     onSubmit,
     maxScore,
+    initialProgress,
+    onProgress,
 }) => {
-    const [order, setOrder] = useState<DragSortItem[]>(() => shuffleUnsolved(items));
+    const [order, setOrder] = useState<DragSortItem[]>(() => {
+        const restored = initialProgress?.orderIds
+            ?.map((id) => items.find((item) => item.id === id))
+            .filter((item): item is DragSortItem => Boolean(item));
+        return restored?.length === items.length ? restored : shuffleUnsolved(items);
+    });
     const [submitted, setSubmitted] = useState(false);
     const [score, setScore] = useState<number | null>(null);
-    const [hasMoved, setHasMoved] = useState(false);
+    const [hasMoved, setHasMoved] = useState(initialProgress?.hasMoved ?? false);
 
     // Bij minder dan twee items valt er niets te sorteren; dan is interactie geen eis.
     const canSubmit = hasMoved || items.length < 2;
+
+    useEffect(() => {
+        if (!submitted && hasMoved) {
+            onProgress?.({ orderIds: order.map((item) => item.id), hasMoved });
+        }
+    }, [hasMoved, onProgress, order, submitted]);
 
     const handleSubmit = () => {
         if (!canSubmit) return;
@@ -159,13 +179,13 @@ export const DragSort: React.FC<DragSortProps> = ({
     };
 
     const handleMove = (id: string, direction: -1 | 1) => {
-        setHasMoved(true);
         setOrder((current) => {
             const index = current.findIndex((item) => item.id === id);
             const nextIndex = index + direction;
             if (index < 0 || nextIndex < 0 || nextIndex >= current.length) return current;
             const next = [...current];
             [next[index], next[nextIndex]] = [next[nextIndex], next[index]];
+            setHasMoved(true);
             return next;
         });
     };
@@ -240,7 +260,7 @@ export const DragSort: React.FC<DragSortProps> = ({
                     data-qa="review-submit"
                     onClick={handleSubmit}
                     disabled={!canSubmit}
-                    className={`w-full py-3 rounded-xl font-bold text-sm transition-all duration-200 active:scale-[0.98]
+                    className={`w-full py-3 rounded-xl font-bold text-sm transition-all duration-200 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-ink focus-visible:ring-offset-2
                         ${canSubmit
                             ? 'bg-gradient-to-r from-duck-acid to-duck-acid hover:from-duck-acid hover:to-duck-acid text-duck-ink'
                             : 'bg-duck-gray text-duck-ink/70 cursor-not-allowed'
@@ -253,7 +273,7 @@ export const DragSort: React.FC<DragSortProps> = ({
                 <button
                     data-qa="review-continue"
                     onClick={handleContinue}
-                    className="w-full py-3 bg-gradient-to-r from-duck-ink to-duck-ink hover:from-duck-ink hover:to-duck-ink text-white rounded-xl font-bold text-sm transition-all duration-200 active:scale-[0.98] flex items-center justify-center gap-2"
+                    className="w-full py-3 bg-gradient-to-r from-duck-ink to-duck-ink hover:from-duck-ink hover:to-duck-ink text-white rounded-xl font-bold text-sm transition-all duration-200 active:scale-[0.98] flex items-center justify-center gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-ink focus-visible:ring-offset-2"
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                 >
                     Volgende ronde

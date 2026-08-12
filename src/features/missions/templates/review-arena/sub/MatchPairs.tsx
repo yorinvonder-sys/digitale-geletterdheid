@@ -15,6 +15,16 @@ interface MatchPairsProps {
     /** Called the moment the round is scored, before the correction is shown. */
     onSubmit?: (score: number) => void;
     maxScore: number;
+    initialProgress?: MatchPairsProgress;
+    onProgress?: (progress: MatchPairsProgress) => void;
+}
+
+export interface MatchPairsProgress {
+    rightOrderIds: number[];
+    selectedLeft: number | null;
+    selectedRight: number | null;
+    matchedIds: number[];
+    wrongAttempts: number;
 }
 
 function shuffle<T>(arr: T[]): T[] {
@@ -33,15 +43,23 @@ export const MatchPairs: React.FC<MatchPairsProps> = ({
     onComplete,
     onSubmit,
     maxScore,
+    initialProgress,
+    onProgress,
 }) => {
     const [leftItems] = useState(() => pairs.map((p, i) => ({ id: i, label: p.left })));
-    const [rightItems] = useState(() => shuffle(pairs.map((p, i) => ({ id: i, label: p.right }))));
+    const [rightItems] = useState(() => {
+        const all = pairs.map((p, i) => ({ id: i, label: p.right }));
+        const restored = initialProgress?.rightOrderIds
+            ?.map((id) => all.find((item) => item.id === id))
+            .filter((item): item is { id: number; label: string } => Boolean(item));
+        return restored?.length === all.length ? restored : shuffle(all);
+    });
 
-    const [selectedLeft, setSelectedLeft] = useState<number | null>(null);
-    const [selectedRight, setSelectedRight] = useState<number | null>(null);
-    const [matched, setMatched] = useState<Set<number>>(new Set());
+    const [selectedLeft, setSelectedLeft] = useState<number | null>(initialProgress?.selectedLeft ?? null);
+    const [selectedRight, setSelectedRight] = useState<number | null>(initialProgress?.selectedRight ?? null);
+    const [matched, setMatched] = useState<Set<number>>(new Set(initialProgress?.matchedIds ?? []));
     const [wrongFlash, setWrongFlash] = useState<number | null>(null);
-    const [wrongAttempts, setWrongAttempts] = useState(0);
+    const [wrongAttempts, setWrongAttempts] = useState(initialProgress?.wrongAttempts ?? 0);
     const [statusMessage, setStatusMessage] = useState('');
     // Rechts klikken zonder links een keuze deed niets — geen melding, geen flits.
     // Dat is niet van een kapotte ronde te onderscheiden, dus zeg wat er moet gebeuren.
@@ -79,6 +97,13 @@ export const MatchPairs: React.FC<MatchPairsProps> = ({
         setSelectedRight(null);
         setNeedsLeftFirst(false);
         setStatusMessage(`${leftItems[id]?.label ?? ''} geselecteerd. Kies nu rechts het bijpassende item.`);
+        onProgress?.({
+            rightOrderIds: rightItems.map((item) => item.id),
+            selectedLeft: id,
+            selectedRight: null,
+            matchedIds: [...matched],
+            wrongAttempts,
+        });
     };
 
     const handleRightClick = (id: number) => {
@@ -107,6 +132,13 @@ export const MatchPairs: React.FC<MatchPairsProps> = ({
             setSelectedLeft(null);
             setSelectedRight(null);
             setStatusMessage(`Goed gekoppeld: ${leftItems[id]?.label ?? ''}.`);
+            onProgress?.({
+                rightOrderIds: rightItems.map((item) => item.id),
+                selectedLeft: null,
+                selectedRight: null,
+                matchedIds: [...newMatched],
+                wrongAttempts,
+            });
 
             if (newMatched.size === pairs.length) {
                 const earned = scoreFor(wrongAttempts);
@@ -124,6 +156,13 @@ export const MatchPairs: React.FC<MatchPairsProps> = ({
             setSelectedRight(id);
             setWrongFlash(id);
             setStatusMessage(`Fout gekoppeld. ${attempts} fout${attempts === 1 ? '' : 'en'} tot nu toe.`);
+            onProgress?.({
+                rightOrderIds: rightItems.map((item) => item.id),
+                selectedLeft,
+                selectedRight: id,
+                matchedIds: [...matched],
+                wrongAttempts: attempts,
+            });
             // Leg de opgelopen aftrek meteen vast, zodat herladen na een fout de
             // strafpunten niet wist.
             onSubmit?.(scoreFor(attempts));
@@ -193,7 +232,7 @@ export const MatchPairs: React.FC<MatchPairsProps> = ({
                                         ? `${item.label} — al gekoppeld`
                                         : `${item.label} selecteren`
                                 }
-                                className={`min-h-[44px] w-full text-left p-2.5 rounded-xl border text-xs font-medium transition-all duration-200
+                                className={`min-h-[44px] w-full text-left p-2.5 rounded-xl border text-xs font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-ink focus-visible:ring-offset-2
                                     ${isMatched
                                         ? 'bg-duck-ink/10 border-duck-ink text-duck-ink opacity-60 cursor-default'
                                         : isSelected
@@ -231,7 +270,7 @@ export const MatchPairs: React.FC<MatchPairsProps> = ({
                                             ? `${item.label} — fout gekoppeld`
                                             : `${item.label} koppelen aan het geselecteerde item`
                                 }
-                                className={`min-h-[44px] w-full text-left p-2.5 rounded-xl border text-xs font-medium transition-all duration-200
+                                className={`min-h-[44px] w-full text-left p-2.5 rounded-xl border text-xs font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-ink focus-visible:ring-offset-2
                                     ${isMatched
                                         ? 'bg-duck-ink/10 border-duck-ink text-duck-ink opacity-60 cursor-default'
                                         : isFlashing
@@ -293,7 +332,7 @@ export const MatchPairs: React.FC<MatchPairsProps> = ({
                         <button
                             data-qa="review-continue"
                             onClick={handleContinue}
-                            className="w-full py-3 bg-gradient-to-r from-duck-ink to-duck-ink hover:from-duck-ink hover:to-duck-ink text-white rounded-xl font-bold text-sm transition-all duration-200 active:scale-[0.98] flex items-center justify-center gap-2"
+                            className="w-full py-3 bg-gradient-to-r from-duck-ink to-duck-ink hover:from-duck-ink hover:to-duck-ink text-white rounded-xl font-bold text-sm transition-all duration-200 active:scale-[0.98] flex items-center justify-center gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-ink focus-visible:ring-offset-2"
                             style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                         >
                             Volgende ronde
