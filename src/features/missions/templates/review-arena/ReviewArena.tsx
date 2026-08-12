@@ -187,15 +187,18 @@ function isStateValidForConfig(s: ReviewArenaState, config: ReviewArenaConfig): 
         const round = config.rounds.find((r) => r.id === active?.roundId);
         if (!round || round.type !== active.type || active.roundId !== config.rounds[s.currentRound]?.id) return false;
         if (active.type === 'drag-sort') {
+            if (round.type !== 'drag-sort') return false;
             if (!Array.isArray(active.progress.orderIds) || active.progress.orderIds.length > round.items.length) return false;
             if (!active.progress.orderIds.every((id) => typeof id === 'string') || typeof active.progress.hasMoved !== 'boolean') return false;
         }
         if (active.type === 'match-pairs') {
+            if (round.type !== 'match-pairs') return false;
             if (!Array.isArray(active.progress.rightOrderIds) || !Array.isArray(active.progress.matchedIds)) return false;
             if (active.progress.rightOrderIds.length > round.pairs.length || active.progress.matchedIds.length > round.pairs.length) return false;
             if (typeof active.progress.wrongAttempts !== 'number' || active.progress.wrongAttempts < 0) return false;
         }
         if (active.type === 'categorize') {
+            if (round.type !== 'categorize') return false;
             if (!Array.isArray(active.progress.itemOrderIds) || typeof active.progress.placements !== 'object' || active.progress.placements === null) return false;
             if (active.progress.itemOrderIds.length > round.items.length) return false;
         }
