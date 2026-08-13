@@ -72,7 +72,7 @@ const NAV_LINKS: Record<Screen, string> = {
 };
 
 const Nav = ({ active }: { active: Screen }) => (
-    <nav className="sticky top-0 z-50 flex gap-2 border-b border-lab-line bg-lab-cream/95 px-4 py-2 text-xs font-bold backdrop-blur">
+    <nav className="sticky top-0 z-50 flex flex-wrap gap-2 border-b border-lab-line bg-lab-cream/95 px-4 py-2 text-xs font-bold backdrop-blur">
         <span className="text-lab-muted mr-2 self-center">DEV shell:</span>
         {SCREENS.map(s => (
             <a
