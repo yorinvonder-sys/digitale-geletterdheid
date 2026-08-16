@@ -55,6 +55,8 @@ test('Builder evidence is apart opgeslagen, zichtbaar en blokkeert completion', 
     assert.match(panel, /const evidenceQualityHint = evidenceRequirement \? answerQualityHint\(evidenceText\) : null/);
     assert.match(panel, /Vul geen namen, contactgegevens/);
     assert.match(preview, /Bewijs voortgang/);
+    assert.match(preview, /<textarea/);
+    assert.match(preview, /onEvidenceChange/);
 });
 
 test('Alle acht toegewezen Builder-configs hebben minimaal één evidence gate', () => {

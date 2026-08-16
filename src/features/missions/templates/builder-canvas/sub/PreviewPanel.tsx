@@ -6,6 +6,7 @@ import type { BuilderCanvasState } from './types';
 export interface PreviewPanelProps {
     config: BuilderCanvasConfig;
     state: BuilderCanvasState;
+    onEvidenceChange: (stepId: string, value: string) => void;
 }
 
 const buildSafeHtmlPreview = (html: string): string => {
@@ -31,7 +32,7 @@ const buildSafeHtmlPreview = (html: string): string => {
 </html>`;
 };
 
-export const PreviewPanel: React.FC<PreviewPanelProps> = ({ config, state }) => {
+export const PreviewPanel: React.FC<PreviewPanelProps> = ({ config, state, onEvidenceChange }) => {
     const { previewType, steps } = config;
     const { checklist, textEntries, evidenceEntries, currentStep, completedSteps } = state;
     const evidenceSteps = steps.filter((step) => step.evidence);
@@ -156,9 +157,20 @@ export const PreviewPanel: React.FC<PreviewPanelProps> = ({ config, state }) => 
                             {step.evidence && (
                                 <div className="mt-3 border-t border-duck-gray pt-3">
                                     <p className="text-[10px] font-black uppercase tracking-widest text-duck-ink/60">{step.evidence.label}</p>
+                                    <textarea
+                                        aria-label={step.evidence.label}
+                                        value={state.evidenceEntries[step.id] ?? ''}
+                                        onChange={(e) => onEvidenceChange(step.id, e.target.value)}
+                                        placeholder={step.evidence.placeholder ?? 'Voeg bewijs toe…'}
+                                        rows={3}
+                                        className="mt-2 w-full resize-none rounded-xl border border-duck-gray bg-white px-3 py-2 text-xs text-duck-ink/70 placeholder:text-duck-ink/50 focus:border-duck-acid/50 focus:outline-none focus:ring-2 focus:ring-duck-acid/30"
+                                    />
                                     <p className="mt-1 text-xs text-duck-ink/70 whitespace-pre-wrap">
-                                        {state.evidenceEntries[step.id]?.trim() || 'Nog geen bewijs toegevoegd…'}
+                                        {state.evidenceEntries[step.id]?.trim()
+                                            ? `${state.evidenceEntries[step.id].trim().length}/${step.evidence.minLength ?? 40} tekens`
+                                            : 'Nog geen bewijs toegevoegd…'}
                                     </p>
+                                    <p className="mt-1 text-[11px] leading-relaxed text-duck-ink/60">Vul geen namen, contactgegevens, foto’s, stemopnames of links met persoonsgegevens in.</p>
                                 </div>
                             )}
                         </div>
@@ -264,7 +276,17 @@ export const PreviewPanel: React.FC<PreviewPanelProps> = ({ config, state }) => 
                                     </span>
                                 </div>
                                 {step.evidence && (
-                                    <p className="mt-2 text-[11px] text-duck-ink/60">Bewijs: {evidenceEntries[step.id]?.trim() ? 'ingevuld' : 'nog nodig'}</p>
+                                    <div className="mt-2">
+                                        <textarea
+                                            aria-label={step.evidence.label}
+                                            value={evidenceEntries[step.id] ?? ''}
+                                            onChange={(e) => onEvidenceChange(step.id, e.target.value)}
+                                            placeholder={step.evidence.placeholder ?? 'Voeg bewijs toe…'}
+                                            rows={3}
+                                            className="w-full resize-none rounded-xl border border-duck-gray bg-white px-3 py-2 text-xs text-duck-ink/70 placeholder:text-duck-ink/50 focus:border-duck-acid/50 focus:outline-none focus:ring-2 focus:ring-duck-acid/30"
+                                        />
+                                        <p className="mt-1 text-[11px] text-duck-ink/60">Bewijs: {evidenceEntries[step.id]?.trim() ? 'ingevuld' : 'nog nodig'}</p>
+                                    </div>
                                 )}
                             </div>
                         );
@@ -276,6 +298,7 @@ export const PreviewPanel: React.FC<PreviewPanelProps> = ({ config, state }) => 
 
     // markdown preview
     const activeText = textEntries[steps[currentStep]?.id] ?? '';
+    const activeStep = steps[currentStep];
 
     return (
         <div className="h-full overflow-y-auto p-6">
@@ -304,6 +327,22 @@ export const PreviewPanel: React.FC<PreviewPanelProps> = ({ config, state }) => 
                     >
                         Begin te schrijven — hier zie je een live voorbeeld.
                     </p>
+                </div>
+            )}
+            {activeStep?.evidence && (
+                <div className="mt-5 rounded-xl border border-duck-acid/25 bg-duck-acid/5 p-3">
+                    <label className="text-[10px] font-black uppercase tracking-widest text-duck-ink/60" htmlFor={`preview-evidence-${activeStep.id}`}>
+                        {activeStep.evidence.label}
+                    </label>
+                    <textarea
+                        id={`preview-evidence-${activeStep.id}`}
+                        value={evidenceEntries[activeStep.id] ?? ''}
+                        onChange={(e) => onEvidenceChange(activeStep.id, e.target.value)}
+                        placeholder={activeStep.evidence.placeholder ?? 'Voeg bewijs toe…'}
+                        rows={3}
+                        className="mt-2 w-full resize-none rounded-xl border border-duck-gray bg-white px-3 py-2 text-xs text-duck-ink/70 placeholder:text-duck-ink/50 focus:border-duck-acid/50 focus:outline-none focus:ring-2 focus:ring-duck-acid/30"
+                    />
+                    <p className="mt-1 text-[11px] text-duck-ink/60">Vul geen namen, contactgegevens, foto’s, stemopnames of links met persoonsgegevens in.</p>
                 </div>
             )}
         </div>

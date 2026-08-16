@@ -33,7 +33,7 @@ export const apiArchitectConfig: BuilderCanvasConfig = {
             textPrompt: 'Schrijf je uitleg van REST API-principes',
             evidence: {
                 label: 'Bewijs van je API-ontwerp',
-                prompt: 'Noteer een klein testresultaat of redacted request/response-fragment waarmee je uitleg controleerbaar wordt.',
+                prompt: 'Noteer een klein testresultaat of afgeschermd request/response-fragment waarmee je uitleg controleerbaar wordt.',
                 placeholder: 'Bijv. GET /taken → 200 met een JSON-lijst; laat tokens en persoonsgegevens weg.',
                 minLength: 45,
             },

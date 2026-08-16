@@ -378,7 +378,7 @@ const BuilderCanvasInner: React.FC<BuilderCanvasProps> = ({
                         mobileTab !== 'preview' ? 'hidden md:block' : 'block'
                     }`}
                 >
-                    <PreviewPanel config={config} state={state} />
+                    <PreviewPanel config={config} state={state} onEvidenceChange={handleEvidenceChange} />
                 </div>
             </div>
 
