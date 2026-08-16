@@ -65,10 +65,10 @@ export const pitchPerfectConfig: BuilderCanvasConfig = {
             description:
                 'De beste sprekers zijn niet de meest getalenteerde — het zijn de meest geoefende. Elk uur oefenen maakt je beter. Maar oefenen zonder feedback is rondjes draaien.',
             instruction:
-                'Beschrijf hoe je je pitch hebt geoefend. Beantwoord: 1) Wie heb je je pitch laten horen? (klasgenoot, ouder, docent), 2) Welke 2 feedbackpunten heb je gekregen? (concreet: wat zeiden ze precies?), 3) Hoe heb je elk feedbackpunt verwerkt in je pitch? (beschrijf de aanpassing), 4) Wat vind jij zelf het moeilijkste onderdeel om te pitchen en waarom?',
-            tip: 'Zet je pitch op video. Je ziet dan precies hoe je overkomt: je houding, je tempo, of je oogcontact maakt. Dat is oncomfortabel maar leerzaam.',
+                'Beschrijf hoe je je pitch hebt geoefend met een timer en rubric-zelfreview of anonieme peerfeedback. Beantwoord: 1) Welke 2 feedbackpunten of zelfobservaties kreeg je? (geen namen, contactgegevens of identificeerbare citaten), 2) Hoe heb je elk punt verwerkt in je pitch? (beschrijf de aanpassing), 3) Wat vind jij zelf het moeilijkste onderdeel om te pitchen en waarom?',
+            tip: 'Gebruik een timer en rubric-zelfreview, of vraag anonieme peerfeedback zonder namen of contactgegevens. Neem geen video, gezicht of stem op; je kunt timing en presentatie ook zonder opname verbeteren.',
             checklistItems: [
-                { id: 'geoefend', label: 'Ik heb mijn pitch aan minstens 1 persoon laten horen' },
+                { id: 'geoefend', label: 'Ik heb met een timer en rubric-zelfreview of anonieme peerfeedback geoefend' },
                 { id: 'twee-feedback', label: 'Twee feedbackpunten zijn beschreven (concreet)' },
                 { id: 'verwerkt', label: 'Beide feedbackpunten zijn verwerkt in de pitch' },
                 { id: 'zelf-reflectie', label: 'Ik heb beschreven wat ik zelf het moeilijkste vind' },
