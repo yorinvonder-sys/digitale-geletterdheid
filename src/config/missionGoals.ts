@@ -717,7 +717,7 @@ export const MISSION_GOALS: Record<string, MissionGoal> = {
         evidence: 'Je leest gemiddelden en verschillen correct af uit een tabel en een grafiek, en je legt uit waarom onderzoek van een bedrijf zelf minder zwaar weegt dan onafhankelijk onderzoek.',
     },
     'welzijnsonderzoeker': {
-        primaryGoal: 'Ik onderzoek de relatie tussen schermtijd en welzijn met enquêtedata en CBS-statistieken en onderscheid correlatie van oorzakelijkheid.',
+        primaryGoal: 'Ik onderzoek met synthetische oefendata de relatie tussen schermtijd en welzijn en onderscheid correlatie van oorzakelijkheid.',
         criteria: {
             type: 'score-threshold',
             threshold: 65,

@@ -10,6 +10,10 @@ const wellbeingResearcher = readFileSync(
     new URL('../src/features/missions/templates/data-viewer/configs/welzijnsonderzoeker.ts', import.meta.url),
     'utf8',
 );
+const missionGoals = readFileSync(
+    new URL('../src/config/missionGoals.ts', import.meta.url),
+    'utf8',
+);
 
 test('J3-content gebruikt alleen synthetische, privacyveilige deelnemersdata', () => {
     assert.match(wellbeingResearcher, /participant_id/);
@@ -26,6 +30,13 @@ test('J3-content gebruikt alleen synthetische, privacyveilige deelnemersdata', (
     assert.match(wellbeingResearcher, /synthetische oefendataset/i);
     assert.match(wellbeingResearcher, /geen echte leerlingen/i);
     assert.match(wellbeingResearcher, /deel geen eigen welzijns-.*, naam-.*, contact-.*, gezondheids-.* of slaapgegevens/i);
+
+    const wellbeingGoal = missionGoals.slice(
+        missionGoals.indexOf("'welzijnsonderzoeker':"),
+        missionGoals.indexOf("'tech-impact-analyst':"),
+    );
+    assert.match(wellbeingGoal, /synthetische oefendata/i);
+    assert.doesNotMatch(wellbeingGoal, /CBS-statistieken|Trimbos|Harvard/i);
 });
 
 test('digital-forensics houdt de fictieve J3-incidenttelling en vaste antwoorden coherent', () => {
