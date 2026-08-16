@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback, useEffect, useRef } from 'react';
 import { ArrowLeft, MessageCircle } from 'lucide-react';
 import { IntroScreen } from '../shared/IntroScreen';
 import { CompletionScreen } from '../shared/CompletionScreen';
@@ -11,7 +11,7 @@ import { MilestoneToast } from './sub/MilestoneToast';
 import { MobileTabBar, type MobileTab } from './sub/MobileTabBar';
 import { PreviewPanel } from './sub/PreviewPanel';
 import { StepInstructionPanel } from './sub/StepInstructionPanel';
-import type { BuilderCanvasState } from './sub/types';
+import { migrateBuilderEvidenceState, type BuilderCanvasState } from './sub/types';
 import { isMeaningfulAnswer } from '../shared/answerQuality';
 import { toScorePercent } from '../shared/scorePercent';
 
@@ -83,6 +83,13 @@ const BuilderCanvasInner: React.FC<BuilderCanvasProps> = ({
 
     const [isChatOpen, setIsChatOpen] = useState(false);
     const [mobileTab, setMobileTab] = useState<MobileTab>('instructies');
+    const evidenceMigrationDone = useRef(false);
+
+    useEffect(() => {
+        if (evidenceMigrationDone.current) return;
+        evidenceMigrationDone.current = true;
+        setState((prev) => migrateBuilderEvidenceState(prev, config.steps));
+    }, [config.steps, setState]);
 
     // state.currentStep komt ongevalideerd uit localStorage terug; als een missie-
     // config na een save korter is geworden (of de opslag corrupt raakt), klemmen we

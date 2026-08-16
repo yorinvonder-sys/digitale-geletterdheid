@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import test from 'node:test';
+import { migrateBuilderEvidenceState } from '../src/features/missions/templates/builder-canvas/sub/types.ts';
 
 const read = (path: string) => readFileSync(new URL(`../${path}`, import.meta.url), 'utf8');
 
@@ -62,4 +63,49 @@ test('Alle acht toegewezen Builder-configs hebben minimaal één evidence gate',
         const source = read(`src/features/missions/templates/builder-canvas/configs/${mission}.ts`);
         assert.match(source, /evidence:\s*\{/, `${mission} is niet op evidence aangesloten`);
     }
+});
+
+test('Builder restore-migratie rolt alleen oude evidence-completion terug', () => {
+    const state = {
+        phase: 'results' as const,
+        currentStep: 2,
+        checklist: { 'step-a-check': true },
+        textEntries: { 'step-a': 'bestaande uitwerking' },
+        evidenceEntries: {},
+        completedSteps: ['step-a', 'step-b', 'step-c'],
+        reflectionAnswered: { 'step-b': true },
+        reflectionCorrect: { 'step-b': true },
+        showMilestone: false,
+    };
+    const migrated = migrateBuilderEvidenceState(state, [
+        { id: 'step-a' },
+        { id: 'step-b', evidence: { minLength: 40 } },
+        { id: 'step-c', evidence: { minLength: 40 } },
+    ]);
+
+    assert.equal(migrated.phase, 'building');
+    assert.equal(migrated.currentStep, 1);
+    assert.deepEqual(migrated.completedSteps, ['step-a']);
+    assert.deepEqual(migrated.textEntries, state.textEntries);
+    assert.deepEqual(migrated.evidenceEntries, state.evidenceEntries);
+    assert.deepEqual(migrated.reflectionAnswered, {});
+    assert.deepEqual(migrated.reflectionCorrect, {});
+});
+
+test('Builder restore-migratie laat evidence-vrije J1/J2-stappen ongemoeid', () => {
+    const state = {
+        phase: 'results' as const,
+        currentStep: 1,
+        checklist: {},
+        textEntries: {},
+        evidenceEntries: {},
+        completedSteps: ['legacy-step'],
+        reflectionAnswered: {},
+        reflectionCorrect: {},
+        showMilestone: false,
+    };
+    assert.deepEqual(
+        migrateBuilderEvidenceState(state, [{ id: 'legacy-step' }]),
+        state,
+    );
 });
