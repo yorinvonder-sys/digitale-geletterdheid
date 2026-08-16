@@ -44,7 +44,7 @@ export type RoleId =
   // Leerjaar 3 - Periode 2: Cybersecurity & Privacy
   'cyber-detective' | 'encryption-expert' | 'phishing-fighter' | 'security-auditor' | 'digital-forensics' | 'security-review' | 'code-denker' |
   // Leerjaar 3 - Periode 3: Maatschappelijke Impact
-  'startup-simulator' | 'policy-maker' | 'innovation-lab' | 'digital-divide-researcher' | 'tech-impact-analyst' | 'impact-review' |
+  'startup-simulator' | 'policy-maker' | 'innovation-lab' | 'digital-divide-researcher' | 'tech-impact-analyst' | 'welzijnsonderzoeker' | 'impact-review' |
   // Leerjaar 3 - Periode 4: Meesterproef
   'portfolio-builder' | 'research-project' | 'prototype-developer' | 'pitch-perfect' | 'reflection-report' | 'meesterproef';
 

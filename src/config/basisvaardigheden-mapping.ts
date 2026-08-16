@@ -689,6 +689,22 @@ export const MISSIE_BASISVAARDIGHEDEN: MissieBasisvaardigheden[] = [
     ],
   },
   {
+    missionId: 'welzijnsonderzoeker',
+    basisvaardigheden: [
+      STATISTIEK('Leerling leest patronen in synthetische, geanonimiseerde welzijnsdata en trekt een voorzichtige conclusie.'),
+      FORMULEREN('Leerling vertaalt bevindingen uit de dataset naar concrete, haalbare aanbevelingen.'),
+      ETHIEK('Leerling bespreekt privacy, toestemming en de grenzen van conclusies over welzijn.'),
+    ],
+  },
+  {
+    missionId: 'startup-pitch',
+    basisvaardigheden: [
+      FORMULEREN('Leerling formuleert een probleem, AI-oplossing en pitch voor een duidelijk publiek.'),
+      SCHRIJFVAARDIGHEID('Leerling schrijft een beknopte pitch met probleem, bewijs, impact en call-to-action.'),
+      ETHIEK('Leerling reflecteert op privacy, eerlijkheid en mogelijke gevolgen van de AI-startup.'),
+    ],
+  },
+  {
     missionId: 'impact-review',
     basisvaardigheden: [
       FORMULEREN('Leerling geeft onderbouwde feedback op impact-analyses van medeleerlingen.'),

@@ -273,48 +273,35 @@ export function buildMissionsForPeriod(yearGroup: number, period: number): Missi
     const periodConfig = getPeriodConfig(yearGroup, period);
     if (!periodConfig) return [];
     const missions: Mission[] = [];
-
-    for (const missionId of (periodConfig.reviewMissions || [])) {
-        const role = ROLES.find(r => r.id === missionId);
-        const meta = getMissionMeta(missionId);
-        const overrides = getMissionOverride(missionId);
-        missions.push({
-            id: missionId,
-            title: getMissionDisplayTitle(missionId, role?.title, meta?.title),
-            description: role?.description || '',
-            icon: role?.icon ? React.cloneElement(role.icon as React.ReactElement<{ size?: number }>, { size: 40 }) : <RotateCcw size={40} />,
-            number: 'Review',
-            status: 'available',
-            info: getMissionTooltipInfo(missionId, role),
-            isReview: true,
-            classRestriction: overrides.classRestriction || meta?.classRestriction,
-            isHighlighted: overrides.isHighlighted,
-            sloKerndoelen: meta?.sloKerndoelen || periodConfig.sloFocus,
-            sloVsoKerndoelen: meta?.sloVsoKerndoelen,
-        });
-    }
-
+    const reviewMissionIds = periodConfig.reviewMissions || [];
+    // J3 learners encounter the review after the regular missions. Preserve
+    // the historical review-first order for J1 and J2.
+    const orderedMissionIds = yearGroup === 3
+        ? [...periodConfig.missions, ...reviewMissionIds]
+        : [...reviewMissionIds, ...periodConfig.missions];
     let missionNum = 1;
-    for (const missionId of periodConfig.missions) {
+    for (const missionId of orderedMissionIds) {
         const role = ROLES.find(r => r.id === missionId);
         const meta = getMissionMeta(missionId);
         const overrides = getMissionOverride(missionId);
+        const isReview = reviewMissionIds.includes(missionId);
         missions.push({
             id: missionId,
             title: getMissionDisplayTitle(missionId, role?.title, meta?.title),
             description: role?.description || '',
-            icon: role?.icon ? React.cloneElement(role.icon as React.ReactElement<{ size?: number }>, { size: 40 }) : <Puzzle size={40} />,
-            number: overrides.number || String(missionNum).padStart(2, '0'),
+            icon: role?.icon
+                ? React.cloneElement(role.icon as React.ReactElement<{ size?: number }>, { size: 40 })
+                : (isReview ? <RotateCcw size={40} /> : <Puzzle size={40} />),
+            number: isReview ? 'Review' : (overrides.number || String(missionNum++).padStart(2, '0')),
             status: 'available',
             info: getMissionTooltipInfo(missionId, role),
-            isReview: false,
+            isReview,
             isExternal: overrides.isExternal,
             isBonus: overrides.isBonus,
             classRestriction: overrides.classRestriction || meta?.classRestriction,
             sloKerndoelen: meta?.sloKerndoelen || periodConfig.sloFocus,
             sloVsoKerndoelen: meta?.sloVsoKerndoelen,
         });
-        missionNum++;
     }
     return missions;
 }

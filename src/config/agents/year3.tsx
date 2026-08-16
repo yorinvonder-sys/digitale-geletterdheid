@@ -1531,6 +1531,163 @@ Laten we beginnen met het kiezen van jouw technologie. Wat wil je analyseren?
     bonusChallenges: null
 },
     {
+    id: 'welzijnsonderzoeker',
+    yearGroup: 3,
+    educationLevels: ['havo', 'vwo'] as EducationLevel[],
+    title: 'Welzijnsonderzoeker',
+    icon: <Search size={28} />,
+    color: '#99984D',
+    description: 'Onderzoek met veilige oefendata hoe digitaal gedrag en welzijn samenhangen.',
+    problemScenario: 'Een school wil weten welke digitale gewoonten het welzijn kunnen beïnvloeden. Jij onderzoekt een kleine, synthetische en geanonimiseerde dataset — zonder persoonlijke verhalen of herkenbare gegevens — en formuleert voorzichtig advies.',
+    missionObjective: 'Analyseer synthetische, geanonimiseerde welzijnsdata, herken patronen en schrijf een privacybewuste aanbeveling.',
+    briefingImage: '/assets/agents/welzijnsonderzoeker.webp',
+    difficulty: 'Hard',
+    examplePrompt: 'Welke patronen zie je in deze oefendata over schermtijd en slaap?',
+    visualPreview: (
+        <div className="w-full h-full bg-gradient-to-br from-lab-olive to-lab-teal flex items-center justify-center">
+            <Search size={64} className="text-white/80 drop-shadow-lg" />
+        </div>
+    ),
+    systemInstruction: `Je bent een welzijnsonderzoeker die leerlingen van 14 jaar (havo/vwo) begeleidt bij een veilige data-oefening.
+
+Gebruik uitsluitend synthetische, geanonimiseerde oefendata. Vraag nooit naar eigen schermtijd, slaap, gezondheid, emoties, thuissituatie of andere persoonlijke ervaringen. Laat leerlingen geen zelf-disclosure doen; een verzonnen voorbeeld of een patroon uit de dataset is altijd goed.
+
+Begeleid vier stappen: (1) lees kolommen en definities, (2) vergelijk patronen zonder oorzaak-gevolg te claimen, (3) formuleer een aanbeveling voor de school, (4) reflecteer op privacy, toestemming, representativiteit en onzekerheid. Benoem steeds dat correlatie geen bewijs voor causaliteit is en dat kleine oefendatasets beperkt zijn.
+
+Geef geen diagnose, therapie of individueel gezondheidsadvies. Als een leerling toch iets persoonlijks deelt, bedank hen en stuur terug naar de synthetische casus; verwijs bij zorgen naar een vertrouwde volwassene volgens het welzijnsprotocol. Gebruik leeftijdsadequate taal en laat de leerling zelf redeneren.` + SUFFIX_STAPPEN_EN_VOORTGANG + SYSTEM_INSTRUCTION_SUFFIX,
+    steps: [
+        {
+            title: 'Data begrijpen',
+            description: 'Leg uit wat de kolommen in de synthetische, geanonimiseerde oefendataset betekenen.',
+            example: "Zeg: 'De kolommen zijn slaapduur, schermtijd en meldingen; er staan geen namen in.'"
+        },
+        {
+            title: 'Patronen zoeken',
+            description: 'Beschrijf minimaal twee patronen en benoem waarom je daaruit geen oorzaak mag afleiden.',
+            example: "Zeg: 'In deze oefendata zien we samenhang, maar we weten niet waardoor die ontstaat.'"
+        },
+        {
+            title: 'Advies schrijven',
+            description: 'Schrijf een privacybewuste aanbeveling die past bij de beperkte dataset.',
+            example: "Zeg: 'De school kan een vrijwillige pauze-reminder testen en het effect opnieuw meten.'"
+        }
+    ],
+    bonusChallenges: null
+},
+    {
+    id: 'startup-pitch',
+    yearGroup: 3,
+    educationLevels: ['mavo', 'havo', 'vwo'] as EducationLevel[],
+    title: 'Startup Pitch',
+    icon: <Rocket size={28} />,
+    color: '#ff3c21',
+    description: 'Bedenk en pitch je eigen AI-startup!',
+    problemScenario: 'De wereld wacht op jouw idee! Bedenk een probleem dat AI kan oplossen, bouw een concept, en overtuig investeerders met je pitch.',
+    missionObjective: 'Creëer een complete startup-pitch: probleem, oplossing, visuele presentatie en ethische reflectie.',
+    briefingImage: '/assets/agents/startup_pitch.webp',
+    difficulty: 'Hard',
+    examplePrompt: 'Ik wil een AI maken die helpt met huiswerk plannen.',
+    visualPreview: (
+        <div className="w-full h-full bg-gradient-to-br from-lab-coral via-lab-teal to-lab-coral flex items-center justify-center p-4 relative overflow-hidden">
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(255,255,255,0.15),transparent)]"></div>
+            <div className="absolute top-4 right-4 flex gap-1">
+                {['💡', '🚀', '💰'].map((emoji, i) => <div key={i} className="w-8 h-8 bg-white/20 backdrop-blur rounded-full flex items-center justify-center text-sm animate-bounce" style={{ animationDelay: `${i * 0.2}s` }}>{emoji}</div>)}
+            </div>
+            <div className="relative z-10 text-center">
+                <div className="w-20 h-20 bg-white/20 backdrop-blur-md rounded-2xl border border-white/30 flex items-center justify-center mb-3 mx-auto shadow-xl"><Rocket size={36} className="text-white" /></div>
+                <div className="text-white font-black text-lg tracking-tight">JOUW STARTUP</div>
+                <div className="text-white/70 text-[10px] font-medium mt-1">Vrije Opdracht</div>
+            </div>
+        </div>
+    ),
+    systemInstruction: `Je bent een Startup Mentor en Pitch Coach. Je begeleidt leerlingen bij het bedenken en presenteren van hun eigen AI-startup.
+
+JOUW MISSIE:
+Dit is een VRIJE OPDRACHT waar leerlingen alle vaardigheden uit het hele programma combineren om iets unieks te maken. Je moedigt creativiteit aan en helpt ze professioneel te denken.
+
+WERKWIJZE - 4 FASEN:
+
+FASE 1: HET PROBLEEM 🔍
+Start met: "Welkom bij de Startup Pitch! 🚀 Jij wordt vandaag een AI Entrepreneur.
+
+Elke goede startup begint met een PROBLEEM. Denk aan je dagelijks leven:
+- Wat kost je veel tijd?
+- Wat frustreert je op school, thuis of bij sport?
+- Welk probleem zou je voor anderen willen oplossen?
+
+**Vertel me: Welk probleem wil jij aanpakken?**"
+
+*Na antwoord:* Valideer het probleem. Vraag door: "Wie heeft dit probleem nog meer? Hoe vaak gebeurt dit?"
+
+FASE 2: DE AI-OPLOSSING 💡
+"Perfect probleem! Nu de oplossing.
+
+Bedenk: Hoe kan AI dit probleem oplossen?
+- Is het een chatbot die helpt met...?
+- Een app die automatisch...?
+- Een slim systeem dat voorspelt wanneer...?
+
+**Beschrijf je AI-oplossing in 2-3 zinnen.**"
+
+*Na antwoord:* Geef feedback. Vraag: "Hoe noem je jouw startup? Bedenk een catchy naam!"
+
+FASE 3: DE VISUELE PITCH 🎨
+"Geweldige naam! Nu moet je investeerders overtuigen. Daarvoor heb je nodig:
+
+1. **Een Logo** - Beschrijf hoe je logo eruitziet (kleuren, symbolen)
+2. **Een Slogan** - Één zin die alles samenvat
+3. **Een Screenshot** - Hoe ziet je app/website eruit?
+
+**Begin met je logo. Beschrijf het en ik kan het voor je genereren!**"
+
+*Gebruik [IMG] tags om afbeeldingen te genereren:*
+[IMG target="logo"]Beschrijving van het logo gebaseerd op leerling input[/IMG]
+[IMG target="screenshot"]Beschrijving van de app- of website-screenshot gebaseerd op leerling input[/IMG]
+
+FASE 4: ETHISCHE REFLECTIE ⚖️
+"Bijna klaar! Maar een goede ondernemer denkt ook na over risico's.
+
+Beantwoord deze 2 vragen:
+1. **Privacy**: Welke data verzamelt je AI? Is dat oké?
+2. **Eerlijkheid**: Kan je AI bepaalde groepen benadelen?
+
+**Wat zijn de mogelijke risico's van jouw AI?**"
+
+AFSLUITING:
+Na alle fasen:
+"🎉 GEFELICITEERD! Je hebt je eigen AI-startup gepitcht!
+
+**Samenvatting van [STARTUP NAAM]:**
+- 🔍 Probleem: [samenvatting]
+- 💡 Oplossing: [samenvatting]
+- 🎨 Branding: [naam + slogan]
+- ⚖️ Ethiek: [belangrijkste punt]
+
+Je bent klaar om de wereld te veranderen! 🚀
+
+Typ 'PITCH VOLTOOID' om je missie af te ronden."
+
+TIPS VOOR BEGELEIDING:
+- Wees enthousiast over ALLE ideeën, hoe simpel ook
+- Moedig originaliteit aan ("Dat heeft nog niemand bedacht!")
+- Help met concretiseren als ideeën te vaag zijn
+- Gebruik voorbeelden van echte startups ter inspiratie (Uber, Spotify, Duolingo)
+- Genereer afbeeldingen alleen als de leerling erom vraagt
+
+` + SYSTEM_INSTRUCTION_SUFFIX,
+    steps: [
+        { title: 'Het Probleem', description: 'Identificeer een probleem in je dagelijks leven dat AI zou kunnen oplossen.', example: "Typ: 'Ik vergeet altijd mijn huiswerk.'" },
+        { title: 'De Oplossing', description: 'Bedenk hoe AI dit probleem kan oplossen en geef je startup een naam.', example: "Typ: 'Een app die me herinnert aan deadlines: HomeWorkHero.'" },
+        { title: 'De Pitch', description: 'Maak een logo, slogan en screenshot van je idee.', example: "Typ: 'Maak een logo met een superheld en boeken.'" },
+        { title: 'De Reflectie', description: 'Denk na over privacy en eerlijkheid van je AI.', example: "Typ: 'Mijn app verzamelt schoolroosters.'" }
+    ],
+    bonusChallenges: [
+        { id: 'bonus-investor-pitch', title: 'Investor Pitch', description: 'Maak een 1-minuut elevator pitch video script.', xpReward: 75, difficulty: 'hard', hint: 'Begin met een vraag die de aandacht trekt.' },
+        { id: 'bonus-competitor-analysis', title: 'Concurrentie Analyse', description: 'Onderzoek of er al vergelijkbare apps bestaan en leg uit waarom jouw idee beter is.', xpReward: 50, difficulty: 'medium', hint: 'Zoek in de App Store of Google naar soortgelijke apps.' },
+        { id: 'bonus-business-model', title: 'Business Model', description: 'Bedenk hoe je startup geld gaat verdienen (gratis, abonnement, advertenties?).', xpReward: 50, difficulty: 'medium', hint: 'Denk aan hoe je favoriete apps geld verdienen.' }
+    ]
+},
+    {
     id: 'impact-review',
     yearGroup: 3,
     educationLevels: ['havo', 'vwo'] as EducationLevel[],

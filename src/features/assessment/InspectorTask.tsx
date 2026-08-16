@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { InspectorTask as InspectorTaskType } from './types';
 import { MousePointer2, AlertCircle, CheckCircle } from 'lucide-react';
+import { registerInspectorHotspot } from './inspectorProgress';
 
 interface Props {
     task: InspectorTaskType;
@@ -11,16 +12,31 @@ interface Props {
 export const InspectorTask: React.FC<Props> = ({ task, onComplete }) => {
     const [showFeedback, setShowFeedback] = useState<{ correct: boolean; message: string } | null>(null);
     const [clicks, setClicks] = useState<{ x: number; y: number }[]>([]);
+    const [foundCorrectIds, setFoundCorrectIds] = useState<string[]>([]);
+
+    const requiredCorrect = task.requiredCorrect ?? task.hotspots.filter(hotspot => hotspot.correct).length;
+    const isHotspotFound = (hotspotId: string) => foundCorrectIds.includes(hotspotId);
 
     const handleHotspotClick = (hotspot: typeof task.hotspots[0]) => {
         if (showFeedback) return;
 
+        const progress = registerInspectorHotspot(task, foundCorrectIds, hotspot);
+        if (hotspot.correct && !progress.duplicate) {
+            setFoundCorrectIds(progress.foundCorrectIds);
+        }
+
+        const feedbackMessage = hotspot.correct && progress.duplicate
+            ? `Deze fout had je al gevonden. Zoek nog ${Math.max(0, progress.requiredCorrect - progress.correctCount)} andere fout${progress.requiredCorrect - progress.correctCount === 1 ? '' : 'en'}.`
+            : hotspot.correct && !progress.isComplete
+                ? `${hotspot.feedback} (${progress.correctCount}/${progress.requiredCorrect} fouten gevonden — ga door!)`
+                : hotspot.feedback;
+
         setShowFeedback({
             correct: hotspot.correct,
-            message: hotspot.feedback
+            message: feedbackMessage
         });
 
-        if (hotspot.correct) {
+        if (hotspot.correct && progress.isComplete && !progress.duplicate) {
             setTimeout(() => onComplete(true), 2500);
         } else {
             setTimeout(() => setShowFeedback(null), 2500);
@@ -42,16 +58,7 @@ export const InspectorTask: React.FC<Props> = ({ task, onComplete }) => {
         );
 
         if (hit) {
-            setShowFeedback({
-                correct: hit.correct,
-                message: hit.feedback
-            });
-
-            if (hit.correct) {
-                setTimeout(() => onComplete(true), 2500);
-            } else {
-                setTimeout(() => setShowFeedback(null), 2500);
-            }
+            handleHotspotClick(hit);
         } else {
             setShowFeedback({
                 correct: false,
@@ -83,7 +90,8 @@ export const InspectorTask: React.FC<Props> = ({ task, onComplete }) => {
                         <span className="text-[10px] text-lab-textLight mb-1">Leerling 1</span>
                         <button
                             onClick={() => badPrompt && handleHotspotClick(badPrompt)}
-                            className="bg-lab-primary text-white px-4 py-2.5 rounded-2xl rounded-tr-sm max-w-[50%] ml-auto text-left hover:ring-2 hover:ring-lab-primary/50 hover:ring-offset-2 transition-all cursor-pointer active:scale-95"
+                            aria-pressed={isHotspotFound(badPrompt?.id ?? '')}
+                            className={`bg-lab-primary text-white px-4 py-2.5 rounded-2xl rounded-tr-sm max-w-[50%] ml-auto text-left hover:ring-2 hover:ring-lab-primary/50 hover:ring-offset-2 transition-all cursor-pointer active:scale-95 ${isHotspotFound(badPrompt?.id ?? '') ? 'ring-2 ring-lab-gold ring-offset-2' : ''}`}
                         >
                             <p className="text-sm font-medium">Schrijf iets</p>
                         </button>
@@ -106,7 +114,8 @@ export const InspectorTask: React.FC<Props> = ({ task, onComplete }) => {
                         <span className="text-[10px] text-lab-textLight mb-1">Leerling 2</span>
                         <button
                             onClick={() => goodPrompt && handleHotspotClick(goodPrompt)}
-                            className="bg-lab-primary text-white px-4 py-2.5 rounded-2xl rounded-tr-sm max-w-[50%] ml-auto text-left hover:ring-2 hover:ring-lab-primary/50 hover:ring-offset-2 transition-all cursor-pointer active:scale-95"
+                            aria-pressed={isHotspotFound(goodPrompt?.id ?? '')}
+                            className={`bg-lab-primary text-white px-4 py-2.5 rounded-2xl rounded-tr-sm max-w-[50%] ml-auto text-left hover:ring-2 hover:ring-lab-primary/50 hover:ring-offset-2 transition-all cursor-pointer active:scale-95 ${isHotspotFound(goodPrompt?.id ?? '') ? 'ring-2 ring-lab-gold ring-offset-2' : ''}`}
                         >
                             <p className="text-sm font-medium">Schrijf een spannend verhaal over een robot die verdwaalt in een grote stad. Het verhaal is voor kinderen van 12 jaar. Maak het 200 woorden.</p>
                         </button>
@@ -147,7 +156,8 @@ export const InspectorTask: React.FC<Props> = ({ task, onComplete }) => {
                         <span className="text-[10px] text-lab-textLight mb-1">SlimmeBot — Antwoord 1</span>
                         <button
                             onClick={() => wrongAnswer && handleHotspotClick(wrongAnswer)}
-                            className="bg-lab-bg border border-lab-line px-4 py-2.5 rounded-2xl rounded-tl-sm max-w-[55%] shadow-sm text-left hover:ring-2 hover:ring-lab-primary/50 hover:ring-offset-2 transition-all cursor-pointer active:scale-95"
+                            aria-pressed={isHotspotFound(wrongAnswer?.id ?? '')}
+                            className={`bg-lab-bg border border-lab-line px-4 py-2.5 rounded-2xl rounded-tl-sm max-w-[55%] shadow-sm text-left hover:ring-2 hover:ring-lab-primary/50 hover:ring-offset-2 transition-all cursor-pointer active:scale-95 ${isHotspotFound(wrongAnswer?.id ?? '') ? 'ring-2 ring-lab-gold ring-offset-2' : ''}`}
                         >
                             <p className="text-sm text-lab-dark">Ons zonnestelsel heeft <strong>9 planeten</strong>! De negen planeten zijn: Mercurius, Venus, Aarde, Mars, Jupiter, Saturnus, Uranus, Neptunus en Pluto. 🪐</p>
                         </button>
@@ -165,7 +175,8 @@ export const InspectorTask: React.FC<Props> = ({ task, onComplete }) => {
                         <span className="text-[10px] text-lab-textLight mb-1">SlimmeBot — Antwoord 2</span>
                         <button
                             onClick={() => correctAnswer && handleHotspotClick(correctAnswer)}
-                            className="bg-lab-bg border border-lab-line px-4 py-2.5 rounded-2xl rounded-tl-sm max-w-[55%] shadow-sm text-left hover:ring-2 hover:ring-lab-primary/50 hover:ring-offset-2 transition-all cursor-pointer active:scale-95"
+                            aria-pressed={isHotspotFound(correctAnswer?.id ?? '')}
+                            className={`bg-lab-bg border border-lab-line px-4 py-2.5 rounded-2xl rounded-tl-sm max-w-[55%] shadow-sm text-left hover:ring-2 hover:ring-lab-primary/50 hover:ring-offset-2 transition-all cursor-pointer active:scale-95 ${isHotspotFound(correctAnswer?.id ?? '') ? 'ring-2 ring-lab-gold ring-offset-2' : ''}`}
                         >
                             <p className="text-sm text-lab-dark">Ons zonnestelsel heeft <strong>8 planeten</strong>: Mercurius, Venus, Aarde, Mars, Jupiter, Saturnus, Uranus en Neptunus. Pluto werd in 2006 herclassificeerd als dwergplaneet. 🌍</p>
                         </button>
@@ -198,7 +209,8 @@ export const InspectorTask: React.FC<Props> = ({ task, onComplete }) => {
                 {/* Title area — hotspot */}
                 <button
                     onClick={(e) => { e.stopPropagation(); titleHotspot && handleHotspotClick(titleHotspot); }}
-                    className="pt-5 pb-2 px-6 text-center hover:bg-lab-cream transition-colors"
+                    aria-pressed={isHotspotFound(titleHotspot?.id ?? '')}
+                    className={`pt-5 pb-2 px-6 text-center hover:bg-lab-cream transition-colors ${isHotspotFound(titleHotspot?.id ?? '') ? 'ring-2 ring-lab-gold ring-inset' : ''}`}
                 >
                     <h3 className="text-base font-bold text-lab-ink">Smartphonegebruik onder jongeren (%)</h3>
                     <p className="text-[11px] text-lab-muted mt-0.5">Bron: Schoolkrant De Digitale Pen, 2026</p>
@@ -208,7 +220,8 @@ export const InspectorTask: React.FC<Props> = ({ task, onComplete }) => {
                     {/* Y-axis area — hotspot (correct answer) */}
                     <button
                         onClick={(e) => { e.stopPropagation(); yAxisHotspot && handleHotspotClick(yAxisHotspot); }}
-                        className="w-14 flex flex-col justify-between items-end pr-2 py-2 hover:bg-lab-gold hover:text-lab-ink rounded-l-lg transition-colors border border-transparent hover:border-lab-gold"
+                        aria-pressed={isHotspotFound(yAxisHotspot?.id ?? '')}
+                        className={`w-14 flex flex-col justify-between items-end pr-2 py-2 hover:bg-lab-gold hover:text-lab-ink rounded-l-lg transition-colors border border-transparent hover:border-lab-gold ${isHotspotFound(yAxisHotspot?.id ?? '') ? 'ring-2 ring-lab-gold ring-inset' : ''}`}
                     >
                         {[100, 90, 80, 70, 60].map(v => (
                             <span key={v} className="text-[11px] font-mono text-lab-muted leading-none">{v}%</span>
@@ -218,7 +231,8 @@ export const InspectorTask: React.FC<Props> = ({ task, onComplete }) => {
                     {/* Chart bars area — hotspot */}
                     <button
                         onClick={(e) => { e.stopPropagation(); barsHotspot && handleHotspotClick(barsHotspot); }}
-                        className="flex-1 flex items-end justify-around gap-3 px-4 py-2 border-l-2 border-b-2 border-lab-line hover:bg-lab-teal/30 rounded-r-lg transition-colors"
+                        aria-pressed={isHotspotFound(barsHotspot?.id ?? '')}
+                        className={`flex-1 flex items-end justify-around gap-3 px-4 py-2 border-l-2 border-b-2 border-lab-line hover:bg-lab-teal/30 rounded-r-lg transition-colors ${isHotspotFound(barsHotspot?.id ?? '') ? 'ring-2 ring-lab-gold ring-inset' : ''}`}
                     >
                         {data.map(d => {
                             const heightPct = ((d.value - yMin) / (yMax - yMin)) * 100;
