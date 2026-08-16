@@ -26,6 +26,13 @@ export interface BuilderStep {
     checklistItems: Array<{ id: string; label: string }>;
     textPrompt?: string;
     minTextLength?: number;
+    evidence?: {
+        label: string;
+        prompt: string;
+        placeholder?: string;
+        minLength?: number;
+        privacyNote?: string;
+    };
     reflectionQuestion?: FollowUpQuestion;
 }
 
@@ -62,6 +69,7 @@ const BuilderCanvasInner: React.FC<BuilderCanvasProps> = ({
         currentStep: 0,
         checklist: {},
         textEntries: {},
+        evidenceEntries: {},
         completedSteps: [],
         reflectionAnswered: {},
         reflectionCorrect: {},
@@ -132,9 +140,15 @@ const BuilderCanvasInner: React.FC<BuilderCanvasProps> = ({
             const requiredLength = step.textPrompt ? (step.minTextLength ?? 40) : 0;
             const text = state.textEntries[stepId] ?? '';
             const textComplete = !requiredLength || (text.trim().length >= requiredLength && isMeaningfulAnswer(text));
-            return checklistComplete && textComplete;
+            const evidence = step.evidence;
+            const evidenceText = state.evidenceEntries[stepId] ?? '';
+            const evidenceLength = evidence?.minLength ?? 40;
+            const evidenceComplete = !evidence || (
+                evidenceText.trim().length >= evidenceLength && isMeaningfulAnswer(evidenceText)
+            );
+            return checklistComplete && textComplete && evidenceComplete;
         },
-        [state.checklist, state.textEntries]
+        [state.checklist, state.textEntries, state.evidenceEntries]
     );
 
     const currentStepComplete = currentStepData
@@ -175,6 +189,13 @@ const BuilderCanvasInner: React.FC<BuilderCanvasProps> = ({
         setState((prev) => ({
             ...prev,
             textEntries: { ...prev.textEntries, [stepId]: value },
+        }));
+    };
+
+    const handleEvidenceChange = (stepId: string, value: string) => {
+        setState((prev) => ({
+            ...prev,
+            evidenceEntries: { ...prev.evidenceEntries, [stepId]: value },
         }));
     };
 
@@ -343,6 +364,7 @@ const BuilderCanvasInner: React.FC<BuilderCanvasProps> = ({
                         isStepComplete={currentStepComplete}
                         onChecklistToggle={handleChecklistToggle}
                         onTextChange={handleTextChange}
+                        onEvidenceChange={handleEvidenceChange}
                         onReflectionAnswer={handleReflectionAnswer}
                         onReflectionComplete={handleReflectionComplete}
                         onNextStep={handleNextStep}

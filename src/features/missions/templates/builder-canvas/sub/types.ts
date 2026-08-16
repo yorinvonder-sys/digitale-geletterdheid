@@ -3,6 +3,7 @@ export interface BuilderCanvasState {
     currentStep: number;
     checklist: Record<string, boolean>;
     textEntries: Record<string, string>;
+    evidenceEntries: Record<string, string>;
     completedSteps: string[];
     reflectionAnswered: Record<string, boolean>;
     reflectionCorrect: Record<string, boolean>;

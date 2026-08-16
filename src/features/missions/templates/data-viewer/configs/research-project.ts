@@ -21,6 +21,7 @@ export const researchProjectConfig: DataViewerConfig = {
             description:
                 'Onderzoekers van de Universiteit Leiden maten schermtijd en welzijnsscores bij 200 havo/vwo-leerlingen (15-17 jaar). Welzijn werd gemeten op een schaal van 1-10. Let op twee sleutelbegrippen: correlatie (= twee dingen hangen samen) en causaliteit (= het ene veroorzaakt het andere) — die zijn niet hetzelfde.',
             type: 'table',
+            source: { kind: 'synthetic', label: 'Gesimuleerde schermtijd- en welzijnstabel', methodNote: 'Fictieve, vereenvoudigde oefendata; de genoemde steekproef is geen werkelijk Universiteit-Leiden-onderzoek.' },
             columns: [
                 { key: 'groep', label: 'Groep (uren/dag)', sortable: true },
                 { key: 'n', label: 'Aantal leerlingen', sortable: true },
@@ -84,6 +85,7 @@ export const researchProjectConfig: DataViewerConfig = {
             description:
                 'Niet elke onderzoeksmethode is even betrouwbaar. Wetenschappers beoordelen methoden op basis van "levels of evidence". Hogere score = sterker bewijs. Twee methoden in de grafiek die je misschien niet kent: cohort-onderzoek (= een groep mensen langere tijd volgen) en meta-analyse (meerdere studies samenvatten).',
             type: 'bar-chart',
+            source: { kind: 'synthetic', label: 'Gesimuleerde levels-of-evidence-grafiek', methodNote: 'Didactische scores om methoden te vergelijken; geen formele wetenschappelijke schaal.' },
             chartData: [
                 { label: 'Expertmening', value: 15, color: '#202023' },
                 { label: 'Casestudy (1 persoon)', value: 25, color: '#e1ff01' },
@@ -135,6 +137,7 @@ export const researchProjectConfig: DataViewerConfig = {
             description:
                 'Goed onderzoek volgt altijd dezelfde structuur. Hier zijn de vier stappen die elke onderzoeker doorloopt.',
             type: 'document-cards',
+            source: { kind: 'synthetic', label: 'Didactische onderzoeksstappen', methodNote: 'Samenvatting voor oefenen; echte conclusies vragen een controleerbare bron en passende methode.' },
             cards: [
                 {
                     title: 'Stap 1: Scherpe onderzoeksvraag formuleren',

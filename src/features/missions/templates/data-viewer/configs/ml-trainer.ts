@@ -21,6 +21,7 @@ export const mlTrainerConfig: DataViewerConfig = {
             description:
                 'Een data-engineer heeft 12 e-mails gelabeld als "spam" of "geen spam". Elke rij bevat features (kenmerken) die een model kan leren. Analyseer de dataset.',
             type: 'table',
+            source: { kind: 'synthetic', label: 'Door de missie ontworpen spam-oefendataset', methodNote: 'Kleine, vereenvoudigde voorbeelden voor oefenen; geen echte e-maildata en niet geschikt voor modelvalidatie.' },
             columns: [
                 { key: 'email_id', label: 'ID', sortable: true },
                 { key: 'afzender_onbekend', label: 'Onbekende afzender', sortable: true },
@@ -91,6 +92,7 @@ export const mlTrainerConfig: DataViewerConfig = {
             description:
                 'Vier versies van een spamfilter zijn getraind met verschillende features. Bekijk de accuracy op de testset.',
             type: 'bar-chart',
+            source: { kind: 'synthetic', label: 'Gesimuleerde accuracy-vergelijking', methodNote: 'Didactische voorbeeldwaarden; geen actuele benchmark of productieprestatie.' },
             chartData: [
                 { label: 'Alleen afzender', value: 68, color: '#e1ff01' },
                 { label: 'Afzender + link', value: 75, color: '#202023' },
@@ -145,6 +147,7 @@ export const mlTrainerConfig: DataViewerConfig = {
             description:
                 'Machine learning heeft een eigen taal. Hier zijn vier kernbegrippen die elke ML Trainer moet kennen.',
             type: 'document-cards',
+            source: { kind: 'synthetic', label: 'Didactische begrippenkaarten', methodNote: 'Samengevatte oefeninhoud; leerlingen moeten echte modellen en datasets later met eigen bronnen controleren.' },
             cards: [
                 {
                     title: 'Trainingset vs. testset',

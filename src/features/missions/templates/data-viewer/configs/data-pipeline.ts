@@ -21,6 +21,7 @@ export const dataPipelineConfig: DataViewerConfig = {
             description:
                 'Sensoren meten elk uur de temperatuur en het stroomverbruik van lokalen. Maar de data is rommelig. Zoek alle dataproblemen in deze tabel.',
             type: 'table',
+            source: { kind: 'synthetic', label: 'Gesimuleerde sensormetingen', methodNote: 'Bewust vervuilde oefendata met duplicaten en uitschieters; geen echte schoolgebouwtelemetrie.' },
             columns: [
                 { key: 'timestamp', label: 'Tijdstip', sortable: true },
                 { key: 'lokaal', label: 'Lokaal', sortable: true },
@@ -87,6 +88,7 @@ export const dataPipelineConfig: DataViewerConfig = {
             description:
                 'Na het ETL-proces is de dataset opgeschoond. Bekijk het verschil in gemiddelde temperatuur per lokaal voor en na de opschoning.',
             type: 'bar-chart',
+            source: { kind: 'synthetic', label: 'Gesimuleerd voor/na ETL-resultaat', methodNote: 'Didactische gemiddelden om opschoning te bespreken; geen operationele energiemeting.' },
             chartData: [
                 { label: 'Lokaal 3A (ruw)', value: 47.8, color: '#ff3c21' },
                 { label: 'Lokaal 3A (schoon)', value: 21.6, color: '#202023' },
@@ -142,6 +144,7 @@ export const dataPipelineConfig: DataViewerConfig = {
             description:
                 'Data-engineers hebben vaste strategieën voor elk type dataprobleem. Lees de vier meest gebruikte en beantwoord de vragen.',
             type: 'document-cards',
+            source: { kind: 'synthetic', label: 'Didactische transformatiestrategieën', methodNote: 'Vereenvoudigde voorbeelden; kies in een echt project een strategie op basis van datacontext en validatie.' },
             cards: [
                 {
                     title: 'Strategie 1: Verwijderen (deletion)',

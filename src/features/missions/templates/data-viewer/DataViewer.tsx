@@ -47,8 +47,19 @@ export interface Dataset {
     chartData?: Array<{ label: string; value: number; color?: string }>;
     // document-cards
     cards?: Array<{ title: string; icon: string; content: string }>;
+    /** Herkomst en beperkingen van de dataset, zichtbaar voor leerlingen. */
+    source?: DatasetSource;
     questions: DataQuestion[];
     followUp?: FollowUpQuestion;
+}
+
+export interface DatasetSource {
+    kind: 'synthetic' | 'external';
+    label: string;
+    url?: string;
+    published?: string;
+    accessed?: string;
+    methodNote?: string;
 }
 
 export interface DataViewerConfig {
@@ -600,6 +611,44 @@ const DatasetView: React.FC<DatasetViewProps> = ({
             >
                 {dataset.description}
             </p>
+            {dataset.source && (
+                <div className="mt-3 rounded-xl border border-duck-gray bg-white/70 px-3 py-2.5">
+                    <p
+                        className="text-[10px] font-black uppercase tracking-widest text-duck-ink/70"
+                        style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
+                    >
+                        Databron
+                    </p>
+                    <p
+                        className="mt-1 text-xs font-semibold text-duck-ink"
+                        style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
+                    >
+                        {dataset.source.kind === 'synthetic' ? 'Oefendataset · ' : 'Externe bron · '}
+                        {dataset.source.url ? (
+                            <a
+                                href={dataset.source.url}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="underline decoration-duck-acid underline-offset-2 hover:text-duck-ink/70"
+                            >
+                                {dataset.source.label}
+                            </a>
+                        ) : (
+                            dataset.source.label
+                        )}
+                    </p>
+                    {(dataset.source.published || dataset.source.accessed || dataset.source.methodNote) && (
+                        <p
+                            className="mt-1 text-[11px] leading-relaxed text-duck-ink/70"
+                            style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
+                        >
+                            {dataset.source.published && `Gepubliceerd: ${dataset.source.published}. `}
+                            {dataset.source.accessed && `Geraadpleegd: ${dataset.source.accessed}. `}
+                            {dataset.source.methodNote}
+                        </p>
+                    )}
+                </div>
+            )}
         </div>
 
         {/* Visualisation */}

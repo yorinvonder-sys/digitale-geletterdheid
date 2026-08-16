@@ -21,6 +21,7 @@ export const neuralNavigatorConfig: DataViewerConfig = {
             description:
                 'Elk neuron berekent: output = (input1 × gewicht1) + (input2 × gewicht2) + bias. Bekijk de tabel met vier neurons uit een netwerk en beantwoord de vragen.',
             type: 'table',
+            source: { kind: 'synthetic', label: 'Gesimuleerde neuronberekeningen', methodNote: 'Kleine, afgeronde waarden om forward passes te oefenen; geen gemeten netwerkuitvoer.' },
             columns: [
                 { key: 'neuron', label: 'Neuron', sortable: false },
                 { key: 'input1', label: 'Input 1', sortable: false },
@@ -79,6 +80,7 @@ export const neuralNavigatorConfig: DataViewerConfig = {
             description:
                 'Dit netwerk leert handgeschreven cijfers herkennen. Bekijk hoe de output-kansen per cijfer veranderen na 1000 trainingsrondes.',
             type: 'bar-chart',
+            source: { kind: 'synthetic', label: 'Gesimuleerde trainingsuitvoer', methodNote: 'Voorbeeldwaarden voor begrip van gewichtsaanpassing; geen actuele modelbenchmark.' },
             chartData: [
                 { label: 'Cijfer 3 (voor)', value: 0.12, color: '#ff3c21' },
                 { label: 'Cijfer 3 (na)', value: 0.87, color: '#202023' },
@@ -136,6 +138,7 @@ export const neuralNavigatorConfig: DataViewerConfig = {
             description:
                 'Een neuraal netwerk is opgebouwd uit lagen. Hier zijn de drie soorten lagen en hun rol.',
             type: 'document-cards',
+            source: { kind: 'synthetic', label: 'Didactische netwerkbegrippen', methodNote: 'Vereenvoudigde uitleg voor oefenen; technische details kunnen per modelarchitectuur verschillen.' },
             cards: [
                 {
                     title: 'Input layer (invoerlaag)',

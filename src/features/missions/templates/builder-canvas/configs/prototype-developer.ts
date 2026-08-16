@@ -32,6 +32,12 @@ export const prototypeDeveloperConfig: BuilderCanvasConfig = {
                 { id: 'out-scope', label: 'Ik heb uitgelegd welke functies ik uitstel en waarom' },
             ],
             textPrompt: 'Beschrijf je product-idee en afbakening',
+            evidence: {
+                label: 'Bewijs van je eerste versie',
+                prompt: 'Noteer wat je in v1 hebt getest en welke concrete wijziging je naar v2 meeneemt.',
+                placeholder: 'v1-test: … → v2-wijziging: … (geen namen, contactgegevens, foto’s of stemopnames).',
+                minLength: 45,
+            },
         },
         {
             id: 'ontwerpen',

@@ -32,6 +32,12 @@ export const portfolioBuilderConfig: BuilderCanvasConfig = {
                 { id: 'motivatie', label: 'Ik heb uitgelegd waarom elk project is geselecteerd' },
             ],
             textPrompt: 'Schrijf je projectselectie en motivatie',
+            evidence: {
+                label: 'Bewijs voor je portfolio',
+                prompt: 'Plak een kort, geredigeerd portfolio-excerpt en leg uit welk leerdoel het laat zien.',
+                placeholder: 'Gebruik alleen een eigen excerpt; verwijder namen, e-mailadressen, foto’s en persoonlijke links.',
+                minLength: 45,
+            },
         },
         {
             id: 'reflecties',

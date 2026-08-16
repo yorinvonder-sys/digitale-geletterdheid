@@ -21,6 +21,7 @@ export const techImpactAnalystConfig: DataViewerConfig = {
             description:
                 'Bezorgdrones worden door logistieke bedrijven getest en ingezet. Bekijk de impact-matrix met positieve en negatieve effecten per domein.',
             type: 'table',
+            source: { kind: 'synthetic', label: 'Gesimuleerde impact-matrix', methodNote: 'Oefenwaarden voor het wegen van effecten; geen officiële veiligheids- of beleidsbeoordeling.' },
             columns: [
                 { key: 'domein', label: 'Domein', sortable: true },
                 { key: 'positief_effect', label: 'Positief effect', sortable: false },
@@ -85,6 +86,7 @@ export const techImpactAnalystConfig: DataViewerConfig = {
             description:
                 'Landen en steden testen bezorgdrones op verschillende schaal. Onderzoekers maten de gemiddelde bezorgtijd in minuten voor een pakket van 1 kg binnen een straal van 5 km.',
             type: 'bar-chart',
+            source: { kind: 'synthetic', label: 'Gesimuleerde drone-pilotvergelijking', methodNote: 'Vereenvoudigde scenariowaarden; geen actuele of representatieve pilotstatistiek.' },
             chartData: [
                 { label: 'Drone (US)', value: 28, color: '#202023' },
                 { label: 'Traditioneel (US)', value: 52, color: '#ff3c21' },
@@ -136,6 +138,7 @@ export const techImpactAnalystConfig: DataViewerConfig = {
             description:
                 'Impact-analisten (= onderzoekers die onderzoeken welke gevolgen iets heeft) gebruiken een gestructureerde methode. Hier zijn de vier stappen die elke analyst doorloopt.',
             type: 'document-cards',
+            source: { kind: 'synthetic', label: 'Didactische impact-analysekaart', methodNote: 'Vereenvoudigd analysekader; onderbouw echte beleidsadviezen met controleerbare bronnen.' },
             cards: [
                 {
                     title: 'Stap 1: Technologie beschrijven',

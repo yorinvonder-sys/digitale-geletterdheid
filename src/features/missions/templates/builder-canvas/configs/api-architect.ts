@@ -31,6 +31,12 @@ export const apiArchitectConfig: BuilderCanvasConfig = {
                 { id: 'json', label: 'Ik heb uitgelegd wat JSON is' },
             ],
             textPrompt: 'Schrijf je uitleg van REST API-principes',
+            evidence: {
+                label: 'Bewijs van je API-ontwerp',
+                prompt: 'Noteer een klein testresultaat of redacted request/response-fragment waarmee je uitleg controleerbaar wordt.',
+                placeholder: 'Bijv. GET /taken → 200 met een JSON-lijst; laat tokens en persoonsgegevens weg.',
+                minLength: 45,
+            },
         },
         {
             id: 'endpoints-ontwerpen',

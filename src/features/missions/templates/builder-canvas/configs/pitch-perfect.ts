@@ -36,6 +36,12 @@ export const pitchPerfectConfig: BuilderCanvasConfig = {
                 { id: 'hook-sterk', label: 'De hook begint niet met "Mijn project..."' },
             ],
             textPrompt: 'Schrijf je pitch-structuur',
+            evidence: {
+                label: 'Bewijs uit feedback',
+                prompt: 'Noteer anonieme rubric-feedback en koppel die aan één aanpassing in je pitch.',
+                placeholder: 'Rubricpunt: duidelijkheid 2/4 → aanpassing: … (zonder namen of contactgegevens).',
+                minLength: 45,
+            },
         },
         {
             id: 'uitwerking',
