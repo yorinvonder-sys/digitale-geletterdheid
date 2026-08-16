@@ -26,7 +26,7 @@ export type RoleId =
   // Leerjaar 1 - Periode 3
   'review-week-2' | 'ai-spiegel' | 'social-safeguard' | 'veilig-internet' | 'scroll-stopper' | 'data-detective' | 'deepfake-detector' | 'cookie-crusher' | 'mail-detective' | 'data-handelaar' | 'privacy-profiel-spiegel' | 'filter-bubble-breaker' | 'datalekken-rampenplan' | 'data-voor-data' | 'data-speurder' | 'data-verzamelaar' |
   // Leerjaar 1 - Periode 4
-  'review-week-3' | 'mission-blueprint' | 'mission-vision' | 'mission-build' | 'mission-launch' | 'startup-pitch' |
+  'review-week-3' | 'mission-blueprint' | 'mission-vision' | 'mission-build' | 'mission-launch' |
   // Leerjaar 1 - Speciaal
   'ai-beleid-brainstorm' |
   // Leerjaar 1 - Reviews
@@ -44,7 +44,7 @@ export type RoleId =
   // Leerjaar 3 - Periode 2: Cybersecurity & Privacy
   'cyber-detective' | 'encryption-expert' | 'phishing-fighter' | 'security-auditor' | 'digital-forensics' | 'security-review' | 'code-denker' |
   // Leerjaar 3 - Periode 3: Maatschappelijke Impact
-  'startup-simulator' | 'policy-maker' | 'innovation-lab' | 'digital-divide-researcher' | 'tech-impact-analyst' | 'welzijnsonderzoeker' | 'impact-review' |
+  'startup-simulator' | 'policy-maker' | 'innovation-lab' | 'digital-divide-researcher' | 'tech-impact-analyst' | 'welzijnsonderzoeker' | 'startup-pitch' | 'impact-review' |
   // Leerjaar 3 - Periode 4: Meesterproef
   'portfolio-builder' | 'research-project' | 'prototype-developer' | 'pitch-perfect' | 'reflection-report' | 'meesterproef';
 

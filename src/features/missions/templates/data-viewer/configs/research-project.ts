@@ -19,7 +19,7 @@ export const researchProjectConfig: DataViewerConfig = {
             id: 'schermtijd-welzijn-onderzoek',
             title: 'Dataset: schermtijd en zelfgerapporteerd welzijn (havo/vwo, n=200)',
             description:
-                'Onderzoekers van de Universiteit Leiden maten schermtijd en welzijnsscores bij 200 havo/vwo-leerlingen (15-17 jaar). Welzijn werd gemeten op een schaal van 1-10. Let op twee sleutelbegrippen: correlatie (= twee dingen hangen samen) en causaliteit (= het ene veroorzaakt het andere) — die zijn niet hetzelfde.',
+                'Deze oefentabel simuleert schermtijd en welzijnsscores bij 200 havo/vwo-leerlingen (15-17 jaar). Welzijn staat op een schaal van 1-10. Let op twee sleutelbegrippen: correlatie (= twee dingen hangen samen) en causaliteit (= het ene veroorzaakt het andere) — die zijn niet hetzelfde.',
             type: 'table',
             source: { kind: 'synthetic', label: 'Gesimuleerde schermtijd- en welzijnstabel', methodNote: 'Fictieve, vereenvoudigde oefendata; de genoemde steekproef is geen werkelijk Universiteit-Leiden-onderzoek.' },
             columns: [

@@ -17,7 +17,7 @@ export const digitalDivideResearcherConfig: DataViewerConfig = {
         // ── Dataset 1: Tabel ──────────────────────────────────────────────────
         {
             id: 'internetsnelheid-landen',
-            title: 'Gemiddelde downloadsnelheid (Mbps) per land — 2024 (Speedtest Global Index)',
+            title: 'Gesimuleerde oefendata: downloadsnelheid (Mbps) per land',
             description:
                 'De gemiddelde downloadsnelheid zegt iets over de kwaliteit van internetinfrastructuur in een land. Bekijk de tabel en zoek patronen.',
             type: 'table',
@@ -79,9 +79,9 @@ export const digitalDivideResearcherConfig: DataViewerConfig = {
         // ── Dataset 2: Staafgrafiek ───────────────────────────────────────────
         {
             id: 'smartphone-gebruik-leeftijd',
-            title: 'Smartphonegebruik (%) per leeftijdsgroep — Nederland 2024 (CBS)',
+            title: 'Gesimuleerde oefendata: smartphonegebruik (%) per leeftijdsgroep',
             description:
-                'Het CBS meet jaarlijks hoeveel Nederlanders een smartphone gebruiken, uitgesplitst naar leeftijdsgroep. Bekijk hoe gebruik varieert over generaties.',
+                'Deze oefengrafiek gebruikt voorbeeldpercentages voor smartphonegebruik per leeftijdsgroep. Bekijk hoe gebruik kan variëren over generaties.',
             type: 'bar-chart',
             source: { kind: 'synthetic', label: 'Gesimuleerde leeftijdsvergelijking', methodNote: 'Didactische voorbeeldpercentages, niet te lezen als actuele CBS-statistiek.' },
             chartData: [

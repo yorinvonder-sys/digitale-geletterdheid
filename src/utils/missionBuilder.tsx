@@ -292,7 +292,7 @@ export function buildMissionsForPeriod(yearGroup: number, period: number): Missi
             icon: role?.icon
                 ? React.cloneElement(role.icon as React.ReactElement<{ size?: number }>, { size: 40 })
                 : (isReview ? <RotateCcw size={40} /> : <Puzzle size={40} />),
-            number: isReview ? 'Review' : (overrides.number || String(missionNum++).padStart(2, '0')),
+            number: isReview ? 'Review' : (overrides.number || String(missionNum).padStart(2, '0')),
             status: 'available',
             info: getMissionTooltipInfo(missionId, role),
             isReview,
@@ -302,6 +302,7 @@ export function buildMissionsForPeriod(yearGroup: number, period: number): Missi
             sloKerndoelen: meta?.sloKerndoelen || periodConfig.sloFocus,
             sloVsoKerndoelen: meta?.sloVsoKerndoelen,
         });
+        if (!isReview) missionNum++;
     }
     return missions;
 }
@@ -322,48 +323,35 @@ export function buildMissionsFromContainer(container: ContainerConfig): Mission[
         .map(m => m.missionId);
 
     const missions: Mission[] = [];
+    const orderedMissionIds = container.yearGroup === 3
+        ? [...mainMissionIds, ...reviewMissionIds]
+        : [...reviewMissionIds, ...mainMissionIds];
+    let missionNum = 1;
 
-    for (const missionId of reviewMissionIds) {
+    for (const missionId of orderedMissionIds) {
         const role = ROLES.find(r => r.id === missionId);
         const meta = getMissionMeta(missionId);
         const overrides = getMissionOverride(missionId);
+        const isReview = reviewMissionIds.includes(missionId);
         missions.push({
             id: missionId,
             title: getMissionDisplayTitle(missionId, role?.title, meta?.title),
             description: role?.description || '',
-            icon: role?.icon ? React.cloneElement(role.icon as React.ReactElement<{ size?: number }>, { size: 40 }) : <RotateCcw size={40} />,
-            number: 'Review',
+            icon: role?.icon
+                ? React.cloneElement(role.icon as React.ReactElement<{ size?: number }>, { size: 40 })
+                : (isReview ? <RotateCcw size={40} /> : <Puzzle size={40} />),
+            number: isReview ? 'Review' : (overrides.number || String(missionNum).padStart(2, '0')),
             status: 'available',
             info: getMissionTooltipInfo(missionId, role),
-            isReview: true,
+            isReview,
+            isExternal: isReview ? undefined : overrides.isExternal,
+            isBonus: isReview ? undefined : overrides.isBonus,
             classRestriction: overrides.classRestriction || meta?.classRestriction,
             isHighlighted: overrides.isHighlighted,
             sloKerndoelen: meta?.sloKerndoelen || container.sloFocus,
             sloVsoKerndoelen: meta?.sloVsoKerndoelen,
         });
-    }
-
-    let missionNum = 1;
-    for (const missionId of mainMissionIds) {
-        const role = ROLES.find(r => r.id === missionId);
-        const meta = getMissionMeta(missionId);
-        const overrides = getMissionOverride(missionId);
-        missions.push({
-            id: missionId,
-            title: getMissionDisplayTitle(missionId, role?.title, meta?.title),
-            description: role?.description || '',
-            icon: role?.icon ? React.cloneElement(role.icon as React.ReactElement<{ size?: number }>, { size: 40 }) : <Puzzle size={40} />,
-            number: overrides.number || String(missionNum).padStart(2, '0'),
-            status: 'available',
-            info: getMissionTooltipInfo(missionId, role),
-            isReview: false,
-            isExternal: overrides.isExternal,
-            isBonus: overrides.isBonus,
-            classRestriction: overrides.classRestriction || meta?.classRestriction,
-            sloKerndoelen: meta?.sloKerndoelen || container.sloFocus,
-            sloVsoKerndoelen: meta?.sloVsoKerndoelen,
-        });
-        missionNum++;
+        if (!isReview) missionNum++;
     }
 
     return missions;

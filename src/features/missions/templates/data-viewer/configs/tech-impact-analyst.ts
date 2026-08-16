@@ -82,7 +82,7 @@ export const techImpactAnalystConfig: DataViewerConfig = {
         // ── Dataset 2: Staafgrafiek ───────────────────────────────────────────
         {
             id: 'drone-bezorging-landen',
-            title: 'Gemiddelde bezorgtijd (minuten) met drone vs. traditioneel — 2024',
+            title: 'Gesimuleerde oefenvergelijking: bezorgtijd met drone vs. traditioneel',
             description:
                 'Landen en steden testen bezorgdrones op verschillende schaal. Onderzoekers maten de gemiddelde bezorgtijd in minuten voor een pakket van 1 kg binnen een straal van 5 km.',
             type: 'bar-chart',
