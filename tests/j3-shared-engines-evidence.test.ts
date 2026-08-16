@@ -12,6 +12,7 @@ const dataViewerConfigs = [
     'digital-divide-researcher',
     'tech-impact-analyst',
     'research-project',
+    'welzijnsonderzoeker',
 ];
 
 const builderConfigs = [

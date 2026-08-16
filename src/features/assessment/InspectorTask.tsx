@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { InspectorTask as InspectorTaskType } from './types';
 import { MousePointer2, AlertCircle, CheckCircle } from 'lucide-react';
 import { registerInspectorHotspot } from './inspectorProgress';
+import { getSpecialInspectorCanvasDefinition } from './specialInspectorCanvases';
 
 interface Props {
     task: InspectorTaskType;
@@ -69,6 +70,59 @@ export const InspectorTask: React.FC<Props> = ({ task, onComplete }) => {
     };
 
     const isSpecialType = task.image.startsWith('SPECIAL:');
+    const configuredSpecialCanvas = getSpecialInspectorCanvasDefinition(
+        task.image,
+        task.hotspots.map(hotspot => hotspot.id),
+    );
+
+    const renderConfiguredSpecialCanvas = () => {
+        if (!configuredSpecialCanvas) return null;
+
+        const toneClasses = {
+            default: 'border-lab-line bg-white text-lab-dark',
+            muted: 'border-lab-line bg-lab-bg text-lab-textLight',
+            code: 'border-lab-primary/25 bg-lab-primary/5 text-lab-dark font-mono',
+        } as const;
+
+        return (
+            <div className="absolute inset-0 bg-lab-bg p-4 sm:p-6 flex flex-col overflow-auto">
+                <header className="mb-4 rounded-xl bg-lab-primary px-4 py-3 text-white shadow-sm">
+                    <h3 className="text-base sm:text-lg font-black">{configuredSpecialCanvas.title}</h3>
+                    <p className="text-xs sm:text-sm text-white/75">{configuredSpecialCanvas.subtitle}</p>
+                </header>
+                <div className="grid flex-1 auto-rows-fr gap-3 sm:grid-cols-2">
+                    {configuredSpecialCanvas.regions.map((region, index) => {
+                        const hotspot = task.hotspots.find(item => item.id === region.hotspotId);
+                        if (!hotspot) return null;
+                        const found = isHotspotFound(hotspot.id);
+
+                        return (
+                            <button
+                                key={region.hotspotId}
+                                type="button"
+                                onClick={() => handleHotspotClick(hotspot)}
+                                aria-label={`Inspecteer onderdeel ${index + 1}: ${region.eyebrow}`}
+                                aria-pressed={found}
+                                className={`min-h-20 rounded-xl border p-3 text-left shadow-sm transition hover:-translate-y-0.5 hover:border-lab-primary hover:shadow-md focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-lab-gold/60 ${toneClasses[region.tone ?? 'default']} ${found ? 'ring-4 ring-lab-gold/70' : ''}`}
+                            >
+                                <span className="block text-[10px] sm:text-xs font-bold uppercase tracking-wide opacity-65">
+                                    {region.eyebrow}
+                                </span>
+                                <span className="mt-1 block text-xs sm:text-sm font-semibold break-words">
+                                    {region.content}
+                                </span>
+                                {region.detail && (
+                                    <span className="mt-1.5 block text-[10px] sm:text-xs leading-relaxed opacity-75">
+                                        {region.detail}
+                                    </span>
+                                )}
+                            </button>
+                        );
+                    })}
+                </div>
+            </div>
+        );
+    };
 
     const renderPromptComparison = () => {
         const badPrompt = task.hotspots.find(h => h.id === 'bad-prompt');
@@ -278,6 +332,7 @@ export const InspectorTask: React.FC<Props> = ({ task, onComplete }) => {
                         {task.image === 'SPECIAL:PROMPT_COMPARISON' && renderPromptComparison()}
                         {task.image === 'SPECIAL:CHATBOT_ERROR_DETECTION' && renderChatbotError()}
                         {task.image === 'SPECIAL:BAR_CHART_MISLEADING' && renderBarChartMisleading()}
+                        {configuredSpecialCanvas && renderConfiguredSpecialCanvas()}
                         {task.image === 'SPECIAL:BAD_SLIDE' && (
                             <div
                                 className="relative w-full h-full cursor-crosshair"
@@ -334,7 +389,12 @@ export const InspectorTask: React.FC<Props> = ({ task, onComplete }) => {
 
                 {/* Feedback Overlay */}
                 {showFeedback && (
-                    <div className="absolute inset-0 flex items-center justify-center bg-black/40 backdrop-blur-sm animate-in fade-in duration-200 z-10">
+                    <div
+                        className="absolute inset-0 flex items-center justify-center bg-black/40 backdrop-blur-sm animate-in fade-in duration-200 z-10"
+                        role="status"
+                        aria-live="polite"
+                        aria-atomic="true"
+                    >
                         <div className={`
                             p-6 rounded-2xl max-w-sm text-center shadow-2xl transform scale-100 animate-in zoom-in-95
                             ${showFeedback.correct ? 'bg-lab-coral text-white' : 'bg-lab-coral text-white'}

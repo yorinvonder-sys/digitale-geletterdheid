@@ -8,7 +8,7 @@ import type { DataViewerConfig } from '../DataViewer';
 //
 // Dataset 1: Synthetische oefentabel van 15 anonieme deelnemers (leerjaar 3)
 //   — schermtijd, platform, gevoel, slaap, limiet, tevredenheid
-// Dataset 2: Staafgrafiek CBS/Trimbos-achtig — gemiddeld schermgebruik per categorie
+// Dataset 2: Synthetische staafgrafiek — gemiddeld schermgebruik per categorie
 // Dataset 3: Trendtabel jan–jun — schermtijd + welzijnsscore (inverse correlatie, niet perfect)
 //
 // Puntenopbouw (totaal 100):
@@ -29,11 +29,11 @@ export const welzijnsonderzoekerConfig: DataViewerConfig = {
     introEmoji: '🔬',
     introTitle: 'Word een welzijnsonderzoeker',
     introDescription:
-        'Wat zegt data écht over digitaal welzijn? Jij analyseert een synthetische oefendataset, bekijkt nationale cijfers en onderzoekt trends over tijd. Geen meningen — alleen wat de data laat zien. Gebruik uitsluitend de gegevens in deze oefening en deel geen eigen welzijns-, naam-, contact-, gezondheids- of slaapgegevens.',
+        'Wat zegt data écht over digitaal welzijn? Jij analyseert synthetische oefendatasets, vergelijkt fictieve categorieën en onderzoekt een gesimuleerde trend over tijd. Geen meningen — alleen wat de oefendata laat zien. Gebruik uitsluitend de gegevens in deze oefening en deel geen eigen welzijns-, naam-, contact-, gezondheids- of slaapgegevens.',
     introFeatures: [
-        'Analyseer enquêtedata van 15 leerlingen uit leerjaar 3',
-        'Vergelijk categorieën schermgebruik met nationale cijfers',
-        'Onderzoek het verband tussen schermtijd en welzijn over 6 maanden',
+        'Analyseer een fictieve enquête met 15 anonieme deelnemers',
+        'Vergelijk categorieën schermgebruik in een oefengrafiek',
+        'Onderzoek een gesimuleerd verband tussen schermtijd en welzijn',
     ],
 
     datasets: [
@@ -44,6 +44,11 @@ export const welzijnsonderzoekerConfig: DataViewerConfig = {
             description:
                 'Dit is een synthetische, uitsluitend voor oefening gemaakte dataset van 15 anonieme deelnemers uit leerjaar 3 — geen echte leerlingen en geen echte welzijns- of slaapgegevens. Bekijk de tabel en beantwoord de vragen. Tip: klik op een kolomkop om te sorteren; deel geen eigen gegevens.',
             type: 'table',
+            source: {
+                kind: 'synthetic',
+                label: 'Fictieve, anonieme oefenenquête',
+                methodNote: 'Handmatig samengestelde voorbeeldrijen voor reken- en correlatie-oefeningen; geen echte deelnemers of onderzoeksresultaten.',
+            },
             columns: [
                 { key: 'participant_id', label: 'Deelnemer-ID', sortable: true },
                 { key: 'schermtijd_uur', label: 'Schermtijd (uur/dag)', sortable: true },
@@ -115,10 +120,15 @@ export const welzijnsonderzoekerConfig: DataViewerConfig = {
         // ── Dataset 2: Staafgrafiek — schermgebruik per categorie ─────────────
         {
             id: 'schermgebruik-categorieen-nl',
-            title: 'Digitaal schermgebruik Nederlandse jongeren (12–18 jaar)',
+            title: 'Gesimuleerd schermgebruik per activiteit (12–18 jaar)',
             description:
-                'Gebaseerd op CBS-data en Trimbos-onderzoek (2025): gemiddeld aantal uren per dag dat Nederlandse jongeren van 12–18 jaar besteden aan verschillende schermactiviteiten. Let goed op de categorieën.',
+                'Deze oefengrafiek gebruikt verzonnen voorbeelduren om verschillende soorten schermgebruik te vergelijken. De waarden zijn geen actuele CBS- of Trimbos-cijfers en mogen niet als echte landelijke gemiddelden worden gebruikt.',
             type: 'bar-chart',
+            source: {
+                kind: 'synthetic',
+                label: 'Gesimuleerde categorieën voor schermgebruik',
+                methodNote: 'Didactische voorbeeldwaarden zonder echte steekproef; alleen bedoeld om categorieën te vergelijken en conclusies te begrenzen.',
+            },
             chartData: [
                 { label: 'Social media',         value: 2.8, color: '#ff3c21' },
                 { label: 'Gaming',               value: 1.9, color: '#202023' },
@@ -131,7 +141,7 @@ export const welzijnsonderzoekerConfig: DataViewerConfig = {
                 {
                     id: 'woz-q4-grootste-categorie',
                     question:
-                        'Welke categorie schermgebruik neemt gemiddeld de meeste tijd in beslag bij Nederlandse jongeren?',
+                        'Welke categorie neemt in deze oefengrafiek gemiddeld de meeste tijd in beslag?',
                     type: 'multiple-choice',
                     options: [
                         'Gaming',
@@ -153,7 +163,7 @@ export const welzijnsonderzoekerConfig: DataViewerConfig = {
                     minKeywords: 1,
                     correctAnswer: '',
                     explanation:
-                        'Creatief gebruik (muziek maken, video\'s produceren) staat onderaan met slechts 0,4 uur, maar onderzoek van Harvard Digital Agency laat zien dat actief creëren een fundamenteel ander effect heeft op welzijn dan passief scrollen. Mensen die iets maken, rapporteren meer controle en voldoening — precies wat bij social media-gebruik vaak ontbreekt. Communicatie via apps (0,9 uur) is ook interessant: dit kan zowel sociaal verbindend als stressverhogend zijn, afhankelijk van de context.',
+                        'Creatief gebruik (muziek maken, video\'s produceren) staat in deze oefengrafiek onderaan met 0,4 uur. Actief iets maken vraagt meestal andere handelingen dan passief scrollen, waardoor alleen het aantal uren onvoldoende zegt over welzijn. Communicatie via apps (0,9 uur) kan bijvoorbeeld zowel sociaal verbindend als stressverhogend zijn, afhankelijk van de context. Voor uitspraken over echte effecten heb je controleerbaar onderzoek nodig.',
                     points: 15,
                 },
             ],
@@ -164,8 +174,13 @@ export const welzijnsonderzoekerConfig: DataViewerConfig = {
             id: 'welzijnstrend-halfjaar',
             title: 'Schermtijd en welzijn over 6 maanden',
             description:
-                'Een panel van 120 leerlingen (leerjaar 2–4) hield gedurende 6 maanden bij hoeveel ze per dag op een scherm keken en hoe ze zich voelden. De welzijnsscore loopt van 1 (zeer slecht) tot 10 (uitstekend). Let goed op het patroon — maar ook op de uitzonderingen.',
+                'Deze synthetische oefentabel doet alsof een panel van 120 leerlingen (leerjaar 2–4) gedurende 6 maanden schermtijd en welzijn bijhield. Er zijn geen echte leerlingen gevolgd. De welzijnsscore loopt van 1 (zeer slecht) tot 10 (uitstekend). Let op het patroon én de uitzonderingen.',
             type: 'table',
+            source: {
+                kind: 'synthetic',
+                label: 'Fictieve trendtabel schermtijd en welzijn',
+                methodNote: 'Verzonnen maandgemiddelden en contextlabels om correlatie, causaliteit en verstorende factoren te oefenen; geen longitudinaal onderzoek.',
+            },
             columns: [
                 { key: 'maand',          label: 'Maand',                    sortable: false },
                 { key: 'schermtijd_uur', label: 'Gem. schermtijd (uur/dag)', sortable: true  },
@@ -206,7 +221,7 @@ export const welzijnsonderzoekerConfig: DataViewerConfig = {
                     minKeywords: 1,
                     correctAnswer: '',
                     explanation:
-                        'De contextkolom laat zien dat er steeds andere factoren meespelen: toetsdruk in maart, vakantierust in april, eindexamenstress in mei. Het is gevaarlijk omdat je een simpele oorzaak-gevolgrelatie suggereert terwijl er veel andere verklaringen zijn (confounders). Trimbos en Harvard Digital Agency benadrukken dat het HOE (passief scrollen vs. actief gebruik) en de context belangrijker zijn dan de hoeveelheid uren alleen.',
+                        'De contextkolom laat zien dat er steeds andere factoren meespelen: toetsdruk in maart, vakantierust in april en toetsstress in mei. Het is gevaarlijk om een simpele oorzaak-gevolgrelatie te suggereren terwijl er veel andere verklaringen zijn (verstorende factoren). Deze oefendata kan alleen laten zien hoe je zulke alternatieve verklaringen onderzoekt; voor echte uitspraken is controleerbaar onderzoek nodig.',
                     points: 10,
                 },
             ],

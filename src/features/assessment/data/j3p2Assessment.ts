@@ -32,6 +32,7 @@ export const J3P2_ASSESSMENT: AssessmentTask[] = [
         xpReward: 90,
         question: 'Bekijk deze e-mail die een medewerker heeft ontvangen. Er zijn drie rode vlaggen die wijzen op phishing. Klik op alle drie de rode vlaggen.',
         image: 'SPECIAL:PHISHING_EMAIL',
+        requiredCorrect: 3,
         hotspots: [
             {
                 id: 'fake-sender',
@@ -98,6 +99,7 @@ export const J3P2_ASSESSMENT: AssessmentTask[] = [
         xpReward: 110,
         question: 'Bekijk dit inlogformulier van de NovaTech-website. Er zitten drie beveiligingsproblemen in. Klik op alle drie de kwetsbaarheden.',
         image: 'SPECIAL:WEBSITE_SECURITY_FORM',
+        requiredCorrect: 3,
         hotspots: [
             {
                 id: 'sql-injection',

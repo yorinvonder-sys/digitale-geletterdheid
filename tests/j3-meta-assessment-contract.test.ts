@@ -2,11 +2,13 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import { registerInspectorHotspot } from '../src/features/assessment/inspectorProgress.ts';
+import { getSpecialInspectorCanvasDefinition } from '../src/features/assessment/specialInspectorCanvases.ts';
 
 const read = (path: string) => fs.readFileSync(new URL(`../${path}`, import.meta.url), 'utf8');
 
 test('inspector progress requires every distinct correct hotspot', () => {
     const task = {
+        requiredCorrect: 2,
         hotspots: [
             { id: 'first', correct: true },
             { id: 'second', correct: true },
@@ -27,6 +29,29 @@ test('inspector progress requires every distinct correct hotspot', () => {
     assert.equal(complete.isComplete, true);
 });
 
+test('alle J3 SPECIAL-inspectors hebben een volledige klikbare canvasdefinitie', () => {
+    const inspectors = [
+        { image: 'SPECIAL:API_RESPONSE_ERROR', hotspotIds: ['wrong-status', 'missing-field', 'correct-header'] },
+        { image: 'SPECIAL:PHISHING_EMAIL', hotspotIds: ['fake-sender', 'urgent-language', 'fake-link', 'logo-area'] },
+        { image: 'SPECIAL:WEBSITE_SECURITY_FORM', hotspotIds: ['sql-injection', 'no-https', 'visible-password', 'submit-button'] },
+        { image: 'SPECIAL:SAFECITY_PITCH', hotspotIds: ['no-consent', 'crime-stats', 'tech-specs'] },
+        { image: 'SPECIAL:PORTFOLIO_REVIEW', hotspotIds: ['missing-sources', 'broken-links', 'accessibility', 'header-design'] },
+    ];
+
+    for (const task of inspectors) {
+        const definition = getSpecialInspectorCanvasDefinition(
+            task.image,
+            task.hotspotIds,
+        );
+        assert.ok(definition, `${task.image} mist een volledige canvasdefinitie`);
+        assert.deepEqual(
+            new Set(definition.regions.map(region => region.hotspotId)),
+            new Set(task.hotspotIds),
+            `${task.image} moet ieder hotspotgebied renderen`,
+        );
+    }
+});
+
 test('J3 inspector prompts name all required findings', () => {
     const p1 = read('src/features/assessment/data/j3p1Assessment.ts');
     const p2 = read('src/features/assessment/data/j3p2Assessment.ts');
@@ -35,6 +60,9 @@ test('J3 inspector prompts name all required findings', () => {
     assert.match(p2, /Klik op alle drie de rode vlaggen/);
     assert.match(p2, /Klik op alle drie de kwetsbaarheden/);
     assert.match(p4, /Klik op alle drie de problemen/);
+    assert.match(p1, /requiredCorrect: 2/);
+    assert.equal((p2.match(/requiredCorrect: 3/g) ?? []).length, 2);
+    assert.match(p4, /requiredCorrect: 3/);
 });
 
 test('inspector progress copy stays neutral across finding types', () => {
