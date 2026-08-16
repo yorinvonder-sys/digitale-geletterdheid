@@ -37,6 +37,13 @@ test('J3 inspector prompts name all required findings', () => {
     assert.match(p4, /Klik op alle drie de problemen/);
 });
 
+test('inspector progress copy stays neutral across finding types', () => {
+    const inspector = read('src/features/assessment/InspectorTask.tsx');
+    assert.match(inspector, /Dit onderdeel had je al gevonden/);
+    assert.match(inspector, /onderdeel\$\{progress\.requiredCorrect === 1 \? '' : 'en'\} gevonden/);
+    assert.doesNotMatch(inspector, /progress\.correctCount[^\n]*fouten gevonden/);
+});
+
 test('J3 roles are registered in the correct year and once', () => {
     const year1 = read('src/config/agents/year1.tsx');
     const year3 = read('src/config/agents/year3.tsx');

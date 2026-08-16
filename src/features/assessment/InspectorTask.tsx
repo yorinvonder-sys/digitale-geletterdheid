@@ -26,9 +26,9 @@ export const InspectorTask: React.FC<Props> = ({ task, onComplete }) => {
         }
 
         const feedbackMessage = hotspot.correct && progress.duplicate
-            ? `Deze fout had je al gevonden. Zoek nog ${Math.max(0, progress.requiredCorrect - progress.correctCount)} andere fout${progress.requiredCorrect - progress.correctCount === 1 ? '' : 'en'}.`
+            ? `Dit onderdeel had je al gevonden. Zoek nog ${Math.max(0, progress.requiredCorrect - progress.correctCount)} ander${progress.requiredCorrect - progress.correctCount === 1 ? '' : 'e'} onderdeel${progress.requiredCorrect - progress.correctCount === 1 ? '' : 'en'}.`
             : hotspot.correct && !progress.isComplete
-                ? `${hotspot.feedback} (${progress.correctCount}/${progress.requiredCorrect} fouten gevonden — ga door!)`
+                ? `${hotspot.feedback} (${progress.correctCount}/${progress.requiredCorrect} onderdeel${progress.requiredCorrect === 1 ? '' : 'en'} gevonden — ga door!)`
                 : hotspot.feedback;
 
         setShowFeedback({
