@@ -30,8 +30,9 @@ export const J3P2_ASSESSMENT: AssessmentTask[] = [
         title: 'Phishing Mail Identificeren',
         description: 'Een medewerker van NovaTech heeft een verdachte e-mail ontvangen. Vind de aanwijzingen dat het phishing is!',
         xpReward: 90,
-        question: 'Bekijk deze e-mail die een medewerker heeft ontvangen. Er zijn meerdere rode vlaggen die wijzen op phishing. Klik op het meest verdachte element.',
+        question: 'Bekijk deze e-mail die een medewerker heeft ontvangen. Er zijn drie rode vlaggen die wijzen op phishing. Klik op alle drie de rode vlaggen.',
         image: 'SPECIAL:PHISHING_EMAIL',
+        requiredCorrect: 3,
         hotspots: [
             {
                 id: 'fake-sender',
@@ -96,8 +97,9 @@ export const J3P2_ASSESSMENT: AssessmentTask[] = [
         title: 'Website Beveiligingslek',
         description: 'De website van NovaTech heeft ernstige beveiligingslekken. Vind de kwetsbaarheden in het inlogformulier!',
         xpReward: 110,
-        question: 'Bekijk dit inlogformulier van de NovaTech-website. Er zitten meerdere beveiligingsproblemen in. Klik op de meest kritieke kwetsbaarheid.',
+        question: 'Bekijk dit inlogformulier van de NovaTech-website. Er zitten drie beveiligingsproblemen in. Klik op alle drie de kwetsbaarheden.',
         image: 'SPECIAL:WEBSITE_SECURITY_FORM',
+        requiredCorrect: 3,
         hotspots: [
             {
                 id: 'sql-injection',

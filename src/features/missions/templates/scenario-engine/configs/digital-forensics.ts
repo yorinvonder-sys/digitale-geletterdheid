@@ -6,7 +6,7 @@ const config: ScenarioEngineConfig = {
     introEmoji: '🕵️',
     introTitle: 'Digital Forensics',
     introDescription:
-        'Elke keer dat iemand een computer gebruikt, laat hij digitale sporen achter: in logbestanden, metadata en netwerkdata. Als digitaal forensisch analist leer jij die sporen lezen, een tijdlijn reconstrueren en een onderbouwde conclusie trekken — net als bij de politie.',
+        'Deze oefening gebruikt uitsluitend fictieve, synthetische incidentdata — geen echte patiënt- of werknemerdata. Elke keer dat iemand een computer gebruikt, laat hij digitale sporen achter: in logbestanden, metadata en netwerkdata. Als digitaal forensisch analist leer jij die sporen lezen, een tijdlijn reconstrueren en een onderbouwde conclusie trekken — net als bij de politie.',
     introFeatures: [
         'Herken verdachte patronen in gesimuleerde logbestanden',
         'Rangschik gebeurtenissen chronologisch om een tijdlijn op te bouwen',
@@ -54,7 +54,7 @@ const config: ScenarioEngineConfig = {
             emoji: '🚨',
             title: 'Herken verdachte logregels',
             description:
-                'Hieronder zie je logregels uit een serverlogboek. Welke regels zijn verdacht en wijzen op een mogelijke aanval of beveiligingsincident? Selecteer ze.',
+                'Hieronder zie je synthetische oefenlogregels uit een fictief serverlogboek — geen echte patiënt- of werknemerdata. Welke regels zijn verdacht en wijzen op een mogelijke aanval of beveiligingsincident? Selecteer ze.',
             type: 'select-correct',
             maxScore: 25,
             feedbackCorrect:
@@ -65,19 +65,19 @@ const config: ScenarioEngineConfig = {
                 {
                     id: 1,
                     icon: '🔁',
-                    title: 'Vijf mislukte inlogpogingen binnen 10 seconden',
+                    title: 'Vier mislukte inlogpogingen gevolgd door succes binnen 10 seconden',
                     description:
                         '22:54:10 | LOGIN FAILED | user: admin\n22:54:11 | LOGIN FAILED | user: admin\n22:54:12 | LOGIN FAILED | user: admin\n22:54:13 | LOGIN FAILED | user: admin\n22:54:19 | LOGIN SUCCESS | user: admin',
                     correct: true,
                     explanation:
-                        'Dit is een brute force aanval: razendsnel proberen totdat het werkt. Vijf pogingen in 9 seconden is niet menselijk typgedrag. De succesvolle inlog daarna is extra alarmerend.',
+                        'Dit is een brute force aanval: vier mislukte pogingen in 3 seconden, gevolgd door één succesvolle inlog 6 seconden later (vijf login-events in totaal). De snelheid en de succesvolle inlog daarna zijn extra alarmerend.',
                 },
                 {
                     id: 2,
                     icon: '🌅',
                     title: 'Inloggen op maandagochtend 08:45',
                     description:
-                        '2024-03-11 08:45:22 | LOGIN SUCCESS | user: medewerker_jan | IP: 192.168.1.15',
+                        '2024-03-11 08:45:22 | LOGIN SUCCESS | user: account_employee_01 | IP: 192.168.1.15',
                     correct: false,
                     explanation:
                         'Dit is volkomen normaal. Een medewerker die op maandagochtend inlogt via het interne netwerk (192.168.x.x is een intern IP-adres) is geen verdacht gedrag.',
@@ -87,7 +87,7 @@ const config: ScenarioEngineConfig = {
                     icon: '🕒',
                     title: 'Inloggen midden in de nacht',
                     description:
-                        '2024-03-09 03:17:44 | LOGIN SUCCESS | user: directeur_bakker | IP: 178.45.22.11',
+                        '2024-03-09 03:17:44 | LOGIN SUCCESS | user: account_director_01 | IP: 178.45.22.11',
                     correct: true,
                     explanation:
                         'Een inlog midden in de nacht van een account dat normaal overdag actief is, met een onbekend extern IP-adres, is verdacht. Het kan een inbraak zijn — of de directeur die thuis werkt. Nader onderzoek is nodig.',
@@ -127,7 +127,7 @@ const config: ScenarioEngineConfig = {
                     icon: '🖨️',
                     title: 'Printer wordt gebruikt voor een printopdracht',
                     description:
-                        '2024-03-10 14:30:05 | PRINT_JOB | user: leraar_vos | printer: printer_lokaal_3 | pages: 12',
+                        '2024-03-10 14:30:05 | PRINT_JOB | user: account_teacher_01 | printer: printer_lokaal_3 | pages: 12',
                     correct: false,
                     explanation:
                         'Gewone printopdracht. Geen verdachte kenmerken: bekende gebruiker, bekende printer, overdag, klein documentje.',
@@ -151,7 +151,7 @@ const config: ScenarioEngineConfig = {
             emoji: '⏱️',
             title: 'Bouw de tijdlijn',
             description:
-                'Hieronder staan vijf logregels uit een incident bij een ziekenhuis. Zet ze in de juiste chronologische volgorde (1e = eerste wat er is gebeurd).',
+                'Hieronder staan vijf logregels uit een fictief, synthetisch ziekenhuisincident (geen echte patiëntdata). Zet ze in de juiste chronologische volgorde (1e = eerste wat er is gebeurd).',
             type: 'order-priority',
             maxScore: 25,
             feedbackCorrect:
@@ -174,7 +174,7 @@ const config: ScenarioEngineConfig = {
                     icon: '❌',
                     title: 'Mislukte inlogpogingen',
                     description:
-                        '22:54:17 en 22:54:19 | LOGIN FAILED | user: dr_bakker — aanvaller probeert wachtwoord te raden.',
+                        '22:54:17 en 22:54:19 | LOGIN FAILED | user: account_doctor_01 — aanvaller probeert wachtwoord te raden (twee mislukte pogingen).',
                     correctPosition: 1,
                     explanation:
                         'Tweede stap: toegang proberen te krijgen. Na de verkenning richt de aanvaller zich op een specifiek account en probeert in te loggen.',
@@ -184,7 +184,7 @@ const config: ScenarioEngineConfig = {
                     icon: '✅',
                     title: 'Succesvolle inlog',
                     description:
-                        '22:54:22 | LOGIN SUCCESS | user: dr_bakker — aanvaller heeft toegang gekregen tot het account.',
+                        '22:54:22 | LOGIN SUCCESS | user: account_doctor_01 — aanvaller heeft toegang gekregen tot het account.',
                     correctPosition: 2,
                     explanation:
                         'Derde stap: toegang verkregen. Na twee mislukte pogingen lukt het. Dit kan betekenen dat het wachtwoord zwak was of dat de aanvaller het wachtwoord al kende.',
@@ -194,17 +194,17 @@ const config: ScenarioEngineConfig = {
                     icon: '📂',
                     title: 'Toegang tot patiëntgegevens',
                     description:
-                        '22:55:41 | ACCESS | database: patient_records | rows: 847 — aanvaller leest 847 patiëntdossiers.',
+                        '22:55:41 | ACCESS | database: synthetic_patient_records | rows: 847 — aanvaller leest 847 synthetische patiëntdossiers.',
                     correctPosition: 3,
                     explanation:
-                        'Vierde stap: het doel bereiken. De aanvaller heeft toegang tot de patiëntendatabase en raadpleegt 847 dossiers. Dit is het feitelijke datalek.',
+                        'Vierde stap: het doel bereiken. De aanvaller heeft toegang tot de fictieve patiëntendatabase en raadpleegt 847 synthetische dossiers. Dit is het feitelijke datalek binnen deze oefening.',
                 },
                 {
                     id: 5,
                     icon: '🚪',
                     title: 'Uitloggen',
                     description:
-                        '22:58:03 | LOGOUT | user: dr_bakker — aanvaller verlaat het systeem na het incident.',
+                        '22:58:03 | LOGOUT | user: account_doctor_01 — aanvaller verlaat het systeem na het incident.',
                     correctPosition: 4,
                     explanation:
                         'Vijfde stap: vertrekken. De aanvaller logt netjes uit, mogelijk om minder sporen achter te laten. Het totale incident duurde slechts 7 minuten.',
@@ -229,7 +229,7 @@ const config: ScenarioEngineConfig = {
                     icon: '⏰',
                     title: '"De inlog vond plaats om 22:54:22"',
                     description:
-                        'Op basis van de logregel: 22:54:22 | LOGIN SUCCESS | user: dr_bakker',
+                        'Op basis van de logregel: 22:54:22 | LOGIN SUCCESS | user: account_doctor_01',
                     correct: true,
                     explanation:
                         'Dit is een feit. De timestamp staat letterlijk in de logdata. Timestamps in serverlogboeken worden automatisch gegenereerd en zijn betrouwbaar bewijs.',
@@ -237,12 +237,12 @@ const config: ScenarioEngineConfig = {
                 {
                     id: 2,
                     icon: '👤',
-                    title: '"Dr. Bakker heeft zelf ingelogd"',
+                    title: '"De accounteigenaar heeft zelf ingelogd"',
                     description:
-                        'Op basis van de logregel: LOGIN SUCCESS | user: dr_bakker | IP: 10.0.5.44',
+                        'Op basis van de logregel: LOGIN SUCCESS | user: account_doctor_01 | IP: 10.0.5.44',
                     correct: false,
                     explanation:
-                        'Dit is een aanname. De log bewijst alleen dat er is ingelogd met de inloggegevens van dr_bakker. Dat kan de echte dr. Bakker zijn — of iemand die zijn wachtwoord heeft gestolen. De identiteit van de persoon is niet bewezen.',
+                        'Dit is een aanname. De log bewijst alleen dat er is ingelogd met de inloggegevens van account_doctor_01. Dat kan de echte accounteigenaar zijn — of iemand die het wachtwoord heeft gestolen. De identiteit van de persoon is niet bewezen.',
                 },
                 {
                     id: 3,
@@ -269,7 +269,7 @@ const config: ScenarioEngineConfig = {
                     icon: '📊',
                     title: '"Er zijn 847 patiëntdossiers ingezien"',
                     description:
-                        'Op basis van: ACCESS | database: patient_records | rows: 847',
+                        'Op basis van: ACCESS | database: synthetic_patient_records | rows: 847',
                     correct: true,
                     explanation:
                         'Dit is een feit. De database-logregel registreert exact hoeveel rijen er zijn opgevraagd. Dit is technisch meetbaar en betrouwbaar als bewijs voor de omvang van het datalek.',

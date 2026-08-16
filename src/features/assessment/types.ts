@@ -45,6 +45,8 @@ export interface InspectorTask extends BaseTask {
     type: 'inspector';
     image: string; // Path to screenshot/image (can be a placeholder color for now)
     hotspots: InspectorHotspot[];
+    /** Optional number of distinct correct hotspots needed to pass. Defaults to all. */
+    requiredCorrect?: number;
     question: string; // "Waar zit de fout in deze slide?"
 }
 

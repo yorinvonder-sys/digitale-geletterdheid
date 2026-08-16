@@ -32,6 +32,12 @@ export const meesterproefConfig: BuilderCanvasConfig = {
                 { id: 'planning', label: 'Er is een tijdlijn met mijlpalen' },
             ],
             textPrompt: 'Schrijf je projectvoorstel',
+            evidence: {
+                label: 'SLO-bewijs en succescriteria',
+                prompt: 'Maak een compacte matrix: leerdoel/SLO, artefact of test, resultaat en beperking.',
+                placeholder: 'SLO: … | artefact/test: … | resultaat: … | beperking/volgende stap: …',
+                minLength: 55,
+            },
         },
         {
             id: 'ontwikkelproces',

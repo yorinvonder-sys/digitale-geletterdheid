@@ -14,6 +14,7 @@ interface StepInstructionPanelProps {
     isStepComplete: boolean;
     onChecklistToggle: (itemKey: string) => void;
     onTextChange: (stepId: string, value: string) => void;
+    onEvidenceChange: (stepId: string, value: string) => void;
     onReflectionAnswer: (stepId: string, correct: boolean) => void;
     onReflectionComplete: (stepId: string, correct: boolean) => void;
     onNextStep: () => void;
@@ -28,6 +29,7 @@ export const StepInstructionPanel: React.FC<StepInstructionPanelProps> = ({
     isStepComplete,
     onChecklistToggle,
     onTextChange,
+    onEvidenceChange,
     onReflectionAnswer,
     onReflectionComplete,
     onNextStep,
@@ -44,6 +46,11 @@ export const StepInstructionPanel: React.FC<StepInstructionPanelProps> = ({
     const lengthRequirementMet = !requiredTextLength || currentTextLength >= requiredTextLength;
     const qualityHint = requiredTextLength ? answerQualityHint(currentText) : null;
     const textRequirementMet = lengthRequirementMet && !qualityHint;
+    const evidenceRequirement = stepData.evidence;
+    const evidenceText = state.evidenceEntries[stepData.id] ?? '';
+    const evidenceMinLength = evidenceRequirement?.minLength ?? 40;
+    const evidenceLengthMet = !evidenceRequirement || evidenceText.trim().length >= evidenceMinLength;
+    const evidenceQualityHint = evidenceRequirement ? answerQualityHint(evidenceText) : null;
 
     // De knop waarop de focus stond (Volgende stap) wordt bij het wisselen van stap
     // uitgeschakeld tot de nieuwe stap voltooid is; de browser haalt de focus dan
@@ -161,6 +168,47 @@ export const StepInstructionPanel: React.FC<StepInstructionPanelProps> = ({
                 </div>
             )}
 
+            {evidenceRequirement && (
+                <div className="mb-4 rounded-2xl border border-duck-acid/25 bg-duck-acid/5 p-4">
+                    <label
+                        className="text-[10px] font-black text-duck-ink/70 uppercase tracking-widest mb-2 block"
+                        style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
+                        htmlFor={`evidence-${stepData.id}`}
+                    >
+                        {evidenceRequirement.label}
+                    </label>
+                    <p
+                        className="text-sm text-duck-ink/75 leading-relaxed mb-2"
+                        style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
+                    >
+                        {evidenceRequirement.prompt}
+                    </p>
+                    <textarea
+                        id={`evidence-${stepData.id}`}
+                        value={evidenceText}
+                        onChange={(e) => onEvidenceChange(stepData.id, e.target.value)}
+                        placeholder={evidenceRequirement.placeholder ?? 'Noteer hier kort welk resultaat of artefact je hebt gecontroleerd…'}
+                        rows={3}
+                        className="w-full resize-none rounded-xl border border-duck-gray bg-white px-4 py-3 text-sm leading-relaxed text-duck-ink/70 placeholder:text-duck-ink/50 focus:border-duck-acid/50 focus:outline-none focus:ring-2 focus:ring-duck-acid/30"
+                        style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
+                    />
+                    <p
+                        className="mt-2 text-xs text-duck-ink/70"
+                        style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
+                    >
+                        {evidenceLengthMet && !evidenceQualityHint
+                            ? `${evidenceText.trim().length} tekens bewijs — compleet.`
+                            : `Schrijf minimaal ${evidenceMinLength} tekens betekenisvol bewijs (${evidenceText.trim().length}/${evidenceMinLength}).`}
+                    </p>
+                    <p
+                        className="mt-1 text-[11px] leading-relaxed text-duck-ink/60"
+                        style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
+                    >
+                        {evidenceRequirement.privacyNote ?? 'Vul geen namen, contactgegevens, foto’s, stemopnames of links met persoonsgegevens in.'}
+                    </p>
+                </div>
+            )}
+
             {/* Reflection question — shown after checklist is complete */}
             {isStepComplete && stepData.reflectionQuestion && !state.reflectionAnswered[stepData.id] && (
                 <FollowUpCard
@@ -219,6 +267,14 @@ export const StepInstructionPanel: React.FC<StepInstructionPanelProps> = ({
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                 >
                     Vink alle items af om door te gaan
+                </p>
+            )}
+            {!isStepComplete && evidenceRequirement && evidenceLengthMet && !evidenceQualityHint && textRequirementMet && (
+                <p
+                    className="text-center text-xs text-duck-ink/70 mt-2"
+                    style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
+                >
+                    Vink alle checklist-items af om door te gaan.
                 </p>
             )}
         </div>

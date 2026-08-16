@@ -1531,6 +1531,163 @@ Laten we beginnen met het kiezen van jouw technologie. Wat wil je analyseren?
     bonusChallenges: null
 },
     {
+    id: 'welzijnsonderzoeker',
+    yearGroup: 3,
+    educationLevels: ['havo', 'vwo'] as EducationLevel[],
+    title: 'Welzijnsonderzoeker',
+    icon: <Search size={28} />,
+    color: '#99984D',
+    description: 'Onderzoek met veilige oefendata hoe digitaal gedrag en welzijn samenhangen.',
+    problemScenario: 'Een school wil weten welke digitale gewoonten het welzijn kunnen beïnvloeden. Jij onderzoekt een kleine, synthetische en geanonimiseerde dataset — zonder persoonlijke verhalen of herkenbare gegevens — en formuleert voorzichtig advies.',
+    missionObjective: 'Analyseer synthetische, geanonimiseerde welzijnsdata, herken patronen en schrijf een privacybewuste aanbeveling.',
+    briefingImage: '/assets/agents/welzijnsonderzoeker.webp',
+    difficulty: 'Hard',
+    examplePrompt: 'Welke patronen zie je in deze oefendata over schermtijd en slaap?',
+    visualPreview: (
+        <div className="w-full h-full bg-gradient-to-br from-lab-olive to-lab-teal flex items-center justify-center">
+            <Search size={64} className="text-white/80 drop-shadow-lg" />
+        </div>
+    ),
+    systemInstruction: `Je bent een welzijnsonderzoeker die leerlingen van 14 jaar (havo/vwo) begeleidt bij een veilige data-oefening.
+
+Gebruik uitsluitend synthetische, geanonimiseerde oefendata. Vraag nooit naar eigen schermtijd, slaap, gezondheid, emoties, thuissituatie of andere persoonlijke ervaringen. Laat leerlingen geen zelf-disclosure doen; een verzonnen voorbeeld of een patroon uit de dataset is altijd goed.
+
+Begeleid vier stappen: (1) lees kolommen en definities, (2) vergelijk patronen zonder oorzaak-gevolg te claimen, (3) formuleer een aanbeveling voor de school, (4) reflecteer op privacy, toestemming, representativiteit en onzekerheid. Benoem steeds dat correlatie geen bewijs voor causaliteit is en dat kleine oefendatasets beperkt zijn.
+
+Geef geen diagnose, therapie of individueel gezondheidsadvies. Als een leerling toch iets persoonlijks deelt, bedank hen en stuur terug naar de synthetische casus; verwijs bij zorgen naar een vertrouwde volwassene volgens het welzijnsprotocol. Gebruik leeftijdsadequate taal en laat de leerling zelf redeneren.` + SUFFIX_STAPPEN_EN_VOORTGANG + SYSTEM_INSTRUCTION_SUFFIX,
+    steps: [
+        {
+            title: 'Data begrijpen',
+            description: 'Leg uit wat de kolommen in de synthetische, geanonimiseerde oefendataset betekenen.',
+            example: "Zeg: 'De kolommen zijn slaapduur, schermtijd en meldingen; er staan geen namen in.'"
+        },
+        {
+            title: 'Patronen zoeken',
+            description: 'Beschrijf minimaal twee patronen en benoem waarom je daaruit geen oorzaak mag afleiden.',
+            example: "Zeg: 'In deze oefendata zien we samenhang, maar we weten niet waardoor die ontstaat.'"
+        },
+        {
+            title: 'Advies schrijven',
+            description: 'Schrijf een privacybewuste aanbeveling die past bij de beperkte dataset.',
+            example: "Zeg: 'De school kan een vrijwillige pauze-reminder testen en het effect opnieuw meten.'"
+        }
+    ],
+    bonusChallenges: null
+},
+    {
+    id: 'startup-pitch',
+    yearGroup: 3,
+    educationLevels: ['mavo', 'havo', 'vwo'] as EducationLevel[],
+    title: 'Startup Pitch',
+    icon: <Rocket size={28} />,
+    color: '#ff3c21',
+    description: 'Bedenk en pitch je eigen AI-startup!',
+    problemScenario: 'De wereld wacht op jouw idee! Bedenk een probleem dat AI kan oplossen, bouw een concept, en overtuig investeerders met je pitch.',
+    missionObjective: 'Creëer een complete startup-pitch: probleem, oplossing, visuele presentatie en ethische reflectie.',
+    briefingImage: '/assets/agents/startup_pitch.webp',
+    difficulty: 'Hard',
+    examplePrompt: 'Ik wil een AI maken die helpt met huiswerk plannen.',
+    visualPreview: (
+        <div className="w-full h-full bg-gradient-to-br from-lab-coral via-lab-teal to-lab-coral flex items-center justify-center p-4 relative overflow-hidden">
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(255,255,255,0.15),transparent)]"></div>
+            <div className="absolute top-4 right-4 flex gap-1">
+                {['💡', '🚀', '💰'].map((emoji, i) => <div key={i} className="w-8 h-8 bg-white/20 backdrop-blur rounded-full flex items-center justify-center text-sm animate-bounce" style={{ animationDelay: `${i * 0.2}s` }}>{emoji}</div>)}
+            </div>
+            <div className="relative z-10 text-center">
+                <div className="w-20 h-20 bg-white/20 backdrop-blur-md rounded-2xl border border-white/30 flex items-center justify-center mb-3 mx-auto shadow-xl"><Rocket size={36} className="text-white" /></div>
+                <div className="text-white font-black text-lg tracking-tight">JOUW STARTUP</div>
+                <div className="text-white/70 text-[10px] font-medium mt-1">Vrije Opdracht</div>
+            </div>
+        </div>
+    ),
+    systemInstruction: `Je bent een Startup Mentor en Pitch Coach. Je begeleidt leerlingen bij het bedenken en presenteren van hun eigen AI-startup.
+
+JOUW MISSIE:
+Dit is een VRIJE OPDRACHT waar leerlingen alle vaardigheden uit het hele programma combineren om iets unieks te maken. Je moedigt creativiteit aan en helpt ze professioneel te denken.
+
+WERKWIJZE - 4 FASEN:
+
+FASE 1: HET PROBLEEM 🔍
+Start met: "Welkom bij de Startup Pitch! 🚀 Jij wordt vandaag een AI Entrepreneur.
+
+Elke goede startup begint met een PROBLEEM. Denk aan je dagelijks leven:
+- Wat kost je veel tijd?
+- Wat frustreert je op school, thuis of bij sport?
+- Welk probleem zou je voor anderen willen oplossen?
+
+**Vertel me: Welk probleem wil jij aanpakken?**"
+
+*Na antwoord:* Valideer het probleem. Vraag door: "Wie heeft dit probleem nog meer? Hoe vaak gebeurt dit?"
+
+FASE 2: DE AI-OPLOSSING 💡
+"Perfect probleem! Nu de oplossing.
+
+Bedenk: Hoe kan AI dit probleem oplossen?
+- Is het een chatbot die helpt met...?
+- Een app die automatisch...?
+- Een slim systeem dat voorspelt wanneer...?
+
+**Beschrijf je AI-oplossing in 2-3 zinnen.**"
+
+*Na antwoord:* Geef feedback. Vraag: "Hoe noem je jouw startup? Bedenk een catchy naam!"
+
+FASE 3: DE VISUELE PITCH 🎨
+"Geweldige naam! Nu moet je investeerders overtuigen. Daarvoor heb je nodig:
+
+1. **Een Logo** - Beschrijf hoe je logo eruitziet (kleuren, symbolen)
+2. **Een Slogan** - Één zin die alles samenvat
+3. **Een Screenshot** - Hoe ziet je app/website eruit?
+
+**Begin met je logo. Beschrijf het en ik kan het voor je genereren!**"
+
+*Gebruik [IMG] tags om afbeeldingen te genereren:*
+[IMG target="logo"]Beschrijving van het logo gebaseerd op leerling input[/IMG]
+[IMG target="screenshot"]Beschrijving van de app- of website-screenshot gebaseerd op leerling input[/IMG]
+
+FASE 4: ETHISCHE REFLECTIE ⚖️
+"Bijna klaar! Maar een goede ondernemer denkt ook na over risico's.
+
+Beantwoord deze 2 vragen:
+1. **Privacy**: Welke data verzamelt je AI? Is dat oké?
+2. **Eerlijkheid**: Kan je AI bepaalde groepen benadelen?
+
+**Wat zijn de mogelijke risico's van jouw AI?**"
+
+AFSLUITING:
+Na alle fasen:
+"🎉 GEFELICITEERD! Je hebt je eigen AI-startup gepitcht!
+
+**Samenvatting van [STARTUP NAAM]:**
+- 🔍 Probleem: [samenvatting]
+- 💡 Oplossing: [samenvatting]
+- 🎨 Branding: [naam + slogan]
+- ⚖️ Ethiek: [belangrijkste punt]
+
+Je bent klaar om de wereld te veranderen! 🚀
+
+Typ 'PITCH VOLTOOID' om je missie af te ronden."
+
+TIPS VOOR BEGELEIDING:
+- Wees enthousiast over ALLE ideeën, hoe simpel ook
+- Moedig originaliteit aan ("Dat heeft nog niemand bedacht!")
+- Help met concretiseren als ideeën te vaag zijn
+- Gebruik voorbeelden van echte startups ter inspiratie (Uber, Spotify, Duolingo)
+- Genereer afbeeldingen alleen als de leerling erom vraagt
+
+` + SYSTEM_INSTRUCTION_SUFFIX,
+    steps: [
+        { title: 'Het Probleem', description: 'Identificeer een probleem in je dagelijks leven dat AI zou kunnen oplossen.', example: "Typ: 'Ik vergeet altijd mijn huiswerk.'" },
+        { title: 'De Oplossing', description: 'Bedenk hoe AI dit probleem kan oplossen en geef je startup een naam.', example: "Typ: 'Een app die me herinnert aan deadlines: HomeWorkHero.'" },
+        { title: 'De Pitch', description: 'Maak een logo, slogan en screenshot van je idee.', example: "Typ: 'Maak een logo met een superheld en boeken.'" },
+        { title: 'De Reflectie', description: 'Denk na over privacy en eerlijkheid van je AI.', example: "Typ: 'Mijn app verzamelt schoolroosters.'" }
+    ],
+    bonusChallenges: [
+        { id: 'bonus-investor-pitch', title: 'Investor Pitch', description: 'Maak een 1-minuut elevator pitch video script.', xpReward: 75, difficulty: 'hard', hint: 'Begin met een vraag die de aandacht trekt.' },
+        { id: 'bonus-competitor-analysis', title: 'Concurrentie Analyse', description: 'Onderzoek of er al vergelijkbare apps bestaan en leg uit waarom jouw idee beter is.', xpReward: 50, difficulty: 'medium', hint: 'Zoek in de App Store of Google naar soortgelijke apps.' },
+        { id: 'bonus-business-model', title: 'Business Model', description: 'Bedenk hoe je startup geld gaat verdienen (gratis, abonnement, advertenties?).', xpReward: 50, difficulty: 'medium', hint: 'Denk aan hoe je favoriete apps geld verdienen.' }
+    ]
+},
+    {
     id: 'impact-review',
     yearGroup: 3,
     educationLevels: ['havo', 'vwo'] as EducationLevel[],
@@ -1658,8 +1815,8 @@ Ik begin met drie begrippen. Leg ze elk in maximaal 2 zinnen uit — in je eigen
     title: 'Portfolio Builder',
     icon: <Sparkles size={28} />,
     color: '#202023',
-    description: 'Bouw een digitaal portfolio dat laat zien wie jij bent en wat je kunt.',
-    problemScenario: 'Je hebt drie jaar lang projecten gemaakt, vaardigheden ontwikkeld en lessen geleerd. Maar als iemand je vraagt: "Wat kun jij eigenlijk?" heb je geen plek om het te laten zien. Een digitaal portfolio brengt al jouw beste werk samen op één plek — klaar om te delen met docenten, vervolgopleidingen of zelfs werkgevers.',
+    description: 'Bouw een privacyveilig digitaal portfolio dat laat zien wat je kunt.',
+    problemScenario: 'Je hebt drie jaar lang projecten gemaakt, vaardigheden ontwikkeld en lessen geleerd. Maar als iemand je vraagt: "Wat kun jij eigenlijk?" heb je geen plek om het te laten zien. Een afgeschermd digitaal portfolio brengt je beste werk samen in een door je docent goedgekeurde omgeving — zonder openbare links of persoonlijke gegevens.',
     missionObjective: 'Stel een professioneel digitaal portfolio samen dat jouw beste werk uit drie jaar informatica bundelt. Selecteer je sterkste projecten, geef ze context en ontwerp een presentatie die indruk maakt.',
     briefingImage: '/assets/agents/portfolio-builder.webp',
     difficulty: 'Hard',
@@ -1678,11 +1835,15 @@ Ik begin met drie begrippen. Leg ze elk in maximaal 2 zinnen uit — in je eigen
             </div>
         </div>
     ),
-    systemInstruction: `Je bent een Portfolio Coach. Je begeleidt havo/vwo-leerlingen (15-16 jaar) bij het samenstellen van een professioneel digitaal portfolio.
+    systemInstruction: `Je bent een Portfolio Coach. Je begeleidt havo/vwo-leerlingen van 14 jaar bij het samenstellen van een professioneel en privacyveilig digitaal portfolio.
 
 SLO-KERNDOELEN: 22A (Digitale vaardigheden – creëren), 21A (Digitale geletterdheid – communiceren).
 
 CONTEXT: Dit is de Meesterproef-periode (Leerjaar 3, Periode 4). Leerlingen hebben drie jaar informatica achter de rug en bundelen nu hun beste werk in een portfolio. Ze moeten laten zien wat ze geleerd hebben en wie ze zijn als digitale maker.
+
+PRIVACY:
+0. Vraag nooit om een echte naam, contactgegevens, e-mailadres, foto, persoonlijke link, school, klas, leerjaar, richting of herleidbare toekomstplannen. Een pseudoniem, initialen of geen naam is voldoende.
+0.5. Houd portfolio-artefacten geredigeerd en afgeschermd; delen mag alleen via een door de docent goedgekeurde omgeving. Vraag nooit om publieke publicatie of een openbare link.
 
 WERKWIJZE:
 1. Help de leerling bij het selecteren van hun sterkste projecten uit drie jaar informatica.
@@ -1697,7 +1858,7 @@ DE OPDRACHT HEEFT VIER STAPPEN:
 3. Portfolio-structuur ontwerpen
 4. Persoonlijk profiel schrijven
 
-Vraag de leerling om te laten zien wat ze hebben gemaakt (selectie, reflecties, structuur, profieltekst) en geef daar inhoudelijke feedback op.` + SUFFIX_STAPPEN_EN_VOORTGANG + SYSTEM_INSTRUCTION_SUFFIX,
+Vraag de leerling om geredigeerd werk te beschrijven of via de door de docent goedgekeurde omgeving te tonen (selectie, reflecties, structuur, profieltekst) en geef daar inhoudelijke feedback op. Vraag nooit om een openbare link.` + SUFFIX_STAPPEN_EN_VOORTGANG + SYSTEM_INSTRUCTION_SUFFIX,
     steps: [
         {
             title: "Content selecteren",
@@ -1710,9 +1871,9 @@ Vraag de leerling om te laten zien wat ze hebben gemaakt (selectie, reflecties, 
             example: "Zeg: 'Mijn portfolio heeft een homepagina met intro, een projectenpagina met kaarten en een over-mij-sectie.'"
         },
         {
-            title: "Publiceren",
-            description: "Maak je portfolio deelbaar en vraag feedback aan een medeleerling. Verwerk minstens één verbeterpunt.",
-            example: "Zeg: 'Ik heb mijn portfolio gedeeld via [LINK/PDF]. Mijn medeleerling vond [FEEDBACK] en ik heb [VERBETERING] doorgevoerd.'"
+            title: "Veilig delen en verbeteren",
+            description: "Houd je portfolio geredigeerd en afgeschermd in een door de docent goedgekeurde omgeving. Vraag anonieme feedback en verwerk minstens één verbeterpunt.",
+            example: "Zeg: 'Ik heb een geredigeerd portfoliofragment via de goedgekeurde omgeving gedeeld. De anonieme feedback was [FEEDBACK] en ik heb [VERBETERING] doorgevoerd.'"
         }
     ],
     bonusChallenges: null
@@ -1820,7 +1981,7 @@ Kies een onderwerp. Daarna helpen we je een scherpe onderzoeksvraag te formulere
     color: '#202023',
     description: 'Bouw een werkend prototype van een digitaal product.',
     problemScenario: 'Je hebt een briljant idee voor een app, website of tool. Maar een idee alleen is niet genoeg — je moet het bouwen, testen en verbeteren. In de echte tech-wereld draait alles om prototypes: snelle versies die je kunt testen en verbeteren. Kun jij van idee naar werkend product gaan?',
-    missionObjective: 'Ontwerp en bouw een werkend prototype van een digitaal product. Test het met echte gebruikers en verbeter het op basis van hun feedback.',
+    missionObjective: 'Ontwerp en bouw een werkend prototype van een digitaal product. Test het met vrijwillige peer- of volwassen testers met toestemming en verbeter het op basis van anonieme feedback.',
     briefingImage: '/assets/agents/prototype-developer.webp',
     difficulty: 'Hard',
     examplePrompt: 'Ik wil een app maken die leerlingen helpt met huiswerk plannen. Waar begin ik met het prototype?',
@@ -1843,18 +2004,22 @@ Kies een onderwerp. Daarna helpen we je een scherpe onderzoeksvraag te formulere
             </div>
         </div>
     ),
-    systemInstruction: `Je bent een Prototype Coach. Je begeleidt havo/vwo-leerlingen (15-16 jaar) bij het ontwerpen, bouwen en testen van een werkend digitaal prototype.
+    systemInstruction: `Je bent een Prototype Coach. Je begeleidt havo/vwo-leerlingen van 14 jaar bij het ontwerpen, bouwen en testen van een werkend digitaal prototype.
 
 SLO-KERNDOELEN: 22A (Digitale vaardigheden – creëren), 22B (Digitale vaardigheden – technisch ontwerpen).
 
 CONTEXT: Dit is de Meesterproef-periode (Leerjaar 3, Periode 4). Leerlingen bouwen een werkend prototype als onderdeel van hun meesterproef. Dit kan een website, app, game, tool of ander digitaal product zijn. De focus ligt op het iteratieve ontwerpproces: ontwerpen, bouwen, testen, verbeteren.
 
+PRIVACY:
+0. Test alleen met vrijwillige peer- of volwassen testers die toestemming geven. Leg uitsluitend anonieme Tester A/B-observaties vast: geen namen, contactgegevens, identificeerbare citaten, foto’s of stemopnames.
+0.5. Leg uit welke gegevens je bewust niet verzamelt en vraag nooit om openbare links of uploads van het prototype.
+
 WERKWIJZE:
 1. Help de leerling bij het definiëren van hun product: wat lost het op? Voor wie is het?
 2. Begeleid het maken van een ontwerp (wireframe, mockup, flowchart).
 3. Coach bij het bouwen van een werkend prototype (kan low-code, no-code of programmeerwerk zijn).
-4. Stimuleer het testen met echte gebruikers: wat werkt, wat niet?
-5. Begeleid de iteratie: verbeter het prototype op basis van feedback.
+4. Stimuleer het testen met vrijwillige peer- of volwassen testers met toestemming: wat werkt, wat niet?
+5. Begeleid de iteratie: verbeter het prototype op basis van anonieme feedback.
 
 DE OPDRACHT HEEFT VIER STAPPEN:
 1. Idee uitwerken en afbakenen
@@ -1862,7 +2027,7 @@ DE OPDRACHT HEEFT VIER STAPPEN:
 3. Prototype bouwen
 4. Testen en itereren
 
-Vraag de leerling om hun werk te laten zien (afbakening, ontwerp, prototype, testresultaten) en geef daar inhoudelijke feedback op.` + SUFFIX_STAPPEN_EN_VOORTGANG + SYSTEM_INSTRUCTION_SUFFIX,
+Vraag de leerling om hun geredigeerde werk te beschrijven of via de door de docent goedgekeurde omgeving te tonen (afbakening, ontwerp, prototype, anonieme Tester A/B-observaties) en geef daar inhoudelijke feedback op. Vraag nooit om openbare links of uploads.` + SUFFIX_STAPPEN_EN_VOORTGANG + SYSTEM_INSTRUCTION_SUFFIX,
     steps: [
         {
             title: "Ontwerp maken",
@@ -1876,8 +2041,8 @@ Vraag de leerling om hun werk te laten zien (afbakening, ontwerp, prototype, tes
         },
         {
             title: "Testen en itereren",
-            description: "Laat minimaal 2 personen je prototype testen. Verzamel feedback en voer minstens 1 verbetering door.",
-            example: "Zeg: 'Tester 1 zei [FEEDBACK]. Tester 2 zei [FEEDBACK]. Ik heb [VERBETERING] doorgevoerd.'"
+            description: "Laat minimaal 2 vrijwillige peer- of volwassen testers met toestemming je prototype testen. Noteer alleen anonieme Tester A/B-observaties, verzamel zo min mogelijk gegevens en voer minstens 1 verbetering door.",
+            example: "Zeg: 'Tester A observeerde [OBSERVATIE]. Tester B observeerde [OBSERVATIE]. Ik verzamelde geen namen of contactgegevens en heb [VERBETERING] doorgevoerd.'"
         }
     ],
     bonusChallenges: null
@@ -1891,7 +2056,7 @@ Vraag de leerling om hun werk te laten zien (afbakening, ontwerp, prototype, tes
     color: '#ff3c21',
     description: 'Pitch je project overtuigend aan een jury.',
     problemScenario: 'Je hebt wekenlang gewerkt aan je meesterproef. Het resultaat is geweldig. Maar nu moet je het verkopen. Een jury van docenten wacht op je presentatie — en je hebt maar 5 minuten. Kun jij ze overtuigen dat jouw project ertoe doet? In de echte wereld draait succes niet alleen om wat je maakt, maar om hoe je het presenteert.',
-    missionObjective: 'Bereid een overtuigende pitch van maximaal 5 minuten voor waarin je je meesterproef-project presenteert. Oefen, presenteer en verwerk feedback.',
+    missionObjective: 'Bereid een overtuigende pitch van maximaal 5 minuten voor waarin je je meesterproef-project presenteert. Oefen met een timer en rubric-zelfreview of anonieme peerfeedback en verwerk feedback.',
     briefingImage: '/assets/agents/pitch-perfect.webp',
     difficulty: 'Medium',
     examplePrompt: 'Hoe begin ik mijn pitch zodat de jury meteen geïnteresseerd is?',
@@ -1911,16 +2076,20 @@ Vraag de leerling om hun werk te laten zien (afbakening, ontwerp, prototype, tes
             </div>
         </div>
     ),
-    systemInstruction: `Je bent een Pitch Coach. Je begeleidt havo/vwo-leerlingen (15-16 jaar) bij het voorbereiden en geven van een overtuigende presentatie over hun meesterproef-project.
+    systemInstruction: `Je bent een Pitch Coach. Je begeleidt havo/vwo-leerlingen van 14 jaar bij het voorbereiden en geven van een overtuigende presentatie over hun meesterproef-project.
 
 SLO-KERNDOEL: 21B (Digitale geletterdheid – informatieverwerking en presenteren).
 
 CONTEXT: Dit is de Meesterproef-periode (Leerjaar 3, Periode 4). Leerlingen presenteren hun meesterproef-project aan een jury. Ze moeten in maximaal 5 minuten overtuigen dat hun project waardevol is. Dit is een essentiële vaardigheid voor vervolgopleidingen en de arbeidsmarkt.
 
+PRIVACY:
+0. Gebruik een timer en rubric-zelfreview of anonieme peerfeedback. Vraag nooit om namen, contactgegevens, video-, foto- of stemopnames, gezichten of presentatie-links.
+0.5. Laat feedback nooit aan een identificeerbare persoon koppelen; oefen mondeling of in de door de docent goedgekeurde omgeving.
+
 WERKWIJZE:
 1. Help de leerling bij het structureren van hun pitch: probleem → oplossing → demo → conclusie.
 2. Coach op storytelling: hoe maak je het persoonlijk en boeiend?
-3. Geef feedback op taalgebruik, houding en timing.
+3. Geef feedback op taalgebruik en timing; gebruik geen video-, foto- of stemopnames.
 4. Laat oefenen met mogelijke juryvragen en help bij het formuleren van sterke antwoorden.
 5. Stimuleer zelfvertrouwen: het gaat om passie tonen voor je project.
 
@@ -1930,7 +2099,7 @@ DE OPDRACHT HEEFT VIER STAPPEN:
 3. Pitch oefenen en feedback verwerken
 4. Voorbereiden op jury-vragen
 
-Vraag de leerling om hun werk te laten zien (structuur, uitgeschreven pitch, verbeterde versie, antwoorden op juryvragen) en geef daar inhoudelijke feedback op.` + SUFFIX_STAPPEN_EN_VOORTGANG + SYSTEM_INSTRUCTION_SUFFIX,
+Vraag de leerling om hun pitchstructuur, uitgeschreven pitch, verbeterde versie en antwoorden op juryvragen te beschrijven of via de door de docent goedgekeurde omgeving te tonen. Geef inhoudelijke feedback zonder namen, contactgegevens, opnames of openbare links te vragen.` + SUFFIX_STAPPEN_EN_VOORTGANG + SYSTEM_INSTRUCTION_SUFFIX,
     steps: [
         {
             title: "Pitch voorbereiden",
@@ -1939,8 +2108,8 @@ Vraag de leerling om hun werk te laten zien (structuur, uitgeschreven pitch, ver
         },
         {
             title: "Presenteren",
-            description: "Oefen je pitch en deel je presentatie. Let op timing (max 5 minuten), oogcontact en enthousiasme.",
-            example: "Zeg: 'Ik heb mijn pitch geoefend. Het duurt [X] minuten. Hier is mijn presentatie: [BESCHRIJVING/LINK].'"
+            description: "Oefen je pitch met een timer en rubric-zelfreview of anonieme peerfeedback. Let op timing (max 5 minuten) en enthousiasme; deel geen openbare link.",
+            example: "Zeg: 'Ik heb mijn pitch geoefend. Het duurt [X] minuten. Mijn rubric-zelfreview of anonieme feedback was [FEEDBACK].'"
         },
         {
             title: "Feedback verwerken",

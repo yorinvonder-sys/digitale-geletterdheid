@@ -91,6 +91,7 @@ export const AGENT_ROLE_IDS = [
   'innovation-lab',
   'digital-divide-researcher',
   'tech-impact-analyst',
+  'welzijnsonderzoeker',
   'impact-review',
   'portfolio-builder',
   'research-project',

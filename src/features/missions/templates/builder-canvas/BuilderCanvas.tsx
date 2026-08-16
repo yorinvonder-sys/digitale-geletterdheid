@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback, useEffect, useRef } from 'react';
 import { ArrowLeft, MessageCircle } from 'lucide-react';
 import { IntroScreen } from '../shared/IntroScreen';
 import { CompletionScreen } from '../shared/CompletionScreen';
@@ -11,7 +11,7 @@ import { MilestoneToast } from './sub/MilestoneToast';
 import { MobileTabBar, type MobileTab } from './sub/MobileTabBar';
 import { PreviewPanel } from './sub/PreviewPanel';
 import { StepInstructionPanel } from './sub/StepInstructionPanel';
-import type { BuilderCanvasState } from './sub/types';
+import { migrateBuilderEvidenceState, type BuilderCanvasState } from './sub/types';
 import { isMeaningfulAnswer } from '../shared/answerQuality';
 import { toScorePercent } from '../shared/scorePercent';
 
@@ -26,6 +26,13 @@ export interface BuilderStep {
     checklistItems: Array<{ id: string; label: string }>;
     textPrompt?: string;
     minTextLength?: number;
+    evidence?: {
+        label: string;
+        prompt: string;
+        placeholder?: string;
+        minLength?: number;
+        privacyNote?: string;
+    };
     reflectionQuestion?: FollowUpQuestion;
 }
 
@@ -62,6 +69,7 @@ const BuilderCanvasInner: React.FC<BuilderCanvasProps> = ({
         currentStep: 0,
         checklist: {},
         textEntries: {},
+        evidenceEntries: {},
         completedSteps: [],
         reflectionAnswered: {},
         reflectionCorrect: {},
@@ -75,6 +83,13 @@ const BuilderCanvasInner: React.FC<BuilderCanvasProps> = ({
 
     const [isChatOpen, setIsChatOpen] = useState(false);
     const [mobileTab, setMobileTab] = useState<MobileTab>('instructies');
+    const evidenceMigrationDone = useRef(false);
+
+    useEffect(() => {
+        if (evidenceMigrationDone.current) return;
+        evidenceMigrationDone.current = true;
+        setState((prev) => migrateBuilderEvidenceState(prev, config.steps));
+    }, [config.steps, setState]);
 
     // state.currentStep komt ongevalideerd uit localStorage terug; als een missie-
     // config na een save korter is geworden (of de opslag corrupt raakt), klemmen we
@@ -132,9 +147,15 @@ const BuilderCanvasInner: React.FC<BuilderCanvasProps> = ({
             const requiredLength = step.textPrompt ? (step.minTextLength ?? 40) : 0;
             const text = state.textEntries[stepId] ?? '';
             const textComplete = !requiredLength || (text.trim().length >= requiredLength && isMeaningfulAnswer(text));
-            return checklistComplete && textComplete;
+            const evidence = step.evidence;
+            const evidenceText = state.evidenceEntries[stepId] ?? '';
+            const evidenceLength = evidence?.minLength ?? 40;
+            const evidenceComplete = !evidence || (
+                evidenceText.trim().length >= evidenceLength && isMeaningfulAnswer(evidenceText)
+            );
+            return checklistComplete && textComplete && evidenceComplete;
         },
-        [state.checklist, state.textEntries]
+        [state.checklist, state.textEntries, state.evidenceEntries]
     );
 
     const currentStepComplete = currentStepData
@@ -175,6 +196,13 @@ const BuilderCanvasInner: React.FC<BuilderCanvasProps> = ({
         setState((prev) => ({
             ...prev,
             textEntries: { ...prev.textEntries, [stepId]: value },
+        }));
+    };
+
+    const handleEvidenceChange = (stepId: string, value: string) => {
+        setState((prev) => ({
+            ...prev,
+            evidenceEntries: { ...prev.evidenceEntries, [stepId]: value },
         }));
     };
 
@@ -343,6 +371,7 @@ const BuilderCanvasInner: React.FC<BuilderCanvasProps> = ({
                         isStepComplete={currentStepComplete}
                         onChecklistToggle={handleChecklistToggle}
                         onTextChange={handleTextChange}
+                        onEvidenceChange={handleEvidenceChange}
                         onReflectionAnswer={handleReflectionAnswer}
                         onReflectionComplete={handleReflectionComplete}
                         onNextStep={handleNextStep}

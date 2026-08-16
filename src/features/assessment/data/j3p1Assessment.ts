@@ -54,8 +54,9 @@ export const J3P1_ASSESSMENT: AssessmentTask[] = [
         title: 'API Fout Opsporen',
         description: 'De REST API van het ziekenhuis stuurt verkeerde responses terug. Vind de fouten!',
         xpReward: 90,
-        question: 'Bekijk deze API-response van het patiëntensysteem. Er zitten twee fouten in: een verkeerde HTTP-statuscode en een ontbrekend verplicht veld. Klik op de fout die het systeem laat crashen.',
+        question: 'Bekijk deze API-response van het patiëntensysteem. Er zitten twee fouten in: een verkeerde HTTP-statuscode en een ontbrekend verplicht veld. Klik op beide fouten om ze te markeren.',
         image: 'SPECIAL:API_RESPONSE_ERROR',
+        requiredCorrect: 2,
         hotspots: [
             {
                 id: 'wrong-status',

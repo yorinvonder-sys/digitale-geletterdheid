@@ -32,6 +32,12 @@ export const innovationLabConfig: BuilderCanvasConfig = {
                 { id: 'tech-kans', label: 'Ik heb uitgelegd waarom technologie kan helpen' },
             ],
             textPrompt: 'Beschrijf het alledaagse probleem dat jij wilt oplossen',
+            evidence: {
+                label: 'Bewijs uit je verkenning',
+                prompt: 'Beschrijf twee anonieme observaties die je probleemkeuze ondersteunen en vermeld hoe je ze verzamelde.',
+                placeholder: 'Observatie 1: … Observatie 2: … (zonder namen, contactgegevens, foto’s of stemopnames).',
+                minLength: 45,
+            },
         },
         {
             id: 'technologie-oplossing',

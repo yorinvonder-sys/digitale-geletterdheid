@@ -56,6 +56,7 @@ export const J3P3_ASSESSMENT: AssessmentTask[] = [
         xpReward: 110,
         question: 'Startup "SafeCity" pitcht hun product: AI-camera\'s in de openbare ruimte die gezichtsherkenning gebruiken om criminelen op te sporen. Bekijk hun pitch-slide en klik op het grootste ethische probleem.',
         image: 'SPECIAL:SAFECITY_PITCH',
+        requiredCorrect: 1,
         hotspots: [
             {
                 id: 'no-consent',

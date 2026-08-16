@@ -32,6 +32,12 @@ export const startupSimulatorConfig: BuilderCanvasConfig = {
                 { id: 'timing', label: 'Ik heb uitgelegd waarom nu het juiste moment is' },
             ],
             textPrompt: 'Beschrijf het probleem en de oplossing',
+            evidence: {
+                label: 'Bewijs voor je probleemkeuze',
+                prompt: 'Noteer je berekening en het bronlabel waarop je schatting is gebaseerd; gebruik geen namen of contactgegevens.',
+                placeholder: 'Bijv. 3 anonieme antwoorden × 2 keer per week = circa 6 momenten; bronlabel: eigen klas-schatting.',
+                minLength: 45,
+            },
         },
         {
             id: 'businessmodel',

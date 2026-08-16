@@ -32,6 +32,12 @@ export const openSourceContributorConfig: BuilderCanvasConfig = {
                 { id: 'branch', label: 'Ik heb uitgelegd waarom je een aparte branch aanmaakt' },
             ],
             textPrompt: 'Beschrijf de complete Git open source workflow',
+            evidence: {
+                label: 'Bewijs van je workflow',
+                prompt: 'Geef een klein, privacyveilig gemaakt diff- of commandofragment en leg uit welk resultaat je controleerde.',
+                placeholder: 'Bijv. git diff --check gaf geen waarschuwingen; verwijder namen, tokens en repository-links.',
+                minLength: 45,
+            },
         },
         {
             id: 'issue-analyseren',

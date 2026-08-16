@@ -57,8 +57,9 @@ export const J3P4_ASSESSMENT: AssessmentTask[] = [
         title: 'Portfolio Kwaliteitscheck',
         description: 'Beoordeel dit digitale portfolio op kwaliteitsproblemen. Er zijn meerdere fouten die opgelost moeten worden!',
         xpReward: 110,
-        question: 'Bekijk dit digitale portfolio van een medeleerling. Er zitten verschillende kwaliteitsproblemen in. Klik op het meest ernstige probleem.',
+        question: 'Bekijk dit digitale portfolio van een medeleerling. Er zitten drie kwaliteitsproblemen in. Klik op alle drie de problemen.',
         image: 'SPECIAL:PORTFOLIO_REVIEW',
+        requiredCorrect: 3,
         hotspots: [
             {
                 id: 'missing-sources',

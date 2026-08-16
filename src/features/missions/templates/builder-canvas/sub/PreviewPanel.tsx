@@ -33,7 +33,12 @@ const buildSafeHtmlPreview = (html: string): string => {
 
 export const PreviewPanel: React.FC<PreviewPanelProps> = ({ config, state }) => {
     const { previewType, steps } = config;
-    const { checklist, textEntries, currentStep, completedSteps } = state;
+    const { checklist, textEntries, evidenceEntries, currentStep, completedSteps } = state;
+    const evidenceSteps = steps.filter((step) => step.evidence);
+    const completedEvidence = evidenceSteps.filter((step) => {
+        const value = evidenceEntries[step.id]?.trim() ?? '';
+        return value.length >= (step.evidence?.minLength ?? 40);
+    }).length;
 
     if (previewType === 'text-preview') {
         const hasAnyText = steps.some((s) => textEntries[s.id]?.trim());
@@ -54,6 +59,18 @@ export const PreviewPanel: React.FC<PreviewPanelProps> = ({ config, state }) => 
                         Wat je bouwt
                     </span>
                 </div>
+                {evidenceSteps.length > 0 && (
+                    <div className="mb-4 rounded-xl border border-duck-acid/25 bg-duck-acid/5 p-3">
+                        <div className="flex items-center justify-between">
+                            <span className="text-xs font-bold text-duck-ink">Bewijs voortgang</span>
+                            <span className="text-xs font-black text-duck-ink">{completedEvidence}/{evidenceSteps.length}</span>
+                        </div>
+                        <div className="mt-2 h-2 overflow-hidden rounded-full bg-duck-gray">
+                            <div className="h-full rounded-full bg-duck-acid transition-all" style={{ width: `${evidenceSteps.length ? (completedEvidence / evidenceSteps.length) * 100 : 0}%` }} />
+                        </div>
+                        <p className="mt-1 text-[11px] text-duck-ink/70">Bewijs wordt alleen lokaal als onderdeel van deze missie opgeslagen.</p>
+                    </div>
+                )}
 
                 {!hasAnyText && (
                     <div className="text-center py-12">
@@ -136,6 +153,14 @@ export const PreviewPanel: React.FC<PreviewPanelProps> = ({ config, state }) => 
                                     Nog niets geschreven…
                                 </p>
                             )}
+                            {step.evidence && (
+                                <div className="mt-3 border-t border-duck-gray pt-3">
+                                    <p className="text-[10px] font-black uppercase tracking-widest text-duck-ink/60">{step.evidence.label}</p>
+                                    <p className="mt-1 text-xs text-duck-ink/70 whitespace-pre-wrap">
+                                        {state.evidenceEntries[step.id]?.trim() || 'Nog geen bewijs toegevoegd…'}
+                                    </p>
+                                </div>
+                            )}
                         </div>
                     );
                 })}
@@ -159,6 +184,14 @@ export const PreviewPanel: React.FC<PreviewPanelProps> = ({ config, state }) => 
                         Voortgang
                     </span>
                 </div>
+                {evidenceSteps.length > 0 && (
+                    <div className="mb-6 rounded-xl border border-duck-acid/25 bg-duck-acid/5 p-3">
+                        <div className="flex items-center justify-between text-xs font-bold text-duck-ink">
+                            <span>Bewijs voortgang</span><span>{completedEvidence}/{evidenceSteps.length}</span>
+                        </div>
+                        <div className="mt-2 h-2 overflow-hidden rounded-full bg-duck-gray"><div className="h-full rounded-full bg-duck-acid" style={{ width: `${evidenceSteps.length ? (completedEvidence / evidenceSteps.length) * 100 : 0}%` }} /></div>
+                    </div>
+                )}
 
                 <div className="mb-6">
                     <div className="flex justify-between items-center mb-2">
@@ -230,6 +263,9 @@ export const PreviewPanel: React.FC<PreviewPanelProps> = ({ config, state }) => 
                                         {stepChecked}/{step.checklistItems.length}
                                     </span>
                                 </div>
+                                {step.evidence && (
+                                    <p className="mt-2 text-[11px] text-duck-ink/60">Bewijs: {evidenceEntries[step.id]?.trim() ? 'ingevuld' : 'nog nodig'}</p>
+                                )}
                             </div>
                         );
                     })}

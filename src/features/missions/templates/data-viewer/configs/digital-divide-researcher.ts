@@ -17,10 +17,11 @@ export const digitalDivideResearcherConfig: DataViewerConfig = {
         // ── Dataset 1: Tabel ──────────────────────────────────────────────────
         {
             id: 'internetsnelheid-landen',
-            title: 'Gemiddelde downloadsnelheid (Mbps) per land — 2024 (Speedtest Global Index)',
+            title: 'Gesimuleerde oefendata: downloadsnelheid (Mbps) per land',
             description:
                 'De gemiddelde downloadsnelheid zegt iets over de kwaliteit van internetinfrastructuur in een land. Bekijk de tabel en zoek patronen.',
             type: 'table',
+            source: { kind: 'synthetic', label: 'Vereenvoudigde connectivity-oefentabel', methodNote: 'Op CBS-/Speedtest-achtige wijze vormgegeven voorbeeldwaarden; controleer actuele cijfers in de originele publicatie.' },
             columns: [
                 { key: 'land', label: 'Land', sortable: true },
                 { key: 'mobiel_mbps', label: 'Mobiel (Mbps)', sortable: true },
@@ -78,10 +79,11 @@ export const digitalDivideResearcherConfig: DataViewerConfig = {
         // ── Dataset 2: Staafgrafiek ───────────────────────────────────────────
         {
             id: 'smartphone-gebruik-leeftijd',
-            title: 'Smartphonegebruik (%) per leeftijdsgroep — Nederland 2024 (CBS)',
+            title: 'Gesimuleerde oefendata: smartphonegebruik (%) per leeftijdsgroep',
             description:
-                'Het CBS meet jaarlijks hoeveel Nederlanders een smartphone gebruiken, uitgesplitst naar leeftijdsgroep. Bekijk hoe gebruik varieert over generaties.',
+                'Deze oefengrafiek gebruikt voorbeeldpercentages voor smartphonegebruik per leeftijdsgroep. Bekijk hoe gebruik kan variëren over generaties.',
             type: 'bar-chart',
+            source: { kind: 'synthetic', label: 'Gesimuleerde leeftijdsvergelijking', methodNote: 'Didactische voorbeeldpercentages, niet te lezen als actuele CBS-statistiek.' },
             chartData: [
                 { label: '12-17 jaar', value: 98, color: '#202023' },
                 { label: '18-24 jaar', value: 99, color: '#202023' },
@@ -134,6 +136,7 @@ export const digitalDivideResearcherConfig: DataViewerConfig = {
             description:
                 'Als connectivity-onderzoeker werk je met vaste concepten. Hier zijn vier kernbegrippen die je nodig hebt om data te lezen en te vergelijken.',
             type: 'document-cards',
+            source: { kind: 'synthetic', label: 'Didactische connectivity-begrippen', methodNote: 'Samenvatting voor oefenen; definities en actuele verschillen kunnen per meetmethode verschillen.' },
             cards: [
                 {
                     title: 'Begrip 1: Bandbreedte vs. latency',

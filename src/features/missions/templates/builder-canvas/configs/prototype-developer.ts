@@ -10,7 +10,7 @@ export const prototypeDeveloperConfig: BuilderCanvasConfig = {
     introFeatures: [
         'Definieer de kernfunctie van je prototype',
         'Bouw een werkende versie met de tools die je kent',
-        'Test met echte gebruikers en verzamel feedback',
+        'Test met vrijwillige peer- of volwassen testers met toestemming',
         'Itereer: verbeter op basis van wat je hebt geleerd',
     ],
     enableChat: true,
@@ -32,6 +32,12 @@ export const prototypeDeveloperConfig: BuilderCanvasConfig = {
                 { id: 'out-scope', label: 'Ik heb uitgelegd welke functies ik uitstel en waarom' },
             ],
             textPrompt: 'Beschrijf je product-idee en afbakening',
+            evidence: {
+                label: 'Bewijs van je eerste versie',
+                prompt: 'Noteer wat je in v1 hebt getest en welke concrete wijziging je naar v2 meeneemt. Beschrijf hoe testers toestemming gaven en welke gegevens je bewust niet verzamelde.',
+                placeholder: 'v1-test: … → v2-wijziging: … (alleen anonieme Tester A/B-observaties; geen namen, contactgegevens, identificeerbare citaten, foto’s of stemopnames).',
+                minLength: 45,
+            },
         },
         {
             id: 'ontwerpen',
@@ -69,14 +75,14 @@ export const prototypeDeveloperConfig: BuilderCanvasConfig = {
             id: 'testen-itereren',
             title: 'Testen en itereren',
             description:
-                'Een prototype dat je niet hebt getest is niet klaar. Echte gebruikers doen onverwachte dingen. Ze drukken op plekken die je niet bedoeld had. Ze begrijpen instructies anders. Testen onthult wat je zelf niet kunt zien.',
+                'Een prototype dat je niet hebt getest is niet klaar. Vrijwillige testers doen onverwachte dingen. Ze drukken op plekken die je niet bedoeld had. Ze begrijpen instructies anders. Testen onthult wat je zelf niet kunt zien — met toestemming en zo min mogelijk gegevens.',
             instruction:
-                'Beschrijf je testproces. Vul in: 1) Wie heeft je prototype getest? (minimaal 2 personen — klasgenoot, familielid), 2) Welke taak hebben ze uitgevoerd?, 3) Welke 2 observaties of feedbackpunten heb je verzameld? (concreet: wat deden of zeiden ze?), 4) Welke 1 verbetering heb je doorgevoerd — en wat zou je doen met meer tijd?',
-            tip: 'Observeer, vraag niet tijdens het testen. Zeg niet "Nee, je moet hier klikken." Kijk gewoon. Waar iemand vastloopt, is een probleem in je design — niet bij de gebruiker.',
+                'Beschrijf je testproces. Gebruik minimaal 2 vrijwillige peer- of volwassen testers met toestemming. Noteer uitsluitend anonieme Tester A- en Tester B-observaties: 1) Welke taak voerden zij uit?, 2) Welke 2 observaties of feedbackpunten zag je (geen namen, contactgegevens, identificeerbare citaten, foto’s of stemopnames)?, 3) Welke 1 verbetering heb je doorgevoerd — en wat zou je doen met meer tijd? Leg ook uit hoe je data minimaliseerde.',
+            tip: 'Observeer, vraag niet tijdens het testen en leg alleen anonieme Tester A/B-observaties vast. Zeg niet "Nee, je moet hier klikken." Kijk gewoon. Waar iemand vastloopt, is een probleem in je design — niet bij de gebruiker.',
             checklistItems: [
-                { id: 'twee-testers', label: 'Minimaal 2 testpersonen zijn beschreven' },
+                { id: 'twee-testers', label: 'Minimaal 2 vrijwillige testers met toestemming zijn beschreven' },
                 { id: 'taak', label: 'De testtaak is beschreven' },
-                { id: 'twee-observaties', label: 'Twee concrete observaties of feedbackpunten zijn genoteerd' },
+                { id: 'twee-observaties', label: 'Twee anonieme Tester A/B-observaties of feedbackpunten zijn genoteerd' },
                 { id: 'verbetering', label: 'Minimaal 1 verbetering is doorgevoerd of beschreven' },
             ],
             textPrompt: 'Beschrijf je testproces en iteraties',
