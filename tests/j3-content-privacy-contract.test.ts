@@ -29,6 +29,8 @@ test('J3-content gebruikt alleen synthetische, privacyveilige deelnemersdata', (
 
     assert.match(wellbeingResearcher, /synthetische oefendataset/i);
     assert.match(wellbeingResearcher, /geen echte leerlingen/i);
+    assert.doesNotMatch(wellbeingResearcher, /de gemiddelde jongere/i);
+    assert.match(wellbeingResearcher, /geen uitspraak over het werkelijke schermgebruik van jongeren/i);
     assert.match(wellbeingResearcher, /deel geen eigen welzijns-.*, naam-.*, contact-.*, gezondheids-.* of slaapgegevens/i);
 
     const wellbeingGoal = missionGoals.slice(
