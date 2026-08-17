@@ -151,7 +151,7 @@ export const welzijnsonderzoekerConfig: DataViewerConfig = {
                     ],
                     correctAnswer: 'Social media',
                     explanation:
-                        'Social media staat met 2,8 uur per dag op de eerste plek — bijna anderhalf keer zo veel als gaming (1,9 uur). Dat betekent dat de gemiddelde jongere bijna een werkdag per week alleen aan social media besteedt (2,8 × 7 = ~20 uur per week).',
+                        'In deze oefengrafiek staat social media met 2,8 uur per dag op de eerste plek — bijna anderhalf keer zo veel als gaming (1,9 uur). Binnen dit verzonnen rekenvoorbeeld is 2,8 × 7 ongeveer 20 uur per week. Dit is geen uitspraak over het werkelijke schermgebruik van jongeren.',
                     points: 15,
                 },
                 {
