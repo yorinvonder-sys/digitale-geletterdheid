@@ -40,6 +40,7 @@ export const MISSION_SCREENSHOTS: Record<string, string> = {
     'review-week-3': '/assets/previews/project_review_week_3.webp',
     'mission-blueprint': '/assets/previews/project_mission_blueprint.webp',
     'mission-vision': '/assets/previews/project_mission_vision.webp',
+    'mission-build': '/assets/previews/project_mission_build.webp',
     'mission-launch': '/assets/previews/project_mission_launch.webp',
     'data-journalist': '/assets/previews/project_data_journalist.webp',
     'spreadsheet-specialist': '/assets/previews/project_spreadsheet_specialist.webp',
