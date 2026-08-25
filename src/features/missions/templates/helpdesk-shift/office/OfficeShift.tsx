@@ -119,6 +119,43 @@ export const OfficeShift: React.FC<Props> = ({
         return () => window.clearInterval(timer);
     }, [mag, office]);
 
+    /**
+     * Het leesvenster is een echt venster: de focus gaat erin, Escape sluit het
+     * en Tab blijft binnen, zodat de knoppen eronder er niet doorheen te
+     * bereiken zijn.
+     */
+    const leesVensterRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        if (!leest) return;
+        const venster = leesVensterRef.current;
+        venster?.focus();
+
+        const opToets = (event: KeyboardEvent) => {
+            if (event.key === 'Escape') {
+                setLeest(false);
+                return;
+            }
+            if (event.key !== 'Tab' || !venster) return;
+            const focusbaar = venster.querySelectorAll<HTMLElement>(
+                'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+            );
+            if (focusbaar.length === 0) return;
+            const eerste = focusbaar[0];
+            const laatste = focusbaar[focusbaar.length - 1];
+            if (event.shiftKey && document.activeElement === eerste) {
+                event.preventDefault();
+                laatste.focus();
+            } else if (!event.shiftKey && document.activeElement === laatste) {
+                event.preventDefault();
+                eerste.focus();
+            }
+        };
+
+        document.addEventListener('keydown', opToets);
+        return () => document.removeEventListener('keydown', opToets);
+    }, [leest]);
+
     // Wegwandelen bij een geopend bericht sluit het scherm.
     useEffect(() => {
         if (leest && !staatBijDoel) setLeest(false);
@@ -232,7 +269,9 @@ export const OfficeShift: React.FC<Props> = ({
 
                     <TouchJoystick onRichting={zetJoystick} zichtbaar={mag} />
 
-                    <div className="pointer-events-none absolute inset-x-0 top-0 p-3">
+                    {/* Opdrachtregel ook hoorbaar: bewegen kan met het toetsenbord, dus
+                        moet je ook zonder het scherm weten waar je heen moet. */}
+                    <div className="pointer-events-none absolute inset-x-0 top-0 p-3" role="status" aria-live="polite">
                         <p
                             className="inline-block rounded-full bg-duck-ink/85 px-3 py-1.5 text-xs font-black text-duck-bgLight"
                             style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
@@ -243,7 +282,11 @@ export const OfficeShift: React.FC<Props> = ({
 
                     {/* Wegwijzer met afstand, zolang je er nog niet bent */}
                     {!afleverHier && !staatBijDoel && doelAfstand !== null && (
-                        <div className="pointer-events-none absolute inset-x-0 top-12 flex justify-center">
+                        <div
+                            className="pointer-events-none absolute inset-x-0 top-12 flex justify-center"
+                            role="status"
+                            aria-live="polite"
+                        >
                             <div className="flex items-center gap-2 rounded-full bg-duck-acid px-3 py-1.5">
                                 <span
                                     aria-hidden="true"
@@ -338,7 +381,14 @@ export const OfficeShift: React.FC<Props> = ({
             </div>
 
             {leest && mailObject && (
-                <div className="fixed inset-0 z-40 overflow-y-auto bg-duck-ink/40 p-4">
+                <div
+                    ref={leesVensterRef}
+                    role="dialog"
+                    aria-modal="true"
+                    aria-label={`Bericht: ${mailObject.subject}`}
+                    tabIndex={-1}
+                    className="fixed inset-0 z-40 overflow-y-auto bg-duck-ink/40 p-4 outline-none"
+                >
                     <div className="mx-auto max-w-md">
                         <button
                             onClick={() => setLeest(false)}

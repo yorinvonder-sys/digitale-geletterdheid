@@ -73,6 +73,15 @@ const ItemRow: React.FC<ItemRowProps> = ({ item, submitted, currentIndex, totalI
             value={item}
             dragListener={false}
             dragControls={controls}
+            // Na indienen is goed/fout alleen zichtbaar aan kleur en icoon. Zonder
+            // dit label hoort een schermlezer wel de samenvatting, maar niet wélke
+            // rij verkeerd staat. Het label zegt niet waar het item wél hoort:
+            // schermlezergebruikers krijgen precies dezelfde informatie als de rest.
+            aria-label={
+                submitted
+                    ? `Plek ${currentIndex + 1}: ${item.label} — ${isCorrect ? 'juiste plek' : 'niet op de juiste plek'}`
+                    : undefined
+            }
             className={`flex items-center gap-3 p-3 rounded-xl border transition-all duration-300 select-none
                 ${submitted
                     ? isCorrect
@@ -83,20 +92,23 @@ const ItemRow: React.FC<ItemRowProps> = ({ item, submitted, currentIndex, totalI
         >
             <div
                 onPointerDown={submitted ? undefined : (e) => controls.start(e)}
-                className={`min-h-[44px] min-w-[32px] inline-flex items-center justify-center text-duck-ink/70 ${submitted ? '' : 'cursor-grab active:cursor-grabbing'}`}
+                className={`min-h-[44px] min-w-[32px] inline-flex items-center justify-center text-duck-ink/75 ${submitted ? '' : 'cursor-grab active:cursor-grabbing'}`}
                 style={{ touchAction: 'none' }}
                 aria-hidden="true"
             >
                 <GripVertical size={16} />
             </div>
 
+            {/* Het rode #ff3c21 haalde met duck-ink-tekst net geen 4,5:1 voor kleine
+                vette tekst; duck-acid haalt dat ruim en sluit aan op de rand- en
+                achtergrondkleur die een foute rij al krijgt. */}
             <div className="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0"
-                style={{ background: submitted ? (isCorrect ? '#202023' : '#ff3c21') : '#ff3c21' }}>
+                style={{ background: submitted && isCorrect ? '#202023' : '#e1ff01' }}>
                 <span className={`text-xs font-black ${submitted && isCorrect ? 'text-white' : 'text-duck-ink'}`}>{currentIndex + 1}</span>
             </div>
 
             <span
-                className="flex-1 text-sm text-duck-ink/70 font-medium"
+                className="flex-1 text-sm text-duck-ink/75 font-medium"
                 style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
             >
                 {item.label}
@@ -104,8 +116,8 @@ const ItemRow: React.FC<ItemRowProps> = ({ item, submitted, currentIndex, totalI
 
             {submitted && (
                 isCorrect
-                    ? <CheckCircle size={16} className="text-duck-ink flex-shrink-0" />
-                    : <XCircle size={16} className="text-duck-ink flex-shrink-0" />
+                    ? <CheckCircle size={16} aria-hidden="true" className="text-duck-ink flex-shrink-0" />
+                    : <XCircle size={16} aria-hidden="true" className="text-duck-ink flex-shrink-0" />
             )}
             {!submitted && (
                 <div className="flex shrink-0 gap-1">
@@ -115,7 +127,7 @@ const ItemRow: React.FC<ItemRowProps> = ({ item, submitted, currentIndex, totalI
                         onClick={() => onMove(item.id, -1)}
                         disabled={currentIndex === 0}
                         aria-label={`${item.label} omhoog verplaatsen`}
-                        className="grid min-h-[44px] min-w-[44px] place-items-center rounded-lg border border-duck-gray text-duck-ink/70 transition-colors hover:border-duck-acid hover:text-duck-ink disabled:opacity-30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-acid/40"
+                        className="grid min-h-[44px] min-w-[44px] place-items-center rounded-lg border border-duck-gray text-duck-ink/75 transition-colors hover:border-duck-acid hover:text-duck-ink disabled:opacity-30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-acid/40"
                     >
                         <ArrowUp size={14} />
                     </button>
@@ -125,7 +137,7 @@ const ItemRow: React.FC<ItemRowProps> = ({ item, submitted, currentIndex, totalI
                         onClick={() => onMove(item.id, 1)}
                         disabled={currentIndex === totalItems - 1}
                         aria-label={`${item.label} omlaag verplaatsen`}
-                        className="grid min-h-[44px] min-w-[44px] place-items-center rounded-lg border border-duck-gray text-duck-ink/70 transition-colors hover:border-duck-acid hover:text-duck-ink disabled:opacity-30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-acid/40"
+                        className="grid min-h-[44px] min-w-[44px] place-items-center rounded-lg border border-duck-gray text-duck-ink/75 transition-colors hover:border-duck-acid hover:text-duck-ink disabled:opacity-30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-acid/40"
                     >
                         <ArrowDown size={14} />
                     </button>
@@ -206,14 +218,14 @@ export const DragSort: React.FC<DragSortProps> = ({
                     {title}
                 </h3>
                 <p
-                    className="text-sm text-duck-ink/70"
+                    className="text-sm text-duck-ink/75"
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                 >
                     {description}
                 </p>
             </div>
 
-            <div className="text-xs text-duck-ink/70 flex items-center gap-1.5" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+            <div className="text-xs text-duck-ink/75 flex items-center gap-1.5" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                 <GripVertical size={12} />
                 Sleep de kaarten in de juiste volgorde of gebruik de pijltjes
             </div>
@@ -263,7 +275,7 @@ export const DragSort: React.FC<DragSortProps> = ({
                     className={`w-full py-3 rounded-xl font-bold text-sm transition-all duration-200 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-ink focus-visible:ring-offset-2
                         ${canSubmit
                             ? 'bg-gradient-to-r from-duck-acid to-duck-acid hover:from-duck-acid hover:to-duck-acid text-duck-ink'
-                            : 'bg-duck-gray text-duck-ink/70 cursor-not-allowed'
+                            : 'bg-duck-gray text-duck-ink/75 cursor-not-allowed'
                         }`}
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                 >

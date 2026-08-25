@@ -18,6 +18,9 @@ export interface ExplorePhaseProps {
 export const ExplorePhase: React.FC<ExplorePhaseProps> = ({ config, state, onMarkRead, onSetActiveIndex, onNext, onQuizAnswer, onQuizComplete }) => {
     const active = config.stakeholders[state.activeStakeholderIndex];
     const color = STAKEHOLDER_COLORS[state.activeStakeholderIndex % STAKEHOLDER_COLORS.length];
+    // Wit op duck-acid (#e1ff01) haalt ~1,1:1 en is onleesbaar; op dat lichte accent
+    // hoort duck-ink als tekstkleur.
+    const onColor = color === '#e1ff01' ? '#202023' : '#ffffff';
     const allRead = state.stakeholdersRead.length >= config.stakeholders.length;
     const isRead = state.stakeholdersRead.includes(active.id);
 
@@ -106,16 +109,16 @@ export const ExplorePhase: React.FC<ExplorePhaseProps> = ({ config, state, onMar
                 {!isRead ? (
                     <button
                         onClick={() => onMarkRead(active.id)}
-                        className="flex-1 py-2.5 rounded-xl text-sm font-bold text-white transition-all active:scale-[0.98]"
-                        style={{ background: color, fontFamily: "'Outfit', system-ui, sans-serif" }}
+                        className="flex-1 py-2.5 rounded-xl text-sm font-bold transition-all active:scale-[0.98]"
+                        style={{ background: color, color: onColor, fontFamily: "'Outfit', system-ui, sans-serif" }}
                     >
                         Gelezen ✓
                     </button>
                 ) : state.activeStakeholderIndex < config.stakeholders.length - 1 ? (
                     <button
                         onClick={() => onSetActiveIndex(state.activeStakeholderIndex + 1)}
-                        className="flex-1 py-2.5 rounded-xl text-sm font-bold text-white transition-all active:scale-[0.98]"
-                        style={{ background: color, fontFamily: "'Outfit', system-ui, sans-serif" }}
+                        className="flex-1 py-2.5 rounded-xl text-sm font-bold transition-all active:scale-[0.98]"
+                        style={{ background: color, color: onColor, fontFamily: "'Outfit', system-ui, sans-serif" }}
                     >
                         Volgende →
                     </button>

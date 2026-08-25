@@ -36,6 +36,9 @@ const config: ToolGuideConfig = {
                     'Het gereedschap waar ik in periode 2 het hoogste cijfer voor had',
                 ],
                 correctIndex: 1,
+                allowRetry: true,
+                retryHint:
+                    'Nog niet. Kijk nog eens naar je plan uit De Blauwdruk: met welk gereedschap maak je iets dat mensen echt kunnen openen? Kies daarna opnieuw.',
                 explanation:
                     'Klopt. Je kiest het gereedschap waarmee je jóuw plan kunt bouwen. Plaatjes en uitleg komen later, bij De Lancering. Nu maak je het ding zelf.',
             },
@@ -60,6 +63,9 @@ const config: ToolGuideConfig = {
                     'De kleuren en het lettertype die je gaat gebruiken',
                 ],
                 correctIndex: 1,
+                allowRetry: true,
+                retryHint:
+                    'Nog niet. Lees de uitleg boven deze stap nog eens: welk antwoord kun je zelf van begin tot eind openen en gebruiken? Kies daarna opnieuw.',
                 explanation:
                     'Precies. De kern is het kleinste stuk dat écht werkt en waaraan iemand ziet wat je project is. Vijf lege pagina\'s zijn nog niets; één werkende pagina wel.',
             },
@@ -84,6 +90,9 @@ const config: ToolGuideConfig = {
                     'Je vraagt een andere klasgenoot die je project al kent',
                 ],
                 correctIndex: 1,
+                allowRetry: true,
+                retryHint:
+                    'Nog niet. Lees de testregel in de opdracht terug: wat mag jij tijdens de test wel en niet doen? Kies daarna opnieuw.',
                 explanation:
                     'Goed. Dat aarzelen ís je testresultaat. Als jij de knop aanwijst, weet je nog steeds niet of een ander hem zelf kan vinden — en straks sta jij er niet bij.',
             },
@@ -111,6 +120,9 @@ const config: ToolGuideConfig = {
                     'Je project is te groot om te delen',
                 ],
                 correctIndex: 1,
+                allowRetry: true,
+                retryHint:
+                    'Nog niet. Open je eigen deellink eens in een privévenster en kijk wat er dan gebeurt. Kies daarna opnieuw.',
                 explanation:
                     'Klopt. Jij was al ingelogd, dus bij jou werkte het. Daarom test je een deellink altijd in een privévenster of op een ander apparaat — dan zie je wat een ander ziet.',
             },

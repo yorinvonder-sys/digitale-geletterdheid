@@ -28,16 +28,20 @@ const config: ToolGuideConfig = {
                 { id: 'frequentie', label: 'Ik heb nagedacht over hoe vaak dit probleem voorkomt' },
             ],
             verificationQuestion: {
-                question: 'Welk probleemomschrijving is het sterkst als startpunt voor een startup?',
+                question:
+                    'Kijk naar wat je bij deze stap hebt opgeschreven. Welke twee onderdelen staan er nu allebei echt op papier?',
                 options: [
-                    'De wereld is niet eerlijk',
-                    'School is soms moeilijk voor leerlingen',
-                    'Leerlingen vergeten gemiddeld 3 deadlines per maand omdat hun agenda te vol is',
-                    'AI kan veel dingen beter dan mensen',
+                    'Alleen wát er misgaat — voor wie het probleem speelt staat er nog nergens',
+                    'Een zin die vertelt wát er misgaat, én daarnaast voor wie het probleem speelt',
+                    'Alleen voor wie het is — wat er precies misgaat staat er nog niet',
+                    'Alleen een naam voor mijn startup',
                 ],
-                correctIndex: 2,
+                correctIndex: 1,
+                allowRetry: true,
+                retryHint:
+                    'Leg je aantekeningen naast de checklist van deze stap en vul aan wat nog ontbreekt. Kies daarna opnieuw.',
                 explanation:
-                    'Precies! Een concreet, meetbaar probleem met een specifieke doelgroep is het beste startpunt. Zo weet je straks ook of je oplossing echt werkt.',
+                    'Goed gecheckt. Met allebei de delen op papier — het probleem én de doelgroep — heb je de basis van elke sterke pitch. Investeerders willen precies weten voor wie je bouwt.',
             },
         },
         {
@@ -52,16 +56,20 @@ const config: ToolGuideConfig = {
                 { id: 'naam-catchy', label: 'De naam is kort, makkelijk te onthouden en past bij de oplossing' },
             ],
             verificationQuestion: {
-                question: 'Wat maakt een goede startupnaam?',
+                question:
+                    'Onderstreep in jouw oplossing het werkwoord dat zegt wat de AI zélf doet (herinnert, voorspelt, sorteert, vertaalt ...). Wat kom je tegen?',
                 options: [
-                    'Zo lang mogelijk, zodat het professioneel klinkt',
-                    'Een naam met veel technische termen erin',
-                    'Kort, makkelijk te onthouden en passend bij het product',
-                    'Een naam die niemand kent, zodat het mysterieus klinkt',
+                    'Alleen werkwoorden die zeggen wat de gebruiker doet, niet de AI',
+                    'Minstens één werkwoord waarbij de AI zelf het werk doet',
+                    'Geen enkel werkwoord — mijn tekst beschrijft nog steeds het probleem',
+                    'Alleen mijn startupnaam, want die staat in elke zin',
                 ],
-                correctIndex: 2,
+                correctIndex: 1,
+                allowRetry: true,
+                retryHint:
+                    'Pak je beschrijving van de oplossing erbij en lees hem zin voor zin na. Vul aan wat mist en kies daarna opnieuw.',
                 explanation:
-                    'Goed! De beste namen zijn kort, uitsprekbaar en roepen meteen een gevoel op dat bij het product past. Denk aan Zoom, Slack, Canva — simpel en direct.',
+                    'Mooi. Dat ene werkwoord is de kern van je pitch: het zegt in één woord wat jouw AI voor iemand doet. Staat het er nog niet, schrijf het er dan alsnog bij.',
             },
         },
         {
@@ -75,6 +83,22 @@ const config: ToolGuideConfig = {
                 { id: 'slogan', label: 'Ik heb een slogan van maximaal 6 woorden bedacht' },
                 { id: 'kleurenpalet', label: 'Ik heb 2 à 3 kleuren gekozen (bijv. blauw = vertrouwen, groen = groei, oranje = energie) en uitgelegd waarom ze passen' },
             ],
+            verificationQuestion: {
+                question:
+                    'Tel de woorden van jouw slogan en kijk of er een woord in zit dat echt bij jouw startup hoort. Wat klopt er nu?',
+                options: [
+                    'Mijn slogan heeft meer dan 6 woorden',
+                    'Maximaal 6 woorden, en er zit een woord in dat bij mijn startup past',
+                    'Maximaal 6 woorden, maar hij zou over elk willekeurig bedrijf kunnen gaan',
+                    'Ik heb nog geen slogan opgeschreven',
+                ],
+                correctIndex: 1,
+                allowRetry: true,
+                retryHint:
+                    'Pak je slogan er nog eens bij en leg hem naast de eisen uit de opdracht. Pas aan wat nodig is en kies daarna opnieuw.',
+                explanation:
+                    'Klopt. Kort én eigen: maximaal zes woorden waarvan er minstens één onmiskenbaar over jouw startup gaat — dat blijft hangen bij een jury.',
+            },
         },
         {
             id: 'stap-4-ethiek',
@@ -89,29 +113,33 @@ const config: ToolGuideConfig = {
                 { id: 'oplossing-risico', label: 'Ik heb voor minstens één risico een oplossing bedacht' },
             ],
             verificationQuestion: {
-                question: 'Waarom moet een AI-startup nadenken over privacy, ook als de app gratis is?',
+                question:
+                    'Lees de oplossing die je bij je risico schreef en streep alles weg wat geen handeling is die je echt kunt uitvoeren ("beter opletten", "eerlijk zijn"). Wat blijft er staan?',
                 options: [
-                    'Alleen betaalde apps hoeven zich aan privacyregels te houden',
-                    'Omdat gratis apps automatisch geen data verzamelen',
-                    'Omdat data van gebruikers — ook minderjarigen — beschermd moet worden, ongeacht de prijs',
-                    'Dat hoeft niet — als gebruikers akkoord gaan, is alles toegestaan',
+                    'Het risico zelf, nog een keer opgeschreven',
+                    'Iets wat je echt kunt doen, zoals data na een maand wissen of de app ook in een andere taal aanbieden',
+                    'Niets — er stonden alleen goede bedoelingen',
+                    'De lijst met data die mijn AI verzamelt',
                 ],
-                correctIndex: 2,
+                correctIndex: 1,
+                allowRetry: true,
+                retryHint:
+                    'Kijk nog eens naar je oplossing: staat er een handeling die je morgen echt kunt uitvoeren? Maak hem concreter als dat nodig is en kies daarna opnieuw.',
                 explanation:
-                    'Precies! In de EU gelden voor alle apps strenge regels voor dataverwerking, ook voor gratis apps. Bij apps voor minderjarigen gelden nog extra regels. Een goed product is ook een veilig en eerlijk product.',
+                    'Precies. Een risico benoemen is stap één; investeerders willen een maatregel zien die je morgen kunt uitvoeren. Blijft er niets staan, maak je oplossing dan concreter.',
             },
         },
     ],
-    maxScore: 55,
+    maxScore: 60,
     badges: [
         {
-            minScore: 55,
+            minScore: 60,
             emoji: '🏆',
             title: 'AI Entrepreneur',
             color: '#ff3c21',
         },
         {
-            minScore: 40,
+            minScore: 45,
             emoji: '💡',
             title: 'Startup Founder',
             color: '#e1ff01',

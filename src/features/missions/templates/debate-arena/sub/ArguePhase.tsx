@@ -1,13 +1,16 @@
-import React from 'react';
+import React, { useId } from 'react';
 import { ArrowLeft, ChevronRight } from 'lucide-react';
 import type { DebateArenaConfig, DebateArenaState, ArgumentEntry } from '../DebateArena';
 import { isMeaningfulAnswer, answerQualityHint } from '../../shared/answerQuality';
 
-function getArgumentQuality(charCount: number): { color: string; label: string } {
-    if (charCount >= 100) return { color: '#ff3c21', label: 'Uitstekend' };
-    if (charCount >= 50) return { color: '#202023', label: 'Goed' };
-    if (charCount >= 20) return { color: '#e1ff01', label: 'Basis' };
-    return { color: '#ff3c21', label: 'Te kort' };
+// De kleur zit alleen in de stip en loopt op van rood (te kort) naar zwart
+// (uitstekend); het label blijft duck-ink, want duck-acid en duck-error halen als
+// kleine tekst op wit te weinig contrast.
+function getArgumentQuality(charCount: number): { dotColor: string; label: string } {
+    if (charCount >= 100) return { dotColor: '#202023', label: 'Uitstekend' };
+    if (charCount >= 50) return { dotColor: '#e1ff01', label: 'Goed' };
+    if (charCount >= 20) return { dotColor: '#c2c1bd', label: 'Basis' };
+    return { dotColor: '#ff3c21', label: 'Te kort' };
 }
 
 export interface ArguePhaseProps {
@@ -20,6 +23,10 @@ export interface ArguePhaseProps {
 }
 
 export const ArguePhase: React.FC<ArguePhaseProps> = ({ config, state, onUpdateArgument, onSetActiveIndex, onNext, onBack }) => {
+    const uid = useId();
+    const claimId = `${uid}-claim`;
+    const evidenceId = `${uid}-evidence`;
+    const stakeholderLabelId = `${uid}-stakeholder`;
     const activeArg = state.arguments[state.activeArgumentIndex];
     const validCount = state.arguments.filter(
         (a) => isMeaningfulAnswer(a.claim) && isMeaningfulAnswer(a.evidence)
@@ -76,10 +83,11 @@ export const ArguePhase: React.FC<ArguePhaseProps> = ({ config, state, onUpdateA
                 </div>
 
                 <div className="mb-3">
-                    <label className="text-xs font-bold text-duck-ink/60 block mb-1.5" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                    <label htmlFor={claimId} className="text-xs font-bold text-duck-ink/60 block mb-1.5" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                         Ik vind dat...
                     </label>
                     <textarea
+                        id={claimId}
                         value={activeArg.claim}
                         onChange={(e) => onUpdateArgument(state.activeArgumentIndex, 'claim', e.target.value)}
                         placeholder="Geef jouw standpunt weer in eigen woorden..."
@@ -91,8 +99,8 @@ export const ArguePhase: React.FC<ArguePhaseProps> = ({ config, state, onUpdateA
                         const q = getArgumentQuality(activeArg.claim.trim().length);
                         return (
                             <div className="inline-flex items-center gap-1 mt-0.5" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
-                                <span className="w-2 h-2 rounded-full shrink-0" style={{ background: q.color }} />
-                                <span className="text-xs" style={{ color: q.color }}>{q.label}</span>
+                                <span className="w-2 h-2 rounded-full shrink-0" style={{ background: q.dotColor }} aria-hidden="true" />
+                                <span className="text-xs text-duck-ink">{q.label}</span>
                             </div>
                         );
                     })() : (
@@ -108,10 +116,11 @@ export const ArguePhase: React.FC<ArguePhaseProps> = ({ config, state, onUpdateA
                 </div>
 
                 <div className="mb-3">
-                    <label className="text-xs font-bold text-duck-ink/60 block mb-1.5" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                    <label htmlFor={evidenceId} className="text-xs font-bold text-duck-ink/60 block mb-1.5" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                         Want...
                     </label>
                     <textarea
+                        id={evidenceId}
                         value={activeArg.evidence}
                         onChange={(e) => onUpdateArgument(state.activeArgumentIndex, 'evidence', e.target.value)}
                         placeholder="Onderbouw met een feit, voorbeeld of redenering..."
@@ -123,8 +132,8 @@ export const ArguePhase: React.FC<ArguePhaseProps> = ({ config, state, onUpdateA
                         const q = getArgumentQuality(activeArg.evidence.trim().length);
                         return (
                             <div className="inline-flex items-center gap-1 mt-0.5" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
-                                <span className="w-2 h-2 rounded-full shrink-0" style={{ background: q.color }} />
-                                <span className="text-xs" style={{ color: q.color }}>{q.label}</span>
+                                <span className="w-2 h-2 rounded-full shrink-0" style={{ background: q.dotColor }} aria-hidden="true" />
+                                <span className="text-xs text-duck-ink">{q.label}</span>
                             </div>
                         );
                     })() : (
@@ -140,10 +149,11 @@ export const ArguePhase: React.FC<ArguePhaseProps> = ({ config, state, onUpdateA
                 </div>
 
                 <div>
-                    <label className="text-xs font-bold text-duck-ink/60 block mb-1.5" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                    {/* Geen <label>: dit hoort bij een groep knoppen, niet bij één invoerveld. */}
+                    <span id={stakeholderLabelId} className="text-xs font-bold text-duck-ink/60 block mb-1.5" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                         Dit raakt het perspectief van...
-                    </label>
-                    <div className="flex flex-wrap gap-2">
+                    </span>
+                    <div role="group" aria-labelledby={stakeholderLabelId} className="flex flex-wrap gap-2">
                         {config.stakeholders.map((sh) => (
                             <button
                                 key={sh.id}

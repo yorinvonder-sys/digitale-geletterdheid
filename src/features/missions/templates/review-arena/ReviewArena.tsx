@@ -196,6 +196,14 @@ function isStateValidForConfig(s: ReviewArenaState, config: ReviewArenaConfig): 
             if (!Array.isArray(active.progress.rightOrderIds) || !Array.isArray(active.progress.matchedIds)) return false;
             if (active.progress.rightOrderIds.length > round.pairs.length || active.progress.matchedIds.length > round.pairs.length) return false;
             if (typeof active.progress.wrongAttempts !== 'number' || active.progress.wrongAttempts < 0) return false;
+            // MatchPairs neemt deze twee rechtstreeks over als begintoestand, dus een
+            // index buiten bereik hoort hier net zo goed tegengehouden te worden als
+            // de rest van de herstelde velden.
+            const selectionValid = (v: number | null | undefined) =>
+                v === null ||
+                v === undefined ||
+                (Number.isInteger(v) && v >= 0 && v < round.pairs.length);
+            if (!selectionValid(active.progress.selectedLeft) || !selectionValid(active.progress.selectedRight)) return false;
         }
         if (active.type === 'categorize') {
             if (round.type !== 'categorize') return false;

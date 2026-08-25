@@ -37,7 +37,7 @@ export const KERNDOEL_MISSIONS: KerndoelMissionMeta[] = [
   // Periode 1 review
   { id: 'ipad-print-instructies', title: 'iPad Print Instructies', week: 2, yearGroup: 1, sloKerndoelen: ['21A'], sloVsoKerndoelen: ['18A'], classRestriction: 'MH1A' },
   { id: 'cloud-cleaner', title: 'Cloud Schoonmaker', week: 2, yearGroup: 1, sloKerndoelen: ['21A', '23A'], sloVsoKerndoelen: ['18A', '20A'] },
-  { id: 'layout-doctor', title: 'Word Match', week: 2, yearGroup: 1, sloKerndoelen: ['21A', '22A'], sloVsoKerndoelen: ['18A', '19A'] },
+  { id: 'layout-doctor', title: 'Opmaakdokter', week: 2, yearGroup: 1, sloKerndoelen: ['21A', '22A'], sloVsoKerndoelen: ['18A', '19A'] },
 
   // Assessment P1
   { id: 'assessment-j1-p1', title: 'Periodetoets 1', week: 1, yearGroup: 1, sloKerndoelen: ['21A', '22A', '23A'] },

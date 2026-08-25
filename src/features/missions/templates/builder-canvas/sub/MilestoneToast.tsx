@@ -8,17 +8,21 @@ interface MilestoneToastProps {
 }
 
 export const MilestoneToast: React.FC<MilestoneToastProps> = ({ show, completedCount, totalCount }) => (
-    <AnimatePresence>
-        {show && (
-            <motion.div
-                initial={{ opacity: 0, y: -20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
-                className="fixed top-4 left-1/2 -translate-x-1/2 z-50 bg-duck-ink/10 border border-duck-ink/30 text-duck-ink px-4 py-2 rounded-full text-sm font-bold"
-                style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
-            >
-                ✓ {completedCount}/{totalCount} voltooid!
-            </motion.div>
-        )}
-    </AnimatePresence>
+    // De live-regio staat er altijd, ook als de toast weg is: een schermlezer kondigt
+    // alleen wijzigingen aan binnen een regio die al in de DOM stond.
+    <div role="status" aria-live="polite">
+        <AnimatePresence>
+            {show && (
+                <motion.div
+                    initial={{ opacity: 0, y: -20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -20 }}
+                    className="fixed top-4 left-1/2 -translate-x-1/2 z-50 bg-duck-ink/10 border border-duck-ink/30 text-duck-ink px-4 py-2 rounded-full text-sm font-bold"
+                    style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
+                >
+                    ✓ {completedCount}/{totalCount} voltooid!
+                </motion.div>
+            )}
+        </AnimatePresence>
+    </div>
 );

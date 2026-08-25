@@ -29,16 +29,20 @@ const config: ToolGuideConfig = {
                 { id: 'systeem-naam', label: 'Ik ken de naam van het systeem op mijn school (bijv. RICOH myPrint, PaperCut of FollowMe)' },
             ],
             verificationQuestion: {
-                question: 'Hoe kom je erachter welk printsysteem jouw school gebruikt?',
+                question:
+                    'Je hebt op je apparaat gekeken waar de printers staan (Instellingen > Printers, of de print-app). Wat zag je daar?',
                 options: [
-                    'Dat staat altijd op de printer zelf, nergens anders',
-                    'Door te kijken in de App Library, of door het te vragen aan je docent of IT-helpdesk',
-                    'Door gewoon te printen — het systeem kiest zichzelf',
-                    'Door een nieuwe app te installeren',
+                    'Een lijst met printers die al zijn ingesteld, plus een knop om een printer toe te voegen',
+                    'Een melding dat alleen docenten de printers mogen bekijken',
+                    'Meteen een voorbeeld van je laatst geprinte document',
+                    'Een lijst met alle leerlingen die vandaag hebben geprint',
                 ],
-                correctIndex: 1,
+                correctIndex: 0,
+                allowRetry: true,
+                retryHint:
+                    'Nog niet. Ga terug naar Instellingen > Printers (of je print-app) en kijk goed wat er in dat scherm staat. Kies daarna opnieuw.',
                 explanation:
-                    'Precies! Je kijkt in de App Library of in de Instellingen van je apparaat, of je vraagt het gewoon aan je docent of de IT-helpdesk. Die weten precies welk systeem de school gebruikt.',
+                    'Klopt! Bij Printers zie je welke printers al op je apparaat staan, plus een knop om er een toe te voegen. Staat de schoolprinter er niet tussen, dan moet je hem nog instellen of de naam navragen bij je docent of de IT-helpdesk.',
             },
             teacherCheck: 'Laat je docent zien welk printsysteem jouw school gebruikt.',
         },
@@ -54,16 +58,20 @@ const config: ToolGuideConfig = {
                 { id: 'printer-verbonden', label: 'Mijn apparaat is verbonden met de schoolprinter' },
             ],
             verificationQuestion: {
-                question: 'Hoe open je het printvenster op een Chromebook of Windows-laptop?',
+                question:
+                    'Je hebt het printvenster geopend. Wat gebeurt er als je bovenin op de naam van de printer tikt of klikt?',
                 options: [
-                    'Via App Library > Afdrukken',
-                    'Ctrl+P in het document',
-                    'Via Instellingen > Printers > Afdrukken',
-                    'Door de print-app te installeren',
+                    'De printopdracht wordt meteen verstuurd',
+                    'Er klapt een lijst open met de printers waaruit je kunt kiezen',
+                    'Het printvenster sluit en je document wordt opgeslagen',
+                    'Je moet je apparaat opnieuw opstarten',
                 ],
                 correctIndex: 1,
+                allowRetry: true,
+                retryHint:
+                    'Nog niet. Open het printvenster nog eens en tik echt op de printernaam bovenin; kijk wat er dan gebeurt. Kies daarna opnieuw.',
                 explanation:
-                    'Ctrl+P opent het printvenster direct in bijna elk programma — op Chromebook én Windows. Snel en handig!',
+                    'Precies! Bovenin het printvenster staat de printer die nu gekozen is. Tik of klik je erop, dan zie je alle printers die je apparaat kent — daar kies je de schoolprinter uit.',
             },
         },
         {
@@ -78,16 +86,20 @@ const config: ToolGuideConfig = {
                 { id: 'aantal', label: 'Ik heb het aantal kopieën gecontroleerd (1 tenzij anders nodig)' },
             ],
             verificationQuestion: {
-                question: 'Wanneer gebruik je dubbelzijdig afdrukken?',
+                question:
+                    'Kijk in het printvenster naar het paginabereik. Wat staat daar ingevuld voordat jij iets verandert?',
                 options: [
-                    'Nooit, want dubbelzijdig is moeilijker te lezen',
-                    'Altijd, ook voor losse aantekeningen van één pagina',
-                    'Bij langere documenten zoals verslagen, om papier te sparen',
-                    'Alleen als de printer dat automatisch doet',
+                    'Alles — dus alle pagina\'s van je document',
+                    'Alleen pagina 1',
+                    'Niets, je moet er altijd zelf iets intypen',
+                    'De pagina\'s van het document dat je hiervoor printte',
                 ],
-                correctIndex: 2,
+                correctIndex: 0,
+                allowRetry: true,
+                retryHint:
+                    'Nog niet. Kijk in het printvenster naar het vakje bij Pagina\'s of Paginabereik, vóórdat je er zelf iets in typt. Kies daarna opnieuw.',
                 explanation:
-                    'Goed gedacht! Dubbelzijdig printen gebruik je bij documenten van meerdere pagina\'s — zoals verslagen of samenvattingen. Dat spaart papier en is beter voor het milieu. Voor een losse pagina is het niet nodig.',
+                    'Goed gezien! Standaard staat het paginabereik op alles. Wil je maar een deel printen, dan typ je daar zelf de paginanummers in — dat scheelt papier en inkt.',
             },
         },
         {
@@ -102,16 +114,19 @@ const config: ToolGuideConfig = {
                 { id: 'print-opgehaald', label: 'Ik heb mijn print opgehaald bij de printer' },
             ],
             verificationQuestion: {
-                question: 'Waarom is het belangrijk om je print direct op te halen bij de printer?',
+                question: 'Je hebt op Afdrukken getikt. Wat zie je daarna op je eigen scherm?',
                 options: [
-                    'Omdat de printer anders automatisch stopt',
-                    'Vanwege je privacy en omdat de opdracht anders uit de wachtrij kan verdwijnen',
-                    'Omdat je anders extra moet betalen voor wachttijd',
-                    'Omdat andere leerlingen dan ook jouw opdracht kunnen bewerken',
+                    'Het printvenster sluit en de opdracht is verstuurd; soms zie je kort een melding dat hij in de wachtrij staat',
+                    'De printer vraagt eerst of je genoeg papier hebt bijgevuld',
+                    'Je document gaat automatisch dicht',
+                    'Je krijgt een e-mail met je print als bijlage',
                 ],
-                correctIndex: 1,
+                correctIndex: 0,
+                allowRetry: true,
+                retryHint:
+                    'Nog niet. Let op je eigen scherm op het moment dat je op Afdrukken tikt: wat verdwijnt of verschijnt daar? Kies daarna opnieuw.',
                 explanation:
-                    'Juist! Je print bevat jouw werk — misschien met persoonlijke informatie. Haal hem direct op voor je privacy. Bovendien kunnen sommige systemen onafgehaalde opdrachten automatisch verwijderen.',
+                    'Klopt! Zodra je opdracht verstuurd is, verdwijnt het printvenster. Bij een FollowMe- of vrijgave-systeem wacht je print daarna op de server tot je je bij de printer aanmeldt — haal hem meteen op, dan blijft je werk privé.',
             },
         },
     ],

@@ -1,4 +1,4 @@
-import React, { useEffect, useId, useRef } from 'react';
+import React, { useCallback, useEffect, useId, useRef, useState } from 'react';
 import { Trophy, Sparkles, CheckCircle2, RotateCcw } from 'lucide-react';
 import { KeesMessage } from '@/components/brand/KeesMessage';
 import { getKeesCompletionLine } from '@/config/keesVoice';
@@ -20,8 +20,16 @@ interface CompletionScreenProps {
     missionTitle?: string;
     phases?: PhaseScore[];
     takeaways: string[];
-    onComplete: () => void;
-    onRetry?: () => void;
+    /** Mag async zijn; het scherm wacht de afronding af en houdt de knop zolang bezig. */
+    onComplete: () => void | Promise<void>;
+    onRetry?: () => void | Promise<void>;
+    /** Slaagdrempel als percentage. Engines met een eigen missiedrempel (bv. 60)
+     *  geven die hier door, anders toont dit scherm 'Gehaald' terwijl de missie
+     *  de run niet als gehaald registreert. */
+    passScorePercent?: number;
+    /** Expliciete slaag-uitkomst voor engines waarvan slagen niet (alleen) van de
+     *  score afhangt (bv. verplichte rondes). Overstemt de percentageberekening. */
+    passed?: boolean;
     attribution?: {
         source: string;
         author?: string;
@@ -40,6 +48,8 @@ export const CompletionScreen: React.FC<CompletionScreenProps> = ({
     takeaways,
     onComplete,
     onRetry,
+    passScorePercent = 40,
+    passed: passedOverride,
     attribution,
 }) => {
     const badge = [...badges]
@@ -62,7 +72,33 @@ export const CompletionScreen: React.FC<CompletionScreenProps> = ({
     // A learner who skipped or failed most of a mission has not actually mastered
     // the takeaways, so we must not present them as achieved (green ✓) nor claim a
     // celebratory "voltooid". 40% mirrors the pass threshold used elsewhere.
-    const passed = maxScore > 0 && percentage >= 40;
+    const passed = passedOverride ?? (maxScore > 0 && percentage >= passScorePercent);
+
+    // Zonder onRetry mag de knop nooit uitgeschakeld raken. Dit scherm vervangt de
+    // hele missie en heeft geen eigen navigatie, en de results-fase staat in de
+    // opgeslagen voortgang: een uitgeschakelde knop is dus een doodlopend scherm dat
+    // ook na herladen terugkomt. Afronden zonder succes is dan de uitweg — de score
+    // gaat mee zoals hij is, er wordt niets als 'gehaald' gerapporteerd.
+    const primaryAction = passed ? onComplete : (onRetry ?? onComplete);
+
+    // De engines geven een async onComplete mee; zonder deze poort vuren twee snelle
+    // klikken (of Enter-herhaling) hem twee keer af. De host ontdubbelt de opslag al,
+    // dit houdt de knop zichtbaar bezig en voorkomt de dubbele aanroep.
+    const [pending, setPending] = useState(false);
+    const pendingRef = useRef(false);
+
+    const handlePrimary = useCallback(async () => {
+        if (pendingRef.current) return;
+        pendingRef.current = true;
+        setPending(true);
+        try {
+            await primaryAction();
+        } finally {
+            // Mislukt afronden, dan moet de leerling het opnieuw kunnen proberen.
+            pendingRef.current = false;
+            setPending(false);
+        }
+    }, [primaryAction]);
 
     return (
         <div
@@ -162,12 +198,17 @@ export const CompletionScreen: React.FC<CompletionScreenProps> = ({
                 {/* Complete button */}
                 <button
                     data-qa="confirm-completion"
-                    onClick={passed ? onComplete : onRetry}
-                    disabled={!passed && !onRetry}
-                    className="mb-4 w-full py-3.5 bg-duck-acid hover:bg-duck-acid/80 text-duck-ink rounded-full font-black text-sm transition-all duration-200 active:scale-[0.98] shadow-lg shadow-duck-acid/25 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-ink focus-visible:ring-offset-2"
+                    onClick={handlePrimary}
+                    disabled={pending}
+                    aria-busy={pending || undefined}
+                    className="mb-4 w-full py-3.5 bg-duck-acid hover:bg-duck-acid/80 text-duck-ink rounded-full font-black text-sm transition-all duration-200 active:scale-[0.98] shadow-lg shadow-duck-acid/25 disabled:cursor-wait disabled:opacity-70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-ink focus-visible:ring-offset-2"
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                 >
-                    {passed ? 'Missie voltooid! 🎉' : 'Afronden — probeer het gerust nog eens'}
+                    {pending
+                        ? 'Bezig met opslaan…'
+                        : passed
+                          ? 'Missie voltooid! 🎉'
+                          : 'Afronden — probeer het gerust nog eens'}
                 </button>
 
                 {/* Takeaways — framed as achieved (✓) only when the learner actually

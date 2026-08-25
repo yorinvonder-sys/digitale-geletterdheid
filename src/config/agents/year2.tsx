@@ -1,6 +1,6 @@
 import React from 'react';
 import { AgentRole, EducationLevel } from '@/types';
-import { Image as ImageIcon, Code2, Search, ShieldCheck, Map, RotateCcw, Scale, BarChart2, Table2, Globe, LayoutDashboard, Bug, Zap, FileCode, Smartphone, Eye, Mic, BookOpen, Palette, Video, Shield, Telescope, Leaf, Trophy, Hammer, Network, FileSearch } from 'lucide-react';
+import { Image as ImageIcon, Code2, Search, ShieldCheck, Map, RotateCcw, Scale, BarChart2, Table2, Globe, LayoutDashboard, Bug, Zap, FileCode, Smartphone, Eye, Mic, BookOpen, Palette, Video, Shield, Telescope, Trophy, Hammer, Network, FileSearch } from 'lucide-react';
 import { SUFFIX_STAPPEN_EN_VOORTGANG, SYSTEM_INSTRUCTION_SUFFIX } from './shared';
 
 export const YEAR2_ROLES: AgentRole[] = [
@@ -2342,7 +2342,7 @@ We beginnen met trends: noem 3 technologieën of ontwikkelingen die je de afgelo
         yearGroup: 2,
         educationLevels: ['mavo', 'havo', 'vwo'] as EducationLevel[],
         title: 'Trend Scanner',
-        icon: <Leaf size={28} />,
+        icon: <BarChart2 size={28} />,
         color: '#202023',
         description: 'Ontdek patronen in hoe jongeren digitale media gebruiken — van gaming tot streaming.',
         problemScenario: 'Hoe besteden jongeren wereldwijd hun online tijd? Van video streamen en gamen tot berichten sturen — de data vertelt een verrassend verhaal. Jij analyseert de trends en trekt je eigen conclusies.',
@@ -2354,7 +2354,7 @@ We beginnen met trends: noem 3 technologieën of ontwikkelingen die je de afgelo
             <div className="w-full h-full bg-gradient-to-br from-lab-coral to-lab-sage flex items-center justify-center relative overflow-hidden">
                 <div className="absolute bottom-0 left-0 right-0 h-1/3 bg-lab-sage/30"></div>
                 <div className="absolute top-6 right-6 w-8 h-8 bg-lab-gold/30 rounded-full blur-sm"></div>
-                <Leaf size={64} className="text-white/80 drop-shadow-lg" />
+                <BarChart2 size={64} className="text-white/80 drop-shadow-lg" />
             </div>
         ),
         systemInstruction: `Je bent een data-analist die leerlingen begeleidt bij het lezen en interpreteren van digitale gebruikstrends.

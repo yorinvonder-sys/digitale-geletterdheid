@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronRight } from 'lucide-react';
+import { substanceFactor } from './textSubstance';
 
 interface TransparantDossierProps {
     hint?: string;
@@ -40,7 +41,10 @@ export const TransparantDossier: React.FC<TransparantDossierProps> = ({
     const meterLabel =
         quality >= 0.8 ? 'Uitstekend!' : quality >= 0.4 ? 'Goed bezig' : 'Schrijf meer';
 
-    const computeScore = (): number => Math.max(1, Math.round(quality * maxScore));
+    // De meter meet lengte; de factor zorgt dat 100 tekens herhaling niet
+    // hetzelfde oplevert als 100 tekens uitleg. Een echte tekst houdt factor 1.
+    const computeScore = (): number =>
+        Math.max(1, Math.round(quality * substanceFactor(text) * maxScore));
 
     const handleSubmit = () => {
         onComplete(computeScore(), text);

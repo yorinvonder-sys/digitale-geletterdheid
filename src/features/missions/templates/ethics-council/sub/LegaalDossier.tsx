@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useId, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronRight, ChevronDown } from 'lucide-react';
 import type { AvgAdvocaatInfo } from '../EthicsCouncil';
+import { substanceFactor } from './textSubstance';
 
 type LegaalVerdict = 'ja' | 'twijfel' | 'nee';
 
@@ -33,6 +34,7 @@ export const LegaalDossier: React.FC<LegaalDossierProps> = ({
     savedJustification,
     onComplete,
 }) => {
+    const verdictLabelId = useId();
     const [perspectiveOpen, setPerspectiveOpen] = useState(false);
     const [verdict, setVerdict] = useState<LegaalVerdict | null>(savedVerdict);
     const [justification, setJustification] = useState(savedJustification);
@@ -45,7 +47,10 @@ export const LegaalDossier: React.FC<LegaalDossierProps> = ({
         // over honesty, the opposite of what this mission teaches.
         const base = Math.round(maxScore * 0.8);
         const qualityBonus = justification.trim().length >= 40 ? Math.round(maxScore * 0.2) : 0;
-        return Math.min(base + qualityBonus, maxScore);
+        // Zonder deze factor levert 40 tekens 'aaaa…' de volle 30 punten op. Een
+        // echte onderbouwing — ook een korte — houdt factor 1 en scoort ongewijzigd.
+        const earned = Math.round((base + qualityBonus) * substanceFactor(justification));
+        return Math.min(earned, maxScore);
     };
 
     const handleSubmit = () => {
@@ -92,6 +97,7 @@ export const LegaalDossier: React.FC<LegaalDossierProps> = ({
                 {/* Progressive reveal toggle */}
                 <button
                     onClick={() => setPerspectiveOpen((o) => !o)}
+                    aria-expanded={perspectiveOpen}
                     className="mt-3 flex items-center gap-1 text-[11px] font-bold text-duck-ink/70 hover:text-duck-ink transition-colors"
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                 >
@@ -118,8 +124,9 @@ export const LegaalDossier: React.FC<LegaalDossierProps> = ({
             </div>
 
             {/* Traffic-light verdict */}
-            <div className="space-y-2">
+            <div className="space-y-2" role="group" aria-labelledby={verdictLabelId}>
                 <p
+                    id={verdictLabelId}
                     className="text-xs font-bold text-duck-ink/70"
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                 >
@@ -129,6 +136,7 @@ export const LegaalDossier: React.FC<LegaalDossierProps> = ({
                     <button
                         key={opt.value}
                         onClick={() => setVerdict(opt.value)}
+                        aria-pressed={verdict === opt.value}
                         className={`w-full flex items-center gap-3 p-3 rounded-xl border-2 transition-all duration-200 text-left
                             ${verdict === opt.value
                                 ? 'border-duck-ink bg-duck-ink/5'

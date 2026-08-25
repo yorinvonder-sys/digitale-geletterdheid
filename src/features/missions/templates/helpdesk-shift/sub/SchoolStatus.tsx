@@ -38,7 +38,9 @@ const NIVEAU_CONFIG: Record<Niveau, { label: string; klasse: string; Icoon: type
     },
     kritiek: {
         label: 'Het loopt uit de hand',
-        klasse: 'bg-duck-error/10 text-duck-error border-duck-error',
+        // Rood op bijna-wit haalt de leesbaarheidsnorm niet; de urgentie zit in
+        // rand en vlak, de tekst blijft in de gewone inktkleur.
+        klasse: 'bg-duck-error/10 text-duck-ink border-duck-error',
         Icoon: Flame,
     },
 };
