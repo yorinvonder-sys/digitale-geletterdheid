@@ -90,23 +90,23 @@ const config: ToolGuideConfig = {
             checklistItems: [
                 { id: 'agenda-open', label: 'Ik heb de Agenda of ELO geopend' },
                 { id: 'huiswerk-gevonden', label: 'Ik heb huiswerk van één vak gevonden (of gezien dat er geen staat)' },
-                { id: 'deadline', label: 'Ik weet voor wanneer het huiswerk ingeleverd moet worden' },
+                { id: 'deadline', label: 'Ik weet voor wanneer het huiswerk af moet zijn (of dat er nu niets openstaat)' },
             ],
             teacherCheck: 'Laat je docent zien waar jij huiswerk of opdrachten terugvindt.',
             verificationQuestion: {
-                question: 'Hoe zag je in de Agenda of ELO voor wanneer het huiswerk af moet zijn?',
+                question: 'Hoe kon je in de Agenda of ELO zien of er voor een dag wel of geen huiswerk klaarstaat?',
                 options: [
-                    'Er loopt een timer die aftelt tot de deadline',
-                    'Het staat bij de dag of datum waarop het in de agenda is gezet',
-                    'Het staat onderaan bij mijn cijfers',
-                    'Je krijgt elke ochtend een telefoontje van de docent',
+                    'Alleen als de app een melding stuurt; zonder melding staat er niets klaar',
+                    'Bij elke dag staat wat er die dag af moet zijn; is die dag leeg, dan is er niets',
+                    'Onderaan bij mijn cijfers staat hoeveel opdrachten nog open staan',
+                    'Dat zie je niet in Magister; dat moet je bij elk vak apart vragen',
                 ],
                 correctIndex: 1,
                 allowRetry: true,
                 retryHint:
-                    'Nog niet. Kijk waar het huiswerkitem precies staat in je agenda. Kies daarna opnieuw.',
+                    'Nog niet. Kijk nog eens hoe je agenda is ingedeeld en waar een huiswerkitem terechtkomt. Kies daarna opnieuw.',
                 explanation:
-                    'Precies! Huiswerk staat bij de dag waarop het af moet zijn. Zo zie je in één oogopslag wat er wanneer klaar moet zijn.',
+                    'Precies! De agenda is geordend per dag: bij elke dag staat wat er die dag af moet zijn. Staat er bij een dag niets, dan is er voor die dag ook geen huiswerk ingepland.',
             },
         },
         {
@@ -138,16 +138,16 @@ const config: ToolGuideConfig = {
             },
         },
     ],
-    maxScore: 55,
+    maxScore: 60,
     badges: [
         {
-            minScore: 55,
+            minScore: 60,
             emoji: '🏆',
             title: 'Magister Expert',
             color: '#202023',
         },
         {
-            minScore: 40,
+            minScore: 45,
             emoji: '📅',
             title: 'Magister Meester',
             color: '#202023',

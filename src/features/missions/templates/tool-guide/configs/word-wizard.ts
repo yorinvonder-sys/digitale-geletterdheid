@@ -135,16 +135,16 @@ const config: ToolGuideConfig = {
             },
         },
     ],
-    maxScore: 55,
+    maxScore: 60,
     badges: [
         {
-            minScore: 55,
+            minScore: 60,
             emoji: '🏆',
             title: 'Document Expert',
             color: '#202023',
         },
         {
-            minScore: 40,
+            minScore: 45,
             emoji: '✍️',
             title: 'Word Wizard',
             color: '#3D3D40',

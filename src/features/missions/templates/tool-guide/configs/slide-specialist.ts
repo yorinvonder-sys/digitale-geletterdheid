@@ -137,16 +137,16 @@ const config: ToolGuideConfig = {
             },
         },
     ],
-    maxScore: 55,
+    maxScore: 60,
     badges: [
         {
-            minScore: 55,
+            minScore: 60,
             emoji: '🏆',
             title: 'Presentatie Expert',
             color: '#ff3c21',
         },
         {
-            minScore: 40,
+            minScore: 45,
             emoji: '🎨',
             title: 'Slide Specialist',
             color: '#202023',

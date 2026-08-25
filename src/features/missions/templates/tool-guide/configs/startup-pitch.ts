@@ -28,16 +28,17 @@ const config: ToolGuideConfig = {
                 { id: 'frequentie', label: 'Ik heb nagedacht over hoe vaak dit probleem voorkomt' },
             ],
             verificationQuestion: {
-                question: 'Welk probleemomschrijving is het sterkst als startpunt voor een startup?',
+                question:
+                    'Pak jouw probleemzin erbij en streep het woord (of de woorden) weg die zeggen WIE dit probleem heeft. Wat houd je over?',
                 options: [
-                    'De wereld is niet eerlijk',
-                    'School is soms moeilijk voor leerlingen',
-                    'Leerlingen vergeten gemiddeld 3 deadlines per maand omdat hun agenda te vol is',
-                    'AI kan veel dingen beter dan mensen',
+                    'Precies dezelfde zin — er stond geen doelgroep in',
+                    'Een zin die nog steeds vertelt wát er misgaat, maar niet meer voor wie',
+                    'Niets meer, want mijn hele zin ging over de doelgroep',
+                    'Eén los woord',
                 ],
-                correctIndex: 2,
+                correctIndex: 1,
                 explanation:
-                    'Precies! Een concreet, meetbaar probleem met een specifieke doelgroep is het beste startpunt. Zo weet je straks ook of je oplossing echt werkt.',
+                    'Goed gekeken. Blijft er zonder de doelgroep nog een zin over die vertelt wat er misgaat, dan zitten allebei de delen erin. Zet de doelgroep er weer bij — investeerders willen precies weten voor wie je bouwt.',
             },
         },
         {
@@ -52,16 +53,17 @@ const config: ToolGuideConfig = {
                 { id: 'naam-catchy', label: 'De naam is kort, makkelijk te onthouden en past bij de oplossing' },
             ],
             verificationQuestion: {
-                question: 'Kijk naar wat je net hebt opgeschreven. Wat klopt er als je deze stap goed hebt gedaan?',
+                question:
+                    'Onderstreep in jouw oplossing het werkwoord dat zegt wat de AI zélf doet (herinnert, voorspelt, sorteert, vertaalt ...). Wat kom je tegen?',
                 options: [
-                    'Ik heb alleen een naam bedacht; de oplossing schrijf ik later op',
-                    'Mijn oplossing staat in 2 tot 3 zinnen en mijn naam is kort (maximaal 2 woorden)',
-                    'Mijn oplossing is één woord en mijn naam is een hele zin',
-                    'Mijn oplossing beschrijft het probleem nog een keer, zonder AI erin',
+                    'Alleen werkwoorden die zeggen wat de gebruiker doet, niet de AI',
+                    'Minstens één werkwoord waarbij de AI zelf het werk doet',
+                    'Geen enkel werkwoord — mijn tekst beschrijft nog steeds het probleem',
+                    'Alleen mijn startupnaam, want die staat in elke zin',
                 ],
                 correctIndex: 1,
                 explanation:
-                    'Goed! Je hebt nu allebei op papier: een oplossing van 2 tot 3 zinnen waarin AI iets doet, en een korte naam die makkelijk blijft hangen.',
+                    'Mooi. Dat ene werkwoord is de kern van je pitch: het zegt in één woord wat jouw AI voor iemand doet. Staat het er nog niet, schrijf het er dan alsnog bij.',
             },
         },
         {
@@ -76,16 +78,17 @@ const config: ToolGuideConfig = {
                 { id: 'kleurenpalet', label: 'Ik heb 2 à 3 kleuren gekozen (bijv. blauw = vertrouwen, groen = groei, oranje = energie) en uitgelegd waarom ze passen' },
             ],
             verificationQuestion: {
-                question: 'Kijk naar het logo, de slogan en de kleuren die je net hebt gemaakt. Wat klopt er?',
+                question:
+                    'Lees jouw slogan en haal er in gedachten het belangrijkste woord uit weg. Wat blijft er over?',
                 options: [
-                    'Ik heb een logo getekend, maar nog geen slogan bedacht',
-                    'Mijn slogan is één woord en ik heb nog geen kleuren gekozen',
-                    'Ik heb 2 à 3 kleuren gekozen met bij elke kleur een reden, en mijn slogan telt maximaal 6 woorden',
-                    'Ik heb zoveel mogelijk kleuren gebruikt, want dan valt mijn logo het meeste op',
+                    'Een zin die precies hetzelfde betekent als eerst',
+                    'Een zin waar de kern uit is, zodat niemand meer snapt waar mijn startup over gaat',
+                    'Niets — mijn slogan bestond uit dat ene woord',
+                    'Een langere zin dan eerst',
                 ],
-                correctIndex: 2,
+                correctIndex: 1,
                 explanation:
-                    'Precies! Een paar kleuren met een reden erachter en een korte slogan maken je merk herkenbaar. Veel kleuren door elkaar maken het juist rommelig.',
+                    'Klopt. Als één woord weghalen je slogan meteen leegmaakt, dan draagt elk woord zijn gewicht. Dat is precies wat je wilt in maximaal zes woorden.',
             },
         },
         {
@@ -101,29 +104,30 @@ const config: ToolGuideConfig = {
                 { id: 'oplossing-risico', label: 'Ik heb voor minstens één risico een oplossing bedacht' },
             ],
             verificationQuestion: {
-                question: 'Kijk terug naar wat je in deze stap hebt opgeschreven. Wat staat er?',
+                question:
+                    'Lees de oplossing die je bij je risico schreef en streep alles weg wat geen handeling is die je echt kunt uitvoeren ("beter opletten", "eerlijk zijn"). Wat blijft er staan?',
                 options: [
-                    'Alleen een lijst met data die mijn AI verzamelt',
-                    'Alleen de naam en de slogan van mijn startup',
-                    'Welke data mijn AI verzamelt, één risico voor eerlijkheid, én bij minstens één risico een oplossing',
-                    'Een lijst met alle mensen die mijn app straks gaan gebruiken',
+                    'Het risico zelf, nog een keer opgeschreven',
+                    'Iets wat je echt kunt doen, zoals data na een maand wissen of de app ook in een andere taal aanbieden',
+                    'Niets — er stonden alleen goede bedoelingen',
+                    'De lijst met data die mijn AI verzamelt',
                 ],
-                correctIndex: 2,
+                correctIndex: 1,
                 explanation:
-                    'Precies! Risico\'s benoemen is stap één, maar investeerders willen ook zien dat je er iets aan doet. Daarom hoort bij minstens één risico een oplossing te staan.',
+                    'Precies. Een risico benoemen is stap één; investeerders willen een maatregel zien die je morgen kunt uitvoeren. Blijft er niets staan, maak je oplossing dan concreter.',
             },
         },
     ],
-    maxScore: 55,
+    maxScore: 60,
     badges: [
         {
-            minScore: 55,
+            minScore: 60,
             emoji: '🏆',
             title: 'AI Entrepreneur',
             color: '#ff3c21',
         },
         {
-            minScore: 40,
+            minScore: 45,
             emoji: '💡',
             title: 'Startup Founder',
             color: '#e1ff01',

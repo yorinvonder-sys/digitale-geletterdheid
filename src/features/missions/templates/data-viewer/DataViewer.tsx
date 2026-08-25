@@ -878,9 +878,11 @@ const DataViewerInner: React.FC<DataViewerProps> = ({
     const totalScore = clampScore(questionScore + followUpBonusScore, config.maxScore);
 
     const missionGoal = config.missionGoal ?? getMissionGoal(config.missionId);
-    /** Puntendrempel van de missie, of null wanneer voltooien niet van de score afhangt. */
+    /** Puntendrempel van de missie, of null wanneer voltooien niet van de score afhangt.
+     *  missionGoals-drempels zijn percentages (registratie werkt in procenten): bij
+     *  eindproject-j2 (maxScore 85) betekent 65 dus 65% = 56 punten, niet 65 punten. */
     const scoreThreshold = missionGoal?.criteria.type === 'score-threshold'
-        ? (missionGoal.criteria.threshold ?? config.maxScore * 0.4)
+        ? Math.ceil(config.maxScore * ((missionGoal.criteria.threshold ?? 40) / 100))
         : null;
     // Zonder eigen missiedrempel blijft de oude regel staan: 40% van het maximum,
     // gemeten op hetzelfde afgeronde percentage dat de docent te zien krijgt.
