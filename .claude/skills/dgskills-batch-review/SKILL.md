@@ -29,13 +29,33 @@ Niet alles op één niveau. Kies per deeltaak het lichtste model dat het werk aa
 | Enginereview: scoring, voltooiing, state-herstel | Opus 5 low → medium | Raakt correctheid; begin laag, escaleer alleen bij twijfel |
 | Welzijn, privacy, juridische claims | Opus 5 high | Kindveiligheid en compliance — hier niet bezuinigen |
 | Synthese en eindoordeel | Opus 5 high (orchestrator) | Vereist het hele beeld |
-| Rapporttekst, samenvattingen, vergelijking met eerdere review | DeepSeek Flash via `--file` | Puur tekst uit context die de orchestrator al heeft |
-| Tegenlezing van dragende claims | ChatGPT sol medium/high | Vaste achtervang, zie Stap 6 |
-| Uitzonderlijke onzekerheid | Fable | Alleen als Opus high er niet uitkomt én het antwoord zwaar weegt |
+| Rapporttekst, samenvattingen, vergelijking met eerdere review | Opus 5 low, of Luna (Codex) | DeepSeek is per 2026-08-20 uit de werkwijze |
+| Tegenlezing van dragende claims | Sol (Codex) medium/high | Vaste achtervang, zie Stap 6 |
+| Uitzonderlijke onzekerheid | Opus 5 high | Fable wordt in deze pipeline niet als losse rol ingezet — zie ultracode-variant hieronder voor het enige geval waarin Fable meedoet |
 
 **Opus `max` wordt in deze pipeline niet gebruikt.** Opus 5 `high` is het plafond. Elke
 correctie die er in de praktijk toe deed kwam van een tegenlezer of van iemand die de missie
 écht naspeelde — niet van dieper nadenken in één hoofd.
+
+### Ultracode-variant (Fable-orchestrator)
+
+Alleen wanneer Yorin expliciet "ultracode" met Fable aanroept voor een sweep. Fable
+draait dan de Workflow-tool en houdt het overzicht (selectie, synthese, statusindex,
+wave-samenvatting) — de deeltaken zelf lopen als losse `agent()`-calls met een **expliciet**
+model, want zonder override erft elke sub-agent standaard het model van de hoofdsessie
+(Fable) en verdwijnt het hele kostenvoordeel.
+
+| Deeltaak | Model (expliciet in `agent()`) | Effort | Waarom |
+|---|---|---|---|
+| Inventarisatie: missies ophalen, paden/registers natrekken | `haiku` | low | Mechanisch, geen oordeel |
+| Rubric-scoring criteria 1-7, 9 (didactiek, flow, techniek, UI) | `sonnet` | low/medium | Tekst-/codeoordeel, context al aangeleverd |
+| Criterium 8 (AI-gedrag) en 10 (privacy/veiligheid) | `opus` | high | **Verplicht — nooit Fable**, ook niet als Fable orchestreert (securityclassifier-risico, zie `CLAUDE.md` § Modelpalet) |
+| Live browserverificatie (speeltest, gokstrategie-check) | `sonnet` | medium | Bestaande afspraak: browserwerk via Sonnet |
+| Tegenlezing van "blocked"-escalaties vóór ze naar Yorin gaan | `opus` | high | Sol/Luna (Codex) zijn niet rechtstreeks aanroepbaar vanuit een Workflow-script |
+| Synthese, statusindex bijwerken, wave-samenvatting | *(geen agent-call — Fable zelf, in de hoofdloop)* | — | Dit ís het overzicht vasthouden; een subagent ervoor ondermijnt het doel |
+
+De regel voor criterium 8 en 10 is hard: die twee scores mogen in geen enkel pad — ook niet
+via de ultracode-variant — als Fable-oordeel het statusbestand in gaan.
 
 ## Triggerprincipes
 
