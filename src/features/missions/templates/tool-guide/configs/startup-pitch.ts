@@ -39,7 +39,7 @@ const config: ToolGuideConfig = {
                 correctIndex: 1,
                 allowRetry: true,
                 retryHint:
-                    'Kijk nog eens naar je aantekeningen: staat er zowel wát er misgaat als voor wie? Vul aan wat mist en kies daarna opnieuw.',
+                    'Leg je aantekeningen naast de checklist van deze stap en vul aan wat nog ontbreekt. Kies daarna opnieuw.',
                 explanation:
                     'Goed gecheckt. Met allebei de delen op papier — het probleem én de doelgroep — heb je de basis van elke sterke pitch. Investeerders willen precies weten voor wie je bouwt.',
             },
@@ -67,7 +67,7 @@ const config: ToolGuideConfig = {
                 correctIndex: 1,
                 allowRetry: true,
                 retryHint:
-                    'Lees je oplossing nog eens en zoek per zin het werkwoord: hoort dat bij de AI of bij de gebruiker? Vul aan wat mist en kies daarna opnieuw.',
+                    'Pak je beschrijving van de oplossing erbij en lees hem zin voor zin na. Vul aan wat mist en kies daarna opnieuw.',
                 explanation:
                     'Mooi. Dat ene werkwoord is de kern van je pitch: het zegt in één woord wat jouw AI voor iemand doet. Staat het er nog niet, schrijf het er dan alsnog bij.',
             },
@@ -95,7 +95,7 @@ const config: ToolGuideConfig = {
                 correctIndex: 1,
                 allowRetry: true,
                 retryHint:
-                    'Tel de woorden van je slogan en check of de kern van jouw startup erin zit. Pas je slogan aan als dat nodig is en kies opnieuw.',
+                    'Pak je slogan er nog eens bij en leg hem naast de eisen uit de opdracht. Pas aan wat nodig is en kies daarna opnieuw.',
                 explanation:
                     'Klopt. Kort én eigen: maximaal zes woorden waarvan er minstens één onmiskenbaar over jouw startup gaat — dat blijft hangen bij een jury.',
             },
