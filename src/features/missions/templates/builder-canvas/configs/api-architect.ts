@@ -53,6 +53,12 @@ export const apiArchitectConfig: BuilderCanvasConfig = {
                 { id: 'request-body', label: 'POST en PUT endpoints hebben een voorbeeld request-body' },
             ],
             textPrompt: 'Ontwerp je API-endpoints hier',
+            evidence: {
+                label: 'Bewijs van je endpoint-tabel',
+                prompt: 'Plak minimaal 3 regels uit je endpoint-tabel (URL, methode, statuscode) als controleerbaar fragment.',
+                placeholder: 'Bijv. GET /taken → 200 OK; POST /taken → 201 Created',
+                minLength: 30,
+            },
         },
         {
             id: 'authenticatie',
@@ -85,6 +91,12 @@ export const apiArchitectConfig: BuilderCanvasConfig = {
                 { id: 'engels', label: 'Documentatie is geschreven in het Engels' },
             ],
             textPrompt: 'Schrijf je API-documentatie',
+            evidence: {
+                label: 'JSON-voorbeeld als bewijs',
+                prompt: 'Plak één van je JSON request- of response-voorbeelden hier ter controle.',
+                placeholder: '{ "status": 200, "data": [...] }',
+                minLength: 20,
+            },
         },
     ],
     maxScore: 100,

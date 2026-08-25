@@ -282,23 +282,42 @@
       "interactivity": 0,
       "total": 3
     },
-    "lastReviewed": "2026-07-02",
-    "reviewStatus": "blocked",
-    "reportPath": "business/dgskills-reviews/api-architect-2026-07-02.md",
-    "autoFixesApplied": 0,
+    "lastReviewed": "2026-08-25",
+    "reviewStatus": "fixed",
+    "reportPath": "business/dgskills-reviews/api-architect-2026-08-25.md",
+    "autoFixesApplied": 2,
     "openEscalations": [
-      "curriculum-keuze: SLO-codes inconsistent over 3 bronnen — mapping 22A/22B/21A, coach-instructie 22A/22B, periode-sloFocus 21D/21C (geen overlap) — welke set is leidend?"
+      {
+        "category": "security",
+        "description": "Onjuiste beveiligingsuitleg in leerlingmateriaal: JWT wordt gepresenteerd als 'versleuteld'. Dit is een security-misvatting die leerlingen kan aanzetten persoonsgegevens in een token te plaatsen. Vraagt een inhoudelijke correctie door iemand met security-kennis, niet een tekstuele patch.",
+        "file": "src/features/missions/templates/builder-canvas/configs/api-architect.ts"
+      },
+      {
+        "category": "privacy",
+        "description": "Stappen 3 en 4 vragen om authenticatie- en payload-uitwerkingen terwijl de leerlingtekst naar het AI-endpoint gaat en de PII-redactie geen tokens/sleutels herkent. Beslissing nodig of de waarschuwing uit stap 1 herhaald moet worden bij de credential-stappen.",
+        "file": "src/features/missions/templates/builder-canvas/configs/api-architect.ts"
+      }
     ],
     "codexVerdict": null,
-    "escalationCount": 1,
+    "escalationCount": 2,
     "reviewScores": {
-      "uiux": 7.5,
-      "didactiek": 5.5,
-      "tech": 8
+      "uiux": 6.5,
+      "didactiek": 7,
+      "tech": 7.5
     },
-    "triageScore": 3.15,
-    "statusNote": "wave 14: SLO-driebronnen-conflict naar Yorin; coach-desync 6e geval (3/4 stappen) -> platform-lijst",
-    "verdict": "fix-eerst"
+    "triageScore": 3,
+    "statusNote": "sweep wave 21 2026-08-25: verse review (alle missies); veiligheids-pass Opus high; 2 auto-fixes",
+    "verdict": "fix-eerst",
+    "proposedFixes": 2,
+    "topIssues": [
+      "[design] Overgeërfd van engine: afrondknop zonder bezig-toestand kan onComplete dubbel afvuren (CompletionScreen.tsx:163).",
+      "[design] Overgeërfd: showMilestone-toast blijft na herlaad binnen 2s vast in beeld; raakt alle 4 stappen van deze missie.",
+      "[design] Overgeërfd: /70-opacity contrastrisico op tekstvelden en checklist-labels, raakt elk tekstveld in deze missie."
+    ],
+    "safetyScores": {
+      "aiGedrag": 8,
+      "privacy": 7
+    }
   },
   {
     "missionId": "api-verkenner",
@@ -330,7 +349,7 @@
   {
     "missionId": "app-prototyper",
     "templateType": "builder-canvas",
-    "priorityBand": "medium",
+    "priorityBand": "low",
     "triageScores": {
       "uiux": 0,
       "slo": 1,
@@ -338,26 +357,42 @@
       "interactivity": 0,
       "total": 2
     },
-    "lastReviewed": "2026-08-07",
-    "reviewStatus": "fixed",
-    "reportPath": "business/dgskills-reviews/app-prototyper-2026-08-07.md",
+    "lastReviewed": "2026-08-25",
+    "reviewStatus": "reviewed",
+    "reportPath": "business/dgskills-reviews/app-prototyper-2026-08-25.md",
     "autoFixesApplied": 0,
-    "openEscalations": [],
+    "openEscalations": [
+      {
+        "category": "privacy",
+        "description": "De missie vraagt de leerling om testgebruikers en probleemhouders te benoemen in een schoolcontext; die vrije tekst gaat naar het AI-endpoint terwijl de PII-redactie geen persoonsnamen afvangt. Beslissing nodig of de opdrachttekst leerlingen moet sturen naar rolbeschrijvingen in plaats van namen.",
+        "file": "src/features/missions/templates/builder-canvas/configs/app-prototyper.ts"
+      }
+    ],
     "codexVerdict": null,
     "reviewScores": {
-      "uiux": 6,
-      "didactiek": 6,
-      "tech": 4
+      "uiux": 7,
+      "didactiek": 7,
+      "tech": 8
     },
-    "triageScore": 4.6,
+    "triageScore": 2.7,
     "verdict": "ok",
-    "statusNote": "wave 17: inhoudelijk gezond; enige punt is het platform-brede coach-plan-desync-patroon",
-    "escalationCount": 1
+    "statusNote": "sweep wave 21 2026-08-25: verse review (alle missies); veiligheids-pass Opus high",
+    "escalationCount": 1,
+    "proposedFixes": 0,
+    "topIssues": [
+      "[design] Gedeelde engine: afrondknop kan dubbel afvuren (geen pending-guard); raakt ook deze missie.",
+      "[design] Gedeelde engine: /70-opacity contrastrisico op leerlingtekst vs placeholder, relevant bij deze missie's lange tekstvelden.",
+      "[design] Gedeelde engine: mijlpaal-toast blijft na snelle herlaad staan."
+    ],
+    "safetyScores": {
+      "aiGedrag": 9,
+      "privacy": 7
+    }
   },
   {
     "missionId": "automation-engineer",
     "templateType": "builder-canvas",
-    "priorityBand": "medium",
+    "priorityBand": "low",
     "triageScores": {
       "uiux": 0,
       "slo": 1,
@@ -365,26 +400,42 @@
       "interactivity": 0,
       "total": 2
     },
-    "lastReviewed": "2026-08-07",
+    "lastReviewed": "2026-08-25",
     "reviewStatus": "fixed",
-    "reportPath": "business/dgskills-reviews/automation-engineer-2026-08-07.md",
-    "autoFixesApplied": 0,
-    "openEscalations": [],
+    "reportPath": "business/dgskills-reviews/automation-engineer-2026-08-25.md",
+    "autoFixesApplied": 2,
+    "openEscalations": [
+      {
+        "category": "privacy",
+        "description": "Het scenario leert leerlingen bulk-e-mail aan ouders automatiseren zonder enige AVG-kadering. Curriculumbeslissing nodig: een korte persoonsgegevens-paragraaf toevoegen aan de taakanalyse of het scenario naar een niet-persoonsgegevens-taak verleggen.",
+        "file": "src/config/agents/year2.tsx"
+      }
+    ],
     "codexVerdict": null,
     "reviewScores": {
-      "uiux": 6,
-      "didactiek": 5,
-      "tech": 4
+      "uiux": 7,
+      "didactiek": 7.5,
+      "tech": 8
     },
-    "triageScore": 5,
+    "triageScore": 2.7,
     "verdict": "ok",
-    "statusNote": "wave 17: foutloos — SLO-registratie consistent, 4 canvas-stappen logisch, scoring exact; 1 niet-blokkerend tekstlengte-puntje stap 1",
-    "escalationCount": 0
+    "statusNote": "sweep wave 21 2026-08-25: verse review (alle missies); veiligheids-pass Opus high; 2 auto-fixes",
+    "escalationCount": 1,
+    "proposedFixes": 2,
+    "topIssues": [
+      "[design] Alle 4 stappen gebruiken StepInstructionPanel/ChecklistItem met text-duck-ink/70 voor zowel getypte tekst als placeholder, en checklist-labels — contrastprobleem raakt deze missie 4x (16 checklist-items + 4 tekstvelden).",
+      "[design] showMilestone-persistentiebug (toast blijft hangen na herlaad <2s) triggert 4x omdat deze missie 4 stappen heeft.",
+      "[didactiek] 3 van de 4 instruction-velden overschrijden de leerjaar-1-2-richtlijn van <60 woorden (stap 2 ±80, stap 3 ±85, stap 1 ±63woorden)."
+    ],
+    "safetyScores": {
+      "aiGedrag": 9,
+      "privacy": 7
+    }
   },
   {
     "missionId": "brand-builder",
     "templateType": "builder-canvas",
-    "priorityBand": "high",
+    "priorityBand": "medium",
     "triageScores": {
       "uiux": 0,
       "slo": 2,
@@ -392,29 +443,37 @@
       "interactivity": 0,
       "total": 7
     },
-    "lastReviewed": "2026-08-08",
+    "lastReviewed": "2026-08-25",
     "reviewStatus": "reviewed",
-    "reportPath": "business/dgskills-reviews/brand-builder-2026-08-08.md",
-    "autoFixesApplied": 2,
+    "reportPath": "business/dgskills-reviews/brand-builder-2026-08-25.md",
+    "autoFixesApplied": 0,
     "openEscalations": [
-      "digitaal-product-SLO wordt indirect via tekst bewezen",
-      "geen semantische beoordeling van logo- en huisstijlkwaliteit"
+      {
+        "category": "ai-act",
+        "description": "Onjuiste juridische claim in leerlingmateriaal: WCAG wordt als wettelijke vereiste gepresenteerd. Juridische tekstcorrectie hoort bij iemand met AVG/EU-wetgevingskennis, niet bij een contentfix.",
+        "file": "src/features/missions/templates/builder-canvas/configs/brand-builder.ts"
+      }
     ],
-    "codexVerdict": "ALLOW",
+    "codexVerdict": null,
     "reviewScores": {
-      "uiux": 8.5,
-      "didactiek": 7,
-      "tech": 8.5
+      "uiux": 7,
+      "didactiek": 6.5,
+      "tech": 7.5
     },
     "proposedFixes": 0,
-    "escalationCount": 2,
+    "escalationCount": 1,
     "topIssues": [
-      "digitaal-product-SLO wordt indirect via tekst bewezen",
-      "geen semantische beoordeling van logo- en huisstijlkwaliteit"
+      "[design] Invoertekst en placeholder in StepInstructionPanel/ChecklistItem gebruiken beide /70-opacity — laag contrast en tekst niet te onderscheiden van placeholder, raakt alle 4 stappen van deze missie.",
+      "[didactiek] Score is voor alle 4 stappen presence-based (checklist + >=40 tekens); een leerling kan met oppervlakkige, incoherente tekst bijna volle punten halen terwijl het leerdoel expliciet coherentie tussen merkwoorden en ontwerpkeuzes vraagt. Alleen de 5 bonuspunten van de reflectievraag toetsen echte kennis.",
+      "[tech] Overige tech-bevindingen (dubbele onComplete-afvuring, showMilestone na reload, ontbrekende aria-live) zitten in de gedeelde builder-canvas-engine en zijn daar al geregistreerd; geen missie-specifieke tech-issues in config/registry/curriculum/SLO/goals-entries."
     ],
-    "statusNote": "Formele J2P3-review: vier viewports en productie bewezen; nul open Blocker/High; Medium/Low geregistreerd.",
-    "triageScore": 2.1,
-    "verdict": "ok"
+    "statusNote": "sweep wave 21 2026-08-25: verse review (alle missies); veiligheids-pass Opus high",
+    "triageScore": 3.05,
+    "verdict": "ok",
+    "safetyScores": {
+      "aiGedrag": 8,
+      "privacy": 9
+    }
   },
   {
     "missionId": "bug-hunter",
@@ -1097,7 +1156,7 @@
   {
     "missionId": "digital-storyteller",
     "templateType": "builder-canvas",
-    "priorityBand": "high",
+    "priorityBand": "low",
     "triageScores": {
       "uiux": 0,
       "slo": 1,
@@ -1105,29 +1164,42 @@
       "interactivity": 1,
       "total": 6
     },
-    "lastReviewed": "2026-08-08",
+    "lastReviewed": "2026-08-25",
     "reviewStatus": "reviewed",
-    "reportPath": "business/dgskills-reviews/digital-storyteller-2026-08-08.md",
-    "autoFixesApplied": 2,
+    "reportPath": "business/dgskills-reviews/digital-storyteller-2026-08-25.md",
+    "autoFixesApplied": 0,
     "openEscalations": [
-      "accent in stap-id blijft een niet-aangetoonde toekomstige integratierisico",
-      "geen validatie van een werkelijk interactief verhaal"
+      {
+        "category": "ai-act",
+        "description": "AI die actief meeschrijft aan vrije-thema fictie voor 13-14-jarigen zonder inhoudelijk themakader, terwijl de contentmoderatie standaard uit staat. Beslissing nodig over een themabegrenzing in de agent-rol of het activeren van de moderatielaag voor deze missie.",
+        "file": "src/config/agents/year2.tsx"
+      },
+      {
+        "category": "privacy",
+        "description": "Welzijnsrisico: persoonlijk gekleurde fictie in de tweede persoon kan echte nood maskeren voor het welzijnsprotocol, dat op directe signalen keyt. Vraagt een pedagogisch/welzijnsoordeel, geen codefix.",
+        "file": "src/features/missions/templates/builder-canvas/configs/digital-storyteller.ts"
+      }
     ],
-    "codexVerdict": "ALLOW",
+    "codexVerdict": null,
     "reviewScores": {
-      "uiux": 8.5,
-      "didactiek": 8.5,
-      "tech": 8.5
+      "uiux": 7,
+      "didactiek": 6.5,
+      "tech": 8
     },
     "proposedFixes": 0,
     "escalationCount": 2,
     "topIssues": [
-      "accent in stap-id blijft een niet-aangetoonde toekomstige integratierisico",
-      "geen validatie van een werkelijk interactief verhaal"
+      "[design] Presence-based scoring: geen enkele verdiepingsvraag in de vier stappen, dus 100/100 haalbaar met minimale plausibele tekst plus vinkjes.",
+      "[design] Gedeelde contrastissue (text-duck-ink/70 op invoertekst + placeholder) raakt alle vier tekstvelden van deze missie.",
+      "[didactiek] Geen koppeling tussen flowchart-stap (stap 2) en scène-stap (stap 3); leerling kan onsamenhangende structuur en scènes leveren zonder dat dit wordt opgemerkt."
     ],
-    "statusNote": "Formele J2P3-review: vier viewports en productie bewezen; nul open Blocker/High; Medium/Low geregistreerd.",
-    "triageScore": 1.5,
-    "verdict": "ok"
+    "statusNote": "sweep wave 21 2026-08-25: verse review (alle missies); veiligheids-pass Opus high",
+    "triageScore": 2.9,
+    "verdict": "ok",
+    "safetyScores": {
+      "aiGedrag": 7,
+      "privacy": 7
+    }
   },
   {
     "missionId": "digitale-balans-coach",
@@ -1397,23 +1469,42 @@
       "interactivity": 0,
       "total": 2
     },
-    "lastReviewed": "2026-07-02",
-    "reviewStatus": "blocked",
-    "reportPath": "business/dgskills-reviews/innovation-lab-2026-07-02.md",
+    "lastReviewed": "2026-08-25",
+    "reviewStatus": "reviewed",
+    "reportPath": "business/dgskills-reviews/innovation-lab-2026-08-25.md",
     "autoFixesApplied": 0,
     "openEscalations": [
-      "ai-endpoint (HOOG): server-coach (systemInstructions.ts) vraagt nog 'maatschappelijk probleem gekoppeld aan SDG' terwijl de missie herschreven is naar 'alledaags probleem (school/sport/thuis)' — leerling krijgt in de chat een zwaardere opdracht dan de missie belooft; server-entry hergenereren (buiten auto-fix-scope)"
+      {
+        "category": "privacy",
+        "description": "Structureel, geldt voor alle builder-canvas-missies: BuilderCanvas stuurt de ruwe inhoud van het hoofd-tekstveld (textEntry) integraal als context naar het AI-endpoint; alleen 'website-bouwer' is expliciet uitgezonderd. Het evidence-veld heeft wel een standaard privacynotitie in de UI en gaat NIET naar de AI. De bescherming staat dus precies op het verkeerde veld. Bij innovation-lab vraagt stap 1 naar 'wie heeft er last van' — informatie over derden zonder waarschuwing richting een externe AI-provider.",
+        "file": "src/features/missions/templates/builder-canvas/BuilderCanvas.tsx"
+      },
+      {
+        "category": "anders",
+        "description": "Inhoudelijke drift tussen missieconfig ('alledaags probleem') en de server-side agent-rol ('maatschappelijke problemen', SDGs, voorbeeldprompt over eenzaamheid onder ouderen). Vraagt om een keuze van Yorin: rol bijstellen of config terugbreden.",
+        "file": "src/config/agents/year3.tsx"
+      }
     ],
     "codexVerdict": null,
     "reviewScores": {
-      "uiux": 9,
-      "didactiek": 7,
-      "tech": 8
+      "uiux": 8,
+      "didactiek": 9,
+      "tech": 6
     },
-    "triageScore": 2.1,
+    "triageScore": 2.2,
     "verdict": "ok",
-    "statusNote": "wave 19: registratie/scoring kloppen; KEES-avatar-clipping = zwaarste instantie van bekend shared-shell-patroon (platform); interne SCOPE GUARD-inconsistentie year3.tsx in rapport",
-    "escalationCount": 1
+    "statusNote": "sweep wave 21 2026-08-25: verse review (alle missies); veiligheids-pass Opus high",
+    "escalationCount": 2,
+    "proposedFixes": 0,
+    "topIssues": [
+      "[tech] Overgeërfd van de engine: dubbelklik op de afrondknop kan onComplete twee keer afvuren (geen pending-guard/disabled state) — geldt onverkort voor innovation-lab, niet apart fixbaar binnen de config-whitelist.",
+      "[design] Contrast: /70-opacity op text-duck-ink treft alle 4 stappen (tekstvelden + checklist-items) van deze missie; oorzaak is engine-scope (StepInstructionPanel.tsx, ChecklistItem.tsx), niet in de missie-config fixbaar.",
+      "[tech] Overgeërfd van de engine: scoring is volledig presence-based (checklist + 40 tekens plausibele tekst = volle stappunten) voor alle 4 stappen van deze missie."
+    ],
+    "safetyScores": {
+      "aiGedrag": 8,
+      "privacy": 7
+    }
   },
   {
     "missionId": "ipad-print-instructies",
@@ -1565,7 +1656,7 @@
   {
     "missionId": "meesterproef",
     "templateType": "builder-canvas",
-    "priorityBand": "low",
+    "priorityBand": "medium",
     "triageScores": {
       "uiux": 0,
       "slo": 0,
@@ -1573,28 +1664,61 @@
       "interactivity": 1,
       "total": 5
     },
-    "lastReviewed": "2026-07-01",
-    "reviewStatus": "blocked",
-    "reportPath": "business/dgskills-reviews/meesterproef-2026-07-01.md",
+    "lastReviewed": "2026-08-25",
+    "reviewStatus": "reviewed",
+    "reportPath": "business/dgskills-reviews/meesterproef-2026-08-25.md",
     "autoFixesApplied": 0,
     "openEscalations": [
-      "content-keuze: coach-fasenmodel (3 STEP_COMPLETE-fasen) dekt de 4 canvas-stappen niet — herschrijfvoorstel ligt klaar in rapport (zelfde beslisklasse als podcast-producer)"
+      {
+        "category": "structural",
+        "description": "Afrondknop mist pending-/disabled-state tijdens async onComplete — dubbele voltooiing/XP mogelijk bij dubbelklik. Gedeelde engine, niet mission-specifiek fixbaar.",
+        "file": "src/features/missions/templates/shared/CompletionScreen.tsx"
+      },
+      {
+        "category": "structural",
+        "description": "showMilestone zit in gepersisteerde state en kan bij snel herladen permanent blijven hangen.",
+        "file": "src/features/missions/templates/builder-canvas/BuilderCanvas.tsx"
+      },
+      {
+        "category": "structural",
+        "description": "completedSteps wordt niet teruggedraaid na terug+wijzigen, relevant voor deze missie omdat leerlingen worden aangemoedigd terug te gaan.",
+        "file": "src/features/missions/templates/builder-canvas/BuilderCanvas.tsx"
+      },
+      {
+        "category": "privacy",
+        "description": "Zelfreflectieve leerlingtekst (ontwikkeldagboek met datums, persoonlijke obstakels, 'wat heb je geleerd over jezelf als maker') gaat ongefilterd en zonder privacynotitie naar de externe AI-provider via het textEntry-contextveld. Voor een eindproject dat drie jaar leerlingontwikkeling samenvat, verdient dat een expliciete afweging.",
+        "file": "src/features/missions/templates/builder-canvas/configs/meesterproef.ts"
+      },
+      {
+        "category": "structural",
+        "description": "speeltest wave 21: hoge score haalbaar zonder inhoudelijk werk — Viewport 1200x593. Zelfde builder-canvas-engine met PII-'SLO-bewijs'-veld: ik vulde een volledige naam, school-e-mailadres en telefoonnummer van een fictieve docent in (Pieter van der Berg, pieter.vdb"
+      }
     ],
     "codexVerdict": null,
-    "escalationCount": 1,
+    "escalationCount": 5,
     "reviewScores": {
-      "uiux": 8.5,
-      "didactiek": 7.5,
-      "tech": 8.5
+      "uiux": 6.5,
+      "didactiek": 7,
+      "tech": 7
     },
-    "triageScore": 1.9,
-    "statusNote": "wave 9: gezond; fasenmodel-gelijktrekking bewust naar Yorin (consistentie met podcast-producer)",
-    "verdict": "ok"
+    "triageScore": 3.85,
+    "statusNote": "sweep wave 21 2026-08-25: verse review (alle missies); veiligheids-pass Opus high",
+    "verdict": "fix-eerst",
+    "proposedFixes": 0,
+    "topIssues": [
+      "[design] Afrondknop zonder pending-state in CompletionScreen.tsx kan door dubbelklik onComplete tweemaal afvuren (engine-breed, ook hier reproduceerbaar).",
+      "[design] Leerling-invoer en placeholder hebben identieke /70-opacity kleur; bij meesterproef extra relevant door lange tekstvelden.",
+      "[design] Mijlpaal-toast kan bij herlaad <2s permanent blijven hangen (gepersisteerde showMilestone-state)."
+    ],
+    "safetyScores": {
+      "aiGedrag": 8,
+      "privacy": 7
+    }
   },
   {
     "missionId": "meme-machine",
     "templateType": "builder-canvas",
-    "priorityBand": "low",
+    "priorityBand": "medium",
     "triageScores": {
       "uiux": 0,
       "slo": 0,
@@ -1602,28 +1726,52 @@
       "interactivity": 1,
       "total": 4
     },
-    "lastReviewed": "2026-08-08",
-    "reviewStatus": "reviewed",
-    "reportPath": "business/dgskills-reviews/meme-machine-2026-08-08.md",
-    "autoFixesApplied": 2,
+    "lastReviewed": "2026-08-25",
+    "reviewStatus": "fixed",
+    "reportPath": "business/dgskills-reviews/meme-machine-2026-08-25.md",
+    "autoFixesApplied": 1,
     "openEscalations": [
-      "coachfasen kunnen de vierde ethiekstap te vroeg als klaar signaleren",
-      "geen validatie van een werkelijk meme-artefact"
+      {
+        "category": "structural",
+        "description": "Afrondknop dubbele-klik risico (onComplete 2x) zit in gedeelde CompletionScreen/BuilderCanvas engine, niet in de meme-machine config zelf.",
+        "file": "src/features/missions/templates/shared/CompletionScreen.tsx"
+      },
+      {
+        "category": "structural",
+        "description": "Presence-based scoring (checklist + 40-tekens tekstcheck) is een engine-brede zwakte die alle 19 builder-canvas configs raakt, inclusief meme-machine.",
+        "file": "src/features/missions/templates/builder-canvas/BuilderCanvas.tsx"
+      },
+      {
+        "category": "privacy",
+        "description": "Meme-ontwerpstap voor 13-14-jarigen mist een portretrecht-/toestemmingsgrens. De opdracht vraagt om een afbeelding en een doelgroep; alleen auteursrecht wordt afgevangen, niet het gebruik van foto's van herkenbare klasgenoten of docenten. Dit is de meest directe route van deze wave naar online pesten met leerlingdata.",
+        "file": "src/features/missions/templates/builder-canvas/configs/meme-machine.ts"
+      },
+      {
+        "category": "anders",
+        "description": "Didactische afweging voor Yorin: de missie leert de jongste doelgroep expliciet welke emotie (boosheid/verbazing) het beste viraal scoort. De ethiekstap staat er wel, maar pas als stap 4. Overweeg de grens in stap 2 en 3 te verankeren in plaats van alleen achteraf.",
+        "file": "src/features/missions/templates/builder-canvas/configs/meme-machine.ts"
+      }
     ],
-    "codexVerdict": "ALLOW",
-    "escalationCount": 2,
+    "codexVerdict": null,
+    "escalationCount": 4,
     "reviewScores": {
-      "uiux": 8.5,
-      "didactiek": 8,
-      "tech": 8.5
+      "uiux": 7,
+      "didactiek": 7,
+      "tech": 8
     },
-    "triageScore": 1.7,
-    "statusNote": "Formele J2P3-review: vier viewports en productie bewezen; nul open Blocker/High; Medium/Low geregistreerd.",
+    "triageScore": 3.2,
+    "statusNote": "sweep wave 21 2026-08-25: verse review (alle missies); veiligheids-pass Opus high; 1 auto-fixes",
     "verdict": "ok",
     "topIssues": [
-      "coachfasen kunnen de vierde ethiekstap te vroeg als klaar signaleren",
-      "geen validatie van een werkelijk meme-artefact"
-    ]
+      "[tech] Afrondknop kent geen bezig-/disabled-state; dubbele klik kan onComplete tweemaal afvuren (engine-breed, raakt ook meme-machine).",
+      "[design] Leerling-invoertekst en placeholder delen dezelfde /70-inktkleur in StepInstructionPanel, hinderlijk voor meme-machine's lange vrije-tekstvelden.",
+      "[design] MilestoneToast mist role=status/aria-live; bij 4 stappen mist schermlezer 4 voortgangsmeldingen."
+    ],
+    "proposedFixes": 1,
+    "safetyScores": {
+      "aiGedrag": 7,
+      "privacy": 6
+    }
   },
   {
     "missionId": "mission-blueprint",
@@ -1636,21 +1784,47 @@
       "interactivity": 0,
       "total": 3
     },
-    "lastReviewed": "2026-07-02",
-    "reviewStatus": "fixed",
-    "reportPath": "business/dgskills-reviews/mission-blueprint-2026-07-02.md",
+    "lastReviewed": "2026-08-25",
+    "reviewStatus": "reviewed",
+    "reportPath": "business/dgskills-reviews/mission-blueprint-2026-08-25.md",
     "autoFixesApplied": 0,
-    "openEscalations": [],
+    "openEscalations": [
+      {
+        "category": "structural",
+        "description": "Blocking dubbelklik-afrondbug zit in de gedeelde builder-canvas-engine (CompletionScreen.tsx + BuilderCanvas.handleComplete) en raakt alle 19 builder-canvas-missies, niet alleen mission-blueprint. Hoort in de engine-brede fixronde, niet als missie-specifieke patch.",
+        "file": "src/features/missions/templates/shared/CompletionScreen.tsx"
+      },
+      {
+        "category": "privacy",
+        "description": "BLOKKEREND. De missie vraagt om een OneDrive-deellink in het hoofd-tekstveld; BuilderCanvas stuurt dat veld integraal naar het externe AI-endpoint. Een deellink is een toegangssleutel tot de cloudmap van een minderjarige leerling. Gecombineerd met de eis dat het bestand 'Voornaam_Achternaam_Blauwdruk.docx' heet, gaat identificeerbare leerlingdata plus toegang tot dat document richting de AI-provider. Vereist een keuze van Yorin: link-invoer uitsluiten van de AI-context (zoals bij website-bouwer), de naameis schrappen, en een privacynotitie onder het hoofdtekstveld tonen.",
+        "file": "src/features/missions/templates/builder-canvas/configs/mission-blueprint.ts"
+      },
+      {
+        "category": "privacy",
+        "description": "De eis om voor- en achternaam in de bestandsnaam te zetten komt uniek in deze missie voor (repo-brede grep: geen andere treffer). Dataminimalisatie (AVG art. 5.1c) vraagt om een onderbouwing of om schrappen.",
+        "file": "src/features/missions/templates/builder-canvas/configs/mission-blueprint.ts"
+      }
+    ],
     "codexVerdict": null,
-    "escalationCount": 0,
+    "escalationCount": 3,
     "reviewScores": {
-      "uiux": 8,
-      "didactiek": 8.5,
-      "tech": 9
+      "uiux": 7,
+      "didactiek": 8,
+      "tech": 8
     },
-    "triageScore": 1.5,
-    "statusNote": "wave 15: coach-plan en canvas 1-op-1 congruent (geen desync); schoon",
-    "verdict": "ok"
+    "triageScore": 2.3,
+    "statusNote": "sweep wave 21 2026-08-25: verse review (alle missies); veiligheids-pass Opus high",
+    "verdict": "ok",
+    "proposedFixes": 0,
+    "topIssues": [
+      "[tech] Geërfd van engine: afrondknop kent geen pending-guard, dubbelklik kan onComplete tweemaal afvuren met dubbele XP als gevolg. Missie-specifieke config bevat geen mitigatie (ook niet nodig — engine-brede fix).",
+      "[design] Geërfd van engine: invoertekst/placeholder delen dezelfde /70-opacity in StepInstructionPanel.tsx; deze missie compenseert dat niet met een hogere minTextLength op stap 1-3.",
+      "[design] Geërfd van engine: mijlpaal-toast kan na snel herladen blijven hangen (showMilestone-persistentie); venster is klein bij 4 stappen maar niet nul."
+    ],
+    "safetyScores": {
+      "aiGedrag": 8,
+      "privacy": 3
+    }
   },
   {
     "missionId": "mission-launch",
@@ -1690,21 +1864,42 @@
       "interactivity": 0,
       "total": 3
     },
-    "lastReviewed": "2026-07-02",
-    "reviewStatus": "fixed",
-    "reportPath": "business/dgskills-reviews/mission-vision-2026-07-02.md",
+    "lastReviewed": "2026-08-25",
+    "reviewStatus": "reviewed",
+    "reportPath": "business/dgskills-reviews/mission-vision-2026-08-25.md",
     "autoFixesApplied": 0,
-    "openEscalations": [],
+    "openEscalations": [
+      {
+        "category": "privacy",
+        "description": "BLOKKEREND, twee keer in één missie: stap 2 en stap 5 vragen om een OneDrive-deellink in het hoofd-tekstveld, dat integraal naar het externe AI-endpoint gaat. Een deellink is een toegangssleutel tot de cloudmap van een minderjarige leerling. Zelfde structurele oorzaak als bij mission-blueprint.",
+        "file": "src/features/missions/templates/builder-canvas/configs/mission-vision.ts"
+      },
+      {
+        "category": "privacy",
+        "description": "Het moodboard vraagt om vijf beelden zonder portretrecht-/toestemmingsgrens; leerlingen van 12-13 gebruiken hier voorspelbaar eigen foto's of foto's van klasgenoten, en delen die vervolgens via een deellink.",
+        "file": "src/features/missions/templates/builder-canvas/configs/mission-vision.ts"
+      }
+    ],
     "codexVerdict": null,
-    "escalationCount": 0,
+    "escalationCount": 2,
     "reviewScores": {
-      "uiux": 9,
-      "didactiek": 8.5,
-      "tech": 9
+      "uiux": 7.5,
+      "didactiek": 8,
+      "tech": 8.5
     },
-    "triageScore": 1.2,
-    "statusNote": "wave 16: gezond; geen coach-desync; zachte tekstlengte-notities in rapport",
-    "verdict": "ok"
+    "triageScore": 2.75,
+    "statusNote": "sweep wave 21 2026-08-25: verse review (alle missies); veiligheids-pass Opus high",
+    "verdict": "ok",
+    "proposedFixes": 0,
+    "topIssues": [
+      "[design] Tekstinvoer en placeholder gebruiken beide text-duck-ink/70 (engine-breed, meest merkbaar in stap pitch-schrijven).",
+      "[didactiek] Presence-based scoring: checklist-items 'opgeslagen in OneDrive'/'link geplakt' (stappen moodboard en slides-bouwen) worden niet technisch geverifieerd, alleen zelfrapportage plus 40-tekens tekstcheck.",
+      "[didactiek] Stap moodboard vraagt auteursrecht-check op afbeeldingen zonder expliciete koppeling naar een eerdere missie waar dat is behandeld."
+    ],
+    "safetyScores": {
+      "aiGedrag": 8,
+      "privacy": 4
+    }
   },
   {
     "missionId": "ml-trainer",
@@ -1872,24 +2067,37 @@
       "interactivity": 0,
       "total": 3
     },
-    "lastReviewed": "2026-07-02",
-    "reviewStatus": "blocked",
-    "reportPath": "business/dgskills-reviews/open-source-contributor-2026-07-02.md",
+    "lastReviewed": "2026-08-25",
+    "reviewStatus": "reviewed",
+    "reportPath": "business/dgskills-reviews/open-source-contributor-2026-08-25.md",
     "autoFixesApplied": 0,
     "openEscalations": [
-      "curriculum-keuze: SLO-bronconflict — autoritaire mapping zegt 22B/23C, coach-instructie zegt 22A/22B (23C ontbreekt in rol, 22A niet in mapping); welke set is leidend? (voorstellen in rapport)",
-      "content-keuze: basisvaardigheden-mapping claimt een ETHIEK-leerdoel over licenties (MIT/GPL), maar licenties komen nergens in de missie voor — leerdoel schrappen of content toevoegen (voorstel in rapport)"
+      {
+        "category": "privacy",
+        "description": "Rolinstructie open-source-contributor mist het PRIVACY-blok dat de andere meesterproef-rollen in deze wave wél hebben, terwijl de vrije tekst van de leerling naar de AI-provider gaat. Beslissing van Yorin nodig: PRIVACY-blok toevoegen (geen echte repo-URL's, handles of tokens) en systemInstructions opnieuw genereren.",
+        "file": "src/config/agents/year3.tsx"
+      }
     ],
     "codexVerdict": null,
-    "escalationCount": 2,
+    "escalationCount": 1,
     "reviewScores": {
-      "uiux": 7,
-      "didactiek": 6,
-      "tech": 8
+      "uiux": 6.5,
+      "didactiek": 7,
+      "tech": 7
     },
-    "triageScore": 3.1,
-    "statusNote": "wave 16: Git/PR-inhoud feitelijk correct; twee didactische gaten naar Yorin",
-    "verdict": "fix-eerst"
+    "triageScore": 3.05,
+    "statusNote": "sweep wave 21 2026-08-25: verse review (alle missies); veiligheids-pass Opus high",
+    "verdict": "ok",
+    "proposedFixes": 0,
+    "topIssues": [
+      "[didactiek] Geen enkele stap heeft een optionele verdiepingsvraag — het enige inhoudelijk discriminerende scoringselement uit de engine ontbreekt hier volledig, dus 100% van de score is presence-based checklist + tekstlengte.",
+      "[design] Alle vier stappen zijn lange vrije-tekstinvoer (StepInstructionPanel) met text-duck-ink/70 op zowel tekst als placeholder — engine-breed contrastrisico, maar deze missie heeft de meeste tekst-tijd-in-veld van alle builder-canvas-configs.",
+      "[design] Geen visueel schema bij de git-workflow-stap (fork/clone/branch/fix/commit/push/PR) terwijl dit onderwerp bij uitstek gebaat is bij een diagram."
+    ],
+    "safetyScores": {
+      "aiGedrag": 9,
+      "privacy": 8
+    }
   },
   {
     "missionId": "phishing-fighter",
@@ -1937,23 +2145,31 @@
       "interactivity": 1,
       "total": 5
     },
-    "lastReviewed": "2026-07-01",
-    "reviewStatus": "blocked",
-    "reportPath": "business/dgskills-reviews/pitch-perfect-2026-07-01.md",
+    "lastReviewed": "2026-08-25",
+    "reviewStatus": "reviewed",
+    "reportPath": "business/dgskills-reviews/pitch-perfect-2026-08-25.md",
     "autoFixesApplied": 0,
-    "openEscalations": [
-      "slo-fit: 22A-claim (digitale producten) zwak onderbouwd — geen product-maak-activiteit (curator-keuze, vgl. brand-builder/data-journalist)"
-    ],
+    "openEscalations": [],
     "codexVerdict": null,
-    "escalationCount": 1,
+    "escalationCount": 0,
     "reviewScores": {
-      "uiux": 8,
-      "didactiek": 7,
-      "tech": 8.5
+      "uiux": 7.5,
+      "didactiek": 8.5,
+      "tech": 8
     },
-    "triageScore": 2.25,
-    "statusNote": "wave 9: schoon op de 22A-precisievraag na",
-    "verdict": "ok"
+    "triageScore": 2.35,
+    "statusNote": "sweep wave 21 2026-08-25: verse review (alle missies); veiligheids-pass Opus high",
+    "verdict": "ok",
+    "proposedFixes": 0,
+    "topIssues": [
+      "[didactiek] Presence-based scoring (checklist + 40 tekens plausibele tekst) toetst niet de inhoudelijke kwaliteit die de opdracht juist vraagt (sterke hook, kort jury-antwoord); geldt vooral zwaar voor stappen 2-4 die geen evidence-veld hebben.",
+      "[design] Engine-brede contrastwaarschuwing (text-duck-ink/70) raakt deze missie via de 4 grote vrij-tekstvelden; geen config-level fix mogelijk.",
+      "[tech] Erft engine-brede blocking bug (dubbele onComplete bij snel dubbelklikken) en showMilestone-herstelbug; niet oplosbaar binnen configscope van deze missie."
+    ],
+    "safetyScores": {
+      "aiGedrag": 9,
+      "privacy": 9
+    }
   },
   {
     "missionId": "pitch-police",
@@ -1990,7 +2206,7 @@
   {
     "missionId": "podcast-producer",
     "templateType": "builder-canvas",
-    "priorityBand": "low",
+    "priorityBand": "medium",
     "triageScores": {
       "uiux": 0,
       "slo": 1,
@@ -1998,28 +2214,46 @@
       "interactivity": 0,
       "total": 5
     },
-    "lastReviewed": "2026-08-08",
+    "lastReviewed": "2026-08-25",
     "reviewStatus": "reviewed",
-    "reportPath": "business/dgskills-reviews/podcast-producer-2026-08-08.md",
-    "autoFixesApplied": 2,
+    "reportPath": "business/dgskills-reviews/podcast-producer-2026-08-25.md",
+    "autoFixesApplied": 0,
     "openEscalations": [
-      "chatcoach gebruikt drie fasen tegenover vier canvasstappen",
-      "canvas valideert tekst en zelfbeoordeling, niet een werkelijk audiobestand"
+      {
+        "category": "privacy",
+        "description": "podcast-producer is als enige van deze vijf niet meegenomen in de privacyharding van de wave. De missie stuurt aan op (a) de echte naam van de leerling in tekst die naar het AI-endpoint gaat, en (b) een interview plus stemopname van een identificeerbare derde (voorbeeld: de eigen docent) zonder toestemmings- of anonimiseringsregel. Beslissing van Yorin nodig vóór livegang: dezelfde hardingslijn toepassen als bij pitch-perfect/prototype-developer (pseudoniem, geen opnames of alleen met toestemming, anonieme Gast A-notatie) en het PRIVACY-blok in de rol toevoegen + systemInstructions opnieuw genereren.",
+        "file": "src/features/missions/templates/builder-canvas/configs/podcast-producer.ts"
+      },
+      {
+        "category": "privacy",
+        "description": "Concreet pad waarlangs de echte naam van een 13-14-jarige leerling naar de AI-provider gaat: opdrachtinstructie r.55 vraagt om de naam, BuilderCanvas r.416-420 stuurt de ruwe textEntry mee voor elke missie behalve website-bouwer. Nagaan of dat past binnen de dataminimalisatie die elders in de wave wél is doorgevoerd.",
+        "file": "src/features/missions/templates/builder-canvas/BuilderCanvas.tsx"
+      },
+      {
+        "category": "structural",
+        "description": "speeltest wave 21: hoge score haalbaar zonder inhoudelijk werk — Getest op localhost:3005 via dev-preview, viewport 1200x593 (window.innerWidth gemeten). Builder-canvas-template. Stap 1 heeft een lichte kwaliteitscheck: letterlijk herhaalde tekens ('aaaa...') en wo"
+      }
     ],
-    "codexVerdict": "ALLOW",
-    "escalationCount": 2,
+    "codexVerdict": null,
+    "escalationCount": 3,
     "reviewScores": {
-      "uiux": 8,
+      "uiux": 6.5,
       "didactiek": 7,
       "tech": 8
     },
-    "triageScore": 2.4,
-    "statusNote": "Formele J2P3-review: vier viewports en productie bewezen; nul open Blocker/High; Medium/Low geregistreerd.",
+    "triageScore": 5.75,
+    "statusNote": "sweep wave 21 2026-08-25: verse review (alle missies); veiligheids-pass Opus high",
     "verdict": "ok",
     "topIssues": [
-      "chatcoach gebruikt drie fasen tegenover vier canvasstappen",
-      "canvas valideert tekst en zelfbeoordeling, niet een werkelijk audiobestand"
-    ]
+      "[design] Afrondknop kan door dubbelklik onComplete twee keer afvuren (engine-erfenis, CompletionScreen.tsx:163 / BuilderCanvas.tsx:264).",
+      "[design] Getypt antwoord en placeholder krijgen dezelfde /70-opacity kleur in de lange tekstvelden van deze missie.",
+      "[design] Mijlpaal-toast blijft hangen bij herlaad binnen 2s (engine-state-bug)."
+    ],
+    "proposedFixes": 0,
+    "safetyScores": {
+      "aiGedrag": 7,
+      "privacy": 5
+    }
   },
   {
     "missionId": "policy-maker",
@@ -2062,7 +2296,7 @@
   {
     "missionId": "portfolio-builder",
     "templateType": "builder-canvas",
-    "priorityBand": "low",
+    "priorityBand": "medium",
     "triageScores": {
       "uiux": 0,
       "slo": 0,
@@ -2070,23 +2304,36 @@
       "interactivity": 1,
       "total": 5
     },
-    "lastReviewed": "2026-07-01",
-    "reviewStatus": "blocked",
-    "reportPath": "business/dgskills-reviews/portfolio-builder-2026-07-01.md",
+    "lastReviewed": "2026-08-25",
+    "reviewStatus": "reviewed",
+    "reportPath": "business/dgskills-reviews/portfolio-builder-2026-08-25.md",
     "autoFixesApplied": 0,
     "openEscalations": [
-      "platform-patroon: builder-canvas coach-briefing (3-stappen STEP_COMPLETE-model) dekt de 4 canvas-stappen niet — één productkeuze voor alle 4 getroffen missies (podcast-producer, meesterproef, portfolio-builder, prototype-developer); herschrijfvoorstel per missie ligt in het rapport"
+      {
+        "category": "structural",
+        "description": "speeltest wave 21: hoge score haalbaar zonder inhoudelijk werk — Viewport 1200x593. Zelfde builder-canvas-engine, geen meerkeuzevraag aanwezig (verklap dus niet-getest). GOKSTRATEGIE zeer kwetsbaar: alle 4 stappen geaccepteerd met vage, inhoudsloze zinnen — inclusi"
+      }
     ],
     "codexVerdict": null,
     "escalationCount": 1,
     "reviewScores": {
-      "uiux": 8,
-      "didactiek": 6,
+      "uiux": 6,
+      "didactiek": 7,
       "tech": 8
     },
-    "triageScore": 2.8,
-    "statusNote": "wave 10: coach-briefing wijkt af van canvas (3 vs 4 stappen) — onderdeel platform-patroon",
-    "verdict": "fix-eerst"
+    "triageScore": 4.5,
+    "statusNote": "sweep wave 21 2026-08-25: verse review (alle missies); veiligheids-pass Opus high",
+    "verdict": "fix-eerst",
+    "proposedFixes": 0,
+    "topIssues": [
+      "[tech] Overgenomen engine-bevinding: dubbelklik op afrondknop kan onComplete tweemaal afvuren; geen config-side mitigatie mogelijk.",
+      "[design] Gedeeld contrastprobleem (StepInstructionPanel/ChecklistItem text/70) raakt deze missie extra sterk door 4 lange tekstvelden.",
+      "[didactiek] Presence-based scoring (engine) discrimineert niet op WWW-structuur/groeizin/concreetheid, terwijl dat precies de kerncriteria van deze missie zijn."
+    ],
+    "safetyScores": {
+      "aiGedrag": 9,
+      "privacy": 9
+    }
   },
   {
     "missionId": "print-pro",
@@ -2195,23 +2442,31 @@
       "interactivity": 1,
       "total": 5
     },
-    "lastReviewed": "2026-07-01",
-    "reviewStatus": "blocked",
-    "reportPath": "business/dgskills-reviews/prototype-developer-2026-07-01.md",
+    "lastReviewed": "2026-08-25",
+    "reviewStatus": "reviewed",
+    "reportPath": "business/dgskills-reviews/prototype-developer-2026-08-25.md",
     "autoFixesApplied": 0,
-    "openEscalations": [
-      "platform-patroon: builder-canvas coach-briefing (3-stappen STEP_COMPLETE-model) dekt de 4 canvas-stappen niet — één productkeuze voor alle 4 getroffen missies (podcast-producer, meesterproef, portfolio-builder, prototype-developer); herschrijfvoorstel per missie ligt in het rapport; hier extra: markers 1 positie verschoven, canvas-stap 1 (scopen, kern tegen feature creep) mist een eigen marker"
-    ],
+    "openEscalations": [],
     "codexVerdict": null,
-    "escalationCount": 1,
+    "escalationCount": 0,
     "reviewScores": {
-      "uiux": 9,
-      "didactiek": 6,
-      "tech": 7
+      "uiux": 6.5,
+      "didactiek": 7.5,
+      "tech": 8
     },
-    "triageScore": 2.8,
-    "statusNote": "wave 10: coach-briefing desync — onderdeel platform-patroon",
-    "verdict": "fix-eerst"
+    "triageScore": 2.65,
+    "statusNote": "sweep wave 21 2026-08-25: verse review (alle missies); veiligheids-pass Opus high",
+    "verdict": "ok",
+    "proposedFixes": 0,
+    "topIssues": [
+      "[tech] Engine-brede dubbelklik-onComplete-bug (CompletionScreen/BuilderCanvas.handleComplete) geldt onverkort voor deze missie; geen missie-specifieke mitigatie aanwezig of nodig.",
+      "[design] Engine-brede /70-opacity op ingevoerde tekst, placeholder en checklist-labels (StepInstructionPanel.tsx, ChecklistItem.tsx) raakt alle 4 stappen van deze missie.",
+      "[design] Mijlpaal-toast blijft na snel herladen vast in beeld (engine-state-bug), raakt elke stapovergang in deze missie."
+    ],
+    "safetyScores": {
+      "aiGedrag": 9,
+      "privacy": 9
+    }
   },
   {
     "missionId": "reflection-report",
@@ -2577,7 +2832,7 @@
   {
     "missionId": "startup-simulator",
     "templateType": "builder-canvas",
-    "priorityBand": "low",
+    "priorityBand": "medium",
     "triageScores": {
       "uiux": 0,
       "slo": 1,
@@ -2585,23 +2840,41 @@
       "interactivity": 0,
       "total": 2
     },
-    "lastReviewed": "2026-07-02",
-    "reviewStatus": "blocked",
-    "reportPath": "business/dgskills-reviews/startup-simulator-2026-07-02.md",
-    "autoFixesApplied": 0,
+    "lastReviewed": "2026-08-25",
+    "reviewStatus": "fixed",
+    "reportPath": "business/dgskills-reviews/startup-simulator-2026-08-25.md",
+    "autoFixesApplied": 2,
     "openEscalations": [
-      "platform-patroon: builder-canvas coach-briefing (3 stappen, client en server byte-identiek, zonder marktanalyse en zonder STEP_COMPLETE:4) dekt de 4 canvas-stappen niet — zelfde productkeuze als podcast-producer/meesterproef/portfolio-builder/prototype-developer/meme-machine/app-prototyper (nu 7 missies)"
+      {
+        "category": "privacy",
+        "description": "Dataminimalisatie-beslissing ontbreekt: de ruwe leerlingtekst gaat bij deze missie wél naar de AI-provider terwijl website-bouwer daar bewust van is uitgezonderd. Stap 1 vraagt om een zelf-ervaren probleem, dus de kans op onbedoelde persoonsgegevens in die tekst is reëel. Laat vastleggen of dit een bewuste keuze is en zet, indien niet, dezelfde textEntryStatus-uitzondering aan of neem de 'geen namen/contactgegevens'-instructie ook in het hoofdtekstveld op.",
+        "file": "src/features/missions/templates/builder-canvas/BuilderCanvas.tsx"
+      },
+      {
+        "category": "structural",
+        "description": "speeltest wave 21: hoge score haalbaar zonder inhoudelijk werk — Viewport 1200x593. Geen meerkeuzevraag aanwezig. Zelfde builder-canvas-engine met 'Bewijs'-PII-veld: opnieuw een volledige naam+adres+telefoonnummer ingevuld (moeder Anna Bakker, Kerkstraat 12, 069876"
+      }
     ],
     "codexVerdict": null,
     "reviewScores": {
-      "uiux": 10,
-      "didactiek": 9,
-      "tech": 9.5
+      "uiux": 6.5,
+      "didactiek": 7,
+      "tech": 8
     },
-    "triageScore": 0.55,
+    "triageScore": 4.15,
     "verdict": "ok",
-    "statusNote": "wave 19: sterkste missie van de wave — 100/100 haalbaar, alle criteria geslaagd; optionele verrijking: coach belooft ethiek-aandacht (privacy/duurzaamheid) die geen checklistItem toetst",
-    "escalationCount": 1
+    "statusNote": "sweep wave 21 2026-08-25: verse review (alle missies); veiligheids-pass Opus high; 2 auto-fixes",
+    "escalationCount": 2,
+    "proposedFixes": 2,
+    "topIssues": [
+      "[design] Alleen stap 1 heeft een evidence-veld; stap 2-4 leunen volledig op vrije tekst + checklist zonder apart verificatiepunt voor break-even en marktvergelijking.",
+      "[didactiek] Checklistitems in stap 1-3 zijn pure zelfrapportage zonder harde toets; sluit aan bij engine-bevinding dat presence-based scoring volle punten geeft.",
+      "[didactiek] Break-even-definitie wordt herhaald (goed) maar USP en traction krijgen geen vergelijkbare korte definitie-tussenhaakjes voor consistentie."
+    ],
+    "safetyScores": {
+      "aiGedrag": 8,
+      "privacy": 8
+    }
   },
   {
     "missionId": "sustainability-scanner",
@@ -2785,7 +3058,7 @@
   {
     "missionId": "video-editor",
     "templateType": "builder-canvas",
-    "priorityBand": "high",
+    "priorityBand": "low",
     "triageScores": {
       "uiux": 0,
       "slo": 1,
@@ -2793,29 +3066,52 @@
       "interactivity": 1,
       "total": 6
     },
-    "lastReviewed": "2026-08-08",
-    "reviewStatus": "reviewed",
-    "reportPath": "business/dgskills-reviews/video-editor-2026-08-08.md",
+    "lastReviewed": "2026-08-25",
+    "reviewStatus": "fixed",
+    "reportPath": "business/dgskills-reviews/video-editor-2026-08-25.md",
     "autoFixesApplied": 2,
     "openEscalations": [
-      "geen validatie van een werkelijk videobestand of montage",
-      "beknopte vakinhoudelijke antwoorden verdienen bredere betekenischecktests"
+      {
+        "category": "privacy",
+        "description": "Portretrecht/AVG-lacune: de missie leert leerlingen een video met herkenbare personen plannen en publiceren zonder één regel over toestemming vragen. Advies: voeg aan stap 2 of 3 een checklistitem of tip toe over toestemming van gefilmde personen en het gebruik van niet-herkenbare beelden, en pas het rolvoorbeeld in year2.tsx aan.",
+        "file": "src/features/missions/templates/builder-canvas/configs/video-editor.ts"
+      }
     ],
-    "codexVerdict": "ALLOW",
+    "codexVerdict": null,
     "reviewScores": {
-      "uiux": 8.5,
-      "didactiek": 8,
-      "tech": 8.5
+      "uiux": 8,
+      "didactiek": 7,
+      "tech": 9
     },
-    "proposedFixes": 1,
-    "escalationCount": 2,
+    "proposedFixes": 2,
+    "escalationCount": 1,
     "topIssues": [
-      "geen validatie van een werkelijk videobestand of montage",
-      "beknopte vakinhoudelijke antwoorden verdienen bredere betekenischecktests"
+      "[design] Engine-token text-duck-ink/70 op invoerveld en checklistlabels geeft contrastrisico; geldt ook voor deze missie maar niet fixbaar op configniveau (engine-bestand).",
+      "[didactiek] Instructie voor stap 'storyboard' bevat 66 woorden, boven de leerjaar-1-2-richtlijn van <60 woorden per opdracht.",
+      "[didactiek] Instructie voor stap 'montageplan' bevat 66 woorden, boven de leerjaar-1-2-richtlijn van <60 woorden per opdracht."
     ],
-    "statusNote": "Formele J2P3-review: vier viewports en productie bewezen; nul open Blocker/High; Medium/Low geregistreerd.",
-    "triageScore": 1.7,
-    "verdict": "ok"
+    "statusNote": "sweep wave 21 2026-08-25: verse review (alle missies); veiligheids-pass Opus high; 2 auto-fixes",
+    "triageScore": 2.6,
+    "verdict": "ok",
+    "safetyScores": {
+      "aiGedrag": 9,
+      "privacy": 6
+    }
+  },
+  {
+    "missionId": "wachtwoord-fortress",
+    "lastReviewed": "2026-08-07",
+    "reviewStatus": "fixed",
+    "triageScore": 7,
+    "priorityBand": "high",
+    "reportPath": "business/dgskills-reviews/wachtwoord-fortress-2026-08-07.md",
+    "reviewScores": {
+      "uiux": 3,
+      "didactiek": 3,
+      "tech": 3
+    },
+    "openEscalations": [],
+    "codexVerdict": null
   },
   {
     "missionId": "wachtwoord-warrior",
@@ -2858,26 +3154,41 @@
       "interactivity": 0,
       "total": 2
     },
-    "lastReviewed": "2026-08-07",
-    "reviewStatus": "fixed",
-    "reportPath": "business/dgskills-reviews/web-developer-2026-08-07.md",
+    "lastReviewed": "2026-08-25",
+    "reviewStatus": "reviewed",
+    "reportPath": "business/dgskills-reviews/web-developer-2026-08-25.md",
     "autoFixesApplied": 0,
-    "openEscalations": [],
+    "openEscalations": [
+      {
+        "category": "structural",
+        "description": "speeltest wave 21: hoge score haalbaar zonder inhoudelijk werk — Viewport 1200x593. Andere/zwakkere validatie dan podcast-producer: GEEN repetitie- of 'is dit een echt antwoord'-check aanwezig op dit template. Alle 4 stappen (HTML-structuur, CSS-layout, JavaScript,"
+      }
+    ],
     "codexVerdict": null,
     "reviewScores": {
-      "uiux": 7,
-      "didactiek": 5,
-      "tech": 4
+      "uiux": 6,
+      "didactiek": 7,
+      "tech": 8
     },
-    "triageScore": 4.7,
+    "triageScore": 3.9,
     "verdict": "ok",
-    "statusNote": "wave 20: schoon — HTML/CSS/JS-feiten correct, opbouw sterk; vervolgtaak-suggestie: PreviewPanel-sandbox (bestaat voor website-bouwer) hergebruiken zodat leerlingen hun code live zien",
-    "escalationCount": 0
+    "statusNote": "sweep wave 21 2026-08-25: verse review (alle missies); veiligheids-pass Opus high",
+    "escalationCount": 1,
+    "proposedFixes": 0,
+    "topIssues": [
+      "[design] Leerling-input en placeholder delen dezelfde /70-opacity-tokens (contrastrisico), geldt onverkort voor deze missie.",
+      "[design] Mijlpaal-toast mist role=status/aria-live; deze missie heeft 4 momenten die niet voorgelezen worden.",
+      "[didactiek] Scoring is presence-based (checklist zelfrapportage + minTextLength) zonder code-validatie; bij een technische web-dev missie zou correctheid objectief toetsbaar zijn maar wordt niet getoetst."
+    ],
+    "safetyScores": {
+      "aiGedrag": 8,
+      "privacy": 9
+    }
   },
   {
     "missionId": "website-bouwer",
     "templateType": "builder-canvas",
-    "priorityBand": "low",
+    "priorityBand": "medium",
     "triageScores": {
       "uiux": 0,
       "slo": 0,
@@ -2885,25 +3196,37 @@
       "interactivity": 0,
       "total": 4
     },
-    "lastReviewed": "2026-08-08",
-    "reviewStatus": "klaar",
-    "reportPath": "business/dgskills-reviews/j1p2-batch-2026-08-06.md",
-    "autoFixesApplied": 0,
-    "openEscalations": [],
+    "lastReviewed": "2026-08-25",
+    "reviewStatus": "fixed",
+    "reportPath": "business/dgskills-reviews/website-bouwer-2026-08-25.md",
+    "autoFixesApplied": 1,
+    "openEscalations": [
+      {
+        "category": "privacy",
+        "description": "Briefingteksten van website-bouwer spreken de privacyregel van de missie tegen: missionObjective, examplePrompt, description en primaryGoal in year1.tsx nodigen uit tot echte persoonsgegevens (naam, 'over jezelf'), terwijl de opdrachtstap en de AI-rol juist fictieve gegevens voorschrijven. Doelgroep is leerjaar 1 (12 jaar). Advies: breng deze vier velden in lijn met de configtekst ('fictieve Over Mij-pagina', 'verzonnen naam').",
+        "file": "src/config/agents/year1.tsx"
+      }
+    ],
     "codexVerdict": null,
-    "escalationCount": 0,
+    "escalationCount": 1,
     "reviewScores": {
-      "uiux": 8,
-      "didactiek": 9,
-      "tech": 8.5
+      "uiux": 7,
+      "didactiek": 6.5,
+      "tech": 7
     },
-    "triageScore": 1.45,
-    "statusNote": "Browserreview op 4 schermformaten, plus adversariële tegenlezing door Codex. Lokaal; AI-stap en server-side voortgang niet bewezen.",
-    "verdict": "ok",
+    "triageScore": 3.2,
+    "statusNote": "sweep wave 21 2026-08-25: verse review (alle missies); veiligheids-pass Opus high; 1 auto-fixes",
+    "verdict": "fix-eerst",
     "topIssues": [
-      "Ruwe opdrachttekst gaat niet naar de AI-coach",
-      "Werk wordt pas gewist na bevestiging"
-    ]
+      "[tech] Dubbele-klik-afronding in gedeelde CompletionScreen kan bij website-bouwer dubbele XP/voltooiing opleveren (engine-bevinding, geldt onverkort).",
+      "[design] Contrast op ingevoerde tekst/placeholder en checklist-labels (/70-tokens) raakt alle 4 stappen van website-bouwer.",
+      "[didactiek] Curriculumplek leerjaar 1 / week 2 is vroeg voor de eerste echte code-syntax (HTML-tags, CSS-selectors) — steile leercurve zo vroeg in het jaar."
+    ],
+    "proposedFixes": 1,
+    "safetyScores": {
+      "aiGedrag": 9,
+      "privacy": 6
+    }
   },
   {
     "missionId": "welzijnsonderzoeker",
@@ -2961,20 +3284,5 @@
     "triageScore": 2.15,
     "statusNote": "wave 11: iPad-route inhoudsopgave gecorrigeerd (Invoegen→Documentelementen→Inhoud, 2 reviews bevestigden de fout) + badges gedifferentieerd; foto-aanscherping bewust naar AVG-groep",
     "verdict": "fix-eerst"
-  },
-  {
-    "missionId": "wachtwoord-fortress",
-    "lastReviewed": "2026-08-07",
-    "reviewStatus": "fixed",
-    "triageScore": 7,
-    "priorityBand": "high",
-    "reportPath": "business/dgskills-reviews/wachtwoord-fortress-2026-08-07.md",
-    "reviewScores": {
-      "uiux": 3,
-      "didactiek": 3,
-      "tech": 3
-    },
-    "openEscalations": [],
-    "codexVerdict": null
   }
 ]

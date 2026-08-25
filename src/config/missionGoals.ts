@@ -149,7 +149,7 @@ export const MISSION_GOALS: Record<string, MissionGoal> = {
         evidence: 'Je kunt per ronde uitleggen of je decompositie, algoritme-volgorde, abstractie of patroonherkenning toepast en waarom je keuze klopt.',
     },
     'website-bouwer': {
-        primaryGoal: 'Ik bouw een werkende Over Mij-webpagina met HTML, CSS en een korte uitleg van mijn keuzes.',
+        primaryGoal: 'Ik bouw een werkende fictieve Over Mij-webpagina met HTML, CSS en een korte uitleg van mijn keuzes.',
         criteria: {
             type: 'steps-complete',
             min: 4,
