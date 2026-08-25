@@ -50,6 +50,8 @@ export interface DebateArenaConfig {
     takeaways: string[];
     explorationQuiz?: FollowUpQuestion;
     argumentQualityIndicators?: boolean;
+    /** Toon het hulpblokje (mentor, Kindertelefoon, 113) op het introscherm bij een zwaar thema. */
+    showWellbeingSupport?: boolean;
 }
 
 // ─── State ───────────────────────────────────────────────────────────────────
@@ -221,6 +223,7 @@ const DebateArenaInner: React.FC<DebateArenaProps> = ({ config, onBack, onComple
                 description={config.introDescription}
                 goal={config.missionGoal ?? getMissionGoal(config.missionId)}
                 features={config.introFeatures}
+                wellbeingSupport={config.showWellbeingSupport}
                 onStart={() => setPhase('explore')}
             />
         );
@@ -231,13 +234,29 @@ const DebateArenaInner: React.FC<DebateArenaProps> = ({ config, onBack, onComple
         const initialPos = config.positions.find((p) => p.id === state.selectedPosition);
         const finalPos = config.positions.find((p) => p.id === (state.finalPosition ?? state.selectedPosition));
 
-        const phases = [
+        const phaseBreakdown = [
             { icon: '👥', title: 'Stakeholders gelezen', score: state.stakeholdersRead.length >= config.stakeholders.length ? 10 : 0, max: 10 },
             { icon: '📍', title: 'Positie gekozen', score: state.selectedPosition ? 10 : 0, max: 10 },
             { icon: '💬', title: 'Argumenten gebouwd', score: Math.round((countDistinctArguments(state.arguments) / 3) * 50), max: 50 },
             { icon: '⚡', title: 'Tegenargument beantwoord', score: isMeaningfulAnswer(state.counterResponse) ? 10 : 0, max: 10 },
             { icon: '🪞', title: 'Gereflecteerd', score: config.reflectionQuestions.filter(q => isMeaningfulAnswer(state.reflectionAnswers[q] ?? '')).length * 10, max: config.reflectionQuestions.length * 10 },
         ];
+
+        // De losse onderdelen tellen samen op tot méér dan `config.maxScore` zodra
+        // er drie reflectievragen zijn: 110 van de 100. `calcScore` topt het totaal al af,
+        // maar de uitsplitsing deed dat niet — die adverteerde 110 haalbare punten
+        // en telde niet op tot het getoonde totaal. Daarom vullen we de rijen op
+        // volgorde tot het puntenbudget op is: de getoonde maxima tellen samen
+        // nooit boven `config.maxScore` en de behaalde punten nooit boven `score`.
+        let maxBudget = config.maxScore;
+        let scoreBudget = score;
+        const phases = phaseBreakdown.map((phase) => {
+            const max = Math.max(0, Math.min(phase.max, maxBudget));
+            const earned = Math.max(0, Math.min(phase.score, max, scoreBudget));
+            maxBudget -= max;
+            scoreBudget -= earned;
+            return { ...phase, max, score: earned };
+        });
 
         return (
             <div className="min-h-screen bg-duck-bg p-4">

@@ -20,7 +20,7 @@ const config: ToolGuideConfig = {
             id: 'stap-1-kop',
             title: 'De pakkende kop',
             instruction:
-                'Een flyer heeft maar **2 seconden** om iemand te stoppen. Bedenk **3 verschillende koppen** met deze formules:\n- **Probleem + oplossing**: "Nooit meer huiswerkstress!"\n- **Nieuwsgierigheid**: "De app die je docent niet kent"\n- **Concreet voordeel**: "3× sneller leren met AI"\n\nKies de beste. Maximaal 8 woorden, geen vage titels zoals "Mijn project".',
+                'Een flyer heeft maar **2 seconden** om iemand te stoppen. Bedenk **3 verschillende koppen** met deze formules:\n- **Probleem + oplossing**: "Nooit meer huiswerkstress!"\n- **Nieuwsgierigheid**: "De app die je docent niet kent"\n- **Concreet voordeel**: "Minder zoekwerk, meer overzicht"\n\nLet op: beloof alleen wat je waar kunt maken. Een kop als "3× sneller leren met AI" klinkt sterk, maar zonder bewijs is dat een loze claim — en die hoort niet op jouw flyer.\n\nKies de beste. Maximaal 8 woorden, geen vage titels zoals "Mijn project".',
             tip: 'Test je kop: lees hem hardop in 2 seconden. Begrijpt iemand die hem niet kent meteen waar het over gaat? Zo ja — goede kop. Zo nee — maak hem korter of specifieker.',
             checklistItems: [
                 { id: 'drie-opties', label: 'Ik heb 3 verschillende koppen bedacht' },

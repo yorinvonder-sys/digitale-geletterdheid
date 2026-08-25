@@ -347,6 +347,7 @@ const ScenarioEngineInner: React.FC<{
                 goal={missionGoal}
                 features={config.introFeatures}
                 attribution={config.attribution}
+                wellbeingSupport={config.showWellbeingSupport}
                 onStart={() => setState((prev) => ({ ...prev, phase: 'active' }))}
             />
         );

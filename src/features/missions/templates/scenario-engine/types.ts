@@ -40,7 +40,7 @@ export interface ScenarioRound {
      * De drie klassieke types zijn keuzelijsten. De drie `-`-varianten daarnaast
      * tonen dezelfde opgave als handeling (mail doorzoeken, slepen, sorteren) en
      * gebruiken bewust dezelfde opslag en dezelfde scoreformule als hun klassieke
-     * tegenhanger — zie `SCORING_KIND` in sub/FeedbackBanner.tsx.
+     * tegenhanger — zie `SCORING_KIND` in sub/scoring.ts.
      */
     type:
         | 'select-correct'
@@ -98,6 +98,8 @@ export interface ScenarioEngineConfig {
     maxScore: number;
     badges: BadgeConfig[];
     takeaways: string[];
+    /** Toon het hulpblokje (mentor, Kindertelefoon, 113) op het introscherm bij een zwaar thema. */
+    showWellbeingSupport?: boolean;
 }
 
 export interface RoundState {
