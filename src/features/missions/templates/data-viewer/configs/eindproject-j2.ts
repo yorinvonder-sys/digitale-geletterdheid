@@ -137,7 +137,7 @@ export const eindprojectJ2Config: DataViewerConfig = {
                         'Als jij je eindproject moet kiezen: zou je voor een "veilig" type gaan (app-ontwerp) of iets onbekends proberen? Onderbouw je keuze met de data.',
                     type: 'text-observation',
                     keywords: ['veilig', 'onbekend', 'risico', 'origineel'],
-                    minKeywords: 1,
+                    minKeywords: 2,
                     correctAnswer: '',
                     explanation:
                         'Er is geen fout antwoord. Sterke argumenten voor "veilig": app-ontwerp scoort gemiddeld het hoogst en geeft een heldere structuur. Sterke argumenten voor "onbekend": origineelheid scoort hoog in de beoordeling — een verrassend onderwerp kan compenseren. De data laat ook zien dat individuele scores (Pien: 8,3 voor video) een hogere uitloop hebben dan het type alleen.',

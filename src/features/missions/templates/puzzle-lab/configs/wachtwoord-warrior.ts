@@ -48,7 +48,7 @@ const config: PuzzleLabConfig = {
             ],
             answer: 'Minder dan 1 seconde — het staat in elke hackerswoordenlijst',
             caseSensitive: false,
-            maxAttempts: 3,
+            maxAttempts: 2,
             points: 25,
             successMessage:
                 'Klopt! "abc123" wordt onmiddellijk gekraakt — het staat in elke woordenlijst die hackers gebruiken. Maar ook als het niet in een lijst stond: 6 tekens zijn bij 1 miljard pogingen per seconde in ~2 seconden uitgeput. Lengte is de belangrijkste factor.',
@@ -78,7 +78,7 @@ const config: PuzzleLabConfig = {
             ],
             answer: 'Hackers kennen variaties op bekende woorden, waardoor symboolvervanging niet helpt',
             caseSensitive: false,
-            maxAttempts: 3,
+            maxAttempts: 2,
             points: 25,
             successMessage:
                 'Precies! Woordenboekaanvallen proberen bekende woorden + alle veelgebruikte vervangingen. "P@ssw0rd!" staat letterlijk in de aanvalslijsten. De les: geen enkel trucsysteem op een herkenbaar woord is veilig — gebruik lange, willekeurige zinnen of een wachtwoordmanager.',
@@ -108,7 +108,7 @@ const config: PuzzleLabConfig = {
             ],
             answer: 'Groot gevaar — hackers proberen het gelekte wachtwoord automatisch op andere sites',
             caseSensitive: false,
-            maxAttempts: 3,
+            maxAttempts: 2,
             points: 25,
             successMessage:
                 'Juist! Credential stuffing is geautomatiseerd: zodra één wachtwoord lekt, wordt het meteen geprobeerd op honderden andere populaire sites. Voor Emma betekent dit: haar e-mail, Instagram én schoolaccount zijn allemaal in gevaar. Unieke wachtwoorden per site zijn daarom essentieel.',

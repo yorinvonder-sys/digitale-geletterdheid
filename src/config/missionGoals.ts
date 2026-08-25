@@ -801,8 +801,8 @@ export const MISSION_GOALS: Record<string, MissionGoal> = {
         primaryGoal: 'Ik onderzoek internetsnelheden en apparaatgebruik per land en leeftijdsgroep en beoordeel de betrouwbaarheid van databronnen.',
         criteria: {
             type: 'score-threshold',
-            threshold: 65,
-            description: 'Je analyseert CBS-data naar leeftijdsgroep, Europese breedbandcijfers en internationale connectiviteitsrapporten.',
+            threshold: 40,
+            description: 'Je analyseert didactische oefendata over internetsnelheid per land, smartphonegebruik per leeftijdsgroep en connectivity-begrippen.',
         },
         evidence: 'Je kunt het procentuele verschil in internetsnelheid of apparaatbeschikbaarheid tussen leeftijdsgroepen of landen noemen en een databron beoordelen.',
     },

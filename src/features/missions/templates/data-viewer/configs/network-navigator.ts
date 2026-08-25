@@ -206,13 +206,13 @@ export const networkNavigatorConfig: DataViewerConfig = {
             minScore: 85,
             emoji: '🌐',
             title: 'Netwerk Engineer!',
-            color: '#202023',
+            color: '#e1ff01',
         },
         {
             minScore: 65,
             emoji: '📡',
             title: 'Internetdetective',
-            color: '#202023',
+            color: '#c2c1bd',
         },
         {
             minScore: 40,

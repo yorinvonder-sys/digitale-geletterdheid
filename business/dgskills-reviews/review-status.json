@@ -322,7 +322,7 @@
   {
     "missionId": "api-verkenner",
     "templateType": "data-viewer",
-    "priorityBand": "low",
+    "priorityBand": "medium",
     "triageScores": {
       "uiux": 2,
       "slo": 1,
@@ -330,21 +330,41 @@
       "interactivity": 0,
       "total": 4
     },
-    "lastReviewed": "2026-07-02",
-    "reviewStatus": "fixed",
-    "reportPath": "business/dgskills-reviews/api-verkenner-2026-07-02.md",
+    "lastReviewed": "2026-08-25",
+    "reviewStatus": "reviewed",
+    "reportPath": "business/dgskills-reviews/api-verkenner-2026-08-25.md",
     "autoFixesApplied": 0,
-    "openEscalations": [],
+    "openEscalations": [
+      {
+        "category": "structural",
+        "description": "Gedeelde engine-blockers (geen onRetry bij falen <40%, clearSave() vóór bevestigde serveropslag) gelden ook voor api-verkenner maar zitten in DataViewer.tsx, buiten de config-whitelist van deze missie.",
+        "file": "src/features/missions/templates/data-viewer/DataViewer.tsx"
+      },
+      {
+        "category": "anders",
+        "description": "Verzonnen onderzoekscijfers worden toegeschreven aan de TU Delft, een bestaande instelling, zonder oefendata-label. Beslissing nodig van Yorin: bron verwijderen, neutraliseren, of het `source: { kind: 'synthetic' }`-veld toevoegen dat het template al ondersteunt.",
+        "file": "src/features/missions/templates/data-viewer/configs/api-verkenner.ts"
+      }
+    ],
     "codexVerdict": null,
-    "escalationCount": 0,
+    "escalationCount": 2,
     "reviewScores": {
-      "uiux": 9,
-      "didactiek": 9,
+      "uiux": 8,
+      "didactiek": 8,
       "tech": 9
     },
-    "triageScore": 1,
-    "statusNote": "wave 11: alle antwoordmodellen + puntensom (100=100) nagerekend; schoon",
-    "verdict": "ok"
+    "triageScore": 3.9,
+    "statusNote": "sweep wave 22 2026-08-25: verse review (alle missies); veiligheids-pass Opus high",
+    "verdict": "ok",
+    "proposedFixes": 0,
+    "topIssues": [
+      "[design] Kleurgebruik in staafgrafiek (rood vs zwart) niet expliciet toegelicht aan leerling; leerling moet zelf afleiden dat het 'hoog' markeert.",
+      "[tech] q5 correctAnswer 12.7 is een afronding van 38/3=12.667; als de engine geen tolerantie hanteert bij number-input kan een exact rekenende leerling worden afgekeurd (engine-vraag, niet in config oplosbaar)."
+    ],
+    "safetyScores": {
+      "aiGedrag": 9,
+      "privacy": 9
+    }
   },
   {
     "missionId": "app-prototyper",
@@ -727,23 +747,37 @@
       "interactivity": 0,
       "total": 5
     },
-    "lastReviewed": "2026-07-01",
-    "reviewStatus": "blocked",
-    "reportPath": "business/dgskills-reviews/cyber-detective-2026-07-01.md",
+    "lastReviewed": "2026-08-25",
+    "reviewStatus": "fixed",
+    "reportPath": "business/dgskills-reviews/cyber-detective-2026-08-25.md",
     "autoFixesApplied": 1,
     "openEscalations": [
-      "asset ontbreekt: briefingImage verwijst naar niet-bestaand /assets/agents/cyber-detective.webp (year3.tsx:564) — leerling ziet kapotte afbeelding; vereist assetgeneratie"
+      {
+        "category": "structural",
+        "description": "Engine-brede gokbestendigheid- en vastloop-bugs in PuzzleLab.tsx (geen scoreverlies bij foute pogingen; CompletionScreen zonder onRetry bij score <40%) manifesteren zich concreet in cyber-detective omdat de missie volledig uit 4-optie MC + 1 sequencing-puzzel bestaat. Structurele fix hoort in de gedeelde engine, niet in deze mission-config.",
+        "file": "src/features/missions/templates/puzzle-lab/PuzzleLab.tsx"
+      }
     ],
-    "codexVerdict": "ALLOW",
+    "codexVerdict": null,
     "escalationCount": 1,
     "reviewScores": {
-      "uiux": 6.5,
+      "uiux": 8,
       "didactiek": 8,
-      "tech": 5
+      "tech": 4
     },
-    "triageScore": 3.35,
-    "statusNote": "wave 7: no-op gradient gefixt; asset-escalatie; gate ALLOW (nevenbevinding over research-project-hunk was al apart ge-gate-t)",
-    "verdict": "fix-eerst"
+    "triageScore": 3.2,
+    "statusNote": "sweep wave 22 2026-08-25: verse review (alle missies); veiligheids-pass Opus high; 1 auto-fixes",
+    "verdict": "fix-eerst",
+    "proposedFixes": 1,
+    "topIssues": [
+      "[tech] Alle 3 MC-puzzels hebben 4 opties + maxAttempts:3; gecombineerd met de engine-brede fout (geen scoreverlies bij foute pogingen) is blind klikken een haalbare pass-strategie voor deze missie (drempel 70/100).",
+      "[tech] Bij score onder de CompletionScreen-passdrempel (40%) loopt de leerling vast door de gedeelde engine-bug (geen onRetry) — geërfd van PuzzleLab.tsx, niet oplosbaar in deze config maar treft deze missie concreet bij lage score.",
+      "[tech] hintCost (4,4,4,3) wordt nooit zinvol besteed door het engine-brede hint-mechanisme-defect — puntenverlies zonder informatiewinst voor deze missie."
+    ],
+    "safetyScores": {
+      "aiGedrag": 9,
+      "privacy": 9
+    }
   },
   {
     "missionId": "dashboard-designer",
@@ -756,21 +790,47 @@
       "interactivity": 0,
       "total": 4
     },
-    "lastReviewed": "2026-07-02",
+    "lastReviewed": "2026-08-25",
     "reviewStatus": "fixed",
-    "reportPath": "business/dgskills-reviews/dashboard-designer-2026-07-02.md",
-    "autoFixesApplied": 0,
-    "openEscalations": [],
+    "reportPath": "business/dgskills-reviews/dashboard-designer-2026-08-25.md",
+    "autoFixesApplied": 1,
+    "openEscalations": [
+      {
+        "category": "structural",
+        "description": "Twee blocking bugs in de gedeelde data-viewer-engine (geen onRetry onder 40%-drempel; clearSave vóór bevestigde onComplete) zijn al vastgelegd in de aparte engine-review en raken deze missie concreet via haar 0-39% badge-tier. Fix hoort in DataViewer.tsx, buiten de whitelist van deze missie-pass.",
+        "file": "src/features/missions/templates/data-viewer/DataViewer.tsx"
+      },
+      {
+        "category": "privacy",
+        "description": "Niet-gelabelde 'schooldata' met klasnamen 2A-2D die samenvallen met de echte klassen van de doelgroep, waarbij klas 2C expliciet als slechtst presterende 'zorgenklas' wordt aangewezen en uitgewerkt. Risico op projectie en stigmatisering richting werkelijke klassen op de afnemende school.",
+        "file": "src/features/missions/templates/data-viewer/configs/dashboard-designer.ts"
+      },
+      {
+        "category": "ai-act",
+        "description": "De missie normaliseert geautomatiseerde profilering van leerlingen in het onderwijs ('een goed dashboard zou deze klas automatisch markeren als aandachtspunt') zonder enige kritische kanttekening, in een product dat zelf als hoog-risico AI onder Annex III 3(b) valt. Vraagt een inhoudelijke keuze over hoe DGSkills profilering aan leerlingen presenteert.",
+        "file": "src/features/missions/templates/data-viewer/configs/dashboard-designer.ts"
+      }
+    ],
     "codexVerdict": null,
-    "escalationCount": 0,
+    "escalationCount": 3,
     "reviewScores": {
-      "uiux": 9,
-      "didactiek": 8,
-      "tech": 9
+      "uiux": 8,
+      "didactiek": 9,
+      "tech": 6
     },
-    "triageScore": 1.4,
-    "statusNote": "wave 12: antwoordmodellen 100% nagerekend; dormant-scenario-mismatch hoort bij platform-dormant-beslispunt",
-    "verdict": "ok"
+    "triageScore": 2.2,
+    "statusNote": "sweep wave 22 2026-08-25: verse review (alle missies); veiligheids-pass Opus high; 1 auto-fixes",
+    "verdict": "fix-eerst",
+    "proposedFixes": 1,
+    "topIssues": [
+      "[design] Pie-chart kleur #99984D in chartData staat los van het duck-token-palet (de andere 4 kleuren zijn wel exacte duck-tokens)",
+      "[tech] Badge-tier 'Aan de slag!' (minScore 0) impliceert een bedoelde uitkomst tussen 0-39%, maar de gedeelde data-viewer-engine mist onRetry onder de 40%-drempel waardoor die leerling nooit kan voltooien (engine-bug, geraakt via deze missie's badge-config)",
+      "[tech] Engine wist opgeslagen voortgang vóór bevestigde server-completion (clearSave vóór onComplete-await) — raakt elke leerling van deze missie bij een mislukte opslag"
+    ],
+    "safetyScores": {
+      "aiGedrag": 8,
+      "privacy": 6
+    }
   },
   {
     "missionId": "data-detective",
@@ -805,7 +865,7 @@
   {
     "missionId": "data-handelaar",
     "templateType": "puzzle-lab",
-    "priorityBand": "low",
+    "priorityBand": "medium",
     "triageScores": {
       "uiux": 1,
       "slo": 0,
@@ -813,21 +873,42 @@
       "interactivity": 0,
       "total": 3
     },
-    "lastReviewed": "2026-07-02",
+    "lastReviewed": "2026-08-25",
     "reviewStatus": "fixed",
-    "reportPath": "business/dgskills-reviews/data-handelaar-2026-07-02.md",
+    "reportPath": "business/dgskills-reviews/data-handelaar-2026-08-25.md",
     "autoFixesApplied": 1,
-    "openEscalations": [],
-    "codexVerdict": "ALLOW",
-    "escalationCount": 0,
+    "openEscalations": [
+      {
+        "category": "structural",
+        "description": "Scoring-gokbestendigheid, completion-trap bij lage score, en hint-bug zijn gedeelde puzzle-lab-engine-bugs (PuzzleLab.tsx) die alle puzzle-lab-missies raken, inclusief data-handelaar — vereisen een engine-fix, geen missie-config-fix.",
+        "file": "src/features/missions/templates/puzzle-lab/PuzzleLab.tsx"
+      },
+      {
+        "category": "privacy",
+        "description": "Gevoelige inhoud over een minderjarige (lichaamsbeeld-zoekopdrachten, psychologisch profiel 'onzeker, beinvloedbaar') wordt aan 12-13-jarigen getoond, terwijl de enige geschreven welzijns- en doorverwijswaarborg in een agent-rol staat die het puzzle-lab-template technisch niet kan activeren. De waarborg moet naar de missie-config zelf; dit is geen slapende-rol-artefact maar een gat in de kindveiligheid van de geleverde missie.",
+        "file": "src/features/missions/templates/puzzle-lab/configs/data-handelaar.ts"
+      }
+    ],
+    "codexVerdict": null,
+    "escalationCount": 2,
     "reviewScores": {
-      "uiux": 9,
-      "didactiek": 9,
-      "tech": 8.5
+      "uiux": 6,
+      "didactiek": 6.5,
+      "tech": 4
     },
-    "triageScore": 1.15,
-    "statusNote": "wave 14: validator puzzel 4 accepteert nu ook \"data deal\" met spatie; welzijns-/AVG-content expliciet gecheckt en in orde; gate ALLOW (gecombineerde call met spreadsheet-specialist, per-missie verdict)",
-    "verdict": "ok"
+    "triageScore": 4.4,
+    "statusNote": "sweep wave 22 2026-08-25: verse review (alle missies); veiligheids-pass Opus high; 1 auto-fixes",
+    "verdict": "fix-eerst",
+    "proposedFixes": 1,
+    "topIssues": [
+      "[tech] Erft engine-scoringsbug: 3 multiple-choice puzzels met 4 opties en maxAttempts:3 zijn structureel gokbaar (engine telt geen strafpunten per foute poging)",
+      "[tech] Erft engine-completiontrap: leerling onder 40% score komt vast te zitten op eindscherm zonder onRetry",
+      "[design] bewijsstuk-a/b description overschrijdt leerjaar-1 copy-limiet (<60 woorden)"
+    ],
+    "safetyScores": {
+      "aiGedrag": 7,
+      "privacy": 6
+    }
   },
   {
     "missionId": "data-journalist",
@@ -840,23 +921,42 @@
       "interactivity": 1,
       "total": 5
     },
-    "lastReviewed": "2026-07-01",
-    "reviewStatus": "blocked",
-    "reportPath": "business/dgskills-reviews/data-journalist-2026-07-01.md",
-    "autoFixesApplied": 3,
+    "lastReviewed": "2026-08-25",
+    "reviewStatus": "reviewed",
+    "reportPath": "business/dgskills-reviews/data-journalist-2026-08-25.md",
+    "autoFixesApplied": 0,
     "openEscalations": [
-      "slo-fit: 22A-claim (digitale producten) oppervlakkig — missie heeft alleen analysevragen, geen productbouw (curator-keuze)"
+      {
+        "category": "structural",
+        "description": "Blocking engine-bugs in gedeelde data-viewer engine raken data-journalist rechtstreeks: leerling onder 40% loopt vast op resultatenscherm, en clearSave() gebeurt vóór bevestigde serveropslag (dataverlies-risico). Fix hoort in DataViewer.tsx, niet in mission-config; buiten autoFixable-whitelist.",
+        "file": "src/features/missions/templates/data-viewer/DataViewer.tsx"
+      },
+      {
+        "category": "privacy",
+        "description": "De AI-chat van deze missie stuurt persoonlijke welzijnsuitingen van middelzware aard terug naar de dataset via de scope guard, terwijl het welzijnsprotocol pas bij zware signalen ingrijpt. Juist deze missie gaat over hoe social media jongeren laat voelen, dus die middencategorie is voorspelbaar. Vraagt een keuze over hoe de rolinstructie erkenning en doorverwijzing regelt voor niet-crisis-uitingen.",
+        "file": "src/config/agents/year2.tsx"
+      }
     ],
-    "codexVerdict": "ALLOW",
-    "escalationCount": 1,
+    "codexVerdict": null,
+    "escalationCount": 2,
     "reviewScores": {
-      "uiux": 8,
-      "didactiek": 6,
-      "tech": 9
+      "uiux": 7.5,
+      "didactiek": 8.5,
+      "tech": 5.5
     },
-    "triageScore": 2.5,
-    "statusNote": "wave 8: AI-coach-briefing gelijkgetrokken met echte missie-inhoud (problemScenario + missionObjective + examplePrompt; objective was orchestrator-aanvulling voor interne consistentie)",
-    "verdict": "fix-eerst"
+    "triageScore": 2.7,
+    "statusNote": "sweep wave 22 2026-08-25: verse review (alle missies); veiligheids-pass Opus high",
+    "verdict": "fix-eerst",
+    "proposedFixes": 0,
+    "topIssues": [
+      "[tech] Leerling onder 40%-drempel loopt vast op resultatenscherm (geen onRetry, disabled knop, geen terugweg) — engine-bug die deze missie raakt",
+      "[tech] clearSave() gebeurt vóór onComplete-bevestiging; mislukte serveropslag wist lokale voortgang van deze missie",
+      "[design] Placeholder- en ingevulde-tekstkleur in tabelfilters identiek (engine-bevinding, raakt dataset 1 direct)"
+    ],
+    "safetyScores": {
+      "aiGedrag": 8,
+      "privacy": 7
+    }
   },
   {
     "missionId": "data-pipeline",
@@ -869,21 +969,37 @@
       "interactivity": 1,
       "total": 4
     },
-    "lastReviewed": "2026-07-02",
+    "lastReviewed": "2026-08-25",
     "reviewStatus": "fixed",
-    "reportPath": "business/dgskills-reviews/data-pipeline-2026-07-02.md",
-    "autoFixesApplied": 1,
-    "openEscalations": [],
-    "codexVerdict": "ALLOW",
-    "escalationCount": 0,
+    "reportPath": "business/dgskills-reviews/data-pipeline-2026-08-25.md",
+    "autoFixesApplied": 2,
+    "openEscalations": [
+      {
+        "category": "structural",
+        "description": "Missie loopt vast op resultatenscherm bij score <40% (geen onRetry) en lokale voortgang wordt gewist vóór serverbevestiging van voltooiing — zit in de gedeelde DataViewer-engine, niet in data-pipeline.ts.",
+        "file": "src/features/missions/templates/data-viewer/DataViewer.tsx"
+      }
+    ],
+    "codexVerdict": null,
+    "escalationCount": 1,
     "reviewScores": {
-      "uiux": 8,
+      "uiux": 7,
       "didactiek": 7,
       "tech": 8
     },
-    "triageScore": 2.4,
-    "statusNote": "wave 12: q8 participatiepunten 0->10 (som=100=maxScore; 3e geval, 2 gate-precedenten); som-gat blijkt engine-breed patroon (7/15 data-viewer-configs) -> gedeelde lijst",
-    "verdict": "ok"
+    "triageScore": 2.5,
+    "statusNote": "sweep wave 22 2026-08-25: verse review (alle missies); veiligheids-pass Opus high; 2 auto-fixes",
+    "verdict": "fix-eerst",
+    "proposedFixes": 2,
+    "topIssues": [
+      "[design] Teller/disabled-knop bij observatievragen mist aria-live/aria-describedby (gedeeld engine-issue, geldt voor q3/q6/q8).",
+      "[didactiek] minKeywords:1 op alle drie tekstvragen is te zwak; leerling kan met één losstaand woord scoren zonder de kern van de vraag te raken.",
+      "[design] Filterveld-placeholder heeft dezelfde kleur als ingevulde tekst."
+    ],
+    "safetyScores": {
+      "aiGedrag": 9,
+      "privacy": 9
+    }
   },
   {
     "missionId": "data-review",
@@ -1060,7 +1176,7 @@
   {
     "missionId": "digital-divide-researcher",
     "templateType": "data-viewer",
-    "priorityBand": "low",
+    "priorityBand": "medium",
     "triageScores": {
       "uiux": 2,
       "slo": 1,
@@ -1068,21 +1184,37 @@
       "interactivity": 0,
       "total": 3
     },
-    "lastReviewed": "2026-07-02",
+    "lastReviewed": "2026-08-25",
     "reviewStatus": "fixed",
-    "reportPath": "business/dgskills-reviews/digital-divide-researcher-2026-07-02.md",
-    "autoFixesApplied": 3,
-    "openEscalations": [],
-    "codexVerdict": "ALLOW",
-    "escalationCount": 0,
+    "reportPath": "business/dgskills-reviews/digital-divide-researcher-2026-08-25.md",
+    "autoFixesApplied": 1,
+    "openEscalations": [
+      {
+        "category": "prose-only",
+        "description": "Verzonnen connectiviteits- en leeftijdscijfers staan als feitelijke conclusies in de takeaways terwijl de datasets als gesimuleerd zijn gelabeld. Vraagt om een inhoudelijke keuze (cijfers uit de takeaways halen of vervangen door geverifieerde CBS-/Speedtest-cijfers met bronvermelding) — niet zelf op te lossen in review.",
+        "file": "src/features/missions/templates/data-viewer/configs/digital-divide-researcher.ts"
+      }
+    ],
+    "codexVerdict": null,
+    "escalationCount": 1,
     "reviewScores": {
-      "uiux": 8,
-      "didactiek": 8,
-      "tech": 5.5
+      "uiux": 7.5,
+      "didactiek": 6,
+      "tech": 8
     },
-    "triageScore": 2.75,
-    "statusNote": "wave 15: q8 participatiepunten 0->10 (som=100, 5e geval) + SLO-code in coach-tekst 23B->21B conform mapping + Nigeria-cijfer gespecificeerd als (vast); alle 7 rekensommen geverifieerd, anti-stigmatiserende framing geprezen",
-    "verdict": "fix-eerst"
+    "triageScore": 4.65,
+    "statusNote": "sweep wave 22 2026-08-25: verse review (alle missies); veiligheids-pass Opus high; 1 auto-fixes",
+    "verdict": "fix-eerst",
+    "proposedFixes": 1,
+    "topIssues": [
+      "[didactiek] missionGoals.ts claimt 'CBS-data', 'Europese breedbandcijfers' en 'internationale connectiviteitsrapporten' terwijl alle datasets in de missieconfig expliciet synthetic zijn met disclaimers ('niet te lezen als actuele CBS-statistiek'). Misleidende bronclaim richting rapportage.",
+      "[design] Engine-niveau: resultatenscherm kan leerling onder 40% vastzetten (geen onRetry); opslag wordt gewist vóór serverbevestiging. Generiek engine-gedrag, geraakt door deze missie.",
+      "[didactiek] missionGoals threshold=65 wijkt af van het 40%-slaagpunt dat de missie zelf hanteert (badge 'Data Analist' vanaf 40, CompletionScreen 'Gehaald' vanaf 40%)."
+    ],
+    "safetyScores": {
+      "aiGedrag": 7,
+      "privacy": 8
+    }
   },
   {
     "missionId": "digital-forensics",
@@ -1239,26 +1371,52 @@
       "interactivity": 0,
       "total": 3
     },
-    "lastReviewed": "2026-07-02",
+    "lastReviewed": "2026-08-25",
     "reviewStatus": "fixed",
-    "reportPath": "business/dgskills-reviews/eindproject-j2-2026-07-02.md",
-    "autoFixesApplied": 2,
-    "openEscalations": [],
-    "codexVerdict": "ALLOW",
-    "escalationCount": 0,
+    "reportPath": "business/dgskills-reviews/eindproject-j2-2026-08-25.md",
+    "autoFixesApplied": 1,
+    "openEscalations": [
+      {
+        "category": "structural",
+        "description": "data-viewer-engine mist onRetry op CompletionScreen bij falen — leerling kan niet herkansen of terug (DataViewer.tsx:984), engine-brede fix nodig, niet missie-specifiek.",
+        "file": "src/features/missions/templates/data-viewer/DataViewer.tsx"
+      },
+      {
+        "category": "structural",
+        "description": "data-viewer-engine wist opslag vóór bevestigde server-voltooiing (clearSave vóór await onComplete-resultaat), risico op dataverlies — engine-brede fix nodig.",
+        "file": "src/features/missions/templates/data-viewer/DataViewer.tsx"
+      },
+      {
+        "category": "privacy",
+        "description": "Fictieve individuele leerlingbeoordelingen (namen + deelcijfers + eindcijfer) worden zonder synthetic-bronlabel als echte schoolgegevens gepresenteerd; daarnaast een opdrachtvoorbeeld dat leerlingen aanzet tot het verzamelen van schermtijd-/concentratiedata van klasgenoten zonder toestemmingskader. Vraagt een beslissing van Yorin over labeling, anonimisering (bijv. 'Leerling 1..16') en een toestemmingszin.",
+        "file": "src/features/missions/templates/data-viewer/configs/eindproject-j2.ts"
+      }
+    ],
+    "codexVerdict": null,
+    "escalationCount": 3,
     "reviewScores": {
-      "uiux": 8.5,
-      "didactiek": 9,
-      "tech": 6.5
+      "uiux": 7.5,
+      "didactiek": 8,
+      "tech": 7
     },
-    "triageScore": 1.9,
-    "statusNote": "wave 15: q2-vraagtekst 5->6 (dataset+uitleg zeggen 6) + maxScore 100->85 (som punten=85; topbadge 85 = perfecte run, conventie); alle 16 eindcijfers nagerekend",
-    "verdict": "fix-eerst"
+    "triageScore": 2.45,
+    "statusNote": "sweep wave 22 2026-08-25: verse review (alle missies); veiligheids-pass Opus high; 1 auto-fixes",
+    "verdict": "fix-eerst",
+    "proposedFixes": 1,
+    "topIssues": [
+      "[tech] Geërfd van de data-viewer-engine: geen onRetry bij falen (<40%) — leerling loopt vast op het resultatenscherm; extra zwaar omdat dit de laatste missie van leerjaar 2 is.",
+      "[tech] Geërfd van de engine: clearSave() vóór bevestigde serveropslag kan het werk van deze 3-dataset-missie laten verdwijnen.",
+      "[design] Visual Precision Gate niet dynamisch geverifieerd (geen Chrome-plugin-evidence); 6-koloms tabel met lange projecttype-labels is een overflow-risico op mobiel."
+    ],
+    "safetyScores": {
+      "aiGedrag": 9,
+      "privacy": 4
+    }
   },
   {
     "missionId": "encryption-expert",
     "templateType": "puzzle-lab",
-    "priorityBand": "low",
+    "priorityBand": "high",
     "triageScores": {
       "uiux": 1,
       "slo": 1,
@@ -1266,21 +1424,46 @@
       "interactivity": 0,
       "total": 5
     },
-    "lastReviewed": "2026-07-01",
+    "lastReviewed": "2026-08-25",
     "reviewStatus": "fixed",
-    "reportPath": "business/dgskills-reviews/encryption-expert-2026-07-01.md",
-    "autoFixesApplied": 0,
-    "openEscalations": [],
+    "reportPath": "business/dgskills-reviews/encryption-expert-2026-08-25.md",
+    "autoFixesApplied": 3,
+    "openEscalations": [
+      {
+        "category": "structural",
+        "description": "Score-drempel-mismatch (missionGoals.ts=70 vs engine-pass=40%) en multiple-choice gok-bestendigheid zijn architecturale bugs in de gedeelde PuzzleLab.tsx-engine, niet fixbaar binnen de whitelist van deze missie-config.",
+        "file": "src/features/missions/templates/puzzle-lab/PuzzleLab.tsx"
+      },
+      {
+        "category": "security",
+        "description": "Wachtwoord-invoeropdracht zonder 'gebruik nooit je echte wachtwoord'-waarschuwing, in een zichtbaar tekstveld, met platte-tekst-persistentie van de ingevoerde waarde in localStorage (gekoppeld aan het user-id, pas gewist na doorklikken van het eindscherm). Vraagt drie beslissingen van Yorin: waarschuwingstekst in de opdracht, maskeren van het veld voor deze puzzel, en het antwoord van deze puzzel niet (of alleen als 'voldaan'-vlag) opslaan.",
+        "file": "src/features/missions/templates/puzzle-lab/configs/encryption-expert.ts"
+      },
+      {
+        "category": "structural",
+        "description": "speeltest wave 22: antwoord al zichtbaar op het scherm — Gokstrategie: verkeerde antwoorden (top-naar-onder MC, 'aaaa') werden telkens geblokkeerd met pogingenteller ('1/6 pogingen', 'ACCESS DENIED'); geen enkele vraag viel te gokken. VERKLAP (nieuwe bevind"
+      }
+    ],
     "codexVerdict": null,
-    "escalationCount": 0,
+    "escalationCount": 3,
     "reviewScores": {
-      "uiux": 9,
-      "didactiek": 9,
-      "tech": 8
+      "uiux": 6,
+      "didactiek": 7,
+      "tech": 5
     },
-    "triageScore": 1.3,
-    "statusNote": "wave 8: alle puzzel-antwoorden zelf gedecodeerd en correct; puntensom 100=maxScore; agent-scoreschaal (issue-counts) gecorrigeerd",
-    "verdict": "ok"
+    "triageScore": 6.5,
+    "statusNote": "sweep wave 22 2026-08-25: verse review (alle missies); veiligheids-pass Opus high; 3 auto-fixes",
+    "verdict": "fix-eerst",
+    "proposedFixes": 3,
+    "topIssues": [
+      "[didactiek] Puzzel 'caesar-crack' geeft het antwoord (VEILIG) al letterlijk weg in de derde basis-clue, waardoor de leerling niet zelf hoeft te decoderen.",
+      "[tech] missionGoals.ts hanteert een score-drempel van 70 terwijl de gedeelde engine intern op 40% pass/completion beslist zonder onRetry — inconsistent slaag-signaal voor deze missie.",
+      "[tech] Multiple-choice puzzel 'public-key' (4 opties, maxAttempts 3) is het concrete voorbeeld van de engine-brede gok-bestendigheidsbug: blind klikken haalt ~75% van de tijd de volle 25 punten."
+    ],
+    "safetyScores": {
+      "aiGedrag": 7,
+      "privacy": 3
+    }
   },
   {
     "missionId": "factchecker",
@@ -1912,26 +2095,47 @@
       "interactivity": 1,
       "total": 5
     },
-    "lastReviewed": "2026-07-01",
-    "reviewStatus": "fixed",
-    "reportPath": "business/dgskills-reviews/ml-trainer-2026-07-01.md",
-    "autoFixesApplied": 2,
-    "openEscalations": [],
-    "codexVerdict": "ALLOW",
-    "escalationCount": 0,
+    "lastReviewed": "2026-08-25",
+    "reviewStatus": "reviewed",
+    "reportPath": "business/dgskills-reviews/ml-trainer-2026-08-25.md",
+    "autoFixesApplied": 0,
+    "openEscalations": [
+      {
+        "category": "structural",
+        "description": "Engine-brede blockers (vastlopen bij <40%, premature clearSave vóór bevestigde opslag) zitten in de gedeelde DataViewer-engine, niet in de ml-trainer-config — buiten de auto-fix-whitelist van deze missie, horen bij de engine-fix.",
+        "file": "src/features/missions/templates/data-viewer/DataViewer.tsx"
+      },
+      {
+        "category": "ai-act",
+        "description": "Voorbeeld waarin een model het telefoongebruik van een leerling voorspelt wordt zonder privacy-/profileringskader aangeboden aan 15-16-jarigen. Kleine copy-toevoeging ('wat betekent het als een school dit zou meten?') zou het een leermoment maken in plaats van normalisering; beslissing ligt bij Yorin.",
+        "file": "src/features/missions/templates/data-viewer/configs/ml-trainer.ts"
+      }
+    ],
+    "codexVerdict": null,
+    "escalationCount": 2,
     "reviewScores": {
-      "uiux": 8,
+      "uiux": 7,
       "didactiek": 8,
-      "tech": 3
+      "tech": 6
     },
-    "triageScore": 3.5,
-    "statusNote": "wave 9: q1-antwoordmodel gecorrigeerd (dataset telt 5/12 spam = 42%, was 50; uitleg verzon 6e rij) + q8 participatiepunten 0->10 (som=100=maxScore; engine geeft text-observation altijd volle punten). Orphan MLTrainerMission.tsx apart geflagd door reviewer",
-    "verdict": "fix-eerst"
+    "triageScore": 4.9,
+    "statusNote": "sweep wave 22 2026-08-25: verse review (alle missies); veiligheids-pass Opus high",
+    "verdict": "ok",
+    "proposedFixes": 0,
+    "topIssues": [
+      "[tech] Engine-erfenis: leerling die onder 40% scoort op ml-trainer komt vast te zitten op het resultatenscherm (geen onRetry, geen terugweg) — reëel scenario gezien de puntenverdeling (zwaarste vragen 15pt elk).",
+      "[tech] Engine-erfenis: clearSave() wordt aangeroepen vóór bevestigde serveropslag — ml-trainer-leerling kan zijn antwoorden verliezen bij een mislukte save.",
+      "[didactiek] SLO-code 22B (Programmeren) wordt geclaimd maar niet substantieel geoefend — de missie bevat geen programmeeractiviteit, alleen data-analyse en begripsvragen."
+    ],
+    "safetyScores": {
+      "aiGedrag": 8,
+      "privacy": 8
+    }
   },
   {
     "missionId": "network-navigator",
     "templateType": "data-viewer",
-    "priorityBand": "high",
+    "priorityBand": "low",
     "triageScores": {
       "uiux": 2,
       "slo": 1,
@@ -1939,33 +2143,44 @@
       "interactivity": 0,
       "total": 7
     },
-    "lastReviewed": "2026-08-07",
+    "lastReviewed": "2026-08-25",
     "reviewStatus": "fixed",
-    "reportPath": "business/dgskills-reviews/network-navigator-2026-08-07.md",
+    "reportPath": "business/dgskills-reviews/network-navigator-2026-08-25.md",
     "autoFixesApplied": 1,
-    "openEscalations": [],
+    "openEscalations": [
+      {
+        "category": "structural",
+        "description": "Data-viewer engine mist onRetry-route en clearSave-volgorde is onveilig; raakt network-navigator net als alle andere data-viewer-missies. Al gerapporteerd als gedeelde engine-bevinding, geen missie-lokale fix mogelijk.",
+        "file": "src/features/missions/templates/data-viewer/DataViewer.tsx"
+      }
+    ],
     "codexVerdict": null,
     "reviewScores": {
-      "uiux": 3,
-      "didactiek": 3,
-      "tech": 3
+      "uiux": 8,
+      "didactiek": 9,
+      "tech": 7
     },
     "goalClear": true,
     "goalAchieved": true,
-    "proposedFixes": 6,
+    "proposedFixes": 1,
     "escalationCount": 1,
     "topIssues": [
-      "goalCriteria type-mismatch: config='rounds-complete' vs agent='steps-complete'",
-      "Hardcoded hex in badges/chartData",
-      "A11y: aria-sort + aria-label ontbreken"
+      "[tech] Deelt het generieke data-viewer-engine-defect: leerling onder 40% loopt vast op resultatenscherm (geen onRetry) en opslag wordt gewist vóór serverbevestiging — geldt voor deze missie maar is niet missie-lokaal oplosbaar.",
+      "[tech] correctAnswer 5.6 voor number-input (45/8=5,625) is gevoelig voor engine-tolerantie bij afronding — engine-brede kwestie, geen missie-lokale fix.",
+      "[design] Alle vier badges gebruiken dezelfde kleur (#202023) — geen visuele differentiatie tussen scoreniveaus."
     ],
-    "statusNote": "wave 4: fix ge-ALLOWed; blocked op goalCriteria-keuze (Yorin)",
-    "triageScore": 7
+    "statusNote": "sweep wave 22 2026-08-25: verse review (alle missies); veiligheids-pass Opus high; 1 auto-fixes",
+    "triageScore": 2.5,
+    "verdict": "ok",
+    "safetyScores": {
+      "aiGedrag": 8,
+      "privacy": 9
+    }
   },
   {
     "missionId": "neural-navigator",
     "templateType": "data-viewer",
-    "priorityBand": "low",
+    "priorityBand": "medium",
     "triageScores": {
       "uiux": 1,
       "slo": 0,
@@ -1973,21 +2188,41 @@
       "interactivity": 0,
       "total": 4
     },
-    "lastReviewed": "2026-07-02",
-    "reviewStatus": "fixed",
-    "reportPath": "business/dgskills-reviews/neural-navigator-2026-07-02.md",
-    "autoFixesApplied": 4,
-    "openEscalations": [],
-    "codexVerdict": "ALLOW",
-    "escalationCount": 0,
+    "lastReviewed": "2026-08-25",
+    "reviewStatus": "reviewed",
+    "reportPath": "business/dgskills-reviews/neural-navigator-2026-08-25.md",
+    "autoFixesApplied": 0,
+    "openEscalations": [
+      {
+        "category": "structural",
+        "description": "Blocking engine-defecten (geen onRetry op resultatenscherm onder 40%; clearSave() vóór bevestigde serveropslag) gelden voor alle data-viewer-missies, incl. Neural Navigator — al vastgesteld op sweep-niveau, geen missie-specifieke fix mogelijk.",
+        "file": "src/features/missions/templates/data-viewer/DataViewer.tsx"
+      },
+      {
+        "category": "structural",
+        "description": "speeltest wave 22: antwoord al zichtbaar op het scherm — Data-viewer template, dataset 1/3 (forward pass, vier neurons). Gokstrategie: numeriek '1' i.p.v. 0.48, eerste MC-optie (Neuron A i.p.v. C), en gibberish-tekst werden alle drie afgewezen met 0 punten "
+      }
+    ],
+    "codexVerdict": null,
+    "escalationCount": 2,
     "reviewScores": {
-      "uiux": 8,
-      "didactiek": 7,
-      "tech": 8
+      "uiux": 7,
+      "didactiek": 6.5,
+      "tech": 7
     },
-    "triageScore": 2.4,
-    "statusNote": "wave 13: tabelwaarden Neuron A 0.69->0.68 en Neuron C 0.81->1.01 (formule zelf nagerekend; C was bias-vergeten) + q8 participatiepunten 0->10 (som=100; 4e geval); gate-BLOCK gevangen: q2 rekende na de C-correctie nog Neuron D goed -> q2 naar Neuron C (1.01), re-gate ALLOW",
-    "verdict": "fix-eerst"
+    "triageScore": 4.35,
+    "statusNote": "sweep wave 22 2026-08-25: verse review (alle missies); veiligheids-pass Opus high",
+    "verdict": "fix-eerst",
+    "proposedFixes": 0,
+    "topIssues": [
+      "[didactiek] missionGoals-drempel (65) wijkt af van de engine-pass-logica (40%): leerling ziet 'Gehaald' bij 45/100 maar docentrapportage telt primaire leerdoel pas vanaf 65 als voldaan.",
+      "[design] Gedeelde InteractiveTable placeholder/tekst-contrastprobleem (text-duck-ink/75) is meteen zichtbaar in dataset 1 (neuron-berekeningen), de eerste interactie van de missie.",
+      "[didactiek] q3 en q6 gebruiken minKeywords:1, erg soepel voor een kernbegrip als backpropagation."
+    ],
+    "safetyScores": {
+      "aiGedrag": 9,
+      "privacy": 9
+    }
   },
   {
     "missionId": "notificatie-ninja",
@@ -2508,7 +2743,7 @@
   {
     "missionId": "research-project",
     "templateType": "data-viewer",
-    "priorityBand": "high",
+    "priorityBand": "medium",
     "triageScores": {
       "uiux": 2,
       "slo": 0,
@@ -2516,30 +2751,44 @@
       "interactivity": 1,
       "total": 7
     },
-    "lastReviewed": "2026-07-01",
-    "reviewStatus": "blocked",
-    "reportPath": "business/dgskills-reviews/research-project-2026-07-01.md",
-    "autoFixesApplied": 4,
+    "lastReviewed": "2026-08-25",
+    "reviewStatus": "reviewed",
+    "reportPath": "business/dgskills-reviews/research-project-2026-08-25.md",
+    "autoFixesApplied": 0,
     "openEscalations": [
-      "product-beslissing: enableChat overwegen voor data-viewer zodat de Onderzoekscoach ook binnen dataset 3 bereikbaar is",
-      "ai-endpoint: systemInstruction client-side in year3.tsx bundle — verificatie nodig of dit richting AI-provider gaat of alleen UI-referentie is"
+      {
+        "category": "structural",
+        "description": "Blocking- en warning-issues zitten in de gedeelde data-viewer-engine (DataViewer.tsx), niet in deze missieconfig; centrale fix nodig voor alle data-viewer-missies.",
+        "file": "src/features/missions/templates/data-viewer/DataViewer.tsx"
+      },
+      {
+        "category": "privacy",
+        "description": "Agent-rol research-project instrueert 15-16-jarigen tot het afnemen van enquetes/interviews over gezondheid- en welzijnsonderwerpen bij klasgenoten, zonder kader voor toestemming, anonimiteit of dataminimalisatie. Dit is een AVG-art.9-risico dat moet zijn opgelost voordat enableChat voor deze missie ooit aan gaat; laat een jurist/FG hierop tekenen.",
+        "file": "src/config/agents/year3.tsx"
+      }
     ],
-    "codexVerdict": "ALLOW",
+    "codexVerdict": null,
     "reviewScores": {
-      "uiux": 2,
-      "didactiek": 2,
-      "tech": 2
+      "uiux": 8,
+      "didactiek": 9,
+      "tech": 6
     },
     "goalClear": true,
     "goalAchieved": true,
-    "proposedFixes": 7,
+    "proposedFixes": 0,
     "escalationCount": 2,
     "topIssues": [
-      "missionGoal ontbreekt in config en missionGoals.ts",
-      "Hardcoded hex + accent buiten token-systeem",
-      "q8 (zwaarste open vraag) heeft points:0 — inconsistent"
+      "[tech] Geen onRetry naar CompletionScreen — leerling onder 40% loopt vast zonder terugweg (gedeelde engine).",
+      "[tech] clearSave() vóór onComplete — dataverlies bij mislukte serveropslag (gedeelde engine).",
+      "[didactiek] 40%-slaagdrempel (score/maxScore) en afgerond percentage in CompletionScreen kunnen bij randgevallen uiteenlopen — geërfd van engine."
     ],
-    "statusNote": "wave 6 fix-pass 2026-07-01: 3 fixes toegepast; rest wacht op Yorin"
+    "statusNote": "sweep wave 22 2026-08-25: verse review (alle missies); veiligheids-pass Opus high",
+    "triageScore": 3.9,
+    "verdict": "fix-eerst",
+    "safetyScores": {
+      "aiGedrag": 9,
+      "privacy": 7
+    }
   },
   {
     "missionId": "review-week-2",
@@ -2662,7 +2911,7 @@
   {
     "missionId": "security-auditor",
     "templateType": "puzzle-lab",
-    "priorityBand": "low",
+    "priorityBand": "medium",
     "triageScores": {
       "uiux": 1,
       "slo": 0,
@@ -2670,21 +2919,42 @@
       "interactivity": 0,
       "total": 4
     },
-    "lastReviewed": "2026-07-02",
+    "lastReviewed": "2026-08-25",
     "reviewStatus": "fixed",
-    "reportPath": "business/dgskills-reviews/security-auditor-2026-07-02.md",
-    "autoFixesApplied": 0,
-    "openEscalations": [],
+    "reportPath": "business/dgskills-reviews/security-auditor-2026-08-25.md",
+    "autoFixesApplied": 1,
+    "openEscalations": [
+      {
+        "category": "security",
+        "description": "security-auditor toont 15-16-jarigen een kant-en-klare XSS-cookie-exfiltratiepayload en een werkende SQL-injectiepayload zonder expliciete melding dat ongeautoriseerd testen strafbaar is (computervredebreuk). Beslis of de payload wordt afgezwakt/gedeeltelijk geredigeerd en voeg in elk geval een juridische grens toe bij de puzzel zelf, niet alleen in intro en takeaways. Vervang evil.com door een gereserveerd voorbeelddomein.",
+        "file": "src/features/missions/templates/puzzle-lab/configs/security-auditor.ts"
+      },
+      {
+        "category": "structural",
+        "description": "PuzzleLab mist de welzijnsscan (useWellbeingMonitor.scanText + WellbeingAlert) die DataViewer wel op vrije tekstinvoer draait. Leerlingtekst in alle puzzle-lab-missies passeert daardoor geen welzijnssignalering.",
+        "file": "src/features/missions/templates/puzzle-lab/PuzzleLab.tsx"
+      }
+    ],
     "codexVerdict": null,
-    "escalationCount": 0,
+    "escalationCount": 2,
     "reviewScores": {
-      "uiux": 8.5,
-      "didactiek": 8,
-      "tech": 8.5
+      "uiux": 7,
+      "didactiek": 7.5,
+      "tech": 6
     },
-    "triageScore": 1.7,
-    "statusNote": "wave 13: alle 4 puzzels feitelijk nagerekend (SQL-injectie/ernst/XSS/validator); punten 100=100; alleen vaknuances",
-    "verdict": "ok"
+    "triageScore": 3.1,
+    "statusNote": "sweep wave 22 2026-08-25: verse review (alle missies); veiligheids-pass Opus high; 1 auto-fixes",
+    "verdict": "fix-eerst",
+    "proposedFixes": 1,
+    "topIssues": [
+      "[tech] Engine-brede MC-gokwinst (geen scoreverlies per foute poging, 4 opties/3 pogingen) raakt alle drie MC-puzzels in deze config direct.",
+      "[design] Vastloop-eindscherm bij <40% (geen onRetry) raakt deze missie's faalpad concreet — 1 van 4 puzzels missen kan al onder de badge-drempel duiken.",
+      "[didactiek] Validator van puzzel 'rapport-schrijven' test losse substrings met OR-logica; keyword-stuffing zonder inhoudelijk begrip haalt de puzzel."
+    ],
+    "safetyScores": {
+      "aiGedrag": 6,
+      "privacy": 8
+    }
   },
   {
     "missionId": "security-review",
@@ -2778,7 +3048,7 @@
   {
     "missionId": "spreadsheet-specialist",
     "templateType": "data-viewer",
-    "priorityBand": "low",
+    "priorityBand": "medium",
     "triageScores": {
       "uiux": 2,
       "slo": 1,
@@ -2786,21 +3056,31 @@
       "interactivity": 0,
       "total": 4
     },
-    "lastReviewed": "2026-07-02",
-    "reviewStatus": "fixed",
-    "reportPath": "business/dgskills-reviews/spreadsheet-specialist-2026-07-02.md",
-    "autoFixesApplied": 1,
+    "lastReviewed": "2026-08-25",
+    "reviewStatus": "reviewed",
+    "reportPath": "business/dgskills-reviews/spreadsheet-specialist-2026-08-25.md",
+    "autoFixesApplied": 0,
     "openEscalations": [],
-    "codexVerdict": "ALLOW",
+    "codexVerdict": null,
     "escalationCount": 0,
     "reviewScores": {
-      "uiux": 8,
-      "didactiek": 9,
-      "tech": 5
+      "uiux": 6,
+      "didactiek": 8,
+      "tech": 6
     },
-    "triageScore": 2.5,
-    "statusNote": "wave 14: no-op zelfde-kleur-gradient -> effen kleur (cyber-detective-precedent; agent-voorstel dat het uiterlijk zou VERANDEREN afgewezen); ontbrekend briefing-asset = platform-breed gat, geen missie-blokkade; gate ALLOW (gecombineerde call met data-handelaar, per-missie verdict)",
-    "verdict": "fix-eerst"
+    "triageScore": 3.2,
+    "statusNote": "sweep wave 22 2026-08-25: verse review (alle missies); veiligheids-pass Opus high",
+    "verdict": "fix-eerst",
+    "proposedFixes": 0,
+    "topIssues": [
+      "[design] Geërfd van engine: geen onRetry naar CompletionScreen — leerling onder 40% zit vast op dood scherm zonder terugweg.",
+      "[tech] Geërfd: clearSave() vóór onComplete — voortgangverlies bij mislukte serveropslag.",
+      "[design] Geërfd: drempel-inconsistentie ratio vs afgerond percentage; raakt deze missie niet concreet (maxScore=100)."
+    ],
+    "safetyScores": {
+      "aiGedrag": 9,
+      "privacy": 9
+    }
   },
   {
     "missionId": "startup-pitch",
@@ -2887,15 +3167,23 @@
       "interactivity": 0,
       "total": 3
     },
-    "lastReviewed": "2026-07-02",
-    "reviewStatus": "blocked",
-    "reportPath": "business/dgskills-reviews/sustainability-scanner-2026-07-02.md",
+    "lastReviewed": "2026-08-25",
+    "reviewStatus": "fixed",
+    "reportPath": "business/dgskills-reviews/sustainability-scanner-2026-08-25.md",
     "autoFixesApplied": 2,
     "openEscalations": [
-      "ai-endpoint (HOOG, gate-vondst): de ECHTE coach-prompt staat server-side in supabase/functions/_shared/systemInstructions.ts:74 en beschrijft nog de oude duurzaamheids-/milieu-coach (SLO 23C/23B) — client-tekst is slechts fallback; server-bestand valt buiten auto-fix-scope (edge function), Yorin/dgskills-supabase-edge moet de server-entry gelijktrekken of de rol uitschakelen",
-      "identiteit: naam/icoon ('sustainability', blad-icoon) suggereren duurzaamheid maar de content gaat volledig over digitale-mediaconsumptie-trends, zonder ethiekcomponent in een 'Ethiek & Maatschappij'-periode — hernoem-/plaatsingskeuze (icoon-swap-voorstel in rapport; id-hernoemen raakt 8+ bestanden)"
+      {
+        "category": "privacy",
+        "description": "Missie vraagt minderjarigen om een concreet voorbeeld uit hun eigen mediagebruik in een vrij tekstveld, zonder waarschuwing om geen persoonlijke/gevoelige details te delen. Advies: dezelfde begrenzende zin toevoegen die welzijnsonderzoeker al hanteert.",
+        "file": "src/features/missions/templates/data-viewer/configs/sustainability-scanner.ts"
+      },
+      {
+        "category": "anders",
+        "description": "Cijfers worden toegeschreven aan echte, met naam genoemde onderzoeksbureaus (DataReportal, Statista) zonder synthetic-markering of controleerbare bron, en worden in de takeaways als feit herhaald. Beslissing nodig: echte bron aanleveren óf de dataset markeren als synthetisch zoals bij de andere missies in deze wave.",
+        "file": "src/features/missions/templates/data-viewer/configs/sustainability-scanner.ts"
+      }
     ],
-    "codexVerdict": "BLOCK",
+    "codexVerdict": null,
     "escalationCount": 2,
     "reviewScores": {
       "uiux": 7,
@@ -2903,8 +3191,18 @@
       "tech": 8
     },
     "triageScore": 3.1,
-    "statusNote": "wave 16 (rapport hersteld na sessielimiet): coach-tekst SLO 21C/22A -> 23C conform mapping + q8 participatiepunten 0->10 (som=100, 6e geval); briefing-asset -> platform-lijst; gate-BLOCK: client-fix onvolledig omdat server-side prompt leidend is (edge function = escalatie per harde regel)",
-    "verdict": "fix-eerst"
+    "statusNote": "sweep wave 22 2026-08-25: verse review (alle missies); veiligheids-pass Opus high; 2 auto-fixes",
+    "verdict": "fix-eerst",
+    "proposedFixes": 2,
+    "topIssues": [
+      "[tech] Erft engine-brede blocker: geen onRetry naar CompletionScreen, dus leerling onder 40% score krijgt permanent uitgeschakelde knop en kan de missie niet afronden.",
+      "[tech] Erft engine-brede blocker: clearSave() wordt aangeroepen vóór bevestigde serveropslag in onComplete, waardoor voortgang verloren kan gaan bij een mislukte save.",
+      "[design] Taartgrafiek-kleuren zijn inconsistent: 3 van 5 segmenten delen exact dezelfde kleur (#202023) terwijl 2 segmenten afwijkende accentkleuren krijgen, zonder duidelijke logica."
+    ],
+    "safetyScores": {
+      "aiGedrag": 7,
+      "privacy": 7
+    }
   },
   {
     "missionId": "tech-court",
@@ -2942,7 +3240,7 @@
   {
     "missionId": "tech-impact-analyst",
     "templateType": "data-viewer",
-    "priorityBand": "low",
+    "priorityBand": "medium",
     "triageScores": {
       "uiux": 2,
       "slo": 0,
@@ -2950,26 +3248,35 @@
       "interactivity": 0,
       "total": 3
     },
-    "lastReviewed": "2026-07-02",
+    "lastReviewed": "2026-08-25",
     "reviewStatus": "fixed",
-    "reportPath": "business/dgskills-reviews/tech-impact-analyst-2026-07-02.md",
+    "reportPath": "business/dgskills-reviews/tech-impact-analyst-2026-08-25.md",
     "autoFixesApplied": 1,
     "openEscalations": [],
-    "codexVerdict": "ALLOW",
+    "codexVerdict": null,
     "escalationCount": 0,
     "reviewScores": {
-      "uiux": 9,
-      "didactiek": 8.5,
-      "tech": 6
+      "uiux": 7,
+      "didactiek": 6.5,
+      "tech": 7
     },
-    "triageScore": 2.1,
-    "statusNote": "wave 16 (rapport hersteld na sessielimiet): q8 0->15 (som=100; rapport prefereerde dit — q8 is de enige 21D/AI-vraag, 0 punten ondergewaardeerde het AI-kerndoel); VSO-dekking -> platform-afweging; scores = orchestrator-mapping uit criteria (7/7, 9/9, 6/7+blocking)",
-    "verdict": "fix-eerst"
+    "triageScore": 3.65,
+    "statusNote": "sweep wave 22 2026-08-25: verse review (alle missies); veiligheids-pass Opus high; 1 auto-fixes",
+    "verdict": "fix-eerst",
+    "proposedFixes": 1,
+    "topIssues": [
+      "[design] Badge-kleuren: 3 van 4 drempels (85/65/0) gebruiken dezelfde kleur #202023 — geen visuele differentiatie tussen hoogste en laagste badge.",
+      "[didactiek] SLO-claim 21D (AI) is oppervlakkig: slechts 1 van 8 vragen (q8) raakt AI; rest van de missie gaat over drones/maatschappij (23C). Claim vs content-mismatch."
+    ],
+    "safetyScores": {
+      "aiGedrag": 9,
+      "privacy": 9
+    }
   },
   {
     "missionId": "ux-detective",
     "templateType": "data-viewer",
-    "priorityBand": "high",
+    "priorityBand": "low",
     "triageScores": {
       "uiux": 2,
       "slo": 1,
@@ -2977,29 +3284,37 @@
       "interactivity": 0,
       "total": 9
     },
-    "lastReviewed": "2026-08-08",
-    "reviewStatus": "reviewed",
-    "reportPath": "business/dgskills-reviews/ux-detective-2026-08-08.md",
+    "lastReviewed": "2026-08-25",
+    "reviewStatus": "fixed",
+    "reportPath": "business/dgskills-reviews/ux-detective-2026-08-25.md",
     "autoFixesApplied": 1,
     "openEscalations": [
-      "feedbacktekst onderscheidt geldigheid en nulscore niet altijd helder",
-      "betekenischeck verdient bredere dekking voor beknopte Nederlandse taalvarianten"
+      {
+        "category": "anders",
+        "description": "Verzonnen usability-benchmarks worden als onderzoeksresultaat gepresenteerd over echte, met naam genoemde producten (Magister, Itslearning, Zermelo, Google Classroom, Microsoft Teams), inclusief het oordeel 'niet goed' / 'onder-gemiddelde usability'. Reputatie- en juridisch risico plus didactische tegenstrijdigheid in een missie over databetrouwbaarheid. Beslissing nodig: fictieve appnamen gebruiken óf de dataset expliciet als synthetisch markeren en de oordelende zin verwijderen.",
+        "file": "src/features/missions/templates/data-viewer/configs/ux-detective.ts"
+      }
     ],
-    "codexVerdict": "ALLOW",
+    "codexVerdict": null,
     "reviewScores": {
-      "uiux": 8,
-      "didactiek": 8,
+      "uiux": 7,
+      "didactiek": 7.5,
       "tech": 8
     },
-    "proposedFixes": 0,
-    "escalationCount": 2,
+    "proposedFixes": 1,
+    "escalationCount": 1,
     "topIssues": [
-      "feedbacktekst onderscheidt geldigheid en nulscore niet altijd helder",
-      "betekenischeck verdient bredere dekking voor beknopte Nederlandse taalvarianten"
+      "[design] q8-verbetervoorstel heeft points:0, terwijl vergelijkbare text-observation-vragen 10-15 punten geven.",
+      "[design] Som van alle points (90) klopt niet met maxScore (100); leerling kan nooit het maximum halen.",
+      "[tech] points-som (90) wijkt af van maxScore (100) in de missieconfig zelf."
     ],
-    "statusNote": "Formele J2P3-review: vier viewports en productie bewezen; nul open Blocker/High; Medium/Low geregistreerd.",
-    "triageScore": 2,
-    "verdict": "ok"
+    "statusNote": "sweep wave 22 2026-08-25: verse review (alle missies); veiligheids-pass Opus high; 1 auto-fixes",
+    "triageScore": 2.55,
+    "verdict": "fix-eerst",
+    "safetyScores": {
+      "aiGedrag": 7,
+      "privacy": 9
+    }
   },
   {
     "missionId": "veilig-internet",
@@ -3124,24 +3439,42 @@
       "interactivity": 0,
       "total": 6
     },
-    "lastReviewed": "2026-08-07",
+    "lastReviewed": "2026-08-25",
     "reviewStatus": "fixed",
-    "reportPath": "business/dgskills-reviews/wachtwoord-warrior-2026-08-07.md",
-    "autoFixesApplied": 0,
-    "openEscalations": [],
+    "reportPath": "business/dgskills-reviews/wachtwoord-warrior-2026-08-25.md",
+    "autoFixesApplied": 1,
+    "openEscalations": [
+      {
+        "category": "structural",
+        "description": "Gokbestendigheid en vastloop-op-lage-score zitten in de gedeelde puzzle-lab-engine (PuzzleLab.tsx), niet oplosbaar binnen de mission-config alleen",
+        "file": "src/features/missions/templates/puzzle-lab/PuzzleLab.tsx"
+      },
+      {
+        "category": "privacy",
+        "description": "Wachtwoord-vormige leerlinginvoer wordt in een zichtbaar tekstveld ingevoerd en in plaintext bewaard in localStorage tot de missie wordt afgerond. Beslissing nodig: invoer van deze puzzel niet persisteren (of direct na validatie overschrijven), en/of `type=\"password\"` gebruiken voor puzzels waar het antwoord een wachtwoord is.",
+        "file": "src/features/missions/templates/puzzle-lab/PuzzleLab.tsx"
+      }
+    ],
     "codexVerdict": null,
     "reviewScores": {
-      "uiux": 7,
-      "didactiek": 6,
+      "uiux": 6,
+      "didactiek": 7,
       "tech": 7
     },
-    "proposedFixes": 0,
-    "escalationCount": 0,
+    "proposedFixes": 1,
+    "escalationCount": 2,
     "topIssues": [
-      "schoon; antwoordmodellen + scoring (4x25=100) geverifieerd"
+      "[design] 3 MC-puzzels met 4 opties en maxAttempts 3 zijn gokbaar (gedeeld engine-issue, raakt deze missie direct)",
+      "[tech] CompletionScreen zonder onRetry laat leerling onder 40% vastlopen (gedeelde engine-bevinding, geraakt door deze missie)",
+      "[design] Hint-knop kost punten voor info die na onthulling al gratis zichtbaar is (engine-bevinding)"
     ],
-    "statusNote": "normalisatie 2026-07-01 (run wave 4+): review schoon, geen open punten",
-    "triageScore": 3.4
+    "statusNote": "sweep wave 22 2026-08-25: verse review (alle missies); veiligheids-pass Opus high; 1 auto-fixes",
+    "triageScore": 3.9,
+    "verdict": "fix-eerst",
+    "safetyScores": {
+      "aiGedrag": 9,
+      "privacy": 7
+    }
   },
   {
     "missionId": "web-developer",
@@ -3239,21 +3572,36 @@
       "interactivity": 0,
       "total": 3
     },
-    "lastReviewed": "2026-07-02",
+    "lastReviewed": "2026-08-25",
     "reviewStatus": "fixed",
-    "reportPath": "business/dgskills-reviews/welzijnsonderzoeker-2026-07-02.md",
-    "autoFixesApplied": 0,
-    "openEscalations": [],
+    "reportPath": "business/dgskills-reviews/welzijnsonderzoeker-2026-08-25.md",
+    "autoFixesApplied": 2,
+    "openEscalations": [
+      {
+        "category": "privacy",
+        "description": "Welzijnsgevoelig thema met vrije tekstvelden zonder actieve welzijnsscan of zichtbare hulplijn/doorverwijzing op de data-viewer-route; de referral-instructie staat alleen in de dormante agent-rol. Beslissing nodig: een korte, statische doorverwijzingsregel op het missiescherm tonen bij welzijnsthema's, of de welzijnscheck ook op tekst-observatievelden laten meelopen.",
+        "file": "src/features/missions/templates/data-viewer/configs/welzijnsonderzoeker.ts"
+      }
+    ],
     "codexVerdict": null,
     "reviewScores": {
-      "uiux": 8.5,
-      "didactiek": 9,
-      "tech": 9
+      "uiux": 8,
+      "didactiek": 7,
+      "tech": 8
     },
-    "triageScore": 1.15,
+    "triageScore": 2.4,
     "verdict": "ok",
-    "statusNote": "wave 17: schoon — antwoordmodellen nagerekend (kloppen), som=100, welzijnsthema niet-stigmatiserend; geen fixes nodig",
-    "escalationCount": 0
+    "statusNote": "sweep wave 22 2026-08-25: verse review (alle missies); veiligheids-pass Opus high; 2 auto-fixes",
+    "escalationCount": 1,
+    "proposedFixes": 2,
+    "topIssues": [
+      "[didactiek] Keywords bij woz-q3-limiet-tevredenheid bevatten 'tevreden'/'ontevreden', woorden die letterlijk in de vraagstelling staan — minKeywords:1 laat een leerling zonder tabelanalyse al slagen.",
+      "[didactiek] Keywords bij woz-q7-correlatie-causaliteit bevatten het te algemene woord 'andere', waardoor vrijwel elk antwoord met 'andere reden/oorzaak' al telt zonder dat de contextkolom (toetsdruk/vakantie) wordt gebruikt."
+    ],
+    "safetyScores": {
+      "aiGedrag": 9,
+      "privacy": 8.5
+    }
   },
   {
     "missionId": "word-wizard",

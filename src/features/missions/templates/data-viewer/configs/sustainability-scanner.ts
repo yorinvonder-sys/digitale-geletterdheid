@@ -62,7 +62,7 @@ export const sustainabilityScannerConfig: DataViewerConfig = {
                         'Berichten sturen heeft 2.100 miljoen gebruikers wereldwijd, terwijl video streamen er 900 miljoen heeft — meer dan twee keer zoveel. Wat zegt dit verschil volgens jou over hoe mensen digitale technologie het meest gebruiken?',
                     type: 'text-observation',
                     keywords: ['communicatie', 'verbinding', 'contact', 'praten', 'iedereen'],
-                    minKeywords: 1,
+                    minKeywords: 2,
                     correctAnswer: '',
                     explanation:
                         'Communicatie (berichten sturen) is de meest universele digitale activiteit — meer mensen sturen berichten dan dat ze video kijken of sociale media gebruiken. Dit laat zien dat de basis van digitale technologie voor veel mensen niet entertainment is, maar verbinding met anderen. Streamen en gaming zijn populair, maar directe communicatie is nog dominanter.',
@@ -81,8 +81,8 @@ export const sustainabilityScannerConfig: DataViewerConfig = {
             chartData: [
                 { label: 'Smartphone', value: 54, color: '#202023' },
                 { label: 'Laptop', value: 22, color: '#e1ff01' },
-                { label: 'Smart-tv', value: 13, color: '#202023' },
-                { label: 'Tablet', value: 7, color: '#202023' },
+                { label: 'Smart-tv', value: 13, color: '#4c8bf5' },
+                { label: 'Tablet', value: 7, color: '#8a8a8a' },
                 { label: 'Console', value: 4, color: '#ff3c21' },
             ],
             questions: [
@@ -113,7 +113,7 @@ export const sustainabilityScannerConfig: DataViewerConfig = {
                         'De smartphone heeft ruim de helft van het marktaandeel. Waarom denk jij dat de smartphone zo dominant is voor mediaconsumptie vergeleken met andere apparaten?',
                     type: 'text-observation',
                     keywords: ['beschikbaar', 'persoonlijk', 'onderweg', 'altijd', 'overal'],
-                    minKeywords: 1,
+                    minKeywords: 2,
                     correctAnswer: '',
                     explanation:
                         'De smartphone is vrijwel altijd beschikbaar (mee onderweg, op bed, in de pauze), heeft een persoonlijk scherm, combineert alle functies in één apparaat en is eenvoudig te bedienen. Andere apparaten hebben één of meer van deze voordelen niet: een smart-tv staat vast, een laptop is groter en minder snel in de hand, een console is voor gaming-specifiek gebruik.',
@@ -178,7 +178,7 @@ export const sustainabilityScannerConfig: DataViewerConfig = {
                         'Kies één van de vier informatiekaarten en leg uit wat jij er nieuw van leerde of wat jou het meest verraste. Geef ook een concreet voorbeeld uit je eigen mediagebruik.',
                     type: 'text-observation',
                     keywords: ['pegi', 'schermtijd', 'algoritme', 'hd'],
-                    minKeywords: 1,
+                    minKeywords: 2,
                     correctAnswer: '',
                     explanation:
                         'Goede antwoorden benoemen een specifiek feit uit de kaart (bijv. het datagebruik bij 4K, de werking van PEGI-labels, de 20-40% onderschatting van schermtijd, of de rol van collaborative filtering) en koppelen dat aan een eigen ervaring. Het gaat om het verbinden van informatie aan de eigen leefwereld.',

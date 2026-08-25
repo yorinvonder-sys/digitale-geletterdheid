@@ -107,7 +107,7 @@ export const welzijnsonderzoekerConfig: DataViewerConfig = {
                     question:
                         'Beschrijf het verschil in tevredenheid met de digitale balans tussen leerlingen mét en zónder schermtijdlimiet. Wat valt je op?',
                     type: 'text-observation',
-                    keywords: ['p04', 'garandeert', 'uitzondering', 'tevreden', 'ontevreden'],
+                    keywords: ['p04', 'garandeert', 'uitzondering'],
                     minKeywords: 1,
                     correctAnswer: '',
                     explanation:
@@ -217,7 +217,7 @@ export const welzijnsonderzoekerConfig: DataViewerConfig = {
                     question:
                         'Leg in eigen woorden uit waarom het gevaarlijk is om te zeggen: "meer schermtijd = slechter welzijn." Gebruik de contextkolom in je uitleg.',
                     type: 'text-observation',
-                    keywords: ['toetsdruk', 'toetsen', 'vakantie', 'andere factoren', 'andere'],
+                    keywords: ['toetsdruk', 'toetsen', 'vakantie', 'andere factoren'],
                     minKeywords: 1,
                     correctAnswer: '',
                     explanation:
