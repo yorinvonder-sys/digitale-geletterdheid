@@ -811,6 +811,13 @@ export const PromptMasterMission: React.FC<Props> = ({ onBack, onComplete, vsoPr
             },
         };
 
+    // Slaagpoort van de missie: pas bij `passingPercentage` (60%, of de aangepaste
+    // dagbestedingsdrempel) telt de run als gehaald. Staat hier zodat zowel de
+    // afrondknop als het resultaatscherm dezelfde uitkomst gebruiken.
+    const maxScore = calculatePromptMasterMaxScore(CHALLENGES);
+    const finalPercentage = maxScore > 0 ? Math.round((progress.totalScore / maxScore) * 100) : 0;
+    const missionPassed = finalPercentage >= passingPercentage;
+
     const allLevelsDone = progress.currentLevel === 'expert' && progress.challengeIndex >= levelChallenges.length - 1 && progress.completedChallenges.includes(currentChallenge?.id);
     const currentResponsePassed = Boolean(aiResponse && currentChallenge && isChallengePassed(aiResponse.score, currentChallenge, vsoProfile));
 
@@ -953,7 +960,9 @@ export const PromptMasterMission: React.FC<Props> = ({ onBack, onComplete, vsoPr
     };
 
     const handleComplete = async () => {
-        if (isCompleting) return;
+        // Succes wordt alleen gemeld als de drempel écht gehaald is; de opslag gaat
+        // pas weg als de host de voltooiing ook heeft vastgelegd.
+        if (isCompleting || !missionPassed) return;
         setIsCompleting(true);
         try {
             const completed = await onComplete(true);
@@ -961,6 +970,32 @@ export const PromptMasterMission: React.FC<Props> = ({ onBack, onComplete, vsoPr
         } finally {
             setIsCompleting(false);
         }
+    };
+
+    // Drempel niet gehaald: afsluiten mag, maar zonder succes én zonder de
+    // voortgang te wissen — die blijft staan voor een volgende keer.
+    const handleFinishWithoutPass = async () => {
+        if (isCompleting) return;
+        setIsCompleting(true);
+        try {
+            await onComplete(false);
+        } finally {
+            setIsCompleting(false);
+        }
+    };
+
+    // Bewuste herstart door de leerling: alleen hier mag de opslag weg zonder
+    // gehaalde voltooiing.
+    const handleRetryMission = () => {
+        idealImageRequestRef.current += 1;
+        clearSave();
+        setProgress({ currentLevel: 'beginner', challengeIndex: 0, totalScore: 0, completedChallenges: [] });
+        setUserPrompt('');
+        setAiResponse(null);
+        setShowFeedback(false);
+        setAttempts(0);
+        setPhase('challenge');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     };
 
     const handleNext = () => {
@@ -1409,9 +1444,7 @@ export const PromptMasterMission: React.FC<Props> = ({ onBack, onComplete, vsoPr
 
     // RESULT SCREEN
     if (phase === 'result') {
-        const maxScore = calculatePromptMasterMaxScore(CHALLENGES);
-        const percentage = Math.round((progress.totalScore / maxScore) * 100);
-        const passed = percentage >= passingPercentage;
+        const passed = missionPassed;
 
         return (
             <div data-qa="prompt-master-result" className="h-dvh overflow-y-auto bg-duck-bg text-duck-ink p-4 md:p-6 flex items-center justify-center" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
@@ -1436,6 +1469,9 @@ export const PromptMasterMission: React.FC<Props> = ({ onBack, onComplete, vsoPr
                         <div className="text-4xl md:text-5xl font-black mb-2 text-duck-ink">
                             {progress.totalScore} pts
                         </div>
+                        <p data-qa="prompt-master-score-percent" className="text-duck-ink/60 font-bold mb-1">
+                            {finalPercentage}% van de punten · minstens {passingPercentage}% nodig
+                        </p>
                         <p className="text-duck-ink/60 font-bold mb-4">{progress.completedChallenges.length}/{CHALLENGES.length} uitdagingen voltooid</p>
 
                         <div className="mt-6 grid grid-cols-3 gap-3 text-sm">
@@ -1475,11 +1511,31 @@ export const PromptMasterMission: React.FC<Props> = ({ onBack, onComplete, vsoPr
                         </ul>
                     </div>
 
+                    {!passed && (
+                        <div
+                            data-qa="prompt-master-threshold-notice"
+                            className="mb-4 rounded-2xl border border-duck-acid/30 bg-duck-acid/10 p-4 text-left"
+                        >
+                            <h4 className="font-black text-duck-ink">Nog niet gehaald</h4>
+                            <p className="mt-1 text-sm text-duck-ink/70">
+                                Je staat op {finalPercentage}%. Je hebt minstens {passingPercentage}% nodig om deze
+                                missie te halen. Je voortgang blijft bewaard tot je opnieuw begint.
+                            </p>
+                            <button
+                                data-qa="prompt-master-retry"
+                                onClick={handleRetryMission}
+                                className="mt-3 w-full min-h-[44px] rounded-full bg-duck-acid py-2.5 text-sm font-black text-duck-ink transition-all duration-300 active:scale-[0.98]"
+                            >
+                                <span className="flex items-center justify-center gap-2">
+                                    <RotateCcw size={16} /> Opnieuw proberen
+                                </span>
+                            </button>
+                        </div>
+                    )}
+
                     <button
-                        onClick={passed ? handleComplete : async () => {
-                            clearSave();
-                            await onComplete(false);
-                        }}
+                        data-qa="prompt-master-finish"
+                        onClick={passed ? handleComplete : handleFinishWithoutPass}
                         disabled={isCompleting}
                         className="w-full py-3 md:py-4 rounded-full font-black transition-all duration-300 text-duck-ink shadow-lg hover:shadow-xl disabled:cursor-wait disabled:opacity-70"
                         style={{ backgroundColor: '#e1ff01' }}

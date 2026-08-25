@@ -32,7 +32,7 @@ const fallbackSeed = Math.random().toString(36).slice(2);
  * (en over een herlaad heen). Zonder dit kreeg iedereen dezelfde husselvolgorde
  * en kon één leerling zijn oplossing één-op-één doorgeven aan de klas.
  */
-const getLearnerSeed = (): string => {
+export const getLearnerSeed = (): string => {
     try {
         const existing = localStorage.getItem(LEARNER_SEED_KEY);
         if (existing) return existing;
@@ -130,6 +130,8 @@ export const OrderPriorityRound: React.FC<{
                             if (!item) return null;
                             const isCorrect = submitted && item.correctPosition === i;
                             const isClose = submitted && !isCorrect && Math.abs((item.correctPosition ?? 0) - i) === 1;
+                            // Op duck-error haalt wit maar 3,6:1; duck-ink haalt 4,6:1 en
+                            // blijft daarmee boven de WCAG AA-eis voor deze 10-12px tekst.
                             return (
                                 <div
                                     key={id}
@@ -137,7 +139,7 @@ export const OrderPriorityRound: React.FC<{
                                         submitted
                                             ? isCorrect ? 'bg-duck-ink/10 text-duck-ink'
                                             : isClose ? 'bg-duck-acid text-duck-ink'
-                                            : 'bg-duck-error text-white'
+                                            : 'bg-duck-error text-duck-ink'
                                             : 'bg-white text-duck-ink/70'
                                     }`}
                                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
@@ -147,7 +149,7 @@ export const OrderPriorityRound: React.FC<{
                                             submitted
                                                 ? isCorrect ? 'bg-duck-ink text-white'
                                                 : isClose ? 'bg-duck-acid text-duck-ink'
-                                                : 'bg-duck-error text-white'
+                                                : 'bg-duck-error text-duck-ink'
                                                 : 'bg-duck-acid/20 text-duck-ink'
                                         }`}
                                     >

@@ -19,7 +19,8 @@ export const InterruptionOverlay: React.FC<Props> = ({ onderbreking, onKies }) =
     const [gekozen, setGekozen] = useState<Keuze | null>(null);
     const kopRef = useRef<HTMLHeadingElement>(null);
     const venstersRef = useRef<HTMLDivElement>(null);
-    // Voorkomt dat een dubbelklik dezelfde keuze twee keer laat tellen.
+    const verderRef = useRef<HTMLButtonElement>(null);
+    // Voorkomt dat een dubbelklik dezelfde stap twee keer laat doorschuiven.
     const afgehandeldRef = useRef(false);
 
     useEffect(() => {
@@ -30,6 +31,11 @@ export const InterruptionOverlay: React.FC<Props> = ({ onderbreking, onKies }) =
             kopRef.current?.focus();
         }
     }, [onderbreking]);
+
+    // Na een keuze naar de Verder-knop, zodat toetsenbordgebruikers meteen door kunnen.
+    useEffect(() => {
+        if (gekozen) verderRef.current?.focus();
+    }, [gekozen]);
 
     // Houd de focus binnen het venster zolang het openstaat.
     useEffect(() => {
@@ -63,12 +69,21 @@ export const InterruptionOverlay: React.FC<Props> = ({ onderbreking, onKies }) =
     const presentatie = PRESENTATIE[onderbreking.soort];
     const { Icoon } = presentatie;
 
+    /**
+     * Kiezen schuift de stap nog niet door: eerst leest de leerling wat zijn
+     * keuze opleverde en waaraan het te herkennen was. Pas "Verder" meldt de
+     * keuze aan de dienst, want dat sluit dit venster meteen.
+     */
     const handleKies = (keuze: Keuze) => {
-        // Eén klik telt, ook bij dubbelklikken op dezelfde of een andere knop.
         if (afgehandeldRef.current) return;
-        afgehandeldRef.current = true;
         setGekozen(keuze);
-        onKies(keuze);
+    };
+
+    const handleVerder = () => {
+        // Eén klik telt, ook bij dubbelklikken.
+        if (!gekozen || afgehandeldRef.current) return;
+        afgehandeldRef.current = true;
+        onKies(gekozen);
     };
 
     return (
@@ -104,9 +119,25 @@ export const InterruptionOverlay: React.FC<Props> = ({ onderbreking, onKies }) =
                 </div>
 
                 {gekozen ? (
-                    <p className="rounded-xl bg-duck-bg px-3 py-3 text-sm text-duck-ink" role="status">
-                        {gekozen.reactie}
-                    </p>
+                    <div className="space-y-3">
+                        <div className="rounded-xl bg-duck-bg px-3 py-3 text-sm text-duck-ink" role="status">
+                            <p>{gekozen.reactie}</p>
+                            <p className="mt-2 text-xs text-duck-ink/80">
+                                <span className="font-bold text-duck-ink">Waaraan je het kon zien:</span>{' '}
+                                {onderbreking.tell}
+                            </p>
+                            <p className="mt-1 text-xs leading-relaxed text-duck-ink/80">{onderbreking.uitleg}</p>
+                        </div>
+                        <button
+                            ref={verderRef}
+                            type="button"
+                            onClick={handleVerder}
+                            data-qa="helpdesk-onderbreking-verder"
+                            className="min-h-[44px] w-full rounded-xl border border-duck-ink bg-duck-acid px-4 py-3 text-sm font-black text-duck-ink transition focus:outline-none focus:ring-2 focus:ring-duck-ink"
+                        >
+                            Verder
+                        </button>
+                    </div>
                 ) : (
                     <div className="flex flex-col gap-2">
                         {onderbreking.keuzes.map((keuze) => (

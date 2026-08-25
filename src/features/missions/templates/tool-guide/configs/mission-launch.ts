@@ -28,16 +28,20 @@ const config: ToolGuideConfig = {
                 { id: 'kop-kort', label: 'Mijn kop is kort (maximaal 8 woorden) en concreet' },
             ],
             verificationQuestion: {
-                question: 'Welke kop is het sterkst voor een flyer?',
+                question:
+                    'Je hebt je drie koppen hardop voorgelezen. Waaraan merk je tijdens dat voorlezen dat een kop te lang is?',
                 options: [
-                    'Mijn informatica-project over kunstmatige intelligentie voor de eindpresentatie',
-                    'Een app voor school',
-                    'Nooit meer huiswerkstress!',
-                    'Project van klas 1A',
+                    'Je bent na 2 seconden nog steeds aan het voorlezen',
+                    'De kop bevat een uitroepteken',
+                    'De kop past niet op één regel op je scherm',
+                    'Je moet even nadenken over de spelling',
                 ],
-                correctIndex: 2,
+                correctIndex: 0,
+                allowRetry: true,
+                retryHint:
+                    'Nog niet. Lees je kop nog een keer hardop voor met een timer erbij en let op hoe ver je na 2 seconden bent. Kies daarna opnieuw.',
                 explanation:
-                    'Precies! "Nooit meer huiswerkstress!" combineert een herkenbaar probleem met een belofte van een oplossing. Het is kort, concreet en spreekt direct de lezer aan.',
+                    'Klopt. De 2-secondentest doe je hardop: ben je dan nog niet klaar, dan is je kop te lang. Maak hem korter of specifieker.',
             },
         },
         {
@@ -52,16 +56,20 @@ const config: ToolGuideConfig = {
                 { id: 'wanneer-waar', label: 'Ik heb de datum, tijd of locatie toegevoegd' },
             ],
             verificationQuestion: {
-                question: 'Hoeveel tekst mag er maximaal op een goede flyer staan?',
+                question:
+                    'Je laat iemand 5 seconden naar jouw kernboodschap kijken. Die persoon kan daarna alleen zeggen: "iets met school". Wat zegt dat over je tekst?',
                 options: [
-                    'Zo veel mogelijk — dan weet de lezer alles',
-                    'Maximaal 3 tot 5 korte zinnen, zodat je de flyer in 5 seconden begrijpt',
-                    'Minstens een hele alinea uitleg',
-                    'Alleen de naam van het project',
+                    'Niets bijzonders — 5 seconden is nu eenmaal te kort',
+                    'Mijn WAT en VOOR WIE zijn nog te vaag; ik moet concreter schrijven',
+                    'Ik moet er meer zinnen bij zetten zodat het duidelijker wordt',
+                    'Ik moet een ander lettertype kiezen',
                 ],
                 correctIndex: 1,
+                allowRetry: true,
+                retryHint:
+                    'Nog niet. Kijk terug naar de drie vragen van deze stap: welke daarvan komt in het antwoord van je tester niet terug? Kies daarna opnieuw.',
                 explanation:
-                    'Goed! Een flyer is geen verslag. Gebruik maximaal 3 tot 5 korte zinnen. Alles wat je kunt weglaten zonder dat de lezer iets mist, hoort niet op de flyer.',
+                    'Precies. Onthoudt iemand na 5 seconden alleen iets vaags, dan is je boodschap niet scherp. Maak WAT en VOOR WIE concreter — niet langer.',
             },
         },
         {
@@ -76,16 +84,20 @@ const config: ToolGuideConfig = {
                 { id: 'cta-positie', label: 'De CTA staat onderaan op de flyer als het meest opvallende element' },
             ],
             verificationQuestion: {
-                question: 'Je wilt een foto van een klasgenoot op je flyer zetten. De foto staat al openbaar op Instagram. Wat moet je doen?',
+                question:
+                    'Je leest jouw eigen call to action voor aan een klasgenoot. Wat moet die klasgenoot daarna meteen kunnen navertellen?',
                 options: [
-                    'Niets — de foto is al openbaar',
-                    'Eerst toestemming vragen aan de persoon op de foto',
-                    'De foto wazig maken zodat niemand het herkent',
-                    'De flyer alleen digitaal verspreiden, niet op papier',
+                    'Hoe lang je aan je project hebt gewerkt',
+                    'Wat hij of zij moet doen, en wanneer of waar',
+                    'Welke kleuren je op de flyer gebruikt',
+                    'Hoe jouw kop precies luidt',
                 ],
                 correctIndex: 1,
+                allowRetry: true,
+                retryHint:
+                    'Nog niet. Kijk naar de voorbeeld-CTA\'s in de opdracht: welke informatie geven die allemaal aan de lezer? Kies daarna opnieuw.',
                 explanation:
-                    'Openbaar betekent niet vrij te gebruiken — dit leerde je in Periode 3. Vraag altijd toestemming voordat je iemands foto gebruikt.',
+                    'Goed. Je CTA is geslaagd als de lezer direct weet welke actie hij moet doen — en wanneer of waar. Lukt dat navertellen niet, maak je CTA dan concreter.',
             },
         },
         {
@@ -103,16 +115,20 @@ const config: ToolGuideConfig = {
             teacherCheck:
                 'Laat je echte flyer aan je docent zien. De docent controleert: de flyer is leesbaar, de kop is het grootst, de call to action valt op, en er staan geen foto\'s of namen van anderen op zonder toestemming.',
             verificationQuestion: {
-                question: 'Wat is de "gouden regel" van visuele hiërarchie op een flyer?',
+                question:
+                    'Je hebt je flyer gemaakt in Word, PowerPoint of Canva. Wat deed je daar om je kop het grootste element te maken?',
                 options: [
-                    'Zet zo veel mogelijk informatie op de flyer zodat niemand iets mist',
-                    'Gebruik zo veel mogelijk kleuren om de aandacht te trekken',
-                    'Groot = belangrijk: het meest cruciale element is ook het grootste',
-                    'Gebruik altijd minstens drie lettertypen voor variatie',
+                    'De kop geselecteerd en de lettergrootte omhoog gezet',
+                    'De flyer op een grotere zoom bekeken',
+                    'Extra witregels boven de kop gezet',
+                    'De kop alleen vetgedrukt gemaakt',
                 ],
-                correctIndex: 2,
+                correctIndex: 0,
+                allowRetry: true,
+                retryHint:
+                    'Nog niet. Klik je kop in je flyer aan en kijk in de werkbalk welke instelling de tekst echt groter maakt. Kies daarna opnieuw.',
                 explanation:
-                    'Juist! Grootte = importantie. De lezer scant een flyer in seconden. Door het belangrijkste element het grootst te maken, gaat de blik vanzelf naar de kernboodschap.',
+                    'Klopt. Visuele hiërarchie maak je met echte lettergrootte: selecteer je kop en zet het lettertype groter. Inzoomen of alleen vet maken verandert de hiërarchie niet.',
             },
         },
     ],

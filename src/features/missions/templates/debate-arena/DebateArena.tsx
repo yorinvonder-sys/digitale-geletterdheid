@@ -1,4 +1,4 @@
-import React, { useMemo, useState, useEffect } from 'react';
+import React, { useMemo, useRef, useState, useEffect } from 'react';
 import { ArrowRight, MessageSquare } from 'lucide-react';
 import { useMissionAutoSave } from '@/hooks/useMissionAutoSave';
 import { PhaseHeader } from '../shared/PhaseHeader';
@@ -96,6 +96,21 @@ const buildInitialState = (): DebateArenaState => ({
 
 // ─── Score calculation ────────────────────────────────────────────────────────
 
+// Drie keer dezelfde claim/onderbouwing plakken is geen debat; alleen onderling
+// verschillende argumenten tellen mee. Hoofdletters en extra spaties negeren we,
+// zodat het om echte herhaling gaat en niet om typwerk.
+const argumentFingerprint = (arg: ArgumentEntry): string =>
+    `${arg.claim.trim().toLowerCase().replace(/\s+/g, ' ')}|${arg.evidence.trim().toLowerCase().replace(/\s+/g, ' ')}`;
+
+export function countDistinctArguments(args: ArgumentEntry[]): number {
+    const seen = new Set<string>();
+    for (const arg of args) {
+        if (!isMeaningfulAnswer(arg.claim) || !isMeaningfulAnswer(arg.evidence)) continue;
+        seen.add(argumentFingerprint(arg));
+    }
+    return Math.min(seen.size, 3);
+}
+
 function calcScore(state: DebateArenaState, config: DebateArenaConfig): number {
     let score = 0;
     const argumentMax = 50;
@@ -112,10 +127,7 @@ function calcScore(state: DebateArenaState, config: DebateArenaConfig): number {
     if (state.selectedPosition) score += 10;
 
     // Arguments: 20 pts each, max 3
-    const validArgs = state.arguments.filter(
-        (a) => isMeaningfulAnswer(a.claim) && isMeaningfulAnswer(a.evidence)
-    );
-    score += Math.round((Math.min(validArgs.length, 3) / 3) * argumentMax);
+    score += Math.round((countDistinctArguments(state.arguments) / 3) * argumentMax);
 
     // Counter-response: 10 pts
     if (isMeaningfulAnswer(state.counterResponse)) score += 10;
@@ -145,14 +157,30 @@ const DebateArenaInner: React.FC<DebateArenaProps> = ({ config, onBack, onComple
     );
 
     const score = useMemo(() => calcScore(state, config), [state, config]);
+    const [completionError, setCompletionError] = useState(false);
 
     const setPhase = (phase: Phase) => setState((s) => ({ ...s, phase }));
 
-    const handleRetryMission = () => {
-        clearSave();
-        setState(buildInitialState());
+    // Terug naar de argumenten mét al het ingevulde werk. De oude versie wiste de
+    // opslag en zette de missie terug op nul, terwijl de knop "Afronden" heette —
+    // een leerling raakte zo zijn argumenten, tegenargument en reflecties kwijt.
+    const handleImproveAnswers = () => {
+        setPhase('argue');
         window.scrollTo({ top: 0, behavior: 'smooth' });
     };
+
+    // Bij een faseovergang rendert de nieuwe fase in dezelfde container; zonder
+    // focusverplaatsing begint een toetsenbord- of schermlezergebruiker weer boven
+    // aan de pagina. De eerste render slaan we over: daar hoort de focus te blijven
+    // waar de gebruiker hem had (bijvoorbeeld na het herstellen van een opslag).
+    const phaseRef = useRef<HTMLDivElement>(null);
+    const previousPhaseRef = useRef<Phase>(state.phase);
+
+    useEffect(() => {
+        if (previousPhaseRef.current === state.phase) return;
+        previousPhaseRef.current = state.phase;
+        phaseRef.current?.focus();
+    }, [state.phase]);
 
     const markStakeholderRead = (id: string) => {
         setState((s) => ({
@@ -171,6 +199,16 @@ const DebateArenaInner: React.FC<DebateArenaProps> = ({ config, onBack, onComple
         challenge: 4,
         reflect: 5,
         results: 6,
+    };
+
+    const phaseLabel: Record<Phase, string> = {
+        intro: 'Introductie',
+        explore: 'Betrokkenen verkennen',
+        position: 'Positie kiezen',
+        argue: 'Argumenten bouwen',
+        challenge: 'Tegenargument beantwoorden',
+        reflect: 'Reflecteren',
+        results: 'Resultaat',
     };
 
     // Phase: intro
@@ -196,7 +234,7 @@ const DebateArenaInner: React.FC<DebateArenaProps> = ({ config, onBack, onComple
         const phases = [
             { icon: '👥', title: 'Stakeholders gelezen', score: state.stakeholdersRead.length >= config.stakeholders.length ? 10 : 0, max: 10 },
             { icon: '📍', title: 'Positie gekozen', score: state.selectedPosition ? 10 : 0, max: 10 },
-            { icon: '💬', title: 'Argumenten gebouwd', score: Math.round((Math.min(state.arguments.filter(a => isMeaningfulAnswer(a.claim) && isMeaningfulAnswer(a.evidence)).length, 3) / 3) * 50), max: 50 },
+            { icon: '💬', title: 'Argumenten gebouwd', score: Math.round((countDistinctArguments(state.arguments) / 3) * 50), max: 50 },
             { icon: '⚡', title: 'Tegenargument beantwoord', score: isMeaningfulAnswer(state.counterResponse) ? 10 : 0, max: 10 },
             { icon: '🪞', title: 'Gereflecteerd', score: config.reflectionQuestions.filter(q => isMeaningfulAnswer(state.reflectionAnswers[q] ?? '')).length * 10, max: config.reflectionQuestions.length * 10 },
         ];
@@ -248,6 +286,44 @@ const DebateArenaInner: React.FC<DebateArenaProps> = ({ config, onBack, onComple
                         ))}
                     </div>
 
+                    {/* Deze fase staat in de opgeslagen voortgang: ook wie na een lage
+                        score herlaadt, moet hier weg kunnen zónder werk te verliezen. */}
+                    <div className="bg-white rounded-2xl border border-duck-gray p-4 mb-4">
+                        <p className="text-sm font-black text-duck-ink" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                            Nog niet tevreden over je score?
+                        </p>
+                        <p className="mt-1 text-xs text-duck-ink/75" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                            Ga terug naar je argumenten en vul ze aan. Alles wat je hebt ingevuld blijft staan.
+                        </p>
+                        <button
+                            data-qa="debate-improve-answers"
+                            onClick={handleImproveAnswers}
+                            className="mt-3 w-full min-h-[44px] rounded-full border-2 border-duck-ink py-2.5 text-sm font-black text-duck-ink transition-all duration-200 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-ink focus-visible:ring-offset-2"
+                            style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
+                        >
+                            Antwoorden verbeteren
+                        </button>
+                    </div>
+
+                    {completionError && (
+                        <div
+                            role="alert"
+                            data-qa="debate-completion-error"
+                            className="mb-4 rounded-2xl border-2 border-duck-error bg-white p-4"
+                        >
+                            <p className="text-sm font-black text-duck-ink" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                                Afronden is niet gelukt.
+                            </p>
+                            <p className="mt-1 text-xs text-duck-ink/75" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                                Je werk staat nog opgeslagen. Controleer je internetverbinding en klik de knop hieronder nog een keer.
+                            </p>
+                        </div>
+                    )}
+
+                    {/* Bewust GEEN onRetry: CompletionScreen maakt onRetry de primaire actie
+                        zodra de score onder de 40% blijft, terwijl die knop "Afronden" heet —
+                        een leerling verloor daarmee al zijn werk. Zonder onRetry rondt die knop
+                        gewoon af en loopt het verbeteren via de knop hierboven. */}
                     <CompletionScreen
                         score={score}
                         maxScore={config.maxScore}
@@ -255,14 +331,20 @@ const DebateArenaInner: React.FC<DebateArenaProps> = ({ config, onBack, onComple
                         phases={phases}
                         takeaways={config.takeaways}
                         onComplete={async () => {
-                            // Pas wissen als de server de voltooiing bevestigd heeft, anders
-                            // raakt een leerling zijn werk kwijt bij een mislukte opslag.
-                            const completed = await onComplete(true, toScorePercent(score, config.maxScore));
-                            if (completed !== false) {
+                            setCompletionError(false);
+                            try {
+                                // Pas wissen als de server de voltooiing bevestigd heeft, anders
+                                // raakt een leerling zijn werk kwijt bij een mislukte opslag.
+                                const completed = await onComplete(true, toScorePercent(score, config.maxScore));
+                                if (completed === false) {
+                                    setCompletionError(true);
+                                    return;
+                                }
                                 clearSave();
+                            } catch {
+                                setCompletionError(true);
                             }
                         }}
-                        onRetry={handleRetryMission}
                     />
                 </div>
             </div>
@@ -291,6 +373,13 @@ const DebateArenaInner: React.FC<DebateArenaProps> = ({ config, onBack, onComple
                     </p>
                 </div>
 
+                <div
+                    ref={phaseRef}
+                    tabIndex={-1}
+                    role="group"
+                    aria-label={`Stap ${currentPhaseIndex} van 6: ${phaseLabel[state.phase]}`}
+                    className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-ink focus-visible:ring-offset-2 rounded-2xl"
+                >
                 {state.phase === 'explore' && (
                     <ExplorePhase
                         config={config}
@@ -355,6 +444,7 @@ const DebateArenaInner: React.FC<DebateArenaProps> = ({ config, onBack, onComple
                         onBack={() => setPhase('challenge')}
                     />
                 )}
+                </div>
             </div>
         </div>
     );

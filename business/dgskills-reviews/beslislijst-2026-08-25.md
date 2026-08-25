@@ -1,5 +1,7 @@
 # Beslislijst voor Yorin — sweep waves 21-25 (2026-08-25)
 
+> **UPDATE (25-08, na PR #329):** het zwaarste werk van deze lijst is inmiddels hersteld en gemerged. Opgelost: alle engine-blockers uit sectie A (doodlopende eindschermen incl. opgeslagen runs, dataverlies bij niet-gehaalde drempels, MatchPairs-scorefout, opslag wissen vóór bevestigde voltooiing, gokcorrecties, state-validatie, contrast/focus), de afgedwongen missiedrempels (65/70/60), het verifiërend maken van alle tool-guide-stappen, en de identiteits-teksten van de zes kandidaten. Deze lijst blijft staan als momentopname van de sweep; nog actueel zijn vooral de inhoudelijke per-missie-escalaties in sectie B die geen engine-oorzaak hadden (SLO-claims, contentkeuzes) en de oudere 'blocked'-punten.
+
 Alles hieronder vereist een keuze of handmatige actie; niets hiervan is automatisch gefixt. Gerangschikt op zwaarte: security > rls > ai-act > privacy > structural > slo > prose-only > anders.
 
 ## A. Gedeelde engines (raken meerdere missies tegelijk)

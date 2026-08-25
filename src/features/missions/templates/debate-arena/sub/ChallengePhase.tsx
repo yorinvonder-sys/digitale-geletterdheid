@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useId } from 'react';
 import { ArrowLeft, ChevronRight } from 'lucide-react';
 import type { DebateArenaConfig, DebateArenaState } from '../DebateArena';
 import { isMeaningfulAnswer } from '../../shared/answerQuality';
@@ -12,6 +12,7 @@ export interface ChallengePhaseProps {
 }
 
 export const ChallengePhase: React.FC<ChallengePhaseProps> = ({ config, state, onUpdateResponse, onNext, onBack }) => {
+    const responseId = useId();
     const canContinue = isMeaningfulAnswer(state.counterResponse);
 
     return (
@@ -42,10 +43,11 @@ export const ChallengePhase: React.FC<ChallengePhaseProps> = ({ config, state, o
 
             {/* Response input */}
             <div className="bg-white rounded-2xl border border-duck-gray p-4 mb-5">
-                <label className="text-xs font-bold text-duck-ink/60 block mb-2" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                <label htmlFor={responseId} className="text-xs font-bold text-duck-ink/60 block mb-2" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                     Jouw reactie
                 </label>
                 <textarea
+                    id={responseId}
                     value={state.counterResponse}
                     onChange={(e) => onUpdateResponse(e.target.value)}
                     placeholder="Leg uit waarom je het eens of oneens bent met dit tegenargument, of nuanceer het..."

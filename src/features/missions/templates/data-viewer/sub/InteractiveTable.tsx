@@ -86,6 +86,8 @@ export const InteractiveTable: React.FC<InteractiveTableProps> = ({ columns, row
         <div className="rounded-xl border border-duck-gray overflow-hidden">
             {/* Filter row */}
             <div className="bg-duck-bg border-b border-duck-gray px-3 py-2 flex gap-2 flex-wrap">
+                {/* Ingevulde tekst op volle inktkleur, placeholder blijft op /75: anders
+                    zijn 'leeg' en 'ingevuld' visueel niet te onderscheiden. */}
                 {columns.map(col => (
                     <input
                         key={col.key}
@@ -94,7 +96,7 @@ export const InteractiveTable: React.FC<InteractiveTableProps> = ({ columns, row
                         placeholder={`Filter ${col.label.toLowerCase()}…`}
                         value={filters[col.key] ?? ''}
                         onChange={e => setFilters(prev => ({ ...prev, [col.key]: e.target.value }))}
-                        className="flex-1 min-w-[100px] text-xs px-2.5 py-1.5 rounded-lg border border-duck-gray bg-white text-duck-ink/75 placeholder:text-duck-ink/75 focus:outline-none focus:border-duck-acid"
+                        className="flex-1 min-w-[100px] text-xs px-2.5 py-1.5 rounded-lg border border-duck-gray bg-white text-duck-ink placeholder:text-duck-ink/75 focus:outline-none focus:border-duck-acid"
                         style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                     />
                 ))}

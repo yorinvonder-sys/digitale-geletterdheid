@@ -53,6 +53,10 @@ export interface BuilderCanvasConfig {
     takeaways: string[];
 }
 
+// Iconenreeks voor het stappenoverzicht op het eindscherm; langere missies lopen er
+// rond in plaats van vanaf stap 5 hetzelfde icoon te herhalen.
+const STEP_ICONS = ['🎯', '🗂️', '✍️', '💬', '🧩', '🔍', '⚙️', '🚀'];
+
 // ─── Main Component ───────────────────────────────────────────────────────────
 
 interface BuilderCanvasProps extends TemplateMissionProps {
@@ -104,6 +108,15 @@ const BuilderCanvasInner: React.FC<BuilderCanvasProps> = ({
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [state.currentStep, safeCurrentStep]);
+
+    // showMilestone hoort bij een toast die zichzelf na 2 seconden uitzet, maar staat
+    // wél in de opgeslagen state. Herlaadt de leerling binnen die 2 seconden, dan komt
+    // hij als true terug en is er geen timer meer die hem uitzet — de toast blijft dan
+    // de rest van de missie in beeld. Bij het laden dus altijd terugzetten.
+    useEffect(() => {
+        setState((prev) => (prev.showMilestone ? { ...prev, showMilestone: false } : prev));
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     // Zelfherstel voor een reload tussen het beantwoorden van een verdiepingsvraag en
     // het klikken op "Doorgaan": reflectionCorrect wordt meteen vastgelegd, maar
@@ -292,7 +305,7 @@ const BuilderCanvasInner: React.FC<BuilderCanvasProps> = ({
         const phaseBreakdown = config.steps.map((step, i) => {
             const stepBonus = step.reflectionQuestion?.bonusPoints ?? 0;
             return {
-                icon: i === 0 ? '🎯' : i === 1 ? '🗂️' : i === 2 ? '✍️' : '💬',
+                icon: STEP_ICONS[i % STEP_ICONS.length],
                 title: step.title,
                 score:
                     (state.completedSteps.includes(step.id) ? pointsForStep(i) : 0) +
@@ -301,6 +314,10 @@ const BuilderCanvasInner: React.FC<BuilderCanvasProps> = ({
             };
         });
 
+        // Bewust GEEN onRetry: CompletionScreen maakt onRetry de primaire actie zodra de
+        // score onder de 40% blijft, terwijl de knop daar "Afronden" heet. Zonder onRetry
+        // rondt diezelfde knop af — dat is hier de uitweg, ook voor een results-fase die
+        // al in een oudere opslag stond, en niemand komt vast te zitten.
         return (
             <CompletionScreen
                 score={totalScore}

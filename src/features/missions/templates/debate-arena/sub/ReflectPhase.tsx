@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useId } from 'react';
 import { ArrowLeft, Sparkles, Trophy } from 'lucide-react';
 import type { DebateArenaConfig, DebateArenaState } from '../DebateArena';
 import { isMeaningfulAnswer } from '../../shared/answerQuality';
@@ -13,6 +13,7 @@ export interface ReflectPhaseProps {
 }
 
 export const ReflectPhase: React.FC<ReflectPhaseProps> = ({ config, state, onUpdateAnswer, onSelectFinalPosition, onNext, onBack }) => {
+    const uid = useId();
     const allAnswered = config.reflectionQuestions.every(
         (q) => isMeaningfulAnswer(state.reflectionAnswers[q] ?? '')
     );
@@ -33,17 +34,19 @@ export const ReflectPhase: React.FC<ReflectPhaseProps> = ({ config, state, onUpd
                 {config.reflectionQuestions.map((q, i) => {
                     const answer = state.reflectionAnswers[q] ?? '';
                     const valid = isMeaningfulAnswer(answer);
+                    const answerId = `${uid}-reflect-${i}`;
                     return (
                         <div key={i} className="bg-white rounded-2xl border border-duck-gray p-4">
                             <div className="flex items-start gap-2 mb-2">
                                 <div className="w-5 h-5 bg-duck-ink/10 rounded-lg flex items-center justify-center shrink-0 mt-0.5">
                                     <span className="text-[10px] font-black text-duck-ink">{i + 1}</span>
                                 </div>
-                                <label className="text-sm font-bold text-duck-ink" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                                <label htmlFor={answerId} className="text-sm font-bold text-duck-ink" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                                     {q}
                                 </label>
                             </div>
                             <textarea
+                                id={answerId}
                                 value={answer}
                                 onChange={(e) => onUpdateAnswer(q, e.target.value)}
                                 placeholder="Schrijf je antwoord hier..."

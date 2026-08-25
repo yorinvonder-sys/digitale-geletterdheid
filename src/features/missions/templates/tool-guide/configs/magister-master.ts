@@ -38,19 +38,19 @@ const config: ToolGuideConfig = {
             ],
             teacherCheck: 'Laat het startscherm van Magister kort aan je docent zien voordat je doorgaat.',
             verificationQuestion: {
-                question: 'Met welk account log je in bij Magister?',
+                question: 'Wat vroeg de Magister-app als allereerste, nog vóór je gebruikersnaam en wachtwoord?',
                 options: [
-                    'Mijn persoonlijke Gmail of iCloud-account',
-                    'Mijn schoolaccount dat school aan mij heeft gegeven',
-                    'Een nieuw account dat ik zelf aanmaak',
-                    'Het account van mijn ouders',
+                    'Mijn geboortedatum',
+                    'De naam van mijn school',
+                    'In welke klas ik zit',
+                    'Mijn e-mailadres van thuis',
                 ],
                 correctIndex: 1,
                 allowRetry: true,
                 retryHint:
-                    'Nog niet. Denk aan wie de toegang tot je rooster en cijfers beheert. Kies daarna opnieuw.',
+                    'Nog niet. Kijk terug naar het eerste scherm van de app, vóór het inlogscherm. Kies daarna opnieuw.',
                 explanation:
-                    'Precies! Je logt altijd in met het schoolaccount dat school aan jou heeft gegeven. Zo zijn je gegevens veilig en kun je alleen jouw eigen rooster en cijfers zien.',
+                    'Klopt! De app vraagt eerst welke school je hebt, want elke school heeft een eigen Magister. Daarna log je in met je schoolaccount.',
             },
         },
         {
@@ -66,19 +66,19 @@ const config: ToolGuideConfig = {
             ],
             teacherCheck: 'Laat je docent je eerste les of roosterregel aanwijzen op je scherm.',
             verificationQuestion: {
-                question: 'Waarom is het slim om elke ochtend je rooster in Magister te checken?',
+                question: 'Wat staat er in jouw rooster bij de les die je net hebt opgezocht, behalve de naam van het vak?',
                 options: [
-                    'Omdat je dan punten verdient in Magister',
-                    'Omdat het rooster soms verandert door uitval of lokaalwijzigingen',
-                    'Omdat je anders geen toegang hebt tot je cijfers',
-                    'Omdat de app anders uitlogt',
+                    'Het cijfer dat je voor dat vak hebt',
+                    'De starttijd en het lokaal',
+                    'De namen van de leerlingen die naast je zitten',
+                    'Hoeveel huiswerk je nog open hebt staan',
                 ],
                 correctIndex: 1,
                 allowRetry: true,
                 retryHint:
-                    'Nog niet. Denk aan wat er gedurende een schooldag onverwacht kan wijzigen. Kies daarna opnieuw.',
+                    'Nog niet. Kijk nog een keer naar de balk van die les in je rooster. Kies daarna opnieuw.',
                 explanation:
-                    'Goed! Het rooster kan dagelijks veranderen. Een docent kan ziek zijn, een lokaal kan bezet zijn — in Magister zie je die wijzigingen altijd het eerst.',
+                    'Goed gekeken! Bij elke les staat wanneer die begint en in welk lokaal je moet zijn. Daarom check je je rooster elke ochtend: die tijd of dat lokaal kan veranderd zijn.',
             },
         },
         {
@@ -90,21 +90,23 @@ const config: ToolGuideConfig = {
             checklistItems: [
                 { id: 'agenda-open', label: 'Ik heb de Agenda of ELO geopend' },
                 { id: 'huiswerk-gevonden', label: 'Ik heb huiswerk van één vak gevonden (of gezien dat er geen staat)' },
-                { id: 'deadline', label: 'Ik weet voor wanneer het huiswerk ingeleverd moet worden' },
+                { id: 'deadline', label: 'Ik weet voor wanneer het huiswerk af moet zijn (of dat er nu niets openstaat)' },
             ],
             teacherCheck: 'Laat je docent zien waar jij huiswerk of opdrachten terugvindt.',
             verificationQuestion: {
-                question: 'Je vindt geen huiswerk in Magister. Wat doe je?',
+                question: 'Hoe kon je in de Agenda of ELO zien of er voor een dag wel of geen huiswerk klaarstaat?',
                 options: [
-                    'Ik neem aan dat er geen huiswerk is',
-                    'Ik vraag mijn docent waar hij of zij huiswerk plaatst',
-                    'Ik wacht tot de les begint',
-                    'Ik maak dan maar geen huiswerk',
+                    'Alleen als de app een melding stuurt; zonder melding staat er niets klaar',
+                    'Bij elke dag staat wat er die dag af moet zijn; een lege dag betekent dat er in Magister niets staat',
+                    'Onderaan bij mijn cijfers staat hoeveel opdrachten nog open staan',
+                    'Dat zie je niet in Magister; dat moet je bij elk vak apart vragen',
                 ],
                 correctIndex: 1,
                 allowRetry: true,
-                retryHint: 'Nog niet. Denk aan de tip hierboven over verschillende plekken voor huiswerk.',
-                explanation: 'Goed! Niet elke docent gebruikt Magister voor huiswerk — vraag het gewoon als je niets vindt.',
+                retryHint:
+                    'Nog niet. Kijk nog eens hoe je agenda is ingedeeld en waar een huiswerkitem terechtkomt. Kies daarna opnieuw.',
+                explanation:
+                    'Precies! De agenda is geordend per dag: bij elke dag staat wat er die dag af moet zijn. Is een dag leeg, dan staat er in Magister niets — maar let op: sommige docenten zetten huiswerk in Teams of Classroom. Check dat ook, of vraag het na bij je docent.',
             },
         },
         {
@@ -120,32 +122,32 @@ const config: ToolGuideConfig = {
             ],
             teacherCheck: 'Laat je docent zien dat je het cijferoverzicht kunt openen. Je hoeft geen cijfer hardop te noemen.',
             verificationQuestion: {
-                question: 'Wat betekent de wegingsfactor bij een cijfer in Magister?',
+                question: 'Wat zag je in het cijferoverzicht bij jouw laatste cijfer staan?',
                 options: [
-                    'Hoe moeilijk de toets was',
-                    'Hoeveel het cijfer meetelt voor je rapportcijfer',
-                    'Hoeveel leerlingen dezelfde toets hebben gemaakt',
-                    'Hoe lang je over de toets hebt gedaan',
+                    'Het gemiddelde cijfer van mijn hele klas',
+                    'Het vak en hoe zwaar dit cijfer meetelt (de weging)',
+                    'Hoeveel klasgenoten een hoger cijfer hadden',
+                    'Hoeveel minuten ik over de toets heb gedaan',
                 ],
                 correctIndex: 1,
                 allowRetry: true,
                 retryHint:
-                    'Nog niet. Denk aan waarom sommige cijfers zwaarder wegen in je gemiddelde. Kies daarna opnieuw.',
+                    'Nog niet. Kijk nog eens naar de regel van je laatste cijfer. Kies daarna opnieuw.',
                 explanation:
-                    'Juist! De wegingsfactor laat zien hoe zwaar een cijfer meetelt voor je uiteindelijke rapportcijfer. Een cijfer met weging 2 telt dubbel zo zwaar als een cijfer met weging 1.',
+                    'Juist! Bij elk cijfer staat het vak en de weging. Die weging laat zien hoe zwaar dat cijfer meetelt voor je rapportcijfer: weging 2 telt dubbel zo zwaar als weging 1.',
             },
         },
     ],
-    maxScore: 55,
+    maxScore: 60,
     badges: [
         {
-            minScore: 55,
+            minScore: 60,
             emoji: '🏆',
             title: 'Magister Expert',
             color: '#202023',
         },
         {
-            minScore: 40,
+            minScore: 45,
             emoji: '📅',
             title: 'Magister Meester',
             color: '#202023',

@@ -35,10 +35,12 @@ function shuffle<T>(arr: T[]): T[] {
     return a;
 }
 
+// Alleen `bg` wordt gebruikt; de eerdere `light`/`border`-velden stonden in
+// Tailwind-schuine-streepsyntaxis in een plain CSS-string en deden dus niets.
 const CATEGORY_COLORS = [
-    { bg: '#ff3c21', light: '#D97848/10', border: '#D97848/40' },
-    { bg: '#202023', light: '#0B453F/10', border: '#0B453F/40' },
-    { bg: '#e1ff01', light: '#D7C95F/10', border: '#D7C95F/40' },
+    { bg: '#ff3c21' },
+    { bg: '#202023' },
+    { bg: '#e1ff01' },
 ];
 
 export const Categorize: React.FC<CategorizeProps> = ({
@@ -168,7 +170,7 @@ export const Categorize: React.FC<CategorizeProps> = ({
                     {title}
                 </h3>
                 <p
-                    className="text-sm text-duck-ink/70"
+                    className="text-sm text-duck-ink/75"
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                 >
                     {description}
@@ -176,7 +178,7 @@ export const Categorize: React.FC<CategorizeProps> = ({
             </div>
 
             {!submitted && (
-                <p className="text-xs text-duck-ink/70" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                <p className="text-xs text-duck-ink/75" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                     Selecteer een item, dan klik op de categorie.
                 </p>
             )}
@@ -242,7 +244,7 @@ export const Categorize: React.FC<CategorizeProps> = ({
                                                     ? isCorrect
                                                         ? 'bg-duck-ink/15 border-duck-ink text-duck-ink'
                                                         : 'bg-duck-acid/15 border-duck-acid/60 text-duck-ink'
-                                                    : 'bg-white border-duck-gray text-duck-ink/70 cursor-pointer hover:border-duck-acid/40'
+                                                    : 'bg-white border-duck-gray text-duck-ink/75 cursor-pointer hover:border-duck-acid/40'
                                                 }`}
                                             style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                                             onClick={(e) => {
@@ -267,7 +269,7 @@ export const Categorize: React.FC<CategorizeProps> = ({
             {/* Unplaced items */}
             {unplacedItems.length > 0 && (
                 <div>
-                    <p className="text-xs text-duck-ink/70 mb-2" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                    <p className="text-xs text-duck-ink/75 mb-2" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                         Te categoriseren:
                     </p>
                     <div className="flex flex-wrap gap-2">
@@ -286,7 +288,7 @@ export const Categorize: React.FC<CategorizeProps> = ({
                                 className={`min-h-[44px] px-3 py-1.5 rounded-lg border text-xs font-medium transition-all duration-200
                                     ${selectedItem === item.id
                                         ? 'bg-duck-acid/15 border-duck-acid text-duck-ink scale-105'
-                                        : 'bg-white border-duck-gray text-duck-ink/70 hover:border-duck-acid/40'
+                                        : 'bg-white border-duck-gray text-duck-ink/75 hover:border-duck-acid/40'
                                     }`}
                                 style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                             >
@@ -333,7 +335,7 @@ export const Categorize: React.FC<CategorizeProps> = ({
                     className={`w-full py-3 rounded-xl font-bold text-sm transition-all duration-200 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-ink focus-visible:ring-offset-2
                         ${allPlaced
                             ? 'bg-gradient-to-r from-duck-acid to-duck-acid hover:from-duck-acid hover:to-duck-acid text-duck-ink'
-                            : 'bg-duck-gray text-duck-ink/70 cursor-not-allowed'
+                            : 'bg-duck-gray text-duck-ink/75 cursor-not-allowed'
                         }`}
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                 >
