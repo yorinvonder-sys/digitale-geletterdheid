@@ -95,7 +95,7 @@
   {
     "missionId": "ai-bias-detective",
     "templateType": "scenario-engine",
-    "priorityBand": "low",
+    "priorityBand": "high",
     "triageScores": {
       "uiux": 2,
       "slo": 1,
@@ -103,26 +103,42 @@
       "interactivity": 0,
       "total": 5
     },
-    "lastReviewed": "2026-07-01",
-    "reviewStatus": "fixed",
-    "reportPath": "business/dgskills-reviews/ai-bias-detective-2026-07-01.md",
+    "lastReviewed": "2026-08-25",
+    "reviewStatus": "reviewed",
+    "reportPath": "business/dgskills-reviews/ai-bias-detective-2026-08-25.md",
     "autoFixesApplied": 0,
-    "openEscalations": [],
+    "openEscalations": [
+      {
+        "category": "structural",
+        "description": "Engine-brede voltooiing-bug (40% knop-drempel vs missiedrempel 60, plus doodlopend eindscherm onder 40%) raakt ai-bias-detective concreet omdat de missiedrempel op 60 staat — fix hoort in ScenarioEngine.tsx/CompletionScreen.tsx, niet in deze config",
+        "file": "src/features/missions/templates/scenario-engine/ScenarioEngine.tsx"
+      }
+    ],
     "codexVerdict": null,
-    "escalationCount": 0,
+    "escalationCount": 1,
     "reviewScores": {
-      "uiux": 8,
-      "didactiek": 9,
+      "uiux": 7.5,
+      "didactiek": 8,
       "tech": 8
     },
-    "triageScore": 1.6,
-    "statusNote": "wave 7 verse review: schoon; dormante chat-rol -> platform-brede beslislijst",
-    "verdict": "ok"
+    "triageScore": 6.05,
+    "statusNote": "sweep wave 23 2026-08-25: verse review (alle missies); veiligheids-pass Opus high",
+    "verdict": "fix-eerst",
+    "proposedFixes": 0,
+    "topIssues": [
+      "[tech] Engine-breed, geraakt deze missie: onder 40% score is het eindscherm een doodlopende weg (geen onRetry/onBack, phase blijft 'results')",
+      "[tech] Engine-breed, geraakt deze missie concreet gezien threshold=60: score 40-59 toont misleidende 'voltooid'-knop die de run wist zonder registratie/XP",
+      "[design] Visual Precision Gate niet live geverifieerd (geen Chrome-plugin bewijs) — status unverified"
+    ],
+    "safetyScores": {
+      "aiGedrag": 9,
+      "privacy": 9
+    }
   },
   {
     "missionId": "ai-ethicus",
     "templateType": "debate-arena",
-    "priorityBand": "high",
+    "priorityBand": "low",
     "triageScores": {
       "uiux": 1,
       "slo": 0,
@@ -130,25 +146,42 @@
       "interactivity": 0,
       "total": 7
     },
-    "lastReviewed": "2026-06-26",
-    "reviewStatus": "blocked",
-    "reportPath": "business/dgskills-reviews/wave-3a-2026-06-26.md",
+    "lastReviewed": "2026-08-25",
+    "reviewStatus": "reviewed",
+    "reportPath": "business/dgskills-reviews/ai-ethicus-2026-08-25.md",
     "autoFixesApplied": 0,
     "openEscalations": [
-      "argumentPrompts wat minimaal als scaffolding voor 14-jarigen — optioneel didactisch"
+      {
+        "category": "structural",
+        "description": "Engine-brede blocking issues (dubbele voltooiing, destructieve retry-knop bij <40%, contrastbugs, geen ontdubbeling van argumenten) gelden voor alle debate-arena-missies inclusief ai-ethicus, maar zitten in gedeelde engine-bestanden buiten de whitelist van deze missie-review.",
+        "file": "src/features/missions/templates/debate-arena/DebateArena.tsx"
+      },
+      {
+        "category": "structural",
+        "description": "Debate-arena declareert enableChat/chatRoleId in de templateRegistry voor 8 missies (waaronder ai-ethicus), maar DebateArena.tsx implementeert geen chat. Beslissing nodig: chat alsnog aansluiten of de vlaggen verwijderen. Zolang beide naast elkaar bestaan klopt de AI-inventarisatie van het platform niet.",
+        "file": "src/config/templateRegistry.ts"
+      }
     ],
     "codexVerdict": null,
     "reviewScores": {
       "uiux": 8,
-      "didactiek": 9,
-      "tech": 10
+      "didactiek": 8.5,
+      "tech": 8
     },
     "proposedFixes": 0,
-    "escalationCount": 1,
+    "escalationCount": 2,
     "topIssues": [
-      "geen defecten; sterkste van de wave"
+      "[tech] Engine: dubbele XP mogelijk door ontbrekende submitting-guard op voltooiknop (raakt ai-ethicus via gedeelde CompletionScreen).",
+      "[tech] Engine: retry-knop bij <40% wist volledige leerling-state zonder bevestiging (raakt ai-ethicus via gedeelde DebateArena/CompletionScreen).",
+      "[design] Engine-brede contrastbugs (ArguePhase kwaliteitskleuren, ontbrekende htmlFor/aria-label op textareas) raken ook ai-ethicus maar zijn niet mission-specifiek fixbaar."
     ],
-    "statusNote": "normalisatie 2026-07-01 (run wave 4+): wacht op Yorin-beslissing over openEscalations"
+    "statusNote": "sweep wave 23 2026-08-25: verse review (alle missies); veiligheids-pass Opus high",
+    "triageScore": 1.65,
+    "verdict": "ok",
+    "safetyScores": {
+      "aiGedrag": 7,
+      "privacy": 9
+    }
   },
   {
     "missionId": "ai-spiegel",
@@ -629,7 +662,7 @@
   {
     "missionId": "code-denker",
     "templateType": "scenario-engine",
-    "priorityBand": "high",
+    "priorityBand": "medium",
     "triageScores": {
       "uiux": 2,
       "slo": 0,
@@ -637,23 +670,42 @@
       "interactivity": 0,
       "total": 6
     },
-    "lastReviewed": "2026-08-08",
-    "reviewStatus": "klaar",
-    "reportPath": "business/dgskills-reviews/j1p2-batch-2026-08-06.md",
-    "autoFixesApplied": 2,
-    "openEscalations": [],
-    "codexVerdict": "ALLOW",
-    "escalationCount": 0,
-    "reviewScores": {
-      "uiux": 8,
-      "didactiek": 7,
-      "tech": 9
-    },
-    "proposedFixes": 1,
-    "topIssues": [
-      "Wereldkaart vraagt extra visuele vertaling"
+    "lastReviewed": "2026-08-25",
+    "reviewStatus": "reviewed",
+    "reportPath": "business/dgskills-reviews/code-denker-2026-08-25.md",
+    "autoFixesApplied": 0,
+    "openEscalations": [
+      {
+        "category": "structural",
+        "description": "Blocking engine-bevinding: eindscherm onder 40% is doodlopend zonder onRetry/onBack, permanent geblokkeerd via opgeslagen phase:'results'. Raakt alle 12 scenario-missies inclusief code-denker; fix hoort in ScenarioEngine.tsx/CompletionScreen.tsx, niet in deze missie-config.",
+        "file": "src/features/missions/templates/scenario-engine/ScenarioEngine.tsx"
+      },
+      {
+        "category": "structural",
+        "description": "scoreOrderPriority mist gokcorrectie (enige scoreformule zonder baseline); ronde 2 van code-denker gebruikt dit type. Fix hoort in FeedbackBanner.tsx, engine-breed.",
+        "file": "src/features/missions/templates/scenario-engine/sub/FeedbackBanner.tsx"
+      }
     ],
-    "statusNote": "Browserreview op 4 schermformaten, plus adversariële tegenlezing door Codex. Lokaal; AI-stap en server-side voortgang niet bewezen."
+    "codexVerdict": null,
+    "escalationCount": 2,
+    "reviewScores": {
+      "uiux": 7,
+      "didactiek": 7.5,
+      "tech": 6
+    },
+    "proposedFixes": 0,
+    "topIssues": [
+      "[tech] Geërfd van engine: onder 40% score is het eindscherm doodlopend (geen onRetry/onBack), en opgeslagen phase:'results' herstelt dit permanent bij elk bezoek. Raakt code-denker net als alle scenario-missies.",
+      "[design] Ronde 2 (order-priority) erft engine-contrastprobleem: bg-duck-error text-white ~3,6:1, onder AA 4,5:1.",
+      "[design] Geen focusbeheer bij rondewisseling (engine-breed), 4 rondes in deze missie zonder aankondiging voor schermlezers."
+    ],
+    "statusNote": "sweep wave 23 2026-08-25: verse review (alle missies); veiligheids-pass Opus high",
+    "triageScore": 3.3,
+    "verdict": "fix-eerst",
+    "safetyScores": {
+      "aiGedrag": 9,
+      "privacy": 9
+    }
   },
   {
     "missionId": "code-review-2",
@@ -720,21 +772,42 @@
       "interactivity": 0,
       "total": 2
     },
-    "lastReviewed": "2026-07-02",
-    "reviewStatus": "fixed",
-    "reportPath": "business/dgskills-reviews/cookie-crusher-2026-07-02.md",
+    "lastReviewed": "2026-08-25",
+    "reviewStatus": "reviewed",
+    "reportPath": "business/dgskills-reviews/cookie-crusher-2026-08-25.md",
     "autoFixesApplied": 0,
-    "openEscalations": [],
+    "openEscalations": [
+      {
+        "category": "structural",
+        "description": "Permanent geblokkeerd resultatenscherm onder 40% score zit in de gedeelde scenario-engine, niet in cookie-crusher.ts — kan niet mechanisch binnen deze config gefixt worden en raakt alle 12 scenario-engine missies. Hoort in een aparte engine-fix-track.",
+        "file": "src/features/missions/templates/scenario-engine/ScenarioEngine.tsx"
+      },
+      {
+        "category": "privacy",
+        "description": "cookie-crusher leert leerlingen dat 'consent or pay' een eerlijk model is en accepteren van gepersonaliseerde advertenties een bewuste keuze. Dit staat op gespannen voet met de EDPB-opinie van april 2024 over betalen-of-toestemmen bij grote platforms. Juridische toets nodig voordat dit als AVG-les naar minderjarigen gaat.",
+        "file": "src/features/missions/templates/scenario-engine/configs/cookie-crusher.ts"
+      }
+    ],
     "codexVerdict": null,
     "reviewScores": {
-      "uiux": 8,
+      "uiux": 7.5,
       "didactiek": 8,
-      "tech": 9
+      "tech": 6
     },
-    "triageScore": 1.7,
-    "verdict": "ok",
-    "statusNote": "wave 18: schoon — scenario-feiten (AVG/dark patterns) en scoreformules nagerekend; geen client/server-promptdrift; resterende punten zijn platform-breed",
-    "escalationCount": 0
+    "triageScore": 2.75,
+    "verdict": "fix-eerst",
+    "statusNote": "sweep wave 23 2026-08-25: verse review (alle missies); veiligheids-pass Opus high",
+    "escalationCount": 2,
+    "proposedFixes": 0,
+    "topIssues": [
+      "[tech] Engine-brede bug: resultatenscherm onder 40% heeft geen werkende voltooiingsknop en geen terugweg; phase 'results' wordt opgeslagen waardoor de missie permanent geblokkeerd raakt voor leerlingen onder de drempel. Raakt cookie-crusher net als alle 12 scenario-engine missies.",
+      "[design] OrderPriorityRound gebruikt bg-duck-error text-white (~3,6:1 contrast) bij foute feedback in ronde 'meest-manipulatief' — onder WCAG AA 4,5:1. Engine-brede styling-bevinding, hier concreet zichtbaar.",
+      "[tech] Order-priority scoreformule (ronde 'meest-manipulatief', 5 items) heeft geen gokcorrectie: klikken zonder lezen levert gemiddeld ~9/25 op, met 16% kans op de 'bijna foutloos'-badge zonder redeneren."
+    ],
+    "safetyScores": {
+      "aiGedrag": 7,
+      "privacy": 6
+    }
   },
   {
     "missionId": "cyber-detective",
@@ -1031,7 +1104,7 @@
   {
     "missionId": "data-speurder",
     "templateType": "scenario-engine",
-    "priorityBand": "high",
+    "priorityBand": "low",
     "triageScores": {
       "uiux": 2,
       "slo": 0,
@@ -1039,27 +1112,42 @@
       "interactivity": 0,
       "total": 6
     },
-    "lastReviewed": "2026-07-01",
-    "reviewStatus": "blocked",
-    "reportPath": "business/dgskills-reviews/data-speurder-2026-07-01.md",
+    "lastReviewed": "2026-08-25",
+    "reviewStatus": "reviewed",
+    "reportPath": "business/dgskills-reviews/data-speurder-2026-08-25.md",
     "autoFixesApplied": 0,
     "openEscalations": [
-      "slo-content: learningObjectives-array voor data-speurder.ts — inhoudelijke leerdoelformulering, Yorin keurt"
+      {
+        "category": "structural",
+        "description": "Geërfde blocking engine-bug (ScenarioEngine.tsx): eindscherm onder 40% totaalscore heeft geen uitweg (disabled knop, geen onRetry/onBack, phase 'results' wordt opgeslagen) — raakt data-speurder net zo hard als alle 12 scenario-missies. Niet oplosbaar op configniveau, hoort bij de engine-fix uit de gedeelde engine-pass.",
+        "file": "src/features/missions/templates/scenario-engine/ScenarioEngine.tsx"
+      },
+      {
+        "category": "privacy",
+        "description": "De server-side coachprompt van data-speurder (ook aanwezig in supabase/functions/_shared/systemInstructions.ts) vraagt om werkelijke schermtijd-per-app van minderjarigen en om onderlinge vergelijking tussen leerlingen, terwijl de missie die data niet gebruikt. Verwijderen of herschrijven naar de feitelijke opdracht, zodat activering van de chat niet stilzwijgend een dataverzameling zonder grondslag opent.",
+        "file": "src/config/agents/year1.tsx"
+      }
     ],
     "codexVerdict": null,
-    "escalationCount": 1,
+    "escalationCount": 2,
     "reviewScores": {
-      "uiux": 8,
-      "didactiek": 7,
-      "tech": 9
+      "uiux": 7.5,
+      "didactiek": 8,
+      "tech": 8.5
     },
-    "proposedFixes": 1,
+    "proposedFixes": 0,
     "topIssues": [
-      "gedeelde FeedbackBanner contrast-bug (alle scenario-missies)",
-      "geen expliciete learningObjectives-array",
-      "VSO-code indirecte SLO-match"
+      "[design] Ronde 3 items zijn merkbaar langer dan ronde 1/4, ongelijke leestijd per ronde.",
+      "[design] Visual Precision Gate niet apart met Chrome-plugin geverifieerd voor deze missie — unverified, niet fail.",
+      "[didactiek] Ronde 2 (order-priority) heeft een zacht randgeval tussen positie 2 en 3 (staafdiagram vs. temperatuur) dat de explanation zelf erkent als 'kan ook' — geen fout, wel didactisch minder scherp."
     ],
-    "statusNote": "wave 5 fix-pass 2026-07-01: 0 toepasbaar; wacht op Yorin"
+    "statusNote": "sweep wave 23 2026-08-25: verse review (alle missies); veiligheids-pass Opus high",
+    "triageScore": 2,
+    "verdict": "ok",
+    "safetyScores": {
+      "aiGedrag": 7,
+      "privacy": 5
+    }
   },
   {
     "missionId": "data-verzamelaar",
@@ -1219,7 +1307,7 @@
   {
     "missionId": "digital-forensics",
     "templateType": "scenario-engine",
-    "priorityBand": "high",
+    "priorityBand": "medium",
     "triageScores": {
       "uiux": 2,
       "slo": 1,
@@ -1227,36 +1315,54 @@
       "interactivity": 0,
       "total": 8
     },
-    "lastReviewed": "2026-07-01",
-    "reviewStatus": "blocked",
-    "reportPath": "business/dgskills-reviews/digital-forensics-2026-07-01.md",
-    "autoFixesApplied": 1,
+    "lastReviewed": "2026-08-25",
+    "reviewStatus": "fixed",
+    "reportPath": "business/dgskills-reviews/digital-forensics-2026-08-25.md",
+    "autoFixesApplied": 2,
     "openEscalations": [
-      "content-ontwerp: ronde 1 (admin, titel '×5' vs log ×4, succes 22:54:19) vs ronde 2 (dr_bakker, 2 fails, succes 22:54:22) — mogelijk zelfde incident met tegenstrijdige details; kies één verhaallijn (agent-fix hierop is teruggedraaid)",
-      "design-identiteit: lab-coral/lab-teal in agent visualPreview — duck-palet heeft geen equivalent (Yorin beslist)",
-      "curriculum-keuze: SLO 21C (mapping regel 169) valt buiten sloFocus ['23A','21A'] van J3-P2 — mapping aanpassen of sloFocus uitbreiden"
+      {
+        "category": "structural",
+        "description": "Dood-lopend eindscherm onder 40% score is een engine-breed defect (ScenarioEngine.tsx + CompletionScreen.tsx) dat alle 12 scenario-engine-missies blokkeert, incl. digital-forensics. Vereist een engine-fix, niet oplosbaar binnen de mission-config-whitelist.",
+        "file": "src/features/missions/templates/scenario-engine/ScenarioEngine.tsx"
+      },
+      {
+        "category": "structural",
+        "description": "Order-priority-ronde mist gokcorrectie (engine-brede scoreformule in FeedbackBanner.tsx); digital-forensics heeft zo'n ronde (tijdlijn-bouwen, 5 items) en is dus direct blootgesteld.",
+        "file": "src/features/missions/templates/scenario-engine/sub/FeedbackBanner.tsx"
+      },
+      {
+        "category": "ai-act",
+        "description": "Agent-rol stuurt aan op een daderschapsconclusie die de missie zelf als foutief bestempelt; bij activering van chat coacht de AI de leerling tegen het leerdoel in. Vraagt een inhoudelijke beslissing van Yorin (rol herschrijven naar de vier rondes, zoals bij factchecker al is gedaan).",
+        "file": "src/config/agents/year3.tsx"
+      }
     ],
-    "codexVerdict": "BLOCK",
+    "codexVerdict": null,
     "reviewScores": {
-      "uiux": 2,
-      "didactiek": 2,
-      "tech": 3
+      "uiux": 7.5,
+      "didactiek": 8.5,
+      "tech": 4
     },
     "goalClear": true,
     "goalAchieved": true,
-    "proposedFixes": 3,
+    "proposedFixes": 2,
     "escalationCount": 3,
     "topIssues": [
-      "SLO 21C valt buiten J3-P2 sloFocus → mismatch",
-      "Badge color '#202023' hardcoded hex",
-      "missionGoal ontbreekt in missionGoals.ts"
+      "[tech] Geërfd van gedeelde scenario-engine: onder 40% score is de voltooi-knop uitgeschakeld zonder onRetry/terugweg, en phase:'results' wordt opgeslagen — permanente blokkade. Raakt alle 12 scenario-missies incl. digital-forensics.",
+      "[design] Alle vier badge-tiers gebruiken hetzelfde hex-literal '#202023' — geen visuele differentiatie tussen 80/60/40/0-niveaus.",
+      "[tech] Geërfd: order-priority scoreformule mist gokcorrectie; ronde 'tijdlijn-bouwen' heeft 5 items waarbij klakkeloos klikken gemiddeld 9/25 oplevert (16% haalt toevallig de 'bijna foutloos'-drempel)."
     ],
-    "statusNote": "wave 6: agent-fix teruggedraaid na gate-BLOCK (verhaallijn-inconsistentie); content-ontwerpkeuze bij Yorin"
+    "statusNote": "sweep wave 23 2026-08-25: verse review (alle missies); veiligheids-pass Opus high; 2 auto-fixes",
+    "triageScore": 3.15,
+    "verdict": "fix-eerst",
+    "safetyScores": {
+      "aiGedrag": 7,
+      "privacy": 9
+    }
   },
   {
     "missionId": "digital-rights-defender",
     "templateType": "debate-arena",
-    "priorityBand": "high",
+    "priorityBand": "low",
     "triageScores": {
       "uiux": 1,
       "slo": 0,
@@ -1264,26 +1370,42 @@
       "interactivity": 0,
       "total": 7
     },
-    "lastReviewed": "2026-06-26",
-    "reviewStatus": "blocked",
-    "reportPath": "business/dgskills-reviews/wave-3b-2026-06-26.md",
-    "autoFixesApplied": 0,
+    "lastReviewed": "2026-08-25",
+    "reviewStatus": "fixed",
+    "reportPath": "business/dgskills-reviews/digital-rights-defender-2026-08-25.md",
+    "autoFixesApplied": 1,
     "openEscalations": [
-      "argumentPrompts dood veld (gedeelde debate-engine)",
-      "4 badges met identieke kleur #202023 — geen visueel niveau-onderscheid (ontwerpkeuze)"
+      {
+        "category": "privacy",
+        "description": "Agent-rol vraagt om inventarisatie van de werkelijke camera- en volgsystemen van de eigen school; bij het ooit aanzetten van chat gaat die schoolspecifieke informatie richting het AI-endpoint. Rol herschrijven of expliciet 'geen eigen school-/persoonsgegevens delen' toevoegen vóór activering.",
+        "file": "src/config/agents/year2.tsx"
+      },
+      {
+        "category": "privacy",
+        "description": "Missie-voortgang met vrije tekst wordt zonder ingelogde sessie onder een niet-persoonsgebonden localStorage-sleutel bewaard; op gedeelde schoolapparaten leesbaar door de volgende leerling. Raakt alle template-missies, niet alleen deze.",
+        "file": "src/hooks/useMissionAutoSave.ts"
+      }
     ],
     "codexVerdict": null,
     "reviewScores": {
-      "uiux": 9,
-      "didactiek": 9,
-      "tech": 9
+      "uiux": 8,
+      "didactiek": 7,
+      "tech": 8
     },
-    "proposedFixes": 0,
+    "proposedFixes": 1,
     "escalationCount": 2,
     "topIssues": [
-      "geen defecten; sterke missie"
+      "[didactiek] Agent-rol beschrijft een privacy-manifest-opdracht die niet bestaat in de debate-arena-flow; AI-coach communiceert verkeerd einddoel",
+      "[design] Stakeholder-kleur index-risico blijft kwetsbaar als een 5e stakeholder wordt toegevoegd (engine-issue, raakt deze config nu niet)",
+      "[tech] Engine-brede bevindingen (dubbele voltooiknop, dataverlies bij retry) gelden ook hier maar zijn al gedekt door de gedeelde engine-fix"
     ],
-    "statusNote": "normalisatie 2026-07-01 (run wave 4+): wacht op Yorin-beslissing over openEscalations"
+    "statusNote": "sweep wave 23 2026-08-25: verse review (alle missies); veiligheids-pass Opus high; 1 auto-fixes",
+    "triageScore": 2.4,
+    "verdict": "fix-eerst",
+    "safetyScores": {
+      "aiGedrag": 7,
+      "privacy": 8
+    }
   },
   {
     "missionId": "digital-storyteller",
@@ -1336,7 +1458,7 @@
   {
     "missionId": "digitale-balans-coach",
     "templateType": "debate-arena",
-    "priorityBand": "low",
+    "priorityBand": "medium",
     "triageScores": {
       "uiux": 2,
       "slo": 0,
@@ -1344,21 +1466,47 @@
       "interactivity": 0,
       "total": 4
     },
-    "lastReviewed": "2026-07-02",
-    "reviewStatus": "fixed",
-    "reportPath": "business/dgskills-reviews/digitale-balans-coach-2026-07-02.md",
+    "lastReviewed": "2026-08-25",
+    "reviewStatus": "reviewed",
+    "reportPath": "business/dgskills-reviews/digitale-balans-coach-2026-08-25.md",
     "autoFixesApplied": 0,
-    "openEscalations": [],
+    "openEscalations": [
+      {
+        "category": "structural",
+        "description": "Blocking bevindingen (dubbele voltooiknop, dataverlies bij <40%, scoring-optelfout) zitten in de gedeelde debate-arena-engine, niet in deze missieconfig — vereisen een engine-brede fix buiten de whitelist van deze missiereview.",
+        "file": "src/features/missions/templates/debate-arena/DebateArena.tsx"
+      },
+      {
+        "category": "privacy",
+        "description": "Missie elicitieert zelfrapportage over schermgebruik en zelfbeheersing van een minderjarige zonder de in dit project gebruikelijke 'deel geen eigen gegevens'-instructie. Vraagt een beslissing van Yorin: guard-tekst toevoegen naar het model van welzijnsonderzoeker.",
+        "file": "src/features/missions/templates/debate-arena/configs/digitale-balans-coach.ts"
+      },
+      {
+        "category": "prose-only",
+        "description": "Welzijnsthema zonder enige doorverwijzingsroute: het welzijnsprotocol zit uitsluitend in de AI-staart en deze missie heeft geen AI. Structurele keuze nodig (bijv. een vaste hulpregel in het debate-arena-resultatenscherm) in plaats van een tekstuele fix in deze ene config.",
+        "file": "src/features/missions/templates/debate-arena/configs/digitale-balans-coach.ts"
+      }
+    ],
     "codexVerdict": null,
-    "escalationCount": 0,
+    "escalationCount": 3,
     "reviewScores": {
-      "uiux": 8.5,
-      "didactiek": 9,
-      "tech": 9
+      "uiux": 6.5,
+      "didactiek": 8,
+      "tech": 6
     },
-    "triageScore": 1.15,
-    "statusNote": "wave 12: welzijnscheck expliciet schoon (gevoelig thema correct behandeld)",
-    "verdict": "ok"
+    "triageScore": 5.65,
+    "statusNote": "sweep wave 23 2026-08-25: verse review (alle missies); veiligheids-pass Opus high",
+    "verdict": "fix-eerst",
+    "proposedFixes": 0,
+    "topIssues": [
+      "[tech] Erft engine-bug: dubbele-klik op voltooiknop kan dubbele XP toekennen (geen submitting-guard).",
+      "[tech] Erft engine-bug: <40%-pad wist alle argumenten, tegenargument en 3 reflecties zonder waarschuwing — grootste dataverlies-risico binnen de debate-arena-familie door 3 reflectievragen.",
+      "[tech] Erft engine-bug: deelscores sommeren tot 110/100 bij deze missie (drie reflectievragen), expliciet genoemd in engine-rapport."
+    ],
+    "safetyScores": {
+      "aiGedrag": 8,
+      "privacy": 6
+    }
   },
   {
     "missionId": "eindproject-j2",
@@ -1468,7 +1616,7 @@
   {
     "missionId": "factchecker",
     "templateType": "scenario-engine",
-    "priorityBand": "low",
+    "priorityBand": "medium",
     "triageScores": {
       "uiux": 2,
       "slo": 1,
@@ -1476,21 +1624,42 @@
       "interactivity": 0,
       "total": 5
     },
-    "lastReviewed": "2026-07-01",
-    "reviewStatus": "fixed",
-    "reportPath": "business/dgskills-reviews/factchecker-2026-07-01.md",
+    "lastReviewed": "2026-08-25",
+    "reviewStatus": "reviewed",
+    "reportPath": "business/dgskills-reviews/factchecker-2026-08-25.md",
     "autoFixesApplied": 0,
-    "openEscalations": [],
+    "openEscalations": [
+      {
+        "category": "structural",
+        "description": "CompletionScreen mist onRetry-koppeling en navigatie onder 40%, waardoor het resultatenscherm een permanente dead end is voor alle 12 scenario-engine-missies inclusief factchecker.",
+        "file": "src/features/missions/templates/scenario-engine/ScenarioEngine.tsx"
+      },
+      {
+        "category": "structural",
+        "description": "Drempel-mismatch: CompletionScreen toont voltooiingsknop vanaf 40%, maar factchecker's missionGoals-drempel is 60 — leerlingen tussen 40-59% verliezen hun run zonder registratie of XP.",
+        "file": "src/config/missionGoals.ts"
+      }
+    ],
     "codexVerdict": null,
-    "escalationCount": 0,
+    "escalationCount": 2,
     "reviewScores": {
-      "uiux": 8.5,
-      "didactiek": 8.5,
-      "tech": 7
+      "uiux": 6,
+      "didactiek": 7.5,
+      "tech": 8
     },
-    "triageScore": 1.95,
-    "statusNote": "wave 8: 22 inhoudsclaims feitelijk gecheckt, 0 fouten; schoon",
-    "verdict": "ok"
+    "triageScore": 4.35,
+    "statusNote": "sweep wave 23 2026-08-25: verse review (alle missies); veiligheids-pass Opus high",
+    "verdict": "fix-eerst",
+    "proposedFixes": 0,
+    "topIssues": [
+      "[didactiek] missionGoals.ts zet threshold 60 voor factchecker terwijl CompletionScreen de voltooi-knop al vanaf 40% niet-disabled toont; leerlingen tussen 40-59% krijgen een misleidende voltooiingsbelofte en verliezen hun run zonder XP/registratie.",
+      "[didactiek] Geërfd van de gedeelde engine: onder 40% is het resultatenscherm een dead end (disabled knop, geen onRetry/onBack), en phase 'results' wordt opgeslagen zodat de leerling permanent vastzit.",
+      "[tech] Order-priority ronde (5 items) erft de ontbrekende gokcorrectie in scoreOrderPriority — gemiddeld 9/25 punten bij nietsdoen, 16% haalt toevallig de 'bijna foutloos'-drempel."
+    ],
+    "safetyScores": {
+      "aiGedrag": 8,
+      "privacy": 8
+    }
   },
   {
     "missionId": "filter-bubble-breaker",
@@ -1522,7 +1691,7 @@
   {
     "missionId": "future-forecaster",
     "templateType": "debate-arena",
-    "priorityBand": "high",
+    "priorityBand": "medium",
     "triageScores": {
       "uiux": 1,
       "slo": 0,
@@ -1530,26 +1699,37 @@
       "interactivity": 0,
       "total": 7
     },
-    "lastReviewed": "2026-06-26",
-    "reviewStatus": "blocked",
-    "reportPath": "business/dgskills-reviews/wave-3b-2026-06-26.md",
+    "lastReviewed": "2026-08-25",
+    "reviewStatus": "reviewed",
+    "reportPath": "business/dgskills-reviews/future-forecaster-2026-08-25.md",
     "autoFixesApplied": 0,
     "openEscalations": [
-      "argumentPrompts dood veld (gedeelde debate-engine)",
-      "NB reviewer-melding maxScore was vals alarm (rekenfout: componenten = 100 = maxScore)"
+      {
+        "category": "ai-act",
+        "description": "Missie presenteert AI-emotieherkenning bij leerlingen ('weet wanneer ik gestrest ben') als wenselijk en onweersproken, terwijl dat in het onderwijs onder de EU AI Act een verboden praktijk is. Inhoudelijke beslissing voor Yorin: stakeholder-tegengeluid of takeaway toevoegen, zeker gezien de AI-Act-claims van het platform.",
+        "file": "src/features/missions/templates/debate-arena/configs/future-forecaster.ts"
+      }
     ],
     "codexVerdict": null,
     "reviewScores": {
-      "uiux": 8,
-      "didactiek": 9,
-      "tech": 8
+      "uiux": 6.5,
+      "didactiek": 8,
+      "tech": 7
     },
     "proposedFixes": 0,
     "escalationCount": 1,
     "topIssues": [
-      "argumentPrompts dood veld [ESCALATIE — shared-engine]"
+      "[design] Engine: voltooiknop niet uitgeschakeld tijdens async onComplete → dubbele XP/voltooiing bij dubbelklik.",
+      "[design] Engine: bij <40% wist dezelfde knop ('Afronden') via onRetry al het werk van de leerling zonder waarschuwing.",
+      "[design] Engine: labels/textareas in Argue/Challenge/Reflect-fase missen htmlFor/aria-label; geen focus-verplaatsing bij faseovergang."
     ],
-    "statusNote": "normalisatie 2026-07-01 (run wave 4+): wacht op Yorin-beslissing over openEscalations"
+    "statusNote": "sweep wave 23 2026-08-25: verse review (alle missies); veiligheids-pass Opus high",
+    "triageScore": 3.15,
+    "verdict": "fix-eerst",
+    "safetyScores": {
+      "aiGedrag": 6,
+      "privacy": 7
+    }
   },
   {
     "missionId": "game-director",
@@ -1773,8 +1953,8 @@
   },
   {
     "missionId": "mail-detective",
-    "templateType": "scenario-engine",
-    "priorityBand": "low",
+    "templateType": "helpdesk-shift",
+    "priorityBand": "medium",
     "triageScores": {
       "uiux": 1,
       "slo": 1,
@@ -1782,24 +1962,37 @@
       "interactivity": 0,
       "total": 3
     },
-    "lastReviewed": "2026-07-02",
-    "reviewStatus": "blocked",
-    "reportPath": "business/dgskills-reviews/mail-detective-2026-07-02.md",
+    "lastReviewed": "2026-08-25",
+    "reviewStatus": "reviewed",
+    "reportPath": "business/dgskills-reviews/mail-detective-2026-08-25.md",
     "autoFixesApplied": 0,
     "openEscalations": [
-      "didactiek: ronde 1 en 4 hebben elk 8 items per scherm — boven de leerjaar-1-richtlijn van 3-4 (zelfde beslisklasse als notificatie-ninja)",
-      "curator: phishing-fighter-overlap resteert op het Magister-kanaal-item (bijna identieke uitleg in beide missies)"
+      {
+        "category": "structural",
+        "description": "Gedeelde helpdesk-shift-engine: onComplete geeft geen scorePercent door en de puntentelling is niet gokbestendig (30% van de score hangt alleen aan veiligeAccounts, geldverlies/meldingen tellen niet mee). Raakt elke helpdesk-shift-missie, niet alleen mail-detective.",
+        "file": "src/features/missions/templates/helpdesk-shift/scoring.ts"
+      }
     ],
     "codexVerdict": null,
-    "escalationCount": 2,
+    "escalationCount": 1,
     "reviewScores": {
-      "uiux": 9,
+      "uiux": 8,
       "didactiek": 7,
-      "tech": 9
+      "tech": 4
     },
-    "triageScore": 1.8,
-    "statusNote": "wave 15: 7 mei-punten bevestigd opgelost; agentRoleIds-registratieconventie (union wel, array niet — geen runtime-effect) -> engine-lijst",
-    "verdict": "ok"
+    "triageScore": 3.6,
+    "statusNote": "sweep wave 23 2026-08-25: verse review (alle missies); veiligheids-pass Opus high",
+    "verdict": "fix-eerst",
+    "proposedFixes": 0,
+    "topIssues": [
+      "[tech] onComplete stuurt geen scorePercent door aan het platform voor deze missie.",
+      "[tech] Puntentelling niet gokbestendig: op deze config scoort 'altijd doorlaten' 63/100 en 'altijd melden' 59/100 zonder een mail te lezen, beide boven de 40%-drempel.",
+      "[didactiek] Leerdoel 4 (foute keuze heeft zichtbaar gevolg) wordt niet betrouwbaar getoetst: engine weegt alleen veiligeAccounts, niet geldKwijt (€1.250 bij mail 7, €85 bij mail 11) of meldingen."
+    ],
+    "safetyScores": {
+      "aiGedrag": 9,
+      "privacy": 10
+    }
   },
   {
     "missionId": "media-review",
@@ -2227,7 +2420,7 @@
   {
     "missionId": "notificatie-ninja",
     "templateType": "scenario-engine",
-    "priorityBand": "high",
+    "priorityBand": "medium",
     "triageScores": {
       "uiux": 2,
       "slo": 0,
@@ -2235,31 +2428,47 @@
       "interactivity": 0,
       "total": 6
     },
-    "lastReviewed": "2026-08-08",
-    "reviewStatus": "klaar",
-    "reportPath": "business/dgskills-reviews/j1p2-batch-2026-08-06.md",
+    "lastReviewed": "2026-08-25",
+    "reviewStatus": "reviewed",
+    "reportPath": "business/dgskills-reviews/notificatie-ninja-2026-08-25.md",
     "autoFixesApplied": 0,
     "openEscalations": [
-      "pedagogische-content: ronde 4 item 6 nuancering absolute claim over apps (before/after ligt klaar in rapport, Yorin keurt)",
-      "structureel-didactisch: ronde 2 order-priority met 8 items = cognitieve overload leerjaar 1 (ontwerpbeslissing)"
+      {
+        "category": "structural",
+        "description": "Doodlopend resultatenscherm onder 40% (geen onRetry/onBack, phase 'results' persistent) zit in de gedeelde ScenarioEngine.tsx en CompletionScreen.tsx, niet in de missie-config. Raakt notificatie-ninja en alle 12 scenario-engine-missies gelijk.",
+        "file": "src/features/missions/templates/scenario-engine/ScenarioEngine.tsx"
+      },
+      {
+        "category": "structural",
+        "description": "scoreOrderPriority mist gokcorrectie t.o.v. scoreSelectCorrect en scoreBinaryChoice; is engine-brede scoreformule, geen config-fix.",
+        "file": "src/features/missions/templates/scenario-engine/sub/FeedbackBanner.tsx"
+      }
     ],
     "codexVerdict": null,
     "escalationCount": 2,
     "reviewScores": {
-      "uiux": 7,
-      "didactiek": 7,
-      "tech": 8
+      "uiux": 7.5,
+      "didactiek": 8.5,
+      "tech": 6.5
     },
-    "proposedFixes": 1,
+    "proposedFixes": 0,
     "topIssues": [
-      "Veel meldingen tegelijk kan op mobiel cognitief dicht worden"
+      "[tech] Geërfd van de gedeelde engine: resultatenscherm heeft geen uitweg onder 40% (geen onRetry/onBack), phase 'results' wordt opgeslagen — permanent geblokkeerd. Raakt notificatie-ninja net als alle 12 scenario-missies. Geen config-fix mogelijk voor deze missie.",
+      "[tech] Geërfd: scoreOrderPriority (gebruikt door ronde 2, 8 items) heeft geen gokcorrectie, in tegenstelling tot de andere 3 rondes in deze missie die dat wel hebben.",
+      "[tech] Geërfd: geen focusbeheer bij rondewisseling, raakt alle 4 rondes van deze missie."
     ],
-    "statusNote": "Browserreview op 4 schermformaten, plus adversariële tegenlezing door Codex. Lokaal; AI-stap en server-side voortgang niet bewezen."
+    "statusNote": "sweep wave 23 2026-08-25: verse review (alle missies); veiligheids-pass Opus high",
+    "triageScore": 3.55,
+    "verdict": "fix-eerst",
+    "safetyScores": {
+      "aiGedrag": 9,
+      "privacy": 9
+    }
   },
   {
     "missionId": "online-helden",
     "templateType": "scenario-engine",
-    "priorityBand": "high",
+    "priorityBand": "medium",
     "triageScores": {
       "uiux": 2,
       "slo": 1,
@@ -2267,29 +2476,42 @@
       "interactivity": 0,
       "total": 9
     },
-    "lastReviewed": "2026-08-08",
+    "lastReviewed": "2026-08-25",
     "reviewStatus": "reviewed",
-    "reportPath": "business/dgskills-reviews/online-helden-2026-08-08.md",
-    "autoFixesApplied": 1,
+    "reportPath": "business/dgskills-reviews/online-helden-2026-08-25.md",
+    "autoFixesApplied": 0,
     "openEscalations": [
-      "intro is relatief conceptdicht op mobile",
-      "juridische en bronclaims vragen periodieke inhoudelijke herbevestiging"
+      {
+        "category": "structural",
+        "description": "Engine-brede blockers (CompletionScreen zonder onRetry/onBack onder 40%; drempel-mismatch 40% vs missiedrempel) raken online-helden direct omdat de missiedrempel op 60 staat — niet oplosbaar binnen deze missie-config, hoort bij het sweep-rapport voor ScenarioEngine.tsx / AuthenticatedApp.tsx.",
+        "file": "src/features/missions/templates/scenario-engine/ScenarioEngine.tsx"
+      },
+      {
+        "category": "anders",
+        "description": "Welzijnsvangnet onder de eigen platformstandaard bij een cyberpesten-missie voor 12-14-jarigen: online-helden heeft geen agent-rol en dus geen welzijnsprotocol, geen welzijnsmonitor (useWellbeingMonitor is niet gekoppeld aan het scenario-engine-sjabloon) en één enkele hulpzin in de introtekst zonder Kindertelefoon/113. Vraagt een expliciete keuze van Yorin: hulpverwijzing conform shared.tsx toevoegen aan intro én afrondscherm, of bewust accepteren dat deze missie buiten het vangnet valt.",
+        "file": "src/features/missions/templates/scenario-engine/configs/online-helden.ts"
+      }
     ],
-    "codexVerdict": "ALLOW",
+    "codexVerdict": null,
     "reviewScores": {
-      "uiux": 8,
-      "didactiek": 9,
-      "tech": 9
+      "uiux": 6,
+      "didactiek": 7.5,
+      "tech": 7
     },
     "proposedFixes": 0,
     "escalationCount": 2,
     "topIssues": [
-      "intro is relatief conceptdicht op mobile",
-      "juridische en bronclaims vragen periodieke inhoudelijke herbevestiging"
+      "[design] Onder 40% score is het eindscherm doodlopend en tussen 40-59% (onder missiedrempel 60) belooft de knop 'Missie voltooid!' terwijl de run zonder XP wordt gewist — engine-bug, maar deze missie's threshold=60 maakt het scenario reëel.",
+      "[tech] missionGoals-threshold 60 valt in de 40-59% engine-gatzone waar 'Missie voltooid!' getoond wordt maar de run zonder registratie wordt gewist.",
+      "[didactiek] Ronde 3 (order-priority, 8 items) gebruikt de enige scoreformule zonder gokcorrectie in de engine, waardoor random klikken punten kan opleveren die de indruk van beheersing geven."
     ],
-    "statusNote": "Formele J2P3-review: vier viewports en productie bewezen; nul open Blocker/High; Medium/Low geregistreerd.",
-    "triageScore": 1.4,
-    "verdict": "ok"
+    "statusNote": "sweep wave 23 2026-08-25: verse review (alle missies); veiligheids-pass Opus high",
+    "triageScore": 3.75,
+    "verdict": "fix-eerst",
+    "safetyScores": {
+      "aiGedrag": 8,
+      "privacy": 7
+    }
   },
   {
     "missionId": "open-source-contributor",
@@ -2337,7 +2559,7 @@
   {
     "missionId": "phishing-fighter",
     "templateType": "scenario-engine",
-    "priorityBand": "high",
+    "priorityBand": "low",
     "triageScores": {
       "uiux": 2,
       "slo": 1,
@@ -2345,29 +2567,44 @@
       "interactivity": 0,
       "total": 8
     },
-    "lastReviewed": "2026-07-01",
-    "reviewStatus": "blocked",
-    "reportPath": "business/dgskills-reviews/phishing-fighter-2026-07-01.md",
-    "autoFixesApplied": 2,
+    "lastReviewed": "2026-08-25",
+    "reviewStatus": "reviewed",
+    "reportPath": "business/dgskills-reviews/phishing-fighter-2026-08-25.md",
+    "autoFixesApplied": 0,
     "openEscalations": [
-      "design-identiteit: visualPreview-gradient legacy lab-gold/lab-coral — duck-palet heeft geen warm equivalent (Yorin beslist; agent-swap naar acid/ink is teruggedraaid in eindreview)"
+      {
+        "category": "structural",
+        "description": "Blocking dead-end completion screen onder 40% score zit in de gedeelde ScenarioEngine (raakt alle 12 scenario-engine missies, dus ook phishing-fighter) en kan niet per missie-config worden opgelost — vereist een engine-fix.",
+        "file": "src/features/missions/templates/scenario-engine/ScenarioEngine.tsx"
+      },
+      {
+        "category": "security",
+        "description": "AI-rol phishing-fighter bevat een instructie die het model aanspoort een 15-16-jarige te laten bedenken hoe je een overtuigende phishing-mail maakt (year3.tsx:733), in directe tegenspraak met de SCOPE GUARD in dezelfde rol (year3.tsx:762). Nu zonder effect omdat de rol slapend is, maar het is een latent misbruikpad dat gerepareerd moet zijn vóór activatie of hergebruik van deze rol.",
+        "file": "src/config/agents/year3.tsx"
+      }
     ],
-    "codexVerdict": "ALLOW",
+    "codexVerdict": null,
     "reviewScores": {
-      "uiux": 2,
-      "didactiek": 2,
-      "tech": 3
+      "uiux": 7.5,
+      "didactiek": 8,
+      "tech": 8.5
     },
     "goalClear": false,
     "goalAchieved": false,
-    "proposedFixes": 3,
-    "escalationCount": 1,
+    "proposedFixes": 0,
+    "escalationCount": 2,
     "topIssues": [
-      "missionGoal ontbreekt → IntroScreen toont geen doel",
-      "22A alleen via agent-chat, niet engine-rondes [ESCALATIE]",
-      "Badge-kleuren hardcoded hex"
+      "[design] Gedeeld: dead-end CompletionScreen onder 40% score (geen onRetry, geen terugweg, phase blijft 'results' opgeslagen) — raakt alle scenario-engine missies inclusief deze.",
+      "[design] Gedeeld: bg-duck-error text-white in OrderPriorityRound (gebruikt door ronde 'gevaarlijkst-eerst') haalt ~3,6:1 contrast, onder WCAG AA 4,5:1.",
+      "[didactiek] Ronde 'gevaarlijkst-eerst' (order-priority) heeft geen gokcorrectie: klikken zonder lezen levert gemiddeld 9/25 op en 16% van leerlingen haalt de 'bijna foutloos'-drempel — ondermijnt het leerdoel dat juist onderscheidingsvermogen test."
     ],
-    "statusNote": "wave 6 fix-pass 2026-07-01: 1 fix netto; gradient-swap teruggedraaid (identiteitsbeslissing)"
+    "statusNote": "sweep wave 23 2026-08-25: verse review (alle missies); veiligheids-pass Opus high",
+    "triageScore": 2,
+    "verdict": "ok",
+    "safetyScores": {
+      "aiGedrag": 7,
+      "privacy": 10
+    }
   },
   {
     "missionId": "pitch-perfect",
@@ -2493,7 +2730,7 @@
   {
     "missionId": "policy-maker",
     "templateType": "debate-arena",
-    "priorityBand": "high",
+    "priorityBand": "low",
     "triageScores": {
       "uiux": 2,
       "slo": 1,
@@ -2501,32 +2738,43 @@
       "interactivity": 0,
       "total": 7
     },
-    "lastReviewed": "2026-07-01",
-    "reviewStatus": "blocked",
-    "reportPath": "business/dgskills-reviews/policy-maker-2026-07-01.md",
+    "lastReviewed": "2026-08-25",
+    "reviewStatus": "reviewed",
+    "reportPath": "business/dgskills-reviews/policy-maker-2026-08-25.md",
     "autoFixesApplied": 0,
     "openEscalations": [
-      "design-tokenisatie: badge-color #202023 template-breed in alle 4 debate-arena-configs; rapportvoorstel var(--color-duck-ink) is technisch onjuist (geen CSS-vars in dit project)",
-      "didactiek: missionObjective 'schrijf beleidsvoorstel' maar template heeft geen schrijfveld — geen whitelist-conform tekstvoorstel in rapport",
-      "ai-endpoint: systemInstruction client-side in year3.tsx — mogelijk prompt-injection-oppervlak, verificatie nodig",
-      "security-verificatie: promptSanitizer-toepassing op chat-input niet verifieerbaar zonder edge-function-inspectie"
+      {
+        "category": "structural",
+        "description": "policy-maker declareert enableChat: true en chatRoleId in templateRegistry.ts:95, maar het debate-arena-sjabloon consumeert die velden niet en de router geeft ze niet door. De AI-coach uit de rolbeschrijving bereikt de leerling nooit. Vraagt een besluit: chat daadwerkelijk aansluiten op DebateArena (dan is een nieuwe AI-gedragsreview nodig, inclusief invoersanitisatie en welzijnsmonitor), of de vlaggen verwijderen zodat registry en werkelijkheid overeenkomen.",
+        "file": "src/config/templateRegistry.ts"
+      },
+      {
+        "category": "privacy",
+        "description": "policy-maker is de enige missie in deze wave met vrije-tekstinvoer van leerlingen. Die tekst wordt niet gescand door useWellbeingMonitor (niet gekoppeld aan DebateArena) en belandt bij een ontbrekende sessie in een niet-gebruikersgebonden localStorage-sleutel (useMissionAutoSave.ts:197), wat op een gedeelde schoolcomputer leerlingtekst bij een volgende gebruiker kan achterlaten. Beide punten raken leerlingdata en horen bij Yorin te liggen, niet bij een automatische fix.",
+        "file": "src/features/missions/templates/debate-arena/DebateArena.tsx"
+      }
     ],
     "codexVerdict": null,
     "reviewScores": {
-      "uiux": 2,
-      "didactiek": 2,
-      "tech": 2
+      "uiux": 8,
+      "didactiek": 8,
+      "tech": 8
     },
     "goalClear": true,
     "goalAchieved": false,
-    "proposedFixes": 5,
-    "escalationCount": 4,
+    "proposedFixes": 0,
+    "escalationCount": 2,
     "topIssues": [
-      "missionGoal ontbreekt → IntroScreen goal-blok leeg",
-      "missionObjective 'schrijf beleidsvoorstel' maar template heeft geen schrijfstap [ESCALATIE]",
-      "systemInstruction client-side in year3.tsx [ESCALATIE]"
+      "[design] 4 stakeholders raken engine-brede kleurindex-4-bug (geel-op-wit) niet aan; blijft relevant bij toekomstige uitbreiding naar 5 stakeholders.",
+      "[didactiek] Slechts 2 reflectionQuestions; reden dat de engine-brede 110-puntenbug (bij 3 vragen) hier niet optreedt. Bij toekomstige uitbreiding naar 3 vragen weging herzien."
     ],
-    "statusNote": "wave 4 fix-pass 2026-07-01: 0 toepasbaar; wacht op Yorin-beslissingen"
+    "statusNote": "sweep wave 23 2026-08-25: verse review (alle missies); veiligheids-pass Opus high",
+    "triageScore": 1.4,
+    "verdict": "ok",
+    "safetyScores": {
+      "aiGedrag": 8,
+      "privacy": 8
+    }
   },
   {
     "missionId": "portfolio-builder",
@@ -2706,7 +2954,7 @@
   {
     "missionId": "reflection-report",
     "templateType": "debate-arena",
-    "priorityBand": "high",
+    "priorityBand": "medium",
     "triageScores": {
       "uiux": 2,
       "slo": 0,
@@ -2714,31 +2962,44 @@
       "interactivity": 2,
       "total": 10
     },
-    "lastReviewed": "2026-07-01",
-    "reviewStatus": "blocked",
-    "reportPath": "business/dgskills-reviews/reflection-report-2026-07-01.md",
-    "autoFixesApplied": 0,
+    "lastReviewed": "2026-08-25",
+    "reviewStatus": "fixed",
+    "reportPath": "business/dgskills-reviews/reflection-report-2026-08-25.md",
+    "autoFixesApplied": 1,
     "openEscalations": [
-      "structureel: template/doel-mismatch — agent beschrijft essay-schrijfopdracht, debate-arena implementeert debat (productkeuze)",
-      "ai-endpoint: systemInstruction client-side inline in year3.tsx vs server-side systemInstructions.ts — verificatie nodig welke de AI-aanroep stuurt",
-      "design: lab-coral -> duck-token-swap onuitvoerbaar — duck-palet heeft geen coral-equivalent (design-beslissing)"
+      {
+        "category": "privacy",
+        "description": "reflection-report: chatrol verzamelt persoonlijke zelfreflectie (sterke/zwakke punten, leermomenten) zonder dataminimalisatie-instructie. Nu inert omdat DebateArena geen chat rendert, maar enableChat staat op true — zodra chat gewired wordt, gaat leerling-zelfevaluatie ongefilterd naar het AI-endpoint. Vooraf beoordelen.",
+        "file": "src/config/agents/year3.tsx"
+      },
+      {
+        "category": "structural",
+        "description": "reflection-report: enableChat/chatRoleId in de registry is inert (DebateArena leest de entry niet). Beslis expliciet: chat wiren (mét welzijnsmonitor en AI-disclosure) of de vlag verwijderen, zodat de configuratie niet iets belooft wat niet bestaat.",
+        "file": "src/config/templateRegistry.ts"
+      }
     ],
     "codexVerdict": null,
     "reviewScores": {
-      "uiux": 2,
-      "didactiek": 1,
-      "tech": 2
+      "uiux": 6,
+      "didactiek": 5,
+      "tech": 7
     },
     "goalClear": false,
     "goalAchieved": false,
-    "proposedFixes": 5,
-    "escalationCount": 3,
+    "proposedFixes": 1,
+    "escalationCount": 2,
     "topIssues": [
-      "Template/doel-mismatch: agent beschrijft essay, template implementeert debat [ESCALATIE]",
-      "Ontbrekende missionGoal → IntroScreen krijgt undefined goal",
-      "systemInstruction client-side inline in year3.tsx [ESCALATIE]"
+      "[design] Agentkaart in src/config/agents/year3.tsx presenteert de missie als individueel schrijf-essay ('Schrijf een reflectieverslag...'), terwijl de missie een debate-arena is over of reflectie een kerndoel moet zijn — briefing en uitvoering matchen niet.",
+      "[didactiek] Briefing bereidt leerlingen voor op zelfstandig schrijven i.p.v. standpuntbepaling/argumentatie tegen 4 stakeholders, wat het leerdoel ondermijnt.",
+      "[didactiek] 2 reflectionQuestions in de config — de gedeelde scoring-bug (som > 100 bij 3 vragen) is hier niet van toepassing."
     ],
-    "statusNote": "wave 4 fix-pass 2026-07-01: 0 toepasbaar; wacht op Yorin-beslissingen"
+    "statusNote": "sweep wave 23 2026-08-25: verse review (alle missies); veiligheids-pass Opus high; 1 auto-fixes",
+    "triageScore": 4.1,
+    "verdict": "fix-eerst",
+    "safetyScores": {
+      "aiGedrag": 8,
+      "privacy": 8
+    }
   },
   {
     "missionId": "research-project",
@@ -2850,7 +3111,7 @@
   {
     "missionId": "schermtijd-coach",
     "templateType": "debate-arena",
-    "priorityBand": "high",
+    "priorityBand": "medium",
     "triageScores": {
       "uiux": 2,
       "slo": 0,
@@ -2858,26 +3119,42 @@
       "interactivity": 0,
       "total": 9
     },
-    "lastReviewed": "2026-08-08",
-    "reviewStatus": "klaar",
-    "reportPath": "business/dgskills-reviews/j1p2-batch-2026-08-06.md",
+    "lastReviewed": "2026-08-25",
+    "reviewStatus": "reviewed",
+    "reportPath": "business/dgskills-reviews/schermtijd-coach-2026-08-25.md",
     "autoFixesApplied": 0,
     "openEscalations": [
-      "missionGoals criteria-type ('rounds-complete') wijkt af van config-inline ('steps-complete' min 5) — reporting-consistentie",
-      "introDescription aan de lange kant voor leerjaar 1 — didactische afweging"
+      {
+        "category": "structural",
+        "description": "Scoring-overflow bij 3 reflectievragen (110 vs maxScore 100) en dubbele/destructieve voltooiknop zijn gedeelde debate-arena-engine bugs die schermtijd-coach concreet raken maar niet via de config-whitelist fixbaar zijn — al vastgelegd in engine-debate-arena.json, hier alleen herbevestigd als missie-impact.",
+        "file": "src/features/missions/templates/debate-arena/DebateArena.tsx"
+      },
+      {
+        "category": "structural",
+        "description": "schermtijd-coach: enableChat/chatRoleId in de registry is inert (DebateArena leest de entry niet). Bepaal of de coach bedoeld is; zo ja, dan moet de chat langs de welzijnsmonitor en de AI-disclosure van StudentAIChat.",
+        "file": "src/config/templateRegistry.ts"
+      }
     ],
     "codexVerdict": null,
     "reviewScores": {
-      "uiux": 8,
-      "didactiek": 9,
+      "uiux": 6.5,
+      "didactiek": 8,
       "tech": 7
     },
     "proposedFixes": 0,
     "escalationCount": 2,
     "topIssues": [
-      "Score en fasegates hingen op tekstlengte — verholpen"
+      "[tech] Deze missie heeft 3 reflectievragen en wordt daardoor concreet geraakt door de engine-bevinding: deelscores sommeren tot 110 i.p.v. maxScore 100, Math.min kapt af, fase-uitsplitsing klopt niet met totaal.",
+      "[tech] Gedeelde voltooiknop-bug (dubbele klik + destructieve retry) raakt ook deze missie bij afronding; fix hoort in shared CompletionScreen/DebateArena, niet in de config.",
+      "[design] Stakeholderkleur-contrast en ArguePhase-kwaliteitskleuren zijn gedeelde engine-issues (zie engine-debate-arena.json); config zelf heeft 4 stakeholders dus buiten het geel-op-wit indexbereik, maar kwetsbaar bij uitbreiding."
     ],
-    "statusNote": "Browserreview op 4 schermformaten, plus adversariële tegenlezing door Codex. Lokaal; AI-stap en server-side voortgang niet bewezen."
+    "statusNote": "sweep wave 23 2026-08-25: verse review (alle missies); veiligheids-pass Opus high",
+    "triageScore": 3.15,
+    "verdict": "ok",
+    "safetyScores": {
+      "aiGedrag": 8,
+      "privacy": 8
+    }
   },
   {
     "missionId": "scroll-stopper",
@@ -2890,23 +3167,37 @@
       "interactivity": 0,
       "total": 4
     },
-    "lastReviewed": "2026-07-02",
-    "reviewStatus": "blocked",
-    "reportPath": "business/dgskills-reviews/scroll-stopper-2026-07-02.md",
+    "lastReviewed": "2026-08-25",
+    "reviewStatus": "reviewed",
+    "reportPath": "business/dgskills-reviews/scroll-stopper-2026-08-25.md",
     "autoFixesApplied": 0,
     "openEscalations": [
-      "content-keuze (welzijnsgevoelig): briefing belooft een dark-pattern-CEO-rollenspel, de missie is een stakeholder-debat — herschrijfvoorstel ligt klaar in rapport; thema schermtijd/verslaving dus Yorin beslist"
+      {
+        "category": "structural",
+        "description": "scroll-stopper: enableChat/chatRoleId is inert én de rolbeschrijving hoort bij een heel andere opdracht (dark-pattern-ontwerp) dan het debat dat de leerling speelt. Beslis welke van de twee de missie is voordat chat ooit wordt aangezet.",
+        "file": "src/config/templateRegistry.ts"
+      }
     ],
     "codexVerdict": null,
     "escalationCount": 1,
     "reviewScores": {
-      "uiux": 8,
-      "didactiek": 5,
-      "tech": 9
+      "uiux": 6.5,
+      "didactiek": 7.5,
+      "tech": 8
     },
     "triageScore": 2.9,
-    "statusNote": "wave 13: briefing-missie-mismatch bewust geescaleerd (welzijnsthema)",
-    "verdict": "fix-eerst"
+    "statusNote": "sweep wave 23 2026-08-25: verse review (alle missies); veiligheids-pass Opus high",
+    "verdict": "ok",
+    "proposedFixes": 0,
+    "topIssues": [
+      "[didactiek] Takeaway 'Regelgeving werkt het best op Europees niveau' presenteert het politieke standpunt van één stakeholder (De Vries) als objectieve conclusie in plaats van als perspectief.",
+      "[design] Gedeelde engine-defecten (STAKEHOLDER_COLORS geel-op-wit contrast, ArguePhase rood/geel kwaliteitsindicator) raken debate-arena platform-breed; deze config zelf voegt geen extra design-issues toe.",
+      "[tech] Missie heeft 2 reflectionQuestions, dus het gedeelde 110-punten-scoringsdefect (engine-bevinding) raakt scroll-stopper niet."
+    ],
+    "safetyScores": {
+      "aiGedrag": 7,
+      "privacy": 8
+    }
   },
   {
     "missionId": "security-auditor",
@@ -3018,7 +3309,7 @@
   {
     "missionId": "social-safeguard",
     "templateType": "scenario-engine",
-    "priorityBand": "low",
+    "priorityBand": "medium",
     "triageScores": {
       "uiux": 2,
       "slo": 0,
@@ -3026,24 +3317,52 @@
       "interactivity": 0,
       "total": 3
     },
-    "lastReviewed": "2026-07-02",
-    "reviewStatus": "blocked",
-    "reportPath": "business/dgskills-reviews/social-safeguard-2026-07-02.md",
+    "lastReviewed": "2026-08-25",
+    "reviewStatus": "reviewed",
+    "reportPath": "business/dgskills-reviews/social-safeguard-2026-08-25.md",
     "autoFixesApplied": 0,
     "openEscalations": [
-      "didactiek: ronde 1 en 4 tonen 8 items per scherm (leerjaar-1-richtlijn 3-4) — zelfde beslisklasse als notificatie-ninja/mail-detective",
-      "welzijnsgevoelig: bij een scenario met concrete fysieke dreiging wordt het niet-spoednummer 0900-8844 genoemd zonder 112-verwijzing — veiligheidsprecisering, Yorin beslist"
+      {
+        "category": "structural",
+        "description": "Dead-end eindscherm onder 40% score (geen onRetry/onBack, phase 'results' wordt opgeslagen) is een engine-brede bug die alle 12 scenario-engine-missies raakt, incl. social-safeguard. Fix hoort in ScenarioEngine.tsx/CompletionScreen.tsx, niet in deze config.",
+        "file": "src/features/missions/templates/scenario-engine/ScenarioEngine.tsx"
+      },
+      {
+        "category": "structural",
+        "description": "scoreOrderPriority mist gokcorrectie (in tegenstelling tot scoreSelectCorrect en scoreBinaryChoice) — engine-brede scoringzwakte die ronde 2 van social-safeguard concreet raakt.",
+        "file": "src/features/missions/templates/scenario-engine/sub/FeedbackBanner.tsx"
+      },
+      {
+        "category": "privacy",
+        "description": "social-safeguard: zwaar welzijnsthema (suïcidale uiting, doxing, heimelijk filmen, bedreiging) voor 12-13-jarigen zonder enige in-missie doorverwijzing naar mentor/vertrouwenspersoon/Kindertelefoon/113, terwijl het welzijnsprotocol die wel verplicht stelt. Het bestaande vangnet zit uitsluitend in de dormante chatrol.",
+        "file": "src/features/missions/templates/scenario-engine/configs/social-safeguard.ts"
+      },
+      {
+        "category": "privacy",
+        "description": "social-safeguard: bewijsadvies bij heimelijk gefilmde kleedkamerbeelden ('verwijder de video niet zelf') plus de algemene screenshot-instructie kan leerlingen aanzetten tot bewaren van mogelijk strafbaar beeldmateriaal van minderjarigen. Laat dit item juridisch/inhoudelijk herzien voordat de missie live blijft.",
+        "file": "src/features/missions/templates/scenario-engine/configs/social-safeguard.ts"
+      }
     ],
     "codexVerdict": null,
-    "escalationCount": 2,
+    "escalationCount": 4,
     "reviewScores": {
-      "uiux": 8.5,
-      "didactiek": 9,
-      "tech": 9.5
+      "uiux": 7,
+      "didactiek": 8,
+      "tech": 7
     },
-    "triageScore": 1,
-    "statusNote": "wave 16: welzijnscontent verder in orde; twee Yorin-keuzes",
-    "verdict": "fix-eerst"
+    "triageScore": 4.8,
+    "statusNote": "sweep wave 23 2026-08-25: verse review (alle missies); veiligheids-pass Opus high",
+    "verdict": "fix-eerst",
+    "proposedFixes": 0,
+    "topIssues": [
+      "[design] Geërfd van engine: onder 40% score is de eindknop uitgeschakeld zonder onRetry/onBack — dead-end resultatenscherm.",
+      "[tech] Geërfd van engine: dead-end eindscherm onder 40% raakt alle scenario-missies incl. deze.",
+      "[design] Geërfd: geen focusbeheer/aria-live bij rondewisseling, raakt de 4 rondes van deze missie."
+    ],
+    "safetyScores": {
+      "aiGedrag": 8,
+      "privacy": 5
+    }
   },
   {
     "missionId": "spreadsheet-specialist",
@@ -3207,7 +3526,7 @@
   {
     "missionId": "tech-court",
     "templateType": "debate-arena",
-    "priorityBand": "high",
+    "priorityBand": "medium",
     "triageScores": {
       "uiux": 1,
       "slo": 1,
@@ -3215,27 +3534,42 @@
       "interactivity": 0,
       "total": 8
     },
-    "lastReviewed": "2026-06-26",
-    "reviewStatus": "blocked",
-    "reportPath": "business/dgskills-reviews/wave-3a-2026-06-26.md",
+    "lastReviewed": "2026-08-25",
+    "reviewStatus": "reviewed",
+    "reportPath": "business/dgskills-reviews/tech-court-2026-08-25.md",
     "autoFixesApplied": 0,
     "openEscalations": [
-      "argumentPrompts wordt door debate-engine niet gebruikt (dood veld over alle debate-configs) — gedeelde-engine",
-      "SLO alleen 23C; 21D (AI) verdedigbaar — curator-afweging (mapping read-only)"
+      {
+        "category": "ai-act",
+        "description": "tech-court: (1) leerling-takeaway presenteert AI Act-hoogrisicoverplichtingen als reeds geldend — feitelijke correctie nodig in lesinhoud over AI-regelgeving; (2) de gekoppelde chatrol laat een AI een 'vonnis' vellen over een discriminatiecasus richting 13-14-jarigen zonder rollenspel-/AI-disclaimer in de rolinstructie. Beoordelen voordat de chat ooit gerenderd wordt.",
+        "file": "src/features/missions/templates/debate-arena/configs/tech-court.ts"
+      },
+      {
+        "category": "structural",
+        "description": "tech-court: enableChat/chatRoleId in de registry is inert (DebateArena leest de entry niet). Vier debate-arena-missies in deze wave hebben dezelfde inconsistentie; kies één lijn.",
+        "file": "src/config/templateRegistry.ts"
+      }
     ],
     "codexVerdict": null,
     "reviewScores": {
-      "uiux": 8,
+      "uiux": 6.5,
       "didactiek": 8,
       "tech": 7
     },
     "proposedFixes": 0,
     "escalationCount": 2,
     "topIssues": [
-      "reviewer-claim 'ontbrekende chat-rol' ONJUIST — rol in year2.tsx:2264",
-      "argumentPrompts dood veld [ESCALATIE — shared-engine]"
+      "[tech] Engine-breed: voltooiknop niet disabled tijdens async onComplete, dubbele XP mogelijk bij snel dubbelklikken",
+      "[tech] Engine-breed: bij <40% score wist voltooiknop (clearSave) alle argumenten/reflecties zonder bevestiging",
+      "[design] Engine-breed: getArgumentQuality gebruikt zelfde rood voor 'Uitstekend'/'Te kort' en geel-op-wit voor 'Basis'"
     ],
-    "statusNote": "normalisatie 2026-07-01 (run wave 4+): wacht op Yorin-beslissing over openEscalations"
+    "statusNote": "sweep wave 23 2026-08-25: verse review (alle missies); veiligheids-pass Opus high",
+    "triageScore": 3.35,
+    "verdict": "fix-eerst",
+    "safetyScores": {
+      "aiGedrag": 7,
+      "privacy": 8
+    }
   },
   {
     "missionId": "tech-impact-analyst",
@@ -3321,21 +3655,41 @@
     "templateType": "scenario-engine",
     "priorityBand": "low",
     "triageScores": null,
-    "lastReviewed": "2026-07-02",
-    "reviewStatus": "fixed",
-    "reportPath": "business/dgskills-reviews/veilig-internet-2026-07-02.md",
+    "lastReviewed": "2026-08-25",
+    "reviewStatus": "reviewed",
+    "reportPath": "business/dgskills-reviews/veilig-internet-2026-08-25.md",
     "autoFixesApplied": 0,
-    "openEscalations": [],
+    "openEscalations": [
+      {
+        "category": "structural",
+        "description": "Doodlopend eindscherm onder 40% (geen onRetry/onBack, phase 'results' blijft hangen in opgeslagen state) raakt alle 12 scenario-engine-missies incl. veilig-internet. Vereist een engine-fix in ScenarioEngine.tsx/CompletionScreen.tsx, buiten de whitelist van deze missie-review.",
+        "file": "src/features/missions/templates/scenario-engine/ScenarioEngine.tsx"
+      },
+      {
+        "category": "structural",
+        "description": "scoreOrderPriority mist gokcorrectie (enige scoreformule zonder basislijn), raakt ronde 'verdacht-bericht' van deze missie plus 10 andere configs. Engine-brede fix nodig in FeedbackBanner.tsx, buiten de whitelist van deze missie-review.",
+        "file": "src/features/missions/templates/scenario-engine/sub/FeedbackBanner.tsx"
+      }
+    ],
     "codexVerdict": null,
     "reviewScores": {
-      "uiux": 9,
-      "didactiek": 9.5,
-      "tech": 9.5
+      "uiux": 8,
+      "didactiek": 8.5,
+      "tech": 7
     },
-    "triageScore": 0.65,
+    "triageScore": 2.55,
     "verdict": "ok",
-    "statusNote": "wave 20: schoon — 10-punts import-registratie compleet, CC-BY-attributie zichtbaar gerenderd, scoring exact, welzijnsbril in orde",
-    "escalationCount": 0
+    "statusNote": "sweep wave 23 2026-08-25: verse review (alle missies); veiligheids-pass Opus high",
+    "escalationCount": 2,
+    "proposedFixes": 0,
+    "topIssues": [
+      "[tech] Bij score onder 40% is het resultatenscherm van ScenarioEngine een doodlopend eindpunt zonder onRetry/onBack; raakt ook veilig-internet. Engine-brede bug, niet oplosbaar binnen de missie-config.",
+      "[tech] Ronde 'verdacht-bericht' (order-priority, 4 items) gebruikt de gedeelde scoreOrderPriority-formule, die als enige geen gokcorrectie heeft; nietsdoen levert gemiddeld ~10/25 op. Engine-brede zwakte, geen configfout."
+    ],
+    "safetyScores": {
+      "aiGedrag": 9,
+      "privacy": 9
+    }
   },
   {
     "missionId": "verhalen-ontwerper",
