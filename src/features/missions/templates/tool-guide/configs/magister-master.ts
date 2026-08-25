@@ -93,6 +93,19 @@ const config: ToolGuideConfig = {
                 { id: 'deadline', label: 'Ik weet voor wanneer het huiswerk ingeleverd moet worden' },
             ],
             teacherCheck: 'Laat je docent zien waar jij huiswerk of opdrachten terugvindt.',
+            verificationQuestion: {
+                question: 'Je vindt geen huiswerk in Magister. Wat doe je?',
+                options: [
+                    'Ik neem aan dat er geen huiswerk is',
+                    'Ik vraag mijn docent waar hij of zij huiswerk plaatst',
+                    'Ik wacht tot de les begint',
+                    'Ik maak dan maar geen huiswerk',
+                ],
+                correctIndex: 1,
+                allowRetry: true,
+                retryHint: 'Nog niet. Denk aan de tip hierboven over verschillende plekken voor huiswerk.',
+                explanation: 'Goed! Niet elke docent gebruikt Magister voor huiswerk — vraag het gewoon als je niets vindt.',
+            },
         },
         {
             id: 'stap-4-cijfers',

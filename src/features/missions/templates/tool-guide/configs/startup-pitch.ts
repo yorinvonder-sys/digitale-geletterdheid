@@ -75,6 +75,17 @@ const config: ToolGuideConfig = {
                 { id: 'slogan', label: 'Ik heb een slogan van maximaal 6 woorden bedacht' },
                 { id: 'kleurenpalet', label: 'Ik heb 2 à 3 kleuren gekozen (bijv. blauw = vertrouwen, groen = groei, oranje = energie) en uitgelegd waarom ze passen' },
             ],
+            verificationQuestion: {
+                question: 'Waarom kiest een bank vaak blauw als merkkleur?',
+                options: [
+                    'Omdat blauw de goedkoopste drukinkt is',
+                    'Omdat blauw vertrouwen en rust uitstraalt',
+                    'Omdat de wet blauw voorschrijft voor banken',
+                    'Kleur maakt voor een merk niets uit',
+                ],
+                correctIndex: 1,
+                explanation: 'Precies! Kleuren roepen gevoelens op. Banken kiezen blauw omdat het vertrouwen en betrouwbaarheid uitstraalt — belangrijk als je met geld werkt.',
+            },
         },
         {
             id: 'stap-4-ethiek',

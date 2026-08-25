@@ -178,7 +178,7 @@ export const privacyByDesignConfig: SimulationLabConfig = {
             description:
                 'Stel de privacyinstellingen van je profiel in. Pas de schuifjes aan en kijk hoe jouw Privacy Score verandert.',
             visualType: 'meter',
-            maxScore: 30,
+            maxScore: 35,
             followUp: {
                 question: 'Welk Privacy by Design-principe houdt in dat privacy de standaardinstelling moet zijn?',
                 options: ['Privacy als preventie', 'Privacy als standaard (default)', 'Privacy ingebouwd in ontwerp', 'End-to-end beveiliging'],

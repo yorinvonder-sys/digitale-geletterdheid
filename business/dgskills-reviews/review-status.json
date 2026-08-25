@@ -34,7 +34,7 @@
   {
     "missionId": "advanced-code-review",
     "templateType": "review-arena",
-    "priorityBand": "low",
+    "priorityBand": "medium",
     "triageScores": {
       "uiux": 1,
       "slo": 0,
@@ -42,21 +42,36 @@
       "interactivity": 0,
       "total": 2
     },
-    "lastReviewed": "2026-07-02",
-    "reviewStatus": "fixed",
-    "reportPath": "business/dgskills-reviews/advanced-code-review-2026-07-02.md",
-    "autoFixesApplied": 3,
-    "openEscalations": [],
-    "codexVerdict": "ALLOW",
+    "lastReviewed": "2026-08-25",
+    "reviewStatus": "reviewed",
+    "reportPath": "business/dgskills-reviews/advanced-code-review-2026-08-25.md",
+    "autoFixesApplied": 0,
+    "openEscalations": [
+      {
+        "category": "structural",
+        "description": "speeltest wave 24: hoge score haalbaar zonder inhoudelijk werk — Review-arena, zelfde patroon als impact-review, maar hier was de eindscore bij overwegend gokken 46/100 (46%) EN de status was 'Gehaald' met 'Missie voltooid! 🎉' actief — de scoredrempel ligt hier dus"
+      }
+    ],
+    "codexVerdict": null,
     "reviewScores": {
-      "uiux": 9,
-      "didactiek": 7.5,
-      "tech": 8.5
+      "uiux": 7,
+      "didactiek": 7,
+      "tech": 4
     },
-    "triageScore": 1.75,
+    "triageScore": 3.9,
     "verdict": "fix-eerst",
-    "statusNote": "wave 17: 3 fixes (missionGoals description leerstijlen->supervised/unsupervised + evidence-claim underfitting->getoetste stof; year3 missionObjective drie->vier rondes); alle 4 rondes feitelijk correct, som 100=maxScore; systemInstruction-drift is dormant (platform-breed review-arena)",
-    "escalationCount": 0
+    "statusNote": "sweep wave 24 2026-08-25: verse review (alle missies); veiligheids-pass Opus high",
+    "escalationCount": 1,
+    "proposedFixes": 0,
+    "topIssues": [
+      "[tech] round-match-pairs draait op MatchPairs.tsx, dat bij elke foute poging al een rondescore vastlegt; herladen na één foute klik toont bijna volle score (19/25) zonder juiste koppeling.",
+      "[tech] Gedeeld CompletionScreen mist onRetry/terugweg; een leerling die op deze missie onder 40% scoort loopt vast op een uitgeschakelde knop.",
+      "[didactiek] round-drag-sort (6 items) en round-categorize (8 items, 4/4 verdeling) hebben via de gedeelde engine geen gokcorrectie en een zwakke poort; willekeurig indienen bij categorize levert gemiddeld ~50% van de rondescore op."
+    ],
+    "safetyScores": {
+      "aiGedrag": 9,
+      "privacy": 10
+    }
   },
   {
     "missionId": "ai-beleid-brainstorm",
@@ -186,7 +201,7 @@
   {
     "missionId": "ai-spiegel",
     "templateType": "simulation-lab",
-    "priorityBand": "low",
+    "priorityBand": "medium",
     "triageScores": {
       "uiux": 1,
       "slo": 0,
@@ -194,24 +209,47 @@
       "interactivity": 0,
       "total": 2
     },
-    "lastReviewed": "2026-07-02",
-    "reviewStatus": "blocked",
-    "reportPath": "business/dgskills-reviews/ai-spiegel-2026-07-02.md",
+    "lastReviewed": "2026-08-25",
+    "reviewStatus": "fixed",
+    "reportPath": "business/dgskills-reviews/ai-spiegel-2026-08-25.md",
     "autoFixesApplied": 1,
     "openEscalations": [
-      "curriculum-keuze: basisvaardigheden-mapping (FORMULEREN+ETHIEK) mist een privacy-gerichte categorie voor deze privacy-missie — welke categorie toevoegen is Yorin-keuze (vgl. social-safeguard: ONLINE_VEILIGHEID)",
-      "design-keuze: bar-chart Sim 2 middencategorie is no-op (beide ternary-takken '#ff3c21', ai-spiegel.ts:52/57/62) — voorgestelde middenkleur '#ffb020' bestaat niet in het palet, kleurkeuze aan Yorin"
+      {
+        "category": "privacy",
+        "description": "Server-side rol 'ai-spiegel' bouwt een gedrags- en advertentieprofiel van een 12-13-jarige uit zelf ingetypte data (kijktijd, likes, zoekopdrachten, aankopen) plus echte apparaatpermissies. Nu slapend omdat de missie op simulation-lab draait zonder chat, maar de rol staat live in de gegenereerde server-instructieset en is via roleId aanroepbaar. Beoordeling nodig op dataminimalisatie en grondslag vóór activering.",
+        "file": "src/config/agents/year1.tsx"
+      },
+      {
+        "category": "ai-act",
+        "description": "Dezelfde rol berekent een 'Privacy Score' en kent badges toe op basis van persoonlijke apparaatinstellingen van een minderjarige — een scoringsvorm die als profilering van een natuurlijk persoon te lezen is. Onderwijs is Annex III hoog-risico; laat toetsen of deze scoring binnen de transparantie- en profileringskaders past voordat de rol ooit live gaat.",
+        "file": "src/config/agents/year1.tsx"
+      },
+      {
+        "category": "privacy",
+        "description": "Missiestate van ai-spiegel bevat de werkelijke permissie-instellingen van het toestel van de leerling en blijft in localStorage staan op mogelijk gedeelde school-iPads tot completion. Bevestiging gewenst dat er een opruimpad is bij uitloggen of apparaatwissel.",
+        "file": "src/features/missions/templates/simulation-lab/configs/ai-spiegel.ts"
+      }
     ],
-    "codexVerdict": "ALLOW",
+    "codexVerdict": null,
     "reviewScores": {
-      "uiux": 8,
+      "uiux": 7,
       "didactiek": 8,
-      "tech": 9
+      "tech": 6
     },
-    "triageScore": 1.7,
+    "triageScore": 4.5,
     "verdict": "fix-eerst",
-    "statusNote": "wave 17: 1 fix (dashboard-SLO-rij naar autoritaire mapping 23A/23B/21C); privacy-adviezen feitelijk correct, scoring sluitend; gate-bijvangst: ProjectZeroDashboard-rij is volgens Codex legacy/unreferenced (live dashboard put uit canonieke mapping) — fix onschadelijk, opruimen van dat bestand is aparte beslissing",
-    "escalationCount": 2
+    "statusNote": "sweep wave 24 2026-08-25: verse review (alle missies); veiligheids-pass Opus high; 1 auto-fixes",
+    "escalationCount": 3,
+    "proposedFixes": 1,
+    "topIssues": [
+      "[design] Bar-chart kleurlogica in computeVisuals geeft dezelfde kleur (#ff3c21) voor elk risiconiveau >0, waardoor 'matig' en 'hoog' visueel niet te onderscheiden zijn.",
+      "[didactiek] Sim 2-vragen (ip1-q1..q3) toetsen vooral herkenning/kennis zonder een eigen-afweging-vraag zoals sim 1 en 3 die wel hebben.",
+      "[didactiek] fb1-q3 wordt grotendeels al beantwoord in de explanation van fb1-q2, wat de laatste vraag minder onderscheidend maakt."
+    ],
+    "safetyScores": {
+      "aiGedrag": 7,
+      "privacy": 6
+    }
   },
   {
     "missionId": "ai-tekengame",
@@ -280,7 +318,7 @@
   {
     "missionId": "algorithm-architect",
     "templateType": "simulation-lab",
-    "priorityBand": "medium",
+    "priorityBand": "low",
     "triageScores": {
       "uiux": 1,
       "slo": 1,
@@ -288,21 +326,31 @@
       "interactivity": 0,
       "total": 4
     },
-    "lastReviewed": "2026-08-07",
-    "reviewStatus": "fixed",
-    "reportPath": "business/dgskills-reviews/algorithm-architect-2026-08-07.md",
+    "lastReviewed": "2026-08-25",
+    "reviewStatus": "reviewed",
+    "reportPath": "business/dgskills-reviews/algorithm-architect-2026-08-25.md",
     "autoFixesApplied": 0,
     "openEscalations": [],
     "codexVerdict": null,
     "escalationCount": 0,
     "reviewScores": {
-      "uiux": 6,
-      "didactiek": 5,
+      "uiux": 7.5,
+      "didactiek": 8,
       "tech": 8
     },
-    "triageScore": 3.8,
-    "statusNote": "wave 11: intern volledig consistent geverifieerd; agent echode kwaliteitsscore als triage (10.0), gecorrigeerd naar 0.0",
-    "verdict": "ok"
+    "triageScore": 2.35,
+    "statusNote": "sweep wave 24 2026-08-25: verse review (alle missies); veiligheids-pass Opus high",
+    "verdict": "ok",
+    "proposedFixes": 0,
+    "topIssues": [
+      "[design] Sorteeralgoritme-toggles hebben geen vraag die reageert op combinatie van aangevinkte algoritmes",
+      "[didactiek] Follow-up-vraag bij zoekalgoritme overlapt inhoudelijk met za1-q3, toetst geen nieuw inzicht",
+      "[tech] Erft engine-poortlogica-defect (één klik ontgrendelt alle vragen) zoals alle simulation-lab-missies; geen missie-specifieke fix mogelijk"
+    ],
+    "safetyScores": {
+      "aiGedrag": 10,
+      "privacy": 10
+    }
   },
   {
     "missionId": "api-architect",
@@ -531,7 +579,7 @@
   {
     "missionId": "bug-hunter",
     "templateType": "simulation-lab",
-    "priorityBand": "medium",
+    "priorityBand": "low",
     "triageScores": {
       "uiux": 1,
       "slo": 1,
@@ -539,21 +587,31 @@
       "interactivity": 0,
       "total": 4
     },
-    "lastReviewed": "2026-08-07",
-    "reviewStatus": "fixed",
-    "reportPath": "business/dgskills-reviews/bug-hunter-2026-08-07.md",
+    "lastReviewed": "2026-08-25",
+    "reviewStatus": "reviewed",
+    "reportPath": "business/dgskills-reviews/bug-hunter-2026-08-25.md",
     "autoFixesApplied": 0,
     "openEscalations": [],
     "codexVerdict": null,
     "escalationCount": 0,
     "reviewScores": {
-      "uiux": 6,
-      "didactiek": 5,
-      "tech": 6
+      "uiux": 7.5,
+      "didactiek": 8,
+      "tech": 8
     },
-    "triageScore": 4.4,
-    "statusNote": "wave 11: debug-voorbeelden feitelijk correct (off-by-one klopt), scoring 30+40+30=100; schoon",
-    "verdict": "ok"
+    "triageScore": 2.35,
+    "statusNote": "sweep wave 24 2026-08-25: verse review (alle missies); veiligheids-pass Opus high",
+    "verdict": "ok",
+    "proposedFixes": 0,
+    "topIssues": [
+      "[design] Bar-chart in Sim 2 mist sublabel/duiding en referentielijn — leerling ziet vijf staven zonder toelichting welke score het gevaarlijkst is.",
+      "[didactiek] Sim 1's fouttype-slider belooft 3 categorieën (syntax/runtime/logische fout) maar de quizvragen testen alleen syntax vs runtime; logische fout wordt pas in Sim 2 behandeld.",
+      "[design] Consistente visuele opbouw over de drie sims (parameters → visual → 3 vragen); emoji-gebruik in comparison-items ondersteunt scanbaarheid."
+    ],
+    "safetyScores": {
+      "aiGedrag": 10,
+      "privacy": 10
+    }
   },
   {
     "missionId": "chatbot-trainer",
@@ -627,7 +685,7 @@
   {
     "missionId": "cloud-commander",
     "templateType": "tool-guide",
-    "priorityBand": "high",
+    "priorityBand": "medium",
     "triageScores": {
       "uiux": 2,
       "slo": 1,
@@ -635,29 +693,44 @@
       "interactivity": 1,
       "total": 6
     },
-    "lastReviewed": "2026-07-01",
-    "reviewStatus": "blocked",
-    "reportPath": "business/dgskills-reviews/cloud-commander-2026-07-01.md",
-    "autoFixesApplied": 2,
+    "lastReviewed": "2026-08-25",
+    "reviewStatus": "reviewed",
+    "reportPath": "business/dgskills-reviews/cloud-commander-2026-08-25.md",
+    "autoFixesApplied": 0,
     "openEscalations": [
-      "avg-persoonsgegevens: stap-3 foto-instructie (portretfoto-risico 12-jarigen) — Yorin beslist of verdere aanscherping naar schoolboek/oefenbestand nodig is"
+      {
+        "category": "structural",
+        "description": "Twee blocking bevindingen (gokbestendige scoring, state-herstel-crash) zitten in de gedeelde ToolGuide.tsx-engine en gelden voor alle tool-guide-missies, niet mission-specifiek voor cloud-commander.",
+        "file": "src/features/missions/templates/tool-guide/ToolGuide.tsx"
+      },
+      {
+        "category": "privacy",
+        "description": "Slapende rol 'cloud-commander' vraagt de leerling volledige bestandsnamen in de chat te typen als bewijs; die bevatten vaak namen van leerlingen. Alleen relevant zodra deze rol via een chatroute wordt geactiveerd — dan een minder identificerende verificatievraag kiezen.",
+        "file": "src/config/agents/year1.tsx"
+      }
     ],
-    "codexVerdict": "ALLOW",
+    "codexVerdict": null,
     "reviewScores": {
-      "uiux": 2,
-      "didactiek": 2,
-      "tech": 2
+      "uiux": 7.5,
+      "didactiek": 7,
+      "tech": 8
     },
     "goalClear": false,
     "goalAchieved": true,
-    "proposedFixes": 4,
-    "escalationCount": 1,
+    "proposedFixes": 0,
+    "escalationCount": 2,
     "topIssues": [
-      "maxScore:60 maar engine-max 50 → gouden badge onbereikbaar",
-      "duck-namespace tokens ontbreken (engine-breed) [ESCALATIE]",
-      "stap-3 foto-instructie AVG-risico: portretten 12-jarigen [ESCALATIE]"
+      "[didactiek] Scoring is puur zelfrapportage via checklist-items plus gratis kennisbonus (allowRetry): een leerling kan 100% scoren zonder OneDrive te openen. Zit in de gedeelde engine, niet oplosbaar in de missieconfig.",
+      "[tech] useMissionAutoSave zonder validate-callback (engine-bevinding): een opgeslagen currentStep buiten bereik na een toekomstige stap-wijziging geeft een wit scherm. Niet oplosbaar binnen cloud-commander.ts.",
+      "[design] Slash-opacity /8-klassen in de gedeelde ToolGuide-engine (engine-bevinding) laten tip-blokken en aangevinkte checklist-items zonder vulkleur renderen — engine-issue, niet in cloud-commander.ts oplosbaar."
     ],
-    "statusNote": "wave 5: 2 fixes ge-ALLOWed; blocked op AVG-foto-instructie (Yorin)"
+    "statusNote": "sweep wave 24 2026-08-25: verse review (alle missies); veiligheids-pass Opus high",
+    "triageScore": 3.05,
+    "verdict": "fix-eerst",
+    "safetyScores": {
+      "aiGedrag": 9,
+      "privacy": 9
+    }
   },
   {
     "missionId": "code-denker",
@@ -718,26 +791,42 @@
       "interactivity": 0,
       "total": 5
     },
-    "lastReviewed": "2026-08-07",
-    "reviewStatus": "fixed",
-    "reportPath": "business/dgskills-reviews/code-review-2-2026-08-07.md",
+    "lastReviewed": "2026-08-25",
+    "reviewStatus": "reviewed",
+    "reportPath": "business/dgskills-reviews/code-review-2-2026-08-25.md",
     "autoFixesApplied": 0,
-    "openEscalations": [],
+    "openEscalations": [
+      {
+        "category": "structural",
+        "description": "Blocking scoring/voltooiings-bugs zitten in de gedeelde review-arena-engine (MatchPairs vroegtijdige rondescore-lock, CompletionScreen dead-end onder 40%) — raakt code-review-2 en elke andere review-arena-missie; niet oplosbaar binnen de missie-config, vereist een engine-fix.",
+        "file": "src/features/missions/templates/review-arena/ReviewArena.tsx"
+      }
+    ],
     "codexVerdict": null,
-    "escalationCount": 0,
+    "escalationCount": 1,
     "reviewScores": {
-      "uiux": 5,
-      "didactiek": 3,
+      "uiux": 6,
+      "didactiek": 8,
       "tech": 6
     },
-    "triageScore": 5.5,
-    "statusNote": "wave 7 verse review: schoon; dormante chat-rol (template-breed, alle 7 review-arena) -> platform-brede beslislijst",
-    "verdict": "ok"
+    "triageScore": 3.2,
+    "statusNote": "sweep wave 24 2026-08-25: verse review (alle missies); veiligheids-pass Opus high",
+    "verdict": "fix-eerst",
+    "proposedFixes": 0,
+    "topIssues": [
+      "[tech] Engine-breed: MatchPairs (round-match-pairs) legt bij de eerste foute poging al een rondescore vast; refresh na één foute klik geeft bijna volle punten zonder inhoudelijk werk.",
+      "[tech] Engine-breed: leerling onder 40% loopt vast op het eindscherm zonder onRetry/onBack, dus deze missie kan niet worden afgerond bij een laag resultaat.",
+      "[design] Engine-breed contrastrisico (text-duck-ink/70 op wit, hardgecodeerde #ff3c21-achtergrond) raakt ook round-drag-sort van deze missie."
+    ],
+    "safetyScores": {
+      "aiGedrag": 9,
+      "privacy": 10
+    }
   },
   {
     "missionId": "code-reviewer",
     "templateType": "simulation-lab",
-    "priorityBand": "medium",
+    "priorityBand": "low",
     "triageScores": {
       "uiux": 1,
       "slo": 1,
@@ -745,21 +834,30 @@
       "interactivity": 0,
       "total": 4
     },
-    "lastReviewed": "2026-08-07",
+    "lastReviewed": "2026-08-25",
     "reviewStatus": "fixed",
-    "reportPath": "business/dgskills-reviews/code-reviewer-2026-08-07.md",
-    "autoFixesApplied": 0,
+    "reportPath": "business/dgskills-reviews/code-reviewer-2026-08-25.md",
+    "autoFixesApplied": 2,
     "openEscalations": [],
     "codexVerdict": null,
     "escalationCount": 0,
     "reviewScores": {
-      "uiux": 7,
-      "didactiek": 6,
-      "tech": 4
+      "uiux": 7.5,
+      "didactiek": 8,
+      "tech": 8
     },
-    "triageScore": 4.3,
-    "statusNote": "wave 12: registratie + scoring (30+40+30=100) volledig geverifieerd; 1 cosmetisch icoon-mix-punt in rapport",
-    "verdict": "ok"
+    "triageScore": 2.15,
+    "statusNote": "sweep wave 24 2026-08-25: verse review (alle missies); veiligheids-pass Opus high; 2 auto-fixes",
+    "verdict": "ok",
+    "proposedFixes": 2,
+    "topIssues": [
+      "[design] Sim 3 ('Alleen positief') mengt een afbeelding-icon met emoji-icons in dezelfde comparison-lijst, inconsistent met de andere twee methode-varianten.",
+      "[didactiek] De naamgeving-slider (0/1/2) toont geen tekstuele betekenis per stand tijdens het schuiven, terwijl de scorelogica wel verschil maakt tussen slecht/matig/goed."
+    ],
+    "safetyScores": {
+      "aiGedrag": 8,
+      "privacy": 10
+    }
   },
   {
     "missionId": "cookie-crusher",
@@ -1077,7 +1175,7 @@
   {
     "missionId": "data-review",
     "templateType": "review-arena",
-    "priorityBand": "low",
+    "priorityBand": "medium",
     "triageScores": {
       "uiux": 2,
       "slo": 0,
@@ -1085,21 +1183,47 @@
       "interactivity": 0,
       "total": 3
     },
-    "lastReviewed": "2026-07-02",
-    "reviewStatus": "fixed",
-    "reportPath": "business/dgskills-reviews/data-review-2026-07-02.md",
+    "lastReviewed": "2026-08-25",
+    "reviewStatus": "reviewed",
+    "reportPath": "business/dgskills-reviews/data-review-2026-08-25.md",
     "autoFixesApplied": 0,
-    "openEscalations": [],
+    "openEscalations": [
+      {
+        "category": "structural",
+        "description": "MatchPairs legt score al vast bij een foute tussentijdse poging (engine-bug); raakt de kasboek-formule-ronde van data-review met tot ~19/25 zonder correcte koppelingen na refresh.",
+        "file": "src/features/missions/templates/review-arena/sub/MatchPairs.tsx"
+      },
+      {
+        "category": "structural",
+        "description": "CompletionScreen blokkeert de enige knop bij <40% zonder terugweg; engine geeft geen onRetry mee vanuit ReviewArena.",
+        "file": "src/features/missions/templates/review-arena/ReviewArena.tsx"
+      },
+      {
+        "category": "structural",
+        "description": "Drag-sort en categorize missen gokcorrectie (in tegenstelling tot rapid-fire), wat de didactische validiteit van de bronnen- en grafiek-ronde in data-review ondermijnt.",
+        "file": "src/features/missions/templates/review-arena/sub/DragSort.tsx"
+      }
+    ],
     "codexVerdict": null,
-    "escalationCount": 0,
+    "escalationCount": 3,
     "reviewScores": {
-      "uiux": 9,
-      "didactiek": 9,
-      "tech": 9.5
+      "uiux": 6,
+      "didactiek": 7,
+      "tech": 7
     },
-    "triageScore": 0.85,
-    "statusNote": "wave 15: vrijwel vlekkeloos; dode CATEGORY_COLORS-velden in gedeelde Categorize.tsx -> engine-lijst (buiten whitelist)",
-    "verdict": "ok"
+    "triageScore": 3.3,
+    "statusNote": "sweep wave 24 2026-08-25: verse review (alle missies); veiligheids-pass Opus high",
+    "verdict": "fix-eerst",
+    "proposedFixes": 0,
+    "topIssues": [
+      "[design] Eindscherm zet bij <40% score de enige knop uit zonder terugweg (engine, raakt data-review concreet gezien 40% van 100 punten een reëel scenario is).",
+      "[tech] MatchPairs (kasboek-formules ronde) legt bij elke foute poging al een tussentijdse score vast; refresh toont ronde als afgerond met tot ~19/25 zonder correcte koppelingen.",
+      "[design] Contrastrisico duck-ink/70 en hardgecodeerd positienummer-contrast in DragSort raakt round-drag-sort (langere brontekst-labels)."
+    ],
+    "safetyScores": {
+      "aiGedrag": 9,
+      "privacy": 10
+    }
   },
   {
     "missionId": "data-speurder",
@@ -1805,21 +1929,42 @@
       "interactivity": 0,
       "total": 4
     },
-    "lastReviewed": "2026-07-02",
-    "reviewStatus": "fixed",
-    "reportPath": "business/dgskills-reviews/impact-review-2026-07-02.md",
-    "autoFixesApplied": 1,
-    "openEscalations": [],
-    "codexVerdict": "ALLOW",
+    "lastReviewed": "2026-08-25",
+    "reviewStatus": "reviewed",
+    "reportPath": "business/dgskills-reviews/impact-review-2026-08-25.md",
+    "autoFixesApplied": 0,
+    "openEscalations": [
+      {
+        "category": "structural",
+        "description": "Match-pairs legt de rondescore al vast bij de eerste foute poging (onSubmit binnen de loop, niet pas bij definitieve inzending) — gedeelde engine-bug in review-arena, raakt impact-review voor 25 van de 100 punten.",
+        "file": "src/features/missions/templates/review-arena/sub/MatchPairs.tsx"
+      },
+      {
+        "category": "structural",
+        "description": "CompletionScreen blokkeert de enige knop bij <40% score zonder onRetry/terugweg — gedeelde engine-bug, laat zwak scorende leerlingen vastlopen zonder dat onComplete ooit wordt aangeroepen.",
+        "file": "src/features/missions/templates/review-arena/ReviewArena.tsx"
+      }
+    ],
+    "codexVerdict": null,
     "reviewScores": {
-      "uiux": 8,
-      "didactiek": 8,
-      "tech": 9
+      "uiux": 6,
+      "didactiek": 4,
+      "tech": 7
     },
-    "triageScore": 1.7,
-    "verdict": "ok",
-    "statusNote": "wave 18: 1 fix (missionObjective beschreef chat-achtig 3-stappenproces i.p.v. de echte 4 rondes: ordenen/koppelen/categoriseren/rapid-fire); alle 4 rondes + 2 bonusvragen feitelijk geverifieerd, som 4x25=100=maxScore",
-    "escalationCount": 0
+    "triageScore": 4.5,
+    "verdict": "fix-eerst",
+    "statusNote": "sweep wave 24 2026-08-25: verse review (alle missies); veiligheids-pass Opus high",
+    "escalationCount": 2,
+    "proposedFixes": 0,
+    "topIssues": [
+      "[didactiek] Match-pairs-ronde (25/100 punten) legt de rondescore al vast bij de eerste foute koppeling; na herladen krijgt de leerling scoreFor(1)=19/25 zonder een juiste koppeling te maken.",
+      "[didactiek] Bij minder dan 40% score staat op het CompletionScreen de enige knop uit zonder terugweg — de missie loopt dood, juist voor de leerling die de moeite heeft met de ethische bonusvragen.",
+      "[design] DragSort positienummer op #ff3c21 + text-duck-ink en text-duck-ink/70 body-tekst bij 12px: contrastrisico, geërfd van gedeelde engine maar hier actief omdat alle vier rondetypes worden gebruikt."
+    ],
+    "safetyScores": {
+      "aiGedrag": 9,
+      "privacy": 9
+    }
   },
   {
     "missionId": "innovation-lab",
@@ -1935,21 +2080,42 @@
       "interactivity": 1,
       "total": 5
     },
-    "lastReviewed": "2026-07-01",
+    "lastReviewed": "2026-08-25",
     "reviewStatus": "fixed",
-    "reportPath": "business/dgskills-reviews/magister-master-2026-07-01.md",
-    "autoFixesApplied": 0,
-    "openEscalations": [],
+    "reportPath": "business/dgskills-reviews/magister-master-2026-08-25.md",
+    "autoFixesApplied": 1,
+    "openEscalations": [
+      {
+        "category": "privacy",
+        "description": "Slapende agent-rol van magister-master vraagt de leerling zijn echte cijfer in te typen en laat het model verifiëren op cijferinhoud (year1.tsx r305 en r337). Nu onbereikbaar (geen enableChat, template-route omzeilt AiLab), maar het aanzetten van chat op deze missie zou cijfergegevens van 12-jarigen naar de AI-provider sturen. Vraag: moeten deze voorbeeldregels herschreven worden naar niet-identificerend bewijs (bijv. 'ik zie een cijfer met weging 2 staan') zodat het risico ook latent verdwijnt?",
+        "file": "src/config/agents/year1.tsx"
+      },
+      {
+        "category": "privacy",
+        "description": "magister-master laat leerlingen hun eigen cijferoverzicht openen in de klas en aan de docent tonen, zonder instructie om het scherm af te schermen voor medeleerlingen. Beoordeling gewenst of hier een expliciete schermafscherm-instructie bij hoort, gezien het om cijfergegevens van minderjarigen gaat.",
+        "file": "src/features/missions/templates/tool-guide/configs/magister-master.ts"
+      }
+    ],
     "codexVerdict": null,
-    "escalationCount": 0,
+    "escalationCount": 2,
     "reviewScores": {
-      "uiux": 8,
-      "didactiek": 8,
+      "uiux": 7,
+      "didactiek": 7.5,
       "tech": 8
     },
-    "triageScore": 2,
-    "statusNote": "wave 8: alle 3 juni-blockers bevestigd opgelost (tokens, focus-ring, maxScore 55=4x10+3x5); agent-scoreschaal omgekeerd, gecorrigeerd",
-    "verdict": "ok"
+    "triageScore": 2.45,
+    "statusNote": "sweep wave 24 2026-08-25: verse review (alle missies); veiligheids-pass Opus high; 1 auto-fixes",
+    "verdict": "fix-eerst",
+    "proposedFixes": 1,
+    "topIssues": [
+      "[design] Stap 3 (huiswerk) mist als enige stap een verificationQuestion, breekt toetsritme",
+      "[didactiek] Eén van de vier leerdoelen (huiswerk opzoeken) wordt alleen door zelfrapportage-checklist gedekt, niet door een begripsvraag",
+      "[design] Visual Precision Gate niet dynamisch geverifieerd in deze pass (geen Chrome-plugin bewijs)"
+    ],
+    "safetyScores": {
+      "aiGedrag": 9,
+      "privacy": 7
+    }
   },
   {
     "missionId": "mail-detective",
@@ -1997,7 +2163,7 @@
   {
     "missionId": "media-review",
     "templateType": "review-arena",
-    "priorityBand": "high",
+    "priorityBand": "low",
     "triageScores": {
       "uiux": 2,
       "slo": 0,
@@ -2005,29 +2171,37 @@
       "interactivity": 0,
       "total": 7
     },
-    "lastReviewed": "2026-08-08",
+    "lastReviewed": "2026-08-25",
     "reviewStatus": "reviewed",
-    "reportPath": "business/dgskills-reviews/media-review-2026-08-08.md",
-    "autoFixesApplied": 1,
+    "reportPath": "business/dgskills-reviews/media-review-2026-08-25.md",
+    "autoFixesApplied": 0,
     "openEscalations": [
-      "echte componenttest voor dubbele callback ontbreekt nog",
-      "timer en onderliggende ronde verdienen aanvullende toegankelijkheidscontrole"
+      {
+        "category": "structural",
+        "description": "MatchPairs-scorevergrendeling en het doodlopende CompletionScreen onder 40% zitten in de gedeelde review-arena-engine en raken media-review via alle vier rondetypes; niet oplosbaar op missie-config-niveau.",
+        "file": "src/features/missions/templates/review-arena/ReviewArena.tsx"
+      }
     ],
-    "codexVerdict": "ALLOW",
+    "codexVerdict": null,
     "reviewScores": {
-      "uiux": 8,
-      "didactiek": 8.5,
-      "tech": 8.5
+      "uiux": 7,
+      "didactiek": 7.5,
+      "tech": 7
     },
     "proposedFixes": 0,
-    "escalationCount": 2,
+    "escalationCount": 1,
     "topIssues": [
-      "echte componenttest voor dubbele callback ontbreekt nog",
-      "timer en onderliggende ronde verdienen aanvullende toegankelijkheidscontrole"
+      "[tech] MatchPairs vergrendelt bij deze missie (5 paren) al bij één foute poging een hoge score via scoreFor(1) na herladen.",
+      "[tech] CompletionScreen zonder onRetry/terugweg blokkeert leerlingen die media-review onder 40% afsluiten.",
+      "[design] Gedeeld text-duck-ink/70 contrastrisico bij 12px raakt alle drie gebruikte subcomponenten (DragSort/MatchPairs/Categorize)."
     ],
-    "statusNote": "Formele J2P3-review: vier viewports en productie bewezen; nul open Blocker/High; Medium/Low geregistreerd.",
-    "triageScore": 1.7,
-    "verdict": "ok"
+    "statusNote": "sweep wave 24 2026-08-25: verse review (alle missies); veiligheids-pass Opus high",
+    "triageScore": 2.8,
+    "verdict": "fix-eerst",
+    "safetyScores": {
+      "aiGedrag": 9,
+      "privacy": 9
+    }
   },
   {
     "missionId": "meesterproef",
@@ -2203,9 +2377,54 @@
     }
   },
   {
+    "missionId": "mission-build",
+    "templateType": "tool-guide",
+    "lastReviewed": "2026-08-25",
+    "reviewStatus": "reviewed",
+    "triageScore": 4.5,
+    "priorityBand": "medium",
+    "reportPath": "business/dgskills-reviews/mission-build-2026-08-25.md",
+    "reviewScores": {
+      "uiux": 7,
+      "didactiek": 6,
+      "tech": 8
+    },
+    "verdict": "ok",
+    "proposedFixes": 0,
+    "autoFixesApplied": 0,
+    "openEscalations": [
+      {
+        "category": "structural",
+        "description": "Scoring in ToolGuide.tsx is niet gokbestendig (10 pt per stap puur op checklist-aanvinken; kennisbonus oneindig te herkansen bij allowRetry) — dit is een gedeelde engine-bevinding die mission-build's badge-systeem direct ondermijnt, maar niet fixbaar binnen missie-eigen whitelist-bestanden.",
+        "file": "src/features/missions/templates/tool-guide/ToolGuide.tsx"
+      },
+      {
+        "category": "privacy",
+        "description": "Stap 4 van De Bouw laat leerlingen van 12-13 jaar een deellink naar hun eigen product publiceren en testen zonder enige instructie over de reikwijdte van de deling (docent/schooldomein versus 'iedereen met de link' of publiek indexeerbaar). Vraagt om een expliciete zichtbaarheidsinstructie voordat dit bij echte klassen draait.",
+        "file": "src/features/missions/templates/tool-guide/configs/mission-build.ts"
+      },
+      {
+        "category": "structural",
+        "description": "speeltest wave 24: hoge score haalbaar zonder inhoudelijk werk — KRITIEKE BEVINDING: 'De Bouw' (projectmissie, 4 stappen) is volledig te voltooien zonder enig echt werk. Elke stap heeft 2-4 zelf-rapportage-checkboxes ('Bewijs voor jezelf' — bv. 'Ik heb dat ene ding"
+      }
+    ],
+    "escalationCount": 3,
+    "codexVerdict": null,
+    "topIssues": [
+      "[didactiek] Engine-brede gokbestendige scoring + gratis kennisbonus bij allowRetry raakt deze missie direct: badge-drempels (40/55 van 60) zijn zonder echt te bouwen/testen haalbaar via puur doorklikken — precies het gedrag dat de missie wil voorkomen.",
+      "[didactiek] teacherCheck ontbreekt bij stap 2 (kern bouwen) en stap 3 (testen); pas bij stap 4 controleert de docent of er echt gebouwd/getest is.",
+      "[design] Stap 4 heeft 4 checklist-items vs 3 bij de andere stappen; cosmetisch, geen fix nodig."
+    ],
+    "statusNote": "sweep wave 24 2026-08-25: verse review (alle missies); veiligheids-pass Opus high",
+    "safetyScores": {
+      "aiGedrag": 9,
+      "privacy": 7
+    }
+  },
+  {
     "missionId": "mission-launch",
     "templateType": "tool-guide",
-    "priorityBand": "low",
+    "priorityBand": "medium",
     "triageScores": {
       "uiux": 2,
       "slo": 0,
@@ -2213,21 +2432,42 @@
       "interactivity": 1,
       "total": 4
     },
-    "lastReviewed": "2026-07-02",
+    "lastReviewed": "2026-08-25",
     "reviewStatus": "fixed",
-    "reportPath": "business/dgskills-reviews/mission-launch-2026-07-02.md",
-    "autoFixesApplied": 0,
-    "openEscalations": [],
+    "reportPath": "business/dgskills-reviews/mission-launch-2026-08-25.md",
+    "autoFixesApplied": 3,
+    "openEscalations": [
+      {
+        "category": "privacy",
+        "description": "De agent-rol van De Lancering adviseert leerlingen van 12-13 jaar een Instagram-CTA op hun flyer ('Volg ons op Instagram: @mijnproject'), terwijl de leerling-facing config bewust alleen schoolinterne CTA's noemt. Beslissing nodig of publieke social-media-promotie in leerjaar 1 gewenst is; zo niet, dan moet het voorbeeld uit de rolinstructie voordat de chat ooit wordt aangezet.",
+        "file": "src/config/agents/year1.tsx"
+      },
+      {
+        "category": "ai-act",
+        "description": "De missie leert '3× sneller leren met AI' aan als voorbeeld van een sterke marketingkop, zonder eis van onderbouwing. Dat is didactisch een aanmoediging tot onbewezen AI-effectiviteitsclaims en botst met de claimhygiëne die het platform zelf hanteert; graag een honesty-regel toevoegen bij de kop-formules.",
+        "file": "src/features/missions/templates/tool-guide/configs/mission-launch.ts"
+      }
+    ],
     "codexVerdict": null,
-    "escalationCount": 0,
+    "escalationCount": 2,
     "reviewScores": {
-      "uiux": 8.5,
-      "didactiek": 9,
-      "tech": 9.5
+      "uiux": 6,
+      "didactiek": 7,
+      "tech": 8
     },
-    "triageScore": 1,
-    "statusNote": "wave 13: scoreplafond 60=60 nagerekend; registratie compleet incl. briefing-asset",
-    "verdict": "ok"
+    "triageScore": 3,
+    "statusNote": "sweep wave 24 2026-08-25: verse review (alle missies); veiligheids-pass Opus high; 3 auto-fixes",
+    "verdict": "fix-eerst",
+    "proposedFixes": 3,
+    "topIssues": [
+      "[design] Stap 1/3/4-instructies overschrijden de 60-woordengrens voor leerjaar 1 opdrachtcopy (criterium 4).",
+      "[didactiek] Cognitieve belasting te hoog door lange stap-instructies (criterium 4) voor leerjaar 1; SLO-fit en Bloom-balans zijn verder goed.",
+      "[tech] Missie-config zelf is schoon; scoring-integriteit (zelfrapportage-checklist, gratis kennisbonus-retry) is een engine-brede kwestie in ToolGuide.tsx, niet in deze config."
+    ],
+    "safetyScores": {
+      "aiGedrag": 7,
+      "privacy": 7
+    }
   },
   {
     "missionId": "mission-vision",
@@ -2821,7 +3061,7 @@
   {
     "missionId": "print-pro",
     "templateType": "tool-guide",
-    "priorityBand": "high",
+    "priorityBand": "medium",
     "triageScores": {
       "uiux": 2,
       "slo": 2,
@@ -2829,32 +3069,44 @@
       "interactivity": 2,
       "total": 8
     },
-    "lastReviewed": "2026-07-01",
+    "lastReviewed": "2026-08-25",
     "reviewStatus": "fixed",
-    "reportPath": "business/dgskills-reviews/print-pro-2026-07-01.md",
-    "autoFixesApplied": 4,
-    "openEscalations": [],
-    "codexVerdict": "ALLOW",
+    "reportPath": "business/dgskills-reviews/print-pro-2026-08-25.md",
+    "autoFixesApplied": 1,
+    "openEscalations": [
+      {
+        "category": "privacy",
+        "description": "De agent-rol van Print Pro begeleidt leerlingen door een inlogflow (schoolaccount, pasje, pincode) zonder expliciete regel dat de leerling nooit wachtwoorden, pincodes of pasnummers in de chat mag typen en dat de AI daar nooit om mag vragen. Rol is momenteel slapend; toevoegen van die credential-guard vóór de chat ooit wordt aangezet.",
+        "file": "src/config/agents/year1.tsx"
+      }
+    ],
+    "codexVerdict": null,
     "reviewScores": {
-      "uiux": 2,
-      "didactiek": 2,
-      "tech": 2
+      "uiux": 8,
+      "didactiek": 7,
+      "tech": 6
     },
     "goalClear": true,
     "goalAchieved": false,
-    "proposedFixes": 4,
-    "escalationCount": 0,
+    "proposedFixes": 1,
+    "escalationCount": 1,
     "topIssues": [
-      "takeaways missen Bloom-actiewerkwoorden",
-      "stap 2 instructie >60w + geen verificationQuestion",
-      "SLO-claim dekt inhoud niet (stap 4 = 23A, claim alleen 21A)"
+      "[design] Stap 1, 3 en 4 instructies overschrijden de 60-woordengrens voor leerjaar 1-2 copy.",
+      "[didactiek] Zelfde copy-lengte overschrijding als design (stap 1/3/4 te lang voor leerjaar 1).",
+      "[didactiek] SLO 23A (privacy) wordt alleen uitgelegd via tip/verificatievraag, niet geoefend via een eigen checklist-item."
     ],
-    "statusNote": "wave 4: 3 fixer-fixes + 1 orchestrator-correctie (maxScore 60) na gate-BLOCK; re-gate ALLOW"
+    "statusNote": "sweep wave 24 2026-08-25: verse review (alle missies); veiligheids-pass Opus high; 1 auto-fixes",
+    "triageScore": 3,
+    "verdict": "fix-eerst",
+    "safetyScores": {
+      "aiGedrag": 7,
+      "privacy": 9
+    }
   },
   {
     "missionId": "privacy-by-design",
     "templateType": "simulation-lab",
-    "priorityBand": "high",
+    "priorityBand": "low",
     "triageScores": {
       "uiux": 1,
       "slo": 1,
@@ -2862,24 +3114,31 @@
       "interactivity": 0,
       "total": 6
     },
-    "lastReviewed": "2026-08-07",
+    "lastReviewed": "2026-08-25",
     "reviewStatus": "fixed",
-    "reportPath": "business/dgskills-reviews/privacy-by-design-2026-08-07.md",
-    "autoFixesApplied": 0,
+    "reportPath": "business/dgskills-reviews/privacy-by-design-2026-08-25.md",
+    "autoFixesApplied": 1,
     "openEscalations": [],
     "codexVerdict": null,
     "reviewScores": {
-      "uiux": 4,
-      "didactiek": 4,
-      "tech": 3
+      "uiux": 8,
+      "didactiek": 8.5,
+      "tech": 6.5
     },
-    "proposedFixes": 0,
-    "escalationCount": 1,
+    "proposedFixes": 1,
+    "escalationCount": 0,
     "topIssues": [
-      "dode missionGoals-entry [ESCALATIE — cleanup]"
+      "[tech] Sim 1 maxScore (30) houdt geen rekening met de follow-up-bonus (5 punten): haalbare punten voor sim 1 zijn 35, terwijl som van alle sim-maxScores (100) gelijk moet zijn aan config.maxScore. Resultatenscherm-uitsplitsing (per sim geclamt) kan hierdoor afwijken van het getoonde totaal.",
+      "[design] Bar-chart-kleuren in computeVisuals gebruiken losse hexwaarden (#ff3c21/#e3e2dc) i.p.v. duck-tokens; functioneel geen probleem maar niet paletgekoppeld.",
+      "[didactiek] Follow-up-vraag introduceert 'Privacy by Default' zonder dat de introDescription dat begrip al noemt."
     ],
-    "statusNote": "normalisatie 2026-07-01 (run wave 4+): wacht op Yorin-beslissing over openEscalations",
-    "triageScore": 6.3
+    "statusNote": "sweep wave 24 2026-08-25: verse review (alle missies); veiligheids-pass Opus high; 1 auto-fixes",
+    "triageScore": 2.25,
+    "verdict": "fix-eerst",
+    "safetyScores": {
+      "aiGedrag": 9,
+      "privacy": 9
+    }
   },
   {
     "missionId": "prompt-master",
@@ -3062,29 +3321,42 @@
       "interactivity": 0,
       "total": 5
     },
-    "lastReviewed": "2026-08-08",
-    "reviewStatus": "klaar",
-    "reportPath": "business/dgskills-reviews/j1p2-batch-2026-08-06.md",
+    "lastReviewed": "2026-08-25",
+    "reviewStatus": "reviewed",
+    "reportPath": "business/dgskills-reviews/review-week-2-2026-08-25.md",
     "autoFixesApplied": 0,
-    "openEscalations": [],
+    "openEscalations": [
+      {
+        "category": "structural",
+        "description": "Twee blocking gebreken in de gedeelde review-arena-engine (MatchPairs mid-ronde scoring-exploit, CompletionScreen dead-end onder 40%) raken review-week-2 concreet maar zitten buiten de config-whitelist van deze missie — vereist een engine-fix die alle review-arena-missies in de wave raakt.",
+        "file": "src/features/missions/templates/review-arena/sub/MatchPairs.tsx"
+      }
+    ],
     "codexVerdict": null,
-    "escalationCount": 0,
+    "escalationCount": 1,
     "reviewScores": {
-      "uiux": 9,
-      "didactiek": 8,
-      "tech": 9
+      "uiux": 8,
+      "didactiek": 8.5,
+      "tech": 5
     },
-    "triageScore": 1.4,
-    "statusNote": "Browserreview op 4 schermformaten, plus adversariële tegenlezing door Codex. Lokaal; AI-stap en server-side voortgang niet bewezen.",
-    "verdict": "ok",
+    "triageScore": 2.7,
+    "statusNote": "sweep wave 24 2026-08-25: verse review (alle missies); veiligheids-pass Opus high",
+    "verdict": "fix-eerst",
     "topIssues": [
-      "Ronde 3 was niet af te maken — verholpen"
-    ]
+      "[tech] MatchPairs submit bij elke foute koppelpoging (niet alleen bij definitieve indiening) laat de round-match-pairs-ronde (25 pt, 5 paren) na herladen op ~19-20/25 vastvriezen zonder een juiste koppeling.",
+      "[tech] CompletionScreen krijgt geen onRetry/terugweg mee; een leerling die onder de 40%-drempel scoort (relevant want deze missie heeft min:4 rondes en 100 maxScore) loopt vast op een uitgeschakelde knop zonder uitgang.",
+      "[tech] round-drag-sort (6 items) en round-categorize (geen inhoudelijke poort) geven ongecorrigeerde deelscore bij willekeurig indienen — geen gokbasislijn zoals in rapid-fire."
+    ],
+    "proposedFixes": 0,
+    "safetyScores": {
+      "aiGedrag": 9,
+      "privacy": 10
+    }
   },
   {
     "missionId": "review-week-3",
     "templateType": "ethics-council",
-    "priorityBand": "low",
+    "priorityBand": "medium",
     "triageScores": {
       "uiux": 2,
       "slo": 0,
@@ -3092,21 +3364,61 @@
       "interactivity": 1,
       "total": 5
     },
-    "lastReviewed": "2026-07-01",
-    "reviewStatus": "fixed",
-    "reportPath": "business/dgskills-reviews/review-week-3-2026-07-01.md",
+    "lastReviewed": "2026-08-25",
+    "reviewStatus": "reviewed",
+    "reportPath": "business/dgskills-reviews/review-week-3-2026-08-25.md",
     "autoFixesApplied": 0,
-    "openEscalations": [],
+    "openEscalations": [
+      {
+        "category": "structural",
+        "description": "70% van de score is lengte-gebaseerd i.p.v. inhoud-gebaseerd (TransparantDossier.tsx:43, UitdagingBoss.tsx:30-31, LegaalDossier.tsx:42-49) — gedeelde engine, treft alle ethics-council-missies.",
+        "file": "src/features/missions/templates/ethics-council/sub/TransparantDossier.tsx"
+      },
+      {
+        "category": "structural",
+        "description": "Leerling onder 40% kan de missie niet afronden (disabled knop, onComplete nooit aangeroepen) — gedeelde CompletionScreen/VonnisClimax-logica.",
+        "file": "src/features/missions/templates/ethics-council/sub/VonnisClimax.tsx"
+      },
+      {
+        "category": "structural",
+        "description": "Categorize-dossier verliest voortgang en reshuffelt bij herladen; geen initialProgress/onProgress meegegeven, geen state-veld in de engine.",
+        "file": "src/features/missions/templates/ethics-council/sub/EerlijkDossier.tsx"
+      },
+      {
+        "category": "privacy",
+        "description": "Vrije leerlingtekst uit de drie dossiers blijft na een afgebroken poging in localStorage staan (clearSave draait alleen bij afronding). Op gedeelde schoolapparaten is die tekst zonder opnieuw inloggen uitleesbaar. Dit zit in de gedeelde useMissionAutoSave-hook, dus het raakt meer missies dan alleen deze; laat een mens bepalen of dit platformbreed opgelost moet worden en of er een 'vul hier geen persoonsgegevens in'-regel bij de invoervelden hoort.",
+        "file": "src/hooks/useMissionAutoSave.ts"
+      },
+      {
+        "category": "anders",
+        "description": "De slapende agent-rol review-week-3 beschrijft inhoudelijk een andere missie dan de EthicsCouncil-template. Zolang enableChat uit staat gebeurt er niets, maar de mismatch is een latent risico bij activering en vraagt een menselijke keuze: rol herschrijven naar de drie dossiers, of expliciet als afgevoerd markeren.",
+        "file": "src/config/agents/year1.tsx"
+      },
+      {
+        "category": "structural",
+        "description": "speeltest wave 24: hoge score haalbaar zonder inhoudelijk werk — KRITIEKE BEVINDING: 'De Ethische Raad' (reflectie-/verdedigingsmissie met 3 dossiers + miniboss + vonnis) draait grotendeels op vrije-tekstvelden die uitsluitend op TEKENAANTAL worden gevalideerd, nie"
+      }
+    ],
     "codexVerdict": null,
-    "escalationCount": 0,
+    "escalationCount": 6,
     "reviewScores": {
-      "uiux": 8.5,
-      "didactiek": 8,
-      "tech": 8
+      "uiux": 7.5,
+      "didactiek": 7,
+      "tech": 4
     },
-    "triageScore": 1.85,
-    "statusNote": "wave 10: gezond op nieuw ethics-council-template (#184); cross-template-imports naar engine-lijst",
-    "verdict": "ok"
+    "triageScore": 3.75,
+    "statusNote": "sweep wave 24 2026-08-25: verse review (alle missies); veiligheids-pass Opus high",
+    "verdict": "fix-eerst",
+    "proposedFixes": 0,
+    "topIssues": [
+      "[didactiek] Leerlingen onder 40% score kunnen de missie niet afronden (gedeelde CompletionScreen-knop blijft disabled).",
+      "[tech] 70/100 punten zijn lengte-gebaseerd i.p.v. inhoud-gebaseerd; leerling kan met willekeurige tekens ~70-85/100 halen.",
+      "[tech] Missie niet af te ronden onder 40% score; onComplete/XP wordt nooit aangeroepen."
+    ],
+    "safetyScores": {
+      "aiGedrag": 8,
+      "privacy": 7
+    }
   },
   {
     "missionId": "schermtijd-coach",
@@ -3258,26 +3570,42 @@
       "interactivity": 0,
       "total": 5
     },
-    "lastReviewed": "2026-07-01",
-    "reviewStatus": "fixed",
-    "reportPath": "business/dgskills-reviews/security-review-2026-07-01.md",
+    "lastReviewed": "2026-08-25",
+    "reviewStatus": "reviewed",
+    "reportPath": "business/dgskills-reviews/security-review-2026-08-25.md",
     "autoFixesApplied": 0,
-    "openEscalations": [],
+    "openEscalations": [
+      {
+        "category": "anders",
+        "description": "Inclusiviteits- en welzijnssignaal: een specifieke, cultureel geladen voornaam (Mohamed) staat als slechtste wachtwoordvoorbeeld in leerlingmateriaal voor 15-16-jarigen, terwijl alle andere voorbeelden neutraal zijn. Dit is inhoudelijke redactie op leerlingcopy en hoort door een mens bevestigd te worden, niet automatisch aangepast.",
+        "file": "src/features/missions/templates/review-arena/configs/security-review.ts"
+      }
+    ],
     "codexVerdict": null,
-    "escalationCount": 0,
+    "escalationCount": 1,
     "reviewScores": {
-      "uiux": 9,
-      "didactiek": 9,
-      "tech": 8.5
+      "uiux": 7.5,
+      "didactiek": 8.5,
+      "tech": 7
     },
-    "triageScore": 1.15,
-    "statusNote": "wave 10: security-adviezen inhoudelijk geverifieerd, niets verouderds; schoonste missie van de run",
-    "verdict": "ok"
+    "triageScore": 2.55,
+    "statusNote": "sweep wave 24 2026-08-25: verse review (alle missies); veiligheids-pass Opus high",
+    "verdict": "ok",
+    "proposedFixes": 0,
+    "topIssues": [
+      "[design] DragSort-rij-feedback zonder tekstalternatief/aria-label en #ff3c21-contrastrisico op positienummer raken deze missie via de gedeelde engine.",
+      "[didactiek] DragSort-followUp-antwoordoptie over 'wachtwoorden altijd kraakbaar' overlapt licht met brute-force-content uit ronde 2.",
+      "[tech] Itemaantal per ronde (6/5/8/10) geeft ongelijke puntwaarde per item tussen rondes; geen fout maar inconsistente granulariteit."
+    ],
+    "safetyScores": {
+      "aiGedrag": 9,
+      "privacy": 6
+    }
   },
   {
     "missionId": "slide-specialist",
     "templateType": "tool-guide",
-    "priorityBand": "high",
+    "priorityBand": "low",
     "triageScores": {
       "uiux": 2,
       "slo": 1,
@@ -3285,26 +3613,39 @@
       "interactivity": 1,
       "total": 6
     },
-    "lastReviewed": "2026-07-01",
-    "reviewStatus": "fixed",
-    "reportPath": "business/dgskills-reviews/slide-specialist-2026-07-01.md",
-    "autoFixesApplied": 1,
-    "openEscalations": [],
-    "codexVerdict": "ALLOW",
+    "lastReviewed": "2026-08-25",
+    "reviewStatus": "reviewed",
+    "reportPath": "business/dgskills-reviews/slide-specialist-2026-08-25.md",
+    "autoFixesApplied": 0,
+    "openEscalations": [
+      {
+        "category": "structural",
+        "description": "Blocking bevindingen (gokbestendigheid, state-herstel-crash) zitten in de gedeelde tool-guide-engine, niet oplosbaar binnen de config-whitelist van slide-specialist. Geldt voor alle tool-guide-missies; engine-fix is een platform-brede taak buiten deze missie-review.",
+        "file": "src/features/missions/templates/tool-guide/ToolGuide.tsx"
+      }
+    ],
+    "codexVerdict": null,
     "reviewScores": {
-      "uiux": 1,
-      "didactiek": 1,
-      "tech": 2
+      "uiux": 9,
+      "didactiek": 8.5,
+      "tech": 4
     },
     "goalClear": true,
     "goalAchieved": false,
-    "proposedFixes": 5,
-    "escalationCount": 0,
+    "proposedFixes": 0,
+    "escalationCount": 1,
     "topIssues": [
-      "'Zetelen' bestaat niet als PowerPoint-overgang (stap 4 onuitvoerbaar)",
-      "'Animatievenster' bestaat niet in iOS PowerPoint (stap 3 onuitvoerbaar)",
-      "learningObjectives-array ontbreekt"
-    ]
+      "[tech] Gedeelde tool-guide-engine scoort niet gokbestendig (checklist = zelfrapportage, kennisbonus is bij allowRetry gratis herhaalbaar) — 55/55 haalbaar zonder inhoudelijk werk; geldt onverkort voor deze missie.",
+      "[tech] useMissionAutoSave zonder validate-callback: een verweesde opgeslagen currentStep na een toekomstige configwijziging van deze missie kan leiden tot een witte crash zonder herstelpad.",
+      "[design] Stap 1-instructie zit op ~59 woorden, net onder de leerjaar 1-2-grens van 60; geen fout maar dicht tegen het plafond."
+    ],
+    "triageScore": 2.7,
+    "verdict": "fix-eerst",
+    "statusNote": "sweep wave 24 2026-08-25: verse review (alle missies); veiligheids-pass Opus high",
+    "safetyScores": {
+      "aiGedrag": 9,
+      "privacy": 9
+    }
   },
   {
     "missionId": "social-safeguard",
@@ -3404,7 +3745,7 @@
   {
     "missionId": "startup-pitch",
     "templateType": "tool-guide",
-    "priorityBand": "low",
+    "priorityBand": "medium",
     "triageScores": {
       "uiux": 2,
       "slo": 0,
@@ -3412,21 +3753,37 @@
       "interactivity": 1,
       "total": 4
     },
-    "lastReviewed": "2026-07-02",
+    "lastReviewed": "2026-08-25",
     "reviewStatus": "fixed",
-    "reportPath": "business/dgskills-reviews/startup-pitch-2026-07-02.md",
-    "autoFixesApplied": 2,
-    "openEscalations": [],
-    "codexVerdict": "ALLOW",
-    "escalationCount": 0,
+    "reportPath": "business/dgskills-reviews/startup-pitch-2026-08-25.md",
+    "autoFixesApplied": 1,
+    "openEscalations": [
+      {
+        "category": "ai-act",
+        "description": "Startup-pitch laat leerlingen een AI-product ontwerpen en reflecteren op privacy en eerlijkheid, maar niet op transparantie richting eindgebruikers (weten gebruikers dat het AI is). Of dit een gewenste aanvulling is op de ethiekstap is een curriculum- en compliancekeuze, geen automatische fix.",
+        "file": "src/features/missions/templates/tool-guide/configs/startup-pitch.ts"
+      }
+    ],
+    "codexVerdict": null,
+    "escalationCount": 1,
     "reviewScores": {
-      "uiux": 8.5,
-      "didactiek": 6.5,
-      "tech": 7
+      "uiux": 7.5,
+      "didactiek": 8,
+      "tech": 4
     },
-    "triageScore": 2.75,
-    "statusNote": "wave 14: maxScore 60->55 (plafond = 4 stappen + 3 vragen, print-pro-familie; topbadge stond al op 55) + yearGroup 1->3 conform mapping/curriculum (rol telde onterecht mee in leerjaar-1-dekking en -suggesties)",
-    "verdict": "fix-eerst"
+    "triageScore": 3.35,
+    "statusNote": "sweep wave 24 2026-08-25: verse review (alle missies); veiligheids-pass Opus high; 1 auto-fixes",
+    "verdict": "ok",
+    "proposedFixes": 1,
+    "topIssues": [
+      "[tech] Scoring is niet gokbestendig (engine-erfenis): een leerling haalt 40/55 (73%, ruim boven de 40%-slaagdrempel) door alleen checklist-vinkjes te zetten, zonder inhoudelijk werk aan probleem, oplossing, branding of ethiek.",
+      "[design] Instructie-copy stap 2 (~95 woorden) en stap 4 (~105 woorden) overschrijdt de leerjaar-3 ronde-opdracht-grens van 80 woorden.",
+      "[tech] Ontbrekende validate-callback bij useMissionAutoSave (engine-erfenis): een toekomstige stap-wijziging kan een opgeslagen currentStep buiten bereik laten vallen en een witte crash veroorzaken."
+    ],
+    "safetyScores": {
+      "aiGedrag": 8,
+      "privacy": 8
+    }
   },
   {
     "missionId": "startup-simulator",
@@ -3960,7 +4317,7 @@
   {
     "missionId": "word-wizard",
     "templateType": "tool-guide",
-    "priorityBand": "low",
+    "priorityBand": "medium",
     "triageScores": {
       "uiux": 2,
       "slo": 1,
@@ -3968,23 +4325,36 @@
       "interactivity": 1,
       "total": 5
     },
-    "lastReviewed": "2026-07-02",
-    "reviewStatus": "blocked",
-    "reportPath": "business/dgskills-reviews/word-wizard-2026-07-02.md",
-    "autoFixesApplied": 2,
+    "lastReviewed": "2026-08-25",
+    "reviewStatus": "reviewed",
+    "reportPath": "business/dgskills-reviews/word-wizard-2026-08-25.md",
+    "autoFixesApplied": 0,
     "openEscalations": [
-      "avg-groep: foto-instructie verder aanscherpen ('geen klasgenoten op de foto')? — zelfde beslissing als cloud-commander stap 3, graag in één keer beslissen",
-      "slo-fit: 22A-claim oppervlakkig + Bloom blijft niveau 1-2 (curator-afweging)"
+      {
+        "category": "ai-act",
+        "file": "src/config/agents/year1.tsx",
+        "description": "Transparantie-signaal ter beoordeling: de openingsboodschap van de slapende Word-Coach-rol noemt zichzelf geen AI. Daarnaast bestaat er wel een component src/features/consent/AiTransparencyNotice.tsx maar die wordt nergens in src/ gebruikt (alleen eigen bestand) — dat is platformbreed, niet specifiek voor deze missie, maar raakt de transparantieverplichting richting leerlingen. Voor word-wizard zelf is er geen AI-interactie, dus geen actueel risico."
+      }
     ],
-    "codexVerdict": "ALLOW",
-    "escalationCount": 2,
+    "codexVerdict": null,
+    "escalationCount": 1,
     "reviewScores": {
-      "uiux": 8.5,
-      "didactiek": 6.5,
-      "tech": 9
+      "uiux": 8,
+      "didactiek": 7,
+      "tech": 6
     },
-    "triageScore": 2.15,
-    "statusNote": "wave 11: iPad-route inhoudsopgave gecorrigeerd (Invoegen→Documentelementen→Inhoud, 2 reviews bevestigden de fout) + badges gedifferentieerd; foto-aanscherping bewust naar AVG-groep",
-    "verdict": "fix-eerst"
+    "triageScore": 3,
+    "statusNote": "sweep wave 24 2026-08-25: verse review (alle missies); veiligheids-pass Opus high",
+    "verdict": "ok",
+    "proposedFixes": 0,
+    "topIssues": [
+      "[design] Stap 3 (afbeelding invoegen) heeft geen verificationQuestion terwijl de andere 3 stappen dat wel hebben — breekt het visuele ritme.",
+      "[didactiek] Stap 4 vereist impliciet een device-wissel (iPad naar laptop/desktop); checklistitems desktopstap-bekeken en bijwerken-bekeken blijven zelfrapportage zonder verificatie dat het echt is gedaan.",
+      "[tech] 3 van de 4 stappen hebben allowRetry:true op de kennisvraag; combineert met de gedeelde engine-bug (gratis kennisbonus via retry) tot 15 van de 55 punten gratis te behalen zonder inhoudelijk begrip."
+    ],
+    "safetyScores": {
+      "aiGedrag": 9,
+      "privacy": 9
+    }
   }
 ]

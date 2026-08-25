@@ -125,7 +125,7 @@ function computeVisuals(
             data: {
                 leftTitle: 'Hoe jij feedback geeft',
                 leftItems: [
-                    { icon: '/assets/brand/ui-icons/dgskills-duck-happy.webp', label: '"Ziet er goed uit!"' },
+                    { icon: '😊', label: '"Ziet er goed uit!"' },
                     { icon: '👍', label: '"Prima gedaan!"' },
                     { icon: '🙈', label: 'Problemen bewust niet noemen' },
                 ],
@@ -179,7 +179,7 @@ export const codeReviewerConfig: SimulationLabConfig = {
             parameters: [
                 {
                     id: 'naamgeving',
-                    label: 'Naamgeving variabelen',
+                    label: 'Naamgeving variabelen (0=slecht: x, abc · 1=matig · 2=goed: beschrijvend)',
                     type: 'slider',
                     min: 0,
                     max: 2,

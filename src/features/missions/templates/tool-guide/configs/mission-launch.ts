@@ -20,7 +20,7 @@ const config: ToolGuideConfig = {
             id: 'stap-1-kop',
             title: 'De pakkende kop',
             instruction:
-                'Een flyer heeft maar **2 seconden** om iemand te stoppen. De kop is het allerbelangrijkste element. Bedenk **3 verschillende opties** voor een kop. Gebruik een van deze formules:\n- **Probleem + oplossing**: "Nooit meer huiswerkstress!"\n- **Nieuwsgierigheid**: "De app die je docent niet kent"\n- **Concreet voordeel**: "3× sneller leren met AI"\n\nKies daarna de beste van je drie opties. Slechte koppen zijn te vaag ("Mijn project") of te lang (meer dan 8 woorden).',
+                'Een flyer heeft maar **2 seconden** om iemand te stoppen. Bedenk **3 verschillende koppen** met deze formules:\n- **Probleem + oplossing**: "Nooit meer huiswerkstress!"\n- **Nieuwsgierigheid**: "De app die je docent niet kent"\n- **Concreet voordeel**: "3× sneller leren met AI"\n\nKies de beste. Maximaal 8 woorden, geen vage titels zoals "Mijn project".',
             tip: 'Test je kop: lees hem hardop in 2 seconden. Begrijpt iemand die hem niet kent meteen waar het over gaat? Zo ja — goede kop. Zo nee — maak hem korter of specifieker.',
             checklistItems: [
                 { id: 'drie-opties', label: 'Ik heb 3 verschillende koppen bedacht' },
@@ -68,7 +68,7 @@ const config: ToolGuideConfig = {
             id: 'stap-3-cta',
             title: 'Call to action',
             instruction:
-                'Een call to action (CTA) vertelt mensen **wat ze moeten doen**. Niet alleen informeren, maar activeren. Voorbeelden van sterke CTA\'s:\n- "Kom vrijdag naar de aula!" (concreet, met datum)\n- "Scan de QR-code en probeer het zelf!" (interactief)\n- "Vraag me er morgen naar!" (laagdrempelig)\n\nSlechte CTA\'s: "Meer info volgt later" (vaag) of "Misschien leuk?" (twijfelachtig). Zet de CTA op de flyer als het **grootste en duidelijkste element** onderaan.',
+                'Een call to action (CTA) vertelt mensen **wat ze moeten doen**. Sterke voorbeelden:\n- "Kom vrijdag naar de aula!"\n- "Scan de QR-code en probeer het zelf!"\n- "Vraag me er morgen naar!"\n\nVermijd vaag ("Meer info volgt later"). Zet de CTA onderaan, groot en duidelijk.',
             tip: 'Stel je voor dat een vriend je flyer leest. Zou die weten wat ze moeten doen? En zouden ze het ook daadwerkelijk doen? Dat is de maatstaf voor een goede CTA.',
             checklistItems: [
                 { id: 'cta-bedacht', label: 'Ik heb een duidelijke call to action bedacht' },
@@ -92,7 +92,7 @@ const config: ToolGuideConfig = {
             id: 'stap-4-ontwerp',
             title: 'Flyer indelen',
             instruction:
-                'Maak de flyer in **Word, PowerPoint of Canva** (of op papier). Gebruik visuele hiërarchie: groot = belangrijk. De kop staat bovenaan en is het grootst. Daarna korte tekst en een afbeelding. Onderaan de call to action in een opvallende kleur. Gebruik maximaal 2 lettertypen en laat genoeg witruimte. Vink de checklist af als je klaar bent.',
+                'Maak de flyer in **Word, PowerPoint of Canva** (of op papier). Groot = belangrijk: kop bovenaan en het grootst, dan korte tekst en een afbeelding, CTA onderaan in een opvallende kleur. Maximaal 2 lettertypen, genoeg witruimte.',
             tip: 'Test je flyer: dek de helft af met je hand. Mis je iets belangrijks? Als het antwoord nee is, dan kan die helft weg. Eenvoud wint altijd.',
             checklistItems: [
                 { id: 'hiearchie', label: 'Mijn kop staat bovenaan en is het grootst' },
