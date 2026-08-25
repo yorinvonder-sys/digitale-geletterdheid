@@ -38,6 +38,9 @@ const config: ToolGuideConfig = {
                     'Een lijst met alle leerlingen die vandaag hebben geprint',
                 ],
                 correctIndex: 0,
+                allowRetry: true,
+                retryHint:
+                    'Nog niet. Ga terug naar Instellingen > Printers (of je print-app) en kijk goed wat er in dat scherm staat. Kies daarna opnieuw.',
                 explanation:
                     'Klopt! Bij Printers zie je welke printers al op je apparaat staan, plus een knop om er een toe te voegen. Staat de schoolprinter er niet tussen, dan moet je hem nog instellen of de naam navragen bij je docent of de IT-helpdesk.',
             },
@@ -64,6 +67,9 @@ const config: ToolGuideConfig = {
                     'Je moet je apparaat opnieuw opstarten',
                 ],
                 correctIndex: 1,
+                allowRetry: true,
+                retryHint:
+                    'Nog niet. Open het printvenster nog eens en tik echt op de printernaam bovenin; kijk wat er dan gebeurt. Kies daarna opnieuw.',
                 explanation:
                     'Precies! Bovenin het printvenster staat de printer die nu gekozen is. Tik of klik je erop, dan zie je alle printers die je apparaat kent — daar kies je de schoolprinter uit.',
             },
@@ -89,6 +95,9 @@ const config: ToolGuideConfig = {
                     'De pagina\'s van het document dat je hiervoor printte',
                 ],
                 correctIndex: 0,
+                allowRetry: true,
+                retryHint:
+                    'Nog niet. Kijk in het printvenster naar het vakje bij Pagina\'s of Paginabereik, vóórdat je er zelf iets in typt. Kies daarna opnieuw.',
                 explanation:
                     'Goed gezien! Standaard staat het paginabereik op alles. Wil je maar een deel printen, dan typ je daar zelf de paginanummers in — dat scheelt papier en inkt.',
             },
@@ -113,6 +122,9 @@ const config: ToolGuideConfig = {
                     'Je krijgt een e-mail met je print als bijlage',
                 ],
                 correctIndex: 0,
+                allowRetry: true,
+                retryHint:
+                    'Nog niet. Let op je eigen scherm op het moment dat je op Afdrukken tikt: wat verdwijnt of verschijnt daar? Kies daarna opnieuw.',
                 explanation:
                     'Klopt! Zodra je opdracht verstuurd is, verdwijnt het printvenster. Bij een FollowMe- of vrijgave-systeem wacht je print daarna op de server tot je je bij de printer aanmeldt — haal hem meteen op, dan blijft je werk privé.',
             },

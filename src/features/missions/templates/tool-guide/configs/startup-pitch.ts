@@ -29,16 +29,19 @@ const config: ToolGuideConfig = {
             ],
             verificationQuestion: {
                 question:
-                    'Pak jouw probleemzin erbij en streep het woord (of de woorden) weg die zeggen WIE dit probleem heeft. Wat houd je over?',
+                    'Kijk naar wat je bij deze stap hebt opgeschreven. Welke twee onderdelen staan er nu allebei echt op papier?',
                 options: [
-                    'Precies dezelfde zin — er stond geen doelgroep in',
-                    'Een zin die nog steeds vertelt wát er misgaat, maar niet meer voor wie',
-                    'Niets meer, want mijn hele zin ging over de doelgroep',
-                    'Eén los woord',
+                    'Alleen wát er misgaat — voor wie het probleem speelt staat er nog nergens',
+                    'Een zin die vertelt wát er misgaat, én daarnaast voor wie het probleem speelt',
+                    'Alleen voor wie het is — wat er precies misgaat staat er nog niet',
+                    'Alleen een naam voor mijn startup',
                 ],
                 correctIndex: 1,
+                allowRetry: true,
+                retryHint:
+                    'Kijk nog eens naar je aantekeningen: staat er zowel wát er misgaat als voor wie? Vul aan wat mist en kies daarna opnieuw.',
                 explanation:
-                    'Goed gekeken. Blijft er zonder de doelgroep nog een zin over die vertelt wat er misgaat, dan zitten allebei de delen erin. Zet de doelgroep er weer bij — investeerders willen precies weten voor wie je bouwt.',
+                    'Goed gecheckt. Met allebei de delen op papier — het probleem én de doelgroep — heb je de basis van elke sterke pitch. Investeerders willen precies weten voor wie je bouwt.',
             },
         },
         {
@@ -62,6 +65,9 @@ const config: ToolGuideConfig = {
                     'Alleen mijn startupnaam, want die staat in elke zin',
                 ],
                 correctIndex: 1,
+                allowRetry: true,
+                retryHint:
+                    'Lees je oplossing nog eens en zoek per zin het werkwoord: hoort dat bij de AI of bij de gebruiker? Vul aan wat mist en kies daarna opnieuw.',
                 explanation:
                     'Mooi. Dat ene werkwoord is de kern van je pitch: het zegt in één woord wat jouw AI voor iemand doet. Staat het er nog niet, schrijf het er dan alsnog bij.',
             },
@@ -79,16 +85,19 @@ const config: ToolGuideConfig = {
             ],
             verificationQuestion: {
                 question:
-                    'Lees jouw slogan en haal er in gedachten het belangrijkste woord uit weg. Wat blijft er over?',
+                    'Tel de woorden van jouw slogan en kijk of er een woord in zit dat echt bij jouw startup hoort. Wat klopt er nu?',
                 options: [
-                    'Een zin die precies hetzelfde betekent als eerst',
-                    'Een zin waar de kern uit is, zodat niemand meer snapt waar mijn startup over gaat',
-                    'Niets — mijn slogan bestond uit dat ene woord',
-                    'Een langere zin dan eerst',
+                    'Mijn slogan heeft meer dan 6 woorden',
+                    'Maximaal 6 woorden, en er zit een woord in dat bij mijn startup past',
+                    'Maximaal 6 woorden, maar hij zou over elk willekeurig bedrijf kunnen gaan',
+                    'Ik heb nog geen slogan opgeschreven',
                 ],
                 correctIndex: 1,
+                allowRetry: true,
+                retryHint:
+                    'Tel de woorden van je slogan en check of de kern van jouw startup erin zit. Pas je slogan aan als dat nodig is en kies opnieuw.',
                 explanation:
-                    'Klopt. Als één woord weghalen je slogan meteen leegmaakt, dan draagt elk woord zijn gewicht. Dat is precies wat je wilt in maximaal zes woorden.',
+                    'Klopt. Kort én eigen: maximaal zes woorden waarvan er minstens één onmiskenbaar over jouw startup gaat — dat blijft hangen bij een jury.',
             },
         },
         {
@@ -113,6 +122,9 @@ const config: ToolGuideConfig = {
                     'De lijst met data die mijn AI verzamelt',
                 ],
                 correctIndex: 1,
+                allowRetry: true,
+                retryHint:
+                    'Kijk nog eens naar je oplossing: staat er een handeling die je morgen echt kunt uitvoeren? Maak hem concreter als dat nodig is en kies daarna opnieuw.',
                 explanation:
                     'Precies. Een risico benoemen is stap één; investeerders willen een maatregel zien die je morgen kunt uitvoeren. Blijft er niets staan, maak je oplossing dan concreter.',
             },

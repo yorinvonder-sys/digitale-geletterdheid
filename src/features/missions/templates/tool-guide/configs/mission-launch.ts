@@ -37,6 +37,9 @@ const config: ToolGuideConfig = {
                     'Je moet even nadenken over de spelling',
                 ],
                 correctIndex: 0,
+                allowRetry: true,
+                retryHint:
+                    'Nog niet. Lees je kop nog een keer hardop voor met een timer erbij en let op hoe ver je na 2 seconden bent. Kies daarna opnieuw.',
                 explanation:
                     'Klopt. De 2-secondentest doe je hardop: ben je dan nog niet klaar, dan is je kop te lang. Maak hem korter of specifieker.',
             },
@@ -62,6 +65,9 @@ const config: ToolGuideConfig = {
                     'Ik moet een ander lettertype kiezen',
                 ],
                 correctIndex: 1,
+                allowRetry: true,
+                retryHint:
+                    'Nog niet. Kijk terug naar de drie vragen van deze stap: welke daarvan komt in het antwoord van je tester niet terug? Kies daarna opnieuw.',
                 explanation:
                     'Precies. Onthoudt iemand na 5 seconden alleen iets vaags, dan is je boodschap niet scherp. Maak WAT en VOOR WIE concreter — niet langer.',
             },
@@ -87,6 +93,9 @@ const config: ToolGuideConfig = {
                     'Hoe jouw kop precies luidt',
                 ],
                 correctIndex: 1,
+                allowRetry: true,
+                retryHint:
+                    'Nog niet. Kijk naar de voorbeeld-CTA\'s in de opdracht: welke informatie geven die allemaal aan de lezer? Kies daarna opnieuw.',
                 explanation:
                     'Goed. Je CTA is geslaagd als de lezer direct weet welke actie hij moet doen — en wanneer of waar. Lukt dat navertellen niet, maak je CTA dan concreter.',
             },
@@ -115,6 +124,9 @@ const config: ToolGuideConfig = {
                     'De kop alleen vetgedrukt gemaakt',
                 ],
                 correctIndex: 0,
+                allowRetry: true,
+                retryHint:
+                    'Nog niet. Klik je kop in je flyer aan en kijk in de werkbalk welke instelling de tekst echt groter maakt. Kies daarna opnieuw.',
                 explanation:
                     'Klopt. Visuele hiërarchie maak je met echte lettergrootte: selecteer je kop en zet het lettertype groter. Inzoomen of alleen vet maken verandert de hiërarchie niet.',
             },

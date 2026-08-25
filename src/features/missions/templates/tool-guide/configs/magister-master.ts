@@ -97,7 +97,7 @@ const config: ToolGuideConfig = {
                 question: 'Hoe kon je in de Agenda of ELO zien of er voor een dag wel of geen huiswerk klaarstaat?',
                 options: [
                     'Alleen als de app een melding stuurt; zonder melding staat er niets klaar',
-                    'Bij elke dag staat wat er die dag af moet zijn; is die dag leeg, dan is er niets',
+                    'Bij elke dag staat wat er die dag af moet zijn; een lege dag betekent dat er in Magister niets staat',
                     'Onderaan bij mijn cijfers staat hoeveel opdrachten nog open staan',
                     'Dat zie je niet in Magister; dat moet je bij elk vak apart vragen',
                 ],
@@ -106,7 +106,7 @@ const config: ToolGuideConfig = {
                 retryHint:
                     'Nog niet. Kijk nog eens hoe je agenda is ingedeeld en waar een huiswerkitem terechtkomt. Kies daarna opnieuw.',
                 explanation:
-                    'Precies! De agenda is geordend per dag: bij elke dag staat wat er die dag af moet zijn. Staat er bij een dag niets, dan is er voor die dag ook geen huiswerk ingepland.',
+                    'Precies! De agenda is geordend per dag: bij elke dag staat wat er die dag af moet zijn. Is een dag leeg, dan staat er in Magister niets — maar let op: sommige docenten zetten huiswerk in Teams of Classroom. Check dat ook, of vraag het na bij je docent.',
             },
         },
         {
