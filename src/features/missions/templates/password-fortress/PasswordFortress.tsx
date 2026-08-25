@@ -210,14 +210,14 @@ export const PasswordFortress: React.FC<TemplateMissionProps> = ({ missionId, on
 const PasswordFortressInner: React.FC<{
     config: PasswordFortressConfig;
     onBack: () => void;
-    onComplete: (success: boolean, scorePercent?: number) => void;
+    onComplete: (success: boolean, scorePercent?: number) => boolean | void | Promise<boolean | void>;
 }> = ({ config, onBack, onComplete }) => {
     const { state, setState, clearSave } = useMissionAutoSave<FortressState>(
         config.missionId,
         makeInitialState(),
         // Een opgeslagen ronde-index die na een configwijziging buiten bereik valt,
         // laat het rondescherm leeg renderen zonder knop om verder te komen.
-        { validate: s => s.currentRound >= 0 && s.currentRound < config.rounds.length }
+        { validate: s => Number.isInteger(s.currentRound) && s.currentRound >= 0 && s.currentRound < config.rounds.length }
     );
 
     // Lokale state — het wachtwoord wordt bewust NIET geautosaved.
@@ -369,8 +369,7 @@ const PasswordFortressInner: React.FC<{
                 badges={config.badges}
                 phases={phases}
                 takeaways={config.takeaways}
-                onComplete={() => {
-                    clearSave();
+                onComplete={async () => {
                     const requiredRounds = missionGoal?.criteria.min ?? config.rounds.length;
                     // De laatste ronde (credential stuffing) is volgens het missiedoel
                     // altijd verplicht; alleen het aantal rondes tellen zou een fort dat
@@ -379,7 +378,12 @@ const PasswordFortressInner: React.FC<{
                     const success =
                         state.cleared.length >= requiredRounds &&
                         (finalRoundId === undefined || state.cleared.includes(finalRoundId));
-                    onComplete(success, toScorePercent(totalScore, config.maxScore));
+                    // Pas wissen als de voltooiing is vastgelegd, anders raakt de
+                    // leerling zijn fort kwijt bij een mislukte serveropslag.
+                    const completed = await onComplete(success, toScorePercent(totalScore, config.maxScore));
+                    if (completed !== false) {
+                        clearSave();
+                    }
                 }}
             />
         );

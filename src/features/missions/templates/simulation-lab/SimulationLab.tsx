@@ -116,7 +116,7 @@ const isRecord = (value: unknown): value is Record<string, unknown> =>
 // echt onbruikbare opslag gewist.
 function isValidSavedState(saved: SimulationLabState): boolean {
     if (saved.phase !== 'intro' && saved.phase !== 'simulate' && saved.phase !== 'results') return false;
-    if (typeof saved.currentSim !== 'number' || !Number.isFinite(saved.currentSim)) return false;
+    if (!Number.isInteger(saved.currentSim)) return false;
     return (
         isRecord(saved.parameterValues) &&
         isRecord(saved.questionAnswers) &&

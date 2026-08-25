@@ -249,9 +249,13 @@ const EthicsCouncilWithConfig: React.FC<EthicsCouncilWithConfigProps> = ({
         [setState]
     );
 
-    const handleComplete = useCallback(() => {
-        clearSave();
-        onComplete(true, toScorePercent(totalScore, config.maxScore));
+    const handleComplete = useCallback(async () => {
+        // Pas wissen als de voltooiing is vastgelegd, anders raakt de leerling
+        // zijn dossiers kwijt bij een mislukte serveropslag.
+        const completed = await onComplete(true, toScorePercent(totalScore, config.maxScore));
+        if (completed !== false) {
+            clearSave();
+        }
     }, [clearSave, onComplete, totalScore, config.maxScore]);
 
     // Opnieuw proberen vanaf dossier 1. Antwoorden én scores blijven staan: elk

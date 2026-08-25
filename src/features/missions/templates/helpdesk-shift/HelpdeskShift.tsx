@@ -147,9 +147,13 @@ const HelpdeskShiftInner: React.FC<{
         afrondtRef.current = true;
         setAfrondt(true);
         try {
-            clearSave();
             const score = scoreShift(config, afgerondeDienst.behandeld, afgerondeDienst.eindstand);
-            await onComplete(score >= config.maxScore * 0.4, toScorePercent(score, config.maxScore));
+            const completed = await onComplete(score >= config.maxScore * 0.4, toScorePercent(score, config.maxScore));
+            // Pas wissen als de voltooiing is vastgelegd, anders raakt de leerling
+            // de afgeronde dienst kwijt bij een mislukte serveropslag.
+            if (completed !== false) {
+                clearSave();
+            }
         } finally {
             // Mislukt afronden, dan moet de leerling het opnieuw kunnen proberen.
             afrondtRef.current = false;

@@ -194,14 +194,24 @@ export const PuzzleLab: React.FC<TemplateMissionProps> = ({
                 setFeedbackMessage('');
                 setShake(true);
                 setTimeout(() => setShake(false), 500);
-                setState(prev => ({
-                    ...prev,
-                    attempts: { ...prev.attempts, [puzzleId]: newAttempts },
-                    extraCluesRevealed:
-                        newAttempts >= puzzle.revealExtraAfterAttempts
+                setState(prev => {
+                    // Via pogingen ontgrendelde aanwijzingen kosten evenveel als de
+                    // betaalde hintknop: gelijke informatie, gelijke prijs — anders
+                    // is gokken goedkoper dan eerlijk om een hint vragen.
+                    const unlocksNow =
+                        newAttempts >= puzzle.revealExtraAfterAttempts &&
+                        !prev.extraCluesRevealed[puzzleId];
+                    return {
+                        ...prev,
+                        attempts: { ...prev.attempts, [puzzleId]: newAttempts },
+                        extraCluesRevealed: unlocksNow
                             ? { ...prev.extraCluesRevealed, [puzzleId]: true }
                             : prev.extraCluesRevealed,
-                }));
+                        hintsUsed: unlocksNow
+                            ? { ...prev.hintsUsed, [puzzleId]: (prev.hintsUsed[puzzleId] ?? 0) + 1 }
+                            : prev.hintsUsed,
+                    };
+                });
                 clearFeedback();
             }
         },

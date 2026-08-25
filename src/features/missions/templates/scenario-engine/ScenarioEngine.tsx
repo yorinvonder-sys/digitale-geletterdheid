@@ -413,6 +413,9 @@ const ScenarioEngineInner: React.FC<{
                         attribution={config.attribution}
                         onComplete={handleComplete}
                         onRetry={handleRetryMission}
+                        passScorePercent={scoreThreshold !== null && config.maxScore > 0
+                            ? Math.round((scoreThreshold / config.maxScore) * 100)
+                            : undefined}
                     />
                 </div>
             </div>
