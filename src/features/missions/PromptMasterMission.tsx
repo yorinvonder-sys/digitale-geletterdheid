@@ -546,6 +546,7 @@ const ResultVisual: React.FC<{
         return (
             <div className={`p-4 rounded-2xl border ${getBgColor()} h-full flex flex-col font-mono text-sm`}>
                 {getHeader()}
+                <AiDisclosureBadge compact text="AI-gegenereerd" className="mt-1" />
                 <div className="flex-1 bg-duck-ink rounded-xl p-4 overflow-x-auto relative">
                     <div className="flex gap-1.5 mb-3 opacity-50">
                         <div className="w-2.5 h-2.5 rounded-full bg-duck-acid" />
@@ -569,6 +570,7 @@ const ResultVisual: React.FC<{
     return (
         <div className={`p-4 rounded-2xl border ${getBgColor()} h-full flex flex-col`}>
             {getHeader()}
+            <AiDisclosureBadge compact text="AI-gegenereerd" className="mt-1" />
             <div className="flex-1 bg-white rounded-xl p-4 text-duck-ink/60 shadow-sm relative overflow-y-auto max-h-[300px]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                 <div className="absolute top-0 left-0 w-full h-1 bg-duck-gray" />
                 {/* Simulate paper lines */}
@@ -1298,6 +1300,9 @@ export const PromptMasterMission: React.FC<Props> = ({ onBack, onComplete, vsoPr
                                 className="w-full bg-white border-2 border-duck-gray rounded-2xl p-4 text-duck-ink placeholder-duck-ink/40 min-h-[80px] md:min-h-[100px] focus:outline-none focus-visible:ring-2 focus-visible:ring-duck-acid transition-all duration-300 resize-none"
                                 disabled={isAnalyzing}
                             />
+                            <p className="mt-2 text-[11px] leading-relaxed text-duck-ink/60 font-medium" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                                Typ geen echte namen of andere persoonsgegevens in je prompt — je tekst gaat naar een AI-dienst.
+                            </p>
                             <button
                                 data-qa="prompt-master-submit"
                                 onClick={handleSubmitPrompt}

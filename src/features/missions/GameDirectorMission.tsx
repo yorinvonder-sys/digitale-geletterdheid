@@ -293,7 +293,7 @@ export const GameDirectorMission: React.FC<GameDirectorProps> = ({ onComplete, o
         startTimeRef.current = Date.now(); // Reset timer for new challenge
 
         if (progress.isHardMode) {
-            log('⚡ Snel gedaan! Hard Mode geactiveerd voor dit level!');
+            log('⚡ Hard Mode staat aan: deze puzzel is een lastigere variant. Liever rustig oefenen? Zet Hard Mode uit met de knop bovenin het scherm.');
         }
     }, [progress.currentChallengeIndex, log, progress.isHardMode]);
 
@@ -721,7 +721,7 @@ export const GameDirectorMission: React.FC<GameDirectorProps> = ({ onComplete, o
             handleReset();
 
             if (isFast) {
-                log(`🚀 Wow! ${duration.toFixed(1)}s is supersnel! Level ${progress.currentChallengeIndex + 2} wordt MOEILIJKER!`);
+                log(`🚀 Wow! ${duration.toFixed(1)}s is supersnel! Hard Mode aan: level ${progress.currentChallengeIndex + 2} krijgt een lastigere puzzel. Liever rustig oefenen? Zet Hard Mode uit met de knop bovenin het scherm.`);
             } else {
                 log(`💪 Goed bezig, Robbie! Op naar het volgende level!`);
             }
@@ -839,6 +839,16 @@ export const GameDirectorMission: React.FC<GameDirectorProps> = ({ onComplete, o
                                         />
                                     ))}
                                 </div>
+                                {progress.isHardMode && (
+                                    <button
+                                        data-qa="game-director-hard-mode-toggle"
+                                        onClick={() => setProgress(prev => ({ ...prev, isHardMode: false }))}
+                                        title="Hard Mode ging automatisch aan omdat je de vorige puzzel heel snel oploste. Zet hem uit als je liever rustig oefent."
+                                        className="ml-1 shrink-0 rounded-full border border-duck-acid/40 bg-duck-acid/10 px-2 py-0.5 text-[10px] font-black uppercase tracking-widest text-duck-ink transition-all duration-300 hover:bg-duck-acid/20"
+                                    >
+                                        ⚡ Hard Mode aan — zet uit
+                                    </button>
+                                )}
                             </div>
                             <h3 className="font-bold text-sm text-duck-ink min-w-0 font-['Newsreader',Georgia,serif]">
                                 {currentChallenge.title}
