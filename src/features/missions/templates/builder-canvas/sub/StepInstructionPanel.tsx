@@ -6,6 +6,11 @@ import { answerQualityHint } from '../../shared/answerQuality';
 import type { BuilderStep } from '../BuilderCanvas';
 import type { BuilderCanvasState } from './types';
 
+// Eén PII-waarschuwing voor alle builder-canvas-missies: onder het hoofdtekstveld
+// én onder het bewijsveld, tenzij een stap een eigen notitie meegeeft.
+const DEFAULT_PRIVACY_NOTE =
+    'Vul geen namen, contactgegevens, foto’s, stemopnames of links met persoonsgegevens in.';
+
 interface StepInstructionPanelProps {
     stepData: BuilderStep;
     stepIndex: number;
@@ -165,6 +170,12 @@ export const StepInstructionPanel: React.FC<StepInstructionPanelProps> = ({
                             {qualityHint}
                         </p>
                     )}
+                    <p
+                        className="mt-2 text-[11px] leading-relaxed text-duck-ink/75"
+                        style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
+                    >
+                        {stepData.textPrivacyNote ?? DEFAULT_PRIVACY_NOTE}
+                    </p>
                 </div>
             )}
 
@@ -204,7 +215,7 @@ export const StepInstructionPanel: React.FC<StepInstructionPanelProps> = ({
                         className="mt-1 text-[11px] leading-relaxed text-duck-ink/75"
                         style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                     >
-                        {evidenceRequirement.privacyNote ?? 'Vul geen namen, contactgegevens, foto’s, stemopnames of links met persoonsgegevens in.'}
+                        {evidenceRequirement.privacyNote ?? DEFAULT_PRIVACY_NOTE}
                     </p>
                 </div>
             )}

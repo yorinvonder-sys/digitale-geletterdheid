@@ -77,6 +77,7 @@ export const memeMachineConfig: BuilderCanvasConfig = {
                 { id: 'inclusief', label: 'Ik heb uitgelegd hoe je humor maakt zonder groepen te targeten' },
                 { id: 'bron', label: 'Ik heb benoemd of mijn meme een bestaande foto/afbeelding gebruikt en of dat mag' },
                 { id: 'richtlijn', label: 'Ik heb 1 persoonlijke richtlijn voor verantwoord posten geformuleerd' },
+                { id: 'portretrecht', label: 'Ik gebruik alleen beelden met toestemming — geen herkenbare klasgenoten of docenten zonder hun toestemming' },
             ],
             textPrompt: 'Schrijf je reflectie op verantwoorde content',
         },

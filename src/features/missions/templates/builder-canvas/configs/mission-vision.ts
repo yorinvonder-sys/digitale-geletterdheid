@@ -58,9 +58,13 @@ export const missionVisionConfig: BuilderCanvasConfig = {
                 { id: 'kleuren', label: 'Ik heb een kleurenpalet van 3 kleuren gekozen met motivatie' },
                 { id: 'gevoel', label: 'Het gevoel van mijn moodboard is in 2 woorden benoemd' },
                 { id: 'link-geplakt', label: 'Ik heb het moodboard opgeslagen in OneDrive en de link geplakt' },
+                { id: 'portretrecht', label: 'Ik gebruik alleen beelden met toestemming — geen herkenbare klasgenoten of docenten zonder hun toestemming' },
             ],
             textPrompt: 'Plak hier de link naar je moodboard',
             minTextLength: 30,
+            excludeTextFromAi: true,
+            textPrivacyNote:
+                'Deel deze link alleen via dit veld met je docent. De link wordt niet naar de AI-coach gestuurd.',
             reflectionQuestion: {
                 question: 'Hoe gebruik je AI het beste om beelden voor je moodboard te vinden?',
                 options: [
@@ -131,6 +135,9 @@ export const missionVisionConfig: BuilderCanvasConfig = {
                 { id: 'slides-opgeslagen', label: 'Mijn 5 PowerPoint-slides zijn opgeslagen in de map "P4-Eindproject" in OneDrive' },
             ],
             textPrompt: 'Plak hier de link naar je PowerPoint in OneDrive',
+            excludeTextFromAi: true,
+            textPrivacyNote:
+                'Deel deze link alleen via dit veld met je docent. De link wordt niet naar de AI-coach gestuurd.',
         },
     ],
     maxScore: 100,

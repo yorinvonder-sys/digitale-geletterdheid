@@ -26,6 +26,10 @@ export interface BuilderStep {
     checklistItems: Array<{ id: string; label: string }>;
     textPrompt?: string;
     minTextLength?: number;
+    // Sluit het hoofdtekstveld van deze stap uit van de AI-context.
+    excludeTextFromAi?: boolean;
+    // Privacynotitie onder het hoofdtekstveld; default staat in StepInstructionPanel.
+    textPrivacyNote?: string;
     evidence?: {
         label: string;
         prompt: string;
@@ -44,6 +48,8 @@ export interface BuilderCanvasConfig {
     introDescription: string;
     missionGoal?: MissionGoal;
     introFeatures?: string[];
+    // Toont het hulp-/welzijnsblokje op het introscherm (zware thema's).
+    showWellbeingSupport?: boolean;
     enableChat: boolean;
     chatRoleId?: string;
     previewType: 'markdown' | 'checklist-only' | 'text-preview';
@@ -294,6 +300,7 @@ const BuilderCanvasInner: React.FC<BuilderCanvasProps> = ({
                 description={config.introDescription}
                 goal={config.missionGoal ?? getMissionGoal(config.missionId)}
                 features={config.introFeatures}
+                wellbeingSupport={config.showWellbeingSupport}
                 onStart={handleStart}
             />
         );
@@ -347,6 +354,11 @@ const BuilderCanvasInner: React.FC<BuilderCanvasProps> = ({
 
     const completedStepIndex = state.completedSteps.length;
     const totalSteps = config.steps.length;
+
+    // Bij Website Bouwer en bij elke stap met excludeTextFromAi gaat de ruwe
+    // opdrachttekst van de leerling NIET mee naar de AI-coach.
+    const excludeTextEntry =
+        config.missionId === 'website-bouwer' || currentStepData?.excludeTextFromAi === true;
 
     return (
         <div className="flex h-screen min-h-screen flex-col overflow-hidden bg-duck-bg">
@@ -425,17 +437,16 @@ const BuilderCanvasInner: React.FC<BuilderCanvasProps> = ({
                                 total: config.steps.length,
                                 completedSteps: state.completedSteps.length,
                             },
-                            // Bij Website Bouwer gaat de ruwe opdrachttekst van de leerling
-                            // NIET mee naar de AI-coach; die krijgt alleen of er iets staat
-                            // en hoe lang het is. De coach heeft de inhoud niet nodig om te
-                            // helpen, en zo verlaat het schrijfwerk van de leerling de
+                            // Bij een uitgesloten stap krijgt de AI-coach alleen of er iets
+                            // staat en hoe lang het is. De coach heeft de inhoud niet nodig
+                            // om te helpen, en zo verlaat het schrijfwerk van de leerling de
                             // vertrouwensgrens niet.
-                            textEntry: config.missionId === 'website-bouwer'
+                            textEntry: excludeTextEntry
                                 ? undefined
                                 : currentStepData
                                   ? state.textEntries[currentStepData.id] ?? ''
                                   : '',
-                            textEntryStatus: config.missionId === 'website-bouwer'
+                            textEntryStatus: excludeTextEntry
                                 ? {
                                       hasContent: Boolean(currentStepData && state.textEntries[currentStepData.id]?.trim()),
                                       characterCount: currentStepData
