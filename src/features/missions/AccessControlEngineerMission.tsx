@@ -71,7 +71,8 @@ const MISSION_GOAL: MissionGoal = {
 // Data — De school-login-omgeving
 // ---------------------------------------------------------------------------
 
-const SCHOOL_NAAM = 'Het Rijnlands Lyceum';
+// Bewust een verzonnen schoolnaam — geen bestaande school neerzetten als slecht beveiligd.
+const SCHOOL_NAAM = 'Het Bitburcht College';
 
 const GEBRUIKERS: User[] = [
     { id: 'u1', naam: 'Emma de Vries', rol: 'leerling', klas: '2B' },
