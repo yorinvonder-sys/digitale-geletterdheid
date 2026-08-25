@@ -358,10 +358,19 @@ const PasswordFortressInner: React.FC<{
             max: config.pointsPerRound,
         }));
 
-        // Bewust GEEN onRetry: CompletionScreen maakt onRetry de primaire actie zodra
-        // de score onder de 40% blijft, en dan bestaat er geen route meer naar
-        // afronden. Zonder onRetry rondt die knop altijd af — ook voor een
+        // Bewust GEEN onRetry: zonder onRetry rondt de knop altijd af — ook voor een
         // results-fase die al in een oudere opslag stond — en zit niemand vast.
+        // Slagen hangt hier niet van de score af maar van de gehaalde rondes, dus
+        // die uitkomst gaat expliciet mee als `passed`: het scherm mag geen
+        // 'Gehaald' tonen voor een fort dat de verplichte rondes niet doorstond.
+        const requiredRounds = missionGoal?.criteria.min ?? config.rounds.length;
+        // De laatste ronde (credential stuffing) is volgens het missiedoel
+        // altijd verplicht; alleen het aantal rondes tellen zou een fort dat
+        // de zwaarste golf nooit heeft doorstaan als geslaagd rapporteren.
+        const finalRoundId = config.rounds[config.rounds.length - 1]?.id;
+        const missionPassed =
+            state.cleared.length >= requiredRounds &&
+            (finalRoundId === undefined || state.cleared.includes(finalRoundId));
         return (
             <CompletionScreen
                 score={totalScore}
@@ -369,19 +378,13 @@ const PasswordFortressInner: React.FC<{
                 badges={config.badges}
                 phases={phases}
                 takeaways={config.takeaways}
+                passed={missionPassed}
                 onComplete={async () => {
-                    const requiredRounds = missionGoal?.criteria.min ?? config.rounds.length;
-                    // De laatste ronde (credential stuffing) is volgens het missiedoel
-                    // altijd verplicht; alleen het aantal rondes tellen zou een fort dat
-                    // de zwaarste golf nooit heeft doorstaan als geslaagd rapporteren.
-                    const finalRoundId = config.rounds[config.rounds.length - 1]?.id;
-                    const success =
-                        state.cleared.length >= requiredRounds &&
-                        (finalRoundId === undefined || state.cleared.includes(finalRoundId));
-                    // Pas wissen als de voltooiing is vastgelegd, anders raakt de
-                    // leerling zijn fort kwijt bij een mislukte serveropslag.
-                    const completed = await onComplete(success, toScorePercent(totalScore, config.maxScore));
-                    if (completed !== false) {
+                    const completed = await onComplete(missionPassed, toScorePercent(totalScore, config.maxScore));
+                    // Alleen wissen na een gehaalde, vastgelegde voltooiing: bij een
+                    // niet-gehaalde run doet de host geen registratie en moet het
+                    // fort bewaard blijven om verder te kunnen bouwen.
+                    if (missionPassed && completed !== false) {
                         clearSave();
                     }
                 }}

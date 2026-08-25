@@ -232,14 +232,20 @@ export const PuzzleLab: React.FC<TemplateMissionProps> = ({
     // aantal pogingen waarop ze vanzelf verschijnen — punten voor informatiewinst.
     const handleHint = () => {
         if (!puzzle || extraRevealed) return;
-        setState(prev => ({
-            ...prev,
-            hintsUsed: {
-                ...prev.hintsUsed,
-                [puzzleId]: (prev.hintsUsed[puzzleId] ?? 0) + 1,
-            },
-            extraCluesRevealed: { ...prev.extraCluesRevealed, [puzzleId]: true },
-        }));
+        setState(prev => {
+            // Guard binnen de updater: de render-state kan achterlopen op een fout
+            // antwoord dat de aanwijzingen zojuist al (betaald) ontgrendelde — één
+            // ontgrendeling mag nooit twee keer worden afgerekend.
+            if (prev.extraCluesRevealed[puzzleId]) return prev;
+            return {
+                ...prev,
+                hintsUsed: {
+                    ...prev.hintsUsed,
+                    [puzzleId]: (prev.hintsUsed[puzzleId] ?? 0) + 1,
+                },
+                extraCluesRevealed: { ...prev.extraCluesRevealed, [puzzleId]: true },
+            };
+        });
     };
 
     const handleSkip = () => {

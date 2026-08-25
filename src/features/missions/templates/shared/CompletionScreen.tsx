@@ -27,6 +27,9 @@ interface CompletionScreenProps {
      *  geven die hier door, anders toont dit scherm 'Gehaald' terwijl de missie
      *  de run niet als gehaald registreert. */
     passScorePercent?: number;
+    /** Expliciete slaag-uitkomst voor engines waarvan slagen niet (alleen) van de
+     *  score afhangt (bv. verplichte rondes). Overstemt de percentageberekening. */
+    passed?: boolean;
     attribution?: {
         source: string;
         author?: string;
@@ -46,6 +49,7 @@ export const CompletionScreen: React.FC<CompletionScreenProps> = ({
     onComplete,
     onRetry,
     passScorePercent = 40,
+    passed: passedOverride,
     attribution,
 }) => {
     const badge = [...badges]
@@ -68,7 +72,7 @@ export const CompletionScreen: React.FC<CompletionScreenProps> = ({
     // A learner who skipped or failed most of a mission has not actually mastered
     // the takeaways, so we must not present them as achieved (green ✓) nor claim a
     // celebratory "voltooid". 40% mirrors the pass threshold used elsewhere.
-    const passed = maxScore > 0 && percentage >= passScorePercent;
+    const passed = passedOverride ?? (maxScore > 0 && percentage >= passScorePercent);
 
     // Zonder onRetry mag de knop nooit uitgeschakeld raken. Dit scherm vervangt de
     // hele missie en heeft geen eigen navigatie, en de results-fase staat in de
