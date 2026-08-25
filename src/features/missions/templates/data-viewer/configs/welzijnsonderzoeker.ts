@@ -35,6 +35,7 @@ export const welzijnsonderzoekerConfig: DataViewerConfig = {
         'Vergelijk categorieën schermgebruik in een oefengrafiek',
         'Onderzoek een gesimuleerd verband tussen schermtijd en welzijn',
     ],
+    showWellbeingSupport: true,
 
     datasets: [
         // ── Dataset 1: Enquêtetabel ───────────────────────────────────────────

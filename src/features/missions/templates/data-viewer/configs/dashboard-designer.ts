@@ -21,6 +21,11 @@ export const dashboardDesignerConfig: DataViewerConfig = {
             description:
                 'De schooldirecteur wil een dashboard over de prestaties van de vier klassen in leerjaar 2. Een dashboard toont de belangrijkste KPI\'s (= Key Performance Indicators: je meest waardevolle meetwaarden in één oogopslag). Bekijk de ruwe data en beantwoord de vragen.',
             type: 'table',
+            source: {
+                kind: 'synthetic',
+                label: 'Verzonnen klassendata',
+                methodNote: 'Volledig fictieve klassen en cijfers van een niet-bestaande school; elke gelijkenis met echte klassen is toeval.',
+            },
             columns: [
                 { key: 'klas', label: 'Klas', sortable: true },
                 { key: 'gem_cijfer', label: 'Gem. cijfer', sortable: true },
@@ -42,7 +47,7 @@ export const dashboardDesignerConfig: DataViewerConfig = {
                     options: ['2A', '2B', '2C', '2D'],
                     correctAnswer: '2C',
                     explanation:
-                        '2C heeft het laagste gemiddelde cijfer (6,4) én de laagste aanwezigheid (89%). Dit is een patroon: minder aanwezigheid hangt vaak samen met lagere prestaties. Een goed dashboard zou deze klas automatisch markeren als "aandachtspunt".',
+                        '2C heeft het laagste gemiddelde cijfer (6,4) én de laagste aanwezigheid (89%). Dit is een patroon: minder aanwezigheid hangt vaak samen met lagere prestaties. Een dashboard kan dit patroon signaleren als aandachtspunt — maar zo\'n automatische markering is een startpunt voor een gesprek, geen oordeel: een docent kijkt altijd zelf wat er echt speelt.',
                     points: 15,
                 },
                 {
@@ -219,6 +224,7 @@ export const dashboardDesignerConfig: DataViewerConfig = {
         'Ken je doelgroep: ontwerp altijd vanuit de vraag van de kijker',
         'Minder is meer: 4-6 visualisaties per scherm houden het overzichtelijk',
         'Kleur gebruik je om te benadrukken, niet om te decoreren',
+        'Een dashboard dat automatisch een klas of leerling als "aandachtspunt" markeert, moet transparant zijn over waarom — en een mens (de docent) neemt altijd de beslissing, nooit het dashboard zelf',
     ],
 };
 

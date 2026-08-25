@@ -76,6 +76,8 @@ export interface DataViewerConfig {
     takeaways: string[];
     enableChat?: boolean;
     chatRoleId?: string;
+    /** Toon een vast hulpblokje (mentor/vertrouwenspersoon, Kindertelefoon, 113) bij missies met een zwaar thema. */
+    showWellbeingSupport?: boolean;
 }
 
 // ── State ─────────────────────────────────────────────────────────────────────
@@ -1016,6 +1018,7 @@ const DataViewerInner: React.FC<DataViewerProps> = ({
                 description={config.introDescription}
                 goal={missionGoal}
                 features={config.introFeatures}
+                wellbeingSupport={config.showWellbeingSupport}
                 onStart={() => setState(prev => ({ ...prev, phase: 'explore' }))}
             />
         );
