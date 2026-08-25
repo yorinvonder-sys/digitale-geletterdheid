@@ -54,12 +54,6 @@ export const startupSimulatorConfig: BuilderCanvasConfig = {
                 { id: 'break-even', label: 'Ik heb een globaal break-even punt berekend' },
             ],
             textPrompt: 'Beschrijf je businessmodel',
-            evidence: {
-                label: 'Bewijs voor je break-even-berekening',
-                prompt: 'Noteer je berekening: vaste kosten ÷ prijs per klant = aantal klanten voor break-even.',
-                placeholder: 'Bijv. €600 vaste kosten ÷ €5 per klant = 120 betalende klanten nodig.',
-                minLength: 30,
-            },
         },
         {
             id: 'marktanalyse',
@@ -76,12 +70,6 @@ export const startupSimulatorConfig: BuilderCanvasConfig = {
                 { id: 'marktomvang', label: 'Een schatting van de marktomvang is gegeven' },
             ],
             textPrompt: 'Schrijf je marktanalyse',
-            evidence: {
-                label: 'Bewijs voor je USP-vergelijking',
-                prompt: 'Noteer per concurrent één concreet verschilpunt met jouw product.',
-                placeholder: 'Bijv. Concurrent A heeft geen abonnement onder 18 jaar, wij wel.',
-                minLength: 30,
-            },
         },
         {
             id: 'pitch',
