@@ -30,6 +30,7 @@ import {
 import { MissionGoalBanner } from './templates/shared/MissionGoalBanner';
 import type { MissionGoal } from './templates/shared/types';
 import { AiDisclosureBadge } from '@/features/ai-chat/AiDisclosureBadge';
+import { sanitizePrompt } from '@/utils/promptSanitizer';
 
 interface PromptMasterProgress {
     currentLevel: 'beginner' | 'gevorderd' | 'expert';
@@ -254,14 +255,17 @@ async function analyzePromptWithAI(
 
     onThinkingStep('🔍 Prompt analyseren...');
 
-    // Sanitize user input: cap length and escape quotes to prevent prompt injection
-    const sanitizedPrompt = prompt
-        .slice(0, 500)
-        .replace(/"/g, '\u201C')
-        .replace(/'/g, '\u2018')
-        .replace(/`/g, '\u2018')
-        .replace(/\\/g, '')
-        .replace(/[=]{3,}/g, '---');
+    // Sanitize user input via de gedeelde OWASP LLM01-sanitizer (zelfde laag als useStudentAssistant)
+    const sanitizeResult = sanitizePrompt(prompt);
+    if (sanitizeResult.wasBlocked) {
+        onThinkingStep('\u26A0\uFE0F Prompt geblokkeerd...');
+        return {
+            output: sanitizeResult.reason ?? 'Je bericht bevat een patroon dat niet is toegestaan. Probeer het anders te formuleren.',
+            score: 0,
+            feedback: [],
+        };
+    }
+    const sanitizedPrompt = sanitizeResult.sanitized.slice(0, 500);
 
     // Create a structured analysis prompt for Mistral
     const analysisPrompt = `Je bent een EERLIJKE maar BEGRIPVOLLE prompt engineering leraar voor kinderen (10-14 jaar). Je beoordeelt prompts RECHTVAARDIG - niet te streng, maar ook niet alles goedkeuren.

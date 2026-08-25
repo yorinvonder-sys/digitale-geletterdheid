@@ -2,7 +2,7 @@
   {
     "missionId": "access-control-engineer",
     "templateType": "dedicated",
-    "priorityBand": "high",
+    "priorityBand": "low",
     "triageScores": {
       "uiux": 1,
       "slo": 0,
@@ -10,26 +10,37 @@
       "interactivity": 0,
       "total": 6
     },
-    "lastReviewed": "2026-08-07",
+    "lastReviewed": "2026-08-25",
     "reviewStatus": "fixed",
-    "reportPath": "business/dgskills-reviews/access-control-engineer-2026-08-07.md",
-    "autoFixesApplied": 4,
-    "openEscalations": [],
-    "codexVerdict": null,
-    "escalationCount": 2,
-    "reviewScores": {
-      "uiux": 2,
-      "didactiek": 2,
-      "tech": 4
-    },
-    "proposedFixes": 4,
-    "topIssues": [
-      "onzichtbare tekst op hover (text-duck-ink op bg-duck-ink) [GEFIXED]",
-      "ontbrekend missionGoals-entry [GEFIXED]",
-      "SLO 22B programmeer-claim zonder programmeeractiviteit [ESCALATIE]"
+    "reportPath": "business/dgskills-reviews/access-control-engineer-2026-08-25.md",
+    "autoFixesApplied": 1,
+    "openEscalations": [
+      {
+        "category": "anders",
+        "description": "Een echte, identificeerbare school ('Het Rijnlands Lyceum') wordt in zowel de missie-UI als de serverside AI-coachprompt neergezet als een school met een inlogportaal vol beveiligingsfouten. Vraagt een besluit van Yorin: vervangen door een fictieve schoolnaam.",
+        "file": "src/features/missions/AccessControlEngineerMission.tsx"
+      }
     ],
-    "statusNote": "normalisatie 2026-07-01 (run wave 4+): wacht op Yorin-beslissing over openEscalations",
-    "triageScore": 7.4
+    "codexVerdict": null,
+    "escalationCount": 1,
+    "reviewScores": {
+      "uiux": 7.5,
+      "didactiek": 9,
+      "tech": 8.5
+    },
+    "proposedFixes": 1,
+    "topIssues": [
+      "[design] ROLLEN_KLEUREN geeft leerling, docent en admin exact dezelfde stijl (bg-duck-ink text-white) — geen visueel onderscheid tussen drie van de vier rollen, terwijl rolonderscheid het kernconcept van de missie is.",
+      "[design] Alleen de terugknop in de header heeft expliciete focus-visible:ring styling; rol-toggle- en test-knoppen in stap 2/3 leunen op browser-default focus-outline.",
+      "[didactiek] Geen apart learningObjectives-array; leerdoel zit impliciet in MISSION_GOAL.primaryGoal — voor rijkere docentrapportage kunnen 3 aparte actiewerkwoord-leerdoelen (herkent/stelt in/test) toegevoegd worden."
+    ],
+    "statusNote": "sweep wave 25 2026-08-25: verse review (alle missies); veiligheids-pass Opus high; 1 auto-fixes",
+    "triageScore": 1.6,
+    "verdict": "fix-eerst",
+    "safetyScores": {
+      "aiGedrag": 8,
+      "privacy": 7
+    }
   },
   {
     "missionId": "advanced-code-review",
@@ -76,7 +87,7 @@
   {
     "missionId": "ai-beleid-brainstorm",
     "templateType": "agent-role",
-    "priorityBand": "high",
+    "priorityBand": "medium",
     "triageScores": {
       "uiux": 0,
       "slo": 0,
@@ -84,28 +95,46 @@
       "interactivity": 0,
       "total": 6
     },
-    "lastReviewed": "2026-08-08",
-    "reviewStatus": "klaar",
-    "reportPath": "business/dgskills-reviews/j1p2-batch-2026-08-06.md",
-    "autoFixesApplied": 2,
+    "lastReviewed": "2026-08-25",
+    "reviewStatus": "fixed",
+    "reportPath": "business/dgskills-reviews/ai-beleid-brainstorm-2026-08-25.md",
+    "autoFixesApplied": 1,
     "openEscalations": [
-      "design-identiteit: lab-coral/lab-teal in visualPreview (year1.tsx:3724-3740) — duck-tokens bestaan niet voor deze kleuren (Yorin beslist)",
-      "a11y-follow-up: aria-label stemknop in AiBeleidBrainstormPreview.tsx:675 (component buiten missie-whitelist)",
-      "data/persoonsgegevens: studentName niet opgeslagen bij ai_beleid_feedback insert (teacherService.ts:558-576) — docent-rapportage-gap, raakt DB-insert-logica"
+      {
+        "category": "rls",
+        "description": "ai_beleid_feedback en ai_beleid_surveys bestaan niet als CREATE TABLE in supabase/migrations en hebben daar geen enkele RLS-policy, terwijl de missie er vrije tekst van minderjarigen in schrijft en school-breed uit leest. Vereist verificatie tegen productie vóór deze missie draait.",
+        "file": "src/services/teacherService.ts"
+      },
+      {
+        "category": "privacy",
+        "description": "Leerlingideeën worden zonder waarschuwing school-breed gedeeld en aan het account gekoppeld opgeslagen; de enige moderatie is een client-side blocklist die zowel te ruim (false positives op 'vals', 'kansen', 'schade') als te zwak (niet serverside afgedwongen) is.",
+        "file": "src/features/ai-lab/previews/AiBeleidBrainstormPreview.tsx"
+      },
+      {
+        "category": "structural",
+        "description": "speeltest wave 25: hoge score haalbaar zonder inhoudelijk werk — Enquête-stap (fase 'survey'): eerste keuzeknop 'Nooit' aangeklikt en de 3 open tekstvelden gevuld met 'aaaa' — 'Ga Verder' werd meteen actief. Er is dus geen minimale inhoud/lengte-check, alleen 'niet"
+      }
     ],
-    "codexVerdict": "ALLOW",
+    "codexVerdict": null,
     "escalationCount": 3,
     "reviewScores": {
       "uiux": 7,
       "didactiek": 6,
       "tech": 7
     },
-    "proposedFixes": 2,
+    "proposedFixes": 1,
     "topIssues": [
-      "Afronden accepteerde ideeen van een letter — verholpen",
-      "Schoolcontext herkent nu ook verbuigingen"
+      "[design] Alle 4 categorieën (Regels/Mogelijkheden/Zorgen/Suggesties) delen exact dezelfde color/bgColor/borderColor — alleen het icoon verschilt, kaarten zijn nauwelijks te scannen.",
+      "[design] Icoon-container gebruikt text-duck-ink op een gradient die eindigt in duck-ink (bijna-zwart-op-zwart, laag contrast); submit-header gebruikt inconsistent text-white voor dezelfde badge.",
+      "[didactiek] Afrondingsgate (canComplete) toetst alleen leerdoel 2 (>=2 volledige regelvoorstellen); leerdoel 1 (voordeel+risico benoemen via Mogelijkheden/Zorgen) en leerdoel 3 (stemmen+toelichten) uit de comment in missionGoals.ts blijven optioneel, terwijl de config-tekst 'stemt of kiest' suggereerde."
     ],
-    "statusNote": "Browserreview op 4 schermformaten, plus adversariële tegenlezing door Codex. Lokaal; AI-stap en server-side voortgang niet bewezen."
+    "statusNote": "sweep wave 25 2026-08-25: verse review (alle missies); veiligheids-pass Opus high; 1 auto-fixes",
+    "triageScore": 3.4,
+    "verdict": "fix-eerst",
+    "safetyScores": {
+      "aiGedrag": 5,
+      "privacy": 5
+    }
   },
   {
     "missionId": "ai-bias-detective",
@@ -262,26 +291,52 @@
       "interactivity": 0,
       "total": 7
     },
-    "lastReviewed": "2026-08-08",
-    "reviewStatus": "klaar",
-    "reportPath": "business/dgskills-reviews/j1p2-batch-2026-08-06.md",
-    "autoFixesApplied": 0,
+    "lastReviewed": "2026-08-25",
+    "reviewStatus": "fixed",
+    "reportPath": "business/dgskills-reviews/ai-tekengame-2026-08-25.md",
+    "autoFixesApplied": 2,
     "openEscalations": [
-      "SLO-inconsistentie: ProjectZeroDashboard toont 21B, canonical mapping = 21D — verkeerde SLO-rapportage",
-      "missionObjective 'Teken 10 korte objecten' — 'korte' semantisch onduidelijk (auteur-intentie)"
+      {
+        "category": "structural",
+        "description": "ai-tekengame belooft in visualPreview/problemScenario/missionObjective/steps een interactief tekenspel met AI-beeldherkenning en tijdslimiet, maar wordt geleverd als pure tekstchat zonder canvas, timer of beeldverwerking. Vereist een productbeslissing: copy afzwakken naar wat de chat kan leveren, of alsnog een canvas-component + beeldherkenning bouwen (nieuw templateType, buiten autofix-scope).",
+        "file": "src/config/agents/year1.tsx"
+      },
+      {
+        "category": "privacy",
+        "description": "Blokkerend: in de duelmodus van ai-tekengame ontbreekt schoolId in de hele keten (AiLab → DrawingGamePreview → DuelLobby → duelService), waardoor de lobbyquery ongefilterd draait en een leerling naam plus klas ziet van online spelers van andere scholen. Niet uitleveren zonder fix.",
+        "file": "src/features/ai-lab/AiLab.tsx"
+      },
+      {
+        "category": "rls",
+        "description": "duel_presence bevat naam en klas van minderjarigen maar heeft geen RLS-policy in de repo-migraties; de effectieve afscherming in productie is niet verifieerbaar vanuit deze codebase.",
+        "file": "src/services/duelService.ts"
+      },
+      {
+        "category": "anders",
+        "description": "Het moderatie-oordeel 'ONGEPAST' van het beeldmodel wordt onbehandeld als gewone AI-gok aan de leerling getoond (en mogelijk aan een duel-tegenstander), zonder blokkade of docentsignaal. Vraagt een besluit over de gewenste afhandeling.",
+        "file": "src/features/ai-lab/previews/DrawingGamePreview.tsx"
+      }
     ],
     "codexVerdict": null,
     "reviewScores": {
-      "uiux": 8,
-      "didactiek": 8,
-      "tech": 7
+      "uiux": 5,
+      "didactiek": 4,
+      "tech": 3
     },
-    "proposedFixes": 0,
-    "escalationCount": 2,
+    "proposedFixes": 2,
+    "escalationCount": 4,
     "topIssues": [
-      "Crashte op alle formaten via duel-abonnement — verholpen"
+      "[design] visualPreview toont een tekencanvas-mockup met AI-beeldherkenning ('AI: Is dit een kat?') die in de werkelijke levering (plain-text chat) niet bestaat — Visual Precision Gate niet houdbaar.",
+      "[didactiek] SLO-fit mismatch: 21D wordt geclaimd via een tekenherkenning-scenario (toepassen/analyseren-niveau), maar de daadwerkelijke chat-levering biedt alleen erover praten (begrijpen-niveau) — het beloofde leerdoel wordt niet gedekt.",
+      "[tech] Geen canvas/drawing/image-component gekoppeld aan de missie: StudentAIChat.tsx bevat geen canvas/image/attach/file-functionaliteit, en er is geen templateRegistry- of missionPreviewConfig-entry voor ai-tekengame — de missie-content belooft een tekenspel dat technisch niet bestaat."
     ],
-    "statusNote": "Browserreview op 4 schermformaten, plus adversariële tegenlezing door Codex. Lokaal; AI-stap en server-side voortgang niet bewezen."
+    "statusNote": "sweep wave 25 2026-08-25: verse review (alle missies); veiligheids-pass Opus high; 2 auto-fixes",
+    "triageScore": 6,
+    "verdict": "fix-eerst",
+    "safetyScores": {
+      "aiGedrag": 6,
+      "privacy": 3
+    }
   },
   {
     "missionId": "ai-trainer",
@@ -294,26 +349,31 @@
       "interactivity": 0,
       "total": 5
     },
-    "lastReviewed": "2026-08-08",
-    "reviewStatus": "klaar",
-    "reportPath": "business/dgskills-reviews/j1p2-batch-2026-08-06.md",
+    "lastReviewed": "2026-08-25",
+    "reviewStatus": "reviewed",
+    "reportPath": "business/dgskills-reviews/ai-trainer-2026-08-25.md",
     "autoFixesApplied": 0,
-    "openEscalations": [
-      "ai-endpoint: client-side systemInstruction (year1.tsx:1568) en server-side versie (systemInstructions.ts:28) zijn inhoudelijk uiteengelopen (GIGO-demo alleen server-side) — sync-keuze + verificatie welke bron de AI stuurt"
-    ],
+    "openEscalations": [],
     "codexVerdict": null,
-    "escalationCount": 1,
+    "escalationCount": 0,
     "reviewScores": {
       "uiux": 8,
-      "didactiek": 9,
+      "didactiek": 8,
       "tech": 8
     },
-    "triageScore": 1.6,
-    "statusNote": "Browserreview op 4 schermformaten, plus adversariële tegenlezing door Codex. Lokaal; AI-stap en server-side voortgang niet bewezen.",
+    "triageScore": 2.2,
+    "statusNote": "sweep wave 25 2026-08-25: verse review (alle missies); veiligheids-pass Opus high",
     "verdict": "ok",
     "topIssues": [
-      "Tipknop was klikbaar zonder saldo — verholpen"
-    ]
+      "[design] Visual Precision Gate unverified — geen Chrome-plugin/dev-server bewijs in deze pass.",
+      "[didactiek] systemInstruction is lang (~350 woorden) maar is agent-instructietekst, geen leerling-UI-copy — geen echte overschrijding.",
+      "[tech] Geen aparte configPath/engine aanwezig om A2/A5/A6 (loading/error/restart-safe state) op te beoordelen — valt buiten scope van dit bestand, gedeelde chat-engine regelt dit."
+    ],
+    "proposedFixes": 0,
+    "safetyScores": {
+      "aiGedrag": 8,
+      "privacy": 8
+    }
   },
   {
     "missionId": "algorithm-architect",
@@ -624,34 +684,41 @@
       "interactivity": 0,
       "total": 4
     },
-    "lastReviewed": "2026-08-08",
-    "reviewStatus": "klaar",
-    "reportPath": "business/dgskills-reviews/j1p2-batch-2026-08-06.md",
-    "autoFixesApplied": 1,
+    "lastReviewed": "2026-08-25",
+    "reviewStatus": "reviewed",
+    "reportPath": "business/dgskills-reviews/chatbot-trainer-2026-08-25.md",
+    "autoFixesApplied": 0,
     "openEscalations": [
-      "slo-fit: mapping zegt 22B met curator-comment 'IF-THEN regels = programmeerlogica', reviewer twijfelt (geen 'echte' programmeeractiviteit) — dashboard is nu conform mapping gezet (22B); inhoudelijk oordeel aan Yorin",
-      "structureel: training-modus heeft vaste 3-koloms layout (w-64 + w-80) zonder responsive breakpoints — vermoedelijk mobiele layoutbreuk, herontwerp-kandidaat",
-      "a11y: verwijderknop van intent zit genest in de rij-knop (geneste buttons = invalide HTML) — vereist rij-refactor naar sibling-knoppen (gate-voorstel in rapport); mijn button-fix is teruggedraaid na gate-BLOCK"
+      {
+        "category": "privacy",
+        "description": "De deelfunctie van chatbot-trainer publiceert ongemodereerde vrije tekst van leerlingen naar shared_projects (leesbaar voor klas- of schoolgenoten via de select-policy). Nu faalt de insert door een uuid-typefout, maar zodra dat gerepareerd wordt is er geen filter en geen waarschuwing over persoonsgegevens.",
+        "file": "src/features/ai-lab/previews/ChatbotTrainerPreview.tsx"
+      }
     ],
-    "codexVerdict": "ALLOW",
-    "escalationCount": 3,
+    "codexVerdict": null,
+    "escalationCount": 1,
     "reviewScores": {
-      "uiux": 7,
-      "didactiek": 8,
-      "tech": 7
+      "uiux": 8,
+      "didactiek": 9,
+      "tech": 9
     },
-    "triageScore": 2.6,
-    "statusNote": "Browserreview op 4 schermformaten, plus adversariële tegenlezing door Codex. Lokaal; AI-stap en server-side voortgang niet bewezen.",
-    "verdict": "fix-eerst",
+    "triageScore": 1.3,
+    "statusNote": "sweep wave 25 2026-08-25: verse review (alle missies); veiligheids-pass Opus high",
+    "verdict": "ok",
     "topIssues": [
-      "3 kolommen braken op iPad-portret — verholpen",
-      "Knoplabel benoemt nu wat ontbreekt"
-    ]
+      "[design] Visual Precision Gate niet dynamisch geverifieerd (geen Chrome-plugin-run in deze pass) — laag risico voor een pure chatmissie zonder eigen layout.",
+      "[didactiek] Geen los learningObjectives-array-veld; het impliciete doel in missionGoals.ts dekt dit functioneel, is echter geen bug maar het staande patroon voor alle agent-role missies."
+    ],
+    "proposedFixes": 0,
+    "safetyScores": {
+      "aiGedrag": 8,
+      "privacy": 8
+    }
   },
   {
     "missionId": "cloud-cleaner",
     "templateType": "dedicated",
-    "priorityBand": "medium",
+    "priorityBand": "low",
     "triageScores": {
       "uiux": 0,
       "slo": 2,
@@ -659,28 +726,31 @@
       "interactivity": 0,
       "total": 4
     },
-    "lastReviewed": "2026-08-08",
-    "reviewStatus": "klaar",
-    "reportPath": "business/dgskills-reviews/j1p2-batch-2026-08-06.md",
-    "autoFixesApplied": 1,
-    "openEscalations": [
-      "a11y: drag-and-drop heeft geen enkel toetsenbord-alternatief (0 aria/rol/tabIndex) — leerling zonder muis/touch kan de missie niet doen; kandidaat voor aparte toegankelijkheidsronde",
-      "mobiel: zwevende actieknop overlapt de laatste bestandskaarten — staat al sinds de UI/UX-audit van 30 juni open (prioriteit 4)"
-    ],
-    "codexVerdict": "ALLOW",
-    "escalationCount": 2,
+    "lastReviewed": "2026-08-25",
+    "reviewStatus": "fixed",
+    "reportPath": "business/dgskills-reviews/cloud-cleaner-2026-08-25.md",
+    "autoFixesApplied": 3,
+    "openEscalations": [],
+    "codexVerdict": null,
+    "escalationCount": 0,
     "reviewScores": {
-      "uiux": 6.5,
-      "didactiek": 7.5,
-      "tech": 5.5
+      "uiux": 8,
+      "didactiek": 8,
+      "tech": 7
     },
-    "triageScore": 3.4,
-    "statusNote": "Browserreview op 4 schermformaten, plus adversariële tegenlezing door Codex. Lokaal; AI-stap en server-side voortgang niet bewezen.",
-    "verdict": "fix-eerst",
+    "triageScore": 2.3,
+    "statusNote": "sweep wave 25 2026-08-25: verse review (alle missies); veiligheids-pass Opus high; 3 auto-fixes",
+    "verdict": "ok",
     "topIssues": [
-      "Ongeldige spring-animatie hersteld",
-      "Gemeld onzichtbaar eindscherm was een meetfout — weerlegd"
-    ]
+      "[design] Terug-knop (icon-only) heeft alleen title, geen aria-label — inconsistent met de mobiele sidebar-toggle ernaast die wél aria-label heeft.",
+      "[tech] Voltooien-knop roept await onComplete(true) aan zonder try/catch en zonder dubbelklik-guard (geen isCompleting-lock); zustermissie PitchPoliceMission lost dit al op met completionLockRef + try/finally.",
+      "[design] Herhaald gebruik van text-duck-ink/60 op lichte achtergronden — risicopatroon voor WCAG AA-contrast, niet gemeten."
+    ],
+    "proposedFixes": 3,
+    "safetyScores": {
+      "aiGedrag": 9.5,
+      "privacy": 9.5
+    }
   },
   {
     "missionId": "cloud-commander",
@@ -1006,7 +1076,7 @@
   {
     "missionId": "data-detective",
     "templateType": "dedicated",
-    "priorityBand": "high",
+    "priorityBand": "low",
     "triageScores": {
       "uiux": 1,
       "slo": 0,
@@ -1014,24 +1084,42 @@
       "interactivity": 0,
       "total": 5
     },
-    "lastReviewed": "2026-07-01",
-    "reviewStatus": "blocked",
-    "reportPath": "business/dgskills-reviews/data-detective-2026-07-01.md",
-    "autoFixesApplied": 1,
+    "lastReviewed": "2026-08-25",
+    "reviewStatus": "fixed",
+    "reportPath": "business/dgskills-reviews/data-detective-2026-08-25.md",
+    "autoFixesApplied": 2,
     "openEscalations": [
-      "didactiek: geen expliciete leerdoelen per level (alleen brede primaryGoal) — leerdoel-formulering is SLO-content, Yorin keurt",
-      "design: duck-error (#ff3c21) als primaire CTA-kleur i.p.v. foutstatus + inline hex door hele component — design-cleanup-keuze"
+      {
+        "category": "structural",
+        "description": "src/features/student/ProjectZeroDashboard.tsx:150 toont nog de oude SLO-codes ['21B','23C'] voor data-detective terwijl slo-kerndoelen-mapping.ts (met expliciete migratie-comment) ['23A','21C'] gebruikt als autoritatieve bron. Buiten de whitelist van deze missie-specifieke rubric-pass — mogelijk raakt dezelfde drift meerdere missies op dat dashboard, dus liever als cross-missie sweep of losse taak oppakken dan losse edit.",
+        "file": "src/features/student/ProjectZeroDashboard.tsx"
+      },
+      {
+        "category": "privacy",
+        "description": "Slapende maar server-side geregistreerde coach-rol 'data-detective' instrueert leerlingen hun app-permissie-inventaris en meest gebruikte apps aan de AI door te geven. Laat bevestigen of deze rol uit supabase/functions/_shared/systemInstructions.ts mag/moet worden verwijderd zolang de missie een dedicated component is, en of dit datastroom-scenario in DPIA/verwerkingsregister is afgedekt.",
+        "file": "src/config/agents/year1.tsx"
+      }
     ],
-    "codexVerdict": "ALLOW",
+    "codexVerdict": null,
     "escalationCount": 2,
     "reviewScores": {
-      "uiux": 4,
-      "didactiek": 2,
-      "tech": 4
+      "uiux": 7,
+      "didactiek": 7.5,
+      "tech": 7
     },
-    "triageScore": 6.8,
-    "statusNote": "wave 7: aria-label terugknop gefixt (orchestrator); triageScore agent-rekenfout gecorrigeerd (3.2 -> 6.8)",
-    "verdict": "fix-eerst"
+    "triageScore": 2.8,
+    "statusNote": "sweep wave 25 2026-08-25: verse review (alle missies); veiligheids-pass Opus high; 2 auto-fixes",
+    "verdict": "fix-eerst",
+    "proposedFixes": 2,
+    "topIssues": [
+      "[design] Component gebruikt overal inline hex-styles i.p.v. duck-* design tokens, terwijl exacte hex-waarden 1-op-1 matchen met bestaande tokens (duck-bg, duck-ink, duck-error).",
+      "[design] Grafieken (bar/line/pie/table) hebben geen aria-label/tekstuele samenvatting; data is alleen visueel toegankelijk.",
+      "[didactiek] SLO-codes voor data-detective verschillen tussen slo-kerndoelen-mapping.ts (23A,21C, bewust gemigreerd) en ProjectZeroDashboard.tsx (nog 21B,23C) — inconsistente docent-rapportage."
+    ],
+    "safetyScores": {
+      "aiGedrag": 8,
+      "privacy": 8
+    }
   },
   {
     "missionId": "data-handelaar",
@@ -1284,21 +1372,37 @@
       "interactivity": 0,
       "total": 1
     },
-    "lastReviewed": "2026-07-02",
+    "lastReviewed": "2026-08-25",
     "reviewStatus": "fixed",
-    "reportPath": "business/dgskills-reviews/data-verzamelaar-2026-07-02.md",
-    "autoFixesApplied": 0,
-    "openEscalations": [],
+    "reportPath": "business/dgskills-reviews/data-verzamelaar-2026-08-25.md",
+    "autoFixesApplied": 3,
+    "openEscalations": [
+      {
+        "category": "ai-act",
+        "description": "AiTransparencyNotice wordt nergens gerenderd — er is geen voorafgaand, kindvriendelijk AI-transparantiemoment vóór het eerste AI-gesprek in een chatmissie. Relevant voor AI Act-transparantieverplichtingen bij hoog-risico onderwijsgebruik en voor de AVG-informatieplicht richting minderjarigen. Platformbreed punt, hier zichtbaar via data-verzamelaar.",
+        "file": "src/features/consent/AiTransparencyNotice.tsx"
+      }
+    ],
     "codexVerdict": null,
     "reviewScores": {
-      "uiux": 7.5,
-      "didactiek": 8.5,
-      "tech": 8
+      "uiux": 6,
+      "didactiek": 7.5,
+      "tech": 8.5
     },
-    "triageScore": 1.95,
-    "verdict": "ok",
-    "statusNote": "wave 18: geen missie-fouten; briefingImage-hergebruik (social_safeguard.webp) = platform-copy-paste over 7 missies; rol ONTBREEKT server-side in systemInstructions.ts -> dekkingsgat voor het drift-audit-dossier",
-    "escalationCount": 0
+    "triageScore": 2.65,
+    "verdict": "fix-eerst",
+    "statusNote": "sweep wave 25 2026-08-25: verse review (alle missies); veiligheids-pass Opus high; 3 auto-fixes",
+    "escalationCount": 1,
+    "proposedFixes": 3,
+    "topIssues": [
+      "[design] visualPreview-badge toont 'Bus: 28%' terwijl de echte dataset (systeeminstructie + DataVerzamelaarPreview.tsx) 18% is.",
+      "[design] visualPreview gebruikt legacy lab-coral/lab-teal gradient i.p.v. de duck-* tokens die de echte in-missie preview gebruikt.",
+      "[design] briefingImage verwijst naar '/assets/agents/social_safeguard.webp' (afbeelding van een andere missie) i.p.v. een data-verzamelaar-specifiek asset."
+    ],
+    "safetyScores": {
+      "aiGedrag": 7.5,
+      "privacy": 8.5
+    }
   },
   {
     "missionId": "data-voor-data",
@@ -1311,23 +1415,37 @@
       "interactivity": 0,
       "total": 1
     },
-    "lastReviewed": "2026-07-02",
-    "reviewStatus": "blocked",
-    "reportPath": "business/dgskills-reviews/data-voor-data-2026-07-02.md",
-    "autoFixesApplied": 0,
+    "lastReviewed": "2026-08-25",
+    "reviewStatus": "fixed",
+    "reportPath": "business/dgskills-reviews/data-voor-data-2026-08-25.md",
+    "autoFixesApplied": 3,
     "openEscalations": [
-      "content-keuze: basisvaardigheden-claim (dataminimalisatie/recht op vergetelheid) wordt inhoudelijk niet gedekt — kies: 1-zins-toevoeging aan eindscherm (voorstel klaar in rapport) of claim aanpassen"
+      {
+        "category": "privacy",
+        "description": "Antwoorden van leerlingen op data-voor-data worden persistent per user_id in Supabase bewaard zonder in-missie transparantie en zonder zichtbare bewaartermijn. Laat bevestigen dat deze verwerking in DPIA en verwerkingsregister staat, dat er een bewaar-/opschoontermijn is, en voeg een kindvriendelijke opslagmelding toe vóór de eerste keuze.",
+        "file": "src/features/missions/DataVoorDataMission.tsx"
+      }
     ],
     "codexVerdict": null,
     "reviewScores": {
       "uiux": 8,
-      "didactiek": 6.5,
-      "tech": 8.5
+      "didactiek": 8,
+      "tech": 7
     },
-    "triageScore": 2.45,
-    "verdict": "fix-eerst",
-    "statusNote": "wave 18: registratie compleet, k-anonimiteit (klas n>=5/school n>=10) geverifieerd correct; server-prompt beschrijft 8 vs 5 rondes maar dedicated component gebruikt geen chat (drift-dossier); signalering: max-score alleen via DEAL ronde 1",
-    "escalationCount": 1
+    "triageScore": 2.3,
+    "verdict": "ok",
+    "statusNote": "sweep wave 25 2026-08-25: verse review (alle missies); veiligheids-pass Opus high; 4 auto-fixes; 1 fix teruggedraaid (props-interface brak DevMissionPreview-typecheck)",
+    "escalationCount": 1,
+    "proposedFixes": 4,
+    "topIssues": [
+      "[design] Hardcoded hex focus-ring `focus-visible:ring-[#5F947D]` i.p.v. duck-token",
+      "[design] Hardcoded hex focus-ring `focus-visible:ring-[#5F947D]` i.p.v. duck-token",
+      "[didactiek] missionGoals evidence-tekst claimt dat leerling keuzes 'onderbouwt', maar de missie vraagt nergens een expliciete onderbouwing (alleen DEAL/NO DEAL-klik + passieve uitleg lezen)"
+    ],
+    "safetyScores": {
+      "aiGedrag": 8.5,
+      "privacy": 7.5
+    }
   },
   {
     "missionId": "datalekken-rampenplan",
@@ -1340,21 +1458,37 @@
       "interactivity": 0,
       "total": 2
     },
-    "lastReviewed": "2026-07-02",
+    "lastReviewed": "2026-08-25",
     "reviewStatus": "fixed",
-    "reportPath": "business/dgskills-reviews/datalekken-rampenplan-2026-07-02.md",
-    "autoFixesApplied": 1,
-    "openEscalations": [],
-    "codexVerdict": "ALLOW",
+    "reportPath": "business/dgskills-reviews/datalekken-rampenplan-2026-08-25.md",
+    "autoFixesApplied": 2,
+    "openEscalations": [
+      {
+        "category": "structural",
+        "description": "SLO-codes op src/features/student/ProjectZeroDashboard.tsx:158 wijken af van de canonieke src/config/slo-kerndoelen-mapping.ts:79 entry voor datalekken-rampenplan (['23A','23B','23C'] vs ['23A','21A']; VSO ['20A','20B'] vs ['20A','18A']). Buiten de auto-fix-whitelist van deze review (ProjectZeroDashboard.tsx staat er niet in) — vereist een gerichte 1-regel-fix door een agent met bredere scope.",
+        "file": "src/features/student/ProjectZeroDashboard.tsx"
+      }
+    ],
+    "codexVerdict": null,
     "reviewScores": {
-      "uiux": 8.5,
-      "didactiek": 9,
-      "tech": 9
+      "uiux": 6.5,
+      "didactiek": 7.5,
+      "tech": 7
     },
-    "triageScore": 1.15,
-    "verdict": "ok",
-    "statusNote": "wave 19: 1 fix (aria-label op icon-only terugknop); AVG-meldplicht-feiten geverifieerd correct; BSN-risico-framing = verrijkingssuggestie in rapport; focus-visible op 4 fase-knoppen = niet-blokkerende notitie; stats:any = platform-contract; gate-vangst: eerste label (Terug naar dashboard) was misleidend -> gecorrigeerd naar missie-intro, daarna ALLOW",
-    "escalationCount": 0
+    "triageScore": 2.95,
+    "verdict": "fix-eerst",
+    "statusNote": "sweep wave 25 2026-08-25: verse review (alle missies); veiligheids-pass Opus high; 3 auto-fixes; 1 fix teruggedraaid (props-interface brak DevMissionPreview-typecheck)",
+    "escalationCount": 1,
+    "proposedFixes": 3,
+    "topIssues": [
+      "[didactiek] SLO-mismatch: leerling-dashboard toont ['23A','23B','23C']/['20A','20B'] terwijl de canonieke mapping ['23A','21A']/['20A','18A'] claimt (mapping-comment bevestigt de correctie is nooit doorgevoerd op het dashboard)",
+      "[design] Hardcoded hex focus-ring `#5F947D` i.p.v. duck-acid token (inconsistent met alle andere knoppen)",
+      "[design] Hover-state is een no-op op 6 knoppen: `bg-duck-acid hover:bg-duck-acid` / `bg-duck-ink hover:bg-duck-ink` geven geen visueel hover-feedback"
+    ],
+    "safetyScores": {
+      "aiGedrag": 9.5,
+      "privacy": 8.5
+    }
   },
   {
     "missionId": "deepfake-detector",
@@ -1367,23 +1501,41 @@
       "interactivity": 0,
       "total": 5
     },
-    "lastReviewed": "2026-07-01",
-    "reviewStatus": "blocked",
-    "reportPath": "business/dgskills-reviews/deepfake-detector-2026-07-01.md",
-    "autoFixesApplied": 1,
+    "lastReviewed": "2026-08-25",
+    "reviewStatus": "reviewed",
+    "reportPath": "business/dgskills-reviews/deepfake-detector-2026-08-25.md",
+    "autoFixesApplied": 0,
     "openEscalations": [
-      "content-keuze: systemInstruction beschrijft 5 cases, component-CHALLENGES tonen er 9 — AI-hulp en spel vertellen verschillende verhalen; kies welke bron leidend is"
+      {
+        "category": "ai-act",
+        "file": "src/config/agents/year1.tsx",
+        "description": "De AI-copiloot van deepfake-detector draait een eigen 5-cases-script dat niet aansluit op de zichtbare opdracht en dat ongevraagd zware onderwerpen aansnijdt (voice-cloning-oplichting, seksueel getinte deepfakes van minderjarigen). Vraagt om afstemming van de rolinstructie op de dedicated component en om docentcontrole vooraf (Art. 14 menselijk toezicht, kindveiligheid)."
+      },
+      {
+        "category": "privacy",
+        "file": "src/features/missions/DeepfakeDetectorMission.tsx",
+        "description": "Challenge g1 legt 12-16-jarigen (en juist VSO-dagbesteding) een vraag voor over contact met onbekenden online zonder enige veiligheidsinstructie of doorverwijzing. Welzijns- en kindveiligheidsbeoordeling nodig voordat dit naar leerlingen gaat."
+      }
     ],
-    "codexVerdict": "ALLOW",
-    "escalationCount": 1,
+    "codexVerdict": null,
+    "escalationCount": 2,
     "reviewScores": {
       "uiux": 8,
-      "didactiek": 7,
-      "tech": 9
+      "didactiek": 7.5,
+      "tech": 8.5
     },
-    "triageScore": 2.1,
-    "statusNote": "wave 8: dashboard-SLO +21D conform mapping; agent-scoreschaal was omgekeerd, gecorrigeerd naar kwaliteit 8/7/9",
-    "verdict": "fix-eerst"
+    "triageScore": 2.05,
+    "statusNote": "sweep wave 25 2026-08-25: verse review (alle missies); veiligheids-pass Opus high",
+    "verdict": "ok",
+    "proposedFixes": 0,
+    "topIssues": [
+      "[didactiek] sloEntry claimt 4 SLO-codes (21B, 21D, 23A, 23C); rubric-drempel is >3 = warning. 23C (Maatschappij) wordt oppervlakkig geraakt (alleen impliciet via explanation-teksten, geen eigen opdrachtonderdeel). Didactische keuze, geen fout.",
+      "[tech] Props.stats?: UserStats wordt gedeclareerd maar nergens gedestructureerd of gebruikt in de component-body. Geen functionele impact, wel dode interface-oppervlakte."
+    ],
+    "safetyScores": {
+      "aiGedrag": 6,
+      "privacy": 7.5
+    }
   },
   {
     "missionId": "digital-divide-researcher",
@@ -1796,21 +1948,37 @@
       "interactivity": 0,
       "total": 1
     },
-    "lastReviewed": "2026-07-02",
+    "lastReviewed": "2026-08-25",
     "reviewStatus": "fixed",
-    "reportPath": "business/dgskills-reviews/filter-bubble-breaker-2026-07-02.md",
-    "autoFixesApplied": 0,
-    "openEscalations": [],
+    "reportPath": "business/dgskills-reviews/filter-bubble-breaker-2026-08-25.md",
+    "autoFixesApplied": 2,
+    "openEscalations": [
+      {
+        "category": "privacy",
+        "file": "src/hooks/useMissionAutoSave.ts",
+        "description": "Vrije reflectie- en analyseteksten van leerlingen blijven na uitloggen in localStorage staan (geen opruiming bij signOut). Op gedeelde schoolapparaten is dat leerlingdata die zichtbaar blijft voor de volgende gebruiker. Raakt filter-bubble-breaker, game-director en ipad-print-instructies in deze wave."
+      }
+    ],
     "codexVerdict": null,
     "reviewScores": {
-      "uiux": 8.5,
-      "didactiek": 9,
-      "tech": 9
+      "uiux": 7,
+      "didactiek": 8,
+      "tech": 7
     },
-    "triageScore": 1.15,
+    "triageScore": 2.6,
     "verdict": "ok",
-    "statusNote": "wave 19: schoon — filterbubbel-uitleg feitelijk en genuanceerd, scoring klopt; dode isB-ternary (identieke class beide takken) = code-smell zonder leerling-effect; personage-drift chat vs component valt onder dormante-chat-dossier",
-    "escalationCount": 0
+    "statusNote": "sweep wave 25 2026-08-25: verse review (alle missies); veiligheids-pass Opus high; 3 auto-fixes; 1 fix teruggedraaid (props-interface brak DevMissionPreview-typecheck)",
+    "escalationCount": 1,
+    "proposedFixes": 3,
+    "topIssues": [
+      "[design] Dode gradient in laagste badge-tier: 'from-duck-ink to-duck-ink' rendert geen gradient.",
+      "[design] compare-scherm gebruikt grid-cols-2 zonder mobile-breakpoint; 'Beide' toont altijd 2 kolommen ook op 375px.",
+      "[design] Analyse-textarea label niet gekoppeld via htmlFor/id."
+    ],
+    "safetyScores": {
+      "aiGedrag": 8,
+      "privacy": 8
+    }
   },
   {
     "missionId": "future-forecaster",
@@ -1858,7 +2026,7 @@
   {
     "missionId": "game-director",
     "templateType": "dedicated",
-    "priorityBand": "high",
+    "priorityBand": "low",
     "triageScores": {
       "uiux": 2,
       "slo": 1,
@@ -1866,30 +2034,44 @@
       "interactivity": 0,
       "total": 13
     },
-    "lastReviewed": "2026-08-08",
-    "reviewStatus": "klaar",
-    "reportPath": "business/dgskills-reviews/j1p2-batch-2026-08-06.md",
-    "autoFixesApplied": 10,
-    "openEscalations": [],
-    "codexVerdict": "ALLOW",
+    "lastReviewed": "2026-08-25",
+    "reviewStatus": "fixed",
+    "reportPath": "business/dgskills-reviews/game-director-2026-08-25.md",
+    "autoFixesApplied": 3,
+    "openEscalations": [
+      {
+        "category": "ai-act",
+        "file": "src/features/missions/GameDirectorMission.tsx",
+        "description": "Hard Mode wordt automatisch geactiveerd op basis van een gemeten prestatie van de leerling, zonder zichtbare uitleg, zonder opt-out en zonder docentzicht. Adaptieve aanpassing in het onderwijs vraagt om transparantie richting leerling en om menselijk toezicht (Art. 14)."
+      }
+    ],
+    "codexVerdict": null,
     "reviewScores": {
-      "uiux": 2,
-      "didactiek": 2,
-      "tech": 2
+      "uiux": 6.5,
+      "didactiek": 8,
+      "tech": 7.5
     },
     "goalClear": true,
     "goalAchieved": true,
-    "proposedFixes": 6,
-    "escalationCount": 0,
+    "proposedFixes": 3,
+    "escalationCount": 1,
     "topIssues": [
-      "Offline AI-hulptekst wees naar Game Programmeur — verholpen"
+      "[design] Dode hover-states: hover:bg-duck-acid identiek aan bg-duck-acid op 'Hulp nodig?'-knop en mobiele Start/Stop-knop, geen visuele feedback.",
+      "[design] Event- en control-blokken delen dezelfde accentkleur (#e1ff01) in BlockTypes.ts, zichtbaar in BlockPalette-headers en losse blokken in de werkruimte; code-comments beschrijven nog een oude, andere kleurindeling.",
+      "[didactiek] Kleurcode-scaffolding (categorie=kleur, cruciaal in Scratch-achtige bloktalen voor beginners) valt weg doordat event- en control-blokken identiek gekleurd zijn."
     ],
-    "statusNote": "Browserreview op 4 schermformaten, plus adversariële tegenlezing door Codex. Lokaal; AI-stap en server-side voortgang niet bewezen."
+    "statusNote": "sweep wave 25 2026-08-25: verse review (alle missies); veiligheids-pass Opus high; 3 auto-fixes",
+    "triageScore": 2.6,
+    "verdict": "ok",
+    "safetyScores": {
+      "aiGedrag": 8,
+      "privacy": 8.5
+    }
   },
   {
     "missionId": "game-programmeur",
     "templateType": "agent-role",
-    "priorityBand": "high",
+    "priorityBand": "low",
     "triageScores": {
       "uiux": 1,
       "slo": 1,
@@ -1897,26 +2079,41 @@
       "interactivity": 0,
       "total": 9
     },
-    "lastReviewed": "2026-08-08",
-    "reviewStatus": "klaar",
-    "reportPath": "business/dgskills-reviews/j1p2-batch-2026-08-06.md",
+    "lastReviewed": "2026-08-25",
+    "reviewStatus": "reviewed",
+    "reportPath": "business/dgskills-reviews/game-programmeur-2026-08-25.md",
     "autoFixesApplied": 0,
     "openEscalations": [
-      "dubbele STEP_COMPLETE-markers (rol-systemInstruction vs gedeelde suffix) — mogelijk conflict",
-      "kleine goal-formulering-nuance missionGoals vs rol (geen defect)"
+      {
+        "category": "ai-act",
+        "file": "src/config/agents/year1.tsx",
+        "description": "De AI kan missiestappen van game-programmeur als voltooid markeren voor codewijzigingen die nooit zijn toegepast. Dat raakt de betrouwbaarheid van voortgang en docentrapportage en daarmee menselijk toezicht (Art. 14); rolinstructie en deterministische uitvoering moeten op elkaar worden afgestemd."
+      },
+      {
+        "category": "security",
+        "file": "supabase/functions/_shared/chatCore.ts",
+        "description": "In de edge function omzeilt het gameContext-veld bewust de promptsanitizer ('our own application code, not user input'). Vanuit deze missie wordt die tak nu niet geraakt omdat er geen enkele client gameContext zet, maar de aanname klopt niet zodra gamecode ooit wel wordt meegestuurd: die code bevat tekst die de leerling via de chat kan laten plaatsen. Signaleren, niet nu repareren."
+      }
     ],
     "codexVerdict": null,
     "reviewScores": {
-      "uiux": 6,
-      "didactiek": 5,
-      "tech": 6
+      "uiux": 8.5,
+      "didactiek": 8,
+      "tech": 8.5
     },
     "proposedFixes": 0,
     "escalationCount": 2,
     "topIssues": [
-      "Voorbeeldpaneel was 0px op mobiel — verholpen"
+      "[didactiek] goalCriteria min:5 (alle stappen verplicht) is strenger dan vergelijkbare missies in dezelfde periode (vaak min:3); waarschijnlijk bewust gezien difficulty 'Hard', maar niet expliciet bevestigd.",
+      "[tech] applyGameCommand() kiest bij ambiguë input met meerdere kleurwoorden in één zin altijd maar één doelwoord (default: speler); geen bug, wel een grens van de simpele regex-parser."
     ],
-    "statusNote": "Browserreview op 4 schermformaten, plus adversariële tegenlezing door Codex. Lokaal; AI-stap en server-side voortgang niet bewezen."
+    "statusNote": "sweep wave 25 2026-08-25: verse review (alle missies); veiligheids-pass Opus high",
+    "triageScore": 1.7,
+    "verdict": "ok",
+    "safetyScores": {
+      "aiGedrag": 6.5,
+      "privacy": 8
+    }
   },
   {
     "missionId": "impact-review",
@@ -2017,30 +2214,54 @@
   {
     "missionId": "ipad-print-instructies",
     "templateType": "dedicated",
-    "priorityBand": "low",
+    "priorityBand": "medium",
     "triageScores": null,
-    "lastReviewed": "2026-07-02",
-    "reviewStatus": "blocked",
-    "reportPath": "business/dgskills-reviews/ipad-print-instructies-2026-07-02.md",
-    "autoFixesApplied": 0,
+    "lastReviewed": "2026-08-25",
+    "reviewStatus": "fixed",
+    "reportPath": "business/dgskills-reviews/ipad-print-instructies-2026-08-25.md",
+    "autoFixesApplied": 4,
     "openEscalations": [
-      "content-authoring: missie belooft iPad-specifiek printen (titel+lesdoel) maar alle 5 scenario's zijn generieke desktop-printerproblemen (WiFi/kleur/papierformaat/kopieën/marges) — geen enkele dekt de echte iPad-route (Deel-icoon -> Print); voorstel-scenario ligt klaar in rapport, auteurskeuze aan Yorin"
+      {
+        "category": "structural",
+        "description": "Content/product-mismatch: dashboard-tegel, agent-briefing, basisvaardigheden-mapping en missiedoel beloven een iPad + RICOH myPrint installatie-en-inlogflow voor de MH1A-ondersteuningsklas, maar het gebouwde component is een generieke desktop-printer-troubleshootquiz zonder iPad/app-content. Vergt een productbeslissing (missie herbouwen naar echte iPad-flow, of alle metadata herschrijven naar de huidige quiz-inhoud) — geen mechanische fix.",
+        "file": "src/config/missionGoals.ts"
+      },
+      {
+        "category": "ai-act",
+        "file": "src/config/agents/year1.tsx",
+        "description": "De rolinstructie van ipad-print-instructies ('altijd hetzelfde antwoord, ongeacht wat de leerling vraagt') doorkruist het verplichte welzijnsprotocol. De client-side welzijnsmonitor vangt zorgwekkende berichten nu af voordat ze naar de AI gaan, dus er is een vangnet, maar de instructie zelf moet worden aangepast voordat deze rol ooit aan een chat wordt gekoppeld."
+      },
+      {
+        "category": "structural",
+        "file": "src/config/agents/year1.tsx",
+        "description": "De agent-rol (Boeken-app-instructie) en de leerling-facing component (Print Troubleshooter-quiz) beschrijven twee verschillende opdrachten onder een missie-id. Vraagt om een keuze van de eigenaar welke van de twee de missie is."
+      }
     ],
     "codexVerdict": null,
     "reviewScores": {
-      "uiux": 7,
-      "didactiek": 5,
-      "tech": 9
+      "uiux": 6.5,
+      "didactiek": 6,
+      "tech": 8
     },
-    "triageScore": 3.2,
+    "triageScore": 3.25,
     "verdict": "fix-eerst",
-    "statusNote": "wave 20: technisch prima (9); curriculum-registratie ontbreekt bewust (MH1A classRestriction, buiten weekrooster); dormante rol verwijst naar school-lokaal Boeken-app-bestand (niet verifieerbaar) = notitie",
-    "escalationCount": 1
+    "statusNote": "sweep wave 25 2026-08-25: verse review (alle missies); veiligheids-pass Opus high; 4 auto-fixes",
+    "escalationCount": 3,
+    "proposedFixes": 4,
+    "topIssues": [
+      "[didactiek] Vijf metadata-bronnen (missionGoals.ts, missionPreviewConfig.ts, agents/year1.tsx, basisvaardigheden-mapping.ts, ProjectZeroDashboard.tsx) beloven een iPad + RICOH myPrint app-installatie-en-inlogflow, maar het component levert een apparaat-onafhankelijke desktop-printer-troubleshootquiz zonder iPad, app-installatie of RICOH-verwijzing.",
+      "[design] Component gebruikt overal inline hex-literals (#f2f1ec, #202023, #ff3c21, #FFFFFF) i.p.v. duck-* tokens, terwijl een paar regels verderop wél duck-ink/duck-acid/duck-bg als className worden gebruikt — inconsistent tokengebruik.",
+      "[design] Hover-handlers op de drie primaire CTA-knoppen zetten dezelfde kleur op enter en leave — geen zichtbare hover-feedback (no-op)."
+    ],
+    "safetyScores": {
+      "aiGedrag": 6,
+      "privacy": 8.5
+    }
   },
   {
     "missionId": "layout-doctor",
     "templateType": "dedicated",
-    "priorityBand": "low",
+    "priorityBand": "high",
     "triageScores": {
       "uiux": 1,
       "slo": 1,
@@ -2048,26 +2269,42 @@
       "interactivity": 0,
       "total": 2
     },
-    "lastReviewed": "2026-08-08",
-    "reviewStatus": "klaar",
-    "reportPath": "business/dgskills-reviews/j1p2-batch-2026-08-06.md",
-    "autoFixesApplied": 0,
+    "lastReviewed": "2026-08-25",
+    "reviewStatus": "fixed",
+    "reportPath": "business/dgskills-reviews/layout-doctor-2026-08-25.md",
+    "autoFixesApplied": 3,
     "openEscalations": [
-      "a11y/UX-opknapcluster dedicated component: mobiel start opdrachtkaart uitgeklapt (werkveld onder de vouw), ribbon-knoppen B/I/U onder touch-formaat (p-1), focus-ring ontbreekt op meeste ribbon-knoppen — voorstellen in rapport, componentwijziging = Yorin-keuze"
+      {
+        "category": "structural",
+        "description": "LayoutDoctorMission.tsx is volledig onbereikbaar in productie — alle routes ('layout-doctor') renderen WordSimulator.tsx in plaats van dit bestand. missionGoals.ts en de opdrachtcriteria in dit bestand beschrijven een taak die leerlingen nooit te zien krijgen. Yorin moet beslissen: dit bestand opruimen (dode code verwijderen) of alsnog aansluiten als vervanger van WordSimulator — een codekwaliteitsfix lost dit niet op.",
+        "file": "src/features/missions/review/LayoutDoctorMission.tsx"
+      },
+      {
+        "category": "privacy",
+        "description": "Third-party asset-load naar images.unsplash.com vanuit leerlingbrowser. Nu afgevangen door de CSP, maar niet bewust ontworpen; graag zelfhosten in /assets zodat de privacy-by-design-lijn niet van een header afhangt.",
+        "file": "src/features/missions/review/LayoutDoctorMission.tsx"
+      }
     ],
     "codexVerdict": null,
     "reviewScores": {
-      "uiux": 7,
-      "didactiek": 8.5,
-      "tech": 8
+      "uiux": 6,
+      "didactiek": 4,
+      "tech": 2
     },
-    "triageScore": 2.1,
-    "verdict": "ok",
-    "statusNote": "Browserreview op 4 schermformaten, plus adversariële tegenlezing door Codex. Lokaal; AI-stap en server-side voortgang niet bewezen.",
-    "escalationCount": 1,
+    "triageScore": 6,
+    "verdict": "fix-eerst",
+    "statusNote": "sweep wave 25 2026-08-25: verse review (alle missies); veiligheids-pass Opus high; 3 auto-fixes",
+    "escalationCount": 2,
     "topIssues": [
-      "Op 390px bleef 90px over voor het document — verholpen"
-    ]
+      "[didactiek] missionGoals.ts primaryGoal en de ASSIGNMENT_CRITERIA in dit bestand beschrijven een documentopmaak-taak, maar de daadwerkelijk gerenderde 'layout-doctor'-missie in productie (WordSimulator via AuthenticatedApp.tsx:773 en AiLab.tsx:1410) is een geheel andere matching-opdracht — SLO/leerdoel-claim en shipped ervaring lopen uiteen",
+      "[tech] LayoutDoctorMission.tsx wordt nergens geïmporteerd of gerouteerd; component is onbereikbare dode code — alle productieroutes voor 'layout-doctor' renderen WordSimulator.tsx in plaats van dit component",
+      "[design] Hardcoded hex kleur border-[#08283B] i.p.v. duck-* token"
+    ],
+    "proposedFixes": 3,
+    "safetyScores": {
+      "aiGedrag": 9,
+      "privacy": 7
+    }
   },
   {
     "missionId": "magister-master",
@@ -2886,7 +3123,7 @@
   {
     "missionId": "pitch-police",
     "templateType": "dedicated",
-    "priorityBand": "high",
+    "priorityBand": "low",
     "triageScores": {
       "uiux": 2,
       "slo": 1,
@@ -2894,26 +3131,37 @@
       "interactivity": 0,
       "total": 5
     },
-    "lastReviewed": "2026-08-08",
-    "reviewStatus": "klaar",
-    "reportPath": "business/dgskills-reviews/j1p2-batch-2026-08-06.md",
-    "autoFixesApplied": 1,
+    "lastReviewed": "2026-08-25",
+    "reviewStatus": "fixed",
+    "reportPath": "business/dgskills-reviews/pitch-police-2026-08-25.md",
+    "autoFixesApplied": 3,
     "openEscalations": [
-      "kwaliteit laag over de hele linie (3/4/2, 2 blockers + 4 warnings) — intro-CTA oogt disabled (platform-intro-patroon) en missie verdient een opknapronde zodra de platform-shell-fix landt"
+      {
+        "category": "privacy",
+        "description": "Drie media.giphy.com- en twee images.unsplash.com-calls vanuit de leerlingbrowser. Nu geblokkeerd door de CSP, maar het is geen bewuste keuze en het breekt tegelijk twee slides didactisch. Assets zelfhosten onder /assets.",
+        "file": "src/features/missions/review/PitchPoliceMission.tsx"
+      }
     ],
-    "codexVerdict": "ALLOW",
+    "codexVerdict": null,
     "escalationCount": 1,
     "reviewScores": {
-      "uiux": 3,
-      "didactiek": 4,
-      "tech": 2
+      "uiux": 6,
+      "didactiek": 8,
+      "tech": 7
     },
-    "triageScore": 6.9,
-    "statusNote": "Browserreview op 4 schermformaten, plus adversariële tegenlezing door Codex. Lokaal; AI-stap en server-side voortgang niet bewezen.",
+    "triageScore": 2.9,
+    "statusNote": "sweep wave 25 2026-08-25: verse review (alle missies); veiligheids-pass Opus high; 3 auto-fixes",
     "verdict": "fix-eerst",
     "topIssues": [
-      "Slotdia was onleesbaar (contrast 1,00:1), nu 8,56:1"
-    ]
+      "[design] Optie-letter (A/B/C) is onzichtbaar in standaardstaat: bg-duck-ink en text-duck-ink zijn identiek (#202023). Geen hover-state op touchscreens (hoofddoelgroep) dus leerlingen zien lege cirkels bij de keuzeopties.",
+      "[design] Zelfde contrast-bug in de mobiele bottom-sheet variant van het politierapport.",
+      "[design] Hardcoded lab-hex-kleuren (#08283B, #0B453F) i.p.v. duck-* tokens, breekt tokendiscipline die verder in het bestand consequent is."
+    ],
+    "proposedFixes": 3,
+    "safetyScores": {
+      "aiGedrag": 9,
+      "privacy": 6
+    }
   },
   {
     "missionId": "podcast-producer",
@@ -3143,7 +3391,7 @@
   {
     "missionId": "prompt-master",
     "templateType": "dedicated",
-    "priorityBand": "high",
+    "priorityBand": "medium",
     "triageScores": {
       "uiux": 1,
       "slo": 0,
@@ -3151,27 +3399,42 @@
       "interactivity": 0,
       "total": 14
     },
-    "lastReviewed": "2026-08-08",
-    "reviewStatus": "klaar",
-    "reportPath": "business/dgskills-reviews/j1p2-batch-2026-08-06.md",
-    "autoFixesApplied": 1,
+    "lastReviewed": "2026-08-25",
+    "reviewStatus": "fixed",
+    "reportPath": "business/dgskills-reviews/prompt-master-2026-08-25.md",
+    "autoFixesApplied": 2,
     "openEscalations": [
-      "missionGoals criteria-type ('component-complete') wijkt af van component-constante ('score-threshold' 60) — reporting-consistentie",
-      "dubbele input-sanitization (inline + promptSanitizer) — ontwerpkeuze",
-      "visualPreview gebruikt legacy lab-* tokens (dashboard-kaart) — losse opschoning"
+      {
+        "category": "ai-act",
+        "description": "AI-disclosure (Art. 50) ontbreekt op het tekst-/help-/code-resultaatpad van deze missie, terwijl het beeldpad de badge wél toont. Inconsistente toepassing van het eigen huis-patroon op een leerlinggerichte AI-output.",
+        "file": "src/features/missions/PromptMasterMission.tsx"
+      },
+      {
+        "category": "privacy",
+        "description": "Vrije leerlingtekst gaat naar Mistral en (bij beeldopdrachten) naar Black Forest Labs zonder zichtbare waarschuwing bij het invoerveld om geen persoonsgegevens te typen. Server-side PII-redactie vangt het grotendeels af; graag dezelfde in-context waarschuwing als bij wachtwoord-fortress.",
+        "file": "src/features/missions/PromptMasterMission.tsx"
+      }
     ],
     "codexVerdict": null,
     "reviewScores": {
-      "uiux": 8,
-      "didactiek": 8,
-      "tech": 9
+      "uiux": 6.5,
+      "didactiek": 7,
+      "tech": 7
     },
-    "proposedFixes": 1,
-    "escalationCount": 3,
+    "proposedFixes": 2,
+    "escalationCount": 2,
     "topIssues": [
-      "TERUG-knop was 71x20px, nu 87x44"
+      "[design] Primaire CTA-knoppen gebruiken hardcoded hex (#e1ff01/#99984D) via inline style + JS onMouseEnter/onMouseLeave i.p.v. de bestaande duck-acid-token met Tailwind hover-klasse.",
+      "[design] Primaire CTA-knoppen (start/verstuur/afronden) hebben geen focus-visible ring, alleen de textarea heeft dat.",
+      "[didactiek] SLO-code 22A (Digitale producten) wordt oppervlakkig geraakt; de missie draait volledig om prompt-formulering, niet om productontwerp."
     ],
-    "statusNote": "Browserreview op 4 schermformaten, plus adversariële tegenlezing door Codex. Lokaal; AI-stap en server-side voortgang niet bewezen."
+    "statusNote": "sweep wave 25 2026-08-25: verse review (alle missies); veiligheids-pass Opus high; 2 auto-fixes",
+    "triageScore": 3.15,
+    "verdict": "fix-eerst",
+    "safetyScores": {
+      "aiGedrag": 8,
+      "privacy": 7
+    }
   },
   {
     "missionId": "prototype-developer",
@@ -4059,27 +4322,47 @@
       "interactivity": 0,
       "total": 5
     },
-    "lastReviewed": "2026-08-08",
-    "reviewStatus": "klaar",
-    "reportPath": "business/dgskills-reviews/j1p2-batch-2026-08-06.md",
+    "lastReviewed": "2026-08-25",
+    "reviewStatus": "reviewed",
+    "reportPath": "business/dgskills-reviews/verhalen-ontwerper-2026-08-25.md",
     "autoFixesApplied": 0,
     "openEscalations": [
-      "ai-endpoint (HOOG): server-instructie in supabase/functions/_shared/systemInstructions.ts:26 is OUDER dan de client-config (mist SCENARIO A/B + 'illustraties op aanvraag'-herziening) op een ACTIEVE chat-missie — server-entry hergenereren vanuit year1.tsx:903-1002 (buiten auto-fix-scope)"
+      {
+        "category": "ai-act",
+        "description": "Geen AI-disclosure op het gepubliceerde prentenboek (tekst én illustraties AI-gegenereerd), terwijl het huis-patroon AiDisclosureBadge elders wel wordt toegepast. Raakt Art. 50-transparantie op een artefact dat schoolbreed gedeeld wordt.",
+        "file": "src/features/student/BookPreview.tsx"
+      },
+      {
+        "category": "privacy",
+        "description": "Publicatie van een prentenboek voegt stilzwijgend naam, klas en school-id van een minderjarige toe aan shared_games; de dialoog benoemt dat niet en zegt niet wie het boek kan zien. Graag een expliciete scope- en gegevensmelding vóór 'Publiceer'.",
+        "file": "src/features/student/BookPreview.tsx"
+      },
+      {
+        "category": "ai-act",
+        "description": "Deze vrije-creatie-missie leunt voor kindveiligheid op de server-side sanitizer plus het child-safety-prefix, terwijl de Mistral-moderatieclassifier standaard uit staat (AI_MODERATION_ENABLED default false). Bekende, bewuste platformstand — maar juist bij deze missie (12-jarigen, vrije tekst én beeld) is dat het punt waar het knelt.",
+        "file": "supabase/functions/_shared/moderationClient.ts"
+      }
     ],
     "codexVerdict": null,
     "reviewScores": {
-      "uiux": 8,
-      "didactiek": 8.5,
-      "tech": 7.5
+      "uiux": 6.5,
+      "didactiek": 9,
+      "tech": 6.5
     },
-    "triageScore": 1.95,
-    "verdict": "ok",
-    "statusNote": "Browserreview op 4 schermformaten, plus adversariële tegenlezing door Codex. Lokaal; AI-stap en server-side voortgang niet bewezen.",
-    "escalationCount": 1,
+    "triageScore": 2.5,
+    "verdict": "fix-eerst",
+    "statusNote": "sweep wave 25 2026-08-25: verse review (alle missies); veiligheids-pass Opus high",
+    "escalationCount": 3,
     "topIssues": [
-      "Interne AI-instructie niet meer zichtbaar in de chat",
-      "Voorbeeldpaneel was 0px op mobiel — verholpen"
-    ]
+      "[design] Foutstaat bij mislukte illustratie is onleesbaar: text-lab-gold op bg-lab-gold (identieke hex #D7C95F) maakt kop, uitleg en AlertCircle-icoon onzichtbaar.",
+      "[design] Zelfde onleesbare foutstaat op pagina-niveau (niet alleen kaft).",
+      "[tech] Onleesbare foutmelding (bg-lab-gold/text-lab-gold) is ook functioneel een tech-bug: de foutstate communiceert niets bruikbaars aan de leerling."
+    ],
+    "proposedFixes": 0,
+    "safetyScores": {
+      "aiGedrag": 7,
+      "privacy": 6
+    }
   },
   {
     "missionId": "video-editor",
@@ -4126,18 +4409,44 @@
   },
   {
     "missionId": "wachtwoord-fortress",
-    "lastReviewed": "2026-08-07",
-    "reviewStatus": "fixed",
-    "triageScore": 7,
-    "priorityBand": "high",
-    "reportPath": "business/dgskills-reviews/wachtwoord-fortress-2026-08-07.md",
+    "lastReviewed": "2026-08-25",
+    "reviewStatus": "reviewed",
+    "triageScore": 3.35,
+    "priorityBand": "medium",
+    "reportPath": "business/dgskills-reviews/wachtwoord-fortress-2026-08-25.md",
     "reviewScores": {
-      "uiux": 3,
-      "didactiek": 3,
-      "tech": 3
+      "uiux": 7.5,
+      "didactiek": 8,
+      "tech": 8
     },
-    "openEscalations": [],
-    "codexVerdict": null
+    "openEscalations": [
+      {
+        "category": "structural",
+        "description": "Blocking issues (doodlopend scherm <40%, verplichte laatste ronde niet afgedwongen) zitten in de gedeelde PasswordFortress-engine, niet in de missie-config; vereisen een engine-fix die alle missies van dit templateType raakt.",
+        "file": "src/features/missions/templates/password-fortress/PasswordFortress.tsx"
+      },
+      {
+        "category": "structural",
+        "description": "Het missiedoel belooft dat de laatste ronde (credential stuffing) altijd verplicht is, maar de afronding controleert alleen het aantal gehaalde rondes (cleared.length >= 3) en niet wélke. Een leerling die juist de credential-stuffing-ronde overslaat, haalt de missie toch. Inhoudelijk geen privacy- of AI-risico, maar de belofte aan leerling en docent klopt niet met wat de code afdwingt.",
+        "file": "src/features/missions/templates/password-fortress/PasswordFortress.tsx"
+      }
+    ],
+    "codexVerdict": null,
+    "templateType": "password-fortress",
+    "verdict": "fix-eerst",
+    "proposedFixes": 0,
+    "autoFixesApplied": 0,
+    "escalationCount": 2,
+    "topIssues": [
+      "[didactiek] Engine controleert alleen cleared.length >= 3, niet of de verplichte laatste ronde (credential stuffing) is gehaald — ondermijnt missionGoal.criteria.description en de didactische kern van de missie.",
+      "[tech] CompletionScreen krijgt geen onRetry mee; leerling onder 40% score komt in doodlopend scherm met uitgeschakelde knop.",
+      "[design] Uitslag (score/voortgangsstip) wordt al zichtbaar vóór de aanvalsanimatie is afgelopen — ondermijnt de opbouw die de story-teksten per ronde beogen."
+    ],
+    "statusNote": "sweep wave 25 2026-08-25: verse review (alle missies); veiligheids-pass Opus high",
+    "safetyScores": {
+      "aiGedrag": 9,
+      "privacy": 9
+    }
   },
   {
     "missionId": "wachtwoord-warrior",

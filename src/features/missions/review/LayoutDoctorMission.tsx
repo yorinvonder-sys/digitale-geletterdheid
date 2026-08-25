@@ -45,7 +45,7 @@ interface ContentBlock {
     id: string;
     type: BlockType;
     content?: string;
-    style?: any; // For text styles, alignment, etc.
+    style?: React.CSSProperties;
 }
 
 export const LayoutDoctorMission: React.FC<LayoutDoctorProps> = ({ onComplete, onBack }) => {
@@ -282,7 +282,7 @@ export const LayoutDoctorMission: React.FC<LayoutDoctorProps> = ({ onComplete, o
             {/* Header */}
             <header className="bg-duck-acid text-duck-ink px-4 py-2 flex items-center justify-between shadow-md relative z-20">
                 <div className="flex items-center gap-4">
-                    <button onClick={onBack} className="p-1.5 hover:bg-white/10 rounded-lg transition-all duration-300 focus-visible:ring-2 focus-visible:ring-white"><ArrowLeft size={20} /></button>
+                    <button onClick={onBack} aria-label="Terug naar overzicht" className="p-1.5 hover:bg-white/10 rounded-lg transition-all duration-300 focus-visible:ring-2 focus-visible:ring-white"><ArrowLeft size={20} /></button>
                     <div className="flex flex-col">
                         <span className="font-medium text-sm">Document1 - Word</span>
                         <div className="flex gap-2 lg:gap-4 text-[11px] text-white/80 overflow-x-auto">
@@ -426,7 +426,7 @@ export const LayoutDoctorMission: React.FC<LayoutDoctorProps> = ({ onComplete, o
                                 {block.type === 'heading' && (
                                     <h1
                                         onClick={(e) => handleSelection(e, block.id, 'heading')}
-                                        className={`cursor-text ${titleStyle === 'comic' ? 'text-2xl text-duck-ink/60 text-center font-[Comic_Sans_MS]' : 'text-4xl font-bold border-b-2 border-[#08283B] pb-2 text-left font-sans'} ${selection === block.id ? 'bg-duck-acid/10' : ''}`}
+                                        className={`cursor-text ${titleStyle === 'comic' ? 'text-2xl text-duck-ink/60 text-center font-[Comic_Sans_MS]' : 'text-4xl font-bold border-b-2 border-duck-ink pb-2 text-left font-sans'} ${selection === block.id ? 'bg-duck-acid/10' : ''}`}
                                     >
                                         {block.content}
                                     </h1>

@@ -250,8 +250,8 @@ function getCoachHint(context: string): string {
 
 const ROLLEN_KLEUREN: Record<string, string> = {
     leerling: 'bg-duck-ink text-white',
-    docent: 'bg-duck-ink text-white',
-    admin: 'bg-duck-ink text-white',
+    docent: 'bg-duck-acid text-duck-ink',
+    admin: 'bg-duck-error text-white',
     gast: 'bg-duck-bg text-duck-ink/60',
 };
 

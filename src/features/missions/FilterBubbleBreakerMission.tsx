@@ -106,7 +106,7 @@ export const FilterBubbleBreakerMission: React.FC<Props> = ({ onBack, onComplete
     const getBadge = () => {
         if (score >= 80) return { emoji: '🫧', title: 'Bubble Breaker', color: 'from-duck-ink to-duck-acid' };
         if (score >= 60) return { emoji: '👀', title: 'Bewuste Scroller', color: 'from-duck-ink to-duck-acid' };
-        return { emoji: '🌱', title: 'Bubbel Ontdekker', color: 'from-duck-ink to-duck-ink' };
+        return { emoji: '🌱', title: 'Bubbel Ontdekker', color: 'from-duck-gray to-duck-ink' };
     };
 
     const renderFeedCard = (item: FeedItem, isB: boolean) => (
@@ -209,8 +209,9 @@ export const FilterBubbleBreakerMission: React.FC<Props> = ({ onBack, onComplete
                     </div>
 
                     <div className="space-y-2">
-                        <label className="text-xs font-black text-duck-ink/60" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>Jouw analyse:</label>
+                        <label htmlFor="fbb-analyze" className="text-xs font-black text-duck-ink/60" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>Jouw analyse:</label>
                         <textarea
+                            id="fbb-analyze"
                             value={analyzeResponse}
                             onChange={e => setAnalyzeResponse(e.target.value)}
                             placeholder="Bijv: Daan mist nieuws over ruimtevaart en wetenschap. Dit is belangrijk omdat..."
