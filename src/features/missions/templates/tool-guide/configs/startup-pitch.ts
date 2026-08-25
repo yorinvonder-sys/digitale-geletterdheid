@@ -52,16 +52,16 @@ const config: ToolGuideConfig = {
                 { id: 'naam-catchy', label: 'De naam is kort, makkelijk te onthouden en past bij de oplossing' },
             ],
             verificationQuestion: {
-                question: 'Wat maakt een goede startupnaam?',
+                question: 'Kijk naar wat je net hebt opgeschreven. Wat klopt er als je deze stap goed hebt gedaan?',
                 options: [
-                    'Zo lang mogelijk, zodat het professioneel klinkt',
-                    'Een naam met veel technische termen erin',
-                    'Kort, makkelijk te onthouden en passend bij het product',
-                    'Een naam die niemand kent, zodat het mysterieus klinkt',
+                    'Ik heb alleen een naam bedacht; de oplossing schrijf ik later op',
+                    'Mijn oplossing staat in 2 tot 3 zinnen en mijn naam is kort (maximaal 2 woorden)',
+                    'Mijn oplossing is één woord en mijn naam is een hele zin',
+                    'Mijn oplossing beschrijft het probleem nog een keer, zonder AI erin',
                 ],
-                correctIndex: 2,
+                correctIndex: 1,
                 explanation:
-                    'Goed! De beste namen zijn kort, uitsprekbaar en roepen meteen een gevoel op dat bij het product past. Denk aan Zoom, Slack, Canva — simpel en direct.',
+                    'Goed! Je hebt nu allebei op papier: een oplossing van 2 tot 3 zinnen waarin AI iets doet, en een korte naam die makkelijk blijft hangen.',
             },
         },
         {
@@ -75,6 +75,18 @@ const config: ToolGuideConfig = {
                 { id: 'slogan', label: 'Ik heb een slogan van maximaal 6 woorden bedacht' },
                 { id: 'kleurenpalet', label: 'Ik heb 2 à 3 kleuren gekozen (bijv. blauw = vertrouwen, groen = groei, oranje = energie) en uitgelegd waarom ze passen' },
             ],
+            verificationQuestion: {
+                question: 'Kijk naar het logo, de slogan en de kleuren die je net hebt gemaakt. Wat klopt er?',
+                options: [
+                    'Ik heb een logo getekend, maar nog geen slogan bedacht',
+                    'Mijn slogan is één woord en ik heb nog geen kleuren gekozen',
+                    'Ik heb 2 à 3 kleuren gekozen met bij elke kleur een reden, en mijn slogan telt maximaal 6 woorden',
+                    'Ik heb zoveel mogelijk kleuren gebruikt, want dan valt mijn logo het meeste op',
+                ],
+                correctIndex: 2,
+                explanation:
+                    'Precies! Een paar kleuren met een reden erachter en een korte slogan maken je merk herkenbaar. Veel kleuren door elkaar maken het juist rommelig.',
+            },
         },
         {
             id: 'stap-4-ethiek',
@@ -89,16 +101,16 @@ const config: ToolGuideConfig = {
                 { id: 'oplossing-risico', label: 'Ik heb voor minstens één risico een oplossing bedacht' },
             ],
             verificationQuestion: {
-                question: 'Waarom moet een AI-startup nadenken over privacy, ook als de app gratis is?',
+                question: 'Kijk terug naar wat je in deze stap hebt opgeschreven. Wat staat er?',
                 options: [
-                    'Alleen betaalde apps hoeven zich aan privacyregels te houden',
-                    'Omdat gratis apps automatisch geen data verzamelen',
-                    'Omdat data van gebruikers — ook minderjarigen — beschermd moet worden, ongeacht de prijs',
-                    'Dat hoeft niet — als gebruikers akkoord gaan, is alles toegestaan',
+                    'Alleen een lijst met data die mijn AI verzamelt',
+                    'Alleen de naam en de slogan van mijn startup',
+                    'Welke data mijn AI verzamelt, één risico voor eerlijkheid, én bij minstens één risico een oplossing',
+                    'Een lijst met alle mensen die mijn app straks gaan gebruiken',
                 ],
                 correctIndex: 2,
                 explanation:
-                    'Precies! In de EU gelden voor alle apps strenge regels voor dataverwerking, ook voor gratis apps. Bij apps voor minderjarigen gelden nog extra regels. Een goed product is ook een veilig en eerlijk product.',
+                    'Precies! Risico\'s benoemen is stap één, maar investeerders willen ook zien dat je er iets aan doet. Daarom hoort bij minstens één risico een oplossing te staan.',
             },
         },
     ],

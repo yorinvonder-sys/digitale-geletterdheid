@@ -119,6 +119,11 @@ export const PuzzleLab: React.FC<TemplateMissionProps> = ({
     }
 
     const missionGoal = config.missionGoal ?? getMissionGoal(config.missionId);
+    /** Puntendrempel van de missie. Zonder eigen score-drempel blijft de oude
+     *  40%-regel gelden, zodat bestaande missies niet strenger worden. */
+    const scoreThreshold = missionGoal?.criteria.type === 'score-threshold'
+        ? (missionGoal.criteria.threshold ?? config.maxScore * 0.4)
+        : config.maxScore * 0.4;
 
     const puzzle = config.puzzles[state.currentPuzzle];
     const puzzleId = puzzle?.id ?? '';
@@ -325,21 +330,70 @@ export const PuzzleLab: React.FC<TemplateMissionProps> = ({
             max: p.points,
         }));
 
+        const missionPassed = totalScore >= scoreThreshold;
+
+        const handleComplete = async () => {
+            const completed = await onComplete(missionPassed, toScorePercent(totalScore, config.maxScore));
+            // Alleen wissen na een echte voltooiing. Bij `success === false` stuurt de
+            // host de leerling terug zonder iets te registreren; wissen zou dan de hele
+            // run weggooien en het eindscherm onbereikbaar maken.
+            if (missionPassed && completed !== false) {
+                clearSave();
+            }
+        };
+
+        // De resultaatfase staat in de opgeslagen voortgang, dus dit scherm moet altijd
+        // een uitweg hebben: de melding hieronder vertelt wat er nog nodig is en geeft
+        // een knop terug naar de puzzels, en `onRetry` maakt dezelfde route bruikbaar
+        // op CompletionScreen zelf.
         return (
-            <CompletionScreen
-                score={totalScore}
-                maxScore={config.maxScore}
-                badges={config.badges}
-                phases={phases}
-                takeaways={config.takeaways}
-                onRetry={handleRetry}
-                onComplete={() => {
-                    clearSave();
-                    // Reflect real performance: only a >=40% score counts as a pass,
-                    // so a skipped/failed run is not reported as a success.
-                    onComplete(totalScore >= config.maxScore * 0.4, toScorePercent(totalScore, config.maxScore));
-                }}
-            />
+            <div className="min-h-screen bg-duck-bg">
+                {!missionPassed && (
+                    <div className="mx-auto max-w-lg px-4 pt-6">
+                        <div
+                            data-qa="puzzle-threshold-notice"
+                            role="status"
+                            className="rounded-2xl border-2 border-duck-ink bg-white p-4"
+                        >
+                            <p
+                                className="text-sm font-black text-duck-ink"
+                                style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
+                            >
+                                Nog niet gehaald — je hebt {Math.round(scoreThreshold)} van de {config.maxScore} punten nodig.
+                            </p>
+                            <p
+                                className="mt-1 text-xs text-duck-ink/70"
+                                style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
+                            >
+                                Je staat nu op {totalScore}. Probeer de puzzels die je nog niet
+                                opgelost hebt opnieuw — je opgeloste puzzels blijven staan.
+                            </p>
+                            <button
+                                data-qa="puzzle-retry"
+                                onClick={handleRetry}
+                                className="mt-3 w-full min-h-[44px] rounded-full bg-duck-acid py-2.5 text-sm font-black text-duck-ink transition-all duration-200 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-ink focus-visible:ring-offset-2"
+                                style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
+                            >
+                                Opnieuw proberen
+                            </button>
+                        </div>
+                    </div>
+                )}
+
+                <CompletionScreen
+                    score={totalScore}
+                    maxScore={config.maxScore}
+                    badges={config.badges}
+                    phases={phases}
+                    takeaways={config.takeaways}
+                    onRetry={handleRetry}
+                    onComplete={handleComplete}
+                    passed={missionPassed}
+                    passScorePercent={config.maxScore > 0
+                        ? Math.round((scoreThreshold / config.maxScore) * 100)
+                        : undefined}
+                />
+            </div>
         );
     }
 

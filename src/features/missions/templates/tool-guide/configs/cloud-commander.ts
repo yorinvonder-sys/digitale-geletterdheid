@@ -26,6 +26,22 @@ export const cloudCommanderConfig: ToolGuideConfig = {
                 { id: 'app-gevonden', label: 'Ik heb de OneDrive-app gevonden op mijn iPad' },
                 { id: 'ingelogd', label: 'Ik ben ingelogd met mijn schoolaccount' },
             ],
+            verificationQuestion: {
+                question:
+                    'Je bent nu ingelogd in de OneDrive-app. Waar kun je in de app zelf zien met welk account je binnen bent?',
+                options: [
+                    'Op de ronde knop met je initialen linksboven — daar staat je e-mailadres',
+                    'Pas nadat je de iPad opnieuw opstart',
+                    'In de Instellingen-app van de iPad, bij Wifi',
+                    'Onderin bij het tabblad met je foto\'s',
+                ],
+                correctIndex: 0,
+                allowRetry: true,
+                retryHint:
+                    'Nog niet. Kijk nog eens goed naar de bovenkant van je scherm in OneDrive en tik op het ronde knopje. Kies daarna opnieuw.',
+                explanation:
+                    'Juist! Linksboven staat een rondje met je initialen. Tik je daarop, dan zie je je e-mailadres. Zo controleer je of je echt met je schoolaccount werkt en niet met een privé-account.',
+            },
         },
         {
             id: 'stap-2-map',
@@ -39,18 +55,19 @@ export const cloudCommanderConfig: ToolGuideConfig = {
             ],
             verificationQuestion: {
                 question:
-                    'Je hebt net de map School op je school-iPad gemaakt en daarin een verslag. Thuis heb je die iPad niet bij je, maar je wilt het verslag op een schoolcomputer openen. Waar sla je het bestand op?',
+                    'Je hebt de map net aangemaakt. Wat zie je nu in OneDrive?',
                 options: [
-                    'Alleen op mijn iPad',
-                    'In OneDrive',
-                    'Op de schoolprinter',
+                    'Een gele mapknop met de naam School in mijn bestandenlijst, nog zonder bestanden erin',
+                    'Een leeg scherm — de map verschijnt pas als ik een bestand upload',
+                    'Een vraag om een wachtwoord voor de map in te stellen',
+                    'De map alleen op de OneDrive-website, niet in de app',
                 ],
-                correctIndex: 1,
+                correctIndex: 0,
                 allowRetry: true,
                 retryHint:
-                    'Nog niet. Denk aan de plek waar je het verslag ook kunt openen als je iPad niet bij je is. Kies daarna opnieuw.',
+                    'Nog niet. Ga terug naar je bestandenlijst in OneDrive en kijk wat daar nu bij staat. Kies daarna opnieuw.',
                 explanation:
-                    'Juist! OneDrive slaat je verslag op in de cloud — dat zijn servers van Microsoft. Daardoor kun je het op een ander apparaat openen, zolang je verbinding hebt met internet.',
+                    'Juist! De map School staat meteen in je bestandenlijst, met een mapicoon en nog niets erin. Omdat de map in OneDrive staat, kun je hem straks ook op een schoolcomputer openen.',
             },
         },
         {
@@ -64,6 +81,22 @@ export const cloudCommanderConfig: ToolGuideConfig = {
                 { id: 'foto-gemaakt', label: 'Ik heb een foto gemaakt of gekozen' },
                 { id: 'geupload', label: 'De foto staat nu in mijn School-map in OneDrive' },
             ],
+            verificationQuestion: {
+                question:
+                    'Je upload is klaar. Wat staat er nu in je School-map?',
+                options: [
+                    'Een klein voorbeeldje van mijn foto, met de bestandsnaam eronder',
+                    'Niets — de foto blijft alleen in de app Foto\'s staan',
+                    'Een zip-bestand waar mijn foto in zit',
+                    'Een lege regel zonder naam, tot de docent hem goedkeurt',
+                ],
+                correctIndex: 0,
+                allowRetry: true,
+                retryHint:
+                    'Nog niet. Open je School-map in OneDrive en kijk wat er precies te zien is. Kies daarna opnieuw.',
+                explanation:
+                    'Juist! OneDrive laat een klein voorbeeldje (miniatuur) van je foto zien met de bestandsnaam. Zie je dat, dan weet je zeker dat de upload gelukt is.',
+            },
         },
         {
             id: 'stap-4-delen',

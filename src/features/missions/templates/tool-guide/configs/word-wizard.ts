@@ -31,19 +31,19 @@ const config: ToolGuideConfig = {
             teacherCheck:
                 'Laat je docent in OneDrive de bestandsnaam en opslaglocatie van je document zien.',
             verificationQuestion: {
-                question: 'Waarom sla je een document meteen op als je begint, en niet pas aan het einde?',
+                question: 'Kijk boven in beeld, nu je het document hebt opgeslagen. Welke naam staat daar?',
                 options: [
-                    'Omdat Word anders automatisch stopt na 5 minuten',
-                    'Zodat je werk niet verloren gaat als de app crasht of de iPad uitvalt',
-                    'Omdat je anders niet kunt typen',
-                    'Omdat de docent het anders niet kan zien',
+                    'Document1',
+                    'De naam die ik zelf koos, bijvoorbeeld Sanne_Verslag_Biologie',
+                    'Naamloos',
+                    'OneDrive',
                 ],
                 correctIndex: 1,
                 allowRetry: true,
                 retryHint:
-                    'Nog niet. Denk aan wat er met je werk gebeurt als de app sluit voordat het bestand een naam en opslaglocatie heeft. Kies daarna opnieuw.',
+                    'Nog niet. Open je document en kijk naar de balk bovenaan. Staat daar nog "Document1", dan heb je het bestand nog geen naam gegeven — doe dat eerst en kies daarna opnieuw.',
                 explanation:
-                    'Precies! Als je document al een naam en locatie heeft, slaat Word het automatisch op terwijl je werkt. Zo is de kans kleiner dat je werk verliest bij een crash of lege batterij.',
+                    'Klopt. Zodra je het bestand een naam en een plek in OneDrive geeft, verandert de titel bovenaan en slaat Word je werk vanzelf op terwijl je typt.',
             },
         },
         {
@@ -60,19 +60,19 @@ const config: ToolGuideConfig = {
             teacherCheck:
                 'Laat je docent in het document minimaal één Kop 1 en één Kop 2 zien.',
             verificationQuestion: {
-                question: 'Waarvoor gebruikt Word de stijlen "Kop 1" en "Kop 2" naast de opmaak?',
+                question: 'Wat gebeurde er met je titel op het moment dat je "Kop 1" aantikte?',
                 options: [
-                    'Om de tekst automatisch te vertalen naar een andere taal',
-                    'Om automatisch een inhoudsopgave te kunnen genereren',
-                    'Om de tekst groter te maken op het scherm',
-                    'Om spelfouten in de koptekst te controleren',
+                    'Er kwam een venster waarin ik zelf de lettergrootte moest invullen',
+                    'De regel veranderde meteen van grootte en kleur, zonder dat ik zelf iets aan het lettertype deed',
+                    'De titel sprong naar een nieuwe pagina',
+                    'Er kwam automatisch een nummer voor de titel te staan',
                 ],
                 correctIndex: 1,
                 allowRetry: true,
                 retryHint:
-                    'Nog niet. Denk aan hoe Word hoofdstukken en paragrafen kan herkennen zonder de tekst zelf te begrijpen. Kies daarna opnieuw.',
+                    'Nog niet. Zet je cursor in je titel en tik nogmaals op Kop 1. Let goed op wat er direct met die regel gebeurt, en kies daarna opnieuw.',
                 explanation:
-                    'Goed! Word leest je kopstijlen en gebruikt die om een automatische inhoudsopgave te bouwen. Na een wijziging werk je de inhoudsopgave op laptop of desktop opnieuw bij.',
+                    'Precies. Een stijl verandert de opmaak in één tik. Word onthoudt daarbij ook dát het een kop is, en gebruikt dat later voor de automatische inhoudsopgave.',
             },
         },
         {
@@ -89,6 +89,21 @@ const config: ToolGuideConfig = {
             ],
             teacherCheck:
                 'Laat je docent de gekozen afbeelding, de bron en de ingestelde tekstomloop zien.',
+            verificationQuestion: {
+                question: 'Wat zag je in je document gebeuren toen je de tekstomloop op "Strak" of "Vierkant" zette?',
+                options: [
+                    'De afbeelding werd zwart-wit',
+                    'De tekst ging om de afbeelding heen lopen en ik kon de afbeelding vrij verslepen',
+                    'De afbeelding sprong naar de laatste pagina van het document',
+                    'De tekst onder de afbeelding verdween',
+                ],
+                correctIndex: 1,
+                allowRetry: true,
+                retryHint:
+                    'Nog niet. Selecteer je afbeelding, zet de tekstomloop op Strak of Vierkant en sleep de afbeelding een stukje. Kijk wat de tekst eromheen doet, en kies daarna opnieuw.',
+                explanation:
+                    'Goed gezien. Met Strak of Vierkant staat de afbeelding los van de tekst: de tekst loopt eromheen en je kunt de afbeelding neerzetten waar je wilt.',
+            },
         },
         {
             id: 'stap-4-inhoudsopgave',
@@ -104,19 +119,19 @@ const config: ToolGuideConfig = {
             teacherCheck:
                 'Laat je docent je kopstructuur zien en leg uit waarom toevoegen en bijwerken op een laptop of desktop gebeurt.',
             verificationQuestion: {
-                question: 'Waarom gebruik je op de iPad al Kop 1 en Kop 2 voordat je op desktop de inhoudsopgave toevoegt?',
+                question: 'Wat stond er in de inhoudsopgave die Word op de laptop of desktop maakte?',
                 options: [
-                    'Omdat Word anders geen afbeeldingen kan openen',
-                    'Omdat Word de kopstijlen gebruikt om de inhoudsopgave op te bouwen',
-                    'Omdat Kop 1 het document automatisch naar de docent stuurt',
-                    'Omdat de iPad dan zelf paginanummers toevoegt',
+                    'Alle zinnen uit mijn document, op alfabetische volgorde',
+                    'Precies mijn Kop 1- en Kop 2-teksten, met de Kop 2-regels ingesprongen en paginanummers erachter',
+                    'Een lege tabel die ik zelf regel voor regel moest invullen',
+                    'Alleen de bestandsnaam en de datum van vandaag',
                 ],
                 correctIndex: 1,
                 allowRetry: true,
                 retryHint:
-                    'Nog niet. Denk aan hoe Word bepaalt welke regels hoofdstukken en paragrafen zijn. Kies daarna opnieuw.',
+                    'Nog niet. Kijk (of laat je docent laten zien) wat er verschijnt na Verwijzingen → Inhoudsopgave → Automatische inhoudsopgave, en vergelijk dat met je eigen koppen. Kies daarna opnieuw.',
                 explanation:
-                    'Goed! Word gebruikt Kop 1 en Kop 2 als bron voor de automatische inhoudsopgave. Na wijzigingen kies je op laptop of desktop Tabel bijwerken.',
+                    'Klopt. Word haalt de regels uit je Kop 1 en Kop 2 en zet ze met paginanummers in de lijst. Verander je een kop, dan kies je op laptop of desktop Tabel bijwerken.',
             },
         },
     ],

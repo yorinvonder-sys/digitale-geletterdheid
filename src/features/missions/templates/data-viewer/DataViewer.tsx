@@ -877,6 +877,17 @@ const DataViewerInner: React.FC<DataViewerProps> = ({
 
     const totalScore = clampScore(questionScore + followUpBonusScore, config.maxScore);
 
+    const missionGoal = config.missionGoal ?? getMissionGoal(config.missionId);
+    /** Puntendrempel van de missie, of null wanneer voltooien niet van de score afhangt. */
+    const scoreThreshold = missionGoal?.criteria.type === 'score-threshold'
+        ? (missionGoal.criteria.threshold ?? config.maxScore * 0.4)
+        : null;
+    // Zonder eigen missiedrempel blijft de oude regel staan: 40% van het maximum,
+    // gemeten op hetzelfde afgeronde percentage dat de docent te zien krijgt.
+    const missionPassed = scoreThreshold !== null
+        ? totalScore >= scoreThreshold
+        : (toScorePercent(totalScore, config.maxScore) ?? 0) >= 40;
+
     const handleAnswer = (id: string, value: string | number) => {
         setState(prev => ({ ...prev, answers: { ...prev.answers, [id]: value } }));
     };
@@ -960,18 +971,24 @@ const DataViewerInner: React.FC<DataViewerProps> = ({
     };
 
     const handleComplete = async () => {
-        // Eén bron voor de uitkomst: CompletionScreen toont 'Gehaald' op het
-        // AFGERONDE percentage, dus moet de docentrapportage dat ook doen. Met de
-        // kale breuk gold 79/200 (39,5%) op het scherm als gehaald en in de
-        // rapportage niet. `undefined` (maxScore 0) telt als niet gehaald.
-        const scorePercent = toScorePercent(totalScore, config.maxScore);
-        const passed = (scorePercent ?? 0) >= 40;
-        // Pas wissen als de voltooiing is vastgelegd, anders raakt een leerling
-        // zijn werk kwijt bij een mislukte serveropslag.
+        // Eén bron voor de uitkomst: het eindscherm, de docentrapportage en het
+        // wissen van de opslag gebruiken allemaal `missionPassed`, zodat 'Gehaald'
+        // op het scherm nooit iets anders betekent dan wat er wordt vastgelegd.
+        const passed = missionPassed;
+        // Pas wissen als de missie ook echt gehaald én vastgelegd is: bij een
+        // mislukte serveropslag of een score onder de drempel raakt een leerling
+        // zijn werk anders kwijt terwijl hij nog verder kan.
         const completed = await onComplete(passed, toScorePercent(totalScore, config.maxScore));
-        if (completed !== false) {
+        if (passed && completed !== false) {
             clearSave();
         }
+    };
+
+    /** Uitweg uit het eindscherm: opnieuw beginnen met een lege staat. */
+    const handleRetryMission = () => {
+        clearSave();
+        setState(INITIAL_STATE);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     };
 
     // Phase breakdown for CompletionScreen
@@ -995,7 +1012,7 @@ const DataViewerInner: React.FC<DataViewerProps> = ({
                 emoji={config.introEmoji}
                 title={config.introTitle}
                 description={config.introDescription}
-                goal={config.missionGoal ?? getMissionGoal(config.missionId)}
+                goal={missionGoal}
                 features={config.introFeatures}
                 onStart={() => setState(prev => ({ ...prev, phase: 'explore' }))}
             />
@@ -1004,12 +1021,13 @@ const DataViewerInner: React.FC<DataViewerProps> = ({
 
     if (phase === 'results') {
         return (
-            // Bewust GEEN onRetry: de vragen zijn na bevestigen definitief, dus een
-            // herkansing zou alleen kunnen door alles te wissen. Zonder onRetry blijft
-            // de knop van CompletionScreen ook bij een lage score de afrondknop — dat
-            // is de uitweg, met behoud van de score. De terugknop hieronder is de
-            // tweede uitweg (nakijken) en geldt ook voor een opgeslagen results-fase
-            // die na herladen weer op dit scherm uitkomt.
+            // Bewust GEEN onRetry op CompletionScreen: de vragen zijn na bevestigen
+            // definitief, dus opnieuw proberen wist alles. Blijft de afrondknop de
+            // primaire knop, dan kan een leerling onder de drempel toch afronden met
+            // behoud van zijn score (er wordt niets als 'gehaald' geregistreerd). Wie
+            // wél opnieuw wil, gebruikt de knop in de drempelmelding hieronder; de
+            // terugknop (nakijken) is de derde uitweg. Alle drie gelden ook voor een
+            // opgeslagen results-fase die na herladen weer op dit scherm uitkomt.
             <div className="min-h-screen bg-duck-bg">
                 <div className="max-w-lg mx-auto px-4 pt-6">
                     <button
@@ -1020,6 +1038,36 @@ const DataViewerInner: React.FC<DataViewerProps> = ({
                         <ChevronLeft size={14} />
                         Terug naar de datasets
                     </button>
+
+                    {!missionPassed && scoreThreshold !== null && (
+                        <div
+                            data-qa="data-viewer-threshold-notice"
+                            role="status"
+                            className="mt-4 rounded-2xl border-2 border-duck-ink bg-white p-4"
+                        >
+                            <p
+                                className="text-sm font-black text-duck-ink"
+                                style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
+                            >
+                                Nog niet gehaald — je hebt {Math.round(scoreThreshold)} van de {config.maxScore} punten nodig.
+                            </p>
+                            <p
+                                className="mt-1 text-xs text-duck-ink/70"
+                                style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
+                            >
+                                Je staat nu op {totalScore}. Je antwoorden blijven bewaard — je kunt ze
+                                nakijken met de knop hierboven, of opnieuw beginnen voor een hogere score.
+                            </p>
+                            <button
+                                data-qa="data-viewer-retry"
+                                onClick={handleRetryMission}
+                                className="mt-3 w-full min-h-[44px] rounded-full bg-duck-acid py-2.5 text-sm font-black text-duck-ink transition-all duration-200 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-ink focus-visible:ring-offset-2"
+                                style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
+                            >
+                                Opnieuw proberen
+                            </button>
+                        </div>
+                    )}
                 </div>
                 <CompletionScreen
                     score={totalScore}
@@ -1028,6 +1076,10 @@ const DataViewerInner: React.FC<DataViewerProps> = ({
                     phases={phaseScores}
                     takeaways={config.takeaways}
                     onComplete={handleComplete}
+                    passScorePercent={scoreThreshold !== null && config.maxScore > 0
+                        ? Math.round((scoreThreshold / config.maxScore) * 100)
+                        : undefined}
+                    passed={missionPassed}
                 />
             </div>
         );

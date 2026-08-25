@@ -21,6 +21,9 @@ export interface VerificationQuestion {
     options: string[];
     correctIndex: number;
     explanation: string;
+    /** Historisch veld. Het checkpunt is nu altijd een poort, dus opnieuw kiezen
+     *  mag hoe vaak nodig — ook zonder deze vlag. Blijft toegestaan zodat
+     *  bestaande configs niet breken. */
     allowRetry?: boolean;
     retryHint?: string;
 }
@@ -86,8 +89,8 @@ const RETRY_PENALTY = 2;
 const MIN_QUESTION_BONUS = 1;
 
 /**
- * Bij een vraag met `allowRetry` kan een leerling opties blijven afgaan tot het
- * juiste antwoord eruit rolt; zonder aftrek levert dat dezelfde bonus op als het
+ * Opnieuw kiezen mag bij elk checkpunt, dus een leerling kan opties blijven
+ * afgaan tot het juiste eruit rolt; zonder aftrek levert dat dezelfde bonus op als het
  * meteen goed hebben. Elke herkansing kost daarom een deel van de bonus, met een
  * bodem zodat wie het na een paar pogingen alsnog snapt niet met lege handen
  * staat. Saves van vóór deze telling hebben geen herkansingen opgeslagen en
@@ -113,6 +116,36 @@ function computeScore(state: ToolGuideState, steps: ToolStep[]): number {
         }
     }
     return score;
+}
+
+/**
+ * Een stap is gehaald wanneer al het bewijs is afgevinkt én het checkpunt goed
+ * is beantwoord. Een stap zonder checkpunt houdt het oude afvinkgedrag.
+ *
+ * Stappen waar de leerling al voorbij is (`index < currentStep`) tellen altijd
+ * als gehaald: die poort ging destijds open, en dat mag niet met terugwerkende
+ * kracht vervallen — niet voor opslag van vóór deze poort, en niet wanneer een
+ * stap later alsnog een checkpunt krijgt.
+ *
+ * De docentcheck telt hier bewust niet mee; die blijft puur een poort binnen de
+ * stap en verandert niet.
+ */
+function isStepPassed(
+    step: ToolStep,
+    index: number,
+    state: ToolGuideState,
+    currentStep: number
+): boolean {
+    if (index < currentStep) return true;
+    const allChecked = step.checklistItems.every(
+        (item) => state.checklist[`${step.id}-${item.id}`]
+    );
+    if (!allChecked) return false;
+    if (!step.verificationQuestion) return true;
+    return (
+        !!state.verificationSubmitted[step.id] &&
+        state.verificationAnswers[step.id] === step.verificationQuestion.correctIndex
+    );
 }
 
 /**
@@ -227,22 +260,21 @@ const StepCard: React.FC<StepCardProps> = ({
         verificationSubmitted &&
         verificationAnswer === step.verificationQuestion.correctIndex;
 
-    const questionAnswered =
-        !step.verificationQuestion ||
-        (verificationSubmitted && (!step.verificationQuestion.allowRetry || isCorrect));
+    // Het checkpunt is de poort van deze stap: pas met een goed antwoord telt de
+    // stap als af. Een stap zonder checkpunt houdt het oude afvinkgedrag.
+    const questionPassed = !step.verificationQuestion || !!isCorrect;
     const teacherApproved = !step.teacherCheck || !!teacherChecks[step.id];
-    const canProceed = allChecked && questionAnswered && teacherApproved;
+    const canProceed = allChecked && questionPassed && teacherApproved;
 
+    // Bij een fout antwoord verklappen we het juiste niet meer: de leerling kiest
+    // opnieuw, en met het antwoord in beeld zou de poort met één klik te omzeilen
+    // zijn. Elke herkansing kost al een deel van de kennisbonus.
     const feedbackText =
         step.verificationQuestion && verificationSubmitted
             ? isCorrect
                 ? step.verificationQuestion.explanation
-                : step.verificationQuestion.allowRetry
-                  ? step.verificationQuestion.retryHint ??
-                    'Nog niet. Lees de vraag en de uitleg nog eens en kies opnieuw.'
-                  : `Nog niet. Het juiste antwoord is: ${
-                        step.verificationQuestion.options[step.verificationQuestion.correctIndex]
-                    }. ${step.verificationQuestion.explanation.replace(/^(Precies|Goed|Juist|Goed gedacht)!\s*/i, '')}`
+                : step.verificationQuestion.retryHint ??
+                  'Nog niet. Lees de vraag en de uitleg nog eens en kies opnieuw.'
             : '';
 
     return (
@@ -415,7 +447,7 @@ const StepCard: React.FC<StepCardProps> = ({
                             const revealCorrectAnswer = Boolean(
                                 verificationSubmitted &&
                                     i === step.verificationQuestion!.correctIndex &&
-                                    (!step.verificationQuestion!.allowRetry || isCorrect)
+                                    isCorrect
                             );
                             let style = 'bg-duck-bg border-duck-gray hover:border-duck-acid/40';
                             let textStyle = 'text-duck-ink/70';
@@ -497,7 +529,10 @@ const StepCard: React.FC<StepCardProps> = ({
                                     {feedbackText}
                                 </p>
                             </div>
-                            {!isCorrect && step.verificationQuestion.allowRetry && (
+                            {/* Altijd een uitweg: de stap gaat pas open bij een goed
+                                antwoord, dus opnieuw kiezen moet bij elk checkpunt
+                                kunnen — anders loopt de leerling hier vast. */}
+                            {!isCorrect && (
                                 <button
                                     onClick={() => onRetryAnswer(step.id)}
                                     className="mt-2 w-full min-h-11 rounded-xl border border-duck-ink/30 bg-white px-4 py-2.5 text-sm font-bold text-duck-ink transition-colors hover:bg-duck-ink/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-ink focus-visible:ring-offset-2"
@@ -568,6 +603,18 @@ const ToolGuideInner: React.FC<ToolGuideProps> = ({
         Math.max(config.steps.length - 1, 0)
     );
     const currentStepData = config.steps[stepIndex];
+
+    // Slaagcriterium: elke stap gehaald. Wie de missie ná deze wijziging speelt
+    // komt alleen via de poort op het resultatenscherm, dus dit is dan altijd
+    // waar. Het vangt de gevallen op waarin opgeslagen voortgang van vóór de
+    // poort — of een stap die later een checkpunt kreeg — tóch op dat scherm
+    // eindigt: die leerling krijgt een melding met een werkende uitweg.
+    const { missionPassed, stepsDone } = useMemo(() => {
+        const done = config.steps.filter((step, i) =>
+            isStepPassed(step, i, state, stepIndex)
+        ).length;
+        return { missionPassed: done === config.steps.length, stepsDone: done };
+    }, [config.steps, state, stepIndex]);
 
     const phaseScores = useMemo(
         () =>
@@ -656,11 +703,15 @@ const ToolGuideInner: React.FC<ToolGuideProps> = ({
     }
 
     async function handleComplete() {
-        // Pas wissen als de host de voltooiing bevestigd heeft. Mislukt het
-        // opslaan, dan houdt de leerling zijn voortgang en kan hij de knop
-        // opnieuw gebruiken in plaats van met lege handen te staan.
-        const completed = await onComplete(true, toScorePercent(score, config.maxScore));
-        if (completed !== false) {
+        // Pas wissen als de missie gehaald is én de host de voltooiing bevestigd
+        // heeft. Mislukt het opslaan, of is de missie nog niet gehaald, dan houdt
+        // de leerling zijn voortgang en kan hij verder in plaats van met lege
+        // handen te staan.
+        const completed = await onComplete(
+            missionPassed,
+            toScorePercent(score, config.maxScore)
+        );
+        if (missionPassed && completed !== false) {
             clearSave();
         }
     }
@@ -691,15 +742,50 @@ const ToolGuideInner: React.FC<ToolGuideProps> = ({
 
     if (state.phase === 'results') {
         return (
-            <CompletionScreen
-                score={score}
-                maxScore={config.maxScore}
-                badges={config.badges}
-                phases={phaseScores}
-                takeaways={config.takeaways}
-                onComplete={handleComplete}
-                onRetry={handleRetryMission}
-            />
+            <div className="min-h-screen bg-duck-bg">
+                {!missionPassed && (
+                    <div className="mx-auto max-w-lg px-4 pt-6">
+                        <div
+                            data-qa="tool-guide-threshold-notice"
+                            role="status"
+                            className="rounded-2xl border-2 border-duck-ink bg-white p-4"
+                        >
+                            <p
+                                className="text-sm font-black text-duck-ink"
+                                style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
+                            >
+                                Nog niet gehaald — {stepsDone} van de {config.steps.length} stappen zijn af.
+                            </p>
+                            <p
+                                className="mt-1 text-xs text-duck-ink/70"
+                                style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
+                            >
+                                Een stap is af als je alles hebt afgevinkt én het checkpunt goed
+                                hebt beantwoord. Je werk blijft bewaard, dus je hoeft alleen af te
+                                maken wat nog mist.
+                            </p>
+                            <button
+                                data-qa="tool-guide-retry"
+                                onClick={handleRetryMission}
+                                className="mt-3 w-full min-h-11 rounded-full bg-duck-acid py-2.5 text-sm font-black text-duck-ink transition-all duration-200 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-ink focus-visible:ring-offset-2"
+                                style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
+                            >
+                                Terug naar de stappen
+                            </button>
+                        </div>
+                    </div>
+                )}
+                <CompletionScreen
+                    score={score}
+                    maxScore={config.maxScore}
+                    badges={config.badges}
+                    phases={phaseScores}
+                    takeaways={config.takeaways}
+                    passed={missionPassed}
+                    onComplete={handleComplete}
+                    onRetry={handleRetryMission}
+                />
+            </div>
         );
     }
 

@@ -31,19 +31,19 @@ const config: ToolGuideConfig = {
             teacherCheck:
                 'Laat je docent het lege deck, het gekozen thema, de kleurvariant (of je eerlijke notitie dat die optie ontbreekt) en de neutrale bestandsnaam in school-OneDrive zien; toon geen account- of e-mailgegevens.',
             verificationQuestion: {
-                question: 'Waarom is het slim om een bestaand thema te kiezen in plaats van alles zelf op te maken?',
+                question: 'Je tikte in het tabblad Ontwerp op een thema. Wat gebeurde er op dat moment met je lege slide?',
                 options: [
-                    'Omdat je dan geen afbeeldingen kunt invoegen',
-                    'Omdat een thema zorgt voor een consistente, professionele opmaak door de hele presentatie',
-                    'Omdat het tabblad Ontwerp anders verdwijnt',
-                    'Omdat je anders te veel slides kunt maken',
+                    'De slide bleef wit; het thema werkt pas vanaf de tweede slide',
+                    'De slide kreeg meteen de achtergrond, kleuren en lettertypen van dat thema',
+                    'PowerPoint maakte er automatisch drie extra slides bij',
+                    'Er verscheen eerst een venster waarin je een bestandsnaam moest typen',
                 ],
                 correctIndex: 1,
                 allowRetry: true,
                 retryHint:
-                    'Nog niet. Denk aan wat een thema voor kleuren en lettertypen door de hele presentatie doet. Kies daarna opnieuw.',
+                    'Nog niet. Kijk terug naar je slide op het moment dat je het thema aantikte. Kies daarna opnieuw.',
                 explanation:
-                    'Precies! Een thema zorgt dat kleuren, lettertypen en achtergronden op alle slides consistent zijn. Dat ziet er professioneel uit en bespaart je veel tijd.',
+                    'Precies! Zodra je een thema aantikt, verandert je slide direct van achtergrond, kleuren en lettertypen. Daarom ziet je hele deck er meteen consistent uit.',
             },
         },
         {
@@ -63,19 +63,19 @@ const config: ToolGuideConfig = {
             teacherCheck:
                 'Laat je docent alle drie slides, beide tekstcontroles, de privacyveilige afbeelding en de bronnotitie (of de aangewezen veilige plek) zien; laat geen privéfoto of persoonlijke screenshot zien.',
             verificationQuestion: {
-                question: 'Hoeveel tekst mag er maximaal op één slide staan voor een goede presentatie?',
+                question: 'Je hebt je afbeelding net op de slide gezet. Wat zag je toen de afbeelding verscheen?',
                 options: [
-                    'Zo veel mogelijk — de kijker kan dan alles nalezen',
-                    'Drie tot vijf korte punten, geen volledige zinnen',
-                    'Minstens twee alinea\'s, anders snap je het niet',
-                    'Eén heel lange zin die alles uitlegt',
+                    'De afbeelding stond op de slide met blokjes (handvatten) langs de randen om hem groter of kleiner te slepen',
+                    'De afbeelding werd meteen als achtergrond op alle drie de slides gezet',
+                    'PowerPoint vroeg eerst om de bron-URL voordat de afbeelding zichtbaar werd',
+                    'De tekstvakken op die slide verdwenen zodra de afbeelding erin stond',
                 ],
-                correctIndex: 1,
+                correctIndex: 0,
                 allowRetry: true,
                 retryHint:
-                    'Nog niet. Denk aan een slide als geheugensteun voor je verhaal: kies enkele kernwoorden in plaats van een script. Kies daarna opnieuw.',
+                    'Nog niet. Denk aan wat er precies rond je afbeelding stond toen die net was ingevoegd. Kies daarna opnieuw.',
                 explanation:
-                    'Goed! Minder tekst is meer. Het publiek luistert naar jou — de slide is een geheugensteuntje, geen script. Gebruik korte punten zodat iedereen kan volgen.',
+                    'Goed gezien! Een net ingevoegde afbeelding staat geselecteerd op je slide, met handvatten langs de randen. Daarmee zet je hem op de goede plek en maat, zonder dat je tekst verdwijnt.',
             },
         },
         {
@@ -91,6 +91,21 @@ const config: ToolGuideConfig = {
             ],
             teacherCheck:
                 'Laat je docent het geanimeerde element en de afgespeelde animatie zien. Als timing alleen op desktop beschikbaar is, toon de docentdemonstratie of noteer dat eerlijk.',
+            verificationQuestion: {
+                question: 'Je tikte op Afspelen (of startte de diavoorstelling) om je animatie te testen. Wat gebeurde er met het element dat je had geselecteerd?',
+                options: [
+                    'Het element kwam pas in beeld of bewoog op het moment dat de animatie afging',
+                    'Alle slides werden automatisch achter elkaar doorgeklikt',
+                    'Het thema van de presentatie veranderde tijdelijk van kleur',
+                    'De animatie werd na één keer afspelen meteen weer verwijderd',
+                ],
+                correctIndex: 0,
+                allowRetry: true,
+                retryHint:
+                    'Nog niet. Denk terug aan wat je op je scherm zag gebeuren met dat ene element. Kies daarna opnieuw.',
+                explanation:
+                    'Klopt! Een animatie werkt op één element: dat verschijnt of beweegt op het moment dat de animatie afgaat. Zo test je meteen of het effect rustig genoeg is.',
+            },
         },
         {
             id: 'stap-4-overgang',
@@ -106,19 +121,19 @@ const config: ToolGuideConfig = {
             teacherCheck:
                 'Laat je docent de overgangskeuze en de diavoorstelling zien. Noteer apart wanneer duur of automatische timing alleen op desktop beschikbaar is; toon geen accountgegevens.',
             verificationQuestion: {
-                question: 'Waarom gebruik je bij voorkeur hetzelfde type overgang voor alle slides?',
+                question: 'Je speelde je presentatie af via Diavoorstelling > Vanaf begin. Wat zag je bij de wissel van slide 1 naar slide 2?',
                 options: [
-                    'Omdat PowerPoint anders crasht',
-                    'Zodat de presentatie er rustig en professioneel uitziet, zonder afleidende variatie',
-                    'Omdat je anders geen animaties kunt gebruiken',
-                    'Omdat de docent dat altijd verplicht stelt',
+                    'De slides wisselden met het effect dat je koos, bijvoorbeeld rustig vervagen in plaats van hard omslaan',
+                    'De slides wisselden pas nadat je een wachtwoord had ingetypt',
+                    'De tekst op beide slides verdween tijdens het wisselen',
+                    'Slide 2 werd overgeslagen omdat er een overgang op stond',
                 ],
-                correctIndex: 1,
+                correctIndex: 0,
                 allowRetry: true,
                 retryHint:
-                    'Nog niet. Denk aan rust en herkenning: één overgangsstijl leidt minder af dan telkens iets anders. Kies daarna opnieuw.',
+                    'Nog niet. Denk terug aan het moment waarop de ene slide overging in de volgende. Kies daarna opnieuw.',
                 explanation:
-                    'Juist! Consistentie maakt je presentatie professioneel. Als elke slide een andere overgang heeft, trekt dat de aandacht weg van de inhoud. Kies één stijl en houd die vast.',
+                    'Juist! In de diavoorstelling zie je je overgang echt werken: de ene slide gaat rustig over in de volgende. Gebruik overal hetzelfde effect, dan blijft de aandacht bij je verhaal.',
             },
         },
     ],
