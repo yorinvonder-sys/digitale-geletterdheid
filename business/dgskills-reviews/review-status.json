@@ -128,7 +128,7 @@
       "[design] Icoon-container gebruikt text-duck-ink op een gradient die eindigt in duck-ink (bijna-zwart-op-zwart, laag contrast); submit-header gebruikt inconsistent text-white voor dezelfde badge.",
       "[didactiek] Afrondingsgate (canComplete) toetst alleen leerdoel 2 (>=2 volledige regelvoorstellen); leerdoel 1 (voordeel+risico benoemen via Mogelijkheden/Zorgen) en leerdoel 3 (stemmen+toelichten) uit de comment in missionGoals.ts blijven optioneel, terwijl de config-tekst 'stemt of kiest' suggereerde."
     ],
-    "statusNote": "sweep wave 25 2026-08-25: verse review (alle missies); veiligheids-pass Opus high; 1 auto-fixes",
+    "statusNote": "sweep wave 25 2026-08-25: verse review (alle missies); veiligheids-pass Opus high; 1 auto-fixes; tegenlezing: claim(s) [55] weerlegd/achterhaald (zie beslislijst sectie D)",
     "triageScore": 3.4,
     "verdict": "fix-eerst",
     "safetyScores": {
@@ -298,7 +298,7 @@
     "openEscalations": [
       {
         "category": "structural",
-        "description": "ai-tekengame belooft in visualPreview/problemScenario/missionObjective/steps een interactief tekenspel met AI-beeldherkenning en tijdslimiet, maar wordt geleverd als pure tekstchat zonder canvas, timer of beeldverwerking. Vereist een productbeslissing: copy afzwakken naar wat de chat kan leveren, of alsnog een canvas-component + beeldherkenning bouwen (nieuw templateType, buiten autofix-scope).",
+        "description": "[WEERLEGD door Sol-tegenlezing: de missie levert wél een tekencanvas met AI-analyse via src/features/ai-lab/previews/DrawingGamePreview.tsx — de review-agent zocht alleen in src/features/missions en src/config] ai-tekengame belooft in visualPreview/problemScenario/missionObjective/steps een interactief tekenspel met AI-beeldherkenning en tijdslimiet, maar wordt geleverd als pure tekstchat zonder canvas, timer of beeldverwerking. Vereist een productbeslissing: copy afzwakken naar wat de chat kan leveren, of alsnog een canvas-component + beeldherkenning bouwen (nieuw templateType, buiten autofix-scope).",
         "file": "src/config/agents/year1.tsx"
       },
       {
@@ -330,7 +330,7 @@
       "[didactiek] SLO-fit mismatch: 21D wordt geclaimd via een tekenherkenning-scenario (toepassen/analyseren-niveau), maar de daadwerkelijke chat-levering biedt alleen erover praten (begrijpen-niveau) — het beloofde leerdoel wordt niet gedekt.",
       "[tech] Geen canvas/drawing/image-component gekoppeld aan de missie: StudentAIChat.tsx bevat geen canvas/image/attach/file-functionaliteit, en er is geen templateRegistry- of missionPreviewConfig-entry voor ai-tekengame — de missie-content belooft een tekenspel dat technisch niet bestaat."
     ],
-    "statusNote": "sweep wave 25 2026-08-25: verse review (alle missies); veiligheids-pass Opus high; 2 auto-fixes",
+    "statusNote": "sweep wave 25 2026-08-25: verse review (alle missies); veiligheids-pass Opus high; 2 auto-fixes; tegenlezing: chat-only-premisse WEERLEGD (DrawingGamePreview.tsx bestaat); alleen de reflectie-eis verdient nog onderzoek; tegenlezing: claim(s) [51, 52] weerlegd/achterhaald (zie beslislijst sectie D)",
     "triageScore": 6,
     "verdict": "fix-eerst",
     "safetyScores": {
@@ -495,7 +495,7 @@
       "tech": 9
     },
     "triageScore": 3.9,
-    "statusNote": "sweep wave 22 2026-08-25: verse review (alle missies); veiligheids-pass Opus high",
+    "statusNote": "sweep wave 22 2026-08-25: verse review (alle missies); veiligheids-pass Opus high; gokbestendig bevestigd in speeltest",
     "verdict": "ok",
     "proposedFixes": 0,
     "topIssues": [
@@ -739,7 +739,7 @@
       "tech": 7
     },
     "triageScore": 2.3,
-    "statusNote": "sweep wave 25 2026-08-25: verse review (alle missies); veiligheids-pass Opus high; 3 auto-fixes",
+    "statusNote": "sweep wave 25 2026-08-25: verse review (alle missies); veiligheids-pass Opus high; 3 auto-fixes; contrastclaim WEERLEGD met meting (speeltest-vloot)",
     "verdict": "ok",
     "topIssues": [
       "[design] Terug-knop (icon-only) heeft alleen title, geen aria-label — inconsistent met de mobiele sidebar-toggle ernaast die wél aria-label heeft.",
@@ -777,6 +777,10 @@
         "category": "privacy",
         "description": "Slapende rol 'cloud-commander' vraagt de leerling volledige bestandsnamen in de chat te typen als bewijs; die bevatten vaak namen van leerlingen. Alleen relevant zodra deze rol via een chatroute wordt geactiveerd — dan een minder identificerende verificatievraag kiezen.",
         "file": "src/config/agents/year1.tsx"
+      },
+      {
+        "category": "structural",
+        "description": "speeltest-vloot: hoge score haalbaar zonder inhoudelijk werk — Stap 1 en 3: de 'bewijs voor jezelf'-knoppen (zelfrapportage) kunnen blind worden aangeklikt zonder enige echte actie; 'Volgende stap' verschijnt gewoon. De docentcheck bij stap 3 ('Ik heb dit aan mijn docent laten zien') is één klik zonder enige ver"
       }
     ],
     "codexVerdict": null,
@@ -788,7 +792,7 @@
     "goalClear": false,
     "goalAchieved": true,
     "proposedFixes": 0,
-    "escalationCount": 2,
+    "escalationCount": 3,
     "topIssues": [
       "[didactiek] Scoring is puur zelfrapportage via checklist-items plus gratis kennisbonus (allowRetry): een leerling kan 100% scoren zonder OneDrive te openen. Zit in de gedeelde engine, niet oplosbaar in de missieconfig.",
       "[tech] useMissionAutoSave zonder validate-callback (engine-bevinding): een opgeslagen currentStep buiten bereik na een toekomstige stap-wijziging geeft een wit scherm. Niet oplosbaar binnen cloud-commander.ts.",
@@ -842,7 +846,7 @@
       "[design] Ronde 2 (order-priority) erft engine-contrastprobleem: bg-duck-error text-white ~3,6:1, onder AA 4,5:1.",
       "[design] Geen focusbeheer bij rondewisseling (engine-breed), 4 rondes in deze missie zonder aankondiging voor schermlezers."
     ],
-    "statusNote": "sweep wave 23 2026-08-25: verse review (alle missies); veiligheids-pass Opus high",
+    "statusNote": "sweep wave 23 2026-08-25: verse review (alle missies); veiligheids-pass Opus high; gokbestendig bevestigd in speeltest",
     "triageScore": 3.3,
     "verdict": "fix-eerst",
     "safetyScores": {
@@ -880,7 +884,7 @@
       "tech": 6
     },
     "triageScore": 3.2,
-    "statusNote": "sweep wave 24 2026-08-25: verse review (alle missies); veiligheids-pass Opus high",
+    "statusNote": "sweep wave 24 2026-08-25: verse review (alle missies); veiligheids-pass Opus high; contrastclaim WEERLEGD met meting (speeltest-vloot)",
     "verdict": "fix-eerst",
     "proposedFixes": 0,
     "topIssues": [
@@ -1007,7 +1011,7 @@
       "tech": 4
     },
     "triageScore": 3.2,
-    "statusNote": "sweep wave 22 2026-08-25: verse review (alle missies); veiligheids-pass Opus high; 1 auto-fixes",
+    "statusNote": "sweep wave 22 2026-08-25: verse review (alle missies); veiligheids-pass Opus high; 1 auto-fixes; tegenlezing: claim(s) [32] weerlegd/achterhaald (zie beslislijst sectie D)",
     "verdict": "fix-eerst",
     "proposedFixes": 1,
     "topIssues": [
@@ -1156,7 +1160,7 @@
       "tech": 4
     },
     "triageScore": 4.4,
-    "statusNote": "sweep wave 22 2026-08-25: verse review (alle missies); veiligheids-pass Opus high; 1 auto-fixes",
+    "statusNote": "sweep wave 22 2026-08-25: verse review (alle missies); veiligheids-pass Opus high; 1 auto-fixes; tegenlezing: claim(s) [31] weerlegd/achterhaald (zie beslislijst sectie D)",
     "verdict": "fix-eerst",
     "proposedFixes": 1,
     "topIssues": [
@@ -1300,7 +1304,7 @@
       "tech": 7
     },
     "triageScore": 3.3,
-    "statusNote": "sweep wave 24 2026-08-25: verse review (alle missies); veiligheids-pass Opus high",
+    "statusNote": "sweep wave 24 2026-08-25: verse review (alle missies); veiligheids-pass Opus high; contrastclaim WEERLEGD met meting (speeltest-vloot)",
     "verdict": "fix-eerst",
     "proposedFixes": 0,
     "topIssues": [
@@ -1434,7 +1438,7 @@
     },
     "triageScore": 2.3,
     "verdict": "ok",
-    "statusNote": "sweep wave 25 2026-08-25: verse review (alle missies); veiligheids-pass Opus high; 4 auto-fixes; 1 fix teruggedraaid (props-interface brak DevMissionPreview-typecheck)",
+    "statusNote": "sweep wave 25 2026-08-25: verse review (alle missies); veiligheids-pass Opus high; 4 auto-fixes; 1 fix teruggedraaid (props-interface brak DevMissionPreview-typecheck); gokbestendig bevestigd in speeltest",
     "escalationCount": 1,
     "proposedFixes": 4,
     "topIssues": [
@@ -1467,6 +1471,10 @@
         "category": "structural",
         "description": "SLO-codes op src/features/student/ProjectZeroDashboard.tsx:158 wijken af van de canonieke src/config/slo-kerndoelen-mapping.ts:79 entry voor datalekken-rampenplan (['23A','23B','23C'] vs ['23A','21A']; VSO ['20A','20B'] vs ['20A','18A']). Buiten de auto-fix-whitelist van deze review (ProjectZeroDashboard.tsx staat er niet in) — vereist een gerichte 1-regel-fix door een agent met bredere scope.",
         "file": "src/features/student/ProjectZeroDashboard.tsx"
+      },
+      {
+        "category": "structural",
+        "description": "speeltest-vloot: hoge score haalbaar zonder inhoudelijk werk — Duidelijke bevinding: op GEEN van de drie geteste fases wordt een foute/onvolledige inzending geblokkeerd — de leerling kan altijd doorklikken naar de volgende fase, ook met overwegend foute keuzes. Fase 1 (bewijs analyseren): selecteerde bewust 1 ju"
       }
     ],
     "codexVerdict": "ALLOW",
@@ -1478,7 +1486,7 @@
     "triageScore": 2.95,
     "verdict": "fix-eerst",
     "statusNote": "sweep wave 25 2026-08-25: verse review (alle missies); veiligheids-pass Opus high; 3 auto-fixes; 1 fix teruggedraaid (props-interface brak DevMissionPreview-typecheck)",
-    "escalationCount": 1,
+    "escalationCount": 2,
     "proposedFixes": 3,
     "topIssues": [
       "[didactiek] SLO-mismatch: leerling-dashboard toont ['23A','23B','23C']/['20A','20B'] terwijl de canonieke mapping ['23A','21A']/['20A','18A'] claimt (mapping-comment bevestigt de correctie is nooit doorgevoerd op het dashboard)",
@@ -1525,7 +1533,7 @@
       "tech": 8.5
     },
     "triageScore": 2.05,
-    "statusNote": "sweep wave 25 2026-08-25: verse review (alle missies); veiligheids-pass Opus high",
+    "statusNote": "sweep wave 25 2026-08-25: verse review (alle missies); veiligheids-pass Opus high; gokbestendig bevestigd in speeltest",
     "verdict": "ok",
     "proposedFixes": 0,
     "topIssues": [
@@ -1567,7 +1575,7 @@
       "tech": 8
     },
     "triageScore": 4.65,
-    "statusNote": "sweep wave 22 2026-08-25: verse review (alle missies); veiligheids-pass Opus high; 1 auto-fixes",
+    "statusNote": "sweep wave 22 2026-08-25: verse review (alle missies); veiligheids-pass Opus high; 1 auto-fixes; tegenlezing: claim(s) [34] weerlegd/achterhaald (zie beslislijst sectie D)",
     "verdict": "fix-eerst",
     "proposedFixes": 1,
     "topIssues": [
@@ -1723,7 +1731,7 @@
       "[design] Gedeelde contrastissue (text-duck-ink/70 op invoertekst + placeholder) raakt alle vier tekstvelden van deze missie.",
       "[didactiek] Geen koppeling tussen flowchart-stap (stap 2) en scène-stap (stap 3); leerling kan onsamenhangende structuur en scènes leveren zonder dat dit wordt opgemerkt."
     ],
-    "statusNote": "sweep wave 21 2026-08-25: verse review (alle missies); veiligheids-pass Opus high",
+    "statusNote": "sweep wave 21 2026-08-25: verse review (alle missies); veiligheids-pass Opus high; tegenlezing: claim(s) [64] weerlegd/achterhaald (zie beslislijst sectie D)",
     "triageScore": 2.9,
     "verdict": "ok",
     "safetyScores": {
@@ -1865,7 +1873,7 @@
       },
       {
         "category": "structural",
-        "description": "speeltest wave 22: antwoord al zichtbaar op het scherm — Gokstrategie: verkeerde antwoorden (top-naar-onder MC, 'aaaa') werden telkens geblokkeerd met pogingenteller ('1/6 pogingen', 'ACCESS DENIED'); geen enkele vraag viel te gokken. VERKLAP (nieuwe bevind"
+        "description": "[BIJGESTELD door tegenlezing: hints onthullen het antwoord pas als herstelhulp ná 2-3 foute pogingen, niet vooraf] speeltest wave 22: antwoord al zichtbaar op het scherm — Gokstrategie: verkeerde antwoorden (top-naar-onder MC, 'aaaa') werden telkens geblokkeerd met pogingenteller ('1/6 pogingen', 'ACCESS DENIED'); geen enkele vraag viel te gokken. VERKLAP (nieuwe bevind"
       }
     ],
     "codexVerdict": "ALLOW",
@@ -1876,7 +1884,7 @@
       "tech": 5
     },
     "triageScore": 6.5,
-    "statusNote": "sweep wave 22 2026-08-25: verse review (alle missies); veiligheids-pass Opus high; 3 auto-fixes",
+    "statusNote": "sweep wave 22 2026-08-25: verse review (alle missies); veiligheids-pass Opus high; 3 auto-fixes; tegenlezing: claim(s) [35, 37, 41] weerlegd/achterhaald (zie beslislijst sectie D)",
     "verdict": "fix-eerst",
     "proposedFixes": 3,
     "topIssues": [
@@ -1957,6 +1965,10 @@
         "category": "privacy",
         "file": "src/hooks/useMissionAutoSave.ts",
         "description": "Vrije reflectie- en analyseteksten van leerlingen blijven na uitloggen in localStorage staan (geen opruiming bij signOut). Op gedeelde schoolapparaten is dat leerlingdata die zichtbaar blijft voor de volgende gebruiker. Raakt filter-bubble-breaker, game-director en ipad-print-instructies in deze wave."
+      },
+      {
+        "category": "structural",
+        "description": "speeltest-vloot: hoge score haalbaar zonder inhoudelijk werk — Twee fasen: (1) vrije-tekst analyse-veld met alleen een tekenteller als gate — 'aaaa aaaa aaaa' (14 tekens, geen inhoudelijke betekenis) was voldoende om de 'Start de vragen'-knop te activeren; geen inhoudelijke validatie op de tekst zelf. Dit is een"
       }
     ],
     "codexVerdict": "ALLOW",
@@ -1968,7 +1980,7 @@
     "triageScore": 2.6,
     "verdict": "ok",
     "statusNote": "sweep wave 25 2026-08-25: verse review (alle missies); veiligheids-pass Opus high; 3 auto-fixes; 1 fix teruggedraaid (props-interface brak DevMissionPreview-typecheck)",
-    "escalationCount": 1,
+    "escalationCount": 2,
     "proposedFixes": 3,
     "topIssues": [
       "[design] Dode gradient in laagste badge-tier: 'from-duck-ink to-duck-ink' rendert geen gradient.",
@@ -2043,6 +2055,10 @@
         "category": "ai-act",
         "file": "src/features/missions/GameDirectorMission.tsx",
         "description": "Hard Mode wordt automatisch geactiveerd op basis van een gemeten prestatie van de leerling, zonder zichtbare uitleg, zonder opt-out en zonder docentzicht. Adaptieve aanpassing in het onderwijs vraagt om transparantie richting leerling en om menselijk toezicht (Art. 14)."
+      },
+      {
+        "category": "structural",
+        "description": "speeltest-vloot: hoge score haalbaar zonder inhoudelijk werk — Blokprogrammeer-puzzel (Robbie de Speurhond, 5 puzzels). Getest door zonder nadenken 2 blokken toe te voegen: een 'wanneer game start'-blok en een LOSSE 'beweeg 5 stappen'-blok die NIET genest was onder het event-blok (2 aparte stacks i.p.v. 1 sameng"
       }
     ],
     "codexVerdict": "ALLOW",
@@ -2054,7 +2070,7 @@
     "goalClear": true,
     "goalAchieved": true,
     "proposedFixes": 3,
-    "escalationCount": 1,
+    "escalationCount": 2,
     "topIssues": [
       "[design] Dode hover-states: hover:bg-duck-acid identiek aan bg-duck-acid op 'Hulp nodig?'-knop en mobiele Start/Stop-knop, geen visuele feedback.",
       "[design] Event- en control-blokken delen dezelfde accentkleur (#e1ff01) in BlockTypes.ts, zichtbaar in BlockPalette-headers en losse blokken in de werkruimte; code-comments beschrijven nog een oude, andere kleurindeling.",
@@ -2245,7 +2261,7 @@
     },
     "triageScore": 3.25,
     "verdict": "fix-eerst",
-    "statusNote": "sweep wave 25 2026-08-25: verse review (alle missies); veiligheids-pass Opus high; 4 auto-fixes",
+    "statusNote": "sweep wave 25 2026-08-25: verse review (alle missies); veiligheids-pass Opus high; 4 auto-fixes; tegenlezing: claim(s) [54] weerlegd/achterhaald (zie beslislijst sectie D)",
     "escalationCount": 3,
     "proposedFixes": 4,
     "topIssues": [
@@ -2293,7 +2309,7 @@
     },
     "triageScore": 6,
     "verdict": "fix-eerst",
-    "statusNote": "sweep wave 25 2026-08-25: verse review (alle missies); veiligheids-pass Opus high; 3 auto-fixes",
+    "statusNote": "sweep wave 25 2026-08-25: verse review (alle missies); veiligheids-pass Opus high; 3 auto-fixes; tegenlezing: claim(s) [53] weerlegd/achterhaald (zie beslislijst sectie D)",
     "escalationCount": 2,
     "topIssues": [
       "[didactiek] missionGoals.ts primaryGoal en de ASSIGNMENT_CRITERIA in dit bestand beschrijven een documentopmaak-taak, maar de daadwerkelijk gerenderde 'layout-doctor'-missie in productie (WordSimulator via AuthenticatedApp.tsx:773 en AiLab.tsx:1410) is een geheel andere matching-opdracht — SLO/leerdoel-claim en shipped ervaring lopen uiteen",
@@ -2432,7 +2448,7 @@
       "[tech] CompletionScreen zonder onRetry/terugweg blokkeert leerlingen die media-review onder 40% afsluiten.",
       "[design] Gedeeld text-duck-ink/70 contrastrisico bij 12px raakt alle drie gebruikte subcomponenten (DragSort/MatchPairs/Categorize)."
     ],
-    "statusNote": "sweep wave 24 2026-08-25: verse review (alle missies); veiligheids-pass Opus high",
+    "statusNote": "sweep wave 24 2026-08-25: verse review (alle missies); veiligheids-pass Opus high; contrastclaim WEERLEGD met meting (speeltest-vloot)",
     "triageScore": 2.8,
     "verdict": "fix-eerst",
     "safetyScores": {
@@ -2881,7 +2897,7 @@
       "tech": 7
     },
     "triageScore": 4.35,
-    "statusNote": "sweep wave 22 2026-08-25: verse review (alle missies); veiligheids-pass Opus high",
+    "statusNote": "sweep wave 22 2026-08-25: verse review (alle missies); veiligheids-pass Opus high; tegenlezing: claim(s) [38] weerlegd/achterhaald (zie beslislijst sectie D)",
     "verdict": "fix-eerst",
     "proposedFixes": 0,
     "topIssues": [
@@ -3150,7 +3166,7 @@
       "tech": 7
     },
     "triageScore": 2.9,
-    "statusNote": "sweep wave 25 2026-08-25: verse review (alle missies); veiligheids-pass Opus high; 3 auto-fixes",
+    "statusNote": "sweep wave 25 2026-08-25: verse review (alle missies); veiligheids-pass Opus high; 3 auto-fixes; gokbestendig bevestigd in speeltest",
     "verdict": "fix-eerst",
     "topIssues": [
       "[design] Optie-letter (A/B/C) is onzichtbaar in standaardstaat: bg-duck-ink en text-duck-ink zijn identiek (#202023). Geen hover-state op touchscreens (hoofddoelgroep) dus leerlingen zien lege cirkels bij de keuzeopties.",
@@ -3380,7 +3396,7 @@
       "[design] Bar-chart-kleuren in computeVisuals gebruiken losse hexwaarden (#ff3c21/#e3e2dc) i.p.v. duck-tokens; functioneel geen probleem maar niet paletgekoppeld.",
       "[didactiek] Follow-up-vraag introduceert 'Privacy by Default' zonder dat de introDescription dat begrip al noemt."
     ],
-    "statusNote": "sweep wave 24 2026-08-25: verse review (alle missies); veiligheids-pass Opus high; 1 auto-fixes",
+    "statusNote": "sweep wave 24 2026-08-25: verse review (alle missies); veiligheids-pass Opus high; 1 auto-fixes; tegenlezing: claim(s) [47] weerlegd/achterhaald (zie beslislijst sectie D)",
     "triageScore": 2.25,
     "verdict": "fix-eerst",
     "safetyScores": {
@@ -3428,7 +3444,7 @@
       "[design] Primaire CTA-knoppen (start/verstuur/afronden) hebben geen focus-visible ring, alleen de textarea heeft dat.",
       "[didactiek] SLO-code 22A (Digitale producten) wordt oppervlakkig geraakt; de missie draait volledig om prompt-formulering, niet om productontwerp."
     ],
-    "statusNote": "sweep wave 25 2026-08-25: verse review (alle missies); veiligheids-pass Opus high; 2 auto-fixes; Codex-gate BLOCK: 1 fix(es) teruggedraaid (benadeelde eerlijke leerlingen / brak opgeslagen voortgang)",
+    "statusNote": "sweep wave 25 2026-08-25: verse review (alle missies); veiligheids-pass Opus high; 2 auto-fixes; Codex-gate BLOCK: 1 fix(es) teruggedraaid (benadeelde eerlijke leerlingen / brak opgeslagen voortgang); gokbestendig bevestigd in speeltest",
     "triageScore": 3.15,
     "verdict": "fix-eerst",
     "safetyScores": {
@@ -3515,7 +3531,7 @@
       "[didactiek] Briefing bereidt leerlingen voor op zelfstandig schrijven i.p.v. standpuntbepaling/argumentatie tegen 4 stakeholders, wat het leerdoel ondermijnt.",
       "[didactiek] 2 reflectionQuestions in de config — de gedeelde scoring-bug (som > 100 bij 3 vragen) is hier niet van toepassing."
     ],
-    "statusNote": "sweep wave 23 2026-08-25: verse review (alle missies); veiligheids-pass Opus high; 1 auto-fixes",
+    "statusNote": "sweep wave 23 2026-08-25: verse review (alle missies); veiligheids-pass Opus high; 1 auto-fixes; tegenlezing: claim(s) [45, 46] weerlegd/achterhaald (zie beslislijst sectie D)",
     "triageScore": 4.1,
     "verdict": "fix-eerst",
     "safetyScores": {
@@ -3708,6 +3724,10 @@
         "category": "structural",
         "description": "schermtijd-coach: enableChat/chatRoleId in de registry is inert (DebateArena leest de entry niet). Bepaal of de coach bedoeld is; zo ja, dan moet de chat langs de welzijnsmonitor en de AI-disclosure van StudentAIChat.",
         "file": "src/config/templateRegistry.ts"
+      },
+      {
+        "category": "structural",
+        "description": "speeltest-vloot: hoge score haalbaar zonder inhoudelijk werk — Debat-arena laadt en rendert prima. Alle 4 stakeholder-kaartjes konden met puur klikken (zonder lezen) als 'gelezen' worden afgevinkt en leverden meteen 10 punten op, zonder enige contentcheck. Bij het bouwen van argumenten accepteerde het formulier "
       }
     ],
     "codexVerdict": null,
@@ -3717,13 +3737,13 @@
       "tech": 7
     },
     "proposedFixes": 0,
-    "escalationCount": 2,
+    "escalationCount": 3,
     "topIssues": [
       "[tech] Deze missie heeft 3 reflectievragen en wordt daardoor concreet geraakt door de engine-bevinding: deelscores sommeren tot 110 i.p.v. maxScore 100, Math.min kapt af, fase-uitsplitsing klopt niet met totaal.",
       "[tech] Gedeelde voltooiknop-bug (dubbele klik + destructieve retry) raakt ook deze missie bij afronding; fix hoort in shared CompletionScreen/DebateArena, niet in de config.",
       "[design] Stakeholderkleur-contrast en ArguePhase-kwaliteitskleuren zijn gedeelde engine-issues (zie engine-debate-arena.json); config zelf heeft 4 stakeholders dus buiten het geel-op-wit indexbereik, maar kwetsbaar bij uitbreiding."
     ],
-    "statusNote": "sweep wave 23 2026-08-25: verse review (alle missies); veiligheids-pass Opus high",
+    "statusNote": "sweep wave 23 2026-08-25: verse review (alle missies); veiligheids-pass Opus high; contrastclaim WEERLEGD met meting (speeltest-vloot)",
     "triageScore": 3.15,
     "verdict": "ok",
     "safetyScores": {
@@ -3751,17 +3771,21 @@
         "category": "structural",
         "description": "scroll-stopper: enableChat/chatRoleId is inert én de rolbeschrijving hoort bij een heel andere opdracht (dark-pattern-ontwerp) dan het debat dat de leerling speelt. Beslis welke van de twee de missie is voordat chat ooit wordt aangezet.",
         "file": "src/config/templateRegistry.ts"
+      },
+      {
+        "category": "structural",
+        "description": "speeltest-vloot: hoge score haalbaar zonder inhoudelijk werk — Zelfde gedeelde debat-arena-engine als schermtijd-coach, bevestigd op het echte scherm: alle 4 stakeholders in één klik-batch als 'gelezen' gemarkeerd, meteen 10 punten, geen contentcheck. Kwam door browser-tab-races (zie serverIssues) niet tot de ar"
       }
     ],
     "codexVerdict": null,
-    "escalationCount": 1,
+    "escalationCount": 2,
     "reviewScores": {
       "uiux": 6.5,
       "didactiek": 7.5,
       "tech": 8
     },
     "triageScore": 2.9,
-    "statusNote": "sweep wave 23 2026-08-25: verse review (alle missies); veiligheids-pass Opus high",
+    "statusNote": "sweep wave 23 2026-08-25: verse review (alle missies); veiligheids-pass Opus high; contrastclaim WEERLEGD met meting (speeltest-vloot)",
     "verdict": "ok",
     "proposedFixes": 0,
     "topIssues": [
@@ -3809,7 +3833,7 @@
       "tech": 6
     },
     "triageScore": 3.1,
-    "statusNote": "sweep wave 22 2026-08-25: verse review (alle missies); veiligheids-pass Opus high; 1 auto-fixes",
+    "statusNote": "sweep wave 22 2026-08-25: verse review (alle missies); veiligheids-pass Opus high; 1 auto-fixes; gokbestendig bevestigd in speeltest; contrastclaim bevestigd met meting (speeltest-vloot)",
     "verdict": "fix-eerst",
     "proposedFixes": 1,
     "topIssues": [
@@ -3992,7 +4016,7 @@
       "tech": 6
     },
     "triageScore": 3.2,
-    "statusNote": "sweep wave 22 2026-08-25: verse review (alle missies); veiligheids-pass Opus high",
+    "statusNote": "sweep wave 22 2026-08-25: verse review (alle missies); veiligheids-pass Opus high; contrastclaim bevestigd met meting (speeltest-vloot)",
     "verdict": "fix-eerst",
     "proposedFixes": 0,
     "topIssues": [
@@ -4289,6 +4313,10 @@
         "category": "structural",
         "description": "scoreOrderPriority mist gokcorrectie (enige scoreformule zonder basislijn), raakt ronde 'verdacht-bericht' van deze missie plus 10 andere configs. Engine-brede fix nodig in FeedbackBanner.tsx, buiten de whitelist van deze missie-review.",
         "file": "src/features/missions/templates/scenario-engine/sub/FeedbackBanner.tsx"
+      },
+      {
+        "category": "structural",
+        "description": "speeltest-vloot: antwoord al zichtbaar op scherm — Ander type missie (phishing-/veiligheidsquiz, geen debat-arena), rendert goed. Gokstrategie: de 'Controleer mijn keuze'-knop blijft disabled bij een enkele losse klik — er is dus enige weerstand tegen puur gokken, maar de precieze drempel (hoeveel op"
       }
     ],
     "codexVerdict": null,
@@ -4300,7 +4328,7 @@
     "triageScore": 2.55,
     "verdict": "ok",
     "statusNote": "sweep wave 23 2026-08-25: verse review (alle missies); veiligheids-pass Opus high",
-    "escalationCount": 2,
+    "escalationCount": 3,
     "proposedFixes": 0,
     "topIssues": [
       "[tech] Bij score onder 40% is het resultatenscherm van ScenarioEngine een doodlopend eindpunt zonder onRetry/onBack; raakt ook veilig-internet. Engine-brede bug, niet oplosbaar binnen de missie-config.",
@@ -4399,7 +4427,7 @@
       "[didactiek] Instructie voor stap 'storyboard' bevat 66 woorden, boven de leerjaar-1-2-richtlijn van <60 woorden per opdracht.",
       "[didactiek] Instructie voor stap 'montageplan' bevat 66 woorden, boven de leerjaar-1-2-richtlijn van <60 woorden per opdracht."
     ],
-    "statusNote": "sweep wave 21 2026-08-25: verse review (alle missies); veiligheids-pass Opus high; 2 auto-fixes",
+    "statusNote": "sweep wave 21 2026-08-25: verse review (alle missies); veiligheids-pass Opus high; 2 auto-fixes; gokbestendig bevestigd in speeltest; contrastclaim WEERLEGD met meting (speeltest-vloot)",
     "triageScore": 2.6,
     "verdict": "ok",
     "safetyScores": {
@@ -4488,7 +4516,7 @@
       "[tech] CompletionScreen zonder onRetry laat leerling onder 40% vastlopen (gedeelde engine-bevinding, geraakt door deze missie)",
       "[design] Hint-knop kost punten voor info die na onthulling al gratis zichtbaar is (engine-bevinding)"
     ],
-    "statusNote": "sweep wave 22 2026-08-25: verse review (alle missies); veiligheids-pass Opus high; 1 auto-fixes",
+    "statusNote": "sweep wave 22 2026-08-25: verse review (alle missies); veiligheids-pass Opus high; 1 auto-fixes; tegenlezing: claim(s) [40] weerlegd/achterhaald (zie beslislijst sectie D)",
     "triageScore": 3.9,
     "verdict": "fix-eerst",
     "safetyScores": {
@@ -4568,7 +4596,7 @@
       "tech": 7
     },
     "triageScore": 3.2,
-    "statusNote": "sweep wave 21 2026-08-25: verse review (alle missies); veiligheids-pass Opus high; 1 auto-fixes",
+    "statusNote": "sweep wave 21 2026-08-25: verse review (alle missies); veiligheids-pass Opus high; 1 auto-fixes; gokbestendig bevestigd in speeltest; contrastclaim WEERLEGD met meting (speeltest-vloot)",
     "verdict": "fix-eerst",
     "topIssues": [
       "[tech] Dubbele-klik-afronding in gedeelde CompletionScreen kan bij website-bouwer dubbele XP/voltooiing opleveren (engine-bevinding, geldt onverkort).",
