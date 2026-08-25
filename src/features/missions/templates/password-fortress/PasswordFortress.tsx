@@ -358,8 +358,6 @@ const PasswordFortressInner: React.FC<{
             max: config.pointsPerRound,
         }));
 
-        // Bewust GEEN onRetry: zonder onRetry rondt de knop altijd af — ook voor een
-        // results-fase die al in een oudere opslag stond — en zit niemand vast.
         // Slagen hangt hier niet van de score af maar van de gehaalde rondes, dus
         // die uitkomst gaat expliciet mee als `passed`: het scherm mag geen
         // 'Gehaald' tonen voor een fort dat de verplichte rondes niet doorstond.
@@ -371,6 +369,20 @@ const PasswordFortressInner: React.FC<{
         const missionPassed =
             state.cleared.length >= requiredRounds &&
             (finalRoundId === undefined || state.cleared.includes(finalRoundId));
+        // Uitweg voor een niet-gehaald fort: terug naar de eerste niet-gehaalde
+        // ronde, met behoud van alles wat al gehaald is. Zonder deze route zou een
+        // opgeslagen results-fase bij elk bezoek opnieuw op dit scherm uitkomen
+        // zonder manier om het fort alsnog af te bouwen.
+        const handleRetryMission = () => {
+            const firstUncleared = config.rounds.findIndex(r => !state.cleared.includes(r.id));
+            setState(prev => ({
+                ...prev,
+                phase: 'round',
+                currentRound: firstUncleared === -1 ? config.rounds.length - 1 : firstUncleared,
+                // Overgeslagen rondes worden weer speelbaar; gehaalde blijven staan.
+                skipped: prev.skipped.filter(id => prev.cleared.includes(id)),
+            }));
+        };
         return (
             <CompletionScreen
                 score={totalScore}
@@ -379,6 +391,7 @@ const PasswordFortressInner: React.FC<{
                 phases={phases}
                 takeaways={config.takeaways}
                 passed={missionPassed}
+                onRetry={missionPassed ? undefined : handleRetryMission}
                 onComplete={async () => {
                     const completed = await onComplete(missionPassed, toScorePercent(totalScore, config.maxScore));
                     // Alleen wissen na een gehaalde, vastgelegde voltooiing: bij een
