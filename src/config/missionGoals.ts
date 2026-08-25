@@ -136,7 +136,7 @@ export const MISSION_GOALS: Record<string, MissionGoal> = {
         primaryGoal: 'Ik bedenk bruikbare AI-afspraken voor school en onderbouw waarom ze nodig zijn.',
         criteria: {
             type: 'component-complete',
-            description: 'Je levert voorstellen, stemt of kiest, en legt je keuze uit.',
+            description: 'Je formuleert minimaal twee eigen AI-regels met een reden en een schoolsituatie erbij.',
         },
         evidence: 'Je hebt minimaal twee concrete AI-regels met reden en schoolsituatie.',
     },
@@ -149,7 +149,7 @@ export const MISSION_GOALS: Record<string, MissionGoal> = {
         evidence: 'Je kunt per ronde uitleggen of je decompositie, algoritme-volgorde, abstractie of patroonherkenning toepast en waarom je keuze klopt.',
     },
     'website-bouwer': {
-        primaryGoal: 'Ik bouw een werkende Over Mij-webpagina met HTML, CSS en een korte uitleg van mijn keuzes.',
+        primaryGoal: 'Ik bouw een werkende fictieve Over Mij-webpagina met HTML, CSS en een korte uitleg van mijn keuzes.',
         criteria: {
             type: 'steps-complete',
             min: 4,
@@ -187,6 +187,7 @@ export const MISSION_GOALS: Record<string, MissionGoal> = {
         primaryGoal: 'Ik onderzoek hoe apps data gebruiken en kies bewust welke data ik wel of niet deel.',
         criteria: {
             type: 'component-complete',
+            min: 3,
             description: 'Je analyseert appdata en maakt privacykeuzes.',
         },
         evidence: 'Je kunt uitleggen welke appgegevens gevoelig zijn en welke keuze veiliger is.',
@@ -294,7 +295,7 @@ export const MISSION_GOALS: Record<string, MissionGoal> = {
             type: 'component-complete',
             description: 'Je maakt keuzes in de dataveiling en reflecteert op je grenzen.',
         },
-        evidence: 'Je kunt minimaal twee datakeuzes onderbouwen met privacy en voordeel.',
+        evidence: 'Je kiest bij minimaal twee databeslissingen bewust DEAL of NO DEAL en leest de bijbehorende privacyrisico-uitleg.',
     },
     'data-speurder': {
         primaryGoal: 'Ik onderzoek data, kies passende visualisaties en trek een conclusie die ik met bewijs kan uitleggen.',
@@ -801,8 +802,8 @@ export const MISSION_GOALS: Record<string, MissionGoal> = {
         primaryGoal: 'Ik onderzoek internetsnelheden en apparaatgebruik per land en leeftijdsgroep en beoordeel de betrouwbaarheid van databronnen.',
         criteria: {
             type: 'score-threshold',
-            threshold: 65,
-            description: 'Je analyseert CBS-data naar leeftijdsgroep, Europese breedbandcijfers en internationale connectiviteitsrapporten.',
+            threshold: 40,
+            description: 'Je analyseert didactische oefendata over internetsnelheid per land, smartphonegebruik per leeftijdsgroep en connectivity-begrippen.',
         },
         evidence: 'Je kunt het procentuele verschil in internetsnelheid of apparaatbeschikbaarheid tussen leeftijdsgroepen of landen noemen en een databron beoordelen.',
     },

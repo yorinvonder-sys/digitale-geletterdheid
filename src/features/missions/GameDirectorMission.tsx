@@ -310,7 +310,7 @@ export const GameDirectorMission: React.FC<GameDirectorProps> = ({ onComplete, o
         ctx.fillRect(0, 0, width, height);
 
         // Subtle grass pattern
-        ctx.strokeStyle = '#202023';
+        ctx.strokeStyle = 'rgba(153, 152, 77, 0.12)';
         ctx.lineWidth = 1;
         for (let x = 0; x < width; x += 40) {
             ctx.beginPath();
@@ -871,7 +871,7 @@ export const GameDirectorMission: React.FC<GameDirectorProps> = ({ onComplete, o
                             {/* 'I am stuck' button - Always visible/accessible helper */}
                             <button
                                 onClick={() => setIsChatOpen(true)}
-                                className="flex items-center gap-1 text-[10px] text-duck-ink font-bold px-3 py-1.5 bg-duck-acid hover:bg-duck-acid rounded-full transition-all duration-300 shadow-lg shadow-duck-acid/20 focus-visible:ring-2 focus-visible:ring-duck-acid"
+                                className="flex items-center gap-1 text-[10px] text-duck-ink font-bold px-3 py-1.5 bg-duck-acid hover:brightness-95 rounded-full transition-all duration-300 shadow-lg shadow-duck-acid/20 focus-visible:ring-2 focus-visible:ring-duck-acid"
                             >
                                 <Sparkles size={12} /> Hulp nodig?
                             </button>
@@ -1026,8 +1026,8 @@ export const GameDirectorMission: React.FC<GameDirectorProps> = ({ onComplete, o
                     onClick={handleTogglePlay}
                     disabled={blocks.length === 0}
                     className={`flex items-center gap-2 px-6 py-2.5 rounded-full font-bold text-sm text-white transition-all duration-300 ${isPlaying
-                        ? 'bg-duck-acid hover:bg-duck-acid hover:text-duck-ink'
-                        : 'bg-duck-acid hover:bg-duck-acid disabled:bg-duck-gray disabled:text-duck-ink/60'
+                        ? 'bg-duck-acid hover:brightness-95 hover:text-duck-ink'
+                        : 'bg-duck-acid hover:brightness-95 disabled:bg-duck-gray disabled:text-duck-ink/60'
                     }`}
                 >
                     <Play size={14} fill="currentColor" />

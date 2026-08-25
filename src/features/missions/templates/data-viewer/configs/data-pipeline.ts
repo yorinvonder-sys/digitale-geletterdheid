@@ -99,7 +99,7 @@ export const dataPipelineConfig: DataViewerConfig = {
                 {
                     id: 'q4-verschil-lokaal3a',
                     question:
-                        'Hoeveel graden wijkt het ruwe gemiddelde van Lokaal 3A af van het schoone gemiddelde?',
+                        'Hoeveel graden wijkt het ruwe gemiddelde van Lokaal 3A af van het schone gemiddelde?',
                     type: 'number-input',
                     correctAnswer: 26.2,
                     explanation:
@@ -128,7 +128,7 @@ export const dataPipelineConfig: DataViewerConfig = {
                         'Beschrijf de drie stappen van een ETL-proces in eigen woorden. Gebruik de sensordata als voorbeeld.',
                     type: 'text-observation',
                     keywords: ['extract', 'ophalen', 'transform', 'opschonen', 'opslaan'],
-                    minKeywords: 1,
+                    minKeywords: 2,
                     correctAnswer: '',
                     explanation:
                         'Extract: haal de sensordata op uit de database of CSV-bestanden. Transform: schoon de data op — verwijder duplicaten, repareer datumformaten, vervang onmogelijke waarden, standaardiseer lokaal-namen. Load: laad de schoone data in een nieuw bestand of database die klaar is voor analyse. Zonder de Transform-stap zijn de Extract en Load nutteloos.',

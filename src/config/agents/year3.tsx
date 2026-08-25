@@ -2126,12 +2126,12 @@ Vraag de leerling om hun pitchstructuur, uitgeschreven pitch, verbeterde versie 
     title: 'Reflection Report',
     icon: <BookOpen size={28} />,
     color: '#e1ff01',
-    description: 'Schrijf een reflectieverslag over je leerproces van drie jaar informatica.',
-    problemScenario: 'Drie jaar informatica zitten erop. Je hebt geprogrammeerd, ontworpen, onderzocht en gepresenteerd. Maar wat heb je eigenlijk geleerd? En hoe ga je deze kennis gebruiken in de toekomst? Een goed reflectieverslag dwingt je om stil te staan bij je groei — en dat is precies wat vervolgopleidingen en werkgevers willen zien.',
-    missionObjective: 'Schrijf een reflectieverslag waarin je je leerproces beschrijft, je sterke en zwakke punten analyseert en vooruitkijkt naar de toekomst.',
+    description: 'Debatteer over de waarde van reflectie en ethiek in het informatica-curriculum.',
+    problemScenario: 'Drie jaar informatica zitten erop. Maar moet een informatica-opleiding ook bijdragen aan wie je bent als persoon — je zelfkennis, je verantwoordelijkheidsgevoel, je digitale ethiek? Vier betrokkenen denken daar heel verschillend over. Kies een positie, bouw argumenten op en reageer op een tegenargument.',
+    missionObjective: 'Formuleer een onderbouwd standpunt over de rol van reflectie en ethisch denken in het informatica-curriculum, gebaseerd op minstens twee stakeholderperspectieven.',
     briefingImage: '/assets/agents/reflection-report.webp',
     difficulty: 'Medium',
-    examplePrompt: 'Ik vind het lastig om over mezelf te schrijven. Hoe begin ik met mijn reflectieverslag?',
+    examplePrompt: 'Ik weet niet welke positie ik moet kiezen in dit debat. Kun je de standpunten nog eens naast elkaar zetten?',
     visualPreview: (
         <div className="w-full h-full bg-gradient-to-br from-lab-coral to-lab-coral flex flex-col items-center justify-center relative overflow-hidden p-4">
             <div className="absolute bottom-6 right-6 w-24 h-24 bg-lab-gold/20 rounded-full blur-2xl"></div>

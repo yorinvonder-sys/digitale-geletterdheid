@@ -718,8 +718,6 @@ export const DataDetectiveMission: React.FC<Props> = ({ onBack, onComplete, vsoP
                             onClick={handleNext}
                             className="w-full py-4 text-white rounded-full font-black uppercase tracking-wide transition-all duration-300 flex items-center justify-center gap-2 focus-visible:ring-2 focus-visible:ring-duck-acid"
                             style={{ backgroundColor: '#ff3c21' }}
-                            onMouseEnter={e => (e.currentTarget.style.backgroundColor = '#ff3c21')}
-                            onMouseLeave={e => (e.currentTarget.style.backgroundColor = '#ff3c21')}
                         >
                             Volgende <ChevronRight size={20} />
                         </button>

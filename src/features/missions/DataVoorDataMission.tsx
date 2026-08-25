@@ -339,7 +339,7 @@ export const DataVoorDataMission: React.FC<Props> = ({ onBack, onComplete }) => 
 
                     {!hasChosen && (
                         <div className="grid grid-cols-2 gap-4">
-                            <button onClick={() => handleChoice('deal')} className="py-5 bg-duck-ink/10 hover:bg-duck-ink/20 border-2 border-duck-ink/30 rounded-2xl font-black text-lg transition-all duration-300 active:scale-95 flex flex-col items-center gap-1 focus-visible:ring-2 focus-visible:ring-[#5F947D]">
+                            <button onClick={() => handleChoice('deal')} className="py-5 bg-duck-ink/10 hover:bg-duck-ink/20 border-2 border-duck-ink/30 rounded-2xl font-black text-lg transition-all duration-300 active:scale-95 flex flex-col items-center gap-1 focus-visible:ring-2 focus-visible:ring-duck-ink">
                                 <ThumbsUp size={28} className="text-duck-ink" />
                                 <span className="text-duck-ink">DEAL!</span>
                             </button>
@@ -415,7 +415,7 @@ export const DataVoorDataMission: React.FC<Props> = ({ onBack, onComplete }) => 
                     <p className="text-xs font-bold text-duck-ink/60 mb-2" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>De les:</p>
                     <p className="text-xs text-duck-ink/60" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>"Gratis" bestaat niet op internet. Je betaalt altijd met je data. Hoe meer je deelt, hoe meer macht je weggeeft. Kies bewust!</p>
                 </div>
-                <button onClick={() => { clearSave(); onComplete(true); }} className="w-full py-4 bg-duck-ink hover:bg-duck-ink text-white rounded-full font-black text-lg transition-all duration-300 active:scale-95 shadow-xl flex items-center justify-center gap-2 focus-visible:ring-2 focus-visible:ring-[#5F947D]"><Trophy size={20} /> Missie Voltooid!</button>
+                <button onClick={() => { clearSave(); onComplete(true); }} className="w-full py-4 bg-duck-ink hover:bg-duck-ink text-white rounded-full font-black text-lg transition-all duration-300 active:scale-95 shadow-xl flex items-center justify-center gap-2 focus-visible:ring-2 focus-visible:ring-duck-ink"><Trophy size={20} /> Missie Voltooid!</button>
             </div>
             </div>
         </div>

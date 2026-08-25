@@ -49,7 +49,7 @@ export const automationEngineerConfig: BuilderCanvasConfig = {
             description:
                 'Een algoritme is een stap-voor-stap plan om een probleem op te lossen. Voordat je ook maar één regel code schrijft, denk je het algoritme uit in gewone taal. Dat heet pseudocode: code die leesbaar is voor mensen, niet voor computers.',
             instruction:
-                'Schrijf het algoritme voor je automatisering in pseudocode. Gebruik duidelijke stappen (STAP 1, STAP 2...), IF/THEN-constructies voor keuzes, en FOR-lussen voor herhalingen. Voorbeeld: "ALS het bestand al bestaat, SLA DAN OVER. ANDERS: hernoem het bestand." Schrijf minimaal 8 stappen.',
+                'Schrijf je algoritme in pseudocode: minimaal 8 genummerde stappen (STAP 1, STAP 2...). Gebruik IF/THEN voor keuzes en een FOR-lus voor herhaling. Voorbeeld: "ALS het bestand bestaat, SLA OVER. ANDERS: hernoem het."',
             tip: 'Pseudocode hoeft niet in het Engels. Nederlands is prima. Het gaat erom dat de logica klopt, niet de syntax.',
             checklistItems: [
                 { id: 'acht-stappen', label: 'Mijn pseudocode heeft minimaal 8 stappen' },
@@ -66,7 +66,7 @@ export const automationEngineerConfig: BuilderCanvasConfig = {
             description:
                 'Nu zet je de pseudocode om naar een echte script-structuur in Python. Je hoeft niet alles werkend te maken, maar je beschrijft welke functies je nodig hebt en hoe ze samenwerken.',
             instruction:
-                'Schrijf de Python-structuur van je script. Gebruik: 1) Commentaarregels (#) om elke sectie te beschrijven, 2) Minstens 2 functiedefinities met `def functienaam():`, 3) Een main-sectie die de functies aanroept, 4) Beschrijf in commentaar welke Python-modules (= een gereedschapsset die Python al klaar heeft staan, bijv. `os` voor bestanden) je nodig hebt. Je hoeft de functies niet volledig te implementeren.',
+                'Schrijf je Python-structuur: commentaarregels (#) per sectie, minstens 2 functies met `def functienaam():`, en een main-sectie die ze aanroept. Noem in commentaar welke Python-modules je nodig hebt (bijv. `os` voor bestanden). Je hoeft de functies niet volledig te implementeren.',
             tip: 'Gebruik deze lege functie als startpunt en vul hem in:\n\ndef verstuur_herinnering(naam, datum):\n    # vul hier in wat de functie doet\n\nJe hoeft de functies niet volledig te bouwen — beschrijf in commentaar wat ze zouden doen. Elke taak in een eigen functie houdt code overzichtelijk.',
             checklistItems: [
                 { id: 'twee-functies', label: 'Er zijn minimaal 2 functiedefinities' },

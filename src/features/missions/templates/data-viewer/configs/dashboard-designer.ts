@@ -79,7 +79,7 @@ export const dashboardDesignerConfig: DataViewerConfig = {
             chartData: [
                 { label: 'Wiskunde', value: 34, color: '#ff3c21' },
                 { label: 'Engels', value: 21, color: '#202023' },
-                { label: 'Nederlands', value: 15, color: '#99984D' },
+                { label: 'Nederlands', value: 15, color: '#6b6a3f' },
                 { label: 'Aardrijkskunde', value: 26, color: '#e1ff01' },
                 { label: 'Overige vakken', value: 19, color: '#c2c1bd' },
             ],

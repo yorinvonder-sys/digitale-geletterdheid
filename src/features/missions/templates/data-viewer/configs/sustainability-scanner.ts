@@ -81,8 +81,8 @@ export const sustainabilityScannerConfig: DataViewerConfig = {
             chartData: [
                 { label: 'Smartphone', value: 54, color: '#202023' },
                 { label: 'Laptop', value: 22, color: '#e1ff01' },
-                { label: 'Smart-tv', value: 13, color: '#202023' },
-                { label: 'Tablet', value: 7, color: '#202023' },
+                { label: 'Smart-tv', value: 13, color: '#4c8bf5' },
+                { label: 'Tablet', value: 7, color: '#8a8a8a' },
                 { label: 'Console', value: 4, color: '#ff3c21' },
             ],
             questions: [

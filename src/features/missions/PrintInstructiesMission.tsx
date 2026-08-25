@@ -340,6 +340,7 @@ export const PrintInstructiesMission: React.FC<Props> = ({ onBack, onComplete })
                             </div>
                             <p className="text-xs" style={{ color: '#6f6e69', fontFamily: "'Outfit', system-ui, sans-serif" }}>Wat heb je geleerd in deze missie? Waar zou je dit in het dagelijks leven tegenkomen?</p>
                             <textarea
+                                aria-label="Reflectie: wat heb je geleerd in deze missie en waar kom je dit nog meer tegen?"
                                 value={state.reflectie}
                                 onChange={e => setState(prev => ({ ...prev, reflectie: e.target.value }))}
                                 placeholder="Wat heb je geleerd? Waar kom je dit nog meer tegen?"
@@ -379,6 +380,7 @@ export const PrintInstructiesMission: React.FC<Props> = ({ onBack, onComplete })
                 <div className="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between">
                     <button
                         onClick={onBack}
+                        aria-label="Terug naar Mission Control"
                         className="p-2 transition-colors"
                         style={{ color: '#6f6e69' }}
                         onMouseEnter={e => (e.currentTarget.style.color = '#202023')}
@@ -462,7 +464,7 @@ export const PrintInstructiesMission: React.FC<Props> = ({ onBack, onComplete })
                                 key={option.id}
                                 onClick={() => handleAnswer(option.id)}
                                 disabled={showFeedback}
-                                className="w-full p-4 rounded-2xl text-left transition-all duration-300"
+                                className="w-full p-4 rounded-2xl text-left transition-all duration-300 focus-visible:ring-2 focus-visible:ring-duck-acid"
                                 style={{
                                     backgroundColor: showResult
                                         ? option.isCorrect ? 'rgba(95, 148, 125, 0.08)' : 'rgba(217, 120, 72, 0.08)'
@@ -523,7 +525,7 @@ export const PrintInstructiesMission: React.FC<Props> = ({ onBack, onComplete })
                                 onClick={handleRetry}
                                 className="w-full py-4 rounded-full font-black uppercase tracking-wide transition-all duration-300 flex items-center justify-center gap-2 focus-visible:ring-2 focus-visible:ring-duck-acid"
                                 style={{ backgroundColor: '#ff3c21', color: '#FFFFFF', fontFamily: "'Outfit', system-ui, sans-serif" }}
-                                onMouseEnter={e => (e.currentTarget.style.backgroundColor = '#ff3c21')}
+                                onMouseEnter={e => (e.currentTarget.style.backgroundColor = '#e0350f')}
                                 onMouseLeave={e => (e.currentTarget.style.backgroundColor = '#ff3c21')}
                             >
                                 <RotateCcw size={18} /> Probeer opnieuw

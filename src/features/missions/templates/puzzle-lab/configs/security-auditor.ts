@@ -123,8 +123,10 @@ const config: PuzzleLabConfig = {
             answer: [],
             validator: (input: string) => {
                 const s = input.toLowerCase();
-                const hasProblem = s.includes('sql') || s.includes('injectie') || s.includes('kwetsbaarheid') || s.includes('formulier') || s.includes('invoer');
-                const hasSolution = s.includes('prepared') || s.includes('parameterized') || s.includes('sanitiz') || s.includes('valideer') || s.includes('escape') || s.includes('queries');
+                const hasProblem = s.includes('sql-injectie') || s.includes('sql injectie') || s.includes('sqlinjectie')
+                    || (s.includes('sql') && (s.includes('injectie') || s.includes('query') || s.includes('queries')));
+                const hasSolution = s.includes('prepared statement') || s.includes('parameterized quer')
+                    || s.includes('parameterised quer');
                 return hasProblem && hasSolution && s.length >= 30;
             },
             caseSensitive: false,

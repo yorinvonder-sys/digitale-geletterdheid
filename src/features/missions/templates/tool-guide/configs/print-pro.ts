@@ -78,7 +78,7 @@ const config: ToolGuideConfig = {
             id: 'stap-3-instellingen',
             title: 'Printinstellingen kiezen',
             instruction:
-                'Voordat je print, controleer je de instellingen. Open het **printvenster** (Ctrl+P, Cmd+P of Deel > Afdrukken). Stel in: **Kleur of zwart-wit** (zwart-wit is goedkoper en spaart inkt), **Enkelzijdig of dubbelzijdig** (dubbelzijdig spaart papier — gebruik dit voor verslagen), en het **aantal kopieën** (normaal: 1). Kijk ook naar het **paginabereik** — wil je alle pagina\'s printen of alleen bepaalde?',
+                'Controleer voor het printen de instellingen. Open het **printvenster** (Ctrl+P, Cmd+P of Deel > Afdrukken). Kies **kleur of zwart-wit**, **enkel- of dubbelzijdig** (dubbelzijdig spaart papier, handig voor verslagen) en het **aantal kopieën** (meestal 1). Check ook het **paginabereik**.',
             tip: 'Druk nooit zomaar op "Print" zonder de instellingen te checken. Een foute printopdracht kost papier en inkt — en soms ook tegoed van je **printbudget** (je tegoed om te printen) op school.',
             checklistItems: [
                 { id: 'kleur-zwart', label: 'Ik heb gekozen voor kleur of zwart-wit' },

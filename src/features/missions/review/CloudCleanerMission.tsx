@@ -4,7 +4,7 @@ import { Cloud, FileText, Image as ImageIcon, Folder, ArrowLeft, CheckCircle, Al
 import type { UserStats, VsoProfile } from '@/types';
 import { useMissionAutoSave } from '@/hooks/useMissionAutoSave';
 import { getMissionGoal } from '@/config/missionGoals';
-import { MissionGoalBanner } from '../templates/shared/MissionGoalBanner';
+import { MissionGoalBanner } from '@/features/missions/templates/shared/MissionGoalBanner';
 
 interface CloudCleanerState {
     remainingFileIds: string[];
@@ -149,6 +149,7 @@ export const CloudCleanerMission: React.FC<CloudCleanerProps> = ({ onComplete, o
     const [whyQuestion, setWhyQuestion] = useState<{ folderId: string; fileName: string } | null>(null);
     const [whyFeedback, setWhyFeedback] = useState<'correct' | 'wrong' | null>(null);
     const [finalReflectionFeedback, setFinalReflectionFeedback] = useState<'correct' | 'wrong' | null>(null);
+    const [isCompleting, setIsCompleting] = useState(false);
 
     // Touch drag state
     const [touchDragFile, setTouchDragFile] = useState<string | null>(null);
@@ -398,7 +399,7 @@ export const CloudCleanerMission: React.FC<CloudCleanerProps> = ({ onComplete, o
             {/* OneDrive Header */}
             <header className="bg-duck-ink text-white flex items-center justify-between px-4 py-3 shadow-md">
                 <div className="flex items-center gap-4">
-                    <button onClick={onBack} className="p-2 hover:bg-white/10 rounded-full transition-all duration-300 focus-visible:ring-2 focus-visible:ring-white" title="Terug naar opdrachten">
+                    <button onClick={onBack} className="p-2 hover:bg-white/10 rounded-full transition-all duration-300 focus-visible:ring-2 focus-visible:ring-white" title="Terug naar opdrachten" aria-label="Terug naar opdrachten">
                         <ArrowLeft size={20} />
                     </button>
                     <button
@@ -863,12 +864,18 @@ export const CloudCleanerMission: React.FC<CloudCleanerProps> = ({ onComplete, o
                                 )}
                                 <button
                                     onClick={async () => {
-                                        const completed = await onComplete(true);
-                                        if (completed !== false) {
-                                            clearSave();
+                                        if (isCompleting) return;
+                                        setIsCompleting(true);
+                                        try {
+                                            const completed = await onComplete(true);
+                                            if (completed !== false) {
+                                                clearSave();
+                                            }
+                                        } finally {
+                                            setIsCompleting(false);
                                         }
                                     }}
-                                    disabled={correctReflections === 0}
+                                    disabled={correctReflections === 0 || isCompleting}
                                     className="w-full py-4 bg-duck-acid hover:bg-duck-acid text-duck-ink rounded-full font-bold transition-all duration-300 shadow-lg hover:shadow-duck-acid/30 focus-visible:ring-2 focus-visible:ring-duck-acid disabled:cursor-not-allowed disabled:opacity-50"
                                 >
                                     {correctReflections === 0 ? 'Beantwoord eerst de reflectie' : 'Voltooien'}

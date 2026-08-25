@@ -25,19 +25,19 @@ const config: ScenarioEngineConfig = {
             minScore: 60,
             emoji: '🔍',
             title: 'Digitale Speurder',
-            color: '#202023',
+            color: '#3d3d42',
         },
         {
             minScore: 40,
             emoji: '📚',
             title: 'Goed Begonnen',
-            color: '#202023',
+            color: '#6b6b70',
         },
         {
             minScore: 0,
             emoji: '🌱',
             title: 'Blijf Oefenen',
-            color: '#202023',
+            color: '#9a9a9e',
         },
     ],
     takeaways: [
@@ -252,7 +252,7 @@ const config: ScenarioEngineConfig = {
                         'IP-adressen die beginnen met 10.x.x.x zijn per definitie privé/interne adressen (RFC 1918 standaard).',
                     correct: true,
                     explanation:
-                        'Dit is een feit — een technisch bewezen gegeven. 10.0.0.0/8 is een gereserveerd privéadresbereik. Dit IP-adres kan nooit van buiten het netwerk afkomstig zijn.',
+                        'Dit is een feit — geen mening, maar een technisch afleidbaar gegeven uit een vaste standaard (RFC 1918: 10.0.0.0/8 is altijd een privéadres). Net als de timestamp in item 1 staat dit onomstotelijk vast, ook al lees je het niet letterlijk af maar leid je het af uit een technische regel.',
                 },
                 {
                     id: 4,

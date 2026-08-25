@@ -64,7 +64,7 @@ export const YEAR1_ROLES: AgentRole[] = [
         color: '#202023',
         description: 'Leer hoe je AI precies laat doen wat jij wilt door betere prompts te schrijven.',
         problemScenario: 'AI kan van alles — verhalen schrijven, uitleggen, bedenken. Maar alleen als jij de juiste opdracht geeft. Een vage vraag geeft een vaag antwoord. Jij leert hoe je AI als een pro aanstuurt.',
-        missionObjective: 'Schrijf 3 steeds betere prompts en scoor op alle criteria een groene vink.',
+        missionObjective: 'Doorloop 6 uitdagingen op 3 niveaus en haal minstens 60% van de score.',
         briefingImage: '/assets/agents/prompt_master.webp',
         difficulty: 'Easy',
         examplePrompt: 'Schrijf een prompt over je favoriete hobby.',
@@ -2151,13 +2151,13 @@ Vertel me eerst: **welke apps gebruik jij het meest?**"
         description: 'Onderzoek een echte dataset en ontdek wat data wel en niet vertelt over de werkelijkheid.',
         problemScenario: 'De gemeente vraagt jouw klas om advies: ze willen weten hoe jongeren naar school reizen. Ze hebben data, maar is die data wel betrouwbaar? En wat kun je er eigenlijk mee?',
         missionObjective: 'Analyseer een dataset over schoolreizen, ontdek de beperkingen, en geef een onderbouwd advies aan de gemeente.',
-        briefingImage: '/assets/agents/social_safeguard.webp',
+        briefingImage: '/assets/previews/project_data_verzamelaar.webp',
         difficulty: 'Medium',
         examplePrompt: 'Ik wil de dataset bekijken over hoe leerlingen naar school reizen.',
         primaryGoal: '🎯 Ik analyseer een dataset, vind de beperkingen en geef een onderbouwd advies',
         goalCriteria: { type: 'steps-complete', min: 3 },
         visualPreview: (
-            <div className="w-full h-full bg-gradient-to-br from-lab-coral to-lab-teal flex items-center justify-center p-4 relative overflow-hidden">
+            <div className="w-full h-full bg-gradient-to-br from-duck-acid to-duck-ink flex items-center justify-center p-4 relative overflow-hidden">
                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(255,255,255,0.08),transparent)]" />
                 <div className="relative z-10 flex flex-col items-center gap-2">
                     <div className="w-20 h-20 rounded-full bg-white/20 backdrop-blur-md border-2 border-white/40 flex items-center justify-center">
@@ -2165,7 +2165,7 @@ Vertel me eerst: **welke apps gebruik jij het meest?**"
                     </div>
                     <div className="flex gap-1 flex-wrap justify-center">
                         <span className="bg-white/20 px-2 py-0.5 rounded-full text-[8px] text-white">Fiets: 47%</span>
-                        <span className="bg-white/20 px-2 py-0.5 rounded-full text-[8px] text-white">Bus: 28%</span>
+                        <span className="bg-white/20 px-2 py-0.5 rounded-full text-[8px] text-white">Bus: 18%</span>
                         <span className="bg-white/20 px-2 py-0.5 rounded-full text-[8px] text-white">Lopen: 15%</span>
                     </div>
                     <div className="bg-white/20 backdrop-blur px-3 py-1 rounded-full border border-white/30">
@@ -3357,7 +3357,7 @@ Welk onderwerp kies jij?"` + SYSTEM_INSTRUCTION_SUFFIX,
         difficulty: 'Easy',
         examplePrompt: 'Hoe herkent AI patronen in tekeningen?',
         visualPreview: (
-            <div className="w-full h-full bg-gradient-to-br from-lab-gold via-lab-coral to-lab-coral flex flex-col items-center justify-center p-4 relative overflow-hidden">
+            <div className="w-full h-full bg-gradient-to-br from-lab-gold to-lab-coral flex flex-col items-center justify-center p-4 relative overflow-hidden">
                 <div className="absolute inset-0 opacity-10">
                     {['✏️', '🎨', '🖌️'].map((e, i) => (
                         <div key={i} className="absolute text-3xl" style={{
@@ -3371,7 +3371,7 @@ Welk onderwerp kies jij?"` + SYSTEM_INSTRUCTION_SUFFIX,
                         <span className="text-4xl">🐱</span>
                     </div>
                 </div>
-                <div className="mt-4 bg-duck-ink/20 backdrop-blur px-4 py-2 rounded-full text-white text-xs font-bold flex items-center gap-2">
+                <div className="mt-4 bg-lab-ink/20 backdrop-blur px-4 py-2 rounded-full text-white text-xs font-bold flex items-center gap-2">
                     <span className="animate-pulse">🤖</span> AI: "Is dit een kat?"
                 </div>
             </div>
