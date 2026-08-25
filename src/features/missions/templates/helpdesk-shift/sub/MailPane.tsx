@@ -84,7 +84,7 @@ export const MailPane: React.FC<Props> = ({ mail, bewijs, onWijsAan, onNeemMee }
         return (
             <div className="w-full max-w-md rounded-2xl border-2 border-dashed border-duck-gray bg-white/60 px-4 py-10 text-center">
                 <MailOpen size={28} className="mx-auto mb-2 text-duck-ink/30" />
-                <p className="text-sm text-duck-ink/50" style={{ fontFamily: FONT }}>
+                <p className="text-sm text-duck-ink/70" style={{ fontFamily: FONT }}>
                     Open een bericht uit de wachtrij
                 </p>
             </div>
@@ -110,7 +110,7 @@ export const MailPane: React.FC<Props> = ({ mail, bewijs, onWijsAan, onNeemMee }
                         <p className="font-bold text-sm text-duck-ink truncate" style={{ fontFamily: FONT }}>
                             {mail.fromName}
                         </p>
-                        <p className="text-[11px] text-duck-ink/50 break-all" style={{ fontFamily: FONT }}>
+                        <p className="text-[11px] text-duck-ink/70 break-all" style={{ fontFamily: FONT }}>
                             {mail.fromAddress}
                         </p>
                     </div>
@@ -140,7 +140,7 @@ export const MailPane: React.FC<Props> = ({ mail, bewijs, onWijsAan, onNeemMee }
                                 {mail.link.label}
                             </span>
                         </button>
-                        <p className="text-xs text-duck-ink/50 px-1 break-all" style={{ fontFamily: FONT }}>
+                        <p className="text-xs text-duck-ink/70 px-1 break-all" style={{ fontFamily: FONT }}>
                             {mail.link.destination}
                         </p>
                         <VlaggenRij vlaggen={vlaggenOp('link')} bewijs={bewijs} onWijsAan={onWijsAan} />
@@ -159,7 +159,7 @@ export const MailPane: React.FC<Props> = ({ mail, bewijs, onWijsAan, onNeemMee }
                                 <p className="text-sm font-bold text-duck-ink break-words" style={{ fontFamily: FONT }}>
                                     {mail.attachment.filename}
                                 </p>
-                                <p className="text-xs text-duck-ink/50" style={{ fontFamily: FONT }}>
+                                <p className="text-xs text-duck-ink/70" style={{ fontFamily: FONT }}>
                                     {mail.attachment.size}
                                 </p>
                             </div>
@@ -171,7 +171,7 @@ export const MailPane: React.FC<Props> = ({ mail, bewijs, onWijsAan, onNeemMee }
 
             <div className="p-4 border-t border-duck-gray space-y-2">
                 {vlaggen.length > 0 && (
-                    <p className="text-xs text-duck-ink/50" style={{ fontFamily: FONT }}>
+                    <p className="text-xs text-duck-ink/70" style={{ fontFamily: FONT }}>
                         {aantalAangewezen === 0
                             ? 'Nog geen onderdelen aangewezen'
                             : aantalAangewezen === 1
@@ -190,7 +190,7 @@ export const MailPane: React.FC<Props> = ({ mail, bewijs, onWijsAan, onNeemMee }
                     <Send size={16} />
                     <span>Neem het bericht mee</span>
                 </button>
-                <p className="text-xs text-duck-ink/50 text-center" style={{ fontFamily: FONT }}>
+                <p className="text-xs text-duck-ink/70 text-center" style={{ fontFamily: FONT }}>
                     Je brengt het bericht naar iemand in het kantoor — onderweg kun je je nog bedenken.
                 </p>
             </div>

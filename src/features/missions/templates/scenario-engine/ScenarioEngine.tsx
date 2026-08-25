@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useMissionAutoSave } from '@/hooks/useMissionAutoSave';
 import { PhaseHeader } from '../shared/PhaseHeader';
 import { PhaseCard } from '../shared/PhaseCard';
@@ -141,6 +141,8 @@ function buildInitialState(config: ScenarioEngineConfig): ScenarioEngineState {
 function isStateValidForConfig(saved: ScenarioEngineState, config: ScenarioEngineConfig): boolean {
     if (!saved || typeof saved !== 'object') return false;
     if (!saved.roundStates || typeof saved.roundStates !== 'object') return false;
+    // Een onbekende fase rendert anders de actieve tak met een onbepaalde staat.
+    if (saved.phase !== 'intro' && saved.phase !== 'active' && saved.phase !== 'results') return false;
     const knownIds = new Set(config.rounds.map((round) => round.id));
     // Elke opgeslagen ronde moet nog bestaan, en elke huidige ronde moet state hebben.
     if (Object.keys(saved.roundStates).some((id) => !knownIds.has(id))) return false;
@@ -154,6 +156,11 @@ function isStateValidForConfig(saved: ScenarioEngineState, config: ScenarioEngin
         // Goedkope bovengrens: meer selecties dan items betekent bewerkte opslag.
         if (rs.selections.length > round.items.length) return true;
         if (rs.selections.some((id) => !Number.isInteger(id))) return true;
+        // De overige velden zijn optioneel, maar een afwijkend type sijpelt door
+        // naar de scoreberekening (followUp-punten) of naar de kalibratie-feedback.
+        if (rs.followUpAnswered !== undefined && typeof rs.followUpAnswered !== 'boolean') return true;
+        if (rs.followUpCorrect !== undefined && typeof rs.followUpCorrect !== 'boolean') return true;
+        if (rs.confidence !== undefined && rs.confidence !== 1 && rs.confidence !== 2 && rs.confidence !== 3) return true;
         // Elk item hoogstens één keer, en nooit als accepteren én weigeren tegelijk.
         // Zonder deze eis telde zevenmaal hetzelfde id zeven keer mee en gaf een
         // ronde met vijf juiste items 35 van de 25 punten.
@@ -220,6 +227,16 @@ const ScenarioEngineInner: React.FC<{
 
     const currentRound = config.rounds[state.currentRound];
     const roundState = currentRound ? state.roundStates[currentRound.id] : null;
+
+    // Bij een rondewisseling verdwijnt de zojuist ingedrukte knop uit de DOM en valt
+    // de focus terug op <body>. Deze kop is het programmatische beginpunt van de
+    // nieuwe ronde, net zoals FeedbackBanner en CompletionScreen dat voor hun eigen
+    // scherm doen.
+    const roundHeadingRef = useRef<HTMLHeadingElement>(null);
+    useEffect(() => {
+        if (state.phase !== 'active') return;
+        roundHeadingRef.current?.focus();
+    }, [state.phase, state.currentRound]);
 
     const totalScore = config.rounds.reduce((acc, round) => {
         const rs = state.roundStates[round.id];
@@ -295,15 +312,28 @@ const ScenarioEngineInner: React.FC<{
         }
     };
 
+    const missionGoal = config.missionGoal ?? getMissionGoal(config.missionId);
+    /** Puntendrempel van de missie, of null wanneer voltooien niet van de score afhangt. */
+    const scoreThreshold = missionGoal?.criteria.type === 'score-threshold'
+        ? (missionGoal.criteria.threshold ?? config.maxScore * 0.4)
+        : null;
+    const missionPassed = scoreThreshold === null || totalScore >= scoreThreshold;
+
     const handleComplete = async () => {
-        const missionGoal = config.missionGoal ?? getMissionGoal(config.missionId);
-        const success = missionGoal?.criteria.type === 'score-threshold'
-            ? totalScore >= (missionGoal.criteria.threshold ?? config.maxScore * 0.4)
-            : true;
-        const completed = await onComplete(success, toScorePercent(totalScore, config.maxScore));
-        if (completed !== false) {
+        const completed = await onComplete(missionPassed, toScorePercent(totalScore, config.maxScore));
+        // Alleen wissen na een echte voltooiing. Bij `success === false` stuurt de host
+        // de leerling terug naar het dashboard zonder iets te registreren; wissen zou
+        // dan de hele run weggooien en het eindscherm onbereikbaar maken.
+        if (missionPassed && completed !== false) {
             clearSave();
         }
+    };
+
+    /** Uitweg uit het eindscherm: opnieuw beginnen met een lege staat. */
+    const handleRetryMission = () => {
+        clearSave();
+        setState(buildInitialState(config));
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     };
 
     // ── Intro phase ──
@@ -314,7 +344,7 @@ const ScenarioEngineInner: React.FC<{
                 emoji={config.introEmoji}
                 title={config.introTitle}
                 description={config.introDescription}
-                goal={config.missionGoal ?? getMissionGoal(config.missionId)}
+                goal={missionGoal}
                 features={config.introFeatures}
                 attribution={config.attribution}
                 onStart={() => setState((prev) => ({ ...prev, phase: 'active' }))}
@@ -323,23 +353,69 @@ const ScenarioEngineInner: React.FC<{
     }
 
     // ── Results phase ──
+    // De opgeslagen voortgang bewaart deze fase, dus dit scherm moet altijd een
+    // uitweg hebben: de kopbalk geeft een terugknop, `onRetry` maakt de knop van
+    // CompletionScreen bruikbaar wanneer die niet naar voltooien mag wijzen, en de
+    // melding hieronder vertelt wat er nog nodig is als de missiedrempel niet is gehaald.
     if (state.phase === 'results') {
         return (
-            <CompletionScreen
-                score={totalScore}
-                maxScore={config.maxScore}
-                badges={config.badges}
-                missionTitle={config.title}
-                phases={config.rounds.map((round) => ({
-                    icon: round.emoji,
-                    title: round.title,
-                    score: adjustedScoreRound(round, state.roundStates[round.id] ?? { selections: [], submitted: false }),
-                    max: round.maxScore,
-                }))}
-                takeaways={config.takeaways}
-                attribution={config.attribution}
-                onComplete={handleComplete}
-            />
+            <div className="min-h-screen bg-duck-bg p-4">
+                <div className="max-w-md mx-auto">
+                    <PhaseHeader
+                        currentPhase={config.rounds.length}
+                        totalPhases={config.rounds.length}
+                        totalScore={totalScore}
+                        onBack={onBack}
+                    />
+
+                    {!missionPassed && scoreThreshold !== null && (
+                        <div
+                            data-qa="scenario-threshold-notice"
+                            role="status"
+                            className="mb-4 rounded-2xl border-2 border-duck-ink bg-white p-4"
+                        >
+                            <p
+                                className="text-sm font-black text-duck-ink"
+                                style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
+                            >
+                                Nog niet gehaald — je hebt {Math.round(scoreThreshold)} van de {config.maxScore} punten nodig.
+                            </p>
+                            <p
+                                className="mt-1 text-xs text-duck-ink/70"
+                                style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
+                            >
+                                Je staat nu op {totalScore}. Probeer het opnieuw voor een hogere score — je
+                                antwoorden blijven bewaard tot je opnieuw begint.
+                            </p>
+                            <button
+                                data-qa="scenario-retry"
+                                onClick={handleRetryMission}
+                                className="mt-3 w-full min-h-[44px] rounded-full bg-duck-acid py-2.5 text-sm font-black text-duck-ink transition-all duration-200 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-ink focus-visible:ring-offset-2"
+                                style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
+                            >
+                                Opnieuw proberen
+                            </button>
+                        </div>
+                    )}
+
+                    <CompletionScreen
+                        score={totalScore}
+                        maxScore={config.maxScore}
+                        badges={config.badges}
+                        missionTitle={config.title}
+                        phases={config.rounds.map((round) => ({
+                            icon: round.emoji,
+                            title: round.title,
+                            score: adjustedScoreRound(round, state.roundStates[round.id] ?? { selections: [], submitted: false }),
+                            max: round.maxScore,
+                        }))}
+                        takeaways={config.takeaways}
+                        attribution={config.attribution}
+                        onComplete={handleComplete}
+                        onRetry={handleRetryMission}
+                    />
+                </div>
+            </div>
         );
     }
 
@@ -384,6 +460,10 @@ const ScenarioEngineInner: React.FC<{
                     title={currentRound.title}
                     description={currentRound.description}
                 >
+                    <h2 ref={roundHeadingRef} tabIndex={-1} className="sr-only">
+                        Ronde {state.currentRound + 1} van {config.rounds.length}: {currentRound.title}
+                    </h2>
+
                     {currentRound.type === 'select-correct' && (
                         <SelectCorrectRound
                             round={currentRound}

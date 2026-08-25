@@ -28,7 +28,7 @@ export const ChecklistItem: React.FC<ChecklistItemProps> = ({ id, label, checked
         </div>
         <span
             className={`text-sm transition-colors duration-200 ${
-                checked ? 'text-duck-ink/70 line-through' : 'text-duck-ink/70'
+                checked ? 'text-duck-ink/75 line-through' : 'text-duck-ink'
             }`}
             style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
         >

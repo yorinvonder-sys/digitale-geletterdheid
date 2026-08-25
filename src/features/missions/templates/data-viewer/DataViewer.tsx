@@ -374,6 +374,7 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
     const submitDisabled = q.type === 'text-observation'
         ? !lengthOk
         : answer === undefined || answer === '';
+    const observationHintId = `${q.id}-observation-hint`;
 
     return (
         <div className="bg-white rounded-2xl border border-duck-gray p-4 mb-3">
@@ -447,7 +448,12 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
                                 className="w-full mb-1.5 px-3 py-2 text-sm rounded-xl border border-duck-gray bg-duck-bg text-duck-ink focus:outline-none focus:border-duck-acid resize-none"
                                 style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                             />
+                            {/* Live-regio én uitleg bij de bevestigknop: anders hoort een
+                                schermlezergebruiker niet waarom de knop uit staat, en
+                                krijgt hij tijdens het typen geen terugkoppeling. */}
                             <p
+                                id={observationHintId}
+                                aria-live="polite"
                                 className="text-xs text-duck-ink/75 mb-3"
                                 style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                             >
@@ -475,6 +481,7 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
                     <button
                         onClick={() => onSubmit(q.id)}
                         disabled={submitDisabled}
+                        aria-describedby={q.type === 'text-observation' ? observationHintId : undefined}
                         className="w-full min-h-[44px] py-2.5 bg-gradient-to-r from-duck-acid to-duck-acid hover:from-duck-acid hover:to-duck-acid disabled:opacity-40 disabled:cursor-not-allowed text-duck-ink rounded-xl font-bold text-sm transition-all duration-200"
                         style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                     >
@@ -833,12 +840,17 @@ const DataViewerInner: React.FC<DataViewerProps> = ({
 
     const userId = (() => {
         try {
-            const key = Object.keys(localStorage).find((k) =>
-                /^sb-[a-z0-9_-]+-auth-token$/i.test(k)
-            );
-            if (!key) return null;
-            const raw = localStorage.getItem(key);
-            return raw ? JSON.parse(raw)?.user?.id : null;
+            // Zelfde reden als in useMissionAutoSave: pak de sleutel van hét
+            // ingestelde project, niet de eerste de beste sb-*-auth-token. Op een
+            // gedeelde schoolcomputer kan een token van een ander Supabase-project
+            // in de browser staan, en dan loopt de chat onder de verkeerde leerling.
+            const supabaseUrl = ((import.meta as any).env.VITE_SUPABASE_URL as string)?.trim();
+            if (!supabaseUrl) return null;
+            const projectId = new URL(supabaseUrl).hostname.split('.')[0];
+            const raw = localStorage.getItem(`sb-${projectId}-auth-token`);
+            if (!raw) return null;
+            const parsed = JSON.parse(raw);
+            return parsed?.user?.id ?? parsed?.currentSession?.user?.id ?? null;
         } catch {
             return null;
         }
@@ -947,10 +959,19 @@ const DataViewerInner: React.FC<DataViewerProps> = ({
         }
     };
 
-    const handleComplete = () => {
-        clearSave();
-        // maxScore 0 zou met een kale vergelijking altijd "gehaald" opleveren.
-        onComplete(config.maxScore > 0 && totalScore / config.maxScore >= 0.4, toScorePercent(totalScore, config.maxScore));
+    const handleComplete = async () => {
+        // Eén bron voor de uitkomst: CompletionScreen toont 'Gehaald' op het
+        // AFGERONDE percentage, dus moet de docentrapportage dat ook doen. Met de
+        // kale breuk gold 79/200 (39,5%) op het scherm als gehaald en in de
+        // rapportage niet. `undefined` (maxScore 0) telt als niet gehaald.
+        const scorePercent = toScorePercent(totalScore, config.maxScore);
+        const passed = (scorePercent ?? 0) >= 40;
+        // Pas wissen als de voltooiing is vastgelegd, anders raakt een leerling
+        // zijn werk kwijt bij een mislukte serveropslag.
+        const completed = await onComplete(passed, toScorePercent(totalScore, config.maxScore));
+        if (completed !== false) {
+            clearSave();
+        }
     };
 
     // Phase breakdown for CompletionScreen
@@ -983,14 +1004,32 @@ const DataViewerInner: React.FC<DataViewerProps> = ({
 
     if (phase === 'results') {
         return (
-            <CompletionScreen
-                score={totalScore}
-                maxScore={config.maxScore}
-                badges={config.badges}
-                phases={phaseScores}
-                takeaways={config.takeaways}
-                onComplete={handleComplete}
-            />
+            // Bewust GEEN onRetry: de vragen zijn na bevestigen definitief, dus een
+            // herkansing zou alleen kunnen door alles te wissen. Zonder onRetry blijft
+            // de knop van CompletionScreen ook bij een lage score de afrondknop — dat
+            // is de uitweg, met behoud van de score. De terugknop hieronder is de
+            // tweede uitweg (nakijken) en geldt ook voor een opgeslagen results-fase
+            // die na herladen weer op dit scherm uitkomt.
+            <div className="min-h-screen bg-duck-bg">
+                <div className="max-w-lg mx-auto px-4 pt-6">
+                    <button
+                        onClick={() => setState(prev => ({ ...prev, phase: 'explore' }))}
+                        className="flex items-center gap-1.5 min-h-[44px] px-1 text-xs text-duck-ink/75 hover:text-duck-ink transition-colors"
+                        style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
+                    >
+                        <ChevronLeft size={14} />
+                        Terug naar de datasets
+                    </button>
+                </div>
+                <CompletionScreen
+                    score={totalScore}
+                    maxScore={config.maxScore}
+                    badges={config.badges}
+                    phases={phaseScores}
+                    takeaways={config.takeaways}
+                    onComplete={handleComplete}
+                />
+            </div>
         );
     }
 

@@ -88,7 +88,7 @@ export const StepInstructionPanel: React.FC<StepInstructionPanelProps> = ({
 
             {/* Description */}
             <p
-                className="text-sm text-duck-ink/70 leading-relaxed mb-4"
+                className="text-sm text-duck-ink/75 leading-relaxed mb-4"
                 style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
             >
                 {stepData.description}
@@ -97,7 +97,7 @@ export const StepInstructionPanel: React.FC<StepInstructionPanelProps> = ({
             {/* Instruction card */}
             <div className="bg-white rounded-2xl border border-duck-gray p-4 mb-4">
                 <p
-                    className="text-sm text-duck-ink/70 leading-relaxed"
+                    className="text-sm text-duck-ink/75 leading-relaxed"
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                 >
                     {stepData.instruction}
@@ -154,12 +154,12 @@ export const StepInstructionPanel: React.FC<StepInstructionPanelProps> = ({
                         onChange={(e) => onTextChange(stepData.id, e.target.value)}
                         placeholder="Schrijf hier jouw antwoord…"
                         rows={5}
-                        className="w-full min-h-[120px] flex-1 resize-none rounded-xl border border-duck-gray bg-white px-4 py-3 text-sm leading-relaxed text-duck-ink/70 placeholder:text-duck-ink/70 transition-all duration-200 focus:border-duck-acid/50 focus:outline-none focus:ring-2 focus:ring-duck-acid/30"
+                        className="w-full min-h-[120px] flex-1 resize-none rounded-xl border border-duck-gray bg-white px-4 py-3 text-sm leading-relaxed text-duck-ink placeholder:text-duck-ink/70 transition-all duration-200 focus:border-duck-acid/50 focus:outline-none focus:ring-2 focus:ring-duck-acid/30"
                         style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                     />
                     {qualityHint && (
                         <p
-                            className="text-xs text-duck-ink/70 mt-2"
+                            className="text-xs text-duck-ink/75 mt-2"
                             style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                         >
                             {qualityHint}
@@ -189,11 +189,11 @@ export const StepInstructionPanel: React.FC<StepInstructionPanelProps> = ({
                         onChange={(e) => onEvidenceChange(stepData.id, e.target.value)}
                         placeholder={evidenceRequirement.placeholder ?? 'Noteer hier kort welk resultaat of artefact je hebt gecontroleerd…'}
                         rows={3}
-                        className="w-full resize-none rounded-xl border border-duck-gray bg-white px-4 py-3 text-sm leading-relaxed text-duck-ink/70 placeholder:text-duck-ink/50 focus:border-duck-acid/50 focus:outline-none focus:ring-2 focus:ring-duck-acid/30"
+                        className="w-full resize-none rounded-xl border border-duck-gray bg-white px-4 py-3 text-sm leading-relaxed text-duck-ink placeholder:text-duck-ink/70 focus:border-duck-acid/50 focus:outline-none focus:ring-2 focus:ring-duck-acid/30"
                         style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                     />
                     <p
-                        className="mt-2 text-xs text-duck-ink/70"
+                        className="mt-2 text-xs text-duck-ink/75"
                         style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                     >
                         {evidenceLengthMet && !evidenceQualityHint
@@ -201,7 +201,7 @@ export const StepInstructionPanel: React.FC<StepInstructionPanelProps> = ({
                             : `Schrijf minimaal ${evidenceMinLength} tekens betekenisvol bewijs (${evidenceText.trim().length}/${evidenceMinLength}).`}
                     </p>
                     <p
-                        className="mt-1 text-[11px] leading-relaxed text-duck-ink/60"
+                        className="mt-1 text-[11px] leading-relaxed text-duck-ink/75"
                         style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                     >
                         {evidenceRequirement.privacyNote ?? 'Vul geen namen, contactgegevens, foto’s, stemopnames of links met persoonsgegevens in.'}
@@ -254,7 +254,7 @@ export const StepInstructionPanel: React.FC<StepInstructionPanelProps> = ({
 
             {!lengthRequirementMet && (
                 <p
-                    className="text-center text-xs text-duck-ink/70 mt-2"
+                    className="text-center text-xs text-duck-ink/75 mt-2"
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                 >
                     Schrijf eerst minimaal {requiredTextLength} tekens als bewijs van je werk
@@ -263,7 +263,7 @@ export const StepInstructionPanel: React.FC<StepInstructionPanelProps> = ({
 
             {!isStepComplete && textRequirementMet && (
                 <p
-                    className="text-center text-xs text-duck-ink/70 mt-2"
+                    className="text-center text-xs text-duck-ink/75 mt-2"
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                 >
                     Vink alle items af om door te gaan
@@ -271,7 +271,7 @@ export const StepInstructionPanel: React.FC<StepInstructionPanelProps> = ({
             )}
             {!isStepComplete && evidenceRequirement && evidenceLengthMet && !evidenceQualityHint && textRequirementMet && (
                 <p
-                    className="text-center text-xs text-duck-ink/70 mt-2"
+                    className="text-center text-xs text-duck-ink/75 mt-2"
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                 >
                     Vink alle checklist-items af om door te gaan.

@@ -8,6 +8,8 @@ interface Props {
     behandeld: HandledMail[];
     eindstand: SchoolState;
     gebeurtenissen: string[];
+    /** Of het afronden al loopt; dan is de knop uit tot het klaar is. */
+    afrondt?: boolean;
     onKlaar: () => void;
 }
 
@@ -117,7 +119,7 @@ const MailRegel: React.FC<{ mail: ShiftMail; keuze: HandledMail }> = ({ mail, ke
     );
 };
 
-export const ShiftDebrief: React.FC<Props> = ({ config, behandeld, eindstand, gebeurtenissen, onKlaar }) => {
+export const ShiftDebrief: React.FC<Props> = ({ config, behandeld, eindstand, gebeurtenissen, afrondt = false, onKlaar }) => {
     const score = scoreShift(config, behandeld, eindstand);
     const badge = [...config.badges]
         .sort((a, b) => b.minScore - a.minScore)
@@ -245,10 +247,12 @@ export const ShiftDebrief: React.FC<Props> = ({ config, behandeld, eindstand, ge
                 <button
                     data-qa="helpdesk-debrief-klaar"
                     onClick={onKlaar}
-                    className="w-full py-3.5 bg-duck-acid hover:bg-duck-acid/80 text-duck-ink rounded-full font-black text-sm transition-all duration-200 active:scale-[0.98] shadow-lg shadow-duck-acid/25 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-ink focus-visible:ring-offset-2"
+                    disabled={afrondt}
+                    aria-busy={afrondt}
+                    className="w-full py-3.5 bg-duck-acid hover:bg-duck-acid/80 text-duck-ink rounded-full font-black text-sm transition-all duration-200 active:scale-[0.98] shadow-lg shadow-duck-acid/25 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-ink focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60 disabled:active:scale-100"
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                 >
-                    Klaar
+                    {afrondt ? 'Bezig met opslaan…' : 'Klaar'}
                 </button>
             </div>
         </div>

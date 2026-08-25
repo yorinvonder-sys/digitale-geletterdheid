@@ -50,7 +50,9 @@ const InlineFlag: React.FC<FlagProps & { size?: 'lg' | 'sm' | 'xs' }> = ({ item,
     const textClass = size === 'lg'
         ? 'text-base font-black text-duck-ink'
         : size === 'xs'
-            ? 'text-xs font-semibold text-duck-ink/60'
+            // Onder /70 zakt duck-ink op wit onder de 4,5:1 die WCAG AA voor deze
+            // kleine tekst eist (/60 ≈ 4,2:1, /50 ≈ 3,3:1).
+            ? 'text-xs font-semibold text-duck-ink/70'
             : 'text-sm font-bold text-duck-ink';
 
     return (
@@ -286,7 +288,7 @@ export const SpotTheFlagsRound: React.FC<Props> = ({ round, selections, submitte
                                     <span className="font-bold text-sm text-duck-ink truncate" style={{ fontFamily: FONT }}>
                                         {frame.fromName}
                                     </span>
-                                    <span className="text-[11px] text-duck-ink/50 shrink-0" style={{ fontFamily: FONT }}>
+                                    <span className="text-[11px] text-duck-ink/70 shrink-0" style={{ fontFamily: FONT }}>
                                         {frame.receivedLabel}
                                     </span>
                                 </div>
@@ -297,7 +299,7 @@ export const SpotTheFlagsRound: React.FC<Props> = ({ round, selections, submitte
                                         ))}
                                     </div>
                                 )}
-                                <p className="text-[11px] text-duck-ink/50 mt-0.5" style={{ fontFamily: FONT }}>
+                                <p className="text-[11px] text-duck-ink/70 mt-0.5" style={{ fontFamily: FONT }}>
                                     aan mij
                                 </p>
                             </div>
@@ -344,7 +346,7 @@ export const SpotTheFlagsRound: React.FC<Props> = ({ round, selections, submitte
                 <div className="mt-4 grid gap-2.5">
                     {frame && asideItems.length > 0 && (
                         <p
-                            className="text-[10px] font-black text-duck-ink/50 uppercase tracking-widest"
+                            className="text-[10px] font-black text-duck-ink/70 uppercase tracking-widest"
                             style={{ fontFamily: FONT }}
                         >
                             Ook binnengekomen — via een ander kanaal

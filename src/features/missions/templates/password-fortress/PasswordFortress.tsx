@@ -179,7 +179,7 @@ const AttackRow: React.FC<{
                     <p className="font-mono text-[10px] text-duck-gray">
                         Kraaktijd: <span className={result.broken ? 'text-duck-error font-bold' : 'text-duck-bg'}>{result.timeLabel}</span>
                     </p>
-                    <p className="font-mono text-[10px] text-duck-gray/80 mt-0.5">{result.detail}</p>
+                    <p className="font-mono text-[10px] text-duck-gray mt-0.5">{result.detail}</p>
                 </div>
             )}
         </div>
@@ -214,7 +214,10 @@ const PasswordFortressInner: React.FC<{
 }> = ({ config, onBack, onComplete }) => {
     const { state, setState, clearSave } = useMissionAutoSave<FortressState>(
         config.missionId,
-        makeInitialState()
+        makeInitialState(),
+        // Een opgeslagen ronde-index die na een configwijziging buiten bereik valt,
+        // laat het rondescherm leeg renderen zonder knop om verder te komen.
+        { validate: s => s.currentRound >= 0 && s.currentRound < config.rounds.length }
     );
 
     // Lokale state — het wachtwoord wordt bewust NIET geautosaved.
@@ -223,6 +226,9 @@ const PasswordFortressInner: React.FC<{
     const [report, setReport] = useState<FortressReport | null>(null);
     const [revealCount, setRevealCount] = useState(0);
     const inputRef = useRef<HTMLInputElement>(null);
+    const headingRef = useRef<HTMLHeadingElement>(null);
+    const nextRef = useRef<HTMLButtonElement>(null);
+    const committedReport = useRef<FortressReport | null>(null);
 
     const round = config.rounds[state.currentRound];
     const roundId = round?.id ?? '';
@@ -257,22 +263,45 @@ const PasswordFortressInner: React.FC<{
 
     const handleTest = () => {
         if (!round || !input.trim() || revealing || isCleared) return;
-        const rep = runAttacks(input, round.attacks, round.targetSeconds);
-        setReport(rep);
+        setReport(runAttacks(input, round.attacks, round.targetSeconds));
         setRevealCount(0);
+    };
+
+    // De uitslag telt pas mee zodra de láátste aanval is onthuld. Anders kleuren de
+    // voortgangsstip en de score-footer al groen terwijl de aanvalsrijen nog lopen,
+    // en is de afloop bekend voordat de opbouw klaar is.
+    useEffect(() => {
+        if (!report || !revealed) return;
+        if (committedReport.current === report) return;
+        committedReport.current = report;
         setState(prev => {
             const next: FortressState = {
                 ...prev,
-                bestTimeLabels: { ...prev.bestTimeLabels, [roundId]: rep.timeLabel },
+                bestTimeLabels: { ...prev.bestTimeLabels, [roundId]: report.timeLabel },
             };
-            if (rep.holds) {
+            if (report.holds) {
                 next.cleared = prev.cleared.includes(roundId) ? prev.cleared : [...prev.cleared, roundId];
             } else {
                 next.attempts = { ...prev.attempts, [roundId]: (prev.attempts[roundId] ?? 0) + 1 };
             }
             return next;
         });
-    };
+    }, [report, revealed, roundId, setState]);
+
+    // Het invoerveld is disabled tijdens de onthulling en verliest daarmee de focus;
+    // bij een gehaalde ronde verdwijnt het formulier helemaal. Zonder verplaatsing
+    // valt de focus naar <body> en verliest een toetsenbord- of schermlezergebruiker
+    // zijn plek.
+    useEffect(() => {
+        if (!revealed) return;
+        if (isCleared) nextRef.current?.focus();
+        else inputRef.current?.focus();
+    }, [revealed, isCleared]);
+
+    // Een nieuwe ronde is een nieuw scherm: begin bij de kop.
+    useEffect(() => {
+        headingRef.current?.focus();
+    }, [state.currentRound]);
 
     const goNextRound = () => {
         resetLocal();
@@ -329,6 +358,10 @@ const PasswordFortressInner: React.FC<{
             max: config.pointsPerRound,
         }));
 
+        // Bewust GEEN onRetry: CompletionScreen maakt onRetry de primaire actie zodra
+        // de score onder de 40% blijft, en dan bestaat er geen route meer naar
+        // afronden. Zonder onRetry rondt die knop altijd af — ook voor een
+        // results-fase die al in een oudere opslag stond — en zit niemand vast.
         return (
             <CompletionScreen
                 score={totalScore}
@@ -339,7 +372,14 @@ const PasswordFortressInner: React.FC<{
                 onComplete={() => {
                     clearSave();
                     const requiredRounds = missionGoal?.criteria.min ?? config.rounds.length;
-                    onComplete(state.cleared.length >= requiredRounds, toScorePercent(totalScore, config.maxScore));
+                    // De laatste ronde (credential stuffing) is volgens het missiedoel
+                    // altijd verplicht; alleen het aantal rondes tellen zou een fort dat
+                    // de zwaarste golf nooit heeft doorstaan als geslaagd rapporteren.
+                    const finalRoundId = config.rounds[config.rounds.length - 1]?.id;
+                    const success =
+                        state.cleared.length >= requiredRounds &&
+                        (finalRoundId === undefined || state.cleared.includes(finalRoundId));
+                    onComplete(success, toScorePercent(totalScore, config.maxScore));
                 }}
             />
         );
@@ -402,11 +442,13 @@ const PasswordFortressInner: React.FC<{
 
                     {/* Ronde-briefing */}
                     <div className="mb-4">
-                        <div className="font-mono text-[10px] text-duck-gray/70 mb-1 uppercase tracking-widest">
+                        <div className="font-mono text-[10px] text-duck-gray mb-1 uppercase tracking-widest">
                             [ AANVALSGOLF {state.currentRound + 1} ]
                         </div>
                         <h2
-                            className="text-lg font-black text-white mb-2"
+                            ref={headingRef}
+                            tabIndex={-1}
+                            className="text-lg font-black text-duck-bg mb-2 rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-acid focus-visible:ring-offset-2 focus-visible:ring-offset-duck-ink"
                             style={{ fontFamily: "'Newsreader', Georgia, serif" }}
                         >
                             {round.title}
@@ -426,60 +468,64 @@ const PasswordFortressInner: React.FC<{
                         <FortressMeter report={report} revealed={revealed} />
                     </div>
 
-                    {/* Aanvallen */}
-                    <div className="space-y-2 mb-4" role="status" aria-live="polite">
-                        <div className="font-mono text-[10px] text-duck-gray uppercase tracking-widest">
-                            Actieve aanvallen
+                    {/* Aanvallen én uitslag in één live-regio: anders hoort een
+                        schermlezer wel de losse aanvalsresultaten, maar niet de
+                        beslissende eindconclusie eronder. */}
+                    <div role="status" aria-live="polite">
+                        <div className="space-y-2 mb-4">
+                            <div className="font-mono text-[10px] text-duck-gray uppercase tracking-widest">
+                                Actieve aanvallen
+                            </div>
+                            {round.attacks.map((attackId, i) => {
+                                const rowState = !report
+                                    ? 'idle'
+                                    : i < revealCount
+                                      ? 'done'
+                                      : i === revealCount
+                                        ? 'running'
+                                        : 'idle';
+                                return (
+                                    <AttackRow
+                                        key={attackId}
+                                        attackId={attackId}
+                                        result={report?.results[i] ?? null}
+                                        state={rowState as 'idle' | 'running' | 'done'}
+                                    />
+                                );
+                            })}
                         </div>
-                        {round.attacks.map((attackId, i) => {
-                            const rowState = !report
-                                ? 'idle'
-                                : i < revealCount
-                                  ? 'done'
-                                  : i === revealCount
-                                    ? 'running'
-                                    : 'idle';
-                            return (
-                                <AttackRow
-                                    key={attackId}
-                                    attackId={attackId}
-                                    result={report?.results[i] ?? null}
-                                    state={rowState as 'idle' | 'running' | 'done'}
-                                />
-                            );
-                        })}
+
+                        {/* Uitslag — gehaald (werkt ook na herladen, zonder lokaal rapport) */}
+                        {isCleared && !revealing && (
+                            <div className="mb-4 rounded-xl border border-duck-acid/60 bg-duck-ink/20 p-4">
+                                <div className="font-mono text-xs font-bold text-duck-acid tracking-widest uppercase text-center mb-2">
+                                    &gt;&gt; FORT HOUDT STAND &lt;&lt;
+                                </div>
+                                <p className="font-mono text-[11px] text-duck-gray leading-relaxed">
+                                    {round.clearedLesson}
+                                </p>
+                            </div>
+                        )}
+
+                        {/* Uitslag — gevallen */}
+                        {revealed && report && !report.holds && (
+                            <div className="mb-4 rounded-xl border border-duck-error/60 bg-duck-error/20 p-4">
+                                <div className="font-mono text-xs font-bold text-duck-ink tracking-widest uppercase text-center mb-2 bg-duck-error rounded-md py-1">
+                                    &gt;&gt; FORT GEVALLEN &lt;&lt;
+                                </div>
+                                <p className="font-mono text-[11px] text-duck-gray leading-relaxed">
+                                    Zwakste schakel:{' '}
+                                    {(() => {
+                                        const weakest = report.results.reduce((min, r) =>
+                                            r.crackSeconds < min.crackSeconds ? r : min
+                                        );
+                                        return `${ATTACK_META[weakest.attackId].name} — ${weakest.timeLabel}. `;
+                                    })()}
+                                    Pas je wachtwoord aan en test opnieuw.
+                                </p>
+                            </div>
+                        )}
                     </div>
-
-                    {/* Uitslag — gehaald (werkt ook na herladen, zonder lokaal rapport) */}
-                    {isCleared && !revealing && (
-                        <div className="mb-4 rounded-xl border border-duck-acid/60 bg-duck-ink/20 p-4">
-                            <div className="font-mono text-xs font-bold text-duck-acid tracking-widest uppercase text-center mb-2">
-                                &gt;&gt; FORT HOUDT STAND &lt;&lt;
-                            </div>
-                            <p className="font-mono text-[11px] text-duck-gray leading-relaxed">
-                                {round.clearedLesson}
-                            </p>
-                        </div>
-                    )}
-
-                    {/* Uitslag — gevallen */}
-                    {revealed && report && !report.holds && (
-                        <div className="mb-4 rounded-xl border border-duck-error/60 bg-duck-error/20 p-4">
-                            <div className="font-mono text-xs font-bold text-duck-ink tracking-widest uppercase text-center mb-2 bg-duck-error rounded-md py-1">
-                                &gt;&gt; FORT GEVALLEN &lt;&lt;
-                            </div>
-                            <p className="font-mono text-[11px] text-duck-gray leading-relaxed">
-                                Zwakste schakel:{' '}
-                                {(() => {
-                                    const weakest = report.results.reduce((min, r) =>
-                                        r.crackSeconds < min.crackSeconds ? r : min
-                                    );
-                                    return `${ATTACK_META[weakest.attackId].name} — ${weakest.timeLabel}. `;
-                                })()}
-                                Pas je wachtwoord aan en test opnieuw.
-                            </p>
-                        </div>
-                    )}
 
                     {/* Invoer */}
                     {!isCleared && (
@@ -515,14 +561,14 @@ const PasswordFortressInner: React.FC<{
                                     {showPw ? <EyeOff size={14} /> : <Eye size={14} />}
                                 </button>
                             </div>
-                            <p className="font-mono text-[10px] text-duck-gray/70 mt-1.5">
+                            <p className="font-mono text-[10px] text-duck-gray mt-1.5">
                                 Gebruik nóóit je echte wachtwoord — verzin er een. Alles blijft in je browser.
                             </p>
                             <button
                                 data-qa="fortress-test"
                                 onClick={handleTest}
                                 disabled={!input.trim() || revealing}
-                                className="min-h-[44px] w-full mt-2 py-2.5 bg-duck-acid hover:bg-duck-acid hover:brightness-95 disabled:bg-duck-gray/30 disabled:text-duck-gray/60 text-duck-ink disabled:cursor-not-allowed font-mono font-bold text-xs rounded-xl transition-all duration-150"
+                                className="min-h-[44px] w-full mt-2 py-2.5 bg-duck-acid hover:bg-duck-acid hover:brightness-95 disabled:bg-duck-gray/20 disabled:text-duck-gray text-duck-ink disabled:cursor-not-allowed font-mono font-bold text-xs rounded-xl transition-all duration-150"
                             >
                                 {revealing ? 'AANVAL LOOPT…' : 'TEST MIJN FORT'}
                             </button>
@@ -533,6 +579,7 @@ const PasswordFortressInner: React.FC<{
                     {isCleared && !revealing && (
                         <button
                             data-qa="fortress-next"
+                            ref={nextRef}
                             onClick={goNextRound}
                             className="min-h-[44px] w-full py-2.5 bg-duck-acid hover:bg-duck-acid hover:brightness-95 font-mono font-bold text-xs text-duck-ink rounded-xl transition-all duration-150 mb-4"
                         >
@@ -566,7 +613,7 @@ const PasswordFortressInner: React.FC<{
                                     <button
                                         data-qa="fortress-hint"
                                         onClick={handleHint}
-                                        className="flex min-h-[44px] items-center gap-1 px-2 font-mono text-[10px] text-duck-gray/70 hover:text-duck-bg transition-colors"
+                                        className="flex min-h-[44px] items-center gap-1 px-2 font-mono text-[10px] text-duck-gray hover:text-duck-bg transition-colors"
                                     >
                                         <Lightbulb size={10} />
                                         hint (-{config.hintCost} pts)

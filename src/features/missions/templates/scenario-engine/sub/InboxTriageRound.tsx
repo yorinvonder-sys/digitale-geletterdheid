@@ -238,7 +238,13 @@ export const InboxTriageRound: React.FC<Props> = ({ round, selections, submitted
                                 onDrag={submitted ? undefined : handleDrag}
                                 onDragEnd={submitted ? undefined : (_e, info) => handleDragEnd(item, info)}
                                 whileDrag={{ scale: 1.02, zIndex: 10 }}
-                                style={{ touchAction: submitted ? undefined : 'none' }}
+                                // 'pan-y' en niet 'none': met 'none' verwerkte de browser
+                                // geen enkel aanraakgebaar bovenop een rij meer, waardoor de
+                                // berichtenlijst op telefoon en tablet niet te scrollen was.
+                                // Verticaal vegen scrollt nu weer; slepen blijft beschikbaar
+                                // met de muis, en de twee knoppen per rij blijven de volwaardige
+                                // bediening op aanraakschermen.
+                                style={{ touchAction: submitted ? undefined : 'pan-y' }}
                                 className={`px-3 py-2.5 transition-colors duration-200 ${
                                     submitted && isAnswered
                                         ? isCorrectAnswer
@@ -257,7 +263,7 @@ export const InboxTriageRound: React.FC<Props> = ({ round, selections, submitted
                                             {item.title}
                                         </p>
                                         <p
-                                            className="text-xs text-duck-ink/60 truncate"
+                                            className="text-xs text-duck-ink/70 truncate"
                                             style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                                         >
                                             {item.description}

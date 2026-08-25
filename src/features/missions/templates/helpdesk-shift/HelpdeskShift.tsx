@@ -1,9 +1,11 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useMissionAutoSave } from '@/hooks/useMissionAutoSave';
 import { IntroScreen } from '../shared/IntroScreen';
 import { getMissionGoal } from '@/config/missionGoals';
 import type { TemplateMissionProps } from '../shared/types';
+import { toScorePercent } from '../shared/scorePercent';
 import type { HelpdeskShiftConfig, HelpdeskShiftState } from './types';
+import type { OfficeConfig } from './office/officeTypes';
 import { scoreShift } from './scoring';
 import { useShiftFlow } from './useShiftFlow';
 import { ShiftDebrief } from './sub/ShiftDebrief';
@@ -65,6 +67,21 @@ function isStateValid(saved: HelpdeskShiftState): boolean {
     return true;
 }
 
+/**
+ * De dienst hangt aan een naamkoppeling tussen twee losse configbestanden: elk
+ * bericht komt binnen op een bureau uit `mailPerDesk`, en elke onderbreking
+ * speelt op een bestaande plek. Klopt die koppeling niet, dan wordt het doel
+ * null, verschijnt de knop "Bericht lezen" nooit en loopt de dienst stil vast.
+ * Hier faalt het zichtbaar bij het laden in plaats van halverwege de ochtend.
+ */
+function isOfficeContractValid(config: HelpdeskShiftConfig, office: OfficeConfig): boolean {
+    const deskIds = new Set(office.desks.map((d) => d.id));
+    const plekken = new Set<string>([...deskIds, ...office.stations.map((s) => s.id)]);
+    const mailsOk = config.mails.every((mail) => deskIds.has(office.mailPerDesk[mail.id] ?? ''));
+    const onderbrekingenOk = office.onderbrekingen.every((o) => plekken.has(o.plek));
+    return mailsOk && onderbrekingenOk;
+}
+
 export const HelpdeskShift: React.FC<TemplateMissionProps> = ({ missionId, onBack, onComplete }) => {
     const [config, setConfig] = useState<HelpdeskShiftConfig | null>(null);
     const [loadError, setLoadError] = useState(false);
@@ -72,7 +89,11 @@ export const HelpdeskShift: React.FC<TemplateMissionProps> = ({ missionId, onBac
     useEffect(() => {
         if (!VALID_HELPDESK_SHIFT_IDS.has(missionId)) { setLoadError(true); return; }
         import(`./configs/${missionId}.ts`)
-            .then((mod) => setConfig(mod.default as HelpdeskShiftConfig))
+            .then((mod) => {
+                const geladen = mod.default as HelpdeskShiftConfig;
+                if (!isOfficeContractValid(geladen, officeConfig)) { setLoadError(true); return; }
+                setConfig(geladen);
+            })
             .catch(() => setLoadError(true));
     }, [missionId]);
 
@@ -85,7 +106,7 @@ export const HelpdeskShift: React.FC<TemplateMissionProps> = ({ missionId, onBac
 const HelpdeskShiftInner: React.FC<{
     config: HelpdeskShiftConfig;
     onBack: () => void;
-    onComplete: (success: boolean) => void;
+    onComplete: TemplateMissionProps['onComplete'];
 }> = ({ config, onBack, onComplete }) => {
     const { state, setState, clearSave } = useMissionAutoSave<HelpdeskShiftState>(
         config.missionId,
@@ -100,6 +121,14 @@ const HelpdeskShiftInner: React.FC<{
      */
     const [bezig, setBezig] = useState(false);
 
+    /**
+     * Of het afronden loopt. Houdt de Klaar-knop uit terwijl de host de
+     * voltooiing afhandelt; loopt dat mis, dan komt de knop terug zodat de
+     * nabespreking geen doodlopend eindscherm wordt.
+     */
+    const [afrondt, setAfrondt] = useState(false);
+    const afrondtRef = useRef(false);
+
     const handleAfgerond = useCallback((resultaat: NonNullable<HelpdeskShiftState['afgerondeDienst']>) => {
         setBezig(false);
         setState(() => ({ phase: 'debrief', afgerondeDienst: resultaat }));
@@ -111,19 +140,34 @@ const HelpdeskShiftInner: React.FC<{
         { onAfgerond: handleAfgerond }
     );
 
+    const afgerondeDienst = state.phase === 'debrief' ? state.afgerondeDienst : undefined;
+
+    const handleKlaar = useCallback(async () => {
+        if (!afgerondeDienst || afrondtRef.current) return;
+        afrondtRef.current = true;
+        setAfrondt(true);
+        try {
+            clearSave();
+            const score = scoreShift(config, afgerondeDienst.behandeld, afgerondeDienst.eindstand);
+            await onComplete(score >= config.maxScore * 0.4, toScorePercent(score, config.maxScore));
+        } finally {
+            // Mislukt afronden, dan moet de leerling het opnieuw kunnen proberen.
+            afrondtRef.current = false;
+            setAfrondt(false);
+        }
+    }, [afgerondeDienst, clearSave, config, onComplete]);
+
     // ── Nabespreking ──
-    if (state.phase === 'debrief' && state.afgerondeDienst) {
-        const { behandeld, eindstand, gebeurtenissen } = state.afgerondeDienst;
+    if (afgerondeDienst) {
+        const { behandeld, eindstand, gebeurtenissen } = afgerondeDienst;
         return (
             <ShiftDebrief
                 config={config}
                 behandeld={behandeld}
                 eindstand={eindstand}
                 gebeurtenissen={gebeurtenissen}
-                onKlaar={() => {
-                    clearSave();
-                    onComplete(scoreShift(config, behandeld, eindstand) >= config.maxScore * 0.4);
-                }}
+                afrondt={afrondt}
+                onKlaar={handleKlaar}
             />
         );
     }

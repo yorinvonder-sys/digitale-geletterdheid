@@ -1,4 +1,4 @@
-import React, { useMemo, useCallback, useState, useEffect } from 'react';
+import React, { useMemo, useCallback, useRef, useState, useEffect } from 'react';
 import { ChevronRight, ChevronLeft } from 'lucide-react';
 import { useMissionAutoSave } from '@/hooks/useMissionAutoSave';
 import { IntroScreen } from '../shared/IntroScreen';
@@ -106,6 +106,27 @@ function clampScore(score: number, maxScore: number): number {
     return Math.min(Math.max(score, 0), maxScore);
 }
 
+const isRecord = (value: unknown): value is Record<string, unknown> =>
+    typeof value === 'object' && value !== null && !Array.isArray(value);
+
+// Toetst alleen de vorm van opgeslagen state, niet de inhoud: vraag-ids uit een
+// oudere config zijn onschadelijk (scoring loopt over de huidige config) en een
+// ontbrekende parameterset wordt bij het lezen aangevuld met de defaults. Zo
+// blijft bestaande voortgang na een configwijziging behouden en wordt alleen
+// echt onbruikbare opslag gewist.
+function isValidSavedState(saved: SimulationLabState): boolean {
+    if (saved.phase !== 'intro' && saved.phase !== 'simulate' && saved.phase !== 'results') return false;
+    if (typeof saved.currentSim !== 'number' || !Number.isFinite(saved.currentSim)) return false;
+    return (
+        isRecord(saved.parameterValues) &&
+        isRecord(saved.questionAnswers) &&
+        isRecord(saved.questionSubmitted) &&
+        isRecord(saved.interacted) &&
+        isRecord(saved.followUpAnswered) &&
+        isRecord(saved.followUpCorrect)
+    );
+}
+
 const SimulationLabInner: React.FC<SimulationLabProps> = ({ onBack, onComplete, config }) => {
     const buildInitialParams = useCallback((): Record<string, Record<string, number | string | boolean>> => {
         const out: Record<string, Record<string, number | string | boolean>> = {};
@@ -134,7 +155,8 @@ const SimulationLabInner: React.FC<SimulationLabProps> = ({ onBack, onComplete, 
 
     const { state, setState, clearSave } = useMissionAutoSave<SimulationLabState>(
         config.missionId,
-        INITIAL_STATE
+        INITIAL_STATE,
+        { validate: isValidSavedState }
     );
 
     const currentSim = Math.min(Math.max(state.currentSim, 0), config.simulations.length - 1);
@@ -147,7 +169,31 @@ const SimulationLabInner: React.FC<SimulationLabProps> = ({ onBack, onComplete, 
 
     const currentSimData = config.simulations[currentSim];
 
-    const currentParams = state.parameterValues[currentSimData?.id] ?? {};
+    const defaultParams = useMemo(() => buildInitialParams(), [buildInitialParams]);
+
+    // Opgeslagen waarden over de defaults heen: een simulatie of parameter die na
+    // het opslaan aan de config is toegevoegd heeft anders geen waarde, waarna
+    // computeVisuals met een lege set draait.
+    const currentParams = useMemo(
+        () => ({
+            ...(defaultParams[currentSimData?.id] ?? {}),
+            ...(state.parameterValues[currentSimData?.id] ?? {}),
+        }),
+        [defaultParams, state.parameterValues, currentSimData]
+    );
+
+    // Bij het wisselen van simulatie wordt de hele inhoud vervangen terwijl de focus
+    // op de dan vaak uitgeschakelde navigatieknop blijft staan. De kop is het
+    // programmatische beginpunt van de nieuwe simulatie.
+    const simTitleRef = useRef<HTMLHeadingElement>(null);
+    const previousSimRef = useRef(currentSim);
+
+    useEffect(() => {
+        if (previousSimRef.current === currentSim) return;
+        previousSimRef.current = currentSim;
+        if (state.phase !== 'simulate') return;
+        simTitleRef.current?.focus();
+    }, [currentSim, state.phase]);
 
     const visualData = useMemo(() => {
         if (!currentSimData) return null;
@@ -186,17 +232,24 @@ const SimulationLabInner: React.FC<SimulationLabProps> = ({ onBack, onComplete, 
     ) ?? false;
 
     const handleParamChange = (simId: string, paramId: string, val: number | string | boolean) => {
-        setState((prev) => ({
-            ...prev,
-            parameterValues: {
-                ...prev.parameterValues,
-                [simId]: {
-                    ...prev.parameterValues[simId],
-                    [paramId]: val,
+        setState((prev) => {
+            const simParams = prev.parameterValues[simId] ?? {};
+            // Alleen een échte waardewijziging telt als experimenteren: opnieuw op de
+            // al gekozen optie klikken verandert niets aan de simulatie.
+            const previous = simParams[paramId] ?? defaultParams[simId]?.[paramId];
+            const changed = previous !== val;
+            return {
+                ...prev,
+                parameterValues: {
+                    ...prev.parameterValues,
+                    [simId]: {
+                        ...simParams,
+                        [paramId]: val,
+                    },
                 },
-            },
-            interacted: { ...prev.interacted, [simId]: true },
-        }));
+                interacted: changed ? { ...prev.interacted, [simId]: true } : prev.interacted,
+            };
+        });
     };
 
     const handleAnswer = (questionId: string, val: string | number) => {
@@ -251,9 +304,13 @@ const SimulationLabInner: React.FC<SimulationLabProps> = ({ onBack, onComplete, 
         }
     };
 
-    const handleComplete = () => {
-        clearSave();
-        onComplete(true, toScorePercent(totalScore, config.maxScore));
+    // Wissen mag pas nadat de voltooiing duurzaam is opgeslagen: faalt dat, dan houdt
+    // de leerling zijn voortgang en kan hij het opnieuw proberen vanaf het eindscherm.
+    const handleComplete = async () => {
+        const completed = await onComplete(true, toScorePercent(totalScore, config.maxScore));
+        if (completed !== false) {
+            clearSave();
+        }
     };
 
     // ─── Phases ───────────────────────────────────────────────────────────────
@@ -321,7 +378,9 @@ const SimulationLabInner: React.FC<SimulationLabProps> = ({ onBack, onComplete, 
                         </span>
                     </div>
                     <h2
-                        className="text-xl font-black text-duck-ink"
+                        ref={simTitleRef}
+                        tabIndex={-1}
+                        className="text-xl font-black text-duck-ink rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-ink focus-visible:ring-offset-2"
                         style={{ fontFamily: "'Newsreader', Georgia, serif" }}
                     >
                         {currentSimData.title}
@@ -336,7 +395,7 @@ const SimulationLabInner: React.FC<SimulationLabProps> = ({ onBack, onComplete, 
 
                 {/* "Probeer het!" prompt when not yet interacted */}
                 {!hasInteracted && (
-                    <div className="bg-duck-acid/8 border border-duck-acid/20 rounded-xl px-4 py-3 mb-4 flex items-center gap-3">
+                    <div className="bg-duck-acid/10 border border-duck-acid/20 rounded-xl px-4 py-3 mb-4 flex items-center gap-3">
                         <span className="text-lg">🔬</span>
                         <p
                             className="text-xs text-duck-ink font-bold"

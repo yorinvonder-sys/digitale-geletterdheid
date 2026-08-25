@@ -33,7 +33,7 @@ export const MISSION_OVERRIDES: Record<string, Partial<Mission>> = {
     'print-pro': { isExternal: true, info: 'Ik print mijn Word-bestand via de print-app en lever mijn bestanden in via Magister. Klaar als: mijn print klopt en de opdracht op "Ingeleverd" staat. Tijd: 15 minuten.' },
     'ipad-print-instructies': { isHighlighted: true, classRestriction: 'MH1A', info: 'Ik leer stap voor stap hoe ik vanaf mijn iPad print. Ik download de print-app, log in en verstuur mijn eerste printopdracht.' },
     'cloud-cleaner': { info: 'Ik herhaal hoe ik bestanden logisch orden. Ik sleep losse bestanden naar de juiste map en maak mijn cloud overzichtelijk.' },
-    'layout-doctor': { info: 'Ik test mijn Word-kennis door problemen aan oplossingen te koppelen. Ik herken sneller welke functie ik nodig heb.' },
+    'layout-doctor': { info: 'Ik repareer vier Word-documenten: tekstomloop, koppen, een inhoudsopgave en paginanummers. Ik herken sneller welke functie ik nodig heb.' },
     'pitch-police': { info: 'Ik herhaal de basis van goed slide-ontwerp. Ik verbeter een saaie slide zodat die duidelijker en aantrekkelijker wordt.' },
     // Leerjaar 1 — Periode 2
     'prompt-master': { info: 'Ik ontdek hoe ik AI duidelijker aanstuur met sterke prompts. Ik leer het verschil tussen vaag vragen en precies formuleren.' },

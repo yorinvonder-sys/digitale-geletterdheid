@@ -26,6 +26,8 @@ interface VonnisClimaxProps {
     badges: BadgeConfig[];
     takeaways: string[];
     onComplete: () => void;
+    /** Zet de leerling terug bij dossier 1 met behoud van zijn antwoorden. */
+    onRetry: () => void;
 }
 
 // Pass threshold: ≥ 50% of the dossier's max
@@ -50,6 +52,7 @@ export const VonnisClimax: React.FC<VonnisClimaxProps> = ({
     badges,
     takeaways,
     onComplete,
+    onRetry,
 }) => {
     const [showConfetti, setShowConfetti] = useState(true);
     const [showCompletion, setShowCompletion] = useState(false);
@@ -86,6 +89,7 @@ export const VonnisClimax: React.FC<VonnisClimaxProps> = ({
                 phases={phases}
                 takeaways={takeaways}
                 onComplete={onComplete}
+                onRetry={onRetry}
             />
         );
     }

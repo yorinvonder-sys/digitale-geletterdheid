@@ -83,10 +83,19 @@ export const PuzzleLab: React.FC<TemplateMissionProps> = ({
     onComplete,
 }) => {
     const config = PUZZLE_LAB_CONFIGS[missionId];
+    const puzzleCount = config?.puzzles.length ?? 0;
 
     const { state, setState, clearSave } = useMissionAutoSave<PuzzleLabState>(
         config?.missionId ?? missionId,
-        makeInitialState()
+        makeInitialState(),
+        {
+            // Een opgeslagen puzzelindex die na het inkorten van een config buiten
+            // bereik valt, levert een lege render zonder terug-knop op.
+            validate: s =>
+                Array.isArray(s.solved) &&
+                s.currentPuzzle >= 0 &&
+                (puzzleCount === 0 || s.currentPuzzle < puzzleCount),
+        }
     );
 
     const [inputValue, setInputValue] = useState('');
@@ -95,6 +104,7 @@ export const PuzzleLab: React.FC<TemplateMissionProps> = ({
     const [shake, setShake] = useState(false);
     const [celebrating, setCelebrating] = useState(false);
     const inputRef = useRef<HTMLInputElement>(null);
+    const headingRef = useRef<HTMLHeadingElement>(null);
 
     // Config not found — show fallback
     if (!config) {
@@ -120,13 +130,8 @@ export const PuzzleLab: React.FC<TemplateMissionProps> = ({
         state.extraCluesRevealed[puzzleId] ||
         attempts >= puzzle?.revealExtraAfterAttempts;
 
-    // Visible clues = base clues + extra if unlocked, sliced to hints used + base
-    const visibleClues = puzzle
-        ? [
-              ...puzzle.clues,
-              ...(extraRevealed && puzzle.extraClues ? puzzle.extraClues : []),
-          ]
-        : [];
+    const hiddenExtraClues =
+        !extraRevealed && puzzle?.extraClues ? puzzle.extraClues.length : 0;
 
     const totalScore = config.puzzles.reduce((acc, p) => {
         if (!state.solved.includes(p.id)) return acc;
@@ -161,7 +166,11 @@ export const PuzzleLab: React.FC<TemplateMissionProps> = ({
                 setCelebrating(true);
                 setState(prev => ({
                     ...prev,
-                    solved: [...prev.solved, puzzleId],
+                    // Twee snelle geslaagde submits (Enter + klik in dezelfde tick)
+                    // mogen het id niet twee keer in de lijst zetten.
+                    solved: prev.solved.includes(puzzleId)
+                        ? prev.solved
+                        : [...prev.solved, puzzleId],
                     answers: { ...prev.answers, [puzzleId]: raw },
                 }));
                 clearFeedback();
@@ -208,14 +217,18 @@ export const PuzzleLab: React.FC<TemplateMissionProps> = ({
         if (e.key === 'Enter') handleSubmit();
     };
 
+    // Een hint kostte punten voor tekst die op datzelfde moment al gratis onder de
+    // puzzel stond. De hint ontgrendelt de extra aanwijzingen nu zélf, vóór het
+    // aantal pogingen waarop ze vanzelf verschijnen — punten voor informatiewinst.
     const handleHint = () => {
-        if (!puzzle) return;
+        if (!puzzle || extraRevealed) return;
         setState(prev => ({
             ...prev,
             hintsUsed: {
                 ...prev.hintsUsed,
                 [puzzleId]: (prev.hintsUsed[puzzleId] ?? 0) + 1,
             },
+            extraCluesRevealed: { ...prev.extraCluesRevealed, [puzzleId]: true },
         }));
     };
 
@@ -232,11 +245,40 @@ export const PuzzleLab: React.FC<TemplateMissionProps> = ({
         }
     };
 
-    // Auto-focus input
+    // De resultaatfase staat in de opgeslagen voortgang: zonder uitweg blijft een
+    // leerling die onder de drempel eindigde daar ook na herladen hangen. Opnieuw
+    // proberen behoudt opgeloste puzzels, antwoorden en gebruikte hints; alleen de
+    // pogingenteller van nog onopgeloste puzzels gaat terug, zodat de invoer weer
+    // openstaat. Onthulde extra aanwijzingen blijven staan.
+    const handleRetry = () => {
+        setInputValue('');
+        setFeedback(null);
+        setState(prev => {
+            const attempts = { ...prev.attempts };
+            config.puzzles.forEach(p => {
+                if (!prev.solved.includes(p.id)) delete attempts[p.id];
+            });
+            const firstUnsolved = config.puzzles.findIndex(
+                p => !prev.solved.includes(p.id)
+            );
+            return {
+                ...prev,
+                phase: 'puzzle',
+                currentPuzzle: firstUnsolved === -1 ? 0 : firstUnsolved,
+                attempts,
+            };
+        });
+    };
+
+    // Auto-focus: bij tekstinvoer het veld, bij multiple-choice de puzzelkop —
+    // anders valt de focus na een puzzelwissel terug op <body>.
     useEffect(() => {
-        if (state.phase === 'puzzle' && inputRef.current && puzzle?.type !== 'multiple-choice') {
+        if (state.phase !== 'puzzle') return;
+        if (puzzle?.type !== 'multiple-choice' && inputRef.current) {
             inputRef.current.focus();
+            return;
         }
+        headingRef.current?.focus();
     }, [state.phase, state.currentPuzzle, puzzle?.type]);
 
     // === INTRO ===
@@ -274,6 +316,7 @@ export const PuzzleLab: React.FC<TemplateMissionProps> = ({
                 badges={config.badges}
                 phases={phases}
                 takeaways={config.takeaways}
+                onRetry={handleRetry}
                 onComplete={() => {
                     clearSave();
                     // Reflect real performance: only a >=40% score counts as a pass,
@@ -346,7 +389,9 @@ export const PuzzleLab: React.FC<TemplateMissionProps> = ({
                             [ {puzzle.type === 'multiple-choice' ? 'MULTIPLE CHOICE' : puzzle.type === 'code-crack' ? 'CODE KRAKEN' : 'TEKST INVOER'} ]
                         </div>
                         <h2
-                            className="text-lg font-black text-white mb-2"
+                            ref={headingRef}
+                            tabIndex={-1}
+                            className="text-lg font-black text-white mb-2 rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-acid focus-visible:ring-offset-2 focus-visible:ring-offset-duck-ink"
                             style={{ fontFamily: "'Newsreader', Georgia, serif" }}
                         >
                             {puzzle.title}
@@ -361,16 +406,16 @@ export const PuzzleLab: React.FC<TemplateMissionProps> = ({
                         <div className="font-mono text-[10px] text-duck-gray uppercase tracking-widest mb-2">
                             AANWIJZINGEN
                         </div>
-                        {visibleClues.slice(0, puzzle.clues.length + hintsUsed).map((clue, i) => (
+                        {puzzle.clues.map((clue, i) => (
                             <div key={i} className="flex items-start gap-2 font-mono text-xs text-duck-gray">
                                 <span className="text-duck-gray shrink-0 mt-0.5">&gt;</span>
                                 <span>{clue}</span>
                             </div>
                         ))}
-                        {visibleClues.length > puzzle.clues.length + hintsUsed && (
+                        {hiddenExtraClues > 0 && (
                             <div className="flex items-center gap-2 font-mono text-[10px] text-duck-gray">
                                 <EyeOff size={10} />
-                                <span>{visibleClues.length - puzzle.clues.length - hintsUsed} aanwijzing(en) verborgen</span>
+                                <span>{hiddenExtraClues} aanwijzing(en) verborgen</span>
                             </div>
                         )}
                         {extraRevealed && puzzle.extraClues && puzzle.extraClues.length > 0 && (
@@ -390,7 +435,7 @@ export const PuzzleLab: React.FC<TemplateMissionProps> = ({
 
                     {/* Feedback banner */}
                     {feedback && (
-                        <div className="mb-4" role="status" aria-live="assertive">
+                        <div className="mb-4" role="status">
                             <FeedbackBanner type={feedback} message={feedbackMessage} />
                         </div>
                     )}
@@ -407,7 +452,7 @@ export const PuzzleLab: React.FC<TemplateMissionProps> = ({
                                             data-puzzle-option-index={i}
                                             onClick={() => checkAnswer(opt)}
                                             disabled={celebrating}
-                                            className="min-h-[44px] w-full text-left px-4 py-3 bg-duck-ink hover:bg-duck-ink border border-duck-gray/30 hover:border-duck-acid/40 rounded-xl font-mono text-xs text-duck-gray transition-all duration-150 flex items-center gap-3"
+                                            className="min-h-[44px] w-full text-left px-4 py-3 bg-duck-ink hover:bg-duck-gray/10 border border-duck-gray/30 hover:border-duck-acid/40 rounded-xl font-mono text-xs text-duck-gray hover:text-duck-bg transition-all duration-150 flex items-center gap-3"
                                         >
                                             <span className="text-duck-gray w-5">{String.fromCharCode(65 + i)}.</span>
                                             {opt}
@@ -453,18 +498,20 @@ export const PuzzleLab: React.FC<TemplateMissionProps> = ({
                                     )}
                                 </div>
                                 <div className="flex items-center gap-2">
-                                    {visibleClues.length > puzzle.clues.length + hintsUsed && (
+                                    {hiddenExtraClues > 0 && (
                                         <button
                                             data-qa="puzzle-hint"
                                             onClick={handleHint}
-                                            className="min-h-[44px] flex items-center gap-1 px-2 font-mono text-[10px] text-duck-gray/70 hover:text-duck-ink transition-colors"
+                                            className="min-h-[44px] flex items-center gap-1 px-2 font-mono text-[10px] text-duck-gray hover:text-duck-bg transition-colors"
                                         >
                                             <Eye size={10} />
                                             hint (-{puzzle.hintCost} pts)
                                         </button>
                                     )}
-                                    {(attempts >= 2 ||
-                                        visibleClues.length <= puzzle.clues.length + hintsUsed) && (
+                                    {/* Overslaan pas na een echte poging of nadat de extra
+                                        aanwijzingen er zijn — anders is elke puzzel bij
+                                        binnenkomst al weg te klikken. */}
+                                    {(attempts >= 2 || extraRevealed) && (
                                         <button
                                             data-qa="puzzle-skip"
                                             onClick={handleSkip}
@@ -487,7 +534,7 @@ export const PuzzleLab: React.FC<TemplateMissionProps> = ({
                             <button
                                 data-qa="puzzle-skip"
                                 onClick={handleSkip}
-                                className="min-h-[44px] w-full py-2.5 bg-duck-ink hover:bg-duck-ink border border-duck-gray/30 font-mono font-bold text-xs text-duck-gray rounded-xl transition-all duration-150"
+                                className="min-h-[44px] w-full py-2.5 bg-duck-ink hover:bg-duck-gray/10 border border-duck-gray/30 font-mono font-bold text-xs text-duck-gray hover:text-duck-bg rounded-xl transition-all duration-150"
                             >
                                 VOLGENDE PUZZEL →
                             </button>

@@ -58,9 +58,9 @@ export const MISSION_GOALS: Record<string, MissionGoal> = {
         primaryGoal: 'Ik verbeter een rommelig Word-document zodat het leesbaar en professioneel wordt.',
         criteria: {
             type: 'component-complete',
-            description: 'Je past de gevraagde opmaakverbeteringen toe.',
+            description: 'Je lost per klacht de gevraagde opmaakfout op in de Word-simulator.',
         },
-        evidence: 'Het document heeft duidelijke koppen, consistente tekst en betere plaatsing van beeld.',
+        evidence: 'De vier documenten hebben een goed geplaatste afbeelding met tekstomloop, koppen op Kop 1, een automatische inhoudsopgave en paginanummers.',
     },
     'pitch-police': {
         primaryGoal: 'Ik herken veelvoorkomende slideproblemen en kies per slide een passende verbetering.',
@@ -373,12 +373,12 @@ export const MISSION_GOALS: Record<string, MissionGoal> = {
         evidence: 'Je advies noemt voordelen, risico\u2019s en een keuze die je kunt verdedigen.',
     },
     'ipad-print-instructies': {
-        primaryGoal: 'Ik print vanaf een iPad door de juiste app, printer en stappen te gebruiken.',
+        primaryGoal: 'Ik herken veelvoorkomende printproblemen en kies de juiste oplossing in de printerinstellingen.',
         criteria: {
             type: 'component-complete',
-            description: 'Je installeert of opent de printapp, kiest printerinstellingen en test de print.',
+            description: 'Je lost vijf printscenario’s op en legt in je reflectie uit wat je hebt geleerd.',
         },
-        evidence: 'Je kunt de printstappen zelfstandig voordoen of uitleggen.',
+        evidence: 'Je kunt per printprobleem uitleggen welke instelling of verbinding je moet controleren.',
     },
     'startup-pitch': {
         primaryGoal: 'Ik bedenk een AI-startup, onderbouw het probleem en de oplossing, en reflecteer op privacy en eerlijkheid.',
@@ -820,9 +820,9 @@ export const MISSION_GOALS: Record<string, MissionGoal> = {
         criteria: {
             type: 'score-threshold',
             threshold: 65,
-            description: 'Je analyseert gebruiksstatistieken per categorie, vergelijkt trends over tijd en beantwoordt vragen over trenddata lezen en berekeningen maken.',
+            description: 'Je analyseert gebruiksstatistieken per activiteit, vergelijkt het apparaataandeel bij mediaconsumptie en beantwoordt vragen over data lezen, berekenen en informatiekaarten over digitale media.',
         },
-        evidence: 'Je kunt het verschil in gebruikstrend tussen twee digitale categorieën uitleggen en twee observaties onderbouwen met concrete cijfers.',
+        evidence: 'Je kunt het verschil in gebruik tussen twee digitale activiteiten uitleggen en twee observaties onderbouwen met concrete cijfers uit de tabel of de cirkelgrafiek.',
     },
     'eindproject-j2': {
         primaryGoal: 'Ik analyseer eindprojectresultaten uit jaar 2 en ontdek welke projecttypen en kwaliteiten tot de hoogste cijfers leiden.',

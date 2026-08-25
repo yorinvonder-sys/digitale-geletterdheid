@@ -163,9 +163,11 @@ export const MatchPairs: React.FC<MatchPairsProps> = ({
                 matchedIds: [...matched],
                 wrongAttempts: attempts,
             });
-            // Leg de opgelopen aftrek meteen vast, zodat herladen na een fout de
-            // strafpunten niet wist.
-            onSubmit?.(scoreFor(attempts));
+            // Bewust GEEN onSubmit hier: dat legt de rondescore vast terwijl de ronde
+            // nog loopt. Na herladen telt de ronde dan als ingediend en levert één
+            // foute klik bijna de volle score op zonder een enkele koppeling. De
+            // opgelopen aftrek gaat niet verloren: `wrongAttempts` gaat mee in
+            // onProgress en wordt bij hervatten teruggezet.
             if (wrongTimer.current) clearTimeout(wrongTimer.current);
             wrongTimer.current = setTimeout(() => {
                 setSelectedRight(null);
@@ -189,7 +191,7 @@ export const MatchPairs: React.FC<MatchPairsProps> = ({
                     {title}
                 </h3>
                 <p
-                    className="text-sm text-duck-ink/70"
+                    className="text-sm text-duck-ink/75"
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                 >
                     {description}
@@ -199,7 +201,7 @@ export const MatchPairs: React.FC<MatchPairsProps> = ({
             {!done && (
                 <p
                     data-qa="review-match-hint"
-                    className={`text-xs ${needsLeftFirst ? 'font-bold text-duck-ink' : 'text-duck-ink/70'}`}
+                    className={`text-xs ${needsLeftFirst ? 'font-bold text-duck-ink' : 'text-duck-ink/75'}`}
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                 >
                     {needsLeftFirst
@@ -237,7 +239,7 @@ export const MatchPairs: React.FC<MatchPairsProps> = ({
                                         ? 'bg-duck-ink/10 border-duck-ink text-duck-ink opacity-60 cursor-default'
                                         : isSelected
                                             ? 'bg-duck-acid/10 border-duck-acid text-duck-ink'
-                                            : 'bg-white border-duck-gray text-duck-ink/70 hover:border-duck-acid/40'
+                                            : 'bg-white border-duck-gray text-duck-ink/75 hover:border-duck-acid/40'
                                     }`}
                                 style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                                 animate={isSelected ? { scale: 1.02 } : { scale: 1 }}
@@ -276,8 +278,8 @@ export const MatchPairs: React.FC<MatchPairsProps> = ({
                                         : isFlashing
                                             ? 'bg-duck-acid/10 border-duck-acid text-duck-ink'
                                             : selectedLeft !== null
-                                                ? 'bg-white border-duck-gray text-duck-ink/70 hover:border-duck-acid/40 cursor-pointer'
-                                                : 'bg-white border-duck-gray text-duck-ink/70'
+                                                ? 'bg-white border-duck-gray text-duck-ink/75 hover:border-duck-acid/40 cursor-pointer'
+                                                : 'bg-white border-duck-gray text-duck-ink/75'
                                     }`}
                                 style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                                 animate={isFlashing ? { x: [0, -4, 4, -4, 0] } : { x: 0 }}
@@ -308,7 +310,7 @@ export const MatchPairs: React.FC<MatchPairsProps> = ({
                         transition={{ duration: 0.3 }}
                     />
                 </div>
-                <span className="text-xs text-duck-ink/70" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                <span className="text-xs text-duck-ink/75" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                     {matched.size}/{pairs.length}
                     {wrongAttempts > 0 && ` · ${wrongAttempts} fout${wrongAttempts === 1 ? '' : 'en'}`}
                 </span>

@@ -440,9 +440,11 @@ export const runAttacks = (
     return {
         results,
         crackSeconds,
+        // Geen enkele aanval vindt iets: dat is de sterkste uitkomst, niet een
+        // onbekende. Bereikbaar zodra een ronde zonder brute-force bestaat.
         timeLabel: Number.isFinite(crackSeconds)
             ? formatSeconds(crackSeconds)
-            : 'onbekend',
+            : 'veilig voor alle aanvallen',
         holds: results.every(r => !r.broken),
         shieldLevel: shieldLevelFor(crackSeconds),
         length: pw.length,

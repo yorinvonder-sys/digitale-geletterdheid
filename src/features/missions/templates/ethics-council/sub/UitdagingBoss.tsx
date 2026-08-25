@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { ChevronRight } from 'lucide-react';
+import { substanceFactor } from './textSubstance';
 
 interface UitdagingBossProps {
     counterArgument: string;
@@ -27,8 +28,13 @@ export const UitdagingBoss: React.FC<UitdagingBossProps> = ({
     const charCount = response.trim().length;
     const canContinue = charCount >= MIN_CHARS;
 
+    // Lengte bepaalt de bovengrens, maar 150 tekens herhaling is geen verdediging;
+    // een echte reactie houdt factor 1 en scoort dus ongewijzigd.
     const computeScore = (): number =>
-        Math.min(maxScore, Math.round((Math.min(charCount, 150) / 150) * maxScore));
+        Math.min(
+            maxScore,
+            Math.round((Math.min(charCount, 150) / 150) * substanceFactor(response) * maxScore)
+        );
 
     const handleSubmit = () => {
         onComplete(computeScore(), response);
