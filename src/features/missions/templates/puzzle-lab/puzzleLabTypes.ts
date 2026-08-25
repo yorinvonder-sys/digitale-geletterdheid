@@ -17,6 +17,8 @@ export interface Puzzle {
     hintCost: number;
     /** Optional custom validator — if provided, overrides answer-string comparison */
     validator?: (input: string) => boolean;
+    /** Wachtwoord-vormige invoer: verberg het veld (type=password) en bewaar het ruwe antwoord niet in de autosave. */
+    sensitiveInput?: boolean;
 }
 
 export interface PuzzleLabConfig {
@@ -31,4 +33,6 @@ export interface PuzzleLabConfig {
     maxScore: number;
     badges: BadgeConfig[];
     takeaways: string[];
+    /** Zwaar thema: toon het vaste hulpblokje (mentor, Kindertelefoon, 113) op het introscherm. */
+    showWellbeingSupport?: boolean;
 }

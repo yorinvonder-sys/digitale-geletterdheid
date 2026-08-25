@@ -1,8 +1,10 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { ArrowLeft, Eye, EyeOff } from 'lucide-react';
 import { useMissionAutoSave } from '@/hooks/useMissionAutoSave';
+import { useWellbeingMonitor } from '@/hooks/useWellbeingMonitor';
 import { CompletionScreen } from '../shared/CompletionScreen';
 import { IntroScreen } from '../shared/IntroScreen';
+import { WellbeingAlert } from '@/features/student/WellbeingAlert';
 import { getMissionGoal } from '@/config/missionGoals';
 import type { TemplateMissionProps } from '../shared/types';
 import { PUZZLE_LAB_CONFIGS } from './puzzleLabRegistry';
@@ -105,6 +107,34 @@ export const PuzzleLab: React.FC<TemplateMissionProps> = ({
     const [celebrating, setCelebrating] = useState(false);
     const inputRef = useRef<HTMLInputElement>(null);
     const headingRef = useRef<HTMLHeadingElement>(null);
+    const {
+        scanText: scanWellbeingText,
+        showHulplijn,
+        lastMatch: wellbeingMatch,
+        dismissHulplijn,
+    } = useWellbeingMonitor();
+
+    // Autosaves van vóór sensitiveInput kunnen bij wachtwoord-puzzels nog het
+    // ruwe antwoord bevatten; vervang dat eenmalig door de placeholder zodat
+    // het niet in localStorage blijft staan op gedeelde apparaten.
+    useEffect(() => {
+        if (!config) return;
+        const leaked = config.puzzles
+            .filter(p => p.sensitiveInput)
+            .map(p => p.id)
+            .filter(id => {
+                const answer = state.answers?.[id];
+                return typeof answer === 'string' && answer !== '' && answer !== '[verborgen]';
+            });
+        if (leaked.length === 0) return;
+        setState(prev => ({
+            ...prev,
+            answers: {
+                ...prev.answers,
+                ...Object.fromEntries(leaked.map(id => [id, '[verborgen]'])),
+            },
+        }));
+    }, [config, state.answers, setState]);
 
     // Config not found — show fallback
     if (!config) {
@@ -152,6 +182,18 @@ export const PuzzleLab: React.FC<TemplateMissionProps> = ({
         (raw: string) => {
             if (!puzzle || isSolved || celebrating) return;
 
+            // Welzijnsscan vóór alle verwerking: staat er een zorgsignaal in de vrije
+            // tekst, dan verschijnt de hulplijn-overlay en stopt de submit — zonder
+            // poging te verbruiken en zonder ACCESS-DENIED-feedback. Wachtwoordvelden
+            // slaan we over: daar typt de leerling verzonnen invoer, geen verhaal.
+            if (
+                puzzle.type !== 'multiple-choice' &&
+                !puzzle.sensitiveInput &&
+                scanWellbeingText(raw).isBlocked
+            ) {
+                return;
+            }
+
             const normalize = (s: string) =>
                 puzzle.caseSensitive ? s.trim() : s.trim().toLowerCase();
 
@@ -176,7 +218,12 @@ export const PuzzleLab: React.FC<TemplateMissionProps> = ({
                     solved: prev.solved.includes(puzzleId)
                         ? prev.solved
                         : [...prev.solved, puzzleId],
-                    answers: { ...prev.answers, [puzzleId]: raw },
+                    // Een wachtwoord-vormig antwoord hoort niet in de opgeslagen
+                    // voortgang: daar gaat alleen een vaste placeholder heen.
+                    answers: {
+                        ...prev.answers,
+                        [puzzleId]: puzzle.sensitiveInput ? '[verborgen]' : raw,
+                    },
                 }));
                 clearFeedback();
                 setTimeout(() => {
@@ -220,7 +267,7 @@ export const PuzzleLab: React.FC<TemplateMissionProps> = ({
                 clearFeedback();
             }
         },
-        [puzzle, puzzleId, isSolved, celebrating, attempts, state.currentPuzzle, config.puzzles.length, setState, clearFeedback]
+        [puzzle, puzzleId, isSolved, celebrating, attempts, state.currentPuzzle, config.puzzles.length, setState, clearFeedback, scanWellbeingText]
     );
 
     const handleSubmit = () => {
@@ -314,6 +361,7 @@ export const PuzzleLab: React.FC<TemplateMissionProps> = ({
                 features={config.introFeatures}
                 tone="terminal"
                 eyebrow={`> ${config.missionId}`}
+                wellbeingSupport={config.showWellbeingSupport}
                 onStart={() => setState(prev => ({ ...prev, phase: 'puzzle' }))}
             />
         );
@@ -405,6 +453,8 @@ export const PuzzleLab: React.FC<TemplateMissionProps> = ({
 
     return (
         <div data-qa="puzzle-lab" className="min-h-screen bg-duck-ink flex items-center justify-center p-4">
+            {showHulplijn && <WellbeingAlert match={wellbeingMatch} onDismiss={dismissHulplijn} />}
+
             <div className="w-full max-w-md">
                 {/* Terminal chrome */}
                 <div className="bg-duck-ink rounded-t-2xl border border-duck-gray/30 px-4 py-2.5 flex items-center gap-2">
@@ -536,7 +586,9 @@ export const PuzzleLab: React.FC<TemplateMissionProps> = ({
                                         <input
                                             data-qa="puzzle-input"
                                             ref={inputRef}
-                                            type="text"
+                                            type={puzzle.sensitiveInput ? 'password' : 'text'}
+                                            // Geen wachtwoordmanager-prompt op een verzonnen oefenwachtwoord.
+                                            autoComplete={puzzle.sensitiveInput ? 'new-password' : undefined}
                                             value={inputValue}
                                             onChange={e => setInputValue(e.target.value)}
                                             onKeyDown={handleKeyDown}

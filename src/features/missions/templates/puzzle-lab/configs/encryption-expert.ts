@@ -94,7 +94,7 @@ export const encryptionExpertConfig: PuzzleLabConfig = {
             title: 'Maak een sterk wachtwoord',
             type: 'text-input',
             description:
-                'Tijd om het geleerde te gebruiken! Maak een wachtwoord dat aan ALLE onderstaande eisen voldoet:\n\n• Minimaal 12 tekens lang\n• Minstens 1 hoofdletter (A–Z)\n• Minstens 1 cijfer (0–9)\n• Minstens 1 speciaal teken (!@#$%^&*)\n• Geen echte naam of woord (dus niet "Welkom123!")\n\nType je wachtwoord hieronder. Het systeem controleert automatisch of het aan de eisen voldoet.',
+                'Tijd om het geleerde te gebruiken! Maak een wachtwoord dat aan ALLE onderstaande eisen voldoet:\n\n• Minimaal 12 tekens lang\n• Minstens 1 hoofdletter (A–Z)\n• Minstens 1 cijfer (0–9)\n• Minstens 1 speciaal teken (!@#$%^&*)\n• Geen echte naam of woord (dus niet "Welkom123!")\n\nType je wachtwoord hieronder. Het systeem controleert automatisch of het aan de eisen voldoet.\n\nBelangrijk: verzin een NIEUW wachtwoord dat je nergens anders gebruikt — typ nooit een wachtwoord dat je écht gebruikt.',
             clues: [
                 'Gebruik een zin als basis: "IkHoud2VanPizza!" is al een stuk beter dan "pizza123".',
                 'Afkortingen werken goed: "MijnHond@Heet5Bobby" is lang en complex.',
@@ -115,6 +115,7 @@ export const encryptionExpertConfig: PuzzleLabConfig = {
                     !/^[a-zA-Z]+$/.test(s)
                 );
             },
+            sensitiveInput: true,
             caseSensitive: true,
             maxAttempts: 10,
             points: 25,

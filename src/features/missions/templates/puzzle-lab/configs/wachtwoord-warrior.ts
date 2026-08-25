@@ -119,7 +119,7 @@ const config: PuzzleLabConfig = {
             title: 'Maak een echt sterk wachtwoord',
             type: 'text-input',
             description:
-                'Nu jij weet hoe aanvallen werken, maak je een wachtwoord dat echt sterk is. Het moet aan ALLE eisen voldoen:\n\n• Minimaal 14 tekens lang\n• Minstens 1 hoofdletter (A–Z)\n• Minstens 1 cijfer (0–9)\n• Minstens 1 speciaal teken (!@#$%&*-_)\n• Geen herkenbaar woord of naam\n\nTip: gebruik een passphrase — meerdere willekeurige woorden met symbolen: "Paraplu#Boot7Ster"\n\nGebruik nooit je échte wachtwoord — verzin er hier een.',
+                'Nu jij weet hoe aanvallen werken, maak je een wachtwoord dat echt sterk is. Het moet aan ALLE eisen voldoen:\n\n• Minimaal 14 tekens lang\n• Minstens 1 hoofdletter (A–Z)\n• Minstens 1 cijfer (0–9)\n• Minstens 1 speciaal teken (!@#$%&*-_)\n• Geen herkenbaar woord of naam\n\nTip: gebruik een passphrase — meerdere willekeurige woorden met symbolen: "Paraplu#Boot7Ster"\n\nBelangrijk: verzin een NIEUW wachtwoord dat je nergens anders gebruikt — typ nooit een wachtwoord dat je écht gebruikt.',
             clues: [
                 'Lengte is de krachtigste factor: 14 tekens is véél sterker dan 8 tekens.',
                 'Willekeurige woorden combineren werkt beter dan trucs op één woord: "Groen-Fiets-42-Maan!" is sterk.',
@@ -146,6 +146,7 @@ const config: PuzzleLabConfig = {
                 if (letterBlocks.length === 1 && letterBlocks[0].length >= 6) return false;
                 return true;
             },
+            sensitiveInput: true,
             caseSensitive: true,
             maxAttempts: 10,
             points: 25,
