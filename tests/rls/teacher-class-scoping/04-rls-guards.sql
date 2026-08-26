@@ -57,8 +57,20 @@ EXCEPTION WHEN insufficient_privilege THEN
   INSERT INTO rres(name, ok) VALUES ('RLS | docent kan scope-modus niet versoepelen', true);
 END $$;
 
--- 6. Beheerder van school A kan wel toekennen.
+-- 6a. Beheerder ZONDER MFA mag NIET toekennen (is_class_scoping_admin eist AAL2).
 SELECT set_config('test.uid','00000000-0000-4000-8000-0000000000a3',false);
+SELECT set_config('request.jwt.claims','{"aal":"aal1"}',false);
+DO $$
+BEGIN
+  INSERT INTO public.teacher_classes (teacher_id, school_id, student_class)
+  VALUES ('00000000-0000-4000-8000-0000000000a2','school-a','A2');
+  INSERT INTO rres(name, ok) VALUES ('RLS | beheerder ZONDER MFA kan niet toekennen', false);
+EXCEPTION WHEN insufficient_privilege THEN
+  INSERT INTO rres(name, ok) VALUES ('RLS | beheerder ZONDER MFA kan niet toekennen', true);
+END $$;
+
+-- 6b. Beheerder MET MFA kan wel toekennen.
+SELECT set_config('request.jwt.claims','{"aal":"aal2"}',false);
 DO $$
 BEGIN
   INSERT INTO public.teacher_classes (teacher_id, school_id, student_class, created_by)
@@ -77,6 +89,64 @@ BEGIN
 EXCEPTION WHEN insufficient_privilege THEN
   INSERT INTO rres(name, ok) VALUES ('RLS | beheerder kan niet buiten eigen school koppelen', true);
 END $$;
+
+
+-- 8. teacher_scope_mode() is geen publieke orakelfunctie meer.
+SET SESSION AUTHORIZATION authenticated;
+DO $$
+BEGIN
+  PERFORM public.teacher_scope_mode('school-b');
+  INSERT INTO rres(name, ok) VALUES ('RLS | teacher_scope_mode niet aanroepbaar door authenticated', false);
+EXCEPTION WHEN insufficient_privilege THEN
+  INSERT INTO rres(name, ok) VALUES ('RLS | teacher_scope_mode niet aanroepbaar door authenticated', true);
+END $$;
+
+-- 9. Doelvalidatie: een LEERLING koppelen als 'docent' moet weigeren.
+SELECT set_config('test.uid','00000000-0000-4000-8000-0000000000a3',false);
+SELECT set_config('request.jwt.claims','{"aal":"aal2"}',false);
+DO $$
+BEGIN
+  INSERT INTO public.teacher_classes (teacher_id, school_id, student_class)
+  VALUES ('00000000-0000-4000-8000-0000000000e1','school-a','A1');
+  INSERT INTO rres(name, ok) VALUES ('trigger | leerling kan niet als docent gekoppeld worden', false);
+EXCEPTION WHEN check_violation THEN
+  INSERT INTO rres(name, ok) VALUES ('trigger | leerling kan niet als docent gekoppeld worden', true);
+END $$;
+
+-- 10. Doelvalidatie: docent van een ANDERE school koppelen moet weigeren.
+DO $$
+BEGIN
+  INSERT INTO public.teacher_classes (teacher_id, school_id, student_class)
+  VALUES ('00000000-0000-4000-8000-0000000000b1','school-a','A1');
+  INSERT INTO rres(name, ok) VALUES ('trigger | docent van andere school kan niet gekoppeld worden', false);
+EXCEPTION WHEN check_violation THEN
+  INSERT INTO rres(name, ok) VALUES ('trigger | docent van andere school kan niet gekoppeld worden', true);
+END $$;
+
+-- 11. created_by wordt SERVER-side gestempeld, niet overgenomen van de client.
+DELETE FROM public.teacher_classes WHERE student_class = 'A3';
+INSERT INTO public.teacher_classes (teacher_id, school_id, student_class, created_by)
+VALUES ('00000000-0000-4000-8000-0000000000a2','school-a','A3','00000000-0000-4000-8000-0000000000e1');
+INSERT INTO rres(name, ok)
+SELECT 'trigger | created_by komt van auth.uid(), niet van de client',
+       created_by = '00000000-0000-4000-8000-0000000000a3'
+FROM public.teacher_classes WHERE student_class = 'A3';
+
+RESET SESSION AUTHORIZATION;
+
+-- 12. Auditspoor: insert en delete komen allebei in audit_logs.
+INSERT INTO rres(name, ok)
+SELECT 'audit | toekennen wordt gelogd', count(*) > 0
+FROM public.audit_logs WHERE action = 'teacher_classes_insert';
+
+DELETE FROM public.teacher_classes WHERE student_class = 'A3';
+INSERT INTO rres(name, ok)
+SELECT 'audit | INTREKKEN van een toewijzing wordt gelogd', count(*) > 0
+FROM public.audit_logs WHERE action = 'teacher_classes_delete';
+
+INSERT INTO rres(name, ok)
+SELECT 'audit | wijziging van de scope-modus wordt gelogd', count(*) > 0
+FROM public.audit_logs WHERE action LIKE 'school_access_settings_%';
 
 RESET SESSION AUTHORIZATION;
 SELECT format('%s  %s', CASE WHEN ok THEN 'PASS' ELSE 'FAIL' END, name) FROM rres ORDER BY n;

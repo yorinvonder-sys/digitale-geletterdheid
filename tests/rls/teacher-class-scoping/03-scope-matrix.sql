@@ -41,8 +41,13 @@ SELECT pg_temp.chk('soft | docent ZONDER toewijzing houdt schoolbrede toegang (A
   public.is_teacher_of_student('00000000-0000-4000-8000-0000000000e1'));
 SELECT pg_temp.chk('soft | docent ZONDER toewijzing houdt schoolbrede toegang (A2)', true,
   public.is_teacher_of_student('00000000-0000-4000-8000-0000000000e2'));
+SELECT pg_temp.chk('soft | docent ZONDER toewijzing ziet leerling ZONDER klas NIET', false,
+  public.is_teacher_of_student('00000000-0000-4000-8000-0000000000e3'));
+SELECT pg_temp.as_user('00000000-0000-4000-8000-0000000000a3','aal2');
+SELECT pg_temp.chk('soft | schoolbeheerder MET MFA houdt schoolbreed zicht (A2)', true,
+  public.is_teacher_of_student('00000000-0000-4000-8000-0000000000e2'));
 SELECT pg_temp.as_user('00000000-0000-4000-8000-0000000000a3','aal1');
-SELECT pg_temp.chk('soft | schoolbeheerder houdt schoolbreed zicht (A2, zonder MFA)', true,
+SELECT pg_temp.chk('soft | schoolbeheerder ZONDER MFA ziet niets (AAL2 sinds 20260626144000)', false,
   public.is_teacher_of_student('00000000-0000-4000-8000-0000000000e2'));
 
 -- ===== MODUS 'class_strict' =====
@@ -56,9 +61,13 @@ SELECT pg_temp.chk('strict | docent MET toewijzing ziet vreemde klas A2 NIET', f
 SELECT pg_temp.as_user('00000000-0000-4000-8000-0000000000a2');
 SELECT pg_temp.chk('strict | docent ZONDER toewijzing ziet NIETS (fail closed)', false,
   public.is_teacher_of_student('00000000-0000-4000-8000-0000000000e1'));
-SELECT pg_temp.as_user('00000000-0000-4000-8000-0000000000a3','aal1');
-SELECT pg_temp.chk('strict | schoolbeheerder houdt schoolbreed zicht', true,
+SELECT pg_temp.chk('strict | docent ZONDER toewijzing ziet leerling zonder klas NIET', false,
+  public.is_teacher_of_student('00000000-0000-4000-8000-0000000000e3'));
+SELECT pg_temp.as_user('00000000-0000-4000-8000-0000000000a3','aal2');
+SELECT pg_temp.chk('strict | schoolbeheerder MET MFA houdt schoolbreed zicht', true,
   public.is_teacher_of_student('00000000-0000-4000-8000-0000000000e2'));
+SELECT pg_temp.chk('strict | schoolbeheerder ziet ook leerling ZONDER klas', true,
+  public.is_teacher_of_student('00000000-0000-4000-8000-0000000000e3'));
 
 -- ===== Erfelijke grenzen: MFA, schoolgrens, onbekende leerling =====
 SELECT pg_temp.as_user('00000000-0000-4000-8000-0000000000a1','aal1');
@@ -74,6 +83,29 @@ SELECT pg_temp.chk('grens | leerling andere school => false', false,
 SELECT pg_temp.as_user('00000000-0000-4000-8000-0000000000e1');
 SELECT pg_temp.chk('grens | leerling zelf is geen docent => false', false,
   public.is_teacher_of_student('00000000-0000-4000-8000-0000000000e2'));
+SELECT pg_temp.as_user('00000000-0000-4000-8000-0000000000a1');
+SELECT pg_temp.chk('grens | doelaccount is een DOCENT => false (geen leerling)', false,
+  public.is_teacher_of_student('00000000-0000-4000-8000-0000000000a2'));
+
+-- Recursie: zet een users-policy op die de helper aanroept — de constructie van
+-- stap 3 uit het migratiepad. Als dat een lus geeft, faalt dit met stack depth.
+DROP POLICY IF EXISTS users_select_own_or_teacher_scoped ON public.users;
+CREATE POLICY users_select_own_or_teacher_scoped ON public.users
+  FOR SELECT USING (auth.uid() = id OR public.is_teacher_of_student(id));
+GRANT SELECT ON public.users TO authenticated;
+DO $rec$
+DECLARE v_ok boolean;
+BEGIN
+  BEGIN
+    PERFORM public.is_teacher_of_student('00000000-0000-4000-8000-0000000000e1');
+    v_ok := true;
+  EXCEPTION WHEN others THEN
+    v_ok := false;
+  END;
+  INSERT INTO res(name, expected, actual)
+  VALUES ('recursie | users-policy roept helper aan zonder oneindige lus', true, v_ok);
+END $rec$;
+DROP POLICY IF EXISTS users_select_own_or_teacher_scoped ON public.users;
 
 -- ===== Nooit ruimer dan de bestaande schoolbrede helper =====
 SELECT pg_temp.as_user('00000000-0000-4000-8000-0000000000a1');

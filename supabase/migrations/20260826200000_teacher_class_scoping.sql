@@ -32,8 +32,45 @@
 --                  Dit is de stand waarin de compliance-belofte waar is.
 --
 -- Admin en developer houden in ALLE modi schoolbrede toegang: dat zijn de
--- schoolbeheerder en het DGSkills-beheer, niet de lesgevende docent.
+-- schoolbeheerder en het DGSkills-beheer, niet de lesgevende docent. Zij komen
+-- net als docenten alleen binnen MET AAL2 — `is_teacher()` eist sinds
+-- 20260626144000 MFA voor elke bevoorrechte rol (de vrijstelling uit
+-- 20260413100000 is daar stil teruggedraaid).
+--
+-- Schrijven naar de twee nieuwe tabellen is een AUTORISATIEbeslissing en loopt
+-- daarom via `public.is_class_scoping_admin()`: admin|developer MET AAL2, naar
+-- het model van de bestaande `public.is_branding_admin()`.
 -- ============================================================================
+
+-- ---------------------------------------------------------------------------
+-- 0. Wie mag de klasindeling en de scope-modus beheren?
+-- ---------------------------------------------------------------------------
+-- Zelfde vorm als public.is_branding_admin(): bevoorrechte rol EN AAL2. Dit is
+-- bewust strenger dan `get_caller_app_role()` alleen, want het toekennen van
+-- een klas bepaalt wie er bij leerlinggegevens kan.
+CREATE OR REPLACE FUNCTION public.is_class_scoping_admin()
+RETURNS boolean
+LANGUAGE plpgsql
+STABLE
+SECURITY DEFINER
+SET search_path = pg_catalog, public
+AS $$
+BEGIN
+  RETURN EXISTS (
+    SELECT 1
+    FROM auth.users
+    WHERE id = auth.uid()
+      AND (
+        raw_app_meta_data->>'role' IN ('admin', 'developer')
+        OR raw_app_meta_data->>'admin' = 'true'
+      )
+  )
+  AND public.is_mfa_aal2();
+END;
+$$;
+
+COMMENT ON FUNCTION public.is_class_scoping_admin() IS
+  'True als de aanroeper admin|developer is MET AAL2. Poort voor het beheren van teacher_classes en school_access_settings.';
 
 -- ---------------------------------------------------------------------------
 -- 1. Koppeltabel docent -> klas
@@ -63,17 +100,19 @@ CREATE INDEX IF NOT EXISTS teacher_classes_school_class_idx
 
 ALTER TABLE public.teacher_classes ENABLE ROW LEVEL SECURITY;
 
--- Lezen: je eigen toewijzingen, of — als docent/beheerder van de school — de
--- toewijzingen binnen je school. Dit is personeelsmetadata, geen leerlingdata,
+-- Lezen: docenten en beheerders van de school zien de toewijzingen binnen hun
+-- school, inclusief hun eigen. Dit is personeelsmetadata, geen leerlingdata,
 -- dus bewust schoolbreed: de beheerder moet het overzicht kunnen beheren.
+--
+-- Bewust GEEN losse `auth.uid() = teacher_id`-tak: die zou een docent zonder
+-- MFA zijn eigen toewijzingen laten lezen en daarmee om de AAL2-eis van
+-- is_teacher_in_school() heen lopen. De autorisatiestaat valt volledig achter
+-- dezelfde grens als de leerlinggegevens die eruit volgen.
 DROP POLICY IF EXISTS "teacher_classes_select_own_or_school" ON public.teacher_classes;
 CREATE POLICY "teacher_classes_select_own_or_school"
   ON public.teacher_classes
   FOR SELECT
-  USING (
-    auth.uid() = teacher_id
-    OR public.is_teacher_in_school(school_id)
-  );
+  USING (public.is_teacher_in_school(school_id));
 
 -- Schrijven: uitsluitend admin/developer binnen de eigen school. Een docent mag
 -- zichzelf nooit klassen toekennen — dat zou de hele maatregel waardeloos maken.
@@ -82,7 +121,7 @@ CREATE POLICY "teacher_classes_insert_admin"
   ON public.teacher_classes
   FOR INSERT
   WITH CHECK (
-    public.get_caller_app_role() IN ('admin', 'developer')
+    public.is_class_scoping_admin()
     AND school_id = public.get_caller_school_id()
   );
 
@@ -91,11 +130,11 @@ CREATE POLICY "teacher_classes_update_admin"
   ON public.teacher_classes
   FOR UPDATE
   USING (
-    public.get_caller_app_role() IN ('admin', 'developer')
+    public.is_class_scoping_admin()
     AND school_id = public.get_caller_school_id()
   )
   WITH CHECK (
-    public.get_caller_app_role() IN ('admin', 'developer')
+    public.is_class_scoping_admin()
     AND school_id = public.get_caller_school_id()
   );
 
@@ -104,7 +143,7 @@ CREATE POLICY "teacher_classes_delete_admin"
   ON public.teacher_classes
   FOR DELETE
   USING (
-    public.get_caller_app_role() IN ('admin', 'developer')
+    public.is_class_scoping_admin()
     AND school_id = public.get_caller_school_id()
   );
 
@@ -138,7 +177,7 @@ CREATE POLICY "school_access_settings_insert_admin"
   ON public.school_access_settings
   FOR INSERT
   WITH CHECK (
-    public.get_caller_app_role() IN ('admin', 'developer')
+    public.is_class_scoping_admin()
     AND school_id = public.get_caller_school_id()
   );
 
@@ -147,11 +186,11 @@ CREATE POLICY "school_access_settings_update_admin"
   ON public.school_access_settings
   FOR UPDATE
   USING (
-    public.get_caller_app_role() IN ('admin', 'developer')
+    public.is_class_scoping_admin()
     AND school_id = public.get_caller_school_id()
   )
   WITH CHECK (
-    public.get_caller_app_role() IN ('admin', 'developer')
+    public.is_class_scoping_admin()
     AND school_id = public.get_caller_school_id()
   );
 
@@ -169,7 +208,7 @@ RETURNS text
 LANGUAGE plpgsql
 STABLE
 SECURITY DEFINER
-SET search_path = public
+SET search_path = pg_catalog, public
 AS $$
 DECLARE
   v_mode text;
@@ -199,7 +238,7 @@ RETURNS boolean
 LANGUAGE plpgsql
 STABLE
 SECURITY DEFINER
-SET search_path = public
+SET search_path = pg_catalog, public
 AS $$
 DECLARE
   v_mode text;
@@ -207,12 +246,15 @@ DECLARE
   v_has_any_assignment boolean;
 BEGIN
   -- Schoolgrens, rolcheck en MFA blijven ONGEWIJZIGD de eerste horde. Deze
-  -- functie kan nooit ruimer zijn dan is_teacher_in_school().
-  IF NOT public.is_teacher_in_school(target_school_id) THEN
+  -- functie kan nooit ruimer zijn dan is_teacher_in_school(). `IS NOT TRUE`
+  -- in plaats van `NOT`, zodat een toekomstige NULL-uitkomst dichtvalt en niet
+  -- stilzwijgend doorloopt.
+  IF public.is_teacher_in_school(target_school_id) IS NOT TRUE THEN
     RETURN false;
   END IF;
 
-  -- Schoolbeheerder en DGSkills-beheer houden schoolbreed zicht.
+  -- Schoolbeheerder en DGSkills-beheer houden schoolbreed zicht. MFA is op dit
+  -- punt al bewezen door is_teacher_in_school() hierboven.
   v_role := public.get_caller_app_role();
   IF v_role IN ('admin', 'developer') THEN
     RETURN true;
@@ -220,8 +262,19 @@ BEGIN
 
   v_mode := public.teacher_scope_mode(target_school_id);
 
+  -- Schoolbrede modus: het gedrag van vóór deze migratie, ongewijzigd.
   IF v_mode = 'school' THEN
     RETURN true;
+  END IF;
+
+  -- Vanaf hier geldt een klasgebonden modus. Een leerling ZONDER klas is aan
+  -- geen enkele docent toe te wijzen en valt daarom dicht — ook voor een docent
+  -- die zelf nog geen toewijzingen heeft. Deze check staat bewust VOOR de
+  -- class_soft-uitzondering: anders zou juist de nog niet ingerichte docent de
+  -- niet-ingedeelde leerlingen wel zien, en dat is precies andersom dan bedoeld.
+  -- Alleen admin/developer (hierboven) houden zicht op niet-ingedeelde leerlingen.
+  IF target_class IS NULL OR btrim(target_class) = '' THEN
+    RETURN false;
   END IF;
 
   IF v_mode = 'class_soft' THEN
@@ -232,18 +285,15 @@ BEGIN
         AND tc.school_id = target_school_id
     ) INTO v_has_any_assignment;
 
-    -- Nog niet ingericht voor deze docent: gedrag blijft zoals het was.
-    IF NOT v_has_any_assignment THEN
+    -- Nog niet ingericht voor deze docent: toegang blijft zoals die was.
+    -- Dit is een compatibiliteits-fallback voor de uitrol, GEEN privacymaatregel:
+    -- zolang een school in class_soft staat is de klasgrens niet afdwingbaar.
+    IF v_has_any_assignment IS NOT TRUE THEN
       RETURN true;
     END IF;
   END IF;
 
   -- class_soft (met toewijzingen) en class_strict: alleen de eigen klassen.
-  -- Een leerling zonder klas is niet toe te wijzen en valt hier dicht.
-  IF target_class IS NULL OR btrim(target_class) = '' THEN
-    RETURN false;
-  END IF;
-
   RETURN EXISTS (
     SELECT 1
     FROM public.teacher_classes tc
@@ -265,12 +315,13 @@ RETURNS boolean
 LANGUAGE plpgsql
 STABLE
 SECURITY DEFINER
-SET search_path = public
+SET search_path = pg_catalog, public
 AS $$
 DECLARE
   v_school_id text;
   v_class text;
   v_found boolean := false;
+  v_target_role text;
 BEGIN
   IF target_user_id IS NULL THEN
     RETURN false;
@@ -281,8 +332,22 @@ BEGIN
   FROM public.users u
   WHERE u.id = target_user_id;
 
-  -- Onbekende leerling: dicht. Nooit "bij twijfel toegang".
-  IF NOT v_found THEN
+  -- Onbekende gebruiker: dicht. Nooit "bij twijfel toegang".
+  IF v_found IS NOT TRUE THEN
+    RETURN false;
+  END IF;
+
+  -- Deze functie doet uitspraken over LEERLINGEN. De rol komt uit de
+  -- server-gezette app_metadata, dezelfde bron die de rest van het systeem
+  -- vertrouwt; public.users.role is client-bewerkbaar geweest en is hier geen
+  -- gezag. Een docent- of beheerdersrij valt dicht: voor personeelsrijen blijft
+  -- de schoolbrede helper de juiste toets.
+  SELECT raw_app_meta_data->>'role'
+    INTO v_target_role
+  FROM auth.users
+  WHERE id = target_user_id;
+
+  IF coalesce(v_target_role, 'student') <> 'student' THEN
     RETURN false;
   END IF;
 
@@ -294,13 +359,142 @@ COMMENT ON FUNCTION public.is_teacher_of_student(uuid) IS
   'Mag de aanroepende docent de gegevens van deze leerling zien? Klasgebonden tegenhanger van is_teacher_in_school(); onbekende leerling => false.';
 
 -- ---------------------------------------------------------------------------
--- 4. Rechten — zelfde patroon als de bestaande RLS-helpers
+-- 4. Triggers: doelvalidatie, server-gezette actor, auditspoor
 -- ---------------------------------------------------------------------------
+-- Zelfde vorm als log_school_branding_change() bij school_branding.
+
+-- Valideer dat de toewijzing een BEVOEGDE gebruiker van DEZELFDE school
+-- betreft, en stempel de actor server-side. `created_by` uit de client is een
+-- bewering; auth.uid() is dat niet.
+CREATE OR REPLACE FUNCTION public.teacher_classes_validate_and_stamp()
+RETURNS TRIGGER
+LANGUAGE plpgsql
+SECURITY DEFINER
+SET search_path = pg_catalog, public
+AS $$
+DECLARE
+  v_target_role text;
+  v_target_school text;
+BEGIN
+  SELECT au.raw_app_meta_data->>'role', au.raw_app_meta_data->>'schoolId'
+    INTO v_target_role, v_target_school
+  FROM auth.users au
+  WHERE au.id = NEW.teacher_id;
+
+  IF v_target_role IS NULL OR v_target_role NOT IN ('teacher', 'admin', 'developer') THEN
+    RAISE EXCEPTION 'teacher_classes: % is geen docent- of beheerdersaccount', NEW.teacher_id
+      USING ERRCODE = 'check_violation';
+  END IF;
+
+  IF v_target_school IS DISTINCT FROM NEW.school_id THEN
+    RAISE EXCEPTION 'teacher_classes: account % hoort niet bij school %', NEW.teacher_id, NEW.school_id
+      USING ERRCODE = 'check_violation';
+  END IF;
+
+  IF TG_OP = 'INSERT' THEN
+    NEW.created_by := auth.uid();
+    NEW.created_at := now();
+  END IF;
+
+  RETURN NEW;
+END;
+$$;
+
+DROP TRIGGER IF EXISTS trg_teacher_classes_validate ON public.teacher_classes;
+CREATE TRIGGER trg_teacher_classes_validate
+  BEFORE INSERT OR UPDATE ON public.teacher_classes
+  FOR EACH ROW EXECUTE FUNCTION public.teacher_classes_validate_and_stamp();
+
+CREATE OR REPLACE FUNCTION public.school_access_settings_stamp()
+RETURNS TRIGGER
+LANGUAGE plpgsql
+SECURITY DEFINER
+SET search_path = pg_catalog, public
+AS $$
+BEGIN
+  NEW.updated_by := auth.uid();
+  NEW.updated_at := now();
+  RETURN NEW;
+END;
+$$;
+
+DROP TRIGGER IF EXISTS trg_school_access_settings_stamp ON public.school_access_settings;
+CREATE TRIGGER trg_school_access_settings_stamp
+  BEFORE INSERT OR UPDATE ON public.school_access_settings
+  FOR EACH ROW EXECUTE FUNCTION public.school_access_settings_stamp();
+
+-- Auditspoor. Ook DELETE wordt gelogd — juist het WEGHALEN van een toewijzing
+-- verruimt in class_soft de toegang van een docent, en dat mag geen spoorloze
+-- handeling zijn. De trigger vangt ook mutaties buiten het beheerscherm om
+-- (directe API-call, service-role, roosterimport).
+CREATE OR REPLACE FUNCTION public.log_class_scoping_change()
+RETURNS TRIGGER
+LANGUAGE plpgsql
+SECURITY DEFINER
+SET search_path = pg_catalog, public
+AS $$
+DECLARE
+  v_data jsonb;
+  v_school text;
+BEGIN
+  -- Bewust twee aparte takken en GEEN SQL-CASE: PL/pgSQL lost de veldverwijzing
+  -- in beide takken van een CASE op, waardoor OLD.teacher_scope ook bij een
+  -- teacher_classes-mutatie geraakt zou worden ("record OLD has no field").
+  IF TG_TABLE_NAME = 'teacher_classes' THEN
+    IF TG_OP = 'DELETE' THEN
+      v_school := OLD.school_id;
+      v_data := jsonb_build_object(
+        'teacher_id', OLD.teacher_id,
+        'student_class', OLD.student_class,
+        'source', OLD.source
+      );
+    ELSE
+      v_school := NEW.school_id;
+      v_data := jsonb_build_object(
+        'teacher_id', NEW.teacher_id,
+        'student_class', NEW.student_class,
+        'source', NEW.source
+      );
+    END IF;
+  ELSE
+    v_school := NEW.school_id;
+    v_data := jsonb_build_object(
+      'teacher_scope_old', CASE WHEN TG_OP = 'UPDATE' THEN OLD.teacher_scope ELSE NULL END,
+      'teacher_scope_new', NEW.teacher_scope
+    );
+  END IF;
+
+  INSERT INTO public.audit_logs (action, uid, school_id, data)
+  VALUES (TG_TABLE_NAME || '_' || lower(TG_OP), auth.uid(), v_school, v_data);
+
+  RETURN NULL;
+END;
+$$;
+
+DROP TRIGGER IF EXISTS trg_teacher_classes_audit ON public.teacher_classes;
+CREATE TRIGGER trg_teacher_classes_audit
+  AFTER INSERT OR UPDATE OR DELETE ON public.teacher_classes
+  FOR EACH ROW EXECUTE FUNCTION public.log_class_scoping_change();
+
+DROP TRIGGER IF EXISTS trg_school_access_settings_audit ON public.school_access_settings;
+CREATE TRIGGER trg_school_access_settings_audit
+  AFTER INSERT OR UPDATE ON public.school_access_settings
+  FOR EACH ROW EXECUTE FUNCTION public.log_class_scoping_change();
+
+-- ---------------------------------------------------------------------------
+-- 5. Rechten — zelfde patroon als de bestaande RLS-helpers
+-- ---------------------------------------------------------------------------
+-- teacher_scope_mode() is een INTERN hulpmiddel. Zou `authenticated` hem mogen
+-- aanroepen, dan kan elke ingelogde gebruiker de beveiligingsstand van een
+-- willekeurige school opvragen door school-ids te raden. De SECURITY DEFINER-
+-- functies hieronder draaien als eigenaar en kunnen hem gewoon aanroepen; de
+-- app leest de stand via de RLS-beschermde tabel school_access_settings.
 REVOKE ALL ON FUNCTION public.teacher_scope_mode(text) FROM PUBLIC;
+REVOKE ALL ON FUNCTION public.is_class_scoping_admin() FROM PUBLIC;
+GRANT EXECUTE ON FUNCTION public.is_class_scoping_admin() TO authenticated;
 REVOKE ALL ON FUNCTION public.is_teacher_of_class(text, text) FROM PUBLIC;
 REVOKE ALL ON FUNCTION public.is_teacher_of_student(uuid) FROM PUBLIC;
 
-GRANT EXECUTE ON FUNCTION public.teacher_scope_mode(text) TO authenticated;
 GRANT EXECUTE ON FUNCTION public.is_teacher_of_class(text, text) TO authenticated;
 GRANT EXECUTE ON FUNCTION public.is_teacher_of_student(uuid) TO authenticated;
 

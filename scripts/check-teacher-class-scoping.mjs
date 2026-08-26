@@ -39,13 +39,37 @@ function fail(message) {
   process.exitCode = 1;
 }
 
-/** Haalt een functiedefinitie letterlijk uit een bestaande migratie. */
-function extractFunction(file, name) {
-  const sql = readFileSync(join(MIGRATIONS, file), 'utf8');
+/**
+ * Haalt de EFFECTIEVE definitie van een auth-helper op: de laatste
+ * `CREATE OR REPLACE` in migratievolgorde, precies zoals productie hem heeft na
+ * het toepassen van alle migraties.
+ *
+ * Een vaste bestandsnaam is hier fout gebleken: `is_teacher()` werd in
+ * 20260413100000 vrijgesteld van MFA voor admin/developer, maar 20260626144000
+ * heeft die vrijstelling stilzwijgend teruggedraaid. Een harnas dat het oudere
+ * bestand pakt, toetst een werkelijkheid die niet bestaat.
+ */
+function migrationFilesInOrder() {
+  return readdirSync(MIGRATIONS)
+    .filter((f) => /^\d{14}_.*\.sql$/.test(f))
+    .sort();
+}
+
+function extractEffectiveFunction(name) {
   const re = new RegExp(`CREATE OR REPLACE FUNCTION public\\.${name}\\(.*?\\n\\$\\$;`, 's');
-  const match = sql.match(re);
-  if (!match) throw new Error(`Kon public.${name}() niet vinden in ${file}.`);
-  return match[0];
+  let found = null;
+  let foundIn = null;
+  for (const file of migrationFilesInOrder()) {
+    const sql = readFileSync(join(MIGRATIONS, file), 'utf8');
+    const match = sql.match(re);
+    if (match) {
+      found = match[0];
+      foundIn = file;
+    }
+  }
+  if (!found) throw new Error(`Kon geen definitie van public.${name}() vinden in de migraties.`);
+  console.log(`      ${name}() <- ${foundIn}`);
+  return found;
 }
 
 // --- Statische controle: deze migratie mag geen bestaande policy aanraken. ---
@@ -120,15 +144,14 @@ function main() {
       return;
     }
 
-    // De echte auth-helpers, in de volgorde waarin productie ze toepast:
-    // eerst de kernversie, daarna de MFA-vrijstelling die is_teacher() herschrijft.
     const helperFile = mkdtempSync(join(tmpdir(), 'tcscope-'));
+    console.log('  effectieve auth-helpers (laatste definitie in migratievolgorde):');
     const helpers = [
-      extractFunction('20260509165658_security_report_core_auth_rls.sql', 'is_mfa_aal2'),
-      extractFunction('20260509165658_security_report_core_auth_rls.sql', 'get_caller_app_role'),
-      extractFunction('20260509165658_security_report_core_auth_rls.sql', 'get_caller_school_id'),
-      extractFunction('20260509165658_security_report_core_auth_rls.sql', 'is_teacher_in_school'),
-      extractFunction('20260413100000_exempt_dev_admin_from_mfa.sql', 'is_teacher'),
+      extractEffectiveFunction('is_mfa_aal2'),
+      extractEffectiveFunction('get_caller_app_role'),
+      extractEffectiveFunction('get_caller_school_id'),
+      extractEffectiveFunction('is_teacher'),
+      extractEffectiveFunction('is_teacher_in_school'),
     ].join('\n\n');
     const helperPath = join(helperFile, '01-helpers.sql');
     writeFileSync(helperPath, `${helpers}\n`, 'utf8');
