@@ -29,7 +29,7 @@ export const ArguePhase: React.FC<ArguePhaseProps> = ({ config, state, onUpdateA
     const stakeholderLabelId = `${uid}-stakeholder`;
     const activeArg = state.arguments[state.activeArgumentIndex];
     const validCount = state.arguments.filter(
-        (a) => isMeaningfulAnswer(a.claim) && isMeaningfulAnswer(a.evidence)
+        (a) => isMeaningfulAnswer(a.claim) && isMeaningfulAnswer(a.evidence) && Boolean(a.stakeholderId)
     ).length;
 
     const selectedPos = config.positions.find((p) => p.id === state.selectedPosition);
@@ -55,7 +55,7 @@ export const ArguePhase: React.FC<ArguePhaseProps> = ({ config, state, onUpdateA
             {/* Argument tabs */}
             <div className="flex gap-2 mb-4">
                 {state.arguments.map((arg, i) => {
-                    const valid = isMeaningfulAnswer(arg.claim) && isMeaningfulAnswer(arg.evidence);
+                    const valid = isMeaningfulAnswer(arg.claim) && isMeaningfulAnswer(arg.evidence) && Boolean(arg.stakeholderId);
                     const isActive = i === state.activeArgumentIndex;
                     return (
                         <button
@@ -158,6 +158,7 @@ export const ArguePhase: React.FC<ArguePhaseProps> = ({ config, state, onUpdateA
                             <button
                                 key={sh.id}
                                 onClick={() => onUpdateArgument(state.activeArgumentIndex, 'stakeholderId', sh.id)}
+                                aria-pressed={activeArg.stakeholderId === sh.id}
                                 className={`px-3 py-1.5 rounded-xl border text-xs font-bold transition-all ${
                                     activeArg.stakeholderId === sh.id
                                         ? 'border-duck-acid bg-duck-acid/10 text-duck-ink'
