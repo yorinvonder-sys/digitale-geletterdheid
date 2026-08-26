@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { ScholenLanding } from '@/features/public-site/ScholenLanding';
+import { resolveHomepageVariant } from '@/features/public-site/homepageVariant';
 const IctLandingPage = React.lazy(() => import('@/features/public-site/IctLandingPage').then(m => ({ default: m.IctLandingPage })));
 const IctIntegraties = React.lazy(() => import('@/features/public-site/ict/IctIntegraties').then(m => ({ default: m.IctIntegraties })));
 const IctPrivacy = React.lazy(() => import('@/features/public-site/ict/IctPrivacy').then(m => ({ default: m.IctPrivacy })));
@@ -22,6 +23,7 @@ const SloRapport = React.lazy(() => import('@/features/seo/SloRapport').then(m =
 const ComparisonPage = React.lazy(() => import('@/features/seo/ComparisonPage').then(m => ({ default: m.ComparisonPage })));
 const PilotAanmelden = React.lazy(() => import('@/features/public-site/PilotAanmelden').then(m => ({ default: m.PilotAanmelden })));
 const VerhaalPage = React.lazy(() => import('@/features/public-site/verhaal/VerhaalPage').then(m => ({ default: m.VerhaalPage })));
+const VersieBPage = React.lazy(() => import('@/features/public-site/versie-b/VersieBPage').then(m => ({ default: m.VersieBPage })));
 const NotFound = React.lazy(() => import('@/components/app-shell/NotFound').then(m => ({ default: m.NotFound })));
 const MobileReceiptPage = React.lazy(() => import('@/components/app-shell/MobileReceiptPage').then(m => ({ default: m.MobileReceiptPage })));
 const ParentConsentApproval = React.lazy(() => import('@/features/consent/ParentConsentApproval').then(m => ({ default: m.ParentConsentApproval })));
@@ -313,6 +315,15 @@ function PublicPageShell({ children }: { children: React.ReactNode }) {
 
 /** Public routes: / and /scholen. Render shell immediately; defer auth to avoid blocking LCP. */
 function PublicRoute({ story = false }: { story?: boolean }) {
+    /**
+     * A/B-variant voor de homepage. Bewust in een useMemo en niet in een effect:
+     * de keuze moet vóór de eerste render vaststaan, anders ziet een B-bezoeker
+     * eerst A. Zie docs/marketing/homepage-ab-test-opzet.md.
+     */
+    const { variant, forced: variantForced } = React.useMemo(
+        () => (story ? resolveHomepageVariant() : { variant: 'a' as const, forced: false }),
+        [story],
+    );
     const shouldProbeAuth = React.useMemo(() => hasLikelySupabaseSession(), []);
     const { user, loading } = useAuthUser({
         enabled: shouldProbeAuth,
@@ -334,7 +345,11 @@ function PublicRoute({ story = false }: { story?: boolean }) {
         <PublicPageShell>
             <SecureErrorBoundary>
                 <React.Suspense fallback={<LoadingFallback />}>
-                    {story ? <VerhaalPage /> : <ScholenLanding />}
+                    {story
+                        ? (variant === 'b'
+                            ? <VersieBPage />
+                            : <VerhaalPage variant={variant} variantForced={variantForced} />)
+                        : <ScholenLanding />}
                 </React.Suspense>
             </SecureErrorBoundary>
         </PublicPageShell>
