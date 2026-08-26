@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
+import { readFile } from 'node:fs/promises';
 
 import {
     relevanceFactor,
@@ -130,6 +131,34 @@ test('een lang kernbegrip telt ook binnen een samenstelling', () => {
     assert.equal(relevanceFactor('Ik gebruik schoolgegevens uit het systeem.', LEGAAL_KEYWORDS), 1);
 });
 
-test('een kort kernbegrip telt wél als het als heel woord voorkomt', () => {
-    assert.equal(relevanceFactor('Mag dat zomaar?', LEGAAL_KEYWORDS), 1);
+test('een kort kernbegrip telt wél als heel woord, maar één treffer alleen is niet genoeg', () => {
+    // 'mag' is een heel woord en dus een geldige treffer, maar een antwoord
+    // moet minstens twee verschillende kernbegrippen raken voor de volle
+    // factor — anders geeft elk alledaags woord uit de lijst gratis punten.
+    assert.equal(relevanceFactor('Mag dat zomaar?', LEGAAL_KEYWORDS), 0.7);
+    assert.equal(relevanceFactor('Mag je zomaar toestemming overslaan?', LEGAAL_KEYWORDS), 1);
+});
+
+test('één generiek kernbegrip in verder onderwerploze tekst geeft geen volle factor', () => {
+    // De directe omzeiling uit de gate-review: alledaagse lijstwoorden als
+    // 'school' of 'project' in een verhaal dat nergens over het dilemma gaat.
+    assert.equal(
+        relevanceFactor('Ik ging gisteren na school lekker voetballen met vrienden op het veld.', LEGAAL_KEYWORDS),
+        0.7
+    );
+    assert.equal(
+        relevanceFactor('Mijn project ging over voetbal en we hebben heel hard gerend buiten.', TRANSPARANT_KEYWORDS),
+        0.7
+    );
+});
+
+test('de matcher gebruikt geen lookbehind-regex (crasht op oudere iPad-Safari)', async () => {
+    // Scholen draaien op iPads t/m iPadOS 15/16.3, waar lookbehind een
+    // SyntaxError gooit bij het BOUWEN van de regex — de missie crashte dan
+    // precies op het inleveren. Tokenisatie heeft dat probleem niet.
+    const bron = await readFile(
+        new URL('../src/features/missions/templates/ethics-council/sub/textSubstance.ts', import.meta.url),
+        'utf8'
+    );
+    assert.ok(!bron.includes('(?<'), 'geen lookbehind/lookbehind-negatie in textSubstance.ts');
 });

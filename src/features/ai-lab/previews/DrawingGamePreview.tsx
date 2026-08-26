@@ -7,7 +7,7 @@ import { DuelWaitingRoom } from '@/features/games/DrawingDuel/DuelWaitingRoom';
 import { ChallengeToast } from '@/features/games/DrawingDuel/ChallengeToast';
 import { MissionConclusion } from '@/features/missions/shared/MissionConclusion';
 import { analyzeDrawingWithAI } from '@/services/aiProviderService';
-import { DRAWING_MODERATION_NOTICE } from '@/services/drawingModeration';
+import { DRAWING_MODERATION_NOTICE, moderationRetrySeconds } from '@/services/drawingModeration';
 import { DuelChallenge, subscribeToChallenges, respondToChallenge, setPlayerOnline, setPlayerOffline } from '@/services/duelService';
 import { blockUser, getBlockedUsers } from '@/services/blockingService';
 
@@ -367,6 +367,8 @@ export const DrawingGamePreview: React.FC<DrawingGamePreviewProps> = ({ onLevelC
     const [gamePhase, setGamePhase] = useState<'draw' | 'analyzing' | 'result'>('draw');
     const [result, setResult] = useState<AnalysisResult | null>(null);
     const [isModerated, setIsModerated] = useState(false);
+    // Resttijd op het moment van inzenden; bepaalt wat een moderatie-retry teruggeeft.
+    const timeLeftAtSubmitRef = useRef(45);
     const [score, setScore] = useState(0);
     const [totalRounds] = useState(10);
     const [analysisStep, setAnalysisStep] = useState(0); // For animating the analysis phase
@@ -554,6 +556,9 @@ export const DrawingGamePreview: React.FC<DrawingGamePreviewProps> = ({ onLevelC
     const submitDrawing = async () => {
         if (!canvasRef.current || !gamePrompts[currentRound]) return;
 
+        // Resttijd vastleggen vóór de analyse: een moderatie-retry geeft
+        // precies deze tijd terug, nooit een verse klok (zie moderationRetrySeconds).
+        timeLeftAtSubmitRef.current = timeLeft;
         setGamePhase('analyzing');
         setAnalysisStep(0);
 
@@ -929,20 +934,34 @@ export const DrawingGamePreview: React.FC<DrawingGamePreviewProps> = ({ onLevelC
                                         {DRAWING_MODERATION_NOTICE}
                                     </p>
                                     <div className="flex justify-end">
-                                        <button
-                                            onClick={() => {
-                                                setIsModerated(false);
-                                                setResult(null);
-                                                setTimeLeft(45);
-                                                setGamePhase('draw');
-                                                setIsDrawing(false);
-                                                setTimeout(clearCanvas, 100);
-                                            }}
-                                            className="px-5 py-2 rounded-lg font-bold flex items-center gap-2 text-sm transition-colors"
-                                            style={{ backgroundColor: '#e3e2dc', color: '#6f6e69' }}
-                                        >
-                                            <RotateCcw size={16} /> Opnieuw Tekenen
-                                        </button>
+                                        {/* De retry geeft de resterende tekentijd terug, nooit een
+                                            verse klok — anders rekt een bewust geblokkeerde tekening
+                                            de ronde eindeloos. Vrijwel geen tijd meer over: ronde
+                                            schuift zonder punten en zonder foutlabel door. */}
+                                        {moderationRetrySeconds(timeLeftAtSubmitRef.current) > 0 ? (
+                                            <button
+                                                onClick={() => {
+                                                    setIsModerated(false);
+                                                    setResult(null);
+                                                    setTimeLeft(moderationRetrySeconds(timeLeftAtSubmitRef.current));
+                                                    setGamePhase('draw');
+                                                    setIsDrawing(false);
+                                                    setTimeout(clearCanvas, 100);
+                                                }}
+                                                className="px-5 py-2 rounded-lg font-bold flex items-center gap-2 text-sm transition-colors"
+                                                style={{ backgroundColor: '#e3e2dc', color: '#6f6e69' }}
+                                            >
+                                                <RotateCcw size={16} /> Opnieuw Tekenen ({moderationRetrySeconds(timeLeftAtSubmitRef.current)}s)
+                                            </button>
+                                        ) : (
+                                            <button
+                                                onClick={nextRound}
+                                                className="px-5 py-2 rounded-lg font-bold flex items-center gap-2 text-sm transition-colors"
+                                                style={{ backgroundColor: '#e3e2dc', color: '#6f6e69' }}
+                                            >
+                                                Volgende ronde
+                                            </button>
+                                        )}
                                     </div>
                                 </div>
                             </div>

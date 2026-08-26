@@ -58,28 +58,37 @@ const OFF_TOPIC_FACTOR = 0.7;
 const WHOLE_WORD_MAX_LENGTH = 4;
 /** T/m deze lengte moet een kernbegrip minstens aan een woordbegin staan. */
 const WORD_START_MAX_LENGTH = 6;
-
-const escapeForRegex = (value: string): string => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+/** Zoveel verschillende kernbegrippen moet een antwoord raken voor factor 1. */
+const MIN_DISTINCT_HITS = 2;
 
 /**
- * Geeft 1 zodra minstens één kernbegrip in de tekst voorkomt, anders
- * `weakFactor`. Hoofdletterongevoelig.
+ * Geeft 1 zodra minstens MIN_DISTINCT_HITS verschillende kernbegrippen in de
+ * tekst voorkomen, anders `weakFactor`. Hoofdletterongevoelig.
+ *
+ * Waarom twee en niet één: de lijsten bevatten bewust ook alledaagse woorden
+ * ('mag', 'school', 'project') zodat eigen-woorden-antwoorden herkend worden —
+ * maar één zo'n woord zegt niets. "Ik ging na school voetballen" gaat niet
+ * over privacy. Een echt antwoord over het dilemma raakt vrijwel altijd
+ * meerdere begrippen tegelijk ("je MAG iemands GEGEVENS niet zomaar
+ * gebruiken"); losse toevalstreffers niet.
  *
  * Hoe specifieker een begrip, hoe vrijer het mag matchen — anders raakt een
- * kort fragment toevallig een doodgewoon woord en ontloopt onderwerploze
- * tekst de rem:
+ * kort fragment toevallig een doodgewoon woord:
  *
  * - t/m 4 letters ('mag', 'wet', 'app', 'zin'): alleen als heel woord. Eerder
- *   matchte 'app' in "boodschappen", 'open' in "kopen", 'leg' in "collega" en
- *   'mag' in "magnetron", waardoor een volstrekt off-topic antwoord alsnog de
- *   volle score kreeg.
+ *   matchte 'app' in "boodschappen", 'open' in "kopen" en 'mag' in
+ *   "magnetron".
  * - 5 t/m 6 letters ('regel', 'delen'): aan een woordbegin, zodat
- *   verbuigingen ("delen", "gedeelde" via 'deel') meetellen zonder dat het
- *   fragment midden in een ander woord raak is.
+ *   verbuigingen meetellen zonder treffers midden in een ander woord.
  * - 7 letters en langer ('gegeven', 'privacy', 'toestemming'): overal in het
- *   woord. Dat is nodig voor Nederlandse samenstellingen — 'gegeven' hóórt te
- *   matchen in "persoonsgegevens" en "schoolgegevens" — en zulke lange
- *   begrippen zijn specifiek genoeg om niet per ongeluk raak te zijn.
+ *   woord — nodig voor Nederlandse samenstellingen ('gegeven' hoort te
+ *   matchen in "persoonsgegevens"), en lang genoeg om niet per ongeluk raak
+ *   te zijn.
+ *
+ * Bewust tokenisatie en géén reguliere expressies per kernbegrip: de eerdere
+ * regex-variant leunde op lookbehind, en dat gooit een SyntaxError op de
+ * iPad-Safari-versies (iPadOS 15/16.3) die scholen nog gebruiken — de missie
+ * crashte dan precies op het inleveren.
  *
  * Een lege lijst betekent "dit dossier heeft geen kernbegrippen" en geeft
  * altijd 1 — zo blijven dossiers zonder lijst ongemoeid.
@@ -92,17 +101,26 @@ export const relevanceFactor = (
     if (keywords.length === 0) return 1;
 
     const text = raw.toLowerCase();
-    const hit = keywords.some((keyword) => {
-        const needle = keyword.trim().toLowerCase();
-        if (needle.length === 0) return false;
-        const escaped = escapeForRegex(needle);
-        const pattern = needle.length <= WHOLE_WORD_MAX_LENGTH
-            ? `(?<![\\p{L}\\p{N}])${escaped}(?![\\p{L}\\p{N}])`
-            : needle.length <= WORD_START_MAX_LENGTH
-                ? `(?<![\\p{L}\\p{N}])${escaped}`
-                : escaped;
-        return new RegExp(pattern, 'u').test(text);
-    });
+    const words: string[] = text.match(WORD_RE) ?? [];
+    const needles = keywords
+        .map((keyword) => keyword.trim().toLowerCase())
+        .filter((needle) => needle.length > 0);
+    // Bij een lijst met maar één begrip is één treffer vanzelfsprekend genoeg.
+    const needed = Math.min(MIN_DISTINCT_HITS, needles.length);
+    if (needed === 0) return 1;
 
-    return hit ? 1 : weakFactor;
+    let hits = 0;
+    for (const needle of needles) {
+        const hit = needle.length <= WHOLE_WORD_MAX_LENGTH
+            ? words.includes(needle)
+            : needle.length <= WORD_START_MAX_LENGTH
+                ? words.some((word) => word.startsWith(needle))
+                : words.some((word) => word.includes(needle));
+        if (hit) {
+            hits++;
+            if (hits >= needed) return 1;
+        }
+    }
+
+    return weakFactor;
 };

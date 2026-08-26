@@ -35,3 +35,19 @@ export function isModeratedDrawingResult(payload: any): boolean {
   if (!Array.isArray(payload.guesses)) return false;
   return payload.guesses.some((guess: any) => isModerationLabel(guess?.label));
 }
+
+/** Onder deze resttijd is opnieuw tekenen zinloos; dan schuift de ronde door. */
+export const MODERATION_RETRY_MIN_SECONDS = 3;
+
+/**
+ * Hoeveel tekentijd een moderatie-retry teruggeeft: precies wat er bij het
+ * inzenden nog over was. De klok mag nooit terug naar vol — anders kan een
+ * leerling met opzettelijk geblokkeerde tekeningen één ronde eindeloos rekken
+ * en is het 45-secondencontract van de missie waardeloos. Is de rest vrijwel
+ * op (< MODERATION_RETRY_MIN_SECONDS), dan geeft dit 0 terug: de ronde
+ * schuift dan zonder punten en zonder foutlabel door naar de volgende.
+ */
+export const moderationRetrySeconds = (remainingAtSubmit: number): number => {
+    const remaining = Math.max(0, Math.floor(remainingAtSubmit));
+    return remaining >= MODERATION_RETRY_MIN_SECONDS ? remaining : 0;
+};
