@@ -69,6 +69,34 @@ test('verse run zonder enige vink blijft ongemoeid', () => {
     assert.equal(migrated, state);
 });
 
+test('een actuele save (met versiestempel) krijgt het late item nooit cadeau', () => {
+    // Misbruikscenario uit de adversariële review: een huidige leerling vinkt
+    // alles aan behalve het late item en herlaadt. De versiestempel (gezet bij
+    // elke checklist-interactie) bewijst dat de save actueel is.
+    const state = makeState({
+        'moodboard-beelden': true,
+        'moodboard-kleuren': true,
+        'moodboard-gevoel': true,
+        'moodboard-link-geplakt': true,
+    });
+    state.checklistVersion = 2;
+    const migrated = migrateBuilderChecklistState(state, STEPS);
+    assert.equal(migrated, state);
+    assert.equal(migrated.checklist['moodboard-portretrecht'], undefined);
+});
+
+test('de grandfather stempelt de save als actueel zodat hij eenmalig is', () => {
+    const state = makeState({
+        'moodboard-beelden': true,
+        'moodboard-kleuren': true,
+        'moodboard-gevoel': true,
+        'moodboard-link-geplakt': true,
+    });
+    const migrated = migrateBuilderChecklistState(state, STEPS);
+    assert.equal(migrated.checklist['moodboard-portretrecht'], true);
+    assert.equal(typeof migrated.checklistVersion, 'number');
+});
+
 test('corrupte opslag (checklist is geen object) crasht de migratie niet', () => {
     const state = makeState({});
     (state as unknown as { checklist: unknown }).checklist = 'corrupt';

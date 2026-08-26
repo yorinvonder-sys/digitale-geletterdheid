@@ -28,9 +28,24 @@ export function useWellbeingTeacherAlert(studentIdOverride?: string | null): {
         && studentId !== 'anonymous'
         && !((import.meta as any).env?.DEV === true && String(studentId).startsWith('dev-'));
     const [status, setStatus] = useState<WellbeingTeacherAlertStatus>('inactive');
+    // Per categorie het tijdstip van de laatst BEVESTIGDE aflevering. Een nieuwe
+    // treffer van dezelfde categorie binnen dit venster is aantoonbaar al bij de
+    // docent gemeld; dan sturen we geen tweede RPC maar blijft 'sent' terecht
+    // staan. Een ándere categorie krijgt wél een eigen melding.
+    const confirmedAt = useRef<Record<string, number>>({});
+    const DEDUP_WINDOW_MS = 60_000;
+    // Staleness-guard: alleen het jongste verzoek mag de status nog zetten,
+    // anders kan een traag, ouder RPC-resultaat een nieuwere status overschrijven.
+    const requestSeq = useRef(0);
 
     const onAlert = useCallback(async (match: WellbeingMatch) => {
         if (!active || !studentId) return;
+        const confirmed = confirmedAt.current[match.category];
+        if (confirmed !== undefined && Date.now() - confirmed < DEDUP_WINDOW_MS) {
+            setStatus('sent');
+            return;
+        }
+        const requestId = ++requestSeq.current;
         setStatus('pending');
         // Log alert naar Supabase voor docentnotificatie (zonder originele tekst — privacy)
         try {
@@ -40,10 +55,11 @@ export function useWellbeingTeacherAlert(studentIdOverride?: string | null): {
                 p_detected_at: match.timestamp,
             });
             if (error) throw error;
-            setStatus('sent');
+            confirmedAt.current[match.category] = Date.now();
+            if (requestSeq.current === requestId) setStatus('sent');
         } catch (err) {
             console.error('Wellbeing alert logging failed:', err);
-            setStatus('failed');
+            if (requestSeq.current === requestId) setStatus('failed');
         }
     }, [active, studentId]);
 

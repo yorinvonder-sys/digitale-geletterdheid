@@ -11,7 +11,7 @@ import { MilestoneToast } from './sub/MilestoneToast';
 import { MobileTabBar, type MobileTab } from './sub/MobileTabBar';
 import { PreviewPanel } from './sub/PreviewPanel';
 import { StepInstructionPanel } from './sub/StepInstructionPanel';
-import { migrateBuilderChecklistState, migrateBuilderEvidenceState, type BuilderCanvasState } from './sub/types';
+import { CHECKLIST_SCHEMA_VERSION, migrateBuilderChecklistState, migrateBuilderEvidenceState, type BuilderCanvasState } from './sub/types';
 import { isMeaningfulAnswer } from '../shared/answerQuality';
 import { toScorePercent } from '../shared/scorePercent';
 
@@ -210,6 +210,9 @@ const BuilderCanvasInner: React.FC<BuilderCanvasProps> = ({
     const handleChecklistToggle = (itemKey: string) => {
         setState((prev) => ({
             ...prev,
+            // De versiestempel markeert de save als actueel: alleen stempel-loze
+            // (oudere) saves komen in aanmerking voor de checklist-grandfather.
+            checklistVersion: CHECKLIST_SCHEMA_VERSION,
             checklist: {
                 ...prev.checklist,
                 [itemKey]: !prev.checklist[itemKey],

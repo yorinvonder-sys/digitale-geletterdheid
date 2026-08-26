@@ -1,9 +1,19 @@
 import { isMeaningfulAnswer } from '../../shared/answerQuality.ts';
 
+/**
+ * Versie van het checklist-schema. Elke checklist-interactie stempelt deze
+ * versie in de opslag; een save zónder stempel dateert aantoonbaar van vóór de
+ * introductie ervan en komt daarmee in aanmerking voor de grandfather-migratie
+ * van later toegevoegde items.
+ */
+export const CHECKLIST_SCHEMA_VERSION = 2;
+
 export interface BuilderCanvasState {
     phase: 'intro' | 'building' | 'results';
     currentStep: number;
     checklist: Record<string, boolean>;
+    /** Zie CHECKLIST_SCHEMA_VERSION; afwezig = save van vóór de versiestempel. */
+    checklistVersion?: number;
     textEntries: Record<string, string>;
     evidenceEntries: Record<string, string>;
     completedSteps: string[];
@@ -39,6 +49,11 @@ export function migrateBuilderChecklistState(
     state: BuilderCanvasState,
     steps: ReadonlyArray<ChecklistStepLike>,
 ): BuilderCanvasState {
+    // Een save mét versiestempel is ná de introductie van addedLater ontstaan:
+    // een ontbrekend late item betekent daar 'bewust (nog) niet aangevinkt' en
+    // mag nooit automatisch goedgekeurd worden — anders kan een huidige
+    // leerling het item omzeilen door alles aan te vinken en te herladen.
+    if (state.checklistVersion !== undefined) return state;
     const checklist = state.checklist ?? {};
     // Bewerkte of corrupte opslag kan hier elk type bevatten; `in` op een
     // niet-object gooit een TypeError en zou de hele missie laten crashen.
@@ -62,7 +77,13 @@ export function migrateBuilderChecklistState(
         for (const key of missingLate) patch[key] = true;
     }
     if (Object.keys(patch).length === 0) return state;
-    return { ...state, checklist: { ...checklist, ...patch } };
+    // Stempel de versie mee: de grandfather geldt één keer, daarna is de save
+    // een gewone actuele save.
+    return {
+        ...state,
+        checklistVersion: CHECKLIST_SCHEMA_VERSION,
+        checklist: { ...checklist, ...patch },
+    };
 }
 
 /**

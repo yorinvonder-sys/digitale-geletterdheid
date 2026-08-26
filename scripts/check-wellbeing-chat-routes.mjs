@@ -140,4 +140,31 @@ for (const route of ROUTES) {
         `${route.naam}: de termenlijst hoort alleen in useWellbeingMonitor te staan`);
 }
 
-console.log(`Welzijnsmonitor: alle ${ROUTES.length} leerlingchat-routes scannen vóór de AI, melden zonder tekst en tonen de hulplijnen.`);
+// 8. Ook de twee template-scanroutes (vrije tekst zonder chat) dragen het
+//    volledige vangnet: monitor, blokkade, docentmelding via de gedeelde hook
+//    en een overlay die de melding alleen bij bevestigde aflevering belooft.
+const SCAN_ROUTES = [
+    { naam: 'Puzzle Lab', bestand: 'src/features/missions/templates/puzzle-lab/PuzzleLab.tsx' },
+    { naam: 'Data Viewer', bestand: 'src/features/missions/templates/data-viewer/DataViewer.tsx' },
+];
+for (const route of SCAN_ROUTES) {
+    const bron = await lees(route.bestand);
+    assert.match(bron, /useWellbeingMonitor/,
+        `${route.naam}: moet useWellbeingMonitor gebruiken`);
+    assert.match(bron, /isBlocked/,
+        `${route.naam}: de scanuitslag moet de inzending kunnen blokkeren`);
+    assert.match(bron, /useWellbeingTeacherAlert/,
+        `${route.naam}: de docentmelding moet via useWellbeingTeacherAlert lopen`);
+    assert.match(bron, /onAlert:\s*teacherAlert\.onAlert/,
+        `${route.naam}: teacherAlert.onAlert moet als onAlert aan useWellbeingMonitor hangen`);
+    assert.match(bron, /<WellbeingAlert/,
+        `${route.naam}: moet de hulplijnweergave tonen`);
+    assert.match(bron, /teacherNotified=\{teacherAlert\.notified\}/,
+        `${route.naam}: de hulplijnweergave mag de docentmelding alleen beloven via de bevestigde status`);
+    assert.match(bron, /dismissHulplijn\(\)/,
+        `${route.naam}: de hulplijnweergave moet te sluiten zijn`);
+    assert.doesNotMatch(bron, /WELLBEING_PATTERNS/,
+        `${route.naam}: de termenlijst hoort alleen in useWellbeingMonitor te staan`);
+}
+
+console.log(`Welzijnsmonitor: alle ${ROUTES.length} leerlingchat-routes en ${SCAN_ROUTES.length} scanroutes scannen vóór verwerking, melden zonder tekst en tonen de hulplijnen.`);
