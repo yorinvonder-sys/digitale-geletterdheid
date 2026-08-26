@@ -28,7 +28,8 @@ const ROUTES = [
   '/scholen', 
   '/leerlingdemo',
   '/verhaal',
-  '/login', 
+  '/pilot',
+  '/login',
   '/ict', 
   '/ict/integraties', 
   '/ict/privacy', 
@@ -136,6 +137,17 @@ function prerenderRoutes() {
       ogTitle: 'Het verhaal van een les die wél werkt — DGSkills',
       ogDescription: 'Digitale geletterdheid voor VO en VSO, verteld als verhaal: van de pijn in de klas naar missies, docentdashboard en aantoonbare SLO-dekking.',
       ogUrl: 'https://dgskills.app/verhaal',
+    },
+    // De hero op de homepage linkt hiernaartoe. Zonder deze route schrijft het
+    // script geen dist/pilot/index.html en serveert de hosting de 404-pagina bij
+    // een directe navigatie — de knop werkte dan alleen na client-side routing.
+    '/pilot': {
+      title: 'Start een gratis pilot | DGSkills',
+      description: 'Vraag een schoolpilot aan voor DGSkills. Live binnen 10 werkdagen, reactie binnen twee werkdagen.',
+      canonical: 'https://dgskills.app/pilot',
+      ogTitle: 'Start een gratis pilot — DGSkills',
+      ogDescription: 'Vraag een schoolpilot aan voor DGSkills. Live binnen 10 werkdagen, reactie binnen twee werkdagen.',
+      ogUrl: 'https://dgskills.app/pilot',
     },
     '/login': {
       title: 'Inloggen — DGSkills | Digitale Geletterdheid',
