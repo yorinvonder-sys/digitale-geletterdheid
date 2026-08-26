@@ -40,6 +40,11 @@ export function migrateBuilderChecklistState(
     steps: ReadonlyArray<ChecklistStepLike>,
 ): BuilderCanvasState {
     const checklist = state.checklist ?? {};
+    // Bewerkte of corrupte opslag kan hier elk type bevatten; `in` op een
+    // niet-object gooit een TypeError en zou de hele missie laten crashen.
+    if (typeof checklist !== 'object' || checklist === null || Array.isArray(checklist)) {
+        return state;
+    }
     const patch: Record<string, boolean> = {};
     for (const step of steps) {
         const lateKeys = step.checklistItems

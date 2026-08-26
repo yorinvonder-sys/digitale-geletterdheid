@@ -69,6 +69,13 @@ test('verse run zonder enige vink blijft ongemoeid', () => {
     assert.equal(migrated, state);
 });
 
+test('corrupte opslag (checklist is geen object) crasht de migratie niet', () => {
+    const state = makeState({});
+    (state as unknown as { checklist: unknown }).checklist = 'corrupt';
+    const migrated = migrateBuilderChecklistState(state, STEPS);
+    assert.equal(migrated, state);
+});
+
 test('een expliciet uitgevinkt item wordt nooit automatisch aangevinkt', () => {
     const state = makeState({
         'moodboard-beelden': true,

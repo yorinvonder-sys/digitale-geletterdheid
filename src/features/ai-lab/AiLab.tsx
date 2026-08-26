@@ -218,6 +218,7 @@ export const AiLab: React.FC<AiLabProps> = ({ user, onExit, saveProgress, comple
     showHulplijn,
     wellbeingMatch,
     dismissHulplijn,
+    wellbeingTeacherNotified,
   } = useAgentLogic({
     selectedRole,
     userIdentifier: user?.uid || '', // IMPORTANT: Must use Supabase UID, not identifier (student number)
@@ -786,7 +787,7 @@ export const AiLab: React.FC<AiLabProps> = ({ user, onExit, saveProgress, comple
     <div className="fixed inset-0 overflow-hidden flex flex-col items-center pt-safe pb-safe pl-safe pr-safe">
 
       {/* Welzijnsdetectie overlay */}
-      {showHulplijn && <WellbeingAlert match={wellbeingMatch} onDismiss={dismissHulplijn} />}
+      {showHulplijn && <WellbeingAlert match={wellbeingMatch} teacherNotified={wellbeingTeacherNotified} onDismiss={dismissHulplijn} />}
 
       {/* NEW: Web Preview Modal */}
       {previewUrl && (

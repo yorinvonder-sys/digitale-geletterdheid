@@ -13,14 +13,15 @@ interface Props {
   match: WellbeingMatch | null;
   onDismiss: () => void;
   /**
-   * Alleen op true zetten wanneer de aanroeper de docentmelding ook echt
-   * verstuurt (via useWellbeingTeacherAlert of een eigen onAlert). Zonder die
-   * koppeling belooft de overlay anders een melding die nooit verstuurd wordt.
+   * Verplicht en bewust zonder default: alleen true doorgeven wanneer de
+   * docentmelding aantoonbaar is afgeleverd (useWellbeingTeacherAlert.notified).
+   * Zo kan geen enkele route stilzwijgend een melding beloven die nooit
+   * verstuurd of nooit bevestigd is.
    */
-  teacherNotified?: boolean;
+  teacherNotified: boolean;
 }
 
-export const WellbeingAlert: React.FC<Props> = ({ match, onDismiss, teacherNotified = true }) => {
+export const WellbeingAlert: React.FC<Props> = ({ match, onDismiss, teacherNotified }) => {
   if (!match) return null;
 
   // items-start + my-auto op de kaart: past de kaart, dan staat hij gecentreerd; past

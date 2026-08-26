@@ -14,14 +14,18 @@ export type WellbeingTeacherAlertStatus = 'inactive' | 'pending' | 'sent' | 'fai
  * exception, dus beide paden worden gecontroleerd. Zo belooft de
  * hulplijn-overlay nooit een docentmelding die niet is aangekomen.
  */
-export function useWellbeingTeacherAlert(): {
+export function useWellbeingTeacherAlert(studentIdOverride?: string | null): {
     status: WellbeingTeacherAlertStatus;
     /** true zodra de melding bevestigd bij Supabase is geregistreerd. */
     notified: boolean;
     onAlert: (match: WellbeingMatch) => void;
 } {
-    const studentId = useRef(getCurrentUserId()).current;
+    // Routes met een eigen leerling-id (chat) geven dat door; template-routes
+    // vallen terug op het id uit de Supabase-sessie in localStorage.
+    const fallbackId = useRef(getCurrentUserId()).current;
+    const studentId = studentIdOverride !== undefined ? studentIdOverride : fallbackId;
     const active = Boolean(studentId)
+        && studentId !== 'anonymous'
         && !((import.meta as any).env?.DEV === true && String(studentId).startsWith('dev-'));
     const [status, setStatus] = useState<WellbeingTeacherAlertStatus>('inactive');
 

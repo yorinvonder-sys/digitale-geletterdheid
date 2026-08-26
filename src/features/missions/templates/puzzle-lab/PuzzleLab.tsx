@@ -601,9 +601,6 @@ export const PuzzleLab: React.FC<TemplateMissionProps> = ({
                                         <input
                                             data-qa="puzzle-input"
                                             ref={inputRef}
-                                            type={puzzle.sensitiveInput ? 'password' : 'text'}
-                                            // Geen wachtwoordmanager-prompt op een verzonnen oefenwachtwoord.
-                                            autoComplete={puzzle.sensitiveInput ? 'new-password' : undefined}
                                             value={inputValue}
                                             onChange={e => setInputValue(e.target.value)}
                                             onKeyDown={handleKeyDown}
@@ -611,6 +608,9 @@ export const PuzzleLab: React.FC<TemplateMissionProps> = ({
                                             placeholder="antwoord..."
                                             aria-label={`Antwoord voor: ${puzzle.title}`}
                                             className="min-h-[44px] flex-1 bg-transparent font-mono text-xs text-duck-bg placeholder:text-duck-gray/50 outline-none"
+                                            type={puzzle.sensitiveInput ? 'password' : 'text'}
+                                            // Geen wachtwoordmanager-prompt op een verzonnen oefenwachtwoord.
+                                            autoComplete={puzzle.sensitiveInput ? 'new-password' : undefined}
                                         />
                                         <BlinkingCursor />
                                     </div>

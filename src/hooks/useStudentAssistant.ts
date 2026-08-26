@@ -4,6 +4,7 @@ import { createChatSession } from '@/services/aiProviderService';
 import { supabase } from '@/services/supabase';
 import { sanitizePrompt } from '@/utils/promptSanitizer';
 import { useWellbeingMonitor, WellbeingMatch } from './useWellbeingMonitor';
+import { useWellbeingTeacherAlert } from '@/hooks/useWellbeingTeacherAlert';
 
 const MAX_UI_MESSAGES = 30;
 const ABUSE_THRESHOLD = 3;
@@ -38,25 +39,13 @@ export const useStudentAssistant = ({ userIdentifier, context, roleId = 'student
         && userIdentifier !== 'anonymous'
         && !((import.meta as any).env?.DEV === true && userIdentifier.startsWith('dev-'));
 
-    // Welzijnsdetectie — scant berichten op zorgwekkende taal voordat ze naar AI gaan
-    const handleWellbeingAlert = useCallback(async (match: WellbeingMatch) => {
-        if (!shouldUseRemoteStudentControls) return;
-
-        // Log alert naar Supabase voor docentnotificatie (zonder originele tekst — privacy)
-        try {
-            await supabase.rpc('log_wellbeing_alert' as any, {
-                p_student_id: userIdentifier,
-                p_category: match.category,
-                p_detected_at: match.timestamp,
-            });
-        } catch (err) {
-            // Tabel/RPC bestaat mogelijk nog niet — fail silently in dev, log in prod
-            console.error('Wellbeing alert logging failed:', err);
-        }
-    }, [shouldUseRemoteStudentControls, userIdentifier]);
+    // Welzijnsdetectie — scant berichten op zorgwekkende taal voordat ze naar AI
+    // gaan. De docentmelding loopt via useWellbeingTeacherAlert zodat de overlay
+    // hem pas belooft als de RPC aantoonbaar is geslaagd.
+    const wellbeingTeacherAlert = useWellbeingTeacherAlert(userIdentifier);
 
     const { scanText: scanWellbeing, showHulplijn, lastMatch: wellbeingMatch, dismissHulplijn } = useWellbeingMonitor({
-        onAlert: handleWellbeingAlert,
+        onAlert: wellbeingTeacherAlert.onAlert,
         studentId: userIdentifier,
     });
 
@@ -294,5 +283,6 @@ REGELS VOOR JOU:
         showHulplijn,
         wellbeingMatch,
         dismissHulplijn,
+        wellbeingTeacherNotified: wellbeingTeacherAlert.notified,
     };
 };

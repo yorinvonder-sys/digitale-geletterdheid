@@ -92,27 +92,43 @@ for (const route of ROUTES) {
             `${route.naam}: de welzijnscheck moet vóór de puntentoekenning staan in ${route.hook}`);
     }
 
-    // 4. De docentmelding gaat via dezelfde RPC.
-    assert.match(hook, /log_wellbeing_alert/,
-        `${route.naam}: de docent moet een melding krijgen via log_wellbeing_alert`);
+    // 4. De docentmelding loopt via de gedeelde useWellbeingTeacherAlert-hook,
+    //    en die hook is als onAlert aan de monitor gekoppeld. De RPC zelf wordt
+    //    hieronder één keer streng gecontroleerd in de gedeelde hook.
+    assert.match(hook, /useWellbeingTeacherAlert/,
+        `${route.naam}: de docentmelding moet via useWellbeingTeacherAlert lopen`);
+    assert.match(hook, /onAlert:\s*wellbeingTeacherAlert\.onAlert/,
+        `${route.naam}: wellbeingTeacherAlert.onAlert moet als onAlert aan useWellbeingMonitor hangen`);
 
-    // 5. PRIVACY: alleen categorie en tijdstip, nooit de originele tekst. De RPC
-    //    kent maar drie parameters; komt er een vierde bij, dan is dat vrijwel
-    //    zeker het bericht zelf en moet dit bewust herzien worden.
-    const rpcAanroep = hook.slice(hook.indexOf('log_wellbeing_alert'));
-    const rpcBlok = rpcAanroep.slice(0, rpcAanroep.indexOf('});') + 3);
-    const parameters = [...rpcBlok.matchAll(/\bp_[a-z_]+:/g)].map(m => m[0].slice(0, -1));
-    assert.deepEqual(parameters.sort(), ['p_category', 'p_detected_at', 'p_student_id'],
-        `${route.naam}: de melding mag alleen categorie, tijdstip en leerling-id bevatten, niet de tekst`);
-    assert.doesNotMatch(rpcBlok, /message|text|input|prompt/i,
-        `${route.naam}: er mag geen berichttekst meegestuurd worden in de docentmelding`);
-
-    // 6. De leerling ziet dezelfde hulplijnweergave en kan die sluiten.
+    // 6. De leerling ziet dezelfde hulplijnweergave en kan die sluiten. De
+    //    weergave belooft de docentmelding alleen bij bevestigde aflevering.
     assert.match(weergave, /<WellbeingAlert/,
         `${route.naam}: ${route.weergave} moet de hulplijnweergave tonen`);
     assert.match(weergave, /onDismiss=\{dismissHulplijn\}/,
         `${route.naam}: de hulplijnweergave moet te sluiten zijn, anders zit de leerling vast`);
+    assert.match(weergave, /teacherNotified=\{(wellbeingTeacherNotified|wellbeingTeacherAlert\.notified)\}/,
+        `${route.naam}: de hulplijnweergave mag de docentmelding alleen beloven via de bevestigde status`);
 }
+
+// 5. PRIVACY + betrouwbaarheid van de docentmelding, één keer in de gedeelde
+//    hook: alleen categorie, tijdstip en leerling-id — nooit de originele
+//    tekst — en de melding geldt pas als verstuurd na een gecontroleerd
+//    RPC-resultaat (Supabase geeft fouten als error-veld terug, niet als
+//    exception).
+const teacherAlertHook = await lees('src/hooks/useWellbeingTeacherAlert.ts');
+assert.match(teacherAlertHook, /log_wellbeing_alert/,
+    'useWellbeingTeacherAlert: de docentmelding moet via log_wellbeing_alert lopen');
+const rpcAanroep = teacherAlertHook.slice(teacherAlertHook.indexOf('log_wellbeing_alert'));
+const rpcBlok = rpcAanroep.slice(0, rpcAanroep.indexOf('});') + 3);
+const parameters = [...rpcBlok.matchAll(/\bp_[a-z_]+:/g)].map(m => m[0].slice(0, -1));
+assert.deepEqual(parameters.sort(), ['p_category', 'p_detected_at', 'p_student_id'],
+    'useWellbeingTeacherAlert: de melding mag alleen categorie, tijdstip en leerling-id bevatten, niet de tekst');
+assert.doesNotMatch(rpcBlok, /message|text|input|prompt/i,
+    'useWellbeingTeacherAlert: er mag geen berichttekst meegestuurd worden in de docentmelding');
+assert.match(teacherAlertHook, /if\s*\(error\)\s*throw error/,
+    'useWellbeingTeacherAlert: het error-veld van de RPC-respons moet gecontroleerd worden');
+assert.match(teacherAlertHook, /setStatus\('sent'\)/,
+    'useWellbeingTeacherAlert: de status mag pas op sent na een geslaagde RPC');
 
 // 7. De detectielijst blijft één gedeelde bron. Zou een route zijn eigen
 //    termenlijst krijgen, dan lopen de routes weer uiteen.

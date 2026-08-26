@@ -18,6 +18,7 @@ import { isGeneratedImageDataUrl } from '@/services/imageGenerationLogic';
 import { useMissionAutoSave } from '@/hooks/useMissionAutoSave';
 import { supabase } from '@/services/supabase';
 import { useWellbeingMonitor, WellbeingMatch } from '@/hooks/useWellbeingMonitor';
+import { useWellbeingTeacherAlert } from '@/hooks/useWellbeingTeacherAlert';
 import { WellbeingAlert } from '@/features/student/WellbeingAlert';
 import {
     buildLocalPromptResult,
@@ -763,25 +764,9 @@ export const PromptMasterMission: React.FC<Props> = ({ onBack, onComplete, vsoPr
     // (useAgentLogic): de prompt van de leerling wordt gescand VOORDAT hij naar de AI
     // gaat. Bij een treffer gaat er niets weg, ziet de leerling de hulplijnen en krijgt
     // de docent een melding — zonder de originele tekst, alleen categorie en tijdstip.
-    const shouldUseRemoteStudentControls = Boolean(studentId)
-        && studentId !== 'anonymous'
-        && !((import.meta as any).env?.DEV === true && studentId!.startsWith('dev-'));
-
-    const handleWellbeingAlert = useCallback(async (match: WellbeingMatch) => {
-        if (!shouldUseRemoteStudentControls) return;
-
-        // Log alert naar Supabase voor docentnotificatie (zonder originele tekst — privacy)
-        try {
-            await supabase.rpc('log_wellbeing_alert' as any, {
-                p_student_id: studentId,
-                p_category: match.category,
-                p_detected_at: match.timestamp,
-            });
-        } catch (err) {
-            // Tabel/RPC bestaat mogelijk nog niet — fail silently in dev, log in prod
-            console.error('Wellbeing alert logging failed:', err);
-        }
-    }, [shouldUseRemoteStudentControls, studentId]);
+    // Docentmelding met bevestigde aflevering: de overlay belooft hem pas als
+    // de RPC aantoonbaar is geslaagd (zie useWellbeingTeacherAlert).
+    const wellbeingTeacherAlert = useWellbeingTeacherAlert(studentId ?? null);
 
     const {
         scanText: scanWellbeing,
@@ -789,7 +774,7 @@ export const PromptMasterMission: React.FC<Props> = ({ onBack, onComplete, vsoPr
         lastMatch: wellbeingMatch,
         dismissHulplijn,
     } = useWellbeingMonitor({
-        onAlert: handleWellbeingAlert,
+        onAlert: wellbeingTeacherAlert.onAlert,
         studentId,
     });
 
@@ -1155,7 +1140,7 @@ export const PromptMasterMission: React.FC<Props> = ({ onBack, onComplete, vsoPr
             <div data-qa="prompt-master-challenge" className="h-dvh overflow-y-auto bg-duck-bg text-duck-ink flex flex-col" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                 {/* Hulplijnen bij een welzijnssignaal. Staat in deze fase omdat hier de
                     prompt verstuurd wordt; sluiten brengt de leerling terug bij de opdracht. */}
-                {showHulplijn && <WellbeingAlert match={wellbeingMatch} onDismiss={dismissHulplijn} />}
+                {showHulplijn && <WellbeingAlert match={wellbeingMatch} teacherNotified={wellbeingTeacherAlert.notified} onDismiss={dismissHulplijn} />}
                 {/* Header */}
                 <header className="bg-white border-b border-duck-gray px-4 py-3 md:px-6 md:py-4 sticky top-0 z-10">
                     <div className="max-w-4xl mx-auto flex flex-wrap items-center justify-between gap-2">

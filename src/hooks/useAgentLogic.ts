@@ -10,6 +10,7 @@ import { supabase } from '@/services/supabase';
 import DOMPurify from 'dompurify';
 import { useChatSession, MAX_UI_MESSAGES } from './useChatSession';
 import { useWellbeingMonitor, WellbeingMatch } from './useWellbeingMonitor';
+import { useWellbeingTeacherAlert } from '@/hooks/useWellbeingTeacherAlert';
 import { useGameCode, stripGameCodeFromResponse } from './useGameCode';
 import { useStepCompletion } from './useStepCompletion';
 
@@ -391,25 +392,9 @@ export const useAgentLogic = ({ selectedRole, userIdentifier, schoolId, initialP
     // wordt gescand VOORDAT het naar de AI gaat. Bij een treffer gaat het bericht niet
     // weg, ziet de leerling de hulplijnen en krijgt de docent een melding — zonder de
     // originele tekst, alleen categorie en tijdstip.
-    const shouldUseRemoteStudentControls = Boolean(userIdentifier)
-        && userIdentifier !== 'anonymous'
-        && !((import.meta as any).env?.DEV === true && userIdentifier.startsWith('dev-'));
-
-    const handleWellbeingAlert = useCallback(async (match: WellbeingMatch) => {
-        if (!shouldUseRemoteStudentControls) return;
-
-        // Log alert naar Supabase voor docentnotificatie (zonder originele tekst — privacy)
-        try {
-            await supabase.rpc('log_wellbeing_alert' as any, {
-                p_student_id: userIdentifier,
-                p_category: match.category,
-                p_detected_at: match.timestamp,
-            });
-        } catch (err) {
-            // Tabel/RPC bestaat mogelijk nog niet — fail silently in dev, log in prod
-            console.error('Wellbeing alert logging failed:', err);
-        }
-    }, [shouldUseRemoteStudentControls, userIdentifier]);
+    // Docentmelding met bevestigde aflevering: de overlay mag de melding pas
+    // beloven als de RPC aantoonbaar is geslaagd (zie useWellbeingTeacherAlert).
+    const wellbeingTeacherAlert = useWellbeingTeacherAlert(userIdentifier);
 
     const {
         scanText: scanWellbeing,
@@ -417,7 +402,7 @@ export const useAgentLogic = ({ selectedRole, userIdentifier, schoolId, initialP
         lastMatch: wellbeingMatch,
         dismissHulplijn,
     } = useWellbeingMonitor({
-        onAlert: handleWellbeingAlert,
+        onAlert: wellbeingTeacherAlert.onAlert,
         studentId: userIdentifier,
     });
 
@@ -1103,5 +1088,6 @@ export const useAgentLogic = ({ selectedRole, userIdentifier, schoolId, initialP
         showHulplijn,
         wellbeingMatch,
         dismissHulplijn,
+        wellbeingTeacherNotified: wellbeingTeacherAlert.notified,
     };
 };
