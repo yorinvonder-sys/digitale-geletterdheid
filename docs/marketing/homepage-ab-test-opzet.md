@@ -37,8 +37,17 @@ Concreet legt dit document vier dingen vast die achteraf niet meer te verschuive
 
 ## 1. Eerst de vraag die alles bepaalt: is testen hier haalbaar?
 
-**Dit is een openstaand punt, geen aanname.** Ik heb geprobeerd het bezoekvolume op te halen en dat
-lukte niet:
+> **Beantwoord op 26-08-2026 door Yorin: er zijn nog geen bezoekers.** Dat maakt een A/B-test in de
+> statistische zin voorlopig onmogelijk — je kunt nul bezoekers niet over twee varianten verdelen.
+> Het verandert niet wat we bouwen, wel waar het eerst voor dient: de variantmechaniek is nu een
+> **schakelaar** om beide versies naast elkaar te kunnen tonen, en de eerste zinvolle vergelijking
+> is de kwalitatieve uit de tabel hieronder (vijf mensen uit de doelgroep, beide versies, de
+> 5-secondentoets uit P1). De verdeling over echt verkeer gaat pas aan zodra er verkeer ís; dat is
+> één constante omzetten (`VARIANT_B_READY` in `src/features/public-site/homepageVariant.ts`).
+>
+> De rest van dit hoofdstuk blijft staan als richtlijn voor het moment dat er wél bezoekers zijn.
+
+Ik heb geprobeerd het bezoekvolume zelf op te halen en dat lukte niet:
 
 - Vercel Web Analytics is **niet ingeschakeld** voor dit project (de API antwoordt met 404).
 - De Supabase-koppeling was in deze sessie niet geautoriseerd, dus de `events`-tabel kon ik niet
@@ -293,8 +302,8 @@ losse vraag, die pas zinvol is als de homepage vaststaat.
 
 | Stap | Wat | Klaar wanneer |
 |---|---|---|
-| 0 | Bezoekcijfers op `/` ophalen en hoofdstuk 1 + de tabel in §5 invullen | De vier parameters staan ingevuld |
-| 1 | Variantmechaniek: toewijzing vóór eerste render, plakkend, `?variant=` override, variant in het paginalabel | In de browser aantoonbaar: twee verse profielen krijgen elk een variant en houden die vast; events dragen `:a` / `:b` |
+| 0 | ~~Bezoekcijfers op `/` ophalen~~ | **Vervallen** — er zijn nog geen bezoekers. De parameters in §5 worden ingevuld zodra er verkeer is. |
+| 1 | ~~Variantmechaniek~~ | **Klaar** — `homepageVariant.ts`, override via `?variant=`, variant in het meetlabel, `VARIANT_B_READY` staat uit. Gedekt door `npm run test:homepage-variant`. |
 | 2 | Variant B bouwen volgens §3 | De 12 principes uit het ontwerpkader zijn langsgelopen, met per principe een uitkomst |
 | 3 | Beide varianten meten | Alle events uit §5 vuren op B, met dezelfde namen als op A |
 | 4 | Test draaien | De afgesproken looptijd is voorbij |
@@ -308,9 +317,9 @@ beoordelen.
 
 ## 10. Openstaande beslissingen — voor Yorin
 
-1. **Bezoekcijfers.** Zonder die getallen is stap 0 niet af en zijn de parameters in §5 niet in te
-   vullen. Zet eventueel Vercel Web Analytics aan (staat nu uit), dat is een schakelaar in het
-   dashboard.
+1. ~~**Bezoekcijfers.**~~ Beantwoord: er is nog geen verkeer. Zet Vercel Web Analytics wél alvast
+   aan (staat nu uit) zodat er iets te meten valt zodra de eerste bezoekers komen — dat is een
+   schakelaar in het Vercel-dashboard.
 2. **Krijgt B dezelfde hero-kop als A?** Mijn advies is ja, voor de eerste test — één variabele
    tegelijk, en het voorkomt de kopflits uit §4.2(a).
 3. **Ga je akkoord dat er nu niets verwijderd wordt?** Het voorstel is: verwijderen is de laatste
