@@ -14,8 +14,11 @@
  * 7. Mistral Vision via Chat Completions — server-side API key only
  * 8. JSON schema validation before returning a result
  *
+ * 9. Moderation gate: if the model flags the drawing as "ONGEPAST", no model content is returned
+ *
  * Input:  { imageBase64: string, possibleLabels?: string[] }
  * Output: { guesses: [{label: string, confidence: number}], reasoning: string }
+ *         or, when moderated: { moderated: true, guesses: [], mainGuess: null, reasoning: "" }
  *
  * NOTE: The frontend also sends a `prompt` field but it is intentionally ignored.
  * The system prompt is always determined server-side to prevent prompt injection.
@@ -68,6 +71,19 @@ interface DrawingGuess {
 interface DrawingAnalysis {
     guesses: DrawingGuess[];
     reasoning: string;
+}
+
+/** Label the vision model returns when a drawing is sexual, hateful or obscene. */
+const MODERATION_LABEL = "ONGEPAST";
+
+/** True when a guess label is the moderation flag (case-insensitive). */
+function isModerationLabel(label: unknown): boolean {
+    return typeof label === "string" && label.trim().toUpperCase() === MODERATION_LABEL;
+}
+
+/** True when the model flagged the drawing — on the main guess or anywhere in the list. */
+function isModeratedAnalysis(analysis: DrawingAnalysis): boolean {
+    return analysis.guesses.some((guess) => isModerationLabel(guess.label));
 }
 
 /** Validate that the parsed AI response matches the expected schema. */
@@ -310,6 +326,37 @@ Deno.serve(async (req: Request) => {
         return new Response(
             JSON.stringify({ error: "Tekening kon niet worden geanalyseerd." }),
             { status: 422, headers: responseHeaders },
+        );
+    }
+
+    // 9. Moderation gate — return no model content at all when the drawing was flagged.
+    if (isModeratedAnalysis(analysis)) {
+        logAiUsageEvent({
+            requestId,
+            endpoint: "analyzeDrawing",
+            provider: "mistral",
+            model: result.model,
+            status: "blocked",
+            userId: user.id,
+            schoolId,
+            inputChars: serverPrompt.length,
+            outputChars: rawText.length,
+            imageCount: 1,
+            usagePayload: result.usagePayload,
+            metadata: { reason: "drawing_moderation" },
+        }).catch((err) => console.error("[analyzeDrawing] Usage log error:", err));
+
+        return new Response(
+            JSON.stringify({ moderated: true, guesses: [], mainGuess: null, reasoning: "" }),
+            {
+                status: 200,
+                headers: {
+                    ...corsHeaders,
+                    "Content-Type": "application/json",
+                    "X-AI-Request-Id": requestId,
+                    ...rateLimitHeaders(rateCheck),
+                },
+            },
         );
     }
 

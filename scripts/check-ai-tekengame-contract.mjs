@@ -30,9 +30,20 @@ assert.ok(
   files.game.includes("aria-hidden={gamePhase === 'draw'}"),
   'hidden AI explanation sidebar must be aria-hidden during the draw phase',
 );
-assert.ok(
-  files.agent.includes("missionObjective: 'Teken 10 korte objecten en ontdek welke patronen de AI herkent.'"),
-  'AI Tekengame mission objective must match the 10-round game',
+// Het missiedoel moet de twee harde spelregels noemen (10 rondes, 45 seconden),
+// maar de exacte formulering mag verbeteren. Deze check pinde eerder op één
+// letterlijke zin en viel daardoor om zodra de copy — inhoudelijk juister —
+// werd bijgewerkt; nu toetst hij de belofte zelf.
+const tekengameObjective = files.agent.match(/missionObjective: '([^']*[Tt]eken[^']*)'/)?.[1] ?? '';
+assert.match(
+  tekengameObjective,
+  /\b10\b/,
+  'AI Tekengame mission objective must promise the 10 rounds the game delivers',
+);
+assert.match(
+  tekengameObjective,
+  /\b45\b/,
+  'AI Tekengame mission objective must promise the 45-second timer the game enforces',
 );
 assert.ok(
   files.agent.includes('Je krijgt een woord en hebt 45 seconden om te tekenen.'),

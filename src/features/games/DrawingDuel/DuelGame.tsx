@@ -13,6 +13,7 @@ import {
     endDuel
 } from '@/services/duelService';
 import { analyzeDrawingWithAI } from '@/services/aiProviderService';
+import { DRAWING_MODERATION_NOTICE } from '@/services/drawingModeration';
 
 // Import PROMPTS from DrawingGamePreview (we'll need to export it)
 const PROMPTS = [
@@ -58,6 +59,7 @@ export const DuelGame: React.FC<DuelGameProps> = ({
     const [isDrawing, setIsDrawing] = useState(false);
     const [isAnalyzing, setIsAnalyzing] = useState(false);
     const [lastResult, setLastResult] = useState<{ success: boolean; word: string } | null>(null);
+    const [showModerationNotice, setShowModerationNotice] = useState(false);
     const [hasEnded, setHasEnded] = useState(false);
 
     const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -191,6 +193,17 @@ export const DuelGame: React.FC<DuelGameProps> = ({
 
         try {
             const result = await analyzeDrawingWithAI(imageBase64, possibleLabels);
+
+            if (result.moderated) {
+                // Moderatie: niets naar de tegenstander, geen score-update, telt niet als fout.
+                // De speler mag opnieuw tekenen voor hetzelfde woord.
+                setLastResult(null);
+                setShowModerationNotice(true);
+                clearCanvas();
+                setIsAnalyzing(false);
+                return;
+            }
+
             const isCorrect = result.mainGuess.toLowerCase() === currentPrompt.word.toLowerCase();
 
             setLastResult({ success: isCorrect, word: currentPrompt.word });
@@ -391,6 +404,25 @@ export const DuelGame: React.FC<DuelGameProps> = ({
                     >
                         <div className="text-6xl">
                             {lastResult.success ? '✅' : '❌'}
+                        </div>
+                    </div>
+                )}
+
+                {/* Moderatie-melding — lokaal, geen score-update, geen AI-tekst */}
+                {showModerationNotice && (
+                    <div className="absolute inset-0 flex items-center justify-center p-4 z-10" style={{ backgroundColor: 'rgba(250,249,240,0.9)' }}>
+                        <div className="max-w-xs w-full rounded-2xl p-5 text-center shadow-2xl" style={{ backgroundColor: '#FFFFFF', border: '1px solid #E7D8BD' }}>
+                            <p className="text-sm mb-4" style={{ fontFamily: "'Outfit', system-ui, sans-serif", color: '#445865' }}>
+                                {DRAWING_MODERATION_NOTICE}
+                            </p>
+                            <button
+                                onClick={() => setShowModerationNotice(false)}
+                                className="px-6 py-3 rounded-full font-bold flex items-center gap-2 mx-auto transition-all duration-300 focus-visible:ring-2 focus-visible:ring-[#D97848]"
+                                style={{ backgroundColor: '#E7D8BD', color: '#445865' }}
+                            >
+                                <RotateCcw size={18} />
+                                Opnieuw tekenen
+                            </button>
                         </div>
                     </div>
                 )}
