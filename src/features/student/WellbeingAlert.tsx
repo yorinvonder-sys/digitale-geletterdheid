@@ -12,9 +12,16 @@ import { HULPLIJNEN, WellbeingMatch } from '@/hooks/useWellbeingMonitor';
 interface Props {
   match: WellbeingMatch | null;
   onDismiss: () => void;
+  /**
+   * Verplicht en bewust zonder default: alleen true doorgeven wanneer de
+   * docentmelding aantoonbaar is afgeleverd (useWellbeingTeacherAlert.notified).
+   * Zo kan geen enkele route stilzwijgend een melding beloven die nooit
+   * verstuurd of nooit bevestigd is.
+   */
+  teacherNotified: boolean;
 }
 
-export const WellbeingAlert: React.FC<Props> = ({ match, onDismiss }) => {
+export const WellbeingAlert: React.FC<Props> = ({ match, onDismiss, teacherNotified }) => {
   if (!match) return null;
 
   // items-start + my-auto op de kaart: past de kaart, dan staat hij gecentreerd; past
@@ -85,8 +92,9 @@ export const WellbeingAlert: React.FC<Props> = ({ match, onDismiss }) => {
           </div>
 
           <p className="text-xs text-duck-ink/65 text-center leading-relaxed mb-4">
-            Je docent krijgt een melding dat je misschien hulp kunt gebruiken.
-            Ze zullen discreet even bij je checken.
+            {teacherNotified
+              ? 'Je docent krijgt een melding dat je misschien hulp kunt gebruiken. Ze zullen discreet even bij je checken.'
+              : 'Je hoeft dit niet alleen op te lossen: praat er even over met je docent, mentor of iemand anders die je vertrouwt.'}
           </p>
 
           <button

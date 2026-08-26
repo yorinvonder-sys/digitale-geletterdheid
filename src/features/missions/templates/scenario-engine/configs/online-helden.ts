@@ -14,6 +14,7 @@ const config: ScenarioEngineConfig = {
         'Bouw inzicht op om zelf te kiezen hoe jij optreedt',
     ],
     maxScore: 100,
+    showWellbeingSupport: true,
     badges: [
         {
             minScore: 80,

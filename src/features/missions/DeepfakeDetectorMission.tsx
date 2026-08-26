@@ -14,6 +14,7 @@ import { useMissionAutoSave } from '@/hooks/useMissionAutoSave';
 import { StudentAIChat } from '@/features/ai-chat/StudentAIChat';
 import type { MissionGoal } from './templates/shared/types';
 import { IntroScreen } from '@/features/missions/templates/shared/IntroScreen';
+import { WellbeingSupportNote } from '@/features/missions/templates/shared/WellbeingSupportNote';
 
 interface DeepfakeDetectorState {
     currentLevel: 'beginner' | 'gevorderd' | 'expert';
@@ -356,6 +357,7 @@ export const DeepfakeDetectorMission: React.FC<Props> = ({ onBack, onComplete, v
                 goal={MISSION_GOAL}
                 features={["AI Afbeeldingen", "AI Teksten", "Nepnieuws"]}
                 tone="default"
+                wellbeingSupport
                 onStart={() => setState(prev => ({ ...prev, showIntro: false }))}
             />
         );
@@ -620,6 +622,9 @@ export const DeepfakeDetectorMission: React.FC<Props> = ({ onBack, onComplete, v
                         </button>
                     </div>
                 )}
+
+                {/* Zwaar thema: contact met onbekenden online */}
+                {currentChallenge.id === 'g1' && <WellbeingSupportNote />}
 
                 {/* Feedback */}
                 {showFeedback && (

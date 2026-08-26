@@ -226,8 +226,8 @@ export const digitalDivideResearcherConfig: DataViewerConfig = {
     ],
 
     takeaways: [
-        'Zuid-Korea en Nederland behoren tot de snelste internetlanden ter wereld met gemiddeld 254 en 219 Mbps vaste snelheid',
-        'Er is 55 procentpunt verschil in smartphonegebruik tussen 18-24 jarigen (99%) en 75-plussers (44%) in Nederland',
+        'In deze oefendata staan Zuid-Korea en Nederland bovenaan qua vaste internetsnelheid — zulke verschillen tussen landen zie je ook in echte connectivity-rapporten',
+        'In deze oefendata is er een groot verschil in smartphonegebruik tussen jongere en oudere leeftijdsgroepen — een patroon dat ook in echte statistieken vaak terugkomt',
         'Bandbreedte en latency zijn twee aparte kwaliteitsmaten voor een internetverbinding',
         'Penetratie (bereik) en snelheid zijn beide nodig om connectiviteit volledig in kaart te brengen',
         'Adoptiesnelheid van technologie varieert sterk per leeftijdsgroep en land',

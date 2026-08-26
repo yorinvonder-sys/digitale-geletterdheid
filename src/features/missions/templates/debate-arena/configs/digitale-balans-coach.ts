@@ -6,7 +6,7 @@ const config: DebateArenaConfig = {
     introEmoji: '⚖️',
     introTitle: 'Digitale Balans Coach',
     introDescription:
-        'Je gebruikt je telefoon elke dag — maar wie bepaalt eigenlijk hoelang? Jijzelf, de app-makers, je ouders, of de overheid? In dit debat onderzoek je vier perspectieven en bouw je je eigen standpunt op.',
+        'Je gebruikt je telefoon elke dag — maar wie bepaalt eigenlijk hoelang? Jijzelf, de app-makers, je ouders, of de overheid? In dit debat onderzoek je vier perspectieven en bouw je je eigen standpunt op. Je schrijft daarbij ook over je eigen gewoontes: houd het algemeen en deel geen namen, contactgegevens of gezondheids-, slaap- of andere privégegevens van jezelf of anderen.',
     introFeatures: [
         'Lees hoe vier betrokkenen hier anders over denken',
         'Kies jouw positie: wie is verantwoordelijk?',
@@ -93,6 +93,7 @@ const config: DebateArenaConfig = {
     counterArgument:
         '"Jij kunt je gedrag veranderen als je het echt wilt. Wij weten uit onderzoek dat het tienerbrein extra vatbaar is voor beloningsprikkels — maar datzelfde onderzoek laat ook zien dat tieners die begrijpen hóé hun brein werkt, beter in staat zijn om bewuste keuzes te maken. Kennis is al een vorm van zelfregulatie."',
     maxScore: 100,
+    showWellbeingSupport: true,
     badges: [
         {
             minScore: 80,

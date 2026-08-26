@@ -27,6 +27,7 @@ interface DrawingGamePreviewProps {
         uid: string;
         displayName: string;
         studentClass?: string;
+        schoolId?: string;
     };
     initialState?: DrawingGamePersistState;
     onSave?: (data: DrawingGamePersistState) => void;
@@ -638,7 +639,8 @@ export const DrawingGamePreview: React.FC<DrawingGamePreviewProps> = ({ onLevelC
                     currentUser={{
                         uid: user.uid,
                         displayName: user.displayName,
-                        studentClass: user.studentClass || ''
+                        studentClass: user.studentClass || '',
+                        schoolId: user.schoolId
                     }}
                     onBack={() => setDuelMode('off')}
                     onChallengeAccepted={(sessionId) => {

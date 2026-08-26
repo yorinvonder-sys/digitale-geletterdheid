@@ -14,6 +14,7 @@ const config: ScenarioEngineConfig = {
         'Ontdek wanneer je zelf kunt helpen en wanneer je een volwassene inschakelt',
     ],
     maxScore: 100,
+    showWellbeingSupport: true,
     badges: [
         {
             minScore: 80,

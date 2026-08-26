@@ -13,7 +13,8 @@ import { ConfidenceRating, ConfidenceFeedback } from '../shared/ConfidenceRating
 import { FollowUpCard } from '../shared/FollowUpCard';
 import { StudentAIChat } from '@/features/ai-chat/StudentAIChat';
 import { WellbeingAlert } from '@/features/student/WellbeingAlert';
-import { useWellbeingMonitor } from '@/hooks/useWellbeingMonitor';
+import { useWellbeingMonitor, type WellbeingMatch } from '@/hooks/useWellbeingMonitor';
+import { useWellbeingTeacherAlert } from '@/hooks/useWellbeingTeacherAlert';
 import { toScorePercent } from '../shared/scorePercent';
 
 // ── Config types ──────────────────────────────────────────────────────────────
@@ -76,6 +77,8 @@ export interface DataViewerConfig {
     takeaways: string[];
     enableChat?: boolean;
     chatRoleId?: string;
+    /** Toon een vast hulpblokje (mentor/vertrouwenspersoon, Kindertelefoon, 113) bij missies met een zwaar thema. */
+    showWellbeingSupport?: boolean;
 }
 
 // ── State ─────────────────────────────────────────────────────────────────────
@@ -831,12 +834,17 @@ const DataViewerInner: React.FC<DataViewerProps> = ({
     );
 
     const [isChatOpen, setIsChatOpen] = useState(false);
+    const teacherAlert = useWellbeingTeacherAlert();
     const {
         scanText: scanWellbeingText,
         showHulplijn,
         lastMatch: wellbeingMatch,
         dismissHulplijn,
-    } = useWellbeingMonitor();
+    } = useWellbeingMonitor({ onAlert: teacherAlert.onAlert });
+    // De monitor toont de overlay maar één keer per minuut (cooldown). Een
+    // geblokkeerde inzending mag nooit stil zijn: deze lokale match zorgt dat
+    // de hulplijn bij élke geblokkeerde inzending opnieuw verschijnt.
+    const [blockedMatch, setBlockedMatch] = useState<WellbeingMatch | null>(null);
 
     const userId = (() => {
         try {
@@ -933,6 +941,7 @@ const DataViewerInner: React.FC<DataViewerProps> = ({
             const observation = String(textObservations[id] ?? answers[id] ?? '');
             const wellbeingResult = scanWellbeingText(observation);
             if (wellbeingResult.isBlocked) {
+                setBlockedMatch(wellbeingResult.match);
                 if (config.enableChat) setIsChatOpen(true);
                 return;
             }
@@ -1016,6 +1025,7 @@ const DataViewerInner: React.FC<DataViewerProps> = ({
                 description={config.introDescription}
                 goal={missionGoal}
                 features={config.introFeatures}
+                wellbeingSupport={config.showWellbeingSupport}
                 onStart={() => setState(prev => ({ ...prev, phase: 'explore' }))}
             />
         );
@@ -1119,7 +1129,16 @@ const DataViewerInner: React.FC<DataViewerProps> = ({
 
     return (
         <div className="min-h-screen bg-duck-bg">
-            {showHulplijn && <WellbeingAlert match={wellbeingMatch} onDismiss={dismissHulplijn} />}
+            {(showHulplijn || blockedMatch) && (
+                <WellbeingAlert
+                    match={blockedMatch ?? wellbeingMatch}
+                    teacherNotified={teacherAlert.notifiedFor((blockedMatch ?? wellbeingMatch)?.category)}
+                    onDismiss={() => {
+                        dismissHulplijn();
+                        setBlockedMatch(null);
+                    }}
+                />
+            )}
 
             <div className="max-w-lg mx-auto px-4 py-6">
                 <PhaseHeader

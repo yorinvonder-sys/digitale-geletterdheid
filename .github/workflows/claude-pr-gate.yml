@@ -120,6 +120,13 @@ jobs:
       - name: Missieafronding en score-contract
         run: npm run test:mission-completion
 
+      # Alle overige contracttests (scoring-gokcorrectie, SLO-sync,
+      # checklist-migratie, welzijnsmelding-aflevering, rolcontracten):
+      # zonder deze stap draaide alleen mission-completion in CI en was de
+      # rest van de contractlaag onbewaakt.
+      - name: Contracttests
+        run: npm run test:contracts
+
       - name: Secret scanning (Gitleaks)
         uses: gitleaks/gitleaks-action@e0c47f4f8be36e29cdc102c57e68cb5cbf0e8d1e # v3
         env:

@@ -50,6 +50,8 @@ export interface DebateArenaConfig {
     takeaways: string[];
     explorationQuiz?: FollowUpQuestion;
     argumentQualityIndicators?: boolean;
+    /** Toon het hulpblokje (mentor, Kindertelefoon, 113) op het introscherm bij een zwaar thema. */
+    showWellbeingSupport?: boolean;
 }
 
 // ─── State ───────────────────────────────────────────────────────────────────
@@ -221,6 +223,7 @@ const DebateArenaInner: React.FC<DebateArenaProps> = ({ config, onBack, onComple
                 description={config.introDescription}
                 goal={config.missionGoal ?? getMissionGoal(config.missionId)}
                 features={config.introFeatures}
+                wellbeingSupport={config.showWellbeingSupport}
                 onStart={() => setPhase('explore')}
             />
         );
@@ -231,13 +234,34 @@ const DebateArenaInner: React.FC<DebateArenaProps> = ({ config, onBack, onComple
         const initialPos = config.positions.find((p) => p.id === state.selectedPosition);
         const finalPos = config.positions.find((p) => p.id === (state.finalPosition ?? state.selectedPosition));
 
-        const phases = [
+        const phaseBreakdown = [
             { icon: '👥', title: 'Stakeholders gelezen', score: state.stakeholdersRead.length >= config.stakeholders.length ? 10 : 0, max: 10 },
+            // De quizbonus telt mee in calcScore; zonder eigen rij sloot de
+            // uitsplitsing niet aan op het getoonde totaal.
+            ...(config.explorationQuiz ? [{
+                icon: '🧠',
+                title: 'Verkenningsquiz (bonus)',
+                score: state.explorationQuizCorrect ? config.explorationQuiz.bonusPoints : 0,
+                max: config.explorationQuiz.bonusPoints,
+            }] : []),
             { icon: '📍', title: 'Positie gekozen', score: state.selectedPosition ? 10 : 0, max: 10 },
             { icon: '💬', title: 'Argumenten gebouwd', score: Math.round((countDistinctArguments(state.arguments) / 3) * 50), max: 50 },
             { icon: '⚡', title: 'Tegenargument beantwoord', score: isMeaningfulAnswer(state.counterResponse) ? 10 : 0, max: 10 },
             { icon: '🪞', title: 'Gereflecteerd', score: config.reflectionQuestions.filter(q => isMeaningfulAnswer(state.reflectionAnswers[q] ?? '')).length * 10, max: config.reflectionQuestions.length * 10 },
         ];
+
+        // De losse onderdelen tellen samen op tot méér dan `config.maxScore` zodra
+        // er drie reflectievragen zijn (110 om 100); `calcScore` topt alleen het
+        // totaal af. De uitsplitsing toont daarom de échte punten en maxima per
+        // onderdeel — zo tellen de rijen altijd op tot wat de leerling werkelijk
+        // verdiende — en benoemt de extra ruimte expliciet als bonusruimte in
+        // plaats van stilletjes rijen af te toppen (dat gaf een som die niet
+        // aansloot op het getoonde totaal).
+        const phases = phaseBreakdown;
+        const phasesMaxTotal = phaseBreakdown.reduce((sum, p) => sum + p.max, 0);
+        const phasesNote = phasesMaxTotal > config.maxScore
+            ? `De onderdelen bieden samen ${phasesMaxTotal} punten aan ruimte; je eindscore telt tot maximaal ${config.maxScore} punten.`
+            : undefined;
 
         return (
             <div className="min-h-screen bg-duck-bg p-4">
@@ -329,6 +353,7 @@ const DebateArenaInner: React.FC<DebateArenaProps> = ({ config, onBack, onComple
                         maxScore={config.maxScore}
                         badges={config.badges}
                         phases={phases}
+                        phasesNote={phasesNote}
                         takeaways={config.takeaways}
                         onComplete={async () => {
                             setCompletionError(false);

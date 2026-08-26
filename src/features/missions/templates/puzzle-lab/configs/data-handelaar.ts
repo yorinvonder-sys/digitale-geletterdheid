@@ -14,6 +14,7 @@ const config: PuzzleLabConfig = {
         'Stel een onderzoeksrapport op met de gevonden overtredingen',
     ],
     maxScore: 100,
+    showWellbeingSupport: true,
     puzzles: [
         {
             id: 'bewijsstuk-a',

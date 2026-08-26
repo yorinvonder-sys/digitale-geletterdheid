@@ -8,7 +8,7 @@ export const apiVerkennerConfig: DataViewerConfig = {
     introDescription:
         'Elke app die je gebruikt — Instagram, Buienradar, Google Maps — haalt data op via API\'s. JSON is gewoon een nette manier om data te verpakken die apps met elkaar delen. Jij gaat ontdekken hoe die onzichtbare datakoppelingen werken. Na deze missie begrijp je hoe apps met elkaar "praten".',
     introFeatures: [
-        'Analyseer een echte JSON-response van een weer-API',
+        'Analyseer voorbeeld-JSON in het formaat van een weer-API',
         'Vergelijk welke data populaire apps via API\'s ophalen',
         'Beoordeel hoe URL-parameters werken bij het opvragen van data',
     ],
@@ -19,8 +19,13 @@ export const apiVerkennerConfig: DataViewerConfig = {
             id: 'json-response-analyse',
             title: 'JSON-response van een weer-API: Amsterdam',
             description:
-                'Een app heeft data ontvangen van de OpenWeatherMap API voor Amsterdam. Voor het overzicht tonen we de velden hier plat; in het echt zitten ze genest in objecten zoals "main" en "wind". Elke regel heeft een sleutel (de naam), een waarde, en een datatype (het soort waarde: tekst, getal of ja/nee). Bekijk de tabel en beantwoord de vragen.',
+                'Dit is voorbeeld-JSON in het formaat van een weer-API, met verzonnen waarden voor Amsterdam — geen echte respons van een provider. Voor het overzicht tonen we de velden hier plat; in het echt zitten ze genest in objecten zoals "main" en "wind". Elke regel heeft een sleutel (de naam), een waarde, en een datatype (het soort waarde: tekst, getal of ja/nee). Bekijk de tabel en beantwoord de vragen.',
             type: 'table',
+            source: {
+                kind: 'synthetic',
+                label: 'Voorbeeld-JSON in het formaat van een weer-API',
+                methodNote: 'Vereenvoudigde, verzonnen voorbeeldwaarden om JSON-structuur te oefenen; geen echte OpenWeatherMap-respons.',
+            },
             columns: [
                 { key: 'key', label: 'JSON-sleutel (key)', sortable: true },
                 { key: 'waarde', label: 'Waarde (value)', sortable: false },
@@ -80,8 +85,13 @@ export const apiVerkennerConfig: DataViewerConfig = {
             id: 'api-verzoeken-per-app',
             title: 'Hoeveel API-verzoeken stuurt een app per sessie?',
             description:
-                'Onderzoekers van de TU Delft (2024) analyseerden hoeveel API-verzoeken populaire apps sturen tijdens een sessie van 5 minuten. Elke bar toont het gemiddeld aantal verzoeken.',
+                'Deze oefengrafiek gebruikt verzonnen voorbeeldwaarden voor hoeveel API-verzoeken populaire apps kunnen sturen tijdens een sessie van 5 minuten. Elke bar toont het (fictieve) gemiddeld aantal verzoeken.',
             type: 'bar-chart',
+            source: {
+                kind: 'synthetic',
+                label: 'Didactische oefengrafiek',
+                methodNote: 'Verzonnen, vereenvoudigde cijfers om het verschil in API-gebruik tussen apps te illustreren; geen echte meting of publicatie.',
+            },
             chartData: [
                 { label: 'Google Maps', value: 47, color: '#ff3c21' },
                 { label: 'Instagram', value: 38, color: '#ff3c21' },

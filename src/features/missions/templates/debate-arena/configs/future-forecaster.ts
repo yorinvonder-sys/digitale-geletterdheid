@@ -46,7 +46,7 @@ const config: DebateArenaConfig = {
             perspective:
                 'AI in onderwijs is nu al een realiteit in sommige landen. Het vergroot de kloof: leerlingen met toegang tot de beste AI-systemen presteren veel beter dan leerlingen zonder. Als we niet oppassen, creëren we een tweedeling waar je toekomst afhangt van de kwaliteit van je AI-abonnement.',
             keyArgument:
-                'Technologie is zelden neutraal. Elke tech-trend versterkt bestaande ongelijkheid als er niet actief op wordt gestuurd.',
+                'Technologie is zelden neutraal. Elke tech-trend versterkt bestaande ongelijkheid als er niet actief op wordt gestuurd. Bovendien: AI die emoties van leerlingen herkent is in het onderwijs in de EU een verboden praktijk — juist omdat constante monitoring riskant is, ook als het "voor je eigen bestwil" wordt gebracht.',
         },
         {
             id: 'politicus',
@@ -119,6 +119,7 @@ const config: DebateArenaConfig = {
         'Technologie vergroot ongelijkheid als er niet actief op gestuurd wordt.',
         'Onderwijs heeft zowel een kennisfunctie als een sociale en democratische functie.',
         'Er is geen één juiste toekomst — de keuzes die we nu maken bepalen welke toekomst werkelijkheid wordt.',
+        'AI die emoties van leerlingen herkent ("weet wanneer ik gestrest ben") is in het onderwijs in de EU verboden volgens de AI Act — ook als het handig of behulpzaam lijkt.',
     ],
 };
 

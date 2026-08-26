@@ -141,13 +141,17 @@ export function useWellbeingMonitor(options?: UseWellbeingMonitorOptions) {
             timestamp: new Date().toISOString(),
           };
 
-          // Voorkom spam: max 1 alert per 60 seconden
+          // De cooldown voorkomt alleen popup-spam van de overlay. De
+          // docentmelding gaat bij élke treffer naar onAlert: de ontvanger
+          // (useWellbeingTeacherAlert) dedupliceert zelf per categorie op
+          // bevestigde afleveringen, zodat een tweede, ándere categorie
+          // binnen de minuut niet stilletjes verloren gaat.
+          options?.onAlert?.(match);
           const now = Date.now();
           if (now - cooldownRef.current > 60_000) {
             cooldownRef.current = now;
             setLastMatch(match);
             setShowHulplijn(true);
-            options?.onAlert?.(match);
           }
 
           return { isBlocked: true, match };

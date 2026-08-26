@@ -19,8 +19,13 @@ export const eindprojectJ2Config: DataViewerConfig = {
             id: 'eindproject-resultaten-vorig-jaar',
             title: 'Eindprojecten leerjaar 2 — schooljaar 2024/2025',
             description:
-                'Vorig jaar maakten 16 leerlingen een eindproject. De docent heeft de projecten beoordeeld op drie criteria. Bekijk de resultaten en ontdek patronen.',
+                'Deze verzonnen oefentabel doet alsof 16 leerlingen vorig jaar een eindproject maakten en op drie criteria zijn beoordeeld. Bekijk de resultaten en ontdek patronen.',
             type: 'table',
+            source: {
+                kind: 'synthetic',
+                label: 'Verzonnen leerlingdata',
+                methodNote: 'Namen en cijfers zijn volledig fictief; geen echte eindprojecten of leerlingen.',
+            },
             columns: [
                 { key: 'leerling', label: 'Leerling', sortable: false },
                 { key: 'project_type', label: 'Projecttype', sortable: true },
@@ -205,7 +210,7 @@ export const eindprojectJ2Config: DataViewerConfig = {
                     minKeywords: 1,
                     correctAnswer: '',
                     explanation:
-                        'Een goed antwoord benoemt (1) het probleem dat de leerling ervaart, (2) wie er baat bij heeft, en (3) wat voor soort project het wordt (app, website, onderzoek, spel). Voorbeelden: "Ik merk dat klasgenoten nooit weten wanneer de bibliotheek open is. Ik wil een simpele website maken met actuele openingstijden en een agenda." Of: "Ik wil onderzoeken hoeveel schermtijd leerlingen in mijn klas hebben en of dat met hun concentratie samenhangt."',
+                        'Een goed antwoord benoemt (1) het probleem dat de leerling ervaart, (2) wie er baat bij heeft, en (3) wat voor soort project het wordt (app, website, onderzoek, spel). Voorbeelden: "Ik merk dat klasgenoten nooit weten wanneer de bibliotheek open is. Ik wil een simpele website maken met actuele openingstijden en een agenda." Of: "Ik wil onderzoeken hoeveel schermtijd leerlingen in mijn klas hebben en of dat met hun concentratie samenhangt." Verzamel dan alleen gegevens van klasgenoten die daar vooraf ja op zeggen, en verwerk antwoorden anoniem.',
                     points: 0,
                 },
             ],
