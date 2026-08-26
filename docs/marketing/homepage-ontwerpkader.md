@@ -240,6 +240,11 @@ kapotte link met een verkeerde preview.
 
 **Verwachte impact:** hoog. Dit is de knop die de zakelijke conversie moet dragen.
 
+> **Status: gerepareerd** (branch `claude/homepage-pilot-404-en-meting`). `/pilot` staat nu in
+> `ROUTES` met een eigen titel, description, canonical en Open Graph, en komt daarmee ook in de
+> sitemap. Geverifieerd: de build schrijft `dist/pilot/index.html`, en lokaal geserveerd geeft
+> `/pilot` HTTP 200.
+
 ## Knelpunt 3 — Op de homepage wordt vrijwel niets gemeten — **HOOG**
 
 **Locatie:** `src/features/public-site/verhaal/VerhaalPage.tsx` (regel ~130) versus
@@ -257,6 +262,26 @@ smaak". Zonder deze meting is elk principe hieronder onbewijsbaar en is elke A/B
 Dit knelpunt blokkeert het hele kader.
 
 **Verwachte impact:** hoog (indirect — het maakt alle andere verbeteringen onmeetbaar).
+
+> **Status: gerepareerd** (branch `claude/homepage-pilot-404-en-meting`). De verhaalpagina meet nu
+> sectiebereik (8 hoofdstukken), scrolldiepte (25/50/75/100), tijd op de pagina en CTA-kliks (11
+> gelabelde knoppen/links), onder een eigen label `verhaal-home` naast `verhaal`. Daarmee zijn P5
+> en P6 toetsbaar geworden.
+>
+> Tijdens die reparatie kwamen twee meetfouten boven die hier vastgelegd horen, omdat ze
+> waarschuwen voor een patroon:
+>
+> - **Een percentage-drempel schaalt mee met de sectiehoogte.** De observer telde een sectie pas als
+>   "gezien" bij 20% zichtbaarheid. Het bewijs-hoofdstuk is 5,3 schermen hoog, dus 20% daarvan past
+>   nooit in beeld — die sectie werd structureel nooit geteld. Uitgerekend het hoofdstuk met het
+>   SLO- en compliancebewijs. Vervangen door een band rond het midden van het scherm, die
+>   onafhankelijk is van de sectiehoogte. Dit trof `ScholenLanding` latent ook.
+> - **Er staan twee `<main>`-elementen op de homepage.** De productpreview rendert een echt stuk
+>   leerlingdashboard inclusief eigen `<main>`, waardoor een selector als `main > section[id]` twee
+>   dashboardsecties als hoofdstuk meetelde. De selector is gescope't op `.verhaal`.
+>
+> Les voor P5: controleer een nieuwe meting altijd empirisch in de browser tegen de lijst secties
+> die je verwacht — beide fouten zagen er in de code correct uit.
 
 ## Knelpunt 4 — Scrolljacking in de Mila-sectie, zonder uitweg — **HOOG**
 
@@ -403,7 +428,8 @@ ondergeschikt, dus het is geen zware fout — maar het is wel de plek waar de me
 | 12 | `sections/MilaReis.tsx` (~regel 423) | De teller toont `NN / 05` terwijl `BEATS` **zes** items bevat en er ook zes stipjes worden getekend. Bezoeker ziet "06 / 05". Klein, maar het ondermijnt de precisie-indruk bij een product dat op zorgvuldigheid verkoopt. |
 | 13 | `PilotForm.tsx` | Alleen het optionele veld is gemarkeerd ("Bericht (optioneel)"); de drie verplichte velden en de twee keuzelijsten zijn niet gemarkeerd. Baymard: verplichte velden markeren presteert beter (§1.1). Verder is het formulier goed: 3 verplicht + 3 optioneel, echte `<label>`s, `autoComplete`, honeypot en een privacyregel met link. |
 | 14 | `index.html` | De rauwe HTML bevat **twee** `<h1>`'s: de LCP-hero en die in het `<noscript>`-blok. Alleen zichtbaar voor niet-renderende crawlers, maar dat zijn precies de crawlers uit knelpunt 1. |
-| 15 | `scripts/prerender.mjs` | `/speeltuin` is een publieke route in de router maar staat niet in `ROUTES` en dus niet in de sitemap — zelfde mechanisme als knelpunt 2. |
+| 15 | `scripts/prerender.mjs` | `/speeltuin` is een publieke route in de router maar staat niet in `ROUTES` en dus niet in de sitemap — zelfde mechanisme als knelpunt 2. Bewust niet meegefixt: `/speeltuin` is geen conversiepagina, dus of hij geïndexeerd hoort te worden is een keuze, geen bug. |
+| 16 | `src/features/public-site/PilotAanmelden.tsx` (~regel 121) | De pagina zet zelf een meta-description met **"AVG-ready schooldossier"**. Dat is een compliance-claim van precies het type dat elders in het project bewust wordt vermeden (zie de code-commentaren in `Proloog.tsx`). Bij het prerenderen van `/pilot` is die zin daarom **niet** overgenomen — de statische description is feitelijk gehouden ("Live binnen 10 werkdagen, reactie binnen twee werkdagen"). De claim op de pagina zelf staat er nog; dat is een juridische beslissing, geen technische. Voorleggen aan Yorin. |
 
 ---
 
