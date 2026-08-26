@@ -143,7 +143,7 @@ export const StudentAIChat: React.FC<StudentAIChatProps> = ({ userIdentifier, co
         showHulplijn,
         wellbeingMatch,
         dismissHulplijn,
-        wellbeingTeacherNotified,
+        wellbeingTeacherNotifiedFor,
     } = useStudentAssistant({ userIdentifier, context, roleId });
 
     // Resolve controlled vs internal state
@@ -187,7 +187,7 @@ export const StudentAIChat: React.FC<StudentAIChatProps> = ({ userIdentifier, co
     return (
         <>
             {/* Welzijnsdetectie overlay */}
-            {showHulplijn && <WellbeingAlert match={wellbeingMatch} teacherNotified={wellbeingTeacherNotified} onDismiss={dismissHulplijn} />}
+            {showHulplijn && <WellbeingAlert match={wellbeingMatch} teacherNotified={wellbeingTeacherNotifiedFor(wellbeingMatch?.category)} onDismiss={dismissHulplijn} />}
 
             {/* Floating AI coach button */}
             {!isControlled && !isVisible && (

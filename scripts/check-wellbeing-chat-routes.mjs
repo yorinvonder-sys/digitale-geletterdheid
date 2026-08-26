@@ -106,8 +106,8 @@ for (const route of ROUTES) {
         `${route.naam}: ${route.weergave} moet de hulplijnweergave tonen`);
     assert.match(weergave, /onDismiss=\{dismissHulplijn\}/,
         `${route.naam}: de hulplijnweergave moet te sluiten zijn, anders zit de leerling vast`);
-    assert.match(weergave, /teacherNotified=\{(wellbeingTeacherNotified|wellbeingTeacherAlert\.notified)\}/,
-        `${route.naam}: de hulplijnweergave mag de docentmelding alleen beloven via de bevestigde status`);
+    assert.match(weergave, /teacherNotified=\{(wellbeingTeacherNotifiedFor|wellbeingTeacherAlert\.notifiedFor)\(wellbeingMatch\?\.category\)\}/,
+        `${route.naam}: de hulplijnweergave mag de docentmelding alleen beloven via de bevestigde status van de eigen categorie`);
 }
 
 // 5. PRIVACY + betrouwbaarheid van de docentmelding, één keer in de gedeelde
@@ -127,8 +127,14 @@ assert.doesNotMatch(rpcBlok, /message|text|input|prompt/i,
     'useWellbeingTeacherAlert: er mag geen berichttekst meegestuurd worden in de docentmelding');
 assert.match(teacherAlertHook, /if\s*\(error\)\s*throw error/,
     'useWellbeingTeacherAlert: het error-veld van de RPC-respons moet gecontroleerd worden');
-assert.match(teacherAlertHook, /setStatus\('sent'\)/,
-    'useWellbeingTeacherAlert: de status mag pas op sent na een geslaagde RPC');
+assert.match(teacherAlertHook, /notifiedFor/,
+    'useWellbeingTeacherAlert: de afleverstatus moet per categorie opvraagbaar zijn');
+const bevestigIndex = teacherAlertHook.search(/if\s*\(error\)\s*throw error/);
+const registratieIndex = zoekVanaf(teacherAlertHook, /confirmedAtRef\.current\[category\]\s*=\s*Date\.now\(\)/, 0);
+assert.ok(registratieIndex > bevestigIndex && bevestigIndex !== -1,
+    'useWellbeingTeacherAlert: een aflevering mag pas als bevestigd geregistreerd worden ná de error-check');
+assert.match(teacherAlertHook, /pendingCategories/,
+    'useWellbeingTeacherAlert: per categorie mag maximaal één verzoek tegelijk lopen');
 
 // 7. De detectielijst blijft één gedeelde bron. Zou een route zijn eigen
 //    termenlijst krijgen, dan lopen de routes weer uiteen.
@@ -144,23 +150,44 @@ for (const route of ROUTES) {
 //    volledige vangnet: monitor, blokkade, docentmelding via de gedeelde hook
 //    en een overlay die de melding alleen bij bevestigde aflevering belooft.
 const SCAN_ROUTES = [
-    { naam: 'Puzzle Lab', bestand: 'src/features/missions/templates/puzzle-lab/PuzzleLab.tsx' },
-    { naam: 'Data Viewer', bestand: 'src/features/missions/templates/data-viewer/DataViewer.tsx' },
+    {
+        naam: 'Puzzle Lab',
+        bestand: 'src/features/missions/templates/puzzle-lab/PuzzleLab.tsx',
+        // De functie die het antwoord verwerkt, en de eerste echte verwerking
+        // daarbinnen: de scan moet dáárvoor staan, anders is het antwoord al
+        // beoordeeld voordat het welzijnssignaal de inzending kan blokkeren.
+        verzendfunctie: /const checkAnswer\s*=/,
+        verwerking: /const correct\s*=/,
+    },
+    {
+        naam: 'Data Viewer',
+        bestand: 'src/features/missions/templates/data-viewer/DataViewer.tsx',
+        verzendfunctie: /const handleSubmitQuestion\s*=/,
+        verwerking: /newAnswers/,
+    },
 ];
 for (const route of SCAN_ROUTES) {
     const bron = await lees(route.bestand);
     assert.match(bron, /useWellbeingMonitor/,
         `${route.naam}: moet useWellbeingMonitor gebruiken`);
-    assert.match(bron, /isBlocked/,
-        `${route.naam}: de scanuitslag moet de inzending kunnen blokkeren`);
     assert.match(bron, /useWellbeingTeacherAlert/,
         `${route.naam}: de docentmelding moet via useWellbeingTeacherAlert lopen`);
     assert.match(bron, /onAlert:\s*teacherAlert\.onAlert/,
         `${route.naam}: teacherAlert.onAlert moet als onAlert aan useWellbeingMonitor hangen`);
+
+    // De scan staat binnen de verwerkingsfunctie en VÓÓR de eerste verwerking.
+    const verzendIndex = bron.search(route.verzendfunctie);
+    assert.notEqual(verzendIndex, -1,
+        `${route.naam}: verwerkingsfunctie niet gevonden in ${route.bestand}`);
+    const scanIndex = zoekVanaf(bron, /isBlocked/, verzendIndex);
+    const verwerkIndex = zoekVanaf(bron, route.verwerking, verzendIndex);
+    assert.ok(scanIndex !== -1 && verwerkIndex !== -1 && scanIndex < verwerkIndex,
+        `${route.naam}: de welzijnscheck moet binnen de verwerkingsfunctie vóór de verwerking staan`);
+
     assert.match(bron, /<WellbeingAlert/,
         `${route.naam}: moet de hulplijnweergave tonen`);
-    assert.match(bron, /teacherNotified=\{teacherAlert\.notified\}/,
-        `${route.naam}: de hulplijnweergave mag de docentmelding alleen beloven via de bevestigde status`);
+    assert.match(bron, /teacherNotified=\{teacherAlert\.notifiedFor\(\(blockedMatch \?\? wellbeingMatch\)\?\.category\)\}/,
+        `${route.naam}: de hulplijnweergave mag de docentmelding alleen beloven via de bevestigde status van de eigen categorie`);
     assert.match(bron, /dismissHulplijn\(\)/,
         `${route.naam}: de hulplijnweergave moet te sluiten zijn`);
     assert.doesNotMatch(bron, /WELLBEING_PATTERNS/,

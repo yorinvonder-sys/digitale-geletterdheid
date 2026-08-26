@@ -1140,7 +1140,7 @@ export const PromptMasterMission: React.FC<Props> = ({ onBack, onComplete, vsoPr
             <div data-qa="prompt-master-challenge" className="h-dvh overflow-y-auto bg-duck-bg text-duck-ink flex flex-col" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                 {/* Hulplijnen bij een welzijnssignaal. Staat in deze fase omdat hier de
                     prompt verstuurd wordt; sluiten brengt de leerling terug bij de opdracht. */}
-                {showHulplijn && <WellbeingAlert match={wellbeingMatch} teacherNotified={wellbeingTeacherAlert.notified} onDismiss={dismissHulplijn} />}
+                {showHulplijn && <WellbeingAlert match={wellbeingMatch} teacherNotified={wellbeingTeacherAlert.notifiedFor(wellbeingMatch?.category)} onDismiss={dismissHulplijn} />}
                 {/* Header */}
                 <header className="bg-white border-b border-duck-gray px-4 py-3 md:px-6 md:py-4 sticky top-0 z-10">
                     <div className="max-w-4xl mx-auto flex flex-wrap items-center justify-between gap-2">

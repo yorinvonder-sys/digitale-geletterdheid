@@ -283,6 +283,6 @@ REGELS VOOR JOU:
         showHulplijn,
         wellbeingMatch,
         dismissHulplijn,
-        wellbeingTeacherNotified: wellbeingTeacherAlert.notified,
+        wellbeingTeacherNotifiedFor: wellbeingTeacherAlert.notifiedFor,
     };
 };

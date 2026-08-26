@@ -1088,6 +1088,6 @@ export const useAgentLogic = ({ selectedRole, userIdentifier, schoolId, initialP
         showHulplijn,
         wellbeingMatch,
         dismissHulplijn,
-        wellbeingTeacherNotified: wellbeingTeacherAlert.notified,
+        wellbeingTeacherNotifiedFor: wellbeingTeacherAlert.notifiedFor,
     };
 };
