@@ -347,7 +347,7 @@ function PublicRoute({ story = false }: { story?: boolean }) {
                 <React.Suspense fallback={<LoadingFallback />}>
                     {story
                         ? (variant === 'b'
-                            ? <VersieBPage />
+                            ? <VersieBPage variantForced={variantForced} />
                             : <VerhaalPage variant={variant} variantForced={variantForced} />)
                         : <ScholenLanding />}
                 </React.Suspense>
