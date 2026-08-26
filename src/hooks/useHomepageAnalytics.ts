@@ -11,21 +11,28 @@ import { useEffect, useRef } from 'react';
 //
 // CTA-kliks worden gemeten via `data-cta` op de knop of link; pagina's zonder dat
 // attribuut meten niets extra's.
+//
+// `enabled` op false zet de hele meting uit zonder de hook-volgorde te breken.
+// Gebruikt voor bezoeken waarin een A/B-variant is afgedwongen via `?variant=`:
+// dat zijn onze eigen bezoeken en die mogen de uitkomst niet vervuilen.
 export const useHomepageAnalytics = (
     page = 'scholen-landing',
     sectionSelector = '[data-section]',
+    enabled = true,
 ) => {
     const trackedSections = useRef<Set<string>>(new Set());
     const trackedDepths = useRef<Set<number>>(new Set());
     const pageEnterTime = useRef<number>(Date.now());
 
     useEffect(() => {
+        if (!enabled) return;
         void import('@/services/analyticsService').then(({ trackEvent }) => {
             trackEvent('homepage_pageview', { page });
         });
-    }, [page]);
+    }, [page, enabled]);
 
     useEffect(() => {
+        if (!enabled) return;
         const handleVisibility = () => {
             if (document.visibilityState !== 'hidden') return;
             const seconds = Math.round((Date.now() - pageEnterTime.current) / 1000);
@@ -35,9 +42,10 @@ export const useHomepageAnalytics = (
         };
         document.addEventListener('visibilitychange', handleVisibility);
         return () => document.removeEventListener('visibilitychange', handleVisibility);
-    }, [page]);
+    }, [page, enabled]);
 
     useEffect(() => {
+        if (!enabled) return;
         const sections = document.querySelectorAll<HTMLElement>(sectionSelector);
         if (!sections.length) return;
 
@@ -64,9 +72,10 @@ export const useHomepageAnalytics = (
 
         sections.forEach((el) => observer.observe(el));
         return () => observer.disconnect();
-    }, [sectionSelector]);
+    }, [sectionSelector, enabled]);
 
     useEffect(() => {
+        if (!enabled) return;
         const MILESTONES = [25, 50, 75, 100];
 
         const check = () => {
@@ -95,13 +104,14 @@ export const useHomepageAnalytics = (
 
         window.addEventListener('scroll', onScroll, { passive: true });
         return () => window.removeEventListener('scroll', onScroll);
-    }, [page]);
+    }, [page, enabled]);
 
     // CTA-kliks. Eén gedelegeerde luisteraar op document-niveau, zodat een sectie
     // die later in beeld komt (of pas na een klik bestaat, zoals de film) geen
     // eigen bedrading nodig heeft. `closest` vangt ook een klik op een <span>
     // binnen de knop.
     useEffect(() => {
+        if (!enabled) return;
         const onClick = (event: MouseEvent) => {
             const target = event.target as Element | null;
             const trigger = target?.closest?.('[data-cta]') as HTMLElement | null;
@@ -114,5 +124,5 @@ export const useHomepageAnalytics = (
 
         document.addEventListener('click', onClick);
         return () => document.removeEventListener('click', onClick);
-    }, [page]);
+    }, [page, enabled]);
 };

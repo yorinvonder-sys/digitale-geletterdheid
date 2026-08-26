@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { trackEvent } from '@/services/analyticsService';
 import { useHomepageAnalytics } from '@/hooks/useHomepageAnalytics';
+import type { HomepageVariant } from '../homepageVariant';
 import { LogoLockup, Marquee, HARD_SHADOW } from './components/storyBrand';
 import { ChapterRail, ScrollProgress } from './components/ChapterRail';
 import { FilmChapter } from './sections/FilmChapter';
@@ -79,7 +80,15 @@ function Nav() {
  * verhaal: Probleem → Ontmoeting → Mila → Docent → Bewijs → Epiloog. De film
  * over Jayden zit ertussen, maar alleen als de bezoeker hem zelf opent.
  */
-export function VerhaalPage() {
+export function VerhaalPage({
+    variant = 'a',
+    variantForced = false,
+}: {
+    /** Welke A/B-variant deze render vertegenwoordigt; gaat mee in het meetlabel. */
+    variant?: HomepageVariant;
+    /** True bij `?variant=` — dan niet meten, zie homepageVariant.ts. */
+    variantForced?: boolean;
+} = {}) {
     /**
      * De film start niet vanzelf meer: de hero moet als eerste vertellen wat
      * DGSkills is. Wie hem wil zien opent hem zelf; pas dan bestaat de sectie.
@@ -107,8 +116,9 @@ export function VerhaalPage() {
      * kale `main > section[id]` telt díe secties dan mee als hoofdstuk.
      */
     useHomepageAnalytics(
-        isHome ? 'verhaal-home' : 'verhaal',
+        isHome ? `verhaal-home:${variant}` : 'verhaal',
         '.verhaal > main > section[id]',
+        !variantForced,
     );
 
     const openFilm = useCallback(() => {

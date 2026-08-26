@@ -56,3 +56,4 @@ Voor code-navigatie: `ARCHITECTURE.md` in de repo-root is de structurele kaart,
 |---|---|
 | [marketing/seo/](marketing/seo/) | SEO-strategie en keywords |
 | [marketing/homepage-ontwerpkader.md](marketing/homepage-ontwerpkader.md) | Toetsbare ontwerpprincipes + audit van de homepage (UX, B2B/B2G, SEO, GEO) |
+| [marketing/homepage-ab-test-opzet.md](marketing/homepage-ab-test-opzet.md) | A/B-opzet voor variant B: wat we vergelijken, meten en wanneer iets gewonnen heeft |
