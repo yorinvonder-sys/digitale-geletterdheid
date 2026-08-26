@@ -178,6 +178,15 @@ mag hergebruiken in plaats van het per rij opnieuw te berekenen. De bestaande
 helpers zijn dat niet; dat is een bestaand prestatiepunt dat hier niet is
 aangeraakt.
 
+Dat `STABLE` roept een terechte vraag op, want deze functies roepen wél de
+VOLATILE bestaande helpers aan. De redenering: alles wat ze lezen — de rol en
+school uit `auth.users`, de AAL-claim uit de request, de stand in
+`school_access_settings`, de toewijzingen in `teacher_classes` — ligt binnen één
+statement vast. Postgres dwingt de volatiliteit van aangeroepen functies niet af;
+`STABLE` is hier dus een bewuste belofte, geen afgeleide garantie. Wordt een van
+de onderliggende helpers ooit afhankelijk van iets dat binnen een statement kan
+veranderen, dan moet deze markering mee heroverwogen worden.
+
 ---
 
 ## 4. Beheer: hoe komt de koppeling erin?
@@ -199,6 +208,14 @@ daarnaast twee dingen zien die vóór het omzetten moeten kloppen:
 
 - docenten zonder enige klastoewijzing;
 - leerlingen zonder klas.
+
+**Die tweede lijst is een wachtrij, geen statistiek.** Een leerling zonder klas
+is in een klasgebonden stand voor geen enkele docent zichtbaar. De verleiding is
+om dat op te lossen met een pseudoklas "niet ingedeeld" waar iedereen bij mag —
+dat zet de maatregel echter voor die groep volledig uit. Beter: een expliciete
+wachtrij die alleen de beheerder, de mentor en de zorgcoördinator zien, met de
+opdracht om de leerling in te delen. Zo blijft de leerling in beeld zonder dat
+de klasgrens gaten krijgt.
 
 ### 4b. Via de roosterimport — daarna, als aanvulling
 
