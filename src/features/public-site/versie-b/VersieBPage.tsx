@@ -42,8 +42,18 @@ function Nav() {
     return (
         <header className="fixed inset-x-0 top-0 z-40 border-b-[3px] border-duck-ink bg-duck-bg/90 backdrop-blur-md">
             <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-6 py-3 md:px-10 lg:px-16">
-                <a href="#hero" className="flex items-center gap-2.5" aria-label="Naar het begin">
-                    <LogoLockup height={28} />
+                {/*
+                    Het beeldmerk stond hier op 28px. Op die maat valt de eend uit
+                    elkaar tot een donkere vlek — herkenbaar als woordmerk, niet als
+                    merk. Bovendien was het klikvlak 28px hoog, onder de 44px die je
+                    op een touchscreen nodig hebt: een logo dat je niet kunt raken.
+                */}
+                <a
+                    href="#hero"
+                    className="flex min-h-[44px] items-center gap-2.5 rounded-full pr-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-ink focus-visible:ring-offset-2"
+                    aria-label="Naar het begin"
+                >
+                    <LogoLockup height={34} />
                 </a>
                 <div className="flex items-center gap-4">
                     <a
