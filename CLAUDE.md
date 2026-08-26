@@ -10,6 +10,8 @@ does not load long baton, launch, or reference files by default.
 de huidige vraag nodig heeft.
 
 - project context: `.claude/project-context.md`
+- nieuwe leerling-opdracht: `.claude/opdracht-eisen.md` — verplicht vóór de eerste
+  regel code van een nieuwe of herschreven opdracht
 - skill routing: `.claude/skill-router.md`
 - kosten, escalatie en afrondingscontrole: `.claude/model-selection.md`
 - acceptance checks: `.claude/acceptance-checklist.md`

@@ -2,6 +2,10 @@
 
 This subtree contains learner-facing missions. Treat mission work as curriculum work, not just UI work.
 
+Bouw je een nieuwe of substantieel herschreven missie? Lees dan eerst
+`.claude/opdracht-eisen.md` — de verplichte doorloop (didactiek, differentiatie,
+veiligheid) vóór de eerste regel code.
+
 ## Read first when editing mission flows
 - `src/config/curriculum.ts`
 - `src/config/agents/`
