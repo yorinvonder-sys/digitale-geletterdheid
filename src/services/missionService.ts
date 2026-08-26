@@ -1,4 +1,10 @@
 import { supabase } from './supabase';
+import {
+    readPending,
+    stashPending,
+    clearPending,
+    volgendTicket,
+} from './progressBackupQueue';
 
 /** Recursively strips undefined values and caps nesting depth for Postgres JSONB. */
 function sanitizeForPostgres(data: any, maxDepth = 5, currentDepth = 0): any {
@@ -23,6 +29,11 @@ export const saveMissionProgress = async (
     progressData: Record<string, any>,
     schoolId?: string
 ): Promise<boolean> => {
+    // Volgnummer van DEZE poging. Alles hieronder hangt eraan: het bepaalt of
+    // ons werk nog het nieuwste is als het antwoord binnenkomt. Bewust een
+    // teller en geen klok -- zie progressBackupQueue.
+    const ticket = volgendTicket(userId, missionId);
+
     try {
         const sanitized = sanitizeForPostgres(progressData);
 
@@ -35,7 +46,10 @@ export const saveMissionProgress = async (
             p_progress_data: sanitized,
         });
 
-        if (!rpcError) return true;
+        if (!rpcError) {
+            clearPending(userId, missionId, ticket);
+            return true;
+        }
 
         // Overgangspad: zolang migratie 20260808180000 niet is toegepast bestaat de
         // functie nog niet. Zonder deze terugval zou een frontend die eerder uitrolt
@@ -68,9 +82,13 @@ export const saveMissionProgress = async (
             });
 
         if (error) throw error;
+        clearPending(userId, missionId, ticket);
         return true;
     } catch (error) {
         console.error(`Error saving progress for ${missionId}:`, error);
+        // Niets bereikte de server. Bewaar het lokaal, zodat een herlaad of een
+        // wegvallend netwerk het werk van de leerling niet wist.
+        stashPending(userId, missionId, sanitizeForPostgres(progressData), ticket);
         return false;
     }
 };
@@ -79,6 +97,16 @@ export const loadMissionProgress = async (
     userId: string,
     missionId: string
 ): Promise<Record<string, any> | null> => {
+    // Staat er werk klaar dat de server nooit heeft bereikt, probeer dat dan eerst
+    // alsnog te versturen. Lukt dat, dan is de server weer de waarheid en is de
+    // lokale kopie opgeruimd. Lukt het niet, dan is die kopie het nieuwste wat de
+    // leerling heeft -- die tonen is beter dan een leeg scherm.
+    const pending = readPending(userId, missionId);
+    if (pending) {
+        const verstuurd = await saveMissionProgress(userId, missionId, pending);
+        if (!verstuurd) return pending;
+    }
+
     try {
         const { data, error } = await supabase
             .from('mission_progress')
@@ -91,7 +119,9 @@ export const loadMissionProgress = async (
         return (data?.progress_data as unknown as Record<string, any>) || null;
     } catch (error) {
         console.error(`Error loading progress for ${missionId}:`, error);
-        return null;
+        // Hebben we het werk nog in handen -- net verstuurd of nog wachtend --
+        // toon dat dan liever dan een leeg scherm.
+        return pending ?? null;
     }
 };
 

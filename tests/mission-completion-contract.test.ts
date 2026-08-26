@@ -194,3 +194,60 @@ test('de opslagfunctie behoudt de afrondmarkering zonder blind samen te voegen',
     // En geen `"completedAt": null` op een rij die nooit is afgerond.
     assert.match(setClause, /jsonb_strip_nulls/);
 });
+
+test('de migraties leggen de completed-guard ook in de USING-clausules vast', () => {
+    const sql = readFileSync(
+        new URL('../supabase/migrations/20260808200000_codify_mission_progress_using_guards.sql', import.meta.url),
+        'utf8',
+    );
+
+    // USING wordt op de BESTAANDE rij toegepast en bepaalt daarmee of een
+    // afgeronde rij nog te wijzigen of te verwijderen is. Stond die voorwaarde
+    // alleen in WITH CHECK, dan gedraagt een uit deze migraties opgebouwde
+    // database zich anders dan productie -- en daar liep een broncode-review
+    // aantoonbaar op stuk.
+    for (const policy of ['mission_progress_owner_update', 'mission_progress_owner_delete']) {
+        const start = sql.indexOf(`ALTER POLICY "${policy}"`);
+        assert.notEqual(start, -1, `${policy} wordt niet vastgelegd`);
+
+        const einde = sql.indexOf(');', start);
+        const blok = sql.slice(start, einde);
+        assert.match(blok, /USING/, `${policy} zet geen USING-clausule`);
+        assert.match(
+            blok,
+            /status <> 'completed'::text/,
+            `${policy} legt de completed-guard niet vast in USING`,
+        );
+    }
+});
+
+test('werk dat de server niet haalt wordt lokaal bewaard en later alsnog verstuurd', () => {
+    const source = readFileSync(
+        new URL('../src/services/missionService.ts', import.meta.url),
+        'utf8',
+    );
+
+    const saveStart = source.indexOf('export const saveMissionProgress');
+    const loadStart = source.indexOf('export const loadMissionProgress');
+    const save = source.slice(saveStart, loadStart);
+    const loadEnd = source.indexOf('export const resetMissionProgress');
+    // Zonder deze grenscontrole geeft indexOf -1 als die functie ooit verdwijnt,
+    // en dan rekt slice() het blok stilzwijgend op tot bijna het hele bestand.
+    assert.ok(loadEnd > loadStart, 'grens van loadMissionProgress niet gevonden');
+    const load = source.slice(loadStart, loadEnd);
+
+    assert.ok(saveStart >= 0 && loadStart > saveStart);
+
+    // Mislukt de opslag, dan mag het werk niet verdampen.
+    assert.match(save, /catch[\s\S]*stashPending/);
+    // Lukt het wel, dan moet de lokale kopie weg -- anders wordt het een tweede
+    // waarheid die later een nieuwere serverversie kan overschrijven.
+    assert.match(save, /clearPending/);
+
+    // Bij het laden eerst de wachtrij legen, en pas daarna de server bevragen.
+    const pendingIndex = load.indexOf('readPending');
+    const queryIndex = load.indexOf(".from('mission_progress')");
+    assert.notEqual(pendingIndex, -1, 'loadMissionProgress kijkt niet naar wachtend werk');
+    assert.notEqual(queryIndex, -1);
+    assert.ok(pendingIndex < queryIndex, 'de wachtrij moet vóór de serverquery worden geleegd');
+});
