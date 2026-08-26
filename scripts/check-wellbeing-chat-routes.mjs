@@ -129,6 +129,10 @@ assert.match(teacherAlertHook, /if\s*\(error\)\s*throw error/,
     'useWellbeingTeacherAlert: het error-veld van de RPC-respons moet gecontroleerd worden');
 assert.match(teacherAlertHook, /createWellbeingAlertDelivery/,
     'useWellbeingTeacherAlert: de aflevering moet via de geteste wellbeingAlertDelivery-module lopen');
+assert.match(teacherAlertHook, /boundStudentId\s*!==\s*\(studentId \?\? null\)/,
+    'useWellbeingTeacherAlert: de delivery-instantie moet identiteitsgebonden zijn (verse instantie bij een andere leerling-id)');
+assert.match(teacherAlertHook, /p_student_id:\s*boundStudentId/,
+    'useWellbeingTeacherAlert: de RPC moet het gebonden leerling-id gebruiken, nooit een verouderde closure');
 assert.match(teacherAlertHook, /notifiedFor/,
     'useWellbeingTeacherAlert: de afleverstatus moet per categorie opvraagbaar zijn');
 

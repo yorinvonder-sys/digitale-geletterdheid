@@ -30,27 +30,38 @@ export function useWellbeingTeacherAlert(studentIdOverride?: string | null): {
 
     // Teller als state zodat de overlay her-rendert zodra een aflevering bevestigt.
     const [, bumpConfirmed] = useState(0);
-    const deliveryRef = useRef<ReturnType<typeof createWellbeingAlertDelivery> | null>(null);
-    if (!deliveryRef.current) {
-        deliveryRef.current = createWellbeingAlertDelivery({
-            // Log alert naar Supabase voor docentnotificatie (zonder originele tekst — privacy)
-            send: async (category, timestamp) => {
-                try {
-                    const { error } = await supabase.rpc('log_wellbeing_alert' as any, {
-                        p_student_id: studentId,
-                        p_category: category,
-                        p_detected_at: timestamp,
-                    });
-                    if (error) throw error;
-                } catch (err) {
-                    console.error('Wellbeing alert logging failed:', err);
-                    throw err;
-                }
-            },
-            onConfirmed: () => bumpConfirmed((n) => n + 1),
-        });
+    // De delivery-instantie is identiteitsgebonden: wisselt de leerling-id
+    // zonder remount (bijv. account-switch op een gedeeld apparaat), dan komt
+    // er een verse instantie. Zo verstuurt send nooit het id van een vórige
+    // leerling en lekt dedup-/bevestigingsstatus nooit tussen leerlingen.
+    const deliveryRef = useRef<{
+        boundStudentId: string | null;
+        delivery: ReturnType<typeof createWellbeingAlertDelivery>;
+    } | null>(null);
+    if (!deliveryRef.current || deliveryRef.current.boundStudentId !== (studentId ?? null)) {
+        const boundStudentId = studentId ?? null;
+        deliveryRef.current = {
+            boundStudentId,
+            delivery: createWellbeingAlertDelivery({
+                // Log alert naar Supabase voor docentnotificatie (zonder originele tekst — privacy)
+                send: async (category, timestamp) => {
+                    try {
+                        const { error } = await supabase.rpc('log_wellbeing_alert' as any, {
+                            p_student_id: boundStudentId,
+                            p_category: category,
+                            p_detected_at: timestamp,
+                        });
+                        if (error) throw error;
+                    } catch (err) {
+                        console.error('Wellbeing alert logging failed:', err);
+                        throw err;
+                    }
+                },
+                onConfirmed: () => bumpConfirmed((n) => n + 1),
+            }),
+        };
     }
-    const delivery = deliveryRef.current;
+    const delivery = deliveryRef.current.delivery;
 
     const onAlert = useCallback((match: WellbeingMatch) => {
         if (!active || !studentId) return;
