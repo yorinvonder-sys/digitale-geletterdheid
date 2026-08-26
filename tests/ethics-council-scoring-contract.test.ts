@@ -86,3 +86,50 @@ test('het uitdagingsdossier krijgt bewust geen keywordlijst', () => {
     // vaste woordenlijst; daar zou de factor eerlijke antwoorden korten.
     assert.ok(!('uitdagingKeywords' in config));
 });
+
+// ── Adversariële gevallen ─────────────────────────────────────
+// Beide reviewrondes (Codex-gate én de Playwright-speeltest) vonden
+// onafhankelijk van elkaar hetzelfde gat: korte kernbegrippen matchten als
+// losse letterreeks midden in doodgewone woorden, waardoor een volstrekt
+// onderwerploos antwoord de rem ontliep. Deze tests pinnen dat dicht.
+
+test('een kort kernbegrip raakt niet toevallig midden in een gewoon woord', () => {
+    const offTopic = [
+        'Ik ging boodschappen doen en wilde iets kopen voor mijn collega.',
+        'De magnetron maakte een grappig geluid en mijn gezin moest lachen.',
+    ];
+    for (const zin of offTopic) {
+        assert.equal(
+            relevanceFactor(zin, LEGAAL_KEYWORDS),
+            0.7,
+            `had off-topic moeten zijn: ${zin}`
+        );
+        assert.equal(
+            relevanceFactor(zin, TRANSPARANT_KEYWORDS),
+            0.7,
+            `had off-topic moeten zijn (transparant): ${zin}`
+        );
+    }
+});
+
+test('een goed antwoord in eigen woorden houdt de volle factor', () => {
+    // Geen vakterm, wel duidelijk over het dilemma — mag nooit gekort worden.
+    const parafrases = [
+        'Je mag iemands gegevens niet zomaar gebruiken als diegene daar geen ja op heeft gezegd.',
+        'Er staan dingen van kinderen in en zij konden daar niet mee instemmen.',
+    ];
+    for (const zin of parafrases) {
+        assert.equal(relevanceFactor(zin, LEGAAL_KEYWORDS), 1, `werd onterecht gekort: ${zin}`);
+    }
+});
+
+test('een lang kernbegrip telt ook binnen een samenstelling', () => {
+    // Nederlandse samenstellingen: 'gegeven' hoort te matchen in
+    // "persoonsgegevens", anders mist de check juist de vaktaal.
+    assert.equal(relevanceFactor('Het gaat om persoonsgegevens van leerlingen.', LEGAAL_KEYWORDS), 1);
+    assert.equal(relevanceFactor('Ik gebruik schoolgegevens uit het systeem.', LEGAAL_KEYWORDS), 1);
+});
+
+test('een kort kernbegrip telt wél als het als heel woord voorkomt', () => {
+    assert.equal(relevanceFactor('Mag dat zomaar?', LEGAAL_KEYWORDS), 1);
+});

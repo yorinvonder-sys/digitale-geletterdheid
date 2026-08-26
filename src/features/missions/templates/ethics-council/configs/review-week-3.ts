@@ -44,6 +44,11 @@ const config: EthicsCouncilConfig = {
         // wie de gegevens gaan, en waar hun materiaal vandaan komt.
         'persoon', 'iemand', 'ander', 'zelf', 'internet', 'kopie', 'kopieer',
         'plaatje', 'afbeelding', 'video', 'muziek', 'tekening',
+        // Parafrases van "toestemming" en van wie het beschermt. Zonder deze
+        // stammen viel een inhoudelijk juist antwoord als "er staan dingen van
+        // kinderen in en zij konden daar niet mee instemmen" buiten de boot.
+        'kinder', 'leerling', 'klasgenoot', 'instem', 'stemde', 'goedkeur',
+        'gevraagd', 'gewild', 'bezwaar', 'weigeren', 'geweigerd',
     ],
     // === Dossier 2: Eerlijk (Categorize-ronde) ===
     // Sorteer ONTWERPKEUZES (niet mensen): maakt de keuze je project eerlijk

@@ -154,6 +154,9 @@ export const DuelGame: React.FC<DuelGameProps> = ({
 
     const startDrawingHandler = useCallback((e: React.MouseEvent | React.TouchEvent) => {
         if (session?.status !== 'drawing' || isAnalyzing) return;
+        // De moderatiebanner blokkeert niets; hij verdwijnt zodra de leerling
+        // weer begint te tekenen.
+        setShowModerationNotice(false);
         isDrawingRef.current = true;
         lastPosRef.current = getPos(e);
     }, [getPos, session?.status, isAnalyzing]);
@@ -408,22 +411,22 @@ export const DuelGame: React.FC<DuelGameProps> = ({
                     </div>
                 )}
 
-                {/* Moderatie-melding — lokaal, geen score-update, geen AI-tekst */}
+                {/* Moderatie-melding — lokaal, geen score-update, geen AI-tekst.
+                    Bewust NIET blokkerend: de duelklok is een gedeelde klok van
+                    60 seconden, dus elke seconde achter een overlay is speeltijd
+                    die de tegenstander wél houdt. Deze banner laat het canvas
+                    vrij, zodat een geblokkeerde poging exact evenveel tijd kost
+                    als een gewone afgekeurde gok. Hij verdwijnt zodra de leerling
+                    weer begint te tekenen. */}
                 {showModerationNotice && (
-                    <div className="absolute inset-0 flex items-center justify-center p-4 z-10" style={{ backgroundColor: 'rgba(250,249,240,0.9)' }}>
-                        <div className="max-w-xs w-full rounded-2xl p-5 text-center shadow-2xl" style={{ backgroundColor: '#FFFFFF', border: '1px solid #E7D8BD' }}>
-                            <p className="text-sm mb-4" style={{ fontFamily: "'Outfit', system-ui, sans-serif", color: '#445865' }}>
-                                {DRAWING_MODERATION_NOTICE}
-                            </p>
-                            <button
-                                onClick={() => setShowModerationNotice(false)}
-                                className="px-6 py-3 rounded-full font-bold flex items-center gap-2 mx-auto transition-all duration-300 focus-visible:ring-2 focus-visible:ring-[#D97848]"
-                                style={{ backgroundColor: '#E7D8BD', color: '#445865' }}
-                            >
-                                <RotateCcw size={18} />
-                                Opnieuw tekenen
-                            </button>
-                        </div>
+                    <div
+                        role="status"
+                        className="absolute inset-x-3 top-3 z-10 rounded-2xl px-4 py-3 shadow-lg"
+                        style={{ backgroundColor: '#FFFFFF', border: '1px solid #E7D8BD' }}
+                    >
+                        <p className="text-sm" style={{ fontFamily: "'Outfit', system-ui, sans-serif", color: '#445865' }}>
+                            {DRAWING_MODERATION_NOTICE}
+                        </p>
                     </div>
                 )}
 

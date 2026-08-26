@@ -54,15 +54,35 @@ export const substanceFactor = (raw: string): number => {
  */
 const OFF_TOPIC_FACTOR = 0.7;
 
+/** T/m deze lengte moet een kernbegrip een héél woord zijn — zie hieronder. */
+const WHOLE_WORD_MAX_LENGTH = 4;
+/** T/m deze lengte moet een kernbegrip minstens aan een woordbegin staan. */
+const WORD_START_MAX_LENGTH = 6;
+
+const escapeForRegex = (value: string): string => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+
 /**
  * Geeft 1 zodra minstens één kernbegrip in de tekst voorkomt, anders
- * `weakFactor`.
+ * `weakFactor`. Hoofdletterongevoelig.
  *
- * De vergelijking is hoofdletterongevoelig en werkt op substring, zodat stammen
- * meetellen: 'toestemming' matcht ook 'toestemmingen' en 'gegeven' ook
- * 'persoonsgegevens'. Een lege lijst betekent "dit dossier heeft geen
- * kernbegrippen" en geeft altijd 1 — zo blijven dossiers zonder lijst
- * ongemoeid.
+ * Hoe specifieker een begrip, hoe vrijer het mag matchen — anders raakt een
+ * kort fragment toevallig een doodgewoon woord en ontloopt onderwerploze
+ * tekst de rem:
+ *
+ * - t/m 4 letters ('mag', 'wet', 'app', 'zin'): alleen als heel woord. Eerder
+ *   matchte 'app' in "boodschappen", 'open' in "kopen", 'leg' in "collega" en
+ *   'mag' in "magnetron", waardoor een volstrekt off-topic antwoord alsnog de
+ *   volle score kreeg.
+ * - 5 t/m 6 letters ('regel', 'delen'): aan een woordbegin, zodat
+ *   verbuigingen ("delen", "gedeelde" via 'deel') meetellen zonder dat het
+ *   fragment midden in een ander woord raak is.
+ * - 7 letters en langer ('gegeven', 'privacy', 'toestemming'): overal in het
+ *   woord. Dat is nodig voor Nederlandse samenstellingen — 'gegeven' hóórt te
+ *   matchen in "persoonsgegevens" en "schoolgegevens" — en zulke lange
+ *   begrippen zijn specifiek genoeg om niet per ongeluk raak te zijn.
+ *
+ * Een lege lijst betekent "dit dossier heeft geen kernbegrippen" en geeft
+ * altijd 1 — zo blijven dossiers zonder lijst ongemoeid.
  */
 export const relevanceFactor = (
     raw: string,
@@ -74,7 +94,14 @@ export const relevanceFactor = (
     const text = raw.toLowerCase();
     const hit = keywords.some((keyword) => {
         const needle = keyword.trim().toLowerCase();
-        return needle.length > 0 && text.includes(needle);
+        if (needle.length === 0) return false;
+        const escaped = escapeForRegex(needle);
+        const pattern = needle.length <= WHOLE_WORD_MAX_LENGTH
+            ? `(?<![\\p{L}\\p{N}])${escaped}(?![\\p{L}\\p{N}])`
+            : needle.length <= WORD_START_MAX_LENGTH
+                ? `(?<![\\p{L}\\p{N}])${escaped}`
+                : escaped;
+        return new RegExp(pattern, 'u').test(text);
     });
 
     return hit ? 1 : weakFactor;
