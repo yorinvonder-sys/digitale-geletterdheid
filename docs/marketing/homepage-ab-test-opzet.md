@@ -179,7 +179,10 @@ Twee werkbare uitwegen, te kiezen bij de bouw:
 - óf een klein inline script in `index.html` leest de variantsleutel vóór de eerste verf en zet de
   juiste kop. Dat kan, maar het raakt de LCP-optimalisatie en moet dan gemeten worden.
 
-**Aanbeveling: eerste test met dezelfde hero-kop.** Eén variabele tegelijk.
+**Besloten op 26-08-2026: B krijgt dezelfde hero-kop als A.** Eén variabele tegelijk. Daarmee meet
+de eerste vergelijking het verschil in *structuur* (lineair verhaal versus rolgericht en scanbaar)
+en niet in *belofte*, en blijft de kopflits uit. Wil je later de kop zelf testen, dan is dat een
+losse test met een eigen beslisregel — niet iets om hier stilletjes bij te schuiven.
 
 **(b) De meting accepteert geen los "variant"-veld.**
 `analyticsService` stuurt alleen een vaste set velden door naar de database (`pageKey`, `ctaKey`,
@@ -320,8 +323,9 @@ beoordelen.
 1. ~~**Bezoekcijfers.**~~ Beantwoord: er is nog geen verkeer. Zet Vercel Web Analytics wél alvast
    aan (staat nu uit) zodat er iets te meten valt zodra de eerste bezoekers komen — dat is een
    schakelaar in het Vercel-dashboard.
-2. **Krijgt B dezelfde hero-kop als A?** Mijn advies is ja, voor de eerste test — één variabele
-   tegelijk, en het voorkomt de kopflits uit §4.2(a).
+2. ~~**Krijgt B dezelfde hero-kop als A?**~~ Besloten op 26-08-2026: **ja**, dezelfde kop. Zie
+   §4.2(a). Gevolg voor de bouw: het vaste `<h1 id="lcp-hero">` in `index.html` hoeft niet
+   variantbewust te worden, en de LCP-optimalisatie blijft ongemoeid.
 3. **Ga je akkoord dat er nu niets verwijderd wordt?** Het voorstel is: verwijderen is de laatste
    stap, op basis van de uitkomst.
 4. **Wat gebeurt er met `/scholen`?** Losse vraag, later, maar hij hangt er wel aan: als B een
