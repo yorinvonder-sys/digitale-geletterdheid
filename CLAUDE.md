@@ -15,6 +15,26 @@ de huidige vraag nodig heeft.
 - acceptance checks: `.claude/acceptance-checklist.md`
 - workstream/status format: `.claude/workstreams.md`, `.claude/adhd-format.md`
 
+## Security-poort
+
+Lees `SECURITY-PIPELINE.md` — alléén de genoemde sectie — vóór de eerste edit wanneer één
+van deze condities waar is. Staat je wijziging er niet bij: niet openen.
+
+| Conditie | Sectie |
+|---|---|
+| Er verandert iets onder `supabase/migrations/`, of er komt een tabel, kolom, policy of cron-taak bij | `P-DB` |
+| Er verandert iets onder `supabase/functions/`, in `supabase/config.toml`, of aan AI-instructies in `src/config/agents/` | `P-EDGE` |
+| Rol-, rechten-, MFA- of routebeveiliging wijzigt, of een Realtime- of Storage-toegang — o.a. `src/services/PermissionService.ts` | `P-AUTH` |
+| Er komt een omgevingsvariabele, secret of externe dienst bij, of er wijzigt er één | `P-SECRETS` |
+| `vercel.json`, een dependency in `package.json`, `.github/workflows/`, `index.html` of `vite.config.ts` verandert | `P-DEPLOY` |
+| De wijziging slaat leerlinggegevens op, toont, logt, exporteert, of stuurt ze naar een extern model | `R-DATA` |
+| Er wordt door gebruikers ingevoerde tekst of AI-output op het scherm getoond | `R-FRONT` |
+| Een bestaande beveiliging of een controlescript zou zwakker worden — waar dan ook, ook buiten Git | `STOP` |
+| Geen van bovenstaande | Niet lezen |
+
+De laatste twee rijen zijn dragend: de vangnetrij vangt wat geen pad raakt, en het expliciete
+"niet lezen" voorkomt dat het bestand elke sessie meeleest.
+
 ## Stack And Conventions
 
 `AGENTS.md` § Project Shape beschrijft de stack en de mappenindeling. Aanvullend:

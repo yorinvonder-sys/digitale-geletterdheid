@@ -47,6 +47,7 @@ Voor code-navigatie: `ARCHITECTURE.md` in de repo-root is de structurele kaart,
 
 | Pad | Inhoud |
 |---|---|
+| [../SECURITY-PIPELINE.md](../SECURITY-PIPELINE.md) | Vaste veiligheidspoort vóór het bouwen — routes per omgeving en wat elk bewijs niet aantoont |
 | [security/](security/) | Cybersecurity & compliance rapporten |
 | [compliance/regulations/](compliance/regulations/) | AI-compliance rapporten |
 
