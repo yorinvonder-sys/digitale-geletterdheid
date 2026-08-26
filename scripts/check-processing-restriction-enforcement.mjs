@@ -48,6 +48,31 @@ assert(migration.includes('CREATE OR REPLACE FUNCTION public.current_user_proces
 assert(migration.includes('REVOKE ALL ON FUNCTION public.current_user_processing_restricted() FROM PUBLIC'), 'Restriction helper must revoke PUBLIC execute.');
 assert(migration.includes('NOT public.current_user_processing_restricted()'), 'RLS policies must block restricted writes.');
 
+const RESTRICTION_GUARD = 'NOT public.current_user_processing_restricted()';
+
+// Snijd het statement uit dat deze policy daadwerkelijk aanmaakt of wijzigt.
+// Anker op het sleutelwoord, niet op de kale naam: een naam kan ook in een
+// commentaar of in de body van een andere policy staan, en dan zou een
+// naam-gebaseerde snede de guard van de verkeerde policy meten.
+const policyStatement = (keyword, name) => {
+  const marker = `${keyword} POLICY "${name}"`;
+  const start = migration.indexOf(marker);
+  if (start === -1) return null;
+  const rest = migration.slice(start + marker.length);
+  const next = rest.search(/\b(?:ALTER|CREATE|DROP) POLICY\b/);
+  return marker + (next === -1 ? rest : rest.slice(0, next));
+};
+
+const isGuarded = (name) =>
+  [policyStatement('ALTER', name), policyStatement('CREATE', name)]
+    .some((statement) => statement !== null && statement.includes(RESTRICTION_GUARD));
+
+// Weg is ook veilig, maar alleen als de policy niet meteen weer wordt aangemaakt.
+const isRemoved = (name) =>
+  migration.includes(`DROP POLICY IF EXISTS "${name}"`) && policyStatement('CREATE', name) === null;
+
+const isMentioned = (name) => migration.includes(`"${name}"`);
+
 const policyNames = {
   mission_progress_insert_own: ['mission_progress_insert_own', 'mission_progress_owner_insert'],
   mission_progress_update_own: ['mission_progress_update_own', 'mission_progress_owner_update'],
@@ -60,15 +85,15 @@ const policyNames = {
 };
 
 for (const [expectedName, acceptedNames] of Object.entries(policyNames)) {
-  const policyName = acceptedNames.find((name) => migration.includes(`"${name}"`));
-  assert(Boolean(policyName), `Migration must harden ${expectedName}.`);
-  if (policyName) {
-    const policyStart = migration.indexOf(`"${policyName}"`);
-    const nextPolicy = migration.indexOf('ALTER POLICY', policyStart + 1);
-    const policyBlock = migration.slice(policyStart, nextPolicy === -1 ? undefined : nextPolicy);
+  const mentioned = acceptedNames.filter(isMentioned);
+  assert(mentioned.length > 0, `Migration must harden ${expectedName}.`);
+  // Elke variant die in deze migratie voorkomt moet zelf geguard of verwijderd
+  // zijn. Permissive policies worden ge-OR'd, dus een enkele ongeguarde variant
+  // maakt de restrictie op de andere waardeloos.
+  for (const name of mentioned) {
     assert(
-      policyBlock.includes('NOT public.current_user_processing_restricted()'),
-      `Migration must add the restriction guard to ${expectedName}.`,
+      isGuarded(name) || isRemoved(name),
+      `Migration must add the restriction guard to ${name} (or drop it).`,
     );
   }
 }
@@ -78,8 +103,7 @@ for (const legacyPolicyName of [
   'mission_progress_owner_update',
 ]) {
   assert(
-    migration.includes(`DROP POLICY IF EXISTS "${legacyPolicyName}"`)
-      || migration.includes(`ALTER POLICY "${legacyPolicyName}"`),
+    isRemoved(legacyPolicyName) || isGuarded(legacyPolicyName),
     `Migration must harden legacy policy ${legacyPolicyName} without leaving it unguarded.`,
   );
 }
