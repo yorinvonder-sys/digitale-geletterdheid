@@ -81,9 +81,16 @@ Je vroeg wat ik ervan vind. Ik ben het deels met je eens, maar niet met weggooie
 
 De verhaalpagina heeft drie problemen die voor deze doelgroep zwaar wegen, en ze zijn meetbaar:
 
-- **De pagina is ~24 schermen lang.** Opgemeten per sectie (desktop): proloog 1,4 · probleem 3,6 ·
-  ontmoeting 3,4 · mila 3,2 · zelf 2,0 · docent 3,0 · bewijs 5,3 · epiloog 2,6. Met de film erbij
-  ruim 25. Dat is een enorme investering te vragen van iemand die aan het inventariseren is.
+- **De pagina is 17,3 schermen lang** op een venster van 1440×900; op een kleiner venster meer.
+  Opgemeten per sectie: proloog 1,0 · probleem 2,3 · ontmoeting 2,2 · mila 3,2 · zelf 1,3 ·
+  docent 2,0 · bewijs 3,5 · epiloog 1,7. De film komt daar nog bij als de bezoeker hem opent. Dat
+  is een enorme investering te vragen van iemand die aan het inventariseren is.
+
+  > **Correctie 27-08-2026.** Hier stond eerst "~24 schermen". Dat getal was de som van
+  > sectiehoogtes gemeten op een kleiner venster, terwijl variant B op 1440×900 was gemeten — twee
+  > verschillende maatlatten naast elkaar. Op één venster gemeten is het 17,3 tegen 5,9. De
+  > conclusie blijft dezelfde, het getal was onzuiver. Meet lengtes voortaan altijd op één
+  > vastgelegd venster en noem dat venster erbij.
 - **Het Mila-hoofdstuk neemt het scrollen over** (320vh, zes tekstblokken). NN/g-onderzoek: de
   meerderheid van de deelnemers raakt gedesoriënteerd, en het is het ergst bij taakgerichte
   bezoekers, op mobiel, en met veel tekst — alle drie van toepassing.
@@ -125,7 +132,7 @@ heb je bovendien geleerd wat precies het verschil maakte.
 | | A (bestaand) | B (te bouwen) |
 |---|---|---|
 | Component | `src/features/public-site/verhaal/` | nieuw, `src/features/public-site/versie-b/` |
-| Karakter | Lineair verhaal, ~24 schermen | Rolgericht en scanbaar, richtlijn ≤ 10 schermen |
+| Karakter | Lineair verhaal, 17,3 schermen (1440×900) | Rolgericht en scanbaar, richtlijn ≤ 10 schermen |
 | Kernidee | De bezoeker meenemen in een verhaal | De bezoeker binnen twee schermen naar zijn eigen vraag laten springen |
 
 **B is nadrukkelijk geen herkleurde A.** Als de varianten alleen in kleur of koptekst verschillen,
@@ -308,7 +315,7 @@ losse vraag, die pas zinvol is als de homepage vaststaat.
 |---|---|---|
 | 0 | ~~Bezoekcijfers op `/` ophalen~~ | **Vervallen** — er zijn nog geen bezoekers. De parameters in §5 worden ingevuld zodra er verkeer is. |
 | 1 | ~~Variantmechaniek~~ | **Klaar** — `homepageVariant.ts`, override via `?variant=`, variant in het meetlabel, `VARIANT_B_READY` staat uit. Gedekt door `npm run test:homepage-variant`. |
-| 2 | ~~Variant B bouwen volgens §3~~ | **Klaar** — `src/features/public-site/versie-b/`. Zeven secties, 8,6 schermen desktop / 9,3 mobiel tegenover 24,4 voor A. |
+| 2 | ~~Variant B bouwen volgens §3~~ | **Klaar** — `src/features/public-site/versie-b/`. Zeven secties, **5,9 schermen tegenover 17,3 voor A**, beide op 1440×900. |
 | 3 | ~~Beide varianten meten~~ | **Klaar** — alle zeven secties, scrolldiepte en CTA-kliks vuren onder label `versie-b:b`, geverifieerd met de verdeling tijdelijk aan. |
 | 4 | Test draaien | De afgesproken looptijd is voorbij |
 | 5 | Beslissen en de verliezer opruimen | Volgens §6 en §7 |
