@@ -37,11 +37,19 @@ export interface EthicsCouncilConfig {
     maxScore: number;
     // Dossier 1 — Legaal
     avgAdvocaat: AvgAdvocaatInfo;
+    /**
+     * Kernbegrippen van dit dilemma. Raakt de onderbouwing er geen enkele, dan
+     * zakt de score naar een deelfactor — een zachte rem op gokwerk, geen
+     * blokkade. Weglaten = geen inhoudelijke check.
+     */
+    legaalKeywords?: readonly string[];
     // Dossier 2 — Eerlijk (categorize)
     eerlijkCategories: string[];
     eerlijkItems: Array<{ label: string; correctCategory: string }>;
     // Dossier 3 — Transparant
     transparantHint?: string;
+    /** Zie `legaalKeywords`; geldt voor de uitleg in dossier 3. */
+    transparantKeywords?: readonly string[];
     // Miniboss
     counterArgument: string;
     // Completion
@@ -328,6 +336,7 @@ const EthicsCouncilWithConfig: React.FC<EthicsCouncilWithConfigProps> = ({
                     {state.stage === 'legaal' && (
                         <LegaalDossier
                             advocaat={config.avgAdvocaat}
+                            keywords={config.legaalKeywords}
                             maxScore={LEGAAL_MAX}
                             savedVerdict={state.legaalVerdict}
                             savedJustification={state.legaalJustification}
@@ -349,6 +358,7 @@ const EthicsCouncilWithConfig: React.FC<EthicsCouncilWithConfigProps> = ({
                     {state.stage === 'transparant' && (
                         <TransparantDossier
                             hint={config.transparantHint}
+                            keywords={config.transparantKeywords}
                             maxScore={TRANSPARANT_MAX}
                             savedText={state.transparantText}
                             onComplete={handleTransparantComplete}

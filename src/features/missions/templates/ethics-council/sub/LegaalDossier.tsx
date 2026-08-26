@@ -2,12 +2,14 @@ import React, { useId, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronRight, ChevronDown } from 'lucide-react';
 import type { AvgAdvocaatInfo } from '../EthicsCouncil';
-import { substanceFactor } from './textSubstance';
+import { relevanceFactor, substanceFactor } from './textSubstance';
 
 type LegaalVerdict = 'ja' | 'twijfel' | 'nee';
 
 interface LegaalDossierProps {
     advocaat: AvgAdvocaatInfo;
+    /** Kernbegrippen van dit dilemma; leeg/afwezig = geen inhoudelijke check. */
+    keywords?: readonly string[];
     maxScore: number;
     /** Restored from saved state (null = fresh start) */
     savedVerdict: LegaalVerdict | null;
@@ -29,6 +31,7 @@ const VERDICT_OPTIONS: Array<{ value: LegaalVerdict; label: string; emoji: strin
  */
 export const LegaalDossier: React.FC<LegaalDossierProps> = ({
     advocaat,
+    keywords = [],
     maxScore,
     savedVerdict,
     savedJustification,
@@ -49,7 +52,13 @@ export const LegaalDossier: React.FC<LegaalDossierProps> = ({
         const qualityBonus = justification.trim().length >= 40 ? Math.round(maxScore * 0.2) : 0;
         // Zonder deze factor levert 40 tekens 'aaaa…' de volle 30 punten op. Een
         // echte onderbouwing — ook een korte — houdt factor 1 en scoort ongewijzigd.
-        const earned = Math.round((base + qualityBonus) * substanceFactor(justification));
+        // De relevantiefactor doet hetzelfde voor tekst die wél gevarieerd is maar
+        // het dilemma niet raakt; wie het onderwerp aansnijdt houdt factor 1.
+        const earned = Math.round(
+            (base + qualityBonus) *
+                substanceFactor(justification) *
+                relevanceFactor(justification, keywords)
+        );
         return Math.min(earned, maxScore);
     };
 

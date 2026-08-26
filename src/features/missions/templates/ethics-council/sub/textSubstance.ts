@@ -36,3 +36,46 @@ export const substanceFactor = (raw: string): number => {
 
     return isMash || isStretchedWord || isRepetition ? FILLER_FACTOR : 1;
 };
+
+/**
+ * Wat een tekst zonder één herkenbaar kernbegrip nog oplevert. Bewust hoog en
+ * bewust géén blokkade: dit is een ZACHTE factor.
+ *
+ * `substanceFactor` herkent alleen tekst die vormelijk geen antwoord is. Een
+ * leerling die keurig gevarieerde maar volstrekt onderwerploze zinnen typt
+ * ("bananen fiets maandag zwembad") glipt daar doorheen en krijgt nu nog de
+ * volle punten. Deze factor drukt dát gokwerk.
+ *
+ * Waarom zacht: een leerling mag het in eigen woorden of met synoniemen zeggen
+ * zonder total loss te gaan. Wie het onderwerp wél raakt maar net andere
+ * woorden kiest dan de lijst, verliest een randje — geen dossier. En de gate om
+ * door te mogen (`canSubmit`/`canContinue`) blijft er volledig buiten: niemand
+ * loopt vast omdat hij het "verkeerde" woord niet gebruikte.
+ */
+const OFF_TOPIC_FACTOR = 0.7;
+
+/**
+ * Geeft 1 zodra minstens één kernbegrip in de tekst voorkomt, anders
+ * `weakFactor`.
+ *
+ * De vergelijking is hoofdletterongevoelig en werkt op substring, zodat stammen
+ * meetellen: 'toestemming' matcht ook 'toestemmingen' en 'gegeven' ook
+ * 'persoonsgegevens'. Een lege lijst betekent "dit dossier heeft geen
+ * kernbegrippen" en geeft altijd 1 — zo blijven dossiers zonder lijst
+ * ongemoeid.
+ */
+export const relevanceFactor = (
+    raw: string,
+    keywords: readonly string[],
+    weakFactor = OFF_TOPIC_FACTOR
+): number => {
+    if (keywords.length === 0) return 1;
+
+    const text = raw.toLowerCase();
+    const hit = keywords.some((keyword) => {
+        const needle = keyword.trim().toLowerCase();
+        return needle.length > 0 && text.includes(needle);
+    });
+
+    return hit ? 1 : weakFactor;
+};
