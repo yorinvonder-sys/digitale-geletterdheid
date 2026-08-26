@@ -18,7 +18,8 @@ de huidige vraag nodig heeft.
 ## Security-poort
 
 Is één van deze condities waar, lees dan vóór de eerste edit in `SECURITY-PIPELINE.md`:
-`POORT-0`, de sectie hieronder, de bijbehorende rij in `BEWIJS`, en `STOP`. Verder niets.
+`POORT-0`, de sectie hieronder, élke rij in `BEWIJS` die bij die sectie hoort — sommige routes
+hebben er meer dan één — en `STOP`. Verder niets.
 Staat je wijziging er niet bij, maar is het werk Rood volgens § Risk Labels in `AGENTS.md`
 (betalingen, facturen, bankgegevens, webhooks, toestemming): lees `POORT-0` en `STOP`.
 Is het werk Groen — teksten, content, styling — dan open je het bestand niet.

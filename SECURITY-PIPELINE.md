@@ -35,10 +35,12 @@ wijziging zonder route is een gat in dit document, geen vrijbrief.
    intact blijven. Verandert het commando (`SELECT`/`INSERT`/…) of permissive-versus-restrictive, dan
    kán `ALTER POLICY` dat niet en is drop-en-hermaken onvermijdelijk: doe dat in één migratie en
    schrijf erbij waarom.
-4. Gevoelige logica in `SECURITY DEFINER`, met `search_path` altijd expliciet gezet — de
-   repo-conventie is `SET search_path = public`. Een leeg `search_path` met volledig gekwalificeerde
-   namen is strikter; wijk niet eenzijdig af van de conventie, leg het aan Yorin voor. Daarna
-   `REVOKE ALL` plus gerichte `GRANT EXECUTE`. Fail-closed: onbekend betekent geweigerd.
+4. Een functie is standaard `SECURITY INVOKER` — dan gelden de rechten van de aanroeper en blijft
+   RLS werken. Kies `SECURITY DEFINER` alleen wanneer de functie iets moet zien wat de aanroeper
+   niet mag zien, en schrijf erbij waarom: je zet daarmee de beveiliging van de aanroeper opzij.
+   Bij `DEFINER` hoort altijd een expliciet `search_path` (repo-conventie: `SET search_path = public`;
+   leeg met volledig gekwalificeerde namen is strikter — wijk niet eenzijdig af, leg het aan Yorin
+   voor), plus `REVOKE ALL` en gerichte `GRANT EXECUTE`. Fail-closed: onbekend betekent geweigerd.
 5. Benoem het gevolg voor rapportage, rechten en wat er zichtbaar wordt.
 
 **Invarianten:** `supabase/CLAUDE.md` § Security rules.
@@ -60,12 +62,15 @@ of `src/config/templateRegistry.ts` — die twee zijn samen de bron voor het geg
 2. Moet de function tóch publiek zijn, dan hoort daar drie keer een vastlegging bij:
    `verify_jwt = false` in `supabase/config.toml`, een regel in `publicEndpointRules` van
    `scripts/check-website-security-posture.mjs`, en een eigen bescherming (CORS, rate limit,
-   moderatie). Ontbreekt alleen de `config.toml`-regel, dan blijft de default `true` gelden en is de
+   moderatie). Ontbreekt alleen de `config.toml`-regel, dan geldt normaal de default `true` en is de
    function afgeschermd — dan werkt hij niet, maar lekt hij niet. Ontbreekt de eigen bescherming
    terwijl `verify_jwt = false` er wél staat, dán staat de deur open.
-3. Blijft de function afgeschermd, voeg dan géén `config.toml`-entry toe — de default is `true`.
-4. Gebruik `buildCorsHeaders`; nooit een wildcard-origin.
-5. Sanitize alle clientinvoer vóór database of AI-model. `systemInstruction` komt van de
+3. `config.toml` is niet het laatste woord: een deploy met `--no-verify-jwt` overrult het, en een
+   deploy zónder die vlag zet een publieke function stil terug op `true`. Lees dus altijd de
+   werkelijke stand na een deploy; ga nooit af op het configbestand alleen.
+4. Blijft de function afgeschermd, voeg dan géén `config.toml`-entry toe — de default is `true`.
+5. Gebruik `buildCorsHeaders`; nooit een wildcard-origin.
+6. Sanitize alle clientinvoer vóór database of AI-model. `systemInstruction` komt van de
    server via `roleId`, nooit van de client. Behandel opgeslagen tekst van gebruikers als
    mogelijke promptinjectie, niet alleen de directe invoer.
 
@@ -136,6 +141,9 @@ Geldt voor logs, exports, foutmeldingen en alles wat naar een extern model gaat.
 - Aggregaties richting AI volgen de bestaande drempel: onder een groepsgrootte van 5 gaat er
   niets naar het model (`MIN_COHORT_SIZE` in `supabase/functions/getClassInsight/index.ts`).
   Die norm geldt voor élke nieuwe aggregatie, niet alleen voor die ene function.
+- Opslag in de browser telt mee als "verlaten": `localStorage` en `sessionStorage` overleven het
+  uitloggen en schoolapparaten worden gedeeld. Zet er nooit tekst van een leerling of een
+  persoonsgegeven in, en ruim bij uitloggen op wat je er wél zet.
 - Bewaartermijnen staan bindend in `business/nl-vo/compliance/verwerkingsregister.md`. Neem ze
   daar niet over — wijk je ervan af, dan is dat een compliancekwestie en ga je naar `STOP`.
 
@@ -170,14 +178,15 @@ concrete onveilige geval. Wijzigt een script inhoudelijk, dan wordt zijn rij hie
 |---|---|---|
 | P-DB | `npm run check:rls:throwaway` | Kan groen zijn terwijl een nieuwe tabel `relrowsecurity = false` heeft: het script toetst een vaste reeks benoemde scenario's, geen dekking over alle tabellen. Aanvullend nodig: query `pg_class` op tabellen in `public` zonder RLS, en die uitkomst moet leeg zijn. |
 | P-EDGE | `npm run security:check` | **Staat vandaag al op rood** met drie bevindingen op `import-ai-cost`; een nieuwe rode regel valt daardoor niet op. Kan bovendien groen zijn terwijl een nieuwe function ongecontroleerd blijft: de inventaris komt uit `git ls-files`, dus een nog niet toegevoegd bestand telt niet mee. En hij leest de bron op markers, niet op gedrag: een function die het woord `Authorization` bevat zonder de uitkomst af te dwingen, komt erdoor. Aanvullend nodig: `git add` vóór je meet, de bestaande drie bevindingen apart afhandelen, en de function zonder token aanroepen. |
-| P-EDGE | `npm run typecheck:edge` | **Faalt op deze machine** vóór de typecontrole met `TS5103`, omdat `tsconfig.base.json` TypeScript 6 eist en er 5.8 staat. Een groen resultaat is hier dus niet te halen; alleen CI meet dit echt. En zelfs groen bewijst alleen types, geen veilige logica. Aanvullend nodig: de CI-uitslag afwachten plus `security:check`. |
+| P-EDGE | `npm run typecheck:edge` | **CI draait dit commando niet** — de PR-poort doet alleen de app-typecheck, dus edge functions worden nergens automatisch op types gecontroleerd. Faalt het lokaal met `TS5103`, dan is je installatie ouder dan `package.json` eist (deze worktree heeft geen eigen `node_modules`): draai eerst `npm install`. En zelfs groen bewijst alleen types, geen veilige logica. Aanvullend nodig: dit commando zelf draaien na een verse installatie, plus `security:check`. |
 | P-EDGE | `npm run check:system-instructions` | Bewijst dat het gegenereerde instructiebestand gelijk loopt met `src/config/agents/` en `src/config/templateRegistry.ts`, en toetst de inhoud op afgesproken regels. Kan groen zijn terwijl de instructie zelf pedagogisch of juridisch onverstandig is — gelijkheid is geen goedkeuring. Aanvullend nodig: de gewijzigde instructietekst zelf lezen. |
 | P-AUTH | handmatig: de flow doorlopen als leerling én als docent | Dekt twee rollen en één pad. Zegt niets over de adminrol, over MFA-omzeiling, over routebeveiliging, over Storage of over Realtime. Kan goed lijken terwijl een record van een andere school via de API wél bereikbaar is. Aanvullend nodig: de query rechtstreeks proberen met een account van een andere school, en elke rol die je raakt apart nalopen. |
 | P-SECRETS | Gitleaks in CI, plus `git diff` vóór commit | Kan groen zijn terwijl een sleutel al eerder is gepusht, of buiten Git is gelekt — in een log, een screenshot of een prompt. Aanvullend nodig: controle bij de bron zelf (Supabase, Vercel, providerdashboard). |
 | P-DEPLOY | `npm run audit:security` | Kan groen zijn terwijl een pakket kwaadaardig is zonder gemelde CVE, en blijft groen zolang een allowlist-uitzondering loopt. Aanvullend nodig: lees wat de uitzondering dekt en tot wanneer, en beoordeel het pakket zelf op herkomst en onderhoud. |
-| P-DEPLOY | `npm run build:prod` plus de headers op het live domein opvragen | Kan groen zijn terwijl een nieuw script in `index.html` gegevens van leerlingen wegsluist: de build toetst geen gedrag van code van derden, en de headers zeggen niets over wat een toegelaten script doet. Aanvullend nodig: lees wat het script doet en waar het naartoe stuurt. |
+| P-DEPLOY | `npm run build:prod` plus de headers op het live domein opvragen | Kan groen zijn terwijl een nieuw script in `index.html` gegevens van leerlingen wegsluist: de build toetst geen gedrag van code van derden, en de headers zeggen niets over wat een toegelaten script doet. Kan bovendien groen lijken terwijl je de headers van de vórige deploy meet — het live domein loopt achter tot jouw commit er echt staat. Aanvullend nodig: controleer dat het live domein jouw commit serveert, en lees wat het script doet en waar het naartoe stuurt. |
 | R-DATA | `npm run check:ai-usage` | Leest een vaste lijst bekende bestanden, niet je nieuwe code. Kan dus groen zijn terwijl een nieuwe function of een nieuwe logregel persoonsgegevens naar buiten brengt. Aanvullend nodig: de regels die je zelf hebt toegevoegd nalezen. |
-| alle | `npm run doctor` | **Faalt op deze machine** met dezelfde `TS5103` als hierboven en bewijst op dit moment dus niets — ook de kritieke paden niet. Aanvullend nodig: de CI-uitslag, plus de bewijsrij van je eigen route. |
+| R-FRONT | handmatig: voer `<img src=x onerror=alert(1)>` in als leerlingtekst en bekijk het resultaat | Toont alleen dat dít ene patroon niet uitvoert. Zegt niets over andere invoervelden, over AI-output op een ander scherm, of over invoer die pas later wordt weergegeven. Aanvullend nodig: elk nieuw veld dat je toevoegt apart proberen. |
+| alle | `npm run doctor` | Faalt met `TS5103` zolang je installatie ouder is dan `package.json` eist; dan bewijst hij niets, ook de kritieke paden niet. Dat is een verouderde installatie, geen kapotte controle — `npm install` in deze map lost het op. Groen bewijst types op kritieke paden, geen veiligheid. Aanvullend nodig: de bewijsrij van je eigen route. |
 
 `npm run lint` staat niet in deze tabel: het is een lege echo en bewijst niets.
 
