@@ -19,6 +19,47 @@ interface EvidenceStepLike {
     };
 }
 
+interface ChecklistStepLike {
+    id: string;
+    checklistItems: ReadonlyArray<{ id: string; addedLater?: boolean }>;
+}
+
+/**
+ * Grandfathert checklistitems die ná een opgeslagen sessie aan een stap zijn
+ * toegevoegd (zoals de portretrecht-regel). Alleen items die in de config
+ * expliciet als `addedLater` gemarkeerd staan komen in aanmerking — een
+ * ontbrekende sleutel alléén is niet genoeg, want die betekent bij oude items
+ * gewoon 'nog niet aangevinkt'. Het late item wordt uitsluitend afgevinkt
+ * wanneer álle oorspronkelijke items van de stap in de opslag al afgevinkt
+ * waren: de leerling had de checklist onder de oude regels dus volledig af.
+ * Half-ingevulde stappen en verse runs blijven ongemoeid, en een expliciet
+ * uitgevinkt item (sleutel met false) wordt nooit overschreven.
+ */
+export function migrateBuilderChecklistState(
+    state: BuilderCanvasState,
+    steps: ReadonlyArray<ChecklistStepLike>,
+): BuilderCanvasState {
+    const checklist = state.checklist ?? {};
+    const patch: Record<string, boolean> = {};
+    for (const step of steps) {
+        const lateKeys = step.checklistItems
+            .filter((item) => item.addedLater)
+            .map((item) => `${step.id}-${item.id}`);
+        if (lateKeys.length === 0) continue;
+        const missingLate = lateKeys.filter((key) => !(key in checklist));
+        if (missingLate.length === 0) continue;
+        const baseKeys = step.checklistItems
+            .filter((item) => !item.addedLater)
+            .map((item) => `${step.id}-${item.id}`);
+        if (baseKeys.length === 0) continue;
+        const baseComplete = baseKeys.every((key) => checklist[key] === true);
+        if (!baseComplete) continue;
+        for (const key of missingLate) patch[key] = true;
+    }
+    if (Object.keys(patch).length === 0) return state;
+    return { ...state, checklist: { ...checklist, ...patch } };
+}
+
 /**
  * Migrates a saved BuilderCanvas run after evidence gates are introduced.
  * Existing learner work is retained; only completion markers at and after the

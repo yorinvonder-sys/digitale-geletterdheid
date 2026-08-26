@@ -11,7 +11,7 @@ import { MilestoneToast } from './sub/MilestoneToast';
 import { MobileTabBar, type MobileTab } from './sub/MobileTabBar';
 import { PreviewPanel } from './sub/PreviewPanel';
 import { StepInstructionPanel } from './sub/StepInstructionPanel';
-import { migrateBuilderEvidenceState, type BuilderCanvasState } from './sub/types';
+import { migrateBuilderChecklistState, migrateBuilderEvidenceState, type BuilderCanvasState } from './sub/types';
 import { isMeaningfulAnswer } from '../shared/answerQuality';
 import { toScorePercent } from '../shared/scorePercent';
 
@@ -23,7 +23,10 @@ export interface BuilderStep {
     description: string;
     instruction: string;
     tip?: string;
-    checklistItems: Array<{ id: string; label: string }>;
+    /** `addedLater` markeert een item dat ná livegang aan de stap is toegevoegd:
+     *  de checklist-migratie vinkt het dan aan voor saves die de stap onder de
+     *  oude regels al volledig hadden afgevinkt. */
+    checklistItems: Array<{ id: string; label: string; addedLater?: boolean }>;
     textPrompt?: string;
     minTextLength?: number;
     // Sluit het hoofdtekstveld van deze stap uit van de AI-context.
@@ -98,7 +101,10 @@ const BuilderCanvasInner: React.FC<BuilderCanvasProps> = ({
     useEffect(() => {
         if (evidenceMigrationDone.current) return;
         evidenceMigrationDone.current = true;
-        setState((prev) => migrateBuilderEvidenceState(prev, config.steps));
+        setState((prev) => migrateBuilderChecklistState(
+            migrateBuilderEvidenceState(prev, config.steps),
+            config.steps,
+        ));
     }, [config.steps, setState]);
 
     // state.currentStep komt ongevalideerd uit localStorage terug; als een missie-

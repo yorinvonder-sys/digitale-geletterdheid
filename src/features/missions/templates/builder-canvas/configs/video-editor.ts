@@ -61,7 +61,7 @@ export const videoEditorConfig: BuilderCanvasConfig = {
                 { id: 'shottype', label: 'Elk shot heeft een shottype (totaal/medium/close-up)' },
                 { id: 'locatie', label: 'Bij elk shot staat de locatie' },
                 { id: 'back-up', label: 'Ik heb back-up shots aangeduid' },
-                { id: 'portretrecht', label: 'Ik gebruik alleen beelden met toestemming — geen herkenbare klasgenoten of docenten zonder hun toestemming' },
+                { id: 'portretrecht', addedLater: true, label: 'Ik gebruik alleen beelden met toestemming — geen herkenbare klasgenoten of docenten zonder hun toestemming' },
             ],
             textPrompt: 'Schrijf je shotlist',
         },

@@ -462,7 +462,7 @@ export const PuzzleLab: React.FC<TemplateMissionProps> = ({
             {(showHulplijn || blockedMatch) && (
                 <WellbeingAlert
                     match={blockedMatch ?? wellbeingMatch}
-                    teacherNotified={teacherAlert.active}
+                    teacherNotified={teacherAlert.notified}
                     onDismiss={() => {
                         dismissHulplijn();
                         setBlockedMatch(null);

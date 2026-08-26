@@ -58,7 +58,7 @@ export const missionVisionConfig: BuilderCanvasConfig = {
                 { id: 'kleuren', label: 'Ik heb een kleurenpalet van 3 kleuren gekozen met motivatie' },
                 { id: 'gevoel', label: 'Het gevoel van mijn moodboard is in 2 woorden benoemd' },
                 { id: 'link-geplakt', label: 'Ik heb het moodboard opgeslagen in OneDrive en de link geplakt' },
-                { id: 'portretrecht', label: 'Ik gebruik alleen beelden met toestemming — geen herkenbare klasgenoten of docenten zonder hun toestemming' },
+                { id: 'portretrecht', addedLater: true, label: 'Ik gebruik alleen beelden met toestemming — geen herkenbare klasgenoten of docenten zonder hun toestemming' },
             ],
             textPrompt: 'Plak hier de link naar je moodboard',
             minTextLength: 30,

@@ -1132,7 +1132,7 @@ const DataViewerInner: React.FC<DataViewerProps> = ({
             {(showHulplijn || blockedMatch) && (
                 <WellbeingAlert
                     match={blockedMatch ?? wellbeingMatch}
-                    teacherNotified={teacherAlert.active}
+                    teacherNotified={teacherAlert.notified}
                     onDismiss={() => {
                         dismissHulplijn();
                         setBlockedMatch(null);
