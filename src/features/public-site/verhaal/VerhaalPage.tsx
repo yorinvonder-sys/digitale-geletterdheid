@@ -1,6 +1,7 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { trackEvent } from '@/services/analyticsService';
+import { useHomepageAnalytics } from '@/hooks/useHomepageAnalytics';
 import { LogoLockup, Marquee, HARD_SHADOW } from './components/storyBrand';
 import { ChapterRail, ScrollProgress } from './components/ChapterRail';
 import { FilmChapter } from './sections/FilmChapter';
@@ -42,12 +43,14 @@ function Nav() {
                         <div className="flex items-center gap-3">
                             <a
                                 href="#bewijs"
+                                data-cta="verhaal_nav_slo"
                                 className="hidden text-sm font-bold text-duck-ink/70 hover:text-duck-ink md:inline-block"
                             >
                                 SLO-koppeling
                             </a>
                             <a
                                 href="/login"
+                                data-cta="verhaal_nav_login"
                                 className="group relative inline-flex min-h-[44px] items-center px-2 text-sm font-bold text-duck-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-ink focus-visible:ring-offset-2"
                             >
                                 Inloggen
@@ -55,6 +58,7 @@ function Nav() {
                             </a>
                             <a
                                 href="#epiloog"
+                                data-cta="verhaal_nav_schoolpilot"
                                 className={`min-h-[44px] rounded-full border-[3px] border-duck-ink bg-duck-acid px-5 py-2 text-sm font-bold text-duck-ink ${HARD_SHADOW} transition-transform hover:-translate-y-0.5`}
                             >
                                 Plan schoolpilot →
@@ -81,6 +85,31 @@ export function VerhaalPage() {
      * DGSkills is. Wie hem wil zien opent hem zelf; pas dan bestaat de sectie.
      */
     const [filmOpen, setFilmOpen] = useState(false);
+
+    /**
+     * Dezelfde pagina staat op `/` en op `/verhaal`. De meting moet die twee uit
+     * elkaar houden, anders vallen homepage-bezoekers en verhaal-bezoekers op één
+     * hoop en zegt geen enkel cijfer meer iets.
+     */
+    const isHome = useMemo(
+        () => window.location.pathname.replace(/\/+$/, '') === '',
+        [],
+    );
+
+    /**
+     * Sectiebereik, scrolldiepte, tijd op de pagina en CTA-kliks. De secties van
+     * deze pagina dragen al een `id` (proloog, probleem, mila, …); die dienen als
+     * sectienaam. Alles loopt via `trackEvent` en is dus afhankelijk van
+     * cookietoestemming.
+     *
+     * De selector begint bewust bij `.verhaal`: de productpreview verderop op de
+     * pagina rendert een echt stuk leerlingdashboard mét eigen `<main>`, en een
+     * kale `main > section[id]` telt díe secties dan mee als hoofdstuk.
+     */
+    useHomepageAnalytics(
+        isHome ? 'verhaal-home' : 'verhaal',
+        '.verhaal > main > section[id]',
+    );
 
     const openFilm = useCallback(() => {
         setFilmOpen(true);
