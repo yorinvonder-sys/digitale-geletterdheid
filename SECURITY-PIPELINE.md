@@ -43,16 +43,20 @@ wijziging zonder route is een gat in dit document, geen vrijbrief.
 
 **Invarianten:** `supabase/CLAUDE.md` § Security rules.
 **Bewijs:** zie `BEWIJS`, rij P-DB. Let op: de RLS-controle is deels handmatig.
-**Stop als:** een bestaande policy zou verdwijnen of verzwakken.
+**Stop als:** je na de migratie mínder of zwakkere policies overhoudt dan ervoor. Een geplande
+drop-en-hermaak binnen één migratie valt hier niet onder — die eindigt met dezelfde dekking.
 
 ## P-EDGE — edge functions en AI-keten
 
 **Wanneer:** `supabase/functions/`, `supabase/config.toml`, of AI-instructies in `src/config/agents/`
-of `src/config/templateRegistry.ts` — beide zijn bron voor het gegenereerde
+of `src/config/templateRegistry.ts` — die twee zijn samen de bron voor het gegenereerde
 `supabase/functions/_shared/systemInstructions.ts`, dat je nooit met de hand bewerkt.
 
 **Volgorde:**
 1. Valideer de `Authorization`-header. Geen anonieme toegang tenzij uitdrukkelijk ontworpen.
+   Een geldig token zegt alleen wie iemand is, niet wat hij mag zien: toets daarnaast rol,
+   school en eigenaarschap van de opgevraagde gegevens. Raakt je function gegevens van
+   anderen, loop dan óók `P-AUTH` af.
 2. Moet de function tóch publiek zijn, dan hoort daar drie keer een vastlegging bij:
    `verify_jwt = false` in `supabase/config.toml`, een regel in `publicEndpointRules` van
    `scripts/check-website-security-posture.mjs`, en een eigen bescherming (CORS, rate limit,
