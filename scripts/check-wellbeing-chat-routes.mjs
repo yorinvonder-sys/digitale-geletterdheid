@@ -127,14 +127,23 @@ assert.doesNotMatch(rpcBlok, /message|text|input|prompt/i,
     'useWellbeingTeacherAlert: er mag geen berichttekst meegestuurd worden in de docentmelding');
 assert.match(teacherAlertHook, /if\s*\(error\)\s*throw error/,
     'useWellbeingTeacherAlert: het error-veld van de RPC-respons moet gecontroleerd worden');
+assert.match(teacherAlertHook, /createWellbeingAlertDelivery/,
+    'useWellbeingTeacherAlert: de aflevering moet via de geteste wellbeingAlertDelivery-module lopen');
 assert.match(teacherAlertHook, /notifiedFor/,
     'useWellbeingTeacherAlert: de afleverstatus moet per categorie opvraagbaar zijn');
-const bevestigIndex = teacherAlertHook.search(/if\s*\(error\)\s*throw error/);
-const registratieIndex = zoekVanaf(teacherAlertHook, /confirmedAtRef\.current\[category\]\s*=\s*Date\.now\(\)/, 0);
-assert.ok(registratieIndex > bevestigIndex && bevestigIndex !== -1,
-    'useWellbeingTeacherAlert: een aflevering mag pas als bevestigd geregistreerd worden ná de error-check');
-assert.match(teacherAlertHook, /pendingCategories/,
-    'useWellbeingTeacherAlert: per categorie mag maximaal één verzoek tegelijk lopen');
+
+// Het concurrency- en foutgedrag van de aflevering (één verzoek per categorie,
+// nooit bevestigen bij een fout, seriële vervolgpoging) wordt uitvoerbaar
+// bewezen door de contracttests op de pure module — die horen te bestaan en
+// de bevestiging-na-succes-volgorde blijft hier structureel gecontroleerd.
+const delivery = await lees('src/hooks/wellbeingAlertDelivery.ts');
+const sendIndex = delivery.search(/await options\.send\(/);
+const confirmIndex = zoekVanaf(delivery, /confirmedAt\[category\]\s*=\s*now\(\)/, 0);
+assert.ok(sendIndex !== -1 && confirmIndex > sendIndex,
+    'wellbeingAlertDelivery: bevestiging mag pas ná een geslaagde send geregistreerd worden');
+await lees('tests/wellbeing-alert-delivery-contract.test.ts').catch(() => {
+    assert.fail('de uitvoerbare gedragstests voor de aflevering ontbreken (tests/wellbeing-alert-delivery-contract.test.ts)');
+});
 
 // 7. De detectielijst blijft één gedeelde bron. Zou een route zijn eigen
 //    termenlijst krijgen, dan lopen de routes weer uiteen.

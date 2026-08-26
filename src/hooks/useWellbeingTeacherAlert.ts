@@ -2,21 +2,18 @@ import { useCallback, useRef, useState } from 'react';
 import { supabase } from '@/services/supabase';
 import { getCurrentUserId } from './useMissionAutoSave';
 import type { WellbeingMatch } from './useWellbeingMonitor';
-
-/** Venster waarbinnen een bevestigde aflevering een nieuwe treffer van dezelfde categorie dekt. */
-const DEDUP_WINDOW_MS = 60_000;
+import { createWellbeingAlertDelivery } from './wellbeingAlertDelivery';
 
 /**
  * Docentmelding bij een welzijnssignaal, hetzelfde vangnet als op de
  * chatroutes: alleen de categorie en het tijdstip gaan mee, nooit de
- * originele tekst van de leerling. De afleverstatus is per categorie:
- * `notifiedFor(categorie)` is pas true nadat Supabase een melding voor
- * précies die categorie bevestigd heeft geregistreerd (een RPC-fout komt als
- * `error`-veld terug, niet als exception, dus beide paden worden
- * gecontroleerd). Zo kan de hulplijn-overlay nooit een melding beloven die
- * niet is aangekomen, en kan een geslaagde melding voor categorie B nooit
- * doorgaan voor een aflevering van categorie A. Per categorie loopt maximaal
- * één verzoek tegelijk, zodat twee snelle treffers geen dubbele melding sturen.
+ * originele tekst van de leerling. `notifiedFor(categorie)` is pas true nadat
+ * Supabase een melding voor précies die categorie bevestigd heeft
+ * geregistreerd (een RPC-fout komt als `error`-veld terug, niet als
+ * exception, dus beide paden worden gecontroleerd). Het concurrency- en
+ * foutgedrag (één verzoek per categorie, seriële vervolgpoging bij een
+ * gefaald verzoek met wachtende treffer) staat in wellbeingAlertDelivery.ts
+ * en wordt daar met contracttests bewezen.
  */
 export function useWellbeingTeacherAlert(studentIdOverride?: string | null): {
     /** true wanneer voor déze categorie een aflevering bevestigd is (binnen het dedup-venster). */
@@ -31,44 +28,36 @@ export function useWellbeingTeacherAlert(studentIdOverride?: string | null): {
         && studentId !== 'anonymous'
         && !((import.meta as any).env?.DEV === true && String(studentId).startsWith('dev-'));
 
-    // Ref voor de logica (altijd actueel binnen async callbacks) + een teller
-    // als state zodat de overlay her-rendert zodra een aflevering bevestigt.
-    const confirmedAtRef = useRef<Record<string, number>>({});
+    // Teller als state zodat de overlay her-rendert zodra een aflevering bevestigt.
     const [, bumpConfirmed] = useState(0);
-    // Per categorie maximaal één RPC tegelijk.
-    const pendingCategories = useRef<Set<string>>(new Set());
+    const deliveryRef = useRef<ReturnType<typeof createWellbeingAlertDelivery> | null>(null);
+    if (!deliveryRef.current) {
+        deliveryRef.current = createWellbeingAlertDelivery({
+            // Log alert naar Supabase voor docentnotificatie (zonder originele tekst — privacy)
+            send: async (category, timestamp) => {
+                try {
+                    const { error } = await supabase.rpc('log_wellbeing_alert' as any, {
+                        p_student_id: studentId,
+                        p_category: category,
+                        p_detected_at: timestamp,
+                    });
+                    if (error) throw error;
+                } catch (err) {
+                    console.error('Wellbeing alert logging failed:', err);
+                    throw err;
+                }
+            },
+            onConfirmed: () => bumpConfirmed((n) => n + 1),
+        });
+    }
+    const delivery = deliveryRef.current;
 
-    const notifiedFor = useCallback((category: WellbeingMatch['category'] | undefined): boolean => {
-        if (!category) return false;
-        const confirmed = confirmedAtRef.current[category];
-        return confirmed !== undefined && Date.now() - confirmed < DEDUP_WINDOW_MS;
-    }, []);
-
-    const onAlert = useCallback(async (match: WellbeingMatch) => {
+    const onAlert = useCallback((match: WellbeingMatch) => {
         if (!active || !studentId) return;
-        const category = match.category;
-        const confirmed = confirmedAtRef.current[category];
-        if (confirmed !== undefined && Date.now() - confirmed < DEDUP_WINDOW_MS) return;
-        if (pendingCategories.current.has(category)) return;
-        pendingCategories.current.add(category);
-        // Log alert naar Supabase voor docentnotificatie (zonder originele tekst — privacy)
-        try {
-            const { error } = await supabase.rpc('log_wellbeing_alert' as any, {
-                p_student_id: studentId,
-                p_category: category,
-                p_detected_at: match.timestamp,
-            });
-            if (error) throw error;
-            confirmedAtRef.current[category] = Date.now();
-            bumpConfirmed((n) => n + 1);
-        } catch (err) {
-            // Niets bevestigen bij falen: notifiedFor blijft false en de overlay
-            // toont de eerlijke tekst zonder meldingsbelofte.
+        delivery.deliver(match.category, match.timestamp).catch((err) => {
             console.error('Wellbeing alert logging failed:', err);
-        } finally {
-            pendingCategories.current.delete(category);
-        }
-    }, [active, studentId]);
+        });
+    }, [active, studentId, delivery]);
 
-    return { notifiedFor, onAlert };
+    return { notifiedFor: delivery.notifiedFor, onAlert };
 }
