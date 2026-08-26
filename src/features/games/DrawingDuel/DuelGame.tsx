@@ -13,6 +13,7 @@ import {
     endDuel
 } from '@/services/duelService';
 import { analyzeDrawingWithAI } from '@/services/aiProviderService';
+import { DRAWING_MODERATION_NOTICE } from '@/services/drawingModeration';
 
 // Import PROMPTS from DrawingGamePreview (we'll need to export it)
 const PROMPTS = [
@@ -58,6 +59,7 @@ export const DuelGame: React.FC<DuelGameProps> = ({
     const [isDrawing, setIsDrawing] = useState(false);
     const [isAnalyzing, setIsAnalyzing] = useState(false);
     const [lastResult, setLastResult] = useState<{ success: boolean; word: string } | null>(null);
+    const [showModerationNotice, setShowModerationNotice] = useState(false);
     const [hasEnded, setHasEnded] = useState(false);
 
     const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -152,6 +154,9 @@ export const DuelGame: React.FC<DuelGameProps> = ({
 
     const startDrawingHandler = useCallback((e: React.MouseEvent | React.TouchEvent) => {
         if (session?.status !== 'drawing' || isAnalyzing) return;
+        // De moderatiebanner blokkeert niets; hij verdwijnt zodra de leerling
+        // weer begint te tekenen.
+        setShowModerationNotice(false);
         isDrawingRef.current = true;
         lastPosRef.current = getPos(e);
     }, [getPos, session?.status, isAnalyzing]);
@@ -191,6 +196,17 @@ export const DuelGame: React.FC<DuelGameProps> = ({
 
         try {
             const result = await analyzeDrawingWithAI(imageBase64, possibleLabels);
+
+            if (result.moderated) {
+                // Moderatie: niets naar de tegenstander, geen score-update, telt niet als fout.
+                // De speler mag opnieuw tekenen voor hetzelfde woord.
+                setLastResult(null);
+                setShowModerationNotice(true);
+                clearCanvas();
+                setIsAnalyzing(false);
+                return;
+            }
+
             const isCorrect = result.mainGuess.toLowerCase() === currentPrompt.word.toLowerCase();
 
             setLastResult({ success: isCorrect, word: currentPrompt.word });
@@ -392,6 +408,25 @@ export const DuelGame: React.FC<DuelGameProps> = ({
                         <div className="text-6xl">
                             {lastResult.success ? '✅' : '❌'}
                         </div>
+                    </div>
+                )}
+
+                {/* Moderatie-melding — lokaal, geen score-update, geen AI-tekst.
+                    Bewust NIET blokkerend: de duelklok is een gedeelde klok van
+                    60 seconden, dus elke seconde achter een overlay is speeltijd
+                    die de tegenstander wél houdt. Deze banner laat het canvas
+                    vrij, zodat een geblokkeerde poging exact evenveel tijd kost
+                    als een gewone afgekeurde gok. Hij verdwijnt zodra de leerling
+                    weer begint te tekenen. */}
+                {showModerationNotice && (
+                    <div
+                        role="status"
+                        className="absolute inset-x-3 top-3 z-10 rounded-2xl px-4 py-3 shadow-lg"
+                        style={{ backgroundColor: '#FFFFFF', border: '1px solid #E7D8BD' }}
+                    >
+                        <p className="text-sm" style={{ fontFamily: "'Outfit', system-ui, sans-serif", color: '#445865' }}>
+                            {DRAWING_MODERATION_NOTICE}
+                        </p>
                     </div>
                 )}
 
