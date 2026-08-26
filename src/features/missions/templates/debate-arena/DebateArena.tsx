@@ -107,7 +107,9 @@ const argumentFingerprint = (arg: ArgumentEntry): string =>
 export function countDistinctArguments(args: ArgumentEntry[]): number {
     const seen = new Set<string>();
     for (const arg of args) {
-        if (!isMeaningfulAnswer(arg.claim) || !isMeaningfulAnswer(arg.evidence)) continue;
+        // Een argument hoort bij een gekozen perspectief; zonder stakeholder telt
+        // het niet mee — argumenteren vanuit de betrokkenen is de kern van de missie.
+        if (!isMeaningfulAnswer(arg.claim) || !isMeaningfulAnswer(arg.evidence) || !arg.stakeholderId) continue;
         seen.add(argumentFingerprint(arg));
     }
     return Math.min(seen.size, 3);
