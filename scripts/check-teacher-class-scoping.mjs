@@ -27,7 +27,10 @@ const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const FIXTURES = join(ROOT, 'tests', 'rls', 'teacher-class-scoping');
 const MIGRATIONS = join(ROOT, 'supabase', 'migrations');
 const MIGRATION = '20260826200000_teacher_class_scoping.sql';
-const CONTAINER = 'dgskills-teacher-class-scoping-check';
+// Procesgebonden naam: twee gelijktijdige runs mogen elkaars container niet
+// opruimen. Met een vaste naam sloopt de tweede run de database van de eerste,
+// wat zich voordoet als een willekeurige, niet-reproduceerbare fout.
+const CONTAINER = `dgskills-teacher-class-scoping-check-${process.pid}`;
 const IMAGE = 'postgres:16-alpine';
 
 function run(cmd, args, opts = {}) {
