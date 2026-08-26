@@ -101,7 +101,11 @@ export const relevanceFactor = (
     if (keywords.length === 0) return 1;
 
     const text = raw.toLowerCase();
-    const words: string[] = text.match(WORD_RE) ?? [];
+    // Uniek per woord: één woord in het antwoord kan maar één treffer
+    // opleveren, ook als het meerdere (overlappende) lijst-items raakt —
+    // anders telde "persoonsgegevens" alleen al als twee begrippen doordat
+    // zowel 'persoon' als 'gegeven' erin voorkomt.
+    const words = new Set<string>(text.match(WORD_RE) ?? []);
     const needles = keywords
         .map((keyword) => keyword.trim().toLowerCase())
         .filter((needle) => needle.length > 0);
@@ -109,14 +113,17 @@ export const relevanceFactor = (
     const needed = Math.min(MIN_DISTINCT_HITS, needles.length);
     if (needed === 0) return 1;
 
-    let hits = 0;
-    for (const needle of needles) {
-        const hit = needle.length <= WHOLE_WORD_MAX_LENGTH
-            ? words.includes(needle)
+    const matchesAnyNeedle = (word: string): boolean => needles.some((needle) =>
+        needle.length <= WHOLE_WORD_MAX_LENGTH
+            ? word === needle
             : needle.length <= WORD_START_MAX_LENGTH
-                ? words.some((word) => word.startsWith(needle))
-                : words.some((word) => word.includes(needle));
-        if (hit) {
+                ? word.startsWith(needle)
+                : word.includes(needle)
+    );
+
+    let hits = 0;
+    for (const word of words) {
+        if (matchesAnyNeedle(word)) {
             hits++;
             if (hits >= needed) return 1;
         }

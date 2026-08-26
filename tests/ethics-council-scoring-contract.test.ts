@@ -126,9 +126,14 @@ test('een goed antwoord in eigen woorden houdt de volle factor', () => {
 
 test('een lang kernbegrip telt ook binnen een samenstelling', () => {
     // Nederlandse samenstellingen: 'gegeven' hoort te matchen in
-    // "persoonsgegevens", anders mist de check juist de vaktaal.
-    assert.equal(relevanceFactor('Het gaat om persoonsgegevens van leerlingen.', LEGAAL_KEYWORDS), 1);
-    assert.equal(relevanceFactor('Ik gebruik schoolgegevens uit het systeem.', LEGAAL_KEYWORDS), 1);
+    // "persoonsgegevens", anders mist de check juist de vaktaal. Getest met
+    // een lijst van één begrip zodat de twee-begrippen-drempel het
+    // samenstellingsgedrag zelf niet maskeert.
+    assert.equal(relevanceFactor('Ik bewaar persoonsgegevens in het systeem.', ['gegeven']), 1);
+    assert.equal(relevanceFactor('Ik gebruik schoolgegevens uit het systeem.', ['gegeven']), 1);
+    // En in een echte zin telt de samenstelling gewoon mee als één van de
+    // twee vereiste begrippen.
+    assert.equal(relevanceFactor('Ik bewaar persoonsgegevens zonder toestemming.', LEGAAL_KEYWORDS), 1);
 });
 
 test('een kort kernbegrip telt wél als heel woord, maar één treffer alleen is niet genoeg', () => {
@@ -137,6 +142,23 @@ test('een kort kernbegrip telt wél als heel woord, maar één treffer alleen is
     // factor — anders geeft elk alledaags woord uit de lijst gratis punten.
     assert.equal(relevanceFactor('Mag dat zomaar?', LEGAAL_KEYWORDS), 0.7);
     assert.equal(relevanceFactor('Mag je zomaar toestemming overslaan?', LEGAAL_KEYWORDS), 1);
+});
+
+test('één woord telt nooit als twee begrippen, ook niet via overlappende lijst-items', () => {
+    // Bypass uit de slotronde: 'persoonsgegevens' raakt zowel 'persoon' als
+    // 'gegeven', en 'begrijpelijk' raakt 'begrijp' — maar het blijft één
+    // woord en dus één treffer. Los ingestuurd hoort dat 0.7 te geven.
+    assert.equal(relevanceFactor('persoonsgegevens', LEGAAL_KEYWORDS), 0.7);
+    assert.equal(relevanceFactor('gevraagd', LEGAAL_KEYWORDS), 0.7);
+    assert.equal(relevanceFactor('begrijpelijk', TRANSPARANT_KEYWORDS), 0.7);
+    // Hetzelfde woord twee keer typen is óók maar één begrip.
+    assert.equal(relevanceFactor('toestemming toestemming', LEGAAL_KEYWORDS), 0.7);
+});
+
+test('geen kernbegrip staat dubbel in een lijst', () => {
+    for (const [naam, lijst] of [['legaal', LEGAAL_KEYWORDS], ['transparant', TRANSPARANT_KEYWORDS]] as const) {
+        assert.equal(new Set(lijst).size, lijst.length, `dubbele entry in ${naam}Keywords`);
+    }
 });
 
 test('één generiek kernbegrip in verder onderwerploze tekst geeft geen volle factor', () => {
