@@ -3,7 +3,8 @@
 **Datum:** 26 augustus 2026
 **Hoort bij:** [homepage-ontwerpkader.md](homepage-ontwerpkader.md) — dit document voert principe
 **P7** (een variant wordt beoordeeld op één vooraf benoemde uitkomstmaat) concreet uit.
-**Status:** besluitstuk. Nog niets gebouwd, nog niets verwijderd.
+**Status:** stap 1 en 2 gebouwd (variantmechaniek + variant B). De verdeling staat uit tot er
+verkeer is; er is niets verwijderd.
 
 ## In het kort
 
@@ -307,8 +308,8 @@ losse vraag, die pas zinvol is als de homepage vaststaat.
 |---|---|---|
 | 0 | ~~Bezoekcijfers op `/` ophalen~~ | **Vervallen** — er zijn nog geen bezoekers. De parameters in §5 worden ingevuld zodra er verkeer is. |
 | 1 | ~~Variantmechaniek~~ | **Klaar** — `homepageVariant.ts`, override via `?variant=`, variant in het meetlabel, `VARIANT_B_READY` staat uit. Gedekt door `npm run test:homepage-variant`. |
-| 2 | Variant B bouwen volgens §3 | De 12 principes uit het ontwerpkader zijn langsgelopen, met per principe een uitkomst |
-| 3 | Beide varianten meten | Alle events uit §5 vuren op B, met dezelfde namen als op A |
+| 2 | ~~Variant B bouwen volgens §3~~ | **Klaar** — `src/features/public-site/versie-b/`. Zeven secties, 8,6 schermen desktop / 9,3 mobiel tegenover 24,4 voor A. |
+| 3 | ~~Beide varianten meten~~ | **Klaar** — alle zeven secties, scrolldiepte en CTA-kliks vuren onder label `versie-b:b`, geverifieerd met de verdeling tijdelijk aan. |
 | 4 | Test draaien | De afgesproken looptijd is voorbij |
 | 5 | Beslissen en de verliezer opruimen | Volgens §6 en §7 |
 
