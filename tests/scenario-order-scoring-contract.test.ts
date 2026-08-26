@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 
-import { ITEM_SCORE_SCALE, scoreRound } from '../src/features/missions/templates/scenario-engine/sub/scoring.ts';
+import { ITEM_SCORE_SCALE, scoreRound, scoreRoundLegacy } from '../src/features/missions/templates/scenario-engine/sub/scoring.ts';
 import type { ScenarioRound } from '../src/features/missions/templates/scenario-engine/types.ts';
 
 /** Volgorde-ronde met n items, waarvan de juiste volgorde 1, 2, … n is. */
@@ -76,4 +76,19 @@ test('één verwisseling van twee buren scoort ruim boven de helft', () => {
             `n=${n}: bijna-foutloze volgorde scoort ${score}, niet meer dan ${ITEM_SCORE_SCALE / 2}`,
         );
     }
+});
+
+/**
+ * Grandfather-garantie: rondes die vóór de gokcorrectie zijn ingezonden
+ * (opgeslagen voortgang zonder bevroren `earnedItemScore`) worden met de
+ * legacy-formule gescoord en houden zo exact hun destijds getoonde score.
+ * Voorbeeld uit de tegenlezing: één burenwissel bij n=4 was 19/25 en zou met
+ * de nieuwe formule 14/25 worden — de legacy-route houdt hem op 19.
+ */
+test('legacy-formule houdt eerder ingezonden rondes op hun oude score', () => {
+    const round = orderRound(4);
+    const swapped = [2, 1, 3, 4];
+    assert.equal(scoreRoundLegacy(round, swapped), 19);
+    assert.equal(scoreRound(round, swapped), 14);
+    assert.equal(scoreRoundLegacy(round, perfectOrder(4)), ITEM_SCORE_SCALE);
 });

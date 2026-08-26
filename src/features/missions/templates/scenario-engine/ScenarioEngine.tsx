@@ -21,6 +21,7 @@ import { SpotTheFlagsRound } from './sub/SpotTheFlagsRound';
 import { OrderDragRound } from './sub/OrderDragRound';
 import { InboxTriageRound } from './sub/InboxTriageRound';
 import { FeedbackBanner, followUpWeight, scaledItemScore, scoreRound } from './sub/FeedbackBanner';
+import { itemsMaxScore, scaledItemScoreLegacy } from './sub/scoring';
 import { toScorePercent } from '../shared/scorePercent';
 
 // ── Scoring ───────────────────────────────────────────────────────────────────
@@ -33,7 +34,13 @@ import { toScorePercent } from '../shared/scorePercent';
  */
 function adjustedScoreRound(round: ScenarioRound, rs: RoundState): number {
     if (!rs.submitted) return 0;
-    const items = scaledItemScore(round, rs.selections);
+    // De itemscore is bevroren op het inzendmoment. Oudere saves zonder dat veld
+    // krijgen de legacy-formule, zodat een al-ingediende ronde na een
+    // formulewijziging exact de score houdt die de leerling destijds zag.
+    // De clamp beschermt tegen een bewerkte opslag met een te hoge waarde.
+    const items = typeof rs.earnedItemScore === 'number' && Number.isFinite(rs.earnedItemScore)
+        ? Math.max(0, Math.min(rs.earnedItemScore, itemsMaxScore(round)))
+        : scaledItemScoreLegacy(round, rs.selections);
     const followUpEarned = rs.followUpAnswered && rs.followUpCorrect && round.followUp
         ? followUpWeight(round) + round.followUp.bonusPoints
         : 0;
@@ -299,8 +306,13 @@ const ScenarioEngineInner: React.FC<{
     };
 
     const handleSubmit = () => {
-        if (!currentRound) return;
-        updateRoundState(currentRound.id, { submitted: true });
+        if (!currentRound || !roundState) return;
+        // Bevries de itemscore op het inzendmoment: zo kan een latere wijziging
+        // van de scoreformule deze ronde nooit met terugwerkende kracht herwaarderen.
+        updateRoundState(currentRound.id, {
+            submitted: true,
+            earnedItemScore: scaledItemScore(currentRound, roundState.selections),
+        });
     };
 
     const handleNextRound = () => {
@@ -551,6 +563,11 @@ const ScenarioEngineInner: React.FC<{
                                 onNext={handleNextRound}
                                 isLast={state.currentRound === config.rounds.length - 1}
                                 hideButton={followUpPending}
+                                earnedItemScore={
+                                    typeof roundState.earnedItemScore === 'number'
+                                        ? roundState.earnedItemScore
+                                        : scaledItemScoreLegacy(currentRound, roundState.selections)
+                                }
                             />
 
                             {followUpPending && currentRound.followUp && (

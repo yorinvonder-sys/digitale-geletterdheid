@@ -105,6 +105,10 @@ export interface ScenarioEngineConfig {
 export interface RoundState {
     selections: number[];
     submitted: boolean;
+    /** Itemscore, bevroren op het moment van inzenden. Voorkomt dat een latere
+     *  wijziging van de scoreformule een al-ingediende ronde herwaardeert;
+     *  oudere saves zonder dit veld vallen terug op de legacy-formule. */
+    earnedItemScore?: number;
     /** Learner's self-reported confidence (1=low, 2=medium, 3=high), set when showConfidence is true */
     confidence?: 1 | 2 | 3;
     /** Whether the follow-up question has been answered */

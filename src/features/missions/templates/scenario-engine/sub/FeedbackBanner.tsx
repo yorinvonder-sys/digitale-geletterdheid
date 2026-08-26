@@ -1,6 +1,6 @@
 import React from 'react';
 import type { ScenarioRound } from '../types';
-import { scoringKind, scoreRound, itemsMaxScore, scaledItemScore } from './scoring';
+import { scoringKind, itemsMaxScore, scaledItemScore } from './scoring';
 
 // De pure scoreformules staan in ./scoring.ts (JSX-vrij, zodat contracttests ze
 // rechtstreeks kunnen aanroepen). Deze re-export houdt de bestaande importpaden
@@ -37,14 +37,19 @@ export const FeedbackBanner: React.FC<{
     onNext: () => void;
     isLast: boolean;
     hideButton?: boolean;
-}> = ({ round, selections, onNext, isLast, hideButton }) => {
-    // rawScore staat altijd op de schaal 0–25; drempels horen daarop te rekenen.
+    /** Op inzendmoment bevroren itemscore. Zonder deze waarde (oudere saves)
+     *  rekent de banner zelf, met de actuele formule. */
+    earnedItemScore?: number;
+}> = ({ round, selections, onNext, isLast, hideButton, earnedItemScore }) => {
     // score/scoreMax zijn wat de leerling ziet en zijn geschaald wanneer de ronde
-    // punten reserveert voor de followUp-vraag.
-    const rawScore = scoreRound(round, selections);
-    const good = rawScore >= 15; // 60% of 25
-    const score = scaledItemScore(round, selections);
+    // punten reserveert voor de followUp-vraag. De bevroren inzendscore gaat vóór
+    // de herberekening, zodat een herstelde ronde dezelfde score toont als het
+    // totaal waarin hij meetelt.
     const scoreMax = itemsMaxScore(round);
+    const score = typeof earnedItemScore === 'number' && Number.isFinite(earnedItemScore)
+        ? Math.max(0, Math.min(earnedItemScore, scoreMax))
+        : scaledItemScore(round, selections);
+    const good = scoreMax > 0 && score / scoreMax >= 0.6;
     // Alleen een foutloos antwoord verdient de feestelijke tekst. Vergelijk op de
     // getoonde schaal (score/scoreMax), niet op round.maxScore: die bevat ook de
     // punten die voor de followUp-vraag zijn gereserveerd, en die meet deze banner niet.

@@ -19,6 +19,9 @@ interface CompletionScreenProps {
      *  ("Screen Bewust", "Blijf Oefenen", …) is never mistaken for the mission title. */
     missionTitle?: string;
     phases?: PhaseScore[];
+    /** Korte toelichting onder de uitsplitsing, bv. wanneer de onderdelen samen
+     *  meer ruimte bieden dan maxScore (bonusruimte). */
+    phasesNote?: string;
     takeaways: string[];
     /** Mag async zijn; het scherm wacht de afronding af en houdt de knop zolang bezig. */
     onComplete: () => void | Promise<void>;
@@ -45,6 +48,7 @@ export const CompletionScreen: React.FC<CompletionScreenProps> = ({
     badges,
     missionTitle,
     phases,
+    phasesNote,
     takeaways,
     onComplete,
     onRetry,
@@ -192,6 +196,14 @@ export const CompletionScreen: React.FC<CompletionScreenProps> = ({
                                 </span>
                             </div>
                         ))}
+                        {phasesNote && (
+                            <p
+                                className="mt-2 border-t border-duck-gray pt-2 text-[11px] leading-relaxed text-duck-ink/60"
+                                style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
+                            >
+                                {phasesNote}
+                            </p>
+                        )}
                     </div>
                 )}
 

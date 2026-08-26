@@ -51,7 +51,7 @@ function scoreSelectCorrect(items: ScenarioRound['items'], selections: number[])
  * normaliseren de rest, zodat willekeurig slepen rond de 0 uitkomt en een
  * foutloze volgorde exact het maximum blijft opleveren.
  */
-function scoreOrderPriority(items: ScenarioRound['items'], order: number[]): number {
+function orderRawFraction(items: ScenarioRound['items'], order: number[]): number {
     if (items.length === 0) return 0;
     if (order.length !== items.length) return 0;
     let correct = 0;
@@ -63,8 +63,13 @@ function scoreOrderPriority(items: ScenarioRound['items'], order: number[]): num
         if (item.correctPosition === i) correct++;
         else if (Math.abs((item.correctPosition ?? 0) - i) === 1) correct += 0.5;
     }
+    return correct / items.length;
+}
+
+function scoreOrderPriority(items: ScenarioRound['items'], order: number[]): number {
+    if (items.length === 0) return 0;
+    const rawFraction = orderRawFraction(items, order);
     const n = items.length;
-    const rawFraction = correct / n;
     // Verwachte gokscore: wat een volledig willekeurige volgorde gemiddeld oplevert.
     const baseline = (2 * n - 1) / (n * n);
     // Bij één item valt er niets te gokken (baseline 1); dan telt de kale fractie,
@@ -72,6 +77,17 @@ function scoreOrderPriority(items: ScenarioRound['items'], order: number[]): num
     if (baseline >= 1) return Math.round(rawFraction * ITEM_SCORE_SCALE);
     const normalized = Math.max(0, (rawFraction - baseline) / (1 - baseline));
     return Math.round(normalized * ITEM_SCORE_SCALE);
+}
+
+/**
+ * De volgorde-formule van vóór de gokcorrectie: de kale fractie, zonder
+ * baseline-aftrek. Alleen bedoeld voor rondes die vóór de wijziging al waren
+ * ingezonden (opgeslagen voortgang zonder bevroren itemscore), zodat die exact
+ * de score houden die de leerling destijds te zien kreeg.
+ */
+function scoreOrderPriorityLegacy(items: ScenarioRound['items'], order: number[]): number {
+    if (items.length === 0) return 0;
+    return Math.round(orderRawFraction(items, order) * ITEM_SCORE_SCALE);
 }
 
 /**
@@ -153,6 +169,24 @@ export function scoreRound(round: ScenarioRound, selections: number[]): number {
     return Math.max(0, Math.min(raw, ITEM_SCORE_SCALE));
 }
 
+/**
+ * Als scoreRound, maar met de volgorde-formule van vóór de gokcorrectie.
+ * Uitsluitend voor al-ingediende rondes uit oudere opgeslagen voortgang
+ * (zonder bevroren `earnedItemScore`): een eerlijke leerling mag door een
+ * formulewijziging nooit punten verliezen op een ronde die al was ingezonden.
+ */
+export function scoreRoundLegacy(round: ScenarioRound, selections: number[]): number {
+    const raw = (() => {
+        switch (scoringKind(round)) {
+            case 'select-correct': return scoreSelectCorrect(round.items, selections);
+            case 'order-priority': return scoreOrderPriorityLegacy(round.items, selections);
+            case 'binary-choice': return scoreBinaryChoice(round.items, selections);
+        }
+    })();
+    if (!Number.isFinite(raw)) return 0;
+    return Math.max(0, Math.min(raw, ITEM_SCORE_SCALE));
+}
+
 /** Punten binnen round.maxScore die voor de followUp-vraag gereserveerd zijn. */
 export function followUpWeight(round: ScenarioRound): number {
     if (!round.followUp) return 0;
@@ -177,6 +211,14 @@ export function itemsMaxScore(round: ScenarioRound): number {
 /** Itemscore geschaald naar itemsMaxScore. Bij een ronde van 25 identiek aan scoreRound. */
 export function scaledItemScore(round: ScenarioRound, selections: number[]): number {
     const base = scoreRound(round, selections);
+    const max = itemsMaxScore(round);
+    if (max === ITEM_SCORE_SCALE) return base;
+    return Math.round((base / ITEM_SCORE_SCALE) * max);
+}
+
+/** Als scaledItemScore, maar met de legacy-volgordeformule (zie scoreRoundLegacy). */
+export function scaledItemScoreLegacy(round: ScenarioRound, selections: number[]): number {
+    const base = scoreRoundLegacy(round, selections);
     const max = itemsMaxScore(round);
     if (max === ITEM_SCORE_SCALE) return base;
     return Math.round((base / ITEM_SCORE_SCALE) * max);

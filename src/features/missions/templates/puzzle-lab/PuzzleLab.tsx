@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { ArrowLeft, Eye, EyeOff } from 'lucide-react';
 import { useMissionAutoSave } from '@/hooks/useMissionAutoSave';
-import { useWellbeingMonitor } from '@/hooks/useWellbeingMonitor';
+import { useWellbeingMonitor, type WellbeingMatch } from '@/hooks/useWellbeingMonitor';
+import { useWellbeingTeacherAlert } from '@/hooks/useWellbeingTeacherAlert';
 import { CompletionScreen } from '../shared/CompletionScreen';
 import { IntroScreen } from '../shared/IntroScreen';
 import { WellbeingAlert } from '@/features/student/WellbeingAlert';
@@ -107,12 +108,17 @@ export const PuzzleLab: React.FC<TemplateMissionProps> = ({
     const [celebrating, setCelebrating] = useState(false);
     const inputRef = useRef<HTMLInputElement>(null);
     const headingRef = useRef<HTMLHeadingElement>(null);
+    const teacherAlert = useWellbeingTeacherAlert();
     const {
         scanText: scanWellbeingText,
         showHulplijn,
         lastMatch: wellbeingMatch,
         dismissHulplijn,
-    } = useWellbeingMonitor();
+    } = useWellbeingMonitor({ onAlert: teacherAlert.onAlert });
+    // De monitor toont de overlay maar één keer per minuut (cooldown). Een
+    // geblokkeerde submit mag echter nooit stil zijn: deze lokale match zorgt
+    // dat de hulplijn bij élke geblokkeerde inzending opnieuw verschijnt.
+    const [blockedMatch, setBlockedMatch] = useState<WellbeingMatch | null>(null);
 
     // Autosaves van vóór sensitiveInput kunnen bij wachtwoord-puzzels nog het
     // ruwe antwoord bevatten; vervang dat eenmalig door de placeholder zodat
@@ -186,12 +192,12 @@ export const PuzzleLab: React.FC<TemplateMissionProps> = ({
             // tekst, dan verschijnt de hulplijn-overlay en stopt de submit — zonder
             // poging te verbruiken en zonder ACCESS-DENIED-feedback. Wachtwoordvelden
             // slaan we over: daar typt de leerling verzonnen invoer, geen verhaal.
-            if (
-                puzzle.type !== 'multiple-choice' &&
-                !puzzle.sensitiveInput &&
-                scanWellbeingText(raw).isBlocked
-            ) {
-                return;
+            if (puzzle.type !== 'multiple-choice' && !puzzle.sensitiveInput) {
+                const wellbeingResult = scanWellbeingText(raw);
+                if (wellbeingResult.isBlocked) {
+                    setBlockedMatch(wellbeingResult.match);
+                    return;
+                }
             }
 
             const normalize = (s: string) =>
@@ -453,7 +459,16 @@ export const PuzzleLab: React.FC<TemplateMissionProps> = ({
 
     return (
         <div data-qa="puzzle-lab" className="min-h-screen bg-duck-ink flex items-center justify-center p-4">
-            {showHulplijn && <WellbeingAlert match={wellbeingMatch} onDismiss={dismissHulplijn} />}
+            {(showHulplijn || blockedMatch) && (
+                <WellbeingAlert
+                    match={blockedMatch ?? wellbeingMatch}
+                    teacherNotified={teacherAlert.active}
+                    onDismiss={() => {
+                        dismissHulplijn();
+                        setBlockedMatch(null);
+                    }}
+                />
+            )}
 
             <div className="w-full max-w-md">
                 {/* Terminal chrome */}

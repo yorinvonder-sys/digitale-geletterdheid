@@ -236,6 +236,14 @@ const DebateArenaInner: React.FC<DebateArenaProps> = ({ config, onBack, onComple
 
         const phaseBreakdown = [
             { icon: '👥', title: 'Stakeholders gelezen', score: state.stakeholdersRead.length >= config.stakeholders.length ? 10 : 0, max: 10 },
+            // De quizbonus telt mee in calcScore; zonder eigen rij sloot de
+            // uitsplitsing niet aan op het getoonde totaal.
+            ...(config.explorationQuiz ? [{
+                icon: '🧠',
+                title: 'Verkenningsquiz (bonus)',
+                score: state.explorationQuizCorrect ? config.explorationQuiz.bonusPoints : 0,
+                max: config.explorationQuiz.bonusPoints,
+            }] : []),
             { icon: '📍', title: 'Positie gekozen', score: state.selectedPosition ? 10 : 0, max: 10 },
             { icon: '💬', title: 'Argumenten gebouwd', score: Math.round((countDistinctArguments(state.arguments) / 3) * 50), max: 50 },
             { icon: '⚡', title: 'Tegenargument beantwoord', score: isMeaningfulAnswer(state.counterResponse) ? 10 : 0, max: 10 },
@@ -243,20 +251,17 @@ const DebateArenaInner: React.FC<DebateArenaProps> = ({ config, onBack, onComple
         ];
 
         // De losse onderdelen tellen samen op tot méér dan `config.maxScore` zodra
-        // er drie reflectievragen zijn: 110 van de 100. `calcScore` topt het totaal al af,
-        // maar de uitsplitsing deed dat niet — die adverteerde 110 haalbare punten
-        // en telde niet op tot het getoonde totaal. Daarom vullen we de rijen op
-        // volgorde tot het puntenbudget op is: de getoonde maxima tellen samen
-        // nooit boven `config.maxScore` en de behaalde punten nooit boven `score`.
-        let maxBudget = config.maxScore;
-        let scoreBudget = score;
-        const phases = phaseBreakdown.map((phase) => {
-            const max = Math.max(0, Math.min(phase.max, maxBudget));
-            const earned = Math.max(0, Math.min(phase.score, max, scoreBudget));
-            maxBudget -= max;
-            scoreBudget -= earned;
-            return { ...phase, max, score: earned };
-        });
+        // er drie reflectievragen zijn (110 om 100); `calcScore` topt alleen het
+        // totaal af. De uitsplitsing toont daarom de échte punten en maxima per
+        // onderdeel — zo tellen de rijen altijd op tot wat de leerling werkelijk
+        // verdiende — en benoemt de extra ruimte expliciet als bonusruimte in
+        // plaats van stilletjes rijen af te toppen (dat gaf een som die niet
+        // aansloot op het getoonde totaal).
+        const phases = phaseBreakdown;
+        const phasesMaxTotal = phaseBreakdown.reduce((sum, p) => sum + p.max, 0);
+        const phasesNote = phasesMaxTotal > config.maxScore
+            ? `De onderdelen bieden samen ${phasesMaxTotal} punten aan ruimte; je eindscore telt tot maximaal ${config.maxScore} punten.`
+            : undefined;
 
         return (
             <div className="min-h-screen bg-duck-bg p-4">
@@ -348,6 +353,7 @@ const DebateArenaInner: React.FC<DebateArenaProps> = ({ config, onBack, onComple
                         maxScore={config.maxScore}
                         badges={config.badges}
                         phases={phases}
+                        phasesNote={phasesNote}
                         takeaways={config.takeaways}
                         onComplete={async () => {
                             setCompletionError(false);
