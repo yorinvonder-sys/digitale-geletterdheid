@@ -88,6 +88,12 @@ for entry in "${ROLLEN[@]}"; do
   else
     run git worktree add -b "$tak" "$wt"
   fi
+
+  # node_modules is gitignored en dus leeg in een verse worktree. Koppel hem aan
+  # die van de hoofdmap in plaats van per worktree opnieuw te installeren.
+  if [ ! -e "$wt/node_modules" ] && [ -d "$REPO_ROOT/node_modules" ]; then
+    run ln -s "$REPO_ROOT/node_modules" "$wt/node_modules"
+  fi
 done
 
 if [ "$DRY_RUN" -eq 1 ]; then
