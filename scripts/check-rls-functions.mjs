@@ -429,10 +429,16 @@ RESET ROLE;
 INSERT INTO rls_function_test_results
 SELECT
   'processing_restriction_helper_not_public',
-  has_function_privilege('anon', 'public.current_user_processing_restricted()', 'execute') = false
+  -- anon is intentionally granted EXECUTE: five processing-restriction policies
+  -- run on role public (also evaluated for anon). Without EXECUTE an anon write
+  -- would fail with "permission denied for function" instead of a clean RLS
+  -- denial, and for anon the helper always returns false via coalesce (no data
+  -- leak). Matches production. See
+  -- 20260805104252_enforce_processing_restriction_in_rls.sql.
+  has_function_privilege('anon', 'public.current_user_processing_restricted()', 'execute') = true
     AND has_function_privilege('authenticated', 'public.current_user_processing_restricted()', 'execute') = true
     AND has_function_privilege('service_role', 'public.current_user_processing_restricted()', 'execute') = true,
-  'processing restriction helper should not be callable by anon';
+  'processing restriction helper grant surface: anon (intentional), authenticated, service_role';
 
 INSERT INTO rls_function_test_results
 SELECT
@@ -710,7 +716,7 @@ function findSupabaseDbContainer() {
 
 function findLatestProcessingRestrictionMigration() {
   const migration = readdirSync('supabase/migrations')
-    .filter((name) => name.endsWith('_enforce_processing_restriction.sql'))
+    .filter((name) => name.includes('_enforce_processing_restriction') && name.endsWith('.sql'))
     .sort()
     .at(-1);
 

@@ -142,7 +142,7 @@ ALTER POLICY "library_items_owner_update" ON public.library_items
 
 ALTER POLICY "shared_games_owner_insert" ON public.shared_games
   WITH CHECK (
-    (COALESCE((user_id)::text, creator_uid) = (auth.uid())::text)
+    (COALESCE((user_id)::text, creator_uid::text) = (auth.uid())::text)
     AND ((length(TRIM(BOTH FROM title)) >= 1) AND (length(TRIM(BOTH FROM title)) <= 80))
     AND ((school_id IS NULL) OR (school_id = (SELECT u.school_id FROM public.users u WHERE u.id = auth.uid())))
     AND NOT public.current_user_processing_restricted()
@@ -153,7 +153,7 @@ ALTER POLICY "shared_games_owner_insert" ON public.shared_games
 -- verwerkingsbeperking wordt geblokkeerd.
 ALTER POLICY "shared_games_owner_update" ON public.shared_games
   WITH CHECK (
-    ((COALESCE((user_id)::text, creator_uid) = (auth.uid())::text) OR public.is_teacher_in_school(school_id))
+    ((COALESCE((user_id)::text, creator_uid::text) = (auth.uid())::text) OR public.is_teacher_in_school(school_id))
     AND NOT public.current_user_processing_restricted()
   );
 
