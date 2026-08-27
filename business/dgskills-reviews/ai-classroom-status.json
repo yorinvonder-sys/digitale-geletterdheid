@@ -1,0 +1,36 @@
+[
+  {
+    "missionId": "mail-detective",
+    "lastPlayed": "2026-07-30",
+    "wave": "pilot",
+    "verdict": "fix-eerst",
+    "personasRun": ["taalzwakke-tess", "concrete-milan", "creatieve-cheater"],
+    "completedBy": ["taalzwakke-tess", "concrete-milan", "creatieve-cheater"],
+    "blockedBy": [],
+    "novelFindings": 6,
+    "knownFindingsConfirmed": 0,
+    "slowestMinutes": 17,
+    "statedMinutes": 15,
+    "meetNiets": true,
+    "landtNietBijIedereen": true,
+    "reportPath": "business/dgskills-reviews/ai-classroom/mail-detective-2026-07-30.md",
+    "evidencePath": "~/dgskills-audit/ai-classroom/mail-detective/"
+  },
+  {
+    "missionId": "layout-doctor",
+    "lastPlayed": "2026-07-30",
+    "wave": "pilot",
+    "verdict": "herontwerp",
+    "personasRun": ["ipad-iris", "concrete-milan", "gamer-gijs"],
+    "completedBy": ["concrete-milan"],
+    "blockedBy": ["ipad-iris", "gamer-gijs"],
+    "novelFindings": 6,
+    "knownFindingsConfirmed": 1,
+    "slowestMinutes": 8,
+    "statedMinutes": null,
+    "meetNiets": false,
+    "landtNietBijIedereen": true,
+    "reportPath": "business/dgskills-reviews/ai-classroom/layout-doctor-2026-07-30.md",
+    "evidencePath": "~/dgskills-audit/ai-classroom/layout-doctor/"
+  }
+]
