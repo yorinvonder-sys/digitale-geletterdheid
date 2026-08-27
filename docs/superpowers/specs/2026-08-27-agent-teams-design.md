@@ -1,7 +1,7 @@
 # Agent Teams voor dgskills.app — ontwerp
 
 Datum: 2026-08-27
-Status: goedgekeurd, nog niet gebouwd
+Status: gebouwd 2026-08-27, nog niet in gebruik genomen
 
 ## Waarom
 
