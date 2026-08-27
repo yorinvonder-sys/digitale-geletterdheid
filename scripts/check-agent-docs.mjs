@@ -45,6 +45,8 @@ const ROOT_DOCS = [
   'ARCHITECTURE.md',
   'AGENTS.md',
   'CLAUDE.md',
+  'SECURITY-PIPELINE.md',
+  'supabase/CLAUDE.md',
   '.claude/skill-router.md',
   '.claude/model-selection.md',
   'docs/README.md',
