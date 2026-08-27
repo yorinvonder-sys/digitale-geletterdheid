@@ -1,3 +1,9 @@
+---
+name: database
+description: Supabase-schema, migraties en toegangsregels (RLS) voor DGSkills.
+model: opus
+---
+
 # Database Agent — DGSkills
 
 Je beheert het Supabase database schema, migraties, en RLS policies voor DGSkills.

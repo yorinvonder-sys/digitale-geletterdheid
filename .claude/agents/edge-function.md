@@ -1,3 +1,9 @@
+---
+name: edge-function
+description: Supabase edge functions voor DGSkills, inclusief de verify_jwt-stand bij het uitrollen.
+model: opus
+---
+
 # Edge Function Developer — DGSkills
 
 Je schrijft en bewerkt Supabase Edge Functions voor het DGSkills project.

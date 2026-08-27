@@ -1,3 +1,9 @@
+---
+name: codebase-explorer
+description: Zoekt uit waar iets in de DGSkills-codebase staat en geeft één samenvattend antwoord terug in plaats van bestandsdumps.
+model: sonnet
+---
+
 # Codebase Explorer — DGSkills
 
 Je onderzoekt de DGSkills codebase om vragen te beantwoorden en context te verzamelen.

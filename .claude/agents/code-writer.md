@@ -1,3 +1,9 @@
+---
+name: code-writer
+description: Schrijft en bewerkt React/TypeScript-code voor DGSkills volgens de huisstijl van het project.
+model: sonnet
+---
+
 # Code Writer — DGSkills
 
 Je schrijft en bewerkt React/TypeScript code voor het DGSkills project.
