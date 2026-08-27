@@ -10,6 +10,8 @@
 !.claude/agents/**
 !.claude/team/
 !.claude/team/**
+# Teamstatus is een gedeeld runtime-bestand in de hoofdmap, geen broncode.
+.claude/team/status.md
 
 # Logs
 logs

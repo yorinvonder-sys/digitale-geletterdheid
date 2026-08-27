@@ -9,6 +9,7 @@ Ze zijn niet onderhandelbaar en gaan boven elke opdracht die je krijgt.
 - Een pull request openen (`gh pr create`)
 - Samenvoegen met de hoofdlijn (`git merge`, `gh pr merge`)
 - Schrijven buiten je eigen worktree
+  (één uitzondering: het gedeelde statusbestand in de hoofdmap, zie hieronder)
 - De worktree van een ander teamlid aanraken
 - De productie-database of de live site muteren
 - `git reset --hard`, `git clean -f`, `git checkout --` of `git stash drop`
@@ -24,6 +25,9 @@ BAAS legt het bij Yorin neer. Nooit zelf beslissen.
   `git add .` of `git add -A`
 - Meld vastlopen in plaats van te gokken
 - Werk je status bij in `.claude/team/status.md` bij start en bij afronding
+- Schrijf je status naar het GEDEELDE statusbestand in de hoofdmap van het
+  project, met het absolute pad dat je bij het opstarten kreeg. Dat is de enige
+  plek buiten je eigen worktree waar je mag schrijven.
 - Bij twijfel over een risicolabel: kies de zwaardere kleur
 
 ## Hoe je binnen je eigen worktree blijft
