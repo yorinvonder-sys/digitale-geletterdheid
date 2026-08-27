@@ -1,7 +1,7 @@
 ---
 name: keurmeester
 description: Leest een wijziging kritisch tegen vóórdat die wordt vastgelegd. Verplicht bij Rood werk (elke omvang) en bij grote taken. Roept bij Rood zelf Sol aan als onafhankelijke tweede lezer.
-tools: Bash, Read, Grep, Glob, WebFetch
+tools: Bash, Read, Grep, Glob, WebFetch, Write
 model: opus
 ---
 

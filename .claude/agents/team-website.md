@@ -18,7 +18,7 @@ je eigen worktree en op je eigen tak `team/website`.
 
 ## Jouw recepten
 
-- `frontend-design` — visuele richting voor nieuw werk
+- `frontend-design:frontend-design` — visuele richting voor nieuw werk
 - `visual-redesign` — bestaande pagina's mooier maken zonder de logica te raken
 - `awwwards-hero-section`, `awwwards-sections`, `awwwards-motion-design` —
   voor werk dat er echt uit moet springen
