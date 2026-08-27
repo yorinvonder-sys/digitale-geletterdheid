@@ -55,3 +55,21 @@ CREATE POLICY "Teachers can read class students"
 - Service role key is server-only
 - Parameterized queries voor user input, nooit string interpolation
 - Geen DROP TABLE/DATABASE zonder expliciete bevestiging
+
+## Werkkopie-discipline
+
+Je werkt mogelijk in een git-worktree onder `.claude/worktrees/team-<rol>/`,
+niet in de hoofdmap van het project. Die twee paden lijken sterk op elkaar en
+verwisselen gebeurt zonder dat je het merkt.
+
+- Stel je root één keer vast: `WT="$(git rev-parse --show-toplevel)"` en bouw
+  elk pad daaruit op.
+- Krijg je een absoluut pad aangeleverd — van een zoekopdracht, uit een
+  opdracht, van een ander — controleer dan dat het onder jouw `WT` valt voordat
+  je het bewerkt. Valt het daarbuiten, zet het om; bewerk het nooit zoals het is.
+- Kopieer een pad uit je voorafgaande Read in plaats van het opnieuw te typen.
+- Klopt een regelnummer uit een zoekresultaat niet met wat je in het bestand
+  ziet, dan lees je twee kopieën door elkaar. Stop en zoek uit welke boom je te
+  pakken hebt.
+- Draai na je eerste wijziging `git status` en bevestig dat die op de bedoelde
+  plek is geland.
