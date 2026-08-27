@@ -450,6 +450,84 @@ SELECT
     AND has_function_privilege('service_role', 'public.trigger_gdrive_backup()', 'execute') = true,
   'Drive backup trigger should not be callable through public RPC';
 
+-- Generieke dekking: elke gewone tabel in public moet RLS aan hebben. Zonder deze
+-- assertie komt een nieuwe tabel zonder RLS door alle andere (scenario-)checks groen
+-- heen. relkind r = gewone tabel, p = partitioned; views/matviews/foreign tables
+-- kennen geen RLS en blijven buiten beschouwing. Groen bewijst alleen dat RLS AAN staat,
+-- niet dat de policies kloppen of dat FORCE RLS geldt.
+--
+-- Whitelist = bekende drift, GEEN goedkeuring. Productie heeft RLS op deze tabellen
+-- (zie migratie 20260328100000_enable_rls_all_tables.sql), maar de repo-migraties
+-- zetten het niet, dus een db-uit-migraties levert ze onbeschermd op. game_permissions
+-- bevat school_id. Dichttrekken is een aparte taak (RLS-migratie + policies); tot dan
+-- staan ze hier expliciet zodat het gat zichtbaar blijft in plaats van de check rood te
+-- maken.
+CREATE TEMP TABLE rls_coverage_whitelist (relname text PRIMARY KEY);
+INSERT INTO rls_coverage_whitelist (relname) VALUES
+  ('bomberman_rooms'),
+  ('game_permissions');
+
+INSERT INTO rls_function_test_results
+SELECT
+  'no_unexpected_public_tables_without_rls',
+  NOT EXISTS (
+    SELECT 1
+    FROM pg_class c
+    JOIN pg_namespace n ON n.oid = c.relnamespace
+    WHERE n.nspname = 'public'
+      AND c.relkind IN ('r', 'p')
+      AND c.relrowsecurity = false
+      AND c.relname NOT IN (SELECT relname FROM rls_coverage_whitelist)
+  ),
+  COALESCE(
+    'public-tabellen zonder RLS (buiten de gedocumenteerde drift-whitelist): ' || (
+      SELECT string_agg(c.relname, ', ' ORDER BY c.relname)
+      FROM pg_class c
+      JOIN pg_namespace n ON n.oid = c.relnamespace
+      WHERE n.nspname = 'public'
+        AND c.relkind IN ('r', 'p')
+        AND c.relrowsecurity = false
+        AND c.relname NOT IN (SELECT relname FROM rls_coverage_whitelist)
+    ),
+    'elke public-tabel heeft RLS aan (op de gedocumenteerde whitelist na)'
+  );
+
+-- Zelf-opschonend: zodra een whitelisted tabel WEL RLS krijgt (of verdwijnt), is de
+-- uitzondering achterhaald en moet de naam eruit. Zonder deze assertie zou een latere
+-- DISABLE ROW LEVEL SECURITY op zo'n tabel opnieuw ongemerkt groen blijven.
+INSERT INTO rls_function_test_results
+SELECT
+  'rls_whitelist_has_no_stale_entries',
+  NOT EXISTS (
+    SELECT 1
+    FROM rls_coverage_whitelist w
+    WHERE NOT EXISTS (
+      SELECT 1
+      FROM pg_class c
+      JOIN pg_namespace n ON n.oid = c.relnamespace
+      WHERE n.nspname = 'public'
+        AND c.relkind IN ('r', 'p')
+        AND c.relrowsecurity = false
+        AND c.relname = w.relname
+    )
+  ),
+  COALESCE(
+    'whitelist-namen die geen RLS-loze public-tabel meer zijn (verwijder ze): ' || (
+      SELECT string_agg(w.relname, ', ' ORDER BY w.relname)
+      FROM rls_coverage_whitelist w
+      WHERE NOT EXISTS (
+        SELECT 1
+        FROM pg_class c
+        JOIN pg_namespace n ON n.oid = c.relnamespace
+        WHERE n.nspname = 'public'
+          AND c.relkind IN ('r', 'p')
+          AND c.relrowsecurity = false
+          AND c.relname = w.relname
+      )
+    ),
+    'elke whitelist-naam is nog een RLS-loze public-tabel'
+  );
+
 INSERT INTO rls_function_test_results
 SELECT
   'policies_unchanged_by_test',
