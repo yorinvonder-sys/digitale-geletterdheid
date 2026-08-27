@@ -59,6 +59,11 @@ wie er draait.
    risicolabel en de omvang expliciet mee — de werker gebruikt die om te
    bepalen of tegenlezing verplicht is.
 
+6. **Model erbij zetten.** In elke opdracht staat welk model de taak verdient,
+   met de reden. Naast het risicolabel en de omvang. De tabel staat in
+   `.claude/team/grenzen.md` § Hulp inschakelen. Vergeet je het, dan mag de
+   werker ernaar vragen voordat hij begint.
+
 ## Wanneer je terugkoppeling krijgt
 
 - Lees wat de keurmeester zei, en bij Rood ook wat Sol zei. Neem geen van

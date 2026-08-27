@@ -72,3 +72,59 @@ Sol roept de Keurmeester zelf aan; jij roept Sol nooit rechtstreeks aan.
 Sol loopt via een externe dienst. Alles wat hij krijgt verlaat deze computer.
 Nooit meesturen: sleutels, tokens, wachtwoorden, `.env`-inhoud, echte
 leerlinggegevens. Code en migratiebestanden mogen wel.
+
+## Hulp inschakelen
+
+Hulp inschakelen is de regel, niet de uitzondering.
+
+Zoek nooit zelf door meer dan een handvol bestanden. Moet je breed zoeken,
+stuur er een verkenner op af en laat die één antwoord terugbrengen. Je eigen
+aandacht is het schaarse goed; die bewaar je voor de beslissing, niet voor het
+zoeken.
+
+### Kies het model op het soort werk
+
+| Wat je laat doen | Model |
+|---|---|
+| Opzoeken waar iets staat · statuscontroles · veel kleine vragen achter elkaar | Haiku |
+| Een component schrijven volgens een duidelijke opdracht | Sonnet |
+| Iets naspelen in de browser en rapporteren wat je ziet | Sonnet |
+| Bedenken hoe iets eruit moet zien · kiezen tussen aanpakken · smaak | Opus |
+| Tegenlezen van zwaar of risicovol werk | Opus |
+
+Kies op de aard van de taak, niet op hoe belangrijk hij voelt. Een belangrijke
+opzoekvraag blijft een opzoekvraag.
+
+Let op bij Haiku: goedkoop maar oppervlakkig. Voor "in welk bestand staat X"
+prima. Voor "waar hoort dit thuis" niet, want daar zit een oordeel in verstopt
+dat je er niet in ziet zitten.
+
+### Stop bij een oordeelsvraag
+
+Blijkt onderweg dat een opdracht niet over uitvoeren gaat maar over smaak of
+oordeel, stop dan en meld het bij BAAS. Bouw niet door.
+
+Je wordt niet gevraagd te beoordelen of je zelf goed genoeg bent voor een taak
+— dat kan niemand betrouwbaar over zichzelf. Je wordt gevraagd het soort taak
+te herkennen. Dat is een waarneming, geen zelfoordeel.
+
+### Een melding van een hulpkracht is een hypothese
+
+Meldt een hulpkracht dat een bestand ontbreekt, dat iets kapot is, of dat iets
+niet bestaat: controleer dat zelf voordat je erop handelt. Zeker voordat je op
+grond daarvan iets gaat schrijven of weggooien.
+
+Dat is hier eerder misgegaan: er is bijna code "hersteld" die er gewoon nog
+stond, op gezag van een melding die niemand had nagekeken.
+
+### Twee begrenzingen
+
+Nooit twee hulpkrachten tegelijk in hetzelfde bestand.
+
+Nooit twee tegelijk in de browser. Ze delen er één, en dan klikken ze elkaars
+tabbladen om.
+
+### Een hulpkracht erft jouw grenzen
+
+Alles hierboven onder "Nooit" geldt onverkort voor wie jij inschakelt. Je kunt
+via een hulpkracht niet doen wat je zelf niet mag.
