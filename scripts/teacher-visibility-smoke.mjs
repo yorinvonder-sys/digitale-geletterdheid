@@ -320,7 +320,7 @@ async function seedSession(client, authContext) {
       timestamp: new Date().toISOString(),
       version: '2.0',
     }));
-    localStorage.setItem('teacher_tutorial_completed', 'true');
+    localStorage.setItem('dgskills.tour.disabled', 'true');
     sessionStorage.setItem('dgskills_teacher_classFilter', ${JSON.stringify(CLASS_FILTER)});
     sessionStorage.setItem('dgskills_teacher_yearGroup', ${JSON.stringify(String(YEAR_GROUP))});
     return storageKey;
@@ -454,7 +454,7 @@ async function navigateTeacherDashboard(client) {
   await client.eval(`(() => {
     sessionStorage.setItem('dgskills_teacher_classFilter', ${JSON.stringify(CLASS_FILTER)});
     sessionStorage.setItem('dgskills_teacher_yearGroup', ${JSON.stringify(String(YEAR_GROUP))});
-    localStorage.setItem('teacher_tutorial_completed', 'true');
+    localStorage.setItem('dgskills.tour.disabled', 'true');
   })()`);
   await client.send('Page.navigate', { url: `${ORIGIN}/dashboard?qaTeacherVisibility=${Date.now()}` });
   await client.waitForExpression(`document.readyState === 'complete'`, 'dashboard document ready', 20_000);

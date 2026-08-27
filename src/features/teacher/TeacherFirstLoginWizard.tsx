@@ -242,7 +242,7 @@ export const TeacherFirstLoginWizard: React.FC<TeacherFirstLoginWizardProps> = (
                             <ul className="space-y-1.5 text-sm text-duck-ink/60">
                                 <li>· Leerlingen aan je klas koppelen vanuit het dashboard.</li>
                                 <li>· De missiekalender per periode bekijken.</li>
-                                <li>· De rondleiding starten voor een uitleg per onderdeel.</li>
+                                <li>· We beginnen met een korte rondleiding langs de onderdelen.</li>
                             </ul>
                         </div>
 

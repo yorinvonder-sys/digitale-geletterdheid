@@ -974,7 +974,7 @@ async function installSupabaseSession(client, authContext) {
       timestamp: new Date().toISOString(),
       version: '2.0',
     }));
-    localStorage.setItem('student_tutorial_completed', 'true');
+    localStorage.setItem('dgskills.tour.disabled', 'true');
     return storageKey;
   })()`);
 }

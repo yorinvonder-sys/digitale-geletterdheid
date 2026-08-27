@@ -25,8 +25,7 @@ import { AiBeleidFeedbackPanel } from '@/features/teacher/AiBeleidFeedbackPanel'
 import { GamesPanel } from '@/features/teacher/GamesPanel';
 import { FeedbackPanel } from '@/features/teacher/FeedbackPanel';
 import { RosterImportModal } from '@/features/teacher/RosterImportModal';
-import { TutorialProvider } from '@/contexts/TutorialContext';
-import TutorialSpotlight, { TutorialRestartButton } from '@/features/teacher/TutorialSpotlight';
+import { useTourActions, useTourBlocker, useTutorialOptional, type TourActions } from '@/contexts/TutorialContext';
 
 import { TeacherModals } from '@/features/teacher/dashboard/TeacherModals';
 import { TeacherCommandCenter } from '@/features/teacher/dashboard/TeacherCommandCenter';
@@ -523,19 +522,51 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ user, onUpda
     const MENU_TABS: MainTab[] = ['settings', 'games', 'gamification', 'ai-beleid', 'feedback', 'documenten'];
     const navActiveTab: MainTab | null = MENU_TABS.includes(activeTab) ? null : activeTab;
 
+    // De rondleiding stuurt het dashboard aan via deze acties, in plaats van
+    // zelf knoppen uit de DOM te vissen en aan te klikken. Die oude aanpak was
+    // gekoppeld aan klassenamen die na de duck-migratie niet meer bestonden.
+    const tourActions = useMemo<TourActions>(() => ({
+        goTo: (area) => {
+            const navigable: readonly MainTab[] = ['overview', 'students', 'progress'];
+            if (!navigable.includes(area as MainTab)) {
+                console.warn(`[rondleiding] onbekend gebied "${area}" — navigatie overgeslagen`);
+                return;
+            }
+            setActiveTab(area as MainTab);
+        },
+        closeOverlays: () => {
+            setShowMessageModal(false);
+            setShowEventModal(false);
+            setShowBadgeModal(false);
+            setShowHighlightModal(false);
+            setShowRosterImport(false);
+            setShowFocusMissionModal(false);
+            setShowLiveModal(false);
+            setShowPresentation(false);
+            setAccountMenuOpen(false);
+            setClassDropdownOpen(false);
+            setSelectedStudent(null);
+        },
+    }), []);
+    useTourActions(tourActions);
+
+    // Buiten de app-shell (publieke demo) is er geen rondleiding; dan verdwijnt
+    // het menu-item vanzelf omdat `onStartTour` undefined blijft.
+    const rondleiding = useTutorialOptional();
+
+    // Zolang een van deze het scherm bezit, verbergt de rondleiding zich en
+    // onthoudt hij de stap. Zonder dit bleef de spotlight (z-[9999]) wijzen naar
+    // elementen achter een schermvullende presentatie.
+    useTourBlocker(
+        'teacher-overlay',
+        showPresentation || showMessageModal || showEventModal || showBadgeModal
+        || showHighlightModal || showRosterImport || showFocusMissionModal
+        || showLiveModal || showSchedulingConfig || showResetConfirm
+        || selectedStudent !== null || studentToDelete !== null,
+    );
+
     return (
-        <TutorialProvider
-            isCompleted={user?.stats?.hasCompletedTeacherTutorial}
-            onComplete={() => {
-                if (user && onUpdateStats) {
-                    onUpdateStats({
-                        ...user.stats,
-                        hasCompletedTeacherTutorial: true
-                    } as UserStats);
-                }
-            }}
-        >
-            <TutorialSpotlight />
+        <>
             <div className="min-h-screen overflow-x-hidden bg-duck-bg text-duck-ink">
                 {/* Toasts */}
                 <div className="fixed top-4 right-4 z-[200] flex flex-col gap-2 pointer-events-none">
@@ -562,7 +593,7 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ user, onUpda
                                 return (
                                     <button
                                         key={`${item.label}-${index}`}
-                                        data-tutorial={`${item.id}-tab`}
+                                        data-tutorial={`teacher-nav-${item.id}`}
                                         onClick={() => navigateTo(item.id)}
                                         className={`flex w-full items-center gap-3 rounded-xl px-3 py-3 text-left text-sm font-bold transition ${
                                             isActive
@@ -608,6 +639,7 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ user, onUpda
                                             aria-haspopup="listbox"
                                             aria-expanded={classDropdownOpen}
                                             aria-label="Selecteer klas"
+                                            data-tutorial="teacher-class-filter"
                                         >
                                             <span className="truncate">{selectedClassLabel}</span>
                                             <ChevronDown size={17} className={`shrink-0 text-duck-ink/60 transition-transform ${classDropdownOpen ? 'rotate-180' : ''}`} />
@@ -653,7 +685,7 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ user, onUpda
                                     {/* Geen belicoon: het aantal aandachtspunten staat al op het
                                         Overzicht-navigatie-item én bovenaan het overzicht zelf. */}
                                     <button
-                                        data-tutorial="presentation-btn"
+                                        data-tutorial="teacher-presentation"
                                         onClick={() => setShowPresentation(true)}
                                         className="hidden h-11 items-center gap-2 rounded-xl bg-duck-acid px-4 text-sm font-black text-duck-ink transition hover:bg-duck-ink hover:text-duck-acid md:flex"
                                     >
@@ -670,6 +702,7 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ user, onUpda
                                         onNavigate={navigateTo}
                                         onOpenRosterImport={() => setShowRosterImport(true)}
                                         onOpenPresentation={() => setShowPresentation(true)}
+                                        onStartTour={rondleiding?.startTutorial}
                                         onLogout={onLogout}
                                     />
                                 </div>
@@ -708,8 +741,8 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ user, onUpda
                                         <button onClick={exportCSV} aria-label="Exporteer leerlingen als CSV" title="Exporteer leerlingen als CSV" className="p-2 text-duck-ink/60 hover:bg-duck-bg rounded-lg"><Download size={16} /></button>
                                     </div>
                                     <div className="flex items-center gap-2">
-                                        <button onClick={() => setShowRosterImport(true)} className="px-4 py-2 bg-duck-bgLight border border-duck-ink/15 text-duck-ink rounded-lg text-sm font-bold flex items-center gap-2 hover:bg-duck-bg"><Upload size={14} /> Importeren</button>
-                                        <button data-tutorial="students-message-btn" onClick={() => setShowMessageModal(true)} className="px-4 py-2 bg-duck-ink text-white rounded-lg text-sm font-bold flex items-center gap-2 hover:bg-duck-ink"><Send size={14} /> Bericht</button>
+                                        <button data-tutorial="teacher-students-import" onClick={() => setShowRosterImport(true)} className="px-4 py-2 bg-duck-bgLight border border-duck-ink/15 text-duck-ink rounded-lg text-sm font-bold flex items-center gap-2 hover:bg-duck-bg"><Upload size={14} /> Importeren</button>
+                                        <button data-tutorial="teacher-students-message" onClick={() => setShowMessageModal(true)} className="px-4 py-2 bg-duck-ink text-white rounded-lg text-sm font-bold flex items-center gap-2 hover:bg-duck-ink"><Send size={14} /> Bericht</button>
                                     </div>
                                 </div>
                                 <StudentList
@@ -741,7 +774,7 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ user, onUpda
                                             <button key={sub.id} onClick={() => setGamificationSubTab(sub.id as any)} className={`flex items-center gap-2 px-3 py-1.5 rounded-md text-xs font-bold transition-all ${gamificationSubTab === sub.id ? 'bg-white text-duck-ink shadow-sm' : 'text-duck-ink/60 hover:text-duck-ink/60'}`}><sub.icon size={14} /> {sub.label}</button>
                                         ))}
                                     </div>
-                                    <button data-tutorial="xp-boost-btn" onClick={() => setShowEventModal(true)} className="px-4 py-2 bg-duck-ink text-white rounded-xl text-xs font-bold flex items-center gap-2"><Zap size={14} /> XP Boost</button>
+                                    <button data-tutorial="teacher-xp-boost" onClick={() => setShowEventModal(true)} className="px-4 py-2 bg-duck-ink text-white rounded-xl text-xs font-bold flex items-center gap-2"><Zap size={14} /> XP Boost</button>
                                 </div>
                                 {gamificationSubTab === 'leaderboard' && <Leaderboard students={students} />}
                                 {gamificationSubTab === 'gallery' && <GoudenPromptGallery schoolId={user?.schoolId} />}
@@ -818,8 +851,6 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ user, onUpda
                     handleDeleteStudent={handleDeleteStudent}
                 />
 
-                <TutorialRestartButton />
-
                 {showSchedulingConfig && user?.schoolId && (
                     <div className="fixed inset-0 z-50 bg-black/40 flex items-start justify-center overflow-y-auto p-4 pt-12">
                         <div className="bg-duck-bg rounded-[2rem] shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto">
@@ -832,6 +863,6 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ user, onUpda
                     </div>
                 )}
             </div>
-        </TutorialProvider>
+        </>
     );
 };

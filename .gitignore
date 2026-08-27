@@ -61,6 +61,9 @@ screenshots/
 !public/screenshots/
 !public/screenshots/**
 .tmp-context/
+# Werkmap van de instructievideo-pipeline (ruwe opname, losse audiofragmenten).
+# Het eindresultaat staat in public/tutorials/.
+.tmp-tutorial-video/
 tmp/
 .superpowers/
 public/dev-docs/

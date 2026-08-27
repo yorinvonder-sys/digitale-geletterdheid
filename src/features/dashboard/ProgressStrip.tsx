@@ -81,7 +81,9 @@ export const ProgressStrip: React.FC<ProgressStripProps> = ({
     const domainScores = nulmetingResult?.kamers ? extractDomeinScores(nulmetingResult) : null;
 
     return (
-        <section className="mb-6 flex flex-wrap items-center gap-4 rounded-[1.5rem] border border-duck-ink/10 bg-white px-5 py-3.5 shadow-duck-soft">
+        // Zelfde rondleidingssleutel als de XP-knop in de mobiele koptekst; de
+        // spotlight kiest zelf welke van de twee zichtbaar is.
+        <section data-tutorial="student-xp" className="mb-6 flex flex-wrap items-center gap-4 rounded-[1.5rem] border border-duck-ink/10 bg-white px-5 py-3.5 shadow-duck-soft">
             <div className="flex items-center gap-3 border-r border-duck-ink/10 pr-4">
                 <div>
                     <p className="text-[10px] font-bold uppercase tracking-wider text-duck-ink/65">Level</p>

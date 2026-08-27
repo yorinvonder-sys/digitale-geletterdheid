@@ -76,6 +76,7 @@ export const TeacherEvidence: React.FC<TeacherEvidenceProps> = ({
             <div
                 role="tablist"
                 aria-label="Bewijsweergave"
+                data-tutorial="teacher-evidence-views"
                 className="flex gap-1 overflow-x-auto rounded-2xl border border-duck-ink/15 bg-duck-bgLight p-1.5 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
             >
                 {VIEWS.map(v => (

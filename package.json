@@ -63,6 +63,8 @@
     "test:ai-students": "node tests/ai-students/cli.mjs",
     "test:ai-students:unit": "node --test tests/ai-students/unit/*.test.mjs",
     "test:avatar-shop": "node --test tests/avatar-shop-economy.test.mjs",
+    "test:onboarding": "node --test tests/onboarding/*.test.ts",
+    "tutorial:video": "node scripts/tutorial-video/index.mjs",
     "test:film-timeline": "node --test tests/public-site/film-timeline.test.ts",
     "test:mission-completion": "node --test tests/mission-completion-contract.test.ts",
     "test:contracts": "node --test tests/*contract*.test.ts",
