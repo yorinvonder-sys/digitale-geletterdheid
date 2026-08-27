@@ -886,6 +886,25 @@ if [ "$ONTBREEKT" -eq 1 ]; then
   exit 1
 fi
 
+# De werkers vertakken vanaf de huidige HEAD, want daar staan de rolbestanden.
+# Loopt die basis achter op origin/main, dan moeten ze dat weten voordat ze
+# beginnen te bouwen — anders bouwen ze op verouderde code.
+BASIS="$(git rev-parse --short HEAD)"
+BASIS_TAK="$(git rev-parse --abbrev-ref HEAD)"
+echo "Werkers vertakken vanaf $BASIS_TAK ($BASIS)"
+
+if git rev-parse --verify --quiet origin/main >/dev/null; then
+  ACHTER=$(git rev-list --count HEAD..origin/main 2>/dev/null || echo 0)
+  if [ "$ACHTER" -gt 0 ]; then
+    echo
+    echo "LET OP: deze basis loopt $ACHTER commits achter op origin/main."
+    echo "De werkers bouwen dus op verouderde code. Overweeg eerst"
+    echo "  git merge origin/main"
+    echo "voordat je het team aan het werk zet."
+    echo
+  fi
+fi
+
 # Maak worktrees aan. Bestaande worktrees worden hergebruikt, nooit verwijderd.
 for entry in "${ROLLEN[@]}"; do
   rol="${entry%%:*}"
@@ -980,6 +999,17 @@ Run:
 git worktree list | grep -c 'team-' || echo 0
 ```
 Expected: `0`.
+
+- [ ] **Step 4a: Bewijs dat de achterstand-waarschuwing werkt**
+
+De werkers vertakken vanaf de huidige HEAD. Loopt die achter op `origin/main`, dan bouwen ze op verouderde code en moet het script dat zeggen.
+
+Run:
+```bash
+git rev-list --count HEAD..origin/main
+scripts/agent-team.sh --dry-run 2>&1 | grep -A1 'LET OP' || echo "GEEN WAARSCHUWING"
+```
+Expected: het eerste commando geeft een getal. Is dat groter dan 0, dan moet de droogloop de regel `LET OP: deze basis loopt <n> commits achter op origin/main.` tonen met hetzelfde getal. Is het 0, dan hoort er geen waarschuwing te staan en is `GEEN WAARSCHUWING` correct.
 
 - [ ] **Step 4b: Bewijs dat de startregel niets uitvoerbaars bevat**
 
