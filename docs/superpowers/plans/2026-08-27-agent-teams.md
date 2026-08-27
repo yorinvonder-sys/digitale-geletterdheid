@@ -311,6 +311,23 @@ strandde en ga niet alsnog via de code kijken hoe het bedoeld was.
 Lees `.claude/team/grenzen.md` en houd je daaraan. Je verandert geen code.
 ```
 
+- [ ] **Step 2b: Leg de vier bestaande agents vast zoals ze nu zijn**
+
+`.gitignore` sloot `.claude/agents/` tot voor kort uit, dus deze vier bestanden staan nog niet in versiebeheer. Zonder een vastgelegde uitgangsstaat kan stap 6 niet bewijzen dat er niets is weggehaald — `git diff` heeft dan niets om mee te vergelijken.
+
+Leg ze daarom eerst ONGEWIJZIGD vast, vóór je frontmatter toevoegt:
+
+```bash
+git add .claude/agents/code-writer.md .claude/agents/codebase-explorer.md .claude/agents/database.md .claude/agents/edge-function.md .claude/agents/leerling-dashboard-auditor.md
+git commit -m "chore(agents): bestaande agent-definities onder versiebeheer brengen"
+```
+
+Verifieer:
+```bash
+git ls-files .claude/agents/ | wc -l
+```
+Expected: `5`.
+
 - [ ] **Step 3: Bewijs dat de vier bestaande agents nu géén frontmatter hebben**
 
 Run:
