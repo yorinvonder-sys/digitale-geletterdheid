@@ -250,6 +250,10 @@ Dit is het scharnierpunt van het hele document. Alles hierboven zegt wat er bete
 
 Zolang we alleen deze twee opties hebben, is elke keuze fout. De uitweg is er een derde bij te bouwen.
 
+### Dit bestaat al: website-bouwer
+
+Voordat we verder redeneren: dit is geen theorie. `website-bouwer` (motor `builder-canvas`) staat al in de "behouden"-lijst van de audit als één van de acht goede opdrachten — de enige daarvan die op een gedeelde motor draait. Leerlingen typen er echte HTML in en zien die meteen in een browservenster verschijnen. Diezelfde motor `builder-canvas` draagt ook tientallen andere, veel ondiepere projectopdrachten. Dat is precies het bewijs dat één motor zowel plat als diep kan uitpakken, en dat het middenniveau hieronder geen wensdenken is maar iets wat al werkt.
+
 ### De derde soort: een motor die diep is van bouw, maar configureerbaar
 
 Een echte motor is **diep gebouwd, één keer**, en daarna instelbaar per opdracht. Niet instelbaar op alleen de teksten — dat is wat we nu hebben. Instelbaar op **drie dingen**:
