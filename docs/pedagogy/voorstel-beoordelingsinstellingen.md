@@ -13,6 +13,11 @@ ongecommitte wijzigingen, dus die heb ik bewust niet gebruikt). Vóór iemand di
 voorstel uitvoert: controleer dat `origin/main` niet intussen alweer is
 doorgeschoven.
 
+De vier genoemde skill-bestanden zijn gelezen vanaf `origin/main` op de stand
+van **2026-08-31**, commit `e3c6a276e93b838f3a754d84b5d4a5569034434f`. Dat is
+de commit om tegen te controleren als later blijkt dat `origin/main` intussen is
+doorgeschoven.
+
 ---
 
 ## 1. `.claude/skills/opdracht-klaar-check/SKILL.md`
