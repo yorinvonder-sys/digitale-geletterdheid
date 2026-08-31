@@ -30,15 +30,15 @@ De laatste regel is de kern. **Het probleem zit niet in de teksten, maar in de m
 
 Het echte gat zit ergens anders: **de rubric zegt nergens hóe je V3 en V7 vaststelt, en in de praktijk werd dat gedaan door het instellingenbestand te lezen — niet door de opdracht te spelen.** Zo kon een opdracht die bij het spelen plat aanvoelt, op papier toch ⚠ of ✓ scoren, omdat de code de juiste velden en componenten bevatte. De code loog niet; de manier van meten wel.
 
-Daarom voegt dit document geen nieuwe score toe, maar een poort ervóór: **drie veto's, uitsluitend vast te stellen door te spelen.** Zak je op één, dan is er geen score. Punt.
+Daarom voegt dit document geen nieuwe score toe, maar een poort ervóór: **vier veto's, uitsluitend vast te stellen door te spelen.** Zak je op één, dan is er geen score. Punt.
 
 ---
 
-## Deel 1 — De drie veto's
+## Deel 1 — De vier veto's
 
 ### De meetregel gaat hieraan vooraf (lees dit eerst)
 
-> **Je stelt alle drie de veto's uitsluitend vast door de opdracht te SPELEN. Nooit door het instellingenbestand te lezen.**
+> **Je stelt alle vier de veto's uitsluitend vast door de opdracht te SPELEN. Nooit door het instellingenbestand te lezen.**
 
 Dit is de belangrijkste enkele reparatie in dit hele document.
 
@@ -51,7 +51,7 @@ Wat je in een instellingenbestand ziet, is wat de bouwer van plan was. Wat je bi
 1. Open de opdracht in de browser (`/dev/mission-preview?mission=<id>` werkt zonder in te loggen).
 2. Speel hem uit, van begin tot eind, als leerling. Niet doorklikken, niet scannen — spelen.
 3. Schrijf tijdens het spelen op wat je doet. Niet wat er staat.
-4. Pas daarna vul je de drie veto's in.
+4. Pas daarna vul je de vier veto's in.
 
 Een beoordeling waarin niet staat dát er gespeeld is, is geen beoordeling. Die gaat terug.
 
@@ -152,31 +152,80 @@ Zet twee scenario-opdrachten over verschillende onderwerpen naast elkaar. Je kri
 
 ---
 
+### Veto 4 — De belofte
+
+**Neem eerst deze drie, alle drie echt en alle drie nagemeten:**
+
+- `dashboard-designer` belooft in zijn naam dat je een dashboard *ontwerpt*. Bij spelen blijkt: de leerling beantwoordt acht vragen over een dashboard dat al af is. Er wordt niets ontworpen.
+- `podcast-producer` belooft een podcast die je *maakt*. Bij spelen blijkt: er wordt geen seconde geluid opgenomen — de leerling beschrijft zijn podcast in vier tekstvakken.
+- `app-prototyper` belooft een prototype dat je *bouwt*. Bij spelen blijkt: het prototype wordt in vier tekstvakken beschreven; niemand kan er daarna op klikken.
+
+Dit is een ander soort fout dan Veto 1 en 2. Een opdracht kan de andere veto's best halen — echt eigen tekst schrijven, echt afwegen — en toch de belofte in zijn eigen naam niet waarmaken. Dat is precies waarom dit een apart veto is en geen extra regel bij Veto 1.
+
+**De regel:** lees de titel en de eerste zin van de opdracht, en schrijf op wat een leerling daarna verwacht te gaan doen. Doet de opdracht dat vervolgens niet, dan is hij afgekeurd — ook als de rest goed is.
+
+**Zo vul je hem in:**
+
+1. Lees alleen de titel en de openingszin. Schrijf op: "Ik verwacht dat ik ga [werkwoord]."
+2. Speel de opdracht. Doe je dat werkwoord ook echt?
+3. Nee → afgekeurd. Ja → geslaagd, ongeacht hoe je erover denkt of het onderwerp interessant is.
+
+**Afgekeurd zodra:**
+- de titel een activiteit belooft (ontwerpen, bouwen, opnemen, coderen, componeren) die nergens in de opdracht voorkomt;
+- het enige wat de leerling doet, is *beschrijven* wat hij zou doen als hij het echt zou doen;
+- je de opdracht een eerlijker naam zou moeten geven om hem niet meer misleidend te vinden.
+
+**De uitweg gaat twee kanten op:** de opdracht waarmaken (leerling gaat echt ontwerpen/maken/opnemen), of hem eerlijk hernoemen naar wat hij werkelijk is (bijvoorbeeld "dashboard-lezer" in plaats van "dashboard-designer"). Beide zijn een geldige oplossing. Alleen de titel laten staan terwijl de opdracht hem niet waarmaakt, is dat niet.
+
+---
+
 ### Het afkeurformulier
 
-Dit is wat een beoordeling minimaal bevat. Zonder deze vier regels is er geen beoordeling.
+Dit is wat een beoordeling minimaal bevat. Zonder deze regels is er geen beoordeling.
+
+Elk veto kent drie mogelijke uitkomsten, niet twee: **GESLAAGD**, **GEZAKT**, of **NIET VASTGESTELD**. Die derde is geen tussenweg en geen halve goedkeuring — zie de uitleg direct onder het formulier.
 
 ```
 Opdracht:       <naam + id>
 Gespeeld op:    <datum>  —  van begin tot eind: ja / nee
 
-Veto 1 Artefact     GESLAAGD / GEZAKT
+Veto 1 Artefact       GESLAAGD / GEZAKT / NIET VASTGESTELD
   Wat blijft er over: ...............................
   Wie kan het bekijken: ............................
+  Bij NIET VASTGESTELD — waarom niet en wat is er nodig: ...
 
-Veto 2 Handelingen  GESLAAGD / GEZAKT
+Veto 2 Handelingen    GESLAAGD / GEZAKT / NIET VASTGESTELD
   Handelingslijst per minuut (bijgevoegd): ja / nee
   Aandeel lezen+klikken: ....%  (GEZAKT boven 50%)
+  Bij NIET VASTGESTELD — waarom niet en wat is er nodig: ...
 
-Veto 3 Onderscheid  GESLAAGD / GEZAKT
+Veto 3 Onderscheid    GESLAAGD / GEZAKT / NIET VASTGESTELD
   Motor: ...........................................
   Vergeleken met: ..................................
   Wat doet de leerling daar anders: ................
+  Bij NIET VASTGESTELD — waarom niet en wat is er nodig: ...
 
-UITKOMST:  DOOR NAAR RUBRIC  /  AFGEKEURD
+Veto 4 Belofte        GESLAAGD / GEZAKT / NIET VASTGESTELD
+  Titel + verwachte handeling: .....................
+  Wat de leerling werkelijk doet: ..................
+  Bij NIET VASTGESTELD — waarom niet en wat is er nodig: ...
+
+UITKOMST:  DOOR NAAR RUBRIC  /  AFGEKEURD  /  NIET VASTGESTELD — NIET NAAR LEERLINGEN
 ```
 
 Eén GEZAKT is genoeg. Er volgt dan geen score, geen puntentotaal, geen "18 van de 20 maar let nog even op". De opdracht gaat terug naar de tekentafel of hij gaat weg.
+
+### De derde uitkomst: Niet vastgesteld
+
+Soms kun je een veto niet met zekerheid spelen. Het artefact zit bijvoorbeeld achter een docentenscherm dat je niet kunt openen, of je hebt geen tijd om een tweede opdracht op dezelfde motor te spelen voor Veto 3. Voor die situatie is er een derde uitkomst naast geslaagd en gezakt: **niet vastgesteld**.
+
+Drie regels horen daar onlosmakelijk bij:
+
+1. **Niet vastgesteld is geen goedkeuring.** Het telt nooit als geslaagd, ook niet stilzwijgend, ook niet omdat de rest van de opdracht er goed uitziet.
+2. **Wie het invult, schrijft twee dingen op:** waarom het niet vast te stellen was, en wat er nodig zou zijn om het alsnog te doen (toegang tot het docentenscherm, tijd om een tweede opdracht te spelen, een testaccount, wat dan ook).
+3. **Een opdracht met één of meer niet-vastgestelde veto's mag niet naar leerlingen** totdat elk daarvan alsnog is vastgesteld — als geslaagd of als gezakt. "Niet vastgesteld" is nooit het eindstation.
+
+Die derde regel is niet vrijblijvend. Zonder haar wordt "niet vastgesteld" binnen een maand het nieuwe "wel goed genoeg" — precies zoals "een keuze telt als bewijs" dat eerder werd voordat Veto 1 er kwam. Een opdracht die op "niet vastgesteld" blijft steken, staat gewoon nog open, niet klaar.
 
 ---
 
@@ -366,7 +415,7 @@ Dit koppelt Deel 5 direct aan Veto 1: **geen artefact betekent automatisch geen 
 
 **Kerndoel 23B (digitaal welzijn) is met 17 opdrachten (geteld in `src/config/slo-kerndoelen-mapping.ts`) het sterkst onderdekt.** Dat kerndoel krijgt voorrang bij alles wat we nieuw bouwen.
 
-Let daarbij op de valkuil die bij welzijn extra hard toeslaat: welzijnsonderwerpen lenen zich makkelijk voor "kies wat jij zou doen"-kaartjes, en dat is precies de vorm die op alle drie de veto's zakt. Voor 23B zijn simulatie met gevolgen (Deel 2, vorm 1) en onderzoek (vorm 3) de kansrijke routes — daar levert de leerling een plan, een oordeel of een onderbouwd besluit op dat je kunt bewaren en laten lezen.
+Let daarbij op de valkuil die bij welzijn extra hard toeslaat: welzijnsonderwerpen lenen zich makkelijk voor "kies wat jij zou doen"-kaartjes, en dat is precies de vorm die op de veto's zakt. Voor 23B zijn simulatie met gevolgen (Deel 2, vorm 1) en onderzoek (vorm 3) de kansrijke routes — daar levert de leerling een plan, een oordeel of een onderbouwd besluit op dat je kunt bewaren en laten lezen.
 
 ---
 
@@ -377,12 +426,14 @@ Let daarbij op de valkuil die bij welzijn extra hard toeslaat: welzijnsonderwerp
 1. Kies je hoofdspeelvorm en schrijf de drie ontwerpregels op (Deel 2).
 2. Bepaal op welke motor hij komt, en wat de leerling daar anders gaat doen dan in de opdrachten die er al op draaien (Veto 3 vooraf).
 3. Bepaal wat het artefact wordt (Veto 1 vooraf) — als je dat niet kunt benoemen, is het ontwerp niet af.
-4. Bepaal de basisroute en de verdiepingsblokken (Deel 4).
-5. Tag pas een kerndoel als je weet dat het artefact het aantoont (Deel 5).
+4. Kies een titel die klopt met wat de leerling gaat doen, en niet meer belooft dan de opdracht waarmaakt (Veto 4 vooraf).
+5. Bepaal de basisroute en de verdiepingsblokken (Deel 4).
+6. Tag pas een kerndoel als je weet dat het artefact het aantoont (Deel 5).
 
 **Bij een bestaande opdracht, of na het bouwen:**
 
 1. Speel hem. Van begin tot eind. Nooit het instellingenbestand lezen.
-2. Vul het afkeurformulier in.
+2. Vul het afkeurformulier in, per veto: GESLAAGD, GEZAKT, of NIET VASTGESTELD (met reden en wat er nodig is).
 3. Eén GEZAKT = afgekeurd, geen score.
-4. Alle drie GESLAAGD = door naar `rubric.md` voor de inhoudelijke beoordeling.
+4. Eén of meer NIET VASTGESTELD, verder geen GEZAKT = niet naar leerlingen totdat alsnog vastgesteld.
+5. Alle vier GESLAAGD = door naar `rubric.md` voor de inhoudelijke beoordeling.
