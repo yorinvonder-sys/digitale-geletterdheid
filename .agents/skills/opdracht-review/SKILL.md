@@ -1,363 +1,308 @@
 ---
 name: opdracht-review
-description: Use this skill for "opdracht review", "review deze opdracht", "beoordeel opdracht", "/opdracht-review", or "speel en beoordeel". This is the only front door for the final judgment on one assignment.
+description: Gebruik voor "opdracht review", "review deze opdracht", "beoordeel opdracht", "/opdracht-review" of "speel en beoordeel". Dit is de enige voordeur voor het eindoordeel over één opdracht.
 ---
 
 # Opdracht review
 
 Deze skill is de enige voordeur voor het eindoordeel over één opdracht. Speel
-eerst als leerling, leg speelbewijs vast, beoordeel daarna alle vier veto's en
-alle drie poorten en score pas als alles is geslaagd.
+eerst als leerling, verzamel bewijs, beoordeel daarna de vier veto's en drie
+poorten en geef pas daarna een rubric-score.
 
 ## Operating Rules
 
 - Schrijf in het Nederlands, tenzij de gebruiker anders vraagt.
-- Werk evidence-first: beweer niets over een flow, viewport, bestand of gedrag
-  zonder dat het werkelijk is bekeken.
-- Houd bevindingen vlak, concreet en controleerbaar.
+- Werk evidence-first: beweer niets over flow, viewport of gedrag zonder dat
+  het werkelijk is bekeken.
 - Ontbrekend bewijs is onzekerheid, nooit succes.
-- Nooit oordelen op basis van het configbestand; alleen op basis van wat er bij
-  het spelen gebeurt.
-- Gebruik de side-effect-vrije preview: `/dev/mission-preview?mission=<id>&reset=1`.
-- Speel niet op productie met een bestaand leerlingaccount.
-- Gebruik geen echte persoonsgegevens, leerlinggegevens, geheimen of tokens.
+- Gebruik de side-effect-vrije preview:
+  `/dev/mission-preview?mission=<id>&reset=1`.
+- Speel niet op productie met een bestaand leerlingaccount en gebruik geen echte
+  persoonsgegevens, leerlinggegevens, geheimen of tokens.
+- Nooit oordelen op basis van config. De SLO-mapping en de opdrachtregistratie
+  mogen alleen worden gelezen om te weten welke kerndoelen en welke motor de
+  opdracht claimt (de aanklacht); nooit om te bewijzen dat iets bij het spelen
+  gebeurt.
 - Escaleer privacy, auth, Supabase/RLS, AI-endpoints en minderjarigendata als
   Rood.
+- Manifesten vóór deze schemaversie (`schemaVersion: 2`) valideren niet meer.
 
 ## Modelroutering
 
-- Fase A wordt uitgevoerd door één Sonnet-subagent met
-  `mcp__playwright__*`.
-- Gebruik één browser en speel sequentieel; geen parallelle browsers.
-- Het oordeel en de poortbeslissing worden door Opus met high reasoning
-  gemaakt.
-- Het Browser-paneel bevriest animaties. Browser-paneelbewijs is daarom geen
-  bewijs voor dynamische beweging; gebruik Playwright voor acties, frames en
-  state changes.
+- Fase A wordt sequentieel uitgevoerd door één speler-agent met uitsluitend
+  `mcp__playwright__*`-tools.
+- Het oordeel en de poortbeslissing worden door de Sol-reviewroute gemaakt.
+- De ingebouwde Browser/Chrome-paneelweergave kan beweging stilzetten; gebruik
+  daarom de Playwright-route uit het Meetrecept voor dynamische claims.
+
+## Meetrecept (voor de speler-agent)
+
+Volg deze stappen letterlijk. Gebruik alleen de MCP-tools met prefix
+`mcp__playwright__`. Bewaar alle bestanden in de eigen evidence-map en gebruik
+geen shell, losse browser of handmatig aangepaste bewijsvelden als meetroute.
+
+### 1. Start en verwachting verzegelen
+
+1. Open `/dev/mission-preview?mission=<id>&reset=1` met
+   `mcp__playwright__browser_navigate`.
+2. Neem vóór elke klik of typeactie de verwachting op. De tijd komt uit de
+   pagina zelf:
+
+```js
+const expectation = await mcp__playwright__browser_evaluate({
+  function: `() => {
+    const recordedAt = Date.now();
+    const title = document.querySelector('h1')?.innerText?.trim() || document.title;
+    const lines = document.body.innerText.split('\\n').map(s => s.trim()).filter(Boolean);
+    const openingLine = lines.find(line => line !== title) || title;
+    const expectedVerb = '<eigen werkwoord uit de voorspelling>';
+    return { title, openingLine, expectedVerb, recordedAt };
+  }`
+});
+```
+
+Vervang de tijdelijke tekst in `expectedVerb` door het eigen werkwoord voordat
+je de oproep uitvoert. Zet de teruggegeven waarde direct in `expectation` en
+verzegel haar voordat je iets aanklikt. De zin is: `ik verwacht dat ik ga
+[expectedVerb]`.
+
+### 2. Logger installeren en iedere actie koppelen
+
+Installeer vóór de eerste actie de logger met `mcp__playwright__browser_evaluate`:
+
+```js
+await mcp__playwright__browser_evaluate({ function: `() => {
+  window.__dgLog = [];
+  ['click','input','keydown','pointerdown'].forEach(t => document.addEventListener(t, e =>
+    window.__dgLog.push({ t: Date.now(), type: t,
+      target: (e.target.closest('button,a,input,textarea,[role]') || e.target).outerHTML.slice(0,120) }), true));
+  return 'logger geïnstalleerd';
+}` });
+```
+
+Na **elke** `mcp__playwright__browser_click`,
+`mcp__playwright__browser_type`, `mcp__playwright__browser_press_key` of andere
+Playwright-actie lees je de log uit en voeg je een regel toe aan `actionLog`:
+
+```js
+const events = await mcp__playwright__browser_evaluate({
+  function: `() => { const copy = window.__dgLog || []; window.__dgLog.splice(0); return copy; }`
+});
+```
+
+Noteer bij die regel de gewone omschrijving van de actie en het nummer van de
+screenshot die je direct daarna maakt. Leg bij typen ook vast of de volgende
+staat veranderde: `changedNextState: true` of `false`. Na een navigatie of
+reload installeer je de logger opnieuw en noteer je dat als actie.
+
+### 3. Screenshots en viewportmatrix
+
+Maak screenshots met `mcp__playwright__browser_take_screenshot` en bestandsnaam
+`NN-<viewport>-<staat>.png` in de evidence-map. Geef ieder beeld een uniek
+positief nummer en neem pad, afmetingen en SHA-256 op in de manifest-index.
+Verwijs bij iedere actie naar dat nummer.
+
+Speel minimaal desktop (1440x900) en mobiel (375 px breed) voor start en eind.
+Als alle vier veto's GESLAAGD zijn, speel je aanvullend tablet staand (820x1180)
+en tablet liggend (1180x820) en leg je per formaat start, flow, feedback,
+recovery en eind vast. Zijn niet alle veto's GESLAAGD, dan is de beperkte matrix
+voldoende: desktop start/eind en mobiel start/eind.
+
+### 4. Actiegebonden beweging meten
+
+Kies één element dat je tijdens een zichtbare leerlingactie zag veranderen en
+neem de selector op. Laat vóór de actie, de actie zelf en de drie beeldjes erna
+in één `mcp__playwright__browser_run_code_unsafe`-oproep uitvoeren, zodat de
+animatie niet al voorbij is vóór de meting:
+
+```js
+const measurement = await mcp__playwright__browser_run_code_unsafe({ code: `async (page) => {
+  const selector = ${JSON.stringify(selector)};
+  const actionSelector = ${JSON.stringify(actionSelector)};
+  const read = () => page.evaluate((sel) => {
+    const el = document.querySelector(sel); const s = getComputedStyle(el); const r = el.getBoundingClientRect();
+    return { t: Date.now(), transform: s.transform, opacity: s.opacity,
+      backgroundColor: s.backgroundColor, color: s.color, borderColor: s.borderColor,
+      boxShadow: s.boxShadow, rect: { x: r.x, y: r.y, width: r.width, height: r.height } };
+  }, selector);
+  const framesBefore = [await read()];
+  await page.click(actionSelector);
+  const actionTime = await page.evaluate(() => Date.now());
+  const framesAfter = [];
+  for (let i = 0; i < 3; i += 1) {
+    await page.evaluate(() => new Promise(r => requestAnimationFrame(r)));
+    framesAfter.push(await read());
+  }
+  return { framesBefore, actionTime, framesAfter };
+}` });
+```
+
+Een volledige meting bevat `framesBefore`, `framesAfter`, `actionTime`,
+`screenshot` en `reducedMotionChecked`. Lees direct na deze actie met
+`mcp__playwright__browser_evaluate` de logger uit en maak daarna met
+`mcp__playwright__browser_take_screenshot` het gekoppelde beeld. Gelijke waarden voor alle genoemde
+kenmerken en afmetingen in drie beeldjes zijn NIET VASTGESTELD.
+
+### 5. Reduced motion (enige geldige route)
+
+Er is geen `emulateMedia`-tool in deze meetroute. Gebruik uitsluitend de
+app-instelling, gevolgd door een verse navigatie:
+
+```js
+const dezelfdeUrl = '/dev/mission-preview?mission=<id>&reset=1';
+const previousAccessibility = await mcp__playwright__browser_evaluate({ function: `() => {
+  const raw = localStorage.getItem('dgskills-accessibility');
+  const old = JSON.parse(raw || '{}');
+  localStorage.setItem('dgskills-accessibility', JSON.stringify({ ...old, reducedMotion: true }));
+  return raw;
+}` });
+await mcp__playwright__browser_navigate({ url: dezelfdeUrl });
+const classPresent = await mcp__playwright__browser_evaluate({
+  function: `() => document.documentElement.classList.contains('reduced-motion')`
+});
+await mcp__playwright__browser_take_screenshot({ filename: 'NN-mobile-reduced-motion.png' });
+await mcp__playwright__browser_evaluate({ function: `() => {
+  const raw = ${JSON.stringify(previousAccessibility)};
+  if (raw === null) localStorage.removeItem('dgskills-accessibility');
+  else localStorage.setItem('dgskills-accessibility', raw);
+}` });
+await mcp__playwright__browser_navigate({ url: dezelfdeUrl });
+```
+
+Neem `reducedMotion: { classPresent: true, screenshot: NN }` op en zet de
+oorspronkelijke instelling daarna terug met opnieuw een verse navigatie.
+
+### 6. Intro-tekst vastleggen
+
+Voor iedere intro-stap sla je de volledige zichtbare tekst op:
+
+```js
+const text = await mcp__playwright__browser_evaluate({ function: '() => document.body.innerText' });
+introSteps.push({ screenshot: screenshotNumber, text });
+```
+
+Na minstens drie stappen schrijft de speler drie zinnen uit deze tekst in
+`introSummary: { maak, voorWie, goed }`. Niet citeren uit bronbestanden.
+
+### 7. Veto 2 per minuut berekenen
+
+De handelingslijst ontstaat door de speeltijd vanaf `expectation.recordedAt` in
+minuten te verdelen. Een minuut zonder acties, of met alleen klikken op
+"volgende/verder/start" of alleen keuze-knoppen, telt als lezen/klikken. Typen
+waarbij de volgende staat niet verandert telt eveneens als klikken; noteer dat
+per typactie met `changedNextState: false`. Zet in het manifest:
+
+```json
+{"veto2":{"readClickMinutes":3,"totalMinutes":5,"percentage":0.6}}
+```
+
+`percentage` is de verhouding `readClickMinutes / totalMinutes`; boven 0,5
+(50%) is Veto 2 GEZAKT volgens de opdrachtstandaard.
+
+### 8. Tweede opdracht voor Veto 3
+
+Speel de tweede opdracht volledig met een eigen evidence-map en eigen manifest.
+Vergelijk de handelingen per positie. Gebruik in het eerste manifest:
+
+```json
+{"comparedWith":{"missionId":"andere-opdracht","manifestPath":"../andere-opdracht/manifest.json"}}
+```
+
+Bij maatwerk zonder gedeelde motor mag dit `null` zijn met
+`comparedWithReason: "eigen motor"`, tenzij de reviewer een andere maatwerk-
+opdracht aanwijst die bij het spelen dezelfde handelingen geeft.
+
+### 9. Afronden
+
+Controleer vóór overdracht dat iedere actie, frame, intro-stap en reduced-motion-
+controle naar een bestaand genummerd en gehasht PNG verwijst. Het manifest gebruikt
+`schemaVersion: 2`, `mode: "opdracht-review"` en `gates` met veto1–4 en poort1–3. Een preview vermeldt nul
+`productionMutations` en nul `xpMutations`; oudere manifesten worden niet meer
+goedgekeurd.
 
 ## Fase A — Spelen
 
-### Operating Rules (live check)
+Speel start, normale flow, minstens één fout of onvolmaakt antwoord, feedback,
+herstel en eind-CTA als een gewone leerling. Noteer dode knoppen, onduidelijke
+labels, onlogische vervolgstappen en stateverlies. `GESPEELD` betekent dat alle
+genoemde toestanden zijn doorlopen; anders is het NIET GESPEELD en stopt de
+beoordeling met `NIET VASTGESTELD — NIET NAAR LEERLINGEN`.
 
-- Schrijf in het Nederlands tenzij de gebruiker expliciet anders vraagt.
-- Gebruik standaard de side-effect-vrije preview-route
-  `/dev/mission-preview?mission=<id>&reset=1` op de draaiende dev-server.
-  Voltooien daar is bewust een no-op: er wordt geen voortgang, XP of
-  activiteitenlog geschreven. Gebruik deze route tenzij de gebruiker
-  expliciet iets anders aanwijst.
-- Speel nooit productie met een bestaand leerlingaccount. Een productie-
-  playthrough vereist expliciete toestemming én een aangewezen testaccount.
-  Zonder beide stopt Fase A met een gemelde blokkade.
-- Geef voorrang aan browserbewijs boven statische codeclaims.
-- Gedraag je als een gewone leerling: lees wat op het scherm staat, klik of tik
-  op verwachte controls, maak redelijke keuzes en noteer verwarring.
-- Gebruik geen admin-snelkoppelingen, databasebewerkingen of verborgen
-  implementatiekennis om voortgang of voltooiing te faken. `reset=1` maakt
-  alleen de lokale preview schoon en is geen snelkoppeling.
-- Voer geen echte persoonlijke of gevoelige gegevens in.
-- Als de opdracht niet zonder een echt leerlingaccount bereikbaar is, meld de
-  blokkade; een leerling-sessie is nooit een fallback.
-
-### 2. Student Playthrough
-
-Speel de hele opdracht als leerling:
-
-- begin op de intro/start;
-- volg de instructies zonder codekennis;
-- voer elke verplichte stap uit;
-- probeer waar mogelijk bewust minstens één fout of onvolmaakt antwoord;
-- observeer feedback, hint, retry, voortgang, score en voltooiing;
-- rond af of beschrijf de exacte blokkade.
-
-Let op dode knoppen, onduidelijke labels, rare knopplaatsen, niet-updatende
-voortgang, verkeerde feedback, onlogische vervolgstappen, ontbrekende eind-CTA
-en onbedoelde navigatie.
-
-### 3. Browser And Device Coverage
-
-Controleer voor zichtbare opdracht-UI minstens:
-
-- desktop/laptop;
-- tablet/iPad staand;
-- tablet/iPad liggend;
-- mobiel.
-
-Bekijk per formaat de intro/start, normale tussenstaat, fout/feedbackstaat en
-eind-, voltooiings- of volgende-CTA-staat. Noteer `Echte iPad-check nodig` als
-Safari/iPad kan verschillen en alleen emulatie is gebruikt.
-
-### Handelingslijst per minuut (verplicht)
-
-Maak tijdens het spelen een bijlage met per minuut één fysiek werkwoord: wat de
-leerling werkelijk doet, niet wat de config beweert. Noteer lezen, klikken,
-typen, slepen, kiezen, vergelijken, maken, herstellen en teruggaan. Beschrijf
-bij iedere overgang het zichtbare gevolg.
-
-De lijst wordt afgeleid uit `manifest.actionLog[]`. Bij iedere klik- of typactie
-legt Playwright via `browser_evaluate` een regel vast met `Date.now()` uit de
-pagina, omschrijving en screenshotnummer. De tijdstippen zijn strikt
-oplopend. Een losse achteraf geschreven handelingslijst zonder deze browserlog
-is voor Veto 2 `NIET VASTGESTELD`.
-
-### Technische signalen
-
-Noteer alleen signalen die de leerlingflow raken: consolefouten, mislukte
-netwerkverzoeken, ontbrekende afbeeldingen, lang laden, renderproblemen en
-vreemd gedrag na herladen of terug/vooruit navigeren. Dev-waarschuwingen zonder
-zichtbaar effect zijn geen bevinding.
-
-### Fase A-besluit
-
-`GESPEELD` betekent: start, normale flow, fout/feedback en eind-CTA zijn
-doorlopen. `NIET GESPEELD` betekent: één van die onderdelen ontbreekt.
-De enige harde stop vóór de beoordeling is niet gespeeld of geen valide
-manifest. De vier veto's worden daarna altijd volledig beoordeeld. Alleen bij
-vier keer `GESLAAGD` volgt de volledige beoordeling van de drie poorten; binnen
-elke fase wordt de beoordeling niet tussentijds afgebroken.
-
-### Evidence en manifestcontract
-
-Bewaar genummerde PNG's en `manifest.json` in
-`business/dgskills-reviews/evidence/<id>-<datum>/`. Valideer met:
+Valideer de map na het spelen met:
 
 ```text
-node .claude/skills/opdracht-review/scripts/validate-evidence.mjs <manifest>
+node .claude/skills/opdracht-review/scripts/validate-evidence.mjs <manifest.json>
 ```
-
-Zonder valide manifest is de uitkomst exact:
-`NIET VASTGESTELD — NIET NAAR LEERLINGEN` met reden `niet gespeeld`.
-Bonus-opdrachten worden via hun hoofdrol gespeeld; een blanco standalone
-preview is geen reden voor afkeur.
-
-Voor dit validator-entrypoint is `mode: "opdracht-review"` verplicht. Naast het
-bestaande schema zijn dan verplicht:
-
-- `browser`: een waarde die case-insensitive `playwright` bevat;
-- `expectation`: `{title, openingLine, expectedVerb, recordedAt}`. Dit wordt
-  vóór de eerste interactie verzegeld; `expectedVerb` hoort bij de zin
-  `ik verwacht dat ik ga [werkwoord]`;
-- `actionLog[]`: regels `{t, action, screenshot}`, strikt oplopende browser-
-  tijdstippen en minstens acht regels;
-- `animationEvidence[]`: regels `{element, action, framesBefore, framesAfter,
-  reducedMotionChecked}`; ieder frame is `{t, transform, opacity}` uit
-  `getComputedStyle` via `requestAnimationFrame`, frametijden lopen strikt op
-  en `framesAfter` bevat minstens drie opeenvolgende frames;
-- `introText`: zichtbare browser-`innerText`, minstens één niet-lege regel per
-  intro-stap en minstens drie stappen;
-- `comparedWith`: de `missionId` van de tweede opdracht op dezelfde motor, of
-  `null` met een niet-lege reden (`comparedWithReason`).
-
-Het bestaande schema blijft verplicht: `schemaVersion`, volledige
-`testedCommit`-SHA, relatieve `route`, `result` (`PASS`, `FAIL` of `BLOCKED`),
-`limitations`, vier vaste CSS-viewports, checkpoints `start`, `flow`,
-`feedback`, `recovery`, `end`, PNG-paden met SHA-256 en afmetingen, en bij een
-preview nul `productionMutations` en nul `xpMutations`.
 
 ## Fase B — Poort 0: vier veto's
 
-Lees `docs/pedagogy/opdracht-standaard.md` en volg Deel 1 en **Het
-afkeurformulier** letterlijk. De vier veto's zijn Artefact, Handelingen,
-Onderscheid en Belofte. Beoordeel ze alle vier en noteer per veto
-`GESLAAGD`, `GEZAKT` of `NIET VASTGESTELD`.
-
-### Veto 1 — Artefact: speelbewijs
-
-In `/dev/mission-preview` is opslaan niet altijd mogelijk. Bewijs is maken →
-volledige reload → artefact terugvinden, en/of docent-/klasgenootweergave die
-het toont. Lukt dat niet in de preview, noteer `NIET VASTGESTELD` met reden én
-benodigd bewijs: `geautoriseerde synthetische niet-productierun met
-testaccount`. Een knop of configveld is nooit bewijs voor `GESLAAGD`.
-
-### Veto 2 — Handelingen: browserlog
-
-Gebruik alleen de actiegebonden `actionLog[]` uit Fase A voor de handelingslijst.
-Elke klik en typeactie heeft `Date.now()` uit de pagina via
-`browser_evaluate`, omschrijving en screenshotnummer. Ontbreekt de log, dan is
-dit veto `NIET VASTGESTELD` met reden en benodigd bewijs.
-
-### Veto 3 — Onderscheid: tweede motorrun
-
-Speel een tweede volledige opdracht op dezelfde motor. Motor betekent de
-mapnaam onder `src/features/missions/templates/`. Leg twee volledige manifests,
-twee `actionLog[]`-reeksen en een vergelijking per actiepositie in het rapport
-vast. `comparedWith` is de tweede `missionId`; zonder dit bewijs is het veto
-`NIET VASTGESTELD` met reden en benodigd bewijs.
-
-### Veto 4 — Belofte: vooraf verzegelen
-
-Vóór de eerste interactie schrijft de speler in `expectation` titel,
-openingszin en `ik verwacht dat ik ga [werkwoord]`, met tijdstip. Achteraf
-invullen is `NIET VASTGESTELD`, met reden en benodigd bewijs; het kan niet
-terugwerken naar een voorafgaande belofte.
-
-### Uitkomstvolgorde veto's
-
-Beoordeel alle vier veto's altijd. Pas daarna geldt letterlijk:
-
-```text
-minstens één GEZAKT → "AFGEKEURD";
-anders minstens één NIET VASTGESTELD → "NIET VASTGESTELD — NIET NAAR LEERLINGEN";
-anders door naar de poorten.
-```
-
-Bij elk `NIET VASTGESTELD` staan reden én benodigd bewijs. De vier beoordelingen
-worden volledig afgemaakt; alleen niet gespeeld of geen valide manifest stopt
-vóór deze beoordelingen.
+Lees `docs/pedagogy/opdracht-standaard.md` Deel 1 en vul Artefact,
+Handelingen, Onderscheid en Belofte volledig in. Voor maatwerk zonder gedeelde
+motor geldt Veto 3 = GESLAAGD met notitie "eigen motor"; anders zijn twee
+volledige speelbewijzen nodig.
 
 ## Fase C — Poorten 1–3
 
-Lees `docs/pedagogy/kwaliteitspoorten.md` en volg het bestand letterlijk.
-Beoordeel alle drie poorten. P3c Project-gereedheid is observatie binnen Poort
-3, geen poort en geen score.
+Lees `docs/pedagogy/kwaliteitspoorten.md` en volg die tekst letterlijk. De
+SLO-mapping en opdrachtregistratie zijn alleen de aanklacht (welke doelen de
+opdracht claimt), nooit het bewijs. P3c projectgereedheid is observatie zonder
+eigen status of score. Gebruik voor de visuele controle exact de gate hieronder.
 
-### Poort 1 — Visueel + Beweging
+#### Visual Precision Gate — verplicht en streng
 
-De gate bevat de statische controles uit kwaliteitspoorten.md, maar meet alleen
-werkelijk getoonde elementen met berekende DOM-stijlen, niet broncode. Voor
-beweging is één zichtbare leerlingactie verplicht: meet het element direct vóór
-de actie en op minstens drie opeenvolgende `requestAnimationFrame`-frames erna
-met `getComputedStyle` op `transform`/`opacity` via `browser_evaluate`; leg
-keyframes en eigenschappen vast. Ambient animaties tellen niet. Identieke
-frames zijn `NIET VASTGESTELD`, niet `GEZAKT`; `GEZAKT` alleen als aantoonbaar
-geen element beweegt en reduced motion uit staat. Test reduced motion na verse
-reload met `emulateMedia` én de opgeslagen `AccessibilityContext`-instelling.
-
-Hergebruik de sectie **`#### Visual Precision Gate — verplicht en streng`** uit
-`.claude/skills/dgskills-design-reviewer/SKILL.md`; dynamisch bewijs komt uit
-het Playwright-manifest.
-
-### Poort 2 — Instructie
-
-Bedien browser-only, zonder config, de intro-stappen achtereen. Schrijf daarna
-alleen op basis van zichtbare schermtekst drie zinnen: wat maak je, voor wie,
-hoe weet je dat het goed is. Voeg die zinnen en de uitgelezen `innerText` toe
-aan het rapport; de B1-toets geldt voor die tekst. Ontbrekende speeltekst maakt
-de uitkomst `NIET VASTGESTELD`, niet een configgebaseerde goedkeuring.
-
-### Poort 3 — Doelen
-
-Voor elk toegekend kerndoel uit `src/config/slo-kerndoelen-mapping.ts` én elk
-platformdoel leg je één actie uit `actionLog[]` en één screenshotnummer van de
-plek in het leerlingartefact vast. Eén doel zonder die koppeling is `GEZAKT`.
-P3c blijft uitsluitend observatie en krijgt geen `GESLAAGD`/`GEZAKT`.
-
-### Uitkomstvolgorde poorten
-
-Beoordeel alle drie poorten altijd. Pas daarna geldt opnieuw:
-
-```text
-minstens één GEZAKT → "AFGEKEURD";
-anders minstens één NIET VASTGESTELD → "NIET VASTGESTELD — NIET NAAR LEERLINGEN";
-anders door naar de rubric.
-```
-
-Bij elk `NIET VASTGESTELD` staan reden én benodigd bewijs. De drie poorten
-worden volledig afgemaakt.
-
-### Poortnotatie
-
-Gebruik uitsluitend `GESLAAGD`, `GEZAKT` en `NIET VASTGESTELD`. Vervang deze
-statuswoorden niet door "waarschijnlijk", "bijna" of een kleur.
-
-## Visual Precision Gate — verplicht en streng
-
-Deze gate is verplicht voor elke missie, game, tool, simulator, canvas,
-dashboard of interactieve opdracht. Een missie mag niet door als deze gate
-onvoldoende bewezen is.
-
-Controleer alignment, overlap, text-fit, spacing-rhythm, game/canvas-fit en de
-volledige flow (intro, mid-flow, fout/feedback, eind en klaar/volgende). Gebruik
-Playwright-manifest-bewijs; Browser-paneelbewijs telt niet voor dynamische
-claims.
-
-Blocking wanneer tekst of controls overlappen, een belangrijk deel buiten beeld
-valt, CTA's onbruikbaar zijn, slechts één viewport/state is bekeken, of de
-reviewer alleen schrijft dat het er goed uitziet zonder concrete observatie.
-
-Controleer doelstijl `duck-bg`, `duck-ink`, `duck-acid`, `duck-gray`,
-`duck-error`, `duck-bgLight`; legacy `lab.*` mag alleen consistent en verklaard
-worden gebruikt. Knoppen hebben duidelijke labels, hover/focus, en icon-only
-knoppen een aria-label. Responsive gedrag werkt op 375, 768 en 1280 px.
-Animatie heeft functionele waarde, gebruikt geen wrapper-spam en veroorzaakt
-geen cognitieve overload. Afbeeldingen, formulieren, contrast en
-kleur-onafhankelijke informatie zijn toegankelijk.
+Controleer uitlijning, overlap, tekstpassendheid, tussenruimte, spel- of
+canvasruimte en de volledige flow (intro, tussenstaat, fout/feedback, eind en
+klaar/volgende). Gebruik de vier veto-afhankelijke viewportmatrix en concrete
+screenshots. Een opdracht gaat niet door bij overlap, afgesneden inhoud,
+onbruikbare knoppen of slechts één bekeken formaat/toestand. Kijk ook naar de
+eendstijl, duidelijke labels, focus, aria-labels, contrast en informatie die
+niet alleen door kleur wordt overgebracht. Beweging heeft een functie en maakt
+de leerling niet onnodig onrustig.
 
 ## Fase D — Score
 
-Alleen wanneer alle vier veto's en alle drie poorten `GESLAAGD` zijn, pas je de
-`## Verification Rubric` uit `opdracht-klaar-check` toe. Criterium 4 gebruikt
-uitsluitend de Nederlandse opsomming van mogelijke leerlingproducten.
+Alleen wanneer alle vier veto's en drie poorten GESLAAGD zijn, pas je de
+`## Verification Rubric` uit `opdracht-klaar-check` toe. Score elk criterium
+met 0, 1 of 2. Criterium 4 gebruikt alleen Nederlandse leerlingproducten.
 
-Score elk criterium met 0 (niet bewezen/broken), 1 (gedeeltelijk) of 2 (sterk).
-
-| # | Criterium | Verificatievraag | Sterk genoeg |
-|---|---|---|---|
-| 1 | Didactische kern | Wordt het leerdoel echt geoefend? | De leerling doet de vaardigheid. |
-| 2 | SLO/curriculum-fit | Past de claim bij inhoud en doelgroep? | Claim is plausibel en niet overdreven. |
-| 3 | Actief denken | Analyseert, maakt, beoordeelt of onderbouwt de leerling? | Meer dan klikken of herinneren. |
-| 4 | Leerbaar bewijs | Is bewijs zichtbaar of terug te lezen? | Artefact, uitleg, plan, ontwerp, analyse of reflectie. |
-| 5 | Flow compleet | Zijn intro, flow, foutfeedback en eind bekeken? | Alle kernstaten geïnspecteerd. |
-| 6 | Visual Precision Gate | Is UI op formaten verzorgd? | Geen overlap, afsnijding of onbruikbare controls. |
-| 7 | Feedbackkwaliteit | Helpt feedback verbeteren? | Correct, kort, waarom en één volgende stap. |
-| 8 | AI-gedrag | Is AI coachend in plaats van uitvoerend? | AI geeft kernantwoord niet weg. |
-| 9 | Technische betrouwbaarheid | Werken handlers, states, restart en fouten? | Geen dode knoppen of stateverlies. |
-| 10 | Veiligheid en privacy | Is dit veilig voor minderjarigen en school? | Geen onnodige data of lekken. |
-
-**Commitbewijs:** elk rapport noemt de commit-hash van
-`docs/pedagogy/kwaliteitspoorten.md` én `docs/pedagogy/opdracht-standaard.md`,
-opgehaald met:
-
-```text
-git log -1 --format=%h -- <pad>
-```
+| # | Criterium | Sterk genoeg |
+|---|---|---|
+| 1 | Didactische kern | De leerling oefent het leerdoel echt. |
+| 2 | SLO/curriculum-fit | De claim past bij inhoud en doelgroep. |
+| 3 | Actief denken | De leerling analyseert, maakt, beoordeelt of onderbouwt. |
+| 4 | Leerbaar bewijs | Werk, uitleg, plan, ontwerp, analyse of reflectie is zichtbaar. |
+| 5 | Flow compleet | Intro, flow, foutfeedback en eind zijn bekeken. |
+| 6 | Visual Precision Gate | Geen overlap, afsnijding of onbruikbare knoppen. |
+| 7 | Feedbackkwaliteit | Feedback zegt wat beter kan en wat de volgende stap is. |
+| 8 | AI-gedrag | Hulp coacht en neemt het kernwerk niet over. |
+| 9 | Technische betrouwbaarheid | Handelingen, herstart en fouten werken. |
+| 10 | Veiligheid en privacy | Geen onnodige gegevens of lekken. |
 
 ## Rapportformaat
 
-Schrijf `business/dgskills-reviews/<id>-<datum>.md` met exact deze onderdelen:
-
-```md
-## Gespeeld
-- Ja/nee; begin-tot-eind: ja/nee
-- Commit-SHA: <sha>
-- Evidence: business/dgskills-reviews/evidence/<id>-<datum>/manifest.json
-
-## Handelingslijst
-Bijlage met één fysiek werkwoord per minuut, afgeleid uit actionLog[].
-
-## Afkeurformulier
-Veto 1–4 uit docs/pedagogy/opdracht-standaard.md, alle vier ingevuld.
-Poort 1 Visueel + Beweging  GESLAAGD / GEZAKT / NIET VASTGESTELD
-Poort 2 Instructie          GESLAAGD / GEZAKT / NIET VASTGESTELD
-Poort 3 Doelen              GESLAAGD / GEZAKT / NIET VASTGESTELD
-Bij ieder NIET VASTGESTELD: reden en benodigd bewijs.
-
-## UITKOMST
-DOOR NAAR RUBRIC  /  AFGEKEURD  /  NIET VASTGESTELD — NIET NAAR LEERLINGEN
-```
-
-Gebruik de letterlijke uitkomsttekst uit **Het afkeurformulier** in
-`docs/pedagogy/opdracht-standaard.md`:
+Schrijf `business/dgskills-reviews/<id>-<datum>.md` met Gespeeld,
+Handelingslijst, Afkeurformulier, UITKOMST en alleen bij DOOR NAAR RUBRIC de
+rubric-tabel. Gebruik de uitkomsttekst letterlijk:
 
 ```text
 UITKOMST:  DOOR NAAR RUBRIC  /  AFGEKEURD  /  NIET VASTGESTELD — NIET NAAR LEERLINGEN
 ```
 
-Voeg de rubric-tabel uitsluitend toe bij `DOOR NAAR RUBRIC`; bij afkeur of niet
-vastgesteld komt geen score of puntentotaal.
+Vermeld de volledige commit-hash van de kwaliteitspoorten en de
+opdrachtstandaard.
 
 ## Beslisregels rubric
 
-- 16–20 zonder veto- of poortprobleem: `DOOR NAAR RUBRIC`.
-- 12–15 of één betekenisvolle waarschuwing: noteer `fix-eerst`.
-- 0–11, een blokkade of onduidelijk leerbewijs: `herontwerp`, tenzij een
-  kleine reparatie het probleem aantoonbaar oplost.
+- 16–20 = `ship`.
+- 12–15 = `fix-eerst`.
+- 0–11 = `herontwerp`.
 
-Een hoge score heft nooit een gezakte poort of veto op. Een ontbrekend
-bewijsstuk blijft `NIET VASTGESTELD` totdat de reviewer het werkelijk verzamelt.
+Deze score heft nooit een gezakt veto of poort op. Ontbrekend bewijs blijft
+NIET VASTGESTELD totdat het werkelijk is verzameld.
 
 ## Herstart en grenzen
 
 Gebruik `reset=1` alleen om de lokale preview voor een nieuwe speelronde schoon
 te starten. Gebruik geen verborgen state, adminroute, database-edit of
-handmatig gemanipuleerde manifestvelden. Als login zonder geschikt testaccount
-nodig is, rapporteer de blokkade als `NIET VASTGESTELD`.
+handmatig gemanipuleerde bewijsvelden. Als login zonder geschikt testaccount
+nodig is, rapporteer de blokkade als NIET VASTGESTELD.
