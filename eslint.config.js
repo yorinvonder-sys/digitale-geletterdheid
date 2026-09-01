@@ -46,12 +46,12 @@ const FORBIDDEN = archs.flatMap((m) => m.default.forbidden ?? []);
 
 const names = COMPONENTS.map((c) => c.name);
 
-// eslint-plugin-boundaries takes `from`/`disallow` as an array of type names,
-// or of [type, captures] tuples for parametric rules -- not the {type} object
-// shape shown in the skill's generic example.
-function expand(spec, except) {
+// eslint-plugin-boundaries v7 selector syntax: an element selector is
+// { element: { type: [...] } }, and disallow entries need an explicit `to`
+// wrapper. The skill's generic example predates this shape.
+function selector(spec, except) {
     if (spec && typeof spec === 'object' && !Array.isArray(spec)) {
-        return [[spec.type, spec.captured ?? {}]]; // parametric
+        return { element: { type: spec.type, captured: spec.captured ?? {} } };
     }
     const resolveList = (list) =>
         list.flatMap((t) =>
@@ -66,19 +66,22 @@ function expand(spec, except) {
         const excluded = new Set(resolveList(except));
         types = types.filter((t) => !excluded.has(t));
     }
-    return types;
+    return { element: { type: types } };
 }
 
+// The schema's stack-agnostic `mode` is translated here: v7 element
+// descriptors deprecate it, and `mode: 'file'` (match the whole path, not a
+// containing folder) is expressed as `partialMatch: false`.
 const elements = COMPONENTS.map((c) => ({
     type: c.name,
     pattern: c.pattern,
-    ...(c.mode && { mode: c.mode }),
+    ...(c.mode === 'file' && { partialMatch: false }),
     ...(c.capture && { capture: c.capture }),
 }));
 
-const rules = FORBIDDEN.map((e) => ({
-    from: expand(e.from, e.except),
-    disallow: expand(e.to, e.except_to),
+const policies = FORBIDDEN.map((e) => ({
+    from: [selector(e.from, e.except)],
+    disallow: [{ to: selector(e.to, e.except_to) }],
     message: e.why,
 }));
 
@@ -114,13 +117,13 @@ export default [
             // code is never linted itself (it is Deno), yet it must be a known
             // element so that a client import of it resolves to `edge-functions`
             // instead of silently passing as an unmatched external module.
-            'boundaries/include': ['src/**/*', 'supabase/functions/**/*'],
+            'boundaries/include': ['src/**/*', 'supabase/functions/**/*', 'tests/**/*'],
             'import/resolver': {
                 typescript: { project: './tsconfig.base.json' },
             },
         },
         rules: {
-            'boundaries/element-types': ['error', { default: 'allow', rules }],
+            'boundaries/dependencies': ['error', { default: 'allow', policies }],
         },
     },
 ];

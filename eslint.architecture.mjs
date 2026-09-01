@@ -17,14 +17,18 @@
 //   - services -> features: 2 imports, both of
 //     @/features/assessment/escaperoom/types. Enforceable once those types
 //     move to a location services may own.
+//   - Co-located test files (src/**/*.test.ts): eslint-plugin-boundaries v7
+//     classifies elements by folder, and its file-descriptor API is not
+//     reachable from the plugin's settings, so a file-level pattern silently
+//     matches nothing. There are no co-located tests in src/ today -- every
+//     test lives in tests/, which IS enforced. Revisit if that changes.
 //   - Literal-only dynamic import paths: 10 mission templates deliberately use
 //     import(`./configs/${missionId}.ts`) behind a validated id allowlist.
 
 export default {
     // Narrowest first; catch-all last (pattern directive #5).
     components: [
-        { name: 'test-unit', pattern: 'src/**/*.{test,spec}.{ts,tsx}', mode: 'file' },
-        { name: 'test-support', pattern: 'tests/**', mode: 'file' },
+        { name: 'test-support', pattern: 'tests/**' },
         { name: 'edge-functions', pattern: 'supabase/functions/**', mode: 'file' },
         { name: 'components-ui', pattern: 'src/components/ui/**', mode: 'file' },
         { name: 'components-shell', pattern: 'src/components/app-shell/**', mode: 'file' },
@@ -51,8 +55,8 @@ export default {
         },
         {
             from: '*',
-            except: ['test-unit', 'test-support'],
-            to: ['test-unit', 'test-support'],
+            except: ['test-support'],
+            to: 'test-support',
             why: 'Production code must not import test-only code.',
         },
     ],
