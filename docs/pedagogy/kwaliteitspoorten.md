@@ -18,19 +18,21 @@ bewijs.
 - **Veto 1 — Artefact:** de speler maakt iets, ververst de pagina volledig en
   vindt het gemaakte werk terug, of een docent- of klasgenootweergave toont het
   werk. Lukt dat in de oefenomgeving niet, dan is de uitkomst NIET VASTGESTELD
-  met als benodigd bewijs: `geautoriseerde synthetische niet-productierun met
-  testaccount`.
+  met als benodigd bewijs: een proefronde met een testaccount buiten de echte
+  leerlingomgeving, na toestemming van de eigenaar.
 - **Veto 2 — Handelingen:** de speler levert een tijdlijn van wat er per minuut
   werkelijk is gedaan. De tijdlijn komt uit de tijdregistratie tijdens het
-  spelen. Minuten waarin de speler alleen leest of klikt vormen samen meer dan
-  de helft van de speeltijd? Dan is Veto 2 GEZAKT. Zonder zo'n registratie is
+  spelen. Elke begonnen minuut telt als hele minuut. Minuten waarin de speler
+  alleen leest of klikt vormen samen meer dan de helft van de speeltijd? Dan is
+  Veto 2 GEZAKT. Zonder zo'n registratie is
   het veto NIET VASTGESTELD.
 - **Veto 3 — Onderscheid:** de speler doorloopt een tweede opdracht op dezelfde
   motor en de reviewer vergelijkt de handelingen in dezelfde volgorde. Zonder
   twee volledige speelrondes is het veto NIET VASTGESTELD. Maatwerk zonder
   gedeelde motor: Veto 3 = GESLAAGD met de notitie 'eigen motor', tenzij de
   reviewer een andere maatwerkopdracht aanwijst die bij het spelen dezelfde
-  handelingen geeft.
+  handelingen geeft. Deze regel geldt voorlopig, tot de eigenaar hem bevestigt
+  of schrapt (zie Beslislog).
 - **Veto 4 — Belofte:** vóór de eerste handeling schrijft de speler de titel,
   openingszin en de zin "ik verwacht dat ik ga [werkwoord]" op, met het
   tijdstip. Achteraf invullen telt niet als voorafgaande belofte.
@@ -47,7 +49,7 @@ UITKOMST:  DOOR NAAR RUBRIC  /  AFGEKEURD  /  NIET VASTGESTELD — NIET NAAR LEE
 ### Regel
 
 De opdracht heeft een herkenbare DGSkills-vorm en reageert zichtbaar op wat de
-leerling doet. De eendstijl voert de boventoon. Titels, kaarten, knoppen en
+leerling doet. De DGSkills-huisstijl (de eend-stijl uit `design.md`) voert de boventoon. Titels, kaarten, knoppen en
 teksten zijn rustig uitgelijnd, goed leesbaar en groot genoeg om aan te raken.
 Beweging is betekenisvol: na een zichtbare leerlingactie verandert het element
 dat bij die actie hoort. Ook kleurwissel of verschijnen en verdwijnen telt als
@@ -55,9 +57,12 @@ beweging. Zwevende versiering zonder aanleiding telt niet.
 
 ### Afgekeurd zodra
 
-De hoofdinteractie bestaat uit afvinkkaders, tekstvakken en een volgende-knop (een formulier in een jasje), ook als de opdracht een groot project is. Omvang is geen excuus: een project verdient een dragende vorm (jury, werkbank, studio, kaart) waarin het werk van de leerling zichtbaar groeit; een afvinklijstje mag hooguit een klein hulpmiddel zijn.
-
-- De gewone laboratoriumstijl overheerst de eendstijl in de werkelijk getoonde
+- De hoofdinteractie bestaat uit afvinkkaders, tekstvakken en een volgende-knop
+  (een formulier in een jasje), ook als de opdracht een groot project is.
+  Omvang is geen excuus: een project verdient een dragende vorm (jury,
+  werkbank, studio, kaart) waarin het werk van de leerling zichtbaar groeit;
+  een afvinklijstje mag hooguit een klein hulpmiddel zijn.
+- De oude laboratoriumstijl overheerst de huisstijl in de werkelijk getoonde
   opdracht.
 - Na een zichtbare leerlingactie verandert geen enkel zichtbaar onderdeel,
   terwijl de gewone bewegingsstand aan staat.
@@ -82,7 +87,7 @@ versiering die niet door de leerling wordt veroorzaakt telt evenmin.
 
 Leg één leerlingactie vast met een beeld vóór de actie en drie opeenvolgende
 beeldjes erna. Noteer het element dat je volgde, de zichtbare verandering en
-alle gemeten uiterlijke kenmerken. Voeg de beelden van de actie en het gevolg
+de gemeten uiterlijke kenmerken: kleur, positie, grootte en doorzichtigheid. Voeg de beelden van de actie en het gevolg
 toe. Herhaal de controle in de stand voor minder beweging en voeg het beeld
 van die run toe. Drie gelijke beeldjes zijn NIET VASTGESTELD; alleen aantoonbaar
 stilvallen met de gewone bewegingsstand is GEZAKT. Hoe de reviewer dit precies meet, staat in de skill `opdracht-review` (Meetrecept).
@@ -215,10 +220,27 @@ Poort 3 Doelen              GESLAAGD / GEZAKT / NIET VASTGESTELD
 | `podcast-producer` | `AFGEKEURD` | Veto 1 + 2 + 3 + 4 | Er blijft geen aantoonbaar werk over; de speler leest en typt vooral, doet dezelfde handelingen als andere formulieropdrachten en de titel belooft maken/opnemen. |
 | `app-prototyper` | `AFGEKEURD` | Veto 1 + 2 + 3 + 4 | Er blijft geen klikbaar prototype over; de speler leest en typt vooral, doet dezelfde handelingen als andere formulieropdrachten en de titel belooft bouwen. |
 | `dashboard-designer` | `AFGEKEURD` | Veto 3 + Veto 4 | De speler voert dezelfde handelingen uit als data-journalist en ontwerpt niets; de titel belooft ontwerpen. |
-| `datalekken-rampenplan` | `AFGEKEURD` | veto's `GESLAAGD`, Poort 2 `GEZAKT`, Poort 1 `NIET VASTGESTELD` | De veto's slagen (Veto 3 via de maatwerkregel), maar de introductie is niet de vereiste opeenvolgende presentatie en beweging is nog niet gemeten. |
+| `datalekken-rampenplan` | `AFGEKEURD` | Veto 1 (gemeten 2 sep 2026); daarnaast zou Poort 2 zakken | De crisisbrief bestaat uit voorgeschreven alinea's die je aanvinkt; de leerling schrijft nergens zelf. Veto 3 slaagt via de maatwerkregel. De introductie is één stil scherm. |
 
-Deze set is een speelbare terugvalcontrole. Wijkt een review af, dan noteert de
-reviewer welk nieuw speelbewijs dat verschil verklaart.
+Deze set is een speelbare terugvalcontrole. Wijkt een review af van deze tabel
+zonder dat de tabel is aangepast, dan is de REVIEW verdacht, niet de tabel: de
+reviewer noteert welk nieuw speelbewijs het verschil verklaart en legt de
+afwijking aan de eigenaar voor.
+
+## Woordenlijst
+
+- **Platformdoel:** wat DGSkills als geheel belooft (zie het merkdocument):
+  leerlingen maken zelf iets echts, AI helpt maar neemt niet over.
+- **Kernwerk:** het deel van de opdracht dat de leerling zelf moet bedenken of
+  maken; niet de uitleg eromheen.
+- **Slimme hulp:** de AI-coach in de opdracht.
+- **Projectgereedheid:** drie losse waarnemingen, geen oordeel: groeit het werk
+  over meerdere lessen, kan een tweede leerling meedoen, is het groter dan één
+  scherm.
+- **Stand voor minder beweging:** de instelling waarmee een leerling animaties
+  uitzet; de inhoud moet dan meteen zichtbaar zijn.
+- **Motor:** het gedeelde stuk software waarop meerdere opdrachten draaien;
+  maatwerk heeft een eigen motor.
 
 ## Beslislog
 
@@ -227,3 +249,5 @@ reviewer welk nieuw speelbewijs dat verschil verklaart.
 | 2026-09-01 | Instructie = geanimeerde intro in de app, geen video; review speelt altijd eerst. | Poort 2 vereist zichtbare, opeenvolgende in-app stappen; video is geen vervanging. |
 | 2026-09-01 | Ook grote/projectmatige opdrachten geen suffe UI met afvinkkaders; creatiever en aantrekkelijker | Poort 1: formulier-hoofdinteractie = GEZAKT |
 | 2026-09-01 | Voorstel (nog door de eigenaar te bevestigen): maatwerk zonder gedeelde motor slaagt op Veto 3 met notitie 'eigen motor' | Veto 3 |
+| 2026-09-02 | Uitleg van de meetregel: instellingen mogen alleen worden gelezen om te weten wat een opdracht CLAIMT (welke kerndoelen, welke motor), nooit als bewijs dat het gebeurt | Veto 3, Poort 3 |
+| 2026-09-02 | Gemeten: datalekken-rampenplan zakt op Veto 1 (aanvinkbrief); de regressieset is daarop aangepast | Veto 1 |

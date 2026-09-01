@@ -189,8 +189,9 @@ async function validateOpdrachtReview(manifest, manifestDir, errors, screenshotI
   }
   if (!manifest.reducedMotion || manifest.reducedMotion.classPresent !== true) fail(errors, 'reducedMotion.classPresent moet true zijn');
   else requireScreenshot(screenshotIndex, manifest.reducedMotion.screenshot, 'reducedMotion.screenshot', errors);
-  if (!Array.isArray(manifest.introSteps) || manifest.introSteps.length < 3) fail(errors, 'introSteps moet minstens 3 stappen bevatten');
-  else for (const [i, step] of manifest.introSteps.entries()) {
+  if (!Array.isArray(manifest.introSteps) || manifest.introSteps.length < 1) fail(errors, 'introSteps moet minstens 1 stap bevatten (leg vast wat er werkelijk is)');
+  else if (manifest.introSteps.length < 3 && manifest.gates?.poort2 === 'GESLAAGD') fail(errors, 'Poort 2 mag niet GESLAAGD zijn met minder dan 3 vastgelegde intro-stappen');
+  if (Array.isArray(manifest.introSteps)) for (const [i, step] of manifest.introSteps.entries()) {
     if (!nonEmptyString(step?.text) || step.text.trim().length < 40) fail(errors, `introSteps[${i}].text moet minstens 40 tekens bevatten`);
     requireScreenshot(screenshotIndex, step?.screenshot, `introSteps[${i}].screenshot`, errors);
   }
@@ -201,7 +202,10 @@ async function validateOpdrachtReview(manifest, manifestDir, errors, screenshotI
   const requiresComparedWith = options.requireComparedWith !== false;
   if (manifest.comparedWith === undefined && requiresComparedWith) fail(errors, 'comparedWith ontbreekt');
   if (manifest.comparedWith !== undefined) {
-    if (manifest.comparedWith === null) { if (manifest.comparedWithReason !== 'eigen motor') fail(errors, 'comparedWithReason moet exact eigen motor zijn bij null'); }
+    if (manifest.comparedWith === null) {
+      if (!nonEmptyString(manifest.comparedWithReason)) fail(errors, 'comparedWithReason moet een reden bevatten bij null');
+      else if (manifest.comparedWithReason.trim() !== 'eigen motor' && manifest.gates?.veto3 === 'GESLAAGD') fail(errors, 'gates.veto3 mag zonder tweede opdracht alleen GESLAAGD zijn met reden eigen motor');
+    }
     else if (!manifest.comparedWith || typeof manifest.comparedWith !== 'object') fail(errors, 'comparedWith moet een object of null zijn');
     else {
       const reference = manifest.comparedWith;

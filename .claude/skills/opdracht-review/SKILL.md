@@ -37,6 +37,25 @@ poorten en geef pas daarna een rubric-score.
 
 ## Meetrecept (voor de speler-agent)
 
+### 0. Benodigde tools van de speler-agent
+
+De speler is een Sonnet-subagent met (a) de volledige `mcp__playwright__*`-set:
+`browser_navigate`, `browser_snapshot`, `browser_click`, `browser_type`,
+`browser_press_key`, `browser_resize`, `browser_take_screenshot`,
+`browser_evaluate`, `browser_run_code_unsafe`; en (b) een shell (`Bash`) voor
+de evidence-map, SHA-256-hashes, afmetingen en de validator. Ontbreekt één van
+beide, dan kan het recept niet worden uitgevoerd: meld dat en stop. Het
+Browser-paneel van Claude is nooit een vervanging.
+
+**Wat de validator wél en niet bewijst.** De validator controleert samenhang
+(bestaan en hash van elke PNG, oplopende tijden, gekoppelde screenshots,
+consistentie tussen metingen en uitkomsten). Hij bewijst geen herkomst: een
+manifest blijft in theorie te verzinnen. Daarom (1) speelt en meet de speler,
+maar oordeelt een ander (Opus) op basis van de screenshots; (2) doet de eigenaar
+steekproeven: open willekeurig twee screenshots uit de evidence-map en
+vergelijk ze met het rapport; (3) is een rapport zonder screenshots die het
+verhaal dragen per definitie NIET VASTGESTELD.
+
 Volg deze stappen letterlijk. Gebruik alleen de MCP-tools met prefix
 `mcp__playwright__`. Bewaar alle bestanden in de eigen evidence-map en gebruik
 geen shell, losse browser of handmatig aangepaste bewijsvelden als meetroute.
