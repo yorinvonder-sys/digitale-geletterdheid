@@ -48,10 +48,32 @@ Client-code mag geen provider secrets bevatten. AI-interactie loopt via Supabase
 - `src/features/ai-lab/`: AI Lab en missiepreview-ervaringen.
 - `src/services/`: gedeelde productservices voor Supabase, analytics, AI, teacher flows en exports.
 
+## Architectuurgrenzen
+
+De grenzen die dit document beschrijft zijn afgedwongen, niet alleen beschreven.
+`eslint.architecture.mjs` in de repo-root declareert de componenten en de
+verboden importranden; `eslint.config.js` stelt daaruit een
+`eslint-plugin-boundaries`-configuratie samen. `npm run lint` draait die check en
+CI draait hem als stap "Architectuurgrenzen".
+
+Afgedwongen vandaag:
+
+- Client code importeert geen `supabase/functions/**` broncode.
+- `src/components/ui/**` en `src/components/app-shell/**` importeren geen
+  `src/features/**`.
+- `src/services/**` importeert geen UI-componenten.
+- Productiecode importeert geen testcode.
+
+Elke rand hierboven heeft nu nul overtredingen. Voeg een rand pas toe zodra de
+bestaande overtredingen weg zijn — anders faalt CI op schuld in plaats van op
+regressie. De randen die daarom nog niet zijn afgedwongen staan met hun
+telling bovenaan in `eslint.architecture.mjs`.
+
 ## Verificatiecommando's
 
 ```bash
 npm run context:budget
+npm run lint
 npm run doctor
 npx tsc -p tsconfig.json --noEmit
 npm run build:prod
