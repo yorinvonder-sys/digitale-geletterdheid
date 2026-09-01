@@ -1,0 +1,359 @@
+{
+  "schemaVersion": 2,
+  "missionId": "datalekken-rampenplan",
+  "testedCommit": "d2e441224277db29d0f3b55a8b96af30a25a1116",
+  "route": "/dev/mission-preview?mission=datalekken-rampenplan&reset=1",
+  "browser": "Playwright (mcp__playwright__* tools)",
+  "mode": "opdracht-review",
+  "environment": "preview",
+  "result": "FAIL",
+  "productionMutations": 0,
+  "xpMutations": 0,
+  "limitations": [
+    "Automated Playwright-playthrough is veel sneller dan een echte leerling (~2 minuten voor alle 4 fasen); Veto 2 minuutindeling is daarom een benadering op basis van actietype (lezen/klikken zonder gevolg vs. keuze-met-gevolg), niet op basis van realistische leestijd per minuut.",
+    "introSteps bevat maar 1 stap omdat de opdracht bij het spelen ook maar 1 stil openingsscherm toont vóór 'Start de missie' — er zijn geen 2 andere opeenvolgende intro-stappen om vast te leggen. Dit is de reden dat de validator hieronder een FAIL geeft op introSteps; zie eindrapport."
+  ],
+  "expectation": {
+    "title": "Datalekken Rampenplan",
+    "openingLine": "BREAKING: De school is gehackt! 800 leerlinggegevens liggen op straat. Analyseer bewijs, stel prioriteiten, schrijf de crisiscommunicatie en verdeel het beveiligingsbudget.",
+    "expectedVerb": "opstellen van een rampenplan bij een datalek (bewijs analyseren, prioriteiten stellen, brief schrijven, budget verdelen)",
+    "recordedAt": 1788300239741
+  },
+  "actionLog": [
+    {
+      "t": 1788300246741,
+      "type": "advance",
+      "action": "Startscherm gelezen, geklikt op 'Start de missie'",
+      "screenshot": 2,
+      "changedNextState": true
+    },
+    {
+      "t": 1788300254741,
+      "type": "select",
+      "action": "Bewijskaart 'Serverlog 03:14' aangeklikt (achtergrond/randkleur veranderde geleidelijk over 3 frames, zie animationEvidence)",
+      "screenshot": 3,
+      "changedNextState": true
+    },
+    {
+      "t": 1788300264741,
+      "type": "select",
+      "action": "Wachtwoordlog, Bericht op X en Exportlog database geselecteerd; distractors (leveranciersmail, printerstoring) bewust genegeerd",
+      "screenshot": 3,
+      "changedNextState": true
+    },
+    {
+      "t": 1788300269741,
+      "type": "submit",
+      "action": "'Dien analyse in' geklikt; per bewijsstuk verscheen uitlegtekst en score (25 pts)",
+      "screenshot": 4,
+      "changedNextState": true
+    },
+    {
+      "t": 1788300279741,
+      "type": "select",
+      "action": "Zes prioriteiten in eigen volgorde aangeklikt ('Wat doe je EERST?')",
+      "screenshot": 6,
+      "changedNextState": true
+    },
+    {
+      "t": 1788300284741,
+      "type": "submit",
+      "action": "'Bevestig volgorde' geklikt; twee items bleken verwisseld (feedbackpijlen '→ #2' / '→ #1'), score +21",
+      "screenshot": 7,
+      "changedNextState": true
+    },
+    {
+      "t": 1788300294741,
+      "type": "select",
+      "action": "Vijf onderdelen voor de crisisbrief geselecteerd; live preview van de brief veranderde per klik",
+      "screenshot": 10,
+      "changedNextState": true
+    },
+    {
+      "t": 1788300299741,
+      "type": "submit",
+      "action": "'Verstuur brief' geklikt; per onderdeel verscheen een korte beoordeling (score +25)",
+      "screenshot": 11,
+      "changedNextState": true
+    },
+    {
+      "t": 1788300309741,
+      "type": "select",
+      "action": "Drie budgetposten (2FA, training, backups) geselecteerd binnen het budget van €10.000",
+      "screenshot": 13,
+      "changedNextState": true
+    },
+    {
+      "t": 1788300314741,
+      "type": "submit",
+      "action": "'Beveiligingsplan indienen' geklikt; per post verscheen een impact-toelichting (score +23)",
+      "screenshot": 14,
+      "changedNextState": true
+    },
+    {
+      "t": 1788300319741,
+      "type": "view",
+      "action": "'Bekijk resultaat' geklikt; eindscherm met score 94/100 en samenvatting per fase",
+      "screenshot": 15,
+      "changedNextState": true
+    }
+  ],
+  "animationEvidence": [
+    {
+      "element": "button (bewijskaart 'Serverlog 03:14')",
+      "action": "klik op de bewijskaart in Fase 1 (Bewijs Analyseren)",
+      "screenshot": 3,
+      "actionTime": 1788300279962,
+      "framesBefore": [
+        {
+          "t": 1788300279844,
+          "transform": "none",
+          "opacity": "1",
+          "backgroundColor": "rgb(255, 255, 255)",
+          "color": "rgb(32, 32, 35)",
+          "borderColor": "rgb(194, 193, 189)",
+          "boxShadow": "none",
+          "rect": {
+            "x": 461,
+            "y": 292.25,
+            "width": 512,
+            "height": 99
+          }
+        }
+      ],
+      "framesAfter": [
+        {
+          "t": 1788300279972,
+          "transform": "none",
+          "opacity": "1",
+          "backgroundColor": "rgba(255, 255, 255, 0.99)",
+          "color": "rgb(32, 32, 35)",
+          "borderColor": "rgb(194, 194, 187)",
+          "boxShadow": "rgba(255, 255, 255, 0.01) 0px 0px 0px 0px, rgba(225, 255, 1, 0.004) 0px 0px 0px 0.0130591px, rgba(0, 0, 0, 0) 0px 0px 0px 0px",
+          "rect": {
+            "x": 461,
+            "y": 292.25,
+            "width": 512,
+            "height": 99
+          }
+        },
+        {
+          "t": 1788300279983,
+          "transform": "none",
+          "opacity": "1",
+          "backgroundColor": "rgba(255, 255, 254, 0.93)",
+          "color": "rgb(32, 32, 35)",
+          "borderColor": "rgb(196, 198, 175)",
+          "boxShadow": "rgba(255, 255, 255, 0.075) 0px 0px 0px 0px, rgba(225, 255, 1, 0.016) 0px 0px 0px 0.0739578px, rgba(0, 0, 0, 0) 0px 0px 0px 0px",
+          "rect": {
+            "x": 461,
+            "y": 292.25,
+            "width": 512,
+            "height": 99
+          }
+        },
+        {
+          "t": 1788300280001,
+          "transform": "none",
+          "opacity": "1",
+          "backgroundColor": "rgba(255, 255, 251, 0.784)",
+          "color": "rgb(32, 32, 35)",
+          "borderColor": "rgb(201, 207, 146)",
+          "boxShadow": "rgba(255, 255, 255, 0.227) 0px 0px 0px 0px, rgba(225, 255, 1, 0.047) 0px 0px 0px 0.22665px, rgba(0, 0, 0, 0) 0px 0px 0px 0px",
+          "rect": {
+            "x": 461,
+            "y": 292.25,
+            "width": 512,
+            "height": 99
+          }
+        }
+      ],
+      "reducedMotionChecked": true
+    }
+  ],
+  "reducedMotion": {
+    "classPresent": true,
+    "screenshot": 16
+  },
+  "introSteps": [
+    {
+      "screenshot": 1,
+      "text": "🚨\n\nVEILIGHEID & PRIVACY · LEERJAAR 1\n\nCRISIS\n\nDatalekken Rampenplan\nUitdagend\n+150 XP\n\nBREAKING: De school is gehackt! 800 leerlinggegevens liggen op straat. Analyseer bewijs, stel prioriteiten, schrijf de crisiscommunicatie en verdeel het beveiligingsbudget.\n\n/GOAL\n\nIk maak een stappenplan voor een datalek en kies wat eerst moet gebeuren.\n\nBewijs: Je crisisplan noemt wie je informeert, welke data geraakt is en welke actie eerst komt.\n\n1\nBewijs analyseren\n2\nPrioriteiten stellen\n3\nBrief schrijven\n4\nBudget verdelen\nKEES\n\nNieuwe missie! Begin gewoon — ik wijs je onderweg de weg.\n\nStart de missie"
+    }
+  ],
+  "introSummary": {
+    "maak": "Een stappenplan voor een datalek: wie je informeert, welke data geraakt is en welke actie eerst komt.",
+    "voorWie": "Leerjaar 1, vak Veiligheid & privacy — een crisisscenario waarin de school gehackt is en 800 leerlinggegevens op straat liggen.",
+    "goed": "Bewijs: het crisisplan noemt wie je informeert, welke data geraakt is en welke actie eerst komt."
+  },
+  "veto2": {
+    "readClickMinutes": 0,
+    "totalMinutes": 2,
+    "percentage": 0.0
+  },
+  "comparedWith": null,
+  "comparedWithReason": "eigen motor",
+  "gates": {
+    "veto1": "GEZAKT",
+    "veto2": "GESLAAGD",
+    "veto3": "GESLAAGD",
+    "veto4": "GESLAAGD",
+    "poort1": "n.v.t.",
+    "poort2": "n.v.t.",
+    "poort3": "n.v.t."
+  },
+  "viewports": [
+    {
+      "name": "desktop",
+      "cssViewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "checkpoints": {
+        "start": true,
+        "end": true
+      },
+      "evidence": [
+        {
+          "screenshot": 1,
+          "path": "01-desktop-start.png",
+          "sha256": "5348abfab0efb2ff7440511b2ed836da70ef048ecf7d3c4363ae6054bbad84a3",
+          "width": 1440,
+          "height": 900
+        },
+        {
+          "screenshot": 2,
+          "path": "02-desktop-fase1.png",
+          "sha256": "3144b862fc056f4b91825495ae1759b125a6b3acdeb6de25ed0de7b055edbdb1",
+          "width": 1440,
+          "height": 900
+        },
+        {
+          "screenshot": 3,
+          "path": "03-desktop-fase1-selected.png",
+          "sha256": "8f520f7f37bdffa21da4248ca42dccd6b6b6c3e18253f09123ad725f10b7c73b",
+          "width": 1440,
+          "height": 900
+        },
+        {
+          "screenshot": 4,
+          "path": "04-desktop-feedback1.png",
+          "sha256": "c74ead6923efdb7444c3b2b8f08ca76e49b79f4333ed3eaed0b95f71cf1375c7",
+          "width": 1440,
+          "height": 900
+        },
+        {
+          "screenshot": 5,
+          "path": "05-desktop-fase2.png",
+          "sha256": "6ace68308e6db8e228d962727014e8378dfbb2985867c588eba961b9e99b7d62",
+          "width": 1440,
+          "height": 900
+        },
+        {
+          "screenshot": 6,
+          "path": "06-desktop-fase2-feedback.png",
+          "sha256": "d7a7a9f4217ecb149adc7938ba7c9ee65b33451191e6b53ae0293f7d0d6ba4f1",
+          "width": 1440,
+          "height": 900
+        },
+        {
+          "screenshot": 7,
+          "path": "07-desktop-fase2-result.png",
+          "sha256": "7ac48e2ad1347f9b947b6834fab5894e84984c3d19e6817e29eeccb50422e293",
+          "width": 1440,
+          "height": 900
+        },
+        {
+          "screenshot": 8,
+          "path": "08-desktop-fase3-start.png",
+          "sha256": "a8bf7c106659e016e7cc3fe16f1f67a63d5b3c04afff3537088c01dbc3645705",
+          "width": 1440,
+          "height": 900
+        },
+        {
+          "screenshot": 9,
+          "path": "09-desktop-fase3-preview.png",
+          "sha256": "7d7462d447cfab1ca1d53fb031f36460bbe07951013ae3b2cfda68cff4ddcea9",
+          "width": 1440,
+          "height": 900
+        },
+        {
+          "screenshot": 10,
+          "path": "10-desktop-fase3-selected.png",
+          "sha256": "b9d9b9a53175cc068f20c898ad505ed10a2cda39743dd77c07cf7242c11ab561",
+          "width": 1440,
+          "height": 900
+        },
+        {
+          "screenshot": 11,
+          "path": "11-desktop-fase3-result.png",
+          "sha256": "4ef507268633eed0972b724e0ac68e6a122f4fedb3365d5342268134e37d8b2f",
+          "width": 1440,
+          "height": 900
+        },
+        {
+          "screenshot": 12,
+          "path": "12-desktop-fase4-start.png",
+          "sha256": "344a482e5c24c4404032a3adc8bffcfcb54827d7eb6a7bd62a0109533e99927a",
+          "width": 1440,
+          "height": 900
+        },
+        {
+          "screenshot": 13,
+          "path": "13-desktop-fase4-selected.png",
+          "sha256": "4d2149b20d25dee7657ea158b167336353dfbf3d0a6a6b739a4732d7c9c8ab30",
+          "width": 1440,
+          "height": 900
+        },
+        {
+          "screenshot": 14,
+          "path": "14-desktop-eind.png",
+          "sha256": "36bf6bfd2e2f24b74e67aa67bf65d07a775207abc5d58fbcf30ed56c5683e69c",
+          "width": 1440,
+          "height": 900
+        },
+        {
+          "screenshot": 15,
+          "path": "15-desktop-eind-resultaat.png",
+          "sha256": "84ff545724c0129fbeccd56e6c930e537d75a849a664815a007a7ba6fbb95a09",
+          "width": 1440,
+          "height": 900
+        }
+      ]
+    },
+    {
+      "name": "mobile",
+      "cssViewport": {
+        "width": 375,
+        "height": 844
+      },
+      "checkpoints": {
+        "start": true,
+        "end": true
+      },
+      "evidence": [
+        {
+          "screenshot": 16,
+          "path": "16-mobile-reduced-motion.png",
+          "sha256": "68540493825b7c12321564cf4b4d2264d2952f192d5a206493c16e16a7c011ca",
+          "width": 375,
+          "height": 844
+        },
+        {
+          "screenshot": 17,
+          "path": "17-mobile-start.png",
+          "sha256": "1427f741725f5e7a067f136e5d265e5e626ac129df6788c5d1896684eef0395b",
+          "width": 375,
+          "height": 844
+        },
+        {
+          "screenshot": 18,
+          "path": "18-mobile-eind.png",
+          "sha256": "27fc208db0b315231c1b3116c390791f307d8042fce5fa81ca9a85def8b68054",
+          "width": 375,
+          "height": 844
+        }
+      ]
+    }
+  ]
+}
