@@ -60,6 +60,16 @@ jobs:
       - name: Type-check
         run: npx tsc --noEmit
 
+      # ARCHITECTURE.md verklaart grenzen die tot nu toe alleen proza waren: client
+      # code mag geen Edge Function-broncode importeren (daar zitten de provider
+      # secrets), en src/components/ui en src/components/app-shell zijn herbruikbaar
+      # zonder domeineigenaarschap. Niets hield dat tegen; een enkele import kon het
+      # stilzwijgend omdraaien. eslint.architecture.mjs codeert alleen grenzen die de
+      # codebase vandaag al respecteert, dus deze stap is een ratel: hij faalt pas
+      # bij een regressie, niet op bestaande schuld.
+      - name: Architectuurgrenzen
+        run: npm run lint
+
       # De navigatiedocumenten voor AI-agents verouderen stil: een pad dat na een
       # herstructurering verdwijnt blijft in de kaart staan en stuurt elke agent die
       # de kaart volgt naar een mislukte read, waarna die alsnog de hele repo
