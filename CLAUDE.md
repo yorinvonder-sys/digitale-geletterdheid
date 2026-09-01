@@ -69,7 +69,7 @@ Audits run in reverse (4 → 1).
 |---|---|---|---|
 | 1 | Necessity | `functionality-complexity-tradeoff` | PASS / DROP |
 | 2 | First principles | `architecture-guidelines` | Smallest correct design |
-| 3 | Placement | `geometric-architecture` | Domain / tier / layer per component |
+| 3 | Placement | `morphogenetic-architecture` | Domain / tier / layer per component |
 | 4 | Complexity | `structural-simplification` | Component-kinds / dependency-edges / max-chain-depth / module-count Δ |
 | 5 | Enforcement | `architecture-as-code` | Per-module config |
 | 6 | Shift-left | `defect-shift-left` | Each error path → earliest stage |

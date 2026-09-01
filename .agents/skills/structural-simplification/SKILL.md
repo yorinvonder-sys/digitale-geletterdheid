@@ -10,8 +10,9 @@ description: >-
     a restructuring, or deciding whether a proposed change makes a system
     simpler or more complex. SKIP for: trivial renames, content edits,
     dependency bumps, isolated bug fixes that touch no structure. For
-    module-level design discipline see `architecture-guidelines`; for spatial
-    dependency-graph constraints see `geometric-architecture`.
+    module-level design discipline see `architecture-guidelines`; for placement
+    and evidence-weighted dependency-topology constraints see
+    `morphogenetic-architecture`.
 ---
 
 # Structural Simplification
@@ -41,9 +42,8 @@ names below in every emit block, gate table, and cross-skill citation.
 | `ΔK` (coupling)  | **Dependency-edges Δ** — imports, calls, package edges, or runtime links added or removed |
 | `ΔP` (depth)     | **Max-chain-depth Δ** — longest import/call/build chain before vs after |
 | `Δn` (quantity)  | **Module-count Δ** — files, modules, jobs, services, or instances added or removed |
-| Wormhole         | **Layer-skip violation** (term carried over from `geometric-architecture`) |
 
-**Naming guardrails.** `P` is **max-chain-depth**, never "depth" alone — bare "depth" collides with the layer axis in `geometric-architecture`. Symbols appear in exactly three places: inside a formula, inside this table, and inside §§1–7 (the internal model). Anywhere else in narrative, use the coder-facing field name.
+**Naming guardrails.** `P` is **max-chain-depth**, never "depth" alone — bare "depth" collides with the layer field in `morphogenetic-architecture`. Symbols appear in exactly three places: inside a formula, inside this table, and inside §§1–7 (the internal model). Anywhere else in narrative, use the coder-facing field name.
 
 > **2026-05-22 — emit field-name change.** Field labels in emit blocks
 > changed from internal symbols to coder-facing fields:
@@ -72,8 +72,10 @@ domain's actual constraints.
 > [!IMPORTANT] **Cycles are property violations, not just high K.** A cycle
 > breaks the DAG assumption only when the chosen projection is required to be
 > acyclic, such as imports, ownership, authority, or layer dependencies. See §5
-> for the geometric framing that rules those cycles out; `geometric-architecture`
-> §2 enforces them as lint. If the domain intentionally contains cycles
+> for the topology framing that rules those cycles out;
+> `morphogenetic-architecture` §2 defines the hard invariant and hands
+> enforceable static constraints to `architecture-as-code`. If the domain
+> intentionally contains cycles
 > (feedback loops, state machines, workflows), define the acyclic projection or
 > cycle semantics before scoring.
 
@@ -107,6 +109,7 @@ Fast proxies — not substitutes for measurement.
 | **Chain**        | Fewer hops source-to-sink                               | P↓            |
 | **Count**        | Fewer parts                                             | n↓            |
 | **Ripple**       | Typical change in this area touches many parts          | K             |
+| **Consistency points** | Each public unit (route, right, config key) drags N hand-maintained artifacts — handler, guard, contract entry, registry row, tests; removing the unit deletes them all | n, K |
 
 ---
 
@@ -124,6 +127,15 @@ Fast proxies — not substitutes for measurement.
 | **Deduplication**  | Eliminate redundant copies                                                 |
 | **Patternization** | Apply a recurring structure — differences become instances, not exceptions |
 | **Cohesion**       | Group what changes together; the unit expresses one concept                |
+
+> [!WARNING] **Unification guardrail — referencing-list uniformity.** Merging
+> vocabulary items (rights, routes, types, statuses, config keys) is safe only
+> when every member is uniform with respect to every *other* list that
+> references them — ban/allow lists, separation-of-duties pairs, fixed scopes,
+> party or tenant restrictions, protocol mappings. A merged item cannot be
+> half-banned or half-granted: one non-uniform member blocks the merge or must
+> stay separate. Enumerate the referencing lists and check uniformity before
+> claiming a D↓ or n↓ from Unification, Generalization, or Merging.
 
 ### K↓ — Reduce Coupling
 
@@ -163,18 +175,21 @@ Fast proxies — not substitutes for measurement.
 
 ---
 
-## 5. Geometric Constraint
+## 5. Topology Constraint
 
-Treating a dependency structure as a physical object — with surfaces,
-orientation, finite volume, and locality — helps bound all four axes: surface
-and locality cap K, orientation caps P, volume caps n, and conforming form
-factors cap D. Subsystem decomposition (vertical) can reduce K and n;
-aspect-system decomposition (horizontal) can reduce D. In dependency graphs
-that require directionality, cycles require a back-to-back face; the geometry
-rules those cycles out without a separate axiom.
+Treat a dependency structure as a directed topology with explicit positions,
+interfaces, locality, and separately measured relationship fields. Bounded
+public surfaces and local neighbor sets cap K, directional static edges cap P,
+cohesive positions bound n, and consistent component forms cap D. Decompose
+along domain, abstraction-tier, or layer seams only when the proposed cut
+improves the measured vector.
 
-For the full spatial treatment — placement addresses, face directionality,
-locality rules, lint enforcement — see `geometric-architecture`.
+For dependency projections that require acyclicity, reject cycles before
+scoring trade-offs. For runtime feedback, name the cycle semantics and measure
+the chosen acyclic projection separately.
+
+For declared placement, observed fields, candidate boundary decisions, and
+enforcement handoffs, see `morphogenetic-architecture`.
 
 ---
 
@@ -291,7 +306,7 @@ first.
 ## 9. See also
 
 - **`architecture-guidelines`** — first-principles discipline that informs Δ scoring (YAGNI, Rule of 3, DRY, SoC).
-- **`geometric-architecture`** — spatial rationale; cycles forbidden by face directionality.
+- **`morphogenetic-architecture`** — placement and topology rationale; static cycles remain forbidden while explicit runtime feedback is modeled separately.
 - **`functionality-complexity-tradeoff`** — consumes `D, K, P, n` deltas in its cost ledger.
 - **`defect-shift-left`** — earliest stage to catch each axis violation.
 - **`continuous-improvement`** — when a recurring axis violation signals a missing rule.

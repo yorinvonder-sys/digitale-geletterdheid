@@ -8,8 +8,9 @@ description: >-
     backlog grooming, PR scope review, dead-code audits, tech-debt reviews,
     "is this worth it?", "should we remove this?", "is this defensive check
     necessary?", and cases involving impossible-state guards, redundant
-    validation, cargo-culted patterns, phantom requirements, or unused
-    generality.
+    validation, cargo-culted patterns, phantom requirements, requirement-pinned
+    mechanism, or unused
+    generality, and evidence-driven revisits of outcome hypotheses after release.
 ---
 
 # Functionality pruner
@@ -44,6 +45,10 @@ description: >-
 >    that finds negative worth — or that fails the necessity gate — prefers
 >    safe removal or deprecation to elaborate justification. Removal still
 >    follows migration, rollback, and compatibility constraints.
+> 7. **Outcome evidence informs worth; it is not the verdict.** Consume current
+>    linked outcome evidence when available. Completion, deployment, or adoption
+>    alone cannot prove downstream value, and no hypothesis state automatically
+>    dictates a worth decision.
 
 ---
 
@@ -129,6 +134,33 @@ more than it returned" invites debate about thresholds; "we removed it
 because client/server version skew cannot occur in a single-artifact deploy"
 closes the question.
 
+### 1e. Obligation vs. mechanism
+
+A subject can pass the necessity gate — the problem is real — while its
+*grain* is still inflated by mechanism nobody demanded. Before scoring worth,
+restate each requirement behind the subject in two parts:
+
+- **Obligation** — the outcome, evidence, or restriction that must exist
+  (a record with actor/time, a gate before a step, an actor limitation).
+- **Mechanism** — the specific rights, roles, endpoints, record types, or
+  protocols the requirement text or the implementation chose to satisfy it.
+
+Mechanism the obligation does not force is a SIMPLIFY candidate even when the
+functionality itself is KEEP. Audit in two passes: first within the current
+requirements to establish the floor, then treat careful requirement edits as
+prospective candidates scored on this same ledger. Flag edits with real
+external trade-offs (consent models, public intake, protocol surfaces) as
+explicit product decisions rather than deciding them silently, and route
+changes of requirement *meaning* through `requirements-grounding`. Three
+floors are never negotiable: legal/regulatory obligations, separation-of-duties
+(second-person) controls, and external protocol surfaces others depend on.
+
+Typical yields: an actor condition encoded as a dedicated right or role where
+a membership attribute or workflow-state gate satisfies the same acceptance
+criterion; a person-split where the obligation only demands recorded evidence
+before the next step; one endpoint per read projection of an aggregate the
+caller already fetches.
+
 ---
 
 ## 2. The Worth Model
@@ -213,7 +245,8 @@ implementation**. All inputs are estimates; record confidence explicitly.
 3. Score `V` axes with **evidence**: user interviews, request tickets,
    analytics of the workaround, competitor behavior. Opinions are not
    evidence. Unsupported opinions are not enough evidence for high-confidence
-   build decisions.
+   build decisions. Cite linked outcome hypotheses when present; before release
+   they express expected value, not observed impact.
 4. Score `C` axes against a **concrete implementation sketch**: files
    touched, new abstractions or dependencies introduced, tests required,
    failure modes created.
@@ -236,6 +269,11 @@ exist**. Inputs are observable; bias toward measurement over judgment.
       it?
     - **If `V` cannot be measured, that itself is a finding** — instrument,
       identify an external floor (§8c), or keep confidence Low.
+    - Consume current outcome-evidence records from
+      `requirements-traceability`. Preserve the canonical hypothesis version,
+      cohort, threshold, window, and guardrails. `stale` or `inconclusive`
+      evidence cannot support High value confidence; `rejected` evidence lowers
+      the supported value claim but does not by itself prove zero value.
 4. Score `C` from current observable state:
     - Structural: measure `D, K, P, n` per `structural-simplification`.
     - `M`: dedicated tests, doc pages, recent commit churn, dependency drift.
@@ -362,7 +400,9 @@ is a candidate for OBSOLETE / DROP-as-non-problem.
    (retrospective) or **DROP** with a necessity-failure rationale
    (prospective). Skip remaining steps.
 2. **Score `V` axes** (`U, F, R, I`) on a 0–3 scale with one-line evidence
-   per axis.
+   per axis. When outcome evidence exists, cite its hypothesis ID, state,
+   freshness, and observation identity; do not replace its threshold or
+   guardrails with a more favorable interpretation.
 3. **Score `C` axes**:
     - Delegate `D, K, P, n` to `structural-simplification` (deltas for
       prospective; absolute measured values for retrospective).
@@ -400,6 +440,12 @@ Do not commit to irreversible verdicts (BUILD, DELETE) on low-confidence
 estimates. **OBSOLETE is exempt from the confidence gate** when the
 necessity finding is itself High confidence — a structural impossibility
 does not become more or less impossible with more data.
+
+An `unmeasured`, `inconclusive`, or `stale` outcome assessment keeps the affected
+value claim Low unless independent current evidence supports it. `supported`
+may raise confidence only within the measured cohort, window, and guardrails.
+Authoritative floors in §8c remain source-driven and do not require an empirical
+outcome hypothesis.
 
 ---
 
@@ -512,6 +558,7 @@ C scores:       Component-kinds Δ=<±n>  Dependency-edges Δ=<±n>
                 M=<0-3>  X=<0-3>  E=<0-3>                 (1-line evidence each; OMIT if Necessity=Fail)
 Confidence V:   Low | Medium | High                       (OMIT if Necessity=Fail)
 Confidence C:   Low | Medium | High                       (OMIT if Necessity=Fail)
+Outcome evidence: <hypothesis IDs, states, freshness, observation links, or none / not applicable>
 Decision:       <BUILD | BUILD-minimal | NEGOTIATE | DEFER | DROP | KEEP | SIMPLIFY | QUARANTINE | DEPRECATE | DELETE | OBSOLETE>
 Rationale:      <2–4 sentences tying scores → decision, or necessity finding → OBSOLETE>
 Next action:    <build minimal slice, delete path, add telemetry, write test, update lint rule, or stop>
@@ -550,6 +597,7 @@ Revisit when:   <measurable trigger or calendar date>
 | Duplicate of library or framework feature                                     | OBSOLETE if the framework already runs it for the same scope; DROP / DELETE if `I` is ~0 by choice |
 | Legacy integration, usage unknown                                             | QUARANTINE — instrument first, then decide (unless §1 already returns OBSOLETE)       |
 | Extension point with one implementation                                       | OBSOLETE if no second implementation is named and probable; SIMPLIFY otherwise        |
+| Actor/role condition encoded as a separate right, role, or endpoint           | SIMPLIFY — an attribute or workflow-state gate satisfies the obligation (§1e), unless a second person is explicitly required |
 | "We'll need this for feature X"                                               | DEFER — build when X is real, not before                                              |
 | Stable feature that still produces bugs                                       | SIMPLIFY (churn × complexity hotspot), then re-evaluate                               |
 | Feature with no docs, no tests, no telemetry                                  | QUARANTINE + add all three, or DEPRECATE — but check §1 first; it may be unreachable  |
@@ -561,6 +609,12 @@ Revisit when:   <measurable trigger or calendar date>
 
 ## 11. Composition with Sibling Skills
 
+- **`requirements-grounding`** — owns outcome-hypothesis meaning, thresholds,
+  cohorts, guardrails, and revisit intent. This skill consumes that definition;
+  it does not rewrite it.
+- **`requirements-traceability`** — owns measurement links, evidence state, and
+  freshness for the exact hypothesis version. This skill consumes its current
+  assessment and alone issues the functionality-worth verdict.
 - **`structural-simplification`** — source of the complexity measurement
   (`D, K, P, n`). This skill **consumes** those deltas; it does not redefine
   them.
