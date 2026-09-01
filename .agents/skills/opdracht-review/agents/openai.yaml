@@ -1,0 +1,4 @@
+interface:
+  display_name: "Opdracht Review"
+  short_description: "Speel een opdracht en geef het eindoordeel via veto's en poorten"
+  default_prompt: "Use $opdracht-review to play this DGSkills assignment first and then judge it through the four vetoes and the three quality gates."
