@@ -5,6 +5,8 @@ description: Use this skill when checking a DGSkills assignment or mission in th
 
 # Opdracht Live Check
 
+> Voor het eindoordeel over één opdracht: gebruik `opdracht-review` (speelt eerst, dan veto's en poorten); deze skill is alleen deelcontrole.
+
 Use this skill for the live, human-facing QA pass: behave like a student, play the whole assignment, and verify the page looks and works correctly in the browser. This is not a code review first; it is a lived student-flow check.
 
 ## Operating Rules

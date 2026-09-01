@@ -5,6 +5,8 @@ description: Controleer een bestaande DGSkills-opdracht of missie handmatig als 
 
 # Opdracht Live Check
 
+> Voor het eindoordeel over één opdracht: gebruik `opdracht-review` (speelt eerst, dan veto's en poorten); deze skill is alleen deelcontrole.
+
 Speel precies één bestaande opdracht end-to-end zoals een leerling die ziet. Schrijf in het Nederlands, behoud het leerdoel en koppel iedere claim aan zichtbaar browserbewijs.
 
 ## Routing en scope
