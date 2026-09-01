@@ -17,24 +17,28 @@
 //   - services -> features: 2 imports, both of
 //     @/features/assessment/escaperoom/types. Enforceable once those types
 //     move to a location services may own.
-//   - Co-located test files (src/**/*.test.ts): eslint-plugin-boundaries v7
-//     classifies elements by folder, and its file-descriptor API is not
-//     reachable from the plugin's settings, so a file-level pattern silently
-//     matches nothing. There are no co-located tests in src/ today -- every
-//     test lives in tests/, which IS enforced. Revisit if that changes.
+//   - Test-only code imported from WITHIN the same element. Boundaries only
+//     evaluates edges between different elements, so a service importing a
+//     test file that sits in src/services/ is internal and not checked. The
+//     rule does fire across elements, which is the case that matters. There
+//     are no co-located test files in src/ today.
 //   - Literal-only dynamic import paths: 10 mission templates deliberately use
 //     import(`./configs/${missionId}.ts`) behind a validated id allowlist.
 
 export default {
     // Narrowest first; catch-all last (pattern directive #5).
+    // `mode: 'file'` marks a component whose unit is a single FILE rather than
+    // a directory. Without it a file pattern classifies nothing at all.
     components: [
         { name: 'test-support', pattern: 'tests/**' },
-        { name: 'edge-functions', pattern: 'supabase/functions/**', mode: 'file' },
-        { name: 'components-ui', pattern: 'src/components/ui/**', mode: 'file' },
-        { name: 'components-shell', pattern: 'src/components/app-shell/**', mode: 'file' },
-        { name: 'services', pattern: 'src/services/**', mode: 'file' },
-        { name: 'feature', pattern: 'src/features/*/**', mode: 'file', capture: ['domain'] },
-        { name: 'src-other', pattern: 'src/**', mode: 'file' }, // catch-all, last
+        { name: 'test-unit', pattern: 'src/**/*.{test,spec}.{ts,tsx,mjs}', mode: 'file' },
+        { name: 'test-contract', pattern: 'src/**/*.contract.mjs', mode: 'file' },
+        { name: 'edge-functions', pattern: 'supabase/functions/**' },
+        { name: 'components-ui', pattern: 'src/components/ui/**' },
+        { name: 'components-shell', pattern: 'src/components/app-shell/**' },
+        { name: 'services', pattern: 'src/services/**' },
+        { name: 'feature', pattern: 'src/features/*/**', capture: ['domain'] },
+        { name: 'src-other', pattern: 'src/**' }, // catch-all, last
     ],
     forbidden: [
         {
@@ -55,8 +59,8 @@ export default {
         },
         {
             from: '*',
-            except: ['test-support'],
-            to: 'test-support',
+            except: ['test-support', 'test-unit', 'test-contract'],
+            to: ['test-support', 'test-unit', 'test-contract'],
             why: 'Production code must not import test-only code.',
         },
     ],

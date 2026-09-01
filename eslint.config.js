@@ -44,15 +44,21 @@ const archs = await Promise.all(archFiles.map((f) => import(pathToFileURL(f).hre
 const COMPONENTS = archs.flatMap((m) => m.default.components ?? []);
 const FORBIDDEN = archs.flatMap((m) => m.default.forbidden ?? []);
 
+
+// eslint-plugin-boundaries v7 has two classification kinds. Element
+// descriptors match FOLDERS (settings 'boundaries/elements', selected by
+// `element.type`); file descriptors match individual FILES (settings
+// 'boundaries/files', selected by `file.categories`). The schema's
+// stack-agnostic `mode: 'file'` maps onto the latter -- using an element
+// descriptor for a file pattern silently classifies nothing.
+const FILE_COMPONENTS = COMPONENTS.filter((c) => c.mode === 'file');
+const ELEMENT_COMPONENTS = COMPONENTS.filter((c) => c.mode !== 'file');
+
+const fileCategories = new Set(FILE_COMPONENTS.map((c) => c.name));
 const names = COMPONENTS.map((c) => c.name);
 
-// eslint-plugin-boundaries v7 selector syntax: an element selector is
-// { element: { type: [...] } }, and disallow entries need an explicit `to`
-// wrapper. The skill's generic example predates this shape.
-function selector(spec, except) {
-    if (spec && typeof spec === 'object' && !Array.isArray(spec)) {
-        return { element: { type: spec.type, captured: spec.captured ?? {} } };
-    }
+function resolveNames(spec, except) {
+    if (spec && typeof spec === 'object' && !Array.isArray(spec)) return spec; // parametric
     const resolveList = (list) =>
         list.flatMap((t) =>
             t === '*'
@@ -66,22 +72,37 @@ function selector(spec, except) {
         const excluded = new Set(resolveList(except));
         types = types.filter((t) => !excluded.has(t));
     }
-    return { element: { type: types } };
+    return types;
 }
 
-// The schema's stack-agnostic `mode` is translated here: v7 element
-// descriptors deprecate it, and `mode: 'file'` (match the whole path, not a
-// containing folder) is expressed as `partialMatch: false`.
-const elements = COMPONENTS.map((c) => ({
+// One spec can name both kinds, so it expands to a list of selectors.
+function selectors(spec, except) {
+    const resolved = resolveNames(spec, except);
+    if (!Array.isArray(resolved)) {
+        return [{ element: { type: resolved.type, captured: resolved.captured ?? {} } }];
+    }
+    const out = [];
+    const elementTypes = resolved.filter((n) => !fileCategories.has(n));
+    const categories = resolved.filter((n) => fileCategories.has(n));
+    if (elementTypes.length) out.push({ element: { type: elementTypes } });
+    if (categories.length) out.push({ file: { categories } });
+    return out;
+}
+
+const elements = ELEMENT_COMPONENTS.map((c) => ({
     type: c.name,
     pattern: c.pattern,
-    ...(c.mode === 'file' && { partialMatch: false }),
     ...(c.capture && { capture: c.capture }),
 }));
 
+const files = FILE_COMPONENTS.map((c) => ({
+    category: c.name,
+    pattern: c.pattern,
+}));
+
 const policies = FORBIDDEN.map((e) => ({
-    from: [selector(e.from, e.except)],
-    disallow: [{ to: selector(e.to, e.except_to) }],
+    from: selectors(e.from, e.except),
+    disallow: selectors(e.to, e.except_to).map((to) => ({ to })),
     message: e.why,
 }));
 
@@ -93,7 +114,7 @@ export default [
         ],
     },
     {
-        files: ['src/**/*.{ts,tsx}'],
+        files: ['src/**/*.{ts,tsx,js,jsx,mjs}'],
         languageOptions: {
             parser: tsParser,
             ecmaVersion: 'latest',
@@ -113,6 +134,7 @@ export default [
         },
         settings: {
             'boundaries/elements': elements,
+            'boundaries/files': files,
             // supabase/functions is listed here but NOT in `files` above: edge
             // code is never linted itself (it is Deno), yet it must be a known
             // element so that a client import of it resolves to `edge-functions`
