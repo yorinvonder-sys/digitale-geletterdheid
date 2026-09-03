@@ -243,7 +243,10 @@ Dit is een beslissing voor de eigenaar, geen technische keuze.
 
 ## 7. Volgorde
 
-1. Beslissingen hieronder laten vallen.
+0. **Voorwaarde vooraf:** de klasgebonden docenttoegang afbouwen (PR #343,
+   stappen 2 en 3 van `docs/compliance/ontwerp-docent-klas-koppeling.md`).
+   Zonder die grens gaat stap 6 hieronder niet aan.
+1. De twee resterende beslissingen laten vallen.
 2. Tabellen + RLS + RPC's, met tests op de toegangsregels.
 3. `exportMyData` en `deleteMyAccount` uitbreiden — samen met de tabellen, niet
    erna. Anders bestaat er even leerlingwerk dat niet te verwijderen is.
@@ -258,17 +261,35 @@ probleem in plaats van een oplossing.
 
 ---
 
-## Beslissingen die vóór de bouw nodig zijn
+## Beslissingen
 
-1. **Beeldmoderatie:** optie A, B of C uit hoofdstuk 4.
-2. **Bewaartermijn:** tot uitschrijving, tot einde schooljaar, of een vast aantal
-   jaren.
-3. **Wie mag kijken:** wachten op de klasgebonden docenttoegang uit PR #343, of
-   nu beginnen met de schoolgrens en later aanscherpen.
+Genomen door de eigenaar op 2026-09-03:
+
+1. **Bestanden — optie A uit hoofdstuk 4.** Alleen wat de app zelf voortbrengt.
+   Geen camera, geen bestandkiezer voor foto's. Dat haalt de zwaarste risicoregel
+   weg: er komt geen door de leerling gekozen beeld het systeem in, dus er is geen
+   beeldmoderatie nodig en er komt geen nieuwe subverwerker bij. Hoofdstuk 4
+   opties B en C vervallen.
+2. **Bewaartermijn — tot uitschrijving.** Het portfolio loopt over meerdere
+   leerjaren mee. Geen jaarlijkse opschoning; de retentiegrens is het einde van de
+   inschrijving, zoals `assessment_results` (V-16) dat al doet.
+3. **Toegang — wachten op de klasgebonden docenttoegang.** Werk wordt niet voor
+   docenten opengezet zolang de grens de school is. De koppeling uit PR #343 wordt
+   eerst afgebouwd; dit portfolio is daarvan afhankelijk.
+
+Nog open:
+
 4. **`library_items`:** blijft naast de nieuwe tabellen bestaan, of gaat er op
    termijn in op? Er staat bestaand leerlingwerk in (games, boeken, tekeningen).
 5. **Naamgeving:** `portfolio_*` of iets wat beter aansluit op hoe jij het tegen
    scholen noemt.
+
+### Wat besluit 1 concreet schrapt
+
+`portfolio_files.moderation_status` vervalt: er is niets te modereren wanneer de
+app de enige bron van bestanden is. De kolom blijft wel in het ontwerp staan als
+uitbreidingsruimte, met standaardwaarde `goedgekeurd`, zodat het model niet om
+hoeft als besluit 1 ooit herzien wordt.
 
 ---
 
@@ -292,10 +313,10 @@ probleem in plaats van een oplossing.
 
 - **Grootste risico:** bestanden die na accountverwijdering achterblijven. Storage
   cascadeert niet mee met de database.
-- **Tweede risico:** beeld van minderjarigen zonder moderatie. Zie hoofdstuk 4.
-- **Derde risico:** de docentgrens is nu de school. Bewaard werk breed zichtbaar
-  maken vóór PR #343 landt, vergroot het aantal mensen dat leerlingwerk kan
-  inzien.
+- **Tweede risico** (vervallen door besluit 1): beeld van minderjarigen zonder
+  moderatie. Blijft alleen relevant als besluit 1 ooit wordt teruggedraaid.
+- **Derde risico** (afgedekt door besluit 3): de docentgrens is nu de school.
+  Het portfolio wacht op de klasgebonden toegang.
 - **Kosten:** opslag groeit met elk schooljaar. Nog niet geraamd.
 - **Open:** of `progress_data` in `mission_progress` blijft bestaan naast dit
   model, of dat de vier missies die hem nu gebruiken meeverhuizen.
