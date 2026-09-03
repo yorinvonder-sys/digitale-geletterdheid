@@ -134,9 +134,23 @@ function main() {
   }
 
   try {
+    // pg_isready is hier GEEN geldig startsein: tijdens initdb draait er een
+    // tijdelijke server die wel antwoordt terwijl de database nog niet
+    // bruikbaar is. Gemeten op postgres:16-alpine — er is een venster waarin
+    // pg_isready slaagt en `select 1` faalt. Landde de lus daarop, dan viel
+    // het eerste SQL-bestand om met een socketfout.
+    //
+    // Daarom wachten we op een echte query, en pas nadat die twee keer
+    // achter elkaar lukt: de tijdelijke server verdwijnt tussendoor, dus één
+    // geslaagde query is nog geen bewijs dat de definitieve server staat.
     let ready = false;
+    let consecutive = 0;
     for (let i = 0; i < 60; i++) {
-      if (run('docker', ['exec', CONTAINER, 'pg_isready', '-U', 'postgres', '-d', 'tctest']).status === 0) {
+      const alive = run('docker', [
+        'exec', CONTAINER, 'psql', '-U', 'postgres', '-d', 'tctest', '-c', 'select 1',
+      ]).status === 0;
+      consecutive = alive ? consecutive + 1 : 0;
+      if (consecutive >= 2) {
         ready = true;
         break;
       }

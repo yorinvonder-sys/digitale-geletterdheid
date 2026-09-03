@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
     Settings, Sparkles, Award, ShieldCheck, MessageSquare,
-    BookOpen, Upload, Presentation, LogOut,
+    BookOpen, Upload, Presentation, LogOut, Users,
 } from 'lucide-react';
 import type { TeacherDashboardTab } from '@/types';
 
@@ -13,6 +13,8 @@ interface MenuEntry {
     tab?: TeacherDashboardTab;
     action?: 'roster' | 'presentation' | 'logout';
     group: number;
+    /** Alleen zichtbaar voor beheerders; de database weigert de rest sowieso. */
+    adminOnly?: boolean;
 }
 
 const ENTRIES: MenuEntry[] = [
@@ -22,6 +24,7 @@ const ENTRIES: MenuEntry[] = [
     { id: 'ai-beleid', label: 'AI-beleid', icon: ShieldCheck, tab: 'ai-beleid', group: 2 },
     { id: 'feedback', label: 'Feedback van leerlingen', icon: MessageSquare, tab: 'feedback', group: 2 },
     { id: 'documenten', label: 'Kennisbank', icon: BookOpen, tab: 'documenten', group: 2 },
+    { id: 'klassen-docenten', label: 'Klassen en docenten', icon: Users, tab: 'klassen-docenten', group: 3, adminOnly: true },
     { id: 'roster', label: 'Leerlingen importeren', icon: Upload, action: 'roster', group: 3 },
     { id: 'presentation', label: 'Presentatiemodus', icon: Presentation, action: 'presentation', group: 3 },
 ];
@@ -33,6 +36,8 @@ interface TeacherAccountMenuProps {
     initial: string;
     displayName?: string;
     onNavigate: (tab: TeacherDashboardTab) => void;
+    /** Beheerder of ontwikkelaar: krijgt het klassenbeheer te zien. */
+    canManageClasses?: boolean;
     onOpenRosterImport: () => void;
     onOpenPresentation: () => void;
     onLogout?: () => void;
@@ -45,7 +50,7 @@ interface TeacherAccountMenuProps {
  */
 export const TeacherAccountMenu: React.FC<TeacherAccountMenuProps> = ({
     open, onToggle, onClose, initial, displayName, onNavigate,
-    onOpenRosterImport, onOpenPresentation, onLogout,
+    onOpenRosterImport, onOpenPresentation, onLogout, canManageClasses = false,
 }) => {
     const ref = useRef<HTMLDivElement | null>(null);
 
@@ -109,7 +114,7 @@ export const TeacherAccountMenu: React.FC<TeacherAccountMenuProps> = ({
 
                         {[1, 2, 3].map(group => (
                             <div key={group} className="border-t border-duck-ink/10 pt-1">
-                                {ENTRIES.filter(e => e.group === group).map(entry => {
+                                {ENTRIES.filter(e => e.group === group && (!e.adminOnly || canManageClasses)).map(entry => {
                                     const Icon = entry.icon;
                                     return (
                                         <button

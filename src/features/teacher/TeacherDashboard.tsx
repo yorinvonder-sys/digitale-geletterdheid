@@ -34,6 +34,7 @@ import { TeacherEvidence } from '@/features/teacher/dashboard/TeacherEvidence';
 import { TeacherMobileNav, type TeacherNavItem } from '@/features/teacher/dashboard/TeacherMobileNav';
 import { TeacherAccountMenu } from '@/features/teacher/dashboard/TeacherAccountMenu';
 import { TeacherDocumentsPanel } from '@/features/teacher/TeacherDocumentsPanel';
+import { ClassScopingPanel } from '@/features/teacher/ClassScopingPanel';
 import { SchedulingConfigurator } from '@/features/coordinator/SchedulingConfigurator';
 import { downloadCsv } from '@/utils/csvExport';
 
@@ -668,6 +669,7 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ user, onUpda
                                         initial={user?.displayName?.charAt(0)?.toUpperCase() || 'D'}
                                         displayName={user?.displayName ?? undefined}
                                         onNavigate={navigateTo}
+                                        canManageClasses={user?.role === 'admin' || user?.role === 'developer'}
                                         onOpenRosterImport={() => setShowRosterImport(true)}
                                         onOpenPresentation={() => setShowPresentation(true)}
                                         onLogout={onLogout}
@@ -775,6 +777,7 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ user, onUpda
                         )}
                         {/* 'documenten' blijft bereikbaar via het accountmenu (Kennisbank). */}
                         {activeTab === 'documenten' && <PageTransition key="documenten"><TeacherDocumentsPanel /></PageTransition>}
+                        {activeTab === 'klassen-docenten' && <PageTransition key="klassen-docenten"><ClassScopingPanel schoolId={user?.schoolId} canManage={user?.role === 'admin' || user?.role === 'developer'} /></PageTransition>}
                             </AnimatePresence>
                         </main>
                     </div>

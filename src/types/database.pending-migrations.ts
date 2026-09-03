@@ -18,6 +18,10 @@ type DeveloperTaskStatus =
 
 type DeveloperPriority = 'low' | 'medium' | 'high';
 
+/** Zie supabase/migrations/20260826200000_teacher_class_scoping.sql. */
+type TeacherClassSource = 'manual' | 'roster_import';
+type TeacherScopeMode = 'school' | 'class_soft' | 'class_strict';
+
 type PendingTables = {
   developer_tasks: TableDefinition<
     {
@@ -438,6 +442,42 @@ type PendingTables = {
       student_uids?: string[];
       data?: Json | null;
       created_at?: string | null;
+    }
+  >;
+  teacher_classes: TableDefinition<
+    {
+      id: string;
+      teacher_id: string;
+      school_id: string;
+      student_class: string;
+      source: TeacherClassSource;
+      created_at: string;
+      created_by: string | null;
+    },
+    {
+      id?: string;
+      teacher_id: string;
+      school_id: string;
+      student_class: string;
+      source?: TeacherClassSource;
+      created_at?: string;
+      // created_by wordt server-side gestempeld door een trigger; meesturen
+      // heeft geen effect.
+      created_by?: string | null;
+    }
+  >;
+  school_access_settings: TableDefinition<
+    {
+      school_id: string;
+      teacher_scope: TeacherScopeMode;
+      updated_at: string;
+      updated_by: string | null;
+    },
+    {
+      school_id: string;
+      teacher_scope?: TeacherScopeMode;
+      updated_at?: string;
+      updated_by?: string | null;
     }
   >;
 };

@@ -360,7 +360,8 @@ export type TeacherDashboardTab =
   | 'gamification'
   | 'ai-beleid'
   | 'feedback'
-  | 'documenten';
+  | 'documenten'
+  | 'klassen-docenten';
 
 export interface ClassroomConfig {
   id: string; // Class name (e.g. MH1A)
