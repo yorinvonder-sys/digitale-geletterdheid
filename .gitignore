@@ -2,8 +2,16 @@
 .claude/*
 !.claude/*.md
 !.claude/settings.json
+!.claude/commands/
+!.claude/commands/**
 !.claude/skills/
 !.claude/skills/**
+!.claude/agents/
+!.claude/agents/**
+!.claude/team/
+!.claude/team/**
+# Teamstatus is een gedeeld runtime-bestand in de hoofdmap, geen broncode.
+.claude/team/status.md
 
 # Logs
 logs
@@ -70,3 +78,9 @@ public/dev-docs/
 
 # Large archives
 *.zip
+
+# Canonical tracked specs store — feature folders under specs/ are the planning
+# source of truth and must never be hidden by the broad rules above.
+# Re-include browser-evidence console logs that the generic *.log rule above
+# would otherwise exclude from the tracked store.
+!specs/**/*.log
