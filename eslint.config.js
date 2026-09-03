@@ -55,7 +55,14 @@ const FILE_COMPONENTS = COMPONENTS.filter((c) => c.mode === 'file');
 const ELEMENT_COMPONENTS = COMPONENTS.filter((c) => c.mode !== 'file');
 
 const fileCategories = new Set(FILE_COMPONENTS.map((c) => c.name));
-const names = COMPONENTS.map((c) => c.name);
+// The file catch-all exists ONLY so that `noneOf` has something to match a
+// production file against. It must never be SELECTABLE: every file carries it,
+// so including it in a `*` expansion makes the file arm match everything and
+// silently defeats any element exclusion on the same rule.
+const CATCH_ALL_CATEGORY = FILE_COMPONENTS.at(-1)?.pattern === '**'
+    ? FILE_COMPONENTS.at(-1).name
+    : null;
+const names = COMPONENTS.map((c) => c.name).filter((n) => n !== CATCH_ALL_CATEGORY);
 
 function resolveNames(spec, except) {
     if (spec && typeof spec === 'object' && !Array.isArray(spec)) return spec; // parametric
@@ -95,16 +102,33 @@ function selectors(spec, except) {
     const elementTypes = resolved.filter((n) => !fileCategories.has(n));
     const categories = resolved.filter((n) => fileCategories.has(n));
 
-    if (excludedCategories.length && elementTypes.length) {
-        return [{
-            element: { type: elementTypes },
-            file: { categories: { noneOf: excludedCategories } },
-        }];
-    }
+    // The element arm carries the category exclusion; the positive category arm
+    // is kept alongside it, because dropping it would silently stop enforcing
+    // components the spec still selects.
     const out = [];
-    if (elementTypes.length) out.push({ element: { type: elementTypes } });
+    if (elementTypes.length) {
+        out.push(excludedCategories.length
+            ? { element: { type: elementTypes }, file: { categories: { noneOf: excludedCategories } } }
+            : { element: { type: elementTypes } });
+    }
     if (categories.length) out.push({ file: { categories } });
     return out;
+}
+
+// `capture` is supported on element components only. A relational template such
+// as `!{{from.captured.domain}}` reads the source's ELEMENT capture; for a file
+// component the value lives elsewhere, and two attempts to retarget it produced
+// a rule that over-blocked every import and then one that blocked none. No rule
+// here uses the construct, so it is rejected rather than approximated a third
+// time. Re-enable it only with probes proving both the same-scope and
+// cross-scope edge behave correctly.
+for (const c of FILE_COMPONENTS) {
+    if (c.capture) {
+        throw new Error(
+            `eslint.architecture.mjs: component '${c.name}' declares capture with ` +
+            `mode: 'file'. Captures are only supported on element components.`,
+        );
+    }
 }
 
 const elements = ELEMENT_COMPONENTS.map((c) => ({
@@ -116,7 +140,6 @@ const elements = ELEMENT_COMPONENTS.map((c) => ({
 const files = FILE_COMPONENTS.map((c) => ({
     category: c.name,
     pattern: c.pattern,
-    ...(c.capture && { capture: c.capture }),
 }));
 
 const policies = FORBIDDEN.map((e) => ({
