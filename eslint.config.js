@@ -98,6 +98,12 @@ function resolveNames(spec, except) {
 function selectors(spec, except) {
     const resolved = resolveNames(spec, except);
     if (!Array.isArray(resolved)) {
+        if (CATCH_ALL_CATEGORY && resolved.type === CATCH_ALL_CATEGORY) {
+            throw new Error(
+                `eslint.architecture.mjs: '${CATCH_ALL_CATEGORY}' is reserved and cannot be ` +
+                `named by a rule, including through the parametric object form.`,
+            );
+        }
         const sel = { captured: resolved.captured ?? {} };
         return [fileCategories.has(resolved.type)
             ? { file: { categories: resolved.type, ...sel } }
@@ -126,11 +132,39 @@ function selectors(spec, except) {
             : { element: { type: elementTypes } });
     }
     if (categories.length) {
-        out.push(excludedElements.length && elementTypes.length
-            ? { element: { type: elementTypes }, file: { categories } }
-            : { file: { categories } });
+        // A file can carry several categories, so a retained category must still
+        // honour the exclusions -- otherwise a multi-category file walks back in
+        // through the arm that kept it.
+        const fileCond = excludedCategories.length
+            ? { categories: { anyOf: categories, noneOf: excludedCategories } }
+            : { categories };
+        if (excludedElements.length) {
+            // Elements were excluded. Constrain by the survivors when there are
+            // any; when the exception removed them all, the exclusion still has
+            // to bite, so select on the excluded list negatively rather than
+            // falling back to an unrestricted file arm.
+            out.push(elementTypes.length
+                ? { element: { type: elementTypes }, file: fileCond }
+                : { element: { type: { noneOf: excludedElements } }, file: fileCond });
+        } else {
+            out.push({ file: fileCond });
+        }
     }
     return out;
+}
+
+// `capture` is supported on element components only. Two attempts to retarget a
+// relational template such as `!{{from.captured.domain}}` for a file source
+// produced a rule that blocked every import, then one that blocked none, so the
+// construct is refused rather than approximated. Re-enable it only with probes
+// proving both the same-scope and cross-scope edge.
+for (const c of FILE_COMPONENTS) {
+    if (c.capture) {
+        throw new Error(
+            `eslint.architecture.mjs: component '${c.name}' declares capture with ` +
+            `mode: 'file'. Captures are only supported on element components.`,
+        );
+    }
 }
 
 const elements = ELEMENT_COMPONENTS.map((c) => ({
