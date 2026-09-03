@@ -62,6 +62,9 @@ beweging. Zwevende versiering zonder aanleiding telt niet.
   Omvang is geen excuus: een project verdient een dragende vorm (jury,
   werkbank, studio, kaart) waarin het werk van de leerling zichtbaar groeit;
   een afvinklijstje mag hooguit een klein hulpmiddel zijn.
+- Het enige bewijs van beweging is een knop die van kleur wisselt of
+  ontgrendelt. Dat telt niet: er moet een scène, artefact of personage
+  reageren op wat de leerling doet.
 - De oude laboratoriumstijl overheerst de huisstijl in de werkelijk getoonde
   opdracht.
 - Na een zichtbare leerlingactie verandert geen enkel zichtbaar onderdeel,
@@ -251,3 +254,4 @@ afwijking aan de eigenaar voor.
 | 2026-09-01 | Voorstel (nog door de eigenaar te bevestigen): maatwerk zonder gedeelde motor slaagt op Veto 3 met notitie 'eigen motor' | Veto 3 |
 | 2026-09-02 | Uitleg van de meetregel: instellingen mogen alleen worden gelezen om te weten wat een opdracht CLAIMT (welke kerndoelen, welke motor), nooit als bewijs dat het gebeurt | Veto 3, Poort 3 |
 | 2026-09-02 | Gemeten: datalekken-rampenplan zakt op Veto 1 (aanvinkbrief); de regressieset is daarop aangepast | Veto 1 |
+| 2026-09-02 | Een knop die van kleur wisselt of ontgrendelt is geen bewijs van beweging; een scène, artefact of personage moet reageren op de leerling (n.a.v. website-bouwer) | Poort 1 |
