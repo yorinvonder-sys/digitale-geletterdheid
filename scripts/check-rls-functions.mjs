@@ -614,6 +614,191 @@ SELECT
   ),
   'test should not alter tracked function grants';
 
+-- ============================================================================
+-- Groep A: klasgebonden docenttoegang (migratie 20260903130000)
+-- ----------------------------------------------------------------------------
+-- De opzet gebruikt bewust TWEE klassen binnen school-a en een docent die er
+-- maar één van geeft. Met één klas zou elke controle hieronder groen zijn
+-- zonder de klasgrens te raken.
+--
+--   student A  (…0001) school-a klas A1  — docent A geeft deze klas
+--   student C  (…0007) school-a klas A2  — docent A geeft deze klas NIET
+--   docent  A  (…0003) school-a
+--   docent  C  (…0008) school-a          — collega, geen toewijzingen
+-- ============================================================================
+
+INSERT INTO auth.users (id, aud, role, email, raw_app_meta_data, raw_user_meta_data, email_confirmed_at, created_at, updated_at)
+VALUES
+  ('00000000-0000-4000-8000-000000000007', 'authenticated', 'authenticated', 'rls-student-c@example.test', '{"role":"student","schoolId":"school-a"}', '{}', now(), now(), now()),
+  ('00000000-0000-4000-8000-000000000008', 'authenticated', 'authenticated', 'rls-teacher-c@example.test', '{"role":"teacher","schoolId":"school-a"}', '{}', now(), now(), now());
+
+INSERT INTO public.users (id, uid, email, display_name, role, school_id, student_class, stats)
+VALUES
+  ('00000000-0000-4000-8000-000000000007', '00000000-0000-4000-8000-000000000007', 'rls-student-c@example.test', 'Student C', 'student', 'school-a', 'A2', '{"xp":0}'::jsonb),
+  ('00000000-0000-4000-8000-000000000008', '00000000-0000-4000-8000-000000000008', 'rls-teacher-c@example.test', 'Teacher C', 'teacher', 'school-a', null, '{"xp":0}'::jsonb);
+
+INSERT INTO public.mission_progress (user_id, mission_id, school_id, progress_data, status) VALUES
+  ('00000000-0000-4000-8000-000000000001', 'groepa-a1', 'school-a', '{"step":1}'::jsonb, 'in_progress'),
+  ('00000000-0000-4000-8000-000000000007', 'groepa-a2', 'school-a', '{"step":1}'::jsonb, 'in_progress'),
+  ('00000000-0000-4000-8000-000000000008', 'groepa-docent', 'school-a', '{"step":1}'::jsonb, 'in_progress')
+ON CONFLICT (user_id, mission_id) DO NOTHING;
+
+INSERT INTO public.student_activities (uid, student_name, type, school_id) VALUES
+  ('00000000-0000-4000-8000-000000000001', 'Student A', 'mission_complete', 'school-a'),
+  ('00000000-0000-4000-8000-000000000007', 'Student C', 'mission_complete', 'school-a');
+
+INSERT INTO public.assessment_results
+  (user_id, school_year, assessment_type, overall_score, niveau, total_time_seconds,
+   score_digitale_systemen, score_media_en_ai, score_programmeren,
+   score_veiligheid_privacy, score_welzijn_maatschappij, school_id)
+VALUES
+  ('00000000-0000-4000-8000-000000000001', 1, 'nulmeting', 50, 'basis', 100, 50, 50, 50, 50, 50, 'school-a'),
+  ('00000000-0000-4000-8000-000000000007', 1, 'nulmeting', 50, 'basis', 100, 50, 50, 50, 50, 50, 'school-a');
+
+INSERT INTO public.nulmeting_results
+  (user_id, overall_score, niveau, total_time_seconds, score_digitale_systemen,
+   score_media_en_ai, score_programmeren, score_veiligheid_privacy, score_welzijn_maatschappij)
+VALUES
+  ('00000000-0000-4000-8000-000000000001', 50, 'basis', 100, 50, 50, 50, 50, 50),
+  ('00000000-0000-4000-8000-000000000007', 50, 'basis', 100, 50, 50, 50, 50, 50);
+
+INSERT INTO public.growth_recommendations
+  (user_id, school_year, recommendation_text, focus_domains, input_context, model_version, school_id)
+VALUES
+  ('00000000-0000-4000-8000-000000000001', 1, 'Oefen A1', ARRAY['programmeren'], '{}'::jsonb, 'test', 'school-a'),
+  ('00000000-0000-4000-8000-000000000007', 1, 'Oefen A2', ARRAY['programmeren'], '{}'::jsonb, 'test', 'school-a');
+
+INSERT INTO public.teacher_step_overrides (teacher_id, student_id, mission_id, step_number, override_type)
+VALUES
+  ('00000000-0000-4000-8000-000000000003', '00000000-0000-4000-8000-000000000001', 'groepa-a1', 1, 'approve'),
+  ('00000000-0000-4000-8000-000000000003', '00000000-0000-4000-8000-000000000007', 'groepa-a2', 1, 'approve');
+
+INSERT INTO public.peer_feedback (mission_id, from_student_id, to_student_id, school_id, class_id, feedback_text)
+VALUES
+  ('groepa-a1', '00000000-0000-4000-8000-000000000001', '00000000-0000-4000-8000-000000000001', 'school-a', 'A1', 'feedback binnen A1'),
+  ('groepa-a2', '00000000-0000-4000-8000-000000000007', '00000000-0000-4000-8000-000000000007', 'school-a', 'A2', 'feedback binnen A2');
+
+-- ── 1. Standaardstand: gedrag moet ONGEWIJZIGD zijn ─────────────────────────
+SET LOCAL ROLE authenticated;
+SET LOCAL request.jwt.claim.sub = '00000000-0000-4000-8000-000000000003';
+SET LOCAL request.jwt.claims = '{"sub":"00000000-0000-4000-8000-000000000003","role":"authenticated","aal":"aal2"}';
+
+INSERT INTO rls_function_test_results
+SELECT
+  'groupa_default_mode_teacher_sees_both_classes',
+  (SELECT count(*) FROM public.mission_progress
+    WHERE mission_id IN ('groepa-a1', 'groepa-a2')) = 2,
+  'in de standaardstand ziet een docent beide klassen, precies als voorheen';
+
+INSERT INTO rls_function_test_results
+SELECT
+  'groupa_default_mode_teacher_row_is_hidden',
+  (SELECT count(*) FROM public.mission_progress WHERE mission_id = 'groepa-docent') = 0,
+  'bewuste versmalling: de rij van een collega-docent is geen leerlinggegeven en valt dicht';
+
+-- ── 2. Omzetten naar de strenge stand, docent A alleen op A1 ────────────────
+RESET ROLE;
+INSERT INTO public.teacher_classes (teacher_id, school_id, student_class, source)
+VALUES ('00000000-0000-4000-8000-000000000003', 'school-a', 'A1', 'manual')
+ON CONFLICT DO NOTHING;
+INSERT INTO public.school_access_settings (school_id, teacher_scope)
+VALUES ('school-a', 'class_strict')
+ON CONFLICT (school_id) DO UPDATE SET teacher_scope = EXCLUDED.teacher_scope;
+
+SET LOCAL ROLE authenticated;
+SET LOCAL request.jwt.claim.sub = '00000000-0000-4000-8000-000000000003';
+SET LOCAL request.jwt.claims = '{"sub":"00000000-0000-4000-8000-000000000003","role":"authenticated","aal":"aal2"}';
+
+INSERT INTO rls_function_test_results
+SELECT 'groupa_strict_mission_progress',
+  (SELECT count(*) FROM public.mission_progress WHERE mission_id = 'groepa-a1') = 1
+  AND (SELECT count(*) FROM public.mission_progress WHERE mission_id = 'groepa-a2') = 0,
+  'mission_progress: eigen klas zichtbaar, vreemde klas niet';
+
+INSERT INTO rls_function_test_results
+SELECT 'groupa_strict_student_activities',
+  (SELECT count(*) FROM public.student_activities
+    WHERE uid = '00000000-0000-4000-8000-000000000001') = 1
+  AND (SELECT count(*) FROM public.student_activities
+    WHERE uid = '00000000-0000-4000-8000-000000000007') = 0,
+  'student_activities: eigen klas zichtbaar, vreemde klas niet';
+
+INSERT INTO rls_function_test_results
+SELECT 'groupa_strict_assessment_results',
+  (SELECT count(*) FROM public.assessment_results
+    WHERE user_id = '00000000-0000-4000-8000-000000000001') = 1
+  AND (SELECT count(*) FROM public.assessment_results
+    WHERE user_id = '00000000-0000-4000-8000-000000000007') = 0,
+  'assessment_results: eigen klas zichtbaar, vreemde klas niet';
+
+INSERT INTO rls_function_test_results
+SELECT 'groupa_strict_nulmeting_results',
+  (SELECT count(*) FROM public.nulmeting_results
+    WHERE user_id = '00000000-0000-4000-8000-000000000001') = 1
+  AND (SELECT count(*) FROM public.nulmeting_results
+    WHERE user_id = '00000000-0000-4000-8000-000000000007') = 0,
+  'nulmeting_results: eigen klas zichtbaar, vreemde klas niet';
+
+INSERT INTO rls_function_test_results
+SELECT 'groupa_strict_growth_recommendations',
+  (SELECT count(*) FROM public.growth_recommendations
+    WHERE user_id = '00000000-0000-4000-8000-000000000001') = 1
+  AND (SELECT count(*) FROM public.growth_recommendations
+    WHERE user_id = '00000000-0000-4000-8000-000000000007') = 0,
+  'growth_recommendations: eigen klas zichtbaar, vreemde klas niet';
+
+INSERT INTO rls_function_test_results
+SELECT 'groupa_strict_teacher_step_overrides',
+  (SELECT count(*) FROM public.teacher_step_overrides WHERE mission_id = 'groepa-a1') = 1
+  AND (SELECT count(*) FROM public.teacher_step_overrides WHERE mission_id = 'groepa-a2') = 0,
+  'teacher_step_overrides: eigen klas zichtbaar, vreemde klas niet';
+
+INSERT INTO rls_function_test_results
+SELECT 'groupa_strict_peer_feedback',
+  (SELECT count(*) FROM public.peer_feedback WHERE mission_id = 'groepa-a1') = 1
+  AND (SELECT count(*) FROM public.peer_feedback WHERE mission_id = 'groepa-a2') = 0,
+  'peer_feedback: eigen klas zichtbaar, vreemde klas niet';
+
+-- Schrijven mag ook niet meer buiten de eigen klas.
+DO $groupa_write$
+DECLARE
+  v_blocked boolean := false;
+BEGIN
+  BEGIN
+    INSERT INTO public.teacher_step_overrides (teacher_id, student_id, mission_id, step_number, override_type)
+    VALUES ('00000000-0000-4000-8000-000000000003', '00000000-0000-4000-8000-000000000007', 'groepa-poging', 2, 'approve');
+  EXCEPTION WHEN insufficient_privilege OR check_violation THEN
+    v_blocked := true;
+  END;
+  INSERT INTO rls_function_test_results
+  VALUES ('groupa_strict_override_insert_blocked', v_blocked,
+    'een docent kan geen override zetten op een leerling buiten zijn klassen');
+END;
+$groupa_write$;
+
+-- ── 3. De leerling zelf houdt toegang, ook in de strenge stand ──────────────
+SET LOCAL request.jwt.claim.sub = '00000000-0000-4000-8000-000000000007';
+SET LOCAL request.jwt.claims = '{"sub":"00000000-0000-4000-8000-000000000007","role":"authenticated","aal":"aal1"}';
+
+INSERT INTO rls_function_test_results
+SELECT 'groupa_strict_student_keeps_own_access',
+  (SELECT count(*) FROM public.mission_progress WHERE mission_id = 'groepa-a2') = 1
+  AND (SELECT count(*) FROM public.assessment_results
+    WHERE user_id = '00000000-0000-4000-8000-000000000007') = 1,
+  'de leerling van de niet-gegeven klas ziet zijn eigen gegevens onverminderd';
+
+-- ── 4. Een collega zonder toewijzingen ziet niets van deze leerlingen ───────
+SET LOCAL request.jwt.claim.sub = '00000000-0000-4000-8000-000000000008';
+SET LOCAL request.jwt.claims = '{"sub":"00000000-0000-4000-8000-000000000008","role":"authenticated","aal":"aal2"}';
+
+INSERT INTO rls_function_test_results
+SELECT 'groupa_strict_unassigned_teacher_sees_nothing',
+  (SELECT count(*) FROM public.mission_progress
+    WHERE mission_id IN ('groepa-a1', 'groepa-a2')) = 0,
+  'in de strenge stand ziet een docent zonder toewijzingen geen enkele leerling';
+
+RESET ROLE;
+
 SELECT
   CASE WHEN passed THEN 'PASS' ELSE 'FAIL' END,
   test_name,

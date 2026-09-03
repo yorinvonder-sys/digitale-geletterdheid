@@ -260,6 +260,41 @@ groepen.
 > juiste telling is 47 over 28. Reproduceer met een zoekopdracht die zowel
 > `CREATE POLICY "naam"` als `CREATE POLICY naam` vangt.
 
+> **Correctie na uitvoering (3 sep 2026).** Bij het daadwerkelijk omzetten
+> (migratie `20260903130000`) bleek de telling hieronder op drie punten niet
+> meer te kloppen. De eindstand is nagemeten in `pg_policies` op een database
+> met álle migraties toegepast, niet uit de migratiebestanden gelezen.
+>
+> 1. **`mission_progress` heeft 2 regels, geen 4.** De twee dubbele
+>    baseline-regels zijn opgeruimd door `20260827100000`, ná het schrijven van
+>    dit ontwerp. Groep A telt daarmee 20 regels, niet 22.
+> 2. **`student_groups` en `teacher_messages` zijn niet mechanisch om te
+>    zetten.** Ze dragen wél een leerlingverwijzing, maar niet als kolom die aan
+>    `is_teacher_of_student(uuid)` te voeren is: `student_groups.student_uids`
+>    is een `uuid[]`, en `teacher_messages.target_id` is vrije tekst met een los
+>    `target_type`. Beide vragen een eigen keuze — alle leden of één lid; klas-
+>    of leerlinggrens — en horen dus in een eigen ronde, net als `users`.
+> 3. **`teacher_notes.student_uid` en `highlighted_work.uid` mogen NULL zijn.**
+>    Een botte omzetting zou bestaande rijen zonder koppeling stil uit het
+>    docentbeeld laten verdwijnen. Ze houden daarom een expliciete tak: geen
+>    leerlingverwijzing op de rij = geen leerlinggegeven = schoolbrede toets.
+>
+> **Uitgevoerd in ronde 1: 12 regels over 9 tabellen** — `mission_progress` (2),
+> `growth_recommendations` (2), `teacher_step_overrides` (2),
+> `assessment_results`, `nulmeting_results`, `student_activities`,
+> `teacher_notes`, `highlighted_work`, `peer_feedback` (elk 1).
+>
+> **Nog open na ronde 1:** `users` (4), `wellbeing_alerts` (2),
+> `student_groups` (1), `teacher_messages` (1).
+>
+> **Eén gedragsverschil, ook in de standaardstand.** `is_teacher_of_student()`
+> geeft false voor een rij die aan een docent- of beheerdersaccount hangt.
+> Vandaag ziet een docent de missievoortgang van een collega omdat de
+> schoolbrede toets alleen naar `school_id` kijkt; na ronde 1 niet meer. Een
+> docent houdt zijn eigen rijen via de eigenaarstak, en het dashboard bevraagt
+> alleen leerlingen. Vastgelegd in de toets
+> `groupa_default_mode_teacher_row_is_hidden`.
+
 ### Groep A — leerlinggegevens, moeten over (22 regels, 13 tabellen)
 
 Deze regels ontsluiten gegevens die herleidbaar zijn tot een individuele
@@ -356,12 +391,30 @@ Hier botsen de belangen en is per tabel een besluit nodig:
 1. **Nu geleverd.** Tabellen, helpers, toegangsregels op de nieuwe tabellen,
    contractcheck. Gedrag ongewijzigd.
 2. **Beheerscherm** (§4a) plus een overzicht van wat er nog ontbreekt.
-3. **Groep A omzetten** — 16 van de 22 regels, dus zonder `wellbeing_alerts`
-   (2 regels) en zonder de 4 regels op `users` (die krijgen een eigen ronde met
-   een eigen ontwerp per regel). Elke omgezette regel krijgt een toets in
-   `tests/rls/teacher-class-scoping/` en een uitbreiding van
-   `scripts/check-rls-functions.mjs`. Meet in deze stap ook de queryduur op
-   `mission_progress` en `student_activities` vóór en ná.
+3. **Groep A omzetten** — ~~16 van de 22~~ **uitgevoerd: 12 van de 20 regels**
+   (migratie `20260903130000`), zonder `wellbeing_alerts`, `users`,
+   `student_groups` en `teacher_messages`; zie de correctie hierboven. De toetsen
+   staan in `scripts/check-rls-functions.mjs` (prefix `groupa_`) en niet in
+   `tests/rls/teacher-class-scoping/`: dat harnas past maar één migratie toe en
+   kent de betrokken tabellen dus niet. De toetsen zijn tegengelezen door de
+   migratie tijdelijk terug te draaien; ze werden dan rood.
+   De queryduur is gemeten op 400 leerlingen × 25 rijen (10.000 rijen), als
+   docent met MFA, in de standaardstand:
+
+   | vorm | `mission_progress` |
+   |---|---:|
+   | huidige productieregel (schoolbreed) | 209 ms |
+   | toets per rij | 467 ms |
+   | **toets per leerling (gekozen)** | **32 ms** |
+
+   Een policy-uitdrukking draait per RIJ. `is_teacher_of_student(user_id)` zou
+   op de twee drukke tabellen dus tienduizenden keren draaien voor een paar
+   honderd leerlingen. De gekozen vorm — `user_id IN (SELECT u.id FROM users u
+   WHERE is_teacher_of_student(u.id))` — evalueert de toets één keer per
+   leerling en is daarmee niet alleen goedkoper dan de omzetting, maar ook
+   goedkoper dan wat er vandaag draait. Alleen `mission_progress` en
+   `student_activities` gebruiken die vorm; de overige tabellen hebben hooguit
+   één rij per leerling, dus daar maakt het geen verschil.
 4. **Eén pilotschool op `class_soft`**, met de instructie om te melden wanneer
    iets niet meer zichtbaar is dat wel zichtbaar hoorde te zijn.
 5. **`class_strict`**, per school, pas als aan de voorwaarden hieronder is
