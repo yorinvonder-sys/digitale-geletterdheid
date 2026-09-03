@@ -1,0 +1,544 @@
+{
+  "schemaVersion": 2,
+  "mode": "opdracht-review",
+  "environment": "preview",
+  "missionId": "ml-trainer",
+  "testedCommit": "f487541e3c98cb1544daebb6be154118f6c9103f",
+  "route": "/dev/mission-preview?mission=ml-trainer&reset=1",
+  "browser": "Playwright (MCP)",
+  "result": "BLOCKED",
+  "limitations": [
+    "De ingebouwde document-listener (window.__dgLog) ving klik- en typacties intermitterend niet op, ondanks zichtbare state-wijzigingen in de UI (bevestigd via snapshots/scores). actionLog-tijden zijn daarom vastgelegd via directe Date.now()-metingen vlak na elke actie in plaats van via de logger; dit is een technische beperking van de meetroute (type/actie/log), niet een verzonnen waarde. Hierdoor bevat actionLog slechts twee type-waarden (click, input) in plaats van drie.",
+    "document.querySelector('h1') matchte bij expectation-opname een verborgen, lege globale h1 boven de missietitel, waardoor expectation.title terugviel op document.title in plaats van de zichtbare missieheading 'Word een ML Trainer'. Dit is een observatie over de paginastructuur, geen meetfout.",
+    "Volle instrumentatie (logger, actionLog, animatiemeting, intro-teksten, reduced motion) is conform de briefing alleen op desktop uitgevoerd; op mobile/ipad-portrait/ipad-landscape zijn alleen de vijf ijkpunten met screenshots vastgelegd.",
+    "veto1, veto3 en veto4 zijn bewust op 'NIET VASTGESTELD' gelaten — buiten de scope van de speler-rol."
+  ],
+  "productionMutations": 0,
+  "xpMutations": 0,
+  "expectation": {
+    "title": "DGSkills — Digitale Geletterdheid voor het Onderwijs | AI-missies & SLO 2025",
+    "openingLine": "🧠",
+    "expectedVerb": "trainen",
+    "recordedAt": 1788424998069
+  },
+  "actionLog": [
+    {
+      "t": 1788425035893,
+      "type": "click",
+      "action": "Op 'Start de missie' geklikt",
+      "screenshot": 2
+    },
+    {
+      "t": 1788425068211,
+      "type": "input",
+      "action": "'30' getypt bij vraag 1 dataset 1 (bewust fout antwoord)",
+      "screenshot": 2,
+      "changedNextState": "ja"
+    },
+    {
+      "t": 1788425076494,
+      "type": "click",
+      "action": "Op 'Bevestigen' geklikt bij vraag 1 dataset 1",
+      "screenshot": 3
+    },
+    {
+      "t": 1788425089953,
+      "type": "click",
+      "action": "Radiobutton '\"Gratis\" of \"Win\" aanwezig' geselecteerd bij vraag 2 dataset 1",
+      "screenshot": 3
+    },
+    {
+      "t": 1788425096783,
+      "type": "click",
+      "action": "Op 'Bevestigen' geklikt bij vraag 2 dataset 1",
+      "screenshot": 3
+    },
+    {
+      "t": 1788425137397,
+      "type": "click",
+      "action": "Op 'Bevestigen' geklikt bij vraag 3 dataset 1 (na intypen observatie)",
+      "screenshot": 4
+    },
+    {
+      "t": 1788425192987,
+      "type": "click",
+      "action": "Op 'Volgende dataset' geklikt (naar dataset 2)",
+      "screenshot": 5
+    },
+    {
+      "t": 1788425200725,
+      "type": "click",
+      "action": "Radiobutton 'Alle features + datum' geselecteerd bij vraag 1 dataset 2",
+      "screenshot": 5
+    },
+    {
+      "t": 1788425205449,
+      "type": "click",
+      "action": "Op 'Bevestigen' geklikt bij vraag 1 dataset 2",
+      "screenshot": 5
+    },
+    {
+      "t": 1788425209893,
+      "type": "input",
+      "action": "'20' getypt bij vraag 2 dataset 2",
+      "screenshot": 5,
+      "changedNextState": "ja"
+    },
+    {
+      "t": 1788425214792,
+      "type": "click",
+      "action": "Op 'Bevestigen' geklikt bij vraag 2 dataset 2",
+      "screenshot": 5
+    },
+    {
+      "t": 1788425219808,
+      "type": "input",
+      "action": "Observatietekst getypt bij vraag 3 dataset 2",
+      "screenshot": 5,
+      "changedNextState": "ja"
+    },
+    {
+      "t": 1788425224291,
+      "type": "click",
+      "action": "Op 'Bevestigen' geklikt bij vraag 3 dataset 2",
+      "screenshot": 5
+    },
+    {
+      "t": 1788425232778,
+      "type": "click",
+      "action": "Op 'Volgende dataset' geklikt (naar dataset 3)",
+      "screenshot": 6
+    },
+    {
+      "t": 1788425287354,
+      "type": "click",
+      "action": "Op 'Vorige dataset' geklikt (terug naar dataset 2, tekst vastleggen)",
+      "screenshot": 7
+    },
+    {
+      "t": 1788425297191,
+      "type": "click",
+      "action": "Op 'Vorige dataset' geklikt (terug naar dataset 1, tekst vastleggen)",
+      "screenshot": 8
+    },
+    {
+      "t": 1788425304857,
+      "type": "click",
+      "action": "Op 'Volgende dataset' geklikt (terug naar dataset 2)",
+      "screenshot": 8
+    },
+    {
+      "t": 1788425309776,
+      "type": "click",
+      "action": "Op 'Volgende dataset' geklikt (naar dataset 3)",
+      "screenshot": 8
+    },
+    {
+      "t": 1788425316201,
+      "type": "click",
+      "action": "Radiobutton 'Overfitting' geselecteerd bij vraag 1 dataset 3",
+      "screenshot": 8
+    },
+    {
+      "t": 1788425321086,
+      "type": "click",
+      "action": "Op 'Bevestigen' geklikt bij vraag 1 dataset 3",
+      "screenshot": 9
+    },
+    {
+      "t": 1788425326032,
+      "type": "input",
+      "action": "Observatietekst getypt bij vraag 2 dataset 3",
+      "screenshot": 9,
+      "changedNextState": "ja"
+    },
+    {
+      "t": 1788425331035,
+      "type": "click",
+      "action": "Op 'Bevestigen' geklikt bij vraag 2 dataset 3",
+      "screenshot": 9
+    },
+    {
+      "t": 1788425340699,
+      "type": "click",
+      "action": "Op 'Bekijk resultaten' geklikt",
+      "screenshot": 10
+    },
+    {
+      "t": 1788425361495,
+      "type": "click",
+      "action": "Op 'Terug naar de datasets' geklikt",
+      "screenshot": 10
+    },
+    {
+      "t": 1788425380667,
+      "type": "click",
+      "action": "Op sorteerknop 'ID' geklikt (voor bewegingsmeting)",
+      "screenshot": 11
+    }
+  ],
+  "animationEvidence": [
+    {
+      "element": "table thead button (sorteerknop 'ID')",
+      "action": "Klik op sorteerknop 'ID' in dataset 1",
+      "screenshot": 11,
+      "framesBefore": [
+        {
+          "t": 1788425380667,
+          "transform": "none",
+          "opacity": "1",
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "color": "rgb(32, 32, 35)",
+          "borderColor": "rgb(229, 231, 235)",
+          "boxShadow": "none",
+          "rect": {
+            "x": 479,
+            "y": 421.25,
+            "width": 63.6328125,
+            "height": 44
+          }
+        }
+      ],
+      "actionTime": 1788425380816,
+      "framesAfter": [
+        {
+          "t": 1788425380820,
+          "transform": "none",
+          "opacity": "1",
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "color": "rgb(32, 32, 35)",
+          "borderColor": "rgb(229, 231, 235)",
+          "boxShadow": "none",
+          "rect": {
+            "x": 479,
+            "y": 421.25,
+            "width": 63.6328125,
+            "height": 44
+          }
+        },
+        {
+          "t": 1788425380835,
+          "transform": "none",
+          "opacity": "1",
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "color": "rgb(32, 32, 35)",
+          "borderColor": "rgb(229, 231, 235)",
+          "boxShadow": "none",
+          "rect": {
+            "x": 479,
+            "y": 421.25,
+            "width": 63.6328125,
+            "height": 44
+          }
+        },
+        {
+          "t": 1788425380852,
+          "transform": "none",
+          "opacity": "1",
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "color": "rgb(32, 32, 35)",
+          "borderColor": "rgb(229, 231, 235)",
+          "boxShadow": "none",
+          "rect": {
+            "x": 479,
+            "y": 421.25,
+            "width": 63.6328125,
+            "height": 44
+          }
+        }
+      ],
+      "reducedMotionChecked": true
+    }
+  ],
+  "reducedMotion": {
+    "classPresent": true,
+    "screenshot": 12
+  },
+  "introSteps": [
+    {
+      "screenshot": 8,
+      "text": "50 pts\nDATASET 1 / 3\nTrainingsdataset: 12 e-mails voor spamfilter\n\nEen data-engineer heeft 12 e-mails gelabeld als \"spam\" of \"geen spam\". Elke rij bevat features (kenmerken) die een model kan leren. Analyseer de dataset.\n\nDATABRON\n\nOefendataset · Door de missie ontworpen spam-oefendataset\n\nKleine, vereenvoudigde voorbeelden voor oefenen; geen echte e-maildata en niet geschikt voor modelvalidatie."
+    },
+    {
+      "screenshot": 7,
+      "text": "50 pts\nDATASET 2 / 3\nAccuracy van modellen met verschillende features\n\nVier versies van een spamfilter zijn getraind met verschillende features. Bekijk de accuracy op de testset.\n\nDATABRON\n\nOefendataset · Gesimuleerde accuracy-vergelijking\n\nDidactische voorbeeldwaarden; geen actuele benchmark of productieprestatie."
+    },
+    {
+      "screenshot": 6,
+      "text": "50 pts\nDATASET 3 / 3\nVier kernbegrippen van machine learning\n\nMachine learning heeft een eigen taal. Hier zijn vier kernbegrippen die elke ML Trainer moet kennen.\n\nDATABRON\n\nOefendataset · Didactische begrippenkaarten\n\nSamengevatte oefeninhoud; leerlingen moeten echte modellen en datasets later met eigen bronnen controleren."
+    }
+  ],
+  "introSummary": {
+    "maak": "Je analyseert een gelabelde e-maildataset op spamkenmerken, vergelijkt de accuracy van modellen die met verschillende features zijn getraind, en leert vier kernbegrippen van machine learning (trainings-/testset, overfitting, features/labels, classificatie/regressie).",
+    "voorWie": "Voor een leerling die leert hoe supervised learning werkt: hoe een model van gelabelde voorbeelden leert en hoe je de kwaliteit ervan beoordeelt.",
+    "goed": "Het is goed als je kunt uitleggen waarom een trainingset en testset gescheiden blijven, en aan de hand van een groot verschil tussen train- en testaccuracy kunt herkennen dat een model overfit."
+  },
+  "veto2": {
+    "readClickMinutes": 2,
+    "totalMinutes": 7,
+    "percentage": 0.2857142857142857
+  },
+  "comparedWith": {
+    "missionId": "neural-navigator",
+    "manifestPath": "../neural-navigator-2026-09-03/manifest.json"
+  },
+  "gates": {
+    "veto1": "NIET VASTGESTELD",
+    "veto2": "GESLAAGD",
+    "veto3": "NIET VASTGESTELD",
+    "veto4": "NIET VASTGESTELD",
+    "poort1": "n.v.t.",
+    "poort2": "n.v.t.",
+    "poort3": "n.v.t."
+  },
+  "viewports": [
+    {
+      "name": "desktop",
+      "cssViewport": "1440x900",
+      "checkpoints": {
+        "start": true,
+        "flow": true,
+        "feedback": true,
+        "recovery": true,
+        "end": true
+      },
+      "evidence": [
+        {
+          "screenshot": 1,
+          "path": "01-desktop-start.png",
+          "sha256": "568cbd63f4f1f645c309adda390bffc7d2f13b29a7289a6ceb8bd403e1d03954",
+          "width": 1440,
+          "height": 900
+        },
+        {
+          "screenshot": 2,
+          "path": "02-desktop-flow.png",
+          "sha256": "52754a69cf3debbdf8820ef46aca5905ab55c3b02d61f8f0ca267c538c631262",
+          "width": 1440,
+          "height": 900
+        },
+        {
+          "screenshot": 3,
+          "path": "03-desktop-feedback.png",
+          "sha256": "4a0c7adbc77557f2e15f696a57c5cd4f4fe1954006eb5dfe1230b8aa6704a4dd",
+          "width": 1440,
+          "height": 900
+        },
+        {
+          "screenshot": 4,
+          "path": "04-desktop-recovery.png",
+          "sha256": "a72afa79a1377c7f60d58b2a64c49b702c77d70d470abcc68c02f0c7f26ab448",
+          "width": 1440,
+          "height": 900
+        },
+        {
+          "screenshot": 5,
+          "path": "05-desktop-flow2.png",
+          "sha256": "e2ba54fbe7020ea0eca1a71f715a0c760ff7ff35272f06a1739aedff7d954fdd",
+          "width": 1440,
+          "height": 900
+        },
+        {
+          "screenshot": 6,
+          "path": "06-desktop-intro3.png",
+          "sha256": "d2d2ae68857fe9125d98a2ccdb6efa209f219b2dbbabc16a35db7377540770c9",
+          "width": 1440,
+          "height": 900
+        },
+        {
+          "screenshot": 7,
+          "path": "07-desktop-intro2.png",
+          "sha256": "6e853ca5becb4fbcbb31f75c2f8bd1db666e0cb7944b57b7666838cb7fb50e04",
+          "width": 1440,
+          "height": 900
+        },
+        {
+          "screenshot": 8,
+          "path": "08-desktop-intro1.png",
+          "sha256": "634c2ba50da2142529f451af72957d97914d01a2abe58c9f5b456bf7885a5aea",
+          "width": 1440,
+          "height": 900
+        },
+        {
+          "screenshot": 9,
+          "path": "09-desktop-flow3-feedback.png",
+          "sha256": "6c31e33ac47e363dcf5a3e26bacf680859cac2225b816b6b460ccf31ff817da8",
+          "width": 1440,
+          "height": 900
+        },
+        {
+          "screenshot": 10,
+          "path": "10-desktop-end.png",
+          "sha256": "d49620b758717de9064bc9690213d5eb2b19cee1be1e7efe3004ad87c206384a",
+          "width": 1440,
+          "height": 900
+        },
+        {
+          "screenshot": 11,
+          "path": "11-desktop-animation.png",
+          "sha256": "fd72469fa0ad3b30e909e210024f1cab8a9aa376a32904f87aaf487417066271",
+          "width": 1440,
+          "height": 900
+        },
+        {
+          "screenshot": 12,
+          "path": "12-desktop-reducedmotion.png",
+          "sha256": "dbf8b0f6faef49dca19faf4611131315a35cdac3095047d398d56d56ef6df089",
+          "width": 1440,
+          "height": 900
+        },
+        {
+          "screenshot": 28,
+          "path": "28-desktop-persistence-reload.png",
+          "sha256": "16037eb990f90b9357e1873a3165a6aba6994241a81d47678e5306267e812dcc",
+          "width": 1440,
+          "height": 900
+        }
+      ]
+    },
+    {
+      "name": "mobile",
+      "cssViewport": "375x844",
+      "checkpoints": {
+        "start": true,
+        "flow": true,
+        "feedback": true,
+        "recovery": true,
+        "end": true
+      },
+      "evidence": [
+        {
+          "screenshot": 13,
+          "path": "13-mobile-start.png",
+          "sha256": "4a1312b61ec5c6e3e27811b53a909627bddf6626609443832bb9d9f7b703edc1",
+          "width": 375,
+          "height": 844
+        },
+        {
+          "screenshot": 14,
+          "path": "14-mobile-flow.png",
+          "sha256": "ad81d7c544c20749853e42ed6985e03db0034e3374b7303567f52bc8343ab2b7",
+          "width": 375,
+          "height": 844
+        },
+        {
+          "screenshot": 15,
+          "path": "15-mobile-feedback.png",
+          "sha256": "48de3b787bb5f95a23c273e548305c9283c16cb35e613c2dc94dece919c560fd",
+          "width": 375,
+          "height": 844
+        },
+        {
+          "screenshot": 16,
+          "path": "16-mobile-recovery.png",
+          "sha256": "87893728278b4dcfb5572a5c0b09ad577cc67802439312ce60f64174f0847660",
+          "width": 375,
+          "height": 844
+        },
+        {
+          "screenshot": 17,
+          "path": "17-mobile-end.png",
+          "sha256": "4ebcfb64947d6d51fdeff10e40c8afe0a667a61894d97b54ee1d1740885e6e56",
+          "width": 375,
+          "height": 844
+        }
+      ]
+    },
+    {
+      "name": "ipad-portrait",
+      "cssViewport": "820x1180",
+      "checkpoints": {
+        "start": true,
+        "flow": true,
+        "feedback": true,
+        "recovery": true,
+        "end": true
+      },
+      "evidence": [
+        {
+          "screenshot": 18,
+          "path": "18-ipad-portrait-start.png",
+          "sha256": "df5088e84c40a82dacd30dd891e18d09f413d13dad7626d04fe235eefe8a4b60",
+          "width": 820,
+          "height": 1180
+        },
+        {
+          "screenshot": 19,
+          "path": "19-ipad-portrait-flow.png",
+          "sha256": "345a61d1bb63a9ee12b6beefe29b81aa38c4e5a0847535c1770678b6db3c5b08",
+          "width": 820,
+          "height": 1180
+        },
+        {
+          "screenshot": 20,
+          "path": "20-ipad-portrait-feedback.png",
+          "sha256": "ab6c4a06352cdd2ccef8ce05b3a28b0560abe9cd72f79f40449ed19e811dab27",
+          "width": 820,
+          "height": 1180
+        },
+        {
+          "screenshot": 21,
+          "path": "21-ipad-portrait-recovery.png",
+          "sha256": "d47f80a225489942efbb0a9000fb17bb486ec292d0ab97978609bf1c3780ccb4",
+          "width": 820,
+          "height": 1180
+        },
+        {
+          "screenshot": 22,
+          "path": "22-ipad-portrait-end.png",
+          "sha256": "1b05b602ef47bcf12ca4dc99d0b1d74d69f9755cb1a68f550013e9009bad1a4e",
+          "width": 820,
+          "height": 1180
+        }
+      ]
+    },
+    {
+      "name": "ipad-landscape",
+      "cssViewport": "1180x820",
+      "checkpoints": {
+        "start": true,
+        "flow": true,
+        "feedback": true,
+        "recovery": true,
+        "end": true
+      },
+      "evidence": [
+        {
+          "screenshot": 23,
+          "path": "23-ipad-landscape-start.png",
+          "sha256": "d9dd7090037e787fa3ad1650dcdc8ac85eccca3648e052225165a223c9f536e0",
+          "width": 1180,
+          "height": 820
+        },
+        {
+          "screenshot": 24,
+          "path": "24-ipad-landscape-flow.png",
+          "sha256": "ea853c6cde76abbafa6e35287f4a081dc48c05532e7d7b49505ac4085eb2db2a",
+          "width": 1180,
+          "height": 820
+        },
+        {
+          "screenshot": 25,
+          "path": "25-ipad-landscape-feedback.png",
+          "sha256": "c5030d12969fd0588dae02d6b3dd27acd3564d4edef13452e3a229acfa84f394",
+          "width": 1180,
+          "height": 820
+        },
+        {
+          "screenshot": 26,
+          "path": "26-ipad-landscape-recovery.png",
+          "sha256": "a774b4f85b475f1619e2daed3901571ccf4b33c15c6ec120cf1794f3a7cee84a",
+          "width": 1180,
+          "height": 820
+        },
+        {
+          "screenshot": 27,
+          "path": "27-ipad-landscape-end.png",
+          "sha256": "f9f91836b5ac60c5904889542aef5d065f5f8dabf86020bec3fc8fb8fc7b70be",
+          "width": 1180,
+          "height": 820
+        }
+      ]
+    }
+  ]
+}
