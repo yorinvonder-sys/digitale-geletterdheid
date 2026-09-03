@@ -17,18 +17,6 @@
 //   - services -> features: 2 imports, both of
 //     @/features/assessment/escaperoom/types. Enforceable once those types
 //     move to a location services may own.
-//   - Test code importing other test code ACROSS elements is also rejected by
-//     the production-to-test rule. A test file carries its directory's element
-//     type as well as its test category, and boundaries cannot express "this
-//     element except its test files" -- see the assembler's assertExpressible.
-//     There are no co-located tests in src/ today, so this false positive
-//     cannot currently occur; it would surface as a loud lint error, not a
-//     silent gap, and should be addressed deliberately when it does.
-//   - Test-only code imported from WITHIN the same element. Boundaries only
-//     evaluates edges between different elements, so a service importing a
-//     test file that sits in src/services/ is internal and not checked. The
-//     rule does fire across elements, which is the case that matters. There
-//     are no co-located test files in src/ today.
 //   - Literal-only dynamic import paths: 10 mission templates deliberately use
 //     import(`./configs/${missionId}.ts`) behind a validated id allowlist.
 
@@ -45,7 +33,11 @@ export default {
         { name: 'components-shell', pattern: 'src/components/app-shell/**' },
         { name: 'services', pattern: 'src/services/**' },
         { name: 'feature', pattern: 'src/features/*/**', capture: ['domain'] },
-        { name: 'src-other', pattern: 'src/**' }, // catch-all, last
+        { name: 'src-other', pattern: 'src/**' }, // element catch-all, last
+        // File catch-all: every file must carry SOME category, otherwise a
+        // `file.categories: { noneOf: [...] }` condition cannot match a
+        // production file and the rule using it silently matches nothing.
+        { name: 'non-test', pattern: '**', mode: 'file' }, // catch-all, last
     ],
     forbidden: [
         {
@@ -66,6 +58,7 @@ export default {
         },
         {
             from: '*',
+            except: ['test-support', 'test-unit', 'test-contract'],
             to: ['test-support', 'test-unit', 'test-contract'],
             why: 'Production code must not import test-only code.',
         },

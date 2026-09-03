@@ -76,38 +76,32 @@ function resolveNames(spec, except) {
 }
 
 // A file carries BOTH a file category and the element type of its directory:
-// src/features/foo/x.test.ts is `test-unit` AND `feature`. eslint-plugin-boundaries
-// offers no way to say "this element, but not the files in it carrying category
-// X": a production file has no file category at all, so adding a `file`
-// condition to a selector stops it matching production files entirely.
-//
-// Two attempts to express such an exception both failed silently (see the
-// review threads on PR #348), so the assembler refuses the construct instead of
-// emitting a rule that looks enforced and is not.
-function assertExpressible(spec, except, why) {
-    const excludedCategories = except?.length
-        ? resolveNames(except).filter((n) => fileCategories.has(n))
-        : [];
-    if (!excludedCategories.length) return;
-    const elementTypes = resolveNames(spec).filter?.((n) => !fileCategories.has(n)) ?? [];
-    if (elementTypes.length) {
-        throw new Error(
-            `eslint.architecture.mjs: cannot except file component(s) ` +
-            `[${excludedCategories.join(', ')}] from a rule that also selects element types ` +
-            `[${elementTypes.join(', ')}] -- the element selector still matches those files, ` +
-            `so the exception would be silently ineffective. Rule: ${why}`,
-        );
-    }
-}
-
+// src/features/foo/x.test.ts is `test-unit` AND `feature`. Dropping a category
+// via `except` therefore does not stop the surviving element selector matching
+// those same files. The fix is a COMPOSITE selector: element condition plus
+// `file.categories: { noneOf: [...] }` in one entity selector, which works only
+// because every file also carries the `non-test` catch-all category.
 function selectors(spec, except) {
     const resolved = resolveNames(spec, except);
     if (!Array.isArray(resolved)) {
-        return [{ element: { type: resolved.type, captured: resolved.captured ?? {} } }];
+        const sel = { captured: resolved.captured ?? {} };
+        return [fileCategories.has(resolved.type)
+            ? { file: { categories: resolved.type, ...sel } }
+            : { element: { type: resolved.type, ...sel } }];
     }
-    const out = [];
+    const excludedCategories = except?.length
+        ? resolveNames(except).filter((n) => fileCategories.has(n))
+        : [];
     const elementTypes = resolved.filter((n) => !fileCategories.has(n));
     const categories = resolved.filter((n) => fileCategories.has(n));
+
+    if (excludedCategories.length && elementTypes.length) {
+        return [{
+            element: { type: elementTypes },
+            file: { categories: { noneOf: excludedCategories } },
+        }];
+    }
+    const out = [];
     if (elementTypes.length) out.push({ element: { type: elementTypes } });
     if (categories.length) out.push({ file: { categories } });
     return out;
@@ -122,17 +116,14 @@ const elements = ELEMENT_COMPONENTS.map((c) => ({
 const files = FILE_COMPONENTS.map((c) => ({
     category: c.name,
     pattern: c.pattern,
+    ...(c.capture && { capture: c.capture }),
 }));
 
-const policies = FORBIDDEN.map((e) => {
-    assertExpressible(e.from, e.except, e.why);
-    assertExpressible(e.to, e.except_to, e.why);
-    return {
-        from: selectors(e.from, e.except),
-        disallow: selectors(e.to, e.except_to).map((to) => ({ to })),
-        message: e.why,
-    };
-});
+const policies = FORBIDDEN.map((e) => ({
+    from: selectors(e.from, e.except),
+    disallow: selectors(e.to, e.except_to).map((to) => ({ to })),
+    message: e.why,
+}));
 
 export default [
     {
@@ -173,7 +164,9 @@ export default [
             },
         },
         rules: {
-            'boundaries/dependencies': ['error', { default: 'allow', policies }],
+            // Without checkInternals the plugin skips dependencies inside one element,
+            // which is exactly where a co-located test file sits.
+            'boundaries/dependencies': ['error', { default: 'allow', policies, checkInternals: true }],
         },
     },
 ];
