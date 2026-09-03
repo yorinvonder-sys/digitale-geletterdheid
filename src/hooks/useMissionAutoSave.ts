@@ -21,7 +21,7 @@ interface StoredPayload<T> {
 }
 
 /** Sync extraction from this app's configured Supabase session only. */
-const getCurrentUserId = (): string | null => {
+export const getCurrentUserId = (): string | null => {
     try {
         // Bewust de sleutel van hét ingestelde project, niet de eerste de beste
         // sb-*-auth-token: op een gedeelde schoolcomputer kan een token van een

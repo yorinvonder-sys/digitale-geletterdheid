@@ -211,7 +211,7 @@ export const techImpactAnalystConfig: DataViewerConfig = {
             minScore: 65,
             emoji: '⚖️',
             title: 'Kritisch Analist',
-            color: '#202023',
+            color: '#ff3c21',
         },
         {
             minScore: 40,

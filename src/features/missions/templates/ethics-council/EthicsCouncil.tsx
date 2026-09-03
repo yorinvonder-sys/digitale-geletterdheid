@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback, useEffect, useRef } from 'react';
 import type { TemplateMissionProps, BadgeConfig, MissionGoal } from '../shared/types';
 import { PhaseHeader } from '../shared/PhaseHeader';
 import { CompletionScreen } from '../shared/CompletionScreen';
@@ -11,6 +11,7 @@ import { TransparantDossier } from './sub/TransparantDossier';
 import { UitdagingBoss } from './sub/UitdagingBoss';
 import { VonnisClimax } from './sub/VonnisClimax';
 import { RewardHud } from './sub/RewardHud';
+import type { CategorizeProgress } from '../review-arena/sub/Categorize';
 import { toScorePercent } from '../shared/scorePercent';
 
 // ═══════════════════════════════════════════════════════════════
@@ -36,11 +37,19 @@ export interface EthicsCouncilConfig {
     maxScore: number;
     // Dossier 1 — Legaal
     avgAdvocaat: AvgAdvocaatInfo;
+    /**
+     * Kernbegrippen van dit dilemma. Raakt de onderbouwing er geen enkele, dan
+     * zakt de score naar een deelfactor — een zachte rem op gokwerk, geen
+     * blokkade. Weglaten = geen inhoudelijke check.
+     */
+    legaalKeywords?: readonly string[];
     // Dossier 2 — Eerlijk (categorize)
     eerlijkCategories: string[];
     eerlijkItems: Array<{ label: string; correctCategory: string }>;
     // Dossier 3 — Transparant
     transparantHint?: string;
+    /** Zie `legaalKeywords`; geldt voor de uitleg in dossier 3. */
+    transparantKeywords?: readonly string[];
     // Miniboss
     counterArgument: string;
     // Completion
@@ -79,6 +88,8 @@ export interface EthicsCouncilState {
     legaalJustification: string;
     transparantText: string;
     counterResponse: string;
+    /** Plaatsingen van dossier 2; optioneel, want oudere saves kennen dit veld niet. */
+    eerlijkProgress?: CategorizeProgress;
 }
 
 // ── Point allocation ──────────────────────────────────────────
@@ -89,6 +100,43 @@ const UITDAGING_MAX  = 20;
 
 // Stages in order (excluding intro and vonnis — those are handled separately)
 const ACTIVE_STAGES: EthicsStage[] = ['legaal', 'eerlijk', 'transparant', 'uitdaging'];
+
+const VALID_STAGES = new Set<string>([
+    'intro',
+    'legaal',
+    'eerlijk',
+    'transparant',
+    'uitdaging',
+    'vonnis',
+] satisfies EthicsStage[]);
+
+/** Elk veld dat een ethics-council-save mag bevatten. */
+const STATE_KEYS = new Set<string>([
+    '_template',
+    'configMissionId',
+    'stage',
+    'legaalScore',
+    'eerlijkScore',
+    'transparantScore',
+    'uitdagingScore',
+    'legaalVerdict',
+    'legaalJustification',
+    'transparantText',
+    'counterResponse',
+    'eerlijkProgress',
+] satisfies Array<keyof EthicsCouncilState>);
+
+/**
+ * De hook merget opgeslagen state OVER de initiële state heen, dus `_template`
+ * en `configMissionId` komen altijd uit de initiële state en verraden een blob
+ * van een andere template niet. Zijn eigen velden blijven na die merge wél
+ * staan — daar herkennen we hem aan. Zo lekt een oude debate-arena-save met een
+ * gelijknamig veld (`counterResponse`) geen voorgevulde tekst in de miniboss.
+ * Een oudere ethics-council-save bevat alleen bekende velden en blijft geldig.
+ */
+const isOwnSave = (state: EthicsCouncilState): boolean =>
+    Object.keys(state).every((key) => STATE_KEYS.has(key)) &&
+    VALID_STAGES.has(state.stage);
 
 // ═══════════════════════════════════════════════════════════════
 // Allowlist
@@ -128,21 +176,18 @@ const EthicsCouncilWithConfig: React.FC<EthicsCouncilWithConfigProps> = ({
 
     const { state, setState, clearSave } = useMissionAutoSave<EthicsCouncilState>(
         missionId,
-        initialState
+        initialState,
+        { validate: isOwnSave }
     );
 
-    // ── Stale-save guard ─────────────────────────────────────
-    // An old debate-arena save for review-week-3 won't have _template === 'ethics-council'.
-    // Also reset if the configMissionId somehow drifted.
+    // ── Focus bij stagewissel ────────────────────────────────
+    // De kaartinhoud wordt vervangen zonder dat er iets van navigatie verschuift;
+    // zonder overdracht valt de focus terug op <body> en hoort een schermlezer
+    // niets van het nieuwe dossier.
+    const stageCardRef = useRef<HTMLDivElement>(null);
     useEffect(() => {
-        const isStale =
-            state._template !== 'ethics-council' ||
-            state.configMissionId !== config.missionId;
-        if (isStale) {
-            setState(initialState);
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [config.missionId]);
+        stageCardRef.current?.focus();
+    }, [state.stage]);
 
     // ── Derived totals ────────────────────────────────────────
     const totalScore =
@@ -166,6 +211,13 @@ const EthicsCouncilWithConfig: React.FC<EthicsCouncilWithConfigProps> = ({
                 legaalJustification: justification,
                 stage: 'eerlijk',
             }));
+        },
+        [setState]
+    );
+
+    const handleEerlijkProgress = useCallback(
+        (progress: CategorizeProgress) => {
+            setState((s) => ({ ...s, eerlijkProgress: progress }));
         },
         [setState]
     );
@@ -205,19 +257,23 @@ const EthicsCouncilWithConfig: React.FC<EthicsCouncilWithConfigProps> = ({
         [setState]
     );
 
-    const handleComplete = useCallback(() => {
-        clearSave();
-        onComplete(true, toScorePercent(totalScore, config.maxScore));
+    const handleComplete = useCallback(async () => {
+        // Pas wissen als de voltooiing is vastgelegd, anders raakt de leerling
+        // zijn dossiers kwijt bij een mislukte serveropslag.
+        const completed = await onComplete(true, toScorePercent(totalScore, config.maxScore));
+        if (completed !== false) {
+            clearSave();
+        }
     }, [clearSave, onComplete, totalScore, config.maxScore]);
 
-    // ── Render ────────────────────────────────────────────────
+    // Opnieuw proberen vanaf dossier 1. Antwoorden én scores blijven staan: elk
+    // dossier overschrijft zijn eigen score pas bij het opnieuw afsluiten, dus
+    // wie halverwege stopt houdt wat hij al had.
+    const handleRetry = useCallback(() => {
+        setState((s) => ({ ...s, stage: 'legaal' }));
+    }, [setState]);
 
-    // A stale (old debate-arena) save lacks our _template discriminator; the
-    // guard effect above resets it. Until that lands, show the loader so we
-    // never read undefined fields from a mismatched blob.
-    if (state._template !== 'ethics-council') {
-        return <LoadingScreen />;
-    }
+    // ── Render ────────────────────────────────────────────────
 
     if (state.stage === 'intro') {
         return (
@@ -255,6 +311,7 @@ const EthicsCouncilWithConfig: React.FC<EthicsCouncilWithConfigProps> = ({
                 badges={config.badges}
                 takeaways={config.takeaways}
                 onComplete={handleComplete}
+                onRetry={handleRetry}
             />
         );
     }
@@ -271,10 +328,15 @@ const EthicsCouncilWithConfig: React.FC<EthicsCouncilWithConfigProps> = ({
 
                 <RewardHud completedDossiers={phaseIndex} totalDossiers={ACTIVE_STAGES.length} />
 
-                <div className="bg-white rounded-2xl border border-duck-gray p-5">
+                <div
+                    ref={stageCardRef}
+                    tabIndex={-1}
+                    className="bg-white rounded-2xl border border-duck-gray p-5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-ink focus-visible:ring-offset-2"
+                >
                     {state.stage === 'legaal' && (
                         <LegaalDossier
                             advocaat={config.avgAdvocaat}
+                            keywords={config.legaalKeywords}
                             maxScore={LEGAAL_MAX}
                             savedVerdict={state.legaalVerdict}
                             savedJustification={state.legaalJustification}
@@ -287,6 +349,8 @@ const EthicsCouncilWithConfig: React.FC<EthicsCouncilWithConfigProps> = ({
                             categories={config.eerlijkCategories}
                             items={config.eerlijkItems}
                             maxScore={EERLIJK_MAX}
+                            savedProgress={state.eerlijkProgress}
+                            onProgress={handleEerlijkProgress}
                             onComplete={handleEerlijkComplete}
                         />
                     )}
@@ -294,6 +358,7 @@ const EthicsCouncilWithConfig: React.FC<EthicsCouncilWithConfigProps> = ({
                     {state.stage === 'transparant' && (
                         <TransparantDossier
                             hint={config.transparantHint}
+                            keywords={config.transparantKeywords}
                             maxScore={TRANSPARANT_MAX}
                             savedText={state.transparantText}
                             onComplete={handleTransparantComplete}

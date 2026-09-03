@@ -13,7 +13,8 @@ import { ConfidenceRating, ConfidenceFeedback } from '../shared/ConfidenceRating
 import { FollowUpCard } from '../shared/FollowUpCard';
 import { StudentAIChat } from '@/features/ai-chat/StudentAIChat';
 import { WellbeingAlert } from '@/features/student/WellbeingAlert';
-import { useWellbeingMonitor } from '@/hooks/useWellbeingMonitor';
+import { useWellbeingMonitor, type WellbeingMatch } from '@/hooks/useWellbeingMonitor';
+import { useWellbeingTeacherAlert } from '@/hooks/useWellbeingTeacherAlert';
 import { toScorePercent } from '../shared/scorePercent';
 
 // ── Config types ──────────────────────────────────────────────────────────────
@@ -76,6 +77,8 @@ export interface DataViewerConfig {
     takeaways: string[];
     enableChat?: boolean;
     chatRoleId?: string;
+    /** Toon een vast hulpblokje (mentor/vertrouwenspersoon, Kindertelefoon, 113) bij missies met een zwaar thema. */
+    showWellbeingSupport?: boolean;
 }
 
 // ── State ─────────────────────────────────────────────────────────────────────
@@ -374,6 +377,7 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
     const submitDisabled = q.type === 'text-observation'
         ? !lengthOk
         : answer === undefined || answer === '';
+    const observationHintId = `${q.id}-observation-hint`;
 
     return (
         <div className="bg-white rounded-2xl border border-duck-gray p-4 mb-3">
@@ -447,7 +451,12 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
                                 className="w-full mb-1.5 px-3 py-2 text-sm rounded-xl border border-duck-gray bg-duck-bg text-duck-ink focus:outline-none focus:border-duck-acid resize-none"
                                 style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                             />
+                            {/* Live-regio én uitleg bij de bevestigknop: anders hoort een
+                                schermlezergebruiker niet waarom de knop uit staat, en
+                                krijgt hij tijdens het typen geen terugkoppeling. */}
                             <p
+                                id={observationHintId}
+                                aria-live="polite"
                                 className="text-xs text-duck-ink/75 mb-3"
                                 style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                             >
@@ -475,6 +484,7 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
                     <button
                         onClick={() => onSubmit(q.id)}
                         disabled={submitDisabled}
+                        aria-describedby={q.type === 'text-observation' ? observationHintId : undefined}
                         className="w-full min-h-[44px] py-2.5 bg-gradient-to-r from-duck-acid to-duck-acid hover:from-duck-acid hover:to-duck-acid disabled:opacity-40 disabled:cursor-not-allowed text-duck-ink rounded-xl font-bold text-sm transition-all duration-200"
                         style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                     >
@@ -824,21 +834,31 @@ const DataViewerInner: React.FC<DataViewerProps> = ({
     );
 
     const [isChatOpen, setIsChatOpen] = useState(false);
+    const teacherAlert = useWellbeingTeacherAlert();
     const {
         scanText: scanWellbeingText,
         showHulplijn,
         lastMatch: wellbeingMatch,
         dismissHulplijn,
-    } = useWellbeingMonitor();
+    } = useWellbeingMonitor({ onAlert: teacherAlert.onAlert });
+    // De monitor toont de overlay maar één keer per minuut (cooldown). Een
+    // geblokkeerde inzending mag nooit stil zijn: deze lokale match zorgt dat
+    // de hulplijn bij élke geblokkeerde inzending opnieuw verschijnt.
+    const [blockedMatch, setBlockedMatch] = useState<WellbeingMatch | null>(null);
 
     const userId = (() => {
         try {
-            const key = Object.keys(localStorage).find((k) =>
-                /^sb-[a-z0-9_-]+-auth-token$/i.test(k)
-            );
-            if (!key) return null;
-            const raw = localStorage.getItem(key);
-            return raw ? JSON.parse(raw)?.user?.id : null;
+            // Zelfde reden als in useMissionAutoSave: pak de sleutel van hét
+            // ingestelde project, niet de eerste de beste sb-*-auth-token. Op een
+            // gedeelde schoolcomputer kan een token van een ander Supabase-project
+            // in de browser staan, en dan loopt de chat onder de verkeerde leerling.
+            const supabaseUrl = ((import.meta as any).env.VITE_SUPABASE_URL as string)?.trim();
+            if (!supabaseUrl) return null;
+            const projectId = new URL(supabaseUrl).hostname.split('.')[0];
+            const raw = localStorage.getItem(`sb-${projectId}-auth-token`);
+            if (!raw) return null;
+            const parsed = JSON.parse(raw);
+            return parsed?.user?.id ?? parsed?.currentSession?.user?.id ?? null;
         } catch {
             return null;
         }
@@ -864,6 +884,19 @@ const DataViewerInner: React.FC<DataViewerProps> = ({
     }, 0);
 
     const totalScore = clampScore(questionScore + followUpBonusScore, config.maxScore);
+
+    const missionGoal = config.missionGoal ?? getMissionGoal(config.missionId);
+    /** Puntendrempel van de missie, of null wanneer voltooien niet van de score afhangt.
+     *  missionGoals-drempels zijn percentages (registratie werkt in procenten): bij
+     *  eindproject-j2 (maxScore 85) betekent 65 dus 65% = 56 punten, niet 65 punten. */
+    const scoreThreshold = missionGoal?.criteria.type === 'score-threshold'
+        ? Math.ceil(config.maxScore * ((missionGoal.criteria.threshold ?? 40) / 100))
+        : null;
+    // Zonder eigen missiedrempel blijft de oude regel staan: 40% van het maximum,
+    // gemeten op hetzelfde afgeronde percentage dat de docent te zien krijgt.
+    const missionPassed = scoreThreshold !== null
+        ? totalScore >= scoreThreshold
+        : (toScorePercent(totalScore, config.maxScore) ?? 0) >= 40;
 
     const handleAnswer = (id: string, value: string | number) => {
         setState(prev => ({ ...prev, answers: { ...prev.answers, [id]: value } }));
@@ -908,6 +941,7 @@ const DataViewerInner: React.FC<DataViewerProps> = ({
             const observation = String(textObservations[id] ?? answers[id] ?? '');
             const wellbeingResult = scanWellbeingText(observation);
             if (wellbeingResult.isBlocked) {
+                setBlockedMatch(wellbeingResult.match);
                 if (config.enableChat) setIsChatOpen(true);
                 return;
             }
@@ -947,10 +981,25 @@ const DataViewerInner: React.FC<DataViewerProps> = ({
         }
     };
 
-    const handleComplete = () => {
+    const handleComplete = async () => {
+        // Eén bron voor de uitkomst: het eindscherm, de docentrapportage en het
+        // wissen van de opslag gebruiken allemaal `missionPassed`, zodat 'Gehaald'
+        // op het scherm nooit iets anders betekent dan wat er wordt vastgelegd.
+        const passed = missionPassed;
+        // Pas wissen als de missie ook echt gehaald én vastgelegd is: bij een
+        // mislukte serveropslag of een score onder de drempel raakt een leerling
+        // zijn werk anders kwijt terwijl hij nog verder kan.
+        const completed = await onComplete(passed, toScorePercent(totalScore, config.maxScore));
+        if (passed && completed !== false) {
+            clearSave();
+        }
+    };
+
+    /** Uitweg uit het eindscherm: opnieuw beginnen met een lege staat. */
+    const handleRetryMission = () => {
         clearSave();
-        // maxScore 0 zou met een kale vergelijking altijd "gehaald" opleveren.
-        onComplete(config.maxScore > 0 && totalScore / config.maxScore >= 0.4, toScorePercent(totalScore, config.maxScore));
+        setState(INITIAL_STATE);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     };
 
     // Phase breakdown for CompletionScreen
@@ -974,8 +1023,9 @@ const DataViewerInner: React.FC<DataViewerProps> = ({
                 emoji={config.introEmoji}
                 title={config.introTitle}
                 description={config.introDescription}
-                goal={config.missionGoal ?? getMissionGoal(config.missionId)}
+                goal={missionGoal}
                 features={config.introFeatures}
+                wellbeingSupport={config.showWellbeingSupport}
                 onStart={() => setState(prev => ({ ...prev, phase: 'explore' }))}
             />
         );
@@ -983,14 +1033,67 @@ const DataViewerInner: React.FC<DataViewerProps> = ({
 
     if (phase === 'results') {
         return (
-            <CompletionScreen
-                score={totalScore}
-                maxScore={config.maxScore}
-                badges={config.badges}
-                phases={phaseScores}
-                takeaways={config.takeaways}
-                onComplete={handleComplete}
-            />
+            // Bewust GEEN onRetry op CompletionScreen: de vragen zijn na bevestigen
+            // definitief, dus opnieuw proberen wist alles. Blijft de afrondknop de
+            // primaire knop, dan kan een leerling onder de drempel toch afronden met
+            // behoud van zijn score (er wordt niets als 'gehaald' geregistreerd). Wie
+            // wél opnieuw wil, gebruikt de knop in de drempelmelding hieronder; de
+            // terugknop (nakijken) is de derde uitweg. Alle drie gelden ook voor een
+            // opgeslagen results-fase die na herladen weer op dit scherm uitkomt.
+            <div className="min-h-screen bg-duck-bg">
+                <div className="max-w-lg mx-auto px-4 pt-6">
+                    <button
+                        onClick={() => setState(prev => ({ ...prev, phase: 'explore' }))}
+                        className="flex items-center gap-1.5 min-h-[44px] px-1 text-xs text-duck-ink/75 hover:text-duck-ink transition-colors"
+                        style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
+                    >
+                        <ChevronLeft size={14} />
+                        Terug naar de datasets
+                    </button>
+
+                    {!missionPassed && scoreThreshold !== null && (
+                        <div
+                            data-qa="data-viewer-threshold-notice"
+                            role="status"
+                            className="mt-4 rounded-2xl border-2 border-duck-ink bg-white p-4"
+                        >
+                            <p
+                                className="text-sm font-black text-duck-ink"
+                                style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
+                            >
+                                Nog niet gehaald — je hebt {Math.round(scoreThreshold)} van de {config.maxScore} punten nodig.
+                            </p>
+                            <p
+                                className="mt-1 text-xs text-duck-ink/70"
+                                style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
+                            >
+                                Je staat nu op {totalScore}. Je antwoorden blijven bewaard — je kunt ze
+                                nakijken met de knop hierboven, of opnieuw beginnen voor een hogere score.
+                            </p>
+                            <button
+                                data-qa="data-viewer-retry"
+                                onClick={handleRetryMission}
+                                className="mt-3 w-full min-h-[44px] rounded-full bg-duck-acid py-2.5 text-sm font-black text-duck-ink transition-all duration-200 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-ink focus-visible:ring-offset-2"
+                                style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
+                            >
+                                Opnieuw proberen
+                            </button>
+                        </div>
+                    )}
+                </div>
+                <CompletionScreen
+                    score={totalScore}
+                    maxScore={config.maxScore}
+                    badges={config.badges}
+                    phases={phaseScores}
+                    takeaways={config.takeaways}
+                    onComplete={handleComplete}
+                    passScorePercent={scoreThreshold !== null && config.maxScore > 0
+                        ? Math.round((scoreThreshold / config.maxScore) * 100)
+                        : undefined}
+                    passed={missionPassed}
+                />
+            </div>
         );
     }
 
@@ -1026,7 +1129,16 @@ const DataViewerInner: React.FC<DataViewerProps> = ({
 
     return (
         <div className="min-h-screen bg-duck-bg">
-            {showHulplijn && <WellbeingAlert match={wellbeingMatch} onDismiss={dismissHulplijn} />}
+            {(showHulplijn || blockedMatch) && (
+                <WellbeingAlert
+                    match={blockedMatch ?? wellbeingMatch}
+                    teacherNotified={teacherAlert.notifiedFor((blockedMatch ?? wellbeingMatch)?.category)}
+                    onDismiss={() => {
+                        dismissHulplijn();
+                        setBlockedMatch(null);
+                    }}
+                />
+            )}
 
             <div className="max-w-lg mx-auto px-4 py-6">
                 <PhaseHeader

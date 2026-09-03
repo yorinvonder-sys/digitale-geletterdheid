@@ -1,0 +1,325 @@
+{
+  "schemaVersion": 2,
+  "missionId": "podcast-producer",
+  "testedCommit": "d2e441224277db29d0f3b55a8b96af30a25a1116",
+  "route": "/dev/mission-preview?mission=podcast-producer&reset=1",
+  "browser": "Playwright (mcp__playwright__* tools)",
+  "mode": "opdracht-review",
+  "environment": "preview",
+  "result": "FAIL",
+  "productionMutations": 0,
+  "xpMutations": 0,
+  "limitations": [
+    "Beperkte viewportmatrix gebruikt (desktop + mobiel, start/eind) omdat de veto's zakken — conform de skill-regel dat de volledige matrix alleen verplicht is als alle vier veto's GESLAAGD zijn.",
+    "Veto 3 (onderscheid) is NIET VASTGESTELD: er is geen tweede volledige speelronde op dezelfde motor (het stap-plus-checklist-plus-tekstvak-patroon, gedeeld met o.a. app-prototyper) uitgevoerd binnen deze sessie; comparedWith is daarom leeg gelaten in plaats van gefabriceerd.",
+    "Automated Playwright-playthrough is sneller dan een echte leerling; Veto 2 minuutindeling is een benadering op actietype, niet op realistische leestijd."
+  ],
+  "expectation": {
+    "title": "Maak je eigen podcast",
+    "openingLine": "In deze missie leer je hoe je een podcast van begin tot eind produceert. Je kiest een onderwerp, maakt een structuur, schrijft een pakkende intro en bedenkt sterke interviewvragen — net als een echte radiopresentator.",
+    "expectedVerb": "produceren/maken van een echte podcast (audio opnemen)",
+    "recordedAt": 1788300643924
+  },
+  "actionLog": [
+    {
+      "t": 1788300649924,
+      "type": "advance",
+      "action": "Startscherm gelezen, geklikt op 'Start de missie'",
+      "screenshot": 1,
+      "changedNextState": true
+    },
+    {
+      "t": 1788300683924,
+      "type": "type",
+      "action": "Stap 1 'Onderwerp kiezen': onderwerp + doelgroep getypt in tekstvak (2-3 zinnen)",
+      "screenshot": 2,
+      "changedNextState": false
+    },
+    {
+      "t": 1788300688924,
+      "type": "select",
+      "action": "Twee checklist-vinkjes aangevinkt bij stap 1",
+      "screenshot": 2,
+      "changedNextState": true
+    },
+    {
+      "t": 1788300693924,
+      "type": "advance",
+      "action": "'Volgende stap' geklikt naar Stap 2",
+      "screenshot": 3,
+      "changedNextState": true
+    },
+    {
+      "t": 1788300733924,
+      "type": "type",
+      "action": "Stap 2 'Structuur plannen': podcast-structuur getypt in tekstvak",
+      "screenshot": 3,
+      "changedNextState": false
+    },
+    {
+      "t": 1788300738924,
+      "type": "select",
+      "action": "Drie checklist-vinkjes aangevinkt bij stap 2",
+      "screenshot": 3,
+      "changedNextState": true
+    },
+    {
+      "t": 1788300743924,
+      "type": "advance",
+      "action": "'Volgende stap' geklikt naar Stap 3",
+      "screenshot": 4,
+      "changedNextState": true
+    },
+    {
+      "t": 1788300783924,
+      "type": "type",
+      "action": "Stap 3 'Intro schrijven': intro-tekst getypt in tekstvak",
+      "screenshot": 4,
+      "changedNextState": false
+    },
+    {
+      "t": 1788300788924,
+      "type": "select",
+      "action": "Verdiepingsvraag (meerkeuze) beantwoord met 'B'; correcte-feedback verscheen, 'Doorgaan' geklikt",
+      "screenshot": 5,
+      "changedNextState": true
+    },
+    {
+      "t": 1788300793924,
+      "type": "advance",
+      "action": "'Volgende stap' geklikt naar Stap 4",
+      "screenshot": 6,
+      "changedNextState": true
+    },
+    {
+      "t": 1788300838924,
+      "type": "type",
+      "action": "Stap 4 'Interviewvragen bedenken': vijf vragen + follow-ups getypt in tekstvak",
+      "screenshot": 6,
+      "changedNextState": false
+    },
+    {
+      "t": 1788300843924,
+      "type": "submit",
+      "action": "'Resultaten bekijken' geklikt; eindscherm 100/100 met 'complete opzet voor een echte podcast die je kunt opnemen'",
+      "screenshot": 7,
+      "changedNextState": true
+    }
+  ],
+  "animationEvidence": [
+    {
+      "element": "checkbox ('Ik heb een concreet onderwerp gekozen')",
+      "action": "klik op checklist-checkbox in Stap 1",
+      "screenshot": 11,
+      "actionTime": 1788300818312,
+      "framesBefore": [
+        {
+          "t": 1788300818267,
+          "transform": "none",
+          "opacity": "1",
+          "backgroundColor": "rgb(255, 255, 255)",
+          "color": "rgb(32, 32, 35)",
+          "borderColor": "rgb(194, 193, 189)",
+          "boxShadow": "none",
+          "rect": {
+            "x": 20,
+            "y": 608,
+            "width": 328,
+            "height": 46
+          }
+        }
+      ],
+      "framesAfter": [
+        {
+          "t": 1788300818324,
+          "transform": "none",
+          "opacity": "1",
+          "backgroundColor": "rgba(255, 255, 255, 0.99)",
+          "color": "rgb(32, 32, 35)",
+          "borderColor": "rgba(193, 192, 188, 0.992)",
+          "boxShadow": "none",
+          "rect": {
+            "x": 20,
+            "y": 608,
+            "width": 328,
+            "height": 46
+          }
+        },
+        {
+          "t": 1788300818342,
+          "transform": "none",
+          "opacity": "1",
+          "backgroundColor": "rgba(253, 253, 253, 0.925)",
+          "color": "rgb(32, 32, 35)",
+          "borderColor": "rgba(190, 189, 185, 0.94)",
+          "boxShadow": "none",
+          "rect": {
+            "x": 20,
+            "y": 608,
+            "width": 328,
+            "height": 46
+          }
+        },
+        {
+          "t": 1788300818356,
+          "transform": "none",
+          "opacity": "1",
+          "backgroundColor": "rgba(249, 249, 249, 0.808)",
+          "color": "rgb(32, 32, 35)",
+          "borderColor": "rgba(182, 181, 177, 0.85)",
+          "boxShadow": "none",
+          "rect": {
+            "x": 20,
+            "y": 608,
+            "width": 328,
+            "height": 46
+          }
+        }
+      ],
+      "reducedMotionChecked": true
+    }
+  ],
+  "reducedMotion": {
+    "classPresent": true,
+    "screenshot": 12
+  },
+  "introSteps": [
+    {
+      "screenshot": 1,
+      "text": "🎙️\n\nDIGITALE PRODUCTEN · LEERJAAR 2\n\nMaak je eigen podcast\n~30 min\nGemiddeld\n+100 XP\n\nIn deze missie leer je hoe je een podcast van begin tot eind produceert. Je kiest een onderwerp, maakt een structuur, schrijft een pakkende intro en bedenkt sterke interviewvragen — net als een echte radiopresentator.\n\n/GOAL\n\nIk produceer een podcast van begin tot eind: onderwerp, structuur, pakkende intro en interviewvragen.\n\nBewijs: Je podcast heeft een duidelijk onderwerp, een hook-first intro en vijf interviewvragen met follow-ups.\n\n1\nKies een interessant onderwerp voor jouw doelgroep\n2\nBouw een duidelijke structuur met intro, segmenten en outro\n3\nSchrijf een pakkende openingszin die luisteraars pakt\n4\nBedenk open interviewvragen die gesprekken op gang brengen\nKEES\n\nGeen stress: stap voor stap kom je er. Ik help je op gang.\n\nStart de missie"
+    }
+  ],
+  "introSummary": {
+    "maak": "Een podcast 'van begin tot eind': onderwerp, structuur, pakkende intro en interviewvragen.",
+    "voorWie": "Leerjaar 2, vak Digitale producten — leerlingen die zelf een podcast willen produceren zoals een echte radiopresentator.",
+    "goed": "Bewijs: de podcast heeft een duidelijk onderwerp, een hook-first intro en vijf interviewvragen met follow-ups."
+  },
+  "veto2": {
+    "readClickMinutes": 3,
+    "totalMinutes": 3,
+    "percentage": 1.0
+  },
+  "comparedWith": null,
+  "comparedWithReason": "NIET VASTGESTELD: geen tweede speelronde uitgevoerd binnen de tijd van deze verificatie; 'eigen motor' is hier niet van toepassing omdat podcast-producer een gedeeld sjabloon is (templateType builder-canvas in templateRegistry.ts), geen maatwerkmissie",
+  "gates": {
+    "veto1": "GEZAKT",
+    "veto2": "GEZAKT",
+    "veto3": "NIET VASTGESTELD",
+    "veto4": "GEZAKT",
+    "poort1": "n.v.t.",
+    "poort2": "n.v.t.",
+    "poort3": "n.v.t."
+  },
+  "viewports": [
+    {
+      "name": "desktop",
+      "cssViewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "checkpoints": {
+        "start": true,
+        "end": true
+      },
+      "evidence": [
+        {
+          "screenshot": 1,
+          "path": "01-desktop-start.png",
+          "sha256": "ad7a06ea749b4f27d29cfc1dd6f278d555073a6d3b93a14ceff6a8dda919f628",
+          "width": 1440,
+          "height": 900
+        },
+        {
+          "screenshot": 2,
+          "path": "02-desktop-stap1.png",
+          "sha256": "7fa1af0d2754b46f20849eaf38bea1da23a6114dc56a4d7bc6f8b4ed1bd79ca8",
+          "width": 1440,
+          "height": 900
+        },
+        {
+          "screenshot": 3,
+          "path": "03-desktop-stap2.png",
+          "sha256": "168f4c87c7167a28ca14391ba890f13b1dd1a84b47fa5a8d210e6503c7fab8fa",
+          "width": 1440,
+          "height": 900
+        },
+        {
+          "screenshot": 4,
+          "path": "04-desktop-stap3.png",
+          "sha256": "2f52ba1c931413c73569a9ec5f0d28fdcac551d76c6a6be8c13eac57ba7bc318",
+          "width": 1440,
+          "height": 900
+        },
+        {
+          "screenshot": 5,
+          "path": "05-desktop-stap3-verdieping.png",
+          "sha256": "3c626914a0d4648867f411ddc1ac41b72e90b13bb7c00d53f395211f58371426",
+          "width": 1440,
+          "height": 900
+        },
+        {
+          "screenshot": 6,
+          "path": "06-desktop-stap4.png",
+          "sha256": "9c3922cb68861d21b0cf93b7e9e43d542e748977f6efd631815397482a76bb67",
+          "width": 1440,
+          "height": 900
+        },
+        {
+          "screenshot": 7,
+          "path": "07-desktop-eind.png",
+          "sha256": "911ef80b430399271e6b7d4e58367bdcfc9e61b74eb78dc7050d988eea92d06f",
+          "width": 1440,
+          "height": 900
+        },
+        {
+          "screenshot": 12,
+          "path": "12-desktop-reduced-motion.png",
+          "sha256": "fa5d053e81c9ab3266de50e9b7ff7e6e3481c70d31d82fdca6cd441699ea22c7",
+          "width": 1440,
+          "height": 900
+        }
+      ]
+    },
+    {
+      "name": "mobile",
+      "cssViewport": {
+        "width": 375,
+        "height": 844
+      },
+      "checkpoints": {
+        "start": true,
+        "end": true
+      },
+      "evidence": [
+        {
+          "screenshot": 8,
+          "path": "08-mobile-start.png",
+          "sha256": "6c26c64a6ce5e3c47969ee79ecf1ef18ec0cb8607689b4fcbaf4306474d1e17d",
+          "width": 375,
+          "height": 844
+        },
+        {
+          "screenshot": 9,
+          "path": "09-mobile-stap3.png",
+          "sha256": "db168d5e608e5dd9e5464a0bc4f5808b2cbc25369e29e2d2a246a842c076378d",
+          "width": 375,
+          "height": 844
+        },
+        {
+          "screenshot": 10,
+          "path": "10-mobile-eind.png",
+          "sha256": "4770689ab38c41408be2815b5c8fe8c6f2746eade7bb5bc2c307ff6d883cdc0d",
+          "width": 375,
+          "height": 844
+        },
+        {
+          "screenshot": 11,
+          "path": "11-desktop-checkbox-anim.png",
+          "sha256": "488e585664d862d867c0a59b017ecd375a7e67639005141a762f339e46ad5cd7",
+          "width": 375,
+          "height": 844
+        }
+      ]
+    }
+  ]
+}

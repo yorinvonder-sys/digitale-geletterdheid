@@ -92,27 +92,62 @@ for (const route of ROUTES) {
             `${route.naam}: de welzijnscheck moet vóór de puntentoekenning staan in ${route.hook}`);
     }
 
-    // 4. De docentmelding gaat via dezelfde RPC.
-    assert.match(hook, /log_wellbeing_alert/,
-        `${route.naam}: de docent moet een melding krijgen via log_wellbeing_alert`);
+    // 4. De docentmelding loopt via de gedeelde useWellbeingTeacherAlert-hook,
+    //    en die hook is als onAlert aan de monitor gekoppeld. De RPC zelf wordt
+    //    hieronder één keer streng gecontroleerd in de gedeelde hook.
+    assert.match(hook, /useWellbeingTeacherAlert/,
+        `${route.naam}: de docentmelding moet via useWellbeingTeacherAlert lopen`);
+    assert.match(hook, /onAlert:\s*wellbeingTeacherAlert\.onAlert/,
+        `${route.naam}: wellbeingTeacherAlert.onAlert moet als onAlert aan useWellbeingMonitor hangen`);
 
-    // 5. PRIVACY: alleen categorie en tijdstip, nooit de originele tekst. De RPC
-    //    kent maar drie parameters; komt er een vierde bij, dan is dat vrijwel
-    //    zeker het bericht zelf en moet dit bewust herzien worden.
-    const rpcAanroep = hook.slice(hook.indexOf('log_wellbeing_alert'));
-    const rpcBlok = rpcAanroep.slice(0, rpcAanroep.indexOf('});') + 3);
-    const parameters = [...rpcBlok.matchAll(/\bp_[a-z_]+:/g)].map(m => m[0].slice(0, -1));
-    assert.deepEqual(parameters.sort(), ['p_category', 'p_detected_at', 'p_student_id'],
-        `${route.naam}: de melding mag alleen categorie, tijdstip en leerling-id bevatten, niet de tekst`);
-    assert.doesNotMatch(rpcBlok, /message|text|input|prompt/i,
-        `${route.naam}: er mag geen berichttekst meegestuurd worden in de docentmelding`);
-
-    // 6. De leerling ziet dezelfde hulplijnweergave en kan die sluiten.
+    // 6. De leerling ziet dezelfde hulplijnweergave en kan die sluiten. De
+    //    weergave belooft de docentmelding alleen bij bevestigde aflevering.
     assert.match(weergave, /<WellbeingAlert/,
         `${route.naam}: ${route.weergave} moet de hulplijnweergave tonen`);
     assert.match(weergave, /onDismiss=\{dismissHulplijn\}/,
         `${route.naam}: de hulplijnweergave moet te sluiten zijn, anders zit de leerling vast`);
+    assert.match(weergave, /teacherNotified=\{(wellbeingTeacherNotifiedFor|wellbeingTeacherAlert\.notifiedFor)\(wellbeingMatch\?\.category\)\}/,
+        `${route.naam}: de hulplijnweergave mag de docentmelding alleen beloven via de bevestigde status van de eigen categorie`);
 }
+
+// 5. PRIVACY + betrouwbaarheid van de docentmelding, één keer in de gedeelde
+//    hook: alleen categorie, tijdstip en leerling-id — nooit de originele
+//    tekst — en de melding geldt pas als verstuurd na een gecontroleerd
+//    RPC-resultaat (Supabase geeft fouten als error-veld terug, niet als
+//    exception).
+const teacherAlertHook = await lees('src/hooks/useWellbeingTeacherAlert.ts');
+assert.match(teacherAlertHook, /log_wellbeing_alert/,
+    'useWellbeingTeacherAlert: de docentmelding moet via log_wellbeing_alert lopen');
+const rpcAanroep = teacherAlertHook.slice(teacherAlertHook.indexOf('log_wellbeing_alert'));
+const rpcBlok = rpcAanroep.slice(0, rpcAanroep.indexOf('});') + 3);
+const parameters = [...rpcBlok.matchAll(/\bp_[a-z_]+:/g)].map(m => m[0].slice(0, -1));
+assert.deepEqual(parameters.sort(), ['p_category', 'p_detected_at', 'p_student_id'],
+    'useWellbeingTeacherAlert: de melding mag alleen categorie, tijdstip en leerling-id bevatten, niet de tekst');
+assert.doesNotMatch(rpcBlok, /message|text|input|prompt/i,
+    'useWellbeingTeacherAlert: er mag geen berichttekst meegestuurd worden in de docentmelding');
+assert.match(teacherAlertHook, /if\s*\(error\)\s*throw error/,
+    'useWellbeingTeacherAlert: het error-veld van de RPC-respons moet gecontroleerd worden');
+assert.match(teacherAlertHook, /createWellbeingAlertDelivery/,
+    'useWellbeingTeacherAlert: de aflevering moet via de geteste wellbeingAlertDelivery-module lopen');
+assert.match(teacherAlertHook, /useMemo\([\s\S]*?\[boundStudentId\]\)/,
+    'useWellbeingTeacherAlert: de delivery-instantie moet identiteitsgebonden zijn via useMemo op het genormaliseerde leerling-id (geen ref-mutatie tijdens render)');
+assert.match(teacherAlertHook, /p_student_id:\s*boundStudentId/,
+    'useWellbeingTeacherAlert: de RPC moet het gebonden leerling-id gebruiken, nooit een verouderde closure');
+assert.match(teacherAlertHook, /notifiedFor/,
+    'useWellbeingTeacherAlert: de afleverstatus moet per categorie opvraagbaar zijn');
+
+// Het concurrency- en foutgedrag van de aflevering (één verzoek per categorie,
+// nooit bevestigen bij een fout, seriële vervolgpoging) wordt uitvoerbaar
+// bewezen door de contracttests op de pure module — die horen te bestaan en
+// de bevestiging-na-succes-volgorde blijft hier structureel gecontroleerd.
+const delivery = await lees('src/hooks/wellbeingAlertDelivery.ts');
+const sendIndex = delivery.search(/await options\.send\(/);
+const confirmIndex = zoekVanaf(delivery, /confirmedAt\[category\]\s*=\s*now\(\)/, 0);
+assert.ok(sendIndex !== -1 && confirmIndex > sendIndex,
+    'wellbeingAlertDelivery: bevestiging mag pas ná een geslaagde send geregistreerd worden');
+await lees('tests/wellbeing-alert-delivery-contract.test.ts').catch(() => {
+    assert.fail('de uitvoerbare gedragstests voor de aflevering ontbreken (tests/wellbeing-alert-delivery-contract.test.ts)');
+});
 
 // 7. De detectielijst blijft één gedeelde bron. Zou een route zijn eigen
 //    termenlijst krijgen, dan lopen de routes weer uiteen.
@@ -124,4 +159,52 @@ for (const route of ROUTES) {
         `${route.naam}: de termenlijst hoort alleen in useWellbeingMonitor te staan`);
 }
 
-console.log(`Welzijnsmonitor: alle ${ROUTES.length} leerlingchat-routes scannen vóór de AI, melden zonder tekst en tonen de hulplijnen.`);
+// 8. Ook de twee template-scanroutes (vrije tekst zonder chat) dragen het
+//    volledige vangnet: monitor, blokkade, docentmelding via de gedeelde hook
+//    en een overlay die de melding alleen bij bevestigde aflevering belooft.
+const SCAN_ROUTES = [
+    {
+        naam: 'Puzzle Lab',
+        bestand: 'src/features/missions/templates/puzzle-lab/PuzzleLab.tsx',
+        // De functie die het antwoord verwerkt, en de eerste echte verwerking
+        // daarbinnen: de scan moet dáárvoor staan, anders is het antwoord al
+        // beoordeeld voordat het welzijnssignaal de inzending kan blokkeren.
+        verzendfunctie: /const checkAnswer\s*=/,
+        verwerking: /const correct\s*=/,
+    },
+    {
+        naam: 'Data Viewer',
+        bestand: 'src/features/missions/templates/data-viewer/DataViewer.tsx',
+        verzendfunctie: /const handleSubmitQuestion\s*=/,
+        verwerking: /newAnswers/,
+    },
+];
+for (const route of SCAN_ROUTES) {
+    const bron = await lees(route.bestand);
+    assert.match(bron, /useWellbeingMonitor/,
+        `${route.naam}: moet useWellbeingMonitor gebruiken`);
+    assert.match(bron, /useWellbeingTeacherAlert/,
+        `${route.naam}: de docentmelding moet via useWellbeingTeacherAlert lopen`);
+    assert.match(bron, /onAlert:\s*teacherAlert\.onAlert/,
+        `${route.naam}: teacherAlert.onAlert moet als onAlert aan useWellbeingMonitor hangen`);
+
+    // De scan staat binnen de verwerkingsfunctie en VÓÓR de eerste verwerking.
+    const verzendIndex = bron.search(route.verzendfunctie);
+    assert.notEqual(verzendIndex, -1,
+        `${route.naam}: verwerkingsfunctie niet gevonden in ${route.bestand}`);
+    const scanIndex = zoekVanaf(bron, /isBlocked/, verzendIndex);
+    const verwerkIndex = zoekVanaf(bron, route.verwerking, verzendIndex);
+    assert.ok(scanIndex !== -1 && verwerkIndex !== -1 && scanIndex < verwerkIndex,
+        `${route.naam}: de welzijnscheck moet binnen de verwerkingsfunctie vóór de verwerking staan`);
+
+    assert.match(bron, /<WellbeingAlert/,
+        `${route.naam}: moet de hulplijnweergave tonen`);
+    assert.match(bron, /teacherNotified=\{teacherAlert\.notifiedFor\(\(blockedMatch \?\? wellbeingMatch\)\?\.category\)\}/,
+        `${route.naam}: de hulplijnweergave mag de docentmelding alleen beloven via de bevestigde status van de eigen categorie`);
+    assert.match(bron, /dismissHulplijn\(\)/,
+        `${route.naam}: de hulplijnweergave moet te sluiten zijn`);
+    assert.doesNotMatch(bron, /WELLBEING_PATTERNS/,
+        `${route.naam}: de termenlijst hoort alleen in useWellbeingMonitor te staan`);
+}
+
+console.log(`Welzijnsmonitor: alle ${ROUTES.length} leerlingchat-routes en ${SCAN_ROUTES.length} scanroutes scannen vóór verwerking, melden zonder tekst en tonen de hulplijnen.`);

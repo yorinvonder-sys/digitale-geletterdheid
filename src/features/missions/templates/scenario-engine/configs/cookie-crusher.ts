@@ -272,7 +272,7 @@ const config: ScenarioEngineConfig = {
                         'Je favoriete nieuwssite vraagt cookies. Ze geven je de optie: betaal €2/maand OF accepteer gepersonaliseerde advertenties.',
                     correct: true,
                     explanation:
-                        'Dit is een eerlijk model (ook wel "consent or pay"). Als je de site gratis wil gebruiken en vertrouwen hebt in hun privacy­beleid, is accepteren een bewuste keuze. Betalen is ook prima als je dat kunt.',
+                        'Dit model heet "consent or pay": betalen óf gepersonaliseerde advertenties accepteren. Het mag, maar het is juridisch omstreden — Europese privacytoezichthouders betwijfelen of je toestemming écht vrijwillig is als het alternatief betalen is. Maak in elk geval een bewuste keuze, wetend wat er met je data gebeurt, in plaats van blind te klikken.',
                 },
                 {
                     id: 6,

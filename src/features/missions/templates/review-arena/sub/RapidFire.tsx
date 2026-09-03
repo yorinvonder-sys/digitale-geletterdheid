@@ -135,6 +135,12 @@ export const RapidFire: React.FC<RapidFireProps> = ({
             : null
     );
     const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+    // De teller loopt mee in een ref zodat het aflopen buiten de state-updater kan
+    // worden afgehandeld (een updater moet zuiver blijven; React mag hem opnieuw
+    // uitvoeren). `answeredRef` sluit hetzelfde gat aan de andere kant: de guard in
+    // handleAnswer las `answered` uit een closure die op dat moment nog null was.
+    const timeLeftRef = useRef<number>(timePerQuestion ?? 0);
+    const answeredRef = useRef<AnswerState>(null);
 
     const currentQuestion = questions[currentIndex];
     const hasTimer = timePerQuestion !== null && timePerQuestion !== undefined;
@@ -144,15 +150,15 @@ export const RapidFire: React.FC<RapidFireProps> = ({
     useEffect(() => {
         if (!hasTimer || answered !== null || done) return;
         setTimeLeft(timePerQuestion!);
+        timeLeftRef.current = timePerQuestion!;
         timerRef.current = setInterval(() => {
-            setTimeLeft((t) => {
-                if (t === null || t <= 1) {
-                    clearInterval(timerRef.current!);
-                    handleAnswer('timeout', 0);
-                    return 0;
-                }
-                return t - 1;
-            });
+            const next = timeLeftRef.current - 1;
+            timeLeftRef.current = next > 0 ? next : 0;
+            setTimeLeft(timeLeftRef.current);
+            if (next <= 0) {
+                clearInterval(timerRef.current!);
+                handleAnswer('timeout', 0);
+            }
         }, 1000);
         return () => {
             if (timerRef.current) clearInterval(timerRef.current);
@@ -161,7 +167,8 @@ export const RapidFire: React.FC<RapidFireProps> = ({
     }, [currentIndex, done]);
 
     const handleAnswer = (choice: Exclude<AnswerState, null>, remainingTime?: number) => {
-        if (answered !== null) return;
+        if (answeredRef.current !== null || answered !== null) return;
+        answeredRef.current = choice;
         if (timerRef.current) clearInterval(timerRef.current);
 
         const correct = choice === currentQuestion.answer;
@@ -191,7 +198,11 @@ export const RapidFire: React.FC<RapidFireProps> = ({
             } else {
                 setCurrentIndex(nextIndex);
                 setAnswered(null);
-                if (hasTimer) setTimeLeft(timePerQuestion!);
+                answeredRef.current = null;
+                if (hasTimer) {
+                    setTimeLeft(timePerQuestion!);
+                    timeLeftRef.current = timePerQuestion!;
+                }
             }
         }, 900);
     };
@@ -242,8 +253,8 @@ export const RapidFire: React.FC<RapidFireProps> = ({
                                 key={i}
                                 className={`text-xs p-2 rounded-lg ${
                                     result.correct
-                                        ? 'bg-duck-ink/10 text-duck-ink/70'
-                                        : 'bg-duck-acid/10 text-duck-ink/70'
+                                        ? 'bg-duck-ink/10 text-duck-ink/75'
+                                        : 'bg-duck-acid/10 text-duck-ink/75'
                                 }`}
                                 style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                             >
@@ -252,7 +263,7 @@ export const RapidFire: React.FC<RapidFireProps> = ({
                                 </span>{' '}
                                 <span className="font-medium">{q.question}</span>
                                 {!result.correct && (
-                                    <div className="mt-1 text-duck-ink/70">{q.explanation}</div>
+                                    <div className="mt-1 text-duck-ink/75">{q.explanation}</div>
                                 )}
                             </div>
                         );
@@ -298,7 +309,7 @@ export const RapidFire: React.FC<RapidFireProps> = ({
                         {title}
                     </h3>
                     <p
-                        className="text-sm text-duck-ink/70"
+                        className="text-sm text-duck-ink/75"
                         style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                     >
                         {description}
@@ -347,7 +358,7 @@ export const RapidFire: React.FC<RapidFireProps> = ({
                             transition={{ duration: 0.5 }}
                         />
                     </div>
-                    <span className="text-xs font-black text-duck-ink/70 w-6 text-right"
+                    <span className="text-xs font-black text-duck-ink/75 w-6 text-right"
                         style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                         {timeLeft}s
                     </span>
@@ -421,7 +432,7 @@ export const RapidFire: React.FC<RapidFireProps> = ({
                                 ? currentQuestion.answer === true
                                     ? 'bg-duck-ink text-white'
                                     : 'bg-duck-acid text-duck-ink'
-                                : 'bg-duck-gray text-duck-ink/70 cursor-not-allowed'
+                                : 'bg-duck-gray text-duck-ink/75 cursor-not-allowed'
                         }`}
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                 >
@@ -438,7 +449,7 @@ export const RapidFire: React.FC<RapidFireProps> = ({
                                 ? currentQuestion.answer === false
                                     ? 'bg-duck-ink text-white'
                                     : 'bg-duck-acid text-duck-ink'
-                                : 'bg-duck-gray text-duck-ink/70 cursor-not-allowed'
+                                : 'bg-duck-gray text-duck-ink/75 cursor-not-allowed'
                         }`}
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                 >
@@ -447,7 +458,7 @@ export const RapidFire: React.FC<RapidFireProps> = ({
             </div>
 
             <div
-                className="text-center text-xs text-duck-ink/70"
+                className="text-center text-xs text-duck-ink/75"
                 style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
             >
                 Vraag {currentIndex + 1} van {questions.length}

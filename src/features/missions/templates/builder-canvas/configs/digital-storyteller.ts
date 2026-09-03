@@ -13,6 +13,7 @@ export const digitalStorytellerConfig: BuilderCanvasConfig = {
         'Teken een beslissingsdiagram (flowchart)',
         'Maak een digitale presentatie van je verhaal',
     ],
+    showWellbeingSupport: true,
     enableChat: true,
     chatRoleId: 'digital-storyteller',
     previewType: 'text-preview',

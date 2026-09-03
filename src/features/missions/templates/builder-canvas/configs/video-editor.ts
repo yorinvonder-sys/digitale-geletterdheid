@@ -38,8 +38,8 @@ export const videoEditorConfig: BuilderCanvasConfig = {
             description:
                 'Een storyboard is een reeks beschrijvingen (of schetsen) van de scènes in je video. Elke scène beschrijft wat je ziet, hoort en hoe lang die duurt. Film begint niet met de camera, maar op papier.',
             instruction:
-                'Schrijf een tekstueel storyboard voor je video met minimaal 5 scènes. Voor elke scène: 1) Wat zie je in beeld? (beschrijving van de shot), 2) Wat hoor je? (dialoog, voice-over (= ingesproken stem over de beelden) of muziek), 3) Hoe lang duurt de scène? (in seconden), 4) Camerahoek (totaalshot, close-up, over-the-shoulder (= over iemands schouder gefilmd)). Begin met een sterke openingsscène die meteen de aandacht trekt.',
-            tip: 'De eerste 3 seconden bepalen of mensen blijven kijken. Begin dus niet met een logo of een "Hoi, welkom bij…". Begin direct met actie of een prikkelende vraag.',
+                'Schrijf een tekstueel storyboard voor je video met minimaal 5 scènes. Voor elke scène: 1) Wat zie je in beeld?, 2) Wat hoor je? (dialoog, voice-over of muziek), 3) Hoe lang duurt de scène? (in seconden), 4) Camerahoek. Begin met een sterke openingsscène die meteen de aandacht trekt.',
+            tip: 'De eerste 3 seconden bepalen of mensen blijven kijken. Begin dus niet met een logo of een "Hoi, welkom bij…". Begin direct met actie of een prikkelende vraag. Plan je scènes zo dat je alleen mensen filmt die daar ja op hebben gezegd.',
             checklistItems: [
                 { id: 'vijf-scenes', label: 'Ik heb minimaal 5 scènes beschreven' },
                 { id: 'beeld-geluid', label: 'Bij elke scène staat beeld EN geluid beschreven' },
@@ -61,6 +61,7 @@ export const videoEditorConfig: BuilderCanvasConfig = {
                 { id: 'shottype', label: 'Elk shot heeft een shottype (totaal/medium/close-up)' },
                 { id: 'locatie', label: 'Bij elk shot staat de locatie' },
                 { id: 'back-up', label: 'Ik heb back-up shots aangeduid' },
+                { id: 'portretrecht', addedLater: true, label: 'Ik gebruik alleen beelden met toestemming — geen herkenbare klasgenoten of docenten zonder hun toestemming' },
             ],
             textPrompt: 'Schrijf je shotlist',
         },
@@ -70,7 +71,7 @@ export const videoEditorConfig: BuilderCanvasConfig = {
             description:
                 'Monteren is het selecteren en samenvoegen van shots tot een vloeiend geheel. Je kiest de volgorde, de overgangen en de muziek. Dit is waar de magie van film echt begint.',
             instruction:
-                'Schrijf een montageplan: 1) De definitieve volgorde van je shots (geef shottitels of nummers), 2) Welke overgangstypen je gebruikt (hard cut, dissolve (= overvloeien), fade to black (= langzaam naar zwart)) en waarom, 3) Welk type muziek of geluid past bij elke sectie, 4) Waar de pacing (= het tempo van de video) versnelt en waar het rustiger wordt. Leg bij elk punt de motivatie uit.',
+                'Schrijf een montageplan: 1) De definitieve volgorde van je shots, 2) Welke overgangstypen je gebruikt (hard cut, dissolve, fade to black) en waarom, 3) Welk type muziek past bij elke sectie, 4) Waar de pacing (= het tempo) versnelt of rustiger wordt.',
             tip: 'Minder overgangen = professioneler. Gebruik "hard cuts" (direct knippen) als standaard en gebruik dissolves of fades alleen voor bewuste, emotionele momenten.',
             checklistItems: [
                 { id: 'volgorde', label: 'Ik heb de definitieve shotsvolgorde bepaald' },

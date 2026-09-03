@@ -9,6 +9,7 @@ Map met DGSkills-specifieke Claude Skills (Anthropic SKILL.md format). Elke skil
 | `dgskills-mission-author` | Bij toevoegen/wijzigen van een leerling-missie | Zorgt voor complete SLO-koppeling, curriculum-plaatsing, template-registratie en didactische onderbouwing |
 | `dgskills-compliance-check` | Vóór elke "done"-markering of PR | Draait acceptance-checklist + AI Act HIGH RISK Annex III 3(b) verplichtingen |
 | `dgskills-supabase-edge` | Bij werk aan Supabase edge functions | Security-first playbook voor Deno edge functions (CORS, auth, AI, secrets, RLS) |
+| `opdracht-review` | Eindoordeel over één leerlingopdracht | Speelt de opdracht eerst (Playwright), dan de vier veto's uit `docs/pedagogy/opdracht-standaard.md` en de drie poorten uit `docs/pedagogy/kwaliteitspoorten.md`; één GEZAKT = geen score |
 
 ## Triggering
 

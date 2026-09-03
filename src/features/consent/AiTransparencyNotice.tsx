@@ -3,11 +3,20 @@ import { ShieldCheck } from 'lucide-react';
 
 interface AiTransparencyNoticeProps {
   studentId: string;
+  /** Optional: kleine bovenregel boven de titel */
+  kicker?: string;
+  /** Optional: kop van de melding */
+  title?: string;
+  /** Optional: logo boven de titel; zonder deze prop wordt geen logo getoond */
+  logoSrc?: string;
+  /** Optional: alt-tekst bij het logo */
+  logoAlt?: string;
   children: React.ReactNode;
 }
 
 const STORAGE_KEY = 'dgskills_ai_notice_seen';
-const GAME_PROGRAMMEUR_LOGO = '/assets/missions/game-programmeur-logo.png';
+const DEFAULT_KICKER = 'AI Lab';
+const DEFAULT_TITLE = 'Je gaat chatten met een AI';
 
 function hasSeenNotice(studentId: string): boolean {
   try {
@@ -30,6 +39,10 @@ function markNoticeSeen(studentId: string): void {
 
 export const AiTransparencyNotice: React.FC<AiTransparencyNoticeProps> = ({
   studentId,
+  kicker = DEFAULT_KICKER,
+  title = DEFAULT_TITLE,
+  logoSrc,
+  logoAlt = 'Opdrachtlogo',
   children,
 }) => {
   const [acknowledged, setAcknowledged] = useState<boolean | null>(null);
@@ -51,26 +64,28 @@ export const AiTransparencyNotice: React.FC<AiTransparencyNoticeProps> = ({
   }
 
   return (
-    <div className="w-full flex items-center justify-center p-6" style={{ minHeight: '100dvh' }}>
+    <div className="w-full h-full flex flex-1 min-w-0 items-center justify-center overflow-y-auto p-6" style={{ minHeight: '240px' }}>
       <div
         className="flex w-full max-w-[440px] flex-col items-center justify-center text-center rounded-[28px] px-6 py-7 shadow-[0_20px_50px_rgba(8,40,59,0.10)]"
         style={{ backgroundColor: '#FFFDF7', border: '1px solid #E7D8BD', color: '#08283B' }}
       >
-        <div
-          className="w-20 h-20 rounded-2xl flex items-center justify-center mb-4 overflow-hidden shadow-sm"
-          style={{ backgroundColor: '#FCF6EA', border: '1px solid #E7D8BD' }}
-        >
-          <img
-            src={GAME_PROGRAMMEUR_LOGO}
-            alt="Game Programmeur opdrachtlogo"
-            className="w-full h-full object-cover"
-            loading="eager"
-          />
-        </div>
+        {logoSrc && (
+          <div
+            className="w-20 h-20 rounded-2xl flex items-center justify-center mb-4 overflow-hidden shadow-sm"
+            style={{ backgroundColor: '#FCF6EA', border: '1px solid #E7D8BD' }}
+          >
+            <img
+              src={logoSrc}
+              alt={logoAlt}
+              className="w-full h-full object-cover"
+              loading="eager"
+            />
+          </div>
+        )}
         <p className="text-[11px] font-black uppercase tracking-[0.14em] mb-2" style={{ color: '#5F947D' }}>
-          Game Programmeur
+          {kicker}
         </p>
-        <h3 className="text-xl font-black text-lab-ink mb-2">AI-mentor</h3>
+        <h3 className="text-xl font-black text-lab-ink mb-2">{title}</h3>
         <p className="text-sm leading-relaxed mb-5" style={{ color: '#445865' }}>
           Je chat met AI om je opdracht stap voor stap te maken.
         </p>

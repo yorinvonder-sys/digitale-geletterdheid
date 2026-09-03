@@ -16,8 +16,10 @@ systemic, root-cause adjustments, without growing bloated.
 >
 > 1. **Automation Before Prose**: Before adding a manual instruction to a SKILL
 >    document, check whether the lesson can be encoded as a test, linter,
->    schema, type, build gate, or template. If automation is infeasible or too
->    costly, record why and add the smallest useful prose rule.
+>    schema, type, build gate, or template. Observe a new check failing without
+>    the rule before calling it enforced; a check never seen to fail is a
+>    hypothesis, not a safeguard. If automation is infeasible or too costly,
+>    record why and add the smallest useful prose rule.
 > 2. **Density Over Volume**: Prefer replacing, merging, or tightening existing
 >    rules before adding new ones. Prune only rules proven obsolete,
 >    contradicted, or owned elsewhere.
@@ -27,16 +29,65 @@ systemic, root-cause adjustments, without growing bloated.
 > 4. **Single Owner, Explicit References**: Keep each rule's primary authority
 >    in one SKILL. Other SKILLs may mention it briefly as a cross-reference when
 >    routing users to the owner would prevent misuse.
+> 5. **Operationalize Before Broadening**: For skill-library updates, add or
+>    extend validation, templates, or primer checks before broad prose changes.
+>    If prose is still needed, keep the rule at the owning SKILL and route
+>    siblings to it.
+> 6. **Promote Before Repinning**: When a consumer project proves a reusable
+>    lesson, update the canonical generic skill library first. Publish that
+>    revision, then repin the consumer; keep project facts in a local overlay.
 
 ## When to use this skill
 
 - Triggered by user corrections, systemic failures, or regression triggers
   that are likely to recur beyond the current conversation (full catalogue in
   §1).
+- Triggered when the user asks to improve, optimize, prune, or audit the skill
+  library itself.
 - **Out of scope:** This skill dictates the _triggers, analysis, and mindset_
   for updating SKILLs. It does NOT dictate the _formatting/layout_ of the SKILLs
   (follow your project's skill-authoring conventions) nor does it define the
   architectural code rules themselves (see `architecture-guidelines`).
+
+---
+
+## Skill-Library Optimization Mode
+
+When the subject is the skills themselves, optimize in this order:
+
+1. Define the behavioral failure, bottleneck, or drift risk; do not start from
+   preferred wording.
+2. Check whether validation can catch it: mirror sync, frontmatter, primer
+   backlinks, output contract presence, owner/routing conflicts, or template
+   shape.
+3. Edit the owning `SKILL.md` only. Sibling skills get cross-references unless
+   they must make a routing decision.
+4. Keep `.agents/skills`, `.claude/skills`, and the matching
+   `.documentation/READ-*.md` primer aligned in the same change. If the skill's
+   public role or trigger changed, update the `README.md` skill index too.
+5. Run `python scripts/validate-skills.py`. If no mechanical check can cover
+   the lesson, record why in the output contract.
+
+## Consumer-to-Library Promotion
+
+Use this sequence when learning originates in a consumer project:
+
+1. Capture the concrete failure, correction, or repeated successful pattern and
+   its verification evidence in the consumer.
+2. Extract the smallest behavior that applies without the project name, private
+   paths, roles, domain taxonomy, local commands, or provider assumptions.
+3. Update the one canonical generic owner in the skill library. Add a skill only
+   when the capability has a distinct trigger, lifecycle, and output contract.
+4. Update mirrors, primers, indexes, root routing guidance, and validation in the
+   same library change.
+5. Validate and publish the library revision.
+6. Repin or reinstall that revision in the consumer, then retain only its
+   project profile and other domain-specific skills locally.
+
+Do not overwrite a generic library from a consumer tree or treat byte-identical
+vendored files as locally owned. If a local emergency patch is unavoidable,
+mark it as temporary divergence with an upstream owner and remove it when the
+published fix is repinned.
 
 ---
 
@@ -52,6 +103,7 @@ encountering:
 | **New Pattern**      | A new, validated structural standard is successfully introduced to the codebase.      |
 | **Systemic Failure** | The same class of anti-pattern or fragile workaround is attempted repeatedly, or once with high blast radius. |
 | **Process Break**    | Recurring CI/CD failures or linter bottlenecks indicating a broken foundational rule. |
+| **Skill Optimization** | User asks to optimize, prune, audit, or increase efficiency of the skill library itself. |
 
 ## 2. Analyze Root Cause
 
@@ -78,7 +130,10 @@ When generating the actual update to the relevant `SKILL.md` file:
   useful exceptions and migration notes.
 - **Maintain Mirrors**: When this library has both `.agents/skills` and
   `.claude/skills` copies, keep the matching `SKILL.md` files synchronized and
-  align the corresponding `.documentation/READ-*.md` primer.
+  align the corresponding `.documentation/READ-*.md` primer and any affected
+  `README.md` skill-index text.
+- **Validate Shape**: Run the repo's skill validator after edits; extend it
+  when a drift pattern can be detected mechanically.
 
 ## 4. Verification & Notification
 
@@ -87,7 +142,8 @@ Ensure the learning "sticks":
 - **Verification**: If applicable, add a unit test, lint rule, schema check, or
   perform an audit showing the previous mistake is now caught earlier or made
   less likely. Do not claim structural impossibility unless an enforced gate
-  guarantees it.
+  guarantees it. For skill-library changes, run
+  `python scripts/validate-skills.py`.
 - **Notify**: Conclude the improvement sequence with a concise summary back to
   the user:
     > _"Updated [Skill/Test] to prevent [issue] by mandating [new practice]."_
@@ -98,12 +154,12 @@ When applying this skill, emit:
 
 ```
 Subject:        <skill / test / linter / schema / template>
-Trigger:        <correction | regression | new pattern | systemic failure | process break>
+Trigger:        <correction | regression | new pattern | systemic failure | process break | skill optimization>
 Root cause:     <missing/ambiguous | conflict | ignored rule | technical constraint | ownership gap>
 Owner:          <skill/test/linter/schema/template that should own the fix>
 Automation:     <implemented | infeasible | deferred> - <reason>
 Decision:       <replace | add | delete | cross-reference | no change>
-Verification:   <test/lint/audit/search performed>
+Verification:   <checks performed, and the observed failure without the rule>
 Next action:    <edit made, check added, follow-up owner, or stop>
 Residual risk:  <what still depends on judgment or future enforcement>
 ```

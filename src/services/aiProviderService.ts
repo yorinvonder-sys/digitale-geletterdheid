@@ -7,6 +7,7 @@ import { getEdgeFunctionUrl, authenticatedFetch } from './supabase';
 import { logAiInteraction } from './auditService';
 import { sanitizePrompt } from '@/utils/promptSanitizer';
 import { markAiGeneratedText } from '@/utils/aiContentMarker';
+import { createModeratedDrawingResult, isModeratedDrawingResult } from './drawingModeration';
 import {
   type GenerateImageResponse,
   type ImageAspectRatio,
@@ -748,12 +749,22 @@ export interface DrawingAnalysisResult {
   guesses: { label: string; confidence: number }[];
   mainGuess: string;
   reasoning: string;
+  /** True wanneer de tekening door de moderatie is tegengehouden; er is dan geen modelinhoud. */
+  moderated?: boolean;
 }
 
 export function parseDrawingAnalysisPayload(data: any): DrawingAnalysisResult {
   const parsed = typeof data?.result === 'string'
     ? JSON.parse(data.result)
     : data?.result || data;
+
+  // Vangnet: ook als een oudere edge-functieversie het ONGEPAST-label nog gewoon
+  // teruggeeft, verlaat er geen enkele modelinhoud deze functie. Deze check staat
+  // vóór de schemavalidatie, zodat een moderatie-antwoord nooit als parsefout
+  // eindigt (dat zou de lokale analyse alsnog een gewoon resultaat laten tonen).
+  if (isModeratedDrawingResult(parsed)) {
+    return createModeratedDrawingResult();
+  }
 
   if (!parsed || !Array.isArray(parsed.guesses)) {
     throw new Error('Invalid drawing analysis response');

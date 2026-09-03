@@ -331,7 +331,7 @@ const PrioritiesPhase: React.FC<{
                             Jouw volgorde
                         </span>
                         {!submitted && (
-                            <button onClick={onReset} className="text-duck-ink/60 hover:text-duck-ink transition-colors">
+                            <button onClick={onReset} aria-label="Volgorde opnieuw instellen" className="text-duck-ink/60 hover:text-duck-ink transition-colors">
                                 <RotateCcw size={14} />
                             </button>
                         )}
@@ -780,7 +780,7 @@ export const DatalekkenRampenplanMission: React.FC<Props> = ({ onBack, onComplet
 
                         <button
                             onClick={() => { clearSave(); onComplete(true); }}
-                            className="w-full py-4 bg-duck-ink hover:bg-duck-ink text-white rounded-full font-black text-lg transition-all duration-300 active:scale-95 shadow-xl flex items-center justify-center gap-2 focus-visible:ring-2 focus-visible:ring-[#5F947D]"
+                            className="w-full py-4 bg-duck-ink hover:bg-duck-ink/80 text-white rounded-full font-black text-lg transition-all duration-300 active:scale-95 shadow-xl flex items-center justify-center gap-2 focus-visible:ring-2 focus-visible:ring-duck-acid"
                         >
                             <Trophy size={20} /> Missie Voltooid!
                         </button>

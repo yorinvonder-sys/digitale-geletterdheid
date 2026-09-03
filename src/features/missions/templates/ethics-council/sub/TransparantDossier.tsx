@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronRight } from 'lucide-react';
+import { relevanceFactor, substanceFactor } from './textSubstance';
 
 interface TransparantDossierProps {
     hint?: string;
+    /** Kernbegrippen van dit dossier; leeg/afwezig = geen inhoudelijke check. */
+    keywords?: readonly string[];
     maxScore: number;
     savedText: string;
     onComplete: (score: number, text: string) => void;
@@ -19,6 +22,7 @@ const GOOD_CHARS = 100;
  */
 export const TransparantDossier: React.FC<TransparantDossierProps> = ({
     hint,
+    keywords = [],
     maxScore,
     savedText,
     onComplete,
@@ -40,7 +44,14 @@ export const TransparantDossier: React.FC<TransparantDossierProps> = ({
     const meterLabel =
         quality >= 0.8 ? 'Uitstekend!' : quality >= 0.4 ? 'Goed bezig' : 'Schrijf meer';
 
-    const computeScore = (): number => Math.max(1, Math.round(quality * maxScore));
+    // De meter meet lengte; de factoren zorgen dat 100 tekens herhaling of 100
+    // tekens buiten het onderwerp niet hetzelfde opleveren als 100 tekens uitleg.
+    // Een echte tekst over het eigen project houdt factor 1.
+    const computeScore = (): number =>
+        Math.max(
+            1,
+            Math.round(quality * substanceFactor(text) * relevanceFactor(text, keywords) * maxScore)
+        );
 
     const handleSubmit = () => {
         onComplete(computeScore(), text);

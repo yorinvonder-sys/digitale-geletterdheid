@@ -3,6 +3,7 @@ import { Reorder, useDragControls } from 'framer-motion';
 import { ArrowDown, ArrowUp, Check, GripVertical } from 'lucide-react';
 import type { ScenarioRound } from '../types';
 import { RoundInstruction } from './RoundInstruction';
+import { getLearnerSeed } from './OrderPriorityRound';
 
 const ScenarioIcon = ({ icon, className }: { icon: string; className: string }) => (
     icon.startsWith('/assets/') ? (
@@ -31,9 +32,12 @@ const answerOrderIds = (items: ScenarioRound['items']): number[] =>
 /**
  * Bouwt een deterministische startvolgorde uit de item-ids zelf (geen
  * Math.random, zodat de volgorde na herladen exact hetzelfde terugkomt —
- * de voortgang wordt opgeslagen). Veel configs zetten de items al in de
- * juiste volgorde; wijkt de hash-volgorde toevallig niet af van het
- * antwoord, dan keren we hem om.
+ * de voortgang wordt opgeslagen). De seed van de leerling gaat mee in de
+ * hash: zonder dat kreeg iedere leerling en iedere poging exact dezelfde
+ * startvolgorde en kon één leerling de reeks zetten doorgeven aan de klas —
+ * hetzelfde lek dat OrderPriorityRound al dichtzette. Veel configs zetten de
+ * items al in de juiste volgorde; wijkt de hash-volgorde toevallig niet af
+ * van het antwoord, dan keren we hem om.
  *
  * Omkeren en niet één plek roteren: bij een rotatie staat élke kaart precies
  * één plek naast zijn plek, en `scoreOrderPriority` beloont een buurpositie met
@@ -41,10 +45,10 @@ const answerOrderIds = (items: ScenarioRound['items']): number[] =>
  * krijgen. Na omkeren staan de kaarten ver van hun plek en levert nietsdoen
  * vrijwel niets op.
  */
-const buildStartOrder = (round: ScenarioRound): number[] => {
+const buildStartOrder = (round: ScenarioRound, learnerSeed: string): number[] => {
     if (round.items.length < 2) return round.items.map((it) => it.id);
     const scrambled = [...round.items]
-        .sort((a, b) => hashSeed(`${round.id}:${a.id}`) - hashSeed(`${round.id}:${b.id}`))
+        .sort((a, b) => hashSeed(`${learnerSeed}:${round.id}:${a.id}`) - hashSeed(`${learnerSeed}:${round.id}:${b.id}`))
         .map((it) => it.id);
     const answer = answerOrderIds(round.items);
     const matchesAnswer = scrambled.every((id, i) => id === answer[i]);
@@ -101,7 +105,8 @@ const CardRow: React.FC<CardRowProps> = ({ itemId, round, submitted, currentInde
             <span
                 className={`w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-black shrink-0 mt-0.5 ${
                     submitted
-                        ? isCorrect ? 'bg-duck-ink text-white' : 'bg-duck-error text-white'
+                        // Wit haalt op duck-error maar 3,6:1; duck-ink haalt 4,6:1.
+                        ? isCorrect ? 'bg-duck-ink text-white' : 'bg-duck-error text-duck-ink'
                         : 'bg-duck-acid/20 text-duck-ink'
                 }`}
             >
@@ -188,6 +193,7 @@ export const OrderDragRound: React.FC<Props> = ({ round, selections, submitted, 
      *    gezet, dan is de configvolgorde één beeld lang zichtbaar — en die is
      *    in veel configs precies het juiste antwoord.
      */
+    const learnerSeed = React.useMemo(() => getLearnerSeed(), []);
     const order = React.useMemo(() => {
         const known = new Set(round.items.map((it) => it.id));
         const seen = new Set<number>();
@@ -197,9 +203,9 @@ export const OrderDragRound: React.FC<Props> = ({ round, selections, submitted, 
             return true;
         });
         if (kept.length === round.items.length) return kept;
-        const missing = buildStartOrder(round).filter((id) => !seen.has(id));
+        const missing = buildStartOrder(round, learnerSeed).filter((id) => !seen.has(id));
         return [...kept, ...missing];
-    }, [round, selections]);
+    }, [round, selections, learnerSeed]);
 
     // Wijkt de werkvolgorde af van wat er is opgeslagen (verse ronde, of een
     // aangevulde halve volgorde uit de oude vorm), leg de herstelde volgorde

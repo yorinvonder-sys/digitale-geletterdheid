@@ -70,13 +70,14 @@ export const memeMachineConfig: BuilderCanvasConfig = {
             description:
                 'Met bereik komt verantwoordelijkheid. Content die viral gaat kan ook mensen kwetsen, misinformatie verspreiden of iemands reputatie beschadigen. Content creators denken na over de impact van wat ze maken.',
             instruction:
-                'Beantwoord de volgende vragen: 1) Kun je je eigen meme-ontwerp bekijken vanuit het perspectief van iemand die er misschien kwetsbaar voor is? Wat zou die persoon voelen?, 2) Hoe kun je humor maken zonder een specifieke groep mensen te targeten?, 3) Noem 1 richtlijn die jij zou gebruiken om te bepalen of content "oké" is om te posten.',
+                'Beantwoord de volgende vragen: 1) Kun je je eigen meme-ontwerp bekijken vanuit het perspectief van iemand die er misschien kwetsbaar voor is? Wat zou die persoon voelen?, 2) Hoe kun je humor maken zonder een specifieke groep mensen te targeten?, 3) Gebruikte je in je meme-ontwerp een bestaande foto of afbeelding? Leg uit of dat mag. 4) Noem 1 richtlijn die jij zou gebruiken om te bepalen of content "oké" is om te posten.',
             tip: 'Vraag jezelf af: "Zou ik dit ook willen delen als mijn naam eronder staat en mijn oma het ziet?" Die test werkt echt.',
             checklistItems: [
                 { id: 'perspectief', label: 'Ik heb nagedacht vanuit het perspectief van iemand die geraakt wordt' },
                 { id: 'inclusief', label: 'Ik heb uitgelegd hoe je humor maakt zonder groepen te targeten' },
                 { id: 'bron', label: 'Ik heb benoemd of mijn meme een bestaande foto/afbeelding gebruikt en of dat mag' },
                 { id: 'richtlijn', label: 'Ik heb 1 persoonlijke richtlijn voor verantwoord posten geformuleerd' },
+                { id: 'portretrecht', addedLater: true, label: 'Ik gebruik alleen beelden met toestemming — geen herkenbare klasgenoten of docenten zonder hun toestemming' },
             ],
             textPrompt: 'Schrijf je reflectie op verantwoorde content',
         },

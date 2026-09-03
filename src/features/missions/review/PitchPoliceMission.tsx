@@ -229,7 +229,7 @@ const SLIDES: SlideData[] = [
             <div className="h-full flex flex-col items-center justify-center">
                 <h1 className="text-4xl font-bold mb-8" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>Schoolcijfers</h1>
                 {fixed ? (
-                    <div className="flex items-end gap-6 h-64 w-96 border-b-4 border-[#08283B] p-4">
+                    <div className="flex items-end gap-6 h-64 w-96 border-b-4 border-duck-ink p-4">
                         <div className="flex-1 bg-duck-ink rounded-t-lg h-[80%] relative group shadow-lg"><span className="absolute -top-8 left-1/2 -translate-x-1/2 font-bold text-xl">8.0</span></div>
                         <div className="flex-1 bg-duck-acid rounded-t-lg h-[70%] relative group shadow-lg"><span className="absolute -top-8 left-1/2 -translate-x-1/2 font-bold text-xl">7.0</span></div>
                         <div className="flex-1 bg-duck-ink rounded-t-lg h-[75%] relative group shadow-lg"><span className="absolute -top-8 left-1/2 -translate-x-1/2 font-bold text-xl">7.5</span></div>
@@ -629,7 +629,7 @@ export const PitchPoliceMission: React.FC<PitchPoliceProps> = ({ onComplete, onB
                                     className="w-full text-left p-4 rounded-2xl bg-duck-bg hover:bg-duck-ink border border-duck-ink/15 hover:border-duck-ink transition-all duration-300 group relative overflow-hidden focus-visible:ring-2 focus-visible:ring-duck-ink"
                                 >
                                     <div className="flex items-start gap-3 relative z-10">
-                                        <div className="w-6 h-6 rounded-full bg-duck-ink text-duck-ink flex items-center justify-center text-xs font-bold group-hover:bg-duck-acid group-hover:text-duck-ink transition-all duration-300 shrink-0">
+                                        <div className="w-6 h-6 rounded-full bg-duck-ink text-white flex items-center justify-center text-xs font-bold group-hover:bg-duck-acid group-hover:text-duck-ink transition-all duration-300 shrink-0">
                                             {opt.id.toUpperCase()}
                                         </div>
                                         <span className="text-sm font-medium text-duck-ink/60 group-hover:text-white">
@@ -671,7 +671,7 @@ export const PitchPoliceMission: React.FC<PitchPoliceProps> = ({ onComplete, onB
                                         className="w-full text-left p-4 rounded-2xl bg-duck-bg hover:bg-duck-ink border border-duck-ink/15 hover:border-duck-ink transition-all duration-300 group relative overflow-hidden focus-visible:ring-2 focus-visible:ring-duck-ink"
                                     >
                                         <div className="flex items-start gap-3 relative z-10">
-                                            <div className="w-6 h-6 rounded-full bg-duck-ink flex items-center justify-center text-xs font-bold group-hover:bg-duck-acid group-hover:text-duck-ink transition-all duration-300 shrink-0 text-duck-ink">
+                                            <div className="w-6 h-6 rounded-full bg-duck-ink flex items-center justify-center text-xs font-bold group-hover:bg-duck-acid group-hover:text-duck-ink transition-all duration-300 shrink-0 text-white">
                                                 {opt.id.toUpperCase()}
                                             </div>
                                             <span className="text-sm font-medium text-duck-ink/60 group-hover:text-white">

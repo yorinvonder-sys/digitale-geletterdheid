@@ -40,7 +40,7 @@ export interface ScenarioRound {
      * De drie klassieke types zijn keuzelijsten. De drie `-`-varianten daarnaast
      * tonen dezelfde opgave als handeling (mail doorzoeken, slepen, sorteren) en
      * gebruiken bewust dezelfde opslag en dezelfde scoreformule als hun klassieke
-     * tegenhanger — zie `SCORING_KIND` in sub/FeedbackBanner.tsx.
+     * tegenhanger — zie `SCORING_KIND` in sub/scoring.ts.
      */
     type:
         | 'select-correct'
@@ -98,11 +98,17 @@ export interface ScenarioEngineConfig {
     maxScore: number;
     badges: BadgeConfig[];
     takeaways: string[];
+    /** Toon het hulpblokje (mentor, Kindertelefoon, 113) op het introscherm bij een zwaar thema. */
+    showWellbeingSupport?: boolean;
 }
 
 export interface RoundState {
     selections: number[];
     submitted: boolean;
+    /** Itemscore, bevroren op het moment van inzenden. Voorkomt dat een latere
+     *  wijziging van de scoreformule een al-ingediende ronde herwaardeert;
+     *  oudere saves zonder dit veld vallen terug op de legacy-formule. */
+    earnedItemScore?: number;
     /** Learner's self-reported confidence (1=low, 2=medium, 3=high), set when showConfidence is true */
     confidence?: 1 | 2 | 3;
     /** Whether the follow-up question has been answered */

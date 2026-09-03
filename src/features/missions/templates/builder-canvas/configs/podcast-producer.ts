@@ -52,7 +52,7 @@ export const podcastProducerConfig: BuilderCanvasConfig = {
             description:
                 'De eerste 30 seconden bepalen of iemand blijft luisteren of afzet. Jouw intro moet direct de aandacht grijpen — een sterke openingszin, een verassend feit of een prikkelende vraag.',
             instruction:
-                'Schrijf een intro van ongeveer 60-80 woorden. Begin met een hook: iets waardoor de luisteraar meteen nieuwsgierig wordt. Stel jezelf dan kort voor ("Ik ben [naam] en dit is [naam podcast]") en vertel wat er vandaag te horen is. Vermijd: "Hoi, welkom bij mijn podcast, ik ben…" — dat is saai. Verras je luisteraar!',
+                'Schrijf een intro van ongeveer 60-80 woorden. Begin met een hook: iets waardoor de luisteraar meteen nieuwsgierig wordt. Stel jezelf kort voor met een verzonnen presentatienaam of alleen je podcastnaam ("Hier is [naam podcast]!") — gebruik niet je echte naam. Vertel daarna wat er vandaag te horen is. Vermijd: "Hoi, welkom bij mijn podcast, ik ben…" — dat is saai. Verras je luisteraar!',
             tip: 'Begin eens met een vraag ("Wist jij dat…?"), een stelling ("Iedereen denkt dat X, maar…") of een korte anekdote.',
             checklistItems: [
                 { id: 'hook-geschreven', label: 'Mijn intro begint met een hook die de aandacht trekt' },
@@ -74,7 +74,7 @@ export const podcastProducerConfig: BuilderCanvasConfig = {
             description:
                 'Goede interviewvragen zorgen voor levendige gesprekken. De truc: stel open vragen (vragen die beginnen met hoe, wat, waarom, vertel eens) zodat je gast meer dan "ja" of "nee" antwoordt.',
             instruction:
-                'Bedenk 5 interviewvragen voor jouw podcast. Minstens 3 moeten open vragen zijn. Voeg bij elke vraag ook een mogelijke vervolgvraag toe (follow-up), die je stelt als het antwoord interessant is maar je meer wilt weten. Voorbeeld van een follow-up: "Wat bedoel je precies met…?" of "Kun je daar een voorbeeld van geven?"',
+                'Bedenk 5 interviewvragen voor jouw podcast. Minstens 3 moeten open vragen zijn. Voeg bij elke vraag ook een mogelijke vervolgvraag toe (follow-up), die je stelt als het antwoord interessant is maar je meer wilt weten. Voorbeeld van een follow-up: "Wat bedoel je precies met…?" of "Kun je daar een voorbeeld van geven?" Interview alleen iemand die daar toestemming voor geeft, en noteer je observaties anoniem als "Gast A" — geen namen, contactgegevens of herkenbare stemopnames in dit veld.',
             tip: 'Vermijd vragen die beginnen met "Ben je…" of "Heb je…" — die krijgen altijd een kort antwoord. Kies voor "Hoe ben je…" of "Wat heeft je gebracht tot…".',
             checklistItems: [
                 { id: 'vijf-vragen', label: 'Ik heb 5 interviewvragen geschreven' },

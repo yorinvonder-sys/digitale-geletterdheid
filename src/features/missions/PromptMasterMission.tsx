@@ -18,6 +18,7 @@ import { isGeneratedImageDataUrl } from '@/services/imageGenerationLogic';
 import { useMissionAutoSave } from '@/hooks/useMissionAutoSave';
 import { supabase } from '@/services/supabase';
 import { useWellbeingMonitor, WellbeingMatch } from '@/hooks/useWellbeingMonitor';
+import { useWellbeingTeacherAlert } from '@/hooks/useWellbeingTeacherAlert';
 import { WellbeingAlert } from '@/features/student/WellbeingAlert';
 import {
     buildLocalPromptResult,
@@ -546,6 +547,7 @@ const ResultVisual: React.FC<{
         return (
             <div className={`p-4 rounded-2xl border ${getBgColor()} h-full flex flex-col font-mono text-sm`}>
                 {getHeader()}
+                <AiDisclosureBadge compact text="AI-gegenereerd" className="mt-1" />
                 <div className="flex-1 bg-duck-ink rounded-xl p-4 overflow-x-auto relative">
                     <div className="flex gap-1.5 mb-3 opacity-50">
                         <div className="w-2.5 h-2.5 rounded-full bg-duck-acid" />
@@ -569,6 +571,7 @@ const ResultVisual: React.FC<{
     return (
         <div className={`p-4 rounded-2xl border ${getBgColor()} h-full flex flex-col`}>
             {getHeader()}
+            <AiDisclosureBadge compact text="AI-gegenereerd" className="mt-1" />
             <div className="flex-1 bg-white rounded-xl p-4 text-duck-ink/60 shadow-sm relative overflow-y-auto max-h-[300px]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                 <div className="absolute top-0 left-0 w-full h-1 bg-duck-gray" />
                 {/* Simulate paper lines */}
@@ -761,25 +764,9 @@ export const PromptMasterMission: React.FC<Props> = ({ onBack, onComplete, vsoPr
     // (useAgentLogic): de prompt van de leerling wordt gescand VOORDAT hij naar de AI
     // gaat. Bij een treffer gaat er niets weg, ziet de leerling de hulplijnen en krijgt
     // de docent een melding — zonder de originele tekst, alleen categorie en tijdstip.
-    const shouldUseRemoteStudentControls = Boolean(studentId)
-        && studentId !== 'anonymous'
-        && !((import.meta as any).env?.DEV === true && studentId!.startsWith('dev-'));
-
-    const handleWellbeingAlert = useCallback(async (match: WellbeingMatch) => {
-        if (!shouldUseRemoteStudentControls) return;
-
-        // Log alert naar Supabase voor docentnotificatie (zonder originele tekst — privacy)
-        try {
-            await supabase.rpc('log_wellbeing_alert' as any, {
-                p_student_id: studentId,
-                p_category: match.category,
-                p_detected_at: match.timestamp,
-            });
-        } catch (err) {
-            // Tabel/RPC bestaat mogelijk nog niet — fail silently in dev, log in prod
-            console.error('Wellbeing alert logging failed:', err);
-        }
-    }, [shouldUseRemoteStudentControls, studentId]);
+    // Docentmelding met bevestigde aflevering: de overlay belooft hem pas als
+    // de RPC aantoonbaar is geslaagd (zie useWellbeingTeacherAlert).
+    const wellbeingTeacherAlert = useWellbeingTeacherAlert(studentId ?? null);
 
     const {
         scanText: scanWellbeing,
@@ -787,7 +774,7 @@ export const PromptMasterMission: React.FC<Props> = ({ onBack, onComplete, vsoPr
         lastMatch: wellbeingMatch,
         dismissHulplijn,
     } = useWellbeingMonitor({
-        onAlert: handleWellbeingAlert,
+        onAlert: wellbeingTeacherAlert.onAlert,
         studentId,
     });
 
@@ -810,6 +797,13 @@ export const PromptMasterMission: React.FC<Props> = ({ onBack, onComplete, vsoPr
                 description: `De missie is behaald als je eindscore minstens ${passingPercentage}% is.`,
             },
         };
+
+    // Slaagpoort van de missie: pas bij `passingPercentage` (60%, of de aangepaste
+    // dagbestedingsdrempel) telt de run als gehaald. Staat hier zodat zowel de
+    // afrondknop als het resultaatscherm dezelfde uitkomst gebruiken.
+    const maxScore = calculatePromptMasterMaxScore(CHALLENGES);
+    const finalPercentage = maxScore > 0 ? Math.round((progress.totalScore / maxScore) * 100) : 0;
+    const missionPassed = finalPercentage >= passingPercentage;
 
     const allLevelsDone = progress.currentLevel === 'expert' && progress.challengeIndex >= levelChallenges.length - 1 && progress.completedChallenges.includes(currentChallenge?.id);
     const currentResponsePassed = Boolean(aiResponse && currentChallenge && isChallengePassed(aiResponse.score, currentChallenge, vsoProfile));
@@ -953,7 +947,9 @@ export const PromptMasterMission: React.FC<Props> = ({ onBack, onComplete, vsoPr
     };
 
     const handleComplete = async () => {
-        if (isCompleting) return;
+        // Succes wordt alleen gemeld als de drempel écht gehaald is; de opslag gaat
+        // pas weg als de host de voltooiing ook heeft vastgelegd.
+        if (isCompleting || !missionPassed) return;
         setIsCompleting(true);
         try {
             const completed = await onComplete(true);
@@ -961,6 +957,32 @@ export const PromptMasterMission: React.FC<Props> = ({ onBack, onComplete, vsoPr
         } finally {
             setIsCompleting(false);
         }
+    };
+
+    // Drempel niet gehaald: afsluiten mag, maar zonder succes én zonder de
+    // voortgang te wissen — die blijft staan voor een volgende keer.
+    const handleFinishWithoutPass = async () => {
+        if (isCompleting) return;
+        setIsCompleting(true);
+        try {
+            await onComplete(false);
+        } finally {
+            setIsCompleting(false);
+        }
+    };
+
+    // Bewuste herstart door de leerling: alleen hier mag de opslag weg zonder
+    // gehaalde voltooiing.
+    const handleRetryMission = () => {
+        idealImageRequestRef.current += 1;
+        clearSave();
+        setProgress({ currentLevel: 'beginner', challengeIndex: 0, totalScore: 0, completedChallenges: [] });
+        setUserPrompt('');
+        setAiResponse(null);
+        setShowFeedback(false);
+        setAttempts(0);
+        setPhase('challenge');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     };
 
     const handleNext = () => {
@@ -1118,7 +1140,7 @@ export const PromptMasterMission: React.FC<Props> = ({ onBack, onComplete, vsoPr
             <div data-qa="prompt-master-challenge" className="h-dvh overflow-y-auto bg-duck-bg text-duck-ink flex flex-col" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                 {/* Hulplijnen bij een welzijnssignaal. Staat in deze fase omdat hier de
                     prompt verstuurd wordt; sluiten brengt de leerling terug bij de opdracht. */}
-                {showHulplijn && <WellbeingAlert match={wellbeingMatch} onDismiss={dismissHulplijn} />}
+                {showHulplijn && <WellbeingAlert match={wellbeingMatch} teacherNotified={wellbeingTeacherAlert.notifiedFor(wellbeingMatch?.category)} onDismiss={dismissHulplijn} />}
                 {/* Header */}
                 <header className="bg-white border-b border-duck-gray px-4 py-3 md:px-6 md:py-4 sticky top-0 z-10">
                     <div className="max-w-4xl mx-auto flex flex-wrap items-center justify-between gap-2">
@@ -1263,6 +1285,9 @@ export const PromptMasterMission: React.FC<Props> = ({ onBack, onComplete, vsoPr
                                 className="w-full bg-white border-2 border-duck-gray rounded-2xl p-4 text-duck-ink placeholder-duck-ink/40 min-h-[80px] md:min-h-[100px] focus:outline-none focus-visible:ring-2 focus-visible:ring-duck-acid transition-all duration-300 resize-none"
                                 disabled={isAnalyzing}
                             />
+                            <p className="mt-2 text-[11px] leading-relaxed text-duck-ink/60 font-medium" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                                Typ geen echte namen of andere persoonsgegevens in je prompt — je tekst gaat naar een AI-dienst.
+                            </p>
                             <button
                                 data-qa="prompt-master-submit"
                                 onClick={handleSubmitPrompt}
@@ -1409,9 +1434,7 @@ export const PromptMasterMission: React.FC<Props> = ({ onBack, onComplete, vsoPr
 
     // RESULT SCREEN
     if (phase === 'result') {
-        const maxScore = calculatePromptMasterMaxScore(CHALLENGES);
-        const percentage = Math.round((progress.totalScore / maxScore) * 100);
-        const passed = percentage >= passingPercentage;
+        const passed = missionPassed;
 
         return (
             <div data-qa="prompt-master-result" className="h-dvh overflow-y-auto bg-duck-bg text-duck-ink p-4 md:p-6 flex items-center justify-center" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
@@ -1436,6 +1459,9 @@ export const PromptMasterMission: React.FC<Props> = ({ onBack, onComplete, vsoPr
                         <div className="text-4xl md:text-5xl font-black mb-2 text-duck-ink">
                             {progress.totalScore} pts
                         </div>
+                        <p data-qa="prompt-master-score-percent" className="text-duck-ink/60 font-bold mb-1">
+                            {finalPercentage}% van de punten · minstens {passingPercentage}% nodig
+                        </p>
                         <p className="text-duck-ink/60 font-bold mb-4">{progress.completedChallenges.length}/{CHALLENGES.length} uitdagingen voltooid</p>
 
                         <div className="mt-6 grid grid-cols-3 gap-3 text-sm">
@@ -1475,11 +1501,31 @@ export const PromptMasterMission: React.FC<Props> = ({ onBack, onComplete, vsoPr
                         </ul>
                     </div>
 
+                    {!passed && (
+                        <div
+                            data-qa="prompt-master-threshold-notice"
+                            className="mb-4 rounded-2xl border border-duck-acid/30 bg-duck-acid/10 p-4 text-left"
+                        >
+                            <h4 className="font-black text-duck-ink">Nog niet gehaald</h4>
+                            <p className="mt-1 text-sm text-duck-ink/70">
+                                Je staat op {finalPercentage}%. Je hebt minstens {passingPercentage}% nodig om deze
+                                missie te halen. Je voortgang blijft bewaard tot je opnieuw begint.
+                            </p>
+                            <button
+                                data-qa="prompt-master-retry"
+                                onClick={handleRetryMission}
+                                className="mt-3 w-full min-h-[44px] rounded-full bg-duck-acid py-2.5 text-sm font-black text-duck-ink transition-all duration-300 active:scale-[0.98]"
+                            >
+                                <span className="flex items-center justify-center gap-2">
+                                    <RotateCcw size={16} /> Opnieuw proberen
+                                </span>
+                            </button>
+                        </div>
+                    )}
+
                     <button
-                        onClick={passed ? handleComplete : async () => {
-                            clearSave();
-                            await onComplete(false);
-                        }}
+                        data-qa="prompt-master-finish"
+                        onClick={passed ? handleComplete : handleFinishWithoutPass}
                         disabled={isCompleting}
                         className="w-full py-3 md:py-4 rounded-full font-black transition-all duration-300 text-duck-ink shadow-lg hover:shadow-xl disabled:cursor-wait disabled:opacity-70"
                         style={{ backgroundColor: '#e1ff01' }}

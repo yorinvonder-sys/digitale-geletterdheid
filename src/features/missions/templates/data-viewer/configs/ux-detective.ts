@@ -19,8 +19,13 @@ export const uxDetectiveConfig: DataViewerConfig = {
             id: 'gebruikersfeedback-app',
             title: 'Gebruikersfeedback: schoolapp van DTLS',
             description:
-                'Een schoolapp kreeg slechte reviews. UX-onderzoekers interviewden 10 leerlingen. Bekijk de bevindingen per gebruiker en beantwoord de vragen.',
+                'Een fictieve schoolapp ("DTLS") kreeg in dit oefenvoorbeeld slechte reviews. Bekijk de verzonnen bevindingen per gebruiker en beantwoord de vragen.',
             type: 'table',
+            source: {
+                kind: 'synthetic',
+                label: 'Verzonnen gebruikersfeedback',
+                methodNote: 'DTLS is een verzonnen naam; geen echt gebruikersonderzoek.',
+            },
             columns: [
                 { key: 'gebruiker', label: 'Gebruiker', sortable: false },
                 { key: 'probleem', label: 'Gevonden probleem', sortable: true },
@@ -87,8 +92,13 @@ export const uxDetectiveConfig: DataViewerConfig = {
             id: 'sus-scores-apps',
             title: 'SUS-score (usability) van vijf schoolapps',
             description:
-                'De SUS (System Usability Scale) is een standaard maatstaf voor gebruiksvriendelijkheid op een schaal van 0-100. Boven 68 = goed. Bekijk de scores van vijf apps.',
+                'De SUS (System Usability Scale) is een echte, standaard maatstaf voor gebruiksvriendelijkheid op een schaal van 0-100 — boven 68 geldt als goed. De scores hieronder voor deze vijf bekende schoolapps zijn echter verzonnen ter oefening, geen echte meting.',
             type: 'bar-chart',
+            source: {
+                kind: 'synthetic',
+                label: 'Verzonnen SUS-scores',
+                methodNote: 'Verzonnen SUS-scores ter illustratie; dit is geen echte meting van deze producten.',
+            },
             chartData: [
                 { label: 'Magister', value: 61, color: '#e1ff01' },
                 { label: 'Google Classroom', value: 78, color: '#202023' },
@@ -109,7 +119,7 @@ export const uxDetectiveConfig: DataViewerConfig = {
                     ],
                     correctAnswer: 'Magister en Itslearning',
                     explanation:
-                        'Magister scoort 61 (onder 68) en Itslearning 55 (ruim onder 68). Zermelo zit met 69 net boven de grens. Google Classroom (78) en Microsoft Teams (72) zijn goed bruikbaar. Magister is de meest gebruikte Nederlandse schoolapp maar heeft dus een onder-gemiddelde usability.',
+                        'In deze oefencijfers scoort "Magister" 61 (onder 68) en "Itslearning" 55 (ruim onder 68). "Zermelo" zit met 69 net boven de grens. "Google Classroom" (78) en "Microsoft Teams" (72) zitten er ruim boven. Dit zegt niets over de echte usability van deze producten — het is verzonnen oefendata om de SUS-drempel te leren toepassen.',
                     points: 10,
                 },
                 {
@@ -192,7 +202,7 @@ export const uxDetectiveConfig: DataViewerConfig = {
                     correctAnswer: '',
                     explanation:
                         'Een goede verbetering past een UX-principe toe: bijv. "Voeg een "Huiswerk"-knop direct op de startpagina toe (Affordance — zichtbaar en toegankelijk)." Of: "Gebruik consistente navigatie zodat huiswerk altijd op dezelfde plek staat (Consistentie)." Of: "Voeg een zoekfunctie toe die snel huiswerk vindt (Foutpreventie — de gebruiker hoeft niet te zoeken in het menu)."',
-                    points: 0,
+                    points: 10,
                 },
             ],
         },

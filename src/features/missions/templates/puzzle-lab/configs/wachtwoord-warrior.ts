@@ -48,7 +48,7 @@ const config: PuzzleLabConfig = {
             ],
             answer: 'Minder dan 1 seconde — het staat in elke hackerswoordenlijst',
             caseSensitive: false,
-            maxAttempts: 3,
+            maxAttempts: 2,
             points: 25,
             successMessage:
                 'Klopt! "abc123" wordt onmiddellijk gekraakt — het staat in elke woordenlijst die hackers gebruiken. Maar ook als het niet in een lijst stond: 6 tekens zijn bij 1 miljard pogingen per seconde in ~2 seconden uitgeput. Lengte is de belangrijkste factor.',
@@ -78,7 +78,7 @@ const config: PuzzleLabConfig = {
             ],
             answer: 'Hackers kennen variaties op bekende woorden, waardoor symboolvervanging niet helpt',
             caseSensitive: false,
-            maxAttempts: 3,
+            maxAttempts: 2,
             points: 25,
             successMessage:
                 'Precies! Woordenboekaanvallen proberen bekende woorden + alle veelgebruikte vervangingen. "P@ssw0rd!" staat letterlijk in de aanvalslijsten. De les: geen enkel trucsysteem op een herkenbaar woord is veilig — gebruik lange, willekeurige zinnen of een wachtwoordmanager.',
@@ -108,7 +108,7 @@ const config: PuzzleLabConfig = {
             ],
             answer: 'Groot gevaar — hackers proberen het gelekte wachtwoord automatisch op andere sites',
             caseSensitive: false,
-            maxAttempts: 3,
+            maxAttempts: 2,
             points: 25,
             successMessage:
                 'Juist! Credential stuffing is geautomatiseerd: zodra één wachtwoord lekt, wordt het meteen geprobeerd op honderden andere populaire sites. Voor Emma betekent dit: haar e-mail, Instagram én schoolaccount zijn allemaal in gevaar. Unieke wachtwoorden per site zijn daarom essentieel.',
@@ -119,7 +119,7 @@ const config: PuzzleLabConfig = {
             title: 'Maak een echt sterk wachtwoord',
             type: 'text-input',
             description:
-                'Nu jij weet hoe aanvallen werken, maak je een wachtwoord dat echt sterk is. Het moet aan ALLE eisen voldoen:\n\n• Minimaal 14 tekens lang\n• Minstens 1 hoofdletter (A–Z)\n• Minstens 1 cijfer (0–9)\n• Minstens 1 speciaal teken (!@#$%&*-_)\n• Geen herkenbaar woord of naam\n\nTip: gebruik een passphrase — meerdere willekeurige woorden met symbolen: "Paraplu#Boot7Ster"\n\nGebruik nooit je échte wachtwoord — verzin er hier een.',
+                'Nu jij weet hoe aanvallen werken, maak je een wachtwoord dat echt sterk is. Het moet aan ALLE eisen voldoen:\n\n• Minimaal 14 tekens lang\n• Minstens 1 hoofdletter (A–Z)\n• Minstens 1 cijfer (0–9)\n• Minstens 1 speciaal teken (!@#$%&*-_)\n• Geen herkenbaar woord of naam\n\nTip: gebruik een passphrase — meerdere willekeurige woorden met symbolen: "Paraplu#Boot7Ster"\n\nBelangrijk: verzin een NIEUW wachtwoord dat je nergens anders gebruikt — typ nooit een wachtwoord dat je écht gebruikt.',
             clues: [
                 'Lengte is de krachtigste factor: 14 tekens is véél sterker dan 8 tekens.',
                 'Willekeurige woorden combineren werkt beter dan trucs op één woord: "Groen-Fiets-42-Maan!" is sterk.',
@@ -146,6 +146,7 @@ const config: PuzzleLabConfig = {
                 if (letterBlocks.length === 1 && letterBlocks[0].length >= 6) return false;
                 return true;
             },
+            sensitiveInput: true,
             caseSensitive: true,
             maxAttempts: 10,
             points: 25,

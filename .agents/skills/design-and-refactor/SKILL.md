@@ -38,7 +38,7 @@ description: >-
 |:--|:--|:--|:--|
 | 1 | Necessity check | `functionality-complexity-tradeoff` | PASS / DROP per type, method, parameter |
 | 2 | First principles | `architecture-guidelines` | Smallest correct design |
-| 3 | Geometric placement | `geometric-architecture` | Domain / tier / layer per component + allowed dependency edges |
+| 3 | Placement | `morphogenetic-architecture` | Domain / tier / layer per component + allowed dependency edges |
 | 4 | Complexity measurement | `structural-simplification` | Component-kinds Δ, Dependency-edges Δ, Max-chain-depth Δ, Module-count Δ |
 | 5 | Architecture as code | `architecture-as-code` (pattern); `-javascript` / `-python` (impl) | Per-module architecture config |
 | 6 | Shift defect detection left | `defect-shift-left` | Each error path → earliest catchable stage |

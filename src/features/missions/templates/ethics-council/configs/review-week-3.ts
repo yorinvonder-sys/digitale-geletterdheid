@@ -25,6 +25,31 @@ const config: EthicsCouncilConfig = {
         perspective:
             'Ik bekijk jouw project door de bril van de wet (de AVG — de Europese privacywet). Verwerk jij persoonsgegevens — namen, foto\'s, e-mailadressen? Dan moet je kunnen aantonen dat je toestemming hebt én dat duidelijk is wie verantwoordelijk is voor die gegevens. "Ik dacht dat het mocht" is geen verdediging als de rechter ernaar kijkt.',
     },
+    // Kernbegrippen van het legale dilemma. Bewust RUIM: de factor is zacht en
+    // het echte risico is een leerling die het in eigen woorden goed zegt en
+    // tóch gekort wordt. Substring-match, dus stammen dekken verbuigingen
+    // ('gegeven' dekt 'persoonsgegevens', 'toestemming' dekt 'toestemmingen').
+    legaalKeywords: [
+        'avg', 'gdpr', 'wet', 'wettelijk', 'legaal', 'illegaal', 'juridisch', 'rechter',
+        'regel', 'recht', 'mag', 'verbod', 'toegestaan', 'boete', 'straf', 'aansprakelijk',
+        'toestemming', 'toestaan', 'akkoord', 'vragen', 'gevraagd', 'ouder', 'leeftijd',
+        'minderjarig', 'privacy', 'privé', 'persoonsgegev', 'gegeven', 'data', 'gebruiker',
+        'naam', 'namen', 'foto', 'beeld', 'e-mail', 'email', 'mail', 'adres', 'account',
+        'wachtwoord', 'ip-adres', 'cookie', 'locatie', 'opslaan', 'opgeslagen', 'bewaar',
+        'verwerk', 'verzamel', 'deel', 'delen', 'gedeeld', 'doorgeven', 'verkoop',
+        'anoniem', 'versleuteld', 'beveilig', 'veilig', 'vertrouwelijk', 'verantwoordelijk',
+        'eigenaar', 'auteursrecht', 'copyright', 'licentie', 'bron', 'openbaar', 'publiek',
+        'school', 'verwijder', 'inzage', 'transparant', 'voorwaarden',
+        // Woorden waarmee leerlingen hetzelfde zeggen zonder de vaktermen: over
+        // wie de gegevens gaan, en waar hun materiaal vandaan komt.
+        'persoon', 'iemand', 'ander', 'zelf', 'internet', 'kopie', 'kopieer',
+        'plaatje', 'afbeelding', 'video', 'muziek', 'tekening',
+        // Parafrases van "toestemming" en van wie het beschermt. Zonder deze
+        // stammen viel een inhoudelijk juist antwoord als "er staan dingen van
+        // kinderen in en zij konden daar niet mee instemmen" buiten de boot.
+        'kinder', 'leerling', 'klasgenoot', 'instem', 'stemde', 'goedkeur',
+        'gewild', 'bezwaar', 'weigeren', 'geweigerd',
+    ],
     // === Dossier 2: Eerlijk (Categorize-ronde) ===
     // Sorteer ONTWERPKEUZES (niet mensen): maakt de keuze je project eerlijk
     // voor iedereen, of sluit hij per ongeluk mensen uit?
@@ -40,6 +65,22 @@ const config: EthicsCouncilConfig = {
     // === Dossier 3: Transparant ===
     transparantHint:
         'Leg het uit zonder code, voor een gewone gebruiker die jouw broncode nooit zal lezen.',
+    // Zelfde afweging als bij legaalKeywords: liever een paar te veel dan één te
+    // weinig. Deze lijst dekt zowel "wat doet het" als "voor wie leg ik het uit".
+    transparantKeywords: [
+        'uitleg', 'uitgelegd', 'leg', 'vertel', 'begrijp', 'begrijpelijk', 'snap',
+        'duidelijk', 'helder', 'eenvoudig', 'simpel', 'makkelijk', 'taal', 'woord',
+        'gebruiker', 'bezoeker', 'lezer', 'iedereen', 'mens', 'publiek', 'open',
+        'openheid', 'transparant', 'zichtbaar', 'zie', 'weten',
+        'waarom', 'hoe', 'werkt', 'werking', 'doet', 'doel', 'bedoel', 'functie',
+        'stap', 'voorbeeld', 'informatie', 'melden', 'melding', 'project', 'app',
+        'website', 'site', 'programma', 'systeem', 'tool', 'knop', 'scherm', 'pagina',
+        'invoer', 'invullen', 'resultaat', 'antwoord', 'uitkomst', 'keuze', 'kies',
+        'beslis', 'bepaal', 'gegeven', 'data', 'model', 'algoritme', 'code',
+        // Woorden waarmee leerlingen een werking beschrijven zonder vaktaal.
+        'vul', 'typ', 'druk', 'klik', 'reken', 'maak', 'krijg', 'geef', 'zin',
+        'plaatje', 'afbeelding', 'foto', 'cijfer', 'lijst', 'spel',
+    ],
     // === Miniboss ===
     counterArgument:
         '"Jij bent een scholier, geen bedrijf. Ethische toetsen zijn voor echte developers, niet voor schoolprojecten. Niemand wordt vervolgd voor een schoolopdracht — dus waarom al die moeite?"',

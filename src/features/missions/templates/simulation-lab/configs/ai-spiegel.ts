@@ -49,7 +49,7 @@ function computeVisuals(
             {
                 label: 'Locatie',
                 value: locatieValue,
-                color: locatieValue > 2 ? '#ff3c21' : locatieValue > 0 ? '#ff3c21' : '#e3e2dc',
+                color: locatieValue > 2 ? '#ff3c21' : locatieValue > 0 ? '#ffb020' : '#e3e2dc',
             },
             {
                 label: 'Camera',

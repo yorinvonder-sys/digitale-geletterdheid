@@ -4,6 +4,7 @@ import { KeesMessage } from '@/components/brand/KeesMessage';
 import { DuckMark } from '@/components/brand/DuckMark';
 import { MissionGoalBanner } from './MissionGoalBanner';
 import { MissionMetaChips } from './MissionMetaChips';
+import { WellbeingSupportNote } from './WellbeingSupportNote';
 import { getKeesMissionIntro } from '@/config/keesVoice';
 import { getMissionMeta } from '@/config/missionMeta';
 import type { MissionGoal } from './types';
@@ -30,6 +31,8 @@ interface IntroScreenProps {
         licenseUrl?: string;
         sourceUrl?: string;
     };
+    /** Toon een vast hulpblokje (mentor/vertrouwenspersoon, Kindertelefoon, 113) bij missies met een zwaar thema. */
+    wellbeingSupport?: boolean;
 }
 
 const FONT = { fontFamily: "'Outfit', system-ui, sans-serif" } as const;
@@ -95,6 +98,7 @@ export const IntroScreen: React.FC<IntroScreenProps> = ({
     tone = 'default',
     eyebrow,
     attribution,
+    wellbeingSupport,
 }) => {
     const t = TONES[tone];
     const meta = missionId ? getMissionMeta(missionId) : undefined;
@@ -172,6 +176,8 @@ export const IntroScreen: React.FC<IntroScreenProps> = ({
                     duckClassName="h-9 w-9"
                     className="mb-4 text-left"
                 />
+
+                {wellbeingSupport && <WellbeingSupportNote className="mb-4" />}
 
                 <button
                     data-qa="mission-start"

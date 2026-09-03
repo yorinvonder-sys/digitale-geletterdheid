@@ -1,18 +1,16 @@
 ---
 name: architecture-guidelines
 description: >-
-    First-principles architectural rules for this project: minimalism (YAGNI,
-    Rule of 3, DRY), modularity (SoC, SRP, interface discipline, dependency
-    inversion), functional core (pure domain logic, I/O at the edges),
-    resilience (fail-fast, idempotency, atomicity, failure classification),
-    domain-driven naming, and concurrency on shared mutable state. TRIGGER when:
-    introducing a new module/service/abstraction, refactoring across module
-    boundaries, applying SOLID, or reviewing a PR for architectural concerns
-    (purity, idempotency, naming, fail-fast). SKIP for: bug fixes within an
-    existing module, content/copy edits, CSS-only changes, dependency bumps,
-    trivial renames. For refactor cost/benefit analysis see
-    `structural-simplification`; for spatial dependency-graph constraints and
-    lint enforcement see `geometric-architecture`.
+    First-principles architectural rules for module/service/abstraction design:
+    minimalism, modularity, functional core, resilience, layer self-sufficiency,
+    naming, and concurrency. TRIGGER when introducing a
+    module/service/abstraction, refactoring across module boundaries, applying
+    SOLID, deciding whether a control may rely on the layer beneath it, or
+    reviewing architectural concerns (purity, idempotency, naming, fail-fast).
+    SKIP for bug fixes within an existing module, content/copy edits, CSS-only
+    changes, dependency bumps, and trivial renames. Emits an `Enforcement`
+    handoff to `architecture-as-code` when a design decision yields an
+    enforceable dependency constraint.
 ---
 
 # Architectural Discipline (First Principles)
@@ -68,6 +66,11 @@ description: >-
 - **SoC**: One concern per module; cross-cutting concerns are extracted, not
   interleaved.
 - **SRP**: One reason to change per module. Two forces of change → split.
+- **Capability Boundary = Module Boundary**: A capability with its own domain
+  name, lifecycle, dependency surface, test surface, or reason to change gets
+  its own module directory. Do not group multiple atomic capabilities in one
+  subsystem directory unless they form a higher-level capability with a single
+  public interface and shared change reason.
 - **High Cohesion, Loose Coupling**: Internals tightly related; external
   dependencies minimized and abstracted.
 - **Interface Discipline**:
@@ -75,6 +78,10 @@ description: >-
     - _Module_: internals encapsulated; the interface is the only access point.
     - _Designer_: expose everything every caller needs and only what every
       caller needs.
+
+**Review check:** If a directory contains multiple named capabilities, require
+one of: a single facade/interface proving they are one higher-level capability,
+or a split into capability-named module directories.
 
 ## 5. Resilience
 
@@ -109,12 +116,63 @@ Every shared mutable state must declare its concurrency model:
 **Review check:** if state is modified after an `await`, ask: _"is this guarded
 against concurrent mutation?"_
 
+## 8. Layer Self-Sufficiency
+
+- **Controls complete at their own layer**: a control a layer owns must hold on
+  that layer alone. One that works only because a lower layer limits who can
+  reach it is inherited, not implemented.
+- **Assume the layer below is absent**: every authentication and authorization
+  decision must hold with the endpoint publicly reachable. Network isolation,
+  private connectivity, and firewall placement are additional layers, never the
+  control.
+- **Ambient guarantees are invisible dependencies**: the assumption lives
+  outside the codebase, so the deployment or infrastructure change that
+  invalidates it never appears in a diff, review, or test of the code relying
+  on it.
+- **Name the reason for every gap**: when a control is weakened, deferred, or
+  dropped, state why. A reason that cites a property of a lower layer or the
+  deployment environment means the control is missing, not satisfied.
+
+**Review check:** for each control, ask _"does this still hold when the layer
+below it disappears?"_ A "no" is a defect in the layer under review, never a
+requirement on the layer below.
+
 > [!IMPORTANT] **Complexity Warning**: If a solution violates any guideline
 > above, state: _"Complexity Warning: introduces [X]. A simpler alternative is
 > [Y]."_ If the violation is non-trivial, see `structural-simplification` §8
 > Decision Protocol for a per-axis comparison before accepting it.
 
-## 8. Output Contract
+## 9. Enforcement Handoff
+
+Use `architecture-as-code` only for constraints that can be enforced as import
+or dependency rules. Do not duplicate this skill's principles there; hand off
+the specific rule to encode.
+
+Examples:
+
+```
+Principle:   DI / functional core
+Constraint:  domain must not import infrastructure
+Enforcement: add architecture rule: forbid <domain-component> -> <infra-component>
+```
+
+```
+Principle:   interface discipline
+Constraint:  external callers use the facade only
+Enforcement: add architecture rule: forbid * -> <module-internal-*>, except <module-*>
+```
+
+A principle can also settle as no handoff. Record that outcome rather than
+omitting it:
+
+```
+Principle:   layer self-sufficiency
+Constraint:  the control holds with the layer below absent
+Enforcement: none - not an import or dependency edge; verify by exercising the
+             component without that layer (`defect-shift-left`)
+```
+
+## 10. Output Contract
 
 When this skill changes or rejects a design, emit a coder-facing decision
 record:
@@ -122,8 +180,9 @@ record:
 ```
 Subject:        <module / service / abstraction / PR / code path>
 Decision:       Proceed | Simplify | Split | Inline | Reject | Defer
-Principle:      <YAGNI | Rule of 3 | DRY | SoC | SRP | DI | fail-fast | idempotency | atomicity | naming | concurrency>
+Principle:      <YAGNI | Rule of 3 | DRY | SoC | SRP | capability-boundary | DI | fail-fast | idempotency | atomicity | layer-self-sufficiency | naming | concurrency>
 Evidence:       <callers, imports, tests, runtime invariant, or file paths checked>
+Enforcement:    <none | add architecture rule: constraint | update architecture rule: constraint>
 Next action:    <edit, delete, extract, add test, add lint rule, or ask user>
 Verification:   <command / review check / Not run + reason>
 ```
@@ -132,4 +191,5 @@ Verification:   <command / review check / Not run + reason>
 
 - **`functionality-complexity-tradeoff`** — necessity gate and worth ledger applied to individual decisions.
 - **`structural-simplification`** — per-axis complexity comparison (`D, K, P, n`).
-- **`geometric-architecture`** — spatial placement and dependency-graph constraints.
+- **`morphogenetic-architecture`** — declared placement, observed coupling fields, and topology evolution.
+- **`architecture-as-code`** — consumes explicit `Enforcement` handoffs and turns enforceable dependency constraints into lint rules.

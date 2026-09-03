@@ -6,8 +6,9 @@ description: >-
     procedures, repo standards, shared platforms, self-service controls, and
     adaptive feedback loops. Use when reducing toil, designing an improvement
     roadmap, deciding what to standardize or automate, assessing where
-    operational work currently lives, or asking how to move work from humans
-    into durable systems.
+    operational work currently lives, pruning prose documentation duplicated by
+    code/config/tests/policy-as-code/architecture-as-code, or asking how to move
+    work from humans into durable systems.
 ---
 
 # Push-Out
@@ -30,10 +31,15 @@ description: >-
 >    standardizing, automating, or platforming it.
 > 4. **Standardize before automating.** Automation over ad hoc practice
 >    industrializes confusion.
-> 5. **Self-service needs guardrails.** A platform without policy, validation,
->    observability, and rollback exports toil to users.
+> 5. **Self-service needs guardrails.** A platform without the guardrail set —
+>    policy, validation, permissions, audit, observability, and rollback —
+>    exports toil to users.
 > 6. **Feedback closes the loop.** Dashboards and metrics are not improvement
 >    until they trigger action.
+> 7. **Executable sources beat prose duplicates.** When code, config, tests,
+>    schemas, CI, policy-as-code, or architecture-as-code already define the
+>    operational truth, keep prose only for intent, ownership, rationale,
+>    external constraints, trade-offs, rollback notes, and links to that source.
 
 ---
 
@@ -47,7 +53,7 @@ The ladder names where recurring operational work currently lives.
 | **1** | Team procedure | Runbook, checklist, documented handoff | Another team member can repeat it manually |
 | **2** | Repo standard | Template, script, CI job, policy, config convention | The repo enforces or strongly guides the path |
 | **3** | Shared platform | Golden path, reusable workflow, managed internal primitive | Multiple repos/teams consume the same capability |
-| **4** | Self-service control | Guardrailed workflow developers can run without ops handoff | Users trigger it safely; policy, validation, audit, and rollback exist |
+| **4** | Self-service control | Guardrailed workflow developers can run without ops handoff | Users trigger it safely; the guardrail set exists (Directive 5) |
 | **5** | Adaptive system | Metrics and feedback change the system | Thresholds, reviews, or automation drive continuous improvement |
 
 ```
@@ -93,7 +99,7 @@ created in the same change.
 Prioritize by:
 
 ```
-priority = push-out distance x frequency x blast radius x toil cost
+priority = push-out distance x frequency x risk x blast radius x toil cost
 ```
 
 If many candidates compete, apply `system-optimization` to find the constraint
@@ -108,8 +114,16 @@ before improving adjacent work.
 | **0 to 1** | Knowledge is tribal | Write owner, inputs, outputs, runbook, rollback |
 | **1 to 2** | A runbook repeats | Convert to script, template, CI job, config schema, or policy |
 | **2 to 3** | Many repos copy the same practice | Extract shared workflow, platform primitive, or golden path |
-| **3 to 4** | Platform team is still a ticket queue | Add self-service UI/API/CLI with validation, permissions, audit, and rollback |
+| **3 to 4** | Platform team is still a ticket queue | Add self-service UI/API/CLI with the full guardrail set (Directive 5) |
 | **4 to 5** | Self-service exists but does not improve | Add SLOs, trend review, alert thresholds, incident learning, and removal loop |
+
+**Documentation pruning pattern:** when prose documentation repeats behavior,
+rules, setup, policy, or architecture that is already enforced or derivable
+from code, config, tests, schemas, generated output, CI, policy-as-code, or
+architecture-as-code, do not create a second source of truth. Verify the
+executable source covers the same scope, then replace the prose duplicate with
+the smallest useful note: why it exists, who owns it, where the executable source
+lives, and which external constraint or trade-off is not visible from the code.
 
 When the move concerns deployment safety, apply `ci-cd-reliability-architecture`.
 When the move concerns check placement, apply `defect-shift-left`. When the
@@ -123,12 +137,13 @@ move concerns duplicated custom implementation, apply `bring-down`.
 | ------------ | ---------- |
 | Automating an undocumented process | Document and standardize first |
 | Platform team as ticket queue | Push to guardrailed self-service |
-| Self-service without policy or rollback | Add validation, permissions, audit, rollback, and observability |
+| Self-service without policy or rollback | Add the full guardrail set (Directive 5) |
 | Dashboard called improvement | Define threshold, review cadence, and action |
 | Tool adoption treated as maturity | Score the operational outcome, not the product installed |
 | Golden path with no adoption signal | Measure usage, escape hatches, and support load |
 | Manual approval called governance | Replace with policy-as-code where technically possible |
 | Keeping manual duplicate forever | Retire same-scope duplicate after proof |
+| Prose repeats an executable source of truth | Keep intent/rationale/ownership/link; delete the repeated mechanics |
 
 ---
 
@@ -139,7 +154,7 @@ Emit results in this shape:
 ```
 Scope:          <product/repo/platform/team/environment/time window>
 Mode:           Assessment | Improvement | Roadmap
-Decision:       Keep manual | Document | Standardize | Automate | Platformize | Reject
+Decision:       Keep manual | Delete | Document (→1) | Standardize (→2) | Platformize (→3) | Self-service (→4) | Adaptive (→5)
 Summary:        <2-4 sentences: main toil source, best next push, key risk>
 Verification:   <metrics, logs, workflow search, runbook check, or Not run + reason>
 

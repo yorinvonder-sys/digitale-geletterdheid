@@ -19,8 +19,13 @@ export const sustainabilityScannerConfig: DataViewerConfig = {
             id: 'digitale-activiteiten-gebruik',
             title: 'Gemiddeld dagelijks gebruik per online activiteit (wereldwijd, 2024)',
             description:
-                'Onderzoekers van DataReportal (2024) analyseerden hoeveel minuten jongeren van 13-24 jaar gemiddeld per dag besteden aan verschillende online activiteiten. Bekijk de tabel en reken de wekelijkse totalen uit.',
+                'Deze didactische oefentabel doet alsof jongeren van 13-24 jaar gemiddeld zoveel minuten per dag besteden aan verschillende online activiteiten. De cijfers zijn verzonnen, in de stijl van echte rapporten. Bekijk de tabel en reken de wekelijkse totalen uit.',
             type: 'table',
+            source: {
+                kind: 'synthetic',
+                label: 'Didactische oefentabel',
+                methodNote: 'Verzonnen, vereenvoudigde cijfers in de stijl van echte rapporten; check actuele cijfers altijd bij de echte bron.',
+            },
             columns: [
                 { key: 'activiteit', label: 'Activiteit', sortable: true },
                 { key: 'minuten_per_dag', label: 'Min. per dag', sortable: true },
@@ -76,13 +81,18 @@ export const sustainabilityScannerConfig: DataViewerConfig = {
             id: 'apparaat-aandeel-media',
             title: 'Apparaataandeel bij mediaconsumptie (2024)',
             description:
-                'Op welk apparaat kijken, luisteren en gamen mensen het meest? Onderzoeksbureau Statista bracht in 2024 het marktaandeel van verschillende apparaten in kaart voor mediaconsumptie (video, muziek, gaming, sociale media).',
+                'Op welk apparaat kijken, luisteren en gamen mensen het meest? Deze oefengrafiek toont een verzonnen, vereenvoudigd marktaandeel van verschillende apparaten voor mediaconsumptie (video, muziek, gaming, sociale media), in de stijl van echte marktrapporten.',
             type: 'pie-chart',
+            source: {
+                kind: 'synthetic',
+                label: 'Didactische oefentabel',
+                methodNote: 'Verzonnen, vereenvoudigde cijfers in de stijl van echte rapporten; check actuele cijfers altijd bij de echte bron.',
+            },
             chartData: [
                 { label: 'Smartphone', value: 54, color: '#202023' },
                 { label: 'Laptop', value: 22, color: '#e1ff01' },
-                { label: 'Smart-tv', value: 13, color: '#202023' },
-                { label: 'Tablet', value: 7, color: '#202023' },
+                { label: 'Smart-tv', value: 13, color: '#4c8bf5' },
+                { label: 'Tablet', value: 7, color: '#8a8a8a' },
                 { label: 'Console', value: 4, color: '#ff3c21' },
             ],
             questions: [
@@ -175,7 +185,7 @@ export const sustainabilityScannerConfig: DataViewerConfig = {
                 {
                     id: 'q8-media-reflectie',
                     question:
-                        'Kies één van de vier informatiekaarten en leg uit wat jij er nieuw van leerde of wat jou het meest verraste. Geef ook een concreet voorbeeld uit je eigen mediagebruik.',
+                        'Kies één van de vier informatiekaarten en leg uit wat jij er nieuw van leerde of wat jou het meest verraste. Geef ook een concreet voorbeeld uit je eigen mediagebruik — deel geen persoonlijke gegevens.',
                     type: 'text-observation',
                     keywords: ['pegi', 'schermtijd', 'algoritme', 'hd'],
                     minKeywords: 1,
@@ -218,8 +228,8 @@ export const sustainabilityScannerConfig: DataViewerConfig = {
     ],
 
     takeaways: [
-        'Berichten sturen is de meest gebruikte digitale activiteit wereldwijd — meer dan video streamen of gamen',
-        '83% van mediaconsumptie vindt plaats op draagbare apparaten (smartphone, laptop, tablet)',
+        'In deze oefendata is berichten sturen de meest gebruikte digitale activiteit — meer dan video streamen of gamen',
+        'In deze oefendata vindt 83% van mediaconsumptie plaats op draagbare apparaten (smartphone, laptop, tablet)',
         'HD-streaming gebruikt ruim 4× meer data dan SD — een groot verschil op mobiele data',
         'Mensen onderschatten hun eigen schermtijd gemiddeld met 20-40%',
         'Aanbevelingsalgoritmen leren van je gedrag en zijn te beïnvloeden door actief keuzes te maken',

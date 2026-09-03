@@ -108,16 +108,19 @@ export const missionBlueprintConfig: BuilderCanvasConfig = {
             description:
                 'Een planning die alleen in je hoofd zit, bestaat niet. Een planning in een document dat je kwijtraakt ook bijna niet. De cloud zorgt dat je plan altijd bereikbaar is — ook als je computer kapotgaat.',
             instruction:
-                'Sla je projectplan nu écht op in de cloud — net als in Cloud Commander. 1) Open OneDrive. 2) Maak een nieuwe map met de naam "P4-Eindproject". 3) Sla je takenlijst en volgorde op als Word-bestand met de naam Voornaam_Achternaam_Blauwdruk.docx. 4) Maak een deellink voor je docent en plak die hieronder in het tekstvak.',
+                'Sla je projectplan nu écht op in de cloud — net als in Cloud Commander. 1) Open OneDrive. 2) Maak een nieuwe map met de naam "P4-Eindproject". 3) Sla je takenlijst en volgorde op als Word-bestand met de naam Blauwdruk-Eindproject.docx (zet niet je eigen naam in de bestandsnaam — je docent ziet in OneDrive vanzelf van wie het bestand is). 4) Maak een deellink voor je docent en plak die hieronder in het tekstvak.',
             tip: 'Google Docs en OneDrive slaan automatisch op. Geen bestand meer verloren door een crash. Kies altijd cloud boven lokale opslag voor schoolprojecten.',
             checklistItems: [
                 { id: 'map-aangemaakt', label: 'Ik heb de map "P4-Eindproject" aangemaakt in OneDrive' },
-                { id: 'document-opgeslagen', label: 'Mijn blauwdruk staat opgeslagen als Voornaam_Achternaam_Blauwdruk.docx' },
+                { id: 'document-opgeslagen', label: 'Mijn blauwdruk staat opgeslagen als Blauwdruk-Eindproject.docx' },
                 { id: 'link-gemaakt', label: 'Ik heb een deellink voor mijn docent gemaakt' },
                 { id: 'link-geplakt', label: 'Ik heb de deellink hieronder geplakt' },
             ],
             textPrompt: 'Plak hier je OneDrive-deellink',
             minTextLength: 30,
+            excludeTextFromAi: true,
+            textPrivacyNote:
+                'Deel deze link alleen via dit veld met je docent. De link wordt niet naar de AI-coach gestuurd.',
             reflectionQuestion: {
                 question: 'Je deelt je plan via een OneDrive-link in plaats van als e-mailbijlage. Wat is het voordeel?',
                 options: [

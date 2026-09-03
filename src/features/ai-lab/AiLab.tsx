@@ -23,6 +23,7 @@ import { getAssessment, hasAssessment } from '@/features/assessment/data/assessm
 import { isMeaningfulAnswer, isRealMessage } from '@/features/missions/templates/shared/answerQuality';
 import { RotateDevicePrompt } from '@/components/app-shell/RotateDevicePrompt';
 import { WellbeingAlert } from '@/features/student/WellbeingAlert';
+import { AiTransparencyNotice } from '@/features/consent/AiTransparencyNotice';
 import { logActivity, saveHybridAssessmentRecord } from '@/services/teacherService';
 
 
@@ -217,6 +218,7 @@ export const AiLab: React.FC<AiLabProps> = ({ user, onExit, saveProgress, comple
     showHulplijn,
     wellbeingMatch,
     dismissHulplijn,
+    wellbeingTeacherNotifiedFor,
   } = useAgentLogic({
     selectedRole,
     userIdentifier: user?.uid || '', // IMPORTANT: Must use Supabase UID, not identifier (student number)
@@ -785,7 +787,7 @@ export const AiLab: React.FC<AiLabProps> = ({ user, onExit, saveProgress, comple
     <div className="fixed inset-0 overflow-hidden flex flex-col items-center pt-safe pb-safe pl-safe pr-safe">
 
       {/* Welzijnsdetectie overlay */}
-      {showHulplijn && <WellbeingAlert match={wellbeingMatch} onDismiss={dismissHulplijn} />}
+      {showHulplijn && <WellbeingAlert match={wellbeingMatch} teacherNotified={wellbeingTeacherNotifiedFor(wellbeingMatch?.category)} onDismiss={dismissHulplijn} />}
 
       {/* NEW: Web Preview Modal */}
       {previewUrl && (
@@ -1027,7 +1029,8 @@ export const AiLab: React.FC<AiLabProps> = ({ user, onExit, saveProgress, comple
                   user={user ? {
                     uid: user.uid,
                     displayName: user.displayName || 'Student',
-                    studentClass: user.studentClass
+                    studentClass: user.studentClass,
+                    schoolId: user.schoolId
                   } : undefined}
                   initialState={stats.missionProgress?.['ai-tekengame']?.data}
                   onSave={handleMissionDataSave}
@@ -1208,7 +1211,8 @@ export const AiLab: React.FC<AiLabProps> = ({ user, onExit, saveProgress, comple
             // Standard Split View for other missions
             <div className={`flex-1 flex flex-col ${showRightPanel ? 'md:flex-row ipad-stack' : ''} gap-3 h-full min-h-0 pb-1 animate-in fade-in slide-in-from-right-4 duration-500`}>
 
-              {/* Chat Column */}
+              {/* Chat Column — eenmalige AI-transparantiemelding vóór de eerste chat */}
+              <AiTransparencyNotice studentId={user?.uid || 'anon'}>
               <section className={`chat-column ${selectedRole.id === 'game-programmeur' ? 'game-programmeur-chat' : ''} flex flex-col bg-white rounded-2xl shadow-sm border border-duck-ink/15 overflow-hidden min-h-0 h-full max-h-full ${chatWidthClass} print:hidden`}>
                 {/* Goal Banner - Show primaryGoal prominently */}
                 <div className={`px-4 py-3 backdrop-blur border-b flex items-center gap-3 shrink-0 transition-all ${goalAchieved ? 'bg-duck-ink/10 border-duck-ink/20' : 'bg-duck-bg/80 border-duck-ink/15'}`}>
@@ -1375,6 +1379,7 @@ export const AiLab: React.FC<AiLabProps> = ({ user, onExit, saveProgress, comple
                   </div>
                 </div>
               </section>
+              </AiTransparencyNotice>
 
               {/* Preview Column */}
               {showRightPanel && (

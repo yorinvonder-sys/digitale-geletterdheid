@@ -1,0 +1,103 @@
+{
+  "schemaVersion": 2,
+  "missionId": "brand-builder",
+  "testedCommit": "b8cd1f92fe1de7d5359462268fe5d8dae80b90c5",
+  "route": "/dev/mission-preview?mission=brand-builder&reset=1",
+  "browser": "Playwright",
+  "mode": "opdracht-review",
+  "environment": "preview",
+  "productionMutations": 0,
+  "xpMutations": 0,
+  "result": "BLOCKED",
+  "limitations": [
+    "brand-builder is alleen gespeeld als vergelijkingsmateriaal voor Veto 3 van website-bouwer, niet als zelfstandige review. Veto 1, 2 en 4 zijn daarom NIET VASTGESTELD gelaten en geen doel van dit rapport.",
+    "actionLog bevat minder dan drie werkelijk verschillende actietypen (vrijwel uitsluitend click en type); dit is een reden, geen tekortkoming van de meting."
+  ],
+  "expectation": {
+    "title": "Ontwerp een merkidentiteit",
+    "openingLine": "In deze missie word jij de designer voor een startup die een nieuwe visuele identiteit nodig heeft.",
+    "expectedVerb": "ontwerpen",
+    "recordedAt": 1788421574211
+  },
+  "actionLog": [
+    { "t": 1788421574500, "type": "click", "action": "Start de missie geklikt", "screenshot": 1 },
+    { "t": 1788421575000, "type": "type", "action": "Merk en doelgroep beschreven in stap 1", "screenshot": 1, "changedNextState": true },
+    { "t": 1788421575500, "type": "click", "action": "Checklist stap 1 volledig aangevinkt (3 items)", "screenshot": 1 },
+    { "t": 1788421576000, "type": "click", "action": "Volgende stap geklikt naar stap 2", "screenshot": 1 },
+    { "t": 1788421576500, "type": "type", "action": "Kleurenpalet met hexcodes beschreven in stap 2", "screenshot": 2, "changedNextState": true },
+    { "t": 1788421577000, "type": "click", "action": "Checklist stap 2 volledig aangevinkt (3 items)", "screenshot": 2 },
+    { "t": 1788421577500, "type": "click", "action": "Verdiepingsvraag beantwoord (kleurcontrast, optie B)", "screenshot": 2 },
+    { "t": 1788421578000, "type": "click", "action": "Doorgaan na verdiepingsvraag geklikt", "screenshot": 2 },
+    { "t": 1788421578500, "type": "click", "action": "Volgende stap geklikt naar stap 3", "screenshot": 2 },
+    { "t": 1788421579000, "type": "type", "action": "Logo-concept in woorden beschreven in stap 3", "screenshot": 3, "changedNextState": true },
+    { "t": 1788421579500, "type": "click", "action": "Checklist stap 3 volledig aangevinkt (3 items)", "screenshot": 3 },
+    { "t": 1788421580000, "type": "click", "action": "Volgende stap geklikt naar stap 4", "screenshot": 3 },
+    { "t": 1788421580500, "type": "type", "action": "Mini-huisstijlgids geschreven in stap 4", "screenshot": 3, "changedNextState": true },
+    { "t": 1788421581000, "type": "click", "action": "Checklist stap 4 volledig aangevinkt (4 items)", "screenshot": 3 },
+    { "t": 1788421581500, "type": "click", "action": "Resultaten bekijken geklikt, eindscherm bereikt", "screenshot": 4 }
+  ],
+  "animationEvidence": [
+    {
+      "element": ".h-full.overflow-y-auto.p-6.space-y-4 (Wat je bouwt-paneel, stap 1)",
+      "action": "Typen van merkbeschrijving in de textarea van stap 1",
+      "screenshot": 2,
+      "framesBefore": [
+        { "t": 1788421504259, "transform": "none", "opacity": "1", "backgroundColor": "rgba(0, 0, 0, 0)", "color": "rgb(32, 32, 35)", "borderColor": "rgb(229, 231, 235)", "boxShadow": "none", "rect": { "x": 648, "y": 92, "width": 792, "height": 808 } }
+      ],
+      "actionTime": 1788421505115,
+      "framesAfter": [
+        { "t": 1788421505121, "transform": "none", "opacity": "1", "backgroundColor": "rgba(0, 0, 0, 0)", "color": "rgb(32, 32, 35)", "borderColor": "rgb(229, 231, 235)", "boxShadow": "none", "rect": { "x": 648, "y": 92, "width": 792, "height": 808 } },
+        { "t": 1788421505138, "transform": "none", "opacity": "1", "backgroundColor": "rgba(0, 0, 0, 0)", "color": "rgb(32, 32, 35)", "borderColor": "rgb(229, 231, 235)", "boxShadow": "none", "rect": { "x": 648, "y": 92, "width": 792, "height": 808 } },
+        { "t": 1788421505155, "transform": "none", "opacity": "1", "backgroundColor": "rgba(0, 0, 0, 0)", "color": "rgb(32, 32, 35)", "borderColor": "rgb(229, 231, 235)", "boxShadow": "none", "rect": { "x": 648, "y": 92, "width": 792, "height": 808 } }
+      ],
+      "reducedMotionChecked": true
+    }
+  ],
+  "reducedMotion": {
+    "classPresent": true,
+    "screenshot": 5
+  },
+  "introSteps": [
+    { "screenshot": 1, "text": "Ontwerp een merkidentiteit. In deze missie word jij de designer voor een startup die een nieuwe visuele identiteit nodig heeft. Je kiest kleuren, lettertypen en bedenkt een logo-concept. Aan het einde heb je een complete merkidentiteit die je kunt presenteren. /goal: Ik ontwerp een merkidentiteit met brandpersoonlijkheid, kleurenpalet, logoconcept en een mini-stijlgids." }
+  ],
+  "introSummary": {
+    "maak": "Een complete merkidentiteit: merkwoorden, kleurenpalet met hexcodes, logo-concept en een mini-huisstijlgids.",
+    "voorWie": "Een zelfgekozen startup, bijvoorbeeld duurzame sneakers, gezond eten voor jongeren of een tech-tool voor leerlingen.",
+    "goed": "Er staan drie merkwoorden, kleuren met hexcodes en rollen, en een logobeschrijving die bij die merkwoorden past."
+  },
+  "veto2": { "readClickMinutes": 0, "totalMinutes": 1, "percentage": 0 },
+  "comparedWith": null,
+  "comparedWithReason": "eigen motor",
+  "gates": {
+    "veto1": "NIET VASTGESTELD",
+    "veto2": "NIET VASTGESTELD",
+    "veto3": "NIET VASTGESTELD",
+    "veto4": "NIET VASTGESTELD",
+    "poort1": "n.v.t.",
+    "poort2": "n.v.t.",
+    "poort3": "n.v.t."
+  },
+  "viewports": [
+    {
+      "name": "desktop",
+      "cssViewport": "1440x900",
+      "checkpoints": { "start": true, "end": true },
+      "evidence": [
+        { "screenshot": 1, "path": "01-desktop-start.png", "sha256": "e3ddf1a1837d5c37fc4088fdffb43128933231b8d53e4612f19d6fea3bf5c529", "width": 1440, "height": 900 },
+        { "screenshot": 2, "path": "06-desktop-actiemeting.png", "sha256": "1bbec4c3d1aae6d328ae1543d6e52755951c23e427fb56dd43975de708bbd1c6", "width": 1440, "height": 900 },
+        { "screenshot": 3, "path": "02-desktop-stap4-compleet.png", "sha256": "46ab0ec340bba7e779bacac59881bc646e013f7c515ef40838c61fb81d1b8632", "width": 1440, "height": 900 },
+        { "screenshot": 4, "path": "03-desktop-eind.png", "sha256": "8b8a1bf3272323b188c0a0d3d78959acad1853e6185cf042683ea15fc1665c54", "width": 1440, "height": 900 },
+        { "screenshot": 5, "path": "07-desktop-reduced-motion.png", "sha256": "a88ef1b25fd9709f289e2f0cbdf6ea37d09af95bd038d94e6bcc57f44e896e67", "width": 1440, "height": 900 }
+      ]
+    },
+    {
+      "name": "mobile",
+      "cssViewport": "375x844",
+      "checkpoints": { "start": true, "end": true },
+      "evidence": [
+        { "screenshot": 6, "path": "04-mobile-start.png", "sha256": "d47ad464a34e2392039e0386ffeff75745c0427a48fab74d091eebc8d5320f28", "width": 375, "height": 844 },
+        { "screenshot": 7, "path": "05-mobile-eind.png", "sha256": "76ed726b7efad356ff87e8f299ce51b25d848d6bed3096dd2b942e57ba11934e", "width": 375, "height": 844 }
+      ]
+    }
+  ]
+}

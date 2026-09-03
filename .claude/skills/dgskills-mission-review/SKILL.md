@@ -5,6 +5,8 @@ description: Use this skill when reviewing, auditing, or checking an existing DG
 
 # DGSkills Mission Review — Orchestrator
 
+> Voor het eindoordeel over één opdracht: gebruik `opdracht-review` (speelt eerst, dan veto's en poorten); deze skill is alleen deelcontrole.
+
 Je bent de orchestrator voor de M2 review-pipeline. Je dispatcht drie parallelle reviewer-agents (design, didactiek, techniek) en bundelt hun output tot één markdown-rapport. De Codex-gate (M1) reviewt het uiteindelijke bundelresultaat.
 
 ## DGSkills Mission Factory v1

@@ -64,7 +64,7 @@ export const YEAR1_ROLES: AgentRole[] = [
         color: '#202023',
         description: 'Leer hoe je AI precies laat doen wat jij wilt door betere prompts te schrijven.',
         problemScenario: 'AI kan van alles — verhalen schrijven, uitleggen, bedenken. Maar alleen als jij de juiste opdracht geeft. Een vage vraag geeft een vaag antwoord. Jij leert hoe je AI als een pro aanstuurt.',
-        missionObjective: 'Schrijf 3 steeds betere prompts en scoor op alle criteria een groene vink.',
+        missionObjective: 'Doorloop 6 uitdagingen op 3 niveaus en haal minstens 60% van de score.',
         briefingImage: '/assets/agents/prompt_master.webp',
         difficulty: 'Easy',
         examplePrompt: 'Schrijf een prompt over je favoriete hobby.',
@@ -333,8 +333,8 @@ Gelukt? Vertel me wat je ziet na het inloggen!"` + SYSTEM_INSTRUCTION_SUFFIX,
             },
             {
                 title: "Cijfers",
-                description: "Tik op het Cijfers-tabblad en zoek je laatste cijfer.",
-                example: "Zeg: 'Mijn laatste cijfer is een [CIJFER] voor [VAK].'"
+                description: "Tik op het Cijfers-tabblad en bekijk hoe je laatste cijfer wordt weergegeven. Je hoeft het cijfer zelf niet te delen.",
+                example: "Zeg: 'Ik zie mijn laatste cijfer staan bij [VAK], met een gekleurd icoontje ervoor.'"
             }
         ]
     },
@@ -372,7 +372,7 @@ BELANGRIJK: De leerling werkt in de ECHTE OneDrive app. Jij coacht ze stap-voor-
 
 WERKWIJZE:
 1. Geef 1 instructie voor de OneDrive app op de iPad (bijv. "Tik op de + rechtsboven").
-2. Stel een verificatievraag (bijv. "Welke opties zie je nu in het menu?", "Wat is de volledige naam van het bestand dat je zojuist hebt opgeslagen?").
+2. Stel een verificatievraag (bijv. "Welke opties zie je nu in het menu?", "In welke map staat het bestand dat je zojuist hebt opgeslagen?"). Vraag nooit om volledige bestandsnamen of andere gegevens met de naam van de leerling erin — mapnamen en wat er op het scherm te zien is, zijn genoeg bewijs.
 3. Pas bij een correct antwoord bevestig je de stap met de ---STEP_COMPLETE:X--- marker.
 
 Zeg dus NOOIT 'Zeg KLAAR'. Vraag altijd om inhoudelijk bewijs.
@@ -398,8 +398,8 @@ Vertel me: welke mappen zie je nu in je OneDrive?"` + SYSTEM_INSTRUCTION_SUFFIX,
             },
             {
                 title: "Bestand opslaan",
-                description: "Sla een testbestand op in de map Opdrachten met de juiste naam.",
-                example: "Zeg: 'Mijn bestand heet klas_voornaam_testbestand.docx'."
+                description: "Sla een testbestand op in de map Opdrachten met de juiste naam. Je hoeft de naam niet in de chat te typen.",
+                example: "Zeg: 'Mijn testbestand staat in de map Opdrachten en begint met mijn klasnaam.'"
             },
             {
                 title: "Delen",
@@ -452,7 +452,7 @@ WERKWIJZE:
 Zeg dus NOOIT 'Zeg KLAAR'. Vraag altijd om inhoudelijk bewijs.
 
 EERSTE BERICHT:
-"Hoi! ✍️ Ik ben je Word Coach.
+"Hoi! ✍️ Ik ben je Word Coach — een AI-hulpje, dus check belangrijke dingen altijd even zelf.
 
 Je maakt een verzorgd Word-document met kopstijlen en een veilige afbeelding. Daarna bereid je de inhoudsopgave voor.
 
@@ -703,6 +703,7 @@ Gelukt? Vertel me welk thema je ziet staan!"` + SYSTEM_INSTRUCTION_SUFFIX,
     Veel schoolprinters vereisen inloggen met een schoolaccount. Leg uit:
     - Waarom inloggen nodig is (zodat de school weet welke printopdrachten van jou zijn).
     - Help met de inlogmethode die past bij hun systeem (schoolmail, pasje, pincode, etc.).
+    - BELANGRIJK: vraag de leerling NOOIT om een wachtwoord, pincode of pasnummer in dit chatgesprek te typen — dat is nergens voor nodig. Typt de leerling er toch een, zeg dan dat dit niet in de chat hoort en ga verder zonder het te herhalen. Inloggegevens horen alleen op het inlogscherm van de printer of het apparaat zelf.
 
     3. PRINTEN 📄
     Leer de kernvaardigheden:
@@ -738,12 +739,12 @@ Gelukt? Vertel me welk thema je ziet staan!"` + SYSTEM_INSTRUCTION_SUFFIX,
         id: 'ipad-print-instructies',
         yearGroup: 1,
         educationLevels: ['mavo', 'havo', 'vwo'] as EducationLevel[],
-        title: 'iPad Print Instructies',
+        title: 'Print Troubleshooter',
         icon: <Database size={28} />,
         color: '#202023',
-        description: 'Leer printen vanaf je iPad.',
-        problemScenario: 'Je hebt een werkstuk af en wilt het printen.',
-        missionObjective: 'Volg de instructies in de Boeken-app.',
+        description: 'Los vijf printproblemen op als echte troubleshooter.',
+        problemScenario: 'Er gaat van alles mis bij het printen: geen verbinding, zwart-wit, afgesneden tekst.',
+        missionObjective: 'Kies bij elk printprobleem de juiste oplossing.',
         briefingImage: '/assets/agents/print_pro.webp',
         difficulty: 'Easy',
         examplePrompt: 'Hoe print ik?',
@@ -758,19 +759,20 @@ Gelukt? Vertel me welk thema je ziet staan!"` + SYSTEM_INSTRUCTION_SUFFIX,
                 </div>
             </div>
         ),
-        systemInstruction: `Je bent een vriendelijke assistent.
+        systemInstruction: `Je bent een vriendelijke Print Troubleshooter-coach.
 
-JOUW ENIGE ANTWOORD (altijd hetzelfde):
-"📱 Open de 'Boeken' app op je iPad, ga naar Bibliotheek en klik op het bestand 'Printen vanaf iPad naar de nieuwe Printers'.
+DE OPDRACHT VAN DE LEERLING:
+De leerling doorloopt in de app een quiz met vijf veelvoorkomende printproblemen (zoals geen verbinding, zwart-wit in plaats van kleur, afgesneden tekst) en kiest bij elk probleem de juiste oplossing. De quiz-app registreert zelf de voortgang; jij markeert geen stappen als voltooid.
 
-Volg de stappen in dat bestand om te leren printen! 🖨️"
-
-Geef ALTIJD dit antwoord, ongeacht wat de leerling vraagt. Herhaal dit als ze meer vragen stellen.` + SYSTEM_INSTRUCTION_SUFFIX,
+JOUW ROL (als de leerling je iets vraagt):
+- Help de leerling nadenken over wat er mis kan zijn bij een printprobleem: eerst kijken (zit er papier in? staat de printer aan? juiste printer gekozen?), dan pas iets veranderen.
+- Geef hints in de vorm van een vraag, geef nooit direct het quizantwoord weg.
+- Verwijs voor de schoolspecifieke printinstructies naar de uitleg van de docent.` + SYSTEM_INSTRUCTION_SUFFIX,
         steps: [
             {
-                title: "Instructie",
-                description: "Open de 'Boeken' app op je iPad, ga naar Bibliotheek en klik op 'Printen vanaf iPad naar de nieuwe Printers'.",
-                example: "Volg de stappen in dat bestand!"
+                title: "Printproblemen oplossen",
+                description: "Bekijk elk van de vijf printproblemen en kies de oplossing die het probleem echt verhelpt.",
+                example: "Denk eerst na: wat controleer je als eerste voordat je iets verandert?"
             }
         ]
     },
@@ -1737,10 +1739,16 @@ JOUW ROL:
 - Benoem bij elke stap zowel een KANS als een GEVAAR.
 - Help de leerling bewust kiezen, zonder bangmakerij.
 
+PRIVACY EN KADER (belangrijk):
+- Het profiel dat je toont is een DEMONSTRATIE van hoe bedrijven profileren — het is geen beoordeling van de leerling. Zeg dat er ook bij.
+- De leerling hoeft geen echte persoonlijke gegevens te delen: een verzonnen testpersoon of een globale beschrijving ("veel gamen en sportvideo's") is genoeg. Vraag nooit door naar echte zoekopdrachten, aankopen, accounts of namen.
+- Bewaar of herhaal geen persoonlijke details die de leerling toch deelt; stuur terug naar algemene of verzonnen voorbeelden.
+- Benoem bij het profiel ook dit leerpunt: als een app of school dit soort profielen automatisch over jou zou opstellen, gelden daar strenge regels voor — een profiel over een persoon is nooit neutraal.
+
 WERKWIJZE:
 
 STAP 1 — DATASPOREN & iPad-CHECK
-1a. Stel 4 korte vragen over online gedrag (kijktijd, likes, zoekopdrachten, aankopen).
+1a. Stel 4 korte vragen over online gedrag (kijktijd, likes, zoekopdrachten, aankopen). Zeg erbij dat een verzonnen voorbeeld of een testpersoon ook prima is.
 1b. Na elk antwoord toon je een groeiprofiel met [PROFILE] tags.
 1c. Leid de leerling daarna naar hun iPad-instellingen:
     - "Open Instellingen > Privacy & beveiliging > Locatievoorzieningen. Hoeveel apps staan op 'Altijd'?"
@@ -1784,6 +1792,8 @@ Badge:
 >80: "Privacy Guardian" 🛡️
 >60: "Bewuste Gebruiker" 👀
 <60: "Tijd voor een opschoonactie!" 🧹
+
+Zeg er altijd bij: de score gaat over de INSTELLINGEN van het apparaat, niet over de leerling zelf — het is een hulpmiddel om op te ruimen, geen rapportcijfer.
 
 STAP 3 — SLIMME KEUZES
 Combineer inzichten uit het profiel EN de iPad-check tot 3 concrete privacykeuzes.
@@ -1931,12 +1941,12 @@ Scenario 1: Er verschijnt een nepaccount van een klasgenoot met gemene posts. Wa
         title: 'De Scroll Stopper',
         icon: <Smartphone size={28} />,
         color: '#202023',
-        description: 'Word ingehuurd als app-ontwerper. Maak een app verslavend — en ontdek waarom dat een probleem is.',
-        problemScenario: 'Een tech-bedrijf huurt jou in als UX-designer. Je opdracht: maak hun app zo verslavend mogelijk. Maar halverwege ontdek je wie de "testgebruiker" eigenlijk is...',
-        missionObjective: 'Ontwerp 5 dark patterns voor een app, ontdek de gevolgen, en herontwerp de app zodat deze eerlijk wordt.',
+        description: 'Debatteer over verslavend app-design: slimme trucjes of oneerlijke manipulatie?',
+        problemScenario: 'Social media apps zijn bewust ontworpen om je zo lang mogelijk vast te houden: infinite scroll, autoplay, streaks. Een tiener, een app-ontwerper, een psycholoog en een politicus botsen hierover. Waar sta jij?',
+        missionObjective: 'Lees de vier standpunten, kies jouw positie in het debat en onderbouw die met sterke argumenten.',
         briefingImage: '/assets/agents/social_safeguard.webp',
         difficulty: 'Medium',
-        examplePrompt: 'Ik zou autoplay toevoegen zodat de volgende video automatisch start.',
+        examplePrompt: 'Ik vind dat apps strenger gereguleerd moeten worden, omdat tieners extra kwetsbaar zijn.',
         visualPreview: (
             <div className="w-full h-full bg-gradient-to-br from-lab-teal to-lab-coral flex items-center justify-center p-4 relative overflow-hidden">
                 <div className="absolute inset-0 opacity-10">
@@ -1950,7 +1960,7 @@ Scenario 1: Er verschijnt een nepaccount van een klasgenoot met gemene posts. Wa
                 </div>
                 <div className="relative w-36 bg-white/10 backdrop-blur rounded-2xl border border-white/20 p-3 space-y-2">
                     <div className="flex items-center justify-between">
-                        <div className="text-[9px] text-white/80 font-bold">📐 Dark Pattern Lab</div>
+                        <div className="text-[9px] text-white/80 font-bold">📱 Debat: verslavend design</div>
                         <div className="bg-lab-coral text-white text-[7px] px-1.5 py-0.5 rounded-full font-bold">LIVE</div>
                     </div>
                     <div className="space-y-1.5">
@@ -1971,7 +1981,7 @@ Scenario 1: Er verschijnt een nepaccount van een klasgenoot met gemene posts. Wa
                         </div>
                     </div>
                     <div className="bg-lab-coral/30 rounded-lg p-1.5 text-center">
-                        <div className="text-[8px] text-white font-bold">Testgebruiker: ???</div>
+                        <div className="text-[8px] text-white font-bold">Jouw positie: ???</div>
                     </div>
                 </div>
             </div>
@@ -1984,31 +1994,34 @@ PRIVACY EN WELZIJN:
 - Wees niet moraliserend over telefoongebruik; focus op ontwerpkeuzes, aandachtstechnieken en eigen regie.
 - Bij signalen van ernstig onwelzijn verwijs je naar mentor, vertrouwenspersoon of passende hulp volgens het welzijnsprotocol.
 
+DE OPDRACHT VAN DE LEERLING:
+De leerling speelt een debat-missie in de app: eerst de standpunten van vier betrokkenen lezen (Luna, een tiener van 14; Mark, een app-ontwerper; Dr. Bakker, een psycholoog; Kamerlid De Vries, een politicus), dan een eigen positie kiezen (totaal verbieden, strenger reguleren, zelfregulatie of vrijheid van ontwerp), argumenten opbouwen, op een tegenargument reageren en reflecteren. De app registreert zelf de voortgang; jij markeert geen stappen als voltooid.
+
 WERKWIJZE:
-1. Help de leerling een aandachtstechniek herkennen, zoals infinite scroll, autoplay, meldingen, streaks of variable rewards.
-2. Leg kort uit waarom die techniek werkt.
-3. Laat de leerling een kleine, haalbare stop-strategie kiezen.
-4. Vraag om een reflectie: welke keuze ligt bij de app en welke keuze ligt bij jou?
+1. Help de leerling de vier standpunten echt te begrijpen: wat is het sterkste punt van elke betrokkene, ook van degene met wie de leerling het oneens is?
+2. Help bij het kiezen en onderbouwen van een positie: een goed argument heeft een bewering én een reden.
+3. Daag zachtjes uit met een tegenargument uit een van de andere perspectieven.
+4. Vraag om een reflectie: is je mening veranderd door het debat, en waardoor?
 
 REGELS:
 - Geef geen kant-en-klaar eindantwoord; coach met korte hints en voorbeeldzinnen.
 - Stel maximaal één vervolgvraag tegelijk.
-- Bevestig alleen een stap als de leerling zichtbaar een techniek, strategie of reflectie heeft genoemd.` + SYSTEM_INSTRUCTION_SUFFIX,
+- Kies zelf geen positie voor de leerling; elk van de vier posities is verdedigbaar.` + SYSTEM_INSTRUCTION_SUFFIX,
         steps: [
             {
-                title: "Dark Pattern Lab",
-                description: "Ontwerp 5 keer een feature voor de app. Kies je voor manipulatie of eerlijkheid?",
-                example: "Kies een optie, bijv: 'A — infinite scroll, want dan blijven ze scrollen.'"
+                title: "Standpunten lezen",
+                description: "Lees de perspectieven van de tiener, de app-ontwerper, de psycholoog en de politicus.",
+                example: "Vraag bijv.: 'Wat is het sterkste argument van de app-ontwerper?'"
             },
             {
-                title: "De Testgebruiker",
-                description: "Ontdek wie jouw app eigenlijk gebruikt — en wat jouw ontwerp met diegene doet.",
-                example: "Typ hoe je je voelt over het resultaat van jouw ontwerpkeuzes."
+                title: "Positie kiezen en onderbouwen",
+                description: "Kies jouw positie in het debat en bouw 2-3 argumenten op.",
+                example: "Typ: 'Ik kies voor strenger reguleren, omdat tieners extra kwetsbaar zijn voor variabele beloningen.'"
             },
             {
-                title: "Het Herontwerp",
-                description: "Bedenk eerlijke alternatieven die leuk zijn maar niet verslavend.",
-                example: "Typ: 'In plaats van infinite scroll zou ik een pauze-moment na 20 minuten inbouwen.'"
+                title: "Tegenargument en reflectie",
+                description: "Reageer op een tegenargument en reflecteer op je eigen standpunt.",
+                example: "Typ: 'Het klopt dat niemand je dwingt, maar als stoppen niet lukt is dat geen vrije keuze meer.'"
             }
         ]
     },
@@ -2151,13 +2164,13 @@ Vertel me eerst: **welke apps gebruik jij het meest?**"
         description: 'Onderzoek een echte dataset en ontdek wat data wel en niet vertelt over de werkelijkheid.',
         problemScenario: 'De gemeente vraagt jouw klas om advies: ze willen weten hoe jongeren naar school reizen. Ze hebben data, maar is die data wel betrouwbaar? En wat kun je er eigenlijk mee?',
         missionObjective: 'Analyseer een dataset over schoolreizen, ontdek de beperkingen, en geef een onderbouwd advies aan de gemeente.',
-        briefingImage: '/assets/agents/social_safeguard.webp',
+        briefingImage: '/assets/previews/project_data_verzamelaar.webp',
         difficulty: 'Medium',
         examplePrompt: 'Ik wil de dataset bekijken over hoe leerlingen naar school reizen.',
         primaryGoal: '🎯 Ik analyseer een dataset, vind de beperkingen en geef een onderbouwd advies',
         goalCriteria: { type: 'steps-complete', min: 3 },
         visualPreview: (
-            <div className="w-full h-full bg-gradient-to-br from-lab-coral to-lab-teal flex items-center justify-center p-4 relative overflow-hidden">
+            <div className="w-full h-full bg-gradient-to-br from-duck-acid to-duck-ink flex items-center justify-center p-4 relative overflow-hidden">
                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(255,255,255,0.08),transparent)]" />
                 <div className="relative z-10 flex flex-col items-center gap-2">
                     <div className="w-20 h-20 rounded-full bg-white/20 backdrop-blur-md border-2 border-white/40 flex items-center justify-center">
@@ -2165,7 +2178,7 @@ Vertel me eerst: **welke apps gebruik jij het meest?**"
                     </div>
                     <div className="flex gap-1 flex-wrap justify-center">
                         <span className="bg-white/20 px-2 py-0.5 rounded-full text-[8px] text-white">Fiets: 47%</span>
-                        <span className="bg-white/20 px-2 py-0.5 rounded-full text-[8px] text-white">Bus: 28%</span>
+                        <span className="bg-white/20 px-2 py-0.5 rounded-full text-[8px] text-white">Bus: 18%</span>
                         <span className="bg-white/20 px-2 py-0.5 rounded-full text-[8px] text-white">Lopen: 15%</span>
                     </div>
                     <div className="bg-white/20 backdrop-blur px-3 py-1 rounded-full border border-white/30">
@@ -3181,10 +3194,11 @@ Help de leerling een titel/kop bedenken die direct de aandacht grijpt:
 - Geef voorbeelden van sterke koppen:
   * "Nooit meer huiswerkstress!" (probleem + oplossing)
   * "De app die je docent niet kent" (nieuwsgierigheid)
-  * "3x sneller leren met AI" (concreet voordeel + getal)
+  * "Minder zoekwerk, meer overzicht" (concreet voordeel)
 - Slechte koppen om van te leren:
   * "Mijn informatica-project" (saai, zegt niks)
   * "Een app voor school" (te vaag)
+  * "3x sneller leren met AI" (klinkt sterk, maar het is een loze claim: je kunt het niet bewijzen — beloof alleen wat je waar kunt maken)
 - Laat de leerling 3 opties bedenken en dan de beste kiezen.
 
 STAP 2: DE KEY INFO
@@ -3201,7 +3215,8 @@ Leer de leerling wat een Call to Action (CTA) is:
 - Voorbeelden:
   * "Kom vrijdag naar de aula!" (duidelijk, concreet)
   * "Scan de QR-code en probeer het zelf!" (interactief)
-  * "Volg ons op Instagram: @mijnproject" (laagdrempelig)
+  * "Meld je aan bij de infobalie in de aula!" (laagdrempelig)
+- Houd CTA's binnen school (aula, QR-code, docent, klasbord) — stuur leerlingen niet naar een eigen openbaar social-media-account.
 - Slechte CTA's: "Meer info volgt later" (vaag), "Misschien leuk om te komen" (twijfelachtig)
 - De CTA moet het GROOTSTE en DUIDELIJKSTE element op de flyer zijn.
 
@@ -3352,12 +3367,12 @@ Welk onderwerp kies jij?"` + SYSTEM_INSTRUCTION_SUFFIX,
         color: '#e1ff01',
         description: 'Teken en laat de AI raden wat het is!',
         problemScenario: 'Hoe leert een computer om plaatjes te herkennen? Door HEEL VEEL voorbeelden te zien! Test hoe goed de AI jouw tekeningen herkent.',
-        missionObjective: 'Teken 10 korte objecten en ontdek welke patronen de AI herkent.',
+        missionObjective: 'Teken 10 rondes lang een object binnen 45 seconden en ontdek welke patronen de AI herkent.',
         briefingImage: '/assets/agents/ai_tekengame.webp',
         difficulty: 'Easy',
         examplePrompt: 'Hoe herkent AI patronen in tekeningen?',
         visualPreview: (
-            <div className="w-full h-full bg-gradient-to-br from-lab-gold via-lab-coral to-lab-coral flex flex-col items-center justify-center p-4 relative overflow-hidden">
+            <div className="w-full h-full bg-gradient-to-br from-lab-gold to-lab-coral flex flex-col items-center justify-center p-4 relative overflow-hidden">
                 <div className="absolute inset-0 opacity-10">
                     {['✏️', '🎨', '🖌️'].map((e, i) => (
                         <div key={i} className="absolute text-3xl" style={{
@@ -3371,7 +3386,7 @@ Welk onderwerp kies jij?"` + SYSTEM_INSTRUCTION_SUFFIX,
                         <span className="text-4xl">🐱</span>
                     </div>
                 </div>
-                <div className="mt-4 bg-duck-ink/20 backdrop-blur px-4 py-2 rounded-full text-white text-xs font-bold flex items-center gap-2">
+                <div className="mt-4 bg-lab-ink/20 backdrop-blur px-4 py-2 rounded-full text-white text-xs font-bold flex items-center gap-2">
                     <span className="animate-pulse">🤖</span> AI: "Is dit een kat?"
                 </div>
             </div>

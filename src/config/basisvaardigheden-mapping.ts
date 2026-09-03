@@ -109,7 +109,7 @@ export const MISSIE_BASISVAARDIGHEDEN: MissieBasisvaardigheden[] = [
   {
     missionId: 'ipad-print-instructies',
     basisvaardigheden: [
-      BEGRIJPEND_LEZEN('Leerling leest en volgt instructies voor printen vanaf een iPad.'),
+      BEGRIJPEND_LEZEN('Leerling leest printscenario’s, herkent het probleem en kiest de juiste oplossing.'),
     ],
   },
   {
@@ -538,7 +538,7 @@ export const MISSIE_BASISVAARDIGHEDEN: MissieBasisvaardigheden[] = [
     missionId: 'sustainability-scanner',
     basisvaardigheden: [
       STATISTIEK('Leerling analyseert trenddata over digitaal gebruik: gaming, streaming, sociale media en berichten.'),
-      ETHIEK('Leerling trekt observaties uit statistieken en beoordeelt de betrouwbaarheid van trenddata.'),
+      ETHIEK('Leerling trekt observaties uit statistieken en denkt na over eigen mediagebruik, schermtijd en aanbevelingsalgoritmen.'),
     ],
   },
   {

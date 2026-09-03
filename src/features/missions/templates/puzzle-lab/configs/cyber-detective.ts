@@ -39,7 +39,7 @@ const config: PuzzleLabConfig = {
             ],
             answer: 'Brute force — het wachtwoord werd geraden door veel te proberen',
             caseSensitive: false,
-            maxAttempts: 3,
+            maxAttempts: 2,
             points: 25,
             successMessage:
                 'Correct! Dit is een brute-force aanval. Hetzelfde IP-adres probeerde het wachtwoord van admin automatisch in hoog tempo — tot het raak was. Dit soort aanval is te herkennen aan veel mislukte inlogpogingen in korte tijd, vanaf hetzelfde IP.',
@@ -69,7 +69,7 @@ const config: PuzzleLabConfig = {
             ],
             answer: 'Een forensische kopie maken van de server en de hash-waarde vastleggen',
             caseSensitive: false,
-            maxAttempts: 3,
+            maxAttempts: 2,
             points: 25,
             successMessage:
                 'Juist! Een forensische kopie bewaard de data ongewijzigd, en de hash-waarde bewijst later dat er niets is aangepast. Zo is het bewijs geldig voor de rechtbank. Direct werken op het origineel of bestanden verwijderen vernietigt bewijs.',
@@ -99,7 +99,7 @@ const config: PuzzleLabConfig = {
             ],
             answer: 'Phishing — de aanvaller doet zich voor als een betrouwbare partij',
             caseSensitive: false,
-            maxAttempts: 3,
+            maxAttempts: 2,
             points: 25,
             successMessage:
                 'Goed gezien! Dit is phishing. Kenmerken: een nep-domeinnaam (bedrijff.nl), urgentietaal en een verdachte link. Phishing is verantwoordelijk voor meer dan 80% van alle succesvolle cyberaanvallen — het aanvallen van mensen is makkelijker dan het aanvallen van systemen.',

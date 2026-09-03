@@ -71,7 +71,8 @@ const MISSION_GOAL: MissionGoal = {
 // Data — De school-login-omgeving
 // ---------------------------------------------------------------------------
 
-const SCHOOL_NAAM = 'Het Rijnlands Lyceum';
+// Bewust een verzonnen schoolnaam — geen bestaande school neerzetten als slecht beveiligd.
+const SCHOOL_NAAM = 'Het Bitburcht College';
 
 const GEBRUIKERS: User[] = [
     { id: 'u1', naam: 'Emma de Vries', rol: 'leerling', klas: '2B' },
@@ -250,8 +251,8 @@ function getCoachHint(context: string): string {
 
 const ROLLEN_KLEUREN: Record<string, string> = {
     leerling: 'bg-duck-ink text-white',
-    docent: 'bg-duck-ink text-white',
-    admin: 'bg-duck-ink text-white',
+    docent: 'bg-duck-acid text-duck-ink',
+    admin: 'bg-duck-error text-white',
     gast: 'bg-duck-bg text-duck-ink/60',
 };
 

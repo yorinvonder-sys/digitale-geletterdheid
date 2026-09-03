@@ -52,7 +52,7 @@ export const QuestionCard: React.FC<{
                                 key={opt}
                                 data-qa="simulation-answer"
                                 data-option-index={question.options?.indexOf(opt)}
-                                disabled={submitted}
+                                disabled={submitted || locked}
                                 aria-pressed={isSelected}
                                 onClick={() => onAnswer(opt)}
                                 className={`min-h-[44px] w-full text-left px-3 py-2 rounded-lg text-xs transition-all duration-200 border flex items-center gap-2 ${
@@ -92,29 +92,31 @@ export const QuestionCard: React.FC<{
 
             {/* Submit button */}
             {!submitted && answer !== undefined && (
-                <>
-                    <button
-                        data-qa="simulation-submit"
-                        onClick={onSubmit}
-                        disabled={submitDisabled}
-                        className={`min-h-[44px] w-full py-2 rounded-lg text-xs font-bold transition-all duration-200 active:scale-[0.98] ${
-                            submitDisabled
-                                ? 'bg-duck-gray text-duck-ink/75 cursor-not-allowed'
-                                : 'bg-gradient-to-r from-duck-acid to-duck-acid text-duck-ink'
-                        }`}
-                        style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
-                    >
-                        Controleer antwoord
-                    </button>
-                    {locked && (
-                        <p
-                            className="text-xs text-duck-ink/75 text-center mt-2"
-                            style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
-                        >
-                            Speel eerst met de simulatie voordat je de vragen beantwoordt
-                        </p>
-                    )}
-                </>
+                <button
+                    data-qa="simulation-submit"
+                    onClick={onSubmit}
+                    disabled={submitDisabled}
+                    className={`min-h-[44px] w-full py-2 rounded-lg text-xs font-bold transition-all duration-200 active:scale-[0.98] ${
+                        submitDisabled
+                            ? 'bg-duck-gray text-duck-ink/75 cursor-not-allowed'
+                            : 'bg-gradient-to-r from-duck-acid to-duck-acid text-duck-ink'
+                    }`}
+                    style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
+                >
+                    Controleer antwoord
+                </button>
+            )}
+
+            {/* De volgorde is de didactiek: eerst experimenteren, dan voorspellen. De
+                uitleg staat los van de submitknop, want zolang de vraag vergrendeld is
+                kan de leerling nog geen antwoord kiezen. */}
+            {locked && !submitted && (
+                <p
+                    className="text-xs text-duck-ink/75 text-center mt-2"
+                    style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
+                >
+                    Speel eerst met de simulatie voordat je de vragen beantwoordt
+                </p>
             )}
 
             {/* Feedback */}

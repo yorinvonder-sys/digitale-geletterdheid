@@ -14,6 +14,7 @@ const config: PuzzleLabConfig = {
         'Stel een onderzoeksrapport op met de gevonden overtredingen',
     ],
     maxScore: 100,
+    showWellbeingSupport: true,
     puzzles: [
         {
             id: 'bewijsstuk-a',
@@ -39,7 +40,7 @@ const config: PuzzleLabConfig = {
             ],
             answer: 'De data wordt gebruikt voor een ander doel dan waarvoor het verzameld is (schending van doelbinding)',
             caseSensitive: false,
-            maxAttempts: 3,
+            maxAttempts: 2,
             points: 25,
             successMessage:
                 'Juist! Dit is schending van het doelbindingsbeginsel — de AVG-regel dat je gegevens alleen mag gebruiken voor het doel waarvoor je ze kreeg. Gebruikers gaven toestemming voor de sportapp, niet voor doorverkoop aan verzekeraars. Bovendien zijn hartslag en slaapdata "bijzondere persoonsgegevens" waarvoor expliciete toestemming vereist is.',
@@ -69,7 +70,7 @@ const config: PuzzleLabConfig = {
             ],
             answer: 'Een minderjarige wordt geprofileerd voor marketingdoeleinden zonder toestemming van ouders',
             caseSensitive: false,
-            maxAttempts: 3,
+            maxAttempts: 2,
             points: 25,
             successMessage:
                 'Correct! Kinderen (onder 16 jaar in Nederland) hebben extra AVG-bescherming. Profileren van kinderen voor marketing is verboden zonder ouderlijke toestemming. Het psychologisch profiel ("beïnvloedbaar") en de zoekgeschiedenissen zijn bovendien bijzonder gevoelige data.',
@@ -99,7 +100,7 @@ const config: PuzzleLabConfig = {
             ],
             answer: 'Liam kan het bedrijf vragen zijn data in te zien en te verwijderen',
             caseSensitive: false,
-            maxAttempts: 3,
+            maxAttempts: 2,
             points: 25,
             successMessage:
                 'Juist! De AVG geeft Liam het recht op inzage (welke data heeft het bedrijf?) en het recht op verwijdering. Het bedrijf moet binnen 30 dagen reageren. Als ze niet meewerken, kan Liam een klacht indienen bij de Autoriteit Persoonsgegevens.',

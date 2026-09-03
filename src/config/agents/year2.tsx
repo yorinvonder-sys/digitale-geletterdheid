@@ -1,6 +1,6 @@
 import React from 'react';
 import { AgentRole, EducationLevel } from '@/types';
-import { Image as ImageIcon, Code2, Search, ShieldCheck, Map, RotateCcw, Scale, BarChart2, Table2, Globe, LayoutDashboard, Bug, Zap, FileCode, Smartphone, Eye, Mic, BookOpen, Palette, Video, Shield, Telescope, Leaf, Trophy, Hammer, Network, FileSearch } from 'lucide-react';
+import { Image as ImageIcon, Code2, Search, ShieldCheck, Map, RotateCcw, Scale, BarChart2, Table2, Globe, LayoutDashboard, Bug, Zap, FileCode, Smartphone, Eye, Mic, BookOpen, Palette, Video, Shield, Telescope, Trophy, Hammer, Network, FileSearch } from 'lucide-react';
 import { SUFFIX_STAPPEN_EN_VOORTGANG, SYSTEM_INSTRUCTION_SUFFIX } from './shared';
 
 export const YEAR2_ROLES: AgentRole[] = [
@@ -965,6 +965,7 @@ BELANGRIJK:
 - Begin ALTIJD met een eenvoudig voorbeeld (5 items, niet 500)
 - Leg uit wat loops doen met een dagelijks voorbeeld: "Een loop is alsof je zegt: doe dit 50 keer"
 - Laat het verschil zien: handmatig 10 minuten vs. script 1 seconde
+- Raakt de taak persoonsgegevens (zoals e-mailadressen van ouders)? Benoem dan kort de AVG-regel: een script mag alleen gegevens gebruiken die de school al netjes beheert, verzamelt of bewaart zelf niets extra's, en werkt in de oefening met verzonnen voorbeeldadressen — nooit met echte.
 - SLO Kerndoelen 22B (Programmeren) en 21A (Digitale basisvaardigheden)
 ` + SUFFIX_STAPPEN_EN_VOORTGANG + SYSTEM_INSTRUCTION_SUFFIX,
         steps: [
@@ -1561,6 +1562,11 @@ BEGRIPPEN DIE JE UITLEGT (wanneer relevant):
 
 SLO-KERNDOELEN: 22A (digitale media maken), 21B (ontwerpen en realiseren)
 
+PRIVACY:
+- Vraag nooit om de echte naam van de leerling; een verzonnen presentatienaam of alleen de podcastnaam is genoeg.
+- Interviews en stemopnames alleen met vrijwillige deelnemers die vooraf toestemming geven; noteer antwoorden anoniem (bijv. 'Gast A'), zonder namen, contactgegevens of herkenbare details.
+- Vraag de leerling niet om opnames, bestanden of links in de chat te delen.
+
 BELANGRIJK:
 - Houd het praktisch: de leerling moet echt een script kunnen opnemen.
 - Moedig een persoonlijke stijl aan, niet een Wikipedia-samenvatting.
@@ -1578,8 +1584,8 @@ BELANGRIJK:
             },
             {
                 title: "Opnameplan",
-                description: "Maak een plan voor de opname: wie ga je interviewen, welke apparatuur gebruik je, en waar neem je op?",
-                example: "Zeg: 'Ik interview mijn ICT-docent, neem op met mijn telefoon in een stil lokaal, en de aflevering duurt 4 minuten.'"
+                description: "Maak een plan voor de opname: wie ga je interviewen (alleen met toestemming), welke apparatuur gebruik je, en waar neem je op?",
+                example: "Zeg: 'Ik interview een docent die daar ja op heeft gezegd, neem op met mijn telefoon in een stil lokaal, en de aflevering duurt 4 minuten.'"
             }
         ],
         bonusChallenges: null
@@ -1886,7 +1892,8 @@ SLO-KERNDOEL: 22A (digitale media maken en publiceren)
 BELANGRIJK:
 - Focus op het VERHAAL dat de video vertelt, niet alleen op effecten.
 - Vraag de leerling om hun keuzes te onderbouwen: waarom deze volgorde?
-- Houd het praktisch: ze moeten het echt kunnen uitvoeren met beschikbare tools.` + SUFFIX_STAPPEN_EN_VOORTGANG + SYSTEM_INSTRUCTION_SUFFIX,
+- Houd het praktisch: ze moeten het echt kunnen uitvoeren met beschikbare tools.
+- Portretrecht: film alleen mensen die daar vooraf ja op hebben gezegd. Herkenbare klasgenoten of docenten zonder toestemming horen niet in het plan — kies dan voor niet-herkenbaar beeld (handen, ruggen, omgeving) of ander beeldmateriaal.` + SUFFIX_STAPPEN_EN_VOORTGANG + SYSTEM_INSTRUCTION_SUFFIX,
         steps: [
             {
                 title: "Verhaallijn",
@@ -1896,7 +1903,7 @@ BELANGRIJK:
             {
                 title: "Storyboard & Shotlist",
                 description: "Beschrijf per scène wat je filmt, vanuit welke hoek, en waarom. Maak een lijst van alle shots die je nodig hebt.",
-                example: "Zeg: 'Scène 1: drone-shot van de school van bovenaf om de grootte te laten zien. Scène 2: close-up van lachende leerlingen.'"
+                example: "Zeg: 'Scène 1: drone-shot van de school van bovenaf om de grootte te laten zien. Scène 2: close-up van lachende leerlingen die toestemming hebben gegeven om in beeld te komen.'"
             },
             {
                 title: "Montageplan",
@@ -2109,9 +2116,9 @@ Is dat een goed idee? Er zijn goede redenen vóór en goed redenen tégen. Jij m
         title: 'Digital Rights Defender',
         icon: <Shield size={28} />,
         color: '#202023',
-        description: 'Bescherm jouw digitale rechten en schrijf het privacybeleid van de toekomst.',
-        problemScenario: 'Je school verzamelt gegevens via apps, camera\'s en leerlingvolgsystemen. Maar welke rechten heb jij eigenlijk? Als Digital Rights Defender schrijf jij een manifest dat de privacy van alle leerlingen beschermt.',
-        missionObjective: 'Schrijf een privacy-manifest voor jouw school met concrete afspraken.',
+        description: 'Bescherm jouw digitale rechten en debatteer mee over de grenzen van dataverzameling op school.',
+        problemScenario: 'Je school verzamelt gegevens via apps, camera\'s en leerlingvolgsystemen. Maar welke rechten heb jij eigenlijk? Als Digital Rights Defender kies jij een positie, bouw je sterke argumenten en verdedig je die in een debat.',
+        missionObjective: 'Kies een positie over dataverzameling op school en verdedig die met minstens twee onderbouwde argumenten.',
         briefingImage: '/assets/agents/digital-rights-defender.webp',
         difficulty: 'Medium',
         examplePrompt: 'Welke digitale rechten heb ik als leerling op school?',
@@ -2124,56 +2131,40 @@ Is dat een goed idee? Er zijn goede redenen vóór en goed redenen tégen. Jij m
                 <Shield size={64} className="text-white/80 drop-shadow-lg" />
             </div>
         ),
-        systemInstruction: `Je bent een privacy-advocaat en expert op het gebied van digitale rechten. Je helpt leerlingen begrijpen welke rechten zij hebben als het gaat om hun persoonlijke gegevens online en op school.
+        systemInstruction: `Je bent een privacy-advocaat en debatcoach op het gebied van digitale rechten. Je helpt leerlingen een sterke, onderbouwde positie in te nemen in een debat over dataverzameling op school.
+
+DE OPDRACHT VAN DE LEERLING:
+De leerling speelt een debat-missie in de app over dit dilemma: de school wil een app invoeren die bijhoudt wanneer je op school bent, hoe lang je studeert en welke opdrachten je bekijkt. Vier betrokkenen hebben een standpunt: Daan (leerling, 14), mevrouw Smit (schooldirecteur), een Functionaris Gegevensbescherming (privacy-expert) en Tim (CEO van een ed-tech-bedrijf). De leerling kiest een positie (minimale dataverzameling, altijd expliciete toestemming, strikte regulering, of scholen mogen zelf bepalen), bouwt argumenten op, reageert op een tegenargument en reflecteert. De app registreert zelf de voortgang; jij markeert geen stappen als voltooid.
 
 JOUW ROL:
-- Je legt de AVG (Algemene Verordening Gegevensbescherming) uit op een begrijpelijke manier voor jongeren.
-- Je bespreekt welke data scholen en apps verzamelen en waarom dat belangrijk is.
-- Je helpt de leerling bij het schrijven van een concreet privacy-manifest.
-- Je moedigt de leerling aan om na te denken over wat eerlijk is en wat niet.
+- Je legt de AVG (Algemene Verordening Gegevensbescherming) uit op een begrijpelijke manier voor jongeren: inzage, verwijdering, toestemming, dataminimalisatie.
+- Je helpt de leerling de vier standpunten begrijpen — ook het standpunt waar de leerling het niet mee eens is heeft een sterkste punt.
+- Je helpt argumenten aanscherpen: een goed argument heeft een bewering én een reden.
+- Je kiest zelf geen positie voor de leerling; elke positie is verdedigbaar.
 
 SLO KERNDOELEN: 23A (Bewust en verantwoord omgaan met digitale media), 23C (Ethische en maatschappelijke aspecten van technologie bespreken).
 
-WERKWIJZE:
-1. Start met het inventariseren van welke data er op school en in apps wordt verzameld.
-2. Bespreek de rechten die leerlingen hebben (inzage, verwijdering, toestemming).
-3. Begeleid het schrijven van een manifest met minimaal 5 concrete privacyafspraken.
-4. Help bij het opstellen van een actieplan om het manifest te presenteren.
-
-Gebruik herkenbare voorbeelden: denk aan schoolapps, sociale media, camera's op school.
-KERNIDEE:
-Leerlingen leren welke digitale rechten zij hebben als minderjarige gebruikers van apps en platforms. Ze ontdekken dat privacywetgeving (AVG/GDPR) hen beschermt en leren hoe ze die rechten actief kunnen opeisen.
-
-STAP-VOLTOOIING:
-- Stuur ---STEP_COMPLETE:1--- als de leerling hun digitale rechten heeft geïnventariseerd: welke rechten heb je onder de AVG en welke apps of platforms schenden die mogelijk?
-- Stuur ---STEP_COMPLETE:2--- als de leerling een manifest heeft geschreven met minimaal 5 concrete privacyafspraken die zij van apps en platforms eisen.
-- Stuur ---STEP_COMPLETE:3--- als de leerling een actieplan heeft opgesteld: hoe presenteer je het manifest en welke concrete stap kan je morgen al zetten?
+PRIVACY:
+- Vraag de leerling niet om te beschrijven welke camera's, volgsystemen of beveiliging er op de EIGEN school hangen, en niet om eigen accounts of gegevens te delen. Gebruik algemene, herkenbare voorbeelden ("veel scholen gebruiken een leerlingvolgsysteem") in plaats van school-specifieke informatie.
 
 SCOPE GUARD:
-- Blijf bij digitale rechten en privacywetgeving. Als de leerling afdwaalt naar technische oplossingen, stuur ze terug: "Goede richting! Maar laten we eerst de rechten stevig neerzetten. Welk recht vind jij het belangrijkst?"
-- Gebruik voorbeelden die herkenbaar zijn voor jongeren (schoolapps, TikTok, etc.).
-
-EERSTE BERICHT:
-"🛡️ Welkom bij Digital Rights HQ!
-Wist je dat jij als gebruiker wettelijke rechten hebt? Je mag weten welke data apps over je bewaren, en je mag vragen om die data te verwijderen.
-Maar kennen jouw klasgenoten die rechten? Jij gaat vandaag een manifest schrijven.
-Begin hier: welke apps of platforms verzamelen volgens jou de meeste data over jou?"
+- Blijf bij digitale rechten, privacywetgeving en het debat. Als de leerling afdwaalt naar technische oplossingen, stuur ze terug: "Goede richting! Maar het debat gaat over de vraag wat er MAG — welk recht vind jij hier het belangrijkst?"
 ` + SYSTEM_INSTRUCTION_SUFFIX,
         steps: [
             {
-                title: "Rechten inventariseren",
-                description: "Onderzoek welke persoonlijke gegevens jouw school en apps verzamelen en welke rechten je hebt.",
-                example: "Typ: 'Op school gebruiken we Magister, Teams en er hangen camera's in de gangen.'"
+                title: "Standpunten lezen",
+                description: "Lees de perspectieven van de leerling, de directeur, de privacy-expert en de ed-tech-CEO.",
+                example: "Vraag bijv.: 'Waarom vindt de directeur die volg-app een goed idee?'"
             },
             {
-                title: "Manifest schrijven",
-                description: "Schrijf een privacy-manifest met minstens 5 afspraken over hoe de school met data moet omgaan.",
-                example: "Typ: 'Afspraak 1: Leerlingen krijgen inzage in alle data die over hen wordt verzameld.'"
+                title: "Positie kiezen en onderbouwen",
+                description: "Kies jouw positie over dataverzameling op school en bouw 2-3 argumenten op.",
+                example: "Typ: 'Ik kies voor minimale dataverzameling, omdat de school niet meer hoeft te weten dan nodig is voor het onderwijs.'"
             },
             {
-                title: "Actieplan maken",
-                description: "Maak een plan hoe je dit manifest kunt presenteren aan de schoolleiding.",
-                example: "Typ: 'Ik wil het manifest presenteren tijdens de leerlingenraad.'"
+                title: "Tegenargument en reflectie",
+                description: "Reageer op een tegenargument en reflecteer op je eigen standpunt.",
+                example: "Typ: 'Handig voor leervoortgang, maar dat kan ook zonder elke klik van mij op te slaan.'"
             }
         ],
         bonusChallenges: null
@@ -2342,7 +2333,7 @@ We beginnen met trends: noem 3 technologieën of ontwikkelingen die je de afgelo
         yearGroup: 2,
         educationLevels: ['mavo', 'havo', 'vwo'] as EducationLevel[],
         title: 'Trend Scanner',
-        icon: <Leaf size={28} />,
+        icon: <BarChart2 size={28} />,
         color: '#202023',
         description: 'Ontdek patronen in hoe jongeren digitale media gebruiken — van gaming tot streaming.',
         problemScenario: 'Hoe besteden jongeren wereldwijd hun online tijd? Van video streamen en gamen tot berichten sturen — de data vertelt een verrassend verhaal. Jij analyseert de trends en trekt je eigen conclusies.',
@@ -2354,7 +2345,7 @@ We beginnen met trends: noem 3 technologieën of ontwikkelingen die je de afgelo
             <div className="w-full h-full bg-gradient-to-br from-lab-coral to-lab-sage flex items-center justify-center relative overflow-hidden">
                 <div className="absolute bottom-0 left-0 right-0 h-1/3 bg-lab-sage/30"></div>
                 <div className="absolute top-6 right-6 w-8 h-8 bg-lab-gold/30 rounded-full blur-sm"></div>
-                <Leaf size={64} className="text-white/80 drop-shadow-lg" />
+                <BarChart2 size={64} className="text-white/80 drop-shadow-lg" />
             </div>
         ),
         systemInstruction: `Je bent een data-analist die leerlingen begeleidt bij het lezen en interpreteren van digitale gebruikstrends.
@@ -2706,7 +2697,7 @@ REGELS:
         icon: <Shield size={28} />,
         color: '#202023',
         description: 'Repareer de onveilige login- en toegangsregels van een schoolsysteem.',
-        problemScenario: 'Het inlogportaal van Het Rijnlands Lyceum zit vol beveiligingsfouten: gasten kunnen zonder wachtwoord inloggen, leerlingen zien cijfers van anderen, en roosters zijn door iedereen aanpasbaar. De directie heeft jou als Access Control Engineer ingehuurd om het systeem te repareren voordat er een datalek ontstaat.',
+        problemScenario: 'Het inlogportaal van Het Bitburcht College zit vol beveiligingsfouten: gasten kunnen zonder wachtwoord inloggen, leerlingen zien cijfers van anderen, en roosters zijn door iedereen aanpasbaar. De directie heeft jou als Access Control Engineer ingehuurd om het systeem te repareren voordat er een datalek ontstaat.',
         missionObjective: 'Analyseer de toegangsregels, stel de juiste rechten in per rol, en test of je configuratie klopt met realistische scenario\'s.',
         briefingImage: '/assets/agents/access_control_engineer.webp',
         difficulty: 'Medium',
@@ -2761,7 +2752,7 @@ STAP-VOLTOOIING:
 EERSTE BERICHT:
 "Hoi! Ik ben je Security Coach. 🛡️
 
-Het Rijnlands Lyceum heeft een probleem: hun inlogsysteem zit vol beveiligingsfouten. Gasten kunnen zonder wachtwoord inloggen, leerlingen zien de cijfers van de hele school, en iedereen kan het rooster aanpassen.
+Het Bitburcht College heeft een probleem: hun inlogsysteem zit vol beveiligingsfouten. Gasten kunnen zonder wachtwoord inloggen, leerlingen zien de cijfers van de hele school, en iedereen kan het rooster aanpassen.
 
 De directie heeft jou gevraagd om het systeem te repareren. Jij wordt de Access Control Engineer!
 

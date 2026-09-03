@@ -24,7 +24,7 @@ export const encryptionExpertConfig: PuzzleLabConfig = {
             clues: [
                 'Het gecodeerde bericht is: YHLOLJ',
                 'De schuif is 3 — elk letter is 3 posities naar rechts verschoven.',
-                'Y → V, H → E, L → I, O → L, L → I, J → G',
+                'Reken zelf: verschuif elke letter 3 posities TERUG in het alfabet (bijvoorbeeld Y wordt V). Doe dit voor alle 6 letters.',
             ],
             extraClues: [
                 'Verschuif elke letter 3 posities TERUG in het alfabet (A=1, B=2, C=3 ... Z=26): Y=25, 25−3=22=V. H=8, 8−3=5=E. L=12, 12−3=9=I. O=15, 15−3=12=L.',
@@ -48,7 +48,7 @@ export const encryptionExpertConfig: PuzzleLabConfig = {
             clues: [
                 'Base64 is geen echte encryptie — iedereen kan het decoderen.',
                 'd2FjaHR3b29yZA== is het gecodeerde woord.',
-                'Plak de code in een Base64-decoder als je één hebt. Of: de eerste 4 tekens "d2Fj" staan voor de letters w, a, c, h.',
+                'Plak de code in een Base64-decoder als je één hebt, of zoek op hoe Base64-tekens naar letters worden omgezet.',
             ],
             extraClues: [
                 'Verder: "aHR3" → t, w, o. En "b29y" → o, r, d. De "==" aan het einde zijn padding-tekens.',
@@ -83,7 +83,7 @@ export const encryptionExpertConfig: PuzzleLabConfig = {
             revealExtraAfterAttempts: 999,
             answer: 'Alleen Liam, want hij heeft de privésleutel',
             caseSensitive: false,
-            maxAttempts: 3,
+            maxAttempts: 2,
             points: 25,
             successMessage:
                 'Precies! Alleen Liam kan het bericht lezen — want alleen hij heeft de privésleutel die hoort bij zijn publieke sleutel. Dit is het principe achter HTTPS, e-mail-encryptie en Signal.',
@@ -94,7 +94,7 @@ export const encryptionExpertConfig: PuzzleLabConfig = {
             title: 'Maak een sterk wachtwoord',
             type: 'text-input',
             description:
-                'Tijd om het geleerde te gebruiken! Maak een wachtwoord dat aan ALLE onderstaande eisen voldoet:\n\n• Minimaal 12 tekens lang\n• Minstens 1 hoofdletter (A–Z)\n• Minstens 1 cijfer (0–9)\n• Minstens 1 speciaal teken (!@#$%^&*)\n• Geen echte naam of woord (dus niet "Welkom123!")\n\nType je wachtwoord hieronder. Het systeem controleert automatisch of het aan de eisen voldoet.',
+                'Tijd om het geleerde te gebruiken! Maak een wachtwoord dat aan ALLE onderstaande eisen voldoet:\n\n• Minimaal 12 tekens lang\n• Minstens 1 hoofdletter (A–Z)\n• Minstens 1 cijfer (0–9)\n• Minstens 1 speciaal teken (!@#$%^&*)\n• Geen echte naam of woord (dus niet "Welkom123!")\n\nType je wachtwoord hieronder. Het systeem controleert automatisch of het aan de eisen voldoet.\n\nBelangrijk: verzin een NIEUW wachtwoord dat je nergens anders gebruikt — typ nooit een wachtwoord dat je écht gebruikt.',
             clues: [
                 'Gebruik een zin als basis: "IkHoud2VanPizza!" is al een stuk beter dan "pizza123".',
                 'Afkortingen werken goed: "MijnHond@Heet5Bobby" is lang en complex.',
@@ -115,6 +115,7 @@ export const encryptionExpertConfig: PuzzleLabConfig = {
                     !/^[a-zA-Z]+$/.test(s)
                 );
             },
+            sensitiveInput: true,
             caseSensitive: true,
             maxAttempts: 10,
             points: 25,

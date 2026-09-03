@@ -7,6 +7,7 @@ import { DuelWaitingRoom } from '@/features/games/DrawingDuel/DuelWaitingRoom';
 import { ChallengeToast } from '@/features/games/DrawingDuel/ChallengeToast';
 import { MissionConclusion } from '@/features/missions/shared/MissionConclusion';
 import { analyzeDrawingWithAI } from '@/services/aiProviderService';
+import { DRAWING_MODERATION_NOTICE, moderationRetrySeconds } from '@/services/drawingModeration';
 import { DuelChallenge, subscribeToChallenges, respondToChallenge, setPlayerOnline, setPlayerOffline } from '@/services/duelService';
 import { blockUser, getBlockedUsers } from '@/services/blockingService';
 
@@ -27,6 +28,7 @@ interface DrawingGamePreviewProps {
         uid: string;
         displayName: string;
         studentClass?: string;
+        schoolId?: string;
     };
     initialState?: DrawingGamePersistState;
     onSave?: (data: DrawingGamePersistState) => void;
@@ -364,6 +366,9 @@ export const DrawingGamePreview: React.FC<DrawingGamePreviewProps> = ({ onLevelC
     const [isDrawing, setIsDrawing] = useState(false);
     const [gamePhase, setGamePhase] = useState<'draw' | 'analyzing' | 'result'>('draw');
     const [result, setResult] = useState<AnalysisResult | null>(null);
+    const [isModerated, setIsModerated] = useState(false);
+    // Resttijd op het moment van inzenden; bepaalt wat een moderatie-retry teruggeeft.
+    const timeLeftAtSubmitRef = useRef(45);
     const [score, setScore] = useState(0);
     const [totalRounds] = useState(10);
     const [analysisStep, setAnalysisStep] = useState(0); // For animating the analysis phase
@@ -551,6 +556,9 @@ export const DrawingGamePreview: React.FC<DrawingGamePreviewProps> = ({ onLevelC
     const submitDrawing = async () => {
         if (!canvasRef.current || !gamePrompts[currentRound]) return;
 
+        // Resttijd vastleggen vóór de analyse: een moderatie-retry geeft
+        // precies deze tijd terug, nooit een verse klok (zie moderationRetrySeconds).
+        timeLeftAtSubmitRef.current = timeLeft;
         setGamePhase('analyzing');
         setAnalysisStep(0);
 
@@ -570,6 +578,15 @@ export const DrawingGamePreview: React.FC<DrawingGamePreviewProps> = ({ onLevelC
             // Step 3: Process AI response
             setAnalysisStep(3);
             await new Promise(resolve => setTimeout(resolve, 400));
+
+            if (aiResult.moderated) {
+                // Moderatie: geen score, geen mislukte ronde, geen AI-tekst tonen.
+                // De leerling mag opnieuw tekenen voor hetzelfde woord.
+                setResult(null);
+                setIsModerated(true);
+                setGamePhase('result');
+                return;
+            }
 
             if (aiResult.guesses.length > 0) {
                 // Use real AI analysis
@@ -608,6 +625,7 @@ export const DrawingGamePreview: React.FC<DrawingGamePreviewProps> = ({ onLevelC
             setTimeLeft(45);
             setGamePhase('draw');
             setResult(null);
+            setIsModerated(false);
             setIsDrawing(false);
             setCurrentFactIndex(prev => (prev + 1) % AI_FACTS.length); // Rotate to next fact
             setTimeout(clearCanvas, 100);
@@ -638,7 +656,8 @@ export const DrawingGamePreview: React.FC<DrawingGamePreviewProps> = ({ onLevelC
                     currentUser={{
                         uid: user.uid,
                         displayName: user.displayName,
-                        studentClass: user.studentClass || ''
+                        studentClass: user.studentClass || '',
+                        schoolId: user.schoolId
                     }}
                     onBack={() => setDuelMode('off')}
                     onChallengeAccepted={(sessionId) => {
@@ -900,6 +919,50 @@ export const DrawingGamePreview: React.FC<DrawingGamePreviewProps> = ({ onLevelC
                                         {analysisStep === 2 && "Features Extracten..."}
                                         {analysisStep === 3 && "Vergelijken met Dataset..."}
                                     </h3>
+                                </div>
+                            </div>
+                        )}
+
+                        {/* MODERATIE-OVERLAY — geen score, geen AI-tekst, ronde telt niet als mislukt */}
+                        {gamePhase === 'result' && isModerated && (
+                            <div className="absolute inset-0 z-20 flex items-center justify-center">
+                                <div className="w-full max-w-md p-6 rounded-2xl shadow-2xl animate-in zoom-in-95 duration-300" style={{ backgroundColor: '#FFFFFF', border: '1px solid #E7D8BD' }}>
+                                    <h3 className="text-lg font-bold mb-3" style={{ color: '#202023' }}>
+                                        Even opnieuw
+                                    </h3>
+                                    <p className="text-sm mb-6" style={{ color: '#6f6e69' }}>
+                                        {DRAWING_MODERATION_NOTICE}
+                                    </p>
+                                    <div className="flex justify-end">
+                                        {/* De retry geeft de resterende tekentijd terug, nooit een
+                                            verse klok — anders rekt een bewust geblokkeerde tekening
+                                            de ronde eindeloos. Vrijwel geen tijd meer over: ronde
+                                            schuift zonder punten en zonder foutlabel door. */}
+                                        {moderationRetrySeconds(timeLeftAtSubmitRef.current) > 0 ? (
+                                            <button
+                                                onClick={() => {
+                                                    setIsModerated(false);
+                                                    setResult(null);
+                                                    setTimeLeft(moderationRetrySeconds(timeLeftAtSubmitRef.current));
+                                                    setGamePhase('draw');
+                                                    setIsDrawing(false);
+                                                    setTimeout(clearCanvas, 100);
+                                                }}
+                                                className="px-5 py-2 rounded-lg font-bold flex items-center gap-2 text-sm transition-colors"
+                                                style={{ backgroundColor: '#e3e2dc', color: '#6f6e69' }}
+                                            >
+                                                <RotateCcw size={16} /> Opnieuw Tekenen ({moderationRetrySeconds(timeLeftAtSubmitRef.current)}s)
+                                            </button>
+                                        ) : (
+                                            <button
+                                                onClick={nextRound}
+                                                className="px-5 py-2 rounded-lg font-bold flex items-center gap-2 text-sm transition-colors"
+                                                style={{ backgroundColor: '#e3e2dc', color: '#6f6e69' }}
+                                            >
+                                                Volgende ronde
+                                            </button>
+                                        )}
+                                    </div>
                                 </div>
                             </div>
                         )}

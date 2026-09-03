@@ -7,7 +7,7 @@ const assert = (condition, message) => {
 };
 
 const latestRestrictionMigration = readdirSync('supabase/migrations')
-  .filter((name) => name.endsWith('_enforce_processing_restriction.sql'))
+  .filter((name) => name.includes('_enforce_processing_restriction') && name.endsWith('.sql'))
   .sort()
   .at(-1);
 
@@ -44,21 +44,58 @@ assert(trackClickEvent.includes('isProcessingRestricted'), 'trackClickEvent must
 assert(trackClickEvent.includes("reason: 'processing_restricted'"), 'trackClickEvent must skip restricted authenticated analytics.');
 assert(trackClickEvent.indexOf('await isProcessingRestricted') < trackClickEvent.indexOf('const rateLimitKey'), 'analytics restriction check must happen before rate limiting/inserts.');
 
-assert(migration.includes('public.current_user_processing_restricted()'), 'Migration must create current_user_processing_restricted helper.');
+assert(migration.includes('CREATE OR REPLACE FUNCTION public.current_user_processing_restricted()'), 'Migration must create current_user_processing_restricted helper.');
 assert(migration.includes('REVOKE ALL ON FUNCTION public.current_user_processing_restricted() FROM PUBLIC'), 'Restriction helper must revoke PUBLIC execute.');
 assert(migration.includes('NOT public.current_user_processing_restricted()'), 'RLS policies must block restricted writes.');
 
-for (const policyName of [
-  'mission_progress_insert_own',
-  'mission_progress_update_own',
-  'Users submit own feedback',
-  'library_items_owner_insert',
-  'shared_games_owner_insert',
-  'shared_projects_owner_insert',
-  'Leerlingen maken eigen nulmeting',
-  'Leerlingen maken eigen assessment',
-]) {
-  assert(migration.includes(policyName), `Migration must harden ${policyName}.`);
+const RESTRICTION_GUARD = 'NOT public.current_user_processing_restricted()';
+
+// Snijd het statement uit dat deze policy daadwerkelijk aanmaakt of wijzigt.
+// Anker op het sleutelwoord, niet op de kale naam: een naam kan ook in een
+// commentaar of in de body van een andere policy staan, en dan zou een
+// naam-gebaseerde snede de guard van de verkeerde policy meten.
+const policyStatement = (keyword, name) => {
+  const marker = `${keyword} POLICY "${name}"`;
+  const start = migration.indexOf(marker);
+  if (start === -1) return null;
+  const rest = migration.slice(start + marker.length);
+  const next = rest.search(/\b(?:ALTER|CREATE|DROP) POLICY\b/);
+  return marker + (next === -1 ? rest : rest.slice(0, next));
+};
+
+const isGuarded = (name) =>
+  [policyStatement('ALTER', name), policyStatement('CREATE', name)]
+    .some((statement) => statement !== null && statement.includes(RESTRICTION_GUARD));
+
+// Weg is ook veilig, maar alleen als de policy niet meteen weer wordt aangemaakt.
+const isRemoved = (name) =>
+  migration.includes(`DROP POLICY IF EXISTS "${name}"`) && policyStatement('CREATE', name) === null;
+
+const isMentioned = (name) => migration.includes(`"${name}"`);
+
+const policyNames = {
+  mission_progress_insert_own: ['mission_progress_insert_own', 'mission_progress_owner_insert'],
+  mission_progress_update_own: ['mission_progress_update_own', 'mission_progress_owner_update'],
+  'Users submit own feedback': ['Users submit own feedback'],
+  library_items_owner_insert: ['library_items_owner_insert'],
+  shared_games_owner_insert: ['shared_games_owner_insert'],
+  shared_projects_owner_insert: ['shared_projects_owner_insert'],
+  'Leerlingen maken eigen nulmeting': ['Leerlingen maken eigen nulmeting'],
+  'Leerlingen maken eigen assessment': ['Leerlingen maken eigen assessment'],
+};
+
+for (const [expectedName, acceptedNames] of Object.entries(policyNames)) {
+  const mentioned = acceptedNames.filter(isMentioned);
+  assert(mentioned.length > 0, `Migration must harden ${expectedName}.`);
+  // Elke variant die in deze migratie voorkomt moet zelf geguard of verwijderd
+  // zijn. Permissive policies worden ge-OR'd, dus een enkele ongeguarde variant
+  // maakt de restrictie op de andere waardeloos.
+  for (const name of mentioned) {
+    assert(
+      isGuarded(name) || isRemoved(name),
+      `Migration must add the restriction guard to ${name} (or drop it).`,
+    );
+  }
 }
 
 for (const legacyPolicyName of [
@@ -66,8 +103,8 @@ for (const legacyPolicyName of [
   'mission_progress_owner_update',
 ]) {
   assert(
-    migration.includes(`DROP POLICY IF EXISTS "${legacyPolicyName}"`),
-    `Migration must drop legacy permissive ${legacyPolicyName}.`,
+    isRemoved(legacyPolicyName) || isGuarded(legacyPolicyName),
+    `Migration must harden legacy policy ${legacyPolicyName} without leaving it unguarded.`,
   );
 }
 

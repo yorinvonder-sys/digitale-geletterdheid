@@ -11,7 +11,7 @@ import { MilestoneToast } from './sub/MilestoneToast';
 import { MobileTabBar, type MobileTab } from './sub/MobileTabBar';
 import { PreviewPanel } from './sub/PreviewPanel';
 import { StepInstructionPanel } from './sub/StepInstructionPanel';
-import { migrateBuilderEvidenceState, type BuilderCanvasState } from './sub/types';
+import { CHECKLIST_SCHEMA_VERSION, migrateBuilderChecklistState, migrateBuilderEvidenceState, type BuilderCanvasState } from './sub/types';
 import { isMeaningfulAnswer } from '../shared/answerQuality';
 import { toScorePercent } from '../shared/scorePercent';
 
@@ -23,9 +23,16 @@ export interface BuilderStep {
     description: string;
     instruction: string;
     tip?: string;
-    checklistItems: Array<{ id: string; label: string }>;
+    /** `addedLater` markeert een item dat ná livegang aan de stap is toegevoegd:
+     *  de checklist-migratie vinkt het dan aan voor saves die de stap onder de
+     *  oude regels al volledig hadden afgevinkt. */
+    checklistItems: Array<{ id: string; label: string; addedLater?: boolean }>;
     textPrompt?: string;
     minTextLength?: number;
+    // Sluit het hoofdtekstveld van deze stap uit van de AI-context.
+    excludeTextFromAi?: boolean;
+    // Privacynotitie onder het hoofdtekstveld; default staat in StepInstructionPanel.
+    textPrivacyNote?: string;
     evidence?: {
         label: string;
         prompt: string;
@@ -44,6 +51,8 @@ export interface BuilderCanvasConfig {
     introDescription: string;
     missionGoal?: MissionGoal;
     introFeatures?: string[];
+    // Toont het hulp-/welzijnsblokje op het introscherm (zware thema's).
+    showWellbeingSupport?: boolean;
     enableChat: boolean;
     chatRoleId?: string;
     previewType: 'markdown' | 'checklist-only' | 'text-preview';
@@ -52,6 +61,10 @@ export interface BuilderCanvasConfig {
     badges: BadgeConfig[];
     takeaways: string[];
 }
+
+// Iconenreeks voor het stappenoverzicht op het eindscherm; langere missies lopen er
+// rond in plaats van vanaf stap 5 hetzelfde icoon te herhalen.
+const STEP_ICONS = ['🎯', '🗂️', '✍️', '💬', '🧩', '🔍', '⚙️', '🚀'];
 
 // ─── Main Component ───────────────────────────────────────────────────────────
 
@@ -88,7 +101,10 @@ const BuilderCanvasInner: React.FC<BuilderCanvasProps> = ({
     useEffect(() => {
         if (evidenceMigrationDone.current) return;
         evidenceMigrationDone.current = true;
-        setState((prev) => migrateBuilderEvidenceState(prev, config.steps));
+        setState((prev) => migrateBuilderChecklistState(
+            migrateBuilderEvidenceState(prev, config.steps),
+            config.steps,
+        ));
     }, [config.steps, setState]);
 
     // state.currentStep komt ongevalideerd uit localStorage terug; als een missie-
@@ -104,6 +120,15 @@ const BuilderCanvasInner: React.FC<BuilderCanvasProps> = ({
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [state.currentStep, safeCurrentStep]);
+
+    // showMilestone hoort bij een toast die zichzelf na 2 seconden uitzet, maar staat
+    // wél in de opgeslagen state. Herlaadt de leerling binnen die 2 seconden, dan komt
+    // hij als true terug en is er geen timer meer die hem uitzet — de toast blijft dan
+    // de rest van de missie in beeld. Bij het laden dus altijd terugzetten.
+    useEffect(() => {
+        setState((prev) => (prev.showMilestone ? { ...prev, showMilestone: false } : prev));
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     // Zelfherstel voor een reload tussen het beantwoorden van een verdiepingsvraag en
     // het klikken op "Doorgaan": reflectionCorrect wordt meteen vastgelegd, maar
@@ -185,6 +210,9 @@ const BuilderCanvasInner: React.FC<BuilderCanvasProps> = ({
     const handleChecklistToggle = (itemKey: string) => {
         setState((prev) => ({
             ...prev,
+            // De versiestempel markeert de save als actueel: alleen stempel-loze
+            // (oudere) saves komen in aanmerking voor de checklist-grandfather.
+            checklistVersion: CHECKLIST_SCHEMA_VERSION,
             checklist: {
                 ...prev.checklist,
                 [itemKey]: !prev.checklist[itemKey],
@@ -281,6 +309,7 @@ const BuilderCanvasInner: React.FC<BuilderCanvasProps> = ({
                 description={config.introDescription}
                 goal={config.missionGoal ?? getMissionGoal(config.missionId)}
                 features={config.introFeatures}
+                wellbeingSupport={config.showWellbeingSupport}
                 onStart={handleStart}
             />
         );
@@ -292,7 +321,7 @@ const BuilderCanvasInner: React.FC<BuilderCanvasProps> = ({
         const phaseBreakdown = config.steps.map((step, i) => {
             const stepBonus = step.reflectionQuestion?.bonusPoints ?? 0;
             return {
-                icon: i === 0 ? '🎯' : i === 1 ? '🗂️' : i === 2 ? '✍️' : '💬',
+                icon: STEP_ICONS[i % STEP_ICONS.length],
                 title: step.title,
                 score:
                     (state.completedSteps.includes(step.id) ? pointsForStep(i) : 0) +
@@ -301,6 +330,10 @@ const BuilderCanvasInner: React.FC<BuilderCanvasProps> = ({
             };
         });
 
+        // Bewust GEEN onRetry: CompletionScreen maakt onRetry de primaire actie zodra de
+        // score onder de 40% blijft, terwijl de knop daar "Afronden" heet. Zonder onRetry
+        // rondt diezelfde knop af — dat is hier de uitweg, ook voor een results-fase die
+        // al in een oudere opslag stond, en niemand komt vast te zitten.
         return (
             <CompletionScreen
                 score={totalScore}
@@ -330,6 +363,11 @@ const BuilderCanvasInner: React.FC<BuilderCanvasProps> = ({
 
     const completedStepIndex = state.completedSteps.length;
     const totalSteps = config.steps.length;
+
+    // Bij Website Bouwer en bij elke stap met excludeTextFromAi gaat de ruwe
+    // opdrachttekst van de leerling NIET mee naar de AI-coach.
+    const excludeTextEntry =
+        config.missionId === 'website-bouwer' || currentStepData?.excludeTextFromAi === true;
 
     return (
         <div className="flex h-screen min-h-screen flex-col overflow-hidden bg-duck-bg">
@@ -408,17 +446,16 @@ const BuilderCanvasInner: React.FC<BuilderCanvasProps> = ({
                                 total: config.steps.length,
                                 completedSteps: state.completedSteps.length,
                             },
-                            // Bij Website Bouwer gaat de ruwe opdrachttekst van de leerling
-                            // NIET mee naar de AI-coach; die krijgt alleen of er iets staat
-                            // en hoe lang het is. De coach heeft de inhoud niet nodig om te
-                            // helpen, en zo verlaat het schrijfwerk van de leerling de
+                            // Bij een uitgesloten stap krijgt de AI-coach alleen of er iets
+                            // staat en hoe lang het is. De coach heeft de inhoud niet nodig
+                            // om te helpen, en zo verlaat het schrijfwerk van de leerling de
                             // vertrouwensgrens niet.
-                            textEntry: config.missionId === 'website-bouwer'
+                            textEntry: excludeTextEntry
                                 ? undefined
                                 : currentStepData
                                   ? state.textEntries[currentStepData.id] ?? ''
                                   : '',
-                            textEntryStatus: config.missionId === 'website-bouwer'
+                            textEntryStatus: excludeTextEntry
                                 ? {
                                       hasContent: Boolean(currentStepData && state.textEntries[currentStepData.id]?.trim()),
                                       characterCount: currentStepData

@@ -1,10 +1,14 @@
 import React from 'react';
 import { Categorize } from '../../review-arena/sub/Categorize';
+import type { CategorizeProgress } from '../../review-arena/sub/Categorize';
 
 interface EerlijkDossierProps {
     categories: string[];
     items: Array<{ label: string; correctCategory: string }>;
     maxScore: number;
+    /** Plaatsingen uit een eerdere sessie (undefined = vers begonnen) */
+    savedProgress?: CategorizeProgress;
+    onProgress: (progress: CategorizeProgress) => void;
     onComplete: (score: number) => void;
 }
 
@@ -18,6 +22,8 @@ export const EerlijkDossier: React.FC<EerlijkDossierProps> = ({
     categories,
     items,
     maxScore,
+    savedProgress,
+    onProgress,
     onComplete,
 }) => (
     <div className="space-y-4">
@@ -63,6 +69,8 @@ export const EerlijkDossier: React.FC<EerlijkDossierProps> = ({
                 categories={categories}
                 items={items}
                 maxScore={maxScore}
+                initialProgress={savedProgress}
+                onProgress={onProgress}
                 onComplete={(score, _maxScore) => onComplete(score)}
             />
         </div>

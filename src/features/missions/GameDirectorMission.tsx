@@ -293,7 +293,7 @@ export const GameDirectorMission: React.FC<GameDirectorProps> = ({ onComplete, o
         startTimeRef.current = Date.now(); // Reset timer for new challenge
 
         if (progress.isHardMode) {
-            log('⚡ Snel gedaan! Hard Mode geactiveerd voor dit level!');
+            log('⚡ Hard Mode staat aan: deze puzzel is een lastigere variant. Liever rustig oefenen? Zet Hard Mode uit met de knop bovenin het scherm.');
         }
     }, [progress.currentChallengeIndex, log, progress.isHardMode]);
 
@@ -310,7 +310,7 @@ export const GameDirectorMission: React.FC<GameDirectorProps> = ({ onComplete, o
         ctx.fillRect(0, 0, width, height);
 
         // Subtle grass pattern
-        ctx.strokeStyle = '#202023';
+        ctx.strokeStyle = 'rgba(153, 152, 77, 0.12)';
         ctx.lineWidth = 1;
         for (let x = 0; x < width; x += 40) {
             ctx.beginPath();
@@ -721,7 +721,7 @@ export const GameDirectorMission: React.FC<GameDirectorProps> = ({ onComplete, o
             handleReset();
 
             if (isFast) {
-                log(`🚀 Wow! ${duration.toFixed(1)}s is supersnel! Level ${progress.currentChallengeIndex + 2} wordt MOEILIJKER!`);
+                log(`🚀 Wow! ${duration.toFixed(1)}s is supersnel! Hard Mode aan: level ${progress.currentChallengeIndex + 2} krijgt een lastigere puzzel. Liever rustig oefenen? Zet Hard Mode uit met de knop bovenin het scherm.`);
             } else {
                 log(`💪 Goed bezig, Robbie! Op naar het volgende level!`);
             }
@@ -839,6 +839,16 @@ export const GameDirectorMission: React.FC<GameDirectorProps> = ({ onComplete, o
                                         />
                                     ))}
                                 </div>
+                                {progress.isHardMode && (
+                                    <button
+                                        data-qa="game-director-hard-mode-toggle"
+                                        onClick={() => setProgress(prev => ({ ...prev, isHardMode: false }))}
+                                        title="Hard Mode ging automatisch aan omdat je de vorige puzzel heel snel oploste. Zet hem uit als je liever rustig oefent."
+                                        className="ml-1 shrink-0 rounded-full border border-duck-acid/40 bg-duck-acid/10 px-2 py-0.5 text-[10px] font-black uppercase tracking-widest text-duck-ink transition-all duration-300 hover:bg-duck-acid/20"
+                                    >
+                                        ⚡ Hard Mode aan — zet uit
+                                    </button>
+                                )}
                             </div>
                             <h3 className="font-bold text-sm text-duck-ink min-w-0 font-['Newsreader',Georgia,serif]">
                                 {currentChallenge.title}
@@ -871,7 +881,7 @@ export const GameDirectorMission: React.FC<GameDirectorProps> = ({ onComplete, o
                             {/* 'I am stuck' button - Always visible/accessible helper */}
                             <button
                                 onClick={() => setIsChatOpen(true)}
-                                className="flex items-center gap-1 text-[10px] text-duck-ink font-bold px-3 py-1.5 bg-duck-acid hover:bg-duck-acid rounded-full transition-all duration-300 shadow-lg shadow-duck-acid/20 focus-visible:ring-2 focus-visible:ring-duck-acid"
+                                className="flex items-center gap-1 text-[10px] text-duck-ink font-bold px-3 py-1.5 bg-duck-acid hover:brightness-95 rounded-full transition-all duration-300 shadow-lg shadow-duck-acid/20 focus-visible:ring-2 focus-visible:ring-duck-acid"
                             >
                                 <Sparkles size={12} /> Hulp nodig?
                             </button>
@@ -1026,8 +1036,8 @@ export const GameDirectorMission: React.FC<GameDirectorProps> = ({ onComplete, o
                     onClick={handleTogglePlay}
                     disabled={blocks.length === 0}
                     className={`flex items-center gap-2 px-6 py-2.5 rounded-full font-bold text-sm text-white transition-all duration-300 ${isPlaying
-                        ? 'bg-duck-acid hover:bg-duck-acid hover:text-duck-ink'
-                        : 'bg-duck-acid hover:bg-duck-acid disabled:bg-duck-gray disabled:text-duck-ink/60'
+                        ? 'bg-duck-acid hover:brightness-95 hover:text-duck-ink'
+                        : 'bg-duck-acid hover:brightness-95 disabled:bg-duck-gray disabled:text-duck-ink/60'
                     }`}
                 >
                     <Play size={14} fill="currentColor" />

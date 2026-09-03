@@ -4,6 +4,7 @@ import { createPortal } from 'react-dom';
 import { BookData } from '@/types';
 import { ChevronLeft, ChevronRight, BookOpen, Image as ImageIcon, Sparkles, Star, Compass, Map, Printer, Loader2, X, Edit3, Wand2, Download, CheckCircle, AlertCircle, Share2, Check } from 'lucide-react';
 import { MissionConclusion } from '@/features/missions/shared/MissionConclusion';
+import { AiDisclosureBadge } from '@/features/ai-chat/AiDisclosureBadge';
 import { publishGame } from '@/services/gameGalleryService';
 import { saveToLibrary } from '@/services/libraryService';
 
@@ -1103,6 +1104,11 @@ Maak nu de titel met [TITLE] tags en de tekst van de eerste pagina met [PAGE] ta
         <>
             {createPortal(<PrintView />, document.body)}
             <div className="w-full h-full flex flex-col bg-stone-100 relative overflow-hidden">
+                {/* AI-transparantie: vaste melding bij de boekweergave */}
+                <div className="absolute top-3 left-1/2 -translate-x-1/2 z-50 bg-white/95 backdrop-blur-md px-3 py-1 rounded-full shadow-sm border border-lab-muted/50 print:hidden">
+                    <AiDisclosureBadge compact text="Verhaal en beelden AI-gegenereerd" />
+                </div>
+
                 {/* Book Container - Centered and Scaled to Fit - Added padding to prevent edge touching */}
                 <div className="flex-1 flex items-center justify-center p-8 z-10 perspective-2000 overflow-hidden">
                     {/* ... Book Structure Wrappers ... */}

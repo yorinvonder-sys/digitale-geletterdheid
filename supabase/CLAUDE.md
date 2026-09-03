@@ -4,11 +4,10 @@ This subtree contains migrations and edge functions for a school-facing educatio
 
 ## Read first when editing Supabase or edge functions
 - `SECURITY.md`
-- `Regelgeving/AUDIT_RAPPORT_2026.md`
 - `docs/security/security-audit-rapport-dgskills.md`
 - `business/nl-vo/compliance/legal-matrix.md`
 - `business/nl-vo/compliance/dpia-dgskills-compleet.md`
-- `services/supabase.ts`
+- `src/services/supabase.ts`
 - relevant migrations and relevant edge function source
 
 ## Safety rules
