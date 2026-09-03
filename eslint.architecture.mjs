@@ -17,6 +17,13 @@
 //   - services -> features: 2 imports, both of
 //     @/features/assessment/escaperoom/types. Enforceable once those types
 //     move to a location services may own.
+//   - Test code importing other test code ACROSS elements is also rejected by
+//     the production-to-test rule. A test file carries its directory's element
+//     type as well as its test category, and boundaries cannot express "this
+//     element except its test files" -- see the assembler's assertExpressible.
+//     There are no co-located tests in src/ today, so this false positive
+//     cannot currently occur; it would surface as a loud lint error, not a
+//     silent gap, and should be addressed deliberately when it does.
 //   - Test-only code imported from WITHIN the same element. Boundaries only
 //     evaluates edges between different elements, so a service importing a
 //     test file that sits in src/services/ is internal and not checked. The
@@ -59,7 +66,6 @@ export default {
         },
         {
             from: '*',
-            except: ['test-support', 'test-unit', 'test-contract'],
             to: ['test-support', 'test-unit', 'test-contract'],
             why: 'Production code must not import test-only code.',
         },

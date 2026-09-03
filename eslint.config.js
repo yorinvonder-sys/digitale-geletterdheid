@@ -75,8 +75,31 @@ function resolveNames(spec, except) {
     return types;
 }
 
-// One spec can name both kinds, so it expands to a list of selectors.
+// A file carries BOTH a file category and the element type of its directory:
+// src/features/foo/x.test.ts is `test-unit` AND `feature`. eslint-plugin-boundaries
+// offers no way to say "this element, but not the files in it carrying category
+// X": a production file has no file category at all, so adding a `file`
+// condition to a selector stops it matching production files entirely.
 //
+// Two attempts to express such an exception both failed silently (see the
+// review threads on PR #348), so the assembler refuses the construct instead of
+// emitting a rule that looks enforced and is not.
+function assertExpressible(spec, except, why) {
+    const excludedCategories = except?.length
+        ? resolveNames(except).filter((n) => fileCategories.has(n))
+        : [];
+    if (!excludedCategories.length) return;
+    const elementTypes = resolveNames(spec).filter?.((n) => !fileCategories.has(n)) ?? [];
+    if (elementTypes.length) {
+        throw new Error(
+            `eslint.architecture.mjs: cannot except file component(s) ` +
+            `[${excludedCategories.join(', ')}] from a rule that also selects element types ` +
+            `[${elementTypes.join(', ')}] -- the element selector still matches those files, ` +
+            `so the exception would be silently ineffective. Rule: ${why}`,
+        );
+    }
+}
+
 function selectors(spec, except) {
     const resolved = resolveNames(spec, except);
     if (!Array.isArray(resolved)) {
@@ -101,30 +124,14 @@ const files = FILE_COMPONENTS.map((c) => ({
     pattern: c.pattern,
 }));
 
-// A file carries BOTH a file category and the element type of the directory it
-// sits in: src/features/foo/x.test.ts is `test-unit` AND `feature`. So an
-// `except` that drops file categories does not stop the surviving element
-// selector from matching those same files, and a legitimate test-to-test
-// import across elements would be rejected. Constraining the `from` selector
-// cannot fix this -- a production file has no file category at all, so ANY
-// `file` condition on that selector fails to match it. Instead each such edge
-// emits a trailing `allow` policy reinstating the excluded categories; later
-// policies win, so the excepted sources keep their access.
-const policies = FORBIDDEN.flatMap((e) => {
-    const to = selectors(e.to, e.except_to);
-    const disallow = {
+const policies = FORBIDDEN.map((e) => {
+    assertExpressible(e.from, e.except, e.why);
+    assertExpressible(e.to, e.except_to, e.why);
+    return {
         from: selectors(e.from, e.except),
-        disallow: to.map((t) => ({ to: t })),
+        disallow: selectors(e.to, e.except_to).map((to) => ({ to })),
         message: e.why,
     };
-    const exceptedCategories = e.except?.length
-        ? resolveNames(e.except).filter((n) => fileCategories.has(n))
-        : [];
-    if (!exceptedCategories.length) return [disallow];
-    return [
-        disallow,
-        { from: [{ file: { categories: exceptedCategories } }], allow: to.map((t) => ({ to: t })) },
-    ];
 });
 
 export default [
