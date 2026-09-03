@@ -1,0 +1,67 @@
+{
+  "schemaVersion": 1,
+  "mode": "opdracht-review",
+  "missionId": "datalekken-rampenplan",
+  "testedCommit": "169e76bb906e056199ce3c5a361ae17318a10da2",
+  "route": "/dev/mission-preview?mission=datalekken-rampenplan&reset=1",
+  "browser": "playwright",
+  "environment": "preview",
+  "result": "FAIL",
+  "productionMutations": 0,
+  "xpMutations": 0,
+  "expectation": {
+    "title": "Datalekken Rampenplan",
+    "openingLine": "BREAKING: De school is gehackt! 800 leerlinggegevens liggen op straat. Analyseer bewijs, stel prioriteiten, schrijf de crisiscommunicatie en verdeel het beveiligingsbudget.",
+    "expectedVerb": "maken (een rampenplan/stappenplan maken)",
+    "recordedAt": 1788297643312
+  },
+  "actionLog": [
+    { "t": 1788297643312, "action": "leest intro-scherm, verzegelt verwachting vóór eerste interactie", "screenshot": 1 },
+    { "t": 1788297652249, "action": "klikt op 'Start de missie'", "screenshot": 1 },
+    { "t": 1788297669453, "action": "klikt bewijskaart 'Wachtwoordlog' in fase 1 (start van de actiegebonden animatiemeting)", "screenshot": 2 },
+    { "t": 1788297669472, "action": "animatiemeting frame 1 na de klik (transform/opacity ongewijzigd)", "screenshot": 2 },
+    { "t": 1788297669488, "action": "animatiemeting frame 2 na de klik (transform/opacity ongewijzigd)", "screenshot": 2 },
+    { "t": 1788297669504, "action": "animatiemeting frame 3 na de klik (transform/opacity ongewijzigd)", "screenshot": 2 },
+    { "t": 1788297669522, "action": "animatiemeting frame 4 na de klik; daarna: selecteert bewust ook het foute bewijsstuk 'Systeemmelding printer' (decoy) als opzettelijk fout antwoord, herstelt dit weer, selecteert het echte 4e bewijsstuk (Exportlog database), dient de analyse in (25/25 pts), doorloopt fase 2 (prioriteiten, deels fout: 21/25), fase 3 (crisisbrief, incl. bewust foute keuze 'Bagatelliseren' + herstel, 25/25) en fase 4 (budget, 25/25) tot het eindscherm (96/100)", "screenshot": 4 },
+    { "t": 1788297910309, "action": "meet moment ná het volledig afronden van de missie (eindscherm zichtbaar, screenshot 13)", "screenshot": 13 }
+  ],
+  "animationEvidence": [
+    {
+      "element": "bewijskaart 'Wachtwoordlog' (button, fase 1)",
+      "action": "leerling klikt de bewijskaart om deze te selecteren",
+      "framesBefore": [
+        { "t": 1788297669453, "transform": "none", "opacity": "1" }
+      ],
+      "framesAfter": [
+        { "t": 1788297669472, "transform": "none", "opacity": "1" },
+        { "t": 1788297669488, "transform": "none", "opacity": "1" },
+        { "t": 1788297669504, "transform": "none", "opacity": "1" },
+        { "t": 1788297669522, "transform": "none", "opacity": "1" }
+      ],
+      "reducedMotionChecked": false
+    }
+  ],
+  "introText": "🚨\n\nVeiligheid & privacy · Leerjaar 1\n\nCrisis\n\nDatalekken Rampenplan\nUitdagend\n+150 XP\n\nBREAKING: De school is gehackt! 800 leerlinggegevens liggen op straat. Analyseer bewijs, stel prioriteiten, schrijf de crisiscommunicatie en verdeel het beveiligingsbudget.\n\n/GOAL\n\nIk maak een stappenplan voor een datalek en kies wat eerst moet gebeuren.\n\nBewijs: Je crisisplan noemt wie je informeert, welke data geraakt is en welke actie eerst komt.\n\n1\nBewijs analyseren\n2\nPrioriteiten stellen\n3\nBrief schrijven\n4\nBudget verdelen\nKEES\n\nNieuwe missie! Begin gewoon — ik wijs je onderweg de weg.\n\nStart de missie",
+  "comparedWith": null,
+  "comparedWithReason": "Dit is maatwerkcode (`DatalekkenRampenplanMission.tsx`), geen sjabloon onder src/features/missions/templates/ — er is geen tweede opdracht op dezelfde motor om tegenover te zetten, dus Veto 3 is per definitie niet van toepassing op dezelfde manier als bij de sjabloonmissies.",
+  "limitations": [
+    "animationEvidence toont identieke transform/opacity-waarden voor de bewijskaart-klik; net als bij de andere drie missies lijkt de DUCK-UI selectiestaten via kleur/rand te tonen, niet via transform/opacity. Poort 1-beweging is daarom NIET VASTGESTELD voor dit specifieke element (niet GEZAKT — er is geen bewijs dat AAN GEEN ENKEL element beweegt).",
+    "reducedMotionChecked kon niet op true gezet worden: geen Playwright emulateMedia-tool beschikbaar in deze sessie om page.emulateMedia() aan te roepen; browser_evaluate kan prefers-reduced-motion niet betrouwbaar overschrijven zonder een verse reload met een echte media-emulatie-API.",
+    "Alleen desktop-viewport (1440x900) getest; ipad-portrait, ipad-landscape en mobiel zijn NIET getest — Poort 1 is voor dit rapport dus sowieso NIET VASTGESTELD op de volledige viewportmatrix, onafhankelijk van de uitkomst op de veto's.",
+    "Veto 1 reload-persistentietest niet apart uitgevoerd (reset=1 wist de preview altijd); het oordeel steunt op de zichtbare, leesbare crisisbrief tijdens het spelen (screenshot 9) en de vier fase-scores, niet op een bewezen 'overleeft een volledige reload'."
+  ],
+  "viewports": [
+    {
+      "name": "desktop",
+      "cssViewport": "1440x900",
+      "checkpoints": { "start": true, "flow": true, "feedback": true, "recovery": true, "end": true },
+      "evidence": [
+        { "path": "01-desktop-intro.png", "sha256": "8f8e0403f2f93fdd6001ed4cb82254211d49f0eb021af7f2d69f2ab8593abeb2", "width": 1440, "height": 900 },
+        { "path": "04-desktop-fase1-feedback.png", "sha256": "c74ead6923efdb7444c3b2b8f08ca76e49b79f4333ed3eaed0b95f71cf1375c7", "width": 1440, "height": 900 },
+        { "path": "09-desktop-fase3-brief-preview.png", "sha256": "ada70c76487baf29dad24c9ffc46e89c76879c1217771aacc64ecc803819414d", "width": 1440, "height": 900 },
+        { "path": "11-desktop-fase4-budget-constraint.png", "sha256": "2aa7574c9055494f865b3f74a268795d4549f832e8478d8f17c1b559e0cfc49f", "width": 1440, "height": 900 },
+        { "path": "13-desktop-eind.png", "sha256": "7c7d7b5ceb2e71bd23aa6f42c6f0df557fe2c0a2b524e0e55b234c4f06613b68", "width": 1440, "height": 900 }
+      ]
+    }
+  ]
+}

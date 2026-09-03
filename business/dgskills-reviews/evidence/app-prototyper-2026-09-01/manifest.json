@@ -1,0 +1,65 @@
+{
+  "schemaVersion": 1,
+  "mode": "opdracht-review",
+  "missionId": "app-prototyper",
+  "testedCommit": "169e76bb906e056199ce3c5a361ae17318a10da2",
+  "route": "/dev/mission-preview?mission=app-prototyper&reset=1",
+  "browser": "playwright",
+  "environment": "preview",
+  "result": "FAIL",
+  "productionMutations": 0,
+  "xpMutations": 0,
+  "expectation": {
+    "title": "Ontwerp een app van idee tot prototype",
+    "openingLine": "In deze missie leer je hoe professionele designers apps bouwen: van het ontdekken van het probleem, via schetsen en wireframes, naar een klikbaar prototype. Je ontwerpt een app die een echt probleem op school oplost.",
+    "expectedVerb": "bouwen (een klikbaar prototype bouwen)",
+    "recordedAt": 1788297139447
+  },
+  "actionLog": [
+    { "t": 1788297139447, "action": "leest intro-scherm, verzegelt verwachting vóór eerste interactie", "screenshot": 1 },
+    { "t": 1788297149337, "action": "klikt op 'Start de missie'", "screenshot": 1 },
+    { "t": 1788297157488, "action": "begint te typen in tekstvak stap 1 (5 W's + waardepropositie kantine-app)", "screenshot": 2 },
+    { "t": 1788297174343, "action": "checklist stap 1 afgevinkt, klikt 'Volgende stap' (overgang naar stap 2)", "screenshot": 2 },
+    { "t": 1788297183408, "action": "begint te typen in tekstvak stap 2 (wireframe-beschrijvingen van 3 schermen)", "screenshot": 3 },
+    { "t": 1788297201661, "action": "checklist stap 2 afgevinkt en verdiepingsvraag beantwoord, meet moment vóór volgende-poging", "screenshot": 3 },
+    { "t": 1788297226949, "action": "begint te typen in tekstvak stap 3 (twee gebruikersflows + foutflow)", "screenshot": 4 },
+    { "t": 1788297233534, "action": "tekst stap 3 voltooid (>150 tekens), vóór checklist aanvinken", "screenshot": 4 }
+  ],
+  "animationEvidence": [
+    {
+      "element": "eerste knop op eindscherm ('Missie voltooid! 🎉')",
+      "action": "controlemeting na afronden van de missie (geen losse leerlingactie tussen framesBefore en framesAfter)",
+      "framesBefore": [
+        { "t": 1788297285803, "transform": "none", "opacity": "1" }
+      ],
+      "framesAfter": [
+        { "t": 1788297285807, "transform": "none", "opacity": "1" },
+        { "t": 1788297285824, "transform": "none", "opacity": "1" },
+        { "t": 1788297285840, "transform": "none", "opacity": "1" }
+      ],
+      "reducedMotionChecked": false
+    }
+  ],
+  "introText": "📱\n\nDIGITALE PRODUCTEN · LEERJAAR 2\n\nOntwerp een app van idee tot prototype\n~30 min\nGemiddeld\n+100 XP\n\nIn deze missie leer je hoe professionele designers apps bouwen: van het ontdekken van het probleem, via schetsen en wireframes, naar een klikbaar prototype. Je ontwerpt een app die een echt probleem op school oplost.\n\n/GOAL\n\nIk werk een app-idee uit tot een toetsbaar prototype met probleem, schermen, flow en testplan.\n\nBewijs: Probleemanalyse, drie wireframes, gebruikersflows en een prototype-testplan.\n\n1\nAnalyseer een gebruiksprobleem met de 5 W's\n2\nSchets wireframes voor de belangrijkste schermen\n3\nOntwerp een gebruikersflow die logisch aanvoelt\n4\nBeschrijf een testplan voor je prototype\nKEES\n\nKlaar voor 'Ontwerp een app van idee tot prototype'? We pakken het samen aan.\n\nStart de missie",
+  "comparedWith": "podcast-producer",
+  "limitations": [
+    "animationEvidence-meting is niet actiegebonden (geen klik tussen framesBefore en framesAfter) en toont identieke waarden; Poort 1-beweging is voor deze missie NIET VASTGESTELD, niet apart hermeten omdat de opdracht al op Veto 1 en Veto 4 AFGEKEURD is.",
+    "reducedMotionChecked is FALSE: geen Playwright emulateMedia-tool beschikbaar in deze sessie.",
+    "Alleen desktop-viewport (1440x900) getest; ipad-portrait, ipad-landscape en mobiel zijn NIET getest omdat de Poorten na AFGEKEURD op de veto's sowieso niet meer beoordeeld worden volgens de uitkomstvolgorde van de skill.",
+    "Reload-persistentietest voor Veto 1 niet apart uitgevoerd; de GEZAKT-conclusie steunt op het eindscherm zelf (screenshot 6), dat uitsluitend score/badge/leerpunten toont en geen van de vier geschreven teksten of een klikbaar prototype."
+  ],
+  "viewports": [
+    {
+      "name": "desktop",
+      "cssViewport": "1440x900",
+      "checkpoints": { "start": true, "flow": true, "feedback": false, "recovery": false, "end": true },
+      "evidence": [
+        { "path": "01-desktop-intro.png", "sha256": "140682075b0b19c652569ac20045f4fad18a60ce352d2eae0c69dc87b4d72eb0", "width": 1440, "height": 900 },
+        { "path": "02-desktop-stap1-ingevuld.png", "sha256": "8c2bf8d088252cfced6bc013e9228cbf14b57d0bdc3df964c84dfc889d402c21", "width": 1440, "height": 900 },
+        { "path": "04-desktop-stap3-ingevuld.png", "sha256": "2812630b235d8623c696453c720c50d572772c786224ef4b1b29071a183b9302", "width": 1440, "height": 900 },
+        { "path": "05-desktop-stap4-ingevuld.png", "sha256": "72aa4fbf5b5773db93e3f923044ed8b70d18be1c2edfba71ec1570bd4bf13e3f", "width": 1440, "height": 900 },
+        { "path": "06-desktop-eind.png", "sha256": "4dfb556c92b99e9dee8e32348a8d24e1682f8e3ab1a1a48a310aa9ea506c8987", "width": 1440, "height": 900 }
+      ]
+    }
+  ]
+}

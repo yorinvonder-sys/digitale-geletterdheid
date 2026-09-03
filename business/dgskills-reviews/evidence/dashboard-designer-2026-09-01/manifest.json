@@ -1,0 +1,51 @@
+{
+  "schemaVersion": 1,
+  "mode": "opdracht-review",
+  "missionId": "dashboard-designer",
+  "testedCommit": "169e76bb906e056199ce3c5a361ae17318a10da2",
+  "route": "/dev/mission-preview?mission=dashboard-designer&reset=1",
+  "browser": "playwright",
+  "environment": "preview",
+  "result": "FAIL",
+  "productionMutations": 0,
+  "xpMutations": 0,
+  "expectation": {
+    "title": "Word een Dashboard Designer",
+    "openingLine": "Een goed dashboard vertelt een verhaal zonder woorden. Bedrijven, scholen en overheden gebruiken dashboards om complexe data in één oogopslag begrijpelijk te maken. Jij leert welke visualisaties passen bij welke data — en waarom \"minder meer is\".",
+    "expectedVerb": "ontwerpen (een schooldashboard ontwerpen)",
+    "recordedAt": 1788297341518
+  },
+  "actionLog": [
+    { "t": 1788297341518, "action": "leest intro-scherm, verzegelt verwachting vóór eerste interactie", "screenshot": 1 },
+    { "t": 1788297350059, "action": "klikt op 'Start de missie'", "screenshot": 1 },
+    { "t": 1788297363751, "action": "kiest antwoord 2C bij vraag 1 (laagste cijfer + laagste aanwezigheid)", "screenshot": 2 },
+    { "t": 1788297373539, "action": "typt bewust fout antwoord '5' bij vraag 2 (juist is 8), klikt Bevestigen", "screenshot": 3 },
+    { "t": 1788297395127, "action": "herstelt antwoord naar '8' en bevestigt opnieuw (recovery)", "screenshot": 4 },
+    { "t": 1788297401302, "action": "typt observatie over welke 2 KPI's ze zou tonen aan de directeur", "screenshot": 4 },
+    { "t": 1788297415939, "action": "klikt 'Volgende dataset' (naar dataset 2/3, cirkeldiagram onvoldoendes)", "screenshot": 5 },
+    { "t": 1788297435681, "action": "beantwoordt MC-vraag over welk vak grootste aandeel heeft en over het doel van cirkeldiagrammen", "screenshot": 6 }
+  ],
+  "animationEvidence": [],
+  "introText": "📈\n\nDATA & DATAVERWERKING · LEERJAAR 2\n\nWord een Dashboard Designer\n~20 min\nUitdagend\n+150 XP\n\nEen goed dashboard vertelt een verhaal zonder woorden. Bedrijven, scholen en overheden gebruiken dashboards om complexe data in één oogopslag begrijpelijk te maken. Jij leert welke visualisaties passen bij welke data — en waarom \"minder meer is\".\n\n/GOAL\n\nIk kies de juiste visualisatie voor een dataset en selecteer zinvolle KPI's voor een schooldashboard.\n\nBewijs: Je kunt uitleggen wanneer je een taartdiagram of staafgrafiek kiest en welke KPI het meest informatief is.\n\n1\nAnalyseer schooldata over cijfers en aanwezigheid\n2\nOntdek welk grafiektype past bij welke soort data\n3\nBeoordeel dashboard-ontwerpen op overzichtelijkheid\nKEES\n\nNieuwe missie! Begin gewoon — ik wijs je onderweg de weg.\n\nStart de missie",
+  "comparedWith": "data-journalist",
+  "limitations": [
+    "animationEvidence is leeg: er is voor deze missie geen actiegebonden rAF-meting op transform/opacity uitgevoerd (tijd besteed aan de exhaustievere podcast-producer-meting, die al liet zien dat dit type UI geen transform/opacity-animatie op klikken toont). Poort 1-beweging is voor deze missie daarom NIET VASTGESTELD; niet apart hermeten omdat de opdracht al op Veto 4 AFGEKEURD is.",
+    "reducedMotionChecked kon sowieso niet worden gezet: geen Playwright emulateMedia-tool beschikbaar in deze sessie.",
+    "Alleen desktop-viewport (1440x900) getest en niet alle vragen van alle 3 datasets zijn individueel gescreenshot; de opdracht is wel volledig van start tot eindscherm (95/100 pts) doorlopen.",
+    "comparedWith = data-journalist is slechts gedeeltelijk gespeeld (dataset 1 van 3, plus verdiepingsvraag) — voldoende om de actiestructuur (tabel lezen/sorteren → MC-vraag → numerieke vraag → tekstobservatie, alle drie 'Bevestigen'-gated) te vergelijken, maar niet de volledige missie tot het eindscherm."
+  ],
+  "viewports": [
+    {
+      "name": "desktop",
+      "cssViewport": "1440x900",
+      "checkpoints": { "start": true, "flow": true, "feedback": true, "recovery": true, "end": true },
+      "evidence": [
+        { "path": "01-desktop-intro.png", "sha256": "b5dd02846c0a7d395407489810fb2fb4ec8ca5b3137d1acd826ec840efb696e6", "width": 1440, "height": 900 },
+        { "path": "02-desktop-vraag1-bevestigd.png", "sha256": "42c1055372135c540fedc48325264af8fa2f428e78d8afa4b25815165015246d", "width": 1440, "height": 900 },
+        { "path": "03-desktop-vraag2-fout-feedback.png", "sha256": "b8ef19d6397cf82b57ad31c725a3264ed10d2c0d87b31e7141561d84c21fb22e", "width": 1440, "height": 900 },
+        { "path": "06-desktop-dataset2-feedback-tekst.png", "sha256": "ad100c2c594d0f53ae2ed6b8bd2279e64b3f531c84991356fbbcdbbc86b24934", "width": 1440, "height": 900 },
+        { "path": "08-desktop-eind.png", "sha256": "60a8294df16df14853faeaba3bbf0f42deb8ce39efb1b5bededd39a0d817f4f3", "width": 1440, "height": 900 }
+      ]
+    }
+  ]
+}

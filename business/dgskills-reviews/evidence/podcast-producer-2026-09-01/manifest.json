@@ -1,0 +1,67 @@
+{
+  "schemaVersion": 1,
+  "mode": "opdracht-review",
+  "missionId": "podcast-producer",
+  "testedCommit": "169e76bb906e056199ce3c5a361ae17318a10da2",
+  "route": "/dev/mission-preview?mission=podcast-producer&reset=1",
+  "browser": "playwright",
+  "environment": "preview",
+  "result": "FAIL",
+  "productionMutations": 0,
+  "xpMutations": 0,
+  "expectation": {
+    "title": "Maak je eigen podcast",
+    "openingLine": "In deze missie leer je hoe je een podcast van begin tot eind produceert. Je kiest een onderwerp, maakt een structuur, schrijft een pakkende intro en bedenkt sterke interviewvragen — net als een echte radiopresentator.",
+    "expectedVerb": "produceren (een podcast opnemen/maken)",
+    "recordedAt": 1788296764913
+  },
+  "actionLog": [
+    { "t": 1788296764913, "action": "leest intro-scherm, verzegelt verwachting vóór eerste interactie", "screenshot": 1 },
+    { "t": 1788296777414, "action": "klikt op 'Start de missie'", "screenshot": 1 },
+    { "t": 1788296793452, "action": "begint te typen in tekstvak stap 1 (onderwerp gamen/schoolstress)", "screenshot": 2 },
+    { "t": 1788296806098, "action": "tekst getypt (>40 tekens); meet 'Volgende stap'-knop vóór aanvinken checklist", "screenshot": 3 },
+    { "t": 1788296815272, "action": "vinkt beide checklist-items stap 1 aan; knop opnieuw gemeten (geen transform/opacity-verandering waargenomen)", "screenshot": 3 },
+    { "t": 1788296832861, "action": "meet stappaneel vlak vóór klik op 'Volgende stap' (overgang naar stap 2 van 4)", "screenshot": 3 },
+    { "t": 1788296851891, "action": "vinkt checklist-item 1 van stap 2 aan (via DOM-click), meet checkbox-wrapper", "screenshot": 4 },
+    { "t": 1788296859096, "action": "vinkt checklist-item 2 van stap 2 aan, meet checkbox-svg-icoon", "screenshot": 4 }
+  ],
+  "animationEvidence": [
+    {
+      "element": "checklist-checkbox-wrapper (stap 2, item 1, class 'space-y-2')",
+      "action": "leerling vinkt de eerste checklist-checkbox van stap 2 aan",
+      "framesBefore": [
+        { "t": 1788296851891, "transform": "none", "opacity": "1" }
+      ],
+      "framesAfter": [
+        { "t": 1788296851908, "transform": "none", "opacity": "1" },
+        { "t": 1788296851917, "transform": "none", "opacity": "1" },
+        { "t": 1788296851933, "transform": "none", "opacity": "1" },
+        { "t": 1788296851950, "transform": "none", "opacity": "1" }
+      ],
+      "reducedMotionChecked": false
+    }
+  ],
+  "introText": "🎙️\n\nDIGITALE PRODUCTEN · LEERJAAR 2\n\nMaak je eigen podcast\n~30 min\nGemiddeld\n+100 XP\n\nIn deze missie leer je hoe je een podcast van begin tot eind produceert. Je kiest een onderwerp, maakt een structuur, schrijft een pakkende intro en bedenkt sterke interviewvragen — net als een echte radiopresentator.\n\n/GOAL\n\nIk produceer een podcast van begin tot eind: onderwerp, structuur, pakkende intro en interviewvragen.\n\nBewijs: Je podcast heeft een duidelijk onderwerp, een hook-first intro en vijf interviewvragen met follow-ups.\n\n1\nKies een interessant onderwerp voor jouw doelgroep\n2\nBouw een duidelijke structuur met intro, segmenten en outro\n3\nSchrijf een pakkende openingszin die luisteraars pakt\n4\nBedenk open interviewvragen die gesprekken op gang brengen\nKEES\n\nGeen stress: stap voor stap kom je er. Ik help je op gang.\n\nStart de missie",
+  "comparedWith": "app-prototyper",
+  "limitations": [
+    "actionLog is met browser Date.now() geïnstrumenteerd voor de eerste 8 handelingen (stap 1 en het begin van stap 2); de resterende handelingen in stap 2-4 zijn wel gespeeld en gescreenshot (screenshots 5-8), maar niet met een losse browser_evaluate-tijdstempel per klik vastgelegd.",
+    "animationEvidence bevat één actiegebonden meting; de gemeten checkbox-wrapper en het svg-icoon toonden identieke transform/opacity over alle frames — Poort 1-beweging is daarom NIET VASTGESTELD, niet GEZAKT, voor dit element.",
+    "reducedMotionChecked is FALSE: er is geen Playwright-tool in deze sessie voor page.emulateMedia(); prefers-reduced-motion kan niet betrouwbaar vanuit paginacontext (browser_evaluate) worden gezet zonder een verse reload met een echte media-emulatie-API. Reduced-motion-gedrag is daarom NIET VASTGESTELD.",
+    "Alleen het desktop-viewport (1440x900) is volledig doorlopen met vijf checkpoints; ipad-portrait, ipad-landscape en mobiel zijn NIET getest, omdat de opdracht al op Veto 1 en Veto 4 AFGEKEURD is en de Poorten (incl. Poort 1 volledige viewportmatrix) volgens de eigen uitkomstvolgorde van de skill dan niet meer worden beoordeeld.",
+    "Veto 1 reload-test is niet apart uitgevoerd (met reset=1 wordt de preview altijd gewist, dat is geen eerlijke persistentietest); de GEZAKT-conclusie steunt in plaats daarvan direct op het eindscherm, dat uitsluitend score/badge toont en geen van de vier geschreven teksten."
+  ],
+  "viewports": [
+    {
+      "name": "desktop",
+      "cssViewport": "1440x900",
+      "checkpoints": { "start": true, "flow": true, "feedback": true, "recovery": true, "end": true },
+      "evidence": [
+        { "path": "01-desktop-intro.png", "sha256": "92b9b7f04cc837fc5a3aa06ba7f05f20b4b9b8a56f06cfcd432292748b24d968", "width": 1440, "height": 900 },
+        { "path": "03-desktop-stap1-ingevuld.png", "sha256": "37b4a39e1d5aae8bfe3fd5d304a216fcd57d96b28520f6792db06039344cc401", "width": 1440, "height": 900 },
+        { "path": "05-desktop-stap3-fout.png", "sha256": "e92cde605a7f23f32f0a7465daa05bac0244da548dc1c86f772e885d56b39b6f", "width": 1440, "height": 900 },
+        { "path": "06-desktop-stap3-verdiepingsvraag.png", "sha256": "78577a915400c20d6c2942aa0d2e4f744505cde0c148a3b1cb8e023afe9c3331", "width": 1440, "height": 900 },
+        { "path": "08-desktop-eind.png", "sha256": "31508eb2e3785e9bf248c4bcc95fbd6f20dd4a1d64bec1e8580ca46aaf077954", "width": 1440, "height": 900 }
+      ]
+    }
+  ]
+}

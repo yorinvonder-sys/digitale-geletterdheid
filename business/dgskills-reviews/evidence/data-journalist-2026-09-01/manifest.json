@@ -1,0 +1,49 @@
+{
+  "schemaVersion": 1,
+  "mode": "opdracht-review",
+  "missionId": "data-journalist",
+  "testedCommit": "169e76bb906e056199ce3c5a361ae17318a10da2",
+  "route": "/dev/mission-preview?mission=data-journalist&reset=1",
+  "browser": "playwright",
+  "environment": "preview",
+  "result": "BLOCKED",
+  "productionMutations": 0,
+  "xpMutations": 0,
+  "expectation": {
+    "title": "Word een data-journalist",
+    "openingLine": "Echte journalisten gebruiken data om verhalen te vertellen. Jij gaat cijfers over social media en schermtijd analyseren, patronen ontdekken en kritisch kijken naar nieuwsberichten. Wat zeggen de getallen écht?",
+    "expectedVerb": "analyseren (data analyseren als journalist)",
+    "recordedAt": 1788297492878
+  },
+  "actionLog": [
+    { "t": 1788297492878, "action": "leest intro-scherm, verzegelt verwachting vóór eerste interactie", "screenshot": 1 },
+    { "t": 1788297504408, "action": "klikt op 'Start de missie'", "screenshot": 1 },
+    { "t": 1788297523563, "action": "kiest antwoord TikTok bij vraag 1 (meest gebruikte platform)", "screenshot": 2 },
+    { "t": 1788297529944, "action": "bevestigt antwoord vraag 1, meet moment vóór typen vraag 2", "screenshot": 2 },
+    { "t": 1788297536922, "action": "typt getal 2.5 bij vraag 2 (gem. uren 14-jarigen), vóór bevestigen", "screenshot": 2 },
+    { "t": 1788297548900, "action": "typt tekstobservatie over gevoel-na-gebruik vs. uren/dag, bevestigt (95/100→45 pts na dataset 1)", "screenshot": 2 },
+    { "t": 1788297557676, "action": "beantwoordt verdiepingsvraag 'bron en methode van dataverzameling'", "screenshot": 3 },
+    { "t": 1788297565596, "action": "meet moment na verdiepingsvraag-feedback, vóór doorklikken naar dataset 2", "screenshot": 3 }
+  ],
+  "animationEvidence": [],
+  "introText": "📰\n\nDATA & DATAVERWERKING · LEERJAAR 2\n\nWord een data-journalist\n~20 min\nGemiddeld\n+100 XP\n\nEchte journalisten gebruiken data om verhalen te vertellen. Jij gaat cijfers over social media en schermtijd analyseren, patronen ontdekken en kritisch kijken naar nieuwsberichten. Wat zeggen de getallen écht?\n\n/GOAL\n\nIk analyseer social media- en schermtijddata als datajournalist en trek onderbouwde conclusies over betrouwbaarheid van nieuwsartikelen.\n\nBewijs: Je leest gemiddelden en verschillen correct af uit een tabel en een grafiek, en je legt uit waarom onderzoek van een bedrijf zelf minder zwaar weegt dan onafhankelijk onderzoek.\n\n1\nAnalyseer een enquête over social media gebruik (leerjaar 2)\n2\nVergelijk schermtijd in zes landen en ontdek patronen\n3\nBeoordeel nieuwsberichten op betrouwbaarheid\nKEES\n\nKlaar voor 'Word een data-journalist'? We pakken het samen aan.\n\nStart de missie",
+  "comparedWith": "dashboard-designer",
+  "limitations": [
+    "Deze missie is UITSLUITEND gespeeld als vergelijkingsinstrument voor Veto 3 van dashboard-designer, niet als een eigen volledige opdracht-review; result is daarom BLOCKED (bewust niet afgemaakt tot eindscherm) en er is geen los oordeel over data-journalist zelf.",
+    "Alleen dataset 1 van 3 plus de verdiepingsvraag is gespeeld; datasets 2 en 3 (schermtijd-vergelijking, nieuwsbetrouwbaarheid) en het eindscherm zijn NIET bekeken.",
+    "animationEvidence is leeg (geen rAF-meting uitgevoerd voor dit vergelijkingsdoel).",
+    "Alleen desktop-viewport (1440x900) getest."
+  ],
+  "viewports": [
+    {
+      "name": "desktop",
+      "cssViewport": "1440x900",
+      "checkpoints": { "start": true, "flow": true, "feedback": true, "recovery": false, "end": false },
+      "evidence": [
+        { "path": "01-intro.png", "sha256": "489d56d8e34baa6151864ba1e121f1ae24f4ee6d38fc2844ebe4343de81d1be8", "width": 1440, "height": 900 },
+        { "path": "02-dataset1-compleet.png", "sha256": "4317d3bcb176371bab46a849354fa2de447c224e5dcd8f28702e330626e0f62b", "width": 1440, "height": 900 },
+        { "path": "03-verdiepingsvraag.png", "sha256": "06b5d8fa5f6e2c53ce957bf8803f6d6ef9eba97382d545fa21505c67dd6fb2b9", "width": 1440, "height": 900 }
+      ]
+    }
+  ]
+}

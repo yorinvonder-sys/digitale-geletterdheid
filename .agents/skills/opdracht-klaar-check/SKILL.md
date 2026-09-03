@@ -5,6 +5,8 @@ description: Use this skill after a DGSkills learner assignment, mission, demo t
 
 # Opdracht Klaar Check
 
+> Voor het eindoordeel over één opdracht: gebruik `opdracht-review` (speelt eerst, dan veto's en poorten); deze skill is alleen deelcontrole.
+
 Use this skill as the post-build quality gate. It verifies the real assignment, not just the intention. It should produce an evidence-based decision: `ship`, `fix-eerst`, or `herontwerp`.
 
 ## Operating Rules

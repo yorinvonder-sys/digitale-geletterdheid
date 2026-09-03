@@ -5,6 +5,8 @@ description: Review, audit, visually test, or improve an existing DGSkills learn
 
 # DGSkills Mission Review - Codex Workspace Skill
 
+> Voor het eindoordeel over één opdracht: gebruik `opdracht-review` (speelt eerst, dan veto's en poorten); deze skill is alleen deelcontrole.
+
 Gebruik deze skill als project-lokale orchestrator. Werk tokenzuinig: laat Luna standaard het begrensde, controleerbare uitvoeringswerk doen en reserveer Sol voor integratie, gevoelige beslissingen en het eindverdict. Sol blijft altijd verantwoordelijk voor de uiteindelijke releasebeslissing.
 
 Pas vóór elke coherente slice de routinggate toe:
