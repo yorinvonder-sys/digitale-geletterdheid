@@ -1,0 +1,137 @@
+{
+  "schemaVersion": 2,
+  "missionId": "website-bouwer",
+  "testedCommit": "b8cd1f92fe1de7d5359462268fe5d8dae80b90c5",
+  "route": "/dev/mission-preview?mission=website-bouwer&reset=1",
+  "browser": "Playwright",
+  "mode": "opdracht-review",
+  "environment": "preview",
+  "productionMutations": 0,
+  "xpMutations": 0,
+  "result": "FAIL",
+  "limitations": [
+    "Veto 1 'een ander kan het bekijken' is alleen aangetoond via de live browser-preview en localStorage-persistentie na volledige reload; er is geen aparte docent- of klasgenootweergave in de dev-preview om dit te bekijken.",
+    "veto2-tijdregistratie is gebaseerd op de werkelijke desktop-hoofdspeelronde; de extra viewport-rondes (mobiel, tablet) zijn niet apart per minuut geregistreerd omdat ze dezelfde handelingen herhalen."
+  ],
+  "expectation": {
+    "title": "Bouw je eerste website",
+    "openingLine": "In deze missie leer je hoe echte websites worden gemaakt. HTML is de taal waarmee je vertelt wát er op een pagina staat (een titel, tekst, een plaatje). Je typt je eerste HTML-code, voegt stijl toe met CSS en bouwt een fictieve \"Over Mij\"-pagina — geen drag-and-drop, maar echte code die je zelf schrijft.",
+    "expectedVerb": "bouwen",
+    "recordedAt": 1788420829421
+  },
+  "actionLog": [
+    { "t": 1788420835000, "type": "click", "action": "Start de missie geklikt", "screenshot": 1 },
+    { "t": 1788420879787, "type": "type", "action": "Volledige HTML-basisstructuur getypt in stap 1 (DOCTYPE, head, h1, p)", "screenshot": 3, "changedNextState": true },
+    { "t": 1788420880200, "type": "click", "action": "Checklist stap 1 volledig aangevinkt (4 items)", "screenshot": 4 },
+    { "t": 1788420880600, "type": "click", "action": "Volgende stap geklikt naar stap 2", "screenshot": 4 },
+    { "t": 1788420881000, "type": "type", "action": "CSS-regels getypt (achtergrondkleur, h1-kleur, font-size)", "screenshot": 5, "changedNextState": true },
+    { "t": 1788420881400, "type": "click", "action": "Checklist stap 2 volledig aangevinkt (4 items), Volgende stap geklikt", "screenshot": 5 },
+    { "t": 1788420881800, "type": "type", "action": "Onvolmaakt eerste antwoord getypt in stap 3 (h2 + img, zonder lijst/alt)", "screenshot": 6, "changedNextState": true },
+    { "t": 1788420882000, "type": "click", "action": "Slechts 2 van 4 checklist-items aangevinkt, Volgende stap blijft geblokkeerd", "screenshot": 7 },
+    { "t": 1788420882400, "type": "type", "action": "Antwoord gecorrigeerd: ul/li en alt-attribuut toegevoegd", "screenshot": 7, "changedNextState": true },
+    { "t": 1788420882800, "type": "click", "action": "Overige 2 checklist-items alsnog aangevinkt, Volgende stap geklikt (herstel)", "screenshot": 8 },
+    { "t": 1788420883200, "type": "type", "action": "Reflectietekst getypt in stap 4 (HTML vs CSS, wat lastig was)", "screenshot": 8, "changedNextState": true },
+    { "t": 1788420883600, "type": "click", "action": "Checklist stap 4 volledig aangevinkt (4 items)", "screenshot": 8 },
+    { "t": 1788420884000, "type": "click", "action": "Resultaten bekijken geklikt, eindscherm 100/100 bereikt", "screenshot": 9 },
+    { "t": 1788420884400, "type": "navigate", "action": "Volledige paginareload zonder reset=1 om persistentie te controleren", "screenshot": 10 },
+    { "t": 1788420884800, "type": "click", "action": "Eindscherm met zelfde score en werk teruggevonden na reload", "screenshot": 10 }
+  ],
+  "animationEvidence": [
+    {
+      "element": "button 'Volgende stap' in stap 1 (disabled → enabled na vierde checkbox)",
+      "action": "Vierde en laatste checklist-item aangevinkt, waardoor de knop van uitgeschakeld naar ingeschakeld overgaat",
+      "screenshot": 28,
+      "framesBefore": [
+        { "t": 1788421813922, "transform": "none", "opacity": "1", "backgroundColor": "rgb(194, 193, 189)", "color": "rgba(32, 32, 35, 0.7)", "borderColor": "rgb(229, 231, 235)", "boxShadow": "none", "rect": { "x": 20, "y": 875.25, "width": 601, "height": 44 } }
+      ],
+      "actionTime": 1788421814003,
+      "framesAfter": [
+        { "t": 1788421814023, "transform": "none", "opacity": "1", "backgroundColor": "rgba(194, 193, 189, 0.984)", "color": "rgba(32, 32, 35, 0.706)", "borderColor": "rgb(229, 231, 235)", "boxShadow": "none", "rect": { "x": 20, "y": 875.25, "width": 601, "height": 44 } },
+        { "t": 1788421814038, "transform": "none", "opacity": "1", "backgroundColor": "rgba(194, 193, 189, 0.92)", "color": "rgba(32, 32, 35, 0.725)", "borderColor": "rgb(229, 231, 235)", "boxShadow": "none", "rect": { "x": 20, "y": 875.25, "width": 601, "height": 44 } },
+        { "t": 1788421814053, "transform": "none", "opacity": "1", "backgroundColor": "rgba(194, 193, 189, 0.773)", "color": "rgba(32, 32, 35, 0.77)", "borderColor": "rgb(229, 231, 235)", "boxShadow": "none", "rect": { "x": 20, "y": 875.25, "width": 601, "height": 44 } }
+      ],
+      "reducedMotionChecked": true
+    }
+  ],
+  "reducedMotion": {
+    "classPresent": true,
+    "screenshot": 27
+  },
+  "introSteps": [
+    { "screenshot": 1, "text": "🌐 PROGRAMMEREN · LEERJAAR 1 Bouw je eerste website ~30 min Gemiddeld +100 XP In deze missie leer je hoe echte websites worden gemaakt. HTML is de taal waarmee je vertelt wát er op een pagina staat (een titel, tekst, een plaatje). Je typt je eerste HTML-code, voegt stijl toe met CSS en bouwt een fictieve \"Over Mij\"-pagina — geen drag-and-drop, maar echte code die je zelf schrijft. /GOAL Ik bouw een werkende fictieve Over Mij-webpagina met HTML, CSS en een korte uitleg van mijn keuzes. Bewijs: HTML-basis, CSS-stijl, persoonlijke inhoud en uitleg over HTML versus CSS. 1 Schrijf je eerste HTML-structuur met tags 2 Voeg kleur en stijl toe met CSS 3 Bouw een fictief profiel met afbeeldingsplek 4 Begrijp hoe browsers je code omzetten naar een webpagina KEES Geen stress: stap voor stap kom je er. Ik help je op gang. Start de missie" }
+  ],
+  "introSummary": {
+    "maak": "Een werkende fictieve Over Mij-webpagina met echte HTML en CSS die zelf getypt is.",
+    "voorWie": "Leerjaar 1, programmeren; de opdracht is bedoeld voor leerlingen die hun eerste website leren bouwen.",
+    "goed": "Er staat HTML-basis, CSS-stijl, persoonlijke (fictieve) inhoud en een uitleg over het verschil tussen HTML en CSS."
+  },
+  "veto2": { "readClickMinutes": 1, "totalMinutes": 4, "percentage": 0.25 },
+  "comparedWith": { "missionId": "brand-builder", "manifestPath": "../brand-builder-2026-09-02/manifest.json" },
+  "gates": {
+    "veto1": "GESLAAGD",
+    "veto2": "GESLAAGD",
+    "veto3": "GESLAAGD",
+    "veto4": "GESLAAGD",
+    "poort1": "GESLAAGD",
+    "poort2": "GEZAKT",
+    "poort3": "GESLAAGD"
+  },
+  "viewports": [
+    {
+      "name": "desktop",
+      "cssViewport": "1440x900",
+      "checkpoints": { "start": true, "flow": true, "feedback": true, "recovery": true, "end": true },
+      "evidence": [
+        { "screenshot": 1, "path": "01-desktop-start.png", "sha256": "090769997a08dd25bedf128e54d00d6c6009dfbf209a718ba20d9a2c9519b0d2", "width": 1440, "height": 900 },
+        { "screenshot": 2, "path": "02-desktop-stap1-voor.png", "sha256": "944691053a25f810e1cbf1504fcef312fe77401307a3d6bbab3615d3d89faa41", "width": 1440, "height": 900 },
+        { "screenshot": 3, "path": "03-desktop-stap1-na-typen.png", "sha256": "cb3574bd82dc1a893bfb979589f799f0e84fdc9d2979236df9d9e73287169307", "width": 1440, "height": 900 },
+        { "screenshot": 4, "path": "04-desktop-stap1-compleet.png", "sha256": "52e374693d97ec4031f62d49f64848a475a8e977c29ddb76e8347e44753783db", "width": 1440, "height": 900 },
+        { "screenshot": 5, "path": "05-desktop-stap2-css-getypt.png", "sha256": "182237ef2640af37a8d1850d51e488c3274ce0ebb747aa648a98b2ac6f0fe0f4", "width": 1440, "height": 900 },
+        { "screenshot": 6, "path": "06-desktop-stap3-onvolmaakt.png", "sha256": "f9f632f345765e2b5dd9da6a92c85bc0608a5301eee21ae2b6a13ab8047d9406", "width": 1440, "height": 900 },
+        { "screenshot": 7, "path": "07-desktop-stap3-geblokkeerd.png", "sha256": "b6f68f2a700ae141b317acb95f24a98c4ae4c4dadb67b45de29b88294dc0b197", "width": 1440, "height": 900 },
+        { "screenshot": 8, "path": "08-desktop-stap4-compleet.png", "sha256": "1b4e4fa1bfcc2f920d5c60ab295ec5df60f162759101ed4b30cb07e2b9ad76f8", "width": 1440, "height": 900 },
+        { "screenshot": 9, "path": "09-desktop-eind.png", "sha256": "9f20fa7df3141776b4a5632a9ee605484ba9fb19d3e24936bbea9add6e66501d", "width": 1440, "height": 900 },
+        { "screenshot": 10, "path": "10-desktop-refresh-persistentie.png", "sha256": "96cd8353e3774550bbe3342945a573c7a0aa463b78c3624fc6bea05bd0400026", "width": 1440, "height": 900 },
+        { "screenshot": 28, "path": "28-desktop-actiemeting-knop.png", "sha256": "f7b20bcfa6ccb969612f849a13fbe8e8d74d44a5b46a99455dbb5b1408dc5f89", "width": 1440, "height": 900 }
+      ]
+    },
+    {
+      "name": "mobile",
+      "cssViewport": "375x844",
+      "checkpoints": { "start": true, "flow": true, "feedback": true, "recovery": true, "end": true },
+      "evidence": [
+        { "screenshot": 11, "path": "11-mobile-start.png", "sha256": "d34a10db01602ffc246ac7d5bf0db75c32c8303bf9cd51eae6dbeb5ce3fafb66", "width": 375, "height": 844 },
+        { "screenshot": 12, "path": "12-mobile-flow-stap1.png", "sha256": "47414a7291dad9ccf3c11a0562e84ea7524e379099b270d776321a23201a5935", "width": 375, "height": 844 },
+        { "screenshot": 13, "path": "13-mobile-preview-tab.png", "sha256": "cb51078f1fb862b497747140aeb132e4028219df3e4b9a0fdfa8a41504c412c9", "width": 375, "height": 844 },
+        { "screenshot": 14, "path": "14-mobile-feedback-geblokkeerd.png", "sha256": "416dd254968e594f2eab18b79b6b59178a7aa1643009f96ee83de776bc1bd2a8", "width": 375, "height": 844 },
+        { "screenshot": 15, "path": "15-mobile-recovery-hersteld.png", "sha256": "922de162b4b2d2998e3d6bd7270f729ca4cff7bc7d5e589767b97452eee227fd", "width": 375, "height": 844 },
+        { "screenshot": 16, "path": "16-mobile-eind.png", "sha256": "5076aa94be24431d04687071e9a67bb8998f6fc4f9818f6bc0c8d9955f5b1070", "width": 375, "height": 844 },
+        { "screenshot": 27, "path": "27-mobile-reduced-motion.png", "sha256": "b0bac07c8c07b438b1c78321557fb9c2d703e77deb913fbdb807990d69e3bd67", "width": 375, "height": 844 }
+      ]
+    },
+    {
+      "name": "ipad-portrait",
+      "cssViewport": "820x1180",
+      "checkpoints": { "start": true, "flow": true, "feedback": true, "recovery": true, "end": true },
+      "evidence": [
+        { "screenshot": 17, "path": "17-ipad-portrait-start.png", "sha256": "467eb34b6db15e00eb02da4a1e200ccc9cfdffa8540e5a87960815340730a35a", "width": 820, "height": 1180 },
+        { "screenshot": 18, "path": "18-ipad-portrait-flow-stap1.png", "sha256": "176df604994f7b8ec4e58f0463d237ba0b61c8f0402eec60b20e81cf8edd6a6c", "width": 820, "height": 1180 },
+        { "screenshot": 19, "path": "19-ipad-portrait-feedback-geblokkeerd.png", "sha256": "1ac7c6cbce24e525c2614ef8d0e1cfd9633e7e6fb3887b23310be7d6bcd60927", "width": 820, "height": 1180 },
+        { "screenshot": 20, "path": "20-ipad-portrait-recovery-hersteld.png", "sha256": "7ce39a9471c6fefe60e1b0837fff2e375a200147b211974c907098d11c3308a1", "width": 820, "height": 1180 },
+        { "screenshot": 21, "path": "21-ipad-portrait-eind.png", "sha256": "0ef6231d5e41972df1c20742d4319e149d005626d30a5fadf1934e06129ac073", "width": 820, "height": 1180 }
+      ]
+    },
+    {
+      "name": "ipad-landscape",
+      "cssViewport": "1180x820",
+      "checkpoints": { "start": true, "flow": true, "feedback": true, "recovery": true, "end": true },
+      "evidence": [
+        { "screenshot": 22, "path": "22-ipad-landscape-start.png", "sha256": "1bb262605b7fdc881af093f0d71eb788a5591037048f27ad620434acf44f816b", "width": 1180, "height": 820 },
+        { "screenshot": 23, "path": "23-ipad-landscape-flow-stap1.png", "sha256": "0aab4c0954f0787b790386d8a0ee92630671bb719f83972e8cf03a7604a76f98", "width": 1180, "height": 820 },
+        { "screenshot": 24, "path": "24-ipad-landscape-feedback-geblokkeerd.png", "sha256": "a18d86c4391c89e429a762416edcf17c870f12ec4e3c108f2506f45660eff4b2", "width": 1180, "height": 820 },
+        { "screenshot": 25, "path": "25-ipad-landscape-recovery-hersteld.png", "sha256": "fcbc6f69929c04e97650d3903131b11f6a5552fd3df4c46bcc28d4a598b1a6e1", "width": 1180, "height": 820 },
+        { "screenshot": 26, "path": "26-ipad-landscape-eind.png", "sha256": "22c249a932a1c94f21ac17a4182abb054339fa2071ff7dde351793036552e602", "width": 1180, "height": 820 }
+      ]
+    }
+  ]
+}
