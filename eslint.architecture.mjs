@@ -31,7 +31,7 @@ export default {
     // a directory. Without it a file pattern classifies nothing at all.
     components: [
         { name: 'test-support', pattern: 'tests/**' },
-        { name: 'test-unit', pattern: 'src/**/*.{test,spec}.{ts,tsx,mjs}', mode: 'file' },
+        { name: 'test-unit', pattern: 'src/**/*.{test,spec}.{ts,tsx,js,jsx,mjs}', mode: 'file' },
         { name: 'test-contract', pattern: 'src/**/*.contract.mjs', mode: 'file' },
         { name: 'edge-functions', pattern: 'supabase/functions/**' },
         { name: 'components-ui', pattern: 'src/components/ui/**' },

@@ -76,6 +76,7 @@ function resolveNames(spec, except) {
 }
 
 // One spec can name both kinds, so it expands to a list of selectors.
+//
 function selectors(spec, except) {
     const resolved = resolveNames(spec, except);
     if (!Array.isArray(resolved)) {
@@ -100,11 +101,31 @@ const files = FILE_COMPONENTS.map((c) => ({
     pattern: c.pattern,
 }));
 
-const policies = FORBIDDEN.map((e) => ({
-    from: selectors(e.from, e.except),
-    disallow: selectors(e.to, e.except_to).map((to) => ({ to })),
-    message: e.why,
-}));
+// A file carries BOTH a file category and the element type of the directory it
+// sits in: src/features/foo/x.test.ts is `test-unit` AND `feature`. So an
+// `except` that drops file categories does not stop the surviving element
+// selector from matching those same files, and a legitimate test-to-test
+// import across elements would be rejected. Constraining the `from` selector
+// cannot fix this -- a production file has no file category at all, so ANY
+// `file` condition on that selector fails to match it. Instead each such edge
+// emits a trailing `allow` policy reinstating the excluded categories; later
+// policies win, so the excepted sources keep their access.
+const policies = FORBIDDEN.flatMap((e) => {
+    const to = selectors(e.to, e.except_to);
+    const disallow = {
+        from: selectors(e.from, e.except),
+        disallow: to.map((t) => ({ to: t })),
+        message: e.why,
+    };
+    const exceptedCategories = e.except?.length
+        ? resolveNames(e.except).filter((n) => fileCategories.has(n))
+        : [];
+    if (!exceptedCategories.length) return [disallow];
+    return [
+        disallow,
+        { from: [{ file: { categories: exceptedCategories } }], allow: to.map((t) => ({ to: t })) },
+    ];
+});
 
 export default [
     {
