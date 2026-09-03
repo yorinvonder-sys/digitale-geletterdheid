@@ -75,6 +75,13 @@ function resolveNames(spec, except) {
                   : [t],
         );
     let types = resolveList(Array.isArray(spec) ? spec : [spec]);
+    if (CATCH_ALL_CATEGORY && types.includes(CATCH_ALL_CATEGORY)) {
+        throw new Error(
+            `eslint.architecture.mjs: '${CATCH_ALL_CATEGORY}' is a reserved implementation ` +
+            `detail (it matches every file so that \`noneOf\` can exclude categories) and ` +
+            `cannot be named by a rule. Select the element types you mean instead.`,
+        );
+    }
     if (except?.length) {
         const excluded = new Set(resolveList(except));
         types = types.filter((t) => !excluded.has(t));
@@ -105,30 +112,25 @@ function selectors(spec, except) {
     // The element arm carries the category exclusion; the positive category arm
     // is kept alongside it, because dropping it would silently stop enforcing
     // components the spec still selects.
+    //
+    // When the `except` removed ELEMENTS, that arm has to carry the surviving
+    // element list too: a categorized file inside an excluded element would
+    // otherwise be selected straight back through its category.
+    const excludedElements = except?.length
+        ? resolveNames(except).filter((n) => !fileCategories.has(n))
+        : [];
     const out = [];
     if (elementTypes.length) {
         out.push(excludedCategories.length
             ? { element: { type: elementTypes }, file: { categories: { noneOf: excludedCategories } } }
             : { element: { type: elementTypes } });
     }
-    if (categories.length) out.push({ file: { categories } });
-    return out;
-}
-
-// `capture` is supported on element components only. A relational template such
-// as `!{{from.captured.domain}}` reads the source's ELEMENT capture; for a file
-// component the value lives elsewhere, and two attempts to retarget it produced
-// a rule that over-blocked every import and then one that blocked none. No rule
-// here uses the construct, so it is rejected rather than approximated a third
-// time. Re-enable it only with probes proving both the same-scope and
-// cross-scope edge behave correctly.
-for (const c of FILE_COMPONENTS) {
-    if (c.capture) {
-        throw new Error(
-            `eslint.architecture.mjs: component '${c.name}' declares capture with ` +
-            `mode: 'file'. Captures are only supported on element components.`,
-        );
+    if (categories.length) {
+        out.push(excludedElements.length && elementTypes.length
+            ? { element: { type: elementTypes }, file: { categories } }
+            : { file: { categories } });
     }
+    return out;
 }
 
 const elements = ELEMENT_COMPONENTS.map((c) => ({
