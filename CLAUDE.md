@@ -89,83 +89,27 @@ Use `design-and-refactor` as the orchestrating skill that sequences these gates 
 
 ## Model- en Denkniveau-Selectie
 
-Bepaal vóór iedere taak zelf welk model en denkniveau past, op basis van
-complexiteit, risico en benodigde verificatie. Deze standaard geldt
-repository-breed; domein-`CLAUDE.md`'s voegen alleen een strengere ondergrens toe
-(geen herhaling van deze tabel).
+Bepaal vóór iedere taak model + denkniveau op complexiteit, risico en
+verificatie. Meld dat bij de eerste taak van een sessie in één regel, en opnieuw
+zodra het taaktype wisselt:
 
-### Sessiestart-check (verplicht, elke nieuwe sessie)
+`Classificatie: <model> <niveau> — <reden in max 8 woorden>`
 
-Bij de eerste taak van een sessie: bepaal expliciet model + denkniveau vóór de
-eerste tooluitvoering, en meld dat in één regel. Herhaal de check zodra het
-taaktype wisselt (bijv. van copy naar auth) — niet bij elke deelstap.
+Projectspecifieke ondergrenzen (de rest staat in `.claude/model-selection.md`):
 
-Formaat: `Classificatie: <model> <niveau> — <reden in max 8 woorden>`
+- Supabase, auth, rollen, sessies, migraties, CI/CD, Vercel-config: **Opus 5
+  `high`** minimaal — ook voor subagents die dit raken.
+- Onafhankelijke eindreview: Opus 5 `xhigh`, nooit dezelfde agent die schreef.
+- Haiku 4.5 nooit voor code die gemerged wordt (200K context).
+- Fable 5 niet in deze repo (stand juli 2026): de securityclassifier geeft
+  false positives op auth/RLS-werk en routeert stil door naar een zwakker
+  model, tegen dubbel tarief. Herbeoordeel als dat aantoonbaar is opgelost.
+- `high` is de default; `max` is niet veiliger. Houd antwoorden en
+  Markdown-deliverables kort: geen vulsecties, geen herhaalde samenvattingen.
 
-Ontbreekt de informatie om te classificeren, vraag dat vóór uitvoering, niet
-erna.
-
-### Modelpalet
-
-| Model | Kies bij |
-|---|---|
-| Haiku 4.5 | Bulkwerk, classificatie, goedkope read-only subagents. Let op: 200K context i.p.v. 1M. Nooit voor code die gemerged wordt. |
-| Sonnet 5 | Teksten, docs, styling, afgebakende componentwijzigingen, repetitief onderhoud. |
-| Opus 5 | Standaard voor echte codewijzigingen en alles in de kritieke domeinen. |
-| Fable 5 | Niet gebruiken in deze repo (stand juli 2026). De securityclassifier geeft hoge false positives op auth-, RLS- en security-adjacent werk en routeert dan stil door naar een zwakker model — precies de kritieke domeinen van dit project, tegen dubbel tarief ($10/$50 vs $5/$25). Opus 5 scoort bovendien hoger op codeerbenchmarks. Herbeoordeel als de false-positive-rate aantoonbaar is opgelost. |
-| DeepSeek Flash / Pro | Extern model zonder tool- of codebasetoegang, aangeroepen via `~/.claude/scripts/deepseek-{flash,pro}.sh`. Kies bij tekstwerk waarvan jij de context al hebt: commit- en PR-teksten uit een diff, changelogs, samenvattingen van logs of testuitvoer, documentatie uit meegeleverde code, een aanpak laten narekenen. Lever context via `--file`/`--stdin`, nooit uitgetypt in de prompt. **Nooit** voor auth, RLS, secrets, edge functions, compliance- of juridische teksten, en nooit voor iets met leerlinggegevens — alles wat je meestuurt verlaat de vertrouwensgrens. Output is een voorstel: Opus reviewt vóór commit of oplevering. De volledige regels staan in de globale model-workflowregels van de gebruiker, buiten deze repo. |
-
-### Taakclassificatie
-
-| Model + niveau | Wanneer |
-|---|---|
-| Sonnet 5 low/medium | Teksten, documentatie, eenvoudige styling, kleine componentwijzigingen, repetitief werk, duidelijk afgebakend onderhoud. |
-| Opus 5 low | Standaard voor normale codewijzigingen, overzichtelijke bugs, reguliere implementatie. |
-| Opus 5 medium | Complexe features, frontendinteracties, animaties, state-samenwerking, normale PR-reviews, wijzigingen over meerdere bestanden. |
-| Opus 5 high | Supabase, auth, rollen, sessies, dependencies, CI/CD, Vercel-config, performanceproblemen, architectuur, moeilijk reproduceerbare regressies. |
-| Opus 5 xhigh | Grote productie-impact, complexe securityvragen, dependencyconflicten, database-/datamigraties, regressies over meerdere systemen of branches. Ook: agentische codeertaken over veel bestanden. |
-| Opus 5 max | Zelden. Alleen wanneer correctheid zwaarder weegt dan kosten én latency, en er geen tweede reviewer beschikbaar is. |
-
-Denkniveau-gebruik in de praktijk:
-
-- `high` is de default; ga daar niet standaard boven zitten.
-- Voor agentisch codeerwerk begin je op `xhigh` en werk je omláág zodra het werkt.
-- `low` en `medium` presteren op Opus 5 uitzonderlijk goed tegen een fractie van
-  de tokens. Test omlaag voordat je omhoog escaleert.
-- `max` is niet "veiliger" — het leidt vaker tot overthinking en diminishing
-  returns. Een onafhankelijke tweede reviewer op `xhigh` is sterker dan één
-  reviewer op `max`.
-- Op `xhigh`/`max`: reken op een ruim outputbudget, anders kapt het werk af.
-
-### Agents en subagents
-
-Kies model + denkniveau per subagent apart; erf niet automatisch het niveau van
-de hoofdsessie.
-
-- Zoeken, inventariseren, read-only verkenning: Haiku 4.5 of Sonnet 5, `low`.
-- Implementerende subagent op niet-kritieke code: Opus 5 `low`/`medium`.
-- Subagent die auth, RLS, migraties of productieconfiguratie raakt: Opus 5
-  `high` minimaal — dezelfde ondergrens als de hoofdsessie.
-- Onafhankelijke eindreview: Opus 5 `xhigh`, en het mag niet dezelfde agent zijn
-  die de wijziging schreef.
-- Delegeer alleen wanneer de opbrengst de overhead overtreft. Een subagent
-  herbouwt zijn context, rapporteert terug, en jij leest die rapportage — voor
-  een paar bestandslezingen of een simpele edit is dat verlies. Gebruik geen
-  subagent om je eigen werk te verifiëren; verificatie hoort in de hoofdloop.
-
-### Beknoptheid
-
-Opus 5 schrijft standaard langere antwoorden én langere bestanden dan eerdere
-modellen. Een lager denkniveau lost dat niet op — dat vergt een expliciete
-instructie. Houd zichtbare antwoorden en rapportage kort, en beperk
-Markdown-deliverables tot de inhoud: geen vulsecties, geen herhaalde
-samenvattingen, geen boilerplate.
-
-### Verdieping
-
-Kostenregel, escalatieregels, zelfevaluatie vóór/ná uitvoering en het
-rapportageformat staan in `.claude/model-selection.md`. Open dat bestand bij
-twijfel over kosten, bij escalatie en vóór afronding — niet standaard.
+Volledige tabellen (modelpalet, taakclassificatie, subagent-keuze), kostenregel,
+escalatie en zelfevaluatie: `.claude/model-selection.md` — open bij twijfel,
+niet standaard.
 
 ## Claude Workflow Notes
 
