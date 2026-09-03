@@ -1,0 +1,588 @@
+{
+  "schemaVersion": 2,
+  "mode": "opdracht-review",
+  "environment": "preview",
+  "missionId": "neural-navigator",
+  "testedCommit": "f487541e3c98cb1544daebb6be154118f6c9103f",
+  "route": "/dev/mission-preview?mission=neural-navigator&reset=1",
+  "browser": "Playwright (MCP)",
+  "result": "BLOCKED",
+  "limitations": [
+    "De custom event-logger (window.__dgLog) ving na de allereerste klik nog maar twee verschillende type-waarden op (pointerdown, click); input/keydown-events werden herhaaldelijk niet gelogd ondanks veelvuldig typen, om een niet-opgehelderde technische reden (mogelijk een eigenschap van hoe Playwright/CDP events dispatcht in deze omgeving). actionLog-tijdstippen zijn daarom overwegend afgeleid uit de daadwerkelijk waargenomen, geverifieerde tijdstempels van elke tool-aanroep in plaats van uit de logger zelf. Er zijn hierdoor geen 'input'/'keydown'-events in actionLog aanwezig, dus minder dan drie verschillende type-waarden.",
+    "De expectation-capture (stap 1) gaf oorspronkelijk een leeg title/openingLine terug, omdat document.querySelector('h1') het eerste van twee h1-elementen op de pagina pakte: een onzichtbare, positie-vaste 'lcp-hero' h1 (id=lcp-hero, waarschijnlijk voor LCP-optimalisatie) met lege tekst, vóór de zichtbare missietitel-h1. recordedAt is wel correct vastgesteld (1788426061646). De titel is achteraf hersteld door alle h1-elementen langs te lopen en de eerste met niet-lege innerText en een rect met breedte/hoogte groter dan nul te nemen ('Word een Neural Navigator'); dit is vergeleken met screenshot 01 (01-desktop-start.png) en komt daarmee overeen. openingLine blijft ongewijzigd zoals oorspronkelijk vastgesteld.",
+    "De browser-tab en werkmap voor screenshots werden in deze sessie gedeeld met een parallelle speler-sessie (speler-ml-trainer) op hetzelfde onderliggende Playwright-MCP-proces (bestandsnamen overlapten niet, maar dit is een omgevingsfactor van deze reviewronde, geen eigenschap van de opdracht zelf).",
+    "introSteps-tekst is vastgelegd via de accessibility-snapshot op hetzelfde moment als het bijbehorende screenshot, niet via een aparte document.body.innerText-aanroep zoals de briefing als voorbeeld geeft; de tekst is wel letterlijk wat op het scherm stond."
+  ],
+  "productionMutations": 0,
+  "xpMutations": 0,
+  "expectation": {
+    "title": "Word een Neural Navigator",
+    "openingLine": "⚡",
+    "expectedVerb": "berekenen",
+    "recordedAt": 1788426061646
+  },
+  "actionLog": [
+    {
+      "t": 1788426090643,
+      "type": "click",
+      "action": "Op 'Start de missie' geklikt",
+      "screenshot": 1
+    },
+    {
+      "t": 1788426110252,
+      "type": "pointerdown",
+      "action": "Numeriek antwoordveld (dataset 1, vraag 1) aangeklikt",
+      "screenshot": 2
+    },
+    {
+      "t": 1788426110263,
+      "type": "click",
+      "action": "Klik-event op numeriek antwoordveld (dataset 1, vraag 1) bevestigd",
+      "screenshot": 2
+    },
+    {
+      "t": 1788426148279,
+      "type": "click",
+      "action": "Bevestigen geklikt bij vraag 1 (berekend antwoord 0.48, correct)",
+      "screenshot": 3
+    },
+    {
+      "t": 1788426181892,
+      "type": "click",
+      "action": "Radiobutton 'Neuron C' gekozen bij vraag 2 (hoogste output)",
+      "screenshot": 4
+    },
+    {
+      "t": 1788426197550,
+      "type": "click",
+      "action": "Bevestigen geklikt bij vraag 2 (correct)",
+      "screenshot": 4
+    },
+    {
+      "t": 1788426205797,
+      "type": "click",
+      "action": "Tekstveld observatie aangeklikt (eerste, onvolledige poging 'Weet niet' getypt)",
+      "screenshot": 5
+    },
+    {
+      "t": 1788426215090,
+      "type": "click",
+      "action": "Tekstveld observatie opnieuw aangeklikt om te herstellen met een volledig antwoord",
+      "screenshot": 5
+    },
+    {
+      "t": 1788426219728,
+      "type": "click",
+      "action": "Bevestigen geklikt bij vraag 3 na herstel (observatie over gewichten, correct)",
+      "screenshot": 6
+    },
+    {
+      "t": 1788426254218,
+      "type": "click",
+      "action": "Numeriek antwoordveld dataset 2 vraag 1 aangeklikt",
+      "screenshot": 7
+    },
+    {
+      "t": 1788426256478,
+      "type": "click",
+      "action": "Bevestigen geklikt bij dataset 2 vraag 1 (antwoord 0.87, correct)",
+      "screenshot": 8
+    },
+    {
+      "t": 1788426258721,
+      "type": "click",
+      "action": "Radiobutton 'gewichten waren willekeurig' gekozen bij dataset 2 vraag 2",
+      "screenshot": 8
+    },
+    {
+      "t": 1788426260924,
+      "type": "click",
+      "action": "Bevestigen geklikt bij dataset 2 vraag 2 (correct)",
+      "screenshot": 8
+    },
+    {
+      "t": 1788426265670,
+      "type": "click",
+      "action": "Tekstveld backpropagation-uitleg aangeklikt bij dataset 2 vraag 3",
+      "screenshot": 9
+    },
+    {
+      "t": 1788426270589,
+      "type": "click",
+      "action": "Bevestigen geklikt bij dataset 2 vraag 3 (analogie recept/backpropagation, correct)",
+      "screenshot": 9
+    },
+    {
+      "t": 1788426276594,
+      "type": "click",
+      "action": "'Volgende dataset' geklikt, naar dataset 3",
+      "screenshot": 10
+    },
+    {
+      "t": 1788426284673,
+      "type": "click",
+      "action": "Numeriek antwoordveld dataset 3 vraag 1 aangeklikt",
+      "screenshot": 10
+    },
+    {
+      "t": 1788426287129,
+      "type": "click",
+      "action": "Bevestigen geklikt bij dataset 3 vraag 1 (antwoord 5, correct)",
+      "screenshot": 10
+    },
+    {
+      "t": 1788426289910,
+      "type": "click",
+      "action": "Tekstveld 'toepassing die je dagelijks gebruikt' aangeklikt bij dataset 3 vraag 2",
+      "screenshot": 10
+    },
+    {
+      "t": 1788426294083,
+      "type": "click",
+      "action": "Bevestigen geklikt bij dataset 3 vraag 2 (gezichtsherkenning-voorbeeld, correct)",
+      "screenshot": 11
+    },
+    {
+      "t": 1788426298575,
+      "type": "click",
+      "action": "'Bekijk resultaten' geklikt, eindscherm bereikt (100/100 punten)",
+      "screenshot": 11
+    }
+  ],
+  "animationEvidence": [
+    {
+      "element": "button 'Volgende dataset' (Tailwind class active:scale-[0.98], transition-all duration-200)",
+      "action": "Muisknop ingedrukt gehouden (mousedown) op de knop 'Volgende dataset', direct gevolgd door mouse-up; dit was tevens de actie die naar dataset 2 navigeerde",
+      "screenshot": 7,
+      "framesBefore": [
+        {
+          "t": 1788426240096,
+          "transform": "none",
+          "opacity": "1",
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "color": "rgb(32, 32, 35)",
+          "borderColor": "rgb(229, 231, 235)",
+          "boxShadow": "none",
+          "rect": {
+            "x": 477,
+            "y": 899.375,
+            "width": 480,
+            "height": 48
+          }
+        }
+      ],
+      "actionTime": 1788426240189,
+      "framesAfter": [
+        {
+          "t": 1788426240201,
+          "transform": "matrix(0.999697, 0, 0, 0.999697, 0, 0)",
+          "opacity": "1",
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "color": "rgb(32, 32, 35)",
+          "borderColor": "rgb(229, 231, 235)",
+          "boxShadow": "none",
+          "rect": {
+            "x": 477.07269287109375,
+            "y": 851.88232421875,
+            "width": 479.8546142578125,
+            "height": 47.9854736328125
+          }
+        },
+        {
+          "t": 1788426240216,
+          "transform": "matrix(0.998302, 0, 0, 0.998302, 0, 0)",
+          "opacity": "1",
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "color": "rgb(32, 32, 35)",
+          "borderColor": "rgb(229, 231, 235)",
+          "boxShadow": "none",
+          "rect": {
+            "x": 477.40740966796875,
+            "y": 851.915771484375,
+            "width": 479.1851806640625,
+            "height": 47.91845703125
+          }
+        },
+        {
+          "t": 1788426240233,
+          "transform": "matrix(0.995269, 0, 0, 0.995269, 0, 0)",
+          "opacity": "1",
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "color": "rgb(32, 32, 35)",
+          "borderColor": "rgb(229, 231, 235)",
+          "boxShadow": "none",
+          "rect": {
+            "x": 478.13543701171875,
+            "y": 851.988525390625,
+            "width": 477.7291259765625,
+            "height": 47.77294921875
+          }
+        }
+      ],
+      "reducedMotionChecked": true
+    },
+    {
+      "element": "button 'Volgende dataset' (Tailwind class active:scale-[0.98], transition-all duration-200) — dezelfde knop, nu gemeten met dgskills-accessibility.reducedMotion=true en de 'reduced-motion'-class bevestigd aanwezig op <html>",
+      "action": "Muisknop ingedrukt gehouden (mousedown) op de knop 'Volgende dataset', direct gevolgd door mouse-up, onder reduced motion; dit was tevens de actie die naar dataset 2 navigeerde",
+      "screenshot": 28,
+      "framesBefore": [
+        {
+          "t": 1788427214519,
+          "transform": "none",
+          "opacity": "1",
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "color": "rgb(32, 32, 35)",
+          "borderColor": "rgb(229, 231, 235)",
+          "boxShadow": "none",
+          "rect": {
+            "x": 477,
+            "y": 899.375,
+            "width": 480,
+            "height": 48
+          }
+        }
+      ],
+      "actionTime": 1788427214590,
+      "framesAfter": [
+        {
+          "t": 1788427214597,
+          "transform": "matrix(0.999702, 0, 0, 0.999702, 0, 0)",
+          "opacity": "1",
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "color": "rgb(32, 32, 35)",
+          "borderColor": "rgb(229, 231, 235)",
+          "boxShadow": "none",
+          "rect": {
+            "x": 477.0715637207031,
+            "y": 851.8822021484375,
+            "width": 479.8569030761719,
+            "height": 47.9857177734375
+          }
+        },
+        {
+          "t": 1788427214613,
+          "transform": "matrix(0.99853, 0, 0, 0.99853, 0, 0)",
+          "opacity": "1",
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "color": "rgb(32, 32, 35)",
+          "borderColor": "rgb(229, 231, 235)",
+          "boxShadow": "none",
+          "rect": {
+            "x": 477.3528747558594,
+            "y": 851.9102783203125,
+            "width": 479.2942199707031,
+            "height": 47.929443359375
+          }
+        },
+        {
+          "t": 1788427214630,
+          "transform": "matrix(0.995248, 0, 0, 0.995248, 0, 0)",
+          "opacity": "1",
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "color": "rgb(32, 32, 35)",
+          "borderColor": "rgb(229, 231, 235)",
+          "boxShadow": "none",
+          "rect": {
+            "x": 478.140380859375,
+            "y": 851.989013671875,
+            "width": 477.71923828125,
+            "height": 47.77197265625
+          }
+        }
+      ],
+      "reducedMotionChecked": true,
+      "reducedMotionResult": "Animatie loopt gewoon door onder reduced motion — NIET onderdrukt. De transform-curve onder reduced motion (none → 0.999702 → 0.998530 → 0.995248, over ~7-40ms na actionTime) is vrijwel identiek aan de oorspronkelijke meting zonder reduced motion (none → 0.999697 → 0.998302 → 0.995269, over ~12-44ms na actionTime). De active:scale-[0.98] pers-animatie op deze knop respecteert de reduced-motion-voorkeur van de gebruiker dus niet, ondanks dat de 'reduced-motion'-class wel correct op <html> stond."
+    }
+  ],
+  "reducedMotion": {
+    "classPresent": true,
+    "screenshot": 12
+  },
+  "introSteps": [
+    {
+      "screenshot": 1,
+      "text": "Word een Neural Navigator. AI · Leerjaar 3, ~20 min, Uitdagend, +150 XP. Neurale netwerken zijn de motor achter gezichtsherkenning, stemassistenten en aanbevelingsalgoritmes. Ze zijn geinspireerd op het menselijk brein. Jij gaat van binnenuit ontdekken hoe neuronen, lagen en backpropagation samenwerken. /goal: Ik bereken een forward pass door een neuraal netwerk en leg uit hoe lagen, gewichten en backpropagatie werken. Bewijs: Je kunt de output van een neuron berekenen met invoer, gewichten en bias, en uitleggen wat backpropagatie doet. Stappen: 1 Reken zelf een forward pass door een neuraal netwerk, 2 Vergelijk hoe de output verandert bij andere gewichten, 3 Beoordeel hoe backpropagation een netwerk laat leren van fouten. Kees: Geen stress, stap voor stap kom je er. Ik help je op gang."
+    },
+    {
+      "screenshot": 7,
+      "text": "Dataset 2/3. Effect van gewichtsaanpassing: voor vs. na training. Dit netwerk leert handgeschreven cijfers herkennen. Bekijk hoe de output-kansen per cijfer veranderen na 1000 trainingsrondes. Databron: Oefendataset, Gesimuleerde trainingsuitvoer. Voorbeeldwaarden voor begrip van gewichtsaanpassing; geen actuele modelbenchmark."
+    },
+    {
+      "screenshot": 10,
+      "text": "Dataset 3/3. De lagen van een neuraal netwerk. Een neuraal netwerk is opgebouwd uit lagen. Hier zijn de drie soorten lagen en hun rol: Input layer (invoerlaag), Hidden layers (verborgen lagen), Output layer (uitvoerlaag), en Activatiefuncties."
+    }
+  ],
+  "introSummary": {
+    "maak": "Je rekent een forward pass door een klein neuraal netwerk uit (output van een neuron uit input, gewichten en bias) en legt uit hoe lagen, gewichten en backpropagatie een netwerk laten leren van fouten.",
+    "voorWie": "Voor een leerling in leerjaar 3 die kennismaakt met AI/neurale netwerken; het niveau is aangeduid als 'Uitdagend', duurt ongeveer 20 minuten en levert 150 XP op.",
+    "goed": "Het is goed als je de output van een neuron kunt berekenen uit invoer, gewichten en bias, en kunt uitleggen wat backpropagatie doet en waarom gewichten tijdens het leren worden aangepast."
+  },
+  "veto2": {
+    "readClickMinutes": 1,
+    "totalMinutes": 4,
+    "percentage": 0.25
+  },
+  "comparedWith": {
+    "missionId": "ml-trainer",
+    "manifestPath": "../ml-trainer-2026-09-03/manifest.json"
+  },
+  "gates": {
+    "veto1": "NIET VASTGESTELD",
+    "veto2": "GESLAAGD",
+    "veto3": "NIET VASTGESTELD",
+    "veto4": "NIET VASTGESTELD",
+    "poort1": "n.v.t.",
+    "poort2": "n.v.t.",
+    "poort3": "n.v.t."
+  },
+  "viewports": [
+    {
+      "name": "desktop",
+      "cssViewport": "1440x900",
+      "checkpoints": {
+        "start": true,
+        "flow": true,
+        "feedback": true,
+        "recovery": true,
+        "end": true
+      },
+      "evidence": [
+        {
+          "screenshot": 1,
+          "path": "01-desktop-start.png",
+          "sha256": "a01adec1cf7cc1c244dc4c9308f5fbda47461e709cdb2052efa4f9ad9dc6a855",
+          "width": 1440,
+          "height": 900
+        },
+        {
+          "screenshot": 2,
+          "path": "02-desktop-flow.png",
+          "sha256": "47634076579d1497af111773dc287acdfff2e4f56f3b68e4d9c090926f2b4bdb",
+          "width": 1440,
+          "height": 900
+        },
+        {
+          "screenshot": 3,
+          "path": "03-desktop-feedback.png",
+          "sha256": "35978ffb2a75723a711921a4d330442cfe902850bece926182d9949690c45257",
+          "width": 1440,
+          "height": 900
+        },
+        {
+          "screenshot": 4,
+          "path": "04-desktop-flow.png",
+          "sha256": "4f3f286bdc3ebf4868231862ef23497fba711c2c0ac3bf9149a6f2752737fd34",
+          "width": 1440,
+          "height": 900
+        },
+        {
+          "screenshot": 5,
+          "path": "05-desktop-flow-onvolledig.png",
+          "sha256": "ff3199209cd7cc005872b3361eebcfe37bc404cc0156ba7e3ddff3c0739d8d57",
+          "width": 1440,
+          "height": 900
+        },
+        {
+          "screenshot": 6,
+          "path": "06-desktop-recovery.png",
+          "sha256": "f2025f982450ffb534d257a7a8a51c5dcfcb0dcb5e606a8904c3478c50f01b71",
+          "width": 1440,
+          "height": 900
+        },
+        {
+          "screenshot": 7,
+          "path": "07-desktop-flow-dataset2.png",
+          "sha256": "9102d3a2dc37cd78c078bccf8e5b4fe35c66989498ddf97556cd8b74efd375d4",
+          "width": 1440,
+          "height": 900
+        },
+        {
+          "screenshot": 8,
+          "path": "08-desktop-feedback-dataset2.png",
+          "sha256": "b19f9be66577ef52d34ba18b19bc7c1c2e8a317e613ba2c178e406d051911b01",
+          "width": 1440,
+          "height": 900
+        },
+        {
+          "screenshot": 9,
+          "path": "09-desktop-flow-dataset2-done.png",
+          "sha256": "b8339c90ddcb047b80409a9188d6cc6cd8e8d45fbb2bd51e570267ee7404da77",
+          "width": 1440,
+          "height": 900
+        },
+        {
+          "screenshot": 10,
+          "path": "10-desktop-flow-dataset3.png",
+          "sha256": "2044a68ea8297237d137a602d8d68bc33932138bfcdf764cda4b2d342979472d",
+          "width": 1440,
+          "height": 900
+        },
+        {
+          "screenshot": 11,
+          "path": "11-desktop-end.png",
+          "sha256": "255267e69667060a670d01b7a677f6a9ad13f3b22200345692c3932c680067e7",
+          "width": 1440,
+          "height": 900
+        },
+        {
+          "screenshot": 12,
+          "path": "12-desktop-reducedmotion.png",
+          "sha256": "442e7535e4cdb4e055679bee39b877704d38e1fa574e5495f619fcb017ecf0b6",
+          "width": 1440,
+          "height": 900
+        },
+        {
+          "screenshot": 28,
+          "path": "28-desktop-reducedmotion-animation.png",
+          "sha256": "9102d3a2dc37cd78c078bccf8e5b4fe35c66989498ddf97556cd8b74efd375d4",
+          "width": 1440,
+          "height": 900
+        }
+      ]
+    },
+    {
+      "name": "mobile",
+      "cssViewport": "375x844",
+      "checkpoints": {
+        "start": true,
+        "flow": true,
+        "feedback": true,
+        "recovery": true,
+        "end": true
+      },
+      "evidence": [
+        {
+          "screenshot": 13,
+          "path": "13-mobile-start.png",
+          "sha256": "8c710c4aca183a52ba89688bb0ef30edee920e7dd42717a7a0629b8b2d4ee46b",
+          "width": 375,
+          "height": 844
+        },
+        {
+          "screenshot": 14,
+          "path": "14-mobile-flow.png",
+          "sha256": "097e179c448214554662ffcf496726d3481ae240702f5c81064a0c2e2ad05198",
+          "width": 375,
+          "height": 844
+        },
+        {
+          "screenshot": 15,
+          "path": "15-mobile-feedback-fout.png",
+          "sha256": "3b5c96b68cc33b5097245d9ce79749f0814c707d8775ae5e8f812cec5a859f61",
+          "width": 375,
+          "height": 844
+        },
+        {
+          "screenshot": 16,
+          "path": "16-mobile-recovery.png",
+          "sha256": "7e8117d5ecce7146e90065831755aa023f62ddfc8ebda413105cb3cc4d88652a",
+          "width": 375,
+          "height": 844
+        },
+        {
+          "screenshot": 17,
+          "path": "17-mobile-end.png",
+          "sha256": "81a13f4a5afd2ef74ac9d7a92aee3fb76661f7c1c151cff41b5882014bd9376c",
+          "width": 375,
+          "height": 844
+        }
+      ]
+    },
+    {
+      "name": "ipad-portrait",
+      "cssViewport": "820x1180",
+      "checkpoints": {
+        "start": true,
+        "flow": true,
+        "feedback": true,
+        "recovery": true,
+        "end": true
+      },
+      "evidence": [
+        {
+          "screenshot": 18,
+          "path": "18-ipad-portrait-start.png",
+          "sha256": "f7f4869ad5ce62b51dda3b9d8cbd15ae5c52429376b9c8001fd9e637cbf41249",
+          "width": 820,
+          "height": 1180
+        },
+        {
+          "screenshot": 19,
+          "path": "19-ipad-portrait-flow.png",
+          "sha256": "f14f49f0d1b0b7b2ed75dd6df46ab24b0b60b4c1387f6653b273373d5d65594d",
+          "width": 820,
+          "height": 1180
+        },
+        {
+          "screenshot": 20,
+          "path": "20-ipad-portrait-feedback-fout.png",
+          "sha256": "9bb48cdc93588d5b93d0365720e6a80b5bf1f05a09ab2526575f417083281770",
+          "width": 820,
+          "height": 1180
+        },
+        {
+          "screenshot": 21,
+          "path": "21-ipad-portrait-recovery.png",
+          "sha256": "c08ae1cfc54ccb803627497c0329a6ca8ae20ff3afe589f4970142c7532f3b55",
+          "width": 820,
+          "height": 1180
+        },
+        {
+          "screenshot": 22,
+          "path": "22-ipad-portrait-end.png",
+          "sha256": "c20a6e5f7d340b801f541f6dc95d895185b998c95fd9e4ddff779f677571f574",
+          "width": 820,
+          "height": 1180
+        }
+      ]
+    },
+    {
+      "name": "ipad-landscape",
+      "cssViewport": "1180x820",
+      "checkpoints": {
+        "start": true,
+        "flow": true,
+        "feedback": true,
+        "recovery": true,
+        "end": true
+      },
+      "evidence": [
+        {
+          "screenshot": 23,
+          "path": "23-ipad-landscape-start.png",
+          "sha256": "9cd08cfce7a7661822488eafd27d40894b62ef71c5a0cded2bf78447bc127981",
+          "width": 1180,
+          "height": 820
+        },
+        {
+          "screenshot": 24,
+          "path": "24-ipad-landscape-flow.png",
+          "sha256": "9cebdd51c9379c84a6771f98964471f75d6c927566efa5d52c143e2d0ac0685d",
+          "width": 1180,
+          "height": 820
+        },
+        {
+          "screenshot": 25,
+          "path": "25-ipad-landscape-feedback-fout.png",
+          "sha256": "44982798b4e41c2f253e8193dc1483872a5c31ced6bdf963f8a7f967bfde0451",
+          "width": 1180,
+          "height": 820
+        },
+        {
+          "screenshot": 26,
+          "path": "26-ipad-landscape-recovery.png",
+          "sha256": "d46fa75a00d57b625429e1baebf450a9e0b2121511d92d6465ac2503b9db74c7",
+          "width": 1180,
+          "height": 820
+        },
+        {
+          "screenshot": 27,
+          "path": "27-ipad-landscape-end.png",
+          "sha256": "32a5af46ea78614f833452ffca7a5e0ffa7a7e4863049638e61e119ad4d98eb6",
+          "width": 1180,
+          "height": 820
+        }
+      ]
+    }
+  ]
+}
