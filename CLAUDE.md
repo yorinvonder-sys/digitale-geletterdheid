@@ -75,6 +75,14 @@ Audits run in reverse (4 → 1).
 | 6 | Shift-left | `defect-shift-left` | Each error path → earliest stage |
 | 7 | Optimize | `system-optimization` | Constraint analysis |
 
+Bij het doorlopen van een gate: raadpleeg alleen het relevante onderdeel van de
+skill (de betreffende sectie of `rules/*.md`-bestand), niet het volledige
+`SKILL.md`/`AGENTS.md`-referentiedocument, tenzij de taak dat vereist — elk
+skill-bestand volledig inlezen kost tokens die de meeste stappen niet nodig
+hebben. De volledige 7-gate-keten is voor écht grote architectuur- of
+refactorwerk; voor een middelgrote wijziging volstaat het toepassen van de
+relevante gates uit het hoofd.
+
 ### Front-door triage (before the gates)
 
 | Step shape | Action |
