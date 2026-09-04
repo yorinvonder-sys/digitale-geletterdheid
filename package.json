@@ -68,6 +68,7 @@
     "test:mission-completion": "node --test tests/mission-completion-contract.test.ts",
     "test:contracts": "node --test tests/*contract*.test.ts",
     "test:ai-students:pilot": "node tests/ai-students/local-pilot.mjs --mission=mail-detective --persona=snelle-sam,taalzwakke-tess,ipad-iris --device=desktop,ipad-portrait,ipad-landscape",
+    "test:mission-quality": "node --experimental-strip-types --test tests/mission-quality/*.test.ts tests/mission-quality/*.test.mjs",
     "audit:security": "node scripts/audit-security.mjs",
     "test:audit-security": "node --test tests/security/audit-security.test.mjs",
     "security:check": "node scripts/security-report-core-check.mjs && node scripts/check-website-security-posture.mjs",

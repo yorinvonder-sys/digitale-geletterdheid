@@ -5,12 +5,14 @@ import {
     Loader2,
     Search,
 } from 'lucide-react';
+import { CURRICULUM } from '@/config/curriculum';
 import { ParentUser } from '@/types';
 import {
     getDeveloperSettings,
     updateDeveloperSettings,
     type DeveloperSettings,
 } from '@/services/developerService';
+import { buildMissionCatalog } from './mission-quality/missionQualityModel';
 
 interface DeveloperReviewChecklistProps {
     user: ParentUser;
@@ -22,20 +24,18 @@ interface ReviewGroup {
     assignments: string[];
 }
 
-const REVIEW_GROUPS: ReviewGroup[] = [
-    { id: 'j1-p1', label: 'J1 P1', assignments: ['magister-master', 'cloud-commander', 'word-wizard', 'slide-specialist', 'print-pro', 'cloud-cleaner', 'layout-doctor', 'pitch-police'] },
-    { id: 'j1-p2', label: 'J1 P2', assignments: ['prompt-master', 'game-programmeur', 'ai-trainer', 'chatbot-trainer', 'verhalen-ontwerper', 'game-director', 'ai-tekengame', 'ai-beleid-brainstorm', 'code-denker', 'website-bouwer', 'schermtijd-coach', 'notificatie-ninja', 'review-week-2'] },
-    { id: 'j1-p3', label: 'J1 P3', assignments: ['data-detective', 'data-verzamelaar', 'deepfake-detector', 'ai-spiegel', 'social-safeguard', 'scroll-stopper', 'cookie-crusher', 'mail-detective', 'data-handelaar', 'filter-bubble-breaker', 'datalekken-rampenplan', 'data-voor-data', 'data-speurder', 'digitale-balans-coach'] },
-    { id: 'j1-p4', label: 'J1 P4', assignments: ['mission-blueprint', 'mission-vision', 'mission-launch', 'review-week-3'] },
-    { id: 'j2-p1', label: 'J2 P1', assignments: ['data-journalist', 'spreadsheet-specialist', 'factchecker', 'api-verkenner', 'dashboard-designer', 'ai-bias-detective', 'data-review'] },
-    { id: 'j2-p2', label: 'J2 P2', assignments: ['algorithm-architect', 'web-developer', 'app-prototyper', 'bug-hunter', 'automation-engineer', 'code-reviewer', 'wachtwoord-warrior', 'wachtwoord-fortress', 'access-control-engineer', 'code-review-2'] },
-    { id: 'j2-p3', label: 'J2 P3', assignments: ['ux-detective', 'podcast-producer', 'meme-machine', 'digital-storyteller', 'brand-builder', 'video-editor', 'online-helden', 'media-review'] },
-    { id: 'j2-p4', label: 'J2 P4', assignments: ['ai-ethicus', 'digital-rights-defender', 'tech-court', 'future-forecaster', 'sustainability-scanner', 'eindproject-j2'] },
-    { id: 'j3-p1', label: 'J3 P1', assignments: ['ml-trainer', 'api-architect', 'neural-navigator', 'data-pipeline', 'open-source-contributor', 'advanced-code-review'] },
-    { id: 'j3-p2', label: 'J3 P2', assignments: ['cyber-detective', 'encryption-expert', 'phishing-fighter', 'security-auditor', 'digital-forensics', 'security-review'] },
-    { id: 'j3-p3', label: 'J3 P3', assignments: ['startup-simulator', 'policy-maker', 'innovation-lab', 'digital-divide-researcher', 'tech-impact-analyst', 'welzijnsonderzoeker', 'startup-pitch', 'impact-review'] },
-    { id: 'j3-p4', label: 'J3 P4', assignments: ['portfolio-builder', 'research-project', 'prototype-developer', 'pitch-perfect', 'reflection-report', 'meesterproef'] },
-];
+const MISSION_CATALOG = buildMissionCatalog(CURRICULUM.yearGroups);
+const REVIEW_GROUPS: ReviewGroup[] = Array.from({ length: 3 }, (_, yearIndex) => yearIndex + 1)
+    .flatMap(yearGroup => (
+        Array.from({ length: 4 }, (_, periodIndex) => periodIndex + 1)
+            .map(period => ({
+                id: `j${yearGroup}-p${period}`,
+                label: `J${yearGroup} P${period}`,
+                assignments: MISSION_CATALOG
+                    .filter(mission => mission.yearGroup === yearGroup && mission.period === period)
+                    .map(mission => mission.id),
+            }))
+    ));
 
 const TOTAL_ASSIGNMENTS = REVIEW_GROUPS.reduce((sum, group) => sum + group.assignments.length, 0);
 const ASSIGNMENT_KEYS = REVIEW_GROUPS.flatMap(group =>
