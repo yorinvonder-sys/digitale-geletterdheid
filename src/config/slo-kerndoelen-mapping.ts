@@ -1,5 +1,5 @@
-import { StudentData } from '@/types';
-import { SloKerndoelCode } from './sloKerndoelen';
+import type { StudentData } from '@/types';
+import type { SloKerndoelCode } from './sloKerndoelen';
 
 export interface KerndoelMissionMeta {
   id: string;

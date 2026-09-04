@@ -102,6 +102,7 @@ export const IctLandingPage: React.FC = () => {
                     <div className="flex flex-wrap items-center gap-5 text-xs text-duck-ink/60">
                         <a href="mailto:info@dgskills.app" className="hover:text-lab-muted transition-colors font-medium">info@dgskills.app</a>
                         <span className="text-duck-ink/60">·</span>
+                        <a href="/leerlijn-digitale-geletterdheid" className="hover:text-lab-muted transition-colors">Leerlijn</a>
                         <a href="/ict/privacy/policy" className="hover:text-lab-muted transition-colors">Privacy</a>
                         <a href="/ict/privacy/cookies" className="hover:text-lab-muted transition-colors">Cookies</a>
                         <a href="/ict/privacy/ai" className="hover:text-lab-muted transition-colors">AI Act</a>

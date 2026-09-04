@@ -2,7 +2,7 @@
 // Volledige curriculumstructuur voor leerjaar 1 t/m 3, alle niveaus
 // Gebaseerd op SLO definitieve conceptkerndoelen (september 2025)
 
-import { SloKerndoelCode } from './sloKerndoelen';
+import type { SloKerndoelCode } from './sloKerndoelen';
 
 // ============================================================================
 // Types

@@ -19,6 +19,7 @@ const ComplianceHub = React.lazy(() => import('@/features/seo/ComplianceHub').th
 const GuidePage = React.lazy(() => import('@/features/seo/GuidePage').then(m => ({ default: m.GuidePage })));
 const ComplianceChecklist = React.lazy(() => import('@/features/seo/ComplianceChecklist').then(m => ({ default: m.ComplianceChecklist })));
 const SloRapport = React.lazy(() => import('@/features/seo/SloRapport').then(m => ({ default: m.SloRapport })));
+const Leerlijn = React.lazy(() => import('@/features/seo/Leerlijn').then(m => ({ default: m.Leerlijn })));
 const ComparisonPage = React.lazy(() => import('@/features/seo/ComparisonPage').then(m => ({ default: m.ComparisonPage })));
 const PilotAanmelden = React.lazy(() => import('@/features/public-site/PilotAanmelden').then(m => ({ default: m.PilotAanmelden })));
 const VerhaalPage = React.lazy(() => import('@/features/public-site/verhaal/VerhaalPage').then(m => ({ default: m.VerhaalPage })));
@@ -559,12 +560,13 @@ export function AppRouter() {
         );
     }
 
-    if (normalizedPath === '/digitale-geletterdheid-vo' || normalizedPath === '/slo-kerndoelen-digitale-geletterdheid' || normalizedPath === '/ai-geletterdheid-onderwijs-ai-act' || normalizedPath === '/compliance-hub' || normalizedPath === '/compliance/checklist' || normalizedPath === '/compliance/slo-rapport' || normalizedPath === '/pilot' || normalizedPath.startsWith('/vergelijking/')) {
+    if (normalizedPath === '/digitale-geletterdheid-vo' || normalizedPath === '/slo-kerndoelen-digitale-geletterdheid' || normalizedPath === '/leerlijn-digitale-geletterdheid' || normalizedPath === '/ai-geletterdheid-onderwijs-ai-act' || normalizedPath === '/compliance-hub' || normalizedPath === '/compliance/checklist' || normalizedPath === '/compliance/slo-rapport' || normalizedPath === '/pilot' || normalizedPath.startsWith('/vergelijking/')) {
         return (
             <PublicPageShell>
                 <React.Suspense fallback={<LoadingFallback />}>
                     {normalizedPath === '/digitale-geletterdheid-vo' && <DigitaleGeletterdheidVo />}
                     {normalizedPath === '/slo-kerndoelen-digitale-geletterdheid' && <SloKerndoelen />}
+                    {normalizedPath === '/leerlijn-digitale-geletterdheid' && <Leerlijn />}
                     {normalizedPath === '/ai-geletterdheid-onderwijs-ai-act' && <AiGeletterdheid />}
                     {normalizedPath === '/compliance-hub' && <ComplianceHub />}
                     {normalizedPath === '/compliance/checklist' && <ComplianceChecklist />}
@@ -589,7 +591,7 @@ export function AppRouter() {
     }
 
     // 404 handler for public routes
-    const isPublicRoute = normalizedPath === '' || normalizedPath === '/' || normalizedPath === '/scholen' || normalizedPath === '/ict' || normalizedPath.startsWith('/ict/') || normalizedPath === '/login' || normalizedPath === '/ouderlijke-toestemming' || normalizedPath === '/digitale-geletterdheid-vo' || normalizedPath === '/slo-kerndoelen-digitale-geletterdheid' || normalizedPath === '/ai-geletterdheid-onderwijs-ai-act' || normalizedPath === '/compliance-hub' || normalizedPath.startsWith('/compliance/') || normalizedPath === '/pilot' || normalizedPath.startsWith('/vergelijking/') || normalizedPath.startsWith('/gids/') || normalizedPath === '/speeltuin' || normalizedPath === '/leerlingdemo' || normalizedPath === '/verhaal';
+    const isPublicRoute = normalizedPath === '' || normalizedPath === '/' || normalizedPath === '/scholen' || normalizedPath === '/ict' || normalizedPath.startsWith('/ict/') || normalizedPath === '/login' || normalizedPath === '/ouderlijke-toestemming' || normalizedPath === '/digitale-geletterdheid-vo' || normalizedPath === '/slo-kerndoelen-digitale-geletterdheid' || normalizedPath === '/leerlijn-digitale-geletterdheid' || normalizedPath === '/ai-geletterdheid-onderwijs-ai-act' || normalizedPath === '/compliance-hub' || normalizedPath.startsWith('/compliance/') || normalizedPath === '/pilot' || normalizedPath.startsWith('/vergelijking/') || normalizedPath.startsWith('/gids/') || normalizedPath === '/speeltuin' || normalizedPath === '/leerlingdemo' || normalizedPath === '/verhaal';
 
     if (isPublicRoute) {
         return (

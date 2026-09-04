@@ -464,12 +464,15 @@ Cookies zijn kleine tekstbestanden die op je computer of telefoon worden opgesla
 
 ### Welke cookies gebruiken wij?
 
-DGSkills maakt uitsluitend gebruik van **strikt noodzakelijke (functionele) cookies**:
+DGSkills gebruikt **strikt noodzakelijke (functionele) cookies en opslag**, plus **optionele
+first-party statistieken die pas na toestemming meten**:
 
 | Cookie/techniek | Doel | Bewaartermijn | Type |
 |---|---|---|---|
-| **Sessie-/authenticatie-token** | Om je ingelogd te houden en te verifiereren wie je bent | Duur van de sessie | Functioneel (strikt noodzakelijk) |
+| **Sessie-/authenticatie-token** | Om je ingelogd te houden en te verifiëren wie je bent | Duur van de sessie | Functioneel (strikt noodzakelijk) |
 | **Supabase auth tokens** | Beveiligde authenticatie via Supabase | Duur van de sessie / verlengbaar | Functioneel (strikt noodzakelijk) |
+| **cookie-consent-status** (localStorage) | Onthouden van je keuze in de cookiemelding | Tot intrekking of verwijdering | Functioneel (strikt noodzakelijk) |
+| **Interne klik-analyse** | First-party gebruiksstatistieken voor productverbetering | Sessie / geaggregeerd | Analytics (alleen na toestemming) |
 
 ### Wat wij NIET gebruiken
 
