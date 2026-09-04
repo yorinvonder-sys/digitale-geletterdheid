@@ -101,6 +101,11 @@ const TEMPLATE_ENGINES = {
     varName: 'VALID_PASSWORD_FORTRESS_IDS',
     dir: 'password-fortress',
   },
+  'helpdesk-shift': {
+    file: 'src/features/missions/templates/helpdesk-shift/HelpdeskShift.tsx',
+    varName: 'VALID_HELPDESK_SHIFT_IDS',
+    dir: 'helpdesk-shift',
+  },
 };
 
 /**
