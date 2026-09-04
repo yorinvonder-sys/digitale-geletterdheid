@@ -90,6 +90,7 @@ export function Proloog({ onPlayFilm }: { onPlayFilm: () => void }) {
                 </a>
                 <a
                     href="/login"
+                    data-cta="verhaal_hero_login"
                     className="inline-flex min-h-[44px] items-center rounded-full px-3 text-sm font-bold text-duck-ink underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-ink focus-visible:ring-offset-2"
                 >
                     Inloggen
@@ -136,12 +137,14 @@ export function Proloog({ onPlayFilm }: { onPlayFilm: () => void }) {
                     >
                         <a
                             href="/leerlingdemo"
+                            data-cta="verhaal_hero_leerlingdemo"
                             className={`inline-flex min-h-[44px] items-center rounded-full border-[3px] border-duck-ink bg-duck-acid px-7 py-3.5 font-bold text-duck-ink ${HARD_SHADOW} transition-transform hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-ink focus-visible:ring-offset-2`}
                         >
                             Bekijk een missie
                         </a>
                         <a
                             href="/pilot"
+                            data-cta="verhaal_hero_schoolpilot"
                             className="inline-flex min-h-[44px] items-center rounded-full border-[3px] border-duck-ink bg-duck-ink px-7 py-3.5 font-bold text-duck-acid transition-transform hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-ink focus-visible:ring-offset-2"
                         >
                             Plan een schoolpilot
@@ -156,6 +159,7 @@ export function Proloog({ onPlayFilm }: { onPlayFilm: () => void }) {
                     >
                         <button
                             type="button"
+                            data-cta="verhaal_hero_film"
                             onClick={onPlayFilm}
                             className="inline-flex min-h-[44px] items-center gap-1.5 underline-offset-4 hover:text-duck-ink hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-ink focus-visible:ring-offset-2"
                         >
@@ -163,6 +167,7 @@ export function Proloog({ onPlayFilm }: { onPlayFilm: () => void }) {
                         </button>
                         <a
                             href="#probleem"
+                            data-cta="verhaal_hero_lees_verhaal"
                             className="inline-flex min-h-[44px] items-center underline-offset-4 hover:text-duck-ink hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-ink focus-visible:ring-offset-2"
                         >
                             Lees het verhaal ↓

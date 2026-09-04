@@ -181,6 +181,7 @@ export function Bewijs() {
                         <div className="mt-8">
                             <a
                                 href="/compliance/slo-rapport"
+                                data-cta="verhaal_bewijs_slo_rapport"
                                 className="inline-flex min-h-[44px] items-center rounded-full border-2 border-duck-acid px-5 py-2 text-sm font-bold text-duck-acid transition-colors hover:bg-duck-acid hover:text-duck-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-acid focus-visible:ring-offset-2 focus-visible:ring-offset-duck-ink"
                             >
                                 Bekijk een voorbeeldrapportage →
@@ -215,6 +216,7 @@ export function Bewijs() {
                         <div className="mt-8">
                             <a
                                 href="/compliance-hub"
+                                data-cta="verhaal_bewijs_compliance_hub"
                                 className="inline-flex min-h-[44px] items-center rounded-full border-2 border-duck-acid px-5 py-2 text-sm font-bold text-duck-acid transition-colors hover:bg-duck-acid hover:text-duck-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-acid focus-visible:ring-offset-2 focus-visible:ring-offset-duck-ink"
                             >
                                 Naar het privacy- en compliancedossier →
